@@ -6,4 +6,4 @@ where
   t.fromSource() and
   m = getInvokedDisposeMethod(t) and
   if implementsDispose(t) then b = true else b = false
-select t, m.getQualifiedNameWithTypes(), b
+select t, m.getFullyQualifiedNameWithTypes(), b

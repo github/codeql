@@ -2108,6 +2108,18 @@ edges
 | array_flow.rb:1641:10:1641:10 | a [element] | array_flow.rb:1641:10:1641:17 | ...[...] |
 | array_flow.rb:1643:10:1643:10 | a [element 0] | array_flow.rb:1643:10:1643:15 | ...[...] |
 | array_flow.rb:1643:10:1643:10 | a [element] | array_flow.rb:1643:10:1643:15 | ...[...] |
+| array_flow.rb:1647:5:1647:5 | a [element 1] | array_flow.rb:1649:10:1649:10 | a [element 1] |
+| array_flow.rb:1647:5:1647:5 | a [element 1] | array_flow.rb:1651:10:1651:10 | a [element 1] |
+| array_flow.rb:1647:9:1647:32 | ...[...] [element 1] | array_flow.rb:1647:5:1647:5 | a [element 1] |
+| array_flow.rb:1647:18:1647:28 | call to source | array_flow.rb:1647:9:1647:32 | ...[...] [element 1] |
+| array_flow.rb:1649:10:1649:10 | a [element 1] | array_flow.rb:1649:10:1649:13 | ...[...] |
+| array_flow.rb:1651:10:1651:10 | a [element 1] | array_flow.rb:1651:10:1651:13 | ...[...] |
+| array_flow.rb:1668:9:1668:10 | a2 [element 1] | array_flow.rb:1670:14:1670:15 | a2 [element 1] |
+| array_flow.rb:1668:9:1668:10 | a2 [element 1] | array_flow.rb:1672:14:1672:15 | a2 [element 1] |
+| array_flow.rb:1668:14:1668:41 | ...[...] [element 1] | array_flow.rb:1668:9:1668:10 | a2 [element 1] |
+| array_flow.rb:1668:25:1668:37 | call to source | array_flow.rb:1668:14:1668:41 | ...[...] [element 1] |
+| array_flow.rb:1670:14:1670:15 | a2 [element 1] | array_flow.rb:1670:14:1670:18 | ...[...] |
+| array_flow.rb:1672:14:1672:15 | a2 [element 1] | array_flow.rb:1672:14:1672:18 | ...[...] |
 nodes
 | array_flow.rb:2:5:2:5 | a [element 0] | semmle.label | a [element 0] |
 | array_flow.rb:2:9:2:20 | * ... [element 0] | semmle.label | * ... [element 0] |
@@ -4348,7 +4360,210 @@ nodes
 | array_flow.rb:1643:10:1643:10 | a [element 0] | semmle.label | a [element 0] |
 | array_flow.rb:1643:10:1643:10 | a [element] | semmle.label | a [element] |
 | array_flow.rb:1643:10:1643:15 | ...[...] | semmle.label | ...[...] |
+| array_flow.rb:1647:5:1647:5 | a [element 1] | semmle.label | a [element 1] |
+| array_flow.rb:1647:9:1647:32 | ...[...] [element 1] | semmle.label | ...[...] [element 1] |
+| array_flow.rb:1647:18:1647:28 | call to source | semmle.label | call to source |
+| array_flow.rb:1649:10:1649:10 | a [element 1] | semmle.label | a [element 1] |
+| array_flow.rb:1649:10:1649:13 | ...[...] | semmle.label | ...[...] |
+| array_flow.rb:1651:10:1651:10 | a [element 1] | semmle.label | a [element 1] |
+| array_flow.rb:1651:10:1651:13 | ...[...] | semmle.label | ...[...] |
+| array_flow.rb:1668:9:1668:10 | a2 [element 1] | semmle.label | a2 [element 1] |
+| array_flow.rb:1668:14:1668:41 | ...[...] [element 1] | semmle.label | ...[...] [element 1] |
+| array_flow.rb:1668:25:1668:37 | call to source | semmle.label | call to source |
+| array_flow.rb:1670:14:1670:15 | a2 [element 1] | semmle.label | a2 [element 1] |
+| array_flow.rb:1670:14:1670:18 | ...[...] | semmle.label | ...[...] |
+| array_flow.rb:1672:14:1672:15 | a2 [element 1] | semmle.label | a2 [element 1] |
+| array_flow.rb:1672:14:1672:18 | ...[...] | semmle.label | ...[...] |
 subpaths
+arrayLiteral
+| array_flow.rb:9:9:9:25 | call to [] |
+| array_flow.rb:33:9:33:22 | call to [] |
+| array_flow.rb:40:9:40:24 | call to [] |
+| array_flow.rb:41:9:41:27 | call to [] |
+| array_flow.rb:48:9:48:22 | call to [] |
+| array_flow.rb:55:9:55:24 | call to [] |
+| array_flow.rb:56:9:56:24 | call to [] |
+| array_flow.rb:63:9:63:24 | call to [] |
+| array_flow.rb:64:9:64:24 | call to [] |
+| array_flow.rb:71:9:71:24 | call to [] |
+| array_flow.rb:80:9:80:25 | call to [] |
+| array_flow.rb:88:9:88:26 | call to [] |
+| array_flow.rb:96:9:96:26 | call to [] |
+| array_flow.rb:103:9:103:39 | call to [] |
+| array_flow.rb:109:9:109:42 | call to [] |
+| array_flow.rb:120:9:120:14 | call to [] |
+| array_flow.rb:128:9:128:14 | call to [] |
+| array_flow.rb:129:15:129:32 | call to [] |
+| array_flow.rb:136:9:136:14 | call to [] |
+| array_flow.rb:144:9:144:14 | call to [] |
+| array_flow.rb:145:15:145:32 | call to [] |
+| array_flow.rb:152:9:152:26 | call to [] |
+| array_flow.rb:159:9:159:26 | call to [] |
+| array_flow.rb:166:9:166:25 | call to [] |
+| array_flow.rb:175:9:175:16 | call to [] |
+| array_flow.rb:176:9:176:16 | call to [] |
+| array_flow.rb:177:9:177:25 | call to [] |
+| array_flow.rb:178:9:178:17 | call to [] |
+| array_flow.rb:184:9:184:26 | call to [] |
+| array_flow.rb:192:9:192:26 | call to [] |
+| array_flow.rb:200:9:200:26 | call to [] |
+| array_flow.rb:208:9:208:26 | call to [] |
+| array_flow.rb:215:9:215:42 | call to [] |
+| array_flow.rb:224:9:224:26 | call to [] |
+| array_flow.rb:231:9:231:28 | call to [] |
+| array_flow.rb:240:9:240:28 | call to [] |
+| array_flow.rb:250:9:250:28 | call to [] |
+| array_flow.rb:253:9:253:25 | call to [] |
+| array_flow.rb:264:9:264:26 | call to [] |
+| array_flow.rb:273:9:273:26 | call to [] |
+| array_flow.rb:279:9:279:26 | call to [] |
+| array_flow.rb:286:9:286:28 | call to [] |
+| array_flow.rb:287:9:287:28 | call to [] |
+| array_flow.rb:294:9:294:26 | call to [] |
+| array_flow.rb:301:9:301:26 | call to [] |
+| array_flow.rb:308:9:308:26 | call to [] |
+| array_flow.rb:316:9:316:28 | call to [] |
+| array_flow.rb:325:9:325:42 | call to [] |
+| array_flow.rb:330:9:330:42 | call to [] |
+| array_flow.rb:338:9:338:26 | call to [] |
+| array_flow.rb:349:9:349:26 | call to [] |
+| array_flow.rb:350:22:350:24 | call to [] |
+| array_flow.rb:355:9:355:47 | call to [] |
+| array_flow.rb:355:30:355:46 | call to [] |
+| array_flow.rb:364:9:364:28 | call to [] |
+| array_flow.rb:372:9:372:42 | call to [] |
+| array_flow.rb:387:9:387:42 | call to [] |
+| array_flow.rb:395:9:395:26 | call to [] |
+| array_flow.rb:403:9:403:26 | call to [] |
+| array_flow.rb:412:9:412:26 | call to [] |
+| array_flow.rb:419:9:419:26 | call to [] |
+| array_flow.rb:427:9:427:26 | call to [] |
+| array_flow.rb:435:9:435:29 | call to [] |
+| array_flow.rb:442:9:442:29 | call to [] |
+| array_flow.rb:451:9:451:31 | call to [] |
+| array_flow.rb:460:9:460:29 | call to [] |
+| array_flow.rb:466:9:466:45 | call to [] |
+| array_flow.rb:482:9:482:31 | call to [] |
+| array_flow.rb:498:9:498:29 | call to [] |
+| array_flow.rb:506:9:506:29 | call to [] |
+| array_flow.rb:518:9:518:16 | call to [] |
+| array_flow.rb:525:9:525:29 | call to [] |
+| array_flow.rb:535:9:535:31 | call to [] |
+| array_flow.rb:543:9:543:29 | call to [] |
+| array_flow.rb:551:9:551:29 | call to [] |
+| array_flow.rb:558:9:558:42 | call to [] |
+| array_flow.rb:570:9:570:28 | call to [] |
+| array_flow.rb:573:9:573:25 | call to [] |
+| array_flow.rb:584:9:584:31 | call to [] |
+| array_flow.rb:584:16:584:30 | call to [] |
+| array_flow.rb:590:9:590:31 | call to [] |
+| array_flow.rb:590:16:590:30 | call to [] |
+| array_flow.rb:600:9:600:31 | call to [] |
+| array_flow.rb:611:9:611:31 | call to [] |
+| array_flow.rb:622:9:622:31 | call to [] |
+| array_flow.rb:631:9:631:29 | call to [] |
+| array_flow.rb:638:9:638:39 | call to [] |
+| array_flow.rb:655:9:655:28 | call to [] |
+| array_flow.rb:669:9:669:28 | call to [] |
+| array_flow.rb:676:9:676:26 | call to [] |
+| array_flow.rb:683:9:683:28 | call to [] |
+| array_flow.rb:684:24:684:43 | call to [] |
+| array_flow.rb:684:46:684:59 | call to [] |
+| array_flow.rb:689:9:689:26 | call to [] |
+| array_flow.rb:699:9:699:28 | call to [] |
+| array_flow.rb:708:9:708:28 | call to [] |
+| array_flow.rb:717:9:717:28 | call to [] |
+| array_flow.rb:726:9:726:26 | call to [] |
+| array_flow.rb:754:9:754:26 | call to [] |
+| array_flow.rb:772:9:772:26 | call to [] |
+| array_flow.rb:800:9:800:26 | call to [] |
+| array_flow.rb:818:9:818:26 | call to [] |
+| array_flow.rb:834:9:834:26 | call to [] |
+| array_flow.rb:844:9:844:26 | call to [] |
+| array_flow.rb:853:9:853:26 | call to [] |
+| array_flow.rb:860:9:860:26 | call to [] |
+| array_flow.rb:866:9:866:26 | call to [] |
+| array_flow.rb:876:9:876:26 | call to [] |
+| array_flow.rb:905:9:905:42 | call to [] |
+| array_flow.rb:913:9:913:42 | call to [] |
+| array_flow.rb:924:9:924:28 | call to [] |
+| array_flow.rb:935:9:935:28 | call to [] |
+| array_flow.rb:936:9:936:28 | call to [] |
+| array_flow.rb:937:9:937:28 | call to [] |
+| array_flow.rb:944:9:944:25 | call to [] |
+| array_flow.rb:953:9:953:16 | call to [] |
+| array_flow.rb:954:9:954:16 | call to [] |
+| array_flow.rb:955:9:955:25 | call to [] |
+| array_flow.rb:956:9:956:17 | call to [] |
+| array_flow.rb:962:9:962:39 | call to [] |
+| array_flow.rb:976:9:976:26 | call to [] |
+| array_flow.rb:985:9:985:26 | call to [] |
+| array_flow.rb:995:9:995:26 | call to [] |
+| array_flow.rb:1005:9:1005:26 | call to [] |
+| array_flow.rb:1016:9:1016:31 | call to [] |
+| array_flow.rb:1017:19:1017:32 | call to [] |
+| array_flow.rb:1023:9:1023:44 | call to [] |
+| array_flow.rb:1034:9:1034:44 | call to [] |
+| array_flow.rb:1045:9:1045:27 | call to [] |
+| array_flow.rb:1053:9:1053:27 | call to [] |
+| array_flow.rb:1063:9:1063:56 | call to [] |
+| array_flow.rb:1095:9:1095:56 | call to [] |
+| array_flow.rb:1106:9:1106:56 | call to [] |
+| array_flow.rb:1117:9:1117:56 | call to [] |
+| array_flow.rb:1128:9:1128:56 | call to [] |
+| array_flow.rb:1141:9:1141:30 | call to [] |
+| array_flow.rb:1149:9:1149:27 | call to [] |
+| array_flow.rb:1159:9:1159:41 | call to [] |
+| array_flow.rb:1166:9:1166:41 | call to [] |
+| array_flow.rb:1174:9:1174:41 | call to [] |
+| array_flow.rb:1184:9:1184:27 | call to [] |
+| array_flow.rb:1195:9:1195:27 | call to [] |
+| array_flow.rb:1206:9:1206:47 | call to [] |
+| array_flow.rb:1260:9:1260:47 | call to [] |
+| array_flow.rb:1268:9:1268:47 | call to [] |
+| array_flow.rb:1279:9:1279:47 | call to [] |
+| array_flow.rb:1290:9:1290:47 | call to [] |
+| array_flow.rb:1301:9:1301:47 | call to [] |
+| array_flow.rb:1312:9:1312:47 | call to [] |
+| array_flow.rb:1321:9:1321:47 | call to [] |
+| array_flow.rb:1330:9:1330:47 | call to [] |
+| array_flow.rb:1339:9:1339:47 | call to [] |
+| array_flow.rb:1348:9:1348:47 | call to [] |
+| array_flow.rb:1359:9:1359:27 | call to [] |
+| array_flow.rb:1367:9:1367:27 | call to [] |
+| array_flow.rb:1375:9:1375:27 | call to [] |
+| array_flow.rb:1383:9:1383:27 | call to [] |
+| array_flow.rb:1397:9:1397:27 | call to [] |
+| array_flow.rb:1404:9:1404:27 | call to [] |
+| array_flow.rb:1417:9:1417:27 | call to [] |
+| array_flow.rb:1427:9:1427:27 | call to [] |
+| array_flow.rb:1439:9:1439:27 | call to [] |
+| array_flow.rb:1447:9:1447:44 | call to [] |
+| array_flow.rb:1471:9:1471:27 | call to [] |
+| array_flow.rb:1484:9:1484:30 | call to [] |
+| array_flow.rb:1490:9:1490:27 | call to [] |
+| array_flow.rb:1500:9:1500:27 | call to [] |
+| array_flow.rb:1507:9:1507:68 | call to [] |
+| array_flow.rb:1507:10:1507:27 | call to [] |
+| array_flow.rb:1507:30:1507:47 | call to [] |
+| array_flow.rb:1507:50:1507:67 | call to [] |
+| array_flow.rb:1518:9:1518:29 | call to [] |
+| array_flow.rb:1519:9:1519:26 | call to [] |
+| array_flow.rb:1520:9:1520:26 | call to [] |
+| array_flow.rb:1528:9:1528:47 | call to [] |
+| array_flow.rb:1542:9:1542:44 | call to [] |
+| array_flow.rb:1549:9:1549:44 | call to [] |
+| array_flow.rb:1561:9:1561:29 | call to [] |
+| array_flow.rb:1572:9:1572:44 | call to [] |
+| array_flow.rb:1596:9:1596:29 | call to [] |
+| array_flow.rb:1597:9:1597:29 | call to [] |
+| array_flow.rb:1598:9:1598:29 | call to [] |
+| array_flow.rb:1612:9:1612:29 | call to [] |
+| array_flow.rb:1613:9:1613:26 | call to [] |
+| array_flow.rb:1621:9:1621:13 | call to [] |
+| array_flow.rb:1621:10:1621:12 | call to [] |
+| array_flow.rb:1647:9:1647:32 | ...[...] |
+| array_flow.rb:1668:14:1668:41 | ...[...] |
 #select
 | array_flow.rb:3:10:3:13 | ...[...] | array_flow.rb:2:10:2:20 | call to source | array_flow.rb:3:10:3:13 | ...[...] | $@ | array_flow.rb:2:10:2:20 | call to source | call to source |
 | array_flow.rb:5:10:5:13 | ...[...] | array_flow.rb:2:10:2:20 | call to source | array_flow.rb:5:10:5:13 | ...[...] | $@ | array_flow.rb:2:10:2:20 | call to source | call to source |
@@ -5045,3 +5260,7 @@ subpaths
 | array_flow.rb:1643:10:1643:15 | ...[...] | array_flow.rb:1634:16:1634:28 | call to source | array_flow.rb:1643:10:1643:15 | ...[...] | $@ | array_flow.rb:1634:16:1634:28 | call to source | call to source |
 | array_flow.rb:1643:10:1643:15 | ...[...] | array_flow.rb:1636:14:1636:26 | call to source | array_flow.rb:1643:10:1643:15 | ...[...] | $@ | array_flow.rb:1636:14:1636:26 | call to source | call to source |
 | array_flow.rb:1643:10:1643:15 | ...[...] | array_flow.rb:1638:16:1638:28 | call to source | array_flow.rb:1643:10:1643:15 | ...[...] | $@ | array_flow.rb:1638:16:1638:28 | call to source | call to source |
+| array_flow.rb:1649:10:1649:13 | ...[...] | array_flow.rb:1647:18:1647:28 | call to source | array_flow.rb:1649:10:1649:13 | ...[...] | $@ | array_flow.rb:1647:18:1647:28 | call to source | call to source |
+| array_flow.rb:1651:10:1651:13 | ...[...] | array_flow.rb:1647:18:1647:28 | call to source | array_flow.rb:1651:10:1651:13 | ...[...] | $@ | array_flow.rb:1647:18:1647:28 | call to source | call to source |
+| array_flow.rb:1670:14:1670:18 | ...[...] | array_flow.rb:1668:25:1668:37 | call to source | array_flow.rb:1670:14:1670:18 | ...[...] | $@ | array_flow.rb:1668:25:1668:37 | call to source | call to source |
+| array_flow.rb:1672:14:1672:18 | ...[...] | array_flow.rb:1668:25:1668:37 | call to source | array_flow.rb:1672:14:1672:18 | ...[...] | $@ | array_flow.rb:1668:25:1668:37 | call to source | call to source |

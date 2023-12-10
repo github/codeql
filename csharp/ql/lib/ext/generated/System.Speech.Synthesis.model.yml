@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -46,7 +47,6 @@ extensions:
       - ["System.Speech.Synthesis", "PromptBuilder", "EndSentence", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "PromptBuilder", "EndStyle", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "PromptBuilder", "EndVoice", "()", "summary", "df-generated"]
-      - ["System.Speech.Synthesis", "PromptBuilder", "PromptBuilder", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "PromptBuilder", "PromptBuilder", "(System.Globalization.CultureInfo)", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "PromptBuilder", "StartParagraph", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "PromptBuilder", "StartParagraph", "(System.Globalization.CultureInfo)", "summary", "df-generated"]
@@ -64,7 +64,6 @@ extensions:
       - ["System.Speech.Synthesis", "PromptBuilder", "get_IsEmpty", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "PromptBuilder", "set_Culture", "(System.Globalization.CultureInfo)", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "PromptEventArgs", "get_Prompt", "()", "summary", "df-generated"]
-      - ["System.Speech.Synthesis", "PromptStyle", "PromptStyle", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "PromptStyle", "PromptStyle", "(System.Speech.Synthesis.PromptEmphasis)", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "PromptStyle", "PromptStyle", "(System.Speech.Synthesis.PromptRate)", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "PromptStyle", "PromptStyle", "(System.Speech.Synthesis.PromptVolume)", "summary", "df-generated"]
@@ -107,7 +106,6 @@ extensions:
       - ["System.Speech.Synthesis", "SpeechSynthesizer", "SpeakAsyncCancelAll", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "SpeechSynthesizer", "SpeakSsml", "(System.String)", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "SpeechSynthesizer", "SpeakSsmlAsync", "(System.String)", "summary", "df-generated"]
-      - ["System.Speech.Synthesis", "SpeechSynthesizer", "SpeechSynthesizer", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "SpeechSynthesizer", "get_Rate", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "SpeechSynthesizer", "get_State", "()", "summary", "df-generated"]
       - ["System.Speech.Synthesis", "SpeechSynthesizer", "get_Voice", "()", "summary", "df-generated"]

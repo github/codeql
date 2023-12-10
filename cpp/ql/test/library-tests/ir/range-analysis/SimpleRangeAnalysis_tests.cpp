@@ -18,7 +18,7 @@ int test2(struct List* p) {
   int count = 0;
   for (; p; p = p->next) {
     count = (count+1) % 10;
-    range(count); // $ range=<=9 range=>=-9 range="<=Phi: p | Store: count+1"
+    range(count); // $ range=<=9 range=>=-9
   }
   range(count); // $ range=>=-9 range=<=9
   return count;
@@ -29,7 +29,7 @@ int test3(struct List* p) {
   for (; p; p = p->next) {
     range(count++); // $ range=>=-9 range=<=9
     count = count % 10;
-    range(count); // $ range=<=9 range=>=-9 range="<=Store: ... +++0" range="<=Phi: p | Store: count+1" 
+    range(count); // $ range=<=9 range=>=-9
   }
   range(count); // $ range=>=-9 range=<=9
   return count;
@@ -317,7 +317,7 @@ int test_mult01(int a, int b) {
     range(b); // $ range=<=23 range=>=-13
     int r = a*b;  // $ overflow=+- -143 .. 253
     range(r);
-    total += r; // $ overflow=+
+    total += r; // $ overflow=+-
     range(total); // $ MISSING: range=">=... * ...+0"
   }
   if (3 <= a && a <= 11 && -13 <= b && b <= 0) {
@@ -365,7 +365,7 @@ int test_mult02(int a, int b) {
     range(b); // $ range=<=23 range=>=-13
     int r = a*b;  // $ overflow=+- -143 .. 253
     range(r);
-    total += r; // $ overflow=+
+    total += r; // $ overflow=+-
     range(total); // $ MISSING: range=">=... * ...+0"
   }
   if (0 <= a && a <= 11 && -13 <= b && b <= 0) {
@@ -460,7 +460,7 @@ int test_mult04(int a, int b) {
     range(b); // $ range=<=23 range=>=-13
     int r = a*b;  // $ overflow=+- -391 .. 221
     range(r);
-    total += r; // $ overflow=-
+    total += r; // $ overflow=+-
     range(total); // $ MISSING: range="<=... * ...+0"
   }
   if (-17 <= a && a <= 0 && -13 <= b && b <= 0) {
@@ -508,7 +508,7 @@ int test_mult05(int a, int b) {
     range(b); // $ range=<=23 range=>=-13
     int r = a*b;  // $ overflow=+- -391 .. 221
     range(r);
-    total += r; // $ overflow=-
+    total += r; // $ overflow=+-
     range(total); // $ MISSING: range="<=... * ...+0"
   }
   if (-17 <= a && a <= -2 && -13 <= b && b <= 0) {
@@ -974,7 +974,7 @@ void test_mod_neg(int s) {
 
 void test_mod_ternary(int s, bool b) {
   int s2 = s % (b ? 5 : 500);
-  range(s2); // $ range=>=-499 range=<=499 range="<=Phi: ... ? ... : ...-1"
+  range(s2); // $ range=>=-499 range=<=499
 }
 
 void test_mod_ternary2(int s, bool b1, bool b2) {
@@ -1077,9 +1077,8 @@ void mask_at_start(int len) {
   }
   // Do something with leftOver
   for (int index = leftOver; index < len; index+=64) {
-    range(index);  // $ range="<=InitializeParameter: len-1"
-    // This should be in bounds
-    range(index + 16); // $ range="<=InitializeParameter: len+15" range="==Phi: index+16" MISSING: range="<=InitializeParameter: len-1"
+    range(index);  // $ range="<=InitializeParameter: len-64" range=">=Store: ... & ... | Store: leftOver+0"
+    range(index + 63); // $ range="<=InitializeParameter: len-1" range="==Phi: index+63" range=">=Store: ... & ... | Store: leftOver+63"
   }
 }
 
@@ -1095,8 +1094,7 @@ void mod_at_start(int len) {
   }
   // Do something with leftOver
   for (int index = leftOver; index < len; index+=64) {
-    range(index);  // $ range="<=InitializeParameter: len-1"
-    // This should be in bounds 
-    range(index + 16); // $ range="<=InitializeParameter: len+15" range="==Phi: index+16" MISSING: range="<=InitializeParameter: len-49"
+    range(index);  // $ range="<=InitializeParameter: len-64" range=">=Store: ... % ... | Store: leftOver+0"
+    range(index + 63); // $ range="<=InitializeParameter: len-1" range="==Phi: index+63" range=">=Store: ... % ... | Store: leftOver+63"
   }
 }

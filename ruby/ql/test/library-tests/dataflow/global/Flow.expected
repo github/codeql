@@ -1,5 +1,6 @@
 testFailures
 edges
+| blocks.rb:14:12:14:20 | call to source | blocks.rb:8:10:8:14 | yield ... |
 | captured_variables.rb:9:24:9:24 | x | captured_variables.rb:10:10:10:23 | -> { ... } [captured x] |
 | captured_variables.rb:9:24:9:24 | x | captured_variables.rb:11:5:11:6 | fn [captured x] |
 | captured_variables.rb:10:5:10:6 | fn [captured x] | captured_variables.rb:11:5:11:6 | fn [captured x] |
@@ -253,6 +254,8 @@ edges
 | instance_variables.rb:121:1:121:3 | bar | instance_variables.rb:122:6:122:8 | bar |
 | instance_variables.rb:121:7:121:24 | call to new | instance_variables.rb:121:1:121:3 | bar |
 nodes
+| blocks.rb:8:10:8:14 | yield ... | semmle.label | yield ... |
+| blocks.rb:14:12:14:20 | call to source | semmle.label | call to source |
 | captured_variables.rb:9:24:9:24 | x | semmle.label | x |
 | captured_variables.rb:10:5:10:6 | fn [captured x] | semmle.label | fn [captured x] |
 | captured_variables.rb:10:10:10:23 | -> { ... } [captured x] | semmle.label | -> { ... } [captured x] |
@@ -548,6 +551,7 @@ subpaths
 | instance_variables.rb:120:6:120:10 | foo16 [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:120:6:120:20 | call to get_field |
 | instance_variables.rb:120:6:120:10 | foo16 [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:120:6:120:20 | call to get_field |
 #select
+| blocks.rb:8:10:8:14 | yield ... | blocks.rb:14:12:14:20 | call to source | blocks.rb:8:10:8:14 | yield ... | $@ | blocks.rb:14:12:14:20 | call to source | call to source |
 | captured_variables.rb:10:20:10:20 | x | captured_variables.rb:13:20:13:29 | call to taint | captured_variables.rb:10:20:10:20 | x | $@ | captured_variables.rb:13:20:13:29 | call to taint | call to taint |
 | captured_variables.rb:17:14:17:14 | x | captured_variables.rb:20:25:20:34 | call to taint | captured_variables.rb:17:14:17:14 | x | $@ | captured_variables.rb:20:25:20:34 | call to taint | call to taint |
 | captured_variables.rb:24:14:24:14 | x | captured_variables.rb:27:48:27:57 | call to taint | captured_variables.rb:24:14:24:14 | x | $@ | captured_variables.rb:27:48:27:57 | call to taint | call to taint |

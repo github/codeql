@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -36,11 +37,9 @@ extensions:
       - ["System.Resources", "IResourceWriter", "AddResource", "(System.String,System.String)", "summary", "df-generated"]
       - ["System.Resources", "IResourceWriter", "Close", "()", "summary", "df-generated"]
       - ["System.Resources", "IResourceWriter", "Generate", "()", "summary", "df-generated"]
-      - ["System.Resources", "MissingManifestResourceException", "MissingManifestResourceException", "()", "summary", "df-generated"]
       - ["System.Resources", "MissingManifestResourceException", "MissingManifestResourceException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Resources", "MissingManifestResourceException", "MissingManifestResourceException", "(System.String)", "summary", "df-generated"]
       - ["System.Resources", "MissingManifestResourceException", "MissingManifestResourceException", "(System.String,System.Exception)", "summary", "df-generated"]
-      - ["System.Resources", "MissingSatelliteAssemblyException", "MissingSatelliteAssemblyException", "()", "summary", "df-generated"]
       - ["System.Resources", "MissingSatelliteAssemblyException", "MissingSatelliteAssemblyException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
       - ["System.Resources", "MissingSatelliteAssemblyException", "MissingSatelliteAssemblyException", "(System.String)", "summary", "df-generated"]
       - ["System.Resources", "MissingSatelliteAssemblyException", "MissingSatelliteAssemblyException", "(System.String,System.Exception)", "summary", "df-generated"]
@@ -59,7 +58,6 @@ extensions:
       - ["System.Resources", "ResourceManager", "GetString", "(System.String,System.Globalization.CultureInfo)", "summary", "df-generated"]
       - ["System.Resources", "ResourceManager", "InternalGetResourceSet", "(System.Globalization.CultureInfo,System.Boolean,System.Boolean)", "summary", "df-generated"]
       - ["System.Resources", "ResourceManager", "ReleaseAllResources", "()", "summary", "df-generated"]
-      - ["System.Resources", "ResourceManager", "ResourceManager", "()", "summary", "df-generated"]
       - ["System.Resources", "ResourceManager", "get_FallbackLocation", "()", "summary", "df-generated"]
       - ["System.Resources", "ResourceManager", "get_IgnoreCase", "()", "summary", "df-generated"]
       - ["System.Resources", "ResourceManager", "set_FallbackLocation", "(System.Resources.UltimateResourceFallbackLocation)", "summary", "df-generated"]
@@ -77,7 +75,6 @@ extensions:
       - ["System.Resources", "ResourceSet", "GetString", "(System.String)", "summary", "df-generated"]
       - ["System.Resources", "ResourceSet", "GetString", "(System.String,System.Boolean)", "summary", "df-generated"]
       - ["System.Resources", "ResourceSet", "ReadResources", "()", "summary", "df-generated"]
-      - ["System.Resources", "ResourceSet", "ResourceSet", "()", "summary", "df-generated"]
       - ["System.Resources", "ResourceSet", "ResourceSet", "(System.String)", "summary", "df-generated"]
       - ["System.Resources", "ResourceWriter", "AddResource", "(System.String,System.Byte[])", "summary", "df-generated"]
       - ["System.Resources", "ResourceWriter", "AddResource", "(System.String,System.IO.Stream)", "summary", "df-generated"]

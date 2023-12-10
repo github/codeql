@@ -1,7 +1,7 @@
 provide:
   - "*/ql/src/qlpack.yml"
   - "*/ql/lib/qlpack.yml"
-  - "*/ql/test/qlpack.yml"
+  - "*/ql/test*/qlpack.yml"
   - "*/ql/examples/qlpack.yml"
   - "*/ql/consistency-queries/qlpack.yml"
   - "*/ql/automodel/src/qlpack.yml"

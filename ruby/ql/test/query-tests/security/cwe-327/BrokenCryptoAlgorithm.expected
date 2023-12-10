@@ -1,19 +1,19 @@
-| broken_crypto.rb:4:8:4:34 | call to new | The cryptographic algorithm DES is broken or weak, and should not be used. |
-| broken_crypto.rb:8:1:8:18 | call to update | The cryptographic algorithm DES is broken or weak, and should not be used. |
-| broken_crypto.rb:12:8:12:43 | call to new | The block mode ECB is broken or weak, and should not be used. |
-| broken_crypto.rb:16:1:16:18 | call to update | The block mode ECB is broken or weak, and should not be used. |
-| broken_crypto.rb:28:1:28:35 | call to new | The block mode ECB is broken or weak, and should not be used. |
-| broken_crypto.rb:37:1:37:33 | call to new | The block mode ECB is broken or weak, and should not be used. |
-| broken_crypto.rb:42:1:42:33 | call to new | The block mode ECB is broken or weak, and should not be used. |
-| broken_crypto.rb:47:1:47:33 | call to new | The block mode ECB is broken or weak, and should not be used. |
-| broken_crypto.rb:52:1:52:29 | call to new | The block mode ECB is broken or weak, and should not be used. |
-| broken_crypto.rb:57:1:57:32 | call to new | The block mode ECB is broken or weak, and should not be used. |
-| broken_crypto.rb:60:1:60:24 | call to new | The cryptographic algorithm DES is broken or weak, and should not be used. |
-| broken_crypto.rb:62:1:62:30 | call to new | The cryptographic algorithm DES is broken or weak, and should not be used. |
-| broken_crypto.rb:67:1:67:31 | call to new | The block mode ECB is broken or weak, and should not be used. |
-| broken_crypto.rb:70:1:70:24 | call to new | The cryptographic algorithm RC2 is broken or weak, and should not be used. |
-| broken_crypto.rb:72:1:72:30 | call to new | The block mode ECB is broken or weak, and should not be used. |
-| broken_crypto.rb:72:1:72:30 | call to new | The cryptographic algorithm RC2 is broken or weak, and should not be used. |
-| broken_crypto.rb:75:1:75:24 | call to new | The cryptographic algorithm RC4 is broken or weak, and should not be used. |
-| broken_crypto.rb:77:1:77:29 | call to new | The cryptographic algorithm RC4 is broken or weak, and should not be used. |
-| broken_crypto.rb:79:1:79:35 | call to new | The cryptographic algorithm RC4 is broken or weak, and should not be used. |
+| broken_crypto.rb:4:8:4:34 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:4:8:4:34 | call to new | The cryptographic algorithm DES |
+| broken_crypto.rb:8:1:8:18 | call to update | $@ is broken or weak, and should not be used. | broken_crypto.rb:8:1:8:4 | weak | The cryptographic algorithm DES |
+| broken_crypto.rb:12:8:12:43 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:12:8:12:43 | call to new | The block mode ECB |
+| broken_crypto.rb:16:1:16:18 | call to update | $@ is broken or weak, and should not be used. | broken_crypto.rb:16:1:16:4 | weak | The block mode ECB |
+| broken_crypto.rb:28:1:28:35 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:28:1:28:35 | call to new | The block mode ECB |
+| broken_crypto.rb:37:1:37:33 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:37:1:37:33 | call to new | The block mode ECB |
+| broken_crypto.rb:42:1:42:33 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:42:1:42:33 | call to new | The block mode ECB |
+| broken_crypto.rb:47:1:47:33 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:47:1:47:33 | call to new | The block mode ECB |
+| broken_crypto.rb:52:1:52:29 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:52:1:52:29 | call to new | The block mode ECB |
+| broken_crypto.rb:57:1:57:32 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:57:1:57:32 | call to new | The block mode ECB |
+| broken_crypto.rb:60:1:60:24 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:60:1:60:24 | call to new | The cryptographic algorithm DES |
+| broken_crypto.rb:62:1:62:30 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:62:1:62:30 | call to new | The cryptographic algorithm DES |
+| broken_crypto.rb:67:1:67:31 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:67:1:67:31 | call to new | The block mode ECB |
+| broken_crypto.rb:70:1:70:24 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:70:1:70:24 | call to new | The cryptographic algorithm RC2 |
+| broken_crypto.rb:72:1:72:30 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:72:1:72:30 | call to new | The block mode ECB |
+| broken_crypto.rb:72:1:72:30 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:72:1:72:30 | call to new | The cryptographic algorithm RC2 |
+| broken_crypto.rb:75:1:75:24 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:75:1:75:24 | call to new | The cryptographic algorithm RC4 |
+| broken_crypto.rb:77:1:77:29 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:77:1:77:29 | call to new | The cryptographic algorithm RC4 |
+| broken_crypto.rb:79:1:79:35 | call to new | $@ is broken or weak, and should not be used. | broken_crypto.rb:79:1:79:35 | call to new | The cryptographic algorithm RC4 |

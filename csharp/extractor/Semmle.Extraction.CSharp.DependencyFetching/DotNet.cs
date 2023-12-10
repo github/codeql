@@ -42,7 +42,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching)
         {
-            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
+            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal";
 
             if (forceDotnetRefAssemblyFetching)
             {
@@ -60,7 +60,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return args;
         }
 
-        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, string? pathToNugetConfig = null)
+        private static IEnumerable<string> GetFirstGroupOnMatch(Regex regex, IEnumerable<string> lines) =>
+            lines
+                .Select(line => regex.Match(line))
+                .Where(match => match.Success)
+                .Select(match => match.Groups[1].Value);
+
+        private static IEnumerable<string> GetAssetsFilePaths(IEnumerable<string> lines) =>
+            GetFirstGroupOnMatch(AssetsFileRegex(), lines);
+
+        private static IEnumerable<string> GetRestoredProjects(IEnumerable<string> lines) =>
+            GetFirstGroupOnMatch(RestoredProjectRegex(), lines);
+
+        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, string? pathToNugetConfig = null)
         {
             var args = GetRestoreArgs(projectFile, packageDirectory, forceDotnetRefAssemblyFetching);
             if (pathToNugetConfig != null)
@@ -68,25 +80,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += $" --configfile \"{pathToNugetConfig}\"";
             }
 
-            return dotnetCliInvoker.RunCommand(args);
+            var success = dotnetCliInvoker.RunCommand(args, out var output);
+            assets = success ? GetAssetsFilePaths(output) : Array.Empty<string>();
+            return success;
         }
 
-        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> projects)
+        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> projects, out IEnumerable<string> assets)
         {
             var args = GetRestoreArgs(solutionFile, packageDirectory, forceDotnetRefAssemblyFetching);
-            args += " --verbosity normal";
-            if (dotnetCliInvoker.RunCommand(args, out var output))
-            {
-                var regex = RestoreProjectRegex();
-                projects = output
-                    .Select(line => regex.Match(line))
-                    .Where(match => match.Success)
-                    .Select(match => match.Groups[1].Value);
-                return true;
-            }
-
-            projects = Array.Empty<string>();
-            return false;
+            var success = dotnetCliInvoker.RunCommand(args, out var output);
+            projects = success ? GetRestoredProjects(output) : Array.Empty<string>();
+            assets = success ? GetAssetsFilePaths(output) : Array.Empty<string>();
+            return success;
         }
 
         public bool New(string folder)
@@ -121,6 +126,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         }
 
         [GeneratedRegex("Restored\\s+(.+\\.csproj)", RegexOptions.Compiled)]
-        private static partial Regex RestoreProjectRegex();
+        private static partial Regex RestoredProjectRegex();
+
+        [GeneratedRegex("[Assets\\sfile\\shas\\snot\\schanged.\\sSkipping\\sassets\\sfile\\swriting.|Writing\\sassets\\sfile\\sto\\sdisk.]\\sPath:\\s(.+)", RegexOptions.Compiled)]
+        private static partial Regex AssetsFileRegex();
     }
 }

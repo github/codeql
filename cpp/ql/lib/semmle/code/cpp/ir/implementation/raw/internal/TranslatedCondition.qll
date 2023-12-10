@@ -77,24 +77,6 @@ class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
   }
 }
 
-class TranslatedNotCondition extends TranslatedFlexibleCondition {
-  override NotExpr expr;
-
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
-    child = this.getOperand() and
-    result = this.getConditionContext().getChildFalseSuccessor(this)
-  }
-
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
-    child = this.getOperand() and
-    result = this.getConditionContext().getChildTrueSuccessor(this)
-  }
-
-  override TranslatedCondition getOperand() {
-    result = getTranslatedCondition(expr.getOperand().getFullyConverted())
-  }
-}
-
 abstract class TranslatedNativeCondition extends TranslatedCondition, TTranslatedNativeCondition {
   TranslatedNativeCondition() { this = TTranslatedNativeCondition(expr) }
 

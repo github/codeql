@@ -59,6 +59,9 @@ private module SourceVariables {
       then result = base.getType()
       else result = getTypeImpl(base.getType(), ind - 1)
     }
+
+    /** Gets the location of this variable. */
+    Location getLocation() { result = this.getBaseVariable().getLocation() }
   }
 }
 
@@ -113,22 +116,12 @@ private newtype TDefOrUseImpl =
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
     // the assignment to a global variable isn't ruled out as dead.
-    exists(VariableAddressInstruction vai, int defIndex |
-      vai.getEnclosingIRFunction() = f and
-      vai.getAstVariable() = v and
-      isDef(_, _, _, vai, _, defIndex) and
-      indirectionIndex = [0 .. defIndex] + 1
-    )
+    isGlobalUse(v, f, _, indirectionIndex)
   } or
   TGlobalDefImpl(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents the initial "definition" of a global variable when entering
     // a function body.
-    exists(VariableAddressInstruction vai |
-      vai.getEnclosingIRFunction() = f and
-      vai.getAstVariable() = v and
-      isUse(_, _, vai, _, indirectionIndex) and
-      not isDef(_, _, vai.getAUse(), _, _, _)
-    )
+    isGlobalDefImpl(v, f, _, indirectionIndex)
   } or
   TIteratorDef(
     Operand iteratorDerefAddress, BaseSourceVariableInstruction container, int indirectionIndex
@@ -149,6 +142,27 @@ private newtype TDefOrUseImpl =
       unspecifiedTypeIsModifiableAt(p.getUnspecifiedType(), indirectionIndex)
     )
   }
+
+private predicate isGlobalUse(
+  GlobalLikeVariable v, IRFunction f, int indirection, int indirectionIndex
+) {
+  exists(VariableAddressInstruction vai |
+    vai.getEnclosingIRFunction() = f and
+    vai.getAstVariable() = v and
+    isDef(_, _, _, vai, indirection, indirectionIndex)
+  )
+}
+
+private predicate isGlobalDefImpl(
+  GlobalLikeVariable v, IRFunction f, int indirection, int indirectionIndex
+) {
+  exists(VariableAddressInstruction vai |
+    vai.getEnclosingIRFunction() = f and
+    vai.getAstVariable() = v and
+    isUse(_, _, vai, indirection, indirectionIndex) and
+    not isDef(_, _, _, vai, _, indirectionIndex)
+  )
+}
 
 private predicate unspecifiedTypeIsModifiableAt(Type unspecified, int indirectionIndex) {
   indirectionIndex = [1 .. getIndirectionForUnspecifiedType(unspecified).getNumberOfIndirections()] and
@@ -438,7 +452,7 @@ class GlobalUse extends UseImpl, TGlobalUse {
 
   override FinalGlobalValue getNode() { result.getGlobalUse() = this }
 
-  override int getIndirection() { result = ind + 1 }
+  override int getIndirection() { isGlobalUse(global, f, result, ind) }
 
   /** Gets the global variable associated with this use. */
   GlobalLikeVariable getVariable() { result = global }
@@ -460,7 +474,9 @@ class GlobalUse extends UseImpl, TGlobalUse {
     )
   }
 
-  override SourceVariable getSourceVariable() { sourceVariableIsGlobal(result, global, f, ind) }
+  override SourceVariable getSourceVariable() {
+    sourceVariableIsGlobal(result, global, f, this.getIndirection())
+  }
 
   final override Cpp::Location getLocation() { result = f.getLocation() }
 
@@ -501,8 +517,10 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
 
   /** Gets the global variable associated with this definition. */
   override SourceVariable getSourceVariable() {
-    sourceVariableIsGlobal(result, global, f, indirectionIndex)
+    sourceVariableIsGlobal(result, global, f, this.getIndirection())
   }
+
+  int getIndirection() { result = indirectionIndex }
 
   /**
    * Gets the type of this use after specifiers have been deeply stripped
@@ -510,7 +528,7 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
    */
   Type getUnspecifiedType() { result = global.getUnspecifiedType() }
 
-  override string toString() { result = "GlobalDef" }
+  override string toString() { result = "Def of " + this.getSourceVariable() }
 
   override Location getLocation() { result = f.getLocation() }
 
@@ -854,7 +872,7 @@ private predicate sourceVariableIsGlobal(
   )
 }
 
-private module SsaInput implements SsaImplCommon::InputSig {
+private module SsaInput implements SsaImplCommon::InputSig<Location> {
   import InputSigCommon
   import SourceVariables
 
@@ -980,7 +998,7 @@ class GlobalDef extends TGlobalDef, SsaDefOrUse {
   final override Location getLocation() { result = global.getLocation() }
 
   /** Gets a textual representation of this definition. */
-  override string toString() { result = "GlobalDef" }
+  override string toString() { result = global.toString() }
 
   /**
    * Holds if this definition has index `index` in block `block`, and
@@ -989,6 +1007,9 @@ class GlobalDef extends TGlobalDef, SsaDefOrUse {
   predicate hasIndexInBlock(IRBlock block, int index, SourceVariable sv) {
     global.hasIndexInBlock(block, index, sv)
   }
+
+  /** Gets the indirection index of this definition. */
+  int getIndirection() { result = global.getIndirection() }
 
   /** Gets the indirection index of this definition. */
   int getIndirectionIndex() { result = global.getIndirectionIndex() }
@@ -1074,7 +1095,7 @@ class Def extends DefOrUse {
   predicate isCertain() { defOrUse.isCertain() }
 }
 
-private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
 class PhiNode extends SsaImpl::DefinitionExt {
   PhiNode() {

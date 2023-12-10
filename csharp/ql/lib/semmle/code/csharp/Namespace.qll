@@ -30,8 +30,12 @@ class Namespace extends DotNet::Namespace, TypeContainer, Declaration, @namespac
     parent_namespace(result, this)
   }
 
-  override predicate hasQualifiedName(string qualifier, string name) {
+  deprecated override predicate hasQualifiedName(string qualifier, string name) {
     DotNet::Namespace.super.hasQualifiedName(qualifier, name)
+  }
+
+  override predicate hasFullyQualifiedName(string qualifier, string name) {
+    DotNet::Namespace.super.hasFullyQualifiedName(qualifier, name)
   }
 
   /**

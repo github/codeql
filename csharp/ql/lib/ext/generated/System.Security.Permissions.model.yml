@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -126,7 +127,6 @@ extensions:
       - ["System.Security.Permissions", "FileIOPermissionAttribute", "set_Write", "(System.String)", "summary", "df-generated"]
       - ["System.Security.Permissions", "GacIdentityPermission", "Copy", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "GacIdentityPermission", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
-      - ["System.Security.Permissions", "GacIdentityPermission", "GacIdentityPermission", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "GacIdentityPermission", "GacIdentityPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
       - ["System.Security.Permissions", "GacIdentityPermission", "Intersect", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Security.Permissions", "GacIdentityPermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
@@ -135,7 +135,6 @@ extensions:
       - ["System.Security.Permissions", "GacIdentityPermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "GacIdentityPermissionAttribute", "GacIdentityPermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]
       - ["System.Security.Permissions", "HostProtectionAttribute", "CreatePermission", "()", "summary", "df-generated"]
-      - ["System.Security.Permissions", "HostProtectionAttribute", "HostProtectionAttribute", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "HostProtectionAttribute", "HostProtectionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]
       - ["System.Security.Permissions", "HostProtectionAttribute", "get_ExternalProcessMgmt", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "HostProtectionAttribute", "get_ExternalThreading", "()", "summary", "df-generated"]
@@ -240,7 +239,6 @@ extensions:
       - ["System.Security.Permissions", "MediaPermission", "Intersect", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Security.Permissions", "MediaPermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Security.Permissions", "MediaPermission", "IsUnrestricted", "()", "summary", "df-generated"]
-      - ["System.Security.Permissions", "MediaPermission", "MediaPermission", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "MediaPermission", "MediaPermission", "(System.Security.Permissions.MediaPermissionAudio)", "summary", "df-generated"]
       - ["System.Security.Permissions", "MediaPermission", "MediaPermission", "(System.Security.Permissions.MediaPermissionAudio,System.Security.Permissions.MediaPermissionVideo,System.Security.Permissions.MediaPermissionImage)", "summary", "df-generated"]
       - ["System.Security.Permissions", "MediaPermission", "MediaPermission", "(System.Security.Permissions.MediaPermissionImage)", "summary", "df-generated"]
@@ -369,7 +367,6 @@ extensions:
       - ["System.Security.Permissions", "ResourcePermissionBase", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
       - ["System.Security.Permissions", "ResourcePermissionBase", "IsUnrestricted", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "ResourcePermissionBase", "RemovePermissionAccess", "(System.Security.Permissions.ResourcePermissionBaseEntry)", "summary", "df-generated"]
-      - ["System.Security.Permissions", "ResourcePermissionBase", "ResourcePermissionBase", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "ResourcePermissionBase", "ResourcePermissionBase", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
       - ["System.Security.Permissions", "ResourcePermissionBase", "ToXml", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "ResourcePermissionBase", "Union", "(System.Security.IPermission)", "summary", "df-generated"]
@@ -377,7 +374,6 @@ extensions:
       - ["System.Security.Permissions", "ResourcePermissionBase", "get_TagNames", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "ResourcePermissionBase", "set_PermissionAccessType", "(System.Type)", "summary", "df-generated"]
       - ["System.Security.Permissions", "ResourcePermissionBase", "set_TagNames", "(System.String[])", "summary", "df-generated"]
-      - ["System.Security.Permissions", "ResourcePermissionBaseEntry", "ResourcePermissionBaseEntry", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "ResourcePermissionBaseEntry", "ResourcePermissionBaseEntry", "(System.Int32,System.String[])", "summary", "df-generated"]
       - ["System.Security.Permissions", "ResourcePermissionBaseEntry", "get_PermissionAccess", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "ResourcePermissionBaseEntry", "get_PermissionAccessPath", "()", "summary", "df-generated"]
@@ -554,7 +550,6 @@ extensions:
       - ["System.Security.Permissions", "WebBrowserPermission", "IsUnrestricted", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "WebBrowserPermission", "ToXml", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "WebBrowserPermission", "Union", "(System.Security.IPermission)", "summary", "df-generated"]
-      - ["System.Security.Permissions", "WebBrowserPermission", "WebBrowserPermission", "()", "summary", "df-generated"]
       - ["System.Security.Permissions", "WebBrowserPermission", "WebBrowserPermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
       - ["System.Security.Permissions", "WebBrowserPermission", "WebBrowserPermission", "(System.Security.Permissions.WebBrowserPermissionLevel)", "summary", "df-generated"]
       - ["System.Security.Permissions", "WebBrowserPermission", "get_Level", "()", "summary", "df-generated"]

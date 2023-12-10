@@ -52,6 +52,7 @@ protocol Exported : JSExport {
     var tainted: Any { get }
     func tainted(arg1: Any, arg2: Any)
 }
+
 class ExportedImpl : Exported {
     var tainted: Any { get { return "" } }
 
@@ -79,4 +80,23 @@ class Extended {}
 extension Extended : WKNavigationDelegate {
     func webView(_: WKWebView, decidePolicyFor: WKNavigationAction, preferences: WKWebpagePreferences, decisionHandler: (WKNavigationActionPolicy, WKWebpagePreferences) -> Void) {} // $ source=remote
     func webView(_: WKWebView, decidePolicyFor: WKNavigationAction, decisionHandler: (WKNavigationActionPolicy) -> Void) {} // $ source=remote
+}
+
+// ---
+
+typealias JSExportAlias = JSExport
+
+protocol Exported2 : JSExportAlias {
+    var tainted: Any { get }
+}
+typealias Exported2Alias = Exported2
+
+class ExportedImpl2 : Exported2Alias {
+    var tainted: Any { get { return "" } }
+    var notTainted: Any { get { return ""} }
+
+    func readFields() {
+        tainted // $ source=remote
+        notTainted
+    }
 }

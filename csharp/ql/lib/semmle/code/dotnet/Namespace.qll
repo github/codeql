@@ -25,7 +25,17 @@ class Namespace extends Declaration, @namespace {
    * For example if the qualified name is `System.Collections.Generic`, then
    * `qualifier`=`System.Collections` and `name`=`Generic`.
    */
-  override predicate hasQualifiedName(string qualifier, string name) {
+  deprecated override predicate hasQualifiedName(string qualifier, string name) {
+    namespaceHasQualifiedName(this, qualifier, name)
+  }
+
+  /**
+   * Holds if this namespace has the qualified name `qualifier`.`name`.
+   *
+   * For example if the qualified name is `System.Collections.Generic`, then
+   * `qualifier`=`System.Collections` and `name`=`Generic`.
+   */
+  override predicate hasFullyQualifiedName(string qualifier, string name) {
     namespaceHasQualifiedName(this, qualifier, name)
   }
 

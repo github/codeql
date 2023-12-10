@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -80,10 +81,8 @@ extensions:
       - ["System.Dynamic", "DynamicMetaObjectBinder", "Bind", "(System.Object[],System.Collections.ObjectModel.ReadOnlyCollection<System.Linq.Expressions.ParameterExpression>,System.Linq.Expressions.LabelTarget)", "summary", "df-generated"]
       - ["System.Dynamic", "DynamicMetaObjectBinder", "Defer", "(System.Dynamic.DynamicMetaObject,System.Dynamic.DynamicMetaObject[])", "summary", "df-generated"]
       - ["System.Dynamic", "DynamicMetaObjectBinder", "Defer", "(System.Dynamic.DynamicMetaObject[])", "summary", "df-generated"]
-      - ["System.Dynamic", "DynamicMetaObjectBinder", "DynamicMetaObjectBinder", "()", "summary", "df-generated"]
       - ["System.Dynamic", "DynamicMetaObjectBinder", "GetUpdateExpression", "(System.Type)", "summary", "df-generated"]
       - ["System.Dynamic", "DynamicMetaObjectBinder", "get_ReturnType", "()", "summary", "df-generated"]
-      - ["System.Dynamic", "DynamicObject", "DynamicObject", "()", "summary", "df-generated"]
       - ["System.Dynamic", "DynamicObject", "GetDynamicMemberNames", "()", "summary", "df-generated"]
       - ["System.Dynamic", "DynamicObject", "GetMetaObject", "(System.Linq.Expressions.Expression)", "summary", "df-generated"]
       - ["System.Dynamic", "DynamicObject", "TryBinaryOperation", "(System.Dynamic.BinaryOperationBinder,System.Object,System.Object)", "summary", "df-generated"]
@@ -100,7 +99,6 @@ extensions:
       - ["System.Dynamic", "DynamicObject", "TryUnaryOperation", "(System.Dynamic.UnaryOperationBinder,System.Object)", "summary", "df-generated"]
       - ["System.Dynamic", "ExpandoObject", "Contains", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "summary", "df-generated"]
       - ["System.Dynamic", "ExpandoObject", "ContainsKey", "(System.String)", "summary", "df-generated"]
-      - ["System.Dynamic", "ExpandoObject", "ExpandoObject", "()", "summary", "df-generated"]
       - ["System.Dynamic", "ExpandoObject", "GetMetaObject", "(System.Linq.Expressions.Expression)", "summary", "df-generated"]
       - ["System.Dynamic", "ExpandoObject", "Remove", "(System.Collections.Generic.KeyValuePair<System.String,System.Object>)", "summary", "df-generated"]
       - ["System.Dynamic", "ExpandoObject", "Remove", "(System.String)", "summary", "df-generated"]

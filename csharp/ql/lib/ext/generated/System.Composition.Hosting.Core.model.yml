@@ -1,3 +1,4 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
 extensions:
   - addsTo:
       pack: codeql/csharp-all
@@ -9,7 +10,7 @@ extensions:
       - ["System.Composition.Hosting.Core", "CompositionContract", False, "CompositionContract", "(System.Type,System.String,System.Collections.Generic.IDictionary<System.String,System.Object>)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["System.Composition.Hosting.Core", "CompositionContract", False, "CompositionContract", "(System.Type,System.String,System.Collections.Generic.IDictionary<System.String,System.Object>)", "", "Argument[2].Element", "Argument[this]", "taint", "df-generated"]
       - ["System.Composition.Hosting.Core", "CompositionContract", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["System.Composition.Hosting.Core", "CompositionContract", False, "TryUnwrapMetadataConstraint<>", "(System.String,T,System.Composition.Hosting.Core.CompositionContract)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Composition.Hosting.Core", "CompositionContract", False, "TryUnwrapMetadataConstraint<T>", "(System.String,T,System.Composition.Hosting.Core.CompositionContract)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition.Hosting.Core", "CompositionContract", False, "get_ContractName", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition.Hosting.Core", "CompositionContract", False, "get_ContractType", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Composition.Hosting.Core", "CompositionContract", False, "get_MetadataConstraints", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
