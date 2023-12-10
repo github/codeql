@@ -20,32 +20,6 @@ func NewReader(_ io.Reader) *Reader {
 }
 
 
-func (_ *Reader) DecodeConcurrent(_ io.Writer, _ int) (int64, error) {
-	return 0, nil
-}
-
-func (_ *Reader) Read(_ []byte) (int, error) {
-	return 0, nil
-}
-
-func (_ *Reader) ReadByte() (byte, error) {
-	return 0, nil
-}
-
-func (_ *Reader) ReadSeeker(_ bool, _ []byte) (*ReadSeeker, error) {
-	return nil, nil
-}
-
-func (_ *Reader) Reset(_ io.Reader) {}
-
-func (_ *Reader) Skip(_ int64) error {
-	return nil
-}
-
-func (_ *Reader) SkippableCB(_ byte, _ func(io.Reader) error) error {
-	return nil
-}
-
 type ReadSeeker struct {
 	Reader *Reader
 }
