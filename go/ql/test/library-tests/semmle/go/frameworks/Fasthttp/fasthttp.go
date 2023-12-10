@@ -4,7 +4,9 @@ package main
 
 import (
 	"bufio"
+	"bytes"
 	"fmt"
+	"io"
 	"net"
 	"time"
 
@@ -176,11 +178,19 @@ func fasthttpServer() {
 		userInput := "user Controlled input"
 		requestCtx.SetContentType("text/html")
 		userInputByte := []byte("user Controlled input")
+		userInputReader := bytes.NewReader(userInputByte)
 		requestCtx.Response.AppendBody(userInputByte)   // $ XssSink=userInputByte
 		requestCtx.Response.AppendBodyString(userInput) // $ XssSink=userInput
 		rspWriter := requestCtx.Response.BodyWriter()
-		rspWriter.Write(userInputByte)                    // $ XssSink=userInputByte
-		fmt.Fprintf(rspWriter, "%s", userInputByte)       // $ XssSink=userInputByte
+		rspWriter.Write(userInputByte)              // $ XssSink=userInputByte
+		fmt.Fprintf(rspWriter, "%s", userInputByte) // $ XssSink=userInputByte
+		io.WriteString(rspWriter, userInput)        // $ XssSink=userInput
+		io.TeeReader(userInputReader, rspWriter)    // $ XssSink=userInputReader
+		io.TeeReader(userInputReader, rspWriter)    // $ XssSink=userInputReader
+		bufioReader := bufio.NewReader(dstReader)
+		bufioReader.WriteTo(rspWriter) // $ XssSink=bufioReader
+		bytesUserInput := bytes.NewBuffer(userInputByte)
+		bytesUserInput.WriteTo(rspWriter)                 // $ XssSink=bytesUserInput
 		requestCtx.Response.SetBody(userInputByte)        // $ XssSink=userInputByte
 		requestCtx.Response.SetBodyString(userInput)      // $ XssSink=userInput
 		requestCtx.Response.SetBodyRaw(userInputByte)     // $ XssSink=userInputByte

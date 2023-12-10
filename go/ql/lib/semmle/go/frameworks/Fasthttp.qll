@@ -96,9 +96,42 @@ module Fasthttp {
     )
     or
     exists(DataFlow::CallNode writerCall |
-      writerCall = any(Function fprintf | fprintf.hasQualifiedName("fmt", "Fprintf")).getACall() and
+      writerCall =
+        any(Function fprintf | fprintf.hasQualifiedName("fmt", ["Fprint", "Fprintf", "Fprintln"]))
+            .getACall() and
       sink = writerCall.getArgument(0) and
       body = writerCall.getSyntacticArgument(any(int i | i > 1))
+    )
+    or
+    exists(DataFlow::CallNode writerCall |
+      writerCall =
+        any(Function ioCopy |
+          ioCopy.hasQualifiedName("io", ["copy", "CopyBuffer", "CopyN", "WriteString"])
+        ).getACall() and
+      sink = writerCall.getArgument(0) and
+      body = writerCall.getArgument(1)
+    )
+    or
+    exists(DataFlow::CallNode writerCall |
+      writerCall =
+        any(Function ioTeeReader | ioTeeReader.hasQualifiedName("io", "TeeReader")).getACall() and
+      sink = writerCall.getArgument(1) and
+      body = writerCall.getArgument(0)
+    )
+    or
+    exists(DataFlow::CallNode writerCall |
+      writerCall =
+        any(Method bufioWriteTo | bufioWriteTo.hasQualifiedName("bufio", "Reader", "WriteTo"))
+            .getACall() and
+      sink = writerCall.getArgument(0) and
+      body = writerCall.getReceiver()
+    )
+    or
+    exists(DataFlow::CallNode writerCall |
+      writerCall =
+        any(Method bytes | bytes.hasQualifiedName("bytes", "Buffer", "WriteTo")).getACall() and
+      sink = writerCall.getArgument(0) and
+      body = writerCall.getReceiver()
     )
   }
 
