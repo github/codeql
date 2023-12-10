@@ -1007,27 +1007,27 @@ module Express {
     }
   }
 
-  /** An expression that is passed as `expressBasicAuth({ users: { <user>: <password> }})`. */
-  class Credentials extends CredentialsNode {
-    string kind;
+  // /** An expression that is passed as `expressBasicAuth({ users: { <user>: <password> }})`. */
+  // class Credentials extends CredentialsNode {
+  //   string kind;
 
-    Credentials() {
-      exists(DataFlow::CallNode call, DataFlow::ModuleImportNode mod |
-        mod.getPath() = "express-basic-auth" and
-        call = mod.getAnInvocation() and
-        exists(DataFlow::ObjectLiteralNode usersSrc, DataFlow::PropWrite pwn |
-          usersSrc.flowsTo(call.getOptionArgument(0, "users")) and
-          usersSrc.flowsTo(pwn.getBase())
-        |
-          this = pwn.getPropertyNameExpr().flow() and kind = "user name"
-          or
-          this = pwn.getRhs() and kind = "password"
-        )
-      )
-    }
+  //   Credentials() {
+  //     exists(DataFlow::CallNode call, DataFlow::ModuleImportNode mod |
+  //       mod.getPath() = "express-basic-auth" and
+  //       call = mod.getAnInvocation() and
+  //       exists(DataFlow::ObjectLiteralNode usersSrc, DataFlow::PropWrite pwn |
+  //         usersSrc.flowsTo(call.getOptionArgument(0, "users")) and
+  //         usersSrc.flowsTo(pwn.getBase())
+  //       |
+  //         this = pwn.getPropertyNameExpr().flow() and kind = "user name"
+  //         or
+  //         this = pwn.getRhs() and kind = "password"
+  //       )
+  //     )
+  //   }
 
-    override string getCredentialsKind() { result = kind }
-  }
+  //   override string getCredentialsKind() { result = kind }
+  // }
 
   /** A call to `response.sendFile`, considered as a file system access. */
   private class ResponseSendFileAsFileSystemAccess extends FileSystemReadAccess,

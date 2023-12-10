@@ -70,23 +70,23 @@ private module MySql {
     result = API::Node::ofType(moduleName(), "ConnectionOptions")
   }
 
-  /** An expression that is passed as user name or password to `mysql.createConnection`. */
-  class Credentials extends CredentialsNode {
-    string kind;
+  // /** An expression that is passed as user name or password to `mysql.createConnection`. */
+  // class Credentials extends CredentialsNode {
+  //   string kind;
 
-    Credentials() {
-      exists(string prop |
-        this = connectionOptions().getMember(prop).asSink() and
-        (
-          prop = "user" and kind = "user name"
-          or
-          prop = "password" and kind = prop
-        )
-      )
-    }
+  //   Credentials() {
+  //     exists(string prop |
+  //       this = connectionOptions().getMember(prop).asSink() and
+  //       (
+  //         prop = "user" and kind = "user name"
+  //         or
+  //         prop = "password" and kind = prop
+  //       )
+  //     )
+  //   }
 
-    override string getCredentialsKind() { result = kind }
-  }
+  //   override string getCredentialsKind() { result = kind }
+  // }
 }
 
 /**
@@ -129,24 +129,24 @@ private module Postgres {
     }
   }
 
-  /** An expression that is passed as user name or password when creating a client or a pool. */
-  class Credentials extends CredentialsNode {
-    string kind;
+  // /** An expression that is passed as user name or password when creating a client or a pool. */
+  // class Credentials extends CredentialsNode {
+  //   string kind;
 
-    Credentials() {
-      exists(string prop |
-        this = clientOrPoolConstructor().getParameter(0).getMember(prop).asSink()
-        or
-        this = pgPromise().getParameter(0).getMember(prop).asSink()
-      |
-        prop = "user" and kind = "user name"
-        or
-        prop = "password" and kind = prop
-      )
-    }
+  //   Credentials() {
+  //     exists(string prop |
+  //       this = clientOrPoolConstructor().getParameter(0).getMember(prop).asSink()
+  //       or
+  //       this = pgPromise().getParameter(0).getMember(prop).asSink()
+  //     |
+  //       prop = "user" and kind = "user name"
+  //       or
+  //       prop = "password" and kind = prop
+  //     )
+  //   }
 
-    override string getCredentialsKind() { result = kind }
-  }
+  //   override string getCredentialsKind() { result = kind }
+  // }
 
   /** Gets a node referring to the `pg-promise` library (which is not itself a Promise). */
   API::Node pgPromise() { result = API::moduleImport("pg-promise") }
@@ -331,23 +331,23 @@ private module MsSql {
     }
   }
 
-  /** An expression that is passed as user name or password when creating a client or a pool. */
-  class Credentials extends CredentialsNode {
-    string kind;
+  // /** An expression that is passed as user name or password when creating a client or a pool. */
+  // class Credentials extends CredentialsNode {
+  //   string kind;
 
-    Credentials() {
-      exists(string prop |
-        this = config().getMember(prop).asSink() and
-        (
-          prop = "user" and kind = "user name"
-          or
-          prop = "password" and kind = prop
-        )
-      )
-    }
+  //   Credentials() {
+  //     exists(string prop |
+  //       this = config().getMember(prop).asSink() and
+  //       (
+  //         prop = "user" and kind = "user name"
+  //         or
+  //         prop = "password" and kind = prop
+  //       )
+  //     )
+  //   }
 
-    override string getCredentialsKind() { result = kind }
-  }
+  //   override string getCredentialsKind() { result = kind }
+  // }
 }
 
 /**

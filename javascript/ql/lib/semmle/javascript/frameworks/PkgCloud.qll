@@ -28,43 +28,43 @@ module PkgCloud {
     )
   }
 
-  /**
-   * An expression that is used for authentication through pkgcloud.
-   */
-  class Credentials extends CredentialsNode {
-    string kind;
+  // /**
+  //  * An expression that is used for authentication through pkgcloud.
+  //  */
+  // class Credentials extends CredentialsNode {
+  //   string kind;
 
-    Credentials() {
-      exists(string propertyName, DataFlow::InvokeNode invk |
-        takesConfigurationObject(invk, _) and
-        this = invk.getOptionArgument(0, propertyName)
-      |
-        /*
-         * Catch-all support for the following providers:
-         * - Amazon
-         * - Azure
-         * - DigitalOcean
-         * - HP Helion
-         * - Joyent
-         * - OpenStack
-         * - Rackspace
-         * - IrisCouch
-         * - MongoLab
-         * - MongoHQ
-         * - RedisToGo
-         */
+  //   Credentials() {
+  //     exists(string propertyName, DataFlow::InvokeNode invk |
+  //       takesConfigurationObject(invk, _) and
+  //       this = invk.getOptionArgument(0, propertyName)
+  //     |
+  //       /*
+  //        * Catch-all support for the following providers:
+  //        * - Amazon
+  //        * - Azure
+  //        * - DigitalOcean
+  //        * - HP Helion
+  //        * - Joyent
+  //        * - OpenStack
+  //        * - Rackspace
+  //        * - IrisCouch
+  //        * - MongoLab
+  //        * - MongoHQ
+  //        * - RedisToGo
+  //        */
 
-        kind = "user name" and
-        propertyName = ["account", "keyId", "storageAccount", "username"]
-        or
-        kind = "password" and
-        propertyName = ["key", "apiKey", "storageAccessKey", "password"]
-        or
-        kind = "token" and
-        propertyName = "token"
-      )
-    }
+  //       kind = "user name" and
+  //       propertyName = ["account", "keyId", "storageAccount", "username"]
+  //       or
+  //       kind = "password" and
+  //       propertyName = ["key", "apiKey", "storageAccessKey", "password"]
+  //       or
+  //       kind = "token" and
+  //       propertyName = "token"
+  //     )
+  //   }
 
-    override string getCredentialsKind() { result = kind }
-  }
+  //   override string getCredentialsKind() { result = kind }
+  // }
 }

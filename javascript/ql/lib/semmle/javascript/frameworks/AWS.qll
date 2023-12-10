@@ -26,23 +26,23 @@ module AWS {
     )
   }
 
-  /**
-   * An expression that is used as an AWS config value: `{ accessKeyId: <user>, secretAccessKey: <password>}`.
-   */
-  class Credentials extends CredentialsNode {
-    string kind;
+  // /**
+  //  * An expression that is used as an AWS config value: `{ accessKeyId: <user>, secretAccessKey: <password>}`.
+  //  */
+  // class Credentials extends CredentialsNode {
+  //   string kind;
 
-    Credentials() {
-      exists(string prop, DataFlow::InvokeNode invk, int i |
-        takesConfigurationObject(invk, i) and
-        this = invk.getOptionArgument(i, prop)
-      |
-        prop = "accessKeyId" and kind = "user name"
-        or
-        prop = "secretAccessKey" and kind = "password"
-      )
-    }
+  //   Credentials() {
+  //     exists(string prop, DataFlow::InvokeNode invk, int i |
+  //       takesConfigurationObject(invk, i) and
+  //       this = invk.getOptionArgument(i, prop)
+  //     |
+  //       prop = "accessKeyId" and kind = "user name"
+  //       or
+  //       prop = "secretAccessKey" and kind = "password"
+  //     )
+  //   }
 
-    override string getCredentialsKind() { result = kind }
-  }
+  //   override string getCredentialsKind() { result = kind }
+  // }
 }

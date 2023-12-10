@@ -44,8 +44,7 @@ private module JsonWebToken {
    */
   private class JwtKey extends CredentialsNode {
     JwtKey() {
-      this =
-        API::moduleImport("jsonwebtoken").getMember(["sign", "verify"]).getParameter(1).asSink()
+      this = API::moduleImport("jsonwebtoken").getMember(["verify"]).getParameter(1).asSink()
     }
 
     override string getCredentialsKind() { result = "key" }
