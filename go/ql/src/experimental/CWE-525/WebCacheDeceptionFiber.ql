@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 9
  * @precision high
- * @id go/web-cache-deception
+ * @id go/web-cache-deception-fiber
  * @tags security
  *       external/cwe/cwe-525
  */
