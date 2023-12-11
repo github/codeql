@@ -7,16 +7,22 @@ module MakeImplCommon<InputSig Lang> {
   import Cached
 
   module DataFlowImplCommonPublic {
-    /** Provides `FlowState = string`. */
-    module FlowStateString {
+    /**
+     * DEPRECATED: Generally, a custom `FlowState` type should be used instead,
+     * but `string` can of course still be used without referring to this
+     * module.
+     *
+     * Provides `FlowState = string`.
+     */
+    deprecated module FlowStateString {
       /** A state value to track during data flow. */
-      class FlowState = string;
+      deprecated class FlowState = string;
 
       /**
        * The default state, which is used when the state is unspecified for a source
        * or a sink.
        */
-      class FlowStateEmpty extends FlowState {
+      deprecated class FlowStateEmpty extends FlowState {
         FlowStateEmpty() { this = "" }
       }
     }
