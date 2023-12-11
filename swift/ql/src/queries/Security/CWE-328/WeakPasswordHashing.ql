@@ -16,13 +16,10 @@ import swift
 import codeql.swift.security.WeakPasswordHashingQuery
 import WeakHashingFlow::PathGraph
 
-from
-  WeakHashingFlow::PathNode source, WeakHashingFlow::PathNode sink, string algorithm,
-  PasswordExpr expr
+from WeakHashingFlow::PathNode source, WeakHashingFlow::PathNode sink, string algorithm
 where
   WeakHashingFlow::flowPath(source, sink) and
-  algorithm = sink.getNode().(WeakPasswordHashingSink).getAlgorithm() and
-  expr = source.getNode().asExpr()
+  algorithm = sink.getNode().(WeakPasswordHashingSink).getAlgorithm()
 select sink.getNode(), source, sink,
   "Insecure hashing algorithm (" + algorithm + ") depends on $@.", source.getNode(),
-  "password (" + expr + ")"
+  "password (" + source.getNode().asExpr() + ")"

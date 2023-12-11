@@ -14,7 +14,12 @@ import codeql.swift.security.WeakSensitiveDataHashingExtensions
  * hashing sinks.
  */
 module WeakSensitiveDataHashingConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
+  predicate isSource(DataFlow::Node node) {
+    exists(SensitiveExpr se |
+      node.asExpr() = se and
+      not se.getSensitiveType() instanceof SensitivePassword // responsibility of the weak password hashing query
+    )
+  }
 
   predicate isSink(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingSink }
 
