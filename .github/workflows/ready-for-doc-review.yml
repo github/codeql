@@ -1,0 +1,11 @@
+name: Ready for docs-content review
+
+on:
+  pull_request_target:
+    types: [labeled, review_requested]
+
+jobs:
+  call-workflow-ready-for-doc-review:
+    if: github.event.label.name == 'ready-for-doc-review' || github.event.requested_team.name == 'docs-content'
+    uses: github/docs-internal/.github/workflows/ready-for-doc-review.yml@main
+    secrets: inherit
