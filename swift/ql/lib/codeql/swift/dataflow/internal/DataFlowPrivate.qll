@@ -1416,11 +1416,7 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
     )
   )
   or
-  exists(TupleType tuple1, TupleType tuple2 |
-    stripType(t1.asType()) = pragma[only_bind_out](tuple1) and
-    stripType(t2.asType()) = pragma[only_bind_into](tuple2) and
-    compatibleTuples(tuple1, tuple2)
-  )
+  compatibleTuples(stripType(t1.asType()), pragma[only_bind_out](stripType(t2.asType())))
   or
   t1 instanceof TopFunctionType and
   t2 instanceof DataFlowFunctionType
@@ -1462,12 +1458,19 @@ predicate isAnyOrUnboundType(Type t) {
   )
 }
 
-pragma[noinline]
+//pragma[nomagic]
 predicate compatibleTuples(TupleType tuple1, TupleType tuple2) {
-  tuple1.getNumberOfTypes() = tuple2.getNumberOfTypes() and
-  tuple1.getType(0) = tuple2.getType(0) and
-  tuple1.getType(tuple1.getNumberOfTypes()) = tuple2.getType(tuple1.getNumberOfTypes()) and
-  forall(int index | index in [0 .. tuple1.getNumberOfTypes() - 1] |
+  compatibleTuplesPartial(tuple1, tuple2, tuple1.getNumberOfTypes() - 1)
+}
+
+predicate compatibleTuplesPartial(TupleType tuple1, TupleType tuple2, int index) {
+  (
+    index = 0 and
+    tuple1.getNumberOfTypes() = tuple2.getNumberOfTypes()
+    or
+    compatibleTuplesPartial(tuple1, tuple2, index - 1)
+  ) and
+  (
     isAnyOrUnboundType(tuple1.getType(index).getCanonicalType()) or
     isAnyOrUnboundType(tuple2.getType(index).getCanonicalType())
   )
