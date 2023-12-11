@@ -7,11 +7,7 @@
 <overview>
 <p>
 This query finds calls of <tt>scanf</tt>-like functions with
-improper return-value checking.
-</p>
-<p>
-Specifically, the query flags uses of <code>scanf</code> where the return value is checked
-only against zero.
+improper return-value checking. Specifically, it flags uses of <code>scanf</code> where the return value is only checked against zero.
 </p>
 <p>
 Functions in the <tt>scanf</tt> family return either <tt>EOF</tt> (a negative value)
@@ -24,13 +20,12 @@ is not enough.
 <recommendation>
 <p>
 Ensure that all uses of <tt>scanf</tt> check the return value against the expected number of arguments
-rather than just against zero
+rather than just against zero.
 </p>
 </recommendation>
 
 <example>
-<p>This example shows different ways of guarding a <tt>scanf</tt> output:
-</p>
+<p>The following examples show different ways of guarding a <tt>scanf</tt> output. In the BAD examples, the results are only checked against zero. In the GOOD examples, the results are checked against the expected number of matches instead.</p>
 <sample src="IncorrectCheckScanf.cpp" />
 </example>
 
