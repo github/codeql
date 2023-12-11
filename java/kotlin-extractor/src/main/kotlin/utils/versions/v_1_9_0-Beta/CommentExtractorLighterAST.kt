@@ -13,8 +13,6 @@ import org.jetbrains.kotlin.ir.visitors.acceptVoid
 import org.jetbrains.kotlin.ir.visitors.IrElementVisitorVoid
 import org.jetbrains.kotlin.kdoc.lexer.KDocTokens
 import org.jetbrains.kotlin.lexer.KtTokens
-import org.jetbrains.kotlin.psi.psiUtil.endOffset
-import org.jetbrains.kotlin.psi.psiUtil.startOffset
 import org.jetbrains.kotlin.util.getChildren
 
 class CommentExtractorLighterAST(fileExtractor: KotlinFileExtractor, file: IrFile, fileLabel: Label<out DbFile>): CommentExtractor(fileExtractor, file, fileLabel) {

@@ -212,4 +212,10 @@ codeql::PoundAssertStmt StmtTranslator::translatePoundAssertStmt(
   return entry;
 }
 
+codeql::DiscardStmt StmtTranslator::translateDiscardStmt(const swift::DiscardStmt& stmt) {
+  auto entry = dispatcher.createEntry(stmt);
+  entry.sub_expr = dispatcher.fetchLabel(stmt.getSubExpr());
+  return entry;
+}
+
 }  // namespace codeql

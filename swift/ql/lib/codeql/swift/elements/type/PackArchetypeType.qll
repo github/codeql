@@ -5,4 +5,7 @@
 
 private import codeql.swift.generated.type.PackArchetypeType
 
+/**
+ * An archetype type of PackType.
+ */
 class PackArchetypeType extends Generated::PackArchetypeType { }

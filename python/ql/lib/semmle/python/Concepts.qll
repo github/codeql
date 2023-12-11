@@ -928,7 +928,10 @@ module Http {
 
       override Parameter getARoutedParameter() {
         result = rs.getARoutedParameter() and
-        result in [this.getArg(_), this.getArgByName(_)]
+        result in [
+            this.getArg(_), this.getArgByName(_), this.getVararg().(Parameter),
+            this.getKwarg().(Parameter)
+          ]
       }
 
       override string getFramework() { result = rs.getFramework() }

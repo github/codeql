@@ -5,4 +5,8 @@
 
 private import codeql.swift.generated.expr.OverloadedDeclRefExpr
 
+/**
+ * An ambiguous expression that might refer to multiple declarations. This will be present only
+ * for failing compilations.
+ */
 class OverloadedDeclRefExpr extends Generated::OverloadedDeclRefExpr { }

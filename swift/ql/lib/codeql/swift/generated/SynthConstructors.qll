@@ -9,6 +9,7 @@ import codeql.swift.elements.DbFileConstructor
 import codeql.swift.elements.DbLocationConstructor
 import codeql.swift.elements.DiagnosticsConstructor
 import codeql.swift.elements.KeyPathComponentConstructor
+import codeql.swift.elements.MacroRoleConstructor
 import codeql.swift.elements.OtherAvailabilitySpecConstructor
 import codeql.swift.elements.PlatformVersionAvailabilitySpecConstructor
 import codeql.swift.elements.UnspecifiedElementConstructor
@@ -27,6 +28,7 @@ import codeql.swift.elements.decl.IfConfigDeclConstructor
 import codeql.swift.elements.decl.ImportDeclConstructor
 import codeql.swift.elements.decl.InfixOperatorDeclConstructor
 import codeql.swift.elements.decl.InitializerConstructor
+import codeql.swift.elements.decl.MacroDeclConstructor
 import codeql.swift.elements.decl.MissingMemberDeclConstructor
 import codeql.swift.elements.decl.ModuleDeclConstructor
 import codeql.swift.elements.decl.NamedFunctionConstructor
@@ -112,6 +114,7 @@ import codeql.swift.elements.expr.LinearToDifferentiableFunctionExprConstructor
 import codeql.swift.elements.expr.LoadExprConstructor
 import codeql.swift.elements.expr.MagicIdentifierLiteralExprConstructor
 import codeql.swift.elements.expr.MakeTemporarilyEscapableExprConstructor
+import codeql.swift.elements.expr.MaterializePackExprConstructor
 import codeql.swift.elements.expr.MemberRefExprConstructor
 import codeql.swift.elements.expr.MetatypeConversionExprConstructor
 import codeql.swift.elements.expr.MethodLookupExprConstructor
@@ -174,6 +177,7 @@ import codeql.swift.elements.stmt.CaseStmtConstructor
 import codeql.swift.elements.stmt.ConditionElementConstructor
 import codeql.swift.elements.stmt.ContinueStmtConstructor
 import codeql.swift.elements.stmt.DeferStmtConstructor
+import codeql.swift.elements.stmt.DiscardStmtConstructor
 import codeql.swift.elements.stmt.DoCatchStmtConstructor
 import codeql.swift.elements.stmt.DoStmtConstructor
 import codeql.swift.elements.stmt.FailStmtConstructor

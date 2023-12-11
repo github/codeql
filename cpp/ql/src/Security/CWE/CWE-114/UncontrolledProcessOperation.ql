@@ -27,10 +27,7 @@ predicate isProcessOperationExplanation(DataFlow::Node arg, string processOperat
   )
 }
 
-predicate isSource(FlowSource source, string sourceType) {
-  not source instanceof DataFlow::ExprNode and
-  sourceType = source.getSourceType()
-}
+predicate isSource(FlowSource source, string sourceType) { sourceType = source.getSourceType() }
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { isSource(node, _) }

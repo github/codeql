@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.Callable
 import codeql.swift.elements.expr.Expr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ClosureExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::ClosureExpr` class directly.

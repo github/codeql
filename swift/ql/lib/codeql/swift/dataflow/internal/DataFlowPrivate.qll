@@ -278,13 +278,19 @@ private module Cached {
         nodeFrom.asPattern().(TypedPattern).getSubPattern()
       ]
     or
-    // Flow from the unique parameter of a key path expression to
-    // the first component in the chain.
-    nodeTo.(KeyPathComponentNodeImpl).getComponent() =
-      nodeFrom.(KeyPathParameterNode).getComponent(0)
+    // Flow from the last component in a key path chain to
+    // the return node for the key path.
+    exists(KeyPathExpr keyPath |
+      nodeFrom.(KeyPathComponentNodeImpl).getComponent() =
+        keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
+      nodeTo.(KeyPathReturnNodeImpl).getKeyPathExpr() = keyPath
+    )
     or
-    nodeFrom.(KeyPathComponentPostUpdateNode).getComponent() =
-      nodeTo.(KeyPathParameterPostUpdateNode).getComponent(0)
+    exists(KeyPathExpr keyPath |
+      nodeTo.(KeyPathComponentPostUpdateNode).getComponent() =
+        keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
+      nodeFrom.(KeyPathReturnPostUpdateNode).getKeyPathExpr() = keyPath
+    )
     or
     // Flow to the result of a keypath assignment
     exists(KeyPathApplicationExpr apply, AssignExpr assign |
@@ -862,11 +868,9 @@ private predicate closureFlowStep(CaptureInput::Expr e1, CaptureInput::Expr e2) 
   e2.(Pattern).getImmediateMatchingExpr() = e1
 }
 
-private module CaptureInput implements VariableCapture::InputSig {
+private module CaptureInput implements VariableCapture::InputSig<Location> {
   private import swift as S
   private import codeql.swift.controlflow.BasicBlocks as B
-
-  class Location = S::Location;
 
   class BasicBlock instanceof B::BasicBlock {
     string toString() { result = super.toString() }
@@ -976,7 +980,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class CapturedParameter = CaptureInput::CapturedParameter;
 
-module CaptureFlow = VariableCapture::Flow<CaptureInput>;
+module CaptureFlow = VariableCapture::Flow<Location, CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode()
@@ -1087,8 +1091,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   // creation of an optional via implicit wrapping keypath component
   exists(KeyPathComponent component |
     component.isOptionalWrapping() and
-    node1.(KeyPathComponentNodeImpl).getComponent() = component and
-    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr() and
+    node1.(KeyPathComponentNodeImpl).getComponent().getNextComponent() = component and
+    node2.(KeyPathComponentNodeImpl).getComponent() = component and
     c instanceof OptionalSomeContentSet
   )
   or
@@ -1176,7 +1180,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   // read of a component in a key-path expression chain
   exists(KeyPathComponent component |
-    component = node1.(KeyPathComponentNodeImpl).getComponent() and
+    // the first node is either the previous element in the chain
+    node1.(KeyPathComponentNodeImpl).getComponent().getNextComponent() = component
+    or
+    // or the start node, if this is the first component in the chain
+    component = node1.(KeyPathParameterNode).getComponent(0)
+  |
+    component = node2.(KeyPathComponentNodeImpl).getComponent() and
     (
       c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
       or
@@ -1190,13 +1200,6 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
         component.isOptionalChaining()
       )
     )
-  |
-    // the next node is either the next element in the chain
-    node2.(KeyPathComponentNodeImpl).getComponent() = component.getNextComponent()
-    or
-    // or the return node, if this is the last component in the chain
-    not exists(component.getNextComponent()) and
-    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
   )
   or
   // read of array or collection content via subscript operator

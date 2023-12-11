@@ -59,6 +59,9 @@ private module SourceVariables {
       then result = base.getType()
       else result = getTypeImpl(base.getType(), ind - 1)
     }
+
+    /** Gets the location of this variable. */
+    Location getLocation() { result = this.getBaseVariable().getLocation() }
   }
 }
 
@@ -869,7 +872,7 @@ private predicate sourceVariableIsGlobal(
   )
 }
 
-private module SsaInput implements SsaImplCommon::InputSig {
+private module SsaInput implements SsaImplCommon::InputSig<Location> {
   import InputSigCommon
   import SourceVariables
 
@@ -1092,7 +1095,7 @@ class Def extends DefOrUse {
   predicate isCertain() { defOrUse.isCertain() }
 }
 
-private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
 class PhiNode extends SsaImpl::DefinitionExt {
   PhiNode() {

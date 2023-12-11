@@ -12,6 +12,10 @@ import codeql.swift.elements.stmt.LabeledStmt
 import codeql.swift.elements.pattern.Pattern
 import codeql.swift.elements.decl.PatternBindingDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ForEachStmt` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::ForEachStmt` class directly.

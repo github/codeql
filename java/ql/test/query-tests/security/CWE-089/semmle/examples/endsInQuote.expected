@@ -1,3 +1,7 @@
+| bindingVars | 5 | Test.java:218:20:218:73 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
+| bindingVars | 7 | Test.java:220:11:220:16 | prefix |
+| bindingVars | 8 | Test.java:221:34:221:39 | prefix |
+| bindingVars | 8 | Test.java:221:81:221:91 | prefixAlias |
 | controlledStrings | 4 | Test.java:137:26:137:79 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
 | controlledStrings | 12 | Test.java:145:27:145:80 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |
 | controlledStrings | 20 | Test.java:153:35:153:88 | "SELECT ITEM,PRICE FROM PRODUCT WHERE ITEM_CATEGORY='" |

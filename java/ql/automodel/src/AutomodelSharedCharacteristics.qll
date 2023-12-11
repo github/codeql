@@ -63,12 +63,12 @@ signature module CandidateSig {
   predicate isSink(Endpoint e, string kind, string provenance);
 
   /**
-   * Holds if `e` is a sink with the label `kind`, and provenance `provenance`.
+   * Holds if `e` is a source with the label `kind`, and provenance `provenance`.
    */
   predicate isSource(Endpoint e, string kind, string provenance);
 
   /**
-   * Holds if `e` is not a sink of any kind.
+   * Holds if `e` is not a source or sink of any kind.
    */
   predicate isNeutral(Endpoint e);
 

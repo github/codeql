@@ -56,9 +56,37 @@ module TarSlip {
   }
 
   /**
+   * Holds if `call` has an unsafe extraction filter, either by default (as the default is unsafe),
+   * or by being set to an explicitly unsafe value, such as `"fully_trusted"`, or `None`.
+   */
+  private predicate hasUnsafeFilter(API::CallNode call) {
+    call =
+      API::moduleImport("tarfile")
+          .getMember("open")
+          .getReturn()
+          .getMember(["extract", "extractall"])
+          .getACall() and
+    (
+      exists(Expr filterValue |
+        filterValue = call.getParameter(4, "filter").getAValueReachingSink().asExpr() and
+        (
+          filterValue.(StrConst).getText() = "fully_trusted"
+          or
+          filterValue instanceof None
+        )
+      )
+      or
+      not exists(call.getParameter(4, "filter"))
+    )
+  }
+
+  /**
    * A sink capturing method calls to `extractall`.
    *
-   * For a call to `file.extractall` without arguments, `file` is considered a sink.
+   * For a call to `file.extractall`, `file` is considered a sink if
+   *
+   * - there are no other arguments, or
+   * - there are other arguments (except `members`), and the extraction filter is unsafe.
    */
   class ExtractAllSink extends Sink {
     ExtractAllSink() {
@@ -69,8 +97,13 @@ module TarSlip {
               .getReturn()
               .getMember("extractall")
               .getACall() and
-        not exists(call.getArg(_)) and
-        not exists(call.getArgByName(_)) and
+        (
+          not exists(call.getArg(_)) and
+          not exists(call.getArgByName(_))
+          or
+          hasUnsafeFilter(call)
+        ) and
+        not exists(call.getArgByName("members")) and
         this = call.(DataFlow::MethodCallNode).getObject()
       )
     }
@@ -84,7 +117,8 @@ module TarSlip {
       exists(DataFlow::CallCfgNode call |
         call =
           API::moduleImport("tarfile").getMember("open").getReturn().getMember("extract").getACall() and
-        this = call.getArg(0)
+        this = call.getArg(0) and
+        hasUnsafeFilter(call)
       )
     }
   }
@@ -99,7 +133,8 @@ module TarSlip {
               .getReturn()
               .getMember("extractall")
               .getACall() and
-        this in [call.getArg(0), call.getArgByName("members")]
+        this in [call.getArg(0), call.getArgByName("members")] and
+        hasUnsafeFilter(call)
       )
     }
   }

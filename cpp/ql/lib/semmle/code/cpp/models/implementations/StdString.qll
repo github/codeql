@@ -99,9 +99,11 @@ private class StdStringConstructor extends Constructor, StdStringTaintFunction {
 /**
  * The `std::string` function `c_str`.
  */
-private class StdStringCStr extends StdStringTaintFunction {
+class StdStringCStr extends MemberFunction {
   StdStringCStr() { this.getClassAndName("c_str") instanceof StdBasicString }
+}
 
+private class StdStringCStrModel extends StdStringCStr, StdStringTaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
@@ -112,9 +114,11 @@ private class StdStringCStr extends StdStringTaintFunction {
 /**
  * The `std::string` function `data`.
  */
-private class StdStringData extends StdStringTaintFunction {
+class StdStringData extends MemberFunction {
   StdStringData() { this.getClassAndName("data") instanceof StdBasicString }
+}
 
+private class StdStringDataModel extends StdStringData, StdStringTaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from string itself (qualifier) to return value
     input.isQualifierObject() and
