@@ -1,1 +1,1 @@
-| WebCacheDeceptionGoChi.go:13:8:13:11 | "/*" | WebCacheDeceptionGoChi.go:6:2:6:27 | import specifier | Wildcard Endpoint used with "/*" in file: WebCacheDeceptionGoChi.go |
+| WebCacheDeceptionGoChi.go:13:8:13:11 | "/*" | Wildcard Endpoint used with "/*" in file: WebCacheDeceptionGoChi.go |
