@@ -1133,6 +1133,47 @@ module RangeStage<
   private float truncatingDiv(float x, float y) { result = (x - (x % y)) / y }
 
   /**
+   * Holds if `e1 + delta` is a valid bound for `e2`.
+   * - `upper = true`  : `e2 <= e1 + delta`
+   * - `upper = false` : `e2 >= e1 + delta`
+   *
+   * This is restricted to simple forward-flowing steps and disregards phi-nodes.
+   */
+  private predicate preBoundStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
+    boundFlowStep(e2, e1, delta, upper)
+    or
+    exists(Sem::SsaVariable v, SsaReadPositionBlock bb |
+      boundFlowStepSsa(v, bb, e1, delta, upper, _) and
+      bb.getAnSsaRead(v) = e2
+    )
+  }
+
+  /**
+   * Holds if simple forward-flowing steps from `e` can reach an expression that
+   * has multiple incoming bound-flow edges, that is, it has multiple ways to
+   * get a valid bound.
+   */
+  private predicate reachesBoundMergepoint(Sem::Expr e, boolean upper) {
+    2 <= strictcount(Sem::Expr mid | preBoundStep(e, mid, _, upper))
+    or
+    exists(Sem::SsaPhiNode v, SsaReadPositionBlock bb |
+      boundFlowStepSsa(v, bb, _, _, upper, _) and
+      bb.getAnSsaRead(v) = e
+    )
+    or
+    exists(Sem::Expr e2 |
+      preBoundStep(e2, e, _, upper) and
+      reachesBoundMergepoint(e2, upper)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate relevantPreBoundStep(Sem::Expr e2, Sem::Expr e1, D::Delta delta, boolean upper) {
+    preBoundStep(e2, e1, delta, upper) and
+    reachesBoundMergepoint(e2, upper)
+  }
+
+  /**
    * Holds if `b + delta` is a valid bound for `e` that can be found using only
    * simple forward-flowing steps and disregarding phi-nodes.
    * - `upper = true`  : `e <= b + delta`
@@ -1155,16 +1196,9 @@ module RangeStage<
     baseBound(e, b, delta, upper)
     or
     exists(Sem::Expr mid, D::Delta d1, D::Delta d2 |
-      boundFlowStep(e, mid, d1, upper) and
+      relevantPreBoundStep(e, mid, d1, upper) and
       preBounded(mid, b, d2, upper) and
       delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
-    )
-    or
-    exists(Sem::SsaVariable v, SsaReadPositionBlock bb, Sem::Expr mid, D::Delta d1, D::Delta d2 |
-      boundFlowStepSsa(v, bb, mid, d1, upper, _) and
-      preBounded(mid, b, d2, upper) and
-      delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2)) and
-      bb.getAnSsaRead(v) = e
     )
   }
 
