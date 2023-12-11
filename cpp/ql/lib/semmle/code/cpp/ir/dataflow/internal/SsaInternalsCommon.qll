@@ -418,6 +418,30 @@ class BaseCallVariable extends AbstractBaseSourceVariable, TBaseCallVariable {
 }
 
 private module IsModifiableAtImpl {
+  /**
+   * Holds if the `indirectionIndex`'th dereference of a value of type
+   * `cppType` is a type that can be modified (either by modifying the value
+   * itself or one of its fields if it's a class type).
+   *
+   * For example, a value of type `const int* const` cannot be modified
+   * at any indirection index (because it's a constant pointer to constant
+   * data), and a value of type `int *const *` is modifiable at indirection index
+   * 2 only.
+   *
+   * A value of type `const S2* s2` where `s2` is
+   * ```cpp
+   * struct S { int x; }
+   * ```
+   * can be modified at indirection index 1. This is to ensure that we generate
+   * a `PostUpdateNode` for the argument corresponding to the `s2` parameter in
+   * an example such as:
+   * ```cpp
+   * void set_field(const S2* s2)
+   * {
+   *  s2->s->x = 42;
+   * }
+   * ```
+   */
   bindingset[cppType, indirectionIndex]
   pragma[inline_late]
   private predicate impl(CppType cppType, int indirectionIndex) {
@@ -436,6 +460,18 @@ private module IsModifiableAtImpl {
     )
   }
 
+  /**
+   * Holds if `cppType` is modifiable with an indirection index of at least 1.
+   *
+   * This predicate factored out into a seperate predicate for two reasons:
+   * - This predicate needs to be recursive because, if a type is modifiable
+   * at indirection `i`, then it's also modifiable at indirection index `i+1`
+   * (because the pointer could be completely re-assigned at indirection `i`).
+   * - We special-case indirection index `0` so that pointer arguments that can
+   * be modified at some index always have a `PostUpdateNode` at indiretion
+   * index 0 even though the 0'th indirection can never be modified by a
+   * callee.
+   */
   private predicate isModifiableAtImplAtLeast1(CppType cppType, int indirectionIndex) {
     indirectionIndex = [1 .. countIndirectionsForCppType(cppType)] and
     (
@@ -447,12 +483,21 @@ private module IsModifiableAtImpl {
     )
   }
 
+  /**
+   * Holds if `cppType` is modifiable at indirection index 0.
+   *
+   * In reality, the 0'th indirection of a pointer (i.e., the pointer itself)
+   * can never be modified by a callee, but it is sometimes useful to be able
+   * to specify the value of the pointer, as its coming out of a function, as
+   * a source of dataflow since the shared library's reverse-read mechanism
+   * then ensures that field-flow is accounted for.
+   */
   private predicate isModifiableAtImplAt0(CppType cppType) { impl(cppType, 0) }
 
   /**
-   * Holds if `t` is a pointer or reference type that supports at least `indirectionIndex` number
-   * of indirections, and the `indirectionIndex` indirection cannot be modfiied by passing a
-   * value of `t` to a function.
+   * Holds if `t` is a pointer or reference type that supports at least
+   * `indirectionIndex` number of indirections, and the `indirectionIndex`
+   * indirection cannot be modfiied by passing a value of `t` to a function.
    */
   private predicate isModifiableAtImpl(CppType cppType, int indirectionIndex) {
     isModifiableAtImplAtLeast1(cppType, indirectionIndex)
@@ -462,9 +507,9 @@ private module IsModifiableAtImpl {
   }
 
   /**
-   * Holds if `t` is a type with at least `indirectionIndex` number of indirections,
-   * and the `indirectionIndex` indirection can be modified by passing a value of
-   * type `t` to a function function.
+   * Holds if `t` is a type with at least `indirectionIndex` number of
+   * indirections, and the `indirectionIndex` indirection can be modified by
+   * passing a value of type `t` to a function function.
    */
   bindingset[indirectionIndex]
   predicate isModifiableAt(CppType cppType, int indirectionIndex) {
