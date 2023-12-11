@@ -1417,13 +1417,9 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   )
   or
   exists(TupleType tuple1, TupleType tuple2 |
-    stripType(t1.asType()) = tuple1 and
-    stripType(t2.asType()) = tuple2 and
-    tuple1.getNumberOfTypes() = tuple2.getNumberOfTypes() and
-    forall(int index | index in [0 .. tuple1.getNumberOfTypes() - 1] |
-      isAnyOrUnboundType(tuple1.getType(index).getCanonicalType()) or
-      isAnyOrUnboundType(tuple2.getType(index).getCanonicalType())
-    )
+    stripType(t1.asType()) = pragma[only_bind_out](tuple1) and
+    stripType(t2.asType()) = pragma[only_bind_into](tuple2) and
+    compatibleTuples(tuple1, tuple2)
   )
   or
   t1 instanceof TopFunctionType and
@@ -1463,6 +1459,17 @@ predicate isAnyOrUnboundType(Type t) {
       parent.(GenericTypeDecl).getNumberOfGenericTypeParams() != 0 or
       parent.(ProtocolDecl).getNumberOfGenericTypeParams() != 0
     )
+  )
+}
+
+pragma[noinline]
+predicate compatibleTuples(TupleType tuple1, TupleType tuple2) {
+  tuple1.getNumberOfTypes() = tuple2.getNumberOfTypes() and
+  tuple1.getType(0) = tuple2.getType(0) and
+  tuple1.getType(tuple1.getNumberOfTypes()) = tuple2.getType(tuple1.getNumberOfTypes()) and
+  forall(int index | index in [0 .. tuple1.getNumberOfTypes() - 1] |
+    isAnyOrUnboundType(tuple1.getType(index).getCanonicalType()) or
+    isAnyOrUnboundType(tuple2.getType(index).getCanonicalType())
   )
 }
 
