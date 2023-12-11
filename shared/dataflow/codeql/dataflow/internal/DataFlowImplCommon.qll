@@ -976,6 +976,9 @@ module MakeImplCommon<InputSig Lang> {
     predicate paramMustFlow(ParamNode p, ArgNode arg) { localMustFlowStep+(p, arg) }
 
     cached
+    ContentApprox getContentApproxCached(Content c) { result = getContentApprox(c) }
+
+    cached
     newtype TCallContext =
       TAnyCallContext() or
       TSpecificCall(DataFlowCall call) { recordDataFlowCallSite(call, _) } or
@@ -1885,7 +1888,7 @@ module MakeImplCommon<InputSig Lang> {
     Content getAHead() {
       exists(ContentApprox cont |
         this = TApproxFrontHead(cont) and
-        cont = getContentApprox(result)
+        cont = getContentApproxCached(result)
       )
     }
   }

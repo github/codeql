@@ -2724,7 +2724,7 @@ module MakeImpl<InputSig Lang> {
       pragma[noinline]
       ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
 
-      predicate projectToHeadContent = getContentApprox/1;
+      predicate projectToHeadContent = getContentApproxCached/1;
 
       class ApOption = ApproxAccessPathFrontOption;
 
