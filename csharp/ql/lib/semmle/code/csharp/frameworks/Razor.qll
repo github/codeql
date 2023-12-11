@@ -233,12 +233,12 @@ class PageModelClass extends Class {
     )
   }
 
-  /** Gets the Razor Page that this PageModel refers to. */
+  /** Gets the Razor Page that has this PageModel. */
   RazorViewClass getPage() {
-    exists(Field modelField |
-      modelField.hasName("Model") and
-      modelField.getType() = this and
-      modelField.getDeclaringType() = result
+    exists(Property modelProp |
+      modelProp.hasName("Model") and
+      modelProp.getType() = this and
+      modelProp.getDeclaringType() = result
     )
   }
 }
