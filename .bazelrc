@@ -1,4 +1,5 @@
 common --enable_platform_specific_config
+common --noenable_bzlmod
 
 build --repo_env=CC=clang --repo_env=CXX=clang++
 
