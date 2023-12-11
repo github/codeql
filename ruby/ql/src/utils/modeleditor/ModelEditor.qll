@@ -38,14 +38,14 @@ string getNamespace(File file) {
   )
 }
 
-abstract class Endpoint instanceof AstNode {
-  string getNamespace() { result = getNamespace(this.(AstNode).getLocation().getFile()) }
+abstract class Endpoint instanceof DataFlow::Node {
+  string getNamespace() { result = getNamespace(super.getLocation().getFile()) }
 
-  string getFileName() { result = this.(AstNode).getLocation().getFile().getBaseName() }
+  string getFileName() { result = super.getLocation().getFile().getBaseName() }
 
-  string toString() { result = this.(AstNode).toString() }
+  string toString() { result = super.toString() }
 
-  Location getLocation() { result = this.(AstNode).getLocation() }
+  Location getLocation() { result = super.getLocation() }
 
   abstract string getType();
 
@@ -65,7 +65,7 @@ class MethodEndpoint extends Endpoint {
   private DataFlow::MethodNode methodNode;
 
   MethodEndpoint() {
-    this = methodNode.asExpr().getExpr() and
+    this = methodNode and
     methodNode.isPublic() and
     not isUninteresting(methodNode)
   }
@@ -197,8 +197,8 @@ class ModuleEndpoint extends Endpoint {
 
   ModuleEndpoint() {
     this =
-      min(AstNode n, Location loc |
-        n = moduleNode.getADeclaration() and
+      min(DataFlow::Node n, Location loc |
+        n.asExpr().getExpr() = moduleNode.getADeclaration() and
         loc = n.getLocation()
       |
         n order by loc.getFile().getAbsolutePath(), loc.getStartLine(), loc.getStartColumn()
