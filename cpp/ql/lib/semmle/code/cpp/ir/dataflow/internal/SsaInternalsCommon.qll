@@ -463,7 +463,7 @@ private module IsModifiableAtImpl {
   /**
    * Holds if `cppType` is modifiable with an indirection index of at least 1.
    *
-   * This predicate factored out into a seperate predicate for two reasons:
+   * This predicate factored out into a separate predicate for two reasons:
    * - This predicate needs to be recursive because, if a type is modifiable
    * at indirection `i`, then it's also modifiable at indirection index `i+1`
    * (because the pointer could be completely re-assigned at indirection `i`).
