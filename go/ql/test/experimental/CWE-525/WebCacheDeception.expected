@@ -1,1 +1,4 @@
-| WebCacheDeceptionBad.go:82:18:82:31 | "/adminusers/" | Wildcard Endpoint used with "/adminusers/" and 'cache-control' Header is used |
+edges
+nodes
+subpaths
+#select
