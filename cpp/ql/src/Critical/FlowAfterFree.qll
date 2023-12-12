@@ -94,8 +94,9 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
 }
 
 /**
- * Holds if `n` is a dataflow node such that `n.asExpr() = e` and `e`
- * is being freed by a deallocation expression `dealloc`.
+ * Holds if `n` is a dataflow node that represents the pointer passed to
+ * `dealloc` after the call returns (i.e., the post-update node associated with
+ * the argument to `dealloc`).
  */
 predicate isFree(DataFlow::Node n, Expr e, DeallocationExpr dealloc) {
   exists(Expr conv |
