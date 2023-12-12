@@ -59,8 +59,4 @@ class LocalFlowPropertyProvider extends IRPropertyProvider {
       result = getNodeProperty(node, key)
     )
   }
-
-  override predicate shouldPrintOperand(Operand operand) { not Ssa::ignoreOperand(operand) }
-
-  override predicate shouldPrintInstruction(Instruction instr) { not Ssa::ignoreInstruction(instr) }
 }
