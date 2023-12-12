@@ -5,12 +5,16 @@ using System.Threading.Tasks;
 namespace test;
 
 class TestModel : PageModel {
-    public string Name {get; set; } = "abc";
+    public string Name { get; set; } = "abc";
 
     private string source() { return "x"; }
 
-    public async Task<IActionResult> OnGetAsync() {
+    public async Task<IActionResult> OnPostAsync() {
         Name = source();
         return Page();
+    }
+
+    public void OnGet() { 
+        Name = source();
     }
 }

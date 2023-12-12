@@ -251,10 +251,18 @@ private MethodCall getAPageCall(PageModelClass pm) {
         ["Page", "RedirectToPage"])
 }
 
+private MethodCall getImplicitThisCallInVoidHandler(PageModelClass pm) {
+  result.getEnclosingCallable() = pm.getAHandlerMethod() and
+  result.getEnclosingCallable().getReturnType() instanceof VoidType and
+  result.hasImplicitThisQualifier()
+}
+
 private class PageModelJumpNode extends DataFlow::NonLocalJumpNode {
   PageModelClass pm;
 
-  PageModelJumpNode() { this.asExpr() = getAPageCall(pm).getQualifier() }
+  PageModelJumpNode() {
+    this.asExpr() = [getAPageCall(pm), getImplicitThisCallInVoidHandler(pm)].getQualifier()
+  }
 
   override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
     preservesValue = true and
