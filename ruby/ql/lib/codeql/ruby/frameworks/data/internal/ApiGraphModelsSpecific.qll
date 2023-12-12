@@ -21,6 +21,7 @@
 private import codeql.ruby.AST
 private import ApiGraphModels
 private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.dataflow.internal.AccessPathSyntax
 // Re-export libraries needed by ApiGraphModels.qll
 import codeql.ruby.ApiGraphs
 import codeql.ruby.DataFlow::DataFlow as DataFlow

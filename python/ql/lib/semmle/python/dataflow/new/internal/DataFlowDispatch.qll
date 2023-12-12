@@ -1562,7 +1562,7 @@ private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
   private ArgumentPosition pos_;
 
   SummaryArgumentNode() {
-    FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), _)
+    FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
   }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {

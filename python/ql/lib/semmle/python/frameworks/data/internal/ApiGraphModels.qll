@@ -71,7 +71,7 @@ private module API = Specific::API;
 private module DataFlow = Specific::DataFlow;
 
 private import ApiGraphModelsExtensions as Extensions
-import codeql.dataflow.internal.AccessPathSyntax
+private import codeql.dataflow.internal.AccessPathSyntax
 
 /** Module containing hooks for providing input data to be interpreted as a model. */
 module ModelInput {

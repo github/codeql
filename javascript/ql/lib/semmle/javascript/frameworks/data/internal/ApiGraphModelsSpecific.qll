@@ -20,6 +20,7 @@
 
 private import javascript as JS
 private import ApiGraphModels
+private import codeql.dataflow.internal.AccessPathSyntax
 
 // Re-export libraries needed by ApiGraphModels.qll
 module API = JS::API;

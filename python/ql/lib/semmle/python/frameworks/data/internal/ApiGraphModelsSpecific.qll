@@ -21,6 +21,7 @@
 
 private import python as PY
 private import ApiGraphModels
+private import codeql.dataflow.internal.AccessPathSyntax
 import semmle.python.ApiGraphs::API as API
 // Re-export libraries needed by ApiGraphModels.qll
 import semmle.python.dataflow.new.DataFlow::DataFlow as DataFlow
