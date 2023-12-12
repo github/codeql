@@ -895,7 +895,7 @@ if (process.argv.length > 2) {
             virtualSourceRoot: null,
         });
         for (let sf of state.project.program.getSourceFiles()) {
-            if (pathlib.basename(sf.fileName) === "lib.d.ts") continue;
+            if (/lib\..*\.d\.ts/.test(pathlib.basename(sf.fileName)) || pathlib.basename(sf.fileName) === "lib.d.ts") continue;
             handleParseCommand({
                 command: "parse",
                 filename: sf.fileName,
