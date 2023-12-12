@@ -1241,7 +1241,7 @@ export class TypeTable {
       stack.push(id);
 
       for (let symbol of type.getProperties()) {
-        let propertyType = this.tryGetTypeOfSymbol(symbol);
+        let propertyType = typeTable.tryGetTypeOfSymbol(symbol);
         if (propertyType == null) continue;
         traverseType(propertyType);
       }
