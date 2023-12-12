@@ -222,7 +222,7 @@ class PageModelClass extends Class {
     this.getABaseType+().hasFullyQualifiedName("Microsoft.AspNetCore.Mvc.RazorPages", "PageModel")
   }
 
-  /** A handler method such as `OnGetAsync` */
+  /** Gets a handler method such as `OnGetAsync` */
   Method getAHandlerMethod() {
     result = this.getAMethod() and
     result.getName().matches("On%") and
