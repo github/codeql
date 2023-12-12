@@ -3,7 +3,7 @@
  * @description If a reference to the contents of a unique pointer outlives the underlying object it may lead to unexpected behavior.
  * @kind problem
  * @precision high
- * @id cpp/use-of-uniwue-pointer-after-lifetime-ends
+ * @id cpp/use-of-unique-pointer-after-lifetime-ends
  * @problem.severity warning
  * @security-severity 8.8
  * @tags reliability
