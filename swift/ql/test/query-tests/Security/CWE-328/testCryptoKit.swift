@@ -66,19 +66,19 @@ func testHashMethods(passwd : UnsafeRawBufferPointer, cert: String, encrypted_pa
     hash = Crypto.Insecure.SHA1.hash(data: account_no)   // BAD
     hash = Crypto.Insecure.SHA1.hash(data: credit_card_no)   // BAD
 
-    hash = Crypto.SHA256.hash(data: passwd)   // BAD [NOT DETECTED] not a computationally expensive hash
+    hash = Crypto.SHA256.hash(data: passwd)   // BAD, not a computationally expensive hash
     hash = Crypto.SHA256.hash(data: cert)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA256.hash(data: account_no)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA256.hash(data: credit_card_no)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA256.hash(data: credit_card_no)   // GOOD, computationally expensive hash not required
 
-    hash = Crypto.SHA384.hash(data: passwd)   // BAD [NOT DETECTED] not a computationally expensive hash
+    hash = Crypto.SHA384.hash(data: passwd)   // BAD, not a computationally expensive hash
     hash = Crypto.SHA384.hash(data: cert)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA384.hash(data: account_no)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA384.hash(data: credit_card_no)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA384.hash(data: credit_card_no)   // GOOD, computationally expensive hash not required
 
-    hash = Crypto.SHA512.hash(data: passwd)   // BAD [NOT DETECTED] not a computationally expensive hash
+    hash = Crypto.SHA512.hash(data: passwd)   // BAD, not a computationally expensive hash
     hash = Crypto.SHA512.hash(data: cert)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA512.hash(data: account_no)   // GOOD, computationally expensive hash not required
     hash = Crypto.SHA512.hash(data: credit_card_no)   // GOOD, computationally expensive hash not required
@@ -105,7 +105,7 @@ func testSHA1UpdateWithData(passwd : String, cert: String, encrypted_passwd : St
 
 func testSHA256UpdateWithData(passwd : String, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
     var hash = Crypto.SHA256()
-    hash.update(data: passwd)  // BAD [NOT DETECTED] not a computationally expensive hash
+    hash.update(data: passwd)  // BAD, not a computationally expensive hash
     hash.update(data: cert)  // GOOD
     hash.update(data: account_no)   // GOOD
     hash.update(data: credit_card_no)   // GOOD
@@ -113,7 +113,7 @@ func testSHA256UpdateWithData(passwd : String, cert: String, encrypted_passwd : 
 
 func testSHA384UpdateWithData(passwd : String, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
     var hash = Crypto.SHA384()
-    hash.update(data: passwd)  // BAD [NOT DETECTED] not a computationally expensive hash
+    hash.update(data: passwd)  // BAD, not a computationally expensive hash
     hash.update(data: cert)  // GOOD
     hash.update(data: account_no)   // GOOD
     hash.update(data: credit_card_no)   // GOOD
@@ -121,7 +121,7 @@ func testSHA384UpdateWithData(passwd : String, cert: String, encrypted_passwd : 
 
 func testSHA512UpdateWithData(passwd : String, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
     var hash = Crypto.SHA512()
-    hash.update(data: passwd)  // BAD [NOT DETECTED] not a computationally expensive hash
+    hash.update(data: passwd)  // BAD, not a computationally expensive hash
     hash.update(data: cert)  // GOOD
     hash.update(data: account_no)   // GOOD
     hash.update(data: credit_card_no)   // GOOD
@@ -147,7 +147,7 @@ func testSHA1UpdateWithUnsafeRawBufferPointer(passwd : UnsafeRawBufferPointer, c
 
 func testSHA256UpdateWithUnsafeRawBufferPointer(passwd : UnsafeRawBufferPointer, cert: UnsafeRawBufferPointer, encrypted_passwd : UnsafeRawBufferPointer, account_no : UnsafeRawBufferPointer, credit_card_no : UnsafeRawBufferPointer) {
     var hash = Crypto.SHA256()
-    hash.update(bufferPointer: passwd)  // BAD [NOT DETECTED] not a computationally expensive hash
+    hash.update(bufferPointer: passwd)  // BAD, not a computationally expensive hash
     hash.update(bufferPointer: cert)  // GOOD
     hash.update(bufferPointer: account_no)   // GOOD
     hash.update(bufferPointer: credit_card_no)   // GOOD
@@ -155,7 +155,7 @@ func testSHA256UpdateWithUnsafeRawBufferPointer(passwd : UnsafeRawBufferPointer,
 
 func testSHA384UpdateWithUnsafeRawBufferPointer(passwd : UnsafeRawBufferPointer, cert: UnsafeRawBufferPointer, encrypted_passwd : UnsafeRawBufferPointer, account_no : UnsafeRawBufferPointer, credit_card_no : UnsafeRawBufferPointer) {
     var hash = Crypto.SHA384()
-    hash.update(bufferPointer: passwd)  // BAD [NOT DETECTED] not a computationally expensive hash
+    hash.update(bufferPointer: passwd)  // BAD, not a computationally expensive hash
     hash.update(bufferPointer: cert)  // GOOD
     hash.update(bufferPointer: account_no)   // GOOD
     hash.update(bufferPointer: credit_card_no)   // GOOD
@@ -163,7 +163,7 @@ func testSHA384UpdateWithUnsafeRawBufferPointer(passwd : UnsafeRawBufferPointer,
 
 func testSHA512UpdateWithUnsafeRawBufferPointer(passwd : UnsafeRawBufferPointer, cert: UnsafeRawBufferPointer, encrypted_passwd : UnsafeRawBufferPointer, account_no : UnsafeRawBufferPointer, credit_card_no : UnsafeRawBufferPointer) {
     var hash = Crypto.SHA512()
-    hash.update(bufferPointer: passwd)  // BAD [NOT DETECTED] not a computationally expensive hash
+    hash.update(bufferPointer: passwd)  // BAD, not a computationally expensive hash
     hash.update(bufferPointer: cert)  // GOOD
     hash.update(bufferPointer: account_no)   // GOOD
     hash.update(bufferPointer: credit_card_no)   // GOOD

@@ -157,10 +157,10 @@ func testArrays(harmlessArray: Array<UInt8>, phoneNumberArray: Array<UInt8>, pas
     _ = SHA1().calculate(for: passwdArray) // BAD
     _ = SHA2(variant: .sha512).calculate(for: harmlessArray) // GOOD
     _ = SHA2(variant: .sha512).calculate(for: phoneNumberArray) // GOOD
-    _ = SHA2(variant: .sha512).calculate(for: passwdArray) // BAD [NOT DETECTED]
+    _ = SHA2(variant: .sha512).calculate(for: passwdArray) // BAD
     _ = SHA3(variant: .sha512).calculate(for: harmlessArray) // GOOD
     _ = SHA3(variant: .sha512).calculate(for: phoneNumberArray) // GOOD
-    _ = SHA3(variant: .sha512).calculate(for: passwdArray) // BAD [NOT DETECTED]
+    _ = SHA3(variant: .sha512).calculate(for: passwdArray) // BAD
 
     _ = Digest.md5(harmlessArray) // GOOD (not sensitive)
     _ = Digest.md5(phoneNumberArray) // BAD
@@ -170,13 +170,13 @@ func testArrays(harmlessArray: Array<UInt8>, phoneNumberArray: Array<UInt8>, pas
     _ = Digest.sha1(passwdArray) // BAD
     _ = Digest.sha512(harmlessArray) // GOOD (not sensitive)
     _ = Digest.sha512(phoneNumberArray) // GOOD
-    _ = Digest.sha512(passwdArray) // BAD [NOT DETECTED]
+    _ = Digest.sha512(passwdArray) // BAD
     _ = Digest.sha2(harmlessArray, variant: .sha512) // GOOD (not sensitive)
     _ = Digest.sha2(phoneNumberArray, variant: .sha512) // GOOD
-    _ = Digest.sha2(passwdArray, variant: .sha512) // BAD [NOT DETECTED]
+    _ = Digest.sha2(passwdArray, variant: .sha512) // BAD
     _ = Digest.sha3(harmlessArray, variant: .sha512) // GOOD (not sensitive)
     _ = Digest.sha3(phoneNumberArray, variant: .sha512) // GOOD
-    _ = Digest.sha3(passwdArray, variant: .sha512) // BAD [NOT DETECTED]
+    _ = Digest.sha3(passwdArray, variant: .sha512) // BAD
 
     _ = harmlessArray.md5() // GOOD (not sensitive)
     _ = phoneNumberArray.md5() // BAD
@@ -186,13 +186,13 @@ func testArrays(harmlessArray: Array<UInt8>, phoneNumberArray: Array<UInt8>, pas
     _ = passwdArray.sha1() // BAD
     _ = harmlessArray.sha512() // GOOD
     _ = phoneNumberArray.sha512() // GOOD
-    _ = passwdArray.sha512() // BAD [NOT DETECTED]
+    _ = passwdArray.sha512() // BAD
     _ = harmlessArray.sha2(.sha512) // GOOD
     _ = phoneNumberArray.sha2(.sha512) // GOOD
-    _ = passwdArray.sha2(.sha512) // BAD [NOT DETECTED]
+    _ = passwdArray.sha2(.sha512) // BAD
     _ = harmlessArray.sha3(.sha512) // GOOD
     _ = phoneNumberArray.sha3(.sha512) // GOOD
-    _ = passwdArray.sha3(.sha512) // BAD [NOT DETECTED]
+    _ = passwdArray.sha3(.sha512) // BAD
 }
 
 func testData(harmlessData: Data, medicalData: Data, passwdData: Data) {
@@ -204,13 +204,13 @@ func testData(harmlessData: Data, medicalData: Data, passwdData: Data) {
     _ = passwdData.sha1() // BAD
     _ = harmlessData.sha512() // GOOD
     _ = medicalData.sha512() // GOOD
-    _ = passwdData.sha512() // BAD [NOT DETECTED]
+    _ = passwdData.sha512() // BAD
     _ = harmlessData.sha2(.sha512) // GOOD
     _ = medicalData.sha2(.sha512) // GOOD
-    _ = passwdData.sha2(.sha512) // BAD [NOT DETECTED]
+    _ = passwdData.sha2(.sha512) // BAD
     _ = harmlessData.sha3(.sha512) // GOOD
     _ = medicalData.sha3(.sha512) // GOOD
-    _ = passwdData.sha3(.sha512) // BAD [NOT DETECTED]
+    _ = passwdData.sha3(.sha512) // BAD
 }
 
 func testStrings(creditCardNumber: String, passwd: String) {
@@ -222,11 +222,11 @@ func testStrings(creditCardNumber: String, passwd: String) {
     _ = passwd.sha1() // BAD
     _ = "harmless".sha512() // GOOD
     _ = creditCardNumber.sha512() // GOOD
-    _ = passwd.sha512() // BAD [NOT DETECTED]
+    _ = passwd.sha512() // BAD
     _ = "harmless".sha2(.sha512) // GOOD
     _ = creditCardNumber.sha2(.sha512) // GOOD
-    _ = passwd.sha2(.sha512) // BAD [NOT DETECTED]
+    _ = passwd.sha2(.sha512) // BAD
     _ = "harmless".sha3(.sha512) // GOOD
     _ = creditCardNumber.sha3(.sha512) // GOOD
-    _ = passwd.sha3(.sha512) // BAD [NOT DETECTED]
+    _ = passwd.sha3(.sha512) // BAD
 }
