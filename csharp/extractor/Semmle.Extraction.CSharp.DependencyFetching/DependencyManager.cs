@@ -439,6 +439,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 files = files.Where(f => !f.FullName.StartsWith(options.DotNetPath, StringComparison.OrdinalIgnoreCase));
             }
 
+            files = new FilePathFilter(sourceDir, progressMonitor).Filter(files);
             return files;
         }
 
