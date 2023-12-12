@@ -9,6 +9,7 @@
 | PublicClass.cs:50:17:50:28 | neutralStuff | GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | true | PublicClass.cs | neutral |
 | PublicGenericClass.cs:7:17:7:21 | stuff | GitHub.CodeQL | PublicGenericClass`2 | stuff | (T) | false | PublicGenericClass.cs |  |
 | PublicGenericClass.cs:12:17:12:26 | stuff2`1 | GitHub.CodeQL | PublicGenericClass`2 | stuff2`1 | (T2) | false | PublicGenericClass.cs |  |
+| PublicGenericClass.cs:17:18:17:36 | summaryStuff`1 | GitHub.CodeQL | PublicGenericClass`2 | summaryStuff`1 | (TNode) | true | PublicGenericClass.cs | summary |
 | PublicGenericInterface.cs:7:10:7:14 | stuff | GitHub.CodeQL | PublicGenericInterface`1 | stuff | (T) | false | PublicGenericInterface.cs |  |
 | PublicGenericInterface.cs:9:10:9:19 | stuff2`1 | GitHub.CodeQL | PublicGenericInterface`1 | stuff2`1 | (T2) | false | PublicGenericInterface.cs |  |
 | PublicGenericInterface.cs:11:17:11:27 | staticStuff | GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | false | PublicGenericInterface.cs |  |
