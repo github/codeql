@@ -886,6 +886,7 @@ if (process.argv.length > 2) {
     if (argument === "--version") {
         console.log("parser-wrapper with TypeScript " + ts.version);
     } else if (pathlib.basename(argument) === "tsconfig.json") {
+        reset();
         handleOpenProjectCommand({
             command: "open-project",
             tsConfig: argument,
