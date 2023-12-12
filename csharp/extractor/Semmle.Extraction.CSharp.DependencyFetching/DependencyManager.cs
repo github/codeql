@@ -479,7 +479,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
 
-            return Path.Combine(Path.GetTempPath(), "GitHub", packages, sb.ToString());
+            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out var _), "GitHub", packages, sb.ToString());
         }
 
         /// <summary>
