@@ -7,12 +7,6 @@ namespace System.ServiceModel
     public sealed class OperationContractAttribute : Attribute { }
 }
 
-namespace System.Runtime.Serialization
-{
-    public sealed class DataContractAttribute : Attribute { }
-    public sealed class DataMemberAttribute : Attribute { }
-}
-
 namespace RemoteFlowSource
 {
     using System.ServiceModel;
