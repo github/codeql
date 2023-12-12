@@ -119,20 +119,13 @@ namespace Semmle.Autobuild.CSharp
             => WithDotNet(builder, (_1, env) => f(env));
 
         /// <summary>
-        /// Returns a script for downloading relevant versions of the
-        /// .NET Core SDK. The SDK(s) will be installed at <code>installDir</code>
-        /// (provided that the script succeeds).
+        /// Tries to determine the version of .NET that's required for the project from a <code>global.json</code> file, if present.
         /// </summary>
-        private static BuildScript DownloadDotNet(IAutobuilder<AutobuildOptionsShared> builder, string installDir)
+        /// <returns>
+        /// Returns the .NET version specified in <code>global.json<code> as a string or null if no version could be retrieved.
+        /// </returns>
+        private static string? SdkVersionFromGlobalJson(IAutobuilder<AutobuildOptionsShared> builder)
         {
-            if (!string.IsNullOrEmpty(builder.Options.DotNetVersion))
-                // Specific version supplied in configuration: always use that
-                return DownloadDotNetVersion(builder, installDir, builder.Options.DotNetVersion);
-
-            // Download versions mentioned in `global.json` files
-            // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
-            var installScript = BuildScript.Success;
-            var validGlobalJson = false;
             foreach (var path in builder.Paths.Select(p => p.Item1).Where(p => p.EndsWith("global.json", StringComparison.Ordinal)))
             {
                 string version;
@@ -147,11 +140,59 @@ namespace Semmle.Autobuild.CSharp
                     continue;
                 }
 
-                installScript &= DownloadDotNetVersion(builder, installDir, version);
-                validGlobalJson = true;
+                return version;
             }
 
-            return validGlobalJson ? installScript : BuildScript.Failure;
+            return null;
+        }
+
+        /// <summary>
+        /// Returns a script for downloading relevant versions of the
+        /// .NET Core SDK. The SDK(s) will be installed at <code>installDir</code>
+        /// (provided that the script succeeds).
+        /// </summary>
+        private static BuildScript DownloadDotNet(IAutobuilder<AutobuildOptionsShared> builder, string installDir)
+        {
+            if (!string.IsNullOrEmpty(builder.Options.DotNetVersion))
+                // Specific version supplied in configuration: always use that
+                return DownloadDotNetVersion(builder, installDir, builder.Options.DotNetVersion);
+
+            // Download versions mentioned in `global.json` files
+            // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
+            var installScript = BuildScript.Success;
+            var foundFrameworkVersion = false;
+            var globalJsonSdkVersion = SdkVersionFromGlobalJson(builder);
+
+            if (!string.IsNullOrEmpty(globalJsonSdkVersion))
+            {
+                installScript &= DownloadDotNetVersion(builder, installDir, globalJsonSdkVersion);
+                foundFrameworkVersion = true;
+            }
+            else
+            {
+                // If there is no `global.json` to retrieve the .NET version from, we find all the
+                // TargetFramework values in the project files and install the latest versions
+                // from the corresponding channels
+                var targetFrameworkVersions = builder.ProjectsOrSolutionsToBuild
+                    .SelectMany(p => Enumerators.Singleton(p).Concat(p.IncludedProjects))
+                    .OfType<Project<CSharpAutobuildOptions>>()
+                    .Select(p => p.TargetFramework)
+                    .OfType<string>()
+                    .Where(v => v.StartsWith("net"));
+
+                foreach (var targetFrameworkVersion in targetFrameworkVersions)
+                {
+                    // For simplicity, we only accept target frameworks of the form "netX.Y"
+                    Version? version = null;
+                    if (Version.TryParse(targetFrameworkVersion[3..], out version))
+                    {
+                        installScript &= DownloadDotNetVersion(builder, installDir, "latest", channel: version.ToString());
+                        foundFrameworkVersion = true;
+                    }
+                }
+            }
+
+            return foundFrameworkVersion ? installScript : BuildScript.Failure;
         }
 
         /// <summary>
@@ -160,7 +201,7 @@ namespace Semmle.Autobuild.CSharp
         ///
         /// See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script.
         /// </summary>
-        private static BuildScript DownloadDotNetVersion(IAutobuilder<AutobuildOptionsShared> builder, string path, string version)
+        private static BuildScript DownloadDotNetVersion(IAutobuilder<AutobuildOptionsShared> builder, string path, string version, string? channel = "release")
         {
             return BuildScript.Bind(GetInstalledSdksScript(builder.Actions), (sdks, sdksRet) =>
                 {
@@ -174,7 +215,7 @@ namespace Semmle.Autobuild.CSharp
                     if (builder.Actions.IsWindows())
                     {
 
-                        var psCommand = $"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version {version} -InstallDir {path}";
+                        var psCommand = $"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel {channel} -Version {version} -InstallDir {path}";
 
                         BuildScript GetInstall(string pwsh) =>
                             new CommandBuilder(builder.Actions).
@@ -203,7 +244,7 @@ namespace Semmle.Autobuild.CSharp
                         var install = new CommandBuilder(builder.Actions).
                             RunCommand("./dotnet-install.sh").
                             Argument("--channel").
-                            Argument("release").
+                            Argument(channel).
                             Argument("--version").
                             Argument(version).
                             Argument("--install-dir").

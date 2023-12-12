@@ -23,6 +23,8 @@ namespace Semmle.Autobuild.Shared
 
         public Version ToolsVersion { get; private set; }
 
+        public string? TargetFramework { get; private set; }
+
         private readonly Lazy<List<Project<TAutobuildOptions>>> includedProjectsLazy;
         public override IEnumerable<IProjectOrSolution> IncludedProjects => includedProjectsLazy.Value;
 
@@ -51,7 +53,8 @@ namespace Semmle.Autobuild.Shared
             {
                 if (root.HasAttribute("Sdk"))
                 {
-                    DotNetProject = true;
+                    this.DotNetProject = true;
+                    this.TargetFramework = root.SelectSingleNode("//Project/PropertyGroup/TargetFramework/text()")?.Value;
                     return;
                 }
 
@@ -72,11 +75,12 @@ namespace Semmle.Autobuild.Shared
 
                 includedProjectsLazy = new Lazy<List<Project<TAutobuildOptions>>>(() =>
                 {
+                    var mgr = new XmlNamespaceManager(projFile.NameTable);
+                    mgr.AddNamespace("msbuild", "http://schemas.microsoft.com/developer/msbuild/2003");
+
                     var ret = new List<Project<TAutobuildOptions>>();
                     // The documentation on `.proj` files is very limited, but it appears that both
                     // `<ProjectFile Include="X"/>` and `<ProjectFiles Include="X"/>` is valid
-                    var mgr = new XmlNamespaceManager(projFile.NameTable);
-                    mgr.AddNamespace("msbuild", "http://schemas.microsoft.com/developer/msbuild/2003");
                     var projectFileIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFile/@Include", mgr)
                         ?.OfType<XmlNode>() ?? Array.Empty<XmlNode>();
                     var projectFilesIncludes = root.SelectNodes("//msbuild:Project/msbuild:ItemGroup/msbuild:ProjectFiles/@Include", mgr)

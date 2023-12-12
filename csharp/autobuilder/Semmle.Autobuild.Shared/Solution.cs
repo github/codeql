@@ -61,6 +61,12 @@ namespace Semmle.Autobuild.Shared
         {
             try
             {
+                // SolutionFile.Parse won't throw a FileNotFoundException if it is given a Windows path on a non-Windows platform
+                if (!builder.Actions.FileExists(FullPath))
+                {
+                    throw new FileNotFoundException(FullPath);
+                }
+
                 solution = SolutionFile.Parse(FullPath);
             }
             catch (Exception ex) when (ex is InvalidProjectFileException || ex is FileNotFoundException)

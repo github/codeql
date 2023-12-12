@@ -559,6 +559,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists["test.sln"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
@@ -573,6 +574,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 10;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists["test.sln"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
@@ -587,6 +589,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln"] = 0;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists["foo.sln"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
@@ -629,6 +632,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess["./build.sh --skip-tests"] = 0;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists["test.sln"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
@@ -729,6 +733,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
             actions.RunProcess[@"cmd.exe /C C:\codeql\tools\codeql index --xml --extensions config"] = 0;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists[@"C:\Project\test.sln"] = false;
             SkipVsWhere();
 
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -875,6 +880,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --skip-nuget"] = 0;
             actions.FileExists["csharp.log"] = true;
+            actions.FileExists["foo.sln"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
@@ -943,6 +949,40 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.DownloadFiles.Add(("https://dot.net/v1/dotnet-install.sh", "dotnet-install.sh"));
 
             var autobuilder = CreateAutoBuilder(false, dotnetVersion: "2.1.3");
+            TestAutobuilderScript(autobuilder, 0, 8);
+        }
+
+        [Fact]
+        public void TestDotnetVersionInstalledFromTargetFramework()
+        {
+            actions.RunProcess["dotnet --list-sdks"] = 0;
+            actions.RunProcessOut["dotnet --list-sdks"] = "6.0.404 [C:\\Program Files\\dotnet\\sdks]\n7.0.102 [C:\\Program Files\\dotnet\\sdks]";
+            actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
+            actions.RunProcess[@"./dotnet-install.sh --channel 8.0 --version latest --install-dir C:\Project/.dotnet"] = 0;
+            actions.RunProcess[@"rm dotnet-install.sh"] = 0;
+            actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
+            actions.RunProcess[@"C:\Project/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"C:\Project/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"C:\Project/.dotnet/dotnet build --no-incremental C:\Project/test.csproj"] = 0;
+            actions.FileExists["csharp.log"] = true;
+            actions.FileExists["test.csproj"] = true;
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["PATH"] = "/bin:/usr/bin";
+            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
+            actions.EnumerateDirectories[@"C:\Project"] = "";
+            var xml = new XmlDocument();
+            xml.LoadXml(@"<Project Sdk=""Microsoft.NET.Sdk"">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+</Project>");
+            actions.LoadXml[@"C:\Project/test.csproj"] = xml;
+            actions.DownloadFiles.Add(("https://dot.net/v1/dotnet-install.sh", "dotnet-install.sh"));
+
+            var autobuilder = CreateAutoBuilder(false);
             TestAutobuilderScript(autobuilder, 0, 8);
         }
 
@@ -1016,7 +1056,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             TestDotnetVersionWindows(() =>
             {
-                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
+                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel release -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
             },
             6);
         }
@@ -1026,8 +1066,8 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             TestDotnetVersionWindows(() =>
             {
-                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 1;
-                actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
+                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel release -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 1;
+                actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Channel release -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
             },
             7);
         }
