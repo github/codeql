@@ -1240,6 +1240,13 @@ export class TypeTable {
       let indexOnStack = stack.length;
       stack.push(id);
 
+      /** Indicates if a type contains no type variables, is a type variable, or strictly contains type variables. */
+      const enum TypeVarDepth {
+        noTypeVar = 0,
+        isTypeVar = 1,
+        containsTypeVar = 2,
+      }
+
       for (let symbol of type.getProperties()) {
         let propertyType = typeTable.tryGetTypeOfSymbol(symbol);
         if (propertyType == null) continue;
@@ -1266,13 +1273,6 @@ export class TypeTable {
       }
 
       return lowlinkTable.get(id);
-
-      /** Indicates if a type contains no type variables, is a type variable, or strictly contains type variables. */
-      const enum TypeVarDepth {
-        noTypeVar = 0,
-        isTypeVar = 1,
-        containsTypeVar = 2,
-      }
 
       function traverseType(type: ts.Type): TypeVarDepth {
         if (isTypeVariable(type)) return TypeVarDepth.isTypeVar;
