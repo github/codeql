@@ -175,4 +175,4 @@
 | testURL.swift:73:52:73:67 | call to get_secret_key() | label:get_secret_key, type:credential |
 | testURL.swift:75:53:75:69 | call to get_cert_string() | label:get_cert_string, type:credential |
 | testURL.swift:96:51:96:51 | certificate | label:certificate, type:credential |
-| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | label:credential, type:credential |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | label:password, type:password |
