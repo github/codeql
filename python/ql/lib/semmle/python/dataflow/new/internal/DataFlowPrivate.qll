@@ -299,6 +299,12 @@ module LocalFlow {
       nodeTo.(CfgNode).getNode() = def.getDefiningNode()
     )
     or
+    // General definition
+    // TODO: remove other cases that are now redundant
+    nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(DefinitionNode).getValue() and
+    // remove jump steps (such as assignment of parameter default values)
+    nodeFrom.getEnclosingCallable() = nodeTo.getEnclosingCallable()
+    or
     // With definition
     //   `with f(42) as x:`
     //   nodeFrom is `f(42)`

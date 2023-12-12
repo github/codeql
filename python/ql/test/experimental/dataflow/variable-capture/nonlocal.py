@@ -38,7 +38,7 @@ def out():
         nonlocal sinkO1
         sinkO1 = SOURCE
     captureOut1()
-    SINK(sinkO1) #$ MISSING:captured
+    SINK(sinkO1) #$ captured
 
     sinkO2 = ""
     def captureOut2():
@@ -47,7 +47,7 @@ def out():
             sinkO2 = SOURCE
         m()
     captureOut2()
-    SINK(sinkO2) #$ MISSING:captured
+    SINK(sinkO2) #$ captured
 
     nonSink1 = ""
     def captureOut1NotCalled():
@@ -74,7 +74,7 @@ def through(tainted):
         nonlocal sinkO1
         sinkO1 = tainted
     captureOut1()
-    SINK(sinkO1) #$ MISSING:captured
+    SINK(sinkO1) #$ captured
 
     sinkO2 = ""
     def captureOut2():
@@ -83,7 +83,7 @@ def through(tainted):
             sinkO2 = tainted
         m()
     captureOut2()
-    SINK(sinkO2) #$ MISSING:captured
+    SINK(sinkO2) #$ captured
 
     nonSink1 = ""
     def captureOut1NotCalled():
