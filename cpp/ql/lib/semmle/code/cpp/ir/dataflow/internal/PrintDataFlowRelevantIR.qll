@@ -3,7 +3,7 @@ private import semmle.code.cpp.ir.IR
 private import SsaInternals as Ssa
 
 /**
- * Property provider that hides all instructions and operands that are not relevant for IR dataflow.
+ * A property provider that hides all instructions and operands that are not relevant for IR dataflow.
  */
 class DataFlowRelevantIRPropertyProvider extends IRPropertyProvider {
   override predicate shouldPrintOperand(Operand operand) { not Ssa::ignoreOperand(operand) }
