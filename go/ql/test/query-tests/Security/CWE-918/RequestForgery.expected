@@ -1,23 +1,22 @@
 edges
 | RequestForgery.go:8:12:8:34 | call to FormValue | RequestForgery.go:11:24:11:65 | ...+... |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:14:11:14:17 | tainted |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:18:12:18:18 | tainted |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:21:34:21:40 | tainted |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:24:66:24:72 | tainted |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:27:11:27:29 | ...+... |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:29:11:29:40 | ...+... |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:36:11:36:17 | tainted |
-| tst.go:35:2:35:2 | definition of u [pointer] | tst.go:36:2:36:2 | u [pointer] |
-| tst.go:36:2:36:2 | implicit dereference | tst.go:35:2:35:2 | definition of u [pointer] |
-| tst.go:36:2:36:2 | implicit dereference | tst.go:36:2:36:2 | u |
-| tst.go:36:2:36:2 | implicit dereference | tst.go:37:11:37:11 | u |
-| tst.go:36:2:36:2 | u | tst.go:36:2:36:2 | implicit dereference |
-| tst.go:36:2:36:2 | u | tst.go:36:2:36:2 | u |
-| tst.go:36:2:36:2 | u | tst.go:37:11:37:11 | u |
-| tst.go:36:2:36:2 | u [pointer] | tst.go:36:2:36:2 | implicit dereference |
-| tst.go:36:11:36:17 | tainted | tst.go:36:2:36:2 | u |
-| tst.go:36:11:36:17 | tainted | tst.go:37:11:37:11 | u |
-| tst.go:37:11:37:11 | u | tst.go:37:11:37:20 | call to String |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:18:11:18:17 | tainted |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:22:12:22:18 | tainted |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:25:34:25:40 | tainted |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:28:66:28:72 | tainted |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:31:11:31:29 | ...+... |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:33:11:33:40 | ...+... |
+| tst.go:10:13:10:35 | call to FormValue | tst.go:40:11:40:18 | tainted2 |
+| tst.go:39:2:39:2 | definition of u [pointer] | tst.go:40:2:40:2 | u [pointer] |
+| tst.go:40:2:40:2 | implicit dereference | tst.go:39:2:39:2 | definition of u [pointer] |
+| tst.go:40:2:40:2 | implicit dereference | tst.go:40:2:40:2 | u |
+| tst.go:40:2:40:2 | u | tst.go:40:2:40:2 | implicit dereference |
+| tst.go:40:2:40:2 | u | tst.go:40:2:40:2 | u |
+| tst.go:40:2:40:2 | u | tst.go:41:11:41:11 | u |
+| tst.go:40:2:40:2 | u [pointer] | tst.go:40:2:40:2 | implicit dereference |
+| tst.go:40:11:40:18 | tainted2 | tst.go:40:2:40:2 | u |
+| tst.go:40:11:40:18 | tainted2 | tst.go:41:11:41:11 | u |
+| tst.go:41:11:41:11 | u | tst.go:41:11:41:20 | call to String |
 | websocket.go:60:21:60:31 | call to Referer | websocket.go:65:27:65:40 | untrustedInput |
 | websocket.go:74:21:74:31 | call to Referer | websocket.go:78:36:78:49 | untrustedInput |
 | websocket.go:88:21:88:31 | call to Referer | websocket.go:91:31:91:44 | untrustedInput |
@@ -31,19 +30,19 @@ nodes
 | RequestForgery.go:8:12:8:34 | call to FormValue | semmle.label | call to FormValue |
 | RequestForgery.go:11:24:11:65 | ...+... | semmle.label | ...+... |
 | tst.go:10:13:10:35 | call to FormValue | semmle.label | call to FormValue |
-| tst.go:14:11:14:17 | tainted | semmle.label | tainted |
-| tst.go:18:12:18:18 | tainted | semmle.label | tainted |
-| tst.go:21:34:21:40 | tainted | semmle.label | tainted |
-| tst.go:24:66:24:72 | tainted | semmle.label | tainted |
-| tst.go:27:11:27:29 | ...+... | semmle.label | ...+... |
-| tst.go:29:11:29:40 | ...+... | semmle.label | ...+... |
-| tst.go:35:2:35:2 | definition of u [pointer] | semmle.label | definition of u [pointer] |
-| tst.go:36:2:36:2 | implicit dereference | semmle.label | implicit dereference |
-| tst.go:36:2:36:2 | u | semmle.label | u |
-| tst.go:36:2:36:2 | u [pointer] | semmle.label | u [pointer] |
-| tst.go:36:11:36:17 | tainted | semmle.label | tainted |
-| tst.go:37:11:37:11 | u | semmle.label | u |
-| tst.go:37:11:37:20 | call to String | semmle.label | call to String |
+| tst.go:18:11:18:17 | tainted | semmle.label | tainted |
+| tst.go:22:12:22:18 | tainted | semmle.label | tainted |
+| tst.go:25:34:25:40 | tainted | semmle.label | tainted |
+| tst.go:28:66:28:72 | tainted | semmle.label | tainted |
+| tst.go:31:11:31:29 | ...+... | semmle.label | ...+... |
+| tst.go:33:11:33:40 | ...+... | semmle.label | ...+... |
+| tst.go:39:2:39:2 | definition of u [pointer] | semmle.label | definition of u [pointer] |
+| tst.go:40:2:40:2 | implicit dereference | semmle.label | implicit dereference |
+| tst.go:40:2:40:2 | u | semmle.label | u |
+| tst.go:40:2:40:2 | u [pointer] | semmle.label | u [pointer] |
+| tst.go:40:11:40:18 | tainted2 | semmle.label | tainted2 |
+| tst.go:41:11:41:11 | u | semmle.label | u |
+| tst.go:41:11:41:20 | call to String | semmle.label | call to String |
 | websocket.go:60:21:60:31 | call to Referer | semmle.label | call to Referer |
 | websocket.go:65:27:65:40 | untrustedInput | semmle.label | untrustedInput |
 | websocket.go:74:21:74:31 | call to Referer | semmle.label | call to Referer |
@@ -65,13 +64,13 @@ nodes
 subpaths
 #select
 | RequestForgery.go:11:15:11:66 | call to Get | RequestForgery.go:8:12:8:34 | call to FormValue | RequestForgery.go:11:24:11:65 | ...+... | The $@ of this request depends on a $@. | RequestForgery.go:11:24:11:65 | ...+... | URL | RequestForgery.go:8:12:8:34 | call to FormValue | user-provided value |
-| tst.go:14:2:14:18 | call to Get | tst.go:10:13:10:35 | call to FormValue | tst.go:14:11:14:17 | tainted | The $@ of this request depends on a $@. | tst.go:14:11:14:17 | tainted | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
-| tst.go:18:2:18:38 | call to Post | tst.go:10:13:10:35 | call to FormValue | tst.go:18:12:18:18 | tainted | The $@ of this request depends on a $@. | tst.go:18:12:18:18 | tainted | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
-| tst.go:22:2:22:14 | call to Do | tst.go:10:13:10:35 | call to FormValue | tst.go:21:34:21:40 | tainted | The $@ of this request depends on a $@. | tst.go:21:34:21:40 | tainted | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
-| tst.go:25:2:25:14 | call to Do | tst.go:10:13:10:35 | call to FormValue | tst.go:24:66:24:72 | tainted | The $@ of this request depends on a $@. | tst.go:24:66:24:72 | tainted | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
-| tst.go:27:2:27:30 | call to Get | tst.go:10:13:10:35 | call to FormValue | tst.go:27:11:27:29 | ...+... | The $@ of this request depends on a $@. | tst.go:27:11:27:29 | ...+... | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
-| tst.go:29:2:29:41 | call to Get | tst.go:10:13:10:35 | call to FormValue | tst.go:29:11:29:40 | ...+... | The $@ of this request depends on a $@. | tst.go:29:11:29:40 | ...+... | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
-| tst.go:37:2:37:21 | call to Get | tst.go:10:13:10:35 | call to FormValue | tst.go:37:11:37:20 | call to String | The $@ of this request depends on a $@. | tst.go:37:11:37:20 | call to String | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
+| tst.go:18:2:18:18 | call to Get | tst.go:10:13:10:35 | call to FormValue | tst.go:18:11:18:17 | tainted | The $@ of this request depends on a $@. | tst.go:18:11:18:17 | tainted | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
+| tst.go:22:2:22:38 | call to Post | tst.go:10:13:10:35 | call to FormValue | tst.go:22:12:22:18 | tainted | The $@ of this request depends on a $@. | tst.go:22:12:22:18 | tainted | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
+| tst.go:26:2:26:14 | call to Do | tst.go:10:13:10:35 | call to FormValue | tst.go:25:34:25:40 | tainted | The $@ of this request depends on a $@. | tst.go:25:34:25:40 | tainted | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
+| tst.go:29:2:29:14 | call to Do | tst.go:10:13:10:35 | call to FormValue | tst.go:28:66:28:72 | tainted | The $@ of this request depends on a $@. | tst.go:28:66:28:72 | tainted | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
+| tst.go:31:2:31:30 | call to Get | tst.go:10:13:10:35 | call to FormValue | tst.go:31:11:31:29 | ...+... | The $@ of this request depends on a $@. | tst.go:31:11:31:29 | ...+... | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
+| tst.go:33:2:33:41 | call to Get | tst.go:10:13:10:35 | call to FormValue | tst.go:33:11:33:40 | ...+... | The $@ of this request depends on a $@. | tst.go:33:11:33:40 | ...+... | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
+| tst.go:41:2:41:21 | call to Get | tst.go:10:13:10:35 | call to FormValue | tst.go:41:11:41:20 | call to String | The $@ of this request depends on a $@. | tst.go:41:11:41:20 | call to String | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |
 | websocket.go:65:12:65:53 | call to Dial | websocket.go:60:21:60:31 | call to Referer | websocket.go:65:27:65:40 | untrustedInput | The $@ of this request depends on a $@. | websocket.go:65:27:65:40 | untrustedInput | WebSocket URL | websocket.go:60:21:60:31 | call to Referer | user-provided value |
 | websocket.go:79:13:79:40 | call to DialConfig | websocket.go:74:21:74:31 | call to Referer | websocket.go:78:36:78:49 | untrustedInput | The $@ of this request depends on a $@. | websocket.go:78:36:78:49 | untrustedInput | WebSocket URL | websocket.go:74:21:74:31 | call to Referer | user-provided value |
 | websocket.go:91:3:91:50 | call to Dial | websocket.go:88:21:88:31 | call to Referer | websocket.go:91:31:91:44 | untrustedInput | The $@ of this request depends on a $@. | websocket.go:91:31:91:44 | untrustedInput | WebSocket URL | websocket.go:88:21:88:31 | call to Referer | user-provided value |

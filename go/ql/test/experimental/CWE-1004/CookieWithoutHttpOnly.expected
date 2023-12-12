@@ -266,8 +266,6 @@ edges
 | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] |
 | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] |
 | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:142:2:142:8 | session |
 | CookieWithoutHttpOnly.go:134:2:134:43 | ... := ...[0] | CookieWithoutHttpOnly.go:142:2:142:8 | session |
 | CookieWithoutHttpOnly.go:134:16:134:20 | store | CookieWithoutHttpOnly.go:134:2:134:43 | ... := ...[0] |
 | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] |
@@ -276,8 +274,6 @@ edges
 | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | session |
 | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | session |
-| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session |
 | CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:135:2:135:8 | session [pointer] | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:134:2:134:8 | definition of session [pointer] |
@@ -286,12 +282,14 @@ edges
 | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:135:2:135:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | session |
 | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:137:2:137:8 | session |
-| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session |
-| CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference | CookieWithoutHttpOnly.go:142:2:142:8 | session |
 | CookieWithoutHttpOnly.go:137:2:137:8 | session | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:137:2:137:8 | session | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
+| CookieWithoutHttpOnly.go:137:2:137:8 | session | CookieWithoutHttpOnly.go:142:2:142:8 | session |
+| CookieWithoutHttpOnly.go:137:2:137:8 | session | CookieWithoutHttpOnly.go:142:2:142:8 | session |
 | CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
+| CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | CookieWithoutHttpOnly.go:142:2:142:8 | session |
+| CookieWithoutHttpOnly.go:137:2:137:8 | session [pointer] | CookieWithoutHttpOnly.go:142:2:142:8 | session |
 | CookieWithoutHttpOnly.go:137:20:140:2 | &... | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:137:20:140:2 | &... | CookieWithoutHttpOnly.go:137:2:137:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:137:20:140:2 | &... | CookieWithoutHttpOnly.go:137:2:137:8 | session |
@@ -303,20 +301,19 @@ edges
 | CookieWithoutHttpOnly.go:139:13:139:20 | httpOnly | CookieWithoutHttpOnly.go:137:21:140:2 | struct literal |
 | CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:147:2:147:8 | session [pointer] |
 | CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:149:2:149:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:153:2:153:8 | session |
 | CookieWithoutHttpOnly.go:146:2:146:43 | ... := ...[0] | CookieWithoutHttpOnly.go:153:2:153:8 | session |
 | CookieWithoutHttpOnly.go:146:16:146:20 | store | CookieWithoutHttpOnly.go:146:2:146:43 | ... := ...[0] |
 | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] |
 | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:149:2:149:8 | session |
-| CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference | CookieWithoutHttpOnly.go:153:2:153:8 | session |
 | CookieWithoutHttpOnly.go:147:2:147:8 | session [pointer] | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:146:2:146:8 | definition of session [pointer] |
 | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:147:2:147:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:149:2:149:8 | session |
-| CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference | CookieWithoutHttpOnly.go:153:2:153:8 | session |
 | CookieWithoutHttpOnly.go:149:2:149:8 | session | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference |
+| CookieWithoutHttpOnly.go:149:2:149:8 | session | CookieWithoutHttpOnly.go:153:2:153:8 | session |
 | CookieWithoutHttpOnly.go:149:2:149:8 | session [pointer] | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference |
+| CookieWithoutHttpOnly.go:149:2:149:8 | session [pointer] | CookieWithoutHttpOnly.go:153:2:153:8 | session |
 | CookieWithoutHttpOnly.go:149:20:151:2 | &... | CookieWithoutHttpOnly.go:149:2:149:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:149:20:151:2 | &... | CookieWithoutHttpOnly.go:149:2:149:8 | session |
 | CookieWithoutHttpOnly.go:149:20:151:2 | &... | CookieWithoutHttpOnly.go:149:20:151:2 | &... |
@@ -327,8 +324,6 @@ edges
 | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] |
 | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] |
 | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:166:2:166:8 | session |
 | CookieWithoutHttpOnly.go:158:2:158:43 | ... := ...[0] | CookieWithoutHttpOnly.go:166:2:166:8 | session |
 | CookieWithoutHttpOnly.go:158:16:158:20 | store | CookieWithoutHttpOnly.go:158:2:158:43 | ... := ...[0] |
 | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] |
@@ -337,8 +332,6 @@ edges
 | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | session |
 | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | session |
-| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session |
 | CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:159:2:159:8 | session [pointer] | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:158:2:158:8 | definition of session [pointer] |
@@ -347,12 +340,14 @@ edges
 | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:159:2:159:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | session |
 | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:161:2:161:8 | session |
-| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session |
-| CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference | CookieWithoutHttpOnly.go:166:2:166:8 | session |
 | CookieWithoutHttpOnly.go:161:2:161:8 | session | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:161:2:161:8 | session | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
+| CookieWithoutHttpOnly.go:161:2:161:8 | session | CookieWithoutHttpOnly.go:166:2:166:8 | session |
+| CookieWithoutHttpOnly.go:161:2:161:8 | session | CookieWithoutHttpOnly.go:166:2:166:8 | session |
 | CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
+| CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | CookieWithoutHttpOnly.go:166:2:166:8 | session |
+| CookieWithoutHttpOnly.go:161:2:161:8 | session [pointer] | CookieWithoutHttpOnly.go:166:2:166:8 | session |
 | CookieWithoutHttpOnly.go:161:20:164:2 | &... | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:161:20:164:2 | &... | CookieWithoutHttpOnly.go:161:2:161:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:161:20:164:2 | &... | CookieWithoutHttpOnly.go:161:2:161:8 | session |
@@ -368,8 +363,6 @@ edges
 | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] |
 | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] |
 | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] |
-| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] | CookieWithoutHttpOnly.go:178:2:178:8 | session |
 | CookieWithoutHttpOnly.go:170:2:170:43 | ... := ...[0] | CookieWithoutHttpOnly.go:178:2:178:8 | session |
 | CookieWithoutHttpOnly.go:170:16:170:20 | store | CookieWithoutHttpOnly.go:170:2:170:43 | ... := ...[0] |
 | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] |
@@ -378,8 +371,6 @@ edges
 | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | session |
 | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | session |
-| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session |
 | CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:171:2:171:8 | session [pointer] | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:170:2:170:8 | definition of session [pointer] |
@@ -388,12 +379,14 @@ edges
 | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:171:2:171:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | session |
 | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:173:2:173:8 | session |
-| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session |
-| CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference | CookieWithoutHttpOnly.go:178:2:178:8 | session |
 | CookieWithoutHttpOnly.go:173:2:173:8 | session | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:173:2:173:8 | session | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
+| CookieWithoutHttpOnly.go:173:2:173:8 | session | CookieWithoutHttpOnly.go:178:2:178:8 | session |
+| CookieWithoutHttpOnly.go:173:2:173:8 | session | CookieWithoutHttpOnly.go:178:2:178:8 | session |
 | CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
+| CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | CookieWithoutHttpOnly.go:178:2:178:8 | session |
+| CookieWithoutHttpOnly.go:173:2:173:8 | session [pointer] | CookieWithoutHttpOnly.go:178:2:178:8 | session |
 | CookieWithoutHttpOnly.go:173:20:176:2 | &... | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:173:20:176:2 | &... | CookieWithoutHttpOnly.go:173:2:173:8 | implicit dereference |
 | CookieWithoutHttpOnly.go:173:20:176:2 | &... | CookieWithoutHttpOnly.go:173:2:173:8 | session |

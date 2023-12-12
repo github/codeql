@@ -71,22 +71,22 @@ edges
 | main.go:61:5:61:15 | RequestData [pointer, Category] | main.go:61:4:61:15 | star expression [Category] |
 | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:42:28:42:41 | untrustedInput |
 | mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:50:34:50:39 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:61:27:61:32 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:63:23:63:28 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:64:22:64:27 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:66:32:66:37 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:69:17:69:22 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:70:20:70:25 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:71:29:71:34 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:72:30:72:35 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:73:29:73:34 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:78:23:78:28 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:79:23:79:28 | filter |
-| mongoDB.go:42:19:42:42 | struct literal | mongoDB.go:80:22:80:27 | filter |
 | mongoDB.go:42:28:42:41 | untrustedInput | mongoDB.go:42:19:42:42 | struct literal |
 | mongoDB.go:50:23:50:40 | struct literal | mongoDB.go:57:22:57:29 | pipeline |
 | mongoDB.go:50:23:50:40 | struct literal | mongoDB.go:81:18:81:25 | pipeline |
 | mongoDB.go:50:34:50:39 | filter | mongoDB.go:50:23:50:40 | struct literal |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:61:27:61:32 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:63:23:63:28 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:64:22:64:27 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:66:32:66:37 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:69:17:69:22 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:70:20:70:25 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:71:29:71:34 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:72:30:72:35 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:73:29:73:34 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:78:23:78:28 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:79:23:79:28 | filter |
+| mongoDB.go:50:34:50:39 | filter | mongoDB.go:80:22:80:27 | filter |
 nodes
 | SqlInjection.go:10:7:11:30 | call to Sprintf | semmle.label | call to Sprintf |
 | SqlInjection.go:11:3:11:9 | selection of URL | semmle.label | selection of URL |

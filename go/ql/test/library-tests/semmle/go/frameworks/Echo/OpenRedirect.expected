@@ -1,28 +1,36 @@
 edges
 | test.go:172:2:172:6 | definition of param | test.go:173:20:173:24 | param |
 | test.go:172:11:172:32 | call to Param | test.go:172:2:172:6 | definition of param |
-| test.go:178:2:178:6 | definition of param | test.go:182:24:182:28 | param |
+| test.go:178:2:178:6 | definition of param | test.go:179:12:179:16 | param |
 | test.go:178:11:178:32 | call to Param | test.go:178:2:178:6 | definition of param |
-| test.go:182:24:182:28 | param | test.go:182:20:182:28 | ...+... |
-| test.go:190:2:190:4 | definition of url | test.go:193:21:193:23 | url |
-| test.go:190:9:190:26 | star expression | test.go:190:2:190:4 | definition of url |
-| test.go:190:9:190:26 | star expression | test.go:190:10:190:26 | selection of URL |
-| test.go:190:10:190:26 | selection of URL | test.go:190:9:190:26 | star expression |
-| test.go:193:21:193:23 | url | test.go:193:21:193:32 | call to String |
+| test.go:179:2:179:7 | definition of param2 | test.go:185:24:185:29 | param2 |
+| test.go:179:12:179:16 | param | test.go:179:2:179:7 | definition of param2 |
+| test.go:185:24:185:29 | param2 | test.go:185:20:185:29 | ...+... |
+| test.go:193:2:193:4 | definition of url | test.go:194:5:194:7 | url |
+| test.go:193:9:193:26 | star expression | test.go:193:2:193:4 | definition of url |
+| test.go:193:9:193:26 | star expression | test.go:193:10:193:26 | selection of URL |
+| test.go:193:10:193:26 | selection of URL | test.go:193:9:193:26 | star expression |
+| test.go:194:5:194:7 | url | test.go:195:3:195:5 | url |
+| test.go:195:3:195:5 | url | test.go:196:21:196:23 | url |
+| test.go:196:21:196:23 | url | test.go:196:21:196:32 | call to String |
 nodes
 | test.go:172:2:172:6 | definition of param | semmle.label | definition of param |
 | test.go:172:11:172:32 | call to Param | semmle.label | call to Param |
 | test.go:173:20:173:24 | param | semmle.label | param |
 | test.go:178:2:178:6 | definition of param | semmle.label | definition of param |
 | test.go:178:11:178:32 | call to Param | semmle.label | call to Param |
-| test.go:182:20:182:28 | ...+... | semmle.label | ...+... |
-| test.go:182:24:182:28 | param | semmle.label | param |
-| test.go:190:2:190:4 | definition of url | semmle.label | definition of url |
-| test.go:190:9:190:26 | star expression | semmle.label | star expression |
-| test.go:190:10:190:26 | selection of URL | semmle.label | selection of URL |
-| test.go:193:21:193:23 | url | semmle.label | url |
-| test.go:193:21:193:32 | call to String | semmle.label | call to String |
+| test.go:179:2:179:7 | definition of param2 | semmle.label | definition of param2 |
+| test.go:179:12:179:16 | param | semmle.label | param |
+| test.go:185:20:185:29 | ...+... | semmle.label | ...+... |
+| test.go:185:24:185:29 | param2 | semmle.label | param2 |
+| test.go:193:2:193:4 | definition of url | semmle.label | definition of url |
+| test.go:193:9:193:26 | star expression | semmle.label | star expression |
+| test.go:193:10:193:26 | selection of URL | semmle.label | selection of URL |
+| test.go:194:5:194:7 | url | semmle.label | url |
+| test.go:195:3:195:5 | url | semmle.label | url |
+| test.go:196:21:196:23 | url | semmle.label | url |
+| test.go:196:21:196:32 | call to String | semmle.label | call to String |
 subpaths
 #select
 | test.go:173:20:173:24 | param | test.go:172:11:172:32 | call to Param | test.go:173:20:173:24 | param | This path to an untrusted URL redirection depends on a $@. | test.go:172:11:172:32 | call to Param | user-provided value |
-| test.go:182:20:182:28 | ...+... | test.go:178:11:178:32 | call to Param | test.go:182:20:182:28 | ...+... | This path to an untrusted URL redirection depends on a $@. | test.go:178:11:178:32 | call to Param | user-provided value |
+| test.go:185:20:185:29 | ...+... | test.go:178:11:178:32 | call to Param | test.go:185:20:185:29 | ...+... | This path to an untrusted URL redirection depends on a $@. | test.go:178:11:178:32 | call to Param | user-provided value |

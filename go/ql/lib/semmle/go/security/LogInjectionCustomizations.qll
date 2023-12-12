@@ -30,7 +30,15 @@ module LogInjection {
 
   /** An argument to a logging mechanism. */
   class LoggerSink extends Sink {
-    LoggerSink() { this = any(LoggerCall log).getAMessageComponent() }
+    LoggerSink() {
+      exists(LoggerCall call |
+        this = call.getAMessageComponent() and
+        // exclude arguments to `call` which have a safe format argument, which
+        // aren't caught by SafeFormatArgumentSanitizer as that sanitizes the
+        // result of the call.
+        not safeFormatArgument(this, call)
+      )
+    }
   }
 
   /**
@@ -43,6 +51,22 @@ module LogInjection {
   }
 
   /**
+   * Holds if `arg` is an argument to `call` that is formatted using the `%q`
+   * directive. This formatting directive replaces newline characters with
+   * escape sequences, so `arg` would not be a sink for log injection.
+   */
+  private predicate safeFormatArgument(
+    DataFlow::Node arg, StringOps::Formatting::StringFormatCall call
+  ) {
+    exists(string safeDirective |
+      // Mark "%q" formats as safe, but not "%#q", which would preserve newline characters.
+      safeDirective.regexpMatch("%[^%#]*q")
+    |
+      arg = call.getOperand(_, safeDirective)
+    )
+  }
+
+  /**
    * An argument that is formatted using the `%q` directive, considered as a sanitizer
    * for log injection.
    *
@@ -50,10 +74,10 @@ module LogInjection {
    */
   private class SafeFormatArgumentSanitizer extends Sanitizer {
     SafeFormatArgumentSanitizer() {
-      exists(StringOps::Formatting::StringFormatCall call, string safeDirective |
-        this = call.getOperand(_, safeDirective) and
-        // Mark "%q" formats as safe, but not "%#q", which would preserve newline characters.
-        safeDirective.regexpMatch("%[^%#]*q")
+      exists(DataFlow::Node arg, StringOps::Formatting::StringFormatCall call |
+        safeFormatArgument(arg, call)
+      |
+        this = call.getAResult()
       )
     }
   }

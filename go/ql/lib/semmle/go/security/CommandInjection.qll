@@ -123,6 +123,28 @@ module CommandInjection {
       node instanceof Sanitizer or
       node = any(ArgumentArrayWithDoubleDash array).getASanitizedElement()
     }
+
+    // Hack: with use-use flow, we might have x (use at line 1) -> x (use at line 2),
+    // x (use at line 1) -> array at line 1 and x (use at line 2) -> array at line 2,
+    // in the context
+    //
+    // array1 := {"--", x}
+    // array2 := {x, "--"}
+    //
+    // We want to taint array2 but not array1, which suggests excluding the edge x (use 1) -> array1
+    // However isSanitizer only allows us to remove nodes (isSanitizerIn/Out permit removing all outgoing
+    // or incoming edges); we can't remove an individual edge, so instead we supply extra edges connecting
+    // the definition with the next use.
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(
+        ArgumentArrayWithDoubleDash array, DataFlow::InstructionNode sanitized,
+        DataFlow::SsaNode defn
+      |
+        sanitized = array.getASanitizedElement() and sanitized = defn.getAUse()
+      |
+        pred = defn and succ = sanitized.getASuccessor()
+      )
+    }
   }
 
   /**

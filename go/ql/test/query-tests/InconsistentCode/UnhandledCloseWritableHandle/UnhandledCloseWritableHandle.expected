@@ -1,6 +1,7 @@
 edges
 | tests.go:8:24:8:24 | definition of f | tests.go:9:8:9:8 | f |
 | tests.go:12:32:12:32 | definition of f | tests.go:13:13:13:13 | capture variable f |
+| tests.go:12:32:12:32 | definition of f | tests.go:14:3:14:3 | f |
 | tests.go:13:13:13:13 | capture variable f | tests.go:14:3:14:3 | f |
 | tests.go:31:5:31:78 | ... := ...[0] | tests.go:32:21:32:21 | f |
 | tests.go:31:5:31:78 | ... := ...[0] | tests.go:33:29:33:29 | f |

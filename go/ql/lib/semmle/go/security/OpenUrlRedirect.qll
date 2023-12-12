@@ -58,6 +58,11 @@ module OpenUrlRedirect {
         w.writesField(node.getASuccessor(), f, _)
       )
       or
+      // Note this blocks other outgoing edges from this node too, so it will
+      // cause false negatives in combination with use-use flow as subsequent
+      // uses are incorrectly sanitized. Noting the other end of the
+      // sanitizing edge as a BarrierIn has the opposite problem, incorrectly
+      // rejecting taint from the other side of a concatenation for example.
       hostnameSanitizingPrefixEdge(node, _)
     }
   }

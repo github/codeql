@@ -65,7 +65,8 @@ func test() {
 	log.Println(actually_secure_password)        // OK
 
 	var user1 cryptedStruct
-	user1.cryptedPassword = x
+	x2 := "perhaps sensitive"
+	user1.cryptedPassword = x2
 	log.Println(user1) // OK
 
 	var user2 passStruct
@@ -115,8 +116,9 @@ func test() {
 	var password1 stringable = stringable{"arstneio"}
 	log.Println(name + ", " + password1.String()) // NOT OK
 
+	x3 := "anotherpotentialpassword"
 	config := Config{
-		password: x,
+		password: x3,
 		hostname: "tarski",
 		x:        password,
 		y:        getPassword(),

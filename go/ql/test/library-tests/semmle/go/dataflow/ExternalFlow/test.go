@@ -123,7 +123,7 @@ func simpleflow() {
 	ch := make(chan string)
 	ch <- a.Src1().(string)
 	taint16 := test.StepArgCollectionContentRes(ch)
-	b.Sink1(taint16) // $ MISSING: hasTaintFlow="taint16" // currently fails due to lack of post-update nodes after send statements
+	b.Sink1(taint16) // $ hasTaintFlow="taint16"
 
 	c1 := test.C{""}
 	c1.Set(a.Src1().(string))

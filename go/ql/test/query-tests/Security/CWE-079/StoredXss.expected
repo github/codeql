@@ -1,6 +1,7 @@
 edges
 | StoredXss.go:13:21:13:31 | call to Name | StoredXss.go:13:21:13:36 | ...+... |
 | stored.go:18:3:18:28 | ... := ...[0] | stored.go:25:14:25:17 | rows |
+| stored.go:25:14:25:17 | rows | stored.go:25:14:25:17 | rows |
 | stored.go:25:14:25:17 | rows | stored.go:25:29:25:33 | &... |
 | stored.go:25:29:25:33 | &... | stored.go:25:29:25:33 | &... |
 | stored.go:25:29:25:33 | &... | stored.go:30:22:30:25 | name |
