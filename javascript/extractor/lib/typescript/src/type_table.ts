@@ -383,6 +383,11 @@ export class TypeTable {
    */
   public restrictedExpansion = false;
 
+  /**
+   * If set to true, skip extracting types.
+   */
+  public skipExtractingTypes = false;
+
   private virtualSourceRoot: VirtualSourceRoot;
 
   /**
