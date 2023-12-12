@@ -23,20 +23,19 @@ Bug Fixes
 ~~~~~~~~~
 
 *   Fixed an internal error in the compiler when arguments to the :code:`codePointCount` string primitive were not bound.
-*   Fixed a bug where :code:`codeql database finalize` would fail if a database under construction was moved between machines between
-    :code:`codeql database init` and :code:`codeql database finalize`.  This should now work, as long as both commands are run by the same *release* of the CodeQL CLI and the extractors used are the ones bundled with the CLI.
+*   Fixed a bug where :code:`codeql database finalize` would fail if a database under construction was moved between machines between :code:`codeql database init` and :code:`codeql database finalize`.
+    This should now work, as long as both commands are run by the same *release* of the CodeQL CLI and the extractors used are the ones bundled with the CLI.
 *   Fixed a bug where :code:`codeql database run-queries` would fail in some circumstances when the database path included an :code:`@`.
 
 New Features
 ~~~~~~~~~~~~
 
-*   A new compilation flag (:code:`--fail-on-ambiguous-relation-name`) has been added to specify that compilation should fail if the compiler generates an ambiguous relation name.
+*   :code:`codeql database analyze` now defaults to include markdown query help for all custom queries with help files available. To change the default behaviour you can pass the new flag :code:`--sarif-include-query-help`, which provides the options :code:`always` (which includes query help for all queries), :code:`custom_queries_only` (the default) and :code:`never` (which does not include query help for any query). The existing flag
+    :code:`--sarif-add-query-help` has been deprecated and will be removed in a future release.
 *   The new (advanced) command-line option :code:`--[no-]linkage-aware-import` disables the linkage-awareness phase of :code:`codeql dataset import`, as a quick fix (at the expense of database completeness) for C++ projects where this part of database creation consumes too much memory. This option is available in the commands :code:`database create`,
     :code:`database finalize`, :code:`database import`, :code:`dataset import`, :code:`test extract`, and
     :code:`test run`.
 *   The CodeQL language server now provides basic support for Rename, and you can now use the Rename Symbol functionality in Visual Studio Code for CodeQL. The current Rename support is less a refactoring tool and more a labor-saving device. You may have to perform some manual edits after using Rename, but it should still be faster and less work than renaming a symbol manually.
-*   :code:`codeql database analyze` now defaults to include markdown query help for all custom queries with help files available. To change the default behaviour you can pass the new flag :code:`--sarif-include-query-help`, which provides the options :code:`always` (which includes query help for all queries), :code:`custom_queries_only` (the default) and :code:`never` (which does not include query help for any query). The existing flag
-    :code:`--sarif-add-query-help` has been deprecated and will be removed in a future release.
 
 Improvements
 ~~~~~~~~~~~~
@@ -84,7 +83,7 @@ Swift
 """""
 
 *   Added new query "System command built from user-controlled sources" (:code:`swift/command-line-injection`) for Swift. This query detects system commands built from user-controlled sources without sufficient validation. The query was previously `contributed to the 'experimental' directory by @maikypedia <https://github.com/github/codeql/pull/13726>`__ but will now run by default for all code scanning users.
-*   Added a nw query "Missing regular expression anchor" (:code:`swift/missing-regexp-anchor`) for Swift. This query detects regular expressions without anchors that can be vulnerable to bypassing.
+*   Added a new query "Missing regular expression anchor" (:code:`swift/missing-regexp-anchor`) for Swift. This query detects regular expressions without anchors that can be vulnerable to bypassing.
 
 Query Metadata Changes
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -92,8 +91,8 @@ Query Metadata Changes
 JavaScript/TypeScript
 """""""""""""""""""""
 
-*   Lower the severity of log-injection to medium.
-*   Increase the severity of XSS to high.
+*   Lower the security severity of log-injection to medium.
+*   Increase the security severity of XSS to high.
 
 Language Libraries
 ------------------
@@ -192,7 +191,7 @@ C#
 Golang
 """"""
 
-*   Added the `gin cors <https://github.com/gin-contrib/cors>`__ library to the CorsMisconfiguration.ql query
+*   Added the `gin-contrib/cors <https://github.com/gin-contrib/cors>`__ library to the experimental query "CORS misconfiguration" (:code:`go/cors-misconfiguration`).
 
 Java
 """"
