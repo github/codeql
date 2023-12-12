@@ -288,36 +288,22 @@ class DataFlowExpr = Expr;
  * Some syntaxtic constructs are handled separately.
  */
 module LocalFlow {
-  /** Holds if `nodeFrom` is the expression defining the value for the variable `nodeTo`. */
+  /**
+   * Holds if `nodeFrom` is the expression defining the value for the variable `nodeTo`.
+   * This includes cases like
+   *   `x = f(42)`
+   * and
+   *    `with f(42) as x:`
+   * where `nodeFrom` is `f(42)` and `nodeTo` is `x`.
+   */
   predicate definitionFlowStep(Node nodeFrom, Node nodeTo) {
-    // Definition
-    //   `x = f(42)`
-    //   nodeFrom is `f(42)`
-    //   nodeTo is `x`
-    exists(AssignmentDefinition def |
-      nodeFrom.(CfgNode).getNode() = def.getValue() and
-      nodeTo.(CfgNode).getNode() = def.getDefiningNode()
-    )
-    or
-    // With definition
-    //   `with f(42) as x:`
-    //   nodeFrom is `f(42)`
-    //   nodeTo is `x`
-    exists(With with, ControlFlowNode contextManager, WithDefinition withDef, ControlFlowNode var |
-      var = withDef.getDefiningNode()
-    |
-      nodeFrom.(CfgNode).getNode() = contextManager and
-      nodeTo.(CfgNode).getNode() = var and
-      // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
-      with.getContextExpr() = contextManager.getNode() and
-      with.getOptionalVars() = var.getNode() and
-      contextManager.strictlyDominates(var)
-      // note: we allow this for both `with` and `async with`, since some
-      // implementations do `async def __aenter__(self): return self`, so you can do
-      // both:
-      // * `foo = x.foo(); await foo.async_method(); foo.close()` and
-      // * `async with x.foo() as foo: await foo.async_method()`.
-    )
+    nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(DefinitionNode).getValue() and
+    // This excludes steps that should be jump steps,
+    // such as assignment of a parameters default value.
+    // (Since the parameter will be in the scope of the function,
+    // while the default value itself will be in the scope that _defines_ the
+    // function.)
+    nodeFrom.getEnclosingCallable() = nodeTo.getEnclosingCallable()
   }
 
   predicate expressionFlowStep(Node nodeFrom, Node nodeTo) {
@@ -505,14 +491,10 @@ predicate runtimeJumpStep(Node nodeFrom, Node nodeTo) {
   // Setting the possible values of the variable at the end of import time
   nodeFrom = nodeTo.(ModuleVariableNode).getADefiningWrite()
   or
-  // a parameter with a default value, since the parameter will be in the scope of the
-  // function, while the default value itself will be in the scope that _defines_ the
-  // function.
-  exists(ParameterDefinition param |
-    // note: we go to the _control-flow node_ of the parameter, and not the ESSA node of the parameter, since for type-tracking, the ESSA node is not a LocalSourceNode, so we would get in trouble.
-    nodeFrom.asCfgNode() = param.getDefault() and
-    nodeTo.asCfgNode() = param.getDefiningNode()
-  )
+  // Non-local definitions, such as assignment of a parameters default value.
+  nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(DefinitionNode).getValue() and
+  // This excludes steps that should be local.
+  nodeFrom.getEnclosingCallable() != nodeTo.getEnclosingCallable()
 }
 
 //--------
