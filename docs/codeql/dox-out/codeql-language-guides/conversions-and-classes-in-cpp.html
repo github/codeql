@@ -1,0 +1,428 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Conversions and classes in C and C++ &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Analyzing data flow in C and C++" href="analyzing-data-flow-in-cpp.html" />
+    <link rel="prev" title="Expressions, types, and statements in C and C++" href="expressions-types-and-statements-in-cpp.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-cpp-code.html">Basic query for C and C++ code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-cpp.html">CodeQL library for C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions-in-cpp.html">Functions in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expressions-types-and-statements-in-cpp.html">Expressions, types, and statements in C and C++</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Conversions and classes in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-cpp.html">Analyzing data flow in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-cpp-new.html">Analyzing data flow in C and C++ (new)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="refining-a-query-to-account-for-edge-cases.html">Refining a query to account for edge cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="detecting-a-potential-buffer-overflow.html">Detecting a potential buffer overflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-the-guards-library-in-cpp.html">Using the guards library in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-range-analsis-in-cpp.html">Using range analysis for C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hash-consing-and-value-numbering.html">Hash consing and value numbering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced-dataflow-scenarios-cpp.html">Advanced dataflow scenarios for C/C++</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-cpp.html"
+                accesskey="U">CodeQL for C and C++</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="conversions-and-classes-in-c-and-c">
+<span id="conversions-and-classes-in-cpp"></span><h1>Conversions and classes in C and C++<a class="headerlink" href="#conversions-and-classes-in-c-and-c" title="Permalink to this headline">¶</a></h1>
+<p>You can use the standard CodeQL libraries for C and C++ to detect when the type of an expression is changed.</p>
+<div class="section" id="conversions">
+<h2>Conversions<a class="headerlink" href="#conversions" title="Permalink to this headline">¶</a></h2>
+<p>In C and C++, conversions change the type of an expression. They may be implicit conversions generated by the compiler, or explicit conversions requested by the user.</p>
+<p>Let’s take a look at the <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$Conversion.html">Conversion</a> class in the standard library:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Expr</span></code><ul>
+<li><code class="docutils literal notranslate"><span class="pre">Conversion</span></code><ul>
+<li><code class="docutils literal notranslate"><span class="pre">Cast</span></code><ul>
+<li><code class="docutils literal notranslate"><span class="pre">CStyleCast</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">StaticCast</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">ConstCastReinterpretCast</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">DynamicCast</span></code></li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">ArrayToPointerConversion</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">VirtualMemberToFunctionPointerConversion</span></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="exploring-the-subexpressions-of-an-assignment">
+<h3>Exploring the subexpressions of an assignment<a class="headerlink" href="#exploring-the-subexpressions-of-an-assignment" title="Permalink to this headline">¶</a></h3>
+<p>Let us consider the following C code:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="k">typedef</span> <span class="kt">signed</span> <span class="kt">int</span> <span class="n">myInt</span><span class="p">;</span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">unsigned</span> <span class="kt">int</span> <span class="n">i</span><span class="p">;</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="p">(</span><span class="n">myInt</span><span class="p">)</span><span class="mi">1</span><span class="p">;</span>
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>And this simple query:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+
+<span class="k">from</span> <span class="n">AssignExpr</span> <span class="n">a</span>
+<span class="k">select</span> <span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">getLValue</span><span class="p">().</span><span class="n">getType</span><span class="p">(),</span> <span class="n">a</span><span class="p">.</span><span class="n">getRValue</span><span class="p">().</span><span class="n">getType</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The query examines the code for assignments, and tells us the type of their left and right subexpressions. In the example C code above, there is just one assignment. Notably, this assignment has two conversions (of type <code class="docutils literal notranslate"><span class="pre">CStyleCast</span></code>) on the right side:</p>
+<ol class="arabic simple">
+<li>Explicit cast of the integer <code class="docutils literal notranslate"><span class="pre">1</span></code> to a <code class="docutils literal notranslate"><span class="pre">myInt</span></code>.</li>
+<li>Implicit conversion generated by the compiler, in preparation for the assignment, converting that expression into an <code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">int</span></code>.</li>
+</ol>
+<p>The query actually reports the result:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">...</span> <span class="o">=</span> <span class="p">...</span> <span class="o">|</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">|</span> <span class="kt">int</span>
+</pre></div>
+</div>
+<p>It is as though the conversions are not there! The reason for this is that <code class="docutils literal notranslate"><span class="pre">Conversion</span></code> expressions do not wrap the objects they convert; instead conversions are attached to expressions and can be accessed using <code class="docutils literal notranslate"><span class="pre">Expr.getConversion()</span></code>. The whole assignment in our example is seen by the standard library classes like this:</p>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">AssignExpr,</span> <span class="pre">i</span> <span class="pre">=</span> <span class="pre">(myInt)1</span></code></div>
+<div class="line">↳ <code class="docutils literal notranslate"><span class="pre">VariableAccess,</span> <span class="pre">i</span></code></div>
+<div class="line">↳  <code class="docutils literal notranslate"><span class="pre">Literal,</span> <span class="pre">1</span></code></div>
+<div class="line-block">
+<div class="line">↳  <code class="docutils literal notranslate"><span class="pre">CStyleCast,</span> <span class="pre">myInt</span> <span class="pre">(explicit)</span></code></div>
+<div class="line-block">
+<div class="line">↳  <code class="docutils literal notranslate"><span class="pre">CStyleCast,</span> <span class="pre">unsigned</span> <span class="pre">int</span> <span class="pre">(implicit)</span></code></div>
+</div>
+</div>
+</div>
+<p>Accessing parts of the assignment:</p>
+<ul class="simple">
+<li>Left side—access value using <code class="docutils literal notranslate"><span class="pre">Assignment.getLValue()</span></code>.</li>
+<li>Right side—access value using <code class="docutils literal notranslate"><span class="pre">Assignment.getRValue()</span></code>.</li>
+<li>Conversions of the <code class="docutils literal notranslate"><span class="pre">Literal</span></code> on the right side—access both using calls to <code class="docutils literal notranslate"><span class="pre">Expr.getConversion()</span></code>. As a shortcut, you can use <code class="docutils literal notranslate"><span class="pre">Expr.GetFullyConverted()</span></code> to follow all the way to the resulting type, or <code class="docutils literal notranslate"><span class="pre">Expr.GetExplicitlyConverted()</span></code> to find the last explicit conversion from an expression.</li>
+</ul>
+<p>Using these predicates we can refine our query so that it reports the results that we expected:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+
+<span class="k">from</span> <span class="n">AssignExpr</span> <span class="n">a</span>
+<span class="k">select</span> <span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">getLValue</span><span class="p">().</span><span class="n">getExplicitlyConverted</span><span class="p">().</span><span class="n">getType</span><span class="p">(),</span> <span class="n">a</span><span class="p">.</span><span class="n">getRValue</span><span class="p">().</span><span class="n">getExplicitlyConverted</span><span class="p">().</span><span class="n">getType</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The result is now:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">...</span> <span class="o">=</span> <span class="p">...</span> <span class="o">|</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">|</span> <span class="n">myInt</span>
+</pre></div>
+</div>
+<p>We can refine the query further by adding <code class="docutils literal notranslate"><span class="pre">Type.getUnderlyingType()</span></code> to resolve the <code class="docutils literal notranslate"><span class="pre">typedef</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+
+<span class="k">from</span> <span class="n">AssignExpr</span> <span class="n">a</span>
+<span class="k">select</span> <span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">getLValue</span><span class="p">().</span><span class="n">getExplicitlyConverted</span><span class="p">().</span><span class="n">getType</span><span class="p">().</span><span class="n">getUnderlyingType</span><span class="p">(),</span> <span class="n">a</span><span class="p">.</span><span class="n">getRValue</span><span class="p">().</span><span class="n">getExplicitlyConverted</span><span class="p">().</span><span class="n">getType</span><span class="p">().</span><span class="n">getUnderlyingType</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The result is now:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">...</span> <span class="o">=</span> <span class="p">...</span> <span class="o">|</span> <span class="kt">unsigned</span> <span class="kt">int</span> <span class="o">|</span> <span class="kt">signed</span> <span class="kt">int</span>
+</pre></div>
+</div>
+<p>If you simply wanted to get the values of all assignments in expressions, regardless of position, you could replace <code class="docutils literal notranslate"><span class="pre">Assignment.getLValue()</span></code> and <code class="docutils literal notranslate"><span class="pre">Assignment.getRValue()</span></code> with <code class="docutils literal notranslate"><span class="pre">Operation.getAnOperand()</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+
+<span class="k">from</span> <span class="n">AssignExpr</span> <span class="n">a</span>
+<span class="k">select</span> <span class="n">a</span><span class="p">,</span> <span class="n">a</span><span class="p">.</span><span class="n">getAnOperand</span><span class="p">().</span><span class="n">getExplicitlyConverted</span><span class="p">().</span><span class="n">getType</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Unlike the earlier versions of the query, this query would return each side of the expression as a separate result:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="p">...</span> <span class="o">=</span> <span class="p">...</span> <span class="o">|</span> <span class="kt">unsigned</span> <span class="kt">int</span>
+<span class="p">...</span> <span class="o">=</span> <span class="p">...</span> <span class="o">|</span> <span class="n">myInt</span>
+</pre></div>
+</div>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<blockquote>
+<div>In general, predicates named <code class="docutils literal notranslate"><span class="pre">getAXxx</span></code> exploit the ability to return multiple results (multiple instances of <code class="docutils literal notranslate"><span class="pre">Xxx</span></code>) whereas plain <code class="docutils literal notranslate"><span class="pre">getXxx</span></code> predicates usually return at most one specific instance of <code class="docutils literal notranslate"><span class="pre">Xxx</span></code>.</div></blockquote>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Permalink to this headline">¶</a></h2>
+<p>Next we’re going to look at C++ classes, using the following CodeQL classes:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Type</span></code><ul>
+<li><code class="docutils literal notranslate"><span class="pre">UserType</span></code>—includes classes, typedefs, and enums<ul>
+<li><code class="docutils literal notranslate"><span class="pre">Class</span></code>—a class or struct<ul>
+<li><code class="docutils literal notranslate"><span class="pre">Struct</span></code>—a struct, which is treated as a subtype of <code class="docutils literal notranslate"><span class="pre">Class</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">TemplateClass</span></code>—a C++ class template</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="section" id="finding-derived-classes">
+<h3>Finding derived classes<a class="headerlink" href="#finding-derived-classes" title="Permalink to this headline">¶</a></h3>
+<p>We want to create a query that checks for destructors that should be <code class="docutils literal notranslate"><span class="pre">virtual</span></code>. Specifically, when a class and a class derived from it both have destructors, the base class destructor should generally be virtual. This ensures that the derived class destructor is always invoked. In the CodeQL library, <code class="docutils literal notranslate"><span class="pre">Destructor</span></code> is a subtype of <code class="docutils literal notranslate"><span class="pre">MemberFunction</span></code>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Function</span></code><ul>
+<li><code class="docutils literal notranslate"><span class="pre">MemberFunction</span></code><ul>
+<li><code class="docutils literal notranslate"><span class="pre">Constructor</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">Destructor</span></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Our starting point for the query is pairs of a base class and a derived class, connected using <code class="docutils literal notranslate"><span class="pre">Class.getABaseClass()</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+
+<span class="k">from</span> <span class="n">Class</span> <span class="n">base</span><span class="p">,</span> <span class="n">Class</span> <span class="n">derived</span>
+<span class="k">where</span> <span class="n">derived</span><span class="p">.</span><span class="n">getABaseClass</span><span class="o">+</span><span class="p">()</span> <span class="o">=</span> <span class="n">base</span>
+<span class="k">select</span> <span class="n">base</span><span class="p">,</span> <span class="n">derived</span><span class="p">,</span> <span class="s">&quot;The second class is derived from the first.&quot;</span>
+</pre></div>
+</div>
+<p>Note that the transitive closure symbol <code class="docutils literal notranslate"><span class="pre">+</span></code> indicates that <code class="docutils literal notranslate"><span class="pre">Class.getABaseClass()</span></code> may be followed one or more times, rather than only accepting a direct base class.</p>
+<p>A lot of the results are uninteresting template parameters. You can remove those results by updating the <code class="docutils literal notranslate"><span class="pre">where</span></code> clause as follows:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">where</span> <span class="n">derived</span><span class="p">.</span><span class="n">getABaseClass</span><span class="o">+</span><span class="p">()</span> <span class="o">=</span> <span class="n">base</span>
+  <span class="k">and</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">base</span><span class="p">.</span><span class="n">getATemplateArgument</span><span class="p">())</span>
+  <span class="k">and</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">derived</span><span class="p">.</span><span class="n">getATemplateArgument</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="finding-derived-classes-with-destructors">
+<h3>Finding derived classes with destructors<a class="headerlink" href="#finding-derived-classes-with-destructors" title="Permalink to this headline">¶</a></h3>
+<p>Now we can extend the query to find derived classes with destructors, using the <code class="docutils literal notranslate"><span class="pre">Class.getDestructor()</span></code> predicate:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+
+<span class="k">from</span> <span class="n">Class</span> <span class="n">base</span><span class="p">,</span> <span class="n">Class</span> <span class="n">derived</span><span class="p">,</span> <span class="n">Destructor</span> <span class="n">d</span><span class="m">1</span><span class="p">,</span> <span class="n">Destructor</span> <span class="n">d</span><span class="m">2</span>
+<span class="k">where</span> <span class="n">derived</span><span class="p">.</span><span class="n">getABaseClass</span><span class="o">+</span><span class="p">()</span> <span class="o">=</span> <span class="n">base</span>
+  <span class="k">and</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">base</span><span class="p">.</span><span class="n">getATemplateArgument</span><span class="p">())</span>
+  <span class="k">and</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">derived</span><span class="p">.</span><span class="n">getATemplateArgument</span><span class="p">())</span>
+  <span class="k">and</span> <span class="n">d</span><span class="m">1</span> <span class="o">=</span> <span class="n">base</span><span class="p">.</span><span class="n">getDestructor</span><span class="p">()</span>
+  <span class="k">and</span> <span class="n">d</span><span class="m">2</span> <span class="o">=</span> <span class="n">derived</span><span class="p">.</span><span class="n">getDestructor</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">base</span><span class="p">,</span> <span class="n">derived</span><span class="p">,</span> <span class="s">&quot;The second class is derived from the first, and both have a destructor.&quot;</span>
+</pre></div>
+</div>
+<p>Notice that getting the destructor implicitly asserts that one exists. As a result, this version of the query returns fewer results than before.</p>
+</div>
+<div class="section" id="finding-base-classes-where-the-destructor-is-not-virtual">
+<h3>Finding base classes where the destructor is not virtual<a class="headerlink" href="#finding-base-classes-where-the-destructor-is-not-virtual" title="Permalink to this headline">¶</a></h3>
+<p>Our last change is to use <code class="docutils literal notranslate"><span class="pre">Function.isVirtual()</span></code> to find cases where the base destructor is not virtual:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+
+<span class="k">from</span> <span class="n">Class</span> <span class="n">base</span><span class="p">,</span> <span class="n">Destructor</span> <span class="n">d</span><span class="m">1</span><span class="p">,</span> <span class="n">Class</span> <span class="n">derived</span><span class="p">,</span> <span class="n">Destructor</span> <span class="n">d</span><span class="m">2</span>
+<span class="k">where</span> <span class="n">derived</span><span class="p">.</span><span class="n">getABaseClass</span><span class="o">+</span><span class="p">()</span> <span class="o">=</span> <span class="n">base</span>
+  <span class="k">and</span> <span class="n">d</span><span class="m">1</span><span class="p">.</span><span class="n">getDeclaringType</span><span class="p">()</span> <span class="o">=</span> <span class="n">base</span>
+  <span class="k">and</span> <span class="n">d</span><span class="m">2</span><span class="p">.</span><span class="n">getDeclaringType</span><span class="p">()</span> <span class="o">=</span> <span class="n">derived</span>
+  <span class="k">and</span> <span class="k">not</span> <span class="n">d</span><span class="m">1</span><span class="p">.</span><span class="n">isVirtual</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">d</span><span class="m">1</span><span class="p">,</span> <span class="s">&quot;This destructor should probably be virtual.&quot;</span>
+</pre></div>
+</div>
+<p>That completes the query.</p>
+<p>There is a similar standard query <a class="reference external" href="https://codeql.github.com/codeql-query-help/cpp/cpp-virtual-destructor/">Non-virtual destructor in base class</a> that finds classes in a C/C++ project with virtual functions but no virtual destructor.</p>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/cpp/ql/src">CodeQL queries for C and C++</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/cpp/ql/examples">Example queries for C and C++</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/">CodeQL library reference for C and C++</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

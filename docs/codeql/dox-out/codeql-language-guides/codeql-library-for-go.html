@@ -1,0 +1,758 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CodeQL library for Go &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Abstract syntax tree classes for working with Go programs" href="abstract-syntax-tree-classes-for-working-with-go-programs.html" />
+    <link rel="prev" title="Basic query for Go code" href="basic-query-for-go-code.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-go-code.html">Basic query for Go code</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CodeQL library for Go</a></li>
+<li class="toctree-l3"><a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-go-programs.html">Abstract syntax tree classes for working with Go programs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="modeling-data-flow-in-go-libraries.html">Modeling data flow in Go libraries</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-go.html"
+                accesskey="U">CodeQL for Go</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="codeql-library-for-go-1">
+<span id="codeql-library-for-go"></span><h1>CodeQL library for Go<a class="headerlink" href="#codeql-library-for-go-1" title="Permalink to this headline">¶</a></h1>
+<p>When you’re analyzing a Go program, you can make use of the large collection of classes in the CodeQL library for Go.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>CodeQL ships with an extensive library for analyzing Go code.  The classes in this library present
+the data from a CodeQL database in an object-oriented form and provide abstractions and predicates
+to help you with common analysis tasks.</p>
+<p>The library is implemented as a set of QL modules, that is, files with the extension <code class="docutils literal notranslate"><span class="pre">.qll</span></code>. The
+module <code class="docutils literal notranslate"><span class="pre">go.qll</span></code> imports most other standard library modules, so you can include the complete
+library by beginning your query with:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">go</span>
+</pre></div>
+</div>
+<p>Broadly speaking, the CodeQL library for Go provides two views of a Go code base: at the <cite>syntactic
+level</cite>, source code is represented as an <a class="reference external" href="https://en.wikipedia.org/wiki/Abstract_syntax_tree">abstract syntax tree</a> (AST), while at the <cite>data-flow level</cite> it is
+represented as a <a class="reference external" href="https://en.wikipedia.org/wiki/Data-flow_analysis">data-flow graph</a> (DFG). In
+between, there is also an intermediate representation of the program as a control-flow graph (CFG),
+though this representation is rarely useful on its own and mostly used to construct the higher-level
+DFG representation.</p>
+<p>The AST representation captures the syntactic structure of the program. You can use it to reason
+about syntactic properties such as the nesting of statements within each other, but also about the
+types of expressions and which variable a name refers to.</p>
+<p>The DFG, on the other hand, provides an approximation of how data flows through variables and
+operations at runtime. It is used, for example, by the security queries to model the way
+user-controlled input can propagate through the program. Additionally, the DFG contains information
+about which function may be invoked by a given call (taking virtual dispatch through interfaces into
+account), as well as control-flow information about the order in which different operations may be
+executed at runtime.</p>
+<p>As a rule of thumb, you normally want to use the AST only for superficial syntactic queries. Any
+analysis involving deeper semantic properties of the program should be done on the DFG.</p>
+<p>The rest of this tutorial briefly summarizes the most important classes and predicates provided by
+this library, including references to the <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/go/">detailed API documentation</a> where applicable. We start by giving an overview of the AST
+representation, followed by an explanation of names and entities, which are used to represent
+name-binding information, and of types and type information. Then we move on to control flow and the
+data-flow graph, and finally the call graph and a few advanced topics.</p>
+</div>
+<div class="section" id="abstract-syntax">
+<h2>Abstract syntax<a class="headerlink" href="#abstract-syntax" title="Permalink to this headline">¶</a></h2>
+<p>The AST presents the program as a hierarchical structure of nodes, each of which corresponds to a
+syntactic element of the program source text. For example, there is an AST node for each expression
+and each statement in the program. These AST nodes are arranged into a parent-child relationship
+reflecting the nesting of syntactic elements and the order in which inner elements appear in
+enclosing ones.</p>
+<p>For example, this is the AST for the expression <code class="docutils literal notranslate"><span class="pre">(x</span> <span class="pre">+</span> <span class="pre">y)</span> <span class="pre">*</span> <span class="pre">z</span></code>:</p>
+<p><img alt="ast" src="../_images/ast.png" /></p>
+<p>It is composed of six AST nodes, representing <code class="docutils literal notranslate"><span class="pre">x</span></code>, <code class="docutils literal notranslate"><span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">(x</span> <span class="pre">+</span> <span class="pre">y)</span></code>, <code class="docutils literal notranslate"><span class="pre">z</span></code> and the
+entire expression <code class="docutils literal notranslate"><span class="pre">(x</span> <span class="pre">+</span> <span class="pre">y)</span> <span class="pre">*</span> <span class="pre">z</span></code>, respectively. The AST nodes representing <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">y</span></code> are
+children of the AST node representing <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span></code> being the zeroth child and <code class="docutils literal notranslate"><span class="pre">y</span></code> being the
+first child, reflecting their order in the program text. Similarly, <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">y</span></code> is the only child of
+<code class="docutils literal notranslate"><span class="pre">(x</span> <span class="pre">+</span> <span class="pre">y)</span></code>, which is the zeroth child of <code class="docutils literal notranslate"><span class="pre">(x</span> <span class="pre">+</span> <span class="pre">y)</span> <span class="pre">*</span> <span class="pre">z</span></code>, whose first child is <code class="docutils literal notranslate"><span class="pre">z</span></code>.</p>
+<p>All AST nodes belong to class <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/go/semmle/go/AST.qll/type.AST$AstNode.html">AstNode</a>, which defines generic
+tree traversal predicates:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">getChild(i)</span></code>: returns the <code class="docutils literal notranslate"><span class="pre">i</span></code>th child of this AST node.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getAChild()</span></code>: returns any child of this AST node.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getParent()</span></code>: returns the parent node of this AST node, if any.</li>
+</ul>
+<p>These predicates should only be used to perform generic AST traversal. To access children of
+specific AST node types, the specialized predicates introduced below should be used instead. In
+particular, queries should not rely on the numeric indices of child nodes relative to their parent
+nodes: these are considered an implementation detail that may change between versions of the
+library.</p>
+<p>The predicate <code class="docutils literal notranslate"><span class="pre">toString()</span></code> in class <code class="docutils literal notranslate"><span class="pre">AstNode</span></code> nodes gives a short description of the AST node,
+usually just indicating what kind of node it is. The <code class="docutils literal notranslate"><span class="pre">toString()</span></code> predicate does <cite>not</cite> provide
+access to the source text corresponding to an AST node. The source text is not stored in the
+dataset, and hence is not directly accessible to CodeQL queries.</p>
+<p>The predicate <code class="docutils literal notranslate"><span class="pre">getLocation()</span></code> in class <code class="docutils literal notranslate"><span class="pre">AstNode</span></code> returns a <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/go/semmle/go/Locations.qll/type.Locations$Location.html">Location</a> entity
+describing the source location of the program element represented by the AST node. You can use its
+member predicates <code class="docutils literal notranslate"><span class="pre">getFile()</span></code>, <code class="docutils literal notranslate"><span class="pre">getStartLine()</span></code>, <code class="docutils literal notranslate"><span class="pre">getStartColumn</span></code>, <code class="docutils literal notranslate"><span class="pre">getEndLine()</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">getEndColumn()</span></code> to obtain information about its file, start line and column, and end line and
+column.</p>
+<p>The most important subclasses of <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/go/semmle/go/AST.qll/type.AST$AstNode.html">AstNode</a> are <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/go/semmle/go/Stmt.qll/type.Stmt$Stmt.html">Stmt</a> and <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/go/semmle/go/Expr.qll/type.Expr$Expr.html">Expr</a>, which represent
+statements and expressions, respectively. This section briefly discusses some of their more
+important subclasses and predicates. For a full reference of all the subclasses of <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/go/semmle/go/Stmt.qll/type.Stmt$Stmt.html">Stmt</a> and <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/go/semmle/go/Expr.qll/type.Expr$Expr.html">Expr</a>, see
+<a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-go-programs.html"><span class="doc">Abstract syntax tree classes for Go</span></a>.</p>
+<div class="section" id="statements">
+<h3>Statements<a class="headerlink" href="#statements" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ExprStmt</span></code>: an expression statement; use <code class="docutils literal notranslate"><span class="pre">getExpr()</span></code> to access the expression itself</li>
+<li><code class="docutils literal notranslate"><span class="pre">Assignment</span></code>: an assignment statement; use <code class="docutils literal notranslate"><span class="pre">getLhs(i)</span></code> to access the <code class="docutils literal notranslate"><span class="pre">i</span></code>th left-hand side
+and <code class="docutils literal notranslate"><span class="pre">getRhs(i)</span></code> to access the <code class="docutils literal notranslate"><span class="pre">i</span></code>th right-hand side; if there is only a single left-hand side
+you can use <code class="docutils literal notranslate"><span class="pre">getLhs()</span></code> instead, and similar for the right-hand side<ul>
+<li><code class="docutils literal notranslate"><span class="pre">SimpleAssignStmt</span></code>: an assignment statement that does not involve a compound operator<ul>
+<li><code class="docutils literal notranslate"><span class="pre">AssignStmt</span></code>: a plain assignment statement of the form <code class="docutils literal notranslate"><span class="pre">lhs</span> <span class="pre">=</span> <span class="pre">rhs</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">DefineStmt</span></code>: a short-hand variable declaration of the form <code class="docutils literal notranslate"><span class="pre">lhs</span> <span class="pre">:=</span> <span class="pre">rhs</span></code></li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">CompoundAssignStmt</span></code>: an assignment statement with a compound operator, such as <code class="docutils literal notranslate"><span class="pre">lhs</span> <span class="pre">+=</span> <span class="pre">rhs</span></code></li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">IncStmt</span></code>, <code class="docutils literal notranslate"><span class="pre">DecStmt</span></code>: an increment statement or a decrement statement, respectively; use
+<code class="docutils literal notranslate"><span class="pre">getOperand()</span></code> to access the expression being incremented or decremented</li>
+<li><code class="docutils literal notranslate"><span class="pre">BlockStmt</span></code>: a block of statements between curly braces; use <code class="docutils literal notranslate"><span class="pre">getStmt(i)</span></code> to access the
+<code class="docutils literal notranslate"><span class="pre">i</span></code>th statement in a block</li>
+<li><code class="docutils literal notranslate"><span class="pre">IfStmt</span></code>: an <code class="docutils literal notranslate"><span class="pre">if</span></code> statement; use <code class="docutils literal notranslate"><span class="pre">getInit()</span></code>, <code class="docutils literal notranslate"><span class="pre">getCond()</span></code>, <code class="docutils literal notranslate"><span class="pre">getThen()</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">getElse()</span></code> to access the (optional) init statement, the condition being checked, the “then”
+branch to evaluate if the condition is true, and the (optional) “else” branch to evaluate
+otherwise, respectively</li>
+<li><code class="docutils literal notranslate"><span class="pre">LoopStmt</span></code>: a loop; use <code class="docutils literal notranslate"><span class="pre">getBody()</span></code> to access its body<ul>
+<li><code class="docutils literal notranslate"><span class="pre">ForStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">for</span></code> statement; use <code class="docutils literal notranslate"><span class="pre">getInit()</span></code>, <code class="docutils literal notranslate"><span class="pre">getCond()</span></code>, and <code class="docutils literal notranslate"><span class="pre">getPost()</span></code> to access
+the init statement, loop condition, and post statement, respectively, all of which are optional</li>
+<li><code class="docutils literal notranslate"><span class="pre">RangeStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">range</span></code> statement; use <code class="docutils literal notranslate"><span class="pre">getDomain()</span></code> to access the iteration domain, and
+<code class="docutils literal notranslate"><span class="pre">getKey()</span></code> and <code class="docutils literal notranslate"><span class="pre">getValue()</span></code> to access the expressions to which successive keys and values
+are assigned, if any</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">GoStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">go</span></code> statement; use <code class="docutils literal notranslate"><span class="pre">getCall()</span></code> to access the call expression that is evaluated
+in the new goroutine</li>
+<li><code class="docutils literal notranslate"><span class="pre">DeferStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">defer</span></code> statement; use <code class="docutils literal notranslate"><span class="pre">getCall()</span></code> to access the call expression being
+deferred</li>
+<li><code class="docutils literal notranslate"><span class="pre">SendStmt</span></code>: a send statement; use <code class="docutils literal notranslate"><span class="pre">getChannel()</span></code> and <code class="docutils literal notranslate"><span class="pre">getValue()</span></code> to access the channel and
+the value being sent over the channel, respectively</li>
+<li><code class="docutils literal notranslate"><span class="pre">ReturnStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">return</span></code> statement; use <code class="docutils literal notranslate"><span class="pre">getExpr(i)</span></code> to access the <code class="docutils literal notranslate"><span class="pre">i</span></code>th returned
+expression; if there is only a single returned expression you can use <code class="docutils literal notranslate"><span class="pre">getExpr()</span></code> instead</li>
+<li><code class="docutils literal notranslate"><span class="pre">BranchStmt</span></code>: a statement that interrupts structured control flow; use <code class="docutils literal notranslate"><span class="pre">getLabel()</span></code> to get the
+optional target label<ul>
+<li><code class="docutils literal notranslate"><span class="pre">BreakStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">break</span></code> statement</li>
+<li><code class="docutils literal notranslate"><span class="pre">ContinueStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">continue</span></code> statement</li>
+<li><code class="docutils literal notranslate"><span class="pre">FallthroughStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">fallthrough</span></code> statement at the end of a switch case</li>
+<li><code class="docutils literal notranslate"><span class="pre">GotoStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">goto</span></code> statement</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">DeclStmt</span></code>: a declaration statement, use <code class="docutils literal notranslate"><span class="pre">getDecl()</span></code> to access the declaration in this
+statement; note that one rarely needs to deal with declaration statements directly, since
+reasoning about the entities they declare is usually easier</li>
+<li><code class="docutils literal notranslate"><span class="pre">SwitchStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">switch</span></code> statement; use <code class="docutils literal notranslate"><span class="pre">getInit()</span></code> to access the (optional) init statement,
+and <code class="docutils literal notranslate"><span class="pre">getCase(i)</span></code> to access the <code class="docutils literal notranslate"><span class="pre">i</span></code>th <code class="docutils literal notranslate"><span class="pre">case</span></code> or <code class="docutils literal notranslate"><span class="pre">default</span></code> clause<ul>
+<li><code class="docutils literal notranslate"><span class="pre">ExpressionSwitchStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">switch</span></code> statement examining the value of an expression</li>
+<li><code class="docutils literal notranslate"><span class="pre">TypeSwitchStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">switch</span></code> statement examining the type of an expression</li>
+</ul>
+</li>
+<li><code class="docutils literal notranslate"><span class="pre">CaseClause</span></code>: a <code class="docutils literal notranslate"><span class="pre">case</span></code> or <code class="docutils literal notranslate"><span class="pre">default</span></code> clause in a <code class="docutils literal notranslate"><span class="pre">switch</span></code> statement; use <code class="docutils literal notranslate"><span class="pre">getExpr(i)</span></code> to
+access the <code class="docutils literal notranslate"><span class="pre">i</span></code>th expression, and <code class="docutils literal notranslate"><span class="pre">getStmt(i)</span></code> to access the <code class="docutils literal notranslate"><span class="pre">i</span></code>th statement in the body
+of this clause</li>
+<li><code class="docutils literal notranslate"><span class="pre">SelectStmt</span></code>: a <code class="docutils literal notranslate"><span class="pre">select</span></code> statement; use <code class="docutils literal notranslate"><span class="pre">getCommClause(i)</span></code> to access the <code class="docutils literal notranslate"><span class="pre">i</span></code>th <code class="docutils literal notranslate"><span class="pre">case</span></code>
+or <code class="docutils literal notranslate"><span class="pre">default</span></code> clause</li>
+<li><code class="docutils literal notranslate"><span class="pre">CommClause</span></code>: a <code class="docutils literal notranslate"><span class="pre">case</span></code> or <code class="docutils literal notranslate"><span class="pre">default</span></code> clause in a <code class="docutils literal notranslate"><span class="pre">select</span></code> statement; use <code class="docutils literal notranslate"><span class="pre">getComm()</span></code> to
+access the send/receive statement of this clause (not defined for <code class="docutils literal notranslate"><span class="pre">default</span></code> clauses), and
+<code class="docutils literal notranslate"><span class="pre">getStmt(i)</span></code> to access the <code class="docutils literal notranslate"><span class="pre">i</span></code>th statement in the body of this clause</li>
+<li><code class="docutils literal notranslate"><span class="pre">RecvStmt</span></code>: a receive statement in a <code class="docutils literal notranslate"><span class="pre">case</span></code> clause of a <code class="docutils literal notranslate"><span class="pre">select</span></code> statement; use
+<code class="docutils literal notranslate"><span class="pre">getLhs(i)</span></code> to access the <code class="docutils literal notranslate"><span class="pre">i</span></code>th left-hand side of this statement, and <code class="docutils literal notranslate"><span class="pre">getExpr()</span></code> to
+access the underlying receive expression</li>
+</ul>
+</div>
+<div class="section" id="expressions">
+<h3>Expressions<a class="headerlink" href="#expressions" title="Permalink to this headline">¶</a></h3>
+<p>Class <code class="docutils literal notranslate"><span class="pre">Expression</span></code> has a predicate <code class="docutils literal notranslate"><span class="pre">isConst()</span></code> that holds if the expression is a compile-time
+constant. For such constant expressions, <code class="docutils literal notranslate"><span class="pre">getNumericValue()</span></code> and <code class="docutils literal notranslate"><span class="pre">getStringValue()</span></code> can be used
+to determine their numeric value and string value, respectively. Note that these predicates are not
+defined for expressions whose value cannot be determined at compile time. Also note that the result
+type of <code class="docutils literal notranslate"><span class="pre">getNumericValue()</span></code> is the QL type <code class="docutils literal notranslate"><span class="pre">float</span></code>. If an expression has a numeric value that
+cannot be represented as a QL <code class="docutils literal notranslate"><span class="pre">float</span></code>, this predicate is also not defined. In such cases, you can
+use <code class="docutils literal notranslate"><span class="pre">getExactValue()</span></code> to obtain a string representation of the value of the constant.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">Ident</span></code>: an identifier; use <code class="docutils literal notranslate"><span class="pre">getName()</span></code> to access its name</li>
+<li><code class="docutils literal notranslate"><span class="pre">SelectorExpr</span></code>: a selector of the form <code class="docutils literal notranslate"><span class="pre">base.sel</span></code>; use <code class="docutils literal notranslate"><span class="pre">getBase()</span></code> to access the part before
+the dot, and <code class="docutils literal notranslate"><span class="pre">getSelector()</span></code> for the identifier after the dot</li>
+<li><code class="docutils literal notranslate"><span class="pre">BasicLit</span></code>: a literal of a basic type; subclasses <code class="docutils literal notranslate"><span class="pre">IntLit</span></code>, <code class="docutils literal notranslate"><span class="pre">FloatLit</span></code>, <code class="docutils literal notranslate"><span class="pre">ImagLit</span></code>,
+<code class="docutils literal notranslate"><span class="pre">RuneLit</span></code>, and <code class="docutils literal notranslate"><span class="pre">StringLit</span></code> represent various specific kinds of literals</li>
+<li><code class="docutils literal notranslate"><span class="pre">FuncLit</span></code>: a function literal; use <code class="docutils literal notranslate"><span class="pre">getBody()</span></code> to access the body of the function</li>
+<li><code class="docutils literal notranslate"><span class="pre">CompositeLit</span></code>: a composite literal; use <code class="docutils literal notranslate"><span class="pre">getKey(i)</span></code> and <code class="docutils literal notranslate"><span class="pre">getValue(i)</span></code> to access the
+<code class="docutils literal notranslate"><span class="pre">i</span></code>th key and the <code class="docutils literal notranslate"><span class="pre">i</span></code>th value, respectively</li>
+<li><code class="docutils literal notranslate"><span class="pre">ParenExpr</span></code>: a parenthesized expression; use <code class="docutils literal notranslate"><span class="pre">getExpr()</span></code> to access the expression between the
+parentheses</li>
+<li><code class="docutils literal notranslate"><span class="pre">IndexExpr</span></code>: an index expression <code class="docutils literal notranslate"><span class="pre">base[idx]</span></code>; use <code class="docutils literal notranslate"><span class="pre">getBase()</span></code> and <code class="docutils literal notranslate"><span class="pre">getIndex()</span></code> to access
+<code class="docutils literal notranslate"><span class="pre">base</span></code> and <code class="docutils literal notranslate"><span class="pre">idx</span></code>, respectively</li>
+<li><code class="docutils literal notranslate"><span class="pre">SliceExpr</span></code>: a slice expression <code class="docutils literal notranslate"><span class="pre">base[lo:hi:max]</span></code>; use <code class="docutils literal notranslate"><span class="pre">getBase()</span></code>, <code class="docutils literal notranslate"><span class="pre">getLow()</span></code>,
+<code class="docutils literal notranslate"><span class="pre">getHigh()</span></code>, and <code class="docutils literal notranslate"><span class="pre">getMax()</span></code> to access <code class="docutils literal notranslate"><span class="pre">base</span></code>, <code class="docutils literal notranslate"><span class="pre">lo</span></code>, <code class="docutils literal notranslate"><span class="pre">hi</span></code>, and <code class="docutils literal notranslate"><span class="pre">max</span></code>, respectively;
+note that <code class="docutils literal notranslate"><span class="pre">lo</span></code>, <code class="docutils literal notranslate"><span class="pre">hi</span></code>, and <code class="docutils literal notranslate"><span class="pre">max</span></code> can be omitted, in which case the corresponding predicates are not defined</li>
+<li><code class="docutils literal notranslate"><span class="pre">ConversionExpr</span></code>: a conversion expression <code class="docutils literal notranslate"><span class="pre">T(e)</span></code>; use <code class="docutils literal notranslate"><span class="pre">getTypeExpr()</span></code> and <code class="docutils literal notranslate"><span class="pre">getOperand()</span></code>
+to access <code class="docutils literal notranslate"><span class="pre">T</span></code> and <code class="docutils literal notranslate"><span class="pre">e</span></code>, respectively</li>
+<li><code class="docutils literal notranslate"><span class="pre">TypeAssertExpr</span></code>: a type assertion <code class="docutils literal notranslate"><span class="pre">e.(T)</span></code>; use <code class="docutils literal notranslate"><span class="pre">getExpr()</span></code> and <code class="docutils literal notranslate"><span class="pre">getTypeExpr()</span></code> to access
+<code class="docutils literal notranslate"><span class="pre">e</span></code> and <code class="docutils literal notranslate"><span class="pre">T</span></code>, respectively</li>
+<li><code class="docutils literal notranslate"><span class="pre">CallExpr</span></code>: a call expression <code class="docutils literal notranslate"><span class="pre">callee(arg0,</span> <span class="pre">...,</span> <span class="pre">argn)</span></code>; use <code class="docutils literal notranslate"><span class="pre">getCalleeExpr()</span></code> to access
+<code class="docutils literal notranslate"><span class="pre">callee</span></code>, and <code class="docutils literal notranslate"><span class="pre">getArg(i)</span></code> to access the <code class="docutils literal notranslate"><span class="pre">i</span></code>th argument</li>
+<li><code class="docutils literal notranslate"><span class="pre">StarExpr</span></code>: a star expression, which may be either a pointer-type expression or a
+pointer-dereference expression, depending on context; use <code class="docutils literal notranslate"><span class="pre">getBase()</span></code> to access the operand of
+the star</li>
+<li><code class="docutils literal notranslate"><span class="pre">TypeExpr</span></code>: an expression that denotes a type</li>
+<li><code class="docutils literal notranslate"><span class="pre">OperatorExpr</span></code>: an expression with a unary or binary operator; use <code class="docutils literal notranslate"><span class="pre">getOperator()</span></code> to access
+the operator<ul>
+<li><code class="docutils literal notranslate"><span class="pre">UnaryExpr</span></code>: an expression with a unary operator; use <code class="docutils literal notranslate"><span class="pre">getAnOperand()</span></code> to access the operand
+of the operator</li>
+<li><code class="docutils literal notranslate"><span class="pre">BinaryExpr</span></code>: an expression with a binary operator; use <code class="docutils literal notranslate"><span class="pre">getLeftOperand()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">getRightOperand()</span></code> to access the left and the right operand, respectively<ul>
+<li><code class="docutils literal notranslate"><span class="pre">ComparisonExpr</span></code>: a binary expression that performs a comparison, including both equality
+tests and relational comparisons<ul>
+<li><code class="docutils literal notranslate"><span class="pre">EqualityTestExpr</span></code>: an equality test, that is, either <code class="docutils literal notranslate"><span class="pre">==</span></code> or <code class="docutils literal notranslate"><span class="pre">!=</span></code>; the predicate
+<code class="docutils literal notranslate"><span class="pre">getPolarity()</span></code> has result <code class="docutils literal notranslate"><span class="pre">true</span></code> for the former and <code class="docutils literal notranslate"><span class="pre">false</span></code> for the latter</li>
+<li><code class="docutils literal notranslate"><span class="pre">RelationalComparisonExpr</span></code>: a relational comparison; use <code class="docutils literal notranslate"><span class="pre">getLesserOperand()</span></code> and
+<code class="docutils literal notranslate"><span class="pre">getGreaterOperand()</span></code> to access the lesser and greater operand of the comparison,
+respectively; <code class="docutils literal notranslate"><span class="pre">isStrict()</span></code> holds if this is a strict comparison using <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code>,
+as opposed to <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="names">
+<h3>Names<a class="headerlink" href="#names" title="Permalink to this headline">¶</a></h3>
+<p>While <code class="docutils literal notranslate"><span class="pre">Ident</span></code> and <code class="docutils literal notranslate"><span class="pre">SelectorExpr</span></code> are very useful classes, they are often too general: <code class="docutils literal notranslate"><span class="pre">Ident</span></code>
+covers all identifiers in a program, including both identifiers appearing in a declaration as well
+as references, and does not distinguish between names referring to packages, types, variables,
+constants, functions, or statement labels. Similarly, a <code class="docutils literal notranslate"><span class="pre">SelectorExpr</span></code> might refer to a package, a
+type, a function, or a method.</p>
+<p>Class <code class="docutils literal notranslate"><span class="pre">Name</span></code> and its subclasses provide a more fine-grained mapping of this space, organized along
+the two axes of structure and namespace. In terms of structure, a name can be a <code class="docutils literal notranslate"><span class="pre">SimpleName</span></code>,
+meaning that it is a simple identifier (and hence an <code class="docutils literal notranslate"><span class="pre">Ident</span></code>), or it can be a <code class="docutils literal notranslate"><span class="pre">QualifiedName</span></code>,
+meaning that it is a qualified identifier (and hence a <code class="docutils literal notranslate"><span class="pre">SelectorExpr</span></code>). In terms of namespacing, a
+<code class="docutils literal notranslate"><span class="pre">Name</span></code> can be a <code class="docutils literal notranslate"><span class="pre">PackageName</span></code>, <code class="docutils literal notranslate"><span class="pre">TypeName</span></code>, <code class="docutils literal notranslate"><span class="pre">ValueName</span></code>, or <code class="docutils literal notranslate"><span class="pre">LabelName</span></code>. A <code class="docutils literal notranslate"><span class="pre">ValueName</span></code>,
+in turn, can be either a <code class="docutils literal notranslate"><span class="pre">ConstantName</span></code>, a <code class="docutils literal notranslate"><span class="pre">VariableName</span></code>, or a <code class="docutils literal notranslate"><span class="pre">FunctionName</span></code>, depending on
+what sort of entity the name refers to.</p>
+<p>A related abstraction is provided by class <code class="docutils literal notranslate"><span class="pre">ReferenceExpr</span></code>: a reference expression is an
+expression that refers to a variable, a constant, a function, a field, or an element of an array or
+a slice. Use predicates <code class="docutils literal notranslate"><span class="pre">isLvalue()</span></code> and <code class="docutils literal notranslate"><span class="pre">isRvalue()</span></code> to determine whether a reference
+expression appears in a syntactic context where it is assigned to or read from, respectively.</p>
+<p>Finally, <code class="docutils literal notranslate"><span class="pre">ValueExpr</span></code> generalizes <code class="docutils literal notranslate"><span class="pre">ReferenceExpr</span></code> to include all other kinds of expressions that
+can be evaluated to a value (as opposed to expressions that refer to a package, a type, or a
+statement label).</p>
+</div>
+<div class="section" id="functions">
+<h3>Functions<a class="headerlink" href="#functions" title="Permalink to this headline">¶</a></h3>
+<p>At the syntactic level, functions appear in two forms: in function declarations (represented by
+class <code class="docutils literal notranslate"><span class="pre">FuncDecl</span></code>) and as function literals (represented by class <code class="docutils literal notranslate"><span class="pre">FuncLit</span></code>). Since it is often
+convenient to reason about functions of either kind, these two classes share a common superclass
+<code class="docutils literal notranslate"><span class="pre">FuncDef</span></code>, which defines a few useful member predicates:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">getBody()</span></code> provides access to the function body</li>
+<li><code class="docutils literal notranslate"><span class="pre">getName()</span></code> gets the function name; it is undefined for function literals, which do not have a
+name</li>
+<li><code class="docutils literal notranslate"><span class="pre">getParameter(i)</span></code> gets the <code class="docutils literal notranslate"><span class="pre">i</span></code>th parameter of the function</li>
+<li><code class="docutils literal notranslate"><span class="pre">getResultVar(i)</span></code> gets the <code class="docutils literal notranslate"><span class="pre">i</span></code>th result variable of the function; if there is only
+one result, <code class="docutils literal notranslate"><span class="pre">getResultVar()</span></code> can be used to access it</li>
+<li><code class="docutils literal notranslate"><span class="pre">getACall()</span></code> gets a data-flow node (see below) representing a call to this function</li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+<div class="section" id="entities-and-name-binding">
+<h2>Entities and name binding<a class="headerlink" href="#entities-and-name-binding" title="Permalink to this headline">¶</a></h2>
+<p>Not all elements of a code base can be represented as AST nodes. For example, functions defined in
+the standard library or in a dependency do not have a source-level definition within the source code
+of the program itself, and built-in functions like <code class="docutils literal notranslate"><span class="pre">len</span></code> do not have a definition at all. Hence
+functions cannot simply be identified with their definition, and similarly for variables, types,
+and so on.</p>
+<p>To smooth over this difference and provide a unified view of functions no matter where they are
+defined, the Go library introduces the concept of an <cite>entity</cite>. An entity is a named program element,
+that is, a package, a type, a constant, a variable, a field, a function, or a label. All entities
+belong to class <code class="docutils literal notranslate"><span class="pre">Entity</span></code>, which defines a few useful predicates:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">getName()</span></code> gets the name of the entity</li>
+<li><code class="docutils literal notranslate"><span class="pre">hasQualifiedName(pkg,</span> <span class="pre">n)</span></code> holds if this entity is declared in package <code class="docutils literal notranslate"><span class="pre">pkg</span></code> and has name
+<code class="docutils literal notranslate"><span class="pre">n</span></code>; this predicate is only defined for types, functions, and package-level variables and
+constants (but not for methods or local variables)</li>
+<li><code class="docutils literal notranslate"><span class="pre">getDeclaration()</span></code> connects an entity to its declaring identifier, if any</li>
+<li><code class="docutils literal notranslate"><span class="pre">getAReference()</span></code> gets a <code class="docutils literal notranslate"><span class="pre">Name</span></code> that refers to this entity</li>
+</ul>
+</div></blockquote>
+<p>Conversely, class <code class="docutils literal notranslate"><span class="pre">Name</span></code> defines a predicate <code class="docutils literal notranslate"><span class="pre">getTarget()</span></code> that gets the entity to which the
+name refers.</p>
+<p>Class <code class="docutils literal notranslate"><span class="pre">Entity</span></code> has several subclasses representing specific kinds of entities: <code class="docutils literal notranslate"><span class="pre">PackageEntity</span></code>
+for packages; <code class="docutils literal notranslate"><span class="pre">TypeEntity</span></code> for types; <code class="docutils literal notranslate"><span class="pre">ValueEntity</span></code> for constants (<code class="docutils literal notranslate"><span class="pre">Constant</span></code>), variables
+(<code class="docutils literal notranslate"><span class="pre">Variable</span></code>), and functions (<code class="docutils literal notranslate"><span class="pre">Function</span></code>); and <code class="docutils literal notranslate"><span class="pre">Label</span></code> for statement labels.</p>
+<p>Class <code class="docutils literal notranslate"><span class="pre">Variable</span></code>, in turn, has a few subclasses representing specific kinds of variables: a
+<code class="docutils literal notranslate"><span class="pre">LocalVariable</span></code> is a variable declared in a local scope, that is, not at package level;
+<code class="docutils literal notranslate"><span class="pre">ReceiverVariable</span></code>, <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> and <code class="docutils literal notranslate"><span class="pre">ResultVariable</span></code> describe receivers, parameters and
+results, respectively, and define a predicate <code class="docutils literal notranslate"><span class="pre">getFunction()</span></code> to access the corresponding
+function. Finally, class <code class="docutils literal notranslate"><span class="pre">Field</span></code> represents struct fields, and provides a member predicate
+<code class="docutils literal notranslate"><span class="pre">hasQualifiedName(pkg,</span> <span class="pre">tp,</span> <span class="pre">f)</span></code> that holds if this field has name <code class="docutils literal notranslate"><span class="pre">f</span></code> and belongs to type <code class="docutils literal notranslate"><span class="pre">tp</span></code>
+in package <code class="docutils literal notranslate"><span class="pre">pkg</span></code>. (Note that due to embedding the same field can belong to multiple types.)</p>
+<p>Class <code class="docutils literal notranslate"><span class="pre">Function</span></code> has a subclass <code class="docutils literal notranslate"><span class="pre">Method</span></code> representing methods (including both interface methods
+and methods defined on a named type). Similar to <code class="docutils literal notranslate"><span class="pre">Field</span></code>, <code class="docutils literal notranslate"><span class="pre">Method</span></code> provides a member predicate
+<code class="docutils literal notranslate"><span class="pre">hasQualifiedName(pkg,</span> <span class="pre">tp,</span> <span class="pre">m)</span></code> that holds if this method has name <code class="docutils literal notranslate"><span class="pre">m</span></code> and belongs to type <code class="docutils literal notranslate"><span class="pre">tp</span></code>
+in package <code class="docutils literal notranslate"><span class="pre">pkg</span></code>. Predicate <code class="docutils literal notranslate"><span class="pre">implements(m2)</span></code> holds if this method implements method <code class="docutils literal notranslate"><span class="pre">m2</span></code>, that
+is, it has the same name and signature as <code class="docutils literal notranslate"><span class="pre">m2</span></code> and it belongs to a type that implements the
+interface to which <code class="docutils literal notranslate"><span class="pre">m2</span></code> belongs. For any function, <code class="docutils literal notranslate"><span class="pre">getACall()</span></code> provides access to call sites
+that may call this function, possibly through virtual dispatch.</p>
+<p>Finally, module <code class="docutils literal notranslate"><span class="pre">Builtin</span></code> provides a convenient way of looking up the entities corresponding to
+built-in functions and types. For example, <code class="docutils literal notranslate"><span class="pre">Builtin::len()</span></code> is the entity representing the
+built-in function <code class="docutils literal notranslate"><span class="pre">len</span></code>, <code class="docutils literal notranslate"><span class="pre">Builtin::bool()</span></code> is the <code class="docutils literal notranslate"><span class="pre">bool</span></code> type, and <code class="docutils literal notranslate"><span class="pre">Builtin::nil()</span></code> is the
+value <code class="docutils literal notranslate"><span class="pre">nil</span></code>.</p>
+</div>
+<div class="section" id="type-information">
+<h2>Type information<a class="headerlink" href="#type-information" title="Permalink to this headline">¶</a></h2>
+<p>Types are represented by class <code class="docutils literal notranslate"><span class="pre">Type</span></code> and its subclasses, such as <code class="docutils literal notranslate"><span class="pre">BoolType</span></code> for the built-in
+type <code class="docutils literal notranslate"><span class="pre">bool</span></code>; <code class="docutils literal notranslate"><span class="pre">NumericType</span></code> for the various numeric types including <code class="docutils literal notranslate"><span class="pre">IntType</span></code>, <code class="docutils literal notranslate"><span class="pre">Uint8Type</span></code>,
+<code class="docutils literal notranslate"><span class="pre">Float64Type</span></code> and others; <code class="docutils literal notranslate"><span class="pre">StringType</span></code> for the type <code class="docutils literal notranslate"><span class="pre">string</span></code>; <code class="docutils literal notranslate"><span class="pre">NamedType</span></code>, <code class="docutils literal notranslate"><span class="pre">ArrayType</span></code>,
+<code class="docutils literal notranslate"><span class="pre">SliceType</span></code>, <code class="docutils literal notranslate"><span class="pre">StructType</span></code>, <code class="docutils literal notranslate"><span class="pre">InterfaceType</span></code>, <code class="docutils literal notranslate"><span class="pre">PointerType</span></code>, <code class="docutils literal notranslate"><span class="pre">MapType</span></code>, <code class="docutils literal notranslate"><span class="pre">ChanType</span></code> for
+named types, arrays, slices, structs, interfaces, pointers, maps, and channels, respectively.
+Finally, <code class="docutils literal notranslate"><span class="pre">SignatureType</span></code> represents function types.</p>
+<p>Note that the type <code class="docutils literal notranslate"><span class="pre">BoolType</span></code> is distinct from the entity <code class="docutils literal notranslate"><span class="pre">Builtin::bool()</span></code>: the latter views
+<code class="docutils literal notranslate"><span class="pre">bool</span></code> as a declared entity, the former as a type. You can, however, map from types to their
+corresponding entity (if any) using the predicate <code class="docutils literal notranslate"><span class="pre">getEntity()</span></code>.</p>
+<p>Class <code class="docutils literal notranslate"><span class="pre">Expr</span></code> and class <code class="docutils literal notranslate"><span class="pre">Entity</span></code> both define a predicate <code class="docutils literal notranslate"><span class="pre">getType()</span></code> to determine the type of
+an expression or entity. If the type of an expression or entity cannot be determined (for example
+because some dependency could not be found during extraction), it will be associated with an invalid
+type of class <code class="docutils literal notranslate"><span class="pre">InvalidType</span></code>.</p>
+</div>
+<div class="section" id="control-flow">
+<h2>Control flow<a class="headerlink" href="#control-flow" title="Permalink to this headline">¶</a></h2>
+<p>Most CodeQL query writers will rarely use the control-flow representation of a program directly, but
+it is nevertheless useful to understand how it works.</p>
+<p>Unlike the abstract syntax tree, which views the program as a hierarchy of AST nodes, the
+control-flow graph views it as a collection of <cite>control-flow nodes</cite>, each representing a single
+operation performed at runtime. These nodes are connected to each other by (directed) edges
+representing the order in which operations are performed.</p>
+<p>For example, consider the following code snippet:</p>
+<div class="highlight-go notranslate"><div class="highlight"><pre><span></span><span class="nx">x</span> <span class="o">:=</span> <span class="mi">0</span>
+<span class="k">if</span> <span class="nx">p</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+  <span class="nx">x</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">f</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="nx">x</span>
+</pre></div>
+</div>
+<p>In the AST, this is represented as an <code class="docutils literal notranslate"><span class="pre">IfStmt</span></code> and a <code class="docutils literal notranslate"><span class="pre">ReturnStmt</span></code>, with the former having an
+<code class="docutils literal notranslate"><span class="pre">NeqExpr</span></code> and a <code class="docutils literal notranslate"><span class="pre">BlockStmt</span></code> as its children, and so on. This provides a very detailed picture of
+the syntactic structure of the code, but it does not immediately help us reason about the order
+in which the various operations such as the comparison and the assignment are performed.</p>
+<p>In the CFG, there are nodes corresponding to <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">:=</span> <span class="pre">0</span></code>, <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">!=</span> <span class="pre">nil</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">p.f</span></code>, and <code class="docutils literal notranslate"><span class="pre">return</span>
+<span class="pre">x</span></code>, as well as a few others. The edges between these nodes model the possible execution orders of
+these statements and expressions, and look as follows (simplified somewhat for presentational
+purposes):</p>
+<p><img alt="cfg" src="../_images/cfg.png" /></p>
+<p>For example, the edge from <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">!=</span> <span class="pre">nil</span></code> to <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">p.f</span></code> models the case where the comparison
+evaluates to <code class="docutils literal notranslate"><span class="pre">true</span></code> and the “then” branch is evaluated, while the edge from <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">!=</span> <span class="pre">nil</span></code> to
+<code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">x</span></code> models the case where the comparison evaluates to <code class="docutils literal notranslate"><span class="pre">false</span></code> and the “then” branch is
+skipped.</p>
+<p>Note, in particular, that a CFG node can have multiple outgoing edges (like from <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">!=</span> <span class="pre">nil</span></code>) as
+well as multiple incoming edges (like into <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">x</span></code>) to represent control-flow branching at
+runtime.</p>
+<p>Also note that only AST nodes that perform some kind of operation on values have a corresponding CFG
+node. This includes expressions (such as the comparison <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">!=</span> <span class="pre">nil</span></code>), assignment statements (such
+as <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">p.f</span></code>) and return statements (such as <code class="docutils literal notranslate"><span class="pre">return</span> <span class="pre">x</span></code>), but not statements that serve a purely
+syntactic purpose (such as block statements) and statements whose semantics is already reflected by
+the CFG edges (such as <code class="docutils literal notranslate"><span class="pre">if</span></code> statements).</p>
+<p>It is important to point out that the control-flow graph provided by the CodeQL libraries for Go
+only models <cite>local</cite> control flow, that is, flow within a single function. Flow from function calls
+to the function they invoke, for example, is not represented by control-flow edges.</p>
+<p>In CodeQL, control-flow nodes are represented by class <code class="docutils literal notranslate"><span class="pre">ControlFlow::Node</span></code>, and the edges between
+nodes are captured by the member predicates <code class="docutils literal notranslate"><span class="pre">getASuccessor()</span></code> and <code class="docutils literal notranslate"><span class="pre">getAPredecessor()</span></code> of
+<code class="docutils literal notranslate"><span class="pre">ControlFlow::Node</span></code>. In addition to control-flow nodes representing runtime operations, each
+function also has a synthetic entry node and an exit node, representing the start and end of an
+execution of the function, respectively. These exist to ensure that the control-flow graph
+corresponding to a function has a unique entry node and a unique exit node, which is required for
+many standard control-flow analysis algorithms.</p>
+</div>
+<div class="section" id="data-flow">
+<h2>Data flow<a class="headerlink" href="#data-flow" title="Permalink to this headline">¶</a></h2>
+<p>At the data-flow level, the program is thought of as a collection of <cite>data-flow nodes</cite>. These nodes
+are connected to each other by (directed) edges representing the way data flows through the program
+at runtime.</p>
+<p>For example, there are data-flow nodes corresponding to expressions and other data-flow nodes
+corresponding to variables (<a class="reference external" href="https://en.wikipedia.org/wiki/Static_single_assignment_form">SSA variables</a>, to be precise). Here is the
+data-flow graph corresponding to the code snippet shown above, ignoring SSA conversion for
+simplicity:</p>
+<p><img alt="dfg" src="../_images/dfg.png" /></p>
+<p>Note that unlike in the control-flow graph, the assignments <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">:=</span> <span class="pre">0</span></code> and <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">p.f</span></code> are not
+represented as nodes. Instead, they are expressed as edges between the node representing the
+right-hand side of the assignment and the node representing the variable on the left-hand side. For
+any subsequent uses of that variable, there is a data-flow edge from the variable to that use, so by
+following the edges in the data-flow graph we can trace the flow of values through variables at
+runtime.</p>
+<p>It is important to point out that the data-flow graph provided by the CodeQL libraries for Go only
+models <cite>local</cite> flow, that is, flow within a single function. Flow from arguments in a function call
+to the corresponding function parameters, for example, is not represented by data-flow edges.</p>
+<p>In CodeQL, data-flow nodes are represented by class <code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code>, and the edges between nodes
+are captured by the predicate <code class="docutils literal notranslate"><span class="pre">DataFlow::localFlowStep</span></code>. The predicate <code class="docutils literal notranslate"><span class="pre">DataFlow::localFlow</span></code>
+generalizes this from a single flow step to zero or more flow steps.</p>
+<p>Most expressions have a corresponding data-flow node; exceptions include type expressions, statement
+labels and other expressions that do not have a value, as well as short-circuiting operators. To map
+from the AST node of an expression to the corresponding DFG node, use <code class="docutils literal notranslate"><span class="pre">DataFlow::exprNode</span></code>. Note
+that the AST node and the DFG node are different entities and cannot be used interchangeably.</p>
+<p>There is also a predicate <code class="docutils literal notranslate"><span class="pre">asExpr()</span></code> on <code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code> that allows you to recover the
+expression underlying a DFG node. However, this predicate should be used with caution, since many
+data-flow nodes do not correspond to an expression, and so this predicate will not be defined for
+them.</p>
+<p>Similar to <code class="docutils literal notranslate"><span class="pre">Expr</span></code>, <code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code> has a member predicate <code class="docutils literal notranslate"><span class="pre">getType()</span></code> to determine the type
+of a node, as well as predicates <code class="docutils literal notranslate"><span class="pre">getNumericValue()</span></code>, <code class="docutils literal notranslate"><span class="pre">getStringValue()</span></code>, and
+<code class="docutils literal notranslate"><span class="pre">getExactValue()</span></code> to retrieve the value of a node if it is constant.</p>
+<p>Important subclasses of <code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code> include:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::CallNode</span></code>: a function call or method call; use <code class="docutils literal notranslate"><span class="pre">getArgument(i)</span></code> and
+<code class="docutils literal notranslate"><span class="pre">getResult(i)</span></code> to obtain the data-flow nodes corresponding to the <code class="docutils literal notranslate"><span class="pre">i</span></code>th argument and the
+<code class="docutils literal notranslate"><span class="pre">i</span></code>th result of this call, respectively; if there is only a single result, <code class="docutils literal notranslate"><span class="pre">getResult()</span></code>
+will return it</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::ParameterNode</span></code>: a parameter of a function; use <code class="docutils literal notranslate"><span class="pre">asParameter()</span></code> to access the
+corresponding AST node</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::BinaryOperationNode</span></code>: an operation involving a binary operator; each <code class="docutils literal notranslate"><span class="pre">BinaryExpr</span></code>
+has a corresponding <code class="docutils literal notranslate"><span class="pre">BinaryOperationNode</span></code>, but there are also binary operations that are not
+explicit at the AST level, such as those arising from compound assignments and
+increment/decrement statements; at the AST level, <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+=</span> <span class="pre">1</span></code>, and <code class="docutils literal notranslate"><span class="pre">x++</span></code> are
+represented by different kinds of AST nodes, while at the DFG level they are all modeled as a
+binary operation node with operands <code class="docutils literal notranslate"><span class="pre">x</span></code> and <code class="docutils literal notranslate"><span class="pre">1</span></code></li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::UnaryOperationNode</span></code>: analogous, but for unary operators<ul>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::PointerDereferenceNode</span></code>: a pointer dereference, either explicit in an expression
+of the form <code class="docutils literal notranslate"><span class="pre">*p</span></code>, or implicit in a field or method reference through a pointer</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::AddressOperationNode</span></code>: analogous, but for taking the address of an entity</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::RelationalComparisonNode</span></code>, <code class="docutils literal notranslate"><span class="pre">DataFlow::EqualityTestNode</span></code>: data-flow nodes
+corresponding to <code class="docutils literal notranslate"><span class="pre">RelationalComparisonExpr</span></code> and <code class="docutils literal notranslate"><span class="pre">EqualityTestExpr</span></code> AST nodes</li>
+</ul>
+</li>
+</ul>
+</div></blockquote>
+<p>Finally, classes <code class="docutils literal notranslate"><span class="pre">Read</span></code> and <code class="docutils literal notranslate"><span class="pre">Write</span></code> represent, respectively, a read or a write of a variable, a
+field, or an element of an array, a slice or a map. Use their member predicates <code class="docutils literal notranslate"><span class="pre">readsVariable</span></code>,
+<code class="docutils literal notranslate"><span class="pre">writesVariable</span></code>, <code class="docutils literal notranslate"><span class="pre">readsField</span></code>, <code class="docutils literal notranslate"><span class="pre">writesField</span></code>, <code class="docutils literal notranslate"><span class="pre">readsElement</span></code>, and <code class="docutils literal notranslate"><span class="pre">writesElement</span></code> to
+determine what the read/write refers to.</p>
+</div>
+<div class="section" id="call-graph">
+<h2>Call graph<a class="headerlink" href="#call-graph" title="Permalink to this headline">¶</a></h2>
+<p>The call graph connects function (and method) calls to the functions they invoke. Call graph
+information is made available by two member predicates on <code class="docutils literal notranslate"><span class="pre">DataFlow::CallNode</span></code>: <code class="docutils literal notranslate"><span class="pre">getTarget()</span></code>
+returns the declared target of a call, while <code class="docutils literal notranslate"><span class="pre">getACallee()</span></code> returns all possible actual functions
+a call may invoke at runtime.</p>
+<p>These two predicates differ in how they handle calls to interface methods: while <code class="docutils literal notranslate"><span class="pre">getTarget()</span></code>
+will return the interface method itself, <code class="docutils literal notranslate"><span class="pre">getACallee()</span></code> will return all concrete methods that
+implement the interface method.</p>
+</div>
+<div class="section" id="global-data-flow-and-taint-tracking">
+<h2>Global data flow and taint tracking<a class="headerlink" href="#global-data-flow-and-taint-tracking" title="Permalink to this headline">¶</a></h2>
+<p>The predicates <code class="docutils literal notranslate"><span class="pre">DataFlow::localFlowStep</span></code> and <code class="docutils literal notranslate"><span class="pre">DataFlow::localFlow</span></code> are useful for reasoning
+about the flow of values in a single function. However, more advanced use cases, particularly in
+security analysis, will invariably require reasoning about global data flow, including flow into,
+out of, and across function calls, and through fields.</p>
+<p>In CodeQL, such reasoning is expressed in terms of <cite>data-flow configurations</cite>. A data-flow
+configuration has three ingredients: sources, sinks, and barriers (also called sanitizers), all of
+which are sets of data-flow nodes. Given these three sets, CodeQL provides a general mechanism for
+finding paths from a source to a sink, possibly going into and out of functions and fields, but
+never flowing through a barrier.</p>
+<p>To define a data-flow configuration, you can define a module implementing <code class="docutils literal notranslate"><span class="pre">DataFlow::ConfigSig</span></code>,
+including the predicates <code class="docutils literal notranslate"><span class="pre">isSource</span></code>, <code class="docutils literal notranslate"><span class="pre">isSink</span></code>, and <code class="docutils literal notranslate"><span class="pre">isBarrier</span></code> to define the sets of
+sources, sinks, and barriers. Data flow is then computed by applying
+<code class="docutils literal notranslate"><span class="pre">DataFlow::Global&lt;..&gt;</span></code> to the configuration.</p>
+<p>Going beyond pure data flow, many security analyses need to perform more general <cite>taint tracking</cite>,
+which also considers flow through value-transforming operations such as string operations. To track
+taint, you apply <code class="docutils literal notranslate"><span class="pre">TaintTracking::Global&lt;..&gt;</span></code> to your configuration instead.</p>
+<p>A detailed exposition of global data flow and taint tracking is out of scope for this brief
+introduction. For a general overview of data flow and taint tracking, see “<a class="reference internal" href="../writing-codeql-queries/about-data-flow-analysis.html#about-data-flow-analysis"><span class="std std-ref">About data flow analysis</span></a>.”</p>
+</div>
+<div class="section" id="advanced-libraries">
+<h2>Advanced libraries<a class="headerlink" href="#advanced-libraries" title="Permalink to this headline">¶</a></h2>
+<p>Finally, we briefly describe a few concepts and libraries that are useful for advanced query
+writers.</p>
+<div class="section" id="basic-blocks-and-dominance">
+<h3>Basic blocks and dominance<a class="headerlink" href="#basic-blocks-and-dominance" title="Permalink to this headline">¶</a></h3>
+<p>Many important control-flow analyses organize control-flow nodes into <a class="reference external" href="https://en.wikipedia.org/wiki/Basic_block">basic blocks</a>, which are maximal straight-line sequences of
+control-flow nodes without any branching. In the CodeQL libraries, basic blocks are represented by
+class <code class="docutils literal notranslate"><span class="pre">BasicBlock</span></code>. Each control-flow node belongs to a basic block. You can use the predicate
+<code class="docutils literal notranslate"><span class="pre">getBasicBlock()</span></code> in class <code class="docutils literal notranslate"><span class="pre">ControlFlow::Node</span></code> and the predicate <code class="docutils literal notranslate"><span class="pre">getNode(i)</span></code> in
+<code class="docutils literal notranslate"><span class="pre">BasicBlock</span></code> to move from one to the other.</p>
+<p>Dominance is a standard concept in control-flow analysis: a basic block <code class="docutils literal notranslate"><span class="pre">dom</span></code> is said to
+<cite>dominate</cite> a basic block <code class="docutils literal notranslate"><span class="pre">bb</span></code> if any path through the control-flow graph from the entry node to
+the first node of <code class="docutils literal notranslate"><span class="pre">bb</span></code> must pass through <code class="docutils literal notranslate"><span class="pre">dom</span></code>. In other words, whenever program execution
+reaches the beginning of <code class="docutils literal notranslate"><span class="pre">bb</span></code>, it must have come through <code class="docutils literal notranslate"><span class="pre">dom</span></code>. Each basic block is moreover
+considered to dominate itself.</p>
+<p>Dually, a basic block <code class="docutils literal notranslate"><span class="pre">postdom</span></code> is said to <cite>post-dominate</cite> a basic block <code class="docutils literal notranslate"><span class="pre">bb</span></code> if any path
+through the control-flow graph from the last node of <code class="docutils literal notranslate"><span class="pre">bb</span></code> to the exit node must pass through
+<code class="docutils literal notranslate"><span class="pre">postdom</span></code>. In other words, after program execution leaves <code class="docutils literal notranslate"><span class="pre">bb</span></code>, it must eventually reach
+<code class="docutils literal notranslate"><span class="pre">postdom</span></code>.</p>
+<p>These two concepts are captured by two member predicates <code class="docutils literal notranslate"><span class="pre">dominates</span></code> and <code class="docutils literal notranslate"><span class="pre">postDominates</span></code> of class
+<code class="docutils literal notranslate"><span class="pre">BasicBlock</span></code>.</p>
+</div>
+<div class="section" id="condition-guard-nodes">
+<h3>Condition guard nodes<a class="headerlink" href="#condition-guard-nodes" title="Permalink to this headline">¶</a></h3>
+<p>A condition guard node is a synthetic control-flow node that records the fact that at some point in
+the control-flow graph the truth value of a condition is known. For example, consider again the code snippet we saw above:</p>
+<div class="highlight-go notranslate"><div class="highlight"><pre><span></span><span class="nx">x</span> <span class="o">:=</span> <span class="mi">0</span>
+<span class="k">if</span> <span class="nx">p</span> <span class="o">!=</span> <span class="kc">nil</span> <span class="p">{</span>
+  <span class="nx">x</span> <span class="p">=</span> <span class="nx">p</span><span class="p">.</span><span class="nx">f</span>
+<span class="p">}</span>
+<span class="k">return</span> <span class="nx">x</span>
+</pre></div>
+</div>
+<p>At the beginning of the “then” branch <code class="docutils literal notranslate"><span class="pre">p</span></code> is known not be <code class="docutils literal notranslate"><span class="pre">nil</span></code>. This knowledge is encoded in
+the control-flow graph by a condition guard node preceding the assignment to <code class="docutils literal notranslate"><span class="pre">x</span></code>, recording the
+fact that <code class="docutils literal notranslate"><span class="pre">p</span> <span class="pre">!=</span> <span class="pre">nil</span></code> is <code class="docutils literal notranslate"><span class="pre">true</span></code> at this point:</p>
+<p><img alt="cfg2" src="../_images/cfg2.png" /></p>
+<p>A typical use of this information would be in an analysis that looks for <code class="docutils literal notranslate"><span class="pre">nil</span></code> dereferences: such
+an analysis would be able to conclude that the field read <code class="docutils literal notranslate"><span class="pre">p.f</span></code> is safe because it is immediately
+preceded by a condition guard node guaranteeing that <code class="docutils literal notranslate"><span class="pre">p</span></code> is not <code class="docutils literal notranslate"><span class="pre">nil</span></code>.</p>
+<p>In CodeQL, condition guard nodes are represented by class <code class="docutils literal notranslate"><span class="pre">ControlFlow::ConditionGuardNode</span></code> which
+offers a variety of member predicates to reason about which conditions a guard node guarantees.</p>
+</div>
+<div class="section" id="static-single-assignment-form">
+<h3>Static single-assignment form<a class="headerlink" href="#static-single-assignment-form" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Static_single_assignment_form">Static single-assignment form</a> (SSA
+form for short) is a program representation in which the original program variables are mapped onto
+more fine-grained <cite>SSA variables</cite>. Each SSA variable has exactly one definition, so program
+variables with multiple assignments correspond to multiple SSA variables.</p>
+<p>Most of the time query authors do not have to deal with SSA form directly. The data-flow graph uses
+it under the hood, and so most of the benefits derived from SSA can be gained by simply using the
+data-flow graph.</p>
+<p>For example, the data-flow graph for our running example actually looks more like this:</p>
+<p><img alt="ssa" src="../_images/ssa.png" /></p>
+<p>Note that the program variable <code class="docutils literal notranslate"><span class="pre">x</span></code> has been mapped onto three distinct SSA variables <code class="docutils literal notranslate"><span class="pre">x1</span></code>,
+<code class="docutils literal notranslate"><span class="pre">x2</span></code>, and <code class="docutils literal notranslate"><span class="pre">x3</span></code>. In this case there is not much benefit to such a representation, but in general
+SSA form has well-known advantages for data-flow analysis for which we refer to the literature.</p>
+<p>If you do need to work with raw SSA variables, they are represented by the class <code class="docutils literal notranslate"><span class="pre">SsaVariable</span></code>.
+Class <code class="docutils literal notranslate"><span class="pre">SsaDefinition</span></code> represents definitions of SSA variables, which have a one-to-one
+correspondence with <code class="docutils literal notranslate"><span class="pre">SsaVariable</span></code>s. Member predicates <code class="docutils literal notranslate"><span class="pre">getDefinition()</span></code> and <code class="docutils literal notranslate"><span class="pre">getVariable()</span></code>
+exist to map from one to the other. You can use member predicate <code class="docutils literal notranslate"><span class="pre">getAUse()</span></code> of <code class="docutils literal notranslate"><span class="pre">SsaVariable</span></code> to
+look for uses of an SSA variable. To access the program variable underlying an SSA variable, use
+member predicate <code class="docutils literal notranslate"><span class="pre">getSourceVariable()</span></code>.</p>
+</div>
+<div class="section" id="global-value-numbering">
+<h3>Global value numbering<a class="headerlink" href="#global-value-numbering" title="Permalink to this headline">¶</a></h3>
+<p><a class="reference external" href="https://en.wikipedia.org/wiki/Value_numbering">Global value numbering</a> is a technique for
+determining when two computations in a program are guaranteed to yield the same result. This is done
+by associating with each data-flow node an abstract representation of its value (conventionally
+called a <cite>value number</cite>, even though in practice it is not usually a number) such that identical
+computations are represented by identical value numbers.</p>
+<p>Since this is an undecidable problem, global value numbering is <cite>conservative</cite> in the sense that if
+two data-flow nodes have the same value number they are guaranteed to have the same value at
+runtime, but not conversely. (That is, there may be data-flow nodes that do, in fact, always
+evaluate to the same value, but their value numbers are different.)</p>
+<p>In the CodeQL libraries for Go, you can use the <code class="docutils literal notranslate"><span class="pre">globalValueNumber(nd)</span></code> predicate to compute the
+global value number for a data-flow node <code class="docutils literal notranslate"><span class="pre">nd</span></code>. Value numbers are represented as an opaque QL type
+<code class="docutils literal notranslate"><span class="pre">GVN</span></code> that provides very little information. Usually, all you need to do with global value numbers
+is to compare them to each other to determine whether two data-flow nodes have the same value.</p>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/go/ql/src">CodeQL queries for Go</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/go/ql/examples">Example queries for Go</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/go/">CodeQL library reference for Go</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

@@ -1,0 +1,1098 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Supported languages and frameworks &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="System requirements" href="system-requirements.html" />
+    <link rel="prev" title="About CodeQL" href="about-codeql.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL overview</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="about-codeql.html">About CodeQL</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Supported languages and frameworks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="system-requirements.html">System requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-changelog/index.html">CodeQL change logs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-tools.html">CodeQL tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-glossary.html">CodeQL glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-language-guides/index.html">CodeQL language guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                accesskey="U">CodeQL overview</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="supported-languages-and-frameworks-1">
+<span id="supported-languages-and-frameworks"></span><h1>Supported languages and frameworks<a class="headerlink" href="#supported-languages-and-frameworks-1" title="Permalink to this headline">¶</a></h1>
+<p>View the languages, libraries, and frameworks supported in the latest version of
+CodeQL.</p>
+<div class="section" id="languages-and-compilers">
+<h2>Languages and compilers<a class="headerlink" href="#languages-and-compilers" title="Permalink to this headline">¶</a></h2>
+<p>The current versions of the CodeQL CLI (<a class="reference external" href="https://github.com/github/codeql-cli-binaries/blob/main/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql-cli-binaries/releases">releases</a>),
+CodeQL library packs (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest">source</a>),
+and CodeQL bundle (<a class="reference external" href="https://github.com/github/codeql-action/releases">releases</a>)
+support the following languages and compilers.</p>
+<table border="1" class="docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head stub">Language</th>
+<th class="head">Variants</th>
+<th class="head">Compilers</th>
+<th class="head">Extensions</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><th class="stub">C/C++</th>
+<td>C89, C99, C11, C17, C++98, C++03, C++11, C++14, C++17, C++20 <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a> <a class="footnote-reference" href="#footnote-2" id="footnote-reference-2">[2]</a></td>
+<td><p class="first">Clang (including clang-cl <a class="footnote-reference" href="#footnote-3" id="footnote-reference-3">[3]</a> and armclang) extensions (up to Clang 12.0),</p>
+<p>GNU extensions (up to GCC 11.1),</p>
+<p>Microsoft extensions (up to VS 2019),</p>
+<p class="last">Arm Compiler 5 <a class="footnote-reference" href="#footnote-4" id="footnote-reference-4">[4]</a></p>
+</td>
+<td><code class="docutils literal notranslate"><span class="pre">.cpp</span></code>, <code class="docutils literal notranslate"><span class="pre">.c++</span></code>, <code class="docutils literal notranslate"><span class="pre">.cxx</span></code>, <code class="docutils literal notranslate"><span class="pre">.hpp</span></code>, <code class="docutils literal notranslate"><span class="pre">.hh</span></code>, <code class="docutils literal notranslate"><span class="pre">.h++</span></code>, <code class="docutils literal notranslate"><span class="pre">.hxx</span></code>, <code class="docutils literal notranslate"><span class="pre">.c</span></code>, <code class="docutils literal notranslate"><span class="pre">.cc</span></code>, <code class="docutils literal notranslate"><span class="pre">.h</span></code></td>
+</tr>
+<tr class="row-odd"><th class="stub">C#</th>
+<td>C# up to 11</td>
+<td><p class="first">Microsoft Visual Studio up to 2019 with .NET up to 4.8,</p>
+<p>.NET Core up to 3.1</p>
+<p class="last">.NET 5, .NET 6, .NET 7</p>
+</td>
+<td><code class="docutils literal notranslate"><span class="pre">.sln</span></code>, <code class="docutils literal notranslate"><span class="pre">.csproj</span></code>, <code class="docutils literal notranslate"><span class="pre">.cs</span></code>, <code class="docutils literal notranslate"><span class="pre">.cshtml</span></code>, <code class="docutils literal notranslate"><span class="pre">.xaml</span></code></td>
+</tr>
+<tr class="row-even"><th class="stub">Go (aka Golang)</th>
+<td>Go up to 1.21</td>
+<td>Go 1.11 or more recent</td>
+<td><code class="docutils literal notranslate"><span class="pre">.go</span></code></td>
+</tr>
+<tr class="row-odd"><th class="stub">Java</th>
+<td>Java 7 to 20 <a class="footnote-reference" href="#footnote-5" id="footnote-reference-5">[5]</a></td>
+<td><p class="first">javac (OpenJDK and Oracle JDK),</p>
+<p class="last">Eclipse compiler for Java (ECJ) <a class="footnote-reference" href="#footnote-6" id="footnote-reference-6">[6]</a></p>
+</td>
+<td><code class="docutils literal notranslate"><span class="pre">.java</span></code></td>
+</tr>
+<tr class="row-even"><th class="stub">Kotlin <a class="footnote-reference" href="#footnote-7" id="footnote-reference-7">[7]</a></th>
+<td>Kotlin 1.5.0 to 1.9.20</td>
+<td>kotlinc</td>
+<td><code class="docutils literal notranslate"><span class="pre">.kt</span></code></td>
+</tr>
+<tr class="row-odd"><th class="stub">JavaScript</th>
+<td>ECMAScript 2022 or lower</td>
+<td>Not applicable</td>
+<td><code class="docutils literal notranslate"><span class="pre">.js</span></code>, <code class="docutils literal notranslate"><span class="pre">.jsx</span></code>, <code class="docutils literal notranslate"><span class="pre">.mjs</span></code>, <code class="docutils literal notranslate"><span class="pre">.es</span></code>, <code class="docutils literal notranslate"><span class="pre">.es6</span></code>, <code class="docutils literal notranslate"><span class="pre">.htm</span></code>, <code class="docutils literal notranslate"><span class="pre">.html</span></code>, <code class="docutils literal notranslate"><span class="pre">.xhtm</span></code>, <code class="docutils literal notranslate"><span class="pre">.xhtml</span></code>, <code class="docutils literal notranslate"><span class="pre">.vue</span></code>, <code class="docutils literal notranslate"><span class="pre">.hbs</span></code>, <code class="docutils literal notranslate"><span class="pre">.ejs</span></code>, <code class="docutils literal notranslate"><span class="pre">.njk</span></code>, <code class="docutils literal notranslate"><span class="pre">.json</span></code>, <code class="docutils literal notranslate"><span class="pre">.yaml</span></code>, <code class="docutils literal notranslate"><span class="pre">.yml</span></code>, <code class="docutils literal notranslate"><span class="pre">.raml</span></code>, <code class="docutils literal notranslate"><span class="pre">.xml</span></code> <a class="footnote-reference" href="#footnote-8" id="footnote-reference-8">[8]</a></td>
+</tr>
+<tr class="row-even"><th class="stub">Python <a class="footnote-reference" href="#footnote-9" id="footnote-reference-9">[9]</a></th>
+<td>2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12</td>
+<td>Not applicable</td>
+<td><code class="docutils literal notranslate"><span class="pre">.py</span></code></td>
+</tr>
+<tr class="row-odd"><th class="stub">Ruby <a class="footnote-reference" href="#footnote-10" id="footnote-reference-10">[10]</a></th>
+<td>up to 3.2</td>
+<td>Not applicable</td>
+<td><code class="docutils literal notranslate"><span class="pre">.rb</span></code>, <code class="docutils literal notranslate"><span class="pre">.erb</span></code>, <code class="docutils literal notranslate"><span class="pre">.gemspec</span></code>, <code class="docutils literal notranslate"><span class="pre">Gemfile</span></code></td>
+</tr>
+<tr class="row-even"><th class="stub">Swift <a class="footnote-reference" href="#footnote-11" id="footnote-reference-11">[11]</a></th>
+<td>Swift 5.4-5.9.1</td>
+<td>Swift compiler</td>
+<td><code class="docutils literal notranslate"><span class="pre">.swift</span></code></td>
+</tr>
+<tr class="row-odd"><th class="stub">TypeScript <a class="footnote-reference" href="#footnote-12" id="footnote-reference-12">[12]</a></th>
+<td>2.6-5.3</td>
+<td>Standard TypeScript compiler</td>
+<td><code class="docutils literal notranslate"><span class="pre">.ts</span></code>, <code class="docutils literal notranslate"><span class="pre">.tsx</span></code>, <code class="docutils literal notranslate"><span class="pre">.mts</span></code>, <code class="docutils literal notranslate"><span class="pre">.cts</span></code></td>
+</tr>
+</tbody>
+</table>
+<div class="footnote-group docutils container">
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td>C++20 support is currently in beta. Supported for GCC on Linux only. Modules are <em>not</em> supported.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-2">[2]</a></td><td>Objective-C, Objective-C++, C++/CLI, and C++/CX are not supported.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-3">[3]</a></td><td>Support for the clang-cl compiler is preliminary.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-4">[4]</a></td><td>Support for the Arm Compiler (armcc) is preliminary.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-5" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-5">[5]</a></td><td>Builds that execute on Java 7 to 20 can be analyzed. The analysis understands Java 20 standard language features.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-6">[6]</a></td><td>ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-7" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-7">[7]</a></td><td>Kotlin support is currently in beta.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-8">[8]</a></td><td>JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-9" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-9">[9]</a></td><td>The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-10">[10]</a></td><td>Requires glibc 2.17.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-11" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-11">[11]</a></td><td>Swift support is currently in beta. Support for the analysis of Swift 5.4-5.8.1 requires macOS or Linux.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="footnote-12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-12">[12]</a></td><td>TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="frameworks-and-libraries">
+<h2>Frameworks and libraries<a class="headerlink" href="#frameworks-and-libraries" title="Permalink to this headline">¶</a></h2>
+<p>The current versions of the CodeQL library and query packs (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest">source</a>) have been explicitly checked against the libraries and frameworks listed below.</p>
+<blockquote class="pull-quote">
+<div><p>Tip</p>
+<p>If you’re interested in other libraries or frameworks, you can extend the analysis to cover them.
+For example, by extending the data flow libraries to include data sources
+and sinks for additional libraries or frameworks.</p>
+</div></blockquote>
+<div class="section" id="c-and-c-built-in-support">
+<h3>C and C++ built-in support<a class="headerlink" href="#c-and-c-built-in-support" title="Permalink to this headline">¶</a></h3>
+<p>Provided by the current versions of the
+CodeQL query pack <code class="docutils literal notranslate"><span class="pre">codeql/cpp-queries</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/src/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/src">source</a>)
+and the CodeQL library pack <code class="docutils literal notranslate"><span class="pre">codeql/cpp-all</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/lib/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/cpp/ql/lib">source</a>).</p>
+<table border="1" class="fullwidthtable docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Category</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="https://en.wikipedia.org/wiki/Berkeley_sockets#Socket_API_functions">Berkeley socket API library</a></td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/bloomberg/bde">Bloomberg Standard Library</a></td>
+<td>Utility library</td>
+</tr>
+<tr class="row-even"><td>string.h</td>
+<td>String library</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="c-built-in-support">
+<h3>C# built-in support<a class="headerlink" href="#c-built-in-support" title="Permalink to this headline">¶</a></h3>
+<p>Provided by the current versions of the
+CodeQL query pack <code class="docutils literal notranslate"><span class="pre">codeql/csharp-queries</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/src/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/src">source</a>)
+and the CodeQL library pack <code class="docutils literal notranslate"><span class="pre">codeql/csharp-all</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/lib/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/csharp/ql/lib">source</a>).</p>
+<table border="1" class="fullwidthtable docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Category</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>ASP.NET</td>
+<td>Web application framework</td>
+</tr>
+<tr class="row-odd"><td>ASP.NET Core</td>
+<td>Web application framework</td>
+</tr>
+<tr class="row-even"><td>ASP.NET Razor templates</td>
+<td>Web application framework</td>
+</tr>
+<tr class="row-odd"><td>Dapper</td>
+<td>Database ORM</td>
+</tr>
+<tr class="row-even"><td>EntityFramework</td>
+<td>Database ORM</td>
+</tr>
+<tr class="row-odd"><td>EntityFramework Core</td>
+<td>Database ORM</td>
+</tr>
+<tr class="row-even"><td>Json.NET</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-odd"><td>NHibernate</td>
+<td>Database ORM</td>
+</tr>
+<tr class="row-even"><td>WinForms</td>
+<td>User interface</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="go-built-in-support">
+<h3>Go built-in support<a class="headerlink" href="#go-built-in-support" title="Permalink to this headline">¶</a></h3>
+<p>Provided by the current versions of the
+CodeQL query pack <code class="docutils literal notranslate"><span class="pre">codeql/go-queries</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/src/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/src">source</a>)
+and the CodeQL library pack <code class="docutils literal notranslate"><span class="pre">codeql/go-all</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/lib/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/go/ql/lib">source</a>).</p>
+<table border="1" class="fullwidthtable docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Category</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="https://beego.me/">beego</a></td>
+<td>Web/logging/database framework</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/go-chi/chi">Chi</a></td>
+<td>Web framework</td>
+</tr>
+<tr class="row-even"><td>Couchbase (<a class="reference external" href="https://github.com/couchbase/gocb">gocb</a> and <a class="reference external" href="http://www.github.com/couchbase/go-couchbase">go-couchbase</a>)</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://echo.labstack.com/">Echo</a></td>
+<td>Web framework</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/gin-gonic/gin">Gin</a></td>
+<td>Web framework</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/golang/glog">glog</a></td>
+<td>Logging library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pg.uptrace.dev/">go-pg</a></td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/emicklei/go-restful">go-restful</a></td>
+<td>Web application framework</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/codeskyblue/go-sh">go-sh</a></td>
+<td>Utility library</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/davecgh/go-spew">go-spew</a></td>
+<td>Logging library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/go-kit/kit">GoKit</a></td>
+<td>Microservice toolkit</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/jbowtie/gokogiri">Gokogiri</a></td>
+<td>XPath library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://pkg.go.dev/golang.org/x/crypto/ssh">golang.org/x/crypto/ssh</a></td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pkg.go.dev/golang.org/x/net/websocket">golang.org/x/net/websocket</a></td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/elazarl/goproxy">goproxy</a></td>
+<td>HTTP proxy library</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="http://www.gorillatoolkit.org/pkg/mux">Gorilla mux</a></td>
+<td>HTTP request router and dispatcher</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/gorilla/websocket">Gorilla websocket</a></td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://gorm.io/">GORM</a></td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/sacOO7/gowebsocket">GoWebsocket</a></td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/ChrisTrenkamp/goxpath">goxpath</a></td>
+<td>XPath library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/antchfx/htmlquery">htmlquery</a></td>
+<td>XPath library</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/json-iterator/go">json-iterator</a></td>
+<td>Serialization</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/evanphx/json-patch">jsonpatch</a></td>
+<td>Serialization</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/antchfx/jsonquery">jsonquery</a></td>
+<td>XPath library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/kubernetes/klog">klog</a></td>
+<td>Logging library</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/sirupsen/logrus">Logrus</a></td>
+<td>Logging library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://gopkg.in/macaron.v1">Macaron</a></td>
+<td>Web framework</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pkg.go.dev/go.mongodb.org/mongo-driver/mongo">mongo</a></td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://nhooyr.io/websocket">nhooyr.io/websocket</a></td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://pkg.go.dev/google.golang.org/protobuf">protobuf</a></td>
+<td>Serialization</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://revel.github.io/">Revel</a></td>
+<td>Web framework</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/sendgrid/sendgrid-go">SendGrid</a></td>
+<td>Email library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="http://jmoiron.github.io/sqlx/">sqlx</a></td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/Masterminds/squirrel">Squirrel</a></td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/gobwas/ws">ws</a></td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://gopkg.in/xmlpath.v2">xmlpath</a></td>
+<td>XPath library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/antchfx/xmlquery">xmlquery</a></td>
+<td>XPath library</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/antchfx/xpath">xpath</a></td>
+<td>XPath library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/santhosh-tekuri/xpathparser">xpathparser</a></td>
+<td>XPath library</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://gopkg.in/yaml.v3">yaml</a></td>
+<td>Serialization</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://go.uber.org/zap">zap</a></td>
+<td>Logging library</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="java-and-kotlin-built-in-support">
+<h3>Java and Kotlin built-in support<a class="headerlink" href="#java-and-kotlin-built-in-support" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><blockquote class="pull-quote">
+<div><p>Note</p>
+<p>CodeQL analysis for Kotlin is currently in beta. During the beta, analysis of Kotlin code,
+and the accompanying documentation, will not be as comprehensive as for other languages.</p>
+</div></blockquote>
+</div></blockquote>
+<p>Provided by the current versions of the
+CodeQL query pack <code class="docutils literal notranslate"><span class="pre">codeql/java-queries</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/src">source</a>)
+and the CodeQL library pack <code class="docutils literal notranslate"><span class="pre">codeql/java-all</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/lib/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/java/ql/lib">source</a>).</p>
+<table border="1" class="fullwidthtable docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Category</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Apache Commons Collections</td>
+<td>Data structure utility library</td>
+</tr>
+<tr class="row-odd"><td>Apache Commons Lang</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-even"><td>Apache HTTP components</td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-odd"><td>Guava</td>
+<td>Utility and collections library</td>
+</tr>
+<tr class="row-even"><td>Hibernate</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>iBatis / MyBatis</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>Jackson</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-odd"><td>Java Persistence API (JPA)</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>JaxRS</td>
+<td>Jakarta EE API specification</td>
+</tr>
+<tr class="row-odd"><td>JDBC</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>JSON-java</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-odd"><td>Kryo deserialization</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-even"><td>Project Lombok</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-odd"><td>Protobuf</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-even"><td>SnakeYaml</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-odd"><td>Spring JDBC</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>Spring MVC</td>
+<td>Web application framework</td>
+</tr>
+<tr class="row-odd"><td>Struts</td>
+<td>Web application framework</td>
+</tr>
+<tr class="row-even"><td>Thrift</td>
+<td>RPC framework</td>
+</tr>
+<tr class="row-odd"><td>XStream</td>
+<td>Serialization</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="javascript-and-typescript-built-in-support">
+<h3>JavaScript and TypeScript built-in support<a class="headerlink" href="#javascript-and-typescript-built-in-support" title="Permalink to this headline">¶</a></h3>
+<p>Provided by the current versions of the
+CodeQL query pack <code class="docutils literal notranslate"><span class="pre">codeql/javascript-queries</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/src/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/src">source</a>)
+and the CodeQL library pack <code class="docutils literal notranslate"><span class="pre">codeql/javascript-all</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/lib/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/javascript/ql/lib">source</a>).</p>
+<table border="1" class="fullwidthtable docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Category</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>angular (modern version)</td>
+<td>HTML framework</td>
+</tr>
+<tr class="row-odd"><td>angular.js (legacy version)</td>
+<td>HTML framework</td>
+</tr>
+<tr class="row-even"><td>axios</td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-odd"><td>browser</td>
+<td>Runtime environment</td>
+</tr>
+<tr class="row-even"><td>EJS</td>
+<td>templating language</td>
+</tr>
+<tr class="row-odd"><td>electron</td>
+<td>Runtime environment</td>
+</tr>
+<tr class="row-even"><td>express</td>
+<td>Server</td>
+</tr>
+<tr class="row-odd"><td>Fastify</td>
+<td>Server</td>
+</tr>
+<tr class="row-even"><td>handlebars</td>
+<td>templating language</td>
+</tr>
+<tr class="row-odd"><td>hapi</td>
+<td>Server</td>
+</tr>
+<tr class="row-even"><td>hogan</td>
+<td>templating language</td>
+</tr>
+<tr class="row-odd"><td>jquery</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-even"><td>koa</td>
+<td>Server</td>
+</tr>
+<tr class="row-odd"><td>lodash</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-even"><td>mongodb</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>mssql</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>mustache</td>
+<td>templating language</td>
+</tr>
+<tr class="row-odd"><td>mysql</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>nest.js</td>
+<td>Server</td>
+</tr>
+<tr class="row-odd"><td>node</td>
+<td>Runtime environment</td>
+</tr>
+<tr class="row-even"><td>nunjucks</td>
+<td>templating language</td>
+</tr>
+<tr class="row-odd"><td>postgres</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>ramda</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-odd"><td>react</td>
+<td>HTML framework</td>
+</tr>
+<tr class="row-even"><td>react native</td>
+<td>HTML framework</td>
+</tr>
+<tr class="row-odd"><td>request</td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-even"><td>restify</td>
+<td>Server</td>
+</tr>
+<tr class="row-odd"><td>sequelize</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>socket.io</td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-odd"><td>sqlite3</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>superagent</td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-odd"><td>swig</td>
+<td>templating language</td>
+</tr>
+<tr class="row-even"><td>underscore</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-odd"><td>vue</td>
+<td>HTML framework</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="python-built-in-support">
+<h3>Python built-in support<a class="headerlink" href="#python-built-in-support" title="Permalink to this headline">¶</a></h3>
+<p>Provided by the current versions of the
+CodeQL query pack <code class="docutils literal notranslate"><span class="pre">codeql/python-queries</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/src/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/src">source</a>)
+and the CodeQL library pack <code class="docutils literal notranslate"><span class="pre">codeql/python-all</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/lib/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/python/ql/lib">source</a>).</p>
+<table border="1" class="fullwidthtable docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Category</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>AWS Lambda</td>
+<td>Web framework</td>
+</tr>
+<tr class="row-odd"><td>aiohttp.web</td>
+<td>Web framework</td>
+</tr>
+<tr class="row-even"><td>Django</td>
+<td>Web framework</td>
+</tr>
+<tr class="row-odd"><td>djangorestframework</td>
+<td>Web framework</td>
+</tr>
+<tr class="row-even"><td>FastAPI</td>
+<td>Web framework</td>
+</tr>
+<tr class="row-odd"><td>Flask</td>
+<td>Web framework</td>
+</tr>
+<tr class="row-even"><td>Flask-Admin</td>
+<td>Web framework</td>
+</tr>
+<tr class="row-odd"><td>Tornado</td>
+<td>Web framework</td>
+</tr>
+<tr class="row-even"><td>Twisted</td>
+<td>Web framework</td>
+</tr>
+<tr class="row-odd"><td>starlette</td>
+<td>Asynchronous Server Gateway Interface (ASGI)</td>
+</tr>
+<tr class="row-even"><td>ldap3</td>
+<td>Lightweight Directory Access Protocol (LDAP)</td>
+</tr>
+<tr class="row-odd"><td>python-ldap</td>
+<td>Lightweight Directory Access Protocol (LDAP)</td>
+</tr>
+<tr class="row-even"><td>httpx</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-odd"><td>pycurl</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-even"><td>requests</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-odd"><td>urllib</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-even"><td>urllib2</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-odd"><td>urllib3</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-even"><td>dill</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-odd"><td>PyYAML</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-even"><td>ruamel.yaml</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-odd"><td>simplejson</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-even"><td>toml</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-odd"><td>ujson</td>
+<td>Serialization</td>
+</tr>
+<tr class="row-even"><td>fabric</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-odd"><td>idna</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-even"><td>invoke</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-odd"><td>jmespath</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-even"><td>multidict</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-odd"><td>pydantic</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-even"><td>yarl</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-odd"><td>aioch</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>aiomysql</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>aiopg</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>aiosqlite</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>asyncpg</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>cassandra-driver</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>clickhouse-driver</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>cx_Oracle</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>mysql-connector</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>mysql-connector-python</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>MySQL-python</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>mysqlclient</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>oracledb</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>phoenixdb</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>psycopg2</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>pymssql</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>PyMySQL</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>pyodbc</td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td>sqlite3</td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td>Flask-SQLAlchemy</td>
+<td>Database ORM</td>
+</tr>
+<tr class="row-odd"><td>peewee</td>
+<td>Database ORM</td>
+</tr>
+<tr class="row-even"><td>SQLAlchemy</td>
+<td>Database ORM</td>
+</tr>
+<tr class="row-odd"><td>cryptography</td>
+<td>Cryptography library</td>
+</tr>
+<tr class="row-even"><td>pycryptodome</td>
+<td>Cryptography library</td>
+</tr>
+<tr class="row-odd"><td>pycryptodomex</td>
+<td>Cryptography library</td>
+</tr>
+<tr class="row-even"><td>rsa</td>
+<td>Cryptography library</td>
+</tr>
+<tr class="row-odd"><td>MarkupSafe</td>
+<td>Escaping Library</td>
+</tr>
+<tr class="row-even"><td>libtaxii</td>
+<td>TAXII utility library</td>
+</tr>
+<tr class="row-odd"><td>libxml2</td>
+<td>XML processing library</td>
+</tr>
+<tr class="row-even"><td>lxml</td>
+<td>XML processing library</td>
+</tr>
+<tr class="row-odd"><td>xmltodict</td>
+<td>XML processing library</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="ruby-built-in-support">
+<h3>Ruby built-in support<a class="headerlink" href="#ruby-built-in-support" title="Permalink to this headline">¶</a></h3>
+<p>Provided by the current versions of the
+CodeQL query pack <code class="docutils literal notranslate"><span class="pre">codeql/ruby-queries</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/src/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/src">source</a>)
+and the CodeQL library pack <code class="docutils literal notranslate"><span class="pre">codeql/ruby-all</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/lib/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/ruby/ql/lib">source</a>).</p>
+<table border="1" class="fullwidthtable docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Category</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>excon</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-odd"><td>faraday</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-even"><td>http_client</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-odd"><td>httparty</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-even"><td>libxml-ruby</td>
+<td>XML processing library</td>
+</tr>
+<tr class="row-odd"><td>nokogiri</td>
+<td>XML processing library</td>
+</tr>
+<tr class="row-even"><td>open-uri</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-odd"><td>posix-spawn</td>
+<td>Utility library</td>
+</tr>
+<tr class="row-even"><td>rest-client</td>
+<td>HTTP client</td>
+</tr>
+<tr class="row-odd"><td>Ruby on Rails</td>
+<td>Web framework</td>
+</tr>
+<tr class="row-even"><td>rubyzip</td>
+<td>Compression library</td>
+</tr>
+<tr class="row-odd"><td>typhoeus</td>
+<td>HTTP client</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="swift-built-in-support">
+<h3>Swift built-in support<a class="headerlink" href="#swift-built-in-support" title="Permalink to this headline">¶</a></h3>
+<blockquote>
+<div><blockquote class="pull-quote">
+<div><p>Note</p>
+<p>CodeQL analysis for Swift is currently in beta. During the beta, analysis of Swift code,
+and the accompanying documentation, will not be as comprehensive as for other languages.</p>
+</div></blockquote>
+</div></blockquote>
+<p>Provided by the current versions of the
+CodeQL query pack <code class="docutils literal notranslate"><span class="pre">codeql/swift-queries</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src">source</a>)
+and the CodeQL library pack <code class="docutils literal notranslate"><span class="pre">codeql/swift-all</span></code> (<a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/lib/CHANGELOG.md">changelog</a>, <a class="reference external" href="https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/lib">source</a>).</p>
+<table border="1" class="fullwidthtable docutils">
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Category</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><a class="reference external" href="https://github.com/tadija/AEXML">AEXML</a></td>
+<td>XML processing library</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/Alamofire/Alamofire">Alamofire</a></td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://developer.apple.com/documentation/coredata/">Core Data</a></td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://developer.apple.com/documentation/cryptokit/">CryptoKit</a></td>
+<td>Cryptography library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/krzyzanowskim/CryptoSwift">CryptoSwift</a></td>
+<td>Cryptography library</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://developer.apple.com/documentation/foundation">Foundation</a></td>
+<td>Utility library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://github.com/groue/GRDB.swift">GRDB</a></td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://developer.apple.com/documentation/javascriptcore">JavaScriptCore</a></td>
+<td>Scripting library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://gitlab.gnome.org/GNOME/libxml2">Libxml2</a></td>
+<td>XML processing library</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://developer.apple.com/documentation/network">Network</a></td>
+<td>Network communicator</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://realm.io/realm-swift/">Realm Swift</a></td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/RNCryptor/RNCryptor">RNCryptor</a></td>
+<td>Cryptography library</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://sqlite.org/index.html">SQLite3</a></td>
+<td>Database</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://github.com/stephencelis/SQLite.swift">SQLite.swift</a></td>
+<td>Database</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://developer.apple.com/documentation/uikit">UIKit</a></td>
+<td>User interface library</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://developer.apple.com/documentation/webkit">WebKit</a></td>
+<td>User interface library</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

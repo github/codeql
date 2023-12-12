@@ -1,0 +1,715 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CodeQL 2.11.0 (2022-09-28) &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="CodeQL 2.10.5 (2022-09-13)" href="codeql-cli-2.10.5.html" />
+    <link rel="prev" title="CodeQL 2.11.1 (2022-10-11)" href="codeql-cli-2.11.1.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">CodeQL overview</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../about-codeql.html">About CodeQL</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../supported-languages-and-frameworks.html">Supported languages and frameworks</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../system-requirements.html">System requirements</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="index.html">CodeQL change logs</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.15.4.html">CodeQL 2.15.4 (2023-12-11)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.15.3.html">CodeQL 2.15.3 (2023-11-22)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.15.2.html">CodeQL 2.15.2 (2023-11-13)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.15.1.html">CodeQL 2.15.1 (2023-10-19)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.15.0.html">CodeQL 2.15.0 (2023-10-11)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.14.6.html">CodeQL 2.14.6 (2023-09-26)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.14.5.html">CodeQL 2.14.5 (2023-09-14)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.14.4.html">CodeQL 2.14.4 (2023-09-12)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.14.3.html">CodeQL 2.14.3 (2023-08-25)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.14.2.html">CodeQL 2.14.2 (2023-08-11)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.14.1.html">CodeQL 2.14.1 (2023-07-27)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.14.0.html">CodeQL 2.14.0 (2023-07-13)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.13.5.html">CodeQL 2.13.5 (2023-07-05)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.13.4.html">CodeQL 2.13.4 (2023-06-19)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.13.3.html">CodeQL 2.13.3 (2023-05-31)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.13.1.html">CodeQL 2.13.1 (2023-05-03)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.13.0.html">CodeQL 2.13.0 (2023-04-20)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.12.7.html">CodeQL 2.12.7 (2023-04-18)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.12.6.html">CodeQL 2.12.6 (2023-04-04)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.12.5.html">CodeQL 2.12.5 (2023-03-21)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.12.4.html">CodeQL 2.12.4 (2023-03-09)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.12.3.html">CodeQL 2.12.3 (2023-02-23)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.12.2.html">CodeQL 2.12.2 (2023-02-07)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.12.1.html">CodeQL 2.12.1 (2023-01-23)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.12.0.html">CodeQL 2.12.0 (2023-01-10)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.11.6.html">CodeQL 2.11.6 (2022-12-13)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.11.5.html">CodeQL 2.11.5 (2022-12-07)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.11.4.html">CodeQL 2.11.4 (2022-11-24)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.11.3.html">CodeQL 2.11.3 (2022-11-11)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.11.2.html">CodeQL 2.11.2 (2022-10-25)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.11.1.html">CodeQL 2.11.1 (2022-10-11)</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CodeQL 2.11.0 (2022-09-28)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.10.5.html">CodeQL 2.10.5 (2022-09-13)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.10.4.html">CodeQL 2.10.4 (2022-08-31)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.10.3.html">CodeQL 2.10.3 (2022-08-15)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.10.2.html">CodeQL 2.10.2 (2022-08-02)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.10.1.html">CodeQL 2.10.1 (2022-07-19)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.10.0.html">CodeQL 2.10.0 (2022-06-27)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.9.4.html">CodeQL 2.9.4 (2022-06-20)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.9.3.html">CodeQL 2.9.3 (2022-05-31)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.9.2.html">CodeQL 2.9.2 (2022-05-16)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.9.1.html">CodeQL 2.9.1 (2022-05-05)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.9.0.html">CodeQL 2.9.0 (2022-04-26)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.8.5.html">CodeQL 2.8.5 (2022-04-07)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.8.4.html">CodeQL 2.8.4 (2022-03-29)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.8.3.html">CodeQL 2.8.3 (2022-03-14)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.8.2.html">CodeQL 2.8.2 (2022-02-28)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.8.1.html">CodeQL 2.8.1 (2022-02-15)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.8.0.html">CodeQL 2.8.0 (2022-02-04)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.7.6.html">CodeQL 2.7.6 (2022-01-24)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.7.5.html">CodeQL 2.7.5 (2022-01-17)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.7.3.html">CodeQL 2.7.3 (2021-12-06)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.7.2.html">CodeQL 2.7.2 (2021-11-22)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.7.1.html">CodeQL 2.7.1 (2021-11-15)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.7.0.html">CodeQL 2.7.0 (2021-10-27)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.6.3.html">CodeQL 2.6.3 (2021-10-06)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.6.2.html">CodeQL 2.6.2 (2021-09-21)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.6.1.html">CodeQL 2.6.1 (2021-09-07)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.6.0.html">CodeQL 2.6.0 (2021-08-24)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.5.9.html">CodeQL 2.5.9 (2021-08-09)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.5.8.html">CodeQL 2.5.8 (2021-07-26)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.5.7.html">CodeQL 2.5.7 (2021-07-02)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.5.6.html">CodeQL 2.5.6 (2021-06-22)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.5.5.html">CodeQL 2.5.5 (2021-05-17)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.5.4.html">CodeQL 2.5.4 (2021-05-03)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.5.3.html">CodeQL 2.5.3 (2021-04-30)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.5.2.html">CodeQL 2.5.2 (2021-04-21)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.5.1.html">CodeQL 2.5.1 (2021-04-19)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.5.0.html">CodeQL 2.5.0 (2021-03-26)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.4.6.html">CodeQL 2.4.6 (2021-03-19)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.4.5.html">CodeQL 2.4.5 (2021-03-08)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.4.4.html">CodeQL 2.4.4 (2021-02-12)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.4.3.html">CodeQL 2.4.3 (2021-01-29)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.4.2.html">CodeQL 2.4.2 (2021-01-22)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-cli-2.4.1.html">CodeQL 2.4.1 (2020-12-19)</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../codeql-tools.html">CodeQL tools</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../codeql-glossary.html">CodeQL glossary</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../codeql-language-guides/index.html">CodeQL language guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="../index.html"
+                >CodeQL overview</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="index.html"
+                accesskey="U">CodeQL change logs</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="codeql-2-11-0-2022-09-28">
+<span id="codeql-cli-2-11-0"></span><h1>CodeQL 2.11.0 (2022-09-28)<a class="headerlink" href="#codeql-2-11-0-2022-09-28" title="Permalink to this headline">¶</a></h1>
+<div class="contents local topic" id="contents">
+<p class="topic-title">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#security-coverage" id="toc-entry-1">Security Coverage</a></li>
+<li><a class="reference internal" href="#codeql-cli" id="toc-entry-2">CodeQL CLI</a><ul>
+<li><a class="reference internal" href="#deprecations" id="toc-entry-3">Deprecations</a></li>
+<li><a class="reference internal" href="#miscellaneous" id="toc-entry-4">Miscellaneous</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#query-packs" id="toc-entry-5">Query Packs</a><ul>
+<li><a class="reference internal" href="#bug-fixes" id="toc-entry-6">Bug Fixes</a></li>
+<li><a class="reference internal" href="#minor-analysis-improvements" id="toc-entry-7">Minor Analysis Improvements</a></li>
+<li><a class="reference internal" href="#new-queries" id="toc-entry-8">New Queries</a></li>
+<li><a class="reference internal" href="#query-metadata-changes" id="toc-entry-9">Query Metadata Changes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#language-libraries" id="toc-entry-10">Language Libraries</a><ul>
+<li><a class="reference internal" href="#bug-fixes-1" id="toc-entry-11">Bug Fixes</a></li>
+<li><a class="reference internal" href="#breaking-changes" id="toc-entry-12">Breaking Changes</a></li>
+<li><a class="reference internal" href="#major-analysis-improvements" id="toc-entry-13">Major Analysis Improvements</a></li>
+<li><a class="reference internal" href="#minor-analysis-improvements-1" id="toc-entry-14">Minor Analysis Improvements</a></li>
+<li><a class="reference internal" href="#deprecated-apis" id="toc-entry-15">Deprecated APIs</a></li>
+<li><a class="reference internal" href="#new-features" id="toc-entry-16">New Features</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#shared-libraries" id="toc-entry-17">Shared Libraries</a><ul>
+<li><a class="reference internal" href="#initial-release" id="toc-entry-18">Initial Release</a></li>
+</ul>
+</li>
+</ul>
+</div>
+<p>This is an overview of changes in the CodeQL CLI and relevant CodeQL query and library packs. For additional updates on changes to the CodeQL code scanning experience, check out the <a class="reference external" href="https://github.blog/tag/code-scanning/">code scanning section on the GitHub blog</a>, <a class="reference external" href="https://github.blog/changelog/label/code-scanning/">relevant GitHub Changelog updates</a>, <a class="reference external" href="https://marketplace.visualstudio.com/items/GitHub.vscode-codeql/changelog">changes in the CodeQL extension for Visual Studio Code</a>, and the <a class="reference external" href="https://github.com/github/codeql-action/blob/main/CHANGELOG.md">CodeQL Action changelog</a>.</p>
+<div class="section" id="security-coverage">
+<h2>Security Coverage<a class="headerlink" href="#security-coverage" title="Permalink to this headline">¶</a></h2>
+<p>CodeQL 2.11.0 runs a total of 353 security queries when configured with the Default suite (covering 148 CWE). The Extended suite enables an additional 109 queries (covering 30 more CWE). 4 security queries have been added with this release.</p>
+</div>
+<div class="section" id="codeql-cli">
+<h2>CodeQL CLI<a class="headerlink" href="#codeql-cli" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="deprecations">
+<h3>Deprecations<a class="headerlink" href="#deprecations" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The CodeQL CLI now uses Python 3 to extract both Python 2 and Python 3 databases. Correspondingly, support for using Python 2 to extract Python databases is now deprecated. Starting with version 2.11.3, you will need to install Python 3 to extract Python databases.</li>
+</ul>
+</div>
+<div class="section" id="miscellaneous">
+<h3>Miscellaneous<a class="headerlink" href="#miscellaneous" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li>The build of Eclipse Temurin OpenJDK that is bundled with the CodeQL CLI has been updated to version 17.0.4.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="query-packs">
+<h2>Query Packs<a class="headerlink" href="#query-packs" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bug-fixes">
+<h3>Bug Fixes<a class="headerlink" href="#bug-fixes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="javascript-typescript">
+<h4>JavaScript/TypeScript<a class="headerlink" href="#javascript-typescript" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Fixed a bug in the <code class="code docutils literal notranslate"><span class="pre">js/type-confusion-through-parameter-tampering</span></code> query that would cause it to ignore sanitizers in branching conditions. The query should now report fewer false positives.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="minor-analysis-improvements">
+<h3>Minor Analysis Improvements<a class="headerlink" href="#minor-analysis-improvements" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="c-c">
+<h4>C/C++<a class="headerlink" href="#c-c" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Modernizations from “Cleartext storage of sensitive information in buffer” (<code class="code docutils literal notranslate"><span class="pre">cpp/cleartext-storage-buffer</span></code>) have been ported to the “Cleartext storage of sensitive information in file” (<code class="code docutils literal notranslate"><span class="pre">cpp/cleartext-storage-file</span></code>), “Cleartext transmission of sensitive information” (<code class="code docutils literal notranslate"><span class="pre">cpp/cleartext-transmission</span></code>) and “Cleartext storage of sensitive information in an SQLite database” (<code class="code docutils literal notranslate"><span class="pre">cpp/cleartext-storage-database</span></code>) queries. These changes may result in more correct results and fewer false positive results from these queries.</li>
+<li>The alert message of many queries have been changed to make the message consistent with other languages.</li>
+</ul>
+</div>
+<div class="section" id="c">
+<h4>C#<a class="headerlink" href="#c" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>A new extractor option has been introduced for disabling CIL extraction. Either pass <code class="code docutils literal notranslate"><span class="pre">-Ocil=false</span></code> to the <code class="code docutils literal notranslate"><span class="pre">codeql</span></code> CLI or set the environment variable <code class="code docutils literal notranslate"><span class="pre">CODEQL_EXTRACTOR_CSHARP_OPTION_CIL=false</span></code>.</li>
+<li>The alert message of many queries have been changed to make the message consistent with other languages.</li>
+</ul>
+</div>
+<div class="section" id="golang">
+<h4>Golang<a class="headerlink" href="#golang" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The alert message of many queries have been changed to make the message consistent with other languages.</li>
+</ul>
+</div>
+<div class="section" id="java">
+<h4>Java<a class="headerlink" href="#java" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The Java extractor now populates the <code class="code docutils literal notranslate"><span class="pre">Method</span></code> relating to a <code class="code docutils literal notranslate"><span class="pre">MethodAccess</span></code> consistently for calls using an explicit and implicit <code class="code docutils literal notranslate"><span class="pre">this</span></code> qualifier. Previously if the method <code class="code docutils literal notranslate"><span class="pre">foo</span></code> was inherited from a specialised generic type <code class="code docutils literal notranslate"><span class="pre">ParentType&lt;String&gt;</span></code>, then an explicit call <code class="code docutils literal notranslate"><span class="pre">this.foo()</span></code> would yield a <code class="code docutils literal notranslate"><span class="pre">MethodAccess</span></code> whose <code class="code docutils literal notranslate"><span class="pre">getMethod()</span></code> accessor returned the bound method <code class="code docutils literal notranslate"><span class="pre">ParentType&lt;String&gt;.foo</span></code>, whereas an implicitly-qualified <code class="code docutils literal notranslate"><span class="pre">foo()</span></code> <code class="code docutils literal notranslate"><span class="pre">MethodAccess</span></code>’s <code class="code docutils literal notranslate"><span class="pre">getMethod()</span></code> would return the unbound method <code class="code docutils literal notranslate"><span class="pre">ParentType.foo</span></code>. Now both scenarios produce a bound method. This means that all data-flow queries may return more results where a relevant path transits a call to such an implicitly-qualified call to a member method with a bound generic type, while queries that inspect the result of <code class="code docutils literal notranslate"><span class="pre">MethodAccess.getMethod()</span></code> may need to tolerate bound generic methods in more circumstances. The queries <code class="code docutils literal notranslate"><span class="pre">java/iterator-remove-failure</span></code>, <code class="code docutils literal notranslate"><span class="pre">java/non-static-nested-class</span></code>, <code class="code docutils literal notranslate"><span class="pre">java/internal-representation-exposure</span></code>, <code class="code docutils literal notranslate"><span class="pre">java/subtle-inherited-call</span></code> and <code class="code docutils literal notranslate"><span class="pre">java/deprecated-call</span></code> have been amended to properly handle calls to bound generic methods, and in some instances may now produce more results in the explicit-<code class="code docutils literal notranslate"><span class="pre">this</span></code> case as well.</li>
+<li>Added taint model for arguments of <code class="code docutils literal notranslate"><span class="pre">java.net.URI</span></code> constructors to the queries <code class="code docutils literal notranslate"><span class="pre">java/path-injection</span></code> and <code class="code docutils literal notranslate"><span class="pre">java/path-injection-local</span></code>.</li>
+<li>Added new sinks related to Android’s <code class="code docutils literal notranslate"><span class="pre">AlarmManager</span></code> to the query <code class="code docutils literal notranslate"><span class="pre">java/android/implicit-pendingintents</span></code>.</li>
+<li>The alert message of many queries have been changed to make the message consistent with other languages.</li>
+</ul>
+</div>
+<div class="section" id="javascript-typescript-1">
+<h4>JavaScript/TypeScript<a class="headerlink" href="#javascript-typescript-1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Improved how the JavaScript parser handles ambiguities between plain JavaScript and dialects such as Flow and E4X that use the same file extension. The parser now prefers plain JavaScript if possible, falling back to dialects only if the source code can not be parsed as plain JavaScript. Previously, there were rare cases where parsing would fail because the parser would erroneously attempt to parse dialect-specific syntax in a regular JavaScript file.</li>
+<li>The <code class="code docutils literal notranslate"><span class="pre">js/regexp/always-matches</span></code> query will no longer report an empty regular expression as always matching, as this is often the intended behavior.</li>
+<li>The alert message of many queries have been changed to make the message consistent with other languages.</li>
+</ul>
+</div>
+<div class="section" id="python">
+<h4>Python<a class="headerlink" href="#python" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The alert message of many queries have been changed to make the message consistent with other languages.</li>
+</ul>
+</div>
+<div class="section" id="ruby">
+<h4>Ruby<a class="headerlink" href="#ruby" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The <code class="code docutils literal notranslate"><span class="pre">rb/unsafe-deserialization</span></code> query now includes alerts for user-controlled data passed to <code class="code docutils literal notranslate"><span class="pre">Hash.from_trusted_xml</span></code>, since that method can deserialize YAML embedded in the XML, which in turn can result in deserialization of arbitrary objects.</li>
+<li>The alert message of many queries have been changed to make the message consistent with other languages.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="new-queries">
+<h3>New Queries<a class="headerlink" href="#new-queries" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="c-c-1">
+<h4>C/C++<a class="headerlink" href="#c-c-1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Added a new medium-precision query, <code class="code docutils literal notranslate"><span class="pre">cpp/missing-check-scanf</span></code>, which detects <code class="code docutils literal notranslate"><span class="pre">scanf</span></code> output variables that are used without a proper return-value check to see that they were actually written. A variation of this query was originally contributed as an <a class="reference external" href="https://github.com/github/codeql/pull/8246">experimental query by &#64;ihsinme</a>.</li>
+</ul>
+</div>
+<div class="section" id="java-1">
+<h4>Java<a class="headerlink" href="#java-1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The query “Server-side template injection” (<code class="code docutils literal notranslate"><span class="pre">java/server-side-template-injection</span></code>) has been promoted from experimental to the main query pack. This query was originally <a class="reference external" href="https://github.com/github/codeql/pull/5935">submitted as an experimental query by &#64;porcupineyhairs</a>.</li>
+<li>Added a new query, <code class="code docutils literal notranslate"><span class="pre">java/android/backup-enabled</span></code>, to detect if Android applications allow backups.</li>
+</ul>
+</div>
+<div class="section" id="ruby-1">
+<h4>Ruby<a class="headerlink" href="#ruby-1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Added a new query, <code class="code docutils literal notranslate"><span class="pre">rb/hardcoded-data-interpreted-as-code</span></code>, to detect cases where hardcoded data is executed as code, a technique associated with backdoors.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="query-metadata-changes">
+<h3>Query Metadata Changes<a class="headerlink" href="#query-metadata-changes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="golang-1">
+<h4>Golang<a class="headerlink" href="#golang-1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Added the <code class="code docutils literal notranslate"><span class="pre">security-severity</span></code> tag and CWE tag to the <code class="code docutils literal notranslate"><span class="pre">go/insecure-hostkeycallback</span></code> query.</li>
+</ul>
+</div>
+<div class="section" id="java-2">
+<h4>Java<a class="headerlink" href="#java-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Removed the <code class="code docutils literal notranslate"><span class="pre">&#64;security-severity</span></code> tag from several queries not in the <code class="code docutils literal notranslate"><span class="pre">Security/</span></code> folder that also had missing <code class="code docutils literal notranslate"><span class="pre">security</span></code> tags.</li>
+</ul>
+</div>
+<div class="section" id="python-1">
+<h4>Python<a class="headerlink" href="#python-1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Added the <code class="code docutils literal notranslate"><span class="pre">security-severity</span></code> tag the <code class="code docutils literal notranslate"><span class="pre">py/redos</span></code>, <code class="code docutils literal notranslate"><span class="pre">py/polynomial-redos</span></code>, and <code class="code docutils literal notranslate"><span class="pre">py/regex-injection</span></code> queries.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="language-libraries">
+<h2>Language Libraries<a class="headerlink" href="#language-libraries" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="bug-fixes-1">
+<h3>Bug Fixes<a class="headerlink" href="#bug-fixes-1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="c-c-2">
+<h4>C/C++<a class="headerlink" href="#c-c-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.</li>
+</ul>
+</div>
+<div class="section" id="c-1">
+<h4>C#<a class="headerlink" href="#c-1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.</li>
+</ul>
+</div>
+<div class="section" id="java-3">
+<h4>Java<a class="headerlink" href="#java-3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.</li>
+</ul>
+</div>
+<div class="section" id="python-2">
+<h4>Python<a class="headerlink" href="#python-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.</li>
+</ul>
+</div>
+<div class="section" id="ruby-2">
+<h4>Ruby<a class="headerlink" href="#ruby-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Fixed an issue in the taint tracking analysis where implicit reads were not allowed by default in sinks or additional taint steps that used flow states.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="breaking-changes">
+<h3>Breaking Changes<a class="headerlink" href="#breaking-changes" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="java-4">
+<h4>Java<a class="headerlink" href="#java-4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The <code class="code docutils literal notranslate"><span class="pre">Member.getQualifiedName()</span></code> predicate result now includes the qualified name of the declaring type.</li>
+</ul>
+</div>
+<div class="section" id="javascript-typescript-2">
+<h4>JavaScript/TypeScript<a class="headerlink" href="#javascript-typescript-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Many library models have been rewritten to use dataflow nodes instead of the AST.
+The types of some classes have been changed, and these changes may break existing code.
+Other classes and predicates have been renamed, in these cases the old name is still available as a deprecated feature.</li>
+<li>The basetype of the following list of classes has changed from an expression to a dataflow node, and thus code using these classes might break.
+The fix to these breakages is usually to use <code class="code docutils literal notranslate"><span class="pre">asExpr()</span></code> to get an expression from a dataflow node, or to use <code class="code docutils literal notranslate"><span class="pre">.flow()</span></code> to get a dataflow node from an expression.<ul>
+<li>DOM.qll#WebStorageWrite</li>
+<li>CryptoLibraries.qll#CryptographicOperation</li>
+<li>Express.qll#Express::RequestBodyAccess</li>
+<li>HTTP.qll#HTTP::ResponseBody</li>
+<li>HTTP.qll#HTTP::CookieDefinition</li>
+<li>HTTP.qll#HTTP::ServerDefinition</li>
+<li>HTTP.qll#HTTP::RouteSetup</li>
+<li>NoSQL.qll#NoSql::Query</li>
+<li>SQL.qll#SQL::SqlString</li>
+<li>SQL.qll#SQL::SqlSanitizer</li>
+<li>HTTP.qll#ResponseBody</li>
+<li>HTTP.qll#CookieDefinition</li>
+<li>HTTP.qll#ServerDefinition</li>
+<li>HTTP.qll#RouteSetup</li>
+<li>HTTP.qll#HTTP::RedirectInvocation</li>
+<li>HTTP.qll#RedirectInvocation</li>
+<li>Express.qll#Express::RouterDefinition</li>
+<li>AngularJSCore.qll#LinkFunction</li>
+<li>Connect.qll#Connect::StandardRouteHandler</li>
+<li>CryptoLibraries.qll#CryptographicKeyCredentialsExpr</li>
+<li>AWS.qll#AWS::Credentials</li>
+<li>Azure.qll#Azure::Credentials</li>
+<li>Connect.qll#Connect::Credentials</li>
+<li>DigitalOcean.qll#DigitalOcean::Credentials</li>
+<li>Express.qll#Express::Credentials</li>
+<li>NodeJSLib.qll#NodeJSLib::Credentials</li>
+<li>PkgCloud.qll#PkgCloud::Credentials</li>
+<li>Request.qll#Request::Credentials</li>
+<li>ServiceDefinitions.qll#InjectableFunctionServiceRequest</li>
+<li>SensitiveActions.qll#SensitiveVariableAccess</li>
+<li>SensitiveActions.qll#CleartextPasswordExpr</li>
+<li>Connect.qll#Connect::ServerDefinition</li>
+<li>Restify.qll#Restify::ServerDefinition</li>
+<li>Connect.qll#Connect::RouteSetup</li>
+<li>Express.qll#Express::RouteSetup</li>
+<li>Fastify.qll#Fastify::RouteSetup</li>
+<li>Hapi.qll#Hapi::RouteSetup</li>
+<li>Koa.qll#Koa::RouteSetup</li>
+<li>Restify.qll#Restify::RouteSetup</li>
+<li>NodeJSLib.qll#NodeJSLib::RouteSetup</li>
+<li>Express.qll#Express::StandardRouteHandler</li>
+<li>Express.qll#Express::SetCookie</li>
+<li>Hapi.qll#Hapi::RouteHandler</li>
+<li>HTTP.qll#HTTP::Servers::StandardHeaderDefinition</li>
+<li>HTTP.qll#Servers::StandardHeaderDefinition</li>
+<li>Hapi.qll#Hapi::ServerDefinition</li>
+<li>Koa.qll#Koa::AppDefinition</li>
+<li>SensitiveActions.qll#SensitiveCall</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="ruby-3">
+<h4>Ruby<a class="headerlink" href="#ruby-3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><code class="code docutils literal notranslate"><span class="pre">import</span> <span class="pre">ruby</span></code> no longer brings the standard Ruby AST library into scope; it instead brings a module <code class="code docutils literal notranslate"><span class="pre">Ast</span></code> into scope, which must be imported. Alternatively, it is also possible to import <code class="code docutils literal notranslate"><span class="pre">codeql.ruby.AST</span></code>.</li>
+<li>Changed the <code class="code docutils literal notranslate"><span class="pre">HTTP::Client::Request</span></code> concept from using <code class="code docutils literal notranslate"><span class="pre">MethodCall</span></code> as base class, to using <code class="code docutils literal notranslate"><span class="pre">DataFlow::Node</span></code> as base class. Any class that extends <code class="code docutils literal notranslate"><span class="pre">HTTP::Client::Request::Range</span></code> must be changed, but if you only use the member predicates of <code class="code docutils literal notranslate"><span class="pre">HTTP::Client::Request</span></code>, no changes are required.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="major-analysis-improvements">
+<h3>Major Analysis Improvements<a class="headerlink" href="#major-analysis-improvements" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="java-5">
+<h4>Java<a class="headerlink" href="#java-5" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The virtual dispatch relation used in data flow now favors summary models over source code for dispatch to interface methods from <code class="code docutils literal notranslate"><span class="pre">java.util</span></code> unless there is evidence that a specific source implementation is reachable. This should provide increased precision for any projects that include, for example, custom <code class="code docutils literal notranslate"><span class="pre">List</span></code> or <code class="code docutils literal notranslate"><span class="pre">Map</span></code> implementations.</li>
+</ul>
+</div>
+<div class="section" id="javascript-typescript-3">
+<h4>JavaScript/TypeScript<a class="headerlink" href="#javascript-typescript-3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Added support for TypeScript 4.8.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="minor-analysis-improvements-1">
+<h3>Minor Analysis Improvements<a class="headerlink" href="#minor-analysis-improvements-1" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="java-6">
+<h4>Java<a class="headerlink" href="#java-6" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Added new sinks to the query <code class="code docutils literal notranslate"><span class="pre">java/android/implicit-pendingintents</span></code> to take into account the classes <code class="code docutils literal notranslate"><span class="pre">androidx.core.app.NotificationManagerCompat</span></code> and <code class="code docutils literal notranslate"><span class="pre">androidx.core.app.AlarmManagerCompat</span></code>.</li>
+<li>Added new flow steps for <code class="code docutils literal notranslate"><span class="pre">androidx.core.app.NotificationCompat</span></code> and its inner classes.</li>
+<li>Added flow sinks, sources and summaries for the Kotlin standard library.</li>
+<li>Added flow summary for <code class="code docutils literal notranslate"><span class="pre">org.springframework.data.repository.CrudRepository.save()</span></code>.</li>
+<li>Added new flow steps for the following Android classes:<ul>
+<li><code class="code docutils literal notranslate"><span class="pre">android.content.ContentResolver</span></code></li>
+<li><code class="code docutils literal notranslate"><span class="pre">android.content.ContentProviderClient</span></code></li>
+<li><code class="code docutils literal notranslate"><span class="pre">android.content.ContentProviderOperation</span></code></li>
+<li><code class="code docutils literal notranslate"><span class="pre">android.content.ContentProviderOperation$Builder</span></code></li>
+<li><code class="code docutils literal notranslate"><span class="pre">android.content.ContentProviderResult</span></code></li>
+<li><code class="code docutils literal notranslate"><span class="pre">android.database.Cursor</span></code></li>
+</ul>
+</li>
+<li>Added taint flow models for the <code class="code docutils literal notranslate"><span class="pre">java.lang.String.(charAt|getBytes)</span></code> methods.</li>
+<li>Improved taint flow models for the <code class="code docutils literal notranslate"><span class="pre">java.lang.String.(replace|replaceFirst|replaceAll)</span></code> methods. Additional results may be found where users do not properly sanitize their inputs.</li>
+</ul>
+</div>
+<div class="section" id="javascript-typescript-4">
+<h4>JavaScript/TypeScript<a class="headerlink" href="#javascript-typescript-4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>A model for the <code class="code docutils literal notranslate"><span class="pre">mermaid</span></code> library has been added. XSS queries can now detect flow through the <code class="code docutils literal notranslate"><span class="pre">render</span></code> method of the <code class="code docutils literal notranslate"><span class="pre">mermaid</span></code> library.</li>
+</ul>
+</div>
+<div class="section" id="python-3">
+<h4>Python<a class="headerlink" href="#python-3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Changed <code class="code docutils literal notranslate"><span class="pre">CallNode.getArgByName</span></code> such that it has results for keyword arguments given after a dictionary unpacking argument, as the <code class="code docutils literal notranslate"><span class="pre">bar=2</span></code> argument in <code class="code docutils literal notranslate"><span class="pre">func(foo=1,</span> <span class="pre">**kwargs,</span> <span class="pre">bar=2)</span></code>.</li>
+<li><code class="code docutils literal notranslate"><span class="pre">getStarArg</span></code> member-predicate on <code class="code docutils literal notranslate"><span class="pre">Call</span></code> and <code class="code docutils literal notranslate"><span class="pre">CallNode</span></code> has been changed for calls that have multiple <code class="code docutils literal notranslate"><span class="pre">*args</span></code> arguments (for example <code class="code docutils literal notranslate"><span class="pre">func(42,</span> <span class="pre">*my_args,</span> <span class="pre">*other_args)</span></code>): Instead of producing no results, it will always have a result for the <em>first</em> such <code class="code docutils literal notranslate"><span class="pre">*args</span></code> argument.</li>
+<li>Reads of global/non-local variables (without annotations) inside functions defined on classes now works properly in the case where the class had an attribute defined with the same name as the non-local variable.</li>
+</ul>
+</div>
+<div class="section" id="ruby-4">
+<h4>Ruby<a class="headerlink" href="#ruby-4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Uses of <code class="code docutils literal notranslate"><span class="pre">ActionView::FileSystemResolver</span></code> are now recognized as filesystem accesses.</li>
+<li>Accesses of ActiveResource models are now recognized as HTTP requests.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="deprecated-apis">
+<h3>Deprecated APIs<a class="headerlink" href="#deprecated-apis" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="c-c-3">
+<h4>C/C++<a class="headerlink" href="#c-c-3" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+The old name still exists as a deprecated alias.</li>
+</ul>
+</div>
+<div class="section" id="c-2">
+<h4>C#<a class="headerlink" href="#c-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+The old name still exists as a deprecated alias.</li>
+</ul>
+</div>
+<div class="section" id="golang-2">
+<h4>Golang<a class="headerlink" href="#golang-2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+The old name still exists as a deprecated alias.</li>
+</ul>
+</div>
+<div class="section" id="java-7">
+<h4>Java<a class="headerlink" href="#java-7" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>The predicate <code class="code docutils literal notranslate"><span class="pre">Annotation.getAValue()</span></code> has been deprecated because it might lead to obtaining the value of the wrong annotation element by accident. <code class="code docutils literal notranslate"><span class="pre">getValue(string)</span></code> (or one of the value type specific predicates) should be used to explicitly specify the name of the annotation element.</li>
+<li>The predicate <code class="code docutils literal notranslate"><span class="pre">Annotation.getAValue(string)</span></code> has been renamed to <code class="code docutils literal notranslate"><span class="pre">getAnArrayValue(string)</span></code>.</li>
+<li>The predicate <code class="code docutils literal notranslate"><span class="pre">SuppressWarningsAnnotation.getASuppressedWarningLiteral()</span></code> has been deprecated because it unnecessarily restricts the result type; <code class="code docutils literal notranslate"><span class="pre">getASuppressedWarning()</span></code> should be used instead.</li>
+<li>The predicates <code class="code docutils literal notranslate"><span class="pre">TargetAnnotation.getATargetExpression()</span></code> and <code class="code docutils literal notranslate"><span class="pre">RetentionAnnotation.getRetentionPolicyExpression()</span></code> have been deprecated because getting the enum constant read expression is rarely useful, instead the corresponding predicates for getting the name of the referenced enum constants should be used.</li>
+</ul>
+</div>
+<div class="section" id="javascript-typescript-5">
+<h4>JavaScript/TypeScript<a class="headerlink" href="#javascript-typescript-5" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+The old name still exists as a deprecated alias.</li>
+</ul>
+</div>
+<div class="section" id="python-4">
+<h4>Python<a class="headerlink" href="#python-4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Some unused predicates in <code class="code docutils literal notranslate"><span class="pre">SsaDefinitions.qll</span></code>, <code class="code docutils literal notranslate"><span class="pre">TObject.qll</span></code>, <code class="code docutils literal notranslate"><span class="pre">protocols.qll</span></code>, and the <code class="code docutils literal notranslate"><span class="pre">pointsto/</span></code> folder have been deprecated.</li>
+<li>Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+The old name still exists as a deprecated alias.</li>
+</ul>
+</div>
+<div class="section" id="ruby-5">
+<h4>Ruby<a class="headerlink" href="#ruby-5" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Some classes/modules with upper-case acronyms in their name have been renamed to follow our style-guide.
+The old name still exists as a deprecated alias.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="new-features">
+<h3>New Features<a class="headerlink" href="#new-features" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="c-c-4">
+<h4>C/C++<a class="headerlink" href="#c-c-4" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Added subclasses of <code class="code docutils literal notranslate"><span class="pre">BuiltInOperations</span></code> for <code class="code docutils literal notranslate"><span class="pre">__is_same</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_function</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_layout_compatible</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_pointer_interconvertible_base_of</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_array</span></code>, <code class="code docutils literal notranslate"><span class="pre">__array_rank</span></code>, <code class="code docutils literal notranslate"><span class="pre">__array_extent</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_arithmetic</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_complete_type</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_compound</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_const</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_floating_point</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_fundamental</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_integral</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_lvalue_reference</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_member_function_pointer</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_member_object_pointer</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_member_pointer</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_object</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_pointer</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_reference</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_rvalue_reference</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_scalar</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_signed</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_unsigned</span></code>, <code class="code docutils literal notranslate"><span class="pre">__is_void</span></code>, and <code class="code docutils literal notranslate"><span class="pre">__is_volatile</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="java-8">
+<h4>Java<a class="headerlink" href="#java-8" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Added a new predicate, <code class="code docutils literal notranslate"><span class="pre">allowsBackup</span></code>, in the <code class="code docutils literal notranslate"><span class="pre">AndroidApplicationXmlElement</span></code> class. This predicate detects if the application element does not disable the <code class="code docutils literal notranslate"><span class="pre">android:allowBackup</span></code> attribute.</li>
+<li>The predicates of the CodeQL class <code class="code docutils literal notranslate"><span class="pre">Annotation</span></code> have been improved:<ul>
+<li>Convenience value type specific predicates have been added, such as <code class="code docutils literal notranslate"><span class="pre">getEnumConstantValue(string)</span></code> or <code class="code docutils literal notranslate"><span class="pre">getStringValue(string)</span></code>.</li>
+<li>Convenience predicates for elements with array values have been added, such as <code class="code docutils literal notranslate"><span class="pre">getAnEnumConstantArrayValue(string)</span></code>. While the behavior of the existing predicates has not changed, usage of them should be reviewed (or replaced with the newly added predicate) to make sure they work correctly for elements with array values.</li>
+<li>Some internal CodeQL usage of the <code class="code docutils literal notranslate"><span class="pre">Annotation</span></code> predicates has been adjusted and corrected; this might affect the results of some queries.</li>
+</ul>
+</li>
+<li>New predicates have been added to the CodeQL class <code class="code docutils literal notranslate"><span class="pre">Annotatable</span></code> to support getting declared and associated annotations. As part of that, <code class="code docutils literal notranslate"><span class="pre">hasAnnotation()</span></code> has been changed to also consider inherited annotations, to be consistent with <code class="code docutils literal notranslate"><span class="pre">hasAnnotation(string,</span> <span class="pre">string)</span></code> and <code class="code docutils literal notranslate"><span class="pre">getAnAnnotation()</span></code>. The newly added predicate <code class="code docutils literal notranslate"><span class="pre">hasDeclaredAnnotation()</span></code> can be used as replacement for the old functionality.</li>
+<li>New predicates have been added to the CodeQL class <code class="code docutils literal notranslate"><span class="pre">AnnotationType</span></code> to simplify getting information about usage of JDK meta-annotations, such as <code class="code docutils literal notranslate"><span class="pre">&#64;Retention</span></code>.</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="shared-libraries">
+<h2>Shared Libraries<a class="headerlink" href="#shared-libraries" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="initial-release">
+<h3>Initial Release<a class="headerlink" href="#initial-release" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="static-single-assignment-ssa">
+<h4>Static Single Assignment (SSA)<a class="headerlink" href="#static-single-assignment-ssa" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Initial release. Extracted common SSA code into a library pack to share code between languages.</li>
+</ul>
+</div>
+<div class="section" id="database-of-common-typographical-errors">
+<h4>Database of Common Typographical Errors<a class="headerlink" href="#database-of-common-typographical-errors" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li>Initial release. Share the database of common typographical errors between languages.</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

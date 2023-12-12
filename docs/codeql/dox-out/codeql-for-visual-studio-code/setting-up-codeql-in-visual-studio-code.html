@@ -1,0 +1,333 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Setting up CodeQL in Visual Studio Code &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Analyzing your projects" href="analyzing-your-projects.html" />
+    <link rel="prev" title="About CodeQL for Visual Studio Code" href="about-codeql-for-visual-studio-code.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL for Visual Studio Code</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="about-codeql-for-visual-studio-code.html">About CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Setting up CodeQL in Visual Studio Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analyzing-your-projects.html">Analyzing your projects</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploring-the-structure-of-your-source-code.html">Exploring the structure of your source code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="exploring-data-flow-with-path-queries.html">Exploring data flow with path queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running-codeql-queries-at-scale-with-mrva.html">Running CodeQL queries at scale with multi-repository variant analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="testing-codeql-queries-in-visual-studio-code.html">Testing CodeQL queries in Visual Studio Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="working-with-codeql-packs-in-visual-studio-code.html">Working with CodeQL packs in Visual Studio Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="using-the-codeql-model-editor.html">Using the CodeQL model editor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="customizing-settings.html">Customizing settings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting-codeql-for-visual-studio-code.html">Troubleshooting CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l2"><a class="reference internal" href="troubleshooting-variant-analysis.html">Troubleshooting variant analysis</a></li>
+<li class="toctree-l2"><a class="reference internal" href="about-telemetry-in-codeql-for-visual-studio-code.html">About telemetry in CodeQL for Visual Studio Code</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-language-guides/index.html">CodeQL language guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                accesskey="U">CodeQL for Visual Studio Code</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="setting-up-codeql-in-visual-studio-code-1">
+<span id="setting-up-codeql-in-visual-studio-code"></span><h1>Setting up CodeQL in Visual Studio Code<a class="headerlink" href="#setting-up-codeql-in-visual-studio-code-1" title="Permalink to this headline">¶</a></h1>
+<p>You can install and configure the CodeQL extension in Visual Studio Code.</p>
+<blockquote class="pull-quote">
+<div><p>License notice</p>
+<p>If you don’t have an Enterprise license then, by installing this product, you are agreeing to the
+<a class="reference external" href="https://securitylab.github.com/tools/codeql/license">GitHub CodeQL Terms and Conditions</a>.</p>
+<p>GitHub CodeQL is licensed on a per-user basis. Under the license restrictions,
+you can use CodeQL to perform the following tasks:</p>
+<ul class="simple">
+<li>To perform academic research.</li>
+<li>To demonstrate the software.</li>
+<li>To test CodeQL queries that are released under an OSI-approved
+License to confirm that new versions of those queries continue to
+find the right vulnerabilities.</li>
+</ul>
+<p>where “OSI-approved License” means an Open Source Initiative
+(OSI)-approved open source software license.</p>
+<p>If you are working with an Open Source Codebase (that is, a codebase that is
+released under an OSI-approved License) you can also use CodeQL for the following tasks:</p>
+<ul class="simple">
+<li>To perform analysis of the Open Source Codebase.</li>
+<li>If the Open Source Codebase is hosted and maintained on
+GitHub.com, to generate CodeQL databases for or during automated
+analysis, continuous integration, or continuous delivery.</li>
+</ul>
+<p>CodeQL can’t be used for automated analysis, continuous integration or
+continuous delivery, whether as part of normal software engineering processes
+or otherwise, except in the express cases set forth herein. For these uses,
+contact the <a class="reference external" href="https://enterprise.github.com/contact">sales team</a>.</p>
+</div></blockquote>
+<div class="section" id="prerequisites">
+<h2>Prerequisites<a class="headerlink" href="#prerequisites" title="Permalink to this headline">¶</a></h2>
+<p>The CodeQL extension requires a minimum of Visual Studio Code 1.39. Older versions are not supported.</p>
+</div>
+<div class="section" id="installing-the-extension">
+<h2>Installing the extension<a class="headerlink" href="#installing-the-extension" title="Permalink to this headline">¶</a></h2>
+<p>You can install the CodeQL extension using any of the normal methods for installing a VS Code extension:</p>
+<ul class="simple">
+<li>Go to the <a class="reference external" href="https://marketplace.visualstudio.com/items?itemName=GitHub.vscode-codeql">Visual Studio Code Marketplace</a> in your browser and click <strong>Install</strong>.</li>
+<li>In the Extensions view (<strong>Ctrl+Shift+X</strong> or <strong>Cmd+Shift+X</strong>), search for <code class="docutils literal notranslate"><span class="pre">CodeQL</span></code>, then select <strong>Install</strong>.</li>
+<li>Download the <a class="reference external" href="https://github.com/github/vscode-codeql/releases">CodeQL VSIX file</a>. Then, in the Extensions view, click the ellipsis representing the <strong>Views and More Actions…</strong> menu, select <strong>Install from VSIX</strong>, then select the CodeQL VSIX file.</li>
+</ul>
+</div>
+<div class="section" id="configuring-access-to-the-codeql-cli">
+<h2>Configuring access to the CodeQL CLI<a class="headerlink" href="#configuring-access-to-the-codeql-cli" title="Permalink to this headline">¶</a></h2>
+<p>The extension uses the CodeQL CLI to compile and run queries.</p>
+<p>If you already have the CLI installed and added to your <code class="docutils literal notranslate"><span class="pre">PATH</span></code>, the extension uses that version. This might be the case if you create your own CodeQL databases instead of downloading them from GitHub.com. For more information, see <a class="reference external" href="https://docs.github.com/en/code-security/codeql-cli">CodeQL CLI</a>.”</p>
+<p>Otherwise, the extension automatically manages access to the executable of the CLI for you. This ensures that the CLI is compatible with the CodeQL extension. You can also check for updates with the <strong>CodeQL: Check for CLI Updates</strong> command.</p>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>The extension-managed CLI is not accessible from the terminal.
+If you intend to use the CLI outside of the extension (for example to create databases), we recommend that you install your own copy of the CLI.
+To avoid having two copies of the CLI on your machine, you can point the CodeQL CLI <strong>Executable Path</strong> setting to your existing copy of the CLI.</p>
+</div></blockquote>
+<p>If you want the extension to use a specific version of the CLI, set the CodeQL CLI <strong>Executable Path</strong> to the location of the executable file for the CLI.
+That is, the file named <code class="docutils literal notranslate"><span class="pre">codeql</span></code> (Linux/Mac) or <code class="docutils literal notranslate"><span class="pre">codeql.exe</span></code> (Windows). For more information, see “<a class="reference internal" href="customizing-settings.html#customizing-settings"><span class="std std-ref">Customizing settings</span></a>.”</p>
+<p>If you have any difficulty setting up access to the CodeQL CLI, check the CodeQL Extension Log for error messages. For more information, see “<a class="reference internal" href="troubleshooting-codeql-for-visual-studio-code.html"><span class="doc">Troubleshooting CodeQL for Visual Studio Code</span></a>.”</p>
+</div>
+<div class="section" id="setting-up-a-codeql-workspace">
+<h2>Setting up a CodeQL workspace<a class="headerlink" href="#setting-up-a-codeql-workspace" title="Permalink to this headline">¶</a></h2>
+<p>When you’re working with CodeQL, you need access to the standard CodeQL libraries. This also makes a wide variety of queries available to explore.</p>
+<p>There are two ways to do this:</p>
+<ul class="simple">
+<li>Recommended, use the “starter” workspace. This is maintained as a Git repository which makes it easy to keep up to date with changes to the libraries. For more information, see “<a class="reference internal" href="#starter-workspace"><span class="std std-ref">Using the starter workspace</span></a>” below.</li>
+<li>More advanced, add the CodeQL libraries and queries to an existing workspace. For more information, see “<a class="reference internal" href="#existing-workspace"><span class="std std-ref">Updating an existing workspace for CodeQL</span></a>” below.</li>
+</ul>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>For CLI users there is a third option: If you have followed the instructions in “<a class="reference external" href="https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/getting-started-with-the-codeql-cli">Getting started with the CodeQL CLI</a>” to create a CodeQL directory (for example <code class="docutils literal notranslate"><span class="pre">codeql-home</span></code>) containing the CodeQL libraries, you can open this directory in VS Code. This also gives the extension access to the CodeQL libraries.</p>
+</div></blockquote>
+<div class="section" id="using-the-starter-workspace">
+<span id="starter-workspace"></span><h3>Using the starter workspace<a class="headerlink" href="#using-the-starter-workspace" title="Permalink to this headline">¶</a></h3>
+<p>The starter workspace is a Git repository. It contains:</p>
+<ul class="simple">
+<li>The <a class="reference external" href="https://github.com/github/codeql">repository of CodeQL libraries and queries</a> for all supported languages. This is included as a submodule, so it can be updated without affecting your custom queries.</li>
+<li>A series of folders named <code class="docutils literal notranslate"><span class="pre">codeql-custom-queries-&lt;language&gt;</span></code>. These are ready for you to start developing your own custom queries for each language, using the standard libraries. There are some example queries to get you started.</li>
+</ul>
+<p>To use the starter workspace:</p>
+<ol class="arabic simple">
+<li><dl class="first docutils">
+<dt>Clone the <a class="reference external" href="https://github.com/github/vscode-codeql-starter/">https://github.com/github/vscode-codeql-starter/</a> repository to your computer:</dt>
+<dd><ul class="first last">
+<li>Make sure you include the submodules, either by using <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">--recursive</span></code>, or using by <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">update</span> <span class="pre">--init</span> <span class="pre">--remote</span></code> after cloning.</li>
+<li>Use <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">submodule</span> <span class="pre">update</span> <span class="pre">--remote</span></code> regularly to keep the submodules up to date.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li>In VS Code, use the <strong>File</strong> &gt; <strong>Open Workspace</strong> option to open the <code class="docutils literal notranslate"><span class="pre">vscode-codeql-starter.code-workspace</span></code> file from your checkout of the workspace repository.</li>
+</ol>
+<p>Remember to update the <code class="docutils literal notranslate"><span class="pre">ql</span></code> submodule in the starter workspace periodically to ensure that it remains compatible with newer versions of the VS Code extension and the CodeQL CLI.</p>
+</div>
+<div class="section" id="updating-an-existing-workspace-for-codeql">
+<span id="existing-workspace"></span><h3>Updating an existing workspace for CodeQL<a class="headerlink" href="#updating-an-existing-workspace-for-codeql" title="Permalink to this headline">¶</a></h3>
+<p>You can add the CodeQL libraries to an existing workspace by making a local clone of the CodeQL repository directly: <a class="reference external" href="https://github.com/github/codeql">https://github.com/github/codeql</a>.</p>
+<p>To make the standard libraries available in your workspace:</p>
+<ol class="arabic simple">
+<li>Select <strong>File</strong> &gt; <strong>Add Folder to Workspace</strong>, and choose your local checkout of the <code class="docutils literal notranslate"><span class="pre">github/codeql</span></code> repository.</li>
+<li>Create one new folder per target language, using either the <strong>New Folder</strong> or <strong>Add Folder to Workspace</strong> options, to hold custom queries and libraries.</li>
+<li>Create a <code class="docutils literal notranslate"><span class="pre">qlpack.yml</span></code> file in each target language folder. This tells the CodeQL CLI the target language for that folder and what its dependencies are. (The <code class="docutils literal notranslate"><span class="pre">main</span></code> branch of <code class="docutils literal notranslate"><span class="pre">github/codeql</span></code> already has these files.) CodeQL will look for the dependencies in all the open workspace folders, or on the user’s search path.</li>
+</ol>
+<p>For example, to make a custom CodeQL folder called <code class="docutils literal notranslate"><span class="pre">my-custom-cpp-pack</span></code> depend on the CodeQL standard library for C++, create a <code class="docutils literal notranslate"><span class="pre">qlpack.yml</span></code> file with the following contents:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">name</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">my-custom-cpp-pack</span>
+<span class="nt">version</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.0.0</span>
+<span class="nt">libraryPathDependencies</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">codeql/cpp-all</span>
+</pre></div>
+</div>
+<p>For more information about why you need to add a <code class="docutils literal notranslate"><span class="pre">qlpack.yml</span></code> file, see “<a class="reference external" href="https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs">About CodeQL packs</a>.”</p>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>“<a class="reference internal" href="analyzing-your-projects.html"><span class="doc">Analyzing your projects</span></a>”</li>
+<li>“<a class="reference external" href="https://docs.github.com/en/code-security/codeql-cli">CodeQL CLI</a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

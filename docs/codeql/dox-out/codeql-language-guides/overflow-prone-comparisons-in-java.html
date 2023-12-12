@@ -1,0 +1,370 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Overflow-prone comparisons in Java and Kotlin &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Navigating the call graph" href="navigating-the-call-graph.html" />
+    <link rel="prev" title="Types in Java and Kotlin" href="types-in-java.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-java-code.html">Basic query for Java and Kotlin code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-java.html">CodeQL library for Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-java.html">Analyzing data flow in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types-in-java.html">Types in Java and Kotlin</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Overflow-prone comparisons in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="navigating-the-call-graph.html">Navigating the call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="annotations-in-java.html">Annotations in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="javadoc.html">Javadoc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="working-with-source-locations.html">Working with source locations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-java-programs.html">Abstract syntax tree classes for working with Java and Kotlin programs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customizing-library-models-for-java-and-kotlin.html">Customizing library models for Java and Kotlin</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-java.html"
+                accesskey="U">CodeQL for Java and Kotlin</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="overflow-prone-comparisons-in-java-and-kotlin">
+<span id="overflow-prone-comparisons-in-java"></span><h1>Overflow-prone comparisons in Java and Kotlin<a class="headerlink" href="#overflow-prone-comparisons-in-java-and-kotlin" title="Permalink to this headline">¶</a></h1>
+<p>You can use CodeQL to check for comparisons in Java/Kotlin code where one side of the comparison is prone to overflow.</p>
+<blockquote>
+<div><blockquote class="pull-quote">
+<div><p>Note</p>
+<p>CodeQL analysis for Kotlin is currently in beta. During the beta, analysis of Kotlin code,
+and the accompanying documentation, will not be as comprehensive as for other languages.</p>
+</div></blockquote>
+</div></blockquote>
+<div class="section" id="about-this-article">
+<h2>About this article<a class="headerlink" href="#about-this-article" title="Permalink to this headline">¶</a></h2>
+<p>In this tutorial article you’ll write a query for finding comparisons between integers and long integers in loops that may lead to non-termination due to overflow.</p>
+<p>To begin, consider this code snippet:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kt">void</span> <span class="nf">foo</span><span class="p">(</span><span class="kt">long</span> <span class="n">l</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">l</span><span class="p">;</span> <span class="n">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// do something</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">l</span></code> is bigger than 2<sup>31</sup>- 1 (the largest positive value of type <code class="docutils literal notranslate"><span class="pre">int</span></code>), then this loop will never terminate: <code class="docutils literal notranslate"><span class="pre">i</span></code> will start at zero, being incremented all the way up to 2<sup>31</sup>- 1, which is still smaller than <code class="docutils literal notranslate"><span class="pre">l</span></code>. When it is incremented once more, an arithmetic overflow occurs, and <code class="docutils literal notranslate"><span class="pre">i</span></code> becomes -2<sup>31</sup>, which also is smaller than <code class="docutils literal notranslate"><span class="pre">l</span></code>! Eventually, <code class="docutils literal notranslate"><span class="pre">i</span></code> will reach zero again, and the cycle repeats.</p>
+<blockquote class="pull-quote">
+<div><p>More about overflow</p>
+<p>All primitive numeric types have a maximum value, beyond which they will wrap around to their lowest possible value (called an “overflow”). For <code class="docutils literal notranslate"><span class="pre">int</span></code>, this maximum value is 2<sup>31</sup>- 1. Type <code class="docutils literal notranslate"><span class="pre">long</span></code> can accommodate larger values up to a maximum of 2<sup>63</sup>- 1. In this example, this means that <code class="docutils literal notranslate"><span class="pre">l</span></code> can take on a value that is higher than the maximum for type <code class="docutils literal notranslate"><span class="pre">int</span></code>; <code class="docutils literal notranslate"><span class="pre">i</span></code> will never be able to reach this value, instead overflowing and returning to a low value.</p>
+</div></blockquote>
+<p>We’re going to develop a query that finds code that looks like it might exhibit this kind of behavior. We’ll be using several of the standard library classes for representing statements and functions. For a full list, see “<a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-java-programs.html"><span class="doc">Abstract syntax tree classes for working with Java programs</span></a>.”</p>
+</div>
+<div class="section" id="initial-query">
+<h2>Initial query<a class="headerlink" href="#initial-query" title="Permalink to this headline">¶</a></h2>
+<p>We’ll start by writing a query that finds less-than expressions (CodeQL class <code class="docutils literal notranslate"><span class="pre">LTExpr</span></code>) where the left operand is of type <code class="docutils literal notranslate"><span class="pre">int</span></code> and the right operand is of type <code class="docutils literal notranslate"><span class="pre">long</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">LTExpr</span> <span class="n">expr</span>
+<span class="k">where</span> <span class="n">expr</span><span class="p">.</span><span class="n">getLeftOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">().</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;int&quot;</span><span class="p">)</span> <span class="k">and</span>
+    <span class="n">expr</span><span class="p">.</span><span class="n">getRightOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">().</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;long&quot;</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">expr</span>
+</pre></div>
+</div>
+<p>This query usually finds results on most codebases.</p>
+<p>Notice that we use the predicate <code class="docutils literal notranslate"><span class="pre">getType</span></code> (available on all subclasses of <code class="docutils literal notranslate"><span class="pre">Expr</span></code>) to determine the type of the operands. Types, in turn, define the <code class="docutils literal notranslate"><span class="pre">hasName</span></code> predicate, which allows us to identify the primitive types <code class="docutils literal notranslate"><span class="pre">int</span></code> and <code class="docutils literal notranslate"><span class="pre">long</span></code>. As it stands, this query finds <em>all</em> less-than expressions comparing <code class="docutils literal notranslate"><span class="pre">int</span></code> and <code class="docutils literal notranslate"><span class="pre">long</span></code>, but in fact we are only interested in comparisons that are part of a loop condition. Also, we want to filter out comparisons where either operand is constant, since these are less likely to be real bugs. The revised query looks like this:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">LTExpr</span> <span class="n">expr</span>
+<span class="k">where</span> <span class="n">expr</span><span class="p">.</span><span class="n">getLeftOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">().</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;int&quot;</span><span class="p">)</span> <span class="k">and</span>
+    <span class="n">expr</span><span class="p">.</span><span class="n">getRightOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">().</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;long&quot;</span><span class="p">)</span> <span class="k">and</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">LoopStmt</span> <span class="n">l</span> <span class="o">|</span> <span class="n">l</span><span class="p">.</span><span class="n">getCondition</span><span class="p">().</span><span class="n">getAChildExpr</span><span class="o">*</span><span class="p">()</span> <span class="o">=</span> <span class="n">expr</span><span class="p">)</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">expr</span><span class="p">.</span><span class="n">getAnOperand</span><span class="p">().</span><span class="n">isCompileTimeConstant</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">expr</span>
+</pre></div>
+</div>
+<p>Notice that fewer results are found.</p>
+<p>The class <code class="docutils literal notranslate"><span class="pre">LoopStmt</span></code> is a common superclass of all loops, including, in particular, <code class="docutils literal notranslate"><span class="pre">for</span></code> loops as in our example above. While different kinds of loops have different syntax, they all have a loop condition, which can be accessed through predicate <code class="docutils literal notranslate"><span class="pre">getCondition</span></code>. We use the reflexive transitive closure operator <code class="docutils literal notranslate"><span class="pre">*</span></code> applied to the <code class="docutils literal notranslate"><span class="pre">getAChildExpr</span></code> predicate to express the requirement that <code class="docutils literal notranslate"><span class="pre">expr</span></code> should be nested inside the loop condition. In particular, it can be the loop condition itself.</p>
+<p>The final conjunct in the <code class="docutils literal notranslate"><span class="pre">where</span></code> clause takes advantage of the fact that <a class="reference internal" href="../ql-language-reference/predicates.html#predicates"><span class="std std-ref">predicates</span></a> can return more than one value (they are really relations). In particular, <code class="docutils literal notranslate"><span class="pre">getAnOperand</span></code> may return <em>either</em> operand of <code class="docutils literal notranslate"><span class="pre">expr</span></code>, so <code class="docutils literal notranslate"><span class="pre">expr.getAnOperand().isCompileTimeConstant()</span></code> holds if at least one of the operands is constant. Negating this condition means that the query will only find expressions where <em>neither</em> of the operands is constant.</p>
+</div>
+<div class="section" id="generalizing-the-query">
+<h2>Generalizing the query<a class="headerlink" href="#generalizing-the-query" title="Permalink to this headline">¶</a></h2>
+<p>Of course, comparisons between <code class="docutils literal notranslate"><span class="pre">int</span></code> and <code class="docutils literal notranslate"><span class="pre">long</span></code> are not the only problematic case: any less-than comparison between a narrower and a wider type is potentially suspect, and less-than-or-equals, greater-than, and greater-than-or-equals comparisons are just as problematic as less-than comparisons.</p>
+<p>In order to compare the ranges of types, we define a predicate that returns the width (in bits) of a given integral type:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">width</span><span class="p">(</span><span class="n">PrimitiveType</span> <span class="n">pt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;byte&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">result</span><span class="o">=</span><span class="m">8</span><span class="p">)</span> <span class="k">or</span>
+    <span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;short&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">result</span><span class="o">=</span><span class="m">16</span><span class="p">)</span> <span class="k">or</span>
+    <span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;char&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">result</span><span class="o">=</span><span class="m">16</span><span class="p">)</span> <span class="k">or</span>
+    <span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;int&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">result</span><span class="o">=</span><span class="m">32</span><span class="p">)</span> <span class="k">or</span>
+    <span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;long&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">result</span><span class="o">=</span><span class="m">64</span><span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We now want to generalize our query to apply to any comparison where the width of the type on the smaller end of the comparison is less than the width of the type on the greater end. Let’s call such a comparison <em>overflow prone</em>, and introduce an abstract class to model it:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="kr">abstract </span><span class="k">class</span> <span class="n">OverflowProneComparison</span> <span class="k">extends</span> <span class="n">ComparisonExpr</span> <span class="p">{</span>
+    <span class="n">Expr</span> <span class="n">getLesserOperand</span><span class="p">()</span> <span class="p">{</span> <span class="k">none</span><span class="p">()</span> <span class="p">}</span>
+    <span class="n">Expr</span> <span class="n">getGreaterOperand</span><span class="p">()</span> <span class="p">{</span> <span class="k">none</span><span class="p">()</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>There are two concrete child classes of this class: one for <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> or <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> comparisons, and one for <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> or <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> comparisons. In both cases, we implement the constructor in such a way that it only matches the expressions we want:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">LTOverflowProneComparison</span> <span class="k">extends</span> <span class="n">OverflowProneComparison</span> <span class="p">{</span>
+    <span class="n">LTOverflowProneComparison</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="n">LEExpr</span> <span class="k">or</span> <span class="k">this</span> <span class="k">instanceof</span> <span class="n">LTExpr</span><span class="p">)</span> <span class="k">and</span>
+        <span class="n">width</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">getLeftOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">())</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">getRightOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="n">GTOverflowProneComparison</span> <span class="k">extends</span> <span class="n">OverflowProneComparison</span> <span class="p">{</span>
+    <span class="n">GTOverflowProneComparison</span><span class="p">()</span> <span class="p">{</span>
+        <span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="n">GEExpr</span> <span class="k">or</span> <span class="k">this</span> <span class="k">instanceof</span> <span class="n">GTExpr</span><span class="p">)</span> <span class="k">and</span>
+        <span class="n">width</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">getRightOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">())</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">getLeftOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">())</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now we rewrite our query to make use of these new classes:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="c1">// Return the width (in bits) of a given integral type</span>
+<span class="kt">int</span> <span class="n">width</span><span class="p">(</span><span class="n">PrimitiveType</span> <span class="n">pt</span><span class="p">)</span> <span class="p">{</span>
+<span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;byte&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">result</span><span class="o">=</span><span class="m">8</span><span class="p">)</span> <span class="k">or</span>
+<span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;short&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">result</span><span class="o">=</span><span class="m">16</span><span class="p">)</span> <span class="k">or</span>
+<span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;char&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">result</span><span class="o">=</span><span class="m">16</span><span class="p">)</span> <span class="k">or</span>
+<span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;int&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">result</span><span class="o">=</span><span class="m">32</span><span class="p">)</span> <span class="k">or</span>
+<span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;long&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">result</span><span class="o">=</span><span class="m">64</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="c1">// Find any comparison where the width of the type on the smaller end of</span>
+<span class="c1">// the comparison is less than the width of the type on the greater end</span>
+<span class="kr">abstract </span><span class="k">class</span> <span class="n">OverflowProneComparison</span> <span class="k">extends</span> <span class="n">ComparisonExpr</span> <span class="p">{</span>
+<span class="n">Expr</span> <span class="n">getLesserOperand</span><span class="p">()</span> <span class="p">{</span> <span class="k">none</span><span class="p">()</span> <span class="p">}</span>
+<span class="n">Expr</span> <span class="n">getGreaterOperand</span><span class="p">()</span> <span class="p">{</span> <span class="k">none</span><span class="p">()</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Return `&lt;=` and `&lt;` comparisons</span>
+<span class="k">class</span> <span class="n">LTOverflowProneComparison</span> <span class="k">extends</span> <span class="n">OverflowProneComparison</span> <span class="p">{</span>
+<span class="n">LTOverflowProneComparison</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="n">LEExpr</span> <span class="k">or</span> <span class="k">this</span> <span class="k">instanceof</span> <span class="n">LTExpr</span><span class="p">)</span> <span class="k">and</span>
+    <span class="n">width</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">getLeftOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">())</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">getRightOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">())</span>
+<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="c1">// Return `&gt;=` and `&gt;` comparisons</span>
+<span class="k">class</span> <span class="n">GTOverflowProneComparison</span> <span class="k">extends</span> <span class="n">OverflowProneComparison</span> <span class="p">{</span>
+<span class="n">GTOverflowProneComparison</span><span class="p">()</span> <span class="p">{</span>
+    <span class="p">(</span><span class="k">this</span> <span class="k">instanceof</span> <span class="n">GEExpr</span> <span class="k">or</span> <span class="k">this</span> <span class="k">instanceof</span> <span class="n">GTExpr</span><span class="p">)</span> <span class="k">and</span>
+    <span class="n">width</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">getRightOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">())</span> <span class="o">&lt;</span> <span class="n">width</span><span class="p">(</span><span class="k">this</span><span class="p">.</span><span class="n">getLeftOperand</span><span class="p">().</span><span class="n">getType</span><span class="p">())</span>
+<span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">from</span> <span class="n">OverflowProneComparison</span> <span class="n">expr</span>
+<span class="k">where</span> <span class="k">exists</span><span class="p">(</span><span class="n">LoopStmt</span> <span class="n">l</span> <span class="o">|</span> <span class="n">l</span><span class="p">.</span><span class="n">getCondition</span><span class="p">().</span><span class="n">getAChildExpr</span><span class="o">*</span><span class="p">()</span> <span class="o">=</span> <span class="n">expr</span><span class="p">)</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">expr</span><span class="p">.</span><span class="n">getAnOperand</span><span class="p">().</span><span class="n">isCompileTimeConstant</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">expr</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/src">CodeQL queries for Java</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/examples">Example queries for Java</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/java/">CodeQL library reference for Java</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

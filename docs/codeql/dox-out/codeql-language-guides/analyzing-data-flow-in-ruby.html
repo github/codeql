@@ -1,0 +1,574 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Analyzing data flow in Ruby &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using API graphs in Ruby" href="using-api-graphs-in-ruby.html" />
+    <link rel="prev" title="Abstract syntax tree classes for working with Ruby programs" href="abstract-syntax-tree-classes-for-working-with-ruby-programs.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-ruby-code.html">Basic query for Ruby code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-ruby.html">CodeQL library for Ruby</a></li>
+<li class="toctree-l3"><a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-ruby-programs.html">Abstract syntax tree classes for working with Ruby programs</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Analyzing data flow in Ruby</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-api-graphs-in-ruby.html">Using API graphs in Ruby</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-ruby.html"
+                accesskey="U">CodeQL for Ruby</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="analyzing-data-flow-in-ruby-1">
+<span id="analyzing-data-flow-in-ruby"></span><h1>Analyzing data flow in Ruby<a class="headerlink" href="#analyzing-data-flow-in-ruby-1" title="Permalink to this headline">¶</a></h1>
+<p>You can use CodeQL to track the flow of data through a Ruby program to places where the data is used.</p>
+<div class="section" id="about-this-article">
+<h2>About this article<a class="headerlink" href="#about-this-article" title="Permalink to this headline">¶</a></h2>
+<p>This article describes how data flow analysis is implemented in the CodeQL libraries for Ruby and includes examples to help you write your own data flow queries.
+The following sections describe how to use the libraries for local data flow, global data flow, and taint tracking.
+For a more general introduction to modeling data flow, see “<a class="reference internal" href="../writing-codeql-queries/about-data-flow-analysis.html#about-data-flow-analysis"><span class="std std-ref">About data flow analysis</span></a>.”</p>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>The new modular API for data flow described here is available alongside the previous library from CodeQL 2.13.0 onwards. For information about how the library has changed and how to migrate any existing queries to the modular API, see <a class="reference external" href="https://gh.io/codeql-new-dataflow-api">New dataflow API for CodeQL query writing</a>.</p>
+</div></blockquote>
+</div>
+<div class="section" id="local-data-flow">
+<h2>Local data flow<a class="headerlink" href="#local-data-flow" title="Permalink to this headline">¶</a></h2>
+<p>Local data flow tracks the flow of data within a single method or callable. Local data flow is easier, faster, and more precise than global data flow. Before looking at more complex tracking, you should always consider local tracking because it is sufficient for many queries.</p>
+<div class="section" id="using-local-data-flow">
+<h3>Using local data flow<a class="headerlink" href="#using-local-data-flow" title="Permalink to this headline">¶</a></h3>
+<p>You can use the local data flow library by importing the <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code> module. The library uses the class <code class="docutils literal notranslate"><span class="pre">Node</span></code> to represent any element through which data can flow.
+<code class="docutils literal notranslate"><span class="pre">Node</span></code>s are divided into expression nodes (<code class="docutils literal notranslate"><span class="pre">ExprNode</span></code>) and parameter nodes (<code class="docutils literal notranslate"><span class="pre">ParameterNode</span></code>).
+You can map a data flow <code class="docutils literal notranslate"><span class="pre">ParameterNode</span></code> to its corresponding <code class="docutils literal notranslate"><span class="pre">Parameter</span></code> AST node using the <code class="docutils literal notranslate"><span class="pre">asParameter</span></code> member predicate.
+Similarly, you can use the <code class="docutils literal notranslate"><span class="pre">asExpr</span></code> member predicate to map a data flow <code class="docutils literal notranslate"><span class="pre">ExprNode</span></code> to its corresponding <code class="docutils literal notranslate"><span class="pre">ExprCfgNode</span></code> in the control-flow library.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">Node</span> <span class="p">{</span>
+  <span class="cp">/** Gets the expression corresponding to this node, if any. */</span>
+  <span class="n">CfgNodes</span><span class="o">::</span><span class="n">ExprCfgNode</span> <span class="n">asExpr</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+  <span class="cp">/** Gets the parameter corresponding to this node, if any. */</span>
+  <span class="n">Parameter</span> <span class="n">asParameter</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+ <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>You can use the predicates <code class="docutils literal notranslate"><span class="pre">exprNode</span></code> and <code class="docutils literal notranslate"><span class="pre">parameterNode</span></code> to map from expressions and parameters to their data-flow node:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="cp">/**</span>
+<span class="cp"> * Gets a node corresponding to expression `e`.</span>
+<span class="cp"> */</span>
+<span class="n">ExprNode</span> <span class="n">exprNode</span><span class="p">(</span><span class="n">CfgNodes</span><span class="o">::</span><span class="n">ExprCfgNode</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="cp">/**</span>
+<span class="cp"> * Gets the node corresponding to the value of parameter `p` at function entry.</span>
+<span class="cp"> */</span>
+<span class="n">ParameterNode</span> <span class="n">parameterNode</span><span class="p">(</span><span class="n">Parameter</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that since <code class="docutils literal notranslate"><span class="pre">asExpr</span></code> and <code class="docutils literal notranslate"><span class="pre">exprNode</span></code> map between data-flow and control-flow nodes, you then need to call the <code class="docutils literal notranslate"><span class="pre">getExpr</span></code> member predicate on the control-flow node to map to the corresponding AST node,
+for example, by writing <code class="docutils literal notranslate"><span class="pre">node.asExpr().getExpr()</span></code>.
+A control-flow graph considers every way control can flow through code, consequently, there can be multiple data-flow and control-flow nodes associated with a single expression node in the AST.</p>
+<p>The predicate <code class="docutils literal notranslate"><span class="pre">localFlowStep(Node</span> <span class="pre">nodeFrom,</span> <span class="pre">Node</span> <span class="pre">nodeTo)</span></code> holds if there is an immediate data flow edge from the node <code class="docutils literal notranslate"><span class="pre">nodeFrom</span></code> to the node <code class="docutils literal notranslate"><span class="pre">nodeTo</span></code>.
+You can apply the predicate recursively, by using the <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">*</span></code> operators, or you can use the predefined recursive predicate <code class="docutils literal notranslate"><span class="pre">localFlow</span></code>.</p>
+<p>For example, you can find flow from an expression <code class="docutils literal notranslate"><span class="pre">source</span></code> to an expression <code class="docutils literal notranslate"><span class="pre">sink</span></code> in zero or more local steps:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="n">DataFlow</span><span class="o">::</span><span class="n">localFlow</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-local-taint-tracking">
+<h3>Using local taint tracking<a class="headerlink" href="#using-local-taint-tracking" title="Permalink to this headline">¶</a></h3>
+<p>Local taint tracking extends local data flow to include flow steps where values are not preserved, for example, string manipulation.
+For example:</p>
+<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">temp</span> <span class="o">=</span> <span class="n">x</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">temp</span> <span class="o">+</span> <span class="s2">&quot;, &quot;</span> <span class="o">+</span> <span class="n">temp</span>
+</pre></div>
+</div>
+<p>If <code class="docutils literal notranslate"><span class="pre">x</span></code> is a tainted string then <code class="docutils literal notranslate"><span class="pre">y</span></code> is also tainted.</p>
+<p>The local taint tracking library is in the module <code class="docutils literal notranslate"><span class="pre">TaintTracking</span></code>.
+Like local data flow, a predicate <code class="docutils literal notranslate"><span class="pre">localTaintStep(DataFlow::Node</span> <span class="pre">nodeFrom,</span> <span class="pre">DataFlow::Node</span> <span class="pre">nodeTo)</span></code> holds if there is an immediate taint propagation edge from the node <code class="docutils literal notranslate"><span class="pre">nodeFrom</span></code> to the node <code class="docutils literal notranslate"><span class="pre">nodeTo</span></code>.
+You can apply the predicate recursively, by using the <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">*</span></code> operators, or you can use the predefined recursive predicate <code class="docutils literal notranslate"><span class="pre">localTaint</span></code>.</p>
+<p>For example, you can find taint propagation from an expression <code class="docutils literal notranslate"><span class="pre">source</span></code> to an expression <code class="docutils literal notranslate"><span class="pre">sink</span></code> in zero or more local steps:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="n">TaintTracking</span><span class="o">::</span><span class="n">localTaint</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-local-sources">
+<h3>Using local sources<a class="headerlink" href="#using-local-sources" title="Permalink to this headline">¶</a></h3>
+<p>When exploring local data flow or taint propagation between two expressions as above, you would normally constrain the expressions to be relevant to your investigation.
+The next section gives some concrete examples, but first it’s helpful to introduce the concept of a local source.</p>
+<p>A local source is a data-flow node with no local data flow into it.
+As such, it is a local origin of data flow, a place where a new value is created.
+This includes parameters (which only receive values from global data flow) and most expressions (because they are not value-preserving).
+The class <code class="docutils literal notranslate"><span class="pre">LocalSourceNode</span></code> represents data-flow nodes that are also local sources.
+It comes with a useful member predicate <code class="docutils literal notranslate"><span class="pre">flowsTo(DataFlow::Node</span> <span class="pre">node)</span></code>, which holds if there is local data flow from the local source to <code class="docutils literal notranslate"><span class="pre">node</span></code>.</p>
+</div>
+<div class="section" id="examples-of-local-data-flow">
+<h3>Examples of local data flow<a class="headerlink" href="#examples-of-local-data-flow" title="Permalink to this headline">¶</a></h3>
+<p>This query finds the filename argument passed in each call to <code class="docutils literal notranslate"><span class="pre">File.open</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">ApiGraphs</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">call</span>
+<span class="k">where</span> <span class="n">call</span> <span class="o">=</span> <span class="n">API</span><span class="o">::</span><span class="n">getTopLevelMember</span><span class="p">(</span><span class="s">&quot;File&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;open&quot;</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">call</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Notice the use of the <code class="docutils literal notranslate"><span class="pre">API</span></code> module for referring to library methods.
+For more information, see “<a class="reference internal" href="using-api-graphs-in-ruby.html"><span class="doc">Using API graphs in Ruby</span></a>.”</p>
+<p>Unfortunately this will only give the expression in the argument, not the values which could be passed to it.
+So we use local data flow to find all expressions that flow into the argument:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">ApiGraphs</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">call</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ExprNode</span> <span class="n">expr</span>
+<span class="k">where</span>
+  <span class="n">call</span> <span class="o">=</span> <span class="n">API</span><span class="o">::</span><span class="n">getTopLevelMember</span><span class="p">(</span><span class="s">&quot;File&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;open&quot;</span><span class="p">)</span> <span class="k">and</span>
+  <span class="n">DataFlow</span><span class="o">::</span><span class="n">localFlow</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">call</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">))</span>
+<span class="k">select</span> <span class="n">call</span><span class="p">,</span> <span class="n">expr</span>
+</pre></div>
+</div>
+<p>Many expressions flow to the same call.
+If you run this query, you may notice that you get several data-flow nodes for an expression as it flows towards a call (notice repeated locations in the <code class="docutils literal notranslate"><span class="pre">call</span></code> column).
+We are mostly interested in the “first” of these, what might be called the local source for the file name.
+To restrict the results to local sources for the file name, and to simultaneously make the analysis more efficient, we can use the CodeQL class <code class="docutils literal notranslate"><span class="pre">LocalSourceNode</span></code>.
+We can update the query to specify that <code class="docutils literal notranslate"><span class="pre">expr</span></code> is an instance of a <code class="docutils literal notranslate"><span class="pre">LocalSourceNode</span></code>.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">ApiGraphs</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">call</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ExprNode</span> <span class="n">expr</span>
+<span class="k">where</span>
+  <span class="n">call</span> <span class="o">=</span> <span class="n">API</span><span class="o">::</span><span class="n">getTopLevelMember</span><span class="p">(</span><span class="s">&quot;File&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;open&quot;</span><span class="p">)</span> <span class="k">and</span>
+  <span class="n">DataFlow</span><span class="o">::</span><span class="n">localFlow</span><span class="p">(</span><span class="n">expr</span><span class="p">,</span> <span class="n">call</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">))</span> <span class="k">and</span>
+  <span class="n">expr</span> <span class="k">instanceof</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">LocalSourceNode</span>
+<span class="k">select</span> <span class="n">call</span><span class="p">,</span> <span class="n">expr</span>
+</pre></div>
+</div>
+<p>An alternative approach to limit the results to local sources for the file name is to enforce this by casting.
+That would allow us to use the member predicate <code class="docutils literal notranslate"><span class="pre">flowsTo</span></code> on <code class="docutils literal notranslate"><span class="pre">LocalSourceNode</span></code> like so:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">ApiGraphs</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">call</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ExprNode</span> <span class="n">expr</span>
+<span class="k">where</span>
+  <span class="n">call</span> <span class="o">=</span> <span class="n">API</span><span class="o">::</span><span class="n">getTopLevelMember</span><span class="p">(</span><span class="s">&quot;File&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;open&quot;</span><span class="p">)</span> <span class="k">and</span>
+  <span class="n">expr</span><span class="p">.(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">LocalSourceNode</span><span class="p">).</span><span class="n">flowsTo</span><span class="p">(</span><span class="n">call</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">))</span>
+<span class="k">select</span> <span class="n">call</span><span class="p">,</span> <span class="n">expr</span>
+</pre></div>
+</div>
+<p>As an alternative, we can ask more directly that <code class="docutils literal notranslate"><span class="pre">expr</span></code> is a local source of the first argument, via the predicate <code class="docutils literal notranslate"><span class="pre">getALocalSource</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">ApiGraphs</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">call</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ExprNode</span> <span class="n">expr</span>
+<span class="k">where</span>
+  <span class="n">call</span> <span class="o">=</span> <span class="n">API</span><span class="o">::</span><span class="n">getTopLevelMember</span><span class="p">(</span><span class="s">&quot;File&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;open&quot;</span><span class="p">)</span> <span class="k">and</span>
+  <span class="n">expr</span> <span class="o">=</span> <span class="n">call</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">getALocalSource</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">call</span><span class="p">,</span> <span class="n">expr</span>
+</pre></div>
+</div>
+<p>All these three queries give identical results.
+We now mostly have one expression per call.</p>
+<p>We may still have cases of more than one expression flowing to a call, but then they flow through different code paths (possibly due to control-flow splitting).</p>
+<p>We might want to make the source more specific, for example, a parameter to a method or block.
+This query finds instances where a parameter is used as the name when opening a file:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">ApiGraphs</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">call</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ParameterNode</span> <span class="n">p</span>
+<span class="k">where</span>
+  <span class="n">call</span> <span class="o">=</span> <span class="n">API</span><span class="o">::</span><span class="n">getTopLevelMember</span><span class="p">(</span><span class="s">&quot;File&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;open&quot;</span><span class="p">)</span> <span class="k">and</span>
+  <span class="n">DataFlow</span><span class="o">::</span><span class="n">localFlow</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">call</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">))</span>
+<span class="k">select</span> <span class="n">call</span><span class="p">,</span> <span class="n">p</span>
+</pre></div>
+</div>
+<p>Using the exact name supplied via the parameter may be too strict.
+If we want to know if the parameter influences the file name, we can use taint tracking instead of data flow.
+This query finds calls to <code class="docutils literal notranslate"><span class="pre">File.open</span></code> where the file name is derived from a parameter:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">TaintTracking</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">ApiGraphs</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">call</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ParameterNode</span> <span class="n">p</span>
+<span class="k">where</span>
+  <span class="n">call</span> <span class="o">=</span> <span class="n">API</span><span class="o">::</span><span class="n">getTopLevelMember</span><span class="p">(</span><span class="s">&quot;File&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;open&quot;</span><span class="p">)</span> <span class="k">and</span>
+  <span class="n">TaintTracking</span><span class="o">::</span><span class="n">localTaint</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">call</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">))</span>
+<span class="k">select</span> <span class="n">call</span><span class="p">,</span> <span class="n">p</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="global-data-flow">
+<h2>Global data flow<a class="headerlink" href="#global-data-flow" title="Permalink to this headline">¶</a></h2>
+<p>Global data flow tracks data flow throughout the entire program, and is therefore more powerful than local data flow.
+However, global data flow is less precise than local data flow, and the analysis typically requires significantly more time and memory to perform.</p>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>You can model data flow paths in CodeQL by creating path queries. To view data flow paths generated by a path query in CodeQL for VS Code, you need to make sure that it has the correct metadata and <code class="docutils literal notranslate"><span class="pre">select</span></code> clause. For more information, see <a class="reference internal" href="../writing-codeql-queries/creating-path-queries.html#creating-path-queries"><span class="std std-ref">Creating path queries</span></a>.</p>
+</div></blockquote>
+<div class="section" id="using-global-data-flow">
+<h3>Using global data flow<a class="headerlink" href="#using-global-data-flow" title="Permalink to this headline">¶</a></h3>
+<p>You can use the global data flow library by implementing the signature <code class="docutils literal notranslate"><span class="pre">DataFlow::ConfigSig</span></code> and applying the module <code class="docutils literal notranslate"><span class="pre">DataFlow::Global&lt;ConfigSig&gt;</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+
+<span class="k">module</span> <span class="n">MyFlowConfiguration</span> <span class="n">implements</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ConfigSig</span> <span class="p">{</span>
+  <span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">MyFlow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Global</span><span class="o">&lt;</span><span class="n">MyFlowConfiguration</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>These predicates are defined in the configuration:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">isSource</span></code> - defines where data may flow from.</li>
+<li><code class="docutils literal notranslate"><span class="pre">isSink</span></code> - defines where data may flow to.</li>
+<li><code class="docutils literal notranslate"><span class="pre">isBarrier</span></code> - optionally, restricts the data flow.</li>
+<li><code class="docutils literal notranslate"><span class="pre">isAdditionalFlowStep</span></code> - optionally, adds additional flow steps.</li>
+</ul>
+<p>The data flow analysis is performed using the predicate <code class="docutils literal notranslate"><span class="pre">flow(DataFlow::Node</span> <span class="pre">source,</span> <span class="pre">DataFlow::Node</span> <span class="pre">sink)</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span>
+<span class="k">where</span> <span class="n">MyFlow</span><span class="o">::</span><span class="n">flow</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">source</span><span class="p">,</span> <span class="s">&quot;Dataflow to $@.&quot;</span><span class="p">,</span> <span class="n">sink</span><span class="p">,</span> <span class="n">sink</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-global-taint-tracking">
+<h3>Using global taint tracking<a class="headerlink" href="#using-global-taint-tracking" title="Permalink to this headline">¶</a></h3>
+<p>Global taint tracking is to global data flow what local taint tracking is to local data flow.
+That is, global taint tracking extends global data flow with additional non-value-preserving steps.
+The global taint tracking library is used by applying the module <code class="docutils literal notranslate"><span class="pre">TaintTracking::Global&lt;ConfigSig&gt;</span></code> to your configuration instead of <code class="docutils literal notranslate"><span class="pre">DataFlow::Global&lt;ConfigSig&gt;</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">TaintTracking</span>
+
+<span class="k">module</span> <span class="n">MyFlowConfiguration</span> <span class="n">implements</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ConfigSig</span> <span class="p">{</span>
+  <span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">MyFlow</span> <span class="o">=</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">Global</span><span class="o">&lt;</span><span class="n">MyFlowConfiguration</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The resulting module has an identical signature to the one obtained from <code class="docutils literal notranslate"><span class="pre">DataFlow::Global&lt;ConfigSig&gt;</span></code>.</p>
+</div>
+<div class="section" id="predefined-sources-and-sinks">
+<h3>Predefined sources and sinks<a class="headerlink" href="#predefined-sources-and-sinks" title="Permalink to this headline">¶</a></h3>
+<p>The data flow library contains a number of predefined sources and sinks, providing a good starting point for defining data flow based security queries.</p>
+<ul class="simple">
+<li>The class <code class="docutils literal notranslate"><span class="pre">RemoteFlowSource</span></code> (defined in module <code class="docutils literal notranslate"><span class="pre">codeql.ruby.dataflow.RemoteFlowSources</span></code>) represents data flow from remote network inputs. This is useful for finding security problems in networked services.</li>
+<li>The library <code class="docutils literal notranslate"><span class="pre">Concepts</span></code> (defined in module <code class="docutils literal notranslate"><span class="pre">codeql.ruby.Concepts</span></code>) contains several subclasses of <code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code> that are security relevant, such as <code class="docutils literal notranslate"><span class="pre">FileSystemAccess</span></code> and <code class="docutils literal notranslate"><span class="pre">SqlExecution</span></code>.</li>
+</ul>
+<p>For global flow, it is also useful to restrict sources to instances of <code class="docutils literal notranslate"><span class="pre">LocalSourceNode</span></code>.
+The predefined sources generally do that.</p>
+</div>
+<div class="section" id="class-hierarchy">
+<h3>Class hierarchy<a class="headerlink" href="#class-hierarchy" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code> - an element behaving as a data-flow node.</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::LocalSourceNode</span></code> - a local origin of data, as a data-flow node.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::ExprNode</span></code> - an expression behaving as a data-flow node.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::ParameterNode</span></code> - a parameter data-flow node representing the value of a parameter at method/block entry.</li>
+<li><code class="docutils literal notranslate"><span class="pre">RemoteFlowSource</span></code> - data flow from network/remote input.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Concepts::SystemCommandExecution</span></code> - a data-flow node that executes an operating system command, for instance by spawning a new process.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Concepts::FileSystemAccess</span></code> - a data-flow node that performs a file system access, including reading and writing data, creating and deleting files and folders, checking and updating permissions, and so on.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Concepts::Path::PathNormalization</span></code> - a data-flow node that performs path normalization. This is often needed in order to safely access paths.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Concepts::CodeExecution</span></code> - a data-flow node that dynamically executes Ruby code.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Concepts::SqlExecution</span></code> - a data-flow node that executes SQL statements.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Concepts::HTTP::Server::RouteSetup</span></code> - a data-flow node that sets up a route on a server.</li>
+<li><code class="docutils literal notranslate"><span class="pre">Concepts::HTTP::Server::HttpResponse</span></code> - a data-flow node that creates an HTTP response on a server.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+</div>
+<div class="section" id="examples-of-global-data-flow">
+<h3>Examples of global data flow<a class="headerlink" href="#examples-of-global-data-flow" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>The following global taint-tracking query finds path arguments in filesystem accesses that can be controlled by a remote user.</dt>
+<dd><ul class="first last simple">
+<li>Since this is a taint-tracking query, the <code class="docutils literal notranslate"><span class="pre">TaintTracking::Global&lt;ConfigSig&gt;</span></code> module is used.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">isSource</span></code> predicate defines sources as any data-flow nodes that are instances of <code class="docutils literal notranslate"><span class="pre">RemoteFlowSource</span></code>.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">isSink</span></code> predicate defines sinks as path arguments in any filesystem access, using <code class="docutils literal notranslate"><span class="pre">FileSystemAccess</span></code> from the <code class="docutils literal notranslate"><span class="pre">Concepts</span></code> library.</li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">TaintTracking</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">Concepts</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">RemoteFlowSources</span>
+
+<span class="k">module</span> <span class="n">RemoteToFileConfiguration</span> <span class="n">implements</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ConfigSig</span> <span class="p">{</span>
+  <span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span> <span class="n">source</span> <span class="k">instanceof</span> <span class="n">RemoteFlowSource</span> <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="k">any</span><span class="p">(</span><span class="n">FileSystemAccess</span> <span class="n">fa</span><span class="p">).</span><span class="n">getAPathArgument</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">RemoteToFileFlow</span> <span class="o">=</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">Global</span><span class="o">&lt;</span><span class="n">RemoteToFileConfiguration</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">input</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">fileAccess</span>
+<span class="k">where</span> <span class="n">RemoteToFileFlow</span><span class="o">::</span><span class="n">flow</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="n">fileAccess</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">fileAccess</span><span class="p">,</span> <span class="s">&quot;This file access uses data from $@.&quot;</span><span class="p">,</span> <span class="n">input</span><span class="p">,</span> <span class="s">&quot;user-controllable input.&quot;</span>
+</pre></div>
+</div>
+<dl class="docutils">
+<dt>The following global data-flow query finds calls to <code class="docutils literal notranslate"><span class="pre">File.open</span></code> where the filename argument comes from an environment variable.</dt>
+<dd><ul class="first last simple">
+<li>Since this is a data-flow query, the <code class="docutils literal notranslate"><span class="pre">DataFlow::Global&lt;ConfigSig&gt;</span></code> module is used.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">isSource</span></code> predicate defines sources as expression nodes representing lookups on the <code class="docutils literal notranslate"><span class="pre">ENV</span></code> hash.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">isSink</span></code> predicate defines sinks as the first argument in any call to <code class="docutils literal notranslate"><span class="pre">File.open</span></code>.</li>
+</ul>
+</dd>
+</dl>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">controlflow</span><span class="p">.</span><span class="n">CfgNodes</span>
+<span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">ApiGraphs</span>
+
+<span class="k">module</span> <span class="n">EnvironmentToFileConfiguration</span> <span class="n">implements</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ConfigSig</span> <span class="p">{</span>
+  <span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">ExprNodes</span><span class="o">::</span><span class="n">ConstantReadAccessCfgNode</span> <span class="n">env</span> <span class="o">|</span>
+      <span class="n">env</span><span class="p">.</span><span class="n">getExpr</span><span class="p">().</span><span class="n">getName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;ENV&quot;</span> <span class="k">and</span>
+      <span class="n">env</span> <span class="o">=</span> <span class="n">source</span><span class="p">.</span><span class="n">asExpr</span><span class="p">().(</span><span class="n">ExprNodes</span><span class="o">::</span><span class="n">ElementReferenceCfgNode</span><span class="p">).</span><span class="n">getReceiver</span><span class="p">()</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">API</span><span class="o">::</span><span class="n">getTopLevelMember</span><span class="p">(</span><span class="s">&quot;File&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;open&quot;</span><span class="p">).</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">EnvironmentToFileFlow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Global</span><span class="o">&lt;</span><span class="n">EnvironmentToFileConfiguration</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">environment</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">fileOpen</span>
+<span class="k">where</span> <span class="n">EnvironmentToFileFlow</span><span class="o">::</span><span class="n">flow</span><span class="p">(</span><span class="n">environment</span><span class="p">,</span> <span class="n">fileOpen</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">fileOpen</span><span class="p">,</span> <span class="s">&quot;This call to &#39;File.open&#39; uses data from $@.&quot;</span><span class="p">,</span> <span class="n">environment</span><span class="p">,</span>
+  <span class="s">&quot;an environment variable&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>“<a class="reference internal" href="../codeql-for-visual-studio-code/exploring-data-flow-with-path-queries.html#exploring-data-flow-with-path-queries"><span class="std std-ref">Exploring data flow with path queries</span></a>”</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/ruby/ql/src">CodeQL queries for Ruby</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/ruby/ql/examples">Example queries for Ruby</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/ruby/">CodeQL library reference for Ruby</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

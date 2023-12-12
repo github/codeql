@@ -1,0 +1,571 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Analyzing data flow in C and C++ &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Analyzing data flow in C and C++ (new)" href="analyzing-data-flow-in-cpp-new.html" />
+    <link rel="prev" title="Conversions and classes in C and C++" href="conversions-and-classes-in-cpp.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-cpp-code.html">Basic query for C and C++ code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-cpp.html">CodeQL library for C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions-in-cpp.html">Functions in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expressions-types-and-statements-in-cpp.html">Expressions, types, and statements in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conversions-and-classes-in-cpp.html">Conversions and classes in C and C++</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Analyzing data flow in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-cpp-new.html">Analyzing data flow in C and C++ (new)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="refining-a-query-to-account-for-edge-cases.html">Refining a query to account for edge cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="detecting-a-potential-buffer-overflow.html">Detecting a potential buffer overflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-the-guards-library-in-cpp.html">Using the guards library in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-range-analsis-in-cpp.html">Using range analysis for C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hash-consing-and-value-numbering.html">Hash consing and value numbering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced-dataflow-scenarios-cpp.html">Advanced dataflow scenarios for C/C++</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-cpp.html"
+                accesskey="U">CodeQL for C and C++</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <blockquote class="pull-quote" id="analyzing-data-flow-in-cpp">
+<div><p>Note</p>
+<p>The data flow library used in this article has been replaced with an improved library which is available from CodeQL 2.12.5 onwards, see <a class="reference internal" href="analyzing-data-flow-in-cpp-new.html#analyzing-data-flow-in-cpp-new"><span class="std std-ref">Analyzing data flow in C and C++ (new)</span></a>. The old library has been deprecated in CodeQL 2.14.1 and will be removed in a later release. With the release of CodeQL 2.13.0 both libraries use the new modular API for data flow.</p>
+</div></blockquote>
+<div class="section" id="analyzing-data-flow-in-c-and-c">
+<h1>Analyzing data flow in C and C++<a class="headerlink" href="#analyzing-data-flow-in-c-and-c" title="Permalink to this headline">¶</a></h1>
+<p>You can use data flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your codebase.</p>
+<div class="section" id="about-data-flow">
+<h2>About data flow<a class="headerlink" href="#about-data-flow" title="Permalink to this headline">¶</a></h2>
+<p>Data flow analysis computes the possible values that a variable can hold at various points in a program, determining how those values propagate through the program, and where they are used. In CodeQL, you can model both local data flow and global data flow. For a more general introduction to modeling data flow, see “<a class="reference internal" href="../writing-codeql-queries/about-data-flow-analysis.html#about-data-flow-analysis"><span class="std std-ref">About data flow analysis</span></a>.”</p>
+</div>
+<div class="section" id="local-data-flow">
+<h2>Local data flow<a class="headerlink" href="#local-data-flow" title="Permalink to this headline">¶</a></h2>
+<p>Local data flow is data flow within a single function. Local data flow is usually easier, faster, and more precise than global data flow, and is sufficient for many queries.</p>
+<div class="section" id="using-local-data-flow">
+<h3>Using local data flow<a class="headerlink" href="#using-local-data-flow" title="Permalink to this headline">¶</a></h3>
+<p>The local data flow library is in the module <code class="docutils literal notranslate"><span class="pre">DataFlow</span></code>, which defines the class <code class="docutils literal notranslate"><span class="pre">Node</span></code> denoting any element that data can flow through. <code class="docutils literal notranslate"><span class="pre">Node</span></code>s are divided into expression nodes (<code class="docutils literal notranslate"><span class="pre">ExprNode</span></code>) and parameter nodes (<code class="docutils literal notranslate"><span class="pre">ParameterNode</span></code>). It is possible to map between data flow nodes and expressions/parameters using the member predicates <code class="docutils literal notranslate"><span class="pre">asExpr</span></code> and <code class="docutils literal notranslate"><span class="pre">asParameter</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">Node</span> <span class="p">{</span>
+  <span class="cp">/** Gets the expression corresponding to this node, if any. */</span>
+  <span class="n">Expr</span> <span class="n">asExpr</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+  <span class="cp">/** Gets the parameter corresponding to this node, if any. */</span>
+  <span class="n">Parameter</span> <span class="n">asParameter</span><span class="p">()</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>or using the predicates <code class="docutils literal notranslate"><span class="pre">exprNode</span></code> and <code class="docutils literal notranslate"><span class="pre">parameterNode</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="cp">/**</span>
+<span class="cp"> * Gets the node corresponding to expression `e`.</span>
+<span class="cp"> */</span>
+<span class="n">ExprNode</span> <span class="n">exprNode</span><span class="p">(</span><span class="n">Expr</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+
+<span class="cp">/**</span>
+<span class="cp"> * Gets the node corresponding to the value of parameter `p` at function entry.</span>
+<span class="cp"> */</span>
+<span class="n">ParameterNode</span> <span class="n">parameterNode</span><span class="p">(</span><span class="n">Parameter</span> <span class="n">p</span><span class="p">)</span> <span class="p">{</span> <span class="p">...</span> <span class="p">}</span>
+</pre></div>
+</div>
+<p>The predicate <code class="docutils literal notranslate"><span class="pre">localFlowStep(Node</span> <span class="pre">nodeFrom,</span> <span class="pre">Node</span> <span class="pre">nodeTo)</span></code> holds if there is an immediate data flow edge from the node <code class="docutils literal notranslate"><span class="pre">nodeFrom</span></code> to the node <code class="docutils literal notranslate"><span class="pre">nodeTo</span></code>. The predicate can be applied recursively (using the <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">*</span></code> operators), or through the predefined recursive predicate <code class="docutils literal notranslate"><span class="pre">localFlow</span></code>, which is equivalent to <code class="docutils literal notranslate"><span class="pre">localFlowStep*</span></code>.</p>
+<p>For example, finding flow from a parameter <code class="docutils literal notranslate"><span class="pre">source</span></code> to an expression <code class="docutils literal notranslate"><span class="pre">sink</span></code> in zero or more local steps can be achieved as follows:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="n">DataFlow</span><span class="o">::</span><span class="n">localFlow</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">parameterNode</span><span class="p">(</span><span class="n">source</span><span class="p">),</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">sink</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-local-taint-tracking">
+<h3>Using local taint tracking<a class="headerlink" href="#using-local-taint-tracking" title="Permalink to this headline">¶</a></h3>
+<p>Local taint tracking extends local data flow by including non-value-preserving flow steps. For example:</p>
+<div class="highlight-cpp notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">tainted_user_input</span><span class="p">();</span>
+<span class="n">some_big_struct</span> <span class="o">*</span><span class="n">array</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">some_big_struct</span><span class="p">));</span>
+</pre></div>
+</div>
+<p>In this case, the argument to <code class="docutils literal notranslate"><span class="pre">malloc</span></code> is tainted.</p>
+<p>The local taint tracking library is in the module <code class="docutils literal notranslate"><span class="pre">TaintTracking</span></code>. Like local data flow, a predicate <code class="docutils literal notranslate"><span class="pre">localTaintStep(DataFlow::Node</span> <span class="pre">nodeFrom,</span> <span class="pre">DataFlow::Node</span> <span class="pre">nodeTo)</span></code> holds if there is an immediate taint propagation edge from the node <code class="docutils literal notranslate"><span class="pre">nodeFrom</span></code> to the node <code class="docutils literal notranslate"><span class="pre">nodeTo</span></code>. The predicate can be applied recursively (using the <code class="docutils literal notranslate"><span class="pre">+</span></code> and <code class="docutils literal notranslate"><span class="pre">*</span></code> operators), or through the predefined recursive predicate <code class="docutils literal notranslate"><span class="pre">localTaint</span></code>, which is equivalent to <code class="docutils literal notranslate"><span class="pre">localTaintStep*</span></code>.</p>
+<p>For example, finding taint propagation from a parameter <code class="docutils literal notranslate"><span class="pre">source</span></code> to an expression <code class="docutils literal notranslate"><span class="pre">sink</span></code> in zero or more local steps can be achieved as follows:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="n">TaintTracking</span><span class="o">::</span><span class="n">localTaint</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">parameterNode</span><span class="p">(</span><span class="n">source</span><span class="p">),</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">sink</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>The following query finds the filename passed to <code class="docutils literal notranslate"><span class="pre">fopen</span></code>.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+
+<span class="k">from</span> <span class="n">Function</span> <span class="n">fopen</span><span class="p">,</span> <span class="n">FunctionCall</span> <span class="n">fc</span>
+<span class="k">where</span> <span class="n">fopen</span><span class="p">.</span><span class="n">hasGlobalName</span><span class="p">(</span><span class="s">&quot;fopen&quot;</span><span class="p">)</span>
+  <span class="k">and</span> <span class="n">fc</span><span class="p">.</span><span class="n">getTarget</span><span class="p">()</span> <span class="o">=</span> <span class="n">fopen</span>
+<span class="k">select</span> <span class="n">fc</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Unfortunately, this will only give the expression in the argument, not the values which could be passed to it. So we use local data flow to find all expressions that flow into the argument:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+<span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">DataFlow</span>
+
+<span class="k">from</span> <span class="n">Function</span> <span class="n">fopen</span><span class="p">,</span> <span class="n">FunctionCall</span> <span class="n">fc</span><span class="p">,</span> <span class="n">Expr</span> <span class="n">src</span>
+<span class="k">where</span> <span class="n">fopen</span><span class="p">.</span><span class="n">hasGlobalName</span><span class="p">(</span><span class="s">&quot;fopen&quot;</span><span class="p">)</span>
+  <span class="k">and</span> <span class="n">fc</span><span class="p">.</span><span class="n">getTarget</span><span class="p">()</span> <span class="o">=</span> <span class="n">fopen</span>
+  <span class="k">and</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">localFlow</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">src</span><span class="p">),</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">fc</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)))</span>
+<span class="k">select</span> <span class="n">src</span>
+</pre></div>
+</div>
+<p>Then we can vary the source and, for example, use the parameter of a function. The following query finds where a parameter is used when opening a file:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+<span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">DataFlow</span>
+
+<span class="k">from</span> <span class="n">Function</span> <span class="n">fopen</span><span class="p">,</span> <span class="n">FunctionCall</span> <span class="n">fc</span><span class="p">,</span> <span class="n">Parameter</span> <span class="n">p</span>
+<span class="k">where</span> <span class="n">fopen</span><span class="p">.</span><span class="n">hasGlobalName</span><span class="p">(</span><span class="s">&quot;fopen&quot;</span><span class="p">)</span>
+  <span class="k">and</span> <span class="n">fc</span><span class="p">.</span><span class="n">getTarget</span><span class="p">()</span> <span class="o">=</span> <span class="n">fopen</span>
+  <span class="k">and</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">localFlow</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">parameterNode</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">fc</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)))</span>
+<span class="k">select</span> <span class="n">p</span>
+</pre></div>
+</div>
+<p>The following example finds calls to formatting functions where the format string is not hard-coded.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">DataFlow</span>
+<span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">commons</span><span class="p">.</span><span class="n">Printf</span>
+
+<span class="k">from</span> <span class="n">FormattingFunction</span> <span class="n">format</span><span class="p">,</span> <span class="n">FunctionCall</span> <span class="n">call</span><span class="p">,</span> <span class="n">Expr</span> <span class="n">formatString</span>
+<span class="k">where</span> <span class="n">call</span><span class="p">.</span><span class="n">getTarget</span><span class="p">()</span> <span class="o">=</span> <span class="n">format</span>
+  <span class="k">and</span> <span class="n">call</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="n">format</span><span class="p">.</span><span class="n">getFormatParameterIndex</span><span class="p">())</span> <span class="o">=</span> <span class="n">formatString</span>
+  <span class="k">and</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span> <span class="o">|</span>
+    <span class="n">DataFlow</span><span class="o">::</span><span class="n">localFlow</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">)</span> <span class="k">and</span>
+    <span class="n">source</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="k">instanceof</span> <span class="n">StringLiteral</span> <span class="k">and</span>
+    <span class="n">sink</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="o">=</span> <span class="n">formatString</span>
+  <span class="p">)</span>
+<span class="k">select</span> <span class="n">call</span><span class="p">,</span> <span class="s">&quot;Argument to &quot;</span> <span class="o">+</span> <span class="n">format</span><span class="p">.</span><span class="n">getQualifiedName</span><span class="p">()</span> <span class="o">+</span> <span class="s">&quot; isn&#39;t hard-coded.&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercises">
+<h3>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h3>
+<p>Exercise 1: Write a query that finds all hard-coded strings used to create a <code class="docutils literal notranslate"><span class="pre">host_ent</span></code> via <code class="docutils literal notranslate"><span class="pre">gethostbyname</span></code>, using local data flow. (<a class="reference external" href="#exercise-1">Answer</a>)</p>
+</div>
+</div>
+<div class="section" id="global-data-flow">
+<h2>Global data flow<a class="headerlink" href="#global-data-flow" title="Permalink to this headline">¶</a></h2>
+<p>Global data flow tracks data flow throughout the entire program, and is therefore more powerful than local data flow. However, global data flow is less precise than local data flow, and the analysis typically requires significantly more time and memory to perform.</p>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>You can model data flow paths in CodeQL by creating path queries. To view data flow paths generated by a path query in CodeQL for VS Code, you need to make sure that it has the correct metadata and <code class="docutils literal notranslate"><span class="pre">select</span></code> clause. For more information, see <a class="reference internal" href="../writing-codeql-queries/creating-path-queries.html#creating-path-queries"><span class="std std-ref">Creating path queries</span></a>.</p>
+</div></blockquote>
+<div class="section" id="using-global-data-flow">
+<h3>Using global data flow<a class="headerlink" href="#using-global-data-flow" title="Permalink to this headline">¶</a></h3>
+<p>The global data flow library is used by implementing the signature <code class="docutils literal notranslate"><span class="pre">DataFlow::ConfigSig</span></code> and applying the module <code class="docutils literal notranslate"><span class="pre">DataFlow::Global&lt;ConfigSig&gt;</span></code> as follows:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">DataFlow</span>
+
+<span class="k">module</span> <span class="n">MyFlowConfiguration</span> <span class="n">implements</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ConfigSig</span> <span class="p">{</span>
+  <span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">MyFlow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Global</span><span class="o">&lt;</span><span class="n">MyFlowConfiguration</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The following predicates are defined in the configuration:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">isSource</span></code>—defines where data may flow from</li>
+<li><code class="docutils literal notranslate"><span class="pre">isSink</span></code>—defines where data may flow to</li>
+<li><code class="docutils literal notranslate"><span class="pre">isBarrier</span></code>—optional, restricts the data flow</li>
+<li><code class="docutils literal notranslate"><span class="pre">isAdditionalFlowStep</span></code>—optional, adds additional flow steps</li>
+</ul>
+<p>The data flow analysis is performed using the predicate <code class="docutils literal notranslate"><span class="pre">flow(DataFlow::Node</span> <span class="pre">source,</span> <span class="pre">DataFlow::Node</span> <span class="pre">sink)</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span>
+<span class="k">where</span> <span class="n">MyFlow</span><span class="o">::</span><span class="n">flow</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">source</span><span class="p">,</span> <span class="s">&quot;Data flow to $@.&quot;</span><span class="p">,</span> <span class="n">sink</span><span class="p">,</span> <span class="n">sink</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-global-taint-tracking">
+<h3>Using global taint tracking<a class="headerlink" href="#using-global-taint-tracking" title="Permalink to this headline">¶</a></h3>
+<p>Global taint tracking is to global data flow as local taint tracking is to local data flow. That is, global taint tracking extends global data flow with additional non-value-preserving steps. The global taint tracking library is used by applying the module <code class="docutils literal notranslate"><span class="pre">TaintTracking::Global&lt;ConfigSig&gt;</span></code> to your configuration instead of <code class="docutils literal notranslate"><span class="pre">DataFlow::Global&lt;ConfigSig&gt;</span></code> as follows:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">TaintTracking</span>
+
+<span class="k">module</span> <span class="n">MyFlowConfiguration</span> <span class="n">implements</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ConfigSig</span> <span class="p">{</span>
+  <span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">...</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">MyFlow</span> <span class="o">=</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">Global</span><span class="o">&lt;</span><span class="n">MyFlowConfiguration</span><span class="o">&gt;</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>The resulting module has an identical signature to the one obtained from <code class="docutils literal notranslate"><span class="pre">DataFlow::Global&lt;ConfigSig&gt;</span></code>.</p>
+</div>
+<div class="section" id="examples-1">
+<h3>Examples<a class="headerlink" href="#examples-1" title="Permalink to this headline">¶</a></h3>
+<p>The following data flow configuration tracks data flow from environment variables to opening files in a Unix-like environment:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">DataFlow</span>
+
+<span class="k">module</span> <span class="n">EnvironmentToFileConfiguration</span> <span class="n">implements</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ConfigSig</span> <span class="p">{</span>
+  <span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span> <span class="p">(</span><span class="n">Function</span> <span class="n">getenv</span> <span class="o">|</span>
+      <span class="n">source</span><span class="p">.</span><span class="n">asExpr</span><span class="p">().(</span><span class="n">FunctionCall</span><span class="p">).</span><span class="n">getTarget</span><span class="p">()</span> <span class="o">=</span> <span class="n">getenv</span> <span class="k">and</span>
+      <span class="n">getenv</span><span class="p">.</span><span class="n">hasGlobalName</span><span class="p">(</span><span class="s">&quot;getenv&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span> <span class="p">(</span><span class="n">FunctionCall</span> <span class="n">fc</span> <span class="o">|</span>
+      <span class="n">sink</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="o">=</span> <span class="n">fc</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span> <span class="k">and</span>
+      <span class="n">fc</span><span class="p">.</span><span class="n">getTarget</span><span class="p">().</span><span class="n">hasGlobalName</span><span class="p">(</span><span class="s">&quot;fopen&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">EnvironmentToFileFlow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Global</span><span class="o">&lt;</span><span class="n">EnvironmentToFileConfiguration</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">from</span> <span class="n">Expr</span> <span class="n">getenv</span><span class="p">,</span> <span class="n">Expr</span> <span class="n">fopen</span>
+<span class="k">where</span> <span class="n">EnvironmentToFileFlow</span><span class="o">::</span><span class="n">flow</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">getenv</span><span class="p">),</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">fopen</span><span class="p">))</span>
+<span class="k">select</span> <span class="n">fopen</span><span class="p">,</span> <span class="s">&quot;This &#39;fopen&#39; uses data from $@.&quot;</span><span class="p">,</span>
+  <span class="n">getenv</span><span class="p">,</span> <span class="s">&quot;call to &#39;getenv&#39;&quot;</span>
+</pre></div>
+</div>
+<p>The following taint-tracking configuration tracks data from a call to <code class="docutils literal notranslate"><span class="pre">ntohl</span></code> to an array index operation. It uses the <code class="docutils literal notranslate"><span class="pre">Guards</span></code> library to recognize expressions that have been bounds-checked, and defines <code class="docutils literal notranslate"><span class="pre">isBarrier</span></code> to prevent taint from propagating through them. It also uses <code class="docutils literal notranslate"><span class="pre">isAdditionalFlowStep</span></code> to add flow from loop bounds to loop indexes.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+<span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">controlflow</span><span class="p">.</span><span class="n">Guards</span>
+<span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">TaintTracking</span>
+
+<span class="k">module</span> <span class="n">NetworkToBufferSizeConfiguration</span> <span class="n">implements</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ConfigSig</span> <span class="p">{</span>
+  <span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">node</span><span class="p">.</span><span class="n">asExpr</span><span class="p">().(</span><span class="n">FunctionCall</span><span class="p">).</span><span class="n">getTarget</span><span class="p">().</span><span class="n">hasGlobalName</span><span class="p">(</span><span class="s">&quot;ntohl&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">ArrayExpr</span> <span class="n">ae</span> <span class="o">|</span> <span class="n">node</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="o">=</span> <span class="n">ae</span><span class="p">.</span><span class="n">getArrayOffset</span><span class="p">())</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isAdditionalFlowStep</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">pred</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">succ</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">Loop</span> <span class="n">loop</span><span class="p">,</span> <span class="n">LoopCounter</span> <span class="n">lc</span> <span class="o">|</span>
+      <span class="n">loop</span> <span class="o">=</span> <span class="n">lc</span><span class="p">.</span><span class="n">getALoop</span><span class="p">()</span> <span class="k">and</span>
+      <span class="n">loop</span><span class="p">.</span><span class="n">getControllingExpr</span><span class="p">().(</span><span class="n">RelationalOperation</span><span class="p">).</span><span class="n">getGreaterOperand</span><span class="p">()</span> <span class="o">=</span> <span class="n">pred</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="o">|</span>
+      <span class="n">succ</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="o">=</span> <span class="n">lc</span><span class="p">.</span><span class="n">getVariableAccessInLoop</span><span class="p">(</span><span class="n">loop</span><span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isBarrier</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">node</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">GuardCondition</span> <span class="n">gc</span><span class="p">,</span> <span class="n">Variable</span> <span class="n">v</span> <span class="o">|</span>
+      <span class="n">gc</span><span class="p">.</span><span class="n">getAChild</span><span class="o">*</span><span class="p">()</span> <span class="o">=</span> <span class="n">v</span><span class="p">.</span><span class="n">getAnAccess</span><span class="p">()</span> <span class="k">and</span>
+      <span class="n">node</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="o">=</span> <span class="n">v</span><span class="p">.</span><span class="n">getAnAccess</span><span class="p">()</span> <span class="k">and</span>
+      <span class="n">gc</span><span class="p">.</span><span class="n">controls</span><span class="p">(</span><span class="n">node</span><span class="p">.</span><span class="n">asExpr</span><span class="p">().</span><span class="n">getBasicBlock</span><span class="p">(),</span> <span class="n">_</span><span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">NetworkToBufferSizeFlow</span> <span class="o">=</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">Global</span><span class="o">&lt;</span><span class="n">NetworkToBufferSizeConfiguration</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">ntohl</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">offset</span>
+<span class="k">where</span> <span class="n">NetworkToBufferSizeFlow</span><span class="o">::</span><span class="n">flow</span><span class="p">(</span><span class="n">ntohl</span><span class="p">,</span> <span class="n">offset</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">offset</span><span class="p">,</span> <span class="s">&quot;This array offset may be influenced by $@.&quot;</span><span class="p">,</span> <span class="n">ntohl</span><span class="p">,</span>
+  <span class="s">&quot;converted data from the network&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercises-1">
+<h3>Exercises<a class="headerlink" href="#exercises-1" title="Permalink to this headline">¶</a></h3>
+<p>Exercise 2: Write a query that finds all hard-coded strings used to create a <code class="docutils literal notranslate"><span class="pre">host_ent</span></code> via <code class="docutils literal notranslate"><span class="pre">gethostbyname</span></code>, using global data flow. (<a class="reference external" href="#exercise-2">Answer</a>)</p>
+<p>Exercise 3: Write a class that represents flow sources from <code class="docutils literal notranslate"><span class="pre">getenv</span></code>. (<a class="reference external" href="#exercise-3">Answer</a>)</p>
+<p>Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from <code class="docutils literal notranslate"><span class="pre">getenv</span></code> to <code class="docutils literal notranslate"><span class="pre">gethostbyname</span></code>. (<a class="reference external" href="#exercise-4">Answer</a>)</p>
+</div>
+</div>
+<div class="section" id="answers">
+<h2>Answers<a class="headerlink" href="#answers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="exercise-1">
+<h3>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">DataFlow</span>
+
+<span class="k">from</span> <span class="n">StringLiteral</span> <span class="n">sl</span><span class="p">,</span> <span class="n">FunctionCall</span> <span class="n">fc</span>
+<span class="k">where</span> <span class="n">fc</span><span class="p">.</span><span class="n">getTarget</span><span class="p">().</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;gethostbyname&quot;</span><span class="p">)</span>
+  <span class="k">and</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">localFlow</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">sl</span><span class="p">),</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">fc</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)))</span>
+<span class="k">select</span> <span class="n">sl</span><span class="p">,</span> <span class="n">fc</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercise-2">
+<h3>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">DataFlow</span>
+
+<span class="k">module</span> <span class="n">LiteralToGethostbynameConfiguration</span> <span class="n">implements</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ConfigSig</span> <span class="p">{</span>
+  <span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">source</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="k">instanceof</span> <span class="n">StringLiteral</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span> <span class="p">(</span><span class="n">FunctionCall</span> <span class="n">fc</span> <span class="o">|</span>
+      <span class="n">sink</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="o">=</span> <span class="n">fc</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span> <span class="k">and</span>
+      <span class="n">fc</span><span class="p">.</span><span class="n">getTarget</span><span class="p">().</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;gethostbyname&quot;</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">LiteralToGethostbynameFlow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Global</span><span class="o">&lt;</span><span class="n">LiteralToGethostbynameConfiguration</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">from</span> <span class="n">StringLiteral</span> <span class="n">sl</span><span class="p">,</span> <span class="n">FunctionCall</span> <span class="n">fc</span>
+<span class="k">where</span> <span class="n">LiteralToGethostbynameFlow</span><span class="o">::</span><span class="n">flow</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">sl</span><span class="p">),</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">fc</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)))</span>
+<span class="k">select</span> <span class="n">sl</span><span class="p">,</span> <span class="n">fc</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercise-3">
+<h3>Exercise 3<a class="headerlink" href="#exercise-3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+
+<span class="k">class</span> <span class="n">GetenvSource</span> <span class="k">extends</span> <span class="n">FunctionCall</span> <span class="p">{</span>
+  <span class="n">GetenvSource</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">getTarget</span><span class="p">().</span><span class="n">hasGlobalName</span><span class="p">(</span><span class="s">&quot;getenv&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercise-4">
+<h3>Exercise 4<a class="headerlink" href="#exercise-4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">semmle</span><span class="p">.</span><span class="n">code</span><span class="p">.</span><span class="n">cpp</span><span class="p">.</span><span class="n">dataflow</span><span class="p">.</span><span class="n">DataFlow</span>
+
+<span class="k">class</span> <span class="n">GetenvSource</span> <span class="k">extends</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="p">{</span>
+  <span class="n">GetenvSource</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span><span class="p">.</span><span class="n">asExpr</span><span class="p">().(</span><span class="n">FunctionCall</span><span class="p">).</span><span class="n">getTarget</span><span class="p">().</span><span class="n">hasGlobalName</span><span class="p">(</span><span class="s">&quot;getenv&quot;</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">GetenvToGethostbynameConfiguration</span> <span class="n">implements</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">ConfigSig</span> <span class="p">{</span>
+  <span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">source</span> <span class="k">instanceof</span> <span class="n">GetenvSource</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span> <span class="p">(</span><span class="n">FunctionCall</span> <span class="n">fc</span> <span class="o">|</span>
+      <span class="n">sink</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="o">=</span> <span class="n">fc</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span> <span class="k">and</span>
+      <span class="n">fc</span><span class="p">.</span><span class="n">getTarget</span><span class="p">().</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;gethostbyname&quot;</span><span class="p">))</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">module</span> <span class="n">GetenvToGethostbynameFlow</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Global</span><span class="o">&lt;</span><span class="n">GetenvToGethostbynameConfiguration</span><span class="o">&gt;</span><span class="p">;</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">getenv</span><span class="p">,</span> <span class="n">FunctionCall</span> <span class="n">fc</span>
+<span class="k">where</span> <span class="n">GetenvToGethostbynameFlow</span><span class="o">::</span><span class="n">flow</span><span class="p">(</span><span class="n">getenv</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">exprNode</span><span class="p">(</span><span class="n">fc</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)))</span>
+<span class="k">select</span> <span class="n">getenv</span><span class="p">.</span><span class="n">asExpr</span><span class="p">(),</span> <span class="n">fc</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>“<a class="reference internal" href="../codeql-for-visual-studio-code/exploring-data-flow-with-path-queries.html#exploring-data-flow-with-path-queries"><span class="std std-ref">Exploring data flow with path queries</span></a>”</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/cpp/ql/src">CodeQL queries for C and C++</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/cpp/ql/examples">Example queries for C and C++</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/">CodeQL library reference for C and C++</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

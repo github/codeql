@@ -1,0 +1,621 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Formulas &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Annotations" href="annotations.html" />
+    <link rel="prev" title="Expressions" href="expressions.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-language-guides/index.html">CodeQL language guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">QL language reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="about-the-ql-language.html">About the QL language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="predicates.html">Predicates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="queries.html">Queries</a></li>
+<li class="toctree-l2"><a class="reference internal" href="types.html">Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signatures.html">Signatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aliases.html">Aliases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variables.html">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressions.html">Expressions</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Formulas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html">Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recursion.html">Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lexical-syntax.html">Lexical syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="name-resolution.html">Name resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation-of-ql-programs.html">Evaluation of QL programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ql-language-specification.html">QL language specification</a></li>
+</ul>
+</li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                accesskey="U">QL language reference</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="formulas-1">
+<span id="formulas"></span><h1>Formulas<a class="headerlink" href="#formulas-1" title="Permalink to this headline">¶</a></h1>
+<p>Formulas define logical relations between the free variables used in expressions.</p>
+<p>Depending on the values assigned to those <a class="reference internal" href="variables.html#free-variables"><span class="std std-ref">free variables</span></a>, a formula can be true or false.
+When a formula is true, we often say that the formula <em>holds</em>.
+For example, the formula <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">=</span> <span class="pre">4</span> <span class="pre">+</span> <span class="pre">5</span></code> holds if the value <code class="docutils literal notranslate"><span class="pre">9</span></code> is assigned to <code class="docutils literal notranslate"><span class="pre">x</span></code>, but it
+doesn’t hold for other assignments to <code class="docutils literal notranslate"><span class="pre">x</span></code>.
+Some formulas don’t have any free variables. For example <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&lt;</span> <span class="pre">2</span></code> always holds, and <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">&gt;</span> <span class="pre">2</span></code>
+never holds.</p>
+<p>You usually use formulas in the bodies of classes, predicates, and select clauses to constrain
+the set of values that they refer to.
+For example, you can define a class containing all integers <code class="docutils literal notranslate"><span class="pre">i</span></code> for which the formula <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">in</span>
+<span class="pre">[0</span> <span class="pre">..</span> <span class="pre">9]</span></code> holds.</p>
+<p>The following sections describe the kinds of formulas that are available in QL.</p>
+<div class="section" id="comparisons">
+<h2>Comparisons<a class="headerlink" href="#comparisons" title="Permalink to this headline">¶</a></h2>
+<p>A comparison formula is of the form:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">expression</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">operator</span><span class="o">&gt;</span> <span class="o">&lt;</span><span class="n">expression</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>See the tables below for an overview of the available comparison operators.</p>
+<div class="section" id="order">
+<h3>Order<a class="headerlink" href="#order" title="Permalink to this headline">¶</a></h3>
+<p>To compare two expressions using one of these order operators, each expression must have a type
+and those types must be <a class="reference internal" href="types.html#type-compatibility"><span class="std std-ref">compatible</span></a> and
+<a class="reference external" href="https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#ordering">orderable</a>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="76%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Symbol</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Greater than</td>
+<td><code class="docutils literal notranslate"><span class="pre">&gt;</span></code></td>
+</tr>
+<tr class="row-odd"><td>Greater than or equal to</td>
+<td><code class="docutils literal notranslate"><span class="pre">&gt;=</span></code></td>
+</tr>
+<tr class="row-even"><td>Less than</td>
+<td><code class="docutils literal notranslate"><span class="pre">&lt;</span></code></td>
+</tr>
+<tr class="row-odd"><td>Less than or equal to</td>
+<td><code class="docutils literal notranslate"><span class="pre">&lt;=</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>For example, the formulas <code class="docutils literal notranslate"><span class="pre">&quot;Ann&quot;</span> <span class="pre">&lt;</span> <span class="pre">&quot;Anne&quot;</span></code> and <code class="docutils literal notranslate"><span class="pre">5</span> <span class="pre">+</span> <span class="pre">6</span> <span class="pre">&gt;=</span> <span class="pre">11</span></code> both hold.</p>
+</div>
+<div class="section" id="equality-1">
+<span id="equality"></span><span id="index-0"></span><h3>Equality<a class="headerlink" href="#equality-1" title="Permalink to this headline">¶</a></h3>
+<p>To compare two expressions using <code class="docutils literal notranslate"><span class="pre">=</span></code>, at least one of the expressions must have a type. If
+both expressions have a type, then their types must be <a class="reference internal" href="types.html#type-compatibility"><span class="std std-ref">compatible</span></a>.</p>
+<p>To compare two expressions using <code class="docutils literal notranslate"><span class="pre">!=</span></code>, both expressions must have a type. Those types
+must also be <a class="reference internal" href="types.html#type-compatibility"><span class="std std-ref">compatible</span></a>.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="64%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Name</th>
+<th class="head">Symbol</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>Equal to</td>
+<td><code class="docutils literal notranslate"><span class="pre">=</span></code></td>
+</tr>
+<tr class="row-odd"><td>Not equal to</td>
+<td><code class="docutils literal notranslate"><span class="pre">!=</span></code></td>
+</tr>
+</tbody>
+</table>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">x.sqrt()</span> <span class="pre">=</span> <span class="pre">2</span></code> holds if <code class="docutils literal notranslate"><span class="pre">x</span></code> is <code class="docutils literal notranslate"><span class="pre">4</span></code>, and <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">!=</span> <span class="pre">5</span></code> always holds.</p>
+<p>For expressions <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code>, the formula <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">=</span> <span class="pre">B</span></code> holds if there is a pair of values—one
+from <code class="docutils literal notranslate"><span class="pre">A</span></code> and one from <code class="docutils literal notranslate"><span class="pre">B</span></code>—that are the same. In other words, <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> have at least
+one value in common. For example, <code class="docutils literal notranslate"><span class="pre">[1</span> <span class="pre">..</span> <span class="pre">2]</span> <span class="pre">=</span> <span class="pre">[2</span> <span class="pre">..</span> <span class="pre">5]</span></code> holds, since both expressions have
+the value <code class="docutils literal notranslate"><span class="pre">2</span></code>.</p>
+<p>As a consequence, <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">!=</span> <span class="pre">B</span></code> has a very different meaning to the <a class="reference internal" href="#negation"><span class="std std-ref">negation</span></a> <code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">A</span> <span class="pre">=</span> <span class="pre">B</span></code> <a class="footnote-reference" href="#footnote-1" id="footnote-reference-1">[1]</a>:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">!=</span> <span class="pre">B</span></code> holds if there is a pair of values (one from <code class="docutils literal notranslate"><span class="pre">A</span></code> and one from <code class="docutils literal notranslate"><span class="pre">B</span></code>) that are
+different.</li>
+<li><code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">A</span> <span class="pre">=</span> <span class="pre">B</span></code> holds if it is <em>not</em> the case that there is a pair of values that are the same.
+In other words, <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> have no values in common.</li>
+</ul>
+<p><strong>Examples</strong></p>
+<ol class="arabic simple">
+<li><dl class="first docutils">
+<dt>If both expressions have a single value (for example <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">0</span></code>), then comparison is straightforward:</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">!=</span> <span class="pre">0</span></code> holds.</li>
+<li><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> <span class="pre">0</span></code> doesn’t hold.</li>
+<li><code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">0</span></code> holds.</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Now compare <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">[1</span> <span class="pre">..</span> <span class="pre">2]</span></code>:</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">!=</span> <span class="pre">[1</span> <span class="pre">..</span> <span class="pre">2]</span></code> holds, because <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">!=</span> <span class="pre">2</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> <span class="pre">[1</span> <span class="pre">..</span> <span class="pre">2]</span></code> holds, because <code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> <span class="pre">1</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">[1</span> <span class="pre">..</span> <span class="pre">2]</span></code> doesn’t hold, because there is a common value (<code class="docutils literal notranslate"><span class="pre">1</span></code>).</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Compare <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">empty()</span> <span class="pre">{</span> <span class="pre">none()</span> <span class="pre">}</span></code> (a predicate defining the empty set of integers):</dt>
+<dd><ul class="first last">
+<li><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">!=</span> <span class="pre">empty()</span></code> doesn’t hold, because there are no values in <code class="docutils literal notranslate"><span class="pre">empty()</span></code>, so no values
+that are not equal to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">1</span> <span class="pre">=</span> <span class="pre">empty()</span></code> also doesn’t hold, because there are no values in <code class="docutils literal notranslate"><span class="pre">empty()</span></code>, so no values
+that are equal to <code class="docutils literal notranslate"><span class="pre">1</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">1</span> <span class="pre">=</span> <span class="pre">empty()</span></code> holds, because there are no common values.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ol>
+</div>
+</div>
+<div class="section" id="type-checks-1">
+<span id="type-checks"></span><span id="index-1"></span><h2>Type checks<a class="headerlink" href="#type-checks-1" title="Permalink to this headline">¶</a></h2>
+<p>A type check is a formula that looks like:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">expression</span><span class="o">&gt;</span> <span class="k">instanceof</span> <span class="o">&lt;</span><span class="n">type</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>You can use a type check formula to check whether an expression has a certain type. For
+example, <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">instanceof</span> <span class="pre">Person</span></code> holds if the variable <code class="docutils literal notranslate"><span class="pre">x</span></code> has type <code class="docutils literal notranslate"><span class="pre">Person</span></code>.</p>
+</div>
+<div class="section" id="range-checks">
+<span id="index-2"></span><h2>Range checks<a class="headerlink" href="#range-checks" title="Permalink to this headline">¶</a></h2>
+<p>A range check is a formula that looks like:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">expression</span><span class="o">&gt;</span> <span class="k">in</span> <span class="o">&lt;</span><span class="n">range</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>You can use a range check formula to check whether a numeric expression is in a given
+<a class="reference internal" href="expressions.html#ranges"><span class="std std-ref">range</span></a>. For example, <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">in</span> <span class="pre">[2.1</span> <span class="pre">..</span> <span class="pre">10.5]</span></code> holds if the variable <code class="docutils literal notranslate"><span class="pre">x</span></code> is
+between the values <code class="docutils literal notranslate"><span class="pre">2.1</span></code> and <code class="docutils literal notranslate"><span class="pre">10.5</span></code> (including <code class="docutils literal notranslate"><span class="pre">2.1</span></code> and <code class="docutils literal notranslate"><span class="pre">10.5</span></code> themselves).</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">&lt;expression&gt;</span> <span class="pre">in</span> <span class="pre">&lt;range&gt;</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">&lt;expression&gt;</span> <span class="pre">=</span> <span class="pre">&lt;range&gt;</span></code>.
+Both formulas check whether the set of values denoted by <code class="docutils literal notranslate"><span class="pre">&lt;expression&gt;</span></code> is the same as the
+set of values denoted by <code class="docutils literal notranslate"><span class="pre">&lt;range&gt;</span></code>.</p>
+</div>
+<div class="section" id="calls-to-predicates">
+<span id="calls"></span><h2>Calls to predicates<a class="headerlink" href="#calls-to-predicates" title="Permalink to this headline">¶</a></h2>
+<p>A call is a formula or <a class="reference internal" href="expressions.html#expressions"><span class="std std-ref">expression</span></a> that consists of a reference to a
+predicate and a number of arguments.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">isThree(x)</span></code> might be a call to a predicate that holds if the argument <code class="docutils literal notranslate"><span class="pre">x</span></code> is
+<code class="docutils literal notranslate"><span class="pre">3</span></code>, and <code class="docutils literal notranslate"><span class="pre">x.isEven()</span></code> might be a call to a member predicate that holds if <code class="docutils literal notranslate"><span class="pre">x</span></code> is even.</p>
+<p>A call to a predicate can also contain a closure operator, namely <code class="docutils literal notranslate"><span class="pre">*</span></code> or <code class="docutils literal notranslate"><span class="pre">+</span></code>. For example,
+<code class="docutils literal notranslate"><span class="pre">a.isChildOf+(b)</span></code> is a call to the <a class="reference internal" href="recursion.html#transitive-closures"><span class="std std-ref">transitive closure</span></a> of
+<code class="docutils literal notranslate"><span class="pre">isChildOf()</span></code>, so it holds if <code class="docutils literal notranslate"><span class="pre">a</span></code> is a descendant of <code class="docutils literal notranslate"><span class="pre">b</span></code>.</p>
+<p>The predicate reference must resolve to exactly one predicate. For more information about how a predicate
+reference is resolved, see “<a class="reference internal" href="name-resolution.html#name-resolution"><span class="std std-ref">Name resolution</span></a>.”</p>
+<p>If the call resolves to a predicate without result, then the call is a formula.</p>
+<p>It is also possible to call a predicate with result. This kind of call is an
+expression in QL, instead of a formula. For more information, see “<a class="reference internal" href="expressions.html#calls-with-result"><span class="std std-ref">Calls to predicates (with result)</span></a>.”</p>
+<p>Member predicates only apply to members of a particular class and calls to
+member predicates have a receiver of a matching type. Syntactically, if a call
+contains a dot, then the expression before the dot specifies the receiver of
+the call. For instance, <code class="docutils literal notranslate"><span class="pre">x</span></code> is the receiver for the call <code class="docutils literal notranslate"><span class="pre">x.isEven()</span></code>.</p>
+<p>For calls to member predicates of the enclosing class on the member itself
+(i.e., the value of <code class="docutils literal notranslate"><span class="pre">this</span></code>), the receiver may be omitted syntactically. In
+this case we say the call has an implicit this receiver. For instance, in the
+following example the <code class="docutils literal notranslate"><span class="pre">isEven()</span></code> call in <code class="docutils literal notranslate"><span class="pre">isOdd()</span></code> is a member predicate
+call with an implicit this receiver and the call is equivalent to
+<code class="docutils literal notranslate"><span class="pre">this.isEven()</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">OneTwoThree</span> <span class="k">extends</span> <span class="kt">int</span> <span class="p">{</span>
+  <span class="n">OneTwoThree</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="o">=</span> <span class="m">1</span> <span class="k">or</span> <span class="k">this</span> <span class="o">=</span> <span class="m">2</span> <span class="k">or</span> <span class="k">this</span> <span class="o">=</span> <span class="m">3</span> <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isEven</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="o">=</span> <span class="m">2</span> <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isOdd</span><span class="p">()</span> <span class="p">{</span> <span class="k">not</span> <span class="n">isEven</span><span class="p">()</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Use of implicit this receivers can make it harder to spot predicates that introduce
+cartesian products by failing to relate the implicit <code class="docutils literal notranslate"><span class="pre">this</span></code> variable with
+other variables, which can negatively affect query performance. For more
+information on cartesian products, see “<a class="reference internal" href="../writing-codeql-queries/troubleshooting-query-performance.html#troubleshooting-query-performance"><span class="std std-ref">Troubleshooting query performance</span></a>”.</p>
+<p>It is possible to enable warnings about implicit this receivers for <a class="reference external" href="https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs#warnonimplicitthis">CodeQL packs</a>
+through the <code class="docutils literal notranslate"><span class="pre">warnOnImplicitThis</span></code> property.</p>
+</div>
+<div class="section" id="parenthesized-formulas-1">
+<span id="parenthesized-formulas"></span><h2>Parenthesized formulas<a class="headerlink" href="#parenthesized-formulas-1" title="Permalink to this headline">¶</a></h2>
+<p>A parenthesized formula is any formula surrounded by parentheses, <code class="docutils literal notranslate"><span class="pre">(</span></code> and <code class="docutils literal notranslate"><span class="pre">)</span></code>. This formula
+has exactly the same meaning as the enclosed formula. The parentheses often help to improve
+readability and group certain formulas together.</p>
+</div>
+<div class="section" id="quantified-formulas-1">
+<span id="quantified-formulas"></span><h2>Quantified formulas<a class="headerlink" href="#quantified-formulas-1" title="Permalink to this headline">¶</a></h2>
+<p>A quantified formula introduces temporary variables and uses them in formulas in its body.
+This is a way to create new formulas from existing ones.</p>
+<div class="section" id="explicit-quantifiers-1">
+<span id="explicit-quantifiers"></span><h3>Explicit quantifiers<a class="headerlink" href="#explicit-quantifiers-1" title="Permalink to this headline">¶</a></h3>
+<p>The following explicit “quantifiers” are the same as the usual existential and universal quantifiers in
+mathematical logic.</p>
+<div class="section" id="exists">
+<span id="index-3"></span><h4><code class="docutils literal notranslate"><span class="pre">exists</span></code><a class="headerlink" href="#exists" title="Permalink to this headline">¶</a></h4>
+<p>This quantifier has the following syntax:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">exists</span><span class="p">(</span><span class="o">&lt;</span><span class="n">variable</span> <span class="n">declarations</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">formula</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>You can also write <code class="docutils literal notranslate"><span class="pre">exists(&lt;variable</span> <span class="pre">declarations&gt;</span> <span class="pre">|</span> <span class="pre">&lt;formula</span> <span class="pre">1&gt;</span> <span class="pre">|</span> <span class="pre">&lt;formula</span> <span class="pre">2&gt;)</span></code>.
+This is equivalent to <code class="docutils literal notranslate"><span class="pre">exists(&lt;variable</span> <span class="pre">declarations&gt;</span> <span class="pre">|</span> <span class="pre">&lt;formula</span> <span class="pre">1&gt;</span> <span class="pre">and</span> <span class="pre">&lt;formula</span> <span class="pre">2&gt;)</span></code>.</p>
+<p>This quantified formula introduces some new variables. It holds if there is at least one set of values
+that the variables could take to make the formula in the body true.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">exists(int</span> <span class="pre">i</span> <span class="pre">|</span> <span class="pre">i</span> <span class="pre">instanceof</span> <span class="pre">OneTwoThree)</span></code> introduces a temporary variable of
+type <code class="docutils literal notranslate"><span class="pre">int</span></code> and holds if any value of that variable has type <code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code>.</p>
+</div>
+<div class="section" id="forall">
+<span id="index-4"></span><h4><code class="docutils literal notranslate"><span class="pre">forall</span></code><a class="headerlink" href="#forall" title="Permalink to this headline">¶</a></h4>
+<p>This quantifier has the following syntax:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">forall</span><span class="p">(</span><span class="o">&lt;</span><span class="n">variable</span> <span class="n">declarations</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">formula</span> <span class="m">1</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">formula</span> <span class="m">2</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">forall</span></code> introduces some new variables, and typically has two formulas in its body. It holds
+if <code class="docutils literal notranslate"><span class="pre">&lt;formula</span> <span class="pre">2&gt;</span></code> holds for all values that <code class="docutils literal notranslate"><span class="pre">&lt;formula</span> <span class="pre">1&gt;</span></code> holds for.</p>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">forall(int</span> <span class="pre">i</span> <span class="pre">|</span> <span class="pre">i</span> <span class="pre">instanceof</span> <span class="pre">OneTwoThree</span> <span class="pre">|</span> <span class="pre">i</span> <span class="pre">&lt;</span> <span class="pre">5)</span></code> holds if all integers
+that are in the class <code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code> are also less than <code class="docutils literal notranslate"><span class="pre">5</span></code>.
+In other words, if there is a value in <code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code> that is greater than or equal to <code class="docutils literal notranslate"><span class="pre">5</span></code>,
+then the formula doesn’t hold.</p>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">forall(&lt;vars&gt;</span> <span class="pre">|</span> <span class="pre">&lt;formula</span> <span class="pre">1&gt;</span> <span class="pre">|</span> <span class="pre">&lt;formula</span> <span class="pre">2&gt;)</span></code> is
+logically the same as <code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">exists(&lt;vars&gt;</span> <span class="pre">|</span> <span class="pre">&lt;formula</span> <span class="pre">1&gt;</span> <span class="pre">|</span> <span class="pre">not</span> <span class="pre">&lt;formula</span> <span class="pre">2&gt;)</span></code>.</p>
+</div>
+<div class="section" id="forex">
+<span id="index-5"></span><h4><code class="docutils literal notranslate"><span class="pre">forex</span></code><a class="headerlink" href="#forex" title="Permalink to this headline">¶</a></h4>
+<p>This quantifier has the following syntax:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">forex</span><span class="p">(</span><span class="o">&lt;</span><span class="n">variable</span> <span class="n">declarations</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">formula</span> <span class="m">1</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">formula</span> <span class="m">2</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This quantifier exists as a shorthand for:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">forall</span><span class="p">(</span><span class="o">&lt;</span><span class="n">vars</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">formula</span> <span class="m">1</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">formula</span> <span class="m">2</span><span class="o">&gt;</span><span class="p">)</span> <span class="k">and</span>
+<span class="k">exists</span><span class="p">(</span><span class="o">&lt;</span><span class="n">vars</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">formula</span> <span class="m">1</span><span class="o">&gt;</span> <span class="o">|</span> <span class="o">&lt;</span><span class="n">formula</span> <span class="m">2</span><span class="o">&gt;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>In other words, <code class="docutils literal notranslate"><span class="pre">forex</span></code> works in a similar way to <code class="docutils literal notranslate"><span class="pre">forall</span></code>, except that it ensures that
+there is at least one value for which <code class="docutils literal notranslate"><span class="pre">&lt;formula</span> <span class="pre">1&gt;</span></code> holds.
+To see why this is useful, note that the <code class="docutils literal notranslate"><span class="pre">forall</span></code> quantifier could hold trivially.
+For example, <code class="docutils literal notranslate"><span class="pre">forall(int</span> <span class="pre">i</span> <span class="pre">|</span> <span class="pre">i</span> <span class="pre">=</span> <span class="pre">1</span> <span class="pre">and</span> <span class="pre">i</span> <span class="pre">=</span> <span class="pre">2</span> <span class="pre">|</span> <span class="pre">i</span> <span class="pre">=</span> <span class="pre">3)</span></code> holds: there are no integers <code class="docutils literal notranslate"><span class="pre">i</span></code>
+which are equal to both <code class="docutils literal notranslate"><span class="pre">1</span></code> and <code class="docutils literal notranslate"><span class="pre">2</span></code>, so the second part of the body <code class="docutils literal notranslate"><span class="pre">(i</span> <span class="pre">=</span> <span class="pre">3)</span></code> holds for
+every integer for which the first part holds.</p>
+<p>Since this is often not the behavior that you want in a query, the <code class="docutils literal notranslate"><span class="pre">forex</span></code> quantifier is a
+useful shorthand.</p>
+</div>
+</div>
+<div class="section" id="implicit-quantifiers-1">
+<span id="implicit-quantifiers"></span><h3>Implicit quantifiers<a class="headerlink" href="#implicit-quantifiers-1" title="Permalink to this headline">¶</a></h3>
+<p>Implicitly quantified variables can be introduced using “don’t care expressions.” These are used
+when you need to introduce a variable to use as an argument to a predicate call, but don’t care
+about its value. For further information, see “<a class="reference internal" href="expressions.html#don-t-care-expressions"><span class="std std-ref">Don’t-care expressions</span></a>.”</p>
+</div>
+</div>
+<div class="section" id="logical-connectives-1">
+<span id="logical-connectives"></span><h2>Logical connectives<a class="headerlink" href="#logical-connectives-1" title="Permalink to this headline">¶</a></h2>
+<p>You can use a number of logical connectives between formulas in QL. They allow you to combine
+existing formulas into longer, more complex ones.</p>
+<p>To indicate which parts of the formula should take precedence, you can use parentheses.
+Otherwise, the order of precedence from highest to lowest is as follows:</p>
+<ol class="arabic simple">
+<li>Negation (<a class="reference internal" href="#negation"><span class="std std-ref">not</span></a>)</li>
+<li>Conditional formula (<a class="reference internal" href="#conditional"><span class="std std-ref">if … then … else</span></a>)</li>
+<li>Conjunction (<a class="reference internal" href="#conjunction"><span class="std std-ref">and</span></a>)</li>
+<li>Disjunction (<a class="reference internal" href="#disjunction"><span class="std std-ref">or</span></a>)</li>
+<li>Implication (<a class="reference internal" href="#implication"><span class="std std-ref">implies</span></a>)</li>
+</ol>
+<p>For example, <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">and</span> <span class="pre">B</span> <span class="pre">implies</span> <span class="pre">C</span> <span class="pre">or</span> <span class="pre">D</span></code> is equivalent to <code class="docutils literal notranslate"><span class="pre">(A</span> <span class="pre">and</span> <span class="pre">B)</span> <span class="pre">implies</span> <span class="pre">(C</span> <span class="pre">or</span> <span class="pre">D)</span></code>.</p>
+<p>Similarly, <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">and</span> <span class="pre">not</span> <span class="pre">if</span> <span class="pre">B</span> <span class="pre">then</span> <span class="pre">C</span> <span class="pre">else</span> <span class="pre">D</span></code> is equivalent to
+<code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">and</span> <span class="pre">(not</span> <span class="pre">(if</span> <span class="pre">B</span> <span class="pre">then</span> <span class="pre">C</span> <span class="pre">else</span> <span class="pre">D))</span></code>.</p>
+<p>Note that the <a class="reference internal" href="#parenthesized-formulas"><span class="std std-ref">parentheses</span></a> in the above examples are not
+necessary, since they highlight the default precedence. You usually only add parentheses to
+override the default precedence, but you can also add them to make your code easier to read
+(even if they aren’t required).</p>
+<p>QL also has two nullary connectives indicating the always true formula,
+<code class="docutils literal notranslate"><span class="pre">any()</span></code>, and the always false formula, <code class="docutils literal notranslate"><span class="pre">none()</span></code>.</p>
+<p>The logical connectives in QL work similarly to Boolean connectives in other programming
+languages. Here is a brief overview:</p>
+<div class="section" id="any">
+<span id="true"></span><span id="index-6"></span><h3><code class="docutils literal notranslate"><span class="pre">any()</span></code><a class="headerlink" href="#any" title="Permalink to this headline">¶</a></h3>
+<p>The built-in predicate <code class="docutils literal notranslate"><span class="pre">any()</span></code> is a formula that always holds.</p>
+<p><strong>Example</strong></p>
+<p>The following predicate defines the set of all expressions.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="n">Expr</span> <span class="n">allExpressions</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">any</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="none">
+<span id="false"></span><span id="index-7"></span><h3><code class="docutils literal notranslate"><span class="pre">none()</span></code><a class="headerlink" href="#none" title="Permalink to this headline">¶</a></h3>
+<p>The built-in predicate <code class="docutils literal notranslate"><span class="pre">none()</span></code> is a formula that never holds.</p>
+<p><strong>Example</strong></p>
+<p>The following predicate defines the empty set of integers.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">emptySet</span><span class="p">()</span> <span class="p">{</span>
+  <span class="k">none</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="not">
+<span id="negation"></span><span id="index-8"></span><h3><code class="docutils literal notranslate"><span class="pre">not</span></code><a class="headerlink" href="#not" title="Permalink to this headline">¶</a></h3>
+<p>You can use the keyword <code class="docutils literal notranslate"><span class="pre">not</span></code> before a formula. The resulting formula is called a negation.</p>
+<p><code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">A</span></code> holds exactly when <code class="docutils literal notranslate"><span class="pre">A</span></code> doesn’t hold.</p>
+<p><strong>Example</strong></p>
+<p>The following query selects files that are not HTML files.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">from</span> <span class="n">File</span> <span class="n">f</span>
+<span class="k">where</span> <span class="k">not</span> <span class="n">f</span><span class="p">.</span><span class="n">getFileType</span><span class="p">().</span><span class="n">isHtml</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">f</span>
+</pre></div>
+</div>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>You should be careful when using <code class="docutils literal notranslate"><span class="pre">not</span></code> in a recursive definition, as this could lead to
+non-monotonic recursion. For more information, “<a class="reference internal" href="recursion.html#non-monotonic-recursion"><span class="std std-ref">Non-monotonic recursion</span></a>.”</p>
+</div></blockquote>
+</div>
+<div class="section" id="if-then-else">
+<span id="conditional"></span><span id="index-9"></span><h3><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">...</span> <span class="pre">then</span> <span class="pre">...</span> <span class="pre">else</span></code><a class="headerlink" href="#if-then-else" title="Permalink to this headline">¶</a></h3>
+<p>You can use these keywords to write a conditional formula. This is another way to simplify
+notation: <code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">A</span> <span class="pre">then</span> <span class="pre">B</span> <span class="pre">else</span> <span class="pre">C</span></code> is the same as writing <code class="docutils literal notranslate"><span class="pre">(A</span> <span class="pre">and</span> <span class="pre">B)</span> <span class="pre">or</span> <span class="pre">((not</span> <span class="pre">A)</span> <span class="pre">and</span> <span class="pre">C)</span></code>.</p>
+<p><strong>Example</strong></p>
+<p>With the following definition, <code class="docutils literal notranslate"><span class="pre">visibility(c)</span></code> returns <code class="docutils literal notranslate"><span class="pre">&quot;public&quot;</span></code> if <code class="docutils literal notranslate"><span class="pre">x</span></code> is
+a public class and returns <code class="docutils literal notranslate"><span class="pre">&quot;private&quot;</span></code> otherwise:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="kt">string</span> <span class="n">visibility</span><span class="p">(</span><span class="n">Class</span> <span class="n">c</span><span class="p">){</span>
+  <span class="k">if</span> <span class="n">c</span><span class="p">.</span><span class="n">isPublic</span><span class="p">()</span>
+  <span class="k">then</span> <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;public&quot;</span>
+  <span class="k">else</span> <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;private&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="and">
+<span id="conjunction"></span><span id="index-10"></span><h3><code class="docutils literal notranslate"><span class="pre">and</span></code><a class="headerlink" href="#and" title="Permalink to this headline">¶</a></h3>
+<p>You can use the keyword <code class="docutils literal notranslate"><span class="pre">and</span></code> between two formulas. The resulting formula is called a
+conjunction.</p>
+<p><code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">and</span> <span class="pre">B</span></code> holds if, and only if, both <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> hold.</p>
+<p><strong>Example</strong></p>
+<p>The following query selects files that have the <code class="docutils literal notranslate"><span class="pre">js</span></code> extension and contain fewer
+than 200 lines of code:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">from</span> <span class="n">File</span> <span class="n">f</span>
+<span class="k">where</span> <span class="n">f</span><span class="p">.</span><span class="n">getExtension</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;js&quot;</span> <span class="k">and</span>
+  <span class="n">f</span><span class="p">.</span><span class="n">getNumberOfLinesOfCode</span><span class="p">()</span> <span class="o">&lt;</span> <span class="m">200</span>
+<span class="k">select</span> <span class="n">f</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="or">
+<span id="disjunction"></span><span id="index-11"></span><h3><code class="docutils literal notranslate"><span class="pre">or</span></code><a class="headerlink" href="#or" title="Permalink to this headline">¶</a></h3>
+<p>You can use the keyword <code class="docutils literal notranslate"><span class="pre">or</span></code> between two formulas. The resulting formula is called a
+disjunction.</p>
+<p><code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">or</span> <span class="pre">B</span></code> holds if at least one of <code class="docutils literal notranslate"><span class="pre">A</span></code> or <code class="docutils literal notranslate"><span class="pre">B</span></code> holds.</p>
+<p><strong>Example</strong></p>
+<p>With the following definition, an integer is in the class <code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code> if it is equal to
+<code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, or <code class="docutils literal notranslate"><span class="pre">3</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">OneTwoThree</span> <span class="k">extends</span> <span class="kt">int</span> <span class="p">{</span>
+  <span class="n">OneTwoThree</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span> <span class="o">=</span> <span class="m">1</span> <span class="k">or</span> <span class="k">this</span> <span class="o">=</span> <span class="m">2</span> <span class="k">or</span> <span class="k">this</span> <span class="o">=</span> <span class="m">3</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="implies">
+<span id="implication"></span><span id="index-12"></span><h3><code class="docutils literal notranslate"><span class="pre">implies</span></code><a class="headerlink" href="#implies" title="Permalink to this headline">¶</a></h3>
+<p>You can use the keyword <code class="docutils literal notranslate"><span class="pre">implies</span></code> between two formulas. The resulting formula is called an
+implication. This is just a simplified notation: <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">implies</span> <span class="pre">B</span></code> is the same as writing <code class="docutils literal notranslate"><span class="pre">(not</span> <span class="pre">A)</span> <span class="pre">or</span> <span class="pre">B</span></code>.</p>
+<p><strong>Example</strong></p>
+<p>The following query selects any <code class="docutils literal notranslate"><span class="pre">SmallInt</span></code> that is odd, or a multiple of <code class="docutils literal notranslate"><span class="pre">4</span></code>.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">SmallInt</span> <span class="k">extends</span> <span class="kt">int</span> <span class="p">{</span>
+  <span class="n">SmallInt</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="o">=</span> <span class="p">[</span><span class="m">1</span> <span class="p">..</span> <span class="m">10</span><span class="p">]</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">from</span> <span class="n">SmallInt</span> <span class="n">x</span>
+<span class="k">where</span> <span class="n">x</span> <span class="o">%</span> <span class="m">2</span> <span class="o">=</span> <span class="m">0</span> <span class="k">implies</span> <span class="n">x</span> <span class="o">%</span> <span class="m">4</span> <span class="o">=</span> <span class="m">0</span>
+<span class="k">select</span> <span class="n">x</span>
+</pre></div>
+</div>
+<p class="rubric">Footnotes</p>
+<table class="docutils footnote" frame="void" id="footnote-1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#footnote-reference-1">[1]</a></td><td><p class="first">The difference between <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">!=</span> <span class="pre">B</span></code> and <code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">A</span> <span class="pre">=</span> <span class="pre">B</span></code> is due to the underlying quantifiers.
+If you think of <code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">B</span></code> as sets of values, then <code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">!=</span> <span class="pre">B</span></code> means:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">exists</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">|</span> <span class="n">a</span> <span class="k">in</span> <span class="n">A</span> <span class="k">and</span> <span class="n">b</span> <span class="k">in</span> <span class="n">B</span> <span class="o">|</span> <span class="n">a</span> <span class="o">!=</span> <span class="n">b</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p>On the other hand, <code class="docutils literal notranslate"><span class="pre">not</span> <span class="pre">A</span> <span class="pre">=</span> <span class="pre">B</span></code> means:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">not</span> <span class="k">exists</span><span class="p">(</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="o">|</span> <span class="n">a</span> <span class="k">in</span> <span class="n">A</span> <span class="k">and</span> <span class="n">b</span> <span class="k">in</span> <span class="n">B</span> <span class="o">|</span> <span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="p">)</span>
+</pre></div>
+</div>
+<p class="last">This is equivalent to <code class="docutils literal notranslate"><span class="pre">forall(</span> <span class="pre">a,</span> <span class="pre">b</span> <span class="pre">|</span> <span class="pre">a</span> <span class="pre">in</span> <span class="pre">A</span> <span class="pre">and</span> <span class="pre">b</span> <span class="pre">in</span> <span class="pre">B</span> <span class="pre">|</span> <span class="pre">a</span> <span class="pre">!=</span> <span class="pre">b</span> <span class="pre">)</span></code>, which is very
+different from the first formula.</p>
+</td></tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

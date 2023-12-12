@@ -1,0 +1,1064 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CodeQL library for Ruby &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Abstract syntax tree classes for working with Ruby programs" href="abstract-syntax-tree-classes-for-working-with-ruby-programs.html" />
+    <link rel="prev" title="Basic query for Ruby code" href="basic-query-for-ruby-code.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-ruby-code.html">Basic query for Ruby code</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CodeQL library for Ruby</a></li>
+<li class="toctree-l3"><a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-ruby-programs.html">Abstract syntax tree classes for working with Ruby programs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-ruby.html">Analyzing data flow in Ruby</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-api-graphs-in-ruby.html">Using API graphs in Ruby</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-ruby.html"
+                accesskey="U">CodeQL for Ruby</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="codeql-library-for-ruby-1">
+<span id="codeql-library-for-ruby"></span><h1>CodeQL library for Ruby<a class="headerlink" href="#codeql-library-for-ruby-1" title="Permalink to this headline">¶</a></h1>
+<p>When you’re analyzing a Ruby program, you can make use of the large collection of classes in the CodeQL library for Ruby.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>CodeQL ships with an extensive library for analyzing Ruby code.  The classes in this library present
+the data from a CodeQL database in an object-oriented form and provide abstractions and predicates
+to help you with common analysis tasks.</p>
+<p>The library is implemented as a set of CodeQL modules, that is, files with the extension <code class="docutils literal notranslate"><span class="pre">.qll</span></code>. The
+module <a class="reference external" href="https://github.com/github/codeql/blob/main/ruby/ql/lib/ruby.qll">ruby.qll</a> imports most other standard library modules, so you can include the complete
+library by beginning your query with:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">AST</span>
+</pre></div>
+</div>
+<p>The CodeQL libraries model various aspects of Ruby code, depending on the type of query you want to write.
+For example the abstract syntax tree (AST) library is used for locating program elements, to match syntactic
+elements in the source code. This can be used to find values, patterns and structures.</p>
+<p>The control flow graph (CFG) is imported using</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">CFG</span>
+</pre></div>
+</div>
+<p>The CFG models the control flow between statements and expressions, for example whether one expression can
+flow to another expression, or whether an expression “dominates” another one, meaning that all paths to an
+expression must flow through another expression first.</p>
+<p>The data flow library is imported using</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">DataFlow</span>
+</pre></div>
+</div>
+<p>Data flow tracks the flow of data through the program, including through function calls (interprocedural data flow).
+Data flow is particularly useful for security queries, where untrusted data flows to vulnerable parts of the program
+to exploit it. Related to data flow, is the taint-tracking library, which finds how data can <em>influence</em> other values
+in a program, even when it is not copied exactly.</p>
+<p>The API graphs library is used to locate methods in libraries. This is particuarly useful when locating
+particular functions or parameters that could be used as a source or sink of data in a security query.</p>
+<p>To summarize, the main Ruby modules are:</p>
+<table border="1" class="docutils" id="table-1">
+<caption><span class="caption-text">Main Ruby modules</span><a class="headerlink" href="#table-1" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Import</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ruby</span></code></td>
+<td>The standard Ruby library</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">codeql.ruby.AST</span></code></td>
+<td>The abstract syntax tree library (also imported by <cite>ruby.qll</cite>)</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">codeql.ruby.ApiGraphs</span></code></td>
+<td>The API graphs library</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">codeql.ruby.CFG</span></code></td>
+<td>The control flow graph library</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">codeql.ruby.DataFlow</span></code></td>
+<td>The data flow library</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">codeql.ruby.TaintTracking</span></code></td>
+<td>The taint tracking library</td>
+</tr>
+</tbody>
+</table>
+<p>The CodeQL examples in this article are only excerpts and are not meant to represent complete queries.</p>
+</div>
+<div class="section" id="abstract-syntax">
+<h2>Abstract syntax<a class="headerlink" href="#abstract-syntax" title="Permalink to this headline">¶</a></h2>
+<p>The abstract syntax tree (AST) represents the elements of the source code organized into a tree. The <a class="reference external" href="https://codeql.github.com/docs/codeql-for-visual-studio-code/exploring-the-structure-of-your-source-code/">AST viewer</a>
+in Visual Studio Code shows the AST nodes, including the relevant CodeQL classes and predicates.</p>
+<p>All CodeQL AST classes inherit from the <cite>AstNode</cite> class, which provides the following member predicates
+to all AST classes:</p>
+<table border="1" class="docutils" id="table-2">
+<caption><span class="caption-text">Main predicates in <code class="docutils literal notranslate"><span class="pre">AstNode</span></code></span><a class="headerlink" href="#table-2" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Predicate</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">getEnclosingModule()</span></code></td>
+<td>Gets the enclosing module, if any.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">getEnclosingMethod()</span></code></td>
+<td>Gets the enclosing method, if any.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">getLocation()</span></code></td>
+<td>Gets the location of this node.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">getAChild()</span></code></td>
+<td>Gets a child node of this node.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">getParent()</span></code></td>
+<td>Gets the parent of this <cite>AstNode</cite>, if this node is not a root node.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">getDesugared</span></code></td>
+<td>Gets the desugared version of this AST node, if any.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">isSynthesized()</span></code></td>
+<td>Holds if this node was synthesized to represent an implicit AST node not
+present in the source code.</td>
+</tr>
+</tbody>
+</table>
+<div class="section" id="modules">
+<h3>Modules<a class="headerlink" href="#modules" title="Permalink to this headline">¶</a></h3>
+<p>Modules represent the main structural elements of Ruby programs, and include modules (<code class="docutils literal notranslate"><span class="pre">Module</span></code>),
+namespaces  (<code class="docutils literal notranslate"><span class="pre">Namespace</span></code>) and classes (<code class="docutils literal notranslate"><span class="pre">ClassDeclaration</span></code>).</p>
+<table border="1" class="docutils" id="table-3">
+<caption><span class="caption-text">Callable classes</span><a class="headerlink" href="#table-3" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description and selected predicates</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Module</span></code></td>
+<td><p class="first">A representation of a runtime <cite>module</cite> or <cite>class</cite> value.</p>
+<ul class="last simple">
+<li><cite>getADeclaration()</cite> - Gets a declaration</li>
+<li><cite>getSuperClass()</cite> - Gets the super class of this module, if any.</li>
+<li><cite>getAPrependedModule()</cite> - Gets a prepended module.</li>
+<li><cite>getAnIncludedModule()</cite> - Gets an included module.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Namespace</span></code></td>
+<td><p class="first">A class or module definition.</p>
+<ul class="last simple">
+<li><cite>getName()</cite> - Gets the name of the module/class.</li>
+<li><cite>getAMethod()</cite>, <cite>getMethod(name)</cite> - Gets a method in this namespace.</li>
+<li><cite>getAClass()</cite>, <cite>getClass(name)</cite> - Gets a class in this namespace.</li>
+<li><cite>getAModule()</cite>, <cite>getModule(name)</cite> - Gets a module in this namespace.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ClassDeclaration</span></code></td>
+<td>A class definition.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">SingletonClass</span></code></td>
+<td>A definition of a singleton class on an object.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ModuleDeclaration</span></code></td>
+<td>A module definition.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Toplevel</span></code></td>
+<td>The node representing the entire Ruby source file.</td>
+</tr>
+</tbody>
+</table>
+<p>The following example lists all methods in the class <cite>ApiController</cite>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">AST</span>
+
+<span class="k">from</span> <span class="n">ClassDeclaration</span> <span class="n">m</span>
+<span class="k">where</span> <span class="n">m</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;ApiController&quot;</span>
+<span class="k">select</span> <span class="n">m</span><span class="p">,</span> <span class="n">m</span><span class="p">.</span><span class="n">getAMethod</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="callables">
+<h3>Callables<a class="headerlink" href="#callables" title="Permalink to this headline">¶</a></h3>
+<p><cite>Callables</cite> are elements that can be called, including methods and blocks.</p>
+<table border="1" class="docutils" id="table-4">
+<caption><span class="caption-text">Callable classes</span><a class="headerlink" href="#table-4" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description and main predicates</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Callable</span></code></td>
+<td><p class="first">A callable.</p>
+<ul class="last simple">
+<li><cite>getAParameter()</cite> - gets a parameter of this callable.</li>
+<li><cite>getParameter(n)</cite> - gets the nth parameter of this callable.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Private</span></code></td>
+<td>A call to <code class="docutils literal notranslate"><span class="pre">private</span></code>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Method</span></code></td>
+<td><p class="first">A method.</p>
+<ul class="last simple">
+<li><cite>getName()</cite> - gets the name of this method</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">SingletonMethod</span></code></td>
+<td>A singleton method.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Lambda</span></code></td>
+<td>A lambda (anonymous method).</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Block</span></code></td>
+<td>A block.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DoBlock</span></code></td>
+<td>A block enclosed within <cite>do</cite> and <cite>end</cite>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">BraceBlock</span></code></td>
+<td>A block defined using curly braces.</td>
+</tr>
+</tbody>
+</table>
+<p><em>Parameters</em> are the values that are passed into callables. Unlike other CodeQL language models,
+parameters in Ruby are not variables themselves, but can introduce variables into the
+callable. The variables of a parameter are given by the <cite>getAVariable()</cite> predicate.</p>
+<table border="1" class="docutils" id="table-5">
+<caption><span class="caption-text">Parameter classes</span><a class="headerlink" href="#table-5" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description and main predicates</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Parameter</span></code></td>
+<td><p class="first">A parameter.</p>
+<ul class="last simple">
+<li><cite>getCallable()</cite> - Gets the callable that this parameter belongs to.</li>
+<li><cite>getPosition()</cite> - Gets the zero-based position of this parameter.</li>
+<li><cite>getAVariable()</cite>, <cite>getVariable(name)</cite> - Gets a variable introduced by this parameter.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">PatternParameter</span></code></td>
+<td>A parameter defined using a pattern.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">TuplePatternParameter</span></code></td>
+<td>A parameter defined using a tuple pattern.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">NamedParameter</span></code></td>
+<td><p class="first">A named parameter.</p>
+<ul class="last simple">
+<li><cite>getName()</cite>, <cite>hasName(name)</cite> - Gets the name of this parameter.</li>
+<li><cite>getAnAccess()</cite> - Gets an access to this parameter.</li>
+<li><cite>getDefiningAccess()</cite> - Gets the access that defines the underlying local variable.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">SimpleParameter</span></code></td>
+<td>A simple (normal) parameter.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">BlockParameter</span></code></td>
+<td>A parameter that is a block.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">HashSplatParameter</span></code></td>
+<td>A hash-splat (or double-splat) parameter.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">KeywordParameter</span></code></td>
+<td><p class="first">A keyword parameter, including a default value if the parameter is optional.</p>
+<ul class="last simple">
+<li><cite>getDefaultValue()</cite> - Gets the default value, i.e. the value assigned to the parameter when one is not provided by the caller.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">OptionalParameter</span></code></td>
+<td><p class="first">An optional parameter.</p>
+<ul class="last simple">
+<li><cite>getDefaultValue()</cite> - Gets the default value, i.e. the value assigned to the parameter when one is not provided by the caller.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">SplatParameter</span></code></td>
+<td>A splat parameter.</td>
+</tr>
+</tbody>
+</table>
+<p>Example</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">AST</span>
+
+<span class="k">from</span> <span class="n">Method</span> <span class="n">m</span>
+<span class="k">where</span> <span class="n">m</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;show&quot;</span>
+<span class="k">select</span> <span class="n">m</span><span class="p">.</span><span class="n">getParameter</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="statements">
+<h3>Statements<a class="headerlink" href="#statements" title="Permalink to this headline">¶</a></h3>
+<p>Statements are the elements of code blocks. Statements that produce a value are called <em>expressions</em>
+and have CodeQL class <cite>Expr</cite>. The remaining statement types (that do not produce values) are listed below.</p>
+<table border="1" class="docutils" id="table-6">
+<caption><span class="caption-text">Statement classes</span><a class="headerlink" href="#table-6" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description and main predicates</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Stmt</span></code></td>
+<td><p class="first">The base class for all statements.</p>
+<ul class="last simple">
+<li><cite>getAControlFlowNode()</cite> - Gets a control-flow node for this statement, if any.</li>
+<li><cite>getEnclosingCallable()</cite> - Gets the enclosing callable, if any.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">EmptyStmt</span></code></td>
+<td>An empty statement.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">BeginExpr</span></code></td>
+<td>A <cite>begin</cite> statement.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">BeginBlock</span></code></td>
+<td>A <cite>BEGIN</cite> block.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">EndBlock</span></code></td>
+<td>An <cite>END</cite> block.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">UndefStmt</span></code></td>
+<td>An <cite>undef</cite> statement.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">AliasStmt</span></code></td>
+<td>An <cite>alias</cite> statement.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ReturningStmt</span></code></td>
+<td>A statement that may return a value: <cite>return</cite>, <cite>break</cite> and <cite>next</cite>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ReturnStmt</span></code></td>
+<td>A <cite>return</cite> statement.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">BreakStmt</span></code></td>
+<td>A <cite>break</cite> statement.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">NextStmt</span></code></td>
+<td>A <cite>next</cite> statement.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">RedoStmt</span></code></td>
+<td>A <cite>redo</cite> statement.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">RetryStmt</span></code></td>
+<td>A <cite>retry</cite> statement.</td>
+</tr>
+</tbody>
+</table>
+<p>The following example finds all literals that are returned by a <cite>return</cite> statement.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">AST</span>
+
+<span class="k">from</span> <span class="n">ReturnStmt</span> <span class="n">return</span><span class="p">,</span> <span class="n">Literal</span> <span class="n">lit</span>
+<span class="k">where</span> <span class="n">lit</span><span class="p">.</span><span class="n">getParent</span><span class="p">()</span> <span class="o">=</span> <span class="n">return</span>
+<span class="k">select</span> <span class="n">lit</span><span class="p">,</span> <span class="s">&quot;Returning a literal &quot;</span> <span class="o">+</span> <span class="n">lit</span><span class="p">.</span><span class="n">getValueText</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="expressions">
+<h3>Expressions<a class="headerlink" href="#expressions" title="Permalink to this headline">¶</a></h3>
+<p>Expressions are types of statement that evaluate to a value. The CodeQL class <cite>Expr</cite> is the base class of all expression types.</p>
+<table border="1" class="docutils" id="table-7">
+<caption><span class="caption-text">Expressions</span><a class="headerlink" href="#table-7" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description and main predicates</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Expr</span></code></td>
+<td><p class="first">An expression.</p>
+<p>This is the root class for all expressions.</p>
+<ul class="last simple">
+<li><cite>getValueText()</cite> - Gets the textual (constant) value of this expression, if any.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Self</span></code></td>
+<td>A reference to the current object.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Pair</span></code></td>
+<td>A pair expression.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">RescueClause</span></code></td>
+<td>A <cite>rescue</cite> clause.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">RescueModifierExpr</span></code></td>
+<td>An expression with a <cite>rescue</cite> modifier.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">StringConcatenation</span></code></td>
+<td><p class="first">A concatenation of string literals.</p>
+<ul class="last simple">
+<li><cite>getConcatenatedValueText()</cite> - Gets the result of concatenating all the string literals, if and only if they do not contain any interpolations.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<table border="1" class="docutils" id="table-8">
+<caption><span class="caption-text">Statement sequences</span><a class="headerlink" href="#table-8" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">StmtSequence</span></code></td>
+<td><p class="first">A sequence of expressions.</p>
+<ul class="last simple">
+<li><cite>getAStmt()</cite>, <cite>getStmt(n)</cite> - Gets a statement in this sequence.</li>
+<li><cite>isEmpty()</cite> - Holds if this sequence has no statements.</li>
+<li><cite>getNumberOfStatements()</cite> - Gets the number of statements in this sequence.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">BodyStmt</span></code></td>
+<td><p class="first">A sequence of statements representing the body of a method, class, module, or do-block.</p>
+<ul class="last simple">
+<li><cite>getARescue()</cite>, <cite>getRescue(n)</cite> - Gets a rescue clause in this block.</li>
+<li><cite>getElse()</cite> - Gets the <cite>else</cite> clause in this block, if any.</li>
+<li><cite>getEnsure()</cite> - Gets the <cite>ensure</cite> clause in this block, if any.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ParenthesizedExpr</span></code></td>
+<td>A parenthesized expression sequence, typically containing a single expression.</td>
+</tr>
+</tbody>
+</table>
+<p>Literals are expressions that evaluate directly to the given value. The CodeQL Ruby library models all types of
+Ruby literal.</p>
+<table border="1" class="docutils" id="table-9">
+<caption><span class="caption-text">Literals</span><a class="headerlink" href="#table-9" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Literal</span></code></td>
+<td><p class="first">A literal. This is the base class for all literals.</p>
+<ul class="last simple">
+<li><cite>getValueText()</cite> - Gets the source text for this literal, if this is a simple literal.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">NumericLiteral</span></code></td>
+<td>A numerical literal. The literal types are <code class="docutils literal notranslate"><span class="pre">IntegerLiteral</span></code>, <code class="docutils literal notranslate"><span class="pre">FloatLiteral</span></code>, <code class="docutils literal notranslate"><span class="pre">RationalLiteral</span></code>, and <code class="docutils literal notranslate"><span class="pre">ComplexLiteral</span></code>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">NilLiteral</span></code></td>
+<td>A <cite>nil</cite> literal.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">BooleanLiteral</span></code></td>
+<td>A Boolean value. The classes <code class="docutils literal notranslate"><span class="pre">TrueLiteral</span></code> and <code class="docutils literal notranslate"><span class="pre">FalseLiteral</span></code> match <cite>true</cite> and <cite>false</cite> respectively.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">StringComponent</span></code></td>
+<td>A component of a string. Either a <code class="docutils literal notranslate"><span class="pre">StringTextComponent</span></code>, <code class="docutils literal notranslate"><span class="pre">StringEscapeSequenceComponent</span></code>, or <code class="docutils literal notranslate"><span class="pre">StringInterpolationComponent</span></code>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">RegExpLiteral</span></code></td>
+<td>A regular expression literal.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">SymbolLiteral</span></code></td>
+<td>A symbol literal.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">SubshellLiteral</span></code></td>
+<td>A subshell literal.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">CharacterLiteral</span></code></td>
+<td>A character literal.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ArrayLiteral</span></code></td>
+<td>An array literal.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">HashLiteral</span></code></td>
+<td>A hash literal.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">RangeLiteral</span></code></td>
+<td>A range literal.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">MethodName</span></code></td>
+<td>A method name literal.</td>
+</tr>
+</tbody>
+</table>
+<p>The following example defines a string literal class containing the text “username”:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">UsernameLiteral</span> <span class="k">extends</span> <span class="n">Literal</span>
+<span class="p">{</span>
+  <span class="n">UsernameLiteral</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="n">getValueText</span><span class="p">().</span><span class="n">toLowerCase</span><span class="p">().</span><span class="n">matches</span><span class="p">(</span><span class="s">&quot;%username%&quot;</span><span class="p">)</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><em>Operations</em> are types of expression that typically perform some sort of calculation. Most operations are <code class="docutils literal notranslate"><span class="pre">MethodCalls</span></code> because often
+there is an underlying call to the operation.</p>
+<table border="1" class="docutils" id="table-10">
+<caption><span class="caption-text">Operations</span><a class="headerlink" href="#table-10" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Operation</span></code></td>
+<td>An operation.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">UnaryOperation</span></code></td>
+<td><p class="first">A unary operation.</p>
+<p class="last">Types of unary operation include <code class="docutils literal notranslate"><span class="pre">UnaryLogicalOperation</span></code>, <code class="docutils literal notranslate"><span class="pre">NotExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">UnaryPlusExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">UnaryMinusExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">SplatExpr</span></code>,
+<code class="docutils literal notranslate"><span class="pre">HashSplatExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">UnaryBitwiseOperation</span></code>, and <code class="docutils literal notranslate"><span class="pre">ComplementExpr</span></code>.</p>
+</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">DefinedExpr</span></code></td>
+<td>A call to the special <cite>defined?</cite> operator</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">BinaryOperation</span></code></td>
+<td>A binary operation, that includes many other operation categories such as <code class="docutils literal notranslate"><span class="pre">BinaryArithmeticOperation</span></code>, <code class="docutils literal notranslate"><span class="pre">BinaryBitwiseOperation</span></code>, <code class="docutils literal notranslate"><span class="pre">ComparisonOperation</span></code>, <code class="docutils literal notranslate"><span class="pre">SpaceshipExpr</span></code>, and <code class="docutils literal notranslate"><span class="pre">Assignment</span></code>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">BinaryArithmeticOperation</span></code></td>
+<td>A binary arithmetic operation. Includes: <code class="docutils literal notranslate"><span class="pre">AddExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">SubExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">MulExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">DivExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">ModuloExpr</span></code>, and <code class="docutils literal notranslate"><span class="pre">ExponentExpr</span></code>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">BinaryLogicalOperation</span></code></td>
+<td>A binary logical operation. Includes: <code class="docutils literal notranslate"><span class="pre">LogicalAndExpr</span></code> and <code class="docutils literal notranslate"><span class="pre">LogicalOrExpr</span></code>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">BinaryBitwiseOperation</span></code></td>
+<td>A binary bitwise operation. Includes: <code class="docutils literal notranslate"><span class="pre">LShiftExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">RShiftExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">BitwiseAndExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">BitwiseOrExpr</span></code>, and <code class="docutils literal notranslate"><span class="pre">BitwiseXorExpr</span></code>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ComparisonOperation</span></code></td>
+<td>A comparison operation, including the classes <code class="docutils literal notranslate"><span class="pre">EqualityOperation</span></code>, <code class="docutils literal notranslate"><span class="pre">EqExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">NEExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">CaseEqExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">RelationalOperation</span></code>, <code class="docutils literal notranslate"><span class="pre">GTExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">GEExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">LTExpr</span></code>, and <code class="docutils literal notranslate"><span class="pre">LEExpr</span></code>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">RegExpMatchExpr</span></code></td>
+<td>A regexp match expression.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">NoRegExpMatchExpr</span></code></td>
+<td>A regexp-doesn’t-match expression.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Assignment</span></code></td>
+<td><p class="first">An assignment. Assignments are simple assignments (<code class="docutils literal notranslate"><span class="pre">AssignExpr</span></code>), or assignment operations (<code class="docutils literal notranslate"><span class="pre">AssignOperation</span></code>).</p>
+<p>The assignment arithmetic operations (<code class="docutils literal notranslate"><span class="pre">AssignArithmeticOperation</span></code>) are <code class="docutils literal notranslate"><span class="pre">AssignAddExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">AssignSubExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">AssignMulExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">AssignDivExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">AssignModuloExpr</span></code>, and <code class="docutils literal notranslate"><span class="pre">AssignExponentExpr</span></code>.</p>
+<p>The assignment logical operations (<code class="docutils literal notranslate"><span class="pre">AssignLogicalOperation</span></code>) are <code class="docutils literal notranslate"><span class="pre">AssignLogicalAndExpr</span></code> and <code class="docutils literal notranslate"><span class="pre">AssignLogicalOrExpr</span></code>.</p>
+<p class="last">The assignment bitwise operations (<code class="docutils literal notranslate"><span class="pre">AssignBitwiseOperation</span></code>) are <code class="docutils literal notranslate"><span class="pre">AssignLShiftExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">AssignRShiftExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">AssignBitwiseAndExpr</span></code>, <code class="docutils literal notranslate"><span class="pre">AssignBitwiseOrExpr</span></code>, and <code class="docutils literal notranslate"><span class="pre">AssignBitwiseXorExpr</span></code>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p>The following example finds “chained assignments” (of the form <code class="docutils literal notranslate"><span class="pre">A=B=C</span></code>):</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">AST</span>
+
+<span class="k">from</span> <span class="n">Assignment</span> <span class="n">op</span>
+<span class="k">where</span> <span class="n">op</span><span class="p">.</span><span class="n">getRightOperand</span><span class="p">()</span> <span class="k">instanceof</span> <span class="n">Assignment</span>
+<span class="k">select</span> <span class="n">op</span><span class="p">,</span> <span class="s">&quot;This is a chained assignment.&quot;</span>
+</pre></div>
+</div>
+<p>Calls pass control to another function, include explicit method calls (<code class="docutils literal notranslate"><span class="pre">MethodCall</span></code>), but also include other types of call such as <cite>super</cite> calls or <cite>yield</cite> calls.</p>
+<table border="1" class="docutils" id="table-11">
+<caption><span class="caption-text">Calls</span><a class="headerlink" href="#table-11" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description and main predicates</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Call</span></code></td>
+<td><p class="first">A call.</p>
+<ul class="last simple">
+<li><cite>getArgument(n)</cite>, <cite>getAnArgument()</cite>, <cite>getKeywordArgument(keyword)</cite> - Gets an argument of this call.</li>
+<li><cite>getATarget()</cite> - Gets a potential target of this call, if any.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">MethodCall</span></code></td>
+<td><p class="first">A method call.</p>
+<ul class="last simple">
+<li><cite>getReceiver()</cite> - Gets the receiver of this call, if any. This is the object being invoked.</li>
+<li><cite>getMethodName()</cite> - Gets the name of the method being called.</li>
+<li><cite>getBlock()</cite> - Gets the block of this method call, if any.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">SetterMethodCall</span></code></td>
+<td>A call to a setter method.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ElementReference</span></code></td>
+<td>An element reference; a call to the <cite>[]</cite> method.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">YieldCall</span></code></td>
+<td>A call to <cite>yield</cite>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">SuperCall</span></code></td>
+<td>A call to <cite>super</cite>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">BlockArgument</span></code></td>
+<td>A block argument in a method call.</td>
+</tr>
+</tbody>
+</table>
+<p>The following example finds all method calls to a method called <cite>delete</cite>.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">AST</span>
+
+<span class="k">from</span> <span class="n">MethodCall</span> <span class="n">call</span>
+<span class="k">where</span> <span class="n">call</span><span class="p">.</span><span class="n">getMethodName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;delete&quot;</span>
+<span class="k">select</span> <span class="n">call</span><span class="p">,</span> <span class="s">&quot;Call to &#39;delete&#39;.&quot;</span>
+</pre></div>
+</div>
+<p>Control expressions are expressions used for control flow.  They are classed as expressions because they can produce a value.</p>
+<table border="1" class="docutils" id="table-12">
+<caption><span class="caption-text">Control expressions</span><a class="headerlink" href="#table-12" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description and main predicates</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ControlExpr</span></code></td>
+<td>A control expression, such as a <cite>case</cite>, <cite>if</cite>, <cite>unless</cite>, ternary-if (<cite>?:</cite>), <cite>while</cite>, <cite>until</cite> (including expression-modifier variants), and <cite>for</cite>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ConditionalExpr</span></code></td>
+<td><p class="first">A conditional expression.</p>
+<ul class="last simple">
+<li><cite>getCondition()</cite> - Gets the condition expression.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">IfExpr</span></code></td>
+<td><p class="first">An <cite>if</cite> or <cite>elsif</cite> expression.</p>
+<ul class="last simple">
+<li><cite>getThen()</cite> - Gets the <cite>then</cite> branch.</li>
+<li><cite>getElse()</cite> - Gets the <cite>elseif</cite> or <cite>else</cite> branch.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">UnlessExpr</span></code></td>
+<td>An <cite>unless</cite> expression.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">IfModifierExpr</span></code></td>
+<td>An expression modified using <cite>if</cite>.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">UnlessModifierExpr</span></code></td>
+<td>An expression modified using <cite>unless</cite>.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">TernaryIfExpr</span></code></td>
+<td>A conditional expression using the ternary (<cite>?:</cite>) operator.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">CaseExpr</span></code></td>
+<td>A <cite>case</cite> expression.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">WhenExpr</span></code></td>
+<td>A <cite>when</cite> branch of a <cite>case</cite> expression.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">Loop</span></code></td>
+<td>A loop. That is, a <cite>for</cite> loop, a <cite>while</cite> or <cite>until</cite> loop, or their expression-modifier variants.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ConditionalLoop</span></code></td>
+<td><p class="first">A loop using a condition expression. That is, a <cite>while</cite> or <cite>until</cite> loop, or their expression-modifier variants.</p>
+<ul class="last simple">
+<li><cite>getCondition()</cite> - Gets the condition expression of this loop.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">WhileExpr</span></code></td>
+<td>A <cite>while</cite> loop.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">UntilExpr</span></code></td>
+<td>An <cite>until</cite> loop.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">WhileModifierExpr</span></code></td>
+<td>An expression looped using the <cite>while</cite> modifier.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">UntilModifierExpr</span></code></td>
+<td>An expression looped using the <cite>until</cite> modifier.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ForExpr</span></code></td>
+<td>A <cite>for</cite> loop.</td>
+</tr>
+</tbody>
+</table>
+<p>The following example finds <cite>if</cite>-expressions that are missing a <cite>then</cite> branch.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">AST</span>
+
+<span class="k">from</span> <span class="n">IfExpr</span> <span class="n">expr</span>
+<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">expr</span><span class="p">.</span><span class="n">getThen</span><span class="p">())</span>
+<span class="k">select</span> <span class="n">expr</span><span class="p">,</span> <span class="s">&quot;This if-expression is redundant.&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="variables">
+<h3>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h3>
+<p><em>Variables</em> are names that hold values in a Ruby program. If you want to query <em>any</em> type
+of variable, then use the <code class="docutils literal notranslate"><span class="pre">Variable</span></code> class, otherwise use one of the subclasses
+<code class="docutils literal notranslate"><span class="pre">LocalVariable</span></code>, <code class="docutils literal notranslate"><span class="pre">InstanceVariable</span></code>, <code class="docutils literal notranslate"><span class="pre">ClassVariable</span></code> or <code class="docutils literal notranslate"><span class="pre">GlobalVariable</span></code>.</p>
+<p>Local variables have the scope of a single function or block, instance variables have the
+scope of an object (like member variables), <em>class</em> variables have the scope of a class and are
+shared between all instances of that class (like static variables), and <em>global</em> variables
+have the scope of the entire program.</p>
+<table border="1" class="docutils" id="table-13">
+<caption><span class="caption-text">Variable classes</span><a class="headerlink" href="#table-13" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description and main predicates</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">Variable</span></code></td>
+<td><p class="first">A variable declared in a scope.</p>
+<ul class="last simple">
+<li><cite>getName()</cite>, <cite>hasName(name)</cite> - Gets the name of this variable.</li>
+<li><cite>getDeclaringScope()</cite> - Gets the scope this variable is declared in.</li>
+<li><cite>getAnAccess()</cite> - Gets an access to this variable.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">LocalVariable</span></code></td>
+<td>A local variable.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">InstanceVariable</span></code></td>
+<td>An instance variable.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ClassVariable</span></code></td>
+<td>A class variable.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">GlobalVariable</span></code></td>
+<td>A global variable.</td>
+</tr>
+</tbody>
+</table>
+<p>The following example finds all class variables in the class <cite>StaticController</cite>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">AST</span>
+
+<span class="k">from</span> <span class="n">ClassDeclaration</span> <span class="n">cd</span><span class="p">,</span> <span class="n">ClassVariable</span> <span class="n">v</span>
+<span class="k">where</span>
+  <span class="n">v</span><span class="p">.</span><span class="n">getDeclaringScope</span><span class="p">()</span> <span class="o">=</span> <span class="n">cd</span> <span class="k">and</span>
+  <span class="n">cd</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;StaticController&quot;</span>
+<span class="k">select</span> <span class="n">v</span><span class="p">,</span> <span class="s">&quot;This is a static variable in &#39;StaticController&#39;.&quot;</span>
+</pre></div>
+</div>
+<p>Variable accesses are the uses of a variable in the source code. Note that variables, and <em>uses</em> of variables are different concepts.
+Variables are modelled using the <code class="docutils literal notranslate"><span class="pre">Variable</span></code> class, whereas uses of the variable are modelled using the <code class="docutils literal notranslate"><span class="pre">VariableAccess</span></code> class.
+<code class="docutils literal notranslate"><span class="pre">Variable.getAnAccess()</span></code> gets the accesses of a variable.</p>
+<p>Variable accesses come in two types: <em>reads</em> of the variable (a <code class="docutils literal notranslate"><span class="pre">ReadAccess</span></code>), and <em>writes</em> to the variable (a <code class="docutils literal notranslate"><span class="pre">WriteAccess</span></code>).
+Accesses are a type of expression, so extend the <code class="docutils literal notranslate"><span class="pre">Expr</span></code> class.</p>
+<table border="1" class="docutils" id="table-14">
+<caption><span class="caption-text">Variable access classes</span><a class="headerlink" href="#table-14" title="Permalink to this table">¶</a></caption>
+<colgroup>
+<col width="50%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">CodeQL class</th>
+<th class="head">Description and main predicates</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">VariableAccess</span></code></td>
+<td><p class="first">An access to a variable.</p>
+<ul class="last simple">
+<li><cite>getVariable()</cite> - Gets the variable that is accessed.</li>
+</ul>
+</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">VariableReadAccess</span></code></td>
+<td>An access to a variable where the value is read.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">VariableWriteAccess</span></code></td>
+<td>An access to a variable where the value is updated.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">LocalVariableAccess</span></code></td>
+<td>An access to a local variable.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">LocalVariableWriteAccess</span></code></td>
+<td>An access to a local variable where the value is updated.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">LocalVariableReadAccess</span></code></td>
+<td>An access to a local variable where the value is read.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">GlobalVariableAccess</span></code></td>
+<td>An access to a global variable where the value is updated.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">InstanceVariableAccess</span></code></td>
+<td>An access to a global variable where the value is read.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">InstanceVariableReadAccess</span></code></td>
+<td>An access to an instance variable.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">InstanceVariableWriteAccess</span></code></td>
+<td>An access to an instance variable where the value is updated.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ClassVariableAccess</span></code></td>
+<td>An access to a class variable.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ClassVariableWriteAccess</span></code></td>
+<td>An access to a class variable where the value is updated.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ClassVariableReadAccess</span></code></td>
+<td>An access to a class variable where the value is read.</td>
+</tr>
+</tbody>
+</table>
+<p>The following example finds writes to class variables in the class <cite>StaticController</cite>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">codeql</span><span class="p">.</span><span class="n">ruby</span><span class="p">.</span><span class="n">AST</span>
+
+<span class="k">from</span> <span class="n">ClassVariableWriteAccess</span> <span class="n">write</span><span class="p">,</span> <span class="n">ClassDeclaration</span> <span class="n">cd</span><span class="p">,</span> <span class="n">ClassVariable</span> <span class="n">v</span>
+<span class="k">where</span>
+  <span class="n">v</span><span class="p">.</span><span class="n">getDeclaringScope</span><span class="p">()</span> <span class="o">=</span> <span class="n">cd</span> <span class="k">and</span>
+  <span class="n">cd</span><span class="p">.</span><span class="n">getName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;StaticController&quot;</span> <span class="k">and</span>
+  <span class="n">write</span><span class="p">.</span><span class="n">getVariable</span><span class="p">()</span> <span class="o">=</span> <span class="n">v</span>
+<span class="k">select</span> <span class="n">write</span><span class="p">,</span> <span class="s">&quot;&#39;StaticController&#39; class variable is written here.&quot;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

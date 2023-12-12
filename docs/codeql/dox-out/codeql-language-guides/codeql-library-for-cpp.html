@@ -1,0 +1,1398 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>CodeQL library for C and C++ &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Functions in C and C++" href="functions-in-cpp.html" />
+    <link rel="prev" title="Basic query for C and C++ code" href="basic-query-for-cpp-code.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-cpp-code.html">Basic query for C and C++ code</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CodeQL library for C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="functions-in-cpp.html">Functions in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="expressions-types-and-statements-in-cpp.html">Expressions, types, and statements in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="conversions-and-classes-in-cpp.html">Conversions and classes in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-cpp.html">Analyzing data flow in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-cpp-new.html">Analyzing data flow in C and C++ (new)</a></li>
+<li class="toctree-l3"><a class="reference internal" href="refining-a-query-to-account-for-edge-cases.html">Refining a query to account for edge cases</a></li>
+<li class="toctree-l3"><a class="reference internal" href="detecting-a-potential-buffer-overflow.html">Detecting a potential buffer overflow</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-the-guards-library-in-cpp.html">Using the guards library in C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-range-analsis-in-cpp.html">Using range analysis for C and C++</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hash-consing-and-value-numbering.html">Hash consing and value numbering</a></li>
+<li class="toctree-l3"><a class="reference internal" href="advanced-dataflow-scenarios-cpp.html">Advanced dataflow scenarios for C/C++</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-cpp.html"
+                accesskey="U">CodeQL for C and C++</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="codeql-library-for-c-and-c">
+<span id="codeql-library-for-cpp"></span><h1>CodeQL library for C and C++<a class="headerlink" href="#codeql-library-for-c-and-c" title="Permalink to this headline">¶</a></h1>
+<p>When analyzing C or C++ code, you can use the large collection of classes in the CodeQL library for C and C++.</p>
+<div class="section" id="about-the-codeql-library-for-c-and-c">
+<h2>About the CodeQL library for C and C++<a class="headerlink" href="#about-the-codeql-library-for-c-and-c" title="Permalink to this headline">¶</a></h2>
+<p>There is an extensive library for analyzing CodeQL databases extracted from C/C++ projects. The classes in this library present the data from a database in an object-oriented form and provide abstractions and predicates to help you with common analysis tasks.
+The library is implemented as a set of QL modules, that is, files with the extension <code class="docutils literal notranslate"><span class="pre">.qll</span></code>. The module <code class="docutils literal notranslate"><span class="pre">cpp.qll</span></code> imports all the core C/C++ library modules, so you can include the complete library by beginning your query with:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">cpp</span>
+</pre></div>
+</div>
+<p>The rest of this topic summarizes the available CodeQL classes and corresponding C/C++ constructs.</p>
+</div>
+<div class="section" id="commonly-used-library-classes">
+<h2>Commonly-used library classes<a class="headerlink" href="#commonly-used-library-classes" title="Permalink to this headline">¶</a></h2>
+<p>The most commonly used standard library classes are listed below.  The listing is broken down by functionality. Each library class is annotated with a C/C++ construct it corresponds to.</p>
+<div class="section" id="declaration-classes">
+<h3>Declaration classes<a class="headerlink" href="#declaration-classes" title="Permalink to this headline">¶</a></h3>
+<p>This table lists <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Declaration.qll/type.Declaration$Declaration.html">Declaration</a> classes representing C/C++ declarations.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="51%" />
+<col width="25%" />
+<col width="24%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Example syntax</th>
+<th class="head">CodeQL class</th>
+<th class="head">Remarks</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>var</em> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Variable.qll/type.Variable$GlobalVariable.html">GlobalVariable</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">namespace</span></code> <em>N</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">float</span></code> <em>var</em> <code class="docutils literal notranslate"><span class="pre">;</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Variable.qll/type.Variable$NamespaceVariable.html">NamespaceVariable</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">void</span> <span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">float</span></code> <em>var</em> <code class="docutils literal notranslate"><span class="pre">;</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Variable.qll/type.Variable$LocalVariable.html">LocalVariable</a></td>
+<td>See also <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Initializer.qll/type.Initializer$Initializer.html">Initializer</a></td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">int</span></code> <em>var</em> <code class="docutils literal notranslate"><span class="pre">;</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Variable.qll/type.Variable$MemberVariable.html">MemberVariable</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(const</span> <span class="pre">char</span></code> <em>param</em> <code class="docutils literal notranslate"><span class="pre">);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Function.qll/type.Function$Function.html">Function</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">typename</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">void</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">param);</span></code></div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Function.qll/type.Function$TemplateFunction.html">TemplateFunction</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(const</span> <span class="pre">char*</span></code> <em>format</em> <code class="docutils literal notranslate"><span class="pre">,</span> <span class="pre">...)</span></code></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/models/interfaces/FormattingFunction.qll/type.FormattingFunction$FormattingFunction.html">FormattingFunction</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><em>func</em> <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">int,</span> <span class="pre">float</span> <span class="pre">&gt;</span> <span class="pre">(</span></code> … <code class="docutils literal notranslate"><span class="pre">);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Function.qll/type.Function$FunctionTemplateInstantiation.html">FunctionTemplateInstantiation</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">typename</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></div>
+<div class="line"><em>func</em> <code class="docutils literal notranslate"><span class="pre">&lt;</span> <span class="pre">int,</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">(</span></code> … <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Function.qll/type.Function$FunctionTemplateSpecialization.html">FunctionTemplateSpecialization</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">float</span></code> <em>param</em> <code class="docutils literal notranslate"><span class="pre">);</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$MemberFunction.html">MemberFunction</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">float</span></code> <em>param</em> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">const;</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$ConstMemberFunction.html">ConstMemberFunction</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">virtual</span> <span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> … <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span> <span class="pre">};</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$VirtualFunction.html">VirtualFunction</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <em>C</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> … <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$Constructor.html">Constructor</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">C::operator</span> <span class="pre">float</span> <span class="pre">()</span> <span class="pre">const;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$ConversionOperator.html">ConversionOperator</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> …  <code class="docutils literal notranslate"><span class="pre">~</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">void</span> <span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$Destructor.html">Destructor</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><em>C</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">const</span></code> <em>D</em> <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> <em>d</em> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$ConversionConstructor.html">ConversionConstructor</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><em>C</em> <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">::</span> <span class="pre">operator=</span> <span class="pre">(const</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">&amp;</span> <span class="pre">);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$CopyAssignmentOperator.html">CopyAssignmentOperator</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><em>C</em> <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">::</span> <span class="pre">operator=</span> <span class="pre">(</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span> <span class="pre">);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$MoveAssignmentOperator.html">MoveAssignmentOperator</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><em>C</em> <code class="docutils literal notranslate"><span class="pre">::</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">(const</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">&amp;</span> <span class="pre">);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$CopyConstructor.html">CopyConstructor</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><em>C</em> <code class="docutils literal notranslate"><span class="pre">::</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span> <span class="pre">);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$MoveConstructor.html">MoveConstructor</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><em>C</em> <code class="docutils literal notranslate"><span class="pre">::</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">(void);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/MemberFunction.qll/type.MemberFunction$NoArgConstructor.html">NoArgConstructor</a></td>
+<td>Default constructor</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">enum</span></code> <em>en</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> <em>val1</em> <code class="docutils literal notranslate"><span class="pre">,</span></code> <em>val2</em> … <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Enum.qll/type.Enum$EnumConstant.html">EnumConstant</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">friend</span> <span class="pre">void</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">int</span> <span class="pre">);</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">friend</span> <span class="pre">class</span></code> <em>B</em> <code class="docutils literal notranslate"><span class="pre">;</span></code></div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/FriendDecl.qll/type.FriendDecl$FriendDecl.html">FriendDecl</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">void</span> <span class="pre">)</span> <span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">enum</span></code> <em>en</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> <em>val1</em> <code class="docutils literal notranslate"><span class="pre">,</span></code> <em>val2</em> … <code class="docutils literal notranslate"><span class="pre">};</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Enum.qll/type.Enum$LocalEnum.html">LocalEnum</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">enum</span></code> <em>en</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> <em>val1</em> <code class="docutils literal notranslate"><span class="pre">,</span></code> <em>val2</em> … <code class="docutils literal notranslate"><span class="pre">}</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Enum.qll/type.Enum$NestedEnum.html">NestedEnum</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">enum</span> <span class="pre">class</span></code> <em>en</em> <code class="docutils literal notranslate"><span class="pre">:</span> <span class="pre">short</span> <span class="pre">{</span></code> <em>val1</em> <code class="docutils literal notranslate"><span class="pre">,</span></code> <em>val2</em> … <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Enum.qll/type.Enum$ScopedEnum.html">ScopedEnum</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">virtual</span> <span class="pre">void</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">int</span> <span class="pre">)</span> <span class="pre">=</span> <span class="pre">0;</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$AbstractClass.html">AbstractClass</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">int</span> <span class="pre">,</span> <span class="pre">float</span> <span class="pre">&gt;</span> <span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$ClassTemplateInstantiation.html">ClassTemplateInstantiation</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">&gt;</span> <span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$FullClassTemplateSpecialization.html">FullClassTemplateSpecialization</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">typename</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">,</span></code> <em>5</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$PartialClassTemplateSpecialization.html">PartialClassTemplateSpecialization</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">void</span> <span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$LocalClass.html">LocalClass</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">class</span></code> <em>D</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$NestedClass.html">NestedClass</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code></div>
+<div class="line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <em>var</em> <code class="docutils literal notranslate"><span class="pre">;</span></code></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Parameter.qll/type.Parameter$Parameter.html">Parameter</a>… <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code>… <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$Class.html">Class</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">struct</span></code> <em>S</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <em>var</em> <code class="docutils literal notranslate"><span class="pre">;</span></code></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Parameter.qll/type.Parameter$Parameter.html">Parameter</a>… <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code>… <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Struct.qll/type.Struct$Struct.html">Struct</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$Class.html">Class</a></div>
+<div class="line"><br /></div>
+</div>
+</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">union</span></code> <em>U</em> <code class="docutils literal notranslate"><span class="pre">{</span></code></div>
+<div class="line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <em>var1</em> <code class="docutils literal notranslate"><span class="pre">;</span></code></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <em>var2</em> <code class="docutils literal notranslate"><span class="pre">;</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Union.qll/type.Union$Union.html">Union</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Struct.qll/type.Struct$Struct.html">Struct</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$Class.html">Class</a></div>
+</div>
+</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">typename</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">struct</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">:</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$ProxyClass.html">ProxyClass</a></td>
+<td>Appears only in <em>uninstantiated</em>
+templates</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">void</span> <span class="pre">)</span> <span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">struct</span></code> <em>S</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Struct.qll/type.Struct$LocalStruct.html">LocalStruct</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">struct</span></code> <em>S</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Struct.qll/type.Struct$NestedStruct.html">NestedStruct</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">int</span> <span class="pre">*</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">void</span> <span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">union</span></code> <em>U</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Union.qll/type.Union$LocalUnion.html">LocalUnion</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">union</span></code> <em>U</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Union.qll/type.Union$NestedUnion.html">NestedUnion</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">int</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/TypedefType.qll/type.TypedefType$TypedefType.html">TypedefType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">void</span> <span class="pre">)</span> <span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">int</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">;</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/TypedefType.qll/type.TypedefType$LocalTypedefType.html">LocalTypedefType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> …</div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">typedef</span> <span class="pre">int</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">;</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/TypedefType.qll/type.TypedefType$NestedTypedefType.html">NestedTypedefType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>V</em> <code class="docutils literal notranslate"><span class="pre">:</span></code> … <code class="docutils literal notranslate"><span class="pre">public</span></code> <em>B</em> … <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$ClassDerivation.html">ClassDerivation</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>V</em> <code class="docutils literal notranslate"><span class="pre">:</span></code> … <code class="docutils literal notranslate"><span class="pre">virtual</span></code> <em>B</em> … <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$VirtualClassDerivation.html">VirtualClassDerivation</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">typename</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$TemplateClass.html">TemplateClass</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>foo</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <em>param1</em> <code class="docutils literal notranslate"><span class="pre">,</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <em>param2</em> … <code class="docutils literal notranslate"><span class="pre">);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Parameter.qll/type.Parameter$Parameter.html">Parameter</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;typename</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> <em>T</em> <em>t</em> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Variable.qll/type.Variable$TemplateVariable.html">TemplateVariable</a></td>
+<td>Since C++14</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="statement-classes">
+<h3>Statement classes<a class="headerlink" href="#statement-classes" title="Permalink to this headline">¶</a></h3>
+<p>This table lists subclasses of <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a> representing C/C++ statements.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="41%" />
+<col width="23%" />
+<col width="36%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Example syntax</th>
+<th class="head">CodeQL class</th>
+<th class="head">Remarks</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">__asm__</span> <span class="pre">(&quot;</span></code> <em>movb %bh, (%eax)</em> <code class="docutils literal notranslate"><span class="pre">&quot;);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$AsmStmt.html">AsmStmt</a></td>
+<td>Specific to a given CPU instruction set</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">{</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a>… <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Block.qll/type.Block$BlockStmt.html">BlockStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">catch</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Parameter.qll/type.Parameter$Parameter.html">Parameter</a> <code class="docutils literal notranslate"><span class="pre">)</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Block.qll/type.Block$BlockStmt.html">BlockStmt</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$CatchBlock.html">CatchBlock</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">catch</span> <span class="pre">(</span> <span class="pre">...</span> <span class="pre">)</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Block.qll/type.Block$BlockStmt.html">BlockStmt</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$CatchAnyBlock.html">CatchAnyBlock</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">goto</span> <span class="pre">*</span></code> <em>labelptr</em> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$ComputedGotoStmt.html">ComputedGotoStmt</a></td>
+<td>GNU extension; use with <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Literal.qll/type.Literal$LabelLiteral.html">LabelLiteral</a></td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <em>i</em> <code class="docutils literal notranslate"><span class="pre">,</span></code> <em>j</em> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$DeclStmt.html">DeclStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a> <code class="docutils literal notranslate"><span class="pre">else</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$IfStmt.html">IfStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">switch</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">{</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$SwitchCase.html">SwitchCase</a>… <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$SwitchStmt.html">SwitchStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">do</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a> <code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$DoStmt.html">DoStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$DeclStmt.html">DeclStmt</a> <code class="docutils literal notranslate"><span class="pre">;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$ForStmt.html">ForStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$DeclStmt.html">DeclStmt</a> <code class="docutils literal notranslate"><span class="pre">:</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$RangeBasedForStmt.html">RangeBasedForStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">while</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$WhileStmt.html">WhileStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$ExprStmt.html">ExprStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">__try</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span> <span class="pre">__except</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$MicrosoftTryExceptStmt.html">MicrosoftTryExceptStmt</a></td>
+<td>Structured exception handling (SEH) under Windows</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">__try</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span> <span class="pre">__finally</span> <span class="pre">{</span></code> … <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$MicrosoftTryFinallyStmt.html">MicrosoftTryFinallyStmt</a></td>
+<td>Structured exception handling (SEH) under Windows</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">return</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$ReturnStmt.html">ReturnStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">case</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">:</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$SwitchCase.html">SwitchCase</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">try</span> <span class="pre">{</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a>… <code class="docutils literal notranslate"><span class="pre">}</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$CatchBlock.html">CatchBlock</a>… <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$CatchAnyBlock.html">CatchAnyBlock</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$TryStmt.html">TryStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">void</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(void)</span> <span class="pre">try</span> <span class="pre">{</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a>… <code class="docutils literal notranslate"><span class="pre">}</span></code></div>
+<div class="line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$CatchBlock.html">CatchBlock</a>… <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$CatchAnyBlock.html">CatchAnyBlock</a></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$FunctionTryStmt.html">FunctionTryStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$EmptyStmt.html">EmptyStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">break;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$BreakStmt.html">BreakStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">continue;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$ContinueStmt.html">ContinueStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">goto</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$LabelStmt.html">LabelStmt</a> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$GotoStmt.html">GotoStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><em>slabel</em> <code class="docutils literal notranslate"><span class="pre">:</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$LabelStmt.html">LabelStmt</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">float</span></code> <em>arr</em> <code class="docutils literal notranslate"><span class="pre">[</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">]</span> <span class="pre">[</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">];</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$VlaDeclStmt.html">VlaDeclStmt</a></td>
+<td>C99 variable-length array</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="expression-classes">
+<h3>Expression classes<a class="headerlink" href="#expression-classes" title="Permalink to this headline">¶</a></h3>
+<p>This table lists subclasses of <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> representing C/C++ expressions.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="37%" />
+<col width="35%" />
+<col width="29%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Example syntax</th>
+<th class="head">CodeQL class(es)</th>
+<th class="head">Remarks</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">{</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a>…  <code class="docutils literal notranslate"><span class="pre">}</span></code></td>
+<td><div class="first last line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Literal.qll/type.Literal$ArrayAggregateLiteral.html">ArrayAggregateLiteral</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Literal.qll/type.Literal$ClassAggregateLiteral.html">ClassAggregateLiteral</a></div>
+</div>
+</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">alignof</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$AlignofExprOperator.html">AlignofExprOperator</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">alignof</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$AlignofTypeOperator.html">AlignofTypeOperator</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">[</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">]</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Access.qll/type.Access$ArrayExpr.html">ArrayExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">__assume</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$AssumeExpr.html">AssumeExpr</a></td>
+<td>Microsoft extension</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">static_assert</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">,</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Literal.qll/type.Literal$StringLiteral.html">StringLiteral</a> <code class="docutils literal notranslate"><span class="pre">)</span></code>
+<code class="docutils literal notranslate"><span class="pre">_Static_assert</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">,</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Literal.qll/type.Literal$StringLiteral.html">StringLiteral</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Element.qll/type.Element$StaticAssert.html">StaticAssert</a></td>
+<td><div class="first last line-block">
+<div class="line">C++11</div>
+<div class="line">C11</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">__noop;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/BuiltInOperations.qll/type.BuiltInOperations$BuiltInNoOp.html">BuiltInNoOp</a></td>
+<td>Microsoft extension</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a>… <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Call.qll/type.Call$ExprCall.html">ExprCall</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a>… <code class="docutils literal notranslate"><span class="pre">)</span></code></div>
+<div class="line"><em>instance</em> <code class="docutils literal notranslate"><span class="pre">.</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a>… <code class="docutils literal notranslate"><span class="pre">)</span></code></div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Call.qll/type.Call$FunctionCall.html">FunctionCall</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">,</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$CommaExpr.html">CommaExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">if</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <em>arg</em> <code class="docutils literal notranslate"><span class="pre">=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$ConditionDeclExpr.html">ConditionDeclExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">)</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$CStyleCast.html">CStyleCast</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">const_cast</span> <span class="pre">&lt;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$ConstCast.html">ConstCast</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">dynamic_cast</span> <span class="pre">&lt;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$DynamicCast.html">DynamicCast</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">reinterpret_cast</span> <span class="pre">&lt;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$ReinterpretCast.html">ReinterpretCast</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">static_cast</span> <span class="pre">&lt;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">&gt;</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$StaticCast.html">StaticCast</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">typename...</span></code>  <em>T</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">auto</span></code> <em>sum</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> <em>T</em> <cite>…</cite> <em>t</em> <code class="docutils literal notranslate"><span class="pre">)</span></code></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">return</span> <span class="pre">(</span></code> <em>t</em> <code class="docutils literal notranslate"><span class="pre">+</span> <span class="pre">...</span> <span class="pre">+</span> <span class="pre">0</span> <span class="pre">);</span> <span class="pre">}</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$FoldExpr.html">FoldExpr</a></td>
+<td>Appears only in <em>uninstantiated</em>
+templates</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>func</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> <em>format</em> <code class="docutils literal notranslate"><span class="pre">,</span> <span class="pre">...</span> <span class="pre">);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/commons/Printf.qll/type.Printf$FormattingFunctionCall.html">FormattingFunctionCall</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">[</span> <span class="pre">=</span> <span class="pre">]</span> <span class="pre">(</span> <span class="pre">float</span></code> <em>b</em> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">-&gt;</span> <span class="pre">float</span></code></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">return</span></code> <em>captured</em> <code class="docutils literal notranslate"><span class="pre">*</span></code> <em>b</em> <code class="docutils literal notranslate"><span class="pre">;</span> <span class="pre">}</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Lambda.qll/type.Lambda$LambdaExpression.html">LambdaExpression</a></td>
+<td>C++11</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">^</span> <span class="pre">int</span> <span class="pre">(</span> <span class="pre">int</span></code> <em>x</em> <code class="docutils literal notranslate"><span class="pre">,</span> <span class="pre">int</span></code> <em>y</em> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">{</span></code></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">{</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a>… <code class="docutils literal notranslate"><span class="pre">;</span> <span class="pre">return</span></code> <em>x</em> <code class="docutils literal notranslate"><span class="pre">+</span></code> <em>y</em> <code class="docutils literal notranslate"><span class="pre">;</span> <span class="pre">}</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$BlockExpr.html">BlockExpr</a></td>
+<td>Apple extension</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">void</span> <span class="pre">*</span></code> <em>labelptr</em> <code class="docutils literal notranslate"><span class="pre">=</span> <span class="pre">&amp;&amp;</span></code> <em>label</em> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Literal.qll/type.Literal$LabelLiteral.html">LabelLiteral</a></td>
+<td>GNU extension; use with <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$ComputedGotoStmt.html">ComputedGotoStmt</a></td>
+</tr>
+<tr class="row-odd"><td><em>“%3d %s\n”</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/commons/Printf.qll/type.Printf$FormatLiteral.html">FormatLiteral</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><em>0xdbceffca</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Literal.qll/type.Literal$HexLiteral.html">HexLiteral</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><em>0167</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Literal.qll/type.Literal$OctalLiteral.html">OctalLiteral</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><em>‘c’</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Literal.qll/type.Literal$CharLiteral.html">CharLiteral</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><em>“abcdefgh”</em>, <em>L”wide”</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Literal.qll/type.Literal$StringLiteral.html">StringLiteral</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">new</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">[</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">]</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$NewArrayExpr.html">NewArrayExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">new</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$NewExpr.html">NewExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">delete</span> <span class="pre">[</span> <span class="pre">]</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$DeleteArrayExpr.html">DeleteArrayExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">delete</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$DeleteExpr.html">DeleteExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">noexcept</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$NoExceptExpr.html">NoExceptExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignExpr.html">AssignExpr</a></td>
+<td>See also <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Initializer.qll/type.Initializer$Initializer.html">Initializer</a></td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">+=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><div class="first last line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignAddExpr.html">AssignAddExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignPointerAddExpr.html">AssignPointerAddExpr</a></div>
+</div>
+</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">/=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignDivExpr.html">AssignDivExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">*=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignMulExpr.html">AssignMulExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">%=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignRemExpr.html">AssignRemExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">-=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><div class="first last line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignSubExpr.html">AssignSubExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignPointerSubExpr.html">AssignPointerSubExpr</a></div>
+</div>
+</td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&amp;=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignAndExpr.html">AssignAndExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&lt;&lt;=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignLShiftExpr.html">AssignLShiftExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> ``</td>
+<td>=`` <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignOrExpr.html">AssignOrExpr</a></td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&gt;&gt;=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignRShiftExpr.html">AssignRShiftExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">^=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Assignment.qll/type.Assignment$AssignXorExpr.html">AssignXorExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">+</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><div class="first last line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$AddExpr.html">AddExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$PointerAddExpr.html">PointerAddExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$ImaginaryRealAddExpr.html">ImaginaryRealAddExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$RealImaginaryAddExpr.html">RealImaginaryAddExpr</a></div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line">C99</div>
+<div class="line">C99</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">/</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><div class="first last line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$DivExpr.html">DivExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$ImaginaryDivExpr.html">ImaginaryDivExpr</a></div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line"><br /></div>
+<div class="line">C99</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&gt;?</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$MaxExpr.html">MaxExpr</a></td>
+<td>GNU extension</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&lt;?</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$MinExpr.html">MinExpr</a></td>
+<td>GNU extension</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">*</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><div class="first last line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$MulExpr.html">MulExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$ImaginaryMulExpr.html">ImaginaryMulExpr</a></div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line"><br /></div>
+<div class="line">C99</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">%</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$RemExpr.html">RemExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">-</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><div class="first last line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$SubExpr.html">SubExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$PointerDiffExpr.html">PointerDiffExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$PointerSubExpr.html">PointerSubExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$ImaginaryRealSubExpr.html">ImaginaryRealSubExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$RealImaginarySubExpr.html">RealImaginarySubExpr</a></div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line"><br /></div>
+<div class="line">C99</div>
+<div class="line">C99</div>
+</div>
+</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&amp;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/BitwiseOperation.qll/type.BitwiseOperation$BitwiseAndExpr.html">BitwiseAndExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">|</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/BitwiseOperation.qll/type.BitwiseOperation$BitwiseOrExpr.html">BitwiseOrExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">^</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/BitwiseOperation.qll/type.BitwiseOperation$BitwiseXorExpr.html">BitwiseXorExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&lt;&lt;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/BitwiseOperation.qll/type.BitwiseOperation$LShiftExpr.html">LShiftExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/BitwiseOperation.qll/type.BitwiseOperation$RShiftExpr.html">RShiftExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/LogicalOperation.qll/type.LogicalOperation$LogicalAndExpr.html">LogicalAndExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">||</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/LogicalOperation.qll/type.LogicalOperation$LogicalOrExpr.html">LogicalOrExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">==</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ComparisonOperation.qll/type.ComparisonOperation$EQExpr.html">EQExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">!=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ComparisonOperation.qll/type.ComparisonOperation$NEExpr.html">NEExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&gt;=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ComparisonOperation.qll/type.ComparisonOperation$GEExpr.html">GEExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ComparisonOperation.qll/type.ComparisonOperation$GTExpr.html">GTExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&lt;=</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ComparisonOperation.qll/type.ComparisonOperation$LEExpr.html">LEExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ComparisonOperation.qll/type.ComparisonOperation$LTExpr.html">LTExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">?</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">:</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/LogicalOperation.qll/type.LogicalOperation$ConditionalExpr.html">ConditionalExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">&amp;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$AddressOfExpr.html">AddressOfExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">*</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$PointerDereferenceExpr.html">PointerDereferenceExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">--</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$PostfixDecrExpr.html">PostfixDecrExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">--</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$PrefixDecrExpr.html">PrefixDecrExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">++</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$PostfixIncrExpr.html">PostfixIncrExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">++</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$PrefixIncrExpr.html">PrefixIncrExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">__imag</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$ImaginaryPartExpr.html">ImaginaryPartExpr</a></td>
+<td>GNU extension</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">__real</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$RealPartExpr.html">RealPartExpr</a></td>
+<td>GNU extension</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">-</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$UnaryMinusExpr.html">UnaryMinusExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">+</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$UnaryPlusExpr.html">UnaryPlusExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">~</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><div class="first last line-block">
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/BitwiseOperation.qll/type.BitwiseOperation$ComplementExpr.html">ComplementExpr</a></div>
+<div class="line"><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/ArithmeticOperation.qll/type.ArithmeticOperation$ConjugationExpr.html">ConjugationExpr</a></div>
+</div>
+</td>
+<td><div class="first last line-block">
+<div class="line"><br /></div>
+<div class="line">GNU extension</div>
+</div>
+</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">!</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/LogicalOperation.qll/type.LogicalOperation$NotExpr.html">NotExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>vect</em> <code class="docutils literal notranslate"><span class="pre">__attribute__</span></code></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">(</span> <span class="pre">vector_size</span> <span class="pre">(</span></code> <em>16</em> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">)</span> <span class="pre">)</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">=</span> <span class="pre">{</span></code> <em>3</em> <code class="docutils literal notranslate"><span class="pre">,</span></code> <em>8</em> <code class="docutils literal notranslate"><span class="pre">,</span></code> <em>32</em> <code class="docutils literal notranslate"><span class="pre">,</span></code>
+<em>33</em> <code class="docutils literal notranslate"><span class="pre">};</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/BuiltInOperations.qll/type.BuiltInOperations$VectorFillOperation.html">VectorFillOperation</a></td>
+<td>GNU extension</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">sizeof</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$SizeofExprOperator.html">SizeofExprOperator</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">sizeof</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$SizeofTypeOperator.html">SizeofTypeOperator</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">typename...</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">int</span></code> <em>count</em> <code class="docutils literal notranslate"><span class="pre">(</span></code> <em>T</em>  <code class="docutils literal notranslate"><span class="pre">&amp;&amp;...</span></code> <em>t</em> <code class="docutils literal notranslate"><span class="pre">)</span></code></div>
+<div class="line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">{</span> <span class="pre">return</span> <span class="pre">sizeof...</span> <span class="pre">(</span></code> <em>t</em> <code class="docutils literal notranslate"><span class="pre">);</span> <span class="pre">}</span></code></div>
+</div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$SizeofPackOperator.html">SizeofPackOperator</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">{</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/stmts/Stmt.qll/type.Stmt$Stmt.html">Stmt</a>… <code class="docutils literal notranslate"><span class="pre">;</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">}</span> <span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$StmtExpr.html">StmtExpr</a></td>
+<td>GNU/Clang extension</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">this</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$ThisExpr.html">ThisExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">throw</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">);</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$ThrowExpr.html">ThrowExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">throw;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$ReThrowExpr.html">ReThrowExpr</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">typeid</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">typeid</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></div>
+</div>
+</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$TypeidOperator.html">TypeidOperator</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">__uuidof</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Cast.qll/type.Cast$UuidofOperator.html">UuidofOperator</a></td>
+<td>Microsoft extension</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="type-classes">
+<h3>Type classes<a class="headerlink" href="#type-classes" title="Permalink to this headline">¶</a></h3>
+<p>This table lists subclasses of <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> representing C/C++ types.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="57%" />
+<col width="28%" />
+<col width="15%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Example syntax</th>
+<th class="head">CodeQL class</th>
+<th class="head">Remarks</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">void</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$VoidType.html">VoidType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">_Bool</span></code> or <code class="docutils literal notranslate"><span class="pre">bool</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$BoolType.html">BoolType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">char16_t</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Char16Type.html">Char16Type</a></td>
+<td>C11, C++11</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">char32_t</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Char32Type.html">Char32Type</a></td>
+<td>C11, C++11</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">char</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$PlainCharType.html">PlainCharType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">signed</span> <span class="pre">char</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$SignedCharType.html">SignedCharType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">unsigned</span> <span class="pre">char</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$UnsignedCharType.html">UnsignedCharType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">int</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$IntType.html">IntType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">long</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$LongLongType.html">LongLongType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">long</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$LongType.html">LongType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">short</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$ShortType.html">ShortType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">wchar_t</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$WideCharType.html">WideCharType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">nullptr_t</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$NullPointerType.html">NullPointerType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">double</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$DoubleType.html">DoubleType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">long</span> <span class="pre">double</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$LongDoubleType.html">LongDoubleType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">float</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$FloatType.html">FloatType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">auto</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$AutoType.html">AutoType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">decltype</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/exprs/Expr.qll/type.Expr$Expr.html">Expr</a> <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Decltype.html">Decltype</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">[</span></code> <em>n</em> <code class="docutils literal notranslate"><span class="pre">]</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$ArrayType.html">ArrayType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">^</span></code> <em>blockptr</em> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Parameter.qll/type.Parameter$Parameter.html">Parameter</a>… <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$BlockType.html">BlockType</a></td>
+<td>Apple extension</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">*</span></code>  <em>funcptr</em> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Parameter.qll/type.Parameter$Parameter.html">Parameter</a>… <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$FunctionPointerType.html">FunctionPointerType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">(</span> <span class="pre">&amp;</span></code> <em>funcref</em> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Parameter.qll/type.Parameter$Parameter.html">Parameter</a>… <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$FunctionReferenceType.html">FunctionReferenceType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">__attribute__</span> <span class="pre">(</span> <span class="pre">(</span> <span class="pre">vector_size</span> <span class="pre">(</span></code> <em>n</em> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">)</span> <span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$GNUVectorType.html">GNUVectorType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a>  <code class="docutils literal notranslate"><span class="pre">*</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$PointerType.html">PointerType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">&amp;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$LValueReferenceType.html">LValueReferenceType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">&amp;&amp;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$RValueReferenceType.html">RValueReferenceType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$Type.html">Type</a> <code class="docutils literal notranslate"><span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Class.qll/type.Class$Class.html">Class</a> <code class="docutils literal notranslate"><span class="pre">*::</span></code>  <em>membptr</em> <code class="docutils literal notranslate"><span class="pre">)</span> <span class="pre">(</span></code> <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Parameter.qll/type.Parameter$Parameter.html">Parameter</a>… <code class="docutils literal notranslate"><span class="pre">)</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$PointerToMemberType.html">PointerToMemberType</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">typename</span> <span class="pre">&gt;</span> <span class="pre">class</span></code> <em>C</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$TemplateTemplateParameter.html">TemplateTemplateParameter</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">template</span> <span class="pre">&lt;</span> <span class="pre">typename</span></code> <em>T</em> <code class="docutils literal notranslate"><span class="pre">&gt;</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Type.qll/type.Type$TemplateParameter.html">TemplateParameter</a></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="preprocessor-classes">
+<h3>Preprocessor classes<a class="headerlink" href="#preprocessor-classes" title="Permalink to this headline">¶</a></h3>
+<p>This table lists <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/module.Preprocessor.html">Preprocessor</a> classes representing C/C++ preprocessing directives.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="46%" />
+<col width="27%" />
+<col width="27%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Example syntax</th>
+<th class="head">CodeQL class</th>
+<th class="head">Remarks</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#elif</span></code> <em>condition</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorElif.html">PreprocessorElif</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#if</span></code> <em>condition</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorIf.html">PreprocessorIf</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#ifdef</span></code> <em>macro</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorIfdef.html">PreprocessorIfdef</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#ifndef</span></code> <em>macro</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorIfndef.html">PreprocessorIfndef</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#else</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorElse.html">PreprocessorElse</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#endif</span></code></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorEndif.html">PreprocessorEndif</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#line</span></code> <em>line_number</em> <em>file_name</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorLine.html">PreprocessorLine</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#pragma</span></code> <em>pragma_property</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorPragma.html">PreprocessorPragma</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#undef</span></code> <em>macro</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorUndef.html">PreprocessorUndef</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#warning</span></code> <em>message</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorWarning.html">PreprocessorWarning</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#error</span></code> <em>message</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Preprocessor.qll/type.Preprocessor$PreprocessorError.html">PreprocessorError</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#include</span></code> <em>file_name</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Include.qll/type.Include$Include.html">Include</a></td>
+<td>&#160;</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#import</span></code> <em>file_name</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Include.qll/type.Include$Import.html">Import</a></td>
+<td>Apple/NeXT extension</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">#include_next</span></code> <em>file_name</em></td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Include.qll/type.Include$IncludeNext.html">IncludeNext</a></td>
+<td>Apple/NeXT extension</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">#define</span></code> <em>macro</em> …</td>
+<td><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/semmle/code/cpp/Macro.qll/type.Macro$Macro.html">Macro</a></td>
+<td>&#160;</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/cpp/ql/src">CodeQL queries for C and C++</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/cpp/ql/examples">Example queries for C and C++</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/cpp/">CodeQL library reference for C and C++</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

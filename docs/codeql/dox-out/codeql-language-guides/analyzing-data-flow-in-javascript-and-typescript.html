@@ -1,0 +1,723 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Analyzing data flow in JavaScript and TypeScript &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Using flow labels for precise data flow analysis" href="using-flow-labels-for-precise-data-flow-analysis.html" />
+    <link rel="prev" title="CodeQL library for TypeScript" href="codeql-library-for-typescript.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-javascript-code.html">Basic query for JavaScript and TypeScript code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-javascript.html">CodeQL library for JavaScript</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-typescript.html">CodeQL library for TypeScript</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Analyzing data flow in JavaScript and TypeScript</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-flow-labels-for-precise-data-flow-analysis.html">Using flow labels for precise data flow analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="specifying-additional-remote-flow-sources-for-javascript.html">Specifying additional remote flow sources for JavaScript</a></li>
+<li class="toctree-l3"><a class="reference internal" href="using-type-tracking-for-api-modeling.html">Using type tracking for API modeling</a></li>
+<li class="toctree-l3"><a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-javascript-and-typescript-programs.html">Abstract syntax tree classes for working with JavaScript and TypeScript programs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="data-flow-cheat-sheet-for-javascript.html">Data flow cheat sheet for JavaScript</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-javascript.html"
+                accesskey="U">CodeQL for JavaScript and TypeScript</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="analyzing-data-flow-in-javascript-and-typescript-1">
+<span id="analyzing-data-flow-in-javascript-and-typescript"></span><h1>Analyzing data flow in JavaScript and TypeScript<a class="headerlink" href="#analyzing-data-flow-in-javascript-and-typescript-1" title="Permalink to this headline">¶</a></h1>
+<p>This topic describes how data flow analysis is implemented in the CodeQL libraries for JavaScript/TypeScript and includes examples to help you write your own data flow queries.</p>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The various sections in this article describe how to utilize the libraries for local data flow, global data flow, and taint tracking.
+As our running example, we will develop a query that identifies command-line arguments that are passed as a file path to the standard Node.js <code class="docutils literal notranslate"><span class="pre">readFile</span></code> function.
+While this is not a problematic pattern as such, it is typical of the kind of reasoning that is frequently used in security queries.</p>
+<p>For a more general introduction to modeling data flow, see “<a class="reference internal" href="../writing-codeql-queries/about-data-flow-analysis.html#about-data-flow-analysis"><span class="std std-ref">About data flow analysis</span></a>.”</p>
+</div>
+<div class="section" id="data-flow-nodes">
+<h2>Data flow nodes<a class="headerlink" href="#data-flow-nodes" title="Permalink to this headline">¶</a></h2>
+<p>Both local and global data flow, as well as taint tracking, work on a representation of the program known as the <a class="reference internal" href="../writing-codeql-queries/about-data-flow-analysis.html#data-flow-graph"><span class="std std-ref">data flow graph</span></a>.
+Nodes on the data flow flow graph may also correspond to nodes on the abstract syntax tree, but they are not the same.
+While AST nodes belong to class <code class="docutils literal notranslate"><span class="pre">ASTNode</span></code> and its subclasses, data flow nodes belong to class <code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code> and its subclasses:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::ValueNode</span></code>: a <em>value node</em>, that is, a data flow node that corresponds either to an expression, or to a declaration of a function, class, TypeScript namespace,
+or TypeScript enum.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::SsaDefinitionNode</span></code>: a data flow node that corresponds to an SSA variable, that is, a local variable with additional information to reason more precisely
+about different assignments to the same variable. This kind of data flow node does not correspond to an AST node.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::PropRef</span></code>: a data flow node that corresponds to a read or a write of an object property, for example, in an assignment, in an object literal, or in a
+destructuring assignment.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::PropRead</span></code>, <code class="docutils literal notranslate"><span class="pre">DataFlow::PropWrite</span></code>: subclasses of <code class="docutils literal notranslate"><span class="pre">DataFlow::PropRef</span></code> that correspond to reads and writes, respectively.</li>
+</ul>
+</div></blockquote>
+<p>Apart from these fairly general classes, there are some more specialized classes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::ParameterNode</span></code>: a data flow node that corresponds to a function parameter.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::InvokeNode</span></code>: a data flow node that corresponds to a function call; its subclasses <code class="docutils literal notranslate"><span class="pre">DataFlow::NewNode</span></code> and <code class="docutils literal notranslate"><span class="pre">DataFlow::CallNode</span></code> represent calls with
+and without <code class="docutils literal notranslate"><span class="pre">new</span></code> respectively, while <code class="docutils literal notranslate"><span class="pre">DataFlow::MethodCallNode</span></code> represents method calls. Note that these classes also model reflective calls using <code class="docutils literal notranslate"><span class="pre">.call</span></code> and
+<code class="docutils literal notranslate"><span class="pre">.apply</span></code>, which do not correspond to any AST nodes.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::ThisNode</span></code>: a data flow node that corresponds to the value of <code class="docutils literal notranslate"><span class="pre">this</span></code> in a function or top level. This kind of data flow node also does not correspond to an AST node.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::GlobalVarRefNode</span></code>: a data flow node that corresponds to a direct reference to a global variable. This class is rarely used directly, instead you would normally
+use the predicate <code class="docutils literal notranslate"><span class="pre">globalVarRef</span></code> (introduced below), which also considers indirect references through <code class="docutils literal notranslate"><span class="pre">window</span></code> or global <code class="docutils literal notranslate"><span class="pre">this</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::FunctionNode</span></code>, <code class="docutils literal notranslate"><span class="pre">DataFlow::ObjectLiteralNode</span></code>, <code class="docutils literal notranslate"><span class="pre">DataFlow::ArrayLiteralNode</span></code>: a data flow node that corresponds to a function (expression or declaration),
+an object literal, or an array literal, respectively.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::ClassNode</span></code>: a data flow node corresponding to a class, either defined using an ECMAScript 2015 <code class="docutils literal notranslate"><span class="pre">class</span></code> declaration or an old-style constructor
+function.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::ModuleImportNode</span></code>: a data flow node corresponding to an ECMAScript 2015 import or an AMD or CommonJS <code class="docutils literal notranslate"><span class="pre">require</span></code> import.</li>
+</ul>
+</div></blockquote>
+<p>The following predicates are available for mapping from AST nodes and other elements to their corresponding data flow nodes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::valueNode(x)</span></code>: maps <code class="docutils literal notranslate"><span class="pre">x</span></code>, which must be an expression or a declaration of a function, class, namespace or enum, to its corresponding <code class="docutils literal notranslate"><span class="pre">DataFlow::ValueNode</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::ssaDefinitionNode(ssa)</span></code>: maps an SSA definition <code class="docutils literal notranslate"><span class="pre">ssa</span></code> to its corresponding <code class="docutils literal notranslate"><span class="pre">DataFlow::SsaDefinitionNode</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::parameterNode(p)</span></code>: maps a function parameter <code class="docutils literal notranslate"><span class="pre">p</span></code> to its corresponding <code class="docutils literal notranslate"><span class="pre">DataFlow::ParameterNode</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::thisNode(s)</span></code>: maps a function or top-level <code class="docutils literal notranslate"><span class="pre">s</span></code> to the <code class="docutils literal notranslate"><span class="pre">DataFlow::ThisNode</span></code> representing the value of <code class="docutils literal notranslate"><span class="pre">this</span></code> in <code class="docutils literal notranslate"><span class="pre">s</span></code>.</li>
+</ul>
+</div></blockquote>
+<p>Class <code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code> also has a member predicate <code class="docutils literal notranslate"><span class="pre">asExpr()</span></code> that you can use to map from a <code class="docutils literal notranslate"><span class="pre">DataFlow::ValueNode</span></code> to the expression it corresponds to. Note that
+this predicate is undefined for other kinds of nodes, and for value nodes that do not correspond to expressions.</p>
+<p>There are also some other predicates available for accessing commonly used data flow nodes:</p>
+<blockquote>
+<div><ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::globalVarRef(g)</span></code>: gets a data flow node corresponding to an access to global variable <code class="docutils literal notranslate"><span class="pre">g</span></code>, either directly or through <code class="docutils literal notranslate"><span class="pre">window</span></code> or (top-level) <code class="docutils literal notranslate"><span class="pre">this</span></code>.
+For example, you can use <code class="docutils literal notranslate"><span class="pre">DataFlow::globalVarRef(&quot;document&quot;)</span></code> to find references to the DOM <code class="docutils literal notranslate"><span class="pre">document</span></code> object.</li>
+<li><code class="docutils literal notranslate"><span class="pre">DataFlow::moduleMember(p,</span> <span class="pre">m)</span></code>: gets a data flow node that references a member <code class="docutils literal notranslate"><span class="pre">m</span></code> of a module loaded from path <code class="docutils literal notranslate"><span class="pre">p</span></code>. For example, you can use
+<code class="docutils literal notranslate"><span class="pre">DataFlow::moduleMember(&quot;fs&quot;,</span> <span class="pre">&quot;readFile&quot;)</span></code> to find references to the <code class="docutils literal notranslate"><span class="pre">fs.readFile</span></code> function from the Node.js standard library.</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="local-data-flow">
+<h2>Local data flow<a class="headerlink" href="#local-data-flow" title="Permalink to this headline">¶</a></h2>
+<p>Local data flow is data flow within a single function. Data flow through function calls and returns or through property writes and reads is not modeled.</p>
+<p>Local data flow is faster to compute and easier to use than global data flow, but less complete. It is, however, sufficient for many purposes.</p>
+<p>To reason about local data flow, use the member predicates <code class="docutils literal notranslate"><span class="pre">getAPredecessor</span></code> and <code class="docutils literal notranslate"><span class="pre">getASuccessor</span></code> on <code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code>. For a data flow node <code class="docutils literal notranslate"><span class="pre">nd</span></code>,
+<code class="docutils literal notranslate"><span class="pre">nd.getAPredecessor()</span></code> returns all data flow nodes from which data flows to <code class="docutils literal notranslate"><span class="pre">nd</span></code> in one local step. Conversely, <code class="docutils literal notranslate"><span class="pre">nd.getASuccessor()</span></code> returns all
+nodes to which data flows from <code class="docutils literal notranslate"><span class="pre">nd</span></code> in one local step.</p>
+<p>To follow one or more steps of local data flow, use the transitive closure operator <code class="docutils literal notranslate"><span class="pre">+</span></code>, and for zero or more steps the reflexive transitive closure operator <code class="docutils literal notranslate"><span class="pre">*</span></code>.</p>
+<p>For example, the following query finds all data flow nodes <code class="docutils literal notranslate"><span class="pre">source</span></code> whose value may flow into the first argument of a call to a method with name <code class="docutils literal notranslate"><span class="pre">readFile</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">javascript</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">MethodCallNode</span> <span class="n">readFile</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span>
+<span class="k">where</span>
+  <span class="n">readFile</span><span class="p">.</span><span class="n">getMethodName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;readFile&quot;</span> <span class="k">and</span>
+  <span class="n">source</span><span class="p">.</span><span class="n">getASuccessor</span><span class="o">*</span><span class="p">()</span> <span class="o">=</span> <span class="n">readFile</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">source</span>
+</pre></div>
+</div>
+<div class="section" id="source-nodes">
+<h3>Source nodes<a class="headerlink" href="#source-nodes" title="Permalink to this headline">¶</a></h3>
+<p>Explicit reasoning about data flow edges can be cumbersome and is rare in practice. Typically, we are not interested in flow originating from arbitrary nodes, but
+from nodes that in some sense are the “source” of some kind of data, either because they create a new object, such as object literals or functions, or because they
+represent a point where data enters the local data flow graph, such as parameters or property reads.</p>
+<p>The data flow library represents such nodes by the class <code class="docutils literal notranslate"><span class="pre">DataFlow::SourceNode</span></code>, which provides a convenient API to reason about local data flow involving
+source nodes.</p>
+<p>By default, the following kinds of data flow nodes are considered source nodes:</p>
+<blockquote>
+<div><ul class="simple">
+<li>classes, functions, object and array literals, regular expressions, and JSX elements</li>
+<li>property reads, global variable references and <code class="docutils literal notranslate"><span class="pre">this</span></code> nodes</li>
+<li>function parameters</li>
+<li>function calls</li>
+<li>imports</li>
+</ul>
+</div></blockquote>
+<p>You can extend the set of source nodes by defining additional subclasses of <code class="docutils literal notranslate"><span class="pre">DataFlow::SourceNode::Range</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">DataFlow::SourceNode</span></code> class defines a number of member predicates that can be used to track where data originating from a source node flows, and to find
+places where properties are accessed or methods are called on them.</p>
+<p>For example, the following query finds all references to properties of <code class="docutils literal notranslate"><span class="pre">process.argv</span></code>, the array through which Node.js applications receive their command-line
+arguments:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">javascript</span>
+
+<span class="k">select</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">globalVarRef</span><span class="p">(</span><span class="s">&quot;process&quot;</span><span class="p">).</span><span class="n">getAPropertyRead</span><span class="p">(</span><span class="s">&quot;argv&quot;</span><span class="p">).</span><span class="n">getAPropertyReference</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>First, we use <code class="docutils literal notranslate"><span class="pre">DataFlow::globalVarRef</span></code> (mentioned above) to find all references to the global variable <code class="docutils literal notranslate"><span class="pre">process</span></code>. Since global variable references are source
+nodes, we can then use the predicate <code class="docutils literal notranslate"><span class="pre">getAPropertyRead</span></code> (defined in class <code class="docutils literal notranslate"><span class="pre">DataFlow::SourceNode</span></code>) to find all places where the property <code class="docutils literal notranslate"><span class="pre">argv</span></code> of that
+global variable is read. The results of this predicate are again source nodes, so we can chain it with a call to <code class="docutils literal notranslate"><span class="pre">getAPropertyReference</span></code>, which is a predicate
+that finds all references to any property (even references with a computed name) on its base source node.</p>
+<p>Note that many predicates on <code class="docutils literal notranslate"><span class="pre">DataFlow::SourceNode</span></code> have source nodes as their result in turn, allowing calls to be chained to concisely express the relationship
+between several data flow nodes.</p>
+<p>Most importantly, predicates like <code class="docutils literal notranslate"><span class="pre">getAPropertyRead</span></code> implicitly follow local data flow, so the above query not only finds direct property references like
+<code class="docutils literal notranslate"><span class="pre">process.argv[2]</span></code>, but also more indirect ones as in this example:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">var</span> <span class="nx">args</span> <span class="o">=</span> <span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">;</span>
+<span class="kd">var</span> <span class="nx">firstArg</span> <span class="o">=</span> <span class="nx">args</span><span class="p">[</span><span class="mi">2</span><span class="p">];</span>
+</pre></div>
+</div>
+<p>Analogous to <code class="docutils literal notranslate"><span class="pre">getAPropertyRead</span></code> there is also a predicate <code class="docutils literal notranslate"><span class="pre">getAPropertyWrite</span></code> for identifying property writes.</p>
+<p>Another common task is to find calls to a function originating from a source node. For this purpose, <code class="docutils literal notranslate"><span class="pre">DataFlow::SourceNode</span></code> offers predicates <code class="docutils literal notranslate"><span class="pre">getACall</span></code>,
+<code class="docutils literal notranslate"><span class="pre">getAnInstantiation</span></code> and <code class="docutils literal notranslate"><span class="pre">getAnInvocation</span></code>: the first one only considers invocations without <code class="docutils literal notranslate"><span class="pre">new</span></code>, the second one only invocations with <code class="docutils literal notranslate"><span class="pre">new</span></code>, and
+the third one considers all invocations.</p>
+<p>We can use these predicates in combination with <code class="docutils literal notranslate"><span class="pre">DataFlow::moduleMember</span></code> (mentioned above) to find calls to the function <code class="docutils literal notranslate"><span class="pre">readFile</span></code> imported from the
+standard Node.js <code class="docutils literal notranslate"><span class="pre">fs</span></code> library:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">javascript</span>
+
+<span class="k">select</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">moduleMember</span><span class="p">(</span><span class="s">&quot;fs&quot;</span><span class="p">,</span> <span class="s">&quot;readFile&quot;</span><span class="p">).</span><span class="n">getACall</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>For identifying method calls there is also a predicate <code class="docutils literal notranslate"><span class="pre">getAMethodCall</span></code>, and the slightly more general <code class="docutils literal notranslate"><span class="pre">getAMemberCall</span></code>. The difference between the
+two is that the former only finds calls that have the syntactic shape of a method call such as <code class="docutils literal notranslate"><span class="pre">x.m(...)</span></code>, while the latter also finds calls where
+<code class="docutils literal notranslate"><span class="pre">x.m</span></code> is first stored into a local variable <code class="docutils literal notranslate"><span class="pre">f</span></code> and then invoked as <code class="docutils literal notranslate"><span class="pre">f(...)</span></code>.</p>
+<p>Finally, the predicate <code class="docutils literal notranslate"><span class="pre">flowsTo(nd)</span></code> holds for any node <code class="docutils literal notranslate"><span class="pre">nd</span></code> into which data originating from the source node may flow. Conversely, <code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code>
+offers a predicate <code class="docutils literal notranslate"><span class="pre">getALocalSource()</span></code> that can be used to find any source node that flows to it.</p>
+<p>Putting all of the above together, here is a query that finds (local) data flow from command line arguments to <code class="docutils literal notranslate"><span class="pre">readFile</span></code> calls:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">javascript</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">SourceNode</span> <span class="n">arg</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">call</span>
+<span class="k">where</span>
+  <span class="n">arg</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">globalVarRef</span><span class="p">(</span><span class="s">&quot;process&quot;</span><span class="p">).</span><span class="n">getAPropertyRead</span><span class="p">(</span><span class="s">&quot;argv&quot;</span><span class="p">).</span><span class="n">getAPropertyReference</span><span class="p">()</span> <span class="k">and</span>
+  <span class="n">call</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">moduleMember</span><span class="p">(</span><span class="s">&quot;fs&quot;</span><span class="p">,</span> <span class="s">&quot;readFile&quot;</span><span class="p">).</span><span class="n">getACall</span><span class="p">()</span> <span class="k">and</span>
+  <span class="n">arg</span><span class="p">.</span><span class="n">flowsTo</span><span class="p">(</span><span class="n">call</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">))</span>
+<span class="k">select</span> <span class="n">arg</span><span class="p">,</span> <span class="n">call</span>
+</pre></div>
+</div>
+<p>There are two points worth making about the source node API:</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li>All data flow tracking is purely local, and in particular flow through global variables is not tracked. If <code class="docutils literal notranslate"><span class="pre">args</span></code> in our <code class="docutils literal notranslate"><span class="pre">process.argv</span></code> example
+above is a global variable, then the query will not find the reference through <code class="docutils literal notranslate"><span class="pre">args[2]</span></code>.</li>
+<li>Strings are not source nodes and cannot be tracked using this API. You can, however, use the <code class="docutils literal notranslate"><span class="pre">mayHaveStringValue</span></code> predicate on class <code class="docutils literal notranslate"><span class="pre">DataFlow::Node</span></code>
+to reason about the possible string values flowing into a data flow node.</li>
+</ol>
+</div></blockquote>
+<p>For a full description of the <code class="docutils literal notranslate"><span class="pre">DataFlow::SourceNode</span></code> API, see the <a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/javascript/semmle/javascript/dataflow/Sources.qll/type.Sources$SourceNode.html">JavaScript standard library</a>.</p>
+</div>
+<div class="section" id="exercises">
+<h3>Exercises<a class="headerlink" href="#exercises" title="Permalink to this headline">¶</a></h3>
+<p>Exercise 1: Write a query that finds all hard-coded strings used as the <code class="docutils literal notranslate"><span class="pre">tagName</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">createElement</span></code> function from the DOM <code class="docutils literal notranslate"><span class="pre">document</span></code> object,
+using local data flow. (<a class="reference external" href="#exercise-1">Answer</a>).</p>
+</div>
+</div>
+<div class="section" id="global-data-flow">
+<h2>Global data flow<a class="headerlink" href="#global-data-flow" title="Permalink to this headline">¶</a></h2>
+<p>Global data flow tracks data flow throughout the entire program, and is therefore more powerful than local data flow. However, global data flow is less precise
+than local data flow. That is, the analysis may report spurious flows that cannot in fact happen. Moreover, global data flow analysis typically requires significantly
+more time and memory than local analysis.</p>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>You can model data flow paths in CodeQL by creating path queries. To view data flow paths generated by a path query in CodeQL for VS Code, you need to make sure that it has the correct metadata and <code class="docutils literal notranslate"><span class="pre">select</span></code> clause. For more information, see <a class="reference internal" href="../writing-codeql-queries/creating-path-queries.html#creating-path-queries"><span class="std std-ref">Creating path queries</span></a>.</p>
+</div></blockquote>
+<div class="section" id="using-global-data-flow">
+<h3>Using global data flow<a class="headerlink" href="#using-global-data-flow" title="Permalink to this headline">¶</a></h3>
+<p>For performance reasons, it is not generally feasible to compute all global data flow across the entire program. Instead, you can define a data flow <cite>configuration</cite>,
+which specifies <cite>source</cite> data flow nodes and <cite>sink</cite> data flow nodes (“sources” and “sinks” for short) of interest. The data flow library provides a generic
+data flow solver that can check whether there is (global) data flow from a source to a sink.</p>
+<p>Optionally, configurations may specify extra data flow edges to be added to the data flow graph, and may also specify  <cite>barriers</cite>. Barriers are data flow nodes or edges through
+which data should not be tracked for the purposes of this analysis.</p>
+<p>To define a configuration, extend the class <code class="docutils literal notranslate"><span class="pre">DataFlow::Configuration</span></code> as follows:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">MyDataFlowConfiguration</span> <span class="k">extends</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Configuration</span> <span class="p">{</span>
+  <span class="n">MyDataFlowConfiguration</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="o">=</span> <span class="s">&quot;MyDataFlowConfiguration&quot;</span> <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+
+  <span class="c1">// optional overrides:</span>
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isBarrier</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">nd</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isBarrierEdge</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">pred</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">succ</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isAdditionalFlowStep</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">pred</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">succ</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The characteristic predicate <code class="docutils literal notranslate"><span class="pre">MyDataFlowConfiguration()</span></code> defines the name of the configuration, so <code class="docutils literal notranslate"><span class="pre">&quot;MyDataFlowConfiguration&quot;</span></code> should be replaced by a suitable
+name describing your particular analysis configuration.</p>
+<p>The data flow analysis is performed using the predicate <code class="docutils literal notranslate"><span class="pre">hasFlow(source,</span> <span class="pre">sink)</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">from</span> <span class="n">MyDataFlowConfiguration</span> <span class="n">dataflow</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span>
+<span class="k">where</span> <span class="n">dataflow</span><span class="p">.</span><span class="n">hasFlow</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">source</span><span class="p">,</span> <span class="s">&quot;Data flow from $@ to $@.&quot;</span><span class="p">,</span> <span class="n">source</span><span class="p">,</span> <span class="n">source</span><span class="p">.</span><span class="n">toString</span><span class="p">(),</span> <span class="n">sink</span><span class="p">,</span> <span class="n">sink</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-global-taint-tracking">
+<h3>Using global taint tracking<a class="headerlink" href="#using-global-taint-tracking" title="Permalink to this headline">¶</a></h3>
+<p>Global taint tracking extends global data flow with additional non-value-preserving steps, such as flow through string-manipulating operations. To use it, simply extend
+<code class="docutils literal notranslate"><span class="pre">TaintTracking::Configuration</span></code> instead of <code class="docutils literal notranslate"><span class="pre">DataFlow::Configuration</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">MyTaintTrackingConfiguration</span> <span class="k">extends</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">Configuration</span> <span class="p">{</span>
+  <span class="n">MyTaintTrackingConfiguration</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="o">=</span> <span class="s">&quot;MyTaintTrackingConfiguration&quot;</span> <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span> <span class="cm">/* ... */</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Analogous to <code class="docutils literal notranslate"><span class="pre">isAdditionalFlowStep</span></code>, there is a predicate <code class="docutils literal notranslate"><span class="pre">isAdditionalTaintStep</span></code> that you can override to specify custom flow steps to consider in the analysis.
+Instead of the <code class="docutils literal notranslate"><span class="pre">isBarrier</span></code> and <code class="docutils literal notranslate"><span class="pre">isBarrierEdge</span></code> predicates, the taint tracking configuration includes <code class="docutils literal notranslate"><span class="pre">isSanitizer</span></code> and <code class="docutils literal notranslate"><span class="pre">isSanitizerEdge</span></code> predicates that specify
+data flow nodes or edges that act as taint sanitizers and hence stop flow from a source to a sink.</p>
+<p>Similar to global data flow, the characteristic predicate <code class="docutils literal notranslate"><span class="pre">MyTaintTrackingConfiguration()</span></code> defines the unique name of the configuration, so <code class="docutils literal notranslate"><span class="pre">&quot;MyTaintTrackingConfiguration&quot;</span></code>
+should be replaced by an appropriate descriptive name.</p>
+<p>The taint tracking analysis is again performed using the predicate <code class="docutils literal notranslate"><span class="pre">hasFlow(source,</span> <span class="pre">sink)</span></code>.</p>
+</div>
+<div class="section" id="examples">
+<h3>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h3>
+<p>The following taint-tracking configuration is a generalization of our example query above, which tracks flow from command-line arguments to <code class="docutils literal notranslate"><span class="pre">readFile</span></code> calls, this
+time using global taint tracking.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">javascript</span>
+
+<span class="k">class</span> <span class="n">CommandLineFileNameConfiguration</span> <span class="k">extends</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">Configuration</span> <span class="p">{</span>
+  <span class="n">CommandLineFileNameConfiguration</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="o">=</span> <span class="s">&quot;CommandLineFileNameConfiguration&quot;</span> <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">DataFlow</span><span class="o">::</span><span class="n">globalVarRef</span><span class="p">(</span><span class="s">&quot;process&quot;</span><span class="p">).</span><span class="n">getAPropertyRead</span><span class="p">(</span><span class="s">&quot;argv&quot;</span><span class="p">).</span><span class="n">getAPropertyRead</span><span class="p">()</span> <span class="o">=</span> <span class="n">source</span>
+  <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">DataFlow</span><span class="o">::</span><span class="n">moduleMember</span><span class="p">(</span><span class="s">&quot;fs&quot;</span><span class="p">,</span> <span class="s">&quot;readFile&quot;</span><span class="p">).</span><span class="n">getACall</span><span class="p">().</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span> <span class="o">=</span> <span class="n">sink</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">from</span> <span class="n">CommandLineFileNameConfiguration</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span>
+<span class="k">where</span> <span class="n">cfg</span><span class="p">.</span><span class="n">hasFlow</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">source</span><span class="p">,</span> <span class="n">sink</span>
+</pre></div>
+</div>
+<p>This query will now find flows that involve inter-procedural steps, like in the following example (where the individual steps have been marked with comments
+<code class="docutils literal notranslate"><span class="pre">#1</span></code> to <code class="docutils literal notranslate"><span class="pre">#4</span></code>):</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">fs</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;fs&#39;</span><span class="p">),</span>
+      <span class="nx">path</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;path&#39;</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">readFileHelper</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>     <span class="c1">// #2</span>
+  <span class="nx">p</span> <span class="o">=</span> <span class="nx">path</span><span class="p">.</span><span class="nx">resolve</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>           <span class="c1">// #3</span>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span>                 <span class="c1">// #4</span>
+    <span class="s1">&#39;utf8&#39;</span><span class="p">,</span> <span class="p">(</span><span class="nx">err</span><span class="p">,</span> <span class="nx">data</span><span class="p">)</span> <span class="p">=&gt;</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="nx">err</span><span class="p">)</span> <span class="k">throw</span> <span class="nx">err</span><span class="p">;</span>
+    <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span>
+
+<span class="nx">readFileHelper</span><span class="p">(</span><span class="nx">process</span><span class="p">.</span><span class="nx">argv</span><span class="p">[</span><span class="mi">2</span><span class="p">]);</span> <span class="c1">// #1</span>
+</pre></div>
+</div>
+<p>Note that for step #3 we rely on the taint-tracking library’s built-in model of the Node.js <code class="docutils literal notranslate"><span class="pre">path</span></code> library, which adds a taint step from <code class="docutils literal notranslate"><span class="pre">p</span></code> to
+<code class="docutils literal notranslate"><span class="pre">path.resolve(p)</span></code>. This step is not value preserving, but it preserves taint in the sense that if <code class="docutils literal notranslate"><span class="pre">p</span></code> is user-controlled, then so is
+<code class="docutils literal notranslate"><span class="pre">path.resolve(p)</span></code> (at least partially).</p>
+<p>Other standard taint steps include flow through string-manipulating operations such as concatenation, <code class="docutils literal notranslate"><span class="pre">JSON.parse</span></code> and <code class="docutils literal notranslate"><span class="pre">JSON.stringify</span></code>, array
+transformations, promise operations, and many more.</p>
+</div>
+<div class="section" id="sanitizers">
+<h3>Sanitizers<a class="headerlink" href="#sanitizers" title="Permalink to this headline">¶</a></h3>
+<p>The above JavaScript program allows the user to read any file, including sensitive system files like <code class="docutils literal notranslate"><span class="pre">/etc/passwd</span></code>. If the program may be invoked
+by an untrusted user, this is undesirable, so we may want to constrain the path. For example, instead of using <code class="docutils literal notranslate"><span class="pre">path.resolve</span></code> we could implement
+a function <code class="docutils literal notranslate"><span class="pre">checkPath</span></code> that first makes the path absolute and then checks that it starts with the current working directory, aborting the program
+with an error if it does not. We could then use that function in <code class="docutils literal notranslate"><span class="pre">readFileHelper</span></code> like this:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">readFileHelper</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">p</span> <span class="o">=</span> <span class="nx">checkPath</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For the purposes of our above analysis, <code class="docutils literal notranslate"><span class="pre">checkPath</span></code> is a <cite>sanitizer</cite>: its output is always untainted, even if its input is tainted. To model this
+we can add an override of <code class="docutils literal notranslate"><span class="pre">isSanitizer</span></code> to our taint-tracking configuration like this:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">CommandLineFileNameConfiguration</span> <span class="k">extends</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">Configuration</span> <span class="p">{</span>
+
+  <span class="c1">// ...</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSanitizer</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">nd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">nd</span><span class="p">.(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span><span class="p">).</span><span class="n">getCalleeName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;checkPath&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This says that any call to a function named <code class="docutils literal notranslate"><span class="pre">checkPath</span></code> is to be considered a sanitizer, so any flow through this node is blocked. In particular,
+the query would no longer flag the flow from <code class="docutils literal notranslate"><span class="pre">process.argv[2]</span></code> to <code class="docutils literal notranslate"><span class="pre">fs.readFile</span></code> in our updated example above.</p>
+</div>
+<div class="section" id="sanitizer-guards">
+<h3>Sanitizer guards<a class="headerlink" href="#sanitizer-guards" title="Permalink to this headline">¶</a></h3>
+<p>A perhaps more natural way of implementing the path check in our example would be to have <code class="docutils literal notranslate"><span class="pre">checkPath</span></code> return a Boolean value indicating whether
+the path is safe to read (instead of returning the path if it is safe and aborting otherwise). We could then use it in <code class="docutils literal notranslate"><span class="pre">readFileHelper</span></code> like this:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kd">function</span> <span class="nx">readFileHelper</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">checkPath</span><span class="p">(</span><span class="nx">p</span><span class="p">))</span>
+    <span class="k">return</span><span class="p">;</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note that <code class="docutils literal notranslate"><span class="pre">checkPath</span></code> is now no longer a sanitizer in the sense described above, since the flow from <code class="docutils literal notranslate"><span class="pre">process.argv[2]</span></code> to <code class="docutils literal notranslate"><span class="pre">fs.readFile</span></code> does not go
+through <code class="docutils literal notranslate"><span class="pre">checkPath</span></code> any more. The flow is, however, <cite>guarded</cite> by <code class="docutils literal notranslate"><span class="pre">checkPath</span></code> in the sense that the expression <code class="docutils literal notranslate"><span class="pre">checkPath(p)</span></code> has to evaluate
+to <code class="docutils literal notranslate"><span class="pre">true</span></code> (or, more precisely, to a truthy value) in order for the flow to happen.</p>
+<p>Such sanitizer guards can be supported by defining a new subclass of <code class="docutils literal notranslate"><span class="pre">TaintTracking::SanitizerGuardNode</span></code> and overriding the predicate
+<code class="docutils literal notranslate"><span class="pre">isSanitizerGuard</span></code> in the taint-tracking configuration class to add all instances of this class as sanitizer guards to the configuration.</p>
+<p>For our above example, we would begin by defining a subclass of <code class="docutils literal notranslate"><span class="pre">SanitizerGuardNode</span></code> that identifies guards of the form <code class="docutils literal notranslate"><span class="pre">checkPath(...)</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">CheckPathSanitizerGuard</span> <span class="k">extends</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">SanitizerGuardNode</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="p">{</span>
+  <span class="n">CheckPathSanitizerGuard</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span><span class="p">.</span><span class="n">getCalleeName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;checkPath&quot;</span> <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">sanitizes</span><span class="p">(</span><span class="kt">boolean</span> <span class="n">outcome</span><span class="p">,</span> <span class="n">Expr</span> <span class="n">e</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">outcome</span> <span class="o">=</span> <span class="k">true</span> <span class="k">and</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">asExpr</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The characteristic predicate of this class checks that the sanitizer guard is a call to a function named <code class="docutils literal notranslate"><span class="pre">checkPath</span></code>. The overriding definition
+of <code class="docutils literal notranslate"><span class="pre">sanitizes</span></code> says such a call sanitizes its first argument (that is, <code class="docutils literal notranslate"><span class="pre">getArgument(0)</span></code>) if it evaluates to <code class="docutils literal notranslate"><span class="pre">true</span></code> (or rather, a truthy
+value).</p>
+<p>Now we can override <code class="docutils literal notranslate"><span class="pre">isSanitizerGuard</span></code> to add these sanitizer guards to our configuration:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">CommandLineFileNameConfiguration</span> <span class="k">extends</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">Configuration</span> <span class="p">{</span>
+
+  <span class="c1">// ...</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSanitizerGuard</span><span class="p">(</span><span class="n">TaintTracking</span><span class="o">::</span><span class="n">SanitizerGuardNode</span> <span class="n">nd</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">nd</span> <span class="k">instanceof</span> <span class="n">CheckPathSanitizerGuard</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>With these two additions, the query recognizes the <code class="docutils literal notranslate"><span class="pre">checkPath(p)</span></code> check as sanitizing <code class="docutils literal notranslate"><span class="pre">p</span></code> after the <code class="docutils literal notranslate"><span class="pre">return</span></code>, since execution can only
+reach there if <code class="docutils literal notranslate"><span class="pre">checkPath(p)</span></code> evaluates to a truthy value. Consequently, there is no longer a path from <code class="docutils literal notranslate"><span class="pre">process.argv[2]</span></code> to
+<code class="docutils literal notranslate"><span class="pre">readFile</span></code>.</p>
+</div>
+<div class="section" id="additional-taint-steps">
+<h3>Additional taint steps<a class="headerlink" href="#additional-taint-steps" title="Permalink to this headline">¶</a></h3>
+<p>Sometimes the default data flow and taint steps provided by <code class="docutils literal notranslate"><span class="pre">DataFlow::Configuration</span></code> and <code class="docutils literal notranslate"><span class="pre">TaintTracking::Configuration</span></code> are not sufficient
+and we need to add additional flow or taint steps to our configuration to make it find the expected flow. For example, this can happen because
+the analyzed program uses a function from an external library whose source code is not available to the analysis, or because it uses a function
+that is too difficult to analyze.</p>
+<p>In the context of our running example, assume that the JavaScript program we are analyzing uses a (fictitious) npm package <code class="docutils literal notranslate"><span class="pre">resolve-symlinks</span></code>
+to resolve any symlinks in the path <code class="docutils literal notranslate"><span class="pre">p</span></code> before passing it to <code class="docutils literal notranslate"><span class="pre">readFile</span></code>:</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="kr">const</span> <span class="nx">resolveSymlinks</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;resolve-symlinks&#39;</span><span class="p">);</span>
+
+<span class="kd">function</span> <span class="nx">readFileHelper</span><span class="p">(</span><span class="nx">p</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">p</span> <span class="o">=</span> <span class="nx">resolveSymlinks</span><span class="p">(</span><span class="nx">p</span><span class="p">);</span>
+  <span class="nx">fs</span><span class="p">.</span><span class="nx">readFile</span><span class="p">(</span><span class="nx">p</span><span class="p">,</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Resolving symlinks does not make an unsafe path any safer, so we would still like our query to flag this, but since the standard library does
+not have a model of <code class="docutils literal notranslate"><span class="pre">resolve-symlinks</span></code> it will no longer return any results.</p>
+<p>We can fix this quite easily by adding an overriding definition of the <code class="docutils literal notranslate"><span class="pre">isAdditionalTaintStep</span></code> predicate to our configuration, introducing an
+additional taint step from the first argument of <code class="docutils literal notranslate"><span class="pre">resolveSymlinks</span></code> to its result:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">CommandLineFileNameConfiguration</span> <span class="k">extends</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">Configuration</span> <span class="p">{</span>
+
+  <span class="c1">// ...</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isAdditionalTaintStep</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">pred</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">succ</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">c</span> <span class="o">|</span>
+      <span class="n">c</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">moduleImport</span><span class="p">(</span><span class="s">&quot;resolve-symlinks&quot;</span><span class="p">).</span><span class="n">getACall</span><span class="p">()</span> <span class="k">and</span>
+      <span class="n">pred</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span> <span class="k">and</span>
+      <span class="n">succ</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We might even consider adding this as a default taint step to be used by all taint-tracking configurations. In order to do this, we need
+to wrap it in a new subclass of <code class="docutils literal notranslate"><span class="pre">TaintTracking::SharedTaintStep</span></code> like this:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">StepThroughResolveSymlinks</span> <span class="k">extends</span> <span class="n">TaintTracking</span><span class="o">::</span><span class="n">SharedTaintStep</span> <span class="p">{</span>
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">step</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">pred</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">succ</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">c</span> <span class="o">|</span>
+      <span class="n">c</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">moduleImport</span><span class="p">(</span><span class="s">&quot;resolve-symlinks&quot;</span><span class="p">).</span><span class="n">getACall</span><span class="p">()</span> <span class="k">and</span>
+      <span class="n">pred</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span> <span class="k">and</span>
+      <span class="n">succ</span> <span class="o">=</span> <span class="n">c</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>If we add this definition to the standard library, it will be picked up by all taint-tracking configurations. Obviously, one has to be
+careful when adding such new additional taint steps to ensure that they really make sense for <cite>all</cite> configurations.</p>
+<p>Analogous to <code class="docutils literal notranslate"><span class="pre">TaintTracking::SharedTaintStep</span></code>, there is also a class <code class="docutils literal notranslate"><span class="pre">DataFlow::SharedFlowStep</span></code> that can be extended to add
+extra steps to all data-flow configurations, and hence also to all taint-tracking configurations.</p>
+</div>
+<div class="section" id="exercises-1">
+<h3>Exercises<a class="headerlink" href="#exercises-1" title="Permalink to this headline">¶</a></h3>
+<p>Exercise 2: Write a query that finds all hard-coded strings used as the <code class="docutils literal notranslate"><span class="pre">tagName</span></code> argument to the <code class="docutils literal notranslate"><span class="pre">createElement</span></code> function from the DOM <code class="docutils literal notranslate"><span class="pre">document</span></code> object,
+using global data flow. (<a class="reference external" href="#exercise-2">Answer</a>).</p>
+<p>Exercise 3: Write a class which represents flow sources from the array elements of the result of a call, for example the expression <code class="docutils literal notranslate"><span class="pre">myObject.myMethod(myArgument)[myIndex]</span></code>.
+Hint: array indices are properties with numeric names; you can use regular expression matching to check this. (<a class="reference external" href="#exercise-3">Answer</a>)</p>
+<p>Exercise 4: Using the answers from 2 and 3, write a query which finds all global data flows from array elements of the result of a call to the <code class="docutils literal notranslate"><span class="pre">tagName</span></code> argument to the
+<code class="docutils literal notranslate"><span class="pre">createElement</span></code> function. (<a class="reference external" href="#exercise-4">Answer</a>)</p>
+</div>
+</div>
+<div class="section" id="answers">
+<h2>Answers<a class="headerlink" href="#answers" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="exercise-1">
+<h3>Exercise 1<a class="headerlink" href="#exercise-1" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">javascript</span>
+
+<span class="k">from</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">create</span><span class="p">,</span> <span class="kt">string</span> <span class="n">name</span>
+<span class="k">where</span>
+  <span class="n">create</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">globalVarRef</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;createElement&quot;</span><span class="p">)</span> <span class="k">and</span>
+  <span class="n">create</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">mayHaveStringValue</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">name</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercise-2">
+<h3>Exercise 2<a class="headerlink" href="#exercise-2" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">javascript</span>
+
+<span class="k">class</span> <span class="n">HardCodedTagNameConfiguration</span> <span class="k">extends</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Configuration</span> <span class="p">{</span>
+  <span class="n">HardCodedTagNameConfiguration</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="o">=</span> <span class="s">&quot;HardCodedTagNameConfiguration&quot;</span> <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span> <span class="n">source</span><span class="p">.</span><span class="n">asExpr</span><span class="p">()</span> <span class="k">instanceof</span> <span class="n">ConstantString</span> <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">globalVarRef</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;createElement&quot;</span><span class="p">).</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">from</span> <span class="n">HardCodedTagNameConfiguration</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span>
+<span class="k">where</span> <span class="n">cfg</span><span class="p">.</span><span class="n">hasFlow</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">source</span><span class="p">,</span> <span class="n">sink</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercise-3">
+<h3>Exercise 3<a class="headerlink" href="#exercise-3" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">javascript</span>
+
+<span class="k">class</span> <span class="n">ArrayEntryCallResult</span> <span class="k">extends</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="p">{</span>
+  <span class="n">ArrayEntryCallResult</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">call</span><span class="p">,</span> <span class="kt">string</span> <span class="n">index</span> <span class="o">|</span>
+      <span class="k">this</span> <span class="o">=</span> <span class="n">call</span><span class="p">.</span><span class="n">getAPropertyRead</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">and</span>
+      <span class="n">index</span><span class="p">.</span><span class="n">regexpMatch</span><span class="p">(</span><span class="s">&quot;\\d+&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="exercise-4">
+<h3>Exercise 4<a class="headerlink" href="#exercise-4" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">javascript</span>
+
+<span class="k">class</span> <span class="n">ArrayEntryCallResult</span> <span class="k">extends</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="p">{</span>
+  <span class="n">ArrayEntryCallResult</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">CallNode</span> <span class="n">call</span><span class="p">,</span> <span class="kt">string</span> <span class="n">index</span> <span class="o">|</span>
+      <span class="k">this</span> <span class="o">=</span> <span class="n">call</span><span class="p">.</span><span class="n">getAPropertyRead</span><span class="p">(</span><span class="n">index</span><span class="p">)</span> <span class="k">and</span>
+      <span class="n">index</span><span class="p">.</span><span class="n">regexpMatch</span><span class="p">(</span><span class="s">&quot;\\d+&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="n">HardCodedTagNameConfiguration</span> <span class="k">extends</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Configuration</span> <span class="p">{</span>
+  <span class="n">HardCodedTagNameConfiguration</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="o">=</span> <span class="s">&quot;HardCodedTagNameConfiguration&quot;</span> <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSource</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">)</span> <span class="p">{</span> <span class="n">source</span> <span class="k">instanceof</span> <span class="n">ArrayEntryCallResult</span> <span class="p">}</span>
+
+  <span class="kr">override </span><span class="k">predicate</span> <span class="n">isSink</span><span class="p">(</span><span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">sink</span> <span class="o">=</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">globalVarRef</span><span class="p">(</span><span class="s">&quot;document&quot;</span><span class="p">).</span><span class="n">getAMethodCall</span><span class="p">(</span><span class="s">&quot;createElement&quot;</span><span class="p">).</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">from</span> <span class="n">HardCodedTagNameConfiguration</span> <span class="n">cfg</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">source</span><span class="p">,</span> <span class="n">DataFlow</span><span class="o">::</span><span class="n">Node</span> <span class="n">sink</span>
+<span class="k">where</span> <span class="n">cfg</span><span class="p">.</span><span class="n">hasFlow</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">sink</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">source</span><span class="p">,</span> <span class="n">sink</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>“<a class="reference internal" href="../codeql-for-visual-studio-code/exploring-data-flow-with-path-queries.html#exploring-data-flow-with-path-queries"><span class="std std-ref">Exploring data flow with path queries</span></a>”</li>
+</ul>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/src">CodeQL queries for Java</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/examples">Example queries for Java</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/java/">CodeQL library reference for Java</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

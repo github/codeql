@@ -1,0 +1,508 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types in Java and Kotlin &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Overflow-prone comparisons in Java and Kotlin" href="overflow-prone-comparisons-in-java.html" />
+    <link rel="prev" title="Analyzing data flow in Java and Kotlin" href="analyzing-data-flow-in-java.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-java-code.html">Basic query for Java and Kotlin code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-java.html">CodeQL library for Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-java.html">Analyzing data flow in Java and Kotlin</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Types in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overflow-prone-comparisons-in-java.html">Overflow-prone comparisons in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="navigating-the-call-graph.html">Navigating the call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="annotations-in-java.html">Annotations in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="javadoc.html">Javadoc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="working-with-source-locations.html">Working with source locations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-java-programs.html">Abstract syntax tree classes for working with Java and Kotlin programs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customizing-library-models-for-java-and-kotlin.html">Customizing library models for Java and Kotlin</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-java.html"
+                accesskey="U">CodeQL for Java and Kotlin</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="types-in-java-and-kotlin">
+<span id="types-in-java"></span><h1>Types in Java and Kotlin<a class="headerlink" href="#types-in-java-and-kotlin" title="Permalink to this headline">¶</a></h1>
+<p>You can use CodeQL to find out information about data types used in Java/Kotlin code. This allows you to write queries to identify specific type-related issues.</p>
+<blockquote>
+<div><blockquote class="pull-quote">
+<div><p>Note</p>
+<p>CodeQL analysis for Kotlin is currently in beta. During the beta, analysis of Kotlin code,
+and the accompanying documentation, will not be as comprehensive as for other languages.</p>
+</div></blockquote>
+</div></blockquote>
+<div class="section" id="about-working-with-java-types">
+<h2>About working with Java types<a class="headerlink" href="#about-working-with-java-types" title="Permalink to this headline">¶</a></h2>
+<p>The standard CodeQL library represents Java types by means of the <code class="docutils literal notranslate"><span class="pre">Type</span></code> class and its various subclasses.</p>
+<p>In particular, class <code class="docutils literal notranslate"><span class="pre">PrimitiveType</span></code> represents primitive types that are built into the Java language (such as <code class="docutils literal notranslate"><span class="pre">boolean</span></code> and <code class="docutils literal notranslate"><span class="pre">int</span></code>), whereas <code class="docutils literal notranslate"><span class="pre">RefType</span></code> and its subclasses represent reference types, that is classes, interfaces, array types, and so on. This includes both types from the Java standard library (like <code class="docutils literal notranslate"><span class="pre">java.lang.Object</span></code>) and types defined by non-library code.</p>
+<p>Class <code class="docutils literal notranslate"><span class="pre">RefType</span></code> also models the class hierarchy: member predicates <code class="docutils literal notranslate"><span class="pre">getASupertype</span></code> and <code class="docutils literal notranslate"><span class="pre">getASubtype</span></code> allow you to find a reference type’s immediate super types and sub types. For example, consider the following Java program:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">A</span> <span class="p">{}</span>
+
+<span class="kd">interface</span> <span class="nc">I</span> <span class="p">{}</span>
+
+<span class="kd">class</span> <span class="nc">B</span> <span class="kd">extends</span> <span class="n">A</span> <span class="kd">implements</span> <span class="n">I</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<p>Here, class <code class="docutils literal notranslate"><span class="pre">A</span></code> has exactly one immediate super type (<code class="docutils literal notranslate"><span class="pre">java.lang.Object</span></code>) and exactly one immediate sub type (<code class="docutils literal notranslate"><span class="pre">B</span></code>); the same is true of interface <code class="docutils literal notranslate"><span class="pre">I</span></code>. Class <code class="docutils literal notranslate"><span class="pre">B</span></code>, on the other hand, has two immediate super types (<code class="docutils literal notranslate"><span class="pre">A</span></code> and <code class="docutils literal notranslate"><span class="pre">I</span></code>), and no immediate sub types.</p>
+<p>To determine ancestor types (including immediate super types, and also <em>their</em> super types, etc.), we can use transitive closure. For example, to find all ancestors of <code class="docutils literal notranslate"><span class="pre">B</span></code> in the example above, we could use the following query:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Class</span> <span class="n">B</span>
+<span class="k">where</span> <span class="n">B</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;B&quot;</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">B</span><span class="p">.</span><span class="n">getASupertype</span><span class="o">+</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>If we ran this query on the example snippet above, the query would return <code class="docutils literal notranslate"><span class="pre">A</span></code>, <code class="docutils literal notranslate"><span class="pre">I</span></code>, and <code class="docutils literal notranslate"><span class="pre">java.lang.Object</span></code>.</p>
+<blockquote class="pull-quote">
+<div><p>Tip</p>
+<p>If you want to see the location of <code class="docutils literal notranslate"><span class="pre">B</span></code> as well as <code class="docutils literal notranslate"><span class="pre">A</span></code>, you can replace <code class="docutils literal notranslate"><span class="pre">B.getASupertype+()</span></code> with <code class="docutils literal notranslate"><span class="pre">B.getASupertype*()</span></code> and re-run the query.</p>
+</div></blockquote>
+<p>Besides class hierarchy modeling, <code class="docutils literal notranslate"><span class="pre">RefType</span></code> also provides member predicate <code class="docutils literal notranslate"><span class="pre">getAMember</span></code> for accessing members (that is, fields, constructors, and methods) declared in the type, and predicate <code class="docutils literal notranslate"><span class="pre">inherits(Method</span> <span class="pre">m)</span></code> for checking whether the type either declares or inherits a method <code class="docutils literal notranslate"><span class="pre">m</span></code>.</p>
+</div>
+<div class="section" id="example-finding-problematic-array-casts">
+<h2>Example: Finding problematic array casts<a class="headerlink" href="#example-finding-problematic-array-casts" title="Permalink to this headline">¶</a></h2>
+<p>As an example of how to use the class hierarchy API, we can write a query that finds downcasts on arrays, that is, cases where an expression <code class="docutils literal notranslate"><span class="pre">e</span></code> of some type <code class="docutils literal notranslate"><span class="pre">A[]</span></code> is converted to type <code class="docutils literal notranslate"><span class="pre">B[]</span></code>, such that <code class="docutils literal notranslate"><span class="pre">B</span></code> is a (not necessarily immediate) subtype of <code class="docutils literal notranslate"><span class="pre">A</span></code>.</p>
+<p>This kind of cast is problematic, since downcasting an array results in a runtime exception, even if every individual array element could be downcast. For example, the following code throws a <code class="docutils literal notranslate"><span class="pre">ClassCastException</span></code>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Object</span><span class="o">[]</span> <span class="n">o</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Object</span><span class="o">[]</span> <span class="p">{</span> <span class="s">&quot;Hello&quot;</span><span class="p">,</span> <span class="s">&quot;world&quot;</span> <span class="p">};</span>
+<span class="n">String</span><span class="o">[]</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="p">)</span><span class="n">o</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>If the expression <code class="docutils literal notranslate"><span class="pre">e</span></code> happens to actually evaluate to a <code class="docutils literal notranslate"><span class="pre">B[]</span></code> array, on the other hand, the cast will succeed:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Object</span><span class="o">[]</span> <span class="n">o</span> <span class="o">=</span> <span class="k">new</span> <span class="n">String</span><span class="o">[]</span> <span class="p">{</span> <span class="s">&quot;Hello&quot;</span><span class="p">,</span> <span class="s">&quot;world&quot;</span> <span class="p">};</span>
+<span class="n">String</span><span class="o">[]</span> <span class="n">s</span> <span class="o">=</span> <span class="p">(</span><span class="n">String</span><span class="o">[]</span><span class="p">)</span><span class="n">o</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>In this tutorial, we don’t try to distinguish these two cases. Our query should simply look for cast expressions <code class="docutils literal notranslate"><span class="pre">ce</span></code> that cast from some type <code class="docutils literal notranslate"><span class="pre">source</span></code> to another type <code class="docutils literal notranslate"><span class="pre">target</span></code>, such that:</p>
+<ul class="simple">
+<li>Both <code class="docutils literal notranslate"><span class="pre">source</span></code> and <code class="docutils literal notranslate"><span class="pre">target</span></code> are array types.</li>
+<li>The element type of <code class="docutils literal notranslate"><span class="pre">source</span></code> is a transitive super type of the element type of <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
+</ul>
+<p>This recipe is not too difficult to translate into a query:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">CastExpr</span> <span class="n">ce</span><span class="p">,</span> <span class="n">Array</span> <span class="n">source</span><span class="p">,</span> <span class="n">Array</span> <span class="n">target</span>
+<span class="k">where</span> <span class="n">source</span> <span class="o">=</span> <span class="n">ce</span><span class="p">.</span><span class="n">getExpr</span><span class="p">().</span><span class="n">getType</span><span class="p">()</span> <span class="k">and</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">ce</span><span class="p">.</span><span class="n">getType</span><span class="p">()</span> <span class="k">and</span>
+    <span class="n">target</span><span class="p">.</span><span class="n">getElementType</span><span class="p">().(</span><span class="n">RefType</span><span class="p">).</span><span class="n">getASupertype</span><span class="o">+</span><span class="p">()</span> <span class="o">=</span> <span class="n">source</span><span class="p">.</span><span class="n">getElementType</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">ce</span><span class="p">,</span> <span class="s">&quot;Potentially problematic array downcast.&quot;</span>
+</pre></div>
+</div>
+<p>Many projects return results for this query.</p>
+<p>Note that by casting <code class="docutils literal notranslate"><span class="pre">target.getElementType()</span></code> to a <code class="docutils literal notranslate"><span class="pre">RefType</span></code>, we eliminate all cases where the element type is a primitive type, that is, <code class="docutils literal notranslate"><span class="pre">target</span></code> is an array of primitive type: the problem we are looking for cannot arise in that case. Unlike in Java, a cast in QL never fails: if an expression cannot be cast to the desired type, it is simply excluded from the query results, which is exactly what we want.</p>
+<div class="section" id="improvements">
+<h3>Improvements<a class="headerlink" href="#improvements" title="Permalink to this headline">¶</a></h3>
+<p>Running this query on old Java code, before version 5, often returns many false positive results arising from uses of the method <code class="docutils literal notranslate"><span class="pre">Collection.toArray(T[])</span></code>, which converts a collection into an array of type <code class="docutils literal notranslate"><span class="pre">T[]</span></code>.</p>
+<p>In code that does not use generics, this method is often used in the following way:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">List</span> <span class="n">l</span> <span class="o">=</span> <span class="k">new</span> <span class="n">ArrayList</span><span class="p">();</span>
+<span class="c1">// add some elements of type A to l</span>
+<span class="n">A</span><span class="o">[]</span> <span class="n">as</span> <span class="o">=</span> <span class="p">(</span><span class="n">A</span><span class="o">[]</span><span class="p">)</span><span class="n">l</span><span class="p">.</span><span class="na">toArray</span><span class="p">(</span><span class="k">new</span> <span class="n">A</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">);</span>
+</pre></div>
+</div>
+<p>Here, <code class="docutils literal notranslate"><span class="pre">l</span></code> has the raw type <code class="docutils literal notranslate"><span class="pre">List</span></code>, so <code class="docutils literal notranslate"><span class="pre">l.toArray</span></code> has return type <code class="docutils literal notranslate"><span class="pre">Object[]</span></code>, independent of the type of its argument array. Hence the cast goes from <code class="docutils literal notranslate"><span class="pre">Object[]</span></code> to <code class="docutils literal notranslate"><span class="pre">A[]</span></code> and will be flagged as problematic by our query, although at runtime this cast can never go wrong.</p>
+<p>To identify these cases, we can create two CodeQL classes that represent, respectively, the <code class="docutils literal notranslate"><span class="pre">Collection.toArray</span></code> method, and calls to this method or any method that overrides it:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="cp">/** class representing java.util.Collection.toArray(T[]) */</span>
+<span class="k">class</span> <span class="n">CollectionToArray</span> <span class="k">extends</span> <span class="n">Method</span> <span class="p">{</span>
+    <span class="n">CollectionToArray</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">getDeclaringType</span><span class="p">().</span><span class="n">hasQualifiedName</span><span class="p">(</span><span class="s">&quot;java.util&quot;</span><span class="p">,</span> <span class="s">&quot;Collection&quot;</span><span class="p">)</span> <span class="k">and</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;toArray&quot;</span><span class="p">)</span> <span class="k">and</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">getNumberOfParameters</span><span class="p">()</span> <span class="o">=</span> <span class="m">1</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">/** class representing calls to java.util.Collection.toArray(T[]) */</span>
+<span class="k">class</span> <span class="n">CollectionToArrayCall</span> <span class="k">extends</span> <span class="n">MethodAccess</span> <span class="p">{</span>
+    <span class="n">CollectionToArrayCall</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">exists</span><span class="p">(</span><span class="n">CollectionToArray</span> <span class="n">m</span> <span class="o">|</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">getMethod</span><span class="p">().</span><span class="n">getSourceDeclaration</span><span class="p">().</span><span class="n">overridesOrInstantiates</span><span class="o">*</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="cp">/** the call&#39;s actual return type, as determined from its argument */</span>
+    <span class="n">Array</span> <span class="n">getActualReturnType</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">getType</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notice the use of <code class="docutils literal notranslate"><span class="pre">getSourceDeclaration</span></code> and <code class="docutils literal notranslate"><span class="pre">overridesOrInstantiates</span></code> in the constructor of <code class="docutils literal notranslate"><span class="pre">CollectionToArrayCall</span></code>: we want to find calls to <code class="docutils literal notranslate"><span class="pre">Collection.toArray</span></code> and to any method that overrides it, as well as any parameterized instances of these methods. In our example above, for instance, the call <code class="docutils literal notranslate"><span class="pre">l.toArray</span></code> resolves to method <code class="docutils literal notranslate"><span class="pre">toArray</span></code> in the raw class <code class="docutils literal notranslate"><span class="pre">ArrayList</span></code>. Its source declaration is <code class="docutils literal notranslate"><span class="pre">toArray</span></code> in the generic class <code class="docutils literal notranslate"><span class="pre">ArrayList&lt;T&gt;</span></code>, which overrides <code class="docutils literal notranslate"><span class="pre">AbstractCollection&lt;T&gt;.toArray</span></code>, which in turn overrides <code class="docutils literal notranslate"><span class="pre">Collection&lt;T&gt;.toArray</span></code>, which is an instantiation of <code class="docutils literal notranslate"><span class="pre">Collection.toArray</span></code> (since the type parameter <code class="docutils literal notranslate"><span class="pre">T</span></code> in the overridden method belongs to <code class="docutils literal notranslate"><span class="pre">ArrayList</span></code> and is an instantiation of the type parameter belonging to <code class="docutils literal notranslate"><span class="pre">Collection</span></code>).</p>
+<p>Using these new classes we can extend our query to exclude calls to <code class="docutils literal notranslate"><span class="pre">toArray</span></code> on an argument of type <code class="docutils literal notranslate"><span class="pre">A[]</span></code> which are then cast to <code class="docutils literal notranslate"><span class="pre">A[]</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="c1">// Insert the class definitions from above</span>
+
+<span class="k">from</span> <span class="n">CastExpr</span> <span class="n">ce</span><span class="p">,</span> <span class="n">Array</span> <span class="n">source</span><span class="p">,</span> <span class="n">Array</span> <span class="n">target</span>
+<span class="k">where</span> <span class="n">source</span> <span class="o">=</span> <span class="n">ce</span><span class="p">.</span><span class="n">getExpr</span><span class="p">().</span><span class="n">getType</span><span class="p">()</span> <span class="k">and</span>
+    <span class="n">target</span> <span class="o">=</span> <span class="n">ce</span><span class="p">.</span><span class="n">getType</span><span class="p">()</span> <span class="k">and</span>
+    <span class="n">target</span><span class="p">.</span><span class="n">getElementType</span><span class="p">().(</span><span class="n">RefType</span><span class="p">).</span><span class="n">getASupertype</span><span class="o">+</span><span class="p">()</span> <span class="o">=</span> <span class="n">source</span><span class="p">.</span><span class="n">getElementType</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">ce</span><span class="p">.</span><span class="n">getExpr</span><span class="p">().(</span><span class="n">CollectionToArrayCall</span><span class="p">).</span><span class="n">getActualReturnType</span><span class="p">()</span> <span class="o">=</span> <span class="n">target</span>
+<span class="k">select</span> <span class="n">ce</span><span class="p">,</span> <span class="s">&quot;Potentially problematic array downcast.&quot;</span>
+</pre></div>
+</div>
+<p>Notice that fewer results are found by this improved query.</p>
+</div>
+</div>
+<div class="section" id="example-finding-mismatched-contains-checks">
+<h2>Example: Finding mismatched contains checks<a class="headerlink" href="#example-finding-mismatched-contains-checks" title="Permalink to this headline">¶</a></h2>
+<p>We’ll now develop a query that finds uses of <code class="docutils literal notranslate"><span class="pre">Collection.contains</span></code> where the type of the queried element is unrelated to the element type of the collection, which guarantees that the test will always return <code class="docutils literal notranslate"><span class="pre">false</span></code>.</p>
+<p>For example, <a class="reference external" href="https://zookeeper.apache.org/">Apache Zookeeper</a> used to have a snippet of code similar to the following in class <code class="docutils literal notranslate"><span class="pre">QuorumPeerConfig</span></code>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">Map</span><span class="o">&lt;</span><span class="n">Object</span><span class="p">,</span> <span class="n">Object</span><span class="o">&gt;</span> <span class="n">zkProp</span><span class="p">;</span>
+
+<span class="c1">// ...</span>
+
+<span class="k">if</span> <span class="p">(</span><span class="n">zkProp</span><span class="p">.</span><span class="na">entrySet</span><span class="p">().</span><span class="na">contains</span><span class="p">(</span><span class="s">&quot;dynamicConfigFile&quot;</span><span class="p">)){</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Since <code class="docutils literal notranslate"><span class="pre">zkProp</span></code> is a map from <code class="docutils literal notranslate"><span class="pre">Object</span></code> to <code class="docutils literal notranslate"><span class="pre">Object</span></code>, <code class="docutils literal notranslate"><span class="pre">zkProp.entrySet</span></code> returns a collection of type <code class="docutils literal notranslate"><span class="pre">Set&lt;Entry&lt;Object,</span> <span class="pre">Object&gt;&gt;</span></code>. Such a set cannot possibly contain an element of type <code class="docutils literal notranslate"><span class="pre">String</span></code>. (The code has since been fixed to use <code class="docutils literal notranslate"><span class="pre">zkProp.containsKey</span></code>.)</p>
+<p>In general, we want to find calls to <code class="docutils literal notranslate"><span class="pre">Collection.contains</span></code> (or any of its overriding methods in any parameterized instance of <code class="docutils literal notranslate"><span class="pre">Collection</span></code>), such that the type <code class="docutils literal notranslate"><span class="pre">E</span></code> of collection elements and the type <code class="docutils literal notranslate"><span class="pre">A</span></code> of the argument to <code class="docutils literal notranslate"><span class="pre">contains</span></code> are unrelated, that is, they have no common subtype.</p>
+<p>We start by creating a class that describes <code class="docutils literal notranslate"><span class="pre">java.util.Collection</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">JavaUtilCollection</span> <span class="k">extends</span> <span class="n">GenericInterface</span> <span class="p">{</span>
+    <span class="n">JavaUtilCollection</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">hasQualifiedName</span><span class="p">(</span><span class="s">&quot;java.util&quot;</span><span class="p">,</span> <span class="s">&quot;Collection&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>To make sure we have not mistyped anything, we can run a simple test query:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">from</span> <span class="n">JavaUtilCollection</span> <span class="n">juc</span>
+<span class="k">select</span> <span class="n">juc</span>
+</pre></div>
+</div>
+<p>This query should return precisely one result.</p>
+<p>Next, we can create a class that describes <code class="docutils literal notranslate"><span class="pre">java.util.Collection.contains</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">JavaUtilCollectionContains</span> <span class="k">extends</span> <span class="n">Method</span> <span class="p">{</span>
+    <span class="n">JavaUtilCollectionContains</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">getDeclaringType</span><span class="p">()</span> <span class="k">instanceof</span> <span class="n">JavaUtilCollection</span> <span class="k">and</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">hasStringSignature</span><span class="p">(</span><span class="s">&quot;contains(Object)&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notice that we use <code class="docutils literal notranslate"><span class="pre">hasStringSignature</span></code> to check that:</p>
+<ul class="simple">
+<li>The method in question has name <code class="docutils literal notranslate"><span class="pre">contains</span></code>.</li>
+<li>It has exactly one argument.</li>
+<li>The type of the argument is <code class="docutils literal notranslate"><span class="pre">Object</span></code>.</li>
+</ul>
+<p>Alternatively, we could have implemented these three checks more verbosely using <code class="docutils literal notranslate"><span class="pre">hasName</span></code>, <code class="docutils literal notranslate"><span class="pre">getNumberOfParameters</span></code>, and <code class="docutils literal notranslate"><span class="pre">getParameter(0).getType()</span> <span class="pre">instanceof</span> <span class="pre">TypeObject</span></code>.</p>
+<p>As before, it is a good idea to test the new class by running a simple query to select all instances of <code class="docutils literal notranslate"><span class="pre">JavaUtilCollectionContains</span></code>; again there should only be a single result.</p>
+<p>Now we want to identify all calls to <code class="docutils literal notranslate"><span class="pre">Collection.contains</span></code>, including any methods that override it, and considering all parameterized instances of <code class="docutils literal notranslate"><span class="pre">Collection</span></code> and its subclasses. That is, we are looking for method accesses where the source declaration of the invoked method (reflexively or transitively) overrides <code class="docutils literal notranslate"><span class="pre">Collection.contains</span></code>. We encode this in a CodeQL class <code class="docutils literal notranslate"><span class="pre">JavaUtilCollectionContainsCall</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">JavaUtilCollectionContainsCall</span> <span class="k">extends</span> <span class="n">MethodAccess</span> <span class="p">{</span>
+    <span class="n">JavaUtilCollectionContainsCall</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">exists</span><span class="p">(</span><span class="n">JavaUtilCollectionContains</span> <span class="n">jucc</span> <span class="o">|</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">getMethod</span><span class="p">().</span><span class="n">getSourceDeclaration</span><span class="p">().</span><span class="n">overrides</span><span class="o">*</span><span class="p">(</span><span class="n">jucc</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This definition is slightly subtle, so you should run a short query to test that <code class="docutils literal notranslate"><span class="pre">JavaUtilCollectionContainsCall</span></code> correctly identifies calls to <code class="docutils literal notranslate"><span class="pre">Collection.contains</span></code>.</p>
+<p>For every call to <code class="docutils literal notranslate"><span class="pre">contains</span></code>, we are interested in two things: the type of the argument, and the element type of the collection on which it is invoked. So we need to add two member predicates <code class="docutils literal notranslate"><span class="pre">getArgumentType</span></code> and <code class="docutils literal notranslate"><span class="pre">getCollectionElementType</span></code> to class <code class="docutils literal notranslate"><span class="pre">JavaUtilCollectionContainsCall</span></code> to compute this information.</p>
+<p>The former is easy:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="n">Type</span> <span class="n">getArgumentType</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">getType</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>For the latter, we proceed as follows:</p>
+<ul class="simple">
+<li>Find the declaring type <code class="docutils literal notranslate"><span class="pre">D</span></code> of the <code class="docutils literal notranslate"><span class="pre">contains</span></code> method being invoked.</li>
+<li>Find a (reflexive or transitive) super type <code class="docutils literal notranslate"><span class="pre">S</span></code> of <code class="docutils literal notranslate"><span class="pre">D</span></code> that is a parameterized instance of <code class="docutils literal notranslate"><span class="pre">java.util.Collection</span></code>.</li>
+<li>Return the (only) type argument of <code class="docutils literal notranslate"><span class="pre">S</span></code>.</li>
+</ul>
+<p>We encode this as follows:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="n">Type</span> <span class="n">getCollectionElementType</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">RefType</span> <span class="n">D</span><span class="p">,</span> <span class="n">ParameterizedInterface</span> <span class="n">S</span> <span class="o">|</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">getMethod</span><span class="p">().</span><span class="n">getDeclaringType</span><span class="p">()</span> <span class="k">and</span>
+        <span class="n">D</span><span class="p">.</span><span class="n">hasSupertype</span><span class="o">*</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="k">and</span> <span class="n">S</span><span class="p">.</span><span class="n">getSourceDeclaration</span><span class="p">()</span> <span class="k">instanceof</span> <span class="n">JavaUtilCollection</span> <span class="k">and</span>
+        <span class="k">result</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">getTypeArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Having added these two member predicates to <code class="docutils literal notranslate"><span class="pre">JavaUtilCollectionContainsCall</span></code>, we need to write a predicate that checks whether two given reference types have a common subtype:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">predicate</span> <span class="n">haveCommonDescendant</span><span class="p">(</span><span class="n">RefType</span> <span class="n">tp</span><span class="m">1</span><span class="p">,</span> <span class="n">RefType</span> <span class="n">tp</span><span class="m">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">RefType</span> <span class="n">commondesc</span> <span class="o">|</span> <span class="n">commondesc</span><span class="p">.</span><span class="n">hasSupertype</span><span class="o">*</span><span class="p">(</span><span class="n">tp</span><span class="m">1</span><span class="p">)</span> <span class="k">and</span> <span class="n">commondesc</span><span class="p">.</span><span class="n">hasSupertype</span><span class="o">*</span><span class="p">(</span><span class="n">tp</span><span class="m">2</span><span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now we are ready to write a first version of our query:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="c1">// Insert the class definitions from above</span>
+
+<span class="k">from</span> <span class="n">JavaUtilCollectionContainsCall</span> <span class="n">juccc</span><span class="p">,</span> <span class="n">Type</span> <span class="n">collEltType</span><span class="p">,</span> <span class="n">Type</span> <span class="n">argType</span>
+<span class="k">where</span> <span class="n">collEltType</span> <span class="o">=</span> <span class="n">juccc</span><span class="p">.</span><span class="n">getCollectionElementType</span><span class="p">()</span> <span class="k">and</span> <span class="n">argType</span> <span class="o">=</span> <span class="n">juccc</span><span class="p">.</span><span class="n">getArgumentType</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">haveCommonDescendant</span><span class="p">(</span><span class="n">collEltType</span><span class="p">,</span> <span class="n">argType</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">juccc</span><span class="p">,</span> <span class="s">&quot;Element type &quot;</span> <span class="o">+</span> <span class="n">collEltType</span> <span class="o">+</span> <span class="s">&quot; is incompatible with argument type &quot;</span> <span class="o">+</span> <span class="n">argType</span>
+</pre></div>
+</div>
+<div class="section" id="improvements-1">
+<h3>Improvements<a class="headerlink" href="#improvements-1" title="Permalink to this headline">¶</a></h3>
+<p>For many programs, this query yields a large number of false positive results due to type variables and wild cards: if the collection element type is some type variable <code class="docutils literal notranslate"><span class="pre">E</span></code> and the argument type is <code class="docutils literal notranslate"><span class="pre">String</span></code>, for example, CodeQL will consider that the two have no common subtype, and our query will flag the call. An easy way to exclude such false positive results is to simply require that neither <code class="docutils literal notranslate"><span class="pre">collEltType</span></code> nor <code class="docutils literal notranslate"><span class="pre">argType</span></code> are instances of <code class="docutils literal notranslate"><span class="pre">TypeVariable</span></code>.</p>
+<p>Another source of false positives is autoboxing of primitive types: if, for example, the collection’s element type is <code class="docutils literal notranslate"><span class="pre">Integer</span></code> and the argument is of type <code class="docutils literal notranslate"><span class="pre">int</span></code>, predicate <code class="docutils literal notranslate"><span class="pre">haveCommonDescendant</span></code> will fail, since <code class="docutils literal notranslate"><span class="pre">int</span></code> is not a <code class="docutils literal notranslate"><span class="pre">RefType</span></code>. To account for this, our query should check that <code class="docutils literal notranslate"><span class="pre">collEltType</span></code> is not the boxed type of <code class="docutils literal notranslate"><span class="pre">argType</span></code>.</p>
+<p>Finally, <code class="docutils literal notranslate"><span class="pre">null</span></code> is special because its type (known as <code class="docutils literal notranslate"><span class="pre">&lt;nulltype&gt;</span></code> in the CodeQL library) is compatible with every reference type, so we should exclude it from consideration.</p>
+<p>Adding these three improvements, our final query becomes:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">class</span> <span class="n">JavaUtilCollection</span> <span class="k">extends</span> <span class="n">GenericInterface</span> <span class="p">{</span>
+    <span class="n">JavaUtilCollection</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">hasQualifiedName</span><span class="p">(</span><span class="s">&quot;java.util&quot;</span><span class="p">,</span> <span class="s">&quot;Collection&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="n">JavaUtilCollectionContains</span> <span class="k">extends</span> <span class="n">Method</span> <span class="p">{</span>
+    <span class="n">JavaUtilCollectionContains</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">getDeclaringType</span><span class="p">()</span> <span class="k">instanceof</span> <span class="n">JavaUtilCollection</span> <span class="k">and</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">hasStringSignature</span><span class="p">(</span><span class="s">&quot;contains(Object)&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="n">JavaUtilCollectionContainsCall</span> <span class="k">extends</span> <span class="n">MethodAccess</span> <span class="p">{</span>
+    <span class="n">JavaUtilCollectionContainsCall</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">exists</span><span class="p">(</span><span class="n">JavaUtilCollectionContains</span> <span class="n">jucc</span> <span class="o">|</span>
+            <span class="k">this</span><span class="p">.</span><span class="n">getMethod</span><span class="p">().</span><span class="n">getSourceDeclaration</span><span class="p">().</span><span class="n">overrides</span><span class="o">*</span><span class="p">(</span><span class="n">jucc</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="n">Type</span> <span class="n">getArgumentType</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">result</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">getArgument</span><span class="p">(</span><span class="m">0</span><span class="p">).</span><span class="n">getType</span><span class="p">()</span>
+    <span class="p">}</span>
+    <span class="n">Type</span> <span class="n">getCollectionElementType</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">RefType</span> <span class="n">D</span><span class="p">,</span> <span class="n">ParameterizedInterface</span> <span class="n">S</span> <span class="o">|</span>
+        <span class="n">D</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">getMethod</span><span class="p">().</span><span class="n">getDeclaringType</span><span class="p">()</span> <span class="k">and</span>
+        <span class="n">D</span><span class="p">.</span><span class="n">hasSupertype</span><span class="o">*</span><span class="p">(</span><span class="n">S</span><span class="p">)</span> <span class="k">and</span> <span class="n">S</span><span class="p">.</span><span class="n">getSourceDeclaration</span><span class="p">()</span> <span class="k">instanceof</span> <span class="n">JavaUtilCollection</span> <span class="k">and</span>
+        <span class="k">result</span> <span class="o">=</span> <span class="n">S</span><span class="p">.</span><span class="n">getTypeArgument</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+    <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">predicate</span> <span class="n">haveCommonDescendant</span><span class="p">(</span><span class="n">RefType</span> <span class="n">tp</span><span class="m">1</span><span class="p">,</span> <span class="n">RefType</span> <span class="n">tp</span><span class="m">2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">RefType</span> <span class="n">commondesc</span> <span class="o">|</span> <span class="n">commondesc</span><span class="p">.</span><span class="n">hasSupertype</span><span class="o">*</span><span class="p">(</span><span class="n">tp</span><span class="m">1</span><span class="p">)</span> <span class="k">and</span> <span class="n">commondesc</span><span class="p">.</span><span class="n">hasSupertype</span><span class="o">*</span><span class="p">(</span><span class="n">tp</span><span class="m">2</span><span class="p">))</span>
+<span class="p">}</span>
+
+<span class="k">from</span> <span class="n">JavaUtilCollectionContainsCall</span> <span class="n">juccc</span><span class="p">,</span> <span class="n">Type</span> <span class="n">collEltType</span><span class="p">,</span> <span class="n">Type</span> <span class="n">argType</span>
+<span class="k">where</span> <span class="n">collEltType</span> <span class="o">=</span> <span class="n">juccc</span><span class="p">.</span><span class="n">getCollectionElementType</span><span class="p">()</span> <span class="k">and</span> <span class="n">argType</span> <span class="o">=</span> <span class="n">juccc</span><span class="p">.</span><span class="n">getArgumentType</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">haveCommonDescendant</span><span class="p">(</span><span class="n">collEltType</span><span class="p">,</span> <span class="n">argType</span><span class="p">)</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">collEltType</span> <span class="k">instanceof</span> <span class="n">TypeVariable</span> <span class="k">and</span> <span class="k">not</span> <span class="n">argType</span> <span class="k">instanceof</span> <span class="n">TypeVariable</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">collEltType</span> <span class="o">=</span> <span class="n">argType</span><span class="p">.(</span><span class="n">PrimitiveType</span><span class="p">).</span><span class="n">getBoxedType</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">argType</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;&lt;nulltype&gt;&quot;</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">juccc</span><span class="p">,</span> <span class="s">&quot;Element type &quot;</span> <span class="o">+</span> <span class="n">collEltType</span> <span class="o">+</span> <span class="s">&quot; is incompatible with argument type &quot;</span> <span class="o">+</span> <span class="n">argType</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/src">CodeQL queries for Java</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/examples">Example queries for Java</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/java/">CodeQL library reference for Java</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

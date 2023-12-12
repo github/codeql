@@ -1,0 +1,502 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Customizing library models for Java and Kotlin &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="CodeQL for JavaScript and TypeScript" href="codeql-for-javascript.html" />
+    <link rel="prev" title="Abstract syntax tree classes for working with Java and Kotlin programs" href="abstract-syntax-tree-classes-for-working-with-java-programs.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-java-code.html">Basic query for Java and Kotlin code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-java.html">CodeQL library for Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-java.html">Analyzing data flow in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types-in-java.html">Types in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overflow-prone-comparisons-in-java.html">Overflow-prone comparisons in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="navigating-the-call-graph.html">Navigating the call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="annotations-in-java.html">Annotations in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="javadoc.html">Javadoc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="working-with-source-locations.html">Working with source locations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-java-programs.html">Abstract syntax tree classes for working with Java and Kotlin programs</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Customizing library models for Java and Kotlin</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-java.html"
+                accesskey="U">CodeQL for Java and Kotlin</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="customizing-library-models-for-java-and-kotlin-1">
+<span id="customizing-library-models-for-java-and-kotlin"></span><h1>Customizing library models for Java and Kotlin<a class="headerlink" href="#customizing-library-models-for-java-and-kotlin-1" title="Permalink to this headline">¶</a></h1>
+<p>You can model the methods and callables that control data flow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.</p>
+<blockquote>
+<div><blockquote class="pull-quote">
+<div><p>Note</p>
+<p>CodeQL analysis for Kotlin is currently in beta. During the beta, analysis of Kotlin code,
+and the accompanying documentation, will not be as comprehensive as for other languages.</p>
+</div></blockquote>
+</div></blockquote>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>CodeQL model packs are currently in beta and subject to change. During the beta, model packs are supported only by Java/Kotlin analysis. To use this beta functionality, install the latest version of the CodeQL CLI bundle from: <a class="reference external" href="https://github.com/github/codeql-action/releases">https://github.com/github/codeql-action/releases</a>.</p>
+</div></blockquote>
+<div class="section" id="about-this-article">
+<h2>About this article<a class="headerlink" href="#about-this-article" title="Permalink to this headline">¶</a></h2>
+<p>This article contains reference material about how to define custom models for sources, sinks and flow summaries for Java dependencies in data extension files.</p>
+<p>The best way to create your own models is using the CodeQL model editor in the CodeQL extension for Visual Studio Code. The model editor automatically guides you through the process of defining models, displaying the properties you need to define and the options available. You can save the resulting models as data extension files in CodeQL model packs and use them without worrying about the syntax.</p>
+<p>For more information, see “<a class="reference internal" href="../codeql-for-visual-studio-code/using-the-codeql-model-editor.html#using-the-codeql-model-editor"><span class="std std-ref">Using the CodeQL model editor</span></a>.”</p>
+</div>
+<div class="section" id="about-data-extensions">
+<h2>About data extensions<a class="headerlink" href="#about-data-extensions" title="Permalink to this headline">¶</a></h2>
+<p>You can customize analysis by defining models (summaries, sinks, and sources) of your code’s dependencies in data extension files. Each model defines the behavior of one or more elements of your library or framework, such as methods and callables. When you run dataflow analysis, these models expand the potential sources and sinks tracked by dataflow analysis and improve the precision of results.</p>
+<p>Most of the security queries search for paths from a source of untrusted input to a sink that represents a vulnerability. This is known as taint tracking. Each source is a starting point for dataflow analysis to track tainted data and each sink is an end point.</p>
+<p>Taint tracking queries also need to know how data can flow through elements that are not included in the source code. These are modeled as summaries. A summary model enables queries to synthesize the flow behavior through elements in dependency code that is not stored in your repository.</p>
+<div class="section" id="syntax-used-to-define-an-element-in-an-extension-file">
+<h3>Syntax used to define an element in an extension file<a class="headerlink" href="#syntax-used-to-define-an-element-in-an-extension-file" title="Permalink to this headline">¶</a></h3>
+<p>Each model of an element is defined using a data extension where each tuple constitutes a model.
+A data extension file to extend the standard Java queries included with CodeQL is a YAML file with the form:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extensions</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">addsTo</span><span class="p">:</span>
+      <span class="nt">pack</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">codeql/java-all</span>
+      <span class="nt">extensible</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">&lt;name of extensible predicate&gt;</span>
+    <span class="nt">data</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">&lt;tuple1&gt;</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">&lt;tuple2&gt;</span>
+      <span class="p p-Indicator">-</span> <span class="l l-Scalar l-Scalar-Plain">...</span>
+</pre></div>
+</div>
+<p>Each YAML file may contain one or more top-level extensions.</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">addsTo</span></code> defines the CodeQL pack name and extensible predicate that the extension is injected into.</li>
+<li><code class="docutils literal notranslate"><span class="pre">data</span></code> defines one or more rows of tuples that are injected as values into the extensible predicate. The number of columns and their types must match the definition of the extensible predicate.</li>
+</ul>
+<p>Data extensions use union semantics, which means that the tuples of all extensions for a single extensible predicate are combined, duplicates are removed, and all of the remaining tuples are queryable by referencing the extensible predicate.</p>
+</div>
+<div class="section" id="publish-data-extension-files-in-a-codeql-model-pack-to-share">
+<h3>Publish data extension files in a CodeQL model pack to share<a class="headerlink" href="#publish-data-extension-files-in-a-codeql-model-pack-to-share" title="Permalink to this headline">¶</a></h3>
+<p>You can group one or more data extension files into a CodeQL model pack and publish it to the GitHub Container Registry. This makes it easy for anyone to download the model pack and use it to extend their analysis. For more information, see <a class="reference external" href="https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/creating-and-working-with-codeql-packs#creating-a-codeql-model-pack">Creating a CodeQL model pack</a> and <a class="reference external" href="https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/publishing-and-using-codeql-packs/">Publishing and using CodeQL packs</a> in the CodeQL CLI documentation.</p>
+</div>
+<div class="section" id="extensible-predicates-used-to-create-custom-models-in-java-and-kotlin">
+<h3>Extensible predicates used to create custom models in Java and Kotlin<a class="headerlink" href="#extensible-predicates-used-to-create-custom-models-in-java-and-kotlin" title="Permalink to this headline">¶</a></h3>
+<p>The CodeQL library for Java and Kotlin analysis exposes the following extensible predicates:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">sourceModel(package,</span> <span class="pre">type,</span> <span class="pre">subtypes,</span> <span class="pre">name,</span> <span class="pre">signature,</span> <span class="pre">ext,</span> <span class="pre">output,</span> <span class="pre">kind,</span> <span class="pre">provenance)</span></code>. This is used to model sources of potentially tainted data. The <code class="docutils literal notranslate"><span class="pre">kind</span></code> of the sources defined using this predicate determine which threat model they are associated with. Different threat models can be used to customize the sources used in an analysis. For more information, see “<a class="reference internal" href="#threat-models"><span class="std std-ref">Threat models</span></a>.”</li>
+<li><code class="docutils literal notranslate"><span class="pre">sinkModel(package,</span> <span class="pre">type,</span> <span class="pre">subtypes,</span> <span class="pre">name,</span> <span class="pre">signature,</span> <span class="pre">ext,</span> <span class="pre">input,</span> <span class="pre">kind,</span> <span class="pre">provenance)</span></code>. This is used to model sinks where tainted data maybe used in a way that makes the code vulnerable.</li>
+<li><code class="docutils literal notranslate"><span class="pre">summaryModel(package,</span> <span class="pre">type,</span> <span class="pre">subtypes,</span> <span class="pre">name,</span> <span class="pre">signature,</span> <span class="pre">ext,</span> <span class="pre">input,</span> <span class="pre">output,</span> <span class="pre">kind,</span> <span class="pre">provenance)</span></code>. This is used to model flow through elements.</li>
+<li><code class="docutils literal notranslate"><span class="pre">neutralModel(package,</span> <span class="pre">type,</span> <span class="pre">name,</span> <span class="pre">signature,</span> <span class="pre">kind,</span> <span class="pre">provenance)</span></code>. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis.</li>
+</ul>
+<p>The extensible predicates are populated using the models defined in data extension files.</p>
+</div>
+</div>
+<div class="section" id="examples-of-custom-model-definitions">
+<h2>Examples of custom model definitions<a class="headerlink" href="#examples-of-custom-model-definitions" title="Permalink to this headline">¶</a></h2>
+<p>The examples in this section are taken from the standard CodeQL Java query pack published by GitHub. They demonstrate how to add tuples to extend extensible predicates that are used by the standard queries.</p>
+<div class="section" id="example-taint-sink-in-the-java-sql-package">
+<h3>Example: Taint sink in the <code class="docutils literal notranslate"><span class="pre">java.sql</span></code> package<a class="headerlink" href="#example-taint-sink-in-the-java-sql-package" title="Permalink to this headline">¶</a></h3>
+<p>This example shows how the Java query pack models the argument of the <code class="docutils literal notranslate"><span class="pre">execute</span></code> method as a SQL injection sink.
+This is the <code class="docutils literal notranslate"><span class="pre">execute</span></code> method in the <code class="docutils literal notranslate"><span class="pre">Statement</span></code> class, which is located in the <code class="docutils literal notranslate"><span class="pre">java.sql</span></code> package.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">taintsink</span><span class="p">(</span><span class="n">Connection</span> <span class="n">conn</span><span class="p">,</span> <span class="n">String</span> <span class="n">query</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">SQLException</span> <span class="p">{</span>
+    <span class="n">Statement</span> <span class="n">stmt</span> <span class="o">=</span> <span class="n">conn</span><span class="p">.</span><span class="na">createStatement</span><span class="p">();</span>
+    <span class="n">stmt</span><span class="p">.</span><span class="na">execute</span><span class="p">(</span><span class="n">query</span><span class="p">);</span> <span class="c1">// The argument to this method is a SQL injection sink.</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We need to add a tuple to the <code class="docutils literal notranslate"><span class="pre">sinkModel</span></code>(package, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate by updating a data extension file.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extensions</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">addsTo</span><span class="p">:</span>
+      <span class="nt">pack</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">codeql/java-all</span>
+      <span class="nt">extensible</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sinkModel</span>
+    <span class="nt">data</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="s">&quot;java.sql&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Statement&quot;</span><span class="p p-Indicator">,</span> <span class="nv">True</span><span class="p p-Indicator">,</span> <span class="s">&quot;execute&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;(String)&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Argument[0]&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;sql-injection&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;manual&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>Since we want to add a new sink, we need to add a tuple to the <code class="docutils literal notranslate"><span class="pre">sinkModel</span></code> extensible predicate.
+The first five values identify the callable (in this case a method) to be modeled as a sink.</p>
+<ul class="simple">
+<li>The first value <code class="docutils literal notranslate"><span class="pre">java.sql</span></code> is the package name.</li>
+<li>The second value <code class="docutils literal notranslate"><span class="pre">Statement</span></code> is the name of the class (type) that contains the method.</li>
+<li>The third value <code class="docutils literal notranslate"><span class="pre">True</span></code> is a flag that indicates whether or not the sink also applies to all overrides of the method.</li>
+<li>The fourth value <code class="docutils literal notranslate"><span class="pre">execute</span></code> is the method name.</li>
+<li>The fifth value <code class="docutils literal notranslate"><span class="pre">(String)</span></code> is the method input type signature.</li>
+</ul>
+<p>The sixth value should be left empty and is out of scope for this documentation.
+The remaining values are used to define the <code class="docutils literal notranslate"><span class="pre">access</span> <span class="pre">path</span></code>, the <code class="docutils literal notranslate"><span class="pre">kind</span></code>, and the <code class="docutils literal notranslate"><span class="pre">provenance</span></code> (origin) of the sink.</p>
+<ul class="simple">
+<li>The seventh value <code class="docutils literal notranslate"><span class="pre">Argument[0]</span></code> is the <code class="docutils literal notranslate"><span class="pre">access</span> <span class="pre">path</span></code> to the first argument passed to the method, which means that this is the location of the sink.</li>
+<li>The eighth value <code class="docutils literal notranslate"><span class="pre">sql-injection</span></code> is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case - the SQL injection queries.</li>
+<li>The ninth value <code class="docutils literal notranslate"><span class="pre">manual</span></code> is the provenance of the sink, which is used to identify the origin of the sink.</li>
+</ul>
+</div>
+<div class="section" id="example-taint-source-from-the-java-net-package">
+<h3>Example: Taint source from the <code class="docutils literal notranslate"><span class="pre">java.net</span></code> package<a class="headerlink" href="#example-taint-source-from-the-java-net-package" title="Permalink to this headline">¶</a></h3>
+<p>This example shows how the Java query pack models the return value from the <code class="docutils literal notranslate"><span class="pre">getInputStream</span></code> method as a <code class="docutils literal notranslate"><span class="pre">remote</span></code> source.
+This is the <code class="docutils literal notranslate"><span class="pre">getInputStream</span></code> method in the <code class="docutils literal notranslate"><span class="pre">Socket</span></code> class, which is located in the <code class="docutils literal notranslate"><span class="pre">java.net</span></code> package.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">tainted</span><span class="p">(</span><span class="n">Socket</span> <span class="n">socket</span><span class="p">)</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="p">{</span>
+    <span class="n">InputStream</span> <span class="n">stream</span> <span class="o">=</span> <span class="n">socket</span><span class="p">.</span><span class="na">getInputStream</span><span class="p">();</span> <span class="c1">// The return value of this method is a remote source of taint.</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We need to add a tuple to the <code class="docutils literal notranslate"><span class="pre">sourceModel</span></code>(package, type, subtypes, name, signature, ext, output, kind, provenance) extensible predicate by updating a data extension file.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extensions</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">addsTo</span><span class="p">:</span>
+      <span class="nt">pack</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">codeql/java-all</span>
+      <span class="nt">extensible</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">sourceModel</span>
+    <span class="nt">data</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="s">&quot;java.net&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Socket&quot;</span><span class="p p-Indicator">,</span> <span class="nv">False</span><span class="p p-Indicator">,</span> <span class="s">&quot;getInputStream&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;()&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;ReturnValue&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;remote&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;manual&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>Since we are adding a new source, we need to add a tuple to the <code class="docutils literal notranslate"><span class="pre">sourceModel</span></code> extensible predicate.
+The first five values identify the callable (in this case a method) to be modeled as a source.</p>
+<ul class="simple">
+<li>The first value <code class="docutils literal notranslate"><span class="pre">java.net</span></code> is the package name.</li>
+<li>The second value <code class="docutils literal notranslate"><span class="pre">Socket</span></code> is the name of the class (type) that contains the source.</li>
+<li>The third value <code class="docutils literal notranslate"><span class="pre">False</span></code> is a flag that indicates whether or not the source also applies to all overrides of the method.</li>
+<li>The fourth value <code class="docutils literal notranslate"><span class="pre">getInputStream</span></code> is the method name.</li>
+<li>The fifth value <code class="docutils literal notranslate"><span class="pre">()</span></code> is the method input type signature.</li>
+</ul>
+<p>The sixth value should be left empty and is out of scope for this documentation.
+The remaining values are used to define the <code class="docutils literal notranslate"><span class="pre">access</span> <span class="pre">path</span></code>, the <code class="docutils literal notranslate"><span class="pre">kind</span></code>, and the <code class="docutils literal notranslate"><span class="pre">provenance</span></code> (origin) of the source.</p>
+<ul class="simple">
+<li>The seventh value <code class="docutils literal notranslate"><span class="pre">ReturnValue</span></code> is the access path to the return of the method, which means that it is the return value that should be considered a source of tainted input.</li>
+<li>The eighth value <code class="docutils literal notranslate"><span class="pre">remote</span></code> is the kind of the source. The source kind is used to define the threat model where the source is in scope. <code class="docutils literal notranslate"><span class="pre">remote</span></code> applies to many of the security related queries as it means a remote source of untrusted data. As an example the SQL injection query uses <code class="docutils literal notranslate"><span class="pre">remote</span></code> sources. For more information, see “<a class="reference internal" href="#threat-models"><span class="std std-ref">Threat models</span></a>.”</li>
+<li>The ninth value <code class="docutils literal notranslate"><span class="pre">manual</span></code> is the provenance of the source, which is used to identify the origin of the source.</li>
+</ul>
+</div>
+<div class="section" id="example-add-flow-through-the-concat-method">
+<h3>Example: Add flow through the <code class="docutils literal notranslate"><span class="pre">concat</span></code> method<a class="headerlink" href="#example-add-flow-through-the-concat-method" title="Permalink to this headline">¶</a></h3>
+<p>This example shows how the Java query pack models flow through a method for a simple case.
+This pattern covers many of the cases where we need to summarize flow through a method that is stored in a library or framework outside the repository.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">taintflow</span><span class="p">(</span><span class="n">String</span> <span class="n">s1</span><span class="p">,</span> <span class="n">String</span> <span class="n">s2</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">String</span> <span class="n">t</span> <span class="o">=</span> <span class="n">s1</span><span class="p">.</span><span class="na">concat</span><span class="p">(</span><span class="n">s2</span><span class="p">);</span> <span class="c1">// There is taint flow from s1 and s2 to t.</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We need to add tuples to the <code class="docutils literal notranslate"><span class="pre">summaryModel</span></code>(package, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extensions</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">addsTo</span><span class="p">:</span>
+      <span class="nt">pack</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">codeql/java-all</span>
+      <span class="nt">extensible</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">summaryModel</span>
+    <span class="nt">data</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="s">&quot;java.lang&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;String&quot;</span><span class="p p-Indicator">,</span> <span class="nv">False</span><span class="p p-Indicator">,</span> <span class="s">&quot;concat&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;(String)&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Argument[this]&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;ReturnValue&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;taint&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;manual&quot;</span><span class="p p-Indicator">]</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="s">&quot;java.lang&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;String&quot;</span><span class="p p-Indicator">,</span> <span class="nv">False</span><span class="p p-Indicator">,</span> <span class="s">&quot;concat&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;(String)&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Argument[0]&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;ReturnValue&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;taint&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;manual&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>Since we are adding flow through a method, we need to add tuples to the <code class="docutils literal notranslate"><span class="pre">summaryModel</span></code> extensible predicate.
+Each tuple defines flow from one argument to the return value.
+The first row defines flow from the qualifier (<code class="docutils literal notranslate"><span class="pre">s1</span></code> in the example) to the return value (<code class="docutils literal notranslate"><span class="pre">t</span></code> in the example) and the second row defines flow from the first argument (<code class="docutils literal notranslate"><span class="pre">s2</span></code> in the example) to the return value (<code class="docutils literal notranslate"><span class="pre">t</span></code> in the example).</p>
+<p>The first five values identify the callable (in this case a method) to be modeled as a summary.
+These are the same for both of the rows above as we are adding two summaries for the same method.</p>
+<ul class="simple">
+<li>The first value <code class="docutils literal notranslate"><span class="pre">java.lang</span></code> is the package name.</li>
+<li>The second value <code class="docutils literal notranslate"><span class="pre">String</span></code> is the class (type) name.</li>
+<li>The third value <code class="docutils literal notranslate"><span class="pre">False</span></code> is a flag that indicates whether or not the summary also applies to all overrides of the method.</li>
+<li>The fourth value <code class="docutils literal notranslate"><span class="pre">concat</span></code> is the method name.</li>
+<li>The fifth value <code class="docutils literal notranslate"><span class="pre">(String)</span></code> is the method input type signature.</li>
+</ul>
+<p>The sixth value should be left empty and is out of scope for this documentation.
+The remaining values are used to define the <code class="docutils literal notranslate"><span class="pre">access</span> <span class="pre">path</span></code>, the <code class="docutils literal notranslate"><span class="pre">kind</span></code>, and the <code class="docutils literal notranslate"><span class="pre">provenance</span></code> (origin) of the summary.</p>
+<ul class="simple">
+<li>The seventh value is the access path to the input (where data flows from). <code class="docutils literal notranslate"><span class="pre">Argument[this]</span></code> is the access path to the qualifier (<code class="docutils literal notranslate"><span class="pre">s1</span></code> in the example) and <code class="docutils literal notranslate"><span class="pre">Argument[0]</span></code> is the access path to the first argument (<code class="docutils literal notranslate"><span class="pre">s2</span></code> in the example).</li>
+<li>The eighth value <code class="docutils literal notranslate"><span class="pre">ReturnValue</span></code> is the access path to the output (where data flows to), in this case <code class="docutils literal notranslate"><span class="pre">ReturnValue</span></code>, which means that the input flows to the return value.</li>
+<li>The ninth value <code class="docutils literal notranslate"><span class="pre">taint</span></code> is the kind of the flow. <code class="docutils literal notranslate"><span class="pre">taint</span></code> means that taint is propagated through the call.</li>
+<li>The tenth value <code class="docutils literal notranslate"><span class="pre">manual</span></code> is the provenance of the summary, which is used to identify the origin of the summary.</li>
+</ul>
+</div>
+<div class="section" id="example-add-flow-through-the-map-method">
+<h3>Example: Add flow through the <code class="docutils literal notranslate"><span class="pre">map</span></code> method<a class="headerlink" href="#example-add-flow-through-the-map-method" title="Permalink to this headline">¶</a></h3>
+<p>This example shows how the Java query pack models a more complex flow through a method.
+Here we model flow through higher order methods and collection types.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">taintflow</span><span class="p">(</span><span class="n">Stream</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">Stream</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">l</span> <span class="o">=</span> <span class="n">s</span><span class="p">.</span><span class="na">map</span><span class="p">(</span><span class="n">e</span> <span class="o">-&gt;</span> <span class="n">e</span><span class="p">.</span><span class="na">concat</span><span class="p">(</span><span class="s">&quot;\n&quot;</span><span class="p">));</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We need to add tuples to the <code class="docutils literal notranslate"><span class="pre">summaryModel</span></code>(package, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate by updating a data extension file:</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extensions</span><span class="p">:</span>
+  <span class="p p-Indicator">-</span> <span class="nt">addsTo</span><span class="p">:</span>
+      <span class="nt">pack</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">codeql/java-all</span>
+      <span class="nt">extensible</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">summaryModel</span>
+    <span class="nt">data</span><span class="p">:</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="s">&quot;java.util.stream&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Stream&quot;</span><span class="p p-Indicator">,</span> <span class="nv">True</span><span class="p p-Indicator">,</span> <span class="s">&quot;map&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;(Function)&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Argument[this].Element&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Argument[0].Parameter[0]&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;value&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;manual&quot;</span><span class="p p-Indicator">]</span>
+      <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="s">&quot;java.util.stream&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Stream&quot;</span><span class="p p-Indicator">,</span> <span class="nv">True</span><span class="p p-Indicator">,</span> <span class="s">&quot;map&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;(Function)&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Argument[0].ReturnValue&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;ReturnValue.Element&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;value&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;manual&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>Since we are adding flow through a method, we need to add tuples to the <code class="docutils literal notranslate"><span class="pre">summaryModel</span></code> extensible predicate.
+Each tuple defines part of the flow that comprises the total flow through the <code class="docutils literal notranslate"><span class="pre">map</span></code> method.
+The first five values identify the callable (in this case a method) to be modeled as a summary.
+These are the same for both of the rows above as we are adding two summaries for the same method.</p>
+<ul class="simple">
+<li>The first value <code class="docutils literal notranslate"><span class="pre">java.util.stream</span></code> is the package name.</li>
+<li>The second value <code class="docutils literal notranslate"><span class="pre">Stream</span></code> is the class (type) name.</li>
+<li>The third value <code class="docutils literal notranslate"><span class="pre">True</span></code> is a flag that indicates whether or not the summary also applies to all overrides of the method.</li>
+<li>The fourth value <code class="docutils literal notranslate"><span class="pre">map</span></code> is the method name.</li>
+<li>The fifth value <code class="docutils literal notranslate"><span class="pre">Function</span></code> is the method input type signature.</li>
+</ul>
+<p>The sixth value should be left empty and is out of scope for this documentation.
+The remaining values are used to define the <code class="docutils literal notranslate"><span class="pre">access</span> <span class="pre">path</span></code>, the <code class="docutils literal notranslate"><span class="pre">kind</span></code>, and the <code class="docutils literal notranslate"><span class="pre">provenance</span></code> (origin) of the summary definition.</p>
+<ul class="simple">
+<li>The seventh value is the access path to the <code class="docutils literal notranslate"><span class="pre">input</span></code> (where data flows from).</li>
+<li>The eighth value is the access path to the <code class="docutils literal notranslate"><span class="pre">output</span></code> (where data flows to).</li>
+</ul>
+<p>For the first row:</p>
+<ul class="simple">
+<li>The seventh value is <code class="docutils literal notranslate"><span class="pre">Argument[this].Element</span></code>, which is the access path to the elements of the qualifier (the elements of the stream <code class="docutils literal notranslate"><span class="pre">s</span></code> in the example).</li>
+<li>The eight value is <code class="docutils literal notranslate"><span class="pre">Argument[0].Parameter[0]</span></code>, which is the access path to the first parameter of the <code class="docutils literal notranslate"><span class="pre">Function</span></code> argument of <code class="docutils literal notranslate"><span class="pre">map</span></code> (the lambda parameter <code class="docutils literal notranslate"><span class="pre">e</span></code> in the example).</li>
+</ul>
+<p>For the second row:</p>
+<ul class="simple">
+<li>The seventh value is <code class="docutils literal notranslate"><span class="pre">Argument[0].ReturnValue</span></code>, which is the access path to the return value of the <code class="docutils literal notranslate"><span class="pre">Function</span></code> argument of <code class="docutils literal notranslate"><span class="pre">map</span></code> (the return value of the lambda in the example).</li>
+<li>The eighth value is <code class="docutils literal notranslate"><span class="pre">ReturnValue.Element</span></code>, which is the access path to the elements of the return value of <code class="docutils literal notranslate"><span class="pre">map</span></code> (the elements of the stream <code class="docutils literal notranslate"><span class="pre">l</span></code> in the example).</li>
+</ul>
+<p>For the remaining values for both rows:</p>
+<ul class="simple">
+<li>The ninth value <code class="docutils literal notranslate"><span class="pre">value</span></code> is the kind of the flow. <code class="docutils literal notranslate"><span class="pre">value</span></code> means that the value is preserved.</li>
+<li>The tenth value <code class="docutils literal notranslate"><span class="pre">manual</span></code> is the provenance of the summary, which is used to identify the origin of the summary.</li>
+</ul>
+<p>That is, the first row specifies that values can flow from the elements of the qualifier stream into the first argument of the function provided to <code class="docutils literal notranslate"><span class="pre">map</span></code>.  The second row specifies that values can flow from the return value of the function to the elements of the stream returned from <code class="docutils literal notranslate"><span class="pre">map</span></code>.</p>
+</div>
+<div class="section" id="example-add-a-neutral-method">
+<h3>Example: Add a <code class="docutils literal notranslate"><span class="pre">neutral</span></code> method<a class="headerlink" href="#example-add-a-neutral-method" title="Permalink to this headline">¶</a></h3>
+<p>This example shows how the Java query pack models the <code class="docutils literal notranslate"><span class="pre">now</span></code> method as being neutral with respect to flow.
+A neutral model is used to define that there is no flow through a method.</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">taintflow</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">Instant</span> <span class="n">t</span> <span class="o">=</span> <span class="n">Instant</span><span class="p">.</span><span class="na">now</span><span class="p">();</span> <span class="c1">// There is no flow from now to t.</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>We need to add a tuple to the <code class="docutils literal notranslate"><span class="pre">neutralModel</span></code>(package, type, name, signature, kind, provenance) extensible predicate by updating a data extension file.</p>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="nt">extensions</span><span class="p">:</span>
+<span class="p p-Indicator">-</span> <span class="nt">addsTo</span><span class="p">:</span>
+    <span class="nt">pack</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">codeql/java-all</span>
+    <span class="nt">extensible</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">neutralModel</span>
+  <span class="nt">data</span><span class="p">:</span>
+    <span class="p p-Indicator">-</span> <span class="p p-Indicator">[</span><span class="s">&quot;java.time&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;Instant&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;now&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;()&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;summary&quot;</span><span class="p p-Indicator">,</span> <span class="s">&quot;manual&quot;</span><span class="p p-Indicator">]</span>
+</pre></div>
+</div>
+<p>Since we are adding a neutral model, we need to add tuples to the <code class="docutils literal notranslate"><span class="pre">neutralModel</span></code> extensible predicate.
+The first four values identify the callable (in this case a method) to be modeled as a neutral, the fifth value is the kind, and the sixth value is the provenance (origin) of the neutral.</p>
+<ul class="simple">
+<li>The first value <code class="docutils literal notranslate"><span class="pre">java.time</span></code> is the package name.</li>
+<li>The second value <code class="docutils literal notranslate"><span class="pre">Instant</span></code> is the class (type) name.</li>
+<li>The third value <code class="docutils literal notranslate"><span class="pre">now</span></code> is the method name.</li>
+<li>The fourth value <code class="docutils literal notranslate"><span class="pre">()</span></code> is the method input type signature.</li>
+<li>The fifth value <code class="docutils literal notranslate"><span class="pre">summary</span></code> is the kind of the neutral.</li>
+<li>The sixth value <code class="docutils literal notranslate"><span class="pre">manual</span></code> is the provenance of the neutral.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="threat-models-1">
+<span id="threat-models"></span><h2>Threat models<a class="headerlink" href="#threat-models-1" title="Permalink to this headline">¶</a></h2>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>Threat models are currently in beta and subject to change. During the beta, threat models are supported only by Java analysis.</p>
+</div></blockquote>
+<p>A threat model is a named class of dataflow sources that can be enabled or disabled independently. Threat models allow you to control the set of dataflow sources that you want to consider unsafe. For example, one codebase may only consider remote HTTP requests to be tainted, whereas another may also consider data from local files to be unsafe. You can use threat models to ensure that the relevant taint sources are used in a CodeQL analysis.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">kind</span></code> property of the <code class="docutils literal notranslate"><span class="pre">sourceModel</span></code> determines which threat model a source is associated with. There are two main categories:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">remote</span></code> which represents requests and responses from the network.</li>
+<li><code class="docutils literal notranslate"><span class="pre">local</span></code> which represents data from local files (<code class="docutils literal notranslate"><span class="pre">file</span></code>), command-line arguments (<code class="docutils literal notranslate"><span class="pre">commandargs</span></code>), database reads (<code class="docutils literal notranslate"><span class="pre">database</span></code>), and environment variables(<code class="docutils literal notranslate"><span class="pre">environment</span></code>).</li>
+</ul>
+<p>When running a CodeQL analysis, the <code class="docutils literal notranslate"><span class="pre">remote</span></code> threat model is included by default. You can optionally include other threat models as appropriate when using the CodeQL CLI and in GitHub code scanning. For more information, see <a class="reference external" href="https://docs.github.com/code-security/codeql-cli/getting-started-with-the-codeql-cli/analyzing-your-code-with-codeql-queries#including-model-packs-to-add-potential-sources-of-tainted-data">Analyzing your code with CodeQL queries</a> and <a class="reference external" href="https://docs.github.com/code-security/code-scanning/creating-an-advanced-setup-for-code-scanning/customizing-your-advanced-setup-for-code-scanning#extending-codeql-coverage-with-threat-models">Customizing your advanced setup for code scanning</a>.</p>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

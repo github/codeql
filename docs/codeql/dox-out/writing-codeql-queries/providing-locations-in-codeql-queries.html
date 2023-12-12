@@ -1,0 +1,323 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Providing locations in CodeQL queries &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="About data flow analysis" href="about-data-flow-analysis.html" />
+    <link rel="prev" title="Defining the results of a query" href="defining-the-results-of-a-query.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Writing CodeQL queries</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-queries.html">CodeQL queries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="about-codeql-queries.html">About CodeQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metadata-for-codeql-queries.html">Metadata for CodeQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="query-help-files.html">Query help files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="defining-the-results-of-a-query.html">Defining the results of a query</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Providing locations in CodeQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about-data-flow-analysis.html">About data flow analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="creating-path-queries.html">Creating path queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting-query-performance.html">Troubleshooting query performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debugging-data-flow-queries-using-partial-flow.html">Debugging data-flow queries using partial flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ql-tutorials.html">QL tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-language-guides/index.html">CodeQL language guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >Writing CodeQL queries</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-queries.html"
+                accesskey="U">CodeQL queries</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="providing-locations-in-codeql-queries-1">
+<span id="providing-locations-in-codeql-queries"></span><h1>Providing locations in CodeQL queries<a class="headerlink" href="#providing-locations-in-codeql-queries-1" title="Permalink to this headline">¶</a></h1>
+<p>CodeQL includes mechanisms for extracting the location of elements in a codebase. Use these mechanisms when writing custom CodeQL queries and libraries to help display information to users.</p>
+<div class="section" id="about-locations">
+<h2>About locations<a class="headerlink" href="#about-locations" title="Permalink to this headline">¶</a></h2>
+<p>When displaying information to the user, applications need to be able to extract location information from the results of a query. In order to do this, all QL classes which can provide location information should do this by using one of the following mechanisms:</p>
+<ul class="simple">
+<li><a class="reference external" href="#providing-urls">Providing URLs</a></li>
+<li><a class="reference external" href="#providing-location-information">Providing location information</a></li>
+<li><a class="reference external" href="#using-extracted-location-information">Using extracted location information</a></li>
+</ul>
+<p>This list is in priority order, so that the first available mechanism is used.</p>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>Since QL is a relational language, there is nothing to enforce that each entity of a QL class is mapped to precisely one location. This is the responsibility of the designer of the library (or the extractor, in the case of the third option below). If entities are assigned no location at all, users will not be able to click through from query results to the source code viewer. If multiple locations are assigned, results may be duplicated.</p>
+</div></blockquote>
+<div class="section" id="providing-urls">
+<h3>Providing URLs<a class="headerlink" href="#providing-urls" title="Permalink to this headline">¶</a></h3>
+<p>A custom URL can be provided by defining a QL predicate returning <code class="docutils literal notranslate"><span class="pre">string</span></code> with the name <code class="docutils literal notranslate"><span class="pre">getURL</span></code> – note that capitalization matters, and no arguments are allowed. For example:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">JiraIssue</span> <span class="k">extends</span> <span class="n">ExternalData</span> <span class="p">{</span>
+    <span class="n">JiraIssue</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">getDataPath</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;JiraIssues.csv&quot;</span>
+    <span class="p">}</span>
+
+    <span class="kt">string</span> <span class="n">getKey</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">result</span> <span class="o">=</span> <span class="n">getField</span><span class="p">(</span><span class="m">0</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="kt">string</span> <span class="n">getURL</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;http://mycompany.com/jira/&quot;</span> <span class="o">+</span> <span class="n">getKey</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="file-urls">
+<h4>File URLs<a class="headerlink" href="#file-urls" title="Permalink to this headline">¶</a></h4>
+<p>The CodeQL extension for Visual Studio Code and the code scanning views in GitHub support the display of URLs which define a line and column in a source file.</p>
+<p>The schema is <code class="docutils literal notranslate"><span class="pre">file://</span></code>, which is followed by the absolute path to a file, followed by four numbers separated by colons. The numbers denote start line, start column, end line and end column. Both line and column numbers are <strong>1-based</strong>, for example:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">file://opt/src/my/file.java:0:0:0:0</span></code> is used to link to an entire file.</li>
+<li><code class="docutils literal notranslate"><span class="pre">file:///opt/src/my/file.java:1:1:2:1</span></code> denotes the location that starts at the beginning of the file and extends to the first character of the second line (the range is inclusive).</li>
+<li><code class="docutils literal notranslate"><span class="pre">file:///opt/src/my/file.java:1:0:1:0</span></code> is taken, by convention, to denote the entire first line of the file.</li>
+</ul>
+<p>By convention, the location of an entire file may also be denoted by a <code class="docutils literal notranslate"><span class="pre">file://</span></code> URL without trailing numbers. Optionally, the location within a file can be denoted using three numbers to define the start line number, character offset and character length of the location respectively. Results of these types are not displayed as code scanning alerts.</p>
+</div>
+<div class="section" id="other-types-of-url">
+<h4>Other types of URL<a class="headerlink" href="#other-types-of-url" title="Permalink to this headline">¶</a></h4>
+<p>The following, less-common types of URL are valid but are not interpreted as code scanning alerts and will be omitted from any results:</p>
+<ul class="simple">
+<li><strong>HTTP URLs</strong> are supported in some client applications. For an example, see the code snippet above.</li>
+<li><strong>Folder URLs</strong> can be useful, for example to provide folder-level metrics. They may use a file URL, for example <code class="docutils literal notranslate"><span class="pre">file:///opt/src:0:0:0:0</span></code>, but they may also start with a scheme of <code class="docutils literal notranslate"><span class="pre">folder://</span></code>, and no trailing numbers, for example <code class="docutils literal notranslate"><span class="pre">folder:///opt/src</span></code>.</li>
+<li><strong>Relative file URLs</strong> are like normal file URLs, but start with the scheme <code class="docutils literal notranslate"><span class="pre">relative://</span></code>. They are typically only meaningful in the context of a particular database, and are taken to be implicitly prefixed by the database’s source location. Note that, in particular, the relative URL of a file will stay constant regardless of where the database is analyzed. It is often most convenient to produce these URLs as input when importing external information; selecting one from a QL class would be unusual, and client applications may not handle it appropriately.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="providing-location-information">
+<h3>Providing location information<a class="headerlink" href="#providing-location-information" title="Permalink to this headline">¶</a></h3>
+<p>If no <code class="docutils literal notranslate"><span class="pre">getURL()</span></code> member predicate is defined, a QL class is checked for the presence of a member predicate called <code class="docutils literal notranslate"><span class="pre">hasLocationInfo(..)</span></code>. This can be understood as a convenient way of providing file URLs (see above) without constructing the long URL string in QL. <code class="docutils literal notranslate"><span class="pre">hasLocationInfo(..)</span></code> should be a predicate, its first column must be <code class="docutils literal notranslate"><span class="pre">string</span></code>-typed (it corresponds to the “path” portion of a file URL), and it must have an additional 3 or 4 <code class="docutils literal notranslate"><span class="pre">int</span></code>-typed columns, which are interpreted like a trailing group of three or four numbers on a file URL.</p>
+<p>For example, let us imagine that the locations for methods provided by the extractor extend from the first character of the method name to the closing curly brace of the method body, and we want to “fix” them to ensure that only the method name is selected. The following code shows two ways of achieving this:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">MyMethod</span> <span class="k">extends</span> <span class="n">Method</span> <span class="p">{</span>
+    <span class="c1">// The locations from the database, which we want to modify.</span>
+    <span class="n">Location</span> <span class="n">getLocation</span><span class="p">()</span> <span class="p">{</span> <span class="k">result</span> <span class="o">=</span> <span class="k">super</span><span class="p">.</span><span class="n">getLocation</span><span class="p">()</span> <span class="p">}</span>
+
+    <span class="cm">/* First member predicate: Construct a URL for the desired location. */</span>
+    <span class="kt">string</span> <span class="n">getURL</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">exists</span><span class="p">(</span><span class="n">Location</span> <span class="n">loc</span> <span class="o">|</span> <span class="n">loc</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">getLocation</span><span class="p">()</span> <span class="o">|</span>
+            <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;file://&quot;</span> <span class="o">+</span> <span class="n">loc</span><span class="p">.</span><span class="n">getFile</span><span class="p">().</span><span class="n">getFullName</span><span class="p">()</span> <span class="o">+</span>
+                <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">loc</span><span class="p">.</span><span class="n">getStartLine</span><span class="p">()</span> <span class="o">+</span>
+                <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">loc</span><span class="p">.</span><span class="n">getStartColumn</span><span class="p">()</span> <span class="o">+</span>
+                <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="n">loc</span><span class="p">.</span><span class="n">getStartLine</span><span class="p">()</span> <span class="o">+</span>
+                <span class="s">&quot;:&quot;</span> <span class="o">+</span> <span class="p">(</span><span class="n">loc</span><span class="p">.</span><span class="n">getStartColumn</span><span class="p">()</span> <span class="o">+</span> <span class="n">getName</span><span class="p">().</span><span class="n">length</span><span class="p">()</span> <span class="o">-</span> <span class="m">1</span><span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="cm">/* Second member predicate: Define hasLocationInfo. This will be more</span>
+<span class="cm">       efficient (it avoids constructing long strings), and will</span>
+<span class="cm">       only be used if getURL() is not defined. */</span>
+    <span class="k">predicate</span> <span class="n">hasLocationInfo</span><span class="p">(</span><span class="kt">string</span> <span class="n">path</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sl</span><span class="p">,</span> <span class="kt">int</span> <span class="n">sc</span><span class="p">,</span> <span class="kt">int</span> <span class="n">el</span><span class="p">,</span> <span class="kt">int</span> <span class="n">ec</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">exists</span><span class="p">(</span><span class="n">Location</span> <span class="n">loc</span> <span class="o">|</span> <span class="n">loc</span> <span class="o">=</span> <span class="k">this</span><span class="p">.</span><span class="n">getLocation</span><span class="p">()</span> <span class="o">|</span>
+            <span class="n">path</span> <span class="o">=</span> <span class="n">loc</span><span class="p">.</span><span class="n">getFile</span><span class="p">().</span><span class="n">getFullName</span><span class="p">()</span> <span class="k">and</span>
+            <span class="n">sl</span> <span class="o">=</span> <span class="n">loc</span><span class="p">.</span><span class="n">getStartLine</span><span class="p">()</span> <span class="k">and</span>
+            <span class="n">sc</span> <span class="o">=</span> <span class="n">loc</span><span class="p">.</span><span class="n">getStartColumn</span><span class="p">()</span> <span class="k">and</span>
+            <span class="n">el</span> <span class="o">=</span> <span class="n">sl</span> <span class="k">and</span>
+            <span class="n">ec</span> <span class="o">=</span> <span class="n">sc</span> <span class="o">+</span> <span class="n">getName</span><span class="p">().</span><span class="n">length</span><span class="p">()</span> <span class="o">-</span> <span class="m">1</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="using-extracted-location-information">
+<h3>Using extracted location information<a class="headerlink" href="#using-extracted-location-information" title="Permalink to this headline">¶</a></h3>
+<p>Finally, if the above two predicates fail, client applications will attempt to call a predicate called <code class="docutils literal notranslate"><span class="pre">getLocation()</span></code> with no parameters, and try to apply one of the above two predicates to the result. This allows certain locations to be put into the database, assigned identifiers, and picked up.</p>
+<p>By convention, the return value of the <code class="docutils literal notranslate"><span class="pre">getLocation()</span></code> predicate should be a class called <code class="docutils literal notranslate"><span class="pre">Location</span></code>, and it should define a version of <code class="docutils literal notranslate"><span class="pre">hasLocationInfo(..)</span></code> (or <code class="docutils literal notranslate"><span class="pre">getURL()</span></code>, though the former is preferable). If the <code class="docutils literal notranslate"><span class="pre">Location</span></code> class does not provide either of these member predicates, then no location information will be available.</p>
+</div>
+</div>
+<div class="section" id="the-tostring-predicate">
+<h2>The <code class="docutils literal notranslate"><span class="pre">toString()</span></code> predicate<a class="headerlink" href="#the-tostring-predicate" title="Permalink to this headline">¶</a></h2>
+<p>All classes except those that extend primitive types, must provide a <code class="docutils literal notranslate"><span class="pre">string</span> <span class="pre">toString()</span></code> member predicate. The query compiler will complain if you don’t. The uniqueness warning, noted above for locations, applies here too.</p>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql">CodeQL repository</a></li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

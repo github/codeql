@@ -1,0 +1,842 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Types &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Modules" href="modules.html" />
+    <link rel="prev" title="Queries" href="queries.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-language-guides/index.html">CodeQL language guides</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">QL language reference</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="about-the-ql-language.html">About the QL language</a></li>
+<li class="toctree-l2"><a class="reference internal" href="predicates.html">Predicates</a></li>
+<li class="toctree-l2"><a class="reference internal" href="queries.html">Queries</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Types</a></li>
+<li class="toctree-l2"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="signatures.html">Signatures</a></li>
+<li class="toctree-l2"><a class="reference internal" href="aliases.html">Aliases</a></li>
+<li class="toctree-l2"><a class="reference internal" href="variables.html">Variables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="expressions.html">Expressions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="formulas.html">Formulas</a></li>
+<li class="toctree-l2"><a class="reference internal" href="annotations.html">Annotations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="recursion.html">Recursion</a></li>
+<li class="toctree-l2"><a class="reference internal" href="lexical-syntax.html">Lexical syntax</a></li>
+<li class="toctree-l2"><a class="reference internal" href="name-resolution.html">Name resolution</a></li>
+<li class="toctree-l2"><a class="reference internal" href="evaluation-of-ql-programs.html">Evaluation of QL programs</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ql-language-specification.html">QL language specification</a></li>
+</ul>
+</li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                accesskey="U">QL language reference</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="types-1">
+<span id="types"></span><span id="index-0"></span><h1>Types<a class="headerlink" href="#types-1" title="Permalink to this headline">¶</a></h1>
+<p>QL is a statically typed language, so each variable must have a declared type.</p>
+<p>A type is a set of values.
+For example, the type <code class="docutils literal notranslate"><span class="pre">int</span></code> is the set of integers.
+Note that a value can belong to more than one of these sets, which means that it can have more
+than one type.</p>
+<p>The kinds of types in QL are <a class="reference internal" href="#primitive-types"><span class="std std-ref">primitive types</span></a>, <a class="reference internal" href="#classes"><span class="std std-ref">classes</span></a>,
+<a class="reference internal" href="#character-types"><span class="std std-ref">character types</span></a>, <a class="reference internal" href="#domain-types"><span class="std std-ref">class domain types</span></a>,
+<a class="reference internal" href="#algebraic-datatypes"><span class="std std-ref">algebraic datatypes</span></a>, <a class="reference internal" href="#type-unions"><span class="std std-ref">type unions</span></a>,
+and <a class="reference internal" href="#database-types"><span class="std std-ref">database types</span></a>.</p>
+<div class="section" id="primitive-types-1">
+<span id="primitive-types"></span><span id="index-1"></span><h2>Primitive types<a class="headerlink" href="#primitive-types-1" title="Permalink to this headline">¶</a></h2>
+<p>These types are built in to QL and are always available in the global <a class="reference internal" href="name-resolution.html#namespaces"><span class="std std-ref">namespace</span></a>,
+independent of the database that you are querying.</p>
+<blockquote>
+<div></div></blockquote>
+<ol class="arabic simple" id="boolean">
+<li><strong>boolean</strong>: This type contains the values <code class="docutils literal notranslate"><span class="pre">true</span></code> and <code class="docutils literal notranslate"><span class="pre">false</span></code>.</li>
+<li id="float"><strong>float</strong>: This type contains 64-bit floating point numbers, such as <code class="docutils literal notranslate"><span class="pre">6.28</span></code> and <code class="docutils literal notranslate"><span class="pre">-0.618</span></code>.</li>
+<li id="int"><strong>int</strong>: This type contains 32-bit <a class="reference external" href="https://en.wikipedia.org/wiki/Two%27s_complement">two’s complement</a> integers, such as <code class="docutils literal notranslate"><span class="pre">-1</span></code> and <code class="docutils literal notranslate"><span class="pre">42</span></code>.</li>
+<li id="string"><strong>string</strong>: This type contains finite strings of 16-bit characters.</li>
+<li id="date"><strong>date</strong>: This type contains dates (and optionally times).</li>
+</ol>
+<p>QL has a range of built-in operations defined on primitive types. These are available by using dispatch on expressions of the appropriate type. For example, <code class="docutils literal notranslate"><span class="pre">1.toString()</span></code> is the string representation of the integer constant <code class="docutils literal notranslate"><span class="pre">1</span></code>. For a full list of built-in operations available in QL, see the
+section on <a class="reference external" href="https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#built-ins">built-ins</a> in the QL language specification.</p>
+</div>
+<div class="section" id="classes-1">
+<span id="classes"></span><span id="index-2"></span><h2>Classes<a class="headerlink" href="#classes-1" title="Permalink to this headline">¶</a></h2>
+<p>You can define your own types in QL. One way to do this is to define a <strong>class</strong>.</p>
+<dl class="docutils">
+<dt>Classes provide an easy way to reuse and structure code. For example, you can:</dt>
+<dd><ul class="first last simple">
+<li>Group together related values.</li>
+<li>Define <a class="reference internal" href="#member-predicates"><span class="std std-ref">member predicates</span></a> on those values.</li>
+<li>Define subclasses that <a class="reference internal" href="#overriding-member-predicates"><span class="std std-ref">override member predicates</span></a>.</li>
+</ul>
+</dd>
+</dl>
+<p>A class in QL doesn’t “create” a new object, it just represents a logical property. A value is
+in a particular class if it satisfies that logical property.</p>
+<div class="section" id="defining-a-class-1">
+<span id="defining-a-class"></span><h3>Defining a class<a class="headerlink" href="#defining-a-class-1" title="Permalink to this headline">¶</a></h3>
+<p>To define a class, you write:</p>
+<ol class="arabic simple">
+<li>The keyword <code class="docutils literal notranslate"><span class="pre">class</span></code>.</li>
+<li>The name of the class. This is an <a class="reference external" href="https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers">identifier</a>
+starting with an uppercase letter.</li>
+<li>The supertypes that the class is derived from via <cite>extends</cite> and/or <cite>instanceof</cite></li>
+<li>The <a class="reference internal" href="#class-bodies"><span class="std std-ref">body of the class</span></a>, enclosed in braces.</li>
+</ol>
+<p>For example:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">OneTwoThree</span> <span class="k">extends</span> <span class="kt">int</span> <span class="p">{</span>
+  <span class="n">OneTwoThree</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// characteristic predicate</span>
+    <span class="k">this</span> <span class="o">=</span> <span class="m">1</span> <span class="k">or</span> <span class="k">this</span> <span class="o">=</span> <span class="m">2</span> <span class="k">or</span> <span class="k">this</span> <span class="o">=</span> <span class="m">3</span>
+  <span class="p">}</span>
+
+  <span class="kt">string</span> <span class="n">getAString</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// member predicate</span>
+    <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;One, two or three: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="k">predicate</span> <span class="n">isEven</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// member predicate</span>
+    <span class="k">this</span> <span class="o">=</span> <span class="m">2</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This defines a class <code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code>, which contains the values <code class="docutils literal notranslate"><span class="pre">1</span></code>, <code class="docutils literal notranslate"><span class="pre">2</span></code>, and <code class="docutils literal notranslate"><span class="pre">3</span></code>. The
+<a class="reference internal" href="#characteristic-predicates"><span class="std std-ref">characteristic predicate</span></a> captures the logical property of
+“being one of the integers 1, 2, or 3.”</p>
+<p id="index-3"><code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code> extends <code class="docutils literal notranslate"><span class="pre">int</span></code>, that is, it is a subtype of <code class="docutils literal notranslate"><span class="pre">int</span></code>. A class in QL must always
+have at least one supertype. Supertypes that are referenced with the <cite>extends</cite> keyword are called
+the <strong>base types</strong> of the class. The values of a class are contained within the intersection of
+the supertypes (that is, they are in the <a class="reference internal" href="#domain-types"><span class="std std-ref">class domain type</span></a>).
+A class inherits all member predicates from its base types.</p>
+<p>A class can extend multiple types. For more information, see “<a class="reference internal" href="#multiple-inheritance"><span class="std std-ref">Multiple inheritance</span></a>.”
+A class can extend final types (or final aliases of types), see “<a class="reference internal" href="#final-extensions"><span class="std std-ref">Final extensions</span></a>.”
+Classes can also specialise other types without extending the class interface via <cite>instanceof</cite>,
+see “<a class="reference internal" href="#instanceof-extensions"><span class="std std-ref">Non-extending subtypes</span></a>.”.</p>
+<dl class="docutils">
+<dt>To be valid, a class:</dt>
+<dd><ul class="first last simple">
+<li>Must not extend itself.</li>
+<li>Must not (transitively) extend a non-final type and a final alias of that same type.</li>
+<li>Must not extend types that are incompatible. For more information, see “<a class="reference internal" href="#type-compatibility"><span class="std std-ref">Type compatibility</span></a>.”</li>
+</ul>
+</dd>
+</dl>
+<p>You can also annotate a class. See the list of <a class="reference internal" href="annotations.html#annotations-overview"><span class="std std-ref">annotations</span></a>
+available for classes.</p>
+</div>
+<div class="section" id="class-bodies-1">
+<span id="class-bodies"></span><h3>Class bodies<a class="headerlink" href="#class-bodies-1" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>The body of a class can contain:</dt>
+<dd><ul class="first last simple">
+<li>A <a class="reference internal" href="#characteristic-predicates"><span class="std std-ref">characteristic predicate</span></a> declaration.</li>
+<li>Any number of <a class="reference internal" href="#member-predicates"><span class="std std-ref">member predicate</span></a> declarations.</li>
+<li>Any number of <a class="reference internal" href="#fields"><span class="std std-ref">field</span></a> declarations.</li>
+</ul>
+</dd>
+</dl>
+<p>When you define a class, that class also inherits all non-<a class="reference internal" href="annotations.html#private"><span class="std std-ref">private</span></a> member predicates and
+fields from its supertypes.</p>
+<p>Depending on whether they are final, you can <a class="reference internal" href="#overriding-member-predicates"><span class="std std-ref">override</span></a> or
+<a class="reference internal" href="#final-extensions"><span class="std std-ref">shadow</span></a> those predicates and fields to give them a more specific definition.</p>
+<div class="section" id="characteristic-predicates-1">
+<span id="characteristic-predicates"></span><h4>Characteristic predicates<a class="headerlink" href="#characteristic-predicates-1" title="Permalink to this headline">¶</a></h4>
+<p>These are <a class="reference internal" href="predicates.html#predicates"><span class="std std-ref">predicates</span></a> defined inside the body of a class. They are logical
+properties that use the variable <code class="docutils literal notranslate"><span class="pre">this</span></code> to restrict the possible values in the class.</p>
+</div>
+<div class="section" id="member-predicates-1">
+<span id="member-predicates"></span><h4>Member predicates<a class="headerlink" href="#member-predicates-1" title="Permalink to this headline">¶</a></h4>
+<p>These are <a class="reference internal" href="predicates.html#predicates"><span class="std std-ref">predicates</span></a> that only apply to members of a particular class.
+You can <a class="reference internal" href="formulas.html#calls"><span class="std std-ref">call</span></a> a member predicate on a value. For example, you can use the member
+predicate from the <a class="reference internal" href="#defining-a-class"><span class="std std-ref">above</span></a> class:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="m">1</span><span class="p">.(</span><span class="n">OneTwoThree</span><span class="p">).</span><span class="n">getAString</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This call returns the result <code class="docutils literal notranslate"><span class="pre">&quot;One,</span> <span class="pre">two</span> <span class="pre">or</span> <span class="pre">three:</span> <span class="pre">1&quot;</span></code>.</p>
+<p>The expression <code class="docutils literal notranslate"><span class="pre">(OneTwoThree)</span></code> is a <a class="reference internal" href="expressions.html#casts"><span class="std std-ref">cast</span></a>. It ensures that <code class="docutils literal notranslate"><span class="pre">1</span></code> has type
+<code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code> instead of just <code class="docutils literal notranslate"><span class="pre">int</span></code>. Therefore, it has access to the member predicate
+<code class="docutils literal notranslate"><span class="pre">getAString()</span></code>.</p>
+<p>Member predicates are especially useful because you can chain them together. For example, you
+can use <code class="docutils literal notranslate"><span class="pre">toUpperCase()</span></code>, a built-in function defined for <code class="docutils literal notranslate"><span class="pre">string</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="m">1</span><span class="p">.(</span><span class="n">OneTwoThree</span><span class="p">).</span><span class="n">getAString</span><span class="p">().</span><span class="n">toUpperCase</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This call returns <code class="docutils literal notranslate"><span class="pre">&quot;ONE,</span> <span class="pre">TWO</span> <span class="pre">OR</span> <span class="pre">THREE:</span> <span class="pre">1&quot;</span></code>.</p>
+<blockquote class="pull-quote" id="this">
+<span id="index-4"></span><div><p>Note</p>
+<p>Characteristic predicates and member predicates often use the variable <code class="docutils literal notranslate"><span class="pre">this</span></code>.
+This variable always refers to a member of the class—in this case a value belonging to the
+class <code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code>.
+In the <a class="reference internal" href="#characteristic-predicates"><span class="std std-ref">characteristic predicate</span></a>, the variable <code class="docutils literal notranslate"><span class="pre">this</span></code>
+constrains the values that are in the class.
+In a <a class="reference internal" href="#member-predicates"><span class="std std-ref">member predicate</span></a>, <code class="docutils literal notranslate"><span class="pre">this</span></code> acts in the same way as any
+other argument to the predicate.</p>
+</div></blockquote>
+</div>
+<div class="section" id="fields-1">
+<span id="fields"></span><span id="index-5"></span><h4>Fields<a class="headerlink" href="#fields-1" title="Permalink to this headline">¶</a></h4>
+<p>These are variables declared in the body of a class. A class can have any number of field
+declarations (that is, variable declarations) within its body. You can use these variables in
+predicate declarations inside the class. Much like the <a class="reference internal" href="#this"><span class="std std-ref">variable</span></a> <code class="docutils literal notranslate"><span class="pre">this</span></code>, fields
+must be constrained in the <a class="reference internal" href="#characteristic-predicates"><span class="std std-ref">characteristic predicate</span></a>.</p>
+<p>For example:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">SmallInt</span> <span class="k">extends</span> <span class="kt">int</span> <span class="p">{</span>
+  <span class="n">SmallInt</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="o">=</span> <span class="p">[</span><span class="m">1</span> <span class="p">..</span> <span class="m">10</span><span class="p">]</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="n">DivisibleInt</span> <span class="k">extends</span> <span class="n">SmallInt</span> <span class="p">{</span>
+  <span class="n">SmallInt</span> <span class="n">divisor</span><span class="p">;</span>   <span class="c1">// declaration of the field `divisor`</span>
+  <span class="n">DivisibleInt</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="o">%</span> <span class="n">divisor</span> <span class="o">=</span> <span class="m">0</span> <span class="p">}</span>
+
+  <span class="n">SmallInt</span> <span class="n">getADivisor</span><span class="p">()</span> <span class="p">{</span> <span class="k">result</span> <span class="o">=</span> <span class="n">divisor</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">from</span> <span class="n">DivisibleInt</span> <span class="n">i</span>
+<span class="k">select</span> <span class="n">i</span><span class="p">,</span> <span class="n">i</span><span class="p">.</span><span class="n">getADivisor</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>In this example, the declaration <code class="docutils literal notranslate"><span class="pre">SmallInt</span> <span class="pre">divisor</span></code> introduces a field <code class="docutils literal notranslate"><span class="pre">divisor</span></code>, constrains
+it in the characteristic predicate, and then uses it in the declaration of the member predicate
+<code class="docutils literal notranslate"><span class="pre">getADivisor</span></code>. This is similar to introducing variables in a <a class="reference internal" href="queries.html#select-clauses"><span class="std std-ref">select clause</span></a>
+by declaring them in the <code class="docutils literal notranslate"><span class="pre">from</span></code> part.</p>
+<p>You can also annotate predicates and fields. See the list of <a class="reference internal" href="annotations.html#annotations-overview"><span class="std std-ref">annotations</span></a>
+that are available.</p>
+</div>
+</div>
+<div class="section" id="concrete-classes-1">
+<span id="concrete-classes"></span><h3>Concrete classes<a class="headerlink" href="#concrete-classes-1" title="Permalink to this headline">¶</a></h3>
+<p>The classes in the above examples are all <strong>concrete</strong> classes. They are defined by
+restricting the values in a larger type. The values in a concrete class are precisely those
+values in the intersection of the supertypes that also satisfy the
+<a class="reference internal" href="#characteristic-predicates"><span class="std std-ref">characteristic predicate</span></a> of the class.</p>
+</div>
+<div class="section" id="abstract-classes-1">
+<span id="abstract-classes"></span><h3>Abstract classes<a class="headerlink" href="#abstract-classes-1" title="Permalink to this headline">¶</a></h3>
+<p>A class <a class="reference internal" href="annotations.html#abstract"><span class="std std-ref">annotated</span></a> with <code class="docutils literal notranslate"><span class="pre">abstract</span></code>, known as an <strong>abstract</strong> class, is also a restriction of
+the values in a larger type. However, an abstract class is defined as the union of its
+subclasses. In particular, for a value to be in an abstract class, it must satisfy the
+characteristic predicate of the class itself <strong>and</strong> the characteristic predicate of a subclass.
+Note that final extensions are not considered subclasses in this context.</p>
+<p>An abstract class is useful if you want to group multiple existing classes together
+under a common name. You can then define member predicates on all those classes. You can also
+extend predefined abstract classes: for example, if you import a library that contains an
+abstract class, you can add more subclasses to it.</p>
+<p><strong>Example</strong></p>
+<p>If you are writing a security query, you may be interested in identifying
+all expressions that can be interpreted as SQL queries.
+You can use the following abstract class to describe these expressions:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="kr">abstract </span><span class="k">class</span> <span class="n">SqlExpr</span> <span class="k">extends</span> <span class="n">Expr</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now define various subclasses—one for each kind of database management system. For example, you
+can define a subclass <code class="docutils literal notranslate"><span class="pre">class</span> <span class="pre">PostgresSqlExpr</span> <span class="pre">extends</span> <span class="pre">SqlExpr</span></code>, which contains expressions
+passed to some Postgres API that performs a database query.
+You can define similar subclasses for MySQL and other database management systems.</p>
+<p>The abstract class <code class="docutils literal notranslate"><span class="pre">SqlExpr</span></code> refers to all of those different expressions. If you want to add
+support for another database system later on, you can simply add a new subclass to <code class="docutils literal notranslate"><span class="pre">SqlExpr</span></code>;
+there is no need to update the queries that rely on it.</p>
+<blockquote class="pull-quote">
+<div><p>Important</p>
+<p>You must take care when you add a new subclass to an existing abstract class. Adding a subclass
+is not an isolated change, it also extends the abstract class since that is a union of its
+subclasses.</p>
+</div></blockquote>
+</div>
+<div class="section" id="overriding-member-predicates-1">
+<span id="overriding-member-predicates"></span><h3>Overriding member predicates<a class="headerlink" href="#overriding-member-predicates-1" title="Permalink to this headline">¶</a></h3>
+<p>If a class inherits a member predicate from a non-final supertype, you can <strong>override</strong> the
+inherited definition. You do this by defining a member predicate with the same name and arity
+as the inherited predicate, and by adding the <code class="docutils literal notranslate"><span class="pre">override</span></code> <a class="reference internal" href="annotations.html#override"><span class="std std-ref">annotation</span></a>.
+This is useful if you want to refine the predicate to give a more specific result for the
+values in the subclass.</p>
+<p>For example, extending the class from the <a class="reference internal" href="#defining-a-class"><span class="std std-ref">first example</span></a>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">OneTwo</span> <span class="k">extends</span> <span class="n">OneTwoThree</span> <span class="p">{</span>
+  <span class="n">OneTwo</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span> <span class="o">=</span> <span class="m">1</span> <span class="k">or</span> <span class="k">this</span> <span class="o">=</span> <span class="m">2</span>
+  <span class="p">}</span>
+
+  <span class="kr">override </span><span class="kt">string</span> <span class="n">getAString</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;One or two: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The member predicate <code class="docutils literal notranslate"><span class="pre">getAString()</span></code> overrides the original definition of <code class="docutils literal notranslate"><span class="pre">getAString()</span></code>
+from <code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code>.</p>
+<p>Now, consider the following query:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">from</span> <span class="n">OneTwoThree</span> <span class="n">o</span>
+<span class="k">select</span> <span class="n">o</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">getAString</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The query uses the “most specific” definition(s) of the predicate <code class="docutils literal notranslate"><span class="pre">getAString()</span></code>, so the results
+look like this:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">o</th>
+<th class="head"><code class="docutils literal notranslate"><span class="pre">getAString()</span></code> result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>One or two: 1</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>One or two: 2</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>One, two or three: 3</td>
+</tr>
+</tbody>
+</table>
+<p>In QL, unlike other object-oriented languages, different subtypes of the same types don’t need to be
+disjoint. For example, you could define another subclass of <code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code>, which overlaps
+with <code class="docutils literal notranslate"><span class="pre">OneTwo</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">TwoThree</span> <span class="k">extends</span> <span class="n">OneTwoThree</span> <span class="p">{</span>
+  <span class="n">TwoThree</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span> <span class="o">=</span> <span class="m">2</span> <span class="k">or</span> <span class="k">this</span> <span class="o">=</span> <span class="m">3</span>
+  <span class="p">}</span>
+
+  <span class="kr">override </span><span class="kt">string</span> <span class="n">getAString</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;Two or three: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now the value 2 is included in both class types <code class="docutils literal notranslate"><span class="pre">OneTwo</span></code> and <code class="docutils literal notranslate"><span class="pre">TwoThree</span></code>. Both of these classes
+override the original definition of <code class="docutils literal notranslate"><span class="pre">getAString()</span></code>. There are two new “most specific” definitions,
+so running the above query gives the following results:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">o</th>
+<th class="head"><code class="docutils literal notranslate"><span class="pre">getAString()</span></code> result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>One or two: 1</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>One or two: 2</td>
+</tr>
+<tr class="row-even"><td>2</td>
+<td>Two or three: 2</td>
+</tr>
+<tr class="row-odd"><td>3</td>
+<td>Two or three: 3</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="multiple-inheritance-1">
+<span id="multiple-inheritance"></span><h3>Multiple inheritance<a class="headerlink" href="#multiple-inheritance-1" title="Permalink to this headline">¶</a></h3>
+<p>A class can extend multiple types. In that case, it inherits from all those types.</p>
+<p>For example, using the definitions from the above section:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">Two</span> <span class="k">extends</span> <span class="n">OneTwo</span><span class="p">,</span> <span class="n">TwoThree</span> <span class="p">{}</span>
+</pre></div>
+</div>
+<p>Any value in the class <code class="docutils literal notranslate"><span class="pre">Two</span></code> must satisfy the logical property represented by <code class="docutils literal notranslate"><span class="pre">OneTwo</span></code>,
+<strong>and</strong> the logical property represented by <code class="docutils literal notranslate"><span class="pre">TwoThree</span></code>. Here the class <code class="docutils literal notranslate"><span class="pre">Two</span></code> contains one
+value, namely 2.</p>
+<p>It inherits member predicates from <code class="docutils literal notranslate"><span class="pre">OneTwo</span></code> and <code class="docutils literal notranslate"><span class="pre">TwoThree</span></code>. It also (indirectly) inherits
+from <code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code> and <code class="docutils literal notranslate"><span class="pre">int</span></code>.</p>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>If a subclass inherits multiple definitions for the same predicate name, then it
+must <a class="reference internal" href="#overriding-member-predicates"><span class="std std-ref">override</span></a> those definitions to avoid ambiguity.
+<a class="reference internal" href="expressions.html#super"><span class="std std-ref">Super expressions</span></a> are often useful in this situation.</p>
+</div></blockquote>
+</div>
+<div class="section" id="final-extensions-1">
+<span id="final-extensions"></span><h3>Final extensions<a class="headerlink" href="#final-extensions-1" title="Permalink to this headline">¶</a></h3>
+<p>A class can extend final types or final aliases of types. In that case, it inherits final
+versions of all the member predicates and fields of those supertypes.
+Member predicates that are inherited through final extensions cannot be overridden,
+but they can be shadowed.</p>
+<p>For example, extending the class from the <a class="reference internal" href="#defining-a-class"><span class="std std-ref">first example</span></a>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="kr">final </span><span class="k">class</span> <span class="n">FinalOneTwoThree</span> <span class="o">=</span> <span class="n">OneTwoThree</span><span class="p">;</span>
+
+<span class="k">class</span> <span class="n">OneTwoFinalExtension</span> <span class="k">extends</span> <span class="n">FinalOneTwoThree</span> <span class="p">{</span>
+  <span class="n">OneTwoFinalExtension</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span> <span class="o">=</span> <span class="m">1</span> <span class="k">or</span> <span class="k">this</span> <span class="o">=</span> <span class="m">2</span>
+  <span class="p">}</span>
+
+  <span class="kt">string</span> <span class="n">getAString</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;One or two: &quot;</span> <span class="o">+</span> <span class="k">this</span><span class="p">.</span><span class="n">toString</span><span class="p">()</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>The member predicate <code class="docutils literal notranslate"><span class="pre">getAString()</span></code> shadows the original definition of <code class="docutils literal notranslate"><span class="pre">getAString()</span></code>
+from <code class="docutils literal notranslate"><span class="pre">OneTwoThree</span></code>.</p>
+<p>Different to overriding (see “<a class="reference internal" href="#overriding-member-predicates"><span class="std std-ref">Overriding member predicates</span></a>”),
+final extensions leave the extended type unchanged:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">from</span> <span class="n">OneTwoTree</span> <span class="n">o</span>
+<span class="k">select</span> <span class="n">o</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">getAString</span><span class="p">()</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">o</th>
+<th class="head"><code class="docutils literal notranslate"><span class="pre">getAString()</span></code> result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>One, two or three: 1</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>One, two or three: 2</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>One, two or three: 3</td>
+</tr>
+</tbody>
+</table>
+<p>However, when calling <code class="docutils literal notranslate"><span class="pre">getAString()</span></code> on <code class="docutils literal notranslate"><span class="pre">OneTwoFinalExtension</span></code>, the original definition is shadowed:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">from</span> <span class="n">OneTwoFinalExtension</span> <span class="n">o</span>
+<span class="k">select</span> <span class="n">o</span><span class="p">,</span> <span class="n">o</span><span class="p">.</span><span class="n">getAString</span><span class="p">()</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="89%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">o</th>
+<th class="head"><code class="docutils literal notranslate"><span class="pre">getAString()</span></code> result</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>1</td>
+<td>One or two: 1</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>One or two: 2</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="non-extending-subtypes">
+<span id="instanceof-extensions"></span><h3>Non-extending subtypes<a class="headerlink" href="#non-extending-subtypes" title="Permalink to this headline">¶</a></h3>
+<p>Besides extending base types, classes can also declare <code class="docutils literal notranslate"><span class="pre">instanceof</span></code> relationships with other types.
+Declaring a class as <code class="docutils literal notranslate"><span class="pre">instanceof</span> <span class="pre">Foo</span></code> is roughly equivalent to saying <code class="docutils literal notranslate"><span class="pre">this</span> <span class="pre">instanceof</span> <span class="pre">Foo</span></code> in the characteristic predicate.
+The main differences are that you can call methods on <code class="docutils literal notranslate"><span class="pre">Bar</span></code> via <code class="docutils literal notranslate"><span class="pre">super</span></code> and you can get better optimisation.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">Foo</span> <span class="k">extends</span> <span class="kt">int</span> <span class="p">{</span>
+  <span class="n">Foo</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="k">in</span> <span class="p">[</span><span class="m">1</span> <span class="p">..</span> <span class="m">10</span><span class="p">]</span> <span class="p">}</span>
+
+  <span class="kt">string</span> <span class="n">fooMethod</span><span class="p">()</span> <span class="p">{</span> <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">class</span> <span class="n">Bar</span> <span class="k">instanceof</span> <span class="n">Foo</span> <span class="p">{</span>
+  <span class="kt">string</span> <span class="n">toString</span><span class="p">()</span> <span class="p">{</span> <span class="k">result</span> <span class="o">=</span> <span class="k">super</span><span class="p">.</span><span class="n">fooMethod</span><span class="p">()</span> <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>In this example, the characteristic predicate from <code class="docutils literal notranslate"><span class="pre">Foo</span></code> also applies to <code class="docutils literal notranslate"><span class="pre">Bar</span></code>.
+However, <code class="docutils literal notranslate"><span class="pre">fooMethod</span></code> is not exposed in <code class="docutils literal notranslate"><span class="pre">Bar</span></code>, so the query <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">any(Bar</span> <span class="pre">b).fooMethod()</span></code>
+results in a compile time error. Note from the example that it is still possible to access
+methods from instanceof supertypes from within the specialising class with the <code class="docutils literal notranslate"><span class="pre">super</span></code> keyword.</p>
+<p>Crucially, the instanceof <strong>supertypes</strong> are not <strong>base types</strong>.
+This means that these supertypes do not participate in overriding, and any fields of such
+supertypes are not part of the new class.
+This has implications on method resolution when complex class hierarchies are involved.
+The following example demonstrates this.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span> <span class="k">class</span> <span class="n">Interface</span> <span class="k">extends</span> <span class="kt">int</span> <span class="p">{</span>
+   <span class="n">Interface</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="k">in</span> <span class="p">[</span><span class="m">1</span> <span class="p">..</span> <span class="m">10</span><span class="p">]</span> <span class="p">}</span>
+   <span class="kt">string</span> <span class="n">foo</span><span class="p">()</span> <span class="p">{</span> <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;&quot;</span> <span class="p">}</span>
+<span class="p">}</span>
+
+ <span class="k">class</span> <span class="n">Foo</span> <span class="k">extends</span> <span class="kt">int</span> <span class="p">{</span>
+   <span class="n">Foo</span><span class="p">()</span> <span class="p">{</span> <span class="k">this</span> <span class="k">in</span> <span class="p">[</span><span class="m">1</span> <span class="p">..</span> <span class="m">5</span><span class="p">]</span> <span class="p">}</span>
+   <span class="kt">string</span> <span class="n">foo</span><span class="p">()</span> <span class="p">{</span> <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;foo&quot;</span> <span class="p">}</span>
+ <span class="p">}</span>
+
+ <span class="k">class</span> <span class="n">Bar</span> <span class="k">extends</span> <span class="n">Interface</span> <span class="k">instanceof</span> <span class="n">Foo</span> <span class="p">{</span>
+   <span class="kr">override </span><span class="kt">string</span> <span class="n">foo</span><span class="p">()</span> <span class="p">{</span> <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;bar&quot;</span> <span class="p">}</span>
+ <span class="p">}</span>
+</pre></div>
+</div>
+<p>Here, the method <code class="docutils literal notranslate"><span class="pre">Bar::foo</span></code> does not override <code class="docutils literal notranslate"><span class="pre">Foo::foo</span></code>.
+Instead, it overrides only <code class="docutils literal notranslate"><span class="pre">Interface::foo</span></code>.
+This means that <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">any(Foo</span> <span class="pre">f).foo()</span></code> yields <code class="docutils literal notranslate"><span class="pre">foo</span></code>.
+Had <code class="docutils literal notranslate"><span class="pre">Bar</span></code> been defined as <code class="docutils literal notranslate"><span class="pre">extends</span> <span class="pre">Foo</span></code>, then <code class="docutils literal notranslate"><span class="pre">select</span> <span class="pre">any(Foo</span> <span class="pre">f).foo()</span></code> would yield <code class="docutils literal notranslate"><span class="pre">bar</span></code>.</p>
+</div>
+</div>
+<div class="section" id="character-types-and-class-domain-types">
+<span id="domain-types"></span><span id="character-types"></span><h2>Character types and class domain types<a class="headerlink" href="#character-types-and-class-domain-types" title="Permalink to this headline">¶</a></h2>
+<p>You can’t refer to these types directly, but each class in QL implicitly defines a character
+type and a class domain type. (These are rather more subtle concepts and don’t appear very
+often in practical query writing.)</p>
+<p>The <strong>character type</strong> of a QL class is the set of values satisfying the <a class="reference internal" href="#characteristic-predicates"><span class="std std-ref">characteristic
+predicate</span></a> of the class.
+It is a subset of the domain type. For concrete classes, a value belongs to
+the class if, and only if, it is in the character type. For <a class="reference internal" href="#abstract-classes"><span class="std std-ref">abstract classes</span></a>, a value must also belong to at least one of the subclasses, in addition to
+being in the character type.</p>
+<p>The <strong>domain type</strong> of a QL class is the intersection of the character types of all its supertypes, that is, a value
+belongs to the domain type if it belongs to every supertype. It occurs as the type of <code class="docutils literal notranslate"><span class="pre">this</span></code>
+in the characteristic predicate of a class.</p>
+</div>
+<div class="section" id="algebraic-datatypes-1">
+<span id="algebraic-datatypes"></span><span id="index-6"></span><h2>Algebraic datatypes<a class="headerlink" href="#algebraic-datatypes-1" title="Permalink to this headline">¶</a></h2>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>The syntax for algebraic datatypes is considered experimental and is subject to
+change. However, they appear in the <a class="reference external" href="https://github.com/github/codeql">standard QL libraries</a>
+so the following sections should help you understand those examples.</p>
+</div></blockquote>
+<p>An algebraic datatype is another form of user-defined type, declared with the keyword <code class="docutils literal notranslate"><span class="pre">newtype</span></code>.</p>
+<p>Algebraic datatypes are used for creating new values that are neither primitive values nor entities from
+the database. One example is to model flow nodes when analyzing data flow through a program.</p>
+<p>An algebraic datatype consists of a number of mutually disjoint <em>branches</em>, that each define
+a branch type. The algebraic datatype itself is the union of all the branch types.
+A branch can have arguments and a body. A new value of the branch type is produced for each set
+of values that satisfy the argument types and the body.</p>
+<p>A benefit of this is that each branch can have a different structure. For example, if you want
+to define an “option type” that either holds a value (such as a <code class="docutils literal notranslate"><span class="pre">Call</span></code>) or is empty, you
+could write this as follows:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">newtype</span> <span class="n">OptionCall</span> <span class="o">=</span> <span class="n">SomeCall</span><span class="p">(</span><span class="n">Call</span> <span class="n">c</span><span class="p">)</span> <span class="k">or</span> <span class="n">NoCall</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>This means that for every <code class="docutils literal notranslate"><span class="pre">Call</span></code> in the program, a distinct <code class="docutils literal notranslate"><span class="pre">SomeCall</span></code> value is produced.
+It also means that a unique <code class="docutils literal notranslate"><span class="pre">NoCall</span></code> value is produced.</p>
+<div class="section" id="defining-an-algebraic-datatype">
+<h3>Defining an algebraic datatype<a class="headerlink" href="#defining-an-algebraic-datatype" title="Permalink to this headline">¶</a></h3>
+<p>To define an algebraic datatype, use the following general syntax:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">newtype</span> <span class="o">&lt;</span><span class="n">TypeName</span><span class="o">&gt;</span> <span class="o">=</span> <span class="o">&lt;</span><span class="n">branches</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>The branch definitions have the following form:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">BranchName</span><span class="o">&gt;</span><span class="p">(</span><span class="o">&lt;</span><span class="n">arguments</span><span class="o">&gt;</span><span class="p">)</span> <span class="p">{</span> <span class="o">&lt;</span><span class="n">body</span><span class="o">&gt;</span> <span class="p">}</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li>The type name and the branch names must be <a class="reference external" href="https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers">identifiers</a>
+starting with an uppercase letter. Conventionally, they start with <code class="docutils literal notranslate"><span class="pre">T</span></code>.</li>
+<li>The different branches of an algebraic datatype are separated by <code class="docutils literal notranslate"><span class="pre">or</span></code>.</li>
+<li>The arguments to a branch, if any, are <a class="reference internal" href="variables.html#variable-declarations"><span class="std std-ref">variable declarations</span></a>
+separated by commas.</li>
+<li>The body of a branch is a <a class="reference internal" href="predicates.html#predicates"><span class="std std-ref">predicate</span></a> body. You can omit the branch body, in which case
+it defaults to <code class="docutils literal notranslate"><span class="pre">any()</span></code>.
+Note that branch bodies are evaluated fully, so they must be finite. They should be kept small
+for good performance.</li>
+</ul>
+<p>For example, the following algebraic datatype has three branches:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">newtype</span> <span class="n">T</span> <span class="o">=</span>
+  <span class="n">Type</span><span class="m">1</span><span class="p">(</span><span class="n">A</span> <span class="n">a</span><span class="p">,</span> <span class="n">B</span> <span class="n">b</span><span class="p">)</span> <span class="p">{</span> <span class="n">body</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="p">}</span>
+  <span class="k">or</span>
+  <span class="n">Type</span><span class="m">2</span><span class="p">(</span><span class="n">C</span> <span class="n">c</span><span class="p">)</span>
+  <span class="k">or</span>
+  <span class="n">Type</span><span class="m">3</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="standard-pattern-for-using-algebraic-datatypes">
+<h3>Standard pattern for using algebraic datatypes<a class="headerlink" href="#standard-pattern-for-using-algebraic-datatypes" title="Permalink to this headline">¶</a></h3>
+<p>Algebraic datatypes are different from <a class="reference internal" href="#classes"><span class="std std-ref">classes</span></a>. In particular, algebraic datatypes don’t have a
+<code class="docutils literal notranslate"><span class="pre">toString()</span></code> member predicate, so you can’t use them in a <a class="reference internal" href="queries.html#select-clauses"><span class="std std-ref">select clause</span></a>.</p>
+<p>Classes are often used to extend algebraic datatypes (and to provide a <code class="docutils literal notranslate"><span class="pre">toString()</span></code> predicate).
+In the standard QL language libraries, this is usually done as follows:</p>
+<ul class="simple">
+<li>Define a class <code class="docutils literal notranslate"><span class="pre">A</span></code> that extends the algebraic datatype and optionally declares <a class="reference internal" href="annotations.html#abstract"><span class="std std-ref">abstract</span></a>
+predicates.</li>
+<li>For each branch type, define a class <code class="docutils literal notranslate"><span class="pre">B</span></code> that extends both <code class="docutils literal notranslate"><span class="pre">A</span></code> and the branch type,
+and provide a definition for any abstract predicates from <code class="docutils literal notranslate"><span class="pre">A</span></code>.</li>
+<li>Annotate the algebraic datatype with <a class="reference internal" href="annotations.html#private"><span class="std std-ref">private</span></a>, and leave the classes public.</li>
+</ul>
+<p>For example, the following code snippet from the CodeQL data-flow library for C# defines classes
+for dealing with tainted or untainted values. In this case, it doesn’t make sense for
+<code class="docutils literal notranslate"><span class="pre">TaintType</span></code> to extend a database type. It is part of the taint analysis, not the underlying
+program, so it’s helpful to extend a new type (namely <code class="docutils literal notranslate"><span class="pre">TTaintType</span></code>):</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="kr">private </span><span class="k">newtype</span> <span class="n">TTaintType</span> <span class="o">=</span>
+  <span class="n">TExactValue</span><span class="p">()</span>
+  <span class="k">or</span>
+  <span class="n">TTaintedValue</span><span class="p">()</span>
+
+<span class="cp">/** Describes how data is tainted. */</span>
+<span class="k">class</span> <span class="n">TaintType</span> <span class="k">extends</span> <span class="n">TTaintType</span> <span class="p">{</span>
+  <span class="kt">string</span> <span class="n">toString</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span> <span class="o">=</span> <span class="n">TExactValue</span><span class="p">()</span> <span class="k">and</span> <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;exact&quot;</span>
+    <span class="k">or</span>
+    <span class="k">this</span> <span class="o">=</span> <span class="n">TTaintedValue</span><span class="p">()</span> <span class="k">and</span> <span class="k">result</span> <span class="o">=</span> <span class="s">&quot;tainted&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cp">/** A taint type where the data is untainted. */</span>
+<span class="k">class</span> <span class="n">Untainted</span> <span class="k">extends</span> <span class="n">TaintType</span><span class="p">,</span> <span class="n">TExactValue</span> <span class="p">{</span>
+<span class="p">}</span>
+
+<span class="cp">/** A taint type where the data is tainted. */</span>
+<span class="k">class</span> <span class="n">Tainted</span> <span class="k">extends</span> <span class="n">TaintType</span><span class="p">,</span> <span class="n">TTaintedValue</span> <span class="p">{</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="type-unions-1">
+<span id="type-unions"></span><h2>Type unions<a class="headerlink" href="#type-unions-1" title="Permalink to this headline">¶</a></h2>
+<p>Type unions are user-defined types that are declared with the keyword <code class="docutils literal notranslate"><span class="pre">class</span></code>.
+The syntax resembles <a class="reference internal" href="aliases.html#type-aliases"><span class="std std-ref">type aliases</span></a>, but with two or more type expressions on the right-hand side.</p>
+<p>Type unions are used for creating restricted subsets of an existing <a class="reference internal" href="#algebraic-datatypes"><span class="std std-ref">algebraic datatype</span></a>, by explicitly
+selecting a subset of the branches of that datatype and binding them to a new type.
+Type unions of <a class="reference internal" href="#database-types"><span class="std std-ref">database types</span></a> are also supported.</p>
+<p>You can use a type union to give a name to a subset of the branches from an algebraic datatype.
+In some cases, using the type union over the whole algebraic datatype can avoid spurious
+<a class="reference internal" href="recursion.html#recursion"><span class="std std-ref">recursion</span></a> in predicates.
+For example, the following construction is legal:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">newtype</span> <span class="n">InitialValueSource</span> <span class="o">=</span>
+  <span class="n">ExplicitInitialization</span><span class="p">(</span><span class="n">VarDecl</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">exists</span><span class="p">(</span><span class="n">v</span><span class="p">.</span><span class="n">getInitializer</span><span class="p">())</span> <span class="p">}</span> <span class="k">or</span>
+  <span class="n">ParameterPassing</span><span class="p">(</span><span class="n">Call</span> <span class="n">c</span><span class="p">,</span> <span class="kt">int</span> <span class="n">pos</span><span class="p">)</span> <span class="p">{</span> <span class="k">exists</span><span class="p">(</span><span class="n">c</span><span class="p">.</span><span class="n">getParameter</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span> <span class="p">}</span> <span class="k">or</span>
+  <span class="n">UnknownInitialGarbage</span><span class="p">(</span><span class="n">VarDecl</span> <span class="n">v</span><span class="p">)</span> <span class="p">{</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">DefiniteInitialization</span> <span class="n">di</span> <span class="o">|</span> <span class="n">v</span> <span class="o">=</span> <span class="n">target</span><span class="p">(</span><span class="n">di</span><span class="p">))</span> <span class="p">}</span>
+
+<span class="k">class</span> <span class="n">DefiniteInitialization</span> <span class="o">=</span> <span class="n">ParameterPassing</span> <span class="k">or</span> <span class="n">ExplicitInitialization</span><span class="p">;</span>
+
+<span class="n">VarDecl</span> <span class="n">target</span><span class="p">(</span><span class="n">DefiniteInitialization</span> <span class="n">di</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">di</span> <span class="o">=</span> <span class="n">ExplicitInitialization</span><span class="p">(</span><span class="k">result</span><span class="p">)</span> <span class="k">or</span>
+  <span class="k">exists</span><span class="p">(</span><span class="n">Call</span> <span class="n">c</span><span class="p">,</span> <span class="kt">int</span> <span class="n">pos</span> <span class="o">|</span> <span class="n">di</span> <span class="o">=</span> <span class="n">ParameterPassing</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">pos</span><span class="p">)</span> <span class="k">and</span>
+                            <span class="k">result</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">getCallee</span><span class="p">().</span><span class="n">getFormalArg</span><span class="p">(</span><span class="n">pos</span><span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>However, a similar implementation that restricts <code class="docutils literal notranslate"><span class="pre">InitialValueSource</span></code> in a class extension is not valid.
+If we had implemented <code class="docutils literal notranslate"><span class="pre">DefiniteInitialization</span></code> as a class extension instead, it would trigger a type test for <code class="docutils literal notranslate"><span class="pre">InitialValueSource</span></code>. This results in an illegal recursion <code class="docutils literal notranslate"><span class="pre">DefiniteInitialization</span> <span class="pre">-&gt;</span> <span class="pre">InitialValueSource</span> <span class="pre">-&gt;</span> <span class="pre">UnknownInitialGarbage</span> <span class="pre">-&gt;</span> <span class="pre">¬DefiniteInitialization</span></code> since <code class="docutils literal notranslate"><span class="pre">UnknownInitialGarbage</span></code> relies on <code class="docutils literal notranslate"><span class="pre">DefiniteInitialization</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="c1">// THIS WON&#39;T WORK: The implicit type check for InitialValueSource involves an illegal recursion</span>
+<span class="c1">// DefiniteInitialization -&gt; InitialValueSource -&gt; UnknownInitialGarbage -&gt; ¬DefiniteInitialization!</span>
+<span class="k">class</span> <span class="n">DefiniteInitialization</span> <span class="k">extends</span> <span class="n">InitialValueSource</span> <span class="p">{</span>
+  <span class="n">DefiniteInitialization</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">this</span> <span class="k">instanceof</span> <span class="n">ParameterPassing</span> <span class="k">or</span> <span class="k">this</span> <span class="k">instanceof</span> <span class="n">ExplicitInitialization</span>
+  <span class="p">}</span>
+  <span class="c1">// ...</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Type unions are supported from release 2.2.0 of the CodeQL CLI.</p>
+</div>
+<div class="section" id="database-types-1">
+<span id="database-types"></span><h2>Database types<a class="headerlink" href="#database-types-1" title="Permalink to this headline">¶</a></h2>
+<p>Database types are defined in the database schema. This means that they depend on the database
+that you are querying, and vary according to the data you are analyzing.</p>
+<p>For example, if you are querying a CodeQL database for a Java project, the database types may
+include <code class="docutils literal notranslate"><span class="pre">&#64;ifstmt</span></code>, representing an if statement in the Java code, and <code class="docutils literal notranslate"><span class="pre">&#64;variable</span></code>,
+representing a variable.</p>
+</div>
+<div class="section" id="type-compatibility-1">
+<span id="type-compatibility"></span><h2>Type compatibility<a class="headerlink" href="#type-compatibility-1" title="Permalink to this headline">¶</a></h2>
+<p>Not all types are compatible. For example, <code class="docutils literal notranslate"><span class="pre">4</span> <span class="pre">&lt;</span> <span class="pre">&quot;five&quot;</span></code> doesn’t make sense, since you can’t
+compare an <code class="docutils literal notranslate"><span class="pre">int</span></code> to a <code class="docutils literal notranslate"><span class="pre">string</span></code>.</p>
+<p>To decide when types are compatible, there are a number of different “type universes” in QL.</p>
+<dl class="docutils">
+<dt>The universes in QL are:</dt>
+<dd><ul class="first last simple">
+<li>One for each primitive type (except <code class="docutils literal notranslate"><span class="pre">int</span></code> and <code class="docutils literal notranslate"><span class="pre">float</span></code>, which are in the same universe
+of “numbers”).</li>
+<li>One for each database type.</li>
+<li>One for each branch of an algebraic datatype.</li>
+</ul>
+</dd>
+<dt>For example, when defining a <a class="reference internal" href="#classes"><span class="std std-ref">class</span></a> this leads to the following restrictions:</dt>
+<dd><ul class="first last simple">
+<li>A class can’t extend multiple primitive types.</li>
+<li>A class can’t extend multiple different database types.</li>
+<li>A class can’t extend multiple different branches of an algebraic datatype.</li>
+</ul>
+</dd>
+</dl>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

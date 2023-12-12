@@ -1,0 +1,416 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Javadoc &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Working with source locations" href="working-with-source-locations.html" />
+    <link rel="prev" title="Annotations in Java and Kotlin" href="annotations-in-java.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-java-code.html">Basic query for Java and Kotlin code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-java.html">CodeQL library for Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-java.html">Analyzing data flow in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types-in-java.html">Types in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overflow-prone-comparisons-in-java.html">Overflow-prone comparisons in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="navigating-the-call-graph.html">Navigating the call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="annotations-in-java.html">Annotations in Java and Kotlin</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Javadoc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="working-with-source-locations.html">Working with source locations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-java-programs.html">Abstract syntax tree classes for working with Java and Kotlin programs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customizing-library-models-for-java-and-kotlin.html">Customizing library models for Java and Kotlin</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-java.html"
+                accesskey="U">CodeQL for Java and Kotlin</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="javadoc-1">
+<span id="javadoc"></span><h1>Javadoc<a class="headerlink" href="#javadoc-1" title="Permalink to this headline">¶</a></h1>
+<p>You can use CodeQL to find errors in Javadoc comments in Java code.</p>
+<div class="section" id="about-analyzing-javadoc">
+<h2>About analyzing Javadoc<a class="headerlink" href="#about-analyzing-javadoc" title="Permalink to this headline">¶</a></h2>
+<p>To access Javadoc associated with a program element, we use member predicate <code class="docutils literal notranslate"><span class="pre">getDoc</span></code> of class <code class="docutils literal notranslate"><span class="pre">Element</span></code>, which returns a <code class="docutils literal notranslate"><span class="pre">Documentable</span></code>. Class <code class="docutils literal notranslate"><span class="pre">Documentable</span></code>, in turn, offers a member predicate <code class="docutils literal notranslate"><span class="pre">getJavadoc</span></code> to retrieve the Javadoc attached to the element in question, if any.</p>
+<p>Javadoc comments are represented by class <code class="docutils literal notranslate"><span class="pre">Javadoc</span></code>, which provides a view of the comment as a tree of <code class="docutils literal notranslate"><span class="pre">JavadocElement</span></code> nodes. Each <code class="docutils literal notranslate"><span class="pre">JavadocElement</span></code> is either a <code class="docutils literal notranslate"><span class="pre">JavadocTag</span></code>, representing a tag, or a <code class="docutils literal notranslate"><span class="pre">JavadocText</span></code>, representing a piece of free-form text.</p>
+<p>The most important member predicates of class <code class="docutils literal notranslate"><span class="pre">Javadoc</span></code> are:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">getAChild</span></code> - retrieves a top-level <code class="docutils literal notranslate"><span class="pre">JavadocElement</span></code> node in the tree representation.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getVersion</span></code> - returns the value of the <code class="docutils literal notranslate"><span class="pre">&#64;version</span></code> tag, if any.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getAuthor</span></code> - returns the value of the <code class="docutils literal notranslate"><span class="pre">&#64;author</span></code> tag, if any.</li>
+</ul>
+<p>For example, the following query finds all classes that have both an <code class="docutils literal notranslate"><span class="pre">&#64;author</span></code> tag and a <code class="docutils literal notranslate"><span class="pre">&#64;version</span></code> tag, and returns this information:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Class</span> <span class="n">c</span><span class="p">,</span> <span class="n">Javadoc</span> <span class="n">jdoc</span><span class="p">,</span> <span class="kt">string</span> <span class="n">author</span><span class="p">,</span> <span class="kt">string</span> <span class="n">version</span>
+<span class="k">where</span> <span class="n">jdoc</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">getDoc</span><span class="p">().</span><span class="n">getJavadoc</span><span class="p">()</span> <span class="k">and</span>
+    <span class="n">author</span> <span class="o">=</span> <span class="n">jdoc</span><span class="p">.</span><span class="n">getAuthor</span><span class="p">()</span> <span class="k">and</span>
+    <span class="n">version</span> <span class="o">=</span> <span class="n">jdoc</span><span class="p">.</span><span class="n">getVersion</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">c</span><span class="p">,</span> <span class="n">author</span><span class="p">,</span> <span class="n">version</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">JavadocElement</span></code> defines member predicates <code class="docutils literal notranslate"><span class="pre">getAChild</span></code> and <code class="docutils literal notranslate"><span class="pre">getParent</span></code> to navigate up and down the tree of elements. It also provides a predicate <code class="docutils literal notranslate"><span class="pre">getTagName</span></code> to return the tag’s name, and a predicate <code class="docutils literal notranslate"><span class="pre">getText</span></code> to access the text associated with the tag.</p>
+<p>We could rewrite the above query to use this API instead of <code class="docutils literal notranslate"><span class="pre">getAuthor</span></code> and <code class="docutils literal notranslate"><span class="pre">getVersion</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Class</span> <span class="n">c</span><span class="p">,</span> <span class="n">Javadoc</span> <span class="n">jdoc</span><span class="p">,</span> <span class="n">JavadocTag</span> <span class="n">authorTag</span><span class="p">,</span> <span class="n">JavadocTag</span> <span class="n">versionTag</span>
+<span class="k">where</span> <span class="n">jdoc</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">getDoc</span><span class="p">().</span><span class="n">getJavadoc</span><span class="p">()</span> <span class="k">and</span>
+    <span class="n">authorTag</span><span class="p">.</span><span class="n">getTagName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;@author&quot;</span> <span class="k">and</span> <span class="n">authorTag</span><span class="p">.</span><span class="n">getParent</span><span class="p">()</span> <span class="o">=</span> <span class="n">jdoc</span> <span class="k">and</span>
+    <span class="n">versionTag</span><span class="p">.</span><span class="n">getTagName</span><span class="p">()</span> <span class="o">=</span> <span class="s">&quot;@version&quot;</span> <span class="k">and</span> <span class="n">versionTag</span><span class="p">.</span><span class="n">getParent</span><span class="p">()</span> <span class="o">=</span> <span class="n">jdoc</span>
+<span class="k">select</span> <span class="n">c</span><span class="p">,</span> <span class="n">authorTag</span><span class="p">.</span><span class="n">getText</span><span class="p">(),</span> <span class="n">versionTag</span><span class="p">.</span><span class="n">getText</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">JavadocTag</span></code> has several subclasses representing specific kinds of Javadoc tags:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">ParamTag</span></code> represents <code class="docutils literal notranslate"><span class="pre">&#64;param</span></code> tags; member predicate <code class="docutils literal notranslate"><span class="pre">getParamName</span></code> returns the name of the parameter being documented.</li>
+<li><code class="docutils literal notranslate"><span class="pre">ThrowsTag</span></code> represents <code class="docutils literal notranslate"><span class="pre">&#64;throws</span></code> tags; member predicate <code class="docutils literal notranslate"><span class="pre">getExceptionName</span></code> returns the name of the exception being documented.</li>
+<li><code class="docutils literal notranslate"><span class="pre">AuthorTag</span></code> represents <code class="docutils literal notranslate"><span class="pre">&#64;author</span></code> tags; member predicate <code class="docutils literal notranslate"><span class="pre">getAuthorName</span></code> returns the name of the author.</li>
+</ul>
+</div>
+<div class="section" id="example-finding-spurious-param-tags">
+<h2>Example: Finding spurious &#64;param tags<a class="headerlink" href="#example-finding-spurious-param-tags" title="Permalink to this headline">¶</a></h2>
+<p>As an example of using the CodeQL Javadoc API, let’s write a query that finds <code class="docutils literal notranslate"><span class="pre">&#64;param</span></code> tags that refer to a non-existent parameter.</p>
+<p>For example, consider this program:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">A</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">    * @param lst a list of strings</span>
+<span class="cm">    */</span>
+    <span class="kd">public</span> <span class="n">String</span> <span class="nf">get</span><span class="p">(</span><span class="n">List</span><span class="o">&lt;</span><span class="n">String</span><span class="o">&gt;</span> <span class="n">list</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">list</span><span class="p">.</span><span class="na">get</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Here, the <code class="docutils literal notranslate"><span class="pre">&#64;param</span></code> tag on <code class="docutils literal notranslate"><span class="pre">A.get</span></code> misspells the name of parameter <code class="docutils literal notranslate"><span class="pre">list</span></code> as <code class="docutils literal notranslate"><span class="pre">lst</span></code>. Our query should be able to find such cases.</p>
+<p>To begin with, we write a query that finds all callables (that is, methods or constructors) and their <code class="docutils literal notranslate"><span class="pre">&#64;param</span></code> tags:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Callable</span> <span class="n">c</span><span class="p">,</span> <span class="n">ParamTag</span> <span class="n">pt</span>
+<span class="k">where</span> <span class="n">c</span><span class="p">.</span><span class="n">getDoc</span><span class="p">().</span><span class="n">getJavadoc</span><span class="p">()</span> <span class="o">=</span> <span class="n">pt</span><span class="p">.</span><span class="n">getParent</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">c</span><span class="p">,</span> <span class="n">pt</span>
+</pre></div>
+</div>
+<p>It’s now easy to add another conjunct to the <code class="docutils literal notranslate"><span class="pre">where</span></code> clause, restricting the query to <code class="docutils literal notranslate"><span class="pre">&#64;param</span></code> tags that refer to a non-existent parameter: we simply need to require that no parameter of <code class="docutils literal notranslate"><span class="pre">c</span></code> has the name <code class="docutils literal notranslate"><span class="pre">pt.getParamName()</span></code>.</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Callable</span> <span class="n">c</span><span class="p">,</span> <span class="n">ParamTag</span> <span class="n">pt</span>
+<span class="k">where</span> <span class="n">c</span><span class="p">.</span><span class="n">getDoc</span><span class="p">().</span><span class="n">getJavadoc</span><span class="p">()</span> <span class="o">=</span> <span class="n">pt</span><span class="p">.</span><span class="n">getParent</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">c</span><span class="p">.</span><span class="n">getAParameter</span><span class="p">().</span><span class="n">hasName</span><span class="p">(</span><span class="n">pt</span><span class="p">.</span><span class="n">getParamName</span><span class="p">())</span>
+<span class="k">select</span> <span class="n">pt</span><span class="p">,</span> <span class="s">&quot;Spurious @param tag.&quot;</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="example-finding-spurious-throws-tags">
+<h2>Example: Finding spurious &#64;throws tags<a class="headerlink" href="#example-finding-spurious-throws-tags" title="Permalink to this headline">¶</a></h2>
+<p>A related, but somewhat more involved, problem is finding <code class="docutils literal notranslate"><span class="pre">&#64;throws</span></code> tags that refer to an exception that the method in question cannot actually throw.</p>
+<p>For example, consider this Java program:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">java.io.IOException</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">A</span> <span class="p">{</span>
+    <span class="cm">/**</span>
+<span class="cm">    * @throws IOException thrown if some IO operation fails</span>
+<span class="cm">    * @throws RuntimeException thrown if something else goes wrong</span>
+<span class="cm">    */</span>
+    <span class="kd">public</span> <span class="kt">void</span> <span class="nf">foo</span><span class="p">()</span> <span class="p">{</span>
+        <span class="c1">// ...</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notice that the Javadoc comment of <code class="docutils literal notranslate"><span class="pre">A.foo</span></code> documents two thrown exceptions: <code class="docutils literal notranslate"><span class="pre">IOException</span></code> and <code class="docutils literal notranslate"><span class="pre">RuntimeException</span></code>. The former is clearly spurious: <code class="docutils literal notranslate"><span class="pre">A.foo</span></code> doesn’t have a <code class="docutils literal notranslate"><span class="pre">throws</span> <span class="pre">IOException</span></code> clause, and therefore can’t throw this kind of exception. On the other hand, <code class="docutils literal notranslate"><span class="pre">RuntimeException</span></code> is an unchecked exception, so it can be thrown even if there is no explicit <code class="docutils literal notranslate"><span class="pre">throws</span></code> clause listing it. So our query should flag the <code class="docutils literal notranslate"><span class="pre">&#64;throws</span></code> tag for <code class="docutils literal notranslate"><span class="pre">IOException</span></code>, but not the one for <code class="docutils literal notranslate"><span class="pre">RuntimeException.</span></code></p>
+<p>Remember that the CodeQL library represents <code class="docutils literal notranslate"><span class="pre">&#64;throws</span></code> tags using class <code class="docutils literal notranslate"><span class="pre">ThrowsTag</span></code>. This class doesn’t provide a member predicate for determining the exception type that is being documented, so we first need to implement our own version. A simple version might look like this:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="n">RefType</span> <span class="n">getDocumentedException</span><span class="p">(</span><span class="n">ThrowsTag</span> <span class="n">tt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">result</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">getExceptionName</span><span class="p">())</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Similarly, <code class="docutils literal notranslate"><span class="pre">Callable</span></code> doesn’t come with a member predicate for querying all exceptions that the method or constructor may possibly throw. We can, however, implement this ourselves by using <code class="docutils literal notranslate"><span class="pre">getAnException</span></code> to find all <code class="docutils literal notranslate"><span class="pre">throws</span></code> clauses of the callable, and then use <code class="docutils literal notranslate"><span class="pre">getType</span></code> to resolve the corresponding exception types:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">predicate</span> <span class="n">mayThrow</span><span class="p">(</span><span class="n">Callable</span> <span class="n">c</span><span class="p">,</span> <span class="n">RefType</span> <span class="n">exn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">exn</span><span class="p">.</span><span class="n">getASupertype</span><span class="o">*</span><span class="p">()</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">getAnException</span><span class="p">().</span><span class="n">getType</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Note the use of <code class="docutils literal notranslate"><span class="pre">getASupertype*</span></code> to find both exceptions declared in a <code class="docutils literal notranslate"><span class="pre">throws</span></code> clause and their subtypes. For instance, if a method has a <code class="docutils literal notranslate"><span class="pre">throws</span> <span class="pre">IOException</span></code> clause, it may throw <code class="docutils literal notranslate"><span class="pre">MalformedURLException</span></code>, which is a subtype of <code class="docutils literal notranslate"><span class="pre">IOException</span></code>.</p>
+<p>Now we can write a query for finding all callables <code class="docutils literal notranslate"><span class="pre">c</span></code> and <code class="docutils literal notranslate"><span class="pre">&#64;throws</span></code> tags <code class="docutils literal notranslate"><span class="pre">tt</span></code> such that:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">tt</span></code> belongs to a Javadoc comment attached to <code class="docutils literal notranslate"><span class="pre">c</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">c</span></code> can’t throw the exception documented by <code class="docutils literal notranslate"><span class="pre">tt</span></code>.</li>
+</ul>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="c1">// Insert the definitions from above</span>
+
+<span class="k">from</span> <span class="n">Callable</span> <span class="n">c</span><span class="p">,</span> <span class="n">ThrowsTag</span> <span class="n">tt</span><span class="p">,</span> <span class="n">RefType</span> <span class="n">exn</span>
+<span class="k">where</span> <span class="n">c</span><span class="p">.</span><span class="n">getDoc</span><span class="p">().</span><span class="n">getJavadoc</span><span class="p">()</span> <span class="o">=</span> <span class="n">tt</span><span class="p">.</span><span class="n">getParent</span><span class="o">+</span><span class="p">()</span> <span class="k">and</span>
+    <span class="n">exn</span> <span class="o">=</span> <span class="n">getDocumentedException</span><span class="p">(</span><span class="n">tt</span><span class="p">)</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">mayThrow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">exn</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">tt</span><span class="p">,</span> <span class="s">&quot;Spurious @throws tag.&quot;</span>
+</pre></div>
+</div>
+<div class="section" id="improvements">
+<h3>Improvements<a class="headerlink" href="#improvements" title="Permalink to this headline">¶</a></h3>
+<p>Currently, there are two problems with this query:</p>
+<ol class="arabic simple">
+<li><code class="docutils literal notranslate"><span class="pre">getDocumentedException</span></code> is too liberal: it will return <em>any</em> reference type with the right name, even if it’s in a different package and not actually visible in the current compilation unit.</li>
+<li><code class="docutils literal notranslate"><span class="pre">mayThrow</span></code> is too restrictive: it doesn’t account for unchecked exceptions, which do not need to be declared.</li>
+</ol>
+<p>To see why the former is a problem, consider this program:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">IOException</span> <span class="kd">extends</span> <span class="n">Exception</span> <span class="p">{}</span>
+
+<span class="kd">class</span> <span class="nc">B</span> <span class="p">{</span>
+    <span class="cm">/** @throws IOException an IO exception */</span>
+    <span class="kt">void</span> <span class="nf">bar</span><span class="p">()</span> <span class="kd">throws</span> <span class="n">IOException</span> <span class="p">{}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This program defines its own class <code class="docutils literal notranslate"><span class="pre">IOException</span></code>, which is unrelated to the class <code class="docutils literal notranslate"><span class="pre">java.io.IOException</span></code> in the standard library: they are in different packages. Our <code class="docutils literal notranslate"><span class="pre">getDocumentedException</span></code> predicate doesn’t check packages, however, so it will consider the <code class="docutils literal notranslate"><span class="pre">&#64;throws</span></code> clause to refer to both <code class="docutils literal notranslate"><span class="pre">IOException</span></code> classes, and thus flag the <code class="docutils literal notranslate"><span class="pre">&#64;param</span></code> tag as spurious, since <code class="docutils literal notranslate"><span class="pre">B.bar</span></code> can’t actually throw <code class="docutils literal notranslate"><span class="pre">java.io.IOException</span></code>.</p>
+<p>As an example of the second problem, method <code class="docutils literal notranslate"><span class="pre">A.foo</span></code> from our previous example was annotated with a <code class="docutils literal notranslate"><span class="pre">&#64;throws</span> <span class="pre">RuntimeException</span></code> tag. Our current version of <code class="docutils literal notranslate"><span class="pre">mayThrow</span></code>, however, would think that <code class="docutils literal notranslate"><span class="pre">A.foo</span></code> can’t throw a <code class="docutils literal notranslate"><span class="pre">RuntimeException</span></code>, and thus flag the tag as spurious.</p>
+<p>We can make <code class="docutils literal notranslate"><span class="pre">mayThrow</span></code> less restrictive by introducing a new class to represent unchecked exceptions, which are just the subtypes of <code class="docutils literal notranslate"><span class="pre">java.lang.RuntimeException</span></code> and <code class="docutils literal notranslate"><span class="pre">java.lang.Error</span></code>:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">UncheckedException</span> <span class="k">extends</span> <span class="n">RefType</span> <span class="p">{</span>
+    <span class="n">UncheckedException</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">getASupertype</span><span class="o">*</span><span class="p">().</span><span class="n">hasQualifiedName</span><span class="p">(</span><span class="s">&quot;java.lang&quot;</span><span class="p">,</span> <span class="s">&quot;RuntimeException&quot;</span><span class="p">)</span> <span class="k">or</span>
+        <span class="k">this</span><span class="p">.</span><span class="n">getASupertype</span><span class="o">*</span><span class="p">().</span><span class="n">hasQualifiedName</span><span class="p">(</span><span class="s">&quot;java.lang&quot;</span><span class="p">,</span> <span class="s">&quot;Error&quot;</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now we incorporate this new class into our <code class="docutils literal notranslate"><span class="pre">mayThrow</span></code> predicate:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">predicate</span> <span class="n">mayThrow</span><span class="p">(</span><span class="n">Callable</span> <span class="n">c</span><span class="p">,</span> <span class="n">RefType</span> <span class="n">exn</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">exn</span> <span class="k">instanceof</span> <span class="n">UncheckedException</span> <span class="k">or</span>
+    <span class="n">exn</span><span class="p">.</span><span class="n">getASupertype</span><span class="o">*</span><span class="p">()</span> <span class="o">=</span> <span class="n">c</span><span class="p">.</span><span class="n">getAnException</span><span class="p">().</span><span class="n">getType</span><span class="p">()</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Fixing <code class="docutils literal notranslate"><span class="pre">getDocumentedException</span></code> is more complicated, but we can easily cover three common cases:</p>
+<ol class="arabic simple">
+<li>The <code class="docutils literal notranslate"><span class="pre">&#64;throws</span></code> tag specifies the fully qualified name of the exception.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">&#64;throws</span></code> tag refers to a type in the same package.</li>
+<li>The <code class="docutils literal notranslate"><span class="pre">&#64;throws</span></code> tag refers to a type that is imported by the current compilation unit.</li>
+</ol>
+<p>The first case can be covered by changing <code class="docutils literal notranslate"><span class="pre">getDocumentedException</span></code> to use the qualified name of the <code class="docutils literal notranslate"><span class="pre">&#64;throws</span></code> tag. To handle the second and the third case, we can introduce a new predicate <code class="docutils literal notranslate"><span class="pre">visibleIn</span></code> that checks whether a reference type is visible in a compilation unit, either by virtue of belonging to the same package or by being explicitly imported. We then rewrite <code class="docutils literal notranslate"><span class="pre">getDocumentedException</span></code> as:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">predicate</span> <span class="n">visibleIn</span><span class="p">(</span><span class="n">CompilationUnit</span> <span class="n">cu</span><span class="p">,</span> <span class="n">RefType</span> <span class="n">tp</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">cu</span><span class="p">.</span><span class="n">getPackage</span><span class="p">()</span> <span class="o">=</span> <span class="n">tp</span><span class="p">.</span><span class="n">getPackage</span><span class="p">()</span>
+    <span class="k">or</span>
+    <span class="k">exists</span><span class="p">(</span><span class="n">ImportType</span> <span class="n">it</span> <span class="o">|</span> <span class="n">it</span><span class="p">.</span><span class="n">getCompilationUnit</span><span class="p">()</span> <span class="o">=</span> <span class="n">cu</span> <span class="o">|</span> <span class="n">it</span><span class="p">.</span><span class="n">getImportedType</span><span class="p">()</span> <span class="o">=</span> <span class="n">tp</span><span class="p">)</span>
+<span class="p">}</span>
+
+<span class="n">RefType</span> <span class="n">getDocumentedException</span><span class="p">(</span><span class="n">ThrowsTag</span> <span class="n">tt</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">result</span><span class="p">.</span><span class="n">getQualifiedName</span><span class="p">()</span> <span class="o">=</span> <span class="n">tt</span><span class="p">.</span><span class="n">getExceptionName</span><span class="p">()</span>
+    <span class="k">or</span>
+    <span class="p">(</span><span class="k">result</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">getExceptionName</span><span class="p">())</span> <span class="k">and</span> <span class="n">visibleIn</span><span class="p">(</span><span class="n">tt</span><span class="p">.</span><span class="n">getFile</span><span class="p">(),</span> <span class="k">result</span><span class="p">))</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>This query should find many fewer, more interesting results.</p>
+<p>Currently, <code class="docutils literal notranslate"><span class="pre">visibleIn</span></code> only considers single-type imports, but you could extend it with support for other kinds of imports.</p>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/src">CodeQL queries for Java</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/examples">Example queries for Java</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/java/">CodeQL library reference for Java</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

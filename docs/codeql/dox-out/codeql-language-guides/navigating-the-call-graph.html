@@ -1,0 +1,373 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Navigating the call graph &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Annotations in Java and Kotlin" href="annotations-in-java.html" />
+    <link rel="prev" title="Overflow-prone comparisons in Java and Kotlin" href="overflow-prone-comparisons-in-java.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-java-code.html">Basic query for Java and Kotlin code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-java.html">CodeQL library for Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-java.html">Analyzing data flow in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types-in-java.html">Types in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overflow-prone-comparisons-in-java.html">Overflow-prone comparisons in Java and Kotlin</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Navigating the call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="annotations-in-java.html">Annotations in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="javadoc.html">Javadoc</a></li>
+<li class="toctree-l3"><a class="reference internal" href="working-with-source-locations.html">Working with source locations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-java-programs.html">Abstract syntax tree classes for working with Java and Kotlin programs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customizing-library-models-for-java-and-kotlin.html">Customizing library models for Java and Kotlin</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-java.html"
+                accesskey="U">CodeQL for Java and Kotlin</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="navigating-the-call-graph-1">
+<span id="navigating-the-call-graph"></span><h1>Navigating the call graph<a class="headerlink" href="#navigating-the-call-graph-1" title="Permalink to this headline">¶</a></h1>
+<p>CodeQL has classes for identifying code that calls other code, and code that can be called from elsewhere. This allows you to find, for example, methods that are never used.</p>
+<div class="section" id="call-graph-classes">
+<h2>Call graph classes<a class="headerlink" href="#call-graph-classes" title="Permalink to this headline">¶</a></h2>
+<p>The CodeQL library for Java/Kotlin provides two abstract classes for representing a program’s call graph: <code class="docutils literal notranslate"><span class="pre">Callable</span></code> and <code class="docutils literal notranslate"><span class="pre">Call</span></code>. The former is simply the common superclass of <code class="docutils literal notranslate"><span class="pre">Method</span></code> and <code class="docutils literal notranslate"><span class="pre">Constructor</span></code>, the latter is a common superclass of <code class="docutils literal notranslate"><span class="pre">MethodAccess</span></code>, <code class="docutils literal notranslate"><span class="pre">ClassInstanceExpression</span></code>, <code class="docutils literal notranslate"><span class="pre">ThisConstructorInvocationStmt</span></code> and <code class="docutils literal notranslate"><span class="pre">SuperConstructorInvocationStmt</span></code>. Simply put, a <code class="docutils literal notranslate"><span class="pre">Callable</span></code> is something that can be invoked, and a <code class="docutils literal notranslate"><span class="pre">Call</span></code> is something that invokes a <code class="docutils literal notranslate"><span class="pre">Callable</span></code>.</p>
+<p>For example, in the following program all callables and calls have been annotated with comments:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kd">class</span> <span class="nc">Super</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+
+    <span class="c1">// callable</span>
+    <span class="kd">public</span> <span class="nf">Super</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">(</span><span class="mi">23</span><span class="p">);</span>       <span class="c1">// call</span>
+    <span class="p">}</span>
+
+    <span class="c1">// callable</span>
+    <span class="kd">public</span> <span class="nf">Super</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">this</span><span class="p">.</span><span class="na">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// callable</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getX</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+    <span class="kd">class</span> <span class="nc">Sub</span> <span class="kd">extends</span> <span class="n">Super</span> <span class="p">{</span>
+    <span class="c1">// callable</span>
+    <span class="kd">public</span> <span class="nf">Sub</span><span class="p">(</span><span class="kt">int</span> <span class="n">x</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">super</span><span class="p">(</span><span class="n">x</span><span class="o">+</span><span class="mi">19</span><span class="p">);</span>    <span class="c1">// call</span>
+    <span class="p">}</span>
+
+    <span class="c1">// callable</span>
+    <span class="kd">public</span> <span class="kt">int</span> <span class="nf">getX</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">return</span> <span class="n">x</span><span class="o">-</span><span class="mi">19</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">Client</span> <span class="p">{</span>
+    <span class="c1">// callable</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">Super</span> <span class="n">s</span> <span class="o">=</span> <span class="k">new</span> <span class="n">Sub</span><span class="p">(</span><span class="mi">42</span><span class="p">);</span>  <span class="c1">// call</span>
+        <span class="n">s</span><span class="p">.</span><span class="na">getX</span><span class="p">();</span>               <span class="c1">// call</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Class <code class="docutils literal notranslate"><span class="pre">Call</span></code> provides two call graph navigation predicates:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">getCallee</span></code> returns the <code class="docutils literal notranslate"><span class="pre">Callable</span></code> that this call (statically) resolves to; note that for a call to an instance (that is, non-static) method, the actual method invoked at runtime may be some other method that overrides this method.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getCaller</span></code> returns the <code class="docutils literal notranslate"><span class="pre">Callable</span></code> of which this call is syntactically part.</li>
+</ul>
+<p>For instance, in our example <code class="docutils literal notranslate"><span class="pre">getCallee</span></code> of the second call in <code class="docutils literal notranslate"><span class="pre">Client.main</span></code> would return <code class="docutils literal notranslate"><span class="pre">Super.getX</span></code>. At runtime, though, this call would actually invoke <code class="docutils literal notranslate"><span class="pre">Sub.getX</span></code>.</p>
+<p>Class <code class="docutils literal notranslate"><span class="pre">Callable</span></code> defines a large number of member predicates; for our purposes, the two most important ones are:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">calls(Callable</span> <span class="pre">target)</span></code> succeeds if this callable contains a call whose callee is <code class="docutils literal notranslate"><span class="pre">target</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">polyCalls(Callable</span> <span class="pre">target)</span></code> succeeds if this callable may call <code class="docutils literal notranslate"><span class="pre">target</span></code> at runtime; this is the case if it contains a call whose callee is either <code class="docutils literal notranslate"><span class="pre">target</span></code> or a method that <code class="docutils literal notranslate"><span class="pre">target</span></code> overrides.</li>
+</ul>
+<p>In our example, <code class="docutils literal notranslate"><span class="pre">Client.main</span></code> calls the constructor <code class="docutils literal notranslate"><span class="pre">Sub(int)</span></code> and the method <code class="docutils literal notranslate"><span class="pre">Super.getX</span></code>; additionally, it <code class="docutils literal notranslate"><span class="pre">polyCalls</span></code> method <code class="docutils literal notranslate"><span class="pre">Sub.getX</span></code>.</p>
+</div>
+<div class="section" id="example-finding-unused-methods">
+<h2>Example: Finding unused methods<a class="headerlink" href="#example-finding-unused-methods" title="Permalink to this headline">¶</a></h2>
+<p>We can use the <code class="docutils literal notranslate"><span class="pre">Callable</span></code> class to write a query that finds methods that are not called by any other method:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Callable</span> <span class="n">callee</span>
+<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">Callable</span> <span class="n">caller</span> <span class="o">|</span> <span class="n">caller</span><span class="p">.</span><span class="n">polyCalls</span><span class="p">(</span><span class="n">callee</span><span class="p">))</span>
+<span class="k">select</span> <span class="n">callee</span>
+</pre></div>
+</div>
+<p>This simple query typically returns a large number of results.</p>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>We have to use <code class="docutils literal notranslate"><span class="pre">polyCalls</span></code> instead of <code class="docutils literal notranslate"><span class="pre">calls</span></code> here: we want to be reasonably sure that <code class="docutils literal notranslate"><span class="pre">callee</span></code> is not called, either directly or via overriding.</p>
+</div></blockquote>
+<p>Running this query on a typical Java/Kotlin project results in lots of hits in the Java/Kotlin standard library. This makes sense, since no single client program uses every method of the standard library. More generally, we may want to exclude methods and constructors from compiled libraries. We can use the predicate <code class="docutils literal notranslate"><span class="pre">fromSource</span></code> to check whether a compilation unit is a source file, and refine our query:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Callable</span> <span class="n">callee</span>
+<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">Callable</span> <span class="n">caller</span> <span class="o">|</span> <span class="n">caller</span><span class="p">.</span><span class="n">polyCalls</span><span class="p">(</span><span class="n">callee</span><span class="p">))</span> <span class="k">and</span>
+    <span class="n">callee</span><span class="p">.</span><span class="n">getCompilationUnit</span><span class="p">().</span><span class="n">fromSource</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">callee</span><span class="p">,</span> <span class="s">&quot;Not called.&quot;</span>
+</pre></div>
+</div>
+<p>This change reduces the number of results returned for most codebases.</p>
+<p>We might also notice several unused methods with the somewhat strange name <code class="docutils literal notranslate"><span class="pre">&lt;clinit&gt;</span></code>: these are class initializers; while they are not explicitly called anywhere in the code, they are called implicitly whenever the surrounding class is loaded. Hence it makes sense to exclude them from our query. While we are at it, we can also exclude finalizers, which are similarly invoked implicitly:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Callable</span> <span class="n">callee</span>
+<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">Callable</span> <span class="n">caller</span> <span class="o">|</span> <span class="n">caller</span><span class="p">.</span><span class="n">polyCalls</span><span class="p">(</span><span class="n">callee</span><span class="p">))</span> <span class="k">and</span>
+    <span class="n">callee</span><span class="p">.</span><span class="n">getCompilationUnit</span><span class="p">().</span><span class="n">fromSource</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;&lt;clinit&gt;&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;finalize&quot;</span><span class="p">)</span>
+<span class="k">select</span> <span class="n">callee</span><span class="p">,</span> <span class="s">&quot;Not called.&quot;</span>
+</pre></div>
+</div>
+<p>This also reduces the number of results returned by most codebases.</p>
+<p>We may also want to exclude public methods from our query, since they may be external API entry points:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Callable</span> <span class="n">callee</span>
+<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">Callable</span> <span class="n">caller</span> <span class="o">|</span> <span class="n">caller</span><span class="p">.</span><span class="n">polyCalls</span><span class="p">(</span><span class="n">callee</span><span class="p">))</span> <span class="k">and</span>
+    <span class="n">callee</span><span class="p">.</span><span class="n">getCompilationUnit</span><span class="p">().</span><span class="n">fromSource</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;&lt;clinit&gt;&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;finalize&quot;</span><span class="p">)</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">isPublic</span><span class="p">()</span>
+<span class="k">select</span> <span class="n">callee</span><span class="p">,</span> <span class="s">&quot;Not called.&quot;</span>
+</pre></div>
+</div>
+<p>This should have a more noticeable effect on the number of results returned.</p>
+<p>A further special case is non-public default constructors: in the singleton pattern, for example, a class is provided with private empty default constructor to prevent it from being instantiated. Since the very purpose of such constructors is their not being called, they should not be flagged up:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Callable</span> <span class="n">callee</span>
+<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">Callable</span> <span class="n">caller</span> <span class="o">|</span> <span class="n">caller</span><span class="p">.</span><span class="n">polyCalls</span><span class="p">(</span><span class="n">callee</span><span class="p">))</span> <span class="k">and</span>
+    <span class="n">callee</span><span class="p">.</span><span class="n">getCompilationUnit</span><span class="p">().</span><span class="n">fromSource</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;&lt;clinit&gt;&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;finalize&quot;</span><span class="p">)</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">isPublic</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">callee</span><span class="p">.(</span><span class="n">Constructor</span><span class="p">).</span><span class="n">getNumberOfParameters</span><span class="p">()</span> <span class="o">=</span> <span class="m">0</span>
+<span class="k">select</span> <span class="n">callee</span><span class="p">,</span> <span class="s">&quot;Not called.&quot;</span>
+</pre></div>
+</div>
+<p>This change has a large effect on the results for some projects but little effect on the results for others. Use of this pattern varies widely between different projects.</p>
+<p>Finally, on many Java projects there are methods that are invoked indirectly by reflection. So, while there are no calls invoking these methods, they are, in fact, used. It is in general very hard to identify such methods. A very common special case, however, is JUnit test methods, which are reflectively invoked by a test runner. The CodeQL library for Java has support for recognizing test classes of JUnit and other testing frameworks, which we can employ to filter out methods defined in such classes:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="k">from</span> <span class="n">Callable</span> <span class="n">callee</span>
+<span class="k">where</span> <span class="k">not</span> <span class="k">exists</span><span class="p">(</span><span class="n">Callable</span> <span class="n">caller</span> <span class="o">|</span> <span class="n">caller</span><span class="p">.</span><span class="n">polyCalls</span><span class="p">(</span><span class="n">callee</span><span class="p">))</span> <span class="k">and</span>
+    <span class="n">callee</span><span class="p">.</span><span class="n">getCompilationUnit</span><span class="p">().</span><span class="n">fromSource</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;&lt;clinit&gt;&quot;</span><span class="p">)</span> <span class="k">and</span> <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">hasName</span><span class="p">(</span><span class="s">&quot;finalize&quot;</span><span class="p">)</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">isPublic</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">callee</span><span class="p">.(</span><span class="n">Constructor</span><span class="p">).</span><span class="n">getNumberOfParameters</span><span class="p">()</span> <span class="o">=</span> <span class="m">0</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="n">callee</span><span class="p">.</span><span class="n">getDeclaringType</span><span class="p">()</span> <span class="k">instanceof</span> <span class="n">TestClass</span>
+<span class="k">select</span> <span class="n">callee</span><span class="p">,</span> <span class="s">&quot;Not called.&quot;</span>
+</pre></div>
+</div>
+<p>This should give a further reduction in the number of results returned.</p>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/src">CodeQL queries for Java</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/examples">Example queries for Java</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/java/">CodeQL library reference for Java</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

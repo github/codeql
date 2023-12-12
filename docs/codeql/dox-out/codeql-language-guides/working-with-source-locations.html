@@ -1,0 +1,391 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Working with source locations &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Abstract syntax tree classes for working with Java and Kotlin programs" href="abstract-syntax-tree-classes-for-working-with-java-programs.html" />
+    <link rel="prev" title="Javadoc" href="javadoc.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../writing-codeql-queries/index.html">Writing CodeQL queries</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">CodeQL language guides</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-cpp.html">CodeQL for C and C++</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-csharp.html">CodeQL for C#</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-go.html">CodeQL for Go</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-for-java.html">CodeQL for Java and Kotlin</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic-query-for-java-code.html">Basic query for Java and Kotlin code</a></li>
+<li class="toctree-l3"><a class="reference internal" href="codeql-library-for-java.html">CodeQL library for Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="analyzing-data-flow-in-java.html">Analyzing data flow in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="types-in-java.html">Types in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="overflow-prone-comparisons-in-java.html">Overflow-prone comparisons in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="navigating-the-call-graph.html">Navigating the call graph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="annotations-in-java.html">Annotations in Java and Kotlin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="javadoc.html">Javadoc</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Working with source locations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="abstract-syntax-tree-classes-for-working-with-java-programs.html">Abstract syntax tree classes for working with Java and Kotlin programs</a></li>
+<li class="toctree-l3"><a class="reference internal" href="customizing-library-models-for-java-and-kotlin.html">Customizing library models for Java and Kotlin</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-javascript.html">CodeQL for JavaScript and TypeScript</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-python.html">CodeQL for Python</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-ruby.html">CodeQL for Ruby</a></li>
+<li class="toctree-l2"><a class="reference internal" href="codeql-for-swift.html">CodeQL for Swift</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >CodeQL language guides</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-for-java.html"
+                accesskey="U">CodeQL for Java and Kotlin</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="working-with-source-locations-1">
+<span id="working-with-source-locations"></span><h1>Working with source locations<a class="headerlink" href="#working-with-source-locations-1" title="Permalink to this headline">¶</a></h1>
+<p>You can use the location of entities within Java/Kotlin code to look for potential errors. Locations allow you to deduce the presence, or absence, of white space which, in some cases, may indicate a problem.</p>
+<blockquote>
+<div><blockquote class="pull-quote">
+<div><p>Note</p>
+<p>CodeQL analysis for Kotlin is currently in beta. During the beta, analysis of Kotlin code,
+and the accompanying documentation, will not be as comprehensive as for other languages.</p>
+</div></blockquote>
+</div></blockquote>
+<div class="section" id="about-source-locations">
+<h2>About source locations<a class="headerlink" href="#about-source-locations" title="Permalink to this headline">¶</a></h2>
+<p>Java offers a rich set of operators with complex precedence rules, which are sometimes confusing to developers. For instance, the class <code class="docutils literal notranslate"><span class="pre">ByteBufferCache</span></code> in the OpenJDK Java compiler (which is a member class of <code class="docutils literal notranslate"><span class="pre">com.sun.tools.javac.util.BaseFileManager</span></code>) contains this code for allocating a buffer:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">ByteBuffer</span><span class="p">.</span><span class="na">allocate</span><span class="p">(</span><span class="n">capacity</span> <span class="o">+</span> <span class="n">capacity</span><span class="o">&gt;&gt;</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Presumably, the author meant to allocate a buffer that is 1.5 times the size indicated by the variable <code class="docutils literal notranslate"><span class="pre">capacity</span></code>. In fact, however, operator <code class="docutils literal notranslate"><span class="pre">+</span></code> binds tighter than operator <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>, so the expression <code class="docutils literal notranslate"><span class="pre">capacity</span> <span class="pre">+</span> <span class="pre">capacity&gt;&gt;1</span></code> is parsed as <code class="docutils literal notranslate"><span class="pre">(capacity</span> <span class="pre">+</span> <span class="pre">capacity)&gt;&gt;1</span></code>, which equals <code class="docutils literal notranslate"><span class="pre">capacity</span></code> (unless there is an arithmetic overflow).</p>
+<p>Note that the source layout gives a fairly clear indication of the intended meaning: there is more white space around <code class="docutils literal notranslate"><span class="pre">+</span></code> than around <code class="docutils literal notranslate"><span class="pre">&gt;&gt;</span></code>, suggesting that the latter is meant to bind more tightly.</p>
+<p>We’re going to develop a query that finds this kind of suspicious nesting, where the operator of the inner expression has more white space around it than the operator of the outer expression. This pattern may not necessarily indicate a bug, but at the very least it makes the code hard to read and prone to misinterpretation.</p>
+<p>White space is not directly represented in the CodeQL database, but we can deduce its presence from the location information associated with program elements and AST nodes. So, before we write our query, we need an understanding of source location management in the standard library for Java.</p>
+</div>
+<div class="section" id="location-api">
+<h2>Location API<a class="headerlink" href="#location-api" title="Permalink to this headline">¶</a></h2>
+<p>For every entity that has a representation in Java source code (including, in particular, program elements and AST nodes), the standard CodeQL library provides these predicates for accessing source location information:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">getLocation</span></code> returns a <code class="docutils literal notranslate"><span class="pre">Location</span></code> object describing the start and end position of the entity.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getFile</span></code> returns a <code class="docutils literal notranslate"><span class="pre">File</span></code> object representing the file containing the entity.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getTotalNumberOfLines</span></code> returns the number of lines the source code of the entity spans.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getNumberOfCommentLines</span></code> returns the number of comment lines.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getNumberOfLinesOfCode</span></code> returns the number of non-comment lines.</li>
+</ul>
+<p>For example, let’s assume this Java class is defined in the compilation unit <code class="docutils literal notranslate"><span class="pre">SayHello.java</span></code>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="kn">package</span> <span class="nn">pkg</span><span class="p">;</span>
+
+<span class="kd">class</span> <span class="nc">SayHello</span> <span class="p">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="nf">main</span><span class="p">(</span><span class="n">String</span><span class="o">[]</span> <span class="n">args</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">System</span><span class="p">.</span><span class="na">out</span><span class="p">.</span><span class="na">println</span><span class="p">(</span>
+            <span class="c1">// Display personalized message</span>
+            <span class="s">&quot;Hello, &quot;</span> <span class="o">+</span> <span class="n">args</span><span class="o">[</span><span class="mi">0</span><span class="o">]</span><span class="p">;</span>
+        <span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Invoking <code class="docutils literal notranslate"><span class="pre">getFile</span></code> on the expression statement in the body of <code class="docutils literal notranslate"><span class="pre">main</span></code> returns a <code class="docutils literal notranslate"><span class="pre">File</span></code> object representing the file <code class="docutils literal notranslate"><span class="pre">SayHello.java</span></code>. The statement spans four lines in total <code class="docutils literal notranslate"><span class="pre">(getTotalNumberOfLines</span></code>), of which one is a comment line (<code class="docutils literal notranslate"><span class="pre">getNumberOfCommentLines</span></code>), while three lines contain code (<code class="docutils literal notranslate"><span class="pre">getNumberOfLinesOfCode</span></code>).</p>
+<p>Class <code class="docutils literal notranslate"><span class="pre">Location</span></code> defines member predicates <code class="docutils literal notranslate"><span class="pre">getStartLine</span></code>, <code class="docutils literal notranslate"><span class="pre">getEndLine</span></code>, <code class="docutils literal notranslate"><span class="pre">getStartColumn</span></code> and <code class="docutils literal notranslate"><span class="pre">getEndColumn</span></code> to retrieve the line and column number an entity starts and ends at, respectively. Both lines and columns are counted starting from 1 (not 0), and the end position is inclusive, that is, it is the position of the last character belonging to the source code of the entity.</p>
+<p>In our example, the expression statement starts at line 5, column 3 (the first two characters on the line are tabs, which each count as one character), and it ends at line 8, column 4.</p>
+<p>Class <code class="docutils literal notranslate"><span class="pre">File</span></code> defines these member predicates:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">getAbsolutePath</span></code> returns the fully qualified name of the file.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getRelativePath</span></code> returns the path of the file relative to the base directory of the source code.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getExtension</span></code> returns the extension of the file.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getStem</span></code> returns the base name of the file, without its extension.</li>
+</ul>
+<p>In our example, assume file <code class="docutils literal notranslate"><span class="pre">A.java</span></code> is located in directory <code class="docutils literal notranslate"><span class="pre">/home/testuser/code/pkg</span></code>, where <code class="docutils literal notranslate"><span class="pre">/home/testuser/code</span></code> is the base directory of the program being analyzed. Then, a <code class="docutils literal notranslate"><span class="pre">File</span></code> object for <code class="docutils literal notranslate"><span class="pre">A.java</span></code> returns:</p>
+<ul class="simple">
+<li><code class="docutils literal notranslate"><span class="pre">getAbsolutePath</span></code> is <code class="docutils literal notranslate"><span class="pre">/home/testuser/code/pkg/A.java</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getRelativePath</span></code> is <code class="docutils literal notranslate"><span class="pre">pkg/A.java</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getExtension</span></code> is <code class="docutils literal notranslate"><span class="pre">java</span></code>.</li>
+<li><code class="docutils literal notranslate"><span class="pre">getStem</span></code> is <code class="docutils literal notranslate"><span class="pre">A</span></code>.</li>
+</ul>
+</div>
+<div class="section" id="determining-white-space-around-an-operator">
+<h2>Determining white space around an operator<a class="headerlink" href="#determining-white-space-around-an-operator" title="Permalink to this headline">¶</a></h2>
+<p>Let’s start by considering how to write a predicate that computes the total amount of white space surrounding the operator of a given binary expression. If <code class="docutils literal notranslate"><span class="pre">rcol</span></code> is the start column of the expression’s right operand and <code class="docutils literal notranslate"><span class="pre">lcol</span></code> is the end column of its left operand, then <code class="docutils literal notranslate"><span class="pre">rcol</span> <span class="pre">-</span> <span class="pre">(lcol+1)</span></code> gives us the total number of characters in between the two operands (note that we have to use <code class="docutils literal notranslate"><span class="pre">lcol+1</span></code> instead of <code class="docutils literal notranslate"><span class="pre">lcol</span></code> because end positions are inclusive).</p>
+<p>This number includes the length of the operator itself, which we need to subtract out. For this, we can use predicate <code class="docutils literal notranslate"><span class="pre">getOp</span></code>, which returns the operator string, surrounded by one white space on either side. Overall, the expression for computing the amount of white space around the operator of a binary expression <code class="docutils literal notranslate"><span class="pre">expr</span></code> is:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="n">rcol</span> <span class="o">-</span> <span class="p">(</span><span class="n">lcol</span><span class="o">+</span><span class="m">1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">expr</span><span class="p">.</span><span class="n">getOp</span><span class="p">().</span><span class="n">length</span><span class="p">()</span><span class="o">-</span><span class="m">2</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Clearly, however, this only works if the entire expression is on a single line, which we can check using predicate <code class="docutils literal notranslate"><span class="pre">getTotalNumberOfLines</span></code> introduced above. We are now in a position to define our predicate for computing white space around operators:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="kt">int</span> <span class="n">operatorWS</span><span class="p">(</span><span class="n">BinaryExpr</span> <span class="n">expr</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">exists</span><span class="p">(</span><span class="kt">int</span> <span class="n">lcol</span><span class="p">,</span> <span class="kt">int</span> <span class="n">rcol</span> <span class="o">|</span>
+        <span class="n">expr</span><span class="p">.</span><span class="n">getNumberOfLinesOfCode</span><span class="p">()</span> <span class="o">=</span> <span class="m">1</span> <span class="k">and</span>
+        <span class="n">lcol</span> <span class="o">=</span> <span class="n">expr</span><span class="p">.</span><span class="n">getLeftOperand</span><span class="p">().</span><span class="n">getLocation</span><span class="p">().</span><span class="n">getEndColumn</span><span class="p">()</span> <span class="k">and</span>
+        <span class="n">rcol</span> <span class="o">=</span> <span class="n">expr</span><span class="p">.</span><span class="n">getRightOperand</span><span class="p">().</span><span class="n">getLocation</span><span class="p">().</span><span class="n">getStartColumn</span><span class="p">()</span> <span class="k">and</span>
+        <span class="k">result</span> <span class="o">=</span> <span class="n">rcol</span> <span class="o">-</span> <span class="p">(</span><span class="n">lcol</span><span class="o">+</span><span class="m">1</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">expr</span><span class="p">.</span><span class="n">getOp</span><span class="p">().</span><span class="n">length</span><span class="p">()</span><span class="o">-</span><span class="m">2</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Notice that we use an <code class="docutils literal notranslate"><span class="pre">exists</span></code> to introduce our temporary variables <code class="docutils literal notranslate"><span class="pre">lcol</span></code> and <code class="docutils literal notranslate"><span class="pre">rcol</span></code>. You could write the predicate without them by just inlining <code class="docutils literal notranslate"><span class="pre">lcol</span></code> and <code class="docutils literal notranslate"><span class="pre">rcol</span></code> into their use, at some cost in readability.</p>
+</div>
+<div class="section" id="find-suspicious-nesting">
+<h2>Find suspicious nesting<a class="headerlink" href="#find-suspicious-nesting" title="Permalink to this headline">¶</a></h2>
+<p>Here’s a first version of our query:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="c1">// Insert predicate defined above</span>
+
+<span class="k">from</span> <span class="n">BinaryExpr</span> <span class="n">outer</span><span class="p">,</span> <span class="n">BinaryExpr</span> <span class="n">inner</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">wsouter</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wsinner</span>
+<span class="k">where</span> <span class="n">inner</span> <span class="o">=</span> <span class="n">outer</span><span class="p">.</span><span class="n">getAChildExpr</span><span class="p">()</span> <span class="k">and</span>
+    <span class="n">wsinner</span> <span class="o">=</span> <span class="n">operatorWS</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span> <span class="k">and</span> <span class="n">wsouter</span> <span class="o">=</span> <span class="n">operatorWS</span><span class="p">(</span><span class="n">outer</span><span class="p">)</span> <span class="k">and</span>
+    <span class="n">wsinner</span> <span class="o">&gt;</span> <span class="n">wsouter</span>
+<span class="k">select</span> <span class="n">outer</span><span class="p">,</span> <span class="s">&quot;Whitespace around nested operators contradicts precedence.&quot;</span>
+</pre></div>
+</div>
+<p>This query is likely to find results on most codebases.</p>
+<p>The first conjunct of the <code class="docutils literal notranslate"><span class="pre">where</span></code> clause restricts <code class="docutils literal notranslate"><span class="pre">inner</span></code> to be an operand of <code class="docutils literal notranslate"><span class="pre">outer</span></code>, the second conjunct binds <code class="docutils literal notranslate"><span class="pre">wsinner</span></code> and <code class="docutils literal notranslate"><span class="pre">wsouter</span></code>, while the last conjunct selects the suspicious cases.</p>
+<p>At first, we might be tempted to write <code class="docutils literal notranslate"><span class="pre">inner</span> <span class="pre">=</span> <span class="pre">outer.getAnOperand()</span></code> in the first conjunct. This, however, wouldn’t be quite correct: <code class="docutils literal notranslate"><span class="pre">getAnOperand</span></code> strips off any surrounding parentheses from its result, which is often useful, but not what we want here: if there are parentheses around the inner expression, then the programmer probably knew what they were doing, and the query should not flag this expression.</p>
+<div class="section" id="improving-the-query">
+<h3>Improving the query<a class="headerlink" href="#improving-the-query" title="Permalink to this headline">¶</a></h3>
+<p>If we run this initial query, we might notice some false positives arising from asymmetric white space. For instance, the following expression is flagged as suspicious, although it is unlikely to cause confusion in practice:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">i</span><span class="o">&lt;</span> <span class="n">start</span> <span class="o">+</span> <span class="mi">100</span>
+</pre></div>
+</div>
+<p>Note that our predicate <code class="docutils literal notranslate"><span class="pre">operatorWS</span></code> computes the <strong>total</strong> amount of white space around the operator, which, in this case, is one for the <code class="docutils literal notranslate"><span class="pre">&lt;</span></code> and two for the <code class="docutils literal notranslate"><span class="pre">+</span></code>. Ideally, we would like to exclude cases where the amount of white space before and after the operator are not the same. Currently, CodeQL databases don’t record enough information to figure this out, but as an approximation we could require that the total number of white space characters is even:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="c1">// Insert predicate definition from above</span>
+
+<span class="k">from</span> <span class="n">BinaryExpr</span> <span class="n">outer</span><span class="p">,</span> <span class="n">BinaryExpr</span> <span class="n">inner</span><span class="p">,</span>
+    <span class="kt">int</span> <span class="n">wsouter</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wsinner</span>
+<span class="k">where</span> <span class="n">inner</span> <span class="o">=</span> <span class="n">outer</span><span class="p">.</span><span class="n">getAChildExpr</span><span class="p">()</span> <span class="k">and</span>
+    <span class="n">wsinner</span> <span class="o">=</span> <span class="n">operatorWS</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span> <span class="k">and</span> <span class="n">wsouter</span> <span class="o">=</span> <span class="n">operatorWS</span><span class="p">(</span><span class="n">outer</span><span class="p">)</span> <span class="k">and</span>
+    <span class="n">wsinner</span> <span class="o">%</span> <span class="m">2</span> <span class="o">=</span> <span class="m">0</span> <span class="k">and</span> <span class="n">wsouter</span> <span class="o">%</span> <span class="m">2</span> <span class="o">=</span> <span class="m">0</span> <span class="k">and</span>
+    <span class="n">wsinner</span> <span class="o">&gt;</span> <span class="n">wsouter</span>
+<span class="k">select</span> <span class="n">outer</span><span class="p">,</span> <span class="s">&quot;Whitespace around nested operators contradicts precedence.&quot;</span>
+</pre></div>
+</div>
+<p>Any results will be refined by our changes to the query.</p>
+<p>Another source of false positives are associative operators: in an expression of the form <code class="docutils literal notranslate"><span class="pre">x</span> <span class="pre">+</span> <span class="pre">y+z</span></code>, the first plus is syntactically nested inside the second, since + in Java associates to the left; hence the expression is flagged as suspicious. But since + is associative to begin with, it does not matter which way around the operators are nested, so this is a false positive. To exclude these cases, let us define a new class identifying binary expressions with an associative operator:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="n">AssociativeOperator</span> <span class="k">extends</span> <span class="n">BinaryExpr</span> <span class="p">{</span>
+    <span class="n">AssociativeOperator</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">this</span> <span class="k">instanceof</span> <span class="n">AddExpr</span> <span class="k">or</span>
+        <span class="k">this</span> <span class="k">instanceof</span> <span class="n">MulExpr</span> <span class="k">or</span>
+        <span class="k">this</span> <span class="k">instanceof</span> <span class="n">BitwiseExpr</span> <span class="k">or</span>
+        <span class="k">this</span> <span class="k">instanceof</span> <span class="n">AndLogicalExpr</span> <span class="k">or</span>
+        <span class="k">this</span> <span class="k">instanceof</span> <span class="n">OrLogicalExpr</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p>Now we can extend our query to discard results where the outer and the inner expression both have the same, associative operator:</p>
+<div class="highlight-ql notranslate"><div class="highlight"><pre><span></span><span class="k">import</span> <span class="n">java</span>
+
+<span class="c1">// Insert predicate and class definitions from above</span>
+
+<span class="k">from</span> <span class="n">BinaryExpr</span> <span class="n">inner</span><span class="p">,</span> <span class="n">BinaryExpr</span> <span class="n">outer</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wsouter</span><span class="p">,</span> <span class="kt">int</span> <span class="n">wsinner</span>
+<span class="k">where</span> <span class="n">inner</span> <span class="o">=</span> <span class="n">outer</span><span class="p">.</span><span class="n">getAChildExpr</span><span class="p">()</span> <span class="k">and</span>
+    <span class="k">not</span> <span class="p">(</span><span class="n">inner</span><span class="p">.</span><span class="n">getOp</span><span class="p">()</span> <span class="o">=</span> <span class="n">outer</span><span class="p">.</span><span class="n">getOp</span><span class="p">()</span> <span class="k">and</span> <span class="n">outer</span> <span class="k">instanceof</span> <span class="n">AssociativeOperator</span><span class="p">)</span> <span class="k">and</span>
+    <span class="n">wsinner</span> <span class="o">=</span> <span class="n">operatorWS</span><span class="p">(</span><span class="n">inner</span><span class="p">)</span> <span class="k">and</span> <span class="n">wsouter</span> <span class="o">=</span> <span class="n">operatorWS</span><span class="p">(</span><span class="n">outer</span><span class="p">)</span> <span class="k">and</span>
+    <span class="n">wsinner</span> <span class="o">%</span> <span class="m">2</span> <span class="o">=</span> <span class="m">0</span> <span class="k">and</span> <span class="n">wsouter</span> <span class="o">%</span> <span class="m">2</span> <span class="o">=</span> <span class="m">0</span> <span class="k">and</span>
+    <span class="n">wsinner</span> <span class="o">&gt;</span> <span class="n">wsouter</span>
+<span class="k">select</span> <span class="n">outer</span><span class="p">,</span> <span class="s">&quot;Whitespace around nested operators contradicts precedence.&quot;</span>
+</pre></div>
+</div>
+<p>Notice that we again use <code class="docutils literal notranslate"><span class="pre">getOp</span></code>, this time to determine whether two binary expressions have the same operator. Running our improved query now finds the Java/Kotlin standard library bug described in the Overview. It also flags up the following suspicious code in <a class="reference external" href="https://hbase.apache.org/">Hadoop HBase</a>:</p>
+<div class="highlight-java notranslate"><div class="highlight"><pre><span></span><span class="n">KEY_SLAVE</span> <span class="o">=</span> <span class="n">tmp</span><span class="o">[</span> <span class="n">i</span><span class="o">+</span><span class="mi">1</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">]</span><span class="p">;</span>
+</pre></div>
+</div>
+<p>Whitespace suggests that the programmer meant to toggle <code class="docutils literal notranslate"><span class="pre">i</span></code> between zero and one, but in fact the expression is parsed as <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">(1%2)</span></code>, which is the same as <code class="docutils literal notranslate"><span class="pre">i</span> <span class="pre">+</span> <span class="pre">1</span></code>, so <code class="docutils literal notranslate"><span class="pre">i</span></code> is simply incremented.</p>
+</div>
+</div>
+<div class="section" id="further-reading">
+<h2>Further reading<a class="headerlink" href="#further-reading" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/src">CodeQL queries for Java</a></li>
+<li><a class="reference external" href="https://github.com/github/codeql/tree/main/java/ql/examples">Example queries for Java</a></li>
+<li><a class="reference external" href="https://codeql.github.com/codeql-standard-libraries/java/">CodeQL library reference for Java</a></li>
+</ul>
+<ul class="simple">
+<li>“<a class="reference internal" href="../ql-language-reference/index.html#ql-language-reference"><span class="std std-ref">QL language reference</span></a>”</li>
+<li>“<a class="reference internal" href="../codeql-overview/codeql-tools.html#codeql-tools"><span class="std std-ref">CodeQL tools</span></a>”</li>
+</ul>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>

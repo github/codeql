@@ -1,0 +1,562 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Query help files &#8212; CodeQL</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="shortcut icon" href="../_static/favicon.ico"/>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Defining the results of a query" href="defining-the-results-of-a-query.html" />
+    <link rel="prev" title="Metadata for CodeQL queries" href="metadata-for-codeql-queries.html" />
+
+<title>CodeQL docs</title>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+<link rel="stylesheet" href="../_static/primer.css" type="text/css" />
+
+
+  </head><body>
+<header class="Header">
+    <div class="Header-item--full">
+        <a href="https://codeql.github.com/docs" class="Header-link f2 d-flex flex-items-center">
+            <!-- <%= octicon "mark-github", class: "mr-2", height: 32 %> -->
+            <svg height="32" class="octicon octicon-mark-github mr-2" viewBox="0 0 16 16" version="1.1" width="32"
+                aria-hidden="true">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <span class="hide-sm">CodeQL documentation</span>
+        </a>
+    </div>
+    <div class="Header-item hide-sm hide-md">
+        <script src="https://addsearch.com/js/?key=93b4d287e2fc079a4089412b669785d5&categories=!0xhelp.semmle.com,0xcodeql.github.com,1xdocs,1xcodeql-standard-libraries,1xcodeql-query-help"></script>
+    </div>
+    <div class="Header-item">
+
+        <details class="dropdown details-reset details-overlay d-inline-block">
+            <summary class="btn bg-gray-dark text-white border" aria-haspopup="true">
+                CodeQL resources
+                <div class="dropdown-caret"></div>
+            </summary>
+
+            <ul class="dropdown-menu dropdown-menu-se dropdown-menu-dark">
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-overview">CodeQL overview</a></li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL tools
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-for-visual-studio-code">CodeQL for VS Code</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-cli">CodeQL CLI</a>
+                </li>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    CodeQL guides
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/writing-codeql-queries">Writing CodeQL queries</a></li>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/codeql-language-guides">CodeQL language guides</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Reference docs
+                </div>
+                <li><a class="dropdown-item" href="https://codeql.github.com/docs/ql-language-reference/">QL language
+                        reference</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-standard-libraries">CodeQL
+                        standard-libraries</a>
+                <li><a class="dropdown-item" href="https://codeql.github.com/codeql-query-help">CodeQL
+                        query help</a>
+                <li class="dropdown-divider" role="separator"></li>
+                <div class="dropdown-header">
+                    Source files
+                </div>
+                <li><a class="dropdown-item" href="https://github.com/github/codeql">CodeQL repository</a>
+            </ul>
+        </details>
+
+    </div>
+
+</header>
+<main class="bg-gray-light clearfix">
+<nav class="SideNav position-sticky top-0 col-lg-3 col-md-3 float-left p-4 hide-sm hide-md overflow-y-auto">
+
+    <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../codeql-overview/index.html">CodeQL overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-for-visual-studio-code/index.html">CodeQL for Visual Studio Code</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-cli/index.html">CodeQL CLI</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Writing CodeQL queries</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="codeql-queries.html">CodeQL queries</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="about-codeql-queries.html">About CodeQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metadata-for-codeql-queries.html">Metadata for CodeQL queries</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Query help files</a></li>
+<li class="toctree-l3"><a class="reference internal" href="defining-the-results-of-a-query.html">Defining the results of a query</a></li>
+<li class="toctree-l3"><a class="reference internal" href="providing-locations-in-codeql-queries.html">Providing locations in CodeQL queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="about-data-flow-analysis.html">About data flow analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="creating-path-queries.html">Creating path queries</a></li>
+<li class="toctree-l3"><a class="reference internal" href="troubleshooting-query-performance.html">Troubleshooting query performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="debugging-data-flow-queries-using-partial-flow.html">Debugging data-flow queries using partial flow</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="ql-tutorials.html">QL tutorials</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../codeql-language-guides/index.html">CodeQL language guides</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ql-language-reference/index.html">QL language reference</a></li>
+</ul>
+
+
+</nav>
+
+
+<div class="body col-sm-12 col-md-9 col-lg-9 float-left border-left">
+
+    <div class="hide-lg hide-xl px-4 pt-4">
+        
+<div class="related" role="navigation" aria-label="related navigation">
+    <ul>
+        <li class="nav-item nav-item-0"><a href="../contents.html">CodeQL</a> &#187;</li>
+        <li class="nav-item nav-item-1"><a href="index.html"
+                >Writing CodeQL queries</a> &#187;</li>
+        <li class="nav-item nav-item-2"><a href="codeql-queries.html"
+                accesskey="U">CodeQL queries</a> &#187;</li> 
+    </ul>
+</div>
+    </div>
+
+    <article class="p-4 col-lg-10 col-md-10 col-sm-12">
+        
+  <div class="section" id="query-help-files-1">
+<span id="query-help-files"></span><h1>Query help files<a class="headerlink" href="#query-help-files-1" title="Permalink to this headline">¶</a></h1>
+<p>Query help files tell users the purpose of a query, and recommend how to solve the potential problem the query finds.</p>
+<p>This topic provides detailed information on the structure of query help files.
+For more information about how to write useful query help in a style that is consistent with the standard CodeQL queries, see the <a class="reference external" href="https://github.com/github/codeql/blob/main/docs/query-help-style-guide.md">Query help style guide</a> on GitHub.</p>
+<blockquote class="pull-quote">
+<div><p>Note</p>
+<p>You can access the query help for CodeQL queries by visiting <a class="reference external" href="https://codeql.github.com/codeql-query-help">CodeQL query help</a>.
+You can also access the raw query help files in the <a class="reference external" href="https://github.com/github/codeql">GitHub repository</a>.
+For example, see the <a class="reference external" href="https://github.com/github/codeql/tree/main/javascript/ql/src/Security">JavaScript/TypeScript security queries</a> and <a class="reference external" href="https://github.com/github/codeql/tree/main/cpp/ql/src/Critical">C/C++ critical queries</a>.</p>
+</div></blockquote>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>Each query help file provides detailed information about the purpose and use of a query. When you write your own queries, we recommend that you also write query help files so that other users know what the queries do, and how they work.</p>
+</div>
+<div class="section" id="structure">
+<h2>Structure<a class="headerlink" href="#structure" title="Permalink to this headline">¶</a></h2>
+<p>Query help files are written using a custom XML format, and stored in a file with a <code class="docutils literal notranslate"><span class="pre">.qhelp</span></code> extension. Query help files must have the same base name as the query they describe, and must be located in the same directory. The basic structure is as follows:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE qhelp SYSTEM &quot;qhelp.dtd&quot;&gt;</span>
+<span class="nt">&lt;qhelp&gt;</span>
+    CONTAINS one or more section-level elements
+<span class="nt">&lt;/qhelp&gt;</span>
+</pre></div>
+</div>
+<p>The header and single top-level <code class="docutils literal notranslate"><span class="pre">qhelp</span></code> element are both mandatory.
+The following sections explain additional elements that you may include in your query help files.</p>
+<blockquote class="pull-quote">
+<div>Code scanning does not process <code class="docutils literal notranslate"><span class="pre">.qhelp</span></code> files for custom CodeQL queries, so to show
+query help for custom queries in the code scanning UI you must convert the <code class="docutils literal notranslate"><span class="pre">.qhelp</span></code> files to markdown
+and then include the markdown-rendered query help in SARIF files generated during an analysis.
+For more information, see
+“<a class="reference external" href="https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/analyzing-databases-with-the-codeql-cli#including-query-help-for-custom-codeql-queries-in-sarif-files">Analyzing databases with the CodeQL CLI</a>.”</div></blockquote>
+</div>
+<div class="section" id="section-level-elements">
+<h2>Section-level elements<a class="headerlink" href="#section-level-elements" title="Permalink to this headline">¶</a></h2>
+<p>Section-level elements are used to group the information in the help file into sections. Many sections have a heading, either defined by a <code class="docutils literal notranslate"><span class="pre">title</span></code> attribute or a default value. The following section-level elements are optional child elements of the <code class="docutils literal notranslate"><span class="pre">qhelp</span></code> element.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="9%" />
+<col width="18%" />
+<col width="11%" />
+<col width="63%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Element</th>
+<th class="head">Attributes</th>
+<th class="head">Children</th>
+<th class="head">Purpose of section</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">example</span></code></td>
+<td>None</td>
+<td>Any block element</td>
+<td>Demonstrate an example of code that violates the rule implemented by the query with guidance on how to fix it. Default heading.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">fragment</span></code></td>
+<td>None</td>
+<td>Any block element</td>
+<td>See “<a class="reference internal" href="#qhelp-inclusion"><span class="std std-ref">Query help inclusion</span></a>” below. No heading.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">hr</span></code></td>
+<td>None</td>
+<td>None</td>
+<td>A horizontal rule. No heading.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">include</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">src</span></code> The query help file to include.</td>
+<td>None</td>
+<td>Include a query help file at the location of this element. See “<a class="reference internal" href="#qhelp-inclusion"><span class="std std-ref">Query help inclusion</span></a>” below. No heading.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">overview</span></code></td>
+<td>None</td>
+<td>Any block element</td>
+<td>Overview of the purpose of the query. Typically this is the first section in a query document. No heading.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">recommendation</span></code></td>
+<td>None</td>
+<td>Any block element</td>
+<td>Recommend how to address any alerts that this query identifies. Default heading.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">references</span></code></td>
+<td>None</td>
+<td><code class="docutils literal notranslate"><span class="pre">li</span></code> elements</td>
+<td>Reference list. Typically this is the last section in a query document. Default heading.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">section</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">title</span></code> Title of the section</td>
+<td>Any block element</td>
+<td>General-purpose section with a heading defined by the <code class="docutils literal notranslate"><span class="pre">title</span></code> attribute.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">semmleNotes</span></code></td>
+<td>None</td>
+<td>Any block element</td>
+<td>Implementation notes about the query. This section is used only for queries that implement a rule defined by a third party. Default heading.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="block-elements">
+<h2>Block elements<a class="headerlink" href="#block-elements" title="Permalink to this headline">¶</a></h2>
+<p>The following elements are optional child elements of the <code class="docutils literal notranslate"><span class="pre">section</span></code>, <code class="docutils literal notranslate"><span class="pre">example</span></code>, <code class="docutils literal notranslate"><span class="pre">fragment</span></code>, <code class="docutils literal notranslate"><span class="pre">recommendation</span></code>, <code class="docutils literal notranslate"><span class="pre">overview</span></code>, and <code class="docutils literal notranslate"><span class="pre">semmleNotes</span></code> elements.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="11%" />
+<col width="32%" />
+<col width="16%" />
+<col width="40%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Element</th>
+<th class="head">Attributes</th>
+<th class="head">Children</th>
+<th class="head">Purpose of block</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">blockquote</span></code></td>
+<td>None</td>
+<td>Any block element</td>
+<td>Display a quoted paragraph.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">img</span></code></td>
+<td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">src</span></code> The image file to include.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">alt</span></code> Text for the image’s alt text.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">height</span></code> Optional, height of the image.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">width</span></code> Optional, the width of the image.</div>
+</div>
+</td>
+<td>None</td>
+<td>Display an image. The content of the image is in a separate image file.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">include</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">src</span></code> The query help file to include.</td>
+<td>None</td>
+<td>Include a query help file at the location of this element. See <a class="reference internal" href="#qhelp-inclusion"><span class="std std-ref">Query help inclusion</span></a> below for more information.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">ol</span></code></td>
+<td>None</td>
+<td><code class="docutils literal notranslate"><span class="pre">li</span></code></td>
+<td>Display an ordered list. See List elements below.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">p</span></code></td>
+<td>None</td>
+<td>Any inline content</td>
+<td>Display a paragraph, used as in HTML files.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">pre</span></code></td>
+<td>None</td>
+<td>Text</td>
+<td>Display text in a monospaced font with preformatted whitespace.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">sample</span></code></td>
+<td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">language</span></code> The language of the in-line code sample.</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">src</span></code> Optional, the file containing the sample code.</div>
+</div>
+</td>
+<td>Text</td>
+<td>Display sample code either defined as nested text in the <code class="docutils literal notranslate"><span class="pre">sample</span></code> element or defined in the <code class="docutils literal notranslate"><span class="pre">src</span></code> file specified. When <code class="docutils literal notranslate"><span class="pre">src</span></code> is specified, the language is inferred from the file extension. If <code class="docutils literal notranslate"><span class="pre">src</span></code> is omitted, then language must be provided and the sample code provided as nested text.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">table</span></code></td>
+<td>None</td>
+<td><code class="docutils literal notranslate"><span class="pre">tbody</span></code></td>
+<td>Display a table. See Tables below.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">ul</span></code></td>
+<td>None</td>
+<td><code class="docutils literal notranslate"><span class="pre">li</span></code></td>
+<td>Display an unordered list. See List elements below.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">warning</span></code></td>
+<td>None</td>
+<td>Text</td>
+<td>Display a warning that will be displayed very visibly on the resulting page. Such warnings are sometimes used on queries that are known to have low precision for many code bases; such queries are often disabled by default.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="list-elements">
+<h2>List elements<a class="headerlink" href="#list-elements" title="Permalink to this headline">¶</a></h2>
+<p>Query help files support two types of block elements for lists: <code class="docutils literal notranslate"><span class="pre">ul</span></code> and <code class="docutils literal notranslate"><span class="pre">ol</span></code>. Both block elements support only one child elements of the type <code class="docutils literal notranslate"><span class="pre">li</span></code>. Each <code class="docutils literal notranslate"><span class="pre">li</span></code> element contains either inline content or a block element.</p>
+</div>
+<div class="section" id="table-elements">
+<h2>Table elements<a class="headerlink" href="#table-elements" title="Permalink to this headline">¶</a></h2>
+<p>The <code class="docutils literal notranslate"><span class="pre">table</span></code> block element is used to include a table in a query help file. Each table includes a number of rows, each of which includes a number of cells. The data in the cells will be rendered as a grid.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="13%" />
+<col width="14%" />
+<col width="23%" />
+<col width="50%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Element</th>
+<th class="head">Attributes</th>
+<th class="head">Children</th>
+<th class="head">Purpose</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">tbody</span></code></td>
+<td>None</td>
+<td><code class="docutils literal notranslate"><span class="pre">tr</span></code></td>
+<td>Defines the top-level element of a table.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">tr</span></code></td>
+<td>None</td>
+<td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">th</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">td</span></code></div>
+</div>
+</td>
+<td>Defines one row of a table.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">td</span></code></td>
+<td>None</td>
+<td>Any inline content</td>
+<td>Defines one cell of a table row.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">th</span></code></td>
+<td>None</td>
+<td>Any inline content</td>
+<td>Defines one header cell of a table row.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="inline-content">
+<h2>Inline content<a class="headerlink" href="#inline-content" title="Permalink to this headline">¶</a></h2>
+<p>Inline content is used to define the content for paragraphs, list items, table cells, and similar elements. Inline content includes text in addition to the inline elements defined below:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="7%" />
+<col width="23%" />
+<col width="10%" />
+<col width="60%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Element</th>
+<th class="head">Attributes</th>
+<th class="head">Children</th>
+<th class="head">Purpose</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">a</span></code></td>
+<td><code class="docutils literal notranslate"><span class="pre">href</span></code> The URL of the link.</td>
+<td>text</td>
+<td>Defines hyperlink. When a user selects the child text, they will be redirected to the given URL.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">b</span></code></td>
+<td>None</td>
+<td>Inline content</td>
+<td>Defines content that should be displayed as bold face.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">code</span></code></td>
+<td>None</td>
+<td>Inline content</td>
+<td>Defines content representing code. It is typically shown in a monospace font.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">em</span></code></td>
+<td>None</td>
+<td>Inline content</td>
+<td>Defines content that should be emphasized, typically by italicizing it.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">i</span></code></td>
+<td>None</td>
+<td>Inline content</td>
+<td>Defines content that should be displayed as italics.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">img</span></code></td>
+<td><div class="first last line-block">
+<div class="line"><code class="docutils literal notranslate"><span class="pre">src</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">alt</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">height</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">width</span></code></div>
+</div>
+</td>
+<td>None</td>
+<td>Display an image. See the description above in Block elements.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">strong</span></code></td>
+<td>None</td>
+<td>Inline content</td>
+<td>Defines content that should be rendered more strongly, typically using bold face.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">sub</span></code></td>
+<td>None</td>
+<td>Inline content</td>
+<td>Defines content that should be rendered as subscript.</td>
+</tr>
+<tr class="row-even"><td><code class="docutils literal notranslate"><span class="pre">sup</span></code></td>
+<td>None</td>
+<td>Inline content</td>
+<td>Defines content that should be rendered as superscript.</td>
+</tr>
+<tr class="row-odd"><td><code class="docutils literal notranslate"><span class="pre">tt</span></code></td>
+<td>None</td>
+<td>Inline content</td>
+<td>Defines content that should be displayed with a monospace font.</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="query-help-inclusion">
+<span id="qhelp-inclusion"></span><h2>Query help inclusion<a class="headerlink" href="#query-help-inclusion" title="Permalink to this headline">¶</a></h2>
+<p>To reuse content between different help topics, you can store shared content in one query help file and then include it in a number of other query help files using the <code class="docutils literal notranslate"><span class="pre">include</span></code> element. The shared content can be stored either in the same directory as the including files, or in <code class="docutils literal notranslate"><span class="pre">SEMMLE_DIST/docs/include</span></code>.
+When a query help file is only included by other help files but does not belong to a specific query, it should have the file extension <code class="docutils literal notranslate"><span class="pre">.inc.qhelp</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">include</span></code> element can be used as a section or block element. The content of the query help file defined by the <code class="docutils literal notranslate"><span class="pre">src</span></code> attribute must contain elements that are appropriate to the location of the <code class="docutils literal notranslate"><span class="pre">include</span></code> element.</p>
+<div class="section" id="section-level-include-elements">
+<h3>Section-level include elements<a class="headerlink" href="#section-level-include-elements" title="Permalink to this headline">¶</a></h3>
+<p>Section-level <code class="docutils literal notranslate"><span class="pre">include</span></code> elements can be located beneath the top-level <code class="docutils literal notranslate"><span class="pre">qhelp</span></code> element. For example, in <a class="reference external" href="https://github.com/github/codeql/blob/main/csharp/ql/src/Security%20Features/CWE-079/StoredXSS.qhelp">StoredXSS.qhelp</a>, a full query help file is reused:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;qhelp&gt;</span>
+    <span class="nt">&lt;include</span> <span class="na">src=</span><span class="s">&quot;XSS.qhelp&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/qhelp&gt;</span>
+</pre></div>
+</div>
+<p>In this example, the <a class="reference external" href="https://github.com/github/codeql/blob/main/csharp/ql/src/Security%20Features/CWE-079/XSS.qhelp">XSS.qhelp</a> file must conform to the standard for a full query help file as described above. That is, the <code class="docutils literal notranslate"><span class="pre">qhelp</span></code> element may only contain non-<code class="docutils literal notranslate"><span class="pre">fragment</span></code>, section-level elements.</p>
+</div>
+<div class="section" id="block-level-include-elements">
+<h3>Block-level include elements<a class="headerlink" href="#block-level-include-elements" title="Permalink to this headline">¶</a></h3>
+<p>Block-level <code class="docutils literal notranslate"><span class="pre">include</span></code> elements can be included beneath section-level elements. For example, an <code class="docutils literal notranslate"><span class="pre">include</span></code> element is used beneath the <code class="docutils literal notranslate"><span class="pre">overview</span></code> section in <a class="reference external" href="https://github.com/github/codeql/blob/main/csharp/ql/src/Likely%20Bugs/ThreadUnsafeICryptoTransform.qhelp">ThreadUnsafeICryptoTransform.qhelp</a>:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="nt">&lt;qhelp&gt;</span>
+    <span class="nt">&lt;overview&gt;</span>
+        <span class="nt">&lt;include</span> <span class="na">src=</span><span class="s">&quot;ThreadUnsafeICryptoTransformOverview.inc.qhelp&quot;</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/overview&gt;</span>
+    ...
+<span class="nt">&lt;/qhelp&gt;</span>
+</pre></div>
+</div>
+<p>The included file, <a class="reference external" href="https://github.com/github/codeql/blob/main/csharp/ql/src/Likely%20Bugs/ThreadUnsafeICryptoTransformOverview.inc.qhelp">ThreadUnsafeICryptoTransformOverview.inc.qhelp</a>, may only contain one or more <code class="docutils literal notranslate"><span class="pre">fragment</span></code> sections. For example:</p>
+<div class="highlight-xml notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE qhelp SYSTEM &quot;qhelp.dtd&quot;&gt;</span>
+<span class="nt">&lt;qhelp&gt;</span>
+   <span class="nt">&lt;fragment&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+         ...
+      <span class="nt">&lt;/p&gt;</span>
+   <span class="nt">&lt;/fragment&gt;</span>
+<span class="nt">&lt;/qhelp&gt;</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+
+
+    </article>
+
+    <!-- GitHub footer, with links to terms and privacy statement -->
+    <div class="px-3 px-md-6 f6 py-4 d-sm-flex flex-justify-between flex-row-reverse flex-items-center border-top">
+        <ul class="list-style-none d-flex flex-items-center mb-3 mb-sm-0 lh-condensed-ultra">
+            <li class="mr-3">
+                <a href="https://twitter.com/github" title="GitHub on Twitter" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 273.5 222.3" class="d-block" height="18">
+                        <path
+                            d="M273.5 26.3a109.77 109.77 0 0 1-32.2 8.8 56.07 56.07 0 0 0 24.7-31 113.39 113.39 0 0 1-35.7 13.6 56.1 56.1 0 0 0-97 38.4 54 54 0 0 0 1.5 12.8A159.68 159.68 0 0 1 19.1 10.3a56.12 56.12 0 0 0 17.4 74.9 56.06 56.06 0 0 1-25.4-7v.7a56.11 56.11 0 0 0 45 55 55.65 55.65 0 0 1-14.8 2 62.39 62.39 0 0 1-10.6-1 56.24 56.24 0 0 0 52.4 39 112.87 112.87 0 0 1-69.7 24 119 119 0 0 1-13.4-.8 158.83 158.83 0 0 0 86 25.2c103.2 0 159.6-85.5 159.6-159.6 0-2.4-.1-4.9-.2-7.3a114.25 114.25 0 0 0 28.1-29.1"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.facebook.com/GitHub" title="GitHub on Facebook" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.3 15.4" class="d-block" height="18">
+                        <path
+                            d="M14.5 0H.8a.88.88 0 0 0-.8.9v13.6a.88.88 0 0 0 .8.9h7.3v-6h-2V7.1h2V5.4a2.87 2.87 0 0 1 2.5-3.1h.5a10.87 10.87 0 0 1 1.8.1v2.1h-1.3c-1 0-1.1.5-1.1 1.1v1.5h2.3l-.3 2.3h-2v5.9h3.9a.88.88 0 0 0 .9-.8V.8a.86.86 0 0 0-.8-.8z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3">
+                <a href="https://www.youtube.com/github" title="GitHub on YouTube" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19.17 13.6" class="d-block" height="16">
+                        <path
+                            d="M18.77 2.13A2.4 2.4 0 0 0 17.09.42C15.59 0 9.58 0 9.58 0a57.55 57.55 0 0 0-7.5.4A2.49 2.49 0 0 0 .39 2.13 26.27 26.27 0 0 0 0 6.8a26.15 26.15 0 0 0 .39 4.67 2.43 2.43 0 0 0 1.69 1.71c1.52.42 7.5.42 7.5.42a57.69 57.69 0 0 0 7.51-.4 2.4 2.4 0 0 0 1.68-1.71 25.63 25.63 0 0 0 .4-4.67 24 24 0 0 0-.4-4.69zM7.67 9.71V3.89l5 2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li class="mr-3 flex-self-start">
+                <a href="https://www.linkedin.com/company/github" title="GitHub on Linkedin" style="color: #959da5;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 19 18" class="d-block" height="18">
+                        <path
+                            d="M3.94 2A2 2 0 1 1 2 0a2 2 0 0 1 1.94 2zM4 5.48H0V18h4zm6.32 0H6.34V18h3.94v-6.57c0-3.66 4.77-4 4.77 0V18H19v-7.93c0-6.17-7.06-5.94-8.72-2.91z"
+                            fill="currentColor"></path>
+                    </svg>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/github" title="GitHub's organization" style="color: #959da5;">
+                    <svg version="1.1" width="20" height="20" viewBox="0 0 16 16" class="octicon octicon-mark-github"
+                        aria-hidden="true">
+                        <path fill-rule="evenodd"
+                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                        </path>
+                    </svg>
+                </a>
+            </li>
+        </ul>
+        <ul class="list-style-none d-flex text-gray">
+            <li class="mr-3">&copy; 
+                <script type="text/javascript">document.write(new Date().getFullYear());</script> GitHub, Inc.</li>
+            <li class="mr-3"><a
+                    href="https://docs.github.com/github/site-policy/github-terms-of-service"
+                    class="link-gray">Terms </a></li>
+            <li><a href="https://docs.github.com/github/site-policy/github-privacy-statement"
+                    class="link-gray">Privacy </a></li>
+        </ul>
+    </div>
+</div>
+</main>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".toggle > *").hide();
+        $(".toggle .name").show();
+        $(".toggle .name").click(function () {
+            $(this).parent().children().not(".name").toggle(400);
+            $(this).parent().children(".name").toggleClass("open");
+        })
+    });
+</script>
+
+  </body>
+</html>
