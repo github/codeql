@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Authorization, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Authorization, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -10,6 +10,7 @@ namespace Microsoft
             public class AllowAnonymousAttribute : System.Attribute, Microsoft.AspNetCore.Authorization.IAllowAnonymous
             {
                 public AllowAnonymousAttribute() => throw null;
+                public override string ToString() => throw null;
             }
             public class AuthorizationBuilder
             {
@@ -129,6 +130,7 @@ namespace Microsoft
                 public AuthorizeAttribute(string policy) => throw null;
                 public string Policy { get => throw null; set { } }
                 public string Roles { get => throw null; set { } }
+                public override string ToString() => throw null;
             }
             public class DefaultAuthorizationEvaluator : Microsoft.AspNetCore.Authorization.IAuthorizationEvaluator
             {
@@ -184,6 +186,10 @@ namespace Microsoft
             }
             public interface IAuthorizationRequirement
             {
+            }
+            public interface IAuthorizationRequirementData
+            {
+                System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Authorization.IAuthorizationRequirement> GetRequirements();
             }
             public interface IAuthorizationService
             {
