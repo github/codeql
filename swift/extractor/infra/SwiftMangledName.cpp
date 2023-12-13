@@ -1,7 +1,7 @@
 #include "swift/extractor/infra/SwiftMangledName.h"
 #include "absl/strings/str_cat.h"
 
-#include <picosha2.h>
+#include "picosha2.h"
 
 namespace codeql {
 

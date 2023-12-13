@@ -5,7 +5,7 @@
 #include <unordered_set>
 #include <queue>
 
-#include <picosha2.h>
+#include "picosha2.h"
 #include <swift/AST/SourceFile.h>
 #include <swift/AST/Builtins.h>
 

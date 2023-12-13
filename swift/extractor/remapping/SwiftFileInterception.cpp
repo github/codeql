@@ -10,7 +10,7 @@
 #include <cassert>
 #include <iostream>
 
-#include <picosha2.h>
+#include "picosha2.h"
 
 #include "swift/extractor/infra/file/PathHash.h"
 #include "swift/extractor/infra/file/Path.h"
