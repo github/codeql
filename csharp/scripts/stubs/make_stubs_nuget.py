@@ -15,7 +15,6 @@ def write_csproj_prefix(ioWrapper):
         '    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>\n')
     ioWrapper.write('  </PropertyGroup>\n\n')
 
-
 print('Script to generate stub file from a nuget package')
 print(' Usage: python3 ' + sys.argv[0] +
       ' TEMPLATE NUGET_PACKAGE_NAME [VERSION=latest] [WORK_DIR=tempDir]')
@@ -34,191 +33,207 @@ thisScript = sys.argv[0]
 thisDir = os.path.abspath(os.path.dirname(thisScript))
 template = sys.argv[1]
 nuget = sys.argv[2]
-
-# /input contains a dotnet project that's being extracted
-workDir = os.path.abspath(helpers.get_argv(4, "tempDir"))
-projectNameIn = "input"
-projectDirIn = os.path.join(workDir, projectNameIn)
-
-def run_cmd(cmd, msg="Failed to run command"):
-    helpers.run_cmd_cwd(cmd, workDir, msg)
-
-# /output contains the output of the stub generation
-outputDirName = "output"
-outputDir = os.path.join(workDir, outputDirName)
-
-# /output/raw contains the bqrs result from the query, the json equivalent
-rawOutputDirName = "raw"
-rawOutputDir = os.path.join(outputDir, rawOutputDirName)
-os.makedirs(rawOutputDir)
-
-# /output/output contains a dotnet project with the generated stubs
-projectNameOut = "output"
-projectDirOut = os.path.join(outputDir, projectNameOut)
-
-# /db contains the extracted QL DB
-dbName = 'db'
-dbDir = os.path.join(workDir, dbName)
-outputName = "stub"
-outputFile = os.path.join(projectDirOut, outputName + '.cs')
-bqrsFile = os.path.join(rawOutputDir, outputName + '.bqrs')
-jsonFile = os.path.join(rawOutputDir, outputName + '.json')
 version = helpers.get_argv(3, "latest")
+relativeWorkDir = helpers.get_argv(4, "tempDir")
 
-print("\n* Creating new input project")
-run_cmd(['dotnet', 'new', template, "-f", "net8.0", "--language", "C#", '--name',
-                 projectNameIn, '--output', projectDirIn])
-helpers.remove_files(projectDirIn, '.cs')
+class Generator:
+    def __init__(self, thisScript, relativeWorkDir, template):
+        # /input contains a dotnet project that's being extracted
+        self.workDir = os.path.abspath(relativeWorkDir)
+        os.makedirs(self.workDir)
+        self.thisDir = os.path.abspath(os.path.dirname(thisScript))
+        self.projectNameIn = "input"
+        self.projectDirIn = os.path.join(self.workDir, self.projectNameIn)
+        self.template = template
+        print("\n* Creating new input project")
+        self.run_cmd(['dotnet', 'new', self.template, "-f", "net8.0", "--language", "C#", '--name',
+                         self.projectNameIn, '--output', self.projectDirIn])
+        helpers.remove_files(self.projectDirIn, '.cs')
 
-print("\n* Adding reference to package: " + nuget)
-cmd = ['dotnet', 'add', projectDirIn, 'package', nuget]
-if (version != "latest"):
-    cmd.append('--version')
-    cmd.append(version)
-run_cmd(cmd)
+    def run_cmd(self, cmd, msg="Failed to run command"):
+        helpers.run_cmd_cwd(cmd, self.workDir, msg)
 
-sdk_version = '8.0.100'
-print("\n* Creating new global.json file and setting SDK to " + sdk_version)
-run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', workDir])
+    def add_nuget(self, nuget, version="latest"):
+        print("\n* Adding reference to package: " + nuget)
+        cmd = ['dotnet', 'add', self.projectDirIn, 'package', nuget]
+        if (version != "latest"):
+            cmd.append('--version')
+            cmd.append(version)
+        self.run_cmd(cmd)
 
-print("\n* Running stub generator")
-helpers.run_cmd_cwd(['dotnet', 'run', '--project', thisDir + '/../../extractor/Semmle.Extraction.CSharp.DependencyStubGenerator/Semmle.Extraction.CSharp.DependencyStubGenerator.csproj'], projectDirIn)
+    def make_stubs(self):
+        # /output contains the output of the stub generation
+        outputDirName = "output"
+        outputDir = os.path.join(self.workDir, outputDirName)
 
-print("\n* Creating new raw output project")
-rawSrcOutputDirName = 'src'
-rawSrcOutputDir = os.path.join(rawOutputDir, rawSrcOutputDirName)
-run_cmd(['dotnet', 'new', template, "--language", "C#",
-                '--name', rawSrcOutputDirName, '--output', rawSrcOutputDir])
-helpers.remove_files(rawSrcOutputDir, '.cs')
+        # /output/raw contains the bqrs result from the query, the json equivalent
+        rawOutputDirName = "raw"
+        rawOutputDir = os.path.join(outputDir, rawOutputDirName)
+        os.makedirs(rawOutputDir)
 
-# copy each file from projectDirIn to rawSrcOutputDir
-pathInfos = {}
-codeqlStubsDir = os.path.join(projectDirIn, 'codeql_csharp_stubs')
-for root, dirs, files in os.walk(codeqlStubsDir):
-    for file in files:
-        if file.endswith('.cs'):
-            path = os.path.join(root, file)
-            relPath, _ = os.path.splitext(os.path.relpath(path, codeqlStubsDir))
-            origDllPath = "/" + relPath + ".dll"
-            pathInfos[origDllPath] = os.path.join(rawSrcOutputDir, file)
-            shutil.copy2(path, rawSrcOutputDir)
+        # /output/output contains a dotnet project with the generated stubs
+        projectNameOut = "output"
+        projectDirOut = os.path.join(outputDir, projectNameOut)
 
-print("\n --> Generated stub files: " + rawSrcOutputDir)
+        # /db contains the extracted QL DB
+        dbName = 'db'
+        dbDir = os.path.join(self.workDir, dbName)
+        outputName = "stub"
+        outputFile = os.path.join(projectDirOut, outputName + '.cs')
+        bqrsFile = os.path.join(rawOutputDir, outputName + '.bqrs')
+        jsonFile = os.path.join(rawOutputDir, outputName + '.json')
 
-print("\n* Formatting files")
-run_cmd(['dotnet', 'format', 'whitespace', rawSrcOutputDir])
+        sdk_version = '8.0.100'
+        print("\n* Creating new global.json file and setting SDK to " + sdk_version)
+        self.run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', self.workDir])
 
-print("\n --> Generated (formatted) stub files: " + rawSrcOutputDir)
+        print("\n* Running stub generator")
+        helpers.run_cmd_cwd(['dotnet', 'run', '--project', self.thisDir + '/../../extractor/Semmle.Extraction.CSharp.DependencyStubGenerator/Semmle.Extraction.CSharp.DependencyStubGenerator.csproj'], self.projectDirIn)
 
-print("\n* Processing project.assets.json to generate folder structure")
-stubsDirName = 'stubs'
-stubsDir = os.path.join(outputDir, stubsDirName)
-os.makedirs(stubsDir)
+        print("\n* Creating new raw output project")
+        rawSrcOutputDirName = 'src'
+        rawSrcOutputDir = os.path.join(rawOutputDir, rawSrcOutputDirName)
+        self.run_cmd(['dotnet', 'new', self.template, "--language", "C#",
+                        '--name', rawSrcOutputDirName, '--output', rawSrcOutputDir])
+        helpers.remove_files(rawSrcOutputDir, '.cs')
 
-frameworksDirName = '_frameworks'
-frameworksDir = os.path.join(stubsDir, frameworksDirName)
+        # copy each file from projectDirIn to rawSrcOutputDir
+        pathInfos = {}
+        codeqlStubsDir = os.path.join(self.projectDirIn, 'codeql_csharp_stubs')
+        for root, dirs, files in os.walk(codeqlStubsDir):
+            for file in files:
+                if file.endswith('.cs'):
+                    path = os.path.join(root, file)
+                    relPath, _ = os.path.splitext(os.path.relpath(path, codeqlStubsDir))
+                    origDllPath = "/" + relPath + ".dll"
+                    pathInfos[origDllPath] = os.path.join(rawSrcOutputDir, file)
+                    shutil.copy2(path, rawSrcOutputDir)
 
-frameworks = set()
-copiedFiles = set()
+        print("\n --> Generated stub files: " + rawSrcOutputDir)
 
-assetsJsonFile = os.path.join(projectDirIn, 'obj', 'project.assets.json')
-with open(assetsJsonFile) as json_data:
-    data = json.load(json_data)
-    if len(data['targets']) > 1:
-        print("ERROR: More than one target found in " + assetsJsonFile)
-        exit(1)
-    target = list(data['targets'].keys())[0]
-    print("Found target: " + target)
-    for package in data['targets'][target].keys():
-        parts = package.split('/')
-        name = parts[0]
-        version = parts[1]
-        packageDir = os.path.join(stubsDir, name, version)
-        if not os.path.exists(packageDir):
-            os.makedirs(packageDir)
-        print('  * Processing package: ' + name + '/' + version)
-        with open(os.path.join(packageDir, name + '.csproj'), 'a') as pf:
+        print("\n* Formatting files")
+        self.run_cmd(['dotnet', 'format', 'whitespace', rawSrcOutputDir])
 
-            write_csproj_prefix(pf)
-            pf.write('  <ItemGroup>\n')
+        print("\n --> Generated (formatted) stub files: " + rawSrcOutputDir)
 
-            dlls = set()
-            if 'compile' in data['targets'][target][package]:
-                for dll in data['targets'][target][package]['compile']:
-                    dlls.add(
-                        (name + '/' + version + '/' + dll).lower())
-            if 'runtime' in data['targets'][target][package]:
-                for dll in data['targets'][target][package]['runtime']:
-                    dlls.add((name + '/' + version + '/' + dll).lower())
+        print("\n* Processing project.assets.json to generate folder structure")
+        stubsDirName = 'stubs'
+        stubsDir = os.path.join(outputDir, stubsDirName)
+        os.makedirs(stubsDir)
 
-            for pathInfo in pathInfos:
-                for dll in dlls:
-                    if pathInfo.lower().endswith(dll):
+        frameworksDirName = '_frameworks'
+        frameworksDir = os.path.join(stubsDir, frameworksDirName)
+
+        frameworks = set()
+        copiedFiles = set()
+
+        assetsJsonFile = os.path.join(self.projectDirIn, 'obj', 'project.assets.json')
+        with open(assetsJsonFile) as json_data:
+            data = json.load(json_data)
+            if len(data['targets']) > 1:
+                print("ERROR: More than one target found in " + assetsJsonFile)
+                exit(1)
+            target = list(data['targets'].keys())[0]
+            print("Found target: " + target)
+            for package in data['targets'][target].keys():
+                parts = package.split('/')
+                name = parts[0]
+                version = parts[1]
+                packageDir = os.path.join(stubsDir, name, version)
+                if not os.path.exists(packageDir):
+                    os.makedirs(packageDir)
+                print('  * Processing package: ' + name + '/' + version)
+                with open(os.path.join(packageDir, name + '.csproj'), 'a') as pf:
+
+                    write_csproj_prefix(pf)
+                    pf.write('  <ItemGroup>\n')
+
+                    dlls = set()
+                    if 'compile' in data['targets'][target][package]:
+                        for dll in data['targets'][target][package]['compile']:
+                            dlls.add(
+                                (name + '/' + version + '/' + dll).lower())
+                    if 'runtime' in data['targets'][target][package]:
+                        for dll in data['targets'][target][package]['runtime']:
+                            dlls.add((name + '/' + version + '/' + dll).lower())
+
+                    for pathInfo in pathInfos:
+                        for dll in dlls:
+                            if pathInfo.lower().endswith(dll):
+                                copiedFiles.add(pathInfo)
+                                shutil.copy2(pathInfos[pathInfo], packageDir)
+
+                    if 'dependencies' in data['targets'][target][package]:
+                        for dependency in data['targets'][target][package]['dependencies'].keys():
+                            depVersion = data['targets'][target][package]['dependencies'][dependency]
+                            pf.write('    <ProjectReference Include="../../' +
+                                     dependency + '/' + depVersion + '/' + dependency + '.csproj" />\n')
+
+                    if 'frameworkReferences' in data['targets'][target][package]:
+                        if not os.path.exists(frameworksDir):
+                            os.makedirs(frameworksDir)
+                        for framework in data['targets'][target][package]['frameworkReferences']:
+                            frameworks.add(framework)
+                            frameworkDir = os.path.join(
+                                frameworksDir, framework)
+                            if not os.path.exists(frameworkDir):
+                                os.makedirs(frameworkDir)
+                            pf.write('    <ProjectReference Include="../../' +
+                                     frameworksDirName + '/' + framework + '/' + framework + '.csproj" />\n')
+
+                    pf.write('    <ProjectReference Include="../../' +
+                             frameworksDirName + '/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />\n')
+
+                    pf.write('  </ItemGroup>\n')
+                    pf.write('</Project>\n')
+
+        # Processing references frameworks
+        for framework in frameworks:
+            with open(os.path.join(frameworksDir, framework, framework + '.csproj'), 'a') as pf:
+
+                write_csproj_prefix(pf)
+                pf.write('  <ItemGroup>\n')
+                pf.write(
+                    '    <ProjectReference Include="../Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />\n')
+                pf.write('  </ItemGroup>\n')
+                pf.write('</Project>\n')
+
+                for pathInfo in pathInfos:
+                    if framework.lower() + '.ref' in pathInfo.lower():
                         copiedFiles.add(pathInfo)
-                        shutil.copy2(pathInfos[pathInfo], packageDir)
+                        shutil.copy2(pathInfos[pathInfo], os.path.join(
+                            frameworksDir, framework))
 
-            if 'dependencies' in data['targets'][target][package]:
-                for dependency in data['targets'][target][package]['dependencies'].keys():
-                    depVersion = data['targets'][target][package]['dependencies'][dependency]
-                    pf.write('    <ProjectReference Include="../../' +
-                             dependency + '/' + depVersion + '/' + dependency + '.csproj" />\n')
-
-            if 'frameworkReferences' in data['targets'][target][package]:
-                if not os.path.exists(frameworksDir):
-                    os.makedirs(frameworksDir)
-                for framework in data['targets'][target][package]['frameworkReferences']:
-                    frameworks.add(framework)
-                    frameworkDir = os.path.join(
-                        frameworksDir, framework)
-                    if not os.path.exists(frameworkDir):
-                        os.makedirs(frameworkDir)
-                    pf.write('    <ProjectReference Include="../../' +
-                             frameworksDirName + '/' + framework + '/' + framework + '.csproj" />\n')
-
-            pf.write('    <ProjectReference Include="../../' +
-                     frameworksDirName + '/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />\n')
-
-            pf.write('  </ItemGroup>\n')
+        # Processing assemblies in  Microsoft.NETCore.App.Ref
+        frameworkDir = os.path.join(frameworksDir, 'Microsoft.NETCore.App')
+        if not os.path.exists(frameworkDir):
+            os.makedirs(frameworkDir)
+        with open(os.path.join(frameworksDir, 'Microsoft.NETCore.App', 'Microsoft.NETCore.App.csproj'), 'a') as pf:
+            write_csproj_prefix(pf)
             pf.write('</Project>\n')
 
-# Processing references frameworks
-for framework in frameworks:
-    with open(os.path.join(frameworksDir, framework, framework + '.csproj'), 'a') as pf:
-
-        write_csproj_prefix(pf)
-        pf.write('  <ItemGroup>\n')
-        pf.write(
-            '    <ProjectReference Include="../Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />\n')
-        pf.write('  </ItemGroup>\n')
-        pf.write('</Project>\n')
+            for pathInfo in pathInfos:
+                if 'microsoft.netcore.app.ref/' in pathInfo.lower():
+                    copiedFiles.add(pathInfo)
+                    shutil.copy2(pathInfos[pathInfo], frameworkDir)
 
         for pathInfo in pathInfos:
-            if framework.lower() + '.ref' in pathInfo.lower():
-                copiedFiles.add(pathInfo)
-                shutil.copy2(pathInfos[pathInfo], os.path.join(
-                    frameworksDir, framework))
+            if pathInfo not in copiedFiles:
+                print('Not copied to nuget or framework folder: ' + pathInfo)
+                othersDir = os.path.join(stubsDir, 'others')
+                if not os.path.exists(othersDir):
+                    os.makedirs(othersDir)
+                shutil.copy2(pathInfos[pathInfo], othersDir)
 
-# Processing assemblies in  Microsoft.NETCore.App.Ref
-frameworkDir = os.path.join(frameworksDir, 'Microsoft.NETCore.App')
-if not os.path.exists(frameworkDir):
-    os.makedirs(frameworkDir)
-with open(os.path.join(frameworksDir, 'Microsoft.NETCore.App', 'Microsoft.NETCore.App.csproj'), 'a') as pf:
-    write_csproj_prefix(pf)
-    pf.write('</Project>\n')
+        print("\n --> Generated structured stub files: " + stubsDir)
 
-    for pathInfo in pathInfos:
-        if 'microsoft.netcore.app.ref/' in pathInfo.lower():
-            copiedFiles.add(pathInfo)
-            shutil.copy2(pathInfos[pathInfo], frameworkDir)
 
-for pathInfo in pathInfos:
-    if pathInfo not in copiedFiles:
-        print('Not copied to nuget or framework folder: ' + pathInfo)
-        othersDir = os.path.join(stubsDir, 'others')
-        if not os.path.exists(othersDir):
-            os.makedirs(othersDir)
-        shutil.copy2(pathInfos[pathInfo], othersDir)
 
-print("\n --> Generated structured stub files: " + stubsDir)
+
+
+generator = Generator(thisScript, relativeWorkDir, template)
+generator.add_nuget(nuget, version)
+generator.make_stubs()
+
 
 exit(0)
