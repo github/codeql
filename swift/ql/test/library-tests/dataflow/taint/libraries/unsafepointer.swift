@@ -241,10 +241,10 @@ func testRawPointers() {
 
   let raw2 = UnsafeMutableRawPointer.allocate(byteCount: 1024, alignment: 4)
   raw2.initializeMemory(as: Int.self, repeating: 0, count: 1024)
-  raw2.storeBytes(of: 0, toByteOffset: 0, as: Int.self)
+  //raw2.storeBytes(of: 0, toByteOffset: 0, as: Int.self) --- this line fails on Linux
   sink(arg: raw2.load(fromByteOffset: 0, as: Int.self))
-  raw2.storeBytes(of: sourceInt("raw2"), toByteOffset: 0, as: Int.self)
-  sink(arg: raw2.load(fromByteOffset: 0, as: Int.self)) // $ tainted=raw2
+  //raw2.storeBytes(of: sourceInt("raw2"), toByteOffset: 0, as: Int.self) --- this line fails on Linux
+  sink(arg: raw2.load(fromByteOffset: 0, as: Int.self)) // $ MISSING: tainted=raw2
 
   let raw3 = UnsafeRawPointer(raw1)
   sink(arg: raw3.load(fromByteOffset: 0, as: Int.self)) // $ tainted=raw1
