@@ -462,10 +462,6 @@
     "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll",
     "swift/ql/lib/codeql/swift/security/internal/SensitiveDataHeuristics.qll"
   ],
-  "TypeTracker": [
-    "python/ql/lib/semmle/python/dataflow/new/internal/TypeTracker.qll",
-    "ruby/ql/lib/codeql/ruby/typetracking/TypeTracker.qll"
-  ],
   "SummaryTypeTracker": [
     "python/ql/lib/semmle/python/dataflow/new/internal/SummaryTypeTracker.qll",
     "ruby/ql/lib/codeql/ruby/typetracking/internal/SummaryTypeTracker.qll"

@@ -28,6 +28,8 @@ astFlow
 | dispatch.cpp:10:37:10:42 | call to source | dispatch.cpp:44:15:44:24 | call to notSource2 |
 | dispatch.cpp:37:19:37:24 | call to source | dispatch.cpp:11:38:11:38 | x |
 | dispatch.cpp:45:18:45:23 | call to source | dispatch.cpp:11:38:11:38 | x |
+| flowOut.cpp:44:7:44:7 | x | flowOut.cpp:46:8:46:11 | access to array |
+| flowOut.cpp:59:7:59:7 | x | flowOut.cpp:61:8:61:11 | access to array |
 | globals.cpp:5:17:5:22 | call to source | globals.cpp:6:10:6:14 | local |
 | lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:14:3:14:6 | t |
 | lambdas.cpp:8:10:8:15 | call to source | lambdas.cpp:18:8:18:8 | call to operator() |
@@ -170,7 +172,11 @@ irFlow
 | dispatch.cpp:107:17:107:22 | call to source | dispatch.cpp:96:8:96:8 | x |
 | dispatch.cpp:140:8:140:13 | call to source | dispatch.cpp:96:8:96:8 | x |
 | dispatch.cpp:144:8:144:13 | call to source | dispatch.cpp:96:8:96:8 | x |
-| flowOut.cpp:5:16:5:21 | call to source | flowOut.cpp:19:9:19:9 | x |
+| flowOut.cpp:5:16:5:21 | call to source | flowOut.cpp:31:9:31:9 | x |
+| flowOut.cpp:5:16:5:21 | call to source | flowOut.cpp:61:8:61:11 | access to array |
+| flowOut.cpp:8:16:8:23 | call to source | flowOut.cpp:73:8:73:9 | * ... |
+| flowOut.cpp:84:18:84:23 | call to source | flowOut.cpp:85:8:85:9 | * ... |
+| flowOut.cpp:90:8:90:13 | call to source | flowOut.cpp:102:8:102:9 | * ... |
 | globals.cpp:5:17:5:22 | call to source | globals.cpp:6:10:6:14 | local |
 | globals.cpp:13:23:13:28 | call to source | globals.cpp:12:10:12:24 | flowTestGlobal1 |
 | globals.cpp:23:23:23:28 | call to source | globals.cpp:19:10:19:24 | flowTestGlobal2 |

@@ -16,7 +16,6 @@ edges
 | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:131:9:131:14 | ... + ... indirection |
 | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:132:15:132:20 | ... + ... indirection |
 | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:135:9:135:12 | ... ++ indirection |
-| argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:135:9:135:12 | ... ++ indirection |
 | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:136:15:136:18 | -- ... indirection |
 | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:139:9:139:26 | ... ? ... : ... indirection |
 | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:140:15:140:32 | ... ? ... : ... indirection |
@@ -43,7 +42,6 @@ nodes
 | argvLocal.c:131:9:131:14 | ... + ... indirection | semmle.label | ... + ... indirection |
 | argvLocal.c:132:15:132:20 | ... + ... indirection | semmle.label | ... + ... indirection |
 | argvLocal.c:135:9:135:12 | ... ++ indirection | semmle.label | ... ++ indirection |
-| argvLocal.c:135:9:135:12 | ... ++ indirection | semmle.label | ... ++ indirection |
 | argvLocal.c:136:15:136:18 | -- ... indirection | semmle.label | -- ... indirection |
 | argvLocal.c:139:9:139:26 | ... ? ... : ... indirection | semmle.label | ... ? ... : ... indirection |
 | argvLocal.c:140:15:140:32 | ... ? ... : ... indirection | semmle.label | ... ? ... : ... indirection |
@@ -69,7 +67,6 @@ subpaths
 | argvLocal.c:128:15:128:16 | i5 indirection | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:128:15:128:16 | i5 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | argv indirection | a command-line argument |
 | argvLocal.c:131:9:131:14 | ... + ... indirection | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:131:9:131:14 | ... + ... indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | argv indirection | a command-line argument |
 | argvLocal.c:132:15:132:20 | ... + ... indirection | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:132:15:132:20 | ... + ... indirection | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | argv indirection | a command-line argument |
-| argvLocal.c:135:9:135:12 | ... ++ indirection | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:135:9:135:12 | ... ++ indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | argv indirection | a command-line argument |
 | argvLocal.c:135:9:135:12 | ... ++ indirection | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:135:9:135:12 | ... ++ indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | argv indirection | a command-line argument |
 | argvLocal.c:136:15:136:18 | -- ... indirection | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:136:15:136:18 | -- ... indirection | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | argv indirection | a command-line argument |
 | argvLocal.c:139:9:139:26 | ... ? ... : ... indirection | argvLocal.c:13:27:13:30 | argv indirection | argvLocal.c:139:9:139:26 | ... ? ... : ... indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | argv indirection | a command-line argument |

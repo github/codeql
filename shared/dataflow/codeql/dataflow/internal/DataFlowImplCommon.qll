@@ -551,7 +551,8 @@ module MakeImplCommon<InputSig Lang> {
           // local flow
           exists(Node mid |
             parameterValueFlowCand(p, mid, read) and
-            simpleLocalFlowStep(mid, node)
+            simpleLocalFlowStep(mid, node) and
+            validParameterAliasStep(mid, node)
           )
           or
           // read
@@ -670,7 +671,8 @@ module MakeImplCommon<InputSig Lang> {
           // local flow
           exists(Node mid |
             parameterValueFlow(p, mid, read) and
-            simpleLocalFlowStep(mid, node)
+            simpleLocalFlowStep(mid, node) and
+            validParameterAliasStep(mid, node)
           )
           or
           // read
@@ -1121,8 +1123,8 @@ module MakeImplCommon<InputSig Lang> {
       Input::enableTypeFlow() and
       (
         exists(ParamNode p, DataFlowType at, DataFlowType pt |
-          at = getNodeType(arg) and
-          pt = getNodeType(p) and
+          nodeDataFlowType(arg, at) and
+          nodeDataFlowType(p, pt) and
           relevantCallEdge(_, _, arg, p) and
           typeStrongerThan0(pt, at)
         )
@@ -1131,8 +1133,8 @@ module MakeImplCommon<InputSig Lang> {
           // A call edge may implicitly strengthen a type by ensuring that a
           // specific argument node was reached if the type of that argument was
           // strengthened via a cast.
-          at = getNodeType(arg) and
-          pt = getNodeType(p) and
+          nodeDataFlowType(arg, at) and
+          nodeDataFlowType(p, pt) and
           paramMustFlow(p, arg) and
           relevantCallEdge(_, _, arg, _) and
           typeStrongerThan0(at, pt)
@@ -1172,8 +1174,8 @@ module MakeImplCommon<InputSig Lang> {
       or
       exists(ArgNode arg, DataFlowType at, DataFlowType pt |
         trackedParamTypeCand(p) and
-        at = getNodeType(arg) and
-        pt = getNodeType(p) and
+        nodeDataFlowType(arg, at) and
+        nodeDataFlowType(p, pt) and
         relevantCallEdge(_, _, arg, p) and
         typeStrongerThan0(at, pt)
       )

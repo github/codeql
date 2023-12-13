@@ -26,7 +26,7 @@ module TrackedTest implements TestSig {
       not e.getLocation().getStartLine() = 0 and
       // We do not wish to annotate scope entry definitions,
       // as they do not appear in the source code.
-      not e.asVar() instanceof ScopeEntryDefinition and
+      not e.asCfgNode() = any(ScopeEntryDefinition def).getDefiningNode() and
       tag = "tracked" and
       location = e.getLocation() and
       value = t.getAttr() and
