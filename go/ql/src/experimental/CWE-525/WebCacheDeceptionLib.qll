@@ -2,8 +2,6 @@ import go
 import StringOps
 
 module WebCacheDeception {
-  abstract class Source extends DataFlow::Node { }
-
   abstract class Sink extends DataFlow::Node { }
 
   private class GoNetHTTP extends Sink {
@@ -49,20 +47,4 @@ module WebCacheDeception {
       )
     }
   }
-
-  deprecated class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "Web Cache Deception" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-  }
-
-  private module Config implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-  }
-
-  module Flow = TaintTracking::Global<Config>;
 }
