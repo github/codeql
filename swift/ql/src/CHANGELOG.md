@@ -1,9 +1,16 @@
+## 0.3.4
+
+### Minor Analysis Improvements
+
+* Added additional sinks for the "Uncontrolled format string" (`swift/uncontrolled-format-string`) query. Some of these sinks are heuristic (imprecise) in nature.
+* Added heuristic (imprecise) sinks for the "Database query built from user-controlled sources" (`swift/sql-injection`) query.
+
 ## 0.3.3
 
 ### New Queries
 
 * Added new query "System command built from user-controlled sources" (`swift/command-line-injection`) for Swift. This query detects system commands built from user-controlled sources without sufficient validation. The query was previously [contributed to the 'experimental' directory by @maikypedia](https://github.com/github/codeql/pull/13726) but will now run by default for all code scanning users.
-* Added a nw query "Missing regular expression anchor" (`swift/missing-regexp-anchor`) for Swift. This query detects regular expressions without anchors that can be vulnerable to bypassing.
+* Added a new query "Missing regular expression anchor" (`swift/missing-regexp-anchor`) for Swift. This query detects regular expressions without anchors that can be vulnerable to bypassing.
 
 ### Minor Analysis Improvements
 
