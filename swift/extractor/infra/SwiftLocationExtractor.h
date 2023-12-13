@@ -29,6 +29,13 @@ concept HasStartAndEndLoc = requires(T e) {
 &&!(HasSourceRange<T>);
 
 template <typename T>
+concept HasLAndRParenLoc = requires(T e) {
+  e.getLParenLoc();
+  e.getRParenLoc();
+}
+&&!(HasSourceRange<T>)&&!(HasStartAndEndLoc<T>);
+
+template <typename T>
 concept HasOneLoc = requires(T e) {
   e.getLoc();
 }
@@ -48,6 +55,13 @@ swift::SourceRange getSourceRange(const HasStartAndEndLoc auto& locatable) {
     return {locatable.getStartLoc(), locatable.getEndLoc()};
   }
   return {locatable.getStartLoc()};
+}
+
+swift::SourceRange getSourceRange(const HasLAndRParenLoc auto& locatable) {
+  if (locatable.getLParenLoc() && locatable.getRParenLoc()) {
+    return {locatable.getLParenLoc(), locatable.getRParenLoc()};
+  }
+  return {locatable.getLParenLoc()};
 }
 
 swift::SourceRange getSourceRange(const HasOneLoc auto& locatable) {

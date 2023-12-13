@@ -5,4 +5,7 @@
 
 private import codeql.swift.generated.type.GenericFunctionType
 
+/**
+ * The type of a generic function with type parameters
+ */
 class GenericFunctionType extends Generated::GenericFunctionType { }

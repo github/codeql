@@ -10,6 +10,10 @@ import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.stmt.LabeledStmt
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `SwitchStmt` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::SwitchStmt` class directly.

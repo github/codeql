@@ -80,6 +80,7 @@ open class KotlinFileExtractor(
     globalExtensionState: KotlinExtractorGlobalState,
 ): KotlinUsesExtractor(logger, tw, dependencyCollector, externalClassExtractor, primitiveTypeMapping, pluginContext, globalExtensionState) {
 
+    val usesK2 = usesK2(pluginContext)
     val metaAnnotationSupport = MetaAnnotationSupport(logger, pluginContext, this)
 
     private inline fun <T> with(kind: String, element: IrElement, f: () -> T): T {
@@ -132,7 +133,7 @@ open class KotlinFileExtractor(
             val lighterAstCommentsExtracted = CommentExtractorLighterAST(this, file, tw.fileId).extract()
             if (psiCommentsExtracted == lighterAstCommentsExtracted) {
                 if (psiCommentsExtracted) {
-                    logger.warnElement("Found both PSI and LightAST comments in ${file.path}.", file)
+                    logger.warnElement("Found both PSI and LighterAST comments in ${file.path}.", file)
                 } else {
                     logger.warnElement("Comments could not be processed in ${file.path}.", file)
                 }
@@ -166,22 +167,26 @@ open class KotlinFileExtractor(
             else -> false
         }
 
+    private fun FunctionDescriptor.tryIsHiddenToOvercomeSignatureClash(d: IrFunction): Boolean {
+        try {
+            return this.isHiddenToOvercomeSignatureClash
+        }
+        catch (e: NotImplementedError) {
+            // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
+            // TODO: We need a replacement for this for Kotlin 2
+            if (!usesK2) {
+                logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
+            }
+            return false
+        }
+    }
+
     @OptIn(ObsoleteDescriptorBasedAPI::class)
     private fun isFake(d: IrDeclarationWithVisibility): Boolean {
         val hasFakeVisibility = d.visibility.let { it is DelegatedDescriptorVisibility && it.delegate == Visibilities.InvisibleFake } || d.isFakeOverride
         if (hasFakeVisibility && !isJavaBinaryObjectMethodRedeclaration(d))
             return true
-        try {
-            if ((d as? IrFunction)?.descriptor?.isHiddenToOvercomeSignatureClash == true) {
-                return true
-            }
-        }
-        catch (e: NotImplementedError) {
-            // `org.jetbrains.kotlin.ir.descriptors.IrBasedClassConstructorDescriptor.isHiddenToOvercomeSignatureClash` throws the exception
-            logger.warnElement("Couldn't query if element is fake, deciding it's not.", d, e)
-            return false
-        }
-        return false
+        return (d as? IrFunction)?.descriptor?.tryIsHiddenToOvercomeSignatureClash(d) == true
     }
 
     private fun shouldExtractDecl(declaration: IrDeclaration, extractPrivateMembers: Boolean) =
@@ -2457,8 +2462,12 @@ open class KotlinFileExtractor(
 
         val fn = getFunctionsByFqName(pluginContext, functionPkg, functionName)
             .firstOrNull { fnSymbol ->
-                fnSymbol.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type &&
-                fnSymbol.owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
+                val owner = fnSymbol.owner
+                (owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type
+                 ||
+                 (owner.parent is IrExternalPackageFragment && getFileClassFqName(owner)?.asString() == type))
+                &&
+                owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
             }?.owner
 
         if (fn != null) {

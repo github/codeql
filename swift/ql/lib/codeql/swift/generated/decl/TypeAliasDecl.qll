@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.GenericTypeDecl
 import codeql.swift.elements.type.Type
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `TypeAliasDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A declaration of a type alias to another type. For example:

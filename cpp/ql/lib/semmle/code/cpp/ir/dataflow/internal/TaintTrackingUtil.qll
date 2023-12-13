@@ -72,6 +72,16 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
     or
     instrTo.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
   )
+  or
+  // Taint from int to boolean casts. This ensures that we have flow to `!x` in:
+  // ```cpp
+  // x = integer_source();
+  // if(!x) { ... }
+  // ```
+  exists(Operand zero |
+    zero.getDef().(ConstantValueInstruction).getValue() = "0" and
+    instrTo.(CompareNEInstruction).hasOperands(opFrom, zero)
+  )
 }
 
 /**

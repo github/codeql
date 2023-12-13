@@ -6,7 +6,7 @@ private import codeql.ruby.dataflow.SSA
 private import codeql.ruby.ast.Variable
 private import Cfg::CfgNodes::ExprNodes
 
-private module SsaInput implements SsaImplCommon::InputSig {
+private module SsaInput implements SsaImplCommon::InputSig<Location> {
   private import codeql.ruby.controlflow.BasicBlocks as BasicBlocks
 
   class BasicBlock = BasicBlocks::BasicBlock;
@@ -62,7 +62,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
   }
 }
 
-private import SsaImplCommon::Make<SsaInput> as Impl
+private import SsaImplCommon::Make<Location, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 

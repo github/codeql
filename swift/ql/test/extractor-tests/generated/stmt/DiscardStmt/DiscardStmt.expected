@@ -1,0 +1,1 @@
+| test.swift:4:5:4:13 | DiscardStmt | getSubExpr: | test.swift:4:13:4:13 | self |

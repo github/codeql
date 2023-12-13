@@ -7,6 +7,8 @@
 private import codeql.swift.generated.expr.SelfApplyExpr
 
 /**
+ * An internal raw instance of method lookups like `x.foo` in `x.foo()`.
+ * This is completely replaced by the synthesized type `MethodLookupExpr`.
  * INTERNAL: Do not use.
  */
 class SelfApplyExpr extends Generated::SelfApplyExpr { }

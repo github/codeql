@@ -10,6 +10,10 @@ import codeql.swift.elements.decl.ProtocolDecl
 import codeql.swift.elements.type.SubstitutableType
 import codeql.swift.elements.type.Type
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ArchetypeType` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::ArchetypeType` class directly.

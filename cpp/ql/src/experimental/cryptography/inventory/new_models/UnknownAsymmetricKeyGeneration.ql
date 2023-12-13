@@ -4,7 +4,6 @@
  * @kind problem
  * @id cpp/quantum-readiness/cbom/unkwon-asymmetric-key-generation
  * @problem.severity error
- * @precision high
  * @tags cbom
  *       cryptography
  */

@@ -10,6 +10,10 @@ import codeql.swift.elements.AstNode
 import codeql.swift.elements.stmt.Stmt
 import codeql.swift.elements.decl.VarDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `BraceStmt` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::BraceStmt` class directly.

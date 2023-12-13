@@ -606,12 +606,12 @@ module Content {
    * we have an implicit hash-splat argument containing `{:a => 1, :b => 2, :c => 3}`.
    */
   class HashSplatContent extends ElementContent, THashSplatContent {
-    private ConstantValue cv;
+    private ConstantValue::ConstantSymbolValue cv;
 
     HashSplatContent() { this = THashSplatContent(cv) }
 
     /** Gets the hash key. */
-    ConstantValue getKey() { result = cv }
+    ConstantValue::ConstantSymbolValue getKey() { result = cv }
 
     override string toString() { result = "hash-splat position " + cv }
   }

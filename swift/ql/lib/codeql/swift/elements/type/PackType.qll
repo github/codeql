@@ -5,4 +5,16 @@
 
 private import codeql.swift.generated.type.PackType
 
+/**
+ * An actual type of a pack expression at the instatiation point.
+ *
+ * In the following example, PackType will appear around `makeTuple` call site as `Pack{String, Int}`:
+ * ```
+ * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) { ... }
+ * makeTuple("A", 2)
+ * ```
+ *
+ * More details:
+ * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+ */
 class PackType extends Generated::PackType { }

@@ -5,4 +5,7 @@
 
 private import codeql.swift.generated.type.PackElementType
 
+/**
+ * A type of PackElementExpr, see PackElementExpr for more information.
+ */
 class PackElementType extends Generated::PackElementType { }

@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `PackElementExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A pack element expression is a child of PackExpansionExpr.

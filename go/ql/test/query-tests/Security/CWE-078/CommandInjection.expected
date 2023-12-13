@@ -10,11 +10,17 @@ edges
 | GitSubcommands.go:10:13:10:27 | call to Query | GitSubcommands.go:15:35:15:41 | tainted |
 | GitSubcommands.go:10:13:10:27 | call to Query | GitSubcommands.go:16:36:16:42 | tainted |
 | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | SanitizingDoubleDash.go:9:13:9:27 | call to Query |
+| SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:13:25:13:31 | tainted |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:14:23:14:33 | slice expression |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:39:31:39:37 | tainted |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:53:21:53:28 | arrayLit |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:68:31:68:37 | tainted |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | SanitizingDoubleDash.go:80:23:80:29 | tainted |
+| SanitizingDoubleDash.go:13:15:13:32 | array literal [array] | SanitizingDoubleDash.go:14:23:14:30 | arrayLit [array] |
+| SanitizingDoubleDash.go:13:25:13:31 | tainted | SanitizingDoubleDash.go:13:15:13:32 | array literal [array] |
+| SanitizingDoubleDash.go:14:23:14:30 | arrayLit [array] | SanitizingDoubleDash.go:14:23:14:33 | slice element node |
+| SanitizingDoubleDash.go:14:23:14:33 | slice element node | SanitizingDoubleDash.go:14:23:14:33 | slice expression [array] |
+| SanitizingDoubleDash.go:14:23:14:33 | slice expression [array] | SanitizingDoubleDash.go:14:23:14:33 | slice expression |
 | SanitizingDoubleDash.go:39:14:39:44 | call to append | SanitizingDoubleDash.go:40:23:40:30 | arrayLit |
 | SanitizingDoubleDash.go:39:31:39:37 | tainted | SanitizingDoubleDash.go:39:14:39:44 | call to append |
 | SanitizingDoubleDash.go:53:14:53:35 | call to append | SanitizingDoubleDash.go:54:23:54:30 | arrayLit |
@@ -24,7 +30,9 @@ edges
 | SanitizingDoubleDash.go:69:14:69:35 | call to append | SanitizingDoubleDash.go:70:23:70:30 | arrayLit |
 | SanitizingDoubleDash.go:69:21:69:28 | arrayLit | SanitizingDoubleDash.go:69:14:69:35 | call to append |
 | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | SanitizingDoubleDash.go:92:13:92:27 | call to Query |
+| SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:95:25:95:31 | tainted |
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:96:24:96:34 | slice expression |
+| SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:100:31:100:37 | tainted |
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:101:24:101:34 | slice expression |
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:105:30:105:36 | tainted |
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:106:24:106:31 | arrayLit |
@@ -36,6 +44,16 @@ edges
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:142:31:142:37 | tainted |
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:148:30:148:36 | tainted |
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | SanitizingDoubleDash.go:152:24:152:30 | tainted |
+| SanitizingDoubleDash.go:95:15:95:32 | array literal [array] | SanitizingDoubleDash.go:96:24:96:31 | arrayLit [array] |
+| SanitizingDoubleDash.go:95:25:95:31 | tainted | SanitizingDoubleDash.go:95:15:95:32 | array literal [array] |
+| SanitizingDoubleDash.go:96:24:96:31 | arrayLit [array] | SanitizingDoubleDash.go:96:24:96:34 | slice element node |
+| SanitizingDoubleDash.go:96:24:96:34 | slice element node | SanitizingDoubleDash.go:96:24:96:34 | slice expression [array] |
+| SanitizingDoubleDash.go:96:24:96:34 | slice expression [array] | SanitizingDoubleDash.go:96:24:96:34 | slice expression |
+| SanitizingDoubleDash.go:100:15:100:38 | array literal [array] | SanitizingDoubleDash.go:101:24:101:31 | arrayLit [array] |
+| SanitizingDoubleDash.go:100:31:100:37 | tainted | SanitizingDoubleDash.go:100:15:100:38 | array literal [array] |
+| SanitizingDoubleDash.go:101:24:101:31 | arrayLit [array] | SanitizingDoubleDash.go:101:24:101:34 | slice element node |
+| SanitizingDoubleDash.go:101:24:101:34 | slice element node | SanitizingDoubleDash.go:101:24:101:34 | slice expression [array] |
+| SanitizingDoubleDash.go:101:24:101:34 | slice expression [array] | SanitizingDoubleDash.go:101:24:101:34 | slice expression |
 | SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] | SanitizingDoubleDash.go:106:24:106:31 | arrayLit |
 | SanitizingDoubleDash.go:105:30:105:36 | tainted | SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] |
 | SanitizingDoubleDash.go:111:14:111:44 | call to append | SanitizingDoubleDash.go:112:24:112:31 | arrayLit |
@@ -68,7 +86,12 @@ nodes
 | GitSubcommands.go:16:36:16:42 | tainted | semmle.label | tainted |
 | SanitizingDoubleDash.go:9:13:9:19 | selection of URL | semmle.label | selection of URL |
 | SanitizingDoubleDash.go:9:13:9:27 | call to Query | semmle.label | call to Query |
+| SanitizingDoubleDash.go:13:15:13:32 | array literal [array] | semmle.label | array literal [array] |
+| SanitizingDoubleDash.go:13:25:13:31 | tainted | semmle.label | tainted |
+| SanitizingDoubleDash.go:14:23:14:30 | arrayLit [array] | semmle.label | arrayLit [array] |
+| SanitizingDoubleDash.go:14:23:14:33 | slice element node | semmle.label | slice element node |
 | SanitizingDoubleDash.go:14:23:14:33 | slice expression | semmle.label | slice expression |
+| SanitizingDoubleDash.go:14:23:14:33 | slice expression [array] | semmle.label | slice expression [array] |
 | SanitizingDoubleDash.go:39:14:39:44 | call to append | semmle.label | call to append |
 | SanitizingDoubleDash.go:39:31:39:37 | tainted | semmle.label | tainted |
 | SanitizingDoubleDash.go:40:23:40:30 | arrayLit | semmle.label | arrayLit |
@@ -83,8 +106,18 @@ nodes
 | SanitizingDoubleDash.go:80:23:80:29 | tainted | semmle.label | tainted |
 | SanitizingDoubleDash.go:92:13:92:19 | selection of URL | semmle.label | selection of URL |
 | SanitizingDoubleDash.go:92:13:92:27 | call to Query | semmle.label | call to Query |
+| SanitizingDoubleDash.go:95:15:95:32 | array literal [array] | semmle.label | array literal [array] |
+| SanitizingDoubleDash.go:95:25:95:31 | tainted | semmle.label | tainted |
+| SanitizingDoubleDash.go:96:24:96:31 | arrayLit [array] | semmle.label | arrayLit [array] |
+| SanitizingDoubleDash.go:96:24:96:34 | slice element node | semmle.label | slice element node |
 | SanitizingDoubleDash.go:96:24:96:34 | slice expression | semmle.label | slice expression |
+| SanitizingDoubleDash.go:96:24:96:34 | slice expression [array] | semmle.label | slice expression [array] |
+| SanitizingDoubleDash.go:100:15:100:38 | array literal [array] | semmle.label | array literal [array] |
+| SanitizingDoubleDash.go:100:31:100:37 | tainted | semmle.label | tainted |
+| SanitizingDoubleDash.go:101:24:101:31 | arrayLit [array] | semmle.label | arrayLit [array] |
+| SanitizingDoubleDash.go:101:24:101:34 | slice element node | semmle.label | slice element node |
 | SanitizingDoubleDash.go:101:24:101:34 | slice expression | semmle.label | slice expression |
+| SanitizingDoubleDash.go:101:24:101:34 | slice expression [array] | semmle.label | slice expression [array] |
 | SanitizingDoubleDash.go:105:15:105:37 | slice literal [array] | semmle.label | slice literal [array] |
 | SanitizingDoubleDash.go:105:30:105:36 | tainted | semmle.label | tainted |
 | SanitizingDoubleDash.go:106:24:106:31 | arrayLit | semmle.label | arrayLit |
