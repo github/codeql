@@ -47,4 +47,17 @@ module WebCacheDeception {
       )
     }
   }
+
+  private class GoHTTPRouter extends Sink {
+    GoHTTPRouter() {
+      exists(string pkg |
+        pkg = "github.com/julienschmidt/httprouter"
+      |
+        exists(DataFlow::CallNode m |
+          m.getCall().getArgument(0).toString().matches("%/*%") and
+          this = m.getArgument(0)
+        )
+      )
+    }
+  }
 }

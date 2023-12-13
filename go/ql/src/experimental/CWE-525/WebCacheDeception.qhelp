@@ -37,6 +37,12 @@
         </p>
         <sample src="examples/WebCacheDeceptionGoChi.go" />
     </example>
+     <example>
+        <p>
+            Vulnerable code example: The server is configured with strict cache controls and URL validation, preventing caching of dynamic or sensitive pages regardless of their URL pattern.
+        </p>
+        <sample src="examples/WebCacheDeceptionHTTPRouter.go" />
+    </example>
     <references>
         <li>
             OWASP Web Cache Deception Attack:
