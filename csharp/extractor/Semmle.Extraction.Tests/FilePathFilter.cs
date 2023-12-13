@@ -15,6 +15,18 @@ namespace Semmle.Extraction.Tests
             public void Log(Severity severity, string message) { }
         }
 
+        private static (FilePathFilter TestSubject, IEnumerable<FileInfo> Files) TestSetup()
+        {
+            return TestSetup("/a/b",
+            [
+                "/a/b/c/d/e/f.cs",
+                "/a/b/c/d/e/g.cs",
+                "/a/b/c/d/e/h.cs",
+                "/a/b/c/x/y/i.cs",
+                "/a/b/c/x/z/i.cs"
+            ]);
+        }
+
         private static (FilePathFilter TestSubject, IEnumerable<FileInfo> Files) TestSetup(string root, IEnumerable<string> paths)
         {
             root = GetPlatformSpecifixPath(root);
@@ -48,15 +60,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestNoFilter()
         {
-            (var testSubject, var files) = TestSetup(
-                "/a/b",
-                [
-                    "/a/b/c/d/e/f.cs",
-                    "/a/b/c/d/e/g.cs",
-                    "/a/b/c/d/e/h.cs",
-                    "/a/b/c/x/y/i.cs",
-                    "/a/b/c/x/z/i.cs"
-                ]);
+            (var testSubject, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", null);
 
@@ -68,15 +72,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestFiltersWithOnlyInclude()
         {
-            (var testSubject, var files) = TestSetup(
-                "/a/b",
-                [
-                    "/a/b/c/d/e/f.cs",
-                    "/a/b/c/d/e/g.cs",
-                    "/a/b/c/d/e/h.cs",
-                    "/a/b/c/x/y/i.cs",
-                    "/a/b/c/x/z/i.cs"
-                ]);
+            (var testSubject, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 include:c/d
@@ -99,14 +95,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestFiltersWithOnlyExclude()
         {
-            (var testSubject, var files) = TestSetup("/a/b",
-            [
-                "/a/b/c/d/e/f.cs",
-                "/a/b/c/d/e/g.cs",
-                "/a/b/c/d/e/h.cs",
-                "/a/b/c/x/y/i.cs",
-                "/a/b/c/x/z/i.cs"
-            ]);
+            (var testSubject, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 exclude:c/d/e
@@ -126,14 +115,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestFiltersWithIncludeExclude()
         {
-            (var testSubject, var files) = TestSetup("/a/b",
-            [
-                "/a/b/c/d/e/f.cs",
-                "/a/b/c/d/e/g.cs",
-                "/a/b/c/d/e/h.cs",
-                "/a/b/c/x/y/i.cs",
-                "/a/b/c/x/z/i.cs"
-            ]);
+            (var testSubject, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 include:c/x
@@ -153,14 +135,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestFiltersWithIncludeExcludeExcludeFirst()
         {
-            (var testSubject, var files) = TestSetup("/a/b",
-            [
-                "/a/b/c/d/e/f.cs",
-                "/a/b/c/d/e/g.cs",
-                "/a/b/c/d/e/h.cs",
-                "/a/b/c/x/y/i.cs",
-                "/a/b/c/x/z/i.cs"
-            ]);
+            (var testSubject, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 exclude:c/x/z
@@ -180,14 +155,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestFiltersWithIncludeExcludeComplexPatterns1()
         {
-            (var testSubject, var files) = TestSetup("/a/b",
-            [
-                "/a/b/c/d/e/f.cs",
-                "/a/b/c/d/e/g.cs",
-                "/a/b/c/d/e/h.cs",
-                "/a/b/c/x/y/i.cs",
-                "/a/b/c/x/z/i.cs"
-            ]);
+            (var testSubject, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 include:c/**/i.*
@@ -211,14 +179,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestFiltersWithIncludeExcludeComplexPatterns2()
         {
-            (var testSubject, var files) = TestSetup("/a/b",
-            [
-                "/a/b/c/d/e/f.cs",
-                "/a/b/c/d/e/g.cs",
-                "/a/b/c/d/e/h.cs",
-                "/a/b/c/x/y/i.cs",
-                "/a/b/c/x/z/i.cs"
-            ]);
+            (var testSubject, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 include:**/i.*
