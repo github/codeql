@@ -15,6 +15,7 @@ private import ModelUtil
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
+private import Node0ToString
 
 /**
  * The IR dataflow graph consists of the following nodes:
@@ -486,10 +487,13 @@ class Node extends TIRDataFlowNode {
 }
 
 private string toExprString(Node n) {
-  result = n.asExpr(0).toString()
-  or
-  not exists(n.asExpr()) and
-  result = n.asIndirectExpr(0, 1).toString() + " indirection"
+  not isDebugMode() and
+  (
+    result = n.asExpr(0).toString()
+    or
+    not exists(n.asExpr()) and
+    result = n.asIndirectExpr(0, 1).toString() + " indirection"
+  )
 }
 
 /**
