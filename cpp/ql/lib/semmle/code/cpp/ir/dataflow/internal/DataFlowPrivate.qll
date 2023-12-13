@@ -6,7 +6,7 @@ private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
-import Node0ToString
+private import Node0ToString
 
 cached
 private module Cached {

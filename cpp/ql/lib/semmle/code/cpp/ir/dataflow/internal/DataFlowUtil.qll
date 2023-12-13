@@ -15,6 +15,7 @@ private import ModelUtil
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
+private import Node0ToString
 
 /**
  * The IR dataflow graph consists of the following nodes:
