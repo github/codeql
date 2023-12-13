@@ -12,7 +12,6 @@
 
 import go
 import WebCacheDeceptionLib
-import WebCacheDeception::Flow::PathGraph
 
 from WebCacheDeception::Sink httpHandleFuncCall
 select httpHandleFuncCall, "$@ is used as wildcard endpoint.", httpHandleFuncCall.getNode(),
