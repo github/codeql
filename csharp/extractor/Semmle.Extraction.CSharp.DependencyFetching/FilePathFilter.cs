@@ -59,7 +59,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     continue;
                 }
 
-                pathFilters.Add(new PathFilter(new Regex(new FilePattern(filterText).RegexPattern, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline), include));
+                var regex = new FilePattern(filterText).RegexPattern;
+                progressMonitor.Log(Severity.Info, $"Filtering {(include ? "in" : "out")} files matching '{regex}'. Original glob filter: '{filter}'");
+                pathFilters.Add(new PathFilter(new Regex(regex, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline), include));
             }
 
             var fileIndex = files.ToDictionary(f => f, f => new FileInclusion(FileUtils.ConvertToUnix(f.FullName.ToLowerInvariant()).Replace(rootFolder, string.Empty).TrimStart('/'), pathFilters.All(f => !f.Include)));
@@ -75,7 +77,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            return fileIndex.Where(f => f.Value.Include).Select(f => f.Key);
+            var included = new List<FileInfo>();
+            foreach (var file in fileIndex)
+            {
+                if (file.Value.Include)
+                {
+                    included.Add(file.Key);
+                }
+                else
+                {
+                    progressMonitor.Log(Severity.Info, $"Excluding '{file.Key.FullName}'");
+                }
+            }
+
+            return included;
         }
     }
 }

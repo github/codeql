@@ -12,10 +12,15 @@ namespace Semmle.Extraction.Tests
     {
         private class ProgressMonitorStub : IProgressMonitor
         {
-            public void Log(Severity severity, string message) { }
+            public List<string> Messages { get; } = [];
+
+            public void Log(Severity severity, string message)
+            {
+                Messages.Add(message);
+            }
         }
 
-        private static (FilePathFilter TestSubject, IEnumerable<FileInfo> Files) TestSetup()
+        private static (FilePathFilter TestSubject, ProgressMonitorStub progressMonitor, IEnumerable<FileInfo> Files) TestSetup()
         {
             return TestSetup("/a/b",
             [
@@ -27,13 +32,15 @@ namespace Semmle.Extraction.Tests
             ]);
         }
 
-        private static (FilePathFilter TestSubject, IEnumerable<FileInfo> Files) TestSetup(string root, IEnumerable<string> paths)
+        private static (FilePathFilter TestSubject, ProgressMonitorStub progressMonitor, IEnumerable<FileInfo> Files) TestSetup(string root, IEnumerable<string> paths)
         {
             root = GetPlatformSpecifixPath(root);
             paths = GetPlatformSpecifixPaths(paths);
 
-            var filePathFilter = new FilePathFilter(new DirectoryInfo(root), new ProgressMonitorStub());
-            return (filePathFilter, paths.Select(p => new FileInfo(p)));
+            var progressMonitor = new ProgressMonitorStub();
+
+            var filePathFilter = new FilePathFilter(new DirectoryInfo(root), progressMonitor);
+            return (filePathFilter, progressMonitor, paths.Select(p => new FileInfo(p)));
         }
 
         private static string GetPlatformSpecifixPath(string file)
@@ -52,7 +59,7 @@ namespace Semmle.Extraction.Tests
             return files.Select(f => new FileInfo(f));
         }
 
-        private static void AssertEquivalence(IEnumerable<FileInfo>? expected, IEnumerable<FileInfo>? actual)
+        private static void AssertFileInfoEquivalence(IEnumerable<FileInfo>? expected, IEnumerable<FileInfo>? actual)
         {
             Assert.Equivalent(expected?.Select(f => f.FullName), actual?.Select(f => f.FullName), strict: true);
         }
@@ -60,19 +67,20 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void TestNoFilter()
         {
-            (var testSubject, var files) = TestSetup();
+            (var testSubject, var progressMonitor, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", null);
 
             var filtered = testSubject.Filter(files);
 
-            AssertEquivalence(files, filtered);
+            AssertFileInfoEquivalence(files, filtered);
+            Assert.Equivalent(Array.Empty<string>(), progressMonitor.Messages, strict: true);
         }
 
         [Fact]
         public void TestFiltersWithOnlyInclude()
         {
-            (var testSubject, var files) = TestSetup();
+            (var testSubject, var progressMonitor, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 include:c/d
@@ -89,13 +97,20 @@ namespace Semmle.Extraction.Tests
                     "/a/b/c/x/y/i.cs"
                 ]);
 
-            AssertEquivalence(expected, filtered);
+            AssertFileInfoEquivalence(expected, filtered);
+
+            var expectedRegexMessages = new[]
+            {
+                "Filtering in files matching '^c/d.*'. Original glob filter: 'include:c/d'",
+                "Filtering in files matching '^c/x/y.*'. Original glob filter: 'include:c/x/y'"
+            };
+            Assert.Equivalent(expectedRegexMessages, progressMonitor.Messages, strict: false);
         }
 
         [Fact]
         public void TestFiltersWithOnlyExclude()
         {
-            (var testSubject, var files) = TestSetup();
+            (var testSubject, var progressMonitor, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 exclude:c/d/e
@@ -109,13 +124,19 @@ namespace Semmle.Extraction.Tests
                     "/a/b/c/x/z/i.cs"
                 ]);
 
-            AssertEquivalence(expected, filtered);
+            AssertFileInfoEquivalence(expected, filtered);
+
+            var expectedRegexMessages = new[]
+            {
+                "Filtering out files matching '^c/d/e.*'. Original glob filter: 'exclude:c/d/e'"
+            };
+            Assert.Equivalent(expectedRegexMessages, progressMonitor.Messages, strict: false);
         }
 
         [Fact]
         public void TestFiltersWithIncludeExclude()
         {
-            (var testSubject, var files) = TestSetup();
+            (var testSubject, var progressMonitor, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 include:c/x
@@ -129,13 +150,20 @@ namespace Semmle.Extraction.Tests
                      "/a/b/c/x/y/i.cs"
                  ]);
 
-            AssertEquivalence(expected, filtered);
+            AssertFileInfoEquivalence(expected, filtered);
+
+            var expectedRegexMessages = new[]
+            {
+                "Filtering in files matching '^c/x.*'. Original glob filter: 'include:c/x'",
+                "Filtering out files matching '^c/x/z.*'. Original glob filter: 'exclude:c/x/z'"
+            };
+            Assert.Equivalent(expectedRegexMessages, progressMonitor.Messages, strict: false);
         }
 
         [Fact]
         public void TestFiltersWithIncludeExcludeExcludeFirst()
         {
-            (var testSubject, var files) = TestSetup();
+            (var testSubject, var progressMonitor, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 exclude:c/x/z
@@ -149,13 +177,20 @@ namespace Semmle.Extraction.Tests
                     "/a/b/c/x/y/i.cs"
                 ]);
 
-            AssertEquivalence(expected, filtered);
+            AssertFileInfoEquivalence(expected, filtered);
+
+            var expectedRegexMessages = new[]
+            {
+                "Filtering in files matching '^c/x.*'. Original glob filter: 'include:c/x'",
+                "Filtering out files matching '^c/x/z.*'. Original glob filter: 'exclude:c/x/z'"
+            };
+            Assert.Equivalent(expectedRegexMessages, progressMonitor.Messages, strict: false);
         }
 
         [Fact]
         public void TestFiltersWithIncludeExcludeComplexPatterns1()
         {
-            (var testSubject, var files) = TestSetup();
+            (var testSubject, var progressMonitor, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 include:c/**/i.*
@@ -173,13 +208,21 @@ namespace Semmle.Extraction.Tests
                     "/a/b/c/x/y/i.cs"
                 ]);
 
-            AssertEquivalence(expected, filtered);
+            AssertFileInfoEquivalence(expected, filtered);
+
+            var expectedRegexMessages = new[]
+            {
+                "Filtering in files matching '^c/.*/i\\.[^/]*.*'. Original glob filter: 'include:c/**/i.*'",
+                "Filtering in files matching '^c/d/.*/[^/]*\\.cs.*'. Original glob filter: 'include:c/d/**/*.cs'",
+                "Filtering out files matching '^.*/z/i\\.cs.*'. Original glob filter: 'exclude:**/z/i.cs'"
+            };
+            Assert.Equivalent(expectedRegexMessages, progressMonitor.Messages, strict: false);
         }
 
         [Fact]
         public void TestFiltersWithIncludeExcludeComplexPatterns2()
         {
-            (var testSubject, var files) = TestSetup();
+            (var testSubject, var progressMonitor, var files) = TestSetup();
 
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 include:**/i.*
@@ -193,7 +236,14 @@ namespace Semmle.Extraction.Tests
                     "/a/b/c/x/y/i.cs"
                 ]);
 
-            AssertEquivalence(expected, filtered);
+            AssertFileInfoEquivalence(expected, filtered);
+
+            var expectedRegexMessages = new[]
+            {
+                "Filtering in files matching '^.*/i\\.[^/]*.*'. Original glob filter: 'include:**/i.*'",
+                "Filtering out files matching '^.*/z/i\\.cs.*'. Original glob filter: 'exclude:**/z/i.cs'"
+            };
+            Assert.Equivalent(expectedRegexMessages, progressMonitor.Messages, strict: false);
         }
     }
 }
