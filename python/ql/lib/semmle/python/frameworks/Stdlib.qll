@@ -297,6 +297,8 @@ module Stdlib {
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the Python standard library.
  *
  * This module is marked private as exposing it means committing to 1-year deprecation
@@ -1305,7 +1307,7 @@ module StdlibPrivate {
   }
 
   /**
-   * A reference to `pickle.load`
+   * Gets a reference to `pickle.load`
    */
   API::Node pickle_load() {
     result = pickle().getMember("load")
@@ -1314,7 +1316,7 @@ module StdlibPrivate {
   }
 
   /**
-   * A reference to `pickle.loads`
+   * Gets a reference to `pickle.loads`
    */
   API::Node pickle_loads() {
     result = pickle().getMember("loads")
@@ -3631,7 +3633,7 @@ module StdlibPrivate {
   // ---------------------------------------------------------------------------
   // xml.etree.ElementTree
   // ---------------------------------------------------------------------------
-  /** A reference to the `xml.etree.ElementTree` class */
+  /** Gets a reference to the `xml.etree.ElementTree` class */
   API::Node elementTreeClassRef() {
     result = API::moduleImport("xml").getMember("etree").getMember("ElementTree").getASubclass*() or
     result = ModelOutput::getATypeNode("xml.etree.ElementTree~Subclass").getASubclass*()
