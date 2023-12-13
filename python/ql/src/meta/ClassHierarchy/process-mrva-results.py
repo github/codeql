@@ -2,22 +2,17 @@
 
 import sys
 import glob
-from pathlib import Path
 import json
 import subprocess
 from collections import defaultdict
-import yaml
 import shutil
 import os
-import re
 
-VERSION = "process-mrva-results 0.0.1"
-
-mad_path = Path(__file__).parent.parent.parent.parent / "lib/semmle/python/frameworks/data/internal/"
+from shared_subclass_functions import *
 
 assert mad_path.exists(), mad_path
 
-package_data = defaultdict(set)
+
 
 # process data
 
@@ -55,34 +50,9 @@ class CodeQL:
                return res.decode('utf-8')
            res += b
 
-def wrap_in_template(data):
-    return {
-        "extensions": [
-            {
-                "addsTo": {
-                    "pack": "codeql/python-all",
-                    "extensible": "typeModel",
-                },
-                "data": data,
-            }
-        ]
-    }
-
-def parse_from_file(path: Path) -> set:
-    if not path.exists():
-        return set()
-
-    f = path.open("r")
-    assert f.readline().startswith(f"# {VERSION}\n"), path
-
-    raw_data = yaml.load(f, Loader=yaml.CBaseLoader)
-    assert len(raw_data["extensions"]) == 1, path
-    assert raw_data["extensions"][0]["addsTo"]["extensible"] == "typeModel", path
-
-    return set(tuple(x) for x in raw_data["extensions"][0]["data"])
-
 
 def gather_from_bqrs_results():
+    package_data = defaultdict(set)
     with CodeQL() as codeql:
         if os.path.exists(sys.argv[1]) and not os.path.isdir(sys.argv[1]) and sys.argv[1].endswith(".bqrs"):
             files = [sys.argv[1]]
@@ -98,34 +68,12 @@ def gather_from_bqrs_results():
             for t in select["#select"]["tuples"]:
                 pkg = t[1]
                 package_data[pkg].add(tuple(t))
+    return package_data
 
-def gather_from_existing():
-    for f in glob.glob(f"{mad_path}/subclass-capture/auto-*.model.yml", recursive=True):
-        print(f"Processing {f}")
 
-        all_data = parse_from_file(Path(f))
-        pkg = f.split("/")[-1].split(".")[0][5:]
-        package_data[pkg].update(all_data)
+if __name__ == "__main__":
+    if joined_file.exists():
+        sys.exit(f"File {joined_file} exists, you should split it up first")
 
-gather_from_bqrs_results()
-
-for pkg in package_data:
-    if not re.match(r"[a-zA-Z0-9-_]+", pkg):
-        print(f"Skipping {repr(pkg)}")
-        continue
-
-    pkg_path = mad_path / "subclass-capture" / f"auto-{pkg}.model.yml"
-
-    print(f"Writing {pkg_path}")
-
-    all_data = parse_from_file(pkg_path)
-    all_data.update(package_data[pkg])
-
-    as_lists = [list(t) for t in all_data]
-    as_lists.sort()
-
-    data_for_yaml = wrap_in_template(as_lists)
-
-    f = pkg_path.open("w+")
-    f.write(f"# {VERSION}\n")
-    yaml.dump(data_for_yaml, indent=2, stream=f, Dumper=yaml.CDumper)
+    package_data = gather_from_bqrs_results()
+    write_all_package_data_to_files(package_data)
