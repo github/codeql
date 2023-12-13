@@ -10,7 +10,7 @@ import javax.servlet.http.Cookie;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.owasp.esapi.Encoder;
 
-public class WeakRandomCookies extends HttpServlet {
+public class InsecureRandomCookies extends HttpServlet {
     HttpServletResponse response;
 
     public void doGet() {
@@ -44,8 +44,8 @@ public class WeakRandomCookies extends HttpServlet {
         byte[] bytes2 = new byte[16];
         sr.nextBytes(bytes2);
         // GOOD: The cookie value is unpredictable.
-        Cookie cookie4 = new Cookie("name", new String(bytes2)); 
-        
+        Cookie cookie4 = new Cookie("name", new String(bytes2));
+
         ThreadLocalRandom tlr = ThreadLocalRandom.current();
 
         Cookie cookie5 = new Cookie("name", Integer.toString(tlr.nextInt())); // $hasWeakRandomFlow
