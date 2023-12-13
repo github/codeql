@@ -5,10 +5,10 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.Maps
 private import semmle.code.java.JDK
 
-private class MapPutOrRemove extends MethodCall {
-  MapPutOrRemove() {
-    this.getMethod() instanceof MapMutator and
-    this.getMethod().getName().matches(["put%", "remove"])
+private class MapUpdateWithKeyOrValue extends MethodCall {
+  MapUpdateWithKeyOrValue() {
+    this.getMethod() instanceof MapMethod and
+    this.getMethod().getName().matches(["put%", "remove", "replace"])
   }
 }
 
@@ -19,7 +19,9 @@ private module ProcessBuilderEnvironmentConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(MapPutOrRemove mm).getQualifier() }
+  predicate isSink(DataFlow::Node sink) {
+    sink.asExpr() = any(MapUpdateWithKeyOrValue mm).getQualifier()
+  }
 }
 
 private module ProcessBuilderEnvironmentFlow = DataFlow::Global<ProcessBuilderEnvironmentConfig>;
@@ -41,7 +43,7 @@ module ExecTaintedEnvironmentConfig implements DataFlow::ConfigSig {
     sinkNode(sink, "environment-injection")
     or
     // sink is a key or value added to a `ProcessBuilder::environment` map.
-    exists(MapPutOrRemove mm | mm.getAnArgument() = sink.asExpr() |
+    exists(MapUpdateWithKeyOrValue mm | mm.getAnArgument() = sink.asExpr() |
       ProcessBuilderEnvironmentFlow::flowToExpr(mm.getQualifier())
     )
   }

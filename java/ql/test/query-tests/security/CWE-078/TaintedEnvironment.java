@@ -15,6 +15,17 @@ public class TaintedEnvironment {
 
         pb.environment().put(s, "foo"); // $hasTaintFlow
 
+        Map<String, String> extra = Map.of("USER", s);
+
+        pb.environment().putAll(extra); // $hasTaintFlow
+
+        pb.environment().putIfAbsent("foo", s); // $hasTaintFlow
+        pb.environment().putIfAbsent(s, "foo"); // $hasTaintFlow
+
+        pb.environment().replace("foo", s); // $hasTaintFlow
+        pb.environment().replace(s, "foo"); // $hasTaintFlow
+        pb.environment().replace("foo", "bar", s); // $hasTaintFlow
+
         Map<String, String> env = pb.environment();
 
         env.put("foo", s); // $hasTaintFlow
