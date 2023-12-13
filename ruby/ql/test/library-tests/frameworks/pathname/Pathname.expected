@@ -57,7 +57,6 @@ pathnameInstances
 | Pathname.rb:39:12:39:19 | foo_path |
 | Pathname.rb:41:1:41:3 | p08 |
 | Pathname.rb:42:1:42:3 | p01 |
-| file://:0:0:0:0 | [summary param] position 0 in + |
 | file://:0:0:0:0 | [summary param] self in + |
 | file://:0:0:0:0 | [summary param] self in Pathname;Method[cleanpath] |
 | file://:0:0:0:0 | [summary param] self in Pathname;Method[expand_path] |
@@ -134,7 +133,6 @@ fileNameSources
 | Pathname.rb:39:12:39:19 | foo_path |
 | Pathname.rb:41:1:41:3 | p08 |
 | Pathname.rb:42:1:42:3 | p01 |
-| file://:0:0:0:0 | [summary param] position 0 in + |
 | file://:0:0:0:0 | [summary param] self in + |
 | file://:0:0:0:0 | [summary param] self in Pathname;Method[cleanpath] |
 | file://:0:0:0:0 | [summary param] self in Pathname;Method[expand_path] |

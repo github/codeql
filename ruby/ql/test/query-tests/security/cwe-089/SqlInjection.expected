@@ -8,12 +8,12 @@ edges
 | ActiveRecordInjection.rb:43:29:43:39 | ...[...] | ActiveRecordInjection.rb:43:20:43:42 | "id = '#{...}'" |
 | ActiveRecordInjection.rb:48:30:48:35 | call to params | ActiveRecordInjection.rb:48:30:48:40 | ...[...] |
 | ActiveRecordInjection.rb:48:30:48:40 | ...[...] | ActiveRecordInjection.rb:48:21:48:43 | "id = '#{...}'" |
-| ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | ActiveRecordInjection.rb:52:21:52:45 | call to [] |
+| ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" : String | ActiveRecordInjection.rb:52:21:52:45 | call to [] |
 | ActiveRecordInjection.rb:52:31:52:36 | call to params | ActiveRecordInjection.rb:52:31:52:41 | ...[...] |
-| ActiveRecordInjection.rb:52:31:52:41 | ...[...] | ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" |
-| ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | ActiveRecordInjection.rb:57:22:57:46 | call to [] |
+| ActiveRecordInjection.rb:52:31:52:41 | ...[...] | ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" : String |
+| ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" : String | ActiveRecordInjection.rb:57:22:57:46 | call to [] |
 | ActiveRecordInjection.rb:57:32:57:37 | call to params | ActiveRecordInjection.rb:57:32:57:42 | ...[...] |
-| ActiveRecordInjection.rb:57:32:57:42 | ...[...] | ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" |
+| ActiveRecordInjection.rb:57:32:57:42 | ...[...] | ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" : String |
 | ActiveRecordInjection.rb:62:21:62:26 | call to params | ActiveRecordInjection.rb:62:21:62:35 | ...[...] |
 | ActiveRecordInjection.rb:62:21:62:35 | ...[...] | ActiveRecordInjection.rb:61:16:61:21 | <<-SQL |
 | ActiveRecordInjection.rb:68:34:68:39 | call to params | ActiveRecordInjection.rb:68:34:68:44 | ...[...] |
@@ -37,13 +37,10 @@ edges
 | ActiveRecordInjection.rb:108:23:108:28 | call to params | ActiveRecordInjection.rb:108:23:108:47 | ...[...] |
 | ActiveRecordInjection.rb:114:5:114:6 | ps | ActiveRecordInjection.rb:115:11:115:12 | ps |
 | ActiveRecordInjection.rb:114:10:114:15 | call to params | ActiveRecordInjection.rb:114:5:114:6 | ps |
-| ActiveRecordInjection.rb:115:5:115:7 | uid | ActiveRecordInjection.rb:116:5:116:9 | uidEq |
+| ActiveRecordInjection.rb:115:5:115:7 | uid | ActiveRecordInjection.rb:116:5:116:9 | uidEq : String |
 | ActiveRecordInjection.rb:115:11:115:12 | ps | ActiveRecordInjection.rb:115:11:115:17 | ...[...] |
 | ActiveRecordInjection.rb:115:11:115:17 | ...[...] | ActiveRecordInjection.rb:115:5:115:7 | uid |
-| ActiveRecordInjection.rb:116:5:116:9 | uidEq | ActiveRecordInjection.rb:120:20:120:32 | ... + ... |
-| ActiveRecordInjection.rb:116:5:116:9 | uidEq | ActiveRecordInjection.rb:120:28:120:32 | uidEq |
-| ActiveRecordInjection.rb:120:20:120:32 | ... + ... [element] | ActiveRecordInjection.rb:120:20:120:32 | ... + ... |
-| ActiveRecordInjection.rb:120:28:120:32 | uidEq | ActiveRecordInjection.rb:120:20:120:32 | ... + ... [element] |
+| ActiveRecordInjection.rb:116:5:116:9 | uidEq : String | ActiveRecordInjection.rb:120:20:120:32 | ... + ... |
 | ActiveRecordInjection.rb:153:21:153:26 | call to params | ActiveRecordInjection.rb:153:21:153:44 | ...[...] |
 | ActiveRecordInjection.rb:153:21:153:26 | call to params | ActiveRecordInjection.rb:153:21:153:44 | ...[...] |
 | ActiveRecordInjection.rb:153:21:153:44 | ...[...] | ActiveRecordInjection.rb:20:22:20:30 | condition |
@@ -51,9 +48,9 @@ edges
 | ActiveRecordInjection.rb:167:59:167:74 | ...[...] | ActiveRecordInjection.rb:167:27:167:76 | "this is an unsafe annotation:..." |
 | ActiveRecordInjection.rb:178:5:178:13 | my_params | ActiveRecordInjection.rb:179:47:179:55 | my_params |
 | ActiveRecordInjection.rb:178:17:178:32 | call to permitted_params | ActiveRecordInjection.rb:178:5:178:13 | my_params |
-| ActiveRecordInjection.rb:179:5:179:9 | query | ActiveRecordInjection.rb:180:37:180:41 | query |
+| ActiveRecordInjection.rb:179:5:179:9 | query : String | ActiveRecordInjection.rb:180:37:180:41 | query |
 | ActiveRecordInjection.rb:179:47:179:55 | my_params | ActiveRecordInjection.rb:179:47:179:65 | ...[...] |
-| ActiveRecordInjection.rb:179:47:179:65 | ...[...] | ActiveRecordInjection.rb:179:5:179:9 | query |
+| ActiveRecordInjection.rb:179:47:179:65 | ...[...] | ActiveRecordInjection.rb:179:5:179:9 | query : String |
 | ActiveRecordInjection.rb:185:5:185:10 | call to params | ActiveRecordInjection.rb:185:5:185:27 | call to require |
 | ActiveRecordInjection.rb:185:5:185:27 | call to require | ActiveRecordInjection.rb:185:5:185:59 | call to permit |
 | ActiveRecordInjection.rb:185:5:185:59 | call to permit | ActiveRecordInjection.rb:178:17:178:32 | call to permitted_params |
@@ -66,18 +63,18 @@ edges
 | ArelInjection.rb:4:5:4:8 | name | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." |
 | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:4:12:4:29 | ...[...] |
 | ArelInjection.rb:4:12:4:29 | ...[...] | ArelInjection.rb:4:5:4:8 | name |
-| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:13:5:13:8 | qry1 |
-| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:19:5:19:8 | qry2 |
-| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:31:5:31:8 | qry3 |
-| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:43:5:43:8 | qry3 |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:13:5:13:8 | qry1 : String |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:19:5:19:8 | qry2 : String |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:31:5:31:8 | qry3 : String |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:43:5:43:8 | qry3 : String |
 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:6:12:6:24 | ...[...] |
 | PgInjection.rb:6:12:6:24 | ...[...] | PgInjection.rb:6:5:6:8 | name |
-| PgInjection.rb:13:5:13:8 | qry1 | PgInjection.rb:14:15:14:18 | qry1 |
-| PgInjection.rb:13:5:13:8 | qry1 | PgInjection.rb:15:21:15:24 | qry1 |
-| PgInjection.rb:19:5:19:8 | qry2 | PgInjection.rb:20:22:20:25 | qry2 |
-| PgInjection.rb:19:5:19:8 | qry2 | PgInjection.rb:21:28:21:31 | qry2 |
-| PgInjection.rb:31:5:31:8 | qry3 | PgInjection.rb:32:29:32:32 | qry3 |
-| PgInjection.rb:43:5:43:8 | qry3 | PgInjection.rb:44:29:44:32 | qry3 |
+| PgInjection.rb:13:5:13:8 | qry1 : String | PgInjection.rb:14:15:14:18 | qry1 |
+| PgInjection.rb:13:5:13:8 | qry1 : String | PgInjection.rb:15:21:15:24 | qry1 |
+| PgInjection.rb:19:5:19:8 | qry2 : String | PgInjection.rb:20:22:20:25 | qry2 |
+| PgInjection.rb:19:5:19:8 | qry2 : String | PgInjection.rb:21:28:21:31 | qry2 |
+| PgInjection.rb:31:5:31:8 | qry3 : String | PgInjection.rb:32:29:32:32 | qry3 |
+| PgInjection.rb:43:5:43:8 | qry3 : String | PgInjection.rb:44:29:44:32 | qry3 |
 nodes
 | ActiveRecordInjection.rb:8:25:8:28 | name | semmle.label | name |
 | ActiveRecordInjection.rb:8:31:8:34 | pass | semmle.label | pass |
@@ -95,11 +92,11 @@ nodes
 | ActiveRecordInjection.rb:48:30:48:35 | call to params | semmle.label | call to params |
 | ActiveRecordInjection.rb:48:30:48:40 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:52:21:52:45 | call to [] | semmle.label | call to [] |
-| ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | semmle.label | "id = '#{...}'" |
+| ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" : String | semmle.label | "id = '#{...}'" : String |
 | ActiveRecordInjection.rb:52:31:52:36 | call to params | semmle.label | call to params |
 | ActiveRecordInjection.rb:52:31:52:41 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:57:22:57:46 | call to [] | semmle.label | call to [] |
-| ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | semmle.label | "id = '#{...}'" |
+| ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" : String | semmle.label | "id = '#{...}'" : String |
 | ActiveRecordInjection.rb:57:32:57:37 | call to params | semmle.label | call to params |
 | ActiveRecordInjection.rb:57:32:57:42 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:61:16:61:21 | <<-SQL | semmle.label | <<-SQL |
@@ -140,10 +137,8 @@ nodes
 | ActiveRecordInjection.rb:115:5:115:7 | uid | semmle.label | uid |
 | ActiveRecordInjection.rb:115:11:115:12 | ps | semmle.label | ps |
 | ActiveRecordInjection.rb:115:11:115:17 | ...[...] | semmle.label | ...[...] |
-| ActiveRecordInjection.rb:116:5:116:9 | uidEq | semmle.label | uidEq |
+| ActiveRecordInjection.rb:116:5:116:9 | uidEq : String | semmle.label | uidEq : String |
 | ActiveRecordInjection.rb:120:20:120:32 | ... + ... | semmle.label | ... + ... |
-| ActiveRecordInjection.rb:120:20:120:32 | ... + ... [element] | semmle.label | ... + ... [element] |
-| ActiveRecordInjection.rb:120:28:120:32 | uidEq | semmle.label | uidEq |
 | ActiveRecordInjection.rb:153:21:153:26 | call to params | semmle.label | call to params |
 | ActiveRecordInjection.rb:153:21:153:44 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:153:21:153:44 | ...[...] | semmle.label | ...[...] |
@@ -152,7 +147,7 @@ nodes
 | ActiveRecordInjection.rb:167:59:167:74 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:178:5:178:13 | my_params | semmle.label | my_params |
 | ActiveRecordInjection.rb:178:17:178:32 | call to permitted_params | semmle.label | call to permitted_params |
-| ActiveRecordInjection.rb:179:5:179:9 | query | semmle.label | query |
+| ActiveRecordInjection.rb:179:5:179:9 | query : String | semmle.label | query : String |
 | ActiveRecordInjection.rb:179:47:179:55 | my_params | semmle.label | my_params |
 | ActiveRecordInjection.rb:179:47:179:65 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:180:37:180:41 | query | semmle.label | query |
@@ -172,15 +167,15 @@ nodes
 | PgInjection.rb:6:5:6:8 | name | semmle.label | name |
 | PgInjection.rb:6:12:6:17 | call to params | semmle.label | call to params |
 | PgInjection.rb:6:12:6:24 | ...[...] | semmle.label | ...[...] |
-| PgInjection.rb:13:5:13:8 | qry1 | semmle.label | qry1 |
+| PgInjection.rb:13:5:13:8 | qry1 : String | semmle.label | qry1 : String |
 | PgInjection.rb:14:15:14:18 | qry1 | semmle.label | qry1 |
 | PgInjection.rb:15:21:15:24 | qry1 | semmle.label | qry1 |
-| PgInjection.rb:19:5:19:8 | qry2 | semmle.label | qry2 |
+| PgInjection.rb:19:5:19:8 | qry2 : String | semmle.label | qry2 : String |
 | PgInjection.rb:20:22:20:25 | qry2 | semmle.label | qry2 |
 | PgInjection.rb:21:28:21:31 | qry2 | semmle.label | qry2 |
-| PgInjection.rb:31:5:31:8 | qry3 | semmle.label | qry3 |
+| PgInjection.rb:31:5:31:8 | qry3 : String | semmle.label | qry3 : String |
 | PgInjection.rb:32:29:32:32 | qry3 | semmle.label | qry3 |
-| PgInjection.rb:43:5:43:8 | qry3 | semmle.label | qry3 |
+| PgInjection.rb:43:5:43:8 | qry3 : String | semmle.label | qry3 : String |
 | PgInjection.rb:44:29:44:32 | qry3 | semmle.label | qry3 |
 subpaths
 #select

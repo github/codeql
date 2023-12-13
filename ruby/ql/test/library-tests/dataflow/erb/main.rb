@@ -17,3 +17,6 @@ class App
         render(view)
     end
 end
+
+class ViewComponent::Base
+end

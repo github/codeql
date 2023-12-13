@@ -31,20 +31,20 @@ edges
 | CodeInjection.rb:86:10:86:25 | ... + ... [element] | CodeInjection.rb:86:10:86:37 | ... + ... [element] |
 | CodeInjection.rb:86:10:86:37 | ... + ... [element] | CodeInjection.rb:86:10:86:37 | ... + ... |
 | CodeInjection.rb:86:22:86:25 | code | CodeInjection.rb:86:10:86:25 | ... + ... [element] |
-| CodeInjection.rb:101:3:102:5 | self in index [@foo] | CodeInjection.rb:111:3:113:5 | self in baz [@foo] |
-| CodeInjection.rb:101:3:102:5 | self in index [@foo] | CodeInjection.rb:111:3:113:5 | self in baz [@foo] |
-| CodeInjection.rb:105:5:105:8 | [post] self [@foo] | CodeInjection.rb:108:3:109:5 | self in bar [@foo] |
-| CodeInjection.rb:105:5:105:8 | [post] self [@foo] | CodeInjection.rb:108:3:109:5 | self in bar [@foo] |
+| CodeInjection.rb:101:3:102:5 | self in index : PostsController [@foo] | CodeInjection.rb:111:3:113:5 | self in baz : PostsController [@foo] |
+| CodeInjection.rb:101:3:102:5 | self in index : PostsController [@foo] | CodeInjection.rb:111:3:113:5 | self in baz : PostsController [@foo] |
+| CodeInjection.rb:105:5:105:8 | [post] self [@foo] | CodeInjection.rb:108:3:109:5 | self in bar : PostsController [@foo] |
+| CodeInjection.rb:105:5:105:8 | [post] self [@foo] | CodeInjection.rb:108:3:109:5 | self in bar : PostsController [@foo] |
 | CodeInjection.rb:105:12:105:17 | call to params | CodeInjection.rb:105:12:105:23 | ...[...] |
 | CodeInjection.rb:105:12:105:17 | call to params | CodeInjection.rb:105:12:105:23 | ...[...] |
 | CodeInjection.rb:105:12:105:23 | ...[...] | CodeInjection.rb:105:5:105:8 | [post] self [@foo] |
 | CodeInjection.rb:105:12:105:23 | ...[...] | CodeInjection.rb:105:5:105:8 | [post] self [@foo] |
-| CodeInjection.rb:108:3:109:5 | self in bar [@foo] | CodeInjection.rb:101:3:102:5 | self in index [@foo] |
-| CodeInjection.rb:108:3:109:5 | self in bar [@foo] | CodeInjection.rb:101:3:102:5 | self in index [@foo] |
-| CodeInjection.rb:111:3:113:5 | self in baz [@foo] | CodeInjection.rb:112:10:112:13 | self [@foo] |
-| CodeInjection.rb:111:3:113:5 | self in baz [@foo] | CodeInjection.rb:112:10:112:13 | self [@foo] |
-| CodeInjection.rb:112:10:112:13 | self [@foo] | CodeInjection.rb:112:10:112:13 | @foo |
-| CodeInjection.rb:112:10:112:13 | self [@foo] | CodeInjection.rb:112:10:112:13 | @foo |
+| CodeInjection.rb:108:3:109:5 | self in bar : PostsController [@foo] | CodeInjection.rb:101:3:102:5 | self in index : PostsController [@foo] |
+| CodeInjection.rb:108:3:109:5 | self in bar : PostsController [@foo] | CodeInjection.rb:101:3:102:5 | self in index : PostsController [@foo] |
+| CodeInjection.rb:111:3:113:5 | self in baz : PostsController [@foo] | CodeInjection.rb:112:10:112:13 | self : PostsController [@foo] |
+| CodeInjection.rb:111:3:113:5 | self in baz : PostsController [@foo] | CodeInjection.rb:112:10:112:13 | self : PostsController [@foo] |
+| CodeInjection.rb:112:10:112:13 | self : PostsController [@foo] | CodeInjection.rb:112:10:112:13 | @foo |
+| CodeInjection.rb:112:10:112:13 | self : PostsController [@foo] | CodeInjection.rb:112:10:112:13 | @foo |
 nodes
 | CodeInjection.rb:5:5:5:8 | code | semmle.label | code |
 | CodeInjection.rb:5:5:5:8 | code | semmle.label | code |
@@ -82,22 +82,22 @@ nodes
 | CodeInjection.rb:88:10:88:32 | "prefix_#{...}_suffix" | semmle.label | "prefix_#{...}_suffix" |
 | CodeInjection.rb:90:10:90:13 | code | semmle.label | code |
 | CodeInjection.rb:90:10:90:13 | code | semmle.label | code |
-| CodeInjection.rb:101:3:102:5 | self in index [@foo] | semmle.label | self in index [@foo] |
-| CodeInjection.rb:101:3:102:5 | self in index [@foo] | semmle.label | self in index [@foo] |
+| CodeInjection.rb:101:3:102:5 | self in index : PostsController [@foo] | semmle.label | self in index : PostsController [@foo] |
+| CodeInjection.rb:101:3:102:5 | self in index : PostsController [@foo] | semmle.label | self in index : PostsController [@foo] |
 | CodeInjection.rb:105:5:105:8 | [post] self [@foo] | semmle.label | [post] self [@foo] |
 | CodeInjection.rb:105:5:105:8 | [post] self [@foo] | semmle.label | [post] self [@foo] |
 | CodeInjection.rb:105:12:105:17 | call to params | semmle.label | call to params |
 | CodeInjection.rb:105:12:105:17 | call to params | semmle.label | call to params |
 | CodeInjection.rb:105:12:105:23 | ...[...] | semmle.label | ...[...] |
 | CodeInjection.rb:105:12:105:23 | ...[...] | semmle.label | ...[...] |
-| CodeInjection.rb:108:3:109:5 | self in bar [@foo] | semmle.label | self in bar [@foo] |
-| CodeInjection.rb:108:3:109:5 | self in bar [@foo] | semmle.label | self in bar [@foo] |
-| CodeInjection.rb:111:3:113:5 | self in baz [@foo] | semmle.label | self in baz [@foo] |
-| CodeInjection.rb:111:3:113:5 | self in baz [@foo] | semmle.label | self in baz [@foo] |
+| CodeInjection.rb:108:3:109:5 | self in bar : PostsController [@foo] | semmle.label | self in bar : PostsController [@foo] |
+| CodeInjection.rb:108:3:109:5 | self in bar : PostsController [@foo] | semmle.label | self in bar : PostsController [@foo] |
+| CodeInjection.rb:111:3:113:5 | self in baz : PostsController [@foo] | semmle.label | self in baz : PostsController [@foo] |
+| CodeInjection.rb:111:3:113:5 | self in baz : PostsController [@foo] | semmle.label | self in baz : PostsController [@foo] |
 | CodeInjection.rb:112:10:112:13 | @foo | semmle.label | @foo |
 | CodeInjection.rb:112:10:112:13 | @foo | semmle.label | @foo |
-| CodeInjection.rb:112:10:112:13 | self [@foo] | semmle.label | self [@foo] |
-| CodeInjection.rb:112:10:112:13 | self [@foo] | semmle.label | self [@foo] |
+| CodeInjection.rb:112:10:112:13 | self : PostsController [@foo] | semmle.label | self : PostsController [@foo] |
+| CodeInjection.rb:112:10:112:13 | self : PostsController [@foo] | semmle.label | self : PostsController [@foo] |
 subpaths
 #select
 | CodeInjection.rb:8:10:8:13 | code | CodeInjection.rb:5:12:5:17 | call to params | CodeInjection.rb:8:10:8:13 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
