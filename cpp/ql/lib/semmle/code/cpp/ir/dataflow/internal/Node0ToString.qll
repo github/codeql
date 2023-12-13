@@ -72,4 +72,4 @@ string instructionToString(Instruction i) { result = any(Node0ToString nts).inst
  * In debug mode the `toString` on dataflow nodes is more expensive to compute,
  * but gives more precise information about the different dataflow nodes.
  */
-predicate isDebugMode() { not any(Node0ToString nts).isDebugMode() }
+predicate isDebugMode() { any(Node0ToString nts).isDebugMode() }

@@ -487,7 +487,7 @@ class Node extends TIRDataFlowNode {
 }
 
 private string toExprString(Node n) {
-  isDebugMode() and
+  not isDebugMode() and
   (
     result = n.asExpr(0).toString()
     or
