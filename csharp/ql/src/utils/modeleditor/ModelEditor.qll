@@ -1,7 +1,6 @@
 /** Provides classes and predicates related to handling APIs for the VS Code extension. */
 
 private import csharp
-private import semmle.code.csharp.commons.QualifiedName
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
@@ -121,22 +120,12 @@ string methodClassification(Call method) {
  * Gets the fully qualified name of the type `t`.
  */
 private string qualifiedTypeName(string namespace, Type t) {
-  exists(string type | QN::hasQualifiedName(t, namespace, type) | result = type)
+  exists(string type | hasQualifiedTypeName(t, namespace, type) | result = type)
 }
 
 /**
  * Gets the fully qualified name of the callable `c`.
  */
 private string qualifiedCallableName(string namespace, string type, Callable c) {
-  exists(string name | QN::hasQualifiedName(c, namespace, type, name) | result = name)
+  exists(string name | hasQualifiedMethodName(c, namespace, type, name) | result = name)
 }
-
-private module QualifiedNameInput implements QualifiedNameInputSig {
-  string getUnboundGenericSuffix(UnboundGeneric ug) {
-    result =
-      "<" + strictconcat(int i, string s | s = ug.getTypeParameter(i).getName() | s, "," order by i)
-        + ">"
-  }
-}
-
-private module QN = QualifiedName<QualifiedNameInput>;
