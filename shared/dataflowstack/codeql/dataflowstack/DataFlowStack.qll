@@ -135,7 +135,6 @@ module DataFlowStackMake<DF::InputSig Lang>{
             string toString(){
                 exists(Lang::DataFlowCall call |
                     call = this.getCall() and
-                    // result = "l-" + call.getLocation().getStartLine() + ": " + call.toString()
                     result = call.toString()
                 )
             }
