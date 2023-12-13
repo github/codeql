@@ -15,7 +15,7 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
- 
+
 ControlFlowNode getControlFlowNodeSuccessor(ControlFlowNode node)
 {
     result = node.getASuccessor()
@@ -57,18 +57,34 @@ MethodAccess getDangerousReachableMethodAccess(MethodAccess ma)
             )
     ))
 }
- 
+
+module SignaturePackageConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+        exists(MethodAccess maCheckSignatures |
+            maCheckSignatures.getCallee().getDeclaringType().getQualifiedName() = "android.content.pm.PackageManager" and
+            maCheckSignatures.getCallee().getName() = "checkSignatures" and
+            source.asExpr() = maCheckSignatures.getArgument(0)
+            )
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+        exists (MethodAccess maCreatePackageContext |
+            (maCreatePackageContext.getCallee().getDeclaringType().getQualifiedName() = "android.content.ContextWrapper" or
+             maCreatePackageContext.getCallee().getDeclaringType().getQualifiedName() = "android.content.Context") and 
+            maCreatePackageContext.getCallee().getName() = "createPackageContext" and
+            sink.asExpr() = maCreatePackageContext.getArgument(0)
+            )                
+    }
+}
+
+module SigPkgCfg = TaintTracking::Global<SignaturePackageConfig>;
+
 predicate isSignaturesChecked(MethodAccess maCreatePackageContext)
 {
-    exists(
-        MethodAccess maCheckSignatures |
-        maCheckSignatures.getCallee().getDeclaringType().getQualifiedName() = "android.content.pm.PackageManager" and
-        maCheckSignatures.getCallee().getName() = "checkSignatures" and
-        //maCheckSignatures.getArgument(0).toString() = maCreatePackageContext.getArgument(0).toString()
-        TaintTracking::localTaint(
-            DataFlow::exprNode(maCheckSignatures.getArgument(0)), 
-            DataFlow::exprNode(maCreatePackageContext.getArgument(0)))
-    )
+    exists(DataFlow::Node source, DataFlow::Node sink |
+        SigPkgCfg::flow(source, sink) and
+        sink.asExpr() = maCreatePackageContext.getArgument(0)
+        )
 }
  
 from 
