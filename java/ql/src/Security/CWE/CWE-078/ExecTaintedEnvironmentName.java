@@ -3,7 +3,8 @@ public void doGet(HttpServletRequest request, HttpServletResponse response) {
     String value = request.getParameter("value");
 
     Map<String, String> env = processBuilder.environment();
-    env.put(attribute, value);
+    // BAD: attr and value are tainted and being added to the environment
+    env.put(attr, value);
 
     processBuilder.start();
 }
