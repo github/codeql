@@ -72,10 +72,10 @@ def parse_from_file(path: Path) -> set:
     if not path.exists():
         return set()
 
-    text = path.read_text()
-    assert text.startswith(f"# {VERSION}\n"), f"{path}: {text[:100]}"
+    f = path.open("r")
+    assert f.readline().startswith(f"# {VERSION}\n"), path
 
-    raw_data = yaml.safe_load(text)
+    raw_data = yaml.load(f, Loader=yaml.CBaseLoader)
     assert len(raw_data["extensions"]) == 1, path
     assert raw_data["extensions"][0]["addsTo"]["extensible"] == "typeModel", path
 
@@ -126,4 +126,6 @@ for pkg in package_data:
 
     data_for_yaml = wrap_in_template(as_lists)
 
-    pkg_path.write_text(f"# {VERSION}\n" + yaml.dump(data_for_yaml, indent=2))
+    f = pkg_path.open("w+")
+    f.write(f"# {VERSION}\n")
+    yaml.dump(data_for_yaml, indent=2, stream=f, Dumper=yaml.CDumper)
