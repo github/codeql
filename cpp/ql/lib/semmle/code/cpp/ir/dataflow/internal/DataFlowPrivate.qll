@@ -6,6 +6,7 @@ private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
+private import Node0ToString
 
 cached
 private module Cached {
@@ -138,11 +139,7 @@ abstract class InstructionNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getInstructionType(instr, _) }
 
-  override string toStringImpl() {
-    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = instr.getAst().toString()
-  }
+  override string toStringImpl() { result = instructionToString(instr) }
 
   override Location getLocationImpl() {
     if exists(instr.getAst().getLocation())
@@ -187,11 +184,7 @@ abstract class OperandNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getOperandType(op, _) }
 
-  override string toStringImpl() {
-    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = op.getDef().getAst().toString()
-  }
+  override string toStringImpl() { result = operandToString(op) }
 
   override Location getLocationImpl() {
     if exists(op.getDef().getAst().getLocation())
