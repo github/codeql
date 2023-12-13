@@ -77,7 +77,6 @@ namespace Semmle.Extraction.CSharp.Standalone
         {
             output.WriteLine("C# standalone extractor\n\nExtracts a C# project in the current directory without performing a build.\n");
             output.WriteLine("Additional options:\n");
-            output.WriteLine("    xxx.sln          Restrict sources to given solution");
             output.WriteLine("    --threads:nnn    Specify number of threads (default=CPU cores)");
             output.WriteLine("    --verbose        Produce more output");
             output.WriteLine("    --pdb            Cross-reference information from PDBs where available");
