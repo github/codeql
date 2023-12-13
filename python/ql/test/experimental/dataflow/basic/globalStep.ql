@@ -1,6 +1,6 @@
 import allFlowsConfig
 
-from DataFlow::PathNode fromNode, DataFlow::PathNode toNode
+from AllFlowsFlow::PathNode fromNode, AllFlowsFlow::PathNode toNode
 where
   toNode = fromNode.getASuccessor() and
   exists(fromNode.getNode().getLocation().getFile().getRelativePath()) and

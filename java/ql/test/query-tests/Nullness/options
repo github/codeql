@@ -1,1 +1,1 @@
-//semmle-extractor-options: --javac-args -cp ${testdir}/../../stubs/junit-4.11:${testdir}/../../stubs/hamcrest-2.2:${testdir}/../../stubs/junit-jupiter-api-5.2.0
+//semmle-extractor-options: --javac-args --release 21 -cp ${testdir}/../../stubs/junit-4.11:${testdir}/../../stubs/hamcrest-2.2:${testdir}/../../stubs/junit-jupiter-api-5.2.0

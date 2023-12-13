@@ -746,6 +746,13 @@ class DataClass extends Class {
  */
 class Record extends Class {
   Record() { isRecord(this) }
+
+  /**
+   * Gets the canonical constructor of this record.
+   */
+  Constructor getCanonicalConstructor() {
+    result = this.getAConstructor() and isCanonicalConstr(result)
+  }
 }
 
 /** An intersection type. */

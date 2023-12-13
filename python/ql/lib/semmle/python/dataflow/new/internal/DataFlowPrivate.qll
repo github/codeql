@@ -281,28 +281,33 @@ class DataFlowExpr = Expr;
 /**
  * A module to compute local flow.
  *
- * Flow will generally go from control flow nodes into essa variables at definitions,
+ * Flow will generally go from control flow nodes for expressions into
+ * control flow nodes for variables at definitions,
  * and from there via use-use flow to other control flow nodes.
  *
  * Some syntaxtic constructs are handled separately.
  */
 module LocalFlow {
-  /** Holds if `nodeFrom` is the control flow node defining the essa variable `nodeTo`. */
+  /** Holds if `nodeFrom` is the expression defining the value for the variable `nodeTo`. */
   predicate definitionFlowStep(Node nodeFrom, Node nodeTo) {
     // Definition
     //   `x = f(42)`
-    //   nodeFrom is `f(42)`, cfg node
-    //   nodeTo is `x`, essa var
-    nodeFrom.(CfgNode).getNode() =
-      nodeTo.(EssaNode).getVar().getDefinition().(AssignmentDefinition).getValue()
+    //   nodeFrom is `f(42)`
+    //   nodeTo is `x`
+    exists(AssignmentDefinition def |
+      nodeFrom.(CfgNode).getNode() = def.getValue() and
+      nodeTo.(CfgNode).getNode() = def.getDefiningNode()
+    )
     or
     // With definition
     //   `with f(42) as x:`
-    //   nodeFrom is `f(42)`, cfg node
-    //   nodeTo is `x`, essa var
-    exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
+    //   nodeFrom is `f(42)`
+    //   nodeTo is `x`
+    exists(With with, ControlFlowNode contextManager, WithDefinition withDef, ControlFlowNode var |
+      var = withDef.getDefiningNode()
+    |
       nodeFrom.(CfgNode).getNode() = contextManager and
-      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+      nodeTo.(CfgNode).getNode() = var and
       // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
       with.getContextExpr() = contextManager.getNode() and
       with.getOptionalVars() = var.getNode() and
@@ -312,34 +317,6 @@ module LocalFlow {
       // both:
       // * `foo = x.foo(); await foo.async_method(); foo.close()` and
       // * `async with x.foo() as foo: await foo.async_method()`.
-    )
-    or
-    // Async with var definition
-    //  `async with f(42) as x:`
-    //  nodeFrom is `x`, cfg node
-    //  nodeTo is `x`, essa var
-    //
-    // This makes the cfg node the local source of the awaited value.
-    //
-    // We have this step in addition to the step above, to handle cases where the QL
-    // modeling of `f(42)` requires a `.getAwaited()` step (in API graphs) when not
-    // using `async with`, so you can do both:
-    // * `foo = await x.foo(); await foo.async_method(); foo.close()` and
-    // * `async with x.foo() as foo: await foo.async_method()`.
-    exists(With with, ControlFlowNode var |
-      nodeFrom.(CfgNode).getNode() = var and
-      nodeTo.(EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
-      with.getOptionalVars() = var.getNode() and
-      with.isAsync()
-    )
-    or
-    // Parameter definition
-    //   `def foo(x):`
-    //   nodeFrom is `x`, cfgNode
-    //   nodeTo is `x`, essa var
-    exists(ParameterDefinition pd |
-      nodeFrom.(CfgNode).getNode() = pd.getDefiningNode() and
-      nodeTo.(EssaNode).getVar() = pd.getVariable()
     )
   }
 
@@ -372,9 +349,12 @@ module LocalFlow {
     // First use after definition
     //   `y = 42`
     //   `x = f(y)`
-    //   nodeFrom is `y` on first line, essa var
-    //   nodeTo is `y` on second line, cfg node
-    defToFirstUse(nodeFrom.asVar(), nodeTo.asCfgNode())
+    //   nodeFrom is `y` on first line
+    //   nodeTo is `y` on second line
+    exists(EssaDefinition def |
+      nodeFrom.(CfgNode).getNode() = def.(EssaNodeDefinition).getDefiningNode() and
+      AdjacentUses::firstUse(def, nodeTo.(CfgNode).getNode())
+    )
     or
     // Next use after use
     //   `x = f(y)`
@@ -565,11 +545,7 @@ predicate neverSkipInPathGraph(Node n) {
   // ```
   // we would end up saying that the path MUST not skip the x in `y = x`, which is just
   // annoying and doesn't help the path explanation become clearer.
-  n.asVar() instanceof EssaDefinition and
-  // For a parameter we have flow from ControlFlowNode to SSA node, and then onwards
-  // with use-use flow, and since the CFN is already part of the path graph, we don't
-  // want to force showing the SSA node as well.
-  not n.asVar() instanceof ParameterDefinition
+  n.asCfgNode() = any(EssaNodeDefinition def).getDefiningNode()
 }
 
 /**
@@ -916,7 +892,7 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
 predicate forReadStep(CfgNode nodeFrom, Content c, Node nodeTo) {
   exists(ForTarget target |
     nodeFrom.asExpr() = target.getSource() and
-    nodeTo.asVar().(EssaNodeDefinition).getDefiningNode() = target
+    nodeTo.asCfgNode() = target
   ) and
   (
     c instanceof ListElementContent

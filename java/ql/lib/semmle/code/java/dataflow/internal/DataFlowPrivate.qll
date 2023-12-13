@@ -232,6 +232,27 @@ predicate storeStep(Node node1, ContentSet f, Node node2) {
     pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
+// Manual join hacking, to avoid a parameters x fields product.
+pragma[noinline]
+private predicate hasNamedField(Record r, Field f, string name) {
+  f = r.getAField() and name = f.getName()
+}
+
+pragma[noinline]
+private predicate hasNamedCanonicalParameter(Record r, Parameter p, int idx, string name) {
+  p = r.getCanonicalConstructor().getParameter(idx) and name = p.getName()
+}
+
+private Field getLexicallyOrderedRecordField(Record r, int idx) {
+  result =
+    rank[idx + 1](Field f, int i, Parameter p, string name |
+      hasNamedCanonicalParameter(r, p, i, name) and
+      hasNamedField(r, f, name)
+    |
+      f order by i
+    )
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` via a read of `f`.
  * Thus, `node1` references an object with a field `f` whose value ends up in
@@ -254,6 +275,13 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
     get.getMethod() = getter and
     node1.asExpr() = get.getQualifier() and
     node2.asExpr() = get
+  )
+  or
+  exists(RecordPatternExpr rpe, PatternExpr subPattern, int i |
+    node1.asExpr() = rpe and
+    subPattern = rpe.getSubPattern(i) and
+    node2.asExpr() = subPattern and
+    f.(FieldContent).getField() = getLexicallyOrderedRecordField(rpe.getType(), i)
   )
   or
   f instanceof ArrayContent and arrayReadStep(node1, node2, _)
@@ -347,7 +375,18 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { compatibleTypes0(t
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {
-  CastNode() { this.getExpr() instanceof CastingExpr }
+  CastNode() {
+    this.getExpr() instanceof CastingExpr
+    or
+    exists(SsaExplicitUpdate upd |
+      upd.getDefiningExpr().(VariableAssign).getSource() =
+        [
+          any(SwitchStmt ss).getExpr(), any(SwitchExpr se).getExpr(),
+          any(InstanceOfExpr ioe).getExpr()
+        ] and
+      this.asExpr() = upd.getAFirstUse()
+    )
+  }
 }
 
 private newtype TDataFlowCallable =

@@ -51,7 +51,7 @@ class With_length_hint:
 def test_length_hint():
     import operator
 
-    with_length_hint = With_length_hint()  #$ arg1="SSA variable with_length_hint" func=With_length_hint.__length_hint__
+    with_length_hint = With_length_hint()  #$ arg1="with_length_hint" func=With_length_hint.__length_hint__
     operator.length_hint(with_length_hint)
 
 
@@ -68,5 +68,5 @@ class With_index:
 def test_index():
     import operator
 
-    with_index = With_index()  #$ arg1="SSA variable with_index" func=With_index.__index__
+    with_index = With_index()  #$ arg1="with_index" func=With_index.__index__
     operator.index(with_index)

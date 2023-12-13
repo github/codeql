@@ -429,3 +429,21 @@ void scan_and_static_variable() {
 	scanf("%d", &i);
 	use(i);  // GOOD: static variables are always 0-initialized
 }
+
+void bad_check() {
+	{
+		int i = 0;
+		if (scanf("%d", &i) != 0) {
+			return;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: Technically no security issue, but code is incorrect.
+	}
+	{
+		int i = 0;
+		int r = scanf("%d", &i);
+		if (!r) {
+			return;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: Technically no security issue, but code is incorrect.
+	}
+}

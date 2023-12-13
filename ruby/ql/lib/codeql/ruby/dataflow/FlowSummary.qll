@@ -2,7 +2,7 @@
 
 import codeql.ruby.AST
 private import codeql.ruby.CFG
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.TypeTracking
 import codeql.ruby.DataFlow
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowDispatch

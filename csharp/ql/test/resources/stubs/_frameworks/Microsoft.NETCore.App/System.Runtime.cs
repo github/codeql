@@ -2697,11 +2697,12 @@ namespace System
         public static class Debug
         {
             public static void Assert(bool condition) => throw null;
-            public static void Assert(bool condition, ref System.Diagnostics.Debug.AssertInterpolatedStringHandler message) => throw null;
-            public static void Assert(bool condition, ref System.Diagnostics.Debug.AssertInterpolatedStringHandler message, ref System.Diagnostics.Debug.AssertInterpolatedStringHandler detailMessage) => throw null;
+            public static void Assert(bool condition, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("condition")] ref System.Diagnostics.Debug.AssertInterpolatedStringHandler message) => throw null;
+            public static void Assert(bool condition, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("condition")] ref System.Diagnostics.Debug.AssertInterpolatedStringHandler message, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("condition")] ref System.Diagnostics.Debug.AssertInterpolatedStringHandler detailMessage) => throw null;
             public static void Assert(bool condition, string message) => throw null;
             public static void Assert(bool condition, string message, string detailMessage) => throw null;
             public static void Assert(bool condition, string message, string detailMessageFormat, params object[] args) => throw null;
+            [System.Runtime.CompilerServices.InterpolatedStringHandler]
             public struct AssertInterpolatedStringHandler
             {
                 public void AppendFormatted(object value, int alignment = default(int), string format = default(string)) => throw null;
@@ -2731,12 +2732,13 @@ namespace System
             public static void Write(object value, string category) => throw null;
             public static void Write(string message) => throw null;
             public static void Write(string message, string category) => throw null;
-            public static void WriteIf(bool condition, ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message) => throw null;
-            public static void WriteIf(bool condition, ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message, string category) => throw null;
+            public static void WriteIf(bool condition, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("condition")] ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message) => throw null;
+            public static void WriteIf(bool condition, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("condition")] ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message, string category) => throw null;
             public static void WriteIf(bool condition, object value) => throw null;
             public static void WriteIf(bool condition, object value, string category) => throw null;
             public static void WriteIf(bool condition, string message) => throw null;
             public static void WriteIf(bool condition, string message, string category) => throw null;
+            [System.Runtime.CompilerServices.InterpolatedStringHandler]
             public struct WriteIfInterpolatedStringHandler
             {
                 public void AppendFormatted(object value, int alignment = default(int), string format = default(string)) => throw null;
@@ -2756,8 +2758,8 @@ namespace System
             public static void WriteLine(string message) => throw null;
             public static void WriteLine(string format, params object[] args) => throw null;
             public static void WriteLine(string message, string category) => throw null;
-            public static void WriteLineIf(bool condition, ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message) => throw null;
-            public static void WriteLineIf(bool condition, ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message, string category) => throw null;
+            public static void WriteLineIf(bool condition, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("condition")] ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message) => throw null;
+            public static void WriteLineIf(bool condition, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("condition")] ref System.Diagnostics.Debug.WriteIfInterpolatedStringHandler message, string category) => throw null;
             public static void WriteLineIf(bool condition, object value) => throw null;
             public static void WriteLineIf(bool condition, object value, string category) => throw null;
             public static void WriteLineIf(bool condition, string message) => throw null;
@@ -9036,6 +9038,7 @@ namespace System
                 public DefaultDependencyAttribute(System.Runtime.CompilerServices.LoadHint loadHintArgument) => throw null;
                 public System.Runtime.CompilerServices.LoadHint LoadHint { get => throw null; }
             }
+            [System.Runtime.CompilerServices.InterpolatedStringHandler]
             public struct DefaultInterpolatedStringHandler
             {
                 public void AppendFormatted(object value, int alignment = default(int), string format = default(string)) => throw null;
@@ -10876,8 +10879,8 @@ namespace System
         public static string Copy(string str) => throw null;
         public void CopyTo(int sourceIndex, char[] destination, int destinationIndex, int count) => throw null;
         public void CopyTo(System.Span<char> destination) => throw null;
-        public static string Create(System.IFormatProvider provider, ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler handler) => throw null;
-        public static string Create(System.IFormatProvider provider, System.Span<char> initialBuffer, ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler handler) => throw null;
+        public static string Create(System.IFormatProvider provider, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("provider")] ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler handler) => throw null;
+        public static string Create(System.IFormatProvider provider, System.Span<char> initialBuffer, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument(new[] { "provider", "initialBuffer" })] ref System.Runtime.CompilerServices.DefaultInterpolatedStringHandler handler) => throw null;
         public static string Create<TState>(int length, TState state, System.Buffers.SpanAction<char, TState> action) => throw null;
         public unsafe String(char* value) => throw null;
         public unsafe String(char* value, int startIndex, int length) => throw null;
@@ -11419,7 +11422,7 @@ namespace System
             public System.Text.StringBuilder Append(char[] value, int startIndex, int charCount) => throw null;
             public System.Text.StringBuilder Append(decimal value) => throw null;
             public System.Text.StringBuilder Append(double value) => throw null;
-            public System.Text.StringBuilder Append(System.IFormatProvider provider, ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
+            public System.Text.StringBuilder Append(System.IFormatProvider provider, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument(new[] { "", "provider" })] ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
             public System.Text.StringBuilder Append(short value) => throw null;
             public System.Text.StringBuilder Append(int value) => throw null;
             public System.Text.StringBuilder Append(long value) => throw null;
@@ -11432,7 +11435,7 @@ namespace System
             public System.Text.StringBuilder Append(string value, int startIndex, int count) => throw null;
             public System.Text.StringBuilder Append(System.Text.StringBuilder value) => throw null;
             public System.Text.StringBuilder Append(System.Text.StringBuilder value, int startIndex, int count) => throw null;
-            public System.Text.StringBuilder Append(ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
+            public System.Text.StringBuilder Append([System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("")] ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
             public System.Text.StringBuilder Append(ushort value) => throw null;
             public System.Text.StringBuilder Append(uint value) => throw null;
             public System.Text.StringBuilder Append(ulong value) => throw null;
@@ -11444,6 +11447,7 @@ namespace System
             public System.Text.StringBuilder AppendFormat(string format, object arg0, object arg1) => throw null;
             public System.Text.StringBuilder AppendFormat(string format, object arg0, object arg1, object arg2) => throw null;
             public System.Text.StringBuilder AppendFormat(string format, params object[] args) => throw null;
+            [System.Runtime.CompilerServices.InterpolatedStringHandler]
             public struct AppendInterpolatedStringHandler
             {
                 public void AppendFormatted(object value, int alignment = default(int), string format = default(string)) => throw null;
@@ -11466,9 +11470,9 @@ namespace System
             public System.Text.StringBuilder AppendJoin<T>(char separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
             public System.Text.StringBuilder AppendJoin<T>(string separator, System.Collections.Generic.IEnumerable<T> values) => throw null;
             public System.Text.StringBuilder AppendLine() => throw null;
-            public System.Text.StringBuilder AppendLine(System.IFormatProvider provider, ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
+            public System.Text.StringBuilder AppendLine(System.IFormatProvider provider, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument(new[] { "", "provider" })] ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
             public System.Text.StringBuilder AppendLine(string value) => throw null;
-            public System.Text.StringBuilder AppendLine(ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
+            public System.Text.StringBuilder AppendLine([System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("")] ref System.Text.StringBuilder.AppendInterpolatedStringHandler handler) => throw null;
             public int Capacity { get => throw null; set { } }
             public struct ChunkEnumerator
             {

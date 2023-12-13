@@ -1,8 +1,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import DataFlowPrivate
-private import codeql.ruby.typetracking.TypeTracker
-private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
+private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 private import codeql.ruby.ast.internal.Module
 private import FlowSummaryImpl as FlowSummaryImpl
 private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
@@ -657,7 +656,7 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
   predicate stepNoCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
     // We exclude steps into `self` parameters. For those, we instead rely on the type of
     // the enclosing module
-    StepSummary::smallstepNoCall(nodeFrom, nodeTo, summary) and
+    smallStepNoCall(nodeFrom, nodeTo, summary) and
     isNotSelf(nodeTo)
     or
     // We exclude steps into type checked variables. For those, we instead rely on the
@@ -667,7 +666,7 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
   }
 
   predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
-    StepSummary::smallstepCall(nodeFrom, nodeTo, summary)
+    smallStepCall(nodeFrom, nodeTo, summary)
   }
 
   class StateProj = Unit;
@@ -941,7 +940,7 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
       RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p,
       CfgNodes::ExprCfgNode nodeFromPreExpr
     |
-      TypeTrackerSpecific::callStep(call, arg, p) and
+      callStep(call, arg, p) and
       nodeTo.getPreUpdateNode() = arg and
       summary.toString() = "return" and
       (
@@ -965,13 +964,13 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
   }
 
   predicate stepNoCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
-    StepSummary::smallstepNoCall(nodeFrom, nodeTo, summary)
+    smallStepNoCall(nodeFrom, nodeTo, summary)
     or
     localFlowStep(nodeFrom, nodeTo, summary)
   }
 
   predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
-    StepSummary::smallstepCall(nodeFrom, nodeTo, summary)
+    smallStepCall(nodeFrom, nodeTo, summary)
     or
     paramReturnFlow(nodeFrom, nodeTo, summary)
   }
