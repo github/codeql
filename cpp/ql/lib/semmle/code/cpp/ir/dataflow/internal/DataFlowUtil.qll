@@ -486,10 +486,13 @@ class Node extends TIRDataFlowNode {
 }
 
 private string toExprString(Node n) {
-  result = n.asExpr(0).toString()
-  or
-  not exists(n.asExpr()) and
-  result = n.asIndirectExpr(0, 1).toString() + " indirection"
+  isDebugMode() and
+  (
+    result = n.asExpr(0).toString()
+    or
+    not exists(n.asExpr()) and
+    result = n.asIndirectExpr(0, 1).toString() + " indirection"
+  )
 }
 
 /**
