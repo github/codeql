@@ -14,7 +14,6 @@ import go
 import WebCacheDeceptionLib
 import WebCacheDeception::Flow::PathGraph
 
-from WebCacheDeception::Flow::PathNode source, WebCacheDeception::Flow::PathNode sink
-where WebCacheDeception::Flow::flowPath(source, sink)
-select sink.getNode(), source, sink, "$@ is used as wildcard endpoint.", source.getNode(),
+from WebCacheDeception::Sink httpHandleFuncCall
+select httpHandleFuncCall, "$@ is used as wildcard endpoint.", httpHandleFuncCall.getNode(),
   "Web Cache Deception"
