@@ -14,5 +14,4 @@ import go
 import WebCacheDeceptionLib
 
 from WebCacheDeception::Sink httpHandleFuncCall
-select httpHandleFuncCall, "$@ is used as wildcard endpoint.", httpHandleFuncCall.getNode(),
-  "Web Cache Deception"
+select httpHandleFuncCall, httpHandleFuncCall + " is used as wildcard endpoint."

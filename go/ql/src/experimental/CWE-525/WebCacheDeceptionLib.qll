@@ -26,7 +26,7 @@ module WebCacheDeception {
         i.getPath() = "github.com/gofiber/fiber" or
         i.getPath() = "github.com/gofiber/fiber/v2"
       |
-        exists(DataFlow::MethodCallNode m |
+        exists(DataFlow::CallNode m |
           m.getCall().getArgument(0).toString().matches("%/*%") and
           this = m.getArgument(0)
         )
@@ -40,7 +40,7 @@ module WebCacheDeception {
         i.getPath() = "github.com/go-chi/chi/v5" or
         i.getPath() = "github.com/go-chi/chi/v5/middleware"
       |
-        exists(DataFlow::MethodCallNode m |
+        exists(DataFlow::CallNode m |
           m.getCall().getArgument(0).toString().matches("%/*%") and
           this = m.getArgument(0)
         )
