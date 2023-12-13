@@ -14,6 +14,8 @@ private import semmle.python.frameworks.Starlette
 private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `fastapi` PyPI package.
  * See https://fastapi.tiangolo.com/.
  */
