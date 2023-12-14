@@ -64,33 +64,33 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 pathFilters.Add(new PathFilter(new Regex(regex, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline), include));
             }
 
-            var fileIndex = files.ToDictionary(f => f, f => new FileInclusion(FileUtils.ConvertToUnix(f.FullName.ToLowerInvariant()).Replace(rootFolder, string.Empty).TrimStart('/'), pathFilters.All(f => !f.Include)));
-
-            foreach (var pathFilter in pathFilters.OrderBy(pf => pf.Include ? 0 : 1))
-            {
-                foreach (var file in fileIndex)
+            var unfilteredResult = files.Select(f =>
+                new
                 {
-                    if (pathFilter.Regex.IsMatch(file.Value.Path))
+                    FileInfo = f,
+                    FileInclusion = new FileInclusion(
+                        FileUtils.ConvertToUnix(f.FullName.ToLowerInvariant()).Replace(rootFolder, string.Empty).TrimStart('/'),
+                        pathFilters.All(f => !f.Include))
+                });
+
+            return unfilteredResult.Where(f =>
+            {
+                var include = f.FileInclusion.Include;
+                foreach (var pathFilter in pathFilters.OrderBy(pf => pf.Include ? 0 : 1))
+                {
+                    if (pathFilter.Regex.IsMatch(f.FileInclusion.Path))
                     {
-                        fileIndex[file.Key].Include = pathFilter.Include;
+                        include = pathFilter.Include;
                     }
                 }
-            }
 
-            var included = new List<FileInfo>();
-            foreach (var file in fileIndex)
-            {
-                if (file.Value.Include)
+                if (!include)
                 {
-                    included.Add(file.Key);
+                    progressMonitor.Log(Severity.Info, $"Excluding '{f.FileInfo.FullName}'");
                 }
-                else
-                {
-                    progressMonitor.Log(Severity.Info, $"Excluding '{file.Key.FullName}'");
-                }
-            }
 
-            return included;
+                return include;
+            }).Select(f => f.FileInfo);
         }
     }
 }
