@@ -842,10 +842,10 @@ private AstNode assigned_value(Expr lhs) {
   /* for lhs in seq: => `result` is the `for` node, representing the `iter(next(seq))` operation. */
   result.(For).getTarget() = lhs
   or
-  // def f(a = 42):  =>  `result` is 42
+  // def f(lhs = 42):  =>  `result` is 42
   exists(Parameter param | lhs = param.asName() and result = param.getDefault())
   or
-  // with f(42) as x:  =>  `result` is `f(42)`
+  // with f(42) as lhs:  =>  `result` is `f(42)`
   exists(With with | lhs = with.getOptionalVars() and result = with.getContextExpr())
 }
 
