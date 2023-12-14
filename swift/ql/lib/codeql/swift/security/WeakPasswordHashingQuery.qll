@@ -13,7 +13,7 @@ import codeql.swift.security.WeakPasswordHashingExtensions
  * A taint tracking configuration from password expressions to inappropriate
  * hashing sinks.
  */
-module WeakHashingPasswordConfig implements DataFlow::ConfigSig {
+module WeakPasswordHashingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     exists(SensitiveExpr se |
       node.asExpr() = se and
@@ -40,4 +40,4 @@ module WeakHashingPasswordConfig implements DataFlow::ConfigSig {
   }
 }
 
-module WeakHashingFlow = TaintTracking::Global<WeakHashingPasswordConfig>;
+module WeakPasswordHashingFlow = TaintTracking::Global<WeakPasswordHashingConfig>;
