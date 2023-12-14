@@ -299,11 +299,11 @@ module LocalFlow {
       nodeTo.(CfgNode).getNode() = def.getDefiningNode()
     )
     or
-    // General definition
-    // TODO: remove other cases that are now redundant
+    // Assignment to captured variables
+    // These are not covered by the `AssignmentDefinition`s in the case above,
+    // as they are not necessarily live.
     nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(DefinitionNode).getValue() and
-    // remove jump steps (such as assignment of parameter default values)
-    nodeFrom.getEnclosingCallable() = nodeTo.getEnclosingCallable()
+    nodeTo.asExpr() = any(VariableCapture::CapturedVariable c).getAStore()
     or
     // With definition
     //   `with f(42) as x:`
