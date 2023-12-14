@@ -590,7 +590,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionSolution()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln"] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -598,7 +598,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
-            var autobuilder = CreateAutoBuilder(false, buildless: "true", solution: "foo.sln");
+            var autobuilder = CreateAutoBuilder(false, buildless: "true");
             TestAutobuilderScript(autobuilder, 0, 1);
         }
 
@@ -890,7 +890,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestSkipNugetBuildless()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --skip-nuget"] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
@@ -898,7 +898,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
-            var autobuilder = CreateAutoBuilder(false, buildless: "true", solution: "foo.sln", nugetRestore: "false");
+            var autobuilder = CreateAutoBuilder(false, buildless: "true");
             TestAutobuilderScript(autobuilder, 0, 1);
         }
 
