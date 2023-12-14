@@ -1042,8 +1042,7 @@ namespace ServiceStack
     }
     public class LongRange : System.IEquatable<ServiceStack.LongRange>
     {
-        public virtual ServiceStack.LongRange<Clone>$() => throw null;
-public LongRange(long from, long? to = default(long?)) => throw null;
+        public LongRange(long from, long? to = default(long?)) => throw null;
         protected LongRange(ServiceStack.LongRange original) => throw null;
         public void Deconstruct(out long from, out long? to) => throw null;
         protected virtual System.Type EqualityContract { get => throw null; }
@@ -1118,8 +1117,7 @@ public LongRange(long from, long? to = default(long?)) => throw null;
     }
     public class NameValue : System.IEquatable<ServiceStack.NameValue>
     {
-        public virtual ServiceStack.NameValue<Clone>$() => throw null;
-public NameValue(string name, string value) => throw null;
+        public NameValue(string name, string value) => throw null;
         protected NameValue(ServiceStack.NameValue original) => throw null;
         public void Deconstruct(out string name, out string value) => throw null;
         protected virtual System.Type EqualityContract { get => throw null; }
