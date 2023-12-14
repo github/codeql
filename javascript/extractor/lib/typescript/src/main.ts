@@ -554,7 +554,7 @@ function handleOpenProjectCommand(command: OpenProjectCommand) {
     let program = project.program;
     let typeChecker = program.getTypeChecker();
 
-    let shouldReportDiagnostics = getEnvironmentVariable("SEMMLE_TYPESCRIPT_REPORT_DIAGNOSTICS", Boolean, false);
+    let shouldReportDiagnostics = getEnvironmentVariable("SEMMLE_TYPESCRIPT_REPORT_DIAGNOSTICS", v => v.trim().toLowerCase() === "true", false);
     let diagnostics = shouldReportDiagnostics
         ? program.getSemanticDiagnostics().filter(d => d.category === ts.DiagnosticCategory.Error)
         : [];
@@ -807,8 +807,8 @@ function handleGetMetadataCommand(command: GetMetadataCommand) {
 
 function reset() {
     state = new State();
-    state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", Boolean, true);
-    state.typeTable.skipExtractingTypes = getEnvironmentVariable("CODEQL_EXTRACTOR_JAVASCRIPT_OPTION_SKIP_TYPES", Boolean, false);
+    state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", v => v.trim().toLowerCase() === "true", true);
+    state.typeTable.skipExtractingTypes = getEnvironmentVariable("CODEQL_EXTRACTOR_JAVASCRIPT_OPTION_SKIP_TYPES", v => v.trim().toLowerCase() === "true", false);
 }
 
 function getEnvironmentVariable<T>(name: string, parse: (x: string) => T, defaultValue: T) {
