@@ -2288,6 +2288,10 @@ private module ContentStars {
     result = "*" + repeatStars(n - 1)
   }
 
+  /**
+   * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
+   * output for `c`.
+   */
   string contentStars(Content c) { result = repeatStars(c.getIndirectionIndex() - 1) }
 }
 
