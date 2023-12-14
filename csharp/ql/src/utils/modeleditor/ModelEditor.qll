@@ -39,10 +39,10 @@ class Endpoint extends Callable {
   }
 
   /**
-   * Gets the qualified method name of this endpoint.
+   * Gets the qualified name of this endpoint.
    */
   bindingset[this]
-  string getMethodName() {
+  string getEndpointName() {
     result = qualifiedCallableName(this.getNamespace(), this.getTypeName(), this)
   }
 
