@@ -115,7 +115,7 @@ module DataFlowStackMake<DF::InputSig Lang>{
             )
         }
 
-        private StackFrame stackFrameForFlow(Flow::PathNode node){
+        StackFrame stackFrameForFlow(Flow::PathNode node){
             // Get the CallFrame, then from the last callframe, track back up whereby each call's target should contain the next CallFrame.
             exists(CallFrame callFrame |
                 callFrame = flowNodeCallFrames(node) and
@@ -196,12 +196,13 @@ module DataFlowStackMake<DF::InputSig Lang>{
         /**
          * A user-supplied predicate which given a Stack Frame, returns some Node associated with it.
          */
-        signature Lang::Node extractNodeFromFrame(StackFrame stack);
+        signature Lang::Node extractNodeFromFrame(Flow::PathNode pathNode);
 
         /**
          * Provides some higher-order predicates for analyzing Stacks
          */
         module StackFrameAnalysis<extractNodeFromFrame/1 customFrameCond>{
+
             /**
              * Find the highest stack frame that satisfies the given predicate,
              * and return the Node(s) that the user-supplied predicate returns.
@@ -212,12 +213,12 @@ module DataFlowStackMake<DF::InputSig Lang>{
             Lang::Node extractingFromHighestStackFrame(StackFrame topStackFrame){
                 exists(StackFrame someStackFrame |
                     someStackFrame = topStackFrame.getSuccessor*() and
-                    result = customFrameCond(topStackFrame) and
+                    result = customFrameCond(someStackFrame.getPathNode()) and
                     not exists(StackFrame predecessor |
-                        predecessor = someStackFrame.getPredecessor*() and
+                        predecessor = someStackFrame.getPredecessor+() and
                         // The predecessor is *not* prior to the user-given 'top' of the stack frame.
                         not predecessor = topStackFrame.getPredecessor*() and
-                        exists(customFrameCond(predecessor))
+                        exists(customFrameCond(predecessor.getPathNode()))
                     )
                 )
             }
@@ -229,10 +230,10 @@ module DataFlowStackMake<DF::InputSig Lang>{
             Lang::Node extractingFromLowestStackFrame(StackFrame topStackFrame){
                 exists(StackFrame someStackFrame |
                     someStackFrame = topStackFrame.getSuccessor*() and
-                    result = customFrameCond(topStackFrame) and
+                    result = customFrameCond(someStackFrame.getPathNode()) and
                     not exists(StackFrame successor |
-                        successor = someStackFrame.getSuccessor*() and
-                        exists(customFrameCond(successor))
+                        successor = someStackFrame.getSuccessor+() and
+                        exists(customFrameCond(successor.getPathNode()))
                     )
                 )
             }
