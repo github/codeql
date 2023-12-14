@@ -64,19 +64,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 pathFilters.Add(new PathFilter(new Regex(regex, RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline), include));
             }
 
+            var includeByDefault = pathFilters.All(f => !f.Include);
             var unfilteredResult = files.Select(f =>
                 new
                 {
                     FileInfo = f,
                     FileInclusion = new FileInclusion(
                         FileUtils.ConvertToUnix(f.FullName.ToLowerInvariant()).Replace(rootFolder, string.Empty).TrimStart('/'),
-                        pathFilters.All(f => !f.Include))
+                        includeByDefault)
                 });
 
+            // Move included pathfilters to the front of the list:
+            pathFilters.Sort((pf1, pf2) => -1 * pf1.Include.CompareTo(pf2.Include));
             return unfilteredResult.Where(f =>
             {
                 var include = f.FileInclusion.Include;
-                foreach (var pathFilter in pathFilters.OrderBy(pf => pf.Include ? 0 : 1))
+                foreach (var pathFilter in pathFilters)
                 {
                     if (pathFilter.Regex.IsMatch(f.FileInclusion.Path))
                     {
