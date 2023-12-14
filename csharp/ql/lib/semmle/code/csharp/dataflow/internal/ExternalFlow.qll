@@ -284,7 +284,7 @@ private predicate elementSpec(
   UnboundValueOrRefType t
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
-  QN::hasQualifiedName(t, namespace, type)
+  hasQualifiedTypeName(t, namespace, type)
 }
 
 private class UnboundValueOrRefType extends ValueOrRefType {
@@ -352,7 +352,7 @@ Declaration interpretBaseDeclaration(string namespace, string type, string name,
   exists(UnboundValueOrRefType t | elementSpec(namespace, type, _, name, signature, _, t) |
     result =
       any(Declaration d |
-        QN::hasQualifiedName(d, namespace, type, name) and
+        hasQualifiedMethodName(d, namespace, type, name) and
         (
           signature = ""
           or
@@ -457,6 +457,19 @@ private module QualifiedNameInput implements QualifiedNameInputSig {
 }
 
 private module QN = QualifiedName<QualifiedNameInput>;
+
+/** Holds if declaration `d` has the qualified name `qualifier`.`name`. */
+predicate hasQualifiedTypeName(Type t, string namespace, string type) {
+  QN::hasQualifiedName(t, namespace, type)
+}
+
+/**
+ * Holds if declaration `d` has name `name` and is defined in type `type`
+ * with namespace `namespace`.
+ */
+predicate hasQualifiedMethodName(Declaration d, string namespace, string type, string name) {
+  QN::hasQualifiedName(d, namespace, type, name)
+}
 
 pragma[nomagic]
 private string parameterQualifiedType(Parameter p) {
