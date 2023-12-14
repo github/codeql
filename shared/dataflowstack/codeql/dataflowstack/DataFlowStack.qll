@@ -192,5 +192,50 @@ module DataFlowStackMake<DF::InputSig Lang>{
                 result = TCallFrame(subnode)
             )
         }
+
+        /**
+         * A user-supplied predicate which given a Stack Frame, returns some Node associated with it.
+         */
+        signature Lang::Node extractNodeFromFrame(StackFrame stack);
+
+        /**
+         * Provides some higher-order predicates for analyzing Stacks
+         */
+        module StackFrameAnalysis<extractNodeFromFrame/1 customFrameCond>{
+            /**
+             * Find the highest stack frame that satisfies the given predicate,
+             * and return the Node(s) that the user-supplied predicate returns.
+             * 
+             * There should be no higher stack frame that satisfies the user-supplied predicate FROM the point that the
+             * argument .
+             */
+            Lang::Node extractingFromHighestStackFrame(StackFrame topStackFrame){
+                exists(StackFrame someStackFrame |
+                    someStackFrame = topStackFrame.getSuccessor*() and
+                    result = customFrameCond(topStackFrame) and
+                    not exists(StackFrame predecessor |
+                        predecessor = someStackFrame.getPredecessor*() and
+                        // The predecessor is *not* prior to the user-given 'top' of the stack frame.
+                        not predecessor = topStackFrame.getPredecessor*() and
+                        exists(customFrameCond(predecessor))
+                    )
+                )
+            }
+
+            /**
+             * Find the lowest stack frame that satisfies the given predicate,
+             * and return the Node(s) that the user-supplied predicate returns.
+             */
+            Lang::Node extractingFromLowestStackFrame(StackFrame topStackFrame){
+                exists(StackFrame someStackFrame |
+                    someStackFrame = topStackFrame.getSuccessor*() and
+                    result = customFrameCond(topStackFrame) and
+                    not exists(StackFrame successor |
+                        successor = someStackFrame.getSuccessor*() and
+                        exists(customFrameCond(successor))
+                    )
+                )
+            }
+        }
     }
 } 
