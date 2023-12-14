@@ -3,7 +3,6 @@ nodes
 | testCryptoKit.swift:57:43:57:43 | cert | semmle.label | cert |
 | testCryptoKit.swift:59:43:59:43 | account_no | semmle.label | account_no |
 | testCryptoKit.swift:60:43:60:43 | credit_card_no | semmle.label | credit_card_no |
-| testCryptoKit.swift:61:43:61:43 | credit_card_no | semmle.label | credit_card_no |
 | testCryptoKit.swift:64:44:64:44 | cert | semmle.label | cert |
 | testCryptoKit.swift:66:44:66:44 | account_no | semmle.label | account_no |
 | testCryptoKit.swift:67:44:67:44 | credit_card_no | semmle.label | credit_card_no |
@@ -13,12 +12,12 @@ nodes
 | testCryptoKit.swift:100:23:100:23 | cert | semmle.label | cert |
 | testCryptoKit.swift:102:23:102:23 | account_no | semmle.label | account_no |
 | testCryptoKit.swift:103:23:103:23 | credit_card_no | semmle.label | credit_card_no |
-| testCryptoKit.swift:133:32:133:32 | cert | semmle.label | cert |
-| testCryptoKit.swift:135:32:135:32 | account_no | semmle.label | account_no |
-| testCryptoKit.swift:136:32:136:32 | credit_card_no | semmle.label | credit_card_no |
-| testCryptoKit.swift:142:32:142:32 | cert | semmle.label | cert |
-| testCryptoKit.swift:144:32:144:32 | account_no | semmle.label | account_no |
-| testCryptoKit.swift:145:32:145:32 | credit_card_no | semmle.label | credit_card_no |
+| testCryptoKit.swift:136:32:136:32 | cert | semmle.label | cert |
+| testCryptoKit.swift:138:32:138:32 | account_no | semmle.label | account_no |
+| testCryptoKit.swift:139:32:139:32 | credit_card_no | semmle.label | credit_card_no |
+| testCryptoKit.swift:145:32:145:32 | cert | semmle.label | cert |
+| testCryptoKit.swift:147:32:147:32 | account_no | semmle.label | account_no |
+| testCryptoKit.swift:148:32:148:32 | credit_card_no | semmle.label | credit_card_no |
 | testCryptoSwift.swift:153:30:153:30 | phoneNumberArray | semmle.label | phoneNumberArray |
 | testCryptoSwift.swift:156:31:156:31 | phoneNumberArray | semmle.label | phoneNumberArray |
 | testCryptoSwift.swift:166:20:166:20 | phoneNumberArray | semmle.label | phoneNumberArray |
@@ -34,7 +33,6 @@ subpaths
 | testCryptoKit.swift:57:43:57:43 | cert | testCryptoKit.swift:57:43:57:43 | cert | testCryptoKit.swift:57:43:57:43 | cert | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:57:43:57:43 | cert | sensitive data (credential cert) |
 | testCryptoKit.swift:59:43:59:43 | account_no | testCryptoKit.swift:59:43:59:43 | account_no | testCryptoKit.swift:59:43:59:43 | account_no | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:59:43:59:43 | account_no | sensitive data (private information account_no) |
 | testCryptoKit.swift:60:43:60:43 | credit_card_no | testCryptoKit.swift:60:43:60:43 | credit_card_no | testCryptoKit.swift:60:43:60:43 | credit_card_no | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:60:43:60:43 | credit_card_no | sensitive data (private information credit_card_no) |
-| testCryptoKit.swift:61:43:61:43 | credit_card_no | testCryptoKit.swift:61:43:61:43 | credit_card_no | testCryptoKit.swift:61:43:61:43 | credit_card_no | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:61:43:61:43 | credit_card_no | sensitive data (private information credit_card_no) |
 | testCryptoKit.swift:64:44:64:44 | cert | testCryptoKit.swift:64:44:64:44 | cert | testCryptoKit.swift:64:44:64:44 | cert | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:64:44:64:44 | cert | sensitive data (credential cert) |
 | testCryptoKit.swift:66:44:66:44 | account_no | testCryptoKit.swift:66:44:66:44 | account_no | testCryptoKit.swift:66:44:66:44 | account_no | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:66:44:66:44 | account_no | sensitive data (private information account_no) |
 | testCryptoKit.swift:67:44:67:44 | credit_card_no | testCryptoKit.swift:67:44:67:44 | credit_card_no | testCryptoKit.swift:67:44:67:44 | credit_card_no | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:67:44:67:44 | credit_card_no | sensitive data (private information credit_card_no) |
@@ -44,12 +42,12 @@ subpaths
 | testCryptoKit.swift:100:23:100:23 | cert | testCryptoKit.swift:100:23:100:23 | cert | testCryptoKit.swift:100:23:100:23 | cert | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:100:23:100:23 | cert | sensitive data (credential cert) |
 | testCryptoKit.swift:102:23:102:23 | account_no | testCryptoKit.swift:102:23:102:23 | account_no | testCryptoKit.swift:102:23:102:23 | account_no | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:102:23:102:23 | account_no | sensitive data (private information account_no) |
 | testCryptoKit.swift:103:23:103:23 | credit_card_no | testCryptoKit.swift:103:23:103:23 | credit_card_no | testCryptoKit.swift:103:23:103:23 | credit_card_no | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:103:23:103:23 | credit_card_no | sensitive data (private information credit_card_no) |
-| testCryptoKit.swift:133:32:133:32 | cert | testCryptoKit.swift:133:32:133:32 | cert | testCryptoKit.swift:133:32:133:32 | cert | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:133:32:133:32 | cert | sensitive data (credential cert) |
-| testCryptoKit.swift:135:32:135:32 | account_no | testCryptoKit.swift:135:32:135:32 | account_no | testCryptoKit.swift:135:32:135:32 | account_no | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:135:32:135:32 | account_no | sensitive data (private information account_no) |
-| testCryptoKit.swift:136:32:136:32 | credit_card_no | testCryptoKit.swift:136:32:136:32 | credit_card_no | testCryptoKit.swift:136:32:136:32 | credit_card_no | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:136:32:136:32 | credit_card_no | sensitive data (private information credit_card_no) |
-| testCryptoKit.swift:142:32:142:32 | cert | testCryptoKit.swift:142:32:142:32 | cert | testCryptoKit.swift:142:32:142:32 | cert | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:142:32:142:32 | cert | sensitive data (credential cert) |
-| testCryptoKit.swift:144:32:144:32 | account_no | testCryptoKit.swift:144:32:144:32 | account_no | testCryptoKit.swift:144:32:144:32 | account_no | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:144:32:144:32 | account_no | sensitive data (private information account_no) |
-| testCryptoKit.swift:145:32:145:32 | credit_card_no | testCryptoKit.swift:145:32:145:32 | credit_card_no | testCryptoKit.swift:145:32:145:32 | credit_card_no | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:145:32:145:32 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCryptoKit.swift:136:32:136:32 | cert | testCryptoKit.swift:136:32:136:32 | cert | testCryptoKit.swift:136:32:136:32 | cert | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:136:32:136:32 | cert | sensitive data (credential cert) |
+| testCryptoKit.swift:138:32:138:32 | account_no | testCryptoKit.swift:138:32:138:32 | account_no | testCryptoKit.swift:138:32:138:32 | account_no | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:138:32:138:32 | account_no | sensitive data (private information account_no) |
+| testCryptoKit.swift:139:32:139:32 | credit_card_no | testCryptoKit.swift:139:32:139:32 | credit_card_no | testCryptoKit.swift:139:32:139:32 | credit_card_no | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:139:32:139:32 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCryptoKit.swift:145:32:145:32 | cert | testCryptoKit.swift:145:32:145:32 | cert | testCryptoKit.swift:145:32:145:32 | cert | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:145:32:145:32 | cert | sensitive data (credential cert) |
+| testCryptoKit.swift:147:32:147:32 | account_no | testCryptoKit.swift:147:32:147:32 | account_no | testCryptoKit.swift:147:32:147:32 | account_no | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:147:32:147:32 | account_no | sensitive data (private information account_no) |
+| testCryptoKit.swift:148:32:148:32 | credit_card_no | testCryptoKit.swift:148:32:148:32 | credit_card_no | testCryptoKit.swift:148:32:148:32 | credit_card_no | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:148:32:148:32 | credit_card_no | sensitive data (private information credit_card_no) |
 | testCryptoSwift.swift:153:30:153:30 | phoneNumberArray | testCryptoSwift.swift:153:30:153:30 | phoneNumberArray | testCryptoSwift.swift:153:30:153:30 | phoneNumberArray | Insecure hashing algorithm (MD5) depends on $@. | testCryptoSwift.swift:153:30:153:30 | phoneNumberArray | sensitive data (private information phoneNumberArray) |
 | testCryptoSwift.swift:156:31:156:31 | phoneNumberArray | testCryptoSwift.swift:156:31:156:31 | phoneNumberArray | testCryptoSwift.swift:156:31:156:31 | phoneNumberArray | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoSwift.swift:156:31:156:31 | phoneNumberArray | sensitive data (private information phoneNumberArray) |
 | testCryptoSwift.swift:166:20:166:20 | phoneNumberArray | testCryptoSwift.swift:166:20:166:20 | phoneNumberArray | testCryptoSwift.swift:166:20:166:20 | phoneNumberArray | Insecure hashing algorithm (MD5) depends on $@. | testCryptoSwift.swift:166:20:166:20 | phoneNumberArray | sensitive data (private information phoneNumberArray) |
