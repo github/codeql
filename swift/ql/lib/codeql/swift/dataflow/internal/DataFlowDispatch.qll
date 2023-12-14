@@ -5,7 +5,6 @@ private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.controlflow.CfgNodes
 private import codeql.swift.controlflow.internal.Scope
 private import FlowSummaryImpl as FlowSummaryImpl
-private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 
 newtype TReturnKind =

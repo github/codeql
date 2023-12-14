@@ -4,7 +4,6 @@ private import ruby
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowPrivate
 private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific
 private import codeql.ruby.frameworks.core.Gem
 private import codeql.ruby.frameworks.data.ModelsAsData
 private import codeql.ruby.frameworks.data.internal.ApiGraphModelsExtensions
