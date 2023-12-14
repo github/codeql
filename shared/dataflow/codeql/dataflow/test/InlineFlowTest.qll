@@ -124,7 +124,7 @@ module InlineFlowTestMake<
   }
 
   module ValueFlowTest<DataFlow::ConfigSig ValueFlowConfig> {
-    import FlowTest<ValueFlowConfig, NoFlowConfig>
+    import ValueFlowTestArgString<ValueFlowConfig, Impl::getArgString/2>
   }
 
   module TaintFlowTestArgString<DataFlow::ConfigSig TaintFlowConfig, getArgStringSig/2 getArgString>
@@ -133,6 +133,6 @@ module InlineFlowTestMake<
   }
 
   module TaintFlowTest<DataFlow::ConfigSig TaintFlowConfig> {
-    import FlowTest<NoFlowConfig, TaintFlowConfig>
+    import TaintFlowTestArgString<TaintFlowConfig, Impl::getArgString/2>
   }
 }
