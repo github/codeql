@@ -150,10 +150,10 @@ extension String {
 
 func testArrays(harmlessArray: Array<UInt8>, phoneNumberArray: Array<UInt8>, passwdArray: Array<UInt8>) {
     _ = MD5().calculate(for: harmlessArray) // GOOD (not sensitive)
-    _ = MD5().calculate(for: phoneNumberArray) // BAD [NOT DETECTED]
+    _ = MD5().calculate(for: phoneNumberArray) // BAD
     _ = MD5().calculate(for: passwdArray) // BAD
     _ = SHA1().calculate(for: harmlessArray) // GOOD (not sensitive)
-    _ = SHA1().calculate(for: phoneNumberArray) // BAD [NOT DETECTED]
+    _ = SHA1().calculate(for: phoneNumberArray) // BAD
     _ = SHA1().calculate(for: passwdArray) // BAD
     _ = SHA2(variant: .sha512).calculate(for: harmlessArray) // GOOD
     _ = SHA2(variant: .sha512).calculate(for: phoneNumberArray) // GOOD
@@ -163,10 +163,10 @@ func testArrays(harmlessArray: Array<UInt8>, phoneNumberArray: Array<UInt8>, pas
     _ = SHA3(variant: .sha512).calculate(for: passwdArray) // BAD [NOT DETECTED]
 
     _ = Digest.md5(harmlessArray) // GOOD (not sensitive)
-    _ = Digest.md5(phoneNumberArray) // BAD [NOT DETECTED]
+    _ = Digest.md5(phoneNumberArray) // BAD
     _ = Digest.md5(passwdArray) // BAD
     _ = Digest.sha1(harmlessArray) // GOOD (not sensitive)
-    _ = Digest.sha1(phoneNumberArray) // BAD [NOT DETECTED]
+    _ = Digest.sha1(phoneNumberArray) // BAD
     _ = Digest.sha1(passwdArray) // BAD
     _ = Digest.sha512(harmlessArray) // GOOD (not sensitive)
     _ = Digest.sha512(phoneNumberArray) // GOOD
@@ -179,10 +179,10 @@ func testArrays(harmlessArray: Array<UInt8>, phoneNumberArray: Array<UInt8>, pas
     _ = Digest.sha3(passwdArray, variant: .sha512) // BAD [NOT DETECTED]
 
     _ = harmlessArray.md5() // GOOD (not sensitive)
-    _ = phoneNumberArray.md5() // BAD [NOT DETECTED]
+    _ = phoneNumberArray.md5() // BAD
     _ = passwdArray.md5() // BAD
     _ = harmlessArray.sha1() // GOOD (not sensitive)
-    _ = phoneNumberArray.sha1() // BAD [NOT DETECTED]
+    _ = phoneNumberArray.sha1() // BAD
     _ = passwdArray.sha1() // BAD
     _ = harmlessArray.sha512() // GOOD
     _ = phoneNumberArray.sha512() // GOOD

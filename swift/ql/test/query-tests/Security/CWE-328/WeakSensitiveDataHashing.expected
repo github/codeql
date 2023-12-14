@@ -19,6 +19,12 @@ nodes
 | testCryptoKit.swift:142:32:142:32 | cert | semmle.label | cert |
 | testCryptoKit.swift:144:32:144:32 | account_no | semmle.label | account_no |
 | testCryptoKit.swift:145:32:145:32 | credit_card_no | semmle.label | credit_card_no |
+| testCryptoSwift.swift:153:30:153:30 | phoneNumberArray | semmle.label | phoneNumberArray |
+| testCryptoSwift.swift:156:31:156:31 | phoneNumberArray | semmle.label | phoneNumberArray |
+| testCryptoSwift.swift:166:20:166:20 | phoneNumberArray | semmle.label | phoneNumberArray |
+| testCryptoSwift.swift:169:21:169:21 | phoneNumberArray | semmle.label | phoneNumberArray |
+| testCryptoSwift.swift:182:9:182:9 | phoneNumberArray | semmle.label | phoneNumberArray |
+| testCryptoSwift.swift:185:9:185:9 | phoneNumberArray | semmle.label | phoneNumberArray |
 | testCryptoSwift.swift:200:9:200:9 | medicalData | semmle.label | medicalData |
 | testCryptoSwift.swift:203:9:203:9 | medicalData | semmle.label | medicalData |
 | testCryptoSwift.swift:218:9:218:9 | creditCardNumber | semmle.label | creditCardNumber |
@@ -44,6 +50,12 @@ subpaths
 | testCryptoKit.swift:142:32:142:32 | cert | testCryptoKit.swift:142:32:142:32 | cert | testCryptoKit.swift:142:32:142:32 | cert | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:142:32:142:32 | cert | sensitive data (credential cert) |
 | testCryptoKit.swift:144:32:144:32 | account_no | testCryptoKit.swift:144:32:144:32 | account_no | testCryptoKit.swift:144:32:144:32 | account_no | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:144:32:144:32 | account_no | sensitive data (private information account_no) |
 | testCryptoKit.swift:145:32:145:32 | credit_card_no | testCryptoKit.swift:145:32:145:32 | credit_card_no | testCryptoKit.swift:145:32:145:32 | credit_card_no | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoKit.swift:145:32:145:32 | credit_card_no | sensitive data (private information credit_card_no) |
+| testCryptoSwift.swift:153:30:153:30 | phoneNumberArray | testCryptoSwift.swift:153:30:153:30 | phoneNumberArray | testCryptoSwift.swift:153:30:153:30 | phoneNumberArray | Insecure hashing algorithm (MD5) depends on $@. | testCryptoSwift.swift:153:30:153:30 | phoneNumberArray | sensitive data (private information phoneNumberArray) |
+| testCryptoSwift.swift:156:31:156:31 | phoneNumberArray | testCryptoSwift.swift:156:31:156:31 | phoneNumberArray | testCryptoSwift.swift:156:31:156:31 | phoneNumberArray | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoSwift.swift:156:31:156:31 | phoneNumberArray | sensitive data (private information phoneNumberArray) |
+| testCryptoSwift.swift:166:20:166:20 | phoneNumberArray | testCryptoSwift.swift:166:20:166:20 | phoneNumberArray | testCryptoSwift.swift:166:20:166:20 | phoneNumberArray | Insecure hashing algorithm (MD5) depends on $@. | testCryptoSwift.swift:166:20:166:20 | phoneNumberArray | sensitive data (private information phoneNumberArray) |
+| testCryptoSwift.swift:169:21:169:21 | phoneNumberArray | testCryptoSwift.swift:169:21:169:21 | phoneNumberArray | testCryptoSwift.swift:169:21:169:21 | phoneNumberArray | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoSwift.swift:169:21:169:21 | phoneNumberArray | sensitive data (private information phoneNumberArray) |
+| testCryptoSwift.swift:182:9:182:9 | phoneNumberArray | testCryptoSwift.swift:182:9:182:9 | phoneNumberArray | testCryptoSwift.swift:182:9:182:9 | phoneNumberArray | Insecure hashing algorithm (MD5) depends on $@. | testCryptoSwift.swift:182:9:182:9 | phoneNumberArray | sensitive data (private information phoneNumberArray) |
+| testCryptoSwift.swift:185:9:185:9 | phoneNumberArray | testCryptoSwift.swift:185:9:185:9 | phoneNumberArray | testCryptoSwift.swift:185:9:185:9 | phoneNumberArray | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoSwift.swift:185:9:185:9 | phoneNumberArray | sensitive data (private information phoneNumberArray) |
 | testCryptoSwift.swift:200:9:200:9 | medicalData | testCryptoSwift.swift:200:9:200:9 | medicalData | testCryptoSwift.swift:200:9:200:9 | medicalData | Insecure hashing algorithm (MD5) depends on $@. | testCryptoSwift.swift:200:9:200:9 | medicalData | sensitive data (private information medicalData) |
 | testCryptoSwift.swift:203:9:203:9 | medicalData | testCryptoSwift.swift:203:9:203:9 | medicalData | testCryptoSwift.swift:203:9:203:9 | medicalData | Insecure hashing algorithm (SHA1) depends on $@. | testCryptoSwift.swift:203:9:203:9 | medicalData | sensitive data (private information medicalData) |
 | testCryptoSwift.swift:218:9:218:9 | creditCardNumber | testCryptoSwift.swift:218:9:218:9 | creditCardNumber | testCryptoSwift.swift:218:9:218:9 | creditCardNumber | Insecure hashing algorithm (MD5) depends on $@. | testCryptoSwift.swift:218:9:218:9 | creditCardNumber | sensitive data (private information creditCardNumber) |
