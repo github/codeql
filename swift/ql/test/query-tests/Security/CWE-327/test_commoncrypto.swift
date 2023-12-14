@@ -127,7 +127,7 @@ func test_commoncrypto1(key: Data, iv: Data, dataIn: Data, dataOut: inout Data) 
 	var myCryptor: CCCryptorRef?
 	var dataOutWritten = 0
 
-	key.withUnsafeBytes({
+	/*key.withUnsafeBytes({
 		keyPtr in
 		iv.withUnsafeBytes({
 			// create the cryptor object
@@ -175,7 +175,7 @@ func test_commoncrypto1(key: Data, iv: Data, dataIn: Data, dataOut: inout Data) 
 				})
 			})
 		})
-	})
+	})*/
 }
 
 func test_commoncrypto2(
