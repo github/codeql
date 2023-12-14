@@ -37,7 +37,7 @@ bindingset[arg]
 int parseLowerBound(string arg) { result = arg.regexpCapture("(-?\\d+)\\.\\.", 1).toInt() }
 
 /**
- * An access part token such as `Argument[1]` or `ReturnValue`.
+ * An access path token such as `Argument[1]` or `ReturnValue`.
  */
 class AccessPathTokenBase extends string {
   bindingset[this]
@@ -181,7 +181,7 @@ module AccessPath<accessPathRangeSig/1 accessPathRange> {
   }
 
   /**
-   * An access part token such as `Argument[1]` or `ReturnValue`, appearing in one or more access paths.
+   * An access path token such as `Argument[1]` or `ReturnValue`, appearing in one or more access paths.
    */
   class AccessPathToken extends AccessPathTokenBaseFinal {
     AccessPathToken() { this = getRawToken(_, _) }

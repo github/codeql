@@ -384,6 +384,7 @@ private predicate interpretSummary(
   )
 }
 
+// adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
   SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _) }
 
@@ -417,6 +418,7 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
   }
 }
 
+// adapter class for converting Mad neutrals to `NeutralCallable`s
 private class NeutralCallableAdapter extends NeutralCallable {
   string kind;
   string provenance_;

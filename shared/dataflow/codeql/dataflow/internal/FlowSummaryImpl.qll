@@ -394,16 +394,12 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       }
     }
 
-    private predicate summaryElement(
-      SummarizedCallable c, string input, string output, boolean preservesValue, string provenance
-    ) {
-      c.propagatesFlow(input, output, preservesValue) and
-      c.hasProvenance(provenance)
-    }
-
     private predicate summarySpec(string spec) {
-      summaryElement(_, spec, _, _, _) or
-      summaryElement(_, _, spec, _, _)
+      exists(SummarizedCallable c |
+        c.propagatesFlow(spec, _, _)
+        or
+        c.propagatesFlow(_, spec, _)
+      )
     }
 
     import AccessPathSyntax::AccessPath<summarySpec/1>
@@ -652,7 +648,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
 
     /**
      * Holds if `c` has a flow summary from `input` to `arg`, where `arg`
-     * writes to (contents of) arguments at position `pos`, and `c` has a
+     * writes to (contents of) arguments at (some) position `pos`, and `c` has a
      * value-preserving flow summary from the arguments at position `pos`
      * to a return value (`return`).
      *
@@ -1423,43 +1419,21 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         }
       }
 
-      private class SummarizedCallableExternal extends SummarizedCallableImpl instanceof SummarizedCallable
+      // adapter class for converting `SummarizedCallable`s to `SummarizedCallableImpl`s
+      private class SummarizedCallableImplAdapter extends SummarizedCallableImpl instanceof SummarizedCallable
       {
-        SummarizedCallableExternal() { summaryElement(this, _, _, _, _) }
-
-        private predicate relevantSummaryElementGenerated(
-          AccessPath inSpec, AccessPath outSpec, boolean preservesValue
-        ) {
-          exists(Provenance provenance |
-            provenance.isGenerated() and
-            summaryElement(this, inSpec, outSpec, preservesValue, provenance)
-          ) and
-          not super.applyManualModel()
-        }
-
-        private predicate relevantSummaryElement(
-          AccessPath inSpec, AccessPath outSpec, boolean preservesValue
-        ) {
-          exists(Provenance provenance |
-            provenance.isManual() and
-            summaryElement(this, inSpec, outSpec, preservesValue, provenance)
-          )
-          or
-          this.relevantSummaryElementGenerated(inSpec, outSpec, preservesValue)
-        }
-
         override predicate propagatesFlow(
           SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
         ) {
           exists(AccessPath inSpec, AccessPath outSpec |
-            this.relevantSummaryElement(inSpec, outSpec, preservesValue) and
+            SummarizedCallable.super.propagatesFlow(inSpec, outSpec, preservesValue) and
             interpretSpec(inSpec, input) and
             interpretSpec(outSpec, output)
           )
         }
 
         override predicate hasProvenance(Provenance provenance) {
-          summaryElement(this, _, _, _, provenance)
+          SummarizedCallable.super.hasProvenance(provenance)
         }
       }
 
@@ -1492,13 +1466,13 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
 
         /**
          * Holds if an external source specification exists for `n` with output specification
-         * `output`, kind `kind`, and provenance `provenance`.
+         * `output` and kind `kind`.
          */
         predicate sourceElement(Element n, string output, string kind);
 
         /**
          * Holds if an external sink specification exists for `n` with input specification
-         * `input`, kind `kind` and provenance `provenance`.
+         * `input` and kind `kind`.
          */
         predicate sinkElement(Element n, string input, string kind);
 
