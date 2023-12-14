@@ -3,7 +3,7 @@
 private import swift
 private import BasicBlocks
 private import ControlFlowGraph
-private import internal.ControlFlowGraphImpl
+private import internal.ControlFlowGraphImpl as Impl
 private import internal.ControlFlowElements
 private import internal.Splitting
 
@@ -14,7 +14,7 @@ private import internal.Splitting
  * (dead) code or not important for control flow, and multiple when there are different
  * splits for the AST node.
  */
-class CfgNode extends ControlFlowNode instanceof AstCfgNode {
+class CfgNode extends ControlFlowNode instanceof Impl::AstCfgNode {
   final override ControlFlowElement getNode() { result = this.getAstNode() }
 
   /** Gets a split for this control flow node, if any. */
@@ -142,3 +142,7 @@ class KeyPathApplicationExprCfgNode extends ExprCfgNode {
 class KeyPathExprCfgNode extends ExprCfgNode {
   override KeyPathExpr e;
 }
+
+class EntryNode = Impl::EntryNode;
+
+class ExitNode = Impl::ExitNode;

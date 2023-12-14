@@ -240,7 +240,7 @@ module Stmts {
   private class DiscardStmtTree extends AstStandardPostOrderTree {
     override DiscardStmt ast;
 
-    final override ControlFlowElement getChildElement(int i) {
+    final override ControlFlowElement getChildNode(int i) {
       i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
     }
   }
@@ -1429,7 +1429,7 @@ module Exprs {
   private class SingleValueStmtExprTree extends AstStandardPostOrderTree {
     override SingleValueStmtExpr ast;
 
-    final override ControlFlowElement getChildElement(int i) {
+    final override ControlFlowElement getChildNode(int i) {
       i = 0 and result.asAstNode() = ast.getStmt()
     }
   }
@@ -1438,7 +1438,7 @@ module Exprs {
   private class PackExpansionExprTree extends AstStandardPostOrderTree {
     override PackExpansionExpr ast;
 
-    final override ControlFlowElement getChildElement(int i) {
+    final override ControlFlowElement getChildNode(int i) {
       i = 0 and result.asAstNode() = ast.getPatternExpr().getFullyConverted()
     }
   }
@@ -1447,7 +1447,7 @@ module Exprs {
   private class PackElementExprTree extends AstStandardPostOrderTree {
     override PackElementExpr ast;
 
-    final override ControlFlowElement getChildElement(int i) {
+    final override ControlFlowElement getChildNode(int i) {
       i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
     }
   }
@@ -1455,7 +1455,7 @@ module Exprs {
   private class MaterializePackExprTree extends AstStandardPostOrderTree {
     override MaterializePackExpr ast;
 
-    final override ControlFlowElement getChildElement(int i) {
+    final override ControlFlowElement getChildNode(int i) {
       i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
     }
   }
@@ -1464,7 +1464,7 @@ module Exprs {
   private class CopyExprTree extends AstStandardPostOrderTree {
     override CopyExpr ast;
 
-    final override ControlFlowElement getChildElement(int i) {
+    final override ControlFlowElement getChildNode(int i) {
       i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
     }
   }
@@ -1473,7 +1473,7 @@ module Exprs {
   private class ConsumeExprTree extends AstStandardPostOrderTree {
     override ConsumeExpr ast;
 
-    final override ControlFlowElement getChildElement(int i) {
+    final override ControlFlowElement getChildNode(int i) {
       i = 0 and result.asAstNode() = ast.getSubExpr().getFullyUnresolved()
     }
   }
