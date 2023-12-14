@@ -337,7 +337,7 @@ module Flask {
     }
   }
 
-  /** A request handler defined in a django view class, that has no known route. */
+  /** A request handler defined in a flask view class, that has no known route. */
   private class FlaskViewClassHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range {
     FlaskViewClassHandlerWithoutKnownRoute() {
       exists(FlaskViewClass vc | vc.getARequestHandler() = this) and
