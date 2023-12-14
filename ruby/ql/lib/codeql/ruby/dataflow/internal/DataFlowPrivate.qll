@@ -144,13 +144,39 @@ module LocalFlow {
   }
 
   /**
+   * Holds if SSA definition `def` assigns `value` to the underlying variable.
+   *
+   * This is either a direct assignment, `x = value`, or an assignment via
+   * simple pattern matching
+   *
+   * ```rb
+   * case value
+   *  in Foo => x then ...
+   *  in y => then ...
+   * end
+   * ```
+   */
+  predicate ssaDefAssigns(Ssa::WriteDefinition def, CfgNodes::ExprCfgNode value) {
+    def.assigns(value)
+    or
+    exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::AstCfgNode pattern |
+      case.getValue() = value and
+      pattern = case.getBranch(_).(CfgNodes::ExprNodes::InClauseCfgNode).getPattern()
+    |
+      def.getWriteAccess() = pattern
+      or
+      def.getWriteAccess() = pattern.(CfgNodes::ExprNodes::AsPatternCfgNode).getVariableAccess()
+    )
+  }
+
+  /**
    * Holds if there is a local flow step from `nodeFrom` to `nodeTo` involving
    * SSA definition `def`.
    */
   pragma[nomagic]
   predicate localSsaFlowStep(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
     // Flow from assignment into SSA definition
-    def.(Ssa::WriteDefinition).assigns(nodeFrom.asExpr()) and
+    ssaDefAssigns(def, nodeFrom.asExpr()) and
     nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def
     or
     // Flow from SSA definition to first read
@@ -273,7 +299,7 @@ module VariableCapture {
     or
     exists(Ssa::Definition def |
       def.getARead() = e2 and
-      def.getAnUltimateDefinition().(Ssa::WriteDefinition).assigns(e1)
+      LocalFlow::ssaDefAssigns(def.getAnUltimateDefinition(), e1)
     )
   }
 
@@ -574,8 +600,7 @@ private module Cached {
 
   /** Holds if `n` wraps an SSA definition without ingoing flow. */
   private predicate entrySsaDefinition(SsaDefinitionExtNode n) {
-    n.getDefinitionExt() =
-      any(SsaImpl::WriteDefinition def | not def.(Ssa::WriteDefinition).assigns(_))
+    n.getDefinitionExt() = any(SsaImpl::WriteDefinition def | not LocalFlow::ssaDefAssigns(def, _))
   }
 
   pragma[nomagic]
