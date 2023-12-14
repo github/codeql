@@ -187,7 +187,6 @@ func fasthttpServer() {
 		fmt.Fprintf(rspWriter, "%s", userInputByte) // $ XssSink=userInputByte
 		io.WriteString(rspWriter, userInput)        // $ XssSink=userInput
 		io.TeeReader(userInputReader, rspWriter)    // $ XssSink=userInputReader
-		io.TeeReader(userInputReader, rspWriter)    // $ XssSink=userInputReader
 		bufioReader := bufio.NewReader(dstReader)
 		bufioReader.WriteTo(rspWriter) // $ XssSink=bufioReader
 		bytesUserInput := bytes.NewBuffer(userInputByte)
