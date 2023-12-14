@@ -8,7 +8,7 @@ import argparse
 
 """
 This script collects CodeQL queries that are part of code scanning query packs
-and prints CSV data to stdout that describes which packs contain which queries.
+and prints CSV data to stdout that describes which suites in the pack contain which queries.
 
 Errors are printed to stderr. This script requires that 'git' and 'codeql' commands
 are on the PATH. It'll try to automatically set the CodeQL search path correctly,
