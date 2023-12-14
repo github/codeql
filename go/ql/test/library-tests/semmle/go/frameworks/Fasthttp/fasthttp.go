@@ -166,12 +166,13 @@ func fasthttpServer() {
 		body2, _ := requestCtx.Request.BodyInflate()      // $ UntrustedFlowSource="... := ...[0]"
 		body3, _ := requestCtx.Request.BodyUnbrotli()     // $ UntrustedFlowSource="... := ...[0]"
 		body4, _ := requestCtx.Request.BodyUncompressed() // $ UntrustedFlowSource="... := ...[0]"
-		requestCtx.Request.BodyStream()                   // $ UntrustedFlowSource="call to BodyStream"
-		requestCtx.Request.ReadBody(dstReader, 100, 1000)
-		requestCtx.Request.ReadLimitBody(dstReader, 100)
-		requestCtx.Request.ContinueReadBodyStream(dstReader, 100, true)
-		requestCtx.Request.ContinueReadBody(dstReader, 100)
 		fmt.Println(body1, body2, body3, body4)
+		requestCtx.Request.BodyStream() // $ UntrustedFlowSource="call to BodyStream"
+
+		requestCtx.Request.ReadBody(dstReader, 100, 1000)               // $ UntrustedFlowSource="dstReader"
+		requestCtx.Request.ReadLimitBody(dstReader, 100)                // $ UntrustedFlowSource="dstReader"
+		requestCtx.Request.ContinueReadBodyStream(dstReader, 100, true) // $ UntrustedFlowSource="dstReader"
+		requestCtx.Request.ContinueReadBody(dstReader, 100)             // $ UntrustedFlowSource="dstReader"
 
 		// Response methods
 		// Xss Sinks Related method
@@ -185,6 +186,7 @@ func fasthttpServer() {
 		rspWriter.Write(userInputByte)              // $ XssSink=userInputByte
 		fmt.Fprintf(rspWriter, "%s", userInputByte) // $ XssSink=userInputByte
 		io.WriteString(rspWriter, userInput)        // $ XssSink=userInput
+		io.TeeReader(userInputReader, rspWriter)    // $ XssSink=userInputReader
 		io.TeeReader(userInputReader, rspWriter)    // $ XssSink=userInputReader
 		bufioReader := bufio.NewReader(dstReader)
 		bufioReader.WriteTo(rspWriter) // $ XssSink=bufioReader

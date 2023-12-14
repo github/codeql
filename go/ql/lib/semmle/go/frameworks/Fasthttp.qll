@@ -399,6 +399,12 @@ module Fasthttp {
             ]) and
           this = m.getACall().getResult(0)
         )
+        or
+        exists(Method m |
+          m.hasQualifiedName(packagePath(), "Request",
+            ["ReadBody", "ReadLimitBody", "ContinueReadBodyStream", "ContinueReadBody"]) and
+          this = m.getACall().getArgument(0)
+        )
       }
     }
 
