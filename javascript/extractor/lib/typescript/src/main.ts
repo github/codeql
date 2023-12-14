@@ -808,7 +808,7 @@ function handleGetMetadataCommand(command: GetMetadataCommand) {
 function reset() {
     state = new State();
     state.typeTable.restrictedExpansion = getEnvironmentVariable("SEMMLE_TYPESCRIPT_NO_EXPANSION", Boolean, true);
-    state.typeTable.skipExtractingTypes = getEnvironmentVariable("SEMMLE_TYPESCRIPT_SKIP_EXTRACTING_TYPES", Boolean, false);
+    state.typeTable.skipExtractingTypes = getEnvironmentVariable("CODEQL_EXTRACTOR_JAVASCRIPT_OPTION_SKIP_TYPES", Boolean, false);
 }
 
 function getEnvironmentVariable<T>(name: string, parse: (x: string) => T, defaultValue: T) {
