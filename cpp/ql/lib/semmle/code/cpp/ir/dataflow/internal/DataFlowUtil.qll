@@ -492,9 +492,40 @@ private string toExprString(Node n) {
     result = n.asExpr(0).toString()
     or
     not exists(n.asExpr()) and
-    result = n.asIndirectExpr(0, 1).toString() + " indirection"
+    result = stars(n) + n.asIndirectExpr(0, 1).toString()
   )
 }
+
+private module NodeStars {
+  private int getNumberOfIndirections(Node n) {
+    result = n.(RawIndirectOperand).getIndirectionIndex()
+    or
+    result = n.(RawIndirectInstruction).getIndirectionIndex()
+    or
+    result = n.(VariableNode).getIndirectionIndex()
+    or
+    result = n.(PostUpdateNodeImpl).getIndirectionIndex()
+    or
+    result = n.(FinalParameterNode).getIndirectionIndex()
+  }
+
+  private int maxNumberOfIndirections() { result = max(getNumberOfIndirections(_)) }
+
+  private string repeatStars(int n) {
+    n = 0 and result = ""
+    or
+    n = [1 .. maxNumberOfIndirections()] and
+    result = "*" + repeatStars(n - 1)
+  }
+
+  /**
+   * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
+   * output for `n`.
+   */
+  string stars(Node n) { result = repeatStars(getNumberOfIndirections(n)) }
+}
+
+private import NodeStars
 
 /**
  * A class that lifts pre-SSA dataflow nodes to regular dataflow nodes.
@@ -786,10 +817,12 @@ class IndirectParameterNode extends Node instanceof IndirectInstruction {
   override Location getLocationImpl() { result = this.getParameter().getLocation() }
 
   override string toStringImpl() {
-    result = this.getParameter().toString() + " indirection"
-    or
-    not exists(this.getParameter()) and
-    result = "this indirection"
+    exists(string prefix | prefix = stars(this) |
+      result = prefix + this.getParameter().toString()
+      or
+      not exists(this.getParameter()) and
+      result = prefix + "this"
+    )
   }
 }
 
@@ -1016,7 +1049,7 @@ private module RawIndirectNodes {
     }
 
     override string toStringImpl() {
-      result = operandNode(this.getOperand()).toStringImpl() + " indirection"
+      result = stars(this) + operandNode(this.getOperand()).toStringImpl()
     }
   }
 
@@ -1058,7 +1091,7 @@ private module RawIndirectNodes {
     }
 
     override string toStringImpl() {
-      result = instructionNode(this.getInstruction()).toStringImpl() + " indirection"
+      result = stars(this) + instructionNode(this.getInstruction()).toStringImpl()
     }
   }
 
@@ -1151,9 +1184,7 @@ class FinalParameterNode extends Node, TFinalParameterNode {
     result instanceof UnknownDefaultLocation
   }
 
-  override string toStringImpl() {
-    if indirectionIndex > 1 then result = p.toString() + " indirection" else result = p.toString()
-  }
+  override string toStringImpl() { result = stars(this) + p.toString() }
 }
 
 /**
@@ -1787,9 +1818,7 @@ class VariableNode extends Node, TVariableNode {
     result instanceof UnknownDefaultLocation
   }
 
-  override string toStringImpl() {
-    if indirectionIndex = 1 then result = v.toString() else result = v.toString() + " indirection"
-  }
+  override string toStringImpl() { result = stars(this) + v.toString() }
 }
 
 /**
@@ -2249,6 +2278,21 @@ class Content extends TContent {
   abstract predicate impliesClearOf(Content c);
 }
 
+private module ContentStars {
+  private int maxNumberOfIndirections() { result = max(any(Content c).getIndirectionIndex()) }
+
+  private string repeatStars(int n) {
+    n = 0 and result = ""
+    or
+    n = [1 .. maxNumberOfIndirections()] and
+    result = "*" + repeatStars(n - 1)
+  }
+
+  string contentStars(Content c) { result = repeatStars(c.getIndirectionIndex() - 1) }
+}
+
+private import ContentStars
+
 /** A reference through a non-union instance field. */
 class FieldContent extends Content, TFieldContent {
   Field f;
@@ -2256,11 +2300,7 @@ class FieldContent extends Content, TFieldContent {
 
   FieldContent() { this = TFieldContent(f, indirectionIndex) }
 
-  override string toString() {
-    indirectionIndex = 1 and result = f.toString()
-    or
-    indirectionIndex > 1 and result = f.toString() + " indirection"
-  }
+  override string toString() { result = contentStars(this) + f.toString() }
 
   Field getField() { result = f }
 
@@ -2289,11 +2329,7 @@ class UnionContent extends Content, TUnionContent {
 
   UnionContent() { this = TUnionContent(u, bytes, indirectionIndex) }
 
-  override string toString() {
-    indirectionIndex = 1 and result = u.toString()
-    or
-    indirectionIndex > 1 and result = u.toString() + " indirection"
-  }
+  override string toString() { result = contentStars(this) + u.toString() }
 
   /** Gets a field of the underlying union of this `UnionContent`, if any. */
   Field getAField() { result = u.getAField() and getFieldSize(result) = bytes }
