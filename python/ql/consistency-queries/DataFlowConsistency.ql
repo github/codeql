@@ -49,7 +49,7 @@ private module Input implements InputSig<PythonDataFlow> {
   predicate uniqueEnclosingCallableExclude(Node n) {
     // `CaptureNode`s miss enclosing calables in some cases.
     exists(Function func |
-      func = n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable()
+      func = n.(SynthCaptureNode).getSynthesizedCaptureNode().getEnclosingCallable()
     |
       // This can happen if `func` is a comprehension.
       // In that case, there is no associated DataFlowCallable.
@@ -60,8 +60,8 @@ private module Input implements InputSig<PythonDataFlow> {
     or
     // We only have a selection of valid callables.
     // For instance, we do not have classes as `DataFlowCallable`s.
-    not n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() instanceof Function and
-    not n.(CaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() instanceof Module
+    not n.(SynthCaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() instanceof Function and
+    not n.(SynthCaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() instanceof Module
   }
 
   predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
@@ -141,6 +141,7 @@ private module Input implements InputSig<PythonDataFlow> {
       other.getNode().getScope() = f
     )
     or
+    // The capture argument node will be reused for every call to the same callable.
     arg = call.getArgument(_) and
     arg instanceof CaptureArgumentNode
   }
