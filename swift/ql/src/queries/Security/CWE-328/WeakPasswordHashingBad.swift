@@ -1,3 +1,8 @@
-using var sha512 = System.Security.Cryptography.SHA512.Create();
+let passwordData = Data(passwordString.utf8)
+let passwordHash = Crypto.SHA512.hash(data: passwordData)
 
-var data = sha512.ComputeHash(Encoding.UTF8.GetBytes(content));    // BAD
+// ...
+
+if Crypto.SHA512.hash(data: Data(passwordString.utf8)) == passwordHash {
+    // ...
+}

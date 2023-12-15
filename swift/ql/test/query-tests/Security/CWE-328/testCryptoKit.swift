@@ -1,5 +1,12 @@
 //codeql-extractor-options: -module-name Crypto
 
+// --- stubs ---
+
+class Data
+{
+    init<S>(_ elements: S) {}
+}
+
 struct SHA256 {
     static func hash<D>(data: D) -> [UInt8] {
         return []
@@ -52,13 +59,14 @@ enum Insecure {
     }
 }
 
+// --- tests ---
+
 func testHashMethods(passwd : UnsafeRawBufferPointer, cert: String, encrypted_passwd : String, account_no : String, credit_card_no : String) {
     var hash = Crypto.Insecure.MD5.hash(data: passwd)  // BAD
     hash = Crypto.Insecure.MD5.hash(data: cert)   // BAD
     hash = Crypto.Insecure.MD5.hash(data: encrypted_passwd)  // GOOD  (not sensitive)
     hash = Crypto.Insecure.MD5.hash(data: account_no)   // BAD
     hash = Crypto.Insecure.MD5.hash(data: credit_card_no)   // BAD
-
 
     hash = Crypto.Insecure.SHA1.hash(data: passwd)  // BAD
     hash = Crypto.Insecure.SHA1.hash(data: cert)   // BAD
@@ -173,4 +181,16 @@ func testSHA512UpdateWithUnsafeRawBufferPointer(passwd : UnsafeRawBufferPointer,
     hash.update(bufferPointer: encrypted_passwd)  // GOOD  (not sensitive)
     hash.update(bufferPointer: account_no)   // GOOD
     hash.update(bufferPointer: credit_card_no)   // GOOD
+}
+
+func tesBadExample(passwordString: String) {
+    // this is the "bad" example from the .qhelp
+    let passwordData = Data(passwordString.utf8)
+    let passwordHash = Crypto.SHA512.hash(data: passwordData) // BAD, not a computationally expensive hash
+
+    // ...
+
+    if Crypto.SHA512.hash(data: Data(passwordString.utf8)) == passwordHash { // BAD, not a computationally expensive hash
+	    // ...
+    }
 }
