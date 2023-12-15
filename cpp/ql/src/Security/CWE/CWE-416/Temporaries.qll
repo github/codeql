@@ -45,7 +45,7 @@ predicate isStoredInContainer(Expr e) {
 /**
  * Holds if `e` or a conversion of `e` has an lvalue-to-rvalue conversion.
  */
-predicate hasLValueToRValueConversion(Expr e) {
+private predicate hasLValueToRValueConversion(Expr e) {
   e.getConversion*().hasLValueToRValueConversion() and
   not e instanceof ConditionalExpr // ConditionalExpr may be spuriously reported as having an lvalue-to-rvalue conversion
 }
