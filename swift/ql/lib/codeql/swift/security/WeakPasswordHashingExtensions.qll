@@ -42,9 +42,8 @@ class WeakPasswordHashingAdditionalFlowStep extends Unit {
  * for the weak sensitive data hashing query is a sink for weak password
  * hashing as well.
  */
-private class InheritedWeakPasswordHashingSink extends WeakPasswordHashingSink {
-  InheritedWeakPasswordHashingSink() { this instanceof WeakSensitiveDataHashingSink }
-
+private class InheritedWeakPasswordHashingSink extends WeakPasswordHashingSink instanceof WeakSensitiveDataHashingSink
+{
   override string getAlgorithm() { result = this.(WeakSensitiveDataHashingSink).getAlgorithm() }
 }
 

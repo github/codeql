@@ -5,7 +5,6 @@
 
 import swift
 import codeql.swift.security.SensitiveExprs
-import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.security.WeakPasswordHashingExtensions
 
