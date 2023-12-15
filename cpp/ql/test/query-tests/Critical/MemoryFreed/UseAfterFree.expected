@@ -12,16 +12,16 @@ edges
 | test_free.cpp:233:14:233:15 | pointer to free output argument | test_free.cpp:236:9:236:10 | * ... |
 | test_free.cpp:239:14:239:15 | pointer to free output argument | test_free.cpp:241:9:241:10 | * ... |
 | test_free.cpp:245:10:245:11 | pointer to free output argument | test_free.cpp:246:9:246:10 | * ... |
-| test_free.cpp:277:8:277:8 | s indirection [post update] [buf] | test_free.cpp:278:12:278:12 | s indirection [buf] |
-| test_free.cpp:277:8:277:13 | pointer to free output argument | test_free.cpp:277:8:277:8 | s indirection [post update] [buf] |
-| test_free.cpp:278:12:278:12 | s indirection [buf] | test_free.cpp:278:15:278:17 | buf |
-| test_free.cpp:282:8:282:8 | s indirection [post update] [buf] | test_free.cpp:283:12:283:12 | s indirection [buf] |
-| test_free.cpp:282:8:282:12 | pointer to free output argument | test_free.cpp:282:8:282:8 | s indirection [post update] [buf] |
-| test_free.cpp:283:12:283:12 | s indirection [buf] | test_free.cpp:283:14:283:16 | buf |
+| test_free.cpp:277:8:277:8 | *s [post update] [buf] | test_free.cpp:278:12:278:12 | *s [buf] |
+| test_free.cpp:277:8:277:13 | pointer to free output argument | test_free.cpp:277:8:277:8 | *s [post update] [buf] |
+| test_free.cpp:278:12:278:12 | *s [buf] | test_free.cpp:278:15:278:17 | buf |
+| test_free.cpp:282:8:282:8 | *s [post update] [buf] | test_free.cpp:283:12:283:12 | *s [buf] |
+| test_free.cpp:282:8:282:12 | pointer to free output argument | test_free.cpp:282:8:282:8 | *s [post update] [buf] |
+| test_free.cpp:283:12:283:12 | *s [buf] | test_free.cpp:283:14:283:16 | buf |
 | test_free.cpp:293:8:293:10 | pointer to free output argument | test_free.cpp:294:3:294:13 | ... = ... |
-| test_free.cpp:294:3:294:3 | s indirection [post update] [buf] | test_free.cpp:295:12:295:12 | s indirection [buf] |
-| test_free.cpp:294:3:294:13 | ... = ... | test_free.cpp:294:3:294:3 | s indirection [post update] [buf] |
-| test_free.cpp:295:12:295:12 | s indirection [buf] | test_free.cpp:295:14:295:16 | buf |
+| test_free.cpp:294:3:294:3 | *s [post update] [buf] | test_free.cpp:295:12:295:12 | *s [buf] |
+| test_free.cpp:294:3:294:13 | ... = ... | test_free.cpp:294:3:294:3 | *s [post update] [buf] |
+| test_free.cpp:295:12:295:12 | *s [buf] | test_free.cpp:295:14:295:16 | buf |
 nodes
 | test_free.cpp:11:10:11:10 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:12:5:12:5 | a | semmle.label | a |
@@ -48,18 +48,18 @@ nodes
 | test_free.cpp:241:9:241:10 | * ... | semmle.label | * ... |
 | test_free.cpp:245:10:245:11 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:246:9:246:10 | * ... | semmle.label | * ... |
-| test_free.cpp:277:8:277:8 | s indirection [post update] [buf] | semmle.label | s indirection [post update] [buf] |
+| test_free.cpp:277:8:277:8 | *s [post update] [buf] | semmle.label | *s [post update] [buf] |
 | test_free.cpp:277:8:277:13 | pointer to free output argument | semmle.label | pointer to free output argument |
-| test_free.cpp:278:12:278:12 | s indirection [buf] | semmle.label | s indirection [buf] |
+| test_free.cpp:278:12:278:12 | *s [buf] | semmle.label | *s [buf] |
 | test_free.cpp:278:15:278:17 | buf | semmle.label | buf |
-| test_free.cpp:282:8:282:8 | s indirection [post update] [buf] | semmle.label | s indirection [post update] [buf] |
+| test_free.cpp:282:8:282:8 | *s [post update] [buf] | semmle.label | *s [post update] [buf] |
 | test_free.cpp:282:8:282:12 | pointer to free output argument | semmle.label | pointer to free output argument |
-| test_free.cpp:283:12:283:12 | s indirection [buf] | semmle.label | s indirection [buf] |
+| test_free.cpp:283:12:283:12 | *s [buf] | semmle.label | *s [buf] |
 | test_free.cpp:283:14:283:16 | buf | semmle.label | buf |
 | test_free.cpp:293:8:293:10 | pointer to free output argument | semmle.label | pointer to free output argument |
-| test_free.cpp:294:3:294:3 | s indirection [post update] [buf] | semmle.label | s indirection [post update] [buf] |
+| test_free.cpp:294:3:294:3 | *s [post update] [buf] | semmle.label | *s [post update] [buf] |
 | test_free.cpp:294:3:294:13 | ... = ... | semmle.label | ... = ... |
-| test_free.cpp:295:12:295:12 | s indirection [buf] | semmle.label | s indirection [buf] |
+| test_free.cpp:295:12:295:12 | *s [buf] | semmle.label | *s [buf] |
 | test_free.cpp:295:14:295:16 | buf | semmle.label | buf |
 subpaths
 #select

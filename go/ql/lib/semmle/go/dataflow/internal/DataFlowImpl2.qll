@@ -10,7 +10,7 @@ private import DataFlowImplSpecific::Private
 import DataFlowImplSpecific::Public
 private import DataFlowImpl
 import DataFlowImplCommonPublic
-import FlowStateString
+deprecated import FlowStateString
 private import codeql.util.Unit
 
 /**

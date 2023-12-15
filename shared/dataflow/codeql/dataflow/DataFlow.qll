@@ -140,6 +140,9 @@ signature module InputSig {
    * stored into (`getAStoreContent`) or read from (`getAReadContent`).
    */
   class ContentSet {
+    /** Gets a textual representation of this element. */
+    string toString();
+
     /** Gets a content that may be stored into when storing into this set. */
     Content getAStoreContent();
 

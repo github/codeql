@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.SignalR.Common, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.SignalR.Common, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -26,6 +26,11 @@ namespace Microsoft
             }
             namespace Protocol
             {
+                public sealed class AckMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
+                {
+                    public AckMessage(long sequenceId) => throw null;
+                    public long SequenceId { get => throw null; set { } }
+                }
                 public class CancelInvocationMessage : Microsoft.AspNetCore.SignalR.Protocol.HubInvocationMessage
                 {
                     public CancelInvocationMessage(string invocationId) : base(default(string)) => throw null;
@@ -89,11 +94,13 @@ namespace Microsoft
                 }
                 public static class HubProtocolConstants
                 {
+                    public const int AckMessageType = 8;
                     public const int CancelInvocationMessageType = 5;
                     public const int CloseMessageType = 7;
                     public const int CompletionMessageType = 3;
                     public const int InvocationMessageType = 1;
                     public const int PingMessageType = 6;
+                    public const int SequenceMessageType = 9;
                     public const int StreamInvocationMessageType = 4;
                     public const int StreamItemMessageType = 2;
                 }
@@ -132,6 +139,11 @@ namespace Microsoft
                 {
                     public RawResult(System.Buffers.ReadOnlySequence<byte> rawBytes) => throw null;
                     public System.Buffers.ReadOnlySequence<byte> RawSerializedData { get => throw null; }
+                }
+                public sealed class SequenceMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
+                {
+                    public SequenceMessage(long sequenceId) => throw null;
+                    public long SequenceId { get => throw null; set { } }
                 }
                 public class StreamBindingFailureMessage : Microsoft.AspNetCore.SignalR.Protocol.HubMessage
                 {

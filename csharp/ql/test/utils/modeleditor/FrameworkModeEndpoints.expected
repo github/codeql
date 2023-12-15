@@ -7,11 +7,12 @@
 | PublicClass.cs:40:19:40:29 | sourceStuff | GitHub.CodeQL | PublicClass | sourceStuff | () | true | PublicClass.cs | source |
 | PublicClass.cs:45:17:45:25 | sinkStuff | GitHub.CodeQL | PublicClass | sinkStuff | (System.String) | true | PublicClass.cs | sink |
 | PublicClass.cs:50:17:50:28 | neutralStuff | GitHub.CodeQL | PublicClass | neutralStuff | (System.String) | true | PublicClass.cs | neutral |
-| PublicGenericClass.cs:7:17:7:21 | stuff | GitHub.CodeQL | PublicGenericClass`2 | stuff | (T) | false | PublicGenericClass.cs |  |
-| PublicGenericClass.cs:12:17:12:26 | stuff2`1 | GitHub.CodeQL | PublicGenericClass`2 | stuff2`1 | (T2) | false | PublicGenericClass.cs |  |
-| PublicGenericInterface.cs:7:10:7:14 | stuff | GitHub.CodeQL | PublicGenericInterface`1 | stuff | (T) | false | PublicGenericInterface.cs |  |
-| PublicGenericInterface.cs:9:10:9:19 | stuff2`1 | GitHub.CodeQL | PublicGenericInterface`1 | stuff2`1 | (T2) | false | PublicGenericInterface.cs |  |
-| PublicGenericInterface.cs:11:17:11:27 | staticStuff | GitHub.CodeQL | PublicGenericInterface`1 | staticStuff | (System.String) | false | PublicGenericInterface.cs |  |
+| PublicGenericClass.cs:7:17:7:21 | stuff | GitHub.CodeQL | PublicGenericClass<T,T2> | stuff | (T) | false | PublicGenericClass.cs |  |
+| PublicGenericClass.cs:12:17:12:26 | stuff2`1 | GitHub.CodeQL | PublicGenericClass<T,T2> | stuff2<T2> | (T2) | false | PublicGenericClass.cs |  |
+| PublicGenericClass.cs:17:18:17:36 | summaryStuff`1 | GitHub.CodeQL | PublicGenericClass<T,T2> | summaryStuff<TNode> | (TNode) | true | PublicGenericClass.cs | summary |
+| PublicGenericInterface.cs:7:10:7:14 | stuff | GitHub.CodeQL | PublicGenericInterface<T> | stuff | (T) | false | PublicGenericInterface.cs |  |
+| PublicGenericInterface.cs:9:10:9:19 | stuff2`1 | GitHub.CodeQL | PublicGenericInterface<T> | stuff2<T2> | (T2) | false | PublicGenericInterface.cs |  |
+| PublicGenericInterface.cs:11:17:11:27 | staticStuff | GitHub.CodeQL | PublicGenericInterface<T> | staticStuff | (System.String) | false | PublicGenericInterface.cs |  |
 | PublicInterface.cs:7:10:7:14 | stuff | GitHub.CodeQL | PublicInterface | stuff | (System.String) | false | PublicInterface.cs |  |
 | PublicInterface.cs:9:29:9:31 | get_PublicProperty | GitHub.CodeQL | PublicInterface | get_PublicProperty | () | false | PublicInterface.cs |  |
 | PublicInterface.cs:9:34:9:36 | set_PublicProperty | GitHub.CodeQL | PublicInterface | set_PublicProperty | (System.String) | false | PublicInterface.cs |  |
