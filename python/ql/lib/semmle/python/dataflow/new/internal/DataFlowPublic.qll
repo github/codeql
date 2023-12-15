@@ -118,9 +118,11 @@ newtype TNode =
   /** A synthetic node representing a captured variable. */
   TSynthCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
   /** A synthetic node representing the heap of a function. Used for variable capture. */
-  TLambdaSelfReferenceNode(Function f) {
+  TSynthCapturingClosureParameterNode(Function f) {
     f = any(VariableCapture::CapturedVariable v).getACapturingScope()
-  }
+  } or
+  /** A synthetic node representing the heap of a function. Used for variable capture. */
+  TSynthCapturingClosureArgumentNode(CallNode callNode)
 
 private import semmle.python.internal.CachedStages
 

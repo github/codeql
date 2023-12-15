@@ -1520,7 +1520,7 @@ abstract class ParameterNodeImpl extends Node {
 }
 
 /**
- * The value of a lambda itself at function entry, viewed as a node in a data
+ * The value of a closure itself at function entry, viewed as a node in a data
  * flow graph.
  *
  * This is used for tracking flow through captured variables, and we use a
@@ -1528,11 +1528,13 @@ abstract class ParameterNodeImpl extends Node {
  * "lambda self" from "normal self", as lambdas may also access outer `self`
  * variables (through variable capture).
  */
-class LambdaSelfReferenceNode extends ParameterNodeImpl, TLambdaSelfReferenceNode {
+class SynthCapturingClosureParameterNode extends ParameterNodeImpl,
+  TSynthCapturingClosureParameterNode
+{
   private Function callable;
 
-  LambdaSelfReferenceNode() {
-    this = TLambdaSelfReferenceNode(callable) and
+  SynthCapturingClosureParameterNode() {
+    this = TSynthCapturingClosureParameterNode(callable) and
     // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
     exists(TFunction(callable))
   }
@@ -1635,11 +1637,22 @@ private class SynthCapturePostUpdateNode extends PostUpdateNodeImpl, SynthCaptur
   override Node getPreUpdateNode() { result = pre }
 }
 
-class CaptureArgumentNode extends CfgNode, ArgumentNode {
+/**
+ * The value of a closure itself being passed to the funciton, viewed as a node in a data
+ * flow graph.
+ *
+ * This is used for tracking flow through captured variables, and we use a
+ * separate node and parameter/argument positions in order to distinguish
+ * "lambda self" from "normal self", as lambdas may also access outer `self`
+ * variables (through variable capture).
+ */
+class SynthCaptureArgumentNode extends TSynthCapturingClosureArgumentNode, ArgumentNode {
   CallNode callNode;
 
-  CaptureArgumentNode() {
-    this.getNode() = callNode.getFunction() and
+  SynthCaptureArgumentNode() {
+    this = TSynthCapturingClosureArgumentNode(callNode) and
+    // We would prefer to put this restriction in the charpred for the branch,
+    // but that incurs non-monotonic recursion.
     exists(Function target | resolveCall(callNode, target, _) |
       target = any(VariableCapture::CapturedVariable v).getACapturingScope()
     )

@@ -504,7 +504,8 @@ module VariableCapture {
     or
     result.(Flow::ParameterNode).getParameter().getCfgNode() = n.(CfgNode).getNode()
     or
-    result.(Flow::ThisParameterNode).getCallable() = n.(LambdaSelfReferenceNode).getCallable()
+    result.(Flow::ThisParameterNode).getCallable() =
+      n.(SynthCapturingClosureParameterNode).getCallable()
   }
 
   predicate storeStep(Node nodeFrom, CapturedVariableContent c, Node nodeTo) {
@@ -1244,7 +1245,7 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   or
   exists(Function f |
     VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(f) and
-    p = TLambdaSelfReferenceNode(f)
+    p = TSynthCapturingClosureParameterNode(f)
   )
 }
 
