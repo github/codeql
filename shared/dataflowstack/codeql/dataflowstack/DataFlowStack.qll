@@ -7,19 +7,26 @@ module DataFlowStackMake<DF::InputSig Lang>{
 
     module FlowStack<DataFlow::GlobalFlowSig Flow>{
 
-        predicate eitherStackSubset(Flow::PathNode nodeA, Flow::PathNode nodeB){
-            exists(StackFrame topNodeA, StackFrame topNodeB |
-                topNodeA = stackFrameForFlow(nodeA) and
-                topNodeB = stackFrameForFlow(nodeB) and (
-                    stackIsSubsetOf(topNodeA, topNodeB)
+        /**
+         * Holds if either the Stack associated with `sourceNodeA` is a subset of the stack associated with `sourceNodeB`
+         * or vice-versa.
+         */
+        predicate eitherStackSubset(Flow::PathNode sourceNodeA, Flow::PathNode sourceNodeB){
+            exists(StackFrame topSourceNodeA, StackFrame topSourceNodeB |
+                topSourceNodeA = stackFrameForFlow(sourceNodeA) and
+                topSourceNodeB = stackFrameForFlow(sourceNodeB) and (
+                    stackIsSubsetOf(topSourceNodeA, topSourceNodeB)
                     or
-                    stackIsSubsetOf(topNodeB, topNodeA)
+                    stackIsSubsetOf(topSourceNodeB, topSourceNodeA)
                 )
             )
         }
 
+        /**
+         * Holds if stackA is a subset of stackB,
+         * The top of stackA is in stackB and the bottom of stackA is then some successor fruther down stackB.
+         */
         predicate stackIsSubsetOf(StackFrame stackA, StackFrame stackB){
-            // If the top of stackA is in stackB at all, and the bottom of stackA is some successor of stackB.
             exists(StackFrame stackBIntermediary |
                 stackBIntermediary = stackB.getSuccessor*() and
                 stackA.getCall() = stackBIntermediary.getCall() and
@@ -27,23 +34,30 @@ module DataFlowStackMake<DF::InputSig Lang>{
             )
         }
 
-        predicate eitherStackTerminatingSubset(Flow::PathNode nodeA, Flow::PathNode nodeB){
-            exists(StackFrame topNodeA, StackFrame topNodeB |
-                topNodeA = stackFrameForFlow(nodeA) and
-                topNodeB = stackFrameForFlow(nodeB) and (
-                    stackIsCovergingTerminatingSubsetOf(topNodeA, topNodeB)
+        /**
+         * Holds if the stack associated with path `sourceNodeA` is a subset (and shares a common stack bottom) with
+         * the stack associated with path `sourceNodeB`, or vice-versa.
+         */
+        predicate eitherStackTerminatingSubset(Flow::PathNode sourceNodeA, Flow::PathNode sourceNodeB){
+            sourceNodeA.isSource() and
+            sourceNodeB.isSource() and
+            exists(StackFrame topSourceNodeA, StackFrame topSourceNodeB |
+                topSourceNodeA = stackFrameForFlow(sourceNodeA) and
+                topSourceNodeB = stackFrameForFlow(sourceNodeB) and (
+                    stackIsCovergingTerminatingSubsetOf(topSourceNodeA, topSourceNodeB)
                     or
-                    stackIsCovergingTerminatingSubsetOf(topNodeB, topNodeA)
+                    stackIsCovergingTerminatingSubsetOf(topSourceNodeB, topSourceNodeA)
                 )
             )
         }
 
+        /**
+         * If the top of stackA is in stackB at any location, and the bottoms of the stack are the same call.
+         */
         predicate stackIsCovergingTerminatingSubsetOf(StackFrame stackA, StackFrame stackB){
-            // If the top of stackA is in stackB at any location, and the bottoms of the stack are the same call.
             stackA.getCall() = stackB.getSuccessor*().getCall() and
             stackA.getBottom().getCall() = stackB.getBottom().getCall()
         }
-
 
         private newtype TStackFrameType =
             TStackFrame(CallFrame callFrame, CallFrame bottom){

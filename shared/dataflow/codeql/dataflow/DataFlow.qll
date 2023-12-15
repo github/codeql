@@ -505,8 +505,13 @@ module DataFlowMake<InputSig Lang> {
      * Only those `PathNode`s that are reachable from a source, and which can reach a sink, are generated.
      */
     class PathNode{
+      /** Gets the underlying Node. */
       Node getNode();
 
+      /** Holds if this node is a source. */
+      predicate isSource();
+
+      /** Gets a successor of this node, if any. */
       PathNode getASuccessor();
     }
 

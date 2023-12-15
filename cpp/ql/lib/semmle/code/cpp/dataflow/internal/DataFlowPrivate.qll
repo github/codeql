@@ -253,11 +253,24 @@ class DataFlowCall extends Expr instanceof Call {
    */
   Expr getArgument(int n) { result = super.getArgument(n) }
 
+  /** Gets an argument to this call. */
+  Expr getAnArgument(){ result = super.getAnArgument() }
+
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result.getExpr() = this }
 
   /** Gets the enclosing callable of this call. */
   Function getEnclosingCallable() { result = this.getEnclosingFunction() }
+
+  /** Gets the target of the call, as best as makes sense for this kind of call.
+   * 
+   * The precise meaning depends on the kind of call it is:
+   *   - For a call to a function, it’s the function being called.
+   *   - For a C++ method call, it’s the statically resolved method.
+   *   - For an Objective C message expression, it’s the statically resolved method, and it might not exist.
+   *   - For a variable call, it never exists.
+   */
+  Function getARuntimeTarget(){ result = super.getTarget() }
 }
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
