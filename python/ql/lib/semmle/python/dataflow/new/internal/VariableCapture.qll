@@ -188,4 +188,8 @@ private module Debug {
     Flow::localFlowStep(closureNodeFrom, closureNodeTo) and
     not flowValueStep(_, closureNodeFrom, closureNodeTo, _)
   }
+
+  predicate unmappedFlowClosureNode(Flow::ClosureNode closureNode) {
+    not exists(Node node | closureNode = asClosureNode(node))
+  }
 }

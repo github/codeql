@@ -179,6 +179,8 @@ class ArgumentPosition extends TArgumentPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
@@ -1647,23 +1649,34 @@ private class SynthCapturePostUpdateNode extends PostUpdateNodeImpl, SynthCaptur
  * separate node and parameter/argument positions in order to distinguish
  * "lambda self" from "normal self", as lambdas may also access outer `self`
  * variables (through variable capture).
+ *
+ * TODO:
+ * We might want a synthetic node here, but currently that incurs problems
+ * with non-monotonic recursion, because of the use of `resolveCall` in the
+ * char pred. This may be solvable by using
+ * `CallGraphConstruction::Make` in staed of
+ * `CallGraphConstruction::Simple::Make` appropriately.
  */
-class SynthCaptureArgumentNode extends TSynthCapturingClosureArgumentNode, ArgumentNode {
+class CapturingClosureArgumentNode extends CfgNode, ArgumentNode {
   CallNode callNode;
 
-  SynthCaptureArgumentNode() {
-    this = TSynthCapturingClosureArgumentNode(callNode) and
-    // We would prefer to put this restriction in the charpred for the branch,
-    // but that incurs non-monotonic recursion.
+  CapturingClosureArgumentNode() {
+    this.getNode() = callNode.getFunction() and
     exists(Function target | resolveCall(callNode, target, _) |
       target = any(VariableCapture::CapturedVariable v).getACapturingScope()
     )
   }
 
+  override string toString() { result = "Capturing closure argument" }
+
+  // final override Location getLocation() { result = callNode.getLocation() }
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     callNode = call.getNode() and
     pos.isLambdaSelf()
   }
+
+  /** Gets the `CallNode` that is being passed as an argument to itself. */
+  CallNode getCallNode() { result = callNode }
 }
 
 /** Gets a viable run-time target for the call `call`. */

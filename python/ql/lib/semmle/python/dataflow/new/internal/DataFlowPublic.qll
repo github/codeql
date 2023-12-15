@@ -120,9 +120,7 @@ newtype TNode =
   /** A synthetic node representing the heap of a function. Used for variable capture. */
   TSynthCapturingClosureParameterNode(Function f) {
     f = any(VariableCapture::CapturedVariable v).getACapturingScope()
-  } or
-  /** A synthetic node representing the heap of a function. Used for variable capture. */
-  TSynthCapturingClosureArgumentNode(CallNode callNode)
+  }
 
 private import semmle.python.internal.CachedStages
 
