@@ -3,7 +3,7 @@
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.security.internal.EncryptionKeySizes
-import codeql.util.Either
+private import codeql.util.Either
 
 /** A minimum recommended key size for some algorithm. */
 abstract class MinimumKeySize extends int {
