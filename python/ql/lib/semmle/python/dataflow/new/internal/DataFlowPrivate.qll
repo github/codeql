@@ -422,6 +422,8 @@ module VariableCapture {
       Function f;
 
       CapturedVariable() {
+        // note: captured variables originating on module scope is currently
+        // covered by global variable handling.
         this.getScope() = f and
         this.getAnAccess().getScope() != f
       }
