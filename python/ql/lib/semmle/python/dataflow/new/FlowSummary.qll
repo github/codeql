@@ -65,7 +65,7 @@ private module LibraryCallbackSummaries {
 
     final override ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(int i |
         i in [0 .. 10] and
         input = "Argument[" + i + "]" and
