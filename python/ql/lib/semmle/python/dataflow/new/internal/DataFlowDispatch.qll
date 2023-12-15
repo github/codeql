@@ -1523,8 +1523,8 @@ abstract class ParameterNodeImpl extends Node {
  * The value of a closure itself at function entry, viewed as a node in a data
  * flow graph.
  *
- * This is used for tracking flow through captured variables, and we use a
- * separate node and parameter/argument positions in order to distinguish
+ * This is used for tracking flow through captured variables, and we use
+ * separate argument/parameter nodes at their own parameter/argument positions in order to distinguish
  * "lambda self" from "normal self", as lambdas may also access outer `self`
  * variables (through variable capture).
  */
