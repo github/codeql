@@ -56,6 +56,9 @@ class PropertiesGetPropertyMethodCall extends MethodCall {
     this.getArgument(0).(ConstantStringExpr).getStringValue() = result.getNameElement().getName()
   }
 
+  /**
+   * Get the potential string values that can be associated with the given property name.
+   */
   string getPropertyValue() {
     result = this.getPair().getValueElement().getValue() or
     result = this.getArgument(1).(ConstantStringExpr).getStringValue()
