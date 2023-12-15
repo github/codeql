@@ -388,22 +388,26 @@ module LocalFlow {
 module VariableCapture {
   private import codeql.dataflow.VariableCapture as Shared
 
-  class ExprCfgNode extends ControlFlowNode {
-    ExprCfgNode() { isExpressionNode(this) }
-  }
-
-  private predicate closureFlowStep(ExprCfgNode nodeFrom, ExprCfgNode nodeTo) {
-    // TODO: Other languages have an extra case here looking like
-    //   simpleAstFlowStep(nodeFrom, nodeTo)
-    // we should investigate the potential benefit of adding that.
-    exists(SsaVariable def |
-      def.getAUse() = nodeTo and
-      def.getAnUltimateDefinition().getDefinition().(DefinitionNode).getValue() = nodeFrom
-    )
-  }
-
   private module CaptureInput implements Shared::InputSig<Location> {
     private import python as PY
+
+    additional class ExprCfgNode extends ControlFlowNode {
+      ExprCfgNode() { isExpressionNode(this) }
+    }
+
+    private predicate closureFlowStep(ExprCfgNode nodeFrom, ExprCfgNode nodeTo) {
+      // TODO: Other languages have an extra case here looking like
+      //   simpleAstFlowStep(nodeFrom, nodeTo)
+      // we should investigate the potential benefit of adding that.
+      exists(SsaVariable def |
+        def.getAUse() = nodeTo and
+        def.getAnUltimateDefinition().getDefinition().(DefinitionNode).getValue() = nodeFrom
+      )
+    }
+
+    class Callable extends Scope {
+      predicate isConstructor() { none() }
+    }
 
     class BasicBlock extends PY::BasicBlock {
       Callable getEnclosingCallable() { result = this.getScope() }
@@ -481,10 +485,6 @@ module VariableCapture {
       }
 
       predicate hasAliasedAccess(Expr f) { closureFlowStep+(this, f) and not closureFlowStep(f, _) }
-    }
-
-    class Callable extends Scope {
-      predicate isConstructor() { none() }
     }
   }
 
