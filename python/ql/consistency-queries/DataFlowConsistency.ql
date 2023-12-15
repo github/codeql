@@ -46,6 +46,13 @@ private module Input implements InputSig<PythonDataFlow> {
     )
   }
 
+  predicate uniqueEnclosingCallableExclude(Node n) {
+    // We only have a selection of valid callables.
+    // For instance, we do not have classes as `DataFlowCallable`s.
+    not n.(SynthCaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() instanceof Function and
+    not n.(SynthCaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() instanceof Module
+  }
+
   predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
     not exists(call.getLocation().getFile().getRelativePath())
   }
@@ -125,7 +132,7 @@ private module Input implements InputSig<PythonDataFlow> {
     or
     // The capture argument node will be reused for every call to the same callable.
     arg = call.getArgument(_) and
-    arg instanceof CaptureArgumentNode
+    arg instanceof SynthCaptureArgumentNode
   }
 }
 
