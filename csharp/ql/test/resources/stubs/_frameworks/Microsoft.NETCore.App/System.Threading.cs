@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Threading, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Threading, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Threading
@@ -182,8 +182,8 @@ namespace System
             public static long Or(ref long location1, long value) => throw null;
             public static uint Or(ref uint location1, uint value) => throw null;
             public static ulong Or(ref ulong location1, ulong value) => throw null;
-            public static long Read(ref long location) => throw null;
-            public static ulong Read(ref ulong location) => throw null;
+            public static long Read(ref readonly long location) => throw null;
+            public static ulong Read(ref readonly ulong location) => throw null;
         }
         public static class LazyInitializer
         {
@@ -417,20 +417,20 @@ namespace System
         }
         public static class Volatile
         {
-            public static bool Read(ref bool location) => throw null;
-            public static byte Read(ref byte location) => throw null;
-            public static double Read(ref double location) => throw null;
-            public static short Read(ref short location) => throw null;
-            public static int Read(ref int location) => throw null;
-            public static long Read(ref long location) => throw null;
-            public static nint Read(ref nint location) => throw null;
-            public static sbyte Read(ref sbyte location) => throw null;
-            public static float Read(ref float location) => throw null;
-            public static ushort Read(ref ushort location) => throw null;
-            public static uint Read(ref uint location) => throw null;
-            public static ulong Read(ref ulong location) => throw null;
-            public static nuint Read(ref nuint location) => throw null;
-            public static T Read<T>(ref T location) where T : class => throw null;
+            public static bool Read(ref readonly bool location) => throw null;
+            public static byte Read(ref readonly byte location) => throw null;
+            public static double Read(ref readonly double location) => throw null;
+            public static short Read(ref readonly short location) => throw null;
+            public static int Read(ref readonly int location) => throw null;
+            public static long Read(ref readonly long location) => throw null;
+            public static nint Read(ref readonly nint location) => throw null;
+            public static sbyte Read(ref readonly sbyte location) => throw null;
+            public static float Read(ref readonly float location) => throw null;
+            public static ushort Read(ref readonly ushort location) => throw null;
+            public static uint Read(ref readonly uint location) => throw null;
+            public static ulong Read(ref readonly ulong location) => throw null;
+            public static nuint Read(ref readonly nuint location) => throw null;
+            public static T Read<T>(ref readonly T location) where T : class => throw null;
             public static void Write(ref bool location, bool value) => throw null;
             public static void Write(ref byte location, byte value) => throw null;
             public static void Write(ref double location, double value) => throw null;

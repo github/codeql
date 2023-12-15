@@ -27,15 +27,13 @@ namespace System.Web
         public virtual HttpResponseBase Response => null;
     }
 
-    public interface IHtmlString
-    {
-    }
-
     public class HtmlString : IHtmlString
     {
         public HtmlString(string s)
         {
         }
+
+        public string ToHtmlString() => null;
     }
 
     public class HttpServerUtility

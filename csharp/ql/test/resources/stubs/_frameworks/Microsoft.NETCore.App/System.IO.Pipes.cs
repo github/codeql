@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.IO.Pipes, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.IO.Pipes, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace Win32
@@ -96,6 +96,7 @@ namespace System
                 None = 0,
                 CurrentUserOnly = 536870912,
                 Asynchronous = 1073741824,
+                FirstPipeInstance = 524288,
             }
             public abstract class PipeStream : System.IO.Stream
             {

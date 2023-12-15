@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="../../NETStandard.Library/1.6.1/NETStandard.Library.csproj" />
+    <ProjectReference Include="../../System.Runtime.Serialization.Formatters/4.3.0/System.Runtime.Serialization.Formatters.csproj" />
     <ProjectReference Include="../../_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj" />
   </ItemGroup>
 </Project>
