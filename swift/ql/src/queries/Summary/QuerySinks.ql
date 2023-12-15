@@ -66,9 +66,11 @@ string queryForSink(DataFlow::Node sink) {
   or
   EcbEncryptionConfig::isSink(sink) and result = "swift/ecb-encryption"
   or
-  WeakSensitiveDataHashingQuery::WeakSensitiveDataHashingConfig::isSink(sink) and result = "swift/weak-sensitive-data-hashing"
+  WeakSensitiveDataHashingQuery::WeakSensitiveDataHashingConfig::isSink(sink) and
+  result = "swift/weak-sensitive-data-hashing"
   or
-  WeakPasswordHashingQuery::WeakPasswordHashingConfig::isSink(sink) and result = "swift/weak-password-hashing"
+  WeakPasswordHashingQuery::WeakPasswordHashingConfig::isSink(sink) and
+  result = "swift/weak-password-hashing"
   or
   XxeConfig::isSink(sink) and result = "swift/xxe"
   or
