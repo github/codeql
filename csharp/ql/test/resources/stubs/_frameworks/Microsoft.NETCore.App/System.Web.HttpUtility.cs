@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Web.HttpUtility, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Web.HttpUtility, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Web
@@ -37,6 +37,10 @@ namespace System
             public static string UrlEncodeUnicode(string str) => throw null;
             public static byte[] UrlEncodeUnicodeToBytes(string str) => throw null;
             public static string UrlPathEncode(string str) => throw null;
+        }
+        public interface IHtmlString
+        {
+            string ToHtmlString();
         }
     }
 }

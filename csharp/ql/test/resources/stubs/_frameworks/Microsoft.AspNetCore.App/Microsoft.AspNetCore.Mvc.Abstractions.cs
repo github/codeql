@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -463,6 +463,7 @@ namespace Microsoft
                     public static Microsoft.AspNetCore.Mvc.ModelBinding.BindingInfo GetBindingInfo(System.Collections.Generic.IEnumerable<object> attributes, Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata modelMetadata) => throw null;
                     public Microsoft.AspNetCore.Mvc.ModelBinding.IPropertyFilterProvider PropertyFilterProvider { get => throw null; set { } }
                     public System.Func<Microsoft.AspNetCore.Mvc.ActionContext, bool> RequestPredicate { get => throw null; set { } }
+                    public object ServiceKey { get => throw null; set { } }
                     public bool TryApplyBindingInfo(Microsoft.AspNetCore.Mvc.ModelBinding.ModelMetadata modelMetadata) => throw null;
                 }
                 public class BindingSource : System.IEquatable<Microsoft.AspNetCore.Mvc.ModelBinding.BindingSource>

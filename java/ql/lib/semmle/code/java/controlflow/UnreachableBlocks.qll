@@ -170,6 +170,7 @@ class ConstSwitchStmt extends SwitchStmt {
   /** Gets the matching case, if it can be deduced. */
   SwitchCase getMatchingCase() {
     // Must be a value we can deduce
+    // TODO: handle other known constants (enum constants, String constants)
     exists(this.getExpr().(ConstantExpr).getIntValue()) and
     if exists(this.getMatchingConstCase())
     then result = this.getMatchingConstCase()

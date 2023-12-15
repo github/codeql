@@ -105,7 +105,10 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * then both `{ return 0; }` and `{ return 1; }` are statement bodies of
    * `N.C.M()`.
    */
-  final BlockStmt getStatementBody() { result = this.getAChildStmt() }
+  final BlockStmt getStatementBody() {
+    result = getStatementBody(this) and
+    not this.getFile().isStub()
+  }
 
   /**
    * DEPRECATED: Use `getStatementBody` instead.
@@ -143,8 +146,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * then both `0` and `1` are expression bodies of `N.C.M()`.
    */
   final Expr getExpressionBody() {
-    result = this.getAChildExpr() and
-    not result = this.(Constructor).getInitializer()
+    result = getExpressionBody(this) and
+    not this.getFile().isStub()
   }
 
   /** Holds if this callable has an expression body. */

@@ -56,9 +56,9 @@ void test3() {
   dest1 = (char*)malloc(sizeof(src));
   if (!dest1)
     return;
-  snprintf(dest1, sizeof(src), "%s", src); // GOOD [FALSE POSITIVE]
+  snprintf(dest1, sizeof(src), "%s", src); // GOOD
   dest2 = (char*)malloc(3);
   if (!dest2)
     return;
-  snprintf(dest2, sizeof(src), "%s", src); // BAD (but with duplicate alerts)
+  snprintf(dest2, sizeof(src), "%s", src); // BAD [NOT DETECTED]
 }

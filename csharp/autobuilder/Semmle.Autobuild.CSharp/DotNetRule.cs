@@ -81,7 +81,7 @@ namespace Semmle.Autobuild.CSharp
         /// </summary>
         public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, Func<string?, IDictionary<string, string>?, BuildScript> f)
         {
-            var installDir = builder.Actions.PathCombine(builder.Options.RootDirectory, ".dotnet");
+            var installDir = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var _), ".dotnet");
             var installScript = DownloadDotNet(builder, installDir);
             return BuildScript.Bind(installScript, installed =>
             {

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.Tracing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Diagnostics.Tracing, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Diagnostics
@@ -179,6 +179,29 @@ namespace System
                     public nint DataPointer { get => throw null; set { } }
                     public int Size { get => throw null; set { } }
                 }
+                public struct EventSourcePrimitive
+                {
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(bool value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(byte value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(short value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(int value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(long value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(sbyte value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(ushort value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(uint value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(ulong value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(nuint value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(float value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(double value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(decimal value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(string value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(byte[] value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(System.Guid value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(System.DateTime value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(nint value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(char value) => throw null;
+                    public static implicit operator System.Diagnostics.Tracing.EventSource.EventSourcePrimitive(System.Enum value) => throw null;
+                }
                 public static string GenerateManifest(System.Type eventSourceType, string assemblyPathToIncludeInManifest) => throw null;
                 public static string GenerateManifest(System.Type eventSourceType, string assemblyPathToIncludeInManifest, System.Diagnostics.Tracing.EventManifestOptions flags) => throw null;
                 public static System.Guid GetGuid(System.Type eventSourceType) => throw null;
@@ -213,6 +236,7 @@ namespace System
                 protected void WriteEvent(int eventId, long arg1, long arg2) => throw null;
                 protected void WriteEvent(int eventId, long arg1, long arg2, long arg3) => throw null;
                 protected void WriteEvent(int eventId, long arg1, string arg2) => throw null;
+                protected void WriteEvent(int eventId, params System.Diagnostics.Tracing.EventSource.EventSourcePrimitive[] args) => throw null;
                 protected void WriteEvent(int eventId, params object[] args) => throw null;
                 protected void WriteEvent(int eventId, string arg1) => throw null;
                 protected void WriteEvent(int eventId, string arg1, int arg2) => throw null;

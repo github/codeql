@@ -50,8 +50,20 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
 }
 
 predicate capturedJumpStep(Node nodeFrom, Node nodeTo) {
-  exists(SsaSourceVariable var, DefinitionNode def | var.hasDefiningNode(def) |
-    nodeTo.asVar().(ScopeEntryDefinition).getSourceVariable() = var and
+  // Jump into a capturing scope.
+  //
+  // var = expr
+  // ...
+  // def f():
+  // ..var is used..
+  //
+  // nodeFrom is `expr`
+  // nodeTo is entry node for `f`
+  exists(ScopeEntryDefinition e, SsaSourceVariable var, DefinitionNode def |
+    e.getSourceVariable() = var and
+    var.hasDefiningNode(def)
+  |
+    nodeTo.asCfgNode() = e.getDefiningNode() and
     nodeFrom.asCfgNode() = def.getValue() and
     var.getScope().getScope*() = nodeFrom.getScope()
   )
@@ -165,7 +177,7 @@ class Boolean extends boolean {
 }
 
 private import SummaryTypeTracker as SummaryTypeTracker
-private import semmle.python.dataflow.new.FlowSummary as FlowSummary
+private import semmle.python.dataflow.new.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
 
 pragma[noinline]
@@ -193,30 +205,30 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   TypeTrackerContentFilter getFilterFromWithContentStep(TypeTrackerContent content) { none() }
 
   // Callables
-  class SummarizedCallable = FlowSummary::SummarizedCallable;
+  class SummarizedCallable = FlowSummaryImpl::Private::SummarizedCallableImpl;
 
   // Summaries and their stacks
-  class SummaryComponent = FlowSummary::SummaryComponent;
+  class SummaryComponent = FlowSummaryImpl::Private::SummaryComponent;
 
-  class SummaryComponentStack = FlowSummary::SummaryComponentStack;
+  class SummaryComponentStack = FlowSummaryImpl::Private::SummaryComponentStack;
 
-  predicate singleton = FlowSummary::SummaryComponentStack::singleton/1;
+  predicate singleton = FlowSummaryImpl::Private::SummaryComponentStack::singleton/1;
 
-  predicate push = FlowSummary::SummaryComponentStack::push/2;
+  predicate push = FlowSummaryImpl::Private::SummaryComponentStack::push/2;
 
   // Relating content to summaries
-  predicate content = FlowSummary::SummaryComponent::content/1;
+  predicate content = FlowSummaryImpl::Private::SummaryComponent::content/1;
 
   SummaryComponent withoutContent(TypeTrackerContent contents) { none() }
 
   SummaryComponent withContent(TypeTrackerContent contents) { none() }
 
-  predicate return = FlowSummary::SummaryComponent::return/0;
+  predicate return = FlowSummaryImpl::Private::SummaryComponent::return/0;
 
   // Relating nodes to summaries
   Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
     exists(DataFlowDispatch::ParameterPosition pos |
-      arg = FlowSummary::SummaryComponent::argument(pos) and
+      arg = FlowSummaryImpl::Private::SummaryComponent::argument(pos) and
       argumentPositionMatch(call, result, pos) and
       isPostUpdate = [false, true] // todo: implement when/if Python uses post-update nodes in type tracking
     )
@@ -226,10 +238,9 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
     exists(
       DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos, Parameter p
     |
-      param = FlowSummary::SummaryComponent::parameter(apos) and
+      param = FlowSummaryImpl::Private::SummaryComponent::parameter(apos) and
       DataFlowDispatch::parameterMatch(ppos, apos) and
-      // pick the SsaNode rather than the CfgNode
-      result.asVar().getDefinition().(ParameterDefinition).getParameter() = p and
+      result.asCfgNode().getNode() = p and
       (
         exists(int i | ppos.isPositional(i) |
           p = callable.getALocalSource().asExpr().(CallableExpr).getInnerScope().getArg(i)
@@ -243,14 +254,16 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   }
 
   Node returnOf(Node callable, SummaryComponent return) {
-    return = FlowSummary::SummaryComponent::return() and
+    return = FlowSummaryImpl::Private::SummaryComponent::return() and
     // `result` should be the return value of a callable expression (lambda or function) referenced by `callable`
     result.asCfgNode() =
       callable.getALocalSource().asExpr().(CallableExpr).getInnerScope().getAReturnValueFlowNode()
   }
 
   // Relating callables to nodes
-  Node callTo(SummarizedCallable callable) { result = callable.getACallSimple() }
+  Node callTo(SummarizedCallable callable) {
+    result = callable.(DataFlowDispatch::LibraryCallable).getACallSimple()
+  }
 }
 
 private module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;

@@ -192,7 +192,7 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
         }
 
         if (typeChecker != null) {
-            if (isTypedNode(node)) {
+            if (isTypedNode(node) && !typeTable.skipExtractingTypes) {
                 let contextualType = isContextuallyTypedNode(node)
                     ? typeChecker.getContextualType(node)
                     : null;

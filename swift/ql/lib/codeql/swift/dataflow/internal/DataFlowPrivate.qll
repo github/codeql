@@ -278,13 +278,19 @@ private module Cached {
         nodeFrom.asPattern().(TypedPattern).getSubPattern()
       ]
     or
-    // Flow from the unique parameter of a key path expression to
-    // the first component in the chain.
-    nodeTo.(KeyPathComponentNodeImpl).getComponent() =
-      nodeFrom.(KeyPathParameterNode).getComponent(0)
+    // Flow from the last component in a key path chain to
+    // the return node for the key path.
+    exists(KeyPathExpr keyPath |
+      nodeFrom.(KeyPathComponentNodeImpl).getComponent() =
+        keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
+      nodeTo.(KeyPathReturnNodeImpl).getKeyPathExpr() = keyPath
+    )
     or
-    nodeFrom.(KeyPathComponentPostUpdateNode).getComponent() =
-      nodeTo.(KeyPathParameterPostUpdateNode).getComponent(0)
+    exists(KeyPathExpr keyPath |
+      nodeTo.(KeyPathComponentPostUpdateNode).getComponent() =
+        keyPath.getComponent(keyPath.getNumberOfComponents() - 1) and
+      nodeFrom.(KeyPathReturnPostUpdateNode).getKeyPathExpr() = keyPath
+    )
     or
     // Flow to the result of a keypath assignment
     exists(KeyPathApplicationExpr apply, AssignExpr assign |
@@ -619,12 +625,16 @@ private module ArgumentNodes {
   }
 
   class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+    private SummaryCall call_;
+    private ArgumentPosition pos_;
+
     SummaryArgumentNode() {
-      FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+      FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
+      call = call_ and
+      pos = pos_
     }
   }
 
@@ -776,10 +786,16 @@ private module OutNodes {
   }
 
   class SummaryOutNode extends OutNode, FlowSummaryNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
+    private SummaryCall call;
+    private ReturnKind kind_;
+
+    SummaryOutNode() {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), kind_)
+    }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
+      result = call and
+      kind = kind_
     }
   }
 
@@ -1085,8 +1101,8 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   // creation of an optional via implicit wrapping keypath component
   exists(KeyPathComponent component |
     component.isOptionalWrapping() and
-    node1.(KeyPathComponentNodeImpl).getComponent() = component and
-    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr() and
+    node1.(KeyPathComponentNodeImpl).getComponent().getNextComponent() = component and
+    node2.(KeyPathComponentNodeImpl).getComponent() = component and
     c instanceof OptionalSomeContentSet
   )
   or
@@ -1174,7 +1190,13 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   or
   // read of a component in a key-path expression chain
   exists(KeyPathComponent component |
-    component = node1.(KeyPathComponentNodeImpl).getComponent() and
+    // the first node is either the previous element in the chain
+    node1.(KeyPathComponentNodeImpl).getComponent().getNextComponent() = component
+    or
+    // or the start node, if this is the first component in the chain
+    component = node1.(KeyPathParameterNode).getComponent(0)
+  |
+    component = node2.(KeyPathComponentNodeImpl).getComponent() and
     (
       c.isSingleton(any(Content::FieldContent ct | ct.getField() = component.getDeclRef()))
       or
@@ -1188,13 +1210,6 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
         component.isOptionalChaining()
       )
     )
-  |
-    // the next node is either the next element in the chain
-    node2.(KeyPathComponentNodeImpl).getComponent() = component.getNextComponent()
-    or
-    // or the return node, if this is the last component in the chain
-    not exists(component.getNextComponent()) and
-    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
   )
   or
   // read of array or collection content via subscript operator
@@ -1392,6 +1407,11 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   exists(Callable c |
     c = p.(ParameterNodeImpl).getEnclosingCallable().asSourceCallable() and
     CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(c)
+  )
+  or
+  exists(DataFlowCallable c, ParameterPosition pos |
+    p.(ParameterNodeImpl).isParameterOf(c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
   )
 }
 

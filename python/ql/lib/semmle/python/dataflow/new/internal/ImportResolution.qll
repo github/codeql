@@ -112,7 +112,7 @@ module ImportResolution {
       not allowedEssaImportStep(_, firstDef)
     |
       not LocalFlow::defToFirstUse(firstDef, _) and
-      val.asVar() = firstDef
+      val.asCfgNode() = firstDef.getDefinition().(EssaNodeDefinition).getDefiningNode()
       or
       exists(ControlFlowNode mid, ControlFlowNode end |
         LocalFlow::defToFirstUse(firstDef, mid) and
@@ -320,11 +320,11 @@ module ImportResolution {
     // name as a submodule, we always consider that this attribute _could_ be a
     // reference to the submodule, even if we don't know that the submodule has been
     // imported yet.
-    exists(string submodule, Module package |
-      submodule = result.asVar().getName() and
-      SsaSource::init_module_submodule_defn(result.asVar().getSourceVariable(),
-        package.getEntryNode()) and
-      m = getModuleFromName(package.getPackageName() + "." + submodule)
+    exists(string submodule, Module package, EssaVariable var |
+      submodule = var.getName() and
+      SsaSource::init_module_submodule_defn(var.getSourceVariable(), package.getEntryNode()) and
+      m = getModuleFromName(package.getPackageName() + "." + submodule) and
+      result.asCfgNode() = var.getDefinition().(EssaNodeDefinition).getDefiningNode()
     )
   }
 

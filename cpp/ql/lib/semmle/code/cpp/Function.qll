@@ -113,6 +113,16 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   predicate isDeleted() { function_deleted(underlyingElement(this)) }
 
   /**
+   * Holds if this function has a prototyped interface.
+   *
+   * Functions generally have a prototyped interface, unless they are
+   * K&R-style functions either without any forward function declaration,
+   * or with all the forward declarations omitting the parameters of the
+   * function.
+   */
+  predicate isPrototyped() { function_prototyped(underlyingElement(this)) }
+
+  /**
    * Holds if this function is explicitly defaulted with the `= default`
    * specifier.
    */
@@ -318,6 +328,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   MetricFunction getMetrics() { result = this }
 
   /** Holds if this function calls the function `f`. */
+  pragma[nomagic]
   predicate calls(Function f) { this.calls(f, _) }
 
   /**
@@ -326,10 +337,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   predicate calls(Function f, Locatable l) {
     exists(FunctionCall call |
-      call.getEnclosingFunction() = this and call.getTarget() = f and call = l
-    )
-    or
-    exists(DestructorCall call |
       call.getEnclosingFunction() = this and call.getTarget() = f and call = l
     )
   }

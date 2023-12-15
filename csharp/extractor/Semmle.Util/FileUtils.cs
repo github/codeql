@@ -144,10 +144,10 @@ namespace Semmle.Util
             return nested;
         }
 
-        public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp)
+        public static string GetTemporaryWorkingDirectory(Func<string, string?> getEnvironmentVariable, string lang, out bool shouldCleanUp)
         {
             shouldCleanUp = false;
-            var tempFolder = EnvironmentVariables.GetScratchDirectory();
+            var tempFolder = getEnvironmentVariable($"CODEQL_EXTRACTOR_{lang}_SCRATCH_DIR");
 
             if (string.IsNullOrEmpty(tempFolder))
             {
@@ -159,6 +159,9 @@ namespace Semmle.Util
 
             return tempFolder;
         }
+
+        public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp) =>
+            GetTemporaryWorkingDirectory(Environment.GetEnvironmentVariable, "CSHARP", out shouldCleanUp);
 
         public static FileInfo CreateTemporaryFile(string extension, out bool shouldCleanUpContainingFolder)
         {

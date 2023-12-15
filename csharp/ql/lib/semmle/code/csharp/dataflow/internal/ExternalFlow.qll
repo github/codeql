@@ -88,13 +88,13 @@
 
 import csharp
 import ExternalFlowExtensions
-private import AccessPathSyntax
 private import DataFlowDispatch
 private import DataFlowPrivate
 private import DataFlowPublic
+private import FlowSummaryImpl
 private import FlowSummaryImpl::Public
+private import FlowSummaryImpl::Private
 private import FlowSummaryImpl::Private::External
-private import FlowSummaryImplSpecific
 private import semmle.code.csharp.commons.QualifiedName
 private import codeql.mad.ModelValidation as SharedModelVal
 
@@ -154,6 +154,21 @@ predicate modelCoverage(string namespace, int namespaces, string kind, string pa
 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
+  private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
+
+  private predicate getRelevantAccessPath(string path) {
+    summaryModel(_, _, _, _, _, _, path, _, _, _) or
+    summaryModel(_, _, _, _, _, _, _, path, _, _) or
+    sinkModel(_, _, _, _, _, _, path, _, _) or
+    sourceModel(_, _, _, _, _, _, path, _, _)
+  }
+
+  private module MkAccessPath = AccessPathSyntax::AccessPath<getRelevantAccessPath/1>;
+
+  class AccessPath = MkAccessPath::AccessPath;
+
+  class AccessPathToken = MkAccessPath::AccessPathToken;
+
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, AccessPathToken part |
       sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
@@ -269,7 +284,7 @@ private predicate elementSpec(
   UnboundValueOrRefType t
 ) {
   elementSpec(namespace, type, subtypes, name, signature, ext) and
-  QN::hasQualifiedName(t, namespace, type)
+  hasQualifiedTypeName(t, namespace, type)
 }
 
 private class UnboundValueOrRefType extends ValueOrRefType {
@@ -337,7 +352,7 @@ Declaration interpretBaseDeclaration(string namespace, string type, string name,
   exists(UnboundValueOrRefType t | elementSpec(namespace, type, _, name, signature, _, t) |
     result =
       any(Declaration d |
-        QN::hasQualifiedName(d, namespace, type, name) and
+        hasQualifiedMethodName(d, namespace, type, name) and
         (
           signature = ""
           or
@@ -380,14 +395,14 @@ Declaration interpretElement(
  * A callable where there exists a MaD sink model that applies to it.
  */
 class SinkCallable extends Callable {
-  SinkCallable() { sinkElement(this, _, _, _) }
+  SinkCallable() { SourceSinkInterpretationInput::sinkElement(this, _, _) }
 }
 
 /**
  * A callable where there exists a MaD source model that applies to it.
  */
 class SourceCallable extends Callable {
-  SourceCallable() { sourceElement(this, _, _, _) }
+  SourceCallable() { SourceSinkInterpretationInput::sourceElement(this, _, _) }
 }
 
 cached
@@ -398,7 +413,9 @@ private module Cached {
    */
   cached
   predicate sourceNode(Node node, string kind) {
-    exists(InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSourceNode(n, kind) and n.asNode() = node
+    )
   }
 
   /**
@@ -407,7 +424,9 @@ private module Cached {
    */
   cached
   predicate sinkNode(Node node, string kind) {
-    exists(InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSinkNode(n, kind) and n.asNode() = node
+    )
   }
 }
 
@@ -438,6 +457,19 @@ private module QualifiedNameInput implements QualifiedNameInputSig {
 }
 
 private module QN = QualifiedName<QualifiedNameInput>;
+
+/** Holds if declaration `d` has the qualified name `qualifier`.`name`. */
+predicate hasQualifiedTypeName(Type t, string namespace, string type) {
+  QN::hasQualifiedName(t, namespace, type)
+}
+
+/**
+ * Holds if declaration `d` has name `name` and is defined in type `type`
+ * with namespace `namespace`.
+ */
+predicate hasQualifiedMethodName(Declaration d, string namespace, string type, string name) {
+  QN::hasQualifiedName(d, namespace, type, name)
+}
 
 pragma[nomagic]
 private string parameterQualifiedType(Parameter p) {
@@ -484,4 +516,66 @@ string asPartialNeutralModel(UnboundCallable c) {
         + name + ";" //
         + parameters + ";" //
   )
+}
+
+private predicate interpretSummary(
+  UnboundCallable c, string input, string output, string kind, string provenance
+) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+    c = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+}
+
+// adapter class for converting Mad summaries to `SummarizedCallable`s
+private class SummarizedCallableAdapter extends SummarizedCallable {
+  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _) }
+
+  private predicate relevantSummaryElementManual(string input, string output, string kind) {
+    exists(Provenance provenance |
+      interpretSummary(this, input, output, kind, provenance) and
+      provenance.isManual()
+    )
+  }
+
+  private predicate relevantSummaryElementGenerated(string input, string output, string kind) {
+    exists(Provenance provenance |
+      interpretSummary(this, input, output, kind, provenance) and
+      provenance.isGenerated()
+    )
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    exists(string kind |
+      this.relevantSummaryElementManual(input, output, kind)
+      or
+      not this.relevantSummaryElementManual(_, _, _) and
+      this.relevantSummaryElementGenerated(input, output, kind)
+    |
+      if kind = "value" then preservesValue = true else preservesValue = false
+    )
+  }
+
+  override predicate hasProvenance(Provenance provenance) {
+    interpretSummary(this, _, _, _, provenance)
+  }
+}
+
+// adapter class for converting Mad neutrals to `NeutralCallable`s
+private class NeutralCallableAdapter extends NeutralCallable {
+  string kind;
+  string provenance_;
+
+  NeutralCallableAdapter() {
+    exists(string namespace, string type, string name, string signature |
+      neutralModel(namespace, type, name, signature, kind, provenance_) and
+      this = interpretElement(namespace, type, false, name, signature, "")
+    )
+  }
+
+  override string getKind() { result = kind }
+
+  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
 }

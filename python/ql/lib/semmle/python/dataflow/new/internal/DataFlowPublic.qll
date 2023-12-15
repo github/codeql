@@ -15,22 +15,20 @@ private import semmle.python.frameworks.data.ModelsAsData
 /**
  * IPA type for data flow nodes.
  *
- * Flow between SSA variables are computed in `Essa.qll`
+ * Nodes broadly fall into three categories.
  *
- * Flow from SSA variables to control flow nodes are generally via uses.
- *
- * Flow from control flow nodes to SSA variables are generally via assignments.
- *
- * The current implementation of these cross flows can be seen in `EssaTaintTracking`.
+ * - Control flow nodes: Flow between these is based on use-use flow computed via an SSA analysis.
+ * - Module variable nodes: These represent global variables and act as canonical targets for reads and writes of these.
+ * - Synthetic nodes: These handle flow in various special cases.
  */
 newtype TNode =
-  /** A node corresponding to an SSA variable. */
-  TEssaNode(EssaVariable var) or
   /** A node corresponding to a control flow node. */
   TCfgNode(ControlFlowNode node) {
     isExpressionNode(node)
     or
     node.getNode() instanceof Pattern
+    or
+    node = any(ScopeEntryDefinition def | not def.getScope() instanceof Module).getDefiningNode()
   } or
   /**
    * A synthetic node representing the value of an object before a state change.
@@ -156,9 +154,6 @@ class Node extends TNode {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  /** Gets the ESSA variable corresponding to this node, if any. */
-  EssaVariable asVar() { none() }
-
   /** Gets the control-flow node corresponding to this node, if any. */
   ControlFlowNode asCfgNode() { none() }
 
@@ -169,25 +164,6 @@ class Node extends TNode {
    * Gets a local source node from which data may flow to this node in zero or more local data-flow steps.
    */
   LocalSourceNode getALocalSource() { result.flowsTo(this) }
-}
-
-/** A data-flow node corresponding to an SSA variable. */
-class EssaNode extends Node, TEssaNode {
-  EssaVariable var;
-
-  EssaNode() { this = TEssaNode(var) }
-
-  /** Gets the `EssaVariable` represented by this data-flow node. */
-  EssaVariable getVar() { result = var }
-
-  override EssaVariable asVar() { result = var }
-
-  /** Gets a textual representation of this element. */
-  override string toString() { result = var.toString() }
-
-  override Scope getScope() { result = var.getScope() }
-
-  override Location getLocation() { result = var.getLocation() }
 }
 
 /** A data-flow node corresponding to a control-flow node. */
@@ -412,8 +388,8 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
   }
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
-  EssaNode getAWrite() {
-    result.getVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+  Node getAWrite() {
+    any(EssaNodeDefinition def).definedBy(var, result.asCfgNode().(DefinitionNode))
   }
 
   /** Gets the possible values of the variable at the end of import time */

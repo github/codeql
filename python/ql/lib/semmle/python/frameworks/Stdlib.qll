@@ -3085,7 +3085,7 @@ private module StdlibPrivate {
       result = API::moduleImport("re").getMember("compile").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input in ["Argument[0]", "Argument[pattern:]"] and
       output = "ReturnValue.Attribute[pattern]" and
       preservesValue = true
@@ -3116,7 +3116,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(string arg |
         this = "re.Match" and arg = "Argument[1]"
         or
@@ -3173,7 +3173,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       methodName = "expand" and
       preservesValue = false and
       (
@@ -3229,7 +3229,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(int offset |
         // for non-compiled regex the first argument is the pattern, so we need to
         // account for this difference
@@ -4079,7 +4079,7 @@ private module StdlibPrivate {
       result = API::builtin("dict").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[0].DictionaryElement[" + key + "]" and
         output = "ReturnValue.DictionaryElement[" + key + "]" and
@@ -4108,7 +4108,7 @@ private module StdlibPrivate {
       result = API::builtin("list").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[0].ListElement"
         or
@@ -4138,7 +4138,7 @@ private module StdlibPrivate {
       result = API::builtin("tuple").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
         input = "Argument[0].TupleElement[" + i.toString() + "]" and
         output = "ReturnValue.TupleElement[" + i.toString() + "]" and
@@ -4163,7 +4163,7 @@ private module StdlibPrivate {
       result = API::builtin("set").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[0].ListElement"
         or
@@ -4193,8 +4193,8 @@ private module StdlibPrivate {
       result = API::builtin("frozenset").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      any(SetSummary s).propagatesFlowExt(input, output, preservesValue)
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      any(SetSummary s).propagatesFlow(input, output, preservesValue)
     }
   }
 
@@ -4211,7 +4211,7 @@ private module StdlibPrivate {
       result = API::builtin("reversed").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[0].ListElement"
         or
@@ -4241,7 +4241,7 @@ private module StdlibPrivate {
       result = API::builtin("sorted").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(string content |
         content = "ListElement"
         or
@@ -4273,7 +4273,7 @@ private module StdlibPrivate {
       result = API::builtin("iter").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[0].ListElement"
         or
@@ -4303,7 +4303,7 @@ private module StdlibPrivate {
       result = API::builtin("next").getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         input = "Argument[0].ListElement"
         or
@@ -4336,7 +4336,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(string content |
         content = "ListElement"
         or
@@ -4378,7 +4378,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self].ListElement" and
       output = "ReturnValue" and
       preservesValue = true
@@ -4415,7 +4415,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self].DictionaryElement[" + key + "]" and
       output = "ReturnValue" and
       preservesValue = true
@@ -4438,7 +4438,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self].DictionaryElement[" + key + "]" and
       output = "ReturnValue" and
       preservesValue = true
@@ -4460,7 +4460,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // default value
       input = "Argument[1]" and
       output = "ReturnValue" and
@@ -4483,7 +4483,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[self].DictionaryElement[" + key + "]" and
         output = "ReturnValue.TupleElement[1]" and
@@ -4509,7 +4509,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "setdefault"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // store/read steps with dictionary content of this is modeled in DataFlowPrivate
       input = "Argument[1]" and
       output = "ReturnValue" and
@@ -4538,7 +4538,7 @@ private module StdlibPrivate {
 
     override DataFlow::ArgumentNode getACallback() { none() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // If key is in the dictionary, return its value.
       input = "Argument[self].DictionaryElement[" + key + "]" and
       output = "ReturnValue" and
@@ -4567,7 +4567,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "values"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[self].DictionaryElement[" + key + "]" and
         output = "ReturnValue.ListElement" and
@@ -4594,7 +4594,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "keys"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
       input = "Argument[self]" and
       output = "ReturnValue" and
@@ -4618,7 +4618,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "items"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
         input = "Argument[self].DictionaryElement[" + key + "]" and
         output = "ReturnValue.ListElement.TupleElement[1]" and
@@ -4648,7 +4648,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "append"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // newly added element added to this
       input = "Argument[0]" and
       output = "Argument[self].ListElement" and
@@ -4675,7 +4675,7 @@ private module StdlibPrivate {
       result.(DataFlow::AttrRead).getAttributeName() = "add"
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // newly added element added to this
       input = "Argument[0]" and
       output = "Argument[self].SetElement" and
@@ -4705,7 +4705,7 @@ private module StdlibPrivate {
         API::moduleImport("os").getMember(["getenv", "getenvb"]).getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input in ["Argument[1]", "Argument[default:]"] and
       output = "ReturnValue" and
       preservesValue = true
