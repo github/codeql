@@ -116,7 +116,7 @@ newtype TNode =
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
   } or
   /** A synthetic node representing a captured variable. */
-  TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+  TSynthCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
   /** A synthetic node representing the heap of a function. Used for variable capture. */
   TLambdaSelfReferenceNode(Function f) {
     f = any(VariableCapture::CapturedVariable v).getACapturingScope()
@@ -489,10 +489,8 @@ class CaptureNode extends Node, TCaptureNode {
   /** Gets the `SynthesizedCaptureNode` that this node represents. */
   VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
 
-  override DataFlowCallable getEnclosingCallable() {
-    result = TFunction(cn.getEnclosingCallable())
-    or
-    result = TModule(cn.getEnclosingCallable())
+  override Scope getScope() {
+    result = cn.getEnclosingCallable()
   }
 
   override Location getLocation() { result = cn.getLocation() }

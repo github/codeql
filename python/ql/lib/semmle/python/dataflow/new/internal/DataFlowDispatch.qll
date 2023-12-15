@@ -1531,7 +1531,11 @@ abstract class ParameterNodeImpl extends Node {
 class LambdaSelfReferenceNode extends ParameterNodeImpl, TLambdaSelfReferenceNode {
   private Function callable;
 
-  LambdaSelfReferenceNode() { this = TLambdaSelfReferenceNode(callable) }
+  LambdaSelfReferenceNode() { 
+    this = TLambdaSelfReferenceNode(callable) and
+    // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
+    exists(TFunction(callable))
+  }
 
   final Function getCallable() { result = callable }
 

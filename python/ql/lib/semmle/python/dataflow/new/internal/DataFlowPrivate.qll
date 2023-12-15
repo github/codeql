@@ -392,7 +392,7 @@ module VariableCapture {
     ExprCfgNode() { isExpressionNode(this) }
   }
 
-  private predicate closureFlowStep(ExprCfgNode e1, ExprCfgNode e2) {
+  private predicate closureFlowStep(ExprCfgNode fromNode, ExprCfgNode toNode) {
     // simpleAstFlowStep(e1, e2)
     // or
     exists(SsaVariable def |
@@ -689,7 +689,7 @@ predicate summaryFlowSteps(Node nodeFrom, Node nodeTo) {
   IncludePostUpdateFlow<PhaseDependentFlow<summaryLocalStep/2>::step/2>::step(nodeFrom, nodeTo)
 }
 
-predicate variableCaptureFlowStep(Node nodeFrom, Node nodeTo) {
+predicate variableCaptureLocalFlowStep(Node nodeFrom, Node nodeTo) {
   // Blindly applying use-use flow can result in a node that steps to itself, for
   // example in while-loops. To uphold dataflow consistency checks, we don't want
   // that. However, we do want to allow `[post] n` to `n` (to handle while loops), so
