@@ -339,10 +339,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
     exists(FunctionCall call |
       call.getEnclosingFunction() = this and call.getTarget() = f and call = l
     )
-    or
-    exists(DestructorCall call |
-      call.getEnclosingFunction() = this and call.getTarget() = f and call = l
-    )
   }
 
   /** Holds if this function accesses a function or variable or enumerator `a`. */
