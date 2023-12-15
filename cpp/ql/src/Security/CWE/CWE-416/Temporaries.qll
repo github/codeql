@@ -41,7 +41,6 @@ predicate isStoredInContainer(Expr e) {
   )
 }
 
-
 /**
  * Holds if `e` or a conversion of `e` has an lvalue-to-rvalue conversion.
  */
