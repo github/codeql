@@ -80,11 +80,11 @@ internal sealed class StubVisitor : SymbolVisitor
             stubWriter.Write(explicitInterfaceType.GetQualifiedName());
             stubWriter.Write('.');
             if (writeName)
-                stubWriter.Write(explicitInterfaceSymbol.GetName());
+                stubWriter.Write(EscapeIdentifier(explicitInterfaceSymbol.GetName()));
         }
         else if (writeName)
         {
-            stubWriter.Write(symbol.GetName());
+            stubWriter.Write(EscapeIdentifier(symbol.GetName()));
         }
     }
 
