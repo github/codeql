@@ -403,9 +403,9 @@ module VariableCapture {
   }
 
   private module CaptureInput implements Shared::InputSig<Location> {
-    private import python as P
+    private import python as PY
 
-    class BasicBlock extends P::BasicBlock {
+    class BasicBlock extends PY::BasicBlock {
       Callable getEnclosingCallable() { result = this.getScope() }
 
       // TODO: check that this gives useful results
