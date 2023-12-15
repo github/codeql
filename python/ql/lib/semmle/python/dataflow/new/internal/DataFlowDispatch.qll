@@ -1534,11 +1534,7 @@ class SynthCapturingClosureParameterNode extends ParameterNodeImpl,
 {
   private Function callable;
 
-  SynthCapturingClosureParameterNode() {
-    this = TSynthCapturingClosureParameterNode(callable) and
-    // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
-    exists(TFunction(callable))
-  }
+  SynthCapturingClosureParameterNode() { this = TSynthCapturingClosureParameterNode(callable) }
 
   final Function getCallable() { result = callable }
 
@@ -1661,7 +1657,7 @@ class CapturingClosureArgumentNode extends CfgNode, ArgumentNode {
   CallNode callNode;
 
   CapturingClosureArgumentNode() {
-    this.getNode() = callNode.getFunction() and
+    node = callNode.getFunction() and
     exists(Function target | resolveCall(callNode, target, _) |
       target = any(VariableCapture::CapturedVariable v).getACapturingScope()
     )
@@ -1669,7 +1665,6 @@ class CapturingClosureArgumentNode extends CfgNode, ArgumentNode {
 
   override string toString() { result = "Capturing closure argument" }
 
-  // final override Location getLocation() { result = callNode.getLocation() }
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     callNode = call.getNode() and
     pos.isLambdaSelf()

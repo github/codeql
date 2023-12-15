@@ -119,7 +119,9 @@ newtype TNode =
   TSynthCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
   /** A synthetic node representing the heap of a function. Used for variable capture. */
   TSynthCapturingClosureParameterNode(Function f) {
-    f = any(VariableCapture::CapturedVariable v).getACapturingScope()
+    f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
+    // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
+    exists(TFunction(f))
   }
 
 private import semmle.python.internal.CachedStages
