@@ -328,6 +328,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   MetricFunction getMetrics() { result = this }
 
   /** Holds if this function calls the function `f`. */
+  pragma[nomagic]
   predicate calls(Function f) { this.calls(f, _) }
 
   /**
