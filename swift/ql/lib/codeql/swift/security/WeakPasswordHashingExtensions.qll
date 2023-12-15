@@ -111,3 +111,18 @@ private class DefaultWeakPasswordHashingSink extends WeakPasswordHashingSink {
 
   override string getAlgorithm() { result = algorithm }
 }
+
+/**
+ * A barrier for weak password hashing, when it occurs inside of
+ * certain cryptographic algorithms as part of their design.
+ */
+class WeakPasswordHashingImplementationBarrier extends WeakPasswordHashingBarrier {
+  WeakPasswordHashingImplementationBarrier() {
+    this.asParameter()
+        .getDeclaringFunction()
+        .(Function)
+        .getDeclaringDecl*()
+        .(NominalTypeDecl)
+        .getName() = ["HMAC", "PBKDF1", "PBKDF2"]
+  }
+}
