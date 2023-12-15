@@ -173,6 +173,9 @@ const S* test1(bool b1, bool b2) {
 
   S* s5[] = { get_unique_ptr().get() }; // BAD
 
+  S s6 = b1 ? *get_unique_ptr() : *get_unique_ptr(); // GOOD
+  S& s7 = b1 ? *get_unique_ptr() : *get_unique_ptr(); // BAD
+
   return &*get_unique_ptr(); // BAD
 }
 

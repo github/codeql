@@ -41,12 +41,21 @@ predicate isStoredInContainer(Expr e) {
   )
 }
 
+
+/**
+ * Holds if `e` or a conversion of `e` has an lvalue-to-rvalue conversion.
+ */
+predicate hasLValueToRValueConversion(Expr e) {
+  e.getConversion*().hasLValueToRValueConversion() and
+  not e instanceof ConditionalExpr // ConditionalExpr may be spuriously reported as having an lvalue-to-rvalue conversion
+}
+
 /**
  * Holds if the value of `e` outlives the enclosing full expression. For
  * example, because the value is stored in a local variable.
  */
 predicate outlivesFullExpr(Expr e) {
-  not e.getConversion*().hasLValueToRValueConversion() and
+  not hasLValueToRValueConversion(e) and
   (
     any(Assignment assign).getRValue() = e
     or
