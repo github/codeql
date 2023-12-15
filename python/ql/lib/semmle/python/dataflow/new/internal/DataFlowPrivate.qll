@@ -392,12 +392,13 @@ module VariableCapture {
     ExprCfgNode() { isExpressionNode(this) }
   }
 
-  private predicate closureFlowStep(ExprCfgNode fromNode, ExprCfgNode toNode) {
-    // simpleAstFlowStep(e1, e2)
-    // or
+  private predicate closureFlowStep(ExprCfgNode nodeFrom, ExprCfgNode nodeTo) {
+    // TODO: Other languages have an extra case here looking like
+    //   simpleAstFlowStep(nodeFrom, nodeTo)
+    // we should investigate the potential benefit of adding that.
     exists(SsaVariable def |
-      def.getAUse() = e2 and
-      def.getAnUltimateDefinition().getDefinition().(DefinitionNode).getValue() = e1
+      def.getAUse() = nodeTo and
+      def.getAnUltimateDefinition().getDefinition().(DefinitionNode).getValue() = nodeFrom
     )
   }
 
@@ -492,7 +493,7 @@ module VariableCapture {
   module Flow = Shared::Flow<Location, CaptureInput>;
 
   private Flow::ClosureNode asClosureNode(Node n) {
-    result = n.(CaptureNode).getSynthesizedCaptureNode()
+    result = n.(SynthCaptureNode).getSynthesizedCaptureNode()
     or
     result.(Flow::ExprNode).getExpr() = n.(CfgNode).getNode()
     or
@@ -665,7 +666,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   or
   summaryFlowSteps(nodeFrom, nodeTo)
   or
-  variableCaptureFlowStep(nodeFrom, nodeTo)
+  variableCaptureLocalFlowStep(nodeFrom, nodeTo)
 }
 
 /**

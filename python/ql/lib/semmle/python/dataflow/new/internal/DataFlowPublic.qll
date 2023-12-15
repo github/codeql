@@ -481,17 +481,15 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
  * A synthesized data flow node representing a closure object that tracks
  * captured variables.
  */
-class CaptureNode extends Node, TCaptureNode {
+class SynthCaptureNode extends Node, TSynthCaptureNode {
   private VariableCapture::Flow::SynthesizedCaptureNode cn;
 
-  CaptureNode() { this = TCaptureNode(cn) }
+  SynthCaptureNode() { this = TSynthCaptureNode(cn) }
 
   /** Gets the `SynthesizedCaptureNode` that this node represents. */
   VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
 
-  override Scope getScope() {
-    result = cn.getEnclosingCallable()
-  }
+  override Scope getScope() { result = cn.getEnclosingCallable() }
 
   override Location getLocation() { result = cn.getLocation() }
 

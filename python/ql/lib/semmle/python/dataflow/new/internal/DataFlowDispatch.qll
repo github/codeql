@@ -1531,7 +1531,7 @@ abstract class ParameterNodeImpl extends Node {
 class LambdaSelfReferenceNode extends ParameterNodeImpl, TLambdaSelfReferenceNode {
   private Function callable;
 
-  LambdaSelfReferenceNode() { 
+  LambdaSelfReferenceNode() {
     this = TLambdaSelfReferenceNode(callable) and
     // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
     exists(TFunction(callable))
@@ -1624,10 +1624,10 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
   override Node getPreUpdateNode() { result = pre }
 }
 
-private class CapturePostUpdateNode extends PostUpdateNodeImpl, CaptureNode {
-  private CaptureNode pre;
+private class SynthCapturePostUpdateNode extends PostUpdateNodeImpl, SynthCaptureNode {
+  private SynthCaptureNode pre;
 
-  CapturePostUpdateNode() {
+  SynthCapturePostUpdateNode() {
     VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
       pre.getSynthesizedCaptureNode())
   }
