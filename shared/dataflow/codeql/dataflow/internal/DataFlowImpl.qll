@@ -6,6 +6,7 @@
 
 private import codeql.util.Unit
 private import codeql.util.Option
+private import codeql.util.Boolean
 private import codeql.dataflow.DataFlow
 
 module MakeImpl<InputSig Lang> {
@@ -1183,7 +1184,9 @@ module MakeImpl<InputSig Lang> {
           string toString();
         }
 
-        class Ap;
+        class Ap {
+          string toString();
+        }
 
         class ApNil extends Ap;
 
@@ -2432,9 +2435,7 @@ module MakeImpl<InputSig Lang> {
 
       class Typ = Unit;
 
-      class Ap extends boolean {
-        Ap() { this in [true, false] }
-      }
+      class Ap = Boolean;
 
       class ApNil extends Ap {
         ApNil() { this = false }
@@ -2724,7 +2725,7 @@ module MakeImpl<InputSig Lang> {
       pragma[noinline]
       ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
 
-      predicate projectToHeadContent = getContentApprox/1;
+      predicate projectToHeadContent = getContentApproxCached/1;
 
       class ApOption = ApproxAccessPathFrontOption;
 

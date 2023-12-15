@@ -1,5 +1,5 @@
 import python
-import semmle.python.dataflow.new.internal.AccessPathSyntax as AccessPathSyntax
+private import semmle.python.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 import semmle.python.frameworks.data.ModelsAsData
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.DataFlow
@@ -27,6 +27,6 @@ query predicate isSource(DataFlow::Node node, string kind) {
   node = ModelOutput::getASourceNode(kind).asSource()
 }
 
-query predicate syntaxErrors(AccessPathSyntax::AccessPath path) { path.hasSyntaxError() }
+query predicate syntaxErrors(ApiGraphModels::AccessPath path) { path.hasSyntaxError() }
 
 query predicate warning = ModelOutput::getAWarning/0;

@@ -3,7 +3,7 @@ using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal class ProgressMonitor
+    internal class ProgressMonitor : IProgressMonitor
     {
         private readonly ILogger logger;
 

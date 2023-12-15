@@ -74,13 +74,13 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 7.0.102
+          dotnet-version: 8.0.100
       - name: Extractor unit tests
         run: |
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 extractor/Semmle.Util.Tests
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 extractor/Semmle.Extraction.Tests
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 autobuilder/Semmle.Autobuild.CSharp.Tests
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=8.0.0 extractor/Semmle.Util.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.0 extractor/Semmle.Extraction.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.0 autobuilder/Semmle.Autobuild.CSharp.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.0 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"
         shell: bash
   stubgentest:
     runs-on: ubuntu-latest

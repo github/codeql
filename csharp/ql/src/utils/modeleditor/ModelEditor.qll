@@ -34,7 +34,17 @@ class Endpoint extends Callable {
    * Gets the unbound type name of this endpoint.
    */
   bindingset[this]
-  string getTypeName() { result = nestedName(this.getDeclaringType().getUnboundDeclaration()) }
+  string getTypeName() {
+    result = qualifiedTypeName(this.getNamespace(), this.getDeclaringType().getUnboundDeclaration())
+  }
+
+  /**
+   * Gets the qualified name of this endpoint.
+   */
+  bindingset[this]
+  string getEndpointName() {
+    result = qualifiedCallableName(this.getNamespace(), this.getTypeName(), this)
+  }
 
   /**
    * Gets the parameter types of this endpoint.
@@ -107,15 +117,15 @@ string methodClassification(Call method) {
 }
 
 /**
- * Gets the nested name of the type `t`.
- *
- * If the type is not a nested type, the result is the same as `getName()`.
- * Otherwise the name of the nested type is prefixed with a `+` and appended to
- * the name of the enclosing type, which might be a nested type as well.
+ * Gets the fully qualified name of the type `t`.
  */
-private string nestedName(Type t) {
-  not exists(t.getDeclaringType().getUnboundDeclaration()) and
-  result = t.getName()
-  or
-  nestedName(t.getDeclaringType().getUnboundDeclaration()) + "+" + t.getName() = result
+private string qualifiedTypeName(string namespace, Type t) {
+  exists(string type | hasQualifiedTypeName(t, namespace, type) | result = type)
+}
+
+/**
+ * Gets the fully qualified name of the callable `c`.
+ */
+private string qualifiedCallableName(string namespace, string type, Callable c) {
+  exists(string name | hasQualifiedMethodName(c, namespace, type, name) | result = name)
 }

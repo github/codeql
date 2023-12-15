@@ -8,7 +8,7 @@ import shutil
 def write_csproj_prefix(ioWrapper):
     ioWrapper.write('<Project Sdk="Microsoft.NET.Sdk">\n')
     ioWrapper.write('  <PropertyGroup>\n')
-    ioWrapper.write('    <TargetFramework>net7.0</TargetFramework>\n')
+    ioWrapper.write('    <TargetFramework>net8.0</TargetFramework>\n')
     ioWrapper.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
     ioWrapper.write('    <OutputPath>bin\</OutputPath>\n')
     ioWrapper.write(
@@ -66,7 +66,7 @@ jsonFile = os.path.join(rawOutputDir, outputName + '.json')
 version = helpers.get_argv(3, "latest")
 
 print("\n* Creating new input project")
-run_cmd(['dotnet', 'new', template, "-f", "net7.0", "--language", "C#", '--name',
+run_cmd(['dotnet', 'new', template, "-f", "net8.0", "--language", "C#", '--name',
                  projectNameIn, '--output', projectDirIn])
 helpers.remove_files(projectDirIn, '.cs')
 
@@ -77,7 +77,7 @@ if (version != "latest"):
     cmd.append(version)
 run_cmd(cmd)
 
-sdk_version = '7.0.102'
+sdk_version = '8.0.100'
 print("\n* Creating new global.json file and setting SDK to " + sdk_version)
 run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', workDir])
 

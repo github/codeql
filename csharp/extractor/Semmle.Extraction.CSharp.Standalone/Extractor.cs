@@ -147,20 +147,17 @@ namespace Semmle.Extraction.CSharp.Standalone
                 return ExitCode.Errors;
             }
 
-            if (!options.SkipExtraction)
-            {
-                using var fileLogger = CSharp.Extractor.MakeLogger(options.Verbosity, false);
+            using var fileLogger = CSharp.Extractor.MakeLogger(options.Verbosity, false);
 
-                logger.Log(Severity.Info, "");
-                logger.Log(Severity.Info, "Extracting...");
-                ExtractStandalone(
-                    a.Extraction.Sources,
-                    a.References,
-                    new ExtractionProgress(logger),
-                    fileLogger,
-                    options);
-                logger.Log(Severity.Info, $"Extraction completed in {stopwatch.Elapsed}");
-            }
+            logger.Log(Severity.Info, "");
+            logger.Log(Severity.Info, "Extracting...");
+            ExtractStandalone(
+                a.Extraction.Sources,
+                a.References,
+                new ExtractionProgress(logger),
+                fileLogger,
+                options);
+            logger.Log(Severity.Info, $"Extraction completed in {stopwatch.Elapsed}");
 
             return ExitCode.Ok;
         }

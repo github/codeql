@@ -976,6 +976,9 @@ module MakeImplCommon<InputSig Lang> {
     predicate paramMustFlow(ParamNode p, ArgNode arg) { localMustFlowStep+(p, arg) }
 
     cached
+    ContentApprox getContentApproxCached(Content c) { result = getContentApprox(c) }
+
+    cached
     newtype TCallContext =
       TAnyCallContext() or
       TSpecificCall(DataFlowCall call) { recordDataFlowCallSite(call, _) } or
@@ -1123,8 +1126,8 @@ module MakeImplCommon<InputSig Lang> {
       Input::enableTypeFlow() and
       (
         exists(ParamNode p, DataFlowType at, DataFlowType pt |
-          at = getNodeType(arg) and
-          pt = getNodeType(p) and
+          nodeDataFlowType(arg, at) and
+          nodeDataFlowType(p, pt) and
           relevantCallEdge(_, _, arg, p) and
           typeStrongerThan0(pt, at)
         )
@@ -1133,8 +1136,8 @@ module MakeImplCommon<InputSig Lang> {
           // A call edge may implicitly strengthen a type by ensuring that a
           // specific argument node was reached if the type of that argument was
           // strengthened via a cast.
-          at = getNodeType(arg) and
-          pt = getNodeType(p) and
+          nodeDataFlowType(arg, at) and
+          nodeDataFlowType(p, pt) and
           paramMustFlow(p, arg) and
           relevantCallEdge(_, _, arg, _) and
           typeStrongerThan0(at, pt)
@@ -1174,8 +1177,8 @@ module MakeImplCommon<InputSig Lang> {
       or
       exists(ArgNode arg, DataFlowType at, DataFlowType pt |
         trackedParamTypeCand(p) and
-        at = getNodeType(arg) and
-        pt = getNodeType(p) and
+        nodeDataFlowType(arg, at) and
+        nodeDataFlowType(p, pt) and
         relevantCallEdge(_, _, arg, p) and
         typeStrongerThan0(at, pt)
       )
@@ -1885,7 +1888,7 @@ module MakeImplCommon<InputSig Lang> {
     Content getAHead() {
       exists(ContentApprox cont |
         this = TApproxFrontHead(cont) and
-        cont = getContentApprox(result)
+        cont = getContentApproxCached(result)
       )
     }
   }
