@@ -1203,8 +1203,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof SynthDictSplatArgumentNode
   or
   n instanceof SynthDictSplatParameterNode
-  // or
-  // n instanceof CaptureNode
+  or
+  n instanceof SynthCaptureNode
 }
 
 class LambdaCallKind = Unit;
