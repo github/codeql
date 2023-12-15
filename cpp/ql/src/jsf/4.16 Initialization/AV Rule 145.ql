@@ -39,10 +39,12 @@ predicate hasReferenceInitializer(EnumConstant c) {
  */
 EnumConstant getNonReferenceInitializedEnumConstantByRank(Enum e, int rnk) {
   result =
-    rank[rnk](EnumConstant cand, int pos |
-      e.getEnumConstant(pos) = cand and not hasReferenceInitializer(cand)
+    rank[rnk](EnumConstant cand, int pos, string filepath, int startline, int startcolumn |
+      e.getEnumConstant(pos) = cand and
+      not hasReferenceInitializer(cand) and
+      cand.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
     |
-      cand order by pos
+      cand order by pos, filepath, startline, startcolumn
     )
 }
 
