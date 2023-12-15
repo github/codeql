@@ -557,6 +557,9 @@ internal sealed class StubVisitor : SymbolVisitor
         });
     }
 
+    private static bool ExcludeMethod(IMethodSymbol symbol) =>
+        symbol.Name == "<Clone>$";
+
     private void StubMethod(IMethodSymbol symbol, IMethodSymbol? explicitInterfaceSymbol, IMethodSymbol? baseCtor)
     {
         var methodKind = explicitInterfaceSymbol is null ? symbol.MethodKind : explicitInterfaceSymbol.MethodKind;
@@ -568,7 +571,7 @@ internal sealed class StubVisitor : SymbolVisitor
                 MethodKind.Ordinary
             };
 
-        if (!relevantMethods.Contains(methodKind))
+        if (!relevantMethods.Contains(methodKind) || ExcludeMethod(symbol))
             return;
 
         StubAttributes(symbol.GetAttributes());
