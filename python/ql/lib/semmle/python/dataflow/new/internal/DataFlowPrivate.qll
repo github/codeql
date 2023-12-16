@@ -304,7 +304,9 @@ module LocalFlow {
     // These are not covered by the `AssignmentDefinition`s in the case above,
     // as they are not necessarily live.
     nodeFrom.(CfgNode).getNode() = nodeTo.(CfgNode).getNode().(DefinitionNode).getValue() and
-    nodeTo.asExpr() = any(VariableCapture::CapturedVariable c).getAStore()
+    nodeTo.asExpr() = any(VariableCapture::CapturedVariable c).getAStore() and
+    // Exclude assignments to parameters. These are from default values and not local.
+    not nodeTo instanceof ParameterNode
     or
     // With definition
     //   `with f(42) as x:`
