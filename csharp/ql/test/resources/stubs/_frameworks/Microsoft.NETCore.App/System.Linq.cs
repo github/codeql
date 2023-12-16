@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Linq, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Linq, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Linq
@@ -197,6 +197,10 @@ namespace System
             public static System.Linq.IOrderedEnumerable<TSource> ThenByDescending<TSource, TKey>(this System.Linq.IOrderedEnumerable<TSource> source, System.Func<TSource, TKey> keySelector) => throw null;
             public static System.Linq.IOrderedEnumerable<TSource> ThenByDescending<TSource, TKey>(this System.Linq.IOrderedEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IComparer<TKey> comparer) => throw null;
             public static TSource[] ToArray<TSource>(this System.Collections.Generic.IEnumerable<TSource> source) => throw null;
+            public static System.Collections.Generic.Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> source) => throw null;
+            public static System.Collections.Generic.Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<TKey, TValue>> source, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
+            public static System.Collections.Generic.Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<(TKey Key, TValue Value)> source) => throw null;
+            public static System.Collections.Generic.Dictionary<TKey, TValue> ToDictionary<TKey, TValue>(this System.Collections.Generic.IEnumerable<(TKey Key, TValue Value)> source, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
             public static System.Collections.Generic.Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector) => throw null;
             public static System.Collections.Generic.Dictionary<TKey, TSource> ToDictionary<TSource, TKey>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Collections.Generic.IEqualityComparer<TKey> comparer) => throw null;
             public static System.Collections.Generic.Dictionary<TKey, TElement> ToDictionary<TSource, TKey, TElement>(this System.Collections.Generic.IEnumerable<TSource> source, System.Func<TSource, TKey> keySelector, System.Func<TSource, TElement> elementSelector) => throw null;

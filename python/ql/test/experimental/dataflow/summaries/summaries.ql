@@ -12,7 +12,7 @@ import experimental.dataflow.testTaintConfig
 private import TestSummaries
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
-  (sc.propagatesFlowExt(s, _, _) or sc.propagatesFlowExt(_, s, _)) and
+  (sc.propagatesFlow(s, _, _) or sc.propagatesFlow(_, s, _)) and
   Private::External::invalidSpecComponent(s, c)
 }
 

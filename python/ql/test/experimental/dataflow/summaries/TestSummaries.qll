@@ -18,6 +18,10 @@ module RecursionGuard {
       (TT::callStep(_, _) implies any())
     }
 
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      none()
+    }
+
     override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
   }
 }
@@ -31,7 +35,7 @@ private class SummarizedCallableIdentity extends SummarizedCallable {
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
     output = "ReturnValue" and
     preservesValue = true
@@ -48,7 +52,7 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[1]" and
     output = "Argument[0].Parameter[0]" and
     preservesValue = true
@@ -68,7 +72,7 @@ private class SummarizedCallableReversed extends SummarizedCallable {
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[0].ListElement" and
     output = "ReturnValue.ListElement" and
     preservesValue = true
@@ -84,7 +88,7 @@ private class SummarizedCallableMap extends SummarizedCallable {
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[1].ListElement" and
     output = "Argument[0].Parameter[0]" and
     preservesValue = true
@@ -104,7 +108,7 @@ private class SummarizedCallableAppend extends SummarizedCallable {
 
   override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
     output = "ReturnValue" and
     preservesValue = false
@@ -126,7 +130,7 @@ private class SummarizedCallableJsonLoads extends SummarizedCallable {
     result = API::moduleImport("json").getMember("loads").getAValueReachableFromSource()
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
     output = "ReturnValue.ListElement" and
     preservesValue = true

@@ -534,6 +534,9 @@ internal sealed class StubVisitor : SymbolVisitor
                 case RefKind.In:
                     stubWriter.Write("in ");
                     break;
+                case RefKind.RefReadOnlyParameter:
+                    stubWriter.Write("ref readonly ");
+                    break;
                 default:
                     stubWriter.Write($"/* TODO: {parameter.RefKind} */");
                     break;

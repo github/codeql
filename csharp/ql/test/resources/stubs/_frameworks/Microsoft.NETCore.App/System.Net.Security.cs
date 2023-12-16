@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Security, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Security, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -189,10 +189,12 @@ namespace System
             public class SslClientAuthenticationOptions
             {
                 public bool AllowRenegotiation { get => throw null; set { } }
+                public bool AllowTlsResume { get => throw null; set { } }
                 public System.Collections.Generic.List<System.Net.Security.SslApplicationProtocol> ApplicationProtocols { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509ChainPolicy CertificateChainPolicy { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509RevocationMode CertificateRevocationCheckMode { get => throw null; set { } }
                 public System.Net.Security.CipherSuitesPolicy CipherSuitesPolicy { get => throw null; set { } }
+                public System.Net.Security.SslStreamCertificateContext ClientCertificateContext { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509CertificateCollection ClientCertificates { get => throw null; set { } }
                 public SslClientAuthenticationOptions() => throw null;
                 public System.Security.Authentication.SslProtocols EnabledSslProtocols { get => throw null; set { } }
@@ -203,12 +205,14 @@ namespace System
             }
             public struct SslClientHelloInfo
             {
+                public SslClientHelloInfo(string serverName, System.Security.Authentication.SslProtocols sslProtocols) => throw null;
                 public string ServerName { get => throw null; }
                 public System.Security.Authentication.SslProtocols SslProtocols { get => throw null; }
             }
             public class SslServerAuthenticationOptions
             {
                 public bool AllowRenegotiation { get => throw null; set { } }
+                public bool AllowTlsResume { get => throw null; set { } }
                 public System.Collections.Generic.List<System.Net.Security.SslApplicationProtocol> ApplicationProtocols { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509ChainPolicy CertificateChainPolicy { get => throw null; set { } }
                 public System.Security.Cryptography.X509Certificates.X509RevocationMode CertificateRevocationCheckMode { get => throw null; set { } }
@@ -306,6 +310,8 @@ namespace System
             {
                 public static System.Net.Security.SslStreamCertificateContext Create(System.Security.Cryptography.X509Certificates.X509Certificate2 target, System.Security.Cryptography.X509Certificates.X509Certificate2Collection additionalCertificates, bool offline) => throw null;
                 public static System.Net.Security.SslStreamCertificateContext Create(System.Security.Cryptography.X509Certificates.X509Certificate2 target, System.Security.Cryptography.X509Certificates.X509Certificate2Collection additionalCertificates, bool offline = default(bool), System.Net.Security.SslCertificateTrust trust = default(System.Net.Security.SslCertificateTrust)) => throw null;
+                public System.Collections.ObjectModel.ReadOnlyCollection<System.Security.Cryptography.X509Certificates.X509Certificate2> IntermediateCertificates { get => throw null; }
+                public System.Security.Cryptography.X509Certificates.X509Certificate2 TargetCertificate { get => throw null; }
             }
             public enum TlsCipherSuite : ushort
             {

@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Net.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Net.Primitives, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Net
@@ -196,6 +196,7 @@ namespace System
             ExpectationFailed = 417,
             MisdirectedRequest = 421,
             UnprocessableEntity = 422,
+            UnprocessableContent = 422,
             Locked = 423,
             FailedDependency = 424,
             UpgradeRequired = 426,
@@ -231,7 +232,7 @@ namespace System
         {
             System.Net.NetworkCredential GetCredential(string host, int port, string authenticationType);
         }
-        public class IPAddress
+        public class IPAddress : System.IFormattable, System.IParsable<System.Net.IPAddress>, System.ISpanFormattable, System.ISpanParsable<System.Net.IPAddress>, System.IUtf8SpanFormattable
         {
             public long Address { get => throw null; set { } }
             public System.Net.Sockets.AddressFamily AddressFamily { get => throw null; }
@@ -267,11 +268,19 @@ namespace System
             public static readonly System.Net.IPAddress None;
             public static System.Net.IPAddress Parse(System.ReadOnlySpan<char> ipSpan) => throw null;
             public static System.Net.IPAddress Parse(string ipString) => throw null;
+            static System.Net.IPAddress System.ISpanParsable<System.Net.IPAddress>.Parse(System.ReadOnlySpan<char> s, System.IFormatProvider provider) => throw null;
+            static System.Net.IPAddress System.IParsable<System.Net.IPAddress>.Parse(string s, System.IFormatProvider provider) => throw null;
             public long ScopeId { get => throw null; set { } }
             public override string ToString() => throw null;
+            string System.IFormattable.ToString(string format, System.IFormatProvider formatProvider) => throw null;
             public bool TryFormat(System.Span<char> destination, out int charsWritten) => throw null;
+            public bool TryFormat(System.Span<byte> utf8Destination, out int bytesWritten) => throw null;
+            bool System.ISpanFormattable.TryFormat(System.Span<char> destination, out int charsWritten, System.ReadOnlySpan<char> format, System.IFormatProvider provider) => throw null;
+            bool System.IUtf8SpanFormattable.TryFormat(System.Span<byte> utf8Destination, out int bytesWritten, System.ReadOnlySpan<char> format, System.IFormatProvider provider) => throw null;
             public static bool TryParse(System.ReadOnlySpan<char> ipSpan, out System.Net.IPAddress address) => throw null;
             public static bool TryParse(string ipString, out System.Net.IPAddress address) => throw null;
+            static bool System.ISpanParsable<System.Net.IPAddress>.TryParse(System.ReadOnlySpan<char> s, System.IFormatProvider provider, out System.Net.IPAddress result) => throw null;
+            static bool System.IParsable<System.Net.IPAddress>.TryParse(string s, System.IFormatProvider provider, out System.Net.IPAddress result) => throw null;
             public bool TryWriteBytes(System.Span<byte> destination, out int bytesWritten) => throw null;
         }
         public class IPEndPoint : System.Net.EndPoint
@@ -292,6 +301,32 @@ namespace System
             public override string ToString() => throw null;
             public static bool TryParse(System.ReadOnlySpan<char> s, out System.Net.IPEndPoint result) => throw null;
             public static bool TryParse(string s, out System.Net.IPEndPoint result) => throw null;
+        }
+        public struct IPNetwork : System.IEquatable<System.Net.IPNetwork>, System.IFormattable, System.IParsable<System.Net.IPNetwork>, System.ISpanFormattable, System.ISpanParsable<System.Net.IPNetwork>, System.IUtf8SpanFormattable
+        {
+            public System.Net.IPAddress BaseAddress { get => throw null; }
+            public bool Contains(System.Net.IPAddress address) => throw null;
+            public IPNetwork(System.Net.IPAddress baseAddress, int prefixLength) => throw null;
+            public bool Equals(System.Net.IPNetwork other) => throw null;
+            public override bool Equals(object obj) => throw null;
+            public override int GetHashCode() => throw null;
+            public static bool operator ==(System.Net.IPNetwork left, System.Net.IPNetwork right) => throw null;
+            public static bool operator !=(System.Net.IPNetwork left, System.Net.IPNetwork right) => throw null;
+            public static System.Net.IPNetwork Parse(System.ReadOnlySpan<char> s) => throw null;
+            public static System.Net.IPNetwork Parse(string s) => throw null;
+            static System.Net.IPNetwork System.IParsable<System.Net.IPNetwork>.Parse(string s, System.IFormatProvider provider) => throw null;
+            static System.Net.IPNetwork System.ISpanParsable<System.Net.IPNetwork>.Parse(System.ReadOnlySpan<char> s, System.IFormatProvider provider) => throw null;
+            public int PrefixLength { get => throw null; }
+            string System.IFormattable.ToString(string format, System.IFormatProvider provider) => throw null;
+            public override string ToString() => throw null;
+            bool System.ISpanFormattable.TryFormat(System.Span<char> destination, out int charsWritten, System.ReadOnlySpan<char> format, System.IFormatProvider provider) => throw null;
+            bool System.IUtf8SpanFormattable.TryFormat(System.Span<byte> utf8Destination, out int bytesWritten, System.ReadOnlySpan<char> format, System.IFormatProvider provider) => throw null;
+            public bool TryFormat(System.Span<char> destination, out int charsWritten) => throw null;
+            public bool TryFormat(System.Span<byte> utf8Destination, out int bytesWritten) => throw null;
+            static bool System.IParsable<System.Net.IPNetwork>.TryParse(string s, System.IFormatProvider provider, out System.Net.IPNetwork result) => throw null;
+            static bool System.ISpanParsable<System.Net.IPNetwork>.TryParse(System.ReadOnlySpan<char> s, System.IFormatProvider provider, out System.Net.IPNetwork result) => throw null;
+            public static bool TryParse(System.ReadOnlySpan<char> s, out System.Net.IPNetwork result) => throw null;
+            public static bool TryParse(string s, out System.Net.IPNetwork result) => throw null;
         }
         public interface IWebProxy
         {
@@ -347,14 +382,17 @@ namespace System
                 RemoteCertificateChainErrors = 4,
             }
         }
-        public class SocketAddress
+        public class SocketAddress : System.IEquatable<System.Net.SocketAddress>
         {
+            public System.Memory<byte> Buffer { get => throw null; }
             public SocketAddress(System.Net.Sockets.AddressFamily family) => throw null;
             public SocketAddress(System.Net.Sockets.AddressFamily family, int size) => throw null;
             public override bool Equals(object comparand) => throw null;
+            public bool Equals(System.Net.SocketAddress comparand) => throw null;
             public System.Net.Sockets.AddressFamily Family { get => throw null; }
             public override int GetHashCode() => throw null;
-            public int Size { get => throw null; }
+            public static int GetMaximumAddressSize(System.Net.Sockets.AddressFamily addressFamily) => throw null;
+            public int Size { get => throw null; set { } }
             public byte this[int offset] { get => throw null; set { } }
             public override string ToString() => throw null;
         }
@@ -450,6 +488,7 @@ namespace System
             {
                 public SocketException() => throw null;
                 public SocketException(int errorCode) => throw null;
+                public SocketException(int errorCode, string message) => throw null;
                 protected SocketException(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
                 public override int ErrorCode { get => throw null; }
                 public override string Message { get => throw null; }

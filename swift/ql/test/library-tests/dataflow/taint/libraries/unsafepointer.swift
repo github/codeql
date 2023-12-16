@@ -203,3 +203,109 @@ func testManualMemoryManagement() {
   })
   sink(arg: r6) // $ tainted=r6
 }
+
+// ---
+
+func testUnsafePointers() {
+  let ptr1 = UnsafeMutablePointer<Int>.allocate(capacity: 1024)
+  ptr1.initialize(repeating: 0, count: 1024)
+  sink(arg: ptr1[0])
+  ptr1.initialize(repeating: sourceInt("ptr1"), count: 1024)
+  sink(arg: ptr1[0]) // $ tainted=ptr1
+
+  let ptr2 = UnsafeMutablePointer<Int>.allocate(capacity: 1)
+  ptr2.initialize(to: 0)
+  sink(arg: ptr2.pointee)
+  ptr2.initialize(to: sourceInt("ptr2"))
+  sink(arg: ptr2.pointee) // $ MISSING: tainted=ptr2
+  sink(arg: ptr2.move()) // $ tainted=ptr2
+
+  let ptr3 = UnsafeMutablePointer<Int>.allocate(capacity: 1024)
+  ptr3.initialize(repeating: 0, count: 1024)
+  sink(arg: ptr3[0])
+  ptr3.assign(repeating: sourceInt("ptr3"), count: 1024)
+  sink(arg: ptr3[0]) // $ tainted=ptr3
+
+  let ptr4 = UnsafeMutablePointer<Int>.allocate(capacity: 1024)
+  ptr4.initialize(repeating: 0, count: 1024)
+  ptr4.update(from: ptr1, count: 512)
+  sink(arg: ptr4[0]) // $ tainted=ptr1
+}
+
+func testRawPointers() {
+  let raw1 = UnsafeMutableRawPointer.allocate(byteCount: 1024, alignment: 4)
+  raw1.initializeMemory(as: Int.self, repeating: 0, count: 1024)
+  sink(arg: raw1.load(fromByteOffset: 0, as: Int.self))
+  raw1.initializeMemory(as: Int.self, repeating: sourceInt("raw1"), count: 1024)
+  sink(arg: raw1.load(fromByteOffset: 0, as: Int.self)) // $ tainted=raw1
+
+  let raw2 = UnsafeMutableRawPointer.allocate(byteCount: 1024, alignment: 4)
+  raw2.initializeMemory(as: Int.self, repeating: 0, count: 1024)
+  //raw2.storeBytes(of: 0, toByteOffset: 0, as: Int.self) --- this line fails on Linux
+  sink(arg: raw2.load(fromByteOffset: 0, as: Int.self))
+  //raw2.storeBytes(of: sourceInt("raw2"), toByteOffset: 0, as: Int.self) --- this line fails on Linux
+  sink(arg: raw2.load(fromByteOffset: 0, as: Int.self)) // $ MISSING: tainted=raw2
+
+  let raw3 = UnsafeRawPointer(raw1)
+  sink(arg: raw3.load(fromByteOffset: 0, as: Int.self)) // $ tainted=raw1
+  let raw4 = UnsafeRawBufferPointer(start: raw3, count: MemoryLayout<Int>.size)
+  sink(arg: raw4[0]) // $ tainted=raw1
+}
+
+func testRawPointerConversion() {
+  let i1 = sourceInt("i1")
+  withUnsafeBytes(of: i1, {
+    ptr in // UnsafeRawBufferPointer
+    sink(arg: ptr[0]) // $ tainted=i1
+
+    let ptr2 = UnsafeRawBufferPointer(ptr)
+    sink(arg: ptr2[0]) // $ tainted=i1
+
+    let ptr3 = UnsafeMutableRawBufferPointer(mutating: ptr)
+    sink(arg: ptr3[0]) // $ tainted=i1
+
+    let ptr4 = UnsafeMutableRawBufferPointer.allocate(byteCount: 8, alignment: 0)
+    ptr4.copyBytes(from: ptr)
+    sink(arg: ptr4[0]) // $ tainted=i1
+
+    let ptr5 = UnsafeMutableRawBufferPointer.allocate(byteCount: 8, alignment: 0)
+    ptr5.copyMemory(from: ptr)
+    sink(arg: ptr5[0]) // $ tainted=i1
+
+    let i = ptr.load(fromByteOffset: 0, as: Int.self)
+    sink(arg: i) // $ tainted=i1
+  })
+
+  var i2 = sourceInt("i2")
+  withUnsafeMutableBytes(of: &i2, {
+    ptr in // UnsafeMutableRawBufferPointer
+    sink(arg: ptr[0]) // $ tainted=i2
+
+    let ptr2 = UnsafeRawBufferPointer(ptr)
+    sink(arg: ptr2[0]) // $ tainted=i2
+
+    let ptr3 = UnsafeMutableRawBufferPointer(ptr)
+    sink(arg: ptr3[0]) // $ tainted=i2
+  })
+}
+
+func testSlice() {
+  let buffer = UnsafeMutableBufferPointer<Int>.allocate(capacity: 1024)
+  buffer.initialize(repeating: 0)
+  sink(arg: buffer[0])
+  buffer[0] = sourceInt("buffer")
+  sink(arg: buffer[0]) // $ tainted=buffer
+
+  let slice = Slice(base: buffer, bounds: 0 ..< 10)
+  sink(arg: slice[0]) // $ tainted=buffer
+  sink(arg: slice.base[0]) // $ MISSING: tainted=buffer
+
+  let buffer2 = UnsafeMutableBufferPointer(rebasing: slice)
+  sink(arg: buffer2[0]) // $ tainted=buffer
+
+  let buffer3 = UnsafeMutableBufferPointer<Int>.allocate(capacity: 1024)
+  buffer3.initialize(repeating: 0)
+  sink(arg: buffer3[0])
+  buffer3[10 ..< 20] = buffer[0 ..< 10]
+  sink(arg: buffer3[0]) // $ tainted=buffer
+}

@@ -212,12 +212,14 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends LocalSourceNode instanceof ParameterNodeImpl {
+class ParameterNode extends LocalSourceNode {
+  ParameterNode() { exists(getParameterPosition(this, _)) }
+
   /** Gets the parameter corresponding to this node, if any. */
-  final Parameter getParameter() { result = super.getParameter() }
+  final Parameter getParameter() { result = getParameter(this) }
 
   /** Gets the callable that this parameter belongs to. */
-  final Callable getCallable() { result = super.getCfgScope() }
+  final Callable getCallable() { result = getCfgScope(this) }
 
   /** Gets the name of the parameter, if any. */
   final string getName() { result = this.getParameter().(NamedParameter).getName() }
@@ -348,9 +350,13 @@ class LocalSourceNode extends Node {
  * Nodes corresponding to AST elements, for example `ExprNode`, usually refer
  * to the value before the update.
  */
-class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
+class PostUpdateNode extends Node {
+  private Node pre;
+
+  PostUpdateNode() { pre = getPreUpdateNode(this) }
+
   /** Gets the node before the state update. */
-  Node getPreUpdateNode() { result = super.getPreUpdateNode() }
+  Node getPreUpdateNode() { result = pre }
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
@@ -382,6 +388,28 @@ private module Cached {
       yield.asExpr().getExpr() = call
     )
   }
+
+  cached
+  CfgScope getCfgScope(NodeImpl node) { result = node.getCfgScope() }
+
+  cached
+  ReturnNode getAReturnNode(Callable callable) { getCfgScope(result) = callable }
+
+  cached
+  Parameter getParameter(ParameterNodeImpl param) { result = param.getParameter() }
+
+  cached
+  ParameterPosition getParameterPosition(ParameterNodeImpl param, DataFlowCallable c) {
+    param.isParameterOf(c, result)
+  }
+
+  cached
+  ParameterPosition getSourceParameterPosition(ParameterNodeImpl param, Callable c) {
+    param.isSourceParameterOf(c, result)
+  }
+
+  cached
+  Node getPreUpdateNode(PostUpdateNodeImpl node) { result = node.getPreUpdateNode() }
 
   cached
   predicate methodHasSuperCall(MethodNode method, CallNode call) {
@@ -1271,7 +1299,7 @@ class CallableNode extends StmtSequenceNode {
   Callable asCallableAstNode() { result = callable }
 
   private ParameterPosition getParameterPosition(ParameterNodeImpl node) {
-    node.isSourceParameterOf(callable, result)
+    result = getSourceParameterPosition(node, callable)
   }
 
   /** Gets the `n`th positional parameter. */
@@ -1311,7 +1339,7 @@ class CallableNode extends StmtSequenceNode {
   /**
    * Gets a data flow node whose value is about to be returned by this callable.
    */
-  Node getAReturnNode() { result.(ReturnNode).(NodeImpl).getCfgScope() = callable }
+  Node getAReturnNode() { result = getAReturnNode(callable) }
 
   /**
    * DEPRECATED. Use `getAReturnNode` instead.

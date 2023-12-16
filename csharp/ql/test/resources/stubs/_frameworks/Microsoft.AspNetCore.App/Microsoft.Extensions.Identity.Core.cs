@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Identity.Core, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Identity.Core, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -112,6 +112,12 @@ namespace Microsoft
                 public bool Succeeded { get => throw null; set { } }
                 public static Microsoft.AspNetCore.Identity.IdentityResult Success { get => throw null; }
                 public override string ToString() => throw null;
+            }
+            public static class IdentitySchemaVersions
+            {
+                public static readonly System.Version Default;
+                public static readonly System.Version Version1;
+                public static readonly System.Version Version2;
             }
             public interface ILookupNormalizer
             {
@@ -419,6 +425,7 @@ namespace Microsoft
                 public StoreOptions() => throw null;
                 public int MaxLengthForKeys { get => throw null; set { } }
                 public bool ProtectPersonalData { get => throw null; set { } }
+                public System.Version SchemaVersion { get => throw null; set { } }
             }
             public class TokenOptions
             {

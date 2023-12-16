@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Linq;
+using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -51,7 +52,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public IEnumerable<string> GenerateFiles(IEnumerable<string> cshtmls, IEnumerable<string> references, string workingDirectory)
         {
             var name = Guid.NewGuid().ToString("N").ToUpper();
-            var tempPath = Path.GetTempPath();
+            var tempPath = FileUtils.GetTemporaryWorkingDirectory(out var _);
             var analyzerConfig = Path.Combine(tempPath, $"{name}.txt");
             var dllPath = Path.Combine(tempPath, $"{name}.dll");
             var cscArgsPath = Path.Combine(tempPath, $"{name}.rsp");

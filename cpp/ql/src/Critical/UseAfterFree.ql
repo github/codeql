@@ -30,7 +30,7 @@ private predicate externalCallNeverDereferences(FormattingFunctionCall call, int
 }
 
 predicate isUse0(Expr e) {
-  not isFree(_, e, _) and
+  not isFree(_, _, e, _) and
   (
     e = any(PointerDereferenceExpr pde).getOperand()
     or
@@ -170,6 +170,6 @@ module UseAfterFree = FlowFromFree<isUse/2, isExcludeFreeUsePair/2>;
 from UseAfterFree::PathNode source, UseAfterFree::PathNode sink, DeallocationExpr dealloc
 where
   UseAfterFree::flowPath(source, sink) and
-  isFree(source.getNode(), _, dealloc)
+  isFree(source.getNode(), _, _, dealloc)
 select sink.getNode(), source, sink, "Memory may have been previously freed by $@.", dealloc,
   dealloc.toString()
