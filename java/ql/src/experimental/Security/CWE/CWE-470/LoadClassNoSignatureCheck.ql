@@ -20,7 +20,7 @@ import semmle.code.java.dataflow.TaintTracking
 
 MethodAccess getClassLoaderReachableMethodAccess(DataFlow::Node node)
 {
-    exists(MethodCall maGetClassLoader |
+    exists(MethodAccess maGetClassLoader |
         maGetClassLoader.getCallee().getName() = "getClassLoader" and
         maGetClassLoader.getQualifier() = node.asExpr() and
         result = maGetClassLoader.getControlFlowNode().getASuccessor+()
@@ -44,7 +44,7 @@ MethodAccess getDangerousReachableMethodAccess(MethodAccess ma)
 
 module SignaturePackageConfig implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
-exists(MethodCall maCheckSignatures |
+exists(MethodAccess maCheckSignatures |
       maCheckSignatures
           .getMethod()
           .hasQualifiedName("android.content.pm", "PackageManager", "checkSignatures") and
@@ -70,16 +70,16 @@ predicate isSignaturesChecked(MethodAccess maCreatePackageContext)
 }
  
 from
-  MethodCall maCreatePackageContext, LocalVariableDeclExpr lvdePackageContext,
-  Expr sinkPackageContext, MethodCall maGetMethod, MethodCall maInvoke
+  MethodAccess maCreatePackageContext, LocalVariableDeclExpr lvdePackageContext,
+  DataFlow::Node sinkPackageContext, MethodAccess maGetMethod, MethodAccess maInvoke
 where
   maCreatePackageContext
       .getMethod()
       .hasQualifiedName("android.content", ["ContextWrapper", "Context"], "createPackageContext") and
   not isSignaturesChecked(maCreatePackageContext) and
   lvdePackageContext.getEnclosingStmt() = maCreatePackageContext.getEnclosingStmt() and
-  TaintTracking::localExprTaint(lvdePackageContext.getAnAccess(), sinkPackageContext) and
-  getClassLoaderReachableMethodCall(sinkPackageContext) = maGetMethod and
-  getGetMethodMethodCall(maGetMethod) = maInvoke
+  TaintTracking::localTaint(DataFlow::exprNode(lvdePackageContext.getAnAccess()), sinkPackageContext) and
+  getClassLoaderReachableMethodAccess(sinkPackageContext) = maGetMethod and
+  getDangerousReachableMethodAccess(maGetMethod) = maInvoke
 select maInvoke, "Potential arbitary code execution due to $@ without $@ signature checking.", sinkPackageContext, "class loading", sinkPackageContext, "package"
  
