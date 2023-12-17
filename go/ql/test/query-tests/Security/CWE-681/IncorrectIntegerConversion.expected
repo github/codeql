@@ -1,2 +1,3 @@
-failures
 testFailures
+| IncorrectIntegerConversion.go:497:15:497:15 | i | Unexpected result: hasValueFlow="i" |
+failures
