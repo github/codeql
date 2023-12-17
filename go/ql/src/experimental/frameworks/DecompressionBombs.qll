@@ -5,8 +5,9 @@ module DecompressionBombs {
     FlowState() {
       this =
         [
-          "ZstdNewReader", "XzNewReader", "GzipNewReader", "S2NewReader", "SnappyNewReader",
-          "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader", "ZipKlauspost", ""
+          "ZstdNewReader", "XzNewReader", "GzipNewReader", "PgzipNewReader", "S2NewReader",
+          "SnappyNewReader", "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader",
+          "ZipKlauspost", ""
         ]
     }
   }
@@ -252,11 +253,12 @@ module DecompressionBombs {
   /**
    * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/gzip` package
    */
-  module KlauspostGzip {
+  module KlauspostGzipAndPgzip {
     class TheSink extends Sink {
       TheSink() {
         exists(Method f |
-          f.hasQualifiedName("github.com/klauspost/compress/gzip", "Reader", "Read")
+          f.hasQualifiedName(["github.com/klauspost/compress/gzip", "github.com/klauspost/pgzip"],
+            "Reader", "Read")
         |
           this = f.getACall().getReceiver()
         )
@@ -277,10 +279,15 @@ module DecompressionBombs {
         DataFlow::Node fromNode, FlowState fromState, DataFlow::Node toNode, FlowState toState
       ) {
         exists(Function f, DataFlow::CallNode call |
-          f.hasQualifiedName(["github.com/klauspost/compress/gzip", "github.com/klauspost/pgzip"],
-            "NewReader") and
-          call = f.getACall()
-        |
+          f.hasQualifiedName("github.com/klauspost/pgzip", "NewReader") and
+          call = f.getACall() and
+          fromNode = call.getArgument(0) and
+          toNode = call.getResult(0) and
+          fromState = "" and
+          toState = "PgzipNewReader"
+          or
+          f.hasQualifiedName("github.com/klauspost/compress/gzip", "NewReader") and
+          call = f.getACall() and
           fromNode = call.getArgument(0) and
           toNode = call.getResult(0) and
           fromState = "" and
@@ -651,7 +658,15 @@ module DecompressionBombs {
   module GeneralReadIoSink {
     class TheSink extends Sink {
       TheSink() {
-        exists(Function f | f.hasQualifiedName("io", ["Copy", "CopyBuffer", "CopyN"]) |
+        exists(Function f, DataFlow::CallNode cn |
+          f.hasQualifiedName("io", "CopyN") and cn = f.getACall()
+        |
+          this = cn.getArgument(1) and
+          // and the return value doesn't flow into a comparison  (<, >, <=, >=).
+          not localStep*(cn.getResult(0), any(DataFlow::RelationalComparisonNode rcn).getAnOperand())
+        )
+        or
+        exists(Function f | f.hasQualifiedName("io", ["Copy", "CopyBuffer"]) |
           this = f.getACall().getArgument(1)
         )
         or
@@ -676,6 +691,30 @@ module DecompressionBombs {
           this = f.getACall().getArgument(0)
         )
       }
+    }
+
+    /**
+     * Holds if the value of `pred` can flow into `succ` in one step through an
+     * arithmetic operation (other than remainder).
+     *
+     * Note: this predicate is copied from AllocationSizeOverflow. When this query
+     * is promoted it should be put in a shared location.
+     */
+    predicate additionalStep(DataFlow::Node pred, DataFlow::Node succ) {
+      succ.asExpr().(ArithmeticExpr).getAnOperand() = pred.asExpr() and
+      not succ.asExpr() instanceof RemExpr
+    }
+
+    /**
+     * Holds if the value of `pred` can flow into `succ` in one step, either by a standard taint step
+     * or by an additional step.
+     *
+     * Note: this predicate is copied from AllocationSizeOverflow. When this query
+     * is promoted it should be put in a shared location.
+     */
+    predicate localStep(DataFlow::Node pred, DataFlow::Node succ) {
+      TaintTracking::localTaintStep(pred, succ) or
+      additionalStep(pred, succ)
     }
   }
 }

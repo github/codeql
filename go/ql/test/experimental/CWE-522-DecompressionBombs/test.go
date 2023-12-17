@@ -23,6 +23,11 @@ import (
 	"compress/gzip"
 	"compress/zlib"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
+	"testing/fstest"
+
 	bzip2Dsnet "github.com/dsnet/compress/bzip2"
 	flateDsnet "github.com/dsnet/compress/flate"
 	"github.com/golang/snappy"
@@ -31,12 +36,8 @@ import (
 	"github.com/klauspost/compress/s2"
 	snappyKlauspost "github.com/klauspost/compress/snappy"
 	zlibKlauspost "github.com/klauspost/compress/zlib"
-	pzipKlauspost "github.com/klauspost/pgzip"
+	pgzipKlauspost "github.com/klauspost/pgzip"
 	"github.com/ulikunitz/xz"
-	"io"
-	"net/http"
-	"os"
-	"testing/fstest"
 
 	zstdDataDog "github.com/DataDog/zstd"
 	zipKlauspost "github.com/klauspost/compress/zip"
@@ -59,8 +60,6 @@ func DecompressHandler(w http.ResponseWriter, request *http.Request) {
 	ZipOpenReaderSafe(request.PostFormValue("test"))
 	GZipOpenReaderSafe(request.PostFormValue("test"))
 	GZipReader(request.Body, "dest")
-	ZipNewReader(request.Body)
-	ZipNewReader2(request.Body)
 	Bzip2Dsnet(request.Body)
 	Bzip2(request.Body)
 	Flate(request.Body)
@@ -305,12 +304,12 @@ func GzipKlauspost(file io.Reader) {
 func PzipKlauspost(file io.Reader) {
 	var tarRead *tar.Reader
 
-	gzippgzip, _ := pzipKlauspost.NewReader(file)
+	pgzippgzip, _ := pgzipKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	gzippgzip.Read(out)
+	pgzippgzip.Read(out)
 	var buf bytes.Buffer
-	gzippgzip.WriteTo(&buf)
-	tarRead = tar.NewReader(gzippgzip)
+	pgzippgzip.WriteTo(&buf)
+	tarRead = tar.NewReader(pgzippgzip)
 
 	TarDecompressor(tarRead)
 }
