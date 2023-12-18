@@ -44,7 +44,7 @@ class FlaskMethodViewClasses extends FindSubclassesSpec {
 
   override API::Node getAlreadyModeledClass() { result = Flask::Views::MethodView::subclassRef() }
 
-  override FlaskViewClasses getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof FlaskViewClasses }
 
   override string getFullyQualifiedName() { result = "flask.views.MethodView" }
 }
@@ -134,7 +134,7 @@ class DjangoHttpResponseRedirect extends FindSubclassesSpec {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseRedirect::classRef()
   }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() { result = "django.http.response.HttpResponseRedirect" }
 }
@@ -149,7 +149,7 @@ class DjangoHttpResponsePermanentRedirect extends FindSubclassesSpec {
       PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponsePermanentRedirect::classRef()
   }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() {
     result = "django.http.response.HttpResponsePermanentRedirect"
@@ -163,7 +163,7 @@ class DjangoHttpResponseNotModified extends FindSubclassesSpec {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseNotModified::classRef()
   }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() {
     result = "django.http.response.HttpResponseNotModified"
@@ -177,7 +177,7 @@ class DjangoHttpResponseBadRequest extends FindSubclassesSpec {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseBadRequest::classRef()
   }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() { result = "django.http.response.HttpResponseBadRequest" }
 }
@@ -189,7 +189,7 @@ class DjangoHttpResponseNotFound extends FindSubclassesSpec {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseNotFound::classRef()
   }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() { result = "django.http.response.HttpResponseNotFound" }
 }
@@ -201,7 +201,7 @@ class DjangoHttpResponseForbidden extends FindSubclassesSpec {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseForbidden::classRef()
   }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() { result = "django.http.response.HttpResponseForbidden" }
 }
@@ -213,7 +213,7 @@ class DjangoHttpResponseNotAllowed extends FindSubclassesSpec {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseNotAllowed::classRef()
   }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() { result = "django.http.response.HttpResponseNotAllowed" }
 }
@@ -225,7 +225,7 @@ class DjangoHttpResponseGone extends FindSubclassesSpec {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseGone::classRef()
   }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() { result = "django.http.response.HttpResponseGone" }
 }
@@ -237,7 +237,7 @@ class DjangoHttpResponseServerError extends FindSubclassesSpec {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseServerError::classRef()
   }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() {
     result = "django.http.response.HttpResponseServerError"
@@ -251,7 +251,7 @@ class DjangoHttpResponseJsonResponse extends FindSubclassesSpec {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::JsonResponse::classRef()
   }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() { result = "django.http.response.JsonResponse" }
 }
@@ -273,7 +273,9 @@ class DjangoHttpResponseFileResponse extends FindSubclassesSpec {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::FileResponse::classRef()
   }
 
-  override DjangoHttpResponseStreamingResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() {
+    result instanceof DjangoHttpResponseStreamingResponse
+  }
 
   override string getFullyQualifiedName() { result = "django.http.response.FileResponse" }
 }
@@ -401,7 +403,7 @@ class RestFrameworkResponse extends FindSubclassesSpec {
 
   override API::Node getAlreadyModeledClass() { result = RestFramework::Response::classRef() }
 
-  override DjangoHttpResponse getSuperClass() { any() }
+  override FindSubclassesSpec getSuperClass() { result instanceof DjangoHttpResponse }
 
   override string getFullyQualifiedName() { result = "rest_framework.response.Response" }
 }
