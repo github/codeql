@@ -37,7 +37,7 @@ private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.internal.CachedStages
-private import semmle.python.dataflow.new.internal.TypeTracker::CallGraphConstruction as CallGraphConstruction
+private import semmle.python.dataflow.new.internal.TypeTrackingImpl::CallGraphConstruction as CallGraphConstruction
 
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
