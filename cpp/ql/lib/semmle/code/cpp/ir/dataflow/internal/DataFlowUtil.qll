@@ -997,7 +997,8 @@ private Type getTypeImpl0(Type t, int indirectionIndex) {
  *
  * If `indirectionIndex` cannot be stripped off `t`, an `UnknownType` is returned.
  */
-bindingset[indirectionIndex]
+bindingset[t, indirectionIndex]
+pragma[inline_late]
 Type getTypeImpl(Type t, int indirectionIndex) {
   result = getTypeImpl0(t, indirectionIndex)
   or
