@@ -145,6 +145,16 @@ module AccessTargetStats implements StatsSig {
   string getNotOkText() { result = "access with missing target" }
 }
 
+module ExprStats implements StatsSig {
+  int getNumberOfOk() { result = count(Expr e | not e instanceof @unknown_expr) }
+
+  int getNumberOfNotOk() { result = count(Expr e | e instanceof @unknown_expr) }
+
+  string getOkText() { result = "expressions with known kind" }
+
+  string getNotOkText() { result = "expressions with unknown kind" }
+}
+
 module CallTargetStatsReport = ReportStats<CallTargetStats>;
 
 module ExprTypeStatsReport = ReportStats<ExprTypeStats>;
@@ -152,6 +162,8 @@ module ExprTypeStatsReport = ReportStats<ExprTypeStats>;
 module TypeMentionTypeStatsReport = ReportStats<TypeMentionTypeStats>;
 
 module AccessTargetStatsReport = ReportStats<AccessTargetStats>;
+
+module ExprStatsReport = ReportStats<ExprStats>;
 
 from string key, float value
 where
@@ -176,5 +188,8 @@ where
   TypeMentionTypeStatsReport::percentageOfOk(key, value) or
   AccessTargetStatsReport::numberOfOk(key, value) or
   AccessTargetStatsReport::numberOfNotOk(key, value) or
-  AccessTargetStatsReport::percentageOfOk(key, value)
+  AccessTargetStatsReport::percentageOfOk(key, value) or
+  ExprStatsReport::numberOfOk(key, value) or
+  ExprStatsReport::numberOfNotOk(key, value) or
+  ExprStatsReport::percentageOfOk(key, value)
 select key, value
