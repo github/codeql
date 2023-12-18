@@ -17,16 +17,6 @@ private module CaptureInput implements Shared::InputSig<Location> {
     ExprCfgNode() { isExpressionNode(this) }
   }
 
-  private predicate closureFlowStep(ExprCfgNode nodeFrom, ExprCfgNode nodeTo) {
-    // TODO: Other languages have an extra case here looking like
-    //   simpleAstFlowStep(nodeFrom, nodeTo)
-    // we should investigate the potential benefit of adding that.
-    exists(SsaVariable def |
-      def.getAUse() = nodeTo and
-      def.getAnUltimateDefinition().getDefinition().(DefinitionNode).getValue() = nodeFrom
-    )
-  }
-
   class Callable extends Scope {
     predicate isConstructor() { none() }
   }
@@ -93,6 +83,16 @@ private module CaptureInput implements Shared::InputSig<Location> {
     VariableRead() { this = v.getALoad().getAFlowNode() }
 
     CapturedVariable getVariable() { result = v }
+  }
+
+  private predicate closureFlowStep(ExprCfgNode nodeFrom, ExprCfgNode nodeTo) {
+    // TODO: Other languages have an extra case here looking like
+    //   simpleAstFlowStep(nodeFrom, nodeTo)
+    // we should investigate the potential benefit of adding that.
+    exists(SsaVariable def |
+      def.getAUse() = nodeTo and
+      def.getAnUltimateDefinition().getDefinition().(DefinitionNode).getValue() = nodeFrom
+    )
   }
 
   class ClosureExpr extends Expr {
