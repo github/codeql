@@ -145,7 +145,7 @@ predicate valueStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
- * Provides predicates to understand the behaviour of the variable capture
+ * Provides predicates to understand the behavior of the variable capture
  * library instantiation on Python code bases.
  *
  * The predicates in here are meant to be run by quick-eval on databases of
@@ -198,6 +198,6 @@ private module Debug {
   }
 
   predicate unmappedFlowClosureNode(Flow::ClosureNode closureNode) {
-    not exists(Node node | closureNode = asClosureNode(node))
+    not closureNode = asClosureNode(_)
   }
 }
