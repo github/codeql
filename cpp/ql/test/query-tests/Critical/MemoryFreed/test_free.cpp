@@ -129,7 +129,7 @@ void test_ptr_deref(void ** a) {
     free(*a); // BAD
     *a = malloc(10);
     free(a[0]); // GOOD
-    free(a[1]); // GOOD [FALSE POSITIVE]
+    free(a[1]); // GOOD
 }
 
 struct list {

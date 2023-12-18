@@ -663,7 +663,8 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
     // We exclude steps into type checked variables. For those, we instead rely on the
     // type being checked against
     localFlowStep(nodeFrom, nodeTo, summary) and
-    not hasAdjacentTypeCheckedReads(nodeTo)
+    not hasAdjacentTypeCheckedReads(nodeTo) and
+    not asModulePattern(nodeTo, _)
   }
 
   predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
