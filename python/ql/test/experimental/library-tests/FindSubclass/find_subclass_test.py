@@ -51,3 +51,7 @@ import flask.views.View as complete_module_alias_no_use
 
 def wrapper():
     return View # $ MISSING
+
+import rest_framework
+class MyRestResponse(rest_framework.response.Response):
+    pass
