@@ -21,8 +21,8 @@ import InsecureCryptoFlow::PathGraph
 /**
  * Get the string value represented by the given expression.
  *
- * If the value is a string literal, return the literal value.
- * If the value is a call to `java.util.Properties::getProperty`, return the potential values of the property.
+ * If the value is a string literal, get the literal value.
+ * If the value is a call to `java.util.Properties::getProperty`, get the potential values of the property.
  */
 string getStringValue(DataFlow::Node algo) {
   result = algo.asExpr().(StringLiteral).getValue()
