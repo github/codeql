@@ -372,6 +372,8 @@ class RestFrameworkResponse extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() { result = RestFramework::Response::classRef() }
 
   override DjangoHttpResponse getSuperClass() { any() }
+
+  override string getFullyQualifiedName() { result = "rest_framework.response.Response" }
 }
 
 class SqlAlchemyEngine extends FindSubclassesSpec {
@@ -520,21 +522,30 @@ predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string
 from FindSubclassesSpec spec, string newModelFullyQualified, string type2, string path, Module mod
 where
   newModel(spec, newModelFullyQualified, _, mod, _) and
-  // Since a class C which is a subclass for flask.MethodView is always a subclass of
-  // flask.View, and we chose to care about this distinction, in a naive approach we
-  // would always record rows for _both_ specs... that's just wasteful, so instead we
-  // only record the row for the more specific spec -- this is captured by the
-  // .getSuperClass() method on a spec, which can links specs together in this way.
-  // However, if the definition actually depends on some logic, like below, we should
-  // still record both rows
-  // ```
-  // if <cond>:
-  //     class C(flask.View): ...
-  // else:
-  //     class C(flask.MethodView): ...
-  // ```
   not exists(FindSubclassesSpec subclass | subclass.getSuperClass() = spec |
+    // Since a class C which is a subclass for flask.MethodView is always a subclass of
+    // flask.View, and we chose to care about this distinction, in a naive approach we
+    // would always record rows for _both_ specs... that's just wasteful, so instead we
+    // only record the row for the more specific spec -- this is captured by the
+    // .getSuperClass() method on a spec, which can links specs together in this way.
+    // However, if the definition actually depends on some logic, like below, we should
+    // still record both rows
+    // ```
+    // if <cond>:
+    //     class C(flask.View): ...
+    // else:
+    //     class C(flask.MethodView): ...
+    // ```
     newModel(subclass, newModelFullyQualified, _, mod, _)
+    or
+    // When defining specs for both foo.Foo and bar.Bar, and you encounter the class
+    // definition for Bar as `class Bar(foo.Foo): ...` inside `__init__.py` of the `bar`
+    // PyPI package, we would normally record this new class as being an unmodeled
+    // subclass of foo.Foo (since the class definition is not found when using
+    // API::moduleImport("bar").getMember("Bar")). However, we don't actually want to
+    // treat this as foo.Foo, since it's actually bar.Bar -- so we use the fully
+    // qualified name ot ignore cases such as this!
+    newModelFullyQualified = subclass.getFullyQualifiedName()
   ) and
   fullyQualifiedToYamlFormat(newModelFullyQualified, type2, path) and
   not Extensions::typeModel(spec, type2, path) and

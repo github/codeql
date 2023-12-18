@@ -57,9 +57,6 @@ extensions:
     - Member[request].Member[HttpRequest]
   - - django.http.response.HttpResponse~Subclass
     - rest_framework
-    - Member[response].Member[Response]
-  - - django.http.response.HttpResponse~Subclass
-    - rest_framework
     - Member[response].Member[SimpleTemplateResponse]
   - - django.http.response.JsonResponse~Subclass
     - rest_framework

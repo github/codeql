@@ -72,7 +72,18 @@ module NotExposed {
      */
     abstract API::Node getAlreadyModeledClass();
 
+    /**
+     * Gets the fully qualified name that this spec represents.
+     *
+     * This should be implemented by all classes for which `getSuperClass` is
+     * implemented, at least if they are defined in a different module than what they
+     * subclass.
+     */
+    string getFullyQualifiedName() { none() }
+
     FindSubclassesSpec getSuperClass() { none() }
+
+    final FindSubclassesSpec getSubClass() { result.getSuperClass() = this }
   }
 
   /**
