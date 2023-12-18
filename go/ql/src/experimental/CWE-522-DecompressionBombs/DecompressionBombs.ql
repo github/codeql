@@ -12,47 +12,10 @@
  */
 
 import go
-import MultipartAndFormRemoteSource
 import experimental.frameworks.DecompressionBombs
+import DecompressionBomb::Flow::PathGraph
 
-module DecompressionBombsConfig implements DataFlow::StateConfigSig {
-  class FlowState = DecompressionBombs::FlowState;
-
-  predicate isSource(DataFlow::Node source, FlowState state) {
-    source instanceof UntrustedFlowSource and
-    state = ""
-  }
-
-  predicate isSink(DataFlow::Node sink, FlowState state) {
-    sink instanceof DecompressionBombs::Sink and
-    state =
-      [
-        "ZstdNewReader", "XzNewReader", "GzipNewReader", "PgzipNewReader", "S2NewReader",
-        "SnappyNewReader", "ZlibNewReader", "FlateNewReader", "Bzip2NewReader", "ZipOpenReader",
-        "ZipKlauspost"
-      ]
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    exists(DecompressionBombs::AdditionalTaintStep addStep |
-      addStep.isAdditionalFlowStep(fromNode, toNode)
-    )
-  }
-
-  predicate isAdditionalFlowStep(
-    DataFlow::Node fromNode, FlowState fromState, DataFlow::Node toNode, FlowState toState
-  ) {
-    exists(DecompressionBombs::AdditionalTaintStep addStep |
-      addStep.isAdditionalFlowStep(fromNode, fromState, toNode, toState)
-    )
-  }
-}
-
-module DecompressionBombsFlow = TaintTracking::GlobalWithState<DecompressionBombsConfig>;
-
-import DecompressionBombsFlow::PathGraph
-
-from DecompressionBombsFlow::PathNode source, DecompressionBombsFlow::PathNode sink
-where DecompressionBombsFlow::flowPath(source, sink)
+from DecompressionBomb::Flow::PathNode source, DecompressionBomb::Flow::PathNode sink
+where DecompressionBomb::Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This decompression is $@.", source.getNode(),
   "decompressing compressed data without managing output size"
