@@ -227,13 +227,25 @@ class CppType extends TCppType {
   predicate hasType(Type type, boolean isGLValue) { none() }
 
   /**
-   * Holds if this type represents the C++ type `type`. If `isGLValue` is `true`, then this type
+   * Holds if this type represents the C++ unspecified type `type`. If `isGLValue` is `true`, then this type
    * represents a glvalue of type `type`. Otherwise, it represents a prvalue of type `type`.
    */
   final predicate hasUnspecifiedType(Type type, boolean isGLValue) {
     exists(Type specifiedType |
       this.hasType(specifiedType, isGLValue) and
       type = specifiedType.getUnspecifiedType()
+    )
+  }
+
+  /**
+   * Holds if this type represents the C++ type `type` (after resolving
+   * typedefs). If `isGLValue` is `true`, then this type represents a glvalue
+   * of type `type`. Otherwise, it represents a prvalue of type `type`.
+   */
+  final predicate hasUnderlyingType(Type type, boolean isGLValue) {
+    exists(Type typedefType |
+      this.hasType(typedefType, isGLValue) and
+      type = typedefType.getUnderlyingType()
     )
   }
 }
