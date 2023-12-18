@@ -45,4 +45,4 @@ def test_library_call():
     for x in map(set, [1]):
         pass
 
-    SINK(captured["x"]) #$ captured
+    SINK(captured["x"]) #$ MISSING: captured
