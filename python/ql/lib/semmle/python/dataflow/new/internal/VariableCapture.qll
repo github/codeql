@@ -34,9 +34,11 @@ private module CaptureInput implements Shared::InputSig<Location> {
   class BasicBlock extends PY::BasicBlock {
     Callable getEnclosingCallable() { result = this.getScope() }
 
-    // Note `PY:BasicBlock` does not have a `GetLocation` and
-    // has a more complicated location info logic.
-    // This is good enough for here.
+    // Note `PY:BasicBlock` does not have a `getLocation`.
+    // (Instead it has a complicated location info logic.)
+    // Using the location of the first node is simple
+    // and we just need a way to identify the basic block
+    // during debugging, so this will be serviceable.
     Location getLocation() { result = super.getNode(0).getLocation() }
   }
 
