@@ -1,3 +1,9 @@
+## 0.1.5
+
+### Deprecated APIs
+
+* The old configuration-class based data flow api has been deprecated. The configuration-module based api should be used instead. For details, see https://github.blog/changelog/2023-08-14-new-dataflow-api-for-writing-custom-codeql-queries/.
+
 ## 0.1.4
 
 No user-facing changes.
