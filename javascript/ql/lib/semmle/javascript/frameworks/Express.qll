@@ -1077,24 +1077,17 @@ module Express {
    * An express route setup configured with the `cors` package.
    */
   class CorsConfiguration extends DataFlow::MethodCallNode {
+    Cors::Cors corsConfig;
+
     CorsConfiguration() {
       exists(Express::RouteSetup setup | this = setup |
-        setup.isUseCall() and setup.getArgument(0) instanceof Cors::Cors
-        or
-        not setup.isUseCall() and setup.getAnArgument() instanceof Cors::Cors
+        if setup.isUseCall()
+        then corsConfig = setup.getArgument(0)
+        else corsConfig = setup.getArgument(any(int i | i > 0))
       )
     }
 
-    /** Gets the cors argument */
-    Cors::Cors getArgument() { result = this.getArgument(0) }
-
-    /** Gets the options used to configure `cors`. */
-    DataFlow::Node getCorsArgument() { result = this.getArgument().getOptionsArgument() }
-
-    /** Holds if cors is using its default configuration. */
-    predicate isDefault() { this.getArgument().isDefault() }
-
-    /** Gets the `origin` option that the call to `cors` is configured with. */
-    DataFlow::Node getOrigin() { result = this.getArgument().getOrigin() }
+    /** Gets the expression that configures `cors` on this route setup. */
+    Cors::Cors getCorsConfiguration() { result = corsConfig }
   }
 }
