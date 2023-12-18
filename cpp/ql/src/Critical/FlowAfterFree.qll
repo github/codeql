@@ -87,6 +87,8 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
       |
         e = any(StoreInstruction store).getDestinationAddress().getUnconvertedResultExpression()
       )
+      or
+      n.asExpr() instanceof ArrayExpr
     }
   }
 
