@@ -129,10 +129,6 @@ private module Input implements InputSig<PythonDataFlow> {
       arg = other.getArgument(any(ArgumentPosition p | p.isSelf())) and
       other.getNode().getScope() = f
     )
-    or
-    // The capture argument node will be reused for every call to the same callable.
-    arg = call.getArgument(_) and
-    arg instanceof CapturingClosureArgumentNode
   }
 }
 
