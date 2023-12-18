@@ -418,6 +418,11 @@ class BaseCallVariable extends AbstractBaseSourceVariable, TBaseCallVariable {
 }
 
 private module IsModifiableAtImpl {
+  pragma[nomagic]
+  private predicate isUnderlyingIndirectionType(Type t) {
+    t = any(Indirection ind).getUnderlyingType()
+  }
+
   /**
    * Holds if the `indirectionIndex`'th dereference of a value of type
    * `cppType` is a type that can be modified (either by modifying the value
@@ -445,10 +450,9 @@ private module IsModifiableAtImpl {
   bindingset[cppType, indirectionIndex]
   pragma[inline_late]
   private predicate impl(CppType cppType, int indirectionIndex) {
-    exists(Type pointerType, Type base, Type t |
-      pointerType = t.getUnderlyingType() and
-      pointerType = any(Indirection ind).getUnderlyingType() and
-      cppType.hasType(t, _) and
+    exists(Type pointerType, Type base |
+      isUnderlyingIndirectionType(pointerType) and
+      cppType.hasUnderlyingType(pointerType, _) and
       base = getTypeImpl(pointerType, indirectionIndex)
     |
       // The value cannot be modified if it has a const specifier,
