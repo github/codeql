@@ -4,9 +4,7 @@
 
 private import python
 private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
-private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
 private import TypeTrackingImpl as TypeTrackingImpl
-import semmle.python.internal.CachedStages
 
 deprecated class Node = DataFlowPublic::Node;
 
@@ -44,15 +42,16 @@ deprecated predicate compatibleContents(
   storeContent = loadContent
 }
 
-predicate simpleLocalFlowStep = TypeTrackingImpl::TypeTrackingInput::simpleLocalSmallStep/2;
+deprecated predicate simpleLocalFlowStep =
+  TypeTrackingImpl::TypeTrackingInput::simpleLocalSmallStep/2;
 
-predicate jumpStep = TypeTrackingImpl::TypeTrackingInput::jumpStep/2;
+deprecated predicate jumpStep = TypeTrackingImpl::TypeTrackingInput::jumpStep/2;
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
 deprecated predicate levelStepCall(Node nodeFrom, Node nodeTo) { none() }
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
-predicate levelStepNoCall = TypeTrackingImpl::TypeTrackingInput::levelStepNoCall/2;
+deprecated predicate levelStepNoCall = TypeTrackingImpl::TypeTrackingInput::levelStepNoCall/2;
 
 /**
  * Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call.
@@ -61,25 +60,25 @@ predicate levelStepNoCall = TypeTrackingImpl::TypeTrackingInput::levelStepNoCall
  * recursion (or, at best, terrible performance), since identifying calls to library
  * methods is done using API graphs (which uses type tracking).
  */
-predicate callStep = TypeTrackingImpl::TypeTrackingInput::callStep/2;
+deprecated predicate callStep = TypeTrackingImpl::TypeTrackingInput::callStep/2;
 
 /** Holds if `nodeFrom` steps to `nodeTo` by being returned from a call. */
-predicate returnStep = TypeTrackingImpl::TypeTrackingInput::returnStep/2;
+deprecated predicate returnStep = TypeTrackingImpl::TypeTrackingInput::returnStep/2;
 
 /**
  * Holds if `nodeFrom` is being written to the `content` content of the object in `nodeTo`.
  */
-predicate basicStoreStep = TypeTrackingImpl::TypeTrackingInput::storeStep/3;
+deprecated predicate basicStoreStep = TypeTrackingImpl::TypeTrackingInput::storeStep/3;
 
 /**
  * Holds if `nodeTo` is the result of accessing the `content` content of `nodeFrom`.
  */
-predicate basicLoadStep = TypeTrackingImpl::TypeTrackingInput::loadStep/3;
+deprecated predicate basicLoadStep = TypeTrackingImpl::TypeTrackingInput::loadStep/3;
 
 /**
  * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
  */
-predicate basicLoadStoreStep = TypeTrackingImpl::TypeTrackingInput::loadStoreStep/4;
+deprecated predicate basicLoadStoreStep = TypeTrackingImpl::TypeTrackingInput::loadStoreStep/4;
 
 /**
  * Holds if type-tracking should step from `nodeFrom` to `nodeTo` but block flow of contents matched by `filter` through here.
