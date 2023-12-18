@@ -498,6 +498,17 @@ class SynthCaptureNode extends Node, TSynthCaptureNode {
   override string toString() { result = cn.toString() }
 }
 
+private class SynthCapturePostUpdateNode extends PostUpdateNodeImpl, SynthCaptureNode {
+  private SynthCaptureNode pre;
+
+  SynthCapturePostUpdateNode() {
+    VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
+      pre.getSynthesizedCaptureNode())
+  }
+
+  override Node getPreUpdateNode() { result = pre }
+}
+
 /**
  * Gets a node that controls whether other nodes are evaluated.
  *

@@ -1626,17 +1626,6 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
   override Node getPreUpdateNode() { result = pre }
 }
 
-private class SynthCapturePostUpdateNode extends PostUpdateNodeImpl, SynthCaptureNode {
-  private SynthCaptureNode pre;
-
-  SynthCapturePostUpdateNode() {
-    VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
-      pre.getSynthesizedCaptureNode())
-  }
-
-  override Node getPreUpdateNode() { result = pre }
-}
-
 /**
  * The value of a closure itself being passed to the funciton, viewed as a node in a data
  * flow graph.
