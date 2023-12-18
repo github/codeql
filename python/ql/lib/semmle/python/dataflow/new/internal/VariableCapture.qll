@@ -5,6 +5,11 @@ private import DataFlowPublic
 private import semmle.python.dataflow.new.internal.DataFlowPrivate
 private import codeql.dataflow.VariableCapture as Shared
 
+// Note: The Javascript implementation (on the branch https://github.com/github/codeql/pull/14412)
+// had some tweaks related to performance. See these two commits:
+// - JS: Capture flow: https://github.com/github/codeql/pull/14412/commits/7bcf8b858babfea0a3e36ce61145954c249e13ac
+// - JS: Disallow consecutive captured contents: https://github.com/github/codeql/pull/14412/commits/46e4cdc6232604ea7f58138a336d5a222fad8567
+// The first is the main implementation, the second is a performance motivated restriction.
 private module CaptureInput implements Shared::InputSig<Location> {
   private import python as PY
 
@@ -142,6 +147,9 @@ predicate valueStep(Node nodeFrom, Node nodeTo) {
 /**
  * Provides predicates to understand the behaviour of the variable capture
  * library instantiation on Python code bases.
+ *
+ * The predicates in here are meant to be run by quick-eval on databases of
+ * interest. The `unmapped*`-predicates should ideally be empty.
  */
 private module Debug {
   predicate flowStoreStep(
