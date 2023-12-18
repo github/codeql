@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor.FindingFiles(srcDir);
 
 
-            var allFiles = GetAllFiles();
+            var allFiles = GetAllFiles().ToList();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
             var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
             var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(progressMonitor).SelectFileNames();
