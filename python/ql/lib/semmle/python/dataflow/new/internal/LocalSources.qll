@@ -72,6 +72,8 @@ class LocalSourceNode extends Node {
     // We include all scope entry definitions, as these act as the local source within the scope they
     // enter.
     this.asCfgNode() = any(ScopeEntryDefinition def).getDefiningNode()
+    or
+    this instanceof ParameterNode
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
@@ -151,7 +153,7 @@ class LocalSourceNode extends Node {
    * See `TypeBackTracker` for more details about how to use this.
    */
   pragma[inline]
-  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
+  LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t = t2.step(result, this) }
 }
 
 /**
@@ -238,7 +240,7 @@ private module Cached {
    * Helper predicate for `hasLocalSource`. Removes any steps go to module variable reads, as these
    * are already local source nodes in their own right.
    */
-  cached
+  pragma[nomagic]
   private predicate localSourceFlowStep(Node nodeFrom, Node nodeTo) {
     simpleLocalFlowStep(nodeFrom, nodeTo) and
     not nodeTo = any(ModuleVariableNode v).getARead()

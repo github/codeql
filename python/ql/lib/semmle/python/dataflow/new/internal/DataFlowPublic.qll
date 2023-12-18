@@ -4,7 +4,7 @@
 
 private import python
 private import DataFlowPrivate
-import semmle.python.dataflow.new.TypeTracker
+import semmle.python.dataflow.new.TypeTracking
 import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute

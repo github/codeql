@@ -111,6 +111,7 @@ module Stages {
     predicate ref() { 1 = 1 }
 
     private import semmle.python.dataflow.new.DataFlow::DataFlow as NewDataFlow
+    private import semmle.python.dataflow.new.internal.TypeTrackingImpl as TypeTrackingImpl
     private import semmle.python.ApiGraphs::API as API
 
     /**
@@ -121,7 +122,7 @@ module Stages {
     predicate backref() {
       1 = 1
       or
-      exists(any(NewDataFlow::TypeTracker t).append(_))
+      exists(TypeTrackingImpl::append(_, _))
       or
       exists(any(API::Node n).getAMember().getAValueReachableFromSource())
     }
