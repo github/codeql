@@ -1,3 +1,16 @@
+## 0.12.2
+
+### Deprecated APIs
+
+* The `isUserInput`, `userInputArgument`, and `userInputReturned` predicates from `SecurityOptions` have been deprecated. Use `FlowSource` instead.
+
+### Minor Analysis Improvements
+
+* Changed the output of `Node.toString` to better reflect how many indirections a given dataflow node has.
+* Added a new predicate `Node.asDefinition` on `DataFlow::Node`s for selecting the dataflow node corresponding to a particular definition.
+* The deprecated `DefaultTaintTracking` library has been removed.
+* The `Guards` library has been replaced with the API-compatible `IRGuards` implementation, which has better precision in some cases.
+
 ## 0.12.1
 
 ### New Features

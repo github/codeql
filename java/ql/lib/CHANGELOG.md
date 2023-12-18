@@ -1,3 +1,15 @@
+## 0.8.5
+
+### Deprecated APIs
+
+* Imports of the old dataflow libraries (e.g. `semmle.code.java.dataflow.DataFlow2`) have been deprecated in the libraries under the `semmle.code.java.security` namespace.
+
+### Minor Analysis Improvements
+
+* Taint tracking now understands Kotlin's `Array.get` and `Array.set` methods.
+* Added a sink model for the `createRelative` method of the `org.springframework.core.io.Resource` interface.
+* Added source models for methods of the `org.springframework.web.util.UrlPathHelper` class and removed their taint flow models.
+
 ## 0.8.4
 
 ### Minor Analysis Improvements
