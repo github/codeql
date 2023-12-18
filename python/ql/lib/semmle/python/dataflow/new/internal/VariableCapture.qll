@@ -10,6 +10,8 @@ private import codeql.dataflow.VariableCapture as Shared
 // - JS: Capture flow: https://github.com/github/codeql/pull/14412/commits/7bcf8b858babfea0a3e36ce61145954c249e13ac
 // - JS: Disallow consecutive captured contents: https://github.com/github/codeql/pull/14412/commits/46e4cdc6232604ea7f58138a336d5a222fad8567
 // The first is the main implementation, the second is a performance motivated restriction.
+// The restriction is to clear any `CapturedVariableContent` before writing a new one
+// to avoid long access paths (see the link for a nice explanation).
 private module CaptureInput implements Shared::InputSig<Location> {
   private import python as PY
 
