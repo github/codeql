@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor.FindingFiles(srcDir);
 
 
-            var allFiles = GetAllFiles();
+            var allFiles = GetAllFiles().ToList();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
             var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
             var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(progressMonitor).SelectFileNames();
@@ -438,6 +438,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 files = files.Where(f => !f.FullName.StartsWith(options.DotNetPath, StringComparison.OrdinalIgnoreCase));
             }
+
+            files = files.Where(f =>
+            {
+                try
+                {
+                    if (f.Exists)
+                    {
+                        return true;
+                    }
+
+                    progressMonitor.Log(Severity.Warning, $"File {f.FullName} could not be processed.");
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    progressMonitor.Log(Severity.Warning, $"File {f.FullName} could not be processed: {ex.Message}");
+                    return false;
+                }
+            });
 
             files = new FilePathFilter(sourceDir, progressMonitor).Filter(files);
             return files;
