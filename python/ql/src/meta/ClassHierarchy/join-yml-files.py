@@ -3,6 +3,12 @@
 """Concerns were raised about performance on Windows with having 2.5 k files for modeling, and it was recommended we join them all together when shipping.
 
 This script does that.
+
+Workflow when working on the automatic subclass modeling:
+1. split files
+2. do your work
+3. join files
+4. commit your changes
 """
 
 import sys
