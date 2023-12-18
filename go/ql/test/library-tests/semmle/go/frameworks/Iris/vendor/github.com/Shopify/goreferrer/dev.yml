@@ -1,0 +1,15 @@
+name: goreferrer
+
+up:
+  - go:
+      version: "1.17"
+      modules: on
+  - custom:
+      name: Setup go dependencies
+      meet: echo 'go mod failed to install packages'; false
+      met?: go mod download
+
+commands:
+  test:
+    run: go get -race -t ./... && go test -race ./...
+    desc: 'run unit tests'
