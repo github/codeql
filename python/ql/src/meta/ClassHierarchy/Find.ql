@@ -131,6 +131,8 @@ class DjangoHttpResponseRedirect extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseRedirect::classRef()
   }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class DjangoHttpResponsePermanentRedirect extends FindSubclassesSpec {
@@ -142,6 +144,8 @@ class DjangoHttpResponsePermanentRedirect extends FindSubclassesSpec {
     result =
       PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponsePermanentRedirect::classRef()
   }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class DjangoHttpResponseNotModified extends FindSubclassesSpec {
@@ -150,6 +154,8 @@ class DjangoHttpResponseNotModified extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseNotModified::classRef()
   }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class DjangoHttpResponseBadRequest extends FindSubclassesSpec {
@@ -158,6 +164,8 @@ class DjangoHttpResponseBadRequest extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseBadRequest::classRef()
   }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class DjangoHttpResponseNotFound extends FindSubclassesSpec {
@@ -166,6 +174,8 @@ class DjangoHttpResponseNotFound extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseNotFound::classRef()
   }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class DjangoHttpResponseForbidden extends FindSubclassesSpec {
@@ -174,6 +184,8 @@ class DjangoHttpResponseForbidden extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseForbidden::classRef()
   }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class DjangoHttpResponseNotAllowed extends FindSubclassesSpec {
@@ -182,6 +194,8 @@ class DjangoHttpResponseNotAllowed extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseNotAllowed::classRef()
   }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class DjangoHttpResponseGone extends FindSubclassesSpec {
@@ -190,6 +204,8 @@ class DjangoHttpResponseGone extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseGone::classRef()
   }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class DjangoHttpResponseServerError extends FindSubclassesSpec {
@@ -198,6 +214,8 @@ class DjangoHttpResponseServerError extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponseServerError::classRef()
   }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class DjangoHttpResponseJsonResponse extends FindSubclassesSpec {
@@ -206,6 +224,8 @@ class DjangoHttpResponseJsonResponse extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::JsonResponse::classRef()
   }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class DjangoHttpResponseStreamingResponse extends FindSubclassesSpec {
@@ -224,6 +244,8 @@ class DjangoHttpResponseFileResponse extends FindSubclassesSpec {
   override API::Node getAlreadyModeledClass() {
     result = PrivateDjango::DjangoImpl::DjangoHttp::Response::FileResponse::classRef()
   }
+
+  override DjangoHttpResponseStreamingResponse getSuperClass() { any() }
 }
 
 class FlaskResponse extends FindSubclassesSpec {
@@ -348,6 +370,8 @@ class RestFrameworkResponse extends FindSubclassesSpec {
   RestFrameworkResponse() { this = "rest_framework.response.Response~Subclass" }
 
   override API::Node getAlreadyModeledClass() { result = RestFramework::Response::classRef() }
+
+  override DjangoHttpResponse getSuperClass() { any() }
 }
 
 class SqlAlchemyEngine extends FindSubclassesSpec {

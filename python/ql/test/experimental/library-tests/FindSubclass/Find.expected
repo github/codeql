@@ -1,7 +1,6 @@
 | Django.Views.View~Subclass | find_subclass_test | Member[clash2] |
 | Django.Views.View~Subclass | find_subclass_test | Member[clash3] |
 | Django.Views.View~Subclass | find_subclass_test | Member[clash] |
-| django.http.response.HttpResponse~Subclass | find_subclass_test | Member[MyRestResponse] |
 | flask.MethodView~Subclass | find_subclass_test | Member[C] |
 | flask.View~Subclass | find_subclass_test | Member[A] |
 | flask.View~Subclass | find_subclass_test | Member[B] |
