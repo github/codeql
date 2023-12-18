@@ -68,6 +68,8 @@ module CorsPermissiveConfiguration {
    * The value of cors origin when initializing the application.
    */
   class ExpressCors extends Sink, DataFlow::ValueNode {
-    ExpressCors() { exists(Express::CorsConfiguration config | this = config.getOrigin()) }
+    ExpressCors() {
+      exists(Express::CorsConfiguration config | this = config.getCorsConfiguration().getOrigin())
+    }
   }
 }
