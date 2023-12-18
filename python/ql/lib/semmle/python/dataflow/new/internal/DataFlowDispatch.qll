@@ -42,6 +42,12 @@ private import semmle.python.dataflow.new.internal.TypeTracker::CallGraphConstru
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfParameterPosition() or
+  /**
+   * This is used for tracking flow through captured variables, and
+   * we use separate parameter/argument positions in order to distinguish
+   * "lambda self" from "normal self", as lambdas may also access outer `self`
+   * variables (through variable capture).
+   */
   TLambdaSelfParameterPosition() or
   TPositionalParameterPosition(int index) {
     index = any(Parameter p).getPosition()
@@ -135,6 +141,12 @@ class ParameterPosition extends TParameterPosition {
 newtype TArgumentPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfArgumentPosition() or
+  /**
+   * This is used for tracking flow through captured variables, and
+   * we use separate parameter/argument positions in order to distinguish
+   * "lambda self" from "normal self", as lambdas may also access outer `self`
+   * variables (through variable capture).
+   */
   TLambdaSelfArgumentPosition() or
   TPositionalArgumentPosition(int index) {
     exists(any(CallNode c).getArg(index))
@@ -1521,20 +1533,19 @@ abstract class ParameterNodeImpl extends Node {
 }
 
 /**
- * The value of a closure itself at function entry, viewed as a node in the data
- * flow graph.
+ * A sythetic parameter representing the values of the variables captured
+ * by the callable being called. This parameter represents a single object
+ * where all the values are stored as attributes.
+ * This is also known as the environment part of a closure.
  *
- * This is used for tracking flow through captured variables, and we use
- * separate argument/parameter nodes at their own parameter/argument positions in order to distinguish
- * "lambda self" from "normal self", as lambdas may also access outer `self`
- * variables (through variable capture).
+ * This is used for tracking flow through captured variables.
  */
-class SynthCapturingClosureParameterNode extends ParameterNodeImpl,
-  TSynthCapturingClosureParameterNode
+class SynthCapturedVariablesParameterNode extends ParameterNodeImpl,
+  TSynthCapturedVariablesParameterNode
 {
   private Function callable;
 
-  SynthCapturingClosureParameterNode() { this = TSynthCapturingClosureParameterNode(callable) }
+  SynthCapturedVariablesParameterNode() { this = TSynthCapturedVariablesParameterNode(callable) }
 
   final Function getCallable() { result = callable }
 
@@ -1627,13 +1638,12 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
 }
 
 /**
- * The value of a closure itself being passed to the funciton, viewed as a
- * node in the data flow graph.
+ * A sythetic argument representing the values of the variables captured
+ * by the callable being called. This argument represents a single object
+ * where all the values are stored as attributes.
+ * This is also known as the environment part of a closure.
  *
- * This is used for tracking flow through captured variables, and we use a
- * separate node and parameter/argument positions in order to distinguish
- * "lambda self" from "normal self", as lambdas may also access outer `self`
- * variables (through variable capture).
+ * This is used for tracking flow through captured variables.
  *
  * TODO:
  * We might want a synthetic node here, but currently that incurs problems
@@ -1642,10 +1652,10 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
  * `CallGraphConstruction::Make` in staed of
  * `CallGraphConstruction::Simple::Make` appropriately.
  */
-class CapturingClosureArgumentNode extends CfgNode, ArgumentNode {
+class CapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
   CallNode callNode;
 
-  CapturingClosureArgumentNode() {
+  CapturedVariablesArgumentNode() {
     node = callNode.getFunction() and
     exists(Function target | resolveCall(callNode, target, _) |
       target = any(VariableCapture::CapturedVariable v).getACapturingScope()

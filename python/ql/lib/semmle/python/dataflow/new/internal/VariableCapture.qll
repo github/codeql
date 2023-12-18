@@ -133,7 +133,7 @@ private Flow::ClosureNode asClosureNode(Node n) {
   result.(Flow::ParameterNode).getParameter().getCfgNode() = n.(CfgNode).getNode()
   or
   result.(Flow::ThisParameterNode).getCallable() =
-    n.(SynthCapturingClosureParameterNode).getCallable()
+    n.(SynthCapturedVariablesParameterNode).getCallable()
 }
 
 predicate storeStep(Node nodeFrom, CapturedVariableContent c, Node nodeTo) {

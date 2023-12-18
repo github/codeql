@@ -1062,7 +1062,7 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   or
   exists(Function f |
     VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(f) and
-    p = TSynthCapturingClosureParameterNode(f)
+    p = TSynthCapturedVariablesParameterNode(f)
   )
 }
 
