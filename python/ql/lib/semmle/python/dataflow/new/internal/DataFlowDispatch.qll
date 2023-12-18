@@ -1521,7 +1521,7 @@ abstract class ParameterNodeImpl extends Node {
 }
 
 /**
- * The value of a closure itself at function entry, viewed as a node in a data
+ * The value of a closure itself at function entry, viewed as a node in the data
  * flow graph.
  *
  * This is used for tracking flow through captured variables, and we use
@@ -1627,8 +1627,8 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
 }
 
 /**
- * The value of a closure itself being passed to the funciton, viewed as a node in a data
- * flow graph.
+ * The value of a closure itself being passed to the funciton, viewed as a
+ * node in the data flow graph.
  *
  * This is used for tracking flow through captured variables, and we use a
  * separate node and parameter/argument positions in order to distinguish
