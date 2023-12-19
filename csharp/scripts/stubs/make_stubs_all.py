@@ -17,6 +17,7 @@ packages = [
     "NHibernate",
     "ServiceStack",
     "ServiceStack.OrmLite.SqlServer",
+    "System.Data.OleDb",
     "System.Data.SqlClient",
     "System.Data.SQLite",
     ]
