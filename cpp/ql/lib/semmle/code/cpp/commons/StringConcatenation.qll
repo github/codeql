@@ -29,7 +29,7 @@ class StringConcatenation extends Call {
   }
 
   /**
-   * Gets the operands of this concatenation (one of the string operands being
+   * Gets an operand of this concatenation (one of the string operands being
    * concatenated).
    * Will not return out param for sprintf-like functions, but will consider the format string
    * to be part of the operands.
