@@ -36,7 +36,6 @@ private import semmle.python.dataflow.new.internal.ImportStar
 class LocalSourceNode extends Node {
   cached
   LocalSourceNode() {
-    exists(this.getLocation().getFile().getRelativePath()) and (
     Stages::DataFlow::ref() and
     this instanceof ExprNode and
     not simpleLocalFlowStepForTypetracking(_, this)
@@ -73,7 +72,6 @@ class LocalSourceNode extends Node {
     // We include all scope entry definitions, as these act as the local source within the scope they
     // enter.
     this.asCfgNode() = any(ScopeEntryDefinition def).getDefiningNode()
-    )
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
