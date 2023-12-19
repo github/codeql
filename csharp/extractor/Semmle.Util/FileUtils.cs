@@ -144,20 +144,40 @@ namespace Semmle.Util
             return nested;
         }
 
+        private static string? tempFolderPath = null;
+        private static readonly object lockObject = new();
+
         public static string GetTemporaryWorkingDirectory(Func<string, string?> getEnvironmentVariable, string lang, out bool shouldCleanUp)
         {
             shouldCleanUp = false;
             var tempFolder = getEnvironmentVariable($"CODEQL_EXTRACTOR_{lang}_SCRATCH_DIR");
-
-            if (string.IsNullOrEmpty(tempFolder))
+            if (!string.IsNullOrEmpty(tempFolder))
             {
+                return tempFolder;
+            }
+
+            if (!string.IsNullOrEmpty(tempFolderPath))
+            {
+                shouldCleanUp = true;
+                return tempFolderPath;
+            }
+
+            lock (lockObject)
+            {
+                if (!string.IsNullOrEmpty(tempFolderPath))
+                {
+                    shouldCleanUp = true;
+                    return tempFolderPath;
+                }
+
                 var tempPath = Path.GetTempPath();
                 var name = Guid.NewGuid().ToString("N").ToUpper();
                 tempFolder = Path.Combine(tempPath, "GitHub", name);
+                Directory.CreateDirectory(tempFolder);
+                tempFolderPath = tempFolder;
                 shouldCleanUp = true;
+                return tempFolder;
             }
-
-            return tempFolder;
         }
 
         public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp) =>
