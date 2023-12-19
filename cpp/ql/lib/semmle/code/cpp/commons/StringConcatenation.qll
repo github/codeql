@@ -5,7 +5,7 @@
 import cpp
 import semmle.code.cpp.models.implementations.Strcat
 import semmle.code.cpp.models.interfaces.FormattingFunction
-import semmle.code.cpp.dataflow.new.DataFlow
+private import semmle.code.cpp.dataflow.new.DataFlow
 
 class StringConcatenation extends Call {
   StringConcatenation() {
