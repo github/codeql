@@ -39,6 +39,12 @@ class StringConcatenation extends Call {
     result = this.getAnArgument() and
     // addresses odd behavior with overloaded operators
     // i.e., "call to operator+" appearing as an operand
+    // occurs in cases like `string s = s1 + s2 + s3`, which is represented as
+    // `string s = (s1.operator+(s2)).operator+(s3);`
+    // By limiting to non-calls we get the leaf operands (the variables or raw strings)
+    // also, by not enuemrating allowed types (variables and strings) we avoid issues
+    // with missed corner cases or extensions/changes to CodeQL in the future which might
+    // invalidate that approach.
     not result instanceof Call and
     // Limit the result type to string
     (
@@ -62,11 +68,7 @@ class StringConcatenation extends Call {
         or
         exists(int n |
           result = this.getArgument(n) and
-          n >=
-            this.(FormattingFunctionCall)
-                .getTarget()
-                .(FormattingFunction)
-                .getFirstFormatArgumentIndex()
+          n >= this.(FormattingFunctionCall).getTarget().getFirstFormatArgumentIndex()
         )
       )
     )
@@ -82,17 +84,15 @@ class StringConcatenation extends Call {
         this.getArgument(this.getTarget().(StrcatFunction).getParamDest())
       or
       // Hardcoding it is also the return
-      [result.asExpr(), result.asIndirectExpr()] = this.(Call)
+      result.asExpr() = this.(Call)
     else
       if this.getTarget() instanceof StrlcatFunction
       then (
-        [result.asExpr(), result.asIndirectExpr()] =
+        result.asDefiningArgument() =
           this.getArgument(this.getTarget().(StrlcatFunction).getParamDest())
       ) else
         if this instanceof FormattingFunctionCall
-        then
-          [result.asExpr(), result.asIndirectExpr()] =
-            this.(FormattingFunctionCall).getOutputArgument(_)
-        else [result.asExpr(), result.asIndirectExpr()] = this.(Call)
+        then result.asDefiningArgument() = this.(FormattingFunctionCall).getOutputArgument(_)
+        else result.asExpr() = this.(Call)
   }
 }
