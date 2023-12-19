@@ -1,14 +1,14 @@
 /**
- * This file contains a module that implements the _debug_ version of
+ * This file contains the class that implements the _debug_ version of
  * `toString` for `Instruction` and `Operand` dataflow nodes.
  */
 
 private import semmle.code.cpp.ir.IR
 private import codeql.util.Unit
-private import Node0ToStringSig
+private import Node0ToString
 private import DataFlowUtil
 
-class DebugNode0ToString extends Node0ToString {
+private class DebugNode0ToString extends Node0ToString {
   override string instructionToString(Instruction i) { result = i.getDumpString() }
 
   override string operandToString(Operand op) {

@@ -1,15 +1,15 @@
 /**
- * This file contains module that implements the non-debug version of
+ * This file contains the class that implements the non-debug version of
  * `toString` for `Instruction` and `Operand` dataflow nodes.
  */
 
 private import semmle.code.cpp.ir.IR
 private import codeql.util.Unit
-private import Node0ToStringSig
+private import Node0ToString
 private import DataFlowUtil
 private import DataFlowPrivate
 
-class NormalNode0ToStringImpl extends Node0ToString {
+private class NormalNode0ToString extends Node0ToString {
   override string instructionToString(Instruction i) {
     if i.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
     then result = "this"
