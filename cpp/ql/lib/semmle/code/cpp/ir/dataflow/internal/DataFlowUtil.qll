@@ -486,47 +486,6 @@ class Node extends TIRDataFlowNode {
   }
 }
 
-private string toExprString(Node n) {
-  not isDebugMode() and
-  (
-    result = n.asExpr(0).toString()
-    or
-    not exists(n.asExpr()) and
-    result = stars(n) + n.asIndirectExpr(0, 1).toString()
-  )
-}
-
-private module NodeStars {
-  private int getNumberOfIndirections(Node n) {
-    result = n.(RawIndirectOperand).getIndirectionIndex()
-    or
-    result = n.(RawIndirectInstruction).getIndirectionIndex()
-    or
-    result = n.(VariableNode).getIndirectionIndex()
-    or
-    result = n.(PostUpdateNodeImpl).getIndirectionIndex()
-    or
-    result = n.(FinalParameterNode).getIndirectionIndex()
-  }
-
-  private int maxNumberOfIndirections() { result = max(getNumberOfIndirections(_)) }
-
-  private string repeatStars(int n) {
-    n = 0 and result = ""
-    or
-    n = [1 .. maxNumberOfIndirections()] and
-    result = "*" + repeatStars(n - 1)
-  }
-
-  /**
-   * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
-   * output for `n`.
-   */
-  string stars(Node n) { result = repeatStars(getNumberOfIndirections(n)) }
-}
-
-private import NodeStars
-
 /**
  * A class that lifts pre-SSA dataflow nodes to regular dataflow nodes.
  */
@@ -589,7 +548,10 @@ Type stripPointer(Type t) {
   result = t.(FunctionPointerIshType).getBaseType()
 }
 
-private class PostUpdateNodeImpl extends PartialDefinitionNode, TPostUpdateNodeImpl {
+/**
+ * INTERNAL: Do not use.
+ */
+class PostUpdateNodeImpl extends PartialDefinitionNode, TPostUpdateNodeImpl {
   int indirectionIndex;
   Operand operand;
 
