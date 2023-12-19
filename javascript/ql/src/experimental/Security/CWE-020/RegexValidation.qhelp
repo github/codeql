@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+            The use of the global flag in regular expressions in JavaScript can lead to unexpected behaviors in the test function. This issue arises because the global regex maintains its last index position across multiple calls, resulting in the test function sometimes returning true and other times false for the same input.
+        </p>
+    </overview>
+    <recommendation>
+        <p>
+            To avoid this issue, it is recommended to either avoid using the global flag with the test method or reset the lastIndex of the regular expression to 0 before each test call. Alternatively, use the match method for scenarios where global search is required.
+        </p>
+    </recommendation>
+    <example>
+        <p>
+            Vulnerable code example: Using a global regex in a test function without resetting lastIndex. The function may return inconsistent results over repeated calls.
+        </p>
+        <sample src="RegexGlobalFlagBad.ts" />
+    </example>
+    <example>
+        <p>
+            Secure code example: Resetting the lastIndex of the regex to 0 before each test call or using match for global searches.
+        </p>
+        <sample src="RegexGlobalFlagGood.ts" />
+    </example>
+    <references>
+        <li>
+            MDN Web Docs - Regular Expressions:
+            <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions">Understanding Regular Expressions in JavaScript</a>
+            <a href="https://stackoverflow.com/questions/28910934/why-does-regex-test-changes-the-result-in-subsequent-calls">Example Stackoverflow Discussion</a>
+        </li>
+        <!-- Additional references can be added here -->
+    </references>
+</qhelp>
