@@ -251,7 +251,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
       e.getSourceVariable() = var and
       var.hasDefiningNode(def)
     |
-      nodeTo.asCfgNode() = e.getDefiningNode() and
+      nodeTo.(DataFlowPublic::ScopeEntryDefinitionNode).getDefinition() = e and
       nodeFrom.asCfgNode() = def.getValue() and
       var.getScope().getScope*() = nodeFrom.getScope()
     )
