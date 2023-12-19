@@ -11,7 +11,7 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
-# For details of all possible config values, 
+# For details of all possible config values,
 # see https://www.sphinx-doc.org/en/master/usage/configuration.html
 ##################################################################################
 
@@ -49,10 +49,10 @@ import os
 def setup(sphinx):
     sys.path.insert(0, os.path.join(os.path.dirname(__file__), os.path.pardir))
     from qllexer import QLLexer
-    sphinx.add_lexer("ql", QLLexer())
+    sphinx.add_lexer("ql", QLLexer() if callable(QLLexer) else QLLexer)
 
-# Set QL as the default language for highlighting code. Set to none to disable 
-# syntax highlighting. If omitted or left blank, it defaults to Python 3. 
+# Set QL as the default language for highlighting code. Set to none to disable
+# syntax highlighting. If omitted or left blank, it defaults to Python 3.
 highlight_language = 'ql'
 
 # The master toctree document.
@@ -110,7 +110,7 @@ html_show_sphinx = False
 # further.  For a list of options available for each theme, see the
 # documentation.
 html_theme_options = {'font_size': '16px',
-                      'body_text': '#333', 
+                      'body_text': '#333',
                       'link': '#2F1695',
                       'link_hover': '#2F1695',
                       'font_family': 'Lato, sans-serif',
