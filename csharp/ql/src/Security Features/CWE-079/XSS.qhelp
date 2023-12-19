@@ -11,17 +11,33 @@ without properly sanitizing the input first, allows for a cross-site scripting v
 </overview>
 <recommendation>
 
-<p>To guard against cross-site scripting, consider using contextual output encoding/escaping before
-writing user input to the page, or one of the other solutions that are mentioned in the
-references.</p>
+<p>
+To guard against cross-site scripting, consider using a library providing suitable encoding
+functionality, such as the <code>System.Net.WebUtility</code> class or the AntiXSS library,
+to sanitize the untrusted input before writing it to the page.
+The references also mention other possible solutions.
+</p>
 
 </recommendation>
 <example>
 
-<p>The following example shows the page parameter being written directly to the server error page,
-leaving the website vulnerable to cross-site scripting.</p>
-
+<p>
+The following example shows the page parameter being written directly to the server error page,
+leaving the website vulnerable to cross-site scripting.
+</p>
 <sample src="XSS.cs" />
+<p>
+Sanitizing the user-controlled data using <code>WebUtility.HtmlEncode</code> method prevents the vulnerability:
+</p>
+<sample src="XSSGood.cs" />
+<p>
+Alternatively, the AntiXSS library can be used to sanitize the user-controlled data:
+</p>
+<sample src="XSSGood2.cs" />
+<p>
+Recall that this solution requires the AntiXSS library to be installed, for example by
+adding a package reference to the AntiXSS NuGet package to the project file.
+</p>
 
 </example>
 <references>
@@ -34,6 +50,9 @@ OWASP:
 </li>
 <li>
 Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
+</li>
+<li>
+AntiXSS: <a href="https://www.nuget.org/packages/AntiXss">AntiXSS NuGet package</a>.
 </li>
 
 
