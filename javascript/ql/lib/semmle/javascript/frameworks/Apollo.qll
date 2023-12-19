@@ -24,7 +24,7 @@ module Apollo {
         ]).getMember("gql")
   }
 
-  /** An instantiation of an `ApolloServer`.  */
+  /** An instantiation of an `ApolloServer`. */
   class ApolloServer extends API::NewNode {
     ApolloServer() { this = apollo().getAnInstantiation() }
   }
