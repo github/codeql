@@ -50,8 +50,6 @@ class StringConcatenation extends Call {
     (
       result.getUnderlyingType().stripType().getName() = "char"
       or
-      result.getUnderlyingType().getName() = "string"
-      or
       result
           .getType()
           .getUnspecifiedType()
