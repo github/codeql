@@ -7,11 +7,7 @@ private import ModelEditor
  * A class of effectively public callables from source code.
  */
 class PublicEndpointFromSource extends Endpoint {
-  PublicEndpointFromSource() {
-    this.fromSource() and
-    not this.getFile() instanceof TestFile and
-    not this.getFile() instanceof TestSupportFile
-  }
+  PublicEndpointFromSource() { this.fromSource() and not this.getFile() instanceof TestFile }
 
   override predicate isSource() { this instanceof SourceCallable }
 
