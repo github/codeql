@@ -7,19 +7,27 @@ private import codeql.util.Unit
 private import DataFlowUtil
 
 /** A signature for a module to control the behavior of `Node.toString`. */
-signature module Node0ToStringSig {
+abstract class Node0ToString extends Unit {
   /**
    * Gets the string that should be used by `OperandNode.toString`.
    */
-  string operandToString(Operand op);
+  abstract string operandToString(Operand op);
 
   /**
    * Gets the string that should be used by `InstructionNode.toString`.
    */
-  string instructionToString(Instruction i);
+  abstract string instructionToString(Instruction i);
 
   /**
    * Gets the string representation of the `Expr` associated with `n`, if any.
    */
-  string toExprString(Node n);
+  abstract string toExprString(Node n);
 }
+
+string operandToString(Operand op) { result = any(Node0ToString s).operandToString(op) }
+
+string instructionToString(Instruction instr) {
+  result = any(Node0ToString s).instructionToString(instr)
+}
+
+string toExprString(Node n) { result = any(Node0ToString s).toExprString(n) }

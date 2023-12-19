@@ -8,14 +8,12 @@ private import codeql.util.Unit
 private import Node0ToStringSig
 private import DataFlowUtil
 
-private module DebugNode0ToString implements Node0ToStringSig {
-  string instructionToString(Instruction i) { result = i.getDumpString() }
+class DebugNode0ToString extends Node0ToString {
+  override string instructionToString(Instruction i) { result = i.getDumpString() }
 
-  string operandToString(Operand op) {
+  override string operandToString(Operand op) {
     result = op.getDumpString() + " @ " + op.getUse().getResultId()
   }
 
-  string toExprString(Node n) { none() }
+  override string toExprString(Node n) { none() }
 }
-
-import DebugNode0ToString

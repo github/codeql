@@ -9,25 +9,23 @@ private import Node0ToStringSig
 private import DataFlowUtil
 private import DataFlowPrivate
 
-private module NormalNode0ToStringImpl implements Node0ToStringSig {
-  string instructionToString(Instruction i) {
+class NormalNode0ToStringImpl extends Node0ToString {
+  override string instructionToString(Instruction i) {
     if i.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
     then result = "this"
     else result = i.getAst().toString()
   }
 
-  string operandToString(Operand op) {
+  override string operandToString(Operand op) {
     if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
     then result = "this"
     else result = op.getDef().getAst().toString()
   }
 
-  string toExprString(Node n) {
+  override string toExprString(Node n) {
     result = n.asExpr(0).toString()
     or
     not exists(n.asExpr()) and
     result = stars(n) + n.asIndirectExpr(0, 1).toString()
   }
 }
-
-import NormalNode0ToStringImpl
