@@ -1,4 +1,4 @@
 ---
 category: majorAnalysis
 ---
-* Support for flow through captured variables.
+* Added support for global data-flow through captured variables.
