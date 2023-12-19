@@ -13,6 +13,7 @@ packages = [
     "Amazon.Lambda.Core",
     "Amazon.Lambda.APIGatewayEvents",
     "Dapper",
+    "EntityFramework",
     "Newtonsoft.Json",
     "NHibernate",
     "ServiceStack",
