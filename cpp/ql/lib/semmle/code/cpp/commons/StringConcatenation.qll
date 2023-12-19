@@ -10,7 +10,7 @@ private import semmle.code.cpp.dataflow.new.DataFlow
 class StringConcatenation extends Call {
   StringConcatenation() {
     // sprintf-like functions, i.e., concat through formatting
-    exists(FormattingFunctionCall fc | this = fc)
+    this instanceof FormattingFunctionCall
     or
     this.getTarget() instanceof StrcatFunction
     or
