@@ -1,4 +1,5 @@
-import semmle.code.csharp.dataflow.FlowSummary
+import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private
+import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Public
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private::TestOutput
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 

@@ -80,11 +80,11 @@ internal sealed class StubVisitor : SymbolVisitor
             stubWriter.Write(explicitInterfaceType.GetQualifiedName());
             stubWriter.Write('.');
             if (writeName)
-                stubWriter.Write(explicitInterfaceSymbol.GetName());
+                stubWriter.Write(EscapeIdentifier(explicitInterfaceSymbol.GetName()));
         }
         else if (writeName)
         {
-            stubWriter.Write(symbol.GetName());
+            stubWriter.Write(EscapeIdentifier(symbol.GetName()));
         }
     }
 
@@ -534,6 +534,9 @@ internal sealed class StubVisitor : SymbolVisitor
                 case RefKind.In:
                     stubWriter.Write("in ");
                     break;
+                case RefKind.RefReadOnlyParameter:
+                    stubWriter.Write("ref readonly ");
+                    break;
                 default:
                     stubWriter.Write($"/* TODO: {parameter.RefKind} */");
                     break;
@@ -554,6 +557,9 @@ internal sealed class StubVisitor : SymbolVisitor
         });
     }
 
+    private static bool ExcludeMethod(IMethodSymbol symbol) =>
+        symbol.Name == "<Clone>$";
+
     private void StubMethod(IMethodSymbol symbol, IMethodSymbol? explicitInterfaceSymbol, IMethodSymbol? baseCtor)
     {
         var methodKind = explicitInterfaceSymbol is null ? symbol.MethodKind : explicitInterfaceSymbol.MethodKind;
@@ -565,7 +571,7 @@ internal sealed class StubVisitor : SymbolVisitor
                 MethodKind.Ordinary
             };
 
-        if (!relevantMethods.Contains(methodKind))
+        if (!relevantMethods.Contains(methodKind) || ExcludeMethod(symbol))
             return;
 
         StubAttributes(symbol.GetAttributes());

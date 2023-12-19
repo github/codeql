@@ -25,4 +25,8 @@ module CppLangImplConstant implements LangSig<Sem, FloatDelta> {
    * Holds if `e2 >= e1 + delta` (if `upper = false`) or `e2 <= e1 + delta` (if `upper = true`).
    */
   predicate additionalBoundFlowStep(SemExpr e2, SemExpr e1, float delta, boolean upper) { none() }
+
+  predicate includeConstantBounds() { any() }
+
+  predicate includeRelativeBounds() { none() }
 }

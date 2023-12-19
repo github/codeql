@@ -48,7 +48,7 @@ namespace Semmle.Extraction
 
             writerLazy = new Lazy<StreamWriter>(() =>
             {
-                var tempPath = trap ?? Path.GetTempPath();
+                var tempPath = trap ?? FileUtils.GetTemporaryWorkingDirectory(out var _);
 
                 do
                 {

@@ -5,8 +5,12 @@ if (CREATE_COMPILATION_DATABASE_LINK)
     set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 endif ()
 
+if (NOT DEFINED BAZEL_BIN)
+    set(BAZEL_BIN "bazelisk")
+endif ()
+
 macro(bazel)
-    execute_process(COMMAND bazel ${ARGN}
+    execute_process(COMMAND ${BAZEL_BIN} ${ARGN}
             COMMAND_ERROR_IS_FATAL ANY
             OUTPUT_STRIP_TRAILING_WHITESPACE
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})

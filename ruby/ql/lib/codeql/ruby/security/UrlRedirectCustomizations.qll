@@ -11,6 +11,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.Sanitizers
 private import codeql.ruby.frameworks.ActionController
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -71,6 +72,10 @@ module UrlRedirect {
         forall(RedirectToCall c | c = e.asExpr().getExpr() | c.allowsExternalRedirect())
       )
     }
+  }
+
+  private class ExternalUrlRedirectSink extends Sink {
+    ExternalUrlRedirectSink() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
   }
 
   /**

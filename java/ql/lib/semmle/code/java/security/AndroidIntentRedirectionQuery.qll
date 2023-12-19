@@ -2,9 +2,9 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.DataFlow2
+deprecated import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking3
+deprecated import semmle.code.java.dataflow.TaintTracking3
 import semmle.code.java.security.AndroidIntentRedirection
 
 /**

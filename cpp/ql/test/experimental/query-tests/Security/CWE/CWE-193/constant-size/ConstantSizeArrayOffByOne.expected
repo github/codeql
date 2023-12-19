@@ -35,10 +35,10 @@ edges
 | test.cpp:136:9:136:16 | ... += ... | test.cpp:138:13:138:15 | arr |
 | test.cpp:143:18:143:21 | asdf | test.cpp:134:25:134:27 | arr |
 | test.cpp:143:18:143:21 | asdf | test.cpp:143:18:143:21 | asdf |
-| test.cpp:146:26:146:26 | p indirection | test.cpp:147:4:147:9 | -- ... |
+| test.cpp:146:26:146:26 | *p | test.cpp:147:4:147:9 | -- ... |
 | test.cpp:156:12:156:14 | buf | test.cpp:156:12:156:18 | ... + ... |
-| test.cpp:156:12:156:18 | ... + ... | test.cpp:158:17:158:18 | & ... indirection |
-| test.cpp:158:17:158:18 | & ... indirection | test.cpp:146:26:146:26 | p indirection |
+| test.cpp:156:12:156:18 | ... + ... | test.cpp:158:17:158:18 | *& ... |
+| test.cpp:158:17:158:18 | *& ... | test.cpp:146:26:146:26 | *p |
 | test.cpp:218:23:218:28 | buffer | test.cpp:220:5:220:11 | access to array |
 | test.cpp:218:23:218:28 | buffer | test.cpp:221:5:221:11 | access to array |
 | test.cpp:229:25:229:29 | array | test.cpp:231:5:231:10 | access to array |
@@ -121,11 +121,11 @@ nodes
 | test.cpp:138:13:138:15 | arr | semmle.label | arr |
 | test.cpp:143:18:143:21 | asdf | semmle.label | asdf |
 | test.cpp:143:18:143:21 | asdf | semmle.label | asdf |
-| test.cpp:146:26:146:26 | p indirection | semmle.label | p indirection |
+| test.cpp:146:26:146:26 | *p | semmle.label | *p |
 | test.cpp:147:4:147:9 | -- ... | semmle.label | -- ... |
 | test.cpp:156:12:156:14 | buf | semmle.label | buf |
 | test.cpp:156:12:156:18 | ... + ... | semmle.label | ... + ... |
-| test.cpp:158:17:158:18 | & ... indirection | semmle.label | & ... indirection |
+| test.cpp:158:17:158:18 | *& ... | semmle.label | *& ... |
 | test.cpp:218:23:218:28 | buffer | semmle.label | buffer |
 | test.cpp:220:5:220:11 | access to array | semmle.label | access to array |
 | test.cpp:221:5:221:11 | access to array | semmle.label | access to array |

@@ -353,7 +353,7 @@ module Flask {
     }
   }
 
-  /** A request handler defined in a django view class, that has no known route. */
+  /** A request handler defined in a flask view class, that has no known route. */
   private class FlaskViewClassHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range {
     FlaskViewClassHandlerWithoutKnownRoute() {
       exists(FlaskViewClass vc | vc.getARequestHandler() = this) and
@@ -640,7 +640,7 @@ module Flask {
             .getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -666,7 +666,7 @@ module Flask {
             .getAValueReachableFromSource()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       // Technically it's `Iterator[str]`, but list will do :)
       output = "ReturnValue.ListElement" and

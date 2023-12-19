@@ -3,7 +3,7 @@ import codeql.typetracking.internal.TypeTrackingImpl as SharedImpl
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as Cfg
 private import Cfg::CfgNodes
-private import SummaryTypeTracker as SummaryTypeTracker
+private import codeql.typetracking.internal.SummaryTypeTracker as SummaryTypeTracker
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary as FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -11,8 +11,6 @@ private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
-private import codeql.ruby.dataflow.internal.AccessPathSyntax
 
 /** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]
@@ -135,11 +133,11 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   class Node = DataFlow::Node;
 
   // Content
-  class TypeTrackerContent = DataFlowPublic::ContentSet;
+  class Content = DataFlowPublic::ContentSet;
 
-  class TypeTrackerContentFilter = TypeTrackingInput::ContentFilter;
+  class ContentFilter = TypeTrackingInput::ContentFilter;
 
-  TypeTrackerContentFilter getFilterFromWithoutContentStep(TypeTrackerContent content) {
+  ContentFilter getFilterFromWithoutContentStep(Content content) {
     (
       content.isAnyElement()
       or
@@ -152,7 +150,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
     result = MkElementFilter()
   }
 
-  TypeTrackerContentFilter getFilterFromWithContentStep(TypeTrackerContent content) {
+  ContentFilter getFilterFromWithContentStep(Content content) {
     (
       content.isAnyElement()
       or
@@ -170,30 +168,30 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   }
 
   // Summaries and their stacks
-  class SummaryComponent = FlowSummary::SummaryComponent;
+  class SummaryComponent = FlowSummaryImpl::Private::SummaryComponent;
 
-  class SummaryComponentStack = FlowSummary::SummaryComponentStack;
+  class SummaryComponentStack = FlowSummaryImpl::Private::SummaryComponentStack;
 
-  predicate singleton = FlowSummary::SummaryComponentStack::singleton/1;
+  predicate singleton = FlowSummaryImpl::Private::SummaryComponentStack::singleton/1;
 
-  predicate push = FlowSummary::SummaryComponentStack::push/2;
+  predicate push = FlowSummaryImpl::Private::SummaryComponentStack::push/2;
 
   // Relating content to summaries
-  predicate content = FlowSummary::SummaryComponent::content/1;
+  predicate content = FlowSummaryImpl::Private::SummaryComponent::content/1;
 
-  predicate withoutContent = FlowSummary::SummaryComponent::withoutContent/1;
+  predicate withoutContent = FlowSummaryImpl::Private::SummaryComponent::withoutContent/1;
 
-  predicate withContent = FlowSummary::SummaryComponent::withContent/1;
+  predicate withContent = FlowSummaryImpl::Private::SummaryComponent::withContent/1;
 
-  predicate return = FlowSummary::SummaryComponent::return/0;
+  predicate return = FlowSummaryImpl::Private::SummaryComponent::return/0;
 
   // Callables
-  class SummarizedCallable = FlowSummary::SummarizedCallable;
+  class SummarizedCallable = FlowSummaryImpl::Private::SummarizedCallableImpl;
 
   // Relating nodes to summaries
   Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
     exists(DataFlowDispatch::ParameterPosition pos, DataFlowPrivate::ArgumentNode n |
-      arg = FlowSummary::SummaryComponent::argument(pos) and
+      arg = FlowSummaryImpl::Private::SummaryComponent::argument(pos) and
       argumentPositionMatch(call.asExpr(), n, pos)
     |
       isPostUpdate = false and result = n
@@ -204,7 +202,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
 
   Node parameterOf(Node callable, SummaryComponent param) {
     exists(DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos |
-      param = FlowSummary::SummaryComponent::parameter(apos) and
+      param = FlowSummaryImpl::Private::SummaryComponent::parameter(apos) and
       DataFlowDispatch::parameterMatch(ppos, apos) and
       result
           .(DataFlowPrivate::ParameterNodeImpl)
@@ -213,13 +211,15 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   }
 
   Node returnOf(Node callable, SummaryComponent return) {
-    return = FlowSummary::SummaryComponent::return() and
+    return = FlowSummaryImpl::Private::SummaryComponent::return() and
     result.(DataFlowPrivate::ReturnNode).(DataFlowPrivate::NodeImpl).getCfgScope() =
       callable.asExpr().getExpr()
   }
 
   // Relating callables to nodes
-  Node callTo(SummarizedCallable callable) { result.asExpr().getExpr() = callable.getACallSimple() }
+  Node callTo(SummarizedCallable callable) {
+    result.asExpr().getExpr() = callable.(FlowSummary::SummarizedCallable).getACallSimple()
+  }
 }
 
 private module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;

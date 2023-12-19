@@ -4,7 +4,6 @@ private import DataFlowPrivate
 private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 private import codeql.ruby.ast.internal.Module
 private import FlowSummaryImpl as FlowSummaryImpl
-private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.SSA
 private import codeql.util.Boolean
@@ -426,14 +425,14 @@ private module Cached {
     TPositionalArgumentPosition(int pos) {
       exists(Call c | exists(c.getArgument(pos)))
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedParameterPosition(_, pos)
+      FlowSummaryImpl::ParsePositions::isParsedParameterPosition(_, pos)
     } or
     TKeywordArgumentPosition(string name) {
       name = any(KeywordParameter kp).getName()
       or
       exists(any(Call c).getKeywordArgument(name))
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
+      FlowSummaryImpl::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
     THashSplatArgumentPosition() or
     TSynthHashSplatArgumentPosition() or
@@ -450,15 +449,17 @@ private module Cached {
     TPositionalParameterPosition(int pos) {
       pos = any(Parameter p).getPosition()
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentPosition(_, pos)
+      FlowSummaryImpl::ParsePositions::isParsedArgumentPosition(_, pos)
     } or
     TPositionalParameterLowerBoundPosition(int pos) {
-      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
+      FlowSummaryImpl::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
     } or
     TKeywordParameterPosition(string name) {
       name = any(KeywordParameter kp).getName()
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+      exists(any(Call c).getKeywordArgument(name))
+      or
+      FlowSummaryImpl::ParsePositions::isParsedKeywordArgumentPosition(_, name)
     } or
     THashSplatParameterPosition() or
     TSynthHashSplatParameterPosition() or
@@ -662,7 +663,8 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
     // We exclude steps into type checked variables. For those, we instead rely on the
     // type being checked against
     localFlowStep(nodeFrom, nodeTo, summary) and
-    not hasAdjacentTypeCheckedReads(nodeTo)
+    not hasAdjacentTypeCheckedReads(nodeTo) and
+    not asModulePattern(nodeTo, _)
   }
 
   predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
