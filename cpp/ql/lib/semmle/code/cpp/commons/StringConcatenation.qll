@@ -9,7 +9,7 @@ private import semmle.code.cpp.dataflow.new.DataFlow
 
 class StringConcatenation extends Call {
   StringConcatenation() {
-    // sprintf-like functions, i.e., concat through formating
+    // sprintf-like functions, i.e., concat through formatting
     exists(FormattingFunctionCall fc | this = fc)
     or
     this.getTarget() instanceof StrcatFunction
