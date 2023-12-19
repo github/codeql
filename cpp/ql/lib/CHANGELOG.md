@@ -1,3 +1,7 @@
+## 0.12.2
+
+No user-facing changes.
+
 ## 0.12.1
 
 ### New Features
