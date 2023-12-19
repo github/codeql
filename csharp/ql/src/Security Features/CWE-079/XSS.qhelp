@@ -13,7 +13,7 @@ without properly sanitizing the input first, allows for a cross-site scripting v
 
 <p>
 To guard against cross-site scripting, consider using a library providing suitable encoding
-functionality, such as the <code>System.Net.WebUtility</code> class or the AntiXSS library,
+functionality, such as the <code>System.Net.WebUtility</code> class or the <code>AntiXSS</code> NuGet package,
 to sanitize the untrusted input before writing it to the page.
 The references also mention other possible solutions.
 </p>
@@ -31,13 +31,9 @@ Sanitizing the user-controlled data using <code>WebUtility.HtmlEncode</code> met
 </p>
 <sample src="XSSGood.cs" />
 <p>
-Alternatively, the AntiXSS library can be used to sanitize the user-controlled data:
+Alternatively, the <code>AntiXSS</code> NuGet package can be used to sanitize the user-controlled data:
 </p>
 <sample src="XSSGood2.cs" />
-<p>
-Recall that this solution requires the AntiXSS library to be installed, for example by
-adding a package reference to the AntiXSS NuGet package to the project file.
-</p>
 
 </example>
 <references>
