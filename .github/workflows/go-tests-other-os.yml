@@ -15,7 +15,7 @@ jobs:
     runs-on: macos-latest
     steps:
       - name: Set up Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
         id: go
@@ -50,7 +50,7 @@ jobs:
     runs-on: windows-latest-xl
     steps:
       - name: Set up Go ${{ env.GO_VERSION }}
-        uses: actions/setup-go@v4
+        uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
         id: go

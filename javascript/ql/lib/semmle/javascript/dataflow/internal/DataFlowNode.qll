@@ -27,6 +27,7 @@ newtype TNode =
     exists(decl.getASpecifier().getImportedName())
   } or
   THtmlAttributeNode(HTML::Attribute attr) or
+  TXmlAttributeNode(XmlAttribute attr) or
   TFunctionReturnNode(Function f) or
   TExceptionalFunctionReturnNode(Function f) or
   TExceptionalInvocationReturnNode(InvokeExpr e) or

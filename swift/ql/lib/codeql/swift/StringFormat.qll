@@ -78,10 +78,13 @@ class NsLog extends FormattingFunction, FreeFunction {
 }
 
 /**
- * The `NSException.raise` method.
+ * The `NSException.init` and `NSException.raise` methods.
  */
 class NsExceptionRaise extends FormattingFunction, Method {
-  NsExceptionRaise() { this.hasQualifiedName("NSException", "raise(_:format:arguments:)") }
+  NsExceptionRaise() {
+    this.hasQualifiedName("NSException", "init(name:reason:userInfo:)") or
+    this.hasQualifiedName("NSException", "raise(_:format:arguments:)")
+  }
 
   override int getFormatParameterIndex() { result = 1 }
 }
@@ -91,10 +94,17 @@ class NsExceptionRaise extends FormattingFunction, Method {
  */
 class PrintfFormat extends FormattingFunction, FreeFunction {
   int formatParamIndex;
+  string modeChars;
 
   PrintfFormat() {
-    this.getShortName().matches("%printf%") and this.getParam(formatParamIndex).getName() = "format"
+    modeChars = this.getShortName().regexpCapture("(.*)printf.*", 1) and
+    this.getParam(formatParamIndex).getName() = "format"
   }
 
   override int getFormatParameterIndex() { result = formatParamIndex }
+
+  /**
+   * Holds if this `printf` is a variant of `sprintf`.
+   */
+  predicate isSprintf() { modeChars.charAt(_) = "s" }
 }

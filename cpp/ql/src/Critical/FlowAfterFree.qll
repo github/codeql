@@ -50,12 +50,12 @@ predicate strictlyDominates(IRBlock b1, int i1, IRBlock b2, int i2) {
 module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
   module FlowFromFreeConfig implements DataFlow::StateConfigSig {
     class FlowState instanceof Expr {
-      FlowState() { isFree(_, this, _) }
+      FlowState() { isFree(_, _, this, _) }
 
       string toString() { result = super.toString() }
     }
 
-    predicate isSource(DataFlow::Node node, FlowState state) { isFree(node, state, _) }
+    predicate isSource(DataFlow::Node node, FlowState state) { isFree(node, _, state, _) }
 
     pragma[inline]
     predicate isSink(DataFlow::Node sink, FlowState state) {
@@ -64,7 +64,7 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
         DeallocationExpr dealloc
       |
         isASink(sink, e) and
-        isFree(source, state, dealloc) and
+        isFree(source, _, state, dealloc) and
         e != state and
         source.hasIndexInBlock(b1, i1) and
         sink.hasIndexInBlock(b2, i2) and
@@ -87,6 +87,8 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
       |
         e = any(StoreInstruction store).getDestinationAddress().getUnconvertedResultExpression()
       )
+      or
+      n.asExpr() instanceof ArrayExpr
     }
   }
 
@@ -94,14 +96,17 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
 }
 
 /**
- * Holds if `n` is a dataflow node such that `n.asExpr() = e` and `e`
- * is being freed by a deallocation expression `dealloc`.
+ * Holds if `outgoing` is a dataflow node that represents the pointer passed to
+ * `dealloc` after the call returns (i.e., the post-update node associated with
+ * the argument to `dealloc`), and `incoming` is the corresponding argument
+ * node going into `dealloc` (i.e., the pre-update node of `outgoing`).
  */
-predicate isFree(DataFlow::Node n, Expr e, DeallocationExpr dealloc) {
+predicate isFree(DataFlow::Node outgoing, DataFlow::Node incoming, Expr e, DeallocationExpr dealloc) {
   exists(Expr conv |
     e = conv.getUnconverted() and
     conv = dealloc.getFreedExpr().getFullyConverted() and
-    conv = n.asConvertedExpr()
+    incoming = outgoing.(DataFlow::PostUpdateNode).getPreUpdateNode() and
+    conv = incoming.asConvertedExpr()
   ) and
   // Ignore realloc functions
   not exists(dealloc.(FunctionCall).getTarget().(AllocationFunction).getReallocPtrArg())

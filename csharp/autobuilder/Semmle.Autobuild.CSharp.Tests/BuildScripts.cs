@@ -327,7 +327,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             Assert.Equal("codeql", startCallbackIn[0]);
             Assert.Equal("", endCallbackIn[0]);
             Assert.Equal(0, endCallbackReturn[0]);
-            Assert.Equal(1, endCallbackReturn.Count);
+            Assert.Single(endCallbackReturn);
         }
 
         [Fact]
@@ -447,6 +447,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists[@"C:\Project\test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbar.cs\ntest.csproj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
             var xml = new XmlDocument();
@@ -474,6 +475,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists[@"C:\Project/test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
             var xml = new XmlDocument();
@@ -496,6 +498,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists["csharp.log"] = false;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -561,6 +564,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -575,6 +579,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -585,14 +590,15 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionSolution()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln"] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
-            var autobuilder = CreateAutoBuilder(false, buildless: "true", solution: "foo.sln");
+            var autobuilder = CreateAutoBuilder(false, buildless: "true");
             TestAutobuilderScript(autobuilder, 0, 1);
         }
 
@@ -631,6 +637,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -647,6 +654,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.RunProcess[@"/bin/chmod u+x C:\Project/build/build.sh"] = 0;
             actions.RunProcess[@"C:\Project/build/build.sh"] = 0;
             actions.RunProcessWorkingDirectory[@"C:\Project/build/build.sh"] = @"C:\Project/build";
@@ -663,6 +671,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
 
             actions.RunProcess[@"/bin/chmod u+x C:\Project/build.sh"] = 0;
             actions.RunProcess[@"C:\Project/build.sh"] = 0;
@@ -680,6 +689,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
 
             actions.RunProcess[@"/bin/chmod u+x C:\Project/build.sh"] = 0;
             actions.RunProcess[@"C:\Project/build.sh"] = 5;
@@ -697,6 +707,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.RunProcess[@"cmd.exe /C C:\Project\build.bat"] = 0;
             actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\Project\build.bat"] = @"C:\Project";
             actions.FileExists["csharp.log"] = true;
@@ -712,6 +723,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.RunProcess[@"cmd.exe /C C:\Project\build.bat"] = 1;
             actions.RunProcessWorkingDirectory[@"cmd.exe /C C:\Project\build.bat"] = @"C:\Project";
             actions.RunProcess[@"cmd.exe /C C:\codeql\tools\java\bin\java -jar C:\codeql\csharp\tools\extractor-asp.jar ."] = 0;
@@ -733,6 +745,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -756,6 +769,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest1.cs\ntest2.cs";
             actions.EnumerateFiles[@"C:\Project\.nuget"] = "nuget.exe";
             actions.EnumerateDirectories[@"C:\Project"] = @".nuget";
@@ -789,6 +803,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "test1.csproj\ntest2.csproj\ntest1.cs\ntest2.cs";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -829,6 +844,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest1.cs\ntest2.cs";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -856,6 +872,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest1.cs\ntest2.cs";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
@@ -873,14 +890,15 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestSkipNugetBuildless()
         {
-            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone foo.sln --skip-nuget"] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
-            var autobuilder = CreateAutoBuilder(false, buildless: "true", solution: "foo.sln", nugetRestore: "false");
+            var autobuilder = CreateAutoBuilder(false, buildless: "true");
             TestAutobuilderScript(autobuilder, 0, 1);
         }
 
@@ -896,6 +914,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists[@"C:\Project/test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
             var xml = new XmlDocument();
@@ -918,16 +937,17 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess["dotnet --list-sdks"] = 0;
             actions.RunProcessOut["dotnet --list-sdks"] = "2.1.2 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
             actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
-            actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
+            actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir scratch/.dotnet"] = 0;
             actions.RunProcess[@"rm dotnet-install.sh"] = 0;
-            actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
-            actions.RunProcess[@"C:\Project/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"C:\Project/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"C:\Project/.dotnet/dotnet build --no-incremental C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet --info"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet build --no-incremental C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists["test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.GetEnvironmentVariable["PATH"] = "/bin:/usr/bin";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
@@ -953,16 +973,17 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcessOut["dotnet --list-sdks"] = @"2.1.3 [C:\Program Files\dotnet\sdks]
 2.1.4 [C:\Program Files\dotnet\sdks]";
             actions.RunProcess[@"chmod u+x dotnet-install.sh"] = 0;
-            actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir C:\Project/.dotnet"] = 0;
+            actions.RunProcess[@"./dotnet-install.sh --channel release --version 2.1.3 --install-dir scratch/.dotnet"] = 0;
             actions.RunProcess[@"rm dotnet-install.sh"] = 0;
-            actions.RunProcess[@"C:\Project/.dotnet/dotnet --info"] = 0;
-            actions.RunProcess[@"C:\Project/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"C:\Project/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"C:\Project/.dotnet/dotnet build --no-incremental C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet --info"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet build --no-incremental C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists["test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.GetEnvironmentVariable["PATH"] = "/bin:/usr/bin";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\nbar.cs\ntest.csproj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
@@ -986,14 +1007,15 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess["cmd.exe /C dotnet --list-sdks"] = 0;
             actions.RunProcessOut["cmd.exe /C dotnet --list-sdks"] = "2.1.3 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
             action();
-            actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet --info"] = 0;
-            actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet clean C:\Project\test.csproj"] = 0;
-            actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet restore C:\Project\test.csproj"] = 0;
-            actions.RunProcess[@"cmd.exe /C C:\Project\.dotnet\dotnet build --no-incremental C:\Project\test.csproj"] = 0;
+            actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet --info"] = 0;
+            actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet clean C:\Project\test.csproj"] = 0;
+            actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet restore C:\Project\test.csproj"] = 0;
+            actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet build --no-incremental C:\Project\test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project\test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.GetEnvironmentVariable["PATH"] = "/bin:/usr/bin";
             actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.cs\ntest.csproj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
@@ -1016,7 +1038,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             TestDotnetVersionWindows(() =>
             {
-                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
+                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir scratch\.dotnet"""] = 0;
             },
             6);
         }
@@ -1026,8 +1048,8 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             TestDotnetVersionWindows(() =>
             {
-                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 1;
-                actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir C:\Project\.dotnet"""] = 0;
+                actions.RunProcess[@"cmd.exe /C pwsh -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir scratch\.dotnet"""] = 1;
+                actions.RunProcess[@"cmd.exe /C powershell -NoProfile -ExecutionPolicy unrestricted -Command ""[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version 2.1.3 -InstallDir scratch\.dotnet"""] = 0;
             },
             7);
         }
@@ -1036,7 +1058,7 @@ namespace Semmle.Autobuild.CSharp.Tests
         public void TestDirsProjWindows()
         {
             actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\dirs.proj -DisableParallelProcessing"] = 1;
-            actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\dirs.proj -DisableParallelProcessing"] = 0;
+            actions.RunProcess[@"cmd.exe /C scratch\.nuget\nuget.exe restore C:\Project\dirs.proj -DisableParallelProcessing"] = 0;
             actions.RunProcess["cmd.exe /C CALL ^\"C:\\Program^ Files^ ^(x86^)\\Microsoft^ Visual^ Studio^ 12.0\\VC\\vcvarsall.bat^\" && set Platform=&& type NUL && msbuild C:\\Project\\dirs.proj /t:Windows /p:Platform=\"x86\" /p:Configuration=\"Debug\" /P:Fu=Bar"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project\a\test.csproj"] = true;
@@ -1049,10 +1071,11 @@ namespace Semmle.Autobuild.CSharp.Tests
 
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "a\\test.cs\na\\test.csproj\ndirs.proj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
-            actions.CreateDirectories.Add(@"C:\Project\.nuget");
-            actions.DownloadFiles.Add(("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", @"C:\Project\.nuget\nuget.exe"));
+            actions.CreateDirectories.Add(@"scratch\.nuget");
+            actions.DownloadFiles.Add(("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", @"scratch\.nuget\nuget.exe"));
 
             var csproj = new XmlDocument();
             csproj.LoadXml(@"<?xml version=""1.0"" encoding=""utf - 8""?>
@@ -1080,17 +1103,18 @@ namespace Semmle.Autobuild.CSharp.Tests
         public void TestDirsProjLinux()
         {
             actions.RunProcess[@"nuget restore C:\Project/dirs.proj -DisableParallelProcessing"] = 1;
-            actions.RunProcess[@"mono C:\Project/.nuget/nuget.exe restore C:\Project/dirs.proj -DisableParallelProcessing"] = 0;
+            actions.RunProcess[@"mono scratch/.nuget/nuget.exe restore C:\Project/dirs.proj -DisableParallelProcessing"] = 0;
             actions.RunProcess[@"msbuild C:\Project/dirs.proj /t:rebuild"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project/a/test.csproj"] = true;
             actions.FileExists[@"C:\Project/dirs.proj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.EnumerateFiles[@"C:\Project"] = "a/test.cs\na/test.csproj\ndirs.proj";
             actions.EnumerateDirectories[@"C:\Project"] = "";
-            actions.CreateDirectories.Add(@"C:\Project/.nuget");
-            actions.DownloadFiles.Add(("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", @"C:\Project/.nuget/nuget.exe"));
+            actions.CreateDirectories.Add("scratch/.nuget");
+            actions.DownloadFiles.Add(("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", "scratch/.nuget/nuget.exe"));
 
             var csproj = new XmlDocument();
             csproj.LoadXml(@"<?xml version=""1.0"" encoding=""utf - 8""?>
@@ -1119,6 +1143,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.FileExists["dirs.proj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
             actions.FileExists["csharp.log"] = false;
             actions.EnumerateFiles[@"C:\Project"] = "dirs.proj";
             actions.EnumerateDirectories[@"C:\Project"] = "";

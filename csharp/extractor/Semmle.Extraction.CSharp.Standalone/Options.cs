@@ -21,21 +21,6 @@ namespace Semmle.Extraction.CSharp.Standalone
                 case "help":
                     Help = true;
                     return true;
-                case "dry-run":
-                    SkipExtraction = value;
-                    return true;
-                case "skip-nuget":
-                    dependencies.UseNuGet = !value;
-                    return true;
-                case "all-references":
-                    AnalyseCsProjFiles = !value;
-                    return true;
-                case "skip-dotnet":
-                    dependencies.ScanNetFrameworkDlls = !value;
-                    return true;
-                case "self-contained-dotnet":
-                    dependencies.UseSelfContainedDotnet = value;
-                    return true;
                 default:
                     return base.HandleFlag(key, value);
             }
@@ -45,12 +30,6 @@ namespace Semmle.Extraction.CSharp.Standalone
         {
             switch (key)
             {
-                case "exclude":
-                    dependencies.Excludes.Add(value);
-                    return true;
-                case "references":
-                    dependencies.DllDirs.Add(value);
-                    return true;
                 case "dotnet":
                     dependencies.DotNetPath = value;
                     return true;
@@ -61,13 +40,6 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         public override bool HandleArgument(string arg)
         {
-            dependencies.SolutionFile = arg;
-            var fi = new FileInfo(dependencies.SolutionFile);
-            if (!fi.Exists)
-            {
-                System.Console.WriteLine($"[{Environment.CurrentManagedThreadId:D3}] Error: The solution {fi.FullName} does not exist");
-                Errors = true;
-            }
             return true;
         }
 
@@ -80,23 +52,13 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// <summary>
         /// The directory containing the source code;
         /// </summary>
-        public string SrcDir { get; } = System.IO.Directory.GetCurrentDirectory();
+        public string SrcDir { get; } = Directory.GetCurrentDirectory();
 
         private readonly DependencyOptions dependencies = new DependencyOptions();
         /// <summary>
         /// Dependency fetching related options.
         /// </summary>
         public IDependencyOptions Dependencies => dependencies;
-
-        /// <summary>
-        /// Whether to search .csproj files.
-        /// </summary>
-        public bool AnalyseCsProjFiles { get; private set; } = true;
-
-        /// <summary>
-        /// Whether the extraction phase should be skipped (dry-run).
-        /// </summary>
-        public bool SkipExtraction { get; private set; } = false;
 
         /// <summary>
         /// Whether errors were encountered parsing the arguments.
@@ -115,17 +77,9 @@ namespace Semmle.Extraction.CSharp.Standalone
         {
             output.WriteLine("C# standalone extractor\n\nExtracts a C# project in the current directory without performing a build.\n");
             output.WriteLine("Additional options:\n");
-            output.WriteLine("    xxx.sln          Restrict sources to given solution");
-            output.WriteLine("    --exclude:xxx    Exclude a file or directory (can be specified multiple times)");
-            output.WriteLine("    --references:xxx Scan additional files or directories for assemblies (can be specified multiple times)");
-            output.WriteLine("    --skip-dotnet    Do not reference the .Net Framework");
-            output.WriteLine("    --dry-run        Stop before extraction");
-            output.WriteLine("    --skip-nuget     Do not download nuget packages");
-            output.WriteLine("    --all-references Use all references (default is to only use references in .csproj files)");
             output.WriteLine("    --threads:nnn    Specify number of threads (default=CPU cores)");
             output.WriteLine("    --verbose        Produce more output");
             output.WriteLine("    --pdb            Cross-reference information from PDBs where available");
-            output.WriteLine("    --self-contained-dotnet    Use the .Net Framework packaged with the extractor");
         }
 
         private Options()

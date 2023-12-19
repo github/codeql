@@ -127,7 +127,7 @@ module String {
       result = API::getTopLevelMember("String").getAnInstantiation().getExprNode().getExpr()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = true
@@ -142,7 +142,7 @@ module String {
         API::getTopLevelMember("String").getAMethodCall("try_convert").getExprNode().getExpr()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -155,7 +155,7 @@ module String {
   private class FormatSummary extends SimpleSummarizedCallable {
     FormatSummary() { this = "%" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = ["Argument[self]", "Argument[0]", "Argument[0].Element[any]"] and
       output = "ReturnValue" and
       preservesValue = false
@@ -169,7 +169,7 @@ module String {
   private class BSummary extends SimpleSummarizedCallable {
     BSummary() { this = "b" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -180,7 +180,7 @@ module String {
   private class BytesliceSummary extends SimpleSummarizedCallable {
     BytesliceSummary() { this = "byteslice" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -191,7 +191,7 @@ module String {
   private class CapitalizeSummary extends SimpleSummarizedCallable {
     CapitalizeSummary() { this = ["capitalize", "capitalize!"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       preservesValue = false and
       output = "ReturnValue"
@@ -204,7 +204,7 @@ module String {
   private class CenterSummary extends SimpleSummarizedCallable {
     CenterSummary() { this = ["center", "ljust", "rjust"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
       or
       input = "Argument[1]" and
@@ -219,7 +219,7 @@ module String {
   private class ChompSummary extends SimpleSummarizedCallable {
     ChompSummary() { this = ["chomp", "chomp!", "chop", "chop!"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
       or
       this = ["chomp!", "chop!"] and
@@ -236,6 +236,10 @@ module String {
    */
   private class ClearSummary extends SimpleSummarizedCallable {
     ClearSummary() { none() }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      none()
+    }
   }
 
   /**
@@ -249,7 +253,7 @@ module String {
       none()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self,0..]" and
       output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
@@ -262,7 +266,7 @@ module String {
   private class DeleteSummary extends SimpleSummarizedCallable {
     DeleteSummary() { this = ["delete", "delete_prefix", "delete_suffix"] + ["", "!"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -273,7 +277,7 @@ module String {
   private class DowncaseSummary extends SimpleSummarizedCallable {
     DowncaseSummary() { this = ["downcase", "upcase", "swapcase"] + ["", "!"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -284,7 +288,7 @@ module String {
   private class DumpSummary extends SimpleSummarizedCallable {
     DumpSummary() { this = ["dump", "undump"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -308,7 +312,7 @@ module String {
   private class EachLineBlockSummary extends EachLineSummary {
     EachLineBlockSummary() { this = "each_line_with_block" and exists(mc.getBlock()) }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       preservesValue = false and
       input = "Argument[self]" and
       output = ["Argument[block].Parameter[0]", "ReturnValue"]
@@ -321,7 +325,7 @@ module String {
   private class EachLineNoBlockSummary extends EachLineSummary {
     EachLineNoBlockSummary() { this = "each_line_without_block" and not exists(mc.getBlock()) }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       preservesValue = false and
       input = "Argument[self]" and
       output = "ReturnValue.Element[?]"
@@ -334,7 +338,7 @@ module String {
   private class EncodeSummary extends SimpleSummarizedCallable {
     EncodeSummary() { this = ["encode", "unicode_normalize"] + ["", "!"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -345,7 +349,7 @@ module String {
   private class ForceEncodingSummary extends SimpleSummarizedCallable {
     ForceEncodingSummary() { this = "force_encoding" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -356,7 +360,7 @@ module String {
   private class FreezeSummary extends SimpleSummarizedCallable {
     FreezeSummary() { this = "freeze" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -370,7 +374,7 @@ module String {
     // str.gsub(pattern, replacement) -> new_str
     // str.gsub(pattern) {|match| block } -> new_str
     // str.gsub(pattern) -> enumerator of matches
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // receiver -> return value
       // replacement -> return value
       // block return -> return value
@@ -390,7 +394,7 @@ module String {
       none()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
       or
       input = "Argument[1]" and output = "ReturnValue" and preservesValue = false
@@ -403,7 +407,7 @@ module String {
   private class InspectSummary extends SimpleSummarizedCallable {
     InspectSummary() { this = "inspect" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -414,7 +418,7 @@ module String {
   private class StripSummary extends SimpleSummarizedCallable {
     StripSummary() { this = ["strip", "lstrip", "rstrip"] + ["", "!"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -425,7 +429,7 @@ module String {
   private class NextSummary extends SimpleSummarizedCallable {
     NextSummary() { this = ["next", "succ"] + ["", "!"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -436,7 +440,7 @@ module String {
   private class PartitionSummary extends SimpleSummarizedCallable {
     PartitionSummary() { this = ["partition", "rpartition"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       output = "ReturnValue.Element[0,1,2]" and
       preservesValue = false
@@ -449,7 +453,7 @@ module String {
   private class ReplaceSummary extends SimpleSummarizedCallable {
     ReplaceSummary() { this = "replace" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and
       output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
@@ -463,7 +467,7 @@ module String {
   private class ReverseSummary extends SimpleSummarizedCallable {
     ReverseSummary() { this = ["reverse", "reverse!"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -483,7 +487,7 @@ module String {
   private class ScanBlockSummary extends ScanSummary {
     ScanBlockSummary() { this = "scan_with_block" and exists(mc.getBlock()) }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       preservesValue = false and
       output =
@@ -500,7 +504,7 @@ module String {
   private class ScanNoBlockSummary extends ScanSummary {
     ScanNoBlockSummary() { this = "scan_no_block" and not exists(mc.getBlock()) }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       // scan(pattern) -> array
       input = "Argument[self]" and
       output = "ReturnValue.Element[?]" and
@@ -523,7 +527,7 @@ module String {
   private class ScrubBlockSummary extends ScrubSummary {
     ScrubBlockSummary() { this = "scrub_block" and exists(mc.getBlock()) }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
       or
       preservesValue = false and
@@ -542,7 +546,7 @@ module String {
   private class ScrubNoBlockSummary extends ScrubSummary {
     ScrubNoBlockSummary() { this = "scrub_no_block" and not exists(mc.getBlock()) }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
       or
       preservesValue = false and
@@ -557,7 +561,7 @@ module String {
   private class ShellescapeSummary extends SimpleSummarizedCallable {
     ShellescapeSummary() { this = "shellescape" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -568,7 +572,7 @@ module String {
   private class ShellSplitSummary extends SimpleSummarizedCallable {
     ShellSplitSummary() { this = "shellsplit" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       output = "ReturnValue.Element[?]" and
       preservesValue = false
@@ -581,7 +585,7 @@ module String {
   private class SliceSummary extends SimpleSummarizedCallable {
     SliceSummary() { this = ["slice", "slice!", "split", "[]"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -592,7 +596,7 @@ module String {
   private class SqueezeSummary extends SimpleSummarizedCallable {
     SqueezeSummary() { this = ["squeeze", "squeeze!"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -603,7 +607,7 @@ module String {
   private class ToStrSummary extends SimpleSummarizedCallable {
     ToStrSummary() { this = ["to_str", "to_s"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
     }
   }
@@ -614,7 +618,7 @@ module String {
   private class TrSummary extends SimpleSummarizedCallable {
     TrSummary() { this = ["tr", "tr_s"] + ["", "!"] }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
       or
       input = "Argument[1]" and output = "ReturnValue" and preservesValue = false
@@ -646,7 +650,7 @@ module String {
     }
 
     // TODO: if second arg ('exclusive') is true, the first arg is excluded
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       taintIdentityFlow(input, output, preservesValue)
       or
       input = ["Argument[self]", "Argument[0]"] and
@@ -668,7 +672,7 @@ module String {
       mc.getArgument(1).getConstantValue().isBoolean(true)
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       output = "Argument[block].Parameter[0]" and
       preservesValue = false

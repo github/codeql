@@ -3,9 +3,12 @@
  */
 
 import java
+private import semmle.code.configfiles.ConfigFiles
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.RangeUtils
 private import semmle.code.java.dispatch.VirtualDispatch
+private import semmle.code.java.frameworks.Properties
 
 private class ShortStringLiteral extends StringLiteral {
   ShortStringLiteral() { this.getValue().length() < 100 }
@@ -38,7 +41,15 @@ private predicate objectToString(MethodCall ma) {
  * A taint-tracking configuration to reason about the use of potentially insecure cryptographic algorithms.
  */
 module InsecureCryptoConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { n.asExpr() instanceof InsecureAlgoLiteral }
+  predicate isSource(DataFlow::Node n) {
+    n.asExpr() instanceof InsecureAlgoLiteral
+    or
+    exists(PropertiesGetPropertyMethodCall mc | n.asExpr() = mc |
+      // Since properties pairs are not included in the java/weak-crypto-algorithm,
+      // The check for values from properties files can be less strict than `InsecureAlgoLiteral`.
+      not mc.getPropertyValue().regexpMatch(getSecureAlgorithmRegex())
+    )
+  }
 
   predicate isSink(DataFlow::Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
 

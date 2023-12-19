@@ -87,6 +87,8 @@
 | testCoreData.swift:91:10:91:10 | passwd | label:passwd, type:credential |
 | testCoreData.swift:92:10:92:10 | passwd | label:passwd, type:credential |
 | testCoreData.swift:93:10:93:10 | passwd | label:passwd, type:credential |
+| testCoreData.swift:128:15:128:33 | call to generateSecretKey() | label:generateSecretKey, type:credential |
+| testCoreData.swift:129:15:129:30 | call to getCertificate() | label:getCertificate, type:credential |
 | testGRDB.swift:73:57:73:57 | password | label:password, type:credential |
 | testGRDB.swift:76:43:76:43 | password | label:password, type:credential |
 | testGRDB.swift:81:45:81:45 | password | label:password, type:credential |
@@ -163,10 +165,14 @@
 | testSend.swift:79:27:79:30 | .BankCardNo | label:BankCardNo, type:private information |
 | testSend.swift:80:27:80:30 | .MyCreditRating | label:MyCreditRating, type:private information |
 | testSend.swift:94:27:94:30 | .password | label:password, type:credential |
-| testURL.swift:17:54:17:54 | passwd | label:passwd, type:credential |
-| testURL.swift:19:55:19:55 | account_no | label:account_no, type:private information |
-| testURL.swift:20:55:20:55 | credit_card_no | label:credit_card_no, type:private information |
-| testURL.swift:24:22:24:22 | passwd | label:passwd, type:credential |
-| testURL.swift:28:55:28:55 | e_mail | label:e_mail, type:private information |
-| testURL.swift:30:57:30:57 | a_homeaddr_z | label:a_homeaddr_z, type:private information |
-| testURL.swift:32:55:32:55 | resident_ID | label:resident_ID, type:private information |
+| testURL.swift:39:50:39:50 | passwd | label:passwd, type:credential |
+| testURL.swift:41:51:41:51 | account_no | label:account_no, type:private information |
+| testURL.swift:42:51:42:51 | credit_card_no | label:credit_card_no, type:private information |
+| testURL.swift:46:22:46:22 | passwd | label:passwd, type:credential |
+| testURL.swift:50:51:50:51 | e_mail | label:e_mail, type:private information |
+| testURL.swift:52:53:52:53 | a_homeaddr_z | label:a_homeaddr_z, type:private information |
+| testURL.swift:54:51:54:51 | resident_ID | label:resident_ID, type:private information |
+| testURL.swift:73:52:73:67 | call to get_secret_key() | label:get_secret_key, type:credential |
+| testURL.swift:75:53:75:69 | call to get_cert_string() | label:get_cert_string, type:credential |
+| testURL.swift:96:51:96:51 | certificate | label:certificate, type:credential |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | label:credential, type:credential |

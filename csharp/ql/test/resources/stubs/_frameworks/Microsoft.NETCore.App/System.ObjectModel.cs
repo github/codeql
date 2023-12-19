@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.ObjectModel, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Collections
@@ -48,6 +48,7 @@ namespace System
                 protected virtual event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
                 event System.Collections.Specialized.NotifyCollectionChangedEventHandler System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged { add { } remove { } }
                 public ReadOnlyObservableCollection(System.Collections.ObjectModel.ObservableCollection<T> list) : base(default(System.Collections.Generic.IList<T>)) => throw null;
+                public static System.Collections.ObjectModel.ReadOnlyObservableCollection<T> Empty { get => throw null; }
                 protected virtual void OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) => throw null;
                 protected virtual void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs args) => throw null;
                 protected virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;

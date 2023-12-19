@@ -6,6 +6,7 @@ private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
+private import Node0ToString
 
 cached
 private module Cached {
@@ -138,11 +139,7 @@ abstract class InstructionNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getInstructionType(instr, _) }
 
-  override string toStringImpl() {
-    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = instr.getAst().toString()
-  }
+  override string toStringImpl() { result = instructionToString(instr) }
 
   override Location getLocationImpl() {
     if exists(instr.getAst().getLocation())
@@ -187,11 +184,7 @@ abstract class OperandNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getOperandType(op, _) }
 
-  override string toStringImpl() {
-    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = op.getDef().getAst().toString()
-  }
+  override string toStringImpl() { result = operandToString(op) }
 
   override Location getLocationImpl() {
     if exists(op.getDef().getAst().getLocation())
@@ -1148,4 +1141,56 @@ private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, Parame
         strictcount(phi.getAnInput())
       )
   )
+}
+
+/**
+ * Holds if the data-flow step from `node1` to `node2` can be used to
+ * determine where side-effects may return from a callable.
+ * For C/C++, this means that the step from `node1` to `node2` not only
+ * preserves the value, but also preserves the identity of the value.
+ * For example, the assignment to `x` that reads the value of `*p` in
+ * ```cpp
+ * int* p = ...
+ * int x = *p;
+ * ```
+ * does not preserve the identity of `*p`.
+ */
+bindingset[node1, node2]
+pragma[inline_late]
+predicate validParameterAliasStep(Node node1, Node node2) {
+  // When flow-through summaries are computed we track which parameters flow to out-going parameters.
+  // In an example such as:
+  // ```
+  // modify(int* px) { *px = source(); }
+  // void modify_copy(int* p) {
+  //   int x = *p;
+  //   modify(&x);
+  // }
+  // ```
+  // since dataflow tracks each indirection as a separate SSA variable dataflow
+  // sees the above roughly as
+  // ```
+  // modify(int* px, int deref_px) { deref_px = source(); }
+  // void modify_copy(int* p, int deref_p) {
+  //   int x = deref_p;
+  //   modify(&x, x);
+  // }
+  // ```
+  // and when dataflow computes flow from a parameter to a post-update node to
+  // conclude which parameters are "updated" by the call to `modify_copy` it
+  // finds flow from `x [post update]` to `deref_p [post update]`.
+  // To prevent this we exclude steps that don't preserve identity. We do this
+  // by excluding flow from the right-hand side of `StoreInstruction`s to the
+  // `StoreInstruction`. This is sufficient because, for flow-through summaries,
+  // we're only interested in indirect parameters such as `deref_p` in the
+  // exampe above (i.e., the parameters with a non-zero indirection index), and
+  // if that ever flows to the right-hand side of a `StoreInstruction` then
+  // there must have been a dereference to reduce its indirection index down to
+  // 0.
+  not exists(Operand operand |
+    node1.asOperand() = operand and
+    node2.asInstruction().(StoreInstruction).getSourceValueOperand() = operand
+  )
+  // TODO: Also block flow through models that don't preserve identity such
+  // as `strdup`.
 }

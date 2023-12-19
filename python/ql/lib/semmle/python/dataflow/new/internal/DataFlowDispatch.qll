@@ -36,9 +36,8 @@ private import python
 private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
-private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import semmle.python.internal.CachedStages
-private import semmle.python.dataflow.new.internal.TypeTracker::CallGraphConstruction as CallGraphConstruction
+private import semmle.python.dataflow.new.internal.TypeTrackingImpl::CallGraphConstruction as CallGraphConstruction
 
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
@@ -49,13 +48,13 @@ newtype TParameterPosition =
     // since synthetic parameters are made for a synthetic summary callable, based on
     // what Argument positions they have flow for, we need to make sure we have such
     // parameter positions available.
-    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalArgumentPosition(_, index)
+    FlowSummaryImpl::ParsePositions::isParsedPositionalArgumentPosition(_, index)
   } or
   TKeywordParameterPosition(string name) {
     name = any(Parameter p).getName()
     or
     // see comment for TPositionalParameterPosition
-    FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+    FlowSummaryImpl::ParsePositions::isParsedKeywordArgumentPosition(_, name)
   } or
   TStarArgsParameterPosition(int index) {
     // since `.getPosition` does not work for `*args`, we need *args parameter positions
@@ -136,13 +135,13 @@ newtype TArgumentPosition =
     // since synthetic calls within a summarized callable could use a unique argument
     // position, we need to ensure we make these available (these are specified as
     // parameters in the flow-summary spec)
-    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalParameterPosition(_, index)
+    FlowSummaryImpl::ParsePositions::isParsedPositionalParameterPosition(_, index)
   } or
   TKeywordArgumentPosition(string name) {
     exists(any(CallNode c).getArgByName(name))
     or
     // see comment for TPositionalArgumentPosition
-    FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
+    FlowSummaryImpl::ParsePositions::isParsedKeywordParameterPosition(_, name)
   } or
   TStarArgsArgumentPosition(int index) {
     exists(Call c | c.getPositionalArg(index) instanceof Starred)
@@ -1559,12 +1558,15 @@ private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
 }
 
 private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+  private SummaryCall call_;
+  private ArgumentPosition pos_;
+
   SummaryArgumentNode() {
-    FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+    FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
   }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
+    call = call_ and pos = pos_
   }
 }
 
@@ -1662,10 +1664,16 @@ private module OutNodes {
   }
 
   private class SummaryOutNode extends FlowSummaryNode, OutNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
+    private SummaryCall call;
+    private ReturnKind kind_;
+
+    SummaryOutNode() {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), kind_)
+    }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
+      result = call and
+      kind = kind_
     }
   }
 }

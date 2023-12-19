@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Runtime.InteropServices.JavaScript, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Runtime.InteropServices.JavaScript, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Runtime
@@ -21,7 +21,6 @@ namespace System
                 {
                     public static System.Runtime.InteropServices.JavaScript.JSFunctionBinding BindJSFunction(string functionName, string moduleName, System.ReadOnlySpan<System.Runtime.InteropServices.JavaScript.JSMarshalerType> signatures) => throw null;
                     public static System.Runtime.InteropServices.JavaScript.JSFunctionBinding BindManagedFunction(string fullyQualifiedName, int signatureHash, System.ReadOnlySpan<System.Runtime.InteropServices.JavaScript.JSMarshalerType> signatures) => throw null;
-                    public JSFunctionBinding() => throw null;
                     public static void InvokeJS(System.Runtime.InteropServices.JavaScript.JSFunctionBinding signature, System.Span<System.Runtime.InteropServices.JavaScript.JSMarshalerArgument> arguments) => throw null;
                 }
                 public static class JSHost
