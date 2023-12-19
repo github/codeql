@@ -361,7 +361,10 @@ module LocalFlow {
     //   nodeFrom is `y` on first line
     //   nodeTo is `y` on second line
     exists(EssaDefinition def |
-      nodeFrom.(CfgNode).getNode() = def.(EssaNodeDefinition).getDefiningNode() and
+      nodeFrom.(CfgNode).getNode() = def.(EssaNodeDefinition).getDefiningNode()
+      or
+      nodeFrom.(ScopeEntryDefinitionNode).getDefinition() = def
+    |
       AdjacentUses::firstUse(def, nodeTo.(CfgNode).getNode())
     )
     or

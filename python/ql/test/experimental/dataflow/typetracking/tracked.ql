@@ -26,7 +26,7 @@ module TrackedTest implements TestSig {
       not e.getLocation().getStartLine() = 0 and
       // We do not wish to annotate scope entry definitions,
       // as they do not appear in the source code.
-      not e.asCfgNode() = any(ScopeEntryDefinition def).getDefiningNode() and
+      not e instanceof DataFlow::ScopeEntryDefinitionNode and
       // ...same for `SynthCaptureNode`s
       not e instanceof DataFlow::SynthCaptureNode and
       tag = "tracked" and
