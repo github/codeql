@@ -1,5 +1,5 @@
 /**
- * This file contains module that implements the _debug_ version of
+ * This file contains a module that implements the _debug_ version of
  * `toString` for `Instruction` and `Operand` dataflow nodes.
  */
 
