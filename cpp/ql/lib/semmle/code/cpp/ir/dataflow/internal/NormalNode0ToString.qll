@@ -10,6 +10,11 @@ private import DataFlowUtil
 private import DataFlowPrivate
 
 private class NormalNode0ToString extends Node0ToString {
+  NormalNode0ToString() {
+    // Silence warning about `this` not being bound.
+    exists(this)
+  }
+
   override string instructionToString(Instruction i) {
     if i.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
     then result = "this"
