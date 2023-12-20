@@ -13,10 +13,12 @@ packages = [
     "Amazon.Lambda.Core",
     "Amazon.Lambda.APIGatewayEvents",
     "Dapper",
+    "EntityFramework",
     "Newtonsoft.Json",
     "NHibernate",
     "ServiceStack",
     "ServiceStack.OrmLite.SqlServer",
+    "System.Data.OleDb",
     "System.Data.SqlClient",
     "System.Data.SQLite",
     ]
