@@ -13,8 +13,7 @@ without properly sanitizing the input first, allows for a cross-site scripting v
 
 <p>
 To guard against cross-site scripting, consider using a library providing suitable encoding
-functionality, such as the <code>System.Net.WebUtility</code> class or the <code>AntiXSS</code> NuGet package,
-to sanitize the untrusted input before writing it to the page.
+functionality, such as the <code>System.Net.WebUtility</code> class to sanitize the untrusted input before writing it to the page.
 The references also mention other possible solutions.
 </p>
 
@@ -25,15 +24,11 @@ The references also mention other possible solutions.
 The following example shows the page parameter being written directly to the server error page,
 leaving the website vulnerable to cross-site scripting.
 </p>
-<sample src="XSS.cs" />
+<sample src="XSSBad.cs" />
 <p>
 Sanitizing the user-controlled data using <code>WebUtility.HtmlEncode</code> method prevents the vulnerability:
 </p>
 <sample src="XSSGood.cs" />
-<p>
-Alternatively, the <code>AntiXSS</code> NuGet package can be used to sanitize the user-controlled data:
-</p>
-<sample src="XSSGood2.cs" />
 
 </example>
 <references>
@@ -47,10 +42,6 @@ OWASP:
 <li>
 Wikipedia: <a href="http://en.wikipedia.org/wiki/Cross-site_scripting">Cross-site scripting</a>.
 </li>
-<li>
-AntiXSS: <a href="https://www.nuget.org/packages/AntiXss">AntiXSS NuGet package</a>.
-</li>
-
 
 </references>
 </qhelp>
