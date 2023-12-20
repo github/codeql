@@ -5,6 +5,7 @@
 private import java as J
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
+private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.java.dataflow.internal.ModelExclusions
 private import semmle.code.java.dataflow.DataFlow as Df
 private import semmle.code.java.dataflow.SSA as Ssa
@@ -37,7 +38,11 @@ private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
  */
 private predicate isRelevantForModels(J::Callable api) {
   not isUninterestingForModels(api) and
-  not isInfrequentlyUsed(api.getCompilationUnit())
+  not isInfrequentlyUsed(api.getCompilationUnit()) and
+  // Disregard all APIs that have a manual model.
+  not api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() and
+  not api =
+    any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
 }
 
 /**
