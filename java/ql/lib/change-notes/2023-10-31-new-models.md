@@ -8,7 +8,6 @@ category: minorAnalysis
   * hudson.console
   * java.lang
   * java.net
-  * java.rmi.server
   * java.util.logging
   * javax.imageio.stream
   * org.apache.commons.io
