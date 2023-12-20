@@ -27,9 +27,12 @@ newtype TNode =
     isExpressionNode(node)
     or
     node.getNode() instanceof Pattern
-    or
-    node = any(ScopeEntryDefinition def | not def.getScope() instanceof Module).getDefiningNode()
   } or
+  /**
+   * A node corresponding to a scope entry definition. That is, the value of a variable
+   * as it enters a scope.
+   */
+  TScopeEntryDefinitionNode(ScopeEntryDefinition def) { not def.getScope() instanceof Module } or
   /**
    * A synthetic node representing the value of an object before a state change.
    *
@@ -256,6 +259,28 @@ class ExprNode extends CfgNode {
 
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
+
+/**
+ * A node corresponding to a scope entry definition. That is, the value of a variable
+ * as it enters a scope.
+ */
+class ScopeEntryDefinitionNode extends Node, TScopeEntryDefinitionNode {
+  ScopeEntryDefinition def;
+
+  ScopeEntryDefinitionNode() { this = TScopeEntryDefinitionNode(def) }
+
+  /** Gets the `ScopeEntryDefinition` associated with this node. */
+  ScopeEntryDefinition getDefinition() { result = def }
+
+  /** Gets the source variable represented by this node. */
+  SsaSourceVariable getVariable() { result = def.getSourceVariable() }
+
+  override Location getLocation() { result = def.getLocation() }
+
+  override Scope getScope() { result = def.getScope() }
+
+  override string toString() { result = "Entry definition for " + this.getVariable().toString() }
+}
 
 /**
  * The value of a parameter at function entry, viewed as a node in a data
