@@ -110,9 +110,9 @@ string supportedType(Endpoint endpoint) {
 }
 
 string methodClassification(Call method) {
-  method.getFile() instanceof TestFile and result = "test"
+  method.getFile() instanceof TestRelatedFile and result = "test"
   or
-  not method.getFile() instanceof TestFile and
+  not method.getFile() instanceof TestRelatedFile and
   result = "source"
 }
 
@@ -130,9 +130,11 @@ private string qualifiedCallableName(string namespace, string type, Callable c) 
   exists(string name | hasQualifiedMethodName(c, namespace, type, name) | result = name)
 }
 
-/** A file that doesn't contain tests itself, but is only used in tests. */
-class TestSupportFile extends TestFile {
-  TestSupportFile() {
+/** A file that is either a test file or is only used in tests. */
+class TestRelatedFile extends File {
+  TestRelatedFile() {
+    this instanceof TestFile
+    or
     this.getAbsolutePath().matches(["%/test/%", "%/tests/%"]) and
     not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
   }
