@@ -1,4 +1,5 @@
-# Here we test capturing the _value_ of a variable (by using it as the default value for a parameter)
+# Here we test the case where a captured variable is being written inside a library call.
+
 # All functions starting with "test_" should run and execute `print("OK")` exactly once.
 # This can be checked by running validTest.py.
 
@@ -29,24 +30,19 @@ def SINK_F(x):
     else:
         print("OK")
 
+# Actual tests start here
 
-def by_value1():
-    a = SOURCE
-    def inner(a_val=a):
-        SINK(a_val) #$ captured
-        SINK_F(a) #$ SPURIOUS: captured
-    a = NONSOURCE
-    inner()
+@expects(2)
+def test_library_call():
+    captured = {"x": NONSOURCE}
 
-def by_value2():
-    a = NONSOURCE
-    def inner(a_val=a):
-        SINK(a) #$ captured
-        SINK_F(a_val)
-    a = SOURCE
-    inner()
+    def set(x):
+        captured["x"] = SOURCE
+        return x
 
-@expects(4)
-def test_by_value():
-    by_value1()
-    by_value2()
+    SINK_F(captured["x"])
+
+    for x in map(set, [1]):
+        pass
+
+    SINK(captured["x"]) #$ MISSING: captured
