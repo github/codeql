@@ -72,7 +72,7 @@ private module CaptureInput implements Shared::InputSig<Location> {
   class VariableWrite extends ControlFlowNode {
     CapturedVariable v;
 
-    VariableWrite() { this = v.getAStore().getAFlowNode() }
+    VariableWrite() { this = v.getAStore().getAFlowNode().(DefinitionNode).getValue() }
 
     CapturedVariable getVariable() { result = v }
 
