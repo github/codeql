@@ -1052,6 +1052,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof SynthDictSplatParameterNode
   or
   n instanceof SynthCaptureNode
+  or
+  n instanceof SynthCapturedVariablesParameterNode
 }
 
 class LambdaCallKind = Unit;
