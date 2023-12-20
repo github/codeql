@@ -12,6 +12,7 @@
 | arguments.cs:35:9:35:19 | call to method f3 | arguments.cs:35:18:35:18 | 2 | args |
 | arguments.cs:36:9:36:33 | call to method f3 | arguments.cs:36:12:36:12 | 0 | o |
 | arguments.cs:36:9:36:33 | call to method f3 | arguments.cs:36:15:36:32 | array creation of type Int32[] | args |
+| arguments.cs:37:9:37:25 | call to method f3 | arguments.cs:37:18:37:18 | 1 | args |
 | arguments.cs:37:9:37:25 | call to method f3 | arguments.cs:37:24:37:24 | 0 | o |
 | arguments.cs:38:9:38:19 | call to method f3 | arguments.cs:38:12:38:12 | 0 | o |
 | arguments.cs:38:9:38:19 | call to method f3 | arguments.cs:38:15:38:18 | access to parameter args | args |

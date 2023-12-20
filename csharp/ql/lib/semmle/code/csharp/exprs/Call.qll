@@ -66,8 +66,7 @@ class Call extends DotNet::Call, Expr, @call {
       result = this.getImplicitArgument(p)
       or
       // Appears in the named part of the call
-      result = this.getExplicitArgument(p.getName()) and
-      (p.(Parameter).isParams() implies isValidExplicitParamsType(p, result.getType()))
+      result = this.getExplicitArgument(p.getName())
     )
   }
 
@@ -222,28 +221,6 @@ class Call extends DotNet::Call, Expr, @call {
   predicate hasNoRuntimeArguments() { not exists(this.getARuntimeArgument()) }
 
   override string toString() { result = "call" }
-}
-
-/**
- * Holds if the type `t` is a valid argument type for passing an explicit array
- * to the `params` parameter `p`. For example, the types `object[]` and `string[]`
- * of the arguments on lines 4 and 5, respectively, are valid for the parameter
- * `args` on line 1 in
- *
- * ```csharp
- * void M(params object[] args) { ... }
- *
- * void CallM(object[] os, string[] ss, string s) {
- *   M(os);
- *   M(ss);
- *   M(s);
- * }
- * ```
- */
-pragma[nomagic]
-private predicate isValidExplicitParamsType(Parameter p, Type t) {
-  p.isParams() and
-  t.isImplicitlyConvertibleTo(p.getType())
 }
 
 /**
