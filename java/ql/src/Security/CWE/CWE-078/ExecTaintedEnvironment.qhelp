@@ -25,6 +25,12 @@ safe before using it.</p>
 <p>In the following (BAD) example, an environment variable is set with a name that is derived from the user input <code>var</code> without validation.</p>
 
 <sample src="ExecTaintedEnvironmentName.java" />
+<p>In the following (GOOD) example, the user's input is validated before being used to set the environment variable.</p>
 
+<sample src="ExecTaintedEnvironmentValidated.java" />
+
+<p>In the following (GOOD) example, the user's input is checked and used to determine an environment variable to add.</p>
+
+<sample src="ExecTaintedEnvironmentChecked.java" />
 </example>
 </qhelp>

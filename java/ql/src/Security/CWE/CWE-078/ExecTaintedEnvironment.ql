@@ -1,7 +1,7 @@
 /**
  * @name Building a command with an injected environment variable
- * @description Using externally controlled strings in the environment variables
- *              passed to a command line is vulnerable to malicious changes to the
+ * @description Passing environment variables containing externally controlled
+ *              strings to a command line is vulnerable to malicious changes to the
  *              environment of a subprocess.
  * @problem.severity error
  * @kind path-problem
