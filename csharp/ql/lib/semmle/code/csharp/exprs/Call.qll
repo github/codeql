@@ -57,38 +57,13 @@ class Call extends DotNet::Call, Expr, @call {
    *
    * This takes into account both positional and named arguments, but does not
    * consider default arguments.
-   *
-   * An argument must always have a type that is convertible to the relevant
-   * parameter type. Therefore, `params` arguments are only taken into account
-   * when they are passed as explicit arrays. For example, in the call to `M1`
-   * on line 5, `o` is not an argument for `M1`'s `args` parameter, while
-   * `new object[] { o }` on line 6 is, in
-   *
-   * ```csharp
-   * class C {
-   *   void M1(params object[] args) { }
-   *
-   *   void M2(object o) {
-   *     M1(o);
-   *     M1(new object[] { o });
-   *   }
-   * }
-   * ```
    */
   cached
   override Expr getArgumentForParameter(DotNet::Parameter p) {
     this.getTarget().getAParameter() = p and
     (
       // Appears in the positional part of the call
-      result = this.getImplicitArgument(p.getPosition()) and
-      (
-        p.(Parameter).isParams()
-        implies
-        (
-          isValidExplicitParamsType(p, result.getType()) and
-          not this.hasMultipleParamsArguments()
-        )
-      )
+      result = this.getImplicitArgument(p)
       or
       // Appears in the named part of the call
       result = this.getExplicitArgument(p.getName()) and
@@ -96,21 +71,16 @@ class Call extends DotNet::Call, Expr, @call {
     )
   }
 
-  /**
-   * Holds if this call has multiple arguments for a `params` parameter
-   * of the targeted callable.
-   */
-  private predicate hasMultipleParamsArguments() {
-    exists(Parameter p | p = this.getTarget().getAParameter() |
-      p.isParams() and
-      exists(this.getArgument(any(int i | i > p.getPosition())))
-    )
-  }
-
   pragma[noinline]
-  private Expr getImplicitArgument(int pos) {
-    result = this.getArgument(pos) and
-    not exists(result.getExplicitArgumentName())
+  private Expr getImplicitArgument(DotNet::Parameter p) {
+    not exists(result.getExplicitArgumentName()) and
+    (
+      p.(Parameter).isParams() and
+      result = this.getArgument(any(int i | i >= p.getPosition()))
+      or
+      not p.(Parameter).isParams() and
+      result = this.getArgument(p.getPosition())
+    )
   }
 
   pragma[nomagic]
