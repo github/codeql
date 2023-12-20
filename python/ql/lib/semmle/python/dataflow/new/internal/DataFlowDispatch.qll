@@ -1533,7 +1533,7 @@ abstract class ParameterNodeImpl extends Node {
 }
 
 /**
- * A sythetic parameter representing the values of the variables captured
+ * A synthetic parameter representing the values of the variables captured
  * by the callable being called. This parameter represents a single object
  * where all the values are stored as attributes.
  * This is also known as the environment part of a closure.
@@ -1638,7 +1638,7 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
 }
 
 /**
- * A sythetic argument representing the values of the variables captured
+ * A synthetic argument representing the values of the variables captured
  * by the callable being called. This argument represents a single object
  * where all the values are stored as attributes.
  * This is also known as the environment part of a closure.
@@ -1649,7 +1649,7 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
  * We might want a synthetic node here, but currently that incurs problems
  * with non-monotonic recursion, because of the use of `resolveCall` in the
  * char pred. This may be solvable by using
- * `CallGraphConstruction::Make` in staed of
+ * `CallGraphConstruction::Make` in stead of
  * `CallGraphConstruction::Simple::Make` appropriately.
  */
 class CapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
