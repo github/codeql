@@ -1,12 +1,12 @@
 /**
  * @name Load 3rd party classes or code ('unsafe reflection') without signature check
- * @description Load classes or code from 3rd party package without checking the 
+ * @description Load classes or code from 3rd party package without checking the
  *              package signature but only rely on package name.
- *              This makes it susceptible to package namespace squatting 
+ *              This makes it susceptible to package namespace squatting
  *              potentially leading to arbitrary code execution.
  * @problem.severity error
  * @precision high
- * @kind problem
+ * @kind path-problem
  * @id java/unsafe-reflection
  * @tags security
  *       experimental
@@ -16,70 +16,75 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.controlflow.Guards
+import semmle.code.java.dataflow.SSA
+import semmle.code.java.frameworks.android.Intent
 
+class CheckSignaturesGuard extends Guard instanceof EqualityTest {
+  MethodAccess checkSignatures;
 
-MethodAccess getClassLoaderReachableMethodAccess(DataFlow::Node node)
-{
-    exists(MethodAccess maGetClassLoader |
-        maGetClassLoader.getCallee().getName() = "getClassLoader" and
-        maGetClassLoader.getQualifier() = node.asExpr() and
-        result = maGetClassLoader.getControlFlowNode().getASuccessor+()
+  CheckSignaturesGuard() {
+    this.getAnOperand() = checkSignatures and
+    checkSignatures
+        .getMethod()
+        .hasQualifiedName("android.content.pm", "PackageManager", "checkSignatures") and
+    exists(Expr signatureCheckResult |
+      this.getAnOperand() = signatureCheckResult and signatureCheckResult != checkSignatures
+    |
+      signatureCheckResult.(CompileTimeConstantExpr).getIntValue() = 0 or
+      signatureCheckResult
+          .(FieldRead)
+          .getField()
+          .hasQualifiedName("android.content.pm", "PackageManager", "SIGNATURE_MATCH")
     )
+  }
+
+  Expr getCheckedExpr() { result = checkSignatures.getArgument(0) }
 }
 
-MethodAccess getDangerousReachableMethodAccess(MethodAccess ma)
-{
-  ma.getCallee().hasName(["getMethod", "getDeclaredMethod"]) and
-  (
-    result = ma.getControlFlowNode().getASuccessor*() and
-    result.getCallee().hasName("invoke")
-    or
-    exists(AssignExpr ae |
-      ae.getSource() = ma and
-      ae.getDest().(VarAccess).getVariable() =
-        result.getQualifier().(VarAccess).getVariable()
-    )
+predicate signatureChecked(Expr safe) {
+  exists(CheckSignaturesGuard g, SsaVariable v |
+    v.getAUse() = g.getCheckedExpr() and
+    safe = v.getAUse() and
+    g.controls(safe.getBasicBlock(), g.(EqualityTest).polarity())
   )
 }
 
-module SignaturePackageConfig implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) {
-exists(MethodAccess maCheckSignatures |
-      maCheckSignatures
-          .getMethod()
-          .hasQualifiedName("android.content.pm", "PackageManager", "checkSignatures") and
-      source.asExpr() = maCheckSignatures.getArgument(0)
+module InsecureLoadingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
+    exists(Method m | m = src.asExpr().(MethodAccess).getMethod() |
+      m.getDeclaringType().getASourceSupertype*() instanceof TypeContext and
+      m.hasName("createPackageContext") and
+      not signatureChecked(src.asExpr().(MethodAccess).getArgument(0))
     )
-    }
+  }
 
-    predicate isSink(DataFlow::Node sink) {
-        exists (MethodAccess maCreatePackageContext |
-            (maCreatePackageContext.getCallee().getDeclaringType().getQualifiedName() = "android.content.ContextWrapper" or
-             maCreatePackageContext.getCallee().getDeclaringType().getQualifiedName() = "android.content.Context") and 
-            maCreatePackageContext.getCallee().getName() = "createPackageContext" and
-            sink.asExpr() = maCreatePackageContext.getArgument(0)
-            )                
-    }
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("java.lang", "ClassLoader", "loadClass")
+    |
+      sink.asExpr() = ma.getQualifier()
+    )
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(MethodAccess ma, Method m |
+      ma.getMethod() = m and
+      m.getDeclaringType().getASourceSupertype*() instanceof TypeContext and
+      m.hasName("getClassLoader")
+    |
+      node1.asExpr() = ma.getQualifier() and
+      node2.asExpr() = ma
+    )
+  }
 }
 
-module SigPkgCfg = TaintTracking::Global<SignaturePackageConfig>;
+module InsecureLoadFlow = TaintTracking::Global<InsecureLoadingConfig>;
 
-predicate isSignaturesChecked(MethodAccess maCreatePackageContext)
-{
-  SigPkgCfg::flowToExpr(maCreatePackageContext.getArgument(0))
-}
- 
-from
-  MethodAccess maCreatePackageContext, LocalVariableDeclExpr lvdePackageContext,
-  DataFlow::Node sinkPackageContext, MethodAccess maGetMethod, MethodAccess maInvoke
-where
-  maCreatePackageContext
-      .getMethod()
-      .hasQualifiedName("android.content", ["ContextWrapper", "Context"], "createPackageContext") and
-  not isSignaturesChecked(maCreatePackageContext) and
-  lvdePackageContext.getEnclosingStmt() = maCreatePackageContext.getEnclosingStmt() and
-  TaintTracking::localTaint(DataFlow::exprNode(lvdePackageContext.getAnAccess()), sinkPackageContext) and
-  getClassLoaderReachableMethodAccess(sinkPackageContext) = maGetMethod and
-  getDangerousReachableMethodAccess(maGetMethod) = maInvoke
-select maInvoke, "Potential arbitary code execution due to $@ without $@ signature checking.", sinkPackageContext, "class loading", sinkPackageContext, "package"
- 
+import InsecureLoadFlow::PathGraph
+
+from InsecureLoadFlow::PathNode source, InsecureLoadFlow::PathNode sink
+where InsecureLoadFlow::flowPath(source, sink)
+select sink.getNode(), source, sink, "Class loaded from a $@ without signature check",
+  source.getNode(), "third party library"
+
