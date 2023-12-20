@@ -505,36 +505,6 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 }
 
 /**
- * A synthesized data flow node representing a closure object that tracks
- * captured variables.
- */
-class SynthCaptureNode extends Node, TSynthCaptureNode {
-  private VariableCapture::Flow::SynthesizedCaptureNode cn;
-
-  SynthCaptureNode() { this = TSynthCaptureNode(cn) }
-
-  /** Gets the `SynthesizedCaptureNode` that this node represents. */
-  VariableCapture::Flow::SynthesizedCaptureNode getSynthesizedCaptureNode() { result = cn }
-
-  override Scope getScope() { result = cn.getEnclosingCallable() }
-
-  override Location getLocation() { result = cn.getLocation() }
-
-  override string toString() { result = cn.toString() }
-}
-
-private class SynthCapturePostUpdateNode extends PostUpdateNodeImpl, SynthCaptureNode {
-  private SynthCaptureNode pre;
-
-  SynthCapturePostUpdateNode() {
-    VariableCapture::Flow::capturePostUpdateNode(this.getSynthesizedCaptureNode(),
-      pre.getSynthesizedCaptureNode())
-  }
-
-  override Node getPreUpdateNode() { result = pre }
-}
-
-/**
  * Gets a node that controls whether other nodes are evaluated.
  *
  * In the base case, this is the last node of `conditionBlock`, and `flipped` is `false`.
