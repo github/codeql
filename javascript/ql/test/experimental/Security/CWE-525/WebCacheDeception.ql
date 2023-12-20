@@ -11,10 +11,9 @@
  *       bug
  */
 
- import javascript
- import WebCacheDeceptionLib
- 
- from WebCacheDeception::Sink httpHandleFuncCall
- where httpHandleFuncCall.toString().matches("%*%")
- select httpHandleFuncCall, httpHandleFuncCall + " is used as wildcard endpoint."
- 
+import javascript
+import WebCacheDeceptionLib
+
+from WebCacheDeception::Sink httpHandleFuncCall
+where httpHandleFuncCall.toString().matches("%*%")
+select httpHandleFuncCall, httpHandleFuncCall + " is used as wildcard endpoint."
