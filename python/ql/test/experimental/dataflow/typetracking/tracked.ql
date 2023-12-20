@@ -3,6 +3,7 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TypeTracking
 import TestUtilities.InlineExpectationsTest
 import semmle.python.ApiGraphs
+private import semmle.python.dataflow.new.internal.DataFlowPrivate as DP
 
 // -----------------------------------------------------------------------------
 // tracked
@@ -28,7 +29,7 @@ module TrackedTest implements TestSig {
       // as they do not appear in the source code.
       not e instanceof DataFlow::ScopeEntryDefinitionNode and
       // ...same for `SynthCaptureNode`s
-      not e instanceof DataFlow::SynthCaptureNode and
+      not e instanceof DP::SynthCaptureNode and
       tag = "tracked" and
       location = e.getLocation() and
       value = t.getAttr() and
