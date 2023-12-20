@@ -3,7 +3,7 @@ const app = express()
 port = 3000
 
 app.get('/test', (req, res) => {
-  res.send('Company: Trendyol, Birth Date: 1997, Country: Turkey, Phone: 5554443322')
+  res.send('test')
 })
 
 
