@@ -40,9 +40,9 @@ class Generator:
 
     def printHelp(self):
         print(f"""Usage:
-python3 GenerateFlowModel.py <library-database> [--with-sinks] [--with-sources] [--with-summaries] [--with-typebased-summaries] [--dry-run]
+python3 GenerateFlowModel.py <library-database> [--with-sinks] [--with-sources] [--with-summaries] [--with-neutrals] [--with-typebased-summaries] [--dry-run]
 
-This generates summary, source and sink models for the code in the database.
+This generates summary, source, sink and neutral models for the code in the database.
 The files will be placed in `{self.language}/ql/lib/ext/generated/`.
 
 Which models are generated is controlled by the flags:
@@ -56,8 +56,7 @@ If none of these flags are specified, all models are generated except for the ty
     --dry-run: Only run the queries, but don't write to file.
 
 Example invocations:
-$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db mylibrary
-$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db mylibrary
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db
 $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db --with-sinks
 
 Requirements: `codeql` should both appear on your path.
