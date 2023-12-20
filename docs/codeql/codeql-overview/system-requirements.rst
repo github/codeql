@@ -38,4 +38,4 @@ For Python extraction:
 
 For Ruby extraction:
 
-- On Windows, the ``msvcp140.dll`` must be installed and available in the system. This can be installed by downloading the appropriate Microsoft Visual C++ Redistributable for Visual Studio.
+- On Windows, the ``msvcp140.dll`` must be installed and available on the system. This can be installed by downloading the appropriate Microsoft Visual C++ Redistributable for Visual Studio.
