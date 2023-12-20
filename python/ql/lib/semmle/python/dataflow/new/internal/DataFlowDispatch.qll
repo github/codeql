@@ -1668,9 +1668,6 @@ class CapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
     callNode = call.getNode() and
     pos.isLambdaSelf()
   }
-
-  /** Gets the `CallNode` that is being passed as an argument to itself. */
-  CallNode getCallNode() { result = callNode }
 }
 
 /** Gets a viable run-time target for the call `call`. */
