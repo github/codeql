@@ -144,7 +144,7 @@ namespace Semmle.Util
             return nested;
         }
 
-        private static Lazy<string> tempFolderPath = new Lazy<string>(() =>
+        private static readonly Lazy<string> tempFolderPath = new Lazy<string>(() =>
         {
             var tempPath = Path.GetTempPath();
             var name = Guid.NewGuid().ToString("N").ToUpper();
