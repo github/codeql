@@ -59,6 +59,41 @@ private module Cached {
 import Cached
 private import Nodes0
 
+/**
+ * A module for calculating the number of stars (i.e., `*`s) needed for various
+ * dataflow node `toString` predicates.
+ */
+module NodeStars {
+  private int getNumberOfIndirections(Node n) {
+    result = n.(RawIndirectOperand).getIndirectionIndex()
+    or
+    result = n.(RawIndirectInstruction).getIndirectionIndex()
+    or
+    result = n.(VariableNode).getIndirectionIndex()
+    or
+    result = n.(PostUpdateNodeImpl).getIndirectionIndex()
+    or
+    result = n.(FinalParameterNode).getIndirectionIndex()
+  }
+
+  private int maxNumberOfIndirections() { result = max(getNumberOfIndirections(_)) }
+
+  private string repeatStars(int n) {
+    n = 0 and result = ""
+    or
+    n = [1 .. maxNumberOfIndirections()] and
+    result = "*" + repeatStars(n - 1)
+  }
+
+  /**
+   * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
+   * output for `n`.
+   */
+  string stars(Node n) { result = repeatStars(getNumberOfIndirections(n)) }
+}
+
+import NodeStars
+
 class Node0Impl extends TIRDataFlowNode0 {
   /**
    * INTERNAL: Do not use.

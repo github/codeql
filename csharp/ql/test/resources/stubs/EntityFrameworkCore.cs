@@ -4,54 +4,6 @@ using System.ComponentModel;
 using System.Threading.Tasks;
 using System;
 
-namespace System.Data.Entity
-{
-    public class DbSet
-    {
-    }
-
-    public class DbSet<TEntity> : IEnumerable<TEntity>
-    {
-        public void Add(TEntity t) { }
-        public void AddRange(IEnumerable<TEntity> t) { }
-        public void Attach(TEntity t) { }
-        IEnumerator<TEntity> IEnumerable<TEntity>.GetEnumerator() => null;
-        IEnumerator IEnumerable.GetEnumerator() => null;
-    }
-
-    public class Database
-    {
-        public int ExecuteSqlQuery(string sql, params object[] parameters) => 0;
-        public int ExecuteSqlCommand(string sql, params object[] parameters) => 0;
-        public async Task ExecuteSqlCommandAsync(string sql, params object[] parameters) => throw null;
-        public Infrastructure.DbRawSqlQuery<T> SqlQuery<T>(string sql, params object[] parameters) => null;
-    }
-
-    public class DbContext : IDisposable
-    {
-        public void Dispose() { }
-        public Database Database => null;
-        public Infrastructure.DbRawSqlQuery<TElement> SqlQuery<TElement>(string sql, params object[] parameters) => null;
-        public int SaveChanges() => 0;
-        public System.Threading.Tasks.Task<int> SaveChangesAsync() => null;
-    }
-}
-
-namespace System.Data.Entity.Infrastructure
-{
-    interface IDbAsyncEnumerable
-    {
-    }
-
-    public class DbRawSqlQuery<T> : IEnumerable<T>, IListSource, IDbAsyncEnumerable
-    {
-        IEnumerator<T> IEnumerable<T>.GetEnumerator() => null;
-        IEnumerator IEnumerable.GetEnumerator() => null;
-        bool IListSource.ContainsListCollection => false;
-        IList IListSource.GetList() => null;
-    }
-}
-
 namespace Microsoft.EntityFrameworkCore
 {
     public class DbSet<TEntity> : IEnumerable<TEntity>

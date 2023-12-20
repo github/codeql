@@ -361,7 +361,10 @@ module LocalFlow {
     //   nodeFrom is `y` on first line
     //   nodeTo is `y` on second line
     exists(EssaDefinition def |
-      nodeFrom.(CfgNode).getNode() = def.(EssaNodeDefinition).getDefiningNode() and
+      nodeFrom.(CfgNode).getNode() = def.(EssaNodeDefinition).getDefiningNode()
+      or
+      nodeFrom.(ScopeEntryDefinitionNode).getDefinition() = def
+    |
       AdjacentUses::firstUse(def, nodeTo.(CfgNode).getNode())
     )
     or
@@ -492,8 +495,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
  * or at runtime when callables in the module are called.
  */
 predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
-  IncludePostUpdateFlow<PhaseDependentFlow<LocalFlow::localFlowStep/2>::step/2>::step(nodeFrom,
-    nodeTo)
+  LocalFlow::localFlowStep(nodeFrom, nodeTo)
 }
 
 private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {

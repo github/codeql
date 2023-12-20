@@ -190,18 +190,23 @@ namespace Semmle.Autobuild.CSharp
                     }
                     else
                     {
+                        var dotnetInstallPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(
+                            builder.Actions.GetEnvironmentVariable,
+                            builder.Options.Language.UpperCaseName,
+                            out var shouldCleanUp), ".dotnet", "dotnet-install.sh");
+
                         var downloadDotNetInstallSh = BuildScript.DownloadFile(
                             "https://dot.net/v1/dotnet-install.sh",
-                            "dotnet-install.sh",
+                            dotnetInstallPath,
                             e => builder.Log(Severity.Warning, $"Failed to download 'dotnet-install.sh': {e.Message}"));
 
                         var chmod = new CommandBuilder(builder.Actions).
                             RunCommand("chmod").
                             Argument("u+x").
-                            Argument("dotnet-install.sh");
+                            Argument(dotnetInstallPath);
 
                         var install = new CommandBuilder(builder.Actions).
-                            RunCommand("./dotnet-install.sh").
+                            RunCommand(dotnetInstallPath).
                             Argument("--channel").
                             Argument("release").
                             Argument("--version").
@@ -209,11 +214,17 @@ namespace Semmle.Autobuild.CSharp
                             Argument("--install-dir").
                             Argument(path);
 
-                        var removeScript = new CommandBuilder(builder.Actions).
-                            RunCommand("rm").
-                            Argument("dotnet-install.sh");
+                        var buildScript = downloadDotNetInstallSh & chmod.Script & install.Script;
 
-                        return downloadDotNetInstallSh & chmod.Script & install.Script & BuildScript.Try(removeScript.Script);
+                        if (shouldCleanUp)
+                        {
+                            var removeScript = new CommandBuilder(builder.Actions).
+                                RunCommand("rm").
+                                Argument(dotnetInstallPath);
+                            buildScript &= removeScript.Script;
+                        }
+
+                        return buildScript;
                     }
                 });
         }
