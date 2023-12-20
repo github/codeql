@@ -484,8 +484,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
  * or at runtime when callables in the module are called.
  */
 predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
-  IncludePostUpdateFlow<PhaseDependentFlow<LocalFlow::localFlowStep/2>::step/2>::step(nodeFrom,
-    nodeTo)
+  LocalFlow::localFlowStep(nodeFrom, nodeTo)
 }
 
 private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
