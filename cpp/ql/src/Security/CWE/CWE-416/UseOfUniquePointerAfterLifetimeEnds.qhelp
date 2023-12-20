@@ -1,0 +1,44 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Calling <code>get</code> on a <code>std::unique_ptr</code> object returns a pointer to the underlying allocations.
+When the <code>std::unique_ptr</code> object is destroyed, the pointer returned by <code>get</code> is no
+longer valid. If the pointer is used after the <code>std::unique_ptr</code> object is destroyed, then the behavior is undefined.
+</p>
+</overview>
+
+<recommendation>
+<p>
+Ensure that the pointer returned by <code>get</code> does not outlive the underlying <code>std::unique_ptr</code> object.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example gets a <code>std::unique_ptr</code> object, and then converts the resulting unique pointer to a
+pointer using <code>get</code> so that it can be passed to the <code>work</code> function.
+
+However, the <code>std::unique_ptr</code> object is destroyed as soon as the call
+to <code>get</code> returns. This means that <code>work</code> is given a pointer to invalid memory.
+</p>
+
+<sample src="UseOfUniquePointerAfterLifetimeEndsBad.cpp" />
+
+<p>
+The following example fixes the above code by ensuring that the pointer returned by the call to <code>get</code> does
+not outlive the underlying <code>std::unique_ptr</code> objects. This ensures that the pointer passed to <code>work</code>
+points to valid memory.
+</p>
+
+<sample src="UseOfUniquePointerAfterLifetimeEndsGood.cpp" />
+
+</example>
+<references>
+
+<li><a href="https://wiki.sei.cmu.edu/confluence/display/cplusplus/MEM50-CPP.+Do+not+access+freed+memory">MEM50-CPP. Do not access freed memory</a>.</li>
+
+</references>
+</qhelp>
