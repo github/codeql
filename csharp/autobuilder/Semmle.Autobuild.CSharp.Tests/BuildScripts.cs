@@ -938,7 +938,6 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcessOut["dotnet --list-sdks"] = "2.1.2 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
             actions.RunProcess[@"chmod u+x scratch/.dotnet/dotnet-install.sh"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet-install.sh --channel release --version 2.1.3 --install-dir scratch/.dotnet"] = 0;
-            actions.RunProcess[@"rm scratch/.dotnet/dotnet-install.sh"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet --info"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
@@ -964,7 +963,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.CreateDirectories.Add(@"scratch/.dotnet");
 
             var autobuilder = CreateAutoBuilder(false, dotnetVersion: "2.1.3");
-            TestAutobuilderScript(autobuilder, 0, 8);
+            TestAutobuilderScript(autobuilder, 0, 7);
         }
 
         [Fact]
@@ -975,7 +974,6 @@ namespace Semmle.Autobuild.CSharp.Tests
 2.1.4 [C:\Program Files\dotnet\sdks]";
             actions.RunProcess[@"chmod u+x scratch/.dotnet/dotnet-install.sh"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet-install.sh --channel release --version 2.1.3 --install-dir scratch/.dotnet"] = 0;
-            actions.RunProcess[@"rm scratch/.dotnet/dotnet-install.sh"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet --info"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
@@ -1001,7 +999,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.CreateDirectories.Add(@"scratch/.dotnet");
 
             var autobuilder = CreateAutoBuilder(false, dotnetVersion: "2.1.3");
-            TestAutobuilderScript(autobuilder, 0, 8);
+            TestAutobuilderScript(autobuilder, 0, 7);
         }
 
         private void TestDotnetVersionWindows(Action action, int commandsRun)

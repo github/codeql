@@ -190,7 +190,10 @@ namespace Semmle.Autobuild.CSharp
                     }
                     else
                     {
-                        var dotnetInstallPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var _), ".dotnet", "dotnet-install.sh");
+                        var dotnetInstallPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(
+                            builder.Actions.GetEnvironmentVariable,
+                            builder.Options.Language.UpperCaseName,
+                            out var shouldCleanUp), ".dotnet", "dotnet-install.sh");
 
                         var downloadDotNetInstallSh = BuildScript.DownloadFile(
                             "https://dot.net/v1/dotnet-install.sh",
@@ -211,11 +214,17 @@ namespace Semmle.Autobuild.CSharp
                             Argument("--install-dir").
                             Argument(path);
 
-                        var removeScript = new CommandBuilder(builder.Actions).
-                            RunCommand("rm").
-                            Argument(dotnetInstallPath);
+                        var buildScript = downloadDotNetInstallSh & chmod.Script & install.Script;
 
-                        return downloadDotNetInstallSh & chmod.Script & install.Script & BuildScript.Try(removeScript.Script);
+                        if (shouldCleanUp)
+                        {
+                            var removeScript = new CommandBuilder(builder.Actions).
+                                RunCommand("rm").
+                                Argument(dotnetInstallPath);
+                            buildScript &= removeScript.Script;
+                        }
+
+                        return buildScript;
                     }
                 });
         }
