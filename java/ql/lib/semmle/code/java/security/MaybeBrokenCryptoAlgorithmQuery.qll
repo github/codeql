@@ -44,10 +44,12 @@ module InsecureCryptoConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
     n.asExpr() instanceof InsecureAlgoLiteral
     or
-    exists(PropertiesGetPropertyMethodCall mc | n.asExpr() = mc |
+    exists(PropertiesGetPropertyMethodCall mc, string value |
+      n.asExpr() = mc and value = mc.getPropertyValue()
+    |
       // Since properties pairs are not included in the java/weak-crypto-algorithm,
       // The check for values from properties files can be less strict than `InsecureAlgoLiteral`.
-      not mc.getPropertyValue().regexpMatch(getSecureAlgorithmRegex())
+      not value.regexpMatch(getSecureAlgorithmRegex())
     )
   }
 
