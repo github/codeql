@@ -17,6 +17,18 @@ Verify that the signature of an app in addition to the package name before loadi
 </p>
 </recommendation>
 
+<example>
+<p>
+The <code>BadClassLoader</code> class illustrate class loading with <code>android.content.pm.PackageInfo.packageName.startsWith()</code> method without any check on the package signature. 
+</p>
+<sample src="BadClassLoader.java" />
+<p>
+The <code>GoodClassLoader</code> class illustrate class loading with package signature check using <code>android.content.pm.PackageManager.checkSignatures()</code> method.
+</p>
+<sample src="GoodClassLoader.java" />
+</example>
+
+
 <references>
 <li>
 <a href="https://blog.oversecured.com/Android-arbitrary-code-execution-via-third-party-package-contexts/">
