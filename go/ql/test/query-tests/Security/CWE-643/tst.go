@@ -10,7 +10,7 @@ package main
 //go:generate depstubber -vendor github.com/jbowtie/gokogiri/xml Node
 //go:generate depstubber -vendor github.com/jbowtie/gokogiri/xpath "" Compile
 //go:generate depstubber -vendor github.com/santhosh-tekuri/xpathparser "" Parse,MustParse
-//go:generate depstubber -vendor github.com/lestrrat-go/libxml2/parser Parser New
+//go:generate depstubber -vendor github.com/lestrrat-go/libxml2/parser Parser New,XMLParseNoEnt
 
 import (
 	"net/http"
