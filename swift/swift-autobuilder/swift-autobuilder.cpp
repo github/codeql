@@ -54,6 +54,11 @@ static bool buildSwiftPackages(const std::vector<std::filesystem::path>& swiftPa
   return any_successful;
 }
 
+static void installDependencies(const CLIArgs& args) {
+  auto structure = scanProjectStructure(args.workingDir);
+  installDependencies(structure, args.dryRun);
+}
+
 static bool autobuild(const CLIArgs& args) {
   auto structure = scanProjectStructure(args.workingDir);
   auto& xcodeTargets = structure.xcodeTargets;
@@ -82,7 +87,6 @@ static bool autobuild(const CLIArgs& args) {
     return false;
   } else if (!xcodeTargets.empty()) {
     LOG_INFO("Building Xcode target: {}", xcodeTargets.front());
-    installDependencies(structure, args.dryRun);
     auto buildSucceeded = buildXcodeTarget(xcodeTargets.front(), args.dryRun);
     // If build failed, try to build Swift packages
     if (!buildSucceeded && !swiftPackages.empty()) {
@@ -113,6 +117,7 @@ static CLIArgs parseCLIArgs(int argc, char** argv) {
 
 int main(int argc, char** argv) {
   auto args = parseCLIArgs(argc, argv);
+  installDependencies(args);
   auto success = autobuild(args);
   codeql::Log::flush();
   if (!success) {
