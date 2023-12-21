@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.undertow.server.handlers.resource", "URLResource", True, "URLResource", "(URL,String)", "", "Argument[0]", "request-forgery", "ai-manual"]
