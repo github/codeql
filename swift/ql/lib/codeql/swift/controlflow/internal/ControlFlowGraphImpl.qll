@@ -60,7 +60,7 @@ module CfgScope {
   private class KeyPathScope extends Range_ instanceof KeyPathExpr {
     KeyPathControlFlowTree tree;
 
-    KeyPathScope() { tree.asAstNode() = this }
+    KeyPathScope() { tree.getAst() = this }
 
     final override predicate entry(ControlFlowElement first) { first(tree, first) }
 
@@ -84,6 +84,8 @@ module CfgScope {
     override ControlFlowElement getChildNode(int i) {
       result.asAstNode() = super.getAst().getComponent(i)
     }
+
+    KeyPathExpr getAst() { result = super.getAst() }
   }
 }
 
@@ -1663,7 +1665,7 @@ module Exprs {
     }
   }
 
-  private class NilCoalescingTestTree extends LeafTree instanceof NilCoalescingElement { 
+  private class NilCoalescingTestTree extends LeafTree instanceof NilCoalescingElement {
     NilCoalescingExpr getAst() { result = super.getAst() }
   }
 
