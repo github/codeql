@@ -780,9 +780,7 @@ private predicate numberOfLoadsFromOperandRec(
  * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
  * operations and exactly `n` `LoadInstruction` operations.
  */
-private predicate numberOfLoadsFromOperand(
-  Operand operandFrom, Operand operandTo, int n, boolean certain
-) {
+predicate numberOfLoadsFromOperand(Operand operandFrom, Operand operandTo, int n, boolean certain) {
   numberOfLoadsFromOperandRec(operandFrom, operandTo, n, certain)
   or
   not Ssa::isDereference(_, operandFrom, _) and

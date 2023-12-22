@@ -146,13 +146,54 @@ private newtype TDefOrUseImpl =
     )
   }
 
+/**
+ * Holds if `fa` flows to a the address of a `StoreInstruction`, or flows to
+ * the qualifier of another field address that transitively flows to a `StoreInstruction`.
+ */
+private predicate fieldFlowsToStore(FieldAddress fa) {
+  numberOfLoadsFromOperand(fa, any(StoreInstruction store).getDestinationAddressOperand(), _, _)
+  or
+  exists(FieldAddress mid |
+    numberOfLoadsFromOperand(fa, mid.getObjectAddressOperand(), _, _) and
+    fieldFlowsToStore(mid)
+  )
+}
+
+private predicate isGlobalUseIndirectDefCand(GlobalLikeVariable v, IRFunction f, CppType type) {
+  exists(VariableAddressInstruction vai, Operand op |
+    vai.getEnclosingIRFunction() = f and
+    vai.getAstVariable() = v and
+    numberOfLoadsFromOperand(vai.getAUse(), op, _, _) and
+    type = getResultLanguageType(vai)
+  |
+    // Either this operand is used as the qualifier of a field that flows to
+    // a `StoreInstruction`
+    op = any(FieldAddress fa | fieldFlowsToStore(fa)).getObjectAddressOperand()
+    or
+    // Or the operand is potentially modified by a function call
+    isModifiableByCall(op, _)
+  )
+}
+
 private predicate isGlobalUse(
   GlobalLikeVariable v, IRFunction f, int indirection, int indirectionIndex
 ) {
+  // Generate a "global use" at the end of the function body if there's a
+  // direct definition somewhere in the body of the function
   exists(VariableAddressInstruction vai |
     vai.getEnclosingIRFunction() = f and
     vai.getAstVariable() = v and
     isDef(_, _, _, vai, indirection, indirectionIndex)
+  )
+  or
+  // Generate a "global use" at the end of the function body if the
+  // global variable is used for field-flow, or is passed as an argument
+  // to a function that may change its value.
+  exists(CppType type, int upper |
+    isGlobalUseIndirectDefCand(v, f, type) and
+    upper = countIndirectionsForCppType(type) and
+    indirection = [1 .. upper] and
+    indirectionIndex = indirection - 1
   )
 }
 
