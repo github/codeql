@@ -122,7 +122,7 @@ private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
   }
 
   override DataFlowType getTypeImpl() {
-    result = getDataFlowType(this.asDefinition().getSourceVariable().asVarDecl().getType())
+    result = getDataFlowType(this.asDefinition().getSourceVariable().getType())
   }
 }
 

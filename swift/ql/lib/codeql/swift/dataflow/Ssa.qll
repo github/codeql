@@ -32,6 +32,8 @@ module Ssa {
 
       EntryNode asKeyPath() { none() }
 
+      abstract Type getType();
+
       DeclRefExpr getAnAccess() { result.getDecl() = this.asVarDecl() }
 
       Location getLocation() {
@@ -48,6 +50,10 @@ module Ssa {
 
       override string toString() { result = v.toString() }
 
+      override Type getType() {
+        result = v.getType()
+      }
+
       override VarDecl asVarDecl() { result = v }
     }
 
@@ -55,6 +61,10 @@ module Ssa {
       EntryNode enter;
 
       KeyPathSourceVariable() { this = TKeyPathSourceVariable(enter) }
+
+      override Type getType() {
+        result = enter.getScope().(KeyPathExpr).getRoot().getType()
+      }
 
       override string toString() { result = enter.toString() }
 
