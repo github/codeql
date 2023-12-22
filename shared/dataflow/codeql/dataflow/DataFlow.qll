@@ -494,7 +494,16 @@ module DataFlowMake<InputSig Lang> {
      * A `Node` augmented with a call context (except for sinks) and an access path.
      * Only those `PathNode`s that are reachable from a source, and which can reach a sink, are generated.
      */
-    class PathNode;
+    class PathNode{
+      /** Gets the underlying Node. */
+      Node getNode();
+
+      /** Gets a successor of this node, if any. */
+      PathNode getASuccessor();
+
+      /** Holds if this node is a source. */
+      predicate isSource();
+    }
 
     /**
      * Holds if data can flow from `source` to `sink`.
@@ -570,6 +579,9 @@ module DataFlowMake<InputSig Lang> {
 
     /** Gets the underlying `Node`. */
     Node getNode();
+
+    /** Holds if this node is a source. */
+    predicate isSource();
   }
 
   signature module PathGraphSig<PathNodeSig PathNode> {
@@ -630,6 +642,15 @@ module DataFlowMake<InputSig Lang> {
       Node getNode() {
         result = this.asPathNode1().getNode() or
         result = this.asPathNode2().getNode()
+      }
+
+      predicate isSource(){
+        this.asPathNode1().isSource() or
+        this.asPathNode2().isSource() or
+      }
+
+      PathNode getASuccessor(){
+        none()
       }
     }
 
@@ -702,6 +723,16 @@ module DataFlowMake<InputSig Lang> {
 
       /** Gets the underlying `Node`. */
       Node getNode() { result = super.getNode() }
+
+      predicate isSource(){
+        this.asPathNode1().isSource() or
+        this.asPathNode2().isSource() or
+        this.asPathNode3().isSource()
+      }
+
+      PathNode getASuccessor(){
+        none()
+      }
     }
 
     /**
