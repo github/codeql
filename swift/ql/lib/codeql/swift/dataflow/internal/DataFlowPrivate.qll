@@ -98,8 +98,6 @@ private class KeyPathComponentPostUpdateNode extends TKeyPathComponentPostUpdate
   }
 
   KeyPathComponent getComponent() { result = component }
-
-  override DataFlowType getTypeImpl() { result = getDataFlowType(component.getComponentType()) }
 }
 
 private class PatternNodeImpl extends PatternNode, NodeImpl {
@@ -514,9 +512,7 @@ private module ParameterNodes {
       p = this.getPosition()
     }
 
-    override DataFlowType getTypeImpl() {
-      result = getDataFlowType(any(AnyType t))
-    }
+    override DataFlowType getTypeImpl() { result = getDataFlowType(any(AnyType t)) }
   }
 
   class KeyPathParameterNode extends ParameterNodeImpl, TKeyPathParameterNode {
@@ -564,9 +560,7 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
 
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 
-  override DataFlowType getTypeImpl() {
-    result = getDataFlowType(any(AnyType t))
-  }
+  override DataFlowType getTypeImpl() { result = getDataFlowType(any(AnyType t)) }
 }
 
 class KeyPathParameterPostUpdateNode extends NodeImpl, ReturnNode, PostUpdateNodeImpl,
@@ -593,10 +587,6 @@ class KeyPathParameterPostUpdateNode extends NodeImpl, ReturnNode, PostUpdateNod
   KeyPathExpr getKeyPathExpr() { result = entry.getScope() }
 
   override ReturnKind getKind() { result.(ParamReturnKind).getIndex() = -1 }
-
-  override DataFlowType getTypeImpl() {
-    result = getDataFlowType(this.getKeyPathExpr().getType().(BoundGenericType).getArgType(0))
-  }
 }
 
 class KeyPathReturnPostUpdateNode extends NodeImpl, ParameterNodeImpl, PostUpdateNodeImpl,
@@ -621,10 +611,6 @@ class KeyPathReturnPostUpdateNode extends NodeImpl, ParameterNodeImpl, PostUpdat
   override DataFlowCallable getEnclosingCallable() { result.asSourceCallable() = exit.getScope() }
 
   KeyPathExpr getKeyPathExpr() { result = exit.getScope() }
-
-  override DataFlowType getTypeImpl() {
-    result = getDataFlowType(this.getKeyPathExpr().getType().(BoundGenericType).getArgType(0))
-  }
 }
 
 /** A data-flow node that represents a call argument. */
@@ -1535,9 +1521,11 @@ Type stripType(Type t) {
   result = t.getCanonicalType()
 }
 
-abstract class PostUpdateNodeImpl extends Node {
+abstract class PostUpdateNodeImpl extends NodeImpl {
   /** Gets the node before the state update. */
   abstract Node getPreUpdateNode();
+
+  override DataFlowType getTypeImpl() { result = this.getPreUpdateNode().getType() }
 }
 
 private module PostUpdateNodes {
@@ -1553,8 +1541,6 @@ private module PostUpdateNodes {
     override string toStringImpl() { result = "[post] " + n.toString() }
 
     override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
-
-    override DataFlowType getTypeImpl() { result = this.getPreUpdateNode().getType() }
   }
 
   class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl {
@@ -1566,9 +1552,11 @@ private module PostUpdateNodes {
       FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(),
         result.(FlowSummaryNode).getSummaryNode())
     }
+
+    override DataFlowType getTypeImpl() { result = this.getPreUpdateNode().getType() }
   }
 
-  class CapturePostUpdateNode extends PostUpdateNodeImpl, CaptureNode {
+  class CapturePostUpdateNode extends PostUpdateNodeImpl, CaptureNodeImpl {
     private CaptureNode pre;
 
     CapturePostUpdateNode() {
@@ -1577,6 +1565,8 @@ private module PostUpdateNodes {
     }
 
     override Node getPreUpdateNode() { result = pre }
+
+    override DataFlowType getTypeImpl() { result = this.getPreUpdateNode().getType() }
   }
 }
 
