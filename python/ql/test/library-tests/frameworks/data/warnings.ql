@@ -1,5 +1,4 @@
 import python
-import semmle.python.dataflow.new.internal.AccessPathSyntax as AccessPathSyntax
 import semmle.python.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 import semmle.python.frameworks.data.ModelsAsData
 

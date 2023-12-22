@@ -578,7 +578,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
-  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  exists(DataFlowCallable c, ParameterPosition pos |
+    parameterNode(p, c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
+  )
   or
   CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(p.(InstanceParameterNode).getCallable())
 }

@@ -134,6 +134,13 @@ private class CaptureNodeImpl extends CaptureNode, NodeImpl {
   override DataFlowCallable getEnclosingCallable() {
     result.asSourceCallable() = this.getSynthesizedCaptureNode().getEnclosingCallable()
   }
+
+  override DataFlowType getTypeImpl() {
+    exists(VarDecl v |
+      this.getSynthesizedCaptureNode().isVariableAccess(v) and
+      result = getDataFlowType(v.getType())
+    )
+  }
 }
 
 private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
@@ -482,6 +489,15 @@ private module ParameterNodes {
     override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
 
     ClosureExpr getClosure() { result = closure }
+
+    override DataFlowType getTypeImpl() {
+      result =
+        getDataFlowType(this.getEnclosingCallable()
+              .asSourceCallable()
+              .getEnclosingDecl()
+              .asNominalTypeDecl()
+              .getType())
+    }
   }
 
   class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
@@ -499,7 +515,7 @@ private module ParameterNodes {
     }
 
     override DataFlowType getTypeImpl() {
-      result = FlowSummaryImpl::Private::summaryNodeType(this.getSummaryNode())
+      result = getDataFlowType(any(AnyType t))
     }
   }
 
@@ -549,7 +565,7 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 
   override DataFlowType getTypeImpl() {
-    result = FlowSummaryImpl::Private::summaryNodeType(this.getSummaryNode())
+    result = getDataFlowType(any(AnyType t))
   }
 }
 
@@ -685,12 +701,16 @@ private module ArgumentNodes {
   }
 
   class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+    private SummaryCall call_;
+    private ArgumentPosition pos_;
+
     SummaryArgumentNode() {
-      FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+      FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
+      call = call_ and
+      pos = pos_
     }
   }
 
@@ -848,10 +868,16 @@ private module OutNodes {
   }
 
   class SummaryOutNode extends OutNode, FlowSummaryNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
+    private SummaryCall call;
+    private ReturnKind kind_;
+
+    SummaryOutNode() {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), kind_)
+    }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
+      result = call and
+      kind = kind_
     }
   }
 
@@ -1634,6 +1660,11 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   exists(Callable c |
     c = p.(ParameterNodeImpl).getEnclosingCallable().asSourceCallable() and
     CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(c)
+  )
+  or
+  exists(DataFlowCallable c, ParameterPosition pos |
+    p.(ParameterNodeImpl).isParameterOf(c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
   )
 }
 
