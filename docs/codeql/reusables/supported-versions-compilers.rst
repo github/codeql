@@ -24,7 +24,7 @@
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [8]_"
    Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12",Not applicable,``.py``
    Ruby [10]_,"up to 3.2",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
-   Swift [11]_,"Swift 5.4-5.8.1","Swift compiler","``.swift``"
+   Swift [11]_,"Swift 5.4-5.9.1","Swift compiler","``.swift``"
    TypeScript [12]_,"2.6-5.3",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group

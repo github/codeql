@@ -53,14 +53,6 @@
     "ruby/ql/lib/codeql/ruby/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "swift/ql/lib/codeql/swift/dataflow/internal/tainttracking1/TaintTrackingImpl.qll"
   ],
-  "DataFlow Java/C#/Go/Ruby/Python/Swift Flow Summaries": [
-    "java/ql/lib/semmle/code/java/dataflow/internal/FlowSummaryImpl.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/FlowSummaryImpl.qll",
-    "go/ql/lib/semmle/go/dataflow/internal/FlowSummaryImpl.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/FlowSummaryImpl.qll",
-    "python/ql/lib/semmle/python/dataflow/new/internal/FlowSummaryImpl.qll",
-    "swift/ql/lib/codeql/swift/dataflow/internal/FlowSummaryImpl.qll"
-  ],
   "SsaReadPosition Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/SsaReadPositionCommon.qll"
@@ -461,19 +453,6 @@
     "python/ql/lib/semmle/python/security/internal/SensitiveDataHeuristics.qll",
     "ruby/ql/lib/codeql/ruby/security/internal/SensitiveDataHeuristics.qll",
     "swift/ql/lib/codeql/swift/security/internal/SensitiveDataHeuristics.qll"
-  ],
-  "SummaryTypeTracker": [
-    "python/ql/lib/semmle/python/dataflow/new/internal/SummaryTypeTracker.qll",
-    "ruby/ql/lib/codeql/ruby/typetracking/internal/SummaryTypeTracker.qll"
-  ],
-  "AccessPathSyntax": [
-    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/AccessPathSyntax.qll",
-    "go/ql/lib/semmle/go/dataflow/internal/AccessPathSyntax.qll",
-    "java/ql/lib/semmle/code/java/dataflow/internal/AccessPathSyntax.qll",
-    "javascript/ql/lib/semmle/javascript/frameworks/data/internal/AccessPathSyntax.qll",
-    "ruby/ql/lib/codeql/ruby/dataflow/internal/AccessPathSyntax.qll",
-    "python/ql/lib/semmle/python/dataflow/new/internal/AccessPathSyntax.qll",
-    "swift/ql/lib/codeql/swift/dataflow/internal/AccessPathSyntax.qll"
   ],
   "IncompleteUrlSubstringSanitization": [
     "javascript/ql/src/Security/CWE-020/IncompleteUrlSubstringSanitization.qll",

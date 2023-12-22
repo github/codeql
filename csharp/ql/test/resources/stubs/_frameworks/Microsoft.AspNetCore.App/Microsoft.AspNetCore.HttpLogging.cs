@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.HttpLogging, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.HttpLogging, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -11,9 +11,23 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseHttpLogging(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseW3CLogging(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
             }
+            public static partial class HttpLoggingEndpointConventionBuilderExtensions
+            {
+                public static TBuilder WithHttpLogging<TBuilder>(this TBuilder builder, Microsoft.AspNetCore.HttpLogging.HttpLoggingFields loggingFields, int? requestBodyLogLimit = default(int?), int? responseBodyLogLimit = default(int?)) where TBuilder : Microsoft.AspNetCore.Builder.IEndpointConventionBuilder => throw null;
+            }
         }
         namespace HttpLogging
         {
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
+            public sealed class HttpLoggingAttribute : System.Attribute
+            {
+                public HttpLoggingAttribute(Microsoft.AspNetCore.HttpLogging.HttpLoggingFields loggingFields) => throw null;
+                public bool IsRequestBodyLogLimitSet { get => throw null; }
+                public bool IsResponseBodyLogLimitSet { get => throw null; }
+                public Microsoft.AspNetCore.HttpLogging.HttpLoggingFields LoggingFields { get => throw null; }
+                public int RequestBodyLogLimit { get => throw null; set { } }
+                public int ResponseBodyLogLimit { get => throw null; set { } }
+            }
             [System.Flags]
             public enum HttpLoggingFields : long
             {
@@ -30,15 +44,31 @@ namespace Microsoft
                 ResponseTrailers = 512,
                 RequestBody = 1024,
                 ResponseBody = 2048,
+                Duration = 4096,
                 RequestProperties = 29,
                 RequestPropertiesAndHeaders = 93,
                 ResponsePropertiesAndHeaders = 160,
                 Request = 1117,
                 Response = 2208,
-                All = 3325,
+                All = 7421,
+            }
+            public sealed class HttpLoggingInterceptorContext
+            {
+                public void AddParameter(string key, object value) => throw null;
+                public HttpLoggingInterceptorContext() => throw null;
+                public void Disable(Microsoft.AspNetCore.HttpLogging.HttpLoggingFields fields) => throw null;
+                public void Enable(Microsoft.AspNetCore.HttpLogging.HttpLoggingFields fields) => throw null;
+                public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set { } }
+                public bool IsAnyEnabled(Microsoft.AspNetCore.HttpLogging.HttpLoggingFields fields) => throw null;
+                public Microsoft.AspNetCore.HttpLogging.HttpLoggingFields LoggingFields { get => throw null; set { } }
+                public System.Collections.Generic.IList<System.Collections.Generic.KeyValuePair<string, object>> Parameters { get => throw null; }
+                public int RequestBodyLogLimit { get => throw null; set { } }
+                public int ResponseBodyLogLimit { get => throw null; set { } }
+                public bool TryDisable(Microsoft.AspNetCore.HttpLogging.HttpLoggingFields fields) => throw null;
             }
             public sealed class HttpLoggingOptions
             {
+                public bool CombineLogs { get => throw null; set { } }
                 public HttpLoggingOptions() => throw null;
                 public Microsoft.AspNetCore.HttpLogging.HttpLoggingFields LoggingFields { get => throw null; set { } }
                 public Microsoft.AspNetCore.HttpLogging.MediaTypeOptions MediaTypeOptions { get => throw null; }
@@ -46,6 +76,11 @@ namespace Microsoft
                 public System.Collections.Generic.ISet<string> RequestHeaders { get => throw null; }
                 public int ResponseBodyLogLimit { get => throw null; set { } }
                 public System.Collections.Generic.ISet<string> ResponseHeaders { get => throw null; }
+            }
+            public interface IHttpLoggingInterceptor
+            {
+                System.Threading.Tasks.ValueTask OnRequestAsync(Microsoft.AspNetCore.HttpLogging.HttpLoggingInterceptorContext logContext);
+                System.Threading.Tasks.ValueTask OnResponseAsync(Microsoft.AspNetCore.HttpLogging.HttpLoggingInterceptorContext logContext);
             }
             public sealed class MediaTypeOptions
             {
@@ -101,6 +136,7 @@ namespace Microsoft
             public static partial class HttpLoggingServicesExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddHttpLogging(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.HttpLogging.HttpLoggingOptions> configureOptions) => throw null;
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddHttpLoggingInterceptor<T>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) where T : class, Microsoft.AspNetCore.HttpLogging.IHttpLoggingInterceptor => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddW3CLogging(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.HttpLogging.W3CLoggerOptions> configureOptions) => throw null;
             }
         }

@@ -24,8 +24,8 @@ private predicate isGlobalWithMangledNameAndWithoutDefinition(@mangledname name,
  * a unique global variable `complete` with the same name that does have a definition.
  */
 private predicate hasTwinWithDefinition(@globalvariable incomplete, @globalvariable complete) {
+  not variable_instantiation(incomplete, complete) and
   exists(@mangledname name |
-    not variable_instantiation(incomplete, complete) and
     isGlobalWithMangledNameAndWithoutDefinition(name, incomplete) and
     isGlobalWithMangledNameAndWithDefinition(name, complete)
   )

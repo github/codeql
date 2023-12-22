@@ -44,3 +44,4 @@ WORKSPACE.bazel @github/codeql-ci-reviewers
 
 # Misc
 /misc/scripts/accept-expected-changes-from-ci.py @RasmusWL
+/misc/scripts/generate-code-scanning-query-list.py @RasmusWL

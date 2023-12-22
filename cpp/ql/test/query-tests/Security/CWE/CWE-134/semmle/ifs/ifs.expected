@@ -1,38 +1,38 @@
 edges
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:62:9:62:10 | c7 indirection |
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:69:9:69:10 | c8 indirection |
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:75:9:75:10 | i1 indirection |
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:81:9:81:10 | i2 indirection |
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:87:9:87:10 | i3 indirection |
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:93:9:93:10 | i4 indirection |
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:99:9:99:10 | i5 indirection |
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:106:9:106:10 | i6 indirection |
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:112:9:112:10 | i7 indirection |
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:118:9:118:10 | i8 indirection |
-| ifs.c:16:27:16:30 | argv indirection | ifs.c:124:9:124:10 | i9 indirection |
+| ifs.c:16:27:16:30 | **argv | ifs.c:62:9:62:10 | *c7 |
+| ifs.c:16:27:16:30 | **argv | ifs.c:69:9:69:10 | *c8 |
+| ifs.c:16:27:16:30 | **argv | ifs.c:75:9:75:10 | *i1 |
+| ifs.c:16:27:16:30 | **argv | ifs.c:81:9:81:10 | *i2 |
+| ifs.c:16:27:16:30 | **argv | ifs.c:87:9:87:10 | *i3 |
+| ifs.c:16:27:16:30 | **argv | ifs.c:93:9:93:10 | *i4 |
+| ifs.c:16:27:16:30 | **argv | ifs.c:99:9:99:10 | *i5 |
+| ifs.c:16:27:16:30 | **argv | ifs.c:106:9:106:10 | *i6 |
+| ifs.c:16:27:16:30 | **argv | ifs.c:112:9:112:10 | *i7 |
+| ifs.c:16:27:16:30 | **argv | ifs.c:118:9:118:10 | *i8 |
+| ifs.c:16:27:16:30 | **argv | ifs.c:124:9:124:10 | *i9 |
 nodes
-| ifs.c:16:27:16:30 | argv indirection | semmle.label | argv indirection |
-| ifs.c:62:9:62:10 | c7 indirection | semmle.label | c7 indirection |
-| ifs.c:69:9:69:10 | c8 indirection | semmle.label | c8 indirection |
-| ifs.c:75:9:75:10 | i1 indirection | semmle.label | i1 indirection |
-| ifs.c:81:9:81:10 | i2 indirection | semmle.label | i2 indirection |
-| ifs.c:87:9:87:10 | i3 indirection | semmle.label | i3 indirection |
-| ifs.c:93:9:93:10 | i4 indirection | semmle.label | i4 indirection |
-| ifs.c:99:9:99:10 | i5 indirection | semmle.label | i5 indirection |
-| ifs.c:106:9:106:10 | i6 indirection | semmle.label | i6 indirection |
-| ifs.c:112:9:112:10 | i7 indirection | semmle.label | i7 indirection |
-| ifs.c:118:9:118:10 | i8 indirection | semmle.label | i8 indirection |
-| ifs.c:124:9:124:10 | i9 indirection | semmle.label | i9 indirection |
+| ifs.c:16:27:16:30 | **argv | semmle.label | **argv |
+| ifs.c:62:9:62:10 | *c7 | semmle.label | *c7 |
+| ifs.c:69:9:69:10 | *c8 | semmle.label | *c8 |
+| ifs.c:75:9:75:10 | *i1 | semmle.label | *i1 |
+| ifs.c:81:9:81:10 | *i2 | semmle.label | *i2 |
+| ifs.c:87:9:87:10 | *i3 | semmle.label | *i3 |
+| ifs.c:93:9:93:10 | *i4 | semmle.label | *i4 |
+| ifs.c:99:9:99:10 | *i5 | semmle.label | *i5 |
+| ifs.c:106:9:106:10 | *i6 | semmle.label | *i6 |
+| ifs.c:112:9:112:10 | *i7 | semmle.label | *i7 |
+| ifs.c:118:9:118:10 | *i8 | semmle.label | *i8 |
+| ifs.c:124:9:124:10 | *i9 | semmle.label | *i9 |
 subpaths
 #select
-| ifs.c:62:9:62:10 | c7 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:62:9:62:10 | c7 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
-| ifs.c:69:9:69:10 | c8 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:69:9:69:10 | c8 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
-| ifs.c:75:9:75:10 | i1 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:75:9:75:10 | i1 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
-| ifs.c:81:9:81:10 | i2 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:81:9:81:10 | i2 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
-| ifs.c:87:9:87:10 | i3 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:87:9:87:10 | i3 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
-| ifs.c:93:9:93:10 | i4 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:93:9:93:10 | i4 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
-| ifs.c:99:9:99:10 | i5 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:99:9:99:10 | i5 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
-| ifs.c:106:9:106:10 | i6 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:106:9:106:10 | i6 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
-| ifs.c:112:9:112:10 | i7 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:112:9:112:10 | i7 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
-| ifs.c:118:9:118:10 | i8 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:118:9:118:10 | i8 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
-| ifs.c:124:9:124:10 | i9 indirection | ifs.c:16:27:16:30 | argv indirection | ifs.c:124:9:124:10 | i9 indirection | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | argv indirection | a command-line argument |
+| ifs.c:62:9:62:10 | *c7 | ifs.c:16:27:16:30 | **argv | ifs.c:62:9:62:10 | *c7 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |
+| ifs.c:69:9:69:10 | *c8 | ifs.c:16:27:16:30 | **argv | ifs.c:69:9:69:10 | *c8 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |
+| ifs.c:75:9:75:10 | *i1 | ifs.c:16:27:16:30 | **argv | ifs.c:75:9:75:10 | *i1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |
+| ifs.c:81:9:81:10 | *i2 | ifs.c:16:27:16:30 | **argv | ifs.c:81:9:81:10 | *i2 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |
+| ifs.c:87:9:87:10 | *i3 | ifs.c:16:27:16:30 | **argv | ifs.c:87:9:87:10 | *i3 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |
+| ifs.c:93:9:93:10 | *i4 | ifs.c:16:27:16:30 | **argv | ifs.c:93:9:93:10 | *i4 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |
+| ifs.c:99:9:99:10 | *i5 | ifs.c:16:27:16:30 | **argv | ifs.c:99:9:99:10 | *i5 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |
+| ifs.c:106:9:106:10 | *i6 | ifs.c:16:27:16:30 | **argv | ifs.c:106:9:106:10 | *i6 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |
+| ifs.c:112:9:112:10 | *i7 | ifs.c:16:27:16:30 | **argv | ifs.c:112:9:112:10 | *i7 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |
+| ifs.c:118:9:118:10 | *i8 | ifs.c:16:27:16:30 | **argv | ifs.c:118:9:118:10 | *i8 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |
+| ifs.c:124:9:124:10 | *i9 | ifs.c:16:27:16:30 | **argv | ifs.c:124:9:124:10 | *i9 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | ifs.c:16:27:16:30 | **argv | a command-line argument |

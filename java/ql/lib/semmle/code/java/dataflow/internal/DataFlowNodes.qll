@@ -491,16 +491,16 @@ module Private {
     override string toString() { result = this.getSummaryNode().toString() }
 
     /** Holds if this summary node is the `i`th argument of `call`. */
-    predicate isArgumentOf(DataFlowCall call, int i) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), i)
+    predicate isArgumentOf(SummaryCall call, int i) {
+      FlowSummaryImpl::Private::summaryArgumentNode(call.getReceiver(), this.getSummaryNode(), i)
     }
 
     /** Holds if this summary node is a return node. */
     predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), _) }
 
     /** Holds if this summary node is an out node for `call`. */
-    predicate isOut(DataFlowCall call) {
-      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), _)
+    predicate isOut(SummaryCall call) {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), _)
     }
   }
 

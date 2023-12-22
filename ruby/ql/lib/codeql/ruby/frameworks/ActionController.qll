@@ -541,7 +541,7 @@ private module ParamsSummaries {
       result = paramsInstance().getAMethodCall(methodReturnsTaintFromSelf()).asExpr().getExpr()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -564,7 +564,7 @@ private module ParamsSummaries {
         [result.getReceiver(), result.getArgument(0)]
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = ["Argument[self]", "Argument[0]"] and
       output = "ReturnValue" and
       preservesValue = false
@@ -588,7 +588,7 @@ private module ParamsSummaries {
         [result.getReceiver(), result.getArgument(0)]
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = ["Argument[self]", "Argument[0]"] and
       output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false

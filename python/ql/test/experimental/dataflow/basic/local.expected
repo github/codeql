@@ -1,4 +1,3 @@
-| test.py:0:0:0:0 | Entry node for Module test | test.py:0:0:0:0 | Entry node for Module test |
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr |
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:1:5:1:17 | ControlFlowNode for obfuscated_id |
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |

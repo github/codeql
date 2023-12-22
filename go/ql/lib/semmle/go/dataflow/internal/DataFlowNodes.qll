@@ -86,7 +86,8 @@ module Private {
 
     /** Holds if this summary node is the `i`th argument of `call`. */
     predicate isArgumentOf(DataFlowCall call, int i) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), i)
+      // We do not currently have support for callback-based library models.
+      none()
     }
 
     /** Holds if this summary node is a return node. */
@@ -96,7 +97,8 @@ module Private {
 
     /** Holds if this summary node is an out node for `call`. */
     predicate isOut(DataFlowCall call) {
-      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), _)
+      // We do not currently have support for callback-based library models.
+      none()
     }
   }
 }
@@ -473,6 +475,7 @@ module Public {
   private DataFlow::Node getACalleeSource(DataFlow::CallNode cn) {
     result = cn.getCalleeNode() or
     basicLocalFlowStep(result, getACalleeSource(cn)) or
+    jumpStep(result, getACalleeSource(cn)) or
     result.asExpr() = getACalleeSource(cn).asExpr().(GenericFunctionInstantiationExpr).getBase()
   }
 

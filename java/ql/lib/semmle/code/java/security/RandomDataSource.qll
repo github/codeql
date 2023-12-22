@@ -108,6 +108,15 @@ class StdlibRandomSource extends RandomDataSource {
 }
 
 /**
+ * A method access calling the `random` of `java.lang.Math`.
+ */
+class MathRandomSource extends RandomDataSource {
+  MathRandomSource() { this.getMethod().hasQualifiedName("java.lang", "Math", "random") }
+
+  override Expr getOutput() { result = this }
+}
+
+/**
  * A method access calling a method declared on `org.apache.commons.lang3.RandomUtils`
  * that returns random data or writes random data to an argument.
  */
@@ -139,6 +148,22 @@ class ApacheCommonsRandomSource extends RandomDataSource {
     or
     m.hasName(["nextInt", "nextLong"]) and
     m.getNumberOfParameters() = 2
+  }
+
+  override Expr getOutput() { result = this }
+}
+
+/**
+ * A method access calling a method declared on `org.apache.commons.lang3.RandomStringUtils`
+ */
+class ApacheCommonsRandomStringSource extends RandomDataSource {
+  ApacheCommonsRandomStringSource() {
+    exists(Method m | m = this.getMethod() |
+      m.getName().matches("random%") and
+      m.getDeclaringType()
+          .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"],
+            "RandomStringUtils")
+    )
   }
 
   override Expr getOutput() { result = this }

@@ -1,16 +1,7 @@
-private import codeql.ruby.AST as Ast
-private import codeql.ruby.CFG as Cfg
-private import Cfg::CfgNodes
-private import codeql.ruby.dataflow.FlowSummary
-private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import codeql.ruby.dataflow.internal.DataFlowPublic as DataFlowPublic
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
-private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
-private import codeql.ruby.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
-private import codeql.ruby.dataflow.internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
-private import codeql.ruby.dataflow.internal.AccessPathSyntax
 private import internal.TypeTrackingImpl as TypeTrackingImpl
-import codeql.util.Boolean
+deprecated import codeql.util.Boolean
 
 deprecated class Node = DataFlowPublic::Node;
 

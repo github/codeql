@@ -19,7 +19,7 @@ module Sequel {
 
     override MethodCall getACall() { result = any(SequelConnection c).asExpr().getExpr() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
     }
   }

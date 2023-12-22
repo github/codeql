@@ -9,6 +9,7 @@ import semmle.code.cpp.exprs.Call
 import semmle.code.cpp.metrics.MetricFunction
 import semmle.code.cpp.Linkage
 private import semmle.code.cpp.internal.ResolveClass
+private import semmle.code.cpp.internal.ResolveFunction
 
 /**
  * A C/C++ function [N4140 8.3.5]. Both member functions and non-member
@@ -25,6 +26,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * in more detail in `Declaration.qll`.
  */
 class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
+  Function() { isFunction(underlyingElement(this)) }
+
   override string getName() { functions(underlyingElement(this), result, _) }
 
   /**
@@ -328,6 +331,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   MetricFunction getMetrics() { result = this }
 
   /** Holds if this function calls the function `f`. */
+  pragma[nomagic]
   predicate calls(Function f) { this.calls(f, _) }
 
   /**
@@ -336,10 +340,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   predicate calls(Function f, Locatable l) {
     exists(FunctionCall call |
-      call.getEnclosingFunction() = this and call.getTarget() = f and call = l
-    )
-    or
-    exists(DestructorCall call |
       call.getEnclosingFunction() = this and call.getTarget() = f and call = l
     )
   }

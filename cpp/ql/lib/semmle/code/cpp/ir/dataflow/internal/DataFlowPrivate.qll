@@ -6,6 +6,7 @@ private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
+private import Node0ToString
 
 cached
 private module Cached {
@@ -57,6 +58,41 @@ private module Cached {
 
 import Cached
 private import Nodes0
+
+/**
+ * A module for calculating the number of stars (i.e., `*`s) needed for various
+ * dataflow node `toString` predicates.
+ */
+module NodeStars {
+  private int getNumberOfIndirections(Node n) {
+    result = n.(RawIndirectOperand).getIndirectionIndex()
+    or
+    result = n.(RawIndirectInstruction).getIndirectionIndex()
+    or
+    result = n.(VariableNode).getIndirectionIndex()
+    or
+    result = n.(PostUpdateNodeImpl).getIndirectionIndex()
+    or
+    result = n.(FinalParameterNode).getIndirectionIndex()
+  }
+
+  private int maxNumberOfIndirections() { result = max(getNumberOfIndirections(_)) }
+
+  private string repeatStars(int n) {
+    n = 0 and result = ""
+    or
+    n = [1 .. maxNumberOfIndirections()] and
+    result = "*" + repeatStars(n - 1)
+  }
+
+  /**
+   * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
+   * output for `n`.
+   */
+  string stars(Node n) { result = repeatStars(getNumberOfIndirections(n)) }
+}
+
+import NodeStars
 
 class Node0Impl extends TIRDataFlowNode0 {
   /**
@@ -138,11 +174,7 @@ abstract class InstructionNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getInstructionType(instr, _) }
 
-  override string toStringImpl() {
-    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = instr.getAst().toString()
-  }
+  override string toStringImpl() { result = instructionToString(instr) }
 
   override Location getLocationImpl() {
     if exists(instr.getAst().getLocation())
@@ -187,11 +219,7 @@ abstract class OperandNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getOperandType(op, _) }
 
-  override string toStringImpl() {
-    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = op.getDef().getAst().toString()
-  }
+  override string toStringImpl() { result = operandToString(op) }
 
   override Location getLocationImpl() {
     if exists(op.getDef().getAst().getLocation())

@@ -113,6 +113,12 @@ signature module TypeTrackingInput {
    * themselves.
    */
   predicate hasFeatureBacktrackStoreTarget();
+
+  /**
+   * Holds if a non-standard `flowsTo` predicate is needed, i.e., one that is not
+   * simply `simpleLocalSmallStep*(localSource, dst)`.
+   */
+  default predicate nonStandardFlowsTo(LocalSourceNode localSource, Node dst) { none() }
 }
 
 private import internal.TypeTrackingImpl as Impl
