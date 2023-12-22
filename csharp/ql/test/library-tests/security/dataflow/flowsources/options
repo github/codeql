@@ -1,1 +1,4 @@
-semmle-extractor-options: /r:System.Data.dll /r:System.ComponentModel.Primitives.dll /r:System.ComponentModel.TypeConverter.dll ${testdir}/../../../../resources/stubs/EntityFramework.cs ${testdir}/../../../../resources/stubs/System.Data.cs /r:System.ComponentModel.TypeConverter.dll /r:System.Data.Common.dll
+semmle-extractor-options: /nostdlib /noconfig
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../../resources/stubs/_frameworks/Microsoft.NETCore.App/Microsoft.NETCore.App.csproj
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../../resources/stubs/System.Data.OleDb/8.0.0/System.Data.OleDb.csproj
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../../resources/stubs/EntityFramework/6.4.4/EntityFramework.csproj

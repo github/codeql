@@ -19,7 +19,7 @@ module NetLdap {
 
     override MethodCall getACall() { result = any(NetLdapConnection l).asExpr().getExpr() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
     }
   }
@@ -32,7 +32,7 @@ module NetLdap {
 
     override MethodCall getACall() { result = any(NetLdapFilter l).asExpr().getExpr() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = ["Argument[0]", "Argument[1]"] and output = "ReturnValue" and preservesValue = false
     }
   }

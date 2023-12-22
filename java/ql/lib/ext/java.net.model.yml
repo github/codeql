@@ -9,6 +9,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["java.net", "DatagramPacket", False, "DatagramPacket", "(byte[],int,InetAddress,int)", "", "Argument[2]", "request-forgery", "ai-manual"]
       - ["java.net", "DatagramSocket", True, "connect", "(SocketAddress)", "", "Argument[0]", "request-forgery", "ai-manual"]
       - ["java.net", "PasswordAuthentication", False, "PasswordAuthentication", "(String,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
       - ["java.net", "Socket", True, "Socket", "(String,int)", "", "Argument[0]", "request-forgery", "ai-manual"]

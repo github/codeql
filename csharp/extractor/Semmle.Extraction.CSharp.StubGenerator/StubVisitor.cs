@@ -80,11 +80,11 @@ internal sealed class StubVisitor : SymbolVisitor
             stubWriter.Write(explicitInterfaceType.GetQualifiedName());
             stubWriter.Write('.');
             if (writeName)
-                stubWriter.Write(explicitInterfaceSymbol.GetName());
+                stubWriter.Write(EscapeIdentifier(explicitInterfaceSymbol.GetName()));
         }
         else if (writeName)
         {
-            stubWriter.Write(symbol.GetName());
+            stubWriter.Write(EscapeIdentifier(symbol.GetName()));
         }
     }
 
@@ -203,10 +203,12 @@ internal sealed class StubVisitor : SymbolVisitor
 
     private static readonly HashSet<string> attributeAllowList = new() {
         "System.FlagsAttribute",
-        "System.AttributeUsageAttribute"
+        "System.AttributeUsageAttribute",
+        "System.Runtime.CompilerServices.InterpolatedStringHandlerAttribute",
+        "System.Runtime.CompilerServices.InterpolatedStringHandlerArgumentAttribute",
     };
 
-    private void StubAttribute(AttributeData a, string prefix)
+    private void StubAttribute(AttributeData a, string prefix, bool addNewLine)
     {
         if (a.AttributeClass is not INamedTypeSymbol @class)
             return;
@@ -232,14 +234,18 @@ internal sealed class StubVisitor : SymbolVisitor
             });
             stubWriter.Write(")");
         }
-        stubWriter.WriteLine("]");
+        stubWriter.Write("]");
+        if (addNewLine)
+        {
+            stubWriter.WriteLine();
+        }
     }
 
-    public void StubAttributes(IEnumerable<AttributeData> a, string prefix = "")
+    public void StubAttributes(IEnumerable<AttributeData> a, string prefix = "", bool addNewLine = true)
     {
         foreach (var attribute in a)
         {
-            StubAttribute(attribute, prefix);
+            StubAttribute(attribute, prefix, addNewLine);
         }
     }
 
@@ -513,6 +519,8 @@ internal sealed class StubVisitor : SymbolVisitor
     {
         WriteCommaSep(parameters, parameter =>
         {
+            StubAttributes(parameter.GetAttributes(), addNewLine: false);
+
             switch (parameter.RefKind)
             {
                 case RefKind.None:
@@ -525,6 +533,9 @@ internal sealed class StubVisitor : SymbolVisitor
                     break;
                 case RefKind.In:
                     stubWriter.Write("in ");
+                    break;
+                case RefKind.RefReadOnlyParameter:
+                    stubWriter.Write("ref readonly ");
                     break;
                 default:
                     stubWriter.Write($"/* TODO: {parameter.RefKind} */");
@@ -546,6 +557,9 @@ internal sealed class StubVisitor : SymbolVisitor
         });
     }
 
+    private static bool ExcludeMethod(IMethodSymbol symbol) =>
+        symbol.Name == "<Clone>$";
+
     private void StubMethod(IMethodSymbol symbol, IMethodSymbol? explicitInterfaceSymbol, IMethodSymbol? baseCtor)
     {
         var methodKind = explicitInterfaceSymbol is null ? symbol.MethodKind : explicitInterfaceSymbol.MethodKind;
@@ -557,7 +571,7 @@ internal sealed class StubVisitor : SymbolVisitor
                 MethodKind.Ordinary
             };
 
-        if (!relevantMethods.Contains(methodKind))
+        if (!relevantMethods.Contains(methodKind) || ExcludeMethod(symbol))
             return;
 
         StubAttributes(symbol.GetAttributes());

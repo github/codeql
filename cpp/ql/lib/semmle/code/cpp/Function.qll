@@ -328,6 +328,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   MetricFunction getMetrics() { result = this }
 
   /** Holds if this function calls the function `f`. */
+  pragma[nomagic]
   predicate calls(Function f) { this.calls(f, _) }
 
   /**
@@ -336,10 +337,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   predicate calls(Function f, Locatable l) {
     exists(FunctionCall call |
-      call.getEnclosingFunction() = this and call.getTarget() = f and call = l
-    )
-    or
-    exists(DestructorCall call |
       call.getEnclosingFunction() = this and call.getTarget() = f and call = l
     )
   }

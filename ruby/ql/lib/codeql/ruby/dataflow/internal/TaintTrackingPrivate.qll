@@ -79,11 +79,16 @@ private module Cached {
   cached
   predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     // value of `case` expression into variables in patterns
-    exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprNodes::InClauseCfgNode clause |
-      nodeFrom.asExpr() = case.getValue() and
+    exists(
+      CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprCfgNode value,
+      CfgNodes::ExprNodes::InClauseCfgNode clause, Ssa::Definition def
+    |
+      nodeFrom.asExpr() = value and
+      value = case.getValue() and
       clause = case.getBranch(_) and
-      nodeTo.(SsaDefinitionExtNode).getDefinitionExt().(Ssa::Definition).getControlFlowNode() =
-        variablesInPattern(clause.getPattern())
+      def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt() and
+      def.getControlFlowNode() = variablesInPattern(clause.getPattern()) and
+      not LocalFlow::ssaDefAssigns(def, value)
     )
     or
     // operation involving `nodeFrom`

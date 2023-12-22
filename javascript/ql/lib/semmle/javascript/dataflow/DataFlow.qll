@@ -973,6 +973,28 @@ module DataFlow {
   }
 
   /**
+   * A data flow node representing an XML attribute.
+   */
+  class XmlAttributeNode extends DataFlow::Node, TXmlAttributeNode {
+    XmlAttribute attr;
+
+    XmlAttributeNode() { this = TXmlAttributeNode(attr) }
+
+    override string toString() { result = attr.toString() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      attr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets the attribute corresponding to this data flow node. */
+    XmlAttribute getAttribute() { result = attr }
+
+    override File getFile() { result = attr.getLocation().getFile() }
+  }
+
+  /**
    * A data flow node representing the exceptions thrown by a function.
    */
   class ExceptionalFunctionReturnNode extends DataFlow::Node, TExceptionalFunctionReturnNode {
