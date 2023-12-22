@@ -141,6 +141,20 @@ WARNING: Module DataFlow has been deprecated and may be removed in future (parti
 | aliasing.cpp:201:13:201:13 | s | IR only |
 | aliasing.cpp:206:8:206:10 | ps2 | IR only |
 | aliasing.cpp:206:13:206:13 | s | IR only |
+| aliasing.cpp:214:14:214:15 | m1 | AST only |
+| aliasing.cpp:218:10:218:17 | global_s | IR only |
+| aliasing.cpp:222:17:222:18 | m1 | AST only |
+| aliasing.cpp:226:10:226:18 | global_s2 | IR only |
+| aliasing.cpp:226:20:226:20 | s | IR only |
+| aliasing.cpp:233:19:233:20 | m1 | AST only |
+| aliasing.cpp:237:10:237:21 | global_s_ptr | IR only |
+| aliasing.cpp:241:22:241:23 | m1 | AST only |
+| aliasing.cpp:245:10:245:22 | global_s2_ptr | IR only |
+| aliasing.cpp:245:25:245:25 | s | IR only |
+| aliasing.cpp:251:5:251:31 | * ... | AST only |
+| aliasing.cpp:255:11:255:31 | global_s_with_pointer | IR only |
+| aliasing.cpp:261:5:261:29 | * ... | AST only |
+| aliasing.cpp:265:11:265:29 | global_s_with_array | IR only |
 | arrays.cpp:6:3:6:8 | access to array | AST only |
 | arrays.cpp:7:8:7:13 | access to array | IR only |
 | arrays.cpp:7:8:7:13 | access to array | IR only |

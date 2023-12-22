@@ -923,3 +923,99 @@ namespace GlobalArrays {
     indirect_sink(global_pointer_static_indirect_2); // clean: global_pointer_static_indirect_2 does not have 2 indirections
   }
 }
+
+namespace globals_without_explicit_def {
+  int* global_int_ptr;
+
+  void set(int* p) { // $ ast-def=p ir-def=*p
+    *p = source();
+  }
+
+  void test1() {
+    set(global_int_ptr);
+    indirect_sink(global_int_ptr); // $ ir,ast
+  }
+
+  void test2() {
+    set(global_int_ptr);
+    sink(*global_int_ptr); // $ ir MISSING: ast
+  }
+
+  void calls_set() {
+    set(global_int_ptr);
+  }
+
+  void test3() {
+    calls_set();
+    indirect_sink(global_int_ptr); // $ MISSING: ast,ir
+  }
+
+  void test4() {
+    calls_set();
+    sink(*global_int_ptr); // $ MISSING: ast,ir
+  }
+
+  int** global_int_ptr_ptr;
+
+  void set_indirect(int** p) { // $ ast-def=p ir-def=*p ir-def=**p
+    *p = indirect_source();
+  }
+
+  void test5() {
+    set_indirect(global_int_ptr_ptr);
+    indirect_sink(global_int_ptr_ptr); // $ ir,ast
+    sink(global_int_ptr_ptr); // $ SPURIOUS: ast
+  }
+
+  void test6() {
+    set_indirect(global_int_ptr_ptr);
+    indirect_sink(*global_int_ptr_ptr); // $ ir MISSING: ast
+    sink(*global_int_ptr_ptr);
+    indirect_sink(**global_int_ptr_ptr);
+    sink(**global_int_ptr_ptr); // $ ir
+  }
+
+  void calls_set_indirect() {
+    set_indirect(global_int_ptr_ptr);
+  }
+
+  void test7() {
+    calls_set_indirect();
+    indirect_sink(global_int_ptr_ptr); // $ MISSING: ast,ir
+    sink(global_int_ptr_ptr); // $ MISSING: ast
+  }
+
+  void test8() {
+    calls_set_indirect();
+    indirect_sink(*global_int_ptr_ptr); // $ MISSING: ast,ir
+    sink(*global_int_ptr_ptr);
+    indirect_sink(**global_int_ptr_ptr);
+    sink(**global_int_ptr_ptr); // $ MISSING: ast,ir
+  }
+
+  int global_int_array[10];
+
+  void test9() {
+    set(global_int_array);
+    indirect_sink(global_int_array); // $ ir,ast
+  }
+
+  void test10() {
+    set(global_int_array);
+    sink(*global_int_array); // $ ir,ast
+  }
+
+  void calls_set_array() {
+    set(global_int_array);
+  }
+
+  void test11() {
+    calls_set_array();
+    indirect_sink(global_int_array); // $ MISSING: ast,ir
+  }
+
+  void test12() {
+    calls_set_array();
+    sink(*global_int_array); // $ MISSING: ast,ir
+  }
+}

@@ -285,6 +285,22 @@
 | aliasing.cpp:205:21:205:21 | s |
 | aliasing.cpp:206:8:206:10 | ps2 |
 | aliasing.cpp:206:13:206:13 | s |
+| aliasing.cpp:214:5:214:12 | global_s |
+| aliasing.cpp:218:10:218:17 | global_s |
+| aliasing.cpp:222:5:222:13 | global_s2 |
+| aliasing.cpp:222:15:222:15 | s |
+| aliasing.cpp:226:10:226:18 | global_s2 |
+| aliasing.cpp:226:20:226:20 | s |
+| aliasing.cpp:233:5:233:16 | global_s_ptr |
+| aliasing.cpp:237:10:237:21 | global_s_ptr |
+| aliasing.cpp:241:5:241:17 | global_s2_ptr |
+| aliasing.cpp:241:20:241:20 | s |
+| aliasing.cpp:245:10:245:22 | global_s2_ptr |
+| aliasing.cpp:245:25:245:25 | s |
+| aliasing.cpp:251:6:251:26 | global_s_with_pointer |
+| aliasing.cpp:255:11:255:31 | global_s_with_pointer |
+| aliasing.cpp:261:6:261:24 | global_s_with_array |
+| aliasing.cpp:265:11:265:29 | global_s_with_array |
 | arrays.cpp:7:8:7:13 | access to array |
 | arrays.cpp:8:8:8:13 | access to array |
 | arrays.cpp:9:8:9:11 | * ... |

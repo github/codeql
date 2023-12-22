@@ -95,6 +95,14 @@ postWithInFlow
 | aliasing.cpp:194:21:194:22 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
 | aliasing.cpp:200:23:200:24 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
 | aliasing.cpp:205:23:205:24 | m1 [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:214:14:214:15 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:222:17:222:18 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:233:19:233:20 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:241:22:241:23 | m1 [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:251:5:251:31 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:251:28:251:31 | data [inner post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:261:5:261:29 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| aliasing.cpp:261:26:261:29 | data [inner post update] | PostUpdateNode should not be the target of local flow. |
 | arrays.cpp:6:3:6:5 | arr [inner post update] | PostUpdateNode should not be the target of local flow. |
 | arrays.cpp:6:3:6:8 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
 | arrays.cpp:15:3:15:10 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
