@@ -646,7 +646,7 @@ module DataFlowMake<InputSig Lang> {
 
       predicate isSource(){
         this.asPathNode1().isSource() or
-        this.asPathNode2().isSource() or
+        this.asPathNode2().isSource()
       }
 
       PathNode getASuccessor(){
