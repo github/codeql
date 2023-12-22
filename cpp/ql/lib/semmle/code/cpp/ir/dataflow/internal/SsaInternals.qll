@@ -41,7 +41,7 @@ private module SourceVariables {
     SsaInternals0::SourceVariable getBaseVariable() { result = base }
 
     /** Gets a textual representation of this element. */
-    string toString() { result = repeatStars(this.getIndirection()) }
+    string toString() { result = repeatStars(this.getIndirection()) + base.toString() }
 
     /**
      * Gets the number of loads performed on the base source variable
