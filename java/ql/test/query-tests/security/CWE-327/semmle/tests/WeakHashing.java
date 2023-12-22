@@ -16,14 +16,14 @@ public class WeakHashing {
 
         // BAD: Using a weak hashing algorithm even with a secure default
         MessageDigest bad2 = MessageDigest.getInstance(props.getProperty("hashAlg1", "SHA-256"));
+
+        // BAD: Using a strong hashing algorithm but with a weak default
+        MessageDigest bad3 = MessageDigest.getInstance(props.getProperty("hashAlg2", "MD5"));
         
         // GOOD: Using a strong hashing algorithm
         MessageDigest ok = MessageDigest.getInstance(props.getProperty("hashAlg2"));
 
-        // OK: Using a strong hashing algorithm even with a weak default
-        MessageDigest ok2 = MessageDigest.getInstance(props.getProperty("hashAlg2", "MD5"));
-
         // OK: Property does not exist and default is secure
-        MessageDigest ok3 = MessageDigest.getInstance(props.getProperty("hashAlg3", "SHA-256"));
+        MessageDigest ok2 = MessageDigest.getInstance(props.getProperty("hashAlg3", "SHA-256"));
     }
 }

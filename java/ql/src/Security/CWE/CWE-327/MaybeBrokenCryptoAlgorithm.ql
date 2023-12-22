@@ -27,7 +27,9 @@ import InsecureCryptoFlow::PathGraph
 string getStringValue(DataFlow::Node algo) {
   result = algo.asExpr().(StringLiteral).getValue()
   or
-  result = algo.asExpr().(PropertiesGetPropertyMethodCall).getPropertyValue()
+  exists(string value | value = algo.asExpr().(PropertiesGetPropertyMethodCall).getPropertyValue() |
+    result = value and not value.regexpMatch(getSecureAlgorithmRegex())
+  )
 }
 
 from InsecureCryptoFlow::PathNode source, InsecureCryptoFlow::PathNode sink, CryptoAlgoSpec c
