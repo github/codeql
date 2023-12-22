@@ -947,12 +947,12 @@ namespace globals_without_explicit_def {
 
   void test3() {
     calls_set();
-    indirect_sink(global_int_ptr); // $ MISSING: ast,ir
+    indirect_sink(global_int_ptr); // $ ir MISSING: ast
   }
 
   void test4() {
     calls_set();
-    sink(*global_int_ptr); // $ MISSING: ast,ir
+    sink(*global_int_ptr); // $ ir MISSING: ast
   }
 
   int** global_int_ptr_ptr;
@@ -981,16 +981,16 @@ namespace globals_without_explicit_def {
 
   void test7() {
     calls_set_indirect();
-    indirect_sink(global_int_ptr_ptr); // $ MISSING: ast,ir
+    indirect_sink(global_int_ptr_ptr); // $ ir MISSING: ast
     sink(global_int_ptr_ptr); // $ MISSING: ast
   }
 
   void test8() {
     calls_set_indirect();
-    indirect_sink(*global_int_ptr_ptr); // $ MISSING: ast,ir
+    indirect_sink(*global_int_ptr_ptr); // $ ir MISSING: ast
     sink(*global_int_ptr_ptr);
     indirect_sink(**global_int_ptr_ptr);
-    sink(**global_int_ptr_ptr); // $ MISSING: ast,ir
+    sink(**global_int_ptr_ptr); // $ ir MISSING: ast
   }
 
   int global_int_array[10];
@@ -1011,11 +1011,11 @@ namespace globals_without_explicit_def {
 
   void test11() {
     calls_set_array();
-    indirect_sink(global_int_array); // $ MISSING: ast,ir
+    indirect_sink(global_int_array); // $ ir MISSING: ast
   }
 
   void test12() {
     calls_set_array();
-    sink(*global_int_array); // $ MISSING: ast,ir
+    sink(*global_int_array); // $ ir MISSING: ast
   }
 }

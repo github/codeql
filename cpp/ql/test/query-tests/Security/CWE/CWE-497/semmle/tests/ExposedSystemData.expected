@@ -1,4 +1,5 @@
 edges
+| tests2.cpp:50:13:50:19 | **global1 | tests2.cpp:50:13:50:19 | **global1 |
 | tests2.cpp:50:13:50:19 | **global1 | tests2.cpp:82:14:82:20 | *global1 |
 | tests2.cpp:50:23:50:43 | *call to mysql_get_client_info | tests2.cpp:50:13:50:19 | **global1 |
 | tests2.cpp:78:18:78:38 | *call to mysql_get_client_info | tests2.cpp:81:14:81:19 | *buffer |

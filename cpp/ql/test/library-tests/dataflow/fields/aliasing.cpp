@@ -215,7 +215,7 @@ namespace GlobalFieldFlow {
   }
 
   void read_field() {
-    sink(global_s.m1); // $ MISSING: ast,ir
+    sink(global_s.m1); // $ ir MISSING: ast
   }
 
   void set_nested_field() {
@@ -223,7 +223,7 @@ namespace GlobalFieldFlow {
   }
 
   void read_nested_field() {
-    sink(global_s2.s.m1); // $ MISSING: ast,ir
+    sink(global_s2.s.m1); // $ ir MISSING: ast
   }
 
   S* global_s_ptr;
@@ -234,7 +234,7 @@ namespace GlobalFieldFlow {
   }
 
   void read_field_ptr() {
-    sink(global_s_ptr->m1); // $ MISSING: ast,ir
+    sink(global_s_ptr->m1); // $ ir MISSING: ast
   }
 
   void set_nested_field_ptr() {
@@ -242,7 +242,7 @@ namespace GlobalFieldFlow {
   }
 
   void read_nested_field_ptr() {
-    sink(global_s2_ptr->s.m1); // $ MISSING: ast,ir
+    sink(global_s2_ptr->s.m1); // $ ir MISSING: ast
   }
 
   S_with_pointer global_s_with_pointer;
@@ -252,7 +252,7 @@ namespace GlobalFieldFlow {
   }
 
   void read_field_indirect() {
-    sink(*global_s_with_pointer.data); // $ MISSING: ast,ir
+    sink(*global_s_with_pointer.data); // $ ir MISSING: ast
   }
 
   S_with_array global_s_with_array;
@@ -262,6 +262,6 @@ namespace GlobalFieldFlow {
   }
 
   void read_field_array() {
-    sink(*global_s_with_array.data); // $ MISSING: ast,ir
+    sink(*global_s_with_array.data); // $ ir MISSING: ast
   }
 }
