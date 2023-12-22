@@ -1,8 +1,8 @@
 /**
  * @name Load 3rd party classes or code ('unsafe reflection') without signature check
- * @description Load classes or code from 3rd party package without checking the
- *              package signature but only rely on package name.
- *              This makes it susceptible to package namespace squatting
+ * @description Loading classes or code from third-party packages without checking the
+ *              package signature could make the application
+ *              susceptible to package namespace squatting attacks,
  *              potentially leading to arbitrary code execution.
  * @problem.severity error
  * @precision high

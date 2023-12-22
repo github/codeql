@@ -3,8 +3,8 @@
 
 <overview>
 <p>
-If a vulnerable loads classes or code of any app based solely on the package name of the app without 
-first checking the package signature of the app, this could malicious app with the same package name 
+If an application loads classes or code from another app based solely on its package name without 
+first checking its package signature, this could allow a malicious app with the same package name 
 to be loaded through "package namespace squatting".
 If the victim user install such malicious app in the same device as the vulnerable app, the vulnerable app would load
 classes or code from the malicious app, potentially leading to arbitrary code execution.
@@ -13,17 +13,17 @@ classes or code from the malicious app, potentially leading to arbitrary code ex
 
 <recommendation>
 <p>
-Verify that the signature of an app in addition to the package name before loading the classes or code.
+Verify the package signature in addition to the package name before loading any classes or code from another application.
 </p>
 </recommendation>
 
 <example>
 <p>
-The <code>BadClassLoader</code> class illustrate class loading with <code>android.content.pm.PackageInfo.packageName.startsWith()</code> method without any check on the package signature. 
+The <code>BadClassLoader</code> class illustrates class loading with the <code>android.content.pm.PackageInfo.packageName.startsWith()</code> method without any check on the package signature. 
 </p>
 <sample src="BadClassLoader.java" />
 <p>
-The <code>GoodClassLoader</code> class illustrate class loading with package signature check using <code>android.content.pm.PackageManager.checkSignatures()</code> method.
+The <code>GoodClassLoader</code> class illustrates class loading with correct package signature check using the <code>android.content.pm.PackageManager.checkSignatures()</code> method.
 </p>
 <sample src="GoodClassLoader.java" />
 </example>
