@@ -71,7 +71,7 @@ class LocalSourceNode extends Node {
     or
     // We include all scope entry definitions, as these act as the local source within the scope they
     // enter.
-    this.asCfgNode() = any(ScopeEntryDefinition def).getDefiningNode()
+    this instanceof ScopeEntryDefinitionNode
     or
     this instanceof ParameterNode
   }
@@ -167,7 +167,7 @@ class LocalSourceNodeNotModuleVariableNode extends LocalSourceNode {
   LocalSourceNodeNotModuleVariableNode() {
     this instanceof ExprNode
     or
-    this.asCfgNode() = any(ScopeEntryDefinition def).getDefiningNode()
+    this instanceof ScopeEntryDefinitionNode
   }
 }
 

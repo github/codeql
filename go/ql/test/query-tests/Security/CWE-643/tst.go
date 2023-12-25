@@ -10,6 +10,7 @@ package main
 //go:generate depstubber -vendor github.com/jbowtie/gokogiri/xml Node
 //go:generate depstubber -vendor github.com/jbowtie/gokogiri/xpath "" Compile
 //go:generate depstubber -vendor github.com/santhosh-tekuri/xpathparser "" Parse,MustParse
+//go:generate depstubber -vendor github.com/lestrrat-go/libxml2/parser Parser New,XMLParseNoEnt
 
 import (
 	"net/http"
@@ -22,6 +23,7 @@ import (
 	"github.com/go-xmlpath/xmlpath"
 	gokogiriXml "github.com/jbowtie/gokogiri/xml"
 	gokogiriXpath "github.com/jbowtie/gokogiri/xpath"
+	"github.com/lestrrat-go/libxml2/parser"
 	"github.com/santhosh-tekuri/xpathparser"
 )
 
@@ -184,4 +186,14 @@ func testJbowtieGokogiri(r *http.Request, n gokogiriXml.Node) {
 
 	// OK: This is not flagged, since the creation of `xpath` is already flagged.
 	_ = n.EvalXPathAsBoolean(xpath, nil)
+}
+
+func testLestratGoLibxml2(r *http.Request) {
+	r.ParseForm()
+	username := r.Form.Get("username")
+
+	p := parser.New(parser.XMLParseNoEnt)
+
+	// BAD: User input used directly in an XPath expression
+	_, _ = p.ParseString("//users/user[login/text()='" + username + "']/home_dir/text()")
 }
