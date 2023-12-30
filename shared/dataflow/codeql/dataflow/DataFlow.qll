@@ -589,6 +589,9 @@ module DataFlowMake<InputSig Lang> {
 
     /** Gets the underlying `Node`. */
     Node getNode();
+
+    /** Holds if this node is a source. */
+    predicate isSource();
   }
 
   signature module PathGraphSig<PathNodeSig PathNode> {
@@ -649,6 +652,15 @@ module DataFlowMake<InputSig Lang> {
       Node getNode() {
         result = this.asPathNode1().getNode() or
         result = this.asPathNode2().getNode()
+      }
+
+      predicate isSource(){
+        this.asPathNode1().isSource() or
+        this.asPathNode2().isSource()
+      }
+
+      PathNode getASuccessor(){
+        none()
       }
     }
 
@@ -721,6 +733,16 @@ module DataFlowMake<InputSig Lang> {
 
       /** Gets the underlying `Node`. */
       Node getNode() { result = super.getNode() }
+
+      predicate isSource(){
+        this.asPathNode1().isSource() or
+        this.asPathNode2().isSource() or
+        this.asPathNode3().isSource()
+      }
+
+      PathNode getASuccessor(){
+        none()
+      }
     }
 
     /**
