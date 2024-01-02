@@ -61,15 +61,15 @@ abstract class Endpoint instanceof DataFlow::Node {
 /**
  * A callable method or accessor from source code.
  */
-class MethodEndpoint extends Endpoint {
+class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
   MethodEndpoint() {
-    this.(DataFlow::MethodNode).isPublic() and
+    this.isPublic() and
     not isUninteresting(this)
   }
 
   DataFlow::MethodNode getNode() { result = this }
 
-  override string getName() { result = this.(DataFlow::MethodNode).getMethodName() }
+  override string getName() { result = super.getMethodName() }
 
   /**
    * Gets the unbound type name of this endpoint.
@@ -91,15 +91,10 @@ class MethodEndpoint extends Endpoint {
     result =
       "(" +
         concat(string key, string value |
-          value =
-            any(int i |
-              i.toString() = key
-            |
-              this.(DataFlow::MethodNode).asCallable().getParameter(i)
-            ).getName()
+          value = any(int i | i.toString() = key | super.asCallable().getParameter(i)).getName()
           or
           exists(DataFlow::ParameterNode param |
-            param = this.(DataFlow::MethodNode).asCallable().getKeywordParameter(key)
+            param = super.asCallable().getKeywordParameter(key)
           |
             value = key + ":"
           )
