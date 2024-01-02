@@ -937,7 +937,6 @@ case @attribute_arg.kind of
 | 2 = @attribute_arg_constant
 | 3 = @attribute_arg_type
 | 4 = @attribute_arg_constant_expr
-| 5 = @attribute_arg_expr
 ;
 
 attribute_arg_value(
@@ -951,10 +950,6 @@ attribute_arg_type(
 attribute_arg_constant(
     unique int arg: @attribute_arg ref,
     int constant: @expr ref
-)
-attribute_arg_expr(
-    unique int arg: @attribute_arg ref,
-    int expr: @expr ref
 )
 attribute_arg_name(
     unique int arg: @attribute_arg ref,
