@@ -3,7 +3,7 @@ import codeql.typetracking.internal.TypeTrackingImpl as SharedImpl
 private import codeql.ruby.AST
 private import codeql.ruby.CFG as Cfg
 private import Cfg::CfgNodes
-private import SummaryTypeTracker as SummaryTypeTracker
+private import codeql.typetracking.internal.SummaryTypeTracker as SummaryTypeTracker
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary as FlowSummary
 private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -133,11 +133,11 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   class Node = DataFlow::Node;
 
   // Content
-  class TypeTrackerContent = DataFlowPublic::ContentSet;
+  class Content = DataFlowPublic::ContentSet;
 
-  class TypeTrackerContentFilter = TypeTrackingInput::ContentFilter;
+  class ContentFilter = TypeTrackingInput::ContentFilter;
 
-  TypeTrackerContentFilter getFilterFromWithoutContentStep(TypeTrackerContent content) {
+  ContentFilter getFilterFromWithoutContentStep(Content content) {
     (
       content.isAnyElement()
       or
@@ -150,7 +150,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
     result = MkElementFilter()
   }
 
-  TypeTrackerContentFilter getFilterFromWithContentStep(TypeTrackerContent content) {
+  ContentFilter getFilterFromWithContentStep(Content content) {
     (
       content.isAnyElement()
       or

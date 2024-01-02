@@ -13,6 +13,7 @@ extensions:
       - ["java.lang", "ProcessBuilder", False, "directory", "(File)", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "ProcessBuilder", False, "ProcessBuilder", "(List)", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "ProcessBuilder", False, "ProcessBuilder", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "ProcessBuilder", False, "redirectError", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "Runtime", True, "exec", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "Runtime", True, "exec", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "Runtime", True, "exec", "(String[],String[])", "", "Argument[0]", "command-injection", "ai-manual"]

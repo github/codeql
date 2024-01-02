@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor = new ProgressMonitor(logger);
             this.sourceDir = new DirectoryInfo(srcDir);
 
-            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "packages"));
             legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "legacypackages"));
             missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "missingpackages"));
 
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor.FindingFiles(srcDir);
 
 
-            var allFiles = GetAllFiles();
+            var allFiles = GetAllFiles().ToList();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
             var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
             var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(progressMonitor).SelectFileNames();
@@ -439,6 +439,25 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 files = files.Where(f => !f.FullName.StartsWith(options.DotNetPath, StringComparison.OrdinalIgnoreCase));
             }
 
+            files = files.Where(f =>
+            {
+                try
+                {
+                    if (f.Exists)
+                    {
+                        return true;
+                    }
+
+                    progressMonitor.Log(Severity.Warning, $"File {f.FullName} could not be processed.");
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    progressMonitor.Log(Severity.Warning, $"File {f.FullName} could not be processed: {ex.Message}");
+                    return false;
+                }
+            });
+
             files = new FilePathFilter(sourceDir, progressMonitor).Filter(files);
             return files;
         }
@@ -448,7 +467,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// with this source tree. Use a SHA1 of the directory name.
         /// </summary>
         /// <returns>The full path of the temp directory.</returns>
-        private static string ComputeTempDirectory(string srcDir, string packages = "packages")
+        private static string ComputeTempDirectory(string srcDir, string subfolderName)
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
             var sha = SHA1.HashData(bytes);
@@ -456,7 +475,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
 
-            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out var _), "GitHub", packages, sb.ToString());
+            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out var _), sb.ToString(), subfolderName);
         }
 
         /// <summary>
@@ -704,7 +723,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
             {
                 progressMonitor.NugetInstall(package);
-                using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
+                using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package, "missingpackages_workingdir"));
                 var success = dotnet.New(tempDir.DirInfo.FullName);
                 if (!success)
                 {

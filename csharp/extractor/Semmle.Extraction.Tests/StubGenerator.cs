@@ -76,6 +76,26 @@ public int M1(ref readonly Guid guid) => throw null;
         Assert.Equal(expected, stub);
     }
 
+    [Fact]
+    public void StubGeneratorEscapeMethodName()
+    {
+        // Setup
+        const string source = @"
+public class MyTest {
+    public int @default() { return 0; }
+}";
+
+        // Execute
+        var stub = GenerateStub(source);
+
+        // Verify
+        const string expected = @"public class MyTest {
+public int @default() => throw null;
+}
+";
+        Assert.Equal(expected, stub);
+    }
+
     private static string GenerateStub(string source)
     {
         var st = CSharpSyntaxTree.ParseText(source);

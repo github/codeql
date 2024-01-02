@@ -1436,10 +1436,14 @@ namespace ServiceStack
             public long decrBy(long value, long by) => throw null;
             public long decrement(long value) => throw null;
             public long decrementBy(long value, long by) => throw null;
+            public object @default(object returnTarget, object elseReturn) => throw null;
             public string dirPath(string filePath) => throw null;
             public System.Collections.Generic.IEnumerable<object> distinct(System.Collections.Generic.IEnumerable<object> items) => throw null;
             public double div(double lhs, double rhs) => throw null;
             public double divide(double lhs, double rhs) => throw null;
+            public object @do(ServiceStack.Script.ScriptScopeContext scope, object expression) => throw null;
+            public System.Threading.Tasks.Task @do(ServiceStack.Script.ScriptScopeContext scope, object target, object expression) => throw null;
+            public System.Threading.Tasks.Task @do(ServiceStack.Script.ScriptScopeContext scope, object target, object expression, object scopeOptions) => throw null;
             public object doIf(object test) => throw null;
             public object doIf(object ignoreTarget, object test) => throw null;
             public double doubleAdd(double lhs, double rhs) => throw null;
@@ -1558,6 +1562,8 @@ namespace ServiceStack
             public string httpPathInfo(ServiceStack.Script.ScriptScopeContext scope) => throw null;
             public string httpRequestUrl(ServiceStack.Script.ScriptScopeContext scope) => throw null;
             public string humanize(string text) => throw null;
+            public object @if(object test) => throw null;
+            public object @if(object returnTarget, object test) => throw null;
             public object ifDebug(ServiceStack.Script.ScriptScopeContext scope, object ignoreTarget) => throw null;
             public object ifDebug(ServiceStack.Script.ScriptScopeContext scope) => throw null;
             public object ifDo(object test) => throw null;
@@ -1840,6 +1846,9 @@ namespace ServiceStack
             public object resolveContextArg(ServiceStack.Script.ScriptScopeContext scope, string name) => throw null;
             public object resolveGlobal(ServiceStack.Script.ScriptScopeContext scope, string name) => throw null;
             public object resolvePageArg(ServiceStack.Script.ScriptScopeContext scope, string name) => throw null;
+            public ServiceStack.Script.StopExecution @return(ServiceStack.Script.ScriptScopeContext scope) => throw null;
+            public ServiceStack.Script.StopExecution @return(ServiceStack.Script.ScriptScopeContext scope, object returnValue) => throw null;
+            public ServiceStack.Script.StopExecution @return(ServiceStack.Script.ScriptScopeContext scope, object returnValue, System.Collections.Generic.Dictionary<string, object> returnArgs) => throw null;
             public System.Collections.Generic.IEnumerable<object> reverse(ServiceStack.Script.ScriptScopeContext scope, System.Collections.Generic.IEnumerable<object> original) => throw null;
             public string rightPart(string text, string needle) => throw null;
             public double round(double value) => throw null;
@@ -1930,6 +1939,8 @@ namespace ServiceStack
             public System.Collections.Generic.IEnumerable<object> thenByDescending(ServiceStack.Script.ScriptScopeContext scope, object target, object expression) => throw null;
             public System.Collections.Generic.IEnumerable<object> thenByDescending(ServiceStack.Script.ScriptScopeContext scope, object target, object expression, object scopeOptions) => throw null;
             public static System.Collections.Generic.IEnumerable<object> thenByInternal(string filterName, ServiceStack.Script.ScriptScopeContext scope, object target, object expression, object scopeOptions) => throw null;
+            public object @throw(ServiceStack.Script.ScriptScopeContext scope, string message) => throw null;
+            public object @throw(ServiceStack.Script.ScriptScopeContext scope, string message, object options) => throw null;
             public object throwArgumentException(ServiceStack.Script.ScriptScopeContext scope, string message) => throw null;
             public object throwArgumentException(ServiceStack.Script.ScriptScopeContext scope, string message, string options) => throw null;
             public object throwArgumentNullException(ServiceStack.Script.ScriptScopeContext scope, string paramName) => throw null;
@@ -3163,6 +3174,7 @@ namespace ServiceStack
             public ProtectedScripts() => throw null;
             public ServiceStack.Script.IgnoreResult Decrypt(string path) => throw null;
             public ServiceStack.Script.IgnoreResult Decrypt(ServiceStack.Script.FileScripts fs, string path) => throw null;
+            public object @default(string typeName) => throw null;
             public ServiceStack.Script.IgnoreResult Delete(string path) => throw null;
             public ServiceStack.Script.IgnoreResult Delete(ServiceStack.Script.IOScript os, string path) => throw null;
             public string deleteDirectory(string virtualPath) => throw null;
@@ -3253,6 +3265,8 @@ namespace ServiceStack
             public ServiceStack.Script.IgnoreResult Move(string from, string to) => throw null;
             public ServiceStack.Script.IgnoreResult Move(ServiceStack.Script.IOScript os, string from, string to) => throw null;
             public string mv(ServiceStack.Script.ScriptScopeContext scope, string from, string to) => throw null;
+            public object @new(string typeName) => throw null;
+            public object @new(string typeName, System.Collections.Generic.List<object> constructorArgs) => throw null;
             public string osPaths(string path) => throw null;
             public string proc(ServiceStack.Script.ScriptScopeContext scope, string fileName) => throw null;
             public string proc(ServiceStack.Script.ScriptScopeContext scope, string fileName, System.Collections.Generic.Dictionary<string, object> options) => throw null;
@@ -3284,6 +3298,7 @@ namespace ServiceStack
             public string textContents(ServiceStack.IO.IVirtualFile file) => throw null;
             public string touch(ServiceStack.Script.ScriptScopeContext scope, string target) => throw null;
             public static string TypeNotFoundErrorMessage(string typeName) => throw null;
+            public System.Type @typeof(string typeName) => throw null;
             public System.Type typeofProgId(string name) => throw null;
             public string typeQualifiedName(System.Type type) => throw null;
             public System.ReadOnlyMemory<byte> urlBytesContents(ServiceStack.Script.ScriptScopeContext scope, string url, object options) => throw null;

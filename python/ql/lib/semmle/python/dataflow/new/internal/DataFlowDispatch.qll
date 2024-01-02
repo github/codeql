@@ -37,11 +37,18 @@ private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.internal.CachedStages
-private import semmle.python.dataflow.new.internal.TypeTracker::CallGraphConstruction as CallGraphConstruction
+private import semmle.python.dataflow.new.internal.TypeTrackingImpl::CallGraphConstruction as CallGraphConstruction
 
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfParameterPosition() or
+  /**
+   * This is used for tracking flow through captured variables, and
+   * we use separate parameter/argument positions in order to distinguish
+   * "lambda self" from "normal self", as lambdas may also access outer `self`
+   * variables (through variable capture).
+   */
+  TLambdaSelfParameterPosition() or
   TPositionalParameterPosition(int index) {
     index = any(Parameter p).getPosition()
     or
@@ -78,6 +85,9 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `self`/`cls` parameter. */
   predicate isSelf() { this = TSelfParameterPosition() }
 
+  /** Holds if this position represents a reference to a lambda itself. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfParameterPosition() }
+
   /** Holds if this position represents a positional parameter at (0-based) `index`. */
   predicate isPositional(int index) { this = TPositionalParameterPosition(index) }
 
@@ -109,6 +119,8 @@ class ParameterPosition extends TParameterPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     exists(int index | this.isPositional(index) and result = "position " + index)
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
@@ -129,6 +141,13 @@ class ParameterPosition extends TParameterPosition {
 newtype TArgumentPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfArgumentPosition() or
+  /**
+   * This is used for tracking flow through captured variables, and
+   * we use separate parameter/argument positions in order to distinguish
+   * "lambda self" from "normal self", as lambdas may also access outer `self`
+   * variables (through variable capture).
+   */
+  TLambdaSelfArgumentPosition() or
   TPositionalArgumentPosition(int index) {
     exists(any(CallNode c).getArg(index))
     or
@@ -153,6 +172,9 @@ class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a `self`/`cls` argument. */
   predicate isSelf() { this = TSelfArgumentPosition() }
 
+  /** Holds if this position represents a lambda `self` argument. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfArgumentPosition() }
+
   /** Holds if this position represents a positional argument at (0-based) `index`. */
   predicate isPositional(int index) { this = TPositionalArgumentPosition(index) }
 
@@ -169,6 +191,8 @@ class ArgumentPosition extends TArgumentPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
@@ -182,6 +206,8 @@ class ArgumentPosition extends TArgumentPosition {
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
+  or
+  ppos.isLambdaSelf() and apos.isLambdaSelf()
   or
   exists(int index | ppos.isPositional(index) and apos.isPositional(index))
   or
@@ -1506,6 +1532,37 @@ abstract class ParameterNodeImpl extends Node {
   }
 }
 
+/**
+ * A synthetic parameter representing the values of the variables captured
+ * by the callable being called. This parameter represents a single object
+ * where all the values are stored as attributes.
+ * This is also known as the environment part of a closure.
+ *
+ * This is used for tracking flow through captured variables.
+ */
+class SynthCapturedVariablesParameterNode extends ParameterNodeImpl,
+  TSynthCapturedVariablesParameterNode
+{
+  private Function callable;
+
+  SynthCapturedVariablesParameterNode() { this = TSynthCapturedVariablesParameterNode(callable) }
+
+  final Function getCallable() { result = callable }
+
+  override Parameter getParameter() { none() }
+
+  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+    c = TFunction(callable) and
+    pos.isLambdaSelf()
+  }
+
+  override Scope getScope() { result = callable }
+
+  override Location getLocation() { result = callable.getLocation() }
+
+  override string toString() { result = "lambda self in " + callable }
+}
+
 /** A parameter for a library callable with a flow summary. */
 class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
   SummaryParameterNode() {
@@ -1578,6 +1635,39 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
   }
 
   override Node getPreUpdateNode() { result = pre }
+}
+
+/**
+ * A synthetic argument representing the values of the variables captured
+ * by the callable being called. This argument represents a single object
+ * where all the values are stored as attributes.
+ * This is also known as the environment part of a closure.
+ *
+ * This is used for tracking flow through captured variables.
+ *
+ * TODO:
+ * We might want a synthetic node here, but currently that incurs problems
+ * with non-monotonic recursion, because of the use of `resolveCall` in the
+ * char pred. This may be solvable by using
+ * `CallGraphConstruction::Make` in stead of
+ * `CallGraphConstruction::Simple::Make` appropriately.
+ */
+class CapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
+  CallNode callNode;
+
+  CapturedVariablesArgumentNode() {
+    node = callNode.getFunction() and
+    exists(Function target | resolveCall(callNode, target, _) |
+      target = any(VariableCapture::CapturedVariable v).getACapturingScope()
+    )
+  }
+
+  override string toString() { result = "Capturing closure argument" }
+
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    callNode = call.getNode() and
+    pos.isLambdaSelf()
+  }
 }
 
 /** Gets a viable run-time target for the call `call`. */

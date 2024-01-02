@@ -10,9 +10,9 @@ signature module Input {
   class Node;
 
   // Content
-  class TypeTrackerContent;
+  class Content;
 
-  class TypeTrackerContentFilter;
+  class ContentFilter;
 
   // Relating content and filters
   /**
@@ -24,7 +24,7 @@ signature module Input {
    * type-tracking this is rarely beneficial and quite expensive. However, `WithoutContent` can be quite useful
    * for restricting the type of an object, and in these cases we translate it to a filter.
    */
-  TypeTrackerContentFilter getFilterFromWithoutContentStep(TypeTrackerContent content);
+  ContentFilter getFilterFromWithoutContentStep(Content content);
 
   /**
    * Gets a content filter to use for a `WithContent[content]` step, (data must be stored in `content`)
@@ -35,7 +35,7 @@ signature module Input {
    * to preserve those that didn't get updated). But for type-tracking this is rarely beneficial and quite expensive.
    * However, `WithContent` can be quite useful for restricting the type of an object, and in these cases we translate it to a filter.
    */
-  TypeTrackerContentFilter getFilterFromWithContentStep(TypeTrackerContent content);
+  ContentFilter getFilterFromWithContentStep(Content content);
 
   // Summaries and their stacks
   class SummaryComponent;
@@ -57,13 +57,13 @@ signature module Input {
 
   // Relating content to summaries
   /** Gets a summary component for content `c`. */
-  SummaryComponent content(TypeTrackerContent contents);
+  SummaryComponent content(Content contents);
 
   /** Gets a summary component where data is not allowed to be stored in `contents`. */
-  SummaryComponent withoutContent(TypeTrackerContent contents);
+  SummaryComponent withoutContent(Content contents);
 
   /** Gets a summary component where data must be stored in `contents`. */
-  SummaryComponent withContent(TypeTrackerContent contents);
+  SummaryComponent withContent(Content contents);
 
   // Callables
   class SummarizedCallable {
@@ -105,34 +105,29 @@ signature module Output<Input I> {
   /**
    * Holds if `nodeTo` is the result of accessing the `content` content of `nodeFrom`.
    */
-  predicate basicLoadStep(I::Node nodeFrom, I::Node nodeTo, I::TypeTrackerContent content);
+  predicate basicLoadStep(I::Node nodeFrom, I::Node nodeTo, I::Content content);
 
   /**
    * Holds if `nodeFrom` is being written to the `content` content of the object in `nodeTo`.
    */
-  predicate basicStoreStep(I::Node nodeFrom, I::Node nodeTo, I::TypeTrackerContent content);
+  predicate basicStoreStep(I::Node nodeFrom, I::Node nodeTo, I::Content content);
 
   /**
    * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
    */
   predicate basicLoadStoreStep(
-    I::Node nodeFrom, I::Node nodeTo, I::TypeTrackerContent loadContent,
-    I::TypeTrackerContent storeContent
+    I::Node nodeFrom, I::Node nodeTo, I::Content loadContent, I::Content storeContent
   );
 
   /**
    * Holds if type-tracking should step from `nodeFrom` to `nodeTo` but block flow of contents matched by `filter` through here.
    */
-  predicate basicWithoutContentStep(
-    I::Node nodeFrom, I::Node nodeTo, I::TypeTrackerContentFilter filter
-  );
+  predicate basicWithoutContentStep(I::Node nodeFrom, I::Node nodeTo, I::ContentFilter filter);
 
   /**
    * Holds if type-tracking should step from `nodeFrom` to `nodeTo` if inside a content matched by `filter`.
    */
-  predicate basicWithContentStep(
-    I::Node nodeFrom, I::Node nodeTo, I::TypeTrackerContentFilter filter
-  );
+  predicate basicWithContentStep(I::Node nodeFrom, I::Node nodeTo, I::ContentFilter filter);
 }
 
 /**
@@ -148,7 +143,7 @@ module SummaryFlow<Input I> implements Output<I> {
 
   pragma[nomagic]
   private predicate hasLoadSummary(
-    I::SummarizedCallable callable, I::TypeTrackerContent contents, I::SummaryComponentStack input,
+    I::SummarizedCallable callable, I::Content contents, I::SummaryComponentStack input,
     I::SummaryComponentStack output
   ) {
     callable.propagatesFlow(I::push(I::content(contents), input), output, true) and
@@ -158,7 +153,7 @@ module SummaryFlow<Input I> implements Output<I> {
 
   pragma[nomagic]
   private predicate hasStoreSummary(
-    I::SummarizedCallable callable, I::TypeTrackerContent contents, I::SummaryComponentStack input,
+    I::SummarizedCallable callable, I::Content contents, I::SummaryComponentStack input,
     I::SummaryComponentStack output
   ) {
     not isNonLocal(input.head()) and
@@ -177,9 +172,8 @@ module SummaryFlow<Input I> implements Output<I> {
 
   pragma[nomagic]
   private predicate hasLoadStoreSummary(
-    I::SummarizedCallable callable, I::TypeTrackerContent loadContents,
-    I::TypeTrackerContent storeContents, I::SummaryComponentStack input,
-    I::SummaryComponentStack output
+    I::SummarizedCallable callable, I::Content loadContents, I::Content storeContents,
+    I::SummaryComponentStack input, I::SummaryComponentStack output
   ) {
     callable
         .propagatesFlow(I::push(I::content(loadContents), input),
@@ -190,10 +184,10 @@ module SummaryFlow<Input I> implements Output<I> {
 
   pragma[nomagic]
   private predicate hasWithoutContentSummary(
-    I::SummarizedCallable callable, I::TypeTrackerContentFilter filter,
-    I::SummaryComponentStack input, I::SummaryComponentStack output
+    I::SummarizedCallable callable, I::ContentFilter filter, I::SummaryComponentStack input,
+    I::SummaryComponentStack output
   ) {
-    exists(I::TypeTrackerContent content |
+    exists(I::Content content |
       callable.propagatesFlow(I::push(I::withoutContent(content), input), output, true) and
       filter = I::getFilterFromWithoutContentStep(content) and
       not isNonLocal(input.head()) and
@@ -204,10 +198,10 @@ module SummaryFlow<Input I> implements Output<I> {
 
   pragma[nomagic]
   private predicate hasWithContentSummary(
-    I::SummarizedCallable callable, I::TypeTrackerContentFilter filter,
-    I::SummaryComponentStack input, I::SummaryComponentStack output
+    I::SummarizedCallable callable, I::ContentFilter filter, I::SummaryComponentStack input,
+    I::SummaryComponentStack output
   ) {
-    exists(I::TypeTrackerContent content |
+    exists(I::Content content |
       callable.propagatesFlow(I::push(I::withContent(content), input), output, true) and
       filter = I::getFilterFromWithContentStep(content) and
       not isNonLocal(input.head()) and
@@ -217,7 +211,7 @@ module SummaryFlow<Input I> implements Output<I> {
   }
 
   private predicate componentLevelStep(I::SummaryComponent component) {
-    exists(I::TypeTrackerContent content |
+    exists(I::Content content |
       component = I::withoutContent(content) and
       not exists(I::getFilterFromWithoutContentStep(content))
     )
@@ -338,7 +332,7 @@ module SummaryFlow<Input I> implements Output<I> {
     )
   }
 
-  predicate basicLoadStep(I::Node nodeFrom, I::Node nodeTo, I::TypeTrackerContent content) {
+  predicate basicLoadStep(I::Node nodeFrom, I::Node nodeTo, I::Content content) {
     exists(
       I::SummarizedCallable callable, I::Node call, I::SummaryComponentStack input,
       I::SummaryComponentStack output
@@ -351,7 +345,7 @@ module SummaryFlow<Input I> implements Output<I> {
     )
   }
 
-  predicate basicStoreStep(I::Node nodeFrom, I::Node nodeTo, I::TypeTrackerContent content) {
+  predicate basicStoreStep(I::Node nodeFrom, I::Node nodeTo, I::Content content) {
     exists(
       I::SummarizedCallable callable, I::Node call, I::SummaryComponentStack input,
       I::SummaryComponentStack output
@@ -365,8 +359,7 @@ module SummaryFlow<Input I> implements Output<I> {
   }
 
   predicate basicLoadStoreStep(
-    I::Node nodeFrom, I::Node nodeTo, I::TypeTrackerContent loadContent,
-    I::TypeTrackerContent storeContent
+    I::Node nodeFrom, I::Node nodeTo, I::Content loadContent, I::Content storeContent
   ) {
     exists(
       I::SummarizedCallable callable, I::Node call, I::SummaryComponentStack input,
@@ -380,9 +373,7 @@ module SummaryFlow<Input I> implements Output<I> {
     )
   }
 
-  predicate basicWithoutContentStep(
-    I::Node nodeFrom, I::Node nodeTo, I::TypeTrackerContentFilter filter
-  ) {
+  predicate basicWithoutContentStep(I::Node nodeFrom, I::Node nodeTo, I::ContentFilter filter) {
     exists(
       I::SummarizedCallable callable, I::Node call, I::SummaryComponentStack input,
       I::SummaryComponentStack output
@@ -395,9 +386,7 @@ module SummaryFlow<Input I> implements Output<I> {
     )
   }
 
-  predicate basicWithContentStep(
-    I::Node nodeFrom, I::Node nodeTo, I::TypeTrackerContentFilter filter
-  ) {
+  predicate basicWithContentStep(I::Node nodeFrom, I::Node nodeTo, I::ContentFilter filter) {
     exists(
       I::SummarizedCallable callable, I::Node call, I::SummaryComponentStack input,
       I::SummaryComponentStack output

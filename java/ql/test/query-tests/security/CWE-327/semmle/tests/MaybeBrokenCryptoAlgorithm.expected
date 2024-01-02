@@ -1,6 +1,12 @@
 edges
 nodes
 | Test.java:34:48:34:52 | "foo" | semmle.label | "foo" |
+| WeakHashing.java:15:55:15:83 | getProperty(...) | semmle.label | getProperty(...) |
+| WeakHashing.java:18:56:18:95 | getProperty(...) | semmle.label | getProperty(...) |
+| WeakHashing.java:21:56:21:91 | getProperty(...) | semmle.label | getProperty(...) |
 subpaths
 #select
 | Test.java:34:21:34:53 | new SecretKeySpec(...) | Test.java:34:48:34:52 | "foo" | Test.java:34:48:34:52 | "foo" | Cryptographic algorithm $@ may not be secure, consider using a different algorithm. | Test.java:34:48:34:52 | "foo" | foo |
+| WeakHashing.java:15:29:15:84 | getInstance(...) | WeakHashing.java:15:55:15:83 | getProperty(...) | WeakHashing.java:15:55:15:83 | getProperty(...) | Cryptographic algorithm $@ may not be secure, consider using a different algorithm. | WeakHashing.java:15:55:15:83 | getProperty(...) | MD5 |
+| WeakHashing.java:18:30:18:96 | getInstance(...) | WeakHashing.java:18:56:18:95 | getProperty(...) | WeakHashing.java:18:56:18:95 | getProperty(...) | Cryptographic algorithm $@ may not be secure, consider using a different algorithm. | WeakHashing.java:18:56:18:95 | getProperty(...) | MD5 |
+| WeakHashing.java:21:30:21:92 | getInstance(...) | WeakHashing.java:21:56:21:91 | getProperty(...) | WeakHashing.java:21:56:21:91 | getProperty(...) | Cryptographic algorithm $@ may not be secure, consider using a different algorithm. | WeakHashing.java:21:56:21:91 | getProperty(...) | MD5 |
