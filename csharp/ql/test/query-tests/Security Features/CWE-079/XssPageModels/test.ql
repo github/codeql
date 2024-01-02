@@ -1,3 +1,7 @@
+/**
+ * @kind path-problem
+ */
+
 import csharp
 import semmle.code.csharp.security.dataflow.XSSQuery
 import semmle.code.csharp.security.dataflow.XSSSinks
@@ -14,6 +18,8 @@ module TestXssTrackingConfig implements DataFlow::ConfigSig {
 
 module TestXss = TaintTracking::Global<TestXssTrackingConfig>;
 
-from DataFlow::Node source, DataFlow::Node sink
-where TestXss::flow(source, sink)
+import TestXss::PathGraph
+
+from TestXss::PathNode source, TestXss::PathNode sink
+where TestXss::flowPath(source, sink)
 select sink, source, sink, "Xss"

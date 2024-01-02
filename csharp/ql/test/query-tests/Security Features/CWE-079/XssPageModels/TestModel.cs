@@ -10,7 +10,7 @@ class TestModel : PageModel {
     private string source() { return "x"; }
 
     public async Task<IActionResult> OnPostAsync() {
-        Name = source();
+        this.Name = source();
         return Page();
     }
 
