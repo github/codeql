@@ -885,3 +885,17 @@ class BuiltInFunction extends Function {
 }
 
 private predicate suppressUnusedThis(Function f) { any() }
+
+/**
+ * A C++ user-defined literal [N4140 13.5.8].
+ */
+class UserDefinedLiteral extends Function {
+  UserDefinedLiteral() { functions(underlyingElement(this), _, 7) }
+}
+
+/**
+ * A C++ deduction guide [N4659 17.9].
+ */
+class DeductionGuide extends Function {
+  DeductionGuide() { functions(underlyingElement(this), _, 8) }
+}
