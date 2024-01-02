@@ -62,27 +62,23 @@ abstract class Endpoint instanceof DataFlow::Node {
  * A callable method or accessor from source code.
  */
 class MethodEndpoint extends Endpoint {
-  private DataFlow::MethodNode methodNode;
-
   MethodEndpoint() {
-    this = methodNode and
-    methodNode.isPublic() and
-    not isUninteresting(methodNode)
+    this.(DataFlow::MethodNode).isPublic() and
+    not isUninteresting(this)
   }
 
-  DataFlow::MethodNode getNode() { result = methodNode }
+  DataFlow::MethodNode getNode() { result = this }
 
-  override string getName() { result = methodNode.getMethodName() }
+  override string getName() { result = this.(DataFlow::MethodNode).getMethodName() }
 
   /**
    * Gets the unbound type name of this endpoint.
    */
   override string getType() {
     result =
-      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getName()) = methodNode)
-          .getQualifiedName() or
+      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getName()) = this).getQualifiedName() or
     result =
-      any(DataFlow::ModuleNode m | m.getOwnSingletonMethod(this.getName()) = methodNode)
+      any(DataFlow::ModuleNode m | m.getOwnSingletonMethod(this.getName()) = this)
             .getQualifiedName() + "!"
   }
 
@@ -90,16 +86,20 @@ class MethodEndpoint extends Endpoint {
    * Gets the parameter types of this endpoint.
    */
   override string getParameters() {
-    // For now, return the names of postional and keyword parameters. We don't always have type information, so we can't return type names.
+    // For now, return the names of positional and keyword parameters. We don't always have type information, so we can't return type names.
     // We don't yet handle splat params or block params.
     result =
       "(" +
         concat(string key, string value |
           value =
-            any(int i | i.toString() = key | methodNode.asCallable().getParameter(i)).getName()
+            any(int i |
+              i.toString() = key
+            |
+              this.(DataFlow::MethodNode).asCallable().getParameter(i)
+            ).getName()
           or
           exists(DataFlow::ParameterNode param |
-            param = methodNode.asCallable().getKeywordParameter(key)
+            param = this.(DataFlow::MethodNode).asCallable().getKeywordParameter(key)
           |
             value = key + ":"
           )
