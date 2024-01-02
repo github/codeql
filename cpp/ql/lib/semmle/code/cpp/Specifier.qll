@@ -282,7 +282,7 @@ class AttributeArgument extends Element, @attribute_arg {
   }
 
   /**
-   * Gets the value of this argument, if its value is a expression.
+   * Gets the value of this argument, if its value is an expression.
    */
   Expr getValueExpr() { attribute_arg_expr(underlyingElement(this), unresolveElement(result)) }
 
