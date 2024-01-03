@@ -31,7 +31,7 @@ if [ -z "${GH_TOKEN}" ]; then
   exit 1
 fi
 
-# Get the sha of the previous release
+# Get the sha of the previous release, i.e. the last commit to the main branch that updated the query pack version
 PREVIOUS_RELEASE_SHA=$(git rev-list -n 1 main -- ./src/qlpack.yml)
 if [ -z "$PREVIOUS_RELEASE_SHA" ]; then
   echo "Error: Could not get the sha of the previous release of codeml-automodel query pack"
