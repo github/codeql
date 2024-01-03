@@ -28,14 +28,9 @@ class CfgScope extends Scope instanceof CfgScope::Range_ {
  * Only nodes that can be reached from an entry point are included in the CFG.
  */
 class ControlFlowNode extends Node {
-  /** Gets a textual representation of this control flow node. */
-  string toString() { none() }
 
   /** Gets the AST node that this node corresponds to, if any. */
   ControlFlowElement getNode() { none() }
-
-  /** Gets the location of this control flow node. */
-  Location getLocation() { none() }
 
   /** Gets the file of this control flow node. */
   final File getFile() { result = this.getLocation().getFile() }
