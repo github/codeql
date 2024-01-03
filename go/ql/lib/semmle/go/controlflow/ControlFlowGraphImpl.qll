@@ -2082,7 +2082,9 @@ module CFG {
 
   /** Gets a successor of `nd`, that is, a node that is executed after `nd`. */
   cached
-  ControlFlow::Node succ0(ControlFlow::Node nd) { any(ControlFlowTree tree).succ0(nd, result) }
+  private ControlFlow::Node succ0(ControlFlow::Node nd) {
+    any(ControlFlowTree tree).succ0(nd, result)
+  }
 
   /** Gets a successor of `nd`, that is, a node that is executed after `nd`. */
   cached
