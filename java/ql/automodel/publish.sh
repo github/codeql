@@ -75,8 +75,11 @@ else
   fi
 fi
 
+# Get the absolute path of the automodel repo
 AUTOMODEL_ROOT="$(readlink -f "$(dirname $0)")"
+# Get the absolute path of the workspace root
 WORKSPACE_ROOT="$AUTOMODEL_ROOT/../../.."
+# Specify the groups of queries to test and publish
 GRPS="automodel,-test"
 
 pushd "$AUTOMODEL_ROOT"
