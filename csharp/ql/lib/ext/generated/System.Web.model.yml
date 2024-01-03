@@ -42,3 +42,4 @@ extensions:
       - ["System.Web", "HttpUtility", "UrlDecodeToBytes", "(System.String,System.Text.Encoding)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "UrlEncodeUnicode", "(System.String)", "summary", "df-generated"]
       - ["System.Web", "HttpUtility", "UrlEncodeUnicodeToBytes", "(System.String)", "summary", "df-generated"]
+      - ["System.Web", "IHtmlString", "ToHtmlString", "()", "summary", "df-generated"]

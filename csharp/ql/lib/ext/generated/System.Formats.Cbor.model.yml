@@ -8,6 +8,7 @@ extensions:
       - ["System.Formats.Cbor", "CborReader", False, "ReadDefiniteLengthByteString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", False, "ReadDefiniteLengthTextStringBytes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", False, "ReadEncodedValue", "(System.Boolean)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Formats.Cbor", "CborReader", False, "Reset", "(System.ReadOnlyMemory<System.Byte>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -52,6 +53,7 @@ extensions:
       - ["System.Formats.Cbor", "CborReader", "get_ConformanceMode", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborReader", "get_CurrentDepth", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborWriter", "CborWriter", "(System.Formats.Cbor.CborConformanceMode,System.Boolean,System.Boolean)", "summary", "df-generated"]
+      - ["System.Formats.Cbor", "CborWriter", "CborWriter", "(System.Formats.Cbor.CborConformanceMode,System.Boolean,System.Boolean,System.Int32)", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborWriter", "Encode", "()", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborWriter", "Encode", "(System.Span<System.Byte>)", "summary", "df-generated"]
       - ["System.Formats.Cbor", "CborWriter", "Reset", "()", "summary", "df-generated"]
