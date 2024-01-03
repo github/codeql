@@ -623,6 +623,10 @@ module CFG {
       not cmpl.isNormal()
     }
 
+    /**
+     * Holds if `succ` is a successor of `pred`, ignoring the execution of any
+     * deferred functions when a function ends.
+     */
     predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(int i |
         lastNode(this.getChildTreeRanked(i), pred, normalCompletion()) and
@@ -630,6 +634,7 @@ module CFG {
       )
     }
 
+    /** Holds if `succ` is a successor of `pred`. */
     predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) { this.succ0(pred, succ) }
 
     final ControlFlowTree getChildTreeRanked(int i) {
@@ -2080,7 +2085,10 @@ module CFG {
     )
   }
 
-  /** Gets a successor of `nd`, that is, a node that is executed after `nd`. */
+  /**
+   * Gets a successor of `nd`, that is, a node that is executed after `nd`,
+   * ignoring the execution of any deferred functions when a function ends.
+   */
   cached
   private ControlFlow::Node succ0(ControlFlow::Node nd) {
     any(ControlFlowTree tree).succ0(nd, result)
