@@ -18,15 +18,15 @@ if ! git diff --quiet; then
 fi
 
 # Check the above environment variables are set
-if [ -z "${GITHUB_TOKEN:-}" ]; then
+if [ -z "${GITHUB_TOKEN}" ]; then
   echo "Error: GITHUB_TOKEN environment variable not set. Please set this to a token with package:write permissions to codeql."
   exit 1
 fi
-if [ -z "${CODEQL_DIST:-}" ]; then
+if [ -z "${CODEQL_DIST}" ]; then
   echo "Error: CODEQL_DIST environment variable not set. Please set this to the path of a codeql distribution."
   exit 1
 fi
-if [ -z "${GH_TOKEN:-}" ]; then
+if [ -z "${GH_TOKEN}" ]; then
   echo "Error: GH_TOKEN environment variable not set. Please set this to a token with repo permissions to github/codeml-automodel."
   exit 1
 fi
