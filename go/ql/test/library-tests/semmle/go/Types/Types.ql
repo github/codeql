@@ -1,5 +1,7 @@
 import go
 
-from Type t
-where exists(t.getEntity().getDeclaration())
-select t, t.pp()
+from Type t, string filepath
+where
+  t.hasLocationInfo(filepath, _, _, _, _) and
+  filepath != ""
+select t.pp()
