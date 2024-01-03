@@ -1597,15 +1597,7 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			extractUnderlyingType(tw, lbl, underlying)
 			trackInstantiatedStructFields(tw, tp, origintp)
 
-			entitylbl, exists := tw.Labeler.LookupObjectID(origintp.Obj(), lbl)
-			if entitylbl == trap.InvalidLabel {
-				log.Printf("Omitting type-object binding for unknown object %v.\n", origintp.Obj())
-			} else {
-				if !exists {
-					extractObject(tw, origintp.Obj(), entitylbl)
-				}
-				dbscheme.TypeObjectTable.Emit(tw, lbl, entitylbl)
-			}
+			extractTypeObject(tw, lbl, origintp.Obj())
 
 			// ensure all methods have labels - note that methods do not have a
 			// parent scope, so they are not dealt with by `extractScopes`
@@ -1627,6 +1619,8 @@ func extractType(tw *trap.Writer, tp types.Type) trap.Label {
 			parentlbl := getTypeParamParentLabel(tw, tp)
 			constraintLabel := extractType(tw, tp.Constraint())
 			dbscheme.TypeParamTable.Emit(tw, lbl, tp.Obj().Name(), constraintLabel, parentlbl, tp.Index())
+
+			extractTypeObject(tw, lbl, tp.Obj())
 		case *types.Union:
 			kind = dbscheme.TypeSetLiteral.Index()
 			for i := 0; i < tp.Len(); i++ {
@@ -1786,6 +1780,19 @@ func getTypeLabel(tw *trap.Writer, tp types.Type) (trap.Label, bool) {
 		tw.Labeler.TypeLabels[tp] = lbl
 	}
 	return lbl, exists
+}
+
+// extractTypeObject extracts a single type object and emits it to the type object table.
+func extractTypeObject(tw *trap.Writer, lbl trap.Label, entity *types.TypeName) {
+	entitylbl, exists := tw.Labeler.LookupObjectID(entity, lbl)
+	if entitylbl == trap.InvalidLabel {
+		log.Printf("Omitting type-object binding for unknown object %v.\n", entity)
+	} else {
+		if !exists {
+			extractObject(tw, entity, entitylbl)
+		}
+		dbscheme.TypeObjectTable.Emit(tw, lbl, entitylbl)
+	}
 }
 
 // extractKeyType extracts `key` as the key type of the map type `mp`
