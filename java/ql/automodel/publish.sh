@@ -52,8 +52,10 @@ if [ -z "${1:-}" ]; then
       exit 1
   fi
   echo "Updating to latest automodel release: $TAG_NAME"
+  # Before downloading, delete any existing release.zip, and ignore failure if not present
   rm release.zip || true
   gh release download $TAG_NAME -A zip -O release.zip --repo 'https://github.com/github/codeml-automodel'
+  # Before unzipping, delete any existing release directory, and ignore failure if not present
   rm -rf release || true
   unzip -o release.zip -d release 
   REVISION=$(jq -r '.["codeql-sha"]' release/codeml-automodel*/codeml-automodel-release.json)
