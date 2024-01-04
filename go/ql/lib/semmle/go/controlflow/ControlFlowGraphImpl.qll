@@ -2111,7 +2111,7 @@ module CFG {
    * Gets a successor of `nd`, that is, a node that is executed after `nd`,
    * ignoring the execution of any deferred functions when a function ends.
    */
-  cached
+  pragma[nomagic]
   private ControlFlow::Node succ0(ControlFlow::Node nd) {
     any(ControlFlowTree tree).succ0(nd, result)
   }
