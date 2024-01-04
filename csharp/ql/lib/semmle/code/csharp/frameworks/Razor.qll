@@ -4,6 +4,7 @@ private import csharp
 private import codeql.util.Unit
 private import codeql.util.FilePath
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
+private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 
 /** A call to the `View` method */
 private class ViewCall extends MethodCall {
@@ -251,17 +252,18 @@ private MethodCall getAPageCall(PageModelClass pm) {
         ["Page", "RedirectToPage"])
 }
 
-private MethodCall getThisCallInVoidHandler(PageModelClass pm) {
+private ThisAccess getThisCallInVoidHandler(PageModelClass pm) {
   result.getEnclosingCallable() = pm.getAHandlerMethod() and
-  result.getEnclosingCallable().getReturnType() instanceof VoidType and
-  result.getQualifier() instanceof ThisAccess
+  result.getEnclosingCallable().getReturnType() instanceof VoidType
 }
 
 private class PageModelJumpNode extends DataFlow::NonLocalJumpNode {
   PageModelClass pm;
 
   PageModelJumpNode() {
-    this.asExpr() = [getAPageCall(pm), getThisCallInVoidHandler(pm)].getQualifier()
+    this.asExpr() = getAPageCall(pm).getQualifier()
+    or
+    this.(PostUpdateNode).getPreUpdateNode().asExpr() = getThisCallInVoidHandler(pm)
   }
 
   override DataFlow::Node getAJumpSuccessor(boolean preservesValue) {
