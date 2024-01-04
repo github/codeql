@@ -21,16 +21,16 @@ class StringConcatenation extends Call {
     or
     this.getTarget() instanceof StrlcatFunction
     or
-    // operator+ concat
+    // operator+ and ostream (<<) concat
     exists(Call call, Operator op |
       call.getTarget() = op and
-      op.hasQualifiedName(["std", "bsl"], "operator+") and
-      op.getType().(UserType).hasQualifiedName(["std", "bsl"], "basic_string") and
+      op.hasQualifiedName(["std", "bsl"], ["operator+", "operator<<"]) and
+      op.getType()
+          .stripType()
+          .(UserType)
+          .hasQualifiedName(["std", "bsl"], ["basic_string", "basic_ostream"]) and
       this = call
     )
-    or
-    // string stream concat (operator<<)
-    this.getTarget().hasQualifiedName(["std", "bsl"], "operator<<")
   }
 
   /**
