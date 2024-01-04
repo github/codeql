@@ -12,6 +12,7 @@ on:
       - main
     paths:
       - "java/ql/src/utils/modelgenerator/**/*.*"
+      - "misc/scripts/models-as-data/*.*"
       - ".github/workflows/mad_modelDiff.yml"
 
 permissions:
