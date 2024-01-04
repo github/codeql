@@ -718,6 +718,18 @@ nodes
 | tooltip.jsx:11:25:11:30 | source |
 | tooltip.jsx:11:25:11:30 | source |
 | tooltip.jsx:11:25:11:30 | source |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:22:20:22:30 | window.name |
+| tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:23:38:23:43 | source |
 | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search |
 | translate.js:6:16:6:39 | documen ... .search |
@@ -1944,6 +1956,20 @@ edges
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
 | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:6:11:6:30 | source |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:22:11:22:30 | source | tooltip.jsx:23:38:23:43 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:22:20:22:30 | window.name | tooltip.jsx:22:11:22:30 | source |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
+| tooltip.jsx:23:38:23:43 | source | tooltip.jsx:18:51:18:59 | provide() |
 | translate.js:6:7:6:39 | target | translate.js:7:42:7:47 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
 | translate.js:6:16:6:39 | documen ... .search | translate.js:6:7:6:39 | target |
