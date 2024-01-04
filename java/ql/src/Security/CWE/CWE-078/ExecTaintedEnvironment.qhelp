@@ -33,4 +33,10 @@ safe before using it.</p>
 
 <sample src="ExecTaintedEnvironmentChecked.java" />
 </example>
+<references>
+  <li>
+    The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/environment/env.html">, Environment Variables</a>.
+  </li>
+
+</references>
 </qhelp>
