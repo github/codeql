@@ -9,6 +9,14 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
   exit 0
 fi
 
+# If there's an $1 argument, then check it's "override-release"
+if [ -n "${1:-}" ]; then
+  if [ "$1" != "override-release" ]; then
+    echo "Error: The only valid argument is 'override-release'"
+    exit 1
+  fi
+fi
+
 # If we're publishing the codeml-automodel release then we will checkout the sha specified in the release.
 # So we need to check that there are no uncommitted changes in the local branch.
 # And, if we're publishing the current HEAD, it's cleaner to ensure that there are no uncommitted changes.
