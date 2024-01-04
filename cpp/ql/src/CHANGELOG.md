@@ -1,3 +1,17 @@
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### Breaking Changes
+
+* The `cpp/tainted-format-string-through-global` query has been deleted. This does not lead to a loss of relevant alerts, as the query duplicated a subset of the alerts from `cpp/tainted-format-string`.
+
+### New Queries
+
+* Added a new query, `cpp/use-of-string-after-lifetime-ends`, to detect calls to `c_str` on strings that will be destroyed immediately.
+
 ## 0.8.3
 
 ### Minor Analysis Improvements

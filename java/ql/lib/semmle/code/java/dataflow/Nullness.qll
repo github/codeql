@@ -100,9 +100,9 @@ predicate dereference(Expr e) {
   or
   exists(SynchronizedStmt synch | synch.getExpr() = e)
   or
-  exists(SwitchStmt switch | switch.getExpr() = e)
+  exists(SwitchStmt switch | switch.getExpr() = e and not switch.hasNullCase())
   or
-  exists(SwitchExpr switch | switch.getExpr() = e)
+  exists(SwitchExpr switch | switch.getExpr() = e and not switch.hasNullCase())
   or
   exists(FieldAccess fa, Field f | fa.getQualifier() = e and fa.getField() = f and not f.isStatic())
   or
@@ -460,7 +460,7 @@ private predicate interestingCond(SsaSourceVariable npecand, ConditionBlock cond
     varMaybeNullInBlock(_, npecand, cond, _) or
     varConditionallyNull(npecand.getAnSsaVariable(), cond, _)
   ) and
-  not cond.getCondition().getAChildExpr*() = npecand.getAnAccess()
+  not cond.getCondition().(Expr).getAChildExpr*() = npecand.getAnAccess()
 }
 
 /** A pair of correlated conditions for a given NPE candidate. */
@@ -588,7 +588,7 @@ private predicate trackingVar(
   exists(ConditionBlock cond |
     interestingCond(npecand, cond) and
     varMaybeNullInBlock(_, npecand, cond, _) and
-    cond.getCondition().getAChildExpr*() = trackvar.getAnAccess() and
+    cond.getCondition().(Expr).getAChildExpr*() = trackvar.getAnAccess() and
     trackssa.getSourceVariable() = trackvar and
     trackssa.getDefiningExpr().(VariableAssign).getSource() = init
   |

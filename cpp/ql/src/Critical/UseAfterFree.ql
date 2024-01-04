@@ -30,7 +30,7 @@ private predicate externalCallNeverDereferences(FormattingFunctionCall call, int
 }
 
 predicate isUse0(Expr e) {
-  not isFree(_, e, _) and
+  not isFree(_, _, e, _) and
   (
     e = any(PointerDereferenceExpr pde).getOperand()
     or
@@ -101,35 +101,43 @@ module ParameterSinks {
     )
   }
 
-  private CallInstruction getAnAlwaysReachedCallInstruction(IRFunction f) {
-    result.getBlock().postDominates(f.getEntryBlock())
+  private CallInstruction getAnAlwaysReachedCallInstruction() {
+    exists(IRFunction f | result.getBlock().postDominates(f.getEntryBlock()))
   }
 
   pragma[nomagic]
-  predicate callHasTargetAndArgument(Function f, int i, CallInstruction call, Instruction argument) {
-    call.getStaticCallTarget() = f and
-    call.getArgument(i) = argument
+  private predicate callHasTargetAndArgument(Function f, int i, Instruction argument) {
+    exists(CallInstruction call |
+      call.getStaticCallTarget() = f and
+      call.getArgument(i) = argument and
+      call = getAnAlwaysReachedCallInstruction()
+    )
   }
 
   pragma[nomagic]
-  predicate initializeParameterInFunction(Function f, int i, InitializeParameterInstruction init) {
-    pragma[only_bind_out](init.getEnclosingFunction()) = f and
-    init.hasIndex(i)
+  private predicate initializeParameterInFunction(Function f, int i) {
+    exists(InitializeParameterInstruction init |
+      pragma[only_bind_out](init.getEnclosingFunction()) = f and
+      init.hasIndex(i) and
+      init = getAnAlwaysDereferencedParameter()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate alwaysDereferencedArgumentHasValueNumber(ValueNumber vn) {
+    exists(int i, Function f, Instruction argument |
+      callHasTargetAndArgument(f, i, argument) and
+      initializeParameterInFunction(pragma[only_bind_into](f), pragma[only_bind_into](i)) and
+      vn.getAnInstruction() = argument
+    )
   }
 
   InitializeParameterInstruction getAnAlwaysDereferencedParameter() {
     result = getAnAlwaysDereferencedParameter0()
     or
-    exists(
-      CallInstruction call, int i, InitializeParameterInstruction p, Instruction argument,
-      Function f
-    |
-      callHasTargetAndArgument(f, i, call, argument) and
-      initializeParameterInFunction(f, i, p) and
-      p = getAnAlwaysDereferencedParameter() and
-      result =
-        pragma[only_bind_out](pragma[only_bind_into](valueNumber(argument)).getAnInstruction()) and
-      call = getAnAlwaysReachedCallInstruction(_)
+    exists(ValueNumber vn |
+      alwaysDereferencedArgumentHasValueNumber(vn) and
+      vn.getAnInstruction() = result
     )
   }
 }
@@ -170,6 +178,6 @@ module UseAfterFree = FlowFromFree<isUse/2, isExcludeFreeUsePair/2>;
 from UseAfterFree::PathNode source, UseAfterFree::PathNode sink, DeallocationExpr dealloc
 where
   UseAfterFree::flowPath(source, sink) and
-  isFree(source.getNode(), _, dealloc)
+  isFree(source.getNode(), _, _, dealloc)
 select sink.getNode(), source, sink, "Memory may have been previously freed by $@.", dealloc,
   dealloc.toString()

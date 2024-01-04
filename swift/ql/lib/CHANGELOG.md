@@ -1,3 +1,16 @@
+## 0.3.5
+
+No user-facing changes.
+
+## 0.3.4
+
+### Minor Analysis Improvements
+
+* Extracts Swift's `DiscardStmt` and `MaterizliePackExpr`
+* Expanded and improved flow models for `Set` and `Sequence`.
+* Added imprecise flow sources matching initializers such as `init(contentsOfFile:)`.
+* Extracts `MacroDecl` and some related information
+
 ## 0.3.3
 
 ### Major Analysis Improvements

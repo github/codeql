@@ -1,9 +1,7 @@
 /** Provides classes and predicates to reason about cleartext storage vulnerabilities. */
 
 import java
-private import semmle.code.java.dataflow.DataFlow4
 private import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.dataflow.TaintTracking2
 private import semmle.code.java.security.SensitiveActions
 
 /** A sink representing persistent storage that saves data in clear text. */

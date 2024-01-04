@@ -628,6 +628,32 @@ void test25(char* source) {
 	strcpy(buf, s.home); // BAD
 }
 
+void test26(bool cond)
+{
+	char buffer[100];
+	char *ptr;
+	int i;
+
+	if (buffer[-1] == 0) { return; } // BAD: accesses buffer[-1]
+
+	ptr = buffer;
+	if (cond)
+	{
+		ptr += 1;
+		if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[0]
+	} else {
+		if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1]
+	}
+	if (ptr[-1] == 0) { return; } // BAD: accesses buffer[-1] or buffer[0] [NOT DETECTED]
+
+	ptr = buffer;
+	for (i = 0; i < 2; i++)
+	{
+		ptr += 1;
+	}
+	if (ptr[-1] == 0) { return; } // GOOD: accesses buffer[1]
+}
+
 int tests_main(int argc, char *argv[])
 {
 	long long arr17[19];

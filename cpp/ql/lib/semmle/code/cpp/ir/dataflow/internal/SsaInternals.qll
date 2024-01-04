@@ -16,6 +16,15 @@ private module SourceVariables {
       ind = [0 .. countIndirectionsForCppType(base.getLanguageType()) + 1]
     }
 
+  private int maxNumberOfIndirections() { result = max(SourceVariable sv | | sv.getIndirection()) }
+
+  private string repeatStars(int n) {
+    n = 0 and result = ""
+    or
+    n = [1 .. maxNumberOfIndirections()] and
+    result = "*" + repeatStars(n - 1)
+  }
+
   class SourceVariable extends TSourceVariable {
     SsaInternals0::SourceVariable base;
     int ind;
@@ -32,13 +41,7 @@ private module SourceVariables {
     SsaInternals0::SourceVariable getBaseVariable() { result = base }
 
     /** Gets a textual representation of this element. */
-    string toString() {
-      ind = 0 and
-      result = this.getBaseVariable().toString()
-      or
-      ind > 0 and
-      result = this.getBaseVariable().toString() + " indirection"
-    }
+    string toString() { result = repeatStars(this.getIndirection()) + base.toString() }
 
     /**
      * Gets the number of loads performed on the base source variable

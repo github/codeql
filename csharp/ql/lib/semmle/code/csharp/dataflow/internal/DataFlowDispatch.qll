@@ -81,9 +81,9 @@ newtype TReturnKind =
  */
 class DataFlowSummarizedCallable instanceof FlowSummary::SummarizedCallable {
   DataFlowSummarizedCallable() {
-    not this.fromSource()
+    not this.hasBody()
     or
-    this.fromSource() and not this.applyGeneratedModel()
+    this.hasBody() and not this.applyGeneratedModel()
   }
 
   string toString() { result = super.toString() }
@@ -116,9 +116,7 @@ private module Cached {
       // No need to include calls that are compiled from source
       not call.getImplementation().getMethod().compiledFromSource()
     } or
-    TSummaryCall(
-      FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
-    ) {
+    TSummaryCall(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
     }
 
@@ -446,7 +444,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
  * the method `Select`.
  */
 class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private FlowSummary::SummarizedCallable c;
   private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }

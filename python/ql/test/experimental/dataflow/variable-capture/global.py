@@ -78,7 +78,7 @@ def through(tainted):
         global sinkT1
         sinkT1 = tainted
     captureOut1()
-    SINK(sinkT1) #$ MISSING:captured
+    SINK(sinkT1) #$ captured
 
     def captureOut2():
         def m():
@@ -86,7 +86,7 @@ def through(tainted):
             sinkT2 = tainted
         m()
     captureOut2()
-    SINK(sinkT2) #$ MISSING:captured
+    SINK(sinkT2) #$ captured
 
     def captureOut1NotCalled():
         global nonSinkT1

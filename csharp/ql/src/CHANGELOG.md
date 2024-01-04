@@ -1,3 +1,13 @@
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Modelled additional flow steps to track flow from a `View` call in an MVC controller to the corresponding Razor View (`.cshtml`) file, which may result in additional results for queries such as `cs/web/xss`.
+
 ## 0.8.3
 
 ### Minor Analysis Improvements

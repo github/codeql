@@ -12,11 +12,11 @@ deprecated class KeySizeConfiguration extends DataFlow::Configuration {
   KeySizeConfiguration() { this = "KeySizeConfiguration" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-    source.(InsufficientKeySizeSource).hasState(state)
+    exists(KeySizeState s | source.(InsufficientKeySizeSource).hasState(s) and state = s.toString())
   }
 
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    sink.(InsufficientKeySizeSink).hasState(state)
+    exists(KeySizeState s | sink.(InsufficientKeySizeSink).hasState(s) and state = s.toString())
   }
 }
 
@@ -24,23 +24,14 @@ deprecated class KeySizeConfiguration extends DataFlow::Configuration {
  * A data flow configuration for tracking key sizes used in cryptographic algorithms.
  */
 module KeySizeConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowState;
+  class FlowState = KeySizeState;
 
-  predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+  predicate isSource(DataFlow::Node source, KeySizeState state) {
     source.(InsufficientKeySizeSource).hasState(state)
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
+  predicate isSink(DataFlow::Node sink, KeySizeState state) {
     sink.(InsufficientKeySizeSink).hasState(state)
-  }
-
-  predicate isBarrier(DataFlow::Node node, DataFlow::FlowState state) { none() }
-
-  predicate isAdditionalFlowStep(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
-  ) {
-    none()
   }
 }
 

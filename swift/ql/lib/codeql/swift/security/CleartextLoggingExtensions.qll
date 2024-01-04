@@ -4,6 +4,7 @@ import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.security.SensitiveExprs
+private import codeql.swift.StringFormat
 
 /** A data flow sink for cleartext logging of sensitive data vulnerabilities. */
 abstract class CleartextLoggingSink extends DataFlow::Node { }
@@ -93,6 +94,48 @@ private class CleartextLoggingFieldAdditionalFlowStep extends CleartextLoggingAd
   }
 }
 
+/**
+ * A sink that appears to be an imported C `printf` variant.
+ */
+private class PrintfCleartextLoggingSink extends CleartextLoggingSink {
+  PrintfCleartextLoggingSink() {
+    exists(CallExpr ce, PrintfFormat f |
+      ce.getStaticTarget() = f and
+      (
+        this.asExpr() = ce.getArgument(f.getFormatParameterIndex()).getExpr() or
+        this.asExpr() = ce.getArgument(f.getNumberOfParams() - 1).getExpr()
+      ) and
+      not f.isSprintf()
+    )
+  }
+}
+
+/**
+ * Holds if `label` looks like the name of a logging function.
+ */
+bindingset[label]
+private predicate logLikeHeuristic(string label) {
+  label.regexpMatch("(l|.*L)og([A-Z0-9].*)?") // e.g. "logMessage", "debugLog"
+}
+
+/**
+ * A cleartext logging sink that is determined by imprecise methods.
+ */
+class HeuristicCleartextLoggingSink extends CleartextLoggingSink {
+  HeuristicCleartextLoggingSink() {
+    exists(CallExpr ce, Function f, Expr e |
+      (
+        logLikeHeuristic(f.getShortName()) or
+        logLikeHeuristic(f.getDeclaringDecl().(NominalTypeDecl).getName())
+      ) and
+      ce.getStaticTarget() = f and
+      ce.getAnArgument().getExpr() = e and
+      e.getType().getUnderlyingType().getName() = ["String", "NSString"] and
+      this.asExpr() = e
+    )
+  }
+}
+
 private class LoggingSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
@@ -123,6 +166,8 @@ private class LoggingSinks extends SinkModelCsv {
         ";;false;os_log(_:log:_:);;;Argument[2];log-injection",
         ";;false;os_log(_:dso:log:_:_:);;;Argument[0,4];log-injection",
         ";;false;os_log(_:dso:log:type:_:);;;Argument[0,4];log-injection",
+        ";NSException;true;init(name:reason:userInfo:);;;Argument[1];log-injection",
+        ";NSException;true;raise(_:format:arguments:);;;Argument[1..2];log-injection",
       ]
   }
 }

@@ -1,5 +1,4 @@
 import javascript
-import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
 import semmle.javascript.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 
 private class InvalidTypeModel extends ModelInput::TypeModelCsv {
