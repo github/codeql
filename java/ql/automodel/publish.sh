@@ -9,12 +9,10 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
   exit 0
 fi
 
-# If there's an $1 argument, then check it's "override-release"
-if [ -n "${1:-}" ]; then
-  if [ "$1" != "override-release" ]; then
-    echo "Error: The only valid argument is 'override-release'"
-    exit 1
-  fi
+# Check that either there are 0 or 1 arguments, and if 1 argument then check that it is "override-release"
+if [ $# -gt 1 ] || [ $# -eq 1 ] && [ "$1" != "override-release" ]; then
+  echo "Error: Invalid arguments. Please run './publish --help' for usage information."
+  exit 1
 fi
 
 # If we're publishing the codeml-automodel release then we will checkout the sha specified in the release.
