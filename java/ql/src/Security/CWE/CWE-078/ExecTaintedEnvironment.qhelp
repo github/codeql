@@ -35,6 +35,9 @@ safe before using it.</p>
 </example>
 <references>
   <li>
+    MITRE: <a href="https://cwe.mitre.org/data/definitions/454.html">CWE-454: External Initialization of Trusted Variables or Data Stores</a>.
+  </li>
+  <li>
     The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/environment/env.html">, Environment Variables</a>.
   </li>
 
