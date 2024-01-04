@@ -5,32 +5,23 @@ module DataFlowStackMake<DF::InputSig Lang>{
 
     import DF::DataFlowMake<Lang> as DataFlow
 
-    module FlowStack<DataFlow::GlobalFlowSig Flow>{
+    module BiStackAnalysisT<DataFlow::GlobalFlowSig FlowA, DataFlow::GlobalFlowSig FlowB>{
+
+        module FlowStackA = FlowStack<FlowA>;
+        module FlowStackB = FlowStack<FlowB>;
 
         /**
          * Holds if either the Stack associated with `sourceNodeA` is a subset of the stack associated with `sourceNodeB`
          * or vice-versa.
          */
-        predicate eitherStackSubset(Flow::PathNode sourceNodeA, Flow::PathNode sourceNodeB){
-            exists(StackFrame topSourceNodeA, StackFrame topSourceNodeB |
-                topSourceNodeA = stackFrameForFlow(sourceNodeA) and
-                topSourceNodeB = stackFrameForFlow(sourceNodeB) and (
-                    stackIsSubsetOf(topSourceNodeA, topSourceNodeB)
+        predicate eitherStackSubset(FlowA::PathNode sourceNodeA, FlowB::PathNode sourceNodeB){
+            exists(FlowStackA::StackFrame topSourceNodeA, FlowStackB::StackFrame topSourceNodeB |
+                topSourceNodeA = FlowStackA::stackFrameForFlow(sourceNodeA) and
+                topSourceNodeB = FlowStackB::stackFrameForFlow(sourceNodeB) and (
+                    BiStackAnalysis<FlowA, FlowB>::stackIsSubsetOf(topSourceNodeA, topSourceNodeB)
                     or
-                    stackIsSubsetOf(topSourceNodeB, topSourceNodeA)
+                    BiStackAnalysis<FlowB, FlowA>::stackIsSubsetOf(topSourceNodeB, topSourceNodeA)
                 )
-            )
-        }
-
-        /**
-         * Holds if stackA is a subset of stackB,
-         * The top of stackA is in stackB and the bottom of stackA is then some successor fruther down stackB.
-         */
-        predicate stackIsSubsetOf(StackFrame stackA, StackFrame stackB){
-            exists(StackFrame stackBIntermediary |
-                stackBIntermediary = stackB.getSuccessor*() and
-                stackA.getCall() = stackBIntermediary.getCall() and
-                stackA.getBottom().getCall() = stackBIntermediary.getSuccessor*().getCall()
             )
         }
 
@@ -38,26 +29,48 @@ module DataFlowStackMake<DF::InputSig Lang>{
          * Holds if the stack associated with path `sourceNodeA` is a subset (and shares a common stack bottom) with
          * the stack associated with path `sourceNodeB`, or vice-versa.
          */
-        predicate eitherStackTerminatingSubset(Flow::PathNode sourceNodeA, Flow::PathNode sourceNodeB){
+        predicate eitherStackTerminatingSubset(FlowA::PathNode sourceNodeA, FlowB::PathNode sourceNodeB){
             sourceNodeA.isSource() and
             sourceNodeB.isSource() and
-            exists(StackFrame topSourceNodeA, StackFrame topSourceNodeB |
-                topSourceNodeA = stackFrameForFlow(sourceNodeA) and
-                topSourceNodeB = stackFrameForFlow(sourceNodeB) and (
-                    stackIsCovergingTerminatingSubsetOf(topSourceNodeA, topSourceNodeB)
+            exists(FlowStackA::StackFrame topSourceNodeA, FlowStackB::StackFrame topSourceNodeB |
+                topSourceNodeA = FlowStackA::stackFrameForFlow(sourceNodeA) and
+                topSourceNodeB = FlowStackB::stackFrameForFlow(sourceNodeB) and (
+                    BiStackAnalysis<FlowA, FlowB>::stackIsCovergingTerminatingSubsetOf(topSourceNodeA, topSourceNodeB)
                     or
-                    stackIsCovergingTerminatingSubsetOf(topSourceNodeB, topSourceNodeA)
+                    BiStackAnalysis<FlowB, FlowA>::stackIsCovergingTerminatingSubsetOf(topSourceNodeB, topSourceNodeA)
                 )
+            )
+        }
+
+    }
+
+    module BiStackAnalysis<DataFlow::GlobalFlowSig FlowA, DataFlow::GlobalFlowSig FlowB>{
+
+        module FlowStackA = FlowStack<FlowA>;
+        module FlowStackB = FlowStack<FlowB>;
+
+        /**
+         * Holds if stackA is a subset of stackB,
+         * The top of stackA is in stackB and the bottom of stackA is then some successor fruther down stackB.
+         */
+        predicate stackIsSubsetOf(FlowStackA::StackFrame stackA, FlowStackB::StackFrame stackB){
+            exists(FlowStackB::StackFrame stackBIntermediary |
+                stackBIntermediary = stackB.getSuccessor*() and
+                stackA.getCall() = stackBIntermediary.getCall() and
+                stackA.getBottom().getCall() = stackBIntermediary.getSuccessor*().getCall()
             )
         }
 
         /**
          * If the top of stackA is in stackB at any location, and the bottoms of the stack are the same call.
          */
-        predicate stackIsCovergingTerminatingSubsetOf(StackFrame stackA, StackFrame stackB){
+        predicate stackIsCovergingTerminatingSubsetOf(FlowStackA::StackFrame stackA, FlowStackB::StackFrame stackB){
             stackA.getCall() = stackB.getSuccessor*().getCall() and
             stackA.getBottom().getCall() = stackB.getBottom().getCall()
         }
+    }
+
+    module FlowStack<DataFlow::GlobalFlowSig Flow>{
 
         private newtype TStackFrameType =
             TStackFrame(CallFrame callFrame, CallFrame bottom){
