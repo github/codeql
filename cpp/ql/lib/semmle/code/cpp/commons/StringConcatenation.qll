@@ -7,6 +7,11 @@ import semmle.code.cpp.models.implementations.Strcat
 import semmle.code.cpp.models.interfaces.FormattingFunction
 private import semmle.code.cpp.dataflow.new.DataFlow
 
+/**
+ * A call that performs a string concatenation. A string can be either a C
+ * string (i.e., a value of type `char*`), or a C++ string (i.e., a value of
+ * type `std::string`).
+ */
 class StringConcatenation extends Call {
   StringConcatenation() {
     // sprintf-like functions, i.e., concat through formatting
