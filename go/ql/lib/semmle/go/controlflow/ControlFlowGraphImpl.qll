@@ -1459,7 +1459,7 @@ module CFG {
         // `defer` can be the first `defer` statement executed
         // there is always a predecessor node because the `defer`'s call is always
         // evaluated before the defer statement itself
-        MkDeferNode(defer) = succ0(notDefersucc0*(this.getEntry()))
+        MkDeferNode(defer) = succ0(notDeferSucc0*(this.getEntry()))
       )
     }
 
@@ -1492,7 +1492,7 @@ module CFG {
       exists(Completion cmpl |
         lastNode(this.getBody(), pred, cmpl) and
         // last node of function body can be reached without going through a `defer` statement
-        pred = notDefersucc0*(this.getEntry())
+        pred = notDeferSucc0*(this.getEntry())
       |
         // panic goes directly to exit, non-panic reads result variables first
         if cmpl = Panic() then succ = MkExitNode(this) else succ = this.getEpilogueNode(0)
@@ -1502,7 +1502,7 @@ module CFG {
       exists(DeferStmt defer | defer = this.getADeferStmt() |
         succ = MkExprNode(defer.getCall()) and
         // the last `DeferStmt` executed before pred is this `defer`
-        pred = notDefersucc0*(MkDeferNode(defer))
+        pred = notDeferSucc0*(MkDeferNode(defer))
       )
       or
       exists(DeferStmt predDefer, DeferStmt succDefer |
@@ -2066,7 +2066,7 @@ module CFG {
   }
 
   /** Gets a successor of `nd` that is not a `defer` node */
-  private ControlFlow::Node notDefersucc0(ControlFlow::Node nd) {
+  private ControlFlow::Node notDeferSucc0(ControlFlow::Node nd) {
     not result = MkDeferNode(_) and
     result = succ0(nd)
   }
@@ -2078,7 +2078,7 @@ module CFG {
     (
       result = succ0(nd)
       or
-      result = succ0(notDefersucc0+(nd))
+      result = succ0(notDeferSucc0+(nd))
     )
   }
 
