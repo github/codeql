@@ -47,7 +47,7 @@ class StringConcatenation extends Call {
     // occurs in cases like `string s = s1 + s2 + s3`, which is represented as
     // `string s = (s1.operator+(s2)).operator+(s3);`
     // By limiting to non-calls we get the leaf operands (the variables or raw strings)
-    // also, by not enuemrating allowed types (variables and strings) we avoid issues
+    // also, by not enumerating allowed types (variables and strings) we avoid issues
     // with missed corner cases or extensions/changes to CodeQL in the future which might
     // invalidate that approach.
     not result instanceof Call and
