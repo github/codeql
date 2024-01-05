@@ -40,10 +40,10 @@ class Generator:
 
     def printHelp(self):
         print(f"""Usage:
-python3 GenerateFlowModel.py <library-database> [--with-sinks] [--with-sources] [--with-summaries] [--with-neutrals] [--with-typebased-summaries] [--dry-run]
+python3 GenerateFlowModel.py <library-database> [DIR] [--with-sinks] [--with-sources] [--with-summaries] [--with-neutrals] [--with-typebased-summaries] [--dry-run]
 
 This generates summary, source, sink and neutral models for the code in the database.
-The files will be placed in `{self.language}/ql/lib/ext/generated/`.
+The files will be placed in `{self.language}/ql/lib/ext/generated/DIR`
 
 Which models are generated is controlled by the flags:
     --with-sinks
@@ -58,16 +58,18 @@ If none of these flags are specified, all models are generated except for the ty
 Example invocations:
 $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db
 $ python3 GenerateFlowModel.py /tmp/dbs/my_library_db --with-sinks
+$ python3 GenerateFlowModel.py /tmp/dbs/my_library_db --with-sinks my_directory
+
 
 Requirements: `codeql` should both appear on your path.
     """)
 
 
-    def setenvironment(self, database):
+    def setenvironment(self, database, folder):
         self.codeQlRoot = subprocess.check_output(["git", "rev-parse", "--show-toplevel"]).decode("utf-8").strip()
         self.database = database
         self.generatedFrameworks = os.path.join(
-            self.codeQlRoot, f"{self.language}/ql/lib/ext/generated/")
+            self.codeQlRoot, f"{self.language}/ql/lib/ext/generated/{folder}")
         self.workDir = tempfile.mkdtemp()
         os.makedirs(self.generatedFrameworks, exist_ok=True)
 
@@ -106,11 +108,15 @@ Requirements: `codeql` should both appear on your path.
         if not generator.generateSinks and not generator.generateSources and not generator.generateSummaries and not generator.generateNeutrals and not generator.generateTypeBasedSummaries:
             generator.generateSinks = generator.generateSources = generator.generateSummaries = generator.generateNeutrals = True
 
-        if len(sys.argv) < 2:
+        n = len(sys.argv)
+        if n < 2:
             generator.printHelp()
             sys.exit(1)
+        elif n == 2:
+            generator.setenvironment(sys.argv[1], "")
+        else:
+            generator.setenvironment(sys.argv[1], sys.argv[2])
 
-        generator.setenvironment(sys.argv[1])
         return generator
     
 
