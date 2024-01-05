@@ -133,7 +133,9 @@ private module Cached {
   private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
 
   /** Holds if `bb` is an exit basic block that represents normal exit. */
-  private predicate normalExitBB(BasicBlock bb) { bb.getANode().(Impl::AnnotatedExitNode).isNormal() }
+  private predicate normalExitBB(BasicBlock bb) {
+    bb.getANode().(Impl::AnnotatedExitNode).isNormal()
+  }
 
   /** Holds if `dom` is an immediate post-dominator of `bb`. */
   cached
@@ -167,7 +169,9 @@ private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryNod
 class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() { entryBB(this) }
 
-  override CfgScope getScope() { this.getFirstNode() = any(EntryNode node | node.getScope() = result) }
+  override CfgScope getScope() {
+    this.getFirstNode() = any(EntryNode node | node.getScope() = result)
+  }
 }
 
 /**

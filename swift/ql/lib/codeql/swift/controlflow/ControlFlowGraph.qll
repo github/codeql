@@ -28,7 +28,6 @@ class CfgScope extends Scope instanceof CfgScope::Range_ {
  * Only nodes that can be reached from an entry point are included in the CFG.
  */
 class ControlFlowNode extends Node {
-
   /** Gets the AST node that this node corresponds to, if any. */
   ControlFlowElement getNode() { none() }
 

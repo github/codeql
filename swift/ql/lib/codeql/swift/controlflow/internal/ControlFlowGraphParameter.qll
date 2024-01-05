@@ -1,10 +1,11 @@
 /**
  * Provides the `CfgImpl` module that is used to construct the basic successor relation on control
  * flow elements, and the `CfgInput` module that is used to construct `CgfImpl`.
- * 
+ *
  * See `ControlFlowGraphImpl.qll` for the auxiliary classes and predicates that map AST elements to
  * control flow elements and sequence their children.
  */
+
 import swift
 import codeql.controlflow.Cfg
 import codeql.util.Unit
@@ -52,7 +53,7 @@ module CfgInput implements InputSig<Location> {
   predicate isAbnormalExitType(SuccessorType t) {
     t instanceof Cfg::SuccessorTypes::ExceptionSuccessor
   }
-  
+
   /** Hold if `t` represents a conditional successor type. */
   predicate successorTypeIsCondition(SuccessorType t) {
     t instanceof Cfg::SuccessorTypes::BooleanSuccessor or

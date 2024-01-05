@@ -46,7 +46,8 @@ private module ConditionalCompletionSplitting {
     override string toString() { result = "ConditionalCompletion" }
   }
 
-  private class ConditionalCompletionSplitImpl extends SplitImpl instanceof ConditionalCompletionSplit {
+  private class ConditionalCompletionSplitImpl extends SplitImpl instanceof ConditionalCompletionSplit
+  {
     override ConditionalCompletionSplitKind getKind() { any() }
 
     override predicate hasEntry(ControlFlowElement pred, ControlFlowElement succ, Completion c) {

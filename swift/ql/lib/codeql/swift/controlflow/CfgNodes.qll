@@ -63,9 +63,7 @@ class PatternCfgNode extends CfgNode {
 class PropertyGetterCfgNode extends CfgNode {
   PropertyGetterElement n;
 
-  PropertyGetterCfgNode() {
-    n = this.getAstNode()
-  }
+  PropertyGetterCfgNode() { n = this.getAstNode() }
 
   Expr getRef() { result = n.getRef() }
 
@@ -78,9 +76,8 @@ class PropertyGetterCfgNode extends CfgNode {
 class PropertySetterCfgNode extends CfgNode {
   PropertySetterElement n;
 
-  PropertySetterCfgNode() {
-    n = this.getAstNode()
-  }
+  PropertySetterCfgNode() { n = this.getAstNode() }
+
   AssignExpr getAssignExpr() { result = n.getAssignExpr() }
 
   CfgNode getBase() { result.getAst() = n.getBase() }
@@ -93,9 +90,8 @@ class PropertySetterCfgNode extends CfgNode {
 class PropertyObserverCfgNode extends CfgNode {
   PropertyObserverElement n;
 
-  PropertyObserverCfgNode() {
-    n = this.getAstNode()
-  }
+  PropertyObserverCfgNode() { n = this.getAstNode() }
+
   AssignExpr getAssignExpr() { result = n.getAssignExpr() }
 
   CfgNode getBase() { result.getAst() = n.getBase() }
