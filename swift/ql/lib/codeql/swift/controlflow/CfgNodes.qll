@@ -146,3 +146,5 @@ class KeyPathExprCfgNode extends ExprCfgNode {
 class EntryNode = Impl::EntryNode;
 
 class ExitNode = Impl::ExitNode;
+
+class AnnotatedExitNode = Impl::AnnotatedExitNode;
