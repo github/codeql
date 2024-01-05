@@ -21,6 +21,8 @@ public class LogForgingHandler : IHttpHandler
         logger.Warn(username + " logged in");
         // GOOD: New-lines removed
         logger.Warn(username.Replace(Environment.NewLine, "") + " logged in");
+        // GOOD: New-lines removed
+        logger.Warn(username.Replace(Environment.NewLine, "", StringComparison.InvariantCultureIgnoreCase) + " logged in");
         // GOOD: Html encoded
         logger.Warn(WebUtility.HtmlEncode(username) + " logged in");
         // BAD: Logged as-is to TraceSource
