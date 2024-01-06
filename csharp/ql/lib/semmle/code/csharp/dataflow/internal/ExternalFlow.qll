@@ -551,6 +551,10 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     exists(Provenance provenance |
       interpretSummary(this, input, output, kind, provenance) and
       provenance.isGenerated()
+    ) and
+    not exists(Provenance provenance |
+      interpretNeutral(this, "summary", provenance) and
+      provenance.isManual()
     )
   }
 
