@@ -7,7 +7,7 @@ private import Completion
 private import ControlFlowGraphImpl
 private import AstControlFlowTrees
 private import ControlFlowElements
-private import ControlFlowGraphParameter
+private import ControlFlowGraphImplSpecific::CfgInput as CfgInput
 
 cached
 private module Cached {

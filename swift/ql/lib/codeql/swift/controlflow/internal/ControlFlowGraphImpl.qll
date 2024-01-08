@@ -36,7 +36,7 @@ private import codeql.swift.controlflow.ControlFlowGraph
 private import codeql.swift.generated.Synth
 private import Completion
 private import Scope
-import ControlFlowGraphParameter::CfgImpl
+import ControlFlowGraphImplSpecific::CfgImpl
 private import ControlFlowElements
 private import AstControlFlowTrees
 
