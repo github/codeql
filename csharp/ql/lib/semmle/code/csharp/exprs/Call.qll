@@ -182,12 +182,20 @@ class Call extends DotNet::Call, Expr, @call {
   /**
    * Gets the argument that corresponds to parameter `p` of a potential
    * run-time target of this call.
+   *
+   * Does not consider default arguments.
    */
   Expr getRuntimeArgumentForParameter(Parameter p) {
     exists(Callable c |
       c = this.getARuntimeTarget() and
       p = c.getAParameter() and
-      result = this.getRuntimeArgument(p.getPosition())
+      (
+        p.isParams() and
+        result = this.getRuntimeArgument(any(int i | i >= p.getPosition()))
+        or
+        not p.isParams() and
+        result = this.getRuntimeArgument(p.getPosition())
+      )
     )
   }
 
