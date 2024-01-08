@@ -12,7 +12,6 @@ summaryThroughStep
 | Steps.cs:42:30:42:34 | false | Steps.cs:42:13:42:35 | call to method StepGeneric2<Boolean> | true |
 | Steps.cs:44:36:44:43 | "string" | Steps.cs:44:13:44:44 | call to method StepOverride | true |
 | Steps.cs:47:39:47:42 | access to local variable arg4 | Steps.cs:47:13:47:16 | [post] this access | false |
-| Steps.cs:50:46:50:49 | access to local variable arg5 | Steps.cs:50:13:50:16 | [post] this access | false |
 summaryGetterStep
 | Steps.cs:28:13:28:16 | this access | Steps.cs:28:13:28:34 | call to method StepFieldGetter | Steps.cs:67:13:67:17 | field Field |
 | Steps.cs:32:13:32:16 | this access | Steps.cs:32:13:32:37 | call to method StepPropertyGetter | Steps.cs:73:13:73:20 | property Property |
