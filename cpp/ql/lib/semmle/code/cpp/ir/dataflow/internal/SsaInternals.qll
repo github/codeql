@@ -180,11 +180,14 @@ private predicate isGlobalUse(
 ) {
   // Generate a "global use" at the end of the function body if there's a
   // direct definition somewhere in the body of the function
-  exists(VariableAddressInstruction vai |
-    vai.getEnclosingIRFunction() = f and
-    vai.getAstVariable() = v and
-    isDef(_, _, _, vai, indirection, indirectionIndex)
-  )
+  indirection =
+    min(int cand, VariableAddressInstruction vai |
+      vai.getEnclosingIRFunction() = f and
+      vai.getAstVariable() = v and
+      isDef(_, _, _, vai, cand, indirectionIndex)
+    |
+      cand
+    )
   or
   // Generate a "global use" at the end of the function body if the
   // global variable is used for field-flow, or is passed as an argument
