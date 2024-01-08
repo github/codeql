@@ -40,10 +40,5 @@ safe before using it.</p>
   <li>
     OWASP: <a href="https://owasp.org/www-community/attacks/Command_Injection">Command injection</a>.
   </li>
-  <li>
-    CERT Coding Standard: <a href="https://wiki.sei.cmu.edu/confluence/display/java/ENV02-J.+Do+not+trust+the+values+of+environment+variables">
-ENV02-J. Do not trust the values of environment variables
-    </a>.
-  </li>
 </references>
 </qhelp>
