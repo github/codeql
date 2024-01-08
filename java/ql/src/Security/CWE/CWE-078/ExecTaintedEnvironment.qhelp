@@ -35,7 +35,7 @@ safe before using it.</p>
 </example>
 <references>
   <li>
-    The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/environment/env.html">, Environment Variables</a>.
+    The Java Tutorials: <a href="https://docs.oracle.com/javase/tutorial/essential/environment/env.html">Environment Variables</a>.
   </li>
   <li>
     OWASP: <a href="https://owasp.org/www-community/attacks/Command_Injection">Command injection</a>.
