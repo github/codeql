@@ -70,18 +70,18 @@ int _getchar_nolock(void);
 wint_t _getwchar_nolock(void);
 
 void test_getchar(FILE *stream) {
-  int a = getc(stream); // $ MISSING: remote_source
-  wint_t b = getwc(stream); // $ MISSING: remote_source
-  int c = _getc_nolock(stream); // $ MISSING: remote_source
-  wint_t d = _getwc_nolock(stream); // $ MISSING: remote_source
+  int a = getc(stream); // $ remote_source
+  wint_t b = getwc(stream); // $ remote_source
+  int c = _getc_nolock(stream); // $ remote_source
+  wint_t d = _getwc_nolock(stream); // $ remote_source
 
-  int e = getch(); // $ MISSING: local_source
-  int f = _getch(); // $ MISSING: local_source
-  wint_t g = _getwch(); // $ MISSING: local_source
-  int h = _getch_nolock(); // $ MISSING: local_source
-  wint_t i = _getwch_nolock(); // $ MISSING: local_source
-  int j = getchar(); // $ MISSING: local_source
-  wint_t k = getwchar(); // $ MISSING: local_source
-  int l = _getchar_nolock(); // $ MISSING: local_source
-  wint_t m = _getwchar_nolock(); // $ MISSING: local_source
+  int e = getch(); // $ local_source
+  int f = _getch(); // $ local_source
+  wint_t g = _getwch(); // $ local_source
+  int h = _getch_nolock(); // $ local_source
+  wint_t i = _getwch_nolock(); // $ local_source
+  int j = getchar(); // $ local_source
+  wint_t k = getwchar(); // $ local_source
+  int l = _getchar_nolock(); // $ local_source
+  wint_t m = _getwchar_nolock(); // $ local_source
 }
