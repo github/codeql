@@ -1,17 +1,23 @@
 #!/bin/bash
 set -e
 
-# Add help message
+help="Usage: ./publish --[override-release] --[dry-run]
+Publish the automodel query pack.
+
+If no arguments are provided, publish the version of the codeql repo specified by the latest official release of the codeml-automodel repo.
+If the --override-release argument is provided, your current local HEAD is used (for unofficial releases or patching).
+If the --dry-run argument is provided, the release is not published (for testing purposes)."
+
+# Echo the help message
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-  echo "Usage: ./publish [override-release]"
-  echo "By default we publish the version of the codeql repo specified by the latest official release defined by the codeml-automodel repo."
-  echo "Otherwise, the optional argument override-release forces your current HEAD to be published."
+  echo "$help"
   exit 0
 fi
 
-# Check that either there are 0 or 1 arguments, and if 1 argument then check that it is "override-release"
-if [ $# -gt 1 ] || [ $# -eq 1 ] && [ "$1" != "override-release" ]; then
-  echo "Error: Invalid arguments. Please run './publish --help' for usage information."
+# Check the arguments are valid
+if [ $# -gt 2 ] || ([ $# -eq 1 ] && [ "$1" != "--override-release" ] && [ "$1" != "--dry-run" ]) || ([ $# -eq 2 ] && [ "$1" != "--override-release" ] && [ "$1" != "--dry-run" ] && [ "$2" != "--override-release" ] && [ "$2" != "--dry-run" ]); then
+  echo "Error: Invalid arguments provided"
+  echo "$help"
   exit 1
 fi
 
@@ -49,8 +55,14 @@ fi
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 CURRENT_SHA=$(git rev-parse HEAD)
 
-if [ -z "${1:-}" ]; then
-  # If the first argument is empty, use the latest release of codeml-automodel
+if [ "$1" = "--override-release" ] || [ "$2" = "--override-release" ]; then
+  # Check that the current HEAD is downstream from PREVIOUS_RELEASE_SHA
+  if ! git merge-base --is-ancestor "$PREVIOUS_RELEASE_SHA" "$CURRENT_SHA"; then
+    echo "Error: The current HEAD is not downstream from the previous release"
+    exit 1
+  fi
+else
+  # Get the latest release of codeml-automodel
   TAG_NAME=$(gh api -H 'Accept: application/vnd.github+json' -H 'X-GitHub-Api-Version: 2022-11-28' /repos/github/codeml-automodel/releases/latest | jq -r .tag_name)
   # Check TAG_NAME is not empty
   if [ -z "$TAG_NAME" ]; then
@@ -73,12 +85,6 @@ if [ -z "${1:-}" ]; then
   fi
   # Get the version of the codeql code specified by the codeml-automodel release
   git checkout "$REVISION"
-else
-  # Check that the current HEAD is downstream from PREVIOUS_RELEASE_SHA
-  if ! git merge-base --is-ancestor "$PREVIOUS_RELEASE_SHA" "$CURRENT_SHA"; then
-    echo "Error: The current HEAD is not downstream from the previous release"
-    exit 1
-  fi
 fi
 
 # Get the absolute path of the automodel repo
@@ -97,9 +103,13 @@ pushd "$WORKSPACE_ROOT"
 echo "Preparing the release"
 "${CODEQL_DIST}/codeql" pack release --groups $GRPS -v
 
-echo "Publishing the release"
-# Add --dry-run to test publishing
-"${CODEQL_DIST}/codeql" pack publish --groups $GRPS -v
+if [ "$1" = "--dry-run" ] || [ "$2" = "--dry-run" ]; then
+  echo "Dry run: not publishing the query pack"
+  "${CODEQL_DIST}/codeql" pack publish --groups $GRPS --dry-run -v
+else
+  echo "Not a dry run! Publishing the query pack"
+  "${CODEQL_DIST}/codeql" pack publish --groups $GRPS -v
+fi
 
 echo "Bumping versions"
 "${CODEQL_DIST}/codeql" pack post-release --groups $GRPS -v
@@ -112,18 +122,39 @@ popd
 # and add a new file
 #  ./src/change-notes/released/<version>.md
 
-if [ -z "${1:-}" ]; then
-  # If we used the latest release of codeml-automodel, then we need to return to the current branch
-  git checkout "$CURRENT_BRANCH"
+# Get the filename of the most recently created file in ./src/change-notes/released/*.md
+# This will be the file for the new release
+NEW_CHANGE_NOTES_FILE=$(ls -t ./src/change-notes/released/*.md | head -n 1)
+
+mv ./src/CHANGELOG.md ./src/CHANGELOG.md.dry-run
+mv ./src/codeql-pack.release.yml ./src/codeql-pack.release.yml.dry-run
+mv ./src/qlpack.yml ./src/qlpack.yml.dry-run
+mv "$NEW_CHANGE_NOTES_FILE" ./src/change-notes/released.md.dry-run
+
+# If --override-release was not specified, then we need to checkout the original branch
+if [ "$1" != "--override-release" ] && [ "$2" != "--override-release" ]; then
+  echo "Checking out the original branch"
+  git checkout "$CURRENT_BRANCH" --force
 fi
 
-# Add the updated files to the current branch
-git add ./src/CHANGELOG.md
-git add ./src/codeql-pack.release.yml
-git add ./src/qlpack.yml
-git add ./src/change-notes/released/*
-echo "Added the following updated version files to the current branch:"
-git status -s
+if [ "$1" = "--dry-run" ] || [ "$2" = "--dry-run" ]; then
+  echo "Inspect the updated dry-run version files:"
+  ls -l ./src/*.dry-run
+  ls -l ./src/change-notes/*.dry-run
+else
+  # Add the updated files to the current branch
+  echo "Adding the version changes"
+  mv -f ./src/CHANGELOG.md.dry-run ./src/CHANGELOG.md
+  mv -f ./src/codeql-pack.release.yml.dry-run ./src/codeql-pack.release.yml
+  mv -f ./src/qlpack.yml.dry-run ./src/qlpack.yml
+  mv -f ./src/change-notes/released.md.dry-run "$NEW_CHANGE_NOTES_FILE"
+  git add ./src/CHANGELOG.md
+  git add ./src/codeql-pack.release.yml
+  git add ./src/qlpack.yml
+  git add "$NEW_CHANGE_NOTES_FILE"
+  echo "Added the following updated version files to the current branch:"
+  git status -s
+  echo "To complete the release, please commit these files and merge to the main branch"
+fi
 
-echo "Automodel packs successfully published. Local files have been modified. Please commit and push the version changes and then merge into main."
-
+echo "Done"
