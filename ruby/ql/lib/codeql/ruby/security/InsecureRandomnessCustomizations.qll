@@ -22,7 +22,7 @@ module InsecureRandomness {
   abstract class Source extends DataFlow::Node { }
 
   /**
-   * AA data flow sink for random values that are not cryptographically secure.
+   * A data flow sink for random values that are not cryptographically secure.
    */
   abstract class Sink extends DataFlow::Node { }
 
@@ -36,8 +36,6 @@ module InsecureRandomness {
    */
   class DefaultSource extends Source, DataFlow::CallNode {
     DefaultSource() {
-      this = API::getTopLevelMember("Random").getAMethodCall(["rand"])
-      or
       this.asExpr().getExpr() instanceof UnknownMethodCall and
       (
         this.getReceiver().asExpr().getExpr() instanceof SelfVariableAccess and
