@@ -1467,10 +1467,11 @@ module MakeImpl<InputSig Lang> {
         pragma[nomagic]
         private predicate fwdFlowIntoArg(
           ArgNodeEx arg, FlowState state, Cc outercc, ParamNodeOption summaryCtx, TypOption argT,
-          ApOption argAp, Typ t, Ap ap, ApApprox apa, boolean cc
+          ApOption argAp, Typ t, Ap ap, boolean emptyAp, ApApprox apa, boolean cc
         ) {
           fwdFlow(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
-          if outercc instanceof CcCall then cc = true else cc = false
+          (if outercc instanceof CcCall then cc = true else cc = false) and
+          if ap instanceof ApNil then emptyAp = true else emptyAp = false
         }
 
         private signature module FwdFlowInInputSig {
@@ -1552,26 +1553,59 @@ module MakeImpl<InputSig Lang> {
             viableImplNotCallContextReducedInlineLate(call, outercc)
           }
 
-          pragma[nomagic]
+          pragma[inline]
           private predicate fwdFlowInCand(
-            DataFlowCall call, ArgNodeEx arg, Cc outercc, DataFlowCallable inner, ParamNodeEx p,
-            ApApprox apa, boolean allowsFieldFlow, boolean cc
+            DataFlowCall call, ArgNodeEx arg, FlowState state, Cc outercc, DataFlowCallable inner,
+            ParamNodeEx p, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap,
+            boolean emptyAp, ApApprox apa, boolean cc
           ) {
-            fwdFlowIntoArg(arg, _, outercc, _, _, _, _, _, apa, cc) and
-            (
-              inner = viableImplCallContextReducedInlineLate(call, arg, outercc)
-              or
-              viableImplArgNotCallContextReduced(call, arg, outercc)
-            ) and
-            callEdgeArgParamRestrictedInlineLate(call, inner, arg, p, allowsFieldFlow, apa)
+            exists(boolean allowsFieldFlow |
+              fwdFlowIntoArg(arg, state, outercc, summaryCtx, argT, argAp, t, ap, emptyAp, apa, cc) and
+              (
+                inner = viableImplCallContextReducedInlineLate(call, arg, outercc)
+                or
+                viableImplArgNotCallContextReduced(call, arg, outercc)
+              ) and
+              callEdgeArgParamRestrictedInlineLate(call, inner, arg, p, allowsFieldFlow, apa) and
+              if allowsFieldFlow = false then emptyAp = true else any()
+            )
+          }
+
+          pragma[inline]
+          private predicate fwdFlowInCandTypeFlowDisabled(
+            DataFlowCall call, ArgNodeEx arg, FlowState state, Cc outercc, DataFlowCallable inner,
+            ParamNodeEx p, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap,
+            ApApprox apa, boolean cc
+          ) {
+            not enableTypeFlow() and
+            fwdFlowInCand(call, arg, state, outercc, inner, p, summaryCtx, argT, argAp, t, ap, _,
+              apa, cc)
           }
 
           pragma[nomagic]
-          private predicate fwdFlowInValidEdge(
+          private predicate fwdFlowInCandTypeFlowEnabled(
             DataFlowCall call, ArgNodeEx arg, Cc outercc, DataFlowCallable inner, ParamNodeEx p,
-            CcCall innercc, ApApprox apa, boolean allowsFieldFlow, boolean cc
+            boolean emptyAp, ApApprox apa, boolean cc
           ) {
-            fwdFlowInCand(call, arg, outercc, inner, p, apa, allowsFieldFlow, cc) and
+            enableTypeFlow() and
+            fwdFlowInCand(call, arg, _, outercc, inner, p, _, _, _, _, _, emptyAp, apa, cc)
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowInValidEdgeTypeFlowDisabled(
+            DataFlowCall call, DataFlowCallable inner, CcCall innercc, boolean cc
+          ) {
+            not enableTypeFlow() and
+            FwdTypeFlow::typeFlowValidEdgeIn(call, inner, cc) and
+            innercc = getCallContextCall(call, inner)
+          }
+
+          pragma[nomagic]
+          private predicate fwdFlowInValidEdgeTypeFlowEnabled(
+            DataFlowCall call, ArgNodeEx arg, Cc outercc, DataFlowCallable inner, ParamNodeEx p,
+            CcCall innercc, boolean emptyAp, ApApprox apa, boolean cc
+          ) {
+            fwdFlowInCandTypeFlowEnabled(call, arg, outercc, inner, p, emptyAp, apa, cc) and
             FwdTypeFlow::typeFlowValidEdgeIn(call, inner, cc) and
             innercc = getCallContextCall(call, inner)
           }
@@ -1582,10 +1616,18 @@ module MakeImpl<InputSig Lang> {
             CcCall innercc, ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t,
             Ap ap, ApApprox apa, boolean cc
           ) {
-            exists(ArgNodeEx arg, boolean allowsFieldFlow |
-              fwdFlowIntoArg(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa, cc) and
-              fwdFlowInValidEdge(call, arg, outercc, inner, p, innercc, apa, allowsFieldFlow, cc) and
-              if allowsFieldFlow = false then ap instanceof ApNil else any()
+            exists(ArgNodeEx arg |
+              // type flow disabled: linear recursion
+              fwdFlowInCandTypeFlowDisabled(call, arg, state, outercc, inner, p, summaryCtx, argT,
+                argAp, t, ap, apa, cc) and
+              fwdFlowInValidEdgeTypeFlowDisabled(call, inner, innercc, cc)
+              or
+              // type flow enabled: non-linear recursion
+              exists(boolean emptyAp |
+                fwdFlowIntoArg(arg, state, outercc, summaryCtx, argT, argAp, t, ap, emptyAp, apa, cc) and
+                fwdFlowInValidEdgeTypeFlowEnabled(call, arg, outercc, inner, p, innercc, emptyAp,
+                  apa, cc)
+              )
             )
           }
         }
