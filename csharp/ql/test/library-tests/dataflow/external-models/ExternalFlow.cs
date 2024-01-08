@@ -206,11 +206,24 @@ namespace My.Qltest
             Sink(MixedFlowArgs(null, o2));
         }
 
+        void M4()
+        {
+            var o1 = new object();
+            Sink(GeneratedFlowWithGeneratedNeutral(o1));
+
+            var o2 = new object();
+            Sink(GeneratedFlowWithManualNeutral(o2)); // no flow because the modelled method exists has a manual neutral summary model
+        }
+
         object GeneratedFlow(object o) => throw null;
 
         object GeneratedFlowArgs(object o1, object o2) => throw null;
 
         object MixedFlowArgs(object o1, object o2) => throw null;
+
+        object GeneratedFlowWithGeneratedNeutral(object o) => throw null;
+
+        object GeneratedFlowWithManualNeutral(object o) => throw null;
 
         static void Sink(object o) { }
     }

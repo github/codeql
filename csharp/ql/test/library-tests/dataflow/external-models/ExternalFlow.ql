@@ -26,8 +26,11 @@ module Taint = TaintTracking::Global<TaintConfig>;
  * provenance as generated summaries are only applied, if a
  * callable does not have a body.
  */
-private class MixedFlowArgs extends Method {
-  MixedFlowArgs() { this.hasFullyQualifiedName("My.Qltest", "G", "MixedFlowArgs") }
+private class MethodsWithGeneratedModels extends Method {
+  MethodsWithGeneratedModels() {
+    this.hasFullyQualifiedName("My.Qltest", "G",
+      ["MixedFlowArgs", "GeneratedFlowWithGeneratedNeutral", "GeneratedFlowWithManualNeutral"])
+  }
 
   override predicate hasBody() { none() }
 }
