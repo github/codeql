@@ -163,7 +163,48 @@ private predicate isMaybeNullArgument(Ssa::ExplicitDefinition def, MaybeNullExpr
   |
     p = pdef.getParameter().getUnboundDeclaration() and
     arg = p.getAnAssignedArgument() and
-    not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod
+    not arg.getEnclosingCallable().getEnclosingCallable*() instanceof TestMethod and
+    (
+      p.isParams()
+      implies
+      (
+        isValidExplicitParamsType(p, arg.getType()) and
+        not exists(Call c | c.getAnArgument() = arg and hasMultipleParamsArguments(c))
+      )
+    )
+  )
+}
+
+/**
+ * Holds if the type `t` is a valid argument type for passing an explicit array
+ * to the `params` parameter `p`. For example, the types `object[]` and `string[]`
+ * of the arguments on lines 4 and 5, respectively, are valid for the parameter
+ * `args` on line 1 in
+ *
+ * ```csharp
+ * void M(params object[] args) { ... }
+ *
+ * void CallM(object[] os, string[] ss, string s) {
+ *   M(os);
+ *   M(ss);
+ *   M(s);
+ * }
+ * ```
+ */
+pragma[nomagic]
+private predicate isValidExplicitParamsType(Parameter p, Type t) {
+  p.isParams() and
+  t.isImplicitlyConvertibleTo(p.getType())
+}
+
+/**
+ * Holds if call `c` has multiple arguments for a `params` parameter
+ * of the targeted callable.
+ */
+private predicate hasMultipleParamsArguments(Call c) {
+  exists(Parameter p | p = c.getTarget().getAParameter() |
+    p.isParams() and
+    exists(c.getArgument(any(int i | i > p.getPosition())))
   )
 }
 

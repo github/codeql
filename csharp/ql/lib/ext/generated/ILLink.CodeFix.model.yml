@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["ILLink.CodeFix", "BaseAttributeCodeFixProvider", "BaseRegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "BaseAttributeCodeFixProvider", "GetAttributeArguments", "(Microsoft.CodeAnalysis.ISymbol,Microsoft.CodeAnalysis.ISymbol,Microsoft.CodeAnalysis.Editing.SyntaxGenerator,Microsoft.CodeAnalysis.Diagnostic)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "BaseAttributeCodeFixProvider", "GetFixAllProvider", "()", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "BaseAttributeCodeFixProvider", "HasPublicAccessibility", "(Microsoft.CodeAnalysis.ISymbol)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "DynamicallyAccessedMembersCodeFixProvider", "GetFixAllProvider", "()", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "DynamicallyAccessedMembersCodeFixProvider", "RegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "DynamicallyAccessedMembersCodeFixProvider", "get_FixableDiagnosticIds", "()", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "DynamicallyAccessedMembersCodeFixProvider", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresAssemblyFilesCodeFixProvider", "GetAttributeArguments", "(Microsoft.CodeAnalysis.ISymbol,Microsoft.CodeAnalysis.ISymbol,Microsoft.CodeAnalysis.Editing.SyntaxGenerator,Microsoft.CodeAnalysis.Diagnostic)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresAssemblyFilesCodeFixProvider", "RegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresAssemblyFilesCodeFixProvider", "get_FixableDiagnosticIds", "()", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresAssemblyFilesCodeFixProvider", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresDynamicCodeCodeFixProvider", "GetAttributeArguments", "(Microsoft.CodeAnalysis.ISymbol,Microsoft.CodeAnalysis.ISymbol,Microsoft.CodeAnalysis.Editing.SyntaxGenerator,Microsoft.CodeAnalysis.Diagnostic)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresDynamicCodeCodeFixProvider", "RegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresDynamicCodeCodeFixProvider", "get_FixableDiagnosticIds", "()", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresDynamicCodeCodeFixProvider", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresUnreferencedCodeCodeFixProvider", "GetAttributeArguments", "(Microsoft.CodeAnalysis.ISymbol,Microsoft.CodeAnalysis.ISymbol,Microsoft.CodeAnalysis.Editing.SyntaxGenerator,Microsoft.CodeAnalysis.Diagnostic)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresUnreferencedCodeCodeFixProvider", "RegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresUnreferencedCodeCodeFixProvider", "get_FixableDiagnosticIds", "()", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "RequiresUnreferencedCodeCodeFixProvider", "get_SupportedDiagnostics", "()", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "UnconditionalSuppressMessageCodeFixProvider", "GetAttributeArguments", "(Microsoft.CodeAnalysis.ISymbol,Microsoft.CodeAnalysis.ISymbol,Microsoft.CodeAnalysis.Editing.SyntaxGenerator,Microsoft.CodeAnalysis.Diagnostic)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "UnconditionalSuppressMessageCodeFixProvider", "RegisterCodeFixesAsync", "(Microsoft.CodeAnalysis.CodeFixes.CodeFixContext)", "summary", "df-generated"]
+      - ["ILLink.CodeFix", "UnconditionalSuppressMessageCodeFixProvider", "get_FixableDiagnosticIds", "()", "summary", "df-generated"]
