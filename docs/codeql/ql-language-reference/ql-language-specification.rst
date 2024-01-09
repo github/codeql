@@ -115,7 +115,7 @@ Environments may be combined as follows:
 -  *Union*. This takes the union of the entry sets of the two environments.
 -  *Overriding union*. This takes the union of two environments, but if there are entries for a key in the first map, then no additional entries for that key are included from the second map.
 
-A *definite* environment has at most one entry for each key. Resolution is unique in a definite environment.
+A *definite* environment has only values that are *equal modulo weak aliasing* for each each.
 
 Global environments
 ~~~~~~~~~~~~~~~~~~~
