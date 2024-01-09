@@ -334,7 +334,7 @@ For a *completely uninstantiated* parameter, the *bottom-up instantiation-resolu
 
 An entity is called *fully instantiated* if none of the *bottom-up instantiation-resolutions* of the parameters in the *relevant set of parameters* of the entity's *underlying completely uninstantiated* entity are parameters.
 
-Two *instantiated modules* or two *instantiation-nested* entities are considered *equivalent* if they have the same *underlying completely uninstantiated* entity and each parameter in its *relevant set of parameters* has the same *bottom-up instantiation-resolution* relative to either *instantiated module*.
+Two *instantiated modules* or two *instantiation-nested* entities are considered *equivalent* if they have the same *underlying completely uninstantiated* entity and each parameter in its *relevant set of parameters* has *bottom-up instantiation-resolution*s relative both *instantiated module*s that are *equivalent modulo weak aliases*.
 
 Module instantiation is applicative, meaning that *equivalent* *instantiated modules* and *equivalent* *instantiation-nested* entities are indistinguishable.
 
