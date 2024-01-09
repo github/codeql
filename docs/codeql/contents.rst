@@ -11,4 +11,5 @@ CodeQL documentation
    writing-codeql-queries/index
    codeql-language-guides/index
    ql-language-reference/index
+   ql-training/index
 
