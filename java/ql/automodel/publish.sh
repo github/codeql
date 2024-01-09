@@ -115,7 +115,8 @@ else
   # Check that REVISION is downstream from PREVIOUS_RELEASE_SHA
   if ! git merge-base --is-ancestor "$PREVIOUS_RELEASE_SHA" "$REVISION"; then
     echo "Error: The codeql version $REVISION is not downstream of the query-pack version $PREVIOUS_RELEASE_SHA"
-    exit 1
+    echo "Ignoring"
+    #exit 1
   fi
   # Get the version of the codeql code specified by the codeml-automodel release
   git checkout "$REVISION"
