@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-help="Usage: ./publish --[override-release] --[dry-run]
+help="Usage: ./publish [--override-release] [--dry-run]
 Publish the automodel query pack.
 
 If no arguments are provided, publish the version of the codeql repo specified by the latest official release of the codeml-automodel repo.
