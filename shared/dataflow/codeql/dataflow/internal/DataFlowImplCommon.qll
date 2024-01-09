@@ -791,10 +791,12 @@ module MakeImplCommon<InputSig Lang> {
        */
       pragma[nomagic]
       private predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
-        mayBenefitFromCallContext(call, callable)
-        or
-        callEnclosingCallable(call, callable) and
-        exists(viableCallableLambda(call, TDataFlowCallSome(_)))
+        (
+          mayBenefitFromCallContext(call)
+          or
+          exists(viableCallableLambda(call, TDataFlowCallSome(_)))
+        ) and
+        callEnclosingCallable(call, callable)
       }
 
       /**
