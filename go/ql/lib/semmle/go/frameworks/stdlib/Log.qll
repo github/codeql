@@ -8,7 +8,7 @@ import go
 module Log {
   private class LogFunction extends Function {
     LogFunction() {
-      exists(string fn | fn.matches(["Fatal%", "Panic%", "Print%"]) |
+      exists(string fn | fn.matches(["Fatal%", "Panic%", "Print%", "Output"]) |
         this.hasQualifiedName("log", fn)
         or
         this.(Method).hasQualifiedName("log", "Logger", fn)
