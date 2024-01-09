@@ -14,11 +14,44 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
   exit 0
 fi
 
-# Check the arguments are valid
-if [ $# -gt 2 ] || ([ $# -eq 1 ] && [ "$1" != "--override-release" ] && [ "$1" != "--dry-run" ]) || ([ $# -eq 2 ] && [ "$1" != "--override-release" ] && [ "$1" != "--dry-run" ] && [ "$2" != "--override-release" ] && [ "$2" != "--dry-run" ]); then
+# Check the number of arguments are valid
+if [ $# -gt 2 ]; then
   echo "Error: Invalid arguments provided"
   echo "$help"
   exit 1
+fi
+
+OVERRIDE_RELEASE=0
+DRY_RUN=0
+for arg in "$@"
+do
+  case $arg in
+    --override-release)
+    OVERRIDE_RELEASE=1
+    shift # Remove --override-release from processing
+    ;;
+    --dry-run)
+    DRY_RUN=1
+    shift # Remove --dry-run from processing
+    ;;
+    *)
+    echo "Error: Invalid argument provided: $arg"
+    echo "$help"
+    exit 1
+    ;;
+  esac
+done
+
+# Describe what we're about to do based on the command-line arguments
+if [ $OVERRIDE_RELEASE = 1 ]; then
+  echo "Publishing the current HEAD of the automodel repo"
+else
+  echo "Publishing the version of the automodel repo specified by the latest official release of the codeml-automodel repo"
+fi
+if [ $DRY_RUN = 1 ]; then
+  echo "Dry run: we will step through the process but we won't publish the query pack"
+else
+  echo "Not a dry run! Publishing the query pack"
 fi
 
 # If we're publishing the codeml-automodel release then we will checkout the sha specified in the release.
@@ -55,7 +88,7 @@ fi
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 CURRENT_SHA=$(git rev-parse HEAD)
 
-if [ "$1" = "--override-release" ] || [ "$2" = "--override-release" ]; then
+if [ $OVERRIDE_RELEASE = 1 ]; then
   # Check that the current HEAD is downstream from PREVIOUS_RELEASE_SHA
   if ! git merge-base --is-ancestor "$PREVIOUS_RELEASE_SHA" "$CURRENT_SHA"; then
     echo "Error: The current HEAD is not downstream from the previous release"
@@ -103,7 +136,7 @@ pushd "$WORKSPACE_ROOT"
 echo "Preparing the release"
 "${CODEQL_DIST}/codeql" pack release --groups $GRPS -v
 
-if [ "$1" = "--dry-run" ] || [ "$2" = "--dry-run" ]; then
+if [ $DRY_RUN = 1 ]; then
   echo "Dry run: not publishing the query pack"
   "${CODEQL_DIST}/codeql" pack publish --groups $GRPS --dry-run -v
 else
@@ -132,12 +165,12 @@ mv ./src/qlpack.yml ./src/qlpack.yml.dry-run
 mv "$NEW_CHANGE_NOTES_FILE" ./src/change-notes/released.md.dry-run
 
 # If --override-release was not specified, then we need to checkout the original branch
-if [ "$1" != "--override-release" ] && [ "$2" != "--override-release" ]; then
+if [ $OVERRIDE_RELEASE != 1 ]; then
   echo "Checking out the original branch"
   git checkout "$CURRENT_BRANCH" --force
 fi
 
-if [ "$1" = "--dry-run" ] || [ "$2" = "--dry-run" ]; then
+if [ $DRY_RUN = 1 ]; then
   echo "Inspect the updated dry-run version files:"
   ls -l ./src/*.dry-run
   ls -l ./src/change-notes/*.dry-run
