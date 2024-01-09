@@ -67,10 +67,6 @@ if [ -z "${GITHUB_TOKEN}" ]; then
   echo "Error: GITHUB_TOKEN environment variable not set. Please set this to a token with package:write permissions to codeql."
   exit 1
 fi
-if [ -z "${CODEQL_DIST}" ]; then
-  echo "Error: CODEQL_DIST environment variable not set. Please set this to the path of a codeql distribution."
-  exit 1
-fi
 if [ -z "${GH_TOKEN}" ]; then
   echo "Error: GH_TOKEN environment variable not set. Please set this to a token with repo permissions to github/codeml-automodel."
   exit 1
@@ -134,27 +130,22 @@ gh extensions install github/gh-codeql
 
 pushd "$AUTOMODEL_ROOT"
 echo Testing automodel queries
-#"${CODEQL_DIST}/codeql" test run test
 gh codeql test run test
 popd
 
 pushd "$WORKSPACE_ROOT"
 echo "Preparing the release"
-#"${CODEQL_DIST}/codeql" pack release --groups $GRPS -v
 gh codeql pack release --groups $GRPS -v
 
 if [ $DRY_RUN = 1 ]; then
   echo "Dry run: not publishing the query pack"
-  #"${CODEQL_DIST}/codeql" pack publish --groups $GRPS --dry-run -v
   gh codeql pack publish --groups $GRPS --dry-run -v
 else
   echo "Not a dry run! Publishing the query pack"
-  #"${CODEQL_DIST}/codeql" pack publish --groups $GRPS -v
   gh codeql pack publish --groups $GRPS -v
 fi
 
 echo "Bumping versions"
-#"${CODEQL_DIST}/codeql" pack post-release --groups $GRPS -v
 gh codeql pack post-release --groups $GRPS -v
 popd
 
