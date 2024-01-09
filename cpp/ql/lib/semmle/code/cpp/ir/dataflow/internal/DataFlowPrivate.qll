@@ -458,10 +458,12 @@ class ReturnKind extends TReturnKind {
   abstract string toString();
 }
 
-private class NormalReturnKind extends ReturnKind, TNormalReturnKind {
+class NormalReturnKind extends ReturnKind, TNormalReturnKind {
   int index;
 
   NormalReturnKind() { this = TNormalReturnKind(index) }
+
+  int getIndirectionIndex() { result = index }
 
   override string toString() { result = "indirect return" }
 }

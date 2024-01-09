@@ -1588,7 +1588,8 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
           SourceSinkAccessPath output, int n, InterpretNode ref, InterpretNode node
         ) {
           sourceElementRef(ref, output, _) and
-          n = 0 and
+          //n = 0 and
+          n = [0,1] and // TODO: fix this, there's no good reason for it.
           (
             if output = ""
             then

@@ -2330,6 +2330,12 @@ class UnionContent extends Content, TUnionContent {
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
 class ContentSet instanceof Content {
+  /**
+   * Holds if this content set is the singleton `{c}`. At present, this is
+   * the only kind of content set supported in C/C++.
+   */
+  predicate isSingleton(Content c) { this = c }
+
   /** Gets a content that may be stored into when storing into this set. */
   Content getAStoreContent() { result = this }
 

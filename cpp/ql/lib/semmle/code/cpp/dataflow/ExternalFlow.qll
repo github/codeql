@@ -13,8 +13,8 @@
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
- * 1. The `namespace` column selects a package.
- * 2. The `type` column selects a type within that package.
+ * 1. The `namespace` column selects a namespace.
+ * 2. The `type` column selects a type within that namespace.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
  *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
  *    blank (for example, a free function).
@@ -65,16 +65,14 @@
  *    globally applicable value-preserving step.
  */
 
-import swift
-private import internal.DataFlowDispatch
-private import internal.DataFlowPrivate
-private import internal.DataFlowPublic
+import cpp
+private import new.DataFlow
 private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import FlowSummary as FlowSummary
 private import codeql.mad.ModelValidation as SharedModelVal
+private import codeql.util.Unit
 
 /**
  * A unit class for adding additional source model rows.
@@ -354,13 +352,13 @@ private predicate elementSpec(
 private string paramsStringPart(Function c, int i) {
   i = -1 and result = "(" and exists(c)
   or
-  exists(int n, string p | c.getParam(n).getType().toString() = p |
+  exists(int n, string p | c.getParameter(n).getType().toString() = p |
     i = 2 * n and result = p
     or
     i = 2 * n - 1 and result = "," and n != 0
   )
   or
-  i = 2 * c.getNumberOfParams() and result = ")"
+  i = 2 * c.getNumberOfParameters() and result = ")"
 }
 
 /**
@@ -401,42 +399,42 @@ private Element interpretElement0(
       type = "" and
       matchesSignature(func, signature) and
       subtypes = false and
-      not result instanceof Method and
+      not exists(func.getDeclaringType()) and
       result = func
     )
     or
     // Member functions
-    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, Method method |
+    exists(Class namedClass, Class classWithMethod, Function method |
       method.getName() = name and
-      method = declWithMethod.getAMember() and
-      namedTypeDecl.getFullName() = type and
+      method = classWithMethod.getAMember() and
+      namedClass.getName() = type and
       matchesSignature(method, signature) and
       result = method
     |
-      // member declared in the named type or a subtype of it (or an extension of any)
+      // member declared in the named type or a subtype of it
       subtypes = true and
-      declWithMethod.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
+      classWithMethod = namedClass.getADerivedClass*()
       or
-      // member declared directly in the named type (or an extension of it)
+      // member declared directly in the named type
       subtypes = false and
-      declWithMethod.asNominalTypeDecl() = namedTypeDecl
+      classWithMethod = namedClass
     )
     or
-    // Fields
+    // Member variables
     signature = "" and
-    exists(NominalTypeDecl namedTypeDecl, Decl declWithField, FieldDecl field |
-      field.getName() = name and
-      field = declWithField.getAMember() and
-      namedTypeDecl.getFullName() = type and
-      result = field
+    exists(Class namedClass, Class classWithMember, MemberVariable member |
+      member.getName() = name and
+      member = classWithMember.getAMember() and
+      namedClass.getName() = type and
+      result = member
     |
       // field declared in the named type or a subtype of it (or an extension of any)
       subtypes = true and
-      declWithField.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
+      classWithMember = namedClass.getADerivedClass*()
       or
       // field declared directly in the named type (or an extension of it)
       subtypes = false and
-      declWithField.asNominalTypeDecl() = namedTypeDecl
+      classWithMember = namedClass
     )
   )
 }
@@ -451,44 +449,6 @@ Element interpretElement(
   )
 }
 
-deprecated private predicate parseField(AccessPathToken c, Content::FieldContent f) {
-  exists(string fieldRegex, string name |
-    c.getName() = "Field" and
-    fieldRegex = "^([^.]+)$" and
-    name = c.getAnArgument().regexpCapture(fieldRegex, 1) and
-    f.getField().getName() = name
-  )
-}
-
-deprecated private predicate parseTuple(AccessPathToken c, Content::TupleContent t) {
-  c.getName() = "TupleElement" and
-  t.getIndex() = c.getAnArgument().toInt()
-}
-
-deprecated private predicate parseEnum(AccessPathToken c, Content::EnumContent e) {
-  c.getName() = "EnumElement" and
-  c.getAnArgument() = e.getSignature()
-  or
-  c.getName() = "OptionalSome" and
-  e.getSignature() = "some:0"
-}
-
-/** Holds if the specification component parses as a `Content`. */
-deprecated predicate parseContent(AccessPathToken component, Content content) {
-  parseField(component, content)
-  or
-  parseTuple(component, content)
-  or
-  parseEnum(component, content)
-  or
-  // map legacy "ArrayElement" specification components to `CollectionContent`
-  component.getName() = "ArrayElement" and
-  content instanceof Content::CollectionContent
-  or
-  component.getName() = "CollectionElement" and
-  content instanceof Content::CollectionContent
-}
-
 cached
 private module Cached {
   /**
@@ -496,7 +456,7 @@ private module Cached {
    * model.
    */
   cached
-  predicate sourceNode(Node node, string kind) {
+  predicate sourceNode(DataFlow::Node node, string kind) {
     exists(SourceSinkInterpretationInput::InterpretNode n |
       isSourceNode(n, kind) and n.asNode() = node
     )
@@ -507,7 +467,7 @@ private module Cached {
    * model.
    */
   cached
-  predicate sinkNode(Node node, string kind) {
+  predicate sinkNode(DataFlow::Node node, string kind) {
     exists(SourceSinkInterpretationInput::InterpretNode n |
       isSinkNode(n, kind) and n.asNode() = node
     )
@@ -567,7 +527,7 @@ private class NeutralCallableAdapter extends NeutralCallable {
   string provenance_;
 
   NeutralCallableAdapter() {
-    // Neutral models have not been implemented for Swift.
+    // Neutral models have not been implemented for CPP.
     none() and
     exists(this) and
     exists(kind) and

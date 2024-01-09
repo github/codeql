@@ -9,6 +9,7 @@
 import cpp
 import FunctionInputsAndOutputs
 import semmle.code.cpp.models.Models
+import semmle.code.cpp.dataflow.ExternalFlow
 
 /**
  * A library function that returns data that may be read from a network connection.

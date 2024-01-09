@@ -2,21 +2,20 @@
  * Provides classes and predicates for defining flow summaries.
  */
 
-private import swift
+private import cpp
 private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
-private import DataFlowImplSpecific as DataFlowImplSpecific
-private import DataFlowImplSpecific::Private
-private import DataFlowImplSpecific::Public
-private import DataFlowImplCommon
-private import codeql.swift.dataflow.ExternalFlow
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific as DataFlowImplSpecific
+private import semmle.code.cpp.dataflow.ExternalFlow
 
-module Input implements InputSig<DataFlowImplSpecific::SwiftDataFlow> {
+module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
   class SummarizedCallableBase = Function;
 
-  ArgumentPosition callbackSelfParameterPosition() { result instanceof ThisArgumentPosition }
+  ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
 
-  ReturnKind getStandardReturnValueKind() { result instanceof NormalReturnKind }
+  ReturnKind getStandardReturnValueKind() { result.(NormalReturnKind).getIndirectionIndex() = 0 }
 
   string encodeParameterPosition(ParameterPosition pos) { result = pos.toString() }
 
@@ -29,38 +28,41 @@ module Input implements InputSig<DataFlowImplSpecific::SwiftDataFlow> {
   }
 
   string encodeContent(ContentSet cs, string arg) {
-    exists(Content::FieldContent c |
+    exists(FieldContent c |
       cs.isSingleton(c) and
       result = "Field" and
       arg = c.getField().getName()
     )
-    or
-    exists(Content::TupleContent c |
-      cs.isSingleton(c) and
-      result = "TupleElement" and
-      arg = c.getIndex().toString()
-    )
-    or
-    exists(Content::EnumContent c, string sig |
-      cs.isSingleton(c) and
-      sig = c.getSignature()
-    |
-      if sig = "some:0"
-      then
-        result = "OptionalSome" and
-        arg = ""
-      else (
-        result = "EnumElement" and
-        arg = sig
-      )
-    )
-    or
-    exists(Content::CollectionContent c |
-      cs.isSingleton(c) and
-      result = "CollectionElement" and
-      arg = ""
-    )
-  }
+    /*
+     * or
+     *    exists(Content::TupleContent c |
+     *      cs.isSingleton(c) and
+     *      result = "TupleElement" and
+     *      arg = c.getIndex().toString()
+     *    )
+     *    or
+     *    exists(Content::EnumContent c, string sig |
+     *      cs.isSingleton(c) and
+     *      sig = c.getSignature()
+     *    |
+     *      if sig = "some:0"
+     *      then
+     *        result = "OptionalSome" and
+     *        arg = ""
+     *      else (
+     *        result = "EnumElement" and
+     *        arg = sig
+     *      )
+     *    )
+     *    or
+     *    exists(Content::CollectionContent c |
+     *      cs.isSingleton(c) and
+     *      result = "CollectionElement" and
+     *      arg = ""
+     *    )
+     */
+
+    }
 
   string encodeWithoutContent(ContentSet c, string arg) {
     result = "WithoutContent" + c and arg = ""
@@ -69,23 +71,11 @@ module Input implements InputSig<DataFlowImplSpecific::SwiftDataFlow> {
   string encodeWithContent(ContentSet c, string arg) { result = "WithContent" + c and arg = "" }
 
   bindingset[token]
-  ContentSet decodeUnknownContent(AccessPath::AccessPathTokenBase token) {
-    // map legacy "ArrayElement" specification components to `CollectionContent`
-    token.getName() = "ArrayElement" and
-    result.isSingleton(any(Content::CollectionContent c))
-    or
-    token.getName() = "CollectionElement" and
-    result.isSingleton(any(Content::CollectionContent c))
-  }
-
-  bindingset[token]
   ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
     // needed to support `Argument[x..y]` ranges and `Argument[-1]`
     token.getName() = "Argument" and
     exists(int pos | pos = AccessPath::parseInt(token.getAnArgument()) |
-      result.(PositionalParameterPosition).getIndex() = pos
-      or
-      pos = -1 and result instanceof ThisParameterPosition
+      result = TDirectPosition(pos)
     )
   }
 
@@ -94,24 +84,21 @@ module Input implements InputSig<DataFlowImplSpecific::SwiftDataFlow> {
     // needed to support `Parameter[x..y]` ranges and `Parameter[-1]`
     token.getName() = "Parameter" and
     exists(int pos | pos = AccessPath::parseInt(token.getAnArgument()) |
-      result.(PositionalArgumentPosition).getIndex() = pos
-      or
-      pos = -1 and
-      result instanceof ThisArgumentPosition
+      result = TDirectPosition(pos)
     )
   }
 }
 
-private import Make<DataFlowImplSpecific::SwiftDataFlow, Input> as Impl
+/*private*/ import Make<DataFlowImplSpecific::CppDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
-  DataFlowCall getACall(Public::SummarizedCallable sc) { result.asCall().getStaticTarget() = sc }
+  DataFlowCall getACall(Public::SummarizedCallable sc) { result.getStaticCallTarget() = sc }
 }
 
 module SourceSinkInterpretationInput implements
   Impl::Private::External::SourceSinkInterpretationInputSig<Location>
 {
-  class Element = AstNode;
+  class Element = Element;
 
   class SourceOrSinkElement = Element;
 
@@ -158,10 +145,12 @@ module SourceSinkInterpretationInput implements
     DataFlowCall asCall() { this = TDataFlowCall_(result) }
 
     /** Gets the callable that this node corresponds to, if any. */
-    DataFlowCallable asCallable() { result.getUnderlyingCallable() = this.asElement() }
+    DataFlowCallable asCallable() { result.(Function) = this.asElement() }
 
     /** Gets the target of this call, if any. */
-    Element getCallTarget() { result = this.asCall().asCall().getStaticTarget() }
+    Element getCallTarget() {
+      result = this.asNode().asExpr().(Call).getTarget()
+    }
 
     /** Gets a textual representation of this node. */
     string toString() {
@@ -186,31 +175,31 @@ module SourceSinkInterpretationInput implements
   bindingset[c]
   predicate interpretOutput(string c, InterpretNode mid, InterpretNode node) {
     // Allow fields to be picked as output nodes.
-    exists(Node n, AstNode ast |
+    exists(Node n, Element ast |
       n = node.asNode() and
       ast = mid.asElement()
     |
       c = "" and
-      n.asExpr().(MemberRefExpr).getMember() = ast
+      n.asExpr().(VariableAccess).getTarget() = ast
     )
   }
 
   /** Provides additional source specification logic. */
   bindingset[c]
   predicate interpretInput(string c, InterpretNode mid, InterpretNode node) {
-    exists(Node n, AstNode ast, MemberRefExpr e |
+    exists(Node n, Element ast, VariableAccess e |
       n = node.asNode() and
       ast = mid.asElement() and
-      e.getMember() = ast
+      e.getTarget() = ast
     |
       // Allow fields to be picked as input nodes.
       c = "" and
-      e.getBase() = n.asExpr()
+      e.getQualifier() = n.asExpr()
       or
       // Allow post update nodes to be picked as input nodes when the `input` column
       // of the row is `PostUpdate`.
       c = "PostUpdate" and
-      e.getBase() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+      e.getQualifier() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 }
