@@ -21,7 +21,9 @@ where
   endpoint.getExtensibleType() = extensibleType and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName) and
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
-  CharacteristicsImpl::isKnownAs(endpoint, endpointType, _)
+  CharacteristicsImpl::isKnownAs(endpoint, endpointType, _) and
+  // exclude features from Kotlin files since they are missing context regions
+  not endpoint.isInKotlinSourceFile()
 select endpoint,
   endpointType + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //

@@ -34,7 +34,9 @@ where
     confidence2 >= SharedCharacteristics::maximalConfidence() and
     characteristic2.hasImplications(positiveType, true, confidence2)
   ) and
-  message = characteristic
+  message = characteristic and
+  // exclude features from Kotlin files since they are missing context regions
+  not endpoint.isInKotlinSourceFile()
 select endpoint,
   message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //

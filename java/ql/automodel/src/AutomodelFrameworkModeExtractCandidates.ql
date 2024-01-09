@@ -38,7 +38,9 @@ where
     CharacteristicsImpl::isSink(endpoint, _, alreadyAiModeled)
   ) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName) and
-  includeAutomodelCandidate(package, type, name, signature)
+  includeAutomodelCandidate(package, type, name, signature) and
+  // exclude features from Kotlin files since they are missing context regions
+  not endpoint.isInKotlinSourceFile()
 select endpoint,
   "Related locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //

@@ -22,7 +22,9 @@ where
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
   CharacteristicsImpl::isKnownAs(endpoint, endpointType, _) and
-  exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()))
+  exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext())) and
+  // exclude features from Kotlin files since they are missing context regions
+  not endpoint.isInKotlinSourceFile()
 select endpoint.asNode(),
   endpointType + "\nrelated locations: $@, $@, $@." +
     "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //

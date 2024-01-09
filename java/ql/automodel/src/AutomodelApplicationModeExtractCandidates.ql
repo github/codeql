@@ -79,7 +79,9 @@ where
     CharacteristicsImpl::isModeled(endpoint, _, _, alreadyAiModeled)
   ) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
-  includeAutomodelCandidate(package, type, name, signature)
+  includeAutomodelCandidate(package, type, name, signature) and
+  // exclude features from Kotlin files since they are missing context regions
+  not endpoint.isInKotlinSourceFile()
 select endpoint.asNode(),
   "Related locations: $@, $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //

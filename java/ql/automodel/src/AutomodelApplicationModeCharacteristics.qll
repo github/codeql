@@ -89,6 +89,13 @@ abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint 
   }
 
   abstract string toString();
+
+  /**
+   * Holds if this endpoint is from a Kotlin source file.
+   */
+  predicate isInKotlinSourceFile() {
+    this.asNode().getLocation().getFile().isKotlinSourceFile()
+  }
 }
 
 /**

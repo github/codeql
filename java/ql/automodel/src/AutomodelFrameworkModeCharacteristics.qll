@@ -88,6 +88,13 @@ abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
   string toString() { result = this.asTop().toString() }
 
   Location getLocation() { result = this.asTop().getLocation() }
+
+  /**
+   * Holds if this endpoint is in a Kotlin source file.
+   */
+  predicate isInKotlinSourceFile() {
+    this.getLocation().getFile().isKotlinSourceFile()
+  }
 }
 
 class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParameter {
