@@ -1369,6 +1369,17 @@ module MakeImplCommon<InputSig Lang> {
       )
     }
 
+    private predicate temp(ArgNode arg, ParamNode p, DataFlowType t1, DataFlowType t2) {
+      typeFlowArgType(arg, t1, _) and
+      relevantArgParamIn(arg, p, t2) and
+      not compatibleTypes(t1, t2)
+    }
+
+    private predicate temp(ArgNode arg, ParamNode p,  int cnt) {
+      // temp(arg, p, t1, t2) and
+      cnt = strictcount(DataFlowType ta, DataFlowType tb | temp(arg, p, ta, tb))
+    }
+
     /**
      * Holds if there is a possible type for `arg` in the call context `cc` that
      * is consistent with the static type of `p`.
