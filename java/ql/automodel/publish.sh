@@ -131,23 +131,28 @@ GRPS="automodel,-test"
 
 pushd "$AUTOMODEL_ROOT"
 echo Testing automodel queries
-"${CODEQL_DIST}/codeql" test run test
+#"${CODEQL_DIST}/codeql" test run test
+gh codeql test run test
 popd
 
 pushd "$WORKSPACE_ROOT"
 echo "Preparing the release"
-"${CODEQL_DIST}/codeql" pack release --groups $GRPS -v
+#"${CODEQL_DIST}/codeql" pack release --groups $GRPS -v
+gh codeql pack release --groups $GRPS -v
 
 if [ $DRY_RUN = 1 ]; then
   echo "Dry run: not publishing the query pack"
-  "${CODEQL_DIST}/codeql" pack publish --groups $GRPS --dry-run -v
+  #"${CODEQL_DIST}/codeql" pack publish --groups $GRPS --dry-run -v
+  gh codeql pack publish --groups $GRPS --dry-run -v
 else
   echo "Not a dry run! Publishing the query pack"
-  "${CODEQL_DIST}/codeql" pack publish --groups $GRPS -v
+  #"${CODEQL_DIST}/codeql" pack publish --groups $GRPS -v
+  gh codeql pack publish --groups $GRPS -v
 fi
 
 echo "Bumping versions"
-"${CODEQL_DIST}/codeql" pack post-release --groups $GRPS -v
+#"${CODEQL_DIST}/codeql" pack post-release --groups $GRPS -v
+gh codeql pack post-release --groups $GRPS -v
 popd
 
 # The above commands update
