@@ -306,7 +306,22 @@ class ExprNode extends AstNode {
 
   ExprNode() { expr = ast }
 
-  override AstNode getChildInternal(int childIndex) { result.getAst() = expr.getChild(childIndex) }
+  Locatable getDestructorChildInternal(int childIndex) {
+    exists(int m1, int m2 |
+      m1 = max(int cand | exists(expr.getChild(cand)))
+      or
+      not exists(expr.getAChild()) and m1 = -1
+    |
+      synthetic_destructor_call(expr, m2, result) and
+      childIndex = m1 + m2 + 1
+    )
+  }
+
+  override AstNode getChildInternal(int childIndex) {
+    result.getAst() = expr.getChild(childIndex)
+    or
+    result.getAst() = this.getDestructorChildInternal(childIndex)
+  }
 
   override string getProperty(string key) {
     result = super.getProperty(key)
@@ -431,13 +446,25 @@ class StmtNode extends AstNode {
 
   StmtNode() { stmt = ast }
 
+  private Locatable getDestructorChildInternal(int childIndex) {
+    exists(int m1, int m2 |
+      m1 = max(int cand | exists(stmt.getChild(cand)))
+      or
+      not exists(stmt.getAChild()) and m1 = -1
+    |
+      synthetic_destructor_call(stmt, m2, result) and
+      childIndex = m1 + m2 + 1
+    )
+  }
+
   override BaseAstNode getChildInternal(int childIndex) {
     exists(Locatable child |
-      child = stmt.getChild(childIndex) and
-      (
-        result.getAst() = child.(Expr) or
-        result.getAst() = child.(Stmt)
-      )
+      child = stmt.getChild(childIndex)
+      or
+      child = this.getDestructorChildInternal(childIndex)
+    |
+      result.getAst() = child.(Expr) or
+      result.getAst() = child.(Stmt)
     )
   }
 
@@ -758,6 +785,11 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     s.(TryStmt).getStmt() = e and pred = "getStmt()"
     or
     s.(VlaDimensionStmt).getDimensionExpr() = e and pred = "getDimensionExpr()"
+    or
+    exists(int i |
+      synthetic_destructor_call(s, i, e) and
+      pred = "synthetic_destructor_call(" + i + ")"
+    )
   )
 }
 
@@ -886,6 +918,11 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     expr.(ThrowExpr).getExpr() = ele and pred = "getExpr()"
     or
     expr.(TypeidOperator).getExpr() = ele and pred = "getExpr()"
+    or
+    exists(int i |
+      synthetic_destructor_call(expr, i, ele) and
+      pred = "synthetic_destructor_call(" + i + ")"
+    )
   )
 }
 

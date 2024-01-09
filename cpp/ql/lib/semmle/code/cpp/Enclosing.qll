@@ -50,6 +50,8 @@ Element exprEnclosingElement(Expr e) {
     expr_ancestor(unresolveElement(e), unresolveElement(anc)) and result = stmtEnclosingElement(anc)
   )
   or
+  result = exprEnclosingElement(e.(DestructorCall).getQualifier())
+  or
   exists(DeclarationEntry de |
     expr_ancestor(unresolveElement(e), unresolveElement(de)) and
     if exists(DeclStmt ds | de = ds.getADeclarationEntry())

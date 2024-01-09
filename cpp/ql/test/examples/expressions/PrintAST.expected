@@ -420,6 +420,19 @@ DestructorCall.cpp:
 #   13|             Type = [PointerType] D *
 #   13|             ValueCategory = prvalue(load)
 #   14|     getStmt(2): [ReturnStmt] return ...
+#   16| [TopLevelFunction] void destruction_of_named_entity()
+#   16|   <params>: 
+#   16|   getEntryPoint(): [BlockStmt] { ... }
+#   17|     getStmt(0): [DeclStmt] declaration
+#   17|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+#   17|           Type = [Class] C
+#   18|     getStmt(1): [ReturnStmt] return ...
+#   19|       synthetic_destructor_call(0): [DestructorCall] call to ~C
+#   19|           Type = [VoidType] void
+#   19|           ValueCategory = prvalue
+#   19|         getQualifier(): [VariableAccess] c
+#   19|             Type = [Class] C
+#   19|             ValueCategory = lvalue
 DynamicCast.cpp:
 #    1| [CopyAssignmentOperator] Base& Base::operator=(Base const&)
 #    1|   <params>: 
