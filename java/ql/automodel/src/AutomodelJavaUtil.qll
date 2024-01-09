@@ -82,3 +82,14 @@ predicate includeAutomodelCandidate(string package, string type, string name, st
   not automodelCandidateFilter(_, _, _, _) or
   automodelCandidateFilter(package, type, name, signature)
 }
+
+/**
+ * Holds if the given program element corresponds to a piece of source code,
+ * that is, it is not compiler-generated.
+ */
+predicate isFromSource(Element e) {
+  // not explicitly marked as compiler-generated
+  not e.isCompilerGenerated() and
+  // does not have a dummy location
+  not e.hasLocationInfo(_, 0, 0, 0, 0)
+}
