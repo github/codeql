@@ -50,3 +50,38 @@ void test_inet(char *hostname, char *servname, struct addrinfo *hints) {
   addrinfo *res;
   int ret = getaddrinfo(hostname, servname, hints, &res); // $ remote_source
 }
+
+typedef unsigned int wint_t;
+
+// getc variants
+int getc(FILE *stream);
+wint_t getwc(FILE *stream);
+int _getc_nolock(FILE *stream);
+wint_t _getwc_nolock(FILE *stream);
+
+int getch(void);
+int _getch(void);
+wint_t _getwch(void);
+int _getch_nolock(void);
+wint_t _getwch_nolock(void);
+int getchar(void);
+wint_t getwchar();
+int _getchar_nolock(void);
+wint_t _getwchar_nolock(void);
+
+void test_getchar(FILE *stream) {
+  int a = getc(stream); // $ MISSING: remote_source
+  wint_t b = getwc(stream); // $ MISSING: remote_source
+  int c = _getc_nolock(stream); // $ MISSING: remote_source
+  wint_t d = _getwc_nolock(stream); // $ MISSING: remote_source
+
+  int e = getch(); // $ MISSING: local_source
+  int f = _getch(); // $ MISSING: local_source
+  wint_t g = _getwch(); // $ MISSING: local_source
+  int h = _getch_nolock(); // $ MISSING: local_source
+  wint_t i = _getwch_nolock(); // $ MISSING: local_source
+  int j = getchar(); // $ MISSING: local_source
+  wint_t k = getwchar(); // $ MISSING: local_source
+  int l = _getchar_nolock(); // $ MISSING: local_source
+  wint_t m = _getwchar_nolock(); // $ MISSING: local_source
+}
