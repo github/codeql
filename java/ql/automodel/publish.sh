@@ -129,6 +129,9 @@ WORKSPACE_ROOT="$AUTOMODEL_ROOT/../../.."
 # Specify the groups of queries to test and publish
 GRPS="automodel,-test"
 
+# Install the codeql gh extension
+gh extensions install github/gh-codeql
+
 pushd "$AUTOMODEL_ROOT"
 echo Testing automodel queries
 #"${CODEQL_DIST}/codeql" test run test
