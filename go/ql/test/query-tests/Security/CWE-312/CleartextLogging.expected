@@ -53,7 +53,6 @@ edges
 | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] |
 | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description |
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] |
-| util.go:16:9:16:18 | selection of password | passwords.go:28:14:28:28 | call to getPassword |
 nodes
 | klog.go:20:3:25:3 | range statement[1] | semmle.label | range statement[1] |
 | klog.go:20:13:20:19 | definition of headers | semmle.label | definition of headers |
@@ -135,7 +134,6 @@ nodes
 | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | semmle.label | implicit dereference [Description] |
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | semmle.label | x [pointer, Description] |
 | protos/query/query.pb.go:119:10:119:22 | selection of Description | semmle.label | selection of Description |
-| util.go:16:9:16:18 | selection of password | semmle.label | selection of password |
 subpaths
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | protobuf.go:14:14:14:35 | call to GetDescription |
 #select
@@ -152,7 +150,6 @@ subpaths
 | passwords.go:26:14:26:23 | selection of password | passwords.go:26:14:26:23 | selection of password | passwords.go:26:14:26:23 | selection of password | $@ flows to a logging call. | passwords.go:26:14:26:23 | selection of password | Sensitive data returned by an access to password |
 | passwords.go:27:14:27:26 | call to getPassword | passwords.go:27:14:27:26 | call to getPassword | passwords.go:27:14:27:26 | call to getPassword | $@ flows to a logging call. | passwords.go:27:14:27:26 | call to getPassword | Sensitive data returned by a call to getPassword |
 | passwords.go:28:14:28:28 | call to getPassword | passwords.go:28:14:28:28 | call to getPassword | passwords.go:28:14:28:28 | call to getPassword | $@ flows to a logging call. | passwords.go:28:14:28:28 | call to getPassword | Sensitive data returned by a call to getPassword |
-| passwords.go:28:14:28:28 | call to getPassword | util.go:16:9:16:18 | selection of password | passwords.go:28:14:28:28 | call to getPassword | $@ flows to a logging call. | util.go:16:9:16:18 | selection of password | Sensitive data returned by an access to password |
 | passwords.go:32:12:32:19 | password | passwords.go:32:12:32:19 | password | passwords.go:32:12:32:19 | password | $@ flows to a logging call. | passwords.go:32:12:32:19 | password | Sensitive data returned by an access to password |
 | passwords.go:34:14:34:35 | ...+... | passwords.go:34:28:34:35 | password | passwords.go:34:14:34:35 | ...+... | $@ flows to a logging call. | passwords.go:34:28:34:35 | password | Sensitive data returned by an access to password |
 | passwords.go:39:14:39:17 | obj1 | passwords.go:37:13:37:13 | x | passwords.go:39:14:39:17 | obj1 | $@ flows to a logging call. | passwords.go:37:13:37:13 | x | Sensitive data returned by an access to password |
