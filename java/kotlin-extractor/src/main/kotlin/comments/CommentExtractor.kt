@@ -8,13 +8,16 @@ import org.jetbrains.kotlin.ir.expressions.IrBody
 import org.jetbrains.kotlin.ir.expressions.IrExpression
 import org.jetbrains.kotlin.ir.util.parentClassOrNull
 
-open class CommentExtractor(protected val fileExtractor: KotlinFileExtractor, protected val file: IrFile, protected val fileLabel: Label<out DbFile>) {
+open class CommentExtractor(
+    protected val fileExtractor: KotlinFileExtractor,
+    protected val file: IrFile,
+    protected val fileLabel: Label<out DbFile>
+) {
     protected val tw = fileExtractor.tw
     protected val logger = fileExtractor.logger
 
     protected fun getLabel(element: IrElement): Label<out DbTop>? {
-        if (element == file)
-            return fileLabel
+        if (element == file) return fileLabel
 
         if (element is IrValueParameter && element.index == -1) {
             // Don't attribute comments to the implicit `this` parameter of a function.
@@ -22,18 +25,21 @@ open class CommentExtractor(protected val fileExtractor: KotlinFileExtractor, pr
         }
 
         val label: String
-        val existingLabel = if (element is IrVariable) {
-            // local variables are not named globally, so we need to get them from the variable label cache
-            label = "variable ${element.name.asString()}"
-            tw.getExistingVariableLabelFor(element)
-        } else if (element is IrFunction && element.isLocalFunction()) {
-            // local functions are not named globally, so we need to get them from the local function label cache
-            label = "local function ${element.name.asString()}"
-            fileExtractor.getExistingLocallyVisibleFunctionLabel(element)
-        } else {
-            label = getLabelForNamedElement(element) ?: return null
-            tw.getExistingLabelFor<DbTop>(label)
-        }
+        val existingLabel =
+            if (element is IrVariable) {
+                // local variables are not named globally, so we need to get them from the variable
+                // label cache
+                label = "variable ${element.name.asString()}"
+                tw.getExistingVariableLabelFor(element)
+            } else if (element is IrFunction && element.isLocalFunction()) {
+                // local functions are not named globally, so we need to get them from the local
+                // function label cache
+                label = "local function ${element.name.asString()}"
+                fileExtractor.getExistingLocallyVisibleFunctionLabel(element)
+            } else {
+                label = getLabelForNamedElement(element) ?: return null
+                tw.getExistingLabelFor<DbTop>(label)
+            }
         if (existingLabel == null) {
             logger.warn("Couldn't get existing label for $label")
             return null
@@ -41,7 +47,7 @@ open class CommentExtractor(protected val fileExtractor: KotlinFileExtractor, pr
         return existingLabel
     }
 
-    private fun getLabelForNamedElement(element: IrElement) : String? {
+    private fun getLabelForNamedElement(element: IrElement): String? {
         when (element) {
             is IrClass -> return fileExtractor.getClassLabel(element, listOf()).classLabel
             is IrTypeParameter -> return fileExtractor.getTypeParameterLabel(element)
@@ -57,14 +63,14 @@ open class CommentExtractor(protected val fileExtractor: KotlinFileExtractor, pr
             is IrField -> return fileExtractor.getFieldLabel(element)
             is IrEnumEntry -> return fileExtractor.getEnumEntryLabel(element)
             is IrTypeAlias -> return fileExtractor.getTypeAliasLabel(element)
-
             is IrAnonymousInitializer -> {
                 val parentClass = element.parentClassOrNull
                 if (parentClass == null) {
                     logger.warnElement("Parent of anonymous initializer is not a class", element)
                     return null
                 }
-                // Assign the comment to the class. The content of the `init` blocks might be extracted in multiple constructors.
+                // Assign the comment to the class. The content of the `init` blocks might be
+                // extracted in multiple constructors.
                 return getLabelForNamedElement(parentClass)
             }
 
@@ -74,7 +80,10 @@ open class CommentExtractor(protected val fileExtractor: KotlinFileExtractor, pr
 
             // todo add others:
             else -> {
-                logger.warnElement("Unhandled element type found during comment extraction: ${element::class}", element)
+                logger.warnElement(
+                    "Unhandled element type found during comment extraction: ${element::class}",
+                    element
+                )
                 return null
             }
         }
