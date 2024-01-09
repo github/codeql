@@ -5,7 +5,6 @@
 import javascript
 import semmle.javascript.frameworks.HTTP
 import semmle.javascript.frameworks.ExpressModules
-import semmle.javascript.frameworks.Cors
 private import semmle.javascript.dataflow.InferredTypes
 private import semmle.javascript.frameworks.ConnectExpressShared::ConnectExpressShared
 
@@ -1071,23 +1070,5 @@ module Express {
     override predicate mayResumeDispatch() { none() }
 
     override predicate definitelyResumesDispatch() { none() }
-  }
-
-  /**
-   * An express route setup configured with the `cors` package.
-   */
-  class CorsConfiguration extends DataFlow::MethodCallNode {
-    Cors::Cors corsConfig;
-
-    CorsConfiguration() {
-      exists(Express::RouteSetup setup | this = setup |
-        if setup.isUseCall()
-        then corsConfig = setup.getArgument(0)
-        else corsConfig = setup.getArgument(any(int i | i > 0))
-      )
-    }
-
-    /** Gets the expression that configures `cors` on this route setup. */
-    Cors::Cors getCorsConfiguration() { result = corsConfig }
   }
 }

@@ -5,6 +5,7 @@
  */
 
 import javascript
+import Cors
 
 /** Module containing sources, sinks, and sanitizers for overly permissive CORS configurations. */
 module CorsPermissiveConfiguration {
@@ -69,7 +70,25 @@ module CorsPermissiveConfiguration {
    */
   class ExpressCors extends Sink, DataFlow::ValueNode {
     ExpressCors() {
-      exists(Express::CorsConfiguration config | this = config.getCorsConfiguration().getOrigin())
+      exists(CorsConfiguration config | this = config.getCorsConfiguration().getOrigin())
     }
+  }
+
+  /**
+   * An express route setup configured with the `cors` package.
+   */
+  class CorsConfiguration extends DataFlow::MethodCallNode {
+    Cors::Cors corsConfig;
+
+    CorsConfiguration() {
+      exists(Express::RouteSetup setup | this = setup |
+        if setup.isUseCall()
+        then corsConfig = setup.getArgument(0)
+        else corsConfig = setup.getArgument(any(int i | i > 0))
+      )
+    }
+
+    /** Gets the expression that configures `cors` on this route setup. */
+    Cors::Cors getCorsConfiguration() { result = corsConfig }
   }
 }
