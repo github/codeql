@@ -45,7 +45,7 @@ open class CommentExtractor(
             // The actual extractor logic is a bit more nuanced than
             // just "isFake", but just checking isFake is good enough
             // to not bother with a warning.
-            if(element !is IrDeclarationWithVisibility || !fileExtractor.isFake(element)) {
+            if (element !is IrDeclarationWithVisibility || !fileExtractor.isFake(element)) {
                 logger.warn("Couldn't get existing label for $label")
             }
             return null
