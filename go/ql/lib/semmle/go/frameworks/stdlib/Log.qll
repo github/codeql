@@ -8,12 +8,16 @@ import go
 module Log {
   private class LogFunction extends Function {
     LogFunction() {
-      exists(string fn | fn.matches(["Fatal%", "Panic%", "Print%", "Output"]) |
+      exists(string fn | fn.matches(["Fatal%", "Panic%", "Print%"]) |
         this.hasQualifiedName("log", fn)
         or
         this.(Method).hasQualifiedName("log", "Logger", fn)
       )
     }
+  }
+
+  private class LogOutput extends Method {
+    LogOutput() { this.hasQualifiedName("log", "Logger", "Output") }
   }
 
   private class LogFormatter extends StringOps::Formatting::Range instanceof LogFunction {
@@ -23,9 +27,19 @@ module Log {
   }
 
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    LogCall() { this = any(LogFunction f).getACall() }
+    DataFlow::Node messageComponent;
 
-    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
+    LogCall() {
+      exists(Function f | this = f.getACall() |
+        f instanceof LogFunction and
+        messageComponent = this.getASyntacticArgument()
+        or
+        f instanceof LogOutput and
+        messageComponent = this.getSyntacticArgument(1)
+      )
+    }
+
+    override DataFlow::Node getAMessageComponent() { result = messageComponent }
   }
 
   /** A fatal log function, which calls `os.Exit`. */
