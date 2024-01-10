@@ -7,17 +7,21 @@ import go
 /** Provides models of commonly used functions in the `log` package. */
 module Log {
   private class LogFunction extends Function {
+    int firstPrintedArg;
+
     LogFunction() {
-      exists(string fn | fn.matches(["Fatal%", "Panic%", "Print%"]) |
+      exists(string fn |
+        fn.matches(["Fatal%", "Panic%", "Print%"]) and firstPrintedArg = 0
+        or
+        fn = "Output" and firstPrintedArg = 1
+      |
         this.hasQualifiedName("log", fn)
         or
         this.(Method).hasQualifiedName("log", "Logger", fn)
       )
     }
-  }
 
-  private class LogOutput extends Method {
-    LogOutput() { this.hasQualifiedName("log", "Logger", "Output") }
+    int getFirstPrintedArg() { result = firstPrintedArg }
   }
 
   private class LogFormatter extends StringOps::Formatting::Range instanceof LogFunction {
@@ -27,19 +31,13 @@ module Log {
   }
 
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
-    DataFlow::Node messageComponent;
+    LogFunction target;
 
-    LogCall() {
-      exists(Function f | this = f.getACall() |
-        f instanceof LogFunction and
-        messageComponent = this.getASyntacticArgument()
-        or
-        f instanceof LogOutput and
-        messageComponent = this.getSyntacticArgument(1)
-      )
+    LogCall() { this = target.getACall() }
+
+    override DataFlow::Node getAMessageComponent() {
+      result = this.getSyntacticArgument(any(int i | i >= target.getFirstPrintedArg()))
     }
-
-    override DataFlow::Node getAMessageComponent() { result = messageComponent }
   }
 
   /** A fatal log function, which calls `os.Exit`. */

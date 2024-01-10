@@ -24,6 +24,7 @@ func main() {
 	log.Panicf("", password)
 	log.Panicf(password, "")
 	log.Panicln(password)
+	log.Output(0, password)
 
 	l := log.Default()
 	l.Print(password)

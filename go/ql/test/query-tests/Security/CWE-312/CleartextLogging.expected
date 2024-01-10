@@ -73,22 +73,23 @@ nodes
 | main.go:24:17:24:24 | password | semmle.label | password |
 | main.go:25:13:25:20 | password | semmle.label | password |
 | main.go:26:14:26:21 | password | semmle.label | password |
-| main.go:29:10:29:17 | password | semmle.label | password |
-| main.go:30:15:30:22 | password | semmle.label | password |
-| main.go:31:11:31:18 | password | semmle.label | password |
-| main.go:32:12:32:19 | password | semmle.label | password |
-| main.go:33:10:33:17 | password | semmle.label | password |
-| main.go:34:15:34:22 | password | semmle.label | password |
-| main.go:35:11:35:18 | password | semmle.label | password |
-| main.go:36:12:36:19 | password | semmle.label | password |
-| main.go:37:10:37:17 | password | semmle.label | password |
-| main.go:38:15:38:22 | password | semmle.label | password |
-| main.go:39:11:39:18 | password | semmle.label | password |
-| main.go:40:12:40:19 | password | semmle.label | password |
-| main.go:41:14:41:21 | password | semmle.label | password |
-| main.go:43:12:43:19 | password | semmle.label | password |
-| main.go:44:17:44:24 | password | semmle.label | password |
-| main.go:51:35:51:42 | password | semmle.label | password |
+| main.go:27:16:27:23 | password | semmle.label | password |
+| main.go:30:10:30:17 | password | semmle.label | password |
+| main.go:31:15:31:22 | password | semmle.label | password |
+| main.go:32:11:32:18 | password | semmle.label | password |
+| main.go:33:12:33:19 | password | semmle.label | password |
+| main.go:34:10:34:17 | password | semmle.label | password |
+| main.go:35:15:35:22 | password | semmle.label | password |
+| main.go:36:11:36:18 | password | semmle.label | password |
+| main.go:37:12:37:19 | password | semmle.label | password |
+| main.go:38:10:38:17 | password | semmle.label | password |
+| main.go:39:15:39:22 | password | semmle.label | password |
+| main.go:40:11:40:18 | password | semmle.label | password |
+| main.go:41:12:41:19 | password | semmle.label | password |
+| main.go:42:14:42:21 | password | semmle.label | password |
+| main.go:44:12:44:19 | password | semmle.label | password |
+| main.go:45:17:45:24 | password | semmle.label | password |
+| main.go:52:35:52:42 | password | semmle.label | password |
 | overrides.go:9:9:9:16 | password | semmle.label | password |
 | overrides.go:13:14:13:23 | call to String | semmle.label | call to String |
 | passwords.go:8:12:8:12 | definition of x | semmle.label | definition of x |
@@ -170,22 +171,23 @@ subpaths
 | main.go:24:17:24:24 | password | main.go:24:17:24:24 | password | main.go:24:17:24:24 | password | $@ flows to a logging call. | main.go:24:17:24:24 | password | Sensitive data returned by an access to password |
 | main.go:25:13:25:20 | password | main.go:25:13:25:20 | password | main.go:25:13:25:20 | password | $@ flows to a logging call. | main.go:25:13:25:20 | password | Sensitive data returned by an access to password |
 | main.go:26:14:26:21 | password | main.go:26:14:26:21 | password | main.go:26:14:26:21 | password | $@ flows to a logging call. | main.go:26:14:26:21 | password | Sensitive data returned by an access to password |
-| main.go:29:10:29:17 | password | main.go:29:10:29:17 | password | main.go:29:10:29:17 | password | $@ flows to a logging call. | main.go:29:10:29:17 | password | Sensitive data returned by an access to password |
-| main.go:30:15:30:22 | password | main.go:30:15:30:22 | password | main.go:30:15:30:22 | password | $@ flows to a logging call. | main.go:30:15:30:22 | password | Sensitive data returned by an access to password |
-| main.go:31:11:31:18 | password | main.go:31:11:31:18 | password | main.go:31:11:31:18 | password | $@ flows to a logging call. | main.go:31:11:31:18 | password | Sensitive data returned by an access to password |
-| main.go:32:12:32:19 | password | main.go:32:12:32:19 | password | main.go:32:12:32:19 | password | $@ flows to a logging call. | main.go:32:12:32:19 | password | Sensitive data returned by an access to password |
-| main.go:33:10:33:17 | password | main.go:33:10:33:17 | password | main.go:33:10:33:17 | password | $@ flows to a logging call. | main.go:33:10:33:17 | password | Sensitive data returned by an access to password |
-| main.go:34:15:34:22 | password | main.go:34:15:34:22 | password | main.go:34:15:34:22 | password | $@ flows to a logging call. | main.go:34:15:34:22 | password | Sensitive data returned by an access to password |
-| main.go:35:11:35:18 | password | main.go:35:11:35:18 | password | main.go:35:11:35:18 | password | $@ flows to a logging call. | main.go:35:11:35:18 | password | Sensitive data returned by an access to password |
-| main.go:36:12:36:19 | password | main.go:36:12:36:19 | password | main.go:36:12:36:19 | password | $@ flows to a logging call. | main.go:36:12:36:19 | password | Sensitive data returned by an access to password |
-| main.go:37:10:37:17 | password | main.go:37:10:37:17 | password | main.go:37:10:37:17 | password | $@ flows to a logging call. | main.go:37:10:37:17 | password | Sensitive data returned by an access to password |
-| main.go:38:15:38:22 | password | main.go:38:15:38:22 | password | main.go:38:15:38:22 | password | $@ flows to a logging call. | main.go:38:15:38:22 | password | Sensitive data returned by an access to password |
-| main.go:39:11:39:18 | password | main.go:39:11:39:18 | password | main.go:39:11:39:18 | password | $@ flows to a logging call. | main.go:39:11:39:18 | password | Sensitive data returned by an access to password |
-| main.go:40:12:40:19 | password | main.go:40:12:40:19 | password | main.go:40:12:40:19 | password | $@ flows to a logging call. | main.go:40:12:40:19 | password | Sensitive data returned by an access to password |
-| main.go:41:14:41:21 | password | main.go:41:14:41:21 | password | main.go:41:14:41:21 | password | $@ flows to a logging call. | main.go:41:14:41:21 | password | Sensitive data returned by an access to password |
-| main.go:43:12:43:19 | password | main.go:43:12:43:19 | password | main.go:43:12:43:19 | password | $@ flows to a logging call. | main.go:43:12:43:19 | password | Sensitive data returned by an access to password |
-| main.go:44:17:44:24 | password | main.go:44:17:44:24 | password | main.go:44:17:44:24 | password | $@ flows to a logging call. | main.go:44:17:44:24 | password | Sensitive data returned by an access to password |
-| main.go:51:35:51:42 | password | main.go:51:35:51:42 | password | main.go:51:35:51:42 | password | $@ flows to a logging call. | main.go:51:35:51:42 | password | Sensitive data returned by an access to password |
+| main.go:27:16:27:23 | password | main.go:27:16:27:23 | password | main.go:27:16:27:23 | password | $@ flows to a logging call. | main.go:27:16:27:23 | password | Sensitive data returned by an access to password |
+| main.go:30:10:30:17 | password | main.go:30:10:30:17 | password | main.go:30:10:30:17 | password | $@ flows to a logging call. | main.go:30:10:30:17 | password | Sensitive data returned by an access to password |
+| main.go:31:15:31:22 | password | main.go:31:15:31:22 | password | main.go:31:15:31:22 | password | $@ flows to a logging call. | main.go:31:15:31:22 | password | Sensitive data returned by an access to password |
+| main.go:32:11:32:18 | password | main.go:32:11:32:18 | password | main.go:32:11:32:18 | password | $@ flows to a logging call. | main.go:32:11:32:18 | password | Sensitive data returned by an access to password |
+| main.go:33:12:33:19 | password | main.go:33:12:33:19 | password | main.go:33:12:33:19 | password | $@ flows to a logging call. | main.go:33:12:33:19 | password | Sensitive data returned by an access to password |
+| main.go:34:10:34:17 | password | main.go:34:10:34:17 | password | main.go:34:10:34:17 | password | $@ flows to a logging call. | main.go:34:10:34:17 | password | Sensitive data returned by an access to password |
+| main.go:35:15:35:22 | password | main.go:35:15:35:22 | password | main.go:35:15:35:22 | password | $@ flows to a logging call. | main.go:35:15:35:22 | password | Sensitive data returned by an access to password |
+| main.go:36:11:36:18 | password | main.go:36:11:36:18 | password | main.go:36:11:36:18 | password | $@ flows to a logging call. | main.go:36:11:36:18 | password | Sensitive data returned by an access to password |
+| main.go:37:12:37:19 | password | main.go:37:12:37:19 | password | main.go:37:12:37:19 | password | $@ flows to a logging call. | main.go:37:12:37:19 | password | Sensitive data returned by an access to password |
+| main.go:38:10:38:17 | password | main.go:38:10:38:17 | password | main.go:38:10:38:17 | password | $@ flows to a logging call. | main.go:38:10:38:17 | password | Sensitive data returned by an access to password |
+| main.go:39:15:39:22 | password | main.go:39:15:39:22 | password | main.go:39:15:39:22 | password | $@ flows to a logging call. | main.go:39:15:39:22 | password | Sensitive data returned by an access to password |
+| main.go:40:11:40:18 | password | main.go:40:11:40:18 | password | main.go:40:11:40:18 | password | $@ flows to a logging call. | main.go:40:11:40:18 | password | Sensitive data returned by an access to password |
+| main.go:41:12:41:19 | password | main.go:41:12:41:19 | password | main.go:41:12:41:19 | password | $@ flows to a logging call. | main.go:41:12:41:19 | password | Sensitive data returned by an access to password |
+| main.go:42:14:42:21 | password | main.go:42:14:42:21 | password | main.go:42:14:42:21 | password | $@ flows to a logging call. | main.go:42:14:42:21 | password | Sensitive data returned by an access to password |
+| main.go:44:12:44:19 | password | main.go:44:12:44:19 | password | main.go:44:12:44:19 | password | $@ flows to a logging call. | main.go:44:12:44:19 | password | Sensitive data returned by an access to password |
+| main.go:45:17:45:24 | password | main.go:45:17:45:24 | password | main.go:45:17:45:24 | password | $@ flows to a logging call. | main.go:45:17:45:24 | password | Sensitive data returned by an access to password |
+| main.go:52:35:52:42 | password | main.go:52:35:52:42 | password | main.go:52:35:52:42 | password | $@ flows to a logging call. | main.go:52:35:52:42 | password | Sensitive data returned by an access to password |
 | overrides.go:13:14:13:23 | call to String | overrides.go:9:9:9:16 | password | overrides.go:13:14:13:23 | call to String | $@ flows to a logging call. | overrides.go:9:9:9:16 | password | Sensitive data returned by an access to password |
 | passwords.go:9:14:9:14 | x | passwords.go:30:8:30:15 | password | passwords.go:9:14:9:14 | x | $@ flows to a logging call. | passwords.go:30:8:30:15 | password | Sensitive data returned by an access to password |
 | passwords.go:25:14:25:21 | password | passwords.go:25:14:25:21 | password | passwords.go:25:14:25:21 | password | $@ flows to a logging call. | passwords.go:25:14:25:21 | password | Sensitive data returned by an access to password |
