@@ -158,14 +158,19 @@ popd
 # This will be the file for the new release
 NEW_CHANGE_NOTES_FILE=$(ls -t ./src/change-notes/released/*.md | head -n 1)
 
+# Make a copy of the modified files
 mv ./src/CHANGELOG.md ./src/CHANGELOG.md.dry-run
 mv ./src/codeql-pack.release.yml ./src/codeql-pack.release.yml.dry-run
 mv ./src/qlpack.yml ./src/qlpack.yml.dry-run
 mv "$NEW_CHANGE_NOTES_FILE" ./src/change-notes/released.md.dry-run
 
-# If --override-release was not specified, then we need to checkout the original branch
-if [ $OVERRIDE_RELEASE != 1 ]; then
-  echo "Checking out the original branch"
+if [ $OVERRIDE_RELEASE = 1 ]; then
+  # Restore the original files
+  git checkout ./src/CHANGELOG.md
+  git checkout ./src/codeql-pack.release.yml
+  git checkout ./src/qlpack.yml
+else
+  # Restore the original files
   git checkout "$CURRENT_BRANCH" --force
 fi
 
