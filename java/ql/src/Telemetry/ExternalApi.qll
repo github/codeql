@@ -65,7 +65,7 @@ class ExternalApi extends Callable {
   pragma[nomagic]
   predicate hasSummary() {
     this = any(SummarizedCallable sc).asCallable() or
-    TaintTracking::localAdditionalTaintStep(this.getAnInput(), _)
+    TaintTracking::localAdditionalTaintStep(this.getAnInput(), _, _)
   }
 
   pragma[nomagic]

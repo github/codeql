@@ -208,7 +208,7 @@ signature module InputSig<LocationSig Location> {
    * Holds if there is a simple local flow step from `node1` to `node2`. These
    * are the value-preserving intra-callable flow steps.
    */
-  predicate simpleLocalFlowStep(Node node1, Node node2);
+  predicate simpleLocalFlowStep(Node node1, Node node2, string model);
 
   /**
    * Holds if the data-flow step from `node1` to `node2` can be used to
@@ -288,6 +288,10 @@ signature module InputSig<LocationSig Location> {
 
   /** Extra data-flow steps needed for lambda flow analysis. */
   predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue);
+
+  predicate knownSourceModel(Node sink, string model);
+
+  predicate knownSinkModel(Node sink, string model);
 
   /**
    * Holds if `n` should never be skipped over in the `PathGraph` and in path
@@ -585,6 +589,10 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       import Config
 
       predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = ""
+      }
     }
 
     import Impl<C>
@@ -603,6 +611,10 @@ module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
       import Config
 
       predicate accessPathLimit = Config::accessPathLimit/0;
+
+      predicate isAdditionalFlowStep(Node node1, Node node2, string model) {
+        Config::isAdditionalFlowStep(node1, node2) and model = ""
+      }
     }
 
     import Impl<C>
