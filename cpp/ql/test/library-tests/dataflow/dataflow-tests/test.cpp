@@ -933,7 +933,7 @@ namespace global_variable_conflation_test {
   }
 
   void use() {
-    sink(global_pointer); // $ SPURIOUS: ir
+    sink(global_pointer); // clean
     sink(*global_pointer); // $ ir MISSING: ast
   }
 }
