@@ -52,17 +52,12 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractCompilerGenerated(trapFile);
         }
 
-        private bool IsCompilerGeneratedDelegate()
-        {
+        private bool IsCompilerGeneratedDelegate() =>
             // Lambdas with parameter defaults or a `params` parameter are implemented
             // using compiler generated delegate types.
-            if (Symbol.MethodKind == MethodKind.DelegateInvoke &&
-                Symbol.ContainingType is INamedTypeSymbol nt)
-            {
-                return nt.TypeKind == TypeKind.Delegate && nt.IsImplicitlyDeclared;
-            }
-            return false;
-        }
+            Symbol.MethodKind == MethodKind.DelegateInvoke &&
+            Symbol.ContainingType is INamedTypeSymbol nt &&
+            nt.IsImplicitlyDeclared;
 
         public static new OrdinaryMethod Create(Context cx, IMethodSymbol method)
         {
