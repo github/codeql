@@ -9,6 +9,8 @@ extensions:
       - ["androidx.core.app", "AlarmManagerCompat", True, "setExactAndAllowWhileIdle", "", "", "Argument[3]", "pending-intents", "manual"]
       - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(String,int,Notification)", "", "Argument[2]", "pending-intents", "manual"]
       - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(int,Notification)", "", "Argument[1]", "pending-intents", "manual"]
+      - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(String,int,Notification)", "", "Argument[2]", "notification", "manual"]
+      - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(int,Notification)", "", "Argument[1]", "notification", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

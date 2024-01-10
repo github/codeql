@@ -38,6 +38,10 @@ extensions:
       - ["android.app", "PendingIntent", False, "send", "(Context,int,Intent,PendingIntent$OnFinished,Handler)", "", "Argument[2]", "pending-intents", "manual"]
       - ["android.app", "PendingIntent", False, "send", "(Context,int,Intent,PendingIntent$OnFinished,Handler,String)", "", "Argument[2]", "pending-intents", "manual"]
       - ["android.app", "PendingIntent", False, "send", "(Context,int,Intent,PendingIntent$OnFinished,Handler,String,Bundle)", "", "Argument[2]", "pending-intents", "manual"]
+      - ["android.app", "NotificationManager", True, "notify", "(String,int,Notification)", "", "Argument[2]", "notification", "manual"]
+      - ["android.app", "NotificationManager", True, "notify", "(int,Notification)", "", "Argument[1]", "notification", "manual"]
+      - ["android.app", "NotificationManager", True, "notifyAsPackage", "(String,String,int,Notification)", "", "Argument[3]", "notification", "manual"]
+      - ["android.app", "NotificationManager", True, "notifyAsUser", "(String,int,Notification,UserHandle)", "", "Argument[2]", "notification", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
