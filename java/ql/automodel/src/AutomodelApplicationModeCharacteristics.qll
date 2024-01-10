@@ -26,14 +26,18 @@ newtype JavaRelatedLocationType =
 
 newtype TApplicationModeEndpoint =
   TExplicitArgument(Call call, DataFlow::Node arg) {
+    AutomodelJavaUtil::isFromSource(call) and
     exists(Argument argExpr |
       arg.asExpr() = argExpr and call = argExpr.getCall() and not argExpr.isVararg()
     )
   } or
   TInstanceArgument(Call call, DataFlow::Node arg) {
-    arg = DataFlow::getInstanceArgument(call) and not call instanceof ConstructorCall
+    AutomodelJavaUtil::isFromSource(call) and
+    arg = DataFlow::getInstanceArgument(call) and
+    not call instanceof ConstructorCall
   } or
   TImplicitVarargsArray(Call call, DataFlow::Node arg, int idx) {
+    AutomodelJavaUtil::isFromSource(call) and
     exists(Argument argExpr |
       arg.asExpr() = argExpr and
       call.getArgument(idx) = argExpr and
@@ -41,8 +45,12 @@ newtype TApplicationModeEndpoint =
       not exists(int i | i < idx and call.getArgument(i).(Argument).isVararg())
     )
   } or
-  TMethodReturnValue(Call call) { not call instanceof ConstructorCall } or
+  TMethodReturnValue(Call call) {
+    AutomodelJavaUtil::isFromSource(call) and
+    not call instanceof ConstructorCall
+  } or
   TOverriddenParameter(Parameter p, Method overriddenMethod) {
+    AutomodelJavaUtil::isFromSource(p) and
     not p.getCallable().callsConstructor(_) and
     p.getCallable().(Method).overrides(overriddenMethod)
   }
