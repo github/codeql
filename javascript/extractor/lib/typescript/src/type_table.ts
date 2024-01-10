@@ -422,15 +422,41 @@ export class TypeTable {
   }
 
   /**
+   * Caches the result of `getId`: `type -> [id (not unfolded), id (unfolded)]`.
+   *
+   * A value of `undefined` means the value is not yet computed,
+   * and `number | null` corresponds to the return value of `getId`.
+   */
+  private idCache = new WeakMap<ts.Type, [number | null | undefined, number | null | undefined]>();
+
+  /**
    * Gets the canonical ID for the given type, generating a fresh ID if necessary.
    *
    * Returns `null` if we do not support extraction of this type.
    */
   public getId(type: ts.Type, unfoldAlias: boolean): number | null {
+    let cached = this.idCache.get(type) ?? [undefined, undefined];
+    let cachedValue = cached[unfoldAlias ? 1 : 0];
+    if (cachedValue !== undefined) return cachedValue;
+
+    let result = this.getIdRaw(type, unfoldAlias);
+    cached[unfoldAlias ? 1 : 0] = result;
+    return result;
+  }
+
+  /**
+   * Gets the canonical ID for the given type, generating a fresh ID if necessary.
+   *
+   * Returns `null` if we do not support extraction of this type.
+   */
+  public getIdRaw(type: ts.Type, unfoldAlias: boolean): number | null {
     if (this.typeRecursionDepth > 100) {
       // Ignore infinitely nested anonymous types, such as `{x: {x: {x: ... }}}`.
       // Such a type can't be written directly with TypeScript syntax (as it would need to be named),
       // but it can occur rarely as a result of type inference.
+
+      // Caching this value is technically incorrect, as a type might be seen at depth 101 and then we cache the fact that it can't be extracted. 
+      // Then later the type is seen at a lower depth and could be extracted, but then we immediately give up because of the cached failure. 
       return null;
     }
     // Replace very long string literal types with `string`.
