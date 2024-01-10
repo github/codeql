@@ -318,7 +318,10 @@
 | errors.As | file://:0:0:0:0 | [summary param] 0 in As | file://:0:0:0:0 | [summary] to write: Argument[1] in As |
 | errors.New | file://:0:0:0:0 | [summary param] 0 in New | file://:0:0:0:0 | [summary] to write: ReturnValue in New |
 | errors.Unwrap | file://:0:0:0:0 | [summary param] 0 in Unwrap | file://:0:0:0:0 | [summary] to write: ReturnValue in Unwrap |
+| fmt.Append | file://:0:0:0:0 | [summary param] 0 in Append | file://:0:0:0:0 | [summary] to write: ReturnValue in Append |
+| fmt.Appendf | file://:0:0:0:0 | [summary param] 0 in Appendf | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendf |
 | fmt.Appendf | file://:0:0:0:0 | [summary param] 1 in Appendf | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendf |
+| fmt.Appendln | file://:0:0:0:0 | [summary param] 0 in Appendln | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendln |
 | fmt.GoStringer.GoString | file://:0:0:0:0 | [summary param] -1 in GoString | file://:0:0:0:0 | [summary] to write: ReturnValue in GoString |
 | fmt.ScanState.Read | file://:0:0:0:0 | [summary param] -1 in Read | file://:0:0:0:0 | [summary] to write: Argument[0] in Read |
 | fmt.ScanState.Token | file://:0:0:0:0 | [summary param] -1 in Token | file://:0:0:0:0 | [summary] to write: ReturnValue in Token |

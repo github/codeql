@@ -1,7 +1,10 @@
+| file://:0:0:0:0 | [summary param] 0 in Append | file://:0:0:0:0 | [summary] to write: ReturnValue in Append |
 | file://:0:0:0:0 | [summary param] 0 in AppendQuote | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendQuote |
 | file://:0:0:0:0 | [summary param] 0 in AppendQuoteToASCII | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendQuoteToASCII |
 | file://:0:0:0:0 | [summary param] 0 in AppendQuoteToGraphic | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendQuoteToGraphic |
 | file://:0:0:0:0 | [summary param] 0 in AppendSlice | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendSlice |
+| file://:0:0:0:0 | [summary param] 0 in Appendf | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendf |
+| file://:0:0:0:0 | [summary param] 0 in Appendln | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendln |
 | file://:0:0:0:0 | [summary param] 0 in As | file://:0:0:0:0 | [summary] to write: Argument[1] in As |
 | file://:0:0:0:0 | [summary param] 0 in Base | file://:0:0:0:0 | [summary] to write: ReturnValue in Base |
 | file://:0:0:0:0 | [summary param] 0 in BytePtrFromString | file://:0:0:0:0 | [summary] to write: ReturnValue in BytePtrFromString |
@@ -289,9 +292,6 @@
 | file://:0:0:0:0 | [summary param] -1 in WriteTo | file://:0:0:0:0 | [summary] to write: Argument[0] in WriteTo |
 | file://:0:0:0:0 | [summary param] -1 in WriteTo | file://:0:0:0:0 | [summary] to write: Argument[0] in WriteTo |
 | file://:0:0:0:0 | [summary param] -1 in WriteTo | file://:0:0:0:0 | [summary] to write: Argument[0] in WriteTo |
-| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in Append | file://:0:0:0:0 | [summary] to write: ReturnValue in Append |
-| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in Appendf | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendf |
-| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in Appendln | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendln |
 | file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in Sprint | file://:0:0:0:0 | [summary] to write: ReturnValue in Sprint |
 | file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in Sprintln | file://:0:0:0:0 | [summary] to write: ReturnValue in Sprintln |
 | file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in Append | file://:0:0:0:0 | [summary] to write: ReturnValue in Append |
