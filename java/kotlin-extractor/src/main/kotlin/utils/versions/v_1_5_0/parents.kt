@@ -1,4 +1,3 @@
-
 package org.jetbrains.kotlin.ir.util
 
 import org.jetbrains.kotlin.backend.common.lower.parents as kParents
@@ -10,4 +9,3 @@ val IrDeclaration.parents: Sequence<IrDeclarationParent>
 
 val IrDeclaration.parentsWithSelf: Sequence<IrDeclarationParent>
     get() = this.kParentsWithSelf
-
