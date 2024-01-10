@@ -82,3 +82,21 @@ predicate includeAutomodelCandidate(string package, string type, string name, st
   not automodelCandidateFilter(_, _, _, _) or
   automodelCandidateFilter(package, type, name, signature)
 }
+
+/**
+ * Holds if the given program element corresponds to a piece of source code,
+ * that is, it is not compiler-generated.
+ *
+ * Note: This is a stricter check than `Element::fromSource`, which simply
+ * checks whether the element is in a source file as opposed to a JAR file.
+ * There can be compiler-generated elements in source files (especially for
+ * Kotlin), which we also want to exclude.
+ */
+predicate isFromSource(Element e) {
+  // from a source file (not a JAR)
+  e.fromSource() and
+  // not explicitly marked as compiler-generated
+  not e.isCompilerGenerated() and
+  // does not have a dummy location
+  not e.hasLocationInfo(_, 0, 0, 0, 0)
+}

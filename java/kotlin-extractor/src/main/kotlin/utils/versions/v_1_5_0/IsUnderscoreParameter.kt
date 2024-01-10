@@ -11,9 +11,11 @@ import org.jetbrains.kotlin.utils.addToStdlib.safeAs
 fun isUnderscoreParameter(vp: IrValueParameter) =
     try {
         DescriptorToSourceUtils.getSourceFromDescriptor(vp.descriptor)
-            ?.safeAs<KtParameter>()?.isSingleUnderscore == true
-    } catch(e: NotImplementedError) {
-        // Some kinds of descriptor throw in `getSourceFromDescriptor` as that method is not normally expected to
+            ?.safeAs<KtParameter>()
+            ?.isSingleUnderscore == true
+    } catch (e: NotImplementedError) {
+        // Some kinds of descriptor throw in `getSourceFromDescriptor` as that method is not
+        // normally expected to
         // be applied to synthetic functions.
         false
     }

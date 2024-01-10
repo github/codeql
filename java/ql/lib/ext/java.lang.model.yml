@@ -22,6 +22,8 @@ extensions:
       - ["java.lang", "Runtime", True, "exec", "(String,String[])", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "Runtime", True, "exec", "(String,String[],File)", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "Runtime", True, "exec", "(String,String[],File)", "", "Argument[2]", "command-injection", "ai-manual"]
+      # All implementations of `java.lang.Runtime::exec` take the environment variables as their second argument.
+      - ["java.lang", "Runtime", True, "exec", "", "", "Argument[1]", "environment-injection", "manual"]
       # These are potential vulnerabilities, but not for command-injection. No query for this kind of vulnerability currently exists.
       # - ["java.lang", "Runtime", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
       # - ["java.lang", "Runtime", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
