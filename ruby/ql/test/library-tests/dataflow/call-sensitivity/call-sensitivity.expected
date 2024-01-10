@@ -1,4 +1,5 @@
 testFailures
+| call_sensitivity.rb:200:10:200:28 | # $ hasValueFlow=37 | Missing result:hasValueFlow=37 |
 edges
 | call_sensitivity.rb:9:7:9:13 | call to taint | call_sensitivity.rb:9:6:9:14 | ( ... ) |
 | call_sensitivity.rb:11:13:11:13 | x | call_sensitivity.rb:12:11:12:11 | x |
@@ -212,6 +213,7 @@ mayBenefitFromCallContext
 | call_sensitivity.rb:149:5:149:28 | call to singleton_method2 |
 | call_sensitivity.rb:153:5:153:35 | call to singleton_method3 |
 | call_sensitivity.rb:175:3:175:12 | call to new |
+| call_sensitivity.rb:194:3:196:5 | call to invoke_block1 |
 viableImplInCallContext
 | call_sensitivity.rb:51:5:51:10 | call to sink | call_sensitivity.rb:55:5:55:13 | call to method1 | call_sensitivity.rb:5:1:7:3 | sink |
 | call_sensitivity.rb:51:5:51:10 | call to sink | call_sensitivity.rb:63:5:63:16 | call to method1 | call_sensitivity.rb:5:1:7:3 | sink |
@@ -267,3 +269,5 @@ viableImplInCallContext
 | call_sensitivity.rb:153:5:153:35 | call to singleton_method3 | call_sensitivity.rb:171:1:171:34 | call to call_singleton_method3 | call_sensitivity.rb:96:3:98:5 | singleton_method3 |
 | call_sensitivity.rb:175:3:175:12 | call to new | call_sensitivity.rb:178:1:178:20 | call to create | call_sensitivity.rb:104:3:107:5 | initialize |
 | call_sensitivity.rb:175:3:175:12 | call to new | call_sensitivity.rb:179:1:179:20 | call to create | call_sensitivity.rb:156:3:158:5 | initialize |
+| call_sensitivity.rb:194:3:196:5 | call to invoke_block1 | call_sensitivity.rb:199:1:201:3 | call to invoke_block2 | call_sensitivity.rb:189:1:191:3 | invoke_block1 |
+| call_sensitivity.rb:194:3:196:5 | call to invoke_block1 | call_sensitivity.rb:203:1:205:3 | call to invoke_block2 | call_sensitivity.rb:189:1:191:3 | invoke_block1 |
