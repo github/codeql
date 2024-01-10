@@ -857,7 +857,7 @@ private class StateTaintStep extends TaintTracking::SharedTaintStep {
  * data to flow from `v` to any read of `c2.props.p`, where `c2`
  * also is an instance of `C`.
  */
-private class PropsTaintStep extends PreCallGraphStep {
+private class PropsFlowStep extends PreCallGraphStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(ReactComponent c, string name, DataFlow::PropRead prn |
       prn = c.getAPropRead(name) or
