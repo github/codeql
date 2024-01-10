@@ -4,6 +4,8 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
+| test.cpp:930:8:930:10 | Use of **global_pointer | Node should have one toString but has 2. |
+| test.cpp:930:8:930:10 | Use of *global_pointer | Node should have one toString but has 2. |
 parameterCallable
 localFlowIsLocal
 readStepIsLocal
