@@ -115,7 +115,7 @@ Environments may be combined as follows:
 -  *Union*. This takes the union of the entry sets of the two environments.
 -  *Overriding union*. This takes the union of two environments, but if there are entries for a key in the first map, then no additional entries for that key are included from the second map.
 
-A *definite* environment has only values that are *equal modulo weak aliasing* for each each.
+A *definite* environment has only values that are *equal modulo weak aliasing* for each key.
 
 Global environments
 ~~~~~~~~~~~~~~~~~~~
@@ -1772,9 +1772,9 @@ Aliases define new names for existing QL bindings.
          |   qldoc? annotations "module" modulename "=" moduleExpr ";"
 
 
-An alias introduces a binding from the new name to the binding referred to by the right-hand side in the current module's declared predicate, type, or module environment respectively.
+An alias introduces a binding from the new name to the binding referred to by the right-hand side in the current module's visible predicate, type, or module environment respectively.
 
-An alias is called *strong alias* if and only if it has the ``final`` annotation. Otherwise, it is called a *weak alias*.
+An alias is called a *strong alias* if and only if it has the ``final`` annotation. Otherwise, it is called a *weak alias*.
 
 Two bindings `A`, `B` are called *equal modulo weak aliasing* if and only if one of the following conditions are satisfied:
 
