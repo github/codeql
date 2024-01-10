@@ -208,7 +208,9 @@ private predicate moduleFlowsToMethodCallReceiver(RelevantCall call, Module m, s
   flowsToMethodCallReceiver(call, trackModuleAccess(m), method)
 }
 
-private Block blockCall(RelevantCall call) { lambdaSourceCall(call, _, trackBlock(result)) }
+private Block blockCall(RelevantCall call) {
+  lambdaSourceCall(call, _, trackBlock(result).(DataFlow::LocalSourceNode).getALocalUse())
+}
 
 pragma[nomagic]
 private predicate superCall(RelevantCall call, Module cls, string method) {
