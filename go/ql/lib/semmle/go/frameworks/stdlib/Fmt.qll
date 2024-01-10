@@ -10,7 +10,7 @@ module Fmt {
   /**
    * The `Sprint` or `Append` functions or one of their variants.
    *
-   * DEPRECATED: Use AppenderOrSprinterFunc.
+   * DEPRECATED: Use AppenderOrSprinterFunc instead.
    */
   deprecated class AppenderOrSprinter extends TaintTracking::FunctionModel {
     AppenderOrSprinter() { this.hasQualifiedName("fmt", ["Append", "Sprint"] + ["", "f", "ln"]) }
