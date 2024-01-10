@@ -421,8 +421,13 @@ export class TypeTable {
     return id;
   }
 
-  // type -> [id (not unfolded), id (unfolded)]
-  private idCache = new WeakMap<ts.Type, [number | undefined, number | undefined]>();
+  /**
+   * Caches the result of `getId`: `type -> [id (not unfolded), id (unfolded)]`.
+   *
+   * A value of `undefined` means the value is not yet computed,
+   * and `number | null` corresponds to the return value of `getId`.
+   */
+  private idCache = new WeakMap<ts.Type, [number | null | undefined, number | null | undefined]>();
 
   /**
    * Gets the canonical ID for the given type, generating a fresh ID if necessary.
@@ -430,23 +435,29 @@ export class TypeTable {
    * Returns `null` if we do not support extraction of this type.
    */
   public getId(type: ts.Type, unfoldAlias: boolean): number | null {
-    const cached = this.idCache.get(type);
-    if (typeof cached !== "undefined") {
-        let value = cached[unfoldAlias ? 1 : 0];
-        if (typeof value !== "undefined") return value;
-    }
-    const setAndReturn = (v: number | null) => {
-        let cached = this.idCache.get(type) || [undefined, undefined];
-        cached[unfoldAlias ? 1 : 0] = v;
-        this.idCache.set(type, cached);
-        return v;
-    }
-    
+    let cached = this.idCache.get(type) ?? [undefined, undefined];
+    let cachedValue = cached[unfoldAlias ? 1 : 0];
+    if (cachedValue !== undefined) return cachedValue;
+
+    let result = this.getIdRaw(type, unfoldAlias);
+    cached[unfoldAlias ? 1 : 0] = result;
+    return result;
+  }
+
+  /**
+   * Gets the canonical ID for the given type, generating a fresh ID if necessary.
+   *
+   * Returns `null` if we do not support extraction of this type.
+   */
+  public getIdRaw(type: ts.Type, unfoldAlias: boolean): number | null {
     if (this.typeRecursionDepth > 100) {
       // Ignore infinitely nested anonymous types, such as `{x: {x: {x: ... }}}`.
       // Such a type can't be written directly with TypeScript syntax (as it would need to be named),
       // but it can occur rarely as a result of type inference.
-      return setAndReturn(null);
+
+      // Caching this value is technically incorrect, as a type might be seen at depth 101 and then we cache the fact that it can't be extracted. 
+      // Then later the type is seen at a lower depth and could be extracted, but then we immediately give up because of the cached failure. 
+      return null;
     }
     // Replace very long string literal types with `string`.
     if ((type.flags & ts.TypeFlags.StringLiteral) && ((type as ts.LiteralType).value as string).length > 30) {
@@ -455,12 +466,12 @@ export class TypeTable {
     ++this.typeRecursionDepth;
     let content = this.getTypeString(type, unfoldAlias);
     --this.typeRecursionDepth;
-    if (content == null) return setAndReturn(null); // Type not supported.
+    if (content == null) return null; // Type not supported.
     let id = this.typeIds.get(content);
     if (id == null) {
       let stringValue = this.stringifyType(type, unfoldAlias);
       if (stringValue == null) {
-        return setAndReturn(null); // Type not supported.
+        return null; // Type not supported.
       }
       id = this.typeIds.size;
       this.typeIds.set(content, id);
@@ -485,7 +496,7 @@ export class TypeTable {
         this.buildTypeWorklist.push([type, id, unfoldAlias]);
       }
     }
-    return setAndReturn(id);
+    return id;
   }
 
   private stringifyType(type: ts.Type, unfoldAlias: boolean): string {
