@@ -70,7 +70,7 @@ jobs:
           sarif_file: ql-for-ql.sarif
           category: ql-for-ql
       - name: Sarif as artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ql-for-ql.sarif
           path: ql-for-ql.sarif
@@ -79,7 +79,7 @@ jobs:
           mkdir split-sarif
           node ./ql/scripts/split-sarif.js ql-for-ql.sarif split-sarif
       - name: Upload langs as artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ql-for-ql-langs
           path: split-sarif

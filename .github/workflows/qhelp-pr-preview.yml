@@ -36,7 +36,7 @@ jobs:
       - run: echo "${PR_NUMBER}" > pr_number.txt
         env:
           PR_NUMBER: ${{ github.event.number }}
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: comment
           path: pr_number.txt
@@ -78,7 +78,7 @@ jobs:
           exit "${EXIT_CODE}"
 
       - if: always()
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: comment
           path: comment_body.txt
@@ -94,7 +94,7 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.number }}
 
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: comment
           path: comment_id.txt
