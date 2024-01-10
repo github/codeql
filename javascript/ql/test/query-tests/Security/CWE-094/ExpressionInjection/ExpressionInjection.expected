@@ -20,6 +20,14 @@
 | .github/workflows/issues.yaml:15:12:15:39 | echo '$ ... env }}' | Potential injection from the ${{ env.global_env }}, which may be controlled by an external user. |
 | .github/workflows/issues.yaml:17:12:17:36 | echo '$ ... env }}' | Potential injection from the ${{ env.job_env }}, which may be controlled by an external user. |
 | .github/workflows/issues.yaml:18:12:18:37 | echo '$ ... env }}' | Potential injection from the ${{ env.step_env }}, which may be controlled by an external user. |
+| .github/workflows/pull_request.yml:9:12:9:56 | echo '$ ... tle }}' | Potential injection from the ${{ github.event.pull_request.title }}, which may be controlled by an external user. |
+| .github/workflows/pull_request.yml:10:12:10:55 | echo '$ ... ody }}' | Potential injection from the ${{ github.event.pull_request.body }}, which may be controlled by an external user. |
+| .github/workflows/pull_request.yml:11:12:11:61 | echo '$ ... bel }}' | Potential injection from the ${{ github.event.pull_request.head.label }}, which may be controlled by an external user. |
+| .github/workflows/pull_request.yml:12:12:12:75 | echo '$ ... nch }}' | Potential injection from the ${{ github.event.pull_request.head.repo.default_branch }}, which may be controlled by an external user. |
+| .github/workflows/pull_request.yml:13:12:13:72 | echo '$ ... ion }}' | Potential injection from the ${{ github.event.pull_request.head.repo.description }}, which may be controlled by an external user. |
+| .github/workflows/pull_request.yml:14:12:14:69 | echo '$ ... age }}' | Potential injection from the ${{ github.event.pull_request.head.repo.homepage }}, which may be controlled by an external user. |
+| .github/workflows/pull_request.yml:15:12:15:59 | echo '$ ... ref }}' | Potential injection from the ${{ github.event.pull_request.head.ref }}, which may be controlled by an external user. |
+| .github/workflows/pull_request.yml:16:12:16:40 | echo '$ ... ref }}' | Potential injection from the ${{ github.head_ref }}, which may be controlled by an external user. |
 | .github/workflows/pull_request_review.yml:7:12:7:56 | echo '$ ... tle }}' | Potential injection from the ${{ github.event.pull_request.title }}, which may be controlled by an external user. |
 | .github/workflows/pull_request_review.yml:8:12:8:55 | echo '$ ... ody }}' | Potential injection from the ${{ github.event.pull_request.body }}, which may be controlled by an external user. |
 | .github/workflows/pull_request_review.yml:9:12:9:61 | echo '$ ... bel }}' | Potential injection from the ${{ github.event.pull_request.head.label }}, which may be controlled by an external user. |
@@ -54,6 +62,7 @@
 | .github/workflows/push.yml:14:12:14:64 | echo '$ ... ame }}' | Potential injection from the ${{ github.event.head_commit.committer.name }}, which may be controlled by an external user. |
 | .github/workflows/push.yml:15:12:15:65 | echo '$ ... ail }}' | Potential injection from the ${{ github.event.commits[11].committer.email }}, which may be controlled by an external user. |
 | .github/workflows/push.yml:16:12:16:64 | echo '$ ... ame }}' | Potential injection from the ${{ github.event.commits[11].committer.name }}, which may be controlled by an external user. |
+| .github/workflows/push.yml:17:12:17:56 | echo '$ ... tle }}' | Potential injection from the ${{ github.event.pull_request.title }}, which may be controlled by an external user. |
 | .github/workflows/workflow_run.yml:9:12:9:64 | echo '$ ... tle }}' | Potential injection from the ${{ github.event.workflow_run.display_title }}, which may be controlled by an external user. |
 | .github/workflows/workflow_run.yml:10:12:10:70 | echo '$ ... age }}' | Potential injection from the ${{ github.event.workflow_run.head_commit.message }}, which may be controlled by an external user. |
 | .github/workflows/workflow_run.yml:11:12:11:75 | echo '$ ... ail }}' | Potential injection from the ${{ github.event.workflow_run.head_commit.author.email }}, which may be controlled by an external user. |

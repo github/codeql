@@ -240,6 +240,9 @@ where
       exists(on.getNode("pull_request_target")) and
       isExternalUserControlledPullRequest(context)
       or
+      exists(on.getNode("pull_request")) and
+      isExternalUserControlledPullRequest(context)
+      or
       exists(on.getNode("pull_request_review")) and
       (isExternalUserControlledReview(context) or isExternalUserControlledPullRequest(context))
       or
@@ -253,7 +256,7 @@ where
       isExternalUserControlledGollum(context)
       or
       exists(on.getNode("push")) and
-      isExternalUserControlledCommit(context)
+      (isExternalUserControlledCommit(context) or isExternalUserControlledPullRequest(context))
       or
       exists(on.getNode("discussion")) and
       isExternalUserControlledDiscussion(context)

@@ -14,3 +14,4 @@ jobs:
     - run: echo '${{ github.event.head_commit.committer.name }}'
     - run: echo '${{ github.event.commits[11].committer.email }}'
     - run: echo '${{ github.event.commits[11].committer.name }}'
+    - run: echo '${{ github.event.pull_request.title }}'
