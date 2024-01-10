@@ -3,6 +3,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.OgnlInjection
+private import semmle.code.java.security.dataflow.CommonSanitizers
 
 /**
  * DEPRECATED: Use `OgnlInjectionFlow` instead.
@@ -33,9 +34,7 @@ module OgnlInjectionFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof OgnlInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleScalarSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(OgnlInjectionAdditionalTaintStep c).step(node1, node2)

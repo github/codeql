@@ -7,6 +7,7 @@ import semmle.code.java.frameworks.UnboundId
 import semmle.code.java.frameworks.SpringLdap
 import semmle.code.java.frameworks.ApacheLdap
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.security.dataflow.CommonSanitizers
 
 /** A data flow sink for unvalidated user input that is used to construct LDAP queries. */
 abstract class LdapInjectionSink extends DataFlow::Node { }
@@ -33,11 +34,7 @@ private class DefaultLdapInjectionSink extends LdapInjectionSink {
 }
 
 /** A sanitizer that clears the taint on (boxed) primitive types. */
-private class DefaultLdapSanitizer extends LdapInjectionSanitizer {
-  DefaultLdapSanitizer() {
-    this.getType() instanceof PrimitiveType or
-    this.getType() instanceof BoxedType
-  }
+private class DefaultLdapSanitizer extends LdapInjectionSanitizer instanceof SimpleScalarSanitizer {
 }
 
 /**
