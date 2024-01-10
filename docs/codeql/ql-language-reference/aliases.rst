@@ -130,11 +130,13 @@ You could give the predicate a more descriptive name as follows:
 Strong and weak aliases
 =======================
 
-Every alias is either **strong** or **weak**.
-An alias is **strong** if and only if it is a :ref:`type alias <type-aliases>` with :ref:`annotation <annotations>`
-``final``.
-During :ref:`name resolution <name-resolution>`, ambiguity between **weak** aliases of the same target is allowed,
-but ambiguity between distinct **strong** aliases or entities is invalid QL.
-For the purpose of applicative instantiation of :ref:`parameterised modules <parameterized-modules>` and
-`:ref:`parameterised module signatures <parameterized-module-signatures>`, **weak** aliases of instantiation
-arguments are considered equivalent, but distinct **strong** aliases result in separate instantiations.
+Every alias definition is either **strong** or **weak**.
+An alias definition is **strong** if and only if it is a :ref:`type alias <type-aliases>` definition with
+:ref:`annotation <annotations>` ``final``.
+During :ref:`name resolution <name-resolution>`, ambiguity between aliases from **weak** alias definitions
+for the same module/type/predicate is allowed, but ambiguity between between aliases from distinct **strong**
+alias definitions is invalid QL.
+Likewise, for the purpose of applicative instantiation of :ref:`parameterised modules <parameterized-modules>`
+and `:ref:`parameterised module signatures <parameterized-module-signatures>`, aliases from **weak** alias
+definitions for instantiation arguments do not result in separate instantiations, but aliases from **strong**
+alias definitions for instantiation arguments do.
