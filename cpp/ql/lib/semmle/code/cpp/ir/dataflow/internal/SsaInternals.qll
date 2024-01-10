@@ -149,11 +149,16 @@ private newtype TDefOrUseImpl =
 private predicate isGlobalUse(
   GlobalLikeVariable v, IRFunction f, int indirection, int indirectionIndex
 ) {
-  exists(VariableAddressInstruction vai |
-    vai.getEnclosingIRFunction() = f and
-    vai.getAstVariable() = v and
-    isDef(_, _, _, vai, indirection, indirectionIndex)
-  )
+  // Generate a "global use" at the end of the function body if there's a
+  // direct definition somewhere in the body of the function
+  indirection =
+    min(int cand, VariableAddressInstruction vai |
+      vai.getEnclosingIRFunction() = f and
+      vai.getAstVariable() = v and
+      isDef(_, _, _, vai, cand, indirectionIndex)
+    |
+      cand
+    )
 }
 
 private predicate isGlobalDefImpl(
