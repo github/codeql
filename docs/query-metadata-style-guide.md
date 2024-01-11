@@ -113,7 +113,7 @@ Alert queries (`@kind problem` or `path-problem`) support two further properties
   * `medium`
   * `high`
   * `very-high`
-* `@problem.severity`–defines the level of severity of non-security alerts: 
+* `@problem.severity`–defines the likelihood that an alert, either security-related or not, causes an actual problem such as incorrect program behavior: 
   * `error`–an issue that is likely to cause incorrect program behavior, for example a crash or vulnerability.
   * `warning`–an issue that indicates a potential problem in the code, or makes the code fragile if another (unrelated) part of code is changed.
   * `recommendation`–an issue where the code behaves correctly, but it could be improved.
