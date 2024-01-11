@@ -253,6 +253,23 @@ module SharedCharacteristics<CandidateSig Candidate> {
   }
 
   /**
+   * A high-confidence characteristic that indicates that an endpoint is not a source of any type. These endpoints can be
+   * used as negative samples for training or for a few-shot prompt.
+   */
+  abstract class NotASourceCharacteristic extends EndpointCharacteristic {
+    bindingset[this]
+    NotASourceCharacteristic() { any() }
+
+    override predicate hasImplications(
+      Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
+    ) {
+      endpointType instanceof Candidate::SourceType and
+      isPositiveIndicator = false and
+      confidence = highConfidence()
+    }
+  }
+
+  /**
    * A medium-confidence characteristic that indicates that an endpoint is unlikely to be a sink of any type. These
    * endpoints can be excluded from scoring at inference time, both to save time and to avoid false positives. They should
    * not, however, be used as negative samples for training or for a few-shot prompt, because they may include a small
@@ -340,17 +357,27 @@ module SharedCharacteristics<CandidateSig Candidate> {
     /**
      * A negative characteristic that indicates that an endpoint was manually modeled as a neutral model.
      */
-    private class NeutralModelCharacteristic extends NotASinkCharacteristic {
-      NeutralModelCharacteristic() { this = "known non-sink" }
+    private class NeutralModelCharacteristic extends NotASinkCharacteristic,
+      NotASourceCharacteristic
+    {
+      NeutralModelCharacteristic() { this = "known non-endpoint" }
+
+      // this is a negative characteristic for both sinks and sources
+      override predicate hasImplications(
+        Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
+      ) {
+        NotASinkCharacteristic.super.hasImplications(endpointType, isPositiveIndicator, confidence) or
+        NotASourceCharacteristic.super
+            .hasImplications(endpointType, isPositiveIndicator, confidence)
+      }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isNeutral(e) }
     }
 
     /**
-     * A negative characteristic that indicates that an endpoint is not part of the source code for the project being
-     * analyzed.
+     * A negative characteristic that indicates that an endpoint is a sanitizer, and thus not a source.
      */
-    private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
+    private class IsSanitizerCharacteristic extends NotASourceCharacteristic {
       IsSanitizerCharacteristic() { this = "known sanitizer" }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSanitizer(e, _) }
