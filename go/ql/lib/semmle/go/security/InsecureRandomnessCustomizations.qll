@@ -40,7 +40,9 @@ module InsecureRandomness {
    * Gets an interface outside of the `crypto` package which is the same as an
    * interface in the `crypto` package.
    */
-  string nonCryptoInterface() { result = ["io.Writer", "io.Reader", "sync.Mutex", "net.Listener"] }
+  string nonCryptoInterface() {
+    result = ["io.Writer", "io.Reader", "sync.Map", "sync.Mutex", "net.Listener"]
+  }
 
   /**
    * A cryptographic algorithm.
