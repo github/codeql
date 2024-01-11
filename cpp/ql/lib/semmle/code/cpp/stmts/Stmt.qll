@@ -59,6 +59,18 @@ class Stmt extends StmtParent, @stmt {
     )
   }
 
+  /**
+   * Gets the `n`th compiler-generated destructor call that is performed after this statement, in
+   * order of destruction.
+   */
+  DestructorCall getSyntheticDestructor(int n) {
+    synthetic_destructor_call(this, max(int i | synthetic_destructor_call(this, i, _)) - n, result)
+  }
+
+  DestructorCall getASyntheticDestructor() {
+    synthetic_destructor_call(this, _, result)
+  }
+
   override Location getLocation() { stmts(underlyingElement(this), _, result) }
 
   override string toString() { none() }
