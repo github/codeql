@@ -3,6 +3,7 @@
 | p;FluentAPI$Inner;notThis;(String);summary;df-generated |
 | p;ImmutablePojo;getX;();summary;df-generated |
 | p;Joiner;length;();summary;df-generated |
+| p;MultipleImpl2$IInterface;m;(Object);summary;df-generated |
 | p;ParamFlow;ignorePrimitiveReturnValue;(String);summary;df-generated |
 | p;ParamFlow;mapType;(Class);summary;df-generated |
 | p;Pojo;doNotSetValue;(String);summary;df-generated |
