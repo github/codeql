@@ -512,7 +512,7 @@ private module ParamsSummaries {
         "dig", "each", "each_key", "each_pair", "each_value", "except", "keep_if", "merge",
         "merge!", "permit", "reject", "reject!", "require", "reverse_merge", "reverse_merge!",
         "select", "select!", "slice", "slice!", "transform_keys", "transform_keys!",
-        "transform_values", "transform_values!", "with_defaults", "with_defaults!"
+        "transform_values", "transform_values!", "with_defaults", "with_defaults!", "[]"
       ]
   }
 

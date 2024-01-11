@@ -9,6 +9,7 @@ This is an overview of changes in the CodeQL CLI and relevant CodeQL query and l
 .. toctree::
    :maxdepth: 1
 
+   codeql-cli-2.15.4
    codeql-cli-2.15.3
    codeql-cli-2.15.2
    codeql-cli-2.15.1

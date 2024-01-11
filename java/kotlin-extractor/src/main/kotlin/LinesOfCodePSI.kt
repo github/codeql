@@ -7,20 +7,17 @@ import com.intellij.psi.PsiWhiteSpace
 import org.jetbrains.kotlin.config.KotlinCompilerVersion
 import org.jetbrains.kotlin.ir.IrElement
 import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.kdoc.psi.api.KDocElement
-import org.jetbrains.kotlin.psi.KtCodeFragment
 import org.jetbrains.kotlin.psi.KtVisitor
 
-class LinesOfCodePSI(
-    val logger: FileLogger,
-    val tw: FileTrapWriter,
-    val file: IrFile
-) {
-    val psi2Ir = getPsi2Ir().also {
-        if (it == null) {
-            logger.warn("Lines of code will not be populated as Kotlin version is too old (${KotlinCompilerVersion.getVersion()})")
+class LinesOfCodePSI(val logger: FileLogger, val tw: FileTrapWriter, val file: IrFile) {
+    val psi2Ir =
+        getPsi2Ir().also {
+            if (it == null) {
+                logger.warn(
+                    "Lines of code will not be populated as Kotlin version is too old (${KotlinCompilerVersion.getVersion()})"
+                )
+            }
         }
-    }
 
     fun linesOfCodeInFile(id: Label<DbFile>): Boolean {
         if (psi2Ir == null) {

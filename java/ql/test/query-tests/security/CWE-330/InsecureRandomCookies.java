@@ -10,7 +10,7 @@ import javax.servlet.http.Cookie;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.owasp.esapi.Encoder;
 
-public class WeakRandomCookies extends HttpServlet {
+public class InsecureRandomCookies extends HttpServlet {
     HttpServletResponse response;
 
     public void doGet() {
@@ -19,6 +19,14 @@ public class WeakRandomCookies extends HttpServlet {
         int c = r.nextInt();
         // BAD: The cookie value may be predictable.
         Cookie cookie = new Cookie("name", Integer.toString(c)); // $hasWeakRandomFlow
+        cookie.setValue(Integer.toString(c)); // $hasWeakRandomFlow
+
+        io.netty.handler.codec.http.Cookie nettyCookie =
+                new io.netty.handler.codec.http.DefaultCookie("name", Integer.toString(c)); // $hasWeakRandomFlow
+        nettyCookie.setValue(Integer.toString(c)); // $hasWeakRandomFlow
+        io.netty.handler.codec.http.cookie.Cookie nettyCookie2 =
+                new io.netty.handler.codec.http.cookie.DefaultCookie("name", Integer.toString(c)); // $hasWeakRandomFlow
+        nettyCookie2.setValue(Integer.toString(c)); // $hasWeakRandomFlow
 
         Encoder enc = null;
         int c2 = r.nextInt();
@@ -36,8 +44,8 @@ public class WeakRandomCookies extends HttpServlet {
         byte[] bytes2 = new byte[16];
         sr.nextBytes(bytes2);
         // GOOD: The cookie value is unpredictable.
-        Cookie cookie4 = new Cookie("name", new String(bytes2)); 
-        
+        Cookie cookie4 = new Cookie("name", new String(bytes2));
+
         ThreadLocalRandom tlr = ThreadLocalRandom.current();
 
         Cookie cookie5 = new Cookie("name", Integer.toString(tlr.nextInt())); // $hasWeakRandomFlow
