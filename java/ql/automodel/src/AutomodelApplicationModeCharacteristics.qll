@@ -259,7 +259,9 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
 
   class EndpointType = AutomodelEndpointTypes::EndpointType;
 
-  class NegativeEndpointType = AutomodelEndpointTypes::NegativeSinkType;
+  class SinkType = AutomodelEndpointTypes::SinkType;
+
+  class SourceType = AutomodelEndpointTypes::SourceType;
 
   class RelatedLocation = Location::Top;
 

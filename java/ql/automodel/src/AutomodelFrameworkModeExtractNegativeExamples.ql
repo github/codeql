@@ -21,18 +21,20 @@ from
 where
   endpoint.getExtensibleType() = extensibleType and
   characteristic.appliesToEndpoint(endpoint) and
+  // the node is known not to be an endpoint of any appropriate type
+  forall(EndpointType tp | tp = endpoint.getAPotentialType() |
+    characteristic.hasImplications(tp, false, _)
+  ) and
+  // the lowest confidence across all endpoint types should be at least highConfidence
+  confidence = min(float c | characteristic.hasImplications(endpoint.getAPotentialType(), false, c)) and
   confidence >= SharedCharacteristics::highConfidence() and
-  characteristic.hasImplications(any(NegativeSinkType negative), true, confidence) and
   meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName) and
-  // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
-  // treated by the actual query as a sanitizer, since the final logic is something like
-  // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as negative examples in the prompt, because
-  // they're ambiguous and might confuse the model, so we explicitly exclude all known sinks from the negative examples.
-  not exists(EndpointCharacteristic characteristic2, float confidence2, SinkType positiveType |
-    not positiveType instanceof NegativeSinkType and
+  // It's valid for a node to be both a potential source/sanitizer and a sink. We don't want to include such nodes
+  // as negative examples in the prompt, because they're ambiguous and might confuse the model, so we explicitly them here.
+  not exists(EndpointCharacteristic characteristic2, float confidence2, EndpointType type2 |
     characteristic2.appliesToEndpoint(endpoint) and
     confidence2 >= SharedCharacteristics::maximalConfidence() and
-    characteristic2.hasImplications(positiveType, true, confidence2)
+    characteristic2.hasImplications(type2, true, confidence2)
   ) and
   message = characteristic
 select endpoint,
