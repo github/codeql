@@ -474,7 +474,6 @@ private class IsMaDTaintStepCharacteristic extends CharacteristicsImpl::NotASink
   IsMaDTaintStepCharacteristic() { this = "taint step" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getExtensibleType() = "sinkModel" and
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(e.asNode(), _, _)
     or
     FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(e.asNode(), _, _)
