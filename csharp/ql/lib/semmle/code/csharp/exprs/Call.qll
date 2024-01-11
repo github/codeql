@@ -183,7 +183,9 @@ class Call extends DotNet::Call, Expr, @call {
    * Gets the argument that corresponds to parameter `p` of a potential
    * run-time target of this call.
    *
-   * Does not consider default arguments.
+   * Does not consider
+   *   - default arguments,
+   *   - named arguments.
    */
   Expr getRuntimeArgumentForParameter(Parameter p) {
     exists(Callable c |
