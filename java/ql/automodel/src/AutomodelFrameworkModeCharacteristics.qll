@@ -90,6 +90,18 @@ abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
 
   abstract string getExtensibleType();
 
+  /**
+   * Gets a potential type of this endpoint to make sure that sources are
+   * associated with source types and sinks with sink types.
+   */
+  AutomodelEndpointTypes::EndpointType getAPotentialType() {
+    this.getExtensibleType() = "sourceModel" and
+    result instanceof AutomodelEndpointTypes::SourceType
+    or
+    this.getExtensibleType() = "sinkModel" and
+    result instanceof AutomodelEndpointTypes::SinkType
+  }
+
   string toString() { result = this.asTop().toString() }
 
   Location getLocation() { result = this.asTop().getLocation() }

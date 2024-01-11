@@ -16,7 +16,9 @@ signature module CandidateSig {
    * An endpoint is a potential candidate for modeling. This will typically be bound to the language's
    * DataFlow node class, or a subtype thereof.
    */
-  class Endpoint;
+  class Endpoint {
+    EndpointType getAPotentialType();
+  }
 
   /**
    * A related location for an endpoint. This will typically be bound to the supertype of all AST nodes (eg., `Top`).
@@ -122,9 +124,10 @@ module SharedCharacteristics<CandidateSig Candidate> {
    *
    * A candidate is an endpoint that cannot be excluded from `endpointType` based on its characteristics.
    */
-  predicate isCandidate(Candidate::Endpoint candidateSink, Candidate::EndpointType sinkType) {
-    not sinkType instanceof Candidate::NegativeEndpointType and
-    not exists(getAnExcludingCharacteristic(candidateSink, sinkType))
+  predicate isCandidate(Candidate::Endpoint endpoint, Candidate::EndpointType endpointType) {
+    not endpointType instanceof Candidate::NegativeEndpointType and
+    endpointType = endpoint.getAPotentialType() and
+    not exists(getAnExcludingCharacteristic(endpoint, endpointType))
   }
 
   /**
