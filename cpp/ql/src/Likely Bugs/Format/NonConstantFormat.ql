@@ -16,7 +16,13 @@
  */
 
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import semmle.code.cpp.commons.Printf
+import semmle.code.cpp.security.FlowSources
+
+class UncalledFunction extends Function {
+  UncalledFunction() { 
+    not exists(Call c | c.getTarget() = this)
+   }
+}
 
 // For the following `...gettext` functions, we assume that
 // all translations preserve the type and order of `%` specifiers
@@ -43,108 +49,53 @@ predicate whitelistFunction(Function f, int arg) {
   (arg = 1 or arg = 2)
 }
 
-// we assume that ALL uses of the `_` macro
-// return constant string literals
-predicate underscoreMacro(Expr e) {
-  exists(MacroInvocation mi |
-    mi.getMacroName() = "_" and
-    mi.getExpr() = e
-  )
-}
 
-/**
- * Holds if `t` cannot hold a character array, directly or indirectly.
- */
-predicate cannotContainString(Type t, boolean isIndirect) {
-  isIndirect = false and
-  exists(Type unspecified |
-    unspecified = t.getUnspecifiedType() and
-    not unspecified instanceof UnknownType
-  |
-    unspecified instanceof BuiltInType or
-    unspecified instanceof IntegralOrEnumType
-  )
-}
-
-predicate isNonConst(DataFlow::Node node, boolean isIndirect) {
-  exists(Expr e |
-    e = node.asExpr() and isIndirect = false
-    or
-    e = node.asIndirectExpr() and isIndirect = true
-  |
-    exists(FunctionCall fc | fc = e |
+predicate isNonConst(DataFlow::Node node){
+    exists(Call fc | fc = [node.asExpr(), node.asIndirectExpr()] |
       not (
         whitelistFunction(fc.getTarget(), _) or
         fc.getTarget().hasDefinition()
       )
     )
     or
-    exists(Parameter p | p = e.(VariableAccess).getTarget() |
-      p.getFunction().getName() = "main" and p.getType() instanceof PointerType
+    exists(UncalledFunction f | f.getAParameter() = node.asParameter())
+    or
+    (
+      node instanceof DataFlow::DefinitionByReferenceNode and
+      not exists(FormattingFunctionCall fc | node.asDefiningArgument() = fc.getOutputArgument(_)) and
+      not exists(Call c | c.getAnArgument() = node.asDefiningArgument() and c.getTarget().hasDefinition())
     )
-    or
-    e instanceof CrementOperation
-    or
-    e instanceof AddressOfExpr
-    or
-    e instanceof ReferenceToExpr
-    or
-    e instanceof AssignPointerAddExpr
-    or
-    e instanceof AssignPointerSubExpr
-    or
-    e instanceof PointerArithmeticOperation
-    or
-    e instanceof FieldAccess
-    or
-    e instanceof PointerDereferenceExpr
-    or
-    e instanceof AddressOfExpr
-    or
-    e instanceof ExprCall
-    or
-    e instanceof NewArrayExpr
-    or
-    exists(Variable v | v = e.(VariableAccess).getTarget() |
-      v.getType().(ArrayType).getBaseType() instanceof CharType and
-      exists(AssignExpr ae |
-        ae.getLValue().(ArrayExpr).getArrayBase().(VariableAccess).getTarget() = v
-      )
-    )
-  )
-  or
-  node instanceof DataFlow::DefinitionByReferenceNode and
-  isIndirect = true
+    or node instanceof FlowSource
 }
 
-pragma[noinline]
-predicate isBarrierNode(DataFlow::Node node) {
-  underscoreMacro([node.asExpr(), node.asIndirectExpr()])
-  or
-  exists(node.asExpr()) and
-  cannotContainString(node.getType(), false)
-}
+
 
 predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
   [sink.asExpr(), sink.asIndirectExpr()] = formatString and
   exists(FormattingFunctionCall fc | formatString = fc.getArgument(fc.getFormatParameterIndex()))
 }
 
+
 module NonConstFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(boolean isIndirect, Type t |
-      isNonConst(source, isIndirect) and
-      t = source.getType() and
-      not cannotContainString(t, isIndirect)
-    )
+    isNonConst(source)
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
 
-  predicate isBarrier(DataFlow::Node node) { isBarrierNode(node) }
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2){
+    exists(Call c, int ind |
+      whitelistFunction(c.getTarget(), ind)
+      and c.getArgument(ind) = [n1.asExpr(), n1.asIndirectExpr()]
+      and n2.asIndirectExpr() = c
+      )
+
+  }
+
 }
 
 module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;
+
 
 from FormattingFunctionCall call, Expr formatString
 where
@@ -156,3 +107,4 @@ where
 select formatString,
   "The format string argument to " + call.getTarget().getName() +
     " should be constant to prevent security issues and other potential errors."
+

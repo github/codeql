@@ -54,66 +54,128 @@ int main(int argc, char **argv) {
   {
     char hello[] = "hello, World\n";
     hello[0] = 'H';
-    printf(hello); // BAD
+    printf(hello); // GOOD
     printf(_(hello)); // GOOD
     printf(gettext(hello)); // GOOD
+    printf(const_wash(hello)); // GOOD
+    printf((hello + 1) + 1); // GOOD
+    printf(+hello); // GOOD
+    printf(*&hello); // GOOD
+    printf(&*hello); // GOOD
+    printf((char*)(void*)+(hello+1) + 1); // GOOD
+  }
+  {
+    char *hello = argv[0];
+    printf(hello); // BAD
+    printf(_(hello)); // BAD
+    printf(gettext(hello)); // BAD
     printf(const_wash(hello)); // BAD
     printf((hello + 1) + 1); // BAD
     printf(+hello); // BAD
     printf(*&hello); // BAD
     printf(&*hello); // BAD
     printf((char*)(void*)+(hello+1) + 1); // BAD
+
   }
-  printf(("Hello, World\n" + 1) + 1); // BAD
+  printf(("Hello, World\n" + 1) + 1); // GOOD
   {
     const char *hello = "Hello, World\n";
-    printf(hello + 1); // BAD
+    printf(hello + 1); // GOOD
     printf(hello); // GOOD
   }
   {
     const char *hello = "Hello, World\n";
     hello += 1;
-    printf(hello); // BAD
+    printf(hello); // GOOD
   }
   {
     // Same as above block but using "x = x + 1" syntax
     const char *hello = "Hello, World\n";
     hello = hello + 1;
-    printf(hello); // BAD
+    printf(hello); // GOOD
   }
   {
     // Same as above block but using "x++" syntax
     const char *hello = "Hello, World\n";
     hello++;
-    printf(hello); // BAD
+    printf(hello); // GOOD
   }
   {
     // Same as above block but using "++x" as subexpression
     const char *hello = "Hello, World\n";
-    printf(++hello); // BAD
+    printf(++hello); // GOOD
   }
   {
     // Same as above block but through a pointer
     const char *hello = "Hello, World\n";
     const char **p = &hello;
     (*p)++;
-    printf(hello); // BAD
+    printf(hello); // GOOD
   }
   {
     // Same as above block but through a C++ reference
     const char *hello = "Hello, World\n";
     const char *&p = hello;
     p++;
-    printf(hello); // BAD [NOT DETECTED]
+    printf(hello); // GOOD
   }
   if (gettext_debug) {
-    printf(new char[100]); // BAD
+    printf(new char[100]); // BAD [False Negative]
   }
   {
     const char *hello = "Hello, World\n";
     const char *const *p = &hello; // harmless reference to const pointer
-    printf(hello); // GOOD [FALSE POSITIVE]
-    hello++; // modification comes after use and so does no harm
+    printf(hello); // GOOD 
+    hello++; 
+  }
+
+
+  {
+    const char *hello = argv[0];
+    printf(hello + 1); // BAD
+    printf(hello); // BAD
+  }
+  {
+    const char *hello = argv[0];
+    hello += 1;
+    printf(hello); // BAD
+  }
+  {
+    // Same as above block but using "x = x + 1" syntax
+    const char *hello = argv[0];
+    hello = hello + 1;
+    printf(hello); // BAD
+  }
+  {
+    // Same as above block but using "x++" syntax
+    const char *hello = argv[0];
+    hello++;
+    printf(hello); // BAD
+  }
+  {
+    // Same as above block but using "++x" as subexpression
+    const char *hello = argv[0];
+    printf(++hello); // BAD
+  }
+  {
+    // Same as above block but through a pointer
+    const char *hello = argv[0];
+    const char **p = &hello;
+    (*p)++;
+    printf(hello); // BAD
+  }
+  {
+    // Same as above block but through a C++ reference
+    const char *hello = argv[0];
+    const char *&p = hello;
+    p++;
+    printf(hello); // BAD
+  }
+  {
+    const char *hello = argv[0];
+    const char *const *p = &hello; // harmless reference to const pointer
+    printf(hello); // BAD 
+    hello++; 
   }
   printf(argc > 2 ? "More than one\n" : _("Only one\n")); // GOOD
 
@@ -154,6 +216,11 @@ void print_ith_message() {
 
 void fmt_via_strcpy(char *data) {
     strcpy(data, "some string");
+    printf(data); // GOOD
+}
+
+void fmt_via_strcpy_bad(char *data, char* src) {
+    strcpy(data, src);
     printf(data); // BAD
 }
 
@@ -163,3 +230,30 @@ void fmt_with_assignment() {
   x = y = "a";
   printf(y); // GOOD
 }
+
+int wprintf(const wchar_t *format,...);
+typedef wchar_t *STRSAFE_LPWSTR;
+typedef const wchar_t *STRSAFE_LPCWSTR;
+typedef unsigned int size_t;
+
+void StringCchPrintfW(
+  STRSAFE_LPWSTR  pszDest,
+  size_t          cchDest,
+  STRSAFE_LPCWSTR pszFormat,
+   ...             
+);
+
+void wchar_t_test_good(){
+  wchar_t wstr[100];
+  StringCchPrintfW(wstr, 100, L"STRING"); 
+
+  wprintf(wstr); // GOOD
+}
+
+void wchar_t_test_bad(const wchar_t *format){
+  wchar_t wstr[100];
+  StringCchPrintfW(wstr, 100, format); // BAD
+
+  wprintf(wstr); // BAD
+}
+
