@@ -16,4 +16,13 @@ class LambdaArgumentsTest
         l3();
         l3(7, 8, 9);
     }
+
+    delegate int MyDelegate(int x, int y);
+
+    void M2()
+    {
+        MyDelegate sum = (int x, int y) => x + y;
+        sum(y: 4, x: 5);
+    }
 }
+
