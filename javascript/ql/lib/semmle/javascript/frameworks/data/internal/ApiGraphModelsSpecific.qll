@@ -48,6 +48,8 @@ predicate parseTypeString(string rawType, string package, string qualifiedName) 
 predicate isPackageUsed(string package) {
   exists(DataFlow::moduleImport(package))
   or
+  exists(JS::PackageJson json | json.getPackageName() = package)
+  or
   package = "global"
   or
   any(DataFlow::SourceNode sn).hasUnderlyingType(package, _)
@@ -124,7 +126,7 @@ API::Node getExtraNodeFromType(string type) {
     parseRelevantTypeString(type, package, qualifiedName)
   |
     qualifiedName = "" and
-    result = API::moduleImport(package)
+    result = [API::moduleImport(package), API::moduleExport(package)]
     or
     // Access instance of a type based on type annotations
     result = API::Internal::getANodeOfTypeRaw(package, qualifiedName)
