@@ -77,6 +77,6 @@ string captureFlow(DataFlowTargetApi api) {
  * A neutral model is generated, if there does not exist any summary model.
  */
 string captureNoFlow(DataFlowTargetApi api) {
-  not exists(captureFlow(api)) and
+  not exists(DataFlowTargetApi api0 | exists(captureFlow(api0)) and api0.lift() = api.lift()) and
   result = ModelPrinting::asNeutralSummaryModel(api)
 }
