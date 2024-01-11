@@ -9,7 +9,7 @@ private import semmle.code.java.security.SensitiveActions
 private module NotificationTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SensitiveExpr }
 
-  predicate isSink(DataFlow::Node sink) { sinkNode(sink, "notifications") }
+  predicate isSink(DataFlow::Node sink) { sinkNode(sink, "notification") }
 }
 
 /** Taint tracking flow for sensitive data flowing to system notifications. */
