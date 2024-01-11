@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* A manual neutral model for a callable now blocks and generated summary models for that callable from having any effect.
+* A manual neutral summary model for a callable now blocks all generated summary models for that callable from having any effect.
