@@ -25,7 +25,7 @@ where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
   ) and
-  CharacteristicsImpl::isSinkCandidate(endpoint, _) and
+  CharacteristicsImpl::isCandidate(endpoint, _) and
   // If a node is already a known sink for any of our existing ATM queries and is already modeled as a MaD sink, we
   // don't include it as a candidate. Otherwise, we might include it as a candidate for query A, but the model will
   // label it as a sink for one of the sink types of query B, for which it's already a known sink. This would result in

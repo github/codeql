@@ -63,7 +63,7 @@ where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
   ) and
-  CharacteristicsImpl::isSinkCandidate(endpoint, _) and
+  CharacteristicsImpl::isCandidate(endpoint, _) and
   endpoint =
     getSampleForSignature(9, package, type, subtypes, name, signature, input, output,
       isVarargsArray, extensibleType) and

@@ -117,13 +117,14 @@ module SharedCharacteristics<CandidateSig Candidate> {
   }
 
   /**
-   * Holds if the candidate sink `candidateSink` should be considered as a possible sink of type `sinkType`, and
-   * classified by the ML model. A candidate sink is a node that cannot be excluded from `sinkType` based on its
-   * characteristics.
+   * Holds if the given `endpoint` should be considered as a candidate for type `endpointType`,
+   * and classified by the ML model.
+   *
+   * A candidate is an endpoint that cannot be excluded from `endpointType` based on its characteristics.
    */
-  predicate isSinkCandidate(Candidate::Endpoint candidateSink, Candidate::EndpointType sinkType) {
+  predicate isCandidate(Candidate::Endpoint candidateSink, Candidate::EndpointType sinkType) {
     not sinkType instanceof Candidate::NegativeEndpointType and
-    not exists(getAReasonSinkExcluded(candidateSink, sinkType))
+    not exists(getAnExcludingCharacteristic(candidateSink, sinkType))
   }
 
   /**
@@ -139,15 +140,14 @@ module SharedCharacteristics<CandidateSig Candidate> {
   }
 
   /**
-   * Gets the list of characteristics that cause `candidateSink` to be excluded as an effective sink for a given sink
-   * type.
+   * Gets a characteristics that disbar `endpoint` from being a candidate for `endpointType`.
    */
-  EndpointCharacteristic getAReasonSinkExcluded(
-    Candidate::Endpoint candidateSink, Candidate::EndpointType sinkType
+  EndpointCharacteristic getAnExcludingCharacteristic(
+    Candidate::Endpoint endpoint, Candidate::EndpointType endpointType
   ) {
     // An endpoint is a sink candidate if none of its characteristics give much indication whether or not it is a sink.
-    not sinkType instanceof Candidate::NegativeEndpointType and
-    result.appliesToEndpoint(candidateSink) and
+    not endpointType instanceof Candidate::NegativeEndpointType and
+    result.appliesToEndpoint(endpoint) and
     (
       // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
       exists(float confidence |
@@ -158,7 +158,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
       // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
       exists(float confidence |
         confidence >= mediumConfidence() and
-        result.hasImplications(sinkType, false, confidence)
+        result.hasImplications(endpointType, false, confidence)
       )
     )
   }
