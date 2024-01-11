@@ -38,13 +38,13 @@ the user input matches one of these patterns.</p>
 and send it back over the socket. However, a malicious user could enter a file name anywhere on the file system,
 such as "/etc/passwd".</p>
 
-<sample src="TaintedPath.java" />
+<sample src="examples/TaintedPath.java" />
 
 <p>Simply checking that the path is under a trusted location (such as a known public folder) is not enough,
 however, since the path could contain relative components such as "..". To fix this, check that it does
 not contain ".." and starts with the public folder.</p>
 
-<sample src="TaintedPathGood.java" />
+<sample src="examples/TaintedPathGood.java" />
 
 </example>
 <references>
