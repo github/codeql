@@ -59,6 +59,7 @@ module InsecureRandomness {
         not (pkg = "crypto/rand" and name = "Read") and
         // `crypto/cipher` APIs for reading/writing encrypted streams
         not (pkg = "crypto/cipher" and name = ["Read", "Write"]) and
+        not (pkg = "crypto/tls" and name = ["Client", "Dial", "DialWithDialer"]) and
         // Some interfaces in the `crypto` package are the same as interfaces
         // elsewhere, e.g. tls.listener is the same as net.Listener
         not fn.hasQualifiedName(nonCryptoInterface(), _) and
