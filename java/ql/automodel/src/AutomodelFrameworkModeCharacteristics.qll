@@ -377,15 +377,25 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Nei
 }
 
 /**
- * A negative characteristic that indicates that an endpoint is an argument to an exception, which is not a sink.
+ * A negative characteristic that indicates that parameters of an exception method or constructor should not be considered sinks,
+ * and its return value should not be considered a source.
  */
-private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic {
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable
+    e.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable and
+    (
+      e.getExtensibleType() = "sinkModel" and
+      not FrameworkCandidatesImpl::isSink(e, _, _)
+      or
+      e.getExtensibleType() = "sourceModel" and
+      not FrameworkCandidatesImpl::isSource(e, _, _) and
+      e.getMaDOutput() = "ReturnValue"
+    )
   }
 }
+
 
 /**
  * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that
