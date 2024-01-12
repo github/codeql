@@ -577,7 +577,20 @@ class TranslatedStructorQualifierSideEffect extends TranslatedArgumentSideEffect
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = this.getAst() }
 
-  final override Type getIndirectionType() { result = call.getTarget().getDeclaringType() }
+  private Type getIndirectionType0() { result = call.getTarget().getDeclaringType() }
+
+  final override Type getIndirectionType() {
+    // Ideally, each function should only belong to one class, but we've seen
+    // functions that belong to thousands of declaring classes. That
+    // causes a problem for later analyses (in particular, the aliased SSA
+    // analysis).
+    // By returning `Void` in this predicate, the caller in
+    // `TranslatedArgumentSideEffect` will ensure that the resulting
+    // `WriteSideEffect` instruction returns an unknown type.
+    if strictcount(this.getIndirectionType0()) < 10
+    then result = this.getIndirectionType0()
+    else result instanceof VoidType
+  }
 
   final override string getArgString() { result = "this" }
 
