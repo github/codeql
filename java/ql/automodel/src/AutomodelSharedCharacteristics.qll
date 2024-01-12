@@ -270,6 +270,22 @@ module SharedCharacteristics<CandidateSig Candidate> {
   }
 
   /**
+   * A high-confidence characteristic that indicates that an endpoint is neither a source nor a sink of any type.
+   */
+  abstract class NeitherSourceNorSinkCharacteristic extends NotASinkCharacteristic, NotASourceCharacteristic {
+    bindingset[this]
+    NeitherSourceNorSinkCharacteristic() { any() }
+
+    final override predicate hasImplications(
+      Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
+    ) {
+      NotASinkCharacteristic.super.hasImplications(endpointType, isPositiveIndicator, confidence) or
+      NotASourceCharacteristic.super
+          .hasImplications(endpointType, isPositiveIndicator, confidence)
+    }
+  }
+
+  /**
    * A medium-confidence characteristic that indicates that an endpoint is unlikely to be a sink of any type. These
    * endpoints can be excluded from scoring at inference time, both to save time and to avoid false positives. They should
    * not, however, be used as negative samples for training or for a few-shot prompt, because they may include a small
@@ -357,19 +373,9 @@ module SharedCharacteristics<CandidateSig Candidate> {
     /**
      * A negative characteristic that indicates that an endpoint was manually modeled as a neutral model.
      */
-    private class NeutralModelCharacteristic extends NotASinkCharacteristic,
-      NotASourceCharacteristic
+    private class NeutralModelCharacteristic extends NeitherSourceNorSinkCharacteristic
     {
       NeutralModelCharacteristic() { this = "known non-endpoint" }
-
-      // this is a negative characteristic for both sinks and sources
-      override predicate hasImplications(
-        Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
-      ) {
-        NotASinkCharacteristic.super.hasImplications(endpointType, isPositiveIndicator, confidence) or
-        NotASourceCharacteristic.super
-            .hasImplications(endpointType, isPositiveIndicator, confidence)
-      }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isNeutral(e) }
     }

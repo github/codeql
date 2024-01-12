@@ -324,7 +324,8 @@ class FrameworkModeMetadataExtractor extends string {
  */
 
 /**
- * A negative characteristic that indicates that an is-style boolean method is unexploitable even if it is a sink.
+ * A negative characteristic that indicates that parameters of an is-style boolean method should not be considered sinks,
+ * and its return value should not be considered a source.
  *
  * A sink is highly unlikely to be exploitable if its callable's name starts with `is` and the callable has a boolean return
  * type (e.g. `isDirectory`). These kinds of calls normally do only checks, and appear before the proper call that does
@@ -332,33 +333,46 @@ class FrameworkModeMetadataExtractor extends string {
  *
  * TODO: this might filter too much, it's possible that methods with more than one parameter contain interesting sinks
  */
-private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic {
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _, _) and
     e.getEnclosingCallable().getName().matches("is%") and
-    e.getEnclosingCallable().getReturnType() instanceof BooleanType
+    e.getEnclosingCallable().getReturnType() instanceof BooleanType and
+    (
+      e.getExtensibleType() = "sinkModel" and
+      not FrameworkCandidatesImpl::isSink(e, _, _)
+      or
+      e.getExtensibleType() = "sourceModel" and
+      not FrameworkCandidatesImpl::isSource(e, _, _) and
+      e.getMaDOutput() = "ReturnValue"
+    )
   }
 }
 
 /**
- * A negative characteristic that indicates that an existence-checking boolean method is unexploitable even if it is a
- * sink.
+ * A negative characteristic that indicates that parameters of an existence-checking boolean method should not be
+ * considered sinks, and its return value should not be considered a source.
  *
  * A sink is highly unlikely to be exploitable if its callable's name is `exists` or `notExists` and the callable has a
  * boolean return type. These kinds of calls normally do only checks, and appear before the proper call that does the
  * dangerous/interesting thing, so we want the latter to be modeled as the sink.
  */
-private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic {
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _, _) and
     exists(Callable callable |
       callable = e.getEnclosingCallable() and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
       callable.getReturnType() instanceof BooleanType
+    |
+      e.getExtensibleType() = "sourceModel" and
+      not FrameworkCandidatesImpl::isSink(e, _, _)
+      or
+      e.getExtensibleType() = "sourceModel" and
+      not FrameworkCandidatesImpl::isSource(e, _, _) and
+      e.getMaDOutput() = "ReturnValue"
     )
   }
 }
