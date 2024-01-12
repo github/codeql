@@ -421,3 +421,30 @@ lambdas.cs:
 #   17|           0: [IntLiteral] 7
 #   17|           1: [IntLiteral] 8
 #   17|           2: [IntLiteral] 9
+#   20|   6: [DelegateType] MyDelegate
+#-----|     2: (Parameters)
+#   20|       0: [Parameter] x
+#   20|         -1: [TypeMention] int
+#   20|       1: [Parameter] y
+#   20|         -1: [TypeMention] int
+#   22|   7: [Method] M2
+#   22|     -1: [TypeMention] Void
+#   23|     4: [BlockStmt] {...}
+#   24|       0: [LocalVariableDeclStmt] ... ...;
+#   24|         0: [LocalVariableDeclAndInitExpr] MyDelegate sum = ...
+#   24|           -1: [TypeMention] MyDelegate
+#   24|           0: [LocalVariableAccess] access to local variable sum
+#   24|           1: [LambdaExpr] (...) => ...
+#-----|             2: (Parameters)
+#   24|               0: [Parameter] x
+#   24|                 -1: [TypeMention] int
+#   24|               1: [Parameter] y
+#   24|                 -1: [TypeMention] int
+#   24|             4: [AddExpr] ... + ...
+#   24|               0: [ParameterAccess] access to parameter x
+#   24|               1: [ParameterAccess] access to parameter y
+#   25|       1: [ExprStmt] ...;
+#   25|         0: [DelegateCall] delegate call
+#   25|           -1: [LocalVariableAccess] access to local variable sum
+#   25|           0: [IntLiteral] 4
+#   25|           1: [IntLiteral] 5

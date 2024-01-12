@@ -7,3 +7,5 @@
 | lambdas.cs:17:9:17:19 | delegate call | lambdas.cs:15:32:15:32 | x | lambdas.cs:17:12:17:12 | 7 |
 | lambdas.cs:17:9:17:19 | delegate call | lambdas.cs:15:32:15:32 | x | lambdas.cs:17:15:17:15 | 8 |
 | lambdas.cs:17:9:17:19 | delegate call | lambdas.cs:15:32:15:32 | x | lambdas.cs:17:18:17:18 | 9 |
+| lambdas.cs:25:9:25:23 | delegate call | lambdas.cs:24:31:24:31 | x | lambdas.cs:25:22:25:22 | 5 |
+| lambdas.cs:25:9:25:23 | delegate call | lambdas.cs:24:38:24:38 | y | lambdas.cs:25:16:25:16 | 4 |
