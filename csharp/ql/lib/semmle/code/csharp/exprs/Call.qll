@@ -60,14 +60,12 @@ class Call extends DotNet::Call, Expr, @call {
    */
   cached
   override Expr getArgumentForParameter(DotNet::Parameter p) {
+    // Appears in the positional part of the call
+    result = this.getImplicitArgument(p)
+    or
+    // Appears in the named part of the call
     this.getTarget().getAParameter() = p and
-    (
-      // Appears in the positional part of the call
-      result = this.getImplicitArgument(p)
-      or
-      // Appears in the named part of the call
-      result = this.getExplicitArgument(p.getName())
-    )
+    result = this.getExplicitArgument(p.getName())
   }
 
   pragma[noinline]
@@ -189,14 +187,12 @@ class Call extends DotNet::Call, Expr, @call {
    */
   cached
   Expr getRuntimeArgumentForParameter(Parameter p) {
+    // Appears in the positional part of the call
+    result = this.getImplicitRuntimeArgument(p)
+    or
+    // Appears in the named part of the call
     this.getARuntimeTarget().getAParameter() = p and
-    (
-      // Appears in the positional part of the call
-      result = this.getImplicitRuntimeArgument(p)
-      or
-      // Appears in the named part of the call
-      result = this.getExplicitRuntimeArgument(p.getName())
-    )
+    result = this.getExplicitRuntimeArgument(p.getName())
   }
 
   pragma[noinline]
