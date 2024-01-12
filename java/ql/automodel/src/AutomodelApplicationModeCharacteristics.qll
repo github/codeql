@@ -15,7 +15,6 @@ private import semmle.code.java.security.QueryInjection
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
 private import AutomodelJavaUtil as AutomodelJavaUtil
 private import semmle.code.java.security.PathSanitizer as PathSanitizer
-private import AutomodelSharedGetCallable as AutomodelSharedGetCallable
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
@@ -330,22 +329,6 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   }
 }
 
-private class JavaCallable = Callable;
-
-private module ApplicationModeGetCallable implements AutomodelSharedGetCallable::GetCallableSig {
-  class Callable = JavaCallable;
-
-  class Endpoint = ApplicationCandidatesImpl::Endpoint;
-
-  /**
-   * Returns the API callable being modeled.
-   *
-   * We usually want to use `.getSourceDeclaration()` instead of just 'the' callable,
-   * because the source declaration callable has erased generic type parameters.
-   */
-  Callable getCallable(Endpoint e) { result = e.getCall().getCallee() }
-}
-
 /**
  * Contains endpoints that are defined in QL code rather than as a MaD model. Ideally this predicate
  * should be empty.
@@ -459,8 +442,7 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    ApplicationModeGetCallable::getCallable(e).getDeclaringType().getASupertype*() instanceof
-      TypeThrowable
+    e.(CallArgument).getCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable
   }
 }
 
@@ -493,18 +475,20 @@ private class LocalCall extends CharacteristicsImpl::UninterestingToModelCharact
   LocalCall() { this = "local call" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    ApplicationModeGetCallable::getCallable(e).fromSource()
+    e.(CallArgument).getCallable().fromSource()
+    or
+    e.(MethodReturnValue).getCallable().fromSource()
   }
 }
 
 /**
- * A Characteristic that marks endpoints as uninteresting to model, according to the Java ModelExclusions module.
+ * A characteristic that marks endpoints as uninteresting to model, according to the Java ModelExclusions module.
  */
 private class ExcludedFromModeling extends CharacteristicsImpl::UninterestingToModelCharacteristic {
   ExcludedFromModeling() { this = "excluded from modeling" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    ModelExclusions::isUninterestingForModels(ApplicationModeGetCallable::getCallable(e))
+    ModelExclusions::isUninterestingForModels(e.getCallable())
   }
 }
 
@@ -518,7 +502,7 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getExtensibleType() = "sinkModel" and
-    not ApplicationModeGetCallable::getCallable(e).isPublic()
+    not e.getCallable().isPublic()
   }
 }
 
