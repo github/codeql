@@ -11,7 +11,10 @@ private import codeql.ruby.ApiGraphs
  * In practice, this means a file that is not part of test code.
  */
 class RelevantFile extends File {
-  RelevantFile() { not this.getRelativePath().regexpMatch(".*/?test(case)?s?/.*") }
+  RelevantFile() {
+    not this.getRelativePath().regexpMatch(".*/?test(case)?s?/.*") or
+    this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
+  }
 }
 
 /**

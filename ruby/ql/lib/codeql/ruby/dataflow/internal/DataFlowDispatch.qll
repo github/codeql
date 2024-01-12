@@ -335,7 +335,7 @@ DataFlowCallable viableLibraryCallable(DataFlowCall call) {
 
 /** Holds if there is a call like `receiver.extend(M)`. */
 pragma[nomagic]
-private predicate extendCall(DataFlow::ExprNode receiver, Module m) {
+predicate extendCall(DataFlow::ExprNode receiver, Module m) {
   exists(DataFlow::CallNode extendCall |
     extendCall.getMethodName() = "extend" and
     exists(DataFlow::LocalSourceNode sourceNode | sourceNode.flowsTo(extendCall.getArgument(_)) |

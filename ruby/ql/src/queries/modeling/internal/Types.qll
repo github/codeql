@@ -8,6 +8,8 @@ private import codeql.ruby.ApiGraphs
 private import Util as Util
 private import codeql.ruby.ast.Module
 private import codeql.ruby.ast.internal.Module
+private import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import codeql.ruby.dataflow.internal.DataFlowPrivate
 
 /**
  * Contains predicates for generating `typeModel`s that contain typing
@@ -51,6 +53,21 @@ module Types {
       m2.getAnImmediateAncestor() = m1 and not m2.isBuiltin() and not m1.isBuiltin()
     |
       m1.getQualifiedName() = type1 and m2.getQualifiedName() = type2 and path = ""
+    )
+    or
+    // module Type1
+    // class Type2
+    //  extend Type1
+    exists(Module m1, Module m2, DataFlow::ExprNode receiver |
+      extendCall(receiver, m1) and
+      exists(SsaSelfDefinitionNode self |
+        self.getVariable() = m2.getADeclaration().getModuleSelfVariable() and
+        self.(DataFlow::LocalSourceNode).flowsTo(receiver)
+      )
+    |
+      m1.getQualifiedName() = type1 and
+      m2.getQualifiedName() + "!" = type2 and
+      path = ""
     )
   }
 }
