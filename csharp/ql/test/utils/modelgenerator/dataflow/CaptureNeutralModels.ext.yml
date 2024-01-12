@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - [ "NoSummaries", "ManuallyModelled", "HasNeutralSummaryNoFlow", "(System.Object)", "summary", "manual"]
