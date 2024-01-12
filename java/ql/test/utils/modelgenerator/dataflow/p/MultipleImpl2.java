@@ -2,6 +2,9 @@ package p;
 
 class MultipleImpl2 {
 
+    // Multiple implementations of the same interface.
+    // This is used to test that we only generate a summary model and
+    // not neutral summary model for `IInterface.m`.
     public interface IInterface {
         Object m(Object value);
     }
