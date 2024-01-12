@@ -452,6 +452,57 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
   }
 }
 
+/**
+ * A use that models a synthetic "last use" of a global variable just before a
+ * function returns.
+ *
+ * We model global variable flow by:
+ * - Inserting a last use of any global variable that's modified by a function
+ * - Flowing from the last use to the `VariableNode` that represents the global
+ *   variable.
+ * - Flowing from the `VariableNode` to an "initial def" of the global variable
+ * in any function that may read the global variable.
+ * - Flowing from the initial definition to any subsequent uses of the global
+ *   variable in the function body.
+ *
+ * For example, consider the following pair of functions:
+ * ```cpp
+ * int global;
+ * int source();
+ * void sink(int);
+ *
+ * void set_global() {
+ *   global = source();
+ * }
+ *
+ * void read_global() {
+ *  sink(global);
+ * }
+ * ```
+ * we insert global uses and defs so that (from the point-of-view of dataflow)
+ * the above scenario looks like:
+ * ```cpp
+ * int global; // (1)
+ * int source();
+ * void sink(int);
+ *
+ * void set_global() {
+ *   global = source();
+ *   __global_use(global); // (2)
+ * }
+ *
+ * void read_global() {
+ *  global = __global_def; // (3)
+ *  sink(global); // (4)
+ * }
+ * ```
+ * and flow from `source()` to the argument of `sink` is then modelled as
+ * follows:
+ * 1. Flow from `source()` to `(2)` (via SSA).
+ * 2. Flow from `(2)` to `(1)` (via a `jumpStep`).
+ * 3. Flow from `(1)` to `(3)` (via a `jumpStep`).
+ * 4. Flow from `(3)` to `(4)` (via SSA).
+ */
 class GlobalUse extends UseImpl, TGlobalUse {
   GlobalLikeVariable global;
   IRFunction f;
@@ -499,6 +550,12 @@ class GlobalUse extends UseImpl, TGlobalUse {
   override BaseSourceVariableInstruction getBase() { none() }
 }
 
+/**
+ * A definition that models a synthetic "initial definition" of a global
+ * variable just after the function entry point.
+ *
+ * See the QLDoc for `GlobalUse` for how this is used.
+ */
 class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
   GlobalLikeVariable global;
   IRFunction f;
