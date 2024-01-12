@@ -35,7 +35,7 @@ abstract class InitializationContext extends TranslatedElement {
  * declarations, `return` statements, and `throw` expressions.
  */
 abstract class TranslatedVariableInitialization extends TranslatedElement, InitializationContext {
-  final override TranslatedElement getChild(int id) { id = 0 and result = this.getInitialization() }
+  TranslatedElement getChildInternal(int id) { id = 0 and result = this.getInitialization() }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getInstruction(InitializerVariableAddressTag()) and

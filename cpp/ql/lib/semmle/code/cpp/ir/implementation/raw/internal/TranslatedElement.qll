@@ -24,6 +24,10 @@ private Element getRealParent(Expr expr) {
   result = expr.getParentWithConversions()
   or
   result.(Destructor).getADestruction() = expr
+  or
+  result.(Expr).getAnImplicitDestructorCall() = expr
+  or
+  result.(Stmt).getAnImplicitDestructorCall() = expr
 }
 
 IRUserVariable getIRUserVariable(Declaration decl, Variable var) {
@@ -103,12 +107,6 @@ private predicate ignoreExprOnly(Expr expr) {
     // Ignore the allocator call, because we always synthesize it. Don't ignore
     // its arguments, though, because we use them as part of the synthesis.
     newExpr.getAllocatorCall() = expr
-  )
-  or
-  exists(DeleteOrDeleteArrayExpr deleteExpr |
-    // Ignore the destructor call as we don't model it yet. Don't ignore
-    // its arguments, though, as they are the arguments to the deallocator.
-    deleteExpr.getDestructorCall() = expr
   )
   or
   // The extractor deliberately emits an `ErrorExpr` as the first argument to
@@ -752,7 +750,10 @@ newtype TTranslatedElement =
     not ignoreSideEffects(call) and
     // Don't bother with destructor calls for now, since we won't see very many of them in the IR
     // until we start injecting implicit destructor calls.
-    call instanceof ConstructorCall and
+    (
+      call instanceof ConstructorCall or
+      call instanceof DestructorCall
+    ) and
     opcode = getASideEffectOpcode(call, -1)
   } or
   // The side effect that initializes newly-allocated memory.

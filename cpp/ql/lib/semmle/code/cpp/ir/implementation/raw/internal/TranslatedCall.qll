@@ -27,7 +27,7 @@ private CallInstruction getTranslatedCallInstruction(Call call) {
  * of a higher-level constructor (e.g. the allocator call in a `NewExpr`).
  */
 abstract class TranslatedCall extends TranslatedExpr {
-  final override TranslatedElement getChild(int id) {
+  final override TranslatedElement getChildInternal(int id) {
     // We choose the child's id in the order of evaluation.
     // The qualifier is evaluated before the call target, because the value of
     // the call target may depend on the value of the qualifier for virtual

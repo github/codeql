@@ -60,6 +60,10 @@ abstract class TranslatedLocalVariableDeclaration extends TranslatedVariableInit
    */
   abstract LocalVariable getVariable();
 
+  final override TranslatedElement getChild(int id) {
+    result = TranslatedVariableInitialization.super.getChildInternal(id)
+  }
+
   final override Type getTargetType() { result = getVariableType(this.getVariable()) }
 
   final override TranslatedInitialization getInitialization() {

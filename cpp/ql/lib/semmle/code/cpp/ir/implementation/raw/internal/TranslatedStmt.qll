@@ -235,6 +235,18 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
 
   TranslatedStmt() { this = TTranslatedStmt(stmt) }
 
+  abstract TranslatedElement getChildInternal(int id);
+
+  final override TranslatedElement getChild(int id) {
+    result = this.getChildInternal(id)
+    or
+    exists(int maxChildId, int destructorIndex |
+      maxChildId = max(int childId | exists(this.getChildInternal(childId))) and
+      result.(TranslatedExpr).getExpr() = stmt.getImplicitDestructorCall(destructorIndex) and
+      id = maxChildId + 1 + destructorIndex
+    )
+  }
+
   final override string toString() { result = stmt.toString() }
 
   final override Locatable getAst() { result = stmt }
@@ -252,7 +264,7 @@ class TranslatedEmptyStmt extends TranslatedStmt {
     stmt instanceof SwitchCase
   }
 
-  override TranslatedElement getChild(int id) { none() }
+  override TranslatedElement getChildInternal(int id) { none() }
 
   override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getInstruction(OnlyInstructionTag()) and
@@ -281,7 +293,7 @@ class TranslatedEmptyStmt extends TranslatedStmt {
 class TranslatedDeclStmt extends TranslatedStmt {
   override DeclStmt stmt;
 
-  override TranslatedElement getChild(int id) { result = this.getDeclarationEntry(id) }
+  override TranslatedElement getChildInternal(int id) { result = this.getDeclarationEntry(id) }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
@@ -335,7 +347,7 @@ class TranslatedExprStmt extends TranslatedStmt {
 
   TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.getExpr().getFullyConverted()) }
 
-  override TranslatedElement getChild(int id) { id = 0 and result = this.getExpr() }
+  override TranslatedElement getChildInternal(int id) { id = 0 and result = this.getExpr() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
@@ -371,6 +383,10 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariable
     result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
   }
 
+  final override TranslatedElement getChildInternal(int id) {
+    result = TranslatedVariableInitialization.super.getChildInternal(id)
+  }
+
   final override Type getTargetType() { result = this.getEnclosingFunction().getReturnType() }
 
   final override TranslatedInitialization getInitialization() {
@@ -390,7 +406,7 @@ class TranslatedReturnVoidExpressionStmt extends TranslatedReturnStmt {
     stmt.hasExpr() and not hasReturnValue(stmt.getEnclosingFunction())
   }
 
-  override TranslatedElement getChild(int id) {
+  override TranslatedElement getChildInternal(int id) {
     id = 0 and
     result = this.getExpr()
   }
@@ -428,7 +444,7 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
     not stmt.hasExpr() and not hasReturnValue(stmt.getEnclosingFunction())
   }
 
-  override TranslatedElement getChild(int id) { none() }
+  override TranslatedElement getChildInternal(int id) { none() }
 
   override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getInstruction(OnlyInstructionTag()) and
@@ -462,6 +478,10 @@ class TranslatedNoValueReturnStmt extends TranslatedReturnStmt, TranslatedVariab
 
   final override Instruction getInitializationSuccessor(EdgeKind kind) {
     result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
+  }
+
+  final override TranslatedElement getChildInternal(int id) {
+    result = TranslatedVariableInitialization.super.getChildInternal(id)
   }
 
   final override Type getTargetType() { result = this.getEnclosingFunction().getReturnType() }
@@ -518,7 +538,7 @@ private class TryOrMicrosoftTryStmt extends Stmt {
 class TranslatedTryStmt extends TranslatedStmt {
   override TryOrMicrosoftTryStmt stmt;
 
-  override TranslatedElement getChild(int id) {
+  override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getBody()
     or
     result = this.getHandler(id - 1)
@@ -581,7 +601,7 @@ class TranslatedTryStmt extends TranslatedStmt {
 class TranslatedBlock extends TranslatedStmt {
   override BlockStmt stmt;
 
-  override TranslatedElement getChild(int id) { result = this.getStmt(id) }
+  override TranslatedElement getChildInternal(int id) { result = this.getStmt(id) }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     this.isEmpty() and
@@ -623,7 +643,7 @@ class TranslatedBlock extends TranslatedStmt {
 abstract class TranslatedHandler extends TranslatedStmt {
   override Handler stmt;
 
-  override TranslatedElement getChild(int id) { id = 1 and result = this.getBlock() }
+  override TranslatedElement getChildInternal(int id) { id = 1 and result = this.getBlock() }
 
   override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getInstruction(CatchTag()) and
@@ -656,8 +676,8 @@ class TranslatedCatchByTypeHandler extends TranslatedHandler {
     resultType = getVoidType()
   }
 
-  override TranslatedElement getChild(int id) {
-    result = super.getChild(id)
+  override TranslatedElement getChildInternal(int id) {
+    result = super.getChildInternal(id)
     or
     id = 0 and result = this.getParameter()
   }
@@ -717,7 +737,7 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
     else result = this.getFirstConditionInstruction(kind)
   }
 
-  override TranslatedElement getChild(int id) {
+  override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getInitialization()
     or
     id = 1 and result = this.getCondition()
@@ -791,7 +811,7 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
 
   final predicate hasCondition() { exists(stmt.getCondition()) }
 
-  override TranslatedElement getChild(int id) {
+  override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getCondition()
     or
     id = 1 and result = this.getBody()
@@ -842,7 +862,7 @@ class TranslatedDoStmt extends TranslatedLoop {
 class TranslatedForStmt extends TranslatedLoop {
   override ForStmt stmt;
 
-  override TranslatedElement getChild(int id) {
+  override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getInitialization()
     or
     id = 1 and result = this.getCondition()
@@ -893,7 +913,7 @@ class TranslatedForStmt extends TranslatedLoop {
 class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
   override RangeBasedForStmt stmt;
 
-  override TranslatedElement getChild(int id) {
+  override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getRangeVariableDeclStmt()
     or
     // Note: `__begin` and `__end` are declared by the same `DeclStmt`
@@ -987,7 +1007,7 @@ class TranslatedJumpStmt extends TranslatedStmt {
     kind instanceof GotoEdge
   }
 
-  override TranslatedElement getChild(int id) { none() }
+  override TranslatedElement getChildInternal(int id) { none() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = OnlyInstructionTag() and
@@ -1031,7 +1051,7 @@ class TranslatedSwitchStmt extends TranslatedStmt {
     else result = this.getFirstExprInstruction(kind)
   }
 
-  override TranslatedElement getChild(int id) {
+  override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getInitialization()
     or
     id = 1 and result = this.getExpr()
@@ -1086,7 +1106,7 @@ class TranslatedSwitchStmt extends TranslatedStmt {
 class TranslatedAsmStmt extends TranslatedStmt {
   override AsmStmt stmt;
 
-  override TranslatedExpr getChild(int id) {
+  override TranslatedExpr getChildInternal(int id) {
     result = getTranslatedExpr(stmt.getChild(id).(Expr).getFullyConverted())
   }
 
@@ -1108,7 +1128,7 @@ class TranslatedAsmStmt extends TranslatedStmt {
     exists(int index |
       tag = AsmTag() and
       operandTag = asmOperand(index) and
-      result = this.getChild(index).getResult()
+      result = this.getChildInternal(index).getResult()
     )
   }
 
@@ -1140,7 +1160,7 @@ class TranslatedAsmStmt extends TranslatedStmt {
 class TranslatedVlaDimensionStmt extends TranslatedStmt {
   override VlaDimensionStmt stmt;
 
-  override TranslatedExpr getChild(int id) {
+  override TranslatedExpr getChildInternal(int id) {
     id = 0 and
     result = getTranslatedExpr(stmt.getDimensionExpr().getFullyConverted())
   }
@@ -1164,7 +1184,7 @@ class TranslatedVlaDimensionStmt extends TranslatedStmt {
 class TranslatedVlaDeclarationStmt extends TranslatedStmt {
   override VlaDeclStmt stmt;
 
-  override TranslatedExpr getChild(int id) { none() }
+  override TranslatedExpr getChildInternal(int id) { none() }
 
   override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getInstruction(OnlyInstructionTag()) and
