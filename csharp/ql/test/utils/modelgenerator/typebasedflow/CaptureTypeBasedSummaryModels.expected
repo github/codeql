@@ -124,7 +124,6 @@
 | Summaries;TypeBasedCollection<T>;false;Add;(T);;Argument[0];Argument[this].Element;value;tb-generated |
 | Summaries;TypeBasedCollection<T>;false;AddMany;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;tb-generated |
 | Summaries;TypeBasedCollection<T>;false;First;();;Argument[this].Element;ReturnValue;value;tb-generated |
-| Summaries;TypeBasedCollection<T>;false;GetEnumerator;();;Argument[this].Element;ReturnValue.SyntheticField[ArgType0];value;tb-generated |
 | Summaries;TypeBasedCollection<T>;false;GetMany;();;Argument[this].Element;ReturnValue.Element;value;tb-generated |
 | Summaries;TypeBasedComplex<T>;false;AddMany;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].SyntheticField[ArgType0];value;tb-generated |
 | Summaries;TypeBasedComplex<T>;false;Apply;(System.Func<T,System.Int32>);;Argument[this].SyntheticField[ArgType0];Argument[0].Parameter[0];value;tb-generated |

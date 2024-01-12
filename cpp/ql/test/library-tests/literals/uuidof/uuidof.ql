@@ -5,6 +5,6 @@ query predicate classUuids(Class cls, string uuid) {
 }
 
 query predicate uuidofOperators(UuidofOperator op, string type, string uuid) {
-  uuid = op.getValue() and
+  (if exists(op.getValue()) then uuid = op.getValue() else uuid = "") and
   type = op.getType().toString()
 }
