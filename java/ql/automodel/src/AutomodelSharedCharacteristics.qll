@@ -272,7 +272,9 @@ module SharedCharacteristics<CandidateSig Candidate> {
   /**
    * A high-confidence characteristic that indicates that an endpoint is neither a source nor a sink of any type.
    */
-  abstract class NeitherSourceNorSinkCharacteristic extends NotASinkCharacteristic, NotASourceCharacteristic {
+  abstract class NeitherSourceNorSinkCharacteristic extends NotASinkCharacteristic,
+    NotASourceCharacteristic
+  {
     bindingset[this]
     NeitherSourceNorSinkCharacteristic() { any() }
 
@@ -280,8 +282,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
       Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
     ) {
       NotASinkCharacteristic.super.hasImplications(endpointType, isPositiveIndicator, confidence) or
-      NotASourceCharacteristic.super
-          .hasImplications(endpointType, isPositiveIndicator, confidence)
+      NotASourceCharacteristic.super.hasImplications(endpointType, isPositiveIndicator, confidence)
     }
   }
 
@@ -373,8 +374,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
     /**
      * A negative characteristic that indicates that an endpoint was manually modeled as a neutral model.
      */
-    private class NeutralModelCharacteristic extends NeitherSourceNorSinkCharacteristic
-    {
+    private class NeutralModelCharacteristic extends NeitherSourceNorSinkCharacteristic {
       NeutralModelCharacteristic() { this = "known non-endpoint" }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isNeutral(e) }

@@ -305,16 +305,27 @@ class FrameworkModeMetadataExtractor extends string {
 
   predicate hasMetadata(
     Endpoint e, string package, string type, string subtypes, string name, string signature,
-    string input, string output, string parameterName
+    string input, string output, string parameterName, string alreadyAiModeled,
+    string extensibleType
   ) {
-    (if exists(e.getParamName()) then parameterName = e.getParamName() else parameterName = "") and
-    name = e.getCallable().getName() and
-    (if exists(e.getMaDInput()) then input = e.getMaDInput() else input = "") and
-    (if exists(e.getMaDOutput()) then output = e.getMaDOutput() else output = "") and
-    package = e.getCallable().getDeclaringType().getPackage().getName() and
-    type = e.getCallable().getDeclaringType().getErasure().(RefType).nestedName() and
-    subtypes = AutomodelJavaUtil::considerSubtypes(e.getCallable()).toString() and
-    signature = ExternalFlow::paramsString(e.getCallable())
+    exists(Callable callable | e.getCallable() = callable |
+      (if exists(e.getMaDInput()) then input = e.getMaDInput() else input = "") and
+      (if exists(e.getMaDOutput()) then output = e.getMaDOutput() else output = "") and
+      package = callable.getDeclaringType().getPackage().getName() and
+      // we're using the erased types because the MaD convention is to not specify type parameters.
+      // Whether something is or isn't a sink doesn't usually depend on the type parameters.
+      type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
+      subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
+      name = callable.getName() and
+      signature = ExternalFlow::paramsString(callable) and
+      (if exists(e.getParamName()) then parameterName = e.getParamName() else parameterName = "") and
+      e.getExtensibleType() = extensibleType
+    ) and
+    (
+      not CharacteristicsImpl::isModeled(e, _, _, _) and alreadyAiModeled = ""
+      or
+      CharacteristicsImpl::isModeled(e, _, _, alreadyAiModeled)
+    )
   }
 }
 
@@ -332,7 +343,8 @@ class FrameworkModeMetadataExtractor extends string {
  *
  * TODO: this might filter too much, it's possible that methods with more than one parameter contain interesting sinks
  */
-private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic {
+private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
+{
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
@@ -357,7 +369,8 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::Neither
  * boolean return type. These kinds of calls normally do only checks, and appear before the proper call that does the
  * dangerous/interesting thing, so we want the latter to be modeled as the sink.
  */
-private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic {
+private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
+{
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
@@ -380,7 +393,8 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Nei
  * A negative characteristic that indicates that parameters of an exception method or constructor should not be considered sinks,
  * and its return value should not be considered a source.
  */
-private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic {
+private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
+{
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
@@ -395,7 +409,6 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSource
     )
   }
 }
-
 
 /**
  * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that

@@ -356,10 +356,10 @@ class ApplicationModeMetadataExtractor extends string {
 
   predicate hasMetadata(
     Endpoint e, string package, string type, string subtypes, string name, string signature,
-    string input, string output, string isVarargsArray
+    string input, string output, string isVarargsArray, string alreadyAiModeled,
+    string extensibleType
   ) {
-    exists(Callable callable |
-      e.getCallable() = callable and
+    exists(Callable callable | e.getCallable() = callable |
       (if exists(e.getMaDInput()) then input = e.getMaDInput() else input = "") and
       (if exists(e.getMaDOutput()) then output = e.getMaDOutput() else output = "") and
       package = callable.getDeclaringType().getPackage().getName() and
@@ -369,9 +369,17 @@ class ApplicationModeMetadataExtractor extends string {
       subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
       name = callable.getName() and
       signature = ExternalFlow::paramsString(callable) and
-      if e instanceof ImplicitVarargsArray
-      then isVarargsArray = "true"
-      else isVarargsArray = "false"
+      (
+        if e instanceof ImplicitVarargsArray
+        then isVarargsArray = "true"
+        else isVarargsArray = "false"
+      ) and
+      extensibleType = e.getExtensibleType()
+    ) and
+    (
+      not CharacteristicsImpl::isModeled(e, _, _, _) and alreadyAiModeled = ""
+      or
+      CharacteristicsImpl::isModeled(e, _, _, alreadyAiModeled)
     )
   }
 }
@@ -416,7 +424,8 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::Neither
  * boolean return type. These kinds of calls normally do only checks, and appear before the proper call that does the
  * dangerous/interesting thing, so we want the latter to be modeled as the sink.
  */
-private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic {
+private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
+{
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
@@ -439,7 +448,8 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Nei
  * A negative characteristic that indicates that parameters of an exception method or constructor should not be considered sinks,
  * and its return value should not be considered a source.
  */
-private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic {
+private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
+{
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
