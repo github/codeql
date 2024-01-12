@@ -496,7 +496,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
  *  sink(global); // (4)
  * }
  * ```
- * and flow from `source()` to the argument of `sink` is then modelled as
+ * and flow from `source()` to the argument of `sink` is then modeled as
  * follows:
  * 1. Flow from `source()` to `(2)` (via SSA).
  * 2. Flow from `(2)` to `(1)` (via a `jumpStep`).
