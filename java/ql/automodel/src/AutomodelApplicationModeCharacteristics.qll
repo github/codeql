@@ -64,8 +64,6 @@ abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint 
    */
   abstract Callable getCallable();
 
-  abstract Call getCall();
-
   /**
    * Gets the input (if any) for this endpoint, eg.: `Argument[0]`.
    *
@@ -111,49 +109,49 @@ abstract private class ApplicationModeEndpoint extends TApplicationModeEndpoint 
   abstract string toString();
 }
 
+class TCallArgument = TExplicitArgument or TInstanceArgument or TImplicitVarargsArray;
+
 /**
- * A class representing nodes that are arguments to calls.
+ * An endpoint that represents an "argument" to a call in a broad sense, including
+ * both explicit arguments and the instance argument.
  */
-class ExplicitArgument extends ApplicationModeEndpoint, TExplicitArgument {
+abstract class CallArgument extends ApplicationModeEndpoint, TCallArgument {
   Call call;
   DataFlow::Node arg;
 
-  ExplicitArgument() { this = TExplicitArgument(call, arg) }
-
   override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
 
-  override Call getCall() { result = call }
+  override string getMaDOutput() { none() }
+
+  override DataFlow::Node asNode() { result = arg }
+
+  Call getCall() { result = call }
+
+  override string toString() { result = arg.toString() }
+}
+
+/**
+ * An endpoint that represents an explicit argument to a call.
+ */
+class ExplicitArgument extends CallArgument, TExplicitArgument {
+  ExplicitArgument() { this = TExplicitArgument(call, arg) }
 
   private int getArgIndex() { this.asTop() = call.getArgument(result) }
 
   override string getMaDInput() { result = "Argument[" + this.getArgIndex() + "]" }
 
-  override string getMaDOutput() { none() }
-
   override Top asTop() { result = arg.asExpr() }
-
-  override DataFlow::Node asNode() { result = arg }
-
-  override string toString() { result = arg.toString() }
 }
 
-class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
-  Call call;
-  DataFlow::Node arg;
-
+/**
+ * An endpoint that represents the instance argument to a call.
+ */
+class InstanceArgument extends CallArgument, TInstanceArgument {
   InstanceArgument() { this = TInstanceArgument(call, arg) }
-
-  override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
-
-  override Call getCall() { result = call }
 
   override string getMaDInput() { result = "Argument[this]" }
 
-  override string getMaDOutput() { none() }
-
   override Top asTop() { if exists(arg.asExpr()) then result = arg.asExpr() else result = call }
-
-  override DataFlow::Node asNode() { result = arg }
 
   override string toString() { result = arg.toString() }
 }
@@ -167,26 +165,14 @@ class InstanceArgument extends ApplicationModeEndpoint, TInstanceArgument {
  * In order to be able to distinguish between varargs endpoints and regular endpoints, we export the `isVarargsArray`
  * meta data field in the extraction queries.
  */
-class ImplicitVarargsArray extends ApplicationModeEndpoint, TImplicitVarargsArray {
-  Call call;
-  DataFlow::Node vararg;
+class ImplicitVarargsArray extends CallArgument, TImplicitVarargsArray {
   int idx;
 
-  ImplicitVarargsArray() { this = TImplicitVarargsArray(call, vararg, idx) }
-
-  override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
-
-  override Call getCall() { result = call }
+  ImplicitVarargsArray() { this = TImplicitVarargsArray(call, arg, idx) }
 
   override string getMaDInput() { result = "Argument[" + idx + "]" }
 
-  override string getMaDOutput() { none() }
-
   override Top asTop() { result = call }
-
-  override DataFlow::Node asNode() { result = vararg }
-
-  override string toString() { result = vararg.toString() }
 }
 
 /**
@@ -199,8 +185,6 @@ class MethodReturnValue extends ApplicationModeEndpoint, TMethodReturnValue {
   MethodReturnValue() { this = TMethodReturnValue(call) }
 
   override Callable getCallable() { result = call.getCallee().getSourceDeclaration() }
-
-  override Call getCall() { result = call }
 
   override string getMaDInput() { none() }
 
@@ -230,8 +214,6 @@ class OverriddenParameter extends ApplicationModeEndpoint, TOverriddenParameter 
     // subclasses of the overridden class.
     result = overriddenMethod.getSourceDeclaration()
   }
-
-  override Call getCall() { none() }
 
   private int getArgIndex() { p.getCallable().getParameter(result) = p }
 
@@ -338,7 +320,7 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
    */
   RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType type) {
     type = CallContext() and
-    result = e.getCall()
+    result = e.(CallArgument).getCall()
     or
     type = MethodDoc() and
     result = e.getCallable().(Documentable).getJavadoc()
@@ -560,9 +542,9 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
   override predicate appliesToEndpoint(Endpoint e) {
     e.getExtensibleType() = "sinkModel" and
     not ApplicationCandidatesImpl::isSink(e, _, _) and
-    exists(Endpoint otherSink |
+    exists(CallArgument otherSink |
       ApplicationCandidatesImpl::isSink(otherSink, _, "manual") and
-      e.getCall() = otherSink.getCall() and
+      e.(CallArgument).getCall() = otherSink.getCall() and
       e != otherSink
     )
   }
