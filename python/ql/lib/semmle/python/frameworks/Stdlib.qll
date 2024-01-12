@@ -3361,6 +3361,90 @@ module StdlibPrivate {
     }
   }
 
+  /**
+   * A flow summary for `urllib.parse.urljoin`
+   *
+   * See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urljoin
+   */
+  class UrljoinSummary extends SummarizedCallable {
+    UrljoinSummary() { this = "urllib.parse.urljoin" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("urllib").getMember("parse").getMember("urljoin").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("urllib")
+            .getMember("parse")
+            .getMember("urljoin")
+            .getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input in ["Argument[0]", "Argument[base:]"] and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // fnmatch
+  // ---------------------------------------------------------------------------
+  /**
+   * A flow summary for `fnmatch.filter`
+   *
+   * See https://docs.python.org/3/library/fnmatch.html#fnmatch.filter
+   */
+  class FnmatchFilterSummary extends SummarizedCallable {
+    FnmatchFilterSummary() { this = "fnmatch.filter" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("fnmatch").getMember("filter").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::moduleImport("fnmatch").getMember("filter").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input in ["Argument[0].ListElement", "Argument[names:].ListElement"] and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // optparse
+  // ---------------------------------------------------------------------------
+  /**
+   * A flow summary for `optparse.parse_args`
+   *
+   * See https://docs.python.org/3/library/fnmatch.html#fnmatch.filter
+   */
+  class OptparseParseArgsSummary extends SummarizedCallable {
+    OptparseParseArgsSummary() { this = "optparse.parse_args" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result =
+        API::moduleImport("optparse").getMember("OptionParser").getMember("parse_args").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("optparse")
+            .getMember("OptionParser")
+            .getMember("parse_args")
+            .getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input in ["Argument[1]", "Argument[args:]"] and
+      output = "ReturnValue.TupleElement[1]" and
+      preservesValue = false
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // tempfile
   // ---------------------------------------------------------------------------
