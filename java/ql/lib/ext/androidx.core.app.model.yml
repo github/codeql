@@ -11,7 +11,7 @@ extensions:
       - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(int,Notification)", "", "Argument[1]", "pending-intents", "manual"]
       
       - ["androidx.core.app", "NotificationCompat$Action", True, "Action", "(int,CharSequence,PendingIntent)", "", "Argument[1..2]", "notification", "manual"]
-      - ["androidx.core.app", "NotificationCompat$Action$Builder", True, "Builder", "(Icon,CharSequence,PendingIntent)", "", "Argument[1..2]", "notification", "manual"]
+      - ["androidx.core.app", "NotificationCompat$Action$Builder", True, "Builder", "(IconCompat,CharSequence,PendingIntent)", "", "Argument[1..2]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$Action$Builder", True, "Builder", "(int,CharSequence,PendingIntent)", "", "Argument[1..2]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$Action$Builder", True, "addExtras", "(Bundle)", "", "Argument[0]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$BigPictureStyle", True, "setBigContentTitle", "(CharSequence)", "", "Argument[0]", "notification", "manual"]
@@ -47,8 +47,6 @@ extensions:
       - ["androidx.core.app", "NotificationCompat$InboxStyle", True, "addLine", "(CharSequence)", "", "Argument[0]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$InboxStyle", True, "setBigContentTitle", "(CharSequence)", "", "Argument[0]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$InboxStyle", True, "setSummaryText", "(CharSequence)", "", "Argument[0]", "notification", "manual"]
-      - ["androidx.core.app", "NotificationCompat$MediaStyle", True, "setRemotePlaybackInfo", "(CharSequence,int,PendingIntent)", "", "Argument[0]", "notification", "manual"]
-      - ["androidx.core.app", "NotificationCompat$MediaStyle", True, "setRemotePlaybackInfo", "(CharSequence,int,PendingIntent)", "", "Argument[2]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$MessagingStyle", True, "addMessage", "(CharSequence,long,CharSequence)", "", "Argument[0]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$MessagingStyle", True, "addMessage", "(CharSequence,long,CharSequence)", "", "Argument[2]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$MessagingStyle", True, "addMessage", "(CharSequence,long,Person)", "", "Argument[0]", "notification", "manual"]

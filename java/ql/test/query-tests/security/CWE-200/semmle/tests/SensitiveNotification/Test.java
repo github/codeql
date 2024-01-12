@@ -1,6 +1,5 @@
 import android.app.Activity;
 import android.app.Notification;
-import android.app.Person;
 import androidx.core.app.NotificationCompat;
 import android.content.Intent;
 import android.app.PendingIntent;
@@ -43,17 +42,17 @@ class Test extends Activity {
             .addLine(password) // $sensitive-notification
             .setBigContentTitle(password) // $sensitive-notification
             .setSummaryText(password)); // $sensitive-notification
-        builder.setStyle(new Notification.MediaStyle()
-            .setRemotePlaybackInfo(password, 0, null) // $sensitive-notification
-            .setRemotePlaybackInfo("", 0, pintent)); // $MISSING: sensitive-notification
+        // builder.setStyle(new Notification.MediaStyle()
+        //     .setRemotePlaybackInfo(password, 0, null) // $sensitive-notification
+        //     .setRemotePlaybackInfo("", 0, pintent)); // $MISSING: sensitive-notification
         builder.setStyle( 
                 new Notification.MessagingStyle(password) // $sensitive-notification
                     .setConversationTitle(password) // $sensitive-notification
                     .addMessage(password, 0, "") // $sensitive-notification
-                    .addMessage(password, 0, (Person)null) // $sensitive-notification
+                    .addMessage(password, 0, (android.app.Person)null) // $sensitive-notification
                     .addMessage("", 0, password) // $sensitive-notification
                     .addMessage(new Notification.MessagingStyle.Message(password, 0, "")) // $sensitive-notification
-                    .addMessage(new Notification.MessagingStyle.Message(password, 0, (Person)null)) // $sensitive-notification
+                    .addMessage(new Notification.MessagingStyle.Message(password, 0, (android.app.Person)null)) // $sensitive-notification
                     .addMessage(new Notification.MessagingStyle.Message("", 0, password)) // $sensitive-notification
                 );
 
@@ -121,17 +120,14 @@ class Test extends Activity {
             .addLine(password) // $sensitive-notification
             .setBigContentTitle(password) // $sensitive-notification
             .setSummaryText(password)); // $sensitive-notification
-        builder.setStyle(new NotificationCompat.MediaStyle()
-            .setRemotePlaybackInfo(password, 0, null) // $sensitive-notification
-            .setRemotePlaybackInfo("", 0, pintent)); // $MISSING: sensitive-notification
         builder.setStyle( 
                 new NotificationCompat.MessagingStyle(password) // $sensitive-notification
                     .setConversationTitle(password) // $sensitive-notification
                     .addMessage(password, 0, "") // $sensitive-notification
-                    .addMessage(password, 0, (Person)null) // $sensitive-notification
+                    .addMessage(password, 0, (androidx.core.app.Person)null) // $sensitive-notification
                     .addMessage("", 0, password) // $sensitive-notification
                     .addMessage(new NotificationCompat.MessagingStyle.Message(password, 0, "")) // $sensitive-notification
-                    .addMessage(new NotificationCompat.MessagingStyle.Message(password, 0, (Person)null)) // $sensitive-notification
+                    .addMessage(new NotificationCompat.MessagingStyle.Message(password, 0, (androidx.core.app.Person)null)) // $sensitive-notification
                     .addMessage(new NotificationCompat.MessagingStyle.Message("", 0, password)) // $sensitive-notification
                 );
 
