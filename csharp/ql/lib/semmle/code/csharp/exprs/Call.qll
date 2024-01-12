@@ -72,6 +72,7 @@ class Call extends DotNet::Call, Expr, @call {
 
   pragma[noinline]
   private Expr getImplicitArgument(DotNet::Parameter p) {
+    this.getTarget().getAParameter() = p and
     not exists(result.getExplicitArgumentName()) and
     (
       p.(Parameter).isParams() and
@@ -188,7 +189,7 @@ class Call extends DotNet::Call, Expr, @call {
    */
   cached
   Expr getRuntimeArgumentForParameter(Parameter p) {
-    p = this.getARuntimeTarget().getAParameter() and
+    this.getARuntimeTarget().getAParameter() = p and
     (
       // Appears in the positional part of the call
       result = this.getImplicitRuntimeArgument(p)
@@ -200,6 +201,7 @@ class Call extends DotNet::Call, Expr, @call {
 
   pragma[noinline]
   private Expr getImplicitRuntimeArgument(Parameter p) {
+    this.getARuntimeTarget().getAParameter() = p and
     not exists(result.getExplicitArgumentName()) and
     (
       p.isParams() and
