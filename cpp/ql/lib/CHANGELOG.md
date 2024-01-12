@@ -1,3 +1,7 @@
+## 0.12.4
+
+No user-facing changes.
+
 ## 0.12.3
 
 ### Deprecated APIs
