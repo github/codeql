@@ -5,7 +5,7 @@ module DataFlowStackMake<DF::InputSig Lang>{
 
     import DF::DataFlowMake<Lang> as DataFlow
 
-    module BiStackAnalysisT<DataFlow::GlobalFlowSig FlowA, DataFlow::GlobalFlowSig FlowB>{
+    module BiStackAnalysis<DataFlow::GlobalFlowSig FlowA, DataFlow::GlobalFlowSig FlowB>{
 
         module FlowStackA = FlowStack<FlowA>;
         module FlowStackB = FlowStack<FlowB>;
@@ -14,143 +14,218 @@ module DataFlowStackMake<DF::InputSig Lang>{
          * Holds if either the Stack associated with `sourceNodeA` is a subset of the stack associated with `sourceNodeB`
          * or vice-versa.
          */
-        predicate eitherStackSubset(FlowA::PathNode sourceNodeA, FlowB::PathNode sourceNodeB){
-            exists(FlowStackA::StackFrame topSourceNodeA, FlowStackB::StackFrame topSourceNodeB |
-                topSourceNodeA = FlowStackA::stackFrameForFlow(sourceNodeA) and
-                topSourceNodeB = FlowStackB::stackFrameForFlow(sourceNodeB) and (
-                    BiStackAnalysis<FlowA, FlowB>::stackIsSubsetOf(topSourceNodeA, topSourceNodeB)
+        predicate eitherStackSubset(FlowA::PathNode sourceNodeA, FlowA::PathNode sinkNodeA, FlowB::PathNode sourceNodeB, FlowB::PathNode sinkNodeB){
+            sourceNodeA.isSource() and
+            sourceNodeB.isSource() and
+            not exists(sinkNodeA.getASuccessor()) and
+            not exists(sinkNodeB.getASuccessor()) and
+            exists(FlowStackA::FlowStack flowStackA, FlowStackB::FlowStack flowStackB |
+                flowStackA  = FlowStackA::createFlowStack(sourceNodeA, sinkNodeA) and
+                flowStackB  = FlowStackB::createFlowStack(sourceNodeB, sinkNodeB) and (
+                    BiStackAnalysisImpl<FlowA, FlowB>::flowStackIsSubsetOf(flowStackA, flowStackB)
                     or
-                    BiStackAnalysis<FlowB, FlowA>::stackIsSubsetOf(topSourceNodeB, topSourceNodeA)
+                    BiStackAnalysisImpl<FlowB, FlowA>::flowStackIsSubsetOf(flowStackB, flowStackA)
                 )
+
             )
         }
 
         /**
          * Holds if the stack associated with path `sourceNodeA` is a subset (and shares a common stack bottom) with
          * the stack associated with path `sourceNodeB`, or vice-versa.
+         * 
+         * For the given pair of (source, sink) for two (potentially disparate) DataFlows,
+         * determine whether one Flow's Stack (at time of sink execution) is a subset of the other flow's Stack.
          */
-        predicate eitherStackTerminatingSubset(FlowA::PathNode sourceNodeA, FlowB::PathNode sourceNodeB){
+        predicate eitherStackTerminatingSubset(FlowA::PathNode sourceNodeA, FlowA::PathNode sinkNodeA, FlowB::PathNode sourceNodeB, FlowB::PathNode sinkNodeB){
             sourceNodeA.isSource() and
             sourceNodeB.isSource() and
-            exists(FlowStackA::StackFrame topSourceNodeA, FlowStackB::StackFrame topSourceNodeB |
-                topSourceNodeA = FlowStackA::stackFrameForFlow(sourceNodeA) and
-                topSourceNodeB = FlowStackB::stackFrameForFlow(sourceNodeB) and (
-                    BiStackAnalysis<FlowA, FlowB>::stackIsCovergingTerminatingSubsetOf(topSourceNodeA, topSourceNodeB)
+            not exists(sinkNodeA.getASuccessor()) and
+            not exists(sinkNodeB.getASuccessor()) and
+            exists(FlowStackA::FlowStack flowStackA, FlowStackB::FlowStack flowStackB |
+                flowStackA = FlowStackA::createFlowStack(sourceNodeA, sinkNodeA) and
+                flowStackB = FlowStackB::createFlowStack(sourceNodeB, sinkNodeB) and (
+                    BiStackAnalysisImpl<FlowA, FlowB>::flowStackIsConvergingTerminatingSubsetOf(flowStackA, flowStackB)
                     or
-                    BiStackAnalysis<FlowB, FlowA>::stackIsCovergingTerminatingSubsetOf(topSourceNodeB, topSourceNodeA)
+                    BiStackAnalysisImpl<FlowB, FlowA>::flowStackIsConvergingTerminatingSubsetOf(flowStackB, flowStackA)
                 )
             )
         }
 
+        /**
+         * Alias for BiStackAnalysisImpl<FlowA,FlowB>::flowStackIsSubsetOf
+         * 
+         * Holds if stackA is a subset of stackB,
+         * The top of stackA is in stackB and the bottom of stackA is then some successor further down stackB.
+         */
+        predicate flowStackIsSubsetOf(FlowStackA::FlowStack flowStackA, FlowStackB::FlowStack flowStackB){
+            BiStackAnalysisImpl<FlowA,FlowB>::flowStackIsSubsetOf(flowStackA, flowStackB)
+        }
+
+        /**
+         * Alias for BiStackAnalysisImpl<FlowA,FlowB>::flowStackIsConvergingTerminatingSubsetOf
+         * 
+         * If the top of stackA is in stackB at any location, and the bottoms of the stack are the same call.
+         */
+        predicate flowStackIsConvergingTerminatingSubsetOf(FlowStackA::FlowStack flowStackA, FlowStackB::FlowStack flowStackB){
+            BiStackAnalysisImpl<FlowA,FlowB>::flowStackIsConvergingTerminatingSubsetOf(flowStackA, flowStackB)
+        }
     }
 
-    module BiStackAnalysis<DataFlow::GlobalFlowSig FlowA, DataFlow::GlobalFlowSig FlowB>{
+    private module BiStackAnalysisImpl<DataFlow::GlobalFlowSig FlowA, DataFlow::GlobalFlowSig FlowB>{
 
         module FlowStackA = FlowStack<FlowA>;
         module FlowStackB = FlowStack<FlowB>;
 
         /**
          * Holds if stackA is a subset of stackB,
-         * The top of stackA is in stackB and the bottom of stackA is then some successor fruther down stackB.
+         * The top of stackA is in stackB and the bottom of stackA is then some successor further down stackB.
          */
-        predicate stackIsSubsetOf(FlowStackA::StackFrame stackA, FlowStackB::StackFrame stackB){
-            exists(FlowStackB::StackFrame stackBIntermediary |
-                stackBIntermediary = stackB.getSuccessor*() and
-                stackA.getCall() = stackBIntermediary.getCall() and
-                stackA.getBottom().getCall() = stackBIntermediary.getSuccessor*().getCall()
+        predicate flowStackIsSubsetOf(FlowStackA::FlowStack flowStackA, FlowStackB::FlowStack flowStackB){
+            exists(FlowStackA::FlowStackFrame highestStackFrameA, FlowStackB::FlowStackFrame highestStackFrameB |
+                highestStackFrameA = flowStackA.getTopFrame() and
+                highestStackFrameB = flowStackB.getTopFrame() and
+                // Check if some intermediary frame `intStackFrameB`of StackB is in the stack of highestStackFrameA
+                exists(FlowStackB::FlowStackFrame intStackFrameB |
+                    intStackFrameB = highestStackFrameB.getASucceedingTerminalStateFrame*() and
+                    intStackFrameB.getCall() = highestStackFrameA.getCall() and
+                    flowStackA.getBottomFrame().getCall() = intStackFrameB.getASucceedingTerminalStateFrame*().getCall()
+                )
             )
         }
 
         /**
          * If the top of stackA is in stackB at any location, and the bottoms of the stack are the same call.
          */
-        predicate stackIsCovergingTerminatingSubsetOf(FlowStackA::StackFrame stackA, FlowStackB::StackFrame stackB){
-            stackA.getCall() = stackB.getSuccessor*().getCall() and
-            stackA.getBottom().getCall() = stackB.getBottom().getCall()
+        predicate flowStackIsConvergingTerminatingSubsetOf(FlowStackA::FlowStack flowStackA, FlowStackB::FlowStack flowStackB){
+            flowStackA.getBottomFrame().getCall() = flowStackB.getBottomFrame().getCall() and
+            exists(FlowStackB::FlowStackFrame intStackFrameB |
+                intStackFrameB = flowStackB.getTopFrame().getASucceedingTerminalStateFrame*() and
+                intStackFrameB.getCall() = flowStackA.getTopFrame().getCall()
+            )
         }
     }
 
     module FlowStack<DataFlow::GlobalFlowSig Flow>{
 
-        private newtype TStackFrameType =
-            TStackFrame(CallFrame callFrame, CallFrame bottom){
-                callFrame.getSuccessor*() = bottom and
-                not exists(bottom.getSuccessor())
+        /** A FlowStack encapsulates flows between a source and a sink, and all the pathways inbetween (possibly multiple) */
+        private newtype FlowStackType =
+            TFlowStack(Flow::PathNode source, Flow::PathNode sink){
+                source.isSource() and
+                not exists(sink.getASuccessor()) and
+                source.getASuccessor*() = sink
             }
 
-        class StackFrame extends TStackFrameType, TStackFrame{
+        class FlowStack extends FlowStackType, TFlowStack{
             string toString(){
-                exists(CallFrame callFrame |
-                    this = TStackFrame(callFrame, _) and
-                    result = callFrame.toString()
+                result = "FlowStack"
+            }
+
+            FlowStackFrame getFirstFrame(){
+                exists(FlowStackFrame flowStackFrame, CallFrame frame |
+                    flowStackFrame = TFlowStackFrame(this, frame) and
+                    not exists(frame.getPredecessor()) and
+                    result = flowStackFrame
                 )
             }
 
-            StackFrame getSuccessor(){
-                exists(StackFrame succ |
-                    this = succ.getPredecessor() and
-                    result = succ
+            FlowStackFrame getTopFrame(){
+                exists(FlowStackFrame flowStackFrame, CallFrame frame |
+                    // TODO: Get the 'Top' frame.
+                    flowStackFrame = TFlowStackFrame(this, frame) and
+                    not exists(frame.getPredecessor()) and
+                    result = flowStackFrame
                 )
             }
 
-            /** Filter subsection of callframes that are parent calls in callgraph, that is,
-             *              limit to only the functions that indirectly/directly call the sink.
+            FlowStackFrame getBottomFrame(){
+                exists(FlowStackFrame flowStackFrame, CallFrame frame |
+                    flowStackFrame = TFlowStackFrame(this, frame) and
+                    not exists(frame.getSuccessor()) and
+                    result = flowStackFrame
+                )
+            }
+        }
+
+        FlowStack createFlowStack(Flow::PathNode source, Flow::PathNode sink){
+            result = TFlowStack(source, sink)
+        }
+
+        /** A FlowStackFrame encapsulates a Stack frame that is bound between a given source and sink. */
+        private newtype FlowStackFrameType =
+            TFlowStackFrame(FlowStack flowStack, CallFrame frame){
+                exists(Flow::PathNode source, Flow::PathNode sink |
+                    flowStack = TFlowStack(source, sink) and
+                    frame.getPathNode() = source.getASuccessor*() and
+                    frame.getPathNode().getASuccessor*() = sink
+                )
+            }
+
+        class FlowStackFrame extends FlowStackFrameType, TFlowStackFrame{
+            string toString(){
+                result = "FlowStackFrame"
+            }
+
+            FlowStackFrame getASuccessor(){
+                exists(FlowStack flowStack, CallFrame frame, CallFrame nextFrame |
+                    this = TFlowStackFrame(flowStack, frame) and
+                    nextFrame = frame.getSuccessor() and
+                    result = TFlowStackFrame(flowStack, nextFrame)
+                )
+            }
+
+            /**
+             * Gets the next FlowStackFrame from the successors which a frame in the end-state stack.
              */
-            StackFrame getPredecessor(){
-                exists(CallFrame callFrame, CallFrame bottom, CallFrame callFramePredecessor |
-                    // Get the predecessor callframe which has a direct call inside the body to the current callFrame
-                    this = TStackFrame(callFrame, bottom) and
-                    callFramePredecessor = callFrame.getPredecessor*() and
-                    callFramePredecessor.getCall().getARuntimeTarget() = callFrame.getCall().getEnclosingCallable() and
-                    result = TStackFrame(callFramePredecessor, bottom)
-                )
+            FlowStackFrame getASucceedingTerminalStateFrame(){
+                // TODO: ATM just default to successor
+                result = this.getASuccessor()
+/*                 exists(FlowStack flowStack, CallFrame frame, CallFrame nextFrame |
+                    this = TFlowStackFrame(flowStack, frame) and
+                    nextFrame = frame.getSuccessor() and
+                    result = TFlowStackFrame(flowStack, nextFrame)
+                ) */
             }
 
+            /**
+             * Gets a predecessor FlowStackFrame of this FlowStackFrame.
+             */
+            FlowStackFrame getAPredecessor(){
+                result.getASuccessor() = this
+            }
+
+            /**
+             * Unpacks the PathNode associated with this FlowStackFrame
+             */
             Flow::PathNode getPathNode(){
                 exists(CallFrame callFrame |
-                    this = TStackFrame(callFrame, _) and
+                    this = TFlowStackFrame(_, callFrame) and
                     result = callFrame.getPathNode()
                 )
             }
 
+            /**
+             * Unpacks the DataFlowCall associated with this FlowStackFrame
+             */
             Lang::DataFlowCall getCall(){
                 exists(CallFrame callFrame |
-                    this = TStackFrame(callFrame, _) and
+                    this = TFlowStackFrame(_, callFrame) and
                     result = callFrame.getCall()
                 )
             }
 
+            /**
+             * Equivalence check on the CallFrame associated with this FlowStackFrame with given CallFrame
+             */
             predicate matchesCallFrame(CallFrame callFrame){
                 this.getPathNode() = callFrame.getPathNode()
             }
-
-            StackFrame getBottom(){
-                result = this.getSuccessor*() and
-                not exists(result.getSuccessor())
-            }
         }
 
-        StackFrame fromCallFrame(CallFrame callFrame){
-            result = TStackFrame(callFrame, getBottomCallFrame(callFrame))
-        }
 
-        CallFrame getBottomCallFrame(CallFrame callFrame){
-            exists(CallFrame bottom |
-                bottom = callFrame.getSuccessor*() and
-                not exists(bottom.getSuccessor()) and
-                result = bottom
-            )
-        }
-
-        StackFrame stackFrameForFlow(Flow::PathNode node){
-            // Get the CallFrame, then from the last callframe, track back up whereby each call's target should contain the next CallFrame.
-            exists(CallFrame callFrame |
-                callFrame = flowNodeCallFrames(node) and
-                callFrame.getCall().getAnArgument() = node.getNode() and
-                result = TStackFrame(callFrame, _)
-            )
-        }
-
+        /**
+         * A CallFrame is a Function Call as a PathNode.
+         */
         private newtype TCallFrameType =
             TCallFrame(Flow::PathNode node) {
                 exists(Lang::DataFlowCall c |
@@ -212,14 +287,6 @@ module DataFlowStackMake<DF::InputSig Lang>{
             )
         }
 
-        private CallFrame flowNodeCallFrames(Flow::PathNode node){
-            exists(Flow::PathNode subnode, Lang::DataFlowCall call |
-                subnode = node.getASuccessor*() and
-                call.getAnArgument() = subnode.getNode() and
-                result = TCallFrame(subnode)
-            )
-        }
-
         /**
          * A user-supplied predicate which given a Stack Frame, returns some Node associated with it.
          */
@@ -237,14 +304,15 @@ module DataFlowStackMake<DF::InputSig Lang>{
              * There should be no higher stack frame that satisfies the user-supplied predicate FROM the point that the
              * argument .
              */
-            Lang::Node extractingFromHighestStackFrame(StackFrame topStackFrame){
-                exists(StackFrame someStackFrame |
-                    someStackFrame = topStackFrame.getSuccessor*() and
+            Lang::Node extractingFromHighestStackFrame(FlowStack flowStack){
+                exists(FlowStackFrame topStackFrame, FlowStackFrame someStackFrame |
+                    topStackFrame = flowStack.getTopFrame() and
+                    someStackFrame = topStackFrame.getASuccessor*() and
                     result = customFrameCond(someStackFrame.getPathNode()) and
-                    not exists(StackFrame predecessor |
-                        predecessor = someStackFrame.getPredecessor+() and
+                    not exists(FlowStackFrame predecessor |
+                        predecessor = someStackFrame.getAPredecessor+() and
                         // The predecessor is *not* prior to the user-given 'top' of the stack frame.
-                        not predecessor = topStackFrame.getPredecessor*() and
+                        not predecessor = topStackFrame.getAPredecessor*() and
                         exists(customFrameCond(predecessor.getPathNode()))
                     )
                 )
@@ -254,12 +322,13 @@ module DataFlowStackMake<DF::InputSig Lang>{
              * Find the lowest stack frame that satisfies the given predicate,
              * and return the Node(s) that the user-supplied predicate returns.
              */
-            Lang::Node extractingFromLowestStackFrame(StackFrame topStackFrame){
-                exists(StackFrame someStackFrame |
-                    someStackFrame = topStackFrame.getSuccessor*() and
+            Lang::Node extractingFromLowestStackFrame(FlowStack flowStack){
+                exists(FlowStackFrame topStackFrame, FlowStackFrame someStackFrame |
+                    topStackFrame = flowStack.getTopFrame() and
+                    someStackFrame = topStackFrame.getASuccessor*() and
                     result = customFrameCond(someStackFrame.getPathNode()) and
-                    not exists(StackFrame successor |
-                        successor = someStackFrame.getSuccessor+() and
+                    not exists(FlowStackFrame successor |
+                        successor = someStackFrame.getASuccessor+() and
                         exists(customFrameCond(successor.getPathNode()))
                     )
                 )

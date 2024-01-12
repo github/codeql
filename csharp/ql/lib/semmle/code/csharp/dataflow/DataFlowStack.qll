@@ -12,6 +12,3 @@ module DataFlowStackMake<DataFlowStackFactory::DataFlow::GlobalFlowSig Flow>{
 module BiStackAnalysisMake<DataFlowStackFactory::DataFlow::GlobalFlowSig FlowA, DataFlowStackFactory::DataFlow::GlobalFlowSig FlowB>{
     import DataFlowStackFactory::BiStackAnalysis<FlowA, FlowB>
 }
-module BiStackAnalysisTMake<DataFlowStackFactory::DataFlow::GlobalFlowSig FlowA, DataFlowStackFactory::DataFlow::GlobalFlowSig FlowB>{
-    import DataFlowStackFactory::BiStackAnalysisT<FlowA, FlowB>
-}
