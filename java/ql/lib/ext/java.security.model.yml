@@ -15,3 +15,10 @@ extensions:
       - ["java.security", "KeyStoreSpi", True, "engineSetKeyEntry", "(String,Key,char[],Certificate[])", "", "Argument[2]", "credentials-password", "hq-generated"]
       - ["java.security", "KeyStoreSpi", True, "engineStore", "(OutputStream,char[])", "", "Argument[1]", "credentials-password", "hq-generated"]
       - ["java.security", "KeyStoreSpi", True, "engineSetKeyEntry", "(String,byte[],Certificate[])", "", "Argument[1]", "credentials-key", "hq-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.security", "MessageDigest", "digest", "()", "summary", "df-manual"]
+      - ["java.security", "MessageDigest", "digest", "(byte[])", "summary", "df-manual"]
+      - ["java.security", "MessageDigest", "digest", "(byte[],int,int)", "summary", "df-manual"]
