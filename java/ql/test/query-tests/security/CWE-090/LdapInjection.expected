@@ -8,14 +8,20 @@ edges
 | LdapInjection.java:63:28:63:59 | jBadInitial : String | LdapInjection.java:65:29:65:55 | ... + ... | provenance |  |
 | LdapInjection.java:69:28:69:52 | jBad : String | LdapInjection.java:71:84:71:103 | ... + ... | provenance |  |
 | LdapInjection.java:69:55:69:88 | jBadDNNameAdd : String | LdapInjection.java:71:53:71:79 | ... + ... : String | provenance |  |
+| LdapInjection.java:71:16:71:31 | new LdapName(...) : LdapName | LdapInjection.java:71:16:71:81 | addAll(...) | provenance |  |
+| LdapInjection.java:71:40:71:80 | new LdapName(...) : LdapName | LdapInjection.java:71:16:71:31 | new LdapName(...) : LdapName | provenance |  |
 | LdapInjection.java:71:40:71:80 | new LdapName(...) : LdapName | LdapInjection.java:71:16:71:81 | addAll(...) | provenance |  |
 | LdapInjection.java:71:53:71:79 | ... + ... : String | LdapInjection.java:71:40:71:80 | new LdapName(...) : LdapName | provenance |  |
 | LdapInjection.java:75:28:75:52 | jBad : String | LdapInjection.java:79:47:79:66 | ... + ... | provenance |  |
 | LdapInjection.java:75:55:75:89 | jBadDNNameAdd2 : String | LdapInjection.java:78:30:78:57 | ... + ... : String | provenance |  |
 | LdapInjection.java:78:5:78:8 | name : LdapName | LdapInjection.java:79:40:79:43 | name : LdapName | provenance |  |
+| LdapInjection.java:78:5:78:8 | name [post update] : LdapName | LdapInjection.java:79:40:79:43 | name : LdapName | provenance |  |
 | LdapInjection.java:78:17:78:58 | new LdapName(...) : LdapName | LdapInjection.java:78:17:78:68 | getRdns(...) : List | provenance |  |
 | LdapInjection.java:78:17:78:68 | getRdns(...) : List | LdapInjection.java:78:5:78:8 | name : LdapName | provenance |  |
+| LdapInjection.java:78:17:78:68 | getRdns(...) : List | LdapInjection.java:78:5:78:8 | name [post update] : LdapName | provenance |  |
 | LdapInjection.java:78:30:78:57 | ... + ... : String | LdapInjection.java:78:17:78:58 | new LdapName(...) : LdapName | provenance |  |
+| LdapInjection.java:79:16:79:31 | new LdapName(...) : LdapName | LdapInjection.java:79:16:79:44 | addAll(...) | provenance |  |
+| LdapInjection.java:79:40:79:43 | name : LdapName | LdapInjection.java:79:16:79:31 | new LdapName(...) : LdapName | provenance |  |
 | LdapInjection.java:79:40:79:43 | name : LdapName | LdapInjection.java:79:16:79:44 | addAll(...) | provenance |  |
 | LdapInjection.java:83:28:83:52 | jBad : String | LdapInjection.java:85:75:85:94 | ... + ... | provenance |  |
 | LdapInjection.java:83:55:83:93 | jBadDNNameToString : String | LdapInjection.java:85:29:85:60 | ... + ... : String | provenance |  |
@@ -26,6 +32,8 @@ edges
 | LdapInjection.java:91:23:91:65 | new LdapName(...) : LdapName | LdapInjection.java:91:23:91:73 | clone(...) : Object | provenance |  |
 | LdapInjection.java:91:23:91:73 | clone(...) : Object | LdapInjection.java:91:16:91:73 | (...)... | provenance |  |
 | LdapInjection.java:91:36:91:64 | ... + ... : String | LdapInjection.java:91:23:91:65 | new LdapName(...) : LdapName | provenance |  |
+| LdapInjection.java:100:27:100:59 | jOkAttribute : String | LdapInjection.java:101:49:101:60 | jOkAttribute : String | provenance |  |
+| LdapInjection.java:101:49:101:60 | jOkAttribute : String | LdapInjection.java:101:29:101:75 | new BasicAttributes(...) | provenance |  |
 | LdapInjection.java:106:31:106:55 | uBad : String | LdapInjection.java:108:67:108:86 | ... + ... | provenance |  |
 | LdapInjection.java:106:58:106:84 | uBadDN : String | LdapInjection.java:108:20:108:39 | ... + ... | provenance |  |
 | LdapInjection.java:112:31:112:67 | uBadFilterCreate : String | LdapInjection.java:113:72:113:87 | uBadFilterCreate : String | provenance |  |
@@ -154,6 +162,7 @@ nodes
 | LdapInjection.java:65:29:65:55 | ... + ... | semmle.label | ... + ... |
 | LdapInjection.java:69:28:69:52 | jBad : String | semmle.label | jBad : String |
 | LdapInjection.java:69:55:69:88 | jBadDNNameAdd : String | semmle.label | jBadDNNameAdd : String |
+| LdapInjection.java:71:16:71:31 | new LdapName(...) : LdapName | semmle.label | new LdapName(...) : LdapName |
 | LdapInjection.java:71:16:71:81 | addAll(...) | semmle.label | addAll(...) |
 | LdapInjection.java:71:40:71:80 | new LdapName(...) : LdapName | semmle.label | new LdapName(...) : LdapName |
 | LdapInjection.java:71:53:71:79 | ... + ... : String | semmle.label | ... + ... : String |
@@ -161,9 +170,11 @@ nodes
 | LdapInjection.java:75:28:75:52 | jBad : String | semmle.label | jBad : String |
 | LdapInjection.java:75:55:75:89 | jBadDNNameAdd2 : String | semmle.label | jBadDNNameAdd2 : String |
 | LdapInjection.java:78:5:78:8 | name : LdapName | semmle.label | name : LdapName |
+| LdapInjection.java:78:5:78:8 | name [post update] : LdapName | semmle.label | name [post update] : LdapName |
 | LdapInjection.java:78:17:78:58 | new LdapName(...) : LdapName | semmle.label | new LdapName(...) : LdapName |
 | LdapInjection.java:78:17:78:68 | getRdns(...) : List | semmle.label | getRdns(...) : List |
 | LdapInjection.java:78:30:78:57 | ... + ... : String | semmle.label | ... + ... : String |
+| LdapInjection.java:79:16:79:31 | new LdapName(...) : LdapName | semmle.label | new LdapName(...) : LdapName |
 | LdapInjection.java:79:16:79:44 | addAll(...) | semmle.label | addAll(...) |
 | LdapInjection.java:79:40:79:43 | name : LdapName | semmle.label | name : LdapName |
 | LdapInjection.java:79:47:79:66 | ... + ... | semmle.label | ... + ... |
@@ -180,6 +191,9 @@ nodes
 | LdapInjection.java:91:23:91:73 | clone(...) : Object | semmle.label | clone(...) : Object |
 | LdapInjection.java:91:36:91:64 | ... + ... : String | semmle.label | ... + ... : String |
 | LdapInjection.java:91:76:91:95 | ... + ... | semmle.label | ... + ... |
+| LdapInjection.java:100:27:100:59 | jOkAttribute : String | semmle.label | jOkAttribute : String |
+| LdapInjection.java:101:29:101:75 | new BasicAttributes(...) | semmle.label | new BasicAttributes(...) |
+| LdapInjection.java:101:49:101:60 | jOkAttribute : String | semmle.label | jOkAttribute : String |
 | LdapInjection.java:106:31:106:55 | uBad : String | semmle.label | uBad : String |
 | LdapInjection.java:106:58:106:84 | uBadDN : String | semmle.label | uBadDN : String |
 | LdapInjection.java:108:20:108:39 | ... + ... | semmle.label | ... + ... |
@@ -348,6 +362,7 @@ subpaths
 | LdapInjection.java:85:75:85:94 | ... + ... | LdapInjection.java:83:28:83:52 | jBad : String | LdapInjection.java:85:75:85:94 | ... + ... | This LDAP query depends on a $@. | LdapInjection.java:83:28:83:52 | jBad | user-provided value |
 | LdapInjection.java:91:16:91:73 | (...)... | LdapInjection.java:89:55:89:90 | jBadDNNameClone : String | LdapInjection.java:91:16:91:73 | (...)... | This LDAP query depends on a $@. | LdapInjection.java:89:55:89:90 | jBadDNNameClone | user-provided value |
 | LdapInjection.java:91:76:91:95 | ... + ... | LdapInjection.java:89:28:89:52 | jBad : String | LdapInjection.java:91:76:91:95 | ... + ... | This LDAP query depends on a $@. | LdapInjection.java:89:28:89:52 | jBad | user-provided value |
+| LdapInjection.java:101:29:101:75 | new BasicAttributes(...) | LdapInjection.java:100:27:100:59 | jOkAttribute : String | LdapInjection.java:101:29:101:75 | new BasicAttributes(...) | This LDAP query depends on a $@. | LdapInjection.java:100:27:100:59 | jOkAttribute | user-provided value |
 | LdapInjection.java:108:20:108:39 | ... + ... | LdapInjection.java:106:58:106:84 | uBadDN : String | LdapInjection.java:108:20:108:39 | ... + ... | This LDAP query depends on a $@. | LdapInjection.java:106:58:106:84 | uBadDN | user-provided value |
 | LdapInjection.java:108:67:108:86 | ... + ... | LdapInjection.java:106:31:106:55 | uBad : String | LdapInjection.java:108:67:108:86 | ... + ... | This LDAP query depends on a $@. | LdapInjection.java:106:31:106:55 | uBad | user-provided value |
 | LdapInjection.java:113:58:113:88 | create(...) | LdapInjection.java:112:31:112:67 | uBadFilterCreate : String | LdapInjection.java:113:58:113:88 | create(...) | This LDAP query depends on a $@. | LdapInjection.java:112:31:112:67 | uBadFilterCreate | user-provided value |
