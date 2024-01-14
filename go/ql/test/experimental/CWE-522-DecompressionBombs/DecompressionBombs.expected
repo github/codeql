@@ -172,6 +172,15 @@ edges
 | test.go:345:12:345:32 | call to NewReader | test.go:347:18:347:24 | tarRead |
 | test.go:345:26:345:31 | xzRead | test.go:345:12:345:32 | call to NewReader |
 | test.go:347:18:347:24 | tarRead | test.go:350:22:350:28 | definition of tarRead |
+| test.go:350:22:350:28 | definition of tarRead | test.go:352:2:352:8 | tarRead |
+| test.go:350:22:350:28 | definition of tarRead | test.go:352:2:352:8 | tarRead |
+| test.go:350:22:350:28 | definition of tarRead | test.go:352:2:352:8 | tarRead |
+| test.go:350:22:350:28 | definition of tarRead | test.go:352:2:352:8 | tarRead |
+| test.go:350:22:350:28 | definition of tarRead | test.go:352:2:352:8 | tarRead |
+| test.go:350:22:350:28 | definition of tarRead | test.go:352:2:352:8 | tarRead |
+| test.go:350:22:350:28 | definition of tarRead | test.go:352:2:352:8 | tarRead |
+| test.go:350:22:350:28 | definition of tarRead | test.go:352:2:352:8 | tarRead |
+| test.go:350:22:350:28 | definition of tarRead | test.go:352:2:352:8 | tarRead |
 | test.go:350:22:350:28 | definition of tarRead | test.go:362:25:362:31 | tarRead |
 | test.go:350:22:350:28 | definition of tarRead | test.go:362:25:362:31 | tarRead |
 | test.go:350:22:350:28 | definition of tarRead | test.go:362:25:362:31 | tarRead |
@@ -367,6 +376,15 @@ nodes
 | test.go:350:22:350:28 | definition of tarRead | semmle.label | definition of tarRead |
 | test.go:350:22:350:28 | definition of tarRead | semmle.label | definition of tarRead |
 | test.go:350:22:350:28 | definition of tarRead | semmle.label | definition of tarRead |
+| test.go:352:2:352:8 | tarRead | semmle.label | tarRead |
+| test.go:352:2:352:8 | tarRead | semmle.label | tarRead |
+| test.go:352:2:352:8 | tarRead | semmle.label | tarRead |
+| test.go:352:2:352:8 | tarRead | semmle.label | tarRead |
+| test.go:352:2:352:8 | tarRead | semmle.label | tarRead |
+| test.go:352:2:352:8 | tarRead | semmle.label | tarRead |
+| test.go:352:2:352:8 | tarRead | semmle.label | tarRead |
+| test.go:352:2:352:8 | tarRead | semmle.label | tarRead |
+| test.go:352:2:352:8 | tarRead | semmle.label | tarRead |
 | test.go:362:25:362:31 | tarRead | semmle.label | tarRead |
 | test.go:362:25:362:31 | tarRead | semmle.label | tarRead |
 | test.go:362:25:362:31 | tarRead | semmle.label | tarRead |
@@ -407,6 +425,22 @@ subpaths
 | test.go:324:2:324:5 | zstd | test.go:76:17:76:28 | selection of Body | test.go:324:2:324:5 | zstd | This decompression is $@. | test.go:76:17:76:28 | selection of Body | decompressing compressed data without managing output size |
 | test.go:334:2:334:5 | zstd | test.go:77:15:77:26 | selection of Body | test.go:334:2:334:5 | zstd | This decompression is $@. | test.go:77:15:77:26 | selection of Body | decompressing compressed data without managing output size |
 | test.go:344:2:344:7 | xzRead | test.go:78:5:78:16 | selection of Body | test.go:344:2:344:7 | xzRead | This decompression is $@. | test.go:78:5:78:16 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:63:13:63:24 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:63:13:63:24 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:64:8:64:19 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:64:8:64:19 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:65:8:65:19 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:65:8:65:19 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:66:17:66:28 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:66:17:66:28 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:67:13:67:24 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:67:13:67:24 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:68:16:68:27 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:68:16:68:27 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:69:7:69:18 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:69:7:69:18 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:70:9:70:20 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:70:9:70:20 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:71:18:71:29 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:71:18:71:29 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:72:5:72:16 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:72:5:72:16 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:73:7:73:18 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:73:7:73:18 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:74:16:74:27 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:74:16:74:27 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:75:16:75:27 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:75:16:75:27 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:76:17:76:28 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:76:17:76:28 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:77:15:77:26 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:77:15:77:26 | selection of Body | decompressing compressed data without managing output size |
+| test.go:352:2:352:8 | tarRead | test.go:78:5:78:16 | selection of Body | test.go:352:2:352:8 | tarRead | This decompression is $@. | test.go:78:5:78:16 | selection of Body | decompressing compressed data without managing output size |
 | test.go:362:25:362:31 | tarRead | test.go:63:13:63:24 | selection of Body | test.go:362:25:362:31 | tarRead | This decompression is $@. | test.go:63:13:63:24 | selection of Body | decompressing compressed data without managing output size |
 | test.go:362:25:362:31 | tarRead | test.go:64:8:64:19 | selection of Body | test.go:362:25:362:31 | tarRead | This decompression is $@. | test.go:64:8:64:19 | selection of Body | decompressing compressed data without managing output size |
 | test.go:362:25:362:31 | tarRead | test.go:65:8:65:19 | selection of Body | test.go:362:25:362:31 | tarRead | This decompression is $@. | test.go:65:8:65:19 | selection of Body | decompressing compressed data without managing output size |

@@ -40,14 +40,6 @@ module DecompressionBombs {
    * Provides decompression bomb sinks and additional flow steps for `github.com/DataDog/zstd` package
    */
   module DataDogZstd {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method f | f.hasQualifiedName("github.com/DataDog/zstd", "reader", "Read") |
-          this = f.getACall().getReceiver()
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -77,17 +69,18 @@ module DecompressionBombs {
   module KlauspostZstd {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f |
-          f.hasQualifiedName("github.com/klauspost/compress/zstd", "Decoder",
-            ["WriteTo", "DecodeAll"])
+        exists(Method m |
+          m.hasQualifiedName("github.com/klauspost/compress/zstd", "Decoder", "DecodeAll")
         |
-          this = f.getACall().getReceiver()
+          this = m.getACall().getReceiver()
         )
         or
-        exists(Method f |
-          f.hasQualifiedName("github.com/klauspost/compress/zstd", "Decoder", "Read")
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("github.com/klauspost/compress/zstd", "Decoder", ["WriteTo", "Read"]) and
+          cn = m.getACall()
         |
-          this = f.getACall().getReceiver()
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -118,7 +111,7 @@ module DecompressionBombs {
   /**
    * Provides additional flow steps for `archive/zip` package
    */
-  module ArchiveZip {
+  module ArchiveZipBombs {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -170,9 +163,9 @@ module DecompressionBombs {
           toNode = fi
         )
         or
-        exists(Method f, DataFlow::CallNode call |
-          f.hasQualifiedName("github.com/klauspost/compress/zip", "File", ["Open", "OpenRaw"]) and
-          call = f.getACall()
+        exists(Method m, DataFlow::CallNode call |
+          m.hasQualifiedName("github.com/klauspost/compress/zip", "File", ["Open", "OpenRaw"]) and
+          call = m.getACall()
         |
           fromNode = call.getReceiver() and
           toNode = call
@@ -187,8 +180,12 @@ module DecompressionBombs {
   module UlikunitzXz {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f | f.hasQualifiedName("github.com/ulikunitz/xz", "Reader", "Read") |
-          this = f.getACall().getReceiver()
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("github.com/ulikunitz/xz", "Reader", "Read") and
+          cn = m.getACall()
+        |
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -218,11 +215,15 @@ module DecompressionBombs {
   /**
    * Provides decompression bomb sinks and additional flow steps for `compress/gzip` package
    */
-  module CompressGzip {
+  module CompressGzipBombs {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f | f.hasQualifiedName("compress/gzip", "Reader", "Read") |
-          this = f.getACall().getReceiver()
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("compress/gzip", "Reader", "Read") and
+          cn = m.getACall()
+        |
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -256,18 +257,13 @@ module DecompressionBombs {
   module KlauspostGzipAndPgzip {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f |
-          f.hasQualifiedName(["github.com/klauspost/compress/gzip", "github.com/klauspost/pgzip"],
-            "Reader", "Read")
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName(["github.com/klauspost/compress/gzip", "github.com/klauspost/pgzip"],
+            "Reader", ["Read", "WriteTo"]) and
+          cn = m.getACall()
         |
-          this = f.getACall().getReceiver()
-        )
-        or
-        exists(Method f |
-          f.hasQualifiedName(["github.com/klauspost/compress/gzip", "github.com/klauspost/pgzip"],
-            "Reader", "WriteTo")
-        |
-          this = f.getACall().getReceiver()
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -307,8 +303,12 @@ module DecompressionBombs {
   module CompressBzip2 {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f | f.hasQualifiedName("compress/bzip2", "reader", "Read") |
-          this = f.getACall().getReceiver()
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("compress/bzip2", "reader", "Read") and
+          cn = m.getACall()
+        |
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -342,8 +342,12 @@ module DecompressionBombs {
   module DsnetBzip2 {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f | f.hasQualifiedName("github.com/dsnet/compress/bzip2", "Reader", "Read") |
-          this = f.getACall().getReceiver()
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("github.com/dsnet/compress/bzip2", "Reader", "Read") and
+          cn = m.getACall()
+        |
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -377,8 +381,12 @@ module DecompressionBombs {
   module DsnetFlate {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f | f.hasQualifiedName("github.com/dsnet/compress/flate", "Reader", "Read") |
-          this = f.getACall().getReceiver()
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("github.com/dsnet/compress/flate", "Reader", "Read") and
+          cn = m.getACall()
+        |
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -409,11 +417,15 @@ module DecompressionBombs {
   /**
    * Provides decompression bomb sinks and additional flow steps for `compress/flate` package
    */
-  module CompressFlate {
+  module CompressFlateBombs {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f | f.hasQualifiedName("compress/flate", "decompressor", "Read") |
-          this = f.getACall().getReceiver()
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("compress/flate", "decompressor", "Read") and
+          cn = m.getACall()
+        |
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -447,10 +459,12 @@ module DecompressionBombs {
   module KlauspostFlate {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f |
-          f.hasQualifiedName("github.com/klauspost/compress/flate", "decompressor", "Read")
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("github.com/klauspost/compress/flate", "decompressor", "Read") and
+          cn = m.getACall()
         |
-          this = f.getACall().getReceiver()
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -484,10 +498,12 @@ module DecompressionBombs {
   module KlauspostZlib {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f |
-          f.hasQualifiedName("github.com/klauspost/compress/zlib", "reader", "Read")
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("github.com/klauspost/compress/zlib", "reader", "Read") and
+          cn = m.getACall()
         |
-          this = f.getACall().getReceiver()
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -518,11 +534,15 @@ module DecompressionBombs {
   /**
    * Provides decompression bomb sinks and additional flow steps for `compress/zlib` package
    */
-  module CompressZlib {
+  module CompressZlibBombs {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f | f.hasQualifiedName("compress/zlib", "reader", "Read") |
-          this = f.getACall().getReceiver()
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("compress/zlib", "reader", "Read") and
+          cn = m.getACall()
+        |
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -556,10 +576,12 @@ module DecompressionBombs {
   module GolangSnappy {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method f |
-          f.hasQualifiedName("github.com/golang/snappy", "Reader", ["Read", "ReadByte"])
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("github.com/golang/snappy", "Reader", ["Read", "ReadByte"]) and
+          cn = m.getACall()
         |
-          this = f.getACall().getReceiver()
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -620,11 +642,13 @@ module DecompressionBombs {
   module KlauspostS2 {
     class TheSink extends Sink {
       TheSink() {
-        exists(Method m |
+        exists(Method m, DataFlow::CallNode cn |
           m.hasQualifiedName("github.com/klauspost/compress/s2", "Reader",
-            ["DecodeConcurrent", "ReadByte", "Read"])
+            ["DecodeConcurrent", "ReadByte", "Read"]) and
+          cn = m.getACall()
         |
-          this = m.getACall().getReceiver()
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
       }
     }
@@ -662,8 +686,21 @@ module DecompressionBombs {
           f.hasQualifiedName("io", "CopyN") and cn = f.getACall()
         |
           this = cn.getArgument(1) and
-          // and the return value doesn't flow into a comparison  (<, >, <=, >=).
-          not localStep*(cn.getResult(0), any(DataFlow::RelationalComparisonNode rcn).getAnOperand())
+          not hasFlowToComparison(cn.getResult(0))
+        )
+        or
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("io", "Reader", "Read") and cn = m.getACall()
+        |
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
+        )
+        or
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("archive/tar", "Reader", "Read") and cn = m.getACall()
+        |
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
         )
         or
         exists(Function f | f.hasQualifiedName("io", ["Copy", "CopyBuffer"]) |
@@ -676,15 +713,23 @@ module DecompressionBombs {
           this = f.getACall().getArgument(0)
         )
         or
-        exists(Method f |
-          f.hasQualifiedName("bufio", "Reader",
-            ["Read", "ReadBytes", "ReadByte", "ReadLine", "ReadRune", "ReadSlice", "ReadString"])
+        exists(Method m |
+          m.hasQualifiedName("bufio", "Reader",
+            ["ReadBytes", "ReadByte", "ReadLine", "ReadRune", "ReadSlice", "ReadString"])
         |
-          this = f.getACall().getReceiver()
+          this = m.getACall().getReceiver()
         )
         or
-        exists(Method f | f.hasQualifiedName("bufio", "Scanner", ["Text", "Bytes"]) |
-          this = f.getACall().getReceiver()
+        exists(Method m, DataFlow::CallNode cn |
+          m.hasQualifiedName("bufio", "Reader", ["Read", "WriteTo"]) and
+          cn = m.getACall()
+        |
+          this = cn.getReceiver() and
+          not hasFlowToComparison(cn.getResult(0))
+        )
+        or
+        exists(Method m | m.hasQualifiedName("bufio", "Scanner", ["Text", "Bytes"]) |
+          this = m.getACall().getReceiver()
         )
         or
         exists(Function f | f.hasQualifiedName("io/ioutil", "ReadAll") |
@@ -692,29 +737,36 @@ module DecompressionBombs {
         )
       }
     }
+  }
 
-    /**
-     * Holds if the value of `pred` can flow into `succ` in one step through an
-     * arithmetic operation (other than remainder).
-     *
-     * Note: this predicate is copied from AllocationSizeOverflow. When this query
-     * is promoted it should be put in a shared location.
-     */
-    predicate additionalStep(DataFlow::Node pred, DataFlow::Node succ) {
-      succ.asExpr().(ArithmeticExpr).getAnOperand() = pred.asExpr() and
-      not succ.asExpr() instanceof RemExpr
-    }
+  /**
+   * Holds if the value of `n` flow into a comparison  (<, >, <=, >=).
+   */
+  predicate hasFlowToComparison(DataFlow::Node n) {
+    localStep*(n, any(DataFlow::RelationalComparisonNode rcn).getAnOperand())
+  }
 
-    /**
-     * Holds if the value of `pred` can flow into `succ` in one step, either by a standard taint step
-     * or by an additional step.
-     *
-     * Note: this predicate is copied from AllocationSizeOverflow. When this query
-     * is promoted it should be put in a shared location.
-     */
-    predicate localStep(DataFlow::Node pred, DataFlow::Node succ) {
-      TaintTracking::localTaintStep(pred, succ) or
-      additionalStep(pred, succ)
-    }
+  /**
+   * Holds if the value of `pred` can flow into `succ` in one step through an
+   * arithmetic operation (other than remainder).
+   *
+   * Note: this predicate is copied from AllocationSizeOverflow. When this query
+   * is promoted it should be put in a shared location.
+   */
+  predicate additionalStep(DataFlow::Node pred, DataFlow::Node succ) {
+    succ.asExpr().(ArithmeticExpr).getAnOperand() = pred.asExpr() and
+    not succ.asExpr() instanceof RemExpr
+  }
+
+  /**
+   * Holds if the value of `pred` can flow into `succ` in one step, either by a standard taint step
+   * or by an additional step.
+   *
+   * Note: this predicate is copied from AllocationSizeOverflow. When this query
+   * is promoted it should be put in a shared location.
+   */
+  predicate localStep(DataFlow::Node pred, DataFlow::Node succ) {
+    TaintTracking::localTaintStep(pred, succ) or
+    additionalStep(pred, succ)
   }
 }

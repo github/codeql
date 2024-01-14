@@ -15,7 +15,7 @@ import go
 import MultipartAndFormRemoteSource
 import experimental.frameworks.DecompressionBombs
 
-module DecompressionBombsConfig implements DataFlow::StateConfigSig {
+module Config implements DataFlow::StateConfigSig {
   class FlowState = DecompressionBombs::FlowState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
@@ -48,11 +48,11 @@ module DecompressionBombsConfig implements DataFlow::StateConfigSig {
   }
 }
 
-module DecompressionBombsFlow = TaintTracking::GlobalWithState<DecompressionBombsConfig>;
+module Flow = TaintTracking::GlobalWithState<Config>;
 
-import DecompressionBombsFlow::PathGraph
+import Flow::PathGraph
 
-from DecompressionBombsFlow::PathNode source, DecompressionBombsFlow::PathNode sink
-where DecompressionBombsFlow::flowPath(source, sink)
+from Flow::PathNode source, Flow::PathNode sink
+where Flow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This decompression is $@.", source.getNode(),
   "decompressing compressed data without managing output size"
