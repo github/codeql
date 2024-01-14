@@ -55,11 +55,8 @@ func main() {
 }
 func DecompressHandler(w http.ResponseWriter, request *http.Request) {
 	ZipNewReader(request.Body)
-	ZipNewReader2(request.Body)
+	ZipNewReaderKlauspost(request.Body)
 	ZipOpenReader(request.FormValue("filepathba"))
-	ZipOpenReaderSafe(request.PostFormValue("test"))
-	GZipOpenReaderSafe(request.PostFormValue("test"))
-	GZipReader(request.Body, "dest")
 	Bzip2Dsnet(request.Body)
 	Bzip2(request.Body)
 	Flate(request.Body)
@@ -71,11 +68,31 @@ func DecompressHandler(w http.ResponseWriter, request *http.Request) {
 	SnappyKlauspost(request.Body)
 	S2(request.Body)
 	Gzip(request.Body)
+	GZipIoReader(request.Body, "dest")
 	GzipKlauspost(request.Body)
 	PzipKlauspost(request.Body)
 	Zstd_Klauspost(request.Body)
 	Zstd_DataDog(request.Body)
 	Xz(request.Body)
+
+	ZipOpenReaderSafe(request.PostFormValue("test"))
+	GZipOpenReaderSafe(request.PostFormValue("test"))
+	Bzip2DsnetSafe(request.Body)
+	Bzip2Safe(request.Body)
+	FlateSafe(request.Body)
+	FlateKlauspostSafe(request.Body)
+	FlateDsnetSafe(request.Body)
+	ZlibKlauspostSafe(request.Body)
+	ZlibSafe(request.Body)
+	SnappySafe(request.Body)
+	SnappyKlauspostSafe(request.Body)
+	S2Safe(request.Body)
+	GzipSafe(request.Body)
+	GzipKlauspostSafe(request.Body)
+	PzipKlauspostSafe(request.Body)
+	Zstd_KlauspostSafe(request.Body)
+	Zstd_DataDogSafe(request.Body)
+	XzSafe(request.Body)
 }
 
 func GZipOpenReaderSafe(filename string) {
@@ -102,29 +119,20 @@ func ZipOpenReaderSafe(filename string) {
 			}
 			totalBytes = totalBytes + result
 			if totalBytes > 1024*1024*1024*5 {
-				fmt.Print(totalBytes)
+				fmt.Print(totalBytes, "exceeded")
 				break
 			}
 		}
 	}
 }
 
-func GZipReader(src io.Reader, dst string) {
-	gzipR, _ := gzip.NewReader(src)
-	dstF, _ := os.OpenFile(dst, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
-	defer dstF.Close()
-	var newSrc io.Reader
-	newSrc = io.Reader(gzipR)
-	_, _ = io.Copy(dstF, newSrc) // BAD
-}
-
 func ZipOpenReader(filename string) {
 	// Open the zip file
-	r, _ := zip.OpenReader(filename)
-	for _, f := range r.File {
+	zipReader, _ := zip.OpenReader(filename)
+	for _, f := range zipReader.File {
 		rc, _ := f.Open()
 		for {
-			result, _ := io.CopyN(os.Stdout, rc, 68) // BAD
+			result, _ := io.CopyN(os.Stdout, rc, 68) // $ hasValueFlow="rc"
 			if result == 0 {
 				_ = rc.Close()
 				break
@@ -133,11 +141,11 @@ func ZipOpenReader(filename string) {
 			_ = rc.Close()
 		}
 	}
-	rKlauspost, _ := zipKlauspost.OpenReader(filename)
-	for _, f := range rKlauspost.File {
+	zipKlauspostReader, _ := zipKlauspost.OpenReader(filename)
+	for _, f := range zipKlauspostReader.File {
 		rc, _ := f.Open()
 		for {
-			result, _ := io.CopyN(os.Stdout, rc, 68) // BAD
+			result, _ := io.CopyN(os.Stdout, rc, 68) // $ hasValueFlow="rc"
 			if result == 0 {
 				_ = rc.Close()
 				break
@@ -154,19 +162,19 @@ func ZipNewReader(file io.Reader) {
 	for _, file := range zipReader.File {
 		fileWriter := bytes.NewBuffer([]byte{})
 		fileReaderCloser, _ := file.Open()
-		result, _ := io.Copy(fileWriter, fileReaderCloser) // BAD
+		result, _ := io.Copy(fileWriter, fileReaderCloser) // $ hasValueFlow="fileReaderCloser"
 		fmt.Print(result)
 	}
 }
 
-func ZipNewReader2(file io.Reader) {
+func ZipNewReaderKlauspost(file io.Reader) {
 	file2, _ := io.ReadAll(file)
-	zipReaderKlauspost, _ := zipKlauspost.NewReader(bytes.NewReader(file2), int64(32<<20))
-	for _, file := range zipReaderKlauspost.File {
+	zipReader, _ := zipKlauspost.NewReader(bytes.NewReader(file2), int64(32<<20))
+	for _, file := range zipReader.File {
 		fileWriter := bytes.NewBuffer([]byte{})
 		// file.OpenRaw()
 		fileReaderCloser, _ := file.Open()
-		result, _ := io.Copy(fileWriter, fileReaderCloser) // BAD
+		result, _ := io.Copy(fileWriter, fileReaderCloser) // $ hasValueFlow="fileReaderCloser"
 		fmt.Print(result)
 	}
 }
@@ -174,182 +182,433 @@ func ZipNewReader2(file io.Reader) {
 func Bzip2Dsnet(file io.Reader) {
 	var tarRead *tar.Reader
 
-	bzip2dsnet, _ := bzip2Dsnet.NewReader(file, &bzip2Dsnet.ReaderConfig{})
+	bzip2Reader, _ := bzip2Dsnet.NewReader(file, &bzip2Dsnet.ReaderConfig{})
 	var out []byte = make([]byte, 70)
-	bzip2dsnet.Read(out) // BAD
-	tarRead = tar.NewReader(bzip2dsnet)
+	bzip2Reader.Read(out) // $ hasValueFlow="bzip2Reader"
+	tarRead = tar.NewReader(bzip2Reader)
 
 	TarDecompressor(tarRead)
+
+}
+func Bzip2DsnetSafe(file io.Reader) {
+	bzip2Reader, _ := bzip2Dsnet.NewReader(file, &bzip2Dsnet.ReaderConfig{})
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = bzip2Reader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", bzip2Reader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 
 }
 func Bzip2(file io.Reader) {
 	var tarRead *tar.Reader
 
-	Bzip2 := bzip2.NewReader(file)
+	bzip2Reader := bzip2.NewReader(file)
 	var out []byte = make([]byte, 70)
-	Bzip2.Read(out) // BAD
-	tarRead = tar.NewReader(Bzip2)
+	bzip2Reader.Read(out) // $ hasValueFlow="bzip2Reader"
+	tarRead = tar.NewReader(bzip2Reader)
 
 	TarDecompressor(tarRead)
+}
+func Bzip2Safe(file io.Reader) {
+	bzip2Reader := bzip2.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = bzip2Reader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", bzip2Reader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func Flate(file io.Reader) {
 	var tarRead *tar.Reader
 
-	Flate := flate.NewReader(file)
+	flateReader := flate.NewReader(file)
 	var out []byte = make([]byte, 70)
-	Flate.Read(out) // BAD
-	tarRead = tar.NewReader(Flate)
+	flateReader.Read(out) // $ hasValueFlow="flateReader"
+	tarRead = tar.NewReader(flateReader)
 
 	TarDecompressor(tarRead)
+}
+func FlateSafe(file io.Reader) {
+	flateReader := flate.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = flateReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", flateReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func FlateKlauspost(file io.Reader) {
 	var tarRead *tar.Reader
 
-	zlibklauspost := flateKlauspost.NewReader(file)
+	flateReader := flateKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	zlibklauspost.Read(out) // BAD
-	tarRead = tar.NewReader(zlibklauspost)
+	flateReader.Read(out) // $ hasValueFlow="flateReader"
+	tarRead = tar.NewReader(flateReader)
 
 	TarDecompressor(tarRead)
+}
+func FlateKlauspostSafe(file io.Reader) {
+	flateReader := flateKlauspost.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = flateReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", flateReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func FlateDsnet(file io.Reader) {
 	var tarRead *tar.Reader
 
-	flatedsnet, _ := flateDsnet.NewReader(file, &flateDsnet.ReaderConfig{})
+	flateReader, _ := flateDsnet.NewReader(file, &flateDsnet.ReaderConfig{})
 	var out []byte = make([]byte, 70)
-	flatedsnet.Read(out) // BAD
-	tarRead = tar.NewReader(flatedsnet)
+	flateReader.Read(out) // $ hasValueFlow="flateReader"
+	tarRead = tar.NewReader(flateReader)
 
 	TarDecompressor(tarRead)
+}
+func FlateDsnetSafe(file io.Reader) {
+	flateReader, _ := flateDsnet.NewReader(file, &flateDsnet.ReaderConfig{})
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = flateReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", flateReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func ZlibKlauspost(file io.Reader) {
 	var tarRead *tar.Reader
 
-	zlibklauspost, _ := zlibKlauspost.NewReader(file)
+	zlibReader, _ := zlibKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	zlibklauspost.Read(out) // BAD
-	tarRead = tar.NewReader(zlibklauspost)
+	zlibReader.Read(out) // $ hasValueFlow="zlibReader"
+	tarRead = tar.NewReader(zlibReader)
 
 	TarDecompressor(tarRead)
+}
+func ZlibKlauspostSafe(file io.Reader) {
+	zlibReader, _ := zlibKlauspost.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = zlibReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", zlibReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func Zlib(file io.Reader) {
 	var tarRead *tar.Reader
 
-	Zlib, _ := zlib.NewReader(file)
+	zlibReader, _ := zlib.NewReader(file)
 	var out []byte = make([]byte, 70)
-	Zlib.Read(out) // BAD
-	tarRead = tar.NewReader(Zlib)
+	zlibReader.Read(out) // $ hasValueFlow="zlibReader"
+	tarRead = tar.NewReader(zlibReader)
 
 	TarDecompressor(tarRead)
+}
+func ZlibSafe(file io.Reader) {
+	zlibReader, _ := zlib.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = zlibReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", zlibReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func Snappy(file io.Reader) {
 	var tarRead *tar.Reader
 
-	Snappy := snappy.NewReader(file)
+	snappyReader := snappy.NewReader(file)
 	var out []byte = make([]byte, 70)
-	Snappy.Read(out)  // BAD
-	Snappy.ReadByte() // BAD
-	tarRead = tar.NewReader(Snappy)
+	snappyReader.Read(out)  // $ hasValueFlow="snappyReader"
+	snappyReader.ReadByte() // $ hasValueFlow="snappyReader"
+	tarRead = tar.NewReader(snappyReader)
 
 	TarDecompressor(tarRead)
+}
+func SnappySafe(file io.Reader) {
+	snappyReader := snappy.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = snappyReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", snappyReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func SnappyKlauspost(file io.Reader) {
 	var tarRead *tar.Reader
 
-	snappyklauspost := snappyKlauspost.NewReader(file)
+	snappyReader := snappyKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	snappyklauspost.Read(out) // BAD
+	snappyReader.Read(out) // $ hasValueFlow="snappyReader"
 	var buf bytes.Buffer
-	snappyklauspost.DecodeConcurrent(&buf, 2) // BAD
-	snappyklauspost.ReadByte()                // BAD
-	tarRead = tar.NewReader(snappyklauspost)
+	snappyReader.DecodeConcurrent(&buf, 2) // $ hasValueFlow="snappyReader"
+	snappyReader.ReadByte()                // $ hasValueFlow="snappyReader"
+	tarRead = tar.NewReader(snappyReader)
 
 	TarDecompressor(tarRead)
+}
+func SnappyKlauspostSafe(file io.Reader) {
+	snappyReader := snappyKlauspost.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = snappyReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", snappyReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func S2(file io.Reader) {
 	var tarRead *tar.Reader
 
-	S2 := s2.NewReader(file)
+	s2Reader := s2.NewReader(file)
 	var out []byte = make([]byte, 70)
-	S2.Read(out) // BAD
+	s2Reader.Read(out) // $ hasValueFlow="s2Reader"
 	var buf bytes.Buffer
-	S2.DecodeConcurrent(&buf, 2) // BAD
-	tarRead = tar.NewReader(S2)
+	s2Reader.DecodeConcurrent(&buf, 2) // $ hasValueFlow="s2Reader"
+	tarRead = tar.NewReader(s2Reader)
 
 	TarDecompressor(tarRead)
+}
+func S2Safe(file io.Reader) {
+	s2Reader := s2.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = s2Reader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", s2Reader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
+}
+func GZipIoReader(src io.Reader, dst string) {
+	gzipReader, _ := gzip.NewReader(src)
+	dstF, _ := os.OpenFile(dst, os.O_RDWR|os.O_CREATE|os.O_TRUNC, 0755)
+	defer dstF.Close()
+	newSrc := io.Reader(gzipReader)
+	_, _ = io.Copy(dstF, newSrc) // $ hasValueFlow="newSrc"
 }
 func Gzip(file io.Reader) {
 	var tarRead *tar.Reader
 
-	gzipRead, _ := gzip.NewReader(file)
+	gzipReader, _ := gzip.NewReader(file)
 	var out []byte = make([]byte, 70)
-	gzipRead.Read(out) // BAD
-	tarRead = tar.NewReader(gzipRead)
+	gzipReader.Read(out) // $ hasValueFlow="gzipReader"
+	tarRead = tar.NewReader(gzipReader)
 
 	TarDecompressor(tarRead)
+}
+func GzipSafe(file io.Reader) {
+	gzipReader, _ := gzip.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = gzipReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", gzipReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func GzipKlauspost(file io.Reader) {
 	var tarRead *tar.Reader
 
-	gzipklauspost, _ := gzipKlauspost.NewReader(file)
+	gzipReader, _ := gzipKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	gzipklauspost.Read(out) // BAD
+	gzipReader.Read(out) // $ hasValueFlow="gzipReader"
 	var buf bytes.Buffer
-	gzipklauspost.WriteTo(&buf) // BAD
-	tarRead = tar.NewReader(gzipklauspost)
+	gzipReader.WriteTo(&buf) // $ hasValueFlow="gzipReader"
+	tarRead = tar.NewReader(gzipReader)
 
 	TarDecompressor(tarRead)
+}
+func GzipKlauspostSafe(file io.Reader) {
+	gzipReader, _ := gzipKlauspost.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = gzipReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", gzipReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func PzipKlauspost(file io.Reader) {
 	var tarRead *tar.Reader
 
-	pgzippgzip, _ := pgzipKlauspost.NewReader(file)
+	pgzipReader, _ := pgzipKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	pgzippgzip.Read(out) // BAD
+	pgzipReader.Read(out) // $ hasValueFlow="pgzipReader"
 	var buf bytes.Buffer
-	pgzippgzip.WriteTo(&buf) // BAD
-	tarRead = tar.NewReader(pgzippgzip)
+	pgzipReader.WriteTo(&buf) // $ hasValueFlow="pgzipReader"
+	tarRead = tar.NewReader(pgzipReader)
 
 	TarDecompressor(tarRead)
+}
+func PzipKlauspostSafe(file io.Reader) {
+	pgzipReader, _ := pgzipKlauspost.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = pgzipReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", pgzipReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func Zstd_Klauspost(file io.Reader) {
 	var tarRead *tar.Reader
 
-	zstd, _ := zstdKlauspost.NewReader(file)
+	zstdReader, _ := zstdKlauspost.NewReader(file)
 	var out []byte = make([]byte, 70)
-	zstd.Read(out) // BAD
+	zstdReader.Read(out) // $ hasValueFlow="zstdReader"
 	var buf bytes.Buffer
-	zstd.WriteTo(&buf) // BAD
+	zstdReader.WriteTo(&buf) // $ hasValueFlow="zstdReader"
 	var src []byte
-	zstd.DecodeAll(src, nil) // BAD
-	tarRead = tar.NewReader(zstd)
+	zstdReader.DecodeAll(src, nil) // $ hasValueFlow="zstdReader"
+	tarRead = tar.NewReader(zstdReader)
 
 	TarDecompressor(tarRead)
+}
+func Zstd_KlauspostSafe(file io.Reader) {
+	zstdReader, _ := zstdKlauspost.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = zstdReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", zstdReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func Zstd_DataDog(file io.Reader) {
 	var tarRead *tar.Reader
 
-	zstd := zstdDataDog.NewReader(file)
+	zstdReader := zstdDataDog.NewReader(file)
 	var out []byte = make([]byte, 70)
-	zstd.Read(out) // BAD
-	tarRead = tar.NewReader(zstd)
+	zstdReader.Read(out) // $ hasValueFlow="zstdReader"
+	tarRead = tar.NewReader(zstdReader)
 
 	TarDecompressor(tarRead)
+}
+func Zstd_DataDogSafe(file io.Reader) {
+	zstdReader := zstdDataDog.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = zstdReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", zstdReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 func Xz(file io.Reader) {
 	var tarRead *tar.Reader
 
-	xzRead, _ := xz.NewReader(file)
+	xzReader, _ := xz.NewReader(file)
 	var out []byte = make([]byte, 70)
-	xzRead.Read(out) // BAD
-	tarRead = tar.NewReader(xzRead)
+	xzReader.Read(out) // $ hasValueFlow="xzReader"
+	tarRead = tar.NewReader(xzReader)
+	fmt.Println(io.SeekStart)
 
 	TarDecompressor(tarRead)
+	TarDecompressor2(tarRead)
+	TarDecompressorSafe(tarRead)
+	TarDecompressorTN(tarRead)
+}
+
+func XzSafe(file io.Reader) {
+	xzReader, _ := xz.NewReader(file)
+	var out []byte = make([]byte, 70)
+	var totalBytes int64 = 0
+	i := 1
+	for i > 0 {
+		i, _ = xzReader.Read(out) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", xzReader)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
 
 func TarDecompressor(tarRead *tar.Reader) {
-	var tarOut []byte = make([]byte, 70)
-	tarRead.Read(tarOut) // BAD
 	files := make(fstest.MapFS)
 	for {
 		cur, err := tarRead.Next()
@@ -359,8 +618,38 @@ func TarDecompressor(tarRead *tar.Reader) {
 		if cur.Typeflag != tar.TypeReg {
 			continue
 		}
-		data, _ := io.ReadAll(tarRead) // BAD
+		data, _ := io.ReadAll(tarRead) // $ hasValueFlow="tarRead"
 		files[cur.Name] = &fstest.MapFile{Data: data}
 	}
 	fmt.Print(files)
+}
+
+func TarDecompressor2(tarRead *tar.Reader) {
+	var tarOut []byte = make([]byte, 70)
+	tarRead.Read(tarOut) // $ hasValueFlow="tarRead"
+	fmt.Println("do sth with output:", tarOut)
+}
+
+func TarDecompressorTN(tarRead *tar.Reader) {
+	var tarOut []byte = make([]byte, 70)
+	i := 1
+	for i > 0 {
+		i, _ = tarRead.Read(tarOut) // $ hasValueFlow="tarRead"
+		fmt.Println("do sth with output:", tarOut)
+	}
+}
+
+func TarDecompressorSafe(tarRead *tar.Reader) {
+	var tarOut []byte = make([]byte, 70)
+	i := 1
+	var totalBytes int64 = 0
+	for i > 0 {
+		i, _ = tarRead.Read(tarOut) // GOOD: The output size is being controlled
+		fmt.Println("do sth with output:", tarOut)
+		totalBytes = totalBytes + int64(i)
+		if totalBytes > 1024*1024*1024*5 {
+			fmt.Print(totalBytes, "exceeded")
+			break
+		}
+	}
 }
