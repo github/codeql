@@ -23,7 +23,7 @@ class MimeMultipartFileHeader extends UntrustedFlowSource::Range {
 
 /** Provides a taint tracking configuration for reasoning about decompression bomb vulnerabilities. */
 module DecompressionBomb {
-  import DecompressionBombsCustomizations
+  import experimental.frameworks.DecompressionBombsCustomizations
 
   module Config implements DataFlow::StateConfigSig {
     class FlowState = DecompressionBombs::FlowState;
