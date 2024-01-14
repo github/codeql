@@ -589,7 +589,7 @@ func Xz(file io.Reader) {
 	TarDecompressor(tarRead)
 	TarDecompressor2(tarRead)
 	TarDecompressorSafe(tarRead)
-	TarDecompressorTP(tarRead)
+	TarDecompressorTN(tarRead)
 }
 
 func XzSafe(file io.Reader) {
@@ -629,7 +629,8 @@ func TarDecompressor2(tarRead *tar.Reader) {
 	tarRead.Read(tarOut) // $ hasValueFlow="tarRead"
 	fmt.Println("do sth with output:", tarOut)
 }
-func TarDecompressorTP(tarRead *tar.Reader) {
+
+func TarDecompressorTN(tarRead *tar.Reader) {
 	var tarOut []byte = make([]byte, 70)
 	i := 1
 	for i > 0 {
@@ -637,6 +638,7 @@ func TarDecompressorTP(tarRead *tar.Reader) {
 		fmt.Println("do sth with output:", tarOut)
 	}
 }
+
 func TarDecompressorSafe(tarRead *tar.Reader) {
 	var tarOut []byte = make([]byte, 70)
 	i := 1
