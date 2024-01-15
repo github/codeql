@@ -517,14 +517,35 @@ class MemberDeclaration extends @property, Documentable {
   predicate hasPublicKeyword() { has_public_keyword(this) }
 
   /**
+   * Holds if this member is considered private.
+   *
+   * This may occur in two cases:
+   * - it is a TypeScript member annotated with the `private` keyword, or
+   * - the member has a private name, such as `#foo`, referring to a private field in the class
+   */
+  predicate isPrivate() { this.hasPrivateKeyword() or this.hasPrivateFieldName() }
+
+  /**
    * Holds if this is a TypeScript member annotated with the `private` keyword.
    */
-  predicate isPrivate() { has_private_keyword(this) }
+  predicate hasPrivateKeyword() { has_private_keyword(this) }
 
   /**
    * Holds if this is a TypeScript member annotated with the `protected` keyword.
    */
   predicate isProtected() { has_protected_keyword(this) }
+
+  /**
+   * Holds if the member has a private name, such as `#foo`, referring to a private field in the class.
+   *
+   * For example:
+   * ```js
+   * class Foo {
+   *   #method() {}
+   * }
+   * ```
+   */
+  predicate hasPrivateFieldName() { this.getNameExpr().(Label).getName().charAt(0) = "#" }
 
   /**
    * Gets the expression specifying the name of this member,
