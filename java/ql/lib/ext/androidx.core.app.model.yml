@@ -7,9 +7,6 @@ extensions:
       - ["androidx.core.app", "AlarmManagerCompat", True, "setAndAllowWhileIdle", "", "", "Argument[3]", "pending-intents", "manual"]
       - ["androidx.core.app", "AlarmManagerCompat", True, "setExact", "", "", "Argument[3]", "pending-intents", "manual"]
       - ["androidx.core.app", "AlarmManagerCompat", True, "setExactAndAllowWhileIdle", "", "", "Argument[3]", "pending-intents", "manual"]
-      - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(String,int,Notification)", "", "Argument[2]", "pending-intents", "manual"]
-      - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(int,Notification)", "", "Argument[1]", "pending-intents", "manual"]
-      
       - ["androidx.core.app", "NotificationCompat$Action", True, "Action", "(int,CharSequence,PendingIntent)", "", "Argument[1]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$Action$Builder", True, "Builder", "(IconCompat,CharSequence,PendingIntent)", "", "Argument[1]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$Action$Builder", True, "Builder", "(int,CharSequence,PendingIntent)", "", "Argument[1]", "notification", "manual"]
@@ -51,6 +48,9 @@ extensions:
       - ["androidx.core.app", "NotificationCompat$MessagingStyle$Message", True, "Message", "(CharSequence,long,CharSequence)", "", "Argument[0]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$MessagingStyle$Message", True, "Message", "(CharSequence,long,CharSequence)", "", "Argument[2]", "notification", "manual"]
       - ["androidx.core.app", "NotificationCompat$MessagingStyle$Message", True, "Message", "(CharSequence,long,Person)", "", "Argument[0]", "notification", "manual"]
+      - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(String,int,Notification)", "", "Argument[2]", "pending-intents", "manual"]
+      - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(int,Notification)", "", "Argument[1]", "pending-intents", "manual"]
+      
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
