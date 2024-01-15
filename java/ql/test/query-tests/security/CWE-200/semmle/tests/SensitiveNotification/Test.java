@@ -14,9 +14,6 @@ class Test extends Activity {
 
         Intent intent = new Intent();
         intent.putExtra("a", password);
-        PendingIntent pintent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-        builder.setContentIntent(pintent); // $MISSING: sensitive-notification // missing model for getActivity
-        builder.setDeleteIntent(pintent); // $MISSING: sensitive-notification 
 
         builder.addExtras(intent.getExtras()); // $sensitive-notification
         builder.setCategory(password); // $sensitive-notification
@@ -42,9 +39,8 @@ class Test extends Activity {
             .addLine(password) // $sensitive-notification
             .setBigContentTitle(password) // $sensitive-notification
             .setSummaryText(password)); // $sensitive-notification
-        // builder.setStyle(new Notification.MediaStyle()
-        //     .setRemotePlaybackInfo(password, 0, null) // $sensitive-notification
-        //     .setRemotePlaybackInfo("", 0, pintent)); // $MISSING: sensitive-notification
+        builder.setStyle(new Notification.MediaStyle()
+            .setRemotePlaybackInfo(password, 0, null)); // $sensitive-notification
         builder.setStyle( 
                 new Notification.MessagingStyle(password) // $sensitive-notification
                     .setConversationTitle(password) // $sensitive-notification
@@ -57,21 +53,13 @@ class Test extends Activity {
                 );
 
         builder.addAction(0, password, null); // $sensitive-notification
-        builder.addAction(0, "", pintent); // $MISSING: sensitive-notification
         builder.addAction(new Notification.Action(0, password, null)); // $sensitive-notification
-        builder.addAction(new Notification.Action(0, "", pintent)); // $MISSING: sensitive-notification
         builder.addAction(new Notification.Action.Builder(0, password, null) // $sensitive-notification
             .addExtras(intent.getExtras()) // $sensitive-notification
             .build());
         builder.addAction(new Notification.Action.Builder(null, password, null).build()); // $sensitive-notification
-        builder.addAction(new Notification.Action.Builder(0, "", pintent).build()); // $MISSING: sensitive-notification
-        builder.addAction(new Notification.Action.Builder(null, "", pintent).build()); // $MISSING: sensitive-notification
 
-        builder.setStyle(Notification.CallStyle.forIncomingCall(null, pintent, null)); // $MISSING: sensitive-notification
-        builder.setStyle(Notification.CallStyle.forIncomingCall(null, null, pintent)); // $MISSING: sensitive-notification
-        builder.setStyle(Notification.CallStyle.forOngoingCall(null, pintent)); // $MISSING: sensitive-notification
-        builder.setStyle(Notification.CallStyle.forScreeningCall(null, pintent, null)); // $MISSING: sensitive-notification
-        builder.setStyle(Notification.CallStyle.forScreeningCall(null, null, pintent)  // $MISSING: sensitive-notification
+        builder.setStyle(Notification.CallStyle.forScreeningCall(null, null, null) 
             .setVerificationText(password)); // $sensitive-notification
     }
 
@@ -92,9 +80,6 @@ class Test extends Activity {
 
         Intent intent = new Intent();
         intent.putExtra("a", password);
-        PendingIntent pintent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
-        builder.setContentIntent(pintent); // $MISSING: sensitive-notification // missing model for getActivity
-        builder.setDeleteIntent(pintent); // $MISSING: sensitive-notification 
 
         builder.addExtras(intent.getExtras()); // $sensitive-notification
         builder.setCategory(password); // $sensitive-notification
@@ -132,21 +117,13 @@ class Test extends Activity {
                 );
 
         builder.addAction(0, password, null); // $sensitive-notification
-        builder.addAction(0, "", pintent); // $MISSING: sensitive-notification
         builder.addAction(new NotificationCompat.Action(0, password, null)); // $sensitive-notification
-        builder.addAction(new NotificationCompat.Action(0, "", pintent)); // $MISSING: sensitive-notification
         builder.addAction(new NotificationCompat.Action.Builder(0, password, null) // $sensitive-notification
             .addExtras(intent.getExtras()) // $sensitive-notification
             .build());
         builder.addAction(new NotificationCompat.Action.Builder(null, password, null).build()); // $sensitive-notification
-        builder.addAction(new NotificationCompat.Action.Builder(0, "", pintent).build()); // $MISSING: sensitive-notification
-        builder.addAction(new NotificationCompat.Action.Builder(null, "", pintent).build()); // $MISSING: sensitive-notification
 
-        builder.setStyle(NotificationCompat.CallStyle.forIncomingCall(null, pintent, null)); // $MISSING: sensitive-notification
-        builder.setStyle(NotificationCompat.CallStyle.forIncomingCall(null, null, pintent)); // $MISSING: sensitive-notification
-        builder.setStyle(NotificationCompat.CallStyle.forOngoingCall(null, pintent)); // $MISSING: sensitive-notification
-        builder.setStyle(NotificationCompat.CallStyle.forScreeningCall(null, pintent, null)); // $MISSING: sensitive-notification
-        builder.setStyle(NotificationCompat.CallStyle.forScreeningCall(null, null, pintent)  // $MISSING: sensitive-notification
+        builder.setStyle(NotificationCompat.CallStyle.forScreeningCall(null, null, null)
             .setVerificationText(password)); // $sensitive-notification
     }
 }
