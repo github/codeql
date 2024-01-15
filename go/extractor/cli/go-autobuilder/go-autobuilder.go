@@ -103,7 +103,7 @@ func getEnvGoSemVer() string {
 	if rcIndex != -1 {
 		return semver.Canonical("v"+goVersion[2:rcIndex]) + "-" + goVersion[rcIndex:]
 	} else {
-		return "v" + goVersion[2:]
+		return semver.Canonical("v" + goVersion[2:])
 	}
 }
 
