@@ -559,9 +559,7 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
 private class FunctionValueCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic {
   FunctionValueCharacteristic() { this = "function value" }
 
-  override predicate appliesToEndpoint(Endpoint e) {
-    e.asNode().asExpr() instanceof FunctionalExpr
-  }
+  override predicate appliesToEndpoint(Endpoint e) { e.asNode().asExpr() instanceof FunctionalExpr }
 }
 
 /**
@@ -575,9 +573,7 @@ private class CannotBeTaintedCharacteristic extends CharacteristicsImpl::LikelyN
 {
   CannotBeTaintedCharacteristic() { this = "cannot be tainted" }
 
-  override predicate appliesToEndpoint(Endpoint e) {
-    not this.isKnownOutNodeForStep(e)
-  }
+  override predicate appliesToEndpoint(Endpoint e) { not this.isKnownOutNodeForStep(e) }
 
   /**
    * Holds if the node `n` is known as the predecessor in a modeled flow step.
