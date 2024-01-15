@@ -74,16 +74,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         includeByDefault)
                 });
 
-            // Move included pathfilters to the front of the list:
-            pathFilters.Sort((pf1, pf2) => -1 * pf1.Include.CompareTo(pf2.Include));
             return unfilteredResult.Where(f =>
             {
                 var include = f.FileInclusion.Include;
-                foreach (var pathFilter in pathFilters)
+                // LGTM_INDEX_FILTERS is a prioritized list, where later filters takes
+                // priority over earlier ones.
+                for (int i = pathFilters.Count - 1; i >= 0; i--)
                 {
+                    var pathFilter = pathFilters[i];
                     if (pathFilter.Regex.IsMatch(f.FileInclusion.Path))
                     {
                         include = pathFilter.Include;
+                        break;
                     }
                 }
 
