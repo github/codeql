@@ -795,11 +795,10 @@ func installDependenciesAndBuild() {
 	}
 
 	goVersionInfo := tryReadGoDirective(buildInfo)
-	canonEnvSemVer := semver.Canonical(getEnvGoSemVer())
 
 	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
 	// Go tooling should install required Go versions as needed.
-	if semver.Compare(canonEnvSemVer, "v1.21.0") < 0 && goVersionInfo.Found && semver.Compare("v"+goVersionInfo.Version, canonEnvSemVer) > 0 {
+	if semver.Compare(getEnvGoSemVer(), "v1.21.0") < 0 && goVersionInfo.Found && semver.Compare("v"+goVersionInfo.Version, getEnvGoSemVer()) > 0 {
 		diagnostics.EmitNewerGoVersionNeeded()
 	}
 
