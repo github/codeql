@@ -1,1 +1,1 @@
-import codeql.swift.controlflow.internal.ControlFlowGraphParameter::CfgImpl::Consistency
+import codeql.swift.controlflow.internal.ControlFlowGraphImplSpecific::CfgImpl::Consistency
