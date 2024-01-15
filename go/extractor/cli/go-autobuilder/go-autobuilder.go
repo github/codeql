@@ -96,7 +96,15 @@ func getEnvGoSemVer() string {
 	if !strings.HasPrefix(goVersion, "go") {
 		log.Fatalf("Expected 'go version' output of the form 'go1.2.3'; got '%s'", goVersion)
 	}
-	return "v" + goVersion[2:]
+	// Go versions don't follow the SemVer format, but the only exception we normally care about
+	// is release candidates; so this is a horrible hack to convert e.g. `go1.22rc1` into `go1.22-rc1`
+	// which is compatible with the SemVer specification
+	rcIndex := strings.Index(goVersion, "rc")
+	if rcIndex != -1 {
+		return semver.Canonical("v"+goVersion[2:rcIndex]) + "-" + goVersion[rcIndex:]
+	} else {
+		return "v" + goVersion[2:]
+	}
 }
 
 // Returns the import path of the package being built, or "" if it cannot be determined.
@@ -787,10 +795,11 @@ func installDependenciesAndBuild() {
 	}
 
 	goVersionInfo := tryReadGoDirective(buildInfo)
+	canonEnvSemVer := semver.Canonical(getEnvGoSemVer())
 
 	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
 	// Go tooling should install required Go versions as needed.
-	if semver.Compare(getEnvGoSemVer(), "v1.21.0") < 0 && goVersionInfo.Found && semver.Compare("v"+goVersionInfo.Version, getEnvGoSemVer()) > 0 {
+	if semver.Compare(canonEnvSemVer, "v1.21.0") < 0 && goVersionInfo.Found && semver.Compare("v"+goVersionInfo.Version, canonEnvSemVer) > 0 {
 		diagnostics.EmitNewerGoVersionNeeded()
 	}
 
