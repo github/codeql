@@ -77,7 +77,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return unfilteredResult.Where(f =>
             {
                 var include = f.FileInclusion.Include;
-                // LGTM_INDEX_FILTERS is a prioritized list, where later filters takes
+                // LGTM_INDEX_FILTERS is a prioritized list, where later filters take
                 // priority over earlier ones.
                 for (int i = pathFilters.Count - 1; i >= 0; i--)
                 {
