@@ -13,16 +13,16 @@ static constexpr std::string_view unknownType = "<unknown_target_type>";
 
 const std::string_view codeql::programName = "autobuilder";
 
-constexpr codeql::SwiftDiagnostic noProjectFound{
-    .id = "no-project-found",
-    .name = "No Xcode project or workspace found",
-    .action = "Set up a [manual build command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
+constexpr codeql::Diagnostic noProjectFound = codeql::swiftDiagnostic(
+    "no-project-found",
+    "No Xcode project or workspace found",
+    "Set up a [manual build command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK);
 
-constexpr codeql::SwiftDiagnostic noSwiftTarget{
-    .id = "no-swift-target",
-    .name = "No Swift compilation target found",
-    .action = "To analyze a custom set of source files, set up a [manual build "
-              "command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
+constexpr codeql::Diagnostic noSwiftTarget = codeql::swiftDiagnostic(
+    "no-swift-target",
+    "No Swift compilation target found",
+    "To analyze a custom set of source files, set up a [manual build "
+              "command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK);
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"main"};
