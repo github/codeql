@@ -520,8 +520,7 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
   NonPublicMethodCharacteristic() { this = "non-public method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getExtensibleType() = "sinkModel" and
-    not e.getCallable().isPublic()
+    exists(Callable c | c = e.getCallable() | not c.isPublic())
   }
 }
 
@@ -543,7 +542,6 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
   }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getExtensibleType() = "sinkModel" and
     not ApplicationCandidatesImpl::isSink(e, _, _) and
     exists(CallArgument otherSink |
       ApplicationCandidatesImpl::isSink(otherSink, _, "manual") and
@@ -562,7 +560,6 @@ private class FunctionValueCharacteristic extends CharacteristicsImpl::LikelyNot
   FunctionValueCharacteristic() { this = "function value" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getExtensibleType() = "sinkModel" and
     e.asNode().asExpr() instanceof FunctionalExpr
   }
 }
@@ -579,7 +576,6 @@ private class CannotBeTaintedCharacteristic extends CharacteristicsImpl::LikelyN
   CannotBeTaintedCharacteristic() { this = "cannot be tainted" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getExtensibleType() = "sinkModel" and
     not this.isKnownOutNodeForStep(e)
   }
 
