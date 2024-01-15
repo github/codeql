@@ -1,4 +1,3 @@
-#select
 | gradle-sample2/src/main/java/com/example/App2.java:0:0:0:0 | App2 |
 | gradle-sample2/src/test/java/com/example/AppTest2.java:0:0:0:0 | AppTest2 |
 | gradle-sample/src/main/java/com/example/App.java:0:0:0:0 | App |
@@ -7,28 +6,3 @@
 | maven-project-1/src/test/java/com/example/AppTest3.java:0:0:0:0 | AppTest3 |
 | maven-project-2/src/main/java/com/example/App4.java:0:0:0:0 | App4 |
 | maven-project-2/src/test/java/com/example/AppTest4.java:0:0:0:0 | AppTest4 |
-xmlFiles
-| gradle-sample2/gradle/verification-metadata.xml:0:0:0:0 | gradle-sample2/gradle/verification-metadata.xml |
-| gradle-sample/gradle/verification-metadata.xml:0:0:0:0 | gradle-sample/gradle/verification-metadata.xml |
-| maven-project-1/pom.xml:0:0:0:0 | maven-project-1/pom.xml |
-| maven-project-1/src/main/resources/page.xml:0:0:0:0 | maven-project-1/src/main/resources/page.xml |
-| maven-project-1/src/main/resources/struts.xml:0:0:0:0 | maven-project-1/src/main/resources/struts.xml |
-| maven-project-2/pom.xml:0:0:0:0 | maven-project-2/pom.xml |
-| maven-project-2/src/main/resources/page.xml:0:0:0:0 | maven-project-2/src/main/resources/page.xml |
-| maven-project-2/src/main/resources/struts.xml:0:0:0:0 | maven-project-2/src/main/resources/struts.xml |
-propertiesFiles
-| gradle-sample2/.gradle/6.6.1/gc.properties:0:0:0:0 | gradle-sample2/.gradle/6.6.1/gc.properties |
-| gradle-sample2/.gradle/7.3/dependencies-accessors/gc.properties:0:0:0:0 | gradle-sample2/.gradle/7.3/dependencies-accessors/gc.properties |
-| gradle-sample2/.gradle/7.3/gc.properties:0:0:0:0 | gradle-sample2/.gradle/7.3/gc.properties |
-| gradle-sample2/.gradle/buildOutputCleanup/cache.properties:0:0:0:0 | gradle-sample2/.gradle/buildOutputCleanup/cache.properties |
-| gradle-sample2/.gradle/configuration-cache/gc.properties:0:0:0:0 | gradle-sample2/.gradle/configuration-cache/gc.properties |
-| gradle-sample2/.gradle/vcs-1/gc.properties:0:0:0:0 | gradle-sample2/.gradle/vcs-1/gc.properties |
-| gradle-sample2/gradle/wrapper/gradle-wrapper.properties:0:0:0:0 | gradle-sample2/gradle/wrapper/gradle-wrapper.properties |
-| gradle-sample/.gradle/6.6.1/gc.properties:0:0:0:0 | gradle-sample/.gradle/6.6.1/gc.properties |
-| gradle-sample/.gradle/buildOutputCleanup/cache.properties:0:0:0:0 | gradle-sample/.gradle/buildOutputCleanup/cache.properties |
-| gradle-sample/.gradle/configuration-cache/gc.properties:0:0:0:0 | gradle-sample/.gradle/configuration-cache/gc.properties |
-| gradle-sample/.gradle/vcs-1/gc.properties:0:0:0:0 | gradle-sample/.gradle/vcs-1/gc.properties |
-| gradle-sample/gradle/wrapper/gradle-wrapper.properties:0:0:0:0 | gradle-sample/gradle/wrapper/gradle-wrapper.properties |
-| maven-project-1/src/main/resources/my-app.properties:0:0:0:0 | maven-project-1/src/main/resources/my-app.properties |
-| maven-project-2/src/main/resources/my-app.properties:0:0:0:0 | maven-project-2/src/main/resources/my-app.properties |
-| test-db/log/ext/javac.properties:0:0:0:0 | test-db/log/ext/javac.properties |
