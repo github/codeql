@@ -25,5 +25,6 @@ Go framework & library support
    `protobuf <https://pkg.go.dev/google.golang.org/protobuf>`_,"``github.com/golang/protobuf*``, ``google.golang.org/protobuf*``",,16,
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,
-   Totals,,8,837,
+   Others,``github.com/valyala/fasthttp``,,5,
+   Totals,,8,842,
 
