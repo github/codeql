@@ -594,6 +594,9 @@ module API {
       exportedName = "" and
       result = getAModuleImportRaw(moduleName)
     }
+
+    /** Gets a sink node that represents instances of `cls`. */
+    Node getClassInstance(DataFlow::ClassNode cls) { result = Impl::MkClassInstance(cls) }
   }
 
   /**
