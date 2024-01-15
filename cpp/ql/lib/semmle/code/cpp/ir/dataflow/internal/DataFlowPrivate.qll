@@ -436,10 +436,10 @@ newtype TPosition =
   }
 
 private newtype TReturnKind =
-  TNormalReturnKind(int index) {
+  TNormalReturnKind(int indirectionIndex) {
     exists(IndirectReturnNode return |
       return.isNormalReturn() and
-      index = return.getIndirectionIndex() - 1 // We subtract one because the return loads the value.
+      indirectionIndex = return.getIndirectionIndex() - 1 // We subtract one because the return loads the value.
     )
   } or
   TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
@@ -458,16 +458,22 @@ class ReturnKind extends TReturnKind {
   abstract string toString();
 }
 
+/**
+ * A value returned from a callable using a `return` statement, that is, a "normal" return.
+ */
 class NormalReturnKind extends ReturnKind, TNormalReturnKind {
-  int index;
+  int indirectionIndex;
 
-  NormalReturnKind() { this = TNormalReturnKind(index) }
+  NormalReturnKind() { this = TNormalReturnKind(indirectionIndex) }
 
-  int getIndirectionIndex() { result = index }
+  int getIndirectionIndex() { result = indirectionIndex }
 
   override string toString() { result = "indirect return" }
 }
 
+/**
+ * A value returned from a callable through a parameter.
+ */
 private class IndirectReturnKind extends ReturnKind, TIndirectReturnKind {
   int argumentIndex;
   int indirectionIndex;
