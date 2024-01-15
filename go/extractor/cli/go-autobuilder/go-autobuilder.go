@@ -847,7 +847,7 @@ func installDependenciesAndBuild() {
 }
 
 const minGoVersion = "1.11"
-const maxGoVersion = "1.21"
+const maxGoVersion = "1.22"
 
 // Check if `version` is lower than `minGoVersion`. Note that for this comparison we ignore the
 // patch part of the version, so 1.20.1 and 1.20 are considered equal.
