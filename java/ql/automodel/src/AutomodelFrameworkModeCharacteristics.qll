@@ -322,9 +322,9 @@ class FrameworkModeMetadataExtractor extends string {
       e.getExtensibleType() = extensibleType
     ) and
     (
-      not CharacteristicsImpl::isModeled(e, _, _, _) and alreadyAiModeled = ""
+      not CharacteristicsImpl::isModeled(e, _, extensibleType, _) and alreadyAiModeled = ""
       or
-      CharacteristicsImpl::isModeled(e, _, _, alreadyAiModeled)
+      CharacteristicsImpl::isModeled(e, _, extensibleType, alreadyAiModeled)
     )
   }
 }
