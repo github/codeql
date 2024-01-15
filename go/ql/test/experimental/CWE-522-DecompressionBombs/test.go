@@ -634,7 +634,7 @@ func TarDecompressorTN(tarRead *tar.Reader) {
 	var tarOut []byte = make([]byte, 70)
 	i := 1
 	for i > 0 {
-		i, _ = tarRead.Read(tarOut) // $ hasValueFlow="tarRead"
+		i, _ = tarRead.Read(tarOut) // GOOD: the output size is being controlled
 		fmt.Println("do sth with output:", tarOut)
 	}
 }
