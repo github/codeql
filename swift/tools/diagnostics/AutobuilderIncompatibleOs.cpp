@@ -9,7 +9,7 @@
 const std::string_view codeql::programName = "autobuilder";
 const std::string_view codeql::extractorName = "swift";
 
-constexpr codeql::Diagnostic incompatibleOs = codeql::Diagnostic{
+constexpr codeql::Diagnostic incompatibleOs{
     .id = "incompatible-os",
     .name = "Incompatible operating system (expected macOS)",
     .action =
