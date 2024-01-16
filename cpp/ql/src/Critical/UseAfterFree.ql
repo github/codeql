@@ -175,9 +175,24 @@ predicate isExcludeFreeUsePair(DeallocationExpr dealloc1, Expr e) {
 
 module UseAfterFree = FlowFromFree<isUse/2, isExcludeFreeUsePair/2>;
 
-from UseAfterFree::PathNode source, UseAfterFree::PathNode sink, DeallocationExpr dealloc
+/*
+ * In order to reduce false positives, the set of sinks is restricted to only those
+ * that satisfy at least one of the following two criteria:
+ * 1. The source dominates the sink, or
+ * 2. The sink post-dominates the source.
+ */
+
+from
+  UseAfterFree::PathNode source, UseAfterFree::PathNode sink, DeallocationExpr dealloc,
+  DataFlow::Node srcNode, DataFlow::Node sinkNode
 where
   UseAfterFree::flowPath(source, sink) and
-  isFree(source.getNode(), _, _, dealloc)
-select sink.getNode(), source, sink, "Memory may have been previously freed by $@.", dealloc,
+  source.getNode() = srcNode and
+  sink.getNode() = sinkNode and
+  isFree(srcNode, _, _, dealloc) and
+  (
+    sinkStrictlyPostDominatesSource(srcNode, sinkNode) or
+    sourceStrictlyDominatesSink(srcNode, sinkNode)
+  )
+select sinkNode, source, sink, "Memory may have been previously freed by $@.", dealloc,
   dealloc.toString()

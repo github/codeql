@@ -38,14 +38,25 @@ predicate strictlyDominates(IRBlock b1, int i1, IRBlock b2, int i2) {
   b1.strictlyDominates(b2)
 }
 
+predicate sinkStrictlyPostDominatesSource(DataFlow::Node source, DataFlow::Node sink) {
+  exists(IRBlock b1, int i1, IRBlock b2, int i2 |
+    source.hasIndexInBlock(b1, i1) and
+    sink.hasIndexInBlock(b2, i2) and
+    strictlyPostDominates(b2, i2, b1, i1)
+  )
+}
+
+predicate sourceStrictlyDominatesSink(DataFlow::Node source, DataFlow::Node sink) {
+  exists(IRBlock b1, int i1, IRBlock b2, int i2 |
+    source.hasIndexInBlock(b1, i1) and
+    sink.hasIndexInBlock(b2, i2) and
+    strictlyDominates(b1, i1, b2, i2)
+  )
+}
+
 /**
  * Constructs a `FlowFromFreeConfig` module that can be used to find flow between
  * a pointer being freed by some deallocation function, and a user-specified sink.
- *
- * In order to reduce false positives, the set of sinks is restricted to only those
- * that satisfy at least one of the following two criteria:
- * 1. The source dominates the sink, or
- * 2. The sink post-dominates the source.
  */
 module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
   module FlowFromFreeConfig implements DataFlow::StateConfigSig {
@@ -59,20 +70,11 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
 
     pragma[inline]
     predicate isSink(DataFlow::Node sink, FlowState state) {
-      exists(
-        Expr e, DataFlow::Node source, IRBlock b1, int i1, IRBlock b2, int i2,
-        DeallocationExpr dealloc
-      |
+      exists(Expr e, DeallocationExpr dealloc |
         isASink(sink, e) and
-        isFree(source, _, state, dealloc) and
+        isFree(_, _, state, dealloc) and
         e != state and
-        source.hasIndexInBlock(b1, i1) and
-        sink.hasIndexInBlock(b2, i2) and
         not isExcluded(dealloc, e)
-      |
-        strictlyDominates(b1, i1, b2, i2)
-        or
-        strictlyPostDominates(b2, i2, b1, i1)
       )
     }
 
