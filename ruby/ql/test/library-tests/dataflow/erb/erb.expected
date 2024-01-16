@@ -1,5 +1,16 @@
-testFailures
-edges
-nodes
-subpaths
-#select
+| main.rb:3:13:3:21 | call to source | main.rb:3:9:3:9 | x |
+| main.rb:3:13:3:21 | call to source | main.rb:3:9:3:21 | ... = ... |
+| main.rb:3:13:3:21 | call to source | main.rb:4:9:4:12 | view [@x] |
+| main.rb:3:13:3:21 | call to source | main.rb:4:9:4:26 | ... = ... [@x] |
+| main.rb:3:13:3:21 | call to source | main.rb:4:16:4:26 | call to new [@x] |
+| main.rb:3:13:3:21 | call to source | main.rb:4:16:4:26 | synthetic splat argument [splat position 0] |
+| main.rb:3:13:3:21 | call to source | main.rb:4:25:4:25 | x |
+| main.rb:3:13:3:21 | call to source | main.rb:5:9:5:20 | synthetic splat argument [splat position 0, ... (2)] |
+| main.rb:3:13:3:21 | call to source | main.rb:5:16:5:19 | view [@x] |
+| main.rb:3:13:3:21 | call to source | main.rb:5:16:5:19 | view [Ext] [@x] |
+| main.rb:3:13:3:21 | call to source | view.rb:2:5:4:7 | synthetic splat parameter [splat position 0] |
+| main.rb:3:13:3:21 | call to source | view.rb:2:20:2:20 | x |
+| main.rb:3:13:3:21 | call to source | view.rb:2:20:2:20 | x |
+| main.rb:3:13:3:21 | call to source | view.rb:3:9:3:10 | [post] self [@x] |
+| main.rb:3:13:3:21 | call to source | view.rb:3:9:3:14 | ... = ... |
+| main.rb:3:13:3:21 | call to source | view.rb:3:14:3:14 | x |
