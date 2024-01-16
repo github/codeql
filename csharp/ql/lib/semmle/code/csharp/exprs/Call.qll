@@ -319,7 +319,7 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
         ]
     ) and
     name = this.getCallName() and
-    not expr_call(this, _)
+    not exists(Method m | expr_call(this, m))
   }
 
   pragma[nomagic]
