@@ -436,6 +436,22 @@ predicate isNegativeExample(
   )
 }
 
+/**
+ * Holds if the given `endpoint` is a positive example for the `endpointType`.
+ *
+ * The other parameters record various other properties of interest.
+ */
+predicate isPositiveExample(
+  Endpoint endpoint, string endpointType, string package, string type, string subtypes, string name,
+  string signature, string input, string output, string isVarargsArray, string extensibleType
+) {
+  any(ApplicationModeMetadataExtractor meta)
+      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output,
+        isVarargsArray, _, extensibleType) and
+  CharacteristicsImpl::isKnownAs(endpoint, endpointType, _) and
+  exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()))
+}
+
 /*
  * EndpointCharacteristic classes that are specific to Automodel for Java.
  */

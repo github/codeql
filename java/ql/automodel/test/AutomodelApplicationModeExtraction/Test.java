@@ -27,15 +27,15 @@ class Test {
 
 	public static void copyFiles(Path source, Path target, CopyOption option) throws Exception {
 		Files.copy(
-			source, // positive example (known sink)
-			target, // positive example (known sink)
+			source, // $ positiveExample=copy(Path,Path,CopyOption[]):Argument[0](path-injection)
+			target, // $ positiveExample=copy(Path,Path,CopyOption[]):Argument[1](path-injection)
 			option // no candidate (not modeled, but source and target are modeled)
 		); // $ sourceModel=copy(Path,Path,CopyOption[]):ReturnValue
 	}
 
 	public static InputStream getInputStream(Path openPath) throws Exception {
 		return Files.newInputStream(
-			openPath // $ sinkModel=newInputStream(Path,OpenOption[]):Argument[0] // positive example (known sink), candidate ("only" ai-modeled, and useful as a candidate in regression testing)
+			openPath // $ sinkModel=newInputStream(Path,OpenOption[]):Argument[0] positiveExample=newInputStream(Path,OpenOption[]):Argument[0](path-injection) // sink candidate because "only" ai-modeled, and useful as a candidate in regression testing
 		); // $ sourceModel=newInputStream(Path,OpenOption[]):ReturnValue
 	}
 
@@ -63,7 +63,7 @@ class Test {
 	}
 
 	public static void WebSocketExample(URLConnection c) throws Exception {
-		c.getInputStream(); // $ sinkModel=getInputStream():Argument[this] // not a source candidate (manual modeling)
+		c.getInputStream(); // $ sinkModel=getInputStream():Argument[this] positiveExample=getInputStream():ReturnValue(remote) // not a source candidate (manual modeling)
 	}
 }
 
@@ -87,15 +87,17 @@ class TaskUtils {
 class MoreTests {
 	public static void FilesListExample(Path p) throws Exception {
 		Files.list(
-			Files.createDirectories(p) // $ sourceModel=createDirectories(Path,FileAttribute[]):ReturnValue negativeExample=list(Path):Argument[0] // modeled as a flow step
+			Files.createDirectories( // $ negativeExample=list(Path):Argument[0] // modeled as a flow step
+				p // $ positiveExample=createDirectories(Path,FileAttribute[]):Argument[0](path-injection)
+			) // $ sourceModel=createDirectories(Path,FileAttribute[]):ReturnValue
 		); // $ sourceModel=list(Path):ReturnValue
 
 		Files.delete(
-			p // $ sinkModel=delete(Path):Argument[0]
+			p // $ sinkModel=delete(Path):Argument[0] positiveExample=delete(Path):Argument[0](path-injection)
 		); // $ negativeExample=delete(Path):ReturnValue // return type is void
 
 		Files.deleteIfExists(
-			p // $ sinkModel=deleteIfExists(Path):Argument[0]
+			p // $ sinkModel=deleteIfExists(Path):Argument[0] positiveExample=deleteIfExists(Path):Argument[0](path-injection)
 		); // $ negativeExample=deleteIfExists(Path):ReturnValue // return type is boolean
 	}
 }
