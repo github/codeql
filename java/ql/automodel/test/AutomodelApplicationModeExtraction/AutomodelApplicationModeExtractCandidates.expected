@@ -1,19 +1,2 @@
-| PluginImpl.java:5:27:5:37 | name | hudson | Plugin | configure | (String,String) |  | Parameter[0] | sourceModel |
-| PluginImpl.java:5:40:5:51 | value | hudson | Plugin | configure | (String,String) |  | Parameter[1] | sourceModel |
-| Test.java:19:3:19:11 | reference | java.util.concurrent.atomic | AtomicReference | set | (Object) | Argument[this] |  | sinkModel |
-| Test.java:19:3:19:24 | set(...) | java.util.concurrent.atomic | AtomicReference | set | (Object) |  | ReturnValue | sourceModel |
-| Test.java:24:3:24:10 | supplier | java.util.function | Supplier | get | () | Argument[this] |  | sinkModel |
-| Test.java:24:3:24:16 | get(...) | java.util.function | Supplier | get | () |  | ReturnValue | sourceModel |
-| Test.java:28:3:32:3 | copy(...) | java.nio.file | Files | copy | (Path,Path,CopyOption[]) |  | ReturnValue | sourceModel |
-| Test.java:36:10:38:3 | newInputStream(...) | java.nio.file | Files | newInputStream | (Path,OpenOption[]) |  | ReturnValue | sourceModel |
-| Test.java:37:4:37:11 | openPath | java.nio.file | Files | newInputStream | (Path,OpenOption[]) | Argument[0] |  | sinkModel |
-| Test.java:43:4:43:22 | get(...) | java.nio.file | Paths | get | (String,String[]) |  | ReturnValue | sourceModel |
-| Test.java:54:3:59:3 | walk(...) | java.nio.file | Files | walk | (Path,FileVisitOption[]) |  | ReturnValue | sourceModel |
-| Test.java:54:3:59:3 | walk(...) | java.nio.file | Files | walk | (Path,FileVisitOption[]) | Argument[1] |  | sinkModel |
-| Test.java:63:3:63:3 | c | java.net | URLConnection | getInputStream | () | Argument[this] |  | sinkModel |
-| Test.java:68:30:68:47 | writer | java.lang | Throwable | printStackTrace | (PrintWriter) |  | Parameter[0] | sourceModel |
-| Test.java:86:3:88:3 | list(...) | java.nio.file | Files | list | (Path) |  | ReturnValue | sourceModel |
-| Test.java:87:4:87:29 | createDirectories(...) | java.nio.file | Files | createDirectories | (Path,FileAttribute[]) |  | ReturnValue | sourceModel |
-| Test.java:90:3:92:3 | delete(...) | java.nio.file | Files | delete | (Path) |  | ReturnValue | sourceModel |
-| Test.java:91:4:91:4 | p | java.nio.file | Files | delete | (Path) | Argument[0] |  | sinkModel |
-| Test.java:95:4:95:4 | p | java.nio.file | Files | deleteIfExists | (Path) | Argument[0] |  | sinkModel |
+testFailures
+failures

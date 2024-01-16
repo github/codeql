@@ -16,56 +16,59 @@ import java.util.concurrent.FutureTask;
 class Test {
 	public static void main(String[] args) throws Exception {
 		AtomicReference<String> reference = new AtomicReference<>(); // uninteresting (parameterless constructor)
-		reference.set(args[0]); // arg[0] is not a candidate (modeled as value flow step)
-		// ^^^^^^ Argument[this] is a candidate
+		reference.set( // $ sinkModel=set(Object):Argument[this]
+			args[0] // not a sink candidate (modeled as a flow step)
+		);  // $ sourceModel=set(Object):ReturnValue
 	}
 
 	public static void callSupplier(Supplier<String> supplier) {
-		supplier.get(); // Argument[this] is a sink candidate; the call is a source candidate
+		supplier.get(); // $ sourceModel=get():ReturnValue sinkModel=get():Argument[this]
 	}
 
 	public static void copyFiles(Path source, Path target, CopyOption option) throws Exception {
-		Files.copy( // the call is a source candidate
+		Files.copy(
 			source, // positive example (known sink)
 			target, // positive example (known sink)
 			option // no candidate (not modeled, but source and target are modeled)
-		);
+		); // $ sourceModel=copy(Path,Path,CopyOption[]):ReturnValue
 	}
 
 	public static InputStream getInputStream(Path openPath) throws Exception {
-		return Files.newInputStream( // the call is a source candidate
-			openPath // positive example (known sink), candidate ("only" ai-modeled, and useful as a candidate in regression testing)
-		);
+		return Files.newInputStream(
+			openPath // $ sinkModel=newInputStream(Path,OpenOption[]):Argument[0] // positive example (known sink), candidate ("only" ai-modeled, and useful as a candidate in regression testing)
+		); // $ sourceModel=newInputStream(Path,OpenOption[]):ReturnValue
 	}
 
 	public static InputStream getInputStream(String openPath) throws Exception {
 		return Test.getInputStream( // the call is not a source candidate (argument to local call)
-			Paths.get(openPath) // no sink candidate (argument to local call); the call is a source candidate
+			Paths.get(
+				openPath // not a sink candidate (argument to local call)
+			) // $ sourceModel=get(String,String[]):ReturnValue
 		);
 	}
 
 	public static int compareFiles(File f1, File f2) {
-		return f1.compareTo( // compareTo call is a known sanitizer
+		return f1.compareTo(
 			f2 // negative sink example (modeled as not a sink)
 		); // the call is a negative source candidate (sanitizer)
 	}
 
 	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
-		Files.walk( // the call is a source candidate
+		Files.walk(
 			p, // negative sink example (modeled as a taint step)
-			o, // the implicit varargs array is a candidate
+			o, // the implicit varargs array is a candidate, annotated on the last line of the call
 			o // not a candidate (only the first arg corresponding to a varargs array
 			  // is extracted)
-		);
+		); // $ sourceModel=walk(Path,FileVisitOption[]):ReturnValue sinkModel=walk(Path,FileVisitOption[]):Argument[1]
 	}
 
 	public static void WebSocketExample(URLConnection c) throws Exception {
-		c.getInputStream(); // the call is a source example, c is a sink candidate
+		c.getInputStream(); // $ sinkModel=getInputStream():Argument[this] // not a source candidate (manual modeling)
 	}
 }
 
 class OverrideTest extends Exception {
-	public void printStackTrace(PrintWriter writer) { // writer is a source candidate because it overrides an existing method
+	public void printStackTrace(PrintWriter writer) { // $ sourceModel=printStackTrace(PrintWriter):Parameter[0]
 		return;
 	}
 
@@ -83,16 +86,16 @@ class TaskUtils {
 
 class MoreTests {
 	public static void FilesListExample(Path p) throws Exception {
-		Files.list( // the call is a source candidate
-			Files.createDirectories(p) // the call is a source candidate, but not a sink candidate (modeled as a taint step)
-		);
+		Files.list(
+			Files.createDirectories(p) // $ sourceModel=createDirectories(Path,FileAttribute[]):ReturnValue // not a sink candidate (modeled as a taint step)
+		); // $ sourceModel=list(Path):ReturnValue
 
-		Files.delete( // not a source candidate (return type is void)
-			p // sink candidate
-		);
+		Files.delete(
+			p // $ sinkModel=delete(Path):Argument[0]
+		); // $ SPURIOUS: sourceModel=delete(Path):ReturnValue
 
-		Files.deleteIfExists( // not a source candidate (return type is boolean)
-			p // sink candidate
-		);
+		Files.deleteIfExists(
+			p // $ sinkModel=deleteIfExists(Path):Argument[0]
+		); // not a source candidate (return type is boolean)
 	}
 }
