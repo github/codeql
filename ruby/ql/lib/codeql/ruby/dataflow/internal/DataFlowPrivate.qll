@@ -236,6 +236,14 @@ module LocalFlow {
     nodeTo.(BlockArgumentNode).getParameterNode(true) = nodeFrom
   }
 
+  predicate flowSummaryLocalStep(
+    FlowSummaryNode nodeFrom, FlowSummaryNode nodeTo, FlowSummaryImpl::Public::SummarizedCallable c
+  ) {
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.getSummaryNode(),
+      nodeTo.getSummaryNode(), true) and
+    c = nodeFrom.getSummarizedCallable()
+  }
+
   predicate localMustFlowStep(Node node1, Node node2) {
     LocalFlow::localFlowSsaParamInput(node1, node2)
     or
@@ -522,7 +530,8 @@ private module Cached {
       p instanceof HashSplatParameter or
       p instanceof SplatParameter
     } or
-    TSelfParameterNode(MethodBase m) or
+    TSelfMethodParameterNode(MethodBase m) or
+    TSelfToplevelParameterNode(Toplevel t) or
     TLambdaSelfReferenceNode(Callable c) { lambdaCreationExpr(_, _, c) } or
     TBlockParameterNode(MethodBase m) or
     TBlockArgumentNode(CfgNodes::ExprNodes::CallCfgNode yield) {
@@ -562,6 +571,8 @@ private module Cached {
     } or
     TCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn)
 
+  class TSelfParameterNode = TSelfMethodParameterNode or TSelfToplevelParameterNode;
+
   class TSourceParameterNode =
     TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or
         TSynthHashSplatParameterNode or TSynthSplatParameterNode;
@@ -593,8 +604,7 @@ private module Cached {
       not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
     )
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-      nodeTo.(FlowSummaryNode).getSummaryNode(), true)
+    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, _)
     or
     VariableCapture::valueStep(nodeFrom, nodeTo)
   }
@@ -627,6 +637,8 @@ private module Cached {
     LocalFlow::localFlowSsaInputFromRead(_, nodeFrom, nodeTo)
     or
     VariableCapture::flowInsensitiveStep(nodeFrom, nodeTo)
+    or
+    LocalFlow::flowSummaryLocalStep(nodeFrom, nodeTo, any(LibraryCallableToIncludeInTypeTracking c))
   }
 
   /** Holds if `n` wraps an SSA definition without ingoing flow. */
@@ -961,32 +973,64 @@ private module ParameterNodes {
    * The value of the `self` parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  class SelfParameterNodeImpl extends ParameterNodeImpl, TSelfParameterNode {
+  abstract class SelfParameterNodeImpl extends ParameterNodeImpl, TSelfParameterNode {
+    /** Gets the corresponding SSA `self` definition, if any. */
+    abstract Ssa::SelfDefinition getSelfDefinition();
+
+    /** Gets the underlying `self` variable. */
+    abstract SelfVariable getSelfVariable();
+
+    final override Parameter getParameter() { none() }
+
+    final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c = TCfgScope(this.getCfgScope()) and pos.isSelf()
+    }
+
+    final override string toStringImpl() { result = "self in " + this.getCfgScope() }
+  }
+
+  /**
+   * The value of the `self` parameter at method entry, viewed as a node in a data
+   * flow graph.
+   */
+  class SelfMethodParameterNodeImpl extends SelfParameterNodeImpl, TSelfMethodParameterNode {
     private MethodBase method;
 
-    SelfParameterNodeImpl() { this = TSelfParameterNode(method) }
+    SelfMethodParameterNodeImpl() { this = TSelfMethodParameterNode(method) }
 
     final MethodBase getMethod() { result = method }
 
-    /** Gets the corresponding SSA `self` definition, if any. */
-    Ssa::SelfDefinition getSelfDefinition() {
+    override Ssa::SelfDefinition getSelfDefinition() {
       result.getSourceVariable().getDeclaringScope() = method
     }
 
-    /** Gets the underlying `self` variable. */
-    final SelfVariable getSelfVariable() { result.getDeclaringScope() = method }
-
-    override Parameter getParameter() { none() }
-
-    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      method = c.asCfgScope() and pos.isSelf()
-    }
+    final override SelfVariable getSelfVariable() { result.getDeclaringScope() = method }
 
     override CfgScope getCfgScope() { result = method }
 
     override Location getLocationImpl() { result = method.getLocation() }
+  }
 
-    override string toStringImpl() { result = "self in " + method }
+  /**
+   * The value of the `self` parameter at top-level entry, viewed as a node in a data
+   * flow graph.
+   */
+  class SelfToplevelParameterNodeImpl extends SelfParameterNodeImpl, TSelfToplevelParameterNode {
+    private Toplevel t;
+
+    SelfToplevelParameterNodeImpl() { this = TSelfToplevelParameterNode(t) }
+
+    final Toplevel getToplevel() { result = t }
+
+    override Ssa::SelfDefinition getSelfDefinition() {
+      result.getSourceVariable().getDeclaringScope() = t
+    }
+
+    final override SelfVariable getSelfVariable() { result.getDeclaringScope() = t }
+
+    override CfgScope getCfgScope() { result = t }
+
+    override Location getLocationImpl() { result = t.getLocation() }
   }
 
   /**
