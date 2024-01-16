@@ -247,6 +247,14 @@ class Call extends DotNet::Call, Expr, @call {
   override string toString() { result = "call" }
 }
 
+pragma[nomagic]
+private predicate methodDeclaredIn(Method m, string name, Type decl) {
+  m.getDeclaringType() = decl and
+  m.getName() = name and
+  // todo: enable the same logic for extension methods too.
+  not m.isExtensionMethod()
+}
+
 /**
  * A method call, for example `a.M()` on line 5 in
  *
@@ -272,6 +280,7 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
     dynamic_member_name(this, result)
   }
 
+  cached
   private Method getACandidateTarget() {
     result = this.getViableCandidateCallTarget() and
     (
@@ -299,7 +308,8 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
     )
   }
 
-  private ValueOrRefType getAlternativeQualifierType() {
+  pragma[nomagic]
+  private ValueOrRefType getAlternativeQualifierType(string name) {
     exists(ValueOrRefType qualifierType |
       qualifierType = this.getQualifier().getType() and
       result =
@@ -307,23 +317,21 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
           qualifierType.getABaseType*(),
           qualifierType.getABaseType*().getAnAmbiguousAlternativeType()
         ]
+    ) and
+    name = this.getCallName() and
+    not expr_call(this, _)
+  }
+
+  pragma[nomagic]
+  private Method getViableCandidateCallTarget() {
+    exists(string name, Type decl |
+      this.getAlternativeQualifierType(name) = decl and
+      methodDeclaredIn(result, name, decl)
     )
   }
 
-  private Method getViableCandidateCallTarget() {
-    this.isViableCandidateCallTarget(result) and
-    result.getDeclaringType() = this.getAlternativeQualifierType()
-  }
-
-  private predicate isViableCandidateCallTarget(Method candidate) {
-    not exists(Method m | expr_call(this, m)) and
-    candidate.hasName(this.getCallName()) and
-    // todo: enable the same logic for extension methods too.
-    not candidate.isExtensionMethod()
-  }
-
   private Expr getImplicitArgument(Callable c, DotNet::Parameter p) {
-    this.isViableCandidateCallTarget(c) and
+    c = this.getViableCandidateCallTarget() and
     c.getAParameter() = p and
     not exists(result.getExplicitArgumentName()) and
     (
@@ -338,12 +346,12 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
   private Expr getArgumentForParameterInternal(Callable c, DotNet::Parameter p) {
     result = this.getImplicitArgument(c, p)
     or
+    c = this.getViableCandidateCallTarget() and
     c.getAParameter() = p and
     result = this.getExplicitArgument(p.getName())
   }
 
   private predicate isParameterArgumentAssignable(Callable c, Parameter p, Expr arg) {
-    this.isViableCandidateCallTarget(c) and
     arg = this.getArgumentForParameterInternal(c, p) and
     (
       not p.isParams() and
