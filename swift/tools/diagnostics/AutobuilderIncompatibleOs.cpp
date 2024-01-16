@@ -7,11 +7,12 @@
 #include "swift/logging/SwiftLogging.h"
 
 const std::string_view codeql::programName = "autobuilder";
+const std::string_view codeql::extractorName = "swift";
 
-constexpr codeql::Diagnostic incompatibleOs = codeql::swiftDiagnostic(
-    "incompatible-os",
-    "Incompatible operating system (expected macOS)",
-    "[Change the Actions runner][1] to run on macOS.\n"
+constexpr codeql::Diagnostic incompatibleOs = codeql::Diagnostic(
+    .id="incompatible-os",
+    .name="Incompatible operating system (expected macOS)",
+    .action="[Change the Actions runner][1] to run on macOS.\n"
     "\n"
     "You may be able to run analysis on Linux by setting up a [manual build command][2].\n"
     "\n"

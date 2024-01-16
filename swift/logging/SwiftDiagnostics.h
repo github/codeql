@@ -19,6 +19,7 @@
 namespace codeql {
 
 extern const std::string_view programName;
+extern const std::string_view extractorName;
 
 struct DiagnosticsLocation {
   std::string_view file;
@@ -51,15 +52,6 @@ class Diagnostic {
     warning,
     error,
   };
-
-  constexpr Diagnostic(std::string_view extractorName,
-                       std::string_view id,
-                       std::string_view name,
-                       std::string_view action,
-                       Severity severity)
-      : extractorName(extractorName), id(id), name(name), action(action), severity(severity) {}
-
-  std::string_view extractorName;
 
   std::string_view id;
   std::string_view name;
@@ -105,20 +97,13 @@ inline constexpr Diagnostic::Visibility operator&(Diagnostic::Visibility lhs,
                                              static_cast<unsigned char>(rhs));
 }
 
-constexpr Diagnostic swiftDiagnostic(std::string_view id,
-                                     std::string_view name,
-                                     std::string_view action,
-                                     Diagnostic::Severity severity = Diagnostic::Severity::error) {
-  return Diagnostic("swift", id, name, action, severity);
-}
-
-constexpr Diagnostic internalError = swiftDiagnostic(
-      "internal-error", "Internal error",
-      "Some or all of the Swift analysis may have failed.\n"
+constexpr Diagnostic internalError = Diagnostic{
+      .id="internal-error", .name="Internal error",
+      .action="Some or all of the Swift analysis may have failed.\n"
       "\n"
       "If the error persists, contact support, quoting the error message and describing what "
       "happened, or [open an issue in our open source repository][1].\n"
       "\n"
       "[1]: https://github.com/github/codeql/issues/new?labels=bug&template=ql---general.md",
-      Diagnostic::Severity::warning);
+      .severity=Diagnostic::Severity::warning};
 }  // namespace codeql
