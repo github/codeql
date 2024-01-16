@@ -9,7 +9,7 @@ private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Sql
-private import semmle.code.csharp.security.dataflow.flowsources.SourceNode
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /** A data flow source of stored user input. */
 abstract class StoredFlowSource extends SourceNode {

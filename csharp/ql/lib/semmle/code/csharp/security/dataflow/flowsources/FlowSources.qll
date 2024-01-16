@@ -1,5 +1,8 @@
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import codeql.threatmodels.ThreatModels
+import semmle.code.csharp.security.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.Local
+import semmle.code.csharp.security.dataflow.flowsources.Stored
 
 /**
  * A data flow source.
