@@ -229,6 +229,10 @@ edges
 | CollectionFlow.cs:375:20:375:38 | array creation of type A[] : null [element] : A | CollectionFlow.cs:35:49:35:52 | args : null [element] : A |
 | CollectionFlow.cs:375:28:375:38 | { ..., ... } : null [element] : A | CollectionFlow.cs:375:20:375:38 | array creation of type A[] : null [element] : A |
 | CollectionFlow.cs:375:30:375:36 | object creation of type A : A | CollectionFlow.cs:375:28:375:38 | { ..., ... } : null [element] : A |
+| CollectionFlow.cs:405:17:405:23 | object creation of type A : A | CollectionFlow.cs:407:20:407:20 | access to local variable a : A |
+| CollectionFlow.cs:407:9:407:13 | [post] access to local variable array : MyInlineArray [element] : A | CollectionFlow.cs:408:14:408:18 | access to local variable array : MyInlineArray [element] : A |
+| CollectionFlow.cs:407:20:407:20 | access to local variable a : A | CollectionFlow.cs:407:9:407:13 | [post] access to local variable array : MyInlineArray [element] : A |
+| CollectionFlow.cs:408:14:408:18 | access to local variable array : MyInlineArray [element] : A | CollectionFlow.cs:408:14:408:21 | access to array element |
 nodes
 | CollectionFlow.cs:13:40:13:41 | ts : A[] [element] : A | semmle.label | ts : A[] [element] : A |
 | CollectionFlow.cs:13:40:13:41 | ts : null [element] : A | semmle.label | ts : null [element] : A |
@@ -459,6 +463,11 @@ nodes
 | CollectionFlow.cs:375:20:375:38 | array creation of type A[] : null [element] : A | semmle.label | array creation of type A[] : null [element] : A |
 | CollectionFlow.cs:375:28:375:38 | { ..., ... } : null [element] : A | semmle.label | { ..., ... } : null [element] : A |
 | CollectionFlow.cs:375:30:375:36 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:405:17:405:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:407:9:407:13 | [post] access to local variable array : MyInlineArray [element] : A | semmle.label | [post] access to local variable array : MyInlineArray [element] : A |
+| CollectionFlow.cs:407:20:407:20 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:408:14:408:18 | access to local variable array : MyInlineArray [element] : A | semmle.label | access to local variable array : MyInlineArray [element] : A |
+| CollectionFlow.cs:408:14:408:21 | access to array element | semmle.label | access to array element |
 subpaths
 | CollectionFlow.cs:43:20:43:22 | access to local variable as : null [element] : A | CollectionFlow.cs:21:34:21:35 | ts : null [element] : A | CollectionFlow.cs:21:41:21:45 | access to array element : A | CollectionFlow.cs:43:14:43:23 | call to method First<A> |
 | CollectionFlow.cs:61:20:61:23 | access to field As : A[] [element] : A | CollectionFlow.cs:21:34:21:35 | ts : A[] [element] : A | CollectionFlow.cs:21:41:21:45 | access to array element : A | CollectionFlow.cs:61:14:61:24 | call to method First<A> |
@@ -539,3 +548,4 @@ subpaths
 | CollectionFlow.cs:373:26:373:32 | object creation of type A : A | CollectionFlow.cs:373:26:373:32 | object creation of type A : A | CollectionFlow.cs:35:63:35:69 | access to array element | $@ | CollectionFlow.cs:35:63:35:69 | access to array element | access to array element |
 | CollectionFlow.cs:374:26:374:32 | object creation of type A : A | CollectionFlow.cs:374:26:374:32 | object creation of type A : A | CollectionFlow.cs:35:63:35:69 | access to array element | $@ | CollectionFlow.cs:35:63:35:69 | access to array element | access to array element |
 | CollectionFlow.cs:375:30:375:36 | object creation of type A : A | CollectionFlow.cs:375:30:375:36 | object creation of type A : A | CollectionFlow.cs:35:63:35:69 | access to array element | $@ | CollectionFlow.cs:35:63:35:69 | access to array element | access to array element |
+| CollectionFlow.cs:405:17:405:23 | object creation of type A : A | CollectionFlow.cs:405:17:405:23 | object creation of type A : A | CollectionFlow.cs:408:14:408:21 | access to array element | $@ | CollectionFlow.cs:408:14:408:21 | access to array element | access to array element |

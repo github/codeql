@@ -393,4 +393,25 @@ public class CollectionFlow
         SinkListElem(list); // no flow
         Sink(ListFirst(list)); // no flow
     }
+
+    [System.Runtime.CompilerServices.InlineArray(10)]
+    struct MyInlineArray
+    {
+        private A myInlineArrayElements;
+    }
+
+    public void InlineArraySetterFlow()
+    {
+        var a = new A();
+        var array = new MyInlineArray();
+        array[0] = a;
+        Sink(array[0]); // flow
+    }
+
+    public void InlineArraySetterNoFlow(A other)
+    {
+        var array = new MyInlineArray();
+        array[0] = other;
+        Sink(array[0]); // no flow
+    }
 }
