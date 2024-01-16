@@ -31,7 +31,8 @@ class StaticCall extends Call {
 }
 
 /** Holds `t` has instance callable `c` as a member, with name `name`. */
-pragma[nomagic]
+bindingset[t, name]
+pragma[inline_late]
 predicate hasInstanceCallable(ValueOrRefType t, InstanceCallable c, string name) {
   t.hasMember(c) and
   name = c.getUndecoratedName()
