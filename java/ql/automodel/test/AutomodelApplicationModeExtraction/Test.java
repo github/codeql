@@ -86,5 +86,13 @@ class MoreTests {
 		Files.list( // the call is a source candidate
 			Files.createDirectories(p) // the call is a source candidate, but not a sink candidate (modeled as a taint step)
 		);
+
+		Files.delete( // not a source candidate (return type is void)
+			p // sink candidate
+		);
+
+		Files.deleteIfExists( // not a source candidate (return type is boolean)
+			p // sink candidate
+		);
 	}
 }

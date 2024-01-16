@@ -25,9 +25,7 @@ newtype JavaRelatedLocationType =
 newtype TFrameworkModeEndpoint =
   TExplicitParameter(Parameter p) {
     AutomodelJavaUtil::isFromSource(p) and
-    not p.getType() instanceof PrimitiveType and
-    not p.getType() instanceof BoxedType and
-    not p.getType() instanceof NumberType
+    not AutomodelJavaUtil::isUnexploitableType(p.getType())
   } or
   TQualifier(Callable c) { AutomodelJavaUtil::isFromSource(c) and not c instanceof Constructor } or
   TReturnValue(Callable c) {
@@ -36,10 +34,7 @@ newtype TFrameworkModeEndpoint =
     or
     AutomodelJavaUtil::isFromSource(c) and
     c instanceof Method and
-    (
-      not c.getReturnType() instanceof VoidType and
-      not c.getReturnType() instanceof PrimitiveType
-    )
+    not AutomodelJavaUtil::isUnexploitableType(c.getReturnType())
   } or
   TOverridableParameter(Method m, Parameter p) {
     AutomodelJavaUtil::isFromSource(p) and
