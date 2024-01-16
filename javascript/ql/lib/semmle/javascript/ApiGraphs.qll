@@ -1621,6 +1621,7 @@ private predicate exports(string m, DataFlow::Node rhs) {
   exists(Module mod | mod = importableModule(m) |
     rhs = mod.(AmdModule).getDefine().getModuleExpr().flow()
     or
+    not mod.(ES2015Module).hasBothNamedAndDefaultExports() and
     exports(m, "default", rhs)
     or
     exists(ExportAssignDeclaration assgn | assgn.getTopLevel() = mod |
