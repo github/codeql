@@ -8,6 +8,32 @@ public class CollectionFlow
 
     public A[] As;
 
+    public static void Sink<T>(T t) { }
+
+    public static void SinkElem<T>(T[] ts) => Sink(ts[0]);
+
+    public static void SinkListElem<T>(IList<T> list) => Sink(list[0]);
+
+    public static void SinkDictValue<T>(IDictionary<int, T> dict) => Sink(dict[0]);
+
+    public static void SinkDictKey<T>(IDictionary<T, int> dict) => Sink(dict.Keys.First());
+
+    public static T First<T>(T[] ts) => ts[0];
+
+    public static T ListFirst<T>(IList<T> list) => list[0];
+
+    public static T DictIndexZero<T>(IDictionary<int, T> dict) => dict[0];
+
+    public static T DictFirstValue<T>(IDictionary<int, T> dict) => dict.First().Value;
+
+    public static T DictValuesFirst<T>(IDictionary<int, T> dict) => dict.Values.First();
+
+    public static T DictKeysFirst<T>(IDictionary<T, int> dict) => dict.Keys.First();
+
+    public static T DictFirstKey<T>(IDictionary<T, int> dict) => dict.First().Key;
+
+    public static void SinkParams<T>(params T[] args) => Sink(args[0]);
+
     public void ArrayInitializerFlow()
     {
         var a = new A();
@@ -367,30 +393,4 @@ public class CollectionFlow
         SinkListElem(list); // no flow
         Sink(ListFirst(list)); // no flow
     }
-
-    public static void Sink<T>(T t) { }
-
-    public static void SinkElem<T>(T[] ts) => Sink(ts[0]);
-
-    public static void SinkListElem<T>(IList<T> list) => Sink(list[0]);
-
-    public static void SinkDictValue<T>(IDictionary<int, T> dict) => Sink(dict[0]);
-
-    public static void SinkDictKey<T>(IDictionary<T, int> dict) => Sink(dict.Keys.First());
-
-    public static T First<T>(T[] ts) => ts[0];
-
-    public static T ListFirst<T>(IList<T> list) => list[0];
-
-    public static T DictIndexZero<T>(IDictionary<int, T> dict) => dict[0];
-
-    public static T DictFirstValue<T>(IDictionary<int, T> dict) => dict.First().Value;
-
-    public static T DictValuesFirst<T>(IDictionary<int, T> dict) => dict.Values.First();
-
-    public static T DictKeysFirst<T>(IDictionary<T, int> dict) => dict.Keys.First();
-
-    public static T DictFirstKey<T>(IDictionary<T, int> dict) => dict.First().Key;
-
-    public static void SinkParams<T>(params T[] args) => Sink(args[0]);
 }
