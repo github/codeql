@@ -157,6 +157,12 @@ func (l *Labeler) ScopedObjectID(object types.Object, getTypeLabel func() Label)
 				// referenced from other files via their method
 				methlbl, _ := l.MethodID(meth, getTypeLabel())
 				label, _ = l.ReceiverObjectID(object, methlbl)
+			} else if funcObject, ok := object.(*types.Func); ok {
+				// associate function objects to special keys, because we need the objects
+				// associated with type parameter types to have the same label when we do
+				// the first package scope pass through all packages and the second pass
+				// through the packages we have source for.
+				label = l.GlobalID(fmt.Sprintf("{%v},%s;functionobject", funcObject.Pkg(), funcObject.Name()))
 			} else {
 				scopeLbl := l.ScopeID(scope, object.Pkg())
 				label = l.GlobalID(fmt.Sprintf("{%v},%s;object", scopeLbl, object.Name()))
