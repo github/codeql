@@ -17,8 +17,8 @@ class Test {
 	public static void main(String[] args) throws Exception {
 		AtomicReference<String> reference = new AtomicReference<>(); // uninteresting (parameterless constructor)
 		reference.set( // $ sinkModel=set(Object):Argument[this]
-			args[0] // not a sink candidate (modeled as a flow step)
-		);  // not a source candidate (return type is void)
+			args[0] // $ negativeExample=set(Object):Argument[0] // modeled as a flow step
+		);  // $ negativeExample=set(Object):ReturnValue // return type is void
 	}
 
 	public static void callSupplier(Supplier<String> supplier) {
@@ -42,20 +42,20 @@ class Test {
 	public static InputStream getInputStream(String openPath) throws Exception {
 		return Test.getInputStream( // the call is not a source candidate (argument to local call)
 			Paths.get(
-				openPath // not a sink candidate (argument to local call)
+				openPath // $ negativeExample=get(String,String[]):Argument[0] // modeled as a flow step
 			) // $ sourceModel=get(String,String[]):ReturnValue
 		);
 	}
 
 	public static int compareFiles(File f1, File f2) {
-		return f1.compareTo(
-			f2 // negative sink example (modeled as not a sink)
-		); // the call is a negative source candidate (sanitizer)
+		return f1.compareTo( // $ negativeExample=compareTo(File):Argument[this]
+			f2 // $ negativeExample=compareTo(File):Argument[0] // modeled as not a sink
+		); // $ negativeExample=compareTo(File):ReturnValue // return type is int
 	}
 
 	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
 		Files.walk(
-			p, // negative sink example (modeled as a taint step)
+			p, // $ negativeExample=walk(Path,FileVisitOption[]):Argument[0] // modeled as a flow step
 			o, // the implicit varargs array is a candidate, annotated on the last line of the call
 			o // not a candidate (only the first arg corresponding to a varargs array
 			  // is extracted)
@@ -87,15 +87,15 @@ class TaskUtils {
 class MoreTests {
 	public static void FilesListExample(Path p) throws Exception {
 		Files.list(
-			Files.createDirectories(p) // $ sourceModel=createDirectories(Path,FileAttribute[]):ReturnValue // not a sink candidate (modeled as a taint step)
+			Files.createDirectories(p) // $ sourceModel=createDirectories(Path,FileAttribute[]):ReturnValue negativeExample=list(Path):Argument[0] // modeled as a flow step
 		); // $ sourceModel=list(Path):ReturnValue
 
 		Files.delete(
 			p // $ sinkModel=delete(Path):Argument[0]
-		); // not a source candidate (return type is void)
+		); // $ negativeExample=delete(Path):ReturnValue // return type is void
 
 		Files.deleteIfExists(
 			p // $ sinkModel=deleteIfExists(Path):Argument[0]
-		); // not a source candidate (return type is boolean)
+		); // $ negativeExample=deleteIfExists(Path):ReturnValue // return type is boolean
 	}
 }
