@@ -312,11 +312,7 @@ class MethodCall extends Call, QualifiableExpr, LateBindableExpr, @method_invoca
 
   private Method getViableCandidateCallTarget() {
     this.isViableCandidateCallTarget(result) and
-    exists(string name, ValueOrRefType alternativeQualifierType |
-      name = this.getCallName() and
-      alternativeQualifierType = this.getAlternativeQualifierType() and
-      result = alternativeQualifierType.getAMethod(name)
-    )
+    result.getDeclaringType() = this.getAlternativeQualifierType()
   }
 
   private predicate isViableCandidateCallTarget(Method candidate) {
