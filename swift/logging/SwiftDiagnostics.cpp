@@ -3,14 +3,12 @@
 #include <binlog/Entries.hpp>
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_cat.h"
-#include "absl/strings/str_split.h"
-#include "swift/logging/SwiftAssert.h"
 
 namespace codeql {
 
 namespace {
-std::string_view severityToString(SwiftDiagnostic::Severity severity) {
-  using S = SwiftDiagnostic::Severity;
+std::string_view severityToString(Diagnostic::Severity severity) {
+  using S = Diagnostic::Severity;
   switch (severity) {
     case S::note:
       return "note";
@@ -24,8 +22,8 @@ std::string_view severityToString(SwiftDiagnostic::Severity severity) {
 }
 }  // namespace
 
-nlohmann::json SwiftDiagnostic::json(const std::chrono::system_clock::time_point& timestamp,
-                                     std::string_view message) const {
+nlohmann::json Diagnostic::json(const std::chrono::system_clock::time_point& timestamp,
+                                std::string_view message) const {
   nlohmann::json ret{
       {"source",
        {
@@ -49,18 +47,18 @@ nlohmann::json SwiftDiagnostic::json(const std::chrono::system_clock::time_point
   return ret;
 }
 
-std::string SwiftDiagnostic::abbreviation() const {
+std::string Diagnostic::abbreviation() const {
   if (location) {
     return absl::StrCat(id, "@", location->str());
   }
   return std::string{id};
 }
 
-bool SwiftDiagnostic::has(SwiftDiagnostic::Visibility v) const {
+bool Diagnostic::has(Visibility v) const {
   return (visibility & v) != Visibility::none;
 }
 
-nlohmann::json SwiftDiagnosticsLocation::json() const {
+nlohmann::json DiagnosticsLocation::json() const {
   nlohmann::json ret{{"file", file}};
   if (startLine) ret["startLine"] = startLine;
   if (startColumn) ret["startColumn"] = startColumn;
@@ -69,7 +67,7 @@ nlohmann::json SwiftDiagnosticsLocation::json() const {
   return ret;
 }
 
-std::string SwiftDiagnosticsLocation::str() const {
+std::string DiagnosticsLocation::str() const {
   return absl::StrJoin(std::tuple{file, startLine, startColumn, endLine, endColumn}, ":");
 }
 }  // namespace codeql
