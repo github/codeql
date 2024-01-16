@@ -1,6 +1,7 @@
 edges
 | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:12:5:12:5 | a |
 | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:13:5:13:6 | * ... |
+| test_free.cpp:42:27:42:27 | pointer to free output argument | test_free.cpp:43:22:43:22 | a |
 | test_free.cpp:42:27:42:27 | pointer to free output argument | test_free.cpp:45:5:45:5 | a |
 | test_free.cpp:44:27:44:27 | pointer to free output argument | test_free.cpp:45:5:45:5 | a |
 | test_free.cpp:69:10:69:10 | pointer to free output argument | test_free.cpp:71:9:71:9 | a |
@@ -27,6 +28,7 @@ nodes
 | test_free.cpp:12:5:12:5 | a | semmle.label | a |
 | test_free.cpp:13:5:13:6 | * ... | semmle.label | * ... |
 | test_free.cpp:42:27:42:27 | pointer to free output argument | semmle.label | pointer to free output argument |
+| test_free.cpp:43:22:43:22 | a | semmle.label | a |
 | test_free.cpp:44:27:44:27 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:45:5:45:5 | a | semmle.label | a |
 | test_free.cpp:45:5:45:5 | a | semmle.label | a |
