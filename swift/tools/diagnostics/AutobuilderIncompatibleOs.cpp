@@ -9,22 +9,23 @@
 const std::string_view codeql::programName = "autobuilder";
 const std::string_view codeql::extractorName = "swift";
 
-constexpr codeql::Diagnostic incompatibleOs = codeql::Diagnostic(
-    .id="incompatible-os",
-    .name="Incompatible operating system (expected macOS)",
-    .action="[Change the Actions runner][1] to run on macOS.\n"
-    "\n"
-    "You may be able to run analysis on Linux by setting up a [manual build command][2].\n"
-    "\n"
-    "[1]: "
-    "https://docs.github.com/en/actions/using-workflows/"
-    "workflow-syntax-for-github-actions#jobsjob_idruns-on\n"
-    "[2]: "
-    "https://docs.github.com/en/enterprise-server/code-security/code-scanning/"
-    "automatically-scanning-your-code-for-vulnerabilities-and-errors/"
-    "configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-"
-    "compiled-"
-    "language");
+constexpr codeql::Diagnostic incompatibleOs = codeql::Diagnostic{
+    .id = "incompatible-os",
+    .name = "Incompatible operating system (expected macOS)",
+    .action =
+        "[Change the Actions runner][1] to run on macOS.\n"
+        "\n"
+        "You may be able to run analysis on Linux by setting up a [manual build command][2].\n"
+        "\n"
+        "[1]: "
+        "https://docs.github.com/en/actions/using-workflows/"
+        "workflow-syntax-for-github-actions#jobsjob_idruns-on\n"
+        "[2]: "
+        "https://docs.github.com/en/enterprise-server/code-security/code-scanning/"
+        "automatically-scanning-your-code-for-vulnerabilities-and-errors/"
+        "configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-"
+        "compiled-"
+        "language"};
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"main"};
