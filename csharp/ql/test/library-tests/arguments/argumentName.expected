@@ -11,3 +11,5 @@
 | arguments.cs:70:36:70:36 | 0 | x |
 | arguments.cs:78:18:78:21 | access to parameter args | args |
 | arguments.cs:78:27:78:27 | 0 | o |
+| lambdas.cs:25:16:25:16 | 4 | y |
+| lambdas.cs:25:22:25:22 | 5 | x |
