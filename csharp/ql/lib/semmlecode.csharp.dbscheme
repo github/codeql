@@ -448,6 +448,7 @@ case @type.kind of
 | 31 = @unknown_type
 | 32 = @tuple_type
 | 33 = @function_pointer_type
+| 34 = @inline_array_type
   ;
 
 @simple_type = @bool_type | @char_type | @integral_type | @floating_point_type | @decimal_type;
@@ -456,7 +457,7 @@ case @type.kind of
 @unsigned_integral_type = @byte_type  | @ushort_type | @uint_type | @ulong_type;
 @floating_point_type = @float_type | @double_type;
 @value_type = @simple_type | @enum_type | @struct_type | @nullable_type | @int_ptr_type
-            | @uint_ptr_type | @tuple_type | @void_type;
+            | @uint_ptr_type | @tuple_type | @void_type | @inline_array_type;
 @ref_type = @class_type | @interface_type | @array_type | @delegate_type | @null_type
           | @dynamic_type;
 @value_or_ref_type = @value_type | @ref_type;
