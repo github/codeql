@@ -18,7 +18,7 @@ class Test {
 		AtomicReference<String> reference = new AtomicReference<>(); // uninteresting (parameterless constructor)
 		reference.set( // $ sinkModel=set(Object):Argument[this]
 			args[0] // not a sink candidate (modeled as a flow step)
-		);  // $ sourceModel=set(Object):ReturnValue
+		);  // not a source candidate (return type is void)
 	}
 
 	public static void callSupplier(Supplier<String> supplier) {
@@ -92,7 +92,7 @@ class MoreTests {
 
 		Files.delete(
 			p // $ sinkModel=delete(Path):Argument[0]
-		); // $ SPURIOUS: sourceModel=delete(Path):ReturnValue
+		); // not a source candidate (return type is void)
 
 		Files.deleteIfExists(
 			p // $ sinkModel=deleteIfExists(Path):Argument[0]

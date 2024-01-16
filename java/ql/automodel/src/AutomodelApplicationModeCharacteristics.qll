@@ -239,7 +239,12 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) {
     exists(t) and
-    AutomodelJavaUtil::isUnexploitableType(e.asNode().getType())
+    AutomodelJavaUtil::isUnexploitableType([
+        // for most endpoints, we can get the type from the node
+        e.asNode().getType(),
+        // but not for calls to void methods, where we need to go via the AST
+        e.asTop().(Expr).getType()
+      ])
     or
     t instanceof AutomodelEndpointTypes::PathInjectionSinkType and
     e.asNode() instanceof PathSanitizer::PathInjectionSanitizer
