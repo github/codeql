@@ -60,7 +60,7 @@ namespace Semmle.Autobuild.Shared
             // Use `nuget.exe` from source code repo, if present, otherwise first attempt with global
             // `nuget` command, and if that fails, attempt to download `nuget.exe` from nuget.org
             var nuget = builder.GetFilename("nuget.exe").Select(t => t.Item1).FirstOrDefault() ?? "nuget";
-            var nugetDownload = builder.Actions.PathCombine(builder.Options.RootDirectory, ".nuget", "nuget.exe");
+            var nugetDownloadPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var _), ".nuget", "nuget.exe");
             var nugetDownloaded = false;
 
             var ret = BuildScript.Success;
@@ -96,13 +96,13 @@ namespace Semmle.Autobuild.Shared
                         // If `nuget restore` fails, and we have not already attempted to download `nuget.exe`,
                         // download it and reattempt `nuget restore`.
                         var nugetDownloadAndRestore =
-                            BuildScript.Bind(DownloadNugetExe(builder, nugetDownload), exitCode =>
+                            BuildScript.Bind(DownloadNugetExe(builder, nugetDownloadPath), exitCode =>
                             {
                                 nugetDownloaded = true;
                                 if (exitCode != 0)
                                     return BuildScript.Failure;
 
-                                nuget = nugetDownload;
+                                nuget = nugetDownloadPath;
                                 return GetNugetRestoreScript();
                             });
                         ret &= BuildScript.Try(nugetRestore | nugetDownloadAndRestore | msbuildRestoreCommand.Script);

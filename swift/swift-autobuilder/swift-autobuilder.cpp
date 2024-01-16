@@ -44,17 +44,14 @@ static bool isNonSwiftOrTestTarget(const XcodeTarget& t) {
          (t.type == unknownType && (endsWith(t.name, "Tests") || endsWith(t.name, "Test")));
 }
 
-static void buildSwiftPackages(const std::vector<std::filesystem::path>& swiftPackages,
+static bool buildSwiftPackages(const std::vector<std::filesystem::path>& swiftPackages,
                                bool dryRun) {
   auto any_successful =
       std::any_of(std::begin(swiftPackages), std::end(swiftPackages), [&](auto& packageFile) {
         LOG_INFO("Building Swift package: {}", packageFile);
         return buildSwiftPackage(packageFile, dryRun);
       });
-  if (!any_successful) {
-    codeql::Log::flush();
-    exit(1);
-  }
+  return any_successful;
 }
 
 static bool autobuild(const CLIArgs& args) {
@@ -89,11 +86,11 @@ static bool autobuild(const CLIArgs& args) {
     auto buildSucceeded = buildXcodeTarget(xcodeTargets.front(), args.dryRun);
     // If build failed, try to build Swift packages
     if (!buildSucceeded && !swiftPackages.empty()) {
-      buildSwiftPackages(swiftPackages, args.dryRun);
+      return buildSwiftPackages(swiftPackages, args.dryRun);
     }
     return buildSucceeded;
   } else if (!swiftPackages.empty()) {
-    buildSwiftPackages(swiftPackages, args.dryRun);
+    return buildSwiftPackages(swiftPackages, args.dryRun);
   }
   return true;
 }

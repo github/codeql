@@ -20,7 +20,7 @@ module SensitiveDataSourcesTest implements TestSig {
       tag = "SensitiveDataSource"
       or
       exists(DataFlow::Node use |
-        any(SensitiveUseConfiguration config).hasFlow(source, use) and
+        SensitiveUseFlow::flow(source, use) and
         location = use.getLocation() and
         element = use.toString() and
         value = source.getClassification() and
@@ -32,19 +32,17 @@ module SensitiveDataSourcesTest implements TestSig {
 
 import MakeTest<SensitiveDataSourcesTest>
 
-class SensitiveUseConfiguration extends TaintTracking::Configuration {
-  SensitiveUseConfiguration() { this = "SensitiveUseConfiguration" }
+module SensitiveUseConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof SensitiveDataSource }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof SensitiveDataSource }
+  predicate isSink(DataFlow::Node node) { node = API::builtin("print").getACall().getArg(_) }
 
-  override predicate isSink(DataFlow::Node node) {
-    node = API::builtin("print").getACall().getArg(_)
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     sensitiveDataExtraStepForCalls(node1, node2)
   }
 }
+
+module SensitiveUseFlow = TaintTracking::Global<SensitiveUseConfig>;
 // import DataFlow::PathGraph
 // from SensitiveUseConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 // where cfg.hasFlowPath(source, sink)

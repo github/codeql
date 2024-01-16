@@ -190,6 +190,8 @@ const char* test1(bool b1, bool b2) {
   char* s9;
   s9 = std::string("hello").data(); // BAD
 
+  const char* s13 = b1 ? std::string("hello").c_str() : s1; // BAD
+
   return std::string("hello").c_str(); // BAD
 }
 

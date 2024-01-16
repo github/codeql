@@ -8,7 +8,6 @@
  */
 
 import javascript
-import semmle.javascript.security.TaintedObject
 import LoopBoundInjectionCustomizations::LoopBoundInjection
 
 /**

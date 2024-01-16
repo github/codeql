@@ -12,6 +12,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: neutralModel
     data:
+      - ["System.Timers", "ElapsedEventArgs", "ElapsedEventArgs", "(System.DateTime)", "summary", "df-generated"]
       - ["System.Timers", "ElapsedEventArgs", "get_SignalTime", "()", "summary", "df-generated"]
       - ["System.Timers", "Timer", "BeginInit", "()", "summary", "df-generated"]
       - ["System.Timers", "Timer", "Close", "()", "summary", "df-generated"]

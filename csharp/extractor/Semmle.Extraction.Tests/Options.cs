@@ -135,23 +135,14 @@ namespace Semmle.Extraction.Tests
         public void StandaloneDefaults()
         {
             standaloneOptions = CSharp.Standalone.Options.Create(Array.Empty<string>());
-            Assert.Empty(standaloneOptions.Dependencies.DllDirs);
-            Assert.True(standaloneOptions.Dependencies.UseNuGet);
-            Assert.False(standaloneOptions.SkipExtraction);
-            Assert.Null(standaloneOptions.Dependencies.SolutionFile);
-            Assert.True(standaloneOptions.Dependencies.ScanNetFrameworkDlls);
             Assert.False(standaloneOptions.Errors);
         }
 
         [Fact]
         public void StandaloneOptions()
         {
-            standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--references:foo", "--silent", "--skip-nuget", "--skip-dotnet", "--exclude", "bar" });
-            Assert.Equal("foo", standaloneOptions.Dependencies.DllDirs[0]);
-            Assert.Equal("bar", standaloneOptions.Dependencies.Excludes[0]);
+            standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--silent" });
             Assert.Equal(Verbosity.Off, standaloneOptions.Verbosity);
-            Assert.False(standaloneOptions.Dependencies.UseNuGet);
-            Assert.False(standaloneOptions.Dependencies.ScanNetFrameworkDlls);
             Assert.False(standaloneOptions.Errors);
             Assert.False(standaloneOptions.Help);
         }
@@ -159,7 +150,7 @@ namespace Semmle.Extraction.Tests
         [Fact]
         public void InvalidOptions()
         {
-            standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--references:foo", "--silent", "--no-such-option" });
+            standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--silent", "--no-such-option" });
             Assert.True(standaloneOptions.Errors);
         }
 

@@ -25,7 +25,7 @@ module Arel {
       result = API::getTopLevelMember("Arel").getAMethodCall("sql").asExpr().getExpr()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
     }
   }

@@ -5,7 +5,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
-import DataFlow::PathGraph
+import SharedFlow::PathGraph
 import SharedCode
 
 class MyClassGetValueAdditionalTaintStep extends TaintTracking::AdditionalTaintStep {
@@ -18,7 +18,7 @@ class MyClassGetValueAdditionalTaintStep extends TaintTracking::AdditionalTaintS
   }
 }
 
-from SharedConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from SharedFlow::PathNode source, SharedFlow::PathNode sink
+where SharedFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "test flow (naive): " + source.getNode().asCfgNode().getScope().getName()
