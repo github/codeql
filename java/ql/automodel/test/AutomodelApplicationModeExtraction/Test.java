@@ -87,9 +87,9 @@ class TaskUtils {
 class MoreTests {
 	public static void FilesListExample(Path p) throws Exception {
 		Files.list(
-			Files.createDirectories( // $ negativeExample=list(Path):Argument[0] // modeled as a flow step
+			Files.createDirectories(
 				p // $ positiveExample=createDirectories(Path,FileAttribute[]):Argument[0](path-injection)
-			) // $ sourceModel=createDirectories(Path,FileAttribute[]):ReturnValue
+			) // $ sourceModel=createDirectories(Path,FileAttribute[]):ReturnValue negativeExample=list(Path):Argument[0] // modeled as a flow step
 		); // $ sourceModel=list(Path):ReturnValue
 
 		Files.delete(
