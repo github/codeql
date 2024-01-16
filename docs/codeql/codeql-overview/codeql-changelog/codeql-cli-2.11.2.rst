@@ -14,7 +14,7 @@ This is an overview of changes in the CodeQL CLI and relevant CodeQL query and l
 Security Coverage
 -----------------
 
-CodeQL 2.11.2 runs a total of 357 security queries when configured with the Default suite (covering 150 CWE). The Extended suite enables an additional 111 queries (covering 31 more CWE). A list of queries for each suite and language `is available here <https://docs.github.com/en/code-security/code-scanning/managing-your-code-scanning-configuration/codeql-query-suites#queries-included-in-the-default-and-security-extended-query-suites>`__. 5 security queries have been added with this release.
+CodeQL 2.11.2 runs a total of 357 security queries when configured with the Default suite (covering 150 CWE). The Extended suite enables an additional 111 queries (covering 31 more CWE). 5 security queries have been added with this release.
 
 CodeQL CLI
 ----------
