@@ -1,15 +1,11 @@
 package com.github.codeql
 
-import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
-import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
-import org.jetbrains.kotlin.config.KotlinCompilerVersion
-import org.jetbrains.kotlin.ir.declarations.*
-import org.jetbrains.kotlin.ir.util.*
-import org.jetbrains.kotlin.ir.IrElement
-import java.io.BufferedReader
-import java.io.BufferedWriter
+import com.github.codeql.utils.versions.usesK2
+import com.semmle.util.files.FileUtil
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
+import java.io.BufferedReader
+import java.io.BufferedWriter
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
@@ -20,9 +16,12 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.zip.GZIPInputStream
 import java.util.zip.GZIPOutputStream
-import com.github.codeql.utils.versions.usesK2
-import com.semmle.util.files.FileUtil
 import kotlin.system.exitProcess
+import org.jetbrains.kotlin.backend.common.extensions.IrGenerationExtension
+import org.jetbrains.kotlin.backend.common.extensions.IrPluginContext
+import org.jetbrains.kotlin.config.KotlinCompilerVersion
+import org.jetbrains.kotlin.ir.declarations.*
+import org.jetbrains.kotlin.ir.util.*
 
 /*
  * KotlinExtractorExtension is the main entry point of the CodeQL Kotlin
@@ -55,8 +54,8 @@ class KotlinExtractorExtension(
     // can be set to true to make the plugin terminate the kotlinc
     // invocation when it has finished. This means that kotlinc will not
     // write any `.class` files etc.
-    private val exitAfterExtraction: Boolean)
-    : IrGenerationExtension {
+    private val exitAfterExtraction: Boolean
+) : IrGenerationExtension {
 
     // This is the main entry point to the extractor.
     // It will be called by kotlinc with the IR for the files being
@@ -65,10 +64,10 @@ class KotlinExtractorExtension(
     override fun generate(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         try {
             runExtractor(moduleFragment, pluginContext)
-        // We catch Throwable rather than Exception, as we want to
-        // continue trying to extract everything else even if we get a
-        // stack overflow or an assertion failure in one file.
-        } catch(e: Throwable) {
+            // We catch Throwable rather than Exception, as we want to
+            // continue trying to extract everything else even if we get a
+            // stack overflow or an assertion failure in one file.
+        } catch (e: Throwable) {
             // If we get an exception at the top level, then something's
             // gone very wrong. Don't try to be too fancy, but try to
             // log a simple message.
@@ -80,7 +79,8 @@ class KotlinExtractorExtension(
                 // We use a slightly different filename pattern compared
                 // to normal logs. Just the existence of a `-top` log is
                 // a sign that something's gone very wrong.
-                val logFile = File.createTempFile("kotlin-extractor-top.", ".log", File(extractorLogDir))
+                val logFile =
+                    File.createTempFile("kotlin-extractor-top.", ".log", File(extractorLogDir))
                 logFile.writeText(msg)
                 // Now we've got that out, let's see if we can append a stack trace too
                 logFile.appendText(e.stackTraceToString())
@@ -99,12 +99,18 @@ class KotlinExtractorExtension(
     private fun runExtractor(moduleFragment: IrModuleFragment, pluginContext: IrPluginContext) {
         val startTimeMs = System.currentTimeMillis()
         val usesK2 = usesK2(pluginContext)
-        // This default should be kept in sync with com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
-        val trapDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/trap")
+        // This default should be kept in sync with
+        // com.semmle.extractor.java.interceptors.KotlinInterceptor.initializeExtractionContext
+        val trapDir =
+            File(
+                System.getenv("CODEQL_EXTRACTOR_JAVA_TRAP_DIR").takeUnless { it.isNullOrEmpty() }
+                    ?: "kotlin-extractor/trap"
+            )
         // The invocation TRAP file will already have been started
         // before the plugin is run, so we always use no compression
         // and we open it in append mode.
-        FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW ->
+        FileOutputStream(File(invocationTrapFile), true).bufferedWriter().use { invocationTrapFileBW
+            ->
             val invocationExtractionProblems = ExtractionProblems()
             val lm = TrapLabelManager()
             val logCounter = LogCounter()
@@ -113,12 +119,21 @@ class KotlinExtractorExtension(
             // The interceptor has already defined #compilation = *
             val compilation: Label<DbCompilation> = StringLabel("compilation")
             tw.writeCompilation_started(compilation)
-            tw.writeCompilation_info(compilation, "Kotlin Compiler Version", KotlinCompilerVersion.getVersion() ?: "<unknown>")
-            val extractor_name = this::class.java.getResource("extractor.name")?.readText() ?: "<unknown>"
+            tw.writeCompilation_info(
+                compilation,
+                "Kotlin Compiler Version",
+                KotlinCompilerVersion.getVersion() ?: "<unknown>"
+            )
+            val extractor_name =
+                this::class.java.getResource("extractor.name")?.readText() ?: "<unknown>"
             tw.writeCompilation_info(compilation, "Kotlin Extractor Name", extractor_name)
             tw.writeCompilation_info(compilation, "Uses Kotlin 2", usesK2.toString())
             if (compilationStartTime != null) {
-                tw.writeCompilation_compiler_times(compilation, -1.0, (System.currentTimeMillis()-compilationStartTime)/1000.0)
+                tw.writeCompilation_compiler_times(
+                    compilation,
+                    -1.0,
+                    (System.currentTimeMillis() - compilationStartTime) / 1000.0
+                )
             }
             tw.flush()
             val logger = Logger(loggerBase, tw)
@@ -138,23 +153,54 @@ class KotlinExtractorExtension(
             // FIXME: FileUtil expects a static global logger
             // which should be provided by SLF4J's factory facility. For now we set it here.
             FileUtil.logger = logger
-            val srcDir = File(System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless { it.isNullOrEmpty() } ?: "kotlin-extractor/src")
+            val srcDir =
+                File(
+                    System.getenv("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR").takeUnless {
+                        it.isNullOrEmpty()
+                    } ?: "kotlin-extractor/src"
+                )
             srcDir.mkdirs()
             val globalExtensionState = KotlinExtractorGlobalState()
             moduleFragment.files.mapIndexed { index: Int, file: IrFile ->
                 val fileExtractionProblems = FileExtractionProblems(invocationExtractionProblems)
                 val fileTrapWriter = tw.makeSourceFileTrapWriter(file, true)
                 loggerBase.setFileNumber(index)
-                fileTrapWriter.writeCompilation_compiling_files(compilation, index, fileTrapWriter.fileId)
-                doFile(compression, fileExtractionProblems, invocationTrapFile, fileTrapWriter, checkTrapIdentical, loggerBase, trapDir, srcDir, file, primitiveTypeMapping, pluginContext, globalExtensionState)
-                fileTrapWriter.writeCompilation_compiling_files_completed(compilation, index, fileExtractionProblems.extractionResult())
+                fileTrapWriter.writeCompilation_compiling_files(
+                    compilation,
+                    index,
+                    fileTrapWriter.fileId
+                )
+                doFile(
+                    compression,
+                    fileExtractionProblems,
+                    invocationTrapFile,
+                    fileTrapWriter,
+                    checkTrapIdentical,
+                    loggerBase,
+                    trapDir,
+                    srcDir,
+                    file,
+                    primitiveTypeMapping,
+                    pluginContext,
+                    globalExtensionState
+                )
+                fileTrapWriter.writeCompilation_compiling_files_completed(
+                    compilation,
+                    index,
+                    fileExtractionProblems.extractionResult()
+                )
             }
             loggerBase.printLimitedDiagnosticCounts(tw)
             logPeakMemoryUsage(logger, "after extractor")
             logger.info("Extraction completed")
             logger.flush()
             val compilationTimeMs = System.currentTimeMillis() - startTimeMs
-            tw.writeCompilation_finished(compilation, -1.0, compilationTimeMs.toDouble() / 1000, invocationExtractionProblems.extractionResult())
+            tw.writeCompilation_finished(
+                compilation,
+                -1.0,
+                compilationTimeMs.toDouble() / 1000,
+                invocationExtractionProblems.extractionResult()
+            )
             tw.flush()
             loggerBase.close()
         }
@@ -168,16 +214,19 @@ class KotlinExtractorExtension(
             return defaultCompression
         } else {
             try {
-                @OptIn(kotlin.ExperimentalStdlibApi::class) // Annotation required by kotlin versions < 1.5
                 val compression_option_upper = compression_option.uppercase()
                 if (compression_option_upper == "BROTLI") {
-                    logger.warn("Kotlin extractor doesn't support Brotli compression. Using GZip instead.")
+                    logger.warn(
+                        "Kotlin extractor doesn't support Brotli compression. Using GZip instead."
+                    )
                     return Compression.GZIP
                 } else {
                     return Compression.valueOf(compression_option_upper)
                 }
             } catch (e: IllegalArgumentException) {
-                logger.warn("Unsupported compression type (\$$compression_env_var) \"$compression_option\". Supported values are ${Compression.values().joinToString()}.")
+                logger.warn(
+                    "Unsupported compression type (\$$compression_env_var) \"$compression_option\". Supported values are ${Compression.values().joinToString()}."
+                )
                 return defaultCompression
             }
         }
@@ -191,11 +240,18 @@ class KotlinExtractorExtension(
         var nonheap: Long = 0
         for (bean in beans) {
             val peak = bean.getPeakUsage().getUsed()
-            val kind = when (bean.getType()) {
-                           MemoryType.HEAP -> { heap += peak; "heap" }
-                           MemoryType.NON_HEAP -> { nonheap += peak; "non-heap" }
-                           else -> "unknown"
-                       }
+            val kind =
+                when (bean.getType()) {
+                    MemoryType.HEAP -> {
+                        heap += peak
+                        "heap"
+                    }
+                    MemoryType.NON_HEAP -> {
+                        nonheap += peak
+                        "non-heap"
+                    }
+                    else -> "unknown"
+                }
             logger.info("Peak memory: * Peak for $kind bean ${bean.getName()} is $peak")
         }
         logger.info("Peak memory: * Total heap peak: $heap")
@@ -204,9 +260,12 @@ class KotlinExtractorExtension(
 }
 
 class KotlinExtractorGlobalState {
-    // These three record mappings of classes, functions and fields that should be replaced wherever they are found.
-    // As of now these are only used to fix IR generated by the Gradle Android Extensions plugin, hence e.g. IrProperty
-    // doesn't have a map as that plugin doesn't generate them. If and when these are used more widely additional maps
+    // These three record mappings of classes, functions and fields that should be replaced wherever
+    // they are found.
+    // As of now these are only used to fix IR generated by the Gradle Android Extensions plugin,
+    // hence e.g. IrProperty
+    // doesn't have a map as that plugin doesn't generate them. If and when these are used more
+    // widely additional maps
     // should be added here.
     val syntheticToRealClassMap = HashMap<IrClass, IrClass?>()
     val syntheticToRealFunctionMap = HashMap<IrFunction, IrFunction?>()
@@ -228,13 +287,15 @@ open class ExtractionProblems {
     open fun setRecoverableProblem() {
         recoverableProblem = true
     }
+
     open fun setNonRecoverableProblem() {
         nonRecoverableProblem = true
     }
+
     fun extractionResult(): Int {
-        if(nonRecoverableProblem) {
+        if (nonRecoverableProblem) {
             return 2
-        } else if(recoverableProblem) {
+        } else if (recoverableProblem) {
             return 1
         } else {
             return 0
@@ -247,11 +308,13 @@ The `FileExtractionProblems` is analogous to `ExtractionProblems`,
 except it records whether there were any problems while extracting a
 particular source file.
 */
-class FileExtractionProblems(val invocationExtractionProblems: ExtractionProblems): ExtractionProblems() {
+class FileExtractionProblems(val invocationExtractionProblems: ExtractionProblems) :
+    ExtractionProblems() {
     override fun setRecoverableProblem() {
         super.setRecoverableProblem()
         invocationExtractionProblems.setRecoverableProblem()
     }
+
     override fun setNonRecoverableProblem() {
         super.setNonRecoverableProblem()
         invocationExtractionProblems.setNonRecoverableProblem()
@@ -266,7 +329,7 @@ identical.
 private fun equivalentTrap(r1: BufferedReader, r2: BufferedReader): Boolean {
     r1.use { br1 ->
         r2.use { br2 ->
-            while(true) {
+            while (true) {
                 val l1 = br1.readLine()
                 val l2 = br2.readLine()
                 if (l1 == null && l2 == null) {
@@ -295,7 +358,8 @@ private fun doFile(
     srcFile: IrFile,
     primitiveTypeMapping: PrimitiveTypeMapping,
     pluginContext: IrPluginContext,
-    globalExtensionState: KotlinExtractorGlobalState) {
+    globalExtensionState: KotlinExtractorGlobalState
+) {
     val srcFilePath = srcFile.path
     val logger = FileLogger(loggerBase, fileTrapWriter)
     logger.info("Extracting file $srcFilePath")
@@ -312,10 +376,13 @@ private fun doFile(
     val dbSrcFilePath = Paths.get("$dbSrcDir/$srcFileRelativePath")
     val dbSrcDirPath = dbSrcFilePath.parent
     Files.createDirectories(dbSrcDirPath)
-    val srcTmpFile = File.createTempFile(dbSrcFilePath.fileName.toString() + ".", ".src.tmp", dbSrcDirPath.toFile())
-    srcTmpFile.outputStream().use {
-        Files.copy(Paths.get(srcFilePath), it)
-    }
+    val srcTmpFile =
+        File.createTempFile(
+            dbSrcFilePath.fileName.toString() + ".",
+            ".src.tmp",
+            dbSrcDirPath.toFile()
+        )
+    srcTmpFile.outputStream().use { Files.copy(Paths.get(srcFilePath), it) }
     srcTmpFile.renameTo(dbSrcFilePath.toFile())
 
     val trapFileName = "$dbTrapDir/$srcFileRelativePath.trap"
@@ -328,22 +395,52 @@ private fun doFile(
             trapFileWriter.getTempWriter().use { trapFileBW ->
                 // We want our comments to be the first thing in the file,
                 // so start off with a mere TrapWriter
-                val tw = PlainTrapWriter(loggerBase, TrapLabelManager(), trapFileBW, fileTrapWriter.getDiagnosticTrapWriter())
+                val tw =
+                    PlainTrapWriter(
+                        loggerBase,
+                        TrapLabelManager(),
+                        trapFileBW,
+                        fileTrapWriter.getDiagnosticTrapWriter()
+                    )
                 tw.writeComment("Generated by the CodeQL Kotlin extractor for kotlin source code")
                 tw.writeComment("Part of invocation $invocationTrapFile")
                 // Now elevate to a SourceFileTrapWriter, and populate the
                 // file information
                 val sftw = tw.makeSourceFileTrapWriter(srcFile, true)
-                val externalDeclExtractor = ExternalDeclExtractor(logger, compression, invocationTrapFile, srcFilePath, primitiveTypeMapping, pluginContext, globalExtensionState, fileTrapWriter.getDiagnosticTrapWriter())
+                val externalDeclExtractor =
+                    ExternalDeclExtractor(
+                        logger,
+                        compression,
+                        invocationTrapFile,
+                        srcFilePath,
+                        primitiveTypeMapping,
+                        pluginContext,
+                        globalExtensionState,
+                        fileTrapWriter.getDiagnosticTrapWriter()
+                    )
                 val linesOfCode = LinesOfCode(logger, sftw, srcFile)
-                val fileExtractor = KotlinFileExtractor(logger, sftw, linesOfCode, srcFilePath, null, externalDeclExtractor, primitiveTypeMapping, pluginContext, KotlinFileExtractor.DeclarationStack(), globalExtensionState)
+                val fileExtractor =
+                    KotlinFileExtractor(
+                        logger,
+                        sftw,
+                        linesOfCode,
+                        srcFilePath,
+                        null,
+                        externalDeclExtractor,
+                        primitiveTypeMapping,
+                        pluginContext,
+                        KotlinFileExtractor.DeclarationStack(),
+                        globalExtensionState
+                    )
 
                 fileExtractor.extractFileContents(srcFile, sftw.fileId)
                 externalDeclExtractor.extractExternalClasses()
             }
 
             if (checkTrapIdentical && trapFileWriter.exists()) {
-                if (equivalentTrap(trapFileWriter.getTempReader(), trapFileWriter.getRealReader())) {
+                if (
+                    equivalentTrap(trapFileWriter.getTempReader(), trapFileWriter.getRealReader())
+                ) {
                     trapFileWriter.deleteTemp()
                 } else {
                     trapFileWriter.renameTempToDifferent()
@@ -351,9 +448,9 @@ private fun doFile(
             } else {
                 trapFileWriter.renameTempToReal()
             }
-        // We catch Throwable rather than Exception, as we want to
-        // continue trying to extract everything else even if we get a
-        // stack overflow or an assertion failure in one file.
+            // We catch Throwable rather than Exception, as we want to
+            // continue trying to extract everything else even if we get a
+            // stack overflow or an assertion failure in one file.
         } catch (e: Throwable) {
             logger.error("Failed to extract '$srcFilePath'. " + trapFileWriter.debugInfo(), e)
             context.clear()
@@ -373,17 +470,26 @@ enum class Compression(val extension: String) {
             return GZIPOutputStream(file.outputStream()).bufferedWriter()
         }
     };
+
     abstract fun bufferedWriter(file: File): BufferedWriter
 }
 
-private fun getTrapFileWriter(compression: Compression, logger: FileLogger, trapFileName: String): TrapFileWriter {
+private fun getTrapFileWriter(
+    compression: Compression,
+    logger: FileLogger,
+    trapFileName: String
+): TrapFileWriter {
     return when (compression) {
         Compression.NONE -> NonCompressedTrapFileWriter(logger, trapFileName)
         Compression.GZIP -> GZipCompressedTrapFileWriter(logger, trapFileName)
     }
 }
 
-private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, val extension: String) {
+private abstract class TrapFileWriter(
+    val logger: FileLogger,
+    trapName: String,
+    val extension: String
+) {
     private val realFile = File(trapName + extension)
     private val parentDir = realFile.parentFile
     lateinit private var tempFile: File
@@ -405,6 +511,7 @@ private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, 
     }
 
     abstract protected fun getReader(file: File): BufferedReader
+
     abstract protected fun getWriter(file: File): BufferedWriter
 
     fun getRealReader(): BufferedReader {
@@ -432,7 +539,8 @@ private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, 
     }
 
     fun renameTempToDifferent() {
-        val trapDifferentFile = File.createTempFile(realFile.getName() + ".", ".trap.different" + extension, parentDir)
+        val trapDifferentFile =
+            File.createTempFile(realFile.getName() + ".", ".trap.different" + extension, parentDir)
         if (tempFile.renameTo(trapDifferentFile)) {
             logger.warn("TRAP difference: $realFile vs $trapDifferentFile")
         } else {
@@ -448,7 +556,8 @@ private abstract class TrapFileWriter(val logger: FileLogger, trapName: String, 
     }
 }
 
-private class NonCompressedTrapFileWriter(logger: FileLogger, trapName: String): TrapFileWriter(logger, trapName, "") {
+private class NonCompressedTrapFileWriter(logger: FileLogger, trapName: String) :
+    TrapFileWriter(logger, trapName, "") {
     override protected fun getReader(file: File): BufferedReader {
         return file.bufferedReader()
     }
@@ -458,12 +567,17 @@ private class NonCompressedTrapFileWriter(logger: FileLogger, trapName: String):
     }
 }
 
-private class GZipCompressedTrapFileWriter(logger: FileLogger, trapName: String): TrapFileWriter(logger, trapName, ".gz") {
+private class GZipCompressedTrapFileWriter(logger: FileLogger, trapName: String) :
+    TrapFileWriter(logger, trapName, ".gz") {
     override protected fun getReader(file: File): BufferedReader {
-        return BufferedReader(InputStreamReader(GZIPInputStream(BufferedInputStream(FileInputStream(file)))))
+        return BufferedReader(
+            InputStreamReader(GZIPInputStream(BufferedInputStream(FileInputStream(file))))
+        )
     }
 
     override protected fun getWriter(file: File): BufferedWriter {
-        return BufferedWriter(OutputStreamWriter(GZIPOutputStream(BufferedOutputStream(FileOutputStream(file)))))
+        return BufferedWriter(
+            OutputStreamWriter(GZIPOutputStream(BufferedOutputStream(FileOutputStream(file))))
+        )
     }
 }

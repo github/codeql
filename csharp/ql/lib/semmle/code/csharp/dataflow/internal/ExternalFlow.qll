@@ -529,6 +529,13 @@ private predicate interpretSummary(
   )
 }
 
+private predicate interpretNeutral(UnboundCallable c, string kind, string provenance) {
+  exists(string namespace, string type, string name, string signature |
+    neutralModel(namespace, type, name, signature, kind, provenance) and
+    c = interpretElement(namespace, type, false, name, signature, "")
+  )
+}
+
 // adapter class for converting Mad summaries to `SummarizedCallable`s
 private class SummarizedCallableAdapter extends SummarizedCallable {
   SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _) }
@@ -544,6 +551,10 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     exists(Provenance provenance |
       interpretSummary(this, input, output, kind, provenance) and
       provenance.isGenerated()
+    ) and
+    not exists(Provenance provenance |
+      interpretNeutral(this, "summary", provenance) and
+      provenance.isManual()
     )
   }
 
@@ -568,12 +579,7 @@ private class NeutralCallableAdapter extends NeutralCallable {
   string kind;
   string provenance_;
 
-  NeutralCallableAdapter() {
-    exists(string namespace, string type, string name, string signature |
-      neutralModel(namespace, type, name, signature, kind, provenance_) and
-      this = interpretElement(namespace, type, false, name, signature, "")
-    )
-  }
+  NeutralCallableAdapter() { interpretNeutral(this, kind, provenance_) }
 
   override string getKind() { result = kind }
 

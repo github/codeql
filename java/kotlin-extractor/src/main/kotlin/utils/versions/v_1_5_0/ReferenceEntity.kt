@@ -14,12 +14,20 @@ fun getClassByClassId(pluginContext: IrPluginContext, id: ClassId): IrClassSymbo
     return getClassByFqName(pluginContext, id.asSingleFqName())
 }
 
-fun getFunctionsByFqName(pluginContext: IrPluginContext, pkgName: FqName, name: Name): Collection<IrSimpleFunctionSymbol> {
+fun getFunctionsByFqName(
+    pluginContext: IrPluginContext,
+    pkgName: FqName,
+    name: Name
+): Collection<IrSimpleFunctionSymbol> {
     val fqName = pkgName.child(name)
     return pluginContext.referenceFunctions(fqName)
 }
 
-fun getPropertiesByFqName(pluginContext: IrPluginContext, pkgName: FqName, name: Name): Collection<IrPropertySymbol> {
+fun getPropertiesByFqName(
+    pluginContext: IrPluginContext,
+    pkgName: FqName,
+    name: Name
+): Collection<IrPropertySymbol> {
     val fqName = pkgName.child(name)
     return pluginContext.referenceProperties(fqName)
 }

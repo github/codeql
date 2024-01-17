@@ -22,7 +22,11 @@ CmakeInfo = provider(
 )
 
 def _cmake_name(label):
-    return ("%s_%s_%s" % (label.workspace_name, label.package, label.name)).replace("/", "_")
+    ret = ("%s_%s_%s" % (label.workspace_name, label.package, label.name)).replace("/", "_")
+    internal_transition_suffix = "_INTERNAL_TRANSITION"
+    if ret.endswith(internal_transition_suffix):
+        ret = ret[:-len(internal_transition_suffix)]
+    return ret
 
 def _cmake_file(file):
     if not file.is_source:

@@ -1,7 +1,10 @@
+| file://:0:0:0:0 | [summary param] 0 in Append | file://:0:0:0:0 | [summary] to write: ReturnValue in Append |
 | file://:0:0:0:0 | [summary param] 0 in AppendQuote | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendQuote |
 | file://:0:0:0:0 | [summary param] 0 in AppendQuoteToASCII | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendQuoteToASCII |
 | file://:0:0:0:0 | [summary param] 0 in AppendQuoteToGraphic | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendQuoteToGraphic |
 | file://:0:0:0:0 | [summary param] 0 in AppendSlice | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendSlice |
+| file://:0:0:0:0 | [summary param] 0 in Appendf | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendf |
+| file://:0:0:0:0 | [summary param] 0 in Appendln | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendln |
 | file://:0:0:0:0 | [summary param] 0 in As | file://:0:0:0:0 | [summary] to write: Argument[1] in As |
 | file://:0:0:0:0 | [summary param] 0 in Base | file://:0:0:0:0 | [summary] to write: ReturnValue in Base |
 | file://:0:0:0:0 | [summary param] 0 in BytePtrFromString | file://:0:0:0:0 | [summary] to write: ReturnValue in BytePtrFromString |
@@ -67,6 +70,7 @@
 | file://:0:0:0:0 | [summary param] 0 in SplitAfter | file://:0:0:0:0 | [summary] to write: ReturnValue in SplitAfter |
 | file://:0:0:0:0 | [summary param] 0 in SplitAfterN | file://:0:0:0:0 | [summary] to write: ReturnValue in SplitAfterN |
 | file://:0:0:0:0 | [summary param] 0 in SplitN | file://:0:0:0:0 | [summary] to write: ReturnValue in SplitN |
+| file://:0:0:0:0 | [summary param] 0 in Sprintf | file://:0:0:0:0 | [summary] to write: ReturnValue in Sprintf |
 | file://:0:0:0:0 | [summary param] 0 in Store | file://:0:0:0:0 | [summary] to write: Argument[-1] in Store |
 | file://:0:0:0:0 | [summary param] 0 in Store | file://:0:0:0:0 | [summary] to write: Argument[-1] in Store |
 | file://:0:0:0:0 | [summary param] 0 in Store | file://:0:0:0:0 | [summary] to write: Argument[-1] in Store |
@@ -133,6 +137,7 @@
 | file://:0:0:0:0 | [summary param] 1 in AppendQuoteToASCII | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendQuoteToASCII |
 | file://:0:0:0:0 | [summary param] 1 in AppendQuoteToGraphic | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendQuoteToGraphic |
 | file://:0:0:0:0 | [summary param] 1 in AppendSlice | file://:0:0:0:0 | [summary] to write: ReturnValue in AppendSlice |
+| file://:0:0:0:0 | [summary param] 1 in Appendf | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendf |
 | file://:0:0:0:0 | [summary param] 1 in Copy | file://:0:0:0:0 | [summary] to write: Argument[0] in Copy |
 | file://:0:0:0:0 | [summary param] 1 in Copy | file://:0:0:0:0 | [summary] to write: Argument[0] in Copy |
 | file://:0:0:0:0 | [summary param] 1 in CopyBuffer | file://:0:0:0:0 | [summary] to write: Argument[0] in CopyBuffer |
@@ -287,6 +292,12 @@
 | file://:0:0:0:0 | [summary param] -1 in WriteTo | file://:0:0:0:0 | [summary] to write: Argument[0] in WriteTo |
 | file://:0:0:0:0 | [summary param] -1 in WriteTo | file://:0:0:0:0 | [summary] to write: Argument[0] in WriteTo |
 | file://:0:0:0:0 | [summary param] -1 in WriteTo | file://:0:0:0:0 | [summary] to write: Argument[0] in WriteTo |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in Sprint | file://:0:0:0:0 | [summary] to write: ReturnValue in Sprint |
+| file://:0:0:0:0 | [summary] read: Argument[0].ArrayElement in Sprintln | file://:0:0:0:0 | [summary] to write: ReturnValue in Sprintln |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in Append | file://:0:0:0:0 | [summary] to write: ReturnValue in Append |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in Appendln | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendln |
+| file://:0:0:0:0 | [summary] read: Argument[1].ArrayElement in Sprintf | file://:0:0:0:0 | [summary] to write: ReturnValue in Sprintf |
+| file://:0:0:0:0 | [summary] read: Argument[2].ArrayElement in Appendf | file://:0:0:0:0 | [summary] to write: ReturnValue in Appendf |
 | main.go:26:11:26:17 | type assertion | main.go:26:2:26:17 | ... := ...[0] |
 | main.go:26:11:26:17 | type assertion | main.go:26:2:26:17 | ... := ...[1] |
 | main.go:38:13:38:13 | 1 | main.go:38:7:38:20 | slice literal |

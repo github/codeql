@@ -60,7 +60,7 @@ predicate computeHeuristicType(Type t) {
 
 /**
  * Holds if `e` is an operation that is common in encryption-like computations.
- * Looking for clusters of these tends to find things like encrpytion,
+ * Looking for clusters of these tends to find things like encryption,
  * compression, random number generation, graphics processing and other compute
  * heavy algorithms.
  */
