@@ -1,0 +1,15 @@
+extensions:
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: supportedThreatModels
+    data: []
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["My.Qltest", "TestSources", False, "ExecuteQuery", "(System.String)", "", "ReturnValue", "database", "manual"]
+      - ["My.Qltest", "TestSources", False, "ReadEnv", "(System.String)", "", "ReturnValue", "environment", "manual"]
+      - ["My.Qltest", "TestSources", False, "GetCustom", "(System.String)", "", "ReturnValue", "custom", "manual"]
+      - ["My.Qltest", "TestSources", False, "GetCliArg", "(System.Int32)", "", "ReturnValue", "commandargs", "manual"]

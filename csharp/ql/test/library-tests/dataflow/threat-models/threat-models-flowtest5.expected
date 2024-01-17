@@ -1,0 +1,31 @@
+edges
+| Test.cs:13:45:13:49 | bytes : Byte[] [element] : Object | Test.cs:16:56:16:60 | access to parameter bytes : Byte[] [element] : Object |
+| Test.cs:16:56:16:60 | access to parameter bytes : Byte[] [element] : Object | Test.cs:16:20:16:61 | call to method GetString : String |
+| Test.cs:24:42:24:59 | call to method GetStream : NetworkStream | Test.cs:26:29:26:34 | access to local variable stream : NetworkStream |
+| Test.cs:26:29:26:34 | access to local variable stream : NetworkStream | Test.cs:26:41:26:46 | [post] access to local variable buffer : Byte[] [element] : Object |
+| Test.cs:26:41:26:46 | [post] access to local variable buffer : Byte[] [element] : Object | Test.cs:29:99:29:104 | access to local variable buffer : Byte[] [element] : Object |
+| Test.cs:29:85:29:105 | call to method BytesToString : String | Test.cs:29:42:29:111 | ... + ... |
+| Test.cs:29:99:29:104 | access to local variable buffer : Byte[] [element] : Object | Test.cs:13:45:13:49 | bytes : Byte[] [element] : Object |
+| Test.cs:29:99:29:104 | access to local variable buffer : Byte[] [element] : Object | Test.cs:29:85:29:105 | call to method BytesToString : String |
+| Test.cs:44:29:44:50 | call to method ReadEnv : String | Test.cs:47:42:47:96 | ... + ... |
+| Test.cs:63:29:63:48 | call to method GetCliArg : String | Test.cs:66:42:66:96 | ... + ... |
+nodes
+| Test.cs:13:45:13:49 | bytes : Byte[] [element] : Object | semmle.label | bytes : Byte[] [element] : Object |
+| Test.cs:16:20:16:61 | call to method GetString : String | semmle.label | call to method GetString : String |
+| Test.cs:16:56:16:60 | access to parameter bytes : Byte[] [element] : Object | semmle.label | access to parameter bytes : Byte[] [element] : Object |
+| Test.cs:24:42:24:59 | call to method GetStream : NetworkStream | semmle.label | call to method GetStream : NetworkStream |
+| Test.cs:26:29:26:34 | access to local variable stream : NetworkStream | semmle.label | access to local variable stream : NetworkStream |
+| Test.cs:26:41:26:46 | [post] access to local variable buffer : Byte[] [element] : Object | semmle.label | [post] access to local variable buffer : Byte[] [element] : Object |
+| Test.cs:29:42:29:111 | ... + ... | semmle.label | ... + ... |
+| Test.cs:29:85:29:105 | call to method BytesToString : String | semmle.label | call to method BytesToString : String |
+| Test.cs:29:99:29:104 | access to local variable buffer : Byte[] [element] : Object | semmle.label | access to local variable buffer : Byte[] [element] : Object |
+| Test.cs:44:29:44:50 | call to method ReadEnv : String | semmle.label | call to method ReadEnv : String |
+| Test.cs:47:42:47:96 | ... + ... | semmle.label | ... + ... |
+| Test.cs:63:29:63:48 | call to method GetCliArg : String | semmle.label | call to method GetCliArg : String |
+| Test.cs:66:42:66:96 | ... + ... | semmle.label | ... + ... |
+subpaths
+| Test.cs:29:99:29:104 | access to local variable buffer : Byte[] [element] : Object | Test.cs:13:45:13:49 | bytes : Byte[] [element] : Object | Test.cs:16:20:16:61 | call to method GetString : String | Test.cs:29:85:29:105 | call to method BytesToString : String |
+#select
+| Test.cs:24:42:24:59 | call to method GetStream : NetworkStream | Test.cs:29:42:29:111 | ... + ... |
+| Test.cs:44:29:44:50 | call to method ReadEnv : String | Test.cs:47:42:47:96 | ... + ... |
+| Test.cs:63:29:63:48 | call to method GetCliArg : String | Test.cs:66:42:66:96 | ... + ... |
