@@ -1,0 +1,230 @@
+
+// non-MAD sources / sinks
+int source();
+void sink(int val);
+
+// --- global MAD sources ---
+
+int localMadSource();
+int remoteMadSource();
+int notASource();
+int localMadSourceHasBody() { return 0; }
+int *remoteMadSourceIndirect();
+void remoteMadSourceArg0(int *x, int *y);
+void remoteMadSourceArg1(int &x, int &y);
+int remoteMadSourceVar;
+void remoteMadSourceParam0(int x);
+
+void test_sources() {
+	sink(0);
+	sink(source()); // $ ir
+
+	// test sources
+
+	sink(localMadSource()); // $ MISSING: ir
+	sink(remoteMadSource()); // $ MISSING: ir
+	sink(notASource());
+	sink(localMadSourceHasBody()); // $ MISSING: ir
+	sink(*remoteMadSourceIndirect()); // $ MISSING: ir
+
+	int a, b, c, d;
+
+	remoteMadSourceArg0(&a, &b);
+	sink(a); // $ MISSING: ir
+	sink(a);
+	remoteMadSourceArg1(c, d);
+	sink(c);
+	sink(d); // $ MISSING: ir
+
+	sink(remoteMadSourceVar); // $ MISSING: ir
+}
+
+void remoteMadSourceParam0(int x)
+{
+	sink(x); // $ MISSING: ir
+}
+
+// --- global MAD sinks ---
+
+void madSinkArg0(int x);
+void notASink(int x);
+void madSinkArg1(int x, int y);
+void madSinkArg12(int x, int y, int z);
+void madSinkArg13(int x, int y, int z);
+void madSinkIndirectArg0(int *x);
+int madSinkVar;
+
+void test_sinks() {
+	// test sinks
+
+	madSinkArg0(source()); // $ MISSING: ir
+	notASink(source());
+	madSinkArg1(source(), 0);
+	madSinkArg1(0, source()); // $ MISSING: ir
+	madSinkArg12(source(), 0, 0); // $ MISSING: ir
+	madSinkArg12(0, source(), 0); // $ MISSING: ir
+	madSinkArg12(0, 0, source());
+	madSinkArg13(source(), 0, 0); // $ MISSING: ir
+	madSinkArg13(0, source(), 0);
+	madSinkArg13(0, 0, source()); // $ MISSING: ir
+
+	int a = source();
+	madSinkIndirectArg0(&a); // $ MISSING: ir
+
+	madSinkVar = source();  // $ MISSING: ir
+
+	// test sources + sinks together
+
+	madSinkArg0(localMadSource()); // $ MISSING: ir
+	madSinkIndirectArg0(remoteMadSourceIndirect()); // $ MISSING: ir
+	madSinkVar = remoteMadSourceVar; // $ MISSING: ir
+}
+
+void madSinkParam0(int x) {
+	x = source(); // $ MISSING: ir
+}
+
+// --- MAD summaries ---
+
+struct MyContainer {
+	int value;
+};
+
+int madArg0ToReturn(int x);
+int notASummary(int x);
+int madArg0ToReturnValueFlow(int x);
+int madArg0IndirectToReturn(int *x);
+void madArg0ToArg1(int x, int &y);
+void madArg0IndirectToArg1(const int *x, int *y);
+
+int madArg0FieldToReturn(MyContainer mc);
+int madArg0IndirectFieldToReturn(MyContainer *mc);
+MyContainer madArg0ToReturnField(int x);
+
+void test_summaries() {
+	// test summaries
+
+	int a, b, c;
+
+	sink(madArg0ToReturn(0));
+	sink(madArg0ToReturn(source())); // $ MISSING: ir
+	sink(notASummary(source()));
+	sink(madArg0ToReturnValueFlow(0));
+	sink(madArg0ToReturnValueFlow(source())); // $ MISSING: ir
+
+	a = source();
+	sink(madArg0IndirectToReturn(&a)); // $ MISSING: ir
+
+	madArg0ToArg1(source(), b);
+	sink(b); // $ MISSING: ir
+
+	madArg0IndirectToArg1(&a, &c);
+	sink(c); // $ MISSING: ir
+
+	MyContainer mc1, mc2;
+
+	mc1.value = 0;
+	sink(madArg0FieldToReturn(mc1));
+	sink(madArg0IndirectFieldToReturn(&mc1));
+
+	mc2.value = source();
+	sink(madArg0FieldToReturn(mc2)); // $ MISSING: ir
+	sink(madArg0IndirectFieldToReturn(&mc2)); // $ MISSING: ir
+
+	sink(madArg0ToReturnField(0).value);
+	sink(madArg0ToReturnField(source()).value); // $ MISSING: ir
+
+	// test source + sinks + summaries together
+
+	madSinkArg0(madArg0ToReturn(remoteMadSource())); // $ MISSING: ir
+	madSinkArg0(madArg0ToReturnValueFlow(remoteMadSource())); // $ MISSING: ir
+	madSinkArg0(madArg0IndirectToReturn(remoteMadSourceIndirect())); // $ MISSING: ir*/
+}
+
+// --- MAD class members ---
+
+class MyClass {
+public:
+	// sources
+	int memberRemoteMadSource();
+	void memberRemoteMadSourceArg0(int *x);
+	int memberRemoteMadSourceVar;
+
+	// sinks
+	void memberMadSinkArg0(int x);
+	int memberMadSinkVar;
+
+	// summaries
+	void madArg0ToSelf(int x);
+	int madSelfToReturn();
+	int notASummary();
+	void madArg0ToField(int x);
+	int madFieldToReturn();
+
+	int val;
+};
+
+class MyDerivedClass : public MyClass {
+public:
+	int subtypeRemoteMadSource1();
+	int subtypeNonSource();
+	int subtypeRemoteMadSource2();
+};
+
+MyClass source2();
+void sink(MyClass mc);
+
+void test_class_members() {
+	MyClass mc, mc2, mc3, mc4, mc5, mc6;
+	MyDerivedClass mdc;
+
+	// test class member sources
+
+	sink(mc.memberRemoteMadSource()); // $ MISSING: ir
+
+	int a;
+	mc.memberRemoteMadSourceArg0(&a);
+	sink(a); // $ MISSING: ir
+
+	sink(mc.memberRemoteMadSourceVar); // $ MISSING: ir
+
+	// test subtype sources
+
+	sink(mdc.memberRemoteMadSource()); // $ MISSING: ir
+	sink(mdc.subtypeRemoteMadSource1()); // $ MISSING: ir
+	sink(mdc.subtypeNonSource());
+	sink(mdc.subtypeRemoteMadSource2()); // $ MISSING: ir
+
+	// test class member sinks
+
+	mc.memberMadSinkArg0(source()); // $ MISSING: ir
+
+	mc.memberMadSinkVar = source(); // $ MISSING: ir
+
+	// test class member summaries
+
+	sink(mc2);
+	mc2.madArg0ToSelf(0);
+	sink(mc2);
+	mc2.madArg0ToSelf(source());
+	sink(mc2); // $ MISSING: ir
+
+	mc3.madArg0ToField(source());
+	sink(mc3.val); // $ MISSING: ir
+
+	sink(source2().madSelfToReturn()); // $ MISSING: ir
+	sink(source2().notASummary());
+
+	mc4.val = source();
+	sink(mc4.madFieldToReturn()); // $ MISSING: ir
+
+	// test class member sources + sinks + summaries together
+
+	mc.memberMadSinkArg0(mc.memberRemoteMadSource()); // $ MISSING: ir
+
+	mc5.madArg0ToSelf(source());
+	sink(mc5.madSelfToReturn()); // $ MISSING: ir
+
+	mc6.madArg0ToField(source());
+	sink(mc6.madFieldToReturn()); // $ MISSING: ir
+}
