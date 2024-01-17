@@ -111,3 +111,12 @@ predicate isUnexploitableType(Type tp) {
   tp instanceof NumberType or
   tp instanceof VoidType
 }
+
+/**
+ * Holds if the given method can be overridden, that is, it is not final,
+ * static, or private.
+ */
+predicate isOverridable(Method m) {
+  not m.getDeclaringType().isFinal() and not m.isFinal() and
+  not m.isStatic() and not m.isPrivate()
+}

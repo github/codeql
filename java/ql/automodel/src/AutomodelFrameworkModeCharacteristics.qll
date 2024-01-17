@@ -38,18 +38,15 @@ newtype TFrameworkModeEndpoint =
   } or
   TOverridableParameter(Method m, Parameter p) {
     AutomodelJavaUtil::isFromSource(p) and
+    not AutomodelJavaUtil::isUnexploitableType(p.getType()) and
     p.getCallable() = m and
     m instanceof ModelExclusions::ModelApi and
-    not m.getDeclaringType().isFinal() and
-    not m.isFinal() and
-    not m.isStatic()
+    AutomodelJavaUtil::isOverridable(m)
   } or
   TOverridableQualifier(Method m) {
     AutomodelJavaUtil::isFromSource(m) and
     m instanceof ModelExclusions::ModelApi and
-    not m.getDeclaringType().isFinal() and
-    not m.isFinal() and
-    not m.isStatic()
+    AutomodelJavaUtil::isOverridable(m)
   }
 
 /**

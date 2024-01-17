@@ -7,7 +7,7 @@ public class File {
         return 0;
     }
 
-    public boolean setLastModified(long time) { // $ sinkModel=setLastModified(long):Argument[this] sourceModel=setLastModified(long):Parameter[this] SPURIOUS: sourceModel=setLastModified(long):Parameter[0] // time is not a candidate (primitive type)
+    public boolean setLastModified(long time) { // $ sinkModel=setLastModified(long):Argument[this] sourceModel=setLastModified(long):Parameter[this] // time is not a candidate (primitive type)
         return false;
     } // return value is not a source candidate because it's a primitive
 }
