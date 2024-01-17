@@ -6,6 +6,11 @@
 #include <regex>
 #include <vector>
 
+#include <fmt/format.h>
+#include <fmt/chrono.h>
+
+#include "swift/logging/Formatters.h"
+
 #include <binlog/binlog.hpp>
 #include <binlog/TextOutputStream.hpp>
 #include <binlog/EventFilter.hpp>

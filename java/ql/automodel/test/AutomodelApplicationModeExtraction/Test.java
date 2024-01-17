@@ -52,7 +52,7 @@ class Test {
 
 	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
 		Files.walk( // the call is a source candidate
-			p, // negative example (modeled as a taint step)
+			p, // negative sink example (modeled as a taint step)
 			o, // the implicit varargs array is a candidate
 			o // not a candidate (only the first arg corresponding to a varargs array
 			  // is extracted)
@@ -78,5 +78,13 @@ class TaskUtils {
 			return 42;
 		});
 		return ft;
+	}
+}
+
+class MoreTests {
+	public static void FilesListExample(Path p) throws Exception {
+		Files.list( // the call is a source candidate
+			Files.createDirectories(p) // the call is a source candidate, but not a sink candidate (modeled as a taint step)
+		);
 	}
 }

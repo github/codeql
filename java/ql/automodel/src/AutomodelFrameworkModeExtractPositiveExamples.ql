@@ -18,9 +18,8 @@ from
   DollarAtString signature, DollarAtString input, DollarAtString output,
   DollarAtString parameterName, DollarAtString extensibleType
 where
-  endpoint.getExtensibleType() = extensibleType and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName) and
-  // Extract positive examples of sinks belonging to the existing ATM query configurations.
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
+    _, extensibleType) and
   CharacteristicsImpl::isKnownAs(endpoint, endpointType, _)
 select endpoint,
   endpointType + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //

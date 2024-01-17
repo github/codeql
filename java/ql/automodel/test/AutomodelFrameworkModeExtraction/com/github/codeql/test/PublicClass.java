@@ -5,7 +5,7 @@ public class PublicClass {
     System.out.println(arg);
   }
 
-  public static void staticStuff(String arg) { // `arg` is a candidate, `this` is not a candidate (static method), `arg` is not a source candidate (static methods can not be overloaded)
+  public static void staticStuff(String arg) { // `arg` is a sink candidate, but not a source candidate (not overrideabe); `this` is not a candidate (static method)
     System.out.println(arg);
   }
 
@@ -21,5 +21,9 @@ public class PublicClass {
 
   public PublicClass(Object input) {
     // the `this` qualifier is not a candidate
+  }
+
+  public Boolean isIgnored(Object input) { // `input` is a source candidate, but not a sink candidate (is-style method); `this` is not a candidate
+    return false;
   }
 }

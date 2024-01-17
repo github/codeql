@@ -15,7 +15,6 @@ private import semmle.code.java.security.QueryInjection
 private import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
 private import AutomodelJavaUtil as AutomodelJavaUtil
-private import AutomodelSharedGetCallable as AutomodelSharedGetCallable
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
@@ -84,7 +83,7 @@ abstract class FrameworkModeEndpoint extends TFrameworkModeEndpoint {
   /**
    * Returns the callable that contains the endpoint.
    */
-  abstract Callable getEnclosingCallable();
+  abstract Callable getCallable();
 
   abstract Top asTop();
 
@@ -106,7 +105,7 @@ class ExplicitParameterEndpoint extends FrameworkModeEndpoint, TExplicitParamete
 
   override string getParamName() { result = param.getName() }
 
-  override Callable getEnclosingCallable() { result = param.getCallable() }
+  override Callable getCallable() { result = param.getCallable() }
 
   override Top asTop() { result = param }
 
@@ -126,7 +125,7 @@ class QualifierEndpoint extends FrameworkModeEndpoint, TQualifier {
 
   override string getParamName() { result = "this" }
 
-  override Callable getEnclosingCallable() { result = callable }
+  override Callable getCallable() { result = callable }
 
   override Top asTop() { result = callable }
 
@@ -144,7 +143,7 @@ class ReturnValue extends FrameworkModeEndpoint, TReturnValue {
 
   override string getParamName() { none() }
 
-  override Callable getEnclosingCallable() { result = callable }
+  override Callable getCallable() { result = callable }
 
   override Top asTop() { result = callable }
 
@@ -163,7 +162,7 @@ class OverridableParameter extends FrameworkModeEndpoint, TOverridableParameter 
 
   override string getParamName() { result = param.getName() }
 
-  override Callable getEnclosingCallable() { result = method }
+  override Callable getCallable() { result = method }
 
   override Top asTop() { result = param }
 
@@ -181,7 +180,7 @@ class OverridableQualifier extends FrameworkModeEndpoint, TOverridableQualifier 
 
   override string getParamName() { result = "this" }
 
-  override Callable getEnclosingCallable() { result = m }
+  override Callable getCallable() { result = m }
 
   override Top asTop() { result = m }
 
@@ -202,7 +201,9 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   class EndpointType = AutomodelEndpointTypes::EndpointType;
 
-  class NegativeEndpointType = AutomodelEndpointTypes::NegativeSinkType;
+  class SinkType = AutomodelEndpointTypes::SinkType;
+
+  class SourceType = AutomodelEndpointTypes::SourceType;
 
   class RelatedLocation = Location::Top;
 
@@ -244,8 +245,8 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   additional predicate sinkSpec(
     Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
-    e.getEnclosingCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getEnclosingCallable()) and
+    e.getCallable().hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(e.getCallable()) and
     ext = "" and
     input = e.getMaDInput()
   }
@@ -254,8 +255,8 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     Endpoint e, string package, string type, string name, string signature, string ext,
     string output
   ) {
-    e.getEnclosingCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getEnclosingCallable()) and
+    e.getCallable().hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(e.getCallable()) and
     ext = "" and
     output = e.getMaDOutput()
   }
@@ -267,10 +268,10 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
    */
   RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType type) {
     type = MethodDoc() and
-    result = e.getEnclosingCallable().(Documentable).getJavadoc()
+    result = e.getCallable().(Documentable).getJavadoc()
     or
     type = ClassDoc() and
-    result = e.getEnclosingCallable().getDeclaringType().(Documentable).getJavadoc()
+    result = e.getCallable().getDeclaringType().(Documentable).getJavadoc()
   }
 }
 
@@ -292,16 +293,27 @@ class FrameworkModeMetadataExtractor extends string {
 
   predicate hasMetadata(
     Endpoint e, string package, string type, string subtypes, string name, string signature,
-    string input, string output, string parameterName
+    string input, string output, string parameterName, string alreadyAiModeled,
+    string extensibleType
   ) {
-    (if exists(e.getParamName()) then parameterName = e.getParamName() else parameterName = "") and
-    name = e.getEnclosingCallable().getName() and
-    (if exists(e.getMaDInput()) then input = e.getMaDInput() else input = "") and
-    (if exists(e.getMaDOutput()) then output = e.getMaDOutput() else output = "") and
-    package = e.getEnclosingCallable().getDeclaringType().getPackage().getName() and
-    type = e.getEnclosingCallable().getDeclaringType().getErasure().(RefType).nestedName() and
-    subtypes = AutomodelJavaUtil::considerSubtypes(e.getEnclosingCallable()).toString() and
-    signature = ExternalFlow::paramsString(e.getEnclosingCallable())
+    exists(Callable callable | e.getCallable() = callable |
+      (if exists(e.getMaDInput()) then input = e.getMaDInput() else input = "") and
+      (if exists(e.getMaDOutput()) then output = e.getMaDOutput() else output = "") and
+      package = callable.getDeclaringType().getPackage().getName() and
+      // we're using the erased types because the MaD convention is to not specify type parameters.
+      // Whether something is or isn't a sink doesn't usually depend on the type parameters.
+      type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
+      subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
+      name = callable.getName() and
+      signature = ExternalFlow::paramsString(callable) and
+      (if exists(e.getParamName()) then parameterName = e.getParamName() else parameterName = "") and
+      e.getExtensibleType() = extensibleType
+    ) and
+    (
+      not CharacteristicsImpl::isModeled(e, _, extensibleType, _) and alreadyAiModeled = ""
+      or
+      CharacteristicsImpl::isModeled(e, _, extensibleType, alreadyAiModeled)
+    )
   }
 }
 
@@ -310,7 +322,8 @@ class FrameworkModeMetadataExtractor extends string {
  */
 
 /**
- * A negative characteristic that indicates that an is-style boolean method is unexploitable even if it is a sink.
+ * A negative characteristic that indicates that parameters of an is-style boolean method should not be considered sinks,
+ * and its return value should not be considered a source.
  *
  * A sink is highly unlikely to be exploitable if its callable's name starts with `is` and the callable has a boolean return
  * type (e.g. `isDirectory`). These kinds of calls normally do only checks, and appear before the proper call that does
@@ -318,45 +331,70 @@ class FrameworkModeMetadataExtractor extends string {
  *
  * TODO: this might filter too much, it's possible that methods with more than one parameter contain interesting sinks
  */
-private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
+{
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _, _) and
-    e.getEnclosingCallable().getName().matches("is%") and
-    e.getEnclosingCallable().getReturnType() instanceof BooleanType
-  }
-}
-
-/**
- * A negative characteristic that indicates that an existence-checking boolean method is unexploitable even if it is a
- * sink.
- *
- * A sink is highly unlikely to be exploitable if its callable's name is `exists` or `notExists` and the callable has a
- * boolean return type. These kinds of calls normally do only checks, and appear before the proper call that does the
- * dangerous/interesting thing, so we want the latter to be modeled as the sink.
- */
-private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
-  UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
-
-  override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _, _) and
-    exists(Callable callable |
-      callable = e.getEnclosingCallable() and
-      callable.getName().toLowerCase() = ["exists", "notexists"] and
-      callable.getReturnType() instanceof BooleanType
+    e.getCallable().getName().matches("is%") and
+    e.getCallable().getReturnType() instanceof BooleanType and
+    (
+      e.getExtensibleType() = "sinkModel" and
+      not FrameworkCandidatesImpl::isSink(e, _, _)
+      or
+      e.getExtensibleType() = "sourceModel" and
+      not FrameworkCandidatesImpl::isSource(e, _, _) and
+      e.getMaDOutput() = "ReturnValue"
     )
   }
 }
 
 /**
- * A negative characteristic that indicates that an endpoint is an argument to an exception, which is not a sink.
+ * A negative characteristic that indicates that parameters of an existence-checking boolean method should not be
+ * considered sinks, and its return value should not be considered a source.
+ *
+ * A sink is highly unlikely to be exploitable if its callable's name is `exists` or `notExists` and the callable has a
+ * boolean return type. These kinds of calls normally do only checks, and appear before the proper call that does the
+ * dangerous/interesting thing, so we want the latter to be modeled as the sink.
  */
-private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
+{
+  UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    exists(Callable callable |
+      callable = e.getCallable() and
+      callable.getName().toLowerCase() = ["exists", "notexists"] and
+      callable.getReturnType() instanceof BooleanType
+    |
+      e.getExtensibleType() = "sinkModel" and
+      not FrameworkCandidatesImpl::isSink(e, _, _)
+      or
+      e.getExtensibleType() = "sourceModel" and
+      not FrameworkCandidatesImpl::isSource(e, _, _) and
+      e.getMaDOutput() = "ReturnValue"
+    )
+  }
+}
+
+/**
+ * A negative characteristic that indicates that parameters of an exception method or constructor should not be considered sinks,
+ * and its return value should not be considered a source.
+ */
+private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
+{
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable
+    e.getCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable and
+    (
+      e.getExtensibleType() = "sinkModel" and
+      not FrameworkCandidatesImpl::isSink(e, _, _)
+      or
+      e.getExtensibleType() = "sourceModel" and
+      not FrameworkCandidatesImpl::isSource(e, _, _) and
+      e.getMaDOutput() = "ReturnValue"
+    )
   }
 }
 
@@ -368,6 +406,6 @@ private class NotAModelApi extends CharacteristicsImpl::UninterestingToModelChar
   NotAModelApi() { this = "not a model API" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not e.getEnclosingCallable() instanceof ModelExclusions::ModelApi
+    not e.getCallable() instanceof ModelExclusions::ModelApi
   }
 }
