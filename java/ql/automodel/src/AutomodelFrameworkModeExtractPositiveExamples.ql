@@ -13,12 +13,12 @@ private import AutomodelEndpointTypes
 private import AutomodelJavaUtil
 
 from
-  Endpoint endpoint, EndpointType endpointType,
-  DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
-  DollarAtString signature, DollarAtString input, DollarAtString output,
-  DollarAtString parameterName, DollarAtString extensibleType
+  Endpoint endpoint, EndpointType endpointType, DollarAtString package, DollarAtString type,
+  DollarAtString subtypes, DollarAtString name, DollarAtString signature, DollarAtString input,
+  DollarAtString output, DollarAtString parameterName, DollarAtString extensibleType
 where
-  isPositiveExample(endpoint, endpointType, package, type, subtypes, name, signature, input, output, parameterName, extensibleType)
+  isPositiveExample(endpoint, endpointType, package, type, subtypes, name, signature, input, output,
+    parameterName, extensibleType)
 select endpoint,
   endpointType + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //

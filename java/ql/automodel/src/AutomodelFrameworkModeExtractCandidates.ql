@@ -16,12 +16,12 @@ private import AutomodelFrameworkModeCharacteristics
 private import AutomodelJavaUtil
 
 from
-  Endpoint endpoint, DollarAtString package,
-  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString output, DollarAtString parameterName,
-  DollarAtString alreadyAiModeled, DollarAtString extensibleType
+  Endpoint endpoint, DollarAtString package, DollarAtString type, DollarAtString subtypes,
+  DollarAtString name, DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString parameterName, DollarAtString alreadyAiModeled, DollarAtString extensibleType
 where
-  isCandidate(endpoint, package, type, subtypes, name, signature, input, output, parameterName, extensibleType, alreadyAiModeled)
+  isCandidate(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
+    extensibleType, alreadyAiModeled)
 select endpoint,
   "Related locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
