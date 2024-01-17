@@ -5,5 +5,9 @@ public class File {
         File pathname // negative example - this is modeled as a neutral model
     ) {
         return 0;
-    } // also a negative example for ReturnValue source
+    }
+
+    public boolean setLastModified(long time) {
+        return false;
+    } // return value is not a source candidate because it's a primitive
 }

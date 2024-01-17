@@ -7,7 +7,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.ImportStar
-private import semmle.python.dataflow.new.TypeTracker
+private import semmle.python.dataflow.new.TypeTracking
 private import semmle.python.dataflow.new.internal.DataFlowPrivate
 
 /**
@@ -111,13 +111,13 @@ module ImportResolution {
       allowedEssaImportStep*(firstDef, lastUseVar) and
       not allowedEssaImportStep(_, firstDef)
     |
-      not EssaFlow::defToFirstUse(firstDef, _) and
-      val.asVar() = firstDef
+      not LocalFlow::defToFirstUse(firstDef, _) and
+      val.asCfgNode() = firstDef.getDefinition().(EssaNodeDefinition).getDefiningNode()
       or
       exists(ControlFlowNode mid, ControlFlowNode end |
-        EssaFlow::defToFirstUse(firstDef, mid) and
-        EssaFlow::useToNextUse*(mid, end) and
-        not EssaFlow::useToNextUse(end, _) and
+        LocalFlow::defToFirstUse(firstDef, mid) and
+        LocalFlow::useToNextUse*(mid, end) and
+        not LocalFlow::useToNextUse(end, _) and
         val.asCfgNode() = end
       )
     )
@@ -227,7 +227,7 @@ module ImportResolution {
    */
   pragma[inline]
   private Module getModuleFromName(string name) {
-    isPreferredModuleForName(result.getFile(), name + ["", ".__init__"])
+    isPreferredModuleForName(result.getFile(), [name, name + ".__init__"])
   }
 
   /** Gets the module from which attributes are imported by `i`. */
@@ -320,11 +320,11 @@ module ImportResolution {
     // name as a submodule, we always consider that this attribute _could_ be a
     // reference to the submodule, even if we don't know that the submodule has been
     // imported yet.
-    exists(string submodule, Module package |
-      submodule = result.asVar().getName() and
-      SsaSource::init_module_submodule_defn(result.asVar().getSourceVariable(),
-        package.getEntryNode()) and
-      m = getModuleFromName(package.getPackageName() + "." + submodule)
+    exists(string submodule, Module package, EssaVariable var |
+      submodule = var.getName() and
+      SsaSource::init_module_submodule_defn(var.getSourceVariable(), package.getEntryNode()) and
+      m = getModuleFromName(package.getPackageName() + "." + submodule) and
+      result.asCfgNode() = var.getDefinition().(EssaNodeDefinition).getDefiningNode()
     )
   }
 

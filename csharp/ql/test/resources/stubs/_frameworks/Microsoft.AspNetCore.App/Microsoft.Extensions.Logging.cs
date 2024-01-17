@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Logging, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Logging, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -47,10 +47,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.Logging.LoggerFilterOptions AddFilter<T>(this Microsoft.Extensions.Logging.LoggerFilterOptions builder, string category, System.Func<Microsoft.Extensions.Logging.LogLevel, bool> levelFilter) where T : Microsoft.Extensions.Logging.ILoggerProvider => throw null;
                 public static Microsoft.Extensions.Logging.LoggerFilterOptions AddFilter<T>(this Microsoft.Extensions.Logging.LoggerFilterOptions builder, string category, Microsoft.Extensions.Logging.LogLevel level) where T : Microsoft.Extensions.Logging.ILoggerProvider => throw null;
             }
-            public interface ILoggingBuilder
-            {
-                Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get; }
-            }
             public class LoggerFactory : System.IDisposable, Microsoft.Extensions.Logging.ILoggerFactory
             {
                 public void AddProvider(Microsoft.Extensions.Logging.ILoggerProvider provider) => throw null;
@@ -93,6 +89,7 @@ namespace Microsoft
                 public static Microsoft.Extensions.Logging.ILoggingBuilder Configure(this Microsoft.Extensions.Logging.ILoggingBuilder builder, System.Action<Microsoft.Extensions.Logging.LoggerFactoryOptions> action) => throw null;
                 public static Microsoft.Extensions.Logging.ILoggingBuilder SetMinimumLevel(this Microsoft.Extensions.Logging.ILoggingBuilder builder, Microsoft.Extensions.Logging.LogLevel level) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)4, AllowMultiple = false, Inherited = false)]
             public class ProviderAliasAttribute : System.Attribute
             {
                 public string Alias { get => throw null; }

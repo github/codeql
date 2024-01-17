@@ -721,3 +721,27 @@ void test_strtok_indirect() {
 	sink(*tokenized); // $ ir MISSING: ast
 	sink(*delim);
 }
+
+long int strtol(const char*, char**, int);
+
+void test_strtol(char *source) {
+	char* endptr = nullptr;
+	long l = strtol(source, &endptr, 10);
+	sink(l); // $ ast,ir
+	sink(endptr); // $ ast,ir
+	sink(*endptr); // $ ast,ir
+}
+
+void *realloc(void *, size_t);
+
+void test_realloc() {
+	char *source = indirect_source();
+	char *dest = (char*)realloc(source, 16);
+	sink(dest); // $ ir MISSING: ast
+}
+
+void test_realloc_2_indirections(int **buffer) {
+  **buffer = source();
+  buffer = (int**)realloc(buffer, 16);
+  sink(**buffer); // $ ir MISSING: ast
+}

@@ -7,7 +7,7 @@ private import internal.CryptoAlgorithmNames
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.TypeTracking
 
 bindingset[algorithmString]
 private string algorithmRegex(string algorithmString) {
@@ -569,6 +569,8 @@ private class CipherOperation extends Cryptography::CryptographicOperation::Rang
     this.getMethodName() = "update"
   }
 
+  override DataFlow::Node getInitialization() { result = cipherNode }
+
   override Cryptography::EncryptionAlgorithm getAlgorithm() {
     result = cipherNode.getCipher().getAlgorithm()
   }
@@ -591,20 +593,20 @@ private module Digest {
   private class DigestCall extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode
   {
     Cryptography::HashingAlgorithm algo;
+    API::MethodAccessNode call;
 
     DigestCall() {
-      exists(API::MethodAccessNode call |
-        call = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("new")
-      |
-        this = call.getReturn().getAMethodCall(["digest", "update", "<<"]) and
-        algo.matchesName(call.asCall()
-              .getArgument(0)
-              .asExpr()
-              .getExpr()
-              .getConstantValue()
-              .getString())
-      )
+      call = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("new") and
+      this = call.getReturn().getAMethodCall(["digest", "update", "<<"]) and
+      algo.matchesName(call.asCall()
+            .getArgument(0)
+            .asExpr()
+            .getExpr()
+            .getConstantValue()
+            .getString())
     }
+
+    override DataFlow::Node getInitialization() { result = call.asCall() }
 
     override Cryptography::HashingAlgorithm getAlgorithm() { result = algo }
 
@@ -617,11 +619,15 @@ private module Digest {
   private class DigestCallDirect extends Cryptography::CryptographicOperation::Range instanceof DataFlow::CallNode
   {
     Cryptography::HashingAlgorithm algo;
+    API::Node digestNode;
 
     DigestCallDirect() {
-      this = API::getTopLevelMember("OpenSSL").getMember("Digest").getMethod("digest").asCall() and
+      digestNode = API::getTopLevelMember("OpenSSL").getMember("Digest") and
+      this = digestNode.getMethod("digest").asCall() and
       algo.matchesName(this.getArgument(0).asExpr().getExpr().getConstantValue().getString())
     }
+
+    override DataFlow::Node getInitialization() { result = digestNode.asSource() }
 
     override Cryptography::HashingAlgorithm getAlgorithm() { result = algo }
 

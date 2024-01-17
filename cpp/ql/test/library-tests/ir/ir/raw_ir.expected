@@ -2725,43 +2725,64 @@ ir.cpp:
 #  462|     mu462_2(int)        = Uninitialized[x]       : &:r462_1
 #  463|     r463_1(glval<bool>) = VariableAddress[a]     : 
 #  463|     r463_2(bool)        = Load[a]                : &:r463_1, ~m?
-#  463|     v463_3(void)        = ConditionalBranch      : r463_2
-#-----|   False -> Block 1
-#-----|   True -> Block 2
+#  463|     r463_3(bool)        = LogicalNot             : r463_2
+#  463|     v463_4(void)        = ConditionalBranch      : r463_3
+#-----|   False -> Block 5
+#-----|   True -> Block 1
 
 #  464|   Block 1
 #  464|     r464_1(int)        = Constant[1]        : 
 #  464|     r464_2(glval<int>) = VariableAddress[x] : 
 #  464|     mu464_3(int)       = Store[x]           : &:r464_2, r464_1
-#-----|   Goto -> Block 2
+#-----|   Goto -> Block 5
 
 #  467|   Block 2
-#  467|     r467_1(glval<bool>) = VariableAddress[a] : 
-#  467|     r467_2(bool)        = Load[a]            : &:r467_1, ~m?
-#  467|     v467_3(void)        = ConditionalBranch  : r467_2
-#-----|   False -> Block 4
-#-----|   True -> Block 3
+#  467|     r467_1(glval<bool>) = VariableAddress[#temp467:11] : 
+#  467|     r467_2(bool)        = Constant[0]                  : 
+#  467|     mu467_3(bool)       = Store[#temp467:11]           : &:r467_1, r467_2
+#-----|   Goto -> Block 3
 
 #  467|   Block 3
-#  467|     r467_4(glval<bool>) = VariableAddress[b] : 
-#  467|     r467_5(bool)        = Load[b]            : &:r467_4, ~m?
-#  467|     v467_6(void)        = ConditionalBranch  : r467_5
-#-----|   False -> Block 4
-#-----|   True -> Block 5
+#  467|     r467_4(glval<bool>) = VariableAddress[#temp467:11] : 
+#  467|     r467_5(bool)        = Load[#temp467:11]            : &:r467_4, ~m?
+#  467|     r467_6(bool)        = LogicalNot                   : r467_5
+#  467|     v467_7(void)        = ConditionalBranch            : r467_6
+#-----|   False -> Block 8
+#-----|   True -> Block 7
 
-#  468|   Block 4
+#  467|   Block 4
+#  467|     r467_8(glval<bool>) = VariableAddress[#temp467:11] : 
+#  467|     r467_9(bool)        = Constant[1]                  : 
+#  467|     mu467_10(bool)      = Store[#temp467:11]           : &:r467_8, r467_9
+#-----|   Goto -> Block 3
+
+#  467|   Block 5
+#  467|     r467_11(glval<bool>) = VariableAddress[a] : 
+#  467|     r467_12(bool)        = Load[a]            : &:r467_11, ~m?
+#  467|     v467_13(void)        = ConditionalBranch  : r467_12
+#-----|   False -> Block 2
+#-----|   True -> Block 6
+
+#  467|   Block 6
+#  467|     r467_14(glval<bool>) = VariableAddress[b] : 
+#  467|     r467_15(bool)        = Load[b]            : &:r467_14, ~m?
+#  467|     v467_16(void)        = ConditionalBranch  : r467_15
+#-----|   False -> Block 2
+#-----|   True -> Block 4
+
+#  468|   Block 7
 #  468|     r468_1(int)        = Constant[2]        : 
 #  468|     r468_2(glval<int>) = VariableAddress[x] : 
 #  468|     mu468_3(int)       = Store[x]           : &:r468_2, r468_1
-#-----|   Goto -> Block 6
+#-----|   Goto -> Block 9
 
-#  471|   Block 5
+#  471|   Block 8
 #  471|     r471_1(int)        = Constant[3]        : 
 #  471|     r471_2(glval<int>) = VariableAddress[x] : 
 #  471|     mu471_3(int)       = Store[x]           : &:r471_2, r471_1
-#-----|   Goto -> Block 6
+#-----|   Goto -> Block 9
 
-#  473|   Block 6
+#  473|   Block 9
 #  473|     v473_1(void)  = NoOp         : 
 #  461|     v461_8(void)  = ReturnVoid   : 
 #  461|     v461_9(void)  = AliasedUse   : ~m?
@@ -11537,6 +11558,38 @@ ir.cpp:
 # 2098|     v2098_6(void)                          = ReturnVoid                      : 
 # 2098|     v2098_7(void)                          = AliasedUse                      : ~m?
 # 2098|     v2098_8(void)                          = ExitFunction                    : 
+
+# 2109| char* test_strtod(char*)
+# 2109|   Block 0
+# 2109|     v2109_1(void)           = EnterFunction                  : 
+# 2109|     mu2109_2(unknown)       = AliasedDefinition              : 
+# 2109|     mu2109_3(unknown)       = InitializeNonLocal             : 
+# 2109|     r2109_4(glval<char *>)  = VariableAddress[s]             : 
+# 2109|     mu2109_5(char *)        = InitializeParameter[s]         : &:r2109_4
+# 2109|     r2109_6(char *)         = Load[s]                        : &:r2109_4, ~m?
+# 2109|     mu2109_7(unknown)       = InitializeIndirection[s]       : &:r2109_6
+# 2110|     r2110_1(glval<char *>)  = VariableAddress[end]           : 
+# 2110|     mu2110_2(char *)        = Uninitialized[end]             : &:r2110_1
+# 2111|     r2111_1(glval<double>)  = VariableAddress[d]             : 
+# 2111|     r2111_2(glval<unknown>) = FunctionAddress[strtod]        : 
+# 2111|     r2111_3(glval<char *>)  = VariableAddress[s]             : 
+# 2111|     r2111_4(char *)         = Load[s]                        : &:r2111_3, ~m?
+# 2111|     r2111_5(char *)         = Convert                        : r2111_4
+# 2111|     r2111_6(glval<char *>)  = VariableAddress[end]           : 
+# 2111|     r2111_7(char **)        = CopyValue                      : r2111_6
+# 2111|     r2111_8(double)         = Call[strtod]                   : func:r2111_2, 0:r2111_5, 1:r2111_7
+# 2111|     v2111_9(void)           = ^BufferReadSideEffect[0]       : &:r2111_5, ~m?
+# 2111|     mu2111_10(char *)       = ^IndirectMayWriteSideEffect[1] : &:r2111_7
+# 2111|     mu2111_11(double)       = Store[d]                       : &:r2111_1, r2111_8
+# 2112|     r2112_1(glval<char *>)  = VariableAddress[#return]       : 
+# 2112|     r2112_2(glval<char *>)  = VariableAddress[end]           : 
+# 2112|     r2112_3(char *)         = Load[end]                      : &:r2112_2, ~m?
+# 2112|     mu2112_4(char *)        = Store[#return]                 : &:r2112_1, r2112_3
+# 2109|     v2109_8(void)           = ReturnIndirection[s]           : &:r2109_6, ~m?
+# 2109|     r2109_9(glval<char *>)  = VariableAddress[#return]       : 
+# 2109|     v2109_10(void)          = ReturnValue                    : &:r2109_9, ~m?
+# 2109|     v2109_11(void)          = AliasedUse                     : ~m?
+# 2109|     v2109_12(void)          = ExitFunction                   : 
 
 perf-regression.cpp:
 #    6| void Big::Big()

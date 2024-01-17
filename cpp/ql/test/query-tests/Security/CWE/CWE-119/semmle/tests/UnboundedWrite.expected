@@ -1,4 +1,32 @@
 edges
-subpaths
+| main.cpp:6:27:6:30 | **argv | main.cpp:10:20:10:23 | **argv |
+| main.cpp:10:20:10:23 | **argv | tests.cpp:657:32:657:35 | **argv |
+| tests.cpp:613:19:613:24 | *source | tests.cpp:615:17:615:22 | *source |
+| tests.cpp:622:19:622:24 | *source | tests.cpp:625:2:625:16 | *... = ... |
+| tests.cpp:625:2:625:2 | *s [post update] [*home] | tests.cpp:628:14:628:14 | *s [*home] |
+| tests.cpp:625:2:625:16 | *... = ... | tests.cpp:625:2:625:2 | *s [post update] [*home] |
+| tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:14:628:19 | *home |
+| tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:16:628:19 | *home |
+| tests.cpp:628:16:628:19 | *home | tests.cpp:628:14:628:19 | *home |
+| tests.cpp:657:32:657:35 | **argv | tests.cpp:682:9:682:15 | *access to array |
+| tests.cpp:657:32:657:35 | **argv | tests.cpp:683:9:683:15 | *access to array |
+| tests.cpp:682:9:682:15 | *access to array | tests.cpp:613:19:613:24 | *source |
+| tests.cpp:683:9:683:15 | *access to array | tests.cpp:622:19:622:24 | *source |
 nodes
+| main.cpp:6:27:6:30 | **argv | semmle.label | **argv |
+| main.cpp:10:20:10:23 | **argv | semmle.label | **argv |
+| tests.cpp:613:19:613:24 | *source | semmle.label | *source |
+| tests.cpp:615:17:615:22 | *source | semmle.label | *source |
+| tests.cpp:622:19:622:24 | *source | semmle.label | *source |
+| tests.cpp:625:2:625:2 | *s [post update] [*home] | semmle.label | *s [post update] [*home] |
+| tests.cpp:625:2:625:16 | *... = ... | semmle.label | *... = ... |
+| tests.cpp:628:14:628:14 | *s [*home] | semmle.label | *s [*home] |
+| tests.cpp:628:14:628:19 | *home | semmle.label | *home |
+| tests.cpp:628:16:628:19 | *home | semmle.label | *home |
+| tests.cpp:657:32:657:35 | **argv | semmle.label | **argv |
+| tests.cpp:682:9:682:15 | *access to array | semmle.label | *access to array |
+| tests.cpp:683:9:683:15 | *access to array | semmle.label | *access to array |
+subpaths
 #select
+| tests.cpp:615:2:615:7 | call to strcpy | main.cpp:6:27:6:30 | **argv | tests.cpp:615:17:615:22 | *source | This 'call to strcpy' with input from $@ may overflow the destination. | main.cpp:6:27:6:30 | **argv | a command-line argument |
+| tests.cpp:628:2:628:7 | call to strcpy | main.cpp:6:27:6:30 | **argv | tests.cpp:628:14:628:19 | *home | This 'call to strcpy' with input from $@ may overflow the destination. | main.cpp:6:27:6:30 | **argv | a command-line argument |

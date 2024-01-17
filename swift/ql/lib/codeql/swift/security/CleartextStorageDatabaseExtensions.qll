@@ -58,6 +58,26 @@ private class CoreDataStore extends CleartextStorageDatabaseSink {
 }
 
 /**
+ * The Realm database `RealmSwiftObject` type. Also matches the Realm `Object`
+ * type, which may or may not be a type alias for `RealmSwiftObject`.
+ */
+class RealmSwiftObject extends Type {
+  RealmSwiftObject() {
+    this.getName() = "RealmSwiftObject"
+    or
+    this.getName() = "Object" and
+    this.(NominalType).getDeclaration().getModule().getName() = "RealmSwift"
+  }
+}
+
+/**
+ * A class that inherits from `RealmSwiftObject`.
+ */
+class RealmSwiftObjectType extends Type {
+  RealmSwiftObjectType() { this.getUnderlyingType().getABaseType*() instanceof RealmSwiftObject }
+}
+
+/**
  * A `DataFlow::Node` that is an expression stored with the Realm database
  * library.
  */
@@ -66,10 +86,9 @@ private class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlo
     // any write into a class derived from `RealmSwiftObject` is a sink. For
     // example in `realmObj.data = sensitive` the post-update node corresponding
     // with `realmObj.data` is a sink.
-    exists(NominalType t, Expr e |
-      t.getUnderlyingType().getABaseType*().getName() = "RealmSwiftObject" and
+    exists(Expr e |
       this.getPreUpdateNode().asExpr() = e and
-      e.getFullyConverted().getType() = t and
+      e.getFullyConverted().getType() instanceof RealmSwiftObjectType and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }

@@ -14,11 +14,11 @@ class AuthExpr extends Expr {
   AuthExpr() {
     this.(MethodCall)
         .getTarget()
-        .hasQualifiedName("System.Security.Principal", "IPrincipal", "IsInRole")
+        .hasFullyQualifiedName("System.Security.Principal", "IPrincipal", "IsInRole")
     or
     this.(PropertyAccess)
         .getTarget()
-        .hasQualifiedName("System.Security.Principal", "IIdentity", ["IsAuthenticated", "Name"])
+        .hasFullyQualifiedName("System.Security.Principal", "IIdentity", ["IsAuthenticated", "Name"])
     or
     this.(MethodCall).getTarget().getName().toLowerCase().matches("%auth%")
     or

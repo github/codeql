@@ -26,9 +26,9 @@ module KindValidation<KindValidationConfigSig Config> {
       this =
         [
           // shared
-          "code-injection", "command-injection", "file-content-store", "html-injection",
-          "js-injection", "ldap-injection", "log-injection", "path-injection", "request-forgery",
-          "sql-injection", "url-redirection",
+          "code-injection", "command-injection", "environment-injection", "file-content-store",
+          "html-injection", "js-injection", "ldap-injection", "log-injection", "path-injection",
+          "request-forgery", "sql-injection", "url-redirection",
           // Java-only currently, but may be shared in the future
           "bean-validation", "fragment-injection", "groovy-injection", "hostname-verification",
           "information-leak", "intent-redirection", "jexl-injection", "jndi-injection",
@@ -43,11 +43,9 @@ module KindValidation<KindValidationConfigSig Config> {
       or
       this.matches([
           // shared
-          "encryption-%", "qltest%", "test-%",
+          "credentials-%", "encryption-%", "qltest%", "test-%",
           // Java-only currently, but may be shared in the future
           "regex-use%",
-          // JavaScript-only currently, but may be shared in the future
-          "credentials-%",
           // Swift-only currently, but may be shared in the future
           "%string-%length", "weak-hash-input-%"
         ])

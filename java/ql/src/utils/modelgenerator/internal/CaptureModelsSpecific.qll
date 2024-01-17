@@ -5,6 +5,7 @@
 private import java as J
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
+private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.java.dataflow.internal.ModelExclusions
 private import semmle.code.java.dataflow.DataFlow as Df
 private import semmle.code.java.dataflow.SSA as Ssa
@@ -21,6 +22,8 @@ class Type = J::Type;
 
 class Unit = J::Unit;
 
+class Callable = J::Callable;
+
 private J::Method superImpl(J::Method m) {
   result = m.getAnOverride() and
   not exists(result.getAnOverride()) and
@@ -35,15 +38,19 @@ private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
 /**
  * Holds if it is relevant to generate models for `api`.
  */
-private predicate isRelevantForModels(J::Callable api) {
+private predicate isRelevantForModels(Callable api) {
   not isUninterestingForModels(api) and
-  not isInfrequentlyUsed(api.getCompilationUnit())
+  not isInfrequentlyUsed(api.getCompilationUnit()) and
+  // Disregard all APIs that have a manual model.
+  not api = any(FlowSummaryImpl::Public::SummarizedCallable sc | sc.applyManualModel()).asCallable() and
+  not api =
+    any(FlowSummaryImpl::Public::NeutralSummaryCallable sc | sc.hasManualModel()).asCallable()
 }
 
 /**
  * Holds if it is relevant to generate models for `api` based on data flow analysis.
  */
-predicate isRelevantForDataFlowModels(J::Callable api) {
+predicate isRelevantForDataFlowModels(Callable api) {
   isRelevantForModels(api) and
   (not api.getDeclaringType() instanceof J::Interface or exists(api.getBody()))
 }
@@ -56,7 +63,7 @@ predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
  * In the Standard library and 3rd party libraries it the Callables that can be called
  * from outside the library itself.
  */
-class TargetApiSpecific extends J::Callable {
+class TargetApiSpecific extends Callable {
   TargetApiSpecific() {
     this.isPublic() and
     this.fromSource() and
@@ -65,6 +72,15 @@ class TargetApiSpecific extends J::Callable {
       superImpl(this).getDeclaringType().isPublic()
     ) and
     isRelevantForModels(this)
+  }
+
+  /**
+   * Gets the callable that a model will be lifted to, if any.
+   */
+  Callable lift() {
+    exists(Method m | m = superImpl(this) and m.fromSource() | result = m)
+    or
+    not exists(superImpl(this)) and result = this
   }
 }
 
@@ -79,9 +95,7 @@ private string typeAsModel(J::RefType type) {
 }
 
 private J::RefType bestTypeForModel(TargetApiSpecific api) {
-  if exists(superImpl(api))
-  then superImpl(api).fromSource() and result = superImpl(api).getDeclaringType()
-  else result = api.getDeclaringType()
+  result = api.lift().getDeclaringType()
 }
 
 /**
@@ -195,7 +209,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
 /**
  * Gets the enclosing callable of `ret`.
  */
-J::Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
+Callable returnNodeEnclosingCallable(DataFlowImplCommon::ReturnNodeExt ret) {
   result = DataFlowImplCommon::getNodeEnclosingCallable(ret).asCallable()
 }
 

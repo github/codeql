@@ -10,7 +10,7 @@
 		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/ReDoS">ReDoS</a>.</li>
 		<li>Wikipedia: <a href="https://en.wikipedia.org/wiki/Time_complexity">Time complexity</a>.</li>
 		<li>James Kirrage, Asiri Rathnayake, Hayo Thielecke:
-		<a href="http://www.cs.bham.ac.uk/~hxt/research/reg-exp-sec.pdf">Static Analysis for Regular Expression Denial-of-Service Attack</a>.
+		<a href="https://arxiv.org/abs/1301.0849">Static Analysis for Regular Expression Denial-of-Service Attack</a>.
 		</li>
 	</references>
 </qhelp>

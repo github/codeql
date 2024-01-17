@@ -60,14 +60,14 @@ deprecated class ImplicitPendingIntentStartConf extends TaintTracking::Configura
  * being wrapped in another implicit `Intent` that gets started.
  */
 module ImplicitPendingIntentStartConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowState;
+  class FlowState = PendingIntentState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    source.(ImplicitPendingIntentSource).hasState(state)
+    source instanceof ImplicitPendingIntentSource and state instanceof NoState
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    sink.(ImplicitPendingIntentSink).hasState(state)
+    sink instanceof ImplicitPendingIntentSink and state instanceof MutablePendingIntent
   }
 
   predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof ExplicitIntentSanitizer }
@@ -79,7 +79,9 @@ module ImplicitPendingIntentStartConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, state1, node2, state2)
+    any(ImplicitPendingIntentAdditionalTaintStep c).mutablePendingIntentCreation(node1, node2) and
+    state1 instanceof NoState and
+    state2 instanceof MutablePendingIntent
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {

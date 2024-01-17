@@ -5,13 +5,18 @@
 // If you add modeling of a new framework/library, remember to add it to the docs in
 // `docs/codeql/reusables/supported-frameworks.rst`
 private import semmle.python.frameworks.Aioch
+private import semmle.python.frameworks.Aiofile
+private import semmle.python.frameworks.Aiofiles
 private import semmle.python.frameworks.Aiohttp
 private import semmle.python.frameworks.Aiomysql
 private import semmle.python.frameworks.Aiopg
 private import semmle.python.frameworks.Aiosqlite
+private import semmle.python.frameworks.Anyio
 private import semmle.python.frameworks.Asyncpg
+private import semmle.python.frameworks.Baize
 private import semmle.python.frameworks.BSon
 private import semmle.python.frameworks.CassandraDriver
+private import semmle.python.frameworks.Cherrypy
 private import semmle.python.frameworks.ClickhouseDriver
 private import semmle.python.frameworks.Cryptodome
 private import semmle.python.frameworks.Cryptography
@@ -54,6 +59,7 @@ private import semmle.python.frameworks.Requests
 private import semmle.python.frameworks.RestFramework
 private import semmle.python.frameworks.Rsa
 private import semmle.python.frameworks.RuamelYaml
+private import semmle.python.frameworks.Sanic
 private import semmle.python.frameworks.ServerLess
 private import semmle.python.frameworks.Setuptools
 private import semmle.python.frameworks.Simplejson

@@ -8,6 +8,8 @@
 /swift/ @github/codeql-swift
 /misc/codegen/ @github/codeql-swift
 /java/kotlin-extractor/ @github/codeql-kotlin
+/java/ql/test-kotlin1/ @github/codeql-kotlin
+/java/ql/test-kotlin2/ @github/codeql-kotlin
 
 # ML-powered queries
 /javascript/ql/experimental/adaptivethreatmodeling/ @github/codeql-ml-powered-queries-reviewers
@@ -42,3 +44,4 @@ WORKSPACE.bazel @github/codeql-ci-reviewers
 
 # Misc
 /misc/scripts/accept-expected-changes-from-ci.py @RasmusWL
+/misc/scripts/generate-code-scanning-query-list.py @RasmusWL

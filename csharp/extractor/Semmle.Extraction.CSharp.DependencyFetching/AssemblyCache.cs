@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
@@ -20,21 +19,27 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// assembly cache.
         /// </param>
         /// <param name="progressMonitor">Callback for progress.</param>
-        public AssemblyCache(IEnumerable<string> paths, ProgressMonitor progressMonitor)
+        public AssemblyCache(IEnumerable<string> paths, IEnumerable<string> frameworkPaths, ProgressMonitor progressMonitor)
         {
             foreach (var path in paths)
             {
                 if (File.Exists(path))
                 {
                     pendingDllsToIndex.Enqueue(path);
+                    continue;
                 }
-                else
+
+                if (Directory.Exists(path))
                 {
                     progressMonitor.FindingFiles(path);
                     AddReferenceDirectory(path);
                 }
+                else
+                {
+                    progressMonitor.LogInfo("AssemblyCache: Path not found: " + path);
+                }
             }
-            IndexReferences();
+            IndexReferences(frameworkPaths);
         }
 
         /// <summary>
@@ -51,13 +56,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private static readonly Version emptyVersion = new Version(0, 0, 0, 0);
-
         /// <summary>
         /// Indexes all DLLs we have located.
         /// Because this is a potentially time-consuming operation, it is put into a separate stage.
         /// </summary>
-        private void IndexReferences()
+        private void IndexReferences(IEnumerable<string> frameworkPaths)
         {
             // Read all of the files
             foreach (var filename in pendingDllsToIndex)
@@ -65,13 +68,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 IndexReference(filename);
             }
 
-            // Index "assemblyInfo" by version string
-            // The OrderBy is used to ensure that we by default select the highest version number.
             foreach (var info in assemblyInfoByFileName.Values
                 .OrderBy(info => info.Name)
-                .ThenBy(info => info.NetCoreVersion ?? emptyVersion)
-                .ThenBy(info => info.Version ?? emptyVersion)
-                .ThenBy(info => info.Filename))
+                .OrderAssemblyInfosByPreference(frameworkPaths))
             {
                 foreach (var index in info.IndexStrings)
                 {

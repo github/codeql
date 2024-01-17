@@ -1,3 +1,40 @@
+## 0.8.6
+
+### Deprecated Queries
+
+* The three queries `java/insufficient-key-size`, `java/server-side-template-injection`, and `java/android/implicit-pendingintents` had accidentally general extension points allowing arbitrary string-based flow state. This has been fixed and the old extension points have been deprecated where possible, and otherwise updated.
+
+### New Queries
+
+* Added the `java/insecure-randomness` query to detect uses of weakly random values which an attacker may be able to predict. Also added the `crypto-parameter` sink kind for sinks which represent the parameters and keys of cryptographic operations. 
+
+### Minor Analysis Improvements
+
+* Modified the `java/potentially-weak-cryptographic-algorithm` query to include the use of weak cryptographic algorithms from configuration values specified in properties files.
+* The query `java/android/missing-certificate-pinning` should no longer alert about requests pointing to the local filesystem.
+* Removed some spurious sinks related to `com.opensymphony.xwork2.TextProvider.getText` from the query `java/ognl-injection`.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+No user-facing changes.
+
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* The query `java/unsafe-deserialization` has been improved to detect insecure calls to `ObjectMessage.getObject` in JMS.
+
+## 0.8.2
+
+### Minor Analysis Improvements
+
+* java/summary/lines-of-code now gives the total number of lines of Java and Kotlin code, and is the only query tagged `lines-of-code`. java/summary/lines-of-code-java and java/summary/lines-of-code-kotlin give the per-language counts.
+* The query `java/spring-disabled-csrf-protection` has been improved to detect more ways of disabling CSRF in Spring.
+
 ## 0.8.1
 
 ### Minor Analysis Improvements

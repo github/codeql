@@ -10,40 +10,14 @@ private import internal.DataFlowUtil
 // import all instances below
 private module Summaries { }
 
-class SummaryComponent = Impl::Public::SummaryComponent;
+deprecated class SummaryComponent = Impl::Private::SummaryComponent;
 
-/** Provides predicates for constructing summary components. */
-module SummaryComponent {
-  import Impl::Public::SummaryComponent
+deprecated module SummaryComponent = Impl::Private::SummaryComponent;
 
-  /** Gets a summary component that represents a qualifier. */
-  SummaryComponent qualifier() { result = argument(-1) }
+deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
-  /** Gets a summary component for field `f`. */
-  SummaryComponent field(Field f) { result = content(any(FieldContent c | c.getField() = f)) }
-
-  /** Gets a summary component that represents the return value of a call. */
-  SummaryComponent return() { result = return(_) }
-}
-
-class SummaryComponentStack = Impl::Public::SummaryComponentStack;
-
-/** Provides predicates for constructing stacks of summary components. */
-module SummaryComponentStack {
-  import Impl::Public::SummaryComponentStack
-
-  /** Gets a singleton stack representing a qualifier. */
-  SummaryComponentStack qualifier() { result = singleton(SummaryComponent::qualifier()) }
-
-  /** Gets a stack representing a field `f` of `object`. */
-  SummaryComponentStack fieldOf(Field f, SummaryComponentStack object) {
-    result = push(SummaryComponent::field(f), object)
-  }
-
-  /** Gets a singleton stack representing a (normal) return. */
-  SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
-}
+deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
-class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;

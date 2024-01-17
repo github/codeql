@@ -29,7 +29,7 @@ import semmle.code.java.frameworks.struts.StrutsActions
 import semmle.code.java.frameworks.Thrift
 import semmle.code.java.frameworks.javaee.jsf.JSFRenderer
 private import semmle.code.java.dataflow.ExternalFlow
-private import semmle.code.java.dataflow.ExternalFlowConfiguration
+private import codeql.threatmodels.ThreatModels
 
 /**
  * A data flow source.
@@ -47,10 +47,6 @@ abstract class SourceNode extends DataFlow::Node {
  */
 class ThreatModelFlowSource extends DataFlow::Node {
   ThreatModelFlowSource() {
-    // Expansive threat model.
-    currentThreatModel("all") and
-    (this instanceof SourceNode or sourceNode(this, _))
-    or
     exists(string kind |
       // Specific threat model.
       currentThreatModel(kind) and

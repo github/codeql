@@ -151,7 +151,7 @@ class Call extends Expr, DotNet::Call, @cil_call_any {
 
   override Method getARuntimeTarget() { result = this.getTarget().getAnOverrider*() }
 
-  override string getExtra() { result = this.getTarget().getQualifiedName() }
+  override string getExtra() { result = this.getTarget().getFullyQualifiedName() }
 
   /**
    * Gets the return type of the call. Methods that do not return a value

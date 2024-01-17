@@ -13,6 +13,7 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.frameworks.Stdlib
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -35,6 +36,8 @@ module Starlette {
       result = API::moduleImport("starlette").getMember("websockets").getMember("WebSocket")
       or
       result = API::moduleImport("fastapi").getMember("WebSocket")
+      or
+      result = ModelOutput::getATypeNode("starlette.websockets.WebSocket~Subclass").getASubclass*()
     }
 
     /**
@@ -100,8 +103,10 @@ module Starlette {
    */
   module Url {
     /** Gets a reference to the `starlette.requests.URL` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("starlette").getMember("requests").getMember("URL")
+      or
+      result = ModelOutput::getATypeNode("starlette.requests.URL~Subclass").getASubclass*()
     }
 
     /**
@@ -163,4 +168,16 @@ module Starlette {
 
   /** DEPRECATED: Alias for Url */
   deprecated module URL = Url;
+
+  /**
+   * A call to the `starlette.responses.FileResponse` constructor as a sink for Filesystem access.
+   */
+  class FileResponseCall extends FileSystemAccess::Range, API::CallNode {
+    FileResponseCall() {
+      this =
+        API::moduleImport("starlette").getMember("responses").getMember("FileResponse").getACall()
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getParameter(0, "path").asSink() }
+  }
 }

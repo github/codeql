@@ -1,3 +1,12 @@
+#select
+| tst.ts:1:1:1:16 | type A = number; | tst.ts:1:6:1:6 | A | 0 | tst.ts:1:10:1:15 | number |
+| tst.ts:2:1:2:16 | type B<T> = T[]; | tst.ts:2:6:2:6 | B | 1 | tst.ts:2:13:2:15 | T[] |
+| tst.ts:8:10:8:20 | type C = A; | tst.ts:8:15:8:15 | C | 0 | tst.ts:8:19:8:19 | A |
+| tst.ts:15:1:15:23 | type Un ...  \| Two; | tst.ts:15:6:15:10 | Union | 0 | tst.ts:15:14:15:22 | One \| Two |
+| tst.ts:17:1:17:36 | type Un ... mber }; | tst.ts:17:6:17:11 | Union2 | 0 | tst.ts:17:15:17:35 | Union & ... umber } |
+| tst.ts:18:1:18:21 | type Un ... Union2; | tst.ts:18:6:18:11 | Union3 | 0 | tst.ts:18:15:18:20 | Union2 |
+| tst.ts:19:1:19:21 | type Un ... Union3; | tst.ts:19:6:19:11 | Union4 | 0 | tst.ts:19:15:19:20 | Union3 |
+| tst.ts:20:1:20:30 | type Un ... number; | tst.ts:20:6:20:11 | Union5 | 0 | tst.ts:20:15:20:29 | Union4 \| number |
 rightHandSide
 | tst.ts:1:1:1:16 | type A = number; | number |
 | tst.ts:2:1:2:16 | type B<T> = T[]; | T[] |
@@ -33,12 +42,3 @@ unfold
 | Union5 | Union5 |
 | Union5 | number |
 | Union5 | { x: number; } |
-#select
-| tst.ts:1:1:1:16 | type A = number; | tst.ts:1:6:1:6 | A | 0 | tst.ts:1:10:1:15 | number |
-| tst.ts:2:1:2:16 | type B<T> = T[]; | tst.ts:2:6:2:6 | B | 1 | tst.ts:2:13:2:15 | T[] |
-| tst.ts:8:10:8:20 | type C = A; | tst.ts:8:15:8:15 | C | 0 | tst.ts:8:19:8:19 | A |
-| tst.ts:15:1:15:23 | type Un ...  \| Two; | tst.ts:15:6:15:10 | Union | 0 | tst.ts:15:14:15:22 | One \| Two |
-| tst.ts:17:1:17:36 | type Un ... mber }; | tst.ts:17:6:17:11 | Union2 | 0 | tst.ts:17:15:17:35 | Union & ... umber } |
-| tst.ts:18:1:18:21 | type Un ... Union2; | tst.ts:18:6:18:11 | Union3 | 0 | tst.ts:18:15:18:20 | Union2 |
-| tst.ts:19:1:19:21 | type Un ... Union3; | tst.ts:19:6:19:11 | Union4 | 0 | tst.ts:19:15:19:20 | Union3 |
-| tst.ts:20:1:20:30 | type Un ... number; | tst.ts:20:6:20:11 | Union5 | 0 | tst.ts:20:15:20:29 | Union4 \| number |

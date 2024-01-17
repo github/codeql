@@ -9,4 +9,4 @@ where
   ) and
   v1.fromSource() and
   v2.fromSource()
-select v1.getQualifiedNameWithTypes(), v2.getQualifiedNameWithTypes(), kind
+select v1.getFullyQualifiedNameWithTypes(), v2.getFullyQualifiedNameWithTypes(), kind

@@ -39,8 +39,10 @@ import semmle.go.frameworks.Echo
 import semmle.go.frameworks.ElazarlGoproxy
 import semmle.go.frameworks.Email
 import semmle.go.frameworks.Encoding
+import semmle.go.frameworks.Fasthttp
 import semmle.go.frameworks.Fiber
 import semmle.go.frameworks.Gin
+import semmle.go.frameworks.GinCors
 import semmle.go.frameworks.Glog
 import semmle.go.frameworks.GoKit
 import semmle.go.frameworks.GoMicro

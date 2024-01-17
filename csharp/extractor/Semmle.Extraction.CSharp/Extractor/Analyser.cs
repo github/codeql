@@ -263,7 +263,7 @@ namespace Semmle.Extraction.CSharp
                 File.GetLastWriteTime(dest) >= File.GetLastWriteTime(src);
         }
 
-        private void AnalyseNamespace(Context cx, INamespaceSymbol ns)
+        private static void AnalyseNamespace(Context cx, INamespaceSymbol ns)
         {
             foreach (var memberNamespace in ns.GetNamespaceMembers())
             {

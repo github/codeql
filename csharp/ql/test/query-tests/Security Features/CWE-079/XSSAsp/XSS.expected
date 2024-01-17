@@ -1,12 +1,12 @@
 edges
-| XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder [element] : String | XSS.cs:26:32:26:40 | access to local variable userInput : StringBuilder [element] : String |
-| XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder [element] : String | XSS.cs:27:29:27:37 | access to local variable userInput : StringBuilder [element] : String |
-| XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder [element] : String | XSS.cs:28:26:28:34 | access to local variable userInput : StringBuilder [element] : String |
+| XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder | XSS.cs:26:32:26:40 | access to local variable userInput : StringBuilder |
+| XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder | XSS.cs:27:29:27:37 | access to local variable userInput : StringBuilder |
+| XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder | XSS.cs:28:26:28:34 | access to local variable userInput : StringBuilder |
 | XSS.cs:25:48:25:62 | access to field categoryTextBox : TextBox | XSS.cs:25:48:25:67 | access to property Text : String |
-| XSS.cs:25:48:25:67 | access to property Text : String | XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder [element] : String |
-| XSS.cs:26:32:26:40 | access to local variable userInput : StringBuilder [element] : String | XSS.cs:26:32:26:51 | call to method ToString |
-| XSS.cs:27:29:27:37 | access to local variable userInput : StringBuilder [element] : String | XSS.cs:27:29:27:48 | call to method ToString |
-| XSS.cs:28:26:28:34 | access to local variable userInput : StringBuilder [element] : String | XSS.cs:28:26:28:45 | call to method ToString |
+| XSS.cs:25:48:25:67 | access to property Text : String | XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder |
+| XSS.cs:26:32:26:40 | access to local variable userInput : StringBuilder | XSS.cs:26:32:26:51 | call to method ToString |
+| XSS.cs:27:29:27:37 | access to local variable userInput : StringBuilder | XSS.cs:27:29:27:48 | call to method ToString |
+| XSS.cs:28:26:28:34 | access to local variable userInput : StringBuilder | XSS.cs:28:26:28:45 | call to method ToString |
 | XSS.cs:37:27:37:53 | access to property QueryString : NameValueCollection | XSS.cs:37:27:37:61 | access to indexer : String |
 | XSS.cs:37:27:37:53 | access to property QueryString : NameValueCollection | XSS.cs:38:36:38:39 | access to local variable name |
 | XSS.cs:37:27:37:61 | access to indexer : String | XSS.cs:38:36:38:39 | access to local variable name |
@@ -29,14 +29,14 @@ edges
 | script.aspx:16:1:16:34 | <%= ... %> | script.aspx:16:1:16:34 | <%= ... %> |
 | script.aspx:20:1:20:41 | <%= ... %> | script.aspx:20:1:20:41 | <%= ... %> |
 nodes
-| XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder [element] : String | semmle.label | [post] access to local variable userInput : StringBuilder [element] : String |
+| XSS.cs:25:13:25:21 | [post] access to local variable userInput : StringBuilder | semmle.label | [post] access to local variable userInput : StringBuilder |
 | XSS.cs:25:48:25:62 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
 | XSS.cs:25:48:25:67 | access to property Text : String | semmle.label | access to property Text : String |
-| XSS.cs:26:32:26:40 | access to local variable userInput : StringBuilder [element] : String | semmle.label | access to local variable userInput : StringBuilder [element] : String |
+| XSS.cs:26:32:26:40 | access to local variable userInput : StringBuilder | semmle.label | access to local variable userInput : StringBuilder |
 | XSS.cs:26:32:26:51 | call to method ToString | semmle.label | call to method ToString |
-| XSS.cs:27:29:27:37 | access to local variable userInput : StringBuilder [element] : String | semmle.label | access to local variable userInput : StringBuilder [element] : String |
+| XSS.cs:27:29:27:37 | access to local variable userInput : StringBuilder | semmle.label | access to local variable userInput : StringBuilder |
 | XSS.cs:27:29:27:48 | call to method ToString | semmle.label | call to method ToString |
-| XSS.cs:28:26:28:34 | access to local variable userInput : StringBuilder [element] : String | semmle.label | access to local variable userInput : StringBuilder [element] : String |
+| XSS.cs:28:26:28:34 | access to local variable userInput : StringBuilder | semmle.label | access to local variable userInput : StringBuilder |
 | XSS.cs:28:26:28:45 | call to method ToString | semmle.label | call to method ToString |
 | XSS.cs:37:27:37:53 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | XSS.cs:37:27:37:61 | access to indexer : String | semmle.label | access to indexer : String |

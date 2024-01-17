@@ -80,15 +80,14 @@ function RegisterExtractorPack(id)
                     end
                 end
 
-                -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
-                -- if an `exe` or `dll` is passed as an argument as the call is forwarded to vstest.
-                if testMatch and (arg:match('%.exe$') or arg:match('%.dll')) then
-                    match = false
-                    break
-                end
-
                 -- we have found a sub-command, ignore all strings that look like sub-command names from now on
                 inSubCommandPosition = false
+            end
+            -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
+            -- if an `exe` or `dll` is passed as an argument as the call is forwarded to vstest.
+            if testMatch and (arg:match('%.exe$') or arg:match('%.dll')) then
+                match = false
+                break
             end
             -- if we see a separator to `dotnet run`, inject just prior to the existing separator
             if arg == '--' then

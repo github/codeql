@@ -1,3 +1,41 @@
+## 0.7.6
+
+### Minor Analysis Improvements
+
+* The diagnostic query `go/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Go files, now considers any Go file seen during extraction, even one with some errors, to be extracted / scanned.
+* The XPath library, which is used for the XPath injection query (`go/xml/xpath-injection`), now includes support for `Parser` sinks from the [libxml2](https://github.com/lestrrat-go/libxml2) package.
+* `CallNode::getACallee` and related predicates now recognise more callees accessed via a function variable, in particular when the callee is stored into a global variable or is captured by an anonymous function. This may lead to new alerts where data-flow into such a callee is relevant.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+### Bug Fixes
+
+* A bug has been fixed that meant that value flow through a slice expression was not tracked correctly. Taint flow was tracked correctly.
+
+## 0.7.3
+
+### Minor Analysis Improvements
+
+* Added the [gin-contrib/cors](https://github.com/gin-contrib/cors) library to the experimental query "CORS misconfiguration" (`go/cors-misconfiguration`).
+
+### Bug Fixes
+
+* A bug has been fixed that meant that value flow through an array was not tracked correctly in some circumstances. Taint flow was tracked correctly.
+
+## 0.7.2
+
+### Minor Analysis Improvements
+
+* Added [Request.Cookie](https://pkg.go.dev/net/http#Request.Cookie) to reflected XSS sanitizers.
+
+### Bug Fixes
+
+* Fixed a bug where data flow nodes in files that are not in the project being analyzed (such as libraries) and are not contained within a function were not given an enclosing `Callable`. Note that for nodes that are not contained within a function, the enclosing callable is considered to be the file itself. This may cause some minor changes to results.
+
 ## 0.7.1
 
 ### Minor Analysis Improvements

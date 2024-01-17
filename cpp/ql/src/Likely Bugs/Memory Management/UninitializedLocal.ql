@@ -13,7 +13,8 @@
  */
 
 import cpp
-import semmle.code.cpp.controlflow.StackVariableReachability
+import semmle.code.cpp.ir.IR
+import semmle.code.cpp.ir.dataflow.MustFlow
 
 /**
  * Auxiliary predicate: Types that don't require initialization
@@ -31,31 +32,6 @@ predicate allocatedType(Type t) {
   or
   /* Type specifiers don't affect whether or not a type is allocated. */
   allocatedType(t.getUnspecifiedType())
-}
-
-/**
- * A declaration of a local variable that leaves the
- * variable uninitialized.
- */
-DeclStmt declWithNoInit(LocalVariable v) {
-  result.getADeclaration() = v and
-  not exists(v.getInitializer()) and
-  /* The type of the variable is not stack-allocated. */
-  exists(Type t | t = v.getType() | not allocatedType(t))
-}
-
-class UninitialisedLocalReachability extends StackVariableReachability {
-  UninitialisedLocalReachability() { this = "UninitialisedLocal" }
-
-  override predicate isSource(ControlFlowNode node, StackVariable v) { node = declWithNoInit(v) }
-
-  override predicate isSink(ControlFlowNode node, StackVariable v) { useOfVarActual(v, node) }
-
-  override predicate isBarrier(ControlFlowNode node, StackVariable v) {
-    // only report the _first_ possibly uninitialized use
-    useOfVarActual(v, node) or
-    definitionBarrier(v, node)
-  }
 }
 
 pragma[noinline]
@@ -82,8 +58,33 @@ VariableAccess commonException() {
   containsInlineAssembly(result.getEnclosingFunction())
 }
 
-from UninitialisedLocalReachability r, LocalVariable v, VariableAccess va
+predicate isSinkImpl(Instruction sink, VariableAccess va) {
+  exists(LoadInstruction load |
+    va = load.getUnconvertedResultExpression() and
+    not va = commonException() and
+    sink = load.getSourceValue()
+  )
+}
+
+class MustFlow extends MustFlowConfiguration {
+  MustFlow() { this = "MustFlow" }
+
+  override predicate isSource(Instruction source) {
+    source instanceof UninitializedInstruction and
+    exists(Type t | t = source.getResultType() | not allocatedType(t))
+  }
+
+  override predicate isSink(Operand sink) { isSinkImpl(sink.getDef(), _) }
+
+  override predicate allowInterproceduralFlow() { none() }
+
+  override predicate isBarrier(Instruction instr) { instr instanceof ChiInstruction }
+}
+
+from
+  VariableAccess va, LocalVariable v, MustFlow conf, MustFlowPathNode source, MustFlowPathNode sink
 where
-  r.reaches(_, v, va) and
-  not va = commonException()
+  conf.hasFlowPath(source, sink) and
+  isSinkImpl(sink.getInstruction(), va) and
+  v = va.getTarget()
 select va, "The variable $@ may not be initialized at this access.", v, v.getName()

@@ -53,6 +53,20 @@ class TopLevelExprParent extends Element, @top_level_expr_parent {
 
 private predicate hasNoSourceLocation(Element e) { not e.getALocation() instanceof SourceLocation }
 
+/** INTERNAL: Do not use. */
+Expr getExpressionBody(Callable c) {
+  result = c.getAChildExpr() and
+  not result = c.(Constructor).getInitializer()
+}
+
+/** INTERNAL: Do not use. */
+BlockStmt getStatementBody(Callable c) { result = c.getAChildStmt() }
+
+private ControlFlowElement getBody(Callable c) {
+  result = getExpressionBody(c) or
+  result = getStatementBody(c)
+}
+
 cached
 private module Cached {
   cached
@@ -161,20 +175,20 @@ private module Cached {
 
   private predicate parent(ControlFlowElement child, ExprOrStmtParent parent) {
     child = getAChild(parent) and
-    not child = any(Callable c).getBody()
+    not child = getBody(_)
   }
 
   /** Holds if the enclosing body of `cfe` is `body`. */
   cached
   predicate enclosingBody(ControlFlowElement cfe, ControlFlowElement body) {
-    body = any(Callable c).getBody() and
+    body = getBody(_) and
     parent*(enclosingStart(cfe), body)
   }
 
   /** Holds if the enclosing callable of `cfe` is `c`. */
   cached
   predicate enclosingCallable(ControlFlowElement cfe, Callable c) {
-    enclosingBody(cfe, c.getBody())
+    enclosingBody(cfe, getBody(c))
     or
     parent*(enclosingStart(cfe), c.(Constructor).getInitializer())
   }

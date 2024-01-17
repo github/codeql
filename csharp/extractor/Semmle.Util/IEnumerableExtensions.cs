@@ -113,5 +113,11 @@ namespace Semmle.Util
                 h = h * 7 + i.GetHashCode();
             return h;
         }
+
+        /// <summary>
+        /// Returns the sequence with nulls removed.
+        /// </summary>
+        public static IEnumerable<T> WhereNotNull<T>(this IEnumerable<T?> items) where T : class =>
+            items.Where(i => i is not null)!;
     }
 }

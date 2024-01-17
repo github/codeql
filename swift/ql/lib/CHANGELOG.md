@@ -1,3 +1,58 @@
+## 0.3.6
+
+### Minor Analysis Improvements
+
+* Expanded flow models for `UnsafePointer` and similar classes.
+* Added flow models for non-member `withUnsafePointer` and similar functions.
+* Added flow models for `withMemoryRebound`, `assumingMemoryBound` and `bindMemory` member functions of library pointer classes.
+* Added a sensitive data model for `SecKeyCopyExternalRepresentation`.
+* Added imprecise flow models for `append` and `insert` methods, and initializer calls with a `data` argument.
+* Tyes for patterns are now included in the database and made available through the `Pattern::getType()` method.
+
+## 0.3.5
+
+No user-facing changes.
+
+## 0.3.4
+
+### Minor Analysis Improvements
+
+* Extracts Swift's `DiscardStmt` and `MaterizliePackExpr`
+* Expanded and improved flow models for `Set` and `Sequence`.
+* Added imprecise flow sources matching initializers such as `init(contentsOfFile:)`.
+* Extracts `MacroDecl` and some related information
+
+## 0.3.3
+
+### Major Analysis Improvements
+
+* Added Swift 5.9.1 support
+* New AST node is extracted: `SingleValueStmtExpr`
+
+### Minor Analysis Improvements
+
+* AST and types related to parameter packs are now extracted
+* Added taint flow models for the `NSString.enumerate*` methods.
+* Generalized the data flow model for subscript writes (`a[index] = b`) so that it applies to subscripts on all kinds of objects, not just arrays.
+* Fixed a bug where some flow sinks at field accesses were not being correctly identified.
+* Added indexed `getVariable` to `CaptureListExpr`, improving its AST printing and data flow.
+* Added flow models for `String` methods involving closures such as `String.withUTF8(_:)`.
+* AST and types related to move semantics (`copy`, `consume`, `_borrow`) are now extracted
+
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+* Added children of `UnspecifiedElement`, which will be present only in certain downgraded databases.
+* Collection content is now automatically read at taint flow sinks. This removes the need to define an `allowImplicitRead` predicate on data flow configurations where the sink might be an array, set or similar type with tainted contents. Where that step had not been defined, taint may find additional results now.
+* Added taint models for `StringProtocol.appendingFormat` and `String.decodeCString`.
+* Added taint flow models for members of `Substring`.
+* Added taint flow models for `RawRepresentable`.
+* The contents of autoclosure function parameters are now included in the control flow graph and data flow libraries.
+* Added models of `StringProtocol` and `NSString` methods that evaluate regular expressions.
+* Flow through 'open existential expressions', implicit expressions created by the compiler when a method is called on a protocol. This may apply, for example, when the method is a modelled taint source.
+
 ## 0.3.1
 
 ### Minor Analysis Improvements

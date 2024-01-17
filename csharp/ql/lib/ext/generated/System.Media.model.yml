@@ -1,0 +1,34 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Media", "SoundPlayer", "GetObjectData", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "Load", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "LoadAsync", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "OnLoadCompleted", "(System.ComponentModel.AsyncCompletedEventArgs)", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "OnSoundLocationChanged", "(System.EventArgs)", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "OnStreamChanged", "(System.EventArgs)", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "Play", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "PlayLooping", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "PlaySync", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "SoundPlayer", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "SoundPlayer", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "SoundPlayer", "(System.String)", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "Stop", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "get_IsLoadCompleted", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "get_LoadTimeout", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "get_SoundLocation", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "get_Stream", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "get_Tag", "()", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "set_LoadTimeout", "(System.Int32)", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "set_SoundLocation", "(System.String)", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "set_Stream", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["System.Media", "SoundPlayer", "set_Tag", "(System.Object)", "summary", "df-generated"]
+      - ["System.Media", "SystemSound", "Play", "()", "summary", "df-generated"]
+      - ["System.Media", "SystemSounds", "get_Asterisk", "()", "summary", "df-generated"]
+      - ["System.Media", "SystemSounds", "get_Beep", "()", "summary", "df-generated"]
+      - ["System.Media", "SystemSounds", "get_Exclamation", "()", "summary", "df-generated"]
+      - ["System.Media", "SystemSounds", "get_Hand", "()", "summary", "df-generated"]
+      - ["System.Media", "SystemSounds", "get_Question", "()", "summary", "df-generated"]

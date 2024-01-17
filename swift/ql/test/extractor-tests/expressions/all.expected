@@ -297,3 +297,11 @@
 | expressions.swift:181:20:181:30 | #keyPath(...) | KeyPathExpr |
 | expressions.swift:182:11:182:16 | #keyPath(...) | KeyPathExpr |
 | expressions.swift:183:20:183:32 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:186:10:186:24 | (...) | TupleExpr |
+| expressions.swift:186:11:186:23 | PackExpansionExpr | PackExpansionExpr |
+| expressions.swift:186:18:186:23 | PackElementExpr | PackElementExpr |
+| expressions.swift:186:23:186:23 | t | DeclRefExpr |
+| expressions.swift:189:9:189:9 | makeTuple(_:) | DeclRefExpr |
+| expressions.swift:189:9:189:25 | call to makeTuple(_:) | CallExpr |
+| expressions.swift:189:19:189:19 | A | StringLiteralExpr |
+| expressions.swift:189:24:189:24 | 2 | IntegerLiteralExpr |
