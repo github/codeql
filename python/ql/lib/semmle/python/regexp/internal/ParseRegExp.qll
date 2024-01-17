@@ -116,13 +116,14 @@ class RegExp extends Expr instanceof StrConst {
 
   /**
    * Gets a mode (if any) of this regular expression. Can be any of:
-   * DEBUG
-   * IGNORECASE
-   * LOCALE
-   * MULTILINE
-   * DOTALL
-   * UNICODE
-   * VERBOSE
+   * - DEBUG
+   * - ASCII
+   * - IGNORECASE
+   * - LOCALE
+   * - MULTILINE
+   * - DOTALL
+   * - UNICODE
+   * - VERBOSE
    */
   string getAMode() {
     result = FindRegexMode::getAMode(this)
@@ -695,7 +696,10 @@ class RegExp extends Expr instanceof StrConst {
    */
   private predicate flag_group_start(int start, int end) {
     this.flag_group_start_no_modes(start, _) and
-    end = max(int i | this.mode_character(start, i) | i + 1)
+    // Check if this is a group with flags, and therefore the `:` should be excluded
+    exists(int maybe_end | maybe_end = max(int i | this.mode_character(start, i) | i + 1) |
+      if this.getChar(maybe_end) = ":" then end = maybe_end + 1 else end = maybe_end
+    )
   }
 
   /**
@@ -705,19 +709,21 @@ class RegExp extends Expr instanceof StrConst {
   private predicate flag_group_start_no_modes(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) in ["i", "L", "m", "s", "u", "x"] and
+    // "-" is for removing flags, e.g. `(?-i:text)`
+    this.getChar(start + 2) in ["-", "a", "i", "L", "m", "s", "u", "x"] and
     end = start + 2
   }
 
   /**
-   * Holds if `pos` contains a mo character from the
+   * Holds if `pos` contains a mode character from the
    * flag group starting at `start`.
    */
   private predicate mode_character(int start, int pos) {
     this.flag_group_start_no_modes(start, pos)
     or
     this.mode_character(start, pos - 1) and
-    this.getChar(pos) in ["i", "L", "m", "s", "u", "x"]
+    // "-" is for removing flags, e.g. `(?-i:text)`
+    this.getChar(pos) in ["-", "a", "i", "L", "m", "s", "u", "x"]
   }
 
   /**
@@ -728,9 +734,13 @@ class RegExp extends Expr instanceof StrConst {
    * ```
    */
   private predicate flag(string c) {
-    exists(int pos |
-      this.mode_character(_, pos) and
-      this.getChar(pos) = c
+    exists(int start, int pos |
+      this.mode_character(start, pos) and
+      this.getChar(pos) = c and
+      // Ignore if flag is removed using `-`; use `<=` to also exclude `-` itself
+      not exists(int minus_pos |
+        this.mode_character(start, minus_pos) and this.getChar(minus_pos) = "-" and minus_pos <= pos
+      )
     )
   }
 
@@ -740,6 +750,8 @@ class RegExp extends Expr instanceof StrConst {
    */
   string getModeFromPrefix() {
     exists(string c | this.flag(c) |
+      c = "a" and result = "ASCII"
+      or
       c = "i" and result = "IGNORECASE"
       or
       c = "L" and result = "LOCALE"
