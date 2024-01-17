@@ -14,5 +14,6 @@ run_codeql_database_create([], lang="go", source="work", db=None, runFunction=ru
 
 check_diagnostics()
 
-# Clean up the temporary GOPATH
+# Clean up the temporary GOPATH to prevent Bazel failures next
+# time the tests are run; see https://github.com/golang/go/issues/27161
 subprocess.call(["go", "clean", "-modcache"])
