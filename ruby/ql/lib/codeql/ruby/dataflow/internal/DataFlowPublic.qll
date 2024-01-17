@@ -686,6 +686,13 @@ class ContentSet extends TContentSet {
   /** Holds if this content set is the singleton `{c}`. */
   predicate isSingleton(Content c) { this = TSingletonContent(c) }
 
+  /**
+   * Holds if this content set represents reading field `f` using an attribute reader.
+   *
+   * This differs from `isSingleton(f)` in that no reverse store steps are generated.
+   */
+  predicate isAttributeReaderContent(Content::FieldContent f) { this = TAttributeReaderContent(f) }
+
   /** Holds if this content set represents all `ElementContent`s. */
   predicate isAnyElement() { this = TAnyElementContent() }
 
@@ -734,6 +741,11 @@ class ContentSet extends TContentSet {
       result = c.toString()
     )
     or
+    exists(Content::FieldContent f |
+      this.isAttributeReaderContent(f) and
+      result = f.toString()
+    )
+    or
     this.isAnyElement() and
     result = "any element"
     or
@@ -767,6 +779,8 @@ class ContentSet extends TContentSet {
   Content getAStoreContent() {
     this.isSingleton(result)
     or
+    // no entry for `isAttributeReaderContent`
+    //
     // For reverse stores, `a[unknown][0] = x`, it is important that the read-step
     // from `a` to `a[unknown]` (which can read any element), gets translated into
     // a reverse store step that store only into `?`
@@ -793,6 +807,8 @@ class ContentSet extends TContentSet {
   /** Gets a content that may be read from when reading from this set. */
   Content getAReadContent() {
     this.isSingleton(result)
+    or
+    this.isAttributeReaderContent(result)
     or
     this.isAnyElement() and
     result instanceof Content::ElementContent

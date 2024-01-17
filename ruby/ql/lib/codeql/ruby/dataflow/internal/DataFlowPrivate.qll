@@ -657,6 +657,7 @@ private module Cached {
   cached
   newtype TOptionalContentSet =
     TSingletonContent(Content c) or
+    TAttributeReaderContent(Content::FieldContent f) or
     TAnyElementContent() or
     TKnownOrUnknownElementContent(Content::KnownElementContent c) or
     TElementLowerBoundContent(int lower, boolean includeUnknown) {
@@ -669,8 +670,8 @@ private module Cached {
 
   cached
   class TContentSet =
-    TSingletonContent or TAnyElementContent or TKnownOrUnknownElementContent or
-        TElementLowerBoundContent or TElementContentOfTypeContent;
+    TSingletonContent or TAttributeReaderContent or TAnyElementContent or
+        TKnownOrUnknownElementContent or TElementLowerBoundContent or TElementContentOfTypeContent;
 
   private predicate trackKnownValue(ConstantValue cv) {
     not cv.isFloat(_) and
@@ -1822,7 +1823,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       node1.asExpr() =
         any(CfgNodes::ExprCfgNode e | e = call.getReceiver() and isNonConstantExpr(e)) and
       call.getNumberOfArguments() = 0 and
-      c.isSingleton(any(Content::FieldContent ct |
+      c.isAttributeReaderContent(any(Content::FieldContent ct |
           ct.getName() = "@" + call.getExpr().getMethodName()
         ))
     )
