@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.controlflow.Guards
 private import semmle.code.csharp.frameworks.Format
 private import semmle.code.csharp.frameworks.system.Web
@@ -58,8 +58,15 @@ private module UrlRedirectConfig implements DataFlow::ConfigSig {
  */
 module UrlRedirect = TaintTracking::Global<UrlRedirectConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends Source instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /** URL Redirection sinks defined through Models as Data. */
 private class ExternalUrlRedirectExprSink extends Sink {

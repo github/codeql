@@ -4,7 +4,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.Xml
 private import semmle.code.csharp.security.Sanitizers
 
@@ -62,8 +62,17 @@ private module MissingXmlValidationConfig implements DataFlow::ConfigSig {
  */
 module MissingXmlValidation = TaintTracking::Global<MissingXmlValidationConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelFlowSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends Source instanceof RemoteFlowSource { }
+
+/**
+ * A source supported by the current threat model.
+ */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /**
  * The input argument to a call to `XmlReader.Create` where the input will not be validated against

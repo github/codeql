@@ -3,7 +3,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
@@ -64,8 +64,15 @@ module CommandInjectionConfig implements DataFlow::ConfigSig {
  */
 module CommandInjection = TaintTracking::Global<CommandInjectionConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends Source instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /** Command Injection sinks defined through Models as Data. */
 private class ExternalCommandInjectionExprSink extends Sink {

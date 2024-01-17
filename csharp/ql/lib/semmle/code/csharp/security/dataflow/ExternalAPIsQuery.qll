@@ -5,7 +5,7 @@
 
 import csharp
 private import semmle.code.csharp.commons.QualifiedName
-private import semmle.code.csharp.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.dataflow.FlowSummary
 

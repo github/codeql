@@ -6,7 +6,7 @@
 import csharp
 private import semmle.code.csharp.serialization.Deserializers
 private import semmle.code.csharp.dataflow.TaintTracking2
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /**
  * A data flow source for unsafe deserialization vulnerabilities.
@@ -48,7 +48,7 @@ abstract private class ConstructorOrStaticMethodSink extends Sink { }
  */
 abstract class Sanitizer extends DataFlow::Node { }
 
-private class RemoteSource extends Source instanceof RemoteFlowSource { }
+private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /**
  * DEPRECATED: Use `TaintToObjectMethodTracking` instead.

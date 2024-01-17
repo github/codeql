@@ -5,7 +5,7 @@
 
 import csharp
 private import semmle.code.csharp.dataflow.DataFlow2
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.text.RegularExpressions
 private import semmle.code.csharp.security.Sanitizers
 
@@ -55,8 +55,15 @@ private module ReDoSConfig implements DataFlow::ConfigSig {
  */
 module ReDoS = TaintTracking::Global<ReDoSConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends Source instanceof RemoteFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 /**
  * An expression that represents a regular expression with potential exponential behavior.

@@ -3,8 +3,7 @@
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
-private import semmle.code.csharp.security.dataflow.flowsources.Local
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.system.codedom.Compiler
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
@@ -55,11 +54,22 @@ private module CodeInjectionConfig implements DataFlow::ConfigSig {
  */
 module CodeInjection = TaintTracking::Global<CodeInjectionConfig>;
 
-/** A source of remote user input. */
-class RemoteSource extends Source instanceof RemoteFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of remote user input.
+ */
+deprecated class RemoteSource extends Source instanceof RemoteFlowSource { }
 
-/** A source of local user input. */
-class LocalSource extends Source instanceof LocalFlowSource { }
+/**
+ * DEPRECATED: Use `ThreatModelSource` instead.
+ *
+ * A source of local user input.
+ */
+deprecated class LocalSource extends Source instanceof LocalFlowSource { }
+
+/** A source supported by the current threat model. */
+class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
