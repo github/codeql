@@ -923,3 +923,17 @@ namespace GlobalArrays {
     indirect_sink(global_pointer_static_indirect_2); // clean: global_pointer_static_indirect_2 does not have 2 indirections
   }
 }
+
+namespace global_variable_conflation_test {
+  int* global_pointer;
+
+  void def() {
+    global_pointer = nullptr;
+    *global_pointer = source();
+  }
+
+  void use() {
+    sink(global_pointer); // clean
+    sink(*global_pointer); // $ ir MISSING: ast
+  }
+}

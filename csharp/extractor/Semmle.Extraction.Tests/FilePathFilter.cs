@@ -165,6 +165,7 @@ namespace Semmle.Extraction.Tests
         {
             (var testSubject, var progressMonitor, var files) = TestSetup();
 
+            // NOTE: the ordering DOES matter, later filters takes priority, so the exclude will end up not mattering at all.
             Environment.SetEnvironmentVariable("LGTM_INDEX_FILTERS", """
                 exclude:c/x/z
                 include:c/x
@@ -174,7 +175,8 @@ namespace Semmle.Extraction.Tests
 
             var expected = GetExpected(
                 [
-                    "/a/b/c/x/y/i.cs"
+                    "/a/b/c/x/y/i.cs",
+                    "/a/b/c/x/z/i.cs"
                 ]);
 
             AssertFileInfoEquivalence(expected, filtered);

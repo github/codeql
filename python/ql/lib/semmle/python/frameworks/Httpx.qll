@@ -9,15 +9,18 @@
 private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `httpx` PyPI package.
  *
  * See
  * - https://pypi.org/project/httpx/
  * - https://www.python-httpx.org/
  */
-private module HttpxModel {
+module HttpxModel {
   /**
    * An outgoing HTTP request, from the `httpx` library.
    *
@@ -59,8 +62,10 @@ private module HttpxModel {
    */
   module Client {
     /** Get a reference to the `httpx.Client` or `httpx.AsyncClient` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("httpx").getMember(["Client", "AsyncClient"])
+      or
+      result = ModelOutput::getATypeNode("httpx.Client~Subclass").getASubclass*()
     }
 
     /** A method call on a Client that sends off a request */

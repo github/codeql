@@ -25,6 +25,7 @@ using namespace std::string_literals;
 using namespace codeql::main_logger;
 
 const std::string_view codeql::programName = "extractor";
+const std::string_view codeql::extractorName = "swift";
 
 // must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
