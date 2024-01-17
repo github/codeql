@@ -21,7 +21,7 @@ public class PublicClass {
   }
 
    // `input` and `input` are source candidates, but not sink candidates (is-style method)
-  public Boolean isIgnored(Object input) { // $ negativeExample=isIgnored(Object):Argument[this] sourceModel=isIgnored(Object):Parameter[this] negativeExample=isIgnored(Object):Argument[0] sourceModel=isIgnored(Object):Parameter[0]
+  public Boolean isIgnored(Object input) { // $ negativeSinkExample=isIgnored(Object):Argument[this] sourceModel=isIgnored(Object):Parameter[this] negativeSinkExample=isIgnored(Object):Argument[0] sourceModel=isIgnored(Object):Parameter[0]
     return false;
   }
 }

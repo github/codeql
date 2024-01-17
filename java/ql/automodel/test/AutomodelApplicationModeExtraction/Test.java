@@ -17,8 +17,8 @@ class Test {
 	public static void main(String[] args) throws Exception {
 		AtomicReference<String> reference = new AtomicReference<>(); // uninteresting (parameterless constructor)
 		reference.set( // $ sinkModel=set(Object):Argument[this]
-			args[0] // $ negativeExample=set(Object):Argument[0] // modeled as a flow step
-		);  // $ negativeExample=set(Object):ReturnValue // return type is void
+			args[0] // $ negativeSinkExample=set(Object):Argument[0] // modeled as a flow step
+		);  // $ negativeSourceExample=set(Object):ReturnValue // return type is void
 	}
 
 	public static void callSupplier(Supplier<String> supplier) {
@@ -27,35 +27,35 @@ class Test {
 
 	public static void copyFiles(Path source, Path target, CopyOption option) throws Exception {
 		Files.copy(
-			source, // $ positiveExample=copy(Path,Path,CopyOption[]):Argument[0](path-injection)
-			target, // $ positiveExample=copy(Path,Path,CopyOption[]):Argument[1](path-injection)
+			source, // $ positiveSinkExample=copy(Path,Path,CopyOption[]):Argument[0](path-injection)
+			target, // $ positiveSinkExample=copy(Path,Path,CopyOption[]):Argument[1](path-injection)
 			option // no candidate (not modeled, but source and target are modeled)
 		); // $ sourceModel=copy(Path,Path,CopyOption[]):ReturnValue
 	}
 
 	public static InputStream getInputStream(Path openPath) throws Exception {
 		return Files.newInputStream(
-			openPath // $ sinkModel=newInputStream(Path,OpenOption[]):Argument[0] positiveExample=newInputStream(Path,OpenOption[]):Argument[0](path-injection) // sink candidate because "only" ai-modeled, and useful as a candidate in regression testing
+			openPath // $ sinkModel=newInputStream(Path,OpenOption[]):Argument[0] positiveSinkExample=newInputStream(Path,OpenOption[]):Argument[0](path-injection) // sink candidate because "only" ai-modeled, and useful as a candidate in regression testing
 		); // $ sourceModel=newInputStream(Path,OpenOption[]):ReturnValue
 	}
 
 	public static InputStream getInputStream(String openPath) throws Exception {
 		return Test.getInputStream( // the call is not a source candidate (argument to local call)
 			Paths.get(
-				openPath // $ negativeExample=get(String,String[]):Argument[0] // modeled as a flow step
+				openPath // $ negativeSinkExample=get(String,String[]):Argument[0] // modeled as a flow step
 			) // $ sourceModel=get(String,String[]):ReturnValue
 		);
 	}
 
 	public static int compareFiles(File f1, File f2) {
-		return f1.compareTo( // $ negativeExample=compareTo(File):Argument[this]
-			f2 // $ negativeExample=compareTo(File):Argument[0] // modeled as not a sink
-		); // $ negativeExample=compareTo(File):ReturnValue // return type is int
+		return f1.compareTo( // $ negativeSinkExample=compareTo(File):Argument[this]
+			f2 // $ negativeSinkExample=compareTo(File):Argument[0] // modeled as not a sink
+		); // $ negativeSourceExample=compareTo(File):ReturnValue // return type is int
 	}
 
 	public static void FilesWalkExample(Path p, FileVisitOption o) throws Exception {
 		Files.walk(
-			p, // $ negativeExample=walk(Path,FileVisitOption[]):Argument[0] // modeled as a flow step
+			p, // $ negativeSinkExample=walk(Path,FileVisitOption[]):Argument[0] // modeled as a flow step
 			o, // the implicit varargs array is a candidate, annotated on the last line of the call
 			o // not a candidate (only the first arg corresponding to a varargs array
 			  // is extracted)
@@ -63,7 +63,7 @@ class Test {
 	}
 
 	public static void WebSocketExample(URLConnection c) throws Exception {
-		c.getInputStream(); // $ sinkModel=getInputStream():Argument[this] positiveExample=getInputStream():ReturnValue(remote) // not a source candidate (manual modeling)
+		c.getInputStream(); // $ sinkModel=getInputStream():Argument[this] positiveSourceExample=getInputStream():ReturnValue(remote) // not a source candidate (manual modeling)
 	}
 }
 
@@ -88,16 +88,16 @@ class MoreTests {
 	public static void FilesListExample(Path p) throws Exception {
 		Files.list(
 			Files.createDirectories(
-				p // $ positiveExample=createDirectories(Path,FileAttribute[]):Argument[0](path-injection)
-			) // $ sourceModel=createDirectories(Path,FileAttribute[]):ReturnValue negativeExample=list(Path):Argument[0] // modeled as a flow step
+				p // $ positiveSinkExample=createDirectories(Path,FileAttribute[]):Argument[0](path-injection)
+			) // $ sourceModel=createDirectories(Path,FileAttribute[]):ReturnValue negativeSinkExample=list(Path):Argument[0] // modeled as a flow step
 		); // $ sourceModel=list(Path):ReturnValue
 
 		Files.delete(
-			p // $ sinkModel=delete(Path):Argument[0] positiveExample=delete(Path):Argument[0](path-injection)
-		); // $ negativeExample=delete(Path):ReturnValue // return type is void
+			p // $ sinkModel=delete(Path):Argument[0] positiveSinkExample=delete(Path):Argument[0](path-injection)
+		); // $ negativeSourceExample=delete(Path):ReturnValue // return type is void
 
 		Files.deleteIfExists(
-			p // $ sinkModel=deleteIfExists(Path):Argument[0] positiveExample=deleteIfExists(Path):Argument[0](path-injection)
-		); // $ negativeExample=deleteIfExists(Path):ReturnValue // return type is boolean
+			p // $ sinkModel=deleteIfExists(Path):Argument[0] positiveSinkExample=deleteIfExists(Path):Argument[0](path-injection)
+		); // $ negativeSourceExample=deleteIfExists(Path):ReturnValue // return type is boolean
 	}
 }

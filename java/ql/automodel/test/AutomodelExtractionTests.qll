@@ -23,7 +23,22 @@ signature module TestHelperSig<CandidateSig Candidate> {
 
 module Extraction<CandidateSig Candidate, TestHelperSig<Candidate> TestHelper> implements TestSig {
   string getARelevantTag() {
-    result in ["sourceModel", "sinkModel", "positiveExample", "negativeExample"]
+    result in [
+        "sourceModel", "sinkModel", // a candidate source/sink
+        "positiveSourceExample", "positiveSinkExample", // a known source/sink
+        "negativeSourceExample", "negativeSinkExample" // a known non-source/non-sink
+      ]
+  }
+
+  /**
+   * If `extensibleType` is `sourceModel` then the result is `ifSource`, if it
+   * is `sinkModel` then the result is `ifSink`.
+   */
+  bindingset[extensibleType, ifSource, ifSink]
+  private string ifSource(string extensibleType, string ifSource, string ifSink) {
+    extensibleType = "sourceModel" and result = ifSource
+    or
+    extensibleType = "sinkModel" and result = ifSink
   }
 
   additional predicate selectEndpoint(
@@ -35,13 +50,13 @@ module Extraction<CandidateSig Candidate, TestHelperSig<Candidate> TestHelper> i
     suffix = ""
     or
     TestHelper::isNegativeExample(endpoint, name, signature, input, output, extensibleType) and
-    tag = "negativeExample" and
+    tag = "negative" + ifSource(extensibleType, "Source", "Sink") + "Example" and
     suffix = ""
     or
     exists(string endpointType |
       TestHelper::isPositiveExample(endpoint, endpointType, name, signature, input, output,
         extensibleType) and
-      tag = "positiveExample" and
+      tag = "positive" + ifSource(extensibleType, "Source", "Sink") + "Example" and
       suffix = "(" + endpointType + ")"
     )
   }
@@ -56,9 +71,7 @@ module Extraction<CandidateSig Candidate, TestHelperSig<Candidate> TestHelper> i
       TestHelper::getEndpointLocation(endpoint) = location and
       endpoint.toString() = element and
       // for source models only the output is relevant, and vice versa for sink models
-      if extensibleType = "sourceModel"
-      then value = name + signature + ":" + output + suffix
-      else value = name + signature + ":" + input + suffix
+      value = name + signature + ":" + ifSource(extensibleType, output, input) + suffix
     )
   }
 }
