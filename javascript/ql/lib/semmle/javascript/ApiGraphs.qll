@@ -1635,6 +1635,7 @@ private predicate exports(string m, DataFlow::Node rhs) {
 /** Holds if module `m` exports `rhs` under the name `prop`. */
 private predicate exports(string m, string prop, DataFlow::Node rhs) {
   exists(ExportDeclaration exp | exp.getEnclosingModule() = importableModule(m) |
+    not exp.isTypeOnly() and
     rhs = exp.getSourceNode(prop)
     or
     exists(Variable v |
