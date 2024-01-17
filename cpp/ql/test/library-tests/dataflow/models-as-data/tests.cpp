@@ -21,10 +21,10 @@ void test_sources() {
 
 	// test sources
 
-	sink(localMadSource()); // $ MISSING: ir
-	sink(remoteMadSource()); // $ MISSING: ir
+	sink(localMadSource()); // $ ir
+	sink(remoteMadSource()); // $ ir
 	sink(notASource());
-	sink(localMadSourceHasBody()); // $ MISSING: ir
+	sink(localMadSourceHasBody()); // $ ir
 	sink(*remoteMadSourceIndirect()); // $ MISSING: ir
 
 	int a, b, c, d;
@@ -41,7 +41,7 @@ void test_sources() {
 
 void remoteMadSourceParam0(int x)
 {
-	sink(x); // $ MISSING: ir
+	sink(x); // $ ir
 }
 
 // --- global MAD sinks ---
@@ -180,20 +180,20 @@ void test_class_members() {
 
 	// test class member sources
 
-	sink(mc.memberRemoteMadSource()); // $ MISSING: ir
+	sink(mc.memberRemoteMadSource()); // $ ir
 
 	int a;
 	mc.memberRemoteMadSourceArg0(&a);
 	sink(a); // $ MISSING: ir
 
-	sink(mc.memberRemoteMadSourceVar); // $ MISSING: ir
+	sink(mc.memberRemoteMadSourceVar); // $ ir
 
 	// test subtype sources
 
-	sink(mdc.memberRemoteMadSource()); // $ MISSING: ir
-	sink(mdc.subtypeRemoteMadSource1()); // $ MISSING: ir
+	sink(mdc.memberRemoteMadSource()); // $ ir
+	sink(mdc.subtypeRemoteMadSource1()); // $ ir
 	sink(mdc.subtypeNonSource());
-	sink(mdc.subtypeRemoteMadSource2()); // $ MISSING: ir
+	sink(mdc.subtypeRemoteMadSource2()); // $ ir
 
 	// test class member sinks
 

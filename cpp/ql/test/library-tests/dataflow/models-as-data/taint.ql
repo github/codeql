@@ -5,7 +5,7 @@ import semmle.code.cpp.security.FlowSources
 /**
  * Models-as-data source models for this test.
  */
-/*private class TestSources extends SourceModelCsv {
+private class TestSources extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -24,12 +24,12 @@ import semmle.code.cpp.security.FlowSources
         ";MyDerivedClass;false;subtypeRemoteMadSource2;;;ReturnValue;remote",
       ]
   }
-}*/
+}
 
 /**
  * Models-as-data sink models for this test.
  */
-/*private class TestSinks extends SinkModelCsv {
+private class TestSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -43,12 +43,12 @@ import semmle.code.cpp.security.FlowSources
         ";MyClass;true;memberMadSinkVar;;;;test-sink",
       ]
   }
-}*/
+}
 
 /**
  * Models-as-data summary models for this test.
  */
-/*private class TestSummaries extends SummaryModelCsv {
+private class TestSummaries extends SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -66,7 +66,7 @@ import semmle.code.cpp.security.FlowSources
         ";MyClass;true;madFieldToReturn;;;Argument[-1].val;ReturnValue;taint",
       ]
   }
-}*/
+}
 
 module IRTest {
   private import semmle.code.cpp.ir.IR
@@ -81,8 +81,8 @@ module IRTest {
     }
 
     predicate isSink(DataFlow::Node sink) {
-      //sinkNode(sink, "test-sink")
-      //or
+      sinkNode(sink, "test-sink")
+      or
       exists(FunctionCall call |
         call.getTarget().getName() = "sink" and
         [sink.asExpr(), sink.asIndirectExpr()] = call.getAnArgument()
