@@ -17,7 +17,10 @@ signature module CandidateSig {
    * DataFlow node class, or a subtype thereof.
    */
   class Endpoint {
-    EndpointType getAPotentialType();
+    /**
+     * Gets the kind of this endpoint, either "sourceModel" or "sinkModel".
+     */
+    string getExtensibleType();
   }
 
   /**
@@ -123,13 +126,25 @@ module SharedCharacteristics<CandidateSig Candidate> {
   }
 
   /**
+   * Gets a potential type of this endpoint to make sure that sources are
+   * associated with source types and sinks with sink types.
+   */
+  Candidate::EndpointType getAPotentialType(Candidate::Endpoint endpoint) {
+    endpoint.getExtensibleType() = "sourceModel" and
+    result instanceof Candidate::SourceType
+    or
+    endpoint.getExtensibleType() = "sinkModel" and
+    result instanceof Candidate::SinkType
+  }
+
+  /**
    * Holds if the given `endpoint` should be considered as a candidate for type `endpointType`,
    * and classified by the ML model.
    *
    * A candidate is an endpoint that cannot be excluded from `endpointType` based on its characteristics.
    */
   predicate isCandidate(Candidate::Endpoint endpoint, Candidate::EndpointType endpointType) {
-    endpointType = endpoint.getAPotentialType() and
+    endpointType = getAPotentialType(endpoint) and
     not exists(getAnExcludingCharacteristic(endpoint, endpointType))
   }
 
@@ -375,7 +390,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
      * A negative characteristic that indicates that an endpoint was manually modeled as a neutral model.
      */
     private class NeutralModelCharacteristic extends NeitherSourceNorSinkCharacteristic {
-      NeutralModelCharacteristic() { this = "known non-endpoint" }
+      NeutralModelCharacteristic() { this = "known non-sink" }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isNeutral(e) }
     }
