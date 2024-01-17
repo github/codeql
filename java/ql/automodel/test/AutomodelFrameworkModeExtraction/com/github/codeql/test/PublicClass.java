@@ -1,29 +1,27 @@
 package com.github.codeql.test;
 
 public class PublicClass {
-  public void stuff(String arg) { // `arg` is a sink candidate, `this` is a candidate, `arg` is a source candidate (overrideable method)
+  public void stuff(String arg) { // $ sinkModel=stuff(String):Argument[this] sourceModel=stuff(String):Parameter[this] sinkModel=stuff(String):Argument[0] sourceModel=stuff(String):Parameter[0] // source candidates because it is an overrideable method
     System.out.println(arg);
   }
 
-  public static void staticStuff(String arg) { // `arg` is a sink candidate, but not a source candidate (not overrideabe); `this` is not a candidate (static method)
+  public static void staticStuff(String arg) { // $ sinkModel=staticStuff(String):Argument[0] // `arg` is not a source candidate (not overrideabe); `this` is not a candidate (static method)
     System.out.println(arg);
   }
 
-  // `arg` and `this` are candidates because the method is protected (may be called from downstream repositories). The return value is a candidate source for the same reason.
-  protected void nonPublicStuff(String arg) {
+  protected void nonPublicStuff(String arg) { // $ sinkModel=nonPublicStuff(String):Argument[this] sourceModel=nonPublicStuff(String):Parameter[this] sinkModel=nonPublicStuff(String):Argument[0] sourceModel=nonPublicStuff(String):Parameter[0]
     System.out.println(arg);
   }
 
-  // `arg` and `this are not candidates because the method is not public:
-  void packagePrivateStuff(String arg) {
+  void packagePrivateStuff(String arg) { // no candidates because the method is not public
     System.out.println(arg);
   }
 
-  public PublicClass(Object input) {
-    // the `this` qualifier is not a candidate
+  public PublicClass(Object input) { // $ sourceModel=PublicClass(Object):ReturnValue sinkModel=PublicClass(Object):Argument[0] // `this` is not a candidate because it is a constructor
   }
 
-  public Boolean isIgnored(Object input) { // `input` is a source candidate, but not a sink candidate (is-style method); `this` is not a candidate
+   // `input` and `input` are source candidates, but not sink candidates (is-style method)
+  public Boolean isIgnored(Object input) { // $ negativeExample=isIgnored(Object):Argument[this] sourceModel=isIgnored(Object):Parameter[this] negativeExample=isIgnored(Object):Argument[0] sourceModel=isIgnored(Object):Parameter[0]
     return false;
   }
 }
