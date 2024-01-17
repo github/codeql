@@ -1,5 +1,5 @@
 cc_library(
-    name = "logging",
+    name = "extractor_shared",
     srcs = glob(["*.cpp"]),
     hdrs = glob(["*.h"]),
     visibility = ["//visibility:public"],
@@ -8,6 +8,5 @@ cc_library(
         "@binlog",
         "@fmt",
         "@json",
-        "//shared/cpp:extractor_shared",
     ],
 )
