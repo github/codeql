@@ -28,3 +28,5 @@ var overlapsWithClass2 = /[\w,.-?:*+]/; // NOT OK
 
 var tst2 = /^([ァ-ヾ]|[ｧ-ﾝﾞﾟ])+$/; // OK
 var tst3 = /[0-9０-９]/; // OK
+
+var question = /[0-?]/; // OK. matches one of: 0123456789:;<=>?
