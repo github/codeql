@@ -1,6 +1,8 @@
-#include "swift/logging/SwiftDiagnostics.h"
+#include "Diagnostics.h"
 
-#include <binlog/Entries.hpp>
+#include <fmt/format.h>
+#include <fmt/chrono.h>
+
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_cat.h"
 
