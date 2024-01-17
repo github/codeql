@@ -41,7 +41,15 @@ predicate isExcludeFreePair(DeallocationExpr dealloc1, Expr e) {
   )
 }
 
-module DoubleFree = FlowFromFree<isFree/2, isExcludeFreePair/2>;
+module DoubleFreeParam implements FlowFromFreeParamSig {
+  predicate isSink = isFree/2;
+
+  predicate isExcluded = isExcludeFreePair/2;
+
+  predicate sourceSinkIsRelated = defaultSourceSinkIsRelated/2;
+}
+
+module DoubleFree = FlowFromFree<DoubleFreeParam>;
 
 from DoubleFree::PathNode source, DoubleFree::PathNode sink, DeallocationExpr dealloc, Expr e2
 where

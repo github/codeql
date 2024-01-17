@@ -70,3 +70,14 @@
 | arguments.cs:84:23:84:43 | array creation of type Double[] | 0 |
 | arguments.cs:85:20:85:20 | 0 | 0 |
 | arguments.cs:85:23:85:43 | array creation of type Double[] | 0 |
+| lambdas.cs:8:12:8:12 | 1 | 0 |
+| lambdas.cs:11:12:11:12 | 2 | 0 |
+| lambdas.cs:11:15:11:15 | 3 | 0 |
+| lambdas.cs:12:12:12:12 | 4 | 0 |
+| lambdas.cs:13:12:13:12 | 5 | 0 |
+| lambdas.cs:13:15:13:15 | 6 | 0 |
+| lambdas.cs:17:12:17:12 | 7 | 0 |
+| lambdas.cs:17:15:17:15 | 8 | 0 |
+| lambdas.cs:17:18:17:18 | 9 | 0 |
+| lambdas.cs:25:16:25:16 | 4 | 0 |
+| lambdas.cs:25:22:25:22 | 5 | 0 |

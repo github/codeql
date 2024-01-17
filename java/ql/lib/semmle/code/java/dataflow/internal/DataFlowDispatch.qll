@@ -116,10 +116,10 @@ private module DispatchImpl {
   /**
    * Holds if the set of viable implementations that can be called by `call`
    * might be improved by knowing the call context. This is the case if the
-   * qualifier is a parameter of the enclosing callable `c`.
+   * qualifier is a parameter of the enclosing callable of `call`.
    */
-  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
-    mayBenefitFromCallContext(call.asCall(), c.asCallable(), _)
+  predicate mayBenefitFromCallContext(DataFlowCall call) {
+    mayBenefitFromCallContext(call.asCall(), _, _)
   }
 
   /**

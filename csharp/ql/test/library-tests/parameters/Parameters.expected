@@ -1,4 +1,6 @@
 noDefaultValue
+| LambdaParameters.cs:9:18:9:44 | (...) => ... | LambdaParameters.cs:9:23:9:23 | x | 0 |
+| LambdaParameters.cs:11:18:11:59 | (...) => ... | LambdaParameters.cs:11:23:11:23 | x | 0 |
 | Parameters.cs:7:17:7:18 | M1 | Parameters.cs:7:24:7:24 | a | 0 |
 | Parameters.cs:7:17:7:18 | M1 | Parameters.cs:7:34:7:34 | b | 1 |
 | Parameters.cs:7:17:7:18 | M1 | Parameters.cs:7:44:7:44 | c | 2 |
@@ -16,6 +18,12 @@ noDefaultValue
 | Parameters.dll:0:0:0:0 | implicit conversion | Parameters.dll:0:0:0:0 | i | 0 |
 | Parameters.dll:0:0:0:0 | implicit conversion | Parameters.dll:0:0:0:0 | s | 0 |
 withDefaultValue
+| LambdaParameters.cs:9:18:9:44 | (...) => ... | LambdaParameters.cs:9:30:9:30 | y | 1 | LambdaParameters.cs:9:34:9:34 | 1 | 1 |
+| LambdaParameters.cs:10:18:10:43 | (...) => ... | LambdaParameters.cs:10:27:10:27 | o | 0 | LambdaParameters.cs:10:31:10:37 | default | null |
+| LambdaParameters.cs:11:18:11:59 | (...) => ... | LambdaParameters.cs:11:30:11:30 | y | 1 | LambdaParameters.cs:11:34:11:34 | 1 | 1 |
+| LambdaParameters.cs:11:18:11:59 | (...) => ... | LambdaParameters.cs:11:41:11:41 | z | 2 | LambdaParameters.cs:11:45:11:45 | 2 | 2 |
+| LambdaParameters.cs:12:18:12:66 | (...) => ... | LambdaParameters.cs:12:60:12:60 | x | 0 | LambdaParameters.cs:12:19:12:60 | 7 | 7 |
+| LambdaParameters.cs:13:18:13:68 | (...) => ... | LambdaParameters.cs:13:62:13:62 | x | 0 | LambdaParameters.cs:13:19:13:62 | object creation of type DateTime | - |
 | Parameters.cs:8:17:8:18 | M2 | Parameters.cs:8:34:8:34 | b | 1 | Parameters.cs:8:38:8:41 | null | null |
 | Parameters.cs:8:17:8:18 | M2 | Parameters.cs:8:51:8:51 | c | 2 | Parameters.cs:8:55:8:70 | "default string" | default string |
 | Parameters.cs:9:17:9:18 | M3 | Parameters.cs:9:24:9:24 | a | 0 | Parameters.cs:9:28:9:28 | 1 | 1 |
@@ -81,6 +89,7 @@ withDefaultValue
 | Parameters.dll:0:0:0:0 | M23 | Parameters.dll:0:0:0:0 | arg12 | 0 | Parameters.dll:0:0:0:0 | (...) ... | 0 |
 | Parameters.dll:0:0:0:0 | M24 | Parameters.dll:0:0:0:0 | arg13 | 0 | Parameters.dll:0:0:0:0 | (...) ... | 7 |
 dateTimeDefaults
+| LambdaParameters.cs:13:18:13:68 | (...) => ... | LambdaParameters.cs:13:62:13:62 | x | LambdaParameters.cs:13:19:13:62 | object creation of type DateTime | DateTime(long) | 14 |
 | Parameters.cs:22:17:22:19 | M14 | Parameters.cs:22:64:22:67 | arg4 | Parameters.cs:22:21:22:67 | object creation of type DateTime | DateTime(long) | 14 |
 | Parameters.cs:23:17:23:19 | M15 | Parameters.cs:23:68:23:71 | arg5 | Parameters.cs:23:21:23:71 | object creation of type DateTime | DateTime(long) | 10001 |
 | Parameters.dll:0:0:0:0 | M14 | Parameters.dll:0:0:0:0 | arg4 | Parameters.dll:0:0:0:0 | object creation of type DateTime | DateTime(long) | 14 |

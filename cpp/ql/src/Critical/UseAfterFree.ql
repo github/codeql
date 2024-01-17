@@ -173,7 +173,15 @@ predicate isExcludeFreeUsePair(DeallocationExpr dealloc1, Expr e) {
   isExFreePoolCall(_, e)
 }
 
-module UseAfterFree = FlowFromFree<isUse/2, isExcludeFreeUsePair/2>;
+module UseAfterFreeParam implements FlowFromFreeParamSig {
+  predicate isSink = isUse/2;
+
+  predicate isExcluded = isExcludeFreeUsePair/2;
+
+  predicate sourceSinkIsRelated = defaultSourceSinkIsRelated/2;
+}
+
+module UseAfterFree = FlowFromFree<UseAfterFreeParam>;
 
 from UseAfterFree::PathNode source, UseAfterFree::PathNode sink, DeallocationExpr dealloc
 where

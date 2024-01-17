@@ -148,16 +148,16 @@ private module Cached {
 import Cached
 
 private module DispatchImpl {
-  /**
-   * Holds if the set of viable implementations that can be called by `call`
-   * might be improved by knowing the call context. This is the case if the
-   * call is a delegate call, or if the qualifier accesses a parameter of
-   * the enclosing callable `c` (including the implicit `this` parameter).
-   */
-  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
+  private predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
     c = call.getEnclosingCallable() and
     call.(NonDelegateDataFlowCall).getDispatchCall().mayBenefitFromCallContext()
   }
+
+  /**
+   * Holds if the set of viable implementations that can be called by `call`
+   * might be improved by knowing the call context.
+   */
+  predicate mayBenefitFromCallContext(DataFlowCall call) { mayBenefitFromCallContext(call, _) }
 
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
