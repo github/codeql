@@ -16,6 +16,9 @@ abstract class StoredFlowSource extends SourceNode {
   override string getThreatModel() { result = "local" }
 }
 
+/**
+ * A node with input from a database.
+ */
 abstract class DatabaseInputSource extends StoredFlowSource {
   override string getThreatModel() { result = "database" }
 }
