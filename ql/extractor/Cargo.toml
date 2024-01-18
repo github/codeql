@@ -15,6 +15,6 @@ tree-sitter-json = {git = "https://github.com/tausbn/tree-sitter-json.git", rev 
 clap = { version = "4.2", features = ["derive"] }
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
-rayon = "1.8.0"
+rayon = "1.8.1"
 regex = "1.10.2"
 codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
