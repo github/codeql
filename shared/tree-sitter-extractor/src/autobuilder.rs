@@ -81,7 +81,7 @@ impl Autobuilder {
             if let Some(stripped) = line.strip_prefix("include:") {
                 cmd.arg("--also-match=".to_owned() + stripped);
             } else if let Some(stripped) = line.strip_prefix("exclude:") {
-                cmd.arg("--exclude=".to_owned() + stripped);
+                cmd.arg("--also-match=!".to_owned() + stripped);
             }
         }
         let exit = &cmd.spawn()?.wait()?;
