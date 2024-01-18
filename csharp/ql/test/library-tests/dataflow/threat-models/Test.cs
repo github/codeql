@@ -7,7 +7,6 @@ namespace My.Qltest
     {
         private TestSources Sources = new TestSources();
 
-        //private ILogger Logger => throw null;
         private SqlConnection Connection => throw null;
 
         private string BytesToString(byte[] bytes)
