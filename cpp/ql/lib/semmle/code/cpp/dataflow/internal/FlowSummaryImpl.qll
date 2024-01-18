@@ -148,9 +148,7 @@ module SourceSinkInterpretationInput implements
     DataFlowCallable asCallable() { result.(Function) = this.asElement() }
 
     /** Gets the target of this call, if any. */
-    Element getCallTarget() {
-      result = this.asNode().asExpr().(Call).getTarget()
-    }
+    Element getCallTarget() { result = this.asNode().asExpr().(Call).getTarget() }
 
     /** Gets a textual representation of this node. */
     string toString() {
