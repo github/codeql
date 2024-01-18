@@ -6,6 +6,7 @@ import csharp
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.Sql
+private import semmle.code.csharp.security.dataflow.flowsources.Stored as Stored
 
 /** Definitions relating to the `NHibernate` package. */
 module NHibernate {
@@ -86,7 +87,7 @@ module NHibernate {
   }
 
   /** A taint source where the data has come from a mapped property stored in the database. */
-  class StoredFlowSource extends DataFlow::Node {
+  class StoredFlowSource extends Stored::DatabaseInputSource {
     StoredFlowSource() {
       this.asExpr() = any(PropertyRead read | read.getTarget() instanceof MappedProperty)
     }
