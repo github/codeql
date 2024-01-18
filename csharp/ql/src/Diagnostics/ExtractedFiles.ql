@@ -1,5 +1,5 @@
 /**
- * @name Successfully extracted files
+ * @name Extracted files
  * @description A list of all files in the source code directory that were extracted
  *              without encountering an extraction or compiler error in the file.
  * @kind diagnostic
