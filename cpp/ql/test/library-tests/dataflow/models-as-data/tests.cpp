@@ -62,16 +62,16 @@ int madSinkVar;
 void test_sinks() {
 	// test sinks
 
-	madSinkArg0(source()); // $ MISSING: ir
+	madSinkArg0(source()); // $ ir
 	notASink(source());
 	madSinkArg1(source(), 0);
-	madSinkArg1(0, source()); // $ MISSING: ir
-	madSinkArg01(source(), 0, 0); // $ MISSING: ir
-	madSinkArg01(0, source(), 0); // $ MISSING: ir
+	madSinkArg1(0, source()); // $ ir
+	madSinkArg01(source(), 0, 0); // $ ir
+	madSinkArg01(0, source(), 0); // $ ir
 	madSinkArg01(0, 0, source());
-	madSinkArg02(source(), 0, 0); // $ MISSING: ir
+	madSinkArg02(source(), 0, 0); // $ ir
 	madSinkArg02(0, source(), 0);
-	madSinkArg02(0, 0, source()); // $ MISSING: ir
+	madSinkArg02(0, 0, source()); // $ ir
 
 	int a = source();
 	madSinkIndirectArg0(&a); // $ MISSING: ir
@@ -80,7 +80,7 @@ void test_sinks() {
 
 	// test sources + sinks together
 
-	madSinkArg0(localMadSource()); // $ MISSING: ir
+	madSinkArg0(localMadSource()); // $ ir
 	madSinkIndirectArg0(remoteMadSourceIndirect()); // $ MISSING: ir
 	madSinkVar = remoteMadSourceVar; // $ MISSING: ir
 }
@@ -202,7 +202,7 @@ void test_class_members() {
 
 	// test class member sinks
 
-	mc.memberMadSinkArg0(source()); // $ MISSING: ir
+	mc.memberMadSinkArg0(source()); // $ ir
 
 	mc.memberMadSinkVar = source(); // $ MISSING: ir
 
@@ -225,7 +225,7 @@ void test_class_members() {
 
 	// test class member sources + sinks + summaries together
 
-	mc.memberMadSinkArg0(mc.memberRemoteMadSource()); // $ MISSING: ir
+	mc.memberMadSinkArg0(mc.memberRemoteMadSource()); // $ ir
 
 	mc5.madArg0ToSelf(source());
 	sink(mc5.madSelfToReturn()); // $ MISSING: ir

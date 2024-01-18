@@ -130,8 +130,7 @@ module SourceSinkInterpretationInput implements
 
   private newtype TInterpretNode =
     TElement_(Element n) or
-    TNode_(Node n) or
-    TDataFlowCall_(DataFlowCall c)
+    TNode_(Node n)
 
   /** An entity used to interpret a source/sink specification. */
   class InterpretNode extends TInterpretNode {
@@ -142,13 +141,13 @@ module SourceSinkInterpretationInput implements
     Node asNode() { this = TNode_(result) }
 
     /** Gets the call that this node corresponds to, if any. */
-    DataFlowCall asCall() { this = TDataFlowCall_(result) }
+    DataFlowCall asCall() { this.asElement() = result.getAst() }
 
     /** Gets the callable that this node corresponds to, if any. */
     DataFlowCallable asCallable() { result.(Function) = this.asElement() }
 
     /** Gets the target of this call, if any. */
-    Element getCallTarget() { result = this.asNode().asExpr().(Call).getTarget() }
+    Element getCallTarget() { result = this.asCall().getAst().(Call).getTarget() }
 
     /** Gets a textual representation of this node. */
     string toString() {
