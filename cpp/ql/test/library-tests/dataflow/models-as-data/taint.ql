@@ -34,8 +34,8 @@ private class TestSinks extends SinkModelCsv {
       [
         ";;false;madSinkArg0;;;Argument[0];test-sink",
         ";;false;madSinkArg1;;;Argument[1];test-sink",
-        ";;false;madSinkArg12;;;Argument[1..2];test-sink",
-        ";;false;madSinkArg13;;;Argument[1,3];test-sink",
+        ";;false;madSinkArg01;;;Argument[0..1];test-sink",
+        ";;false;madSinkArg02;;;Argument[0,2];test-sink",
         // TODO: madSinkIndirectArg0
         ";;false;madSinkVar;;;;test-sink", ";;false;madSinkParam0;;;Parameter[0];remote",
         ";MyClass;true;memberMadSinkArg0;;;Argument[0];test-sink",

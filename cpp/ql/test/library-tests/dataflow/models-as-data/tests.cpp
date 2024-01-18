@@ -49,8 +49,8 @@ void remoteMadSourceParam0(int x)
 void madSinkArg0(int x);
 void notASink(int x);
 void madSinkArg1(int x, int y);
-void madSinkArg12(int x, int y, int z);
-void madSinkArg13(int x, int y, int z);
+void madSinkArg01(int x, int y, int z);
+void madSinkArg02(int x, int y, int z);
 void madSinkIndirectArg0(int *x);
 int madSinkVar;
 
@@ -61,12 +61,12 @@ void test_sinks() {
 	notASink(source());
 	madSinkArg1(source(), 0);
 	madSinkArg1(0, source()); // $ MISSING: ir
-	madSinkArg12(source(), 0, 0); // $ MISSING: ir
-	madSinkArg12(0, source(), 0); // $ MISSING: ir
-	madSinkArg12(0, 0, source());
-	madSinkArg13(source(), 0, 0); // $ MISSING: ir
-	madSinkArg13(0, source(), 0);
-	madSinkArg13(0, 0, source()); // $ MISSING: ir
+	madSinkArg01(source(), 0, 0); // $ MISSING: ir
+	madSinkArg01(0, source(), 0); // $ MISSING: ir
+	madSinkArg01(0, 0, source());
+	madSinkArg02(source(), 0, 0); // $ MISSING: ir
+	madSinkArg02(0, source(), 0);
+	madSinkArg02(0, 0, source()); // $ MISSING: ir
 
 	int a = source();
 	madSinkIndirectArg0(&a); // $ MISSING: ir
