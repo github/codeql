@@ -248,4 +248,24 @@ namespace My.Qltest
 
         static void Sink(object o) { }
     }
+
+    [System.Runtime.CompilerServices.InlineArray(10)]
+    public struct MyInlineArray
+    {
+        private object myInlineArrayElements;
+    }
+
+    public class I
+    {
+        void M1(MyInlineArray a)
+        {
+            a[0] = new object();
+            var b = GetFirst(a);
+            Sink(b);
+        }
+
+        object GetFirst(MyInlineArray arr) => throw null;
+
+        static void Sink(object o) { }
+    }
 }

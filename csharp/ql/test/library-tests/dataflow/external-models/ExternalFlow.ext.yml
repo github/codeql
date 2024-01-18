@@ -32,6 +32,7 @@ extensions:
       - ["My.Qltest", "G", false, "GeneratedFlowWithGeneratedNeutral", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
       - ["My.Qltest", "G", false, "GeneratedFlowWithManualNeutral", "(System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
       - ["My.Qltest", "HE", false, "ExtensionMethod", "(My.Qltest.HI)", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "I", false, "GetFirst", "(My.Qltest.MyInlineArray)", "", "Argument[0].Element", "ReturnValue", "value", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
