@@ -1,5 +1,4 @@
 import TestUtilities.dataflow.FlowTestCommon
-import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.security.FlowSources
 
 /**
