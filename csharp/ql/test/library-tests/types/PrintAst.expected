@@ -121,3 +121,27 @@ types.cs:
 #   65|         0: [IntLiteral] 5
 #   68|     5: [Field] myMultiDimentionalInlineArrayElements
 #   68|       -1: [TypeMention] MyInlineArray
+#   72|   12: [InlineArrayType] MyMultiDimensionalInlineArray2
+#-----|     0: (Attributes)
+#   71|       1: [DefaultAttribute] [InlineArray(...)]
+#   71|         -1: [TypeMention] InlineArrayAttribute
+#   71|         0: [IntLiteral] 7
+#   74|     5: [Field] myMultiDimentionalInlineArrayElements
+#   74|       -1: [TypeMention] String[]
+#   74|         1: [TypeMention] string
+#   78|   13: [InlineArrayType] MyMultiDimensionalInlineArray3
+#-----|     0: (Attributes)
+#   77|       1: [DefaultAttribute] [InlineArray(...)]
+#   77|         -1: [TypeMention] InlineArrayAttribute
+#   77|         0: [IntLiteral] 4
+#   80|     5: [Field] myMultiDimentionalInlineArrayElements
+#   80|       -1: [TypeMention] Object[,]
+#   80|         1: [TypeMention] object
+#   84|   14: [InlineArrayType] MyMultiDimensionalInlineArray4
+#-----|     0: (Attributes)
+#   83|       1: [DefaultAttribute] [InlineArray(...)]
+#   83|         -1: [TypeMention] InlineArrayAttribute
+#   83|         0: [IntLiteral] 11
+#   86|     5: [Field] myMultiDimentionalInlineArrayElements
+#   86|       -1: [TypeMention] Object[][]
+#   86|         1: [TypeMention] object

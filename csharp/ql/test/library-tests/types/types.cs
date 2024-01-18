@@ -67,4 +67,22 @@ namespace Types
     {
         private MyInlineArray myMultiDimentionalInlineArrayElements;
     }
+
+    [System.Runtime.CompilerServices.InlineArray(7)]
+    public struct MyMultiDimensionalInlineArray2
+    {
+        private string[] myMultiDimentionalInlineArrayElements;
+    }
+
+    [System.Runtime.CompilerServices.InlineArray(4)]
+    public struct MyMultiDimensionalInlineArray3
+    {
+        private object[,] myMultiDimentionalInlineArrayElements;
+    }
+
+    [System.Runtime.CompilerServices.InlineArray(11)]
+    public struct MyMultiDimensionalInlineArray4
+    {
+        private object[][] myMultiDimentionalInlineArrayElements;
+    }
 }
