@@ -143,3 +143,22 @@ predicate defaultSourceSinkIsRelated(DataFlow::Node source, DataFlow::Node sink)
     strictlyPostDominates(b2, i2, b1, i1)
   )
 }
+
+/**
+ * `dealloc1` is a deallocation expression, `e` is an expression that dereferences a
+ * pointer, and the `(dealloc1, e)` pair should be excluded by the `FlowFromFree` library.
+ *
+ * Note that `e` is not necessarily the expression deallocated by `dealloc1`. It will
+ * be bound to the second deallocation as identified by the `FlowFromFree` library.
+ *
+ * From https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-mmfreepagesfrommdl:
+ * "After calling MmFreePagesFromMdl, the caller must also call ExFreePool
+ * to release the memory that was allocated for the MDL structure."
+ */
+bindingset[dealloc1, e]
+predicate isExcludedMmFreePageFromMdl(DeallocationExpr dealloc1, Expr e) {
+  exists(DeallocationExpr dealloc2 | isFree(_, _, e, dealloc2) |
+    dealloc1.(FunctionCall).getTarget().hasGlobalName("MmFreePagesFromMdl") and
+    isExFreePoolCall(dealloc2, _)
+  )
+}

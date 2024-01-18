@@ -18,6 +18,16 @@ import FlowAfterFree
 import UseAfterFree
 import UseAfterFreeTrace::PathGraph
 
+module UseAfterFreeParam implements FlowFromFreeParamSig {
+  predicate isSink = isUse/2;
+
+  predicate isExcluded = isExcludedMmFreePageFromMdl/2;
+
+  predicate sourceSinkIsRelated = defaultSourceSinkIsRelated/2;
+}
+
+import UseAfterFreeParam
+
 module UseAfterFreeTrace = FlowFromFree<UseAfterFreeParam>;
 
 from UseAfterFreeTrace::PathNode source, UseAfterFreeTrace::PathNode sink, DeallocationExpr dealloc

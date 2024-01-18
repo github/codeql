@@ -144,26 +144,3 @@ module IsUse {
 }
 
 import IsUse
-
-/**
- * `dealloc1` is a deallocation expression, `e` is an expression that dereferences a
- * pointer, and the `(dealloc1, e)` pair should be excluded by the `FlowFromFree` library.
- */
-bindingset[dealloc1, e]
-predicate isExcludeFreeUsePair(DeallocationExpr dealloc1, Expr e) {
-  // From https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-mmfreepagesfrommdl:
-  // "After calling MmFreePagesFromMdl, the caller must also call ExFreePool
-  // to release the memory that was allocated for the MDL structure."
-  dealloc1.(FunctionCall).getTarget().hasGlobalName("MmFreePagesFromMdl") and
-  isExFreePoolCall(_, e)
-}
-
-module UseAfterFreeParam implements FlowFromFreeParamSig {
-  predicate isSink = isUse/2;
-
-  predicate isExcluded = isExcludeFreeUsePair/2;
-
-  predicate sourceSinkIsRelated = defaultSourceSinkIsRelated/2;
-}
-
-import UseAfterFreeParam
