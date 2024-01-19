@@ -36,7 +36,7 @@ func checkDirsNested(inputDirs []string) (string, bool) {
 
 // Returns the directory to run the go build in and whether to use a go.mod
 // file.
-func findGoModFiles(emitDiagnostics bool) (baseDir string, useGoMod bool) {
+func getBuildRoot(emitDiagnostics bool) (baseDir string, useGoMod bool) {
 	goModPaths := util.FindAllFilesWithName(".", "go.mod", "vendor")
 	if len(goModPaths) == 0 {
 		baseDir = "."
@@ -115,7 +115,7 @@ func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, string) {
 		}
 	}
 
-	baseDir, useGoMod := findGoModFiles(emitDiagnostics)
+	baseDir, useGoMod := getBuildRoot(emitDiagnostics)
 	if useGoMod {
 		log.Println("Found go.mod, enabling go modules")
 		return GoGetWithModules, baseDir
