@@ -1,4 +1,7 @@
 /**
+ * DEPRECATED: The logic is now incorporated into the
+ * cs/cleartext-storage-of-sensitive-information query.
+ *
  * Provides a taint-tracking configuration for reasoning about private information flowing unencrypted to an external location.
  */
 
@@ -10,17 +13,17 @@ private import semmle.code.csharp.security.PrivateData
 /**
  * A data flow source for private information flowing unencrypted to an external location.
  */
-abstract class Source extends DataFlow::ExprNode { }
+abstract deprecated class Source extends DataFlow::ExprNode { }
 
 /**
  * A data flow sink for private information flowing unencrypted to an external location.
  */
-abstract class Sink extends DataFlow::ExprNode { }
+abstract deprecated class Sink extends DataFlow::ExprNode { }
 
 /**
  * A sanitizer for private information flowing unencrypted to an external location.
  */
-abstract class Sanitizer extends DataFlow::ExprNode { }
+abstract deprecated class Sanitizer extends DataFlow::ExprNode { }
 
 /**
  * DEPRECATED: Use `ExposureOfPrivateInformation` instead.
@@ -40,7 +43,7 @@ deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration
 /**
  * A taint-tracking configuration for private information flowing unencrypted to an external location.
  */
-private module ExposureOfPrivateInformationConfig implements DataFlow::ConfigSig {
+deprecated private module ExposureOfPrivateInformationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
@@ -51,10 +54,11 @@ private module ExposureOfPrivateInformationConfig implements DataFlow::ConfigSig
 /**
  * A taint-tracking module for private information flowing unencrypted to an external location.
  */
-module ExposureOfPrivateInformation = TaintTracking::Global<ExposureOfPrivateInformationConfig>;
+deprecated module ExposureOfPrivateInformation =
+  TaintTracking::Global<ExposureOfPrivateInformationConfig>;
 
-private class PrivateDataSource extends Source {
+deprecated private class PrivateDataSource extends Source {
   PrivateDataSource() { this.getExpr() instanceof PrivateDataExpr }
 }
 
-private class ExternalLocation extends Sink instanceof ExternalLocationSink { }
+deprecated private class ExternalLocation extends Sink instanceof ExternalLocationSink { }
