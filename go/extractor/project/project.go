@@ -13,14 +13,6 @@ import (
 	"golang.org/x/mod/semver"
 )
 
-func getDirs(paths []string) []string {
-	dirs := make([]string, len(paths))
-	for i, path := range paths {
-		dirs[i] = filepath.Dir(path)
-	}
-	return dirs
-}
-
 func checkDirsNested(inputDirs []string) (string, bool) {
 	// replace "." with "" so that we can check if all the paths are nested
 	dirs := make([]string, len(inputDirs))
@@ -51,7 +43,7 @@ func findGoModFiles(emitDiagnostics bool) (baseDir string, useGoMod bool) {
 		useGoMod = false
 		return
 	}
-	goModDirs := getDirs(goModPaths)
+	goModDirs := util.GetParentDirs(goModPaths)
 	if util.AnyGoFilesOutsideDirs(".", goModDirs...) {
 		if emitDiagnostics {
 			diagnostics.EmitGoFilesOutsideGoModules(goModPaths)

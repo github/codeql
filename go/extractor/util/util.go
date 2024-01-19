@@ -340,3 +340,12 @@ func AnyGoFilesOutsideDirs(root string, dirsToSkip ...string) bool {
 	})
 	return found
 }
+
+// For every file path in the input array, return the parent directory.
+func GetParentDirs(paths []string) []string {
+	dirs := make([]string, len(paths))
+	for i, path := range paths {
+		dirs[i] = filepath.Dir(path)
+	}
+	return dirs
+}
