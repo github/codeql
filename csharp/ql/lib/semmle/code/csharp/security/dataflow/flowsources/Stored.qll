@@ -59,7 +59,11 @@ class DbDataReaderPropertyStoredFlowSource extends DatabaseInputSource {
   }
 }
 
-/** A read of a mapped property. */
+/**
+ * DEPRECATED: Use `EntityFramework::StoredFlowSource` and `NHibernate::StoredFlowSource` instead.
+ *
+ * A read of a mapped property.
+ */
 deprecated class ORMMappedProperty extends DataFlow::Node {
   ORMMappedProperty() {
     this instanceof EntityFramework::StoredFlowSource or
