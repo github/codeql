@@ -51,7 +51,7 @@ and the CodeQL library pack ``codeql/go-all`` (`changelog <https://github.com/gi
    :widths: auto
 
    Name, Category
-   `AWS Lambda <https://docs.aws.amazon.com/lambda/latest/dg/lambda-golang.html>`_, Web framework
+   `AWS Lambda <https://docs.aws.amazon.com/lambda/latest/dg/lambda-golang.html>`_, Serverless framework
    `beego <https://beego.me/>`_, Web/logging/database framework
    `Chi <https://github.com/go-chi/chi>`_, Web framework
    Couchbase (`gocb <https://github.com/couchbase/gocb>`_ and `go-couchbase <http://www.github.com/couchbase/go-couchbase>`_), Database
