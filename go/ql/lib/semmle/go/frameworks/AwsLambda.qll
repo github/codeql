@@ -45,7 +45,7 @@ private class StartOrNewHandlerFunction extends Function {
       ]) and
     handlerArgPos = 0
     or
-    this.hasQualifiedName(awsLambdaPkg(), "StartHandlerWithContext") and
+    this.hasQualifiedName(awsLambdaPkg(), ["StartHandlerWithContext", "StartWithContext"]) and
     handlerArgPos = 1
   }
 

@@ -29,6 +29,8 @@ func StartHandlerFunc[TIn any, TOut any, H HandlerFunc[TIn, TOut]](handler H, op
 
 func StartHandlerWithContext(ctx context.Context, handler Handler) {}
 
+func StartWithContext(ctx context.Context, handler interface{}) {}
+
 func StartWithOptions(handler interface{}, options ...Option) {}
 
 func NewHandler(handlerFunc interface{}) Handler { return nil }

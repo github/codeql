@@ -148,6 +148,14 @@ func Handler16(ctx context.Context, event Event) (*Response, error) {
 	return &Response{Message: ""}, nil
 }
 
+func Handler17(ctx context.Context, event Event) (*Response, error) {
+	sink(ctx)        // safe
+	sink(event.Name) // $ hasTaintFlow="selection of Name"
+	sink(event.Age)  // $ hasTaintFlow="selection of Age"
+	sink(event)      // $ hasTaintFlow="event"
+	return &Response{Message: ""}, nil
+}
+
 func main() {
 	lambda.Start(Handler0)
 	lambda.Start(Handler1)
@@ -177,7 +185,15 @@ func main() {
 	})
 	lambda.StartHandlerWithContext(context.Background(), MyHandlerFunc(Handler12))
 	lambda.StartHandlerWithContext(context.Background(), &Handler13{})
-	lambda.StartWithOptions(Handler14)
+	lambda.StartWithContext(context.Background(), Handler14)
+	lambda.StartWithContext(context.Background(), func(ctx context.Context, event Event) (*Response, error) {
+		sink(ctx)        // safe
+		sink(event.Name) // $ hasTaintFlow="selection of Name"
+		sink(event.Age)  // $ hasTaintFlow="selection of Age"
+		sink(event)      // $ hasTaintFlow="event"
+		return &Response{Message: ""}, nil
+	})
+	lambda.StartWithOptions(Handler15)
 	lambda.StartWithOptions(func(ctx context.Context, event Event) (*Response, error) {
 		sink(ctx)        // safe
 		sink(event.Name) // $ hasTaintFlow="selection of Name"
@@ -185,7 +201,7 @@ func main() {
 		sink(event)      // $ hasTaintFlow="event"
 		return &Response{Message: ""}, nil
 	})
-	lambda.NewHandler(Handler15)
+	lambda.NewHandler(Handler16)
 	lambda.NewHandler(func(ctx context.Context, event Event) (*Response, error) {
 		sink(ctx)        // safe
 		sink(event.Name) // $ hasTaintFlow="selection of Name"
@@ -193,7 +209,7 @@ func main() {
 		sink(event)      // $ hasTaintFlow="event"
 		return &Response{Message: ""}, nil
 	})
-	lambda.NewHandlerWithOptions(Handler16)
+	lambda.NewHandlerWithOptions(Handler17)
 	lambda.NewHandlerWithOptions(func(ctx context.Context, event Event) (*Response, error) {
 		sink(ctx)        // safe
 		sink(event.Name) // $ hasTaintFlow="selection of Name"
