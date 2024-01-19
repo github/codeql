@@ -4,6 +4,7 @@ import java
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.SensitiveActions
+private import semmle.code.java.frameworks.android.Layout
 
 /** A configuration for tracking sensitive information to system notifications. */
 private module NotificationTrackingConfig implements DataFlow::ConfigSig {
@@ -42,15 +43,37 @@ private class SetTextCall extends MethodCall {
   Expr getStringArgument() { result = this.getArgument(0) }
 }
 
+/** A call to a method indicating that the contents of a UI element are safely masked. */
+private class MaskCall extends MethodCall {
+  MaskCall() {
+    this.getMethod().hasQualifiedName("android.widget", "TextView", "setInputType")
+    or
+    this.getMethod().hasQualifiedName("android.widget", "view", "setVisibility")
+  }
+}
+
 /** A configuration for tracking sensitive information to text fields. */
 private module TextFieldTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SensitiveExpr }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(SetTextCall s).getStringArgument() }
+  predicate isSink(DataFlow::Node sink) {
+    exists(SetTextCall call |
+      sink.asExpr() = call.getStringArgument() and
+      not isMasked(call)
+    )
+  }
 
   predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
   }
+}
+
+/** Holds if the qualifier of `call` is also called with a method that may mask the information displayed. */
+private predicate isMasked(SetTextCall call) {
+  exists(string id |
+    DataFlow::localExprFlow(getAUseOfViewWithId(id), call.getQualifier()) and
+    DataFlow::localExprFlow(getAUseOfViewWithId(id), any(MaskCall mcall).getQualifier())
+  )
 }
 
 /** Taint tracking flow for sensitive data flowing to text fields. */
