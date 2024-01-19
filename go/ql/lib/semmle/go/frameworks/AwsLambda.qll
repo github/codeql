@@ -27,9 +27,9 @@ private class HandlerFunction extends FuncDef {
     or
     this = any(Method m | m.implements(awsLambdaPkg(), "Handler", "Invoke")).getFuncDecl()
     or
-    exists(ConversionExpr ce |
-      ce.getTypeExpr().getType() instanceof HandlerImpl and
-      this = ce.getOperand().(FunctionName).getTarget().getFuncDecl()
+    exists(DataFlow::TypeCastNode typeCast |
+      typeCast.getResultType() instanceof HandlerImpl and
+      this.(FuncDecl).getFunction().getARead() = typeCast.getOperand()
     )
   }
 }
