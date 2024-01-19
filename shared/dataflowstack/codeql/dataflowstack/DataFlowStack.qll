@@ -130,10 +130,9 @@ module DataFlowStackMake<DF::InputSig Lang>{
             }
 
             FlowStackFrame getTopFrame(){
-                exists(FlowStackFrame flowStackFrame, CallFrame frame |
-                    // TODO: Get the 'Top' frame.
-                    flowStackFrame = TFlowStackFrame(this, frame) and
-                    not exists(frame.getPredecessor()) and
+                exists(FlowStackFrame flowStackFrame |
+                    flowStackFrame = TFlowStackFrame(this, _) and
+                    not exists(flowStackFrame.getParentStackFrame()) and
                     result = flowStackFrame
                 )
             }
@@ -166,6 +165,9 @@ module DataFlowStackMake<DF::InputSig Lang>{
                 result = "FlowStackFrame"
             }
 
+            /**
+             * Get the next frame in the DataFlow Stack
+             */
             FlowStackFrame getASuccessor(){
                 exists(FlowStack flowStack, CallFrame frame, CallFrame nextFrame |
                     this = TFlowStackFrame(flowStack, frame) and
@@ -175,16 +177,18 @@ module DataFlowStackMake<DF::InputSig Lang>{
             }
 
             /**
-             * Gets the next FlowStackFrame from the successors which a frame in the end-state stack.
+             * Gets the next FlowStackFrame from the successors which is a frame in the end-state (terminal) stack.
              */
             FlowStackFrame getASucceedingTerminalStateFrame(){
-                // TODO: ATM just default to successor
-                result = this.getASuccessor()
-/*                 exists(FlowStack flowStack, CallFrame frame, CallFrame nextFrame |
-                    this = TFlowStackFrame(flowStack, frame) and
-                    nextFrame = frame.getSuccessor() and
-                    result = TFlowStackFrame(flowStack, nextFrame)
-                ) */
+                exists(FlowStackFrame nextHighestFrame |
+                    nextHighestFrame = this.getChildStackFrame() and
+                    // There are no other direct children that are further in the flow
+                    not exists(FlowStackFrame succeedingChildStackFrame |
+                        succeedingChildStackFrame = this.getChildStackFrame() and
+                        nextHighestFrame.getASuccessor+() = succeedingChildStackFrame
+                    ) and
+                    result = nextHighestFrame
+                )
             }
 
             /**
@@ -192,6 +196,24 @@ module DataFlowStackMake<DF::InputSig Lang>{
              */
             FlowStackFrame getAPredecessor(){
                 result.getASuccessor() = this
+            }
+
+            /**
+             * Gets a predecessor FlowStackFrame that is a parent in the stack.
+             */
+            FlowStackFrame getParentStackFrame(){
+                result.getChildStackFrame() = this
+            }
+
+            /**
+             * Gets the set of succeeding FlowStackFrame which are a direct descendant of this frame in the Stack.
+             */
+            FlowStackFrame getChildStackFrame(){
+                exists(FlowStackFrame transitiveSuccessor |
+                    transitiveSuccessor = this.getASuccessor*() and
+                    this.getCall().getARuntimeTarget() = transitiveSuccessor.getCall().getEnclosingCallable() and
+                    result = transitiveSuccessor
+                )
             }
 
             /**
@@ -224,7 +246,7 @@ module DataFlowStackMake<DF::InputSig Lang>{
 
 
         /**
-         * A CallFrame is a Function Call as a PathNode.
+         * A CallFrame is a PathNode that represents a Function Call (DataFlowCall).
          */
         private newtype TCallFrameType =
             TCallFrame(Flow::PathNode node) {
@@ -241,6 +263,9 @@ module DataFlowStackMake<DF::InputSig Lang>{
                 )
             }
 
+            /**
+             * Find the set of CallFrames that are immediate successors of this CallFrame.
+             */
             CallFrame getSuccessor(){
                 exists(Flow::PathNode node |
                     this = TCallFrame(node) and
@@ -251,6 +276,9 @@ module DataFlowStackMake<DF::InputSig Lang>{
                 )
             }
 
+            /**
+             * Find the set of CallFrames that are an immediate predecessor of this CallFrame.
+             */
             CallFrame getPredecessor(){
                 exists(CallFrame prior |
                     prior.getSuccessor() = this and
@@ -258,10 +286,9 @@ module DataFlowStackMake<DF::InputSig Lang>{
                 )
             }
 
-            Lang::DataFlowCall getPredecessorCall(){
-                result = this.getPredecessor().getCall()
-            }
-
+            /**
+             * Unpack the CallFrame and retrieve the associated DataFlowCall.
+             */
             Lang::DataFlowCall getCall(){
                 exists(Lang::DataFlowCall call, Flow::PathNode node |
                     this = TCallFrame(node) and
@@ -270,6 +297,9 @@ module DataFlowStackMake<DF::InputSig Lang>{
                 )
             }
 
+            /**
+             * Unpack the CallFrame and retrieve the associated PathNode.
+             */
             Flow::PathNode getPathNode(){
                 exists(Flow::PathNode n |
                     this = TCallFrame(n) and
@@ -278,6 +308,10 @@ module DataFlowStackMake<DF::InputSig Lang>{
             }
         }
 
+        /**
+         * From the given PathNode argument, find the set of successors that are an argument in a DataFlowCall,
+         * and return them as the result.
+         */
         private Flow::PathNode getSuccessorCall(Flow::PathNode n){
             exists(Flow::PathNode succ |
                 succ = n.getASuccessor() and
