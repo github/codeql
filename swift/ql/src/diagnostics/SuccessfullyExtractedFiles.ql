@@ -1,6 +1,6 @@
 /**
- * @name Successfully extracted files
- * @description Lists all files in the source code directory that were extracted without encountering a problem in the file.
+ * @name Extracted files
+ * @description Lists all files in the source code directory that were extracted.
  * @kind diagnostic
  * @id swift/diagnostics/successfully-extracted-files
  * @tags successfully-extracted-files
@@ -9,5 +9,5 @@
 import swift
 
 from File f
-where f.isSuccessfullyExtracted()
+where exists(f.getRelativePath())
 select f, "File successfully extracted."
