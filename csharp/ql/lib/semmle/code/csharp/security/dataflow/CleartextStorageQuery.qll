@@ -1,32 +1,34 @@
 /**
- * Provides a taint-tracking configuration for reasoning about cleartext storage of sensitive information.
+ * Provides a taint-tracking configuration for reasoning about cleartext storage
+ * of sensitive or private information.
  */
 
 import csharp
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.frameworks.system.Web
-private import semmle.code.csharp.security.SensitiveActions
+private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
+private import semmle.code.csharp.security.PrivateData
+private import semmle.code.csharp.security.SensitiveActions
 
 /**
- * A data flow source for cleartext storage of sensitive information.
+ * A data flow source for cleartext storage of sensitive or private information.
  */
 abstract class Source extends DataFlow::ExprNode { }
 
 /**
- * A data flow sink for cleartext storage of sensitive information.
+ * A data flow sink for cleartext storage of sensitive or private information.
  */
 abstract class Sink extends DataFlow::ExprNode { }
 
 /**
- * A sanitizer for cleartext storage of sensitive information.
+ * A sanitizer for cleartext storage of sensitive or private information.
  */
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
  * DEPRECATED: Use `ClearTextStorage` instead.
  *
- * A taint-tracking configuration for cleartext storage of sensitive information.
+ * A taint-tracking configuration for cleartext storage of sensitive or private information.
  */
 deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "ClearTextStorage" }
@@ -39,7 +41,7 @@ deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration
 }
 
 /**
- * A taint-tracking configuration for cleartext storage of sensitive information.
+ * A taint-tracking configuration for cleartext storage of sensitive or private information.
  */
 private module ClearTextStorageConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -50,13 +52,18 @@ private module ClearTextStorageConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * A taint-tracking module for cleartext storage of sensitive information.
+ * A taint-tracking module for cleartext storage of sensitive or private information.
  */
 module ClearTextStorage = TaintTracking::Global<ClearTextStorageConfig>;
 
 /** A source of sensitive data. */
 class SensitiveExprSource extends Source {
   SensitiveExprSource() { this.getExpr() instanceof SensitiveExpr }
+}
+
+/** A source of private data. */
+private class PrivateDataExprSource extends Source {
+  PrivateDataExprSource() { this.getExpr() instanceof PrivateDataExpr }
 }
 
 /** A call to any method whose name suggests that it encodes or encrypts the parameter. */
