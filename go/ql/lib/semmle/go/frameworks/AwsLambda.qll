@@ -18,11 +18,11 @@ private class LambdaInput extends UntrustedFlowSource::Range {
 
 private class HandlerFunction extends FuncDef {
   HandlerFunction() {
-    exists(StartOrNewHandlerFunction f, Expr e |
-      f.getACall().getArgument(f.getHandlerArgPos()).asExpr() = e
+    exists(StartOrNewHandlerFunction f, DataFlow::Node handlerArg |
+      f.getACall().getArgument(f.getHandlerArgPos()) = handlerArg
     |
-      this = e.(FunctionName).getTarget().getFuncDecl() or
-      this = e.(FuncLit)
+      handlerArg = this.(FuncDecl).getFunction().getARead() or
+      handlerArg = DataFlow::exprNode(this.(FuncLit))
     )
     or
     this = any(Method m | m.implements(awsLambdaPkg(), "Handler", "Invoke")).getFuncDecl()
