@@ -8,7 +8,7 @@ extensions:
       - ["environment", false, 1]
 
   - addsTo:
-      pack: codeql/java-all
+      pack: codeql/csharp-all
       extensible: sourceModel
     data:
       - ["My.Qltest", "TestSources", False, "ExecuteQuery", "(System.String)", "", "ReturnValue", "database", "manual"]
