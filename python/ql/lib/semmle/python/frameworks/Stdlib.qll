@@ -4842,6 +4842,23 @@ module StdlibPrivate {
       override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // html
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to 'html.escape'.
+   * See https://docs.python.org/3/library/html.html#html.escape
+   */
+  private class HtmlEscapeCall extends Escaping::Range, API::CallNode {
+    HtmlEscapeCall() { this = API::moduleImport("html").getMember("escape").getACall() }
+
+    override DataFlow::Node getAnInput() { result = this.getParameter(0, "s").asSink() }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getKind() { result = Escaping::getHtmlKind() }
+  }
 }
 
 // ---------------------------------------------------------------------------
