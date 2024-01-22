@@ -1967,13 +1967,7 @@ module StdlibPrivate {
         result = cgiHttpServer().getMember("CGIHTTPRequestHandler")
       }
     }
-
-    /** DEPRECATED: Alias for CgiHttpRequestHandler */
-    deprecated module CGIHTTPRequestHandler = CgiHttpRequestHandler;
   }
-
-  /** DEPRECATED: Alias for CgiHttpServer */
-  deprecated module CGIHTTPServer = CgiHttpServer;
 
   // ---------------------------------------------------------------------------
   // http (Python 3 only)
@@ -2042,9 +2036,6 @@ module StdlibPrivate {
          */
         deprecated API::Node classRef() { result = server().getMember("CGIHTTPRequestHandler") }
       }
-
-      /** DEPRECATED: Alias for CgiHttpRequestHandler */
-      deprecated module CGIHTTPRequestHandler = CgiHttpRequestHandler;
     }
   }
 
@@ -2232,9 +2223,6 @@ module StdlibPrivate {
         result = "Stdlib: wsgiref.simple_server application: WSGI environment parameter"
       }
     }
-
-    /** DEPRECATED: Alias for WsgiEnvirontParameter */
-    deprecated class WSGIEnvirontParameter = WsgiEnvirontParameter;
 
     /**
      * Gets a reference to the parameter of a `WsgirefSimpleServerApplication` that

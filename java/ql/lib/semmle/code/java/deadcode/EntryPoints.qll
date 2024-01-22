@@ -135,10 +135,6 @@ class JaxAnnotationReflectivelyConstructedClass extends ReflectivelyConstructedC
   }
 }
 
-/** DEPRECATED: Alias for JaxAnnotationReflectivelyConstructedClass */
-deprecated class JAXAnnotationReflectivelyConstructedClass =
-  JaxAnnotationReflectivelyConstructedClass;
-
 class DeserializedClass extends ReflectivelyConstructedClass {
   DeserializedClass() {
     exists(CastingExpr cast, ReadObjectMethod readObject |
@@ -324,9 +320,6 @@ class EjbHome extends Interface, EntryPoint {
   override Callable getALiveCallable() { result = this.getACallable() }
 }
 
-/** DEPRECATED: Alias for EjbHome */
-deprecated class EJBHome = EjbHome;
-
 /**
  * Entry point for EJB object interfaces.
  */
@@ -335,9 +328,6 @@ class EjbObject extends Interface, EntryPoint {
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }
-
-/** DEPRECATED: Alias for EjbObject */
-deprecated class EJBObject = EjbObject;
 
 class GsonDeserializationEntryPoint extends ReflectivelyConstructedClass {
   GsonDeserializationEntryPoint() {
@@ -360,9 +350,6 @@ class JaxbDeserializationEntryPoint extends ReflectivelyConstructedClass {
     )
   }
 }
-
-/** DEPRECATED: Alias for JaxbDeserializationEntryPoint */
-deprecated class JAXBDeserializationEntryPoint = JaxbDeserializationEntryPoint;
 
 /**
  * A `javax.annotation` for a method that is called after or before dependency injection on a type.

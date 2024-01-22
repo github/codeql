@@ -27,9 +27,6 @@ private module ExperimentalPrivateDjango {
 
             override string getSourceType() { result = "django.http.request.GET.get" }
           }
-
-          /** DEPRECATED: Alias for DjangoGetParameter */
-          deprecated class DjangoGETParameter = DjangoGetParameter;
         }
       }
 
