@@ -204,3 +204,15 @@ def tuple_default(x=(1,2)):
 
 def safe_method(x=[]):
     return x.count(42)
+
+# Use of deepcopy:
+
+from copy import deepcopy
+
+def flow_from_within_deepcopy_fp():
+    y = deepcopy([])
+    y.append(1) #$ SPURIOUS: modification=y
+
+def flow_through_deepcopy_fp(x=[]):
+    y = deepcopy(x)
+    y.append(1) #$ SPURIOUS: modification=y
