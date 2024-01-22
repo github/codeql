@@ -1,3 +1,9 @@
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* The diagnostic query `rb/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Ruby files, now considers any Ruby file seen during extraction, even one with some errors, to be extracted / scanned.
+
 ## 0.8.6
 
 ### Minor Analysis Improvements

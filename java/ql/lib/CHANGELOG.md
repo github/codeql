@@ -1,3 +1,21 @@
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Improved models for `java.lang.Throwable` and `java.lang.Exception`, and the `valueOf` method of `java.lang.String`.
+* Added taint tracking for the following GSON methods:
+  * `com.google.gson.stream.JsonReader` constructor
+  * `com.google.gson.stream.JsonWriter` constructor
+  * `com.google.gson.JsonObject.getAsJsonArray`
+  * `com.google.gson.JsonObject.getAsJsonObject`
+  * `com.google.gson.JsonObject.getAsJsonPrimitive`
+  * `com.google.gson.JsonParser.parseReader`
+  * `com.google.gson.JsonParser.parseString`
+
+### Bug Fixes
+
+* Fixed regular expressions containing flags not being parsed correctly in some cases.
+
 ## 0.8.6
 
 ### Deprecated APIs
