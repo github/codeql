@@ -14,37 +14,15 @@ private import AutomodelJavaUtil
 
 from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence,
-  DollarAtString message, FrameworkModeMetadataExtractor meta, DollarAtString package,
-  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString output, DollarAtString parameterName,
-  DollarAtString extensibleType
+  DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
+  DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString parameterName, DollarAtString extensibleType
 where
-  characteristic.appliesToEndpoint(endpoint) and
-  // the node is known not to be an endpoint of any appropriate type
-  forall(EndpointType tp | tp = CharacteristicsImpl::getAPotentialType(endpoint) |
-    characteristic.hasImplications(tp, false, _)
-  ) and
-  // the lowest confidence across all endpoint types should be at least highConfidence
-  confidence =
-    min(float c |
-      characteristic.hasImplications(CharacteristicsImpl::getAPotentialType(endpoint), false, c)
-    ) and
-  confidence >= SharedCharacteristics::highConfidence() and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
-    _, extensibleType) and
-  // It's valid for a node to be both a potential source/sanitizer and a sink. We don't want to include such nodes
-  // as negative examples in the prompt, because they're ambiguous and might confuse the model, so we explicitly exclude them here.
-  not exists(EndpointCharacteristic characteristic2, float confidence2 |
-    characteristic2 != characteristic
-  |
-    characteristic2.appliesToEndpoint(endpoint) and
-    confidence2 >= SharedCharacteristics::maximalConfidence() and
-    characteristic2
-        .hasImplications(CharacteristicsImpl::getAPotentialType(endpoint), true, confidence2)
-  ) and
-  message = characteristic
+  isNegativeExample(endpoint, characteristic, confidence, package, type, subtypes, name, signature,
+    input, output, parameterName, extensibleType)
 select endpoint,
-  message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
+  characteristic + "\nrelated locations: $@, $@." +
+    "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
   package, "package", //

@@ -25,9 +25,7 @@ newtype JavaRelatedLocationType =
 newtype TFrameworkModeEndpoint =
   TExplicitParameter(Parameter p) {
     AutomodelJavaUtil::isFromSource(p) and
-    not p.getType() instanceof PrimitiveType and
-    not p.getType() instanceof BoxedType and
-    not p.getType() instanceof NumberType
+    not AutomodelJavaUtil::isUnexploitableType(p.getType())
   } or
   TQualifier(Callable c) { AutomodelJavaUtil::isFromSource(c) and not c instanceof Constructor } or
   TReturnValue(Callable c) {
@@ -36,25 +34,19 @@ newtype TFrameworkModeEndpoint =
     or
     AutomodelJavaUtil::isFromSource(c) and
     c instanceof Method and
-    (
-      not c.getReturnType() instanceof VoidType and
-      not c.getReturnType() instanceof PrimitiveType
-    )
+    not AutomodelJavaUtil::isUnexploitableType(c.getReturnType())
   } or
   TOverridableParameter(Method m, Parameter p) {
     AutomodelJavaUtil::isFromSource(p) and
+    not AutomodelJavaUtil::isUnexploitableType(p.getType()) and
     p.getCallable() = m and
     m instanceof ModelExclusions::ModelApi and
-    not m.getDeclaringType().isFinal() and
-    not m.isFinal() and
-    not m.isStatic()
+    AutomodelJavaUtil::isOverridable(m)
   } or
   TOverridableQualifier(Method m) {
     AutomodelJavaUtil::isFromSource(m) and
     m instanceof ModelExclusions::ModelApi and
-    not m.getDeclaringType().isFinal() and
-    not m.isFinal() and
-    not m.isStatic()
+    AutomodelJavaUtil::isOverridable(m)
   }
 
 /**
@@ -315,6 +307,85 @@ class FrameworkModeMetadataExtractor extends string {
       CharacteristicsImpl::isModeled(e, _, extensibleType, alreadyAiModeled)
     )
   }
+}
+
+/**
+ * Holds if the given `endpoint` should be considered a candidate for the `extensibleType`.
+ *
+ * The other parameters record various other properties of interest.
+ */
+predicate isCandidate(
+  Endpoint endpoint, string package, string type, string subtypes, string name, string signature,
+  string input, string output, string parameterName, string extensibleType, string alreadyAiModeled
+) {
+  CharacteristicsImpl::isCandidate(endpoint, _) and
+  not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
+    u.appliesToEndpoint(endpoint)
+  ) and
+  any(FrameworkModeMetadataExtractor meta)
+      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
+        alreadyAiModeled, extensibleType) and
+  // If a node is already modeled in MaD, we don't include it as a candidate. Otherwise, we might include it as a
+  // candidate for query A, but the model will label it as a sink for one of the sink types of query B, for which it's
+  // already a known sink. This would result in overlap between our detected sinks and the pre-existing modeling. We
+  // assume that, if a sink has already been modeled in a MaD model, then it doesn't belong to any additional sink
+  // types, and we don't need to reexamine it.
+  alreadyAiModeled.matches(["", "%ai-%"]) and
+  AutomodelJavaUtil::includeAutomodelCandidate(package, type, name, signature)
+}
+
+/**
+ * Holds if the given `endpoint` is a negative example for the `extensibleType`
+ * because of the `characteristic`.
+ *
+ * The other parameters record various other properties of interest.
+ */
+predicate isNegativeExample(
+  Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string package,
+  string type, string subtypes, string name, string signature, string input, string output,
+  string parameterName, string extensibleType
+) {
+  characteristic.appliesToEndpoint(endpoint) and
+  // the node is known not to be an endpoint of any appropriate type
+  forall(AutomodelEndpointTypes::EndpointType tp |
+    tp = CharacteristicsImpl::getAPotentialType(endpoint)
+  |
+    characteristic.hasImplications(tp, false, _)
+  ) and
+  // the lowest confidence across all endpoint types should be at least highConfidence
+  confidence =
+    min(float c |
+      characteristic.hasImplications(CharacteristicsImpl::getAPotentialType(endpoint), false, c)
+    ) and
+  confidence >= SharedCharacteristics::highConfidence() and
+  any(FrameworkModeMetadataExtractor meta)
+      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
+        _, extensibleType) and
+  // It's valid for a node to be both a potential source/sanitizer and a sink. We don't want to include such nodes
+  // as negative examples in the prompt, because they're ambiguous and might confuse the model, so we explicitly exclude them here.
+  not exists(EndpointCharacteristic characteristic2, float confidence2 |
+    characteristic2 != characteristic
+  |
+    characteristic2.appliesToEndpoint(endpoint) and
+    confidence2 >= SharedCharacteristics::maximalConfidence() and
+    characteristic2
+        .hasImplications(CharacteristicsImpl::getAPotentialType(endpoint), true, confidence2)
+  )
+}
+
+/**
+ * Holds if the given `endpoint` is a positive example for the `endpointType`.
+ *
+ * The other parameters record various other properties of interest.
+ */
+predicate isPositiveExample(
+  Endpoint endpoint, string endpointType, string package, string type, string subtypes, string name,
+  string signature, string input, string output, string parameterName, string extensibleType
+) {
+  any(FrameworkModeMetadataExtractor meta)
+      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
+        _, extensibleType) and
+  CharacteristicsImpl::isKnownAs(endpoint, endpointType, _)
 }
 
 /*
