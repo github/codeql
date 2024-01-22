@@ -184,8 +184,12 @@ private class InterpolationSanitizer extends Sanitizer {
  */
 private class StringFormatSanitizer extends Sanitizer {
   StringFormatSanitizer() {
-    exists(FormatCall c, Expr e | c = this.getExpr() and e = c.getFormatExpr() |
-      e.(StringLiteral).getValue().splitAt("{0}", 0).matches("%?%")
+    exists(FormatCall c, Expr e, int index, string format |
+      c = this.getExpr() and e = c.getFormatExpr()
+    |
+      format = e.(StringLiteral).getValue() and
+      exists(format.regexpFind("\\{[0-9]+\\}", 0, index)) and
+      format.substring(0, index).matches("%?%")
     )
   }
 }
