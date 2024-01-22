@@ -1,6 +1,5 @@
 import java
 import AutomodelFrameworkModeCharacteristics as Characteristics
-import TestUtilities.InlineExpectationsTest
 import AutomodelExtractionTests
 
 module TestHelper implements TestHelperSig<Characteristics::FrameworkCandidatesImpl> {
