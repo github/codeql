@@ -1,12 +1,4 @@
 edges
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:128:14:128:14 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:34:149:34 | ControlFlowNode for x |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:128:14:128:14 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:170:21:170:21 | ControlFlowNode for y |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:13:149:13 | ControlFlowNode for y | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:178:12:178:12 | ControlFlowNode for y |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:17:149:41 | ControlFlowNode for _deepcopy_atomic() | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:13:149:13 | ControlFlowNode for y |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:34:149:34 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:17:149:41 | ControlFlowNode for _deepcopy_atomic() |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:34:149:34 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:182:22:182:22 | ControlFlowNode for x |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:170:21:170:21 | ControlFlowNode for y | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:178:12:178:12 | ControlFlowNode for y |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:182:22:182:22 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:183:12:183:12 | ControlFlowNode for x |
 | test.py:2:12:2:12 | ControlFlowNode for l | test.py:3:5:3:5 | ControlFlowNode for l |
 | test.py:7:11:7:11 | ControlFlowNode for l | test.py:8:5:8:5 | ControlFlowNode for l |
 | test.py:12:14:12:14 | ControlFlowNode for l | test.py:13:9:13:9 | ControlFlowNode for l |
@@ -48,20 +40,7 @@ edges
 | test.py:195:28:195:28 | ControlFlowNode for x | test.py:181:28:181:28 | ControlFlowNode for x |
 | test.py:197:18:197:18 | ControlFlowNode for x | test.py:198:28:198:28 | ControlFlowNode for x |
 | test.py:198:28:198:28 | ControlFlowNode for x | test.py:181:28:181:28 | ControlFlowNode for x |
-| test.py:216:30:216:30 | ControlFlowNode for x | test.py:217:18:217:18 | ControlFlowNode for x |
-| test.py:217:5:217:5 | ControlFlowNode for y | test.py:218:5:218:5 | ControlFlowNode for y |
-| test.py:217:9:217:19 | ControlFlowNode for deepcopy() | test.py:217:5:217:5 | ControlFlowNode for y |
-| test.py:217:18:217:18 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:128:14:128:14 | ControlFlowNode for x |
-| test.py:217:18:217:18 | ControlFlowNode for x | test.py:217:9:217:19 | ControlFlowNode for deepcopy() |
 nodes
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:128:14:128:14 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:13:149:13 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:17:149:41 | ControlFlowNode for _deepcopy_atomic() | semmle.label | ControlFlowNode for _deepcopy_atomic() |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:34:149:34 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:170:21:170:21 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:178:12:178:12 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:182:22:182:22 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:183:12:183:12 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:2:12:2:12 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
 | test.py:3:5:3:5 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
 | test.py:7:11:7:11 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
@@ -128,14 +107,7 @@ nodes
 | test.py:195:28:195:28 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:197:18:197:18 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:198:28:198:28 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:216:30:216:30 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:217:5:217:5 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
-| test.py:217:9:217:19 | ControlFlowNode for deepcopy() | semmle.label | ControlFlowNode for deepcopy() |
-| test.py:217:18:217:18 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:218:5:218:5 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
 subpaths
-| file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:34:149:34 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:182:22:182:22 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:183:12:183:12 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:149:17:149:41 | ControlFlowNode for _deepcopy_atomic() |
-| test.py:217:18:217:18 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:128:14:128:14 | ControlFlowNode for x | file:///usr/local/python/3.10.13/lib/python3.10/copy.py:178:12:178:12 | ControlFlowNode for y | test.py:217:9:217:19 | ControlFlowNode for deepcopy() |
 #select
 | test.py:3:5:3:5 | ControlFlowNode for l | test.py:2:12:2:12 | ControlFlowNode for l | test.py:3:5:3:5 | ControlFlowNode for l | This expression mutates a $@. | test.py:2:12:2:12 | ControlFlowNode for l | default value |
 | test.py:8:5:8:5 | ControlFlowNode for l | test.py:7:11:7:11 | ControlFlowNode for l | test.py:8:5:8:5 | ControlFlowNode for l | This expression mutates a $@. | test.py:7:11:7:11 | ControlFlowNode for l | default value |
@@ -166,4 +138,3 @@ subpaths
 | test.py:185:9:185:9 | ControlFlowNode for x | test.py:197:18:197:18 | ControlFlowNode for x | test.py:185:9:185:9 | ControlFlowNode for x | This expression mutates a $@. | test.py:197:18:197:18 | ControlFlowNode for x | default value |
 | test.py:187:9:187:9 | ControlFlowNode for x | test.py:194:18:194:18 | ControlFlowNode for x | test.py:187:9:187:9 | ControlFlowNode for x | This expression mutates a $@. | test.py:194:18:194:18 | ControlFlowNode for x | default value |
 | test.py:187:9:187:9 | ControlFlowNode for x | test.py:197:18:197:18 | ControlFlowNode for x | test.py:187:9:187:9 | ControlFlowNode for x | This expression mutates a $@. | test.py:197:18:197:18 | ControlFlowNode for x | default value |
-| test.py:218:5:218:5 | ControlFlowNode for y | test.py:216:30:216:30 | ControlFlowNode for x | test.py:218:5:218:5 | ControlFlowNode for y | This expression mutates a $@. | test.py:216:30:216:30 | ControlFlowNode for x | default value |

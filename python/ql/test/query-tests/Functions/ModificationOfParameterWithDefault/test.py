@@ -215,4 +215,4 @@ def flow_from_within_deepcopy_fp():
 
 def flow_through_deepcopy_fp(x=[]):
     y = deepcopy(x)
-    y.append(1) #$ SPURIOUS: modification=y
+    y.append(1)
