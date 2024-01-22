@@ -211,7 +211,7 @@ from copy import deepcopy
 
 def flow_from_within_deepcopy_fp():
     y = deepcopy([])
-    y.append(1) #$ SPURIOUS: modification=y
+    y.append(1)
 
 def flow_through_deepcopy_fp(x=[]):
     y = deepcopy(x)
