@@ -24,7 +24,7 @@ signature module TestHelperSig<CandidateSig Candidate> {
 module Extraction<CandidateSig Candidate, TestHelperSig<Candidate> TestHelper> implements TestSig {
   string getARelevantTag() {
     result in [
-        "sourceModel", "sinkModel", // a candidate source/sink
+        "sourceModelCandidate", "sinkModelCandidate", // a candidate source/sink
         "positiveSourceExample", "positiveSinkExample", // a known source/sink
         "negativeSourceExample", "negativeSinkExample" // a known non-source/non-sink
       ]
@@ -46,7 +46,7 @@ module Extraction<CandidateSig Candidate, TestHelperSig<Candidate> TestHelper> i
     string extensibleType, string tag, string suffix
   ) {
     TestHelper::isCandidate(endpoint, name, signature, input, output, extensibleType) and
-    tag = extensibleType and
+    tag = ifSource(extensibleType, "sourceModelCandidate", "sinkModelCandidate") and
     suffix = ""
     or
     TestHelper::isNegativeExample(endpoint, name, signature, input, output, extensibleType) and
