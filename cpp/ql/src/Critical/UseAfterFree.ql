@@ -14,8 +14,8 @@
 import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
 import semmle.code.cpp.ir.IR
-import FlowAfterFree
-import UseAfterFree
+import semmle.code.cpp.security.flowafterfree.FlowAfterFree
+import semmle.code.cpp.security.flowafterfree.UseAfterFree
 import UseAfterFreeTrace::PathGraph
 
 module UseAfterFreeParam implements FlowFromFreeParamSig {

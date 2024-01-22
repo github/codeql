@@ -1,5 +1,9 @@
+/**
+ * General library for tracing Use After Free vulnerabilities.
+ */
+
 import cpp
-private import FlowAfterFree
+private import semmle.code.cpp.security.flowafterfree.FlowAfterFree
 private import semmle.code.cpp.ir.IR
 
 /**

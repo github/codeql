@@ -1,3 +1,7 @@
+/**
+ * General library for finding flow from a pointer being freed to a user-specified sink
+ */
+
 import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
 private import semmle.code.cpp.ir.IR

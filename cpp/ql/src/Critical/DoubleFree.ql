@@ -13,7 +13,7 @@
 
 import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
-import FlowAfterFree
+import semmle.code.cpp.security.flowafterfree.FlowAfterFree
 import DoubleFree::PathGraph
 
 /**
