@@ -48,7 +48,7 @@ private module UrlRedirectConfig implements DataFlow::StateConfigSig {
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
     sink instanceof UrlRedirect::Sink and
-    state = state
+    exists(state)
   }
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
