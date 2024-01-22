@@ -259,6 +259,17 @@ edges
 | instance_variables.rb:120:6:120:10 | foo16 [@field] | instance_variables.rb:120:6:120:20 | call to get_field |
 | instance_variables.rb:121:1:121:3 | bar | instance_variables.rb:122:6:122:8 | bar |
 | instance_variables.rb:121:7:121:24 | call to new | instance_variables.rb:121:1:121:3 | bar |
+| taint.rb:9:15:9:15 | x | taint.rb:12:13:12:13 | x : String |
+| taint.rb:12:13:12:13 | x : String | taint.rb:10:5:15:11 | case ... : String |
+| taint.rb:19:1:19:1 | x : String | taint.rb:20:6:20:6 | x |
+| taint.rb:19:1:19:1 | x : String | taint.rb:22:5:22:5 | x : String |
+| taint.rb:19:5:19:25 | call to stringify : String | taint.rb:19:1:19:1 | x : String |
+| taint.rb:19:15:19:25 | ( ... ) | taint.rb:9:15:9:15 | x |
+| taint.rb:19:15:19:25 | ( ... ) | taint.rb:19:5:19:25 | call to stringify : String |
+| taint.rb:19:16:19:24 | call to taint | taint.rb:19:15:19:25 | ( ... ) |
+| taint.rb:22:1:22:1 | y : String | taint.rb:23:6:23:6 | y |
+| taint.rb:22:5:22:5 | x : String | taint.rb:22:5:22:11 | ...[...] : String |
+| taint.rb:22:5:22:11 | ...[...] : String | taint.rb:22:1:22:1 | y : String |
 nodes
 | blocks.rb:8:10:8:14 | yield ... | semmle.label | yield ... |
 | blocks.rb:14:12:14:20 | call to source | semmle.label | call to source |
@@ -486,6 +497,18 @@ nodes
 | instance_variables.rb:121:1:121:3 | bar | semmle.label | bar |
 | instance_variables.rb:121:7:121:24 | call to new | semmle.label | call to new |
 | instance_variables.rb:122:6:122:8 | bar | semmle.label | bar |
+| taint.rb:9:15:9:15 | x | semmle.label | x |
+| taint.rb:10:5:15:11 | case ... : String | semmle.label | case ... : String |
+| taint.rb:12:13:12:13 | x : String | semmle.label | x : String |
+| taint.rb:19:1:19:1 | x : String | semmle.label | x : String |
+| taint.rb:19:5:19:25 | call to stringify : String | semmle.label | call to stringify : String |
+| taint.rb:19:15:19:25 | ( ... ) | semmle.label | ( ... ) |
+| taint.rb:19:16:19:24 | call to taint | semmle.label | call to taint |
+| taint.rb:20:6:20:6 | x | semmle.label | x |
+| taint.rb:22:1:22:1 | y : String | semmle.label | y : String |
+| taint.rb:22:5:22:5 | x : String | semmle.label | x : String |
+| taint.rb:22:5:22:11 | ...[...] : String | semmle.label | ...[...] : String |
+| taint.rb:23:6:23:6 | y | semmle.label | y |
 subpaths
 | captured_variables.rb:20:25:20:34 | call to taint | captured_variables.rb:15:28:15:28 | x | captured_variables.rb:16:5:18:5 | -> { ... } [captured x] | captured_variables.rb:20:2:20:34 | call to capture_escape_return1 [captured x] |
 | captured_variables.rb:27:48:27:57 | call to taint | captured_variables.rb:22:28:22:28 | x | captured_variables.rb:23:5:25:5 | -> { ... } [captured x] | captured_variables.rb:27:25:27:57 | call to capture_escape_return2 [captured x] |
@@ -561,6 +584,7 @@ subpaths
 | instance_variables.rb:119:28:119:36 | call to taint | instance_variables.rb:27:25:27:29 | field | instance_variables.rb:28:9:28:25 | [post] self [@field] | instance_variables.rb:119:6:119:10 | [post] foo16 [@field] |
 | instance_variables.rb:120:6:120:10 | foo16 [@field] | captured_variables.rb:60:5:62:7 | self in get_field : Foo [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:120:6:120:20 | call to get_field |
 | instance_variables.rb:120:6:120:10 | foo16 [@field] | instance_variables.rb:13:5:15:7 | self in get_field : Foo [@field] | instance_variables.rb:14:9:14:21 | return | instance_variables.rb:120:6:120:20 | call to get_field |
+| taint.rb:19:15:19:25 | ( ... ) | taint.rb:9:15:9:15 | x | taint.rb:10:5:15:11 | case ... : String | taint.rb:19:5:19:25 | call to stringify : String |
 #select
 | blocks.rb:8:10:8:14 | yield ... | blocks.rb:14:12:14:20 | call to source | blocks.rb:8:10:8:14 | yield ... | $@ | blocks.rb:14:12:14:20 | call to source | call to source |
 | captured_variables.rb:10:20:10:20 | x | captured_variables.rb:13:20:13:29 | call to taint | captured_variables.rb:10:20:10:20 | x | $@ | captured_variables.rb:13:20:13:29 | call to taint | call to taint |
@@ -610,3 +634,5 @@ subpaths
 | instance_variables.rb:119:6:119:37 | call to call_initialize | instance_variables.rb:24:9:24:17 | call to taint | instance_variables.rb:119:6:119:37 | call to call_initialize | $@ | instance_variables.rb:24:9:24:17 | call to taint | call to taint |
 | instance_variables.rb:120:6:120:20 | call to get_field | instance_variables.rb:119:28:119:36 | call to taint | instance_variables.rb:120:6:120:20 | call to get_field | $@ | instance_variables.rb:119:28:119:36 | call to taint | call to taint |
 | instance_variables.rb:122:6:122:8 | bar | instance_variables.rb:43:9:43:17 | call to taint | instance_variables.rb:122:6:122:8 | bar | $@ | instance_variables.rb:43:9:43:17 | call to taint | call to taint |
+| taint.rb:20:6:20:6 | x | taint.rb:19:16:19:24 | call to taint | taint.rb:20:6:20:6 | x | $@ | taint.rb:19:16:19:24 | call to taint | call to taint |
+| taint.rb:23:6:23:6 | y | taint.rb:19:16:19:24 | call to taint | taint.rb:23:6:23:6 | y | $@ | taint.rb:19:16:19:24 | call to taint | call to taint |

@@ -72,6 +72,26 @@ private module Cached {
   cached
   predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
 
+  cached
+  predicate readElementStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // Although flow through collections is modeled precisely using stores/reads, we still
+    // allow flow out of a _tainted_ collection. This is needed in order to support taint-
+    // tracking configurations where the source is a collection.
+    exists(DataFlow::ContentSet c |
+      readStep(nodeFrom, c, nodeTo) and
+      c.isElement()
+    )
+  }
+
+  cached
+  predicate summaryLocalStep(
+    DataFlow::Node nodeFrom, DataFlow::Node nodeTo, FlowSummaryImpl::Public::SummarizedCallable c
+  ) {
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo.(FlowSummaryNode).getSummaryNode(), false) and
+    c = nodeFrom.(FlowSummaryNode).getSummarizedCallable()
+  }
+
   /**
    * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
    * in all global taint flow configurations.
@@ -105,18 +125,18 @@ private module Cached {
         )
     )
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
-      nodeTo.(FlowSummaryNode).getSummaryNode(), false)
+    summaryLocalStep(nodeFrom, nodeTo, _)
     or
     any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo)
     or
-    // Although flow through collections is modeled precisely using stores/reads, we still
-    // allow flow out of a _tainted_ collection. This is needed in order to support taint-
-    // tracking configurations where the source is a collection.
-    exists(DataFlow::ContentSet c |
-      readStep(nodeFrom, c, nodeTo) and
-      c.isElement()
-    )
+    readElementStep(nodeFrom, nodeTo)
+  }
+
+  cached
+  predicate defaultAdditionalTypedLocalStringStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    readElementStep(nodeFrom, nodeTo)
+    or
+    summaryLocalStep(nodeFrom, nodeTo, "[]")
   }
 
   cached
@@ -141,3 +161,16 @@ private module Cached {
 }
 
 import Cached
+
+predicate defaultAdditionalTypedLocalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  defaultAdditionalTypedLocalStringStep(node1, node2)
+}
+
+bindingset[node1, t1]
+predicate defaultAdditionalTypedLocalTaintStep(
+  DataFlow::Node node1, DataFlowType t1, DataFlow::Node node2, DataFlowType t2
+) {
+  defaultAdditionalTypedLocalStringStep(node1, node2) and
+  isStringClass(t1, false) and
+  t2 = t1
+}

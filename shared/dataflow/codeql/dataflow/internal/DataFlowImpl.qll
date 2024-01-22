@@ -70,6 +70,19 @@ module MakeImpl<InputSig Lang> {
 
     /**
      * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
+     */
+    predicate isAdditionalTypedLocalFlowStep(Node node1, Node node2);
+
+    /**
+     * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
+     */
+    bindingset[node1, t1]
+    predicate isAdditionalTypedLocalFlowStep(
+      Node node1, DataFlowType t1, Node node2, DataFlowType t2
+    );
+
+    /**
+     * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
      * This step is only applicable in `state1` and updates the flow state to `state2`.
      */
     predicate isAdditionalFlowStep(Node node1, FlowState state1, Node node2, FlowState state2);
@@ -366,6 +379,16 @@ module MakeImpl<InputSig Lang> {
         node2.asNode() = n and
         not fullBarrier(node2)
       )
+    }
+
+    /**
+     * Holds if the additional step from `node1` to `node2` does not jump between callables.
+     */
+    bindingset[node1, t1]
+    private predicate additionalTypedLocalFlowStep(
+      NodeEx node1, DataFlowType t1, NodeEx node2, DataFlowType t2
+    ) {
+      Config::isAdditionalTypedLocalFlowStep(node1.asNode(), t1, node2.asNode(), t2)
     }
 
     private predicate additionalLocalStateStep(
@@ -1255,6 +1278,9 @@ module MakeImpl<InputSig Lang> {
           Typ t, LocalCc lcc
         );
 
+        bindingset[node1, t1]
+        predicate localTypedStep(NodeEx node1, Typ t1, NodeEx node2, Typ t2);
+
         bindingset[node, state, t0, ap]
         predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t);
 
@@ -1340,8 +1366,15 @@ module MakeImpl<InputSig Lang> {
             localStep(mid, state0, node, state, true, _, localCc) and
             t = t0
             or
-            localStep(mid, state0, node, state, false, t, localCc) and
-            ap instanceof ApNil
+            exists(Typ t1 |
+              localStep(mid, state0, node, state, false, t1, localCc) and
+              ap instanceof ApNil
+            |
+              localTypedStep(mid, t0, node, t)
+              or
+              not localTypedStep(mid, t0, node, _) and
+              t = t1
+            )
           )
           or
           fwdFlowJump(node, state, t, ap, apa) and
@@ -2531,6 +2564,8 @@ module MakeImpl<InputSig Lang> {
         exists(lcc)
       }
 
+      predicate localTypedStep(NodeEx node1, Typ t1, NodeEx node2, Typ t2) { none() }
+
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node) {
         exists(Content c |
@@ -2591,7 +2626,9 @@ module MakeImpl<InputSig Lang> {
           clearsContentCached(this.asNode(), _) or
           expectsContentCached(this.asNode(), _) or
           neverSkipInPathGraph(this.asNode()) or
-          Config::neverSkip(this.asNode())
+          Config::neverSkip(this.asNode()) or
+          Config::isAdditionalTypedLocalFlowStep(this.asNode(), _) or
+          Config::isAdditionalTypedLocalFlowStep(_, this.asNode())
         }
       }
 
@@ -2786,6 +2823,11 @@ module MakeImpl<InputSig Lang> {
         exists(lcc)
       }
 
+      bindingset[node1, t1]
+      predicate localTypedStep(NodeEx node1, Typ t1, NodeEx node2, Typ t2) {
+        additionalTypedLocalFlowStep(node1, t1, node2, t2)
+      }
+
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node, Ap ap) {
         exists(Content c |
@@ -2873,6 +2915,11 @@ module MakeImpl<InputSig Lang> {
         PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
         exists(lcc)
+      }
+
+      bindingset[node1, t1]
+      predicate localTypedStep(NodeEx node1, Typ t1, NodeEx node2, Typ t2) {
+        additionalTypedLocalFlowStep(node1, t1, node2, t2)
       }
 
       pragma[nomagic]
@@ -3153,6 +3200,11 @@ module MakeImpl<InputSig Lang> {
         localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc) and
         PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
+      }
+
+      bindingset[node1, t1]
+      predicate localTypedStep(NodeEx node1, Typ t1, NodeEx node2, Typ t2) {
+        additionalTypedLocalFlowStep(node1, t1, node2, t2)
       }
 
       bindingset[node, state, t0, ap]
@@ -3925,10 +3977,17 @@ module MakeImpl<InputSig Lang> {
         localFlowBigStep(midnode, state0, node, state, true, _, localCC)
       )
       or
-      exists(NodeEx midnode, FlowState state0, LocalCallContext localCC |
-        pathNode(mid, midnode, state0, cc, sc, _, ap, localCC) and
-        localFlowBigStep(midnode, state0, node, state, false, t, localCC) and
+      exists(
+        NodeEx midnode, FlowState state0, DataFlowType t0, DataFlowType t1, LocalCallContext localCC
+      |
+        pathNode(mid, midnode, state0, cc, sc, t0, ap, localCC) and
+        localFlowBigStep(midnode, state0, node, state, false, t1, localCC) and
         ap instanceof AccessPathNil
+      |
+        additionalTypedLocalFlowStep(midnode, t0, node, t)
+        or
+        not additionalTypedLocalFlowStep(midnode, t0, node, _) and
+        t = t1
       )
       or
       jumpStepEx(mid.getNodeEx(), node) and

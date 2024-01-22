@@ -1992,6 +1992,15 @@ private predicate isHashClass(DataFlowType t) {
   t = TModuleDataFlowType(any(TypeInference::HashClass m).getADescendent())
 }
 
+pragma[nomagic]
+predicate isStringClass(DataFlowType t, boolean descendant) {
+  t = TModuleDataFlowType(any(TypeInference::StringClass s)) and
+  descendant = false
+  or
+  t = TModuleDataFlowType(any(TypeInference::StringClass s).getAnImmediateDescendent+()) and
+  descendant = true
+}
+
 private predicate isCollectionClass(DataFlowType t) { isArrayClass(t) or isHashClass(t) }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
