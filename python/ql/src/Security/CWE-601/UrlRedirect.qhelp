@@ -39,19 +39,30 @@ and check that the user input is in that list:
 
 <p>
 Often this is not possible, so an alternative is to check that the target URL does not
-specify an explicit host name. For example, the Django framework provides a
-function <code>url_has_allowed_host_and_scheme</code> that can be used to check that a
-URL is safe to redirect to, as shown in the following example:
+specify an explicit host name. For example, you can use the <code>urlparse</code> function
+from the Python standard library to parse the URL and check that the <code>netloc</code>
+attribute is empty.
+</p>
+
+<p>
+Note, however, that many browsers accept backslash characters (<code>\</code>) as equivalent
+to forward slash characters (<code>/</code>) in URLs, but the <code>urlparse</code> function
+does not. To account for this, you can first replace all backslashes with forward slashes,
+as shown in the following example:
 </p>
 
 <sample src="examples/redirect_good2.py"/>
 
 <p>
-Note that many browsers accept backslash characters (<code>\</code>) as equivalent to
-forward slash characters (<code>/</code>) in URLs, so it is important to account for this
-when validating the URL, for example by first replacing all backslashes with forward
-slashes. Django's <code>url_has_allowed_host_and_scheme</code> function
-does this automatically, but other libraries may not.
+For Django application, you can use the function <code>url_has_allowed_host_and_scheme</code>
+to check that a URL is safe to redirect to, as shown in the following example:
+</p>
+
+<sample src="examples/redirect_good3.py"/>
+
+<p>
+Note that <code>url_has_allowed_host_and_scheme</code> handles backslashes correctly, so no
+additional processing is required.
 </p>
 
 </example>
@@ -59,6 +70,8 @@ does this automatically, but other libraries may not.
 <references>
 <li>OWASP: <a href="https://cheatsheetseries.owasp.org/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.html">
   XSS Unvalidated Redirects and Forwards Cheat Sheet</a>.</li>
+<li>Python standard library: <a href="https://docs.python.org/3/library/urllib.parse.html">
+  urllib.parse</a>.</li>
 </references>
 
 </qhelp>
