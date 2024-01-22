@@ -609,7 +609,10 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
  */
 predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
   exists(IRBlock bb1, int i1, SourceVariable v |
-    defOrUse1.asDefOrUse().hasIndexInBlock(bb1, i1, v)
+    defOrUse1
+        .asDefOrUse()
+        .hasIndexInBlock(pragma[only_bind_out](bb1), pragma[only_bind_out](i1),
+          pragma[only_bind_out](v))
   |
     exists(IRBlock bb2, int i2, DefinitionExt def |
       adjacentDefReadExt(pragma[only_bind_into](def), pragma[only_bind_into](bb1),
@@ -631,7 +634,11 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
  * flows to `useOrPhi`.
  */
 private predicate globalDefToUse(GlobalDef globalDef, UseOrPhi useOrPhi) {
-  exists(IRBlock bb1, int i1, SourceVariable v | globalDef.hasIndexInBlock(bb1, i1, v) |
+  exists(IRBlock bb1, int i1, SourceVariable v |
+    globalDef
+        .hasIndexInBlock(pragma[only_bind_out](bb1), pragma[only_bind_out](i1),
+          pragma[only_bind_out](v))
+  |
     exists(IRBlock bb2, int i2 |
       adjacentDefReadExt(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
         pragma[only_bind_into](bb2), pragma[only_bind_into](i2)) and
