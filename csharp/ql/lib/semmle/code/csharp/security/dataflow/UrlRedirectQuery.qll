@@ -5,6 +5,7 @@
 import csharp
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.frameworks.Format
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.Mvc
 private import semmle.code.csharp.security.Sanitizers
@@ -172,6 +173,20 @@ class ConcatenationSanitizer extends Sanitizer {
 private class InterpolationSanitizer extends Sanitizer {
   InterpolationSanitizer() {
     this.getExpr().(InterpolatedStringExpr).getText(0).getValue().matches("%?%")
+  }
+}
+
+/**
+ * A call to `string.Format`, where the format expression (before any inserts)
+ * contains the character "?".
+ *
+ * This is considered a sanitizer by the same reasoning as `ConcatenationSanitizer`.
+ */
+private class StringFormatSanitizer extends Sanitizer {
+  StringFormatSanitizer() {
+    exists(FormatCall c, Expr e | c = this.getExpr() and e = c.getFormatExpr() |
+      e.(StringLiteral).getValue().splitAt("{0}", 0).matches("%?%")
+    )
   }
 }
 
