@@ -2928,5 +2928,10 @@ module PrivateDjango {
     DjangoAllowedUrl() {
       this = DataFlow::BarrierGuard<djangoUrlHasAllowedHostAndScheme/3>::getABarrierNode()
     }
+
+    override predicate sanitizes(UrlRedirect::FlowState state) {
+      // sanitize all flow states
+      any()
+    }
   }
 }
