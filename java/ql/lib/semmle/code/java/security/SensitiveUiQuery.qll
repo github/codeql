@@ -59,7 +59,7 @@ private module TextFieldTrackingConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(SetTextCall call |
       sink.asExpr() = call.getStringArgument() and
-      not isMasked(call)
+      not setTextCallIsMasked(call)
     )
   }
 
@@ -68,13 +68,18 @@ private module TextFieldTrackingConfig implements DataFlow::ConfigSig {
   }
 }
 
+/** Holds if the given may be masked. */
+private predicate viewIsMasked(AndroidLayoutXmlElement view) {
+  DataFlow::localExprFlow(getAUseOfViewWithId(view.getId()), any(MaskCall mcall).getQualifier())
+}
+
 /** Holds if the qualifier of `call` is also called with a method that may mask the information displayed. */
-private predicate isMasked(SetTextCall call) {
-  exists(string id |
-    DataFlow::localExprFlow(getAUseOfViewWithId(id), call.getQualifier()) and
-    DataFlow::localExprFlow(getAUseOfViewWithId(id), any(MaskCall mcall).getQualifier())
+private predicate setTextCallIsMasked(SetTextCall call) {
+  exists(AndroidLayoutXmlElement view |
+    DataFlow::localExprFlow(getAUseOfViewWithId(view.getId()), call.getQualifier()) and
+    viewIsMasked(view.getParent*())
   )
 }
 
 /** Taint tracking flow for sensitive data flowing to text fields. */
-module TextFieldTracking = TaintTracking::Global<NotificationTrackingConfig>;
+module TextFieldTracking = TaintTracking::Global<TextFieldTrackingConfig>;
