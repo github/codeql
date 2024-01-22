@@ -650,12 +650,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         }
 
-        private bool RestoreProject(string project, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, string? pathToNugetConfig = null) =>
-            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching, out assets, pathToNugetConfig);
-
-        private bool RestoreSolution(string solution, out IEnumerable<string> projects, out IEnumerable<string> assets) =>
-            dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out projects, out assets);
-
         /// <summary>
         /// Executes `dotnet restore` on all solution files in solutions.
         /// As opposed to RestoreProjects this is not run in parallel using PLINQ
@@ -670,7 +664,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var assetFiles = new List<string>();
             var projects = solutions.SelectMany(solution =>
                 {
-                    RestoreSolution(solution, out var restoredProjects, out var a);
+                    dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out var restoredProjects, out var a);
                     assetFiles.AddRange(a);
                     return restoredProjects;
                 });
@@ -689,7 +683,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var assetFiles = new List<string>();
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
-                RestoreProject(project, forceDotnetRefAssemblyFetching: true, out var a);
+                dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out var a, out var _);
                 assetFiles.AddRange(a);
             });
             assets = assetFiles;
@@ -736,11 +730,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     return;
                 }
 
-                dotnet.RestoreProjectToDirectory(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, out var _, pathToNugetConfig: nugetConfig);
-                // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
+                success = dotnet.RestoreProjectToDirectory(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, out var _, out var outputLines, pathToNugetConfig: nugetConfig);
                 if (!success)
                 {
-                    progressMonitor.FailedToRestoreNugetPackage(package);
+                    if (outputLines?.Any(s => s.Contains("NU1301")) == true)
+                    {
+                        // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
+                        success = dotnet.RestoreProjectToDirectory(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, out var _, out var _, pathToNugetConfig: null, force: true);
+                    }
+
+                    // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
+
+                    if (!success)
+                    {
+                        progressMonitor.FailedToRestoreNugetPackage(package);
+                    }
                 }
             });
 
