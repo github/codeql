@@ -117,6 +117,8 @@ predicate isUnexploitableType(Type tp) {
  * static, or private.
  */
 predicate isOverridable(Method m) {
-  not m.getDeclaringType().isFinal() and not m.isFinal() and
-  not m.isStatic() and not m.isPrivate()
+  not m.getDeclaringType().isFinal() and
+  not m.isFinal() and
+  not m.isStatic() and
+  not m.isPrivate()
 }
