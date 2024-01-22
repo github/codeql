@@ -2,12 +2,10 @@ edges
 | UrlRedirect.cs:13:31:13:53 | access to property QueryString : NameValueCollection | UrlRedirect.cs:13:31:13:61 | access to indexer |
 | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:23:22:23:52 | access to indexer : String |
 | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:48:29:48:31 | access to local variable url |
-| UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:61:31:61:52 | $"..." |
 | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:64:31:64:52 | $"..." |
 | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:67:66:67:68 | access to local variable url : String |
 | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:70:66:70:68 | access to local variable url : String |
 | UrlRedirect.cs:23:22:23:52 | access to indexer : String | UrlRedirect.cs:48:29:48:31 | access to local variable url |
-| UrlRedirect.cs:23:22:23:52 | access to indexer : String | UrlRedirect.cs:61:31:61:52 | $"..." |
 | UrlRedirect.cs:23:22:23:52 | access to indexer : String | UrlRedirect.cs:64:31:64:52 | $"..." |
 | UrlRedirect.cs:23:22:23:52 | access to indexer : String | UrlRedirect.cs:67:66:67:68 | access to local variable url : String |
 | UrlRedirect.cs:23:22:23:52 | access to indexer : String | UrlRedirect.cs:70:66:70:68 | access to local variable url : String |
@@ -36,7 +34,6 @@ nodes
 | UrlRedirect.cs:39:47:39:69 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | UrlRedirect.cs:39:47:39:77 | access to indexer | semmle.label | access to indexer |
 | UrlRedirect.cs:48:29:48:31 | access to local variable url | semmle.label | access to local variable url |
-| UrlRedirect.cs:61:31:61:52 | $"..." | semmle.label | $"..." |
 | UrlRedirect.cs:64:31:64:52 | $"..." | semmle.label | $"..." |
 | UrlRedirect.cs:67:31:67:69 | call to method Format | semmle.label | call to method Format |
 | UrlRedirect.cs:67:66:67:68 | access to local variable url : String | semmle.label | access to local variable url : String |
@@ -61,7 +58,6 @@ subpaths
 | UrlRedirect.cs:38:44:38:74 | access to indexer | UrlRedirect.cs:38:44:38:66 | access to property QueryString : NameValueCollection | UrlRedirect.cs:38:44:38:74 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:38:44:38:66 | access to property QueryString | user-provided value |
 | UrlRedirect.cs:39:47:39:77 | access to indexer | UrlRedirect.cs:39:47:39:69 | access to property QueryString : NameValueCollection | UrlRedirect.cs:39:47:39:77 | access to indexer | Untrusted URL redirection due to $@. | UrlRedirect.cs:39:47:39:69 | access to property QueryString | user-provided value |
 | UrlRedirect.cs:48:29:48:31 | access to local variable url | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:48:29:48:31 | access to local variable url | Untrusted URL redirection due to $@. | UrlRedirect.cs:23:22:23:44 | access to property QueryString | user-provided value |
-| UrlRedirect.cs:61:31:61:52 | $"..." | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:61:31:61:52 | $"..." | Untrusted URL redirection due to $@. | UrlRedirect.cs:23:22:23:44 | access to property QueryString | user-provided value |
 | UrlRedirect.cs:64:31:64:52 | $"..." | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:64:31:64:52 | $"..." | Untrusted URL redirection due to $@. | UrlRedirect.cs:23:22:23:44 | access to property QueryString | user-provided value |
 | UrlRedirect.cs:67:31:67:69 | call to method Format | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:67:31:67:69 | call to method Format | Untrusted URL redirection due to $@. | UrlRedirect.cs:23:22:23:44 | access to property QueryString | user-provided value |
 | UrlRedirect.cs:70:31:70:69 | call to method Format | UrlRedirect.cs:23:22:23:44 | access to property QueryString : NameValueCollection | UrlRedirect.cs:70:31:70:69 | call to method Format | Untrusted URL redirection due to $@. | UrlRedirect.cs:23:22:23:44 | access to property QueryString | user-provided value |

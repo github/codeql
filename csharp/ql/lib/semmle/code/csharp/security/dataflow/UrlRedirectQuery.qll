@@ -163,6 +163,18 @@ class ConcatenationSanitizer extends Sanitizer {
   }
 }
 
+/**
+ * A string interpolation expression, where the first part (before any inserts) of the
+ * expression contains the character "?".
+ *
+ * This is considered a sanitizer by the same reasoning as `ConcatenationSanitizer`.
+ */
+private class InterpolationSanitizer extends Sanitizer {
+  InterpolationSanitizer() {
+    this.getExpr().(InterpolatedStringExpr).getText(0).getValue().matches("%?%")
+  }
+}
+
 /** A call to an URL encoder. */
 class UrlEncodeSanitizer extends Sanitizer {
   UrlEncodeSanitizer() { this.getExpr() instanceof UrlSanitizedExpr }
