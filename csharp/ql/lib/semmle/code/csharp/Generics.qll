@@ -95,10 +95,16 @@ private string getTypeArgumentsToString(ConstructedGeneric cg) {
     strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.toStringWithTypes(), ", " order by i)
 }
 
+pragma[nomagic]
+private string getTypeArgumentName(ConstructedGeneric cg, int i) {
+  result = cg.getTypeArgument(i).getName()
+}
+
 /** Gets the concatenation of the `getName()` of type arguments. */
 language[monotonicAggregates]
 private string getTypeArgumentsNames(ConstructedGeneric cg) {
-  result = strictconcat(Type t, int i | t = cg.getTypeArgument(i) | t.getName(), "," order by i)
+  result =
+    strictconcat(int i | exists(cg.getTypeArgument(i)) | getTypeArgumentName(cg, i), "," order by i)
 }
 
 /**
@@ -197,9 +203,9 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
     // A<int>.B<T2> is a partially constructed UnboundGenericClass and
     // A<int>.B<int> is a ConstructedGenericClass.
     exists(ConstructedGeneric c, UnboundGeneric u, int tpi |
-      this = u.getTypeParameter(tpi) and
+      this = u.getTypeParameter(pragma[only_bind_into](tpi)) and
       (u = c.getUnboundGeneric() or u = c.getUnboundDeclaration()) and
-      result = c.getTypeArgument(tpi)
+      result = c.getTypeArgument(pragma[only_bind_into](tpi))
     )
   }
 

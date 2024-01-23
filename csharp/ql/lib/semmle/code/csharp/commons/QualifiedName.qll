@@ -49,11 +49,20 @@ module QualifiedName<QualifiedNameInputSig Input> {
     )
   }
 
+  pragma[nomagic]
+  private string getTypeArgumentsQualifiedName(ConstructedGeneric cg, int i) {
+    result = getFullName(cg.getTypeArgument(i))
+  }
+
   /** Gets the concatenation of the `getFullName` of type arguments. */
   language[monotonicAggregates]
   private string getTypeArgumentsQualifiedNames(ConstructedGeneric cg) {
     result =
-      strictconcat(Type t, int i | t = cg.getTypeArgument(i) | getFullName(t), "," order by i)
+      strictconcat(int i |
+        exists(cg.getTypeArgument(i))
+      |
+        getTypeArgumentsQualifiedName(cg, i), "," order by i
+      )
   }
 
   /** Holds if declaration `d` has the qualified name `qualifier`.`name`. */
