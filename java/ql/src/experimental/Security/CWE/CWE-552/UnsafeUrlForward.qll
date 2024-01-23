@@ -129,7 +129,7 @@ private class SpringModelAndViewSink extends UnsafeUrlForwardSink {
   }
 }
 
-private class PrimitiveSanitizer extends UnsafeUrlForwardSanitizer instanceof SimpleScalarSanitizer {
+private class PrimitiveSanitizer extends UnsafeUrlForwardSanitizer instanceof SimpleTypeSanitizer {
 }
 
 private class SanitizingPrefix extends InterestingPrefix {

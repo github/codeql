@@ -58,7 +58,7 @@ module TrustBoundaryConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node instanceof TrustBoundaryValidationSanitizer or
     node.getType() instanceof HttpServletSession or
-    node instanceof SimpleScalarSanitizer
+    node instanceof SimpleTypeSanitizer
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TrustBoundaryViolationSink }

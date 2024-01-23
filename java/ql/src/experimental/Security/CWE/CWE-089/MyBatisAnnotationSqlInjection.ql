@@ -25,7 +25,7 @@ private module MyBatisAnnotationSqlInjectionConfig implements DataFlow::ConfigSi
 
   predicate isSink(DataFlow::Node sink) { sink instanceof MyBatisAnnotatedMethodCallArgument }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleScalarSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodCall ma |

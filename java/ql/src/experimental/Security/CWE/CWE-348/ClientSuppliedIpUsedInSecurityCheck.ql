@@ -39,7 +39,7 @@ module ClientSuppliedIpUsedInSecurityCheckConfig implements DataFlow::ConfigSig 
       not aa.getIndexExpr().(CompileTimeConstantExpr).getIntValue() = 0
     )
     or
-    node instanceof SimpleScalarSanitizer
+    node instanceof SimpleTypeSanitizer
   }
 }
 

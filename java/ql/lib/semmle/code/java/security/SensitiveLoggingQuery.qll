@@ -56,7 +56,7 @@ module SensitiveLoggerConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer.asExpr() instanceof LiveLiteral or
-    sanitizer instanceof SimpleScalarSanitizer or
+    sanitizer instanceof SimpleTypeSanitizer or
     sanitizer.getType() instanceof TypeType
   }
 

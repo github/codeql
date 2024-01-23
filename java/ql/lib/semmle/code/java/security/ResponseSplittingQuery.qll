@@ -17,7 +17,7 @@ module ResponseSplittingConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node instanceof SimpleScalarSanitizer
+    node instanceof SimpleTypeSanitizer
     or
     exists(MethodCall ma, string methodName, CompileTimeConstantExpr target |
       node.asExpr() = ma and

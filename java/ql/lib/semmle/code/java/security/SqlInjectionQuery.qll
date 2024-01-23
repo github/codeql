@@ -42,7 +42,7 @@ module QueryInjectionFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleScalarSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(AdditionalQueryInjectionTaintStep s).step(node1, node2)

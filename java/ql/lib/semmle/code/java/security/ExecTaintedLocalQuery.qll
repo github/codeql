@@ -13,7 +13,7 @@ module ExecTaintedLocalConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }
 
   predicate isBarrier(DataFlow::Node node) {
-    node instanceof SimpleScalarSanitizer
+    node instanceof SimpleTypeSanitizer
     or
     isSafeCommandArgument(node.asExpr())
   }

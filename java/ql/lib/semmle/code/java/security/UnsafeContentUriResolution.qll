@@ -43,7 +43,7 @@ private class UriOpeningContentResolverMethod extends Method {
   }
 }
 
-private class UninterestingTypeSanitizer extends ContentUriResolutionSanitizer instanceof SimpleScalarSanitizer
+private class UninterestingTypeSanitizer extends ContentUriResolutionSanitizer instanceof SimpleTypeSanitizer
 { }
 
 private class PathSanitizer extends ContentUriResolutionSanitizer instanceof PathInjectionSanitizer {

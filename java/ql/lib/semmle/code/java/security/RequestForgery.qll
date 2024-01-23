@@ -60,8 +60,7 @@ private class DefaultRequestForgerySink extends RequestForgerySink {
 /** A sanitizer for request forgery vulnerabilities. */
 abstract class RequestForgerySanitizer extends DataFlow::Node { }
 
-private class PrimitiveSanitizer extends RequestForgerySanitizer instanceof SimpleScalarSanitizer {
-}
+private class PrimitiveSanitizer extends RequestForgerySanitizer instanceof SimpleTypeSanitizer { }
 
 private class HostnameSanitizingPrefix extends InterestingPrefix {
   int offset;

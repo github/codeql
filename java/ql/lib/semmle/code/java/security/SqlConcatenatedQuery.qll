@@ -23,7 +23,7 @@ module UncontrolledStringBuilderSourceFlowConfig implements DataFlow::ConfigSig 
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleScalarSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 }
 
 /**

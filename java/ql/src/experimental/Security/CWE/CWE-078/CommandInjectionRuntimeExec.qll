@@ -21,7 +21,7 @@ module ExecCmdFlowConfig implements DataFlow::ConfigSig {
     node instanceof AssignToNonZeroIndex or
     node instanceof ArrayInitAtNonZeroIndex or
     node instanceof StreamConcatAtNonZeroIndex or
-    node instanceof SimpleScalarSanitizer
+    node instanceof SimpleTypeSanitizer
   }
 }
 
@@ -41,7 +41,7 @@ module ExecUserFlowConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleScalarSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 }
 
 /** Tracks flow of unvalidated user input that is used in Runtime.Exec */

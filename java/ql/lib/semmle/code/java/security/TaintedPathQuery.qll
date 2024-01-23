@@ -58,7 +58,7 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sinkNode(sink, "path-injection") }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer instanceof SimpleScalarSanitizer or
+    sanitizer instanceof SimpleTypeSanitizer or
     sanitizer instanceof PathInjectionSanitizer
   }
 
@@ -79,7 +79,7 @@ module TaintedPathLocalConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sinkNode(sink, "path-injection") }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer instanceof SimpleScalarSanitizer or
+    sanitizer instanceof SimpleTypeSanitizer or
     sanitizer instanceof PathInjectionSanitizer
   }
 

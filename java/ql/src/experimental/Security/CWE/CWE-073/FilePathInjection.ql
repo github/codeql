@@ -57,7 +57,7 @@ module InjectFilePathConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    node instanceof SimpleScalarSanitizer
+    node instanceof SimpleTypeSanitizer
     or
     node instanceof PathInjectionSanitizer
   }

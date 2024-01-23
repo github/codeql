@@ -76,7 +76,7 @@ module PolynomialRedosConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    node instanceof SimpleScalarSanitizer or
+    node instanceof SimpleTypeSanitizer or
     node.asExpr().(MethodCall).getMethod() instanceof LengthRestrictedMethod
   }
 }

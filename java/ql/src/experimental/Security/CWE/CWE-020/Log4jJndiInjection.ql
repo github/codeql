@@ -34,7 +34,7 @@ class Log4jInjectionSink extends DataFlow::Node {
 /**
  * A node that sanitizes a message before logging to avoid log injection.
  */
-class Log4jInjectionSanitizer extends DataFlow::Node instanceof SimpleScalarSanitizer { }
+class Log4jInjectionSanitizer extends DataFlow::Node instanceof SimpleTypeSanitizer { }
 
 /**
  * A taint-tracking configuration for tracking untrusted user input used in log entries.

@@ -39,7 +39,7 @@ module HttpStringToUrlOpenMethodFlowConfig implements DataFlow::ConfigSig {
     any(HttpUrlsAdditionalTaintStep c).step(node1, node2)
   }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleScalarSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 }
 
 /**

@@ -39,7 +39,7 @@ private class DefaultCommandInjectionSink extends CommandInjectionSink {
 
 private class DefaultCommandInjectionSanitizer extends CommandInjectionSanitizer {
   DefaultCommandInjectionSanitizer() {
-    this instanceof SimpleScalarSanitizer
+    this instanceof SimpleTypeSanitizer
     or
     isSafeCommandArgument(this.asExpr())
   }

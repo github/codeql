@@ -31,7 +31,7 @@ private class DefaultLogInjectionSink extends LogInjectionSink {
   DefaultLogInjectionSink() { sinkNode(this, "log-injection") }
 }
 
-private class DefaultLogInjectionSanitizer extends LogInjectionSanitizer instanceof SimpleScalarSanitizer
+private class DefaultLogInjectionSanitizer extends LogInjectionSanitizer instanceof SimpleTypeSanitizer
 { }
 
 private class LineBreaksLogInjectionSanitizer extends LogInjectionSanitizer {

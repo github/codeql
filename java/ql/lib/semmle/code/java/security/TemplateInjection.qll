@@ -90,5 +90,5 @@ private class DefaultTemplateInjectionSink extends TemplateInjectionSink {
   DefaultTemplateInjectionSink() { sinkNode(this, "template-injection") }
 }
 
-private class DefaultTemplateInjectionSanitizer extends TemplateInjectionSanitizer instanceof SimpleScalarSanitizer
+private class DefaultTemplateInjectionSanitizer extends TemplateInjectionSanitizer instanceof SimpleTypeSanitizer
 { }

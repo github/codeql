@@ -20,7 +20,7 @@ deprecated class JndiInjectionFlowConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof SimpleScalarSanitizer or
+    node instanceof SimpleTypeSanitizer or
     node instanceof JndiInjectionSanitizer
   }
 
@@ -38,7 +38,7 @@ module JndiInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node instanceof SimpleScalarSanitizer or
+    node instanceof SimpleTypeSanitizer or
     node instanceof JndiInjectionSanitizer
   }
 
