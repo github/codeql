@@ -7,7 +7,7 @@ public void sendUserFileGood(Socket sock, String user) {
 	Path filePath = publicFolder.resolve(filename).normalize().toAbsolutePath();
 
 	// GOOD: ensure that the path stays within the public folder
-	if (!filePath.startsWith(publicFolder)) {
+	if (!filePath.startsWith(publicFolder + File.separator)) {
 		throw new IllegalArgumentException("Invalid filename");
 	}
 	BufferedReader fileReader = new BufferedReader(new FileReader(filePath.toString()));
