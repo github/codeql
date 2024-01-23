@@ -687,7 +687,8 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
       exists(int n | expr.getChild(n) = child and result = "getChild(" + n + ")")
       or
       exists(int n |
-        expr.getImplicitDestructorCall(n) = child and result = "getImplicitDestructorCall(" + n + ")"
+        expr.getImplicitDestructorCall(n) = child and
+        result = "getImplicitDestructorCall(" + n + ")"
       )
     )
   )

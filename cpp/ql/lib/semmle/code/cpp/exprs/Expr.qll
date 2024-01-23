@@ -69,9 +69,7 @@ class Expr extends StmtParent, @expr {
   /**
    * Gets a compiler-generated destructor call that is performed after this expression.
    */
-  DestructorCall getAnImplicitDestructorCall() {
-    synthetic_destructor_call(this, _, result)
-  }
+  DestructorCall getAnImplicitDestructorCall() { synthetic_destructor_call(this, _, result) }
 
   /** Gets the location of this expression. */
   override Location getLocation() {
