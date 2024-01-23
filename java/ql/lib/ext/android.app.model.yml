@@ -40,7 +40,7 @@ extensions:
       - ["android.app", "Notification$BigTextStyle", True, "bigText", "(CharSequence)", "", "Argument[0]", "notification", "manual"]
       - ["android.app", "Notification$BigTextStyle", True, "setBigContentTitle", "(CharSequence)", "", "Argument[0]", "notification", "manual"]
       - ["android.app", "Notification$BigTextStyle", True, "setSummaryText", "(CharSequence)", "", "Argument[0]", "notification", "manual"]
-      - ["android.app", "Notification$Builder", True, "addAction", "(int,CharSequence,PendingIntent)", "", "Argument[1..2]", "notification", "manual"]
+      - ["android.app", "Notification$Builder", True, "addAction", "(int,CharSequence,PendingIntent)", "", "Argument[1]", "notification", "manual"]
       - ["android.app", "Notification$Builder", True, "addExtras", "(Bundle)", "", "Argument[0]", "notification", "manual"]
       - ["android.app", "Notification$Builder", True, "setCategory", "(String)", "", "Argument[0]", "notification", "manual"]
       - ["android.app", "Notification$Builder", True, "setChannelId", "(String)", "", "Argument[0]", "notification", "manual"]

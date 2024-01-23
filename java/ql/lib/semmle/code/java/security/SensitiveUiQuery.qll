@@ -14,6 +14,8 @@ private module NotificationTrackingConfig implements DataFlow::ConfigSig {
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
     isSink(node) and exists(c)
   }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 /** Taint tracking flow for sensitive data flowing to system notifications. */
