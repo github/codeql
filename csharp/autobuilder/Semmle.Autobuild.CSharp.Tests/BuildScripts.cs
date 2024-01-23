@@ -116,9 +116,8 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         string? IBuildActions.GetEnvironmentVariable(string name)
         {
-            if (!GetEnvironmentVariable.ContainsKey(name))
-                return null;
-            return GetEnvironmentVariable[name];
+            GetEnvironmentVariable.TryGetValue(name, out var ret);
+            return ret;
         }
 
         public string GetCurrentDirectory { get; set; } = "";
