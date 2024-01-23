@@ -405,8 +405,7 @@ private Element interpretElement0(
     or
     // Member functions
     exists(Class namedClass, Class classWithMethod, Function method |
-      method.getName() = name and
-      method = classWithMethod.getAMember() and
+      classWithMethod = method.getClassAndName(name) and
       namedClass.getName() = type and
       matchesSignature(method, signature) and
       result = method
