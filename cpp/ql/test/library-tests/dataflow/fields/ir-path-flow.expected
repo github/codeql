@@ -12,8 +12,6 @@ edges
 | A.cpp:31:20:31:20 | c | A.cpp:31:14:31:21 | call to B [c] |
 | A.cpp:41:5:41:6 | insert output argument | A.cpp:43:10:43:12 | *& ... |
 | A.cpp:41:15:41:21 | new | A.cpp:41:5:41:6 | insert output argument |
-| A.cpp:41:15:41:21 | new | A.cpp:41:5:41:6 | insert output argument |
-| A.cpp:41:15:41:21 | new | A.cpp:41:15:41:21 | new |
 | A.cpp:47:12:47:18 | new | A.cpp:48:20:48:20 | c |
 | A.cpp:48:12:48:18 | *call to make [c] | A.cpp:49:10:49:10 | *b [c] |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c |
@@ -22,7 +20,6 @@ edges
 | A.cpp:55:5:55:5 | set output argument [c] | A.cpp:56:10:56:10 | *b [c] |
 | A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c |
 | A.cpp:55:12:55:19 | new | A.cpp:55:5:55:5 | set output argument [c] |
-| A.cpp:55:12:55:19 | new | A.cpp:55:12:55:19 | new |
 | A.cpp:56:10:56:10 | *b [c] | A.cpp:28:8:28:10 | *this [c] |
 | A.cpp:56:10:56:10 | *b [c] | A.cpp:56:10:56:17 | call to get |
 | A.cpp:57:11:57:24 | *new [c] | A.cpp:28:8:28:10 | *this [c] |
@@ -33,12 +30,10 @@ edges
 | A.cpp:57:17:57:23 | new | A.cpp:57:17:57:23 | new |
 | A.cpp:64:10:64:15 | *call to setOnB [c] | A.cpp:66:10:66:11 | *b2 [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:64:10:64:15 | *call to setOnB [c] |
-| A.cpp:64:21:64:28 | new | A.cpp:64:21:64:28 | new |
 | A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c |
 | A.cpp:66:10:66:11 | *b2 [c] | A.cpp:66:10:66:14 | c |
 | A.cpp:73:10:73:19 | *call to setOnBWrap [c] | A.cpp:75:10:75:11 | *b2 [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:73:10:73:19 | *call to setOnBWrap [c] |
-| A.cpp:73:25:73:32 | new | A.cpp:73:25:73:32 | new |
 | A.cpp:73:25:73:32 | new | A.cpp:78:27:78:27 | c |
 | A.cpp:75:10:75:11 | *b2 [c] | A.cpp:75:10:75:14 | c |
 | A.cpp:78:27:78:27 | c | A.cpp:81:21:81:21 | c |
@@ -770,7 +765,6 @@ nodes
 | A.cpp:31:20:31:20 | c | semmle.label | c |
 | A.cpp:41:5:41:6 | insert output argument | semmle.label | insert output argument |
 | A.cpp:41:15:41:21 | new | semmle.label | new |
-| A.cpp:41:15:41:21 | new | semmle.label | new |
 | A.cpp:43:10:43:12 | *& ... | semmle.label | *& ... |
 | A.cpp:47:12:47:18 | new | semmle.label | new |
 | A.cpp:48:12:48:18 | *call to make [c] | semmle.label | *call to make [c] |
@@ -778,7 +772,6 @@ nodes
 | A.cpp:49:10:49:10 | *b [c] | semmle.label | *b [c] |
 | A.cpp:49:10:49:13 | c | semmle.label | c |
 | A.cpp:55:5:55:5 | set output argument [c] | semmle.label | set output argument [c] |
-| A.cpp:55:12:55:19 | new | semmle.label | new |
 | A.cpp:55:12:55:19 | new | semmle.label | new |
 | A.cpp:56:10:56:10 | *b [c] | semmle.label | *b [c] |
 | A.cpp:56:10:56:17 | call to get | semmle.label | call to get |
@@ -789,11 +782,9 @@ nodes
 | A.cpp:57:17:57:23 | new | semmle.label | new |
 | A.cpp:64:10:64:15 | *call to setOnB [c] | semmle.label | *call to setOnB [c] |
 | A.cpp:64:21:64:28 | new | semmle.label | new |
-| A.cpp:64:21:64:28 | new | semmle.label | new |
 | A.cpp:66:10:66:11 | *b2 [c] | semmle.label | *b2 [c] |
 | A.cpp:66:10:66:14 | c | semmle.label | c |
 | A.cpp:73:10:73:19 | *call to setOnBWrap [c] | semmle.label | *call to setOnBWrap [c] |
-| A.cpp:73:25:73:32 | new | semmle.label | new |
 | A.cpp:73:25:73:32 | new | semmle.label | new |
 | A.cpp:75:10:75:11 | *b2 [c] | semmle.label | *b2 [c] |
 | A.cpp:75:10:75:14 | c | semmle.label | c |
@@ -1608,14 +1599,10 @@ subpaths
 | simple.cpp:84:14:84:20 | *this [f2, f1] | simple.cpp:78:9:78:15 | *this [f2, f1] | simple.cpp:78:9:78:15 | *getf2f1 | simple.cpp:84:14:84:20 | call to getf2f1 |
 #select
 | A.cpp:43:10:43:12 | *& ... | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | *& ... | *& ... flows from $@ | A.cpp:41:15:41:21 | new | new |
-| A.cpp:43:10:43:12 | *& ... | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | *& ... | *& ... flows from $@ | A.cpp:41:15:41:21 | new | new |
 | A.cpp:49:10:49:13 | c | A.cpp:47:12:47:18 | new | A.cpp:49:10:49:13 | c | c flows from $@ | A.cpp:47:12:47:18 | new | new |
-| A.cpp:56:10:56:17 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:10:56:17 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
 | A.cpp:56:10:56:17 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:10:56:17 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
 | A.cpp:57:10:57:32 | call to get | A.cpp:57:17:57:23 | new | A.cpp:57:10:57:32 | call to get | call to get flows from $@ | A.cpp:57:17:57:23 | new | new |
 | A.cpp:66:10:66:14 | c | A.cpp:64:21:64:28 | new | A.cpp:66:10:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new | new |
-| A.cpp:66:10:66:14 | c | A.cpp:64:21:64:28 | new | A.cpp:66:10:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new | new |
-| A.cpp:75:10:75:14 | c | A.cpp:73:25:73:32 | new | A.cpp:75:10:75:14 | c | c flows from $@ | A.cpp:73:25:73:32 | new | new |
 | A.cpp:75:10:75:14 | c | A.cpp:73:25:73:32 | new | A.cpp:75:10:75:14 | c | c flows from $@ | A.cpp:73:25:73:32 | new | new |
 | A.cpp:107:12:107:16 | a | A.cpp:98:12:98:18 | new | A.cpp:107:12:107:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
 | A.cpp:120:12:120:16 | a | A.cpp:98:12:98:18 | new | A.cpp:120:12:120:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
