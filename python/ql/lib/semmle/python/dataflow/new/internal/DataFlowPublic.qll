@@ -27,6 +27,12 @@ newtype TNode =
     isExpressionNode(node)
     or
     node.getNode() instanceof Pattern
+    // not node.getLocation().getFile().inStdlib() and
+    // (
+    //   isExpressionNode(node)
+    //   or
+    //   node.getNode() instanceof Pattern
+    // )
   } or
   /**
    * A node corresponding to a scope entry definition. That is, the value of a variable
