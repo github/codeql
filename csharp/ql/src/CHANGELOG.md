@@ -1,3 +1,9 @@
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Modelled additional flow steps to track flow from handler methods of a `PageModel` class to the corresponding Razor Page (`.cshtml`) file, which may result in additional results for queries such as `cs/web/xss`.
+
 ## 0.8.6
 
 ### Minor Analysis Improvements
