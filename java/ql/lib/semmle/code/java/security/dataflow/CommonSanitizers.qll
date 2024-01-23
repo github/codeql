@@ -1,7 +1,7 @@
 /** Classes to represent sanitizers commonly used in dataflow and taint tracking configurations. */
 
 import java
-import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.DataFlow
 
 /**
  * A node whose type is a common scalar type, such as primitives or their boxed counterparts.
