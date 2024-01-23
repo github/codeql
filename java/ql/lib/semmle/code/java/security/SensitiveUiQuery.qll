@@ -46,9 +46,9 @@ private class SetTextCall extends MethodCall {
 /** A call to a method indicating that the contents of a UI element are safely masked. */
 private class MaskCall extends MethodCall {
   MaskCall() {
-    this.getMethod().hasQualifiedName("android.widget", "TextView", "setInputType")
+    this.getMethod().getAnOverride*().hasQualifiedName("android.widget", "TextView", "setInputType")
     or
-    this.getMethod().hasQualifiedName("android.widget", "view", "setVisibility")
+    this.getMethod().getAnOverride*().hasQualifiedName("android.view", "View", "setVisibility")
   }
 }
 
@@ -66,6 +66,8 @@ private module TextFieldTrackingConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
   }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 /** Holds if the given may be masked. */

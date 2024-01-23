@@ -16,5 +16,5 @@ import semmle.code.java.security.SensitiveUiQuery
 import TextFieldTracking::PathGraph
 
 from TextFieldTracking::PathNode source, TextFieldTracking::PathNode sink
-where NotificationTracking::flowPath(source, sink)
+where TextFieldTracking::flowPath(source, sink)
 select sink, source, sink, "This $@ is exposed in a text view.", source, "sensitive information"

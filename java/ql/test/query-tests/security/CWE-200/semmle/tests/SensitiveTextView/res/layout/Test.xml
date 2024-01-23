@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <EditText
+        android:id="@+id/test1"
+        android:inputType="text"/>
+
+    <TextView
+        android:id="@+id/test2"/>
+
+    <EditText
+        android:id="@+id/test3"/>
+
+    <LinearLayout
+        android:id="@+id/test4">
+        <TextView
+            android:id="@+id/test5"/>
+    </LinearLayout>
+
+</LinearLayout>
