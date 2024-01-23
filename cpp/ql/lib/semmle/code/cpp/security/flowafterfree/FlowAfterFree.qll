@@ -1,20 +1,10 @@
+/**
+ * General library for finding flow from a pointer being freed to a user-specified sink
+ */
+
 import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
 private import semmle.code.cpp.ir.IR
-
-/**
- * Signature for a predicate that holds if `n.asExpr() = e` and `n` is a sink in
- * the `FlowFromFreeConfig` module.
- */
-private signature predicate isSinkSig(DataFlow::Node n, Expr e);
-
-/**
- * Holds if `dealloc` is a deallocation expression and `e` is an expression such
- * that `isFree(_, e)` holds for some `isFree` predicate satisfying `isSinkSig`,
- * and this source-sink pair should be excluded from the analysis.
- */
-bindingset[dealloc, e]
-private signature predicate isExcludedSig(DeallocationExpr dealloc, Expr e);
 
 /**
  * Holds if `(b1, i1)` strictly post-dominates `(b2, i2)`
@@ -39,6 +29,31 @@ predicate strictlyDominates(IRBlock b1, int i1, IRBlock b2, int i2) {
 }
 
 /**
+ * The signature for a module that is used to specify the inputs to the `FlowFromFree` module.
+ */
+signature module FlowFromFreeParamSig {
+  /**
+   * Holds if `n.asExpr() = e` and `n` is a sink in the `FlowFromFreeConfig`
+   * module.
+   */
+  predicate isSink(DataFlow::Node n, Expr e);
+
+  /**
+   * Holds if `dealloc` is a deallocation expression and `e` is an expression such
+   * that `isFree(_, e)` holds for some `isFree` predicate satisfying `isSinkSig`,
+   * and this source-sink pair should be excluded from the analysis.
+   */
+  bindingset[dealloc, e]
+  predicate isExcluded(DeallocationExpr dealloc, Expr e);
+
+  /**
+   * Holds if `sink` should be considered a `sink` when the source of flow is `source`.
+   */
+  bindingset[source, sink]
+  default predicate sourceSinkIsRelated(DataFlow::Node source, DataFlow::Node sink) { any() }
+}
+
+/**
  * Constructs a `FlowFromFreeConfig` module that can be used to find flow between
  * a pointer being freed by some deallocation function, and a user-specified sink.
  *
@@ -47,8 +62,8 @@ predicate strictlyDominates(IRBlock b1, int i1, IRBlock b2, int i2) {
  * 1. The source dominates the sink, or
  * 2. The sink post-dominates the source.
  */
-module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
-  module FlowFromFreeConfig implements DataFlow::StateConfigSig {
+module FlowFromFree<FlowFromFreeParamSig P> {
+  private module FlowFromFreeConfig implements DataFlow::StateConfigSig {
     class FlowState instanceof Expr {
       FlowState() { isFree(_, _, this, _) }
 
@@ -59,20 +74,12 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
 
     pragma[inline]
     predicate isSink(DataFlow::Node sink, FlowState state) {
-      exists(
-        Expr e, DataFlow::Node source, IRBlock b1, int i1, IRBlock b2, int i2,
-        DeallocationExpr dealloc
-      |
-        isASink(sink, e) and
+      exists(Expr e, DataFlow::Node source, DeallocationExpr dealloc |
+        P::isSink(sink, e) and
         isFree(source, _, state, dealloc) and
         e != state and
-        source.hasIndexInBlock(b1, i1) and
-        sink.hasIndexInBlock(b2, i2) and
-        not isExcluded(dealloc, e)
-      |
-        strictlyDominates(b1, i1, b2, i2)
-        or
-        strictlyPostDominates(b2, i2, b1, i1)
+        not P::isExcluded(dealloc, e) and
+        P::sourceSinkIsRelated(source, sink)
       )
     }
 
@@ -125,5 +132,40 @@ predicate isExFreePoolCall(FunctionCall fc, Expr e) {
     )
     or
     fc.getTarget().hasGlobalName("ExFreePool")
+  )
+}
+
+/**
+ * Holds if either `source` strictly dominates `sink`, or `sink` strictly
+ * post-dominates `source`.
+ */
+bindingset[source, sink]
+predicate defaultSourceSinkIsRelated(DataFlow::Node source, DataFlow::Node sink) {
+  exists(IRBlock b1, int i1, IRBlock b2, int i2 |
+    source.hasIndexInBlock(b1, i1) and
+    sink.hasIndexInBlock(b2, i2)
+  |
+    strictlyDominates(b1, i1, b2, i2)
+    or
+    strictlyPostDominates(b2, i2, b1, i1)
+  )
+}
+
+/**
+ * `dealloc1` is a deallocation expression, `e` is an expression that dereferences a
+ * pointer, and the `(dealloc1, e)` pair should be excluded by the `FlowFromFree` library.
+ *
+ * Note that `e` is not necessarily the expression deallocated by `dealloc1`. It will
+ * be bound to the second deallocation as identified by the `FlowFromFree` library.
+ *
+ * From https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-mmfreepagesfrommdl:
+ * "After calling MmFreePagesFromMdl, the caller must also call ExFreePool
+ * to release the memory that was allocated for the MDL structure."
+ */
+bindingset[dealloc1, e]
+predicate isExcludedMmFreePageFromMdl(DeallocationExpr dealloc1, Expr e) {
+  exists(DeallocationExpr dealloc2 | isFree(_, _, e, dealloc2) |
+    dealloc1.(FunctionCall).getTarget().hasGlobalName("MmFreePagesFromMdl") and
+    isExFreePoolCall(dealloc2, _)
   )
 }
