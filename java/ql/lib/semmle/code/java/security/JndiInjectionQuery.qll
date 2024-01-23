@@ -5,7 +5,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Jndi
 import semmle.code.java.frameworks.SpringLdap
 import semmle.code.java.security.JndiInjection
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /**
  * DEPRECATED: Use `JndiInjectionFlow` instead.

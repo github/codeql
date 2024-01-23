@@ -4,7 +4,7 @@ import java
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.android.Android
 private import semmle.code.java.security.PathSanitizer
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /** A URI that gets resolved by a `ContentResolver`. */
 abstract class ContentUriResolutionSink extends DataFlow::Node { }

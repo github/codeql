@@ -4,7 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.security.HttpsUrls
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /**
  * DEPRECATED: Use `HttpsStringToUrlOpenMethodFlow` instead.

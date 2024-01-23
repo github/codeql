@@ -2,7 +2,7 @@ import java
 import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 module ExecCmdFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {

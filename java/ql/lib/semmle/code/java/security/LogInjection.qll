@@ -4,7 +4,7 @@ import java
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.controlflow.Guards
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /** A data flow sink for unvalidated user input that is used to log messages. */
 abstract class LogInjectionSink extends DataFlow::Node { }

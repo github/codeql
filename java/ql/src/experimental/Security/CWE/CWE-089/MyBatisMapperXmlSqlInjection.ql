@@ -17,7 +17,7 @@ import MyBatisCommonLib
 import MyBatisMapperXmlSqlInjectionLib
 import semmle.code.xml.MyBatisMapperXML
 import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 import MyBatisMapperXmlSqlInjectionFlow::PathGraph
 
 private module MyBatisMapperXmlSqlInjectionConfig implements DataFlow::ConfigSig {

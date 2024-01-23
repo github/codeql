@@ -10,7 +10,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.Properties
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.dataflow.ExternalFlow
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A unit class for adding additional taint steps that are specific to server-side request forgery (SSRF) attacks.

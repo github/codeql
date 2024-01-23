@@ -5,7 +5,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
 private import experimental.semmle.code.java.frameworks.SpringResource
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 private class ActiveModels extends ActiveExperimentalModels {
   ActiveModels() { this = "unsafe-url-forward" }

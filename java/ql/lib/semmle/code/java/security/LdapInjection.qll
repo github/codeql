@@ -7,7 +7,7 @@ import semmle.code.java.frameworks.UnboundId
 import semmle.code.java.frameworks.SpringLdap
 import semmle.code.java.frameworks.ApacheLdap
 private import semmle.code.java.dataflow.ExternalFlow
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /** A data flow sink for unvalidated user input that is used to construct LDAP queries. */
 abstract class LdapInjectionSink extends DataFlow::Node { }

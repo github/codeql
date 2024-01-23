@@ -3,7 +3,7 @@
 import java
 private import semmle.code.java.security.Encryption
 private import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 private class ShortStringLiteral extends StringLiteral {
   ShortStringLiteral() { this.getValue().length() < 100 }

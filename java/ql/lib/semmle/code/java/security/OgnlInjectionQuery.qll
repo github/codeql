@@ -3,7 +3,7 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.OgnlInjection
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /**
  * DEPRECATED: Use `OgnlInjectionFlow` instead.

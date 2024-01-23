@@ -6,7 +6,7 @@ private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.frameworks.owasp.Esapi
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A source of data that crosses a trust boundary.

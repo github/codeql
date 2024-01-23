@@ -4,7 +4,7 @@ import java
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.ExternalProcess
 private import semmle.code.java.security.CommandArguments
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /** A taint-tracking configuration to reason about use of externally controlled strings to make command line commands. */
 module ExecTaintedLocalConfig implements DataFlow::ConfigSig {

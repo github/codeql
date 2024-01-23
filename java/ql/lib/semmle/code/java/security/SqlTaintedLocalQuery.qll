@@ -6,7 +6,7 @@
 import java
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.SqlInjectionQuery
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A taint-tracking configuration for reasoning about local user input that is

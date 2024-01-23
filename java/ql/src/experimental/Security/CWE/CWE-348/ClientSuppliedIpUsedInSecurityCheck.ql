@@ -14,7 +14,7 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.dataflow.CommonSanitizers
+import semmle.code.java.security.Sanitizers
 import ClientSuppliedIpUsedInSecurityCheckLib
 import ClientSuppliedIpUsedInSecurityCheckFlow::PathGraph
 

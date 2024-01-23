@@ -12,7 +12,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.CommandArguments
 private import semmle.code.java.security.ExternalProcess
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 
 /** A sink for command injection vulnerabilities. */
 abstract class CommandInjectionSink extends DataFlow::Node { }

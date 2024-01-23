@@ -18,7 +18,7 @@ import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
 import JFinalController
 import semmle.code.java.security.PathSanitizer
-private import semmle.code.java.security.dataflow.CommonSanitizers
+private import semmle.code.java.security.Sanitizers
 import InjectFilePathFlow::PathGraph
 
 private class ActivateModels extends ActiveExperimentalModels {
