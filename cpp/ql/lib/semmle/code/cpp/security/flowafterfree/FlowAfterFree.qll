@@ -28,10 +28,13 @@ predicate strictlyDominates(IRBlock b1, int i1, IRBlock b2, int i2) {
   b1.strictlyDominates(b2)
 }
 
+/**
+ * The signature for a module that is used to specify the inputs to the `FlowFromFree` module.
+ */
 signature module FlowFromFreeParamSig {
   /**
-   * Signature for a predicate that holds if `n.asExpr() = e` and `n` is a sink in
-   * the `FlowFromFreeConfig` module.
+   * Holds if `n.asExpr() = e` and `n` is a sink in the `FlowFromFreeConfig`
+   * module.
    */
   predicate isSink(DataFlow::Node n, Expr e);
 
@@ -60,7 +63,7 @@ signature module FlowFromFreeParamSig {
  * 2. The sink post-dominates the source.
  */
 module FlowFromFree<FlowFromFreeParamSig P> {
-  module FlowFromFreeConfig implements DataFlow::StateConfigSig {
+  private module FlowFromFreeConfig implements DataFlow::StateConfigSig {
     class FlowState instanceof Expr {
       FlowState() { isFree(_, _, this, _) }
 

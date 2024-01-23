@@ -41,10 +41,10 @@ predicate isUse0(Expr e) {
   )
 }
 
-module ParameterSinks {
+private module ParameterSinks {
   import semmle.code.cpp.ir.ValueNumbering
 
-  predicate flowsToUse(DataFlow::Node n) {
+  private predicate flowsToUse(DataFlow::Node n) {
     isUse0(n.asExpr())
     or
     exists(DataFlow::Node succ |
@@ -131,9 +131,15 @@ module ParameterSinks {
   }
 }
 
-module IsUse {
+private module IsUse {
   private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
 
+  /**
+   * Holds if `n` represents the expression `e`, and `e` is a pointer that is
+   * guarenteed to be dereferenced (either because it's an operand of a
+   * dereference operation, or because it's an argument to a function that
+   * always dereferences the parameter).
+   */
   predicate isUse(DataFlow::Node n, Expr e) {
     isUse0(e) and n.asExpr() = e
     or
