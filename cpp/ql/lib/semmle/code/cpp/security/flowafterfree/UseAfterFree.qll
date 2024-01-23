@@ -18,9 +18,16 @@ private predicate externalCallNeverDereferences(FormattingFunctionCall call, int
   )
 }
 
+/**
+ * Holds if `e` is a use. A use is a pointer dereference or a
+ * parameter to a call with no function definition.
+ * Uses in deallocation expressions (e.g., free) are excluded.
+ * Default isUse definition for an expression.
+ */
 predicate isUse0(Expr e) {
   not isFree(_, _, e, _) and
   (
+    // TODO: use DirectDefereferencedByOperation in Dereferenced.qll
     e = any(PointerDereferenceExpr pde).getOperand()
     or
     e = any(PointerFieldAccess pfa).getQualifier()
@@ -131,26 +138,22 @@ private module ParameterSinks {
   }
 }
 
-private module IsUse {
-  private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
 
-  /**
-   * Holds if `n` represents the expression `e`, and `e` is a pointer that is
-   * guarenteed to be dereferenced (either because it's an operand of a
-   * dereference operation, or because it's an argument to a function that
-   * always dereferences the parameter).
-   */
-  predicate isUse(DataFlow::Node n, Expr e) {
-    isUse0(e) and n.asExpr() = e
-    or
-    exists(CallInstruction call, InitializeParameterInstruction init |
-      n.asOperand().getDef().getUnconvertedResultExpression() = e and
-      pragma[only_bind_into](init) = ParameterSinks::getAnAlwaysDereferencedParameter() and
-      viableParamArg(call, DataFlow::instructionNode(init), n) and
-      pragma[only_bind_out](init.getEnclosingFunction()) =
-        pragma[only_bind_out](call.getStaticCallTarget())
-    )
-  }
+/**
+ * Holds if `n` represents the expression `e`, and `e` is a pointer that is
+ * guarenteed to be dereferenced (either because it's an operand of a
+ * dereference operation, or because it's an argument to a function that
+ * always dereferences the parameter).
+ */
+predicate isUse(DataFlow::Node n, Expr e) {
+  isUse0(e) and n.asExpr() = e
+  or
+  exists(CallInstruction call, InitializeParameterInstruction init |
+    n.asOperand().getDef().getUnconvertedResultExpression() = e and
+    pragma[only_bind_into](init) = ParameterSinks::getAnAlwaysDereferencedParameter() and
+    viableParamArg(call, DataFlow::instructionNode(init), n) and
+    pragma[only_bind_out](init.getEnclosingFunction()) =
+      pragma[only_bind_out](call.getStaticCallTarget())
+  )
 }
-
-import IsUse
