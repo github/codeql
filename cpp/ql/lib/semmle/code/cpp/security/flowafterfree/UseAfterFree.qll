@@ -142,7 +142,7 @@ private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
 
 /**
  * Holds if `n` represents the expression `e`, and `e` is a pointer that is
- * guarenteed to be dereferenced (either because it's an operand of a
+ * guaranteed to be dereferenced (either because it's an operand of a
  * dereference operation, or because it's an argument to a function that
  * always dereferences the parameter).
  */
