@@ -15,12 +15,18 @@ import org.jetbrains.kotlin.psi.KtVisitor
 import org.jetbrains.kotlin.psi.psiUtil.endOffset
 import org.jetbrains.kotlin.psi.psiUtil.startOffset
 
-class CommentExtractorPSI(fileExtractor: KotlinFileExtractor, file: IrFile, fileLabel: Label<out DbFile>): CommentExtractor(fileExtractor, file, fileLabel) {
+class CommentExtractorPSI(
+    fileExtractor: KotlinFileExtractor,
+    file: IrFile,
+    fileLabel: Label<out DbFile>
+) : CommentExtractor(fileExtractor, file, fileLabel) {
     // Returns true if it extracted the comments; false otherwise.
     fun extract(): Boolean {
         val psi2Ir = getPsi2Ir()
         if (psi2Ir == null) {
-            logger.warn("Comments will not be extracted as Kotlin version is too old (${KotlinCompilerVersion.getVersion()})")
+            logger.warn(
+                "Comments will not be extracted as Kotlin version is too old (${KotlinCompilerVersion.getVersion()})"
+            )
             return false
         }
         val ktFile = psi2Ir.getKtFile(file)
@@ -37,28 +43,30 @@ class CommentExtractorPSI(fileExtractor: KotlinFileExtractor, file: IrFile, file
             override fun visitElement(element: PsiElement) {
                 element.acceptChildren(this)
 
-                // Slightly hacky, but `visitComment` doesn't seem to visit comments with `tokenType` `KtTokens.DOC_COMMENT`
-                if (element is PsiComment){
+                // Slightly hacky, but `visitComment` doesn't seem to visit comments with
+                // `tokenType` `KtTokens.DOC_COMMENT`
+                if (element is PsiComment) {
                     visitCommentElement(element)
                 }
             }
 
             private fun visitCommentElement(comment: PsiComment) {
-                val type: CommentType = when (comment.tokenType) {
-                    KtTokens.EOL_COMMENT -> {
-                        CommentType.SingleLine
+                val type: CommentType =
+                    when (comment.tokenType) {
+                        KtTokens.EOL_COMMENT -> {
+                            CommentType.SingleLine
+                        }
+                        KtTokens.BLOCK_COMMENT -> {
+                            CommentType.Block
+                        }
+                        KtTokens.DOC_COMMENT -> {
+                            CommentType.Doc
+                        }
+                        else -> {
+                            logger.warn("Unhandled comment token type: ${comment.tokenType}")
+                            return
+                        }
                     }
-                    KtTokens.BLOCK_COMMENT -> {
-                        CommentType.Block
-                    }
-                    KtTokens.DOC_COMMENT -> {
-                        CommentType.Doc
-                    }
-                    else -> {
-                        logger.warn("Unhandled comment token type: ${comment.tokenType}")
-                        return
-                    }
-                }
 
                 val commentLabel = tw.getFreshIdLabel<DbKtcomment>()
                 tw.writeKtComments(commentLabel, type.value, comment.text)
@@ -101,10 +109,12 @@ class CommentExtractorPSI(fileExtractor: KotlinFileExtractor, file: IrFile, file
                 }
             }
 
-            private fun getKDocOwner(comment: KDoc) : PsiElement? {
+            private fun getKDocOwner(comment: KDoc): PsiElement? {
                 val owner = comment.owner
                 if (owner == null) {
-                    logger.warn("Couldn't get owner of KDoc. The comment is extracted without an owner.")
+                    logger.warn(
+                        "Couldn't get owner of KDoc. The comment is extracted without an owner."
+                    )
                 }
                 return owner
             }

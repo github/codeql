@@ -2,6 +2,11 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests+SimpleParentWithDynamicKeyedService", False, "SimpleParentWithDynamicKeyedService", "(System.IServiceProvider)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: neutralModel
     data:
       - ["Microsoft.Extensions.DependencyInjection.Specification", "ClassWithOptionalArgsCtor", "ClassWithOptionalArgsCtor", "(System.String)", "summary", "df-generated"]
@@ -47,6 +52,7 @@ extensions:
       - ["Microsoft.Extensions.DependencyInjection.Specification", "DependencyInjectionSpecificationTests", "RegistrationOrderIsPreservedWhenServicesAreIEnumerableResolved", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection.Specification", "DependencyInjectionSpecificationTests", "ResolvesDifferentInstancesForServiceWhenResolvingEnumerable", "(System.Type,System.Type,System.Type,Microsoft.Extensions.DependencyInjection.ServiceLifetime)", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection.Specification", "DependencyInjectionSpecificationTests", "ResolvesMixedOpenClosedGenericsAsEnumerable", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "DependencyInjectionSpecificationTests", "ResolvingEnumerableContainingOpenGenericServiceUsesCorrectSlot", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection.Specification", "DependencyInjectionSpecificationTests", "SafelyDisposeNestedProviderReferences", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection.Specification", "DependencyInjectionSpecificationTests", "ScopedServiceCanBeResolved", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection.Specification", "DependencyInjectionSpecificationTests", "ScopedServices_FromCachedScopeFactory_CanBeResolvedAndDisposed", "()", "summary", "df-generated"]
@@ -73,3 +79,38 @@ extensions:
       - ["Microsoft.Extensions.DependencyInjection.Specification", "DependencyInjectionSpecificationTests", "get_ServiceContainerPicksConstructorWithLongestMatchesData", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection.Specification", "DependencyInjectionSpecificationTests", "get_SupportsIServiceProviderIsService", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.DependencyInjection.Specification", "DependencyInjectionSpecificationTests", "get_TypesWithNonPublicConstructorData", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests+SimpleParentWithDynamicKeyedService", "GetService", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ClosedGenericsWithIsKeyedService", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "CreateServiceProvider", "(Microsoft.Extensions.DependencyInjection.IServiceCollection)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "CreateServiceWithKeyedParameter", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ExplicitServiceRegistrationWithIsKeyedService", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "IEnumerableWithIsKeyedServiceAlwaysReturnsTrue", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "NonKeyedServiceWithIsKeyedService", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "OpenGenericsWithIsKeyedService", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedGenericServices", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedOpenGenericService", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedScopedFromScopeServiceProvider", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedService", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceSingletonFactory", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceSingletonFactoryWithAnyKey", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceSingletonFactoryWithAnyKeyIgnoreWrongType", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceSingletonInstance", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceSingletonInstanceWithAnyKey", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceSingletonInstanceWithKeyInjection", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceSingletonInstanceWithKeyedParameter", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceSingletonType", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceTransientFactory", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceTransientType", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServiceTransientTypeWithAnyKey", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServices", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServicesAnyKey", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServicesAnyKeyWithAnyKeyRegistration", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedServicesSingletonInstanceWithAnyKey", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedSingletonFromInjectedServiceProvider", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedSingletonFromScopeServiceProvider", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedTransientFromInjectedServiceProvider", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveKeyedTransientFromScopeServiceProvider", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveNonKeyedService", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "ResolveNullKeyedService", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "SimpleServiceKeyedResolution", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.DependencyInjection.Specification", "KeyedDependencyInjectionSpecificationTests", "get_SupportsIServiceProviderIsKeyedService", "()", "summary", "df-generated"]

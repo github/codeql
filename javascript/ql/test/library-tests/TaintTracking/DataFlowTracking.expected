@@ -70,6 +70,7 @@
 | getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:92:14:92:16 | c.x |
 | getters-and-setters.js:79:20:79:27 | source() | getters-and-setters.js:100:10:100:22 | getX(new C()) |
 | getters-and-setters.js:89:17:89:24 | source() | getters-and-setters.js:82:18:82:22 | value |
+| importedReactComponent.jsx:4:40:4:47 | source() | exportedReactComponent.jsx:2:10:2:19 | props.text |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:9:10:9:10 | x |
 | indexOf.js:4:11:4:18 | source() | indexOf.js:13:10:13:10 | x |
 | nested-props.js:4:13:4:20 | source() | nested-props.js:5:10:5:14 | obj.x |

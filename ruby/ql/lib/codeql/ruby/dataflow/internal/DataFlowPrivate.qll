@@ -230,6 +230,8 @@ module LocalFlow {
         or
         p.(KeywordParameter).getDefaultValue() = nodeFrom.asExpr().getExpr()
       )
+    or
+    nodeTo.(BlockArgumentNode).getParameterNode(true) = nodeFrom
   }
 }
 
@@ -497,6 +499,9 @@ private module Cached {
     TSelfParameterNode(MethodBase m) or
     TLambdaSelfReferenceNode(Callable c) { lambdaCreationExpr(_, _, c) } or
     TBlockParameterNode(MethodBase m) or
+    TBlockArgumentNode(CfgNodes::ExprNodes::CallCfgNode yield) {
+      yield = any(BlockParameterNode b).getAYieldCall()
+    } or
     TSynthHashSplatParameterNode(DataFlowCallable c) {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
     } or
@@ -645,6 +650,8 @@ private module Cached {
     isStoreTargetNode(n)
     or
     TypeTrackingInput::loadStep(_, n, _)
+    or
+    n instanceof BlockArgumentNode
   }
 
   cached
@@ -770,6 +777,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof LambdaSelfReferenceNode
   or
   n instanceof CaptureNode
+  or
+  n instanceof BlockArgumentNode
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
@@ -1277,18 +1286,36 @@ module ArgumentNodes {
     }
   }
 
-  class BlockParameterArgumentNode extends BlockParameterNode, ArgumentNode {
-    BlockParameterArgumentNode() { exists(this.getAYieldCall()) }
+  class BlockArgumentNode extends NodeImpl, ArgumentNode, TBlockArgumentNode {
+    CfgNodes::ExprNodes::CallCfgNode yield;
+
+    BlockArgumentNode() { this = TBlockArgumentNode(yield) }
+
+    CfgNodes::ExprNodes::CallCfgNode getYieldCall() { result = yield }
+
+    pragma[nomagic]
+    BlockParameterNode getParameterNode(boolean inSameScope) {
+      result.getAYieldCall() = yield and
+      if nodeGetEnclosingCallable(this) = nodeGetEnclosingCallable(result)
+      then inSameScope = true
+      else inSameScope = false
+    }
 
     // needed for variable capture flow
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
-      call = this.getAYieldCall() and
+      call = yield and
       pos.isLambdaSelf()
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       this.sourceArgumentOf(call.asCall(), pos)
     }
+
+    override CfgScope getCfgScope() { result = yield.getScope() }
+
+    override Location getLocationImpl() { result = yield.getLocation() }
+
+    override string toStringImpl() { result = "yield block argument" }
   }
 
   private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
@@ -1699,6 +1726,8 @@ predicate jumpStep(Node pred, Node succ) {
     succ.(FlowSummaryNode).getSummaryNode())
   or
   any(AdditionalJumpStep s).step(pred, succ)
+  or
+  succ.(BlockArgumentNode).getParameterNode(false) = pred
 }
 
 private ContentSet getArrayContent(int n) {
@@ -2037,7 +2066,7 @@ private predicate lambdaCallExpr(
  */
 predicate lambdaSourceCall(CfgNodes::ExprNodes::CallCfgNode call, LambdaCallKind kind, Node receiver) {
   kind = TYieldCallKind() and
-  call = receiver.(BlockParameterNode).getAYieldCall()
+  call = receiver.(BlockArgumentNode).getYieldCall()
   or
   kind = TLambdaCallKind() and
   lambdaCallExpr(call, receiver.asExpr())

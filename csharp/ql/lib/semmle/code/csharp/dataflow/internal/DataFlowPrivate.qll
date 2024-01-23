@@ -602,18 +602,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   nodeTo.(ObjectCreationNode).getPreUpdateNode() = nodeFrom.(ObjectInitializerNode)
 }
 
-pragma[noinline]
-private Expr getImplicitArgument(Call c, int pos) {
-  result = c.getArgument(pos) and
-  not exists(result.getExplicitArgumentName())
-}
-
-pragma[nomagic]
-private Expr getExplicitArgument(Call c, string name) {
-  result = c.getAnArgument() and
-  result.getExplicitArgumentName() = name
-}
-
 /**
  * Holds if `arg` is a `params` argument of `c`, for parameter `p`, and `arg` will
  * be wrapped in an array by the C# compiler.
@@ -624,11 +612,7 @@ private predicate isParamsArg(Call c, Expr arg, Parameter p) {
     p = target.getAParameter() and
     p.isParams() and
     numArgs = c.getNumberOfArguments() and
-    arg =
-      [
-        getImplicitArgument(c, [p.getPosition() .. numArgs - 1]),
-        getExplicitArgument(c, p.getName())
-      ]
+    arg = c.getArgumentForParameter(p)
   |
     numArgs > target.getNumberOfParameters()
     or

@@ -1,3 +1,13 @@
+## 0.3.6
+
+### Minor Analysis Improvements
+
+* Added additional sinks for the "Cleartext logging of sensitive information" (`swift/cleartext-logging`) query. Some of these sinks are heuristic (imprecise) in nature.
+
+## 0.3.5
+
+No user-facing changes.
+
 ## 0.3.4
 
 ### Minor Analysis Improvements

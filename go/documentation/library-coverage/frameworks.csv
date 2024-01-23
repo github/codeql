@@ -4,6 +4,7 @@ beego,https://beego.me/,github.com/astaxie/beego* github.com/beego/beego*
 Couchbase official client(gocb),https://github.com/couchbase/gocb,github.com/couchbase/gocb* gopkg.in/couchbase/gocb*
 Couchbase unofficial client,http://www.github.com/couchbase/go-couchbase,github.com/couchbaselabs/gocb*
 Echo,https://echo.labstack.com/,github.com/labstack/echo*
+fasthttp,https://github.com/valyala/fasthttp,github.com/valyala/fasthttp*
 Gin,https://github.com/gin-gonic/gin,github.com/gin-gonic/gin*
 go-pg,https://pg.uptrace.dev/,github.com/go-pg/pg*
 golang.org/x/net,https://pkg.go.dev/golang.org/x/net,golang.org/x/net*

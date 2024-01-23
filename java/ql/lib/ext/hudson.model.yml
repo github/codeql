@@ -32,8 +32,11 @@ extensions:
       - ["hudson", "FilePath", True, "write", "(String,String)", "", "Argument[0]", "file-content-store", "manual"]
       - ["hudson", "Launcher$ProcStarter", False, "cmds", "", "", "Argument[0]", "command-injection", "manual"]
       - ["hudson", "Launcher$ProcStarter", False, "cmdAsSingleString", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["hudson", "Launcher$ProcStarter", False, "envs", "(String[])", "", "Argument[0]", "environment-injection", "manual"]
       - ["hudson", "Launcher", True, "launch", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["hudson", "Launcher", True, "decorateByEnv", "(String[])", "", "Argument[0]", "environment-injection", "manual"]
       - ["hudson", "Launcher", True, "launchChannel", "", "", "Argument[0]", "command-injection", "manual"]
+      - ["hudson", "Launcher", True, "launchChannel", "", "", "Argument[3]", "environment-injection", "manual"]
       - ["hudson", "XmlFile", False, "XmlFile", "(XStream,File)", "", "Argument[1]", "path-injection", "ai-manual"]
   - addsTo:
       pack: codeql/java-all

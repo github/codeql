@@ -14,6 +14,8 @@ private module Input implements InputSig<PythonDataFlow> {
   private import Private
   private import Public
 
+  predicate postWithInFlowExclude(Node n) { n instanceof FlowSummaryNode }
+
   predicate argHasPostUpdateExclude(ArgumentNode n) {
     // TODO: Implement post-updates for *args, see tests added in https://github.com/github/codeql/pull/14936
     exists(ArgumentPosition apos | n.argumentOf(_, apos) and apos.isStarArgs(_))
@@ -44,6 +46,13 @@ private module Input implements InputSig<PythonDataFlow> {
     )
   }
 
+  predicate uniqueEnclosingCallableExclude(Node n) {
+    // We only have a selection of valid callables.
+    // For instance, we do not have classes as `DataFlowCallable`s.
+    not n.(SynthCaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() instanceof Function and
+    not n.(SynthCaptureNode).getSynthesizedCaptureNode().getEnclosingCallable() instanceof Module
+  }
+
   predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
     not exists(call.getLocation().getFile().getRelativePath())
   }
@@ -53,7 +62,7 @@ private module Input implements InputSig<PythonDataFlow> {
   }
 
   predicate multipleArgumentCallExclude(ArgumentNode arg, DataFlowCall call) {
-    // since we can have multiple DataFlowCall for a CallNode (for example if can
+    // since we can have multiple DataFlowCall for a CallNode (for example if it can
     // resolve to multiple functions), but we only make _one_ ArgumentNode for each
     // argument in the CallNode, we end up violating this consistency check in those
     // cases. (see `getCallArg` in DataFlowDispatch.qll)

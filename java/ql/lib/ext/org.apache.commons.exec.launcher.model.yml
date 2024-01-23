@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.commons.exec.launcher", "CommandLauncher", True, "exec", "", "", "Argument[1]", "environment-injection", "manual"]

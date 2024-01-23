@@ -588,18 +588,17 @@ However, joining the virtual dispatch relation with itself in this way is
 usually way too big to be feasible. Instead, the relation above should only be
 defined for those values of `call` for which the set of resulting dispatch
 targets might be reduced. To do this, define the set of `call`s that might for
-some reason benefit from a call context as the following predicate (the `c`
-column should be `call.getEnclosingCallable()`):
+some reason benefit from a call context as the following predicate:
 ```ql
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c)
+predicate mayBenefitFromCallContext(DataFlowCall call)
 ```
 And then define `DataFlowCallable viableImplInCallContext(DataFlowCall call,
 DataFlowCall ctx)` as sketched above, but restricted to
-`mayBenefitFromCallContext(call, _)`.
+`mayBenefitFromCallContext(call)`.
 
 The shared implementation will then compare counts of virtual dispatch targets
 using `viableCallable` and `viableImplInCallContext` for each `call` in
-`mayBenefitFromCallContext(call, _)` and track call contexts during flow
+`mayBenefitFromCallContext(call)` and track call contexts during flow
 calculation when differences in these counts show an improved precision in
 further calls.
 

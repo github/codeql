@@ -117,6 +117,14 @@ newtype TNode =
   /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
   TSynthDictSplatParameterNode(DataFlowCallable callable) {
     exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
+  } or
+  /** A synthetic node representing a captured variable. */
+  TSynthCaptureNode(VariableCapture::Flow::SynthesizedCaptureNode cn) or
+  /** A synthetic node representing the heap of a function. Used for variable capture. */
+  TSynthCapturedVariablesParameterNode(Function f) {
+    f = any(VariableCapture::CapturedVariable v).getACapturingScope() and
+    // TODO: Remove this restriction when adding proper support for captured variables in the body of the function we generate for comprehensions
+    exists(TFunction(f))
   }
 
 private import semmle.python.internal.CachedStages
@@ -627,7 +635,9 @@ newtype TContent =
     exists(string input, string output | ModelOutput::relevantSummaryModel(_, _, input, output, _) |
       attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
     )
-  }
+  } or
+  /** A captured variable. */
+  TCapturedVariableContent(VariableCapture::CapturedVariable v)
 
 /**
  * A data-flow value can have associated content.
@@ -688,6 +698,18 @@ class AttributeContent extends TAttributeContent, Content {
   string getAttribute() { result = attr }
 
   override string toString() { result = "Attribute " + attr }
+}
+
+/** A captured variable. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  private VariableCapture::CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  /** Gets the captured variable. */
+  VariableCapture::CapturedVariable getVariable() { result = v }
+
+  override string toString() { result = "captured " + v }
 }
 
 /**

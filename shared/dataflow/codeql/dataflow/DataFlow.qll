@@ -77,13 +77,13 @@ signature module InputSig {
    * Holds if the set of viable implementations that can be called by `call`
    * might be improved by knowing the call context.
    */
-  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c);
+  default predicate mayBenefitFromCallContext(DataFlowCall call) { none() }
 
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
    * restricted to those `call`s for which a context might make a difference.
    */
-  DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx);
+  default DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
   /**
    * Gets a node that can read the value returned from `call` with return kind

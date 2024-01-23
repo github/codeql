@@ -57,60 +57,28 @@ class Call extends DotNet::Call, Expr, @call {
    *
    * This takes into account both positional and named arguments, but does not
    * consider default arguments.
-   *
-   * An argument must always have a type that is convertible to the relevant
-   * parameter type. Therefore, `params` arguments are only taken into account
-   * when they are passed as explicit arrays. For example, in the call to `M1`
-   * on line 5, `o` is not an argument for `M1`'s `args` parameter, while
-   * `new object[] { o }` on line 6 is, in
-   *
-   * ```csharp
-   * class C {
-   *   void M1(params object[] args) { }
-   *
-   *   void M2(object o) {
-   *     M1(o);
-   *     M1(new object[] { o });
-   *   }
-   * }
-   * ```
    */
   cached
   override Expr getArgumentForParameter(DotNet::Parameter p) {
+    // Appears in the positional part of the call
+    result = this.getImplicitArgument(p)
+    or
+    // Appears in the named part of the call
     this.getTarget().getAParameter() = p and
-    (
-      // Appears in the positional part of the call
-      result = this.getImplicitArgument(p.getPosition()) and
-      (
-        p.(Parameter).isParams()
-        implies
-        (
-          isValidExplicitParamsType(p, result.getType()) and
-          not this.hasMultipleParamsArguments()
-        )
-      )
-      or
-      // Appears in the named part of the call
-      result = this.getExplicitArgument(p.getName()) and
-      (p.(Parameter).isParams() implies isValidExplicitParamsType(p, result.getType()))
-    )
-  }
-
-  /**
-   * Holds if this call has multiple arguments for a `params` parameter
-   * of the targeted callable.
-   */
-  private predicate hasMultipleParamsArguments() {
-    exists(Parameter p | p = this.getTarget().getAParameter() |
-      p.isParams() and
-      exists(this.getArgument(any(int i | i > p.getPosition())))
-    )
+    result = this.getExplicitArgument(p.getName())
   }
 
   pragma[noinline]
-  private Expr getImplicitArgument(int pos) {
-    result = this.getArgument(pos) and
-    not exists(result.getExplicitArgumentName())
+  private Expr getImplicitArgument(DotNet::Parameter p) {
+    this.getTarget().getAParameter() = p and
+    not exists(result.getExplicitArgumentName()) and
+    (
+      p.(Parameter).isParams() and
+      result = this.getArgument(any(int i | i >= p.getPosition()))
+      or
+      not p.(Parameter).isParams() and
+      result = this.getArgument(p.getPosition())
+    )
   }
 
   pragma[nomagic]
@@ -213,13 +181,37 @@ class Call extends DotNet::Call, Expr, @call {
   /**
    * Gets the argument that corresponds to parameter `p` of a potential
    * run-time target of this call.
+   *
+   * This takes into account both positional and named arguments, but does not
+   * consider default arguments.
    */
+  cached
   Expr getRuntimeArgumentForParameter(Parameter p) {
-    exists(Callable c |
-      c = this.getARuntimeTarget() and
-      p = c.getAParameter() and
+    // Appears in the positional part of the call
+    result = this.getImplicitRuntimeArgument(p)
+    or
+    // Appears in the named part of the call
+    this.getARuntimeTarget().getAParameter() = p and
+    result = this.getExplicitRuntimeArgument(p.getName())
+  }
+
+  pragma[noinline]
+  private Expr getImplicitRuntimeArgument(Parameter p) {
+    this.getARuntimeTarget().getAParameter() = p and
+    not exists(result.getExplicitArgumentName()) and
+    (
+      p.isParams() and
+      result = this.getRuntimeArgument(any(int i | i >= p.getPosition()))
+      or
+      not p.isParams() and
       result = this.getRuntimeArgument(p.getPosition())
     )
+  }
+
+  pragma[nomagic]
+  private Expr getExplicitRuntimeArgument(string name) {
+    result = this.getARuntimeArgument() and
+    result.getExplicitArgumentName() = name
   }
 
   /**
@@ -252,28 +244,6 @@ class Call extends DotNet::Call, Expr, @call {
   predicate hasNoRuntimeArguments() { not exists(this.getARuntimeArgument()) }
 
   override string toString() { result = "call" }
-}
-
-/**
- * Holds if the type `t` is a valid argument type for passing an explicit array
- * to the `params` parameter `p`. For example, the types `object[]` and `string[]`
- * of the arguments on lines 4 and 5, respectively, are valid for the parameter
- * `args` on line 1 in
- *
- * ```csharp
- * void M(params object[] args) { ... }
- *
- * void CallM(object[] os, string[] ss, string s) {
- *   M(os);
- *   M(ss);
- *   M(s);
- * }
- * ```
- */
-pragma[nomagic]
-private predicate isValidExplicitParamsType(Parameter p, Type t) {
-  p.isParams() and
-  t.isImplicitlyConvertibleTo(p.getType())
 }
 
 /**

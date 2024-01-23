@@ -17,13 +17,13 @@
 
    .NET 5, .NET 6, .NET 7","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    Go (aka Golang), "Go up to 1.21", "Go 1.11 or more recent", ``.go``
-   Java,"Java 7 to 20 [5]_","javac (OpenJDK and Oracle JDK),
+   Java,"Java 7 to 21 [5]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [6]_",``.java``
    Kotlin [7]_,"Kotlin 1.5.0 to 1.9.20","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [8]_"
    Python [9]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11, 3.12",Not applicable,``.py``
-   Ruby [10]_,"up to 3.2",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
+   Ruby [10]_,"up to 3.3",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
    Swift [11]_,"Swift 5.4-5.9.1","Swift compiler","``.swift``"
    TypeScript [12]_,"2.6-5.3",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
@@ -33,7 +33,7 @@
     .. [2] Objective-C, Objective-C++, C++/CLI, and C++/CX are not supported.
     .. [3] Support for the clang-cl compiler is preliminary.
     .. [4] Support for the Arm Compiler (armcc) is preliminary.
-    .. [5] Builds that execute on Java 7 to 20 can be analyzed. The analysis understands Java 20 standard language features.
+    .. [5] Builds that execute on Java 7 to 21 can be analyzed. The analysis understands Java 21 standard language features.
     .. [6] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
     .. [7] Kotlin support is currently in beta.
     .. [8] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.

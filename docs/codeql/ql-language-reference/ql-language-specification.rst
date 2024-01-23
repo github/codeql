@@ -115,7 +115,7 @@ Environments may be combined as follows:
 -  *Union*. This takes the union of the entry sets of the two environments.
 -  *Overriding union*. This takes the union of two environments, but if there are entries for a key in the first map, then no additional entries for that key are included from the second map.
 
-A *definite* environment has at most one entry for each key. Resolution is unique in a definite environment.
+A *definite* environment has only values that are *equal modulo weak aliasing* for each key.
 
 Global environments
 ~~~~~~~~~~~~~~~~~~~
@@ -334,7 +334,7 @@ For a *completely uninstantiated* parameter, the *bottom-up instantiation-resolu
 
 An entity is called *fully instantiated* if none of the *bottom-up instantiation-resolutions* of the parameters in the *relevant set of parameters* of the entity's *underlying completely uninstantiated* entity are parameters.
 
-Two *instantiated modules* or two *instantiation-nested* entities are considered *equivalent* if they have the same *underlying completely uninstantiated* entity and each parameter in its *relevant set of parameters* has the same *bottom-up instantiation-resolution* relative to either *instantiated module*.
+Two *instantiated modules* or two *instantiation-nested* entities are considered *equivalent* if they have the same *underlying completely uninstantiated* entity and each parameter in its *relevant set of parameters* has *bottom-up instantiation-resolution*s relative both *instantiated module*s that are *equivalent modulo weak aliases*.
 
 Module instantiation is applicative, meaning that *equivalent* *instantiated modules* and *equivalent* *instantiation-nested* entities are indistinguishable.
 
@@ -1763,7 +1763,7 @@ The grammar given in this section is disambiguated first by precedence, and seco
 Aliases
 -------
 
-Aliases define new names for existing QL entities.
+Aliases define new names for existing QL bindings.
 
 ::
 
@@ -1772,7 +1772,19 @@ Aliases define new names for existing QL entities.
          |   qldoc? annotations "module" modulename "=" moduleExpr ";"
 
 
-An alias introduces a binding from the new name to the entity referred to by the right-hand side in the current module's declared predicate, type, or module environment respectively.
+An alias introduces a binding from the new name to the binding referred to by the right-hand side in the current module's visible predicate, type, or module environment respectively.
+
+An alias is called a *strong alias* if and only if it has the ``final`` annotation. Otherwise, it is called a *weak alias*.
+
+Two bindings `A`, `B` are called *equal modulo weak aliasing* if and only if one of the following conditions are satisfied:
+
+- `A` and `B` are the same binding or
+
+- `A`` is introduced by a *weak alias* for `C`, where `B` and `C` are *equal modulo weak aliasing* (or vice versa) or
+
+- `A` and `B` are introduced by the same strong alias and they are aliases for bindings that are *equal modulo weak aliasing*.
+
+Note that the third condition is only relevant in :ref:`Parameterized modules`, where the binding introduced by the alias can depend on instantiation parameters.
 
 Built-ins
 ---------
