@@ -454,6 +454,11 @@ private newtype TReturnKind =
  * from a callable. For C++, this is simply a function return.
  */
 class ReturnKind extends TReturnKind {
+  /**
+   * Gets the indirection index of this return kind.
+   */
+  abstract int getIndirectionIndex();
+
   /** Gets a textual representation of this return kind. */
   abstract string toString();
 }
@@ -466,7 +471,7 @@ class NormalReturnKind extends ReturnKind, TNormalReturnKind {
 
   NormalReturnKind() { this = TNormalReturnKind(indirectionIndex) }
 
-  int getIndirectionIndex() { result = indirectionIndex }
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override string toString() { result = "indirect return" }
 }
@@ -479,6 +484,8 @@ private class IndirectReturnKind extends ReturnKind, TIndirectReturnKind {
   int indirectionIndex;
 
   IndirectReturnKind() { this = TIndirectReturnKind(argumentIndex, indirectionIndex) }
+
+  override int getIndirectionIndex() { result = indirectionIndex }
 
   override string toString() { result = "indirect outparam[" + argumentIndex.toString() + "]" }
 }
