@@ -62,14 +62,14 @@ class Expr extends StmtParent, @expr {
    * Gets the `n`th compiler-generated destructor call that is performed after this expression, in
    * order of destruction.
    */
-  DestructorCall getSyntheticDestructor(int n) {
+  DestructorCall getImplicitDestructorCall(int n) {
     synthetic_destructor_call(this, max(int i | synthetic_destructor_call(this, i, _)) - n, result)
   }
 
   /**
    * Gets a compiler-generated destructor call that is performed after this expression.
    */
-  DestructorCall getASyntheticDestructor() {
+  DestructorCall getAnImplicitDestructorCall() {
     synthetic_destructor_call(this, _, result)
   }
 

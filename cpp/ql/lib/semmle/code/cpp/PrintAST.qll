@@ -310,7 +310,7 @@ class ExprNode extends AstNode {
     result.getAst() = expr.getChild(childIndex)
     or
     exists(int destructorIndex |
-      result.getAst() = expr.getSyntheticDestructor(destructorIndex) and
+      result.getAst() = expr.getImplicitDestructorCall(destructorIndex) and
       childIndex = destructorIndex + max(int index | exists(expr.getChild(index)) or index = 0) + 1
     )
   }
@@ -448,7 +448,7 @@ class StmtNode extends AstNode {
     )
     or
     exists(int destructorIndex |
-      result.getAst() = stmt.getSyntheticDestructor(destructorIndex) and
+      result.getAst() = stmt.getImplicitDestructorCall(destructorIndex) and
       childIndex = destructorIndex + max(int index | exists(stmt.getChild(index)) or index = 0) + 1
     )
   }
@@ -676,7 +676,7 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
       exists(int n | s.getChild(n) = child and result = "getChild(" + n + ")")
       or
       exists(int n |
-        s.getSyntheticDestructor(n) = child and result = "getSyntheticDestructor(" + n + ")"
+        s.getImplicitDestructorCall(n) = child and result = "getImplicitDestructorCall(" + n + ")"
       )
     )
     or
@@ -687,7 +687,7 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
       exists(int n | expr.getChild(n) = child and result = "getChild(" + n + ")")
       or
       exists(int n |
-        expr.getSyntheticDestructor(n) = child and result = "getSyntheticDestructor(" + n + ")"
+        expr.getImplicitDestructorCall(n) = child and result = "getImplicitDestructorCall(" + n + ")"
       )
     )
   )

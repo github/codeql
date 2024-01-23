@@ -63,7 +63,7 @@ destructors.cpp:
 #   13|                     Type = [IntType] int
 #   13|                     Value = [Literal] 130
 #   13|                     ValueCategory = prvalue
-#   14|         getSyntheticDestructor(0): [DestructorCall] call to ~C
+#   14|         getImplicitDestructorCall(0): [DestructorCall] call to ~C
 #   14|             Type = [VoidType] void
 #   14|             ValueCategory = prvalue
 #   14|           getQualifier(): [VariableAccess] c30
@@ -86,13 +86,13 @@ destructors.cpp:
 #   17|               Type = [IntType] int
 #   17|               ValueCategory = prvalue(load)
 #   17|           getThen(): [GotoStmt] goto ...
-#   21|             getSyntheticDestructor(0): [DestructorCall] call to ~C
+#   21|             getImplicitDestructorCall(0): [DestructorCall] call to ~C
 #   21|                 Type = [VoidType] void
 #   21|                 ValueCategory = prvalue
 #   21|               getQualifier(): [VariableAccess] c31
 #   21|                   Type = [Class] C
 #   21|                   ValueCategory = lvalue
-#   26|             getSyntheticDestructor(1): [DestructorCall] call to ~C
+#   26|             getImplicitDestructorCall(1): [DestructorCall] call to ~C
 #   26|                 Type = [VoidType] void
 #   26|                 ValueCategory = prvalue
 #   26|               getQualifier(): [VariableAccess] c20
@@ -118,25 +118,25 @@ destructors.cpp:
 #   19|               Type = [IntType] int
 #   19|               ValueCategory = prvalue(load)
 #   19|           getThen(): [ReturnStmt] return ...
-#   21|             getSyntheticDestructor(0): [DestructorCall] call to ~C
+#   21|             getImplicitDestructorCall(0): [DestructorCall] call to ~C
 #   21|                 Type = [VoidType] void
 #   21|                 ValueCategory = prvalue
 #   21|               getQualifier(): [VariableAccess] c32
 #   21|                   Type = [Class] C
 #   21|                   ValueCategory = lvalue
-#   21|             getSyntheticDestructor(1): [DestructorCall] call to ~C
+#   21|             getImplicitDestructorCall(1): [DestructorCall] call to ~C
 #   21|                 Type = [VoidType] void
 #   21|                 ValueCategory = prvalue
 #   21|               getQualifier(): [VariableAccess] c31
 #   21|                   Type = [Class] C
 #   21|                   ValueCategory = lvalue
-#   26|             getSyntheticDestructor(2): [DestructorCall] call to ~C
+#   26|             getImplicitDestructorCall(2): [DestructorCall] call to ~C
 #   26|                 Type = [VoidType] void
 #   26|                 ValueCategory = prvalue
 #   26|               getQualifier(): [VariableAccess] c20
 #   26|                   Type = [Class] C
 #   26|                   ValueCategory = lvalue
-#   35|             getSyntheticDestructor(3): [DestructorCall] call to ~C
+#   35|             getImplicitDestructorCall(3): [DestructorCall] call to ~C
 #   35|                 Type = [VoidType] void
 #   35|                 ValueCategory = prvalue
 #   35|               getQualifier(): [VariableAccess] c10
@@ -157,19 +157,19 @@ destructors.cpp:
 #   20|                     Type = [IntType] int
 #   20|                     Value = [Literal] 133
 #   20|                     ValueCategory = prvalue
-#   21|         getSyntheticDestructor(0): [DestructorCall] call to ~C
+#   21|         getImplicitDestructorCall(0): [DestructorCall] call to ~C
 #   21|             Type = [VoidType] void
 #   21|             ValueCategory = prvalue
 #   21|           getQualifier(): [VariableAccess] c33
 #   21|               Type = [Class] C
 #   21|               ValueCategory = lvalue
-#   21|         getSyntheticDestructor(1): [DestructorCall] call to ~C
+#   21|         getImplicitDestructorCall(1): [DestructorCall] call to ~C
 #   21|             Type = [VoidType] void
 #   21|             ValueCategory = prvalue
 #   21|           getQualifier(): [VariableAccess] c32
 #   21|               Type = [Class] C
 #   21|               ValueCategory = lvalue
-#   21|         getSyntheticDestructor(2): [DestructorCall] call to ~C
+#   21|         getImplicitDestructorCall(2): [DestructorCall] call to ~C
 #   21|             Type = [VoidType] void
 #   21|             ValueCategory = prvalue
 #   21|           getQualifier(): [VariableAccess] c31
@@ -187,7 +187,7 @@ destructors.cpp:
 #   23|                     Type = [IntType] int
 #   23|                     Value = [Literal] 134
 #   23|                     ValueCategory = prvalue
-#   24|         getSyntheticDestructor(0): [DestructorCall] call to ~C
+#   24|         getImplicitDestructorCall(0): [DestructorCall] call to ~C
 #   24|             Type = [VoidType] void
 #   24|             ValueCategory = prvalue
 #   24|           getQualifier(): [VariableAccess] c34
@@ -204,13 +204,13 @@ destructors.cpp:
 #   25|                   Type = [IntType] int
 #   25|                   Value = [Literal] 121
 #   25|                   ValueCategory = prvalue
-#   26|       getSyntheticDestructor(0): [DestructorCall] call to ~C
+#   26|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
 #   26|           Type = [VoidType] void
 #   26|           ValueCategory = prvalue
 #   26|         getQualifier(): [VariableAccess] c21
 #   26|             Type = [Class] C
 #   26|             ValueCategory = lvalue
-#   26|       getSyntheticDestructor(1): [DestructorCall] call to ~C
+#   26|       getImplicitDestructorCall(1): [DestructorCall] call to ~C
 #   26|           Type = [VoidType] void
 #   26|           ValueCategory = prvalue
 #   26|         getQualifier(): [VariableAccess] c20
@@ -228,7 +228,7 @@ destructors.cpp:
 #   28|                   Type = [IntType] int
 #   28|                   Value = [Literal] 122
 #   28|                   ValueCategory = prvalue
-#   29|       getSyntheticDestructor(0): [DestructorCall] call to ~C
+#   29|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
 #   29|           Type = [VoidType] void
 #   29|           ValueCategory = prvalue
 #   29|         getQualifier(): [VariableAccess] c22
@@ -247,7 +247,7 @@ destructors.cpp:
 #   32|                   Type = [IntType] int
 #   32|                   Value = [Literal] 123
 #   32|                   ValueCategory = prvalue
-#   33|       getSyntheticDestructor(0): [DestructorCall] call to ~C
+#   33|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
 #   33|           Type = [VoidType] void
 #   33|           ValueCategory = prvalue
 #   33|         getQualifier(): [VariableAccess] c23
@@ -265,13 +265,13 @@ destructors.cpp:
 #   34|                 Value = [Literal] 111
 #   34|                 ValueCategory = prvalue
 #   35|     getStmt(5): [ReturnStmt] return ...
-#   35|       getSyntheticDestructor(0): [DestructorCall] call to ~C
+#   35|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
 #   35|           Type = [VoidType] void
 #   35|           ValueCategory = prvalue
 #   35|         getQualifier(): [VariableAccess] c11
 #   35|             Type = [Class] C
 #   35|             ValueCategory = lvalue
-#   35|       getSyntheticDestructor(1): [DestructorCall] call to ~C
+#   35|       getImplicitDestructorCall(1): [DestructorCall] call to ~C
 #   35|           Type = [VoidType] void
 #   35|           ValueCategory = prvalue
 #   35|         getQualifier(): [VariableAccess] c10
@@ -341,7 +341,7 @@ destructors2.cpp:
 #   23|           ValueCategory = prvalue(load)
 #   23|       getThen(): [BlockStmt] { ... }
 #   24|         getStmt(0): [ReturnStmt] return ...
-#   27|           getSyntheticDestructor(0): [DestructorCall] call to ~Class2
+#   27|           getImplicitDestructorCall(0): [DestructorCall] call to ~Class2
 #   27|               Type = [VoidType] void
 #   27|               ValueCategory = prvalue
 #   27|             getQualifier(): [VariableAccess] c
@@ -369,13 +369,13 @@ destructors2.cpp:
 #   26|                   Type = [SpecifiedType] const Class2
 #   26|                   ValueCategory = lvalue
 #   27|     getStmt(3): [ReturnStmt] return ...
-#   27|       getSyntheticDestructor(0): [DestructorCall] call to ~Inner
+#   27|       getImplicitDestructorCall(0): [DestructorCall] call to ~Inner
 #   27|           Type = [VoidType] void
 #   27|           ValueCategory = prvalue
 #   27|         getQualifier(): [VariableAccess] inner
 #   27|             Type = [NestedClass] Inner
 #   27|             ValueCategory = lvalue
-#   27|       getSyntheticDestructor(1): [DestructorCall] call to ~Class2
+#   27|       getImplicitDestructorCall(1): [DestructorCall] call to ~Class2
 #   27|           Type = [VoidType] void
 #   27|           ValueCategory = prvalue
 #   27|         getQualifier(): [VariableAccess] c
