@@ -97,9 +97,6 @@ class SerialVersionUidField extends ReflectivelyReadField {
   }
 }
 
-/** DEPRECATED: Alias for SerialVersionUidField */
-deprecated class SerialVersionUIDField = SerialVersionUidField;
-
 /**
  * A field is read by the JAXB during serialization if it is a JAXB bound field, and if the
  * containing class is considered "live".
@@ -173,6 +170,3 @@ class JpaReadField extends ReflectivelyReadField {
     )
   }
 }
-
-/** DEPRECATED: Alias for JpaReadField */
-deprecated class JPAReadField = JpaReadField;

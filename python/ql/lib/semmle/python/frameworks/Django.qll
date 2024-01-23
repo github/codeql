@@ -1154,9 +1154,6 @@ module PrivateDjango {
     /** Gets a reference to the `django.http` module. */
     API::Node http() { result = django().getMember("http") }
 
-    /** DEPRECATED: Alias for `DjangoHttp` */
-    deprecated module http = DjangoHttp;
-
     /** Provides models for the `django.http` module */
     module DjangoHttp {
       // ---------------------------------------------------------------------------

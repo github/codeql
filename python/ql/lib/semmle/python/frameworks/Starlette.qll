@@ -166,9 +166,6 @@ module Starlette {
     }
   }
 
-  /** DEPRECATED: Alias for Url */
-  deprecated module URL = Url;
-
   /**
    * A call to the `starlette.responses.FileResponse` constructor as a sink for Filesystem access.
    */

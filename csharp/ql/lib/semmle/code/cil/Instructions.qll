@@ -788,9 +788,6 @@ module Opcodes {
     }
   }
 
-  /** DEPRECATED: Alias for NewObj */
-  deprecated class Newobj = NewObj;
-
   /** An `initobj` instruction. */
   class Initobj extends Instruction, @cil_initobj {
     override string getOpcodeName() { result = "initobj" }
@@ -853,9 +850,6 @@ module Opcodes {
   class ReThrow extends Throw, @cil_rethrow {
     override string getOpcodeName() { result = "rethrow" }
   }
-
-  /** DEPRECATED: Alias for ReThrow */
-  deprecated class Rethrow = ReThrow;
 
   /** A `ldlen` instruction. */
   class Ldlen extends UnaryExpr, @cil_ldlen {
