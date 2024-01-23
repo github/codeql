@@ -221,6 +221,10 @@
             <v>47824</v>
         </e>
         <e>
+            <k>@inline_array_type</k>
+            <v>0</v>
+        </e>
+        <e>
             <k>@uint_ptr_type</k>
             <v>0</v>
         </e>
