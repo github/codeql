@@ -116,10 +116,9 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         string? IBuildActions.GetEnvironmentVariable(string name)
         {
-            if (!GetEnvironmentVariable.TryGetValue(name, out var ret))
-                throw new ArgumentException("Missing GetEnvironmentVariable " + name);
-
-            return ret;
+            if (!GetEnvironmentVariable.ContainsKey(name))
+                return null;
+            return GetEnvironmentVariable[name];
         }
 
         public string GetCurrentDirectory { get; set; } = "";
