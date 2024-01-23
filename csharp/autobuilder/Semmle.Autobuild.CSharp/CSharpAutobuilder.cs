@@ -27,7 +27,7 @@ namespace Semmle.Autobuild.CSharp
         {
             Buildless = actions.GetEnvironmentVariable(lgtmPrefix + "BUILDLESS").AsBool("buildless", false) ||
                 actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false) ||
-                actions.GetEnvironmentVariable(buildModeEnvironmentVariable) == "none";
+                actions.GetEnvironmentVariable(buildModeEnvironmentVariable)?.ToLower() == "none";
         }
     }
 
