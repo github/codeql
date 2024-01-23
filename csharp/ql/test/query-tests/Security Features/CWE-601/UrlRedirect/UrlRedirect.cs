@@ -68,6 +68,12 @@ public class UrlRedirectHandler : IHttpHandler
 
         // BAD: The attacker can control the location
         ctx.Response.Redirect(string.Format("{0}.asp?param=foo", url));
+
+        // GOOD: The attacker can only control the parameters, not the location
+        ctx.Response.Redirect(string.Format("foo.asp?{1}param={0}", url, url));
+
+        // BAD: The attacker can control the location
+        ctx.Response.Redirect(string.Format("{1}.asp?{0}param=foo", url, url));
     }
 
     // Implementation as recommended by Microsoft.
