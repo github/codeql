@@ -94,6 +94,11 @@ module NodeStars {
 
 import NodeStars
 
+/**
+ * A cut-down `DataFlow::Node` class that does not depend on the output of SSA.
+ * This can thus be safely used in the SSA computations themselves, as well as
+ * in construction of other node classes (`TIRDataFlowNode`).
+ */
 class Node0Impl extends TIRDataFlowNode0 {
   /**
    * INTERNAL: Do not use.
