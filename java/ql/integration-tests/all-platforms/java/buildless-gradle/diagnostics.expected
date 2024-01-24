@@ -41,12 +41,12 @@
   }
 }
 {
-  "markdownMessage": "Reading the dependency graph from Gradle build files provided 1 classpath entries",
+  "markdownMessage": "Reading the dependency graph from build files provided 1 classpath entries",
   "severity": "unknown",
   "source": {
     "extractorName": "java",
     "id": "java/autobuilder/buildless/depgraph-provided-by-gradle",
-    "name": "Java buildless mode extracted precise dependency graph information from Gradle"
+    "name": "Java buildless mode extracted precise dependency graph information from tool Gradle"
   },
   "visibility": {
     "cliSummaryTable": true,
