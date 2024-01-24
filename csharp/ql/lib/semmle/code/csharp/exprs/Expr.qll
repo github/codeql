@@ -1216,3 +1216,47 @@ class WithExpr extends Expr, @with_expr {
 
   override string getAPrimaryQlClass() { result = "WithExpr" }
 }
+
+/**
+ * A spread element expression, for example `.. x` in `[1, 2, .. x]`
+ */
+class SpreadElementExpr extends Expr, @spread_element_expr {
+  /**
+   * Gets the expression, for example `x` in `.. x`.
+   */
+  Expr getExpr() { result = this.getChild(0) }
+
+  override string toString() { result = ".. " + this.getExpr().toString() }
+
+  override string getAPrimaryQlClass() { result = "SpreadElementExpr" }
+}
+
+/**
+ * A collection expression, for example `[1, 2, 3]` on line 1 in
+ * ```csharp
+ * int[] x = [1, 2, 3];
+ * ```
+ */
+class CollectionExpression extends Expr, @collection_expr {
+  /**
+   * Gets the `i`th argument of this collection.
+   */
+  Expr getElement(int i) { result = this.getChild(i) }
+
+  /**
+   * Gets an argument of this collection
+   */
+  Expr getAnElement() { result = this.getElement(_) }
+
+  override Type getType() {
+    super.getType() instanceof NullType and
+    exists(CastExpr ce | ce.getExpr() = this and result = ce.getType())
+    or
+    not super.getType() instanceof NullType and
+    result = super.getType()
+  }
+
+  override string toString() { result = "[...]" }
+
+  override string getAPrimaryQlClass() { result = "CollectionExpression" }
+}
