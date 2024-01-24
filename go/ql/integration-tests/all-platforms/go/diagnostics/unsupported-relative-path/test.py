@@ -10,7 +10,7 @@ from diagnostics_test_utils import *
 goPath = os.path.join(os.path.abspath(os.getcwd()), ".go")
 os.environ['GOPATH'] = goPath
 os.environ['GITHUB_REPOSITORY'] = "a/b"
-run_codeql_database_create([], lang="go", source="work", db=None, runFunction=runUnsuccessfully)
+run_codeql_database_create([], lang="go", source="work", db=None)
 
 check_diagnostics()
 

@@ -463,8 +463,15 @@ func initGoModForLegacyProject(buildInfo project.BuildInfo) {
 	modTidy := exec.Command("go", "mod", "tidy")
 	modTidy.Dir = buildInfo.BaseDir
 
-	if !util.RunCmd(modTidy) {
+	out, err := modTidy.CombinedOutput()
+	log.Println(string(out))
+
+	if err != nil {
 		log.Printf("Failed to determine module requirements for this project.")
+
+		if strings.Contains(string(out), "is relative, but relative import paths are not supported in module mode") {
+			diagnostics.EmitRelativeImportPaths()
+		}
 	}
 }
 
