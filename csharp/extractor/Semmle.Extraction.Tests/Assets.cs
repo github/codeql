@@ -12,7 +12,7 @@ namespace Semmle.Extraction.Tests
         public void TestAssets1()
         {
             // Setup
-            var assets = new Assets(new ProgressMonitor(new LoggerStub()));
+            var assets = new Assets(new LoggerStub());
             var json = assetsJson1;
             var dependencies = new DependencyContainer();
 
@@ -43,7 +43,7 @@ namespace Semmle.Extraction.Tests
         public void TestAssetsFailure()
         {
             // Setup
-            var assets = new Assets(new ProgressMonitor(new LoggerStub()));
+            var assets = new Assets(new LoggerStub());
             var json = "garbage data";
             var dependencies = new DependencyContainer();
 
@@ -59,7 +59,7 @@ namespace Semmle.Extraction.Tests
         public void TestAssetsNet70()
         {
             // Setup
-            var assets = new Assets(new ProgressMonitor(new LoggerStub()));
+            var assets = new Assets(new LoggerStub());
             var json = assetsNet70;
             var dependencies = new DependencyContainer();
 
@@ -90,7 +90,7 @@ namespace Semmle.Extraction.Tests
         public void TestAssetsNet48()
         {
             // Setup
-            var assets = new Assets(new ProgressMonitor(new LoggerStub()));
+            var assets = new Assets(new LoggerStub());
             var json = assetsNet48;
             var dependencies = new DependencyContainer();
 
@@ -117,7 +117,7 @@ namespace Semmle.Extraction.Tests
         public void TestAssetsNetstandard21()
         {
             // Setup
-            var assets = new Assets(new ProgressMonitor(new LoggerStub()));
+            var assets = new Assets(new LoggerStub());
             var json = assetsNetstandard21;
             var dependencies = new DependencyContainer();
 
@@ -145,7 +145,7 @@ namespace Semmle.Extraction.Tests
         public void TestAssetsNetStandard16()
         {
             // Setup
-            var assets = new Assets(new ProgressMonitor(new LoggerStub()));
+            var assets = new Assets(new LoggerStub());
             var json = assetsNetstandard16;
             var dependencies = new DependencyContainer();
 
@@ -177,7 +177,7 @@ namespace Semmle.Extraction.Tests
         public void TestAssetsNetcoreapp20()
         {
             // Setup
-            var assets = new Assets(new ProgressMonitor(new LoggerStub()));
+            var assets = new Assets(new LoggerStub());
             var json = assetsNetcoreapp20;
             var dependencies = new DependencyContainer();
 
@@ -205,7 +205,7 @@ namespace Semmle.Extraction.Tests
         public void TestAssetsNetcoreapp31()
         {
             // Setup
-            var assets = new Assets(new ProgressMonitor(new LoggerStub()));
+            var assets = new Assets(new LoggerStub());
             var json = assetsNetcoreapp31;
             var dependencies = new DependencyContainer();
 

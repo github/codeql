@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -13,22 +14,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal partial class DotNet : IDotNet
     {
         private readonly IDotNetCliInvoker dotnetCliInvoker;
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
         private readonly TemporaryDirectory? tempWorkingDirectory;
 
-        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor, TemporaryDirectory? tempWorkingDirectory = null)
+        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, TemporaryDirectory? tempWorkingDirectory = null)
         {
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
             this.tempWorkingDirectory = tempWorkingDirectory;
             this.dotnetCliInvoker = dotnetCliInvoker;
             Info();
         }
 
-        private DotNet(IDependencyOptions options, ProgressMonitor progressMonitor, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor, tempWorkingDirectory) { }
+        private DotNet(IDependencyOptions options, ILogger logger, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(logger, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), logger, tempWorkingDirectory) { }
 
-        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor) => new DotNet(dotnetCliInvoker, progressMonitor);
+        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger) => new DotNet(dotnetCliInvoker, logger);
 
-        public static IDotNet Make(IDependencyOptions options, ProgressMonitor progressMonitor, TemporaryDirectory tempWorkingDirectory) => new DotNet(options, progressMonitor, tempWorkingDirectory);
+        public static IDotNet Make(IDependencyOptions options, ILogger logger, TemporaryDirectory tempWorkingDirectory) => new DotNet(options, logger, tempWorkingDirectory);
 
         private void Info()
         {

@@ -38,7 +38,7 @@ namespace Semmle.Extraction.Tests
     public class DotNetTests
     {
         private static IDotNet MakeDotnet(IDotNetCliInvoker dotnetCliInvoker) =>
-            DotNet.Make(dotnetCliInvoker, new ProgressMonitor(new LoggerStub()));
+            DotNet.Make(dotnetCliInvoker, new LoggerStub());
 
         private static IList<string> MakeDotnetRestoreOutput() =>
             new List<string> {

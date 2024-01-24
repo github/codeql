@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -18,10 +19,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Paths to search. Directories are searched recursively. Files are added directly to the
         /// assembly cache.
         /// </param>
-        /// <param name="progressMonitor">Callback for progress.</param>
-        public AssemblyCache(IEnumerable<string> paths, IEnumerable<string> frameworkPaths, ProgressMonitor progressMonitor)
+        /// <param name="logger">Callback for progress.</param>
+        public AssemblyCache(IEnumerable<string> paths, IEnumerable<string> frameworkPaths, ILogger logger)
         {
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
             foreach (var path in paths)
             {
                 if (File.Exists(path))
@@ -32,12 +33,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 if (Directory.Exists(path))
                 {
-                    progressMonitor.LogInfo($"Finding reference DLLs in {path}...");
+                    logger.LogInfo($"Finding reference DLLs in {path}...");
                     AddReferenceDirectory(path);
                 }
                 else
                 {
-                    progressMonitor.LogInfo("AssemblyCache: Path not found: " + path);
+                    logger.LogInfo("AssemblyCache: Path not found: " + path);
                 }
             }
             IndexReferences(frameworkPaths);
@@ -63,7 +64,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         private void IndexReferences(IEnumerable<string> frameworkPaths)
         {
-            progressMonitor.LogInfo($"Indexing {dllsToIndex.Count} assemblies...");
+            logger.LogInfo($"Indexing {dllsToIndex.Count} assemblies...");
 
             // Read all of the files
             foreach (var filename in dllsToIndex)
@@ -71,7 +72,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 IndexReference(filename);
             }
 
-            progressMonitor.LogInfo($"Read {assemblyInfoByFileName.Count} assembly infos");
+            logger.LogInfo($"Read {assemblyInfoByFileName.Count} assembly infos");
 
             foreach (var info in assemblyInfoByFileName.Values
                 .OrderBy(info => info.Name)
@@ -88,13 +89,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             try
             {
-                progressMonitor.LogDebug($"Reading assembly info from {filename}");
+                logger.LogDebug($"Reading assembly info from {filename}");
                 var info = AssemblyInfo.ReadFromFile(filename);
                 assemblyInfoByFileName[filename] = info;
             }
             catch (AssemblyLoadException)
             {
-                progressMonitor.LogInfo($"Couldn't read assembly info from {filename}");
+                logger.LogInfo($"Couldn't read assembly info from {filename}");
             }
         }
 
@@ -168,6 +169,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private readonly HashSet<string> failedAssemblyInfoIds = new HashSet<string>();
 
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
     }
 }

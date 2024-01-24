@@ -17,7 +17,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     public sealed class DependencyManager : IDisposable
     {
         private readonly AssemblyCache assemblyCache;
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
 
         // Only used as a set, but ConcurrentDictionary is the only concurrent set in .NET.
         private readonly IDictionary<string, bool> usedReferences = new ConcurrentDictionary<string, bool>();
@@ -48,7 +48,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var startTime = DateTime.Now;
 
             this.options = options;
-            this.progressMonitor = new ProgressMonitor(logger);
+            this.logger = logger;
             this.sourceDir = new DirectoryInfo(srcDir);
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "packages"));
@@ -59,36 +59,36 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                this.dotnet = DotNet.Make(options, progressMonitor, tempWorkingDirectory);
+                this.dotnet = DotNet.Make(options, logger, tempWorkingDirectory);
                 runtimeLazy = new Lazy<Runtime>(() => new Runtime(dotnet));
             }
             catch
             {
-                progressMonitor.LogError("Missing dotnet CLI");
+                logger.LogError("Missing dotnet CLI");
                 throw;
             }
 
-            progressMonitor.LogInfo($"Finding files in {srcDir}...");
+            logger.LogInfo($"Finding files in {srcDir}...");
 
             var allFiles = GetAllFiles().ToList();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
             var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
-            var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(progressMonitor).SelectFileNames();
-            this.fileContent = new FileContent(progressMonitor, smallNonBinaryFiles);
+            var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(logger).SelectFileNames();
+            this.fileContent = new FileContent(logger, smallNonBinaryFiles);
             this.nonGeneratedSources = allNonBinaryFiles.SelectFileNamesByExtension(".cs").ToList();
             this.generatedSources = new();
             var allProjects = allNonBinaryFiles.SelectFileNamesByExtension(".csproj").ToList();
             var allSolutions = allNonBinaryFiles.SelectFileNamesByExtension(".sln").ToList();
             var dllPaths = allFiles.SelectFileNamesByExtension(".dll").ToHashSet();
 
-            progressMonitor.LogInfo($"Found {allFiles.Count} files, {nonGeneratedSources.Count} source files, {allProjects.Count} project files, {allSolutions.Count} solution files, {dllPaths.Count} DLLs.");
+            logger.LogInfo($"Found {allFiles.Count} files, {nonGeneratedSources.Count} source files, {allProjects.Count} project files, {allSolutions.Count} solution files, {dllPaths.Count} DLLs.");
 
             RestoreNugetPackages(allNonBinaryFiles, allProjects, allSolutions, dllPaths);
             // Find DLLs in the .Net / Asp.Net Framework
             // This needs to come after the nuget restore, because the nuget restore might fetch the .NET Core/Framework reference assemblies.
             var frameworkLocations = AddFrameworkDlls(dllPaths);
 
-            assemblyCache = new AssemblyCache(dllPaths, frameworkLocations, progressMonitor);
+            assemblyCache = new AssemblyCache(dllPaths, frameworkLocations, logger);
             AnalyseSolutions(allSolutions);
 
             foreach (var filename in assemblyCache.AllAssemblies.Select(a => a.Filename))
@@ -102,35 +102,36 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Output the findings
             foreach (var r in usedReferences.Keys.OrderBy(r => r))
             {
-                progressMonitor.LogInfo($"Resolved reference {r}");
+                logger.LogInfo($"Resolved reference {r}");
             }
 
             foreach (var r in unresolvedReferences.OrderBy(r => r.Key))
             {
-                progressMonitor.LogInfo($"Unresolved reference {r.Key} in project {r.Value}");
+                logger.LogInfo($"Unresolved reference {r.Key} in project {r.Value}");
             }
 
             var webViewExtractionOption = Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_STANDALONE_EXTRACT_WEB_VIEWS");
             if (bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
                 shouldExtractWebViews)
             {
-                progressMonitor.LogInfo("Generating source files from cshtml and razor files...");
+                logger.LogInfo("Generating source files from cshtml and razor files...");
                 GenerateSourceFilesFromWebViews(allNonBinaryFiles);
             }
 
             GenerateSourceFileFromImplicitUsings();
 
             const int align = 6;
-            progressMonitor.LogInfo("");
-            progressMonitor.LogInfo("Build analysis summary:");
-            progressMonitor.LogInfo($"{this.nonGeneratedSources.Count,align} source files in the filesystem");
-            progressMonitor.LogInfo($"{this.generatedSources.Count,align} generated source files");
-            progressMonitor.LogInfo($"{allSolutions.Count,align} solution files");
-            progressMonitor.LogInfo($"{allProjects.Count,align} project files in the filesystem");
-            progressMonitor.LogInfo($"{usedReferences.Keys.Count,align} resolved references");
-            progressMonitor.LogInfo($"{unresolvedReferences.Count,align} unresolved references");
-            progressMonitor.LogInfo($"{conflictedReferences,align} resolved assembly conflicts");
-            progressMonitor.LogInfo($"Build analysis completed in {DateTime.Now - startTime}");
+            logger.LogInfo("");
+            logger.LogInfo("Build analysis summary:");
+            logger.LogInfo($"{this.nonGeneratedSources.Count,align} source files in the filesystem");
+            logger.LogInfo($"{this.generatedSources.Count,align} generated source files");
+            logger.LogInfo($"{allSolutions.Count,align} solution files");
+            logger.LogInfo($"{allProjects.Count,align} project files in the filesystem");
+            logger.LogInfo($"{usedReferences.Keys.Count,align} resolved references");
+            logger.LogInfo($"{unresolvedReferences.Count,align} unresolved references");
+            logger.LogInfo($"{conflictedReferences,align} resolved assembly conflicts");
+            logger.LogInfo($"Build analysis completed in {DateTime.Now - startTime}");
+
         }
 
         private HashSet<string> AddFrameworkDlls(HashSet<string> dllPaths)
@@ -148,7 +149,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             try
             {
-                var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, progressMonitor);
+                var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, logger);
                 nuget.InstallPackages();
 
                 var nugetPackageDlls = legacyPackageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
@@ -159,16 +160,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 if (nugetPackageDllPaths.Count > 0)
                 {
-                    progressMonitor.LogInfo($"Restored {nugetPackageDllPaths.Count} Nuget DLLs.");
+                    logger.LogInfo($"Restored {nugetPackageDllPaths.Count} Nuget DLLs.");
                 }
                 if (excludedPaths.Count > 0)
                 {
-                    progressMonitor.LogInfo($"Excluding {excludedPaths.Count} Nuget DLLs.");
+                    logger.LogInfo($"Excluding {excludedPaths.Count} Nuget DLLs.");
                 }
 
                 foreach (var excludedPath in excludedPaths)
                 {
-                    progressMonitor.LogInfo($"Excluded Nuget DLL: {excludedPath}");
+                    logger.LogInfo($"Excluded Nuget DLL: {excludedPath}");
                 }
 
                 nugetPackageDllPaths.ExceptWith(excludedPaths);
@@ -176,14 +177,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             catch (Exception)
             {
-                progressMonitor.LogError("Failed to restore Nuget packages with nuget.exe");
+                logger.LogError("Failed to restore Nuget packages with nuget.exe");
             }
 
             var restoredProjects = RestoreSolutions(allSolutions, out var assets1);
             var projects = allProjects.Except(restoredProjects);
             RestoreProjects(projects, out var assets2);
 
-            var dependencies = Assets.GetCompilationDependencies(progressMonitor, assets1.Union(assets2));
+            var dependencies = Assets.GetCompilationDependencies(logger, assets1.Union(assets2));
 
             var paths = dependencies
                 .Paths
@@ -232,7 +233,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     if (isInAnalyzersFolder)
                     {
                         usedReferences.Remove(filename);
-                        progressMonitor.LogInfo($"Removed analyzer reference {filename}");
+                        logger.LogInfo($"Removed analyzer reference {filename}");
                     }
                 }
             }
@@ -248,19 +249,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (versionFolders.Length > 1)
             {
                 var versions = string.Join(", ", versionFolders.Select(d => d.Name));
-                progressMonitor.LogInfo($"Found multiple {frameworkType} DLLs in NuGet packages at {frameworkPath}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
+                logger.LogInfo($"Found multiple {frameworkType} DLLs in NuGet packages at {frameworkPath}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
             }
 
             var selectedFrameworkFolder = versionFolders.FirstOrDefault()?.FullName;
             if (selectedFrameworkFolder is null)
             {
-                progressMonitor.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {frameworkPath}, but no version folder was found.");
+                logger.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {frameworkPath}, but no version folder was found.");
                 selectedFrameworkFolder = frameworkPath;
             }
 
             dllPaths.Add(selectedFrameworkFolder);
             frameworkLocations.Add(selectedFrameworkFolder);
-            progressMonitor.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {selectedFrameworkFolder}.");
+            logger.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {selectedFrameworkFolder}.");
         }
 
         private void AddNetFrameworkDlls(ISet<string> dllPaths, ISet<string> frameworkLocations)
@@ -298,7 +299,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             runtimeLocation ??= Runtime.ExecutingRuntime;
 
-            progressMonitor.LogInfo($".NET runtime location selected: {runtimeLocation}");
+            logger.LogInfo($".NET runtime location selected: {runtimeLocation}");
             dllPaths.Add(runtimeLocation);
             frameworkLocations.Add(runtimeLocation);
         }
@@ -316,7 +317,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var path in toRemove)
             {
                 dllPaths.Remove(path);
-                progressMonitor.LogInfo($"Removed reference {path}");
+                logger.LogInfo($"Removed reference {path}");
             }
         }
 
@@ -336,7 +337,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (Runtime.AspNetCoreRuntime is string aspNetCoreRuntime)
             {
-                progressMonitor.LogInfo($"ASP.NET runtime location selected: {aspNetCoreRuntime}");
+                logger.LogInfo($"ASP.NET runtime location selected: {aspNetCoreRuntime}");
                 dllPaths.Add(aspNetCoreRuntime);
                 frameworkLocations.Add(aspNetCoreRuntime);
             }
@@ -370,13 +371,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var allPackageDirectories = GetAllPackageDirectories();
 
-            progressMonitor.LogInfo($"Restored {allPackageDirectories.Count} packages");
-            progressMonitor.LogInfo($"Found {dependencies.Packages.Count} packages in project.asset.json files");
+            logger.LogInfo($"Restored {allPackageDirectories.Count} packages");
+            logger.LogInfo($"Found {dependencies.Packages.Count} packages in project.asset.json files");
 
             allPackageDirectories
                 .Where(package => !dependencies.Packages.Contains(package))
                 .Order()
-                .ForEach(package => progressMonitor.LogInfo($"Unused package: {package}"));
+                .ForEach(package => logger.LogInfo($"Unused package: {package}"));
         }
 
         private void GenerateSourceFileFromImplicitUsings()
@@ -400,7 +401,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             usings.UnionWith(fileContent.CustomImplicitUsings);
 
-            progressMonitor.LogInfo($"Generating source file for implicit usings. Namespaces: {string.Join(", ", usings.OrderBy(u => u))}");
+            logger.LogInfo($"Generating source file for implicit usings. Namespaces: {string.Join(", ", usings.OrderBy(u => u))}");
 
             if (usings.Count > 0)
             {
@@ -429,14 +430,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return;
             }
 
-            progressMonitor.LogInfo($"Found {views.Length} cshtml and razor files.");
+            logger.LogInfo($"Found {views.Length} cshtml and razor files.");
 
             var sdk = new Sdk(dotnet).GetNewestSdk();
             if (sdk != null)
             {
                 try
                 {
-                    var razor = new Razor(sdk, dotnet, progressMonitor);
+                    var razor = new Razor(sdk, dotnet, logger);
                     var targetDir = GetTemporaryWorkingDirectory("razor");
                     var generatedFiles = razor.GenerateFiles(views, usedReferences.Keys, targetDir);
                     this.generatedSources.AddRange(generatedFiles);
@@ -444,7 +445,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 catch (Exception ex)
                 {
                     // It's okay, we tried our best to generate source files from cshtml files.
-                    progressMonitor.LogInfo($"Failed to generate source files from cshtml files: {ex.Message}");
+                    logger.LogInfo($"Failed to generate source files from cshtml files: {ex.Message}");
                 }
             }
         }
@@ -469,17 +470,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         return true;
                     }
 
-                    progressMonitor.Log(Severity.Warning, $"File {f.FullName} could not be processed.");
+                    logger.Log(Severity.Warning, $"File {f.FullName} could not be processed.");
                     return false;
                 }
                 catch (Exception ex)
                 {
-                    progressMonitor.Log(Severity.Warning, $"File {f.FullName} could not be processed: {ex.Message}");
+                    logger.Log(Severity.Warning, $"File {f.FullName} could not be processed: {ex.Message}");
                     return false;
                 }
             });
 
-            files = new FilePathFilter(sourceDir, progressMonitor).Filter(files);
+            files = new FilePathFilter(sourceDir, logger).Filter(files);
             return files;
         }
 
@@ -530,7 +531,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 catch (AssemblyLoadException)
                 {
-                    progressMonitor.Log(Severity.Warning, $"Could not load assembly information from {usedReference.Key}");
+                    logger.Log(Severity.Warning, $"Could not load assembly information from {usedReference.Key}");
                 }
             }
 
@@ -538,7 +539,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .OrderAssemblyInfosByPreference(frameworkPaths)
                 .ToList();
 
-            progressMonitor.LogInfo($"Reference list contains {sortedReferences.Count} assemblies");
+            logger.LogInfo($"Reference list contains {sortedReferences.Count} assemblies");
 
             var finalAssemblyList = new Dictionary<string, AssemblyInfo>();
 
@@ -555,7 +556,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 UseReference(r);
             }
 
-            progressMonitor.LogInfo($"After conflict resolution, reference list contains {finalAssemblyList.Count} assemblies");
+            logger.LogInfo($"After conflict resolution, reference list contains {finalAssemblyList.Count} assemblies");
 
             // Report the results
             foreach (var r in sortedReferences)
@@ -564,13 +565,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 if (resolvedInfo.Version != r.Version || resolvedInfo.NetCoreVersion != r.NetCoreVersion)
                 {
                     var asm = resolvedInfo.Id + (resolvedInfo.NetCoreVersion is null ? "" : $" (.NET Core {resolvedInfo.NetCoreVersion})");
-                    progressMonitor.LogInfo($"Resolved {r.Id} as {asm}");
+                    logger.LogInfo($"Resolved {r.Id} as {asm}");
+
                     ++conflictedReferences;
                 }
 
                 if (r != resolvedInfo)
                 {
-                    progressMonitor.LogDebug($"Resolved {r.Id} as {resolvedInfo.Id} from {resolvedInfo.Filename}");
+                    logger.LogDebug($"Resolved {r.Id} as {resolvedInfo.Id} from {resolvedInfo.Filename}");
                 }
             }
         }
@@ -616,7 +618,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 try
                 {
                     var sln = new SolutionFile(solutionFile);
-                    progressMonitor.LogInfo($"Analyzing {solutionFile}...");
+                    logger.LogInfo($"Analyzing {solutionFile}...");
                     foreach (var proj in sln.Projects.Select(p => new FileInfo(p)))
                     {
                         AnalyseProject(proj);
@@ -624,7 +626,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 catch (Microsoft.Build.Exceptions.InvalidProjectFileException ex)
                 {
-                    progressMonitor.LogInfo($"Couldn't read solution file {solutionFile}: {ex.BaseMessage}");
+                    logger.LogInfo($"Couldn't read solution file {solutionFile}: {ex.BaseMessage}");
                 }
             });
         }
@@ -633,7 +635,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             if (!project.Exists)
             {
-                progressMonitor.LogInfo($"Couldn't read project file {project.FullName}");
+                logger.LogInfo($"Couldn't read project file {project.FullName}");
                 return;
             }
 
@@ -656,7 +658,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
-                progressMonitor.LogInfo($"Couldn't read project file {project.FullName}: {ex.Message}");
+                logger.LogInfo($"Couldn't read project file {project.FullName}: {ex.Message}");
             }
         }
 
@@ -674,7 +676,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var assetFiles = new List<string>();
             var projects = solutions.SelectMany(solution =>
                 {
-                    progressMonitor.LogInfo($"Restoring solution {solution}...");
+                    logger.LogInfo($"Restoring solution {solution}...");
                     var success = dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out var restoredProjects, out var a);
                     assetFiles.AddRange(a);
                     return restoredProjects;
@@ -694,7 +696,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var assetFiles = new List<string>();
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
-                progressMonitor.LogInfo($"Restoring project {project}...");
+                logger.LogInfo($"Restoring project {project}...");
                 var success = dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out var a, out var _);
                 assetFiles.AddRange(a);
             });
@@ -713,20 +715,20 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return;
             }
 
-            progressMonitor.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
+            logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
 
             var nugetConfigs = allFiles.SelectFileNamesByName("nuget.config").ToArray();
             string? nugetConfig = null;
             if (nugetConfigs.Length > 1)
             {
-                progressMonitor.LogInfo($"Found multiple nuget.config files: {string.Join(", ", nugetConfigs)}.");
+                logger.LogInfo($"Found multiple nuget.config files: {string.Join(", ", nugetConfigs)}.");
                 nugetConfig = allFiles
                     .SelectRootFiles(sourceDir)
                     .SelectFileNamesByName("nuget.config")
                     .FirstOrDefault();
                 if (nugetConfig == null)
                 {
-                    progressMonitor.LogInfo("Could not find a top-level nuget.config file.");
+                    logger.LogInfo("Could not find a top-level nuget.config file.");
                 }
             }
             else
@@ -736,12 +738,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (nugetConfig != null)
             {
-                progressMonitor.LogInfo($"Using nuget.config file {nugetConfig}.");
+                logger.LogInfo($"Using nuget.config file {nugetConfig}.");
             }
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
             {
-                progressMonitor.LogInfo($"Restoring package {package}...");
+                logger.LogInfo($"Restoring package {package}...");
                 using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package, "missingpackages_workingdir"));
                 var success = dotnet.New(tempDir.DirInfo.FullName);
                 if (!success)
@@ -768,7 +770,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                     if (!success)
                     {
-                        progressMonitor.LogInfo($"Failed to restore nuget package {package}");
+                        logger.LogInfo($"Failed to restore nuget package {package}");
                     }
                 }
             });
@@ -784,7 +786,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             catch (Exception exc)
             {
-                progressMonitor.LogInfo($"Couldn't delete {name} directory {exc.Message}");
+                logger.LogInfo($"Couldn't delete {name} directory {exc.Message}");
             }
         }
 

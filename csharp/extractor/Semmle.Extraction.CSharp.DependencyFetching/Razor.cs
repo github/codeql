@@ -4,36 +4,37 @@ using System.IO;
 using System.Text;
 using System.Linq;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal class Razor
     {
         private readonly DotNetVersion sdk;
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
         private readonly IDotNet dotNet;
         private readonly string sourceGeneratorFolder;
         private readonly string cscPath;
 
-        public Razor(DotNetVersion sdk, IDotNet dotNet, ProgressMonitor progressMonitor)
+        public Razor(DotNetVersion sdk, IDotNet dotNet, ILogger logger)
         {
             this.sdk = sdk;
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
             this.dotNet = dotNet;
 
             sourceGeneratorFolder = Path.Combine(this.sdk.FullPath, "Sdks", "Microsoft.NET.Sdk.Razor", "source-generators");
-            this.progressMonitor.LogInfo($"Razor source generator folder: {sourceGeneratorFolder}");
+            this.logger.LogInfo($"Razor source generator folder: {sourceGeneratorFolder}");
             if (!Directory.Exists(sourceGeneratorFolder))
             {
-                this.progressMonitor.LogInfo($"Razor source generator folder {sourceGeneratorFolder} does not exist.");
+                this.logger.LogInfo($"Razor source generator folder {sourceGeneratorFolder} does not exist.");
                 throw new Exception($"Razor source generator folder {sourceGeneratorFolder} does not exist.");
             }
 
             cscPath = Path.Combine(this.sdk.FullPath, "Roslyn", "bincore", "csc.dll");
-            this.progressMonitor.LogInfo($"Razor source generator CSC: {cscPath}");
+            this.logger.LogInfo($"Razor source generator CSC: {cscPath}");
             if (!File.Exists(cscPath))
             {
-                this.progressMonitor.LogInfo($"Csc.exe not found at {cscPath}.");
+                this.logger.LogInfo($"Csc.exe not found at {cscPath}.");
                 throw new Exception($"csc.dll {cscPath} does not exist.");
             }
         }
@@ -65,7 +66,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 GenerateAnalyzerConfig(cshtmls, analyzerConfig);
 
-                progressMonitor.LogInfo($"Analyzer config content: {File.ReadAllText(analyzerConfig)}");
+                logger.LogInfo($"Analyzer config content: {File.ReadAllText(analyzerConfig)}");
 
                 var args = new StringBuilder();
                 args.Append($"/target:exe /generatedfilesout:\"{outputFolder}\" /out:\"{dllPath}\" /analyzerconfig:\"{analyzerConfig}\" ");
@@ -87,7 +88,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 var argsString = args.ToString();
 
-                progressMonitor.LogInfo($"Running CSC to generate Razor source files with arguments: {argsString}.");
+                logger.LogInfo($"Running CSC to generate Razor source files with arguments: {argsString}.");
 
                 using (var sw = new StreamWriter(cscArgsPath))
                 {
@@ -98,7 +99,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 var files = Directory.GetFiles(outputFolder, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
 
-                progressMonitor.LogInfo($"Generated {files.Length} source files from cshtml files.");
+                logger.LogInfo($"Generated {files.Length} source files from cshtml files.");
 
                 return files;
             }
