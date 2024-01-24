@@ -1,5 +1,4 @@
 import go
-import semmle.go.frameworks.AwsLambda
 import TestUtilities.InlineFlowTest
 
 module Config implements DataFlow::ConfigSig {
