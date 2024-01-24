@@ -1,8 +1,8 @@
 /**
- * @name Exposure of sensitive information to UI text fields.
+ * @name Exposure of sensitive information to UI text views.
  * @id java/android/sensitive-text
  * @kind path-problem
- * @description Sensitive information ... TODO
+ * @description Sensitive information displayed in UI text views should be properly masked.
  * @problem.severity warning
  * @precision medium
  * @security-severity 6.5
