@@ -6,6 +6,8 @@ import (
 	"os"
 	"os/exec"
 	"strings"
+
+	"golang.org/x/mod/semver"
 )
 
 // Check if Go is installed in the environment.
@@ -34,6 +36,23 @@ func GetEnvGoVersion() string {
 		goVersion = parseGoVersion(string(out))
 	}
 	return goVersion
+}
+
+// Returns the current Go version in semver format, e.g. v1.14.4
+func GetEnvGoSemVer() string {
+	goVersion := GetEnvGoVersion()
+	if !strings.HasPrefix(goVersion, "go") {
+		log.Fatalf("Expected 'go version' output of the form 'go1.2.3'; got '%s'", goVersion)
+	}
+	// Go versions don't follow the SemVer format, but the only exception we normally care about
+	// is release candidates; so this is a horrible hack to convert e.g. `go1.22rc1` into `go1.22-rc1`
+	// which is compatible with the SemVer specification
+	rcIndex := strings.Index(goVersion, "rc")
+	if rcIndex != -1 {
+		return semver.Canonical("v"+goVersion[2:rcIndex]) + "-" + goVersion[rcIndex:]
+	} else {
+		return semver.Canonical("v" + goVersion[2:])
+	}
 }
 
 // The 'go version' command may output warnings on separate lines before
