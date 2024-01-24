@@ -20,4 +20,34 @@
             android:id="@+id/test5"/>
     </LinearLayout>
 
+    <EditText
+        android:id="@+id/test6"
+        android:inputType="textPassword"/>
+
+    <EditText
+        android:id="@+id/test7"
+        android:inputType="textWebPassword"/>
+
+    <EditText
+        android:id="@+id/test8"
+        android:inputType="numberPassword"/>
+
+    <EditText
+        android:id="@+id/test9"
+        android:inputType="textVisiblePassword"/>
+
+    <EditText
+        android:id="@+id/test10"
+        android:visibility="invisible"/>
+
+    <EditText
+        android:id="@+id/test11"
+        android:visibility="gone"/>
+
+    <LinearLayout
+        android:visibility="invisible">
+        <TextView
+            android:id="@+id/test12"/>
+    </LinearLayout>
+
 </LinearLayout>

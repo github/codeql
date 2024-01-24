@@ -11,15 +11,10 @@ class AndroidLayoutXmlFile extends XmlFile {
 
 /** A component declared in an Android layout file. */
 class AndroidLayoutXmlElement extends XmlElement {
-  AndroidXmlAttribute id;
+  AndroidLayoutXmlElement() { this.getFile() instanceof AndroidLayoutXmlFile }
 
-  AndroidLayoutXmlElement() {
-    this.getFile() instanceof AndroidLayoutXmlFile and
-    id = this.getAttribute("id")
-  }
-
-  /** Gets the ID of this component. */
-  string getId() { result = id.getValue() }
+  /** Gets the ID of this component, if any. */
+  string getId() { result = this.getAttribute("id").getValue() }
 
   /** Gets the class of this component. */
   Class getClass() {

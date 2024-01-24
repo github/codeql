@@ -73,6 +73,14 @@ private module TextFieldTrackingConfig implements DataFlow::ConfigSig {
 /** Holds if the given may be masked. */
 private predicate viewIsMasked(AndroidLayoutXmlElement view) {
   DataFlow::localExprFlow(getAUseOfViewWithId(view.getId()), any(MaskCall mcall).getQualifier())
+  or
+  view.getAttribute("inputType")
+      .(AndroidXmlAttribute)
+      .getValue()
+      .regexpMatch("(?i).*(text|number)(web)?password.*")
+  or
+  view.getAttribute("visibility").(AndroidXmlAttribute).getValue().toLowerCase() =
+    ["invisible", "gone"]
 }
 
 /** Holds if the qualifier of `call` is also called with a method that may mask the information displayed. */
