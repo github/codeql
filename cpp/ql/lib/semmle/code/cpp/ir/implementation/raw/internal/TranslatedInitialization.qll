@@ -42,6 +42,8 @@ abstract class TranslatedVariableInitialization extends TranslatedElement, Initi
     kind instanceof GotoEdge
   }
 
+  override Instruction getLastInstruction() { result = this.getInstruction(OnlyInstructionTag()) }
+
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = InitializerVariableAddressTag() and
     opcode instanceof Opcode::VariableAddress and
@@ -177,6 +179,8 @@ abstract class TranslatedListInitialization extends TranslatedInitialization, In
     result = this.getParent().getChildSuccessor(this, kind)
   }
 
+  override Instruction getLastInstruction() { result = this.getInstruction(ThrowTag()) }
+
   override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     exists(int index |
       child = this.getChild(index) and
@@ -260,6 +264,8 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
     not expr instanceof StringLiteral
   }
 
+  override Instruction getLastInstruction() { result = this.getInstruction(InitializerStoreTag()) }
+
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = InitializerStoreTag() and
     opcode instanceof Opcode::Store and
@@ -295,6 +301,12 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
  */
 class TranslatedStringLiteralInitialization extends TranslatedDirectInitialization {
   override StringLiteral expr;
+
+  override Instruction getLastInstruction() {
+    if this.zeroInitRange(_, _)
+    then result = this.getInstruction(ZeroPadStringStoreTag())
+    else result = this.getInstruction(InitializerStoreTag())
+  }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     // Load the string literal to make it a prvalue of type `char[len]`
@@ -457,6 +469,8 @@ class TranslatedConstructorInitialization extends TranslatedDirectInitialization
 {
   override ConstructorCall expr;
 
+  override Instruction getLastInstruction() { result = this.getInitializer().getLastInstruction() }
+
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
@@ -558,6 +572,10 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
     this = TTranslatedExplicitFieldInitialization(ast, field, expr, position)
   }
 
+  override Instruction getLastInstruction() {
+    result = this.getInitialization().getLastInstruction()
+  }
+
   override Instruction getTargetAddress() {
     result = this.getInstruction(this.getFieldAddressTag())
   }
@@ -594,6 +612,10 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
   TTranslatedFieldValueInitialization
 {
   TranslatedFieldValueInitialization() { this = TTranslatedFieldValueInitialization(ast, field) }
+
+  override Instruction getLastInstruction() {
+    result = this.getInstruction(this.getFieldDefaultValueStoreTag())
+  }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     TranslatedFieldInitialization.super.hasInstruction(opcode, tag, resultType)
@@ -743,6 +765,10 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
     this = TTranslatedExplicitElementInitialization(initList, elementIndex, position)
   }
 
+  override Instruction getLastInstruction() {
+    result = this.getInstruction(this.getElementAddressTag())
+  }
+
   override Instruction getTargetAddress() {
     result = this.getInstruction(this.getElementAddressTag())
   }
@@ -786,6 +812,10 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
 
   TranslatedElementValueInitialization() {
     this = TTranslatedElementValueInitialization(initList, elementIndex, elementCount)
+  }
+
+  override Instruction getLastInstruction() {
+    result = this.getInstruction(this.getElementDefaultValueStoreTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -894,6 +924,8 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
     kind instanceof GotoEdge
   }
 
+  override Instruction getLastInstruction() { result = this.getStructorCall().getLastInstruction() }
+
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = OnlyInstructionTag() and
     opcode instanceof Opcode::ConvertToNonVirtualBase and
@@ -946,6 +978,8 @@ class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromC
   final override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getStructorCall().getFirstInstruction(kind)
   }
+
+  override Instruction getLastInstruction() { result = this.getStructorCall().getLastInstruction() }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
@@ -1008,6 +1042,8 @@ class TranslatedConstructorBareInit extends TranslatedElement, TTranslatedConstr
   override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getParent().getChildSuccessor(this, kind)
   }
+
+  override Instruction getLastInstruction() { none() } // FIXME: does this need to be filled in?
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()

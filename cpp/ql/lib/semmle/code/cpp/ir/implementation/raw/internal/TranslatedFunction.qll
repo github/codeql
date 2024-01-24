@@ -114,6 +114,9 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
     kind instanceof GotoEdge
   }
 
+  override Instruction getLastInstruction() { result = this.getInstruction(ExitFunctionTag()) }
+
+
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
@@ -379,6 +382,12 @@ abstract class TranslatedParameter extends TranslatedElement {
     kind instanceof GotoEdge
   }
 
+  override Instruction getLastInstruction() {
+    if this.hasIndirection()
+    then result = this.getInstruction(InitializerIndirectStoreTag())
+    else result = this.getInstruction(InitializerStoreTag())
+  }
+
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     tag = InitializerVariableAddressTag() and
@@ -611,6 +620,8 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
     else result = this.getParent().getChildSuccessor(this, kind)
   }
 
+  override Instruction getLastInstruction() { result = this.getChild(max(int id | exists(this.getChild(id)))).getLastInstruction() }
+
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
@@ -677,6 +688,7 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
     then result = this.getChild(0).getFirstInstruction(kind)
     else result = this.getParent().getChildSuccessor(this, kind)
   }
+  override Instruction getLastInstruction() { result = this.getChild(max(int id | exists(this.getChild(id)))).getLastInstruction() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
@@ -728,6 +740,15 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
     else result = this.getParent().getChildSuccessor(this, kind)
   }
 
+  override Instruction getLastInstruction() {
+    if exists(this.getAChild())
+    then
+      result =
+        max(TranslatedElement child, int id | child = this.getChild(id) | child order by id)
+            .getFirstInstruction(any(GotoEdge goto))
+    else result = this.getParent().getChildSuccessor(this, any(GotoEdge goto))
+  }
+
   override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     exists(int id | child = this.getChild(id) |
       if exists(TranslatedReadEffect child2, int id2 | id2 > id and child2 = this.getChild(id2))
@@ -772,6 +793,7 @@ abstract class TranslatedReadEffect extends TranslatedElement {
     kind instanceof GotoEdge
   }
 
+  override Instruction getLastInstruction() { result = this.getInstruction(OnlyInstructionTag()) }
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     opcode instanceof Opcode::ReturnIndirection and
     tag = OnlyInstructionTag() and

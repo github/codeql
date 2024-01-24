@@ -47,6 +47,8 @@ abstract class TranslatedCall extends TranslatedExpr {
     else result = this.getFirstCallTargetInstruction(kind)
   }
 
+  override Instruction getLastInstruction() { result = this.getSideEffects().getLastInstruction() }
+
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = CallTag() and
     opcode instanceof Opcode::Call and
@@ -246,6 +248,15 @@ abstract class TranslatedSideEffects extends TranslatedElement {
     result = this.getParent().getChildSuccessor(this, kind)
   }
 
+  override Instruction getLastInstruction() {
+    if exists(this.getAChild())
+    then result = this.getChild(max(int i | exists(this.getChild(i)))).getLastInstruction()
+    else
+      // If there are no side effects, the "last" instruction should be the parent call's last
+      // instruction, so that implicit destructors can be inserted in the right place.
+      result = this.getParent().getInstruction(CallTag())
+  }
+
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
   /** Gets the primary instruction to be associated with each side effect instruction. */
@@ -422,6 +433,8 @@ abstract class TranslatedSideEffect extends TranslatedElement {
     result = this.getInstruction(OnlyInstructionTag()) and
     kind instanceof GotoEdge
   }
+
+  override Instruction getLastInstruction() { result = this.getInstruction(OnlyInstructionTag()) }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType type) {
     tag = OnlyInstructionTag() and

@@ -56,6 +56,10 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
     result = this.getOperand().getFirstInstruction(kind)
   }
 
+  final override Instruction getLastInstruction() {
+    result = this.getOperand().getLastInstruction()
+  }
+
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
@@ -102,6 +106,12 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getLeftOperand().getFirstInstruction(kind)
+  }
+
+  final override Instruction getLastInstruction() {
+    result = this.getLeftOperand().getLastInstruction()
+    or
+    result = this.getRightOperand().getLastInstruction()
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -160,6 +170,10 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
 
   override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getValueExpr().getFirstInstruction(kind)
+  }
+
+  override Instruction getLastInstruction() {
+    result = this.getInstruction(ValueConditionConditionalBranchTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
