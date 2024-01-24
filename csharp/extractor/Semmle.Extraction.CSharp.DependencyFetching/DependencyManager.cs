@@ -24,6 +24,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly IDictionary<string, string> unresolvedReferences = new ConcurrentDictionary<string, string>();
         private readonly List<string> nonGeneratedSources;
         private readonly List<string> generatedSources;
+        private int dotnetFrameworkVersionVariantCount = 0;
         private int conflictedReferences = 0;
         private readonly IDependencyOptions options;
         private readonly DirectoryInfo sourceDir;
@@ -123,15 +124,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             const int align = 6;
             logger.LogInfo("");
             logger.LogInfo("Build analysis summary:");
-            logger.LogInfo($"{this.nonGeneratedSources.Count,align} source files in the filesystem");
-            logger.LogInfo($"{this.generatedSources.Count,align} generated source files");
+            logger.LogInfo($"{nonGeneratedSources.Count,align} source files in the filesystem");
+            logger.LogInfo($"{generatedSources.Count,align} generated source files");
             logger.LogInfo($"{allSolutions.Count,align} solution files");
             logger.LogInfo($"{allProjects.Count,align} project files in the filesystem");
             logger.LogInfo($"{usedReferences.Keys.Count,align} resolved references");
             logger.LogInfo($"{unresolvedReferences.Count,align} unresolved references");
             logger.LogInfo($"{conflictedReferences,align} resolved assembly conflicts");
+            logger.LogInfo($"{dotnetFrameworkVersionVariantCount,align} restored .NET framework variants");
             logger.LogInfo($"Build analysis completed in {DateTime.Now - startTime}");
-
         }
 
         private HashSet<string> AddFrameworkDlls(HashSet<string> dllPaths)
@@ -241,11 +242,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void SelectNewestFrameworkPath(string frameworkPath, string frameworkType, ISet<string> dllPaths, ISet<string> frameworkLocations)
         {
-            var versionFolders = new DirectoryInfo(frameworkPath)
-                .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
-                .OrderByDescending(d => d.Name) // TODO: Improve sorting to handle pre-release versions.
-                .ToArray();
-
+            var versionFolders = GetPackageVersionSubDirectories(frameworkPath);
             if (versionFolders.Length > 1)
             {
                 var versions = string.Join(", ", versionFolders.Select(d => d.Name));
@@ -264,18 +261,34 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             logger.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {selectedFrameworkFolder}.");
         }
 
+        private static DirectoryInfo[] GetPackageVersionSubDirectories(string packagePath)
+        {
+            return new DirectoryInfo(packagePath)
+                .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
+                .OrderByDescending(d => d.Name) // TODO: Improve sorting to handle pre-release versions.
+                .ToArray();
+        }
+
         private void AddNetFrameworkDlls(ISet<string> dllPaths, ISet<string> frameworkLocations)
         {
             // Multiple dotnet framework packages could be present.
             // The order of the packages is important, we're adding the first one that is present in the nuget cache.
             var packagesInPrioOrder = FrameworkPackageNames.NetFrameworks;
 
-            var frameworkPath = packagesInPrioOrder
+            var frameworkPaths = packagesInPrioOrder
                 .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
-                .FirstOrDefault(pair => pair.Path is not null);
+                .Where(pair => pair.Path is not null)
+                .ToArray();
+
+            var frameworkPath = frameworkPaths.FirstOrDefault();
 
             if (frameworkPath.Path is not null)
             {
+                foreach (var fp in frameworkPaths)
+                {
+                    dotnetFrameworkVersionVariantCount += GetPackageVersionSubDirectories(fp.Path!).Length;
+                }
+
                 SelectNewestFrameworkPath(frameworkPath.Path, ".NET Framework", dllPaths, frameworkLocations);
 
                 for (var i = frameworkPath.Index + 1; i < packagesInPrioOrder.Length; i++)
