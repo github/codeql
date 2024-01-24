@@ -22,16 +22,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.dotNet = dotNet;
 
             sourceGeneratorFolder = Path.Combine(this.sdk.FullPath, "Sdks", "Microsoft.NET.Sdk.Razor", "source-generators");
+            this.progressMonitor.LogInfo($"Razor source generator folder: {sourceGeneratorFolder}");
             if (!Directory.Exists(sourceGeneratorFolder))
             {
-                this.progressMonitor.RazorSourceGeneratorMissing(sourceGeneratorFolder);
+                this.progressMonitor.LogInfo($"Razor source generator folder {sourceGeneratorFolder} does not exist.");
                 throw new Exception($"Razor source generator folder {sourceGeneratorFolder} does not exist.");
             }
 
             cscPath = Path.Combine(this.sdk.FullPath, "Roslyn", "bincore", "csc.dll");
+            this.progressMonitor.LogInfo($"Razor source generator CSC: {cscPath}");
             if (!File.Exists(cscPath))
             {
-                this.progressMonitor.CscMissing(cscPath);
+                this.progressMonitor.LogInfo($"Csc.exe not found at {cscPath}.");
                 throw new Exception($"csc.dll {cscPath} does not exist.");
             }
         }
@@ -85,7 +87,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 var argsString = args.ToString();
 
-                progressMonitor.RazorCscArgs(argsString);
+                progressMonitor.LogInfo($"Running CSC to generate Razor source files with arguments: {argsString}.");
 
                 using (var sw = new StreamWriter(cscArgsPath))
                 {
@@ -94,7 +96,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 dotNet.Exec($"\"{cscPath}\" /noconfig @\"{cscArgsPath}\"");
 
-                return Directory.GetFiles(outputFolder, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
+                var files = Directory.GetFiles(outputFolder, "*.*", new EnumerationOptions { RecurseSubdirectories = true });
+
+                progressMonitor.LogInfo($"Generated {files.Length} source files from cshtml files.");
+
+                return files;
             }
             finally
             {

@@ -192,7 +192,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 catch (Exception ex)
                 {
-                    progressMonitor.FailedToReadFile(file, ex);
+                    progressMonitor.LogInfo($"Failed to read file {file}");
+                    progressMonitor.LogDebug($"Failed to read file {file}, exception: {ex}");
                 }
             }
         }

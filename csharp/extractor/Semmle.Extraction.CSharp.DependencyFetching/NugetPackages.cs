@@ -42,6 +42,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (packageFiles.Length > 0)
             {
+                progressMonitor.LogInfo($"Found {packageFiles.Length} packages.config files, trying to use nuget.exe for package restore");
                 nugetExe = ResolveNugetExe(sourceDir);
             }
             else
@@ -65,14 +66,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var nuget = Path.Combine(directory, "nuget", "nuget.exe");
             if (File.Exists(nuget))
             {
-                progressMonitor.FoundNuGet(nuget);
+                progressMonitor.LogInfo($"Found nuget.exe at {nuget}");
                 return nuget;
             }
-            else
-            {
-                progressMonitor.LogInfo($"Nuget.exe could not be found at {nuget}");
-                return DownloadNugetExe(sourceDir);
-            }
+
+            return DownloadNugetExe(sourceDir);
         }
 
         private string DownloadNugetExe(string sourceDir)
@@ -83,7 +81,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Nuget.exe already exists in the .nuget directory.
             if (File.Exists(nuget))
             {
-                progressMonitor.FoundNuGet(nuget);
+                progressMonitor.LogInfo($"Found nuget.exe at {nuget}");
                 return nuget;
             }
 
@@ -108,7 +106,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="package">The package file.</param>
         private void RestoreNugetPackage(string package)
         {
-            progressMonitor.NugetInstall(package);
+            progressMonitor.LogInfo($"Restoring file {package}...");
 
             /* Use nuget.exe to install a package.
              * Note that there is a clutch of NuGet assemblies which could be used to
@@ -135,29 +133,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 UseShellExecute = false
             };
 
-            try
+            var threadId = Environment.CurrentManagedThreadId;
+            void onOut(string s) => progressMonitor.LogInfo(s, threadId);
+            void onError(string s) => progressMonitor.LogError(s, threadId);
+            var exitCode = pi.ReadOutput(out var _, onOut, onError);
+            if (exitCode != 0)
             {
-                using var p = Process.Start(pi);
-
-                if (p is null)
-                {
-                    progressMonitor.FailedNugetCommand(pi.FileName, pi.Arguments, "Couldn't start process.");
-                    return;
-                }
-
-                var output = p.StandardOutput.ReadToEnd();
-                var error = p.StandardError.ReadToEnd();
-
-                p.WaitForExit();
-                if (p.ExitCode != 0)
-                {
-                    progressMonitor.FailedNugetCommand(pi.FileName, pi.Arguments, output + error);
-                }
+                progressMonitor.LogError($"Command {pi.FileName} {pi.Arguments} failed with exit code {exitCode}");
             }
-            catch (Exception ex)
-                when (ex is System.ComponentModel.Win32Exception || ex is FileNotFoundException)
+            else
             {
-                progressMonitor.FailedNugetCommand(pi.FileName, pi.Arguments, ex.Message);
+                progressMonitor.LogInfo($"Restored file {package}");
             }
         }
 

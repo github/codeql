@@ -35,21 +35,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private bool RunCommandAux(string args, out IList<string> output)
         {
-            progressMonitor.RunningProcess($"{Exec} {args}");
+            progressMonitor.LogInfo($"Running {Exec} {args}");
             var pi = MakeDotnetStartInfo(args);
-            var threadId = $"[{Environment.CurrentManagedThreadId:D3}]";
-            void onOut(string s)
-            {
-                Console.Out.WriteLine($"{threadId} {s}");
-            }
-            void onError(string s)
-            {
-                Console.Error.WriteLine($"{threadId} {s}");
-            }
+            var threadId = Environment.CurrentManagedThreadId;
+            void onOut(string s) => progressMonitor.LogInfo(s, threadId);
+            void onError(string s) => progressMonitor.LogError(s, threadId);
             var exitCode = pi.ReadOutput(out output, onOut, onError);
             if (exitCode != 0)
             {
-                progressMonitor.CommandFailed(Exec, args, exitCode);
+                progressMonitor.LogError($"Command {Exec} {args} failed with exit code {exitCode}");
                 return false;
             }
             return true;
