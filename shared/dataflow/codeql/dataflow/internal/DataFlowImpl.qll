@@ -1270,7 +1270,7 @@ module MakeImpl<InputSig Lang> {
         /* Begin: Stage logic. */
         private module TypOption = Option<Typ>;
 
-        private class TypOption = TypOption::Option;
+        additional class TypOption = TypOption::Option;
 
         pragma[nomagic]
         private Typ getNodeTyp(NodeEx node) {
@@ -2747,8 +2747,145 @@ module MakeImpl<InputSig Lang> {
     pragma[nomagic]
     private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
 
-    private module Stage3Param implements MkStage<Stage2>::StageParam {
+    // private module Stage2_5Param implements MkStage<Stage2>::StageParam {
+    //   private module PrevStage = Stage2;
+    //   class Typ = DataFlowType;
+    //   class Ap = PrevStage::Ap;
+    //   class ApNil = PrevStage::ApNil;
+    //   PrevStage::Ap getApprox(Ap ap) { result = ap }
+    //   Typ getTyp(DataFlowType t) { result = t }
+    //   bindingset[c, t, tail]
+    //   Ap apCons(Content c, Typ t, Ap tail) {
+    //     result = true and exists(c) and exists(t) and exists(tail)
+    //   }
+    //   class ApHeadContent = PrevStage::ApHeadContent;
+    //   predicate getHeadContent = PrevStage::getHeadContent/1;
+    //   // pragma[inline]
+    //   // ApHeadContent getHeadContent(Ap ap) { exists(result) and ap = true }
+    //   predicate projectToHeadContent = PrevStage::projectToHeadContent/1;
+    //   // ApHeadContent projectToHeadContent(Content c) { any() }
+    //   class ApOption = PrevStage::ApOption;
+    //   // class ApOption = BooleanOption;
+    //   predicate apNone = PrevStage::apNone/0;
+    //   // ApOption apNone() { result = TBooleanNone() }
+    //   predicate apSome = PrevStage::apSome/1;
+    //   // ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
+    //   import Level1CallContext
+    //   import NoLocalCallContext
+    //   predicate localStep(
+    //     NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+    //     Typ t, LocalCc lcc
+    //   ) {
+    //     localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _) and
+    //     exists(lcc)
+    //   }
+    //   pragma[nomagic]
+    //   private predicate expectsContentCand(NodeEx node) {
+    //     exists(Content c |
+    //       PrevStage::revFlow(node) and
+    //       PrevStage::readStepCand(_, c, _) and
+    //       expectsContentEx(node, c)
+    //     )
+    //   }
+    //   bindingset[node, state, t0, ap]
+    //   predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+    //     exists(state) and
+    //     // We can get away with not using type strengthening here, since we aren't
+    //     // going to use the tracked types in the construction of Stage 4 access
+    //     // paths. For Stage 4 and onwards, the tracked types must be consistent as
+    //     // the cons candidates including types are used to construct subsequent
+    //     // access path approximations.
+    //     t0 = t and
+    //     (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t0) else any()) and
+    //     (
+    //       notExpectsContent(node)
+    //       or
+    //       expectsContentCand(node)
+    //     )
+    //   }
+    //   bindingset[typ, contentType]
+    //   predicate typecheckStore(Typ typ, DataFlowType contentType) {
+    //     // We need to typecheck stores here, since reverse flow through a getter
+    //     // might have a different type here compared to inside the getter.
+    //     compatibleTypes(typ, contentType)
+    //   }
+    //   predicate enableTypeFlow() { none() }
+    // }
+    private module Stage2_5Param implements MkStage<Stage2>::StageParam {
       private module PrevStage = Stage2;
+
+      class Typ = PrevStage::Typ;
+
+      class Ap = ApproxAccessPathFront;
+
+      class ApNil = ApproxAccessPathFrontNil;
+
+      PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
+
+      predicate getTyp = PrevStage::getTyp/1;
+
+      bindingset[c, t, tail]
+      Ap apCons(Content c, Typ t, Ap tail) { result.getAHead() = c and exists(t) and exists(tail) }
+
+      class ApHeadContent = ContentApprox;
+
+      pragma[noinline]
+      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
+
+      predicate projectToHeadContent = getContentApproxCached/1;
+
+      class ApOption = ApproxAccessPathFrontOption;
+
+      ApOption apNone() { result = TApproxAccessPathFrontNone() }
+
+      ApOption apSome(Ap ap) { result = TApproxAccessPathFrontSome(ap) }
+
+      // ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
+      import Level1CallContext
+      import NoLocalCallContext
+
+      predicate localStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+        Typ t, LocalCc lcc
+      ) {
+        localFlowBigStep(node1, state1, node2, state2, preservesValue, _, _) and
+        exists(t) and
+        exists(lcc)
+      }
+
+      pragma[nomagic]
+      private predicate expectsContentCand(NodeEx node, Ap ap) {
+        exists(Content c |
+          PrevStage::revFlow(node) and
+          PrevStage::readStepCand(_, c, _) and
+          expectsContentEx(node, c) and
+          c = ap.getAHead()
+        )
+      }
+
+      bindingset[node, state, t0, ap]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+        exists(state) and
+        t0 = t and
+        exists(ap) and
+        not stateBarrier(node, state) and
+        (
+          notExpectsContent(node)
+          or
+          expectsContentCand(node, ap)
+        )
+      }
+
+      bindingset[typ, contentType]
+      predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
+
+      predicate enableTypeFlow() { none() }
+    }
+
+    private module Stage2_5 = MkStage<Stage2>::Stage<Stage2_5Param>;
+
+    private module Stage3Param implements MkStage<Stage2_5>::StageParam {
+      private module PrevStage = Stage2_5;
 
       class Typ = DataFlowType;
 
@@ -2756,7 +2893,8 @@ module MakeImpl<InputSig Lang> {
 
       class ApNil = ApproxAccessPathFrontNil;
 
-      PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
+      // PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
+      PrevStage::Ap getApprox(Ap ap) { result = ap }
 
       Typ getTyp(DataFlowType t) { result = t }
 
@@ -2779,11 +2917,14 @@ module MakeImpl<InputSig Lang> {
       import Level1CallContext
       import NoLocalCallContext
 
+      pragma[nomagic]
       predicate localStep(
         NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
         Typ t, LocalCc lcc
       ) {
         localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _) and
+        PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
+        PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
         exists(lcc)
       }
 
@@ -2822,7 +2963,42 @@ module MakeImpl<InputSig Lang> {
       }
     }
 
-    private module Stage3 = MkStage<Stage2>::Stage<Stage3Param>;
+    private module Stage3 = MkStage<Stage2_5>::Stage<Stage3Param>;
+
+    pragma[nomagic]
+    private predicate busy(NodeEx node, int c) {
+      c =
+        strictcount(FlowState state, Stage3::Cc cc, ParamNodeOption summaryCtx,
+          Stage3::TypOption argT, Stage3::ApOption argAp, Stage3::Typ t, Stage3::Ap ap |
+          Stage3::fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _)
+        )
+    }
+
+    private predicate busy(
+      NodeEx node, int c, FlowState state, Stage3::Cc cc, ParamNodeOption summaryCtx,
+      Stage3::TypOption argT, Stage3::ApOption argAp, Stage3::Typ t, Stage3::Ap ap
+    ) {
+      busy(node, c) and
+      c = max(int i | busy(_, i)) and
+      Stage3::fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _)
+    }
+
+    pragma[nomagic]
+    private predicate busyRev(NodeEx node, int c) {
+      c =
+        strictcount(FlowState state, ReturnCtx returnCtx, Stage3::ApOption returnAp, Stage3::Ap ap |
+          Stage3::revFlow(node, state, returnCtx, returnAp, ap)
+        )
+    }
+
+    private predicate busyRev(
+      NodeEx node, int c, FlowState state, ReturnCtx returnCtx, Stage3::ApOption returnAp,
+      Stage3::Ap ap
+    ) {
+      busyRev(node, c) and
+      c = max(int i | busyRev(_, i)) and
+      Stage3::revFlow(node, state, returnCtx, returnAp, ap)
+    }
 
     bindingset[node, t0]
     private predicate strengthenType(NodeEx node, DataFlowType t0, DataFlowType t) {
@@ -2834,8 +3010,100 @@ module MakeImpl<InputSig Lang> {
       else t = t0
     }
 
-    private module Stage4Param implements MkStage<Stage3>::StageParam {
+    private module Stage3_5Param implements MkStage<Stage3>::StageParam {
       private module PrevStage = Stage3;
+
+      class Typ = Unit;
+
+      class Ap = AccessPathFront;
+
+      class ApNil = AccessPathFrontNil;
+
+      PrevStage::Ap getApprox(Ap ap) { result = ap.toApprox() }
+
+      Typ getTyp(DataFlowType t) { any() }
+
+      bindingset[c, t, tail]
+      Ap apCons(Content c, Typ t, Ap tail) { result.getHead() = c and exists(t) and exists(tail) }
+
+      class ApHeadContent = Content;
+
+      pragma[noinline]
+      ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
+
+      ApHeadContent projectToHeadContent(Content c) { result = c }
+
+      class ApOption = AccessPathFrontOption;
+
+      ApOption apNone() { result = TAccessPathFrontNone() }
+
+      ApOption apSome(Ap ap) { result = TAccessPathFrontSome(ap) }
+
+      import Level1CallContext
+      import NoLocalCallContext
+
+      pragma[nomagic]
+      predicate localStep(
+        NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
+        Typ t, LocalCc lcc
+      ) {
+        localFlowBigStep(node1, state1, node2, state2, preservesValue, _, _) and
+        PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
+        PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
+        exists(t) and
+        exists(lcc)
+      }
+
+      pragma[nomagic]
+      private predicate clearSet(NodeEx node, ContentSet c) {
+        PrevStage::revFlow(node) and
+        clearsContentCached(node.asNode(), c)
+      }
+
+      pragma[nomagic]
+      private predicate clearContent(NodeEx node, Content c) {
+        exists(ContentSet cs |
+          PrevStage::readStepCand(_, pragma[only_bind_into](c), _) and
+          c = cs.getAReadContent() and
+          clearSet(node, cs)
+        )
+      }
+
+      pragma[nomagic]
+      private predicate clear(NodeEx node, Ap ap) { clearContent(node, ap.getHead()) }
+
+      pragma[nomagic]
+      private predicate expectsContentCand(NodeEx node, Ap ap) {
+        exists(Content c |
+          PrevStage::revFlow(node) and
+          PrevStage::readStepCand(_, c, _) and
+          expectsContentEx(node, c) and
+          c = ap.getHead()
+        )
+      }
+
+      bindingset[node, state, t0, ap]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+        exists(state) and
+        not clear(node, ap) and
+        t0 = t and
+        (
+          notExpectsContent(node)
+          or
+          expectsContentCand(node, ap)
+        )
+      }
+
+      bindingset[typ, contentType]
+      predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
+
+      predicate enableTypeFlow() { none() }
+    }
+
+    private module Stage3_5 = MkStage<Stage3>::Stage<Stage3_5Param>;
+
+    private module Stage4Param implements MkStage<Stage3_5>::StageParam {
+      private module PrevStage = Stage3_5;
 
       class Typ = DataFlowType;
 
@@ -2843,7 +3111,8 @@ module MakeImpl<InputSig Lang> {
 
       class ApNil = AccessPathFrontNil;
 
-      PrevStage::Ap getApprox(Ap ap) { result = ap.toApprox() }
+      // PrevStage::Ap getApprox(Ap ap) { result = ap.toApprox() }
+      PrevStage::Ap getApprox(Ap ap) { result = ap }
 
       Typ getTyp(DataFlowType t) { result = t }
 
@@ -2863,7 +3132,8 @@ module MakeImpl<InputSig Lang> {
 
       ApOption apSome(Ap ap) { result = TAccessPathFrontSome(ap) }
 
-      import BooleanCallContext
+      import Level1CallContext
+      import NoLocalCallContext
 
       pragma[nomagic]
       predicate localStep(
@@ -2922,9 +3192,11 @@ module MakeImpl<InputSig Lang> {
         // might have a different type here compared to inside the getter.
         compatibleTypes(typ, contentType)
       }
+
+      predicate enableTypeFlow() { none() }
     }
 
-    private module Stage4 = MkStage<Stage3>::Stage<Stage4Param>;
+    private module Stage4 = MkStage<Stage3_5>::Stage<Stage4Param>;
 
     /**
      * Holds if `argApf` is recorded as the summary context for flow reaching `node`
