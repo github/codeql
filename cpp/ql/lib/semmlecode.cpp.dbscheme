@@ -747,7 +747,8 @@ usertype_uuid(
 
 mangled_name(
     unique int id: @declaration ref,
-    int mangled_name : @mangledname
+    int mangled_name : @mangledname,
+    boolean is_complete: boolean ref
 );
 
 is_pod_class(unique int id: @usertype ref);
