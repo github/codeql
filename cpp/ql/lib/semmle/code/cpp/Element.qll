@@ -7,6 +7,7 @@ import semmle.code.cpp.Location
 private import semmle.code.cpp.Enclosing
 private import semmle.code.cpp.internal.ResolveClass
 private import semmle.code.cpp.internal.ResolveGlobalVariable
+private import semmle.code.cpp.internal.ResolveFunction
 
 /**
  * Get the `Element` that represents this `@element`.
@@ -30,11 +31,14 @@ pragma[inline]
 @element unresolveElement(Element e) {
   not result instanceof @usertype and
   not result instanceof @variable and
+  not result instanceof @function and
   result = e
   or
   e = resolveClass(result)
   or
   e = resolveGlobalVariable(result)
+  or
+  e = resolveFunction(result)
 }
 
 /**
