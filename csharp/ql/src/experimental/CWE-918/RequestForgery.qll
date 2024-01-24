@@ -6,6 +6,7 @@ module RequestForgery {
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.frameworks.Format
   import semmle.code.csharp.security.dataflow.flowsources.Remote
+  import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
   /**
    * A data flow source for server side request forgery vulnerabilities.
@@ -91,10 +92,9 @@ module RequestForgery {
   module RequestForgeryFlow = DataFlow::Global<RequestForgeryFlowConfig>;
 
   /**
-   * A remote data flow source taken as a source
-   * for Server Side Request Forgery(SSRF) Vulnerabilities.
+   * A dataflow source for Server Side Request Forgery(SSRF) Vulnerabilities.
    */
-  private class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
+  private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
   /**
    * An url argument to a `HttpRequestMessage` constructor call
