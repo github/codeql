@@ -1484,10 +1484,15 @@ private module IndirectNodeToIndirectExpr<IndirectNodeToIndirectExprSig Sig> {
       indirectNodeHasIndirectExpr(node, e, n, indirectionIndex) and
       not exists(Expr conv, int adjustedIndirectionIndex |
         adjustForReference(e, indirectionIndex, conv, adjustedIndirectionIndex) and
-        indirectNodeHasIndirectExpr(_, conv, n + 1, adjustedIndirectionIndex)
+        indirectExprNodeShouldBe(conv, n + 1, adjustedIndirectionIndex)
       )
     )
   }
+}
+
+private predicate indirectExprNodeShouldBe(Expr e, int n, int indirectionIndex) {
+  indirectExprNodeShouldBeIndirectOperand(_, e, n, indirectionIndex) or
+  indirectExprNodeShouldBeIndirectInstruction(_, e, n, indirectionIndex)
 }
 
 private module IndirectOperandIndirectExprNodeImpl implements IndirectNodeToIndirectExprSig {
