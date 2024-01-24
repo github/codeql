@@ -9,8 +9,9 @@ private class TestSources extends SourceModelCsv {
     row =
       [
         ";;false;localMadSource;;;ReturnValue;remote",
-        ";;false;remoteMadSource;;;ReturnValue;local",
-        ";;false;localMadSourceHasBody;;;ReturnValue;remote",
+        ";;false;remoteMadSource;;;ReturnValue;remote",
+        ";;false;localMadSourceVoid;;;ReturnValue;local",
+        ";;false;localMadSourceHasBody;;;ReturnValue;local",
         // TODO: remoteMadSourceIndirect
         ";;false;remoteMadSourceArg0;;;Argument[0];remote",
         ";;false;remoteMadSourceArg1;;;Argument[1];remote", ";;false;remoteMadSourceVar;;;;remote",

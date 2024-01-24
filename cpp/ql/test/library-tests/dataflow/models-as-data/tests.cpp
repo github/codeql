@@ -8,6 +8,7 @@ void sink(int val);
 int localMadSource();
 int remoteMadSource();
 int notASource();
+int localMadSourceVoid(void);
 int localMadSourceHasBody() { return 0; }
 int *remoteMadSourceIndirect();
 void remoteMadSourceArg0(int *x, int *y);
@@ -24,6 +25,7 @@ void test_sources() {
 	sink(localMadSource()); // $ ir
 	sink(remoteMadSource()); // $ ir
 	sink(notASource());
+	sink(localMadSourceVoid()); // $ ir
 	sink(localMadSourceHasBody()); // $ ir
 	sink(*remoteMadSourceIndirect()); // $ MISSING: ir
 
@@ -37,6 +39,9 @@ void test_sources() {
 	sink(d); // $ MISSING: ir
 
 	sink(remoteMadSourceVar); // $ MISSING: ir
+
+	int e = localMadSource();
+	sink(e); // $ ir
 }
 
 void remoteMadSourceParam0(int x)
