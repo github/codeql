@@ -677,9 +677,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var projects = solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
-                    var success = dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out var restoredProjects, out var a);
-                    assetFiles.AddRange(a);
-                    return restoredProjects;
+                    var res = dotnet.Restore(new(solution, packageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                    assetFiles.AddRange(res.AssetsFilePaths);
+                    return res.RestoredProjects;
                 });
             assets = assetFiles;
             return projects;
@@ -697,8 +697,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
                 logger.LogInfo($"Restoring project {project}...");
-                var success = dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out var a, out var _);
-                assetFiles.AddRange(a);
+                var res = dotnet.Restore(new(project, packageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                assetFiles.AddRange(res.AssetsFilePaths);
             });
             assets = assetFiles;
         }
@@ -757,18 +757,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     return;
                 }
 
-                success = dotnet.RestoreProjectToDirectory(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, out var _, out var outputLines, pathToNugetConfig: nugetConfig);
-                if (!success)
+                var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig));
+                if (!res.Success)
                 {
-                    if (outputLines?.Any(s => s.Contains("NU1301")) == true)
+                    if (res.HasNugetPackageSourceError)
                     {
                         // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
-                        success = dotnet.RestoreProjectToDirectory(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, out var _, out var _, pathToNugetConfig: null, force: true);
+                        res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: null, ForceReevaluation: true));
                     }
 
                     // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
 
-                    if (!success)
+                    if (!res.Success)
                     {
                         logger.LogInfo($"Failed to restore nuget package {package}");
                     }

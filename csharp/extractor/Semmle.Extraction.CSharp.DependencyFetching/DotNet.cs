@@ -41,11 +41,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching)
+        private string GetRestoreArgs(RestoreSettings restoreSettings)
         {
-            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal";
+            var args = $"restore --no-dependencies \"{restoreSettings.File}\" --packages \"{restoreSettings.PackageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal";
 
-            if (forceDotnetRefAssemblyFetching)
+            if (restoreSettings.ForceDotnetRefAssemblyFetching)
             {
                 // Ugly hack: we set the TargetFrameworkRootPath and NetCoreTargetingPackRoot properties to an empty folder:
                 var path = ".empty";
@@ -58,46 +58,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\"";
             }
 
-            return args;
-        }
-
-        private static IEnumerable<string> GetFirstGroupOnMatch(Regex regex, IEnumerable<string> lines) =>
-            lines
-                .Select(line => regex.Match(line))
-                .Where(match => match.Success)
-                .Select(match => match.Groups[1].Value);
-
-        private static IEnumerable<string> GetAssetsFilePaths(IEnumerable<string> lines) =>
-            GetFirstGroupOnMatch(AssetsFileRegex(), lines);
-
-        private static IEnumerable<string> GetRestoredProjects(IEnumerable<string> lines) =>
-            GetFirstGroupOnMatch(RestoredProjectRegex(), lines);
-
-        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, out IList<string> outputLines, string? pathToNugetConfig = null, bool force = false)
-        {
-            var args = GetRestoreArgs(projectFile, packageDirectory, forceDotnetRefAssemblyFetching);
-            if (pathToNugetConfig != null)
+            if (restoreSettings.PathToNugetConfig != null)
             {
-                args += $" --configfile \"{pathToNugetConfig}\"";
+                args += $" --configfile \"{restoreSettings.PathToNugetConfig}\"";
             }
 
-            if (force)
+            if (restoreSettings.ForceReevaluation)
             {
                 args += " --force";
             }
 
-            var success = dotnetCliInvoker.RunCommand(args, out outputLines);
-            assets = success ? GetAssetsFilePaths(outputLines) : Array.Empty<string>();
-            return success;
+            return args;
         }
 
-        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> projects, out IEnumerable<string> assets)
+        public RestoreResult Restore(RestoreSettings restoreSettings)
         {
-            var args = GetRestoreArgs(solutionFile, packageDirectory, forceDotnetRefAssemblyFetching);
+            var args = GetRestoreArgs(restoreSettings);
             var success = dotnetCliInvoker.RunCommand(args, out var output);
-            projects = success ? GetRestoredProjects(output) : Array.Empty<string>();
-            assets = success ? GetAssetsFilePaths(output) : Array.Empty<string>();
-            return success;
+            return new(success, output);
         }
 
         public bool New(string folder)
@@ -130,11 +108,5 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var args = $"exec {execArgs}";
             return dotnetCliInvoker.RunCommand(args);
         }
-
-        [GeneratedRegex("Restored\\s+(.+\\.csproj)", RegexOptions.Compiled)]
-        private static partial Regex RestoredProjectRegex();
-
-        [GeneratedRegex("[Assets\\sfile\\shas\\snot\\schanged.\\sSkipping\\sassets\\sfile\\swriting.|Writing\\sassets\\sfile\\sto\\sdisk.]\\sPath:\\s(.+)", RegexOptions.Compiled)]
-        private static partial Regex AssetsFileRegex();
     }
 }
