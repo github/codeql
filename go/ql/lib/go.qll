@@ -31,6 +31,7 @@ import semmle.go.dataflow.SSA
 import semmle.go.dataflow.TaintTracking
 import semmle.go.dataflow.TaintTracking2
 import semmle.go.frameworks.Afero
+import semmle.go.frameworks.AwsLambda
 import semmle.go.frameworks.Beego
 import semmle.go.frameworks.BeegoOrm
 import semmle.go.frameworks.Chi
