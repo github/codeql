@@ -36,10 +36,6 @@ def ok3(x):
 def ok4(x = []):
     return len(x)
 
-
-
-
-
 def use_implicit_return_value(arg):
     x = do_nothing()
     return call_non_callable(arg)
@@ -127,12 +123,6 @@ def mutli_return(arg):
         return do_something()
     else:
         return do_nothing()
-
-
-
-
-
-
 
 #ODASA 3658
 from sys import exit
