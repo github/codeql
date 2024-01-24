@@ -5,11 +5,14 @@
 import csharp
 private import semmle.code.csharp.frameworks.system.windows.Forms
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /** A data flow source of local data. */
-abstract class LocalFlowSource extends DataFlow::Node {
+abstract class LocalFlowSource extends SourceNode {
   /** Gets a string that describes the type of this local flow source. */
   abstract string getSourceType();
+
+  override string getThreatModel() { result = "local" }
 }
 
 private class ExternalLocalFlowSource extends LocalFlowSource {

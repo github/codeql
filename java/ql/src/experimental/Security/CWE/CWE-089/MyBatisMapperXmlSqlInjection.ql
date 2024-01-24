@@ -17,6 +17,7 @@ import MyBatisCommonLib
 import MyBatisMapperXmlSqlInjectionLib
 import semmle.code.xml.MyBatisMapperXML
 import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.Sanitizers
 import MyBatisMapperXmlSqlInjectionFlow::PathGraph
 
 private module MyBatisMapperXmlSqlInjectionConfig implements DataFlow::ConfigSig {
@@ -24,11 +25,7 @@ private module MyBatisMapperXmlSqlInjectionConfig implements DataFlow::ConfigSig
 
   predicate isSink(DataFlow::Node sink) { sink instanceof MyBatisMapperMethodCallAnArgument }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
-    node.getType() instanceof NumberType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodCall ma |

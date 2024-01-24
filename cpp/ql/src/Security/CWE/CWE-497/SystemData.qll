@@ -55,9 +55,6 @@ class SqlClientInfo extends SystemData {
   override predicate isSensitive() { any() }
 }
 
-/** DEPRECATED: Alias for SqlClientInfo */
-deprecated class SQLClientInfo = SqlClientInfo;
-
 private predicate sqlConnectInfo(FunctionCall source, Expr use) {
   (
     source.getTarget().hasName("mysql_connect") or
@@ -76,9 +73,6 @@ class SqlConnectInfo extends SystemData {
 
   override predicate isSensitive() { any() }
 }
-
-/** DEPRECATED: Alias for SqlConnectInfo */
-deprecated class SQLConnectInfo = SqlConnectInfo;
 
 private predicate posixSystemInfo(FunctionCall source, DataFlow::Node use) {
   // size_t confstr(int name, char *buf, size_t len)
