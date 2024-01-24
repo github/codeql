@@ -66,3 +66,8 @@ func parseGoVersion(data string) string {
 	}
 	return strings.Fields(lastLine)[2]
 }
+
+// Returns a value indicating whether the system Go toolchain supports workspaces.
+func SupportsWorkspaces() bool {
+	return semver.Compare(GetEnvGoSemVer(), "v1.18.0") >= 0
+}
