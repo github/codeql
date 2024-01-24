@@ -1,2 +1,4 @@
 | Diamond.java:14:31:14:47 | new ArrayList<Integer>(...) |
 | Diamond.java:15:36:15:50 | new HashMap<String,Object>(...) |
+| Diamond.java:27:24:27:43 | new (...) |
+| Diamond.java:28:29:33:2 | new (...) |

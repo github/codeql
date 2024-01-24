@@ -1233,7 +1233,14 @@ class ClassInstanceExpr extends Expr, ConstructorCall, @classinstancexpr {
    * empty type argument list of the form `<>`.
    */
   predicate isDiamond() {
-    this.getType() instanceof ParameterizedClass and
+    (
+      this.getType() instanceof ParameterizedClass
+      or
+      this.getAnonymousClass().getASupertype() instanceof ParameterizedType and
+      // Ignore Kotlin code; otherwise seems to erroneously match `object` expression with explicit
+      // type arguments, possibly because extractor is not properly extracting the type args?
+      not this.getCompilationUnit().isKotlinSourceFile()
+    ) and
     not exists(this.getATypeArgument())
   }
 
