@@ -186,12 +186,34 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 // Returns the directory to run the go build in and whether to use a go.mod
 // file.
 func getBuildRoot(emitDiagnostics bool) (baseDirs []string, useGoMod bool) {
-	goModPaths := util.FindAllFilesWithName(".", "go.mod", "vendor")
-	if len(goModPaths) == 0 {
+	goWorkspaces := discoverWorkspaces(emitDiagnostics)
+
+	// Determine the total number of `go.mod` files that we discovered.
+	totalModuleFiles := 0
+
+	for _, goWorkspace := range goWorkspaces {
+		totalModuleFiles += len(goWorkspace.Modules)
+	}
+
+	// If there are no `go.mod` files at all, try to build the project without Go modules.
+	if totalModuleFiles == 0 {
+		log.Println("Found no go.mod files, not using Go modules.")
 		baseDirs = []string{"."}
 		useGoMod = false
 		return
 	}
+
+	// Get the paths to all `go.mod` files
+	i := 0
+	goModPaths := make([]string, totalModuleFiles)
+
+	for _, goWorkspace := range goWorkspaces {
+		for _, goModule := range goWorkspace.Modules {
+			goModPaths[i] = goModule.Path
+			i++
+		}
+	}
+
 	goModDirs := util.GetParentDirs(goModPaths)
 	if util.AnyGoFilesOutsideDirs(".", goModDirs...) {
 		if emitDiagnostics {
@@ -201,21 +223,26 @@ func getBuildRoot(emitDiagnostics bool) (baseDirs []string, useGoMod bool) {
 		useGoMod = false
 		return
 	}
-	if len(goModPaths) > 1 {
-		// currently not supported
-		baseDirs = []string{"."}
-		commonRoot, nested := checkDirsNested(goModDirs)
-		if nested && commonRoot == "" {
-			useGoMod = true
-		} else {
-			useGoMod = false
-		}
-		if emitDiagnostics {
+
+	// If we are emitted diagnostics, report some details about the workspace structure.
+	if emitDiagnostics {
+		if totalModuleFiles > 1 {
+			_, nested := checkDirsNested(goModDirs)
+
 			if nested {
 				diagnostics.EmitMultipleGoModFoundNested(goModPaths)
 			} else {
 				diagnostics.EmitMultipleGoModFoundNotNested(goModPaths)
 			}
+		} else if totalModuleFiles == 1 {
+			if goModDirs[0] == "." {
+				diagnostics.EmitSingleRootGoModFound(goModPaths[0])
+			} else {
+				diagnostics.EmitSingleNonRootGoModFound(goModPaths[0])
+			}
+		}
+	}
+
 	baseDirs = goModDirs
 	useGoMod = true
 	return
@@ -243,14 +270,6 @@ func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, []string) {
 		// currently not supported
 		if emitDiagnostics {
 			diagnostics.EmitBazelBuildFilesFound(bazelPaths)
-		}
-	}
-
-	goWorkPaths := util.FindAllFilesWithName(".", "go.work", "vendor")
-	if len(goWorkPaths) > 0 {
-		// currently not supported
-		if emitDiagnostics {
-			diagnostics.EmitGoWorkFound(goWorkPaths)
 		}
 	}
 
