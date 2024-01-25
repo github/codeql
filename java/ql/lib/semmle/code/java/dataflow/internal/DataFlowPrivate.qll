@@ -349,7 +349,12 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
-  setsInstanceField(c.(FieldContent).getField(), n, _)
+  // setsInstanceField(c.(FieldContent).getField(), n, _)
+  exists(FieldAccess fa |
+    instanceFieldAssign(_, _, fa) and
+    n = getFieldQualifier(fa) and
+    c.(FieldContent).getField() = fa.getField()
+  )
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or

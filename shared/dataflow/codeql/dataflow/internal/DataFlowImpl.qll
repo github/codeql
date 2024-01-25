@@ -1332,9 +1332,8 @@ module MakeImpl<InputSig Lang> {
             PrevStage::revFlow(node, state, apa) and
             (
               (
-                if summaryCtx0 = TParamNodeSome(_) //and
+                if summaryCtx0 = TParamNodeSome(_) and PrevStage::nodeMayFlowThrough(node, apa)
                 then
-                  // PrevStage::nodeMayFlowThrough(node, apa)
                   summaryCtx = summaryCtx0 and
                   argT = argT0 and
                   argAp = argAp0 and
@@ -1402,18 +1401,17 @@ module MakeImpl<InputSig Lang> {
           )
           or
           // flow into a callable
-          fwdFlowIn(node, apa, state, cc, t, ap) and
-          (
-            if PrevStage::parameterMayFlowThrough(node, apa)
-            then
-              summaryCtx = TParamNodeSome(node.asNode()) and
-              argT = ArgTypOption::some(toArgTyp(t)) and
-              argAp = apSome(ap)
-            else (
-              summaryCtx = TParamNodeNone() and
-              argT instanceof ArgTypOption::None and
-              argAp = apNone()
-            )
+          exists(Typ t0 | fwdFlowIn(node, apa, state, cc, t0, ap) |
+            PrevStage::parameterMayFlowThrough(node, apa) and
+            summaryCtx = TParamNodeSome(node.asNode()) and
+            argT = ArgTypOption::some(toArgTyp(t)) and
+            argAp = apSome(ap) and
+            t = t0 // getNodeTyp(node)
+            or
+            summaryCtx = TParamNodeNone() and
+            argT instanceof ArgTypOption::None and
+            argAp = apNone() and
+            t = t0
           )
           or
           // flow out of a callable
@@ -3074,7 +3072,7 @@ module MakeImpl<InputSig Lang> {
       if castingNodeEx(node)
       then
         exists(DataFlowType nt | nt = node.getDataFlowType() |
-          if inSummaryCtx = true and typeStrongerThan(nt, t0)
+          if inSummaryCtx = false and typeStrongerThan(nt, t0)
           then t = nt
           else (
             compatibleTypes(nt, t0) and t = t0
