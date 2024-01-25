@@ -77,7 +77,7 @@ class Node extends TNode {
     or
     exists(DataFlowCallable c |
       lambdaCreation(this, _, c) and
-      result.asCallableAstNode() = c.asCallable()
+      result.asCallableAstNode() = c.asCfgScope()
     )
   }
 
@@ -727,6 +727,25 @@ class ContentSet extends TContentSet {
     this = TElementContentOfTypeContent(type, true)
   }
 
+  /**
+   * Holds if this content set represents an element in a collection (array or hash).
+   */
+  predicate isElement() {
+    this.isSingleton(any(Content::ElementContent c))
+    or
+    this.isAnyElement()
+    or
+    this.isKnownOrUnknownElement(any(Content::KnownElementContent c))
+    or
+    this.isElementLowerBound(_)
+    or
+    this.isElementLowerBoundOrUnknown(_)
+    or
+    this.isElementOfType(_)
+    or
+    this.isElementOfTypeOrUnknown(_)
+  }
+
   /** Gets a textual representation of this content set. */
   string toString() {
     exists(Content c |
@@ -1067,7 +1086,7 @@ class ModuleNode instanceof Module {
    * Does not take inheritance into account.
    */
   ParameterNode getAnOwnInstanceSelf() {
-    result = TSelfParameterNode(this.getAnOwnInstanceMethod().asCallableAstNode())
+    result = TSelfMethodParameterNode(this.getAnOwnInstanceMethod().asCallableAstNode())
   }
 
   /**

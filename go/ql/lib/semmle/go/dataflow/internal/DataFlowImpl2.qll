@@ -296,6 +296,12 @@ deprecated private module Config implements FullStateConfigSig {
   }
 
   predicate includeHiddenNodes() { any(Configuration config).includeHiddenNodes() }
+
+  predicate isAdditionalTypedLocalFlowStep(Node node1, Node node2) { none() }
+
+  predicate isAdditionalTypedLocalFlowStep(Node node1, DataFlowType t1, Node node2, DataFlowType t2) {
+    none()
+  }
 }
 
 deprecated private import Impl<Config> as I

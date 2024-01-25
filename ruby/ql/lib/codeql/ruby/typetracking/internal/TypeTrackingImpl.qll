@@ -28,7 +28,7 @@ private predicate flowThrough(DataFlowPublic::ParameterNode param) {
 /** Holds if there is flow from `arg` to `p` via the call `call`, not counting `new -> initialize` call steps. */
 pragma[nomagic]
 private predicate callStepNoInitialize(
-  ExprNodes::CallCfgNode call, DataFlow::Node arg, DataFlowPrivate::ParameterNodeImpl p
+  DataFlowDispatch::DataFlowCall call, DataFlow::Node arg, DataFlowPrivate::ParameterNodeImpl p
 ) {
   exists(DataFlowDispatch::ParameterPosition pos |
     argumentPositionMatch(call, arg, pos) and
@@ -93,7 +93,7 @@ private predicate localFieldStep(DataFlow::Node pred, DataFlow::Node succ) {
 }
 
 pragma[noinline]
-private predicate argumentPositionMatch(
+private predicate sourceArgumentPositionMatch(
   ExprNodes::CallCfgNode call, DataFlowPrivate::ArgumentNode arg,
   DataFlowDispatch::ParameterPosition ppos
 ) {
@@ -105,22 +105,53 @@ private predicate argumentPositionMatch(
 }
 
 pragma[noinline]
-private predicate viableParam(
-  ExprNodes::CallCfgNode call, DataFlowPrivate::ParameterNodeImpl p,
+private predicate argumentPositionMatch(
+  DataFlowDispatch::DataFlowCall call, DataFlowPrivate::ArgumentNode arg,
   DataFlowDispatch::ParameterPosition ppos
 ) {
-  exists(Cfg::CfgScope callable |
-    DataFlowDispatch::getTarget(call) = callable or
-    DataFlowDispatch::getInitializeTarget(call) = callable
+  sourceArgumentPositionMatch(call.asCall(), arg, ppos)
+  or
+  exists(DataFlowDispatch::ArgumentPosition apos |
+    DataFlowDispatch::parameterMatch(ppos, apos) and
+    arg.argumentOf(call, apos) and
+    call.getEnclosingCallable().asLibraryCallable() instanceof
+      DataFlowDispatch::LibraryCallableToIncludeInTypeTracking
+  )
+}
+
+pragma[noinline]
+private predicate viableParam(
+  DataFlowDispatch::DataFlowCall call, DataFlowPrivate::ParameterNodeImpl p,
+  DataFlowDispatch::ParameterPosition ppos
+) {
+  exists(DataFlowDispatch::DataFlowCallable callable |
+    DataFlowDispatch::getTarget(call) = callable.asCfgScope() or
+    DataFlowDispatch::getInitializeTarget(call.asCall()) = callable.asCfgScope() or
+    call.asCall().getAstNode() =
+      callable
+          .asLibraryCallable()
+          .(DataFlowDispatch::LibraryCallableToIncludeInTypeTracking)
+          .getACallSimple()
   |
-    p.isSourceParameterOf(callable, ppos)
+    p.isParameterOf(callable, ppos)
+  )
+}
+
+/** Holds if there is flow from `arg` to `p` via the source-code call `call`. */
+pragma[nomagic]
+predicate sourceCallStep(
+  ExprNodes::CallCfgNode call, DataFlow::Node arg, DataFlowPrivate::ParameterNodeImpl p
+) {
+  exists(DataFlowDispatch::ParameterPosition pos |
+    sourceArgumentPositionMatch(call, arg, pos) and
+    viableParam(DataFlowDispatch::TNormalCall(call), p, pos)
   )
 }
 
 /** Holds if there is flow from `arg` to `p` via the call `call`. */
 pragma[nomagic]
 predicate callStep(
-  ExprNodes::CallCfgNode call, DataFlow::Node arg, DataFlowPrivate::ParameterNodeImpl p
+  DataFlowDispatch::DataFlowCall call, DataFlow::Node arg, DataFlowPrivate::ParameterNodeImpl p
 ) {
   exists(DataFlowDispatch::ParameterPosition pos |
     argumentPositionMatch(call, arg, pos) and
@@ -192,7 +223,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
     exists(DataFlowDispatch::ParameterPosition pos, DataFlowPrivate::ArgumentNode n |
       arg = FlowSummaryImpl::Private::SummaryComponent::argument(pos) and
-      argumentPositionMatch(call.asExpr(), n, pos)
+      sourceArgumentPositionMatch(call.asExpr(), n, pos)
     |
       isPostUpdate = false and result = n
       or
@@ -272,7 +303,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
   predicate levelStepCall(Node nodeFrom, LocalSourceNode nodeTo) {
     exists(DataFlowPublic::ParameterNode param |
       flowThrough(param) and
-      callStepNoInitialize(nodeTo.asExpr(), nodeFrom, param)
+      callStepNoInitialize(DataFlowDispatch::TNormalCall(nodeTo.asExpr()), nodeFrom, param)
     )
   }
 
@@ -296,7 +327,8 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
     exists(ExprNodes::CallCfgNode call |
       nodeFrom instanceof DataFlowPrivate::ReturnNode and
       not nodeFrom instanceof DataFlowPrivate::InitializeReturnNode and
-      nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
+      nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() =
+        DataFlowDispatch::getTarget(DataFlowDispatch::TNormalCall(call)) and
       // deliberately do not include `getInitializeTarget`, since calls to `new` should not
       // get the return value from `initialize`. Any fields being set in the initializer
       // will reach all reads via `callStep` and `localFieldStep`.

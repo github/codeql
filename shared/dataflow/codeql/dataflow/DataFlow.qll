@@ -537,6 +537,14 @@ module DataFlowMake<InputSig Lang> {
     private module C implements FullStateConfigSig {
       import DefaultState<Config>
       import Config
+
+      predicate isAdditionalTypedLocalFlowStep(Node node1, Node node2) { none() }
+
+      predicate isAdditionalTypedLocalFlowStep(
+        Node node1, DataFlowType t1, Node node2, DataFlowType t2
+      ) {
+        none()
+      }
     }
 
     import Impl<C>
@@ -553,6 +561,14 @@ module DataFlowMake<InputSig Lang> {
   module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
     private module C implements FullStateConfigSig {
       import Config
+
+      predicate isAdditionalTypedLocalFlowStep(Node node1, Node node2) { none() }
+
+      predicate isAdditionalTypedLocalFlowStep(
+        Node node1, DataFlowType t1, Node node2, DataFlowType t2
+      ) {
+        none()
+      }
     }
 
     import Impl<C>

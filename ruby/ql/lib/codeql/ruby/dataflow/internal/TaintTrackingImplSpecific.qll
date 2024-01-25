@@ -6,5 +6,10 @@ private import codeql.dataflow.TaintTracking
 private import DataFlowImplSpecific
 
 module RubyTaintTracking implements InputSig<RubyDataFlow> {
-  import TaintTrackingPrivate
+  private import TaintTrackingPrivate as Priv
+  import Priv
+
+  predicate defaultAdditionalTypedLocalTaintStep = Priv::defaultAdditionalTypedLocalTaintStep/2;
+
+  predicate defaultAdditionalTypedLocalTaintStep = Priv::defaultAdditionalTypedLocalTaintStep/4;
 }

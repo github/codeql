@@ -28,6 +28,17 @@ signature module InputSig<DF::InputSig Lang> {
    */
   bindingset[node]
   predicate defaultImplicitTaintRead(Lang::Node node, Lang::ContentSet c);
+
+  default predicate defaultAdditionalTypedLocalTaintStep(Lang::Node node1, Lang::Node node2) {
+    none()
+  }
+
+  bindingset[node1, t1]
+  default predicate defaultAdditionalTypedLocalTaintStep(
+    Lang::Node node1, Lang::DataFlowType t1, Lang::Node node2, Lang::DataFlowType t2
+  ) {
+    none()
+  }
 }
 
 /**
@@ -63,6 +74,12 @@ module TaintFlowMake<DF::InputSig DataFlowLang, InputSig<DataFlowLang> TaintTrac
       ) and
       defaultImplicitTaintRead(node, c)
     }
+
+    predicate isAdditionalTypedLocalFlowStep =
+      TaintTrackingLang::defaultAdditionalTypedLocalTaintStep/2;
+
+    predicate isAdditionalTypedLocalFlowStep =
+      TaintTrackingLang::defaultAdditionalTypedLocalTaintStep/4;
   }
 
   /**
@@ -72,6 +89,12 @@ module TaintFlowMake<DF::InputSig DataFlowLang, InputSig<DataFlowLang> TaintTrac
     private module Config0 implements DataFlowInternal::FullStateConfigSig {
       import DataFlowInternal::DefaultState<Config>
       import Config
+
+      predicate isAdditionalTypedLocalFlowStep =
+        TaintTrackingLang::defaultAdditionalTypedLocalTaintStep/2;
+
+      predicate isAdditionalTypedLocalFlowStep =
+        TaintTrackingLang::defaultAdditionalTypedLocalTaintStep/4;
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {
@@ -92,6 +115,12 @@ module TaintFlowMake<DF::InputSig DataFlowLang, InputSig<DataFlowLang> TaintTrac
   module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
     private module Config0 implements DataFlowInternal::FullStateConfigSig {
       import Config
+
+      predicate isAdditionalTypedLocalFlowStep =
+        TaintTrackingLang::defaultAdditionalTypedLocalTaintStep/2;
+
+      predicate isAdditionalTypedLocalFlowStep =
+        TaintTrackingLang::defaultAdditionalTypedLocalTaintStep/4;
     }
 
     private module C implements DataFlowInternal::FullStateConfigSig {

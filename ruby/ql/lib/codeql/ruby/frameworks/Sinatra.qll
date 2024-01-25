@@ -280,7 +280,7 @@ module Sinatra {
         // the filter applies to all routes
         not filter.hasPattern() and
         blockPostUpdate(pred, filter.getBody()) and
-        blockSelfParameterNode(succ, route.getBody().asExpr().getExpr())
+        blockSelfParameterSuccessorNode(succ, route.getBody().asExpr().getExpr())
       )
     }
   }
@@ -290,8 +290,18 @@ module Sinatra {
     n.getPreUpdateNode() = b
   }
 
-  /** Holds if `n` is a `self` parameter belonging to block `b`. */
-  private predicate blockSelfParameterNode(DataFlowPrivate::LambdaSelfReferenceNode n, Block b) {
-    n.getCallable() = b
+  /**
+   * Holds if `n` is a successor of a `self` parameter belonging to block `b`.
+   *
+   * We use a successor instead of the parameter node itself, because the types
+   * don't match up; in normal variable capture flow, the type of the `self`
+   * parameter should always match the type of the lambda itself, but that is not
+   * the case here.
+   */
+  private predicate blockSelfParameterSuccessorNode(DataFlow::Node n, Block b) {
+    exists(DataFlowPrivate::LambdaSelfReferenceNode p |
+      p.getCallable() = b and
+      n = p.getALocalSuccessor()
+    )
   }
 }
