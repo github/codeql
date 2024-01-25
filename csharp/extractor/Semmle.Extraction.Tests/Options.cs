@@ -27,7 +27,7 @@ namespace Semmle.Extraction.Tests
             Assert.Null(options.CompilerName);
             Assert.Empty(options.CompilerArguments);
             Assert.True(options.Threads >= 1);
-            Assert.Equal(Verbosity.Info, options.Verbosity);
+            Assert.Equal(Verbosity.Info, options.LegacyVerbosity);
             Assert.False(options.Console);
             Assert.False(options.PDB);
             Assert.False(options.Fast);
@@ -80,25 +80,25 @@ namespace Semmle.Extraction.Tests
         public void VerbosityTests()
         {
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbose" });
-            Assert.Equal(Verbosity.Debug, options.Verbosity);
+            Assert.Equal(Verbosity.Debug, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "0" });
-            Assert.Equal(Verbosity.Off, options.Verbosity);
+            Assert.Equal(Verbosity.Off, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "1" });
-            Assert.Equal(Verbosity.Error, options.Verbosity);
+            Assert.Equal(Verbosity.Error, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "2" });
-            Assert.Equal(Verbosity.Warning, options.Verbosity);
+            Assert.Equal(Verbosity.Warning, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "3" });
-            Assert.Equal(Verbosity.Info, options.Verbosity);
+            Assert.Equal(Verbosity.Info, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "4" });
-            Assert.Equal(Verbosity.Debug, options.Verbosity);
+            Assert.Equal(Verbosity.Debug, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "5" });
-            Assert.Equal(Verbosity.Trace, options.Verbosity);
+            Assert.Equal(Verbosity.Trace, options.LegacyVerbosity);
 
             Assert.Throws<FormatException>(() => CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "X" }));
         }
@@ -142,7 +142,7 @@ namespace Semmle.Extraction.Tests
         public void StandaloneOptions()
         {
             standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--silent" });
-            Assert.Equal(Verbosity.Off, standaloneOptions.Verbosity);
+            Assert.Equal(Verbosity.Off, standaloneOptions.LegacyVerbosity);
             Assert.False(standaloneOptions.Errors);
             Assert.False(standaloneOptions.Help);
         }

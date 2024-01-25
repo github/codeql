@@ -136,7 +136,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             var stopwatch = new Stopwatch();
             stopwatch.Start();
 
-            using var logger = new ConsoleLogger(options.Verbosity, logThreadId: true);
+            using var logger = new ConsoleLogger(options.LegacyVerbosity, logThreadId: true);
             logger.Log(Severity.Info, "Running C# standalone extractor");
             using var a = new Analysis(logger, options);
             var sourceFileCount = a.Extraction.Sources.Count;
@@ -147,7 +147,7 @@ namespace Semmle.Extraction.CSharp.Standalone
                 return ExitCode.Errors;
             }
 
-            using var fileLogger = CSharp.Extractor.MakeLogger(options.Verbosity, false);
+            using var fileLogger = CSharp.Extractor.MakeLogger(options.LegacyVerbosity, false);
 
             logger.Log(Severity.Info, "");
             logger.Log(Severity.Info, "Extracting...");

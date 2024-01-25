@@ -16,9 +16,9 @@ namespace Semmle.Extraction
         public int Threads { get; private set; } = EnvironmentVariables.GetDefaultNumberOfThreads();
 
         /// <summary>
-        /// The verbosity used in output and logging.
+        /// The verbosity used specified by the '--silent' or '--verbose' flags or the '--verbosity' option.
         /// </summary>
-        public Verbosity Verbosity { get; protected set; } = Verbosity.Info;
+        public Verbosity LegacyVerbosity { get; protected set; } = Verbosity.Info;
 
         /// <summary>
         /// Whether to output to the console.
@@ -63,7 +63,7 @@ namespace Semmle.Extraction
                     Threads = int.Parse(value);
                     return true;
                 case "verbosity":
-                    Verbosity = (Verbosity)int.Parse(value);
+                    LegacyVerbosity = (Verbosity)int.Parse(value);
                     return true;
                 case "trap_compression":
                     if (Enum.TryParse<TrapWriter.CompressionMode>(value, true, out var mode))
@@ -87,10 +87,10 @@ namespace Semmle.Extraction
             switch (flag)
             {
                 case "silent":
-                    Verbosity = value ? Verbosity.Off : Verbosity.Info;
+                    LegacyVerbosity = value ? Verbosity.Off : Verbosity.Info;
                     return true;
                 case "verbose":
-                    Verbosity = value ? Verbosity.Debug : Verbosity.Error;
+                    LegacyVerbosity = value ? Verbosity.Debug : Verbosity.Error;
                     return true;
                 case "console":
                     Console = value;
