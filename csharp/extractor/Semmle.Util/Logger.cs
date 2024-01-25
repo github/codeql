@@ -46,17 +46,8 @@ namespace Semmle.Util.Logging
         void LogInfo(string text, int? threadId = null) => Log(Severity.Info, text, threadId);
 
         void LogDebug(string text, int? threadId = null) => Log(Severity.Debug, text, threadId);
-    }
 
-    public static class LoggerExtensions
-    {
-        /// <summary>
-        /// Log the given text with the given severity.
-        /// </summary>
-        public static void Log(this ILogger logger, Severity s, string text, params object?[] args)
-        {
-            logger.Log(s, string.Format(text, args));
-        }
+        void Log(Severity s, string text, params object?[] args) => Log(s, string.Format(text, args));
     }
 
     /// <summary>
