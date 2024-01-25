@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private static IEnumerable<string> GetRestoredProjects(IEnumerable<string> lines) =>
             GetFirstGroupOnMatch(RestoredProjectRegex(), lines);
 
-        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, string? pathToNugetConfig = null)
+        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, out IList<string> outputLines, string? pathToNugetConfig = null, bool force = false)
         {
             var args = GetRestoreArgs(projectFile, packageDirectory, forceDotnetRefAssemblyFetching);
             if (pathToNugetConfig != null)
@@ -80,8 +80,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += $" --configfile \"{pathToNugetConfig}\"";
             }
 
-            var success = dotnetCliInvoker.RunCommand(args, out var output);
-            assets = success ? GetAssetsFilePaths(output) : Array.Empty<string>();
+            if (force)
+            {
+                args += " --force";
+            }
+
+            var success = dotnetCliInvoker.RunCommand(args, out outputLines);
+            assets = success ? GetAssetsFilePaths(outputLines) : Array.Empty<string>();
             return success;
         }
 
@@ -128,7 +133,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         [GeneratedRegex("Restored\\s+(.+\\.csproj)", RegexOptions.Compiled)]
         private static partial Regex RestoredProjectRegex();
 
-        [GeneratedRegex("[Assets\\sfile\\shas\\snot\\schanged.\\sSkipping\\sassets\\sfile\\swriting.|Writing\\sassets\\sfile\\sto\\sdisk.]\\sPath:\\s(.*)", RegexOptions.Compiled)]
+        [GeneratedRegex("[Assets\\sfile\\shas\\snot\\schanged.\\sSkipping\\sassets\\sfile\\swriting.|Writing\\sassets\\sfile\\sto\\sdisk.]\\sPath:\\s(.+)", RegexOptions.Compiled)]
         private static partial Regex AssetsFileRegex();
     }
 }

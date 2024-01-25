@@ -29,7 +29,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             dependencyManager = new DependencyManager(options.SrcDir, options.Dependencies, logger);
             References = dependencyManager.ReferenceFiles;
             Extraction = new Extraction(options.SrcDir);
-            Extraction.Sources.AddRange(options.Dependencies.SolutionFile is null ? dependencyManager.AllSourceFiles : dependencyManager.ProjectSourceFiles);
+            Extraction.Sources.AddRange(dependencyManager.AllSourceFiles);
         }
 
         public IEnumerable<string> References { get; }

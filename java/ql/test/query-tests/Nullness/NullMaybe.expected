@@ -35,3 +35,4 @@
 | C.java:233:7:233:8 | xs | Variable $@ may be null at this access because of $@ assignment. | C.java:231:5:231:56 | int[] xs | xs | C.java:231:11:231:55 | xs | this |
 | F.java:11:5:11:7 | obj | Variable $@ may be null at this access as suggested by $@ null guard. | F.java:8:18:8:27 | obj | obj | F.java:9:9:9:19 | ... == ... | this |
 | F.java:17:5:17:7 | obj | Variable $@ may be null at this access as suggested by $@ null guard. | F.java:14:18:14:27 | obj | obj | F.java:15:9:15:19 | ... == ... | this |
+| G.java:20:12:20:12 | s | Variable $@ may be null at this access as suggested by $@ null guard. | G.java:3:27:3:34 | s | s | G.java:5:9:5:17 | ... == ... | this |

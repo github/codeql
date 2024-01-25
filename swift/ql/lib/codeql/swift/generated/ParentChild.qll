@@ -245,6 +245,19 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfMacroRole(MacroRole e, int index, string partialPredicateCall) {
+    exists(int b, int bAstNode, int n |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfUnspecifiedElement(
     UnspecifiedElement e, int index, string partialPredicateCall
   ) {
@@ -601,6 +614,25 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfOperatorDecl(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfMacroDecl(MacroDecl e, int index, string partialPredicateCall) {
+    exists(int b, int bGenericContext, int bValueDecl, int n |
+      b = 0 and
+      bGenericContext =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
+      bValueDecl =
+        bGenericContext + 1 +
+          max(int i | i = -1 or exists(getImmediateChildOfValueDecl(e, i, _)) | i) and
+      n = bValueDecl and
+      (
+        none()
+        or
+        result = getImmediateChildOfGenericContext(e, index - b, partialPredicateCall)
+        or
+        result = getImmediateChildOfValueDecl(e, index - bGenericContext, partialPredicateCall)
       )
     )
   }
@@ -1201,6 +1233,40 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfConsumeExpr(
+    ConsumeExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfCopyExpr(CopyExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfDeclRefExpr(
     DeclRefExpr e, int index, string partialPredicateCall
   ) {
@@ -1573,6 +1639,24 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfMaterializePackExpr(
+    MaterializePackExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfObjCSelectorExpr(
     ObjCSelectorExpr e, int index, string partialPredicateCall
   ) {
@@ -1693,6 +1777,44 @@ private module Impl {
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
         result = getImmediateChildOfErrorElement(e, index - bExpr, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPackElementExpr(
+    PackElementExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nSubExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPackExpansionExpr(
+    PackExpansionExpr e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bExpr, int n, int nPatternExpr |
+      b = 0 and
+      bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
+      n = bExpr and
+      nPatternExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
+        or
+        index = n and
+        result = e.getImmediatePatternExpr() and
+        partialPredicateCall = "PatternExpr()"
       )
     )
   }
@@ -2099,6 +2221,20 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfApplyExpr(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfBorrowExpr(BorrowExpr e, int index, string partialPredicateCall) {
+    exists(int b, int bIdentityExpr, int n |
+      b = 0 and
+      bIdentityExpr =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfIdentityExpr(e, i, _)) | i) and
+      n = bIdentityExpr and
+      (
+        none()
+        or
+        result = getImmediateChildOfIdentityExpr(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -3552,6 +3688,24 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfDiscardStmt(
+    DiscardStmt e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bStmt, int n, int nSubExpr |
+      b = 0 and
+      bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
+      n = bStmt and
+      nSubExpr = n + 1 and
+      (
+        none()
+        or
+        result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
+        or
+        index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
+      )
+    )
+  }
+
   private Element getImmediateChildOfFailStmt(FailStmt e, int index, string partialPredicateCall) {
     exists(int b, int bStmt, int n |
       b = 0 and
@@ -4029,6 +4183,49 @@ private module Impl {
   }
 
   private Element getImmediateChildOfModuleType(ModuleType e, int index, string partialPredicateCall) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPackElementType(
+    PackElementType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPackExpansionType(
+    PackExpansionType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bType, int n |
+      b = 0 and
+      bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
+      n = bType and
+      (
+        none()
+        or
+        result = getImmediateChildOfType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfPackType(PackType e, int index, string partialPredicateCall) {
     exists(int b, int bType, int n |
       b = 0 and
       bType = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfType(e, i, _)) | i) and
@@ -4611,6 +4808,22 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfLocalArchetypeType(
+    LocalArchetypeType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bArchetypeType, int n |
+      b = 0 and
+      bArchetypeType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfArchetypeType(e, i, _)) | i) and
+      n = bArchetypeType and
+      (
+        none()
+        or
+        result = getImmediateChildOfArchetypeType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfNominalType(
     NominalType e, int index, string partialPredicateCall
   ) {
@@ -4649,8 +4862,8 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfOpenedArchetypeType(
-    OpenedArchetypeType e, int index, string partialPredicateCall
+  private Element getImmediateChildOfPackArchetypeType(
+    PackArchetypeType e, int index, string partialPredicateCall
   ) {
     exists(int b, int bArchetypeType, int n |
       b = 0 and
@@ -4775,6 +4988,22 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfElementArchetypeType(
+    ElementArchetypeType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocalArchetypeType, int n |
+      b = 0 and
+      bLocalArchetypeType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocalArchetypeType(e, i, _)) | i) and
+      n = bLocalArchetypeType and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocalArchetypeType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
   private Element getImmediateChildOfEnumType(EnumType e, int index, string partialPredicateCall) {
     exists(int b, int bNominalType, int n |
       b = 0 and
@@ -4785,6 +5014,22 @@ private module Impl {
         none()
         or
         result = getImmediateChildOfNominalType(e, index - b, partialPredicateCall)
+      )
+    )
+  }
+
+  private Element getImmediateChildOfOpenedArchetypeType(
+    OpenedArchetypeType e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bLocalArchetypeType, int n |
+      b = 0 and
+      bLocalArchetypeType =
+        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLocalArchetypeType(e, i, _)) | i) and
+      n = bLocalArchetypeType and
+      (
+        none()
+        or
+        result = getImmediateChildOfLocalArchetypeType(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -4873,6 +5118,8 @@ private module Impl {
     or
     result = getImmediateChildOfKeyPathComponent(e, index, partialAccessor)
     or
+    result = getImmediateChildOfMacroRole(e, index, partialAccessor)
+    or
     result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
     or
     result = getImmediateChildOfOtherAvailabilitySpec(e, index, partialAccessor)
@@ -4902,6 +5149,8 @@ private module Impl {
     result = getImmediateChildOfEnumElementDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfInfixOperatorDecl(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfMacroDecl(e, index, partialAccessor)
     or
     result = getImmediateChildOfPostfixOperatorDecl(e, index, partialAccessor)
     or
@@ -4949,6 +5198,10 @@ private module Impl {
     or
     result = getImmediateChildOfCaptureListExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfConsumeExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfCopyExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfDeclRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfDefaultArgumentExpr(e, index, partialAccessor)
@@ -4979,6 +5232,8 @@ private module Impl {
     or
     result = getImmediateChildOfMakeTemporarilyEscapableExpr(e, index, partialAccessor)
     or
+    result = getImmediateChildOfMaterializePackExpr(e, index, partialAccessor)
+    or
     result = getImmediateChildOfObjCSelectorExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfOneWayExpr(e, index, partialAccessor)
@@ -4992,6 +5247,10 @@ private module Impl {
     result = getImmediateChildOfOtherInitializerRefExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfOverloadedDeclRefExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPackElementExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPackExpansionExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfPropertyWrapperValuePlaceholderExpr(e, index, partialAccessor)
     or
@@ -5038,6 +5297,8 @@ private module Impl {
     result = getImmediateChildOfAwaitExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBinaryExpr(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfBorrowExpr(e, index, partialAccessor)
     or
     result = getImmediateChildOfBridgeFromObjCExpr(e, index, partialAccessor)
     or
@@ -5195,6 +5456,8 @@ private module Impl {
     or
     result = getImmediateChildOfDeferStmt(e, index, partialAccessor)
     or
+    result = getImmediateChildOfDiscardStmt(e, index, partialAccessor)
+    or
     result = getImmediateChildOfFailStmt(e, index, partialAccessor)
     or
     result = getImmediateChildOfFallthroughStmt(e, index, partialAccessor)
@@ -5238,6 +5501,12 @@ private module Impl {
     result = getImmediateChildOfLValueType(e, index, partialAccessor)
     or
     result = getImmediateChildOfModuleType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPackElementType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPackExpansionType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfPackType(e, index, partialAccessor)
     or
     result = getImmediateChildOfParameterizedProtocolType(e, index, partialAccessor)
     or
@@ -5297,7 +5566,7 @@ private module Impl {
     or
     result = getImmediateChildOfOpaqueTypeArchetypeType(e, index, partialAccessor)
     or
-    result = getImmediateChildOfOpenedArchetypeType(e, index, partialAccessor)
+    result = getImmediateChildOfPackArchetypeType(e, index, partialAccessor)
     or
     result = getImmediateChildOfPrimaryArchetypeType(e, index, partialAccessor)
     or
@@ -5311,7 +5580,11 @@ private module Impl {
     or
     result = getImmediateChildOfClassType(e, index, partialAccessor)
     or
+    result = getImmediateChildOfElementArchetypeType(e, index, partialAccessor)
+    or
     result = getImmediateChildOfEnumType(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfOpenedArchetypeType(e, index, partialAccessor)
     or
     result = getImmediateChildOfOptionalType(e, index, partialAccessor)
     or

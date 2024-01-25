@@ -1,3 +1,38 @@
+## 0.11.6
+
+### Major Analysis Improvements
+
+* Added support for global data-flow through captured variables.
+
+### Minor Analysis Improvements
+
+* Captured subclass relationships ahead-of-time for most popular PyPI packages so we are able to resolve subclass relationships even without having the packages installed. For example we have captured that `flask_restful.Resource` is a subclass of `flask.views.MethodView`, so our Flask modeling will still consider a function named `post` on a `class Foo(flask_restful.Resource):` as a HTTP request handler.
+* Python now makes use of the shared type tracking library, exposed as `semmle.python.dataflow.new.TypeTracking`. The existing type tracking library, `semmle.python.dataflow.new.TypeTracker`, has consequently been deprecated.
+
+### Bug Fixes
+
+- We would previously confuse all captured variables into a single scope entry node. Now they each get their own node so they can be tracked properly.
+- The dataflow graph no longer contains SSA variables. Instead, flow is directed via the corresponding controlflow nodes. This should make the graph and the flow simpler to understand. Minor improvements in flow computation has been observed, but in general negligible changes to alerts are expected.
+
+## 0.11.5
+
+No user-facing changes.
+
+## 0.11.4
+
+### Minor Analysis Improvements
+
+- Added support for tarfile extraction filters as defined in [PEP-706](https://peps.python.org/pep-0706). In particular, calls to `TarFile.extract`, and `TarFile.extractall` are no longer considered to be sinks for the `py/tarslip` query if a sufficiently safe filter is provided.
+* Added modeling of `*args` and `**kwargs` as routed-parameters in request handlers for django/flask/FastAPI/tornado.
+- Added support for type parameters in function and class definitions, as well as the new Python 3.12 type alias statement.
+* Added taint-flow modeling for regular expressions with `re` module from the standard library.
+
+## 0.11.3
+
+### Minor Analysis Improvements
+
+* Added basic flow for attributes defined on classes, when the attribute lookup is on a direct reference to that class (so not instance, cls parameter, or self parameter). Example: class definition `class Foo: my_tuples = (dangerous, safe)` and usage `SINK(Foo.my_tuples[0])`.
+
 ## 0.11.2
 
 ### Minor Analysis Improvements

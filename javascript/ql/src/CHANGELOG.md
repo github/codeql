@@ -1,3 +1,24 @@
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Added django URLs to detected "safe" URL patterns in `js/unsafe-external-link`. 
+
+## 0.8.3
+
+### Query Metadata Changes
+
+* Lower the security severity of log-injection to medium.
+* Increase the security severity of XSS to high.
+
 ## 0.8.2
 
 ### Minor Analysis Improvements

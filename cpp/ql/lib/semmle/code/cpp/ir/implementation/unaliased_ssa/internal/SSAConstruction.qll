@@ -1068,6 +1068,3 @@ module Ssa {
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
 }
-
-/** DEPRECATED: Alias for Ssa */
-deprecated module SSA = Ssa;

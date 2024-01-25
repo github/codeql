@@ -17,6 +17,3 @@ module Ssa {
 
   predicate hasUnreachedInstruction(IRFunctionBase irFunc) { none() }
 }
-
-/** DEPRECATED: Alias for Ssa */
-deprecated module SSA = Ssa;

@@ -27,8 +27,8 @@ import (
 	"golang.org/x/tools/go/gcexportdata"
 	"golang.org/x/tools/internal/gocommand"
 	"golang.org/x/tools/internal/packagesinternal"
-	"golang.org/x/tools/internal/typeparams"
 	"golang.org/x/tools/internal/typesinternal"
+	"golang.org/x/tools/internal/versions"
 )
 
 // A LoadMode controls the amount of detail to return when loading.
@@ -431,12 +431,6 @@ func init() {
 	}
 	packagesinternal.GetDepsErrors = func(p interface{}) []*packagesinternal.PackageError {
 		return p.(*Package).depsErrors
-	}
-	packagesinternal.GetGoCmdRunner = func(config interface{}) *gocommand.Runner {
-		return config.(*Config).gocmdRunner
-	}
-	packagesinternal.SetGoCmdRunner = func(config interface{}, runner *gocommand.Runner) {
-		config.(*Config).gocmdRunner = runner
 	}
 	packagesinternal.SetModFile = func(config interface{}, value string) {
 		config.(*Config).modFile = value
@@ -1020,10 +1014,11 @@ func (ld *loader) loadPackage(lpkg *loaderPackage) {
 		Defs:       make(map[*ast.Ident]types.Object),
 		Uses:       make(map[*ast.Ident]types.Object),
 		Implicits:  make(map[ast.Node]types.Object),
+		Instances:  make(map[*ast.Ident]types.Instance),
 		Scopes:     make(map[ast.Node]*types.Scope),
 		Selections: make(map[*ast.SelectorExpr]*types.Selection),
 	}
-	typeparams.InitInstanceInfo(lpkg.TypesInfo)
+	versions.InitFileVersions(lpkg.TypesInfo)
 	lpkg.TypesSizes = ld.sizes
 
 	importer := importerFunc(func(path string) (*types.Package, error) {

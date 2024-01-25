@@ -17,6 +17,7 @@ import codeql.swift.elements.File
 import codeql.swift.elements.KeyPathComponent
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location
+import codeql.swift.elements.MacroRole
 import codeql.swift.elements.OtherAvailabilitySpec
 import codeql.swift.elements.PlatformVersionAvailabilitySpec
 import codeql.swift.elements.UnknownFile
@@ -43,6 +44,7 @@ import codeql.swift.elements.decl.IfConfigDecl
 import codeql.swift.elements.decl.ImportDecl
 import codeql.swift.elements.decl.InfixOperatorDecl
 import codeql.swift.elements.decl.Initializer
+import codeql.swift.elements.decl.MacroDecl
 import codeql.swift.elements.decl.MissingMemberDecl
 import codeql.swift.elements.decl.ModuleDecl
 import codeql.swift.elements.decl.NamedFunction
@@ -78,6 +80,7 @@ import codeql.swift.elements.expr.AwaitExpr
 import codeql.swift.elements.expr.BinaryExpr
 import codeql.swift.elements.expr.BindOptionalExpr
 import codeql.swift.elements.expr.BooleanLiteralExpr
+import codeql.swift.elements.expr.BorrowExpr
 import codeql.swift.elements.expr.BridgeFromObjCExpr
 import codeql.swift.elements.expr.BridgeToObjCExpr
 import codeql.swift.elements.expr.BuiltinLiteralExpr
@@ -91,6 +94,8 @@ import codeql.swift.elements.expr.CollectionExpr
 import codeql.swift.elements.expr.CollectionUpcastConversionExpr
 import codeql.swift.elements.expr.ConditionalBridgeFromObjCExpr
 import codeql.swift.elements.expr.ConditionalCheckedCastExpr
+import codeql.swift.elements.expr.ConsumeExpr
+import codeql.swift.elements.expr.CopyExpr
 import codeql.swift.elements.expr.CovariantFunctionConversionExpr
 import codeql.swift.elements.expr.CovariantReturnConversionExpr
 import codeql.swift.elements.expr.DeclRefExpr
@@ -141,6 +146,7 @@ import codeql.swift.elements.expr.LoadExpr
 import codeql.swift.elements.expr.LookupExpr
 import codeql.swift.elements.expr.MagicIdentifierLiteralExpr
 import codeql.swift.elements.expr.MakeTemporarilyEscapableExpr
+import codeql.swift.elements.expr.MaterializePackExpr
 import codeql.swift.elements.expr.MemberRefExpr
 import codeql.swift.elements.expr.MetatypeConversionExpr
 import codeql.swift.elements.expr.MethodLookupExpr
@@ -155,6 +161,8 @@ import codeql.swift.elements.expr.OptionalEvaluationExpr
 import codeql.swift.elements.expr.OptionalTryExpr
 import codeql.swift.elements.expr.OtherInitializerRefExpr
 import codeql.swift.elements.expr.OverloadedDeclRefExpr
+import codeql.swift.elements.expr.PackElementExpr
+import codeql.swift.elements.expr.PackExpansionExpr
 import codeql.swift.elements.expr.ParenExpr
 import codeql.swift.elements.expr.PointerToPointerExpr
 import codeql.swift.elements.expr.PostfixUnaryExpr
@@ -203,6 +211,7 @@ import codeql.swift.elements.stmt.CaseStmt
 import codeql.swift.elements.stmt.ConditionElement
 import codeql.swift.elements.stmt.ContinueStmt
 import codeql.swift.elements.stmt.DeferStmt
+import codeql.swift.elements.stmt.DiscardStmt
 import codeql.swift.elements.stmt.DoCatchStmt
 import codeql.swift.elements.stmt.DoStmt
 import codeql.swift.elements.stmt.FailStmt
@@ -248,6 +257,7 @@ import codeql.swift.elements.type.ClassType
 import codeql.swift.elements.type.DependentMemberType
 import codeql.swift.elements.type.DictionaryType
 import codeql.swift.elements.type.DynamicSelfType
+import codeql.swift.elements.type.ElementArchetypeType
 import codeql.swift.elements.type.EnumType
 import codeql.swift.elements.type.ErrorType
 import codeql.swift.elements.type.ExistentialMetatypeType
@@ -257,6 +267,7 @@ import codeql.swift.elements.type.GenericFunctionType
 import codeql.swift.elements.type.GenericTypeParamType
 import codeql.swift.elements.type.InOutType
 import codeql.swift.elements.type.LValueType
+import codeql.swift.elements.type.LocalArchetypeType
 import codeql.swift.elements.type.MetatypeType
 import codeql.swift.elements.type.ModuleType
 import codeql.swift.elements.type.NominalOrBoundGenericNominalType
@@ -264,6 +275,10 @@ import codeql.swift.elements.type.NominalType
 import codeql.swift.elements.type.OpaqueTypeArchetypeType
 import codeql.swift.elements.type.OpenedArchetypeType
 import codeql.swift.elements.type.OptionalType
+import codeql.swift.elements.type.PackArchetypeType
+import codeql.swift.elements.type.PackElementType
+import codeql.swift.elements.type.PackExpansionType
+import codeql.swift.elements.type.PackType
 import codeql.swift.elements.type.ParameterizedProtocolType
 import codeql.swift.elements.type.ParenType
 import codeql.swift.elements.type.PrimaryArchetypeType

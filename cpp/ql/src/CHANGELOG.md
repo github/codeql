@@ -1,3 +1,34 @@
+## 0.9.2
+
+### New Queries
+
+* Added a new query, `cpp/use-of-unique-pointer-after-lifetime-ends`, to detect uses of the contents unique pointers that will be destroyed immediately.
+* The `cpp/incorrectly-checked-scanf` query has been added. This finds results where the return value of scanf is not checked correctly. Some of these were previously found by `cpp/missing-check-scanf` and will no longer be reported there.
+
+### Minor Analysis Improvements
+
+* The `cpp/badly-bounded-write` query could report false positives when a pointer was first initialized with a literal and later assigned a dynamically allocated array. These false positives now no longer occur.
+
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### Breaking Changes
+
+* The `cpp/tainted-format-string-through-global` query has been deleted. This does not lead to a loss of relevant alerts, as the query duplicated a subset of the alerts from `cpp/tainted-format-string`.
+
+### New Queries
+
+* Added a new query, `cpp/use-of-string-after-lifetime-ends`, to detect calls to `c_str` on strings that will be destroyed immediately.
+
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* The `cpp/uninitialized-local` query has been improved to produce fewer false positives.
+
 ## 0.8.2
 
 No user-facing changes.

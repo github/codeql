@@ -9,7 +9,7 @@ import codeql.swift.controlflow.internal.ControlFlowGraphImpl::TestOutput
 class MyRelevantNode extends RelevantNode {
   MyRelevantNode() { this.getScope().getLocation().getFile().getName().matches("%swift/ql/test%") }
 
-  private AstNode asAstNode() { result = this.getNode().asAstNode() }
+  private AstNode asAstNode() { result = this.getAstNode().asAstNode() }
 
   override string getOrderDisambiguation() {
     result = this.asAstNode().getPrimaryQlClasses()

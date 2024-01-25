@@ -10,6 +10,10 @@ import codeql.swift.elements.AstNode
 import codeql.swift.elements.Element
 import codeql.swift.elements.ErrorElement
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `UnspecifiedElement` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::UnspecifiedElement` class directly.

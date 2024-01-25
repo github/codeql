@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Logging.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -83,6 +83,10 @@ namespace Microsoft
             public interface ILoggerProvider : System.IDisposable
             {
                 Microsoft.Extensions.Logging.ILogger CreateLogger(string categoryName);
+            }
+            public interface ILoggingBuilder
+            {
+                Microsoft.Extensions.DependencyInjection.IServiceCollection Services { get; }
             }
             public interface ISupportExternalScope
             {
@@ -172,6 +176,9 @@ namespace Microsoft
             {
                 public LoggerMessageAttribute() => throw null;
                 public LoggerMessageAttribute(int eventId, Microsoft.Extensions.Logging.LogLevel level, string message) => throw null;
+                public LoggerMessageAttribute(Microsoft.Extensions.Logging.LogLevel level) => throw null;
+                public LoggerMessageAttribute(Microsoft.Extensions.Logging.LogLevel level, string message) => throw null;
+                public LoggerMessageAttribute(string message) => throw null;
                 public int EventId { get => throw null; set { } }
                 public string EventName { get => throw null; set { } }
                 public Microsoft.Extensions.Logging.LogLevel Level { get => throw null; set { } }

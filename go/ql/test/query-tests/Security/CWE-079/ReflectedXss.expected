@@ -13,9 +13,13 @@ edges
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:46:34:60 | selection of Filename |
 | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | reflectedxsstest.go:33:49:33:55 | content |
 | reflectedxsstest.go:32:34:32:37 | file | reflectedxsstest.go:32:2:32:38 | ... := ...[0] |
+| reflectedxsstest.go:33:17:33:56 | []type{args} [array] | reflectedxsstest.go:33:17:33:56 | call to Sprintf |
 | reflectedxsstest.go:33:17:33:56 | call to Sprintf | reflectedxsstest.go:33:10:33:57 | type conversion |
+| reflectedxsstest.go:33:49:33:55 | content | reflectedxsstest.go:33:17:33:56 | []type{args} [array] |
 | reflectedxsstest.go:33:49:33:55 | content | reflectedxsstest.go:33:17:33:56 | call to Sprintf |
+| reflectedxsstest.go:34:17:34:61 | []type{args} [array] | reflectedxsstest.go:34:17:34:61 | call to Sprintf |
 | reflectedxsstest.go:34:17:34:61 | call to Sprintf | reflectedxsstest.go:34:10:34:62 | type conversion |
+| reflectedxsstest.go:34:46:34:60 | selection of Filename | reflectedxsstest.go:34:17:34:61 | []type{args} [array] |
 | reflectedxsstest.go:34:46:34:60 | selection of Filename | reflectedxsstest.go:34:17:34:61 | call to Sprintf |
 | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | reflectedxsstest.go:39:16:39:21 | reader |
 | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | reflectedxsstest.go:40:14:40:17 | part |
@@ -25,7 +29,9 @@ edges
 | reflectedxsstest.go:40:14:40:28 | call to FileName | reflectedxsstest.go:44:46:44:53 | partName |
 | reflectedxsstest.go:41:2:41:10 | definition of byteSlice | reflectedxsstest.go:45:10:45:18 | byteSlice |
 | reflectedxsstest.go:42:2:42:5 | part | reflectedxsstest.go:41:2:41:10 | definition of byteSlice |
+| reflectedxsstest.go:44:17:44:54 | []type{args} [array] | reflectedxsstest.go:44:17:44:54 | call to Sprintf |
 | reflectedxsstest.go:44:17:44:54 | call to Sprintf | reflectedxsstest.go:44:10:44:55 | type conversion |
+| reflectedxsstest.go:44:46:44:53 | partName | reflectedxsstest.go:44:17:44:54 | []type{args} [array] |
 | reflectedxsstest.go:44:46:44:53 | partName | reflectedxsstest.go:44:17:44:54 | call to Sprintf |
 | reflectedxsstest.go:51:14:51:18 | selection of URL | reflectedxsstest.go:51:14:51:26 | call to Query |
 | reflectedxsstest.go:51:14:51:26 | call to Query | reflectedxsstest.go:54:11:54:21 | type conversion |
@@ -64,9 +70,11 @@ nodes
 | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:32:34:32:37 | file | semmle.label | file |
 | reflectedxsstest.go:33:10:33:57 | type conversion | semmle.label | type conversion |
+| reflectedxsstest.go:33:17:33:56 | []type{args} [array] | semmle.label | []type{args} [array] |
 | reflectedxsstest.go:33:17:33:56 | call to Sprintf | semmle.label | call to Sprintf |
 | reflectedxsstest.go:33:49:33:55 | content | semmle.label | content |
 | reflectedxsstest.go:34:10:34:62 | type conversion | semmle.label | type conversion |
+| reflectedxsstest.go:34:17:34:61 | []type{args} [array] | semmle.label | []type{args} [array] |
 | reflectedxsstest.go:34:17:34:61 | call to Sprintf | semmle.label | call to Sprintf |
 | reflectedxsstest.go:34:46:34:60 | selection of Filename | semmle.label | selection of Filename |
 | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | semmle.label | ... := ...[0] |
@@ -77,6 +85,7 @@ nodes
 | reflectedxsstest.go:41:2:41:10 | definition of byteSlice | semmle.label | definition of byteSlice |
 | reflectedxsstest.go:42:2:42:5 | part | semmle.label | part |
 | reflectedxsstest.go:44:10:44:55 | type conversion | semmle.label | type conversion |
+| reflectedxsstest.go:44:17:44:54 | []type{args} [array] | semmle.label | []type{args} [array] |
 | reflectedxsstest.go:44:17:44:54 | call to Sprintf | semmle.label | call to Sprintf |
 | reflectedxsstest.go:44:46:44:53 | partName | semmle.label | partName |
 | reflectedxsstest.go:45:10:45:18 | byteSlice | semmle.label | byteSlice |

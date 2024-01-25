@@ -51,7 +51,6 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
     (
       output.isParameterDeref(0) or
-      output.isReturnValue() or
       output.isReturnValueDeref()
     ) and
     description = "string read by " + this.getName()
@@ -102,7 +101,6 @@ private class GetsFunction extends DataFlowFunction, ArrayFunction, AliasFunctio
   override predicate hasLocalFlowSource(FunctionOutput output, string description) {
     (
       output.isParameterDeref(0) or
-      output.isReturnValue() or
       output.isReturnValueDeref()
     ) and
     description = "string read by " + this.getName()

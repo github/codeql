@@ -2399,7 +2399,7 @@
 | UseUseExplosion.rb:24:5:25:7 | use | UseUseExplosion.rb:1:1:26:3 | C |
 | local_dataflow.rb:1:1:7:3 | self (foo) | local_dataflow.rb:3:8:3:10 | self |
 | local_dataflow.rb:1:1:7:3 | self in foo | local_dataflow.rb:1:1:7:3 | self (foo) |
-| local_dataflow.rb:1:1:150:3 | <uninitialized> | local_dataflow.rb:10:9:10:9 | x |
+| local_dataflow.rb:1:1:150:3 | <uninitialized> x | local_dataflow.rb:10:9:10:9 | x |
 | local_dataflow.rb:1:1:150:3 | self (local_dataflow.rb) | local_dataflow.rb:49:1:53:3 | self |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:1:9:1:9 | a |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:2:7:2:7 | a |
@@ -2528,6 +2528,8 @@
 | local_dataflow.rb:78:12:78:20 | [post] self | local_dataflow.rb:85:22:85:28 | self |
 | local_dataflow.rb:78:12:78:20 | [post] self | local_dataflow.rb:86:28:86:34 | self |
 | local_dataflow.rb:78:12:78:20 | [post] self | local_dataflow.rb:87:20:87:26 | self |
+| local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:79:13:79:13 | b |
+| local_dataflow.rb:78:12:78:20 | call to source | local_dataflow.rb:80:8:80:8 | a |
 | local_dataflow.rb:78:12:78:20 | self | local_dataflow.rb:79:20:79:26 | self |
 | local_dataflow.rb:78:12:78:20 | self | local_dataflow.rb:80:24:80:30 | self |
 | local_dataflow.rb:78:12:78:20 | self | local_dataflow.rb:82:7:82:13 | self |

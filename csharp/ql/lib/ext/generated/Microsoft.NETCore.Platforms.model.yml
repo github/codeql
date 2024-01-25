@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.NETCore.Platforms", "UpdateRuntimeIdentifierGraph", "Execute", "()", "summary", "df-generated"]
+      - ["Microsoft.NETCore.Platforms", "UpdateRuntimeIdentifierGraph", "get_AdditionalRuntimeIdentifiers", "()", "summary", "df-generated"]
+      - ["Microsoft.NETCore.Platforms", "UpdateRuntimeIdentifierGraph", "get_InputFile", "()", "summary", "df-generated"]
+      - ["Microsoft.NETCore.Platforms", "UpdateRuntimeIdentifierGraph", "get_OutputFile", "()", "summary", "df-generated"]
+      - ["Microsoft.NETCore.Platforms", "UpdateRuntimeIdentifierGraph", "set_AdditionalRuntimeIdentifiers", "(Microsoft.Build.Framework.ITaskItem[])", "summary", "df-generated"]
+      - ["Microsoft.NETCore.Platforms", "UpdateRuntimeIdentifierGraph", "set_InputFile", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.NETCore.Platforms", "UpdateRuntimeIdentifierGraph", "set_OutputFile", "(System.String)", "summary", "df-generated"]

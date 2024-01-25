@@ -8,6 +8,10 @@ private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.Locatable
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `ErrorElement` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * The superclass of all elements indicating some kind of error.

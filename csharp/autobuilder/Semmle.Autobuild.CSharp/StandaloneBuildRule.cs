@@ -17,7 +17,7 @@ namespace Semmle.Autobuild.CSharp
 
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
-            BuildScript GetCommand(string? solution)
+            BuildScript GetCommand()
             {
                 string standalone;
                 if (builder.CodeQLExtractorLangRoot is not null && builder.CodeQlPlatform is not null)
@@ -32,14 +32,6 @@ namespace Semmle.Autobuild.CSharp
                 var cmd = new CommandBuilder(builder.Actions);
                 cmd.RunCommand(standalone);
 
-                if (solution is not null)
-                    cmd.QuoteArgument(solution);
-
-                if (!builder.Options.NugetRestore)
-                {
-                    cmd.Argument("--skip-nuget");
-                }
-
                 if (!string.IsNullOrEmpty(this.dotNetPath))
                 {
                     cmd.Argument("--dotnet");
@@ -50,16 +42,11 @@ namespace Semmle.Autobuild.CSharp
             }
 
             if (!builder.Options.Buildless)
+            {
                 return BuildScript.Failure;
+            }
 
-            if (!builder.Options.Solution.Any())
-                return GetCommand(null);
-
-            var script = BuildScript.Success;
-            foreach (var solution in builder.Options.Solution)
-                script &= GetCommand(solution);
-
-            return script;
+            return GetCommand();
         }
     }
 }

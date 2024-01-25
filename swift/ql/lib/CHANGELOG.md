@@ -1,3 +1,44 @@
+## 0.3.6
+
+### Minor Analysis Improvements
+
+* Expanded flow models for `UnsafePointer` and similar classes.
+* Added flow models for non-member `withUnsafePointer` and similar functions.
+* Added flow models for `withMemoryRebound`, `assumingMemoryBound` and `bindMemory` member functions of library pointer classes.
+* Added a sensitive data model for `SecKeyCopyExternalRepresentation`.
+* Added imprecise flow models for `append` and `insert` methods, and initializer calls with a `data` argument.
+* Tyes for patterns are now included in the database and made available through the `Pattern::getType()` method.
+
+## 0.3.5
+
+No user-facing changes.
+
+## 0.3.4
+
+### Minor Analysis Improvements
+
+* Extracts Swift's `DiscardStmt` and `MaterizliePackExpr`
+* Expanded and improved flow models for `Set` and `Sequence`.
+* Added imprecise flow sources matching initializers such as `init(contentsOfFile:)`.
+* Extracts `MacroDecl` and some related information
+
+## 0.3.3
+
+### Major Analysis Improvements
+
+* Added Swift 5.9.1 support
+* New AST node is extracted: `SingleValueStmtExpr`
+
+### Minor Analysis Improvements
+
+* AST and types related to parameter packs are now extracted
+* Added taint flow models for the `NSString.enumerate*` methods.
+* Generalized the data flow model for subscript writes (`a[index] = b`) so that it applies to subscripts on all kinds of objects, not just arrays.
+* Fixed a bug where some flow sinks at field accesses were not being correctly identified.
+* Added indexed `getVariable` to `CaptureListExpr`, improving its AST printing and data flow.
+* Added flow models for `String` methods involving closures such as `String.withUTF8(_:)`.
+* AST and types related to move semantics (`copy`, `consume`, `_borrow`) are now extracted
+
 ## 0.3.2
 
 ### Minor Analysis Improvements

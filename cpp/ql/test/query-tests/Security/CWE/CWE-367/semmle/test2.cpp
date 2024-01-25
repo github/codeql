@@ -19,7 +19,7 @@ bool stat(const char *path, stat_data *buf);
 bool fstat(int file, stat_data *buf);
 bool lstat(const char *path, stat_data *buf);
 bool fstatat(int dir, const char *path, stat_data *buf);
-void chmod(const char *path, int setting);
+int chmod(const char *path, int setting);
 int rename(const char *from, const char *to);
 bool remove(const char *path);
 
@@ -407,4 +407,9 @@ void test7_1(const char *path1, const char *path2)
 	{
 		chmod(path2, 1234); // BAD
 	}
+}
+
+int test8(const char *path, int mode)
+{
+    return (chmod(path, mode) == 0 ? 1 : 0); // GOOD
 }

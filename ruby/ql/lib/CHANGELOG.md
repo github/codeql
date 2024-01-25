@@ -1,3 +1,25 @@
+## 0.8.6
+
+### Minor Analysis Improvements
+
+* Parsing of division operators (`/`) at the end of a line has been improved. Before they were wrongly interpreted as the start of a regular expression literal (`/.../`) leading to syntax errors.
+* Parsing of `case` statements that are formatted with the value expression on a different line than the `case` keyword  has been improved and should no longer lead to syntax errors.
+* Ruby now makes use of the shared type tracking library, exposed as `codeql.ruby.typetracking.TypeTracking`. The existing type tracking library, `codeql.ruby.typetracking.TypeTracker`, has consequently been deprecated.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Improved modeling for `ActiveRecord`s `update_all` method
+
+## 0.8.3
+
+No user-facing changes.
+
 ## 0.8.2
 
 No user-facing changes.

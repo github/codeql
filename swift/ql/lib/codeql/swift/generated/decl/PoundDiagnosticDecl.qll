@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.Decl
 import codeql.swift.elements.expr.StringLiteralExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `PoundDiagnosticDecl` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * A diagnostic directive, which is either `#error` or `#warning`.
@@ -22,6 +26,7 @@ module Generated {
      * Gets the kind of this pound diagnostic declaration.
      *
      * This is 1 for `#error` and 2 for `#warning`.
+     * INTERNAL: Do not use.
      */
     int getKind() {
       result = Synth::convertPoundDiagnosticDeclToRaw(this).(Raw::PoundDiagnosticDecl).getKind()

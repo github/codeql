@@ -16,6 +16,15 @@ private module SourceVariables {
       ind = [0 .. countIndirectionsForCppType(base.getLanguageType()) + 1]
     }
 
+  private int maxNumberOfIndirections() { result = max(SourceVariable sv | | sv.getIndirection()) }
+
+  private string repeatStars(int n) {
+    n = 0 and result = ""
+    or
+    n = [1 .. maxNumberOfIndirections()] and
+    result = "*" + repeatStars(n - 1)
+  }
+
   class SourceVariable extends TSourceVariable {
     SsaInternals0::SourceVariable base;
     int ind;
@@ -32,13 +41,7 @@ private module SourceVariables {
     SsaInternals0::SourceVariable getBaseVariable() { result = base }
 
     /** Gets a textual representation of this element. */
-    string toString() {
-      ind = 0 and
-      result = this.getBaseVariable().toString()
-      or
-      ind > 0 and
-      result = this.getBaseVariable().toString() + " indirection"
-    }
+    string toString() { result = repeatStars(this.getIndirection()) + base.toString() }
 
     /**
      * Gets the number of loads performed on the base source variable
@@ -59,6 +62,9 @@ private module SourceVariables {
       then result = base.getType()
       else result = getTypeImpl(base.getType(), ind - 1)
     }
+
+    /** Gets the location of this variable. */
+    Location getLocation() { result = this.getBaseVariable().getLocation() }
   }
 }
 
@@ -143,11 +149,16 @@ private newtype TDefOrUseImpl =
 private predicate isGlobalUse(
   GlobalLikeVariable v, IRFunction f, int indirection, int indirectionIndex
 ) {
-  exists(VariableAddressInstruction vai |
-    vai.getEnclosingIRFunction() = f and
-    vai.getAstVariable() = v and
-    isDef(_, _, _, vai, indirection, indirectionIndex)
-  )
+  // Generate a "global use" at the end of the function body if there's a
+  // direct definition somewhere in the body of the function
+  indirection =
+    min(int cand, VariableAddressInstruction vai |
+      vai.getEnclosingIRFunction() = f and
+      vai.getAstVariable() = v and
+      isDef(_, _, _, vai, cand, indirectionIndex)
+    |
+      cand
+    )
 }
 
 private predicate isGlobalDefImpl(
@@ -441,6 +452,57 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
   }
 }
 
+/**
+ * A use that models a synthetic "last use" of a global variable just before a
+ * function returns.
+ *
+ * We model global variable flow by:
+ * - Inserting a last use of any global variable that's modified by a function
+ * - Flowing from the last use to the `VariableNode` that represents the global
+ *   variable.
+ * - Flowing from the `VariableNode` to an "initial def" of the global variable
+ * in any function that may read the global variable.
+ * - Flowing from the initial definition to any subsequent uses of the global
+ *   variable in the function body.
+ *
+ * For example, consider the following pair of functions:
+ * ```cpp
+ * int global;
+ * int source();
+ * void sink(int);
+ *
+ * void set_global() {
+ *   global = source();
+ * }
+ *
+ * void read_global() {
+ *  sink(global);
+ * }
+ * ```
+ * we insert global uses and defs so that (from the point-of-view of dataflow)
+ * the above scenario looks like:
+ * ```cpp
+ * int global; // (1)
+ * int source();
+ * void sink(int);
+ *
+ * void set_global() {
+ *   global = source();
+ *   __global_use(global); // (2)
+ * }
+ *
+ * void read_global() {
+ *  global = __global_def; // (3)
+ *  sink(global); // (4)
+ * }
+ * ```
+ * and flow from `source()` to the argument of `sink` is then modeled as
+ * follows:
+ * 1. Flow from `source()` to `(2)` (via SSA).
+ * 2. Flow from `(2)` to `(1)` (via a `jumpStep`).
+ * 3. Flow from `(1)` to `(3)` (via a `jumpStep`).
+ * 4. Flow from `(3)` to `(4)` (via SSA).
+ */
 class GlobalUse extends UseImpl, TGlobalUse {
   GlobalLikeVariable global;
   IRFunction f;
@@ -488,6 +550,12 @@ class GlobalUse extends UseImpl, TGlobalUse {
   override BaseSourceVariableInstruction getBase() { none() }
 }
 
+/**
+ * A definition that models a synthetic "initial definition" of a global
+ * variable just after the function entry point.
+ *
+ * See the QLDoc for `GlobalUse` for how this is used.
+ */
 class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
   GlobalLikeVariable global;
   IRFunction f;
@@ -541,7 +609,10 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
  */
 predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
   exists(IRBlock bb1, int i1, SourceVariable v |
-    defOrUse1.asDefOrUse().hasIndexInBlock(bb1, i1, v)
+    defOrUse1
+        .asDefOrUse()
+        .hasIndexInBlock(pragma[only_bind_out](bb1), pragma[only_bind_out](i1),
+          pragma[only_bind_out](v))
   |
     exists(IRBlock bb2, int i2, DefinitionExt def |
       adjacentDefReadExt(pragma[only_bind_into](def), pragma[only_bind_into](bb1),
@@ -563,7 +634,11 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
  * flows to `useOrPhi`.
  */
 private predicate globalDefToUse(GlobalDef globalDef, UseOrPhi useOrPhi) {
-  exists(IRBlock bb1, int i1, SourceVariable v | globalDef.hasIndexInBlock(bb1, i1, v) |
+  exists(IRBlock bb1, int i1, SourceVariable v |
+    globalDef
+        .hasIndexInBlock(pragma[only_bind_out](bb1), pragma[only_bind_out](i1),
+          pragma[only_bind_out](v))
+  |
     exists(IRBlock bb2, int i2 |
       adjacentDefReadExt(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
         pragma[only_bind_into](bb2), pragma[only_bind_into](i2)) and
@@ -869,7 +944,7 @@ private predicate sourceVariableIsGlobal(
   )
 }
 
-private module SsaInput implements SsaImplCommon::InputSig {
+private module SsaInput implements SsaImplCommon::InputSig<Location> {
   import InputSigCommon
   import SourceVariables
 
@@ -1092,7 +1167,7 @@ class Def extends DefOrUse {
   predicate isCertain() { defOrUse.isCertain() }
 }
 
-private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+private module SsaImpl = SsaImplCommon::Make<Location, SsaInput>;
 
 class PhiNode extends SsaImpl::DefinitionExt {
   PhiNode() {

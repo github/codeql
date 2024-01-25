@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["", "Uri", False, "getQueryParameter", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

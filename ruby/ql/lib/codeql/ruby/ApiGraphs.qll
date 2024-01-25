@@ -8,8 +8,7 @@
 private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.ApiGraphShared
-private import codeql.ruby.typetracking.TypeTracker
-private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
+private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
@@ -802,12 +801,6 @@ module API {
     bindingset[this]
     EntryPoint() { any() }
 
-    /** DEPRECATED. This predicate has been renamed to `getASource`. */
-    deprecated DataFlow::LocalSourceNode getAUse() { none() }
-
-    /** DEPRECATED. This predicate has been renamed to `getASink`. */
-    deprecated DataFlow::Node getARhs() { none() }
-
     /** Gets a data-flow node corresponding to a use-node for this entry point. */
     DataFlow::LocalSourceNode getASource() { none() }
 
@@ -1050,9 +1043,9 @@ module API {
 
   /** INTERNAL USE ONLY. */
   module Internal {
-    private module Shared = ApiGraphShared<SharedArg>;
+    private module MkShared = ApiGraphShared<SharedArg>;
 
-    import Shared
+    import MkShared
 
     /** Gets the API node corresponding to the module/class object for `mod`. */
     bindingset[mod]
@@ -1093,7 +1086,7 @@ module API {
     private predicate needsSinkNode(DataFlow::Node node) {
       node instanceof DataFlowPrivate::ArgumentNode
       or
-      TypeTrackerSpecific::basicStoreStep(node, _, _)
+      TypeTrackingInput::storeStep(node, _, _)
       or
       node = any(DataFlow::CallableNode callable).getAReturnNode()
       or
@@ -1203,10 +1196,8 @@ module API {
 
     cached
     predicate contentEdge(Node pred, DataFlow::Content content, Node succ) {
-      exists(
-        DataFlow::Node object, DataFlow::Node value, TypeTrackerSpecific::TypeTrackerContent c
-      |
-        TypeTrackerSpecific::basicLoadStep(object, value, c) and
+      exists(DataFlow::Node object, DataFlow::Node value, DataFlow::ContentSet c |
+        TypeTrackingInput::loadStep(object, value, c) and
         content = c.getAStoreContent() and
         not c.isSingleton(any(DataFlow::Content::AttributeNameContent k)) and
         // `x -> x.foo` with content "foo"
@@ -1214,7 +1205,7 @@ module API {
         succ = getForwardStartNode(value)
         or
         // Based on `object.c = value` generate `object -> value` with content `c`
-        TypeTrackerSpecific::basicStoreStep(value, object, c) and
+        TypeTrackingInput::storeStep(value, object, c) and
         content = c.getAStoreContent() and
         pred = getForwardOrBackwardEndNode(getALocalSourceStrict(object)) and
         succ = MkSinkNode(value)

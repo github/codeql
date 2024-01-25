@@ -10,6 +10,10 @@ import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.ValueDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `OverloadedDeclRefExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An ambiguous expression that might refer to multiple declarations. This will be present only

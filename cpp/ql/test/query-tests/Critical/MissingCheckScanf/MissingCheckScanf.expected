@@ -5,9 +5,6 @@
 | test.cpp:98:7:98:8 | * ... | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:97:3:97:7 | call to scanf | call to scanf |
 | test.cpp:108:7:108:7 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:107:3:107:8 | call to fscanf | call to fscanf |
 | test.cpp:115:7:115:7 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:114:3:114:8 | call to sscanf | call to sscanf |
-| test.cpp:164:8:164:8 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:162:7:162:11 | call to scanf | call to scanf |
-| test.cpp:173:8:173:8 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:171:7:171:11 | call to scanf | call to scanf |
-| test.cpp:205:8:205:8 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:204:7:204:11 | call to scanf | call to scanf |
 | test.cpp:224:8:224:8 | j | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 2. | test.cpp:221:7:221:11 | call to scanf | call to scanf |
 | test.cpp:248:9:248:9 | d | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 2. | test.cpp:246:25:246:29 | call to scanf | call to scanf |
 | test.cpp:252:9:252:9 | d | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 2. | test.cpp:250:14:250:18 | call to scanf | call to scanf |

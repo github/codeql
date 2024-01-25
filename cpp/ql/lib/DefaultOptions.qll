@@ -52,17 +52,18 @@ class Options extends string {
   /**
    * Holds if a call to this function will never return.
    *
-   * By default, this holds for `exit`, `_exit`, `abort`, `__assert_fail`,
-   * `longjmp`, `__builtin_unreachable` and any function with a
-   * `noreturn` attribute or specifier.
+   * By default, this holds for `exit`, `_exit`, `_Exit`, `abort`,
+   * `__assert_fail`, `longjmp`, `__builtin_unreachable` and any
+   * function with a `noreturn` or `__noreturn__` attribute or
+   * `noreturn` specifier.
    */
   predicate exits(Function f) {
-    f.getAnAttribute().hasName("noreturn")
+    f.getAnAttribute().hasName(["noreturn", "__noreturn__"])
     or
     f.getASpecifier().hasName("noreturn")
     or
     f.hasGlobalOrStdName([
-        "exit", "_exit", "abort", "__assert_fail", "longjmp", "__builtin_unreachable"
+        "exit", "_exit", "_Exit", "abort", "__assert_fail", "longjmp", "__builtin_unreachable"
       ])
     or
     CustomOptions::exits(f) // old Options.qll

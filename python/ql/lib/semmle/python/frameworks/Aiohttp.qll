@@ -14,6 +14,7 @@ private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.Multidict
 private import semmle.python.frameworks.Yarl
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -31,6 +32,8 @@ module AiohttpWebModel {
     /** Gets a reference to the `aiohttp.web.View` class or any subclass. */
     API::Node subclassRef() {
       result = API::moduleImport("aiohttp").getMember("web").getMember("View").getASubclass*()
+      or
+      result = ModelOutput::getATypeNode("aiohttp.web.View~Subclass").getASubclass*()
     }
   }
 
@@ -706,10 +709,12 @@ module AiohttpWebModel {
 }
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the web server part (`aiohttp.client`) of the `aiohttp` PyPI package.
  * See https://docs.aiohttp.org/en/stable/client.html
  */
-private module AiohttpClientModel {
+module AiohttpClientModel {
   /**
    * Provides models for the `aiohttp.ClientSession` class
    *
@@ -717,8 +722,10 @@ private module AiohttpClientModel {
    */
   module ClientSession {
     /** Gets a reference to the `aiohttp.ClientSession` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("aiohttp").getMember("ClientSession")
+      or
+      result = ModelOutput::getATypeNode("aiohttp.ClientSession~Subclass").getASubclass*()
     }
 
     /** Gets a reference to an instance of `aiohttp.ClientSession`. */

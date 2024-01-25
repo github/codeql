@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.ParamDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `DefaultArgumentExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::DefaultArgumentExpr` class directly.

@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.ParamDecl
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `AppliedPropertyWrapperExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * An implicit application of a property wrapper on the argument of a call.

@@ -911,11 +911,11 @@ func autoclosureTest() {
 // ---
 
 protocol MyProtocol {
-	func source() -> Int
+	func source(_ label: String) -> Int
 }
 
 class MyProcotolImpl : MyProtocol {
-	func source() -> Int { return 0 }
+	func source(_ label: String) -> Int { return 0 }
 }
 
 func getMyProtocol() -> MyProtocol { return MyProcotolImpl() }
@@ -924,10 +924,71 @@ func getMyProtocolImpl() -> MyProcotolImpl { return MyProcotolImpl() }
 func sink(arg: Int) { }
 
 func testOpenExistentialExpr(x: MyProtocol, y: MyProcotolImpl) {
-	sink(arg: x.source()) // $ flow=927
-	sink(arg: y.source()) // $ flow=928
-	sink(arg: getMyProtocol().source()) // $ flow=929
-	sink(arg: getMyProtocolImpl().source()) // $ flow=930
+	sink(arg: x.source("x.source")) // $ flow=x.source
+	sink(arg: y.source("y.source")) // $ flow=y.source
+	sink(arg: getMyProtocol().source("getMyProtocol.source")) // $ flow=getMyProtocol.source
+	sink(arg: getMyProtocolImpl().source("getMyProtocolImpl.source")) // $ flow=getMyProtocolImpl.source
 }
 
 // ---
+
+@propertyWrapper struct MyTaintPropertyWrapper {
+    var wrappedValue: Int {
+        get { return source() }
+        set { sink(arg: newValue) } // $ flow=943 flow=950
+    }
+
+    init(wrappedValue: Int) {
+        sink(arg: wrappedValue) // $ flow=948
+        self.wrappedValue = source()
+    }
+}
+
+func test_my_taint_property_wrapper() {
+    @MyTaintPropertyWrapper var x: Int = source()
+    sink(arg: x) // $ flow=937
+    x = source()
+    sink(arg: x) // $ flow=937
+}
+
+// ---
+
+@propertyWrapper struct MySimplePropertyWrapper {
+    var wrappedValue: Int {
+        didSet {
+            sink(arg: wrappedValue) // $ flow=980 flow=991
+        }
+    }
+
+    var projectedValue: Int {
+        get { wrappedValue }
+        set {
+            sink(arg: wrappedValue) // $ MISSING: flow=991
+            wrappedValue = newValue
+        }
+    }
+
+    init(wrappedValue: Int) {
+        sink(arg: wrappedValue) // $ flow=983
+        self.wrappedValue = wrappedValue
+    }
+}
+
+func test_my_property_wrapper() {
+    @MySimplePropertyWrapper var a = 0
+    sink(arg: a)
+    a = source()
+    sink(arg: a) // $ MISSING: flow=980
+
+    @MySimplePropertyWrapper var b = source()
+    sink(arg: b) // $ MISSING: flow=983
+    b = 0
+    sink(arg: b)
+
+    @MySimplePropertyWrapper var c = 0
+    sink(arg: c)
+    sink(arg: $c)
+    $c = source()
+    sink(arg: c) // $ MISSING: flow=991
+    sink(arg: $c) // $ MISSING: flow=991
+}

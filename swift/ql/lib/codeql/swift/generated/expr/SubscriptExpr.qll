@@ -9,6 +9,10 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Argument
 import codeql.swift.elements.expr.LookupExpr
 
+/**
+ * INTERNAL: This module contains the fully generated definition of `SubscriptExpr` and should not
+ * be referenced directly.
+ */
 module Generated {
   /**
    * INTERNAL: Do not reference the `Generated::SubscriptExpr` class directly.

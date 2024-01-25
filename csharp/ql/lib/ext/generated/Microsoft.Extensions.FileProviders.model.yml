@@ -9,7 +9,6 @@ extensions:
       - ["Microsoft.Extensions.FileProviders", "CompositeFileProvider", False, "GetDirectoryContents", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileProviders", "CompositeFileProvider", False, "GetDirectoryContents", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.FileProviders", "CompositeFileProvider", False, "get_FileProviders", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
-      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", False, "GetDirectoryContents", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel
@@ -45,6 +44,7 @@ extensions:
       - ["Microsoft.Extensions.FileProviders", "NullFileProvider", "Watch", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "Dispose", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "Dispose", "(System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "GetDirectoryContents", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "GetFileInfo", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "PhysicalFileProvider", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "PhysicalFileProvider", "(System.String,Microsoft.Extensions.FileProviders.Physical.ExclusionFilters)", "summary", "df-generated"]

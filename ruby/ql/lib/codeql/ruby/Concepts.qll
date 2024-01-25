@@ -701,17 +701,6 @@ module Http {
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
       deprecated DataFlow::Node getURL() { result = Request::Range.super.getAUrlPart() }
-
-      /**
-       * Holds if this request is made using a mode that disables SSL/TLS
-       * certificate validation, where `disablingNode` represents the point at
-       * which the validation was disabled.
-       */
-      deprecated predicate disablesCertificateValidation(DataFlow::Node disablingNode) {
-        Request::Range.super.disablesCertificateValidation(disablingNode, _)
-        or
-        Request::Range.super.disablesCertificateValidation(disablingNode)
-      }
     }
 
     /** Provides a class for modeling new HTTP requests. */
@@ -725,15 +714,6 @@ module Http {
       abstract class Range extends SC::Request::Range {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
-
-        /**
-         * DEPRECATED: override `disablesCertificateValidation/2` instead.
-         *
-         * Holds if this request is made using a mode that disables SSL/TLS
-         * certificate validation, where `disablingNode` represents the point at
-         * which the validation was disabled.
-         */
-        deprecated predicate disablesCertificateValidation(DataFlow::Node disablingNode) { none() }
       }
     }
 
@@ -747,9 +727,6 @@ module Http {
     }
   }
 }
-
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;
 
 /**
  * A data flow node that executes an operating system command,
@@ -967,9 +944,6 @@ class CsrfProtectionSetting extends DataFlow::Node instanceof CsrfProtectionSett
   boolean getVerificationSetting() { result = super.getVerificationSetting() }
 }
 
-/** DEPRECATED: Alias for CsrfProtectionSetting */
-deprecated class CSRFProtectionSetting = CsrfProtectionSetting;
-
 /** Provides a class for modeling new CSRF protection setting APIs. */
 module CsrfProtectionSetting {
   /**
@@ -986,9 +960,6 @@ module CsrfProtectionSetting {
     abstract boolean getVerificationSetting();
   }
 }
-
-/** DEPRECATED: Alias for CsrfProtectionSetting */
-deprecated module CSRFProtectionSetting = CsrfProtectionSetting;
 
 /** Provides classes for modeling path-related APIs. */
 module Path {

@@ -3,8 +3,8 @@
  */
 
 import go
-private import semmle.go.dataflow.FlowSummary
 private import semmle.go.dataflow.internal.DataFlowPrivate
+private import semmle.go.dataflow.internal.FlowSummaryImpl::Private
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
@@ -154,7 +154,7 @@ module NetHttp {
       )
       or
       exists(
-        SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack input,
+        SummarizedCallableImpl callable, DataFlow::CallNode call, SummaryComponentStack input,
         SummaryComponentStack output
       |
         this = call.getASyntacticArgument() and
