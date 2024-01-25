@@ -267,8 +267,8 @@ func outputEnvironmentJson(version string) {
 // Get the version of Go to install and output it to stdout as json.
 func IdentifyEnvironment() {
 	var v versionInfo
-	buildInfo := project.GetBuildInfo(false)
-	goVersionInfo := project.TryReadGoDirective(buildInfo)
+	buildInfos := project.GetBuildInfo(false)
+	goVersionInfo := project.TryReadGoDirective(buildInfos[0]) // TODO: find greatest version
 	v.goModVersion, v.goModVersionFound = goVersionInfo.Version, goVersionInfo.Found
 
 	v.goEnvVersionFound = toolchain.IsInstalled()

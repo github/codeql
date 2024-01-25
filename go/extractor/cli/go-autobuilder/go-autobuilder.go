@@ -546,75 +546,77 @@ func installDependenciesAndBuild() {
 
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
 	// extraction
-	buildInfo := project.GetBuildInfo(true)
+	buildInfos := project.GetBuildInfo(true)
 	if _, present := os.LookupEnv("GO111MODULE"); !present {
 		os.Setenv("GO111MODULE", "auto")
 	}
 
-	goVersionInfo := project.TryReadGoDirective(buildInfo)
+	for _, buildInfo := range buildInfos {
+		goVersionInfo := project.TryReadGoDirective(buildInfo)
 
-	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
-	// Go tooling should install required Go versions as needed.
-	if semver.Compare(toolchain.GetEnvGoSemVer(), "v1.21.0") < 0 && goVersionInfo.Found && semver.Compare("v"+goVersionInfo.Version, toolchain.GetEnvGoSemVer()) > 0 {
-		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer(), "v"+goVersionInfo.Version)
-		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
-			log.Printf(
-				"The go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
-				"v"+goVersionInfo.Version,
-				toolchain.GetEnvGoSemVer())
+		// This diagnostic is not required if the system Go version is 1.21 or greater, since the
+		// Go tooling should install required Go versions as needed.
+		if semver.Compare(toolchain.GetEnvGoSemVer(), "v1.21.0") < 0 && goVersionInfo.Found && semver.Compare("v"+goVersionInfo.Version, toolchain.GetEnvGoSemVer()) > 0 {
+			diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer(), "v"+goVersionInfo.Version)
+			if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
+				log.Printf(
+					"The go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
+					"v"+goVersionInfo.Version,
+					toolchain.GetEnvGoSemVer())
+			}
 		}
-	}
 
-	fixGoVendorIssues(&buildInfo, goVersionInfo.Found)
+		fixGoVendorIssues(&buildInfo, goVersionInfo.Found)
 
-	tryUpdateGoModAndGoSum(buildInfo)
+		tryUpdateGoModAndGoSum(buildInfo)
 
-	importpath := getImportPath()
-	needGopath := getNeedGopath(buildInfo, importpath)
+		importpath := getImportPath()
+		needGopath := getNeedGopath(buildInfo, importpath)
 
-	inLGTM := os.Getenv("LGTM_SRC") != "" || os.Getenv("LGTM_INDEX_NEED_GOPATH") != ""
+		inLGTM := os.Getenv("LGTM_SRC") != "" || os.Getenv("LGTM_INDEX_NEED_GOPATH") != ""
 
-	if inLGTM && needGopath {
-		paths := moveToTemporaryGopath(srcdir, importpath)
+		if inLGTM && needGopath {
+			paths := moveToTemporaryGopath(srcdir, importpath)
 
-		// schedule restoring the contents of newdir to their original location after this function completes:
-		defer restoreRepoLayout(paths.newdir, paths.files, filepath.Base(paths.scratch), srcdir)
+			// schedule restoring the contents of newdir to their original location after this function completes:
+			defer restoreRepoLayout(paths.newdir, paths.files, filepath.Base(paths.scratch), srcdir)
 
-		pt := createPathTransformerFile(paths.newdir)
-		defer os.Remove(pt.Name())
+			pt := createPathTransformerFile(paths.newdir)
+			defer os.Remove(pt.Name())
 
-		writePathTransformerFile(pt, paths.realSrc, paths.root, paths.newdir)
-		setGopath(paths.root)
-	}
-
-	// check whether an explicit dependency installation command was provided
-	inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
-	shouldInstallDependencies := false
-	if inst == "" {
-		shouldInstallDependencies = buildWithoutCustomCommands(buildInfo.ModMode)
-	} else {
-		buildWithCustomCommands(inst)
-	}
-
-	if buildInfo.ModMode == project.ModVendor {
-		// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
-		// or not set if the go version < 1.14. Note we check this post-build in case the build brings
-		// the vendor directory up to date.
-		if !checkVendor() {
-			buildInfo.ModMode = project.ModMod
-			log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
+			writePathTransformerFile(pt, paths.realSrc, paths.root, paths.newdir)
+			setGopath(paths.root)
 		}
-	}
 
-	if shouldInstallDependencies {
-		if buildInfo.ModMode == project.ModVendor {
-			log.Printf("Skipping dependency installation because a Go vendor directory was found.")
+		// check whether an explicit dependency installation command was provided
+		inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
+		shouldInstallDependencies := false
+		if inst == "" {
+			shouldInstallDependencies = buildWithoutCustomCommands(buildInfo.ModMode)
 		} else {
-			installDependencies(buildInfo)
+			buildWithCustomCommands(inst)
 		}
-	}
 
-	extract(buildInfo)
+		if buildInfo.ModMode == project.ModVendor {
+			// test if running `go` with -mod=vendor works, and if it doesn't, try to fallback to -mod=mod
+			// or not set if the go version < 1.14. Note we check this post-build in case the build brings
+			// the vendor directory up to date.
+			if !checkVendor() {
+				buildInfo.ModMode = project.ModMod
+				log.Println("The vendor directory is not consistent with the go.mod; not using vendored dependencies.")
+			}
+		}
+
+		if shouldInstallDependencies {
+			if buildInfo.ModMode == project.ModVendor {
+				log.Printf("Skipping dependency installation because a Go vendor directory was found.")
+			} else {
+				installDependencies(buildInfo)
+			}
+		}
+
+		extract(buildInfo)
+	}
 }
 
 func main() {

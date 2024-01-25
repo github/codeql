@@ -185,10 +185,10 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 
 // Returns the directory to run the go build in and whether to use a go.mod
 // file.
-func getBuildRoot(emitDiagnostics bool) (baseDir string, useGoMod bool) {
+func getBuildRoot(emitDiagnostics bool) (baseDirs []string, useGoMod bool) {
 	goModPaths := util.FindAllFilesWithName(".", "go.mod", "vendor")
 	if len(goModPaths) == 0 {
-		baseDir = "."
+		baseDirs = []string{"."}
 		useGoMod = false
 		return
 	}
@@ -197,13 +197,13 @@ func getBuildRoot(emitDiagnostics bool) (baseDir string, useGoMod bool) {
 		if emitDiagnostics {
 			diagnostics.EmitGoFilesOutsideGoModules(goModPaths)
 		}
-		baseDir = "."
+		baseDirs = []string{"."}
 		useGoMod = false
 		return
 	}
 	if len(goModPaths) > 1 {
 		// currently not supported
-		baseDir = "."
+		baseDirs = []string{"."}
 		commonRoot, nested := checkDirsNested(goModDirs)
 		if nested && commonRoot == "" {
 			useGoMod = true
@@ -216,17 +216,7 @@ func getBuildRoot(emitDiagnostics bool) (baseDir string, useGoMod bool) {
 			} else {
 				diagnostics.EmitMultipleGoModFoundNotNested(goModPaths)
 			}
-		}
-		return
-	}
-	if emitDiagnostics {
-		if goModDirs[0] == "." {
-			diagnostics.EmitSingleRootGoModFound(goModPaths[0])
-		} else {
-			diagnostics.EmitSingleNonRootGoModFound(goModPaths[0])
-		}
-	}
-	baseDir = goModDirs[0]
+	baseDirs = goModDirs
 	useGoMod = true
 	return
 }
@@ -246,7 +236,7 @@ const (
 )
 
 // Returns the appropriate DependencyInstallerMode for the current project
-func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, string) {
+func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, []string) {
 	bazelPaths := util.FindAllFilesWithName(".", "BUILD", "vendor")
 	bazelPaths = append(bazelPaths, util.FindAllFilesWithName(".", "BUILD.bazel", "vendor")...)
 	if len(bazelPaths) > 0 {
@@ -264,10 +254,10 @@ func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, string) {
 		}
 	}
 
-	baseDir, useGoMod := getBuildRoot(emitDiagnostics)
+	baseDirs, useGoMod := getBuildRoot(emitDiagnostics)
 	if useGoMod {
-		log.Println("Found go.mod, enabling go modules")
-		return GoGetWithModules, baseDir
+		log.Printf("Found go.mod files in %s: enabling go modules.\n", strings.Join(baseDirs, ", "))
+		return GoGetWithModules, baseDirs
 	}
 
 	if util.FileExists("Gopkg.toml") {
@@ -275,7 +265,7 @@ func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, string) {
 			diagnostics.EmitGopkgTomlFound()
 		}
 		log.Println("Found Gopkg.toml, using dep instead of go get")
-		return Dep, "."
+		return Dep, []string{"."}
 	}
 
 	if util.FileExists("glide.yaml") {
@@ -283,9 +273,9 @@ func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, string) {
 			diagnostics.EmitGlideYamlFound()
 		}
 		log.Println("Found glide.yaml, using Glide instead of go get")
-		return Glide, "."
+		return Glide, []string{"."}
 	}
-	return GoGetNoModules, "."
+	return GoGetNoModules, []string{"."}
 }
 
 // ModMode corresponds to the possible values of the -mod flag for the Go compiler
@@ -341,10 +331,16 @@ type BuildInfo struct {
 	BaseDir string
 }
 
-func GetBuildInfo(emitDiagnostics bool) BuildInfo {
-	depMode, baseDir := getDepMode(true)
-	modMode := getModMode(depMode, baseDir)
-	return BuildInfo{depMode, modMode, baseDir}
+func GetBuildInfo(emitDiagnostics bool) []BuildInfo {
+	depMode, baseDirs := getDepMode(true)
+	results := make([]BuildInfo, len(baseDirs))
+
+	for i, baseDir := range baseDirs {
+		modMode := getModMode(depMode, baseDir)
+		results[i] = BuildInfo{depMode, modMode, baseDir}
+	}
+
+	return results
 }
 
 type GoVersionInfo struct {
