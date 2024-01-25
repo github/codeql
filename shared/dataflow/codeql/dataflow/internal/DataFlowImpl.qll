@@ -1620,7 +1620,7 @@ module MakeImpl<InputSig Lang> {
               // type flow disabled: linear recursion
               fwdFlowInCandTypeFlowDisabled(call, arg, state, outercc, inner, p, summaryCtx, argT,
                 argAp, t, ap, apa, cc) and
-              fwdFlowInValidEdgeTypeFlowDisabled(call, inner, innercc, cc)
+              fwdFlowInValidEdgeTypeFlowDisabled(call, inner, innercc, pragma[only_bind_into](cc))
               or
               // type flow enabled: non-linear recursion
               exists(boolean emptyAp |
