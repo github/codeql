@@ -233,6 +233,18 @@ edges
 | CollectionFlow.cs:407:9:407:13 | [post] access to local variable array : MyInlineArray [element] : A | CollectionFlow.cs:408:14:408:18 | access to local variable array : MyInlineArray [element] : A |
 | CollectionFlow.cs:407:20:407:20 | access to local variable a : A | CollectionFlow.cs:407:9:407:13 | [post] access to local variable array : MyInlineArray [element] : A |
 | CollectionFlow.cs:408:14:408:18 | access to local variable array : MyInlineArray [element] : A | CollectionFlow.cs:408:14:408:21 | access to array element |
+| CollectionFlow.cs:426:17:426:23 | object creation of type A : A | CollectionFlow.cs:427:22:427:22 | access to local variable a : A |
+| CollectionFlow.cs:427:21:427:23 | [...] : A[] [element] : A | CollectionFlow.cs:428:14:428:18 | access to local variable array : A[] [element] : A |
+| CollectionFlow.cs:427:22:427:22 | access to local variable a : A | CollectionFlow.cs:427:21:427:23 | [...] : A[] [element] : A |
+| CollectionFlow.cs:428:14:428:18 | access to local variable array : A[] [element] : A | CollectionFlow.cs:428:14:428:21 | access to array element |
+| CollectionFlow.cs:433:17:433:23 | object creation of type A : A | CollectionFlow.cs:434:22:434:22 | access to local variable a : A |
+| CollectionFlow.cs:434:21:434:23 | [...] : List<A> [element] : A | CollectionFlow.cs:435:14:435:14 | access to local variable l : List<A> [element] : A |
+| CollectionFlow.cs:434:22:434:22 | access to local variable a : A | CollectionFlow.cs:434:21:434:23 | [...] : List<A> [element] : A |
+| CollectionFlow.cs:435:14:435:14 | access to local variable l : List<A> [element] : A | CollectionFlow.cs:435:14:435:17 | access to indexer |
+| CollectionFlow.cs:446:17:446:23 | object creation of type A : A | CollectionFlow.cs:447:21:447:21 | access to local variable a : A |
+| CollectionFlow.cs:447:20:447:22 | [...] : A[] [element] : A | CollectionFlow.cs:449:14:449:18 | access to local variable array : A[] [element] : A |
+| CollectionFlow.cs:447:21:447:21 | access to local variable a : A | CollectionFlow.cs:447:20:447:22 | [...] : A[] [element] : A |
+| CollectionFlow.cs:449:14:449:18 | access to local variable array : A[] [element] : A | CollectionFlow.cs:449:14:449:21 | access to array element |
 nodes
 | CollectionFlow.cs:13:40:13:41 | ts : A[] [element] : A | semmle.label | ts : A[] [element] : A |
 | CollectionFlow.cs:13:40:13:41 | ts : null [element] : A | semmle.label | ts : null [element] : A |
@@ -468,6 +480,21 @@ nodes
 | CollectionFlow.cs:407:20:407:20 | access to local variable a : A | semmle.label | access to local variable a : A |
 | CollectionFlow.cs:408:14:408:18 | access to local variable array : MyInlineArray [element] : A | semmle.label | access to local variable array : MyInlineArray [element] : A |
 | CollectionFlow.cs:408:14:408:21 | access to array element | semmle.label | access to array element |
+| CollectionFlow.cs:426:17:426:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:427:21:427:23 | [...] : A[] [element] : A | semmle.label | [...] : A[] [element] : A |
+| CollectionFlow.cs:427:22:427:22 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:428:14:428:18 | access to local variable array : A[] [element] : A | semmle.label | access to local variable array : A[] [element] : A |
+| CollectionFlow.cs:428:14:428:21 | access to array element | semmle.label | access to array element |
+| CollectionFlow.cs:433:17:433:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:434:21:434:23 | [...] : List<A> [element] : A | semmle.label | [...] : List<A> [element] : A |
+| CollectionFlow.cs:434:22:434:22 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:435:14:435:14 | access to local variable l : List<A> [element] : A | semmle.label | access to local variable l : List<A> [element] : A |
+| CollectionFlow.cs:435:14:435:17 | access to indexer | semmle.label | access to indexer |
+| CollectionFlow.cs:446:17:446:23 | object creation of type A : A | semmle.label | object creation of type A : A |
+| CollectionFlow.cs:447:20:447:22 | [...] : A[] [element] : A | semmle.label | [...] : A[] [element] : A |
+| CollectionFlow.cs:447:21:447:21 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:449:14:449:18 | access to local variable array : A[] [element] : A | semmle.label | access to local variable array : A[] [element] : A |
+| CollectionFlow.cs:449:14:449:21 | access to array element | semmle.label | access to array element |
 subpaths
 | CollectionFlow.cs:43:20:43:22 | access to local variable as : null [element] : A | CollectionFlow.cs:21:34:21:35 | ts : null [element] : A | CollectionFlow.cs:21:41:21:45 | access to array element : A | CollectionFlow.cs:43:14:43:23 | call to method First<A> |
 | CollectionFlow.cs:61:20:61:23 | access to field As : A[] [element] : A | CollectionFlow.cs:21:34:21:35 | ts : A[] [element] : A | CollectionFlow.cs:21:41:21:45 | access to array element : A | CollectionFlow.cs:61:14:61:24 | call to method First<A> |
@@ -549,3 +576,6 @@ subpaths
 | CollectionFlow.cs:374:26:374:32 | object creation of type A : A | CollectionFlow.cs:374:26:374:32 | object creation of type A : A | CollectionFlow.cs:35:63:35:69 | access to array element | $@ | CollectionFlow.cs:35:63:35:69 | access to array element | access to array element |
 | CollectionFlow.cs:375:30:375:36 | object creation of type A : A | CollectionFlow.cs:375:30:375:36 | object creation of type A : A | CollectionFlow.cs:35:63:35:69 | access to array element | $@ | CollectionFlow.cs:35:63:35:69 | access to array element | access to array element |
 | CollectionFlow.cs:405:17:405:23 | object creation of type A : A | CollectionFlow.cs:405:17:405:23 | object creation of type A : A | CollectionFlow.cs:408:14:408:21 | access to array element | $@ | CollectionFlow.cs:408:14:408:21 | access to array element | access to array element |
+| CollectionFlow.cs:426:17:426:23 | object creation of type A : A | CollectionFlow.cs:426:17:426:23 | object creation of type A : A | CollectionFlow.cs:428:14:428:21 | access to array element | $@ | CollectionFlow.cs:428:14:428:21 | access to array element | access to array element |
+| CollectionFlow.cs:433:17:433:23 | object creation of type A : A | CollectionFlow.cs:433:17:433:23 | object creation of type A : A | CollectionFlow.cs:435:14:435:17 | access to indexer | $@ | CollectionFlow.cs:435:14:435:17 | access to indexer | access to indexer |
+| CollectionFlow.cs:446:17:446:23 | object creation of type A : A | CollectionFlow.cs:446:17:446:23 | object creation of type A : A | CollectionFlow.cs:449:14:449:21 | access to array element | $@ | CollectionFlow.cs:449:14:449:21 | access to array element | access to array element |

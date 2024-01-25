@@ -414,4 +414,38 @@ public class CollectionFlow
         array[0] = other;
         Sink(array[0]); // no flow
     }
+
+    public void CollectionExpressionNoFlow(A a)
+    {
+        A[] array = [a];
+        Sink(array[0]); // no flow
+    }
+
+    public void CollectionExpressionElementFlow()
+    {
+        var a = new A();
+        A[] array = [a];
+        Sink(array[0]); // flow
+    }
+
+    public void CollectionExpressionElementFlowList()
+    {
+        var a = new A();
+        List<A> l = [a];
+        Sink(l[0]); // flow
+    }
+
+    public void CollectionExpressionSpreadElementNoFlow(A[] other)
+    {
+        A[] array = [.. other];
+        Sink(array[0]); // no flow
+    }
+
+    public void CollectionExpressionSpreadElementFlow()
+    {
+        var a = new A();
+        A[] temp = [a];
+        A[] array = [.. temp];
+        Sink(array[0]); // flow
+    }
 }
