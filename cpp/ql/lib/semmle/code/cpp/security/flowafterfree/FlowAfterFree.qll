@@ -51,6 +51,9 @@ signature module FlowFromFreeParamSig {
    */
   bindingset[source, sink]
   default predicate sourceSinkIsRelated(DataFlow::Node source, DataFlow::Node sink) { any() }
+
+
+  default DataFlow::FlowFeature getAFeature() { none() }
 }
 
 /**
@@ -97,7 +100,12 @@ module FlowFromFree<FlowFromFreeParamSig P> {
       or
       n.asExpr() instanceof ArrayExpr
     }
+
+    DataFlow::FlowFeature getAFeature(){
+      result = P::getAFeature()
+    }
   }
+
 
   import DataFlow::GlobalWithState<FlowFromFreeConfig>
 }
