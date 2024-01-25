@@ -10,10 +10,9 @@ repos:
         exclude: /test/.*$(?<!\.ql)(?<!\.qll)(?<!\.qlref)|.*\.patch
 
   - repo: https://github.com/pre-commit/mirrors-clang-format
-    rev: v13.0.1
+    rev: v17.0.6
     hooks:
       - id: clang-format
-        files: ^swift/.*\.(h|c|cpp)$
 
   - repo: https://github.com/pre-commit/mirrors-autopep8
     rev: v1.6.0
