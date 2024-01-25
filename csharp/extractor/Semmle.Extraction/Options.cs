@@ -20,6 +20,36 @@ namespace Semmle.Extraction
         /// </summary>
         public Verbosity LegacyVerbosity { get; protected set; } = Verbosity.Info;
 
+        private Verbosity? verbosity = null;
+        public Verbosity Verbosity
+        {
+            get
+            {
+                if (verbosity != null)
+                {
+                    return verbosity.Value;
+                }
+
+                var envVarValue = EnvironmentVariables.GetExtractorOption("LOGGING_VERBOSITY");
+                verbosity = VerbosityExtensions.ParseVerbosity(envVarValue, logThreadId: true);
+                if (verbosity != null)
+                {
+                    return verbosity.Value;
+                }
+
+                envVarValue = Environment.GetEnvironmentVariable("CODEQL_VERBOSITY");
+                verbosity = VerbosityExtensions.ParseVerbosity(envVarValue, logThreadId: true);
+                if (verbosity != null)
+                {
+                    return verbosity.Value;
+                }
+
+                // This only works, because we already parsed the provided options, so `LegacyVerbosity` is already set (or it still has the default value).
+                verbosity = LegacyVerbosity;
+                return verbosity.Value;
+            }
+        }
+
         /// <summary>
         /// Whether to output to the console.
         /// </summary>

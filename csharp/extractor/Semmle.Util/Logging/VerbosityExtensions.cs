@@ -2,7 +2,7 @@ using System;
 
 namespace Semmle.Util.Logging
 {
-    internal static class VerbosityExtensions
+    public static class VerbosityExtensions
     {
         /// <summary>
         /// Whether a message with the given severity must be included
@@ -25,6 +25,35 @@ namespace Semmle.Util.Logging
                 default:
                     throw new ArgumentOutOfRangeException(nameof(s));
             }
+        }
+
+        public static Verbosity? ParseVerbosity(string? str, bool logThreadId)
+        {
+            if (str == null)
+            {
+                return null;
+            }
+
+            Verbosity? verbosity = str.ToLowerInvariant() switch
+            {
+                "off" => Verbosity.Off,
+                "errors" => Verbosity.Error,
+                "warnings" => Verbosity.Warning,
+                "info" or "progress" => Verbosity.Info,
+                "debug" or "progress+" => Verbosity.Debug,
+                "trace" or "progress++" => Verbosity.Trace,
+                "progress+++" => Verbosity.All,
+                _ => null
+            };
+
+            if (verbosity == null && str != null)
+            {
+                // We don't have a logger when this setting is parsed, so writing it to the console:
+                var prefix = logThreadId ? $"[{Environment.CurrentManagedThreadId:D3}] " : "";
+                Console.WriteLine($"{prefix}Error: Invalid verbosity level: '{str}'");
+            }
+
+            return verbosity;
         }
     }
 }

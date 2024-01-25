@@ -103,6 +103,37 @@ namespace Semmle.Extraction.Tests
             Assert.Throws<FormatException>(() => CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "X" }));
         }
 
+
+        private const string extractorVariableName = "CODEQL_EXTRACTOR_CSHARP_OPTION_LOGGING_VERBOSITY";
+        private const string cliVariableName = "CODEQL_VERBOSITY";
+
+        private void CheckVerbosity(string? extractor, string? cli, Verbosity expected)
+        {
+            var currentExtractorVerbosity = Environment.GetEnvironmentVariable(extractorVariableName);
+            var currentCliVerbosity = Environment.GetEnvironmentVariable(cliVariableName);
+            try
+            {
+                Environment.SetEnvironmentVariable(extractorVariableName, extractor);
+                Environment.SetEnvironmentVariable(cliVariableName, cli);
+
+                options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbose" });
+                Assert.Equal(expected, options.Verbosity);
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable(extractorVariableName, currentExtractorVerbosity);
+                Environment.SetEnvironmentVariable(cliVariableName, currentCliVerbosity);
+            }
+        }
+
+        [Fact]
+        public void VerbosityTests_WithExtractorOption()
+        {
+            CheckVerbosity("progress+++", "progress++", Verbosity.All);
+            CheckVerbosity(null, "progress++", Verbosity.Trace);
+            CheckVerbosity(null, null, Verbosity.Debug);
+        }
+
         [Fact]
         public void Console()
         {

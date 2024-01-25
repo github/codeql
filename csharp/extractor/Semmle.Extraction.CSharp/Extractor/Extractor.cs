@@ -97,7 +97,7 @@ namespace Semmle.Extraction.CSharp
             var options = Options.CreateWithEnvironment(args);
             Entities.Compilation.Settings = (Directory.GetCurrentDirectory(), options.CompilerArguments.ToArray());
 
-            using var logger = MakeLogger(options.LegacyVerbosity, options.Console);
+            using var logger = MakeLogger(options.Verbosity, options.Console);
 
             var canonicalPathCache = CanonicalPathCache.Create(logger, 1000);
             var pathTransformer = new PathTransformer(canonicalPathCache);
