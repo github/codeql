@@ -122,10 +122,6 @@ private newtype TPointsToContext =
   } or
   TObjectContext(SelfInstanceInternal object)
 
-deprecated module Context {
-  PointsToContext forObject(ObjectInternal object) { result = TObjectContext(object) }
-}
-
 /**
  * A points-to context. Context can be one of:
  *    * "main": Used for scripts.

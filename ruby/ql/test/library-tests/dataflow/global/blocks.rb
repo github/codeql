@@ -1,7 +1,7 @@
 class A
   def m1(&block)
-    r = block.call() # $ MISSING: hasValueFlow=1
-    sink r
+    r = block.call()
+    sink r # $ MISSING: hasValueFlow=1
   end
 
   def m2

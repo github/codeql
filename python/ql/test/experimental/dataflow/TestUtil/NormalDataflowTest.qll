@@ -32,6 +32,3 @@ query predicate missingAnnotationOnSink(Location location, string error, string 
     )
   )
 }
-
-/** DEPRECATED: Alias for missingAnnotationOnSink */
-deprecated predicate missingAnnotationOnSINK = missingAnnotationOnSink/3;

@@ -19,9 +19,10 @@ namespace Semmle.Extraction.Tests
 
         public bool New(string folder) => true;
 
-        public bool RestoreProjectToDirectory(string project, string directory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, string? pathToNugetConfig = null)
+        public bool RestoreProjectToDirectory(string project, string directory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, out IList<string> outputLines, string? pathToNugetConfig = null, bool force = false)
         {
             assets = Array.Empty<string>();
+            outputLines = Array.Empty<string>();
             return true;
         }
 

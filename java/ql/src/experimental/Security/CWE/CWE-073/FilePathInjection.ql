@@ -18,6 +18,7 @@ import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
 import JFinalController
 import semmle.code.java.security.PathSanitizer
+private import semmle.code.java.security.Sanitizers
 import InjectFilePathFlow::PathGraph
 
 private class ActivateModels extends ActiveExperimentalModels {
@@ -56,7 +57,7 @@ module InjectFilePathConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    exists(Type t | t = node.getType() | t instanceof BoxedType or t instanceof PrimitiveType)
+    node instanceof SimpleTypeSanitizer
     or
     node instanceof PathInjectionSanitizer
   }

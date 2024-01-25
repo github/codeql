@@ -5,6 +5,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.XmlParsers
 import semmle.code.java.security.XsltInjection
+private import semmle.code.java.security.Sanitizers
 
 /**
  * DEPRECATED: Use `XsltInjectionFlow` instead.
@@ -35,9 +36,7 @@ module XsltInjectionFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XsltInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(XsltInjectionAdditionalTaintStep c).step(node1, node2)
