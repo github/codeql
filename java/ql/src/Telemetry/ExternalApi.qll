@@ -27,8 +27,9 @@ class ExternalApi extends Callable {
    */
   string getApiName() {
     result =
-      this.getDeclaringType().getPackage() + "." + this.getDeclaringType().getSourceDeclaration() +
-        "#" + this.getName() + paramsString(this)
+      this.getDeclaringType().getPackage() + "." +
+        this.getDeclaringType().getSourceDeclaration().nestedName() + "#" + this.getName() +
+        paramsString(this)
   }
 
   private string getJarName() {
@@ -78,7 +79,7 @@ class ExternalApi extends Callable {
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
-  predicate isNeutral() { this = any(FlowSummaryImpl::Public::NeutralCallable nsc).asCallable() }
+  predicate isNeutral() { this = any(FlowSummaryImpl::Public::NeutralCallable n).asCallable() }
 
   /**
    * Holds if this API is supported by existing CodeQL libraries, that is, it is either a
@@ -89,13 +90,10 @@ class ExternalApi extends Callable {
   }
 }
 
-/** DEPRECATED: Alias for ExternalApi */
-deprecated class ExternalAPI = ExternalApi;
-
 /**
  * Gets the limit for the number of results produced by a telemetry query.
  */
-int resultLimit() { result = 1000 }
+int resultLimit() { result = 100 }
 
 /**
  * Holds if it is relevant to count usages of `api`.

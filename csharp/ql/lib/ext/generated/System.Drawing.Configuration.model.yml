@@ -1,0 +1,13 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Drawing.Configuration", "SystemDrawingSection", False, "get_BitmapSuffix", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Drawing.Configuration", "SystemDrawingSection", "get_Properties", "()", "summary", "df-generated"]
+      - ["System.Drawing.Configuration", "SystemDrawingSection", "set_BitmapSuffix", "(System.String)", "summary", "df-generated"]

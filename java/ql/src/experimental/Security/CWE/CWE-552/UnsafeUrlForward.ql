@@ -8,7 +8,7 @@
  * @id java/unsafe-url-forward-dispatch-load
  * @tags security
  *       experimental
- *       external/cwe-552
+ *       external/cwe/cwe-552
  */
 
 import java
@@ -21,8 +21,8 @@ import UnsafeUrlForwardFlow::PathGraph
 
 module UnsafeUrlForwardFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource and
-    not exists(MethodAccess ma, Method m | ma.getMethod() = m |
+    source instanceof ThreatModelFlowSource and
+    not exists(MethodCall ma, Method m | ma.getMethod() = m |
       (
         m instanceof HttpServletRequestGetRequestUriMethod or
         m instanceof HttpServletRequestGetRequestUrlMethod or
@@ -42,7 +42,7 @@ module UnsafeUrlForwardFlowConfig implements DataFlow::ConfigSig {
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
   predicate isAdditionalFlowStep(DataFlow::Node prev, DataFlow::Node succ) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       (
         ma.getMethod() instanceof GetServletResourceMethod or
         ma.getMethod() instanceof GetFacesResourceMethod or

@@ -17,21 +17,18 @@ import MyBatisCommonLib
 import MyBatisMapperXmlSqlInjectionLib
 import semmle.code.xml.MyBatisMapperXML
 import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.Sanitizers
 import MyBatisMapperXmlSqlInjectionFlow::PathGraph
 
 private module MyBatisMapperXmlSqlInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof MyBatisMapperMethodCallAnArgument }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
-    node.getType() instanceof NumberType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().getDeclaringType() instanceof TypeObject and
       ma.getMethod().getName() = "toString" and
       ma.getQualifier() = node1.asExpr() and
@@ -45,7 +42,7 @@ private module MyBatisMapperXmlSqlInjectionFlow =
 
 from
   MyBatisMapperXmlSqlInjectionFlow::PathNode source,
-  MyBatisMapperXmlSqlInjectionFlow::PathNode sink, MyBatisMapperXmlElement mmxe, MethodAccess ma,
+  MyBatisMapperXmlSqlInjectionFlow::PathNode sink, MyBatisMapperXmlElement mmxe, MethodCall ma,
   string unsafeExpression
 where
   MyBatisMapperXmlSqlInjectionFlow::flowPath(source, sink) and

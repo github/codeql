@@ -66,13 +66,13 @@
  */
 
 import swift
-private import internal.AccessPathSyntax
 private import internal.DataFlowDispatch
 private import internal.DataFlowPrivate
 private import internal.DataFlowPublic
+private import internal.FlowSummaryImpl
 private import internal.FlowSummaryImpl::Public
+private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.FlowSummaryImplSpecific
 private import FlowSummary as FlowSummary
 private import codeql.mad.ModelValidation as SharedModelVal
 
@@ -417,14 +417,6 @@ private Element interpretElement0(
       subtypes = true and
       declWithMethod.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
       or
-      // member declared in a type that's extended with a protocol that is the named type
-      exists(ExtensionDecl e |
-        e.getExtendedTypeDecl().getADerivedTypeDecl*() = declWithMethod.asNominalTypeDecl()
-      |
-        subtypes = true and
-        e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
-      )
-      or
       // member declared directly in the named type (or an extension of it)
       subtypes = false and
       declWithMethod.asNominalTypeDecl() = namedTypeDecl
@@ -441,14 +433,6 @@ private Element interpretElement0(
       // field declared in the named type or a subtype of it (or an extension of any)
       subtypes = true and
       declWithField.asNominalTypeDecl() = namedTypeDecl.getADerivedTypeDecl*()
-      or
-      // field declared in a type that's extended with a protocol that is the named type
-      exists(ExtensionDecl e |
-        e.getExtendedTypeDecl().getADerivedTypeDecl*() = declWithField.asNominalTypeDecl()
-      |
-        subtypes = true and
-        e.getAProtocol() = namedTypeDecl.getADerivedTypeDecl*()
-      )
       or
       // field declared directly in the named type (or an extension of it)
       subtypes = false and
@@ -467,7 +451,7 @@ Element interpretElement(
   )
 }
 
-private predicate parseField(AccessPathToken c, Content::FieldContent f) {
+deprecated private predicate parseField(AccessPathToken c, Content::FieldContent f) {
   exists(string fieldRegex, string name |
     c.getName() = "Field" and
     fieldRegex = "^([^.]+)$" and
@@ -476,9 +460,33 @@ private predicate parseField(AccessPathToken c, Content::FieldContent f) {
   )
 }
 
+deprecated private predicate parseTuple(AccessPathToken c, Content::TupleContent t) {
+  c.getName() = "TupleElement" and
+  t.getIndex() = c.getAnArgument().toInt()
+}
+
+deprecated private predicate parseEnum(AccessPathToken c, Content::EnumContent e) {
+  c.getName() = "EnumElement" and
+  c.getAnArgument() = e.getSignature()
+  or
+  c.getName() = "OptionalSome" and
+  e.getSignature() = "some:0"
+}
+
 /** Holds if the specification component parses as a `Content`. */
-predicate parseContent(AccessPathToken component, Content content) {
+deprecated predicate parseContent(AccessPathToken component, Content content) {
   parseField(component, content)
+  or
+  parseTuple(component, content)
+  or
+  parseEnum(component, content)
+  or
+  // map legacy "ArrayElement" specification components to `CollectionContent`
+  component.getName() = "ArrayElement" and
+  content instanceof Content::CollectionContent
+  or
+  component.getName() = "CollectionElement" and
+  content instanceof Content::CollectionContent
 }
 
 cached
@@ -489,7 +497,9 @@ private module Cached {
    */
   cached
   predicate sourceNode(Node node, string kind) {
-    exists(InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSourceNode(n, kind) and n.asNode() = node
+    )
   }
 
   /**
@@ -498,8 +508,73 @@ private module Cached {
    */
   cached
   predicate sinkNode(Node node, string kind) {
-    exists(InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSinkNode(n, kind) and n.asNode() = node
+    )
   }
 }
 
 import Cached
+
+private predicate interpretSummary(
+  Function f, string input, string output, string kind, string provenance
+) {
+  exists(
+    string namespace, string type, boolean subtypes, string name, string signature, string ext
+  |
+    summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+    f = interpretElement(namespace, type, subtypes, name, signature, ext)
+  )
+}
+
+// adapter class for converting Mad summaries to `SummarizedCallable`s
+private class SummarizedCallableAdapter extends SummarizedCallable {
+  SummarizedCallableAdapter() { interpretSummary(this, _, _, _, _) }
+
+  private predicate relevantSummaryElementManual(string input, string output, string kind) {
+    exists(Provenance provenance |
+      interpretSummary(this, input, output, kind, provenance) and
+      provenance.isManual()
+    )
+  }
+
+  private predicate relevantSummaryElementGenerated(string input, string output, string kind) {
+    exists(Provenance provenance |
+      interpretSummary(this, input, output, kind, provenance) and
+      provenance.isGenerated()
+    )
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    exists(string kind |
+      this.relevantSummaryElementManual(input, output, kind)
+      or
+      not this.relevantSummaryElementManual(_, _, _) and
+      this.relevantSummaryElementGenerated(input, output, kind)
+    |
+      if kind = "value" then preservesValue = true else preservesValue = false
+    )
+  }
+
+  override predicate hasProvenance(Provenance provenance) {
+    interpretSummary(this, _, _, _, provenance)
+  }
+}
+
+// adapter class for converting Mad neutrals to `NeutralCallable`s
+private class NeutralCallableAdapter extends NeutralCallable {
+  string kind;
+  string provenance_;
+
+  NeutralCallableAdapter() {
+    // Neutral models have not been implemented for Swift.
+    none() and
+    exists(this) and
+    exists(kind) and
+    exists(provenance_)
+  }
+
+  override string getKind() { result = kind }
+
+  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
+}

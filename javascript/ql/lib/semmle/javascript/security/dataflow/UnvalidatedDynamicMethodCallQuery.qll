@@ -38,10 +38,10 @@ class Configuration extends TaintTracking::Configuration {
     sink.(Sink).getFlowLabel() = label
   }
 
-  override predicate isSanitizerEdge(
-    DataFlow::Node pred, DataFlow::Node succ, DataFlow::FlowLabel lbl
-  ) {
-    any(Sanitizer s).sanitizes(pred, succ, lbl)
+  override predicate isLabeledBarrier(DataFlow::Node node, DataFlow::FlowLabel label) {
+    super.isLabeledBarrier(node, label)
+    or
+    node.(Sanitizer).getFlowLabel() = label
   }
 
   override predicate isSanitizerGuard(TaintTracking::SanitizerGuardNode guard) {

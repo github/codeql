@@ -1,11 +1,9 @@
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import DataFlowPrivate
-private import codeql.ruby.typetracking.TypeTracker
-private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
+private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 private import codeql.ruby.ast.internal.Module
 private import FlowSummaryImpl as FlowSummaryImpl
-private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.SSA
 private import codeql.util.Boolean
@@ -21,8 +19,7 @@ private class SelfLocalSourceNode extends DataFlow::LocalSourceNode {
   SelfLocalSourceNode() {
     self = this.(SelfParameterNodeImpl).getSelfVariable()
     or
-    self = this.(SsaSelfDefinitionNode).getVariable() and
-    not LocalFlow::localFlowSsaParamInput(_, this)
+    self = this.(SsaSelfDefinitionNode).getVariable()
   }
 
   /** Gets the `self` variable. */
@@ -211,7 +208,9 @@ private predicate moduleFlowsToMethodCallReceiver(RelevantCall call, Module m, s
   flowsToMethodCallReceiver(call, trackModuleAccess(m), method)
 }
 
-private Block blockCall(RelevantCall call) { lambdaSourceCall(call, _, trackBlock(result)) }
+private Block blockCall(RelevantCall call) {
+  lambdaSourceCall(call, _, trackBlock(result).(DataFlow::LocalSourceNode).getALocalUse())
+}
 
 pragma[nomagic]
 private predicate superCall(RelevantCall call, Module cls, string method) {
@@ -264,7 +263,7 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
 private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
   exists(AsPattern ap |
     m = resolveConstantReadAccess(ap.getPattern()) and
-    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getNode() =
+    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getAstNode() =
       ap.getVariableAccess()
   )
 }
@@ -310,8 +309,14 @@ predicate isUserDefinedNew(SingletonMethod new) {
 }
 
 private Callable viableSourceCallableNonInit(RelevantCall call) {
-  result = getTarget(call) and
-  not result = blockCall(call) // handled by `lambdaCreation`/`lambdaCall`
+  result = getTargetInstance(call, _)
+  or
+  result = getTargetSingleton(call, _)
+  or
+  exists(Module cls, string method |
+    superCall(call, cls, method) and
+    result = lookupMethod(cls.getAnImmediateAncestor(), method)
+  )
 }
 
 private Callable viableSourceCallableInit(RelevantCall call) { result = getInitializeTarget(call) }
@@ -401,14 +406,7 @@ private module Cached {
 
   cached
   CfgScope getTarget(RelevantCall call) {
-    result = getTargetInstance(call, _)
-    or
-    result = getTargetSingleton(call, _)
-    or
-    exists(Module cls, string method |
-      superCall(call, cls, method) and
-      result = lookupMethod(cls.getAnImmediateAncestor(), method)
-    )
+    result = viableSourceCallableNonInit(call)
     or
     result = blockCall(call)
   }
@@ -424,50 +422,55 @@ private module Cached {
   cached
   newtype TArgumentPosition =
     TSelfArgumentPosition() or
+    TLambdaSelfArgumentPosition() or
     TBlockArgumentPosition() or
     TPositionalArgumentPosition(int pos) {
       exists(Call c | exists(c.getArgument(pos)))
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedParameterPosition(_, pos)
+      FlowSummaryImpl::ParsePositions::isParsedParameterPosition(_, pos)
     } or
     TKeywordArgumentPosition(string name) {
       name = any(KeywordParameter kp).getName()
       or
       exists(any(Call c).getKeywordArgument(name))
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
+      FlowSummaryImpl::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
     THashSplatArgumentPosition() or
-    TSplatAllArgumentPosition() or
+    TSynthHashSplatArgumentPosition() or
+    TSplatArgumentPosition(int pos) { exists(Call c | c.getArgument(pos) instanceof SplatExpr) } or
+    TSynthSplatArgumentPosition() or
     TAnyArgumentPosition() or
     TAnyKeywordArgumentPosition()
 
   cached
   newtype TParameterPosition =
     TSelfParameterPosition() or
+    TLambdaSelfParameterPosition() or
     TBlockParameterPosition() or
     TPositionalParameterPosition(int pos) {
       pos = any(Parameter p).getPosition()
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentPosition(_, pos)
+      FlowSummaryImpl::ParsePositions::isParsedArgumentPosition(_, pos)
     } or
     TPositionalParameterLowerBoundPosition(int pos) {
-      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
+      FlowSummaryImpl::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
     } or
     TKeywordParameterPosition(string name) {
       name = any(KeywordParameter kp).getName()
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+      exists(any(Call c).getKeywordArgument(name))
+      or
+      FlowSummaryImpl::ParsePositions::isParsedKeywordArgumentPosition(_, name)
     } or
     THashSplatParameterPosition() or
-    // To get flow from a hash-splat argument to a keyword parameter, we add a read-step
-    // from a synthetic hash-splat parameter. We need this separate synthetic ParameterNode,
-    // since we clear content of the normal hash-splat parameter for the names that
-    // correspond to normal keyword parameters. Since we cannot re-use the same parameter
-    // position for multiple parameter nodes in the same callable, we introduce this
-    // synthetic parameter position.
     TSynthHashSplatParameterPosition() or
-    TSplatAllParameterPosition() or
+    TSplatParameterPosition(int pos) {
+      pos = 0
+      or
+      exists(Parameter p | p.getPosition() = pos and p instanceof SplatParameter)
+    } or
+    TSynthSplatParameterPosition() or
     TAnyParameterPosition() or
     TAnyKeywordParameterPosition()
 }
@@ -656,17 +659,18 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
   predicate stepNoCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
     // We exclude steps into `self` parameters. For those, we instead rely on the type of
     // the enclosing module
-    StepSummary::smallstepNoCall(nodeFrom, nodeTo, summary) and
+    smallStepNoCall(nodeFrom, nodeTo, summary) and
     isNotSelf(nodeTo)
     or
     // We exclude steps into type checked variables. For those, we instead rely on the
     // type being checked against
     localFlowStep(nodeFrom, nodeTo, summary) and
-    not hasAdjacentTypeCheckedReads(nodeTo)
+    not hasAdjacentTypeCheckedReads(nodeTo) and
+    not asModulePattern(nodeTo, _)
   }
 
   predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
-    StepSummary::smallstepCall(nodeFrom, nodeTo, summary)
+    smallStepCall(nodeFrom, nodeTo, summary)
   }
 
   class StateProj = Unit;
@@ -936,20 +940,24 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
   private predicate paramReturnFlow(
     DataFlow::Node nodeFrom, DataFlow::PostUpdateNode nodeTo, StepSummary summary
   ) {
-    exists(RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p, Expr nodeFromPreExpr |
-      TypeTrackerSpecific::callStep(call, arg, p) and
+    exists(
+      RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p,
+      CfgNodes::ExprCfgNode nodeFromPreExpr
+    |
+      callStep(call, arg, p) and
       nodeTo.getPreUpdateNode() = arg and
       summary.toString() = "return" and
       (
-        nodeFromPreExpr = nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getExpr()
+        nodeFromPreExpr = nodeFrom.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
         or
-        nodeFromPreExpr = nodeFrom.asExpr().getExpr() and
-        singletonMethodOnInstance(_, _, nodeFromPreExpr)
+        nodeFromPreExpr = nodeFrom.asExpr() and
+        singletonMethodOnInstance(_, _, nodeFromPreExpr.getExpr())
       )
     |
-      nodeFromPreExpr = p.getParameter().(NamedParameter).getVariable().getAnAccess()
+      nodeFromPreExpr =
+        LocalFlow::getParameterDefNode(p.getParameter()).getDefinitionExt().getARead()
       or
-      nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfVariable().getAnAccess()
+      nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfDefinition().getARead()
     )
   }
 
@@ -960,13 +968,13 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
   }
 
   predicate stepNoCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
-    StepSummary::smallstepNoCall(nodeFrom, nodeTo, summary)
+    smallStepNoCall(nodeFrom, nodeTo, summary)
     or
     localFlowStep(nodeFrom, nodeTo, summary)
   }
 
   predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
-    StepSummary::smallstepCall(nodeFrom, nodeTo, summary)
+    smallStepCall(nodeFrom, nodeTo, summary)
     or
     paramReturnFlow(nodeFrom, nodeTo, summary)
   }
@@ -1082,8 +1090,8 @@ private CfgScope getTargetSingleton(RelevantCall call, string method) {
 }
 
 /**
- * Holds if `ctx` targets `encl`, which is the enclosing callable of `call`, the receiver
- * of `call` is a parameter access, where the corresponding argument of `ctx` is `arg`.
+ * Holds if `ctx` targets the enclosing callable of `call`, the receiver of `call` is a
+ * parameter access, where the corresponding argument of `ctx` is `arg`.
  *
  * `name` is the name of the method being called by `call`, `source` is a
  * `LocalSourceNode` that flows to `arg`, and `paramDef` is the SSA definition for the
@@ -1092,11 +1100,11 @@ private CfgScope getTargetSingleton(RelevantCall call, string method) {
 pragma[nomagic]
 private predicate argMustFlowToReceiver(
   RelevantCall ctx, DataFlow::LocalSourceNode source, DataFlow::Node arg, RelevantCall call,
-  Callable encl, string name
+  string name
 ) {
   exists(
     ParameterNodeImpl p, SsaDefinitionExtNode paramDef, ParameterPosition ppos,
-    ArgumentPosition apos
+    ArgumentPosition apos, Callable encl
   |
     // the receiver of `call` references `p`
     exists(DataFlow::Node receiver |
@@ -1127,7 +1135,7 @@ private predicate argMustFlowToReceiver(
 }
 
 /**
- * Holds if `ctx` targets `encl`, which is the enclosing callable of `new`, and
+ * Holds if `ctx` targets the enclosing callable of `new`, and
  * the receiver of `new` is a parameter access, where the corresponding argument
  * `arg` of `ctx` has type `tp`.
  *
@@ -1135,10 +1143,10 @@ private predicate argMustFlowToReceiver(
  */
 pragma[nomagic]
 private predicate mayBenefitFromCallContextInitialize(
-  RelevantCall ctx, RelevantCall new, DataFlow::Node arg, Callable encl, Module tp, string name
+  RelevantCall ctx, RelevantCall new, DataFlow::Node arg, Module tp, string name
 ) {
   exists(DataFlow::LocalSourceNode source |
-    argMustFlowToReceiver(ctx, pragma[only_bind_into](source), arg, new, encl, "new") and
+    argMustFlowToReceiver(ctx, pragma[only_bind_into](source), arg, new, "new") and
     source = trackModuleAccess(tp) and
     name = "initialize" and
     exists(lookupMethod(tp, name))
@@ -1146,7 +1154,7 @@ private predicate mayBenefitFromCallContextInitialize(
 }
 
 /**
- * Holds if `ctx` targets `encl`, which is the enclosing callable of `call`, and
+ * Holds if `ctx` targets the enclosing callable of `call`, and
  * the receiver of `call` is a parameter access, where the corresponding argument
  * `arg` of `ctx` has type `tp`.
  *
@@ -1155,11 +1163,10 @@ private predicate mayBenefitFromCallContextInitialize(
  */
 pragma[nomagic]
 private predicate mayBenefitFromCallContextInstance(
-  RelevantCall ctx, RelevantCall call, DataFlow::Node arg, Callable encl, Module tp, boolean exact,
-  string name
+  RelevantCall ctx, RelevantCall call, DataFlow::Node arg, Module tp, boolean exact, string name
 ) {
   exists(DataFlow::LocalSourceNode source |
-    argMustFlowToReceiver(ctx, pragma[only_bind_into](source), arg, call, encl,
+    argMustFlowToReceiver(ctx, pragma[only_bind_into](source), arg, call,
       pragma[only_bind_into](name)) and
     source = trackInstance(tp, exact) and
     exists(lookupMethod(tp, pragma[only_bind_into](name)))
@@ -1167,7 +1174,7 @@ private predicate mayBenefitFromCallContextInstance(
 }
 
 /**
- * Holds if `ctx` targets `encl`, which is the enclosing callable of `call`, and
+ * Holds if `ctx` targets  the enclosing callable of `call`, and
  * the receiver of `call` is a parameter access, where the corresponding argument
  * `arg` of `ctx` is a module access targeting a module of type `tp`.
  *
@@ -1176,12 +1183,11 @@ private predicate mayBenefitFromCallContextInstance(
  */
 pragma[nomagic]
 private predicate mayBenefitFromCallContextSingleton(
-  RelevantCall ctx, RelevantCall call, DataFlow::Node arg, Callable encl, Module tp, boolean exact,
-  string name
+  RelevantCall ctx, RelevantCall call, DataFlow::Node arg, Module tp, boolean exact, string name
 ) {
   exists(DataFlow::LocalSourceNode source |
     argMustFlowToReceiver(ctx, pragma[only_bind_into](source), pragma[only_bind_into](arg), call,
-      encl, pragma[only_bind_into](name)) and
+      pragma[only_bind_into](name)) and
     exists(lookupSingletonMethod(tp, pragma[only_bind_into](name), exact))
   |
     source = trackModuleAccess(tp) and
@@ -1202,16 +1208,14 @@ private predicate mayBenefitFromCallContextSingleton(
 
 /**
  * Holds if the set of viable implementations that can be called by `call`
- * might be improved by knowing the call context. This is the case if the
- * receiver accesses a parameter of the enclosing callable `c` (including
- * the implicit `self` parameter).
+ * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
-  mayBenefitFromCallContextInitialize(_, call.asCall(), _, c.asCallable(), _, _)
+predicate mayBenefitFromCallContext(DataFlowCall call) {
+  mayBenefitFromCallContextInitialize(_, call.asCall(), _, _, _)
   or
-  mayBenefitFromCallContextInstance(_, call.asCall(), _, c.asCallable(), _, _, _)
+  mayBenefitFromCallContextInstance(_, call.asCall(), _, _, _, _)
   or
-  mayBenefitFromCallContextSingleton(_, call.asCall(), _, c.asCallable(), _, _, _)
+  mayBenefitFromCallContextSingleton(_, call.asCall(), _, _, _, _)
 }
 
 /**
@@ -1220,25 +1224,25 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
  */
 pragma[nomagic]
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-  mayBenefitFromCallContext(call, _) and
+  mayBenefitFromCallContext(call) and
   (
     // `ctx` can provide a potentially better type bound
     exists(RelevantCall call0, Callable res |
       call0 = call.asCall() and
       res = result.asCallable() and
       exists(Module m, string name |
-        mayBenefitFromCallContextInitialize(ctx.asCall(), pragma[only_bind_into](call0), _, _,
+        mayBenefitFromCallContextInitialize(ctx.asCall(), pragma[only_bind_into](call0), _,
           pragma[only_bind_into](m), pragma[only_bind_into](name)) and
         res = getInitializeTarget(call0) and
         res = lookupMethod(m, name)
         or
         exists(boolean exact |
-          mayBenefitFromCallContextInstance(ctx.asCall(), pragma[only_bind_into](call0), _, _,
+          mayBenefitFromCallContextInstance(ctx.asCall(), pragma[only_bind_into](call0), _,
             pragma[only_bind_into](m), pragma[only_bind_into](exact), pragma[only_bind_into](name)) and
           res = getTargetInstance(call0, name) and
           res = lookupMethod(m, name, exact)
           or
-          mayBenefitFromCallContextSingleton(ctx.asCall(), pragma[only_bind_into](call0), _, _,
+          mayBenefitFromCallContextSingleton(ctx.asCall(), pragma[only_bind_into](call0), _,
             pragma[only_bind_into](m), pragma[only_bind_into](exact), pragma[only_bind_into](name)) and
           res = getTargetSingleton(call0, name) and
           res = lookupSingletonMethod(m, name, exact)
@@ -1251,15 +1255,15 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
     exists(RelevantCall call0, RelevantCall ctx0, DataFlow::Node arg, string name |
       call0 = call.asCall() and
       ctx0 = ctx.asCall() and
-      argMustFlowToReceiver(ctx0, _, arg, call0, _, name) and
-      not mayBenefitFromCallContextInitialize(ctx0, call0, arg, _, _, _) and
-      not mayBenefitFromCallContextInstance(ctx0, call0, arg, _, _, _, name) and
-      not mayBenefitFromCallContextSingleton(ctx0, call0, arg, _, _, _, name) and
+      argMustFlowToReceiver(ctx0, _, arg, call0, name) and
+      not mayBenefitFromCallContextInitialize(ctx0, call0, arg, _, _) and
+      not mayBenefitFromCallContextInstance(ctx0, call0, arg, _, _, name) and
+      not mayBenefitFromCallContextSingleton(ctx0, call0, arg, _, _, name) and
       result.asCallable() = viableSourceCallable(call0)
     )
     or
     // library calls should always be able to resolve
-    argMustFlowToReceiver(ctx.asCall(), _, _, call.asCall(), _, _) and
+    argMustFlowToReceiver(ctx.asCall(), _, _, call.asCall(), _) and
     result = viableLibraryCallable(call)
   )
 }
@@ -1270,6 +1274,9 @@ predicate exprNodeReturnedFrom = exprNodeReturnedFromCached/2;
 class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `self` parameter. */
   predicate isSelf() { this = TSelfParameterPosition() }
+
+  /** Holds if this position represents a reference to a lambda itself. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfParameterPosition() }
 
   /** Holds if this position represents a block parameter. */
   predicate isBlock() { this = TBlockParameterPosition() }
@@ -1286,9 +1293,14 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a hash-splat parameter. */
   predicate isHashSplat() { this = THashSplatParameterPosition() }
 
+  /** Holds if this position represents a synthetic hash-splat parameter. */
   predicate isSynthHashSplat() { this = TSynthHashSplatParameterPosition() }
 
-  predicate isSplatAll() { this = TSplatAllParameterPosition() }
+  /** Holds if this position represents a splat parameter at position `n`. */
+  predicate isSplat(int n) { this = TSplatParameterPosition(n) }
+
+  /** Holds if this position represents a synthetic splat parameter. */
+  predicate isSynthSplat() { this = TSynthSplatParameterPosition() }
 
   /**
    * Holds if this position represents any parameter, except `self` parameters. This
@@ -1303,6 +1315,8 @@ class ParameterPosition extends TParameterPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     this.isBlock() and result = "block"
     or
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
@@ -1315,11 +1329,13 @@ class ParameterPosition extends TParameterPosition {
     or
     this.isSynthHashSplat() and result = "synthetic **"
     or
-    this.isSplatAll() and result = "*"
-    or
     this.isAny() and result = "any"
     or
     this.isAnyNamed() and result = "any-named"
+    or
+    exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
+    or
+    this.isSynthSplat() and result = "synthetic *"
   }
 }
 
@@ -1327,6 +1343,9 @@ class ParameterPosition extends TParameterPosition {
 class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a `self` argument. */
   predicate isSelf() { this = TSelfArgumentPosition() }
+
+  /** Holds if this position represents a lambda `self` argument. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfArgumentPosition() }
 
   /** Holds if this position represents a block argument. */
   predicate isBlock() { this = TBlockArgumentPosition() }
@@ -1346,17 +1365,23 @@ class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents any positional parameter. */
   predicate isAnyNamed() { this = TAnyKeywordArgumentPosition() }
 
-  /**
-   * Holds if this position represents a synthesized argument containing all keyword
-   * arguments wrapped in a hash.
-   */
+  /** Holds if this position represents a hash-splat argument. */
   predicate isHashSplat() { this = THashSplatArgumentPosition() }
 
-  predicate isSplatAll() { this = TSplatAllArgumentPosition() }
+  /** Holds if this position represents a synthetic hash-splat argument. */
+  predicate isSynthHashSplat() { this = TSynthHashSplatArgumentPosition() }
+
+  /** Holds if this position represents a splat argument at position `n`. */
+  predicate isSplat(int n) { this = TSplatArgumentPosition(n) }
+
+  /** Holds if this position represents a synthetic splat argument. */
+  predicate isSynthSplat() { this = TSynthSplatArgumentPosition() }
 
   /** Gets a textual representation of this position. */
   string toString() {
     this.isSelf() and result = "self"
+    or
+    this.isLambdaSelf() and result = "lambda self"
     or
     this.isBlock() and result = "block"
     or
@@ -1370,20 +1395,32 @@ class ArgumentPosition extends TArgumentPosition {
     or
     this.isHashSplat() and result = "**"
     or
-    this.isSplatAll() and result = "*"
+    this.isSynthHashSplat() and result = "synthetic **"
+    or
+    exists(int pos | this.isSplat(pos) and result = "* (position " + pos + ")")
+    or
+    this.isSynthSplat() and result = "synthetic *"
   }
 }
 
 pragma[nomagic]
-private predicate parameterPositionIsNotSelf(ParameterPosition ppos) { not ppos.isSelf() }
+private predicate parameterPositionIsNotSelf(ParameterPosition ppos) {
+  not ppos.isSelf() and
+  not ppos.isLambdaSelf()
+}
 
 pragma[nomagic]
-private predicate argumentPositionIsNotSelf(ArgumentPosition apos) { not apos.isSelf() }
+private predicate argumentPositionIsNotSelf(ArgumentPosition apos) {
+  not apos.isSelf() and
+  not apos.isLambdaSelf()
+}
 
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[nomagic]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
+  or
+  ppos.isLambdaSelf() and apos.isLambdaSelf()
   or
   ppos.isBlock() and apos.isBlock()
   or
@@ -1395,11 +1432,21 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
   or
-  ppos.isHashSplat() and apos.isHashSplat()
+  (ppos.isHashSplat() or ppos.isSynthHashSplat()) and
+  (apos.isHashSplat() or apos.isSynthHashSplat())
   or
-  ppos.isSynthHashSplat() and apos.isHashSplat()
-  or
-  ppos.isSplatAll() and apos.isSplatAll()
+  exists(int pos |
+    (
+      ppos.isSplat(pos)
+      or
+      ppos.isSynthSplat() and pos = 0
+    ) and
+    (
+      apos.isSplat(pos)
+      or
+      apos.isSynthSplat() and pos = 0
+    )
+  )
   or
   ppos.isAny() and argumentPositionIsNotSelf(apos)
   or
@@ -1408,14 +1455,4 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isAnyNamed() and apos.isKeyword(_)
   or
   apos.isAnyNamed() and ppos.isKeyword(_)
-}
-
-/**
- * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
- *
- * This is a temporary hook to support technical debt in the Go language; do not use.
- */
-pragma[inline]
-predicate golangSpecificParamArgFilter(DataFlowCall call, DataFlow::Node p, ArgumentNode arg) {
-  any()
 }

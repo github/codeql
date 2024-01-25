@@ -1,6 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Text.Encodings.Web, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
-
+// Generated from `System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Text
@@ -13,73 +12,67 @@ namespace System
                 {
                     public static System.Text.Encodings.Web.HtmlEncoder Create(System.Text.Encodings.Web.TextEncoderSettings settings) => throw null;
                     public static System.Text.Encodings.Web.HtmlEncoder Create(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
-                    public static System.Text.Encodings.Web.HtmlEncoder Default { get => throw null; }
                     protected HtmlEncoder() => throw null;
+                    public static System.Text.Encodings.Web.HtmlEncoder Default { get => throw null; }
                 }
-
                 public abstract class JavaScriptEncoder : System.Text.Encodings.Web.TextEncoder
                 {
                     public static System.Text.Encodings.Web.JavaScriptEncoder Create(System.Text.Encodings.Web.TextEncoderSettings settings) => throw null;
                     public static System.Text.Encodings.Web.JavaScriptEncoder Create(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
-                    public static System.Text.Encodings.Web.JavaScriptEncoder Default { get => throw null; }
                     protected JavaScriptEncoder() => throw null;
+                    public static System.Text.Encodings.Web.JavaScriptEncoder Default { get => throw null; }
                     public static System.Text.Encodings.Web.JavaScriptEncoder UnsafeRelaxedJsonEscaping { get => throw null; }
                 }
-
                 public abstract class TextEncoder
                 {
-                    public virtual System.Buffers.OperationStatus Encode(System.ReadOnlySpan<System.Char> source, System.Span<System.Char> destination, out int charsConsumed, out int charsWritten, bool isFinalBlock = default(bool)) => throw null;
-                    public virtual void Encode(System.IO.TextWriter output, System.Char[] value, int startIndex, int characterCount) => throw null;
+                    protected TextEncoder() => throw null;
+                    public virtual void Encode(System.IO.TextWriter output, char[] value, int startIndex, int characterCount) => throw null;
                     public void Encode(System.IO.TextWriter output, string value) => throw null;
                     public virtual void Encode(System.IO.TextWriter output, string value, int startIndex, int characterCount) => throw null;
+                    public virtual System.Buffers.OperationStatus Encode(System.ReadOnlySpan<char> source, System.Span<char> destination, out int charsConsumed, out int charsWritten, bool isFinalBlock = default(bool)) => throw null;
                     public virtual string Encode(string value) => throw null;
-                    public virtual System.Buffers.OperationStatus EncodeUtf8(System.ReadOnlySpan<System.Byte> utf8Source, System.Span<System.Byte> utf8Destination, out int bytesConsumed, out int bytesWritten, bool isFinalBlock = default(bool)) => throw null;
-                    unsafe public abstract int FindFirstCharacterToEncode(System.Char* text, int textLength);
-                    public virtual int FindFirstCharacterToEncodeUtf8(System.ReadOnlySpan<System.Byte> utf8Text) => throw null;
+                    public virtual System.Buffers.OperationStatus EncodeUtf8(System.ReadOnlySpan<byte> utf8Source, System.Span<byte> utf8Destination, out int bytesConsumed, out int bytesWritten, bool isFinalBlock = default(bool)) => throw null;
+                    public abstract unsafe int FindFirstCharacterToEncode(char* text, int textLength);
+                    public virtual int FindFirstCharacterToEncodeUtf8(System.ReadOnlySpan<byte> utf8Text) => throw null;
                     public abstract int MaxOutputCharactersPerInputCharacter { get; }
-                    protected TextEncoder() => throw null;
-                    unsafe public abstract bool TryEncodeUnicodeScalar(int unicodeScalar, System.Char* buffer, int bufferLength, out int numberOfCharactersWritten);
+                    public abstract unsafe bool TryEncodeUnicodeScalar(int unicodeScalar, char* buffer, int bufferLength, out int numberOfCharactersWritten);
                     public abstract bool WillEncode(int unicodeScalar);
                 }
-
                 public class TextEncoderSettings
                 {
-                    public virtual void AllowCharacter(System.Char character) => throw null;
-                    public virtual void AllowCharacters(params System.Char[] characters) => throw null;
+                    public virtual void AllowCharacter(char character) => throw null;
+                    public virtual void AllowCharacters(params char[] characters) => throw null;
                     public virtual void AllowCodePoints(System.Collections.Generic.IEnumerable<int> codePoints) => throw null;
                     public virtual void AllowRange(System.Text.Unicode.UnicodeRange range) => throw null;
                     public virtual void AllowRanges(params System.Text.Unicode.UnicodeRange[] ranges) => throw null;
                     public virtual void Clear() => throw null;
-                    public virtual void ForbidCharacter(System.Char character) => throw null;
-                    public virtual void ForbidCharacters(params System.Char[] characters) => throw null;
-                    public virtual void ForbidRange(System.Text.Unicode.UnicodeRange range) => throw null;
-                    public virtual void ForbidRanges(params System.Text.Unicode.UnicodeRange[] ranges) => throw null;
-                    public virtual System.Collections.Generic.IEnumerable<int> GetAllowedCodePoints() => throw null;
                     public TextEncoderSettings() => throw null;
                     public TextEncoderSettings(System.Text.Encodings.Web.TextEncoderSettings other) => throw null;
                     public TextEncoderSettings(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
+                    public virtual void ForbidCharacter(char character) => throw null;
+                    public virtual void ForbidCharacters(params char[] characters) => throw null;
+                    public virtual void ForbidRange(System.Text.Unicode.UnicodeRange range) => throw null;
+                    public virtual void ForbidRanges(params System.Text.Unicode.UnicodeRange[] ranges) => throw null;
+                    public virtual System.Collections.Generic.IEnumerable<int> GetAllowedCodePoints() => throw null;
                 }
-
                 public abstract class UrlEncoder : System.Text.Encodings.Web.TextEncoder
                 {
                     public static System.Text.Encodings.Web.UrlEncoder Create(System.Text.Encodings.Web.TextEncoderSettings settings) => throw null;
                     public static System.Text.Encodings.Web.UrlEncoder Create(params System.Text.Unicode.UnicodeRange[] allowedRanges) => throw null;
-                    public static System.Text.Encodings.Web.UrlEncoder Default { get => throw null; }
                     protected UrlEncoder() => throw null;
+                    public static System.Text.Encodings.Web.UrlEncoder Default { get => throw null; }
                 }
-
             }
         }
         namespace Unicode
         {
-            public class UnicodeRange
+            public sealed class UnicodeRange
             {
-                public static System.Text.Unicode.UnicodeRange Create(System.Char firstCharacter, System.Char lastCharacter) => throw null;
+                public static System.Text.Unicode.UnicodeRange Create(char firstCharacter, char lastCharacter) => throw null;
+                public UnicodeRange(int firstCodePoint, int length) => throw null;
                 public int FirstCodePoint { get => throw null; }
                 public int Length { get => throw null; }
-                public UnicodeRange(int firstCodePoint, int length) => throw null;
             }
-
             public static class UnicodeRanges
             {
                 public static System.Text.Unicode.UnicodeRange All { get => throw null; }
@@ -117,8 +110,8 @@ namespace System
                 public static System.Text.Unicode.UnicodeRange CjkUnifiedIdeographsExtensionA { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange CombiningDiacriticalMarks { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange CombiningDiacriticalMarksExtended { get => throw null; }
-                public static System.Text.Unicode.UnicodeRange CombiningDiacriticalMarksSupplement { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange CombiningDiacriticalMarksforSymbols { get => throw null; }
+                public static System.Text.Unicode.UnicodeRange CombiningDiacriticalMarksSupplement { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange CombiningHalfMarks { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange CommonIndicNumberForms { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange ControlPictures { get => throw null; }
@@ -144,8 +137,8 @@ namespace System
                 public static System.Text.Unicode.UnicodeRange GeorgianExtended { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange GeorgianSupplement { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange Glagolitic { get => throw null; }
-                public static System.Text.Unicode.UnicodeRange GreekExtended { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange GreekandCoptic { get => throw null; }
+                public static System.Text.Unicode.UnicodeRange GreekExtended { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange Gujarati { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange Gurmukhi { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange HalfwidthandFullwidthForms { get => throw null; }
@@ -195,8 +188,8 @@ namespace System
                 public static System.Text.Unicode.UnicodeRange Myanmar { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange MyanmarExtendedA { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange MyanmarExtendedB { get => throw null; }
-                public static System.Text.Unicode.UnicodeRange NKo { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange NewTaiLue { get => throw null; }
+                public static System.Text.Unicode.UnicodeRange NKo { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange None { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange NumberForms { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange Ogham { get => throw null; }
@@ -241,11 +234,10 @@ namespace System
                 public static System.Text.Unicode.UnicodeRange VariationSelectors { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange VedicExtensions { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange VerticalForms { get => throw null; }
+                public static System.Text.Unicode.UnicodeRange YijingHexagramSymbols { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange YiRadicals { get => throw null; }
                 public static System.Text.Unicode.UnicodeRange YiSyllables { get => throw null; }
-                public static System.Text.Unicode.UnicodeRange YijingHexagramSymbols { get => throw null; }
             }
-
         }
     }
 }

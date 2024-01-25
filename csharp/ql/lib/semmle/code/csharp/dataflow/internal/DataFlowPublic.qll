@@ -90,7 +90,7 @@ class ExprNode extends Node, TExprNode_ {
    */
   Expr getExprAtNode(ControlFlow::Nodes::ElementNode cfn) {
     this = TExprNode(cfn) and
-    result = cfn.getElement()
+    result = cfn.getAstNode()
   }
 }
 
@@ -183,30 +183,6 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
     exists(Guard g, Expr e, AbstractValue v |
       guardChecks(g, e, v) and
       g.controlsNode(result.getControlFlowNode(), e, v)
-    )
-  }
-}
-
-/**
- * DEPRECATED: Use `BarrierGuard` module instead.
- *
- * A guard that validates some expression.
- *
- * To use this in a configuration, extend the class and provide a
- * characteristic predicate precisely specifying the guard, and override
- * `checks` to specify what is being validated and in which branch.
- *
- * It is important that all extending classes in scope are disjoint.
- */
-deprecated class BarrierGuard extends Guard {
-  /** Holds if this guard validates `e` upon evaluating to `v`. */
-  abstract predicate checks(Expr e, AbstractValue v);
-
-  /** Gets a node guarded by this guard. */
-  final ExprNode getAGuardedNode() {
-    exists(Expr e, AbstractValue v |
-      this.checks(e, v) and
-      this.controlsNode(result.getControlFlowNode(), e, v)
     )
   }
 }

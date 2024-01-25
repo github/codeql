@@ -3,11 +3,22 @@ description: Builds the C# CodeQL pack
 runs:
   using: composite
   steps:
+    - uses: ./.github/actions/fetch-codeql
     - name: Setup dotnet
       uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 7.0.102
+        dotnet-version: 8.0.100
     - name: Build Extractor
       shell: bash
       run: scripts/create-extractor-pack.sh
       working-directory: csharp
+    - name: Patch bundle to include ASP extractor
+      shell: bash
+      run: |
+        CODEQL_PATH=$(gh codeql version --format=json | jq -r .unpackedLocation)
+        # The legacy ASP extractor is not in this repo, so take the one from the nightly build
+        mv "$CODEQL_PATH/csharp/tools/extractor-asp.jar" "${{ github.workspace }}/csharp/extractor-pack/tools"
+        # Safe guard against using the bundled extractor
+        rm -rf "$CODEQL_PATH/csharp"
+      env:
+        GITHUB_TOKEN: ${{ github.token }}

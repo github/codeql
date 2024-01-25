@@ -81,9 +81,9 @@ newtype TReturnKind =
  */
 class DataFlowSummarizedCallable instanceof FlowSummary::SummarizedCallable {
   DataFlowSummarizedCallable() {
-    not this.fromSource()
+    not this.hasBody()
     or
-    this.fromSource() and not this.applyGeneratedModel()
+    this.hasBody() and not this.applyGeneratedModel()
   }
 
   string toString() { result = super.toString() }
@@ -104,21 +104,19 @@ private module Cached {
   newtype TDataFlowCall =
     TNonDelegateCall(ControlFlow::Nodes::ElementNode cfn, DispatchCall dc) {
       DataFlowImplCommon::forceCachingInSameStage() and
-      cfn.getElement() = dc.getCall()
+      cfn.getAstNode() = dc.getCall()
     } or
     TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {
-      cfn.getElement() = dc
+      cfn.getAstNode() = dc
     } or
-    TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn, Callable target) {
-      transitiveCapturedCallTarget(cfn, target)
+    TTransitiveCapturedCall(ControlFlow::Nodes::ElementNode cfn) {
+      transitiveCapturedCallTarget(cfn, _)
     } or
     TCilCall(CIL::Call call) {
       // No need to include calls that are compiled from source
       not call.getImplementation().getMethod().compiledFromSource()
     } or
-    TSummaryCall(
-      FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
-    ) {
+    TSummaryCall(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
     }
 
@@ -136,35 +134,37 @@ private module Cached {
   newtype TParameterPosition =
     TPositionalParameterPosition(int i) { i = any(Parameter p).getPosition() } or
     TThisParameterPosition() or
-    TImplicitCapturedParameterPosition(LocalScopeVariable v) { capturedWithFlowIn(v) }
+    TImplicitCapturedParameterPosition(LocalScopeVariable v) { capturedWithFlowIn(v) } or
+    TDelegateSelfParameterPosition()
 
   cached
   newtype TArgumentPosition =
     TPositionalArgumentPosition(int i) { i = any(Parameter p).getPosition() } or
     TQualifierArgumentPosition() or
-    TImplicitCapturedArgumentPosition(LocalScopeVariable v) { capturedWithFlowIn(v) }
+    TImplicitCapturedArgumentPosition(LocalScopeVariable v) { capturedWithFlowIn(v) } or
+    TDelegateSelfArgumentPosition()
 }
 
 import Cached
 
 private module DispatchImpl {
+  private predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
+    c = call.getEnclosingCallable() and
+    call.(NonDelegateDataFlowCall).getDispatchCall().mayBenefitFromCallContext()
+  }
+
   /**
    * Holds if the set of viable implementations that can be called by `call`
-   * might be improved by knowing the call context. This is the case if the
-   * call is a delegate call, or if the qualifier accesses a parameter of
-   * the enclosing callable `c` (including the implicit `this` parameter).
+   * might be improved by knowing the call context.
    */
-  predicate mayBenefitFromCallContext(NonDelegateDataFlowCall call, DataFlowCallable c) {
-    c = call.getEnclosingCallable() and
-    call.getDispatchCall().mayBenefitFromCallContext()
-  }
+  predicate mayBenefitFromCallContext(DataFlowCall call) { mayBenefitFromCallContext(call, _) }
 
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
    * restricted to those `call`s for which a context might make a difference.
    */
-  DataFlowCallable viableImplInCallContext(NonDelegateDataFlowCall call, DataFlowCall ctx) {
-    exists(DispatchCall dc | dc = call.getDispatchCall() |
+  DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+    exists(DispatchCall dc | dc = call.(NonDelegateDataFlowCall).getDispatchCall() |
       result.getUnderlyingCallable() =
         getCallableForDataFlow(dc.getADynamicTargetInCallContext(ctx.(NonDelegateDataFlowCall)
                 .getDispatchCall()).getUnboundDeclaration())
@@ -389,11 +389,12 @@ class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDe
  */
 class TransitiveCapturedDataFlowCall extends DataFlowCall, TTransitiveCapturedCall {
   private ControlFlow::Nodes::ElementNode cfn;
-  private Callable target;
 
-  TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn, target) }
+  TransitiveCapturedDataFlowCall() { this = TTransitiveCapturedCall(cfn) }
 
-  override DataFlowCallable getARuntimeTarget() { result.asCallable() = target }
+  override DataFlowCallable getARuntimeTarget() {
+    transitiveCapturedCallTarget(cfn, result.asCallable())
+  }
 
   override ControlFlow::Nodes::ElementNode getControlFlowNode() { result = cfn }
 
@@ -413,6 +414,9 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
   private CIL::Call call;
 
   CilDataFlowCall() { this = TCilCall(call) }
+
+  /** Gets the underlying CIL call. */
+  CIL::Call getCilCall() { result = call }
 
   override DataFlowCallable getARuntimeTarget() {
     // There is no dispatch library for CIL, so do not consider overrides for now
@@ -440,7 +444,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
  * the method `Select`.
  */
 class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private FlowSummary::SummarizedCallable c;
   private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
@@ -476,6 +480,14 @@ class ParameterPosition extends TParameterPosition {
     this = TImplicitCapturedParameterPosition(v)
   }
 
+  /**
+   * Holds if this position represents a reference to a delegate itself.
+   *
+   * Used for tracking flow through captured variables and for improving
+   * delegate dispatch.
+   */
+  predicate isDelegateSelf() { this = TDelegateSelfParameterPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     result = "position " + this.getPosition()
@@ -485,6 +497,9 @@ class ParameterPosition extends TParameterPosition {
     exists(LocalScopeVariable v |
       this.isImplicitCapturedParameterPosition(v) and result = "captured " + v
     )
+    or
+    this.isDelegateSelf() and
+    result = "delegate self"
   }
 }
 
@@ -501,6 +516,14 @@ class ArgumentPosition extends TArgumentPosition {
     this = TImplicitCapturedArgumentPosition(v)
   }
 
+  /**
+   * Holds if this position represents a reference to a delegate itself.
+   *
+   * Used for tracking flow through captured variables and for improving
+   * delegate dispatch.
+   */
+  predicate isDelegateSelf() { this = TDelegateSelfArgumentPosition() }
+
   /** Gets a textual representation of this position. */
   string toString() {
     result = "position " + this.getPosition()
@@ -510,6 +533,9 @@ class ArgumentPosition extends TArgumentPosition {
     exists(LocalScopeVariable v |
       this.isImplicitCapturedArgumentPosition(v) and result = "captured " + v
     )
+    or
+    this.isDelegateSelf() and
+    result = "delegate self"
   }
 }
 
@@ -523,14 +549,6 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
     ppos.isImplicitCapturedParameterPosition(v) and
     apos.isImplicitCapturedArgumentPosition(v)
   )
-}
-
-/**
- * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
- *
- * This is a temporary hook to support technical debt in the Go language; do not use.
- */
-pragma[inline]
-predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
-  any()
+  or
+  ppos.isDelegateSelf() and apos.isDelegateSelf()
 }

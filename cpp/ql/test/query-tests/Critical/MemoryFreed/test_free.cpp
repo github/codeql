@@ -81,8 +81,8 @@ public:
 void test_new1() {
     A *a = new A();
     delete(a);
-    a->f(); // BAD [NOT DETECTED]
-    delete(a); // BAD [NOT DETECTED]
+    a->f(); // BAD
+    delete(a); // BAD
 }
 
 void test_dereference1(A *a) {
@@ -126,7 +126,7 @@ void test_ptr_deref(void ** a) {
     free(*a);
     *a = malloc(10);
     free(*a); // GOOD
-    free(*a); // BAD [NOT DETECTED]
+    free(*a); // BAD
     *a = malloc(10);
     free(a[0]); // GOOD
     free(a[1]); // GOOD
@@ -244,4 +244,53 @@ void test_loop3(char ** a, char ** b) {
 void test_deref(char **a) {
     free(*a);
     use(*a); // GOOD [FALSE POSITIVE]
+}
+
+// Refs
+
+void test_ref(char *&p) {
+	free(p);
+	p = (char *)malloc(sizeof(char)*10);
+	use(p);  // GOOD
+    free(p); // GOOD
+}
+
+
+void test_ref_delete(int *&p) {
+	delete p;
+	p = new int;
+	use(p);  // GOOD
+    delete p;  // GOOD
+}
+
+void test_free_assign() {
+	void *a = malloc(10); 
+	void *b;
+	free(b = a); // GOOD 
+}
+
+struct MyStruct {
+  char* buf;
+};
+
+void test_free_struct(MyStruct* s) {
+  free(s->buf);
+  char c = s->buf[0]; // BAD
+}
+
+void test_free_struct2(MyStruct s) {
+  free(s.buf);
+  char c = s.buf[0]; // BAD
+}
+
+void test_free_struct3(MyStruct s) {
+  char* buf = s.buf;
+  free(buf);
+  char c = s.buf[0]; // BAD [FALSE NEGATIVE]
+}
+
+void test_free_struct4(char* buf, MyStruct s) {
+  free(buf);
+  s.buf = buf;
+  char c = s.buf[0]; // BAD
 }

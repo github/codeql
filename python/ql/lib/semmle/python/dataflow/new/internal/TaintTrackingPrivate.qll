@@ -16,7 +16,7 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
 
 private module Cached {
   /**
@@ -216,8 +216,10 @@ predicate awaitStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
  */
 predicate asyncWithStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   exists(With with, ControlFlowNode contextManager, ControlFlowNode var |
+    var = any(WithDefinition wd).getDefiningNode()
+  |
     nodeFrom.(DataFlow::CfgNode).getNode() = contextManager and
-    nodeTo.(DataFlow::EssaNode).getVar().getDefinition().(WithDefinition).getDefiningNode() = var and
+    nodeTo.(DataFlow::CfgNode).getNode() = var and
     // see `with_flow` in `python/ql/src/semmle/python/dataflow/Implementation.qll`
     with.getContextExpr() = contextManager.getNode() and
     with.getOptionalVars() = var.getNode() and

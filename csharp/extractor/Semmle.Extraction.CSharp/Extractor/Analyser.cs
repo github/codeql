@@ -1,13 +1,13 @@
 using System;
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Semmle.Extraction.CSharp.Populators;
-using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Diagnostics;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Semmle.Util.Logging;
+using Semmle.Extraction.CSharp.Populators;
 
 namespace Semmle.Extraction.CSharp
 {
@@ -19,6 +19,8 @@ namespace Semmle.Extraction.CSharp
         protected Extraction.Extractor? extractor;
         protected CSharpCompilation? compilation;
         protected CommonOptions? options;
+        private protected Entities.Compilation? compilationEntity;
+        private IDisposable? compilationTrapFile;
 
         private readonly object progressMutex = new object();
 
@@ -226,7 +228,34 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
+        private void DoAnalyseCompilation()
+        {
+            try
+            {
+                var assemblyPath = extractor.OutputPath;
+                var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
+                var assembly = compilation.Assembly;
+                var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
+                compilationTrapFile = trapWriter;  // Dispose later
+                var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
+
+                compilationEntity = Entities.Compilation.Create(cx);
+            }
+            catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
+            {
+                Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", "compilation", ex);
+            }
+        }
+
 #nullable restore warnings
+
+        /// <summary>
+        /// Extracts compilation-wide entities, such as compilations and compiler diagnostics.
+        /// </summary>
+        public void AnalyseCompilation()
+        {
+            extractionTasks.Add(() => DoAnalyseCompilation());
+        }
 
         private static bool FileIsUpToDate(string src, string dest)
         {
@@ -234,7 +263,7 @@ namespace Semmle.Extraction.CSharp
                 File.GetLastWriteTime(dest) >= File.GetLastWriteTime(src);
         }
 
-        private void AnalyseNamespace(Context cx, INamespaceSymbol ns)
+        private static void AnalyseNamespace(Context cx, INamespaceSymbol ns)
         {
             foreach (var memberNamespace in ns.GetNamespaceMembers())
             {
@@ -275,6 +304,8 @@ namespace Semmle.Extraction.CSharp
                 Logger.Log(Severity.Info, "EXTRACTION SUCCEEDED in {0}", stopWatch.Elapsed);
 
             Logger.Dispose();
+
+            compilationTrapFile?.Dispose();
         }
 
         /// <summary>

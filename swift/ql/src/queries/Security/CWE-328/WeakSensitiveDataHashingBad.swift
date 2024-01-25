@@ -1,5 +1,10 @@
-typealias Hasher = Crypto.Insecure.MD5
+func getContentsAndHash(url: URL) -> (Data, String)? {
+    guard let data = try? Data(contentsOf: url) else {
+        return nil
+    }
 
-func checkCertificate(cert: Array[UInt8], hash: Array[UInt8]) -> Bool
-  return Hasher.hash(data: cert) == hash  // BAD
+    let digest = Insecure.MD5.hash(data: data) // BAD: MD5 is not suitable for hashing sensitive data.
+    let hash = digest.map { String(format: "%02hhx", $0) }.joined()
+
+    return (data, hash)
 }

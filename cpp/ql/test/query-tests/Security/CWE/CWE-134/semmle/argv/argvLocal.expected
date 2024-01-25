@@ -1,250 +1,77 @@
 edges
-| argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
-| argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
-| argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
-| argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
-| argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
-| argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array |
-| argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
-| argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
-| argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
-| argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:102:15:102:16 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:102:15:102:16 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:102:15:102:16 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:102:15:102:16 | i1 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:145:15:145:16 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:145:15:145:16 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:145:15:145:16 | i7 |
-| argvLocal.c:100:7:100:10 | argv | argvLocal.c:145:15:145:16 | i7 |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:107:15:107:19 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:107:15:107:19 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:107:15:107:19 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:107:15:107:19 | access to array |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
-| argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | i3 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | i3 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | i3 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | i3 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:10 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:10 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:17:136:18 | i4 |
-| argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:17:136:18 | i4 |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:127:9:127:10 | i5 |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:127:9:127:10 | i5 |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:127:9:127:10 | i5 |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:127:9:127:10 | i5 |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:128:15:128:16 | i5 |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:128:15:128:16 | i5 |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:128:15:128:16 | i5 |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:128:15:128:16 | i5 |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:131:9:131:14 | ... + ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:131:9:131:14 | ... + ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:131:9:131:14 | ... + ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:131:9:131:14 | ... + ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:131:9:131:14 | ... + ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:131:9:131:14 | ... + ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:132:15:132:20 | ... + ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:132:15:132:20 | ... + ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:132:15:132:20 | ... + ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:132:15:132:20 | ... + ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:139:9:139:26 | ... ? ... : ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:139:9:139:26 | ... ? ... : ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:139:9:139:26 | ... ? ... : ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:139:9:139:26 | ... ? ... : ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:139:9:139:26 | ... ? ... : ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:139:9:139:26 | ... ? ... : ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:140:15:140:32 | ... ? ... : ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:140:15:140:32 | ... ? ... : ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:140:15:140:32 | ... ? ... : ... |
-| argvLocal.c:126:10:126:13 | argv | argvLocal.c:140:15:140:32 | ... ? ... : ... |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
-| argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:9:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:15:170:26 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:15:170:26 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
-| argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 |
-subpaths
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:95:9:95:15 | *access to array |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:96:15:96:21 | *access to array |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:101:9:101:10 | *i1 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:102:15:102:16 | *i1 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:106:9:106:13 | *access to array |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:107:15:107:19 | *access to array |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:110:9:110:11 | ** ... |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:111:15:111:17 | ** ... |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:116:9:116:10 | *i3 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:117:15:117:16 | *i3 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:121:9:121:10 | *i4 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:122:15:122:16 | *i4 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:127:9:127:10 | *i5 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:128:15:128:16 | *i5 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:131:9:131:14 | *... + ... |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:132:15:132:20 | *... + ... |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:135:9:135:12 | *... ++ |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:136:15:136:18 | *-- ... |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:139:9:139:26 | *... ? ... : ... |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:140:15:140:32 | *... ? ... : ... |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:144:9:144:10 | *i7 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:145:15:145:16 | *i7 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:150:9:150:10 | *i8 |
+| argvLocal.c:13:27:13:30 | **argv | argvLocal.c:151:15:151:16 | *i8 |
 nodes
-| argvLocal.c:95:9:95:12 | argv | semmle.label | argv |
-| argvLocal.c:95:9:95:12 | argv | semmle.label | argv |
-| argvLocal.c:95:9:95:15 | access to array | semmle.label | access to array |
-| argvLocal.c:95:9:95:15 | access to array | semmle.label | access to array |
-| argvLocal.c:95:9:95:15 | access to array | semmle.label | access to array |
-| argvLocal.c:96:15:96:18 | argv | semmle.label | argv |
-| argvLocal.c:96:15:96:18 | argv | semmle.label | argv |
-| argvLocal.c:96:15:96:21 | access to array | semmle.label | access to array |
-| argvLocal.c:96:15:96:21 | access to array | semmle.label | access to array |
-| argvLocal.c:100:7:100:10 | argv | semmle.label | argv |
-| argvLocal.c:100:7:100:10 | argv | semmle.label | argv |
-| argvLocal.c:101:9:101:10 | i1 | semmle.label | i1 |
-| argvLocal.c:101:9:101:10 | i1 | semmle.label | i1 |
-| argvLocal.c:101:9:101:10 | i1 | semmle.label | i1 |
-| argvLocal.c:102:15:102:16 | i1 | semmle.label | i1 |
-| argvLocal.c:102:15:102:16 | i1 | semmle.label | i1 |
-| argvLocal.c:105:14:105:17 | argv | semmle.label | argv |
-| argvLocal.c:105:14:105:17 | argv | semmle.label | argv |
-| argvLocal.c:106:9:106:13 | access to array | semmle.label | access to array |
-| argvLocal.c:106:9:106:13 | access to array | semmle.label | access to array |
-| argvLocal.c:106:9:106:13 | access to array | semmle.label | access to array |
-| argvLocal.c:107:15:107:19 | access to array | semmle.label | access to array |
-| argvLocal.c:107:15:107:19 | access to array | semmle.label | access to array |
-| argvLocal.c:110:9:110:11 | * ... | semmle.label | * ... |
-| argvLocal.c:110:9:110:11 | * ... | semmle.label | * ... |
-| argvLocal.c:110:9:110:11 | * ... | semmle.label | * ... |
-| argvLocal.c:111:15:111:17 | * ... | semmle.label | * ... |
-| argvLocal.c:111:15:111:17 | * ... | semmle.label | * ... |
-| argvLocal.c:115:13:115:16 | argv | semmle.label | argv |
-| argvLocal.c:115:13:115:16 | argv | semmle.label | argv |
-| argvLocal.c:116:9:116:10 | i3 | semmle.label | i3 |
-| argvLocal.c:116:9:116:10 | i3 | semmle.label | i3 |
-| argvLocal.c:117:15:117:16 | i3 | semmle.label | i3 |
-| argvLocal.c:117:15:117:16 | i3 | semmle.label | i3 |
-| argvLocal.c:121:9:121:10 | i4 | semmle.label | i4 |
-| argvLocal.c:121:9:121:10 | i4 | semmle.label | i4 |
-| argvLocal.c:121:9:121:10 | i4 | semmle.label | i4 |
-| argvLocal.c:122:15:122:16 | i4 | semmle.label | i4 |
-| argvLocal.c:122:15:122:16 | i4 | semmle.label | i4 |
-| argvLocal.c:126:10:126:13 | argv | semmle.label | argv |
-| argvLocal.c:126:10:126:13 | argv | semmle.label | argv |
-| argvLocal.c:127:9:127:10 | i5 | semmle.label | i5 |
-| argvLocal.c:127:9:127:10 | i5 | semmle.label | i5 |
-| argvLocal.c:128:15:128:16 | i5 | semmle.label | i5 |
-| argvLocal.c:128:15:128:16 | i5 | semmle.label | i5 |
-| argvLocal.c:131:9:131:14 | ... + ... | semmle.label | ... + ... |
-| argvLocal.c:131:9:131:14 | ... + ... | semmle.label | ... + ... |
-| argvLocal.c:131:9:131:14 | ... + ... | semmle.label | ... + ... |
-| argvLocal.c:132:15:132:20 | ... + ... | semmle.label | ... + ... |
-| argvLocal.c:132:15:132:20 | ... + ... | semmle.label | ... + ... |
-| argvLocal.c:135:9:135:10 | i4 | semmle.label | i4 |
-| argvLocal.c:135:9:135:12 | ... ++ | semmle.label | ... ++ |
-| argvLocal.c:135:9:135:12 | ... ++ | semmle.label | ... ++ |
-| argvLocal.c:135:9:135:12 | ... ++ | semmle.label | ... ++ |
-| argvLocal.c:136:15:136:18 | -- ... | semmle.label | -- ... |
-| argvLocal.c:136:15:136:18 | -- ... | semmle.label | -- ... |
-| argvLocal.c:136:15:136:18 | -- ... | semmle.label | -- ... |
-| argvLocal.c:136:17:136:18 | i4 | semmle.label | i4 |
-| argvLocal.c:139:9:139:26 | ... ? ... : ... | semmle.label | ... ? ... : ... |
-| argvLocal.c:139:9:139:26 | ... ? ... : ... | semmle.label | ... ? ... : ... |
-| argvLocal.c:139:9:139:26 | ... ? ... : ... | semmle.label | ... ? ... : ... |
-| argvLocal.c:140:15:140:32 | ... ? ... : ... | semmle.label | ... ? ... : ... |
-| argvLocal.c:140:15:140:32 | ... ? ... : ... | semmle.label | ... ? ... : ... |
-| argvLocal.c:144:9:144:10 | i7 | semmle.label | i7 |
-| argvLocal.c:144:9:144:10 | i7 | semmle.label | i7 |
-| argvLocal.c:144:9:144:10 | i7 | semmle.label | i7 |
-| argvLocal.c:145:15:145:16 | i7 | semmle.label | i7 |
-| argvLocal.c:145:15:145:16 | i7 | semmle.label | i7 |
-| argvLocal.c:149:11:149:14 | argv | semmle.label | argv |
-| argvLocal.c:149:11:149:14 | argv | semmle.label | argv |
-| argvLocal.c:150:9:150:10 | i8 | semmle.label | i8 |
-| argvLocal.c:150:9:150:10 | i8 | semmle.label | i8 |
-| argvLocal.c:150:9:150:10 | i8 | semmle.label | i8 |
-| argvLocal.c:151:15:151:16 | i8 | semmle.label | i8 |
-| argvLocal.c:151:15:151:16 | i8 | semmle.label | i8 |
-| argvLocal.c:168:18:168:21 | argv | semmle.label | argv |
-| argvLocal.c:168:18:168:21 | argv | semmle.label | argv |
-| argvLocal.c:169:9:169:20 | i10 | semmle.label | i10 |
-| argvLocal.c:169:9:169:20 | i10 | semmle.label | i10 |
-| argvLocal.c:169:18:169:20 | i10 | semmle.label | i10 |
-| argvLocal.c:169:18:169:20 | i10 | semmle.label | i10 |
-| argvLocal.c:170:15:170:26 | i10 | semmle.label | i10 |
-| argvLocal.c:170:24:170:26 | i10 | semmle.label | i10 |
-| argvLocal.c:170:24:170:26 | i10 | semmle.label | i10 |
+| argvLocal.c:13:27:13:30 | **argv | semmle.label | **argv |
+| argvLocal.c:95:9:95:15 | *access to array | semmle.label | *access to array |
+| argvLocal.c:96:15:96:21 | *access to array | semmle.label | *access to array |
+| argvLocal.c:101:9:101:10 | *i1 | semmle.label | *i1 |
+| argvLocal.c:102:15:102:16 | *i1 | semmle.label | *i1 |
+| argvLocal.c:106:9:106:13 | *access to array | semmle.label | *access to array |
+| argvLocal.c:107:15:107:19 | *access to array | semmle.label | *access to array |
+| argvLocal.c:110:9:110:11 | ** ... | semmle.label | ** ... |
+| argvLocal.c:111:15:111:17 | ** ... | semmle.label | ** ... |
+| argvLocal.c:116:9:116:10 | *i3 | semmle.label | *i3 |
+| argvLocal.c:117:15:117:16 | *i3 | semmle.label | *i3 |
+| argvLocal.c:121:9:121:10 | *i4 | semmle.label | *i4 |
+| argvLocal.c:122:15:122:16 | *i4 | semmle.label | *i4 |
+| argvLocal.c:127:9:127:10 | *i5 | semmle.label | *i5 |
+| argvLocal.c:128:15:128:16 | *i5 | semmle.label | *i5 |
+| argvLocal.c:131:9:131:14 | *... + ... | semmle.label | *... + ... |
+| argvLocal.c:132:15:132:20 | *... + ... | semmle.label | *... + ... |
+| argvLocal.c:135:9:135:12 | *... ++ | semmle.label | *... ++ |
+| argvLocal.c:136:15:136:18 | *-- ... | semmle.label | *-- ... |
+| argvLocal.c:139:9:139:26 | *... ? ... : ... | semmle.label | *... ? ... : ... |
+| argvLocal.c:140:15:140:32 | *... ? ... : ... | semmle.label | *... ? ... : ... |
+| argvLocal.c:144:9:144:10 | *i7 | semmle.label | *i7 |
+| argvLocal.c:145:15:145:16 | *i7 | semmle.label | *i7 |
+| argvLocal.c:150:9:150:10 | *i8 | semmle.label | *i8 |
+| argvLocal.c:151:15:151:16 | *i8 | semmle.label | *i8 |
+subpaths
 #select
-| argvLocal.c:95:9:95:15 | access to array | argvLocal.c:95:9:95:12 | argv | argvLocal.c:95:9:95:15 | access to array | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:95:9:95:12 | argv | argv |
-| argvLocal.c:96:15:96:21 | access to array | argvLocal.c:96:15:96:18 | argv | argvLocal.c:96:15:96:21 | access to array | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:96:15:96:18 | argv | argv |
-| argvLocal.c:101:9:101:10 | i1 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:101:9:101:10 | i1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:100:7:100:10 | argv | argv |
-| argvLocal.c:102:15:102:16 | i1 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:102:15:102:16 | i1 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:100:7:100:10 | argv | argv |
-| argvLocal.c:106:9:106:13 | access to array | argvLocal.c:105:14:105:17 | argv | argvLocal.c:106:9:106:13 | access to array | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:105:14:105:17 | argv | argv |
-| argvLocal.c:107:15:107:19 | access to array | argvLocal.c:105:14:105:17 | argv | argvLocal.c:107:15:107:19 | access to array | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:105:14:105:17 | argv | argv |
-| argvLocal.c:110:9:110:11 | * ... | argvLocal.c:105:14:105:17 | argv | argvLocal.c:110:9:110:11 | * ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:105:14:105:17 | argv | argv |
-| argvLocal.c:111:15:111:17 | * ... | argvLocal.c:105:14:105:17 | argv | argvLocal.c:111:15:111:17 | * ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:105:14:105:17 | argv | argv |
-| argvLocal.c:116:9:116:10 | i3 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:116:9:116:10 | i3 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:115:13:115:16 | argv | argv |
-| argvLocal.c:117:15:117:16 | i3 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:117:15:117:16 | i3 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:115:13:115:16 | argv | argv |
-| argvLocal.c:121:9:121:10 | i4 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:121:9:121:10 | i4 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:115:13:115:16 | argv | argv |
-| argvLocal.c:122:15:122:16 | i4 | argvLocal.c:115:13:115:16 | argv | argvLocal.c:122:15:122:16 | i4 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:115:13:115:16 | argv | argv |
-| argvLocal.c:127:9:127:10 | i5 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:127:9:127:10 | i5 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:126:10:126:13 | argv | argv |
-| argvLocal.c:128:15:128:16 | i5 | argvLocal.c:126:10:126:13 | argv | argvLocal.c:128:15:128:16 | i5 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:126:10:126:13 | argv | argv |
-| argvLocal.c:131:9:131:14 | ... + ... | argvLocal.c:126:10:126:13 | argv | argvLocal.c:131:9:131:14 | ... + ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:126:10:126:13 | argv | argv |
-| argvLocal.c:132:15:132:20 | ... + ... | argvLocal.c:126:10:126:13 | argv | argvLocal.c:132:15:132:20 | ... + ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:126:10:126:13 | argv | argv |
-| argvLocal.c:135:9:135:12 | ... ++ | argvLocal.c:115:13:115:16 | argv | argvLocal.c:135:9:135:12 | ... ++ | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:115:13:115:16 | argv | argv |
-| argvLocal.c:136:15:136:18 | -- ... | argvLocal.c:115:13:115:16 | argv | argvLocal.c:136:15:136:18 | -- ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:115:13:115:16 | argv | argv |
-| argvLocal.c:139:9:139:26 | ... ? ... : ... | argvLocal.c:126:10:126:13 | argv | argvLocal.c:139:9:139:26 | ... ? ... : ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:126:10:126:13 | argv | argv |
-| argvLocal.c:140:15:140:32 | ... ? ... : ... | argvLocal.c:126:10:126:13 | argv | argvLocal.c:140:15:140:32 | ... ? ... : ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:126:10:126:13 | argv | argv |
-| argvLocal.c:144:9:144:10 | i7 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:144:9:144:10 | i7 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:100:7:100:10 | argv | argv |
-| argvLocal.c:145:15:145:16 | i7 | argvLocal.c:100:7:100:10 | argv | argvLocal.c:145:15:145:16 | i7 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:100:7:100:10 | argv | argv |
-| argvLocal.c:150:9:150:10 | i8 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:150:9:150:10 | i8 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:149:11:149:14 | argv | argv |
-| argvLocal.c:151:15:151:16 | i8 | argvLocal.c:149:11:149:14 | argv | argvLocal.c:151:15:151:16 | i8 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:149:11:149:14 | argv | argv |
-| argvLocal.c:169:18:169:20 | i10 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:169:18:169:20 | i10 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:168:18:168:21 | argv | argv |
-| argvLocal.c:170:24:170:26 | i10 | argvLocal.c:168:18:168:21 | argv | argvLocal.c:170:24:170:26 | i10 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:168:18:168:21 | argv | argv |
+| argvLocal.c:95:9:95:15 | *access to array | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:95:9:95:15 | *access to array | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:96:15:96:21 | *access to array | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:96:15:96:21 | *access to array | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:101:9:101:10 | *i1 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:101:9:101:10 | *i1 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:102:15:102:16 | *i1 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:102:15:102:16 | *i1 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:106:9:106:13 | *access to array | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:106:9:106:13 | *access to array | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:107:15:107:19 | *access to array | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:107:15:107:19 | *access to array | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:110:9:110:11 | ** ... | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:110:9:110:11 | ** ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:111:15:111:17 | ** ... | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:111:15:111:17 | ** ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:116:9:116:10 | *i3 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:116:9:116:10 | *i3 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:117:15:117:16 | *i3 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:117:15:117:16 | *i3 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:121:9:121:10 | *i4 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:121:9:121:10 | *i4 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:122:15:122:16 | *i4 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:122:15:122:16 | *i4 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:127:9:127:10 | *i5 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:127:9:127:10 | *i5 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:128:15:128:16 | *i5 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:128:15:128:16 | *i5 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:131:9:131:14 | *... + ... | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:131:9:131:14 | *... + ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:132:15:132:20 | *... + ... | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:132:15:132:20 | *... + ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:135:9:135:12 | *... ++ | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:135:9:135:12 | *... ++ | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:136:15:136:18 | *-- ... | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:136:15:136:18 | *-- ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:139:9:139:26 | *... ? ... : ... | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:139:9:139:26 | *... ? ... : ... | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:140:15:140:32 | *... ? ... : ... | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:140:15:140:32 | *... ? ... : ... | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:144:9:144:10 | *i7 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:144:9:144:10 | *i7 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:145:15:145:16 | *i7 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:145:15:145:16 | *i7 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:150:9:150:10 | *i8 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:150:9:150:10 | *i8 | The value of this argument may come from $@ and is being used as a formatting argument to printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |
+| argvLocal.c:151:15:151:16 | *i8 | argvLocal.c:13:27:13:30 | **argv | argvLocal.c:151:15:151:16 | *i8 | The value of this argument may come from $@ and is being used as a formatting argument to printWrapper(correct), which calls printf(format). | argvLocal.c:13:27:13:30 | **argv | a command-line argument |

@@ -1,5 +1,5 @@
 int source();
-void sink(int); void sink(const int *); void sink(int **); void indirect_sink(...);
+void sink(...); void indirect_sink(...);
 
 void intraprocedural_with_local_flow() {
   int t2;
@@ -702,4 +702,238 @@ void call_increment_buf(int** buf) { // $ ast-def=buf
 void test_conflation_regression(int* source) { // $ ast-def=source
   int* buf = source;
   call_increment_buf(&buf);
+}
+
+void write_to_star_star_p(unsigned char **p) // $ ast-def=p ir-def=**p ir-def=*p
+{
+  **p = 0;
+}
+
+void write_to_star_buf(unsigned char *buf) // $ ast-def=buf
+{
+  unsigned char *c = buf;
+  write_to_star_star_p(&c);
+}
+
+void test_write_to_star_buf(unsigned char *source) // $ ast-def=source
+{
+  write_to_star_buf(source);
+  sink(*source); // clean
+}
+
+void does_not_write_source_to_dereference(int *p) // $ ast-def=p ir-def=*p
+{
+  int x = source();
+  p = &x;
+  *p = 42;
+}
+
+void test_does_not_write_source_to_dereference()
+{
+  int x;
+  does_not_write_source_to_dereference(&x);
+  sink(x); // $ ast=733:7 ir SPURIOUS: ast=726:11
+}
+
+void sometimes_calls_sink_eq(int x, int n) {
+  if(n == 0) {
+    sink(x); // $ ast,ir=751:27 ast,ir=755:32 SPURIOUS: ast=749:27 ast,ir=753:32 // IR spurious results because we only have call contexts of depth 1
+  }
+}
+
+void call_sometimes_calls_sink_eq(int x, int n) {
+  sometimes_calls_sink_eq(x, n);
+}
+
+void test_sometimes_calls_sink_eq_1() {
+  sometimes_calls_sink_eq(source(), 1);
+  sometimes_calls_sink_eq(0, 0);
+  sometimes_calls_sink_eq(source(), 0);
+
+  call_sometimes_calls_sink_eq(source(), 1);
+  call_sometimes_calls_sink_eq(0, 0);
+  call_sometimes_calls_sink_eq(source(), 0);
+}
+
+void sometimes_calls_sink_lt(int x, int n) {
+  if(n < 10) {
+    sink(x); // $ ast,ir=771:27 ast,ir=775:32 SPURIOUS: ast=769:27 ast,ir=773:32 // IR spurious results because we only have call contexts of depth 1
+  }
+}
+
+void call_sometimes_calls_sink_lt(int x, int n) {
+  sometimes_calls_sink_lt(x, n);
+}
+
+void test_sometimes_calls_sink_lt() {
+  sometimes_calls_sink_lt(source(), 10);
+  sometimes_calls_sink_lt(0, 0);
+  sometimes_calls_sink_lt(source(), 2);
+
+  call_sometimes_calls_sink_lt(source(), 10);
+  call_sometimes_calls_sink_lt(0, 0);
+  call_sometimes_calls_sink_lt(source(), 2);
+
+}
+
+void sometimes_calls_sink_switch(int x, int n) {
+  switch(n) {
+    case 0:
+      sink(x); // $ ast,ir=790:31 SPURIOUS: ast,ir=788:31 // IR spurious results because IRGuard doesn't understand switch statements.
+      break;
+  }
+}
+
+void test_sometimes_calls_sink_switch() {
+  sometimes_calls_sink_switch(source(), 1);
+  sometimes_calls_sink_switch(0, 0);
+  sometimes_calls_sink_switch(source(), 0);
+}
+
+void intPointerSource(int *ref_source, const int* another_arg);
+
+void test() {
+  MyStruct a;
+  intPointerSource(a.content, a.content);
+  indirect_sink(a.content); // $ ast ir
+}
+
+namespace MoreGlobalTests {
+  int **global_indirect1;
+  int **global_indirect2;
+  int **global_direct;
+
+  void set_indirect1()
+  {
+    *global_indirect1 = indirect_source();
+  }
+
+  void read_indirect1() {
+    sink(global_indirect1); // clean
+    indirect_sink(*global_indirect1); // $ ir MISSING: ast
+  }
+
+  void set_indirect2()
+  {
+    **global_indirect2 = source();
+  }
+
+  void read_indirect2() {
+    sink(global_indirect2); // clean
+    sink(**global_indirect2); // $ ir MISSING: ast
+  }
+
+  // overload source with a boolean parameter so
+  // that we can define a variant that return an int**.
+  int** source(bool);
+
+  void set_direct()
+  {
+    global_direct = source(true);
+  }
+
+  void read_direct() {
+    sink(global_direct); // $ ir MISSING: ast
+    indirect_sink(global_direct); // clean
+  }
+}
+
+void test_references() {
+  int x = source();
+  int &y = x;
+  sink(y); // $ ast,ir
+
+  int* px = indirect_source();
+  int*& rpx = px;
+  indirect_sink((int*)rpx); // $ ast,ir
+}
+
+namespace GlobalArrays {
+  void test1() {
+    static const int static_local_array_dynamic[] = { ::source() };
+    sink(*static_local_array_dynamic); // $ ir MISSING: ast
+  }
+
+  const int* source(bool);
+
+  void test2() {
+    static const int* static_local_pointer_dynamic = source(true);
+    sink(static_local_pointer_dynamic); // $ ast,ir
+  }
+
+  static const int global_array_dynamic[] = { ::source() };
+
+  void test3() {
+    sink(*global_array_dynamic); // $ MISSING: ir,ast // Missing in IR because no 'IRFunction' for global_array is generated because the type of global_array_dynamic is "deeply const".
+  }
+
+  const int* source(bool);
+
+  static const int* global_pointer_dynamic = source(true);
+
+  void test4() {
+    sink(global_pointer_dynamic); // $ ir MISSING: ast
+  }
+
+  void test5() {
+    static const char static_local_array_static[] = "source";
+    static const char static_local_array_static_indirect_1[] = "indirect_source(1)";
+    static const char static_local_array_static_indirect_2[] = "indirect_source(2)";
+    sink(static_local_array_static); // clean
+    sink(static_local_array_static_indirect_1); // $ ir MISSING: ast
+    indirect_sink(static_local_array_static_indirect_1); // clean
+    sink(static_local_array_static_indirect_2); // clean
+    indirect_sink(static_local_array_static_indirect_2); // $ ir MISSING: ast
+  }
+
+  void test6() {
+    static const char* static_local_pointer_static = "source";
+    static const char* static_local_pointer_static_indirect_1 = "indirect_source(1)";
+    static const char* static_local_pointer_static_indirect_2 = "indirect_source(2)";
+    sink(static_local_pointer_static); // $ ir MISSING: ast
+    sink(static_local_pointer_static_indirect_1); // clean
+    indirect_sink(static_local_pointer_static_indirect_1); // $ ir MISSING: ast
+    sink(static_local_pointer_static_indirect_2); // clean: static_local_pointer_static_indirect_2 does not have 2 indirections
+    indirect_sink(static_local_pointer_static_indirect_2); // clean: static_local_pointer_static_indirect_2 does not have 2 indirections
+  }
+
+  static const char global_array_static[] = "source";
+  static const char global_array_static_indirect_1[] = "indirect_source(1)";
+  static const char global_array_static_indirect_2[] = "indirect_source(2)";
+
+  void test7() {
+    sink(global_array_static); // clean
+    sink(*global_array_static); // clean
+    sink(global_array_static_indirect_1); // $ ir MISSING: ast
+    sink(*global_array_static_indirect_1); // clean
+    indirect_sink(global_array_static); // clean
+    indirect_sink(global_array_static_indirect_1); // clean
+    indirect_sink(global_array_static_indirect_2); // $ ir MISSING: ast
+  }
+
+  static const char* global_pointer_static = "source";
+  static const char* global_pointer_static_indirect_1 = "indirect_source(1)";
+  static const char* global_pointer_static_indirect_2 = "indirect_source(2)";
+
+  void test8() {
+    sink(global_pointer_static); // $ ir MISSING: ast
+    sink(global_pointer_static_indirect_1); // clean
+    indirect_sink(global_pointer_static_indirect_1); // $ ir MISSING: ast
+    sink(global_pointer_static_indirect_2); // clean: global_pointer_static_indirect_2 does not have 2 indirections
+    indirect_sink(global_pointer_static_indirect_2); // clean: global_pointer_static_indirect_2 does not have 2 indirections
+  }
+}
+
+namespace global_variable_conflation_test {
+  int* global_pointer;
+
+  void def() {
+    global_pointer = nullptr;
+    *global_pointer = source();
+  }
+
+  void use() {
+    sink(global_pointer); // clean
+    sink(*global_pointer); // $ ir MISSING: ast
+  }
 }

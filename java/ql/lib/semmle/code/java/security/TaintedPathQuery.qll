@@ -6,6 +6,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.PathSanitizer
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A unit class for adding additional taint steps.
@@ -52,14 +53,12 @@ private class TaintPreservingUriCtorParam extends Parameter {
  * A taint-tracking configuration for tracking flow from remote sources to the creation of a path.
  */
 module TaintedPathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sinkNode(sink, "path-injection") }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer.getType() instanceof BoxedType or
-    sanitizer.getType() instanceof PrimitiveType or
-    sanitizer.getType() instanceof NumberType or
+    sanitizer instanceof SimpleTypeSanitizer or
     sanitizer instanceof PathInjectionSanitizer
   }
 
@@ -80,9 +79,7 @@ module TaintedPathLocalConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sinkNode(sink, "path-injection") }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer.getType() instanceof BoxedType or
-    sanitizer.getType() instanceof PrimitiveType or
-    sanitizer.getType() instanceof NumberType or
+    sanitizer instanceof SimpleTypeSanitizer or
     sanitizer instanceof PathInjectionSanitizer
   }
 

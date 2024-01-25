@@ -27,27 +27,25 @@
 
 		<p>
 
-			If possible, use hard-coded string literals to specify the
-			command to run or library to load. Instead of forwarding the
-			command-line arguments to the process, examine the command-line
-			arguments and then choose among hard-coded string literals.
+			If possible, use APIs that don't run shell commands and accept
+			command arguments as an array of strings rather than a single
+			concatenated string. This is both safer and more portable.
 
 		</p>
 
 		<p>
 
-			If the applicable libraries or commands cannot be determined
-			at compile time, then add code to verify that each forwarded
-			command-line argument is properly escaped before using it.
+If given arguments as a single string, avoid simply splitting the string on 
+whitespace. Arguments may contain quoted whitespace, causing them to split into 
+multiple arguments. Use a library like <code>shell-quote</code> to parse the string 
+into an array of arguments instead.
 
 		</p>
 
 		<p>
 
-			If the forwarded command-line arguments are part of the
-			arguments of the system command, prefer a library routine that handles
-			the arguments as an array of strings rather than a single concatenated
-			string. This prevents the unexpected evaluation of special characters.
+			If this approach is not viable, then add code to verify that each
+			forwarded command-line argument is properly escaped before using it.
 
 		</p>
 
@@ -91,6 +89,17 @@
 
 		<sample src="examples/indirect-command-injection_fixed.js" />
 
+		<p>
+
+			If you want to allow the user to specify other options to
+			<code>node</code>, you can use a library like
+			<code>shell-quote</code> to parse the user input into an array of
+			arguments without risking command injection:
+
+		</p>
+
+		<sample src="examples/indirect-command-injection_shellquote.js" />
+
 	</example>
 
 	<references>
@@ -98,6 +107,11 @@
 		<li>
 			OWASP:
 			<a href="https://www.owasp.org/index.php/Command_Injection">Command Injection</a>.
+		</li>
+
+		<li>
+			npm:
+			<a href="https://www.npmjs.com/package/shell-quote">shell-quote</a>.
 		</li>
 
 	</references>

@@ -333,36 +333,6 @@ predicate call3(
   arg2 = call.getArg(2)
 }
 
-bindingset[self, function]
-deprecated predicate method_binding(
-  AttrNode instantiation, ObjectInternal self, CallableObjectInternal function,
-  PointsToContext context
-) {
-  exists(ObjectInternal obj, string name | receiver(instantiation, context, obj, name) |
-    exists(ObjectInternal cls |
-      cls = obj.getClass() and
-      cls != ObjectInternal::superType() and
-      cls.attribute(name, function, _) and
-      self = obj
-    )
-    or
-    exists(SuperInstance sup, ClassObjectInternal decl |
-      sup = obj and
-      decl = Types::getMro(self.getClass()).startingAt(sup.getStartClass()).findDeclaringClass(name) and
-      Types::declaredAttribute(decl, name, function, _) and
-      self = sup.getSelf()
-    )
-  )
-}
-
-/** Helper for method_binding */
-pragma[noinline]
-deprecated predicate receiver(
-  AttrNode instantiation, PointsToContext context, ObjectInternal obj, string name
-) {
-  PointsToInternal::pointsTo(instantiation.getObject(name), context, obj, _)
-}
-
 /** Helper self parameters: `def meth(self, ...): ...`. */
 pragma[noinline]
 private predicate self_parameter(

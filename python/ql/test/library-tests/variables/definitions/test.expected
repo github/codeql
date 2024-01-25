@@ -2,3 +2,5 @@
 | 4 | 5 | ControlFlowNode for Tuple |
 | 4 | 5 | ControlFlowNode for x |
 | 4 | 8 | ControlFlowNode for y |
+| 7 | 5 | ControlFlowNode for default_value_in_param |
+| 7 | 28 | ControlFlowNode for x |

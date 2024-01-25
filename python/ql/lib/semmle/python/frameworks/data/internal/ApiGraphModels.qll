@@ -70,8 +70,8 @@ private module API = Specific::API;
 
 private module DataFlow = Specific::DataFlow;
 
-private import Specific::AccessPathSyntax
 private import ApiGraphModelsExtensions as Extensions
+private import codeql.dataflow.internal.AccessPathSyntax
 
 /** Module containing hooks for providing input data to be interpreted as a model. */
 module ModelInput {
@@ -327,29 +327,29 @@ predicate isRelevantFullPath(string type, string path) {
 }
 
 /** A string from a CSV row that should be parsed as an access path. */
-private class AccessPathRange extends AccessPath::Range {
-  AccessPathRange() {
-    isRelevantFullPath(_, this)
-    or
-    exists(string type | isRelevantType(type) |
-      summaryModel(type, _, this, _, _) or
-      summaryModel(type, _, _, this, _)
-    )
-    or
-    typeVariableModel(_, this)
-  }
+private predicate accessPathRange(string s) {
+  isRelevantFullPath(_, s)
+  or
+  exists(string type | isRelevantType(type) |
+    summaryModel(type, _, s, _, _) or
+    summaryModel(type, _, _, s, _)
+  )
+  or
+  typeVariableModel(_, s)
 }
+
+import AccessPath<accessPathRange/1>
 
 /**
  * Gets a successor of `node` in the API graph.
  */
 bindingset[token]
-API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
+API::Node getSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   // API graphs use the same label for arguments and parameters. An edge originating from a
   // use-node represents an argument, and an edge originating from a def-node represents a parameter.
   // We just map both to the same thing.
   token.getName() = ["Argument", "Parameter"] and
-  result = node.getParameter(AccessPath::parseIntUnbounded(token.getAnArgument()))
+  result = node.getParameter(parseIntUnbounded(token.getAnArgument()))
   or
   token.getName() = "ReturnValue" and
   result = node.getReturn()
@@ -362,11 +362,9 @@ API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
  * Gets an API-graph successor for the given invocation.
  */
 bindingset[token]
-API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathToken token) {
+API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathTokenBase token) {
   token.getName() = "Argument" and
-  result =
-    invoke
-        .getParameter(AccessPath::parseIntWithArity(token.getAnArgument(), invoke.getNumArgument()))
+  result = invoke.getParameter(parseIntWithArity(token.getAnArgument(), invoke.getNumArgument()))
   or
   token.getName() = "ReturnValue" and
   result = invoke.getReturn()
@@ -378,10 +376,12 @@ API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathToken to
 /**
  * Holds if `invoke` invokes a call-site filter given by `token`.
  */
-pragma[inline]
-private predicate invocationMatchesCallSiteFilter(Specific::InvokeNode invoke, AccessPathToken token) {
+bindingset[token]
+private predicate invocationMatchesCallSiteFilter(
+  Specific::InvokeNode invoke, AccessPathTokenBase token
+) {
   token.getName() = "WithArity" and
-  invoke.getNumArgument() = AccessPath::parseIntUnbounded(token.getAnArgument())
+  invoke.getNumArgument() = parseIntUnbounded(token.getAnArgument())
   or
   Specific::invocationMatchesExtraCallSiteFilter(invoke, token)
 }
@@ -454,6 +454,14 @@ private API::Node getNodeFromPath(string type, AccessPath path, int n) {
   or
   // Apply a type step
   typeStep(getNodeFromPath(type, path, n), result)
+  or
+  // Apply a fuzzy step (without advancing 'n')
+  path.getToken(n).getName() = "Fuzzy" and
+  result = Specific::getAFuzzySuccessor(getNodeFromPath(type, path, n))
+  or
+  // Skip a fuzzy step (advance 'n' without changing the current node)
+  path.getToken(n - 1).getName() = "Fuzzy" and
+  result = getNodeFromPath(type, path, n - 1)
 }
 
 /**
@@ -500,6 +508,14 @@ private API::Node getNodeFromSubPath(API::Node base, AccessPath subPath, int n) 
   // will themselves find by following type-steps.
   n > 0 and
   n < subPath.getNumToken()
+  or
+  // Apply a fuzzy step (without advancing 'n')
+  subPath.getToken(n).getName() = "Fuzzy" and
+  result = Specific::getAFuzzySuccessor(getNodeFromSubPath(base, subPath, n))
+  or
+  // Skip a fuzzy step (advance 'n' without changing the current node)
+  subPath.getToken(n - 1).getName() = "Fuzzy" and
+  result = getNodeFromSubPath(base, subPath, n - 1)
 }
 
 /**
@@ -561,7 +577,7 @@ private Specific::InvokeNode getInvocationFromPath(string type, AccessPath path)
  */
 bindingset[name]
 private predicate isValidTokenNameInIdentifyingAccessPath(string name) {
-  name = ["Argument", "Parameter", "ReturnValue", "WithArity", "TypeVar"]
+  name = ["Argument", "Parameter", "ReturnValue", "WithArity", "TypeVar", "Fuzzy"]
   or
   Specific::isExtraValidTokenNameInIdentifyingAccessPath(name)
 }
@@ -572,7 +588,7 @@ private predicate isValidTokenNameInIdentifyingAccessPath(string name) {
  */
 bindingset[name]
 private predicate isValidNoArgumentTokenInIdentifyingAccessPath(string name) {
-  name = "ReturnValue"
+  name = ["ReturnValue", "Fuzzy"]
   or
   Specific::isExtraValidNoArgumentTokenInIdentifyingAccessPath(name)
 }
@@ -641,6 +657,15 @@ module ModelOutput {
     predicate resolvedSummaryBase(string type, string path, Specific::InvokeNode baseNode) {
       summaryModel(type, path, _, _, _) and
       baseNode = getInvocationFromPath(type, path)
+    }
+
+    /**
+     * Holds if a `baseNode` is a callable identified by the `type,path` part of a summary row.
+     */
+    cached
+    predicate resolvedSummaryRefBase(string type, string path, API::Node baseNode) {
+      summaryModel(type, path, _, _, _) and
+      baseNode = getNodeFromPath(type, path)
     }
 
     /**

@@ -24,16 +24,6 @@ module ActionController {
 }
 
 /**
- * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
- */
-deprecated class ParamsCall = Rails::ParamsCall;
-
-/**
- * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::CookiesCall` instead.
- */
-deprecated class CookiesCall = Rails::CookiesCall;
-
-/**
  * A class that extends `ActionController::Base`.
  * For example,
  *
@@ -83,24 +73,8 @@ class ActionControllerClass extends DataFlow::ClassNode {
   }
 }
 
-private DataFlow::LocalSourceNode actionControllerInstance() {
-  result = any(ActionControllerClass cls).getSelf()
-}
-
-/**
- * DEPRECATED. Use `ActionControllerClass` instead.
- *
- * A `ClassDeclaration` corresponding to an `ActionControllerClass`.
- */
-deprecated class ActionControllerControllerClass extends ClassDeclaration {
-  ActionControllerControllerClass() { this = any(ActionControllerClass cls).getADeclaration() }
-
-  /**
-   * Gets a `ActionControllerActionMethod` defined in this class.
-   */
-  ActionControllerActionMethod getAnAction() {
-    result = this.getAMethod().(Method) and result.isPrivate()
-  }
+private API::Node actionControllerInstance() {
+  result = any(ActionControllerClass cls).getSelf().track()
 }
 
 /**
@@ -222,19 +196,19 @@ private class ActionControllerRenderToCall extends RenderToCallImpl {
   }
 }
 
+pragma[nomagic]
+private DataFlow::CallNode renderCall() {
+  // ActionController#render is an alias for ActionController::Renderer#render
+  result =
+    [
+      any(ActionControllerClass c).trackModule().getAMethodCall("render"),
+      any(ActionControllerClass c).trackModule().getReturn("renderer").getAMethodCall("render")
+    ]
+}
+
 /** A call to `ActionController::Renderer#render`. */
 private class RendererRenderCall extends RenderCallImpl {
-  RendererRenderCall() {
-    this =
-      [
-        // ActionController#render is an alias for ActionController::Renderer#render
-        any(ActionControllerClass c).getAnImmediateReference().getAMethodCall("render"),
-        any(ActionControllerClass c)
-            .getAnImmediateReference()
-            .getAMethodCall("renderer")
-            .getAMethodCall("render")
-      ].asExpr().getExpr()
-  }
+  RendererRenderCall() { this = renderCall().asExpr().getExpr() }
 }
 
 /** A call to `html_escape` from within a controller. */
@@ -260,6 +234,7 @@ class RedirectToCall extends MethodCall {
     this =
       controller
           .getSelf()
+          .track()
           .getAMethodCall(["redirect_to", "redirect_back", "redirect_back_or_to"])
           .asExpr()
           .getExpr()
@@ -511,7 +486,7 @@ private module ParamsSummaries {
         "dig", "each", "each_key", "each_pair", "each_value", "except", "keep_if", "merge",
         "merge!", "permit", "reject", "reject!", "require", "reverse_merge", "reverse_merge!",
         "select", "select!", "slice", "slice!", "transform_keys", "transform_keys!",
-        "transform_values", "transform_values!", "with_defaults", "with_defaults!"
+        "transform_values", "transform_values!", "with_defaults", "with_defaults!", "[]"
       ]
   }
 
@@ -540,7 +515,7 @@ private module ParamsSummaries {
       result = paramsInstance().getAMethodCall(methodReturnsTaintFromSelf()).asExpr().getExpr()
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       output = "ReturnValue" and
       preservesValue = false
@@ -563,7 +538,7 @@ private module ParamsSummaries {
         [result.getReceiver(), result.getArgument(0)]
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = ["Argument[self]", "Argument[0]"] and
       output = "ReturnValue" and
       preservesValue = false
@@ -587,7 +562,7 @@ private module ParamsSummaries {
         [result.getReceiver(), result.getArgument(0)]
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = ["Argument[self]", "Argument[0]"] and
       output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
@@ -600,9 +575,7 @@ private module ParamsSummaries {
  * response.
  */
 private module Response {
-  DataFlow::LocalSourceNode response() {
-    result = actionControllerInstance().getAMethodCall("response")
-  }
+  API::Node response() { result = actionControllerInstance().getReturn("response") }
 
   class BodyWrite extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
     BodyWrite() { this = response().getAMethodCall("body=") }
@@ -628,7 +601,7 @@ private module Response {
     HeaderWrite() {
       // response.header[key] = val
       // response.headers[key] = val
-      this = response().getAMethodCall(["header", "headers"]).getAMethodCall("[]=")
+      this = response().getReturn(["header", "headers"]).getAMethodCall("[]=")
       or
       // response.set_header(key) = val
       // response[header] = val
@@ -673,18 +646,12 @@ private module Response {
   }
 }
 
-private class ActionControllerLoggerInstance extends DataFlow::Node {
-  ActionControllerLoggerInstance() {
-    this = actionControllerInstance().getAMethodCall("logger")
-    or
-    any(ActionControllerLoggerInstance i).(DataFlow::LocalSourceNode).flowsTo(this)
-  }
-}
-
 private class ActionControllerLoggingCall extends DataFlow::CallNode, Logging::Range {
   ActionControllerLoggingCall() {
-    this.getReceiver() instanceof ActionControllerLoggerInstance and
-    this.getMethodName() = ["debug", "error", "fatal", "info", "unknown", "warn"]
+    this =
+      actionControllerInstance()
+          .getReturn("logger")
+          .getAMethodCall(["debug", "error", "fatal", "info", "unknown", "warn"])
   }
 
   // Note: this is identical to the definition `stdlib.Logger.LoggerInfoStyleCall`.

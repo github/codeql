@@ -1,0 +1,30 @@
+Test.java:
+#    0| [CompilationUnit] Test
+#    1|   1: [Class] Test
+#    3|     2: [Method] yield
+#    3|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#    3|         0: [Parameter] x
+#    3|           0: [TypeAccess] int
+#    3|       5: [BlockStmt] { ... }
+#    3|         0: [ReturnStmt] return ...
+#    3|           0: [VarAccess] x
+#    5|     3: [Method] secondCall
+#    5|       3: [TypeAccess] void
+#    5|       5: [BlockStmt] { ... }
+#    7|     4: [Method] yieldWrapper
+#    7|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#    7|         0: [Parameter] x
+#    7|           0: [TypeAccess] int
+#    7|       5: [BlockStmt] { ... }
+#    8|         0: [LocalVariableDeclStmt] var ...;
+#    8|           0: [TypeAccess] int
+#    8|           1: [LocalVariableDeclExpr] ret
+#    8|             0: [ErrorExpr] <error expr>
+#    8|               0: [MethodCall] yield(...)
+#    8|                 0: [VarAccess] x
+#    9|         1: [ExprStmt] <Expr>;
+#    9|           0: [MethodCall] secondCall(...)
+#   10|         2: [ReturnStmt] return ...
+#   10|           0: [VarAccess] ret

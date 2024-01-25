@@ -10,7 +10,7 @@
 
 import java
 
-from MethodAccess ma, ToStringMethod tostring
+from MethodCall ma, ToStringMethod tostring
 where
   tostring.getDeclaringType() instanceof TypeString and
   ma.getMethod() = tostring

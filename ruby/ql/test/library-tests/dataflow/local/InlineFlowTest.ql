@@ -5,7 +5,7 @@
 import codeql.ruby.AST
 import TestUtilities.InlineFlowTest
 import DefaultFlowTest
-import PathGraph
+import TaintFlow::PathGraph
 
 from TaintFlow::PathNode source, TaintFlow::PathNode sink
 where TaintFlow::flowPath(source, sink)

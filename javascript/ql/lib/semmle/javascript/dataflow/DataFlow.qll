@@ -139,14 +139,6 @@ module DataFlow {
     }
 
     /**
-     * DEPRECATED: Use `DataFlow::ParameterNode::flowsTo()` instead.
-     * Holds if this expression may refer to the initial value of parameter `p`.
-     */
-    deprecated predicate mayReferToParameter(Parameter p) {
-      parameterNode(p).(SourceNode).flowsTo(this)
-    }
-
-    /**
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
      * column `endcolumn` of line `endline` in file `filepath`.
@@ -981,6 +973,28 @@ module DataFlow {
   }
 
   /**
+   * A data flow node representing an XML attribute.
+   */
+  class XmlAttributeNode extends DataFlow::Node, TXmlAttributeNode {
+    XmlAttribute attr;
+
+    XmlAttributeNode() { this = TXmlAttributeNode(attr) }
+
+    override string toString() { result = attr.toString() }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      attr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets the attribute corresponding to this data flow node. */
+    XmlAttribute getAttribute() { result = attr }
+
+    override File getFile() { result = attr.getLocation().getFile() }
+  }
+
+  /**
    * A data flow node representing the exceptions thrown by a function.
    */
   class ExceptionalFunctionReturnNode extends DataFlow::Node, TExceptionalFunctionReturnNode {
@@ -1276,6 +1290,41 @@ module DataFlow {
       override int getNumArgument() {
         result >= 0 and kind = "call" and result = originalCall.getNumArgument() - 1
       }
+    }
+
+    /**
+     * A data flow node representing a call with a tagged template literal.
+     */
+    private class TaggedTemplateLiteralCallNode extends CallNodeDef, ValueNode {
+      override TaggedTemplateExpr astNode;
+
+      override InvokeExpr getInvokeExpr() { none() } // There is no InvokeExpr for this.
+
+      override string getCalleeName() {
+        result = astNode.getTag().getUnderlyingValue().(Identifier).getName()
+      }
+
+      override DataFlow::Node getCalleeNode() { result = DataFlow::valueNode(astNode.getTag()) }
+
+      override DataFlow::Node getArgument(int i) {
+        // the first argument sent to the function is the array of string parts, which we don't model.
+        // rank is 1-indexed, which is perfect here.
+        result =
+          DataFlow::valueNode(rank[i](Expr e, int index |
+              e = astNode.getTemplate().getElement(index) and not e instanceof TemplateElement
+            |
+              e order by index
+            ))
+      }
+
+      override DataFlow::Node getAnArgument() { result = this.getArgument(_) }
+
+      override DataFlow::Node getASpreadArgument() { none() }
+
+      // we don't model the string constants as arguments, but we still count them.
+      override int getNumArgument() { result = count(this.getArgument(_)) + 1 }
+
+      override DataFlow::Node getReceiver() { none() }
     }
   }
 

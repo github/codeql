@@ -15,21 +15,20 @@ private import codeql.ruby.Concepts
  * https://github.com/sparklemotion/sqlite3-ruby
  */
 module Sqlite3 {
+  private API::Node databaseConst() {
+    result = API::getTopLevelMember("SQLite3").getMember("Database")
+  }
+
+  private API::Node dbInstance() {
+    result = databaseConst().getInstance()
+    or
+    // e.g. SQLite3::Database.new("foo.db") |db| { db.some_method }
+    result = databaseConst().getMethod("new").getBlock().getParameter(0)
+  }
+
   /** Gets a method call with a receiver that is a database instance. */
   private DataFlow::CallNode getADatabaseMethodCall(string methodName) {
-    exists(API::Node dbInstance |
-      dbInstance = API::getTopLevelMember("SQLite3").getMember("Database").getInstance() and
-      (
-        result = dbInstance.getAMethodCall(methodName)
-        or
-        // e.g. SQLite3::Database.new("foo.db") |db| { db.some_method }
-        exists(DataFlow::BlockNode block |
-          result.getMethodName() = methodName and
-          block = dbInstance.getAValueReachableFromSource().(DataFlow::CallNode).getBlock() and
-          block.getParameter(0).flowsTo(result.getReceiver())
-        )
-      )
-    )
+    result = dbInstance().getAMethodCall(methodName)
   }
 
   /** A prepared but unexecuted SQL statement. */
@@ -48,7 +47,7 @@ module Sqlite3 {
       this.getMethodName() = ["columns", "execute", "execute!", "get_metadata", "types"]
     }
 
-    override DataFlow::Node getSql() { result = stmt.getReceiver() }
+    override DataFlow::Node getSql() { result = stmt.getSql() }
   }
 
   /** Gets the name of a method called against a database that executes an SQL statement. */
@@ -95,7 +94,7 @@ module Sqlite3 {
 
     override MethodCall getACall() { result = any(SQLite3QuoteSanitization c).asExpr().getExpr() }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
     }
   }

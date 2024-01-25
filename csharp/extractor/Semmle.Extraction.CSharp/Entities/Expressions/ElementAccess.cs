@@ -1,8 +1,7 @@
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Semmle.Extraction.CSharp.Populators;
-using Semmle.Extraction.Kinds;
-using Microsoft.CodeAnalysis;
 using System.IO;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
 {
@@ -44,6 +43,9 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
         public sealed override Microsoft.CodeAnalysis.Location? ReportingLocation => base.ReportingLocation;
 
+        private static bool IsArray(ITypeSymbol symbol) =>
+            symbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Array || symbol.IsInlineArray();
+
         private static ExprKind GetKind(Context cx, ExpressionSyntax qualifier)
         {
             var qualifierType = cx.GetType(qualifier);
@@ -60,7 +62,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
 
             return IsDynamic(cx, qualifier)
                 ? ExprKind.DYNAMIC_ELEMENT_ACCESS
-                : qualifierType.Symbol.TypeKind == Microsoft.CodeAnalysis.TypeKind.Array
+                : IsArray(qualifierType.Symbol)
                     ? ExprKind.ARRAY_ACCESS
                     : ExprKind.INDEXER_ACCESS;
         }

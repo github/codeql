@@ -1,5 +1,6 @@
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Semmle.Extraction.CSharp.Util;
 using Semmle.Extraction.Kinds;
 
 namespace Semmle.Extraction.CSharp.Entities.Expressions
@@ -50,8 +51,10 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
                 )
                 .FirstOrDefault();
 
-        // Creates a new generated expression with an implicit cast added, if needed.
-        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
+        /// <summary>
+        /// Creates a new generated expression with an implicit conversion added.
+        /// </summary>
+        public static Expression CreateGeneratedConversion(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
             Extraction.Entities.Location location)
         {
             ExpressionInfo create(ExprKind kind, string? v) =>
@@ -78,7 +81,27 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             }
         }
 
-        // Creates a new expression, adding casts as required.
+        /// <summary>
+        /// Creates a new generated cast expression.
+        /// </summary>
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
+                    Extraction.Entities.Location location)
+        {
+            var info = new ExpressionInfo(cx,
+                    AnnotatedTypeSymbol.CreateNotAnnotated(type),
+                    location,
+                    ExprKind.CAST,
+                    parent,
+                    childIndex,
+                    true,
+                    ValueAsString(value));
+
+            return new Expression(info);
+        }
+
+        /// <summary>
+        /// Creates a new expression, adding casts as required.
+        /// </summary>
         public static Expression Create(ExpressionNodeInfo info)
         {
             var resolvedType = info.ResolvedType;

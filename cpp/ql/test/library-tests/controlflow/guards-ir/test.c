@@ -151,3 +151,36 @@ void test5(int x) {
 void test6(int x, int y) {
   return x && y;
 }
+
+int ptr_test(int *x, int *y) {
+    if (x == y + 42) {
+    }
+
+    if (x == y - 42) {
+    }
+
+    if (x < y + 42) {
+    }
+
+    if (x < y - 42) {
+    }
+
+    return 0;
+}
+
+int foo(const char*, int);
+
+int ternary_test(const char *path, int mode)
+{
+    return (foo(path, mode) == 0 ? 1 : 0);
+}
+
+void abort(void);
+
+int abort_test(int x) {
+    if (x) {
+        x += 1;
+    } else {
+        abort();
+    }
+}

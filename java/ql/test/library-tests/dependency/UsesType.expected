@@ -10,4 +10,7 @@
 | dependency/A.java:22:7:22:7 | F | dependency/A.java:22:7:22:7 | F |
 | dependency/A.java:24:7:24:7 | G | dependency/A.java:24:7:24:7 | G |
 | dependency/A.java:26:7:26:7 | H | dependency/A.java:26:7:26:7 | H |
+| dependency/A.java:41:22:41:26 | Used1 | dependency/A.java:41:22:41:26 | Used1 |
+| dependency/A.java:42:22:42:26 | Used2 | dependency/A.java:42:22:42:26 | Used2 |
+| dependency/A.java:43:22:43:26 | Used3 | dependency/A.java:43:22:43:26 | Used3 |
 | file://:0:0:0:0 | C[] | dependency/A.java:9:7:9:7 | C |

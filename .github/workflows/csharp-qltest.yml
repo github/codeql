@@ -29,7 +29,7 @@ jobs:
   qlupgrade:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/fetch-codeql
       - name: Check DB upgrade scripts
         run: |
@@ -52,8 +52,7 @@ jobs:
       matrix:
         slice: ["1/2", "2/2"]
     steps:
-      - uses: actions/checkout@v3
-      - uses: ./.github/actions/fetch-codeql
+      - uses: actions/checkout@v4
       - uses: ./csharp/actions/create-extractor-pack
       - name: Cache compilation cache
         id: query-cache
@@ -62,25 +61,41 @@ jobs:
           key: csharp-qltest-${{ matrix.slice }}
       - name: Run QL tests
         run: |
-          CODEQL_PATH=$(gh codeql version --format=json | jq -r .unpackedLocation)
-          # The legacy ASP extractor is not in this repo, so take the one from the nightly build
-          mv "$CODEQL_PATH/csharp/tools/extractor-asp.jar" "${{ github.workspace }}/csharp/extractor-pack/tools"
-          # Safe guard against using the bundled extractor
-          rm -rf "$CODEQL_PATH/csharp"
-          codeql test run --threads=0 --ram 50000 --slice ${{ matrix.slice }} --search-path "${{ github.workspace }}/csharp/extractor-pack" --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          codeql test run --threads=0 --ram 50000 --slice ${{ matrix.slice }} --search-path extractor-pack --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries ql/test --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
         env:
           GITHUB_TOKEN: ${{ github.token }}
   unit-tests:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-2019]
+    runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Setup dotnet
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 7.0.102
+          dotnet-version: 8.0.100
       - name: Extractor unit tests
         run: |
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/csharp/extractor/Semmle.Util.Tests"
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/csharp/extractor/Semmle.Extraction.Tests"
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/csharp/autobuilder/Semmle.Autobuild.CSharp.Tests"
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=8.0.0 extractor/Semmle.Util.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.0 extractor/Semmle.Extraction.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.0 autobuilder/Semmle.Autobuild.CSharp.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.0 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"
+        shell: bash
+  stubgentest:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./csharp/actions/create-extractor-pack
+      - name: Run stub generator tests
+        run: |
+          # Generate (Asp)NetCore stubs
+          STUBS_PATH=stubs_output
+          python3 scripts/stubs/make_stubs_nuget.py webapp Swashbuckle.AspNetCore.Swagger 6.5.0 "$STUBS_PATH"
+          rm -rf ql/test/resources/stubs/_frameworks
+          # Update existing stubs in the repo with the freshly generated ones
+          mv "$STUBS_PATH/output/stubs/_frameworks" ql/test/resources/stubs/
+          git status
+          codeql test run --threads=0 --search-path extractor-pack --check-databases --check-undefined-labels --check-repeated-labels --check-redefined-labels --consistency-queries ql/consistency-queries -- ql/test/library-tests/dataflow/flowsources/aspremote
+        env:
+          GITHUB_TOKEN: ${{ github.token }}

@@ -4,14 +4,14 @@
  * It must export the following members:
  * ```ql
  * class Unit // a unit type
- * module AccessPathSyntax // a re-export of the AccessPathSyntax module
+ *
  * class InvokeNode // a type representing an invocation connected to the API graph
  * module API // the API graph module
  * predicate isPackageUsed(string package)
  * API::Node getExtraNodeFromPath(string package, string type, string path, int n)
- * API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token)
- * API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathToken token)
- * predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPathToken token)
+ * API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token)
+ * API::Node getExtraSuccessorFromInvoke(API::InvokeNode node, AccessPathTokenBase token)
+ * predicate invocationMatchesExtraCallSiteFilter(API::InvokeNode invoke, AccessPathTokenBase token)
  * InvokeNode getAnInvocationOf(API::Node node)
  * predicate isExtraValidTokenNameInIdentifyingAccessPath(string name)
  * predicate isExtraValidNoArgumentTokenInIdentifyingAccessPath(string name)
@@ -21,11 +21,10 @@
 
 private import python as PY
 private import ApiGraphModels
+private import codeql.dataflow.internal.AccessPathSyntax
 import semmle.python.ApiGraphs::API as API
 // Re-export libraries needed by ApiGraphModels.qll
-import semmle.python.dataflow.new.internal.AccessPathSyntax as AccessPathSyntax
 import semmle.python.dataflow.new.DataFlow::DataFlow as DataFlow
-private import AccessPathSyntax
 
 /**
  * Holds if models describing `type` may be relevant for the analysis of this database.
@@ -49,7 +48,7 @@ API::Node getExtraNodeFromType(string type) { result = API::moduleImport(type) }
  * Gets a Python-specific API graph successor of `node` reachable by resolving `token`.
  */
 bindingset[token]
-API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
+API::Node getExtraSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   token.getName() = "Member" and
   result = node.getMember(token.getAnArgument())
   or
@@ -89,7 +88,7 @@ API::Node getExtraSuccessorFromNode(API::Node node, AccessPathToken token) {
  * Gets a Python-specific API graph successor of `node` reachable by resolving `token`.
  */
 bindingset[token]
-API::Node getExtraSuccessorFromInvoke(API::CallNode node, AccessPathToken token) {
+API::Node getExtraSuccessorFromInvoke(API::CallNode node, AccessPathTokenBase token) {
   token.getName() = "Instance" and
   result = node.getReturn()
   or
@@ -108,11 +107,28 @@ API::Node getExtraSuccessorFromInvoke(API::CallNode node, AccessPathToken token)
   )
 }
 
+pragma[inline]
+API::Node getAFuzzySuccessor(API::Node node) {
+  result = node.getAMember()
+  or
+  result = node.getParameter(_)
+  or
+  result = node.getKeywordParameter(_)
+  or
+  result = node.getReturn()
+  or
+  result = node.getASubscript()
+  or
+  result = node.getAwaited()
+  or
+  result = node.getASubclass()
+}
+
 /**
  * Holds if `invoke` matches the PY-specific call site filter in `token`.
  */
 bindingset[token]
-predicate invocationMatchesExtraCallSiteFilter(API::CallNode invoke, AccessPathToken token) {
+predicate invocationMatchesExtraCallSiteFilter(API::CallNode invoke, AccessPathTokenBase token) {
   token.getName() = "Call" and exists(invoke) // there is only one kind of call in Python.
 }
 

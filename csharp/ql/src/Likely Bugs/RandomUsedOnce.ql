@@ -17,7 +17,7 @@ predicate generateRandomNumberMethod(string s) { s = "Next" or s = "NextBytes" o
 
 from ObjectCreation c, MethodCall m
 where
-  c.getType().getUnboundDeclaration().(ValueOrRefType).hasQualifiedName("System", "Random") and
+  c.getType().getUnboundDeclaration().(ValueOrRefType).hasFullyQualifiedName("System", "Random") and
   m.getQualifier() = c and
   generateRandomNumberMethod(m.getTarget().getName())
 select m, "Random object created and used only once."

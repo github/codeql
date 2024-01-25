@@ -2,3 +2,4 @@ name: codeql/cpp-downgrades
 groups: cpp
 downgrades: .
 library: true
+warnOnImplicitThis: true

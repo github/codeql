@@ -28,10 +28,14 @@ For extraction of compiled languages (C/C++, C#, Go, Java) and Ruby on Linux:
 
 For TypeScript extraction on all platforms:
 
-- Node.js must be installed and available on the ``PATH`` as ``node``.
+- Node.js 14 or higher must be installed and available on the ``PATH`` as ``node``.
 
 For Python extraction:
 
 - On Linux and macOS, Python 3 must be installed and available on the ``PATH`` as ``python3`` or ``python``.
 - For Python 2 extraction on Linux and macOS, we also recommend having Python 2 installed and available on the ``PATH`` as ``python2``.
 - On Windows, the Python launcher must be installed and available on the ``PATH`` as ``py.exe``.
+
+For Ruby extraction:
+
+- On Windows, the ``msvcp140.dll`` must be installed and available on the system. This can be installed by downloading the appropriate Microsoft Visual C++ Redistributable for Visual Studio.

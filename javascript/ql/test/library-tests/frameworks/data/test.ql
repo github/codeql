@@ -1,6 +1,6 @@
 import javascript
 import testUtilities.ConsistencyChecking
-import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+import semmle.javascript.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 
 class Steps extends ModelInput::SummaryModelCsv {
   override predicate row(string row) {
@@ -54,6 +54,7 @@ class Sinks extends ModelInput::SinkModelCsv {
         "testlib;Member[typevar].TypeVar[ABC].Member[mySink].Argument[0];test-sink",
         "testlib;Member[typevar].TypeVar[ABC].TypeVar[ABC].Member[mySink].Argument[1];test-sink",
         "testlib;Member[typevar].TypeVar[LeftRight].Member[mySink].Argument[0];test-sink",
+        "testlib;Fuzzy.Member[fuzzyCall].Argument[0];test-sink"
       ]
   }
 }
@@ -125,6 +126,6 @@ class SyntaxErrorTest extends ModelInput::SinkModelCsv {
   }
 }
 
-query predicate syntaxErrors(AccessPathSyntax::AccessPath path) { path.hasSyntaxError() }
+query predicate syntaxErrors(ApiGraphModels::AccessPath path) { path.hasSyntaxError() }
 
 query predicate warning = ModelOutput::getAWarning/0;

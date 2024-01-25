@@ -20,6 +20,11 @@
 | file://:0:0:0:0 | UnionWithDef & | 8 |
 | file://:0:0:0:0 | UnionWithDef && | 8 |
 | file://:0:0:0:0 | _Complex _Float16 | 4 |
+| file://:0:0:0:0 | _Complex _Float32 | 8 |
+| file://:0:0:0:0 | _Complex _Float32x | 16 |
+| file://:0:0:0:0 | _Complex _Float64 | 16 |
+| file://:0:0:0:0 | _Complex _Float64x | 32 |
+| file://:0:0:0:0 | _Complex _Float128 | 32 |
 | file://:0:0:0:0 | _Complex __float128 | 32 |
 | file://:0:0:0:0 | _Complex double | 16 |
 | file://:0:0:0:0 | _Complex float | 8 |
@@ -33,12 +38,13 @@
 | file://:0:0:0:0 | _Float64 | 8 |
 | file://:0:0:0:0 | _Float64x | 16 |
 | file://:0:0:0:0 | _Float128 | 16 |
-| file://:0:0:0:0 | _Float128x | 32 |
 | file://:0:0:0:0 | _Imaginary double | 8 |
 | file://:0:0:0:0 | _Imaginary float | 4 |
 | file://:0:0:0:0 | _Imaginary long double | 16 |
 | file://:0:0:0:0 | __attribute((vector_size(16))) int | 16 |
+| file://:0:0:0:0 | __bf16 | 2 |
 | file://:0:0:0:0 | __float128 | 16 |
+| file://:0:0:0:0 | __fp16 | 2 |
 | file://:0:0:0:0 | __int128 | 16 |
 | file://:0:0:0:0 | __va_list_tag | 24 |
 | file://:0:0:0:0 | __va_list_tag & | 8 |
@@ -84,6 +90,7 @@
 | file://:0:0:0:0 | signed long | 8 |
 | file://:0:0:0:0 | signed long long | 8 |
 | file://:0:0:0:0 | signed short | 2 |
+| file://:0:0:0:0 | std::float16_t | 2 |
 | file://:0:0:0:0 | unknown | 1 |
 | file://:0:0:0:0 | unsigned __int128 | 16 |
 | file://:0:0:0:0 | unsigned char | 1 |

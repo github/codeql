@@ -164,6 +164,38 @@ If the call resolves to a predicate without result, then the call is a formula.
 It is also possible to call a predicate with result. This kind of call is an
 expression in QL, instead of a formula. For more information, see ":ref:`calls-with-result`."
 
+Member predicates only apply to members of a particular class and calls to
+member predicates have a receiver of a matching type. Syntactically, if a call
+contains a dot, then the expression before the dot specifies the receiver of
+the call. For instance, ``x`` is the receiver for the call ``x.isEven()``.
+
+For calls to member predicates of the enclosing class on the member itself
+(i.e., the value of ``this``), the receiver may be omitted syntactically. In
+this case we say the call has an implicit this receiver. For instance, in the
+following example the ``isEven()`` call in ``isOdd()`` is a member predicate
+call with an implicit this receiver and the call is equivalent to
+``this.isEven()``:
+
+.. code-block:: ql
+
+  class OneTwoThree extends int {
+    OneTwoThree() { this = 1 or this = 2 or this = 3 }
+
+    predicate isEven() { this = 2 }
+
+    predicate isOdd() { not isEven() }
+  }
+
+Use of implicit this receivers can make it harder to spot predicates that introduce
+cartesian products by failing to relate the implicit ``this`` variable with
+other variables, which can negatively affect query performance. For more
+information on cartesian products, see ":ref:`Troubleshooting query performance
+<troubleshooting-query-performance>`".
+
+It is possible to enable warnings about implicit this receivers for `CodeQL packs
+<https://docs.github.com/en/code-security/codeql-cli/codeql-cli-reference/about-codeql-packs#warnonimplicitthis>`__
+through the ``warnOnImplicitThis`` property.
+
 .. _parenthesized-formulas:
 
 Parenthesized formulas

@@ -6,16 +6,44 @@ private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.frameworks.android.Intent
 private import semmle.code.java.frameworks.android.PendingIntent
 
+private newtype TPendingIntentState =
+  TMutablePendingIntent() or
+  TNoState()
+
+/** A flow state for an implicit `PendingIntent` flow. */
+class PendingIntentState extends TPendingIntentState {
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+}
+
+/** A flow state indicating that a mutable `PendingIntent` has been created. */
+class MutablePendingIntent extends PendingIntentState, TMutablePendingIntent {
+  override string toString() { result = "MutablePendingIntent" }
+}
+
+/** The initial flow state for an implicit `PendingIntent` flow. */
+class NoState extends PendingIntentState, TNoState {
+  override string toString() { result = "NoState" }
+}
+
 /** A source for an implicit `PendingIntent` flow. */
 abstract class ImplicitPendingIntentSource extends DataFlow::Node {
-  /** Holds if this source has the specified `state`. */
-  predicate hasState(DataFlow::FlowState state) { state = "" }
+  /**
+   * DEPRECATED: Open-ended flow state is not intended to be part of the extension points.
+   *
+   * Holds if this source has the specified `state`.
+   */
+  deprecated predicate hasState(DataFlow::FlowState state) { state = "" }
 }
 
 /** A sink that sends an implicit and mutable `PendingIntent` to a third party. */
 abstract class ImplicitPendingIntentSink extends DataFlow::Node {
-  /** Holds if this sink has the specified `state`. */
-  predicate hasState(DataFlow::FlowState state) { state = "" }
+  /**
+   * DEPRECATED: Open-ended flow state is not intended to be part of the extension points.
+   *
+   * Holds if this sink has the specified `state`.
+   */
+  deprecated predicate hasState(DataFlow::FlowState state) { state = "" }
 }
 
 /**
@@ -32,11 +60,19 @@ class ImplicitPendingIntentAdditionalTaintStep extends Unit {
   predicate step(DataFlow::Node node1, DataFlow::Node node2) { none() }
 
   /**
+   * Holds if the step from `node1` to `node2` creates a mutable `PendingIntent`.
+   */
+  predicate mutablePendingIntentCreation(DataFlow::Node node1, DataFlow::Node node2) { none() }
+
+  /**
+   * DEPRECATED: Open-ended flow state is not intended to be part of the extension points.
+   * Use `mutablePendingIntentCreation` instead.
+   *
    * Holds if the step from `node1` to `node2` should be considered a taint
    * step for flows related to the use of implicit `PendingIntent`s. This step is only applicable
    * in `state1` and updates the flow state to `state2`.
    */
-  predicate step(
+  deprecated predicate step(
     DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
     DataFlow::FlowState state2
   ) {
@@ -57,7 +93,7 @@ private class SendPendingIntent extends ImplicitPendingIntentSink {
     // intent redirection sinks are method calls that start Android components
     sinkNode(this, "intent-redirection") and
     // implicit intents can't be started as services since API 21
-    not exists(MethodAccess ma, Method m |
+    not exists(MethodCall ma, Method m |
       ma.getMethod() = m and
       m.getDeclaringType().getAnAncestor() instanceof TypeContext and
       m.getName().matches(["start%Service%", "bindService%"]) and
@@ -66,17 +102,10 @@ private class SendPendingIntent extends ImplicitPendingIntentSink {
     or
     sinkNode(this, "pending-intents")
   }
-
-  override predicate hasState(DataFlow::FlowState state) { state = "MutablePendingIntent" }
 }
 
 private class MutablePendingIntentFlowStep extends ImplicitPendingIntentAdditionalTaintStep {
-  override predicate step(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
-  ) {
-    state1 = "" and
-    state2 = "MutablePendingIntent" and
+  override predicate mutablePendingIntentCreation(DataFlow::Node node1, DataFlow::Node node2) {
     exists(PendingIntentCreation pic, Argument flagArg |
       node1.asExpr() = pic.getIntentArg() and
       node2.asExpr() = pic and

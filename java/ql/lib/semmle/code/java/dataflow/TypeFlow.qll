@@ -241,7 +241,6 @@ private module ForAll<NodeSig Node, RankedEdge<Node> E, TypePropagation T> {
    * Holds if `t` is a candidate bound for `n` that is also valid for data coming
    * through the edges into `n` ranked from `1` to `r`.
    */
-  pragma[assume_small_delta]
   private predicate flowJoin(int r, Node n, T::Typ t) {
     (
       r = 1 and candJoinType(n, t)
@@ -415,30 +414,40 @@ private predicate downcastSuccessor(VarAccess va, RefType t) {
 }
 
 /**
- * Holds if `va` is an access to a value that is guarded by `instanceof t`.
+ * Holds if `va` is an access to a value that is guarded by `instanceof t` or `case e t`.
  */
-private predicate instanceOfGuarded(VarAccess va, RefType t) {
-  exists(InstanceOfExpr ioe, BaseSsaVariable v |
-    ioe.getExpr() = v.getAUse() and
-    t = ioe.getCheckedType() and
+private predicate typeTestGuarded(VarAccess va, RefType t) {
+  exists(Guard typeTest, BaseSsaVariable v |
+    typeTest.appliesTypeTest(v.getAUse(), t, _) and
     va = v.getAUse() and
-    guardControls_v1(ioe, va.getBasicBlock(), true)
+    guardControls_v1(typeTest, va.getBasicBlock(), true)
   )
 }
 
 /**
- * Holds if `aa` is an access to a value that is guarded by `instanceof t`.
+ * Holds if `aa` is an access to a value that is guarded by `instanceof t` or `case e t`.
  */
-predicate arrayInstanceOfGuarded(ArrayAccess aa, RefType t) {
-  exists(InstanceOfExpr ioe, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
-    ioe.getExpr() = aa1 and
-    t = ioe.getCheckedType() and
+predicate arrayTypeTestGuarded(ArrayAccess aa, RefType t) {
+  exists(Guard typeTest, BaseSsaVariable v1, BaseSsaVariable v2, ArrayAccess aa1 |
+    typeTest.appliesTypeTest(aa1, t, _) and
     aa1.getArray() = v1.getAUse() and
     aa1.getIndexExpr() = v2.getAUse() and
     aa.getArray() = v1.getAUse() and
     aa.getIndexExpr() = v2.getAUse() and
-    guardControls_v1(ioe, aa.getBasicBlock(), true)
+    guardControls_v1(typeTest, aa.getBasicBlock(), true)
   )
+}
+
+/**
+ * Holds if `t` is the type of the `this` value corresponding to the the
+ * `SuperAccess`. As the `SuperAccess` expression has the type of the supertype,
+ * the type `t` is a stronger type bound.
+ */
+private predicate superAccess(SuperAccess sup, RefType t) {
+  sup.isEnclosingInstanceAccess(t)
+  or
+  sup.isOwnInstanceAccess() and
+  t = sup.getEnclosingCallable().getDeclaringType()
 }
 
 /**
@@ -451,9 +460,10 @@ private predicate typeFlowBaseCand(TypeFlowNode n, RefType t) {
     upcast(n, srctype) or
     upcastEnhancedForStmt(n.asSsa(), srctype) or
     downcastSuccessor(n.asExpr(), srctype) or
-    instanceOfGuarded(n.asExpr(), srctype) or
-    arrayInstanceOfGuarded(n.asExpr(), srctype) or
-    n.asExpr().(FunctionalExpr).getConstructedType() = srctype
+    typeTestGuarded(n.asExpr(), srctype) or
+    arrayTypeTestGuarded(n.asExpr(), srctype) or
+    n.asExpr().(FunctionalExpr).getConstructedType() = srctype or
+    superAccess(n.asExpr(), srctype)
   |
     t = srctype.(BoundedType).getAnUltimateUpperBoundType()
     or
@@ -617,7 +627,7 @@ private predicate instanceofDisjunctionGuarded(TypeFlowNode n, RefType t) {
     bb.bbDominates(va.getBasicBlock()) and
     va = v.getAUse() and
     instanceofDisjunct(ioe, bb, v) and
-    t = ioe.getCheckedType() and
+    t = ioe.getSyntacticCheckedType() and
     n.asExpr() = va
   )
 }

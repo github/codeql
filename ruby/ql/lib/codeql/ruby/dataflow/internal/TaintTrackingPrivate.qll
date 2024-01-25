@@ -17,7 +17,10 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  * of `c` at sinks and inputs to additional taint steps.
  */
 bindingset[node]
-predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
+predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) {
+  exists(node) and
+  c.isElementOfTypeOrUnknown("int")
+}
 
 private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
   CfgNodes::ExprNodes::CasePatternCfgNode p
@@ -64,9 +67,10 @@ private CfgNodes::ExprNodes::VariableWriteAccessCfgNode variablesInPattern(
 cached
 private module Cached {
   private import codeql.ruby.dataflow.FlowSteps as FlowSteps
+  private import codeql.ruby.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 
   cached
-  predicate forceCachingInSameStage() { any() }
+  predicate forceCachingInSameStage() { DataFlowImplCommon::forceCachingInSameStage() }
 
   /**
    * Holds if the additional step from `nodeFrom` to `nodeTo` should be included
@@ -75,11 +79,16 @@ private module Cached {
   cached
   predicate defaultAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     // value of `case` expression into variables in patterns
-    exists(CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprNodes::InClauseCfgNode clause |
-      nodeFrom.asExpr() = case.getValue() and
+    exists(
+      CfgNodes::ExprNodes::CaseExprCfgNode case, CfgNodes::ExprCfgNode value,
+      CfgNodes::ExprNodes::InClauseCfgNode clause, Ssa::Definition def
+    |
+      nodeFrom.asExpr() = value and
+      value = case.getValue() and
       clause = case.getBranch(_) and
-      nodeTo.(SsaDefinitionExtNode).getDefinitionExt().(Ssa::Definition).getControlFlowNode() =
-        variablesInPattern(clause.getPattern())
+      def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt() and
+      def.getControlFlowNode() = variablesInPattern(clause.getPattern()) and
+      not LocalFlow::ssaDefAssigns(def, value)
     )
     or
     // operation involving `nodeFrom`

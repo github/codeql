@@ -180,7 +180,8 @@ For example, in the previous two snippets, we relied on the predicate signature 
     signature int transformer(int x);
 
 The instantiation of parameterized modules is applicative.
-That is, if you instantiate a parameterized module twice with identical arguments, the resulting object is the same.
+That is, if you instantiate a parameterized module twice with equivalent arguments, the resulting object is the same.
+Arguments are considered equivalent in this context if they differ only by :ref:`weak aliasing <weak_strong_aliases>`.
 This is particularly relevant for type definitions inside parameterized modules as :ref:`classes <classes>`
 or via :ref:`newtype <algebraic-datatypes>`, because the duplication of such type definitions would result in
 incompatible types.
@@ -264,7 +265,12 @@ Import statements are used for importing modules. They are of the form:
 Import statements are usually listed at the beginning of the module. Each
 import statement imports one module. You can import multiple modules by 
 including multiple import statements (one for each module you want to import).
-An import statement can also be :ref:`annotated <private>` with ``private``.
+
+An import statement can also be :ref:`annotated <annotations-overview>` with
+``private`` or ``deprecated``. If an import statement is annotated with
+``private`` then the imported names are not reexported. If an imported name is
+only reachable through deprecated imports in a given context then usage of the
+name in that context will generate deprecation warnings.
 
 You can import a module under a different name using the ``as`` keyword, 
 for example ``import javascript as js``.

@@ -13,8 +13,13 @@ import codeql.swift.security.WeakSensitiveDataHashingExtensions
  * A taint tracking configuration from sensitive expressions to broken or weak
  * hashing sinks.
  */
-module WeakHashingConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
+module WeakSensitiveDataHashingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    exists(SensitiveExpr se |
+      node.asExpr() = se and
+      not se.getSensitiveType() instanceof SensitivePassword // responsibility of the weak password hashing query
+    )
+  }
 
   predicate isSink(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingSink }
 
@@ -35,4 +40,8 @@ module WeakHashingConfig implements DataFlow::ConfigSig {
   }
 }
 
-module WeakHashingFlow = TaintTracking::Global<WeakHashingConfig>;
+deprecated module WeakHashingConfig = WeakSensitiveDataHashingConfig;
+
+module WeakSensitiveDataHashingFlow = TaintTracking::Global<WeakSensitiveDataHashingConfig>;
+
+deprecated module WeakHashingFlow = WeakSensitiveDataHashingFlow;

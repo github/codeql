@@ -1,0 +1,20 @@
+#select
+| variables.kt:3:5:3:21 | prop | int | variables.kt:3:21:3:21 | 1 |
+| variables.kt:5:20:5:29 | param | int | file://:0:0:0:0 | <none> |
+| variables.kt:6:13:6:18 | int local1 | int | variables.kt:6:22:6:26 | ... + ... |
+| variables.kt:8:13:8:18 | int local2 | int | variables.kt:8:22:8:26 | ... + ... |
+| variables.kt:10:13:10:18 | int local3 | int | variables.kt:10:22:10:26 | param |
+| variables.kt:15:1:15:21 | topLevel | int | variables.kt:15:21:15:21 | 1 |
+| variables.kt:21:11:21:18 | o | C1 | file://:0:0:0:0 | <none> |
+| variables.kt:21:11:21:18 | o | C1 | variables.kt:21:11:21:18 | o |
+| variables.kt:28:9:28:10 | <this> | C1 | file://:0:0:0:0 | <none> |
+isFinal
+| variables.kt:6:13:6:18 | int local1 | final |
+| variables.kt:8:13:8:18 | int local2 | non-final |
+| variables.kt:10:13:10:18 | int local3 | final |
+compileTimeConstant
+| variables.kt:3:5:3:21 | prop |
+| variables.kt:3:5:3:21 | this.prop |
+| variables.kt:7:17:7:22 | local1 |
+| variables.kt:15:1:15:21 | VariablesKt.topLevel |
+| variables.kt:15:1:15:21 | VariablesKt.topLevel |

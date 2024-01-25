@@ -15,19 +15,21 @@ on:
       - .github/workflows/go-tests.yml
       - .github/actions/**
       - codeql-workspace.yml
+env:
+  GO_VERSION: '~1.21.0'
 jobs:
   test-linux:
     name: Test Linux (Ubuntu)
     runs-on: ubuntu-latest-xl
     steps:
-      - name: Set up Go 1.20
-        uses: actions/setup-go@v4
+      - name: Set up Go ${{ env.GO_VERSION }}
+        uses: actions/setup-go@v5
         with:
-          go-version: '1.20'
+          go-version: ${{ env.GO_VERSION }}
         id: go
 
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Set up CodeQL CLI
         uses: ./.github/actions/fetch-codeql

@@ -15,90 +15,107 @@ namespace codeql {
 
 class TrapDomain;
 
-class SwiftLocationExtractor {
-  template <typename Locatable, typename = void>
-  struct HasSpecializedImplementation : std::false_type {};
+namespace detail {
+template <typename T>
+concept HasSourceRange = requires(T e) {
+  e.getSourceRange();
+};
 
+template <typename T>
+concept HasStartAndEndLoc = requires(T e) {
+  e.getStartLoc();
+  e.getEndLoc();
+}
+&&!(HasSourceRange<T>);
+
+template <typename T>
+concept HasLAndRParenLoc = requires(T e) {
+  e.getLParenLoc();
+  e.getRParenLoc();
+}
+&&!(HasSourceRange<T>)&&!(HasStartAndEndLoc<T>);
+
+template <typename T>
+concept HasOneLoc = requires(T e) {
+  e.getLoc();
+}
+&&!(HasSourceRange<T>)&&(!HasStartAndEndLoc<T>);
+
+template <typename T>
+concept HasOneLocField = requires(T e) {
+  e.Loc;
+};
+
+swift::SourceRange getSourceRange(const HasSourceRange auto& locatable) {
+  return locatable.getSourceRange();
+}
+
+swift::SourceRange getSourceRange(const HasStartAndEndLoc auto& locatable) {
+  if (locatable.getStartLoc() && locatable.getEndLoc()) {
+    return {locatable.getStartLoc(), locatable.getEndLoc()};
+  }
+  return {locatable.getStartLoc()};
+}
+
+swift::SourceRange getSourceRange(const HasLAndRParenLoc auto& locatable) {
+  if (locatable.getLParenLoc() && locatable.getRParenLoc()) {
+    return {locatable.getLParenLoc(), locatable.getRParenLoc()};
+  }
+  return {locatable.getLParenLoc()};
+}
+
+swift::SourceRange getSourceRange(const HasOneLoc auto& locatable) {
+  return {locatable.getLoc()};
+}
+
+swift::SourceRange getSourceRange(const HasOneLocField auto& locatable) {
+  return {locatable.Loc};
+}
+
+swift::SourceRange getSourceRange(const swift::Token& token);
+
+template <typename Locatable>
+swift::SourceRange getSourceRange(const llvm::MutableArrayRef<Locatable>& locatables) {
+  if (locatables.empty()) {
+    return {};
+  }
+  auto startRange = getSourceRange(locatables.front());
+  auto endRange = getSourceRange(locatables.back());
+  if (startRange.Start && endRange.End) {
+    return {startRange.Start, endRange.End};
+  }
+  return {startRange.Start};
+}
+}  // namespace detail
+
+template <typename E>
+concept IsLocatable = requires(E e) {
+  detail::getSourceRange(e);
+};
+
+class SwiftLocationExtractor {
  public:
   explicit SwiftLocationExtractor(TrapDomain& trap) : trap(trap) {}
 
   TrapLabel<FileTag> emitFile(swift::SourceFile* file);
   TrapLabel<FileTag> emitFile(const std::filesystem::path& file);
 
-  template <typename Locatable>
-  void attachLocation(const swift::SourceManager& sourceManager,
-                      const Locatable& locatable,
-                      TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(sourceManager, &locatable, locatableLabel);
-  }
-
   // Emits a Location TRAP entry and attaches it to a `Locatable` trap label
-  template <typename Locatable,
-            std::enable_if_t<!HasSpecializedImplementation<Locatable>::value>* = nullptr>
   void attachLocation(const swift::SourceManager& sourceManager,
-                      const Locatable* locatable,
+                      const IsLocatable auto& locatable,
                       TrapLabel<LocatableTag> locatableLabel) {
-    attachLocationImpl(sourceManager, locatable->getStartLoc(), locatable->getEndLoc(),
-                       locatableLabel);
+    attachLocationImpl(sourceManager, detail::getSourceRange(locatable), locatableLabel);
   }
 
-  template <typename Locatable,
-            std::enable_if_t<HasSpecializedImplementation<Locatable>::value>* = nullptr>
   void attachLocation(const swift::SourceManager& sourceManager,
-                      const Locatable* locatable,
+                      const IsLocatable auto* locatable,
                       TrapLabel<LocatableTag> locatableLabel) {
-    attachLocationImpl(sourceManager, locatable, locatableLabel);
+    attachLocation(sourceManager, *locatable, locatableLabel);
   }
 
  private:
-  // Emits a Location TRAP entry for a list of swift entities and attaches it to a `Locatable` trap
-  // label
-  template <typename Locatable>
-  void attachLocationImpl(const swift::SourceManager& sourceManager,
-                          const llvm::MutableArrayRef<Locatable>* locatables,
-                          TrapLabel<LocatableTag> locatableLabel) {
-    if (locatables->empty()) {
-      return;
-    }
-    attachLocationImpl(sourceManager, locatables->front().getStartLoc(),
-                       locatables->back().getEndLoc(), locatableLabel);
-  }
-
-  void attachLocationImpl(const swift::SourceManager& sourceManager,
-                          swift::SourceLoc start,
-                          swift::SourceLoc end,
-                          TrapLabel<LocatableTag> locatableLabel);
-
-  void attachLocationImpl(const swift::SourceManager& sourceManager,
-                          swift::SourceLoc loc,
-                          TrapLabel<LocatableTag> locatableLabel);
-
   void attachLocationImpl(const swift::SourceManager& sourceManager,
                           const swift::SourceRange& range,
-                          TrapLabel<LocatableTag> locatableLabel);
-
-  void attachLocationImpl(const swift::SourceManager& sourceManager,
-                          const swift::CapturedValue* capture,
-                          TrapLabel<LocatableTag> locatableLabel);
-
-  void attachLocationImpl(const swift::SourceManager& sourceManager,
-                          const swift::IfConfigClause* clause,
-                          TrapLabel<LocatableTag> locatableLabel);
-
-  void attachLocationImpl(const swift::SourceManager& sourceManager,
-                          const swift::AvailabilitySpec* spec,
-                          TrapLabel<LocatableTag> locatableLabel);
-
-  void attachLocationImpl(const swift::SourceManager& sourceManager,
-                          const swift::Token* token,
-                          TrapLabel<LocatableTag> locatableLabel);
-
-  void attachLocationImpl(const swift::SourceManager& sourceManager,
-                          const swift::DiagnosticInfo* token,
-                          TrapLabel<LocatableTag> locatableLabel);
-
-  void attachLocationImpl(const swift::SourceManager& sourceManager,
-                          const swift::KeyPathExpr::Component* component,
                           TrapLabel<LocatableTag> locatableLabel);
 
  private:
@@ -106,13 +123,5 @@ class SwiftLocationExtractor {
   TrapDomain& trap;
   std::unordered_map<std::filesystem::path, TrapLabel<FileTag>, codeql::PathHash> store;
 };
-
-template <typename Locatable>
-struct SwiftLocationExtractor::HasSpecializedImplementation<
-    Locatable,
-    decltype(std::declval<SwiftLocationExtractor>().attachLocationImpl(
-        std::declval<const swift::SourceManager&>(),
-        std::declval<const Locatable*>(),
-        std::declval<TrapLabel<LocatableTag>>()))> : std::true_type {};
 
 }  // namespace codeql

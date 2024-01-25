@@ -19,6 +19,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.security.Sanitizers
 import Log4jInjectionFlow::PathGraph
 
 private class ActivateModels extends ActiveExperimentalModels {
@@ -33,17 +34,13 @@ class Log4jInjectionSink extends DataFlow::Node {
 /**
  * A node that sanitizes a message before logging to avoid log injection.
  */
-class Log4jInjectionSanitizer extends DataFlow::Node {
-  Log4jInjectionSanitizer() {
-    this.getType() instanceof BoxedType or this.getType() instanceof PrimitiveType
-  }
-}
+class Log4jInjectionSanitizer extends DataFlow::Node instanceof SimpleTypeSanitizer { }
 
 /**
  * A taint-tracking configuration for tracking untrusted user input used in log entries.
  */
 module Log4jInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Log4jInjectionSink }
 

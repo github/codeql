@@ -633,6 +633,31 @@ getExprType
 | tst.ts:467:15:467:17 | foo | readonly ["a", "b", "c"] |
 | tst.ts:467:15:467:20 | foo[1] | "b" |
 | tst.ts:467:19:467:19 | 1 | 1 |
+| tst.ts:472:8:472:11 | TS52 | typeof TS52 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:473:11:473:19 | SomeClass | SomeClass |
+| tst.ts:474:10:474:36 | ((_targ ...  => {}) | (_target: undefined, _context: ClassFieldDecora... |
+| tst.ts:474:11:474:35 | (_targe ... ) => {} | (_target: undefined, _context: ClassFieldDecora... |
+| tst.ts:474:12:474:18 | _target | undefined |
+| tst.ts:474:21:474:28 | _context | ClassFieldDecoratorContext<SomeClass, number> &... |
+| tst.ts:475:9:475:11 | foo | number |
+| tst.ts:475:15:475:17 | 123 | 123 |
+| tst.ts:478:5:478:11 | console | Console |
+| tst.ts:478:5:478:15 | console.log | (...data: any[]) => void |
+| tst.ts:478:5:478:43 | console ... adata]) | void |
+| tst.ts:478:13:478:15 | log | (...data: any[]) => void |
+| tst.ts:478:17:478:25 | SomeClass | typeof SomeClass in tst.ts:472 |
+| tst.ts:478:17:478:42 | SomeCla ... tadata] | DecoratorMetadataObject |
+| tst.ts:478:27:478:32 | Symbol | SymbolConstructor |
+| tst.ts:478:27:478:41 | Symbol.metadata | typeof metadata |
+| tst.ts:478:34:478:41 | metadata | typeof metadata |
+| tst.ts:483:5:483:11 | console | Console |
+| tst.ts:483:5:483:15 | console.log | (...data: any[]) => void |
+| tst.ts:483:5:483:59 | console ... tring>) | void |
+| tst.ts:483:13:483:15 | log | (...data: any[]) => void |
+| tst.ts:483:17:483:34 | ["hello", "world"] | Pair3<string> |
+| tst.ts:483:17:483:58 | ["hello ... string> | [first: string, string] |
+| tst.ts:483:18:483:24 | "hello" | "hello" |
+| tst.ts:483:27:483:33 | "world" | "world" |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -708,6 +733,8 @@ getExprType
 | type_definitions.ts:19:5:19:5 | e | EnumWithOneMember |
 | type_definitions.ts:22:5:22:23 | aliasForNumberArray | Alias<number> |
 getTypeDefinitionType
+| badTypes.ts:5:1:5:29 | interfa ... is.B {} | A |
+| badTypes.ts:6:1:6:24 | type T  ... ar.bar; | any |
 | tst.ts:54:1:56:1 | interfa ... mber;\\n} | NonAbstractDummy |
 | tst.ts:58:1:60:1 | interfa ... mber;\\n} | HasArea |
 | tst.ts:65:1:65:54 | type My ...  true}; | MyUnion |
@@ -744,6 +771,8 @@ getTypeDefinitionType
 | tst.ts:408:3:410:3 | interfa ... er;\\n  } | HSVObj |
 | tst.ts:419:3:425:3 | class P ...   }\\n  } | Person |
 | tst.ts:447:5:458:5 | class P ... }\\n    } | Person |
+| tst.ts:473:5:476:5 | class S ... ;\\n    } | SomeClass |
+| tst.ts:481:5:481:34 | type Pa ...  T, T]; | Pair3<T> |
 | type_alias.ts:1:1:1:17 | type B = boolean; | boolean |
 | type_alias.ts:5:1:5:50 | type Va ... ay<T>>; | ValueOrArray<T> |
 | type_alias.ts:9:1:15:13 | type Js ... Json[]; | Json |
@@ -756,6 +785,13 @@ getTypeDefinitionType
 | type_definitions.ts:18:1:18:33 | enum En ... ember } | EnumWithOneMember |
 | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; | Alias<T> |
 getTypeExprType
+| badTypes.ts:5:11:5:11 | A | A |
+| badTypes.ts:5:21:5:26 | this.B | any |
+| badTypes.ts:5:26:5:26 | B | any |
+| badTypes.ts:6:6:6:6 | T | any |
+| badTypes.ts:6:10:6:23 | typeof var.bar | any |
+| badTypes.ts:6:17:6:19 | var | any |
+| badTypes.ts:6:21:6:23 | bar | any |
 | boolean-type.ts:3:12:3:15 | true | true |
 | boolean-type.ts:4:12:4:15 | true | true |
 | boolean-type.ts:4:12:4:22 | true \| true | true |
@@ -1093,6 +1129,15 @@ getTypeExprType
 | tst.ts:462:65:462:72 | string[] | readonly string[] |
 | tst.ts:462:81:462:81 | T | T |
 | tst.ts:462:85:462:85 | T | T |
+| tst.ts:481:10:481:14 | Pair3 | Pair3<T> |
+| tst.ts:481:16:481:16 | T | T |
+| tst.ts:481:21:481:33 | [first: T, T] | [first: T, T] |
+| tst.ts:481:22:481:26 | first | any |
+| tst.ts:481:29:481:29 | T | T |
+| tst.ts:481:32:481:32 | T | T |
+| tst.ts:483:46:483:50 | Pair3 | Pair3<T> |
+| tst.ts:483:46:483:58 | Pair3<string> | Pair3<string> |
+| tst.ts:483:52:483:57 | string | string |
 | tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
 | tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
@@ -1163,6 +1208,7 @@ getTypeExprType
 | type_definitions.ts:22:32:22:37 | number | number |
 missingToString
 referenceDefinition
+| A | badTypes.ts:5:1:5:29 | interfa ... is.B {} |
 | Action | tst.ts:252:3:254:50 | type Ac ... ring }; |
 | Alias<T> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
 | Alias<number> | type_definitions.ts:21:1:21:20 | type Alias<T> = T[]; |
@@ -1196,12 +1242,15 @@ referenceDefinition
 | MyUnion | tst.ts:65:1:65:54 | type My ...  true}; |
 | MyUnion2 | tst.ts:68:1:68:49 | type My ...  true}; |
 | NonAbstractDummy | tst.ts:54:1:56:1 | interfa ... mber;\\n} |
+| Pair3<T> | tst.ts:481:5:481:34 | type Pa ...  T, T]; |
+| Pair3<string> | tst.ts:481:5:481:34 | type Pa ...  T, T]; |
 | Person | tst.ts:222:3:234:3 | class P ...   }\\n  } |
 | Person | tst.ts:419:3:425:3 | class P ...   }\\n  } |
 | Person | tst.ts:447:5:458:5 | class P ... }\\n    } |
 | RGB | tst.ts:393:3:393:56 | type RG ... umber]; |
 | RGBObj | tst.ts:404:3:406:3 | interfa ... er;\\n  } |
 | Shape | tst.ts:140:3:142:47 | type Sh ... mber }; |
+| SomeClass | tst.ts:473:5:476:5 | class S ... ;\\n    } |
 | State<T> | tst.ts:342:1:345:1 | interfa ... void;\\n} |
 | State<number> | tst.ts:342:1:345:1 | interfa ... void;\\n} |
 | Sub | tst.ts:97:3:101:3 | class S ...   }\\n  } |
@@ -1275,6 +1324,8 @@ tupleTypes
 | tst.ts:467:15:467:17 | foo | readonly ["a", "b", "c"] | 0 | "a" | 3 | no-rest |
 | tst.ts:467:15:467:17 | foo | readonly ["a", "b", "c"] | 1 | "b" | 3 | no-rest |
 | tst.ts:467:15:467:17 | foo | readonly ["a", "b", "c"] | 2 | "c" | 3 | no-rest |
+| tst.ts:483:17:483:58 | ["hello ... string> | [first: string, string] | 0 | string | 2 | no-rest |
+| tst.ts:483:17:483:58 | ["hello ... string> | [first: string, string] | 1 | string | 2 | no-rest |
 unknownType
 | tst.ts:40:5:40:15 | unknownType | unknown |
 | tst.ts:47:8:47:8 | e | unknown |
@@ -1355,6 +1406,7 @@ unionIndex
 | number | 1 | string \| number |
 | number | 1 | string \| number \| boolean |
 | number | 1 | string \| number \| boolean \| { [property: string... |
+| number | 1 | string \| number \| symbol |
 | number | 1 | string \| number \| true |
 | string | 0 | VirtualNode \| { [key: string]: any; } |
 | string | 0 | string \| Error |
@@ -1363,10 +1415,12 @@ unionIndex
 | string | 0 | string \| number |
 | string | 0 | string \| number \| boolean |
 | string | 0 | string \| number \| boolean \| { [property: string... |
+| string | 0 | string \| number \| symbol |
 | string | 0 | string \| number \| true |
 | string | 0 | string \| symbol |
 | string | 0 | string \| { [key: string]: any; } |
 | symbol | 1 | string \| symbol |
+| symbol | 2 | string \| number \| symbol |
 | true | 1 | boolean |
 | true | 1 | boolean \| Promise<number> |
 | true | 2 | number \| boolean |

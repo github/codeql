@@ -13,7 +13,6 @@
  */
 
 import go
-import DataFlow::PathGraph
 
 /**
  * Holds if `pattern` is a regular expression pattern for URLs with a host matched by `hostPart`,
@@ -80,10 +79,8 @@ predicate regexpGuardsError(RegexpPattern regexp) {
   )
 }
 
-class Config extends DataFlow::Configuration {
-  Config() { this = "IncompleteHostNameRegexp::Config" }
-
-  predicate isSourceString(DataFlow::Node source, string hostPart) {
+module IncompleteHostNameRegexpConfig implements DataFlow::ConfigSig {
+  additional predicate isSourceString(DataFlow::Node source, string hostPart) {
     exists(Expr e |
       e = source.asExpr() and
       isIncompleteHostNameRegexpPattern(e.getStringValue(), hostPart)
@@ -95,9 +92,9 @@ class Config extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) { this.isSourceString(source, _) }
+  predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink instanceof RegexpPattern and
     forall(Http::RequestHandler handler | regexpGuardsHandler(sink, handler) |
       not handler = getASafeHandler()
@@ -106,8 +103,14 @@ class Config extends DataFlow::Configuration {
   }
 }
 
-from Config c, DataFlow::PathNode source, DataFlow::PathNode sink, string hostPart
-where c.hasFlowPath(source, sink) and c.isSourceString(source.getNode(), hostPart)
+module Flow = DataFlow::Global<IncompleteHostNameRegexpConfig>;
+
+import Flow::PathGraph
+
+from Flow::PathNode source, Flow::PathNode sink, string hostPart
+where
+  Flow::flowPath(source, sink) and
+  IncompleteHostNameRegexpConfig::isSourceString(source.getNode(), hostPart)
 select source, source, sink,
   "This regular expression has an unescaped dot before '" + hostPart + "', " +
     "so it might match more hosts than expected when $@.", sink, "the regular expression is used"

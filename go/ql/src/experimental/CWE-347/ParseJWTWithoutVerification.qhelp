@@ -1,0 +1,34 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+               A JSON Web Token (JWT) is used for authenticating and managing users in an application.
+          </p>
+          <p>
+               Only Decoding JWTs without checking if they have a valid signature or not can lead to security vulnerabilities.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+               Don't use methods that only decode JWT, Instead use methods that verify the signature of JWT.
+          </p>
+
+     </recommendation>
+     <example>
+
+          <p>
+               In the following code you can see an Example from a popular Library.
+          </p>
+
+          <sample src="Example.go" />
+
+     </example>
+     <references>
+          <li>
+               <a href="https://github.com/argoproj/argo-cd/security/advisories/GHSA-q9hr-j4rf-8fjc">JWT audience claim is not verified</a>
+          </li>
+     </references>
+
+</qhelp>

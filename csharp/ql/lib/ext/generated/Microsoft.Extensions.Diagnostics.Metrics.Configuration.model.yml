@@ -1,0 +1,7 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Diagnostics.Metrics.Configuration", "IMetricListenerConfigurationFactory", "GetConfiguration", "(System.String)", "summary", "df-generated"]

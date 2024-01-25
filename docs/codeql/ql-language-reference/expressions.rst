@@ -149,7 +149,7 @@ Instead of overriding both definitions, it uses the definition from ``B``.
     
     class C extends A, B {
       // Need to define `int getANumber()`; otherwise it would be ambiguous
-      int getANumber() { 
+      override int getANumber() {
         result = B.super.getANumber()
       }
     }
@@ -557,7 +557,7 @@ for a given ``f``.
 In this query, oranges are available at two different prices, and the
 default ``sum`` aggregate returns a single line where Alice buys an
 orange at a price of 100, another orange at a price of 1, and an apple
-at a price of 100, totalling 201. On the other hand, in the the
+at a price of 100, totalling 201. On the other hand, in the 
 *monotonic* semantics for ``sum``, Alice always buys one orange and
 one apple, and a line of output is produced for each *way* she can
 complete her shopping list.

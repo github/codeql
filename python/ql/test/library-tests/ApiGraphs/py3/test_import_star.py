@@ -2,9 +2,11 @@
 
 from unknown import * #$ use=moduleImport("unknown")
 
-# Currently missing, as we do not consider `hello` to be a `LocalSourceNode`, since it has flow
-# going into it from its corresponding `GlobalSsaVariable`.
-hello() #$ MISSING: use=moduleImport("unknown").getMember("hello").getReturn()
+# This used to be missing, as we did not consider `hello` to be a `LocalSourceNode`,
+# since it has flow going into it from its corresponding `GlobalSsaVariable`.
+hello() #$ use=moduleImport("unknown").getMember("hello").getReturn()
+
+print(const_from_unknown) #$ use=moduleImport("unknown").getMember("const_from_unknown")
 
 # We don't want our analysis to think that either `non_module_member` or `outer_bar` can
 # come from `from unknown import *`

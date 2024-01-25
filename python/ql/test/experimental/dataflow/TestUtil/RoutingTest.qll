@@ -10,22 +10,25 @@ private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPr
  * the functions tested sink their arguments sequentially, that is
  * `SINK1(arg1)`, etc.
  */
-abstract class RoutingTest extends InlineExpectationsTest {
-  bindingset[this]
-  RoutingTest() { any() }
+signature module RoutingTestSig {
+  class Argument;
 
-  abstract string flowTag();
+  string flowTag(Argument arg);
 
-  abstract predicate relevantFlow(DataFlow::Node fromNode, DataFlow::Node toNode);
+  predicate relevantFlow(DataFlow::Node fromNode, DataFlow::Node toNode, Argument arg);
+}
 
-  override string getARelevantTag() { result in ["func", this.flowTag()] }
+module MakeTestSig<RoutingTestSig Impl> implements TestSig {
+  string getARelevantTag() { result in ["func", Impl::flowTag(_)] }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node fromNode, DataFlow::Node toNode | this.relevantFlow(fromNode, toNode) |
+  predicate hasActualResult(Location location, string element, string tag, string value) {
+    exists(DataFlow::Node fromNode, DataFlow::Node toNode, Impl::Argument arg |
+      Impl::relevantFlow(fromNode, toNode, arg)
+    |
       location = fromNode.getLocation() and
       element = fromNode.toString() and
       (
-        tag = this.flowTag() and
+        tag = Impl::flowTag(arg) and
         if "\"" + tag + "\"" = fromValue(fromNode) then value = "" else value = fromValue(fromNode)
         or
         // only have result for `func` tag if the function where `arg<n>` is used, is

@@ -5,7 +5,6 @@
 import java
 import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.DataFlow2
 private import semmle.code.java.security.SecurityTests
 
 private class ExploitableStringLiteral extends StringLiteral {
@@ -54,14 +53,14 @@ private class RegexFlowSink extends DataFlow::Node {
 
   /** Gets the string expression that a regex that flows here is matched against, if any. */
   Expr getStringArgument() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       this.asExpr() = argOf(ma, _) and
       result = argOf(ma, strArg)
     )
   }
 }
 
-private Expr argOf(MethodAccess ma, int arg) {
+private Expr argOf(MethodCall ma, int arg) {
   arg = -1 and result = ma.getQualifier()
   or
   result = ma.getArgument(arg)
@@ -83,7 +82,7 @@ class RegexAdditionalFlowStep extends Unit {
 // TODO: This may be able to be done with models-as-data if query-specific flow steps beome supported.
 private class JdkRegexFlowStep extends RegexAdditionalFlowStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma, Method m, string package, string type, string name, int arg |
+    exists(MethodCall ma, Method m, string package, string type, string name, int arg |
       ma.getMethod().getSourceDeclaration().overrides*(m) and
       m.hasQualifiedName(package, type, name) and
       node1.asExpr() = argOf(ma, arg) and
@@ -109,7 +108,7 @@ private class JdkRegexFlowStep extends RegexAdditionalFlowStep {
 
 private class GuavaRegexFlowStep extends RegexAdditionalFlowStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(MethodAccess ma, Method m, string package, string type, string name, int arg |
+    exists(MethodCall ma, Method m, string package, string type, string name, int arg |
       ma.getMethod().getSourceDeclaration().overrides*(m) and
       m.hasQualifiedName(package, type, name) and
       node1.asExpr() = argOf(ma, arg) and
@@ -148,6 +147,8 @@ private module RegexFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
   }
+
+  int fieldFlowBranchLimit() { result = 1 }
 }
 
 private module RegexFlow = DataFlow::Global<RegexFlowConfig>;

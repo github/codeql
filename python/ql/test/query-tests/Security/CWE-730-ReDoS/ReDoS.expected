@@ -1,5 +1,5 @@
-| KnownCVEs.py:15:22:15:24 | \\d+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
-| KnownCVEs.py:30:24:31:25 | .* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of ','. |
+| KnownCVEs.py:15:20:15:22 | \\d+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| KnownCVEs.py:30:21:30:23 | .* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of ','. |
 | KnownCVEs.py:35:18:35:81 | ([-/:,#%.'"\\s!\\w]\|\\w-\\w\|'[\\s\\w]+'\\s*\|"[\\s\\w]+"\|\\([\\d,%\\.\\s]+\\))* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '"\\t"'. |
 | redos.py:6:28:6:42 | (?:__\|[\\s\\S])+? | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '__'. |
 | redos.py:6:52:6:68 | (?:\\*\\*\|[\\s\\S])+? | This part of the regular expression may cause exponential backtracking on strings starting with '*' and containing many repetitions of '**'. |
@@ -7,7 +7,7 @@
 | redos.py:21:57:21:76 | (?:[^'\\\\]\|\\\\\\\\\|\\\\.)+ | This part of the regular expression may cause exponential backtracking on strings starting with '\\t'' and containing many repetitions of '\\\\\\\\'. |
 | redos.py:21:81:21:100 | (?:[^)\\\\]\|\\\\\\\\\|\\\\.)+ | This part of the regular expression may cause exponential backtracking on strings starting with '\\t(' and containing many repetitions of '\\\\\\\\'. |
 | redos.py:33:64:33:65 | .* | This part of the regular expression may cause exponential backtracking on strings starting with '!\|\\n-\|\\n' and containing many repetitions of '\|\|\\n'. |
-| redos.py:38:33:38:42 | (\\\\\\/\|.)*? | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\\\/'. |
+| redos.py:38:33:38:42 | (\\\\\\/\|.)*? | This part of the regular expression may cause exponential backtracking on strings starting with '/' and containing many repetitions of '\\\\/'. |
 | redos.py:43:37:43:38 | .* | This part of the regular expression may cause exponential backtracking on strings starting with '#' and containing many repetitions of '#'. |
 | redos.py:49:41:49:43 | .*? | This part of the regular expression may cause exponential backtracking on strings starting with '"' and containing many repetitions of '""'. |
 | redos.py:49:47:49:49 | .*? | This part of the regular expression may cause exponential backtracking on strings starting with ''' and containing many repetitions of ''''. |
@@ -35,9 +35,9 @@
 | redos.py:139:25:139:31 | (\\w\|G)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'G'. |
 | redos.py:145:25:145:32 | (\\d\|\\w)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
 | redos.py:148:25:148:31 | (\\d\|5)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '5'. |
-| redos.py:151:25:151:34 | (\\s\|[\\f])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\u000c'. |
-| redos.py:154:25:154:38 | (\\s\|[\\v]\|\\\\v)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\u000b'. |
-| redos.py:157:25:157:34 | (\\f\|[\\f])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\u000c'. |
+| redos.py:151:25:151:34 | (\\s\|[\\f])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\u000c'. |
+| redos.py:154:25:154:38 | (\\s\|[\\v]\|\\\\v)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\u000b'. |
+| redos.py:157:25:157:34 | (\\f\|[\\f])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\u000c'. |
 | redos.py:160:25:160:32 | (\\W\|\\D)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of ' '. |
 | redos.py:163:25:163:32 | (\\S\|\\w)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
 | redos.py:166:25:166:34 | (\\S\|[\\w])* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
@@ -67,8 +67,8 @@
 | redos.py:259:24:259:126 | (.thisisagoddamnlongstringforstresstestingthequery\|\\sthisisagoddamnlongstringforstresstestingthequery)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\tthisisagoddamnlongstringforstresstestingthequery'. |
 | redos.py:262:24:262:87 | (thisisagoddamnlongstringforstresstestingthequery\|this\\w+query)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'thisisagoddamnlongstringforstresstestingthequery'. |
 | redos.py:262:78:262:80 | \\w+ | This part of the regular expression may cause exponential backtracking on strings starting with 'this' and containing many repetitions of '0querythis'. |
-| redos.py:268:28:268:39 | ([\ufffd\ufffd]\|[\ufffd\ufffd])* | This part of the regular expression may cause exponential backtracking on strings starting with 'foo' and containing many repetitions of '\ufffd'. |
-| redos.py:271:28:271:41 | ((\ufffd\|\ufffd)\|(\ufffd\|\ufffd))* | This part of the regular expression may cause exponential backtracking on strings starting with 'foo' and containing many repetitions of '\ufffd'. |
+| redos.py:268:27:268:38 | ([\ufffd\ufffd]\|[\ufffd\ufffd])* | This part of the regular expression may cause exponential backtracking on strings starting with 'foo' and containing many repetitions of '\\ufffd'. |
+| redos.py:271:27:271:40 | ((\ufffd\|\ufffd)\|(\ufffd\|\ufffd))* | This part of the regular expression may cause exponential backtracking on strings starting with 'foo' and containing many repetitions of '\\ufffd'. |
 | redos.py:274:31:274:32 | b+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'b'. |
 | redos.py:277:48:277:50 | \\s* | This part of the regular expression may cause exponential backtracking on strings starting with '<0\\t0=' and containing many repetitions of '""\\t0='. |
 | redos.py:283:26:283:27 | a+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a'. |
@@ -96,12 +96,15 @@
 | redos.py:363:25:363:43 | ((?:a{0\|-)\|\\w\\{\\d)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0'. |
 | redos.py:364:25:364:45 | ((?:a{0,\|-)\|\\w\\{\\d,)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0,'. |
 | redos.py:365:25:365:48 | ((?:a{0,2\|-)\|\\w\\{\\d,\\d)+ | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of 'a{0,2'. |
-| redos.py:371:25:371:35 | (\\u0061\|a)* | This part of the regular expression may cause exponential backtracking on strings starting with 'X' and containing many repetitions of 'a'. |
-| redos.py:380:35:380:41 | [^"\\s]+ | This part of the regular expression may cause exponential backtracking on strings starting with '/' and containing many repetitions of '!'. |
-| redos.py:381:35:381:41 | [^"\\s]+ | This part of the regular expression may cause exponential backtracking on strings starting with '/' and containing many repetitions of '!'. |
-| redos.py:384:26:384:32 | (\\d\|0)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
-| redos.py:385:24:385:30 | (\\d\|0)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
-| redos.py:386:26:386:32 | (\\d\|0)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
-| redos.py:391:15:391:25 | (\\u0061\|a)* | This part of the regular expression may cause exponential backtracking on strings starting with 'X' and containing many repetitions of 'a'. |
-| unittests.py:5:17:5:23 | (\u00c6\|\\\u00c6)+ | This part of the regular expression may cause exponential backtracking on strings starting with 'X' and containing many repetitions of '\u00c6'. |
-| unittests.py:9:16:9:24 | (?:.\|\\n)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
+| redos.py:371:23:371:33 | (\\u0061\|a)* | This part of the regular expression may cause exponential backtracking on strings starting with 'X' and containing many repetitions of 'a'. |
+| redos.py:380:33:380:39 | [^"\\s]+ | This part of the regular expression may cause exponential backtracking on strings starting with '/' and containing many repetitions of '!'. |
+| redos.py:381:33:381:39 | [^"\\s]+ | This part of the regular expression may cause exponential backtracking on strings starting with '/' and containing many repetitions of '!'. |
+| redos.py:384:24:384:30 | (\\d\|0)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| redos.py:385:22:385:28 | (\\d\|0)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| redos.py:386:24:386:30 | (\\d\|0)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '0'. |
+| redos.py:391:13:391:23 | (\\u0061\|a)* | This part of the regular expression may cause exponential backtracking on strings starting with 'X' and containing many repetitions of 'a'. |
+| unittests.py:5:15:5:21 | (\u00c6\|\\\u00c6)+ | This part of the regular expression may cause exponential backtracking on strings starting with 'X' and containing many repetitions of '\\u00c6'. |
+| unittests.py:9:14:9:22 | (?:.\|\\n)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
+| unittests.py:11:18:11:26 | (?:.\|\\n)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
+| unittests.py:12:19:12:27 | (?:.\|\\n)* | This part of the regular expression may cause exponential backtracking on strings containing many repetitions of '\\n'. |
+| unittests.py:13:20:13:28 | (?:.\|\\n)* | This part of the regular expression may cause exponential backtracking on strings starting with 'x' and containing many repetitions of '\\n'. |

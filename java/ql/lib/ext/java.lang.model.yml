@@ -8,38 +8,48 @@ extensions:
       - ["java.lang", "ClassLoader", True, "getSystemResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "ClassLoader", True, "getSystemResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "Module", True, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "ProcessBuilder", False, "command", "(List)", "", "Argument[0]", "command-injection", "manual"]
+      - ["java.lang", "ProcessBuilder", False, "command", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "ProcessBuilder", False, "directory", "(File)", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "ProcessBuilder", False, "ProcessBuilder", "(List)", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "ProcessBuilder", False, "ProcessBuilder", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "ProcessBuilder", False, "redirectError", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "Runtime", True, "exec", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "Runtime", True, "exec", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "Runtime", True, "exec", "(String[],String[])", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "Runtime", True, "exec", "(String[],String[],File)", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "Runtime", True, "exec", "(String[],String[],File)", "", "Argument[2]", "command-injection", "ai-manual"]
+      - ["java.lang", "Runtime", True, "exec", "(String,String[])", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "Runtime", True, "exec", "(String,String[],File)", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "Runtime", True, "exec", "(String,String[],File)", "", "Argument[2]", "command-injection", "ai-manual"]
+      # All implementations of `java.lang.Runtime::exec` take the environment variables as their second argument.
+      - ["java.lang", "Runtime", True, "exec", "", "", "Argument[1]", "environment-injection", "manual"]
       # These are potential vulnerabilities, but not for command-injection. No query for this kind of vulnerability currently exists.
       # - ["java.lang", "Runtime", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
       # - ["java.lang", "Runtime", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
-      # These are modeled in plain CodeQL. TODO: migrate them.
-      # - ["java.lang", "ProcessBuilder", False, "command", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
-      # - ["java.lang", "ProcessBuilder", False, "directory", "(File)", "", "Argument[0]", "command-injection", "ai-manual"]
-      # - ["java.lang", "ProcessBuilder", False, "ProcessBuilder", "(List)", "", "Argument[0]", "command-injection", "ai-manual"]
-      # - ["java.lang", "ProcessBuilder", False, "ProcessBuilder", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
-      # - ["java.lang", "Runtime", True, "exec", "(String,String[])", "", "Argument[0]", "command-injection", "ai-manual"]
-      # - ["java.lang", "Runtime", True, "exec", "(String[],String[])", "", "Argument[0]", "command-injection", "ai-manual"]
-      # - ["java.lang", "Runtime", True, "exec", "(String,String[],File)", "", "Argument[0]", "command-injection", "ai-manual"]
-      # - ["java.lang", "Runtime", True, "exec", "(String,String[],File)", "", "Argument[2]", "command-injection", "ai-manual"]
-      # - ["java.lang", "Runtime", True, "exec", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
-      # - ["java.lang", "Runtime", True, "exec", "(String[],String[],File)", "", "Argument[0]", "command-injection", "ai-manual"]
-      # - ["java.lang", "Runtime", True, "exec", "(String[],String[],File)", "", "Argument[2]", "command-injection", "ai-manual"]
-      # - ["java.lang", "Runtime", True, "exec", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "String", False, "matches", "(String)", "", "Argument[0]", "regex-use[f-1]", "manual"]
       - ["java.lang", "String", False, "replaceAll", "(String,String)", "", "Argument[0]", "regex-use[-1]", "manual"]
       - ["java.lang", "String", False, "replaceFirst", "(String,String)", "", "Argument[0]", "regex-use[-1]", "manual"]
       - ["java.lang", "String", False, "split", "(String)", "", "Argument[0]", "regex-use[-1]", "manual"]
       - ["java.lang", "String", False, "split", "(String,int)", "", "Argument[0]", "regex-use[-1]", "manual"]
-      # These are modeled in plain CodeQL. TODO: migrate them.
-      # - ["java.lang", "System", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-manual"] # This is actually injecting a library.
-      # - ["java.lang", "System", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-manual"] # This is actually injecting a library.
-      - ["java.lang", "System$Logger", True, "log", "(Level,Object)", "", "Argument[1]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Object[])", "", "Argument[2..3]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Throwable)", "", "Argument[2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String)", "", "Argument[1]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Object[])", "", "Argument[1..2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Supplier)", "", "Argument[1..2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Supplier,Throwable)", "", "Argument[1..2]", "log-injection", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Throwable)", "", "Argument[1]", "log-injection", "manual"]
+      # These are potential vulnerabilities, but not for command-injection. No query for this kind of vulnerability currently exists.
+      # - ["java.lang", "System", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
+      # - ["java.lang", "System", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,Object)", "", "Argument[1]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,ResourceBundle,String,Object[])", "", "Argument[2..3]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,ResourceBundle,String,Throwable)", "", "Argument[2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String)", "", "Argument[1]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Object[])", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Supplier)", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Supplier,Throwable)", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(System$Logger$Level,String,Throwable)", "", "Argument[1]", "log-injection", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["java.lang", "System", False, "getenv", "", "", "ReturnValue", "environment", "manual"]
+      - ["java.lang", "System", False, "getProperties", "", "", "ReturnValue", "environment", "manual"]
+      - ["java.lang", "System", False, "getProperty", "", "", "ReturnValue", "environment", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
@@ -47,6 +57,7 @@ extensions:
       - ["java.lang", "AbstractStringBuilder", True, "AbstractStringBuilder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "append", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "append", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.lang", "ProcessBuilder", False, "environment", "()", "", "Argument[this]", "ReturnValue", "taint", "ai-manual"]
       # When `WithoutElement` is implemented for Java, `java.lang.AbstractStringBuilder#delete` might require a `taint` step of the form `Argument[this].WithoutElement -> Argument[this]` in addition to the below `value` step.
       - ["java.lang", "AbstractStringBuilder", True, "delete", "(int,int)", "", "Argument[this]", "ReturnValue", "value", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "getChars", "", "", "Argument[this]", "Argument[2]", "taint", "manual"]
@@ -68,6 +79,8 @@ extensions:
       - ["java.lang", "Exception", False, "Exception", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "Exception", False, "Exception", "(String,Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "Exception", False, "Exception", "(String,Throwable)", "", "Argument[1]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.lang", "Exception", False, "Exception", "(Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.lang", "Exception", False, "Exception", "(Throwable)", "", "Argument[0].SyntheticField[java.lang.Throwable.message]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "taint", "manual"]
       - ["java.lang", "IllegalArgumentException", False, "IllegalArgumentException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "IllegalStateException", False, "IllegalStateException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "IndexOutOfBoundsException", False, "IndexOutOfBoundsException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
@@ -120,6 +133,7 @@ extensions:
       - ["java.lang", "String", False, "valueOf", "(char)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "valueOf", "(char[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "valueOf", "(char[],int,int)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.lang", "String", False, "valueOf", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(CharSequence)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.lang", "StringBuilder", True, "StringBuilder", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
@@ -129,14 +143,20 @@ extensions:
       - ["java.lang", "Thread", True, "getName", "()", "", "Argument[this].SyntheticField[java.lang.Thread.name]", "ReturnValue", "value", "manual"]
       - ["java.lang", "ThreadLocal", True, "get", "()", "", "Argument[this].SyntheticField[java.lang.ThreadLocal.value]", "ReturnValue", "value", "manual"]
       - ["java.lang", "ThreadLocal", True, "set", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.ThreadLocal.value]", "value", "manual"]
-      - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.lang", "ThreadLocal", False, "withInitial", "(Supplier)", "", "Argument[0].ReturnValue", "ReturnValue.SyntheticField[java.lang.ThreadLocal.value]", "value", "manual"]
       - ["java.lang", "Throwable", False, "Throwable", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
+      - ["java.lang", "Throwable", False, "Throwable", "(String,Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
+      - ["java.lang", "Throwable", False, "Throwable", "(String,Throwable)", "", "Argument[1]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0].SyntheticField[java.lang.Throwable.message]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "taint", "manual"]
       - ["java.lang", "Throwable", True, "getCause", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "getMessage", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "getLocalizedMessage", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
+      - ["java.lang", "Throwable", True, "initCause", "(Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.lang", "Throwable", True, "initCause", "(Throwable)", "", "Argument[0]", "ReturnValue.SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.lang", "Throwable", True, "initCause", "(Throwable)", "", "Argument[this]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "toString", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "UnsupportedOperationException", False, "UnsupportedOperationException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
-
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
@@ -176,7 +196,6 @@ extensions:
       - ["java.lang", "Object", "getClass", "()", "summary", "manual"]
       - ["java.lang", "Object", "hashCode", "()", "summary", "manual"]
       - ["java.lang", "Object", "toString", "()", "summary", "manual"]
-      - ["java.lang", "Runnable", "run", "()", "summary", "manual"]
       - ["java.lang", "Runtime", "getRuntime", "()", "summary", "manual"]
       - ["java.lang", "String", "compareTo", "(String)", "summary", "manual"]
       - ["java.lang", "String", "contains", "(CharSequence)", "summary", "manual"]
@@ -192,6 +211,7 @@ extensions:
       - ["java.lang", "String", "length", "()", "summary", "manual"]
       - ["java.lang", "String", "startsWith", "(String)", "summary", "manual"]
       - ["java.lang", "String", "valueOf", "(boolean)", "summary", "manual"]
+      - ["java.lang", "String", "valueOf", "(Object)", "summary", "manual"]
       - ["java.lang", "System", "currentTimeMillis", "()", "summary", "manual"]
       - ["java.lang", "System", "exit", "(int)", "summary", "manual"]
       - ["java.lang", "System", "getenv", "(String)", "summary", "manual"]
@@ -203,6 +223,14 @@ extensions:
       - ["java.lang", "Thread", "interrupt", "()", "summary", "manual"]
       - ["java.lang", "Thread", "sleep", "(long)", "summary", "manual"]
       - ["java.lang", "Thread", "start", "()", "summary", "manual"]
+      - ["java.lang", "Throwable", "addSuppressed", "(Throwable)", "summary", "manual"]
+      - ["java.lang", "Throwable", "fillInStackTrace", "()", "summary", "manual"]
+      - ["java.lang", "Throwable", "getStackTrace", "()", "summary", "manual"]
+      - ["java.lang", "Throwable", "getSuppressed", "()", "summary", "manual"]
+      - ["java.lang", "Throwable", "printStackTrace", "()", "summary", "manual"]
+      - ["java.lang", "Throwable", "printStackTrace", "(PrintStream)", "summary", "manual"]
+      - ["java.lang", "Throwable", "printStackTrace", "(PrintWriter)", "summary", "manual"]
+      - ["java.lang", "Throwable", "setStackTrace", "(StackTraceElement[])", "summary", "manual"]
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
       - ["java.lang", "Double", "doubleToLongBits", "(double)", "summary", "manual"] # taint-numeric

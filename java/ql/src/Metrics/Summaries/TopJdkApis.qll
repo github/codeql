@@ -1,7 +1,6 @@
 /** Provides classes and predicates for working with Top JDK APIs. */
 
 import java
-private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.java.dataflow.ExternalFlow
 
@@ -287,26 +286,32 @@ predicate hasApiName(Callable c, string apiName) {
 }
 
 /** A top JDK API. */
-class TopJdkApi extends SummarizedCallableBase {
+class TopJdkApi extends Callable {
   TopJdkApi() {
+    this.isSourceDeclaration() and
     exists(string apiName |
-      hasApiName(this.asCallable(), apiName) and
+      hasApiName(this, apiName) and
       topJdkApiName(apiName)
     )
   }
 
   /** Holds if this API has a manual summary model. */
-  private predicate hasManualSummary() { this.(SummarizedCallable).hasManualModel() }
+  private predicate hasManualSummary() {
+    exists(FlowSummaryImpl::Public::SummarizedCallable sc |
+      sc.asCallable() = this and sc.hasManualModel()
+    )
+  }
 
-  /** Holds if this API has a manual neutral model. */
-  private predicate hasManualNeutral() {
-    this.(FlowSummaryImpl::Public::NeutralCallable).hasManualModel()
+  /** Holds if this API has a manual neutral summary model. */
+  private predicate hasManualNeutralSummary() {
+    this = any(FlowSummaryImpl::Public::NeutralSummaryCallable n | n.hasManualModel()).asCallable()
   }
 
   /** Holds if this API has a manual MaD model. */
-  predicate hasManualMadModel() { this.hasManualSummary() or this.hasManualNeutral() }
+  predicate hasManualMadModel() { this.hasManualSummary() or this.hasManualNeutralSummary() }
   /*
    * Note: the following top JDK APIs are not modeled with MaD:
+   * `java.lang.Runnable#run()`: specialised lambda flow
    * `java.lang.String#valueOf(Object)`: a complex case; an alias for `Object.toString`, except the dispatch is hidden
    * `java.lang.System#getProperty(String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
    * `java.lang.System#setProperty(String,String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs

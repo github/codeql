@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.TaintTracking
 private import CommandInjectionCustomizations::CommandInjection as CommandInjection
 private import semmle.python.Concepts as Concepts
+private import semmle.python.ApiGraphs
 
 /**
  * Module containing sources, sinks, and sanitizers for shell command constructed from library input.
@@ -16,6 +17,9 @@ private import semmle.python.Concepts as Concepts
 module UnsafeShellCommandConstruction {
   /** A source for shell command constructed from library input vulnerabilities. */
   abstract class Source extends DataFlow::Node { }
+
+  /** A sanitizer for shell command constructed from library input vulnerabilities. */
+  abstract class Sanitizer extends DataFlow::Node { }
 
   private import semmle.python.frameworks.Setuptools
 
@@ -46,7 +50,7 @@ module UnsafeShellCommandConstruction {
     source = backtrackShellExec(TypeTracker::TypeBackTracker::end(), shellExec)
   }
 
-  import semmle.python.dataflow.new.TypeTracker as TypeTracker
+  import semmle.python.dataflow.new.TypeTracking as TypeTracker
 
   private DataFlow::LocalSourceNode backtrackShellExec(
     TypeTracker::TypeBackTracker t, Concepts::SystemCommandExecution shellExec
@@ -155,5 +159,14 @@ module UnsafeShellCommandConstruction {
     override DataFlow::Node getCommandExecution() { result = s }
 
     override DataFlow::Node getStringConstruction() { result = formatCall }
+  }
+
+  /**
+   * A call to `shlex.quote`, considered as a sanitizer.
+   */
+  class ShlexQuoteAsSanitizer extends Sanitizer, DataFlow::Node {
+    ShlexQuoteAsSanitizer() {
+      this = API::moduleImport("shlex").getMember("quote").getACall().getArg(0)
+    }
   }
 }

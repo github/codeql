@@ -6,6 +6,7 @@ void *realloc(void *ptr, size_t size);
 void *calloc(size_t nmemb, size_t size); 
 void free(void *ptr);
 wchar_t *wcscpy(wchar_t *s1, const wchar_t *s2); 
+int snprintf(char *s, size_t n, const char *format, ...);
 
 // --- Semmle tests ---
 
@@ -45,4 +46,19 @@ void tests2() {
   wcscpy(buffer, L"1234567"); // GOOD
   wcscpy(buffer, L"12345678"); // BAD: buffer overflow
   delete [] buffer;
+}
+
+char* dest1 = "a";
+char* dest2 = "abcdefghijklmnopqrstuvwxyz";
+
+void test3() {
+  const char src[] = "abcdefghijkl";
+  dest1 = (char*)malloc(sizeof(src));
+  if (!dest1)
+    return;
+  snprintf(dest1, sizeof(src), "%s", src); // GOOD
+  dest2 = (char*)malloc(3);
+  if (!dest2)
+    return;
+  snprintf(dest2, sizeof(src), "%s", src); // BAD [NOT DETECTED]
 }

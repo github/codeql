@@ -6,63 +6,13 @@ import java
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowUtil
 
-class SummaryComponent = Impl::Public::SummaryComponent;
+deprecated class SummaryComponent = Impl::Private::SummaryComponent;
 
-/** Provides predicates for constructing summary components. */
-module SummaryComponent {
-  import Impl::Public::SummaryComponent
+deprecated module SummaryComponent = Impl::Private::SummaryComponent;
 
-  /** Gets a summary component that represents a qualifier. */
-  SummaryComponent qualifier() { result = argument(-1) }
+deprecated class SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
-  /** Gets a summary component for field `f`. */
-  SummaryComponent field(Field f) { result = content(any(FieldContent c | c.getField() = f)) }
-
-  /** Gets a summary component for `Element`. */
-  SummaryComponent element() { result = content(any(CollectionContent c)) }
-
-  /** Gets a summary component for `ArrayElement`. */
-  SummaryComponent arrayElement() { result = content(any(ArrayContent c)) }
-
-  /** Gets a summary component for `MapValue`. */
-  SummaryComponent mapValue() { result = content(any(MapValueContent c)) }
-
-  /** Gets a summary component that represents the return value of a call. */
-  SummaryComponent return() { result = return(_) }
-}
-
-class SummaryComponentStack = Impl::Public::SummaryComponentStack;
-
-/** Provides predicates for constructing stacks of summary components. */
-module SummaryComponentStack {
-  import Impl::Public::SummaryComponentStack
-
-  /** Gets a singleton stack representing a qualifier. */
-  SummaryComponentStack qualifier() { result = singleton(SummaryComponent::qualifier()) }
-
-  /** Gets a stack representing a field `f` of `object`. */
-  SummaryComponentStack fieldOf(Field f, SummaryComponentStack object) {
-    result = push(SummaryComponent::field(f), object)
-  }
-
-  /** Gets a stack representing `Element` of `object`. */
-  SummaryComponentStack elementOf(SummaryComponentStack object) {
-    result = push(SummaryComponent::element(), object)
-  }
-
-  /** Gets a stack representing `ArrayElement` of `object`. */
-  SummaryComponentStack arrayElementOf(SummaryComponentStack object) {
-    result = push(SummaryComponent::arrayElement(), object)
-  }
-
-  /** Gets a stack representing `MapValue` of `object`. */
-  SummaryComponentStack mapValueOf(SummaryComponentStack object) {
-    result = push(SummaryComponent::mapValue(), object)
-  }
-
-  /** Gets a singleton stack representing a (normal) return. */
-  SummaryComponentStack return() { result = singleton(SummaryComponent::return()) }
-}
+deprecated module SummaryComponentStack = Impl::Private::SummaryComponentStack;
 
 /** A synthetic callable with a set of concrete call sites and a flow summary. */
 abstract class SyntheticCallable extends string {
@@ -77,11 +27,7 @@ abstract class SyntheticCallable extends string {
    *
    * See `SummarizedCallable::propagatesFlow` for details.
    */
-  predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
-    none()
-  }
+  abstract predicate propagatesFlow(string input, string output, boolean preservesValue);
 
   /**
    * Gets the type of the parameter at the specified position with -1 indicating
@@ -101,6 +47,7 @@ abstract class SyntheticCallable extends string {
  * A module for importing frameworks that define synthetic callables.
  */
 private module SyntheticCallables {
+  private import semmle.code.java.dispatch.WrappedInvocation
   private import semmle.code.java.frameworks.android.Intent
   private import semmle.code.java.frameworks.Stream
 }
@@ -170,20 +117,18 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
   }
 }
 
-class SummarizedCallable = Impl::Public::SummarizedCallable;
+class Provenance = Impl::Public::Provenance;
 
-class NeutralCallable = Impl::Public::NeutralCallable;
+class SummarizedCallable = Impl::Public::SummarizedCallable;
 
 /**
  * An adapter class to add the flow summaries specified on `SyntheticCallable`
  * to `SummarizedCallable`.
  */
 private class SummarizedSyntheticCallableAdapter extends SummarizedCallable, TSyntheticCallable {
-  override predicate propagatesFlow(
-    SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-  ) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     this.asSyntheticCallable().propagatesFlow(input, output, preservesValue)
   }
 }
 
-class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
+deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryComponentStack;

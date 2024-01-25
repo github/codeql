@@ -5,6 +5,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
 import semmle.code.java.frameworks.android.Compose
+private import semmle.code.java.security.Sanitizers
 
 /** A variable that may hold sensitive information, judging by its name. */
 class CredentialExpr extends Expr {
@@ -55,9 +56,7 @@ module SensitiveLoggerConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer.asExpr() instanceof LiveLiteral or
-    sanitizer.getType() instanceof PrimitiveType or
-    sanitizer.getType() instanceof BoxedType or
-    sanitizer.getType() instanceof NumberType or
+    sanitizer instanceof SimpleTypeSanitizer or
     sanitizer.getType() instanceof TypeType
   }
 

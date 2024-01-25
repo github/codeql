@@ -1,0 +1,54 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Composition", "SharingBoundaryAttribute", False, "SharingBoundaryAttribute", "(System.String[])", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["System.Composition", "SharingBoundaryAttribute", False, "get_SharingBoundaryNames", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Composition", "CompositionContext", "GetExport", "(System.Composition.Hosting.Core.CompositionContract)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "GetExport", "(System.Type)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "GetExport", "(System.Type,System.String)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "GetExport<TExport>", "()", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "GetExport<TExport>", "(System.String)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "GetExports", "(System.Type)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "GetExports", "(System.Type,System.String)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "GetExports<TExport>", "()", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "GetExports<TExport>", "(System.String)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "TryGetExport", "(System.Composition.Hosting.Core.CompositionContract,System.Object)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "TryGetExport", "(System.Type,System.Object)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "TryGetExport", "(System.Type,System.String,System.Object)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "TryGetExport<TExport>", "(System.String,TExport)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContext", "TryGetExport<TExport>", "(TExport)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContextExtensions", "SatisfyImports", "(System.Composition.CompositionContext,System.Object)", "summary", "df-generated"]
+      - ["System.Composition", "CompositionContextExtensions", "SatisfyImports", "(System.Composition.CompositionContext,System.Object,System.Composition.Convention.AttributedModelProvider)", "summary", "df-generated"]
+      - ["System.Composition", "Export<T>", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Composition", "Export<T>", "get_Value", "()", "summary", "df-generated"]
+      - ["System.Composition", "ExportAttribute", "ExportAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Composition", "ExportAttribute", "ExportAttribute", "(System.String,System.Type)", "summary", "df-generated"]
+      - ["System.Composition", "ExportAttribute", "ExportAttribute", "(System.Type)", "summary", "df-generated"]
+      - ["System.Composition", "ExportAttribute", "get_ContractName", "()", "summary", "df-generated"]
+      - ["System.Composition", "ExportAttribute", "get_ContractType", "()", "summary", "df-generated"]
+      - ["System.Composition", "ExportFactory<T,TMetadata>", "get_Metadata", "()", "summary", "df-generated"]
+      - ["System.Composition", "ExportFactory<T>", "CreateExport", "()", "summary", "df-generated"]
+      - ["System.Composition", "ExportMetadataAttribute", "ExportMetadataAttribute", "(System.String,System.Object)", "summary", "df-generated"]
+      - ["System.Composition", "ExportMetadataAttribute", "get_Name", "()", "summary", "df-generated"]
+      - ["System.Composition", "ExportMetadataAttribute", "get_Value", "()", "summary", "df-generated"]
+      - ["System.Composition", "ImportAttribute", "ImportAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Composition", "ImportAttribute", "get_AllowDefault", "()", "summary", "df-generated"]
+      - ["System.Composition", "ImportAttribute", "get_ContractName", "()", "summary", "df-generated"]
+      - ["System.Composition", "ImportAttribute", "set_AllowDefault", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Composition", "ImportManyAttribute", "ImportManyAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Composition", "ImportManyAttribute", "get_ContractName", "()", "summary", "df-generated"]
+      - ["System.Composition", "ImportMetadataConstraintAttribute", "ImportMetadataConstraintAttribute", "(System.String,System.Object)", "summary", "df-generated"]
+      - ["System.Composition", "ImportMetadataConstraintAttribute", "get_Name", "()", "summary", "df-generated"]
+      - ["System.Composition", "ImportMetadataConstraintAttribute", "get_Value", "()", "summary", "df-generated"]
+      - ["System.Composition", "PartMetadataAttribute", "PartMetadataAttribute", "(System.String,System.Object)", "summary", "df-generated"]
+      - ["System.Composition", "PartMetadataAttribute", "get_Name", "()", "summary", "df-generated"]
+      - ["System.Composition", "PartMetadataAttribute", "get_Value", "()", "summary", "df-generated"]
+      - ["System.Composition", "SharedAttribute", "SharedAttribute", "(System.String)", "summary", "df-generated"]
+      - ["System.Composition", "SharedAttribute", "get_SharingBoundary", "()", "summary", "df-generated"]

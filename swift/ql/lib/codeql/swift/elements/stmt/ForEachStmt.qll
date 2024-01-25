@@ -6,4 +6,9 @@ class ForEachStmt extends Generated::ForEachStmt {
     then result = "for ... in ... where ... { ... }"
     else result = "for ... in ... { ... }"
   }
+
+  /**
+   * Gets the sequence which this statement is iterating over.
+   */
+  final Expr getSequence() { result = this.getIteratorVar().getInit(0) }
 }

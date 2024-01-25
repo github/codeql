@@ -1,34 +1,31 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Win32.Registry, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
-
+// Generated from `Microsoft.Win32.Registry, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace Win32
     {
         public static class Registry
         {
-            public static Microsoft.Win32.RegistryKey ClassesRoot;
-            public static Microsoft.Win32.RegistryKey CurrentConfig;
-            public static Microsoft.Win32.RegistryKey CurrentUser;
+            public static readonly Microsoft.Win32.RegistryKey ClassesRoot;
+            public static readonly Microsoft.Win32.RegistryKey CurrentConfig;
+            public static readonly Microsoft.Win32.RegistryKey CurrentUser;
             public static object GetValue(string keyName, string valueName, object defaultValue) => throw null;
-            public static Microsoft.Win32.RegistryKey LocalMachine;
-            public static Microsoft.Win32.RegistryKey PerformanceData;
+            public static readonly Microsoft.Win32.RegistryKey LocalMachine;
+            public static readonly Microsoft.Win32.RegistryKey PerformanceData;
             public static void SetValue(string keyName, string valueName, object value) => throw null;
             public static void SetValue(string keyName, string valueName, object value, Microsoft.Win32.RegistryValueKind valueKind) => throw null;
-            public static Microsoft.Win32.RegistryKey Users;
+            public static readonly Microsoft.Win32.RegistryKey Users;
         }
-
-        public enum RegistryHive : int
+        public enum RegistryHive
         {
             ClassesRoot = -2147483648,
-            CurrentConfig = -2147483643,
             CurrentUser = -2147483647,
             LocalMachine = -2147483646,
-            PerformanceData = -2147483644,
             Users = -2147483645,
+            PerformanceData = -2147483644,
+            CurrentConfig = -2147483643,
         }
-
-        public class RegistryKey : System.MarshalByRefObject, System.IDisposable
+        public sealed class RegistryKey : System.MarshalByRefObject, System.IDisposable
         {
             public void Close() => throw null;
             public Microsoft.Win32.RegistryKey CreateSubKey(string subkey) => throw null;
@@ -64,8 +61,8 @@ namespace Microsoft
             public Microsoft.Win32.RegistryKey OpenSubKey(string name) => throw null;
             public Microsoft.Win32.RegistryKey OpenSubKey(string name, Microsoft.Win32.RegistryKeyPermissionCheck permissionCheck) => throw null;
             public Microsoft.Win32.RegistryKey OpenSubKey(string name, Microsoft.Win32.RegistryKeyPermissionCheck permissionCheck, System.Security.AccessControl.RegistryRights rights) => throw null;
-            public Microsoft.Win32.RegistryKey OpenSubKey(string name, System.Security.AccessControl.RegistryRights rights) => throw null;
             public Microsoft.Win32.RegistryKey OpenSubKey(string name, bool writable) => throw null;
+            public Microsoft.Win32.RegistryKey OpenSubKey(string name, System.Security.AccessControl.RegistryRights rights) => throw null;
             public void SetAccessControl(System.Security.AccessControl.RegistrySecurity registrySecurity) => throw null;
             public void SetValue(string name, object value) => throw null;
             public void SetValue(string name, object value, Microsoft.Win32.RegistryValueKind valueKind) => throw null;
@@ -74,56 +71,49 @@ namespace Microsoft
             public int ValueCount { get => throw null; }
             public Microsoft.Win32.RegistryView View { get => throw null; }
         }
-
-        public enum RegistryKeyPermissionCheck : int
+        public enum RegistryKeyPermissionCheck
         {
             Default = 0,
             ReadSubTree = 1,
             ReadWriteSubTree = 2,
         }
-
         [System.Flags]
-        public enum RegistryOptions : int
+        public enum RegistryOptions
         {
             None = 0,
             Volatile = 1,
         }
-
-        public enum RegistryValueKind : int
+        public enum RegistryValueKind
         {
+            None = -1,
+            Unknown = 0,
+            String = 1,
+            ExpandString = 2,
             Binary = 3,
             DWord = 4,
-            ExpandString = 2,
             MultiString = 7,
-            None = -1,
             QWord = 11,
-            String = 1,
-            Unknown = 0,
         }
-
         [System.Flags]
-        public enum RegistryValueOptions : int
+        public enum RegistryValueOptions
         {
-            DoNotExpandEnvironmentNames = 1,
             None = 0,
+            DoNotExpandEnvironmentNames = 1,
         }
-
-        public enum RegistryView : int
+        public enum RegistryView
         {
             Default = 0,
-            Registry32 = 512,
             Registry64 = 256,
+            Registry32 = 512,
         }
-
         namespace SafeHandles
         {
-            public class SafeRegistryHandle : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
+            public sealed class SafeRegistryHandle : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
             {
-                protected override bool ReleaseHandle() => throw null;
                 public SafeRegistryHandle() : base(default(bool)) => throw null;
-                public SafeRegistryHandle(System.IntPtr preexistingHandle, bool ownsHandle) : base(default(bool)) => throw null;
+                public SafeRegistryHandle(nint preexistingHandle, bool ownsHandle) : base(default(bool)) => throw null;
+                protected override bool ReleaseHandle() => throw null;
             }
-
         }
     }
 }
@@ -133,7 +123,7 @@ namespace System
     {
         namespace AccessControl
         {
-            public class RegistryAccessRule : System.Security.AccessControl.AccessRule
+            public sealed class RegistryAccessRule : System.Security.AccessControl.AccessRule
             {
                 public RegistryAccessRule(System.Security.Principal.IdentityReference identity, System.Security.AccessControl.RegistryRights registryRights, System.Security.AccessControl.AccessControlType type) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AccessControlType)) => throw null;
                 public RegistryAccessRule(System.Security.Principal.IdentityReference identity, System.Security.AccessControl.RegistryRights registryRights, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AccessControlType type) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AccessControlType)) => throw null;
@@ -141,34 +131,31 @@ namespace System
                 public RegistryAccessRule(string identity, System.Security.AccessControl.RegistryRights registryRights, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AccessControlType type) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AccessControlType)) => throw null;
                 public System.Security.AccessControl.RegistryRights RegistryRights { get => throw null; }
             }
-
-            public class RegistryAuditRule : System.Security.AccessControl.AuditRule
+            public sealed class RegistryAuditRule : System.Security.AccessControl.AuditRule
             {
                 public RegistryAuditRule(System.Security.Principal.IdentityReference identity, System.Security.AccessControl.RegistryRights registryRights, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AuditFlags flags) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AuditFlags)) => throw null;
                 public RegistryAuditRule(string identity, System.Security.AccessControl.RegistryRights registryRights, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AuditFlags flags) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AuditFlags)) => throw null;
                 public System.Security.AccessControl.RegistryRights RegistryRights { get => throw null; }
             }
-
             [System.Flags]
-            public enum RegistryRights : int
+            public enum RegistryRights
             {
-                ChangePermissions = 262144,
-                CreateLink = 32,
-                CreateSubKey = 4,
-                Delete = 65536,
-                EnumerateSubKeys = 8,
-                ExecuteKey = 131097,
-                FullControl = 983103,
-                Notify = 16,
                 QueryValues = 1,
-                ReadKey = 131097,
-                ReadPermissions = 131072,
                 SetValue = 2,
-                TakeOwnership = 524288,
+                CreateSubKey = 4,
+                EnumerateSubKeys = 8,
+                Notify = 16,
+                CreateLink = 32,
+                Delete = 65536,
+                ReadPermissions = 131072,
                 WriteKey = 131078,
+                ExecuteKey = 131097,
+                ReadKey = 131097,
+                ChangePermissions = 262144,
+                TakeOwnership = 524288,
+                FullControl = 983103,
             }
-
-            public class RegistrySecurity : System.Security.AccessControl.NativeObjectSecurity
+            public sealed class RegistrySecurity : System.Security.AccessControl.NativeObjectSecurity
             {
                 public override System.Type AccessRightType { get => throw null; }
                 public override System.Security.AccessControl.AccessRule AccessRuleFactory(System.Security.Principal.IdentityReference identityReference, int accessMask, bool isInherited, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AccessControlType type) => throw null;
@@ -188,7 +175,6 @@ namespace System
                 public void SetAccessRule(System.Security.AccessControl.RegistryAccessRule rule) => throw null;
                 public void SetAuditRule(System.Security.AccessControl.RegistryAuditRule rule) => throw null;
             }
-
         }
     }
 }

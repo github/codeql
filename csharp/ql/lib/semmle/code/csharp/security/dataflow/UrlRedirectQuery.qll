@@ -5,10 +5,12 @@
 import csharp
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.frameworks.Format
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.Mvc
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 /**
  * A data flow source for unvalidated URL redirect vulnerabilities.
@@ -26,13 +28,6 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `Sanitizer` instead.
- *
- * A guard for unvalidated URL redirect vulnerabilities.
- */
-abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
-/**
  * DEPRECATED: Use `UrlRedirect` instead.
  *
  * A taint-tracking configuration for reasoning about unvalidated URL redirect vulnerabilities.
@@ -45,10 +40,6 @@ deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration
   override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-    guard instanceof SanitizerGuard
-  }
 }
 
 /**
@@ -69,6 +60,11 @@ module UrlRedirect = TaintTracking::Global<UrlRedirectConfig>;
 
 /** A source of remote user input. */
 class RemoteSource extends Source instanceof RemoteFlowSource { }
+
+/** URL Redirection sinks defined through Models as Data. */
+private class ExternalUrlRedirectExprSink extends Sink {
+  ExternalUrlRedirectExprSink() { sinkNode(this, "url-redirection") }
+}
 
 /**
  * A URL argument to a call to `HttpResponse.Redirect()` or `Controller.Redirect()`, that is a
@@ -120,14 +116,24 @@ class HttpServerTransferSink extends Sink {
   }
 }
 
-private predicate isLocalUrlSanitizer(Guard g, Expr e, AbstractValue v) {
-  g.(MethodCall).getTarget().hasName("IsLocalUrl") and
-  e = g.(MethodCall).getArgument(0) and
+private predicate isLocalUrlSanitizerMethodCall(MethodCall guard, Expr e, AbstractValue v) {
+  exists(Method m | m = guard.getTarget() |
+    m.hasName("IsLocalUrl") and
+    e = guard.getArgument(0)
+    or
+    m.hasName("IsUrlLocalToHost") and
+    e = guard.getArgument(1)
+  ) and
   v.(AbstractValues::BooleanValue).getValue() = true
 }
 
+private predicate isLocalUrlSanitizer(Guard g, Expr e, AbstractValue v) {
+  isLocalUrlSanitizerMethodCall(g, e, v)
+}
+
 /**
- * A URL argument to a call to `UrlHelper.isLocalUrl()` that is a sanitizer for URL redirects.
+ * A URL argument to a call to `UrlHelper.IsLocalUrl()` or `HttpRequestBase.IsUrlLocalToHost()` that
+ * is a sanitizer for URL redirects.
  */
 class LocalUrlSanitizer extends Sanitizer {
   LocalUrlSanitizer() { this = DataFlow::BarrierGuard<isLocalUrlSanitizer/3>::getABarrierNode() }
@@ -155,6 +161,36 @@ class ConcatenationSanitizer extends Sanitizer {
   ConcatenationSanitizer() {
     this.getType() instanceof StringType and
     this.getExpr().(AddExpr).getLeftOperand().getValue().matches("%?%")
+  }
+}
+
+/**
+ * A string interpolation expression, where the first part (before any inserts) of the
+ * expression contains the character "?".
+ *
+ * This is considered a sanitizer by the same reasoning as `ConcatenationSanitizer`.
+ */
+private class InterpolationSanitizer extends Sanitizer {
+  InterpolationSanitizer() {
+    this.getExpr().(InterpolatedStringExpr).getText(0).getValue().matches("%?%")
+  }
+}
+
+/**
+ * A call to `string.Format`, where the format expression (before any inserts)
+ * contains the character "?".
+ *
+ * This is considered a sanitizer by the same reasoning as `ConcatenationSanitizer`.
+ */
+private class StringFormatSanitizer extends Sanitizer {
+  StringFormatSanitizer() {
+    exists(FormatCall c, Expr e, int index, string format |
+      c = this.getExpr() and e = c.getFormatExpr()
+    |
+      format = e.(StringLiteral).getValue() and
+      exists(format.regexpFind("\\{[0-9]+\\}", 0, index)) and
+      format.substring(0, index).matches("%?%")
+    )
   }
 }
 

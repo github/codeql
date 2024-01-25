@@ -7,13 +7,12 @@ import codeql.ruby.ApiGraphs
 import codeql.ruby.dataflow.FlowSummary
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.internal.FlowSummaryImpl
-import codeql.ruby.dataflow.internal.AccessPathSyntax
 import codeql.ruby.frameworks.data.ModelsAsData
 import TestUtilities.InlineFlowTest
 import PathGraph
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
-  (sc.propagatesFlowExt(s, _, _) or sc.propagatesFlowExt(_, s, _)) and
+  (sc.propagatesFlow(s, _, _) or sc.propagatesFlow(_, s, _)) and
   Private::External::invalidSpecComponent(s, c)
 }
 
@@ -24,7 +23,7 @@ private class SummarizedCallableIdentity extends SummarizedCallable {
 
   override MethodCall getACall() { result.getMethodName() = this }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
     output = "ReturnValue" and
     preservesValue = true
@@ -36,7 +35,7 @@ private class SummarizedCallableApplyBlock extends SummarizedCallable {
 
   override MethodCall getACall() { result.getMethodName() = this }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[0]" and
     output = "Argument[block].Parameter[0]" and
     preservesValue = true
@@ -52,7 +51,7 @@ private class SummarizedCallableApplyLambda extends SummarizedCallable {
 
   override MethodCall getACall() { result.getMethodName() = this }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     input = "Argument[1]" and
     output = "Argument[0].Parameter[0]" and
     preservesValue = true
@@ -145,6 +144,7 @@ private class SinkFromModel extends ModelInput::SinkModelCsv {
         "Foo!;Method[getSinks].ReturnValue.Element[any].Method[mySink].Argument[0];test-sink", //
         "Foo!;Method[arraySink].Argument[0].Element[any];test-sink", //
         "Foo!;Method[secondArrayElementIsSink].Argument[0].Element[1];test-sink", //
+        "FuzzyLib!;Fuzzy.Method[fuzzyCall].Argument[0];test-sink"
       ]
   }
 }

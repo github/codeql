@@ -145,9 +145,9 @@ namespace Semmle.Autobuild.Cpp.Tests
 
         bool IBuildActions.IsMacOs() => IsMacOs;
 
-        public bool IsArm { get; set; }
+        public bool IsRunningOnAppleSilicon { get; set; }
 
-        bool IBuildActions.IsArm() => IsArm;
+        bool IBuildActions.IsRunningOnAppleSilicon() => IsRunningOnAppleSilicon;
 
         string IBuildActions.PathCombine(params string[] parts)
         {
@@ -326,8 +326,8 @@ namespace Semmle.Autobuild.Cpp.Tests
         public void TestCppAutobuilderSuccess()
         {
             Actions.RunProcess[@"cmd.exe /C nuget restore C:\Project\test.sln -DisableParallelProcessing"] = 1;
-            Actions.RunProcess[@"cmd.exe /C C:\Project\.nuget\nuget.exe restore C:\Project\test.sln -DisableParallelProcessing"] = 0;
-            Actions.RunProcess[@"cmd.exe /C CALL ^""C:\Program Files ^(x86^)\Microsoft Visual Studio 14.0\VC\vcvarsall.bat^"" && set Platform=&& type NUL && msbuild C:\Project\test.sln /t:rebuild /p:Platform=""x86"" /p:Configuration=""Release"""] = 0;
+            Actions.RunProcess[@"cmd.exe /C scratch\.nuget\nuget.exe restore C:\Project\test.sln -DisableParallelProcessing"] = 0;
+            Actions.RunProcess[@"cmd.exe /C CALL ^""C:\Program^ Files^ ^(x86^)\Microsoft^ Visual^ Studio^ 14.0\VC\vcvarsall.bat^"" && set Platform=&& type NUL && msbuild C:\Project\test.sln /t:rebuild /p:Platform=""x86"" /p:Configuration=""Release"""] = 0;
             Actions.RunProcessOut[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = "";
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationPath"] = 1;
             Actions.RunProcess[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe -prerelease -legacy -property installationVersion"] = 0;
@@ -337,10 +337,11 @@ namespace Semmle.Autobuild.Cpp.Tests
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\vcvarsall.bat"] = true;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\vcvarsall.bat"] = true;
             Actions.FileExists[@"C:\Program Files (x86)\Microsoft Visual Studio\Installer\vswhere.exe"] = true;
+            Actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CPP_SCRATCH_DIR"] = "scratch";
             Actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.slx";
             Actions.EnumerateDirectories[@"C:\Project"] = "";
-            Actions.CreateDirectories.Add(@"C:\Project\.nuget");
-            Actions.DownloadFiles.Add(("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", @"C:\Project\.nuget\nuget.exe"));
+            Actions.CreateDirectories.Add(@"scratch\.nuget");
+            Actions.DownloadFiles.Add(("https://dist.nuget.org/win-x86-commandline/latest/nuget.exe", @"scratch\.nuget\nuget.exe"));
 
             var autobuilder = CreateAutoBuilder(true);
             var solution = new TestSolution(@"C:\Project\test.sln");

@@ -248,6 +248,34 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * The role of a macro, for example #freestanding(declaration) or @attached(member).
+   */
+  class MacroRole extends @macro_role, AstNode {
+    override string toString() { result = "MacroRole" }
+
+    /**
+     * Gets the kind of this macro role (declaration, expression, member, etc.).
+     */
+    int getKind() { macro_roles(this, result, _) }
+
+    /**
+     * Gets the #freestanding or @attached.
+     */
+    int getMacroSyntax() { macro_roles(this, _, result) }
+
+    /**
+     * Gets the `index`th conformance of this macro role (0-based).
+     */
+    TypeExpr getConformance(int index) { macro_role_conformances(this, index, result) }
+
+    /**
+     * Gets the `index`th name of this macro role (0-based).
+     */
+    string getName(int index) { macro_role_names(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class UnspecifiedElement extends @unspecified_element, ErrorElement {
     override string toString() { result = "UnspecifiedElement" }
@@ -271,6 +299,13 @@ module Raw {
      * Gets the error of this unspecified element.
      */
     string getError() { unspecified_elements(this, _, result) }
+
+    /**
+     * Gets the `index`th child of this unspecified element (0-based).
+     *
+     * These will be present only in certain downgraded databases.
+     */
+    AstNode getChild(int index) { unspecified_element_children(this, index, result) }
   }
 
   /**
@@ -552,6 +587,38 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A declaration of a macro. Some examples:
+   *
+   * ```
+   * @freestanding(declaration)
+   * macro A() = #externalMacro(module: "A", type: "A")
+   * @freestanding(expression)
+   * macro B() = Builtin.B
+   * @attached(member)
+   * macro C() = C.C
+   * ```
+   */
+  class MacroDecl extends @macro_decl, GenericContext, ValueDecl {
+    override string toString() { result = "MacroDecl" }
+
+    /**
+     * Gets the name of this macro.
+     */
+    string getName() { macro_decls(this, result) }
+
+    /**
+     * Gets the `index`th parameter of this macro (0-based).
+     */
+    ParamDecl getParameter(int index) { macro_decl_parameters(this, index, result) }
+
+    /**
+     * Gets the `index`th role of this macro (0-based).
+     */
+    MacroRole getRole(int index) { macro_decl_roles(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class PostfixOperatorDecl extends @postfix_operator_decl, OperatorDecl {
     override string toString() { result = "PostfixOperatorDecl" }
@@ -574,9 +641,12 @@ module Raw {
     string getName() { type_decls(this, result) }
 
     /**
-     * Gets the `index`th base type of this type declaration (0-based).
+     * Gets the `index`th inherited type of this type declaration (0-based).
+     *
+     * This only returns the types effectively appearing in the declaration. In particular it
+     * will not resolve `TypeAliasDecl`s or consider base types added by extensions.
      */
-    Type getBaseType(int index) { type_decl_base_types(this, index, result) }
+    Type getInheritedType(int index) { type_decl_inherited_types(this, index, result) }
   }
 
   /**
@@ -1111,6 +1181,42 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that forces value to be moved. In the example below, `consume` marks the move expression:
+   *
+   * ```
+   * let y = ...
+   * let x = consume y
+   * ```
+   */
+  class ConsumeExpr extends @consume_expr, Expr {
+    override string toString() { result = "ConsumeExpr" }
+
+    /**
+     * Gets the sub expression of this consume expression.
+     */
+    Expr getSubExpr() { consume_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that forces value to be copied. In the example below, `copy` marks the copy expression:
+   *
+   * ```
+   * let y = ...
+   * let x = copy y
+   * ```
+   */
+  class CopyExpr extends @copy_expr, Expr {
+    override string toString() { result = "CopyExpr" }
+
+    /**
+     * Gets the sub expression of this copy expression.
+     */
+    Expr getSubExpr() { copy_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class DeclRefExpr extends @decl_ref_expr, Expr {
     override string toString() { result = "DeclRefExpr" }
@@ -1404,6 +1510,22 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An expression that materializes a pack during expansion. Appears around PackExpansionExpr.
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class MaterializePackExpr extends @materialize_pack_expr, Expr {
+    override string toString() { result = "MaterializePackExpr" }
+
+    /**
+     * Gets the sub expression of this materialize pack expression.
+     */
+    Expr getSubExpr() { materialize_pack_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class ObjCSelectorExpr extends @obj_c_selector_expr, Expr {
     override string toString() { result = "ObjCSelectorExpr" }
@@ -1515,6 +1637,52 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * A pack element expression is a child of PackExpansionExpr.
+   *
+   * In the following example, `each t` on the second line is the pack element expression:
+   * ```
+   * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+   *   return (repeat each t)
+   * }
+   * ```
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class PackElementExpr extends @pack_element_expr, Expr {
+    override string toString() { result = "PackElementExpr" }
+
+    /**
+     * Gets the sub expression of this pack element expression.
+     */
+    Expr getSubExpr() { pack_element_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A pack expansion expression.
+   *
+   * In the following example, `repeat each t` on the second line is the pack expansion expression:
+   * ```
+   * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) {
+   *   return (repeat each t)
+   * }
+   * ```
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class PackExpansionExpr extends @pack_expansion_expr, Expr {
+    override string toString() { result = "PackExpansionExpr" }
+
+    /**
+     * Gets the pattern expression of this pack expansion expression.
+     */
+    Expr getPatternExpr() { pack_expansion_exprs(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * A placeholder substituting property initializations with `=` when the property has a property
    * wrapper with an initializer.
    */
@@ -1559,6 +1727,19 @@ module Raw {
      * Gets the `index`th element of this sequence expression (0-based).
      */
     Expr getElement(int index) { sequence_expr_elements(this, index, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that wraps a statement which produces a single value.
+   */
+  class SingleValueStmtExpr extends @single_value_stmt_expr, Expr {
+    override string toString() { result = "SingleValueStmtExpr" }
+
+    /**
+     * Gets the statement of this single value statement expression.
+     */
+    Stmt getStmt() { single_value_stmt_exprs(this, result) }
   }
 
   /**
@@ -1772,6 +1953,19 @@ module Raw {
    */
   class BinaryExpr extends @binary_expr, ApplyExpr {
     override string toString() { result = "BinaryExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An expression that marks value as borrowed. In the example below, `_borrow` marks the borrow expression:
+   *
+   * ```
+   * let y = ...
+   * let x = _borrow y
+   * ```
+   */
+  class BorrowExpr extends @borrow_expr, IdentityExpr {
+    override string toString() { result = "BorrowExpr" }
   }
 
   /**
@@ -2358,7 +2552,12 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Pattern extends @pattern, AstNode { }
+  class Pattern extends @pattern, AstNode {
+    /**
+     * Gets the type of this pattern, if it exists.
+     */
+    Type getType() { pattern_types(this, result) }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -2444,9 +2643,9 @@ module Raw {
     override string toString() { result = "NamedPattern" }
 
     /**
-     * Gets the name of this named pattern.
+     * Gets the variable declaration of this named pattern.
      */
-    string getName() { named_patterns(this, result) }
+    VarDecl getVarDecl() { named_patterns(this, result) }
   }
 
   /**
@@ -2599,11 +2798,6 @@ module Raw {
     override string toString() { result = "CaseStmt" }
 
     /**
-     * Gets the body of this case statement.
-     */
-    Stmt getBody() { case_stmts(this, result) }
-
-    /**
      * Gets the `index`th label of this case statement (0-based).
      */
     CaseLabelItem getLabel(int index) { case_stmt_labels(this, index, result) }
@@ -2612,6 +2806,11 @@ module Raw {
      * Gets the `index`th variable of this case statement (0-based).
      */
     VarDecl getVariable(int index) { case_stmt_variables(this, index, result) }
+
+    /**
+     * Gets the body of this case statement.
+     */
+    Stmt getBody() { case_stmts(this, result) }
   }
 
   /**
@@ -2641,6 +2840,24 @@ module Raw {
      * Gets the body of this defer statement.
      */
     BraceStmt getBody() { defer_stmts(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A statement that takes a non-copyable value and destructs its members/fields.
+   *
+   * The only valid syntax:
+   * ```
+   * destruct self
+   * ```
+   */
+  class DiscardStmt extends @discard_stmt, Stmt {
+    override string toString() { result = "DiscardStmt" }
+
+    /**
+     * Gets the sub expression of this discard statement.
+     */
+    Expr getSubExpr() { discard_stmts(this, result) }
   }
 
   /**
@@ -2768,12 +2985,7 @@ module Raw {
     /**
      * Gets the pattern of this for each statement.
      */
-    Pattern getPattern() { for_each_stmts(this, result, _, _) }
-
-    /**
-     * Gets the sequence of this for each statement.
-     */
-    Expr getSequence() { for_each_stmts(this, _, result, _) }
+    Pattern getPattern() { for_each_stmts(this, result, _) }
 
     /**
      * Gets the where of this for each statement, if it exists.
@@ -2781,9 +2993,19 @@ module Raw {
     Expr getWhere() { for_each_stmt_wheres(this, result) }
 
     /**
+     * Gets the iteratorvar of this for each statement, if it exists.
+     */
+    PatternBindingDecl getIteratorVar() { for_each_stmt_iterator_vars(this, result) }
+
+    /**
+     * Gets the nextcall of this for each statement, if it exists.
+     */
+    Expr getNextCall() { for_each_stmt_next_calls(this, result) }
+
+    /**
      * Gets the body of this for each statement.
      */
-    BraceStmt getBody() { for_each_stmts(this, _, _, result) }
+    BraceStmt getBody() { for_each_stmts(this, _, result) }
   }
 
   /**
@@ -2882,6 +3104,12 @@ module Raw {
 
     /**
      * Gets the canonical type of this type.
+     *
+     * This is the unique type we get after resolving aliases and desugaring. For example, given
+     * ```
+     * typealias MyInt = Int
+     * ```
+     * then `[MyInt?]` has the canonical type `Array<Optional<Int>>`.
      */
     Type getCanonicalType() { types(this, _, result) }
   }
@@ -3030,6 +3258,59 @@ module Raw {
      * Gets the module of this module type.
      */
     ModuleDecl getModule() { module_types(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A type of PackElementExpr, see PackElementExpr for more information.
+   */
+  class PackElementType extends @pack_element_type, Type {
+    override string toString() { result = "PackElementType" }
+
+    /**
+     * Gets the pack type of this pack element type.
+     */
+    Type getPackType() { pack_element_types(this, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * A type of PackExpansionExpr, see PackExpansionExpr for more information.
+   */
+  class PackExpansionType extends @pack_expansion_type, Type {
+    override string toString() { result = "PackExpansionType" }
+
+    /**
+     * Gets the pattern type of this pack expansion type.
+     */
+    Type getPatternType() { pack_expansion_types(this, result, _) }
+
+    /**
+     * Gets the count type of this pack expansion type.
+     */
+    Type getCountType() { pack_expansion_types(this, _, result) }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * An actual type of a pack expression at the instatiation point.
+   *
+   * In the following example, PackType will appear around `makeTuple` call site as `Pack{String, Int}`:
+   * ```
+   * func makeTuple<each T>(_ t: repeat each T) -> (repeat each T) { ... }
+   * makeTuple("A", 2)
+   * ```
+   *
+   * More details:
+   * https://github.com/apple/swift-evolution/blob/main/proposals/0393-parameter-packs.md
+   */
+  class PackType extends @pack_type, Type {
+    override string toString() { result = "PackType" }
+
+    /**
+     * Gets the `index`th element of this pack type (0-based).
+     */
+    Type getElement(int index) { pack_type_elements(this, index, result) }
   }
 
   /**
@@ -3359,6 +3640,11 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class LocalArchetypeType extends @local_archetype_type, ArchetypeType { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class NominalType extends @nominal_type, NominalOrBoundGenericNominalType { }
 
   /**
@@ -3378,9 +3664,10 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An archetype type of PackType.
    */
-  class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {
-    override string toString() { result = "OpenedArchetypeType" }
+  class PackArchetypeType extends @pack_archetype_type, ArchetypeType {
+    override string toString() { result = "PackArchetypeType" }
   }
 
   /**
@@ -3437,9 +3724,24 @@ module Raw {
 
   /**
    * INTERNAL: Do not use.
+   * An archetype type of PackElementType.
+   */
+  class ElementArchetypeType extends @element_archetype_type, LocalArchetypeType {
+    override string toString() { result = "ElementArchetypeType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
    */
   class EnumType extends @enum_type, NominalType {
     override string toString() { result = "EnumType" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class OpenedArchetypeType extends @opened_archetype_type, LocalArchetypeType {
+    override string toString() { result = "OpenedArchetypeType" }
   }
 
   /**

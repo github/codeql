@@ -16,7 +16,6 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.filters.Tests
-import DataFlow::PathGraph
 
 bindingset[char, fraction]
 predicate fewer_characters_than(StrConst str, string char, float fraction) {
@@ -108,17 +107,19 @@ private string getACredentialRegex() {
   result = "(?i).*(cert)(?!.*(format|name)).*"
 }
 
-class HardcodedCredentialsConfiguration extends TaintTracking::Configuration {
-  HardcodedCredentialsConfiguration() { this = "Hardcoded credentials configuration" }
+private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof HardcodedValueSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof HardcodedValueSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CredentialSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CredentialSink }
 }
 
-from HardcodedCredentialsConfiguration config, DataFlow::PathNode src, DataFlow::PathNode sink
+module HardcodedCredentialsFlow = TaintTracking::Global<HardcodedCredentialsConfig>;
+
+import HardcodedCredentialsFlow::PathGraph
+
+from HardcodedCredentialsFlow::PathNode src, HardcodedCredentialsFlow::PathNode sink
 where
-  config.hasFlowPath(src, sink) and
+  HardcodedCredentialsFlow::flowPath(src, sink) and
   not any(TestScope test).contains(src.getNode().asCfgNode().getNode())
 select src.getNode(), src, sink, "This hardcoded value is $@.", sink.getNode(),
   "used as credentials"

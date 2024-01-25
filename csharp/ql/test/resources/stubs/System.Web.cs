@@ -27,15 +27,13 @@ namespace System.Web
         public virtual HttpResponseBase Response => null;
     }
 
-    public interface IHtmlString
-    {
-    }
-
     public class HtmlString : IHtmlString
     {
         public HtmlString(string s)
         {
         }
+
+        public string ToHtmlString() => null;
     }
 
     public class HttpServerUtility
@@ -48,6 +46,8 @@ namespace System.Web
     public class HttpApplication : IHttpHandler
     {
         public HttpServerUtility Server { get; }
+
+        public Routing.RouteTable RouteTable { get; }
     }
 }
 
@@ -79,6 +79,8 @@ namespace System.Web.UI
 
     public class Page
     {
+        public System.Security.Principal.IPrincipal User { get; }
+        public System.Web.HttpRequest Request { get; }
     }
 
     interface IPostBackDataHandler
@@ -151,6 +153,11 @@ namespace System.Web
         public UnvalidatedRequestValues Unvalidated { get; }
         public string RawUrl { get; set; }
         public HttpCookieCollection Cookies => null;
+    }
+
+    public class HttpRequestWrapper : System.Web.HttpRequestBase
+    {
+        public HttpRequestWrapper(HttpRequest r) { }
     }
 
     public class HttpResponse
@@ -301,6 +308,20 @@ namespace System.Web.Routing
     public class RequestContext
     {
     }
+
+    public class Route
+    {
+    }
+
+    public class RouteTable
+    {
+        public RouteCollection Routes { get; }
+    }
+
+    public class RouteCollection
+    {
+        public Route MapPageRoute(string routeName, string routeUrl, string physicalFile, bool checkPhysicalUrlAccess) { return null; }
+    }
 }
 
 namespace System.Web.Security
@@ -350,6 +371,15 @@ namespace System.Web.Helpers
     {
         public static void Validate() { }
     }
+}
+
+namespace System.Web.WebPages
+{
+    public static class RequestExtensions
+    {
+        public static bool IsUrlLocalToHost(this System.Web.HttpRequestBase request, string url) => throw null;
+    }
+
 }
 
 namespace System.Web.Script.Serialization

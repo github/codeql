@@ -19,6 +19,7 @@ import semmle.code.cpp.controlflow.Guards
 import semmle.code.cpp.dataflow.new.DataFlow::DataFlow
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.ValueNumbering
+import ScanfChecks
 
 /** Holds if `n` reaches an argument  to a call to a `scanf`-like function. */
 pragma[nomagic]
@@ -60,7 +61,9 @@ predicate isSink(ScanfFunctionCall call, int index, Node n, Expr input) {
  * argument that has not been previously initialized.
  */
 predicate isRelevantScanfCall(ScanfFunctionCall call, int index, Expr output) {
-  exists(Node n | fwdFlow0(n) and isSink(call, index, n, output))
+  exists(Node n | fwdFlow0(n) and isSink(call, index, n, output)) and
+  // Exclude results from incorrectky checked scanf query
+  not incorrectlyCheckedScanf(call)
 }
 
 /**

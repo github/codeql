@@ -3,11 +3,12 @@
  */
 
 import java
+private import semmle.code.java.dataflow.TypeFlow
 
 /**
  * A method access that returns random data or writes random data to an argument.
  */
-abstract class RandomDataSource extends MethodAccess {
+abstract class RandomDataSource extends MethodCall {
   /**
    * Gets the integer lower bound, inclusive, of the values returned by this call,
    * if applicable to this method's type and a constant bound is known.
@@ -43,6 +44,9 @@ abstract class RandomDataSource extends MethodAccess {
    * in the case where it writes random data to that argument.
    */
   abstract Expr getOutput();
+
+  /** Gets the type of the source of randomness used by this call. */
+  RefType getSourceOfRandomness() { boundOrStaticType(this.getQualifier(), result) }
 }
 
 /**
@@ -103,8 +107,17 @@ class StdlibRandomSource extends RandomDataSource {
   }
 
   override Expr getOutput() {
-    if m.hasName("getBytes") then result = this.getArgument(0) else result = this
+    if m.hasName("nextBytes") then result = this.getArgument(0) else result = this
   }
+}
+
+/**
+ * A method access calling the `random` of `java.lang.Math`.
+ */
+class MathRandomSource extends RandomDataSource {
+  MathRandomSource() { this.getMethod().hasQualifiedName("java.lang", "Math", "random") }
+
+  override Expr getOutput() { result = this }
 }
 
 /**
@@ -142,4 +155,34 @@ class ApacheCommonsRandomSource extends RandomDataSource {
   }
 
   override Expr getOutput() { result = this }
+}
+
+/**
+ * A method access calling a method declared on `org.apache.commons.lang3.RandomStringUtils`
+ */
+class ApacheCommonsRandomStringSource extends RandomDataSource {
+  ApacheCommonsRandomStringSource() {
+    exists(Method m | m = this.getMethod() |
+      m.getName().matches("random%") and
+      m.getDeclaringType()
+          .hasQualifiedName(["org.apache.commons.lang3", "org.apache.commons.lang"],
+            "RandomStringUtils")
+    )
+  }
+
+  override Expr getOutput() { result = this }
+
+  override RefType getSourceOfRandomness() {
+    if
+      this.getMethod().hasStringSignature("random(int, int, int, boolean, boolean, char[], Random)")
+    then boundOrStaticType(this.getArgument(6), result)
+    else result.hasQualifiedName("java.util", "Random")
+  }
+}
+
+/** Holds if `t` is the static type of `e`, or an upper bound of the runtime type of `e`. */
+private predicate boundOrStaticType(Expr e, RefType t) {
+  exprTypeFlow(e, t, false)
+  or
+  t = e.getType()
 }

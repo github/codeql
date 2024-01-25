@@ -10,17 +10,11 @@ class XmlRecordedCall extends XmlElement {
   /** Gets the XML data for the call. */
   XmlCall getXmlCall() { result.getParent() = this }
 
-  /** DEPRECATED: Alias for getXmlCall */
-  deprecated XMLCall getXMLCall() { result = this.getXmlCall() }
-
   /** Gets a call matching the recorded information. */
   Call getACall() { result = this.getXmlCall().getACall() }
 
   /** Gets the XML data for the callee. */
   XmlCallee getXmlCallee() { result.getParent() = this }
-
-  /** DEPRECATED: Alias for getXmlCallee */
-  deprecated XMLCallee getXMLCallee() { result = this.getXmlCallee() }
 
   /** Gets a python function matching the recorded information of the callee. */
   Function getAPythonCallee() { result = this.getXmlCallee().(XmlPythonCallee).getACallee() }

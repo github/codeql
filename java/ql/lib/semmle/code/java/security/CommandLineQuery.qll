@@ -10,8 +10,9 @@
 import java
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
-private import semmle.code.java.security.ExternalProcess
 private import semmle.code.java.security.CommandArguments
+private import semmle.code.java.security.ExternalProcess
+private import semmle.code.java.security.Sanitizers
 
 /** A sink for command injection vulnerabilities. */
 abstract class CommandInjectionSink extends DataFlow::Node { }
@@ -33,16 +34,12 @@ class CommandInjectionAdditionalTaintStep extends Unit {
 }
 
 private class DefaultCommandInjectionSink extends CommandInjectionSink {
-  DefaultCommandInjectionSink() {
-    this.asExpr() instanceof ArgumentToExec or sinkNode(this, "command-injection")
-  }
+  DefaultCommandInjectionSink() { sinkNode(this, "command-injection") }
 }
 
 private class DefaultCommandInjectionSanitizer extends CommandInjectionSanitizer {
   DefaultCommandInjectionSanitizer() {
-    this.getType() instanceof PrimitiveType
-    or
-    this.getType() instanceof BoxedType
+    this instanceof SimpleTypeSanitizer
     or
     isSafeCommandArgument(this.asExpr())
   }
@@ -52,7 +49,7 @@ private class DefaultCommandInjectionSanitizer extends CommandInjectionSanitizer
  * A taint-tracking configuration for unvalidated user input that is used to run an external process.
  */
 module RemoteUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjectionSink }
 
@@ -100,7 +97,7 @@ predicate execIsTainted(
   RemoteUserInputToArgumentToExecFlow::PathNode sink, Expr execArg
 ) {
   RemoteUserInputToArgumentToExecFlow::flowPath(source, sink) and
-  sink.getNode().asExpr() = execArg
+  argumentToExec(execArg, sink.getNode())
 }
 
 /**
@@ -112,7 +109,7 @@ predicate execIsTainted(
  */
 deprecated predicate execTainted(DataFlow::PathNode source, DataFlow::PathNode sink, Expr execArg) {
   exists(RemoteUserInputToArgumentToExecFlowConfig conf |
-    conf.hasFlowPath(source, sink) and sink.getNode().asExpr() = execArg
+    conf.hasFlowPath(source, sink) and argumentToExec(execArg, sink.getNode())
   )
 }
 

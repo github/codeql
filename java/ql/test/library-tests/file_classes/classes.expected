@@ -1,0 +1,3 @@
+| A.kt:0:0:0:0 | AKt | true |
+| B.kt:0:0:0:0 | BKt | true |
+| C.kt:1:1:3:1 | C | false |

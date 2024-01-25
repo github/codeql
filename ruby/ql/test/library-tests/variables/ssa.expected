@@ -61,12 +61,12 @@ definition
 | parameters.rb:30:15:30:19 | first | parameters.rb:30:15:30:19 | first |
 | parameters.rb:30:24:30:29 | middle | parameters.rb:30:24:30:29 | middle |
 | parameters.rb:30:36:30:39 | last | parameters.rb:30:36:30:39 | last |
-| parameters.rb:35:1:38:3 | <uninitialized> | parameters.rb:35:16:35:16 | b |
+| parameters.rb:35:1:38:3 | <uninitialized> b | parameters.rb:35:16:35:16 | b |
 | parameters.rb:35:1:38:3 | self (multi) | parameters.rb:35:1:38:3 | self |
 | parameters.rb:35:11:35:11 | a | parameters.rb:35:11:35:11 | a |
 | parameters.rb:35:16:35:16 | b | parameters.rb:35:16:35:16 | b |
 | parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b |
-| parameters.rb:40:1:43:3 | <uninitialized> | parameters.rb:40:15:40:15 | e |
+| parameters.rb:40:1:43:3 | <uninitialized> e | parameters.rb:40:15:40:15 | e |
 | parameters.rb:40:1:43:3 | self (multi2) | parameters.rb:40:1:43:3 | self |
 | parameters.rb:40:12:40:12 | d | parameters.rb:40:12:40:12 | d |
 | parameters.rb:40:15:40:15 | e | parameters.rb:40:15:40:15 | e |
@@ -103,13 +103,9 @@ definition
 | scopes.rb:26:1:26:12 | self (A) | scopes.rb:26:1:26:12 | self |
 | scopes.rb:27:1:27:1 | x | scopes.rb:27:1:27:1 | x |
 | scopes.rb:28:1:30:3 | self (B) | scopes.rb:28:1:30:3 | self |
-| scopes.rb:29:3:29:3 | x | scopes.rb:29:3:29:3 | x |
-| scopes.rb:32:3:32:3 | x | scopes.rb:32:3:32:3 | x |
 | scopes.rb:34:1:36:3 | self (C) | scopes.rb:34:1:36:3 | self |
-| scopes.rb:35:3:35:3 | x | scopes.rb:35:3:35:3 | x |
 | scopes.rb:41:1:49:3 | self (M) | scopes.rb:41:1:49:3 | self |
 | scopes.rb:42:2:42:4 | var | scopes.rb:42:2:42:4 | var |
-| scopes.rb:43:2:43:4 | foo | scopes.rb:43:2:43:4 | foo |
 | scopes.rb:46:5:46:8 | var2 | scopes.rb:46:5:46:8 | var2 |
 | ssa.rb:1:1:16:3 | self (m) | ssa.rb:1:1:16:3 | self |
 | ssa.rb:1:7:1:7 | b | ssa.rb:1:7:1:7 | b |
@@ -121,24 +117,26 @@ definition
 | ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x |
 | ssa.rb:21:5:21:5 | x | ssa.rb:18:8:18:8 | x |
-| ssa.rb:25:1:30:3 | <uninitialized> | ssa.rb:26:7:26:10 | elem |
+| ssa.rb:25:1:30:3 | <uninitialized> elem | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self |
 | ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements |
 | ssa.rb:26:3:28:5 | <captured entry> self | ssa.rb:25:1:30:3 | self |
 | ssa.rb:26:3:28:5 | <captured exit> elem | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:26:3:28:5 | __synth__0__1 | ssa.rb:26:3:28:5 | __synth__0__1 |
 | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem |
+| ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem |
+| ssa.rb:26:7:26:10 | phi | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:32:1:36:3 | self (m3) | ssa.rb:32:1:36:3 | self |
 | ssa.rb:33:16:35:5 | <captured entry> self | ssa.rb:32:1:36:3 | self |
 | ssa.rb:33:20:33:20 | x | ssa.rb:33:20:33:20 | x |
 | ssa.rb:38:1:42:3 | self (m4) | ssa.rb:38:1:42:3 | self |
 | ssa.rb:40:3:40:4 | m3 | ssa.rb:40:3:40:4 | m3 |
-| ssa.rb:44:1:47:3 | <uninitialized> | ssa.rb:45:3:45:3 | x |
+| ssa.rb:44:1:47:3 | <uninitialized> x | ssa.rb:45:3:45:3 | x |
 | ssa.rb:44:1:47:3 | self (m5) | ssa.rb:44:1:47:3 | self |
 | ssa.rb:44:8:44:8 | b | ssa.rb:44:8:44:8 | b |
 | ssa.rb:45:3:45:3 | x | ssa.rb:45:3:45:3 | x |
 | ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x |
-| ssa.rb:49:1:51:3 | <uninitialized> | ssa.rb:49:14:49:14 | y |
+| ssa.rb:49:1:51:3 | <uninitialized> y | ssa.rb:49:14:49:14 | y |
 | ssa.rb:49:1:51:3 | self (m6) | ssa.rb:49:1:51:3 | self |
 | ssa.rb:49:14:49:14 | y | ssa.rb:49:14:49:14 | y |
 | ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y |
@@ -316,6 +314,7 @@ read
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x |
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:20:10:20:10 | x |
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:21:5:21:5 | x |
+| ssa.rb:25:1:30:3 | <uninitialized> elem | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self | ssa.rb:29:3:29:11 | self |
 | ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:26:15:26:22 | elements |
 | ssa.rb:26:3:28:5 | <captured entry> self | ssa.rb:25:1:30:3 | self | ssa.rb:27:5:27:13 | self |
@@ -470,6 +469,7 @@ firstRead
 | ssa.rb:10:5:10:5 | i | ssa.rb:2:3:2:3 | i | ssa.rb:11:10:11:10 | i |
 | ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self |
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x |
+| ssa.rb:25:1:30:3 | <uninitialized> elem | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self | ssa.rb:29:3:29:11 | self |
 | ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:26:15:26:22 | elements |
 | ssa.rb:26:3:28:5 | <captured entry> self | ssa.rb:25:1:30:3 | self | ssa.rb:27:5:27:13 | self |
@@ -621,6 +621,7 @@ lastRead
 | ssa.rb:18:1:23:3 | self (m1) | ssa.rb:18:1:23:3 | self | ssa.rb:20:5:20:10 | self |
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:19:9:19:9 | x |
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:21:5:21:5 | x |
+| ssa.rb:25:1:30:3 | <uninitialized> elem | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem |
 | ssa.rb:25:1:30:3 | self (m2) | ssa.rb:25:1:30:3 | self | ssa.rb:29:3:29:11 | self |
 | ssa.rb:25:8:25:15 | elements | ssa.rb:25:8:25:15 | elements | ssa.rb:26:15:26:22 | elements |
 | ssa.rb:26:3:28:5 | <captured entry> self | ssa.rb:25:1:30:3 | self | ssa.rb:27:5:27:13 | self |
@@ -726,9 +727,9 @@ adjacentReads
 | ssa.rb:91:3:91:3 | x | ssa.rb:91:3:91:3 | x | ssa.rb:95:10:95:10 | x | ssa.rb:99:10:99:10 | x |
 | ssa.rb:91:3:91:3 | x | ssa.rb:91:3:91:3 | x | ssa.rb:95:10:95:10 | x | ssa.rb:101:10:101:10 | x |
 phi
-| parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:35:1:38:3 | <uninitialized> |
+| parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:35:1:38:3 | <uninitialized> b |
 | parameters.rb:37:3:37:18 | phi | parameters.rb:35:16:35:16 | b | parameters.rb:35:16:35:16 | b |
-| parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:1:43:3 | <uninitialized> |
+| parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:1:43:3 | <uninitialized> e |
 | parameters.rb:42:3:42:18 | phi | parameters.rb:40:15:40:15 | e | parameters.rb:40:15:40:15 | e |
 | parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:9:57:3 | <captured entry> x |
 | parameters.rb:55:4:55:9 | phi | parameters.rb:53:1:53:1 | x | parameters.rb:54:19:54:19 | x |
@@ -736,9 +737,11 @@ phi
 | ssa.rb:5:3:13:5 | phi | ssa.rb:2:3:2:3 | i | ssa.rb:10:5:10:5 | i |
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:18:8:18:8 | x |
 | ssa.rb:19:9:19:9 | phi | ssa.rb:18:8:18:8 | x | ssa.rb:21:5:21:5 | x |
-| ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:44:1:47:3 | <uninitialized> |
+| ssa.rb:26:7:26:10 | phi | ssa.rb:26:7:26:10 | elem | ssa.rb:25:1:30:3 | <uninitialized> elem |
+| ssa.rb:26:7:26:10 | phi | ssa.rb:26:7:26:10 | elem | ssa.rb:26:7:26:10 | elem |
+| ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:44:1:47:3 | <uninitialized> x |
 | ssa.rb:45:3:45:12 | phi | ssa.rb:45:3:45:3 | x | ssa.rb:45:3:45:3 | x |
-| ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:1:51:3 | <uninitialized> |
+| ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:1:51:3 | <uninitialized> y |
 | ssa.rb:50:3:50:8 | phi | ssa.rb:49:14:49:14 | y | ssa.rb:49:14:49:14 | y |
 phiReadNode
 | parameters.rb:26:3:26:11 | SSA phi read(name) | parameters.rb:25:15:25:18 | name |

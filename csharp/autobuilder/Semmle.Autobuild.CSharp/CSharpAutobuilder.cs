@@ -1,8 +1,8 @@
-﻿using Semmle.Extraction.CSharp;
+﻿using System.Linq;
+using Semmle.Util;
 using Semmle.Util.Logging;
 using Semmle.Autobuild.Shared;
-using Semmle.Util;
-using System.Linq;
+using Semmle.Extraction.CSharp;
 
 namespace Semmle.Autobuild.CSharp
 {
@@ -11,6 +11,7 @@ namespace Semmle.Autobuild.CSharp
     /// </summary>
     public class CSharpAutobuildOptions : AutobuildOptionsShared
     {
+        private const string buildModeEnvironmentVariable = "CODEQL_EXTRACTOR_CSHARP_BUILD_MODE";
         private const string extractorOptionPrefix = "CODEQL_EXTRACTOR_CSHARP_OPTION_";
 
         public bool Buildless { get; }
@@ -25,7 +26,8 @@ namespace Semmle.Autobuild.CSharp
         public CSharpAutobuildOptions(IBuildActions actions) : base(actions)
         {
             Buildless = actions.GetEnvironmentVariable(lgtmPrefix + "BUILDLESS").AsBool("buildless", false) ||
-                actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false);
+                actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false) ||
+                actions.GetEnvironmentVariable(buildModeEnvironmentVariable)?.ToLower() == "none";
         }
     }
 
@@ -48,8 +50,11 @@ namespace Semmle.Autobuild.CSharp
                     attempt = new BuildCommandRule(DotNetRule.WithDotNet).Analyse(this, false) & CheckExtractorRun(true);
                     break;
                 case CSharpBuildStrategy.Buildless:
-                    // No need to check that the extractor has been executed in buildless mode
-                    attempt = new StandaloneBuildRule().Analyse(this, false);
+                    attempt = DotNetRule.WithDotNet(this, (dotNetPath, env) =>
+                        {
+                            // No need to check that the extractor has been executed in buildless mode
+                            return new StandaloneBuildRule(dotNetPath).Analyse(this, false);
+                        });
                     break;
                 case CSharpBuildStrategy.MSBuild:
                     attempt = new MsBuildRule().Analyse(this, false) & CheckExtractorRun(true);

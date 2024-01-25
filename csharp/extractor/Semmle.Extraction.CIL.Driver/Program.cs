@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Semmle.Util.Logging;
-using System.Diagnostics;
 
 namespace Semmle.Extraction.CIL.Driver
 {
@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CIL.Driver
             }
 
             var options = new ExtractorOptions(args);
-            using var logger = new ConsoleLogger(options.Verbosity);
+            using var logger = new ConsoleLogger(options.Verbosity, logThreadId: false);
 
             var actions = options.AssembliesToExtract
                 .Select(asm => asm.Filename)

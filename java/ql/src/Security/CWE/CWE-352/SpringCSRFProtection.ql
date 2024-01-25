@@ -12,11 +12,8 @@
  */
 
 import java
+import semmle.code.java.security.SpringCsrfProtection
 
-from MethodAccess call
-where
-  call.getMethod().hasName("disable") and
-  call.getReceiverType()
-      .hasQualifiedName("org.springframework.security.config.annotation.web.configurers",
-        "CsrfConfigurer<HttpSecurity>")
+from MethodCall call
+where disablesSpringCsrfProtection(call)
 select call, "CSRF vulnerability due to protection being disabled."

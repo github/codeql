@@ -44,11 +44,11 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
   override Call getACall() {
     exists(API::MethodAccessNode base |
       ModelOutput::resolvedSummaryBase(type, path, base) and
-      result = base.getCallNode().asExpr().getExpr()
+      result = base.asCall().asExpr().getExpr()
     )
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind) |
       kind = "value" and
       preservesValue = true

@@ -2,20 +2,22 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow3
+deprecated import semmle.code.java.dataflow.DataFlow3
+private import semmle.code.java.dataflow.DataFlow3
 private import semmle.code.java.dataflow.RangeUtils
 
 private module Frameworks {
   private import semmle.code.java.frameworks.apache.CommonsXml
   private import semmle.code.java.frameworks.javaee.Xml
   private import semmle.code.java.frameworks.javase.Beans
+  private import semmle.code.java.frameworks.mdht.MdhtXml
   private import semmle.code.java.frameworks.rundeck.RundeckXml
 }
 
 /**
  * An abstract type representing a call to parse XML files.
  */
-abstract class XmlParserCall extends MethodAccess {
+abstract class XmlParserCall extends MethodCall {
   /**
    * Gets the argument representing the XML content to be parsed.
    */
@@ -30,7 +32,7 @@ abstract class XmlParserCall extends MethodAccess {
 /**
  * An access to a method use for configuring the parser.
  */
-abstract class ParserConfig extends MethodAccess {
+abstract class ParserConfig extends MethodCall {
   /**
    * Holds if the method disables a property.
    */
@@ -81,41 +83,16 @@ class DocumentBuilderParse extends XmlParserCall {
   override Expr getSink() { result = this.getArgument(0) }
 
   override predicate isSafe() {
-    SafeDocumentBuilderToDocumentBuilderParseFlow::flowToExpr(this.getQualifier())
+    SafeDocumentBuilderToDocumentBuilderParseFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
-private module SafeDocumentBuilderToDocumentBuilderParseFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeDocumentBuilder }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(DocumentBuilderParse dbp).getQualifier()
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    exists(RefType t, ReturnStmt ret, Method m |
-      node2.asExpr().(ClassInstanceExpr).getConstructedType().getSourceDeclaration() = t and
-      t.getASourceSupertype+().hasQualifiedName("java.lang", "ThreadLocal") and
-      ret.getResult() = node1.asExpr() and
-      ret.getEnclosingCallable() = m and
-      m.hasName("initialValue") and
-      m.getDeclaringType() = t
-    )
-    or
-    exists(MethodAccess ma, Method m |
-      ma = node2.asExpr() and
-      ma.getQualifier() = node1.asExpr() and
-      ma.getMethod() = m and
-      m.hasName("get") and
-      m.getDeclaringType().getSourceDeclaration().hasQualifiedName("java.lang", "ThreadLocal")
-    )
-  }
-
-  int fieldFlowBranchLimit() { result = 0 }
+private predicate safeDocumentBuilderNode(DataFlow::Node src) {
+  src.asExpr() instanceof SafeDocumentBuilder
 }
 
 private module SafeDocumentBuilderToDocumentBuilderParseFlow =
-  DataFlow::Global<SafeDocumentBuilderToDocumentBuilderParseFlowConfig>;
+  DataFlow::SimpleGlobal<safeDocumentBuilderNode/1>;
 
 /**
  * A `ParserConfig` specific to `DocumentBuilderFactory`.
@@ -165,7 +142,7 @@ class SafeDocumentBuilderFactory extends VarAccess {
   }
 }
 
-private class DocumentBuilderConstruction extends MethodAccess {
+private class DocumentBuilderConstruction extends MethodCall {
   DocumentBuilderConstruction() {
     exists(Method m |
       this.getMethod() = m and
@@ -175,27 +152,19 @@ private class DocumentBuilderConstruction extends MethodAccess {
   }
 }
 
-private module SafeDocumentBuilderFactoryToDocumentBuilderConstructionFlowConfig implements
-  DataFlow::ConfigSig
-{
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeDocumentBuilderFactory }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(DocumentBuilderConstruction dbc).getQualifier()
-  }
-
-  int fieldFlowBranchLimit() { result = 0 }
+private predicate safeDocumentBuilderFactoryNode(DataFlow::Node src) {
+  src.asExpr() instanceof SafeDocumentBuilderFactory
 }
 
 private module SafeDocumentBuilderFactoryToDocumentBuilderConstructionFlow =
-  DataFlow::Global<SafeDocumentBuilderFactoryToDocumentBuilderConstructionFlowConfig>;
+  DataFlow::SimpleGlobal<safeDocumentBuilderFactoryNode/1>;
 
 /**
  * A `DocumentBuilder` created from a safely configured `DocumentBuilderFactory`.
  */
 class SafeDocumentBuilder extends DocumentBuilderConstruction {
   SafeDocumentBuilder() {
-    SafeDocumentBuilderFactoryToDocumentBuilderConstructionFlow::flowToExpr(this.getQualifier())
+    SafeDocumentBuilderFactoryToDocumentBuilderConstructionFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
@@ -225,23 +194,16 @@ class XmlInputFactoryStreamReader extends XmlParserCall {
   }
 
   override predicate isSafe() {
-    SafeXmlInputFactoryToXmlInputFactoryReaderFlow::flowToExpr(this.getQualifier())
+    SafeXmlInputFactoryToXmlInputFactoryReaderFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
-private module SafeXmlInputFactoryToXmlInputFactoryReaderFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeXmlInputFactory }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(XmlInputFactoryStreamReader xifsr).getQualifier() or
-    sink.asExpr() = any(XmlInputFactoryEventReader xifer).getQualifier()
-  }
-
-  int fieldFlowBranchLimit() { result = 0 }
+private predicate safeXmlInputFactoryNode(DataFlow::Node src) {
+  src.asExpr() instanceof SafeXmlInputFactory
 }
 
 private module SafeXmlInputFactoryToXmlInputFactoryReaderFlow =
-  DataFlow::Global<SafeXmlInputFactoryToXmlInputFactoryReaderFlowConfig>;
+  DataFlow::SimpleGlobal<safeXmlInputFactoryNode/1>;
 
 /** A call to `XMLInputFactory.createEventReader`. */
 class XmlInputFactoryEventReader extends XmlParserCall {
@@ -260,7 +222,7 @@ class XmlInputFactoryEventReader extends XmlParserCall {
   }
 
   override predicate isSafe() {
-    SafeXmlInputFactoryToXmlInputFactoryReaderFlow::flowToExpr(this.getQualifier())
+    SafeXmlInputFactoryToXmlInputFactoryReaderFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
@@ -302,9 +264,6 @@ Expr configOptionSupportDtd() {
     f.getDeclaringType() instanceof XmlInputFactory
   )
 }
-
-/** DEPRECATED: Alias for configOptionSupportDtd */
-deprecated Expr configOptionSupportDTD() { result = configOptionSupportDtd() }
 
 /**
  * A safely configured `XmlInputFactory`.
@@ -352,20 +311,13 @@ class SaxBuilderParse extends XmlParserCall {
   override Expr getSink() { result = this.getArgument(0) }
 
   override predicate isSafe() {
-    SafeSaxBuilderToSaxBuilderParseFlow::flowToExpr(this.getQualifier())
+    SafeSaxBuilderToSaxBuilderParseFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
-private module SafeSaxBuilderToSaxBuilderParseFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSaxBuilder }
+private predicate safeSaxBuilderNode(DataFlow::Node src) { src.asExpr() instanceof SafeSaxBuilder }
 
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(SaxBuilderParse sax).getQualifier() }
-
-  int fieldFlowBranchLimit() { result = 0 }
-}
-
-private module SafeSaxBuilderToSaxBuilderParseFlow =
-  DataFlow::Global<SafeSaxBuilderToSaxBuilderParseFlowConfig>;
+private module SafeSaxBuilderToSaxBuilderParseFlow = DataFlow::SimpleGlobal<safeSaxBuilderNode/1>;
 
 /**
  * A `ParserConfig` specific to `SAXBuilder`.
@@ -425,7 +377,9 @@ class SaxParserParse extends XmlParserCall {
 
   override Expr getSink() { result = this.getArgument(0) }
 
-  override predicate isSafe() { SafeSaxParserFlow::flowToExpr(this.getQualifier()) }
+  override predicate isSafe() {
+    SafeSaxParserFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
+  }
 }
 
 /** A `ParserConfig` that is specific to `SaxParserFactory`. */
@@ -472,44 +426,23 @@ class SafeSaxParserFactory extends VarAccess {
   }
 }
 
-private module SafeSaxParserFactoryToNewSaxParserFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSaxParserFactory }
-
-  predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma, Method m |
-      sink.asExpr() = ma.getQualifier() and
-      ma.getMethod() = m and
-      m.getDeclaringType() instanceof SaxParserFactory and
-      m.hasName("newSAXParser")
-    )
-  }
-
-  int fieldFlowBranchLimit() { result = 0 }
+private predicate safeSaxParserFactoryNode(DataFlow::Node src) {
+  src.asExpr() instanceof SafeSaxParserFactory
 }
 
 private module SafeSaxParserFactoryToNewSaxParserFlow =
-  DataFlow::Global<SafeSaxParserFactoryToNewSaxParserFlowConfig>;
+  DataFlow::SimpleGlobal<safeSaxParserFactoryNode/1>;
 
-private module SafeSaxParserFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSaxParser }
+private predicate safeSaxParserNode(DataFlow::Node src) { src.asExpr() instanceof SafeSaxParser }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      sink.asExpr() = ma.getQualifier() and ma.getMethod().getDeclaringType() instanceof SaxParser
-    )
-  }
-
-  int fieldFlowBranchLimit() { result = 0 }
-}
-
-private module SafeSaxParserFlow = DataFlow::Global<SafeSaxParserFlowConfig>;
+private module SafeSaxParserFlow = DataFlow::SimpleGlobal<safeSaxParserNode/1>;
 
 /** A `SaxParser` created from a safely configured `SaxParserFactory`. */
-class SafeSaxParser extends MethodAccess {
+class SafeSaxParser extends MethodCall {
   SafeSaxParser() {
     this.getMethod().getDeclaringType() instanceof SaxParserFactory and
     this.getMethod().hasName("newSAXParser") and
-    SafeSaxParserFactoryToNewSaxParserFlow::flowToExpr(this.getQualifier())
+    SafeSaxParserFactoryToNewSaxParserFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
@@ -533,7 +466,9 @@ class SaxReaderRead extends XmlParserCall {
 
   override Expr getSink() { result = this.getArgument(0) }
 
-  override predicate isSafe() { SafeSaxReaderFlow::flowToExpr(this.getQualifier()) }
+  override predicate isSafe() {
+    SafeSaxReaderFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
+  }
 }
 
 /** A `ParserConfig` specific to `SaxReader`. */
@@ -547,19 +482,9 @@ class SaxReaderConfig extends ParserConfig {
   }
 }
 
-private module SafeSaxReaderFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSaxReader }
+private predicate safeSaxReaderNode(DataFlow::Node src) { src.asExpr() instanceof SafeSaxReader }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
-      sink.asExpr() = ma.getQualifier() and ma.getMethod().getDeclaringType() instanceof SaxReader
-    )
-  }
-
-  int fieldFlowBranchLimit() { result = 0 }
-}
-
-private module SafeSaxReaderFlow = DataFlow::Global<SafeSaxReaderFlowConfig>;
+private module SafeSaxReaderFlow = DataFlow::SimpleGlobal<safeSaxReaderNode/1>;
 
 /** A safely configured `SaxReader`. */
 class SafeSaxReader extends VarAccess {
@@ -611,8 +536,8 @@ class XmlReaderParse extends XmlParserCall {
   override Expr getSink() { result = this.getArgument(0) }
 
   override predicate isSafe() {
-    exists(ExplicitlySafeXmlReader sr | sr.flowsTo(this.getQualifier())) or
-    exists(CreatedSafeXmlReader cr | cr.flowsTo(this.getQualifier()))
+    ExplicitlySafeXmlReaderFlow::flowsTo(DataFlow::exprNode(this.getQualifier())) or
+    CreatedSafeXmlReaderFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
@@ -627,7 +552,7 @@ class XmlReaderConfig extends ParserConfig {
   }
 }
 
-private module ExplicitlySafeXmlReaderFlowConfig implements DataFlow::ConfigSig {
+deprecated private module ExplicitlySafeXmlReaderFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ExplicitlySafeXmlReader }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SafeXmlReaderFlowSink }
@@ -635,7 +560,14 @@ private module ExplicitlySafeXmlReaderFlowConfig implements DataFlow::ConfigSig 
   int fieldFlowBranchLimit() { result = 0 }
 }
 
-private module ExplicitlySafeXmlReaderFlow = DataFlow::Global<ExplicitlySafeXmlReaderFlowConfig>;
+private predicate explicitlySafeXmlReaderNode(DataFlow::Node src) {
+  src.asExpr() instanceof ExplicitlySafeXmlReader
+}
+
+deprecated private module ExplicitlySafeXmlReaderFlowDeprecated =
+  DataFlow::Global<ExplicitlySafeXmlReaderFlowConfig>;
+
+private module ExplicitlySafeXmlReaderFlow = DataFlow::SimpleGlobal<explicitlySafeXmlReaderNode/1>;
 
 /** An argument to a safe XML reader. */
 class SafeXmlReaderFlowSink extends Expr {
@@ -679,13 +611,13 @@ class ExplicitlySafeXmlReader extends VarAccess {
     )
   }
 
-  /** Holds if `SafeXmlReaderFlowSink` detects flow from this to `sink` */
-  predicate flowsTo(SafeXmlReaderFlowSink sink) {
-    ExplicitlySafeXmlReaderFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(sink))
+  /** DEPRECATED. Holds if `SafeXmlReaderFlowSink` detects flow from this to `sink` */
+  deprecated predicate flowsTo(SafeXmlReaderFlowSink sink) {
+    ExplicitlySafeXmlReaderFlowDeprecated::flow(DataFlow::exprNode(this), DataFlow::exprNode(sink))
   }
 }
 
-private module CreatedSafeXmlReaderFlowConfig implements DataFlow::ConfigSig {
+deprecated private module CreatedSafeXmlReaderFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof CreatedSafeXmlReader }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SafeXmlReaderFlowSink }
@@ -693,20 +625,27 @@ private module CreatedSafeXmlReaderFlowConfig implements DataFlow::ConfigSig {
   int fieldFlowBranchLimit() { result = 0 }
 }
 
-private module CreatedSafeXmlReaderFlow = DataFlow::Global<CreatedSafeXmlReaderFlowConfig>;
+private predicate createdSafeXmlReaderNode(DataFlow::Node src) {
+  src.asExpr() instanceof CreatedSafeXmlReader
+}
+
+deprecated private module CreatedSafeXmlReaderFlowDeprecated =
+  DataFlow::Global<CreatedSafeXmlReaderFlowConfig>;
+
+private module CreatedSafeXmlReaderFlow = DataFlow::SimpleGlobal<createdSafeXmlReaderNode/1>;
 
 /** An `XmlReader` that is obtained from a safe source. */
 class CreatedSafeXmlReader extends Call {
   CreatedSafeXmlReader() {
     //Obtained from SAXParser
-    this.(MethodAccess).getMethod().getDeclaringType() instanceof SaxParser and
-    this.(MethodAccess).getMethod().hasName("getXMLReader") and
-    SafeSaxParserFlow::flowToExpr(this.getQualifier())
+    this.(MethodCall).getMethod().getDeclaringType() instanceof SaxParser and
+    this.(MethodCall).getMethod().hasName("getXMLReader") and
+    SafeSaxParserFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
     or
     //Obtained from SAXReader
-    this.(MethodAccess).getMethod().getDeclaringType() instanceof SaxReader and
-    this.(MethodAccess).getMethod().hasName("getXMLReader") and
-    SafeSaxReaderFlow::flowToExpr(this.getQualifier())
+    this.(MethodCall).getMethod().getDeclaringType() instanceof SaxReader and
+    this.(MethodCall).getMethod().hasName("getXMLReader") and
+    SafeSaxReaderFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
     or
     exists(RefType secureReader, string package |
       this.(ClassInstanceExpr).getConstructedType() = secureReader and
@@ -715,9 +654,9 @@ class CreatedSafeXmlReader extends Call {
     )
   }
 
-  /** Holds if `CreatedSafeXmlReaderFlowConfig` detects flow from this to `sink` */
-  predicate flowsTo(SafeXmlReaderFlowSink sink) {
-    CreatedSafeXmlReaderFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(sink))
+  /** DEPRECATED. Holds if `CreatedSafeXmlReaderFlowConfig` detects flow from this to `sink` */
+  deprecated predicate flowsTo(SafeXmlReaderFlowSink sink) {
+    CreatedSafeXmlReaderFlowDeprecated::flow(DataFlow::exprNode(this), DataFlow::exprNode(sink))
   }
 }
 
@@ -746,13 +685,13 @@ class ConstructedSaxSource extends ClassInstanceExpr {
 
   /** Holds if the resulting `SaxSource` is safe. */
   predicate isSafe() {
-    exists(CreatedSafeXmlReader safeReader | safeReader.flowsTo(this.getArgument(0))) or
-    exists(ExplicitlySafeXmlReader safeReader | safeReader.flowsTo(this.getArgument(0)))
+    CreatedSafeXmlReaderFlow::flowsTo(DataFlow::exprNode(this.getArgument(0))) or
+    ExplicitlySafeXmlReaderFlow::flowsTo(DataFlow::exprNode(this.getArgument(0)))
   }
 }
 
 /** A call to the `SAXSource.setXMLReader` method. */
-class SaxSourceSetReader extends MethodAccess {
+class SaxSourceSetReader extends MethodCall {
   SaxSourceSetReader() {
     exists(Method m |
       m = this.getMethod() and
@@ -768,8 +707,8 @@ class SafeSaxSource extends Expr {
     exists(Variable v | v = this.(VarAccess).getVariable() |
       exists(SaxSourceSetReader s | s.getQualifier() = v.getAnAccess() |
         (
-          exists(CreatedSafeXmlReader safeReader | safeReader.flowsTo(s.getArgument(0))) or
-          exists(ExplicitlySafeXmlReader safeReader | safeReader.flowsTo(s.getArgument(0)))
+          CreatedSafeXmlReaderFlow::flowsTo(DataFlow::exprNode(s.getArgument(0))) or
+          ExplicitlySafeXmlReaderFlow::flowsTo(DataFlow::exprNode(s.getArgument(0)))
         )
       )
     )
@@ -780,7 +719,7 @@ class SafeSaxSource extends Expr {
 
 /* Transformer: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#transformerfactory */
 /** An access to a method use for configuring a transformer or schema. */
-abstract class TransformerConfig extends MethodAccess {
+abstract class TransformerConfig extends MethodCall {
   /** Holds if the configuration is disabled */
   predicate disables(Expr e) {
     this.getArgument(0) = e and
@@ -804,9 +743,6 @@ Expr configAccessExternalDtd() {
     f.getDeclaringType() instanceof XmlConstants
   )
 }
-
-/** DEPRECATED: Alias for configAccessExternalDtd */
-deprecated Expr configAccessExternalDTD() { result = configAccessExternalDtd() }
 
 /** A configuration specific for transformers. */
 Expr configAccessExternalStyleSheet() {
@@ -858,22 +794,16 @@ class TransformerTransform extends XmlParserCall {
   override Expr getSink() { result = this.getArgument(0) }
 
   override predicate isSafe() {
-    SafeTransformerToTransformerTransformFlow::flowToExpr(this.getQualifier())
+    SafeTransformerToTransformerTransformFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
-private module SafeTransformerToTransformerTransformFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeTransformer }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(TransformerTransform tt).getQualifier()
-  }
-
-  int fieldFlowBranchLimit() { result = 0 }
+private predicate safeTransformerNode(DataFlow::Node src) {
+  src.asExpr() instanceof SafeTransformer
 }
 
 private module SafeTransformerToTransformerTransformFlow =
-  DataFlow::Global<SafeTransformerToTransformerTransformFlowConfig>;
+  DataFlow::SimpleGlobal<safeTransformerNode/1>;
 
 /** A call to `Transformer.newTransformer` with source. */
 class TransformerFactorySource extends XmlParserCall {
@@ -887,7 +817,9 @@ class TransformerFactorySource extends XmlParserCall {
 
   override Expr getSink() { result = this.getArgument(0) }
 
-  override predicate isSafe() { SafeTransformerFactoryFlow::flowToExpr(this.getQualifier()) }
+  override predicate isSafe() {
+    SafeTransformerFactoryFlow2::flowsTo(DataFlow::exprNode(this.getQualifier()))
+  }
 }
 
 /** A `ParserConfig` specific to `TransformerFactory`. */
@@ -902,7 +834,7 @@ class TransformerFactoryConfig extends TransformerConfig {
 }
 
 /**
- * DEPRECATED: Use `SafeTransformerFactoryFlow` instead.
+ * DEPRECATED.
  *
  * A dataflow configuration that identifies `TransformerFactory` and `SAXTransformerFactory`
  * instances that have been safely configured.
@@ -913,7 +845,7 @@ deprecated class SafeTransformerFactoryFlowConfig extends DataFlow3::Configurati
   override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeTransformerFactory }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getQualifier() and
       ma.getMethod().getDeclaringType() instanceof TransformerFactory
     )
@@ -923,14 +855,16 @@ deprecated class SafeTransformerFactoryFlowConfig extends DataFlow3::Configurati
 }
 
 /**
+ * DEPRECATED.
+ *
  * A dataflow configuration that identifies `TransformerFactory` and `SAXTransformerFactory`
  * instances that have been safely configured.
  */
-module SafeTransformerFactoryFlowConfig implements DataFlow::ConfigSig {
+deprecated module SafeTransformerFactoryFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeTransformerFactory }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getQualifier() and
       ma.getMethod().getDeclaringType() instanceof TransformerFactory
     )
@@ -939,11 +873,19 @@ module SafeTransformerFactoryFlowConfig implements DataFlow::ConfigSig {
   int fieldFlowBranchLimit() { result = 0 }
 }
 
+private predicate safeTransformerFactoryNode(DataFlow::Node src) {
+  src.asExpr() instanceof SafeTransformerFactory
+}
+
 /**
+ * DEPRECATED.
+ *
  * Identifies `TransformerFactory` and `SAXTransformerFactory`
  * instances that have been safely configured.
  */
-module SafeTransformerFactoryFlow = DataFlow::Global<SafeTransformerFactoryFlowConfig>;
+deprecated module SafeTransformerFactoryFlow = DataFlow::Global<SafeTransformerFactoryFlowConfig>;
+
+private module SafeTransformerFactoryFlow2 = DataFlow::SimpleGlobal<safeTransformerFactoryNode/1>;
 
 /** A safely configured `TransformerFactory`. */
 class SafeTransformerFactory extends VarAccess {
@@ -960,13 +902,13 @@ class SafeTransformerFactory extends VarAccess {
 }
 
 /** A `Transformer` created from a safely configured `TransformerFactory`. */
-class SafeTransformer extends MethodAccess {
+class SafeTransformer extends MethodCall {
   SafeTransformer() {
     exists(Method m |
       this.getMethod() = m and
       m.getDeclaringType() instanceof TransformerFactory and
       m.hasName("newTransformer") and
-      SafeTransformerFactoryFlow::flowToExpr(this.getQualifier())
+      SafeTransformerFactoryFlow2::flowsTo(DataFlow::exprNode(this.getQualifier()))
     )
   }
 }
@@ -988,7 +930,9 @@ class SaxTransformerFactoryNewXmlFilter extends XmlParserCall {
 
   override Expr getSink() { result = this.getArgument(0) }
 
-  override predicate isSafe() { SafeTransformerFactoryFlow::flowToExpr(this.getQualifier()) }
+  override predicate isSafe() {
+    SafeTransformerFactoryFlow2::flowsTo(DataFlow::exprNode(this.getQualifier()))
+  }
 }
 
 /* Schema: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#schemafactory */
@@ -1021,22 +965,16 @@ class SchemaFactoryNewSchema extends XmlParserCall {
   override Expr getSink() { result = this.getArgument(0) }
 
   override predicate isSafe() {
-    SafeSchemaFactoryToSchemaFactoryNewSchemaFlow::flowToExpr(this.getQualifier())
+    SafeSchemaFactoryToSchemaFactoryNewSchemaFlow::flowsTo(DataFlow::exprNode(this.getQualifier()))
   }
 }
 
-private module SafeSchemaFactoryToSchemaFactoryNewSchemaFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSchemaFactory }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(SchemaFactoryNewSchema sfns).getQualifier()
-  }
-
-  int fieldFlowBranchLimit() { result = 0 }
+private predicate safeSchemaFactoryNode(DataFlow::Node src) {
+  src.asExpr() instanceof SafeSchemaFactory
 }
 
 private module SafeSchemaFactoryToSchemaFactoryNewSchemaFlow =
-  DataFlow::Global<SafeSchemaFactoryToSchemaFactoryNewSchemaFlowConfig>;
+  DataFlow::SimpleGlobal<safeSchemaFactoryNode/1>;
 
 /** A safely configured `SchemaFactory`. */
 class SafeSchemaFactory extends VarAccess {

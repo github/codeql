@@ -1,2 +1,2 @@
-semmle-extractor-options: /r:System.ComponentModel.Primitives.dll /r:${testdir}/../../../resources/assemblies/System.Data.dll /r:System.Data.Common.dll
-semmle-extractor-options: /langversion:8.0
+semmle-extractor-options: /nostdlib /noconfig
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/System.Data.SqlClient/4.8.5/System.Data.SqlClient.csproj

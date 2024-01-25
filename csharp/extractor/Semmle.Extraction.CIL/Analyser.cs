@@ -1,6 +1,6 @@
-using Semmle.Util.Logging;
 using System;
 using Semmle.Util;
+using Semmle.Util.Logging;
 using Semmle.Extraction.CIL.Entities;
 
 namespace Semmle.Extraction.CIL

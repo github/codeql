@@ -94,16 +94,54 @@ types.cs:
 #   47|   3: [Struct] Struct
 #   50|   4: [Interface] Interface
 #   53|   5: [DelegateType] Delegate
-#   54|   6: [Class] GenericClass<>
+#   54|   6: [Class] GenericClass`1
 #-----|     1: (Type parameters)
 #   54|       0: [TypeParameter] T
-#   55|   7: [Interface] GenericInterface<>
+#   55|   7: [Interface] GenericInterface`1
 #-----|     1: (Type parameters)
 #   55|       0: [TypeParameter] T
-#   56|   8: [Struct] GenericStruct<>
+#   56|   8: [Struct] GenericStruct`1
 #-----|     1: (Type parameters)
 #   56|       0: [TypeParameter] T
-#   57|   9: [Class] Map<,>
+#   57|   9: [Class] Map`2
 #-----|     1: (Type parameters)
 #   57|       0: [TypeParameter] U
 #   57|       1: [TypeParameter] V
+#   60|   10: [InlineArrayType] MyInlineArray
+#-----|     0: (Attributes)
+#   59|       1: [DefaultAttribute] [InlineArray(...)]
+#   59|         -1: [TypeMention] InlineArrayAttribute
+#   59|         0: [IntLiteral] 10
+#   62|     5: [Field] myInlineArrayElements
+#   62|       -1: [TypeMention] int
+#   66|   11: [InlineArrayType] MyMultiDimensionalInlineArray
+#-----|     0: (Attributes)
+#   65|       1: [DefaultAttribute] [InlineArray(...)]
+#   65|         -1: [TypeMention] InlineArrayAttribute
+#   65|         0: [IntLiteral] 5
+#   68|     5: [Field] myMultiDimentionalInlineArrayElements
+#   68|       -1: [TypeMention] MyInlineArray
+#   72|   12: [InlineArrayType] MyMultiDimensionalInlineArray2
+#-----|     0: (Attributes)
+#   71|       1: [DefaultAttribute] [InlineArray(...)]
+#   71|         -1: [TypeMention] InlineArrayAttribute
+#   71|         0: [IntLiteral] 7
+#   74|     5: [Field] myMultiDimentionalInlineArrayElements
+#   74|       -1: [TypeMention] String[]
+#   74|         1: [TypeMention] string
+#   78|   13: [InlineArrayType] MyMultiDimensionalInlineArray3
+#-----|     0: (Attributes)
+#   77|       1: [DefaultAttribute] [InlineArray(...)]
+#   77|         -1: [TypeMention] InlineArrayAttribute
+#   77|         0: [IntLiteral] 4
+#   80|     5: [Field] myMultiDimentionalInlineArrayElements
+#   80|       -1: [TypeMention] Object[,]
+#   80|         1: [TypeMention] object
+#   84|   14: [InlineArrayType] MyMultiDimensionalInlineArray4
+#-----|     0: (Attributes)
+#   83|       1: [DefaultAttribute] [InlineArray(...)]
+#   83|         -1: [TypeMention] InlineArrayAttribute
+#   83|         0: [IntLiteral] 11
+#   86|     5: [Field] myMultiDimentionalInlineArrayElements
+#   86|       -1: [TypeMention] Object[][]
+#   86|         1: [TypeMention] object

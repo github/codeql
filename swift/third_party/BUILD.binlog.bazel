@@ -1,19 +1,27 @@
 cc_library(
-  name = "binlog",
-  hdrs = glob(["include/**/*.hpp"]),
-  srcs = glob(["include/**/*.cpp"]),
-  includes = ["include"],
-  visibility = ["//visibility:public"],
+    name = "binlog",
+    srcs = glob(["include/**/*.cpp"]),
+    hdrs = glob(["include/**/*.hpp"]),
+    includes = ["include"],
+    visibility = ["//visibility:public"],
 )
 
 cc_binary(
-  name = "bread",
-  srcs = ["bin/bread.cpp", "bin/printers.hpp", "bin/printers.cpp", "bin/getopt.hpp"],
-  deps = [":binlog"],
+    name = "bread",
+    srcs = [
+        "bin/bread.cpp",
+        "bin/getopt.hpp",
+        "bin/printers.cpp",
+        "bin/printers.hpp",
+    ],
+    deps = [":binlog"],
 )
 
 cc_binary(
-  name = "brecovery",
-  srcs = ["bin/brecovery.cpp", "bin/getopt.hpp"],
-  deps = [":binlog"],
+    name = "brecovery",
+    srcs = [
+        "bin/brecovery.cpp",
+        "bin/getopt.hpp",
+    ],
+    deps = [":binlog"],
 )

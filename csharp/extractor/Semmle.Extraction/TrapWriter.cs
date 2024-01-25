@@ -1,9 +1,9 @@
-using Semmle.Util;
-using Semmle.Util.Logging;
 using System;
 using System.IO;
 using System.IO.Compression;
 using System.Text;
+using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction
 {
@@ -48,7 +48,7 @@ namespace Semmle.Extraction
 
             writerLazy = new Lazy<StreamWriter>(() =>
             {
-                var tempPath = trap ?? Path.GetTempPath();
+                var tempPath = trap ?? FileUtils.GetTemporaryWorkingDirectory(out var _);
 
                 do
                 {
@@ -216,7 +216,7 @@ namespace Semmle.Extraction
 
         private void ArchiveContents(PathTransformer.ITransformedPath transformedPath, string contents)
         {
-            var dest = NestPaths(logger, archive, transformedPath.Value);
+            var dest = FileUtils.NestPaths(logger, archive, transformedPath.Value);
             var tmpSrcFile = Path.GetTempFileName();
             File.WriteAllText(tmpSrcFile, contents, utf8);
             try
@@ -229,38 +229,6 @@ namespace Semmle.Extraction
                 // In any case, this is not a fatal error.
                 logger.Log(Severity.Warning, "Problem archiving " + dest + ": " + ex);
             }
-        }
-
-        public static string NestPaths(ILogger logger, string? outerpath, string innerpath)
-        {
-            var nested = innerpath;
-            if (!string.IsNullOrEmpty(outerpath))
-            {
-                // Remove all leading path separators / or \
-                // For example, UNC paths have two leading \\
-                innerpath = innerpath.TrimStart(Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar);
-
-                if (innerpath.Length > 1 && innerpath[1] == ':')
-                    innerpath = innerpath[0] + "_" + innerpath.Substring(2);
-
-                nested = Path.Combine(outerpath, innerpath);
-            }
-            try
-            {
-                var directoryName = Path.GetDirectoryName(nested);
-                if (directoryName is null)
-                {
-                    logger.Log(Severity.Warning, "Failed to get directory name from path '" + nested + "'.");
-                    throw new InvalidOperationException();
-                }
-                Directory.CreateDirectory(directoryName);
-            }
-            catch (PathTooLongException)
-            {
-                logger.Log(Severity.Warning, "Failed to create parent directory of '" + nested + "': Path too long.");
-                throw;
-            }
-            return nested;
         }
 
         private static string TrapExtension(CompressionMode compression)
@@ -280,7 +248,7 @@ namespace Semmle.Extraction
             if (string.IsNullOrEmpty(folder))
                 folder = Directory.GetCurrentDirectory();
 
-            return NestPaths(logger, folder, filename);
+            return FileUtils.NestPaths(logger, folder, filename);
         }
     }
 }

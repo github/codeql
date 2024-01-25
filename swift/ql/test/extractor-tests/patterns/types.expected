@@ -1,0 +1,199 @@
+| patterns.swift:2:9:2:9 | an_int | Int |
+| patterns.swift:3:9:3:9 | a_string | String |
+| patterns.swift:3:9:3:19 | ... as ... | String |
+| patterns.swift:4:9:4:17 | (...) | (Int, Int, Int) |
+| patterns.swift:4:10:4:10 | x | Int |
+| patterns.swift:4:13:4:13 | y | Int |
+| patterns.swift:4:16:4:16 | z | Int |
+| patterns.swift:5:9:5:9 | _ | String |
+| patterns.swift:6:9:6:11 | (...) | String |
+| patterns.swift:6:10:6:10 | _ | String |
+| patterns.swift:10:9:10:9 | point | (Int, Int) |
+| patterns.swift:12:10:12:21 | let ... | (Int, Int) |
+| patterns.swift:12:14:12:21 | (...) | (Int, Int) |
+| patterns.swift:12:15:12:15 | xx | Int |
+| patterns.swift:12:19:12:19 | yy | Int |
+| patterns.swift:16:10:16:14 | =~ ... | Int |
+| patterns.swift:17:10:17:10 | _ | Int |
+| patterns.swift:24:9:24:9 | v | Foo |
+| patterns.swift:24:9:24:12 | ... as ... | Foo |
+| patterns.swift:27:10:27:11 | .bar | Foo |
+| patterns.swift:28:10:28:23 | let ... | Foo |
+| patterns.swift:28:14:28:23 | .baz(...) | Foo |
+| patterns.swift:28:18:28:23 | (...) | (Int, String) |
+| patterns.swift:28:19:28:19 | i | Int |
+| patterns.swift:28:22:28:22 | s | String |
+| patterns.swift:31:9:31:9 | w | Int? |
+| patterns.swift:31:9:31:15 | ... as ... | Int? |
+| patterns.swift:34:10:34:15 | let ... | Int? |
+| patterns.swift:34:14:34:14 | n | Int |
+| patterns.swift:34:14:34:15 | let ...? | Int? |
+| patterns.swift:35:10:35:10 | _ | Int? |
+| patterns.swift:38:9:38:9 | a | Any |
+| patterns.swift:38:9:38:12 | ... as ... | Any |
+| patterns.swift:41:10:41:13 | ... is ... | Any |
+| patterns.swift:42:10:42:19 | let ... | Any |
+| patterns.swift:42:14:42:14 | x | String |
+| patterns.swift:42:14:42:19 | ... is ... | Any |
+| patterns.swift:43:10:43:10 | _ | Any |
+| patterns.swift:46:9:46:9 | b | Bool |
+| patterns.swift:49:10:49:10 | true | Bool |
+| patterns.swift:50:10:50:10 | false | Bool |
+| patterns.swift:55:9:55:9 | a | Int |
+| patterns.swift:55:16:55:16 | b | Int |
+| patterns.swift:55:23:55:23 | c | Int |
+| patterns.swift:55:23:55:26 | ... as ... | Int |
+| patterns.swift:57:8:57:20 | let ... | (Int, Int, Int) |
+| patterns.swift:57:8:57:20 | let ...? | (Int, Int, Int)? |
+| patterns.swift:57:12:57:20 | (...) | (Int, Int, Int) |
+| patterns.swift:57:13:57:13 | a | Int |
+| patterns.swift:57:16:57:16 | b | Int |
+| patterns.swift:57:19:57:19 | c | Int |
+| patterns.swift:58:13:58:29 | (...) | (Int, Int, Int) |
+| patterns.swift:58:14:58:14 | =~ ... | Int |
+| patterns.swift:58:17:58:21 | let ... | Int |
+| patterns.swift:58:21:58:21 | b | Int |
+| patterns.swift:58:24:58:28 | let ... | Int |
+| patterns.swift:58:28:58:28 | c | Int |
+| patterns.swift:61:14:61:14 | =~ ... | Int |
+| patterns.swift:62:14:62:18 | let ... | Int |
+| patterns.swift:62:18:62:18 | c | Int |
+| patterns.swift:63:9:63:9 | _ | Int |
+| patterns.swift:78:9:78:9 | a | MyEnum |
+| patterns.swift:78:9:78:13 | ... as ... | MyEnum |
+| patterns.swift:81:10:81:11 | .myNone | MyEnum |
+| patterns.swift:83:10:83:25 | .mySingle(...) | MyEnum |
+| patterns.swift:83:19:83:25 | (...) | (Int) |
+| patterns.swift:83:20:83:24 | let ... | (Int) |
+| patterns.swift:83:24:83:24 | a | (Int) |
+| patterns.swift:85:10:85:30 | .myPair(...) | MyEnum |
+| patterns.swift:85:17:85:30 | (...) | (Int, Int) |
+| patterns.swift:85:18:85:22 | let ... | Int |
+| patterns.swift:85:22:85:22 | a | Int |
+| patterns.swift:85:25:85:29 | let ... | Int |
+| patterns.swift:85:29:85:29 | b | Int |
+| patterns.swift:88:10:88:26 | let ... | MyEnum |
+| patterns.swift:88:14:88:26 | .myCons(...) | MyEnum |
+| patterns.swift:88:21:88:26 | (...) | (Int, MyEnum) |
+| patterns.swift:88:22:88:22 | a | Int |
+| patterns.swift:88:25:88:25 | _ | MyEnum |
+| patterns.swift:92:13:92:28 | .mySingle(...) | MyEnum |
+| patterns.swift:92:22:92:28 | (...) | (Int) |
+| patterns.swift:92:23:92:27 | let ... | (Int) |
+| patterns.swift:92:27:92:27 | x | (Int) |
+| patterns.swift:95:13:95:33 | .myPair(...) | MyEnum |
+| patterns.swift:95:20:95:33 | (...) | (Int, Int) |
+| patterns.swift:95:21:95:25 | let ... | Int |
+| patterns.swift:95:25:95:25 | x | Int |
+| patterns.swift:95:28:95:32 | let ... | Int |
+| patterns.swift:95:32:95:32 | y | Int |
+| patterns.swift:103:10:103:11 | .myNone | MyEnum |
+| patterns.swift:105:10:105:25 | .mySingle(...) | MyEnum |
+| patterns.swift:105:19:105:25 | (...) | (Int) |
+| patterns.swift:105:20:105:24 | let ... | (Int) |
+| patterns.swift:105:24:105:24 | a | (Int) |
+| patterns.swift:107:10:107:30 | .myPair(...) | MyEnum |
+| patterns.swift:107:17:107:30 | (...) | (Int, Int) |
+| patterns.swift:107:18:107:22 | let ... | Int |
+| patterns.swift:107:22:107:22 | a | Int |
+| patterns.swift:107:25:107:29 | let ... | Int |
+| patterns.swift:107:29:107:29 | b | Int |
+| patterns.swift:110:10:110:26 | let ... | MyEnum |
+| patterns.swift:110:14:110:26 | .myCons(...) | MyEnum |
+| patterns.swift:110:21:110:26 | (...) | (Int, MyEnum) |
+| patterns.swift:110:22:110:22 | a | Int |
+| patterns.swift:110:25:110:25 | _ | MyEnum |
+| patterns.swift:114:13:114:28 | .mySingle(...) | MyEnum |
+| patterns.swift:114:22:114:28 | (...) | (Int) |
+| patterns.swift:114:23:114:27 | let ... | (Int) |
+| patterns.swift:114:27:114:27 | x | (Int) |
+| patterns.swift:117:13:117:33 | .myPair(...) | MyEnum |
+| patterns.swift:117:20:117:33 | (...) | (Int, Int) |
+| patterns.swift:117:21:117:25 | let ... | Int |
+| patterns.swift:117:25:117:25 | x | Int |
+| patterns.swift:117:28:117:32 | let ... | Int |
+| patterns.swift:117:32:117:32 | y | Int |
+| patterns.swift:125:10:125:11 | .myNone | MyEnum |
+| patterns.swift:127:10:127:25 | .mySingle(...) | MyEnum |
+| patterns.swift:127:19:127:25 | (...) | (Int) |
+| patterns.swift:127:20:127:24 | let ... | (Int) |
+| patterns.swift:127:24:127:24 | a | (Int) |
+| patterns.swift:129:10:129:30 | .myPair(...) | MyEnum |
+| patterns.swift:129:17:129:30 | (...) | (Int, Int) |
+| patterns.swift:129:18:129:22 | let ... | Int |
+| patterns.swift:129:22:129:22 | a | Int |
+| patterns.swift:129:25:129:29 | let ... | Int |
+| patterns.swift:129:29:129:29 | b | Int |
+| patterns.swift:132:10:132:26 | let ... | MyEnum |
+| patterns.swift:132:14:132:26 | .myCons(...) | MyEnum |
+| patterns.swift:132:21:132:26 | (...) | (Int, MyEnum) |
+| patterns.swift:132:22:132:22 | a | Int |
+| patterns.swift:132:25:132:25 | _ | MyEnum |
+| patterns.swift:136:13:136:28 | .mySingle(...) | MyEnum |
+| patterns.swift:136:22:136:28 | (...) | (Int) |
+| patterns.swift:136:23:136:27 | let ... | (Int) |
+| patterns.swift:136:27:136:27 | x | (Int) |
+| patterns.swift:139:13:139:33 | .myPair(...) | MyEnum |
+| patterns.swift:139:20:139:33 | (...) | (Int, Int) |
+| patterns.swift:139:21:139:25 | let ... | Int |
+| patterns.swift:139:25:139:25 | x | Int |
+| patterns.swift:139:28:139:32 | let ... | Int |
+| patterns.swift:139:32:139:32 | y | Int |
+| patterns.swift:144:9:144:9 | b | MyEnum |
+| patterns.swift:144:9:144:12 | ... as ... | MyEnum |
+| patterns.swift:147:10:147:11 | .myNone | MyEnum |
+| patterns.swift:149:10:149:25 | .mySingle(...) | MyEnum |
+| patterns.swift:149:19:149:25 | (...) | (Int) |
+| patterns.swift:149:20:149:24 | let ... | (Int) |
+| patterns.swift:149:24:149:24 | a | (Int) |
+| patterns.swift:151:10:151:30 | .myPair(...) | MyEnum |
+| patterns.swift:151:17:151:30 | (...) | (Int, Int) |
+| patterns.swift:151:18:151:22 | let ... | Int |
+| patterns.swift:151:22:151:22 | a | Int |
+| patterns.swift:151:25:151:29 | let ... | Int |
+| patterns.swift:151:29:151:29 | b | Int |
+| patterns.swift:154:10:154:38 | let ... | MyEnum |
+| patterns.swift:154:14:154:38 | .myCons(...) | MyEnum |
+| patterns.swift:154:21:154:38 | (...) | (Int, MyEnum) |
+| patterns.swift:154:22:154:22 | a | Int |
+| patterns.swift:154:25:154:37 | .myPair(...) | MyEnum |
+| patterns.swift:154:32:154:37 | (...) | (Int, Int) |
+| patterns.swift:154:33:154:33 | b | Int |
+| patterns.swift:154:36:154:36 | c | Int |
+| patterns.swift:158:10:158:26 | let ... | MyEnum |
+| patterns.swift:158:14:158:26 | .myCons(...) | MyEnum |
+| patterns.swift:158:21:158:26 | (...) | (Int, MyEnum) |
+| patterns.swift:158:22:158:22 | a | Int |
+| patterns.swift:158:25:158:25 | _ | MyEnum |
+| patterns.swift:162:13:162:28 | .mySingle(...) | MyEnum |
+| patterns.swift:162:22:162:28 | (...) | (Int) |
+| patterns.swift:162:23:162:27 | let ... | (Int) |
+| patterns.swift:162:27:162:27 | x | (Int) |
+| patterns.swift:165:13:165:39 | .myPair(...) | MyEnum |
+| patterns.swift:165:26:165:39 | (...) | (Int, Int) |
+| patterns.swift:165:27:165:31 | let ... | Int |
+| patterns.swift:165:31:165:31 | x | Int |
+| patterns.swift:165:34:165:38 | let ... | Int |
+| patterns.swift:165:38:165:38 | y | Int |
+| patterns.swift:169:13:169:41 | let ... | MyEnum |
+| patterns.swift:169:17:169:41 | .myCons(...) | MyEnum |
+| patterns.swift:169:24:169:41 | (...) | (Int, MyEnum) |
+| patterns.swift:169:25:169:25 | _ | Int |
+| patterns.swift:169:28:169:40 | .myPair(...) | MyEnum |
+| patterns.swift:169:35:169:40 | (...) | (Int, Int) |
+| patterns.swift:169:36:169:36 | _ | Int |
+| patterns.swift:169:39:169:39 | c | Int |
+| patterns.swift:174:10:174:55 | let ... | (MyEnum, MyEnum) |
+| patterns.swift:174:14:174:55 | (...) | (MyEnum, MyEnum) |
+| patterns.swift:174:15:174:27 | .myPair(...) | MyEnum |
+| patterns.swift:174:22:174:27 | (...) | (Int, Int) |
+| patterns.swift:174:23:174:23 | a | Int |
+| patterns.swift:174:26:174:26 | b | Int |
+| patterns.swift:174:30:174:54 | .myCons(...) | MyEnum |
+| patterns.swift:174:37:174:54 | (...) | (Int, MyEnum) |
+| patterns.swift:174:38:174:38 | c | Int |
+| patterns.swift:174:41:174:53 | .myPair(...) | MyEnum |
+| patterns.swift:174:48:174:53 | (...) | (Int, Int) |
+| patterns.swift:174:49:174:49 | d | Int |
+| patterns.swift:174:52:174:52 | e | Int |
+| patterns.swift:180:5:180:5 | _ | (MyEnum, MyEnum) |

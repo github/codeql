@@ -16,6 +16,8 @@ typealias B1_alias = B1
 
 typealias B2_alias = B2
 
+// ---
+
 protocol P {
 }
 
@@ -27,11 +29,60 @@ class C1 : P {
 class C2 : P_alias {
 }
 
-typealias C1_alias = C1
+// ---
 
-typealias C2_alias = C2
+class Outer {
+	class Inner {
+		typealias InnerAlias = A
+	}
+}
+
+// ---
+
+protocol P1 {
+}
+
+protocol P2 {
+}
+
+typealias P1P2 = P1 & P2
+
+// ---
+
+class Box<T> {
+}
+
+// ---
+
+class D1 {
+}
+
+protocol P3 {
+}
+
+extension D1 : P3 {
+}
+
+// ---
+
+class D2 {
+}
+
+typealias D2_alias = D2
+
+protocol P4 {
+}
+
+typealias P4_alias = P4
+
+extension D2 : P4_alias {
+}
+
+// ---
 
 func test() {
+	var i : Int
+	var j : Any?
 	var a : A
 	var a_alias : A_alias
 	var a_optional_alias : A_optional_alias
@@ -43,6 +94,11 @@ func test() {
 	var p_alias : P_alias
 	var c1 : C1
 	var c2 : C2
-	var c1_alias : C1_alias
-	var c2_alias : C2_alias
+	var o : Outer
+	var oi : Outer.Inner
+	var oia : Outer.Inner.InnerAlias
+	var p1p2 : P1P2
+	var boxInt : Box<A>
+	var d1: D1
+	var d2: D2
 }

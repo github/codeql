@@ -25,6 +25,7 @@ using namespace std::string_literals;
 using namespace codeql::main_logger;
 
 const std::string_view codeql::programName = "extractor";
+const std::string_view codeql::extractorName = "swift";
 
 // must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
@@ -85,15 +86,18 @@ class Observer : public swift::FrontendObserver {
 
   void parsedArgs(swift::CompilerInvocation& invocation) override {
     auto& options = invocation.getFrontendOptions();
+    options.KeepASTContext = true;
     lockOutputSwiftModuleTraps(state, options);
     processFrontendOptions(state, options);
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
+    // remove default consumers to avoid double messaging
+    instance.getDiags().takeConsumers();
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
-  void performedSemanticAnalysis(swift::CompilerInstance& compiler) override {
+  void performedCompilation(swift::CompilerInstance& compiler) override {
     codeql::extractSwiftFiles(state, compiler);
     codeql::extractSwiftInvocation(state, compiler, invocationTrap);
     codeql::extractExtractLazyDeclarations(state, compiler);
@@ -174,9 +178,7 @@ codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
   return std::move(maybeDomain.value());
 }
 
-codeql::SwiftExtractorConfiguration configure(int argc,
-                                              char** argv,
-                                              const std::string& resourceDir) {
+codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
   codeql::SwiftExtractorConfiguration configuration{};
   configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", "extractor-out/trap/swift");
   configuration.sourceArchiveDir =
@@ -184,13 +186,6 @@ codeql::SwiftExtractorConfiguration configure(int argc,
   configuration.scratchDir =
       getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", "extractor-out/working");
   configuration.frontendOptions.assign(argv + 1, argv + argc);
-  // TODO: Should be moved to the tracer config
-  for (int i = 0; i < argc - 1; i++) {
-    if (std::string("-resource-dir") == configuration.frontendOptions[i]) {
-      configuration.frontendOptions[i + 1] = resourceDir.c_str();
-      break;
-    }
-  }
   return configuration;
 }
 
@@ -223,9 +218,7 @@ int main(int argc, char** argv, char** envp) {
   INITIALIZE_LLVM();
   initializeSwiftModules();
 
-  std::string resourceDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_ROOT", ".") + "/resource-dir/" +
-                            getenv_or("CODEQL_PLATFORM", ".");
-  const auto configuration = configure(argc, argv, resourceDir);
+  const auto configuration = configure(argc, argv);
   LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
   LOG_DEBUG("environment:\n{}\n", envDump(envp));
 
