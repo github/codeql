@@ -1,0 +1,7 @@
+| EnvironmentVariables.cs:10:28:10:82 | call to method GetEnvironmentVariable |
+| EnvironmentVariables.cs:11:40:11:129 | call to method GetEnvironmentVariable |
+| EnvironmentVariables.cs:12:39:12:128 | call to method GetEnvironmentVariable |
+| EnvironmentVariables.cs:17:48:17:84 | call to method GetEnvironmentVariables |
+| EnvironmentVariables.cs:18:60:18:129 | call to method GetEnvironmentVariables |
+| EnvironmentVariables.cs:19:59:19:128 | call to method GetEnvironmentVariables |
+| EnvironmentVariables.cs:24:31:24:78 | call to method ExpandEnvironmentVariables |

@@ -29,3 +29,10 @@ class TextFieldSource extends LocalUserInputSource {
 
   override string getSourceType() { result = "TextBox text" }
 }
+
+abstract class EnvironmentVariableSource extends LocalFlowSource {
+  override string getThreatModel() { result = "environment" }
+
+  override string getSourceType() { result = "environment variable" }
+}
+
