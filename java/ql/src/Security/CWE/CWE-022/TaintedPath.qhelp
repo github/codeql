@@ -18,6 +18,7 @@ unexpected special characters such as "..". Such a path could point anywhere on 
 <p>Common validation methods include checking that the normalized path is relative and does not contain
 any ".." components, or checking that the path is contained within a safe folder. The method you should use depends 
 on how the path is used in the application, and whether the path should be a single path component.
+</p>
 
 <p>If the path should be a single path component (such as a file name), you can check for the existence 
 of any path separators ("/" or "\"), or ".." sequences in the input, and reject the input if any are found.
