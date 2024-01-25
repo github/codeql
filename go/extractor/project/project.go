@@ -52,6 +52,17 @@ func checkDirsNested(inputDirs []string) (string, bool) {
 	return dirs[0], true
 }
 
+// Find all go.work files in the working directory and its subdirectories
+func findGoWorkFiles() []string {
+	return util.FindAllFilesWithName(".", "go.work", "vendor")
+}
+
+// Find all go.mod files in the specified directory and its subdirectories
+func findGoModFiles(root string) []string {
+	return util.FindAllFilesWithName(root, "go.mod", "vendor")
+}
+
+
 // Returns the directory to run the go build in and whether to use a go.mod
 // file.
 func getBuildRoot(emitDiagnostics bool) (baseDir string, useGoMod bool) {
