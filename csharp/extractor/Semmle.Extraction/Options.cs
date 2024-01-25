@@ -87,8 +87,7 @@ namespace Semmle.Extraction
             switch (flag)
             {
                 case "silent":
-                    if (value)
-                        Verbosity = Verbosity.Off;
+                    Verbosity = value ? Verbosity.Off : Verbosity.Info;
                     return true;
                 case "verbose":
                     Verbosity = value ? Verbosity.Debug : Verbosity.Error;
