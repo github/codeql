@@ -3773,14 +3773,11 @@ module MakeImpl<InputSig Lang> {
       }
 
       override PathNodeImpl getASuccessorImpl() {
-        not outBarrier(node, state) and
-        (
-          // an intermediate step to another intermediate node
-          result = this.getSuccMid()
-          or
-          // a final step to a sink
-          result = this.getSuccMid().projectToSink()
-        )
+        // an intermediate step to another intermediate node
+        result = this.getSuccMid()
+        or
+        // a final step to a sink
+        result = this.getSuccMid().projectToSink()
       }
 
       override predicate isSource() {
