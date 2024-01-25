@@ -62,6 +62,126 @@ func findGoModFiles(root string) []string {
 	return util.FindAllFilesWithName(root, "go.mod", "vendor")
 }
 
+// Given a list of `go.mod` file paths, try to parse them all. The resulting array of `GoModule` objects
+// will be the same length as the input array and the objects will contain at least the `go.mod` path.
+// If parsing the corresponding file is successful, then the parsed contents will also be available.
+func loadGoModules(goModFilePaths []string) []*GoModule {
+	results := make([]*GoModule, len(goModFilePaths))
+
+	for i, goModFilePath := range goModFilePaths {
+		results[i] = new(GoModule)
+		results[i].Path = goModFilePath
+
+		modFileSrc, err := os.ReadFile(goModFilePath)
+
+		if err != nil {
+			log.Printf("Unable to read %s: %s.\n", goModFilePath, err.Error())
+			continue
+		}
+
+		modFile, err := modfile.ParseLax(goModFilePath, modFileSrc, nil)
+
+		if err != nil {
+			log.Printf("Unable to parse %s: %s.\n", goModFilePath, err.Error())
+			continue
+		}
+
+		results[i].Module = modFile
+	}
+
+	return results
+}
+
+// Given a path to a `go.work` file, this function attempts to parse the `go.work`. If unsuccessful,
+// we attempt to discover `go.mod` files within subdirectories of the directory containing the `go.work`
+// file ourselves.
+func discoverWorkspace(workFilePath string) GoWorkspace {
+	log.Printf("Loading %s...\n", workFilePath)
+	baseDir := filepath.Dir(workFilePath)
+	workFileSrc, err := os.ReadFile(workFilePath)
+
+	if err != nil {
+		// We couldn't read the `go.work` file for some reason; let's try to find `go.mod` files ourselves
+		log.Printf("Unable to read %s, falling back to finding `go.mod` files manually:\n%s\n", workFilePath, err.Error())
+		return GoWorkspace{
+			BaseDir:  baseDir,
+			UseGoMod: true,
+			Modules:  loadGoModules(findGoModFiles(baseDir)),
+		}
+	}
+
+	workFile, err := modfile.ParseWork(workFilePath, workFileSrc, nil)
+
+	if err != nil {
+		// The `go.work` file couldn't be parsed for some reason; let's try to find `go.mod` files ourselves
+		log.Printf("Unable to parse %s, falling back to finding `go.mod` files manually:\n%s\n", workFilePath, err.Error())
+		return GoWorkspace{
+			BaseDir:  baseDir,
+			UseGoMod: true,
+			Modules:  loadGoModules(findGoModFiles(baseDir)),
+		}
+	}
+
+	// Get the paths of all of the `go.mod` files that we read from the `go.work` file.
+	goModFilePaths := make([]string, len(workFile.Use))
+
+	for i, use := range workFile.Use {
+		if filepath.IsAbs(use.Path) {
+			// TODO: This case might be problematic for some other logic (e.g. stray file detection)
+			goModFilePaths[i] = filepath.Join(use.Path, "go.mod")
+		} else {
+			goModFilePaths[i] = filepath.Join(filepath.Dir(workFilePath), use.Path, "go.mod")
+		}
+	}
+
+	log.Printf("%s uses the following Go modules:\n%s\n", workFilePath, strings.Join(goModFilePaths, "\n"))
+
+	return GoWorkspace{
+		BaseDir:       baseDir,
+		UseGoMod:      true,
+		WorkspaceFile: workFile,
+		Modules:       loadGoModules(goModFilePaths),
+	}
+}
+
+// Analyse the working directory to discover workspaces.
+func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
+	// Try to find any `go.work` files which may exist in the working directory.
+	goWorkFiles := findGoWorkFiles()
+
+	if len(goWorkFiles) == 0 {
+		// There is no `go.work` file. Find all `go.mod` files in the working directory.
+		log.Println("Found no go.work files in the workspace; looking for go.mod files...")
+
+		goModFiles := findGoModFiles(".")
+
+		// Return a separate workspace for each `go.mod` file that we found.
+		results := make([]GoWorkspace, len(goModFiles))
+
+		for i, goModFile := range goModFiles {
+			results[i] = GoWorkspace{
+				BaseDir:  filepath.Dir(goModFile),
+				UseGoMod: true,
+				Modules:  loadGoModules([]string{goModFile}),
+			}
+		}
+
+		return results
+	} else {
+		// We have found `go.work` files, try to load them all.
+		log.Printf("Found go.work files in %s.\n", strings.Join(goWorkFiles, ", "))
+
+		if emitDiagnostics {
+			diagnostics.EmitGoWorkFound(goWorkFiles)
+		}
+
+		results := make([]GoWorkspace, len(goWorkFiles))
+		for i, workFilePath := range goWorkFiles {
+			results[i] = discoverWorkspace(workFilePath)
+		}
+		return results
+	}
+}
 
 // Returns the directory to run the go build in and whether to use a go.mod
 // file.
