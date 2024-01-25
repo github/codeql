@@ -10,9 +10,27 @@ import (
 
 	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/util"
+	"golang.org/x/mod/modfile"
 	"golang.org/x/mod/semver"
 )
 
+// Represents information about a `go.mod` file: this is at least the path to the `go.mod` file,
+// plus the parsed contents of the file, if available.
+type GoModule struct {
+	Path   string        // The path to the `go.mod` file
+	Module *modfile.File // The parsed contents of the `go.mod` file
+}
+
+// Represents information about a Go project workspace: this may either be a folder containing
+// a `go.work` file or a collection of `go.mod` files.
+type GoWorkspace struct {
+	BaseDir       string            // The base directory for this workspace
+	UseGoMod      bool              // Whether to use modules or not
+	WorkspaceFile *modfile.WorkFile // The `go.work` file for this workspace
+	Modules       []*GoModule       // A list of `go.mod` files
+}
+
+// Determines whether any of the directory paths in the input are nested.
 func checkDirsNested(inputDirs []string) (string, bool) {
 	// replace "." with "" so that we can check if all the paths are nested
 	dirs := make([]string, len(inputDirs))
