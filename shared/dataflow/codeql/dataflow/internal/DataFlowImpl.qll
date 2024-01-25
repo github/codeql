@@ -956,6 +956,12 @@ module MakeImpl<InputSig Lang> {
       }
 
       pragma[nomagic]
+      predicate nodeMayFlowThrough(NodeEx node, Ap ap) {
+        throughFlowNodeCand(node) and
+        exists(ap)
+      }
+
+      pragma[nomagic]
       predicate callMayFlowThroughRev(DataFlowCall call) {
         exists(ArgNodeEx arg, boolean toReturn |
           revFlow(arg, toReturn) and
@@ -1158,6 +1164,8 @@ module MakeImpl<InputSig Lang> {
 
       predicate returnMayFlowThrough(RetNodeEx ret, Ap argAp, Ap ap, ReturnKindExt kind);
 
+      predicate nodeMayFlowThrough(NodeEx node, Ap ap);
+
       predicate storeStepCand(
         NodeEx node1, Ap ap1, Content c, NodeEx node2, DataFlowType contentType,
         DataFlowType containerType
@@ -1255,8 +1263,8 @@ module MakeImpl<InputSig Lang> {
           Typ t, LocalCc lcc
         );
 
-        bindingset[node, state, t0, ap]
-        predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t);
+        bindingset[node, state, t0, ap, inSummaryCtx]
+        predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx);
 
         bindingset[typ, contentType]
         predicate typecheckStore(Typ typ, DataFlowType contentType);
@@ -1317,9 +1325,30 @@ module MakeImpl<InputSig Lang> {
           NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, ArgTypOption argT,
           ApOption argAp, Typ t0, Typ t, Ap ap, ApApprox apa
         ) {
-          fwdFlow0(node, state, cc, summaryCtx, argT, argAp, t0, ap, apa) and
-          PrevStage::revFlow(node, state, apa) and
-          filter(node, state, t0, ap, t)
+          exists(
+            ParamNodeOption summaryCtx0, ArgTypOption argT0, ApOption argAp0, boolean inSummaryCtx
+          |
+            fwdFlow0(node, state, cc, summaryCtx0, argT0, argAp0, t0, ap, apa) and
+            PrevStage::revFlow(node, state, apa) and
+            (
+              (
+                if summaryCtx0 = TParamNodeSome(_) //and
+                then
+                  // PrevStage::nodeMayFlowThrough(node, apa)
+                  summaryCtx = summaryCtx0 and
+                  argT = argT0 and
+                  argAp = argAp0 and
+                  inSummaryCtx = true
+                else (
+                  summaryCtx = TParamNodeNone() and
+                  argT instanceof ArgTypOption::None and
+                  argAp = apNone() and
+                  inSummaryCtx = false
+                )
+              ) and
+              filter(node, state, t0, ap, t, inSummaryCtx)
+            )
+          )
         }
 
         pragma[nomagic]
@@ -1374,15 +1403,17 @@ module MakeImpl<InputSig Lang> {
           or
           // flow into a callable
           fwdFlowIn(node, apa, state, cc, t, ap) and
-          if PrevStage::parameterMayFlowThrough(node, apa)
-          then (
-            summaryCtx = TParamNodeSome(node.asNode()) and
-            argT = ArgTypOption::some(toArgTyp(t)) and
-            argAp = apSome(ap)
-          ) else (
-            summaryCtx = TParamNodeNone() and
-            argT instanceof ArgTypOption::None and
-            argAp = apNone()
+          (
+            if PrevStage::parameterMayFlowThrough(node, apa)
+            then
+              summaryCtx = TParamNodeSome(node.asNode()) and
+              argT = ArgTypOption::some(toArgTyp(t)) and
+              argAp = apSome(ap)
+            else (
+              summaryCtx = TParamNodeNone() and
+              argT instanceof ArgTypOption::None and
+              argAp = apNone()
+            )
           )
           or
           // flow out of a callable
@@ -2285,6 +2316,11 @@ module MakeImpl<InputSig Lang> {
         }
 
         pragma[nomagic]
+        predicate nodeMayFlowThrough(NodeEx node, Ap ap) {
+          revFlow(node, _, TReturnCtxMaybeFlowThrough(_), _, ap)
+        }
+
+        pragma[nomagic]
         private predicate revFlowThroughArg(
           DataFlowCall call, ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp,
           Ap ap
@@ -2336,6 +2372,42 @@ module MakeImpl<InputSig Lang> {
           )
         }
 
+        pragma[nomagic]
+        private predicate tuplesFwd(NodeEx node, int c) {
+          c =
+            strictcount(FlowState state, Cc cc, ParamNodeOption summaryCtx, ArgTypOption argT,
+              ApOption argAp, Typ t, Ap ap |
+              fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _)
+            )
+        }
+
+        /** A debug predicate for identifying the most busy node in forwards flow. */
+        additional predicate mostBusyNodeFwd(
+          NodeEx node, int c, FlowState state, Cc cc, ParamNodeOption summaryCtx, ArgTypOption argT,
+          ApOption argAp, Typ t, Ap ap
+        ) {
+          tuplesFwd(node, c) and
+          c = max(int i | tuplesFwd(_, i)) and
+          fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _)
+        }
+
+        pragma[nomagic]
+        private predicate tuplesRev(NodeEx node, int c) {
+          c =
+            strictcount(FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap |
+              revFlow(node, state, returnCtx, returnAp, ap)
+            )
+        }
+
+        /** A debug predicate for identifying the most busy node in reverse flow. */
+        additional predicate mostBusyNodeRev(
+          NodeEx node, int c, FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap
+        ) {
+          tuplesRev(node, c) and
+          c = max(int i | tuplesRev(_, i)) and
+          revFlow(node, state, returnCtx, returnAp, ap)
+        }
+
         additional predicate stats(
           boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges,
           int tfnodes, int tftuples
@@ -2345,11 +2417,7 @@ module MakeImpl<InputSig Lang> {
           fields = count(Content f0 | fwdConsCand(f0, _, _)) and
           conscand = count(Content f0, Typ t, Ap ap | fwdConsCand(f0, t, ap)) and
           states = count(FlowState state | fwdFlow(_, state, _, _, _, _, _, _, _)) and
-          tuples =
-            count(NodeEx n, FlowState state, Cc cc, ParamNodeOption summaryCtx, ArgTypOption argT,
-              ApOption argAp, Typ t, Ap ap |
-              fwdFlow(n, state, cc, summaryCtx, argT, argAp, t, ap, _)
-            ) and
+          tuples = count(NodeEx n, int c | tuplesFwd(n, c) | c) and
           calledges =
             count(DataFlowCall call, DataFlowCallable c |
               FwdTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
@@ -2362,10 +2430,7 @@ module MakeImpl<InputSig Lang> {
           fields = count(Content f0 | consCand(f0, _, _)) and
           conscand = count(Content f0, Typ t, Ap ap | consCand(f0, t, ap)) and
           states = count(FlowState state | revFlow(_, state, _, _, _)) and
-          tuples =
-            count(NodeEx n, FlowState state, ReturnCtx returnCtx, ApOption retAp, Ap ap |
-              revFlow(n, state, returnCtx, retAp, ap)
-            ) and
+          tuples = count(NodeEx n, int c | tuplesRev(n, c) | c) and
           calledges =
             count(DataFlowCall call, DataFlowCallable c |
               RevTypeFlowInput::dataFlowTakenCallEdgeIn(call, c, _) or
@@ -2566,8 +2631,8 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      bindingset[node, state, t0, ap, inSummaryCtx]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
         PrevStage::revFlowState(state) and
         t0 = t and
         exists(ap) and
@@ -2577,7 +2642,8 @@ module MakeImpl<InputSig Lang> {
           or
           ap = true and
           expectsContentCand(node)
-        )
+        ) and
+        exists(inSummaryCtx)
       }
 
       bindingset[typ, contentType]
@@ -2889,8 +2955,8 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      bindingset[node, state, t0, ap, inSummaryCtx]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
         exists(state) and
         t0 = t and
         exists(ap) and
@@ -2899,7 +2965,8 @@ module MakeImpl<InputSig Lang> {
           notExpectsContent(node)
           or
           expectsContentCand(node, ap)
-        )
+        ) and
+        exists(inSummaryCtx)
       }
 
       bindingset[typ, contentType]
@@ -2964,8 +3031,8 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      bindingset[node, state, t0, ap, inSummaryCtx]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
         exists(state) and
         // We can get away with not using type strengthening here, since we aren't
         // going to use the tracked types in the construction of Stage 4 access
@@ -2978,7 +3045,8 @@ module MakeImpl<InputSig Lang> {
           notExpectsContent(node)
           or
           expectsContentCand(node, ap)
-        )
+        ) and
+        exists(inSummaryCtx)
       }
 
       bindingset[typ, contentType]
@@ -2991,47 +3059,26 @@ module MakeImpl<InputSig Lang> {
 
     private module Stage3 = MkStage<Stage2_5>::Stage<Stage3Param>;
 
-    pragma[nomagic]
-    private predicate busy(NodeEx node, int c) {
-      c =
-        strictcount(FlowState state, Stage3::Cc cc, ParamNodeOption summaryCtx,
-          Stage3::ArgTypOption argT, Stage3::ApOption argAp, Stage3::Typ t, Stage3::Ap ap |
-          Stage3::fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _)
-        )
-    }
+    private predicate mostBusyNodeFwd3 = Stage3::mostBusyNodeFwd/9;
 
-    private predicate busy(
-      NodeEx node, int c, FlowState state, Stage3::Cc cc, ParamNodeOption summaryCtx,
-      Stage3::ArgTypOption argT, Stage3::ApOption argAp, Stage3::Typ t, Stage3::Ap ap
+    private predicate mostBusyNodeFwd3_5 = Stage3_5::mostBusyNodeFwd/9;
+
+    private predicate mostBusyNodeFwd4 = Stage4::mostBusyNodeFwd/9;
+
+    private predicate mostBusyNodeFwd5 = Stage5::mostBusyNodeFwd/9;
+
+    bindingset[node, t0, inSummaryCtx]
+    private predicate strengthenType(
+      NodeEx node, DataFlowType t0, DataFlowType t, boolean inSummaryCtx
     ) {
-      busy(node, c) and
-      c = max(int i | busy(_, i)) and
-      Stage3::fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _)
-    }
-
-    pragma[nomagic]
-    private predicate busyRev(NodeEx node, int c) {
-      c =
-        strictcount(FlowState state, ReturnCtx returnCtx, Stage3::ApOption returnAp, Stage3::Ap ap |
-          Stage3::revFlow(node, state, returnCtx, returnAp, ap)
-        )
-    }
-
-    private predicate busyRev(
-      NodeEx node, int c, FlowState state, ReturnCtx returnCtx, Stage3::ApOption returnAp,
-      Stage3::Ap ap
-    ) {
-      busyRev(node, c) and
-      c = max(int i | busyRev(_, i)) and
-      Stage3::revFlow(node, state, returnCtx, returnAp, ap)
-    }
-
-    bindingset[node, t0]
-    private predicate strengthenType(NodeEx node, DataFlowType t0, DataFlowType t) {
       if castingNodeEx(node)
       then
         exists(DataFlowType nt | nt = node.getDataFlowType() |
-          if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
+          if inSummaryCtx = true and typeStrongerThan(nt, t0)
+          then t = nt
+          else (
+            compatibleTypes(nt, t0) and t = t0
+          )
         )
       else t = t0
     }
@@ -3107,8 +3154,8 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      bindingset[node, state, t0, ap, inSummaryCtx]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
         exists(state) and
         not clear(node, ap) and
         t0 = t and
@@ -3117,7 +3164,8 @@ module MakeImpl<InputSig Lang> {
           notExpectsContent(node)
           or
           expectsContentCand(node, ap)
-        )
+        ) and
+        exists(inSummaryCtx)
       }
 
       bindingset[typ, contentType]
@@ -3157,8 +3205,9 @@ module MakeImpl<InputSig Lang> {
 
       ApOption apSome(Ap ap) { result = TAccessPathFrontSome(ap) }
 
-      import Level1CallContext
-      import NoLocalCallContext
+      // import Level1CallContext
+      // import NoLocalCallContext
+      import BooleanCallContext
 
       pragma[nomagic]
       predicate localStep(
@@ -3199,11 +3248,11 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      bindingset[node, state, t0, ap, inSummaryCtx]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
         exists(state) and
         not clear(node, ap) and
-        strengthenType(node, t0, t) and
+        strengthenType(node, t0, t, inSummaryCtx) and
         (
           notExpectsContent(node)
           or
@@ -3453,9 +3502,9 @@ module MakeImpl<InputSig Lang> {
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
       }
 
-      bindingset[node, state, t0, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
-        strengthenType(node, t0, t) and
+      bindingset[node, state, t0, ap, inSummaryCtx]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
+        strengthenType(node, t0, t, inSummaryCtx) and
         exists(state) and
         exists(ap)
       }
@@ -4205,10 +4254,11 @@ module MakeImpl<InputSig Lang> {
       PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
       AccessPath ap
     ) {
-      exists(DataFlowType t0 |
+      exists(DataFlowType t0, boolean inSummaryCtx |
         pathStep0(mid, node, state, cc, sc, t0, ap) and
         Stage5::revFlow(node, state, ap.getApprox()) and
-        strengthenType(node, t0, t) and
+        (if sc = TSummaryCtxNone() then inSummaryCtx = false else inSummaryCtx = true) and
+        strengthenType(node, t0, t, inSummaryCtx) and
         not inBarrier(node, state)
       )
     }
@@ -4950,7 +5000,10 @@ module MakeImpl<InputSig Lang> {
           notExpectsContent(node) or
           expectsContentEx(node, ap.getHead())
         ) and
-        strengthenType(node, t0, t)
+        exists(boolean inSummaryCtx |
+          (if sc1 = TSummaryCtx1None() then inSummaryCtx = false else inSummaryCtx = true) and
+          strengthenType(node, t0, t, inSummaryCtx)
+        )
       }
 
       pragma[nomagic]
