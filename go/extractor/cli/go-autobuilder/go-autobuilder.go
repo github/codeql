@@ -226,8 +226,7 @@ func tryUpdateGoModAndGoSum(buildInfo project.BuildInfo) {
 		beforeGoSumFileInfo, beforeGoSumErr := os.Stat(goSumPath)
 
 		// run `go mod tidy -e`
-		cmd := exec.Command("go", "mod", "tidy", "-e")
-		cmd.Dir = buildInfo.BaseDir
+		cmd := toolchain.TidyModule(buildInfo.BaseDir)
 		res := util.RunCmd(cmd)
 
 		if !res {
@@ -443,9 +442,7 @@ func initGoModForLegacyProject(buildInfo project.BuildInfo) {
 		return
 	}
 
-	modTidy := exec.Command("go", "mod", "tidy")
-	modTidy.Dir = buildInfo.BaseDir
-
+	modTidy := toolchain.TidyModule(buildInfo.BaseDir)
 	out, err := modTidy.CombinedOutput()
 	log.Println(string(out))
 

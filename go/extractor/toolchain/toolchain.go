@@ -71,3 +71,10 @@ func parseGoVersion(data string) string {
 func SupportsWorkspaces() bool {
 	return semver.Compare(GetEnvGoSemVer(), "v1.18.0") >= 0
 }
+
+// Run `go mod tidy -e` in the directory given by `path`.
+func TidyModule(path string) *exec.Cmd {
+	cmd := exec.Command("go", "mod", "tidy", "-e")
+	cmd.Dir = path
+	return cmd
+}
