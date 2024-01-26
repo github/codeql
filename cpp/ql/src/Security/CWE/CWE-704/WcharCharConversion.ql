@@ -19,7 +19,7 @@ class WideCharPointerType extends PointerType {
 }
 
 /**
- * types that may also be `CharPointerType`, but that are likely used as arbitrary buffers
+ * A type that may also be `CharPointerType`, but that are likely used as arbitrary buffers.
  */
 class UnlikelyToBeAStringType extends Type {
   UnlikelyToBeAStringType() {
