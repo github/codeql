@@ -15,6 +15,20 @@ import (
 	"golang.org/x/mod/semver"
 )
 
+// DependencyInstallerMode is an enum describing how dependencies should be installed
+type DependencyInstallerMode int
+
+const (
+	// GoGetNoModules represents dependency installation using `go get` without modules
+	GoGetNoModules DependencyInstallerMode = iota
+	// GoGetWithModules represents dependency installation using `go get` with modules
+	GoGetWithModules
+	// Dep represent dependency installation using `dep ensure`
+	Dep
+	// Glide represents dependency installation using `glide install`
+	Glide
+)
+
 // Represents information about a `go.mod` file: this is at least the path to the `go.mod` file,
 // plus the parsed contents of the file, if available.
 type GoModule struct {
@@ -274,20 +288,6 @@ func getBuildRoot(emitDiagnostics bool) (baseDirs []string, useGoMod bool) {
 	useGoMod = true
 	return
 }
-
-// DependencyInstallerMode is an enum describing how dependencies should be installed
-type DependencyInstallerMode int
-
-const (
-	// GoGetNoModules represents dependency installation using `go get` without modules
-	GoGetNoModules DependencyInstallerMode = iota
-	// GoGetWithModules represents dependency installation using `go get` with modules
-	GoGetWithModules
-	// Dep represent dependency installation using `dep ensure`
-	Dep
-	// Glide represents dependency installation using `glide install`
-	Glide
-)
 
 // Returns the appropriate DependencyInstallerMode for the current project
 func getDepMode(emitDiagnostics bool) (DependencyInstallerMode, []string) {
