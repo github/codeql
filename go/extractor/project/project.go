@@ -39,10 +39,10 @@ type GoModule struct {
 // Represents information about a Go project workspace: this may either be a folder containing
 // a `go.work` file or a collection of `go.mod` files.
 type GoWorkspace struct {
-	BaseDir       string            // The base directory for this workspace
-	UseGoMod      bool              // Whether to use modules or not
-	WorkspaceFile *modfile.WorkFile // The `go.work` file for this workspace
-	Modules       []*GoModule       // A list of `go.mod` files
+	BaseDir       string                  // The base directory for this workspace
+	WorkspaceFile *modfile.WorkFile       // The `go.work` file for this workspace
+	Modules       []*GoModule             // A list of `go.mod` files
+	DepMode       DependencyInstallerMode // A value indicating how to install dependencies for this workspace
 }
 
 // Determines whether any of the directory paths in the input are nested.
@@ -143,9 +143,9 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 		// We couldn't read the `go.work` file for some reason; let's try to find `go.mod` files ourselves
 		log.Printf("Unable to read %s, falling back to finding `go.mod` files manually:\n%s\n", workFilePath, err.Error())
 		return GoWorkspace{
-			BaseDir:  baseDir,
-			UseGoMod: true,
-			Modules:  loadGoModules(findGoModFiles(baseDir)),
+			BaseDir: baseDir,
+			Modules: loadGoModules(findGoModFiles(baseDir)),
+			DepMode: GoGetWithModules,
 		}
 	}
 
@@ -155,9 +155,9 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 		// The `go.work` file couldn't be parsed for some reason; let's try to find `go.mod` files ourselves
 		log.Printf("Unable to parse %s, falling back to finding `go.mod` files manually:\n%s\n", workFilePath, err.Error())
 		return GoWorkspace{
-			BaseDir:  baseDir,
-			UseGoMod: true,
-			Modules:  loadGoModules(findGoModFiles(baseDir)),
+			BaseDir: baseDir,
+			Modules: loadGoModules(findGoModFiles(baseDir)),
+			DepMode: GoGetWithModules,
 		}
 	}
 
@@ -177,9 +177,9 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 
 	return GoWorkspace{
 		BaseDir:       baseDir,
-		UseGoMod:      true,
 		WorkspaceFile: workFile,
 		Modules:       loadGoModules(goModFilePaths),
+		DepMode:       GoGetWithModules,
 	}
 }
 
@@ -199,9 +199,9 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 
 		for i, goModFile := range goModFiles {
 			results[i] = GoWorkspace{
-				BaseDir:  filepath.Dir(goModFile),
-				UseGoMod: true,
-				Modules:  loadGoModules([]string{goModFile}),
+				BaseDir: filepath.Dir(goModFile),
+				Modules: loadGoModules([]string{goModFile}),
+				DepMode: GoGetWithModules,
 			}
 		}
 
