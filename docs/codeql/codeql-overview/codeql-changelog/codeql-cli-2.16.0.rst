@@ -50,6 +50,14 @@ Improvements
 Query Packs
 -----------
 
+Bug Fixes
+~~~~~~~~~
+
+Java
+""""
+
+*   The three queries :code:`java/insufficient-key-size`, :code:`java/server-side-template-injection`, and :code:`java/android/implicit-pendingintents` had accidentally general extension points allowing arbitrary string-based flow state. This has been fixed and the old extension points have been deprecated where possible, and otherwise updated.
+
 Minor Analysis Improvements
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -80,14 +88,6 @@ Swift
 """""
 
 *   Added additional sinks for the "Cleartext logging of sensitive information" (:code:`swift/cleartext-logging`) query. Some of these sinks are heuristic (imprecise) in nature.
-
-Deprecated Queries
-~~~~~~~~~~~~~~~~~~
-
-Java
-""""
-
-*   The three queries :code:`java/insufficient-key-size`, :code:`java/server-side-template-injection`, and :code:`java/android/implicit-pendingintents` had accidentally general extension points allowing arbitrary string-based flow state. This has been fixed and the old extension points have been deprecated where possible, and otherwise updated.
 
 New Queries
 ~~~~~~~~~~~
