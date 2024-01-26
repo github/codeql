@@ -16,10 +16,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
-<<<<<<< HEAD
-=======
 import semmle.code.java.security.TaintedPathQuery
->>>>>>> 9e469c9c32 (Migrate path injection sinks to MaD)
 import JFinalController
 import semmle.code.java.security.PathSanitizer
 private import semmle.code.java.security.Sanitizers
@@ -56,11 +53,7 @@ module InjectFilePathConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
-<<<<<<< HEAD
-    sinkNode(sink, "path-injection") and
-=======
     sink instanceof TaintedPathSink and
->>>>>>> 9e469c9c32 (Migrate path injection sinks to MaD)
     not sink instanceof NormalizedPathNode
   }
 

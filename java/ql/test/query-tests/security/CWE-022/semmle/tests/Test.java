@@ -60,10 +60,8 @@ public class Test {
         // "java.nio.file;Files;false;copy;;;Argument[0];read-file;manual"
         Files.copy((Path) source(), (Path) null); // $ hasTaintFlow
         Files.copy((Path) source(), (OutputStream) null); // $ hasTaintFlow
-        Files.copy((InputStream) source(), null); // $ hasTaintFlow
         // "java.nio.file;Files;false;copy;;;Argument[1];create-file;manual"
         Files.copy((Path) null, (Path) source()); // $ hasTaintFlow
-        Files.copy((Path) null, (OutputStream) source()); // $ hasTaintFlow
         Files.copy((InputStream) null, (Path) source()); // $ hasTaintFlow
         // "java.nio.file;Files;false;createDirectories;;;Argument[0];create-file;manual"
         Files.createDirectories((Path) source()); // $ hasTaintFlow
