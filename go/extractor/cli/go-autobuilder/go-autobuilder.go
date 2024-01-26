@@ -430,31 +430,6 @@ func buildWithCustomCommands(inst string) {
 	util.RunCmd(exec.Command(script.Name()))
 }
 
-// Try to initialize a go.mod file for projects that do not already have one.
-func initGoModForLegacyProject(buildInfo project.BuildInfo) {
-	log.Printf("Project appears to be a legacy Go project, attempting to initialize go.mod")
-
-	modInit := exec.Command("go", "mod", "init", "codeql/auto-project")
-	modInit.Dir = buildInfo.BaseDir
-
-	if !util.RunCmd(modInit) {
-		log.Printf("Failed to initialize go.mod file for this project.")
-		return
-	}
-
-	modTidy := toolchain.TidyModule(buildInfo.BaseDir)
-	out, err := modTidy.CombinedOutput()
-	log.Println(string(out))
-
-	if err != nil {
-		log.Printf("Failed to determine module requirements for this project.")
-
-		if strings.Contains(string(out), "is relative, but relative import paths are not supported in module mode") {
-			diagnostics.EmitRelativeImportPaths()
-		}
-	}
-}
-
 // Install dependencies using the given dependency installer mode.
 func installDependencies(buildInfo project.BuildInfo) {
 	// automatically determine command to install dependencies
@@ -493,13 +468,6 @@ func installDependencies(buildInfo project.BuildInfo) {
 		install = exec.Command("glide", "install")
 		log.Println("Installing dependencies using `glide install`")
 	} else {
-		// If we have `GoGetNoModules`, then the project appears to be a legacy project without
-		// a `go.mod` file. Try to initialize one automatically.
-		// See https://go.dev/blog/migrating-to-go-modules
-		if buildInfo.DepMode == project.GoGetNoModules {
-			initGoModForLegacyProject(buildInfo)
-		}
-
 		// get dependencies
 		install = exec.Command("go", "get", "-v", "./...")
 		install.Dir = buildInfo.BaseDir

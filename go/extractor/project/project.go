@@ -3,12 +3,14 @@ package project
 import (
 	"log"
 	"os"
+	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
 	"strings"
 
 	"github.com/github/codeql-go/extractor/diagnostics"
+	"github.com/github/codeql-go/extractor/toolchain"
 	"github.com/github/codeql-go/extractor/util"
 	"golang.org/x/mod/modfile"
 	"golang.org/x/mod/semver"
@@ -50,6 +52,31 @@ func checkDirsNested(inputDirs []string) (string, bool) {
 		}
 	}
 	return dirs[0], true
+}
+
+// Try to initialize a go.mod file for projects that do not already have one.
+func initGoModForLegacyProject(path string) {
+	log.Printf("Project appears to be a legacy Go project, attempting to initialize go.mod")
+
+	modInit := exec.Command("go", "mod", "init", "codeql/auto-project")
+	modInit.Dir = path
+
+	if !util.RunCmd(modInit) {
+		log.Printf("Failed to initialize go.mod file for this project.")
+		return
+	}
+
+	modTidy := toolchain.TidyModule(path)
+	out, err := modTidy.CombinedOutput()
+	log.Println(string(out))
+
+	if err != nil {
+		log.Printf("Failed to determine module requirements for this project.")
+
+		if strings.Contains(string(out), "is relative, but relative import paths are not supported in module mode") {
+			diagnostics.EmitRelativeImportPaths()
+		}
+	}
 }
 
 // Find all go.work files in the working directory and its subdirectories
@@ -195,11 +222,13 @@ func getBuildRoot(emitDiagnostics bool) (baseDirs []string, useGoMod bool) {
 		totalModuleFiles += len(goWorkspace.Modules)
 	}
 
-	// If there are no `go.mod` files at all, try to build the project without Go modules.
+	// If there are no `go.mod` files at all, create one in line with https://go.dev/blog/migrating-to-go-modules
 	if totalModuleFiles == 0 {
-		log.Println("Found no go.mod files, not using Go modules.")
+		// If we have no `go.mod` files, then the project appears to be a legacy project without
+		// a `go.mod` file. Try to initialize one automatically.
+		initGoModForLegacyProject(".")
 		baseDirs = []string{"."}
-		useGoMod = false
+		useGoMod = true
 		return
 	}
 
