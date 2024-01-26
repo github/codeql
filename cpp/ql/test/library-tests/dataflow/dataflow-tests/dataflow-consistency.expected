@@ -159,6 +159,9 @@ postWithInFlow
 | test.cpp:808:5:808:21 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:808:6:808:21 | global_indirect1 [inner post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:832:5:832:17 | global_direct [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:931:5:931:18 | global_pointer [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:932:5:932:19 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:932:6:932:19 | global_pointer [inner post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
@@ -166,3 +169,4 @@ uniqueContentApprox
 identityLocalStep
 missingArgumentCall
 multipleArgumentCall
+lambdaCallEnclosingCallableMismatch

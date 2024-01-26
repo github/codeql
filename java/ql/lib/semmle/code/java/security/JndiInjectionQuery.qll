@@ -5,6 +5,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Jndi
 import semmle.code.java.frameworks.SpringLdap
 import semmle.code.java.security.JndiInjection
+private import semmle.code.java.security.Sanitizers
 
 /**
  * DEPRECATED: Use `JndiInjectionFlow` instead.
@@ -19,8 +20,7 @@ deprecated class JndiInjectionFlowConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
+    node instanceof SimpleTypeSanitizer or
     node instanceof JndiInjectionSanitizer
   }
 
@@ -38,8 +38,7 @@ module JndiInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
+    node instanceof SimpleTypeSanitizer or
     node instanceof JndiInjectionSanitizer
   }
 

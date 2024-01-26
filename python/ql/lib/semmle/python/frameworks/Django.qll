@@ -1154,9 +1154,6 @@ module PrivateDjango {
     /** Gets a reference to the `django.http` module. */
     API::Node http() { result = django().getMember("http") }
 
-    /** DEPRECATED: Alias for `DjangoHttp` */
-    deprecated module http = DjangoHttp;
-
     /** Provides models for the `django.http` module */
     module DjangoHttp {
       // ---------------------------------------------------------------------------
@@ -2927,6 +2924,11 @@ module PrivateDjango {
   private class DjangoAllowedUrl extends UrlRedirect::Sanitizer {
     DjangoAllowedUrl() {
       this = DataFlow::BarrierGuard<djangoUrlHasAllowedHostAndScheme/3>::getABarrierNode()
+    }
+
+    override predicate sanitizes(UrlRedirect::FlowState state) {
+      // sanitize all flow states
+      any()
     }
   }
 }

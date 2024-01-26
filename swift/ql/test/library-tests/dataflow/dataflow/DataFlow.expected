@@ -1,5 +1,8 @@
 edges
+| file://:0:0:0:0 | .wrappedValue | test.swift:949:15:949:15 | x |
+| file://:0:0:0:0 | .wrappedValue | test.swift:951:15:951:15 | x |
 | file://:0:0:0:0 | KeyPathComponent [some:0] | test.swift:663:13:663:29 | exit #keyPath(...) [some:0] |
+| file://:0:0:0:0 | [post] self [wrappedValue] | file://:0:0:0:0 | self [wrappedValue] |
 | file://:0:0:0:0 | self [a, x] | file://:0:0:0:0 | .a [x] |
 | file://:0:0:0:0 | self [s, x] | file://:0:0:0:0 | .s [x] |
 | file://:0:0:0:0 | self [str] | file://:0:0:0:0 | .str |
@@ -7,6 +10,7 @@ edges
 | file://:0:0:0:0 | self [v2] | file://:0:0:0:0 | .v2 |
 | file://:0:0:0:0 | self [v3] | file://:0:0:0:0 | .v3 |
 | file://:0:0:0:0 | self [v] | file://:0:0:0:0 | .v |
+| file://:0:0:0:0 | self [wrappedValue] | test.swift:958:9:958:9 | self [wrappedValue] |
 | file://:0:0:0:0 | self [x, some:0] | file://:0:0:0:0 | .x [some:0] |
 | file://:0:0:0:0 | self [x] | file://:0:0:0:0 | .x |
 | file://:0:0:0:0 | self [x] | file://:0:0:0:0 | .x |
@@ -14,8 +18,12 @@ edges
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v2] |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v3] |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v] |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [wrappedValue] |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [x] |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [x] |
+| file://:0:0:0:0 | value | test.swift:938:9:938:9 | newValue |
+| file://:0:0:0:0 | value | test.swift:957:9:957:9 | value |
+| file://:0:0:0:0 | value | test.swift:965:9:965:9 | newValue |
 | file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [v2, some:0] |
 | file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [x, some:0] |
 | test.swift:6:19:6:26 | call to source() | test.swift:7:15:7:15 | t1 |
@@ -606,6 +614,24 @@ edges
 | test.swift:908:19:908:26 | call to source() | test.swift:904:13:904:18 | call to ... |
 | test.swift:927:12:927:31 | call to source(_:) | test.swift:927:12:927:31 | OpenExistentialExpr |
 | test.swift:929:12:929:57 | call to source(_:) | test.swift:929:12:929:57 | OpenExistentialExpr |
+| test.swift:937:22:937:29 | call to source() | file://:0:0:0:0 | .wrappedValue |
+| test.swift:938:9:938:9 | newValue | test.swift:938:25:938:25 | newValue |
+| test.swift:941:10:941:24 | wrappedValue | test.swift:942:19:942:19 | wrappedValue |
+| test.swift:943:29:943:36 | call to source() | test.swift:938:9:938:9 | newValue |
+| test.swift:948:33:948:33 | value | file://:0:0:0:0 | value |
+| test.swift:948:42:948:49 | call to source() | test.swift:941:10:941:24 | wrappedValue |
+| test.swift:950:9:950:16 | call to source() | test.swift:948:33:948:33 | value |
+| test.swift:957:9:957:9 | value | file://:0:0:0:0 | value |
+| test.swift:958:9:958:9 | self [wrappedValue] | test.swift:959:23:959:23 | self [wrappedValue] |
+| test.swift:959:23:959:23 | self [wrappedValue] | test.swift:959:23:959:23 | .wrappedValue |
+| test.swift:965:9:965:9 | newValue | test.swift:967:28:967:28 | newValue |
+| test.swift:967:28:967:28 | newValue | test.swift:957:9:957:9 | value |
+| test.swift:971:10:971:24 | wrappedValue | test.swift:972:19:972:19 | wrappedValue |
+| test.swift:978:34:978:34 | value | file://:0:0:0:0 | value |
+| test.swift:980:9:980:16 | call to source() | test.swift:978:34:978:34 | value |
+| test.swift:983:38:983:45 | call to source() | test.swift:971:10:971:24 | wrappedValue |
+| test.swift:988:34:988:34 | value | file://:0:0:0:0 | value |
+| test.swift:991:10:991:17 | call to source() | test.swift:988:34:988:34 | value |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .s [x] | semmle.label | .s [x] |
@@ -614,6 +640,7 @@ nodes
 | file://:0:0:0:0 | .v2 | semmle.label | .v2 |
 | file://:0:0:0:0 | .v2 [some:0] | semmle.label | .v2 [some:0] |
 | file://:0:0:0:0 | .v3 | semmle.label | .v3 |
+| file://:0:0:0:0 | .wrappedValue | semmle.label | .wrappedValue |
 | file://:0:0:0:0 | .x | semmle.label | .x |
 | file://:0:0:0:0 | .x | semmle.label | .x |
 | file://:0:0:0:0 | .x | semmle.label | .x |
@@ -623,6 +650,7 @@ nodes
 | file://:0:0:0:0 | [post] self [v2] | semmle.label | [post] self [v2] |
 | file://:0:0:0:0 | [post] self [v3] | semmle.label | [post] self [v3] |
 | file://:0:0:0:0 | [post] self [v] | semmle.label | [post] self [v] |
+| file://:0:0:0:0 | [post] self [wrappedValue] | semmle.label | [post] self [wrappedValue] |
 | file://:0:0:0:0 | [post] self [x, some:0] | semmle.label | [post] self [x, some:0] |
 | file://:0:0:0:0 | [post] self [x] | semmle.label | [post] self [x] |
 | file://:0:0:0:0 | [post] self [x] | semmle.label | [post] self [x] |
@@ -633,10 +661,15 @@ nodes
 | file://:0:0:0:0 | self [v2] | semmle.label | self [v2] |
 | file://:0:0:0:0 | self [v3] | semmle.label | self [v3] |
 | file://:0:0:0:0 | self [v] | semmle.label | self [v] |
+| file://:0:0:0:0 | self [wrappedValue] | semmle.label | self [wrappedValue] |
 | file://:0:0:0:0 | self [x, some:0] | semmle.label | self [x, some:0] |
 | file://:0:0:0:0 | self [x] | semmle.label | self [x] |
 | file://:0:0:0:0 | self [x] | semmle.label | self [x] |
 | file://:0:0:0:0 | self [x] | semmle.label | self [x] |
+| file://:0:0:0:0 | value | semmle.label | value |
+| file://:0:0:0:0 | value | semmle.label | value |
+| file://:0:0:0:0 | value | semmle.label | value |
+| file://:0:0:0:0 | value | semmle.label | value |
 | file://:0:0:0:0 | value | semmle.label | value |
 | file://:0:0:0:0 | value | semmle.label | value |
 | file://:0:0:0:0 | value | semmle.label | value |
@@ -1262,6 +1295,30 @@ nodes
 | test.swift:929:12:929:57 | OpenExistentialExpr | semmle.label | OpenExistentialExpr |
 | test.swift:929:12:929:57 | call to source(_:) | semmle.label | call to source(_:) |
 | test.swift:930:12:930:65 | call to source(_:) | semmle.label | call to source(_:) |
+| test.swift:937:22:937:29 | call to source() | semmle.label | call to source() |
+| test.swift:938:9:938:9 | newValue | semmle.label | newValue |
+| test.swift:938:25:938:25 | newValue | semmle.label | newValue |
+| test.swift:941:10:941:24 | wrappedValue | semmle.label | wrappedValue |
+| test.swift:942:19:942:19 | wrappedValue | semmle.label | wrappedValue |
+| test.swift:943:29:943:36 | call to source() | semmle.label | call to source() |
+| test.swift:948:33:948:33 | value | semmle.label | value |
+| test.swift:948:42:948:49 | call to source() | semmle.label | call to source() |
+| test.swift:949:15:949:15 | x | semmle.label | x |
+| test.swift:950:9:950:16 | call to source() | semmle.label | call to source() |
+| test.swift:951:15:951:15 | x | semmle.label | x |
+| test.swift:957:9:957:9 | value | semmle.label | value |
+| test.swift:958:9:958:9 | self [wrappedValue] | semmle.label | self [wrappedValue] |
+| test.swift:959:23:959:23 | .wrappedValue | semmle.label | .wrappedValue |
+| test.swift:959:23:959:23 | self [wrappedValue] | semmle.label | self [wrappedValue] |
+| test.swift:965:9:965:9 | newValue | semmle.label | newValue |
+| test.swift:967:28:967:28 | newValue | semmle.label | newValue |
+| test.swift:971:10:971:24 | wrappedValue | semmle.label | wrappedValue |
+| test.swift:972:19:972:19 | wrappedValue | semmle.label | wrappedValue |
+| test.swift:978:34:978:34 | value | semmle.label | value |
+| test.swift:980:9:980:16 | call to source() | semmle.label | call to source() |
+| test.swift:983:38:983:45 | call to source() | semmle.label | call to source() |
+| test.swift:988:34:988:34 | value | semmle.label | value |
+| test.swift:991:10:991:17 | call to source() | semmle.label | call to source() |
 subpaths
 | test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:32:75:32 | [post] y |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |
@@ -1463,3 +1520,11 @@ subpaths
 | test.swift:928:12:928:31 | call to source(_:) | test.swift:928:12:928:31 | call to source(_:) | test.swift:928:12:928:31 | call to source(_:) | result |
 | test.swift:929:12:929:57 | OpenExistentialExpr | test.swift:929:12:929:57 | call to source(_:) | test.swift:929:12:929:57 | OpenExistentialExpr | result |
 | test.swift:930:12:930:65 | call to source(_:) | test.swift:930:12:930:65 | call to source(_:) | test.swift:930:12:930:65 | call to source(_:) | result |
+| test.swift:938:25:938:25 | newValue | test.swift:943:29:943:36 | call to source() | test.swift:938:25:938:25 | newValue | result |
+| test.swift:938:25:938:25 | newValue | test.swift:950:9:950:16 | call to source() | test.swift:938:25:938:25 | newValue | result |
+| test.swift:942:19:942:19 | wrappedValue | test.swift:948:42:948:49 | call to source() | test.swift:942:19:942:19 | wrappedValue | result |
+| test.swift:949:15:949:15 | x | test.swift:937:22:937:29 | call to source() | test.swift:949:15:949:15 | x | result |
+| test.swift:951:15:951:15 | x | test.swift:937:22:937:29 | call to source() | test.swift:951:15:951:15 | x | result |
+| test.swift:959:23:959:23 | .wrappedValue | test.swift:980:9:980:16 | call to source() | test.swift:959:23:959:23 | .wrappedValue | result |
+| test.swift:959:23:959:23 | .wrappedValue | test.swift:991:10:991:17 | call to source() | test.swift:959:23:959:23 | .wrappedValue | result |
+| test.swift:972:19:972:19 | wrappedValue | test.swift:983:38:983:45 | call to source() | test.swift:972:19:972:19 | wrappedValue | result |

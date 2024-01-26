@@ -60,18 +60,17 @@ class Call extends DotNet::Call, Expr, @call {
    */
   cached
   override Expr getArgumentForParameter(DotNet::Parameter p) {
+    // Appears in the positional part of the call
+    result = this.getImplicitArgument(p)
+    or
+    // Appears in the named part of the call
     this.getTarget().getAParameter() = p and
-    (
-      // Appears in the positional part of the call
-      result = this.getImplicitArgument(p)
-      or
-      // Appears in the named part of the call
-      result = this.getExplicitArgument(p.getName())
-    )
+    result = this.getExplicitArgument(p.getName())
   }
 
   pragma[noinline]
   private Expr getImplicitArgument(DotNet::Parameter p) {
+    this.getTarget().getAParameter() = p and
     not exists(result.getExplicitArgumentName()) and
     (
       p.(Parameter).isParams() and
@@ -182,13 +181,37 @@ class Call extends DotNet::Call, Expr, @call {
   /**
    * Gets the argument that corresponds to parameter `p` of a potential
    * run-time target of this call.
+   *
+   * This takes into account both positional and named arguments, but does not
+   * consider default arguments.
    */
+  cached
   Expr getRuntimeArgumentForParameter(Parameter p) {
-    exists(Callable c |
-      c = this.getARuntimeTarget() and
-      p = c.getAParameter() and
+    // Appears in the positional part of the call
+    result = this.getImplicitRuntimeArgument(p)
+    or
+    // Appears in the named part of the call
+    this.getARuntimeTarget().getAParameter() = p and
+    result = this.getExplicitRuntimeArgument(p.getName())
+  }
+
+  pragma[noinline]
+  private Expr getImplicitRuntimeArgument(Parameter p) {
+    this.getARuntimeTarget().getAParameter() = p and
+    not exists(result.getExplicitArgumentName()) and
+    (
+      p.isParams() and
+      result = this.getRuntimeArgument(any(int i | i >= p.getPosition()))
+      or
+      not p.isParams() and
       result = this.getRuntimeArgument(p.getPosition())
     )
+  }
+
+  pragma[nomagic]
+  private Expr getExplicitRuntimeArgument(string name) {
+    result = this.getARuntimeArgument() and
+    result.getExplicitArgumentName() = name
   }
 
   /**

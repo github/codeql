@@ -27,4 +27,8 @@ module RubyDataFlow implements InputSig {
   predicate neverSkipInPathGraph = Private::neverSkipInPathGraph/1;
 
   Node exprNode(DataFlowExpr e) { result = Public::exprNode(e) }
+
+  predicate mayBenefitFromCallContext = Private::mayBenefitFromCallContext/1;
+
+  predicate viableImplInCallContext = Private::viableImplInCallContext/2;
 }

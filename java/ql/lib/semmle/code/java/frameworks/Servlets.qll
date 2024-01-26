@@ -139,9 +139,6 @@ class HttpServletRequestGetRequestUriMethod extends Method {
   }
 }
 
-/** DEPRECATED: Alias for HttpServletRequestGetRequestUriMethod */
-deprecated class HttpServletRequestGetRequestURIMethod = HttpServletRequestGetRequestUriMethod;
-
 /**
  * The method `getRemoteUser()` declared in `javax.servlet.http.HttpServletRequest`.
  */
@@ -244,13 +241,23 @@ class TypeCookie extends Class {
 }
 
 /**
- * The method `getValue(String)` declared in `javax.servlet.http.Cookie`.
+ * The method `getValue()` declared in `javax.servlet.http.Cookie`.
  */
 class CookieGetValueMethod extends Method {
   CookieGetValueMethod() {
     this.getDeclaringType() instanceof TypeCookie and
     this.hasName("getValue") and
     this.getReturnType() instanceof TypeString
+  }
+}
+
+/**
+ * The method `setValue(String)` declared in `javax.servlet.http.Cookie`.
+ */
+class CookieSetValueMethod extends Method {
+  CookieSetValueMethod() {
+    this.getDeclaringType() instanceof TypeCookie and
+    this.hasName("setValue")
   }
 }
 

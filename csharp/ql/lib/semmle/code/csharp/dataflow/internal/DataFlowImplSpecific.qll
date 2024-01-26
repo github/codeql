@@ -20,4 +20,8 @@ module CsharpDataFlow implements InputSig {
   Node exprNode(DataFlowExpr e) { result = Public::exprNode(e) }
 
   predicate accessPathLimit = Private::accessPathLimit/0;
+
+  predicate mayBenefitFromCallContext = Private::mayBenefitFromCallContext/1;
+
+  predicate viableImplInCallContext = Private::viableImplInCallContext/2;
 }
