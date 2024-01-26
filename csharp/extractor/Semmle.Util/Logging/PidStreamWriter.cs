@@ -1,7 +1,7 @@
 using System.IO;
 using System.Diagnostics;
 
-namespace Semmle.Util
+namespace Semmle.Util.Logging
 {
     /// <summary>
     /// Utility stream writer that prefixes the current PID to some writes.
