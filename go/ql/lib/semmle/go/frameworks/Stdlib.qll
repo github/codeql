@@ -154,6 +154,3 @@ module Url {
     }
   }
 }
-
-/** DEPRECATED: Alias for Url */
-deprecated module URL = Url;

@@ -13,7 +13,7 @@
 
 import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
-import FlowAfterFree
+import semmle.code.cpp.security.flowafterfree.FlowAfterFree
 import DoubleFree::PathGraph
 
 /**
@@ -22,26 +22,15 @@ import DoubleFree::PathGraph
  */
 predicate isFree(DataFlow::Node n, Expr e) { isFree(_, n, e, _) }
 
-/**
- * `dealloc1` is a deallocation expression and `e` is an expression such
- * that is deallocated by a deallocation expression, and the `(dealloc1, e)` pair
- * should be excluded by the `FlowFromFree` library.
- *
- * Note that `e` is not necessarily the expression deallocated by `dealloc1`. It will
- * be bound to the second deallocation as identified by the `FlowFromFree` library.
- */
-bindingset[dealloc1, e]
-predicate isExcludeFreePair(DeallocationExpr dealloc1, Expr e) {
-  exists(DeallocationExpr dealloc2 | isFree(_, _, e, dealloc2) |
-    dealloc1.(FunctionCall).getTarget().hasGlobalName("MmFreePagesFromMdl") and
-    // From https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-mmfreepagesfrommdl:
-    // "After calling MmFreePagesFromMdl, the caller must also call ExFreePool
-    // to release the memory that was allocated for the MDL structure."
-    isExFreePoolCall(dealloc2, _)
-  )
+module DoubleFreeParam implements FlowFromFreeParamSig {
+  predicate isSink = isFree/2;
+
+  predicate isExcluded = isExcludedMmFreePageFromMdl/2;
+
+  predicate sourceSinkIsRelated = defaultSourceSinkIsRelated/2;
 }
 
-module DoubleFree = FlowFromFree<isFree/2, isExcludeFreePair/2>;
+module DoubleFree = FlowFromFree<DoubleFreeParam>;
 
 from DoubleFree::PathNode source, DoubleFree::PathNode sink, DeallocationExpr dealloc, Expr e2
 where

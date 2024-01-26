@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -13,22 +14,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal partial class DotNet : IDotNet
     {
         private readonly IDotNetCliInvoker dotnetCliInvoker;
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
         private readonly TemporaryDirectory? tempWorkingDirectory;
 
-        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor, TemporaryDirectory? tempWorkingDirectory = null)
+        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, TemporaryDirectory? tempWorkingDirectory = null)
         {
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
             this.tempWorkingDirectory = tempWorkingDirectory;
             this.dotnetCliInvoker = dotnetCliInvoker;
             Info();
         }
 
-        private DotNet(IDependencyOptions options, ProgressMonitor progressMonitor, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor, tempWorkingDirectory) { }
+        private DotNet(IDependencyOptions options, ILogger logger, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(logger, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), logger, tempWorkingDirectory) { }
 
-        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor) => new DotNet(dotnetCliInvoker, progressMonitor);
+        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger) => new DotNet(dotnetCliInvoker, logger);
 
-        public static IDotNet Make(IDependencyOptions options, ProgressMonitor progressMonitor, TemporaryDirectory tempWorkingDirectory) => new DotNet(options, progressMonitor, tempWorkingDirectory);
+        public static IDotNet Make(IDependencyOptions options, ILogger logger, TemporaryDirectory tempWorkingDirectory) => new DotNet(options, logger, tempWorkingDirectory);
 
         private void Info()
         {
@@ -40,11 +41,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching)
+        private string GetRestoreArgs(RestoreSettings restoreSettings)
         {
-            var args = $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal";
+            var args = $"restore --no-dependencies \"{restoreSettings.File}\" --packages \"{restoreSettings.PackageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal";
 
-            if (forceDotnetRefAssemblyFetching)
+            if (restoreSettings.ForceDotnetRefAssemblyFetching)
             {
                 // Ugly hack: we set the TargetFrameworkRootPath and NetCoreTargetingPackRoot properties to an empty folder:
                 var path = ".empty";
@@ -57,41 +58,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\"";
             }
 
+            if (restoreSettings.PathToNugetConfig != null)
+            {
+                args += $" --configfile \"{restoreSettings.PathToNugetConfig}\"";
+            }
+
+            if (restoreSettings.ForceReevaluation)
+            {
+                args += " --force";
+            }
+
             return args;
         }
 
-        private static IEnumerable<string> GetFirstGroupOnMatch(Regex regex, IEnumerable<string> lines) =>
-            lines
-                .Select(line => regex.Match(line))
-                .Where(match => match.Success)
-                .Select(match => match.Groups[1].Value);
-
-        private static IEnumerable<string> GetAssetsFilePaths(IEnumerable<string> lines) =>
-            GetFirstGroupOnMatch(AssetsFileRegex(), lines);
-
-        private static IEnumerable<string> GetRestoredProjects(IEnumerable<string> lines) =>
-            GetFirstGroupOnMatch(RestoredProjectRegex(), lines);
-
-        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, string? pathToNugetConfig = null)
+        public RestoreResult Restore(RestoreSettings restoreSettings)
         {
-            var args = GetRestoreArgs(projectFile, packageDirectory, forceDotnetRefAssemblyFetching);
-            if (pathToNugetConfig != null)
-            {
-                args += $" --configfile \"{pathToNugetConfig}\"";
-            }
-
+            var args = GetRestoreArgs(restoreSettings);
             var success = dotnetCliInvoker.RunCommand(args, out var output);
-            assets = success ? GetAssetsFilePaths(output) : Array.Empty<string>();
-            return success;
-        }
-
-        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> projects, out IEnumerable<string> assets)
-        {
-            var args = GetRestoreArgs(solutionFile, packageDirectory, forceDotnetRefAssemblyFetching);
-            var success = dotnetCliInvoker.RunCommand(args, out var output);
-            projects = success ? GetRestoredProjects(output) : Array.Empty<string>();
-            assets = success ? GetAssetsFilePaths(output) : Array.Empty<string>();
-            return success;
+            return new(success, output);
         }
 
         public bool New(string folder)
@@ -124,11 +108,5 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var args = $"exec {execArgs}";
             return dotnetCliInvoker.RunCommand(args);
         }
-
-        [GeneratedRegex("Restored\\s+(.+\\.csproj)", RegexOptions.Compiled)]
-        private static partial Regex RestoredProjectRegex();
-
-        [GeneratedRegex("[Assets\\sfile\\shas\\snot\\schanged.\\sSkipping\\sassets\\sfile\\swriting.|Writing\\sassets\\sfile\\sto\\sdisk.]\\sPath:\\s(.+)", RegexOptions.Compiled)]
-        private static partial Regex AssetsFileRegex();
     }
 }

@@ -100,3 +100,25 @@ predicate isFromSource(Element e) {
   // does not have a dummy location
   not e.hasLocationInfo(_, 0, 0, 0, 0)
 }
+
+/**
+ * Holds if taint cannot flow through the given type (because it is a numeric
+ * type or some other type with a fixed set of values).
+ */
+predicate isUnexploitableType(Type tp) {
+  tp instanceof PrimitiveType or
+  tp instanceof BoxedType or
+  tp instanceof NumberType or
+  tp instanceof VoidType
+}
+
+/**
+ * Holds if the given method can be overridden, that is, it is not final,
+ * static, or private.
+ */
+predicate isOverridable(Method m) {
+  not m.getDeclaringType().isFinal() and
+  not m.isFinal() and
+  not m.isStatic() and
+  not m.isPrivate()
+}

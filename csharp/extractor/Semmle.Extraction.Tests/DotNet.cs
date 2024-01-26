@@ -38,7 +38,7 @@ namespace Semmle.Extraction.Tests
     public class DotNetTests
     {
         private static IDotNet MakeDotnet(IDotNetCliInvoker dotnetCliInvoker) =>
-            DotNet.Make(dotnetCliInvoker, new ProgressMonitor(new LoggerStub()));
+            DotNet.Make(dotnetCliInvoker, new LoggerStub());
 
         private static IList<string> MakeDotnetRestoreOutput() =>
             new List<string> {
@@ -101,7 +101,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", false, out var assets);
+            dotnet.Restore(new("myproject.csproj", "mypackages", false));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -116,14 +116,32 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", false, out var assets, "myconfig.config");
+            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, "myconfig.config"));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal --configfile \"myconfig.config\"", lastArgs);
-            Assert.Equal(2, assets.Count());
-            Assert.Contains("/path/to/project.assets.json", assets);
-            Assert.Contains("/path/to/project2.assets.json", assets);
+            Assert.Equal(2, res.AssetsFilePaths.Count());
+            Assert.Contains("/path/to/project.assets.json", res.AssetsFilePaths);
+            Assert.Contains("/path/to/project2.assets.json", res.AssetsFilePaths);
+        }
+
+        [Fact]
+        public void TestDotnetRestoreProjectToDirectory3()
+        {
+            // Setup
+            var dotnetCliInvoker = new DotNetCliInvokerStub(MakeDotnetRestoreOutput());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
+
+            // Execute
+            var res = dotnet.Restore(new("myproject.csproj", "mypackages", false, "myconfig.config", true));
+
+            // Verify
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
+            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal --configfile \"myconfig.config\" --force", lastArgs);
+            Assert.Equal(2, res.AssetsFilePaths.Count());
+            Assert.Contains("/path/to/project.assets.json", res.AssetsFilePaths);
+            Assert.Contains("/path/to/project2.assets.json", res.AssetsFilePaths);
         }
 
         [Fact]
@@ -134,17 +152,17 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.RestoreSolutionToDirectory("mysolution.sln", "mypackages", false, out var projects, out var assets);
+            var res = dotnet.Restore(new("mysolution.sln", "mypackages", false));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("restore --no-dependencies \"mysolution.sln\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal", lastArgs);
-            Assert.Equal(2, projects.Count());
-            Assert.Contains("/path/to/project.csproj", projects);
-            Assert.Contains("/path/to/project2.csproj", projects);
-            Assert.Equal(2, assets.Count());
-            Assert.Contains("/path/to/project.assets.json", assets);
-            Assert.Contains("/path/to/project2.assets.json", assets);
+            Assert.Equal(2, res.RestoredProjects.Count());
+            Assert.Contains("/path/to/project.csproj", res.RestoredProjects);
+            Assert.Contains("/path/to/project2.csproj", res.RestoredProjects);
+            Assert.Equal(2, res.AssetsFilePaths.Count());
+            Assert.Contains("/path/to/project.assets.json", res.AssetsFilePaths);
+            Assert.Contains("/path/to/project2.assets.json", res.AssetsFilePaths);
         }
 
         [Fact]
@@ -156,13 +174,13 @@ namespace Semmle.Extraction.Tests
             dotnetCliInvoker.Success = false;
 
             // Execute
-            dotnet.RestoreSolutionToDirectory("mysolution.sln", "mypackages", false, out var projects, out var assets);
+            var res = dotnet.Restore(new("mysolution.sln", "mypackages", false));
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("restore --no-dependencies \"mysolution.sln\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal", lastArgs);
-            Assert.Empty(projects);
-            Assert.Empty(assets);
+            Assert.Empty(res.RestoredProjects);
+            Assert.Empty(res.AssetsFilePaths);
         }
 
         [Fact]

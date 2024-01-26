@@ -40,36 +40,6 @@ Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
   )
 }
 
-predicate candidate(
-  Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string package,
-  string type, string subtypes, string name, string signature, string input, string output,
-  string isVarargsArray, string extensibleType
-) {
-  // the node is known not to be an endpoint of any appropriate type
-  forall(EndpointType tp | tp = CharacteristicsImpl::getAPotentialType(endpoint) |
-    characteristic.hasImplications(tp, false, _)
-  ) and
-  // the lowest confidence across all endpoint types should be at least highConfidence
-  confidence =
-    min(float c |
-      characteristic.hasImplications(CharacteristicsImpl::getAPotentialType(endpoint), false, c)
-    ) and
-  confidence >= SharedCharacteristics::highConfidence() and
-  any(ApplicationModeMetadataExtractor meta)
-      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output,
-        isVarargsArray, _, extensibleType) and
-  // It's valid for a node to be both a potential source/sanitizer and a sink. We don't want to include such nodes
-  // as negative examples in the prompt, because they're ambiguous and might confuse the model, so we explicitly exclude them here.
-  not exists(EndpointCharacteristic characteristic2, float confidence2 |
-    characteristic2 != characteristic
-  |
-    characteristic2.appliesToEndpoint(endpoint) and
-    confidence2 >= SharedCharacteristics::maximalConfidence() and
-    characteristic2
-        .hasImplications(CharacteristicsImpl::getAPotentialType(endpoint), true, confidence2)
-  )
-}
-
 from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
   DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
@@ -77,8 +47,8 @@ from
   DollarAtString isVarargsArray, DollarAtString extensibleType
 where
   endpoint = getSampleForCharacteristic(characteristic, 100) and
-  candidate(endpoint, characteristic, confidence, package, type, subtypes, name, signature, input,
-    output, isVarargsArray, extensibleType) and
+  isNegativeExample(endpoint, characteristic, confidence, package, type, subtypes, name, signature,
+    input, output, isVarargsArray, extensibleType) and
   message = characteristic
 select endpoint.asNode(),
   message + "\nrelated locations: $@, $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //

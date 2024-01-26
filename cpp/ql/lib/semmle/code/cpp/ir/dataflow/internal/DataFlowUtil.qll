@@ -1394,11 +1394,21 @@ abstract private class ExprNodeBase extends Node {
   final Expr getExpr(int n) { result = this.getConvertedExpr(n).getUnconverted() }
 }
 
+/**
+ * Holds if there exists a dataflow node whose `asExpr(n)` should evaluate
+ * to `e`.
+ */
+private predicate exprNodeShouldBe(Expr e, int n) {
+  exprNodeShouldBeInstruction(_, e, n) or
+  exprNodeShouldBeOperand(_, e, n) or
+  exprNodeShouldBeIndirectOutNode(_, e, n)
+}
+
 private class InstructionExprNode extends ExprNodeBase, InstructionNode {
   InstructionExprNode() {
     exists(Expr e, int n |
       exprNodeShouldBeInstruction(this, e, n) and
-      not exprNodeShouldBeInstruction(_, e, n + 1)
+      not exprNodeShouldBe(e, n + 1)
     )
   }
 
@@ -1409,7 +1419,7 @@ private class OperandExprNode extends ExprNodeBase, OperandNode {
   OperandExprNode() {
     exists(Expr e, int n |
       exprNodeShouldBeOperand(this, e, n) and
-      not exprNodeShouldBeOperand(_, e, n + 1)
+      not exprNodeShouldBe(e, n + 1)
     )
   }
 
@@ -1474,10 +1484,15 @@ private module IndirectNodeToIndirectExpr<IndirectNodeToIndirectExprSig Sig> {
       indirectNodeHasIndirectExpr(node, e, n, indirectionIndex) and
       not exists(Expr conv, int adjustedIndirectionIndex |
         adjustForReference(e, indirectionIndex, conv, adjustedIndirectionIndex) and
-        indirectNodeHasIndirectExpr(_, conv, n + 1, adjustedIndirectionIndex)
+        indirectExprNodeShouldBe(conv, n + 1, adjustedIndirectionIndex)
       )
     )
   }
+}
+
+private predicate indirectExprNodeShouldBe(Expr e, int n, int indirectionIndex) {
+  indirectExprNodeShouldBeIndirectOperand(_, e, n, indirectionIndex) or
+  indirectExprNodeShouldBeIndirectInstruction(_, e, n, indirectionIndex)
 }
 
 private module IndirectOperandIndirectExprNodeImpl implements IndirectNodeToIndirectExprSig {

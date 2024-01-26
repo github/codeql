@@ -1,3 +1,9 @@
+## 0.2.7
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `adjacentDefNoUncertainReads`, `lastRefRedefNoUncertainReads`, and `lastRefNoUncertainReads` predicates.
+
 ## 0.2.6
 
 No user-facing changes.

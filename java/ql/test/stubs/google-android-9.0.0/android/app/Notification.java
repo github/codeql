@@ -358,6 +358,17 @@ public class Notification implements Parcelable
         public RemoteViews createHeadsUpContentView(){ return null; }
         public static Notification.Builder recoverBuilder(Context p0, Notification p1){ return null; }
     }
+    static public class CallStyle extends Notification.Style
+    {
+        public Notification.CallStyle setAnswerButtonColorHint(int p0){ return null; }
+        public Notification.CallStyle setDeclineButtonColorHint(int p0){ return null; }
+        public Notification.CallStyle setIsVideo(boolean p0){ return null; }
+        public Notification.CallStyle setVerificationIcon(Icon p0){ return null; }
+        public Notification.CallStyle setVerificationText(CharSequence p0){ return null; }
+        public static Notification.CallStyle forIncomingCall(Person p0, PendingIntent p1, PendingIntent p2){ return null; }
+        public static Notification.CallStyle forOngoingCall(Person p0, PendingIntent p1){ return null; }
+        public static Notification.CallStyle forScreeningCall(Person p0, PendingIntent p1, PendingIntent p2){ return null; }
+    }
     static public class InboxStyle extends Notification.Style
     {
         public InboxStyle(){}
@@ -371,7 +382,42 @@ public class Notification implements Parcelable
         public MediaStyle(){}
         public MediaStyle(Notification.Builder p0){}
         public Notification.MediaStyle setMediaSession(MediaSession.Token p0){ return null; }
+        public Notification.MediaStyle setRemotePlaybackInfo(CharSequence p0, int p1, PendingIntent p2){ return null; } // added manually
         public Notification.MediaStyle setShowActionsInCompactView(int... p0){ return null; }
+    }
+    static public class MessagingStyle extends Notification.Style
+    {
+        protected MessagingStyle() {}
+        public CharSequence getConversationTitle(){ return null; }
+        public CharSequence getUserDisplayName(){ return null; }
+        public List<Notification.MessagingStyle.Message> getHistoricMessages(){ return null; }
+        public List<Notification.MessagingStyle.Message> getMessages(){ return null; }
+        public MessagingStyle(CharSequence p0){}
+        public MessagingStyle(Person p0){}
+        public Notification.MessagingStyle addHistoricMessage(Notification.MessagingStyle.Message p0){ return null; }
+        public Notification.MessagingStyle addMessage(CharSequence p0, long p1, CharSequence p2){ return null; }
+        public Notification.MessagingStyle addMessage(CharSequence p0, long p1, Person p2){ return null; }
+        public Notification.MessagingStyle addMessage(Notification.MessagingStyle.Message p0){ return null; }
+        public Notification.MessagingStyle setConversationTitle(CharSequence p0){ return null; }
+        public Notification.MessagingStyle setGroupConversation(boolean p0){ return null; }
+        public Person getUser(){ return null; }
+        public boolean isGroupConversation(){ return false; }
+        public static int MAXIMUM_RETAINED_MESSAGES = 0;
+        static public class Message
+        {
+            protected Message() {}
+            public Bundle getExtras(){ return null; }
+            public CharSequence getSender(){ return null; }
+            public CharSequence getText(){ return null; }
+            public Message(CharSequence p0, long p1, CharSequence p2){}
+            public Message(CharSequence p0, long p1, Person p2){}
+            public Notification.MessagingStyle.Message setData(String p0, Uri p1){ return null; }
+            public Person getSenderPerson(){ return null; }
+            public String getDataMimeType(){ return null; }
+            public Uri getDataUri(){ return null; }
+            public long getTimestamp(){ return 0; }
+            public static List<Notification.MessagingStyle.Message> getMessagesFromBundleArray(Parcelable[] p0){ return null; }
+        }
     }
     static public interface Extender
     {
