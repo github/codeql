@@ -956,7 +956,7 @@ module MakeImpl<InputSig Lang> {
       }
 
       pragma[nomagic]
-      predicate nodeMayFlowThrough(NodeEx node, Ap ap) {
+      additional predicate nodeMayFlowThrough(NodeEx node, Ap ap) {
         throughFlowNodeCand(node) and
         exists(ap)
       }
@@ -1164,8 +1164,7 @@ module MakeImpl<InputSig Lang> {
 
       predicate returnMayFlowThrough(RetNodeEx ret, Ap argAp, Ap ap, ReturnKindExt kind);
 
-      predicate nodeMayFlowThrough(NodeEx node, Ap ap);
-
+      // predicate nodeMayFlowThrough(NodeEx node, Ap ap);
       predicate storeStepCand(
         NodeEx node1, Ap ap1, Content c, NodeEx node2, DataFlowType contentType,
         DataFlowType containerType
@@ -1263,6 +1262,9 @@ module MakeImpl<InputSig Lang> {
           Typ t, LocalCc lcc
         );
 
+        bindingset[p, argAp, node, ap]
+        predicate nodeMayFlowThrough(ParamNode p, ApApprox argAp, NodeEx node, ApApprox ap);
+
         bindingset[node, state, t0, ap, inSummaryCtx]
         predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx);
 
@@ -1293,17 +1295,23 @@ module MakeImpl<InputSig Lang> {
           PrevStage::revFlow(node) and result = getTyp(node.getDataFlowType())
         }
 
+        pragma[inline]
+        private predicate flowThroughOutOfCall(
+          DataFlowCall call, CcCall ccc, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
+          boolean allowsFieldFlow, ApApprox argApa, ApApprox apa
+        ) {
+          PrevStage::callEdgeReturn(call, _, ret, kind, out, allowsFieldFlow, apa) and
+          PrevStage::callMayFlowThroughRev(call) and
+          PrevStage::returnMayFlowThrough(ret, argApa, apa, kind) and
+          matchesCall(ccc, call)
+        }
+
         pragma[nomagic]
         private predicate flowThroughOutOfCall(
-          DataFlowCall call, CcCall ccc, RetNodeEx ret, NodeEx out, boolean allowsFieldFlow,
+          DataFlowCall call, CcCall ccc, ReturnKindExt kind, NodeEx out, boolean allowsFieldFlow,
           ApApprox argApa, ApApprox apa
         ) {
-          exists(ReturnKindExt kind |
-            PrevStage::callEdgeReturn(call, _, ret, kind, out, allowsFieldFlow, apa) and
-            PrevStage::callMayFlowThroughRev(call) and
-            PrevStage::returnMayFlowThrough(ret, argApa, apa, kind) and
-            matchesCall(ccc, call)
-          )
+          flowThroughOutOfCall(call, ccc, _, kind, out, allowsFieldFlow, argApa, apa)
         }
 
         /**
@@ -1325,28 +1333,32 @@ module MakeImpl<InputSig Lang> {
           NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, ArgTypOption argT,
           ApOption argAp, Typ t0, Typ t, Ap ap, ApApprox apa
         ) {
-          exists(
-            ParamNodeOption summaryCtx0, ArgTypOption argT0, ApOption argAp0, boolean inSummaryCtx
-          |
-            fwdFlow0(node, state, cc, summaryCtx0, argT0, argAp0, t0, ap, apa) and
+          exists(ParamNodeOption summaryCtx0, ApOption argAp0, boolean inSummaryCtx |
+            fwdFlow0(node, state, cc, summaryCtx0, argT, argAp0, t0, ap, apa) and
             PrevStage::revFlow(node, state, apa) and
             (
-              (
-                if summaryCtx0 = TParamNodeSome(_) and PrevStage::nodeMayFlowThrough(node, apa)
+              exists(ParamNode p, ApApprox argApa |
+                summaryCtx0 = TParamNodeSome(p) and
+                argAp0 = apSome(any(Ap argAp1 | argApa = getApprox(argAp1)))
+              |
+                if Param::nodeMayFlowThrough(p, argApa, node, apa)
                 then
                   summaryCtx = summaryCtx0 and
-                  argT = argT0 and
                   argAp = argAp0 and
                   inSummaryCtx = true
                 else (
                   summaryCtx = TParamNodeNone() and
-                  argT instanceof ArgTypOption::None and
                   argAp = apNone() and
                   inSummaryCtx = false
                 )
-              ) and
-              filter(node, state, t0, ap, t, inSummaryCtx)
-            )
+              )
+              or
+              summaryCtx0 = TParamNodeNone() and
+              summaryCtx = summaryCtx0 and
+              argAp = argAp0 and
+              inSummaryCtx = false
+            ) and
+            filter(node, state, t0, ap, t, inSummaryCtx)
           )
         }
 
@@ -1402,16 +1414,18 @@ module MakeImpl<InputSig Lang> {
           or
           // flow into a callable
           exists(Typ t0 | fwdFlowIn(node, apa, state, cc, t0, ap) |
-            PrevStage::parameterMayFlowThrough(node, apa) and
-            summaryCtx = TParamNodeSome(node.asNode()) and
-            argT = ArgTypOption::some(toArgTyp(t)) and
-            argAp = apSome(ap) and
-            t = t0 // getNodeTyp(node)
-            or
-            summaryCtx = TParamNodeNone() and
-            argT instanceof ArgTypOption::None and
-            argAp = apNone() and
-            t = t0
+            if PrevStage::parameterMayFlowThrough(node, apa)
+            then
+              summaryCtx = TParamNodeSome(node.asNode()) and
+              argT = ArgTypOption::some(toArgTyp(t)) and
+              argAp = apSome(ap) and
+              t = t0 // getNodeTyp(node)
+            else (
+              summaryCtx = TParamNodeNone() and
+              argT instanceof ArgTypOption::None and
+              argAp = apNone() and
+              t = t0
+            )
           )
           or
           // flow out of a callable
@@ -1419,12 +1433,12 @@ module MakeImpl<InputSig Lang> {
           or
           // flow through a callable
           exists(
-            DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow,
+            DataFlowCall call, CcCall ccc, ReturnKindExt kind, boolean allowsFieldFlow,
             ApApprox innerArgApa
           |
-            fwdFlowThrough(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret,
+            fwdFlowThrough(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, kind,
               innerArgApa) and
-            flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow, innerArgApa, apa) and
+            flowThroughOutOfCall(call, ccc, kind, node, allowsFieldFlow, innerArgApa, apa) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
@@ -1877,6 +1891,22 @@ module MakeImpl<InputSig Lang> {
           )
         }
 
+        pragma[nomagic]
+        private predicate fwdFlowRetFromArg1(
+          ReturnKindExt kind, FlowState state, CcCall ccc, ParamNodeEx summaryCtx, ArgTyp argT,
+          Ap argAp, ApApprox argApa, Typ t, Ap ap, ApApprox apa
+        ) {
+          exists(RetNodeEx ret |
+            fwdFlow(pragma[only_bind_into](ret), state, ccc,
+              TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())), ArgTypOption::some(argT),
+              pragma[only_bind_into](apSome(argAp)), t, ap, pragma[only_bind_into](apa)) and
+            kind = ret.getKind() and
+            parameterFlowThroughAllowed(summaryCtx, kind) and
+            argApa = getApprox(argAp) and
+            PrevStage::returnMayFlowThrough(ret, argApa, apa, kind)
+          )
+        }
+
         pragma[inline]
         private predicate fwdFlowThrough0(
           DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
@@ -1889,13 +1919,25 @@ module MakeImpl<InputSig Lang> {
             innerArgAp)
         }
 
+        pragma[inline]
+        private predicate fwdFlowThrough1(
+          DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
+          ArgTypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa, ReturnKindExt kind,
+          ParamNodeEx innerSummaryCtx, ArgTyp innerArgT, Ap innerArgAp, ApApprox innerArgApa
+        ) {
+          fwdFlowRetFromArg1(kind, state, ccc, innerSummaryCtx, innerArgT, innerArgAp, innerArgApa,
+            t, ap, apa) and
+          fwdFlowIsEntered(call, cc, ccc, summaryCtx, argT, argAp, innerSummaryCtx, innerArgT,
+            innerArgAp)
+        }
+
         pragma[nomagic]
         private predicate fwdFlowThrough(
           DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
-          ArgTypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa, RetNodeEx ret,
+          ArgTypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa, ReturnKindExt kind,
           ApApprox innerArgApa
         ) {
-          fwdFlowThrough0(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret, _, _, _,
+          fwdFlowThrough1(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, kind, _, _, _,
             innerArgApa)
         }
 
@@ -1949,7 +1991,7 @@ module MakeImpl<InputSig Lang> {
         ) {
           exists(DataFlowCall call, ApApprox apa, boolean allowsFieldFlow, ApApprox innerArgApa |
             returnFlowsThrough0(call, state, ccc, ap, apa, ret, p, argT, argAp, innerArgApa) and
-            flowThroughOutOfCall(call, ccc, ret, _, allowsFieldFlow, innerArgApa, apa) and
+            flowThroughOutOfCall(call, ccc, ret, _, _, allowsFieldFlow, innerArgApa, apa) and
             pos = ret.getReturnPosition() and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
@@ -2298,9 +2340,9 @@ module MakeImpl<InputSig Lang> {
 
         pragma[nomagic]
         predicate parameterMayFlowThrough(ParamNodeEx p, Ap ap) {
-          exists(ReturnPosition pos |
-            returnFlowsThrough(_, pos, _, _, p, _, ap, _) and
-            parameterFlowsThroughRev(p, ap, pos, _)
+          exists(ReturnPosition pos, Ap returnAp |
+            returnFlowsThrough(_, pos, _, _, p, _, ap, returnAp) and
+            parameterFlowsThroughRev(p, ap, pos, returnAp)
           )
         }
 
@@ -2313,9 +2355,22 @@ module MakeImpl<InputSig Lang> {
           )
         }
 
+        // pragma[nomagic]
+        // predicate nodeMayFlowThrough(NodeEx node, Ap ap) {
+        //   revFlow(node, _, TReturnCtxMaybeFlowThrough(_), _, ap)
+        // }
         pragma[nomagic]
-        predicate nodeMayFlowThrough(NodeEx node, Ap ap) {
-          revFlow(node, _, TReturnCtxMaybeFlowThrough(_), _, ap)
+        additional predicate nodeMayFlowThrough(ParamNode p, Ap argAp, NodeEx node, Ap ap) {
+          // revFlow(node, _, TReturnCtxMaybeFlowThrough(_), _, ap)
+          exists(ReturnPosition pos, Ap returnAp, ParamNodeEx param |
+            p = param.asNode() and
+            returnFlowsThrough(_, pos, _, _, param, _, argAp, returnAp) and
+            parameterFlowsThroughRev(param, argAp, pos, returnAp) and
+            revFlow(pragma[only_bind_into](node), _, TReturnCtxMaybeFlowThrough(pos),
+              apSome(returnAp), pragma[only_bind_into](ap)) and
+            fwdFlow(pragma[only_bind_into](node), _, _, TParamNodeSome(p), _, apSome(argAp), _,
+              pragma[only_bind_into](ap), _)
+          )
         }
 
         pragma[nomagic]
@@ -2618,6 +2673,13 @@ module MakeImpl<InputSig Lang> {
         ) and
         exists(t) and
         exists(lcc)
+      }
+
+      bindingset[p, argAp, node, ap]
+      predicate nodeMayFlowThrough(ParamNode p, PrevStage::Ap argAp, NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowThrough(node, ap) and
+        exists(p) and
+        exists(argAp)
       }
 
       pragma[nomagic]
@@ -2943,6 +3005,11 @@ module MakeImpl<InputSig Lang> {
         exists(lcc)
       }
 
+      bindingset[p, argAp, node, ap]
+      predicate nodeMayFlowThrough(ParamNode p, PrevStage::Ap argAp, NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowThrough(p, argAp, node, ap)
+      }
+
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node, Ap ap) {
         exists(Content c |
@@ -3019,6 +3086,11 @@ module MakeImpl<InputSig Lang> {
         exists(lcc)
       }
 
+      bindingset[p, argAp, node, ap]
+      predicate nodeMayFlowThrough(ParamNode p, PrevStage::Ap argAp, NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowThrough(p, argAp, node, ap)
+      }
+
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node, Ap ap) {
         exists(Content c |
@@ -3057,14 +3129,10 @@ module MakeImpl<InputSig Lang> {
 
     private module Stage3 = MkStage<Stage2_5>::Stage<Stage3Param>;
 
-    private predicate mostBusyNodeFwd3 = Stage3::mostBusyNodeFwd/9;
-
-    private predicate mostBusyNodeFwd3_5 = Stage3_5::mostBusyNodeFwd/9;
-
-    private predicate mostBusyNodeFwd4 = Stage4::mostBusyNodeFwd/9;
-
-    private predicate mostBusyNodeFwd5 = Stage5::mostBusyNodeFwd/9;
-
+    // private predicate mostBusyNodeFwd3 = Stage3::mostBusyNodeFwd/9;
+    // private predicate mostBusyNodeFwd3_5 = Stage3_5::mostBusyNodeFwd/9;
+    // private predicate mostBusyNodeFwd4 = Stage4::mostBusyNodeFwd/9;
+    // private predicate mostBusyNodeFwd5 = Stage5::mostBusyNodeFwd/9;
     bindingset[node, t0, inSummaryCtx]
     private predicate strengthenType(
       NodeEx node, DataFlowType t0, DataFlowType t, boolean inSummaryCtx
@@ -3122,6 +3190,11 @@ module MakeImpl<InputSig Lang> {
         PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
         exists(lcc)
+      }
+
+      bindingset[p, argAp, node, ap]
+      predicate nodeMayFlowThrough(ParamNode p, PrevStage::Ap argAp, NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowThrough(p, argAp, node, ap)
       }
 
       pragma[nomagic]
@@ -3216,6 +3289,11 @@ module MakeImpl<InputSig Lang> {
         PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
         exists(lcc)
+      }
+
+      bindingset[p, argAp, node, ap]
+      predicate nodeMayFlowThrough(ParamNode p, PrevStage::Ap argAp, NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowThrough(p, argAp, node, ap)
       }
 
       pragma[nomagic]
@@ -3498,6 +3576,11 @@ module MakeImpl<InputSig Lang> {
         localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc) and
         PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
+      }
+
+      bindingset[p, argAp, node, ap]
+      predicate nodeMayFlowThrough(ParamNode p, PrevStage::Ap argAp, NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowThrough(p, argAp, node, ap)
       }
 
       bindingset[node, state, t0, ap, inSummaryCtx]
@@ -4252,12 +4335,29 @@ module MakeImpl<InputSig Lang> {
       PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
       AccessPath ap
     ) {
-      exists(DataFlowType t0, boolean inSummaryCtx |
-        pathStep0(mid, node, state, cc, sc, t0, ap) and
-        Stage5::revFlow(node, state, ap.getApprox()) and
-        (if sc = TSummaryCtxNone() then inSummaryCtx = false else inSummaryCtx = true) and
+      exists(DataFlowType t0, SummaryCtx sc0, Stage5::Ap apa, boolean inSummaryCtx |
+        pathStep0(mid, node, state, cc, sc0, t0, ap, apa) and
+        Stage5::revFlow(node, state, apa) and
         strengthenType(node, t0, t, inSummaryCtx) and
         not inBarrier(node, state)
+      |
+        exists(ParamNodeEx p, ParamNode param, AccessPath argAp, Stage5::Ap argApa |
+          sc0 = TSummaryCtxSome(p, _, _, argAp) and
+          param = p.asNode() and
+          argApa = argAp.getApprox() and
+          if Stage5::nodeMayFlowThrough(param, argApa, node, apa)
+          then
+            sc = sc0 and
+            inSummaryCtx = true
+          else (
+            sc = TSummaryCtxNone() and
+            inSummaryCtx = false
+          )
+        )
+        or
+        sc0 = TSummaryCtxNone() and
+        sc = sc0 and
+        inSummaryCtx = false
       )
     }
 
@@ -4268,61 +4368,64 @@ module MakeImpl<InputSig Lang> {
     pragma[nomagic]
     private predicate pathStep0(
       PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
-      AccessPath ap
+      AccessPath ap, Stage5::Ap apa
     ) {
-      exists(NodeEx midnode, FlowState state0, LocalCallContext localCC |
-        pathNode(mid, midnode, state0, cc, sc, t, ap, localCC) and
-        localFlowBigStep(midnode, state0, node, state, true, _, localCC)
-      )
-      or
-      exists(NodeEx midnode, FlowState state0, LocalCallContext localCC |
-        pathNode(mid, midnode, state0, cc, sc, _, ap, localCC) and
-        localFlowBigStep(midnode, state0, node, state, false, t, localCC) and
-        ap instanceof AccessPathNil
-      )
-      or
-      jumpStepEx(mid.getNodeExOutgoing(), node) and
-      state = mid.getState() and
-      cc instanceof CallContextAny and
-      sc instanceof SummaryCtxNone and
-      t = mid.getType() and
-      ap = mid.getAp()
-      or
-      additionalJumpStep(mid.getNodeExOutgoing(), node) and
-      state = mid.getState() and
-      cc instanceof CallContextAny and
-      sc instanceof SummaryCtxNone and
-      mid.getAp() instanceof AccessPathNil and
-      t = node.getDataFlowType() and
-      ap = TAccessPathNil()
-      or
-      additionalJumpStateStep(mid.getNodeExOutgoing(), mid.getState(), node, state) and
-      cc instanceof CallContextAny and
-      sc instanceof SummaryCtxNone and
-      mid.getAp() instanceof AccessPathNil and
-      t = node.getDataFlowType() and
-      ap = TAccessPathNil()
-      or
-      exists(Content c, DataFlowType t0, AccessPath ap0 |
-        pathStoreStep(mid, node, state, t0, ap0, c, t, cc) and
-        ap.isCons(c, t0, ap0) and
-        sc = mid.getSummaryCtx()
-      )
-      or
-      exists(Content c, AccessPath ap0 |
-        pathReadStep(mid, node, state, ap0, c, cc) and
-        ap0.isCons(c, t, ap) and
-        sc = mid.getSummaryCtx()
-      )
-      or
-      pathIntoCallable(mid, node, state, _, cc, sc, _) and t = mid.getType() and ap = mid.getAp()
-      or
-      pathOutOfCallable(mid, node, state, cc) and
-      t = mid.getType() and
-      ap = mid.getAp() and
-      sc instanceof SummaryCtxNone
-      or
-      pathThroughCallable(mid, node, state, cc, t, ap) and sc = mid.getSummaryCtx()
+      (
+        exists(NodeEx midnode, FlowState state0, LocalCallContext localCC |
+          pathNode(mid, midnode, state0, cc, sc, t, ap, localCC) and
+          localFlowBigStep(midnode, state0, node, state, true, _, localCC)
+        )
+        or
+        exists(NodeEx midnode, FlowState state0, LocalCallContext localCC |
+          pathNode(mid, midnode, state0, cc, sc, _, ap, localCC) and
+          localFlowBigStep(midnode, state0, node, state, false, t, localCC) and
+          ap instanceof AccessPathNil
+        )
+        or
+        jumpStepEx(mid.getNodeExOutgoing(), node) and
+        state = mid.getState() and
+        cc instanceof CallContextAny and
+        sc instanceof SummaryCtxNone and
+        t = mid.getType() and
+        ap = mid.getAp()
+        or
+        additionalJumpStep(mid.getNodeExOutgoing(), node) and
+        state = mid.getState() and
+        cc instanceof CallContextAny and
+        sc instanceof SummaryCtxNone and
+        mid.getAp() instanceof AccessPathNil and
+        t = node.getDataFlowType() and
+        ap = TAccessPathNil()
+        or
+        additionalJumpStateStep(mid.getNodeExOutgoing(), mid.getState(), node, state) and
+        cc instanceof CallContextAny and
+        sc instanceof SummaryCtxNone and
+        mid.getAp() instanceof AccessPathNil and
+        t = node.getDataFlowType() and
+        ap = TAccessPathNil()
+        or
+        exists(Content c, DataFlowType t0, AccessPath ap0 |
+          pathStoreStep(mid, node, state, t0, ap0, c, t, cc) and
+          ap.isCons(c, t0, ap0) and
+          sc = mid.getSummaryCtx()
+        )
+        or
+        exists(Content c, AccessPath ap0 |
+          pathReadStep(mid, node, state, ap0, c, cc) and
+          ap0.isCons(c, t, ap) and
+          sc = mid.getSummaryCtx()
+        )
+        or
+        pathIntoCallable(mid, node, state, _, cc, sc, _) and t = mid.getType() and ap = mid.getAp()
+        or
+        pathOutOfCallable(mid, node, state, cc) and
+        t = mid.getType() and
+        ap = mid.getAp() and
+        sc instanceof SummaryCtxNone
+        or
+        pathThroughCallable(mid, node, state, cc, t, ap) and sc = mid.getSummaryCtx()
+      ) and
+      apa = ap.getApprox()
     }
 
     pragma[nomagic]
