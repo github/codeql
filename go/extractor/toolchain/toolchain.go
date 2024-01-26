@@ -78,3 +78,10 @@ func TidyModule(path string) *exec.Cmd {
 	cmd.Dir = path
 	return cmd
 }
+
+// Run `go mod init` in the directory given by `path`.
+func InitModule(path string) *exec.Cmd {
+	modInit := exec.Command("go", "mod", "init", "codeql/auto-project")
+	modInit.Dir = path
+	return modInit
+}

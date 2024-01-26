@@ -3,7 +3,6 @@ package project
 import (
 	"log"
 	"os"
-	"os/exec"
 	"path/filepath"
 	"regexp"
 	"sort"
@@ -58,8 +57,7 @@ func checkDirsNested(inputDirs []string) (string, bool) {
 func initGoModForLegacyProject(path string) {
 	log.Printf("Project appears to be a legacy Go project, attempting to initialize go.mod")
 
-	modInit := exec.Command("go", "mod", "init", "codeql/auto-project")
-	modInit.Dir = path
+	modInit := toolchain.InitModule(path)
 
 	if !util.RunCmd(modInit) {
 		log.Printf("Failed to initialize go.mod file for this project.")
