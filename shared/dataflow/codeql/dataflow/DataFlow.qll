@@ -67,7 +67,7 @@ signature module InputSig {
 
     DataFlowCallable getEnclosingCallable();
 
-    ArgumentNode getAnArgument();
+    ArgumentNode getAnArgumentNode();
   }
 
   class DataFlowCallable {

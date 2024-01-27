@@ -251,7 +251,7 @@ module DataFlowStackMake<DF::InputSig Lang>{
         private newtype TCallFrameType =
             TCallFrame(Flow::PathNode node) {
                 exists(Lang::DataFlowCall c |
-                    c.getAnArgument() = node.getNode()
+                    c.getAnArgumentNode() = node.getNode()
                 )
             }
 
@@ -292,7 +292,7 @@ module DataFlowStackMake<DF::InputSig Lang>{
             Lang::DataFlowCall getCall(){
                 exists(Lang::DataFlowCall call, Flow::PathNode node |
                     this = TCallFrame(node) and
-                    call.getAnArgument() = node.getNode() and
+                    call.getAnArgumentNode() = node.getNode() and
                     result = call
                 )
             }
@@ -315,7 +315,7 @@ module DataFlowStackMake<DF::InputSig Lang>{
         private Flow::PathNode getSuccessorCall(Flow::PathNode n){
             exists(Flow::PathNode succ |
                 succ = n.getASuccessor() and
-                if exists(Lang::DataFlowCall c | c.getAnArgument() = succ.getNode())
+                if exists(Lang::DataFlowCall c | c.getAnArgumentNode() = succ.getNode())
                 then result = succ
                 else result = getSuccessorCall(succ)
             )

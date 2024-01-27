@@ -256,6 +256,9 @@ class DataFlowCall extends Expr instanceof Call {
   /** Gets an argument to this call. */
   Expr getAnArgument(){ result = super.getAnArgument() }
 
+  /** Gets an argument to this call as a Node. */
+  ArgumentNode getAnArgumentNode(){ result = this.getNode() }
+
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result.getExpr() = this }
 
@@ -270,7 +273,7 @@ class DataFlowCall extends Expr instanceof Call {
    *   - For an Objective C message expression, it’s the statically resolved method, and it might not exist.
    *   - For a variable call, it never exists.
    */
-  Function getARuntimeTarget(){ result = super.getTarget() }
+  DataFlowCallable getARuntimeTarget(){ result = super.getTarget() }
 }
 
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() } // stub implementation
