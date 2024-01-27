@@ -1,5 +1,5 @@
 /**
- * Provides default sources, sinks, and sanitizers for reasoning about random values that 
+ * Provides default sources, sinks, and sanitizers for reasoning about random values that
  * are not cryptographically secure, as well as extension points for adding your own.
  */
 
@@ -12,7 +12,7 @@ private import codeql.ruby.ApiGraphs
 import codeql.ruby.frameworks.core.Kernel
 
 /**
- * Provides default sources, sinks, and sanitizers for reasoning about random values that 
+ * Provides default sources, sinks, and sanitizers for reasoning about random values that
  * are not cryptographically secure, as well as extension points for adding your own.
  */
 module InsecureRandomness {
@@ -41,7 +41,8 @@ module InsecureRandomness {
         this.getReceiver().asExpr().getExpr() instanceof SelfVariableAccess and
         super.getMethodName() = "rand"
       )
-      or this.(Kernel::KernelMethodCall).getMethodName() = "rand"
+      or
+      this.(Kernel::KernelMethodCall).getMethodName() = "rand"
     }
   }
 
