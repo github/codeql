@@ -20,6 +20,8 @@ multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
+| ir.c:26:14:26:38 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ir.c:21:5:21:17 | int TryExceptTest(int) | int TryExceptTest(int) |
+| ir.c:26:14:26:38 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | ir.c:21:5:21:17 | int TryExceptTest(int) | int TryExceptTest(int) |
 | ir.cpp:1486:8:1486:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1486:8:1486:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
