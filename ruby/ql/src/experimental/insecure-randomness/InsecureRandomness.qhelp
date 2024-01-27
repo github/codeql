@@ -24,9 +24,9 @@ perform actions that would otherwise be beyond their reach. For instance, if an 
 predict a newly generated user's random password, they would gain unauthorized access to that user's 
 account.
 
-For Ruby, `SecureRandom` provides a cryptographically secure pseudo-random number generator. 
-`rand` is not cryptographically secure, and should be avoided in security contexts. 
-For contexts which are not security sensitive, Random may be preferable as it has a more convenient 
+For Ruby, <code>SecureRandom</code> provides a cryptographically secure pseudo-random number generator. 
+<code>rand</code> is not cryptographically secure, and should be avoided in security contexts. 
+For contexts which are not security sensitive, <code>Random</code> may be preferable as it has a more convenient 
 interface.
 
 </p>
@@ -37,11 +37,11 @@ interface.
 The following examples show different ways of generating a password.
 </p>
 
-<p>The first example uses `Random.rand()` which is not for security purposes</p>
+<p>The first example uses <code>Random.rand()</code> which is not for security purposes</p>
 
 <sample src="examples/InsecureRandomnessBad.rb" />
 
-<p>In the second example, the password is generated using `SecureRandom.random_bytes` which is a 
+<p>In the second example, the password is generated using <code>SecureRandom.random_bytes()</code> which is a 
 cryptographically secure method.</p>
 
 <sample src="examples/InsecureRandomnessGood.rb" />
