@@ -891,6 +891,23 @@ class DataFlowType = Type;
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
   DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
+
+
+  /** Gets an argument to this call as a Node. */
+  ArgumentNode getAnArgumentNode(){ none() } // TODO: JB1 return an argument as a DataFlow ArgumentNode
+
+  /** Gets the data flow node corresponding to this call. */
+  ExprNode getNode() { none() } // TODO: JB1 return this Call as a Node
+
+  /** Gets the target of the call, as best as makes sense for this kind of call.
+   * 
+   * The precise meaning depends on the kind of call it is:
+   *   - For a call to a function, it’s the function being called.
+   *   - For a C++ method call, it’s the statically resolved method.
+   *   - For an Objective C message expression, it’s the statically resolved method, and it might not exist.
+   *   - For a variable call, it never exists.
+   */
+  DataFlowCallable getARuntimeTarget(){ none() } // TODO getCallTarget() returns `Instruction`
 }
 
 module IsUnreachableInCall {
