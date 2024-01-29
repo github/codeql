@@ -18,9 +18,27 @@ on:
 env:
   GO_VERSION: '~1.21.0'
 jobs:
+  choose-runner:
+    runs-on: ubuntu-latest
+    outputs:
+      mac-12: ${{ steps.results.outputs.MAC_12 }}
+      ubuntu-latest: ${{ steps.results.outputs.UBUNTU_LATEST }}
+      windows-latest: ${{ steps.results.outputs.WINDOWS_LATEST }}
+    steps:
+      - id: results
+        run: |
+          echo "UBUNTU_LATEST=$UBUNTU_LATEST" >> $GITHUB_OUTPUT
+          echo "MAC_12=$MAC_12" >> $GITHUB_OUTPUT
+          echo "WINDOWS_LATEST=$WINDOWS_LATEST" >> $GITHUB_OUTPUT
+        env:
+          UBUNTU_LATEST: ${{ (github.repository_owner == 'github' || vars.use_large_linux_runners_for_speed) && 'ubuntu-latest-xl' || 'ubuntu-latest' }}
+          MAC_12: ${{ (github.repository_owner == 'github' || vars.use_large_mac_runners_for_speed) && 'macos-12-xl' || 'macos-12' }}
+          WINDOWS_LATEST: ${{ (github.repository_owner == 'github' || vars.use_large_win_runners_for_speed) && 'windows-latest-xl' || 'windows-latest' }}
+
   test-linux:
     name: Test Linux (Ubuntu)
-    runs-on: ubuntu-latest-xl
+    needs: choose-runner
+    runs-on: ${{ needs.choose-runner.outputs.ubuntu-latest }}
     steps:
       - name: Set up Go ${{ env.GO_VERSION }}
         uses: actions/setup-go@v5
