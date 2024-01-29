@@ -473,4 +473,12 @@ public class CollectionFlow
         public static IntegerCollection Create(ReadOnlySpan<int> elements)
             => new IntegerCollection(elements);
     }
+
+    public void CollectionExpressionSpreadElementNoFieldFlow()
+    {
+        IntegerCollection ic0 = [0];
+        ic0.Payload = new A();
+        IntegerCollection ic1 = [.. ic0];
+        Sink(ic1.Payload); // No flow
+    }
 }
