@@ -21,9 +21,36 @@ private predicate isLinuxKernel() {
 }
 
 /**
+ * Gets the value of the EOF macro.
+ *
+ * This is typically `"-1"`, but this is not guaranteed to be the case on all
+ * systems.
+ */
+private string getEofValue() {
+  exists(MacroInvocation mi |
+    mi.getMacroName() = "EOF" and
+    result = unique( | | mi.getExpr().getValue())
+  )
+}
+
+/**
+ * Holds if the value of `call` has been checked to not equal `EOF`.
+ */
+private predicate checkedForEof(ScanfFunctionCall call) {
+  exists(IRGuardCondition gc |
+    exists(Instruction i, ConstantInstruction eof |
+      eof.getValue() = getEofValue() and
+      i.getUnconvertedResultExpression() = call and
+      gc.comparesEq(valueNumber(i).getAUse(), eof.getAUse(), 0, _, _)
+    )
+  )
+}
+
+/**
  * Holds if `call` is a `scanf`-like call were the result is only checked against 0, but it can also return EOF.
  */
 predicate incorrectlyCheckedScanf(ScanfFunctionCall call) {
   exprInBooleanContext(call) and
+  not checkedForEof(call) and
   not isLinuxKernel() // scanf in the linux kernel can't return EOF
 }
