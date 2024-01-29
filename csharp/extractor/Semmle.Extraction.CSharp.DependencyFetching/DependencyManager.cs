@@ -112,10 +112,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             var webViewExtractionOption = Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_STANDALONE_EXTRACT_WEB_VIEWS");
-            if (bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
+            if (webViewExtractionOption == null ||
+                bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
                 shouldExtractWebViews)
             {
-                logger.LogInfo("Generating source files from cshtml and razor files...");
                 GenerateSourceFilesFromWebViews(allNonBinaryFiles);
             }
 
@@ -444,6 +444,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             logger.LogInfo($"Found {views.Length} cshtml and razor files.");
+
+            if (!fileContent.IsNewProjectStructureUsed)
+            {
+                logger.LogInfo("Generating source files from cshtml files is only supported for new (SDK-style) project files");
+                return;
+            }
+
+            logger.LogInfo("Generating source files from cshtml and razor files...");
 
             var sdk = new Sdk(dotnet).GetNewestSdk();
             if (sdk != null)
