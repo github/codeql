@@ -447,3 +447,15 @@ void bad_check() {
 		use(i);  // GOOD [FALSE POSITIVE]: Technically no security issue, but code is incorrect.
 	}
 }
+
+#define EOF (-1)
+
+void disjunct_boolean_condition(const char* modifier_data) {
+	long value;
+	auto rc = sscanf(modifier_data, "%lx", &value);
+
+	if((rc == EOF) || (rc == 0)) {
+		return;
+	}
+	use(value); // GOOD
+}
