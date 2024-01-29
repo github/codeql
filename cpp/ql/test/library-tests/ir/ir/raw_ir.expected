@@ -800,7 +800,7 @@ ir.c:
 #   25|     r25_3(int)            = Load[x]                                 : &:r25_2, ~m?
 #   25|     v25_4(void)           = Call[ExRaiseAccessViolation]            : func:r25_1, 0:r25_3
 #   25|     mu25_5(unknown)       = ^CallSideEffect                         : ~m?
-#-----|   Goto -> Block 7
+#-----|   Exception -> Block 5
 
 #   21|   Block 1
 #   21|     r21_6(glval<int>) = VariableAddress[#return] : 
@@ -822,8 +822,11 @@ ir.c:
 #-----|   True -> Block 6
 
 #   26|   Block 4
-#   26|     v26_7(void) = Unwind : 
-#-----|   Goto -> Block 7
+#   26|     v26_7(void)       = Unwind                   : 
+#   29|     r29_1(glval<int>) = VariableAddress[#return] : 
+#   29|     r29_2(int)        = Constant[0]              : 
+#   29|     mu29_3(int)       = Store[#return]           : &:r29_1, r29_2
+#-----|   Goto -> Block 1
 
 #   26|   Block 5
 #   26|     r26_8(int)   = Constant[1]       : 
@@ -837,12 +840,6 @@ ir.c:
 #   27|     r27_1(glval<int>) = VariableAddress[#return] : 
 #   27|     r27_2(int)        = Constant[1]              : 
 #   27|     mu27_3(int)       = Store[#return]           : &:r27_1, r27_2
-#-----|   Goto -> Block 1
-
-#   29|   Block 7
-#   29|     r29_1(glval<int>) = VariableAddress[#return] : 
-#   29|     r29_2(int)        = Constant[0]              : 
-#   29|     mu29_3(int)       = Store[#return]           : &:r29_1, r29_2
 #-----|   Goto -> Block 1
 
 ir.cpp:
