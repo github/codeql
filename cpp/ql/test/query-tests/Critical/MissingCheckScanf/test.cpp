@@ -459,3 +459,17 @@ void disjunct_boolean_condition(const char* modifier_data) {
 	}
 	use(value); // GOOD
 }
+
+void check_for_negative_test() {
+	int res;
+	int value;
+
+	res = scanf("%d", &value); // GOOD [FALSE POSITIVE]
+	if(res == 0) {
+		return;
+	}
+	if (res < 0) {
+		return;
+	}
+	use(value);
+}
