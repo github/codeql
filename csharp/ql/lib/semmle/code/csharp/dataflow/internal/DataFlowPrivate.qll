@@ -250,7 +250,12 @@ module LocalFlow {
         scope = e2 and
         isSuccessor = true
         or
-        e1 = e2.(CollectionExpression).getAnElement().(SpreadElementExpr).getExpr() and
+        e1 = e2.(CollectionExpression).getAnElement() and
+        e1 instanceof SpreadElementExpr and
+        scope = e2 and
+        isSuccessor = true
+        or
+        e1 = e2.(SpreadElementExpr).getExpr() and
         scope = e2 and
         isSuccessor = true
         or
@@ -2018,6 +2023,8 @@ predicate clearsContent(Node n, ContentSet c) {
  */
 predicate expectsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
+  n.asExpr() instanceof SpreadElementExpr and c instanceof ElementContent
 }
 
 /**
