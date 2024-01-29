@@ -49,10 +49,21 @@ predicate declaredInLoop(LocalVariableDecl v, LoopStmt loop) {
   exists(EnhancedForStmt for | for = loop | for.getVariable().getVariable() = v)
 }
 
+/**
+ * Holds if `e` is executed often in loop `loop`.
+ *
+ * Checks that `e` is not in a block that breaks out of the loop.
+ *
+ * A more principled way would be to check for loops in the control flow graph.
+ */
+predicate executedOften(Assignment e, LoopStmt loop) {
+  e.getEnclosingStmt().getEnclosingStmt*() = loop and
+  not loop.(ForStmt).getInit(_) = e.getParent*() and
+  not exists(BreakStmt b | b.getEnclosingStmt() = e.getEnclosingStmt().getEnclosingStmt())
+}
+
 from Assignment a, Variable v
 where
   useAndDef(a, v) and
-  exists(LoopStmt loop | a.getEnclosingStmt().getEnclosingStmt*() = loop |
-    not declaredInLoop(v, loop)
-  )
+  exists(LoopStmt loop | executedOften(a, loop) | not declaredInLoop(v, loop))
 select a, "The string " + v.getName() + " is built-up in a loop: use string buffer."

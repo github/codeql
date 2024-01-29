@@ -1,0 +1,1 @@
+| ConcatenationInLoops.java:7:4:7:10 | ...+=... | The string s is built-up in a loop: use string buffer. |
