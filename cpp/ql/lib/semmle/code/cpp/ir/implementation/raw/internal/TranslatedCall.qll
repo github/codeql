@@ -3,6 +3,7 @@ private import semmle.code.cpp.ir.implementation.Opcode
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
 private import semmle.code.cpp.ir.internal.CppType
 private import semmle.code.cpp.models.interfaces.SideEffect
+private import semmle.code.cpp.models.interfaces.Throwing
 private import InstructionTag
 private import SideEffects
 private import TranslatedElement
@@ -76,7 +77,14 @@ abstract class TranslatedCall extends TranslatedExpr {
         any(UnreachedInstruction instr |
           this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction()
         )
-    else result = this.getParent().getChildSuccessor(this, kind)
+    else (
+      not this.mustThrowException() and
+      result = this.getParent().getChildSuccessor(this, kind)
+      or
+      this.mayThrowException() and
+      kind instanceof ExceptionEdge and
+      result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
+    )
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -101,6 +109,16 @@ abstract class TranslatedCall extends TranslatedExpr {
   }
 
   final override Instruction getResult() { result = this.getInstruction(CallTag()) }
+
+  /**
+   * Holds if the evaluation of this call may throw an exception.
+   */
+  abstract predicate mayThrowException();
+
+  /**
+   * Holds if the evaluation of this call always throws an exception.
+   */
+  abstract predicate mustThrowException();
 
   /**
    * Gets the result type of the call.
@@ -295,6 +313,15 @@ class TranslatedExprCall extends TranslatedCallExpr {
   override TranslatedExpr getCallTarget() {
     result = getTranslatedExpr(expr.getExpr().getFullyConverted())
   }
+
+  final override predicate mayThrowException() {
+    // We assume that a call to a function pointer will not throw an exception.
+    // This is not sound in general, but this will greatly reduce the number of
+    // exceptional edges.
+    none()
+  }
+
+  final override predicate mustThrowException() { none() }
 }
 
 /**
@@ -315,6 +342,14 @@ class TranslatedFunctionCall extends TranslatedCallExpr, TranslatedDirectCall {
   override predicate hasQualifier() {
     exists(this.getQualifier()) and
     not exists(MemberFunction func | expr.getTarget() = func and func.isStatic())
+  }
+
+  final override predicate mayThrowException() {
+    expr.getTarget().(ThrowingFunction).mayThrowException(_)
+  }
+
+  final override predicate mustThrowException() {
+    expr.getTarget().(ThrowingFunction).mayThrowException(true)
   }
 }
 
