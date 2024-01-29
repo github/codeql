@@ -3,12 +3,15 @@ private import semmle.code.cpp.commons.Scanf
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
 
+private ConstantInstruction getZeroInstruction() { result.getValue() = "0" }
+
+private Operand zero() { result.getDef() = getZeroInstruction() }
+
 private predicate exprInBooleanContext(Expr e) {
   exists(IRGuardCondition gc |
-    exists(Instruction i, ConstantInstruction zero |
-      zero.getValue() = "0" and
+    exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
-      gc.comparesEq(valueNumber(i).getAUse(), zero.getAUse(), 0, _, _)
+      gc.comparesEq(valueNumber(i).getAUse(), zero(), 0, _, _)
     )
     or
     gc.getUnconvertedResultExpression() = e
@@ -33,15 +36,21 @@ private string getEofValue() {
   )
 }
 
+private ConstantInstruction getEofInstruction() { result.getValue() = getEofValue() }
+
+private Operand eof() { result.getDef() = getEofInstruction() }
+
 /**
  * Holds if the value of `call` has been checked to not equal `EOF`.
  */
 private predicate checkedForEof(ScanfFunctionCall call) {
   exists(IRGuardCondition gc |
-    exists(Instruction i, ConstantInstruction eof |
-      eof.getValue() = getEofValue() and
-      i.getUnconvertedResultExpression() = call and
-      gc.comparesEq(valueNumber(i).getAUse(), eof.getAUse(), 0, _, _)
+    exists(Instruction i | i.getUnconvertedResultExpression() = call |
+      // call == EOF
+      gc.comparesEq(valueNumber(i).getAUse(), eof(), 0, _, _)
+      or
+      // call < 0 (EOF is guaranteed to be negative)
+      gc.comparesLt(valueNumber(i).getAUse(), zero(), 0, true, _)
     )
   )
 }
