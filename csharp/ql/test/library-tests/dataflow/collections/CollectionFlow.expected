@@ -242,12 +242,10 @@ edges
 | CollectionFlow.cs:435:22:435:22 | access to local variable a : A | CollectionFlow.cs:435:21:435:23 | [...] : List<A> [element] : A |
 | CollectionFlow.cs:436:14:436:14 | access to local variable l : List<A> [element] : A | CollectionFlow.cs:436:14:436:17 | access to indexer |
 | CollectionFlow.cs:447:17:447:23 | object creation of type A : A | CollectionFlow.cs:448:21:448:21 | access to local variable a : A |
-| CollectionFlow.cs:448:20:448:22 | [...] : A[] [element] : A | CollectionFlow.cs:450:14:450:18 | access to local variable array : A[] [element] : A |
+| CollectionFlow.cs:448:20:448:22 | [...] : A[] [element] : A | CollectionFlow.cs:449:22:449:28 | .. access to local variable temp : A[] [element] : A |
 | CollectionFlow.cs:448:21:448:21 | access to local variable a : A | CollectionFlow.cs:448:20:448:22 | [...] : A[] [element] : A |
+| CollectionFlow.cs:449:22:449:28 | .. access to local variable temp : A[] [element] : A | CollectionFlow.cs:450:14:450:18 | access to local variable array : A[] [element] : A |
 | CollectionFlow.cs:450:14:450:18 | access to local variable array : A[] [element] : A | CollectionFlow.cs:450:14:450:21 | access to array element |
-| CollectionFlow.cs:480:9:480:11 | [post] access to local variable ic0 : IntegerCollection [property Payload] : A | CollectionFlow.cs:482:14:482:16 | access to local variable ic1 : IntegerCollection [property Payload] : A |
-| CollectionFlow.cs:480:23:480:29 | object creation of type A : A | CollectionFlow.cs:480:9:480:11 | [post] access to local variable ic0 : IntegerCollection [property Payload] : A |
-| CollectionFlow.cs:482:14:482:16 | access to local variable ic1 : IntegerCollection [property Payload] : A | CollectionFlow.cs:482:14:482:24 | access to property Payload |
 nodes
 | CollectionFlow.cs:14:40:14:41 | ts : A[] [element] : A | semmle.label | ts : A[] [element] : A |
 | CollectionFlow.cs:14:40:14:41 | ts : null [element] : A | semmle.label | ts : null [element] : A |
@@ -496,12 +494,9 @@ nodes
 | CollectionFlow.cs:447:17:447:23 | object creation of type A : A | semmle.label | object creation of type A : A |
 | CollectionFlow.cs:448:20:448:22 | [...] : A[] [element] : A | semmle.label | [...] : A[] [element] : A |
 | CollectionFlow.cs:448:21:448:21 | access to local variable a : A | semmle.label | access to local variable a : A |
+| CollectionFlow.cs:449:22:449:28 | .. access to local variable temp : A[] [element] : A | semmle.label | .. access to local variable temp : A[] [element] : A |
 | CollectionFlow.cs:450:14:450:18 | access to local variable array : A[] [element] : A | semmle.label | access to local variable array : A[] [element] : A |
 | CollectionFlow.cs:450:14:450:21 | access to array element | semmle.label | access to array element |
-| CollectionFlow.cs:480:9:480:11 | [post] access to local variable ic0 : IntegerCollection [property Payload] : A | semmle.label | [post] access to local variable ic0 : IntegerCollection [property Payload] : A |
-| CollectionFlow.cs:480:23:480:29 | object creation of type A : A | semmle.label | object creation of type A : A |
-| CollectionFlow.cs:482:14:482:16 | access to local variable ic1 : IntegerCollection [property Payload] : A | semmle.label | access to local variable ic1 : IntegerCollection [property Payload] : A |
-| CollectionFlow.cs:482:14:482:24 | access to property Payload | semmle.label | access to property Payload |
 subpaths
 | CollectionFlow.cs:44:20:44:22 | access to local variable as : null [element] : A | CollectionFlow.cs:22:34:22:35 | ts : null [element] : A | CollectionFlow.cs:22:41:22:45 | access to array element : A | CollectionFlow.cs:44:14:44:23 | call to method First<A> |
 | CollectionFlow.cs:62:20:62:23 | access to field As : A[] [element] : A | CollectionFlow.cs:22:34:22:35 | ts : A[] [element] : A | CollectionFlow.cs:22:41:22:45 | access to array element : A | CollectionFlow.cs:62:14:62:24 | call to method First<A> |
@@ -586,4 +581,3 @@ subpaths
 | CollectionFlow.cs:427:17:427:23 | object creation of type A : A | CollectionFlow.cs:427:17:427:23 | object creation of type A : A | CollectionFlow.cs:429:14:429:21 | access to array element | $@ | CollectionFlow.cs:429:14:429:21 | access to array element | access to array element |
 | CollectionFlow.cs:434:17:434:23 | object creation of type A : A | CollectionFlow.cs:434:17:434:23 | object creation of type A : A | CollectionFlow.cs:436:14:436:17 | access to indexer | $@ | CollectionFlow.cs:436:14:436:17 | access to indexer | access to indexer |
 | CollectionFlow.cs:447:17:447:23 | object creation of type A : A | CollectionFlow.cs:447:17:447:23 | object creation of type A : A | CollectionFlow.cs:450:14:450:21 | access to array element | $@ | CollectionFlow.cs:450:14:450:21 | access to array element | access to array element |
-| CollectionFlow.cs:480:23:480:29 | object creation of type A : A | CollectionFlow.cs:480:23:480:29 | object creation of type A : A | CollectionFlow.cs:482:14:482:24 | access to property Payload | $@ | CollectionFlow.cs:482:14:482:24 | access to property Payload | access to property Payload |
