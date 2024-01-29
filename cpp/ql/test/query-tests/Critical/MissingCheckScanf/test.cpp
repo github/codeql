@@ -464,7 +464,7 @@ void check_for_negative_test() {
 	int res;
 	int value;
 
-	res = scanf("%d", &value); // GOOD [FALSE POSITIVE]
+	res = scanf("%d", &value); // GOOD
 	if(res == 0) {
 		return;
 	}
