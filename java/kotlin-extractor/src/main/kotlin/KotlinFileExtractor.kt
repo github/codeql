@@ -205,7 +205,7 @@ open class KotlinFileExtractor(
     }
 
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    private fun isFake(d: IrDeclarationWithVisibility): Boolean {
+    fun isFake(d: IrDeclarationWithVisibility): Boolean {
         val hasFakeVisibility =
             d.visibility.let {
                 it is DelegatedDescriptorVisibility && it.delegate == Visibilities.InvisibleFake
