@@ -86,5 +86,10 @@ from
 where
   conf.hasFlowPath(source, sink) and
   isSinkImpl(sink.getInstruction(), va) and
-  v = va.getTarget()
+  v = va.getTarget() and
+  (
+    exists(Call c | c.getQualifier() = va)
+    implies
+    exists(Call c | c.getQualifier() = va and not c.getTarget().isStatic())
+  )
 select va, "The variable $@ may not be initialized at this access.", v, v.getName()
