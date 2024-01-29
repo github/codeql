@@ -40,11 +40,12 @@ class AndroidEditableXmlElement extends AndroidLayoutXmlElement {
 /** A `findViewById` or `requireViewById` method on `Activity` or `View`. */
 private class FindViewMethod extends Method {
   FindViewMethod() {
-    this.hasQualifiedName("android.view", "View", ["findViewById", "requireViewById"])
-    or
-    exists(Method m |
-      m.hasQualifiedName("android.app", "Activity", ["findViewById", "requireViewById"]) and
-      this = m.getAnOverride*()
+    exists(Method m | this.getAnOverride*() = m |
+      m.hasQualifiedName("android.app", "Activity", ["findViewById", "requireViewById"])
+      or
+      m.hasQualifiedName("android.view", "View", ["findViewById", "requireViewById"])
+      or
+      m.hasQualifiedName("android.app", "Dialog", ["findViewById", "requireViewById"])
     )
   }
 }
@@ -52,7 +53,7 @@ private class FindViewMethod extends Method {
 /** Gets a use of the view that has the given id. (i.e. from a call to a method like `findViewById`) */
 MethodCall getAUseOfViewWithId(string id) {
   exists(string name, NestedClass r_id, Field id_field |
-    id = "@+id/" + name and
+    id = ["@+id/", "@id/"] + name and
     result.getMethod() instanceof FindViewMethod and
     r_id.getEnclosingType().hasName("R") and
     r_id.hasName("id") and

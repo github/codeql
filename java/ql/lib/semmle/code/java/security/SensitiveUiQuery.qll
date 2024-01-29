@@ -70,9 +70,30 @@ private module TextFieldTrackingConfig implements DataFlow::ConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-/** Holds if the given may be masked. */
+/** A local flow step that also flows through access to fields containing `View`s */
+private predicate localViewFieldFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  DataFlow::localFlowStep(node1, node2)
+  or
+  exists(Field f |
+    f.getType().(Class).getASupertype*().hasQualifiedName("android.view", "View") and
+    node1.asExpr() = f.getAnAccess().(FieldWrite).getASource() and
+    node2.asExpr() = f.getAnAccess().(FieldRead)
+  )
+}
+
+/** Holds if data can flow from `node1` to `node2` with local flow steps as well as flow through fields containing `View`s */
+private predicate localViewFieldFlow(DataFlow::Node node1, DataFlow::Node node2) {
+  localViewFieldFlowStep*(node1, node2)
+}
+
+/** Holds if data can flow from `e1` to `e2` with local flow steps as well as flow through fields containing `View`s */
+private predicate localViewFieldExprFlow(Expr e1, Expr e2) {
+  localViewFieldFlow(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
+}
+
+/** Holds if the given view may be properly masked. */
 private predicate viewIsMasked(AndroidLayoutXmlElement view) {
-  DataFlow::localExprFlow(getAUseOfViewWithId(view.getId()), any(MaskCall mcall).getQualifier())
+  localViewFieldExprFlow(getAUseOfViewWithId(view.getId()), any(MaskCall mcall).getQualifier())
   or
   view.getAttribute("inputType")
       .(AndroidXmlAttribute)
@@ -83,10 +104,10 @@ private predicate viewIsMasked(AndroidLayoutXmlElement view) {
     ["invisible", "gone"]
 }
 
-/** Holds if the qualifier of `call` is also called with a method that may mask the information displayed. */
+/** Holds if the qualifier of `call` may be properly masked. */
 private predicate setTextCallIsMasked(SetTextCall call) {
   exists(AndroidLayoutXmlElement view |
-    DataFlow::localExprFlow(getAUseOfViewWithId(view.getId()), call.getQualifier()) and
+    localViewFieldExprFlow(getAUseOfViewWithId(view.getId()), call.getQualifier()) and
     viewIsMasked(view.getParent*())
   )
 }
