@@ -50,4 +50,12 @@
             android:id="@+id/test12"/>
     </LinearLayout>
 
+    <EditText
+        android:id="@id/test13"
+        android:inputType="textPassword"/>
+
+    <EditText
+        android:id="@+id/test14"
+        android:inputType="textPassword"/>
+
 </LinearLayout>

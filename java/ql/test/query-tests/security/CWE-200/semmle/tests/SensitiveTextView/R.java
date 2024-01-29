@@ -14,6 +14,8 @@ public final class R {
         public static final int test10 = 10;
         public static final int test11 = 11;
         public static final int test12 = 12;
+        public static final int test13 = 13;
+        public static final int test14 = 14;
     }
 
     public static final class string {

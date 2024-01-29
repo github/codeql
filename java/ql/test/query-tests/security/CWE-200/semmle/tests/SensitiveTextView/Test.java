@@ -60,5 +60,18 @@ class Test extends Activity {
         // GOOD: Visibility of parent set to invisible in XML
         EditText test12 = findViewById(R.id.test12);
         test12.setText(password);
+
+        // GOOD: Input type set to textPassword in XML
+        EditText test13 = findViewById(R.id.test13);
+        test13.setText(password);
+
+        test14 = findViewById(R.id.test14);
+    }
+
+    EditText test14;
+
+    void test2(String password) {
+        // GOOD: Input type set to textPassword in XML
+        test14.setText(password);
     }
 }
