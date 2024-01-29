@@ -334,9 +334,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private bool IsAspNetCoreDetected()
+        {
+            return fileContent.IsNewProjectStructureUsed && fileContent.UseAspNetCoreDlls;
+        }
+
         private void AddAspNetCoreFrameworkDlls(ISet<string> dllPaths, ISet<string> frameworkLocations)
         {
-            if (!fileContent.IsNewProjectStructureUsed || !fileContent.UseAspNetCoreDlls)
+            if (!IsAspNetCoreDetected())
             {
                 return;
             }
@@ -445,7 +450,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             logger.LogInfo($"Found {views.Length} cshtml and razor files.");
 
-            if (!fileContent.IsNewProjectStructureUsed)
+            if (!IsAspNetCoreDetected())
             {
                 logger.LogInfo("Generating source files from cshtml files is only supported for new (SDK-style) project files");
                 return;
