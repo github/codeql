@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -447,5 +448,29 @@ public class CollectionFlow
         A[] temp = [a];
         A[] array = [.. temp];
         Sink(array[0]); // flow
+    }
+
+    [System.Runtime.CompilerServices.CollectionBuilder(typeof(IntegerCollectionBuilder), "Create")]
+    public class IntegerCollection : IEnumerable<int>
+    {
+        private int[] items;
+
+        public A? Payload { get; set; }
+
+        public IntegerCollection(ReadOnlySpan<int> items)
+        {
+            this.items = items.ToArray();
+            Payload = null;
+        }
+
+        public IEnumerator<int> GetEnumerator() => items.AsEnumerable<int>().GetEnumerator();
+
+        IEnumerator IEnumerable.GetEnumerator() => items.GetEnumerator();
+    }
+
+    public static class IntegerCollectionBuilder
+    {
+        public static IntegerCollection Create(ReadOnlySpan<int> elements)
+            => new IntegerCollection(elements);
     }
 }
