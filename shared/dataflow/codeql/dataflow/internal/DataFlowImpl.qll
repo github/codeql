@@ -962,6 +962,16 @@ module MakeImpl<InputSig Lang> {
       }
 
       pragma[nomagic]
+      additional predicate nodeMayFlowNotThrough(NodeEx node, Ap ap) {
+        revFlow(node, false) and
+        exists(ap)
+        or
+        revFlow(node, true) and
+        exists(ap) and
+        hasSinkCallCtx()
+      }
+
+      pragma[nomagic]
       predicate callMayFlowThroughRev(DataFlowCall call) {
         exists(ArgNodeEx arg, boolean toReturn |
           revFlow(arg, toReturn) and
@@ -1265,6 +1275,9 @@ module MakeImpl<InputSig Lang> {
         bindingset[p, argAp, node, ap]
         predicate nodeMayFlowThrough(ParamNode p, ApApprox argAp, NodeEx node, ApApprox ap);
 
+        bindingset[node, ap]
+        predicate nodeMayFlowNotThrough(NodeEx node, ApApprox ap);
+
         bindingset[node, state, t0, ap, inSummaryCtx]
         predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx);
 
@@ -1333,29 +1346,19 @@ module MakeImpl<InputSig Lang> {
           NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, ArgTypOption argT,
           ApOption argAp, Typ t0, Typ t, Ap ap, ApApprox apa
         ) {
-          exists(ParamNodeOption summaryCtx0, ApOption argAp0, boolean inSummaryCtx |
-            fwdFlow0(node, state, cc, summaryCtx0, argT, argAp0, t0, ap, apa) and
+          exists(boolean inSummaryCtx |
+            fwdFlow0(node, state, cc, summaryCtx, argT, argAp, t0, ap, apa) and
             PrevStage::revFlow(node, state, apa) and
             (
               exists(ParamNode p, ApApprox argApa |
-                summaryCtx0 = TParamNodeSome(p) and
-                argAp0 = apSome(any(Ap argAp1 | argApa = getApprox(argAp1)))
-              |
-                if Param::nodeMayFlowThrough(p, argApa, node, apa)
-                then
-                  summaryCtx = summaryCtx0 and
-                  argAp = argAp0 and
-                  inSummaryCtx = true
-                else (
-                  summaryCtx = TParamNodeNone() and
-                  argAp = apNone() and
-                  inSummaryCtx = false
-                )
+                summaryCtx = TParamNodeSome(p) and
+                argAp = apSome(any(Ap argAp1 | argApa = getApprox(argAp1))) and
+                Param::nodeMayFlowThrough(p, argApa, node, apa) and
+                inSummaryCtx = true
               )
               or
-              summaryCtx0 = TParamNodeNone() and
-              summaryCtx = summaryCtx0 and
-              argAp = argAp0 and
+              summaryCtx = TParamNodeNone() and
+              (cc instanceof CcNoCall or Param::nodeMayFlowNotThrough(node, apa)) and
               inSummaryCtx = false
             ) and
             filter(node, state, t0, ap, t, inSummaryCtx)
@@ -1414,22 +1417,24 @@ module MakeImpl<InputSig Lang> {
           or
           // flow into a callable
           exists(Typ t0 | fwdFlowIn(node, apa, state, cc, t0, ap) |
-            if PrevStage::parameterMayFlowThrough(node, apa)
-            then
-              summaryCtx = TParamNodeSome(node.asNode()) and
-              argT = ArgTypOption::some(toArgTyp(t)) and
-              argAp = apSome(ap) and
-              t = t0 // getNodeTyp(node)
-            else (
-              summaryCtx = TParamNodeNone() and
-              argT instanceof ArgTypOption::None and
-              argAp = apNone() and
-              t = t0
-            )
+            PrevStage::parameterMayFlowThrough(node, apa) and
+            summaryCtx = TParamNodeSome(node.asNode()) and
+            argT = ArgTypOption::some(toArgTyp(t)) and
+            argAp = apSome(ap) and
+            t = t0 // getNodeTyp(node)
+            or
+            Param::nodeMayFlowNotThrough(node, apa) and
+            summaryCtx = TParamNodeNone() and
+            argT instanceof ArgTypOption::None and
+            argAp = apNone() and
+            t = t0
           )
           or
           // flow out of a callable
-          fwdFlowOut(_, _, node, state, cc, summaryCtx, argT, argAp, t, ap, apa)
+          fwdFlowOut(_, _, node, state, cc, _, _, _, t, ap, apa) and
+          argT instanceof ArgTypOption::None and
+          argAp = apNone() and
+          summaryCtx = TParamNodeNone()
           or
           // flow through a callable
           exists(
@@ -2374,6 +2379,14 @@ module MakeImpl<InputSig Lang> {
         }
 
         pragma[nomagic]
+        additional predicate nodeMayFlowNotThrough(NodeEx node, Ap ap) {
+          revFlow(node, _, TReturnCtxNone(), _, ap)
+          or
+          revFlow(node, _, TReturnCtxNoFlowThrough(), _, ap) and
+          hasSinkCallCtx()
+        }
+
+        pragma[nomagic]
         private predicate revFlowThroughArg(
           DataFlowCall call, ArgNodeEx arg, FlowState state, ReturnCtx returnCtx, ApOption returnAp,
           Ap ap
@@ -2680,6 +2693,11 @@ module MakeImpl<InputSig Lang> {
         PrevStage::nodeMayFlowThrough(node, ap) and
         exists(p) and
         exists(argAp)
+      }
+
+      bindingset[node, ap]
+      predicate nodeMayFlowNotThrough(NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowNotThrough(node, ap)
       }
 
       pragma[nomagic]
@@ -3010,6 +3028,11 @@ module MakeImpl<InputSig Lang> {
         PrevStage::nodeMayFlowThrough(p, argAp, node, ap)
       }
 
+      bindingset[node, ap]
+      predicate nodeMayFlowNotThrough(NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowNotThrough(node, ap)
+      }
+
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node, Ap ap) {
         exists(Content c |
@@ -3091,6 +3114,11 @@ module MakeImpl<InputSig Lang> {
         PrevStage::nodeMayFlowThrough(p, argAp, node, ap)
       }
 
+      bindingset[node, ap]
+      predicate nodeMayFlowNotThrough(NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowNotThrough(node, ap)
+      }
+
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node, Ap ap) {
         exists(Content c |
@@ -3137,6 +3165,7 @@ module MakeImpl<InputSig Lang> {
     private predicate strengthenType(
       NodeEx node, DataFlowType t0, DataFlowType t, boolean inSummaryCtx
     ) {
+      exists(inSummaryCtx) and
       if castingNodeEx(node)
       then
         exists(DataFlowType nt | nt = node.getDataFlowType() |
@@ -3195,6 +3224,11 @@ module MakeImpl<InputSig Lang> {
       bindingset[p, argAp, node, ap]
       predicate nodeMayFlowThrough(ParamNode p, PrevStage::Ap argAp, NodeEx node, PrevStage::Ap ap) {
         PrevStage::nodeMayFlowThrough(p, argAp, node, ap)
+      }
+
+      bindingset[node, ap]
+      predicate nodeMayFlowNotThrough(NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowNotThrough(node, ap)
       }
 
       pragma[nomagic]
@@ -3294,6 +3328,11 @@ module MakeImpl<InputSig Lang> {
       bindingset[p, argAp, node, ap]
       predicate nodeMayFlowThrough(ParamNode p, PrevStage::Ap argAp, NodeEx node, PrevStage::Ap ap) {
         PrevStage::nodeMayFlowThrough(p, argAp, node, ap)
+      }
+
+      bindingset[node, ap]
+      predicate nodeMayFlowNotThrough(NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowNotThrough(node, ap)
       }
 
       pragma[nomagic]
@@ -3581,6 +3620,11 @@ module MakeImpl<InputSig Lang> {
       bindingset[p, argAp, node, ap]
       predicate nodeMayFlowThrough(ParamNode p, PrevStage::Ap argAp, NodeEx node, PrevStage::Ap ap) {
         PrevStage::nodeMayFlowThrough(p, argAp, node, ap)
+      }
+
+      bindingset[node, ap]
+      predicate nodeMayFlowNotThrough(NodeEx node, PrevStage::Ap ap) {
+        PrevStage::nodeMayFlowNotThrough(node, ap)
       }
 
       bindingset[node, state, t0, ap, inSummaryCtx]
@@ -4563,7 +4607,8 @@ module MakeImpl<InputSig Lang> {
         (
           sc = TSummaryCtxSome(p, state, t, ap)
           or
-          not exists(TSummaryCtxSome(p, state, t, ap)) and
+          // not exists(TSummaryCtxSome(p, state, t, ap)) and
+          Stage5::nodeMayFlowNotThrough(p, ap.getApprox()) and
           sc = TSummaryCtxNone() and
           // When the call contexts of source and sink needs to match then there's
           // never any reason to enter a callable except to find a summary. See also
