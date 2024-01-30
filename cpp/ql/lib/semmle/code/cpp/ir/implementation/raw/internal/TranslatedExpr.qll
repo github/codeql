@@ -2544,8 +2544,8 @@ class TranslatedTemporaryObjectExpr extends TranslatedNonConstantExpr,
     result = getIRTempVariable(expr, TempObjectTempVar())
   }
 
-  final override Instruction getInitializationSuccessor() {
-    result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
+  final override Instruction getInitializationSuccessor(EdgeKind kind) {
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   final override Instruction getResult() { result = this.getTargetAddress() }
@@ -2593,8 +2593,9 @@ class TranslatedThrowValueExpr extends TranslatedThrowExpr, TranslatedVariableIn
     result = TranslatedVariableInitialization.super.getInstructionSuccessor(tag, kind)
   }
 
-  final override Instruction getInitializationSuccessor() {
-    result = this.getInstruction(ThrowTag())
+  final override Instruction getInitializationSuccessor(EdgeKind kind) {
+    result = this.getInstruction(ThrowTag()) and
+    kind instanceof GotoEdge
   }
 
   final override predicate hasTempVariable(TempVariableTag tag, CppType type) {

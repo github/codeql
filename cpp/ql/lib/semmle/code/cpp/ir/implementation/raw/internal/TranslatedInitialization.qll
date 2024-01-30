@@ -66,16 +66,14 @@ abstract class TranslatedVariableInitialization extends TranslatedElement, Initi
     (
       result = this.getInitialization().getFirstInstruction(kind)
       or
-      kind instanceof GotoEdge and
       not exists(this.getInitialization()) and
-      result = this.getInitializationSuccessor()
+      result = this.getInitializationSuccessor(kind)
     )
   }
 
   final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     child = this.getInitialization() and
-    result = this.getInitializationSuccessor() and
-    kind instanceof GotoEdge
+    result = this.getInitializationSuccessor(kind)
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -110,8 +108,9 @@ abstract class TranslatedVariableInitialization extends TranslatedElement, Initi
 
   /**
    * Gets the `Instruction` to be executed immediately after the initialization.
+   * The successor edge kind is specified by `kind`.
    */
-  abstract Instruction getInitializationSuccessor();
+  abstract Instruction getInitializationSuccessor(EdgeKind kind);
 
   /**
    * Holds if this initialization requires an `Uninitialized` instruction to be emitted before

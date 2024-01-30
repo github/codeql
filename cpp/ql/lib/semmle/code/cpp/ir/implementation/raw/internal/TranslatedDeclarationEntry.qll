@@ -67,8 +67,8 @@ abstract class TranslatedLocalVariableDeclaration extends TranslatedVariableInit
       getTranslatedInitialization(this.getVariable().getInitializer().getExpr().getFullyConverted())
   }
 
-  final override Instruction getInitializationSuccessor() {
-    result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
+  final override Instruction getInitializationSuccessor(EdgeKind kind) {
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   final override IRVariable getIRVariable() {

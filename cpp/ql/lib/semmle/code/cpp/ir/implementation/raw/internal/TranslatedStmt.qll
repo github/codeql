@@ -367,8 +367,8 @@ abstract class TranslatedReturnStmt extends TranslatedStmt {
 class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariableInitialization {
   TranslatedReturnValueStmt() { stmt.hasExpr() and hasReturnValue(stmt.getEnclosingFunction()) }
 
-  final override Instruction getInitializationSuccessor() {
-    result = this.getEnclosingFunction().getReturnSuccessorInstruction(any(GotoEdge edge))
+  final override Instruction getInitializationSuccessor(EdgeKind kind) {
+    result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
   }
 
   final override Type getTargetType() { result = this.getEnclosingFunction().getReturnType() }
@@ -460,8 +460,8 @@ class TranslatedNoValueReturnStmt extends TranslatedReturnStmt, TranslatedVariab
     not stmt.hasExpr() and hasReturnValue(stmt.getEnclosingFunction())
   }
 
-  final override Instruction getInitializationSuccessor() {
-    result = this.getEnclosingFunction().getReturnSuccessorInstruction(any(GotoEdge edge))
+  final override Instruction getInitializationSuccessor(EdgeKind kind) {
+    result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
   }
 
   final override Type getTargetType() { result = this.getEnclosingFunction().getReturnType() }

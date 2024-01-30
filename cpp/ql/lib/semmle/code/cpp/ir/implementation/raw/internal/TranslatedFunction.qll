@@ -674,7 +674,7 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
   override Instruction getFirstInstruction(EdgeKind kind) {
     if exists(this.getChild(0))
     then result = this.getChild(0).getFirstInstruction(kind)
-    else result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
+    else result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
