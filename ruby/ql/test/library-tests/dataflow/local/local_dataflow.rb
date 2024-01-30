@@ -96,16 +96,16 @@ def and_or
   sink(b) # $ hasValueFlow=1 hasValueFlow=2
   
   a = source(1) && source(2)
-  sink(a) # $ hasValueFlow=1 hasValueFlow=2
+  sink(a) # $ hasValueFlow=2
   b = (source(1) and source(2))
-  sink(b) # $ hasValueFlow=1 hasValueFlow=2
+  sink(b) # $ hasValueFlow=2
 
   a = source(5)
   a ||= source(6)
   sink(a) # $ hasValueFlow=5 hasValueFlow=6
   b = source(7)
   b &&= source(8)
-  sink(b) # $ hasValueFlow=7 hasValueFlow=8
+  sink(b) # $ hasValueFlow=8
 end
 
 def object_dup
