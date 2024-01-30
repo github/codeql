@@ -52,28 +52,32 @@ abstract class TranslatedCall extends TranslatedExpr {
     resultType = getTypeForPRValue(this.getCallResultType())
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getQualifier() and
-    result = this.getFirstCallTargetInstruction()
-    or
-    child = this.getCallTarget() and
-    result = this.getFirstArgumentOrCallInstruction()
-    or
-    exists(int argIndex |
-      child = this.getArgument(argIndex) and
-      if exists(this.getArgument(argIndex + 1))
-      then result = this.getArgument(argIndex + 1).getFirstInstruction()
-      else result = this.getInstruction(CallTag())
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+    kind instanceof GotoEdge and
+    (
+      child = this.getQualifier() and
+      result = this.getFirstCallTargetInstruction()
+      or
+      child = this.getCallTarget() and
+      result = this.getFirstArgumentOrCallInstruction()
+      or
+      exists(int argIndex |
+        child = this.getArgument(argIndex) and
+        if exists(this.getArgument(argIndex + 1))
+        then result = this.getArgument(argIndex + 1).getFirstInstruction()
+        else result = this.getInstruction(CallTag())
+      )
     )
     or
     child = this.getSideEffects() and
     if this.isNoReturn()
     then
+      kind instanceof GotoEdge and
       result =
         any(UnreachedInstruction instr |
           this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction()
         )
-    else result = this.getParent().getChildSuccessor(this)
+    else result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -203,12 +207,12 @@ abstract class TranslatedSideEffects extends TranslatedElement {
       )
   }
 
-  final override Instruction getChildSuccessor(TranslatedElement te) {
+  final override Instruction getChildSuccessor(TranslatedElement te, EdgeKind kind) {
     exists(int i |
       this.getChild(i) = te and
       if exists(this.getChild(i + 1))
-      then result = this.getChild(i + 1).getFirstInstruction()
-      else result = this.getParent().getChildSuccessor(this)
+      then kind instanceof GotoEdge and result = this.getChild(i + 1).getFirstInstruction()
+      else result = this.getParent().getChildSuccessor(this, kind)
     )
   }
 
@@ -220,7 +224,8 @@ abstract class TranslatedSideEffects extends TranslatedElement {
     result = this.getChild(0).getFirstInstruction()
     or
     // Some functions, like `std::move()`, have no side effects whatsoever.
-    not exists(this.getChild(0)) and result = this.getParent().getChildSuccessor(this)
+    not exists(this.getChild(0)) and
+    result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
   }
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
@@ -376,7 +381,7 @@ private int initializeAllocationGroup() { result = 3 }
 abstract class TranslatedSideEffect extends TranslatedElement {
   final override TranslatedElement getChild(int n) { none() }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
 
   final override Instruction getFirstInstruction() {
     result = this.getInstruction(OnlyInstructionTag())
@@ -388,9 +393,8 @@ abstract class TranslatedSideEffect extends TranslatedElement {
   }
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
-    result = this.getParent().getChildSuccessor(this) and
-    tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge
+    result = this.getParent().getChildSuccessor(this, kind) and
+    tag = OnlyInstructionTag()
   }
 
   final override Declaration getFunction() { result = this.getParent().getFunction() }

@@ -904,9 +904,10 @@ abstract class TranslatedElement extends TTranslatedElement {
 
   /**
    * Gets the successor instruction to which control should flow after the
-   * child element specified by `child` has finished execution.
+   * child element specified by `child` has finished execution. The successor
+   * edge kind is specified by `kind`.
    */
-  abstract Instruction getChildSuccessor(TranslatedElement child);
+  abstract Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind);
 
   /**
    * Gets the instruction to which control should flow if an exception is thrown

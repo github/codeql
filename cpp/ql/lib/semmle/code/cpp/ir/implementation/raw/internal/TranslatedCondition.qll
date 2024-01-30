@@ -54,7 +54,7 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
 
   abstract TranslatedCondition getOperand();
 }
@@ -80,7 +80,7 @@ class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
 abstract class TranslatedNativeCondition extends TranslatedCondition, TTranslatedNativeCondition {
   TranslatedNativeCondition() { this = TTranslatedNativeCondition(expr) }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
 }
 
 abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeCondition, ConditionContext {
@@ -158,9 +158,10 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
     resultType = getVoidType()
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     child = this.getValueExpr() and
-    result = this.getInstruction(ValueConditionConditionalBranchTag())
+    result = this.getInstruction(ValueConditionConditionalBranchTag()) and
+    kind instanceof GotoEdge
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {

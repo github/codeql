@@ -75,9 +75,10 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
     )
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     child = this.getChild(1) and
-    result = this.getInstruction(ReturnTag())
+    result = this.getInstruction(ReturnTag()) and
+    kind instanceof GotoEdge
   }
 
   final override CppType getInstructionMemoryOperandType(
