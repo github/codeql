@@ -56,6 +56,8 @@ VariableAccess commonException() {
   // Finally, exclude functions that contain assembly blocks. It's
   // anyone's guess what happens in those.
   containsInlineAssembly(result.getEnclosingFunction())
+  or
+  exists(Call c | c.getQualifier() = result | c.getTarget().isStatic())
 }
 
 predicate isSinkImpl(Instruction sink, VariableAccess va) {
@@ -86,10 +88,5 @@ from
 where
   conf.hasFlowPath(source, sink) and
   isSinkImpl(sink.getInstruction(), va) and
-  v = va.getTarget() and
-  (
-    exists(Call c | c.getQualifier() = va)
-    implies
-    exists(Call c | c.getQualifier() = va and not c.getTarget().isStatic())
-  )
+  v = va.getTarget()
 select va, "The variable $@ may not be initialized at this access.", v, v.getName()
