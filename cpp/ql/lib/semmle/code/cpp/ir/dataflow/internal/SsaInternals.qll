@@ -70,18 +70,22 @@ private module SourceVariables {
 
 import SourceVariables
 
+predicate hasIndirectOperand(Operand op, int indirectionIndex) {
+  exists(CppType type, int m |
+    not ignoreOperand(op) and
+    type = getLanguageType(op) and
+    m = countIndirectionsForCppType(type) and
+    indirectionIndex = [1 .. m]
+  )
+}
+
 /**
  * Holds if the `(operand, indirectionIndex)` columns should be
  * assigned a `RawIndirectOperand` value.
  */
 predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
-  exists(CppType type, int m |
-    not ignoreOperand(op) and
-    type = getLanguageType(op) and
-    m = countIndirectionsForCppType(type) and
-    indirectionIndex = [1 .. m] and
-    not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
-  )
+  hasIndirectOperand(op, indirectionIndex) and
+  not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
 }
 
 /**
@@ -402,6 +406,8 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
   FinalParameterUse() { this = TFinalParameterUse(p, ind) }
 
   Parameter getParameter() { result = p }
+
+  int getArgumentIndex() { result = p.getIndex() }
 
   override Node getNode() { finalParameterNodeHasParameterAndIndex(result, p, ind) }
 

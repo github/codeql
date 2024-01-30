@@ -436,22 +436,21 @@ class IndirectionPosition extends Position, TIndirectionPosition {
 newtype TPosition =
   TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index)) } or
   TIndirectionPosition(int argumentIndex, int indirectionIndex) {
-    hasOperandAndIndex(_, any(CallInstruction call).getArgumentOperand(argumentIndex),
+    Ssa::hasIndirectOperand(any(CallInstruction call).getArgumentOperand(argumentIndex),
       indirectionIndex)
   }
 
 private newtype TReturnKind =
   TNormalReturnKind(int indirectionIndex) {
-    exists(IndirectReturnNode return |
-      return.isNormalReturn() and
-      indirectionIndex = return.getIndirectionIndex() - 1 // We subtract one because the return loads the value.
-    )
-    or indirectionIndex = 0 // TODO: very much a bodge so that it works on the test that has no return statements
+    Ssa::hasIndirectOperand(any(ReturnValueInstruction ret).getReturnAddressOperand(),
+      indirectionIndex + 1) // We subtract one because the return loads the value.
+    or
+    indirectionIndex = 0 // TODO: very much a bodge so that it works on the test that has no return statements
   } or
   TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
-    exists(IndirectReturnNode return |
-      return.isParameterReturn(argumentIndex) and
-      indirectionIndex = return.getIndirectionIndex()
+    exists(Ssa::FinalParameterUse use |
+      hasFinalParameterNode(use, _, indirectionIndex) and
+      use.getArgumentIndex() = argumentIndex
     )
   }
 

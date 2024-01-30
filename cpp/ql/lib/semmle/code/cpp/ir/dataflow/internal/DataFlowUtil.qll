@@ -53,14 +53,22 @@ private newtype TIRDataFlowNode =
     Ssa::hasRawIndirectInstruction(node.asInstruction(), indirectionIndex)
   } or
   TFinalParameterNode(Parameter p, int indirectionIndex) {
-    exists(Ssa::FinalParameterUse use |
-      use.getParameter() = p and
-      use.getIndirectionIndex() = indirectionIndex and
-      parameterIsRedefined(p)
-    )
+    hasFinalParameterNode(_, p, indirectionIndex)
   } or
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
-  TInitialGlobalValue(Ssa::GlobalDef globalUse)
+  TInitialGlobalValue(Ssa::GlobalDef globalUse) or
+  FlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
+
+/**
+ * Holds if `(p, indirectionIndex)` should define a `TFinalParameterNode`
+ * entry because `use` represents the final use of a parameter that has been
+ * written to in the enclosing function of `p`.
+ */
+predicate hasFinalParameterNode(Ssa::FinalParameterUse use, Parameter p, int indirectionIndex) {
+  use.getParameter() = p and
+  use.getIndirectionIndex() = indirectionIndex and
+  parameterIsRedefined(p)
+}
 
 /**
  * Holds if the value of `*p` (or `**p`, `***p`, etc.) is redefined somewhere in the body
