@@ -179,9 +179,7 @@ module UnsafeDeserialization {
     /**
      * Gets the value being assigned to `Oj.default_options`.
      */
-    DataFlow::Node getValue() {
-      result = this.getArgument(0)
-    }
+    DataFlow::Node getValue() { result = this.getArgument(0) }
   }
 
   /**
@@ -264,9 +262,7 @@ module UnsafeDeserialization {
     /**
      * Gets the value being assigned to `Ox.default_options`.
      */
-    DataFlow::Node getValue() {
-      result = this.getArgument(0)
-    }
+    DataFlow::Node getValue() { result = this.getArgument(0) }
   }
 
   /**
