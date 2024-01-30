@@ -1162,7 +1162,8 @@ module LoopSplitting {
 
   /** Holds if `ce` is guarded by a (non-)empty check, as specified by `v`. */
   private predicate emptinessGuarded(
-    Guards::Guard g, Guards::CollectionExpr ce, Guards::AbstractValues::EmptyCollectionValue v
+    Guards::Guard g, Guards::EnumerableCollectionExpr ce,
+    Guards::AbstractValues::EmptyCollectionValue v
   ) {
     exists(PreBasicBlock bb | Guards::Internal::preControls(g, bb, v) |
       PreSsa::adjacentReadPairSameVar(g, ce) and

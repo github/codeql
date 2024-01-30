@@ -949,6 +949,14 @@
             <v>4152</v>
         </e>
         <e>
+            <k>@collection_expr</k>
+            <v>0</v>
+        </e>
+        <e>
+            <k>@spread_element_expr</k>
+            <v>0</v>
+        </e>
+        <e>
             <k>@define_symbol_expr</k>
             <v>40236</v>
         </e>

@@ -1148,9 +1148,6 @@ case @expr.kind of
 | 133 = @urshift_expr
 | 134 = @assign_urshift_expr
 | 135 = @utf8_string_literal_expr
-/* C# 12.0 */
-| 136 = @collection_expr
-| 137 = @spread_element_expr
 /* Preprocessor */
 | 999 = @define_symbol_expr
 ;
