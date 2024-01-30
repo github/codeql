@@ -74,7 +74,7 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 8.0.100
+          dotnet-version: 8.0.101
       - name: Extractor unit tests
         run: |
           dotnet test -p:RuntimeFrameworkVersion=8.0.0 extractor/Semmle.Util.Tests
