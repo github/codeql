@@ -827,9 +827,10 @@ abstract class TranslatedElement extends TTranslatedElement {
   Location getLocation() { result = this.getAst().getLocation() }
 
   /**
-   * Get the first instruction to be executed in the evaluation of this element.
+   * Get the first instruction to be executed in the evaluation of this
+   * element when the edge kind is `kind`.
    */
-  abstract Instruction getFirstInstruction();
+  abstract Instruction getFirstInstruction(EdgeKind kind);
 
   /**
    * Get the immediate child elements of this element.

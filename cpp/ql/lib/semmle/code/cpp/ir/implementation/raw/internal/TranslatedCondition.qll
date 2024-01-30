@@ -44,8 +44,8 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 
   final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getOperand().getFirstInstruction()
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getOperand().getFirstInstruction(kind)
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -92,8 +92,8 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
     id = 1 and result = this.getRightOperand()
   }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getLeftOperand().getFirstInstruction()
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getLeftOperand().getFirstInstruction(kind)
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -116,7 +116,7 @@ class TranslatedLogicalAndExpr extends TranslatedBinaryLogicalOperation {
 
   override Instruction getChildTrueSuccessor(TranslatedCondition child) {
     child = this.getLeftOperand() and
-    result = this.getRightOperand().getFirstInstruction()
+    result = this.getRightOperand().getFirstInstruction(any(GotoEdge edge))
     or
     child = this.getRightOperand() and
     result = this.getConditionContext().getChildTrueSuccessor(this)
@@ -138,7 +138,7 @@ class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
 
   override Instruction getChildFalseSuccessor(TranslatedCondition child) {
     child = this.getLeftOperand() and
-    result = this.getRightOperand().getFirstInstruction()
+    result = this.getRightOperand().getFirstInstruction(any(GotoEdge edge))
     or
     child = this.getRightOperand() and
     result = this.getConditionContext().getChildFalseSuccessor(this)
@@ -150,7 +150,9 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getValueExpr() }
 
-  override Instruction getFirstInstruction() { result = this.getValueExpr().getFirstInstruction() }
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getValueExpr().getFirstInstruction(kind)
+  }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = ValueConditionConditionalBranchTag() and

@@ -147,8 +147,9 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     type = getBoolType()
   }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getInstruction(DynamicInitializationFlagAddressTag())
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(DynamicInitializationFlagAddressTag()) and
+    kind instanceof GotoEdge
   }
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -166,7 +167,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
       result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
-      result = this.getInitialization().getFirstInstruction()
+      result = this.getInitialization().getFirstInstruction(any(GotoEdge edge))
     )
     or
     tag = DynamicInitializationFlagConstantTag() and

@@ -22,7 +22,10 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
 
   final override Declaration getFunction() { result = var }
 
-  override Instruction getFirstInstruction() { result = this.getInstruction(EnterFunctionTag()) }
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(EnterFunctionTag()) and
+    kind instanceof GotoEdge
+  }
 
   override TranslatedElement getChild(int n) {
     n = 1 and
@@ -63,10 +66,13 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
       or
       tag = AliasedDefinitionTag() and
       result = this.getInstruction(InitializerVariableAddressTag())
-      or
-      tag = InitializerVariableAddressTag() and
-      result = this.getChild(1).getFirstInstruction()
-      or
+    )
+    or
+    tag = InitializerVariableAddressTag() and
+    result = this.getChild(1).getFirstInstruction(kind)
+    or
+    kind instanceof GotoEdge and
+    (
       tag = ReturnTag() and
       result = this.getInstruction(AliasedUseTag())
       or
