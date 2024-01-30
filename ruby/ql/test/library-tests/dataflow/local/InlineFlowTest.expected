@@ -25,17 +25,13 @@ edges
 | local_dataflow.rb:95:8:95:16 | call to source | local_dataflow.rb:95:3:95:3 | b |
 | local_dataflow.rb:95:21:95:29 | call to source | local_dataflow.rb:95:3:95:3 | b |
 | local_dataflow.rb:98:3:98:3 | a | local_dataflow.rb:99:8:99:8 | a |
-| local_dataflow.rb:98:7:98:15 | call to source | local_dataflow.rb:98:3:98:3 | a |
 | local_dataflow.rb:98:20:98:28 | call to source | local_dataflow.rb:98:3:98:3 | a |
 | local_dataflow.rb:100:3:100:3 | b | local_dataflow.rb:101:8:101:8 | b |
-| local_dataflow.rb:100:8:100:16 | call to source | local_dataflow.rb:100:3:100:3 | b |
 | local_dataflow.rb:100:22:100:30 | call to source | local_dataflow.rb:100:3:100:3 | b |
 | local_dataflow.rb:103:3:103:3 | a | local_dataflow.rb:104:3:104:3 | a |
 | local_dataflow.rb:103:7:103:15 | call to source | local_dataflow.rb:103:3:103:3 | a |
 | local_dataflow.rb:104:3:104:3 | a | local_dataflow.rb:105:8:105:8 | a |
 | local_dataflow.rb:104:9:104:17 | call to source | local_dataflow.rb:104:3:104:3 | a |
-| local_dataflow.rb:106:3:106:3 | b | local_dataflow.rb:107:3:107:3 | b |
-| local_dataflow.rb:106:7:106:15 | call to source | local_dataflow.rb:106:3:106:3 | b |
 | local_dataflow.rb:107:3:107:3 | b | local_dataflow.rb:108:8:108:8 | b |
 | local_dataflow.rb:107:9:107:17 | call to source | local_dataflow.rb:107:3:107:3 | b |
 | local_dataflow.rb:112:8:112:16 | call to source | local_dataflow.rb:112:8:112:20 | call to dup |
@@ -78,11 +74,9 @@ nodes
 | local_dataflow.rb:95:21:95:29 | call to source | semmle.label | call to source |
 | local_dataflow.rb:96:8:96:8 | b | semmle.label | b |
 | local_dataflow.rb:98:3:98:3 | a | semmle.label | a |
-| local_dataflow.rb:98:7:98:15 | call to source | semmle.label | call to source |
 | local_dataflow.rb:98:20:98:28 | call to source | semmle.label | call to source |
 | local_dataflow.rb:99:8:99:8 | a | semmle.label | a |
 | local_dataflow.rb:100:3:100:3 | b | semmle.label | b |
-| local_dataflow.rb:100:8:100:16 | call to source | semmle.label | call to source |
 | local_dataflow.rb:100:22:100:30 | call to source | semmle.label | call to source |
 | local_dataflow.rb:101:8:101:8 | b | semmle.label | b |
 | local_dataflow.rb:103:3:103:3 | a | semmle.label | a |
@@ -90,8 +84,6 @@ nodes
 | local_dataflow.rb:104:3:104:3 | a | semmle.label | a |
 | local_dataflow.rb:104:9:104:17 | call to source | semmle.label | call to source |
 | local_dataflow.rb:105:8:105:8 | a | semmle.label | a |
-| local_dataflow.rb:106:3:106:3 | b | semmle.label | b |
-| local_dataflow.rb:106:7:106:15 | call to source | semmle.label | call to source |
 | local_dataflow.rb:107:3:107:3 | b | semmle.label | b |
 | local_dataflow.rb:107:9:107:17 | call to source | semmle.label | call to source |
 | local_dataflow.rb:108:8:108:8 | b | semmle.label | b |
@@ -127,13 +119,10 @@ subpaths
 | local_dataflow.rb:94:8:94:8 | a | local_dataflow.rb:93:20:93:28 | call to source | local_dataflow.rb:94:8:94:8 | a | $@ | local_dataflow.rb:93:20:93:28 | call to source | call to source |
 | local_dataflow.rb:96:8:96:8 | b | local_dataflow.rb:95:8:95:16 | call to source | local_dataflow.rb:96:8:96:8 | b | $@ | local_dataflow.rb:95:8:95:16 | call to source | call to source |
 | local_dataflow.rb:96:8:96:8 | b | local_dataflow.rb:95:21:95:29 | call to source | local_dataflow.rb:96:8:96:8 | b | $@ | local_dataflow.rb:95:21:95:29 | call to source | call to source |
-| local_dataflow.rb:99:8:99:8 | a | local_dataflow.rb:98:7:98:15 | call to source | local_dataflow.rb:99:8:99:8 | a | $@ | local_dataflow.rb:98:7:98:15 | call to source | call to source |
 | local_dataflow.rb:99:8:99:8 | a | local_dataflow.rb:98:20:98:28 | call to source | local_dataflow.rb:99:8:99:8 | a | $@ | local_dataflow.rb:98:20:98:28 | call to source | call to source |
-| local_dataflow.rb:101:8:101:8 | b | local_dataflow.rb:100:8:100:16 | call to source | local_dataflow.rb:101:8:101:8 | b | $@ | local_dataflow.rb:100:8:100:16 | call to source | call to source |
 | local_dataflow.rb:101:8:101:8 | b | local_dataflow.rb:100:22:100:30 | call to source | local_dataflow.rb:101:8:101:8 | b | $@ | local_dataflow.rb:100:22:100:30 | call to source | call to source |
 | local_dataflow.rb:105:8:105:8 | a | local_dataflow.rb:103:7:103:15 | call to source | local_dataflow.rb:105:8:105:8 | a | $@ | local_dataflow.rb:103:7:103:15 | call to source | call to source |
 | local_dataflow.rb:105:8:105:8 | a | local_dataflow.rb:104:9:104:17 | call to source | local_dataflow.rb:105:8:105:8 | a | $@ | local_dataflow.rb:104:9:104:17 | call to source | call to source |
-| local_dataflow.rb:108:8:108:8 | b | local_dataflow.rb:106:7:106:15 | call to source | local_dataflow.rb:108:8:108:8 | b | $@ | local_dataflow.rb:106:7:106:15 | call to source | call to source |
 | local_dataflow.rb:108:8:108:8 | b | local_dataflow.rb:107:9:107:17 | call to source | local_dataflow.rb:108:8:108:8 | b | $@ | local_dataflow.rb:107:9:107:17 | call to source | call to source |
 | local_dataflow.rb:112:8:112:20 | call to dup | local_dataflow.rb:112:8:112:16 | call to source | local_dataflow.rb:112:8:112:20 | call to dup | $@ | local_dataflow.rb:112:8:112:16 | call to source | call to source |
 | local_dataflow.rb:113:8:113:24 | call to dup | local_dataflow.rb:113:8:113:16 | call to source | local_dataflow.rb:113:8:113:24 | call to dup | $@ | local_dataflow.rb:113:8:113:16 | call to source | call to source |
