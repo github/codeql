@@ -1,3 +1,10 @@
+/**
+ * This library offers a view of preprocessor branches (`#if`, `#ifdef`,
+ * `#ifndef`, `#elif` and `#else`) as blocks of code between the opening and
+ * closing directives, with navigable parent-child relationships to other
+ * blocks. The main class is `PreprocessorBlock`.
+ */
+
 import cpp
 
 /**
