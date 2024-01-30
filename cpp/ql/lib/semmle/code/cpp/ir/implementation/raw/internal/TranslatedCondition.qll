@@ -7,9 +7,17 @@ private import TranslatedElement
 private import TranslatedExpr
 
 abstract class ConditionContext extends TranslatedElement {
-  abstract Instruction getChildTrueSuccessor(TranslatedCondition child);
+  /**
+   * Gets the instruction to be executed when `child` evaluates to `true`. The
+   * successor edge kind is specified by `kind`.
+   */
+  abstract Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind);
 
-  abstract Instruction getChildFalseSuccessor(TranslatedCondition child);
+  /**
+   * Gets the instruction to be executed when `child` evaluates to `false`. The
+   * successor edge kind is specified by `kind`.
+   */
+  abstract Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind);
 }
 
 TranslatedCondition getTranslatedCondition(Expr expr) { result.getExpr() = expr }
@@ -62,14 +70,14 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
   override ParenthesisExpr expr;
 
-  final override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  final override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getOperand() and
-    result = this.getConditionContext().getChildTrueSuccessor(this)
+    result = this.getConditionContext().getChildTrueSuccessor(this, kind)
   }
 
-  final override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  final override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getOperand() and
-    result = this.getConditionContext().getChildFalseSuccessor(this)
+    result = this.getConditionContext().getChildFalseSuccessor(this, kind)
   }
 
   final override TranslatedCondition getOperand() {
@@ -114,34 +122,34 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
 class TranslatedLogicalAndExpr extends TranslatedBinaryLogicalOperation {
   TranslatedLogicalAndExpr() { expr instanceof LogicalAndExpr }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getLeftOperand() and
-    result = this.getRightOperand().getFirstInstruction(any(GotoEdge edge))
+    result = this.getRightOperand().getFirstInstruction(kind)
     or
     child = this.getRightOperand() and
-    result = this.getConditionContext().getChildTrueSuccessor(this)
+    result = this.getConditionContext().getChildTrueSuccessor(this, kind)
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     (child = this.getLeftOperand() or child = this.getRightOperand()) and
-    result = this.getConditionContext().getChildFalseSuccessor(this)
+    result = this.getConditionContext().getChildFalseSuccessor(this, kind)
   }
 }
 
 class TranslatedLogicalOrExpr extends TranslatedBinaryLogicalOperation {
   override LogicalOrExpr expr;
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
     (child = this.getLeftOperand() or child = this.getRightOperand()) and
-    result = this.getConditionContext().getChildTrueSuccessor(this)
+    result = this.getConditionContext().getChildTrueSuccessor(this, kind)
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getLeftOperand() and
-    result = this.getRightOperand().getFirstInstruction(any(GotoEdge edge))
+    result = this.getRightOperand().getFirstInstruction(kind)
     or
     child = this.getRightOperand() and
-    result = this.getConditionContext().getChildFalseSuccessor(this)
+    result = this.getConditionContext().getChildFalseSuccessor(this, kind)
   }
 }
 
@@ -170,10 +178,10 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
     tag = ValueConditionConditionalBranchTag() and
     (
       kind instanceof TrueEdge and
-      result = this.getConditionContext().getChildTrueSuccessor(this)
+      result = this.getConditionContext().getChildTrueSuccessor(this, any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
-      result = this.getConditionContext().getChildFalseSuccessor(this)
+      result = this.getConditionContext().getChildFalseSuccessor(this, any(GotoEdge edge))
     )
   }
 

@@ -291,14 +291,16 @@ class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
 
   override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
-    result = this.getInstruction(ConditionValueTrueTempAddressTag())
+    result = this.getInstruction(ConditionValueTrueTempAddressTag()) and
+    kind instanceof GotoEdge
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
-    result = this.getInstruction(ConditionValueFalseTempAddressTag())
+    result = this.getInstruction(ConditionValueFalseTempAddressTag()) and
+    kind instanceof GotoEdge
   }
 
   private TranslatedCondition getCondition() { result = getTranslatedCondition(expr) }
@@ -2421,14 +2423,14 @@ class TranslatedTernaryConditionalExpr extends TranslatedConditionalExpr, Condit
     )
   }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
-    result = this.getThen().getFirstInstruction(any(GotoEdge edge))
+    result = this.getThen().getFirstInstruction(kind)
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
-    result = this.getElse().getFirstInstruction(any(GotoEdge edge))
+    result = this.getElse().getFirstInstruction(kind)
   }
 
   private TranslatedCondition getCondition() {

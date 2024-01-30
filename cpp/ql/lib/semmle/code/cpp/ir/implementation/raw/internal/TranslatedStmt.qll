@@ -750,16 +750,16 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
-    result = this.getThen().getFirstInstruction(any(GotoEdge edge))
+    result = this.getThen().getFirstInstruction(kind)
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
     if this.hasElse()
-    then result = this.getElse().getFirstInstruction(any(GotoEdge edge))
-    else result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
+    then result = this.getElse().getFirstInstruction(kind)
+    else result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
@@ -804,13 +804,13 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  final override Instruction getChildTrueSuccessor(TranslatedCondition child) {
-    child = this.getCondition() and result = this.getBody().getFirstInstruction(any(GotoEdge edge))
+  final override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
+    child = this.getCondition() and result = this.getBody().getFirstInstruction(kind)
   }
 
-  final override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  final override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
-    result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 }
 
@@ -936,14 +936,14 @@ class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  override Instruction getChildTrueSuccessor(TranslatedCondition child) {
+  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
-    result = this.getVariableDeclStmt().getFirstInstruction(any(GotoEdge edge))
+    result = this.getVariableDeclStmt().getFirstInstruction(kind)
   }
 
-  override Instruction getChildFalseSuccessor(TranslatedCondition child) {
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
-    result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   private TranslatedDeclStmt getRangeVariableDeclStmt() {
