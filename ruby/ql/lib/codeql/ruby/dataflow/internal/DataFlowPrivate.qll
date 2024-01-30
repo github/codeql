@@ -220,8 +220,10 @@ module LocalFlow {
     or
     nodeTo.asExpr() =
       any(CfgNodes::ExprNodes::BinaryOperationCfgNode op |
-        op.getExpr() instanceof BinaryLogicalOperation and
+        op.getExpr() instanceof LogicalOrExpr and
         nodeFrom.asExpr() = op.getAnOperand()
+        or
+        op.getExpr() instanceof LogicalAndExpr and nodeFrom.asExpr() = op.getRightOperand()
       )
     or
     nodeTo.(ParameterNodeImpl).getParameter() =
