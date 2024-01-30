@@ -62,14 +62,26 @@ class PreprocessorBlock extends @element {
     endcolumn = 0
   }
 
+  /**
+   * Gets a textual representation of this element.
+   */
   string toString() { result = mkElement(this).toString() }
 
+  /**
+   * Gets the file this `PreprocessorBlock` is located in.
+   */
   cached
   File getFile() { result = mkElement(this).getFile() }
 
+  /**
+   * Gets the start line number of this `PreprocessorBlock`.
+   */
   cached
   int getStartLine() { result = mkElement(this).getLocation().getStartLine() }
 
+  /**
+   * Gets the end line number of this `PreprocessorBlock`.
+   */
   cached
   int getEndLine() {
     result = mkElement(this).(File).getMetrics().getNumberOfLines() or
