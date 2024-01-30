@@ -1408,7 +1408,10 @@ private class InstructionExprNode extends ExprNodeBase, InstructionNode {
   InstructionExprNode() {
     exists(Expr e, int n |
       exprNodeShouldBeInstruction(this, e, n) and
-      not exprNodeShouldBe(e, n + 1)
+      not exists(Expr conv |
+        exprNodeShouldBe(conv, n + 1) and
+        conv.getUnconverted() = e.getUnconverted()
+      )
     )
   }
 
@@ -1419,7 +1422,10 @@ private class OperandExprNode extends ExprNodeBase, OperandNode {
   OperandExprNode() {
     exists(Expr e, int n |
       exprNodeShouldBeOperand(this, e, n) and
-      not exprNodeShouldBe(e, n + 1)
+      not exists(Expr conv |
+        exprNodeShouldBe(conv, n + 1) and
+        conv.getUnconverted() = e.getUnconverted()
+      )
     )
   }
 
