@@ -176,6 +176,18 @@ predicate sinkHasAlias(API::Node sink, string package, string name) {
 bindingset[node]
 private API::Node getASinkNode(DataFlow::SourceNode node) { result.getAValueReachingSink() = node }
 
+/**
+ * Holds if `node` is a declaration in an externs file.
+ *
+ * This is to ensure that functions/classes in externs are not named after a re-export in a package.
+ */
+private predicate nameFromExterns(DataFlow::Node node, string package, string name, int badness) {
+  node.getTopLevel().isExterns() and
+  package = "global" and
+  node = AccessPath::getAnAssignmentTo(name) and
+  badness = -10
+}
+
 bindingset[qualifiedName]
 private int getBadnessOfClassName(string qualifiedName) {
   if qualifiedName.matches("%.constructor")
@@ -201,6 +213,8 @@ private predicate classObjectHasNameCandidate(
     sinkHasPrimaryName(getASinkNode(cls), package, name, baseBadness) and
     badness = baseBadness + getBadnessOfClassName(name)
   )
+  or
+  nameFromExterns(cls, package, name, badness)
 }
 
 private predicate classObjectHasPrimaryName(
@@ -314,6 +328,8 @@ private predicate functionHasNameCandidate(
       name = join(baseName, memberName)
     )
   )
+  or
+  nameFromExterns(function, package, name, badness)
 }
 
 private predicate functionHasPrimaryName(
