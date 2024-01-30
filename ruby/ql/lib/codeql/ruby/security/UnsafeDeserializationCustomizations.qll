@@ -234,7 +234,7 @@ module UnsafeDeserialization {
    * The first argument in a call to `Oj.object_load`, always considered as a
    * sink for unsafe deserialization. (global and local mode options are ignored)
    */
-  class OjObjectLoadArgument extends Sink {
+  private class OjObjectLoadArgument extends Sink {
     OjObjectLoadArgument() {
       this = API::getTopLevelMember("Oj").getAMethodCall("object_load").getArgument(0)
     }
@@ -266,8 +266,7 @@ module UnsafeDeserialization {
      * Gets the value being assigned to `Ox.default_options`.
      */
     DataFlow::Node getValue() {
-      result.asExpr() =
-        this.getArgument(0).asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+      result =  this.getArgument(0)
     }
   }
 
