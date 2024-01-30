@@ -334,6 +334,16 @@ class DataFlowCall extends Expr {
     or
     not exists(this.getEnclosingFunction()) and result.asFileScope() = this.getFile()
   }
+
+  // #45 - Stub Implementation
+  /** Gets an argument to this call as a Node. */
+  ArgumentNode getAnArgumentNode(){ result = this.getArgument(_) }
+
+  /* Gets the data flow node corresponding to this call. */
+  ExprNode getDataFlowNode() { result = this.getNode() }
+
+  /** Gets the target of the call, as a DataFlowCallable. */
+  DataFlowCallable getARuntimeTarget(){ result.asCallable() = call.getACalleeIncludingExternals() }
 }
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */

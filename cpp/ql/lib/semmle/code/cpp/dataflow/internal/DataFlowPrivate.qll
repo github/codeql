@@ -262,6 +262,9 @@ class DataFlowCall extends Expr instanceof Call {
   /** Gets the data flow node corresponding to this call. */
   ExprNode getNode() { result.getExpr() = this }
 
+  /** Gets the data flow node corresponding to this call. (Alias of `getNode()`) */
+  ExprNode getDataFlowNode() { result = this.getNode() }
+
   /** Gets the enclosing callable of this call. */
   Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 
