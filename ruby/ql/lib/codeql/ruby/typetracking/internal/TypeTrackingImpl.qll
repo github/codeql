@@ -32,7 +32,7 @@ private predicate callStepNoInitialize(
 ) {
   exists(DataFlowDispatch::ParameterPosition pos |
     argumentPositionMatch(call, arg, pos) and
-    p.isSourceParameterOf(DataFlowDispatch::getTarget(call), pos)
+    p.isSourceParameterOf(DataFlowDispatch::getTarget(DataFlowDispatch::TNormalCall(call)), pos)
   )
 }
 
@@ -110,7 +110,7 @@ private predicate viableParam(
   DataFlowDispatch::ParameterPosition ppos
 ) {
   exists(Cfg::CfgScope callable |
-    DataFlowDispatch::getTarget(call) = callable or
+    DataFlowDispatch::getTarget(DataFlowDispatch::TNormalCall(call)) = callable or
     DataFlowDispatch::getInitializeTarget(call) = callable
   |
     p.isSourceParameterOf(callable, ppos)
@@ -296,7 +296,8 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
     exists(ExprNodes::CallCfgNode call |
       nodeFrom instanceof DataFlowPrivate::ReturnNode and
       not nodeFrom instanceof DataFlowPrivate::InitializeReturnNode and
-      nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
+      nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() =
+        DataFlowDispatch::getTarget(DataFlowDispatch::TNormalCall(call)) and
       // deliberately do not include `getInitializeTarget`, since calls to `new` should not
       // get the return value from `initialize`. Any fields being set in the initializer
       // will reach all reads via `callStep` and `localFieldStep`.

@@ -235,6 +235,30 @@ module LocalFlow {
     or
     nodeTo.(BlockArgumentNode).getParameterNode(true) = nodeFrom
   }
+
+  predicate localMustFlowStep(Node node1, Node node2) {
+    LocalFlow::localFlowSsaParamInput(node1, node2)
+    or
+    exists(SsaImpl::Definition def |
+      def.(Ssa::WriteDefinition).assigns(node1.asExpr()) and
+      node2.(SsaDefinitionExtNode).getDefinitionExt() = def
+      or
+      def = node1.(SsaDefinitionExtNode).getDefinitionExt() and
+      node2.asExpr() = SsaImpl::getARead(def)
+    )
+    or
+    node1.asExpr() = node2.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+    or
+    node1.asExpr() = node2.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
+    or
+    node1 = node2.(BlockArgumentNode).getParameterNode(true)
+    or
+    node1 =
+      unique(FlowSummaryNode n1 |
+        FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
+          node2.(FlowSummaryNode).getSummaryNode(), true)
+      )
+  }
 }
 
 /** An argument of a call (including qualifier arguments and block arguments). */
@@ -508,11 +532,11 @@ private module Cached {
       isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
     } or
     TSynthSplatParameterNode(DataFlowCallable c) {
-      exists(c.asCallable()) and // exclude library callables (for now)
+      exists(c.asCfgScope()) and // exclude library callables (for now)
       isParameterNode(_, c, any(ParameterPosition p | p.isPositional(_)))
     } or
     TSynthSplatParameterShiftNode(DataFlowCallable c, int splatPos, int n) {
-      splatPos = unique(int i | splatParameterAt(c.asCallable(), i) and i > 0) and
+      splatPos = unique(int i | splatParameterAt(c.asCfgScope(), i) and i > 0) and
       n in [0 .. 10]
     } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
@@ -715,7 +739,7 @@ private module Cached {
   cached
   predicate exprNodeReturnedFromCached(ExprNode e, Callable c) {
     exists(ReturnNode r |
-      nodeGetEnclosingCallable(r).asCallable() = c and
+      nodeGetEnclosingCallable(r).asCfgScope() = c and
       (
         r.(ExplicitReturnNode).getReturningNode().getReturnedValueNode() = e.asExpr() or
         r.(ExprReturnNode) = e
@@ -881,10 +905,10 @@ private module ParameterNodes {
 
     abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition pos);
 
-    final predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
+    final predicate isSourceParameterOf(CfgScope c, ParameterPosition pos) {
       exists(DataFlowCallable callable |
         this.isParameterOf(callable, pos) and
-        c = callable.asCallable()
+        c = callable.asCfgScope()
       )
     }
   }
@@ -901,7 +925,7 @@ private module ParameterNodes {
     override Parameter getParameter() { result = parameter }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      exists(Callable callable | callable = c.asCallable() |
+      exists(Callable callable | callable = c.asCfgScope() |
         exists(int i | pos.isPositional(i) and callable.getParameter(i) = parameter |
           parameter instanceof SimpleParameter
           or
@@ -955,7 +979,7 @@ private module ParameterNodes {
     override Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      method = c.asCallable() and pos.isSelf()
+      method = c.asCfgScope() and pos.isSelf()
     }
 
     override CfgScope getCfgScope() { result = method }
@@ -984,7 +1008,7 @@ private module ParameterNodes {
     override Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      callable = c.asCallable() and pos.isLambdaSelf()
+      callable = c.asCfgScope() and pos.isLambdaSelf()
     }
 
     override CfgScope getCfgScope() { result = callable }
@@ -1010,7 +1034,7 @@ private module ParameterNodes {
     }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c.asCallable() = method and pos.isBlock()
+      c.asCfgScope() = method and pos.isBlock()
     }
 
     CfgNodes::ExprNodes::CallCfgNode getAYieldCall() {
@@ -1088,7 +1112,7 @@ private module ParameterNodes {
       c = callable and pos.isSynthHashSplat()
     }
 
-    final override CfgScope getCfgScope() { result = callable.asCallable() }
+    final override CfgScope getCfgScope() { result = callable.asCfgScope() }
 
     final override DataFlowCallable getEnclosingCallable() { result = callable }
 
@@ -1144,7 +1168,7 @@ private module ParameterNodes {
     predicate readInto(ParameterNode p, ContentSet c) {
       exists(int n |
         isParameterNode(p, callable, any(ParameterPosition pos | pos.isPositional(n))) and
-        not exists(int i | splatParameterAt(callable.asCallable(), i) and i < n)
+        not exists(int i | splatParameterAt(callable.asCfgScope(), i) and i < n)
       |
         // Important: do not include `TSplatContent(_, false)` here, as normal parameter matching is possible
         c = getSplatContent(n, true)
@@ -1161,7 +1185,7 @@ private module ParameterNodes {
       c = callable and pos.isSynthSplat()
     }
 
-    final override CfgScope getCfgScope() { result = callable.asCallable() }
+    final override CfgScope getCfgScope() { result = callable.asCfgScope() }
 
     final override DataFlowCallable getEnclosingCallable() { result = callable }
 
@@ -1212,7 +1236,7 @@ private module ParameterNodes {
       cs = getArrayContent(pos)
     }
 
-    final override CfgScope getCfgScope() { result = callable.asCallable() }
+    final override CfgScope getCfgScope() { result = callable.asCfgScope() }
 
     final override DataFlowCallable getEnclosingCallable() { result = callable }
 
@@ -1321,11 +1345,11 @@ module ArgumentNodes {
   }
 
   private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
-    private SummaryCall call_;
+    private FlowSummaryImpl::Private::SummaryNode receiver;
     private ArgumentPosition pos_;
 
     SummaryArgumentNode() {
-      FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
+      FlowSummaryImpl::Private::summaryArgumentNode(receiver, this.getSummaryNode(), pos_)
     }
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
@@ -1333,7 +1357,7 @@ module ArgumentNodes {
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      call = call_ and pos = pos_
+      call.(SummaryCall).getReceiver() = receiver and pos = pos_
     }
   }
 
@@ -1543,7 +1567,7 @@ module ArgumentNodes {
 import ArgumentNodes
 
 /** A call to `new`. */
-private class NewCall extends DataFlowCall {
+private class NewCall extends NormalCall {
   NewCall() { this.asCall().getExpr().(MethodCall).getMethodName() = "new" }
 }
 
@@ -1856,7 +1880,7 @@ predicate clearsContent(Node n, ContentSet c) {
     ParameterPosition keywordPos, ConstantValue::ConstantSymbolValue cv, string name
   |
     n = TNormalParameterNode(hashSplatParam) and
-    callable.asCallable() = hashSplatParam.getCallable() and
+    callable.asCfgScope() = hashSplatParam.getCallable() and
     keywordParam.isParameterOf(callable, keywordPos) and
     keywordPos.isKeyword(name) and
     c.isKnownOrUnknownElement(TKnownElementContent(cv)) and
@@ -2042,7 +2066,7 @@ private predicate lambdaCreationExpr(CfgNodes::ExprCfgNode creation, LambdaCallK
 
 /** Holds if `creation` is an expression that creates a lambda of kind `kind` for `c`. */
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
-  lambdaCreationExpr(creation.asExpr(), kind, c.asCallable())
+  lambdaCreationExpr(creation.asExpr(), kind, c.asCfgScope())
 }
 
 /** Holds if `call` is a call to `lambda`, `proc`, or `Proc.new` */

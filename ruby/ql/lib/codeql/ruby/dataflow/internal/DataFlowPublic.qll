@@ -77,7 +77,7 @@ class Node extends TNode {
     or
     exists(DataFlowCallable c |
       lambdaCreation(this, _, c) and
-      result.asCallableAstNode() = c.asCallable()
+      result.asCallableAstNode() = c.asCfgScope()
     )
   }
 
