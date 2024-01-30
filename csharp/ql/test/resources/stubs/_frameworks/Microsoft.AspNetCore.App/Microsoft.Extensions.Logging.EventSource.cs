@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.Extensions.Logging.EventSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.Extensions.Logging.EventSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace Extensions
@@ -28,6 +28,7 @@ namespace Microsoft
             }
             public static partial class EventSourceLoggerFactoryExtensions
             {
+                public static Microsoft.Extensions.Logging.ILoggerFactory AddEventSourceLogger(this Microsoft.Extensions.Logging.ILoggerFactory factory) => throw null;
                 public static Microsoft.Extensions.Logging.ILoggingBuilder AddEventSourceLogger(this Microsoft.Extensions.Logging.ILoggingBuilder builder) => throw null;
             }
         }

@@ -3,7 +3,7 @@ import semmle.code.csharp.commons.QualifiedName
 
 from TrivialProperty prop, string namespace, string type, string name
 where
-  prop.getDeclaringType().hasQualifiedName(namespace, type) and
+  prop.getDeclaringType().hasFullyQualifiedName(namespace, type) and
   (
     namespace = "System.Reflection" and type = "AssemblyName"
     or
@@ -11,5 +11,5 @@ where
     or
     namespace = "Dataflow" and type = "Properties"
   ) and
-  prop.hasQualifiedName(namespace, type, name)
+  prop.hasFullyQualifiedName(namespace, type, name)
 select getQualifiedName(namespace, type, name)

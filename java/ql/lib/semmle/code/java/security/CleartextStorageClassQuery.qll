@@ -88,7 +88,7 @@ private module ClassStoreFlowConfig implements DataFlow::ConfigSig {
 private module ClassStoreFlow = DataFlow::Global<ClassStoreFlowConfig>;
 
 private predicate serializableStore(DataFlow::Node instance, Expr store) {
-  exists(MethodAccess m |
+  exists(MethodCall m |
     store = m and
     m.getMethod() instanceof WriteObjectMethod and
     instance.asExpr() = m.getArgument(0)
@@ -96,7 +96,7 @@ private predicate serializableStore(DataFlow::Node instance, Expr store) {
 }
 
 private predicate marshallableStore(DataFlow::Node instance, Expr store) {
-  exists(MethodAccess m |
+  exists(MethodCall m |
     store = m and
     m.getMethod() instanceof JaxbMarshalMethod and
     instance.asExpr() = m.getArgument(0)

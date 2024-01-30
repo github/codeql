@@ -256,6 +256,7 @@ class DataFlowLocation = Location;
 private newtype TDataFlowCallable =
   TCallable(Callable c) or
   TFileScope(File f) or
+  TExternalFileScope() or
   TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
 class DataFlowCallable extends TDataFlowCallable {
@@ -268,6 +269,11 @@ class DataFlowCallable extends TDataFlowCallable {
    * Gets the `File` whose root scope corresponds to this `DataFlowCallable`, if any.
    */
   File asFileScope() { this = TFileScope(result) }
+
+  /**
+   * Holds if this `DataFlowCallable` is an external file scope.
+   */
+  predicate isExternalFileScope() { this = TExternalFileScope() }
 
   /**
    * Gets the `SummarizedCallable` corresponding to this `DataFlowCallable`, if any.
@@ -414,7 +420,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
-  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  exists(DataFlowCallable c, int pos |
+    p.isParameterOf(c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
+  )
 }
 
 /** An approximated `Content`. */

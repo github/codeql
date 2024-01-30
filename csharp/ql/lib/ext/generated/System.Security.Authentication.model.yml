@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Security.Authentication", "AuthenticationException", "AuthenticationException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
+      - ["System.Security.Authentication", "AuthenticationException", "AuthenticationException", "(System.String)", "summary", "df-generated"]
+      - ["System.Security.Authentication", "AuthenticationException", "AuthenticationException", "(System.String,System.Exception)", "summary", "df-generated"]
+      - ["System.Security.Authentication", "InvalidCredentialException", "InvalidCredentialException", "(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext)", "summary", "df-generated"]
+      - ["System.Security.Authentication", "InvalidCredentialException", "InvalidCredentialException", "(System.String)", "summary", "df-generated"]
+      - ["System.Security.Authentication", "InvalidCredentialException", "InvalidCredentialException", "(System.String,System.Exception)", "summary", "df-generated"]

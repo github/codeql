@@ -18,7 +18,13 @@ private import semmle.code.csharp.security.dataflow.flowsources.Remote
  * Holds if `node` should be a sanitizer in all global taint flow configurations
  * but not in local taint.
  */
-predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
+predicate defaultTaintSanitizer(DataFlow::Node node) {
+  exists(MethodCall mc |
+    mc.getTarget().hasFullyQualifiedName("System.Text.StringBuilder", "Clear")
+  |
+    node.asExpr() = mc.getQualifier()
+  )
+}
 
 /**
  * Holds if default `TaintTracking::Configuration`s should allow implicit reads
@@ -81,6 +87,19 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
       or
       e1 = e2.(AwaitExpr).getExpr() and
       scope = e2
+      or
+      // Taint flows from the operand of a cast to the cast expression if the cast is to an interpolated string handler.
+      e2 =
+        any(CastExpr ce |
+          e1 = ce.getExpr() and
+          scope = ce and
+          ce.getTargetType()
+              .(Attributable)
+              .getAnAttribute()
+              .getType()
+              .hasFullyQualifiedName("System.Runtime.CompilerServices",
+                "InterpolatedStringHandlerAttribute")
+        )
     )
   }
 }

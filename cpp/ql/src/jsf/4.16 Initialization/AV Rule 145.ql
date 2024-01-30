@@ -32,18 +32,41 @@ predicate hasReferenceInitializer(EnumConstant c) {
   )
 }
 
+/**
+ * Gets the `rnk`'th (1-based) enumeration constant in `e` that does not have a
+ * reference initializer (i.e., an initializer that refers to an enumeration
+ * constant from the same enumeration).
+ */
+EnumConstant getNonReferenceInitializedEnumConstantByRank(Enum e, int rnk) {
+  result =
+    rank[rnk](EnumConstant cand, int pos, string filepath, int startline, int startcolumn |
+      e.getEnumConstant(pos) = cand and
+      not hasReferenceInitializer(cand) and
+      cand.getLocation().hasLocationInfo(filepath, startline, startcolumn, _, _)
+    |
+      cand order by pos, filepath, startline, startcolumn
+    )
+}
+
+/**
+ * Holds if `ec` is not the last enumeration constant in `e` that has a non-
+ * reference initializer.
+ */
+predicate hasNextWithoutReferenceInitializer(Enum e, EnumConstant ec) {
+  exists(int rnk |
+    ec = getNonReferenceInitializedEnumConstantByRank(e, rnk) and
+    exists(getNonReferenceInitializedEnumConstantByRank(e, rnk + 1))
+  )
+}
+
 // There exists another constant whose value is implicit, but it's
 // not the last one: the last value is okay to use to get the highest
 // enum value automatically. It can be followed by aliases though.
 predicate enumThatHasConstantWithImplicitValue(Enum e) {
-  exists(EnumConstant ec, int pos |
-    ec = e.getEnumConstant(pos) and
+  exists(EnumConstant ec |
+    ec = e.getAnEnumConstant() and
     not hasInitializer(ec) and
-    exists(EnumConstant ec2, int pos2 |
-      ec2 = e.getEnumConstant(pos2) and
-      pos2 > pos and
-      not hasReferenceInitializer(ec2)
-    )
+    hasNextWithoutReferenceInitializer(e, ec)
   )
 }
 

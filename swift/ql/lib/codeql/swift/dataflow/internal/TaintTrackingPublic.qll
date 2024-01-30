@@ -32,8 +32,12 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet cs)
   // So when the node is a `PostUpdateNode` we allow any sequence of implicit read steps of an appropriate
   // type to make sure we arrive at the sink with an empty access path.
   exists(NominalTypeDecl d, Decl cx |
-    node.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr().getType().getUnderlyingType() =
-      d.getType().getABaseType*() and
+    node.(DataFlow::PostUpdateNode)
+        .getPreUpdateNode()
+        .asExpr()
+        .getType()
+        .getUnderlyingType()
+        .getABaseType*() = d.getType() and
     cx.asNominalTypeDecl() = d and
     cs.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
   )

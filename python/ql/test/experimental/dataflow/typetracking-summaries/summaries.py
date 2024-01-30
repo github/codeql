@@ -6,10 +6,8 @@ tainted = TTS_identity(tracked)  # $ tracked
 tainted  # $ tracked
 
 # Lambda summary
-# I think the missing result is expected because type tracking
-# is not allowed to flow back out of a call.
 tainted_lambda = TTS_apply_lambda(lambda x: x, tracked)  # $ tracked
-tainted_lambda  # $ MISSING: tracked
+tainted_lambda  # $ tracked
 
 # A lambda that directly introduces taint
 bad_lambda = TTS_apply_lambda(lambda x: tracked, 1)  # $ tracked

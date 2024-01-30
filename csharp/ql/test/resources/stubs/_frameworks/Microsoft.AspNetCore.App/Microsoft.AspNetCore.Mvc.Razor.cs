@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.Razor, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.Razor, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -79,6 +79,7 @@ namespace Microsoft
                     {
                         Microsoft.AspNetCore.Mvc.Razor.Compilation.IViewCompiler GetCompiler();
                     }
+                    [System.AttributeUsage((System.AttributeTargets)1, AllowMultiple = true)]
                     public class RazorViewAttribute : System.Attribute
                     {
                         public RazorViewAttribute(string path, System.Type viewType) => throw null;
@@ -107,9 +108,11 @@ namespace Microsoft
                 }
                 namespace Internal
                 {
+                    [System.AttributeUsage((System.AttributeTargets)128, AllowMultiple = false, Inherited = true)]
                     public class RazorInjectAttribute : System.Attribute
                     {
                         public RazorInjectAttribute() => throw null;
+                        public object Key { get => throw null; set { } }
                     }
                 }
                 public interface IRazorPage

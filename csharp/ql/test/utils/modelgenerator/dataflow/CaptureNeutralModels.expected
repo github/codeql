@@ -4,7 +4,7 @@
 | NoSummaries;CollectionFlow;ReturnSimpleTypeDictionary;(System.Collections.Generic.Dictionary<System.Int32,System.Int32>);summary;df-generated |
 | NoSummaries;CollectionFlow;ReturnSimpleTypeList;(System.Collections.Generic.List<System.Int32>);summary;df-generated |
 | NoSummaries;EquatableBound;Equals;(System.Object);summary;df-generated |
-| NoSummaries;EquatableUnBound<>;Equals;(T);summary;df-generated |
+| NoSummaries;EquatableUnBound<T>;Equals;(T);summary;df-generated |
 | NoSummaries;SimpleTypes;M1;(System.Boolean);summary;df-generated |
 | NoSummaries;SimpleTypes;M2;(System.Boolean);summary;df-generated |
 | NoSummaries;SimpleTypes;M3;(System.Int32);summary;df-generated |

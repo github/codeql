@@ -8,12 +8,12 @@ module Config implements DataFlow::ConfigSig {
       or
       src.asParameter().getCallable().hasName("taintSteps")
       or
-      src.asExpr() = any(MethodAccess ma | ma.getMethod().hasName("source")).getAnArgument()
+      src.asExpr() = any(MethodCall ma | ma.getMethod().hasName("source")).getAnArgument()
     )
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       sink.asExpr() = ma.getAnArgument() and
       ma.getMethod().hasName("sink")
       or

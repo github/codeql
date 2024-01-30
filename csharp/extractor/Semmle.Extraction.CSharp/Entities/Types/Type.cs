@@ -52,9 +52,15 @@ namespace Semmle.Extraction.CSharp.Entities
                     {
                         case TypeKind.Class: return Kinds.TypeKind.CLASS;
                         case TypeKind.Struct:
-                            return ((INamedTypeSymbol)Symbol).IsTupleType && !constructUnderlyingTupleType
-                                ? Kinds.TypeKind.TUPLE
-                                : Kinds.TypeKind.STRUCT;
+                            {
+                                if (((INamedTypeSymbol)Symbol).IsTupleType && !constructUnderlyingTupleType)
+                                {
+                                    return Kinds.TypeKind.TUPLE;
+                                }
+                                return Symbol.IsInlineArray() 
+                                    ? Kinds.TypeKind.INLINE_ARRAY
+                                    : Kinds.TypeKind.STRUCT;
+                            }
                         case TypeKind.Interface: return Kinds.TypeKind.INTERFACE;
                         case TypeKind.Array: return Kinds.TypeKind.ARRAY;
                         case TypeKind.Enum: return Kinds.TypeKind.ENUM;

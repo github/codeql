@@ -4,6 +4,7 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Networking
 import semmle.code.java.security.HttpsUrls
+private import semmle.code.java.security.Sanitizers
 
 /**
  * DEPRECATED: Use `HttpsStringToUrlOpenMethodFlow` instead.
@@ -38,9 +39,7 @@ module HttpStringToUrlOpenMethodFlowConfig implements DataFlow::ConfigSig {
     any(HttpUrlsAdditionalTaintStep c).step(node1, node2)
   }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 }
 
 /**

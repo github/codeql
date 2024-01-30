@@ -1,14 +1,16 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Authorization, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Authorization, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
     {
         namespace Authorization
         {
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = false, Inherited = true)]
             public class AllowAnonymousAttribute : System.Attribute, Microsoft.AspNetCore.Authorization.IAllowAnonymous
             {
                 public AllowAnonymousAttribute() => throw null;
+                public override string ToString() => throw null;
             }
             public class AuthorizationBuilder
             {
@@ -120,6 +122,7 @@ namespace Microsoft
                 public static System.Threading.Tasks.Task<Microsoft.AspNetCore.Authorization.AuthorizationResult> AuthorizeAsync(this Microsoft.AspNetCore.Authorization.IAuthorizationService service, System.Security.Claims.ClaimsPrincipal user, Microsoft.AspNetCore.Authorization.AuthorizationPolicy policy) => throw null;
                 public static System.Threading.Tasks.Task<Microsoft.AspNetCore.Authorization.AuthorizationResult> AuthorizeAsync(this Microsoft.AspNetCore.Authorization.IAuthorizationService service, System.Security.Claims.ClaimsPrincipal user, string policyName) => throw null;
             }
+            [System.AttributeUsage((System.AttributeTargets)68, AllowMultiple = true, Inherited = true)]
             public class AuthorizeAttribute : System.Attribute, Microsoft.AspNetCore.Authorization.IAuthorizeData
             {
                 public string AuthenticationSchemes { get => throw null; set { } }
@@ -127,6 +130,7 @@ namespace Microsoft
                 public AuthorizeAttribute(string policy) => throw null;
                 public string Policy { get => throw null; set { } }
                 public string Roles { get => throw null; set { } }
+                public override string ToString() => throw null;
             }
             public class DefaultAuthorizationEvaluator : Microsoft.AspNetCore.Authorization.IAuthorizationEvaluator
             {
@@ -182,6 +186,10 @@ namespace Microsoft
             }
             public interface IAuthorizationRequirement
             {
+            }
+            public interface IAuthorizationRequirementData
+            {
+                System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Authorization.IAuthorizationRequirement> GetRequirements();
             }
             public interface IAuthorizationService
             {

@@ -105,7 +105,10 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * then both `{ return 0; }` and `{ return 1; }` are statement bodies of
    * `N.C.M()`.
    */
-  final BlockStmt getStatementBody() { result = this.getAChildStmt() }
+  final BlockStmt getStatementBody() {
+    result = getStatementBody(this) and
+    not this.getFile().isStub()
+  }
 
   /**
    * DEPRECATED: Use `getStatementBody` instead.
@@ -143,8 +146,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
    * then both `0` and `1` are expression bodies of `N.C.M()`.
    */
   final Expr getExpressionBody() {
-    result = this.getAChildExpr() and
-    not result = this.(Constructor).getInitializer()
+    result = getExpressionBody(this) and
+    not this.getFile().isStub()
   }
 
   /** Holds if this callable has an expression body. */
@@ -236,7 +239,12 @@ class Method extends Callable, Virtualizable, Attributable, @method {
 
   override ValueOrRefType getDeclaringType() { methods(this, _, result, _, _) }
 
-  override Type getReturnType() { methods(this, _, _, getTypeRef(result), _) }
+  override Type getReturnType() {
+    methods(this, _, _, result, _)
+    or
+    not methods(this, _, _, any(Type t), _) and
+    methods(this, _, _, getTypeRef(result), _)
+  }
 
   override Method getUnboundDeclaration() { methods(this, _, _, _, result) }
 
@@ -453,7 +461,12 @@ class Operator extends Callable, Member, Attributable, Overridable, @operator {
 
   override ValueOrRefType getDeclaringType() { operators(this, _, _, result, _, _) }
 
-  override Type getReturnType() { operators(this, _, _, _, getTypeRef(result), _) }
+  override Type getReturnType() {
+    operators(this, _, _, _, result, _)
+    or
+    not operators(this, _, _, _, any(Type t), _) and
+    operators(this, _, _, _, getTypeRef(result), _)
+  }
 
   override Operator getUnboundDeclaration() { operators(this, _, _, _, _, result) }
 
@@ -462,16 +475,6 @@ class Operator extends Callable, Member, Attributable, Overridable, @operator {
   override string toString() { result = Callable.super.toString() }
 
   override Parameter getRawParameter(int i) { result = this.getParameter(i) }
-
-  override predicate hasQualifiedName(string qualifier, string name) {
-    super.hasQualifiedName(qualifier, _) and
-    name = this.getFunctionName()
-  }
-
-  override predicate hasQualifiedName(string namespace, string type, string name) {
-    super.hasQualifiedName(namespace, type, _) and
-    name = this.getFunctionName()
-  }
 }
 
 /** A clone method on a record. */
@@ -1102,14 +1105,6 @@ class LocalFunction extends Callable, Modifiable, Attributable, @local_function 
   LocalFunctionStmt getStatement() { result.getLocalFunction() = this.getUnboundDeclaration() }
 
   override Callable getEnclosingCallable() { result = this.getStatement().getEnclosingCallable() }
-
-  override predicate hasQualifiedName(string qualifier, string name) {
-    exists(string cqualifier, string type |
-      this.getEnclosingCallable().hasQualifiedName(cqualifier, type) and
-      qualifier = getQualifiedName(cqualifier, type)
-    ) and
-    name = this.getName()
-  }
 
   override Location getALocation() { result = this.getStatement().getALocation() }
 

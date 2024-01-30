@@ -1,5 +1,7 @@
-private import RangeAnalysisStage
 private import RangeAnalysisImpl
+private import codeql.rangeanalysis.RangeAnalysis
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExpr
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticType
 
 module FloatDelta implements DeltaSig {
   class Delta = float;
@@ -20,7 +22,7 @@ module FloatDelta implements DeltaSig {
   Delta fromFloat(float f) { result = f }
 }
 
-module FloatOverflow implements OverflowSig<FloatDelta> {
+module FloatOverflow implements OverflowSig<Sem, FloatDelta> {
   predicate semExprDoesNotOverflow(boolean positively, SemExpr expr) {
     exists(float lb, float ub, float delta |
       typeBounds(expr.getSemType(), lb, ub) and

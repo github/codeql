@@ -26,7 +26,7 @@ class ConditionInterface extends Interface {
   ConditionInterface() { this.hasQualifiedName("java.util.concurrent.locks", "Condition") }
 }
 
-from MethodAccess ma, ConditionInterface condition
+from MethodCall ma, ConditionInterface condition
 where
   ma.getMethod() instanceof WaitMethod and
   ma.getQualifier().getType().(RefType).hasSupertype*(condition)

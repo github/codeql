@@ -6,12 +6,6 @@ import go
 
 /** Provides classes and predicates shared between the XSS queries. */
 module SharedXss {
-  /**
-   * DEPRECATED: This class is not used.
-   * A data flow source for XSS vulnerabilities.
-   */
-  abstract deprecated class Source extends DataFlow::Node { }
-
   /** A data flow sink for XSS vulnerabilities. */
   abstract class Sink extends DataFlow::Node {
     /**

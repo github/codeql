@@ -11,6 +11,7 @@ namespace Semmle.Autobuild.CSharp
     /// </summary>
     public class CSharpAutobuildOptions : AutobuildOptionsShared
     {
+        private const string buildModeEnvironmentVariable = "CODEQL_EXTRACTOR_CSHARP_BUILD_MODE";
         private const string extractorOptionPrefix = "CODEQL_EXTRACTOR_CSHARP_OPTION_";
 
         public bool Buildless { get; }
@@ -25,7 +26,8 @@ namespace Semmle.Autobuild.CSharp
         public CSharpAutobuildOptions(IBuildActions actions) : base(actions)
         {
             Buildless = actions.GetEnvironmentVariable(lgtmPrefix + "BUILDLESS").AsBool("buildless", false) ||
-                actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false);
+                actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false) ||
+                actions.GetEnvironmentVariable(buildModeEnvironmentVariable)?.ToLower() == "none";
         }
     }
 
