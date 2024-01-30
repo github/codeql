@@ -23,9 +23,4 @@ class UserController < ActionController::Base
     object = Oj.load params[:json]
     # ...
   end
-
-  def ox_example
-    object = Ox.parse_obj params[:xml]
-    # ...
-  end
 end

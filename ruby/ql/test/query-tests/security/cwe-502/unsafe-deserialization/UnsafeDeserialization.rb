@@ -2,7 +2,6 @@ require "active_job"
 require "base64"
 require "json"
 require "oj"
-require "ox"
 require "yaml"
 
 class UsersController < ActionController::Base
@@ -76,42 +75,15 @@ class UsersController < ActionController::Base
     object = Oj.safe_load json_data
   end
 
-  # BAD - Oj.object_load is always unsafe
-  def route10
-   json_data = params[:key]
-   object = Oj.object_load json_data
-  end
-
-  # BAD - Ox.parse_obj is always unsafe
-  def route11
-   xml_data = params[:key]
-   object = Ox.parse_obj xml_data
-  end
-
-  # BAD - Ox.load with :object mode is always unsafe
-  def route12
-    xml_data = params[:key]
-    object = Ox.load xml_data, mode: :object
-  end
-
-  # GOOD - Ox.load is safe in the default mode (which is :generic) and in any other mode than :object
-  def route13
-    xml_data = params[:key]
-    object1 = Ox.load xml_data
-    object2 = Ox.load xml_data, mode: :limited
-    object3 = Ox.load xml_data, mode: :hash
-    object4 = Ox.load xml_data, mode: :generic
-  end
-
   # BAD - `Hash.from_trusted_xml` will deserialize elements with the
   # `type="yaml"` attribute as YAML.
-  def route14
+  def route10
     xml = params[:key]
     hash = Hash.from_trusted_xml(xml)
   end
 
   # BAD
-  def route15
+  def route11
     yaml_data = params[:key]
     object = Psych.load yaml_data
   end
