@@ -1,4 +1,5 @@
 ---
 category: minorAnalysis
 ---
-* Corrected a false positive with `cpp/uninitialized-local`: `a->func()` is a false positive if `func` is static regardless of if `a` is initializeed.
+* The "Potentially uninitialized local variable" query (`cpp/uninitialized-local`) no longer reports an alert when the local variable is used as a qualifier to a static member function call.
+* ```
