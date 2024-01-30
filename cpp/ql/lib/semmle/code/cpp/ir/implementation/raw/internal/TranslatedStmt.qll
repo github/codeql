@@ -563,13 +563,12 @@ class TranslatedTryStmt extends TranslatedStmt {
     // The last catch clause flows to the exception successor of the parent
     // of the `try`, because the exception successor of the `try` itself is
     // the first catch clause.
-    kind instanceof GotoEdge and
     handler = this.getHandler(stmt.getNumberOfCatchClauses() - 1) and
-    result = this.getParent().getExceptionSuccessorInstruction()
+    result = this.getParent().getExceptionSuccessorInstruction(kind)
   }
 
-  final override Instruction getExceptionSuccessorInstruction() {
-    result = this.getHandler(0).getFirstInstruction(any(GotoEdge edge))
+  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+    result = this.getHandler(0).getFirstInstruction(kind)
   }
 
   private TranslatedElement getHandler(int index) { result = stmt.getTranslatedHandler(index) }
@@ -635,10 +634,10 @@ abstract class TranslatedHandler extends TranslatedStmt {
     child = this.getBlock() and result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getExceptionSuccessorInstruction() {
+  override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
     // A throw from within a `catch` block flows to the handler for the parent of
     // the `try`.
-    result = this.getParent().getParent().getExceptionSuccessorInstruction()
+    result = this.getParent().getParent().getExceptionSuccessorInstruction(kind)
   }
 
   TranslatedStmt getBlock() { result = getTranslatedStmt(stmt.getBlock()) }

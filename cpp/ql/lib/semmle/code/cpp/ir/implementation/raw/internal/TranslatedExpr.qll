@@ -2566,7 +2566,7 @@ abstract class TranslatedThrowExpr extends TranslatedNonConstantExpr {
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = ThrowTag() and
     kind instanceof ExceptionEdge and
-    result = this.getParent().getExceptionSuccessorInstruction()
+    result = this.getParent().getExceptionSuccessorInstruction(any(GotoEdge edge))
   }
 
   override Instruction getResult() { none() }

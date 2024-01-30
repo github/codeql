@@ -222,8 +222,9 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
     )
   }
 
-  final override Instruction getExceptionSuccessorInstruction() {
-    result = this.getInstruction(UnwindTag())
+  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+    result = this.getInstruction(UnwindTag()) and
+    kind instanceof GotoEdge
   }
 
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
