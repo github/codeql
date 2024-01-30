@@ -3,12 +3,10 @@ import cpp
 /**
  * Gets the line of the `ix`th `PreprocessorBranchDirective` in file `f`.
  */
-private cached int getPreprocLineFromIndex(File f, int ix) {
-  result = rank[ix](
-    PreprocessorBranchDirective g |
-    g.getFile() = f |
-    g.getLocation().getStartLine()
-  )
+cached
+private int getPreprocLineFromIndex(File f, int ix) {
+  result =
+    rank[ix](PreprocessorBranchDirective g | g.getFile() = f | g.getLocation().getStartLine())
 }
 
 /**
@@ -22,8 +20,7 @@ private PreprocessorBranchDirective getPreprocFromIndex(File f, int ix) {
 /**
  * Get the index of a `PreprocessorBranchDirective` in its `file`.
  */
-private int getPreprocIndex(PreprocessorBranchDirective directive)
-{
+private int getPreprocIndex(PreprocessorBranchDirective directive) {
   directive = getPreprocFromIndex(directive.getFile(), result)
 }
 
@@ -48,9 +45,9 @@ class PreprocessorBlock extends @element {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(string filepath,
-                            int startline, int startcolumn,
-                            int endline, int endcolumn) {
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
     filepath = this.getFile().toString() and
     startline = this.getStartLine() and
     startcolumn = 0 and
@@ -58,40 +55,40 @@ class PreprocessorBlock extends @element {
     endcolumn = 0
   }
 
-  string toString() {
-    result = mkElement(this).toString()
-  }
+  string toString() { result = mkElement(this).toString() }
 
-  cached File getFile() {
-    result = mkElement(this).getFile()
-  }
+  cached
+  File getFile() { result = mkElement(this).getFile() }
 
-  cached int getStartLine() {
-    result = mkElement(this).getLocation().getStartLine()
-  }
+  cached
+  int getStartLine() { result = mkElement(this).getLocation().getStartLine() }
 
-  cached int getEndLine() {
+  cached
+  int getEndLine() {
     result = mkElement(this).(File).getMetrics().getNumberOfLines() or
-    result = mkElement(this).(PreprocessorBranchDirective).getNext().getLocation().getStartLine() - 1
+    result =
+      mkElement(this).(PreprocessorBranchDirective).getNext().getLocation().getStartLine() - 1
   }
 
-  private cached PreprocessorBlock getParentInternal() {
+  cached
+  private PreprocessorBlock getParentInternal() {
     // find the `#ifdef` corresponding to this block and the
     // PreprocessorBranchDirective `prev` that came directly
     // before it in the source.
     exists(int ix, PreprocessorBranchDirective prev |
       ix = getPreprocIndex(mkElement(this).(PreprocessorBranchDirective).getIf()) and
-      prev = getPreprocFromIndex(getFile(), ix - 1) |
-      if (prev instanceof PreprocessorEndif) then (
+      prev = getPreprocFromIndex(getFile(), ix - 1)
+    |
+      if prev instanceof PreprocessorEndif
+      then
         // if we follow an #endif, we have the same parent
         // as its corresponding `#if` has.
         result = unresolveElement(prev.getIf()).(PreprocessorBlock).getParentInternal()
-      ) else (
+      else
         // otherwise we directly follow an #if / #ifdef / #ifndef /
         // #elif / #else that must be a level above and our parent
         // block.
         mkElement(result) = prev
-      )
     )
   }
 
@@ -102,22 +99,20 @@ class PreprocessorBlock extends @element {
   PreprocessorBlock getParent() {
     not mkElement(this) instanceof File and
     (
-      if exists(getParentInternal()) then (
+      if exists(getParentInternal())
+      then
         // found parent directive
         result = getParentInternal()
-      ) else (
+      else
         // top level directive
         mkElement(result) = getFile()
-      )
     )
   }
-  
+
   /**
    * Gets a `PreprocessorBlock` that's directly inside this one.
    */
-  PreprocessorBlock getAChild() {
-    result.getParent() = this
-  }
+  PreprocessorBlock getAChild() { result.getParent() = this }
 
   private Include getAnEnclosedInclude() {
     result.getFile() = getFile() and
@@ -128,7 +123,7 @@ class PreprocessorBlock extends @element {
   /**
    * Gets an include directive that is directly in this
    * `PreprocessorBlock`.
-   */ 
+   */
   Include getAnInclude() {
     result = getAnEnclosedInclude() and
     not result = getAChild().getAnEnclosedInclude()
@@ -143,7 +138,7 @@ class PreprocessorBlock extends @element {
   /**
    * Gets a macro definition that is directly in this
    * `PreprocessorBlock`.
-   */ 
+   */
   Macro getAMacro() {
     result = getAnEnclosedMacro() and
     not result = getAChild().getAnEnclosedMacro()
