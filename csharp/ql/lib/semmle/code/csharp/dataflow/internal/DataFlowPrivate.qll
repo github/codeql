@@ -540,6 +540,8 @@ module LocalFlow {
       not t instanceof NullType
       or
       t = any(TypeParameter tp | not tp.isValueType())
+      or
+      t.(Struct).isRef()
     ) and
     not exists(getALastEvalNode(result))
   }
