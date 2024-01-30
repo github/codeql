@@ -339,9 +339,6 @@ class DataFlowCall extends Expr {
   /** Gets an argument to this call as a Node. */
   ArgumentNode getAnArgumentNode(){ result = this.getArgument(_) }
 
-  /* Gets the data flow node corresponding to this call. */
-  ExprNode getDataFlowNode() { result = this.getNode() }
-
   /** Gets the target of the call, as a DataFlowCallable. */
   DataFlowCallable getARuntimeTarget(){ result.asCallable() = call.getACalleeIncludingExternals() }
 }

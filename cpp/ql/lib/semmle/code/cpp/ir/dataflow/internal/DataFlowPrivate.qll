@@ -896,9 +896,6 @@ class DataFlowCall extends CallInstruction {
   /** Gets an argument to this call as a Node. */
   ArgumentNode getAnArgumentNode(){ none() } // TODO: JB1 return an argument as a DataFlow ArgumentNode
 
-  /** Gets the data flow node corresponding to this call. */
-  ExprNode getDataFlowNode() {none() }
-
   /** Gets the target of the call, as a DataFlowCallable. */
   DataFlowCallable getARuntimeTarget(){ none() } // TODO getCallTarget() returns `Instruction`
 }

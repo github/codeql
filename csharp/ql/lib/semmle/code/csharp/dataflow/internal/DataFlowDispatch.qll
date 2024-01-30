@@ -294,9 +294,6 @@ abstract class DataFlowCall extends TDataFlowCall {
   /** Gets an argument of this call. */
   final ArgumentNode getAnArgumentNode() { result.argumentOf(this, _) }
 
-  /** Gets the data flow node corresponding to this call. (An alias of `getNode()`) */
-  DataFlow::Node getDataFlowNode(){ result = this.getNode() }
-
   /** Gets a textual representation of this call. */
   abstract string toString();
 
