@@ -1,0 +1,8 @@
+| delegates.cs:72:13:72:20 | delegate call | delegates.cs:72:13:72:15 | access to local variable cd1 |
+| delegates.cs:74:13:74:23 | delegate call | delegates.cs:74:13:74:15 | access to local variable cd7 |
+| delegates.cs:79:22:79:26 | delegate call | delegates.cs:79:22:79:23 | access to local variable pi |
+| delegates.cs:79:30:79:35 | delegate call | delegates.cs:79:30:79:31 | access to local variable ps |
+| delegates.cs:93:13:93:25 | delegate call | delegates.cs:93:13:93:16 | this access |
+| delegates.cs:94:13:94:28 | delegate call | delegates.cs:94:13:94:16 | this access |
+| delegates.cs:95:13:95:20 | delegate call | delegates.cs:95:13:95:17 | access to field Field |
+| delegates.cs:96:13:96:23 | delegate call | delegates.cs:96:13:96:20 | access to property Property |

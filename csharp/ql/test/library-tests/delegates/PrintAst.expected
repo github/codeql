@@ -249,3 +249,33 @@ delegates.cs:
 #   81|         16: [LocalVariableDeclStmt] ... ...;
 #   81|           0: [LocalVariableDeclExpr] ContextCallback d
 #   81|             0: [TypeMention] ContextCallback
+#   86|   10: [Class] E
+#   88|     5: [Field] Field
+#   88|       -1: [TypeMention] Action<int>
+#   88|         1: [TypeMention] int
+#   89|     6: [Property] Property
+#   89|       -1: [TypeMention] Action<int>
+#   89|         1: [TypeMention] int
+#   89|       3: [Getter] get_Property
+#   89|       4: [Setter] set_Property
+#-----|         2: (Parameters)
+#   89|           0: [Parameter] value
+#   91|     7: [Method] M
+#   91|       -1: [TypeMention] Void
+#   92|       4: [BlockStmt] {...}
+#   93|         0: [ExprStmt] ...;
+#   93|           0: [DelegateCall] delegate call
+#   93|             -1: [ThisAccess] this access
+#   93|             0: [IntLiteral] 0
+#   94|         1: [ExprStmt] ...;
+#   94|           0: [DelegateCall] delegate call
+#   94|             -1: [ThisAccess] this access
+#   94|             0: [IntLiteral] 0
+#   95|         2: [ExprStmt] ...;
+#   95|           0: [DelegateCall] delegate call
+#   95|             -1: [FieldAccess] access to field Field
+#   95|             0: [IntLiteral] 0
+#   96|         3: [ExprStmt] ...;
+#   96|           0: [DelegateCall] delegate call
+#   96|             -1: [PropertyCall] access to property Property
+#   96|             0: [IntLiteral] 0

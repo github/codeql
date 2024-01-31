@@ -83,4 +83,17 @@ namespace Delegates
 
     }
 
+    class E
+    {
+        Action<int> Field;
+        Action<int> Property { get; set; }
+
+        void M()
+        {
+            this.Field(0);
+            this.Property(0);
+            Field(0);
+            Property(0);
+        }
+    }
 }
