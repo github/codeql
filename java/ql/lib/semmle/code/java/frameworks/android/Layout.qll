@@ -50,7 +50,7 @@ private class FindViewMethod extends Method {
   }
 }
 
-/** Gets a use of the view that has the given id. (i.e. from a call to a method like `findViewById`) */
+/** Gets a use of the view that has the given id. (that is, from a call to a method like `findViewById`) */
 MethodCall getAUseOfViewWithId(string id) {
   exists(string name, NestedClass r_id, Field id_field |
     id = ["@+id/", "@id/"] + name and

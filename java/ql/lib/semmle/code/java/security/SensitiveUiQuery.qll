@@ -5,6 +5,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.SensitiveActions
 private import semmle.code.java.frameworks.android.Layout
+private import semmle.code.java.security.Sanitizers
 
 /** A configuration for tracking sensitive information to system notifications. */
 private module NotificationTrackingConfig implements DataFlow::ConfigSig {
@@ -63,9 +64,7 @@ private module TextFieldTrackingConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
