@@ -210,7 +210,7 @@ namespace Semmle.Extraction.Tests
             try
             {
                 File.AppendAllText(file, "Test");
-                new string[] { "/noconfig", "@" + file }.WriteCommandLine(sw);
+                sw.WriteContentFromArgumentFile(new string[] { "/noconfig", "@" + file });
                 Assert.Equal("Test", Regex.Replace(sw.ToString(), @"\t|\n|\r", ""));
             }
             finally

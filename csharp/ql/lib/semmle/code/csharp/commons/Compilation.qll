@@ -23,6 +23,22 @@ class Compilation extends @compilation {
     result = concat(int i | exists(this.getArgument(i)) | this.getArgument(i), " ")
   }
 
+  /**
+   * Gets the `i`th expanded command line argument. This is similar to
+   * `getArgument`, but for a `@someFile.rsp` argument, it includes the arguments
+   * from that file, rather than just taking the argument literally.
+   */
+  string getExpandedArgument(int i) { compilation_expanded_args(this, i, result) }
+
+  /**
+   * Gets the expanded arguments as a concatenated string. This is similar to
+   * `getArguments`, but for a `@someFile.rsp` argument, it includes the arguments
+   * from that file, rather than just taking the argument literally.
+   */
+  string getExpandedArguments() {
+    result = concat(int i | exists(this.getExpandedArgument(i)) | this.getExpandedArgument(i), " ")
+  }
+
   /** Gets the 'i'th source file in this compilation. */
   File getFileCompiled(int i) { compilation_compiling_files(this, i, result) }
 
