@@ -54,6 +54,39 @@ type GoVersionInfo struct {
 	Found bool
 }
 
+// Determines the version of Go that is required by this workspace. This is, in order of preference:
+// 1. The Go version specified in the `go.work` file, if any.
+// 2. The greatest Go version specified in any `go.mod` file, if any.
+func (workspace *GoWorkspace) RequiredGoVersion() GoVersionInfo {
+	if workspace.WorkspaceFile != nil {
+		// If we have parsed a `go.work` file, return the version number from it.
+		return GoVersionInfo{Version: workspace.WorkspaceFile.Go.Version, Found: true}
+	} else if workspace.Modules != nil && len(workspace.Modules) > 0 {
+		// Otherwise, if we have `go.work` files, find the greatest Go version in those.
+		var greatestVersion string = ""
+		for _, module := range workspace.Modules {
+			if module.Module != nil {
+				// If we have parsed the file, retrieve the version number we have already obtained.
+				if greatestVersion == "" || semver.Compare("v"+module.Module.Go.Version, "v"+greatestVersion) > 0 {
+					greatestVersion = module.Module.Go.Version
+				}
+			} else {
+				modVersion := tryReadGoDirective(module.Path)
+				if modVersion.Found && (greatestVersion == "" || semver.Compare("v"+modVersion.Version, "v"+greatestVersion) > 0) {
+					greatestVersion = modVersion.Version
+				}
+			}
+		}
+
+		// If we have found some version, return it.
+		if greatestVersion != "" {
+			return GoVersionInfo{Version: greatestVersion, Found: true}
+		}
+	}
+
+	return GoVersionInfo{Version: "", Found: false}
+}
+
 // Determines whether any of the directory paths in the input are nested.
 func checkDirsNested(inputDirs []string) (string, bool) {
 	// replace "." with "" so that we can check if all the paths are nested
@@ -310,8 +343,8 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 	return
 }
 
-// Returns the appropriate DependencyInstallerMode for the current project
-func getDepMode(emitDiagnostics bool) []GoWorkspace {
+// Finds Go workspaces in the current working directory.
+func GetWorkspaceInfo(emitDiagnostics bool) []GoWorkspace {
 	bazelPaths := util.FindAllFilesWithName(".", "BUILD", "vendor")
 	bazelPaths = append(bazelPaths, util.FindAllFilesWithName(".", "BUILD.bazel", "vendor")...)
 	if len(bazelPaths) > 0 {
@@ -400,37 +433,18 @@ func getModMode(depMode DependencyInstallerMode, baseDir string) ModMode {
 	return ModUnset
 }
 
-type BuildInfo struct {
-	DepMode DependencyInstallerMode
-	ModMode ModMode
-	BaseDir string
-}
-
-func GetBuildInfo(emitDiagnostics bool) []BuildInfo {
-	goWorkspaces := getDepMode(true)
-	results := make([]BuildInfo, len(goWorkspaces))
-
-	for i, workspace := range goWorkspaces {
-		modMode := getModMode(workspace.DepMode, workspace.BaseDir)
-		results[i] = BuildInfo{workspace.DepMode, modMode, workspace.BaseDir}
-	}
-
-	return results
-}
-
 // Tries to open `go.mod` and read a go directive, returning the version and whether it was found.
-func TryReadGoDirective(buildInfo BuildInfo) GoVersionInfo {
-	if buildInfo.DepMode == GoGetWithModules {
-		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)$`)
-		goMod, err := os.ReadFile(filepath.Join(buildInfo.BaseDir, "go.mod"))
-		if err != nil {
-			log.Println("Failed to read go.mod to check for missing Go version")
-		} else {
-			matches := versionRe.FindSubmatch(goMod)
-			if matches != nil {
-				if len(matches) > 1 {
-					return GoVersionInfo{string(matches[1]), true}
-				}
+// The version string is returned in the "1.2.3" format.
+func tryReadGoDirective(path string) GoVersionInfo {
+	versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+(\.[0-9]+)?)$`)
+	goMod, err := os.ReadFile(path)
+	if err != nil {
+		log.Println("Failed to read go.mod to check for missing Go version")
+	} else {
+		matches := versionRe.FindSubmatch(goMod)
+		if matches != nil {
+			if len(matches) > 1 {
+				return GoVersionInfo{string(matches[1]), true}
 			}
 		}
 	}

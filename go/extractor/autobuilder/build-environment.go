@@ -267,15 +267,25 @@ func outputEnvironmentJson(version string) {
 // Get the version of Go to install and output it to stdout as json.
 func IdentifyEnvironment() {
 	var v versionInfo
-	buildInfos := project.GetBuildInfo(false)
-	goVersionInfo := project.TryReadGoDirective(buildInfos[0]) // TODO: find greatest version
-	v.goModVersion, v.goModVersionFound = goVersionInfo.Version, goVersionInfo.Found
+	workspaces := project.GetWorkspaceInfo(false)
 
+	// Find the greatest Go version required by any of the workspaces.
+	greatestGoVersion := project.GoVersionInfo{Version: "", Found: false}
+	for _, workspace := range workspaces {
+		goVersionInfo := workspace.RequiredGoVersion()
+		if goVersionInfo.Found && (!greatestGoVersion.Found || semver.Compare("v"+goVersionInfo.Version, "v"+greatestGoVersion.Version) > 0) {
+			greatestGoVersion = goVersionInfo
+		}
+	}
+	v.goModVersion, v.goModVersionFound = greatestGoVersion.Version, greatestGoVersion.Found
+
+	// Find which, if any, version of Go is installed on the system already.
 	v.goEnvVersionFound = toolchain.IsInstalled()
 	if v.goEnvVersionFound {
 		v.goEnvVersion = toolchain.GetEnvGoVersion()[2:]
 	}
 
+	// Determine which version of Go we should recommend to install.
 	msg, versionToInstall := getVersionToInstall(v)
 	log.Println(msg)
 
