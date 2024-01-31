@@ -265,11 +265,13 @@ delegates.cs:
 #   92|       4: [BlockStmt] {...}
 #   93|         0: [ExprStmt] ...;
 #   93|           0: [DelegateCall] delegate call
-#   93|             -1: [ThisAccess] this access
+#   93|             -1: [FieldAccess] access to field Field
+#   93|               -1: [ThisAccess] this access
 #   93|             0: [IntLiteral] 0
 #   94|         1: [ExprStmt] ...;
 #   94|           0: [DelegateCall] delegate call
-#   94|             -1: [ThisAccess] this access
+#   94|             -1: [PropertyCall] access to property Property
+#   94|               -1: [ThisAccess] this access
 #   94|             0: [IntLiteral] 0
 #   95|         2: [ExprStmt] ...;
 #   95|           0: [DelegateCall] delegate call
