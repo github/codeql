@@ -126,11 +126,12 @@ func initGoModForLegacyProject(path string) {
 
 	if err != nil {
 		log.Printf("Failed to determine module requirements for this project.")
-
-		if strings.Contains(string(out), "is relative, but relative import paths are not supported in module mode") {
-			diagnostics.EmitRelativeImportPaths()
-		}
 	}
+
+	if strings.Contains(string(out), "is relative, but relative import paths are not supported in module mode") {
+		diagnostics.EmitRelativeImportPaths()
+	}
+}
 }
 
 // Find all go.work files in the working directory and its subdirectories
