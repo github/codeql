@@ -43,6 +43,7 @@ type GoWorkspace struct {
 	WorkspaceFile *modfile.WorkFile       // The `go.work` file for this workspace
 	Modules       []*GoModule             // A list of `go.mod` files
 	DepMode       DependencyInstallerMode // A value indicating how to install dependencies for this workspace
+	ModMode       ModMode                 // A value indicating which module mode to use for this workspace
 }
 
 // Represents a nullable version string.
@@ -154,6 +155,7 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 			BaseDir: baseDir,
 			Modules: loadGoModules(findGoModFiles(baseDir)),
 			DepMode: GoGetWithModules,
+			ModMode: getModMode(GoGetWithModules, baseDir),
 		}
 	}
 
@@ -166,6 +168,7 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 			BaseDir: baseDir,
 			Modules: loadGoModules(findGoModFiles(baseDir)),
 			DepMode: GoGetWithModules,
+			ModMode: getModMode(GoGetWithModules, baseDir),
 		}
 	}
 
@@ -188,6 +191,7 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 		WorkspaceFile: workFile,
 		Modules:       loadGoModules(goModFilePaths),
 		DepMode:       GoGetWithModules,
+		ModMode:       getModMode(GoGetWithModules, baseDir),
 	}
 }
 
@@ -210,6 +214,7 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 				BaseDir: filepath.Dir(goModFile),
 				Modules: loadGoModules([]string{goModFile}),
 				DepMode: GoGetWithModules,
+				ModMode: getModMode(GoGetWithModules, filepath.Dir(goModFile)),
 			}
 		}
 
@@ -251,6 +256,7 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 		goWorkspaces = []GoWorkspace{{
 			BaseDir: ".",
 			DepMode: GoGetWithModules,
+			ModMode: getModMode(GoGetWithModules, "."),
 		}}
 		totalModuleFiles = 1
 		return
@@ -276,6 +282,7 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 		goWorkspaces = []GoWorkspace{{
 			BaseDir: ".",
 			DepMode: GoGetNoModules,
+			ModMode: ModUnset,
 		}}
 		totalModuleFiles = 0
 		return
@@ -328,6 +335,7 @@ func getDepMode(emitDiagnostics bool) []GoWorkspace {
 		return []GoWorkspace{{
 			BaseDir: ".",
 			DepMode: Dep,
+			ModMode: ModUnset,
 		}}
 	}
 
@@ -339,6 +347,7 @@ func getDepMode(emitDiagnostics bool) []GoWorkspace {
 		return []GoWorkspace{{
 			BaseDir: ".",
 			DepMode: Glide,
+			ModMode: ModUnset,
 		}}
 	}
 	return goWorkspaces
