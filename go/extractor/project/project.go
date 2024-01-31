@@ -284,7 +284,19 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 	// If there are no `go.mod` files at all, create one in line with https://go.dev/blog/migrating-to-go-modules
 	if totalModuleFiles == 0 {
 		// If we have no `go.mod` files, then the project appears to be a legacy project without
-		// a `go.mod` file. Try to initialize one automatically.
+		// a `go.mod` file. Check that there are actually Go source files before initializing a module
+		// so that we correctly fail the extraction later.
+		if !util.FindGoFiles(".") {
+			goWorkspaces = []GoWorkspace{{
+				BaseDir: ".",
+				DepMode: GoGetNoModules,
+				ModMode: ModUnset,
+			}}
+			totalModuleFiles = 0
+			return
+		}
+
+		// Try to initialize a `go.mod` file automatically.
 		initGoModForLegacyProject(".")
 
 		goWorkspaces = []GoWorkspace{{
