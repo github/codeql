@@ -4,3 +4,4 @@ extensions:
       extensible: sinkModel
     data:
       - ["java.util.jar", "JarOutputStream", True, "putNextEntry", "(ZipEntry)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.util.jar", "JarOutputStream", True, "putNextEntry", "(ZipEntry)", "", "Argument[0]", "path-injection", "ai-manual"]

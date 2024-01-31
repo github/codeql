@@ -4,3 +4,4 @@ extensions:
       extensible: summaryModel
     data:
       - ["io.grpc", "ManagedChannelBuilder", False, "forAddress", "(String,int)", "", Argument[0], "ReturnValue", "taint", "ai-manual"]
+      - ["io.grpc", "ManagedChannelBuilder", False, "forAddress", "(String,int)", "", Argument[0], "ReturnValue", "taint", "ai-manual"]

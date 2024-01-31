@@ -4,6 +4,7 @@ extensions:
       extensible: sinkModel
     data:
       - ["kotlin.io", "FilesKt", False, "appendText$default", "(File,String,Charset,int,Object)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["kotlin.io", "FilesKt", False, "appendText$default", "(File,String,Charset,int,Object)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["kotlin.io", "FilesKt", False, "deleteRecursively", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["kotlin.io", "FilesKt", False, "inputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["kotlin.io", "FilesKt", False, "readBytes", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]

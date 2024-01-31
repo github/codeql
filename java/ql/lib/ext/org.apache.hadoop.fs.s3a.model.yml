@@ -4,3 +4,4 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.apache.hadoop.fs.s3a", "WriteOperationHelper", True, "createPutObjectRequest", "(String,File)", "", "Argument[1]", "path-injection", "ai-manual"]
+      - ["org.apache.hadoop.fs.s3a", "WriteOperationHelper", True, "createPutObjectRequest", "(String,File)", "", "Argument[1]", "path-injection", "ai-manual"]

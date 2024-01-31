@@ -19,3 +19,4 @@ extensions:
       extensible: summaryModel
     data:
       - ["javax.servlet", "ServletRequest", True, "getParameter", "(String)", "", Argument[0], "ReturnValue", "taint", "ai-manual"]
+      - ["javax.servlet", "ServletRequest", True, "getParameter", "(String)", "", Argument[0], "ReturnValue", "taint", "ai-manual"]

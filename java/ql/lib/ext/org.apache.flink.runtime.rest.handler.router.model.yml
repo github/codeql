@@ -4,3 +4,4 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.apache.flink.runtime.rest.handler.router", "MethodlessRouter", False, "route", "(String,String,Map,String[])", "", "Argument[0]", "request-forgery", "ai-manual"]
+      - ["org.apache.flink.runtime.rest.handler.router", "MethodlessRouter", False, "route", "(String,String,Map,String[])", "", "Argument[0]", "request-forgery", "ai-manual"]

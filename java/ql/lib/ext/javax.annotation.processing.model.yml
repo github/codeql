@@ -4,4 +4,6 @@ extensions:
       extensible: summaryModel
     data:
       - ["javax.annotation.processing", "Filer", True, "createResource", "(JavaFileManager$Location,CharSequence,CharSequence,Element[])", "", Argument[0], "ReturnValue", "taint", "ai-manual"]
+      - ["javax.annotation.processing", "Filer", True, "createResource", "(JavaFileManager$Location,CharSequence,CharSequence,Element[])", "", Argument[0], "ReturnValue", "taint", "ai-manual"]
+      - ["javax.annotation.processing", "Filer", True, "createResource", "(JavaFileManager$Location,CharSequence,CharSequence,Element[])", "", Argument[2], "ReturnValue", "taint", "ai-manual"]
       - ["javax.annotation.processing", "Filer", True, "createResource", "(JavaFileManager$Location,CharSequence,CharSequence,Element[])", "", Argument[2], "ReturnValue", "taint", "ai-manual"]

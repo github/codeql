@@ -6,6 +6,7 @@ extensions:
       - ["java.util.zip", "GZIPInputStream", False, "GZIPInputStream", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.util.zip", "ZipEntry", True, "ZipEntry", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.util.zip", "ZipFile", True, "getInputStream", "(ZipEntry)", "", Argument[0], "ReturnValue", "taint", "ai-manual"]
+      - ["java.util.zip", "ZipFile", True, "getInputStream", "(ZipEntry)", "", Argument[0], "ReturnValue", "taint", "ai-manual"]
       - ["java.util.zip", "ZipInputStream", False, "ZipInputStream", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
   - addsTo:
       pack: codeql/java-all
