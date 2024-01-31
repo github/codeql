@@ -9,6 +9,10 @@ on:
       - codeql-workspace.yml
 env:
   GO_VERSION: '~1.21.0'
+
+permissions:
+  contents: read
+
 jobs:
   test-mac:
     name: Test MacOS

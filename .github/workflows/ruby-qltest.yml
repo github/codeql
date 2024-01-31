@@ -29,6 +29,9 @@ defaults:
   run:
     working-directory: ruby
 
+permissions:
+  contents: read
+
 jobs:
   qlupgrade:
     runs-on: ubuntu-latest

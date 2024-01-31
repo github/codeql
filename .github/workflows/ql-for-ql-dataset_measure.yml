@@ -11,6 +11,10 @@ on:
       - ql/ql/src/ql.dbscheme
   workflow_dispatch:
 
+permissions:
+  contents: read
+  security-events: read
+
 jobs:
   measure:
     env:
