@@ -45,6 +45,14 @@ type GoWorkspace struct {
 	DepMode       DependencyInstallerMode // A value indicating how to install dependencies for this workspace
 }
 
+// Represents a nullable version string.
+type GoVersionInfo struct {
+	// The version string, if any
+	Version string
+	// A value indicating whether a version string was found
+	Found bool
+}
+
 // Determines whether any of the directory paths in the input are nested.
 func checkDirsNested(inputDirs []string) (string, bool) {
 	// replace "." with "" so that we can check if all the paths are nested
@@ -399,13 +407,6 @@ func GetBuildInfo(emitDiagnostics bool) []BuildInfo {
 	}
 
 	return results
-}
-
-type GoVersionInfo struct {
-	// The version string, if any
-	Version string
-	// A value indicating whether a version string was found
-	Found bool
 }
 
 // Tries to open `go.mod` and read a go directive, returning the version and whether it was found.
