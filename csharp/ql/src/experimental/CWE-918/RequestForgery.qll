@@ -5,7 +5,6 @@ module RequestForgery {
   import semmle.code.csharp.frameworks.System
   import semmle.code.csharp.frameworks.system.Web
   import semmle.code.csharp.frameworks.Format
-  import semmle.code.csharp.security.dataflow.flowsources.Remote
   import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
   /**

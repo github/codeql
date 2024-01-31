@@ -1,7 +1,6 @@
 import csharp
 import semmle.code.csharp.frameworks.system.Net
 import semmle.code.csharp.frameworks.System
-import semmle.code.csharp.security.dataflow.flowsources.Remote
 import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 import semmle.code.csharp.security.Sanitizers
 
