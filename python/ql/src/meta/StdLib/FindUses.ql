@@ -1,6 +1,7 @@
 import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
+private import semmle.python.dataflow.new.internal.FlowSummaryImpl as FlowSummaryImpl
 
 pragma[inline]
 predicate inStdLib(DataFlow::Node node) { node.getLocation().getFile().inStdlib() }
@@ -15,15 +16,7 @@ string stepsTo(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       or
       exists(TaintTracking::AdditionalTaintStep s | s.step(nodeFrom, nodeTo))
       or
-      // TODO: This is an attempt to recognize flow summary models, but it does not work.
-      exists(
-        TaintTracking::AdditionalTaintStep s, DataFlow::Node entryNode, DataFlow::Node exitNode
-      |
-        s.step(entryNode, exitNode)
-      |
-        TaintTracking::localTaint(nodeFrom, entryNode) and
-        TaintTracking::localTaint(exitNode, nodeTo)
-      )
+      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
     then result = "taint"
     else result = "no"
 }
@@ -53,15 +46,84 @@ abstract class EntryPointsByQuery extends string {
   }
 }
 
-module EntryPointsForRegexInjectionQuery {
-  private import semmle.python.security.dataflow.RegexInjectionQuery
+// Not in a separate configuration file.
+// module EntryPointsForHardcodedCredentialsQuery {
+//     private import semmle.python.security.dataflow.HardcodedCredentialsQuery
+//     module Flow = HardcodedCredentialsFlow;
+//     private import Flow::PathGraph
+//     private class EntryPointsForHardcodedCredentialsQuery extends EntryPointsByQuery {
+//         EntryPointsForHardcodedCredentialsQuery() { this = "HardcodedCredentialsQuery" }
+//         override predicate subpath(
+//             DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+//         ) {
+//             exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+//                 subpaths(arg, par, _, out)
+//             |
+//                 argument = arg.getNode() and
+//                 parameter = par.getNode() and
+//                 outNode = out.getNode()
+//             )
+//         }
+//     }
+// }
+//
+module EntryPointsForPolynomialReDoSQuery {
+  private import semmle.python.security.dataflow.PolynomialReDoSQuery
 
-  module Flow = RegexInjectionFlow;
+  module Flow = PolynomialReDoSFlow;
 
   private import Flow::PathGraph
 
-  private class EntryPointsForRegexInjectionQuery extends EntryPointsByQuery {
-    EntryPointsForRegexInjectionQuery() { this = "RegexInjectionQuery" }
+  private class EntryPointsForPolynomialReDoSQuery extends EntryPointsByQuery {
+    EntryPointsForPolynomialReDoSQuery() { this = "PolynomialReDoSQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+module EntryPointsForCleartextLoggingQuery {
+  private import semmle.python.security.dataflow.CleartextLoggingQuery
+
+  module Flow = CleartextLoggingFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForCleartextLoggingQuery extends EntryPointsByQuery {
+    EntryPointsForCleartextLoggingQuery() { this = "CleartextLoggingQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+module EntryPointsForSqlInjectionQuery {
+  private import semmle.python.security.dataflow.SqlInjectionQuery
+
+  module Flow = SqlInjectionFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForSqlInjectionQuery extends EntryPointsByQuery {
+    EntryPointsForSqlInjectionQuery() { this = "SqlInjectionQuery" }
 
     override predicate subpath(
       DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
@@ -103,15 +165,15 @@ module EntryPointsForUnsafeShellCommandConstructionQuery {
   }
 }
 
-module EntryPointsForPolynomialReDoSQuery {
-  private import semmle.python.security.dataflow.PolynomialReDoSQuery
+module EntryPointsForWeakSensitiveDataHashingQuery {
+  private import semmle.python.security.dataflow.WeakSensitiveDataHashingQuery
 
-  module Flow = PolynomialReDoSFlow;
+  module Flow = WeakSensitiveDataHashingFlow;
 
   private import Flow::PathGraph
 
-  private class EntryPointsForPolynomialReDoSQuery extends EntryPointsByQuery {
-    EntryPointsForPolynomialReDoSQuery() { this = "PolynomialReDoSQuery" }
+  private class EntryPointsForWeakSensitiveDataHashingQuery extends EntryPointsByQuery {
+    EntryPointsForWeakSensitiveDataHashingQuery() { this = "WeakSensitiveDataHashingQuery" }
 
     override predicate subpath(
       DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
@@ -127,11 +189,339 @@ module EntryPointsForPolynomialReDoSQuery {
   }
 }
 
+module EntryPointsForUrlRedirectQuery {
+  private import semmle.python.security.dataflow.UrlRedirectQuery
+
+  module Flow = UrlRedirectFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForUrlRedirectQuery extends EntryPointsByQuery {
+    EntryPointsForUrlRedirectQuery() { this = "UrlRedirectQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+module EntryPointsForPathInjectionQuery {
+  private import semmle.python.security.dataflow.PathInjectionQuery
+
+  module Flow = PathInjectionFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForPathInjectionQuery extends EntryPointsByQuery {
+    EntryPointsForPathInjectionQuery() { this = "PathInjectionQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+module EntryPointsForPartialServerSideRequestForgeryQuery {
+  private import semmle.python.security.dataflow.ServerSideRequestForgeryQuery
+
+  module Flow = PartialServerSideRequestForgeryFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForPartialServerSideRequestForgeryQuery extends EntryPointsByQuery {
+    EntryPointsForPartialServerSideRequestForgeryQuery() {
+      this = "PartialServerSideRequestForgeryQuery"
+    }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+module EntryPointsForCleartextStorageQuery {
+  private import semmle.python.security.dataflow.CleartextStorageQuery
+
+  module Flow = CleartextStorageFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForCleartextStorageQuery extends EntryPointsByQuery {
+    EntryPointsForCleartextStorageQuery() { this = "CleartextStorageQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+module EntryPointsForStackTraceExposureQuery {
+  private import semmle.python.security.dataflow.StackTraceExposureQuery
+
+  module Flow = StackTraceExposureFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForStackTraceExposureQuery extends EntryPointsByQuery {
+    EntryPointsForStackTraceExposureQuery() { this = "StackTraceExposureQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+module EntryPointsForReflectedXssQuery {
+  private import semmle.python.security.dataflow.ReflectedXssQuery
+
+  module Flow = ReflectedXssFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForReflectedXssQuery extends EntryPointsByQuery {
+    EntryPointsForReflectedXssQuery() { this = "ReflectedXssQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+// Not a flow query
+// module EntryPointsForWeakFilePermissionsQuery {
+//   private import semmle.python.security.dataflow.WeakFilePermissionsQuery
+//   module Flow = WeakFilePermissionsFlow;
+//   private import Flow::PathGraph
+//   private class EntryPointsForWeakFilePermissionsQuery extends EntryPointsByQuery {
+//     EntryPointsForWeakFilePermissionsQuery() { this = "WeakFilePermissionsQuery" }
+//     override predicate subpath(
+//       DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+//     ) {
+//       exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+//         subpaths(arg, par, _, out)
+//       |
+//         argument = arg.getNode() and
+//         parameter = par.getNode() and
+//         outNode = out.getNode()
+//       )
+//     }
+//   }
+// }
+//
+module EntryPointsForRegexInjectionQuery {
+  private import semmle.python.security.dataflow.RegexInjectionQuery
+
+  module Flow = RegexInjectionFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForRegexInjectionQuery extends EntryPointsByQuery {
+    EntryPointsForRegexInjectionQuery() { this = "RegexInjectionQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+module EntryPointsForUnsafeDeserializationQuery {
+  private import semmle.python.security.dataflow.UnsafeDeserializationQuery
+
+  module Flow = UnsafeDeserializationFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForUnsafeDeserializationQuery extends EntryPointsByQuery {
+    EntryPointsForUnsafeDeserializationQuery() { this = "UnsafeDeserializationQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+module EntryPointsForLogInjectionQuery {
+  private import semmle.python.security.dataflow.LogInjectionQuery
+
+  module Flow = LogInjectionFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForLogInjectionQuery extends EntryPointsByQuery {
+    EntryPointsForLogInjectionQuery() { this = "LogInjectionQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+module EntryPointsForFullServerSideRequestForgeryQuery {
+  private import semmle.python.security.dataflow.ServerSideRequestForgeryQuery
+
+  module Flow = FullServerSideRequestForgeryFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForFullServerSideRequestForgeryQuery extends EntryPointsByQuery {
+    EntryPointsForFullServerSideRequestForgeryQuery() { this = "FullServerSideRequestForgeryQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+// Not a flow query
+// module EntryPointsForIncompleteHostnameRegExpQuery {
+//   private import semmle.python.security.regexp.HostnameRegex
+//   module Flow = IncompleteHostnameRegExpFlow;
+//   private import Flow::PathGraph
+//   private class EntryPointsForIncompleteHostnameRegExpQuery extends EntryPointsByQuery {
+//     EntryPointsForIncompleteHostnameRegExpQuery() { this = "IncompleteHostnameRegExpQuery" }
+//     override predicate subpath(
+//       DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+//     ) {
+//       exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+//         subpaths(arg, par, _, out)
+//       |
+//         argument = arg.getNode() and
+//         parameter = par.getNode() and
+//         outNode = out.getNode()
+//       )
+//     }
+//   }
+// }
+//
+module EntryPointsForCommandInjectionQuery {
+  private import semmle.python.security.dataflow.CommandInjectionQuery
+
+  module Flow = CommandInjectionFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForCommandInjectionQuery extends EntryPointsByQuery {
+    EntryPointsForCommandInjectionQuery() { this = "CommandInjectionQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
+// Not a path query
+// module EntryPointsForBindToAllInterfacesQuery {
+//   private import semmle.python.security.dataflow.BindToAllInterfacesQuery
+//   module Flow = BindToAllInterfacesFlow;
+//   private import Flow::PathGraph
+//   private class EntryPointsForBindToAllInterfacesQuery extends EntryPointsByQuery {
+//     EntryPointsForBindToAllInterfacesQuery() { this = "BindToAllInterfacesQuery" }
+//     override predicate subpath(
+//       DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+//     ) {
+//       exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+//         subpaths(arg, par, _, out)
+//       |
+//         argument = arg.getNode() and
+//         parameter = par.getNode() and
+//         outNode = out.getNode()
+//       )
+//     }
+//   }
+// }
+//
 from
   EntryPointsByQuery e, DataFlow::Node argument, string parameter, string functionName,
   DataFlow::Node outNode, string alreadyModelled
 where
   e.entryPoint(argument, parameter, functionName, outNode, alreadyModelled) and
   alreadyModelled = "no"
-// select e, argument, parameter, functionName, outNode, alreadyModelled
-select e, parameter, functionName, alreadyModelled
+select e, parameter, functionName
