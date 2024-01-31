@@ -4830,6 +4830,35 @@ module StdlibPrivate {
       override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getCommand() }
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // html
+  // ---------------------------------------------------------------------------
+  /**
+   * A call to 'html.escape'.
+   * See https://docs.python.org/3/library/html.html#html.escape
+   */
+  private class HtmlEscapeCall extends Escaping::Range, API::CallNode {
+    HtmlEscapeCall() {
+      this = API::moduleImport("html").getMember("escape").getACall() and
+      // if quote escaping is disabled, that might lead to XSS if the result is inserted
+      // in the attribute value of a tag, such as `<foo bar="escape_result">`. Since we
+      // don't know how values are being inserted, and we don't want to lose these
+      // results (FNs), we require quote escaping to be enabled. This might lead to some
+      // FPs, so we might need to revisit this in the future.
+      not this.getParameter(1, "quote")
+          .getAValueReachingSink()
+          .asExpr()
+          .(ImmutableLiteral)
+          .booleanValue() = false
+    }
+
+    override DataFlow::Node getAnInput() { result = this.getParameter(0, "s").asSink() }
+
+    override DataFlow::Node getOutput() { result = this }
+
+    override string getKind() { result = Escaping::getHtmlKind() }
+  }
 }
 
 // ---------------------------------------------------------------------------

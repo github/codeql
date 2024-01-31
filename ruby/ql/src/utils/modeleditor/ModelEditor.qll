@@ -104,7 +104,7 @@ class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
 
   /** Holds if this API has a supported summary. */
   pragma[nomagic]
-  predicate hasSummary() { none() }
+  predicate hasSummary() { this.getNode() instanceof SummaryCallable }
 
   /** Holds if this API is a known source. */
   pragma[nomagic]
@@ -116,7 +116,7 @@ class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
-  predicate isNeutral() { none() }
+  predicate isNeutral() { this.getNode() instanceof NeutralCallable }
 
   /**
    * Holds if this API is supported by existing CodeQL libraries, that is, it is either a
@@ -179,6 +179,30 @@ class SourceCallable extends DataFlow::CallableNode {
       method = path.regexpCapture("(Method\\[[^\\]]+\\]).*", 1) and
       Util::pathToMethod(this, type, method) and
       sourceModel(type, path, _)
+    )
+  }
+}
+
+/**
+ * A callable where there exists a MaD summary model that applies to it.
+ */
+class SummaryCallable extends DataFlow::CallableNode {
+  SummaryCallable() {
+    exists(string type, string path |
+      Util::pathToMethod(this, type, path) and
+      summaryModel(type, path, _, _, _)
+    )
+  }
+}
+
+/**
+ * A callable where there exists a MaD neutral model that applies to it.
+ */
+class NeutralCallable extends DataFlow::CallableNode {
+  NeutralCallable() {
+    exists(string type, string path |
+      Util::pathToMethod(this, type, path) and
+      neutralModel(type, path, _)
     )
   }
 }
