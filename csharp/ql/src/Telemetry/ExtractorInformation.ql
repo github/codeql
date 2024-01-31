@@ -165,6 +165,15 @@ module AccessTargetStatsReport = ReportStats<AccessTargetStats>;
 
 module ExprStatsReport = ReportStats<ExprStats>;
 
+predicate analyzerAssemblies(string key, float value) {
+  exists(Compilation c, string arg |
+    c.getExpandedArgument(_) = arg and
+    arg.indexOf("/analyzer:") = 0 and
+    key = "CSC analyzer: " + arg.substring(10, arg.length())
+  ) and
+  value = 1.0
+}
+
 from string key, float value
 where
   (
@@ -192,7 +201,8 @@ where
     AccessTargetStatsReport::percentageOfOk(key, value) or
     ExprStatsReport::numberOfOk(key, value) or
     ExprStatsReport::numberOfNotOk(key, value) or
-    ExprStatsReport::percentageOfOk(key, value)
+    ExprStatsReport::percentageOfOk(key, value) or
+    analyzerAssemblies(key, value)
   ) and
   /* Infinity */
   value != 1.0 / 0.0 and

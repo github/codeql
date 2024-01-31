@@ -45,12 +45,12 @@ the result is within the destination directory. If provided with a zip file cont
 path like <code>..\sneaky-file</code>, then this file would be written outside the destination
 directory.</p>
 
-<sample src="ZipSlipBad.java" />
+<sample src="examples/ZipSlipBad.java" />
 
 <p>To fix this vulnerability, we need to verify that the normalized <code>file</code> still has
 <code>destinationDir</code> as its prefix, and throw an exception if this is not the case.</p>
 
-<sample src="ZipSlipGood.java" />
+<sample src="examples/ZipSlipGood.java" />
 
 </example>
 <references>

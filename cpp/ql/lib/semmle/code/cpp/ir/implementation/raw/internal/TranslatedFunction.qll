@@ -109,8 +109,9 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
     result = getTranslatedEllipsisParameter(func)
   }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getInstruction(EnterFunctionTag())
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(EnterFunctionTag()) and
+    kind instanceof GotoEdge
   }
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -121,17 +122,20 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
       or
       tag = AliasedDefinitionTag() and
       result = this.getInstruction(InitializeNonLocalTag())
-      or
-      (
-        tag = InitializeNonLocalTag() and
-        if exists(this.getThisType())
-        then result = this.getParameter(-1).getFirstInstruction()
-        else
-          if exists(this.getParameter(0))
-          then result = this.getParameter(0).getFirstInstruction()
-          else result = this.getBody().getFirstInstruction()
-      )
-      or
+    )
+    or
+    (
+      tag = InitializeNonLocalTag() and
+      if exists(this.getThisType())
+      then result = this.getParameter(-1).getFirstInstruction(kind)
+      else
+        if exists(this.getParameter(0))
+        then result = this.getParameter(0).getFirstInstruction(kind)
+        else result = this.getBody().getFirstInstruction(kind)
+    )
+    or
+    kind instanceof GotoEdge and
+    (
       tag = ReturnValueAddressTag() and
       result = this.getInstruction(ReturnTag())
       or
@@ -146,25 +150,25 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
     )
   }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) {
-    exists(int paramIndex |
-      child = this.getParameter(paramIndex) and
+  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+    exists(int paramIndex | child = this.getParameter(paramIndex) |
       if
         exists(func.getParameter(paramIndex + 1)) or
         getEllipsisParameterIndexForFunction(func) = paramIndex + 1
-      then result = this.getParameter(paramIndex + 1).getFirstInstruction()
-      else result = this.getConstructorInitList().getFirstInstruction()
+      then result = this.getParameter(paramIndex + 1).getFirstInstruction(kind)
+      else result = this.getConstructorInitList().getFirstInstruction(kind)
     )
     or
     child = this.getConstructorInitList() and
-    result = this.getBody().getFirstInstruction()
+    result = this.getBody().getFirstInstruction(kind)
     or
     child = this.getBody() and
-    result = this.getReturnSuccessorInstruction()
+    result = this.getReturnSuccessorInstruction(kind)
     or
     child = this.getDestructorDestructionList() and
-    result = this.getReadEffects().getFirstInstruction()
+    result = this.getReadEffects().getFirstInstruction(kind)
     or
+    kind instanceof GotoEdge and
     child = this.getReadEffects() and
     if this.hasReturnValue()
     then result = this.getInstruction(ReturnValueAddressTag())
@@ -218,8 +222,9 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
     )
   }
 
-  final override Instruction getExceptionSuccessorInstruction() {
-    result = this.getInstruction(UnwindTag())
+  final override Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+    result = this.getInstruction(UnwindTag()) and
+    kind instanceof GotoEdge
   }
 
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -268,8 +273,8 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
    * Gets the instruction to which control should flow after a `return`
    * statement.
    */
-  final Instruction getReturnSuccessorInstruction() {
-    result = this.getDestructorDestructionList().getFirstInstruction()
+  final Instruction getReturnSuccessorInstruction(EdgeKind kind) {
+    result = this.getDestructorDestructionList().getFirstInstruction(kind)
   }
 
   /**
@@ -369,30 +374,30 @@ TranslatedEllipsisParameter getTranslatedEllipsisParameter(Function func) {
 abstract class TranslatedParameter extends TranslatedElement {
   final override TranslatedElement getChild(int id) { none() }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getInstruction(InitializerVariableAddressTag())
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(InitializerVariableAddressTag()) and
+    kind instanceof GotoEdge
   }
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
-    (
-      tag = InitializerVariableAddressTag() and
-      result = this.getInstruction(InitializerStoreTag())
-      or
-      tag = InitializerStoreTag() and
-      if this.hasIndirection()
-      then result = this.getInstruction(InitializerIndirectAddressTag())
-      else result = this.getParent().getChildSuccessor(this)
-      or
-      tag = InitializerIndirectAddressTag() and
-      result = this.getInstruction(InitializerIndirectStoreTag())
-      or
-      tag = InitializerIndirectStoreTag() and
-      result = this.getParent().getChildSuccessor(this)
-    )
+    tag = InitializerVariableAddressTag() and
+    result = this.getInstruction(InitializerStoreTag())
+    or
+    tag = InitializerStoreTag() and
+    if this.hasIndirection()
+    then kind instanceof GotoEdge and result = this.getInstruction(InitializerIndirectAddressTag())
+    else result = this.getParent().getChildSuccessor(this, kind)
+    or
+    kind instanceof GotoEdge and
+    tag = InitializerIndirectAddressTag() and
+    result = this.getInstruction(InitializerIndirectStoreTag())
+    or
+    tag = InitializerIndirectStoreTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = InitializerVariableAddressTag() and
@@ -600,10 +605,10 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
     )
   }
 
-  override Instruction getFirstInstruction() {
+  override Instruction getFirstInstruction(EdgeKind kind) {
     if exists(this.getChild(0))
-    then result = this.getChild(0).getFirstInstruction()
-    else result = this.getParent().getChildSuccessor(this)
+    then result = this.getChild(0).getFirstInstruction(kind)
+    else result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -614,12 +619,12 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     exists(int id |
       child = this.getChild(id) and
       if exists(this.getChild(id + 1))
-      then result = this.getChild(id + 1).getFirstInstruction()
-      else result = this.getParent().getChildSuccessor(this)
+      then result = this.getChild(id + 1).getFirstInstruction(kind)
+      else result = this.getParent().getChildSuccessor(this, kind)
     )
   }
 
@@ -667,10 +672,10 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
     )
   }
 
-  override Instruction getFirstInstruction() {
+  override Instruction getFirstInstruction(EdgeKind kind) {
     if exists(this.getChild(0))
-    then result = this.getChild(0).getFirstInstruction()
-    else result = this.getParent().getChildSuccessor(this)
+    then result = this.getChild(0).getFirstInstruction(kind)
+    else result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -681,12 +686,12 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     exists(int id |
       child = this.getChild(id) and
       if exists(this.getChild(id + 1))
-      then result = this.getChild(id + 1).getFirstInstruction()
-      else result = this.getParent().getChildSuccessor(this)
+      then result = this.getChild(id + 1).getFirstInstruction(kind)
+      else result = this.getParent().getChildSuccessor(this, kind)
     )
   }
 }
@@ -714,16 +719,16 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
     result = getTranslatedParameterReadEffect(func.getParameter(id))
   }
 
-  override Instruction getFirstInstruction() {
+  override Instruction getFirstInstruction(EdgeKind kind) {
     if exists(this.getAChild())
     then
       result =
         min(TranslatedElement child, int id | child = this.getChild(id) | child order by id)
-            .getFirstInstruction()
-    else result = this.getParent().getChildSuccessor(this)
+            .getFirstInstruction(kind)
+    else result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     exists(int id | child = this.getChild(id) |
       if exists(TranslatedReadEffect child2, int id2 | id2 > id and child2 = this.getChild(id2))
       then
@@ -732,8 +737,8 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
             child2 = this.getChild(id2) and id2 > id
           |
             child2 order by id2
-          ).getFirstInstruction()
-      else result = this.getParent().getChildSuccessor(this)
+          ).getFirstInstruction(kind)
+      else result = this.getParent().getChildSuccessor(this, kind)
     )
   }
 
@@ -755,15 +760,17 @@ private TranslatedParameterReadEffect getTranslatedParameterReadEffect(Parameter
 abstract class TranslatedReadEffect extends TranslatedElement {
   override TranslatedElement getChild(int id) { none() }
 
-  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    kind = EdgeKind::gotoEdge() and
-    result = this.getParent().getChildSuccessor(this)
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getFirstInstruction() { result = this.getInstruction(OnlyInstructionTag()) }
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(OnlyInstructionTag()) and
+    kind instanceof GotoEdge
+  }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     opcode instanceof Opcode::ReturnIndirection and

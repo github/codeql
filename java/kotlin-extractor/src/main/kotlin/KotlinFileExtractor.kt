@@ -205,7 +205,7 @@ open class KotlinFileExtractor(
     }
 
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    private fun isFake(d: IrDeclarationWithVisibility): Boolean {
+    fun isFake(d: IrDeclarationWithVisibility): Boolean {
         val hasFakeVisibility =
             d.visibility.let {
                 it is DelegatedDescriptorVisibility && it.delegate == Visibilities.InvisibleFake
@@ -990,21 +990,26 @@ open class KotlinFileExtractor(
                             }
                         }
                     } else {
-                        c.declarations.forEach {
-                            extractDeclaration(
-                                it,
-                                extractPrivateMembers = extractPrivateMembers,
-                                extractFunctionBodies = extractFunctionBodies,
-                                extractAnnotations = true
+                        try {
+                            c.declarations.forEach {
+                                extractDeclaration(
+                                    it,
+                                    extractPrivateMembers = extractPrivateMembers,
+                                    extractFunctionBodies = extractFunctionBodies,
+                                    extractAnnotations = true
+                                )
+                            }
+                            if (extractStaticInitializer) extractStaticInitializer(c, { id })
+                            extractJvmStaticProxyMethods(
+                                c,
+                                id,
+                                extractPrivateMembers,
+                                extractFunctionBodies
                             )
+                        } catch (e: IllegalArgumentException) {
+                            // A Kotlin bug causes this to throw: https://youtrack.jetbrains.com/issue/KT-63847/K2-IllegalStateException-IrFieldPublicSymbolImpl-for-java.time-Clock.OffsetClock.offset0-is-already-bound
+                            // TODO: This should either be removed or log something, once the bug is fixed
                         }
-                        if (extractStaticInitializer) extractStaticInitializer(c, { id })
-                        extractJvmStaticProxyMethods(
-                            c,
-                            id,
-                            extractPrivateMembers,
-                            extractFunctionBodies
-                        )
                     }
                 }
                 if (c.isNonCompanionObject) {

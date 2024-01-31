@@ -18,4 +18,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["javax.servlet", "ServletRequest", True, "getParameter", "(String)", "", Argument[0], "ReturnValue", "taint", "ai-manual"]
+      - ["javax.servlet", "ServletRequest", False, "getRealPath", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
