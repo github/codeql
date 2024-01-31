@@ -43,6 +43,7 @@ string getArgumentPath(DataFlow::ParameterNode paramNode) {
  */
 predicate pathToMethod(DataFlow::MethodNode method, string type, string path) {
   method.getLocation().getFile() instanceof RelevantFile and
+  method.isPublic() and // only public methods are modeled
   exists(DataFlow::ModuleNode mod, string methodName |
     method = mod.getOwnInstanceMethod(methodName) and
     if methodName = "initialize"
