@@ -272,7 +272,8 @@ namespace Semmle.Autobuild.CSharp
             var build = new CommandBuilder(builder.Actions, null, environment);
             var script = build.RunCommand(DotNetCommand(builder.Actions, dotNetPath)).
                 Argument("build").
-                Argument("--no-incremental");
+                Argument("--no-incremental").
+                Argument("/nodeReuse:false");
 
             return
                 script.Argument(builder.Options.DotNetArguments).
