@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.keycloak.testsuite.cli.exec", "AbstractExecBuilder", True, "argsLine", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]

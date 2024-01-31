@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.beam.runners.core.construction", "Environments", False, "createProcessEnvironment", "(String,String,String,Map)", "", "Argument[2]", "command-injection", "ai-manual"]
