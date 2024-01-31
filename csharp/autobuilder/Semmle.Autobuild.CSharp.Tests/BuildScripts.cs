@@ -440,7 +440,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess["cmd.exe /C dotnet --info"] = 0;
             actions.RunProcess[@"cmd.exe /C dotnet clean C:\Project\test.csproj"] = 0;
             actions.RunProcess[@"cmd.exe /C dotnet restore C:\Project\test.csproj"] = 0;
-            actions.RunProcess[@"cmd.exe /C dotnet build --no-incremental /nodeReuse:false C:\Project\test.csproj"] = 0;
+            actions.RunProcess[@"cmd.exe /C dotnet build --no-incremental C:\Project\test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project\test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -468,7 +468,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess["dotnet --info"] = 0;
             actions.RunProcess[@"dotnet clean C:\Project/test.csproj"] = 0;
             actions.RunProcess[@"dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"dotnet build --no-incremental /nodeReuse:false C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"dotnet build --no-incremental C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project/test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -907,7 +907,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess["dotnet --info"] = 0;
             actions.RunProcess[@"dotnet clean C:\Project/test.csproj"] = 0;
             actions.RunProcess[@"dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"dotnet build --no-incremental /nodeReuse:false --no-restore C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"dotnet build --no-incremental --no-restore C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project/test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -939,7 +939,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess[@"scratch/.dotnet/dotnet --info"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"scratch/.dotnet/dotnet build --no-incremental /nodeReuse:false C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet build --no-incremental C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists["test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -975,7 +975,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess[@"scratch/.dotnet/dotnet --info"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"scratch/.dotnet/dotnet build --no-incremental /nodeReuse:false C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet build --no-incremental C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists["test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -1008,7 +1008,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet --info"] = 0;
             actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet clean C:\Project\test.csproj"] = 0;
             actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet restore C:\Project\test.csproj"] = 0;
-            actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet build --no-incremental /nodeReuse:false C:\Project\test.csproj"] = 0;
+            actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet build --no-incremental C:\Project\test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists[@"C:\Project\test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
