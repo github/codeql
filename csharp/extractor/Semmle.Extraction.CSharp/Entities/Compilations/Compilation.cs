@@ -53,8 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
                         var rspArgs = CommandLineParser.SplitCommandLineIntoArguments(rspFileContent, removeHashComments: true);
                         foreach (var rspArg in rspArgs)
                         {
-                            trapFile.compilation_expanded_args(this, expandedIndex, rspArg);
-                            expandedIndex++;
+                            trapFile.compilation_expanded_args(this, expandedIndex++, rspArg);
                         }
                     }
                     catch (Exception exc)
@@ -64,8 +63,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 }
                 else
                 {
-                    trapFile.compilation_expanded_args(this, expandedIndex, arg);
-                    expandedIndex++;
+                    trapFile.compilation_expanded_args(this, expandedIndex++, arg);
                 }
             }
 
