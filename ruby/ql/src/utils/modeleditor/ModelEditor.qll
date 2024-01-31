@@ -68,14 +68,27 @@ class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
 
   DataFlow::MethodNode getNode() { result = this }
 
-  override string getName() { result = super.getMethodName() }
+  override string getName() {
+    result = super.getMethodName() and this.isConstructor() = false
+    or
+    // Constructors are modeled as Type!#new rather than Type#initialize
+    result = "new" and this.isConstructor() = true
+  }
 
   /**
    * Gets the unbound type name of this endpoint.
    */
   override string getType() {
     result =
-      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getName()) = this).getQualifiedName() or
+      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getName()) = this).getQualifiedName() and
+    this.isConstructor() = false
+    or
+    // Constructors are modeled on `Type!`, not on `Type`
+    result =
+      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(super.getMethodName()) = this)
+            .getQualifiedName() + "!" and
+    this.isConstructor() = true
+    or
     result =
       any(DataFlow::ModuleNode m | m.getOwnSingletonMethod(this.getName()) = this)
             .getQualifiedName() + "!"
@@ -140,6 +153,17 @@ class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
     this.isNeutral() and result = "neutral"
     or
     not this.isSupported() and result = ""
+  }
+
+  /**
+   * Holds if this method is a constructor for a module.
+   */
+  private boolean isConstructor() {
+    if
+      super.getMethodName() = "initialize" and
+      exists(DataFlow::ModuleNode m | m.getOwnInstanceMethod(super.getMethodName()) = this)
+    then result = true
+    else result = false
   }
 }
 
