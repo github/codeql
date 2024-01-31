@@ -132,7 +132,6 @@ func initGoModForLegacyProject(path string) {
 		diagnostics.EmitRelativeImportPaths()
 	}
 }
-}
 
 // Find all go.work files in the working directory and its subdirectories
 func findGoWorkFiles() []string {
