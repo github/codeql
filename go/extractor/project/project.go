@@ -301,6 +301,7 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 		goWorkspaces = []GoWorkspace{{
 			BaseDir: ".",
 			DepMode: GoGetWithModules,
+			Modules: loadGoModules([]string{"go.mod"}),
 			ModMode: getModMode(GoGetWithModules, "."),
 		}}
 		totalModuleFiles = 1
@@ -324,12 +325,16 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 			diagnostics.EmitGoFilesOutsideGoModules(goModPaths)
 		}
 
-		goWorkspaces = []GoWorkspace{{
+		// Try to initialize a `go.mod` file automatically for the stray source files.
+		initGoModForLegacyProject(".")
+
+		goWorkspaces = append(goWorkspaces, GoWorkspace{
 			BaseDir: ".",
-			DepMode: GoGetNoModules,
+			Modules: loadGoModules([]string{"go.mod"}),
+			DepMode: GoGetWithModules,
 			ModMode: ModUnset,
-		}}
-		totalModuleFiles = 0
+		})
+		totalModuleFiles += 1
 		return
 	}
 
