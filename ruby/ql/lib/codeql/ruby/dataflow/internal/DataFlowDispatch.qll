@@ -2,7 +2,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import DataFlowPrivate
 private import codeql.ruby.typetracking.internal.TypeTrackingImpl
-private import codeql.ruby.ast.internal.Module
+private import codeql.ruby.ast.internal.Module as Module
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.SSA
@@ -80,6 +80,12 @@ abstract class LibraryCallable extends string {
 
   /** Same as `getACall()` except this does not depend on the call graph or API graph. */
   Call getACallSimple() { none() }
+}
+
+/** A callable defined in library code, which should be taken into account in type tracking. */
+abstract class LibraryCallableToIncludeInTypeTracking extends LibraryCallable {
+  bindingset[this]
+  LibraryCallableToIncludeInTypeTracking() { exists(this) }
 }
 
 /**
@@ -184,6 +190,91 @@ class NormalCall extends DataFlowCall, TNormalCall {
   override Location getLocation() { result = c.getLocation() }
 }
 
+/**
+ * Provides modeling of flow through the `render` method of view components.
+ *
+ * ```rb
+ * # view.rb
+ * class View < ViewComponent::Base
+ *     def initialize(x)
+ *         @x = x
+ *     end
+ *
+ *     def foo
+ *         sink(@x)
+ *     end
+ * end
+ * ```
+ *
+ * ```erb
+ * # view.html.erb
+ * <%= foo() %>                     # 1
+ * ```
+ *
+ * ```rb
+ * # app.rb
+ * class App
+ *     def run
+ *         view = View.new(taint)   # 2
+ *         render(view)             # 3
+ *     end
+ * end
+ * ```
+ *
+ * The `render` call (3) is modeled using a flow summary. The summary specifies
+ * that the first argument (`view`) will have a special method invoked on it (we
+ * call the method `__invoke__toplevel__erb__`), which targets the top-level of the
+ * matching ERB file (`view.html.erb`). The `view` argument will flow into the receiver
+ * of the synthesized method call, from there into the implicit `self` parameter of
+ * the ERB file, and from there to the implicit `self` receiver of the call to `foo` (1).
+ *
+ * Since it is not actually possible to specify such flow summaries, we instead
+ * specify a call-back summary, and adjust the generated call to target the special
+ * `__invoke__toplevel__erb__` method.
+ *
+ * In order to resolve the target of the adjusted method call, we need to take
+ * the `render` summary into account when constructing the call graph. That is, we
+ * need to track the `View` instance (2) into the receiver of the adjusted method
+ * call, in order to figure out that the call target is in fact `view.html.erb`.
+ */
+private module ViewComponentRenderModeling {
+  private import codeql.ruby.frameworks.ViewComponent
+
+  private class RenderMethod extends SummarizedCallable, LibraryCallableToIncludeInTypeTracking {
+    RenderMethod() { this = "render view component" }
+
+    override MethodCall getACallSimple() { result.getMethodName() = "render" }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      // use a call-back summary, and adjust it to a method call below
+      output = "Argument[0].Parameter[self]" and
+      preservesValue = true
+    }
+  }
+
+  private string invokeToplevelName() { result = "__invoke__toplevel__erb__" }
+
+  /** Holds if `call` should be adjusted to be a method call to `name` on `receiver`. */
+  predicate adjustedMethodCall(DataFlowCall call, FlowSummaryNode receiver, string name) {
+    exists(RenderMethod render |
+      call = TSummaryCall(render, receiver.getSummaryNode()) and
+      name = invokeToplevelName()
+    )
+  }
+
+  /** Holds if `self` belongs to the top-level of an ERB file with matching view class `view`. */
+  pragma[nomagic]
+  predicate selfInErbToplevel(SelfVariable self, ViewComponent::ComponentClass view) {
+    self.getDeclaringScope().(Toplevel).getFile() = view.getTemplate()
+  }
+
+  Toplevel lookupMethod(ViewComponent::ComponentClass m, string name) {
+    result.getFile() = m.getTemplate() and
+    name = invokeToplevelName()
+  }
+}
+
 /** A call for which we want to compute call targets. */
 private class RelevantCall extends CfgNodes::ExprNodes::CallCfgNode {
   pragma[nomagic]
@@ -200,6 +291,8 @@ private predicate methodCall(DataFlowCall call, DataFlow::Node receiver, string 
       method = rc.getExpr().(MethodCall).getMethodName() and
       receiver.asExpr() = rc.getReceiver()
     )
+  or
+  ViewComponentRenderModeling::adjustedMethodCall(call, receiver, method)
 }
 
 pragma[nomagic]
@@ -253,8 +346,11 @@ private predicate selfInMethod(SelfVariable self, MethodBase method, Module m) {
 /** Holds if `self` belongs to the top-level. */
 pragma[nomagic]
 private predicate selfInToplevel(SelfVariable self, Module m) {
+  ViewComponentRenderModeling::selfInErbToplevel(self, m)
+  or
+  not ViewComponentRenderModeling::selfInErbToplevel(self, _) and
   self.getDeclaringScope() instanceof Toplevel and
-  m = TResolved("Object")
+  m = Module::TResolved("Object")
 }
 
 /**
@@ -271,7 +367,7 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
  */
 private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
   exists(AsPattern ap |
-    m = resolveConstantReadAccess(ap.getPattern()) and
+    m = Module::resolveConstantReadAccess(ap.getPattern()) and
     def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getAstNode() =
       ap.getVariableAccess()
   )
@@ -295,7 +391,7 @@ private predicate hasAdjacentTypeCheckedReads(
   exists(
     CfgNodes::ExprCfgNode pattern, ConditionBlock cb, CfgNodes::ExprNodes::CaseExprCfgNode case
   |
-    m = resolveConstantReadAccess(pattern.getExpr()) and
+    m = Module::resolveConstantReadAccess(pattern.getExpr()) and
     cb.getLastNode() = pattern and
     cb.controls(read2.getBasicBlock(),
       any(SuccessorTypes::MatchingSuccessor match | match.getValue() = true)) and
@@ -313,7 +409,7 @@ predicate isUserDefinedNew(SingletonMethod new) {
   exists(Expr object | singletonMethod(new, "new", object) |
     selfInModule(object.(SelfVariableReadAccess).getVariable(), _)
     or
-    exists(resolveConstantReadAccess(object))
+    exists(Module::resolveConstantReadAccess(object))
   )
 }
 
@@ -351,7 +447,7 @@ private predicate extendCall(DataFlow::ExprNode receiver, Module m) {
     extendCall.getMethodName() = "extend" and
     exists(DataFlow::LocalSourceNode sourceNode | sourceNode.flowsTo(extendCall.getArgument(_)) |
       selfInModule(sourceNode.(SelfLocalSourceNode).getVariable(), m) or
-      m = resolveConstantReadAccess(sourceNode.asExpr().getExpr())
+      m = Module::resolveConstantReadAccess(sourceNode.asExpr().getExpr())
     ) and
     receiver = extendCall.getReceiver()
   )
@@ -364,8 +460,14 @@ private predicate extendCallModule(Module m, Module n) {
     receiver.flowsTo(e) and extendCall(e, n)
   |
     selfInModule(receiver.(SelfLocalSourceNode).getVariable(), m) or
-    m = resolveConstantReadAccess(receiver.asExpr().getExpr())
+    m = Module::resolveConstantReadAccess(receiver.asExpr().getExpr())
   )
+}
+
+private CfgScope lookupMethod(Module m, string name) {
+  result = Module::lookupMethod(m, name)
+  or
+  result = ViewComponentRenderModeling::lookupMethod(m, name)
 }
 
 /**
@@ -377,7 +479,7 @@ private CfgScope lookupMethod(Module m, string name, boolean exact) {
   result = lookupMethod(m, name) and
   exact in [false, true]
   or
-  result = lookupMethodInSubClasses(m, name) and
+  result = Module::lookupMethodInSubClasses(m, name) and
   exact = false
 }
 
@@ -490,7 +592,7 @@ private module TrackModuleInput implements CallGraphConstruction::Simple::InputS
   class State = Module;
 
   predicate start(DataFlow::Node start, Module m) {
-    m = resolveConstantReadAccess(start.asExpr().getExpr())
+    m = Module::resolveConstantReadAccess(start.asExpr().getExpr())
   }
 
   // We exclude steps into `self` parameters, and instead rely on the type of the
@@ -547,55 +649,55 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
   pragma[nomagic]
   private predicate isInstanceNoCall(DataFlow::Node n, Module tp, boolean exact) {
     n.asExpr().getExpr() instanceof NilLiteral and
-    tp = TResolved("NilClass") and
+    tp = Module::TResolved("NilClass") and
     exact = true
     or
     n.asExpr().getExpr().(BooleanLiteral).isFalse() and
-    tp = TResolved("FalseClass") and
+    tp = Module::TResolved("FalseClass") and
     exact = true
     or
     n.asExpr().getExpr().(BooleanLiteral).isTrue() and
-    tp = TResolved("TrueClass") and
+    tp = Module::TResolved("TrueClass") and
     exact = true
     or
     n.asExpr().getExpr() instanceof IntegerLiteral and
-    tp = TResolved("Integer") and
+    tp = Module::TResolved("Integer") and
     exact = true
     or
     n.asExpr().getExpr() instanceof FloatLiteral and
-    tp = TResolved("Float") and
+    tp = Module::TResolved("Float") and
     exact = true
     or
     n.asExpr().getExpr() instanceof RationalLiteral and
-    tp = TResolved("Rational") and
+    tp = Module::TResolved("Rational") and
     exact = true
     or
     n.asExpr().getExpr() instanceof ComplexLiteral and
-    tp = TResolved("Complex") and
+    tp = Module::TResolved("Complex") and
     exact = true
     or
     n.asExpr().getExpr() instanceof StringlikeLiteral and
-    tp = TResolved("String") and
+    tp = Module::TResolved("String") and
     exact = true
     or
     n.asExpr() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode and
-    tp = TResolved("Array") and
+    tp = Module::TResolved("Array") and
     exact = true
     or
     n.asExpr() instanceof CfgNodes::ExprNodes::HashLiteralCfgNode and
-    tp = TResolved("Hash") and
+    tp = Module::TResolved("Hash") and
     exact = true
     or
     n.asExpr().getExpr() instanceof MethodBase and
-    tp = TResolved("Symbol") and
+    tp = Module::TResolved("Symbol") and
     exact = true
     or
     n.asParameter() instanceof BlockParameter and
-    tp = TResolved("Proc") and
+    tp = Module::TResolved("Proc") and
     exact = true
     or
     n.asExpr().getExpr() instanceof Lambda and
-    tp = TResolved("Proc") and
+    tp = Module::TResolved("Proc") and
     exact = true
     or
     // `self` reference in method or top-level (but not in module or singleton method,
@@ -646,11 +748,11 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
       isInstance(start, tp, exact)
       or
       exists(Module m |
-        (if m.isClass() then tp = TResolved("Class") else tp = TResolved("Module")) and
+        (if m.isClass() then tp = Module::TResolved("Class") else tp = Module::TResolved("Module")) and
         exact = true
       |
         // needed for e.g. `C.new`
-        m = resolveConstantReadAccess(start.asExpr().getExpr())
+        m = Module::resolveConstantReadAccess(start.asExpr().getExpr())
         or
         // needed for e.g. `self.include`
         selfInModule(start.(SelfLocalSourceNode).getVariable(), m)
@@ -805,7 +907,7 @@ private predicate singletonMethodOnModule(MethodBase method, string name, Module
   )
   or
   exists(DataFlow::LocalSourceNode sourceNode |
-    m = resolveConstantReadAccess(sourceNode.asExpr().getExpr()) and
+    m = Module::resolveConstantReadAccess(sourceNode.asExpr().getExpr()) and
     flowsToSingletonMethodObject(sourceNode, method, name)
   )
   or
@@ -821,7 +923,7 @@ private MethodBase lookupSingletonMethodDirect(Module m, string name) {
   or
   exists(DataFlow::LocalSourceNode sourceNode |
     sourceNode = trackModuleAccess(m) and
-    not m = resolveConstantReadAccess(sourceNode.asExpr().getExpr()) and
+    not m = Module::resolveConstantReadAccess(sourceNode.asExpr().getExpr()) and
     flowsToSingletonMethodObject(sourceNode, result, name)
   )
 }
@@ -847,7 +949,7 @@ private MethodBase lookupSingletonMethodInSubClasses(Module m, string name) {
   // The 'self' inside such a singleton method could then be any class, leading to self-calls
   // being resolved to arbitrary singleton methods.
   // To remedy this, we do not allow following super-classes all the way to Object.
-  not m = TResolved("Object") and
+  not m = Module::TResolved("Object") and
   exists(Module sub |
     sub.getSuperClass() = m // not `getAnImmediateAncestor` because singleton methods cannot be included
   |
@@ -901,7 +1003,7 @@ predicate singletonMethodOnInstance(MethodBase method, string name, Expr object)
   singletonMethod(method, name, object) and
   not selfInModule(object.(SelfVariableReadAccess).getVariable(), _) and
   // cannot use `trackModuleAccess` because of negative recursion
-  not exists(resolveConstantReadAccess(object))
+  not exists(Module::resolveConstantReadAccess(object))
   or
   exists(DataFlow::ExprNode receiver, Module other |
     extendCall(receiver, other) and
@@ -948,7 +1050,7 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
       RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p,
       CfgNodes::ExprCfgNode nodeFromPreExpr
     |
-      callStep(call, arg, p) and
+      sourceCallStep(call, arg, p) and
       nodeTo.getPreUpdateNode() = arg and
       summary.toString() = "return" and
       (
