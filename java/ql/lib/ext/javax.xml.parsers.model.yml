@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.xml.parsers", "DocumentBuilder", True, "parse", "(InputSource)", "", "Argument[0]", "xxe", "ai-manual"]

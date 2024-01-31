@@ -5,6 +5,10 @@ extensions:
     data:
       - ["java.lang", "Class", False, "getResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "Class", False, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "ClassLoader", False, "getSystemResources", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "ClassLoader", True, "getResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "ClassLoader", True, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "ClassLoader", True, "getResources", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "ClassLoader", True, "getSystemResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "ClassLoader", True, "getSystemResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "Module", True, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
@@ -14,6 +18,7 @@ extensions:
       - ["java.lang", "ProcessBuilder", False, "ProcessBuilder", "(List)", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "ProcessBuilder", False, "ProcessBuilder", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "ProcessBuilder", False, "redirectError", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "ProcessBuilder", False, "redirectOutput", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "Runtime", True, "exec", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "Runtime", True, "exec", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
       - ["java.lang", "Runtime", True, "exec", "(String[],String[])", "", "Argument[0]", "command-injection", "ai-manual"]
