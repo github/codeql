@@ -40,4 +40,6 @@ deprecated class Configuration extends TaintTracking::Configuration {
     super.isSanitizer(node) or
     node instanceof Sanitizer
   }
+
+  predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
 }

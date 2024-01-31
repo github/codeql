@@ -37,6 +37,8 @@ private module SensitiveGetQueryConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof Source }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 /**

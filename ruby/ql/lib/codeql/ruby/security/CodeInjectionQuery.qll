@@ -56,7 +56,7 @@ private module Config implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node, FlowState state) { node.(Sanitizer).getAState() = state }
 
-  predicate isBarrierIn(DataFlow::Node node) { node instanceof Source }
+  predicate isBarrierIn(DataFlow::Node node, FlowState label) { isSource(node, label) }
 
   int fieldFlowBranchLimit() { result = 10 }
 }

@@ -136,6 +136,8 @@ private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof CredentialSink }
 
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(ExprNodes::BinaryOperationCfgNode binop |
       (
