@@ -13,6 +13,7 @@ private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /** A data flow source of stored user input. */
 abstract class StoredFlowSource extends SourceNode {
+  // override string getSourceType() { result = "stored flow source" }
   override string getThreatModel() { result = "local" }
 }
 
@@ -21,6 +22,8 @@ abstract class StoredFlowSource extends SourceNode {
  */
 abstract class DatabaseInputSource extends StoredFlowSource {
   override string getThreatModel() { result = "database" }
+
+  override string getSourceType() { result = "database input" }
 }
 
 /**
@@ -76,4 +79,6 @@ class FileStreamStoredFlowSource extends StoredFlowSource {
   FileStreamStoredFlowSource() { sourceNode(this, "file") }
 
   override string getThreatModel() { result = "file" }
+
+  override string getSourceType() { result = "file stream" }
 }
