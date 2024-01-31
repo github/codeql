@@ -12,8 +12,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.flowsources.Remote
-import semmle.code.csharp.security.dataflow.flowsources.Local
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 import semmle.code.csharp.frameworks.Format
 import FormatString::PathGraph
 
@@ -31,11 +30,7 @@ module FormatStringConfig implements DataFlow::ConfigSig {
 
 module FormatString = TaintTracking::Global<FormatStringConfig>;
 
-string getSourceType(DataFlow::Node node) {
-  result = node.(RemoteFlowSource).getSourceType()
-  or
-  result = node.(LocalFlowSource).getSourceType()
-}
+string getSourceType(DataFlow::Node node) { result = node.(SourceNode).getSourceType() }
 
 from FormatString::PathNode source, FormatString::PathNode sink
 where FormatString::flowPath(source, sink)
