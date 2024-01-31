@@ -150,7 +150,7 @@ private predicate sinkHasPrimaryName(API::Node sink, string package, string name
 /**
  * Holds if `(package, name)` is the primary name to associate with `node`.
  */
-private predicate sinkHasPrimaryName(API::Node sink, string package, string name) {
+predicate sinkHasPrimaryName(API::Node sink, string package, string name) {
   sinkHasPrimaryName(sink, package, name, _)
 }
 
