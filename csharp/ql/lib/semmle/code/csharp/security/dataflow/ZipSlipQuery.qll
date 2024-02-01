@@ -51,21 +51,6 @@ private module GetFullPathToQualifierTaintTrackingConfiguration implements DataF
   }
 }
 
-/**
- * DEPRECATED: Use `ZipSlip` instead.
- *
- * A taint tracking configuration for Zip Slip.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "ZipSlipTaintTracking" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
 /** An access to the `FullName` property of a `ZipArchiveEntry`. */
 class ArchiveFullNameSource extends Source {
   ArchiveFullNameSource() {
@@ -134,8 +119,8 @@ private predicate safeCombineGetFullPathSequence(MethodCallGetFullPath mcGetFull
  *    OR
  *      There is a direct flow from Path.GetFullPath to qualifier of RootSanitizerMethodCall.
  *
- *    It is not simply enough for the qualifier of String.StartsWith
- *    to pass through Path.Combine without also passing through GetFullPath AFTER.
+ * It is not simply enough for the qualifier of String.StartsWith
+ * to pass through Path.Combine without also passing through GetFullPath AFTER.
  */
 class RootSanitizerMethodCall extends SanitizerMethodCall {
   RootSanitizerMethodCall() {
@@ -186,7 +171,12 @@ module SanitizedGuardTT = TaintTracking::Global<SanitizedGuardTaintTrackingConfi
  *  }
  */
 private module SanitizedGuardTaintTrackingConfiguration implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof DataFlow::ParameterNode }
+  predicate isSource(DataFlow::Node source) {
+    source instanceof DataFlow::ParameterNode and
+    exists(RootSanitizerMethodCall smc |
+      smc.getEnclosingCallable() = source.getEnclosingCallable()
+    )
+  }
 
   predicate isSink(DataFlow::Node sink) {
     exists(RootSanitizerMethodCall smc |
@@ -214,6 +204,13 @@ abstract private class AbstractWrapperSanitizerMethod extends AbstractSanitizerM
 
   Parameter paramFilePath() { result = paramFilename }
 }
+
+/* predicate aaaa(ZipSlipGuard g, DataFlow::ParameterNode source){
+      exists(DataFlow::Node sink |
+        sink = DataFlow::exprNode(g.getFilePathArgument()) and
+        SanitizedGuardTT::flow(source, sink) and
+      )
+} */
 
 /**
  * A DirectWrapperSantizierMethod is a Method where
@@ -246,7 +243,7 @@ class DirectWrapperSantizierMethod extends AbstractWrapperSanitizerMethod {
       ret.getExpr().(BoolLiteral).getBoolValue() = false
       or
       // It passes the guard, contraining the function argument to the Guard argument.
-      exists(ZipSlipGuard g, DataFlow::Node source, DataFlow::Node sink |
+      exists(ZipSlipGuard g, DataFlow::ParameterNode source, DataFlow::Node sink |
         g.getEnclosingCallable() = this and
         source = DataFlow::parameterNode(paramFilename) and
         sink = DataFlow::exprNode(g.getFilePathArgument()) and
@@ -453,8 +450,8 @@ private module ZipSlipConfig implements DataFlow::ConfigSig {
  */
 module ZipSlip = TaintTracking::Global<ZipSlipConfig>;
 
-final class ZipSlipTaintTrackingConfiguration extends TaintTracking::Configuration {
-  ZipSlipTaintTrackingConfiguration() { this = "ZipSlipTaintTrackingConfiguration" }
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
+  TaintTrackingConfiguration() { this = "ZipSlipTaintTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node node) { node instanceof Source }
 
@@ -463,6 +460,7 @@ final class ZipSlipTaintTrackingConfiguration extends TaintTracking::Configurati
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
     super.isAdditionalTaintStep(pred, succ)
     or
+    // If the sink is a method call, and the source is an argument to that method call
     exists(MethodCall mc | succ.asExpr() = mc and pred.asExpr() = mc.getAnArgument())
   }
 
