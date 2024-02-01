@@ -110,7 +110,7 @@ func checkDirsNested(inputDirs []string) (string, bool) {
 }
 
 // A list of files we created that should be removed after we are done.
-var filesToRemove []string
+var filesToRemove []string = []string{}
 
 // Try to initialize a go.mod file for projects that do not already have one.
 func initGoModForLegacyProject(path string) {
@@ -148,7 +148,7 @@ func RemoveTemporaryExtractorFiles() {
 		}
 	}
 
-	filesToRemove = nil
+	filesToRemove = []string{}
 }
 
 // Find all go.work files in the working directory and its subdirectories
