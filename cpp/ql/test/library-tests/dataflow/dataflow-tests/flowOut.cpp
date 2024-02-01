@@ -70,7 +70,7 @@ void modify_copy_via_strdup(char* p) { // $ ast-def=p
 
 void test_modify_copy_via_strdup(char* p) { // $ ast-def=p
   modify_copy_via_strdup(p);
-  sink(*p); // $ SPURIOUS: ir
+  sink(*p); // clean
 }
 
 int* deref(int** p) { // $ ast-def=p
@@ -114,5 +114,5 @@ void modify_copy_via_memcpy(char* p) { // $ ast-def=p
 
 void test_modify_copy_via_memcpy(char* p) { // $ ast-def=p
   modify_copy_via_memcpy(p);
-  sink(*p); // $ SPURIOUS: ir
+  sink(*p); // clean
 }

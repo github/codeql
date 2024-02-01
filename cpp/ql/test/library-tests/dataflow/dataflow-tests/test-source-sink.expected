@@ -174,8 +174,6 @@ irFlow
 | dispatch.cpp:144:8:144:13 | call to source | dispatch.cpp:96:8:96:8 | x |
 | flowOut.cpp:5:16:5:21 | call to source | flowOut.cpp:31:9:31:9 | x |
 | flowOut.cpp:5:16:5:21 | call to source | flowOut.cpp:61:8:61:11 | access to array |
-| flowOut.cpp:8:16:8:23 | call to source | flowOut.cpp:73:8:73:9 | * ... |
-| flowOut.cpp:8:16:8:23 | call to source | flowOut.cpp:117:8:117:9 | * ... |
 | flowOut.cpp:84:18:84:23 | call to source | flowOut.cpp:85:8:85:9 | * ... |
 | flowOut.cpp:90:8:90:13 | call to source | flowOut.cpp:102:8:102:9 | * ... |
 | globals.cpp:5:17:5:22 | call to source | globals.cpp:6:10:6:14 | local |
