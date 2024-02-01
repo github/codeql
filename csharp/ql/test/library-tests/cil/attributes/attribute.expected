@@ -6468,11 +6468,11 @@ attrArgPositional
 | Interop.BOOL System.RuntimeTypeHandle.IsCollectible(System.Runtime.CompilerServices.QCallTypeHandle) | [LibraryImportAttribute(...)] | 0 | QCall |
 | Interop.BOOL System.Threading.Thread.YieldInternal() | [LibraryImportAttribute(...)] | 0 | QCall |
 | Interop.Globalization.ResultCode Interop.Globalization.GetCalendarInfo(System.String,System.Globalization.CalendarId,System.Globalization.CalendarDataType,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| Interop.Globalization.ResultCode Interop.Globalization.GetCalendarInfo(System.String,System.Globalization.CalendarId,System.Globalization.CalendarDataType,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| Interop.Globalization.ResultCode Interop.Globalization.GetCalendarInfo(System.String,System.Globalization.CalendarId,System.Globalization.CalendarDataType,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | Interop.Globalization.ResultCode Interop.Globalization.GetSortHandle(System.String,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| Interop.Globalization.ResultCode Interop.Globalization.GetSortHandle(System.String,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| Interop.Globalization.ResultCode Interop.Globalization.GetSortHandle(System.String,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | Interop.Globalization.ResultCode Interop.Globalization.GetTimeZoneDisplayName(System.String,System.String,Interop.Globalization.TimeZoneDisplayNameType,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| Interop.Globalization.ResultCode Interop.Globalization.GetTimeZoneDisplayName(System.String,System.String,Interop.Globalization.TimeZoneDisplayNameType,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| Interop.Globalization.ResultCode Interop.Globalization.GetTimeZoneDisplayName(System.String,System.String,Interop.Globalization.TimeZoneDisplayNameType,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | Interop.HostPolicy.corehost_error_writer_fn | [UnmanagedFunctionPointerAttribute(...)] | 0 | 2 |
 | Interop.HostPolicy.corehost_resolve_component_dependencies_result_fn | [UnmanagedFunctionPointerAttribute(...)] | 0 | 2 |
 | Microsoft.Win32.SafeHandles.SafeFileHandle | [NullableAttribute(...)] | 0 | 0 |
@@ -6480,13 +6480,13 @@ attrArgPositional
 | Microsoft.Win32.SafeHandles.SafeFileHandle | [NullableContextAttribute(...)] | 0 | 2 |
 | Microsoft.Win32.SafeHandles.SafeWaitHandle | [NullableAttribute(...)] | 0 | 2 |
 | Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateEventEx(System.IntPtr,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateEventEx(System.IntPtr,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateEventEx(System.IntPtr,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateMutexEx(System.IntPtr,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateMutexEx(System.IntPtr,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateMutexEx(System.IntPtr,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateSemaphoreEx(System.IntPtr,System.Int32,System.Int32,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateSemaphoreEx(System.IntPtr,System.Int32,System.Int32,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.CreateSemaphoreEx(System.IntPtr,System.Int32,System.Int32,System.String,System.UInt32,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.OpenMutex(System.UInt32,System.Boolean,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.OpenMutex(System.UInt32,System.Boolean,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| Microsoft.Win32.SafeHandles.SafeWaitHandle Interop.Kernel32.OpenMutex(System.UInt32,System.Boolean,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | Microsoft.Win32.SafeHandles.SafeWaitHandle System.Threading.RegisteredWaitHandle.Handle | [NullableAttribute(...)] | 0 | 1 |
 | System.AccessViolationException | [NullableAttribute(...)] | 0 | 0 |
 | System.AccessViolationException | [NullableContextAttribute(...)] | 0 | 2 |
@@ -6624,44 +6624,44 @@ attrArgPositional
 | System.BitConverter | [NullableAttribute(...)] | 0 | 0 |
 | System.BitConverter | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Boolean Interop.Globalization.EndsWith(System.IntPtr,System.Char*,System.Int32,System.Char*,System.Int32,System.Globalization.CompareOptions,System.Int32*) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.EndsWith(System.IntPtr,System.Char*,System.Int32,System.Char*,System.Int32,System.Globalization.CompareOptions,System.Int32*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.EndsWith(System.IntPtr,System.Char*,System.Int32,System.Char*,System.Int32,System.Globalization.CompareOptions,System.Int32*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Globalization.EnumCalendarInfo(System.IntPtr,System.String,System.Globalization.CalendarId,System.Globalization.CalendarDataType,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.EnumCalendarInfo(System.IntPtr,System.String,System.Globalization.CalendarId,System.Globalization.CalendarDataType,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.EnumCalendarInfo(System.IntPtr,System.String,System.Globalization.CalendarId,System.Globalization.CalendarDataType,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Globalization.GetDefaultLocaleName(System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.GetDefaultLocaleName(System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.GetDefaultLocaleName(System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Globalization.GetJapaneseEraStartDate(System.Int32,System.Int32,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.GetJapaneseEraStartDate(System.Int32,System.Int32,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.GetJapaneseEraStartDate(System.Int32,System.Int32,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Globalization.GetJapaneseEraStartDate(System.Int32,System.Int32,System.Int32,System.Int32) | [LibraryImportAttribute(...)] | 0 | libSystem.Globalization.Native |
 | System.Boolean Interop.Globalization.GetLocaleInfoGroupingSizes(System.String,System.UInt32,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.GetLocaleInfoGroupingSizes(System.String,System.UInt32,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.GetLocaleInfoGroupingSizes(System.String,System.UInt32,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Globalization.GetLocaleInfoInt(System.String,System.UInt32,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.GetLocaleInfoInt(System.String,System.UInt32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.GetLocaleInfoInt(System.String,System.UInt32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Globalization.GetLocaleInfoString(System.String,System.UInt32,System.Char*,System.Int32,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.GetLocaleInfoString(System.String,System.UInt32,System.Char*,System.Int32,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.GetLocaleInfoString(System.String,System.UInt32,System.Char*,System.Int32,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Globalization.GetLocaleName(System.String,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.GetLocaleName(System.String,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.GetLocaleName(System.String,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Globalization.GetLocaleTimeFormat(System.String,System.Boolean,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.GetLocaleTimeFormat(System.String,System.Boolean,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.GetLocaleTimeFormat(System.String,System.Boolean,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Globalization.IsPredefinedLocale(System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.IsPredefinedLocale(System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.IsPredefinedLocale(System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Globalization.StartsWith(System.IntPtr,System.Char*,System.Int32,System.Char*,System.Int32,System.Globalization.CompareOptions,System.Int32*) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Globalization.StartsWith(System.IntPtr,System.Char*,System.Int32,System.Char*,System.Int32,System.Globalization.CompareOptions,System.Int32*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Globalization.StartsWith(System.IntPtr,System.Char*,System.Int32,System.Char*,System.Int32,System.Globalization.CompareOptions,System.Int32*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Kernel32.CloseHandle(System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Kernel32.CloseHandle(System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Kernel32.CloseHandle(System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Kernel32.CloseHandle(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean Interop.Kernel32.ReleaseMutex(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Kernel32.ReleaseMutex(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Kernel32.ReleaseMutex(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Kernel32.ReleaseMutex(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean Interop.Kernel32.ReleaseSemaphore(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Kernel32.ReleaseSemaphore(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Kernel32.ReleaseSemaphore(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Kernel32.ReleaseSemaphore(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Int32,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean Interop.Kernel32.ResetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Kernel32.ResetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Kernel32.ResetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Kernel32.ResetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean Interop.Kernel32.SetEnvironmentVariable(System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Kernel32.SetEnvironmentVariable(System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Kernel32.SetEnvironmentVariable(System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Kernel32.SetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean Interop.Kernel32.SetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean Interop.Kernel32.SetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean Interop.Kernel32.SetEvent(Microsoft.Win32.SafeHandles.SafeWaitHandle) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.ApplicationId.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.ArgIterator.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
@@ -6792,21 +6792,21 @@ attrArgPositional
 | System.Boolean System.Delegate.op_Equality(System.Delegate,System.Delegate) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Delegate.op_Inequality(System.Delegate,System.Delegate) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Diagnostics.Debugger.LaunchInternal() | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Diagnostics.Debugger.LaunchInternal() | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Diagnostics.Debugger.LaunchInternal() | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Diagnostics.Debugger.LaunchInternal() | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Diagnostics.StackFrameExtensions.HasMethod(System.Diagnostics.StackFrame) | [UnconditionalSuppressMessageAttribute(...)] | 0 | ReflectionAnalysis |
 | System.Boolean System.Diagnostics.StackFrameExtensions.HasMethod(System.Diagnostics.StackFrame) | [UnconditionalSuppressMessageAttribute(...)] | 1 | IL2026:RequiresUnreferencedCode |
 | System.Boolean System.Diagnostics.Tracing.EventPipeInternal.GetNextEvent(System.UInt64,System.Diagnostics.Tracing.EventPipeEventInstanceData*) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Diagnostics.Tracing.EventPipeInternal.GetNextEvent(System.UInt64,System.Diagnostics.Tracing.EventPipeEventInstanceData*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Diagnostics.Tracing.EventPipeInternal.GetNextEvent(System.UInt64,System.Diagnostics.Tracing.EventPipeEventInstanceData*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Diagnostics.Tracing.EventPipeInternal.GetNextEvent(System.UInt64,System.Diagnostics.Tracing.EventPipeEventInstanceData*) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Diagnostics.Tracing.EventPipeInternal.GetSessionInfo(System.UInt64,System.Diagnostics.Tracing.EventPipeSessionInfo*) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Diagnostics.Tracing.EventPipeInternal.GetSessionInfo(System.UInt64,System.Diagnostics.Tracing.EventPipeSessionInfo*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Diagnostics.Tracing.EventPipeInternal.GetSessionInfo(System.UInt64,System.Diagnostics.Tracing.EventPipeSessionInfo*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Diagnostics.Tracing.EventPipeInternal.GetSessionInfo(System.UInt64,System.Diagnostics.Tracing.EventPipeSessionInfo*) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Diagnostics.Tracing.EventPipeInternal.SignalSession(System.UInt64) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Diagnostics.Tracing.EventPipeInternal.SignalSession(System.UInt64) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Diagnostics.Tracing.EventPipeInternal.SignalSession(System.UInt64) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Diagnostics.Tracing.EventPipeInternal.SignalSession(System.UInt64) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Diagnostics.Tracing.EventPipeInternal.WaitForSessionSignal(System.UInt64,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Diagnostics.Tracing.EventPipeInternal.WaitForSessionSignal(System.UInt64,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Diagnostics.Tracing.EventPipeInternal.WaitForSessionSignal(System.UInt64,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Diagnostics.Tracing.EventPipeInternal.WaitForSessionSignal(System.UInt64,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Double.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Double.TryParse(System.String,System.Double) | [NullableContextAttribute(...)] | 0 | 2 |
@@ -6880,7 +6880,7 @@ attrArgPositional
 | System.Boolean System.IntPtr.TryParse(System.String,System.IFormatProvider,System.IntPtr) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.IntPtr.TryParse(System.String,System.IntPtr) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.MdUtf8String.EqualsCaseInsensitive(System.Void*,System.Void*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.MdUtf8String.EqualsCaseInsensitive(System.Void*,System.Void*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.MdUtf8String.EqualsCaseInsensitive(System.Void*,System.Void*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.MdUtf8String.EqualsCaseInsensitive(System.Void*,System.Void*,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.MemoryExtensions.ContainsAnyExceptInRange`1(System.ReadOnlySpan<!0>,!0,!0) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Boolean System.MemoryExtensions.ContainsAnyExceptInRange`1(System.Span<!0>,!0,!0) | [NullableContextAttribute(...)] | 0 | 1 |
@@ -6983,18 +6983,18 @@ attrArgPositional
 | System.Boolean System.Reflection.FieldInfo.op_Equality(System.Reflection.FieldInfo,System.Reflection.FieldInfo) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Reflection.FieldInfo.op_Inequality(System.Reflection.FieldInfo,System.Reflection.FieldInfo) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Reflection.LoaderAllocatorScout.Destroy(System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Reflection.LoaderAllocatorScout.Destroy(System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Reflection.LoaderAllocatorScout.Destroy(System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Reflection.LoaderAllocatorScout.Destroy(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Reflection.MemberFilter.Invoke(System.Reflection.MemberInfo,System.Object) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Boolean System.Reflection.MemberInfo.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Reflection.MemberInfo.op_Equality(System.Reflection.MemberInfo,System.Reflection.MemberInfo) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Reflection.MemberInfo.op_Inequality(System.Reflection.MemberInfo,System.Reflection.MemberInfo) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Reflection.Metadata.AssemblyExtensions.InternalTryGetRawMetadata(System.Runtime.CompilerServices.QCallAssembly,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Reflection.Metadata.AssemblyExtensions.InternalTryGetRawMetadata(System.Runtime.CompilerServices.QCallAssembly,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Reflection.Metadata.AssemblyExtensions.InternalTryGetRawMetadata(System.Runtime.CompilerServices.QCallAssembly,System.Byte*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Reflection.Metadata.AssemblyExtensions.InternalTryGetRawMetadata(System.Runtime.CompilerServices.QCallAssembly,System.Byte*,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Reflection.Metadata.AssemblyExtensions.TryGetRawMetadata(System.Reflection.Assembly,System.Byte*,System.Int32) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Boolean System.Reflection.Metadata.MetadataUpdater.IsApplyUpdateSupported() | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Reflection.Metadata.MetadataUpdater.IsApplyUpdateSupported() | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Reflection.Metadata.MetadataUpdater.IsApplyUpdateSupported() | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Reflection.Metadata.MetadataUpdater.IsApplyUpdateSupported() | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Reflection.MethodInfo.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Reflection.MethodInfo.op_Equality(System.Reflection.MethodInfo,System.Reflection.MethodInfo) | [NullableContextAttribute(...)] | 0 | 2 |
@@ -7004,7 +7004,7 @@ attrArgPositional
 | System.Boolean System.Reflection.Module.op_Inequality(System.Reflection.Module,System.Reflection.Module) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Reflection.Pointer.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Reflection.RuntimeAssembly.GetCodeBase(System.Runtime.CompilerServices.QCallAssembly,System.Runtime.CompilerServices.StringHandleOnStack) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Reflection.RuntimeAssembly.GetCodeBase(System.Runtime.CompilerServices.QCallAssembly,System.Runtime.CompilerServices.StringHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Reflection.RuntimeAssembly.GetCodeBase(System.Runtime.CompilerServices.QCallAssembly,System.Runtime.CompilerServices.StringHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Reflection.RuntimeAssembly.GetCodeBase(System.Runtime.CompilerServices.QCallAssembly,System.Runtime.CompilerServices.StringHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Reflection.TypeDelegator.IsAssignableFrom(System.Reflection.TypeInfo) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Reflection.TypeFilter.Invoke(System.Type,System.Object) | [NullableContextAttribute(...)] | 0 | 1 |
@@ -7016,24 +7016,24 @@ attrArgPositional
 | System.Boolean System.Resources.ResourceReader.InitializeBinaryFormatter() | [RequiresDynamicCodeAttribute(...)] | 0 | The native code for this instantiation might not be available at runtime. |
 | System.Boolean System.Resources.ResourceReader.InitializeBinaryFormatter() | [RequiresUnreferencedCodeAttribute(...)] | 0 | The CustomResourceTypesSupport feature switch has been enabled for this app which is being trimmed. Custom readers as well as custom objects on the resources file are not observable by the trimmer and so required assemblies, types and members may be removed. |
 | System.Boolean System.Runtime.CompilerServices.RuntimeHelpers.AreTypesEquivalent(System.Runtime.CompilerServices.MethodTable*,System.Runtime.CompilerServices.MethodTable*) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.CompilerServices.RuntimeHelpers.AreTypesEquivalent(System.Runtime.CompilerServices.MethodTable*,System.Runtime.CompilerServices.MethodTable*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Runtime.CompilerServices.RuntimeHelpers.AreTypesEquivalent(System.Runtime.CompilerServices.MethodTable*,System.Runtime.CompilerServices.MethodTable*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Runtime.CompilerServices.RuntimeHelpers.AreTypesEquivalent(System.Runtime.CompilerServices.MethodTable*,System.Runtime.CompilerServices.MethodTable*) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Runtime.CompilerServices.RuntimeHelpers.Equals(System.Object,System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.CompilerServices.RuntimeHelpers.IsReferenceOrContainsReferences`1() | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.InteropServices.CLong.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.InteropServices.CULong.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetComInstanceInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetComInstanceInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetComInstanceInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetComInstanceInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetObject(System.IntPtr,System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetObjectInternal(System.IntPtr,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetObjectInternal(System.IntPtr,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetObjectInternal(System.IntPtr,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetObjectInternal(System.IntPtr,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetOrCreateComInterfaceForObjectInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.InteropServices.CreateComInterfaceFlags,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetOrCreateComInterfaceForObjectInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.InteropServices.CreateComInterfaceFlags,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetOrCreateComInterfaceForObjectInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.InteropServices.CreateComInterfaceFlags,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetOrCreateComInterfaceForObjectInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.InteropServices.CreateComInterfaceFlags,System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetOrCreateObjectForComInstanceInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64,System.IntPtr,System.IntPtr,System.Runtime.InteropServices.CreateObjectFlags,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetOrCreateObjectForComInstanceInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64,System.IntPtr,System.IntPtr,System.Runtime.InteropServices.CreateObjectFlags,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetOrCreateObjectForComInstanceInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64,System.IntPtr,System.IntPtr,System.Runtime.InteropServices.CreateObjectFlags,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Runtime.InteropServices.ComWrappers.TryGetOrCreateObjectForComInstanceInternal(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64,System.IntPtr,System.IntPtr,System.Runtime.InteropServices.CreateObjectFlags,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.Runtime.InteropServices.Marshal.SetComObjectData(System.Object,System.Object,System.Object) | [SupportedOSPlatformAttribute(...)] | 0 | windows |
 | System.Boolean System.Runtime.InteropServices.MemoryMarshal.TryGetArray`1(System.ReadOnlyMemory<!0>,System.ArraySegment<!0>) | [NullableContextAttribute(...)] | 0 | 2 |
@@ -7093,13 +7093,13 @@ attrArgPositional
 | System.Boolean System.Runtime.Intrinsics.Vector512.TryCopyTo`1(System.Runtime.Intrinsics.Vector512<!0>,System.Span<!0>) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.Intrinsics.Vector512`1.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceAssemblyLoadFromResolveHandlerInvoked(System.String,System.Boolean,System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceAssemblyLoadFromResolveHandlerInvoked(System.String,System.Boolean,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceAssemblyLoadFromResolveHandlerInvoked(System.String,System.Boolean,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceAssemblyResolveHandlerInvoked(System.String,System.String,System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceAssemblyResolveHandlerInvoked(System.String,System.String,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceAssemblyResolveHandlerInvoked(System.String,System.String,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceResolvingHandlerInvoked(System.String,System.String,System.String,System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceResolvingHandlerInvoked(System.String,System.String,System.String,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceResolvingHandlerInvoked(System.String,System.String,System.String,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceSatelliteSubdirectoryPathProbed(System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceSatelliteSubdirectoryPathProbed(System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.Runtime.Loader.AssemblyLoadContext.TraceSatelliteSubdirectoryPathProbed(System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.Runtime.Versioning.FrameworkName.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.Versioning.FrameworkName.Equals(System.Runtime.Versioning.FrameworkName) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.Runtime.Versioning.FrameworkName.op_Equality(System.Runtime.Versioning.FrameworkName,System.Runtime.Versioning.FrameworkName) | [NullableContextAttribute(...)] | 0 | 2 |
@@ -7107,7 +7107,7 @@ attrArgPositional
 | System.Boolean System.RuntimeFieldHandle.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.RuntimeMethodHandle.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.RuntimeTypeHandle._IsVisible(System.Runtime.CompilerServices.QCallTypeHandle) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Boolean System.RuntimeTypeHandle._IsVisible(System.Runtime.CompilerServices.QCallTypeHandle) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Boolean System.RuntimeTypeHandle._IsVisible(System.Runtime.CompilerServices.QCallTypeHandle) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Boolean System.RuntimeTypeHandle._IsVisible(System.Runtime.CompilerServices.QCallTypeHandle) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Boolean System.SByte.Equals(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Boolean System.SByte.TryParse(System.String,System.Globalization.NumberStyles,System.IFormatProvider,System.SByte) | [NullableContextAttribute(...)] | 0 | 2 |
@@ -7286,7 +7286,7 @@ attrArgPositional
 | System.Buffer | [NullableAttribute(...)] | 0 | 0 |
 | System.Buffer | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Buffers.ArrayPoolEventSource | [GeneratedCodeAttribute(...)] | 0 | System.Private.CoreLib.Generators |
-| System.Buffers.ArrayPoolEventSource | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Buffers.ArrayPoolEventSource | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Buffers.ArrayPool`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Buffers.ArrayPool`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Buffers.BitVector256._values | [FixedBufferAttribute(...)] | 0 | System.UInt32 |
@@ -7315,7 +7315,7 @@ attrArgPositional
 | System.Byte System.Runtime.InteropServices.Marshal.ReadByte(System.Object,System.Int32) | [RequiresDynamicCodeAttribute(...)] | 0 | Marshalling code for the object might not be available |
 | System.Byte System.Runtime.InteropServices.MemoryMarshal.GetArrayDataReference(System.Array) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Byte* System.Reflection.RuntimeAssembly.GetResource(System.Runtime.CompilerServices.QCallAssembly,System.String,System.UInt32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Byte* System.Reflection.RuntimeAssembly.GetResource(System.Runtime.CompilerServices.QCallAssembly,System.String,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Byte* System.Reflection.RuntimeAssembly.GetResource(System.Runtime.CompilerServices.QCallAssembly,System.String,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Byte[] System.BitConverter.GetBytes(System.UInt16) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Byte[] System.BitConverter.GetBytes(System.UInt32) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Byte[] System.BitConverter.GetBytes(System.UInt64) | [CLSCompliantAttribute(...)] | 0 | False |
@@ -7909,7 +7909,7 @@ attrArgPositional
 | System.Diagnostics.Tracing.EventWrittenEventArgs | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Diagnostics.Tracing.EventWrittenEventArgs.MoreEventInfo System.Diagnostics.Tracing.EventWrittenEventArgs.MoreInfo | [NullableAttribute(...)] | 0 | 1 |
 | System.Diagnostics.Tracing.FrameworkEventSource | [GeneratedCodeAttribute(...)] | 0 | System.Private.CoreLib.Generators |
-| System.Diagnostics.Tracing.FrameworkEventSource | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Diagnostics.Tracing.FrameworkEventSource | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Diagnostics.Tracing.IncrementingEventCounter | [NullableAttribute(...)] | 0 | 0 |
 | System.Diagnostics.Tracing.IncrementingEventCounter | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Diagnostics.Tracing.IncrementingEventCounter | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
@@ -7917,13 +7917,13 @@ attrArgPositional
 | System.Diagnostics.Tracing.IncrementingPollingCounter | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Diagnostics.Tracing.IncrementingPollingCounter | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
 | System.Diagnostics.Tracing.NativeRuntimeEventSource | [GeneratedCodeAttribute(...)] | 0 | System.Private.CoreLib.Generators |
-| System.Diagnostics.Tracing.NativeRuntimeEventSource | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Diagnostics.Tracing.NativeRuntimeEventSource | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Diagnostics.Tracing.NonEventAttribute | [AttributeUsageAttribute(...)] | 0 | 64 |
 | System.Diagnostics.Tracing.PollingCounter | [NullableAttribute(...)] | 0 | 0 |
 | System.Diagnostics.Tracing.PollingCounter | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Diagnostics.Tracing.PollingCounter | [UnsupportedOSPlatformAttribute(...)] | 0 | browser |
 | System.Diagnostics.Tracing.RuntimeEventSource | [GeneratedCodeAttribute(...)] | 0 | System.Private.CoreLib.Generators |
-| System.Diagnostics.Tracing.RuntimeEventSource | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Diagnostics.Tracing.RuntimeEventSource | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Diagnostics.Tracing.SessionMask | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Diagnostics.Tracing.TraceLoggingEventHandleTable | [DefaultMemberAttribute(...)] | 0 | Item |
 | System.Diagnostics.Tracing.TraceLoggingEventTypes System.Diagnostics.Tracing.EventSource.EventMetadata.get_TraceLoggingEventTypes() | [RequiresUnreferencedCodeAttribute(...)] | 0 | EventSource will serialize the whole object graph. Trimmer will not safely handle this case because properties may be trimmed. |
@@ -8339,21 +8339,21 @@ attrArgPositional
 | System.Int32 Internal.Runtime.InteropServices.ComponentActivator.LoadAssemblyBytes(System.Byte*,System.IntPtr,System.Byte*,System.IntPtr,System.IntPtr,System.IntPtr) | [UnsupportedOSPlatformAttribute(...)] | 0 | maccatalyst |
 | System.Int32 Internal.Runtime.InteropServices.ComponentActivator.LoadAssemblyBytes(System.Byte*,System.IntPtr,System.Byte*,System.IntPtr,System.IntPtr,System.IntPtr) | [UnsupportedOSPlatformAttribute(...)] | 0 | tvos |
 | System.Int32 Interop.Globalization.GetCalendars(System.String,System.Globalization.CalendarId[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Globalization.GetCalendars(System.String,System.Globalization.CalendarId[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 Interop.Globalization.GetCalendars(System.String,System.Globalization.CalendarId[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 Interop.Globalization.GetICUVersion() | [LibraryImportAttribute(...)] | 0 | libSystem.Globalization.Native |
 | System.Int32 Interop.Globalization.GetLatestJapaneseEra() | [LibraryImportAttribute(...)] | 0 | libSystem.Globalization.Native |
 | System.Int32 Interop.Globalization.GetLocales(System.Char[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Globalization.GetLocales(System.Char[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 Interop.Globalization.GetLocales(System.Char[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 Interop.Globalization.GetSortVersion(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Globalization.Native |
 | System.Int32 Interop.Globalization.IanaIdToWindowsId(System.String,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Globalization.IanaIdToWindowsId(System.String,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 Interop.Globalization.IanaIdToWindowsId(System.String,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 Interop.Globalization.LoadICU() | [LibraryImportAttribute(...)] | 0 | libSystem.Globalization.Native |
 | System.Int32 Interop.Globalization.WindowsIdToIanaId(System.String,System.IntPtr,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Globalization.WindowsIdToIanaId(System.String,System.IntPtr,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 Interop.Globalization.WindowsIdToIanaId(System.String,System.IntPtr,System.Char*,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 Interop.HostPolicy.corehost_resolve_component_dependencies(System.String,Interop.HostPolicy.corehost_resolve_component_dependencies_result_fn) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.HostPolicy.corehost_resolve_component_dependencies(System.String,Interop.HostPolicy.corehost_resolve_component_dependencies_result_fn) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 Interop.HostPolicy.corehost_resolve_component_dependencies(System.String,Interop.HostPolicy.corehost_resolve_component_dependencies_result_fn) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 Interop.Kernel32.FormatMessage(System.Int32,System.IntPtr,System.UInt32,System.Int32,System.Void*,System.Int32,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 Interop.Kernel32.FormatMessage(System.Int32,System.IntPtr,System.UInt32,System.Int32,System.Void*,System.Int32,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 Interop.Kernel32.FormatMessage(System.Int32,System.IntPtr,System.UInt32,System.Int32,System.Void*,System.Int32,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 Interop.Kernel32.FormatMessage(System.Int32,System.IntPtr,System.UInt32,System.Int32,System.Void*,System.Int32,System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.AppDomain.ExecuteAssembly(System.String) | [RequiresUnreferencedCodeAttribute(...)] | 0 | Types and members the loaded assembly depends on might be removed |
 | System.Int32 System.AppDomain.ExecuteAssembly(System.String,System.String[]) | [RequiresUnreferencedCodeAttribute(...)] | 0 | Types and members the loaded assembly depends on might be removed |
@@ -8437,7 +8437,7 @@ attrArgPositional
 | System.Int32 System.DateTime.CompareTo(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Int32 System.Decimal.CompareTo(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Int32 System.Diagnostics.Tracing.EventPipeInternal.EventActivityIdControl(System.UInt32,System.Guid) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Diagnostics.Tracing.EventPipeInternal.EventActivityIdControl(System.UInt32,System.Guid) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Diagnostics.Tracing.EventPipeInternal.EventActivityIdControl(System.UInt32,System.Guid) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Diagnostics.Tracing.EventPipeInternal.EventActivityIdControl(System.UInt32,System.Guid) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.Diagnostics.Tracing.EventSource.GetHelperCallFirstArg(System.Reflection.MethodInfo) | [UnconditionalSuppressMessageAttribute(...)] | 0 | ReflectionAnalysis |
 | System.Int32 System.Diagnostics.Tracing.EventSource.GetHelperCallFirstArg(System.Reflection.MethodInfo) | [UnconditionalSuppressMessageAttribute(...)] | 1 | IL2026:RequiresUnreferencedCode |
@@ -8447,7 +8447,7 @@ attrArgPositional
 | System.Int32 System.GC._EndNoGCRegion() | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.GC._RefreshMemoryLimit(System.GC.GCHeapHardLimitInfo) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.GC._StartNoGCRegion(System.Int64,System.Boolean,System.Int64,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.GC._StartNoGCRegion(System.Int64,System.Boolean,System.Int64,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.GC._StartNoGCRegion(System.Int64,System.Boolean,System.Int64,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.GC._StartNoGCRegion(System.Int64,System.Boolean,System.Int64,System.Boolean) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.Globalization.CharUnicodeInfo.GetDecimalDigitValue(System.String,System.Int32) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Int32 System.Globalization.CharUnicodeInfo.GetDigitValue(System.String,System.Int32) | [NullableContextAttribute(...)] | 0 | 1 |
@@ -8575,41 +8575,41 @@ attrArgPositional
 | System.Int32 System.ReadOnlySpan`1.GetHashCode() | [EditorBrowsableAttribute(...)] | 0 | 1 |
 | System.Int32 System.ReadOnlySpan`1.GetHashCode() | [ObsoleteAttribute(...)] | 0 | GetHashCode() on ReadOnlySpan will always throw an exception. |
 | System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetArrayMethodToken(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetArrayMethodToken(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetArrayMethodToken(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetMemberRef(System.Runtime.CompilerServices.QCallModule,System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetMemberRefFromSignature(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetMemberRefFromSignature(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetMemberRefFromSignature(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetMemberRefOfFieldInfo(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Runtime.CompilerServices.QCallTypeHandle,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetMemberRefOfMethodInfo(System.Runtime.CompilerServices.QCallModule,System.Int32,System.RuntimeMethodHandleInternal) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetStringConstant(System.Runtime.CompilerServices.QCallModule,System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetStringConstant(System.Runtime.CompilerServices.QCallModule,System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetStringConstant(System.Runtime.CompilerServices.QCallModule,System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetTokenFromTypeSpec(System.Runtime.CompilerServices.QCallModule,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetTokenFromTypeSpec(System.Runtime.CompilerServices.QCallModule,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetTokenFromTypeSpec(System.Runtime.CompilerServices.QCallModule,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetTokenFromTypeSpec(System.Runtime.CompilerServices.QCallModule,System.Byte[],System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetTypeRef(System.Runtime.CompilerServices.QCallModule,System.String,System.Runtime.CompilerServices.QCallModule,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetTypeRef(System.Runtime.CompilerServices.QCallModule,System.String,System.Runtime.CompilerServices.QCallModule,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeModuleBuilder.GetTypeRef(System.Runtime.CompilerServices.QCallModule,System.String,System.Runtime.CompilerServices.QCallModule,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineEvent(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Reflection.EventAttributes,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineEvent(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Reflection.EventAttributes,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineEvent(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Reflection.EventAttributes,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineField(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32,System.Reflection.FieldAttributes) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineField(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32,System.Reflection.FieldAttributes) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineField(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32,System.Reflection.FieldAttributes) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineGenericParam(System.Runtime.CompilerServices.QCallModule,System.String,System.Int32,System.Reflection.GenericParameterAttributes,System.Int32,System.Int32[]) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineGenericParam(System.Runtime.CompilerServices.QCallModule,System.String,System.Int32,System.Reflection.GenericParameterAttributes,System.Int32,System.Int32[]) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineGenericParam(System.Runtime.CompilerServices.QCallModule,System.String,System.Int32,System.Reflection.GenericParameterAttributes,System.Int32,System.Int32[]) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineMethod(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32,System.Reflection.MethodAttributes) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineMethod(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32,System.Reflection.MethodAttributes) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineMethod(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Byte[],System.Int32,System.Reflection.MethodAttributes) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineMethodSpec(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineMethodSpec(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineMethodSpec(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineMethodSpec(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Byte[],System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineProperty(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Reflection.PropertyAttributes,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineProperty(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Reflection.PropertyAttributes,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineProperty(System.Runtime.CompilerServices.QCallModule,System.Int32,System.String,System.Reflection.PropertyAttributes,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineType(System.Runtime.CompilerServices.QCallModule,System.String,System.Int32,System.Reflection.TypeAttributes,System.Int32,System.Int32[]) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineType(System.Runtime.CompilerServices.QCallModule,System.String,System.Int32,System.Reflection.TypeAttributes,System.Int32,System.Int32[]) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.DefineType(System.Runtime.CompilerServices.QCallModule,System.String,System.Int32,System.Reflection.TypeAttributes,System.Int32,System.Int32[]) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.GetTokenFromSig(System.Runtime.CompilerServices.QCallModule,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.GetTokenFromSig(System.Runtime.CompilerServices.QCallModule,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.GetTokenFromSig(System.Runtime.CompilerServices.QCallModule,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.GetTokenFromSig(System.Runtime.CompilerServices.QCallModule,System.Byte[],System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.SetParamInfo(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32,System.Reflection.ParameterAttributes,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.SetParamInfo(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32,System.Reflection.ParameterAttributes,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.Emit.RuntimeTypeBuilder.SetParamInfo(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32,System.Reflection.ParameterAttributes,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Reflection.RuntimeAssembly.GetManifestResourceInfo(System.Runtime.CompilerServices.QCallAssembly,System.String,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.StringHandleOnStack) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Reflection.RuntimeAssembly.GetManifestResourceInfo(System.Runtime.CompilerServices.QCallAssembly,System.String,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.StringHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Reflection.RuntimeAssembly.GetManifestResourceInfo(System.Runtime.CompilerServices.QCallAssembly,System.String,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.StringHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Runtime.CompilerServices.RuntimeHelpers.GetHashCode(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Int32 System.Runtime.CompilerServices.Unsafe.SizeOf`1() | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Int32 System.Runtime.InteropServices.ComTypes.IMoniker.IsRunning(System.Runtime.InteropServices.ComTypes.IBindCtx,System.Runtime.InteropServices.ComTypes.IMoniker,System.Runtime.InteropServices.ComTypes.IMoniker) | [NullableContextAttribute(...)] | 0 | 2 |
@@ -8718,7 +8718,7 @@ attrArgPositional
 | System.Int32 System.Text.UnicodeEncoding.GetChars(System.Byte*,System.Int32,System.Char*,System.Int32) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Int32 System.Text.UnicodeEncoding.GetChars(System.Byte*,System.Int32,System.Char*,System.Int32) | [NullableContextAttribute(...)] | 0 | 0 |
 | System.Int32 System.Threading.LowLevelLifoSemaphore.WaitNative(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Int32 System.Threading.LowLevelLifoSemaphore.WaitNative(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Int32 System.Threading.LowLevelLifoSemaphore.WaitNative(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Int32 System.Threading.LowLevelLifoSemaphore.WaitNative(Microsoft.Win32.SafeHandles.SafeWaitHandle,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Int32 System.Threading.SynchronizationContext.Wait(System.IntPtr[],System.Boolean,System.Int32) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.Int32 System.Threading.SynchronizationContext.WaitHelper(System.IntPtr[],System.Boolean,System.Int32) | [CLSCompliantAttribute(...)] | 0 | False |
@@ -8775,13 +8775,13 @@ attrArgPositional
 | System.IntPtr Internal.Runtime.InteropServices.ComponentActivator.InternalGetFunctionPointer(System.Runtime.Loader.AssemblyLoadContext,System.String,System.String,System.IntPtr) | [RequiresUnreferencedCodeAttribute(...)] | 0 | Native hosting is not trim compatible and this warning will be seen if trimming is enabled. |
 | System.IntPtr Interop.HostPolicy.corehost_set_error_writer(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libhostpolicy |
 | System.IntPtr System.ComAwareWeakReference.ObjectToComWeakRef(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr System.ComAwareWeakReference.ObjectToComWeakRef(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.IntPtr System.ComAwareWeakReference.ObjectToComWeakRef(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.IntPtr System.ComAwareWeakReference.ObjectToComWeakRef(System.Runtime.CompilerServices.ObjectHandleOnStack,System.Int64) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.CreateProvider(System.String,delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void>,System.Void*) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.CreateProvider(System.String,delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void>,System.Void*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.CreateProvider(System.String,delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void>,System.Void*) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.DefineEvent(System.IntPtr,System.UInt32,System.Int64,System.UInt32,System.UInt32,System.Void*,System.UInt32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.GetProvider(System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.GetProvider(System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.IntPtr System.Diagnostics.Tracing.EventPipeInternal.GetProvider(System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.IntPtr System.GC._RegisterFrozenSegment(System.IntPtr,System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.IntPtr System.IO.FileStream.Handle | [ObsoleteAttribute(...)] | 0 | FileStream.Handle has been deprecated. Use FileStream's SafeFileHandle property instead. |
 | System.IntPtr System.IntPtr.CreateChecked`1(!0) | [NullableContextAttribute(...)] | 0 | 1 |
@@ -8826,14 +8826,14 @@ attrArgPositional
 | System.IntPtr System.Runtime.InteropServices.Marshal.StringToHGlobalUni(System.String) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.IntPtr System.Runtime.InteropServices.Marshal.UnsafeAddrOfPinnedArrayElement(System.Array,System.Int32) | [EditorBrowsableAttribute(...)] | 0 | 1 |
 | System.IntPtr System.Runtime.InteropServices.NativeLibrary.GetSymbol(System.IntPtr,System.String,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr System.Runtime.InteropServices.NativeLibrary.GetSymbol(System.IntPtr,System.String,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.IntPtr System.Runtime.InteropServices.NativeLibrary.GetSymbol(System.IntPtr,System.String,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadByName(System.String,System.Runtime.CompilerServices.QCallAssembly,System.Boolean,System.UInt32,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadByName(System.String,System.Runtime.CompilerServices.QCallAssembly,System.Boolean,System.UInt32,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadByName(System.String,System.Runtime.CompilerServices.QCallAssembly,System.Boolean,System.UInt32,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadFromPath(System.String,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadFromPath(System.String,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.IntPtr System.Runtime.InteropServices.NativeLibrary.LoadFromPath(System.String,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.IntPtr System.Runtime.Loader.AssemblyLoadContext.GetLoadContextForAssembly(System.Runtime.CompilerServices.QCallAssembly) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.IntPtr System.Runtime.Loader.AssemblyLoadContext.InitializeAssemblyLoadContext(System.IntPtr,System.Boolean,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.IntPtr System.Runtime.Loader.AssemblyLoadContext.InitializeAssemblyLoadContext(System.IntPtr,System.Boolean,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.IntPtr System.Runtime.Loader.AssemblyLoadContext.InitializeAssemblyLoadContext(System.IntPtr,System.Boolean,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.IntPtr System.Runtime.Loader.AssemblyLoadContext.InitializeAssemblyLoadContext(System.IntPtr,System.Boolean,System.Boolean) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.IntPtr System.RuntimeMethodHandle.GetFunctionPointer(System.RuntimeMethodHandleInternal) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.IntPtr System.RuntimeTypeHandle.FreeGCHandle(System.Runtime.CompilerServices.QCallTypeHandle,System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
@@ -9994,7 +9994,6 @@ attrArgPositional
 | System.Runtime.CompilerServices.ITuple | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Runtime.CompilerServices.IndexerNameAttribute | [AttributeUsageAttribute(...)] | 0 | 128 |
 | System.Runtime.CompilerServices.InlineArrayAttribute | [AttributeUsageAttribute(...)] | 0 | 8 |
-| System.Runtime.CompilerServices.InlineArrayAttribute | [EditorBrowsableAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.InternalsVisibleToAttribute | [AttributeUsageAttribute(...)] | 0 | 1 |
 | System.Runtime.CompilerServices.InternalsVisibleToAttribute | [NullableAttribute(...)] | 0 | 0 |
 | System.Runtime.CompilerServices.InternalsVisibleToAttribute | [NullableContextAttribute(...)] | 0 | 1 |
@@ -11962,7 +11961,7 @@ attrArgPositional
 | System.Threading.Tasks.Task`1 | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Tasks.Task`1 | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.Tasks.TplEventSource | [GeneratedCodeAttribute(...)] | 0 | System.Private.CoreLib.Generators |
-| System.Threading.Tasks.TplEventSource | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Threading.Tasks.TplEventSource | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Threading.Tasks.UnobservedTaskExceptionEventArgs | [NullableAttribute(...)] | 0 | 0 |
 | System.Threading.Tasks.UnobservedTaskExceptionEventArgs | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Threading.Tasks.ValueTask | [AsyncMethodBuilderAttribute(...)] | 0 | System.Runtime.CompilerServices.AsyncValueTaskMethodBuilder |
@@ -12428,7 +12427,7 @@ attrArgPositional
 | System.UInt16 System.UInt128.op_CheckedExplicit(System.UInt128) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.UInt16 System.UInt128.op_Explicit(System.UInt128) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.UInt32 Interop.Kernel32.GetEnvironmentVariable(System.String,System.Char,System.UInt32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.UInt32 Interop.Kernel32.GetEnvironmentVariable(System.String,System.Char,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.UInt32 Interop.Kernel32.GetEnvironmentVariable(System.String,System.Char,System.UInt32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.UInt32 System.BitConverter.SingleToUInt32Bits(System.Single) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.UInt32 System.BitConverter.ToUInt32(System.Byte[],System.Int32) | [CLSCompliantAttribute(...)] | 0 | False |
 | System.UInt32 System.BitConverter.ToUInt32(System.ReadOnlySpan<System.Byte>) | [CLSCompliantAttribute(...)] | 0 | False |
@@ -12745,14 +12744,14 @@ attrArgPositional
 | System.Void Internal.Runtime.InteropServices.ComponentActivator.LoadAssemblyImpl(System.String) | [UnsupportedOSPlatformAttribute(...)] | 0 | tvos |
 | System.Void Internal.Runtime.InteropServices.IsolatedComponentLoadContext..ctor(System.String) | [RequiresUnreferencedCodeAttribute(...)] | 0 | The trimmer might remove assemblies that are loaded by this class |
 | System.Void Interop.Globalization.ChangeCase(System.Char*,System.Int32,System.Char*,System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void Interop.Globalization.ChangeCase(System.Char*,System.Int32,System.Char*,System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void Interop.Globalization.ChangeCase(System.Char*,System.Int32,System.Char*,System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void Interop.Globalization.ChangeCaseInvariant(System.Char*,System.Int32,System.Char*,System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void Interop.Globalization.ChangeCaseInvariant(System.Char*,System.Int32,System.Char*,System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void Interop.Globalization.ChangeCaseInvariant(System.Char*,System.Int32,System.Char*,System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void Interop.Globalization.ChangeCaseTurkish(System.Char*,System.Int32,System.Char*,System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void Interop.Globalization.ChangeCaseTurkish(System.Char*,System.Int32,System.Char*,System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void Interop.Globalization.ChangeCaseTurkish(System.Char*,System.Int32,System.Char*,System.Int32,System.Boolean) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void Interop.Globalization.CloseSortHandle(System.IntPtr) | [LibraryImportAttribute(...)] | 0 | libSystem.Globalization.Native |
 | System.Void Interop.Globalization.InitICUFunctions(System.IntPtr,System.IntPtr,System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void Interop.Globalization.InitICUFunctions(System.IntPtr,System.IntPtr,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void Interop.Globalization.InitICUFunctions(System.IntPtr,System.IntPtr,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.AccessViolationException..ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [EditorBrowsableAttribute(...)] | 0 | 1 |
 | System.Void System.AccessViolationException..ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.AccessViolationException..ctor(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [ObsoleteAttribute(...)] | 0 | This API supports obsolete formatter-based serialization. It should not be called or extended by application code. |
@@ -13184,7 +13183,7 @@ attrArgPositional
 | System.Void System.Diagnostics.DebugProvider.FailCore(System.String,System.String,System.String,System.String) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.Diagnostics.DebugProvider.WriteCore(System.String) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.Diagnostics.Debugger.LogInternal(System.Int32,System.String,System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Diagnostics.Debugger.LogInternal(System.Int32,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Diagnostics.Debugger.LogInternal(System.Int32,System.String,System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Diagnostics.DebuggerTypeProxyAttribute..ctor(System.String) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.Diagnostics.DebuggerTypeProxyAttribute..ctor(System.Type) | [NullableContextAttribute(...)] | 0 | 1 |
 | System.Void System.Diagnostics.DebuggerVisualizerAttribute..ctor(System.String) | [NullableContextAttribute(...)] | 0 | 1 |
@@ -13297,7 +13296,7 @@ attrArgPositional
 | System.Void System.Diagnostics.Tracing.NativeRuntimeEventSource.LogContentionStop(System.Diagnostics.Tracing.NativeRuntimeEventSource.ContentionFlagsMap,System.UInt16,System.Double) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Diagnostics.Tracing.NativeRuntimeEventSource.LogThreadPoolIODequeue(System.IntPtr,System.IntPtr,System.UInt16) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Diagnostics.Tracing.NativeRuntimeEventSource.LogThreadPoolIOEnqueue(System.IntPtr,System.IntPtr,System.Boolean,System.UInt16) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Diagnostics.Tracing.NativeRuntimeEventSource.LogThreadPoolIOEnqueue(System.IntPtr,System.IntPtr,System.Boolean,System.UInt16) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Diagnostics.Tracing.NativeRuntimeEventSource.LogThreadPoolIOEnqueue(System.IntPtr,System.IntPtr,System.Boolean,System.UInt16) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Diagnostics.Tracing.NativeRuntimeEventSource.LogThreadPoolIOEnqueue(System.IntPtr,System.IntPtr,System.Boolean,System.UInt16) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Diagnostics.Tracing.NativeRuntimeEventSource.LogThreadPoolIOPack(System.IntPtr,System.IntPtr,System.UInt16) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Diagnostics.Tracing.NativeRuntimeEventSource.LogThreadPoolMinMaxThreads(System.UInt16,System.UInt16,System.UInt16,System.UInt16,System.UInt16) | [LibraryImportAttribute(...)] | 0 | QCall |
@@ -13711,11 +13710,11 @@ attrArgPositional
 | System.Void System.Reflection.Emit.RuntimeEnumBuilder..ctor(System.String,System.Type,System.Reflection.TypeAttributes,System.Reflection.Emit.RuntimeModuleBuilder) | [UnconditionalSuppressMessageAttribute(...)] | 0 | ReflectionAnalysis |
 | System.Void System.Reflection.Emit.RuntimeEnumBuilder..ctor(System.String,System.Type,System.Reflection.TypeAttributes,System.Reflection.Emit.RuntimeModuleBuilder) | [UnconditionalSuppressMessageAttribute(...)] | 1 | IL2064:UnrecognizedReflectionPattern |
 | System.Void System.Reflection.Emit.RuntimeModuleBuilder.SetFieldRVAContent(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Reflection.Emit.RuntimeModuleBuilder.SetFieldRVAContent(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Reflection.Emit.RuntimeModuleBuilder.SetFieldRVAContent(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Byte[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Reflection.Emit.RuntimeModuleBuilder.SetFieldRVAContent(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Byte[],System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.AddInterfaceImpl(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.DefineCustomAttribute(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32,System.ReadOnlySpan<System.Byte>,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Reflection.Emit.RuntimeTypeBuilder.DefineCustomAttribute(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32,System.ReadOnlySpan<System.Byte>,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Reflection.Emit.RuntimeTypeBuilder.DefineCustomAttribute(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32,System.ReadOnlySpan<System.Byte>,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.DefineCustomAttribute(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32,System.ReadOnlySpan<System.Byte>,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.DefineMethodImpl(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.DefineMethodSemantics(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Reflection.MethodSemanticsAttributes,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
@@ -13723,11 +13722,11 @@ attrArgPositional
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetConstantValue(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32,System.Void*) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetFieldLayoutOffset(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetMethodIL(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Boolean,System.Byte[],System.Int32,System.Byte[],System.Int32,System.Int32,System.Reflection.Emit.ExceptionHandler[],System.Int32,System.Int32[],System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetMethodIL(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Boolean,System.Byte[],System.Int32,System.Byte[],System.Int32,System.Int32,System.Reflection.Emit.ExceptionHandler[],System.Int32,System.Int32[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetMethodIL(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Boolean,System.Byte[],System.Int32,System.Byte[],System.Int32,System.Int32,System.Reflection.Emit.ExceptionHandler[],System.Int32,System.Int32[],System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetMethodIL(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Boolean,System.Byte[],System.Int32,System.Byte[],System.Int32,System.Int32,System.Reflection.Emit.ExceptionHandler[],System.Int32,System.Int32[],System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetMethodImpl(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Reflection.MethodImplAttributes) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetPInvokeData(System.Runtime.CompilerServices.QCallModule,System.String,System.String,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetPInvokeData(System.Runtime.CompilerServices.QCallModule,System.String,System.String,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetPInvokeData(System.Runtime.CompilerServices.QCallModule,System.String,System.String,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.SetParentType(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.Emit.RuntimeTypeBuilder.TermCreateClass(System.Runtime.CompilerServices.QCallModule,System.Int32,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.Emit.SignatureHelper.Init(System.Reflection.Module) | [MemberNotNullAttribute(...)] | 0 | m_signature |
@@ -13761,23 +13760,23 @@ attrArgPositional
 | System.Void System.Reflection.RuntimeAssembly.GetLocale(System.Runtime.CompilerServices.QCallAssembly,System.Runtime.CompilerServices.StringHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.RuntimeAssembly.GetLocation(System.Runtime.CompilerServices.QCallAssembly,System.Runtime.CompilerServices.StringHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.RuntimeAssembly.GetModule(System.Runtime.CompilerServices.QCallAssembly,System.String,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Reflection.RuntimeAssembly.GetModule(System.Runtime.CompilerServices.QCallAssembly,System.String,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Reflection.RuntimeAssembly.GetModule(System.Runtime.CompilerServices.QCallAssembly,System.String,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Reflection.RuntimeAssembly.GetModules(System.Runtime.CompilerServices.QCallAssembly,System.Boolean,System.Boolean,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Reflection.RuntimeAssembly.GetModules(System.Runtime.CompilerServices.QCallAssembly,System.Boolean,System.Boolean,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Reflection.RuntimeAssembly.GetModules(System.Runtime.CompilerServices.QCallAssembly,System.Boolean,System.Boolean,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Reflection.RuntimeAssembly.GetModules(System.Runtime.CompilerServices.QCallAssembly,System.Boolean,System.Boolean,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.RuntimeAssembly.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [EditorBrowsableAttribute(...)] | 0 | 1 |
 | System.Void System.Reflection.RuntimeAssembly.GetObjectData(System.Runtime.Serialization.SerializationInfo,System.Runtime.Serialization.StreamingContext) | [ObsoleteAttribute(...)] | 0 | This API supports obsolete formatter-based serialization. It should not be called or extended by application code. |
 | System.Void System.Reflection.RuntimeAssembly.GetPublicKey(System.Runtime.CompilerServices.QCallAssembly,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.RuntimeAssembly.GetSimpleName(System.Runtime.CompilerServices.QCallAssembly,System.Runtime.CompilerServices.StringHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.RuntimeAssembly.GetTypeCore(System.Runtime.CompilerServices.QCallAssembly,System.String,System.ReadOnlySpan<System.String>,System.Int32,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Reflection.RuntimeAssembly.GetTypeCore(System.Runtime.CompilerServices.QCallAssembly,System.String,System.ReadOnlySpan<System.String>,System.Int32,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Reflection.RuntimeAssembly.GetTypeCore(System.Runtime.CompilerServices.QCallAssembly,System.String,System.ReadOnlySpan<System.String>,System.Int32,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Reflection.RuntimeAssembly.GetTypeCoreIgnoreCase(System.Runtime.CompilerServices.QCallAssembly,System.String,System.ReadOnlySpan<System.String>,System.Int32,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Reflection.RuntimeAssembly.GetTypeCoreIgnoreCase(System.Runtime.CompilerServices.QCallAssembly,System.String,System.ReadOnlySpan<System.String>,System.Int32,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Reflection.RuntimeAssembly.GetTypeCoreIgnoreCase(System.Runtime.CompilerServices.QCallAssembly,System.String,System.ReadOnlySpan<System.String>,System.Int32,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Reflection.RuntimeAssembly.GetVersion(System.Runtime.CompilerServices.QCallAssembly,System.Int32,System.Int32,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Reflection.RuntimeAssembly.GetVersion(System.Runtime.CompilerServices.QCallAssembly,System.Int32,System.Int32,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Reflection.RuntimeAssembly.GetVersion(System.Runtime.CompilerServices.QCallAssembly,System.Int32,System.Int32,System.Int32,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Reflection.RuntimeAssembly.GetVersion(System.Runtime.CompilerServices.QCallAssembly,System.Int32,System.Int32,System.Int32,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.RuntimeAssembly.InternalLoad(System.Reflection.NativeAssemblyNameParts*,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.StackCrawlMarkHandle,System.Boolean,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Reflection.RuntimeAssembly.InternalLoad(System.Reflection.NativeAssemblyNameParts*,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.StackCrawlMarkHandle,System.Boolean,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Reflection.RuntimeAssembly.InternalLoad(System.Reflection.NativeAssemblyNameParts*,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.StackCrawlMarkHandle,System.Boolean,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Reflection.RuntimeAssembly.InternalLoad(System.Reflection.NativeAssemblyNameParts*,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.StackCrawlMarkHandle,System.Boolean,System.Runtime.CompilerServices.ObjectHandleOnStack,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Reflection.RuntimeConstructorInfo.InvokeClassConstructor() | [UnconditionalSuppressMessageAttribute(...)] | 0 | ReflectionAnalysis |
 | System.Void System.Reflection.RuntimeConstructorInfo.InvokeClassConstructor() | [UnconditionalSuppressMessageAttribute(...)] | 1 | IL2059:RunClassConstructor |
@@ -13901,7 +13900,7 @@ attrArgPositional
 | System.Void System.Runtime.InteropServices.ComTypes.ITypeInfo.GetMops(System.Int32,System.String) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Void System.Runtime.InteropServices.ComTypes.ITypeLib2.GetDocumentation2(System.Int32,System.String,System.Int32,System.String) | [LCIDConversionAttribute(...)] | 0 | 1 |
 | System.Void System.Runtime.InteropServices.ComWrappers.GetIUnknownImplInternal(System.IntPtr,System.IntPtr,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Runtime.InteropServices.ComWrappers.GetIUnknownImplInternal(System.IntPtr,System.IntPtr,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Runtime.InteropServices.ComWrappers.GetIUnknownImplInternal(System.IntPtr,System.IntPtr,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Runtime.InteropServices.ComWrappers.GetIUnknownImplInternal(System.IntPtr,System.IntPtr,System.IntPtr) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Runtime.InteropServices.ComWrappers.RegisterForMarshalling(System.Runtime.InteropServices.ComWrappers) | [SupportedOSPlatformAttribute(...)] | 0 | windows |
 | System.Void System.Runtime.InteropServices.ComWrappers.SetGlobalInstanceRegisteredForMarshalling(System.Int64) | [LibraryImportAttribute(...)] | 0 | QCall |
@@ -14035,11 +14034,11 @@ attrArgPositional
 | System.Void System.Runtime.Intrinsics.X86.X86Base.__cpuidex(System.Int32*,System.Int32,System.Int32) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Runtime.Loader.AssemblyLoadContext..ctor(System.String,System.Boolean) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Void System.Runtime.Loader.AssemblyLoadContext.InternalSetProfileRoot(System.String) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Runtime.Loader.AssemblyLoadContext.InternalSetProfileRoot(System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Runtime.Loader.AssemblyLoadContext.InternalSetProfileRoot(System.String) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Runtime.Loader.AssemblyLoadContext.InternalStartProfile(System.String,System.IntPtr) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Runtime.Loader.AssemblyLoadContext.InternalStartProfile(System.String,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Runtime.Loader.AssemblyLoadContext.InternalStartProfile(System.String,System.IntPtr) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Runtime.Loader.AssemblyLoadContext.LoadFromPath(System.IntPtr,System.String,System.String,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Runtime.Loader.AssemblyLoadContext.LoadFromPath(System.IntPtr,System.String,System.String,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Runtime.Loader.AssemblyLoadContext.LoadFromPath(System.IntPtr,System.String,System.String,System.Runtime.CompilerServices.ObjectHandleOnStack) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Runtime.Loader.AssemblyLoadContext.LoadFromPath(System.IntPtr,System.String,System.String,System.Runtime.CompilerServices.ObjectHandleOnStack) | [RequiresUnreferencedCodeAttribute(...)] | 0 | Types and members the loaded assembly depends on might be removed |
 | System.Void System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IntPtr,System.IntPtr,System.Int32,System.IntPtr,System.Int32,System.Runtime.CompilerServices.ObjectHandleOnStack) | [LibraryImportAttribute(...)] | 0 | QCall |
 | System.Void System.Runtime.Loader.AssemblyLoadContext.LoadFromStream(System.IntPtr,System.IntPtr,System.Int32,System.IntPtr,System.Int32,System.Runtime.CompilerServices.ObjectHandleOnStack) | [RequiresUnreferencedCodeAttribute(...)] | 0 | Types and members the loaded assembly depends on might be removed |
@@ -14254,7 +14253,7 @@ attrArgPositional
 | System.Void System.Threading.Thread.Abort(System.Object) | [NullableContextAttribute(...)] | 0 | 2 |
 | System.Void System.Threading.Thread.Abort(System.Object) | [ObsoleteAttribute(...)] | 0 | Thread.Abort is not supported and throws PlatformNotSupportedException. |
 | System.Void System.Threading.Thread.InformThreadNameChange(System.Threading.ThreadHandle,System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 0 | Microsoft.Interop.LibraryImportGenerator |
-| System.Void System.Threading.Thread.InformThreadNameChange(System.Threading.ThreadHandle,System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.3103 |
+| System.Void System.Threading.Thread.InformThreadNameChange(System.Threading.ThreadHandle,System.String,System.Int32) | [GeneratedCodeAttribute(...)] | 1 | 8.0.9.8001 |
 | System.Void System.Threading.Thread.ResetAbort() | [ObsoleteAttribute(...)] | 0 | Thread.ResetAbort is not supported and throws PlatformNotSupportedException. |
 | System.Void System.Threading.Thread.Resume() | [ObsoleteAttribute(...)] | 0 | Thread.Resume has been deprecated. Use other classes in System.Threading, such as Monitor, Mutex, Event, and Semaphore, to synchronize Threads or protect resources. |
 | System.Void System.Threading.Thread.SetApartmentState(System.Threading.ApartmentState) | [SupportedOSPlatformAttribute(...)] | 0 | windows |
