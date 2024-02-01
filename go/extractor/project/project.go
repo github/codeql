@@ -109,9 +109,12 @@ func checkDirsNested(inputDirs []string) (string, bool) {
 	return dirs[0], true
 }
 
+// A list of files we created that should be removed after we are done.
+var filesToRemove []string
+
 // Try to initialize a go.mod file for projects that do not already have one.
 func initGoModForLegacyProject(path string) {
-	log.Printf("Project appears to be a legacy Go project, attempting to initialize go.mod")
+	log.Printf("Project appears to be a legacy Go project, attempting to initialize go.mod in %s\n", path)
 
 	modInit := toolchain.InitModule(path)
 
@@ -119,6 +122,9 @@ func initGoModForLegacyProject(path string) {
 		log.Printf("Failed to initialize go.mod file for this project.")
 		return
 	}
+
+	// Add the go.mod file to a list of files we should remove later.
+	filesToRemove = append(filesToRemove, filepath.Join(path, "go.mod"))
 
 	modTidy := toolchain.TidyModule(path)
 	out, err := modTidy.CombinedOutput()
@@ -131,6 +137,18 @@ func initGoModForLegacyProject(path string) {
 	if strings.Contains(string(out), "is relative, but relative import paths are not supported in module mode") {
 		diagnostics.EmitRelativeImportPaths()
 	}
+}
+
+// Attempts to remove all files that we created.
+func RemoveTemporaryExtractorFiles() {
+	for _, path := range filesToRemove {
+		err := os.Remove(path)
+		if err != nil {
+			log.Printf("Unable to remove file we created at %s: %s\n", path, err.Error())
+		}
+	}
+
+	filesToRemove = nil
 }
 
 // Find all go.work files in the working directory and its subdirectories

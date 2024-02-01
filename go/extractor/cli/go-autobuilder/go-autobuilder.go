@@ -526,6 +526,9 @@ func installDependenciesAndBuild() {
 		os.Setenv("GO111MODULE", "auto")
 	}
 
+	// Remove temporary extractor files (e.g. auto-generated go.mod files) when we are done
+	defer project.RemoveTemporaryExtractorFiles()
+
 	for _, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
 

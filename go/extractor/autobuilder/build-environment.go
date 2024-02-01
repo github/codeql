@@ -269,6 +269,9 @@ func IdentifyEnvironment() {
 	var v versionInfo
 	workspaces := project.GetWorkspaceInfo(false)
 
+	// Remove temporary extractor files (e.g. auto-generated go.mod files) when we are done
+	defer project.RemoveTemporaryExtractorFiles()
+
 	// Find the greatest Go version required by any of the workspaces.
 	greatestGoVersion := project.GoVersionInfo{Version: "", Found: false}
 	for _, workspace := range workspaces {
