@@ -282,6 +282,35 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 
 	// If there are no `go.mod` files at all, create one in line with https://go.dev/blog/migrating-to-go-modules
 	if totalModuleFiles == 0 {
+		// Check for other, legacy package managers
+		if util.FileExists("Gopkg.toml") {
+			if emitDiagnostics {
+				diagnostics.EmitGopkgTomlFound()
+			}
+			log.Println("Found Gopkg.toml, using dep instead of go get")
+			goWorkspaces = []GoWorkspace{{
+				BaseDir: ".",
+				DepMode: Dep,
+				ModMode: ModUnset,
+			}}
+			totalModuleFiles = 0
+			return
+		}
+
+		if util.FileExists("glide.yaml") {
+			if emitDiagnostics {
+				diagnostics.EmitGlideYamlFound()
+			}
+			log.Println("Found glide.yaml, using Glide instead of go get")
+			goWorkspaces = []GoWorkspace{{
+				BaseDir: ".",
+				DepMode: Glide,
+				ModMode: ModUnset,
+			}}
+			totalModuleFiles = 0
+			return
+		}
+
 		// If we have no `go.mod` files, then the project appears to be a legacy project without
 		// a `go.mod` file. Check that there are actually Go source files before initializing a module
 		// so that we correctly fail the extraction later.
@@ -372,34 +401,8 @@ func GetWorkspaceInfo(emitDiagnostics bool) []GoWorkspace {
 	}
 
 	goWorkspaces, totalModuleFiles := getBuildRoots(emitDiagnostics)
-	if totalModuleFiles > 0 {
-		log.Printf("Found %d go.mod file(s): enabling go modules.\n", totalModuleFiles)
-		return goWorkspaces
-	}
+	log.Printf("Found %d go.mod file(s).\n", totalModuleFiles)
 
-	if util.FileExists("Gopkg.toml") {
-		if emitDiagnostics {
-			diagnostics.EmitGopkgTomlFound()
-		}
-		log.Println("Found Gopkg.toml, using dep instead of go get")
-		return []GoWorkspace{{
-			BaseDir: ".",
-			DepMode: Dep,
-			ModMode: ModUnset,
-		}}
-	}
-
-	if util.FileExists("glide.yaml") {
-		if emitDiagnostics {
-			diagnostics.EmitGlideYamlFound()
-		}
-		log.Println("Found glide.yaml, using Glide instead of go get")
-		return []GoWorkspace{{
-			BaseDir: ".",
-			DepMode: Glide,
-			ModMode: ModUnset,
-		}}
-	}
 	return goWorkspaces
 }
 
