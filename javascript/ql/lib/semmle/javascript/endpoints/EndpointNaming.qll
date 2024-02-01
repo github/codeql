@@ -8,7 +8,7 @@
  * However, there are cases where classes and functions can be exposed to client
  * code without being accessible as a qualified name. For example;
  * ```js
- * // 'Foo' is internal, but clients can reach its methods via `getFoo().m()`
+ * // 'Foo' is internal, but clients can call its methods, e.g. `getFoo().m()`
  * class Foo {
  *   m() {}
  * }
@@ -16,7 +16,7 @@
  *   return new Foo();
  * }
  *
- * // Clients can reach m() via getObj().m()
+ * // Clients can call m() via getObj().m()
  * export function getObj() {
  *   return {
  *     m() {}
