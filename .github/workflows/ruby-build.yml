@@ -93,17 +93,17 @@ jobs:
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' && steps.cache-extractor.outputs.cache-hit != 'true'}}
         run: extractor/target/release/codeql-extractor-ruby generate --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: ruby.dbscheme
           path: ruby/ql/lib/ruby.dbscheme
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
           name: TreeSitter.qll
           path: ruby/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: extractor-${{ matrix.os }}
           path: |
@@ -134,7 +134,7 @@ jobs:
           PACK_FOLDER=$(readlink -f "$PACKS"/codeql/ruby-queries/*)
           codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
           (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: codeql-ruby-queries
           path: |
@@ -171,7 +171,7 @@ jobs:
           cp win64/codeql-extractor-ruby.exe ruby/tools/win64/extractor.exe
           chmod +x ruby/tools/{linux64,osx64}/extractor
           zip -rq codeql-ruby.zip ruby
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: codeql-ruby-pack
           path: ruby/codeql-ruby.zip
@@ -188,7 +188,7 @@ jobs:
             ]
           }' > .codeqlmanifest.json
           zip -rq codeql-ruby-bundle.zip .codeqlmanifest.json ruby qlpacks
-      - uses: actions/upload-artifact@v3
+      - uses: actions/upload-artifact@v4
         with:
           name: codeql-ruby-bundle
           path: ruby/codeql-ruby-bundle.zip

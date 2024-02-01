@@ -54,7 +54,7 @@ jobs:
           env QHELP_OUT_DIR=qhelp-out make qhelp-to-markdown
 
       - name: Upload qhelp markdown
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: qhelp-markdown
           path: go/qhelp-out/**/*.md
