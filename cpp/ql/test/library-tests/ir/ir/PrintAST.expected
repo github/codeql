@@ -16425,6 +16425,54 @@ ir.cpp:
 # 2149|           Type = [NestedStruct] iterator
 # 2149|           ValueCategory = lvalue
 # 2152|     getStmt(3): [ReturnStmt] return ...
+# 2154| [TopLevelFunction] void IfDestructors2(bool)
+# 2154|   <params>: 
+# 2154|     getParameter(0): [Parameter] b
+# 2154|         Type = [BoolType] bool
+# 2154|   getEntryPoint(): [BlockStmt] { ... }
+# 2155|     getStmt(0): [IfStmt] if (...) ... 
+# 2155|       getInitialization(): [DeclStmt] declaration
+# 2155|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2155|             Type = [Struct] String
+# 2155|           getVariable().getInitializer(): [Initializer] initializer for s
+# 2155|             getExpr(): [ConstructorCall] call to String
+# 2155|                 Type = [VoidType] void
+# 2155|                 ValueCategory = prvalue
+# 2155|               getArgument(0): hello
+# 2155|                   Type = [ArrayType] const char[6]
+# 2155|                   Value = [StringLiteral] "hello"
+# 2155|                   ValueCategory = lvalue
+# 2155|               getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2155|                   Type = [PointerType] const char *
+# 2155|                   ValueCategory = prvalue
+# 2155|       getCondition(): [VariableAccess] b
+# 2155|           Type = [BoolType] bool
+# 2155|           ValueCategory = prvalue(load)
+# 2155|       getThen(): [BlockStmt] { ... }
+# 2156|         getStmt(0): [DeclStmt] declaration
+# 2156|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2156|               Type = [IntType] int
+# 2156|             getVariable().getInitializer(): [Initializer] initializer for x
+# 2156|               getExpr(): [Literal] 0
+# 2156|                   Type = [IntType] int
+# 2156|                   Value = [Literal] 0
+# 2156|                   ValueCategory = prvalue
+# 2157|       getElse(): [BlockStmt] { ... }
+# 2158|         getStmt(0): [DeclStmt] declaration
+# 2158|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2158|               Type = [IntType] int
+# 2158|             getVariable().getInitializer(): [Initializer] initializer for y
+# 2158|               getExpr(): [Literal] 0
+# 2158|                   Type = [IntType] int
+# 2158|                   Value = [Literal] 0
+# 2158|                   ValueCategory = prvalue
+# 2159|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2159|           Type = [VoidType] void
+# 2159|           ValueCategory = prvalue
+# 2159|         getQualifier(): [VariableAccess] s
+# 2159|             Type = [Struct] String
+# 2159|             ValueCategory = lvalue
+# 2160|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

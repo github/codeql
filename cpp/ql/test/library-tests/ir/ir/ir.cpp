@@ -2151,6 +2151,12 @@ void ForDestructors() {
     }
 }
 
-
+void IfDestructors2(bool b) {
+    if(String s = String("hello"); b) {
+        int x = 0;
+    } else {
+        int y = 0;
+    }
+}
 
 // semmle-extractor-options: -std=c++17 --clang

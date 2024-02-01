@@ -12184,6 +12184,52 @@ ir.cpp:
 # 2143|     v2143_5(void) = AliasedUse   : ~m?
 # 2143|     v2143_6(void) = ExitFunction : 
 
+# 2154| void IfDestructors2(bool)
+# 2154|   Block 0
+# 2154|     v2154_1(void)           = EnterFunction                   : 
+# 2154|     mu2154_2(unknown)       = AliasedDefinition               : 
+# 2154|     mu2154_3(unknown)       = InitializeNonLocal              : 
+# 2154|     r2154_4(glval<bool>)    = VariableAddress[b]              : 
+# 2154|     mu2154_5(bool)          = InitializeParameter[b]          : &:r2154_4
+# 2155|     r2155_1(glval<String>)  = VariableAddress[s]              : 
+# 2155|     mu2155_2(String)        = Uninitialized[s]                : &:r2155_1
+# 2155|     r2155_3(glval<unknown>) = FunctionAddress[String]         : 
+# 2155|     r2155_4(glval<char[6]>) = StringConstant["hello"]         : 
+# 2155|     r2155_5(char *)         = Convert                         : r2155_4
+# 2155|     v2155_6(void)           = Call[String]                    : func:r2155_3, this:r2155_1, 0:r2155_5
+# 2155|     mu2155_7(unknown)       = ^CallSideEffect                 : ~m?
+# 2155|     v2155_8(void)           = ^BufferReadSideEffect[0]        : &:r2155_5, ~m?
+# 2155|     mu2155_9(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2155_1
+# 2155|     r2155_10(glval<bool>)   = VariableAddress[b]              : 
+# 2155|     r2155_11(bool)          = Load[b]                         : &:r2155_10, ~m?
+# 2155|     v2155_12(void)          = ConditionalBranch               : r2155_11
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2156|   Block 1
+# 2156|     r2156_1(glval<int>) = VariableAddress[x] : 
+# 2156|     r2156_2(int)        = Constant[0]        : 
+# 2156|     mu2156_3(int)       = Store[x]           : &:r2156_1, r2156_2
+#-----|   Goto -> Block 3
+
+# 2158|   Block 2
+# 2158|     r2158_1(glval<int>) = VariableAddress[y] : 
+# 2158|     r2158_2(int)        = Constant[0]        : 
+# 2158|     mu2158_3(int)       = Store[y]           : &:r2158_1, r2158_2
+#-----|   Goto -> Block 3
+
+# 2159|   Block 3
+# 2159|     r2159_1(glval<String>)  = VariableAddress[s]              : 
+# 2159|     r2159_2(glval<unknown>) = FunctionAddress[~String]        : 
+# 2159|     v2159_3(void)           = Call[~String]                   : func:r2159_2, this:r2159_1
+# 2159|     mu2159_4(unknown)       = ^CallSideEffect                 : ~m?
+# 2159|     v2159_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2159_1, ~m?
+# 2159|     mu2159_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2159_1
+# 2160|     v2160_1(void)           = NoOp                            : 
+# 2154|     v2154_6(void)           = ReturnVoid                      : 
+# 2154|     v2154_7(void)           = AliasedUse                      : ~m?
+# 2154|     v2154_8(void)           = ExitFunction                    : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
