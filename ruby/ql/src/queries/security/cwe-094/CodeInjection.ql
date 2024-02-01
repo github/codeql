@@ -16,20 +16,9 @@
 
 private import codeql.ruby.AST
 private import codeql.ruby.security.CodeInjectionQuery
-import CodeInjectionFlow::PathGraph
+import DataFlow::DeduplicatePathGraph<CodeInjectionFlow::PathNode, CodeInjectionFlow::PathGraph>
 
-from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Source sourceNode
-where
-  CodeInjectionFlow::flowPath(source, sink) and
-  sourceNode = source.getNode() and
-  // removing duplications of the same path, but different flow-labels.
-  sink =
-    min(CodeInjectionFlow::PathNode otherSink |
-      CodeInjectionFlow::flowPath(any(CodeInjectionFlow::PathNode s | s.getNode() = sourceNode),
-        otherSink) and
-      otherSink.getNode() = sink.getNode()
-    |
-      otherSink order by otherSink.getState().getStringRepresentation()
-    )
-select sink.getNode(), source, sink, "This code execution depends on a $@.", sourceNode,
+from PathNode source, PathNode sink
+where CodeInjectionFlow::flowPath(source.getAnOriginalPathNode(), sink.getAnOriginalPathNode())
+select sink.getNode(), source, sink, "This code execution depends on a $@.", source.getNode(),
   "user-provided value"
