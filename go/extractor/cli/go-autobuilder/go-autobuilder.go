@@ -495,8 +495,15 @@ func extract(workspace project.GoWorkspace) {
 		extractorArgs = append(extractorArgs, workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...)
 	}
 	for _, module := range workspace.Modules {
-		relModPath, _ := filepath.Rel(workspace.BaseDir, filepath.Dir(module.Path))
-		extractorArgs = append(extractorArgs, relModPath)
+		relModPath, relErr := filepath.Rel(workspace.BaseDir, filepath.Dir(module.Path))
+
+		if relErr != nil {
+			log.Printf(
+				"Unable to make module path %s relative to workspace base dir %s: %s\n",
+				filepath.Dir(module.Path), workspace.BaseDir, relErr.Error())
+		} else {
+			extractorArgs = append(extractorArgs, relModPath)
+		}
 	}
 
 	log.Printf("Running extractor command '%s %v' from directory '%s'.\n", extractor, extractorArgs, workspace.BaseDir)
