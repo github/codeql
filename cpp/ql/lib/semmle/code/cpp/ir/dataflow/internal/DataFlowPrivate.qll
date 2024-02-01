@@ -442,16 +442,18 @@ newtype TPosition =
 
 private newtype TReturnKind =
   TNormalReturnKind(int indirectionIndex) {
-    Ssa::hasIndirectOperand(any(ReturnValueInstruction ret).getReturnAddressOperand(),
-      indirectionIndex + 1) // `indirectionIndex` is one less than the argument because the return loads the value.
-    or
-    indirectionIndex = 0 // TODO: very much a bodge so that it works on the test that has no return statements
+    indirectionIndex =
+      [0 .. max(Ssa::Function f |
+          |
+          Ssa::getMaxIndirectionsForType(f.getUnspecifiedType()) - 1 // -1 because a returned value is a prvalue not a glvalue
+        )]
   } or
   TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
-    exists(Ssa::FinalParameterUse use |
-      hasFinalParameterNode(use, _, indirectionIndex) and
-      use.getArgumentIndex() = argumentIndex
-    )
+    indirectionIndex =
+      [0 .. max(Ssa::Function f |
+          |
+          Ssa::getMaxIndirectionsForType(f.getParameter(argumentIndex).getUnspecifiedType()) - 1 // -1 because an argument is a prvalue not a glvalue
+        )]
   }
 
 /**
