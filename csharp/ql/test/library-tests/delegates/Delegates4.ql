@@ -1,4 +1,4 @@
 import csharp
 
-from DelegateCall dc
+from DelegateLikeCall dc
 select dc, dc.getExpr()
