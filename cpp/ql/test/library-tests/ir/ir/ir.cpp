@@ -1064,7 +1064,7 @@ struct vector {
 
         bool operator!=(iterator right) const;
     };
-
+    vector(T); ~vector();
     iterator begin() const;
     iterator end() const;
 };
@@ -2145,6 +2145,12 @@ void ForDestructors() {
     for(String s("hello"); c != 0; c = s.pop_back()) {
         String s2;
     }
+
+    for(String s : vector<String>(String("hello"))) {
+        String s2;
+    }
 }
+
+
 
 // semmle-extractor-options: -std=c++17 --clang
