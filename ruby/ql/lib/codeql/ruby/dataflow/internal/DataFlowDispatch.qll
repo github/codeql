@@ -8,6 +8,7 @@ private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.SSA
 private import codeql.util.Boolean
 private import codeql.util.Unit
+private import codeql.ruby.controlflow.CfgNodes
 
 /**
  * A `LocalSourceNode` for a `self` variable. This is the implicit `self`
@@ -239,6 +240,7 @@ class NormalCall extends DataFlowCall, TNormalCall {
  */
 private module ViewComponentRenderModeling {
   private import codeql.ruby.frameworks.ViewComponent
+  private import codeql.ruby.frameworks.ActionController
 
   private class RenderMethod extends SummarizedCallable, LibraryCallableToIncludeInTypeTracking {
     RenderMethod() { this = "render view component" }
@@ -250,12 +252,38 @@ private module ViewComponentRenderModeling {
       // use a call-back summary, and adjust it to a method call below
       output = "Argument[0].Parameter[self]" and
       preservesValue = true
+      or
+      input = "Argument[self]" and
+      output = "Argument[self].Parameter[self]" and
+      preservesValue = true
     }
   }
 
   private string invokeToplevelName() { result = "__invoke__toplevel__erb__" }
 
-  /** Holds if `call` should be adjusted to be a method call to `name` on `receiver`. */
+  /**
+   * Holds if `call` should be adjusted to be a method call to `name` on `receiver`.
+   * `call` is the callback call inside the flow summary.
+   * Effectively we generate something like
+   * ```rb
+   * def render(view)
+   *   # ViewComponent
+   *   view()
+   *   # ActionController
+   *   self()
+   * end
+   * ```
+   *
+   * And this adjustment changes it to
+   * ```rb
+   * def render(view)
+   *   # ViewComponent
+   *   view.__invoke__toplevel__erb__()
+   *   # ActionController
+   *   self.__invoke__toplevel__erb__()
+   * end
+   * ```
+   */
   predicate adjustedMethodCall(DataFlowCall call, FlowSummaryNode receiver, string name) {
     exists(RenderMethod render |
       call = TSummaryCall(render, receiver.getSummaryNode()) and
@@ -265,13 +293,28 @@ private module ViewComponentRenderModeling {
 
   /** Holds if `self` belongs to the top-level of an ERB file with matching view class `view`. */
   pragma[nomagic]
-  predicate selfInErbToplevel(SelfVariable self, ViewComponent::ComponentClass view) {
-    self.getDeclaringScope().(Toplevel).getFile() = view.getTemplate()
+  predicate selfInErbToplevel(SelfVariable self, Module view) {
+    self.getDeclaringScope().(Toplevel).getFile() =
+      [
+        view.(ViewComponent::ComponentClass).getTemplate(),
+        view.(ActionControllerClass).getAnAction().getDefaultTemplateFile()
+      ]
   }
 
   Toplevel lookupMethod(ViewComponent::ComponentClass m, string name) {
     result.getFile() = m.getTemplate() and
     name = invokeToplevelName()
+  }
+
+  Toplevel lookupMethodCall(DataFlowCall c, Module mod, DataFlow::Node receiver, string name) {
+    name = invokeToplevelName() and
+    exists(ActionControllerActionMethod m, Call summaryCall |
+      m.getControllerClass() = mod and
+      result.getFile() = m.getDefaultTemplateFile() and
+      c.getEnclosingCallable().asLibraryCallable().getACallSimple() = summaryCall and
+      summaryCall.getEnclosingCallable() = m and
+      adjustedMethodCall(c, receiver, name)
+    )
   }
 }
 
@@ -801,7 +844,11 @@ private CfgScope lookupInstanceMethodCall(DataFlowCall call, string method, bool
   exists(Module tp, DataFlow::Node receiver |
     methodCall(call, pragma[only_bind_into](receiver), pragma[only_bind_into](method)) and
     receiver = trackInstance(tp, exact) and
-    result = lookupMethod(tp, pragma[only_bind_into](method), exact)
+    (
+      result = lookupMethod(tp, pragma[only_bind_into](method), exact)
+      or
+      result = ViewComponentRenderModeling::lookupMethodCall(call, tp, receiver, method)
+    )
   )
 }
 
