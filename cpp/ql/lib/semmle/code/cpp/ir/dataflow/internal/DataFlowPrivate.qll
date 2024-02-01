@@ -443,7 +443,7 @@ newtype TPosition =
 private newtype TReturnKind =
   TNormalReturnKind(int indirectionIndex) {
     Ssa::hasIndirectOperand(any(ReturnValueInstruction ret).getReturnAddressOperand(),
-      indirectionIndex + 1) // We subtract one because the return loads the value.
+      indirectionIndex + 1) // `indirectionIndex` is one less than the argument because the return loads the value.
     or
     indirectionIndex = 0 // TODO: very much a bodge so that it works on the test that has no return statements
   } or

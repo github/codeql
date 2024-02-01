@@ -56,8 +56,7 @@ private newtype TIRDataFlowNode =
     hasFinalParameterNode(_, p, indirectionIndex)
   } or
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
-  TInitialGlobalValue(Ssa::GlobalDef globalUse) or
-  FlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
+  TInitialGlobalValue(Ssa::GlobalDef globalUse)
 
 /**
  * Holds if `(p, indirectionIndex)` should define a `TFinalParameterNode`

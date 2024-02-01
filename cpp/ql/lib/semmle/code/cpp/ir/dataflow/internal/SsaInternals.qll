@@ -70,6 +70,11 @@ private module SourceVariables {
 
 import SourceVariables
 
+/**
+ * Holds if `indirectionIndex` is a valid non-zero indirection index for
+ * operand `op`. That is, `indirectionIndex` is between 1 and the maximum
+ * indirection for the operand's type.
+ */
 predicate hasIndirectOperand(Operand op, int indirectionIndex) {
   exists(CppType type, int m |
     not ignoreOperand(op) and
