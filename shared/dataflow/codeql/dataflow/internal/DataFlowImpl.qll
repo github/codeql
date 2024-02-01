@@ -1428,26 +1428,18 @@ module MakeImpl<InputSig Lang> {
           )
           or
           // flow into a callable
-          exists(Typ t0, TypOption origT0, boolean inSummaryCtx |
-            fwdFlowIn(node, apa, state, cc, t0, origT0, ap, inSummaryCtx)
+          exists(boolean inSummaryCtx |
+            fwdFlowIn(node, apa, state, cc, t, origT, ap, inSummaryCtx)
           |
             PrevStage::parameterMayFlowThrough(node, apa) and
             summaryCtx = TParamNodeSome(node.asNode()) and
             argT = ArgTypOption::some(toArgTyp(t)) and
-            argAp = apSome(ap) and
-            // t = getNodeTyp(node) and
-            // if origT0.isNone() then origT.asSome() = t0 else origT = origT0
-            t = t0 and
-            origT = origT0
+            argAp = apSome(ap)
             or
-            // t = t0 and
-            // origT = origT0
             Param::nodeMayFlowNotThrough(node, apa) and
             summaryCtx = TParamNodeNone() and
             argT instanceof ArgTypOption::None and
             argAp = apNone() and
-            t = t0 and
-            origT = origT0 and
             inSummaryCtx = false
           )
           or
@@ -1459,12 +1451,12 @@ module MakeImpl<InputSig Lang> {
           or
           // flow through a callable
           exists(
-            DataFlowCall call, CcCall ccc, ReturnKindExt kind, boolean allowsFieldFlow,
+            DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow,
             ApApprox innerArgApa
           |
-            fwdFlowThrough(call, cc, state, ccc, summaryCtx, argT, argAp, t, origT, ap, apa, kind,
+            fwdFlowThrough(call, cc, state, ccc, summaryCtx, argT, argAp, t, origT, ap, apa, ret,
               innerArgApa) and
-            flowThroughOutOfCall(call, ccc, kind, node, allowsFieldFlow, innerArgApa, apa) and
+            flowThroughOutOfCall(call, ccc, ret, _, node, allowsFieldFlow, innerArgApa, apa) and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
@@ -1944,30 +1936,14 @@ module MakeImpl<InputSig Lang> {
           RetNodeEx ret, FlowState state, CcCall ccc, ParamNodeEx summaryCtx, ArgTyp argT, Ap argAp,
           ApApprox argApa, Typ t, TypOption origT, Ap ap, ApApprox apa
         ) {
-          exists(ReturnKindExt kind |
+          exists(DataFlowCall call, ReturnKindExt kind, boolean allowsFieldFlow |
             fwdFlow(pragma[only_bind_into](ret), state, ccc,
               TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())), ArgTypOption::some(argT),
               pragma[only_bind_into](apSome(argAp)), t, origT, ap, pragma[only_bind_into](apa)) and
-            kind = ret.getKind() and
             parameterFlowThroughAllowed(summaryCtx, kind) and
             argApa = getApprox(argAp) and
-            PrevStage::returnMayFlowThrough(ret, argApa, apa, kind)
-          )
-        }
-
-        pragma[nomagic]
-        private predicate fwdFlowRetFromArg1(
-          ReturnKindExt kind, FlowState state, CcCall ccc, ParamNodeEx summaryCtx, ArgTyp argT,
-          Ap argAp, ApApprox argApa, Typ t, TypOption origT, Ap ap, ApApprox apa
-        ) {
-          exists(RetNodeEx ret |
-            fwdFlow(pragma[only_bind_into](ret), state, ccc,
-              TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())), ArgTypOption::some(argT),
-              pragma[only_bind_into](apSome(argAp)), t, origT, ap, pragma[only_bind_into](apa)) and
-            kind = ret.getKind() and
-            parameterFlowThroughAllowed(summaryCtx, kind) and
-            argApa = getApprox(argAp) and
-            PrevStage::returnMayFlowThrough(ret, argApa, apa, kind)
+            flowThroughOutOfCall(call, ccc, ret, kind, _, allowsFieldFlow, argApa, apa) and
+            if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
         }
 
@@ -1984,26 +1960,13 @@ module MakeImpl<InputSig Lang> {
             innerArgAp)
         }
 
-        pragma[inline]
-        private predicate fwdFlowThrough1(
-          DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
-          ArgTypOption argT, ApOption argAp, Typ t, TypOption origT, Ap ap, ApApprox apa,
-          ReturnKindExt kind, ParamNodeEx innerSummaryCtx, ArgTyp innerArgT, Ap innerArgAp,
-          ApApprox innerArgApa
-        ) {
-          fwdFlowRetFromArg1(kind, state, ccc, innerSummaryCtx, innerArgT, innerArgAp, innerArgApa,
-            t, origT, ap, apa) and
-          fwdFlowIsEntered(call, cc, ccc, summaryCtx, argT, argAp, innerSummaryCtx, innerArgT,
-            innerArgAp)
-        }
-
         pragma[nomagic]
         private predicate fwdFlowThrough(
           DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
           ArgTypOption argT, ApOption argAp, Typ t, TypOption origT, Ap ap, ApApprox apa,
-          ReturnKindExt kind, ApApprox innerArgApa
+          RetNodeEx ret, ApApprox innerArgApa
         ) {
-          fwdFlowThrough1(call, cc, state, ccc, summaryCtx, argT, argAp, t, origT, ap, apa, kind, _,
+          fwdFlowThrough0(call, cc, state, ccc, summaryCtx, argT, argAp, t, origT, ap, apa, ret, _,
             _, _, innerArgApa)
         }
 
@@ -2022,8 +1985,10 @@ module MakeImpl<InputSig Lang> {
           DataFlowCall call, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx, ArgTypOption argT,
           ApOption argAp, ParamNodeEx p, ArgTyp t, Ap ap
         ) {
-          FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, _, p, _, cc, innerCc, summaryCtx,
-            argT, argAp, any(Typ t0 | t = toArgTyp(t0)), _, ap, _, _)
+          exists(ApApprox apa |
+            FwdFlowIn<FwdFlowThroughRestriction>::fwdFlowIn(call, _, p, _, cc, innerCc, summaryCtx,
+              argT, argAp, any(Typ t0 | t = toArgTyp(t0)), _, ap, apa, _)
+          )
         }
 
         pragma[nomagic]
