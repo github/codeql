@@ -12053,7 +12053,7 @@ ir.cpp:
 # 2145|     r2145_13(int)         = Constant[0]        : 
 # 2145|     r2145_14(bool)        = CompareNE          : r2145_12, r2145_13
 # 2145|     v2145_15(void)        = ConditionalBranch  : r2145_14
-#-----|   False -> Block 4
+#-----|   False -> Block 3
 #-----|   True -> Block 2
 
 # 2146|   Block 2
@@ -12086,13 +12086,10 @@ ir.cpp:
 # 2145|     mu2145_27(unknown)       = ^CallSideEffect                 : ~m?
 # 2145|     v2145_28(void)           = ^IndirectReadSideEffect[-1]     : &:r2145_24, ~m?
 # 2145|     mu2145_29(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2145_24
-#-----|   Goto -> Block 4
-
-# 2148|   Block 4
-# 2148|     v2148_1(void) = NoOp         : 
-# 2143|     v2143_4(void) = ReturnVoid   : 
-# 2143|     v2143_5(void) = AliasedUse   : ~m?
-# 2143|     v2143_6(void) = ExitFunction : 
+# 2148|     v2148_1(void)            = NoOp                            : 
+# 2143|     v2143_4(void)            = ReturnVoid                      : 
+# 2143|     v2143_5(void)            = AliasedUse                      : ~m?
+# 2143|     v2143_6(void)            = ExitFunction                    : 
 
 perf-regression.cpp:
 #    6| void Big::Big()

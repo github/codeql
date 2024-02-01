@@ -908,7 +908,7 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
     child = this.getCondition() and result = this.getBody().getFirstInstruction(kind)
   }
 
-  final override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
     result = this.getParent().getChildSuccessor(this, kind)
   }
@@ -943,6 +943,15 @@ class TranslatedDoStmt extends TranslatedLoop {
 class TranslatedForStmt extends TranslatedLoop {
   override ForStmt stmt;
 
+  override predicate handlesDestructorsExplicitly() { any() }
+
+  final override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
+    child = this.getCondition() and
+    if this.hasImplicitDestructorCalls()
+    then result = this.getChild(this.getFirstDestructorCallIndex()).getFirstInstruction(kind)
+    else result = this.getParent().getChildSuccessor(this, kind)
+  }
+
   override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getInitialization()
     or
@@ -951,6 +960,11 @@ class TranslatedForStmt extends TranslatedLoop {
     id = 2 and result = this.getUpdate()
     or
     id = 3 and result = this.getBody()
+    or
+    exists(int n |
+      result.getAst() = stmt.getImplicitDestructorCall(n) and
+      id = 4 + n
+    )
   }
 
   private TranslatedStmt getInitialization() {
@@ -981,6 +995,12 @@ class TranslatedForStmt extends TranslatedLoop {
     )
     or
     child = this.getUpdate() and result = this.getFirstConditionInstruction(kind)
+    or
+    exists(int lastDestructorIndex |
+      lastDestructorIndex = max(int n | exists(this.getChild(n)) and n >= this.getFirstDestructorCallIndex()) and
+      child = this.getChild(lastDestructorIndex) and
+      result = this.getParent().getChildSuccessor(this, kind)
+    )
   }
 }
 
