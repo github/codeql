@@ -101,3 +101,18 @@ void test2() {
   addtaint2(&p);
   sink(*p); // $ ir MISSING: ast
 }
+
+using size_t = decltype(sizeof(int));
+
+void* memcpy(void* dest, const void* src, size_t);
+
+void modify_copy_via_memcpy(char* p) { // $ ast-def=p
+  char* dest;
+  char* p2 = (char*)memcpy(dest, p, 10);
+  source_ref(p2);
+}
+
+void test_modify_copy_via_memcpy(char* p) { // $ ast-def=p
+  modify_copy_via_memcpy(p);
+  sink(*p); // $ SPURIOUS: ir
+}
