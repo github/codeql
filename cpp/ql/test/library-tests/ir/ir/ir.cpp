@@ -605,7 +605,7 @@ struct String {
     String& operator=(String&&);
 
     const char* c_str() const;
-
+    char pop_back();
 private:
     const char* p;
 };
@@ -2110,6 +2110,41 @@ char* test_strtod(char *s) {
   char *end;
   double d = strtod(s, &end);
   return end;
+}
+
+void TryCatchDestructors(bool b) {
+  try {
+    String s;
+    if (b) {
+      throw "string literal";
+    }
+    String s2;
+  }
+  catch (const char* s) {
+    throw String(s);
+  }
+  catch (const String& e) {
+  }
+  catch (...) {
+    throw;
+  }
+}
+
+void IfDestructors(bool b) {
+    String s1;
+    if(b) {
+        String s2;
+    } else {
+        String s3;
+    }
+    String s4;
+}
+
+void ForDestructors() {
+    char c = 'a';
+    for(String s("hello"); c != 0; c = s.pop_back()) {
+        String s2;
+    }
 }
 
 // semmle-extractor-options: -std=c++17 --clang

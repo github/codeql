@@ -50,13 +50,15 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 {
   TranslatedFlexibleCondition() { this = TTranslatedFlexibleCondition(expr) }
 
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
+
   final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getOperand().getFirstInstruction(kind)
   }
 
-  final override Instruction getLastInstruction() {
+  final override Instruction getLastInstructionInternal() {
     result = this.getOperand().getLastInstruction()
   }
 
@@ -64,7 +66,9 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
     none()
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
 
   final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
 
@@ -98,6 +102,8 @@ abstract class TranslatedNativeCondition extends TranslatedCondition, TTranslate
 abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeCondition, ConditionContext {
   override BinaryLogicalOperation expr;
 
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
+
   final override TranslatedElement getChild(int id) {
     id = 0 and result = this.getLeftOperand()
     or
@@ -108,7 +114,7 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
     result = this.getLeftOperand().getFirstInstruction(kind)
   }
 
-  final override Instruction getLastInstruction() {
+  final override Instruction getLastInstructionInternal() {
     result = this.getLeftOperand().getLastInstruction()
     or
     result = this.getRightOperand().getLastInstruction()
@@ -118,7 +124,9 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
     none()
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
 
   final TranslatedCondition getLeftOperand() {
     result = getTranslatedCondition(expr.getLeftOperand().getFullyConverted())
@@ -172,9 +180,11 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
     result = this.getValueExpr().getFirstInstruction(kind)
   }
 
-  override Instruction getLastInstruction() {
+  override Instruction getLastInstructionInternal() {
     result = this.getInstruction(ValueConditionConditionalBranchTag())
   }
+
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = ValueConditionConditionalBranchTag() and
@@ -188,7 +198,7 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
     kind instanceof GotoEdge
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = ValueConditionConditionalBranchTag() and
     (
       kind instanceof TrueEdge and
