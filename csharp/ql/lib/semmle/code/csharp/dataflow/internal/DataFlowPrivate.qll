@@ -2017,6 +2017,14 @@ predicate clearsContent(Node n, ContentSet c) {
     f = oi.getAMemberInitializer().getInitializedMember() and
     c = f.getContent()
   )
+  or
+  exists(Argument a, Struct s, Field f |
+    a = n.(PostUpdateNode).getPreUpdateNode().asExpr() and
+    a.getType() = s and
+    f = s.getAField() and
+    c.(FieldContent).getField() = f.getUnboundDeclaration() and
+    not f.isRef()
+  )
 }
 
 /**
