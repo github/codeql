@@ -4425,6 +4425,8 @@ summary
 | System.Collections.Immutable;ImmutableArray;false;CreateRange<TSource,TArg,TResult>;(System.Collections.Immutable.ImmutableArray<TSource>,System.Int32,System.Int32,System.Func<TSource,TArg,TResult>,TArg);;Argument[3];Argument[3].Parameter[delegate-self];value;hq-generated |
 | System.Collections.Immutable;ImmutableArray;false;CreateRange<TSource,TResult>;(System.Collections.Immutable.ImmutableArray<TSource>,System.Func<TSource,TResult>);;Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | System.Collections.Immutable;ImmutableArray;false;CreateRange<TSource,TResult>;(System.Collections.Immutable.ImmutableArray<TSource>,System.Int32,System.Int32,System.Func<TSource,TResult>);;Argument[3];Argument[3].Parameter[delegate-self];value;hq-generated |
+| System.Collections.Immutable;ImmutableArray;false;ToImmutableArray<T>;(System.ReadOnlySpan<T>);;Argument[0].Element;ReturnValue.Element;value;manual |
+| System.Collections.Immutable;ImmutableArray;false;ToImmutableArray<T>;(System.Span<T>);;Argument[0].Element;ReturnValue.Element;value;manual |
 | System.Collections.Immutable;ImmutableArray;false;ToImmutableArray<TSource>;(System.Collections.Generic.IEnumerable<TSource>);;Argument[0].Element;ReturnValue;taint;df-generated |
 | System.Collections.Immutable;ImmutableArray<T>+Builder;false;AddRange;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual |
 | System.Collections.Immutable;ImmutableArray<T>+Builder;false;AddRange;(System.Collections.Immutable.ImmutableArray<T>);;Argument[0].Element;Argument[this].Element;value;manual |
@@ -15265,6 +15267,9 @@ summary
 | System;MemoryExtensions;false;AsMemory<T>;(T[],System.Range);;Argument[0].Element;ReturnValue;taint;df-generated |
 | System;MemoryExtensions;false;EnumerateLines;(System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint;df-generated |
 | System;MemoryExtensions;false;EnumerateRunes;(System.ReadOnlySpan<System.Char>);;Argument[0];ReturnValue;taint;df-generated |
+| System;MemoryExtensions;false;Replace<T>;(System.ReadOnlySpan<T>,System.Span<T>,T,T);;Argument[0].Element;Argument[1].Element;value;manual |
+| System;MemoryExtensions;false;Replace<T>;(System.ReadOnlySpan<T>,System.Span<T>,T,T);;Argument[3];Argument[1].Element;value;manual |
+| System;MemoryExtensions;false;Replace<T>;(System.Span<T>,T,T);;Argument[2];Argument[0].Element;value;manual |
 | System;MemoryExtensions;false;Sort<T>;(System.Span<T>,System.Comparison<T>);;Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | System;MemoryExtensions;false;Sort<TKey,TValue>;(System.Span<TKey>,System.Span<TValue>,System.Comparison<TKey>);;Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | System;MemoryExtensions;false;Trim;(System.Memory<System.Char>);;Argument[0];ReturnValue;taint;df-generated |
