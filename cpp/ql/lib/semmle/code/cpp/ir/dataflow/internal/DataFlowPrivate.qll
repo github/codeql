@@ -1206,7 +1206,7 @@ private predicate isInputOutput(
  * ```
  * does not preserve the identity of `*p`.
  *
- * Similarly, functions that copy the contents of a string into a new location
+ * Similarly, a function that copies the contents of a string into a new location
  * does not also preserve the identity. For example, `strdup(p)` does not
  * preserve the identity of `*p` (since it allocates new storage and copies
  * the string into the new storage).
