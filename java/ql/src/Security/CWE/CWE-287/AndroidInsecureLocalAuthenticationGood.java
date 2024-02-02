@@ -26,16 +26,16 @@ private Cipher getCipher() {
             + KeyProperties.ENCRYPTION_PADDING_PKCS7);
 }
 
-public prompt() {
+public prompt(byte[] encryptedData) {
     Cipher cipher = getCipher();
     SecretKey secretKey = getSecretKey();
     cipher.init(Cipher.DECRYPT_MODE, secretKey);
 
     biometricPrompt.authenticate(
-        new BiometricPrompt.CryptoObject(cipher);
+        new BiometricPrompt.CryptoObject(cipher),
         cancellationSignal,
         executor,
-        new BiometricPrompt.AuthenticationCallback {
+        new BiometricPrompt.AuthenticationCallback() {
             @Override
             // GOOD: This authentication callback uses the result to decrypt some data.
             public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
