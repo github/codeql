@@ -1,9 +1,9 @@
 edges
-| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:19:19:19:30 | userProperty |
-| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:21:23:21:34 | userProperty |
-| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:23:23:23:34 | userProperty |
-| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:25:28:25:39 | userProperty |
-| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:27:44:27:55 | userProperty |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:19:19:19:30 | userProperty | provenance |  |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:21:23:21:34 | userProperty | provenance |  |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:23:23:23:34 | userProperty | provenance |  |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:25:28:25:39 | userProperty | provenance |  |
+| Test.java:17:27:17:60 | getProperty(...) : String | Test.java:27:44:27:55 | userProperty | provenance |  |
 nodes
 | Test.java:17:27:17:60 | getProperty(...) : String | semmle.label | getProperty(...) : String |
 | Test.java:19:19:19:30 | userProperty | semmle.label | userProperty |

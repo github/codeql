@@ -1,11 +1,11 @@
 edges
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) |
-| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String |
-| UrlRedirect.java:36:58:36:89 | getParameter(...) : String | UrlRedirect.java:36:25:36:89 | ... + ... |
-| UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:14 | input : String |
-| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String |
-| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String |
-| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | provenance |  |
+| UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | provenance |  |
+| UrlRedirect.java:36:58:36:89 | getParameter(...) : String | UrlRedirect.java:36:25:36:89 | ... + ... | provenance |  |
+| UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:14 | input : String | provenance |  |
+| UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | provenance |  |
+| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance |  |
+| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance |  |
 nodes
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | semmle.label | weakCleanup(...) |

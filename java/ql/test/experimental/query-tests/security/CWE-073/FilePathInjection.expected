@@ -1,13 +1,13 @@
 edges
-| FilePathInjection.java:21:21:21:34 | getPara(...) : String | FilePathInjection.java:26:47:26:59 | finalFilePath |
-| FilePathInjection.java:64:21:64:34 | getPara(...) : String | FilePathInjection.java:72:47:72:59 | finalFilePath |
-| FilePathInjection.java:87:21:87:34 | getPara(...) : String | FilePathInjection.java:95:47:95:59 | finalFilePath |
-| FilePathInjection.java:177:50:177:58 | file : File | FilePathInjection.java:182:30:182:33 | file |
-| FilePathInjection.java:205:17:205:44 | getParameter(...) : String | FilePathInjection.java:209:24:209:31 | filePath : String |
-| FilePathInjection.java:209:15:209:32 | new File(...) : File | FilePathInjection.java:210:23:210:26 | file |
-| FilePathInjection.java:209:15:209:32 | new File(...) : File | FilePathInjection.java:217:19:217:22 | file : File |
-| FilePathInjection.java:209:24:209:31 | filePath : String | FilePathInjection.java:209:15:209:32 | new File(...) : File |
-| FilePathInjection.java:217:19:217:22 | file : File | FilePathInjection.java:177:50:177:58 | file : File |
+| FilePathInjection.java:21:21:21:34 | getPara(...) : String | FilePathInjection.java:26:47:26:59 | finalFilePath | provenance |  |
+| FilePathInjection.java:64:21:64:34 | getPara(...) : String | FilePathInjection.java:72:47:72:59 | finalFilePath | provenance |  |
+| FilePathInjection.java:87:21:87:34 | getPara(...) : String | FilePathInjection.java:95:47:95:59 | finalFilePath | provenance |  |
+| FilePathInjection.java:177:50:177:58 | file : File | FilePathInjection.java:182:30:182:33 | file | provenance |  |
+| FilePathInjection.java:205:17:205:44 | getParameter(...) : String | FilePathInjection.java:209:24:209:31 | filePath : String | provenance |  |
+| FilePathInjection.java:209:15:209:32 | new File(...) : File | FilePathInjection.java:210:23:210:26 | file | provenance |  |
+| FilePathInjection.java:209:15:209:32 | new File(...) : File | FilePathInjection.java:217:19:217:22 | file : File | provenance |  |
+| FilePathInjection.java:209:24:209:31 | filePath : String | FilePathInjection.java:209:15:209:32 | new File(...) : File | provenance |  |
+| FilePathInjection.java:217:19:217:22 | file : File | FilePathInjection.java:177:50:177:58 | file : File | provenance |  |
 nodes
 | FilePathInjection.java:21:21:21:34 | getPara(...) : String | semmle.label | getPara(...) : String |
 | FilePathInjection.java:26:47:26:59 | finalFilePath | semmle.label | finalFilePath |
