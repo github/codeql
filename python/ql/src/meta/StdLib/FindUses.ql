@@ -21,6 +21,49 @@ string stepsTo(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     else result = "no"
 }
 
+bindingset[parameter]
+string madSummary(
+  DataFlow::Node argument, string parameter, Function function, DataFlow::Node outNode
+) {
+  exists(string package, string functionPath, string argumentPath, string returnPath, string mode |
+    exists(string moduleName |
+      package = function.getScope().getName().splitAt(".", 0) and
+      moduleName = function.getScope().getName().splitAt(".", 1) and
+      functionPath = "Member[" + moduleName + "].Member[" + function.getName() + "]"
+    ) and
+    (
+      exists(int index |
+        parameter = function.getArg(index).getName() and
+        argumentPath = "Argument[" + index.toString() + "]"
+      )
+      or
+      exists(function.getArgByName(parameter)) and
+      argumentPath = "Argument[" + parameter + ":]"
+      or
+      not exists(int index | parameter = function.getArg(index).getName()) and
+      not exists(function.getArgByName(parameter)) and
+      argumentPath = "Argument[?]"
+    ) and
+    (
+      outNode.(DataFlow::CallCfgNode).getArg(_) = argument and
+      returnPath = "ReturnValue"
+      or
+      outNode.(DataFlow::CallCfgNode).getArgByName(_) = argument and
+      returnPath = "ReturnValue"
+      or
+      not outNode.(DataFlow::CallCfgNode).getArg(_) = argument and
+      not outNode.(DataFlow::CallCfgNode).getArgByName(_) = argument and
+      returnPath =
+        argument.getLocation().toString() + ": " + argument.toString() + " -> " + outNode.toString()
+    ) and
+    mode = "taint"
+  |
+    result =
+      "- [\"" + package + "\", \"" + functionPath + "\", \"" + argumentPath + "\", \"" + returnPath +
+        "\", \"" + mode + "\"]"
+  )
+}
+
 abstract class EntryPointsByQuery extends string {
   bindingset[this]
   EntryPointsByQuery() { any() }
@@ -31,7 +74,7 @@ abstract class EntryPointsByQuery extends string {
 
   predicate entryPoint(
     DataFlow::Node argument, string parameterName, string functionName, DataFlow::Node outNode,
-    string alreadyModelled
+    string alreadyModelled, string madSummary
   ) {
     exists(DataFlow::ParameterNode parameter, Function function |
       parameterName = parameter.getParameter().getName() and
@@ -41,7 +84,8 @@ abstract class EntryPointsByQuery extends string {
       not inStdLib(argument) and
       inStdLib(parameter) and
       function = parameter.getScope() and
-      alreadyModelled = stepsTo(argument, outNode)
+      alreadyModelled = stepsTo(argument, outNode) and
+      madSummary = madSummary(argument, parameterName, function, outNode)
     )
   }
 }
@@ -520,8 +564,9 @@ module EntryPointsForCommandInjectionQuery {
 //
 from
   EntryPointsByQuery e, DataFlow::Node argument, string parameter, string functionName,
-  DataFlow::Node outNode, string alreadyModelled
+  DataFlow::Node outNode, string alreadyModelled, string madSummary
 where
-  e.entryPoint(argument, parameter, functionName, outNode, alreadyModelled) and
+  e.entryPoint(argument, parameter, functionName, outNode, alreadyModelled, madSummary) and
   alreadyModelled = "no"
-select e, parameter, functionName
+// select e, parameter, functionName, madSummary
+select parameter, functionName, madSummary
