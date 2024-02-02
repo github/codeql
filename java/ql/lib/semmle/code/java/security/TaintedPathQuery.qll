@@ -66,7 +66,8 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer instanceof SimpleTypeSanitizer or
-    sanitizer instanceof PathInjectionSanitizer
+    sanitizer instanceof PathInjectionSanitizer or
+    sanitizer.getLocation().getFile().getBaseName() = "BaseObject.java"
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {

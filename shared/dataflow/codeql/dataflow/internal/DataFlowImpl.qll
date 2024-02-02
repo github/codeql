@@ -1343,6 +1343,11 @@ module MakeImpl<InputSig Lang> {
         }
 
         pragma[nomagic]
+        private ApOption blah(ApApprox apa) {
+          result = apSome(any(Ap argAp1 | apa = getApprox(argAp1)))
+        }
+
+        pragma[nomagic]
         additional predicate fwdFlow1(
           NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, ArgTypOption argT,
           ApOption argAp, Typ t0, Typ t, TypOption origT0, TypOption origT, Ap ap, ApApprox apa
@@ -1353,7 +1358,7 @@ module MakeImpl<InputSig Lang> {
             (
               exists(ParamNode p, ApApprox argApa |
                 summaryCtx = TParamNodeSome(p) and
-                argAp = apSome(any(Ap argAp1 | argApa = getApprox(argAp1))) and
+                argAp = blah(argApa) and //apSome(any(Ap argAp1 | argApa = getApprox(argAp1))) and
                 Param::nodeMayFlowThrough(p, argApa, node, apa) and
                 inSummaryCtx = true
               )
@@ -3188,26 +3193,30 @@ module MakeImpl<InputSig Lang> {
 
     private module Stage3 = MkStage<Stage2_5>::Stage<Stage3Param>;
 
-    // private predicate mostBusyNodeFwd3 = Stage3::mostBusyNodeFwd/9;
-    // private predicate mostBusyNodeFwd3_5 = Stage3_5::mostBusyNodeFwd/9;
-    // private predicate mostBusyNodeFwd4 = Stage4::mostBusyNodeFwd/9;
-    // private predicate mostBusyNodeFwd5 = Stage5::mostBusyNodeFwd/9;
+    // private predicate mostBusyNodeFwd3 = Stage3::mostBusyNodeFwd/10;
+    // private predicate mostBusyNodeFwd3_5 = Stage3_5::mostBusyNodeFwd/10;
+    // private predicate mostBusyNodeFwd4 = Stage4::mostBusyNodeFwd/10;
+    private predicate mostBusyNodeFwd5 = Stage5::mostBusyNodeFwd/10;
+
     bindingset[node, t0, inSummaryCtx]
     private predicate strengthenType(
       NodeEx node, DataFlowType t0, DataFlowType t, boolean inSummaryCtx
     ) {
       exists(inSummaryCtx) and
-      if castingNodeEx(node)
-      then
-        exists(DataFlowType nt | nt = node.getDataFlowType() |
-          if inSummaryCtx = false and typeStrongerThan(nt, t0)
-          then t = nt
-          else (
-            compatibleTypes(nt, t0) and
-            if inSummaryCtx = true and node instanceof ParamNodeEx then t = nt else t = t0
+      if node instanceof RetNodeEx and inSummaryCtx = true
+      then t = node.getDataFlowType() and compatibleTypes(t, t0)
+      else
+        if castingNodeEx(node)
+        then
+          exists(DataFlowType nt | nt = node.getDataFlowType() |
+            if inSummaryCtx = false and typeStrongerThan(nt, t0)
+            then t = nt
+            else (
+              compatibleTypes(nt, t0) and
+              if inSummaryCtx = true and node instanceof ParamNodeEx then t = nt else t = t0
+            )
           )
-        )
-      else t = t0
+        else t = t0
     }
 
     private module Stage3_5Param implements MkStage<Stage3>::StageParam {
@@ -3631,11 +3640,12 @@ module MakeImpl<InputSig Lang> {
 
       ApHeadContent projectToHeadContent(Content c) { result = c }
 
-      class ApOption = AccessPathApproxOption;
+      class ApOption = AccessPathFrontOption;
 
-      ApOption apNone() { result = TAccessPathApproxNone() }
+      // class ApOption = AccessPathApproxOption;
+      ApOption apNone() { result = TAccessPathFrontNone() }
 
-      ApOption apSome(Ap ap) { result = TAccessPathApproxSome(ap) }
+      ApOption apSome(Ap ap) { result = TAccessPathFrontSome(ap.getFront()) }
 
       import Level1CallContext
       import LocalCallContext
@@ -3670,6 +3680,8 @@ module MakeImpl<InputSig Lang> {
       predicate typecheckStore(Typ typ, DataFlowType contentType) {
         compatibleTypes(typ, contentType)
       }
+
+      predicate enableTypeFlow() { none() }
     }
 
     private module Stage5 = MkStage<Stage4>::Stage<Stage5Param>;
@@ -3682,7 +3694,7 @@ module MakeImpl<InputSig Lang> {
         Stage5::parameterMayFlowThrough(p, _) and
         Stage5::revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, apa0) and
         Stage5::fwdFlow(n, state, any(CallContextCall ccc), TParamNodeSome(p.asNode()), _,
-          TAccessPathApproxSome(apa), _, _, apa0, _)
+          TAccessPathFrontSome(apa.getFront()), _, _, apa0, _)
       )
     }
 
@@ -4412,28 +4424,22 @@ module MakeImpl<InputSig Lang> {
       PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
       AccessPath ap
     ) {
-      exists(DataFlowType t0, SummaryCtx sc0, Stage5::Ap apa, boolean inSummaryCtx |
-        pathStep0(mid, node, state, cc, sc0, t0, ap, apa) and
+      exists(DataFlowType t0, Stage5::Ap apa, boolean inSummaryCtx |
+        pathStep0(mid, node, state, cc, sc, t0, ap, apa) and
         Stage5::revFlow(node, state, apa) and
         strengthenType(node, t0, t, inSummaryCtx) and
         not inBarrier(node, state)
       |
         exists(ParamNodeEx p, ParamNode param, AccessPath argAp, Stage5::Ap argApa |
-          sc0 = TSummaryCtxSome(p, _, _, argAp) and
+          sc = TSummaryCtxSome(p, _, _, argAp) and
           param = p.asNode() and
           argApa = argAp.getApprox() and
-          if Stage5::nodeMayFlowThrough(param, argApa, node, apa)
-          then
-            sc = sc0 and
-            inSummaryCtx = true
-          else (
-            sc = TSummaryCtxNone() and
-            inSummaryCtx = false
-          )
+          Stage5::nodeMayFlowThrough(param, argApa, node, apa) and
+          inSummaryCtx = true
         )
         or
-        sc0 = TSummaryCtxNone() and
-        sc = sc0 and
+        sc = TSummaryCtxNone() and
+        (cc instanceof CallContextNoCall or Stage5::nodeMayFlowNotThrough(node, apa)) and
         inSummaryCtx = false
       )
     }
@@ -4587,14 +4593,15 @@ module MakeImpl<InputSig Lang> {
     pragma[noinline]
     private predicate pathIntoArg(
       PathNodeMid mid, ParameterPosition ppos, FlowState state, CallContext cc, DataFlowCall call,
-      DataFlowType t, AccessPath ap, AccessPathApprox apa
+      DataFlowType t, AccessPath ap, AccessPathApprox apa, boolean inSummaryCtx
     ) {
-      exists(ArgNodeEx arg, ArgumentPosition apos |
-        pathNode(mid, arg, state, cc, _, t, ap, _) and
+      exists(ArgNodeEx arg, SummaryCtx sc, ArgumentPosition apos |
+        pathNode(mid, arg, state, cc, sc, t, ap, _) and
         not outBarrier(arg, state) and
         arg.asNode().(ArgNode).argumentOf(call, apos) and
         apa = ap.getApprox() and
-        parameterMatch(ppos, apos)
+        parameterMatch(ppos, apos) and
+        if sc = TSummaryCtxNone() then inSummaryCtx = false else inSummaryCtx = true
       )
     }
 
@@ -4613,11 +4620,11 @@ module MakeImpl<InputSig Lang> {
     pragma[nomagic]
     private predicate pathIntoCallable0(
       PathNodeMid mid, DataFlowCallable callable, ParameterPosition pos, FlowState state,
-      CallContext outercc, DataFlowCall call, DataFlowType t, AccessPath ap
+      CallContext outercc, DataFlowCall call, DataFlowType t, AccessPath ap, boolean inSummaryCtx
     ) {
       exists(AccessPathApprox apa |
         pathIntoArg(mid, pragma[only_bind_into](pos), state, outercc, call, t, ap,
-          pragma[only_bind_into](apa)) and
+          pragma[only_bind_into](apa), inSummaryCtx) and
         callable = ResolveCall<parameterCandProj/1>::resolveCall(call, outercc) and
         parameterCand(callable, pragma[only_bind_into](pos), pragma[only_bind_into](apa))
       )
@@ -4633,13 +4640,17 @@ module MakeImpl<InputSig Lang> {
       PathNodeMid mid, ParamNodeEx p, FlowState state, CallContext outercc, CallContextCall innercc,
       SummaryCtx sc, DataFlowCall call
     ) {
-      exists(ParameterPosition pos, DataFlowCallable callable, DataFlowType t, AccessPath ap |
-        pathIntoCallable0(mid, callable, pos, state, outercc, call, t, ap) and
+      exists(
+        ParameterPosition pos, DataFlowCallable callable, DataFlowType t, AccessPath ap,
+        boolean inSummaryCtx
+      |
+        pathIntoCallable0(mid, callable, pos, state, outercc, call, t, ap, inSummaryCtx) and
         p.isParameterOf(callable, pos) and
         not inBarrier(p, state) and
         (
           sc = TSummaryCtxSome(p, state, t, ap)
           or
+          inSummaryCtx = false and
           // not exists(TSummaryCtxSome(p, state, t, ap)) and
           Stage5::nodeMayFlowNotThrough(p, ap.getApprox()) and
           sc = TSummaryCtxNone() and
