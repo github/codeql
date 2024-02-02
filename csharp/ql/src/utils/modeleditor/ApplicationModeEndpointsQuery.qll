@@ -34,7 +34,7 @@ class ExternalEndpoint extends Endpoint {
   override predicate hasSummary() {
     Endpoint.super.hasSummary()
     or
-    defaultAdditionalTaintStep(this.getAnInput(), _)
+    defaultAdditionalTaintStep(this.getAnInput(), _, _)
   }
 
   override predicate isSource() {
