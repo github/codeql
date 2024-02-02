@@ -482,3 +482,11 @@ module TS52 {
 
     console.log(["hello", "world"] satisfies Pair3<string>);
 }
+
+module TS54 {
+  function createStreetLight<C extends string>(colors: C[], defaultColor?: NoInfer<C>) {
+    return colors[0];
+  }
+
+  createStreetLight(["red", "yellow", "green"], "yellow");
+}
