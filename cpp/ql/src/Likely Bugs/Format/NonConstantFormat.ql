@@ -91,15 +91,16 @@ predicate isNonConst(DataFlow::Node node, boolean isIndirect) {
       )
     )
     or
-    exists(UncalledFunction f, Parameter p| f.getAParameter() = p |
-      p = e.(VariableAccess).getTarget())
-    or 
+    exists(UncalledFunction f, Parameter p | f.getAParameter() = p |
+      p = e.(VariableAccess).getTarget()
+    )
+    or
     node instanceof FlowSource
     or
-    (
-      node instanceof DataFlow::DefinitionByReferenceNode and
-      not exists(FormattingFunctionCall fc | node.asDefiningArgument() = fc.getOutputArgument(_)) and
-      not exists(Call c | c.getAnArgument() = node.asDefiningArgument() and c.getTarget().hasDefinition())
+    node instanceof DataFlow::DefinitionByReferenceNode and
+    not exists(FormattingFunctionCall fc | node.asDefiningArgument() = fc.getOutputArgument(_)) and
+    not exists(Call c |
+      c.getAnArgument() = node.asDefiningArgument() and c.getTarget().hasDefinition()
     )
   )
   or
@@ -121,15 +122,7 @@ predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
 }
 
 module NonConstFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    // isNonConst(source)
-    isNonConst(source,_)
-    // exists(boolean isIndirect, Type t |
-    //   isNonConst(source, isIndirect) and
-    //   t = source.getType() and
-    //   not cannotContainString(t, isIndirect)
-    // )
-  }
+  predicate isSource(DataFlow::Node source) { isNonConst(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
 
@@ -138,17 +131,10 @@ module NonConstFlowConfig implements DataFlow::ConfigSig {
 
 module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;
 
-// import NonConstFlow::PathGraph
-
-from
-  FormattingFunctionCall call, Expr formatString, DataFlow::Node sink
-  // ,NonConstFlow::PathNode src,
-  // NonConstFlow::PathNode sink
+from FormattingFunctionCall call, Expr formatString, DataFlow::Node sink
 where
   call.getArgument(call.getFormatParameterIndex()) = formatString and
-  //NonConstFlow::flowPath(src, sink) and
   NonConstFlow::flowTo(sink) and
-  //isSinkImpl(sink.getNode(), formatString)
   isSinkImpl(sink, formatString)
 select formatString, //sink.getNode(), src, sink,
   "The format string argument to " + call.getTarget().getName() +
