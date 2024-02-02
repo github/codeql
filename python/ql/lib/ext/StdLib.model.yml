@@ -1,0 +1,30 @@
+extensions:
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sourceModel
+    data: []
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: sinkModel
+    data: []
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: summaryModel
+    data:
+      - ["urllib", "Member[parse].Member[urljoin]", "Argument[1]", "ReturnValue", "taint"]
+  - addsTo:
+      pack: codeql/python-all
+      extensible: neutralModel
+    data: []
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeModel
+    data: []
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: typeVariableModel
+    data: []
