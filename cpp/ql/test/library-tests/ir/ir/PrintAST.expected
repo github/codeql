@@ -1815,6 +1815,42 @@ ir.c:
 #   15|               Type = [CharPointerType] char *
 #   15|               ValueCategory = prvalue
 #   16|     getStmt(1): [ReturnStmt] return ...
+#   18| [TopLevelFunction] void ExRaiseAccessViolation(int)
+#   18|   <params>: 
+#   18|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   18|         Type = [IntType] int
+#   21| [TopLevelFunction] int TryExceptTest(int)
+#   21|   <params>: 
+#   21|     getParameter(0): [Parameter] x
+#   21|         Type = [IntType] int
+#   21|   getEntryPoint(): [BlockStmt] { ... }
+#   22|     getStmt(0): [DeclStmt] declaration
+#   22|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of localPtr
+#   22|           Type = [IntPointerType] int *
+#   24|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   24|       getStmt(): [BlockStmt] { ... }
+#   25|         getStmt(0): [ExprStmt] ExprStmt
+#   25|           getExpr(): [FunctionCall] call to ExRaiseAccessViolation
+#   25|               Type = [VoidType] void
+#   25|               ValueCategory = prvalue
+#   25|             getArgument(0): [VariableAccess] x
+#   25|                 Type = [IntType] int
+#   25|                 ValueCategory = prvalue(load)
+#   26|       getCondition(): [Literal] 1
+#   26|           Type = [IntType] int
+#   26|           Value = [Literal] 1
+#   26|           ValueCategory = prvalue
+#   26|       getExcept(): [BlockStmt] { ... }
+#   27|         getStmt(0): [ReturnStmt] return ...
+#   27|           getExpr(): [Literal] 1
+#   27|               Type = [IntType] int
+#   27|               Value = [Literal] 1
+#   27|               ValueCategory = prvalue
+#   29|     getStmt(2): [ReturnStmt] return ...
+#   29|       getExpr(): [Literal] 0
+#   29|           Type = [IntType] int
+#   29|           Value = [Literal] 0
+#   29|           ValueCategory = prvalue
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   <params>: 

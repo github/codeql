@@ -540,6 +540,8 @@ module LocalFlow {
       not t instanceof NullType
       or
       t = any(TypeParameter tp | not tp.isValueType())
+      or
+      t.(Struct).isRef()
     ) and
     not exists(getALastEvalNode(result))
   }
@@ -2014,6 +2016,14 @@ predicate clearsContent(Node n, ContentSet c) {
     n.asExpr() = oi and
     f = oi.getAMemberInitializer().getInitializedMember() and
     c = f.getContent()
+  )
+  or
+  exists(Argument a, Struct s, Field f |
+    a = n.(PostUpdateNode).getPreUpdateNode().asExpr() and
+    a.getType() = s and
+    f = s.getAField() and
+    c.(FieldContent).getField() = f.getUnboundDeclaration() and
+    not f.isRef()
   )
 }
 

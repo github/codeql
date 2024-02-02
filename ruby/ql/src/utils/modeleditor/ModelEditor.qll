@@ -9,11 +9,6 @@ private import codeql.ruby.frameworks.data.ModelsAsData
 private import codeql.ruby.frameworks.data.internal.ApiGraphModelsExtensions
 private import queries.modeling.internal.Util as Util
 
-/** Holds if the given callable is not worth supporting. */
-private predicate isUninteresting(DataFlow::MethodNode c) {
-  c.getLocation().getFile() instanceof TestFile
-}
-
 private predicate gemFileStep(Gem::GemSpec gem, Folder folder, int n) {
   n = 0 and folder.getAFile() = gem.(File)
   or
@@ -63,19 +58,32 @@ abstract class Endpoint instanceof DataFlow::Node {
 class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
   MethodEndpoint() {
     this.isPublic() and
-    not isUninteresting(this)
+    this.(DataFlow::MethodNode).getLocation().getFile() instanceof Util::RelevantFile
   }
 
   DataFlow::MethodNode getNode() { result = this }
 
-  override string getName() { result = super.getMethodName() }
+  override string getName() {
+    result = super.getMethodName() and not this.isConstructor()
+    or
+    // Constructors are modeled as Type!#new rather than Type#initialize
+    result = "new" and this.isConstructor()
+  }
 
   /**
    * Gets the unbound type name of this endpoint.
    */
   override string getType() {
     result =
-      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getName()) = this).getQualifiedName() or
+      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getName()) = this).getQualifiedName() and
+    not this.isConstructor()
+    or
+    // Constructors are modeled on `Type!`, not on `Type`
+    result =
+      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(super.getMethodName()) = this)
+            .getQualifiedName() + "!" and
+    this.isConstructor()
+    or
     result =
       any(DataFlow::ModuleNode m | m.getOwnSingletonMethod(this.getName()) = this)
             .getQualifiedName() + "!"
@@ -141,20 +149,21 @@ class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
     or
     not this.isSupported() and result = ""
   }
+
+  /**
+   * Holds if this method is a constructor for a module.
+   */
+  private predicate isConstructor() {
+    super.getMethodName() = "initialize" and
+    exists(DataFlow::ModuleNode m | m.getOwnInstanceMethod(super.getMethodName()) = this)
+  }
 }
 
 string methodClassification(Call method) {
-  method.getFile() instanceof TestFile and result = "test"
+  method.getFile() instanceof Util::TestFile and result = "test"
   or
-  not method.getFile() instanceof TestFile and
+  not method.getFile() instanceof Util::TestFile and
   result = "source"
-}
-
-class TestFile extends File {
-  TestFile() {
-    this.getRelativePath().regexpMatch(".*(test|spec|examples).+") and
-    not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
-  }
 }
 
 /**
@@ -222,7 +231,7 @@ class ModuleEndpoint extends Endpoint {
         n order by loc.getFile().getAbsolutePath(), loc.getStartLine(), loc.getStartColumn()
       ) and
     not moduleNode.(Module).isBuiltin() and
-    not moduleNode.getLocation().getFile() instanceof TestFile
+    moduleNode.getLocation().getFile() instanceof Util::RelevantFile
   }
 
   DataFlow::ModuleNode getNode() { result = moduleNode }

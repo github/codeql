@@ -601,6 +601,15 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
 }
 
 /**
+ * Holds if the type of the given expression is annotated with `@FunctionalInterface`.
+ */
+predicate hasFunctionalInterfaceType(Expr e) {
+  exists(RefType tp | tp = e.getType().getErasure() |
+    tp.getAnAssociatedAnnotation().getType().hasQualifiedName("java.lang", "FunctionalInterface")
+  )
+}
+
+/**
  * A characteristic that marks functional expression as likely not sinks.
  *
  * These expressions may well _contain_ sinks, but rarely are sinks themselves.
@@ -608,7 +617,11 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
 private class FunctionValueCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic {
   FunctionValueCharacteristic() { this = "function value" }
 
-  override predicate appliesToEndpoint(Endpoint e) { e.asNode().asExpr() instanceof FunctionalExpr }
+  override predicate appliesToEndpoint(Endpoint e) {
+    exists(Expr expr | expr = e.asNode().asExpr() |
+      expr instanceof FunctionalExpr or hasFunctionalInterfaceType(expr)
+    )
+  }
 }
 
 /**

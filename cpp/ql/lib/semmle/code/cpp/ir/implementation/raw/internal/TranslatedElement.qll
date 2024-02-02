@@ -827,9 +827,10 @@ abstract class TranslatedElement extends TTranslatedElement {
   Location getLocation() { result = this.getAst().getLocation() }
 
   /**
-   * Get the first instruction to be executed in the evaluation of this element.
+   * Get the first instruction to be executed in the evaluation of this
+   * element when the edge kind is `kind`.
    */
-  abstract Instruction getFirstInstruction();
+  abstract Instruction getFirstInstruction(EdgeKind kind);
 
   /**
    * Get the immediate child elements of this element.
@@ -904,18 +905,19 @@ abstract class TranslatedElement extends TTranslatedElement {
 
   /**
    * Gets the successor instruction to which control should flow after the
-   * child element specified by `child` has finished execution.
+   * child element specified by `child` has finished execution. The successor
+   * edge kind is specified by `kind`.
    */
-  abstract Instruction getChildSuccessor(TranslatedElement child);
+  abstract Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind);
 
   /**
    * Gets the instruction to which control should flow if an exception is thrown
    * within this element. This will generally return first `catch` block of the
    * nearest enclosing `try`, or the `Unwind` instruction for the function if
-   * there is no enclosing `try`.
+   * there is no enclosing `try`. The successor edge kind is specified by `kind`.
    */
-  Instruction getExceptionSuccessorInstruction() {
-    result = this.getParent().getExceptionSuccessorInstruction()
+  Instruction getExceptionSuccessorInstruction(EdgeKind kind) {
+    result = this.getParent().getExceptionSuccessorInstruction(kind)
   }
 
   /**

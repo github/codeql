@@ -124,10 +124,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             const int align = 6;
             logger.LogInfo("");
             logger.LogInfo("Build analysis summary:");
-            logger.LogInfo($"{nonGeneratedSources.Count,align} source files in the filesystem");
-            logger.LogInfo($"{generatedSources.Count,align} generated source files");
-            logger.LogInfo($"{allSolutions.Count,align} solution files");
-            logger.LogInfo($"{allProjects.Count,align} project files in the filesystem");
+            logger.LogInfo($"{nonGeneratedSources.Count,align} source files found on the filesystem");
+            logger.LogInfo($"{generatedSources.Count,align} source files have been generated");
+            logger.LogInfo($"{allSolutions.Count,align} solution files found on the filesystem");
+            logger.LogInfo($"{allProjects.Count,align} project files found on the filesystem");
             logger.LogInfo($"{usedReferences.Keys.Count,align} resolved references");
             logger.LogInfo($"{unresolvedReferences.Count,align} unresolved references");
             logger.LogInfo($"{conflictedReferences,align} resolved assembly conflicts");
