@@ -11,13 +11,13 @@
   <recommendation>
     <p>
     For editable text fields containing sensitive information, the <code>inputType</code> should be set to <code>textPassword</code> or similar to ensure it is properly masked.
-    Otherwise, sensitive data that is required to be displayed should be hidden by default, and only revealed based on an explicit user action.
+    Otherwise, sensitive data that must be displayed should be hidden by default, and only revealed based on an explicit user action.
     </p>
   </recommendation>
 
   <example>
     <p>
-    In the following (bad) case, sensitive information <code>password</code> is exposed to the <code>TextView</code>.
+    In the following (bad) case, sensitive information in <code>password</code> is exposed to the <code>TextView</code>.
     </p>
 
     <sample src="AndroidSensitiveTextBad.java"/>
