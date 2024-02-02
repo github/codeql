@@ -10,7 +10,6 @@ import cpp
 /**
  * Gets the line of the `ix`th `PreprocessorBranchDirective` in file `f`.
  */
-cached
 private int getPreprocLineFromIndex(File f, int ix) {
   result =
     rank[ix](PreprocessorBranchDirective g | g.getFile() = f | g.getLocation().getStartLine())
@@ -70,26 +69,22 @@ class PreprocessorBlock extends @element {
   /**
    * Gets the file this `PreprocessorBlock` is located in.
    */
-  cached
   File getFile() { result = mkElement(this).getFile() }
 
   /**
    * Gets the start line number of this `PreprocessorBlock`.
    */
-  cached
   int getStartLine() { result = mkElement(this).getLocation().getStartLine() }
 
   /**
    * Gets the end line number of this `PreprocessorBlock`.
    */
-  cached
   int getEndLine() {
     result = mkElement(this).(File).getMetrics().getNumberOfLines() or
     result =
       mkElement(this).(PreprocessorBranchDirective).getNext().getLocation().getStartLine() - 1
   }
 
-  cached
   private PreprocessorBlock getParentInternal() {
     // find the `#ifdef` corresponding to this block and the
     // PreprocessorBranchDirective `prev` that came directly
