@@ -9,6 +9,8 @@ private class AuthenticationCallbackClass extends Class {
       "FingerprintManager$AuthenticationCallback")
     or
     this.hasQualifiedName("android.hardware.biometrics", "BiometricPrompt$AuthenticationCallback")
+    or
+    this.hasQualifiedName("androidx.biometric", "BiometricPrompt$AuthenticationCallback")
   }
 }
 
