@@ -62,13 +62,13 @@ predicate returnValue(string type, string path, string value, string details) {
   )
 }
 
-predicate inputSuggestions(string type, string path, string value, string details, string defType) {
+predicate inputAccessPaths(string type, string path, string value, string details, string defType) {
   simpleParameters(type, path, value, details) and defType = "parameter"
   or
   blockArguments(type, path, value, details) and defType = "parameter"
 }
 
-predicate outputSuggestions(string type, string path, string value, string details, string defType) {
+predicate outputAccessPaths(string type, string path, string value, string details, string defType) {
   simpleParameters(type, path, value, details) and defType = "parameter"
   or
   blockArguments(type, path, value, details) and defType = "parameter"
@@ -76,6 +76,6 @@ predicate outputSuggestions(string type, string path, string value, string detai
   returnValue(type, path, value, details) and defType = "return"
 }
 
-query predicate input = inputSuggestions/5;
+query predicate input = inputAccessPaths/5;
 
-query predicate output = outputSuggestions/5;
+query predicate output = outputAccessPaths/5;
