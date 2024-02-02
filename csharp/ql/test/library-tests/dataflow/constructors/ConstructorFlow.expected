@@ -1,0 +1,61 @@
+testFailures
+edges
+| Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object |
+| Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object |
+| Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object |
+| Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object |
+| Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object |
+| Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object |
+| Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object | Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object |
+| Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object | Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object |
+| Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object | Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object |
+| Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object | Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object |
+| Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object | Constructors.cs:15:18:15:19 | access to field s1 |
+| Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object | Constructors.cs:15:18:15:19 | access to field s1 |
+| Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object | Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object |
+| Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object | Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object |
+| Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object |
+| Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object |
+| Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object | Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object |
+| Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object | Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object |
+| Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object | Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object |
+| Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object | Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object |
+| Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object | Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object |
+| Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object | Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object |
+| Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object | Constructors.cs:33:18:33:19 | access to field s1 |
+| Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object | Constructors.cs:33:18:33:19 | access to field s1 |
+nodes
+| Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | semmle.label | [post] this access : C_no_ctor [field s1] : Object |
+| Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | semmle.label | [post] this access : C_no_ctor [field s1] : Object |
+| Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | semmle.label | object creation of type C_no_ctor : C_no_ctor [field s1] : Object |
+| Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | semmle.label | object creation of type C_no_ctor : C_no_ctor [field s1] : Object |
+| Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object | semmle.label | access to local variable c : C_no_ctor [field s1] : Object |
+| Constructors.cs:10:13:10:13 | access to local variable c : C_no_ctor [field s1] : Object | semmle.label | access to local variable c : C_no_ctor [field s1] : Object |
+| Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object | semmle.label | this : C_no_ctor [field s1] : Object |
+| Constructors.cs:13:21:13:22 | this : C_no_ctor [field s1] : Object | semmle.label | this : C_no_ctor [field s1] : Object |
+| Constructors.cs:15:18:15:19 | access to field s1 | semmle.label | access to field s1 |
+| Constructors.cs:15:18:15:19 | access to field s1 | semmle.label | access to field s1 |
+| Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object | semmle.label | this access : C_no_ctor [field s1] : Object |
+| Constructors.cs:15:18:15:19 | this access : C_no_ctor [field s1] : Object | semmle.label | this access : C_no_ctor [field s1] : Object |
+| Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object | semmle.label | [post] this access : C_with_ctor [field s1] : Object |
+| Constructors.cs:21:24:21:25 | [post] this access : C_with_ctor [field s1] : Object | semmle.label | [post] this access : C_with_ctor [field s1] : Object |
+| Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object | semmle.label | object creation of type C_with_ctor : C_with_ctor [field s1] : Object |
+| Constructors.cs:25:29:25:45 | object creation of type C_with_ctor : C_with_ctor [field s1] : Object | semmle.label | object creation of type C_with_ctor : C_with_ctor [field s1] : Object |
+| Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object | semmle.label | access to local variable c : C_with_ctor [field s1] : Object |
+| Constructors.cs:26:13:26:13 | access to local variable c : C_with_ctor [field s1] : Object | semmle.label | access to local variable c : C_with_ctor [field s1] : Object |
+| Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object | semmle.label | this : C_with_ctor [field s1] : Object |
+| Constructors.cs:31:21:31:22 | this : C_with_ctor [field s1] : Object | semmle.label | this : C_with_ctor [field s1] : Object |
+| Constructors.cs:33:18:33:19 | access to field s1 | semmle.label | access to field s1 |
+| Constructors.cs:33:18:33:19 | access to field s1 | semmle.label | access to field s1 |
+| Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object | semmle.label | this access : C_with_ctor [field s1] : Object |
+| Constructors.cs:33:18:33:19 | this access : C_with_ctor [field s1] : Object | semmle.label | this access : C_with_ctor [field s1] : Object |
+subpaths
+#select
+| Constructors.cs:15:18:15:19 | access to field s1 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:15:18:15:19 | access to field s1 | $@ | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:15:18:15:19 | access to field s1 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:15:18:15:19 | access to field s1 | $@ | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:33:18:33:19 | access to field s1 | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | Constructors.cs:33:18:33:19 | access to field s1 | $@ | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:33:18:33:19 | access to field s1 | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | Constructors.cs:33:18:33:19 | access to field s1 | $@ | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |
