@@ -7,8 +7,37 @@
  */
 
 private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import queries.modeling.internal.Util as Util
+
+string parameterDetails(DataFlow::ParameterNode paramNode) {
+  exists(DataFlow::MethodNode methodNode | methodNode.getParameter(_) = paramNode |
+    result = paramNode.getName()
+  )
+  or
+  exists(DataFlow::MethodNode methodNode, string name |
+    methodNode.getKeywordParameter(name) = paramNode
+  |
+    result = name + ":"
+  )
+  or
+  exists(DataFlow::MethodNode methodNode | methodNode.getBlockParameter() = paramNode |
+    result = "&" + paramNode.getName()
+    or
+    not exists(paramNode.getName()) and result = "&"
+  )
+  or
+  exists(DataFlow::MethodNode methodNode | methodNode.getSelfParameter() = paramNode |
+    result = "self"
+  )
+  or
+  exists(DataFlow::MethodNode methodNode | methodNode.getHashSplatParameter() = paramNode |
+    result = "**" + paramNode.getName()
+    or
+    not exists(paramNode.getName()) and result = "**"
+  )
+}
 
 predicate simpleParameters(string type, string path, string value, string details) {
   exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
@@ -23,7 +52,7 @@ predicate simpleParameters(string type, string path, string value, string detail
   |
     Util::pathToMethod(methodNode, type, path) and
     value = Util::getArgumentPath(paramNode) and
-    details = paramNode.toString()
+    details = parameterDetails(paramNode)
   )
 }
 
@@ -33,9 +62,11 @@ predicate blockArguments(string type, string path, string value, string details)
     callNode = methodNode.getABlockCall()
   |
     (
-      exists(DataFlow::ExprNode argNode, int i | argNode = callNode.getPositionalArgument(i) |
+      exists(DataFlow::VariableAccessNode argNode, int i |
+        argNode = callNode.getPositionalArgument(i)
+      |
         value = "Argument[block].Parameter[" + i + "]" and
-        details = argNode.toString()
+        details = argNode.asVariableAccessAstNode().getVariable().getName()
       )
       or
       exists(DataFlow::ExprNode argNode, string keyword |
@@ -45,7 +76,14 @@ predicate blockArguments(string type, string path, string value, string details)
         details = ":" + keyword
       )
       or
-      value = "Argument[block]" and details = callNode.toString()
+      value = "Argument[block]" and
+      (
+        details = callNode.getMethodName()
+        or
+        not exists(callNode.getMethodName()) and
+        callNode.getExprNode().getExpr() instanceof YieldCall and
+        details = "yield ..."
+      )
     ) and
     Util::pathToMethod(methodNode, type, path)
   )
