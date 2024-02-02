@@ -14,6 +14,31 @@ extensions:
       extensible: summaryModel
     data:
       - ["urllib", "Member[parse].Member[urljoin]", "Argument[1]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[quote]", "Argument[string:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[quote]", "Argument[0]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[urlencode]", "Argument[query:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[urlencode]", "Argument[0]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[urlretrieve]", "Argument[0]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[unquote]", "Argument[0]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[pathname2url]", "Argument[pathname:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[unquote]", "Argument[string:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[quote_plus]", "Argument[string:]", "ReturnValue", "taint"]
+      - ["email", "Member[utils].Member[parseaddr]", "Argument[addr:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[splitquery]", "Argument[url:]", "ReturnValue", "taint"]
+      - ["ctypes", "Member[__init__].Member[create_unicode_buffer]", "Argument[init:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[quote_plus]", "Argument[0]", "ReturnValue", "taint"]
+      - ["email", "Member[utils].Member[parseaddr]", "Argument[0]", "ReturnValue", "taint"]
+      - ["html", "Member[__init__].Member[escape]", "Argument[0]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[url2pathname]", "Argument[pathname:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[unquote_plus]", "Argument[0]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[url2pathname]", "Argument[0]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[unquote_plus]", "Argument[string:]", "ReturnValue", "taint"]
+      - ["html", "Member[__init__].Member[escape]", "Argument[s:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[splitquery]", "Argument[0]", "ReturnValue", "taint"]
+      - ["ctypes", "Member[__init__].Member[create_unicode_buffer]", "Argument[0]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[urlretrieve]", "Argument[url:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[request].Member[pathname2url]", "Argument[0]", "ReturnValue", "taint"]
+      
   - addsTo:
       pack: codeql/python-all
       extensible: neutralModel
