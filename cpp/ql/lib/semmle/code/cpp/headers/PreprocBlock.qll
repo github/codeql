@@ -96,7 +96,7 @@ class PreprocessorBlock extends @element {
     // before it in the source.
     exists(int ix, PreprocessorBranchDirective prev |
       ix = getPreprocIndex(mkElement(this).(PreprocessorBranchDirective).getIf()) and
-      prev = getPreprocFromIndex(getFile(), ix - 1)
+      prev = getPreprocFromIndex(this.getFile(), ix - 1)
     |
       if prev instanceof PreprocessorEndif
       then
@@ -118,13 +118,13 @@ class PreprocessorBlock extends @element {
   PreprocessorBlock getParent() {
     not mkElement(this) instanceof File and
     (
-      if exists(getParentInternal())
+      if exists(this.getParentInternal())
       then
         // found parent directive
-        result = getParentInternal()
+        result = this.getParentInternal()
       else
         // top level directive
-        mkElement(result) = getFile()
+        mkElement(result) = this.getFile()
     )
   }
 
@@ -134,9 +134,9 @@ class PreprocessorBlock extends @element {
   PreprocessorBlock getAChild() { result.getParent() = this }
 
   private Include getAnEnclosedInclude() {
-    result.getFile() = getFile() and
-    result.getLocation().getStartLine() > getStartLine() and
-    result.getLocation().getStartLine() <= getEndLine()
+    result.getFile() = this.getFile() and
+    result.getLocation().getStartLine() > this.getStartLine() and
+    result.getLocation().getStartLine() <= this.getEndLine()
   }
 
   /**
@@ -144,14 +144,14 @@ class PreprocessorBlock extends @element {
    * `PreprocessorBlock`.
    */
   Include getAnInclude() {
-    result = getAnEnclosedInclude() and
-    not result = getAChild().getAnEnclosedInclude()
+    result = this.getAnEnclosedInclude() and
+    not result = this.getAChild().getAnEnclosedInclude()
   }
 
   private Macro getAnEnclosedMacro() {
-    result.getFile() = getFile() and
-    result.getLocation().getStartLine() > getStartLine() and
-    result.getLocation().getStartLine() <= getEndLine()
+    result.getFile() = this.getFile() and
+    result.getLocation().getStartLine() > this.getStartLine() and
+    result.getLocation().getStartLine() <= this.getEndLine()
   }
 
   /**
@@ -159,7 +159,7 @@ class PreprocessorBlock extends @element {
    * `PreprocessorBlock`.
    */
   Macro getAMacro() {
-    result = getAnEnclosedMacro() and
-    not result = getAChild().getAnEnclosedMacro()
+    result = this.getAnEnclosedMacro() and
+    not result = this.getAChild().getAnEnclosedMacro()
   }
 }
