@@ -17,6 +17,11 @@
 
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.commons.Printf
+import semmle.code.cpp.security.FlowSources
+
+class UncalledFunction extends Function {
+  UncalledFunction() { not exists(Call c | c.getTarget() = this) }
+}
 
 // For the following `...gettext` functions, we assume that
 // all translations preserve the type and order of `%` specifiers
@@ -79,37 +84,22 @@ predicate isNonConst(DataFlow::Node node, boolean isIndirect) {
       )
     )
     or
-    exists(Parameter p | p = e.(VariableAccess).getTarget() |
-      p.getFunction().getName() = "main" and p.getType() instanceof PointerType
-    )
-    or
-    e instanceof CrementOperation
-    or
-    e instanceof AddressOfExpr
-    or
-    e instanceof ReferenceToExpr
-    or
-    e instanceof AssignPointerAddExpr
-    or
-    e instanceof AssignPointerSubExpr
-    or
-    e instanceof PointerArithmeticOperation
-    or
-    e instanceof FieldAccess
-    or
-    e instanceof PointerDereferenceExpr
-    or
-    e instanceof AddressOfExpr
-    or
-    e instanceof ExprCall
-    or
-    e instanceof NewArrayExpr
-    or
     exists(Variable v | v = e.(VariableAccess).getTarget() |
       v.getType().(ArrayType).getBaseType() instanceof CharType and
       exists(AssignExpr ae |
         ae.getLValue().(ArrayExpr).getArrayBase().(VariableAccess).getTarget() = v
       )
+    )
+    or
+    exists(UncalledFunction f, Parameter p| f.getAParameter() = p |
+      p = e.(VariableAccess).getTarget())
+    or 
+    node instanceof FlowSource
+    or
+    (
+      node instanceof DataFlow::DefinitionByReferenceNode and
+      not exists(FormattingFunctionCall fc | node.asDefiningArgument() = fc.getOutputArgument(_)) and
+      not exists(Call c | c.getAnArgument() = node.asDefiningArgument() and c.getTarget().hasDefinition())
     )
   )
   or
@@ -132,11 +122,13 @@ predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
 
 module NonConstFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(boolean isIndirect, Type t |
-      isNonConst(source, isIndirect) and
-      t = source.getType() and
-      not cannotContainString(t, isIndirect)
-    )
+    // isNonConst(source)
+    isNonConst(source,_)
+    // exists(boolean isIndirect, Type t |
+    //   isNonConst(source, isIndirect) and
+    //   t = source.getType() and
+    //   not cannotContainString(t, isIndirect)
+    // )
   }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
@@ -146,13 +138,18 @@ module NonConstFlowConfig implements DataFlow::ConfigSig {
 
 module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;
 
-from FormattingFunctionCall call, Expr formatString
+// import NonConstFlow::PathGraph
+
+from
+  FormattingFunctionCall call, Expr formatString, DataFlow::Node sink
+  // ,NonConstFlow::PathNode src,
+  // NonConstFlow::PathNode sink
 where
   call.getArgument(call.getFormatParameterIndex()) = formatString and
-  exists(DataFlow::Node sink |
-    NonConstFlow::flowTo(sink) and
-    isSinkImpl(sink, formatString)
-  )
-select formatString,
+  //NonConstFlow::flowPath(src, sink) and
+  NonConstFlow::flowTo(sink) and
+  //isSinkImpl(sink.getNode(), formatString)
+  isSinkImpl(sink, formatString)
+select formatString, //sink.getNode(), src, sink,
   "The format string argument to " + call.getTarget().getName() +
     " should be constant to prevent security issues and other potential errors."
