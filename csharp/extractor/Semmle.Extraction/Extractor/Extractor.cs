@@ -102,7 +102,7 @@ namespace Semmle.Extraction
 
         public ILogger Logger { get; private set; }
 
-        public static string Version => $"{ThisAssembly.Git.BaseTag} ({ThisAssembly.Git.Sha})";
+        public static string Version => $"";
 
         public PathTransformer PathTransformer { get; }
     }

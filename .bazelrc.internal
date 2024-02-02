@@ -2,3 +2,5 @@
 
 common --registry=file:///%workspace%/ql/misc/bazel/registry
 common --registry=https://bcr.bazel.build
+
+common --@rules_dotnet//dotnet/settings:strict_deps=false
