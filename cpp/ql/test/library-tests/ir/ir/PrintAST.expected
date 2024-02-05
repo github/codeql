@@ -16539,6 +16539,72 @@ ir.cpp:
 # 2174|             Type = [Class] Bool
 # 2174|             ValueCategory = lvalue
 # 2175|     getStmt(1): [ReturnStmt] return ...
+# 2178| [CopyAssignmentOperator] Bool2& Bool2::operator=(Bool2 const&)
+# 2178|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Bool2 &
+# 2178| [CopyConstructor] void Bool2::Bool2(Bool2 const&)
+# 2178|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Bool2 &
+# 2180| [Constructor] void Bool2::Bool2(bool)
+# 2180|   <params>: 
+# 2180|     getParameter(0): [Parameter] b_
+# 2180|         Type = [BoolType] bool
+# 2181| [ConversionOperator] bool Bool2::operator bool()
+# 2181|   <params>: 
+# 2182| [Destructor] void Bool2::~Bool2()
+# 2182|   <params>: 
+# 2185| [TopLevelFunction] void IfInitiaiizationConstructor(bool)
+# 2185|   <params>: 
+# 2185|     getParameter(0): [Parameter] b
+# 2185|         Type = [BoolType] bool
+# 2185|   getEntryPoint(): [BlockStmt] { ... }
+# 2186|     getStmt(0): [IfStmt] if (...) ... 
+# 2186|       getCondition(): [ConditionDeclExpr] (condition decl)
+# 2186|           Type = [BoolType] bool
+# 2186|           ValueCategory = prvalue
+# 2186|         getChild(0): [FunctionCall] call to operator bool
+# 2186|             Type = [BoolType] bool
+# 2186|             ValueCategory = prvalue
+# 2186|           getQualifier(): [VariableAccess] B
+# 2186|               Type = [Class] Bool2
+# 2186|               ValueCategory = prvalue(load)
+# 2186|       getThen(): [BlockStmt] { ... }
+# 2187|         getStmt(0): [DeclStmt] declaration
+# 2187|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s1
+# 2187|               Type = [Struct] String
+# 2187|             getVariable().getInitializer(): [Initializer] initializer for s1
+# 2187|               getExpr(): [ConstructorCall] call to String
+# 2187|                   Type = [VoidType] void
+# 2187|                   ValueCategory = prvalue
+# 2188|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2188|             Type = [VoidType] void
+# 2188|             ValueCategory = prvalue
+# 2188|           getQualifier(): [VariableAccess] s1
+# 2188|               Type = [Struct] String
+# 2188|               ValueCategory = lvalue
+# 2188|       getElse(): [BlockStmt] { ... }
+# 2189|         getStmt(0): [DeclStmt] declaration
+# 2189|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s2
+# 2189|               Type = [Struct] String
+# 2189|             getVariable().getInitializer(): [Initializer] initializer for s2
+# 2189|               getExpr(): [ConstructorCall] call to String
+# 2189|                   Type = [VoidType] void
+# 2189|                   ValueCategory = prvalue
+# 2190|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2190|             Type = [VoidType] void
+# 2190|             ValueCategory = prvalue
+# 2190|           getQualifier(): [VariableAccess] s2
+# 2190|               Type = [Struct] String
+# 2190|               ValueCategory = lvalue
+# 2190|       getImplicitDestructorCall(0): [DestructorCall] call to ~Bool2
+# 2190|           Type = [VoidType] void
+# 2190|           ValueCategory = prvalue
+# 2190|         getQualifier(): [VariableAccess] B
+# 2190|             Type = [Class] Bool2
+# 2190|             ValueCategory = lvalue
+# 2191|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

@@ -2174,4 +2174,20 @@ void IfDestructors3(bool b) {
     }
 }
 
+
+class Bool2 {
+    public:
+    Bool2(bool b_);
+    operator bool();
+    ~Bool2();
+};
+
+void IfInitiaiizationConstructor(bool b) {
+    if(Bool2 B = Bool2(b)) {
+        String s1;
+    } else {
+        String s2;
+    }
+}
+
 // semmle-extractor-options: -std=c++17 --clang
