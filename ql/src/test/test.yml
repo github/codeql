@@ -1,0 +1,35 @@
+on: push
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+
+    outputs:
+      job_output: ${{ steps.step2.outputs.test }}
+
+    steps:
+      - uses: actions/checkout@v4
+      - id: step0 
+        uses: mad9000/actions-find-and-replace-string@3
+        with:
+          source: ${{ github.event.head_commit.message }}
+          find: 'foo'
+          replace: ''
+      - id: step1
+        env:
+          BODY: ${{ steps.step0.outputs.value}}
+        run: |
+          Write-Output "::set-output name=MSG::$ENV{BODY}"
+      - id: step2
+        run: echo "test=${{steps.step1.outputs.MSG}}" >> "$GITHUB_OUTPUT"
+
+  job2:
+    runs-on: ubuntu-latest
+
+    if: ${{ always() }}
+
+    needs: job1
+
+    steps:
+      - env:
+        run: echo ${{needs.job1.outputs.job_output}}

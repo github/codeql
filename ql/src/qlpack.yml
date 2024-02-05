@@ -1,0 +1,14 @@
+---
+library: false
+name: codeql/actions-queries
+version: 0.0.1
+groups:
+  - actions
+  - queries
+suites: codeql-suites
+extractor: yaml
+defaultSuiteFile: codeql-suites/actions-code-scanning.qls
+dependencies:
+  codeql/actions-all: ${workspace}
+warnOnImplicitThis: true
+tests: test

@@ -1,0 +1,15 @@
+---
+library: true
+warnOnImplicitThis: true
+name: codeql/actions-all
+version: 0.0.1-dev
+dependencies:
+  codeql/controlflow: ^0.1.7
+  codeql/yaml: '*'
+  codeql/util: '*'
+  codeql/dataflow: ^0.1.7
+dbscheme: yaml.dbscheme
+extractor: yaml
+tests: test
+groups:
+ - yaml

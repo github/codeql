@@ -1,0 +1,16 @@
+on: push
+
+jobs:
+  simple1:
+    runs-on: ubuntu-latest
+
+    steps:
+      - id: source 
+        uses: mad9000/actions-find-and-replace-string@3
+        with:
+          source: ${{ github.event.head_commit.message }}
+          find: 'foo'
+          replace: ''
+      - id: sink
+        run: |
+          echo "${{steps.source.outputs.value}}"

@@ -1,0 +1,21 @@
+[2024-02-03 10:17:52] This is codeql database index-files --include-extension=.yaml --include-extension=.yml --size-limit=5m --language=yaml /Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test-db
+[2024-02-03 10:17:52] Log file was started late.
+[2024-02-03 10:17:52] Using index-files script /Users/pwntester/.local/share/gh/extensions/gh-codeql/dist/release/v2.16.1/yaml/tools/index-files.sh.
+[2024-02-03 10:17:52] [PROGRESS] database index-files> Scanning for files in /Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test...
+[2024-02-03 10:17:52] Calling plumbing command: codeql resolve files --include-extension=.yaml --include-extension=.yml --size-limit=5m /Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test --format=json
+[2024-02-03 10:17:53] [PROGRESS] resolve files> Scanning /Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test...
+[2024-02-03 10:17:53] Plumbing command codeql resolve files completed:
+                      [
+                        "/Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test/changed-files.yml",
+                        "/Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test/inter1.yml",
+                        "/Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test/test.yml",
+                        "/Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test/no-flow1.yml",
+                        "/Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test/no-flow2.yml",
+                        "/Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test/simple1.yml",
+                        "/Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test/simple2.yml"
+                      ]
+[2024-02-03 10:17:53] [DETAILS] database index-files> Found 7 files.
+[2024-02-03 10:17:53] [PROGRESS] database index-files> /Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test-db: Indexing files in in /Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test...
+[2024-02-03 10:17:53] Using index-files script /Users/pwntester/.local/share/gh/extensions/gh-codeql/dist/release/v2.16.1/yaml/tools/index-files.sh.
+[2024-02-03 10:17:53] [PROGRESS] database index-files> Running command in /Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test: [/Users/pwntester/.local/share/gh/extensions/gh-codeql/dist/release/v2.16.1/yaml/tools/index-files.sh, /Users/pwntester/seclab/projects/actions/codeql-actions/ql/src/test-db/working/files-to-index11251721875757902238.list]
+[2024-02-03 10:17:53] Terminating normally.
