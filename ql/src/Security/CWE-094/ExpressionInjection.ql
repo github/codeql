@@ -24,6 +24,7 @@ private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionInjectionSink }
+  //predicate neverSkip(DataFlow::Node node) { any() }
 }
 
 module MyFlow = TaintTracking::Global<MyConfig>;

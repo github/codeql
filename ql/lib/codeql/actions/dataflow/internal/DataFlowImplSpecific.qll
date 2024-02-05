@@ -6,6 +6,9 @@
 private import codeql.dataflow.DataFlow
 
 module ActionsDataFlow implements InputSig {
-  import DataFlowPrivate
+  import DataFlowPrivate as Private
   import DataFlowPublic
+  import Private
+
+  predicate neverSkipInPathGraph = Private::neverSkipInPathGraph/1;
 }

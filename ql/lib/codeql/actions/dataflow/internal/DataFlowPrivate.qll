@@ -207,27 +207,6 @@ predicate stepOutputDefToUse(Node nodeFrom, Node nodeTo) {
   )
 }
 
-predicate test1(UsesExpr u, string f, JobStmt j) {
-  u.getLocation().getFile().getBaseName() = "inter1.yml" and
-  f = u.getId() and
-  j = u.getJob()
-}
-
-predicate test2(StepOutputAccessExpr r, string f, JobStmt j) {
-  r.getLocation().getFile().getBaseName() = "inter1.yml" and
-  f = r.getStepId() and
-  j = r.getJob()
-}
-
-predicate test3(UsesExpr u, StepOutputAccessExpr r, Node n) {
-  r.getLocation().getFile().getBaseName() = "inter1.yml" and
-  u.getLocation().getFile().getBaseName() = "inter1.yml" and
-  u.getId() = r.getStepId() and
-  u.getJob() = r.getJob() and
-  // el SOAE has no mapping DF NODE
-  n.asExpr() = r
-}
-
 predicate jobOutputDefToUse(Node nodeFrom, Node nodeTo) {
   // nodeTo is a JobOutputAccessExpr and nodeFrom is the Job output expression
   exists(Expression astFrom, JobOutputAccessExpr astTo |
@@ -310,3 +289,10 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
+
+/**
+ * Since our model is so simple, we dont want to compress the local flow steps.
+ * This compression is normally done to not show SSA steps, casts, etc.
+ */
+predicate neverSkipInPathGraph(Node node) { any() }
+
