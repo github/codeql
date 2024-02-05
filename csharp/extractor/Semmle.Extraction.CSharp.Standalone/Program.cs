@@ -30,6 +30,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             References = dependencyManager.ReferenceFiles;
             Extraction = new Extraction(options.SrcDir);
             Extraction.Sources.AddRange(dependencyManager.AllSourceFiles);
+            CompilationInfos = dependencyManager.CompilationInfos;
         }
 
         public IEnumerable<string> References { get; }
@@ -38,6 +39,8 @@ namespace Semmle.Extraction.CSharp.Standalone
         /// The extraction configuration.
         /// </summary>
         public Extraction Extraction { get; }
+
+        public IEnumerable<(string, string)> CompilationInfos { get; }
 
         private readonly DependencyManager dependencyManager;
 

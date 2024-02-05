@@ -24,8 +24,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
         private static void AnalyseStandalone(
             StandaloneAnalyser analyser,
-            IEnumerable<string> sources,
-            IEnumerable<string> referencePaths,
+            ExtractionInput extractionInput,
             CommonOptions options,
             IProgressMonitor progressMonitor,
             Stopwatch stopwatch)
@@ -35,12 +34,12 @@ namespace Semmle.Extraction.CSharp.Standalone
             try
             {
                 CSharp.Extractor.Analyse(stopwatch, analyser, options,
-                    references => GetResolvedReferencesStandalone(referencePaths, references),
-                    (analyser, syntaxTrees) => CSharp.Extractor.ReadSyntaxTrees(sources, analyser, null, null, syntaxTrees),
+                    references => GetResolvedReferencesStandalone(extractionInput.References, references),
+                    (analyser, syntaxTrees) => CSharp.Extractor.ReadSyntaxTrees(extractionInput.Sources, analyser, null, null, syntaxTrees),
                     (syntaxTrees, references) => CSharpCompilation.Create(
                         output.Name, syntaxTrees, references, new CSharpCompilationOptions(OutputKind.ConsoleApplication, allowUnsafe: true)
                         ),
-                    (compilation, options) => analyser.Initialize(output.FullName, compilation, options),
+                    (compilation, options) => analyser.Initialize(output.FullName, extractionInput.CompilationInfos, compilation, options),
                     _ => { },
                     () =>
                     {
@@ -73,8 +72,7 @@ namespace Semmle.Extraction.CSharp.Standalone
         }
 
         private static void ExtractStandalone(
-            IEnumerable<string> sources,
-            IEnumerable<string> referencePaths,
+            ExtractionInput extractionInput,
             IProgressMonitor pm,
             ILogger logger,
             CommonOptions options)
@@ -88,7 +86,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             using var analyser = new StandaloneAnalyser(pm, logger, false, pathTransformer);
             try
             {
-                AnalyseStandalone(analyser, sources, referencePaths, options, pm, stopwatch);
+                AnalyseStandalone(analyser, extractionInput, options, pm, stopwatch);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -131,6 +129,8 @@ namespace Semmle.Extraction.CSharp.Standalone
             }
         }
 
+        public record ExtractionInput(IEnumerable<string> Sources, IEnumerable<string> References, IEnumerable<(string, string)> CompilationInfos);
+
         public static ExitCode Run(Options options)
         {
             var stopwatch = new Stopwatch();
@@ -152,8 +152,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             logger.Log(Severity.Info, "");
             logger.Log(Severity.Info, "Extracting...");
             ExtractStandalone(
-                a.Extraction.Sources,
-                a.References,
+                new ExtractionInput(a.Extraction.Sources, a.References, a.CompilationInfos),
                 new ExtractionProgress(logger),
                 fileLogger,
                 options);

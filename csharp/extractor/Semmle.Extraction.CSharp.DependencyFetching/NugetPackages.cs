@@ -22,6 +22,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         private readonly FileInfo[] packageFiles;
 
+        public int PackageCount => packageFiles.Length;
+
         /// <summary>
         /// The computed packages directory.
         /// This will be in the Temp location
@@ -105,7 +107,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Restore all files in a specified package.
         /// </summary>
         /// <param name="package">The package file.</param>
-        private void RestoreNugetPackage(string package)
+        private bool RestoreNugetPackage(string package)
         {
             logger.LogInfo($"Restoring file {package}...");
 
@@ -141,22 +143,31 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (exitCode != 0)
             {
                 logger.LogError($"Command {pi.FileName} {pi.Arguments} failed with exit code {exitCode}");
+                return false;
             }
             else
             {
                 logger.LogInfo($"Restored file {package}");
+                return true;
             }
         }
 
         /// <summary>
         /// Download the packages to the temp folder.
         /// </summary>
-        public void InstallPackages()
+        public int InstallPackages()
         {
+            var success = 0;
             foreach (var package in packageFiles)
             {
-                RestoreNugetPackage(package.FullName);
+                var result = RestoreNugetPackage(package.FullName);
+                if (result)
+                {
+                    success++;
+                }
             }
+
+            return success;
         }
     }
 }
