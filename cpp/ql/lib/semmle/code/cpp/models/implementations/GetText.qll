@@ -28,8 +28,6 @@ class GetTextFunction extends DataFlowFunction {
   GetTextFunction() { argInd = getTextArg(this) }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
-    input.isParameter(argInd) and output.isReturnValue()
-    or
     input.isParameterDeref(argInd) and output.isReturnValueDeref()
   }
 }
