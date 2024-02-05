@@ -1,3 +1,13 @@
+## 0.11.8
+
+### Minor Analysis Improvements
+
+* Added `html.escape` as a sanitizer for HTML.
+
+### Bug Fixes
+
+* Fixed the `a` (ASCII) inline flag not being recognized by the regular expression library.
+
 ## 0.11.7
 
 ### Minor Analysis Improvements
