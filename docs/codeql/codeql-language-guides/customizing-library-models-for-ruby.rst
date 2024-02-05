@@ -35,7 +35,7 @@ See the `CLI documentation for how to load and use data extensions in a CodeQL e
 We'll explain how to use these using a few examples, and provide some reference material at the end of this article.
 
 Example: Taint sink in the 'tty-command' gem
-------------------------------------------
+--------------------------------------------
 
 In this example, we'll show how to add the following argument, passed to **tty-command**, as a command-line injection sink:
 
