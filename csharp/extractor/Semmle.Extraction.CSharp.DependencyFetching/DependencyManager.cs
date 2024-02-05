@@ -157,7 +157,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return frameworkLocations;
         }
 
-        private void RestoreNugetPackages(List<FileInfo> allNonBinaryFiles, List<string> allProjects, List<string> allSolutions, HashSet<string> dllPaths)
+        private void RestoreNugetPackages(List<FileInfo> allNonBinaryFiles, IEnumerable<string> allProjects, IEnumerable<string> allSolutions, HashSet<string> dllPaths)
         {
             try
             {
@@ -719,7 +719,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Returns a list of projects that are up to date with respect to restore.
         /// </summary>
         /// <param name="solutions">A list of paths to solution files.</param>
-        private IEnumerable<string> RestoreSolutions(List<string> solutions, out IEnumerable<string> assets)
+        private IEnumerable<string> RestoreSolutions(IEnumerable<string> solutions, out IEnumerable<string> assets)
         {
             var successCount = 0;
             var assetFiles = new List<string>();
@@ -841,21 +841,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     if (!res.Success)
                     {
                         logger.LogInfo($"Failed to restore nuget package {package}");
-                    }
-                    else
-                    {
-                        lock (sync)
-                        {
-                            successCount++;
-                        }
+                        return;
                     }
                 }
-                else
+
+                lock (sync)
                 {
-                    lock (sync)
-                    {
-                        successCount++;
-                    }
+                    successCount++;
                 }
             });
 

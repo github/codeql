@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Semmle.Extraction.CSharp.DependencyFetching;
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -12,7 +13,6 @@ namespace Semmle.Extraction.CSharp.Standalone
 {
     public static class Extractor
     {
-
         private static IEnumerable<Action> GetResolvedReferencesStandalone(IEnumerable<string> referencePaths, BlockingCollection<MetadataReference> references)
         {
             return referencePaths.Select<string, Action>(path => () =>
@@ -138,10 +138,9 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             using var logger = new ConsoleLogger(options.Verbosity, logThreadId: true);
             logger.Log(Severity.Info, "Extracting C# in buildless mode");
-            using var a = new Analysis(logger, options);
-            var sourceFileCount = a.Extraction.Sources.Count;
+            using var dependencyManager = new DependencyManager(options.SrcDir, options.Dependencies, logger);
 
-            if (sourceFileCount == 0)
+            if (!dependencyManager.AllSourceFiles.Any())
             {
                 logger.Log(Severity.Error, "No source files found");
                 return ExitCode.Errors;
@@ -152,7 +151,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             logger.Log(Severity.Info, "");
             logger.Log(Severity.Info, "Extracting...");
             ExtractStandalone(
-                new ExtractionInput(a.Extraction.Sources, a.References, a.CompilationInfos),
+                new ExtractionInput(dependencyManager.AllSourceFiles, dependencyManager.ReferenceFiles, dependencyManager.CompilationInfos),
                 new ExtractionProgress(logger),
                 fileLogger,
                 options);

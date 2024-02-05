@@ -107,7 +107,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Restore all files in a specified package.
         /// </summary>
         /// <param name="package">The package file.</param>
-        private bool RestoreNugetPackage(string package)
+        private bool TryRestoreNugetPackage(string package)
         {
             logger.LogInfo($"Restoring file {package}...");
 
@@ -157,17 +157,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         public int InstallPackages()
         {
-            var success = 0;
-            foreach (var package in packageFiles)
-            {
-                var result = RestoreNugetPackage(package.FullName);
-                if (result)
-                {
-                    success++;
-                }
-            }
-
-            return success;
+            return packageFiles.Count(package => TryRestoreNugetPackage(package.FullName));
         }
     }
 }

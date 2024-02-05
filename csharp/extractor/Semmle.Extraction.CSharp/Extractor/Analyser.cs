@@ -21,7 +21,7 @@ namespace Semmle.Extraction.CSharp
         protected CSharpCompilation? compilation;
         protected CommonOptions? options;
         private protected Entities.Compilation? compilationEntity;
-        private TrapWriter? compilationTrapFile;
+        private IDisposable? compilationTrapFile;
 
         private readonly object progressMutex = new object();
 
