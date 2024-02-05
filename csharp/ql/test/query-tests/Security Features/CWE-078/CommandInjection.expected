@@ -1,26 +1,26 @@
 edges
-| CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:25:32:25:51 | access to property Text : String |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:26:27:26:47 | ... + ... |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:26:50:26:66 | ... + ... |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:63:28:71 | access to local variable userInput |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:63:28:71 | access to local variable userInput : String |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:74:28:82 | access to local variable userInput |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:74:28:82 | access to local variable userInput : String |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:32:39:32:47 | access to local variable userInput |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:32:39:32:47 | access to local variable userInput : String |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:33:40:33:48 | access to local variable userInput |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:33:40:33:48 | access to local variable userInput : String |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:34:47:34:55 | access to local variable userInput |
-| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:34:47:34:55 | access to local variable userInput : String |
-| CommandInjection.cs:28:42:28:83 | object creation of type ProcessStartInfo : ProcessStartInfo | CommandInjection.cs:29:27:29:35 | access to local variable startInfo |
-| CommandInjection.cs:28:63:28:71 | access to local variable userInput : String | CommandInjection.cs:28:42:28:83 | object creation of type ProcessStartInfo : ProcessStartInfo |
-| CommandInjection.cs:28:74:28:82 | access to local variable userInput : String | CommandInjection.cs:28:42:28:83 | object creation of type ProcessStartInfo : ProcessStartInfo |
-| CommandInjection.cs:32:13:32:26 | [post] access to local variable startInfoProps : ProcessStartInfo | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps |
-| CommandInjection.cs:32:39:32:47 | access to local variable userInput : String | CommandInjection.cs:32:13:32:26 | [post] access to local variable startInfoProps : ProcessStartInfo |
-| CommandInjection.cs:33:13:33:26 | [post] access to local variable startInfoProps : ProcessStartInfo | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps |
-| CommandInjection.cs:33:40:33:48 | access to local variable userInput : String | CommandInjection.cs:33:13:33:26 | [post] access to local variable startInfoProps : ProcessStartInfo |
-| CommandInjection.cs:34:13:34:26 | [post] access to local variable startInfoProps : ProcessStartInfo | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps |
-| CommandInjection.cs:34:47:34:55 | access to local variable userInput : String | CommandInjection.cs:34:13:34:26 | [post] access to local variable startInfoProps : ProcessStartInfo |
+| CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:25:32:25:51 | access to property Text : String | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:26:27:26:47 | ... + ... | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:26:50:26:66 | ... + ... | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:63:28:71 | access to local variable userInput | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:63:28:71 | access to local variable userInput : String | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:74:28:82 | access to local variable userInput | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:28:74:28:82 | access to local variable userInput : String | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:32:39:32:47 | access to local variable userInput | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:32:39:32:47 | access to local variable userInput : String | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:33:40:33:48 | access to local variable userInput | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:33:40:33:48 | access to local variable userInput : String | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:34:47:34:55 | access to local variable userInput | provenance |  |
+| CommandInjection.cs:25:32:25:51 | access to property Text : String | CommandInjection.cs:34:47:34:55 | access to local variable userInput : String | provenance |  |
+| CommandInjection.cs:28:42:28:83 | object creation of type ProcessStartInfo : ProcessStartInfo | CommandInjection.cs:29:27:29:35 | access to local variable startInfo | provenance |  |
+| CommandInjection.cs:28:63:28:71 | access to local variable userInput : String | CommandInjection.cs:28:42:28:83 | object creation of type ProcessStartInfo : ProcessStartInfo | provenance |  |
+| CommandInjection.cs:28:74:28:82 | access to local variable userInput : String | CommandInjection.cs:28:42:28:83 | object creation of type ProcessStartInfo : ProcessStartInfo | provenance |  |
+| CommandInjection.cs:32:13:32:26 | [post] access to local variable startInfoProps : ProcessStartInfo | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps | provenance |  |
+| CommandInjection.cs:32:39:32:47 | access to local variable userInput : String | CommandInjection.cs:32:13:32:26 | [post] access to local variable startInfoProps : ProcessStartInfo | provenance |  |
+| CommandInjection.cs:33:13:33:26 | [post] access to local variable startInfoProps : ProcessStartInfo | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps | provenance |  |
+| CommandInjection.cs:33:40:33:48 | access to local variable userInput : String | CommandInjection.cs:33:13:33:26 | [post] access to local variable startInfoProps : ProcessStartInfo | provenance |  |
+| CommandInjection.cs:34:13:34:26 | [post] access to local variable startInfoProps : ProcessStartInfo | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps | provenance |  |
+| CommandInjection.cs:34:47:34:55 | access to local variable userInput : String | CommandInjection.cs:34:13:34:26 | [post] access to local variable startInfoProps : ProcessStartInfo | provenance |  |
 nodes
 | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
 | CommandInjection.cs:25:32:25:51 | access to property Text : String | semmle.label | access to property Text : String |
