@@ -92,7 +92,7 @@ class ExternalApiDataNode extends DataFlow::Node {
 deprecated class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
   UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
