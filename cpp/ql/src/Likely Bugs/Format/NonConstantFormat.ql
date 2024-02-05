@@ -136,6 +136,6 @@ where
   call.getArgument(call.getFormatParameterIndex()) = formatString and
   NonConstFlow::flowTo(sink) and
   isSinkImpl(sink, formatString)
-select formatString, //sink.getNode(), src, sink,
+select formatString,
   "The format string argument to " + call.getTarget().getName() +
     " should be constant to prevent security issues and other potential errors."
