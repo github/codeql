@@ -139,31 +139,40 @@ private import CfgImpl
 private import Completion
 private import CfgScope
 
-// Trees are what end up creating Cfg::Node objects and therefore DataFlow::Node objects.
-// Its also required that there is parent/child relationships between nodes so orphans nodes will not appear as either Cfg::Node or DataFlow::Node.
-// For example
-// - ArgumentExpr should be children of UsesExpr, and UsesExpr should be children of StepStmt.
-// TODO: We need to make VarAccess expressions part ot the tree as they are currently orphans
-private class CfgNodeTree extends StandardPreOrderTree instanceof AstNode {
-  override AstNode getChildNode(int i) { result = super.getChildNodeByOrder(i) }
+private class JobTree extends StandardPreOrderTree instanceof JobStmt {
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](Expression child, Location l |
+        (child = super.getAStep() or child = super.getOutputStmt()) and
+        l = child.getLocation()
+      |
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
+      )
+  }
 }
-// private class JobStmtTree extends StandardPreOrderTree instanceof JobStmt {
-//   override ControlFlowTree getChildNode(int i) { result = super.getSuccNode(i) }
-// }
-//
-// private class StepStmtTree extends StandardPreOrderTree instanceof StepStmt {
-//   override ControlFlowTree getChildNode(int i) { result = super.getSuccNode(i) }
-// }
-//
-// private class JobOutputTree extends StandardPreOrderTree instanceof JobOutputStmt {
-//   override ControlFlowTree getChildNode(int i) { result = super.getSuccNode(i) }
-// }
-//
-// // TODO: Do we need this or we can just care about the ExprAccessExpr
-// private class ArgumentTree extends LeafTree instanceof ArgumentExpr { }
-//
-// private class ExprAccessTree extends LeafTree instanceof ExprAccessExpr { }
-//
-// private class StepOutputAccessTree extends LeafTree instanceof StepOutputAccessExpr { }
-//
-// private class JobOutputAccessTree extends LeafTree instanceof JobOutputAccessExpr { }
+
+private class JobOutputTree extends StandardPreOrderTree instanceof JobOutputStmt {
+  override ControlFlowTree getChildNode(int i) { result = super.asYamlMapping().getValueNode(i) }
+}
+
+private class UsesTree extends StandardPreOrderTree instanceof UsesExpr {
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](Expression child, Location l |
+        child = super.getArgument(_) and l = child.getLocation()
+      |
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
+      )
+  }
+}
+
+private class RunTree extends StandardPreOrderTree instanceof RunExpr {
+  override ControlFlowTree getChildNode(int i) { result = super.getScriptExpr() and i = 0 }
+}
+
+private class ExprAccessTree extends LeafTree instanceof ExprAccessExpr { }
+

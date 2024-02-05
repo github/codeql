@@ -19,18 +19,6 @@ abstract class RemoteFlowSource extends SourceNode {
   override string getThreatModel() { result = "remote" }
 }
 
-private class ChangedFilesSource extends RemoteFlowSource {
-  ChangedFilesSource() {
-    exists(UsesExpr uses |
-      uses.getTarget() = "tj-actions/changed-files" and
-      uses.getVersion() = ["v1", "v20", "v30", "v40"] and
-      uses = this.asExpr()
-    )
-  }
-
-  override string getSourceType() { result = "User-controlled list of changed files" }
-}
-
 bindingset[context]
 private predicate isExternalUserControlledIssue(string context) {
   context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*issue\\s*\\.\\s*title\\b") or
@@ -134,4 +122,16 @@ private class EventSource extends RemoteFlowSource {
   }
 
   override string getSourceType() { result = "User-controlled events" }
+}
+
+private class ChangedFilesSource extends RemoteFlowSource {
+  ChangedFilesSource() {
+    exists(UsesExpr uses |
+      uses.getTarget() = "tj-actions/changed-files" and
+      uses.getVersion() = ["v10", "v20", "v30", "v40"] and
+      uses = this.asExpr()
+    )
+  }
+
+  override string getSourceType() { result = "User-controlled list of changed files" }
 }

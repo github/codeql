@@ -97,8 +97,8 @@ class DataFlowCallable instanceof Cfg::CfgScope {
 
   string getName() {
     if this instanceof StepStmt
-    then result = this.(StepStmt).getName()
-    else result = this.(JobStmt).getName()
+    then result = this.(StepStmt).getId()
+    else result = this.(JobStmt).getId()
   }
 }
 
@@ -295,4 +295,3 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * This compression is normally done to not show SSA steps, casts, etc.
  */
 predicate neverSkipInPathGraph(Node node) { any() }
-
