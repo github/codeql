@@ -114,7 +114,7 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
     kind instanceof GotoEdge
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     result = this.getInstruction(ExitFunctionTag())
   }
 
@@ -383,7 +383,7 @@ abstract class TranslatedParameter extends TranslatedElement {
     kind instanceof GotoEdge
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     if this.hasIndirection()
     then result = this.getInstruction(InitializerIndirectStoreTag())
     else result = this.getInstruction(InitializerStoreTag())
@@ -621,8 +621,8 @@ class TranslatedConstructorInitList extends TranslatedElement, InitializationCon
     else result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getLastChild().getLastInstruction()
+  override Instruction getALastInstructionInternal() {
+    result = this.getLastChild().getALastInstruction()
   }
 
   override TranslatedElement getLastChild() {
@@ -696,8 +696,8 @@ class TranslatedDestructorDestructionList extends TranslatedElement,
     else result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getChild(max(int id | exists(this.getChild(id)))).getLastInstruction()
+  override Instruction getALastInstructionInternal() {
+    result = this.getChild(max(int id | exists(this.getChild(id)))).getALastInstruction()
   }
 
   override TranslatedElement getLastChild() {
@@ -754,7 +754,7 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
     else result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     if exists(this.getAChild())
     then
       result =
@@ -811,7 +811,7 @@ abstract class TranslatedReadEffect extends TranslatedElement {
     kind instanceof GotoEdge
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     result = this.getInstruction(OnlyInstructionTag())
   }
 

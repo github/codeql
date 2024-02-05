@@ -156,7 +156,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     kind instanceof GotoEdge
   }
 
-  final override Instruction getLastInstructionInternal() {
+  final override Instruction getALastInstructionInternal() {
     result = this.getInstruction(DynamicInitializationConditionalBranchTag())
     or
     result = this.getInstruction(DynamicInitializationFlagStoreTag())
@@ -188,7 +188,7 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getInitialization() and
     result = this.getInstruction(DynamicInitializationFlagConstantTag()) and
     kind instanceof GotoEdge

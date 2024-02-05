@@ -213,8 +213,8 @@ class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
 
   override TranslatedElement getLastChild() { result = this.getTranslatedHandler() }
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getTranslatedHandler().getLastInstruction()
+  override Instruction getALastInstructionInternal() {
+    result = this.getTranslatedHandler().getALastInstruction()
     or
     result = this.getInstruction(UnwindTag())
   }
@@ -260,7 +260,7 @@ abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
     not exists(this.getChildInternal(_)) and result = 0
   }
 
-  final override predicate hasImplicitDestructorCalls() {
+  final override predicate hasAnImplicitDestructorCall() {
     exists(stmt.getAnImplicitDestructorCall())
   }
 
@@ -288,7 +288,7 @@ class TranslatedEmptyStmt extends TranslatedStmt {
     kind instanceof GotoEdge
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     result = this.getInstruction(OnlyInstructionTag())
   }
 
@@ -327,8 +327,8 @@ class TranslatedDeclStmt extends TranslatedStmt {
     result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getChild(this.getChildCount() - 1).getLastInstruction()
+  override Instruction getALastInstructionInternal() {
+    result = this.getChild(this.getChildCount() - 1).getALastInstruction()
   }
 
   override TranslatedElement getLastChild() { result = this.getChild(this.getChildCount() - 1) }
@@ -384,7 +384,7 @@ class TranslatedExprStmt extends TranslatedStmt {
     result = this.getExpr().getFirstInstruction(kind)
   }
 
-  override Instruction getLastInstructionInternal() { result = this.getExpr().getLastInstruction() }
+  override Instruction getALastInstructionInternal() { result = this.getExpr().getALastInstruction() }
 
   override TranslatedElement getLastChild() { result = this.getExpr() }
 
@@ -446,7 +446,7 @@ class TranslatedReturnVoidExpressionStmt extends TranslatedReturnStmt {
     result = this.getExpr().getFirstInstruction(kind)
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     result = this.getInstruction(OnlyInstructionTag())
   }
 
@@ -486,7 +486,7 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
     kind instanceof GotoEdge
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     result = this.getInstruction(OnlyInstructionTag())
   }
 
@@ -596,8 +596,8 @@ class TranslatedTryStmt extends TranslatedStmt {
     result = this.getBody().getFirstInstruction(kind)
   }
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getLastChild().getLastInstruction()
+  override Instruction getALastInstructionInternal() {
+    result = this.getLastChild().getALastInstruction()
   }
 
   override TranslatedElement getLastChild() {
@@ -665,7 +665,7 @@ class TranslatedBlock extends TranslatedStmt {
     else result = this.getStmt(0).getFirstInstruction(kind)
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     if this.isEmpty()
     then result = this.getInstruction(OnlyInstructionTag())
     else result = this.getStmt(this.getStmtCount() - 1).getFirstInstruction(any(GotoEdge goto))
@@ -709,8 +709,8 @@ abstract class TranslatedHandler extends TranslatedStmt {
     kind instanceof GotoEdge
   }
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getBlock().getLastInstruction()
+  override Instruction getALastInstructionInternal() {
+    result = this.getBlock().getALastInstruction()
   }
 
   override TranslatedElement getLastChild() { result = this.getBlock() }
@@ -802,8 +802,8 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
     else result = this.getFirstConditionInstruction(kind)
   }
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getElse().getLastInstruction() or result = this.getThen().getLastInstruction() // FIXME: how do we handle the CFG merge here
+  override Instruction getALastInstructionInternal() {
+    result = this.getElse().getALastInstruction() or result = this.getThen().getALastInstruction() // FIXME: how do we handle the CFG merge here
   }
 
   override TranslatedElement getLastChild() {
@@ -870,8 +870,8 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
 abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
   override Loop stmt;
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getCondition().getLastInstruction() // FIXME: how do we handle the branch here
+  override Instruction getALastInstructionInternal() {
+    result = this.getCondition().getALastInstruction() // FIXME: how do we handle the branch here
   }
 
   override TranslatedElement getLastChild() { result = this.getCondition() }
@@ -947,7 +947,7 @@ class TranslatedForStmt extends TranslatedLoop {
 
   final override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
     child = this.getCondition() and
-    if this.hasImplicitDestructorCalls()
+    if this.hasAnImplicitDestructorCall()
     then result = this.getChild(this.getFirstDestructorCallIndex()).getFirstInstruction(kind)
     else result = this.getParent().getChildSuccessor(this, kind)
   }
@@ -1033,8 +1033,8 @@ class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
     result = this.getRangeVariableDeclStmt().getFirstInstruction(kind)
   }
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getCondition().getLastInstruction()
+  override Instruction getALastInstructionInternal() {
+    result = this.getCondition().getALastInstruction()
   }
 
   override TranslatedElement getLastChild() { result = this.getCondition() }
@@ -1114,7 +1114,7 @@ class TranslatedJumpStmt extends TranslatedStmt {
     kind instanceof GotoEdge
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     result = this.getInstruction(OnlyInstructionTag())
   }
 
@@ -1162,7 +1162,7 @@ class TranslatedSwitchStmt extends TranslatedStmt {
     else result = this.getFirstExprInstruction(kind)
   }
 
-  override Instruction getLastInstructionInternal() { result = this.getBody().getLastInstruction() }
+  override Instruction getALastInstructionInternal() { result = this.getBody().getALastInstruction() }
 
   override TranslatedElement getLastChild() { result = this.getBody() }
 
@@ -1233,7 +1233,7 @@ class TranslatedAsmStmt extends TranslatedStmt {
     )
   }
 
-  override Instruction getLastInstructionInternal() { result = this.getInstruction(AsmTag()) }
+  override Instruction getALastInstructionInternal() { result = this.getInstruction(AsmTag()) }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = AsmTag() and
@@ -1286,8 +1286,8 @@ class TranslatedVlaDimensionStmt extends TranslatedStmt {
     result = this.getChild(0).getFirstInstruction(kind)
   }
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getChild(0).getLastInstruction()
+  override Instruction getALastInstructionInternal() {
+    result = this.getChild(0).getALastInstruction()
   }
 
   override TranslatedElement getLastChild() { result = this.getChild(0) }
@@ -1314,7 +1314,7 @@ class TranslatedVlaDeclarationStmt extends TranslatedStmt {
     kind instanceof GotoEdge
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     result = this.getInstruction(OnlyInstructionTag())
   }
 

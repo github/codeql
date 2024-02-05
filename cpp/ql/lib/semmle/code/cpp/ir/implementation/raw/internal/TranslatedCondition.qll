@@ -58,8 +58,8 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
     result = this.getOperand().getFirstInstruction(kind)
   }
 
-  final override Instruction getLastInstructionInternal() {
-    result = this.getOperand().getLastInstruction()
+  final override Instruction getALastInstructionInternal() {
+    result = this.getOperand().getALastInstruction()
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -70,7 +70,7 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
     none()
   }
 
-  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
 
   abstract TranslatedCondition getOperand();
 }
@@ -96,7 +96,7 @@ class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
 abstract class TranslatedNativeCondition extends TranslatedCondition, TTranslatedNativeCondition {
   TranslatedNativeCondition() { this = TTranslatedNativeCondition(expr) }
 
-  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
 }
 
 abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeCondition, ConditionContext {
@@ -114,10 +114,10 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
     result = this.getLeftOperand().getFirstInstruction(kind)
   }
 
-  final override Instruction getLastInstructionInternal() {
-    result = this.getLeftOperand().getLastInstruction()
+  final override Instruction getALastInstructionInternal() {
+    result = this.getLeftOperand().getALastInstruction()
     or
-    result = this.getRightOperand().getLastInstruction()
+    result = this.getRightOperand().getALastInstruction()
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -180,7 +180,7 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
     result = this.getValueExpr().getFirstInstruction(kind)
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     result = this.getInstruction(ValueConditionConditionalBranchTag())
   }
 
@@ -192,7 +192,7 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
     resultType = getVoidType()
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getValueExpr() and
     result = this.getInstruction(ValueConditionConditionalBranchTag()) and
     kind instanceof GotoEdge

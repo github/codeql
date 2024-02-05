@@ -47,8 +47,8 @@ abstract class TranslatedCall extends TranslatedExpr {
     else result = this.getFirstCallTargetInstruction(kind)
   }
 
-  override Instruction getLastInstructionInternal() {
-    result = this.getSideEffects().getLastInstruction()
+  override Instruction getALastInstructionInternal() {
+    result = this.getSideEffects().getALastInstruction()
   }
 
   override TranslatedElement getLastChild() { result = this.getSideEffects() }
@@ -94,7 +94,6 @@ abstract class TranslatedCall extends TranslatedExpr {
   }
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
-    kind instanceof GotoEdge and
     tag = CallTag() and
     result = this.getSideEffects().getFirstInstruction(kind)
   }
@@ -257,9 +256,9 @@ abstract class TranslatedSideEffects extends TranslatedElement {
     result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     if exists(this.getAChild())
-    then result = this.getChild(max(int i | exists(this.getChild(i)))).getLastInstruction()
+    then result = this.getChild(max(int i | exists(this.getChild(i)))).getALastInstruction()
     else
       // If there are no side effects, the "last" instruction should be the parent call's last
       // instruction, so that implicit destructors can be inserted in the right place.
@@ -455,7 +454,7 @@ abstract class TranslatedSideEffect extends TranslatedElement {
     kind instanceof GotoEdge
   }
 
-  override Instruction getLastInstructionInternal() {
+  override Instruction getALastInstructionInternal() {
     result = this.getInstruction(OnlyInstructionTag())
   }
 
