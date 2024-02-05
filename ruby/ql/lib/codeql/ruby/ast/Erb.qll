@@ -252,14 +252,32 @@ class ErbGraphqlDirective extends ErbDirective {
 class ErbOutputDirective extends ErbDirective {
   private Erb::OutputDirective g;
 
-  ErbOutputDirective() { this = TOutputDirective(g) }
+  ErbOutputDirective() { this = TOutputDirective(g) or this = TRawOutputDirective(g) }
 
   override ErbCode getToken() { toGenerated(result) = g.getChild() }
 
+  /**
+   * Holds if this is a raw Erb output directive.
+   * ```erb
+   * <%== foo %>
+   * ```
+   */
+  predicate isRaw() { this = TRawOutputDirective(g) }
+
   final override string toString() {
-    result = "<%=" + this.getToken().toString() + "%>"
+    this.isRaw() and
+    (
+      result = "<%==" + this.getToken().toString() + "%>"
+      or
+      not exists(this.getToken()) and result = "<%==%>"
+    )
     or
-    not exists(this.getToken()) and result = "<%=%>"
+    not this.isRaw() and
+    (
+      result = "<%=" + this.getToken().toString() + "%>"
+      or
+      not exists(this.getToken()) and result = "<%=%>"
+    )
   }
 
   final override string getAPrimaryQlClass() { result = "ErbOutputDirective" }
