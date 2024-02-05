@@ -29,7 +29,9 @@ string madSummary(
     exists(string moduleName |
       package = function.getScope().getName().splitAt(".", 0) and
       moduleName = function.getScope().getName().splitAt(".", 1) and
-      functionPath = "Member[" + moduleName + "].Member[" + function.getName() + "]"
+      if moduleName = "__init__"
+      then functionPath = "Member[" + function.getName() + "]"
+      else functionPath = "Member[" + moduleName + "].Member[" + function.getName() + "]"
     ) and
     (
       exists(int index |
