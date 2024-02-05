@@ -11,35 +11,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import queries.modeling.internal.Util as Util
 
-string parameterDetails(DataFlow::ParameterNode paramNode) {
-  exists(DataFlow::MethodNode methodNode | methodNode.getParameter(_) = paramNode |
-    result = paramNode.getName()
-  )
-  or
-  exists(DataFlow::MethodNode methodNode, string name |
-    methodNode.getKeywordParameter(name) = paramNode
-  |
-    result = name + ":"
-  )
-  or
-  exists(DataFlow::MethodNode methodNode | methodNode.getBlockParameter() = paramNode |
-    result = "&" + paramNode.getName()
-    or
-    not exists(paramNode.getName()) and result = "&"
-  )
-  or
-  exists(DataFlow::MethodNode methodNode | methodNode.getSelfParameter() = paramNode |
-    result = "self"
-  )
-  or
-  exists(DataFlow::MethodNode methodNode | methodNode.getHashSplatParameter() = paramNode |
-    result = "**" + paramNode.getName()
-    or
-    not exists(paramNode.getName()) and result = "**"
-  )
-}
-
-predicate simpleParameters(string type, string path, string value, string details) {
+predicate simpleParameters(string type, string path, string value, DataFlow::Node details) {
   exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
     methodNode.getLocation().getFile() instanceof Util::RelevantFile and
     (
@@ -52,11 +24,11 @@ predicate simpleParameters(string type, string path, string value, string detail
   |
     Util::pathToMethod(methodNode, type, path) and
     value = Util::getArgumentPath(paramNode) and
-    details = parameterDetails(paramNode)
+    details = paramNode
   )
 }
 
-predicate blockArguments(string type, string path, string value, string details) {
+predicate blockArguments(string type, string path, string value, DataFlow::Node details) {
   exists(DataFlow::MethodNode methodNode, DataFlow::CallNode callNode |
     methodNode.getLocation().getFile() instanceof Util::RelevantFile and
     callNode = methodNode.getABlockCall()
@@ -66,47 +38,45 @@ predicate blockArguments(string type, string path, string value, string details)
         argNode = callNode.getPositionalArgument(i)
       |
         value = "Argument[block].Parameter[" + i + "]" and
-        details = argNode.asVariableAccessAstNode().getVariable().getName()
+        details = argNode
       )
       or
       exists(DataFlow::ExprNode argNode, string keyword |
         argNode = callNode.getKeywordArgument(keyword)
       |
         value = "Argument[block].Parameter[" + keyword + ":]" and
-        details = ":" + keyword
+        details = argNode
       )
       or
       value = "Argument[block]" and
-      (
-        details = callNode.getMethodName()
-        or
-        not exists(callNode.getMethodName()) and
-        callNode.getExprNode().getExpr() instanceof YieldCall and
-        details = "yield ..."
-      )
+      details = callNode
     ) and
     Util::pathToMethod(methodNode, type, path)
   )
 }
 
-predicate returnValue(string type, string path, string value, string details) {
+predicate returnValue(string type, string path, string value, DataFlow::Node details) {
   exists(DataFlow::MethodNode methodNode, DataFlow::Node returnNode |
     methodNode.getLocation().getFile() instanceof Util::RelevantFile and
     returnNode = methodNode.getAReturnNode()
   |
     Util::pathToMethod(methodNode, type, path) and
     value = "ReturnValue" and
-    details = returnNode.toString()
+    details = returnNode
   )
 }
 
-predicate inputAccessPaths(string type, string path, string value, string details, string defType) {
+predicate inputAccessPaths(
+  string type, string path, string value, DataFlow::Node details, string defType
+) {
   simpleParameters(type, path, value, details) and defType = "parameter"
   or
   blockArguments(type, path, value, details) and defType = "parameter"
 }
 
-predicate outputAccessPaths(string type, string path, string value, string details, string defType) {
+predicate outputAccessPaths(
+  string type, string path, string value, DataFlow::Node details, string defType
+) {
   simpleParameters(type, path, value, details) and defType = "parameter"
   or
   blockArguments(type, path, value, details) and defType = "parameter"
