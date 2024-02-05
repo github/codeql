@@ -18,6 +18,7 @@ jobs:
       - id: step1
         env:
           BODY: ${{ steps.step0.outputs.value}}
+        shell: powershell
         run: |
           Write-Output "::set-output name=MSG::$ENV{BODY}"
       - id: step2
