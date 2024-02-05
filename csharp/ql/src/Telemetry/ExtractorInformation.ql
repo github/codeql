@@ -11,7 +11,6 @@ import semmle.code.csharp.commons.Diagnostics
 
 predicate compilationInfo(string key, float value) {
   exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
-    exists(infoValue.toFloat()) and
     key = infoKey and
     value = infoValue.toFloat()
     or
