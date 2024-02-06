@@ -209,46 +209,69 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
   predicate isSink(Endpoint e, string kind, string provenance) {
-    exists(string package, string type, string name, string signature, string ext, string input |
-      sinkSpec(e, package, type, name, signature, ext, input) and
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      string input
+    |
+      sinkSpec(e, package, type, subtypes, name, signature, ext, input) and
       ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
     )
   }
 
   predicate isSource(Endpoint e, string kind, string provenance) {
-    exists(string package, string type, string name, string signature, string ext, string output |
-      sourceSpec(e, package, type, name, signature, ext, output) and
-      ExternalFlow::sourceModel(package, type, _, name, [signature, ""], ext, output, kind,
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      string output
+    |
+      sourceSpec(e, package, type, subtypes, name, signature, ext, output) and
+      ExternalFlow::sourceModel(package, type, subtypes, name, [signature, ""], ext, output, kind,
         provenance)
     )
   }
 
   predicate isNeutral(Endpoint e) {
     exists(string package, string type, string name, string signature |
-      (
-        sinkSpec(e, package, type, name, signature, _, _)
-        or
-        sourceSpec(e, package, type, name, signature, _, _)
-      ) and
+      sinkSpec(e, package, type, _, name, signature, _, _)
+      or
+      sourceSpec(e, package, type, _, name, signature, _, _)
+    |
       ExternalFlow::neutralModel(package, type, name, [signature, ""], "sink", _)
     )
   }
 
-  additional predicate sinkSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext, string input
+  /**
+   * Holds if the endpoint concerns a callable with the given package, type, name and signature.
+   *
+   * If `subtypes` is `false`, only the exact callable is considered. If `true`, the callable and
+   * all its overrides are considered.
+   */
+  additional predicate endpointCallable(
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature
   ) {
-    e.getCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getCallable()) and
+    exists(Callable c |
+      c = e.getCallable() and subtypes in [true, false]
+      or
+      e.getCallable().(Method).getSourceDeclaration().overrides+(c) and subtypes = true
+    |
+      c.hasQualifiedName(package, type, name) and
+      signature = ExternalFlow::paramsString(c)
+    )
+  }
+
+  additional predicate sinkSpec(
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    string ext, string input
+  ) {
+    endpointCallable(e, package, type, subtypes, name, signature) and
     ext = "" and
     input = e.getMaDInput()
   }
 
   additional predicate sourceSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext,
-    string output
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    string ext, string output
   ) {
-    e.getCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getCallable()) and
+    endpointCallable(e, package, type, subtypes, name, signature) and
     ext = "" and
     output = e.getMaDOutput()
   }
