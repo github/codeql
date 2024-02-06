@@ -191,7 +191,3 @@ func katarasJwt5() {
 	var alg kataras.Alg
 	keys.Register(alg, "api", nil, safeName) // BAD
 }
-
-func main() {
-	return
-}
