@@ -406,7 +406,7 @@ private Element interpretElement0(
     // Member functions
     exists(Class namedClass, Class classWithMethod, Function method |
       classWithMethod = method.getClassAndName(name) and
-      classWithMethod.getNamespace().getQualifiedName() = namespace and
+      namedClass.getNamespace().getQualifiedName() = namespace and
       namedClass.getName() = type and
       matchesSignature(method, signature) and
       result = method
@@ -425,7 +425,7 @@ private Element interpretElement0(
     exists(Class namedClass, Class classWithMember, MemberVariable member |
       member.getName() = name and
       member = classWithMember.getAMember() and
-      classWithMember.getNamespace().getQualifiedName() = namespace and
+      namedClass.getNamespace().getQualifiedName() = namespace and
       namedClass.getName() = type and
       result = member
     |
