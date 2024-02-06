@@ -7,7 +7,7 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
 
 /**
- * Provides modeling for the `Open3` library.
+ * Provides modeling for the `Open3` and `Open4` libraries.
  */
 module Open3 {
   /**
@@ -18,8 +18,10 @@ module Open3 {
   class Open3Call extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
     Open3Call() {
       this =
-        API::getTopLevelMember("Open3")
-            .getAMethodCall(["popen3", "popen2", "popen2e", "capture3", "capture2", "capture2e"])
+        API::getTopLevelMember(["Open3", "Open4"])
+            .getAMethodCall([
+                "popen3", "popen2", "popen2e", "capture3", "capture2", "capture2e", "popen4"
+              ])
     }
 
     override DataFlow::Node getAnArgument() { result = super.getArgument(_) }

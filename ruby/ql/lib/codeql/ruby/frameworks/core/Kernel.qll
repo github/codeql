@@ -130,13 +130,19 @@ module Kernel {
    * `Kernel.spawn` takes the same argument forms as `Kernel.system`.
    * See `KernelSystemCall` for details.
    * Ruby documentation: https://docs.ruby-lang.org/en/3.0.0/Kernel.html#method-i-spawn
+   * Methods with the same effect exist in the `Process` and `PTY` classes, so they are also modeled here.
    * TODO: document and handle the env and option arguments.
    * ```
    * spawn([env,] command... [,options]) -> pid
    * ```
    */
-  class KernelSpawnCall extends SystemCommandExecution::Range instanceof KernelMethodCall {
-    KernelSpawnCall() { this.getMethodName() = "spawn" }
+  class KernelSpawnCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
+    KernelSpawnCall() {
+      this.getMethodName() = "spawn" and
+      this instanceof KernelMethodCall
+      or
+      this = DataFlow::getConstant(["Process", "PTY"]).getAMethodCall("spawn")
+    }
 
     override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
 
