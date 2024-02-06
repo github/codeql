@@ -394,8 +394,7 @@ private Element interpretElement0(
   (
     // Non-member functions
     exists(Function func |
-      func.getName() = name and
-      func.getNamespace().getQualifiedName() = namespace and
+      func.hasQualifiedName(namespace, name) and
       type = "" and
       matchesSignature(func, signature) and
       subtypes = false and
@@ -406,8 +405,7 @@ private Element interpretElement0(
     // Member functions
     exists(Class namedClass, Class classWithMethod, Function method |
       classWithMethod = method.getClassAndName(name) and
-      namedClass.getNamespace().getQualifiedName() = namespace and
-      namedClass.getName() = type and
+      namedClass.hasQualifiedName(namespace, type) and
       matchesSignature(method, signature) and
       result = method
     |
@@ -425,8 +423,7 @@ private Element interpretElement0(
     exists(Class namedClass, Class classWithMember, MemberVariable member |
       member.getName() = name and
       member = classWithMember.getAMember() and
-      namedClass.getNamespace().getQualifiedName() = namespace and
-      namedClass.getName() = type and
+      namedClass.hasQualifiedName(namespace, type) and
       result = member
     |
       // field declared in the named type or a subtype of it (or an extension of any)
