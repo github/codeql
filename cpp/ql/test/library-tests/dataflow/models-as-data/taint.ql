@@ -8,7 +8,7 @@ private class TestSources extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
-        ";;false;localMadSource;;;ReturnValue;remote",
+        ";;false;localMadSource;;;ReturnValue;local",
         ";;false;remoteMadSource;;;ReturnValue;remote",
         ";;false;localMadSourceVoid;;;ReturnValue;local",
         ";;false;localMadSourceHasBody;;;ReturnValue;local",
@@ -16,14 +16,14 @@ private class TestSources extends SourceModelCsv {
         ";;false;remoteMadSourceArg0;;;Argument[0];remote",
         ";;false;remoteMadSourceArg1;;;Argument[1];remote", ";;false;remoteMadSourceVar;;;;remote",
         ";;false;remoteMadSourceParam0;;;Parameter[0];remote",
-        "MyNamespace;;false;namespaceLocalMadSource;;;ReturnValue;remote",
-        "MyNamespace;;false;namespaceLocalMadSourceVar;;;;remote",
-        "MyNamespace::MyNamespace2;;false;namespace2LocalMadSource;;;ReturnValue;remote",
+        "MyNamespace;;false;namespaceLocalMadSource;;;ReturnValue;local",
+        "MyNamespace;;false;namespaceLocalMadSourceVar;;;;local",
+        "MyNamespace::MyNamespace2;;false;namespace2LocalMadSource;;;ReturnValue;local",
         ";MyClass;true;memberRemoteMadSource;;;ReturnValue;remote",
         ";MyClass;true;memberRemoteMadSourceArg0;;;Argument[0];remote",
         ";MyClass;true;memberRemoteMadSourceVar;;;;remote",
         ";MyClass;true;subtypeRemoteMadSource1;;;ReturnValue;remote",
-        ";MyClass;false;subtypeNonSource;;;ReturnValue;remote", // only a source if defined in MyClass
+        ";MyClass;false;subtypeNonSource;;;ReturnValue;remote", // the tests define this in MyDerivedClass, so it should *not* be recongized as a source
         ";MyDerivedClass;false;subtypeRemoteMadSource2;;;ReturnValue;remote",
       ]
   }
@@ -41,7 +41,7 @@ private class TestSinks extends SinkModelCsv {
         ";;false;madSinkArg01;;;Argument[0..1];test-sink",
         ";;false;madSinkArg02;;;Argument[0,2];test-sink",
         // TODO: madSinkIndirectArg0
-        ";;false;madSinkVar;;;;test-sink", ";;false;madSinkParam0;;;Parameter[0];remote",
+        ";;false;madSinkVar;;;;test-sink", ";;false;madSinkParam0;;;Parameter[0];test-sink",
         ";MyClass;true;memberMadSinkArg0;;;Argument[0];test-sink",
         ";MyClass;true;memberMadSinkVar;;;;test-sink",
         "MyNamespace;MyClass;true;namespaceMemberMadSinkArg0;;;Argument[0];test-sink",
