@@ -1030,4 +1030,11 @@ namespace test_gettext {
     sink(translated); // clean 
     indirect_sink(translated); // $ ir MISSING: ast
   }
+
+  void indirect_test_gettext_no_flow_from_domain() {
+    char* domain = source(); // Should not trace from this source
+    char* translated = dgettext(domain, nullptr);
+    sink(translated); // clean 
+    indirect_sink(translated); // clean
+  }
 }
