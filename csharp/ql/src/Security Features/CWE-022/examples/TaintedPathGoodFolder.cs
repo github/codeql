@@ -8,6 +8,7 @@ public class TaintedPathHandler : IHttpHandler
     {
         string filename = ctx.Request.QueryString["path"];
         
+        string user = ctx.User.Identity.Name;
         string publicFolder = Path.GetFullPath("/home/" + user + "/public");
         string filePath = Path.GetFullPath(Path.Combine(publicFolder, filename));
 
