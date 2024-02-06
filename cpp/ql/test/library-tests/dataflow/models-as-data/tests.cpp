@@ -16,6 +16,18 @@ void remoteMadSourceArg1(int &x, int &y);
 int remoteMadSourceVar;
 void remoteMadSourceParam0(int x);
 
+namespace MyNamespace {
+	int namespaceLocalMadSource();
+	int namespaceLocalMadSourceVar;
+
+	namespace MyNamespace2 {
+		int namespace2LocalMadSource();
+	}
+
+	int localMadSource(); // (not a source)
+}
+int namespaceLocalMadSource(); // (not a source)
+
 void test_sources() {
 	sink(0);
 	sink(source()); // $ ir
@@ -42,6 +54,12 @@ void test_sources() {
 
 	int e = localMadSource();
 	sink(e); // $ ir
+
+	sink(MyNamespace::namespaceLocalMadSource()); // $ MISSING: ir
+	sink(MyNamespace::namespaceLocalMadSourceVar); // $ MISSING: ir
+	sink(MyNamespace::MyNamespace2::namespace2LocalMadSource()); // $ MISSING: ir
+	sink(MyNamespace::localMadSource()); // $ SPURIOUS: ir (the MyNamespace version of this function is not a source)
+	sink(namespaceLocalMadSource()); // (the global namespace version of this function is not a source)
 }
 
 void remoteMadSourceParam0(int x)
@@ -179,9 +197,26 @@ public:
 MyClass source2();
 void sink(MyClass mc);
 
+namespace MyNamespace {
+	class MyClass {
+	public:
+		// sinks
+		void namespaceMemberMadSinkArg0(int x);
+		static void namespaceStaticMemberMadSinkArg0(int x);
+		int namespaceMemberMadSinkVar;
+		static int namespaceStaticMemberMadSinkVar;
+
+		// summaries
+		int namespaceMadSelfToReturn();
+	};
+}
+
+MyNamespace::MyClass source3();
+
 void test_class_members() {
 	MyClass mc, mc2, mc3, mc4, mc5, mc6;
 	MyDerivedClass mdc;
+	MyNamespace::MyClass mnc;
 
 	// test class member sources
 
@@ -206,6 +241,11 @@ void test_class_members() {
 
 	mc.memberMadSinkVar = source(); // $ MISSING: ir
 
+	mnc.namespaceMemberMadSinkArg0(source()); // $ MISSING: ir
+	MyNamespace::MyClass::namespaceStaticMemberMadSinkArg0(source()); // $ MISSING: ir
+	mnc.namespaceMemberMadSinkVar = source(); // $ MISSING: ir
+	MyNamespace::MyClass::namespaceStaticMemberMadSinkVar = source(); // $ MISSING: ir
+
 	// test class member summaries
 
 	sink(mc2);
@@ -222,6 +262,8 @@ void test_class_members() {
 
 	mc4.val = source();
 	sink(mc4.madFieldToReturn()); // $ MISSING: ir
+
+	sink(source3().namespaceMadSelfToReturn()); // $ MISSING: ir
 
 	// test class member sources + sinks + summaries together
 

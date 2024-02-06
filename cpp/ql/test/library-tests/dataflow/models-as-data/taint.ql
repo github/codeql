@@ -16,6 +16,9 @@ private class TestSources extends SourceModelCsv {
         ";;false;remoteMadSourceArg0;;;Argument[0];remote",
         ";;false;remoteMadSourceArg1;;;Argument[1];remote", ";;false;remoteMadSourceVar;;;;remote",
         ";;false;remoteMadSourceParam0;;;Parameter[0];remote",
+        "MyNamespace;;false;namespaceLocalMadSource;;;ReturnValue;remote",
+        "MyNamespace;;false;namespaceLocalMadSourceVar;;;;remote",
+        "MyNamespace::MyNamespace2;;false;namespace2LocalMadSource;;;ReturnValue;remote",
         ";MyClass;true;memberRemoteMadSource;;;ReturnValue;remote",
         ";MyClass;true;memberRemoteMadSourceArg0;;;Argument[0];remote",
         ";MyClass;true;memberRemoteMadSourceVar;;;;remote",
@@ -41,6 +44,10 @@ private class TestSinks extends SinkModelCsv {
         ";;false;madSinkVar;;;;test-sink", ";;false;madSinkParam0;;;Parameter[0];remote",
         ";MyClass;true;memberMadSinkArg0;;;Argument[0];test-sink",
         ";MyClass;true;memberMadSinkVar;;;;test-sink",
+        "MyNamespace;MyClass;true;namespaceMemberMadSinkArg0;;;Argument[0];test-sink",
+        "MyNamespace;MyClass;true;namespaceStaticMemberMadSinkArg0;;;Argument[0];test-sink",
+        "MyNamespace;MyClass;true;namespaceMemberMadSinkVar;;;;test-sink",
+        "MyNamespace;MyClass;true;namespaceStaticMemberMadSinkVar;;;;test-sink",
       ]
   }
 }
@@ -64,6 +71,7 @@ private class TestSummaries extends SummaryModelCsv {
         ";MyClass;true;madSelfToReturn;;;Argument[-1];ReturnValue;taint",
         ";MyClass;true;madArg0ToField;;;Argument[0];Argument[-1].val;taint",
         ";MyClass;true;madFieldToReturn;;;Argument[-1].val;ReturnValue;taint",
+        "MyNamespace;MyClass;true;namespaceMadSelfToReturn;;;Argument[-1];ReturnValue;taint",
       ]
   }
 }
@@ -77,7 +85,7 @@ module IRTest {
     predicate isSource(DataFlow::Node source) {
       source instanceof FlowSource
       or
-      source.asExpr().(FunctionCall).getTarget().getName() = ["source", "source2"]
+      source.asExpr().(FunctionCall).getTarget().getName() = ["source", "source2", "source3"]
     }
 
     predicate isSink(DataFlow::Node sink) {
