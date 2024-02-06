@@ -391,11 +391,11 @@ private Element interpretElement0(
   string namespace, string type, boolean subtypes, string name, string signature
 ) {
   elementSpec(namespace, type, subtypes, name, signature, _) and
-  namespace = "" and // TODO: Fill out when we properly extract modules.
   (
     // Non-member functions
     exists(Function func |
       func.getName() = name and
+      func.getNamespace().getQualifiedName() = namespace and
       type = "" and
       matchesSignature(func, signature) and
       subtypes = false and
@@ -406,6 +406,7 @@ private Element interpretElement0(
     // Member functions
     exists(Class namedClass, Class classWithMethod, Function method |
       classWithMethod = method.getClassAndName(name) and
+      classWithMethod.getNamespace().getQualifiedName() = namespace and
       namedClass.getName() = type and
       matchesSignature(method, signature) and
       result = method
@@ -424,6 +425,7 @@ private Element interpretElement0(
     exists(Class namedClass, Class classWithMember, MemberVariable member |
       member.getName() = name and
       member = classWithMember.getAMember() and
+      classWithMember.getNamespace().getQualifiedName() = namespace and
       namedClass.getName() = type and
       result = member
     |

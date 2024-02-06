@@ -55,10 +55,10 @@ void test_sources() {
 	int e = localMadSource();
 	sink(e); // $ ir
 
-	sink(MyNamespace::namespaceLocalMadSource()); // $ MISSING: ir
+	sink(MyNamespace::namespaceLocalMadSource()); // $: ir
 	sink(MyNamespace::namespaceLocalMadSourceVar); // $ MISSING: ir
-	sink(MyNamespace::MyNamespace2::namespace2LocalMadSource()); // $ MISSING: ir
-	sink(MyNamespace::localMadSource()); // $ SPURIOUS: ir (the MyNamespace version of this function is not a source)
+	sink(MyNamespace::MyNamespace2::namespace2LocalMadSource()); // $ ir
+	sink(MyNamespace::localMadSource()); // $ (the MyNamespace version of this function is not a source)
 	sink(namespaceLocalMadSource()); // (the global namespace version of this function is not a source)
 }
 
@@ -241,8 +241,8 @@ void test_class_members() {
 
 	mc.memberMadSinkVar = source(); // $ MISSING: ir
 
-	mnc.namespaceMemberMadSinkArg0(source()); // $ MISSING: ir
-	MyNamespace::MyClass::namespaceStaticMemberMadSinkArg0(source()); // $ MISSING: ir
+	mnc.namespaceMemberMadSinkArg0(source()); // $ ir
+	MyNamespace::MyClass::namespaceStaticMemberMadSinkArg0(source()); // $ ir
 	mnc.namespaceMemberMadSinkVar = source(); // $ MISSING: ir
 	MyNamespace::MyClass::namespaceStaticMemberMadSinkVar = source(); // $ MISSING: ir
 
