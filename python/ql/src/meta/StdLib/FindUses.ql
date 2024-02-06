@@ -26,12 +26,18 @@ string madSummary(
   DataFlow::Node argument, string parameter, Function function, DataFlow::Node outNode
 ) {
   exists(string package, string functionPath, string argumentPath, string returnPath, string mode |
-    exists(string moduleName |
-      package = function.getScope().getName().splitAt(".", 0) and
-      moduleName = function.getScope().getName().splitAt(".", 1) and
-      if moduleName = "__init__"
-      then functionPath = "Member[" + function.getName() + "]"
-      else functionPath = "Member[" + moduleName + "].Member[" + function.getName() + "]"
+    (
+      exists(string moduleName |
+        package = function.getScope().getName().splitAt(".", 0) and
+        moduleName = function.getScope().getName().splitAt(".", 1) and
+        if moduleName = "__init__"
+        then functionPath = "Member[" + function.getName() + "]"
+        else functionPath = "Member[" + moduleName + "].Member[" + function.getName() + "]"
+      )
+      or
+      not exists(function.getScope().getName().splitAt(".", 1)) and
+      package = function.getScope().getName() and
+      functionPath = "Member[" + function.getName() + "]"
     ) and
     (
       exists(int index |
@@ -87,7 +93,14 @@ abstract class EntryPointsByQuery extends string {
       inStdLib(parameter) and
       function = parameter.getScope() and
       alreadyModelled = stepsTo(argument, outNode) and
-      madSummary = madSummary(argument, parameterName, function, outNode)
+      (
+        madSummary = madSummary(argument, parameterName, function, outNode)
+        or
+        not exists(madSummary(argument, parameterName, function, outNode)) and
+        madSummary =
+          argument.getLocation().getFile().getBaseName() + ":" + argument.toString() + " -> " +
+            outNode.toString()
+      )
     )
   }
 }
