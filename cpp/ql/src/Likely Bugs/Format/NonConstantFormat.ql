@@ -18,115 +18,80 @@
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.commons.Printf
 import semmle.code.cpp.security.FlowSources
+import semmle.code.cpp.ir.dataflow.internal.ModelUtil
+import semmle.code.cpp.models.interfaces.DataFlow
+import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.ir.implementation.raw.Instruction
 
 class UncalledFunction extends Function {
-  UncalledFunction() { not exists(Call c | c.getTarget() = this) }
+  UncalledFunction() {
+    not exists(Call c | c.getTarget() = this) and
+    not this.(MemberFunction).overrides(_)
+  }
 }
 
-// For the following `...gettext` functions, we assume that
-// all translations preserve the type and order of `%` specifiers
-// (and hence are safe to use as format strings).  This
-// assumption is hard-coded into the query.
-predicate whitelistFunction(Function f, int arg) {
-  // basic variations of gettext
-  f.getName() = "_" and arg = 0
+/**
+ * Holds if `node` is a non-constant source of data flow.
+ * This is defined as either:
+ * 1) a `FlowSource`
+ * 2) a parameter of an 'uncalled' function (i.e., a function that is not called in the program)
+ * 3) an argument to a function with no definition that is not known to define the output through its input
+ * 4) an out arg of a function with no definition that is not known to define the output through its input
+ *
+ * The latter two cases address identifying standard string manipulation libraries as input sources
+ * e.g., strcpy, but it will identify unknown function calls as possible non-constant source
+ * since it cannot be determined if the out argument or return is constant.
+ */
+predicate isNonConst(DataFlow::Node node) {
+  node instanceof FlowSource
   or
-  f.getName() = "gettext" and arg = 0
+  exists(UncalledFunction f | f.getAParameter() = node.asParameter())
   or
-  f.getName() = "dgettext" and arg = 1
-  or
-  f.getName() = "dcgettext" and arg = 1
-  or
-  // plural variations of gettext that take one format string for singular and another for plural form
-  f.getName() = "ngettext" and
-  (arg = 0 or arg = 1)
-  or
-  f.getName() = "dngettext" and
-  (arg = 1 or arg = 2)
-  or
-  f.getName() = "dcngettext" and
-  (arg = 1 or arg = 2)
-}
-
-// we assume that ALL uses of the `_` macro
-// return constant string literals
-predicate underscoreMacro(Expr e) {
-  exists(MacroInvocation mi |
-    mi.getMacroName() = "_" and
-    mi.getExpr() = e
+  // Consider as an input any out arg of a function or a function's return where the function is not:
+  // 1. a function with a known dataflow or taintflow from input to output and the `node` is the output
+  // 2. a function where there is a known definition
+  // i.e., functions that with unknown bodies and are not known to define the output through its input
+  //       are considered as possible non-const sources
+  (
+    node instanceof DataFlow::DefinitionByReferenceNode or
+    node.asIndirectExpr() instanceof Call
+  ) and
+  not exists(Function func, FunctionInput input, FunctionOutput output, CallInstruction call |
+    // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
+    // variant function's output are now possible non-const sources
+    (
+      func.(DataFlowFunction).hasDataFlow(input, output) or
+      func.(TaintFunction).hasTaintFlow(input, output)
+    ) and
+    node = callOutput(call, output) and
+    call.getStaticCallTarget() = func
+  ) and
+  not exists(Call c |
+    c.getTarget().hasDefinition() and
+    if node instanceof DataFlow::DefinitionByReferenceNode
+    then c.getAnArgument() = node.asDefiningArgument()
+    else c = [node.asExpr(), node.asIndirectExpr()]
   )
 }
 
 /**
- * Holds if `t` cannot hold a character array, directly or indirectly.
+ * Holds if `sink` is a sink is a format string of any
+ * `FormattingFunctionCall`.
  */
-predicate cannotContainString(Type t, boolean isIndirect) {
-  isIndirect = false and
-  exists(Type unspecified |
-    unspecified = t.getUnspecifiedType() and
-    not unspecified instanceof UnknownType
-  |
-    unspecified instanceof BuiltInType or
-    unspecified instanceof IntegralOrEnumType
-  )
-}
-
-predicate isNonConst(DataFlow::Node node, boolean isIndirect) {
-  exists(Expr e |
-    e = node.asExpr() and isIndirect = false
-    or
-    e = node.asIndirectExpr() and isIndirect = true
-  |
-    exists(FunctionCall fc | fc = e |
-      not (
-        whitelistFunction(fc.getTarget(), _) or
-        fc.getTarget().hasDefinition()
-      )
-    )
-    or
-    exists(Variable v | v = e.(VariableAccess).getTarget() |
-      v.getType().(ArrayType).getBaseType() instanceof CharType and
-      exists(AssignExpr ae |
-        ae.getLValue().(ArrayExpr).getArrayBase().(VariableAccess).getTarget() = v
-      )
-    )
-    or
-    exists(UncalledFunction f, Parameter p | f.getAParameter() = p |
-      p = e.(VariableAccess).getTarget()
-    )
-    or
-    node instanceof FlowSource
-    or
-    node instanceof DataFlow::DefinitionByReferenceNode and
-    not exists(FormattingFunctionCall fc | node.asDefiningArgument() = fc.getOutputArgument(_)) and
-    not exists(Call c |
-      c.getAnArgument() = node.asDefiningArgument() and c.getTarget().hasDefinition()
-    )
-  )
-  or
-  node instanceof DataFlow::DefinitionByReferenceNode and
-  isIndirect = true
-}
-
-pragma[noinline]
-predicate isBarrierNode(DataFlow::Node node) {
-  underscoreMacro([node.asExpr(), node.asIndirectExpr()])
-  or
-  exists(node.asExpr()) and
-  cannotContainString(node.getType(), false)
-}
-
 predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
   [sink.asExpr(), sink.asIndirectExpr()] = formatString and
   exists(FormattingFunctionCall fc | formatString = fc.getArgument(fc.getFormatParameterIndex()))
 }
 
 module NonConstFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { isNonConst(source, _) }
+  predicate isSource(DataFlow::Node source) { isNonConst(source) }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
 
-  predicate isBarrier(DataFlow::Node node) { isBarrierNode(node) }
+  predicate isBarrier(DataFlow::Node node) {
+    // Ignore tracing non-const through array indices
+    exists(ArrayExpr a | a.getArrayOffset() = node.asExpr())
+  }
 }
 
 module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;

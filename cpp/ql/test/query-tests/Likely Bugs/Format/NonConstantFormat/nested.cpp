@@ -18,7 +18,7 @@ extern "C" int snprintf ( char * s, int n, const char * format, ... );
 struct A {
   void do_print(const char *fmt0) {
     char buf[32];
-    snprintf(buf, 32, fmt0); // GOOD [FALSE POSITIVE]
+    snprintf(buf, 32, fmt0); // BAD through call from c.do_some_printing(c.ext_fmt_str())
   }
 };
 
@@ -39,7 +39,7 @@ struct C {
 
 void foo(void) {
   C c;
-  c.do_some_printing(c.ext_fmt_str()); // BAD [NOT DETECTED]
+  c.do_some_printing(c.ext_fmt_str()); 
 }
 
 struct some_class {
