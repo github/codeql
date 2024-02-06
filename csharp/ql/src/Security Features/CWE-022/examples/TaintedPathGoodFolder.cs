@@ -6,7 +6,7 @@ public class TaintedPathHandler : IHttpHandler
 {
     public void ProcessRequest(HttpContext ctx)
     {
-        String filename = ctx.Request.QueryString["path"];
+        string filename = ctx.Request.QueryString["path"];
         
         string publicFolder = Path.GetFullPath("/home/" + user + "/public");
         string filePath = Path.GetFullPath(Path.Combine(publicFolder, filename));

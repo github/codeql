@@ -6,7 +6,7 @@ public class TaintedPathHandler : IHttpHandler
 {
     public void ProcessRequest(HttpContext ctx)
     {
-        String filename = ctx.Request.QueryString["path"];
+        string filename = ctx.Request.QueryString["path"];
         // BAD: This could read any file on the filesystem.
         ctx.Response.Write(File.ReadAllText(filename));
     }

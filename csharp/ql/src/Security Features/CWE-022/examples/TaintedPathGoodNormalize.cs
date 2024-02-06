@@ -6,7 +6,7 @@ public class TaintedPathHandler : IHttpHandler
 {
     public void ProcessRequest(HttpContext ctx)
     {
-        String filename = ctx.Request.QueryString["path"];
+        string filename = ctx.Request.QueryString["path"];
         // GOOD: ensure that the filename has no path separators or parent directory references
         if (filename.Contains("..") || filename.Contains("/") || filename.Contains("\\"))
         {
