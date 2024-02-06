@@ -183,7 +183,7 @@ private predicate relevantNamespace(string namespace) {
 private predicate namespaceLink(string shortns, string longns) {
   relevantNamespace(shortns) and
   relevantNamespace(longns) and
-  longns.prefix(longns.indexOf(".")) = shortns
+  longns.prefix(longns.indexOf("::")) = shortns
 }
 
 private predicate canonicalNamespace(string namespace) {
