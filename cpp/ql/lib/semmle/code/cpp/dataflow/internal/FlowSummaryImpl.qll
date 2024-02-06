@@ -33,36 +33,8 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
       result = "Field" and
       arg = c.getField().getName()
     )
-    /*
-     * or
-     *    exists(Content::TupleContent c |
-     *      cs.isSingleton(c) and
-     *      result = "TupleElement" and
-     *      arg = c.getIndex().toString()
-     *    )
-     *    or
-     *    exists(Content::EnumContent c, string sig |
-     *      cs.isSingleton(c) and
-     *      sig = c.getSignature()
-     *    |
-     *      if sig = "some:0"
-     *      then
-     *        result = "OptionalSome" and
-     *        arg = ""
-     *      else (
-     *        result = "EnumElement" and
-     *        arg = sig
-     *      )
-     *    )
-     *    or
-     *    exists(Content::CollectionContent c |
-     *      cs.isSingleton(c) and
-     *      result = "CollectionElement" and
-     *      arg = ""
-     *    )
-     */
-
-    }
+    // TODO: indirection support here?
+  }
 
   string encodeWithoutContent(ContentSet c, string arg) {
     result = "WithoutContent" + c and arg = ""
