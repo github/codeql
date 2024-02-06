@@ -12,10 +12,6 @@ About this article
 
 This article contains reference material about how to define custom models for sources, sinks and flow summaries for C# dependencies in data extension files.
 
-The best way to create your own models is using the CodeQL model editor in the CodeQL extension for Visual Studio Code. The model editor automatically guides you through the process of defining models, displaying the properties you need to define and the options available. You can save the resulting models as data extension files in CodeQL model packs and use them without worrying about the syntax.
-
-For more information, see ":ref:`Using the CodeQL model editor <using-the-codeql-model-editor>`."
-
 About data extensions
 ---------------------
 
