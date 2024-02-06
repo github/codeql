@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/dgrijalva/jwt-go", "Token", True, "SignedString", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "SigningMethod", True, "Sign", "", "", "Argument[1]", "credentials-key", "manual"]
