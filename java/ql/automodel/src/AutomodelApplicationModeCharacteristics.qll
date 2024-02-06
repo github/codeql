@@ -35,14 +35,10 @@ newtype TApplicationModeEndpoint =
     arg = DataFlow::getInstanceArgument(call) and
     not call instanceof ConstructorCall
   } or
-  TImplicitVarargsArray(Call call, DataFlow::Node arg, int idx) {
+  TImplicitVarargsArray(Call call, DataFlow::ImplicitVarargsArray arg, int idx) {
     AutomodelJavaUtil::isFromSource(call) and
-    exists(Argument argExpr |
-      arg.asExpr() = argExpr and
-      call.getArgument(idx) = argExpr and
-      argExpr.isVararg() and
-      not exists(int i | i < idx and call.getArgument(i).(Argument).isVararg())
-    )
+    call = arg.getCall() and
+    idx = call.getCallee().getVaragsParameterIndex()
   } or
   TMethodReturnValue(Call call) {
     AutomodelJavaUtil::isFromSource(call) and
