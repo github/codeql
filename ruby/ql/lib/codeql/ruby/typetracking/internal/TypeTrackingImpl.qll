@@ -217,7 +217,15 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   predicate return = FlowSummaryImpl::Private::SummaryComponent::return/0;
 
   // Callables
-  class SummarizedCallable = FlowSummaryImpl::Private::SummarizedCallableImpl;
+  class SummarizedCallable instanceof FlowSummaryImpl::Private::SummarizedCallableImpl {
+    string toString() { result = super.toString() }
+
+    predicate propagatesFlow(
+      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+    ) {
+      super.propagatesFlow(input, output, preservesValue, _)
+    }
+  }
 
   // Relating nodes to summaries
   Node argumentOf(Node call, SummaryComponent arg, boolean isPostUpdate) {
