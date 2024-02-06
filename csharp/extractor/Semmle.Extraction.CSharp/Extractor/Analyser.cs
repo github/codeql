@@ -242,7 +242,7 @@ namespace Semmle.Extraction.CSharp
 
                 compilationEntity = Entities.Compilation.Create(cx);
 
-                extractor.CompilationInfos?.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
+                extractor.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
