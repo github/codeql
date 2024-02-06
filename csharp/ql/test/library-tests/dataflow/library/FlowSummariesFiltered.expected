@@ -8183,9 +8183,9 @@ summary
 | System.Linq;Enumerable;false;Concat<TSource>;(System.Collections.Generic.IEnumerable<TSource>,System.Collections.Generic.IEnumerable<TSource>);;Argument[1].Element;ReturnValue.Element;value;manual |
 | System.Linq;Enumerable;false;Count<TSource>;(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,System.Boolean>);;Argument[0].Element;Argument[1].Parameter[0];value;manual |
 | System.Linq;Enumerable;false;Count<TSource>;(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,System.Boolean>);;Argument[1];Argument[1].Parameter[delegate-self];value;manual |
-| System.Linq;Enumerable;false;DefaultIfEmpty<TSource>;(System.Collections.Generic.IEnumerable<TSource>);;Argument[0].Element;ReturnValue;value;manual |
-| System.Linq;Enumerable;false;DefaultIfEmpty<TSource>;(System.Collections.Generic.IEnumerable<TSource>,TSource);;Argument[0].Element;ReturnValue;value;manual |
-| System.Linq;Enumerable;false;DefaultIfEmpty<TSource>;(System.Collections.Generic.IEnumerable<TSource>,TSource);;Argument[1];ReturnValue;value;manual |
+| System.Linq;Enumerable;false;DefaultIfEmpty<TSource>;(System.Collections.Generic.IEnumerable<TSource>);;Argument[0].Element;ReturnValue.Element;value;manual |
+| System.Linq;Enumerable;false;DefaultIfEmpty<TSource>;(System.Collections.Generic.IEnumerable<TSource>,TSource);;Argument[0].Element;ReturnValue.Element;value;manual |
+| System.Linq;Enumerable;false;DefaultIfEmpty<TSource>;(System.Collections.Generic.IEnumerable<TSource>,TSource);;Argument[1];ReturnValue.Element;value;manual |
 | System.Linq;Enumerable;false;Distinct<TSource>;(System.Collections.Generic.IEnumerable<TSource>);;Argument[0].Element;ReturnValue.Element;value;manual |
 | System.Linq;Enumerable;false;Distinct<TSource>;(System.Collections.Generic.IEnumerable<TSource>,System.Collections.Generic.IEqualityComparer<TSource>);;Argument[0].Element;ReturnValue.Element;value;manual |
 | System.Linq;Enumerable;false;DistinctBy<TSource,TKey>;(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TKey>);;Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
