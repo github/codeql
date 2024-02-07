@@ -14,7 +14,6 @@
  */
 
 import swift
-import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.UnsafeUnpackQuery
 import UnsafeUnpackFlow::PathGraph
 
