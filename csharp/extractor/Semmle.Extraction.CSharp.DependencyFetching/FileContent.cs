@@ -61,6 +61,28 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private bool useWpf = false;
+
+        public bool UseWpf
+        {
+            get
+            {
+                initialize.Run();
+                return useWpf;
+            }
+        }
+
+        private bool useWindowsForms = false;
+
+        public bool UseWindowsForms
+        {
+            get
+            {
+                initialize.Run();
+                return useWindowsForms;
+            }
+        }
+
         private bool isLegacyProjectStructureUsed = false;
 
         public bool IsLegacyProjectStructureUsed
@@ -172,6 +194,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         useImplicitUsings = useImplicitUsings
                             || line.Contains("<ImplicitUsings>enable</ImplicitUsings>".AsSpan(), StringComparison.Ordinal)
                             || line.Contains("<ImplicitUsings>true</ImplicitUsings>".AsSpan(), StringComparison.Ordinal);
+
+                        // Determine if WPF is used.
+                        useWpf = useWpf
+                            || line.Contains("<UseWPF>true</UseWPF>".AsSpan(), StringComparison.Ordinal);
+
+                        // Determine if Windows Forms is used.
+                        useWindowsForms = useWindowsForms
+                            || line.Contains("<UseWindowsForms>true</UseWindowsForms>".AsSpan(), StringComparison.Ordinal);
 
                         // Find all custom implicit usings.
                         foreach (var valueMatch in CustomImplicitUsingDeclarations().EnumerateMatches(line))
