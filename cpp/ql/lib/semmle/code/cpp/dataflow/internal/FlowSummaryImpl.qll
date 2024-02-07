@@ -113,7 +113,7 @@ module SourceSinkInterpretationInput implements
     Node asNode() { this = TNode_(result) }
 
     /** Gets the call that this node corresponds to, if any. */
-    DataFlowCall asCall() { this.asElement() = result.getAst() }
+    DataFlowCall asCall() { this.asElement() = result.getUnconvertedResultExpression() }
 
     /** Gets the callable that this node corresponds to, if any. */
     DataFlowCallable asCallable() { result.(Function) = this.asElement() }
