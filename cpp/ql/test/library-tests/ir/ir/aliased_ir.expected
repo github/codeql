@@ -12441,6 +12441,16 @@ ir.cpp:
 # 2109|     v2109_12(void)          = AliasedUse                     : m2109_3
 # 2109|     v2109_13(void)          = ExitFunction                   : 
 
+# 2119| void call_as_child_of_ConditionDeclExpr()
+# 2119|   Block 0
+# 2119|     v2119_1(void)                   = EnterFunction      : 
+# 2119|     m2119_2(unknown)                = AliasedDefinition  : 
+# 2119|     m2119_3(unknown)                = InitializeNonLocal : 
+# 2119|     m2119_4(unknown)                = Chi                : total:m2119_2, partial:m2119_3
+# 2120|     r2120_1(glval<HasOperatorBool>) = VariableAddress[b] : 
+# 2120|     r2120_2(HasOperatorBool)        = Constant[0]        : 
+# 2120|     m2120_3(HasOperatorBool)        = Store[b]           : &:r2120_1, r2120_2
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

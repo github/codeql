@@ -1,4 +1,5 @@
 missingOperand
+| ir.cpp:2120:6:2120:42 | CopyValue: (condition decl) | Instruction 'CopyValue' is missing an expected operand with tag 'Unary' in function '$@'. | ir.cpp:2119:6:2119:39 | void call_as_child_of_ConditionDeclExpr() | void call_as_child_of_ConditionDeclExpr() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -6,6 +7,8 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir.cpp:2120:22:2120:22 | IndirectMayWriteSideEffect: b | Instruction 'IndirectMayWriteSideEffect: b' has no successors in function '$@'. | ir.cpp:2119:6:2119:39 | void call_as_child_of_ConditionDeclExpr() | void call_as_child_of_ConditionDeclExpr() |
+| ir.cpp:2120:25:2120:42 | Store: 0 | Instruction 'Store: 0' has no successors in function '$@'. | ir.cpp:2119:6:2119:39 | void call_as_child_of_ConditionDeclExpr() | void call_as_child_of_ConditionDeclExpr() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

@@ -10070,6 +10070,10 @@
 | ir.cpp:2112:10:2112:12 | Address | &:r2112_2 |
 | ir.cpp:2112:10:2112:12 | Load | m2111_11 |
 | ir.cpp:2112:10:2112:12 | StoreValue | r2112_3 |
+| ir.cpp:2119:6:2119:39 | ChiPartial | partial:m2119_3 |
+| ir.cpp:2119:6:2119:39 | ChiTotal | total:m2119_2 |
+| ir.cpp:2120:6:2120:42 | Address | &:r2120_1 |
+| ir.cpp:2120:25:2120:42 | StoreValue | r2120_2 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_7 |
