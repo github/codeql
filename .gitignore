@@ -39,6 +39,9 @@
 # local bazel options
 /local.bazelrc
 
+# generated cmake directory
+/.bazel-cmake
+
 # CLion project files
 /.clwb
 
