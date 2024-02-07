@@ -244,9 +244,15 @@ class ConditionDeclExpr extends Expr, @condition_decl {
 
   /**
    * Gets the compiler-generated variable access that conceptually occurs after
-   * the initialization of the declared variable.
+   * the initialization of the declared variable, if any.
    */
-  VariableAccess getVariableAccess() { result = this.getChild(0) }
+  VariableAccess getVariableAccess() { result = this.getExpr() }
+
+  /**
+   * Gets the expression that is evaluated after the initialization of the declared
+   * variable.
+   */
+  Expr getExpr() { result = this.getChild(0) }
 
   /**
    * Gets the expression that initializes the declared variable. This predicate

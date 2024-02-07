@@ -13,10 +13,10 @@ namespace Semmle.Extraction.CSharp
         {
         }
 
-        public void Initialize(string outputPath, CSharpCompilation compilationIn, CommonOptions options)
+        public void Initialize(string outputPath, IEnumerable<(string, string)> compilationInfos, CSharpCompilation compilationIn, CommonOptions options)
         {
             compilation = compilationIn;
-            extractor = new StandaloneExtractor(outputPath, Logger, PathTransformer, options);
+            extractor = new StandaloneExtractor(outputPath, compilationInfos, Logger, PathTransformer, options);
             this.options = options;
             LogExtractorInfo(Extraction.Extractor.Version);
             SetReferencePaths();
