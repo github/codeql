@@ -32,6 +32,14 @@ string getNamespace(File file) {
   )
 }
 
+/**
+ * Holds if this method is a constructor for a module.
+ */
+predicate isConstructor(DataFlow::MethodNode method) {
+  method.getMethodName() = "initialize" and
+  exists(DataFlow::ModuleNode m | m.getOwnInstanceMethod(method.getMethodName()) = method)
+}
+
 abstract class Endpoint instanceof DataFlow::Node {
   string getNamespace() { result = getNamespace(super.getLocation().getFile()) }
 
@@ -153,10 +161,7 @@ class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
   /**
    * Holds if this method is a constructor for a module.
    */
-  private predicate isConstructor() {
-    super.getMethodName() = "initialize" and
-    exists(DataFlow::ModuleNode m | m.getOwnInstanceMethod(super.getMethodName()) = this)
-  }
+  private predicate isConstructor() { isConstructor(this) }
 }
 
 string methodClassification(Call method) {

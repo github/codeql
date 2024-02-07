@@ -10,6 +10,7 @@ private import ruby
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import queries.modeling.internal.Util as Util
+private import ModelEditor
 
 predicate simpleParameters(string type, string path, string value, DataFlow::Node node) {
   exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
@@ -58,7 +59,8 @@ predicate blockArguments(string type, string path, string value, DataFlow::Node 
 predicate returnValue(string type, string path, string value, DataFlow::Node node) {
   exists(DataFlow::MethodNode methodNode, DataFlow::Node returnNode |
     methodNode.getLocation().getFile() instanceof Util::RelevantFile and
-    returnNode = methodNode.getAReturnNode()
+    returnNode = methodNode.getAReturnNode() and
+    not isConstructor(methodNode) // A constructor doesn't have a return value
   |
     Util::pathToMethod(methodNode, type, path) and
     value = "ReturnValue" and
