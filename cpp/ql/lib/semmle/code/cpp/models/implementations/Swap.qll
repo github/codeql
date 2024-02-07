@@ -20,7 +20,7 @@ private class Swap extends DataFlowFunction, FlowOutBarrierFunction {
     output.isParameterDeref(0)
   }
 
-  override predicate isFlowOutBarrier(FunctionInput input) { input.isParameterDeref(1) }
+  override predicate isFlowOutBarrier(FunctionInput input) { input.isParameterDeref([0, 1]) }
 }
 
 /**
