@@ -642,7 +642,9 @@ newtype TContent =
     or
     //
     // 2) summaries in data-extension files
-    exists(string input, string output | ModelOutput::relevantSummaryModel(_, _, input, output, _) |
+    exists(string input, string output |
+      ModelOutput::relevantSummaryModel(_, _, input, output, _, _)
+    |
       attr = [input, output].regexpFind("(?<=(^|\\.)Attribute\\[)[^\\]]+(?=\\])", _, _).trim()
     )
   } or
