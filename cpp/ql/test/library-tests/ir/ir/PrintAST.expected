@@ -16132,6 +16132,31 @@ ir.cpp:
 # 2112|       getExpr(): [VariableAccess] end
 # 2112|           Type = [CharPointerType] char *
 # 2112|           ValueCategory = prvalue(load)
+# 2115| [CopyAssignmentOperator] HasOperatorBool& HasOperatorBool::operator=(HasOperatorBool const&)
+# 2115|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const HasOperatorBool &
+# 2115| [MoveAssignmentOperator] HasOperatorBool& HasOperatorBool::operator=(HasOperatorBool&&)
+# 2115|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] HasOperatorBool &&
+# 2116| [ConversionOperator] bool HasOperatorBool::operator bool()
+# 2116|   <params>: 
+# 2119| [TopLevelFunction] void call_as_child_of_ConditionDeclExpr()
+# 2119|   <params>: 
+# 2119|   getEntryPoint(): [BlockStmt] { ... }
+# 2120|     getStmt(0): [IfStmt] if (...) ... 
+# 2120|       getCondition(): [ConditionDeclExpr] (condition decl)
+# 2120|           Type = [BoolType] bool
+# 2120|           ValueCategory = prvalue
+# 2120|         getChild(0): [FunctionCall] call to operator bool
+# 2120|             Type = [BoolType] bool
+# 2120|             ValueCategory = prvalue
+# 2120|           getQualifier(): [VariableAccess] b
+# 2120|               Type = [Struct] HasOperatorBool
+# 2120|               ValueCategory = prvalue(load)
+# 2120|       getThen(): [BlockStmt] { ... }
+# 2121|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
