@@ -5,7 +5,6 @@
  */
 
 import swift
-import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.dataflow.FlowSources
 import codeql.swift.security.UnsafeUnpackExtensions
