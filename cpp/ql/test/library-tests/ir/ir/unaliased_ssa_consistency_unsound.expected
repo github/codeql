@@ -6,8 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.cpp:2170:16:2170:23 | IndirectMayWriteSideEffect: call to Bool | Instruction 'IndirectMayWriteSideEffect: call to Bool' has no successors in function '$@'. | ir.cpp:2169:6:2169:19 | void IfDestructors3(bool) | void IfDestructors3(bool) |
-| ir.cpp:2186:17:2186:25 | IndirectMayWriteSideEffect: call to Bool2 | Instruction 'IndirectMayWriteSideEffect: call to Bool2' has no successors in function '$@'. | ir.cpp:2185:6:2185:32 | void IfInitiaiizationConstructor(bool) | void IfInitiaiizationConstructor(bool) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

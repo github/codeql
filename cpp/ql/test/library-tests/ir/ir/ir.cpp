@@ -2112,6 +2112,14 @@ char* test_strtod(char *s) {
   return end;
 }
 
+struct HasOperatorBool {
+    operator bool();
+};
+
+void call_as_child_of_ConditionDeclExpr() {
+  if(HasOperatorBool b = HasOperatorBool()) {}
+}
+
 void TryCatchDestructors(bool b) {
   try {
     String s;
@@ -2181,13 +2189,5 @@ class Bool2 {
     operator bool();
     ~Bool2();
 };
-
-void IfInitiaiizationConstructor(bool b) {
-    if(Bool2 B = Bool2(b)) {
-        String s1;
-    } else {
-        String s2;
-    }
-}
 
 // semmle-extractor-options: -std=c++17 --clang

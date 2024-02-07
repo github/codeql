@@ -133,6 +133,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             logger.LogInfo($"{conflictedReferences,align} resolved assembly conflicts");
             logger.LogInfo($"{dotnetFrameworkVersionVariantCount,align} restored .NET framework variants");
             logger.LogInfo($"Build analysis completed in {DateTime.Now - startTime}");
+
+            CompilationInfos.AddRange([
+                ("Source files on filesystem", nonGeneratedSources.Count.ToString()),
+                ("Source files generated", generatedSources.Count.ToString()),
+                ("Solution files on filesystem", allSolutions.Count.ToString()),
+                ("Project files on filesystem", allProjects.Count.ToString()),
+                ("Resolved references", usedReferences.Keys.Count.ToString()),
+                ("Unresolved references", unresolvedReferences.Count.ToString()),
+                ("Resolved assembly conflicts", conflictedReferences.ToString()),
+                ("Restored .NET framework variants", dotnetFrameworkVersionVariantCount.ToString()),
+            ]);
         }
 
         private HashSet<string> AddFrameworkDlls(HashSet<string> dllPaths)
@@ -151,7 +162,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             try
             {
                 var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, logger);
-                nuget.InstallPackages();
+                var count = nuget.InstallPackages();
+
+                if (nuget.PackageCount > 0)
+                {
+                    CompilationInfos.Add(("packages.config files", nuget.PackageCount.ToString()));
+                    CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
+                }
 
                 var nugetPackageDlls = legacyPackageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
                 var nugetPackageDllPaths = nugetPackageDlls.Select(f => f.FullName).ToHashSet();
@@ -630,6 +647,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public IEnumerable<string> UnresolvedReferences => unresolvedReferences.Select(r => r.Key);
 
         /// <summary>
+        /// List of `(key, value)` tuples, that are stored in the DB for telemetry purposes.
+        /// </summary>
+        public List<(string, string)> CompilationInfos { get; } = new List<(string, string)>();
+
+        /// <summary>
         /// Record that a particular reference couldn't be resolved.
         /// Note that this records at most one project file per missing reference.
         /// </summary>
@@ -699,15 +721,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="solutions">A list of paths to solution files.</param>
         private IEnumerable<string> RestoreSolutions(IEnumerable<string> solutions, out IEnumerable<string> assets)
         {
+            var successCount = 0;
             var assetFiles = new List<string>();
             var projects = solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
                     var res = dotnet.Restore(new(solution, packageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                    if (res.Success)
+                    {
+                        successCount++;
+                    }
                     assetFiles.AddRange(res.AssetsFilePaths);
                     return res.RestoredProjects;
-                });
+                }).ToList();
             assets = assetFiles;
+            CompilationInfos.Add(("Successfully restored solution files", successCount.ToString()));
+            CompilationInfos.Add(("Restored projects through solution files", projects.Count.ToString()));
             return projects;
         }
 
@@ -719,14 +748,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="projects">A list of paths to project files.</param>
         private void RestoreProjects(IEnumerable<string> projects, out IEnumerable<string> assets)
         {
+            var successCount = 0;
             var assetFiles = new List<string>();
+            var sync = new object();
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
                 logger.LogInfo($"Restoring project {project}...");
                 var res = dotnet.Restore(new(project, packageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
-                assetFiles.AddRange(res.AssetsFilePaths);
+                lock (sync)
+                {
+                    if (res.Success)
+                    {
+                        successCount++;
+                    }
+                    assetFiles.AddRange(res.AssetsFilePaths);
+                }
             });
             assets = assetFiles;
+            CompilationInfos.Add(("Successfully restored project files", successCount.ToString()));
         }
 
         private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<string> dllPaths)
@@ -767,6 +806,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Using nuget.config file {nugetConfig}.");
             }
 
+            CompilationInfos.Add(("Fallback nuget restore", notYetDownloadedPackages.Count.ToString()));
+
+            var successCount = 0;
+            var sync = new object();
+
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
             {
                 logger.LogInfo($"Restoring package {package}...");
@@ -797,9 +841,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     if (!res.Success)
                     {
                         logger.LogInfo($"Failed to restore nuget package {package}");
+                        return;
                     }
                 }
+
+                lock (sync)
+                {
+                    successCount++;
+                }
             });
+
+            CompilationInfos.Add(("Successfully ran fallback nuget restore", successCount.ToString()));
 
             dllPaths.Add(missingPackageDirectory.DirInfo.FullName);
         }
