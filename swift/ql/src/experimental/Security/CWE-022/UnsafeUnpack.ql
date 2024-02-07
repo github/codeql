@@ -1,11 +1,11 @@
 /**
  * @name Arbitrary file write during a zip extraction from a user controlled source
- * @description Unpacking user controlled zips without validating if destination path file
- *              is within the destination directory can cause files outside
- *              the destination directory to be overwritten.
+ * @description Unpacking user controlled zips without validating whether the
+ *              destination file path is within the destination directory can cause files
+ *              outside the destination directory to be overwritten.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 9.8
+ * @security-severity 7.5
  * @precision high
  * @id swift/unsafe-unpacking
  * @tags security

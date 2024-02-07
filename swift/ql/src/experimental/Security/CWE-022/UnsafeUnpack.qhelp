@@ -31,7 +31,7 @@ The following examples unpacks a remote zip using `fileManager.unzipItem()` whic
 
 
 <p>Consider using a safer module, such as: <code>ZIPArchive</code></p>
-<sample src="ZIPArchiveGood.swift" />
+<sample src="ZipArchiveGood.swift" />
 </example>
 
 <references>
