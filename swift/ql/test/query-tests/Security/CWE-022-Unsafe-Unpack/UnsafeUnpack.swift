@@ -52,15 +52,15 @@ extension String {
 // --- tests ---
 
 func testCommandInjectionQhelpExamples() {
-	guard let remoteURL = URL(string: "https://example.com/") else {
-		return
-	}
+    guard let remoteURL = URL(string: "https://example.com/") else {
+        return
+    }
 
     let source  = URL(fileURLWithPath: "/sourcePath")
     let destination = URL(fileURLWithPath: "/destination")
 
     try Data(contentsOf: remoteURL, options: []).write(to: source) 
-	do {
+    do {
         try Zip.unzipFile(source, destination: destination, overwrite: true, password: nil) // BAD
 
         let fileManager = FileManager()
