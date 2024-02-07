@@ -71,6 +71,9 @@ namespace Semmle.Extraction.CSharp
         internal static void compilation_expanded_args(this TextWriter trapFile, Compilation compilation, int index, string arg) =>
             trapFile.WriteTuple("compilation_expanded_args", compilation, index, arg);
 
+        internal static void compilation_info(this TextWriter trapFile, Compilation compilation, string infoKey, string infoValue) =>
+            trapFile.WriteTuple("compilation_info", compilation, infoKey, infoValue);
+
         internal static void compilation_compiling_files(this TextWriter trapFile, Compilation compilation, int index, Extraction.Entities.File file) =>
             trapFile.WriteTuple("compilation_compiling_files", compilation, index, file);
 
