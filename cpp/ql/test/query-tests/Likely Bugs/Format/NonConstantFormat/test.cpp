@@ -107,7 +107,7 @@ int main(int argc, char **argv) {
     printf(hello); // GOOD
   }
   if (gettext_debug) {
-    printf(new char[100]); // BAD [FALSE NEGATIVE]
+    printf(new char[100]); // BAD [FALSE NEGATIVE: uninitialized value not considered a source]
   }
   {
     const char *hello = "Hello, World\n";
@@ -197,7 +197,7 @@ void wchar_t_test_bad(wchar_t* str){
   wprintf(wstr); // BAD
 }
 
-const char* get_string();
+char* get_string();
 
 void pointer_arithmetic_test_on_bad_string(){
    {

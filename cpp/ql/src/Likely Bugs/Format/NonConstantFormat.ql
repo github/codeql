@@ -26,7 +26,11 @@ import semmle.code.cpp.ir.implementation.raw.Instruction
 class UncalledFunction extends Function {
   UncalledFunction() {
     not exists(Call c | c.getTarget() = this) and
-    not this.(MemberFunction).overrides(_)
+    // TODO: Need rationale here, added based on suggestion
+    //but unclear of the scenario being avoided
+    not this.(MemberFunction).overrides(_) and
+    // Ignore functions that appear to be function pointers
+    not exists(FunctionAccess fa | fa.getTarget() = this)
   }
 }
 
@@ -34,9 +38,14 @@ class UncalledFunction extends Function {
  * Holds if `node` is a non-constant source of data flow.
  * This is defined as either:
  * 1) a `FlowSource`
- * 2) a parameter of an 'uncalled' function (i.e., a function that is not called in the program)
+ * 2) a parameter of an 'uncalled' function
  * 3) an argument to a function with no definition that is not known to define the output through its input
  * 4) an out arg of a function with no definition that is not known to define the output through its input
+ *
+ * With exception to `FlowSource` all non-const values have a type that is not const
+ * (declared without a `const` specifier)
+ * ASSUMPTION: any const values are assumed to be static if their assignment is not seen (
+ * i.e., assuming users did not get non-const data and cast into a const
  *
  * The latter two cases address identifying standard string manipulation libraries as input sources
  * e.g., strcpy, but it will identify unknown function calls as possible non-constant source
@@ -45,32 +54,66 @@ class UncalledFunction extends Function {
 predicate isNonConst(DataFlow::Node node) {
   node instanceof FlowSource
   or
-  exists(UncalledFunction f | f.getAParameter() = node.asParameter())
+  // Parameters of uncalled functions that aren't const
+  exists(UncalledFunction f, Parameter p, Type t |
+    not t.isConst() and
+    f.getAParameter() = p and
+    p = node.asParameter() and
+    not f.getType().getUnderlyingType().isConst() and
+    (
+      // const char* means (const char)*, so the pointer is not const, the pointed to value is
+      // Grab the base type if a pointer, as this is the type we will check for const-ness
+      if p.getType().getUnderlyingType() instanceof PointerType
+      then t = p.getType().getUnderlyingType().(PointerType).getBaseType()
+      else t = p.getType().getUnderlyingType()
+    )
+  )
   or
   // Consider as an input any out arg of a function or a function's return where the function is not:
   // 1. a function with a known dataflow or taintflow from input to output and the `node` is the output
   // 2. a function where there is a known definition
   // i.e., functions that with unknown bodies and are not known to define the output through its input
   //       are considered as possible non-const sources
-  (
-    node instanceof DataFlow::DefinitionByReferenceNode or
-    node.asIndirectExpr() instanceof Call
-  ) and
-  not exists(Function func, FunctionInput input, FunctionOutput output, CallInstruction call |
-    // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
-    // variant function's output are now possible non-const sources
-    (
-      func.(DataFlowFunction).hasDataFlow(input, output) or
-      func.(TaintFunction).hasTaintFlow(input, output)
+  // The function's output must also not be const to be considered a non-const source
+  exists(Type t |
+    not t.isConst() and
+    exists(Call c |
+      exists(Expr arg | c.getAnArgument() = arg |
+        arg = node.asDefiningArgument() and
+        (
+          // const char* means (const char)*, so the pointer is not const, the pointed to value is
+          // Grab the base type if a pointer, as this is the type we will check for const-ness
+          if arg.getType().getUnderlyingType() instanceof PointerType
+          then t = arg.getType().getUnderlyingType().(PointerType).getBaseType()
+          else t = arg.getType().getUnderlyingType()
+        )
+      )
+      or
+      c = node.asIndirectExpr() and
+      (
+        // const char* means (const char)*, so the pointer is not const, the pointed to value is
+        // Grab the base type if a pointer, as this is the type we will check for const-ness
+        if c.getType().getUnderlyingType() instanceof PointerType
+        then t = c.getType().getUnderlyingType().(PointerType).getBaseType()
+        else t = c.getType().getUnderlyingType()
+      )
     ) and
-    node = callOutput(call, output) and
-    call.getStaticCallTarget() = func
-  ) and
-  not exists(Call c |
-    c.getTarget().hasDefinition() and
-    if node instanceof DataFlow::DefinitionByReferenceNode
-    then c.getAnArgument() = node.asDefiningArgument()
-    else c = [node.asExpr(), node.asIndirectExpr()]
+    not exists(Function func, FunctionInput input, FunctionOutput output, CallInstruction call |
+      // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
+      // variant function's output are now possible non-const sources
+      (
+        func.(DataFlowFunction).hasDataFlow(input, output) or
+        func.(TaintFunction).hasTaintFlow(input, output)
+      ) and
+      node = callOutput(call, output) and
+      call.getStaticCallTarget() = func
+    ) and
+    not exists(Call c |
+      c.getTarget().hasDefinition() and
+      if node instanceof DataFlow::DefinitionByReferenceNode
+      then c.getAnArgument() = node.asDefiningArgument()
+      else c = [node.asExpr(), node.asIndirectExpr()]
+    )
   )
 }
 

@@ -1,15 +1,19 @@
 | NonConstantFormat.c:30:10:30:16 | access to array | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | NonConstantFormat.c:41:9:41:27 | call to any_random_function | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| nested.cpp:21:23:21:26 | fmt0 | The format string argument to snprintf should be constant to prevent security issues and other potential errors. |
-| nested.cpp:79:32:79:38 | call to get_fmt | The format string argument to diagnostic should be constant to prevent security issues and other potential errors. |
+| NonConstantFormat.c:45:9:45:48 | call to gettext | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | nested.cpp:87:18:87:20 | fmt | The format string argument to diagnostic should be constant to prevent security issues and other potential errors. |
 | test.cpp:51:10:51:21 | call to make_message | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:57:12:57:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:60:12:60:21 | call to const_wash | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:61:12:61:26 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:62:12:62:17 | + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:63:12:63:18 | * ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:64:12:64:18 | & ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
-| test.cpp:65:12:65:39 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | test.cpp:130:20:130:26 | access to array | The format string argument to sprintf should be constant to prevent security issues and other potential errors. |
 | test.cpp:157:12:157:15 | data | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:170:12:170:14 | res | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:195:31:195:33 | str | The format string argument to StringCchPrintfW should be constant to prevent security issues and other potential errors. |
+| test.cpp:197:11:197:14 | wstr | The format string argument to wprintf should be constant to prevent security issues and other potential errors. |
+| test.cpp:205:12:205:20 | ... + ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:206:12:206:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:211:12:211:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:217:12:217:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:223:12:223:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:228:12:228:18 | ++ ... | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:235:12:235:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:242:12:242:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| test.cpp:247:12:247:16 | hello | The format string argument to printf should be constant to prevent security issues and other potential errors. |

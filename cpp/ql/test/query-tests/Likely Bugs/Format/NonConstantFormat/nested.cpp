@@ -18,7 +18,7 @@ extern "C" int snprintf ( char * s, int n, const char * format, ... );
 struct A {
   void do_print(const char *fmt0) {
     char buf[32];
-    snprintf(buf, 32, fmt0); // BAD through call from c.do_some_printing(c.ext_fmt_str())
+    snprintf(buf, 32, fmt0); // GOOD, all paths to year use const char*
   }
 };
 
@@ -76,12 +76,12 @@ void diagnostic(const char *fmt, ...)
 }
 
 void bar(void) {
-    diagnostic (some_instance->get_fmt());  // BAD
+    diagnostic (some_instance->get_fmt());  // GOOD get_fmt is const char* assumed static
 }
 
 namespace ns {
 
-  class blab {
+  class blab { 
     void out1(void) {
       char *fmt = (char *)__builtin_alloca(10);
       diagnostic(fmt);  // BAD
