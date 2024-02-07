@@ -10,7 +10,6 @@ category: minorAnalysis
   * java.nio.file
   * java.util.zip
   * javax.servlet
-  * kotlin.io
   * org.apache.commons.io
   * org.apache.hadoop.fs
   * org.apache.hadoop.fs.s3a
