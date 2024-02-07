@@ -246,7 +246,7 @@ module DataFlowStackMake<DF::InputSig Lang>{
 
 
         /**
-         * A CallFrame is a PathNode that represents a Function Call (DataFlowCall).
+         * A CallFrame is a PathNode that represents a (DataFlowCall/Accessor).
          */
         private newtype TCallFrameType =
             TCallFrame(Flow::PathNode node) {
