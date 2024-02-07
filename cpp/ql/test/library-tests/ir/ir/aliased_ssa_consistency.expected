@@ -6,7 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.cpp:2120:25:2120:42 | Store: 0 | Instruction 'Store: 0' has no successors in function '$@'. | ir.cpp:2119:6:2119:39 | void call_as_child_of_ConditionDeclExpr() | void call_as_child_of_ConditionDeclExpr() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

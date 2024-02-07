@@ -11649,32 +11649,28 @@ ir.cpp:
 
 # 2119| void call_as_child_of_ConditionDeclExpr()
 # 2119|   Block 0
-# 2119|     v2119_1(void)                   = EnterFunction      : 
-# 2119|     mu2119_2(unknown)               = AliasedDefinition  : 
-# 2119|     mu2119_3(unknown)               = InitializeNonLocal : 
-# 2120|     r2120_1(glval<HasOperatorBool>) = VariableAddress[b] : 
-# 2120|     r2120_2(HasOperatorBool)        = Constant[0]        : 
-# 2120|     mu2120_3(HasOperatorBool)       = Store[b]           : &:r2120_1, r2120_2
-
-# 2120|   (no string representation)
-# 2120|     CopyValue: (condition decl)
-# 2120|     ConditionalBranch: (condition decl)
-#-----|   False -> Block 3
-#-----|   True -> Block 2
-
-# 2120|   Block 1
+# 2119|     v2119_1(void)                   = EnterFunction                   : 
+# 2119|     mu2119_2(unknown)               = AliasedDefinition               : 
+# 2119|     mu2119_3(unknown)               = InitializeNonLocal              : 
+# 2120|     r2120_1(glval<HasOperatorBool>) = VariableAddress[b]              : 
+# 2120|     r2120_2(HasOperatorBool)        = Constant[0]                     : 
+# 2120|     mu2120_3(HasOperatorBool)       = Store[b]                        : &:r2120_1, r2120_2
 # 2120|     r2120_4(glval<HasOperatorBool>) = VariableAddress[b]              : 
 # 2120|     r2120_5(glval<unknown>)         = FunctionAddress[operator bool]  : 
 # 2120|     r2120_6(bool)                   = Call[operator bool]             : func:r2120_5, this:r2120_4
 # 2120|     mu2120_7(unknown)               = ^CallSideEffect                 : ~m?
 # 2120|     v2120_8(void)                   = ^IndirectReadSideEffect[-1]     : &:r2120_4, ~m?
 # 2120|     mu2120_9(HasOperatorBool)       = ^IndirectMayWriteSideEffect[-1] : &:r2120_4
+# 2120|     r2120_10(bool)                  = CopyValue                       : r2120_6
+# 2120|     v2120_11(void)                  = ConditionalBranch               : r2120_10
+#-----|   False -> Block 2
+#-----|   True -> Block 1
 
-# 2120|   Block 2
-# 2120|     v2120_10(void) = NoOp : 
-#-----|   Goto -> Block 3
+# 2120|   Block 1
+# 2120|     v2120_12(void) = NoOp : 
+#-----|   Goto -> Block 2
 
-# 2121|   Block 3
+# 2121|   Block 2
 # 2121|     v2121_1(void) = NoOp         : 
 # 2119|     v2119_4(void) = ReturnVoid   : 
 # 2119|     v2119_5(void) = AliasedUse   : ~m?

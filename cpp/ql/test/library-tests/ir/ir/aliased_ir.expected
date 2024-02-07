@@ -12443,13 +12443,35 @@ ir.cpp:
 
 # 2119| void call_as_child_of_ConditionDeclExpr()
 # 2119|   Block 0
-# 2119|     v2119_1(void)                   = EnterFunction      : 
-# 2119|     m2119_2(unknown)                = AliasedDefinition  : 
-# 2119|     m2119_3(unknown)                = InitializeNonLocal : 
-# 2119|     m2119_4(unknown)                = Chi                : total:m2119_2, partial:m2119_3
-# 2120|     r2120_1(glval<HasOperatorBool>) = VariableAddress[b] : 
-# 2120|     r2120_2(HasOperatorBool)        = Constant[0]        : 
-# 2120|     m2120_3(HasOperatorBool)        = Store[b]           : &:r2120_1, r2120_2
+# 2119|     v2119_1(void)                   = EnterFunction                   : 
+# 2119|     m2119_2(unknown)                = AliasedDefinition               : 
+# 2119|     m2119_3(unknown)                = InitializeNonLocal              : 
+# 2119|     m2119_4(unknown)                = Chi                             : total:m2119_2, partial:m2119_3
+# 2120|     r2120_1(glval<HasOperatorBool>) = VariableAddress[b]              : 
+# 2120|     r2120_2(HasOperatorBool)        = Constant[0]                     : 
+# 2120|     m2120_3(HasOperatorBool)        = Store[b]                        : &:r2120_1, r2120_2
+# 2120|     r2120_4(glval<HasOperatorBool>) = VariableAddress[b]              : 
+# 2120|     r2120_5(glval<unknown>)         = FunctionAddress[operator bool]  : 
+# 2120|     r2120_6(bool)                   = Call[operator bool]             : func:r2120_5, this:r2120_4
+# 2120|     m2120_7(unknown)                = ^CallSideEffect                 : ~m2119_4
+# 2120|     m2120_8(unknown)                = Chi                             : total:m2119_4, partial:m2120_7
+# 2120|     v2120_9(void)                   = ^IndirectReadSideEffect[-1]     : &:r2120_4, m2120_3
+# 2120|     m2120_10(HasOperatorBool)       = ^IndirectMayWriteSideEffect[-1] : &:r2120_4
+# 2120|     m2120_11(HasOperatorBool)       = Chi                             : total:m2120_3, partial:m2120_10
+# 2120|     r2120_12(bool)                  = CopyValue                       : r2120_6
+# 2120|     v2120_13(void)                  = ConditionalBranch               : r2120_12
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2120|   Block 1
+# 2120|     v2120_14(void) = NoOp : 
+#-----|   Goto -> Block 2
+
+# 2121|   Block 2
+# 2121|     v2121_1(void) = NoOp         : 
+# 2119|     v2119_5(void) = ReturnVoid   : 
+# 2119|     v2119_6(void) = AliasedUse   : ~m2120_8
+# 2119|     v2119_7(void) = ExitFunction : 
 
 perf-regression.cpp:
 #    6| void Big::Big()
