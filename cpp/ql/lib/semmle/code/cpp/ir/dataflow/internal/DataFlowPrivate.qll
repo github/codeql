@@ -1020,6 +1020,10 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
+predicate knownSourceModel(Node source, string model) { none() }
+
+predicate knownSinkModel(Node sink, string model) { none() }
+
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a
  * side-effect, resulting in a summary from `p` to itself.
@@ -1096,7 +1100,7 @@ private predicate localFlowStepWithSummaries(Node node1, Node node2) {
   or
   readStep(node1, _, node2)
   or
-  DataFlowImplCommon::argumentValueFlowsThrough(node1, _, node2)
+  DataFlowImplCommon::argumentValueFlowsThrough(node1, _, node2, _)
 }
 
 /** Holds if `node` flows to a node that is used in a `SwitchInstruction`. */
