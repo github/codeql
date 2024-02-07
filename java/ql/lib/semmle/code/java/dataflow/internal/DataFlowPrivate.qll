@@ -414,6 +414,12 @@ private predicate compatibleTypes0(DataFlowType t1, DataFlowType t2) {
   erasedHaveIntersection(t1, t2)
 }
 
+private predicate sdef(DataFlowType t1, DataFlowType t2) {
+  t1.toString() = "String" and
+  t2.toString() = "ArrayList" and
+  compatibleTypes(t1, t2)
+}
+
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.

@@ -3203,20 +3203,32 @@ module MakeImpl<InputSig Lang> {
       NodeEx node, DataFlowType t0, DataFlowType t, boolean inSummaryCtx
     ) {
       exists(inSummaryCtx) and
-      if node instanceof RetNodeEx and inSummaryCtx = true
-      then t = node.getDataFlowType() and compatibleTypes(t, t0)
-      else
-        if castingNodeEx(node)
-        then
-          exists(DataFlowType nt | nt = node.getDataFlowType() |
-            if inSummaryCtx = false and typeStrongerThan(nt, t0)
-            then t = nt
-            else (
-              compatibleTypes(nt, t0) and
-              if inSummaryCtx = true and node instanceof ParamNodeEx then t = nt else t = t0
-            )
+      // if node instanceof RetNodeEx and inSummaryCtx = true
+      // then t = node.getDataFlowType() and compatibleTypes(t, t0)
+      // else
+      //   if castingNodeEx(node)
+      //   then
+      //     exists(DataFlowType nt | nt = node.getDataFlowType() |
+      //       if inSummaryCtx = false and typeStrongerThan(nt, t0)
+      //       then t = nt
+      //       else (
+      //         compatibleTypes(nt, t0) and
+      //         if inSummaryCtx = true and node instanceof ParamNodeEx then t = nt else t = t0
+      //       )
+      //     )
+      //   else t = t0
+      if castingNodeEx(node)
+      then
+        exists(DataFlowType nt | nt = node.getDataFlowType() |
+          if inSummaryCtx = false and typeStrongerThan(nt, t0)
+          then t = nt
+          else (
+            compatibleTypes(nt, t0) and
+            // t = t0
+            if inSummaryCtx = true and node instanceof ParamNodeEx then t = nt else t = t0
           )
-        else t = t0
+        )
+      else t = t0
     }
 
     private module Stage3_5Param implements MkStage<Stage3>::StageParam {
