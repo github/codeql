@@ -20,13 +20,9 @@ class PathCombinerViaMethodCall extends UnsanitizedPathCombiner {
   }
 }
 
-class PathCombinerViaStringInterpolation extends UnsanitizedPathCombiner {
-  PathCombinerViaStringInterpolation() { exists(InterpolatedStringExpr e | this = e) }
-}
+class PathCombinerViaStringInterpolation extends UnsanitizedPathCombiner instanceof InterpolatedStringExpr {}
 
-class PathCombinerViaStringConcatenation extends UnsanitizedPathCombiner {
-  PathCombinerViaStringConcatenation() { exists(AddExpr e | this = e) }
-}
+class PathCombinerViaStringConcatenation extends UnsanitizedPathCombiner instanceof AddExpr {}
 
 class MethodCallGetFullPath extends MethodCall {
   MethodCallGetFullPath() { this.getTarget().hasFullyQualifiedName("System.IO.Path", "GetFullPath") }
@@ -36,9 +32,9 @@ class MethodCallGetFullPath extends MethodCall {
  * A taint tracking module for GetFullPath to String.StartsWith.
  */
 module GetFullPathToQualifierTT =
-  TaintTracking::Global<GetFullPathToQualifierTaintTrackingConfiguration>;
+  TaintTracking::Global<GetFullPathToQualifierTaintTrackingConfig>;
 
-private module GetFullPathToQualifierTaintTrackingConfiguration implements DataFlow::ConfigSig {
+private module GetFullPathToQualifierTaintTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     exists(MethodCallGetFullPath mcGetFullPath | node = DataFlow::exprNode(mcGetFullPath))
   }
@@ -65,10 +61,10 @@ class ArchiveFullNameSource extends Source {
  * A taint tracking module for String combining to GetFullPath.
  */
 module PathCombinerToGetFullPathTT =
-  TaintTracking::Global<PathCombinerToGetFullPathTaintTrackingConfiguration>;
+  TaintTracking::Global<PathCombinerToGetFullPathTaintTrackingConfig>;
 
 /**
- * PathCombinerToGetFullPathTaintTrackingConfiguration - A Taint Tracking configuration that tracks
+ * PathCombinerToGetFullPathTaintTrackingConfig - A Taint Tracking configuration that tracks
  * a File path combining expression (Such as string concatenation, Path.Combine, or string interpolation),
  * to a Path.GetFullPath method call's argument.
  *
@@ -79,7 +75,7 @@ module PathCombinerToGetFullPathTT =
  * If the operations are in the opposite order, the resultant may still contain path traversal characters,
  * as you cannot fully resolve a relative path. So we must ascertain that they are conducted in this sequence.
  */
-private module PathCombinerToGetFullPathTaintTrackingConfiguration implements DataFlow::ConfigSig {
+private module PathCombinerToGetFullPathTaintTrackingConfig implements DataFlow::ConfigSig {
   /**
    * We are looking for the result of some Path combining operation (String concat, Path.Combine, etc.)
    */
@@ -124,7 +120,7 @@ private predicate safeCombineGetFullPathSequence(MethodCallGetFullPath mcGetFull
  */
 class RootSanitizerMethodCall extends SanitizerMethodCall {
   RootSanitizerMethodCall() {
-    exists(MethodSystemStringStartsWith sm | this.getTarget() = sm) and
+    this.getTarget() instanceof MethodSystemStringStartsWith and
     exists(Expr q, AbstractValue v |
       this.getQualifier() = q and
       v.(AbstractValues::BooleanValue).getValue() = true and
@@ -140,9 +136,7 @@ class RootSanitizerMethodCall extends SanitizerMethodCall {
  *      Path.GetFullPath - it is not simply enough for the qualifier of String.StartsWith
  *      to pass through Path.Combine without also passing through GetFullPath.
  */
-class ZipSlipGuard extends Guard {
-  ZipSlipGuard() { this instanceof SanitizerMethodCall }
-
+class ZipSlipGuard extends Guard instanceof SanitizerMethodCall{
   Expr getFilePathArgument() { result = this.(SanitizerMethodCall).getFilePathArgument() }
 }
 
@@ -342,7 +336,7 @@ class WrapperCheckSanitizer extends Sanitizer {
 abstract private class Source extends DataFlow::Node { }
 
 /**
- * Access to the `FullName` property of the archive item
+ * An access to the `FullName` property of the archive item
  */
 class ArchiveEntryFullName extends Source {
   ArchiveEntryFullName() {
@@ -359,7 +353,7 @@ class ArchiveEntryFullName extends Source {
 abstract private class Sink extends DataFlow::Node { }
 
 /**
- * Argument to extract to file extension method
+ * An argument to ExtractToFile extension method
  */
 class SinkCompressionExtractToFileArgument extends Sink {
   SinkCompressionExtractToFileArgument() {
@@ -371,7 +365,7 @@ class SinkCompressionExtractToFileArgument extends Sink {
 }
 
 /**
- * File Stream created from tainted file name through File.Open/File.Create
+ * A File Stream created from tainted file name through File.Open/File.Create
  */
 class SinkFileOpenArgument extends Sink {
   SinkFileOpenArgument() {
@@ -383,7 +377,7 @@ class SinkFileOpenArgument extends Sink {
 }
 
 /**
- * File Stream created from tainted file name passed directly to the constructor
+ * A File Stream created from tainted file name passed directly to the constructor
  */
 class SinkStreamConstructorArgument extends Sink {
   SinkStreamConstructorArgument() {
