@@ -19,9 +19,7 @@ module Actions {
         f = this.getLocation().getFile() and
         (
           f.getRelativePath().regexpMatch("(^|.*/)\\.github/workflows/.*\\.ya?ml$") or
-          f.getBaseName() = ["action.yml", "action.yaml"] or
-          // ALVARO: Add any yaml files temporary for development
-          f.getExtension() = ["yml", "yaml"]
+          f.getBaseName() = ["action.yml", "action.yaml"]
         )
       )
     }
