@@ -4,7 +4,6 @@
 
 import csharp
 private import semmle.code.csharp.controlflow.Guards
-private import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 /**
  * The set of all Sanitizer methods.
