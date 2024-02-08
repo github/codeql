@@ -1,5 +1,0 @@
----
-category: minorAnalysis
----
-
-- Added modeling of YARL's `is_absolute` method and checks of the `netloc` of a parsed URL as sanitizers for the `py/url-redirection` query, leading to fewer false positives.

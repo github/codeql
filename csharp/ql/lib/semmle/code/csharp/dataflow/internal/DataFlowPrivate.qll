@@ -250,6 +250,15 @@ module LocalFlow {
         scope = e2 and
         isSuccessor = true
         or
+        e1 = e2.(CollectionExpression).getAnElement() and
+        e1 instanceof SpreadElementExpr and
+        scope = e2 and
+        isSuccessor = true
+        or
+        e1 = e2.(SpreadElementExpr).getExpr() and
+        scope = e2 and
+        isSuccessor = true
+        or
         exists(WithExpr we |
           scope = we and
           isSuccessor = true
@@ -531,6 +540,8 @@ module LocalFlow {
       not t instanceof NullType
       or
       t = any(TypeParameter tp | not tp.isValueType())
+      or
+      t.(Struct).isRef()
     ) and
     not exists(getALastEvalNode(result))
   }
@@ -736,6 +747,15 @@ private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2
       overridesOrImplementsSourceDecl(target, ret)
     )
   )
+}
+
+/**
+ * Holds if `ce` is a collection expression that adds `src` to the collection `ce`.
+ */
+private predicate collectionStore(Expr src, CollectionExpression ce) {
+  // Collection expression, `[1, src, 3]`
+  src = ce.getAnElement() and
+  not src instanceof SpreadElementExpr
 }
 
 /**
@@ -1799,6 +1819,11 @@ private class StoreStepConfiguration extends ControlFlowReachabilityConfiguratio
     or
     exactScope = false and
     isSuccessor = true and
+    collectionStore(e1, e2) and
+    scope = e2
+    or
+    exactScope = false and
+    isSuccessor = true and
     isParamsArg(e2, e1, _) and
     scope = e2
   }
@@ -1821,6 +1846,10 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     fieldOrPropertyStore(_, c, node1.asExpr(), node.getExpr(), postUpdate)
     or
     arrayStore(_, node1.asExpr(), node.getExpr(), postUpdate) and c instanceof ElementContent
+  )
+  or
+  exists(StoreStepConfiguration x | hasNodePath(x, node1, node2) |
+    collectionStore(node1.asExpr(), node2.asExpr()) and c instanceof ElementContent
   )
   or
   exists(StoreStepConfiguration x, Expr arg, ControlFlow::Node callCfn |
@@ -1988,6 +2017,14 @@ predicate clearsContent(Node n, ContentSet c) {
     f = oi.getAMemberInitializer().getInitializedMember() and
     c = f.getContent()
   )
+  or
+  exists(Argument a, Struct s, Field f |
+    a = n.(PostUpdateNode).getPreUpdateNode().asExpr() and
+    a.getType() = s and
+    f = s.getAField() and
+    c.(FieldContent).getField() = f.getUnboundDeclaration() and
+    not f.isRef()
+  )
 }
 
 /**
@@ -1996,6 +2033,8 @@ predicate clearsContent(Node n, ContentSet c) {
  */
 predicate expectsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
+  n.asExpr() instanceof SpreadElementExpr and c instanceof ElementContent
 }
 
 /**

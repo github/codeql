@@ -2112,4 +2112,12 @@ char* test_strtod(char *s) {
   return end;
 }
 
+struct HasOperatorBool {
+    operator bool();
+};
+
+void call_as_child_of_ConditionDeclExpr() {
+  if(HasOperatorBool b = HasOperatorBool()) {}
+}
+
 // semmle-extractor-options: -std=c++17 --clang

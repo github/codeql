@@ -27,7 +27,7 @@ namespace Semmle.Extraction.Tests
             Assert.Null(options.CompilerName);
             Assert.Empty(options.CompilerArguments);
             Assert.True(options.Threads >= 1);
-            Assert.Equal(Verbosity.Info, options.Verbosity);
+            Assert.Equal(Verbosity.Info, options.LegacyVerbosity);
             Assert.False(options.Console);
             Assert.False(options.PDB);
             Assert.False(options.Fast);
@@ -80,27 +80,58 @@ namespace Semmle.Extraction.Tests
         public void VerbosityTests()
         {
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbose" });
-            Assert.Equal(Verbosity.Debug, options.Verbosity);
+            Assert.Equal(Verbosity.Debug, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "0" });
-            Assert.Equal(Verbosity.Off, options.Verbosity);
+            Assert.Equal(Verbosity.Off, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "1" });
-            Assert.Equal(Verbosity.Error, options.Verbosity);
+            Assert.Equal(Verbosity.Error, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "2" });
-            Assert.Equal(Verbosity.Warning, options.Verbosity);
+            Assert.Equal(Verbosity.Warning, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "3" });
-            Assert.Equal(Verbosity.Info, options.Verbosity);
+            Assert.Equal(Verbosity.Info, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "4" });
-            Assert.Equal(Verbosity.Debug, options.Verbosity);
+            Assert.Equal(Verbosity.Debug, options.LegacyVerbosity);
 
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "5" });
-            Assert.Equal(Verbosity.Trace, options.Verbosity);
+            Assert.Equal(Verbosity.Trace, options.LegacyVerbosity);
 
             Assert.Throws<FormatException>(() => CSharp.Options.CreateWithEnvironment(new string[] { "--verbosity", "X" }));
+        }
+
+
+        private const string extractorVariableName = "CODEQL_EXTRACTOR_CSHARP_OPTION_LOGGING_VERBOSITY";
+        private const string cliVariableName = "CODEQL_VERBOSITY";
+
+        private void CheckVerbosity(string? extractor, string? cli, Verbosity expected)
+        {
+            var currentExtractorVerbosity = Environment.GetEnvironmentVariable(extractorVariableName);
+            var currentCliVerbosity = Environment.GetEnvironmentVariable(cliVariableName);
+            try
+            {
+                Environment.SetEnvironmentVariable(extractorVariableName, extractor);
+                Environment.SetEnvironmentVariable(cliVariableName, cli);
+
+                options = CSharp.Options.CreateWithEnvironment(new string[] { "--verbose" });
+                Assert.Equal(expected, options.Verbosity);
+            }
+            finally
+            {
+                Environment.SetEnvironmentVariable(extractorVariableName, currentExtractorVerbosity);
+                Environment.SetEnvironmentVariable(cliVariableName, currentCliVerbosity);
+            }
+        }
+
+        [Fact]
+        public void VerbosityTests_WithExtractorOption()
+        {
+            CheckVerbosity("progress+++", "progress++", Verbosity.All);
+            CheckVerbosity(null, "progress++", Verbosity.Trace);
+            CheckVerbosity(null, null, Verbosity.Debug);
         }
 
         [Fact]
@@ -142,7 +173,7 @@ namespace Semmle.Extraction.Tests
         public void StandaloneOptions()
         {
             standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--silent" });
-            Assert.Equal(Verbosity.Off, standaloneOptions.Verbosity);
+            Assert.Equal(Verbosity.Off, standaloneOptions.LegacyVerbosity);
             Assert.False(standaloneOptions.Errors);
             Assert.False(standaloneOptions.Help);
         }
@@ -179,7 +210,7 @@ namespace Semmle.Extraction.Tests
             try
             {
                 File.AppendAllText(file, "Test");
-                new string[] { "/noconfig", "@" + file }.WriteCommandLine(sw);
+                sw.WriteContentFromArgumentFile(new string[] { "/noconfig", "@" + file });
                 Assert.Equal("Test", Regex.Replace(sw.ToString(), @"\t|\n|\r", ""));
             }
             finally

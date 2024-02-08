@@ -1,3 +1,9 @@
+## 0.9.3
+
+### Minor Analysis Improvements
+
+* The `cpp/include-non-header` style query will now ignore the `.def` extension for textual header inclusions.
+
 ## 0.9.2
 
 ### New Queries

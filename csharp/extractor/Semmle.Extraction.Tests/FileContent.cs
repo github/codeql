@@ -25,7 +25,7 @@ namespace Semmle.Extraction.Tests
 
     internal class TestFileContent : FileContent
     {
-        public TestFileContent(IEnumerable<string> lines) : base(new ProgressMonitor(new LoggerStub()),
+        public TestFileContent(IEnumerable<string> lines) : base(new LoggerStub(),
             new List<string>() { "test1.cs" },
             new UnsafeFileReaderStub(lines))
         { }
@@ -84,7 +84,7 @@ namespace Semmle.Extraction.Tests
             Assert.Contains("StyleCop.Analyzers".ToLowerInvariant(), allPackages);
         }
 
-        private static void ImplicitUsingsTest(string line, bool expected)
+        private static void CsProjSettingsTest(string line, bool expected, Func<FileContent, bool> func)
         {
             // Setup
             var lines = new List<string>()
@@ -94,28 +94,52 @@ namespace Semmle.Extraction.Tests
             var fileContent = new TestFileContent(lines);
 
             // Execute
-            var useImplicitUsings = fileContent.UseImplicitUsings;
+            var actual = func(fileContent);
 
             // Verify
-            Assert.Equal(expected, useImplicitUsings);
+            Assert.Equal(expected, actual);
         }
 
         [Fact]
         public void TestFileContent_ImplicitUsings0()
         {
-            ImplicitUsingsTest("<ImplicitUsings>false</ImplicitUsings>", false);
+            CsProjSettingsTest("<ImplicitUsings>false</ImplicitUsings>", false, fc => fc.UseImplicitUsings);
         }
 
         [Fact]
         public void TestFileContent_ImplicitUsings1()
         {
-            ImplicitUsingsTest("<ImplicitUsings>true</ImplicitUsings>", true);
+            CsProjSettingsTest("<ImplicitUsings>true</ImplicitUsings>", true, fc => fc.UseImplicitUsings);
         }
 
         [Fact]
         public void TestFileContent_ImplicitUsings2()
         {
-            ImplicitUsingsTest("<ImplicitUsings>enable</ImplicitUsings>", true);
+            CsProjSettingsTest("<ImplicitUsings>enable</ImplicitUsings>", true, fc => fc.UseImplicitUsings);
+        }
+
+        [Fact]
+        public void TestFileContent_UseWpf0()
+        {
+            CsProjSettingsTest("<UseWPF>false</UseWPF>", false, fc => fc.UseWpf);
+        }
+
+        [Fact]
+        public void TestFileContent_UseWpf1()
+        {
+            CsProjSettingsTest("<UseWPF>true</UseWPF>", true, fc => fc.UseWpf);
+        }
+
+        [Fact]
+        public void TestFileContent_UseWindowsForms0()
+        {
+            CsProjSettingsTest("<UseWindowsForms>false</UseWindowsForms>", false, fc => fc.UseWindowsForms);
+        }
+
+        [Fact]
+        public void TestFileContent_UseWindowsForms1()
+        {
+            CsProjSettingsTest("<UseWindowsForms>true</UseWindowsForms>", true, fc => fc.UseWindowsForms);
         }
 
         [Fact]

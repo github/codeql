@@ -212,7 +212,7 @@ void test_swap() {
 
 	std::swap(x, y);
 
-	sink(x); // $ SPURIOUS: ast,ir
+	sink(x); // $ SPURIOUS: ast
 	sink(y); // $ ast,ir
 }
 

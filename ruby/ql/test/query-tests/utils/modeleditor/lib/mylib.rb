@@ -1,7 +1,13 @@
 require_relative "./other"
 
 class A
+  def initialize(x, y)
+  end
+
   def foo(x, y, key1:, **kwargs, &block)
+    block.call(x, y, key2: key1)
+
+    yield x, y, key2: key1
   end
 
   def bar(x, *args)

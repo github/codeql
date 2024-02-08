@@ -58,7 +58,7 @@ class Call extends Expr instanceof CallImpl {
       TCfgScope(result) = viableCallableLambda(c, _)
     )
     or
-    result = getTarget(this.getAControlFlowNode())
+    result = getTarget(TNormalCall(this.getAControlFlowNode()))
   }
 
   override AstNode getAChild(string pred) {
