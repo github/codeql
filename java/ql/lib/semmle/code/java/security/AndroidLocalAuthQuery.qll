@@ -43,8 +43,8 @@ class AuthenticationSuccessCallback extends Method {
 }
 
 /** A call that sets a parameter for key generation that is insecure for use with biometric authentication. */
-class InsecureBiometricKeyParam extends MethodCall {
-  InsecureBiometricKeyParam() {
+class InsecureBiometricKeyParamCall extends MethodCall {
+  InsecureBiometricKeyParamCall() {
     exists(string name, CompileTimeConstantExpr val |
       this.getMethod()
           .hasQualifiedName("android.security.keystore", "KeyGenParameterSpec$Builder", name) and
@@ -59,3 +59,6 @@ class InsecureBiometricKeyParam extends MethodCall {
     )
   }
 }
+
+/** Holds if the application contains an instance of a key being used for local biometric authentication. */
+predicate usesLocalAuth() { exists(AuthenticationSuccessCallback cb | exists(cb.getAResultUse())) }
