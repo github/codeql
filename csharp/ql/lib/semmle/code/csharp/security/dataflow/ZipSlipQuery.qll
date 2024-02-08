@@ -169,6 +169,9 @@ class RootSanitizerMethodCall extends SanitizerMethodCall {
  *      to pass through Path.Combine without also passing through GetFullPath.
  */
 class ZipSlipGuard extends Guard instanceof SanitizerMethodCall {
+  /**
+   * The qualifier of this method call, which represents the File Path (implicit) argument.
+   */
   Expr getFilePathArgument() { result = this.(SanitizerMethodCall).getFilePathArgument() }
 }
 
@@ -176,6 +179,9 @@ class ZipSlipGuard extends Guard instanceof SanitizerMethodCall {
  * The set of calls to calls to Sanitizers.
  */
 abstract private class SanitizerMethodCall extends MethodCall {
+  /**
+   * The qualifier of this method call, which represents the File Path (implicit) argument.
+   */
   abstract Expr getFilePathArgument();
 }
 
