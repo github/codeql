@@ -21,15 +21,13 @@ import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
-import semmle.code.cpp.ir.implementation.raw.Instruction
+import semmle.code.cpp.ir.IR
 
 class UncalledFunction extends Function {
   UncalledFunction() {
     not exists(Call c | c.getTarget() = this) and
-    // TODO: Need rationale here, added based on suggestion
-    //but unclear of the scenario being avoided
-    not this.(MemberFunction).overrides(_) and
     // Ignore functions that appear to be function pointers
+    // function pointers may be seen as uncalled statically
     not exists(FunctionAccess fa | fa.getTarget() = this)
   }
 }
@@ -39,7 +37,6 @@ class UncalledFunction extends Function {
  * Grabs the base type of the underlying type of `t` if `t` is a pointer and checks `isConst()` else
  * checks on the underlying type of `t` alone.
  */
-bindingset[t]
 predicate hasConstSpecifier(Type t) {
   if t.getUnderlyingType() instanceof PointerType
   then t.getUnderlyingType().(PointerType).getBaseType().isConst()
