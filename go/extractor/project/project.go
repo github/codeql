@@ -58,14 +58,14 @@ type GoVersionInfo struct {
 // 1. The Go version specified in the `go.work` file, if any.
 // 2. The greatest Go version specified in any `go.mod` file, if any.
 func (workspace *GoWorkspace) RequiredGoVersion() GoVersionInfo {
-	if workspace.WorkspaceFile != nil {
+	if workspace.WorkspaceFile != nil && workspace.WorkspaceFile.Go != nil {
 		// If we have parsed a `go.work` file, return the version number from it.
 		return GoVersionInfo{Version: workspace.WorkspaceFile.Go.Version, Found: true}
 	} else if workspace.Modules != nil && len(workspace.Modules) > 0 {
 		// Otherwise, if we have `go.work` files, find the greatest Go version in those.
 		var greatestVersion string = ""
 		for _, module := range workspace.Modules {
-			if module.Module != nil {
+			if module.Module != nil && module.Module.Go != nil {
 				// If we have parsed the file, retrieve the version number we have already obtained.
 				if greatestVersion == "" || semver.Compare("v"+module.Module.Go.Version, "v"+greatestVersion) > 0 {
 					greatestVersion = module.Module.Go.Version
