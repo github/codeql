@@ -948,8 +948,8 @@ private Type getTypeImpl0(Type t, int indirectionIndex) {
     // Such a type would create an infinite loop otherwise. For these cases we
     // simply don't produce a result for `getTypeImpl`.
     // To be on the safe side, we check whether the _unspecified_ type has
-    // changed since this also prevents an infinite loop for occuring when
-    // `stripped` and `t` only differ by const'ness or volatile'ness.
+    // changed since this also prevents an infinite loop when `stripped` and
+    // `t` only differ by const'ness or volatile'ness.
     stripped.getUnspecifiedType() != t.getUnspecifiedType() and
     result = getTypeImpl0(stripped, indirectionIndex - 1)
   )
