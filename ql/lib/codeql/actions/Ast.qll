@@ -2,48 +2,13 @@ private import codeql.actions.ast.internal.Actions
 private import codeql.Locations
 
 /**
- * Base class for the AST tree.
- * Based on YamlNode from the Yaml library but making mapping values children of the mapping keys:
- * eg: top:
- *        key: value
- * According to the Yaml library, both `key` and `value` are direct children of `top`
- * This Tree implementation makes `key` child od `top` and `value` child of `key`
+ * Base class for the AST tree. Based on YamlNode from the Yaml library.
  */
 class AstNode instanceof YamlNode {
   AstNode getParentNode() { result = super.getParentNode() }
 
-  // AstNode getParentNode() {
-  //   if exists(YamlMapping m | m.maps(_, this))
-  //   then exists(YamlMapping m | m.maps(result, this))
-  //   else result = super.getParentNode()
-  // }
   AstNode getAChildNode() { result = super.getAChildNode() }
 
-  // AstNode getAChildNode() {
-  //   if this instanceof YamlMapping
-  //   then this.(YamlMapping).maps(result, _)
-  //   else
-  //     if this instanceof YamlCollection
-  //     then result = super.getChildNode(_)
-  //     else
-  //       if this instanceof YamlScalar and exists(YamlMapping m | m.maps(this, _))
-  //       then exists(YamlMapping m | m.maps(this, result))
-  //       else none()
-  // }
-  // /**
-  //  * This should be getAChildNode(int i)
-  //  */
-  // AstNode getChildNodeByOrder(int i) {
-  //   result =
-  //     rank[i](Expression child, Location l |
-  //       child = this.getAChildNode() and
-  //       child.getLocation() = l
-  //     |
-  //       child
-  //       order by
-  //         l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-  //     )
-  // }
   string toString() { result = super.toString() }
 
   string getAPrimaryQlClass() { result = super.getAPrimaryQlClass() }
