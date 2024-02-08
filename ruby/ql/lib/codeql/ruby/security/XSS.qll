@@ -298,7 +298,10 @@ private module OrmTracking {
       Shared::isAdditionalXssFlowStep(node1, node2)
     }
 
-    predicate isBarrierIn(DataFlow::Node node) { node instanceof DataFlow::SelfParameterNode }
+    predicate isBarrierIn(DataFlow::Node node) {
+      node instanceof DataFlow::SelfParameterNode and
+      not node.getLocation().getFile() instanceof ErbFile
+    }
   }
 
   import DataFlow::Global<Config>
