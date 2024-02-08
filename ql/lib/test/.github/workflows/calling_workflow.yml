@@ -1,0 +1,18 @@
+on: push
+
+jobs:
+  call-workflow-1-in-local-repo:
+    uses: octo-org/this-repo/.github/workflows/reusable_workflow.yml@172239021f7ba04fe7327647b213799853a9eb89
+    with:
+      config-path: ${{ github.event.pull_request.head.ref }}
+    secrets: inherit
+  call-workflow-2-in-local-repo:
+    uses: ./.github/workflows/reusable_workflow.yml
+    with:
+      config-path: ${{ github.event.pull_request.head.ref }}
+    secrets: inherit
+  call-workflow-in-another-repo:
+    uses: octo-org/another-repo/.github/workflows/workflow.yml@v1
+    with:
+      config-path: ${{ github.event.pull_request.head.ref }}
+    secrets: inherit
