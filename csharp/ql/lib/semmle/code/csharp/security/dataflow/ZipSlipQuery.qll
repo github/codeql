@@ -169,7 +169,7 @@ class RootSanitizerMethodCall extends SanitizerMethodCall {
  */
 class ZipSlipGuard extends Guard instanceof SanitizerMethodCall {
   /**
-   * The qualifier of this method call, which represents the File Path (implicit) argument.
+   * Gets the qualifier of this method call, which represents the File Path (implicit) argument.
    */
   Expr getFilePathArgument() { result = this.(SanitizerMethodCall).getFilePathArgument() }
 }
@@ -179,7 +179,7 @@ class ZipSlipGuard extends Guard instanceof SanitizerMethodCall {
  */
 abstract private class SanitizerMethodCall extends MethodCall {
   /**
-   * The qualifier of this method call, which represents the File Path (implicit) argument.
+   * Gets the qualifier of this method call, which represents the File Path (implicit) argument.
    */
   abstract Expr getFilePathArgument();
 }
