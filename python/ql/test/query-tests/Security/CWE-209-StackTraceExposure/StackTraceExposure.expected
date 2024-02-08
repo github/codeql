@@ -1,13 +1,13 @@
 edges
-| test.py:23:25:23:25 | ControlFlowNode for e | test.py:24:16:24:16 | ControlFlowNode for e |
-| test.py:31:25:31:25 | ControlFlowNode for e | test.py:32:16:32:16 | ControlFlowNode for e |
-| test.py:32:16:32:16 | ControlFlowNode for e | test.py:32:16:32:30 | ControlFlowNode for Attribute |
-| test.py:49:9:49:11 | ControlFlowNode for err | test.py:50:29:50:31 | ControlFlowNode for err |
-| test.py:49:15:49:36 | ControlFlowNode for Attribute() | test.py:49:9:49:11 | ControlFlowNode for err |
-| test.py:50:29:50:31 | ControlFlowNode for err | test.py:50:16:50:32 | ControlFlowNode for format_error() |
-| test.py:50:29:50:31 | ControlFlowNode for err | test.py:52:18:52:20 | ControlFlowNode for msg |
-| test.py:52:18:52:20 | ControlFlowNode for msg | test.py:53:12:53:27 | ControlFlowNode for BinaryExpr |
-| test.py:65:25:65:25 | ControlFlowNode for e | test.py:66:24:66:40 | ControlFlowNode for Dict |
+| test.py:23:25:23:25 | ControlFlowNode for e | test.py:24:16:24:16 | ControlFlowNode for e | provenance |  |
+| test.py:31:25:31:25 | ControlFlowNode for e | test.py:32:16:32:16 | ControlFlowNode for e | provenance |  |
+| test.py:32:16:32:16 | ControlFlowNode for e | test.py:32:16:32:30 | ControlFlowNode for Attribute | provenance |  |
+| test.py:49:9:49:11 | ControlFlowNode for err | test.py:50:29:50:31 | ControlFlowNode for err | provenance |  |
+| test.py:49:15:49:36 | ControlFlowNode for Attribute() | test.py:49:9:49:11 | ControlFlowNode for err | provenance |  |
+| test.py:50:29:50:31 | ControlFlowNode for err | test.py:50:16:50:32 | ControlFlowNode for format_error() | provenance |  |
+| test.py:50:29:50:31 | ControlFlowNode for err | test.py:52:18:52:20 | ControlFlowNode for msg | provenance |  |
+| test.py:52:18:52:20 | ControlFlowNode for msg | test.py:53:12:53:27 | ControlFlowNode for BinaryExpr | provenance |  |
+| test.py:65:25:65:25 | ControlFlowNode for e | test.py:66:24:66:40 | ControlFlowNode for Dict | provenance |  |
 nodes
 | test.py:16:16:16:37 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:23:25:23:25 | ControlFlowNode for e | semmle.label | ControlFlowNode for e |
