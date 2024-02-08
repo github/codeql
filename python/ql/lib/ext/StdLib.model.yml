@@ -17,10 +17,18 @@ extensions:
       - ["ArgumentParser", "Member[_parse_known_args]", "Argument[arg_strings:]", "ReturnValue", "taint"]
       - ["ArgumentParser", "Member[_read_args_from_files]", "Argument[1]", "ReturnValue", "taint"]
       - ["ArgumentParser", "Member[_read_args_from_files]", "Argument[arg_strings:]", "ReturnValue", "taint"]
+      - ["ArgumentParser", "Member[parse_args]", "Argument[1]", "Argument[1]", "taint"]
+      - ["ArgumentParser", "Member[parse_args]", "Argument[1]", "Argument[args:]", "taint"]
       - ["ArgumentParser", "Member[parse_args]", "Argument[1]", "ReturnValue", "taint"]
+      - ["ArgumentParser", "Member[parse_args]", "Argument[args:]", "Argument[1]", "taint"]
+      - ["ArgumentParser", "Member[parse_args]", "Argument[args:]", "Argument[args:]", "taint"]
       - ["ArgumentParser", "Member[parse_args]", "Argument[args:]", "ReturnValue", "taint"]
       - ["ArgumentParser", "Member[parse_known_args]", "Argument[1]", "ReturnValue", "taint"]
       - ["ArgumentParser", "Member[parse_known_args]", "Argument[args:]", "ReturnValue", "taint"]
+      - ["CGIHTTPRequestHandler", "Member[is_cgi]", "Argument[0]", "Argument[0]", "taint"]
+      - ["CGIHTTPRequestHandler", "Member[is_cgi]", "Argument[0]", "Argument[self:]", "taint"]
+      - ["CGIHTTPRequestHandler", "Member[is_cgi]", "Argument[self:]", "Argument[0]", "taint"]
+      - ["CGIHTTPRequestHandler", "Member[is_cgi]", "Argument[self:]", "Argument[self:]", "taint"]
       - ["ctypes", "Member[create_unicode_buffer]", "Argument[0]", "ReturnValue", "taint"]
       - ["ctypes", "Member[create_unicode_buffer]", "Argument[init:]", "ReturnValue", "taint"]
       - ["email", "Member[utils].Member[parseaddr]", "Argument[0]", "ReturnValue", "taint"]
@@ -105,7 +113,7 @@ extensions:
       - ["ZipFile", "Member[__init__]", "Argument[file:]", "ReturnValue", "taint"]
       - ["ZipFile", "Member[_extract_member]", "Argument[2]", "ReturnValue", "taint"]
       - ["ZipFile", "Member[_extract_member]", "Argument[targetpath:]", "ReturnValue", "taint"]
-      
+
   - addsTo:
       pack: codeql/python-all
       extensible: neutralModel

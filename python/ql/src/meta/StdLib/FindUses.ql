@@ -21,6 +21,32 @@ string stepsTo(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     else result = "no"
 }
 
+pragma[inline]
+string computeArgumentPath(string parameter, Function function) {
+  exists(int index |
+    parameter = function.getArg(index).getName() and
+    result = "Argument[" + index.toString() + "]"
+  )
+  or
+  exists(function.getArgByName(parameter)) and
+  result = "Argument[" + parameter + ":]"
+}
+
+bindingset[parameter, function]
+pragma[inline]
+string computeReturnPath(
+  DataFlow::Node argument, string parameter, Function function, DataFlow::Node outNode
+) {
+  outNode.(DataFlow::CallCfgNode).getArg(_) = argument and
+  result = "ReturnValue"
+  or
+  outNode.(DataFlow::CallCfgNode).getArgByName(_) = argument and
+  result = "ReturnValue"
+  or
+  outNode.(DataFlow::PostUpdateNode).getPreUpdateNode() = argument and
+  result = computeArgumentPath(parameter, function)
+}
+
 bindingset[parameter]
 string madSummary(
   DataFlow::Node argument, string parameter, Function function, DataFlow::Node outNode
@@ -40,27 +66,15 @@ string madSummary(
       functionPath = "Member[" + function.getName() + "]"
     ) and
     (
-      exists(int index |
-        parameter = function.getArg(index).getName() and
-        argumentPath = "Argument[" + index.toString() + "]"
-      )
+      argumentPath = computeArgumentPath(parameter, function)
       or
-      exists(function.getArgByName(parameter)) and
-      argumentPath = "Argument[" + parameter + ":]"
-      or
-      not exists(int index | parameter = function.getArg(index).getName()) and
-      not exists(function.getArgByName(parameter)) and
+      not exists(computeArgumentPath(parameter, function)) and
       argumentPath = "Argument[?]"
     ) and
     (
-      outNode.(DataFlow::CallCfgNode).getArg(_) = argument and
-      returnPath = "ReturnValue"
+      returnPath = computeReturnPath(argument, parameter, function, outNode)
       or
-      outNode.(DataFlow::CallCfgNode).getArgByName(_) = argument and
-      returnPath = "ReturnValue"
-      or
-      not outNode.(DataFlow::CallCfgNode).getArg(_) = argument and
-      not outNode.(DataFlow::CallCfgNode).getArgByName(_) = argument and
+      not exists(computeReturnPath(argument, parameter, function, outNode)) and
       returnPath =
         argument.getLocation().toString() + ": " + argument.toString() + " -> " + outNode.toString()
     ) and
@@ -98,7 +112,7 @@ abstract class EntryPointsByQuery extends string {
         or
         not exists(madSummary(argument, parameterName, function, outNode)) and
         madSummary =
-          argument.getLocation().getFile().getBaseName() + ":" + argument.toString() + " -> " +
+          argument.getLocation().toString() + ":" + argument.toString() + " -> " +
             outNode.toString()
       )
     )
