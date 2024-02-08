@@ -1,47 +1,18 @@
 astTypeBugs
 irTypeBugs
 incorrectBaseType
-| BarrierGuard.cpp:75:15:75:17 | *buf | Expected 'Node.getType()' to be const int, but it was int |
-| clang.cpp:18:8:18:19 | *sourceArray1 | Expected 'Node.getType()' to be const int, but it was int |
 | clang.cpp:22:8:22:20 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
 | clang.cpp:23:17:23:29 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
-| clang.cpp:52:8:52:17 | *stackArray | Expected 'Node.getType()' to be const int, but it was int |
 | dispatch.cpp:60:3:60:14 | *globalBottom | Expected 'Node.getType()' to be Top, but it was Top * |
 | dispatch.cpp:61:3:61:14 | *globalMiddle | Expected 'Node.getType()' to be Top, but it was Top * |
-| example.c:19:6:19:6 | *b | Expected 'Node.getType()' to be MyBool, but it was (unnamed class/struct/union) |
-| example.c:26:18:26:24 | *& ... | Expected 'Node.getType()' to be MyCoords, but it was (unnamed class/struct/union) |
-| file://:0:0:0:0 | *this | Expected 'Node.getType()' to be const lambda [] type at line 13, col. 11, but it was decltype([...](...){...}) |
 | flowOut.cpp:50:14:50:15 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
-| flowOut.cpp:67:21:67:21 | *p | Expected 'Node.getType()' to be const char, but it was char |
 | flowOut.cpp:84:9:84:10 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
 | flowOut.cpp:101:13:101:14 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
-| flowOut.cpp:111:34:111:34 | *p | Expected 'Node.getType()' to be const void, but it was void |
-| flowOut.cpp:139:30:139:30 | *p | Expected 'Node.getType()' to be const char *, but it was char * |
-| flowOut.cpp:154:30:154:30 | *p | Expected 'Node.getType()' to be const char *, but it was char * |
 | flowOut.cpp:168:3:168:10 | ** ... | Expected 'Node.getType()' to be char, but it was char * |
-| flowOut.cpp:176:30:176:30 | *p | Expected 'Node.getType()' to be const char *, but it was char * |
-| flowOut.cpp:193:30:193:30 | *p | Expected 'Node.getType()' to be const char *, but it was char * |
-| lambdas.cpp:14:3:14:6 | *this | Expected 'Node.getType()' to be const lambda [] type at line 13, col. 11, but it was decltype([...](...){...}) |
-| lambdas.cpp:15:3:15:6 | *this | Expected 'Node.getType()' to be const lambda [] type at line 13, col. 11, but it was decltype([...](...){...}) |
-| lambdas.cpp:21:3:21:6 | *this | Expected 'Node.getType()' to be const lambda [] type at line 20, col. 11, but it was decltype([...](...){...}) |
-| lambdas.cpp:22:3:22:6 | *this | Expected 'Node.getType()' to be const lambda [] type at line 20, col. 11, but it was decltype([...](...){...}) |
-| lambdas.cpp:23:3:23:14 | *this | Expected 'Node.getType()' to be const lambda [] type at line 20, col. 11, but it was decltype([...](...){...}) |
-| lambdas.cpp:29:3:29:6 | *this | Expected 'Node.getType()' to be const lambda [] type at line 28, col. 11, but it was decltype([...](...){...}) |
-| lambdas.cpp:30:3:30:6 | *this | Expected 'Node.getType()' to be const lambda [] type at line 28, col. 11, but it was decltype([...](...){...}) |
 | self_parameter_flow.cpp:8:8:8:9 | *& ... | Expected 'Node.getType()' to be unsigned char, but it was unsigned char * |
 | test.cpp:67:28:67:37 | (reference dereference) | Expected 'Node.getType()' to be const int, but it was int * |
-| test.cpp:67:28:67:37 | *call to move | Expected 'Node.getType()' to be const int, but it was int |
-| test.cpp:70:19:70:33 | *x3 | Expected 'Node.getType()' to be const int, but it was int |
-| test.cpp:71:8:71:9 | *x4 | Expected 'Node.getType()' to be const int, but it was int |
-| test.cpp:384:16:384:23 | *& ... | Expected 'Node.getType()' to be const void, but it was void |
-| test.cpp:391:16:391:23 | *& ... | Expected 'Node.getType()' to be const void, but it was void |
-| test.cpp:400:16:400:22 | *& ... | Expected 'Node.getType()' to be const void, but it was void |
-| test.cpp:407:16:407:22 | *& ... | Expected 'Node.getType()' to be const void, but it was void |
-| test.cpp:526:3:526:4 | ** ... | Expected 'Node.getType()' to be const int *, but it was int * |
-| test.cpp:526:3:526:4 | ** ... | Expected 'Node.getType()' to be const int, but it was int * |
-| test.cpp:526:8:526:9 | *& ... | Expected 'Node.getType()' to be const int, but it was int |
-| test.cpp:531:39:531:40 | *& ... | Expected 'Node.getType()' to be const int *, but it was int * |
-| test.cpp:531:39:531:40 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
+| test.cpp:526:3:526:4 | ** ... | Expected 'Node.getType()' to be const int, but it was const int * |
+| test.cpp:531:39:531:40 | *& ... | Expected 'Node.getType()' to be int, but it was const int * |
 | test.cpp:562:5:562:13 | *globalInt | Expected 'Node.getType()' to be int, but it was int * |
 | test.cpp:576:5:576:13 | *globalInt | Expected 'Node.getType()' to be int, but it was int * |
 | test.cpp:584:3:584:3 | *x | Expected 'Node.getType()' to be int, but it was int * |
@@ -50,73 +21,14 @@ incorrectBaseType
 | test.cpp:704:22:704:25 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
 | test.cpp:715:24:715:25 | *& ... | Expected 'Node.getType()' to be unsigned char, but it was unsigned char * |
 | test.cpp:727:3:727:3 | *p | Expected 'Node.getType()' to be int, but it was int * |
-| test.cpp:797:31:797:39 | *content | Expected 'Node.getType()' to be const int, but it was int |
 | test.cpp:808:5:808:21 | ** ... | Expected 'Node.getType()' to be int, but it was int * |
 | test.cpp:832:5:832:17 | *global_direct | Expected 'Node.getType()' to be int *, but it was int ** |
 | test.cpp:848:23:848:25 | (reference dereference) | Expected 'Node.getType()' to be int, but it was int * |
 | test.cpp:854:10:854:36 | * ... | Expected 'Node.getType()' to be const int, but it was int |
-| test.cpp:860:54:860:59 | *call to source | Expected 'Node.getType()' to be const int, but it was int |
-| test.cpp:861:10:861:37 | *static_local_pointer_dynamic | Expected 'Node.getType()' to be const int, but it was int |
 | test.cpp:867:10:867:30 | * ... | Expected 'Node.getType()' to be const int, but it was int |
-| test.cpp:872:46:872:51 | *call to source | Expected 'Node.getType()' to be const int, but it was int |
-| test.cpp:875:10:875:31 | *global_pointer_dynamic | Expected 'Node.getType()' to be const int, but it was int |
-| test.cpp:882:10:882:34 | *static_local_array_static | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:883:10:883:45 | *static_local_array_static_indirect_1 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:884:19:884:54 | *static_local_array_static_indirect_1 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:885:10:885:45 | *static_local_array_static_indirect_2 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:886:19:886:54 | *static_local_array_static_indirect_2 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:890:54:890:61 | *source | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:891:65:891:84 | *indirect_source(1) | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:892:65:892:84 | *indirect_source(2) | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:893:10:893:36 | *static_local_pointer_static | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:894:10:894:47 | *static_local_pointer_static_indirect_1 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:895:19:895:56 | *static_local_pointer_static_indirect_1 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:896:10:896:47 | *static_local_pointer_static_indirect_2 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:897:19:897:56 | *static_local_pointer_static_indirect_2 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:905:10:905:28 | *global_array_static | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:907:10:907:39 | *global_array_static_indirect_1 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:909:19:909:37 | *global_array_static | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:910:19:910:48 | *global_array_static_indirect_1 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:911:19:911:48 | *global_array_static_indirect_2 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:914:46:914:53 | *source | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:915:57:915:76 | *indirect_source(1) | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:916:57:916:76 | *indirect_source(2) | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:919:10:919:30 | *global_pointer_static | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:920:10:920:41 | *global_pointer_static_indirect_1 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:921:19:921:50 | *global_pointer_static_indirect_1 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:922:10:922:41 | *global_pointer_static_indirect_2 | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:923:19:923:50 | *global_pointer_static_indirect_2 | Expected 'Node.getType()' to be const char, but it was char |
 | test.cpp:931:5:931:18 | *global_pointer | Expected 'Node.getType()' to be int, but it was int * |
-| test.cpp:952:32:952:35 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:959:32:959:35 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:967:33:967:38 | *domain | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:967:41:967:44 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:975:33:975:38 | *domain | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:975:41:975:44 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:984:33:984:36 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:984:39:984:40 | *np | Expected 'Node.getType()' to be const char, but it was char |
 | test.cpp:988:5:988:14 | *translated | Expected 'Node.getType()' to be char, but it was char * |
-| test.cpp:988:27:988:28 | *np | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:988:31:988:34 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:997:33:997:36 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:997:39:997:40 | *np | Expected 'Node.getType()' to be const char, but it was char |
 | test.cpp:1001:5:1001:14 | *translated | Expected 'Node.getType()' to be char, but it was char * |
-| test.cpp:1001:27:1001:28 | *np | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1001:31:1001:34 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1011:34:1011:39 | *domain | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1011:42:1011:45 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1011:48:1011:49 | *np | Expected 'Node.getType()' to be const char, but it was char |
 | test.cpp:1015:5:1015:14 | *translated | Expected 'Node.getType()' to be char, but it was char * |
-| test.cpp:1015:28:1015:33 | *domain | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1015:36:1015:37 | *np | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1015:40:1015:43 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1025:34:1025:39 | *domain | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1025:42:1025:45 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1025:48:1025:49 | *np | Expected 'Node.getType()' to be const char, but it was char |
 | test.cpp:1029:5:1029:14 | *translated | Expected 'Node.getType()' to be char, but it was char * |
-| test.cpp:1029:28:1029:33 | *domain | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1029:36:1029:37 | *np | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1029:40:1029:43 | *data | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1036:33:1036:38 | *domain | Expected 'Node.getType()' to be const char, but it was char |
-| test.cpp:1036:41:1036:47 | *0 | Expected 'Node.getType()' to be const char, but it was char |
 failures
