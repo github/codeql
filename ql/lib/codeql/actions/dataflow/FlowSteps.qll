@@ -20,6 +20,9 @@ class AdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
+/**
+ * Holds if actions-find-and-replace-string step is used.
+ */
 private class ActionsFindAndReplaceStringStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(UsesExpr u |
@@ -28,4 +31,33 @@ private class ActionsFindAndReplaceStringStep extends AdditionalTaintStep {
       succ.asExpr() = u
     )
   }
+}
+
+/**
+ * Holds if a Run step declares an environment variable, uses it in its script and sets an output in its script.
+ * e.g.
+ *  - name: Extract and Clean Initial URL
+ *    id: extract-url
+ *    env:
+ *      BODY: ${{ github.event.comment.body }}
+ *    run: |
+ *      INITIAL_URL=$(echo "$BODY" | grep -o 'https://github.com/github/release-assets/assets/[^ >]*')
+ *      echo "Cleaned Initial URL: $INITIAL_URL"
+ *      echo "::set-output name=initial_url::$INITIAL_URL"
+ */
+private class RunEnvToScriptStep extends AdditionalTaintStep {
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) { test(pred, succ) }
+}
+
+predicate test(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(RunExpr r, string varName |
+    r.getEnvExpr(varName) = pred.asExpr() and
+    exists(string script, string line |
+      script = r.getScript() and
+      line = script.splitAt("\n") and
+      line.regexpMatch(".*::set-output\\s+name.*") and
+      script.indexOf("$" + ["", "{", "ENV{"] + varName) > 0
+    ) and
+    succ.asExpr() = r
+  )
 }

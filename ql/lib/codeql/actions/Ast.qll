@@ -169,6 +169,13 @@ class RunExpr extends StepStmt, Expression {
 
   Expression getScriptExpr() { result = scriptExpr }
 
+  Expression getEnvExpr(string name) {
+    exists(Actions::StepEnv env |
+      env.getStep() = this and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+  }
+
   string getScript() { result = scriptExpr.getValue() }
 }
 
@@ -183,6 +190,7 @@ class ExprAccessExpr extends Expression instanceof YamlString {
   string getExpression() { result = expr }
 
   JobStmt getJob() { result.getAChildNode*() = this }
+  //override string toString() { result = expr }
 }
 
 /**

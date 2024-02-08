@@ -171,8 +171,18 @@ private class UsesTree extends StandardPreOrderTree instanceof UsesExpr {
 }
 
 private class RunTree extends StandardPreOrderTree instanceof RunExpr {
-  override ControlFlowTree getChildNode(int i) { result = super.getScriptExpr() and i = 0 }
+  //override ControlFlowTree getChildNode(int i) { result = super.getScriptExpr() and i = 0 }
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](Expression child, Location l |
+        (child = super.getEnvExpr(_) or child = super.getScriptExpr()) and
+        l = child.getLocation()
+      |
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
+      )
+  }
 }
 
 private class ExprAccessTree extends LeafTree instanceof ExprAccessExpr { }
-

@@ -197,9 +197,19 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos =
  */
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { localFlowStep(nodeFrom, nodeTo) }
 
-predicate stepOutputDefToUse(Node nodeFrom, Node nodeTo) {
+predicate usesOutputDefToUse(Node nodeFrom, Node nodeTo) {
   // nodeTo is an OutputVarAccessExpr scoped with the namespace of the nodeFrom Step output
   exists(UsesExpr uses, StepOutputAccessExpr outputRead |
+    uses = nodeFrom.asExpr() and
+    outputRead = nodeTo.asExpr() and
+    outputRead.getStepId() = uses.getId() and
+    uses.getJob() = outputRead.getJob()
+  )
+}
+
+predicate runOutputDefToUse(Node nodeFrom, Node nodeTo) {
+  // nodeTo is an OutputVarAccessExpr scoped with the namespace of the nodeFrom Step output
+  exists(RunExpr uses, StepOutputAccessExpr outputRead |
     uses = nodeFrom.asExpr() and
     outputRead = nodeTo.asExpr() and
     outputRead.getStepId() = uses.getId() and
@@ -223,7 +233,8 @@ predicate jobOutputDefToUse(Node nodeFrom, Node nodeTo) {
  */
 pragma[nomagic]
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  stepOutputDefToUse(nodeFrom, nodeTo) or
+  usesOutputDefToUse(nodeFrom, nodeTo) or
+  runOutputDefToUse(nodeFrom, nodeTo) or
   jobOutputDefToUse(nodeFrom, nodeTo)
 }
 
