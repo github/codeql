@@ -1278,8 +1278,10 @@ module MakeImpl<InputSig Lang> {
         bindingset[node, ap]
         predicate nodeMayFlowNotThrough(NodeEx node, ApApprox ap);
 
-        bindingset[node, state, t0, ap, inSummaryCtx]
-        predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx);
+        bindingset[node, state, origT, t0, ap, inSummaryCtx]
+        predicate filter(
+          NodeEx node, FlowState state, Typ origT, Typ t0, Ap ap, Typ t, boolean inSummaryCtx
+        );
 
         bindingset[typ, contentType]
         predicate typecheckStore(Typ typ, DataFlowType contentType);
@@ -1367,7 +1369,13 @@ module MakeImpl<InputSig Lang> {
               (cc instanceof CcNoCall or Param::nodeMayFlowNotThrough(node, apa)) and
               inSummaryCtx = false
             ) and
-            filter(node, state, t0, ap, t, inSummaryCtx) and
+            exists(Typ origT1 |
+              origT1 = origT0.asSome()
+              or
+              origT0.isNone() and origT1 = t0
+            |
+              filter(node, state, origT1, t0, ap, t, inSummaryCtx)
+            ) and
             // origT.asSome() = t
             if t != t0 and origT0.isNone() and not ap instanceof ApNil
             then origT.asSome() = t0
@@ -2395,6 +2403,21 @@ module MakeImpl<InputSig Lang> {
           )
         }
 
+        pragma[nomagic]
+        private predicate nodeMayFlowThrough0(
+          ParamNode p, Ap argAp, ApOption argApO, ReturnPosition pos, Ap returnAp,
+          ApOption returnApO
+        ) {
+          // revFlow(node, _, TReturnCtxMaybeFlowThrough(_), _, ap)
+          exists(ParamNodeEx param |
+            p = param.asNode() and
+            returnFlowsThrough(_, pos, _, _, param, _, argAp, returnAp) and
+            parameterFlowsThroughRev(param, argAp, pos, returnAp) and
+            argApO = apSome(argAp) and
+            returnApO = apSome(returnAp)
+          )
+        }
+
         // pragma[nomagic]
         // predicate nodeMayFlowThrough(NodeEx node, Ap ap) {
         //   revFlow(node, _, TReturnCtxMaybeFlowThrough(_), _, ap)
@@ -2402,13 +2425,11 @@ module MakeImpl<InputSig Lang> {
         pragma[nomagic]
         additional predicate nodeMayFlowThrough(ParamNode p, Ap argAp, NodeEx node, Ap ap) {
           // revFlow(node, _, TReturnCtxMaybeFlowThrough(_), _, ap)
-          exists(ReturnPosition pos, Ap returnAp, ParamNodeEx param |
-            p = param.asNode() and
-            returnFlowsThrough(_, pos, _, _, param, _, argAp, returnAp) and
-            parameterFlowsThroughRev(param, argAp, pos, returnAp) and
-            revFlow(pragma[only_bind_into](node), _, TReturnCtxMaybeFlowThrough(pos),
-              apSome(returnAp), pragma[only_bind_into](ap)) and
-            fwdFlow(pragma[only_bind_into](node), _, _, TParamNodeSome(p), _, apSome(argAp), _, _,
+          exists(ApOption argApO, ReturnPosition pos, Ap returnAp, ApOption returnApO |
+            nodeMayFlowThrough0(p, argAp, argApO, pos, returnAp, returnApO) and
+            revFlow(pragma[only_bind_into](node), _, TReturnCtxMaybeFlowThrough(pos), returnApO,
+              pragma[only_bind_into](ap)) and
+            fwdFlow(pragma[only_bind_into](node), _, _, TParamNodeSome(p), _, argApO, _, _,
               pragma[only_bind_into](ap), _)
           )
         }
@@ -2745,9 +2766,12 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      bindingset[node, state, t0, ap, inSummaryCtx]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
+      bindingset[node, state, origT, t0, ap, inSummaryCtx]
+      predicate filter(
+        NodeEx node, FlowState state, Typ origT, Typ t0, Ap ap, Typ t, boolean inSummaryCtx
+      ) {
         PrevStage::revFlowState(state) and
+        exists(origT) and
         t0 = t and
         exists(ap) and
         not stateBarrier(node, state) and
@@ -3079,9 +3103,12 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      bindingset[node, state, t0, ap, inSummaryCtx]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
+      bindingset[node, state, origT, t0, ap, inSummaryCtx]
+      predicate filter(
+        NodeEx node, FlowState state, Typ origT, Typ t0, Ap ap, Typ t, boolean inSummaryCtx
+      ) {
         exists(state) and
+        exists(origT) and
         t0 = t and
         exists(ap) and
         not stateBarrier(node, state) and
@@ -3165,9 +3192,12 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      bindingset[node, state, t0, ap, inSummaryCtx]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
+      bindingset[node, state, origT, t0, ap, inSummaryCtx]
+      predicate filter(
+        NodeEx node, FlowState state, Typ origT, Typ t0, Ap ap, Typ t, boolean inSummaryCtx
+      ) {
         exists(state) and
+        exists(origT) and
         // We can get away with not using type strengthening here, since we aren't
         // going to use the tracked types in the construction of Stage 4 access
         // paths. For Stage 4 and onwards, the tracked types must be consistent as
@@ -3200,7 +3230,7 @@ module MakeImpl<InputSig Lang> {
 
     bindingset[node, t0, inSummaryCtx]
     private predicate strengthenType(
-      NodeEx node, DataFlowType t0, DataFlowType t, boolean inSummaryCtx
+      NodeEx node, DataFlowType origT, DataFlowType t0, DataFlowType t, boolean inSummaryCtx
     ) {
       exists(inSummaryCtx) and
       // if node instanceof RetNodeEx and inSummaryCtx = true
@@ -3225,7 +3255,11 @@ module MakeImpl<InputSig Lang> {
           else (
             compatibleTypes(nt, t0) and
             // t = t0
-            if inSummaryCtx = true and node instanceof ParamNodeEx then t = nt else t = t0
+            if inSummaryCtx = true and node instanceof ParamNodeEx
+            then
+              t = nt and
+              compatibleTypes(origT, t)
+            else t = t0
           )
         )
       else t = t0
@@ -3312,9 +3346,12 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      bindingset[node, state, t0, ap, inSummaryCtx]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
+      bindingset[node, state, origT, t0, ap, inSummaryCtx]
+      predicate filter(
+        NodeEx node, FlowState state, Typ origT, Typ t0, Ap ap, Typ t, boolean inSummaryCtx
+      ) {
         exists(state) and
+        exists(origT) and
         not clear(node, ap) and
         t0 = t and
         (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t0) else any()) and
@@ -3416,11 +3453,13 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      bindingset[node, state, t0, ap, inSummaryCtx]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
+      bindingset[node, state, origT, t0, ap, inSummaryCtx]
+      predicate filter(
+        NodeEx node, FlowState state, Typ origT, Typ t0, Ap ap, Typ t, boolean inSummaryCtx
+      ) {
         exists(state) and
         not clear(node, ap) and
-        strengthenType(node, t0, t, inSummaryCtx) and
+        strengthenType(node, origT, t0, t, inSummaryCtx) and
         (
           notExpectsContent(node)
           or
@@ -3681,9 +3720,11 @@ module MakeImpl<InputSig Lang> {
         PrevStage::nodeMayFlowNotThrough(node, ap)
       }
 
-      bindingset[node, state, t0, ap, inSummaryCtx]
-      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t, boolean inSummaryCtx) {
-        strengthenType(node, t0, t, inSummaryCtx) and
+      bindingset[node, state, origT, t0, ap, inSummaryCtx]
+      predicate filter(
+        NodeEx node, FlowState state, Typ origT, Typ t0, Ap ap, Typ t, boolean inSummaryCtx
+      ) {
+        strengthenType(node, origT, t0, t, inSummaryCtx) and
         exists(state) and
         exists(ap)
       }
@@ -4439,7 +4480,7 @@ module MakeImpl<InputSig Lang> {
       exists(DataFlowType t0, Stage5::Ap apa, boolean inSummaryCtx |
         pathStep0(mid, node, state, cc, sc, t0, ap, apa) and
         Stage5::revFlow(node, state, apa) and
-        strengthenType(node, t0, t, inSummaryCtx) and
+        strengthenType(node, t0, t0, t, inSummaryCtx) and
         not inBarrier(node, state)
       |
         exists(ParamNodeEx p, ParamNode param, AccessPath argAp, Stage5::Ap argApa |
@@ -5204,7 +5245,7 @@ module MakeImpl<InputSig Lang> {
         ) and
         exists(boolean inSummaryCtx |
           (if sc1 = TSummaryCtx1None() then inSummaryCtx = false else inSummaryCtx = true) and
-          strengthenType(node, t0, t, inSummaryCtx)
+          strengthenType(node, t0, t0, t, inSummaryCtx)
         )
       }
 
