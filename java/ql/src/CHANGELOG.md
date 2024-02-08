@@ -1,3 +1,10 @@
+## 0.8.8
+
+### New Queries
+
+* Added a new query `java/android/sensitive-text` to detect instances of sensitive data being exposed through text fields without being properly masked. 
+* Added a new query `java/android/sensitive-notification` to detect instances of sensitive data being exposed through Android notifications. 
+
 ## 0.8.7
 
 ### New Queries
@@ -10,10 +17,6 @@
 
 ## 0.8.6
 
-### Deprecated Queries
-
-* The three queries `java/insufficient-key-size`, `java/server-side-template-injection`, and `java/android/implicit-pendingintents` had accidentally general extension points allowing arbitrary string-based flow state. This has been fixed and the old extension points have been deprecated where possible, and otherwise updated.
-
 ### New Queries
 
 * Added the `java/insecure-randomness` query to detect uses of weakly random values which an attacker may be able to predict. Also added the `crypto-parameter` sink kind for sinks which represent the parameters and keys of cryptographic operations. 
@@ -23,6 +26,10 @@
 * Modified the `java/potentially-weak-cryptographic-algorithm` query to include the use of weak cryptographic algorithms from configuration values specified in properties files.
 * The query `java/android/missing-certificate-pinning` should no longer alert about requests pointing to the local filesystem.
 * Removed some spurious sinks related to `com.opensymphony.xwork2.TextProvider.getText` from the query `java/ognl-injection`.
+
+### Bug Fixes
+
+* The three queries `java/insufficient-key-size`, `java/server-side-template-injection`, and `java/android/implicit-pendingintents` had accidentally general extension points allowing arbitrary string-based flow state. This has been fixed and the old extension points have been deprecated where possible, and otherwise updated.
 
 ## 0.8.5
 
