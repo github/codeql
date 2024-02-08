@@ -7,7 +7,7 @@ You can model the methods and callables that control data flow in any framework 
 
 .. include:: ../reusables/kotlin-beta-note.rst
 
-.. include:: ../reusables/beta-note-model-packs-java.rst
+.. include:: ../reusables/beta-note-customizing-library-models.rst
 
 About this article
 ------------------

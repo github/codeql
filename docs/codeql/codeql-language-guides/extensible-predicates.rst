@@ -8,7 +8,7 @@ Extensible predicates and their interaction with data extensions
 
 You can use data extensions to model the methods and callables that control dataflow in any framework or library. This is especially useful for custom frameworks or niche libraries, that are not supported by the standard CodeQL libraries.
 
-.. include:: ../reusables/beta-note-model-packs-java.rst
+.. include:: ../reusables/beta-note-customizing-library-models.rst
 
 About this article
 ------------------
