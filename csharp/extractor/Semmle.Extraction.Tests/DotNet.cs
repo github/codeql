@@ -101,7 +101,7 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", false, out var assets);
+            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", false, out var assets, out var _);
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
@@ -116,11 +116,29 @@ namespace Semmle.Extraction.Tests
             var dotnet = MakeDotnet(dotnetCliInvoker);
 
             // Execute
-            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", false, out var assets, "myconfig.config");
+            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", false, out var assets, out var _, pathToNugetConfig: "myconfig.config");
 
             // Verify
             var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal --configfile \"myconfig.config\"", lastArgs);
+            Assert.Equal(2, assets.Count());
+            Assert.Contains("/path/to/project.assets.json", assets);
+            Assert.Contains("/path/to/project2.assets.json", assets);
+        }
+
+        [Fact]
+        public void TestDotnetRestoreProjectToDirectory3()
+        {
+            // Setup
+            var dotnetCliInvoker = new DotNetCliInvokerStub(MakeDotnetRestoreOutput());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
+
+            // Execute
+            dotnet.RestoreProjectToDirectory("myproject.csproj", "mypackages", false, out var assets, out var _, pathToNugetConfig: "myconfig.config", force: true);
+
+            // Verify
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
+            Assert.Equal("restore --no-dependencies \"myproject.csproj\" --packages \"mypackages\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal --configfile \"myconfig.config\" --force", lastArgs);
             Assert.Equal(2, assets.Count());
             Assert.Contains("/path/to/project.assets.json", assets);
             Assert.Contains("/path/to/project2.assets.json", assets);

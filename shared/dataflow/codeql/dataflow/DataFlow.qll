@@ -87,13 +87,13 @@ signature module InputSig {
    * Holds if the set of viable implementations that can be called by `call`
    * might be improved by knowing the call context.
    */
-  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c);
+  default predicate mayBenefitFromCallContext(DataFlowCall call) { none() }
 
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
    * restricted to those `call`s for which a context might make a difference.
    */
-  DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx);
+  default DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
   /**
    * Gets a node that can read the value returned from `call` with return kind
@@ -150,6 +150,9 @@ signature module InputSig {
    * stored into (`getAStoreContent`) or read from (`getAReadContent`).
    */
   class ContentSet {
+    /** Gets a textual representation of this element. */
+    string toString();
+
     /** Gets a content that may be stored into when storing into this set. */
     Content getAStoreContent();
 
@@ -179,6 +182,13 @@ signature module InputSig {
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
   predicate simpleLocalFlowStep(Node node1, Node node2);
+
+  /**
+   * Holds if the data-flow step from `node1` to `node2` can be used to
+   * determine where side-effects may return from a callable.
+   */
+  bindingset[node1, node2]
+  default predicate validParameterAliasStep(Node node1, Node node2) { any() }
 
   /**
    * Holds if data can flow from `node1` to `node2` through a non-local step

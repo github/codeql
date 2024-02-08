@@ -1,3 +1,13 @@
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Added support for [doT](https://github.com/olado/doT) templates. 
+
+## 0.8.6
+
+No user-facing changes.
+
 ## 0.8.5
 
 No user-facing changes.

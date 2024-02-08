@@ -13,6 +13,7 @@ private import semmle.python.Concepts
 // This import is done like this to avoid importing the deprecated top-level things that
 // would pollute the namespace
 private import semmle.python.frameworks.PEP249::PEP249 as PEP249
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -34,10 +35,12 @@ module SqlAlchemy {
    */
   module Engine {
     /** Gets a reference to a SQLAlchemy Engine class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("sqlalchemy").getMember("engine").getMember("Engine")
       or
       result = API::moduleImport("sqlalchemy").getMember("future").getMember("Engine")
+      or
+      result = ModelOutput::getATypeNode("sqlalchemy.engine.Engine~Subclass").getASubclass*()
     }
 
     /**
@@ -87,7 +90,7 @@ module SqlAlchemy {
    */
   module Connection {
     /** Gets a reference to a SQLAlchemy Connection class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result =
         API::moduleImport("sqlalchemy")
             .getMember("engine")
@@ -95,6 +98,8 @@ module SqlAlchemy {
             .getMember("Connection")
       or
       result = API::moduleImport("sqlalchemy").getMember("future").getMember("Connection")
+      or
+      result = ModelOutput::getATypeNode("sqlalchemy.engine.Connection~Subclass").getASubclass*()
     }
 
     /**
@@ -178,8 +183,10 @@ module SqlAlchemy {
    */
   module Session {
     /** Gets a reference to the `sqlalchemy.orm.Session` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result = API::moduleImport("sqlalchemy").getMember("orm").getMember("Session")
+      or
+      result = ModelOutput::getATypeNode("sqlalchemy.orm.Session~Subclass").getASubclass*()
     }
 
     /**

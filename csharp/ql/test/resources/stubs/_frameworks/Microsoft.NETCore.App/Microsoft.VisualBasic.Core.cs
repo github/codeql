@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.VisualBasic.Core, Version=12.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `Microsoft.VisualBasic.Core, Version=13.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace VisualBasic
@@ -728,7 +728,7 @@ namespace Microsoft
                 public TextFieldParser(string path, System.Text.Encoding defaultEncoding, bool detectEncoding) => throw null;
                 public string[] Delimiters { get => throw null; set { } }
                 protected virtual void Dispose(bool disposing) => throw null;
-                void System.IDisposable.Dispose() => throw null;
+                public void Dispose() => throw null;
                 public bool EndOfData { get => throw null; }
                 public string ErrorLine { get => throw null; }
                 public long ErrorLineNumber { get => throw null; }

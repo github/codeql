@@ -18,7 +18,12 @@ namespace Semmle.Extraction.CSharp.Entities
 
         public IMethodSymbol SourceDeclaration => Symbol.OriginalDefinition;
 
-        public override Microsoft.CodeAnalysis.Location ReportingLocation => Symbol.GetSymbolLocation();
+        public override Microsoft.CodeAnalysis.Location ReportingLocation =>
+            IsCompilerGeneratedDelegate()
+                ? Symbol.ContainingType.GetSymbolLocation()
+                : Symbol.GetSymbolLocation();
+
+        public override bool NeedsPopulation => base.NeedsPopulation || IsCompilerGeneratedDelegate();
 
         public override void Populate(TextWriter trapFile)
         {
@@ -46,6 +51,13 @@ namespace Semmle.Extraction.CSharp.Entities
             ExtractRefReturn(trapFile, Symbol, this);
             ExtractCompilerGenerated(trapFile);
         }
+
+        private bool IsCompilerGeneratedDelegate() =>
+            // Lambdas with parameter defaults or a `params` parameter are implemented
+            // using compiler generated delegate types.
+            Symbol.MethodKind == MethodKind.DelegateInvoke &&
+            Symbol.ContainingType is INamedTypeSymbol nt &&
+            nt.IsImplicitlyDeclared;
 
         public static new OrdinaryMethod Create(Context cx, IMethodSymbol method)
         {

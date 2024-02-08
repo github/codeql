@@ -1,3 +1,16 @@
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Modelled additional flow steps to track flow from handler methods of a `PageModel` class to the corresponding Razor Page (`.cshtml`) file, which may result in additional results for queries such as `cs/web/xss`.
+
+## 0.8.6
+
+### Minor Analysis Improvements
+
+* Fixed a Log forging false positive when using `String.Replace` to sanitize the input.    
+* Fixed a URL redirection from remote source false positive when guarding a redirect with `HttpRequestBase.IsUrlLocalToHost()`
+
 ## 0.8.5
 
 No user-facing changes.

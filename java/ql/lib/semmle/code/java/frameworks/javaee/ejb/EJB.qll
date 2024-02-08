@@ -112,9 +112,6 @@ class SessionEjb extends EJB {
   EjbAnnotatedInitMethod getAnAnnotatedInitMethod() { this.inherits(result) }
 }
 
-/** DEPRECATED: Alias for SessionEjb */
-deprecated class SessionEJB = SessionEjb;
-
 /**
  * A stateful session EJB.
  */
@@ -132,9 +129,6 @@ class StatefulSessionEjb extends SessionEjb {
   }
 }
 
-/** DEPRECATED: Alias for StatefulSessionEjb */
-deprecated class StatefulSessionEJB = StatefulSessionEjb;
-
 /**
  * A stateless session EJB.
  */
@@ -151,9 +145,6 @@ class StatelessSessionEjb extends SessionEjb {
     )
   }
 }
-
-/** DEPRECATED: Alias for StatelessSessionEjb */
-deprecated class StatelessSessionEJB = StatelessSessionEjb;
 
 /**
  * A message-driven EJB.
@@ -189,9 +180,6 @@ class EntityEjb extends EJB {
     )
   }
 }
-
-/** DEPRECATED: Alias for EntityEjb */
-deprecated class EntityEJB = EntityEjb;
 
 /*
  * Business interfaces (applicable to session beans).
@@ -245,9 +233,6 @@ abstract class BusinessInterface extends Interface {
   /** Gets an EJB to which this business interface belongs. */
   abstract SessionEjb getAnEjb();
 
-  /** DEPRECATED: Alias for getAnEjb */
-  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
-
   /** Holds if this business interface is declared local. */
   abstract predicate isDeclaredLocal();
 
@@ -273,9 +258,6 @@ class XmlSpecifiedBusinessInterface extends BusinessInterface {
       result.getQualifiedName() = se.getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
-
-  /** DEPRECATED: Alias for getAnEjb */
-  deprecated override SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   override predicate isDeclaredLocal() {
     exists(EjbJarXmlFile f |
@@ -312,9 +294,6 @@ class AnnotatedBusinessInterface extends BusinessInterface {
   override SessionEjb getAnEjb() {
     result.getAnAnnotation().(BusinessInterfaceAnnotation).getANamedType() = this
   }
-
-  /** DEPRECATED: Alias for getAnEjb */
-  deprecated override SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   override predicate isDeclaredLocal() { this instanceof LocalAnnotatedBusinessInterface }
 
@@ -449,9 +428,6 @@ class XmlSpecifiedRemoteInterface extends LegacyEjbRemoteInterface {
       result.getQualifiedName() = se.getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
-
-  /** DEPRECATED: Alias for getAnEjb */
-  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 }
 
 /** A legacy remote home interface. */
@@ -469,9 +445,6 @@ class AnnotatedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface {
 
   /** Gets an EJB to which this interface belongs. */
   SessionEjb getAnEjb() { result.getAnAnnotation().(RemoteHomeAnnotation).getANamedType() = this }
-
-  /** DEPRECATED: Alias for getAnEjb */
-  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   /** Gets a remote interface associated with this legacy remote home interface. */
   Interface getAnAssociatedRemoteInterface() { result = this.getACreateMethod().getReturnType() }
@@ -494,9 +467,6 @@ class XmlSpecifiedRemoteHomeInterface extends LegacyEjbRemoteHomeInterface {
       result.getQualifiedName() = se.getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
-
-  /** DEPRECATED: Alias for getAnEjb */
-  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 }
 
 /** A legacy local interface. */
@@ -522,9 +492,6 @@ class XmlSpecifiedLocalInterface extends LegacyEjbLocalInterface {
       result.getQualifiedName() = se.getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
-
-  /** DEPRECATED: Alias for getAnEjb */
-  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 }
 
 /** A legacy local home interface. */
@@ -542,9 +509,6 @@ class AnnotatedLocalHomeInterface extends LegacyEjbLocalHomeInterface {
 
   /** Gets an EJB to which this interface belongs. */
   SessionEjb getAnEjb() { result.getAnAnnotation().(LocalHomeAnnotation).getANamedType() = this }
-
-  /** DEPRECATED: Alias for getAnEjb */
-  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   /** Gets a local interface associated with this legacy local home interface. */
   Interface getAnAssociatedLocalInterface() { result = this.getACreateMethod().getReturnType() }
@@ -567,9 +531,6 @@ class XmlSpecifiedLocalHomeInterface extends LegacyEjbLocalHomeInterface {
       result.getQualifiedName() = se.getAnEjbClassElement().getACharactersSet().getCharacters()
     )
   }
-
-  /** DEPRECATED: Alias for getAnEjb */
-  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 }
 
 /**
@@ -592,9 +553,6 @@ class RemoteInterface extends Interface {
     result = this.(XmlSpecifiedRemoteInterface).getAnEjb() or
     result.getARemoteInterface() = this
   }
-
-  /** DEPRECATED: Alias for getAnEjb */
-  deprecated SessionEJB getAnEJB() { result = this.getAnEjb() }
 
   /**
    * A "remote method" is a method that is available on the remote
@@ -859,9 +817,6 @@ class DependsOnAnnotation extends Annotation {
 class EjbAnnotation extends Annotation {
   EjbAnnotation() { this.getType().hasQualifiedName("javax.ejb", "EJB") }
 }
-
-/** DEPRECATED: Alias for EjbAnnotation */
-deprecated class EJBAnnotation = EjbAnnotation;
 
 /**
  * A `@javax.ejb.EJBs` annotation.

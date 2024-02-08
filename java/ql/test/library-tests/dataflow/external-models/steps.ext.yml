@@ -11,3 +11,11 @@ extensions:
       - ["my.qltest", "C", False, "stepArgResGenerated", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["my.qltest", "C", False, "stepArgResGeneratedIgnored", "(Object,Object)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["my.qltest", "C", False, "stepArgResGeneratedIgnored", "(Object,Object)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
+      - ["my.qltest", "C", False, "stepArgQualGenerated", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["my.qltest", "C", False, "stepArgQualGeneratedIgnored", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["my.qltest", "C", "stepArgQualGenerated", "(Object)", "summary", "df-generated"]
+      - ["my.qltest", "C", "stepArgQualGeneratedIgnored", "(Object)", "summary", "manual"]

@@ -1,3 +1,30 @@
+## 0.11.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `LDAP`, `HTTP`, `URL`, `CGI` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `localSourceStoreStep` predicate, use `flowsToStoreStep` instead.
+* Deleted the deprecated `iteration_defined_variable` predicate from the `SSA` library.
+* Deleted various deprecated predicates from the points-to libraries.
+* Deleted the deprecated `semmle/python/security/OverlyLargeRangeQuery.qll`, `semmle/python/security/regexp/ExponentialBackTracking.qll`, `semmle/python/security/regexp/NfaUtils.qll`, and `semmle/python/security/regexp/NfaUtils.qll` files.
+* The diagnostic query `py/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Python files, now considers any Python file seen during extraction, even one with some errors, to be extracted / scanned.
+
+## 0.11.6
+
+### Major Analysis Improvements
+
+* Added support for global data-flow through captured variables.
+
+### Minor Analysis Improvements
+
+* Captured subclass relationships ahead-of-time for most popular PyPI packages so we are able to resolve subclass relationships even without having the packages installed. For example we have captured that `flask_restful.Resource` is a subclass of `flask.views.MethodView`, so our Flask modeling will still consider a function named `post` on a `class Foo(flask_restful.Resource):` as a HTTP request handler.
+* Python now makes use of the shared type tracking library, exposed as `semmle.python.dataflow.new.TypeTracking`. The existing type tracking library, `semmle.python.dataflow.new.TypeTracker`, has consequently been deprecated.
+
+### Bug Fixes
+
+- We would previously confuse all captured variables into a single scope entry node. Now they each get their own node so they can be tracked properly.
+- The dataflow graph no longer contains SSA variables. Instead, flow is directed via the corresponding controlflow nodes. This should make the graph and the flow simpler to understand. Minor improvements in flow computation has been observed, but in general negligible changes to alerts are expected.
+
 ## 0.11.5
 
 No user-facing changes.

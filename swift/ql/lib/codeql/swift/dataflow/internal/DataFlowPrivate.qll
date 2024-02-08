@@ -625,12 +625,16 @@ private module ArgumentNodes {
   }
 
   class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+    private SummaryCall call_;
+    private ArgumentPosition pos_;
+
     SummaryArgumentNode() {
-      FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+      FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
+      call = call_ and
+      pos = pos_
     }
   }
 
@@ -782,10 +786,16 @@ private module OutNodes {
   }
 
   class SummaryOutNode extends OutNode, FlowSummaryNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
+    private SummaryCall call;
+    private ReturnKind kind_;
+
+    SummaryOutNode() {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), kind_)
+    }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
+      result = call and
+      kind = kind_
     }
   }
 
@@ -1397,6 +1407,11 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   exists(Callable c |
     c = p.(ParameterNodeImpl).getEnclosingCallable().asSourceCallable() and
     CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(c)
+  )
+  or
+  exists(DataFlowCallable c, ParameterPosition pos |
+    p.(ParameterNodeImpl).isParameterOf(c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
   )
 }
 

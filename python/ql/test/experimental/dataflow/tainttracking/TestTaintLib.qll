@@ -3,10 +3,8 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.PrintNode
 
-class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
-  TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module TestTaintTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     // Standard sources
     source.(DataFlow::CfgNode).getNode().(NameNode).getId() in [
         "TAINTED_STRING", "TAINTED_BYTES", "TAINTED_LIST", "TAINTED_DICT"
@@ -19,13 +17,15 @@ class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(CallNode call |
       call.getFunction().(NameNode).getId() in ["ensure_tainted", "ensure_not_tainted"] and
       sink.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
 }
+
+module TestTaintTrackingFlow = DataFlow::Global<TestTaintTrackingConfig>;
 
 query predicate test_taint(string arg_location, string test_res, string scope_name, string repr) {
   exists(Call call, Expr arg, boolean expected_taint, boolean has_taint |
@@ -42,9 +42,9 @@ query predicate test_taint(string arg_location, string test_res, string scope_na
     (
       // TODO: Replace with `hasFlowToExpr` once that is working
       if
-        exists(TaintTracking::Configuration c |
-          c.hasFlowTo(any(DataFlow::Node n | n.(DataFlow::CfgNode).getNode() = arg.getAFlowNode()))
-        )
+        TestTaintTrackingFlow::flowTo(any(DataFlow::Node n |
+            n.(DataFlow::CfgNode).getNode() = arg.getAFlowNode()
+          ))
       then has_taint = true
       else has_taint = false
     ) and

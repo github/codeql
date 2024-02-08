@@ -1,11 +1,9 @@
 private import codeql.ruby.AST
 private import codeql.ruby.CFG
 private import DataFlowPrivate
-private import codeql.ruby.typetracking.TypeTracker
-private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
+private import codeql.ruby.typetracking.internal.TypeTrackingImpl
 private import codeql.ruby.ast.internal.Module
 private import FlowSummaryImpl as FlowSummaryImpl
-private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.SSA
 private import codeql.util.Boolean
@@ -217,7 +215,9 @@ private predicate moduleFlowsToMethodCallReceiver(RelevantCall call, Module m, s
   flowsToMethodCallReceiver(call, trackModuleAccess(m), method)
 }
 
-private Block blockCall(RelevantCall call) { lambdaSourceCall(call, _, trackBlock(result)) }
+private Block blockCall(RelevantCall call) {
+  lambdaSourceCall(call, _, trackBlock(result).(DataFlow::LocalSourceNode).getALocalUse())
+}
 
 pragma[nomagic]
 private predicate superCall(RelevantCall call, Module cls, string method) {
@@ -434,14 +434,14 @@ private module Cached {
     TPositionalArgumentPosition(int pos) {
       exists(Call c | exists(c.getArgument(pos)))
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedParameterPosition(_, pos)
+      FlowSummaryImpl::ParsePositions::isParsedParameterPosition(_, pos)
     } or
     TKeywordArgumentPosition(string name) {
       name = any(KeywordParameter kp).getName()
       or
       exists(any(Call c).getKeywordArgument(name))
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
+      FlowSummaryImpl::ParsePositions::isParsedKeywordParameterPosition(_, name)
     } or
     THashSplatArgumentPosition() or
     TSynthHashSplatArgumentPosition() or
@@ -458,15 +458,17 @@ private module Cached {
     TPositionalParameterPosition(int pos) {
       pos = any(Parameter p).getPosition()
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentPosition(_, pos)
+      FlowSummaryImpl::ParsePositions::isParsedArgumentPosition(_, pos)
     } or
     TPositionalParameterLowerBoundPosition(int pos) {
-      FlowSummaryImplSpecific::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
+      FlowSummaryImpl::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
     } or
     TKeywordParameterPosition(string name) {
       name = any(KeywordParameter kp).getName()
       or
-      FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+      exists(any(Call c).getKeywordArgument(name))
+      or
+      FlowSummaryImpl::ParsePositions::isParsedKeywordArgumentPosition(_, name)
     } or
     THashSplatParameterPosition() or
     TSynthHashSplatParameterPosition() or
@@ -664,17 +666,18 @@ private module TrackInstanceInput implements CallGraphConstruction::InputSig {
   predicate stepNoCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
     // We exclude steps into `self` parameters. For those, we instead rely on the type of
     // the enclosing module
-    StepSummary::smallstepNoCall(nodeFrom, nodeTo, summary) and
+    smallStepNoCall(nodeFrom, nodeTo, summary) and
     isNotSelf(nodeTo)
     or
     // We exclude steps into type checked variables. For those, we instead rely on the
     // type being checked against
     localFlowStep(nodeFrom, nodeTo, summary) and
-    not hasAdjacentTypeCheckedReads(nodeTo)
+    not hasAdjacentTypeCheckedReads(nodeTo) and
+    not asModulePattern(nodeTo, _)
   }
 
   predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
-    StepSummary::smallstepCall(nodeFrom, nodeTo, summary)
+    smallStepCall(nodeFrom, nodeTo, summary)
   }
 
   class StateProj = Unit;
@@ -948,7 +951,7 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
       RelevantCall call, DataFlow::Node arg, DataFlow::ParameterNode p,
       CfgNodes::ExprCfgNode nodeFromPreExpr
     |
-      TypeTrackerSpecific::callStep(call, arg, p) and
+      callStep(call, arg, p) and
       nodeTo.getPreUpdateNode() = arg and
       summary.toString() = "return" and
       (
@@ -972,13 +975,13 @@ private module TrackSingletonMethodOnInstanceInput implements CallGraphConstruct
   }
 
   predicate stepNoCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
-    StepSummary::smallstepNoCall(nodeFrom, nodeTo, summary)
+    smallStepNoCall(nodeFrom, nodeTo, summary)
     or
     localFlowStep(nodeFrom, nodeTo, summary)
   }
 
   predicate stepCall(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
-    StepSummary::smallstepCall(nodeFrom, nodeTo, summary)
+    smallStepCall(nodeFrom, nodeTo, summary)
     or
     paramReturnFlow(nodeFrom, nodeTo, summary)
   }
@@ -1094,8 +1097,8 @@ private CfgScope getTargetSingleton(RelevantCall call, string method) {
 }
 
 /**
- * Holds if `ctx` targets `encl`, which is the enclosing callable of `call`, the receiver
- * of `call` is a parameter access, where the corresponding argument of `ctx` is `arg`.
+ * Holds if `ctx` targets the enclosing callable of `call`, the receiver of `call` is a
+ * parameter access, where the corresponding argument of `ctx` is `arg`.
  *
  * `name` is the name of the method being called by `call`, `source` is a
  * `LocalSourceNode` that flows to `arg`, and `paramDef` is the SSA definition for the
@@ -1104,11 +1107,11 @@ private CfgScope getTargetSingleton(RelevantCall call, string method) {
 pragma[nomagic]
 private predicate argMustFlowToReceiver(
   RelevantCall ctx, DataFlow::LocalSourceNode source, DataFlow::Node arg, RelevantCall call,
-  Callable encl, string name
+  string name
 ) {
   exists(
     ParameterNodeImpl p, SsaDefinitionExtNode paramDef, ParameterPosition ppos,
-    ArgumentPosition apos
+    ArgumentPosition apos, Callable encl
   |
     // the receiver of `call` references `p`
     exists(DataFlow::Node receiver |
@@ -1139,7 +1142,7 @@ private predicate argMustFlowToReceiver(
 }
 
 /**
- * Holds if `ctx` targets `encl`, which is the enclosing callable of `new`, and
+ * Holds if `ctx` targets the enclosing callable of `new`, and
  * the receiver of `new` is a parameter access, where the corresponding argument
  * `arg` of `ctx` has type `tp`.
  *
@@ -1147,10 +1150,10 @@ private predicate argMustFlowToReceiver(
  */
 pragma[nomagic]
 private predicate mayBenefitFromCallContextInitialize(
-  RelevantCall ctx, RelevantCall new, DataFlow::Node arg, Callable encl, Module tp, string name
+  RelevantCall ctx, RelevantCall new, DataFlow::Node arg, Module tp, string name
 ) {
   exists(DataFlow::LocalSourceNode source |
-    argMustFlowToReceiver(ctx, pragma[only_bind_into](source), arg, new, encl, "new") and
+    argMustFlowToReceiver(ctx, pragma[only_bind_into](source), arg, new, "new") and
     source = trackModuleAccess(tp) and
     name = "initialize" and
     exists(lookupMethod(tp, name))
@@ -1158,7 +1161,7 @@ private predicate mayBenefitFromCallContextInitialize(
 }
 
 /**
- * Holds if `ctx` targets `encl`, which is the enclosing callable of `call`, and
+ * Holds if `ctx` targets the enclosing callable of `call`, and
  * the receiver of `call` is a parameter access, where the corresponding argument
  * `arg` of `ctx` has type `tp`.
  *
@@ -1167,11 +1170,10 @@ private predicate mayBenefitFromCallContextInitialize(
  */
 pragma[nomagic]
 private predicate mayBenefitFromCallContextInstance(
-  RelevantCall ctx, RelevantCall call, DataFlow::Node arg, Callable encl, Module tp, boolean exact,
-  string name
+  RelevantCall ctx, RelevantCall call, DataFlow::Node arg, Module tp, boolean exact, string name
 ) {
   exists(DataFlow::LocalSourceNode source |
-    argMustFlowToReceiver(ctx, pragma[only_bind_into](source), arg, call, encl,
+    argMustFlowToReceiver(ctx, pragma[only_bind_into](source), arg, call,
       pragma[only_bind_into](name)) and
     source = trackInstance(tp, exact) and
     exists(lookupMethod(tp, pragma[only_bind_into](name)))
@@ -1179,7 +1181,7 @@ private predicate mayBenefitFromCallContextInstance(
 }
 
 /**
- * Holds if `ctx` targets `encl`, which is the enclosing callable of `call`, and
+ * Holds if `ctx` targets  the enclosing callable of `call`, and
  * the receiver of `call` is a parameter access, where the corresponding argument
  * `arg` of `ctx` is a module access targeting a module of type `tp`.
  *
@@ -1188,12 +1190,11 @@ private predicate mayBenefitFromCallContextInstance(
  */
 pragma[nomagic]
 private predicate mayBenefitFromCallContextSingleton(
-  RelevantCall ctx, RelevantCall call, DataFlow::Node arg, Callable encl, Module tp, boolean exact,
-  string name
+  RelevantCall ctx, RelevantCall call, DataFlow::Node arg, Module tp, boolean exact, string name
 ) {
   exists(DataFlow::LocalSourceNode source |
     argMustFlowToReceiver(ctx, pragma[only_bind_into](source), pragma[only_bind_into](arg), call,
-      encl, pragma[only_bind_into](name)) and
+      pragma[only_bind_into](name)) and
     exists(lookupSingletonMethod(tp, pragma[only_bind_into](name), exact))
   |
     source = trackModuleAccess(tp) and
@@ -1214,16 +1215,14 @@ private predicate mayBenefitFromCallContextSingleton(
 
 /**
  * Holds if the set of viable implementations that can be called by `call`
- * might be improved by knowing the call context. This is the case if the
- * receiver accesses a parameter of the enclosing callable `c` (including
- * the implicit `self` parameter).
+ * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
-  mayBenefitFromCallContextInitialize(_, call.asCall(), _, c.asCallable(), _, _)
+predicate mayBenefitFromCallContext(DataFlowCall call) {
+  mayBenefitFromCallContextInitialize(_, call.asCall(), _, _, _)
   or
-  mayBenefitFromCallContextInstance(_, call.asCall(), _, c.asCallable(), _, _, _)
+  mayBenefitFromCallContextInstance(_, call.asCall(), _, _, _, _)
   or
-  mayBenefitFromCallContextSingleton(_, call.asCall(), _, c.asCallable(), _, _, _)
+  mayBenefitFromCallContextSingleton(_, call.asCall(), _, _, _, _)
 }
 
 /**
@@ -1232,25 +1231,25 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
  */
 pragma[nomagic]
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
-  mayBenefitFromCallContext(call, _) and
+  mayBenefitFromCallContext(call) and
   (
     // `ctx` can provide a potentially better type bound
     exists(RelevantCall call0, Callable res |
       call0 = call.asCall() and
       res = result.asCallable() and
       exists(Module m, string name |
-        mayBenefitFromCallContextInitialize(ctx.asCall(), pragma[only_bind_into](call0), _, _,
+        mayBenefitFromCallContextInitialize(ctx.asCall(), pragma[only_bind_into](call0), _,
           pragma[only_bind_into](m), pragma[only_bind_into](name)) and
         res = getInitializeTarget(call0) and
         res = lookupMethod(m, name)
         or
         exists(boolean exact |
-          mayBenefitFromCallContextInstance(ctx.asCall(), pragma[only_bind_into](call0), _, _,
+          mayBenefitFromCallContextInstance(ctx.asCall(), pragma[only_bind_into](call0), _,
             pragma[only_bind_into](m), pragma[only_bind_into](exact), pragma[only_bind_into](name)) and
           res = getTargetInstance(call0, name) and
           res = lookupMethod(m, name, exact)
           or
-          mayBenefitFromCallContextSingleton(ctx.asCall(), pragma[only_bind_into](call0), _, _,
+          mayBenefitFromCallContextSingleton(ctx.asCall(), pragma[only_bind_into](call0), _,
             pragma[only_bind_into](m), pragma[only_bind_into](exact), pragma[only_bind_into](name)) and
           res = getTargetSingleton(call0, name) and
           res = lookupSingletonMethod(m, name, exact)
@@ -1263,15 +1262,15 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
     exists(RelevantCall call0, RelevantCall ctx0, DataFlow::Node arg, string name |
       call0 = call.asCall() and
       ctx0 = ctx.asCall() and
-      argMustFlowToReceiver(ctx0, _, arg, call0, _, name) and
-      not mayBenefitFromCallContextInitialize(ctx0, call0, arg, _, _, _) and
-      not mayBenefitFromCallContextInstance(ctx0, call0, arg, _, _, _, name) and
-      not mayBenefitFromCallContextSingleton(ctx0, call0, arg, _, _, _, name) and
+      argMustFlowToReceiver(ctx0, _, arg, call0, name) and
+      not mayBenefitFromCallContextInitialize(ctx0, call0, arg, _, _) and
+      not mayBenefitFromCallContextInstance(ctx0, call0, arg, _, _, name) and
+      not mayBenefitFromCallContextSingleton(ctx0, call0, arg, _, _, name) and
       result.asCallable() = viableSourceCallable(call0)
     )
     or
     // library calls should always be able to resolve
-    argMustFlowToReceiver(ctx.asCall(), _, _, call.asCall(), _, _) and
+    argMustFlowToReceiver(ctx.asCall(), _, _, call.asCall(), _) and
     result = viableLibraryCallable(call)
   )
 }

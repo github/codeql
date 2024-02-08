@@ -6,7 +6,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
-private import codeql.ruby.typetracking.TypeTracker
+private import codeql.ruby.typetracking.TypeTracking
 private import Response::Private as RP
 
 /**

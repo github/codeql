@@ -9,8 +9,10 @@ private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.data.Entity
 private import semmle.code.csharp.frameworks.system.collections.Generic
 private import semmle.code.csharp.frameworks.Sql
-private import semmle.code.csharp.dataflow.FlowSummary
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Public
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.code.csharp.security.dataflow.flowsources.Stored as Stored
 
 /**
  * Definitions relating to the `System.ComponentModel.DataAnnotations`
@@ -43,7 +45,7 @@ module EntityFramework {
   }
 
   /** A taint source where the data has come from a mapped property stored in the database. */
-  class StoredFlowSource extends DataFlow::Node {
+  class StoredFlowSource extends Stored::DatabaseInputSource {
     StoredFlowSource() {
       this.asExpr() = any(PropertyRead read | read.getTarget() instanceof MappedProperty)
     }
@@ -85,9 +87,23 @@ module EntityFramework {
   }
 
   /** A flow summary for EntityFramework. */
-  abstract class EFSummarizedCallable extends SummarizedCallable {
+  abstract class EFSummarizedCallable extends SummarizedCallableImpl {
     bindingset[this]
     EFSummarizedCallable() { any() }
+
+    override predicate hasProvenance(Provenance provenance) { provenance = "manual" }
+  }
+
+  // see `SummarizedCallableImpl` qldoc
+  private class EFSummarizedCallableAdapter extends SummarizedCallable instanceof EFSummarizedCallable
+  {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      none()
+    }
+
+    override predicate hasProvenance(Provenance provenance) {
+      EFSummarizedCallable.super.hasProvenance(provenance)
+    }
   }
 
   /** The class ``Microsoft.EntityFrameworkCore.DbQuery`1`` or ``System.Data.Entity.DbQuery`1``. */

@@ -30,6 +30,7 @@ If you opt in, GitHub collects the following information related to the usage of
 - Randomly generated GUID that uniquely identifies a CodeQL extension installation. (Discarded before aggregation.)
 - IP address of the client sending the telemetry data. (Discarded before aggregation.)
 - Whether or not the ``codeQL.canary`` setting is enabled and set to ``true``.
+- Whether any :doc:`CodeQL extension settings <customizing-settings>` are configured.
 
 How long data is retained
 --------------------------

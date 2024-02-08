@@ -2,6 +2,7 @@
 
 import java
 private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.Sanitizers
 import semmle.code.java.security.ResponseSplitting
 
 /**
@@ -16,9 +17,7 @@ module ResponseSplittingConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType
-    or
-    node.getType() instanceof BoxedType
+    node instanceof SimpleTypeSanitizer
     or
     exists(MethodCall ma, string methodName, CompileTimeConstantExpr target |
       node.asExpr() = ma and

@@ -1,3 +1,64 @@
+## 0.8.7
+
+### New Features
+
+* Added a new library `semmle.code.java.security.Sanitizers` which contains a new sanitizer class `SimpleTypeSanitizer`, which represents nodes which cannot realistically carry taint for most queries (e.g. primitives, their boxed equivalents, and numeric types).
+* Converted definitions of `isBarrier` and sanitizer classes to use `SimpleTypeSanitizer` instead of checking if `node.getType()` is `PrimitiveType` or `BoxedType`.
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `EJB`, `JMX`, `NFE`, `DNS` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `semmle/code/java/security/OverlyLargeRangeQuery.qll`, `semmle/code/java/security/regexp/ExponentialBackTracking.qll`, `semmle/code/java/security/regexp/NfaUtils.qll`, and `semmle/code/java/security/regexp/NfaUtils.qll` files.
+* Improved models for `java.lang.Throwable` and `java.lang.Exception`, and the `valueOf` method of `java.lang.String`.
+* Added taint tracking for the following GSON methods:
+  * `com.google.gson.stream.JsonReader` constructor
+  * `com.google.gson.stream.JsonWriter` constructor
+  * `com.google.gson.JsonObject.getAsJsonArray`
+  * `com.google.gson.JsonObject.getAsJsonObject`
+  * `com.google.gson.JsonObject.getAsJsonPrimitive`
+  * `com.google.gson.JsonParser.parseReader`
+  * `com.google.gson.JsonParser.parseString`
+* Added a dataflow model for `java.awt.Desktop.browse(URI)`.
+
+### Bug Fixes
+
+* Fixed regular expressions containing flags not being parsed correctly in some cases.
+
+## 0.8.6
+
+### Deprecated APIs
+
+* Imports of the old dataflow libraries (e.g. `semmle.code.java.dataflow.DataFlow2`) have been deprecated in the libraries under the `semmle.code.java.security` namespace.
+
+### Minor Analysis Improvements
+
+* Added the `Map#replace` and `Map#replaceAll` methods to the `MapMutator` class in `semmle.code.java.Maps`.
+* Taint tracking now understands Kotlin's `Array.get` and `Array.set` methods.
+* Added a sink model for the `createRelative` method of the `org.springframework.core.io.Resource` interface.
+* Added source models for methods of the `org.springframework.web.util.UrlPathHelper` class and removed their taint flow models.
+* Added models for the following packages:
+
+  * com.google.common.io
+  * hudson
+  * hudson.console
+  * java.lang
+  * java.net
+  * java.util.logging
+  * javax.imageio.stream
+  * org.apache.commons.io
+  * org.apache.hadoop.hive.ql.exec
+  * org.apache.hadoop.hive.ql.metadata
+  * org.apache.tools.ant.taskdefs
+* Added models for the following packages:
+
+  * com.alibaba.druid.sql.repository
+  * jakarta.persistence
+  * jakarta.persistence.criteria
+  * liquibase.database.jvm
+  * liquibase.statement.core
+  * org.apache.ibatis.mapping
+  * org.keycloak.models.map.storage
+
 ## 0.8.5
 
 No user-facing changes.

@@ -1,3 +1,16 @@
+## 0.7.7
+
+### Minor Analysis Improvements
+
+* The query `go/insecure-randomness` now recognizes the selection of candidates from a predefined set using a weak RNG when the result is used in a sensitive operation. Also, false positives have been reduced by adding more sink exclusions for functions in the `crypto` package not related to cryptographic operations.
+* Added more sources and sinks to the query `go/clear-text-logging`.
+
+## 0.7.6
+
+### Minor Analysis Improvements
+
+* There was a bug in the query `go/incorrect-integer-conversion` which meant that upper bound checks using a strict inequality (`<`) and comparing against `math.MaxInt` or `math.MaxUint` were not considered correctly, which led to false positives. This has now been fixed.
+
 ## 0.7.5
 
 No user-facing changes.

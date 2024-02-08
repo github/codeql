@@ -52,7 +52,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor = new ProgressMonitor(logger);
             this.sourceDir = new DirectoryInfo(srcDir);
 
-            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName));
+            packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "packages"));
             legacyPackageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "legacypackages"));
             missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "missingpackages"));
 
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.progressMonitor.FindingFiles(srcDir);
 
 
-            var allFiles = GetAllFiles();
+            var allFiles = GetAllFiles().ToList();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
             var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
             var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(progressMonitor).SelectFileNames();
@@ -80,67 +80,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             this.nonGeneratedSources = allNonBinaryFiles.SelectFileNamesByExtension(".cs").ToList();
             this.generatedSources = new();
             var allProjects = allNonBinaryFiles.SelectFileNamesByExtension(".csproj");
-            var solutions = options.SolutionFile is not null
-                ? new[] { options.SolutionFile }
-                : allNonBinaryFiles.SelectFileNamesByExtension(".sln");
-            var dllPaths = options.DllDirs.Count == 0
-                ? allFiles.SelectFileNamesByExtension(".dll").ToHashSet()
-                : options.DllDirs.Select(Path.GetFullPath).ToHashSet();
+            var allSolutions = allNonBinaryFiles.SelectFileNamesByExtension(".sln");
+            var dllPaths = allFiles.SelectFileNamesByExtension(".dll").ToHashSet();
 
-            if (options.UseNuGet)
-            {
-                try
-                {
-                    var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, progressMonitor);
-                    nuget.InstallPackages();
-
-                    var nugetPackageDlls = legacyPackageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
-                    var nugetPackageDllPaths = nugetPackageDlls.Select(f => f.FullName).ToHashSet();
-                    var excludedPaths = nugetPackageDllPaths
-                        .Where(path => IsPathInSubfolder(path, legacyPackageDirectory.DirInfo.FullName, "tools"));
-
-                    foreach (var excludedPath in excludedPaths)
-                    {
-                        progressMonitor.LogInfo($"Excluded Nuget DLL: {excludedPath}");
-                    }
-
-                    nugetPackageDllPaths.ExceptWith(excludedPaths);
-                    dllPaths.UnionWith(nugetPackageDllPaths);
-                }
-                catch (FileNotFoundException)
-                {
-                    progressMonitor.MissingNuGet();
-                }
-
-                var restoredProjects = RestoreSolutions(solutions, out var assets1);
-                var projects = allProjects.Except(restoredProjects);
-                RestoreProjects(projects, out var assets2);
-
-                var dependencies = Assets.GetCompilationDependencies(progressMonitor, assets1.Union(assets2));
-
-                var paths = dependencies
-                    .Paths
-                    .Select(d => Path.Combine(packageDirectory.DirInfo.FullName, d))
-                    .ToList();
-                dllPaths.UnionWith(paths);
-
-                LogAllUnusedPackages(dependencies);
-                DownloadMissingPackages(allNonBinaryFiles, dllPaths);
-            }
-
-            var frameworkLocations = new HashSet<string>();
-
+            RestoreNugetPackages(allNonBinaryFiles, allProjects, allSolutions, dllPaths);
             // Find DLLs in the .Net / Asp.Net Framework
-            // This block needs to come after the nuget restore, because the nuget restore might fetch the .NET Core/Framework reference assemblies.
-            if (options.ScanNetFrameworkDlls)
-            {
-                AddNetFrameworkDlls(dllPaths, frameworkLocations);
-                AddAspNetCoreFrameworkDlls(dllPaths, frameworkLocations);
-                AddMicrosoftWindowsDesktopDlls(dllPaths, frameworkLocations);
-            }
+            // This needs to come after the nuget restore, because the nuget restore might fetch the .NET Core/Framework reference assemblies.
+            var frameworkLocations = AddFrameworkDlls(dllPaths);
 
             assemblyCache = new AssemblyCache(dllPaths, frameworkLocations, progressMonitor);
-            AnalyseSolutions(solutions);
+            AnalyseSolutions(allSolutions);
 
             foreach (var filename in assemblyCache.AllAssemblies.Select(a => a.Filename))
             {
@@ -182,6 +131,58 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 DateTime.Now - startTime);
         }
 
+        private HashSet<string> AddFrameworkDlls(HashSet<string> dllPaths)
+        {
+            var frameworkLocations = new HashSet<string>();
+
+            AddNetFrameworkDlls(dllPaths, frameworkLocations);
+            AddAspNetCoreFrameworkDlls(dllPaths, frameworkLocations);
+            AddMicrosoftWindowsDesktopDlls(dllPaths, frameworkLocations);
+
+            return frameworkLocations;
+        }
+
+        private void RestoreNugetPackages(List<FileInfo> allNonBinaryFiles, IEnumerable<string> allProjects, IEnumerable<string> allSolutions, HashSet<string> dllPaths)
+        {
+            try
+            {
+                var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, progressMonitor);
+                nuget.InstallPackages();
+
+                var nugetPackageDlls = legacyPackageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
+                var nugetPackageDllPaths = nugetPackageDlls.Select(f => f.FullName).ToHashSet();
+                var excludedPaths = nugetPackageDllPaths
+                    .Where(path => IsPathInSubfolder(path, legacyPackageDirectory.DirInfo.FullName, "tools"));
+
+                foreach (var excludedPath in excludedPaths)
+                {
+                    progressMonitor.LogInfo($"Excluded Nuget DLL: {excludedPath}");
+                }
+
+                nugetPackageDllPaths.ExceptWith(excludedPaths);
+                dllPaths.UnionWith(nugetPackageDllPaths);
+            }
+            catch (FileNotFoundException)
+            {
+                progressMonitor.MissingNuGet();
+            }
+
+            var restoredProjects = RestoreSolutions(allSolutions, out var assets1);
+            var projects = allProjects.Except(restoredProjects);
+            RestoreProjects(projects, out var assets2);
+
+            var dependencies = Assets.GetCompilationDependencies(progressMonitor, assets1.Union(assets2));
+
+            var paths = dependencies
+                .Paths
+                .Select(d => Path.Combine(packageDirectory.DirInfo.FullName, d))
+                .ToList();
+            dllPaths.UnionWith(paths);
+
+            LogAllUnusedPackages(dependencies);
+            DownloadMissingPackages(allNonBinaryFiles, dllPaths);
+        }
+
         private static bool IsPathInSubfolder(string path, string rootFolder, string subFolder)
         {
             return path.IndexOf(
@@ -192,11 +193,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void RemoveNugetAnalyzerReferences()
         {
-            if (!options.UseNuGet)
-            {
-                return;
-            }
-
             var packageFolder = packageDirectory.DirInfo.FullName.ToLowerInvariant();
             if (packageFolder == null)
             {
@@ -230,6 +226,31 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private void SelectNewestFrameworkPath(string frameworkPath, string frameworkType, ISet<string> dllPaths, ISet<string> frameworkLocations)
+        {
+            var versionFolders = new DirectoryInfo(frameworkPath)
+                .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
+                .OrderByDescending(d => d.Name) // TODO: Improve sorting to handle pre-release versions.
+                .ToArray();
+
+            if (versionFolders.Length > 1)
+            {
+                var versions = string.Join(", ", versionFolders.Select(d => d.Name));
+                progressMonitor.LogInfo($"Found multiple {frameworkType} DLLs in NuGet packages at {frameworkPath}. Using the latest version ({versionFolders[0].Name}) from: {versions}.");
+            }
+
+            var selectedFrameworkFolder = versionFolders.FirstOrDefault()?.FullName;
+            if (selectedFrameworkFolder is null)
+            {
+                progressMonitor.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {frameworkPath}, but no version folder was found.");
+                selectedFrameworkFolder = frameworkPath;
+            }
+
+            dllPaths.Add(selectedFrameworkFolder);
+            frameworkLocations.Add(selectedFrameworkFolder);
+            progressMonitor.LogInfo($"Found {frameworkType} DLLs in NuGet packages at {selectedFrameworkFolder}. Not adding installation directory.");
+        }
+
         private void AddNetFrameworkDlls(ISet<string> dllPaths, ISet<string> frameworkLocations)
         {
             // Multiple dotnet framework packages could be present.
@@ -237,14 +258,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var packagesInPrioOrder = FrameworkPackageNames.NetFrameworks;
 
             var frameworkPath = packagesInPrioOrder
-                    .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
-                    .FirstOrDefault(pair => pair.Path is not null);
+                .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
+                .FirstOrDefault(pair => pair.Path is not null);
 
             if (frameworkPath.Path is not null)
             {
-                dllPaths.Add(frameworkPath.Path);
-                frameworkLocations.Add(frameworkPath.Path);
-                progressMonitor.LogInfo($"Found .NET Core/Framework DLLs in NuGet packages at {frameworkPath.Path}. Not adding installation directory.");
+                SelectNewestFrameworkPath(frameworkPath.Path, ".NET Framework", dllPaths, frameworkLocations);
 
                 for (var i = frameworkPath.Index + 1; i < packagesInPrioOrder.Length; i++)
                 {
@@ -256,11 +275,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             string? runtimeLocation = null;
 
-            if (options.UseSelfContainedDotnet)
-            {
-                runtimeLocation = Runtime.ExecutingRuntime;
-            }
-            else if (fileContent.IsNewProjectStructureUsed)
+            if (fileContent.IsNewProjectStructureUsed)
             {
                 runtimeLocation = Runtime.NetCoreRuntime;
             }
@@ -278,11 +293,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void RemoveNugetPackageReference(string packagePrefix, ISet<string> dllPaths)
         {
-            if (!options.UseNuGet)
-            {
-                return;
-            }
-
             var packageFolder = packageDirectory.DirInfo.FullName.ToLowerInvariant();
             if (packageFolder == null)
             {
@@ -308,9 +318,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // First try to find ASP.NET Core assemblies in the NuGet packages
             if (GetPackageDirectory(FrameworkPackageNames.AspNetCoreFramework) is string aspNetCorePackage)
             {
-                progressMonitor.LogInfo($"Found ASP.NET Core in NuGet packages. Not adding installation directory.");
-                dllPaths.Add(aspNetCorePackage);
-                frameworkLocations.Add(aspNetCorePackage);
+                SelectNewestFrameworkPath(aspNetCorePackage, "ASP.NET Core", dllPaths, frameworkLocations);
                 return;
             }
 
@@ -326,19 +334,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             if (GetPackageDirectory(FrameworkPackageNames.WindowsDesktopFramework) is string windowsDesktopApp)
             {
-                progressMonitor.LogInfo($"Found Windows Desktop App in NuGet packages.");
-                dllPaths.Add(windowsDesktopApp);
-                frameworkLocations.Add(windowsDesktopApp);
+                SelectNewestFrameworkPath(windowsDesktopApp, "Windows Desktop App", dllPaths, frameworkLocations);
             }
         }
 
         private string? GetPackageDirectory(string packagePrefix)
         {
-            if (!options.UseNuGet)
-            {
-                return null;
-            }
-
             return new DirectoryInfo(packageDirectory.DirInfo.FullName)
                 .EnumerateDirectories(packagePrefix + "*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
                 .FirstOrDefault()?
@@ -347,11 +348,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private IEnumerable<string> GetAllPackageDirectories()
         {
-            if (!options.UseNuGet)
-            {
-                return Enumerable.Empty<string>();
-            }
-
             return new DirectoryInfo(packageDirectory.DirInfo.FullName)
                 .EnumerateDirectories("*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
                 .Select(d => d.Name);
@@ -436,14 +432,33 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private IEnumerable<FileInfo> GetAllFiles()
         {
-            var files = sourceDir.GetFiles("*.*", new EnumerationOptions { RecurseSubdirectories = true })
-                .Where(d => !options.ExcludesFile(d.FullName));
+            IEnumerable<FileInfo> files = sourceDir.GetFiles("*.*", new EnumerationOptions { RecurseSubdirectories = true });
 
             if (options.DotNetPath != null)
             {
                 files = files.Where(f => !f.FullName.StartsWith(options.DotNetPath, StringComparison.OrdinalIgnoreCase));
             }
 
+            files = files.Where(f =>
+            {
+                try
+                {
+                    if (f.Exists)
+                    {
+                        return true;
+                    }
+
+                    progressMonitor.Log(Severity.Warning, $"File {f.FullName} could not be processed.");
+                    return false;
+                }
+                catch (Exception ex)
+                {
+                    progressMonitor.Log(Severity.Warning, $"File {f.FullName} could not be processed: {ex.Message}");
+                    return false;
+                }
+            });
+
+            files = new FilePathFilter(sourceDir, progressMonitor).Filter(files);
             return files;
         }
 
@@ -452,7 +467,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// with this source tree. Use a SHA1 of the directory name.
         /// </summary>
         /// <returns>The full path of the temp directory.</returns>
-        private static string ComputeTempDirectory(string srcDir, string packages = "packages")
+        private static string ComputeTempDirectory(string srcDir, string subfolderName)
         {
             var bytes = Encoding.Unicode.GetBytes(srcDir);
             var sha = SHA1.HashData(bytes);
@@ -460,7 +475,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var b in sha.Take(8))
                 sb.AppendFormat("{0:x2}", b);
 
-            return Path.Combine(Path.GetTempPath(), "GitHub", packages, sb.ToString());
+            return Path.Combine(FileUtils.GetTemporaryWorkingDirectory(out var _), sb.ToString(), subfolderName);
         }
 
         /// <summary>
@@ -635,12 +650,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         }
 
-        private bool RestoreProject(string project, bool forceDotnetRefAssemblyFetching, out IEnumerable<string> assets, string? pathToNugetConfig = null) =>
-            dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching, out assets, pathToNugetConfig);
-
-        private bool RestoreSolution(string solution, out IEnumerable<string> projects, out IEnumerable<string> assets) =>
-            dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out projects, out assets);
-
         /// <summary>
         /// Executes `dotnet restore` on all solution files in solutions.
         /// As opposed to RestoreProjects this is not run in parallel using PLINQ
@@ -655,7 +664,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var assetFiles = new List<string>();
             var projects = solutions.SelectMany(solution =>
                 {
-                    RestoreSolution(solution, out var restoredProjects, out var a);
+                    dotnet.RestoreSolutionToDirectory(solution, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out var restoredProjects, out var a);
                     assetFiles.AddRange(a);
                     return restoredProjects;
                 });
@@ -674,7 +683,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var assetFiles = new List<string>();
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
-                RestoreProject(project, forceDotnetRefAssemblyFetching: true, out var a);
+                dotnet.RestoreProjectToDirectory(project, packageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: true, out var a, out var _);
                 assetFiles.AddRange(a);
             });
             assets = assetFiles;
@@ -708,7 +717,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
             {
                 progressMonitor.NugetInstall(package);
-                using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package));
+                using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package, "missingpackages_workingdir"));
                 var success = dotnet.New(tempDir.DirInfo.FullName);
                 if (!success)
                 {
@@ -721,11 +730,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     return;
                 }
 
-                dotnet.RestoreProjectToDirectory(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, out var _, pathToNugetConfig: nugetConfig);
-                // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
+                success = dotnet.RestoreProjectToDirectory(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, out var _, out var outputLines, pathToNugetConfig: nugetConfig);
                 if (!success)
                 {
-                    progressMonitor.FailedToRestoreNugetPackage(package);
+                    if (outputLines?.Any(s => s.Contains("NU1301")) == true)
+                    {
+                        // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
+                        success = dotnet.RestoreProjectToDirectory(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, forceDotnetRefAssemblyFetching: false, out var _, out var _, pathToNugetConfig: null, force: true);
+                    }
+
+                    // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
+
+                    if (!success)
+                    {
+                        progressMonitor.FailedToRestoreNugetPackage(package);
+                    }
                 }
             });
 

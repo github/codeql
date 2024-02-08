@@ -103,7 +103,7 @@ class Expr(AstNode):
 @group("pattern")
 @ql.hideable
 class Pattern(AstNode):
-    pass
+    type: optional[Type]
 
 @group("stmt")
 class Stmt(AstNode):

@@ -61,6 +61,11 @@ private module Cached {
       se = nodeTo.asExpr()
     )
     or
+    // flow through autoclosure expressions (which turn value arguments into closure arguments);
+    // if the value is tainted, it's helpful to consider the autoclosure itself to be tainted as
+    // well for the purposes of matching sink models.
+    nodeFrom.asExpr() = nodeTo.asExpr().(AutoClosureExpr).getExpr()
+    or
     // flow through the read of a content that inherits taint
     exists(DataFlow::ContentSet f |
       readStep(nodeFrom, f, nodeTo) and

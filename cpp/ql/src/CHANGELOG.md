@@ -1,3 +1,20 @@
+## 0.9.3
+
+### Minor Analysis Improvements
+
+* The `cpp/include-non-header` style query will now ignore the `.def` extension for textual header inclusions.
+
+## 0.9.2
+
+### New Queries
+
+* Added a new query, `cpp/use-of-unique-pointer-after-lifetime-ends`, to detect uses of the contents unique pointers that will be destroyed immediately.
+* The `cpp/incorrectly-checked-scanf` query has been added. This finds results where the return value of scanf is not checked correctly. Some of these were previously found by `cpp/missing-check-scanf` and will no longer be reported there.
+
+### Minor Analysis Improvements
+
+* The `cpp/badly-bounded-write` query could report false positives when a pointer was first initialized with a literal and later assigned a dynamically allocated array. These false positives now no longer occur.
+
 ## 0.9.1
 
 No user-facing changes.

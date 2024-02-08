@@ -1,3 +1,24 @@
+## 0.7.7
+
+### Deprecated APIs
+
+* The class `Fmt::AppenderOrSprinter` of the `Fmt.qll` module has been deprecated. Use the new `Fmt::AppenderOrSprinterFunc` class instead. Its taint flow features have been migrated to models-as-data.
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `TLD`, `HTTP`, `SQL`, `URL` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated and unused `Source` class from the `SharedXss` module of `Xss.qll`
+* Support for flow sources in [AWS Lambda function handlers](https://docs.aws.amazon.com/lambda/latest/dg/golang-handler.html) has been added.
+* Support for the [fasthttp framework](https://github.com/valyala/fasthttp/) has been added.
+
+## 0.7.6
+
+### Minor Analysis Improvements
+
+* The diagnostic query `go/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Go files, now considers any Go file seen during extraction, even one with some errors, to be extracted / scanned.
+* The XPath library, which is used for the XPath injection query (`go/xml/xpath-injection`), now includes support for `Parser` sinks from the [libxml2](https://github.com/lestrrat-go/libxml2) package.
+* `CallNode::getACallee` and related predicates now recognise more callees accessed via a function variable, in particular when the callee is stored into a global variable or is captured by an anonymous function. This may lead to new alerts where data-flow into such a callee is relevant.
+
 ## 0.7.5
 
 No user-facing changes.

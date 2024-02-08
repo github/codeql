@@ -110,8 +110,8 @@ private predicate loopConditionAlwaysUponEntry(ControlFlowNode loop, Expr condit
  * should be in this relation.
  */
 pragma[noinline]
-private predicate isFunction(Element el) {
-  el instanceof Function
+private predicate isFunction(@element el) {
+  el instanceof @function
   or
   el.(Expr).getParent() = el
 }
@@ -122,7 +122,7 @@ private predicate isFunction(Element el) {
  */
 pragma[noopt]
 private predicate callHasNoTarget(@funbindexpr fc) {
-  exists(Function f |
+  exists(@function f |
     funbind(fc, f) and
     not isFunction(f)
   )

@@ -1,5 +1,5 @@
 name: codeql/csharp-all
-version: 0.8.5
+version: 0.8.7
 groups: csharp
 dbscheme: semmlecode.csharp.dbscheme
 extractor: csharp
@@ -11,6 +11,7 @@ dependencies:
   codeql/dataflowstack: ${workspace}
   codeql/mad: ${workspace}
   codeql/ssa: ${workspace}
+  codeql/threat-models: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
 dataExtensions:
