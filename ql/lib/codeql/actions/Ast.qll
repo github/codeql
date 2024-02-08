@@ -34,7 +34,50 @@ class WorkflowStmt extends Statement instanceof Actions::Workflow {
   JobStmt getAJob() { result = super.getJob(_) }
 
   JobStmt getJob(string id) { result = super.getJob(id) }
+
+  predicate isReusable() { this instanceof ReusableWorkflowStmt }
 }
+
+class ReusableWorkflowStmt extends WorkflowStmt {
+  YamlMapping parameters;
+
+  ReusableWorkflowStmt() {
+    exists(Actions::On on |
+      on.getWorkflow() = this and
+      on.getNode("workflow_call").(YamlMapping).lookup("inputs") = parameters
+    )
+  }
+
+  ParamsStmt getParams() { result = parameters }
+
+  // TODO: implemnt callable name
+  string getName() { result = this.getLocation().getFile().getRelativePath() }
+}
+
+class ParamsStmt extends Statement instanceof YamlMapping {
+  ParamsStmt() {
+    exists(Actions::On on | on.getNode("workflow_call").(YamlMapping).lookup("inputs") = this)
+  }
+
+  /**
+   * Gets a specific parameter expression (YamlMapping) by name.
+   * eg:
+   * on:
+   *   workflow_call:
+   *     inputs:
+   *       config-path:
+   *         required: true
+   *         type: string
+   *     secrets:
+   *       token:
+   *         required: true
+   */
+  ParamExpr getParamExpr(string name) {
+    this.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+  }
+}
+
+class ParamExpr extends Expression instanceof YamlValue { }
 
 /**
  * A Job is a collection of steps that run in an execution environment.
@@ -71,6 +114,11 @@ class JobStmt extends Statement instanceof Actions::Job {
    *   out2: ${steps.foo.baz}
    */
   JobOutputStmt getOutputStmt() { result = this.(Actions::Job).lookup("outputs") }
+
+  /**
+   * Reusable workflow jobs may have Uses children
+   */
+  JobUsesExpr getUsesExpr() { result = this.(Actions::Job).lookup("uses") }
 }
 
 /**
@@ -104,23 +152,79 @@ class StepStmt extends Statement instanceof Actions::Step {
   JobStmt getJob() { result = super.getJob() }
 }
 
+abstract class UsesExpr extends Expression {
+  abstract string getTarget();
+
+  abstract string getVersion();
+
+  abstract Expression getArgument(string key);
+}
+
 /**
  * A Uses step represents a call to an action that is defined in a GitHub repository.
  */
-class UsesExpr extends StepStmt, Expression {
+class StepUsesExpr extends StepStmt, UsesExpr {
   Actions::Uses uses;
 
-  UsesExpr() { uses.getStep() = this }
+  StepUsesExpr() { uses.getStep() = this }
 
-  string getTarget() { result = uses.getGitHubRepository() }
+  override string getTarget() { result = uses.getGitHubRepository() }
 
-  string getVersion() { result = uses.getVersion() }
+  override string getVersion() { result = uses.getVersion() }
 
-  Expression getArgument(string key) {
+  override Expression getArgument(string key) {
     exists(Actions::With with |
       with.getStep() = this and
       result = with.lookup(key)
     )
+  }
+}
+
+/**
+ * A Uses step represents a call to an action that is defined in a GitHub repository.
+ */
+class JobUsesExpr extends UsesExpr instanceof YamlScalar {
+  JobStmt job;
+
+  JobUsesExpr() { job.(YamlMapping).lookup("uses") = this }
+
+  JobStmt getJob() { result = job }
+
+  /**
+   * Gets a regular expression that parses an `owner/repo@version` reference within a `uses` field in an Actions job step.
+   * local repo: octo-org/this-repo/.github/workflows/workflow-1.yml@172239021f7ba04fe7327647b213799853a9eb89
+   * local repo: ./.github/workflows/workflow-2.yml
+   * remote repo: octo-org/another-repo/.github/workflows/workflow.yml@v1
+   */
+  private string repoUsesParser() { result = "([^/]+)/([^/]+)/([^@]+)@(.+)" }
+
+  private string pathUsesParser() { result = "\\./(.+)" }
+
+  override string getTarget() {
+    exists(string name |
+      this.(YamlScalar).getValue() = name and
+      if name.matches("./%")
+      then result = name.regexpCapture(this.pathUsesParser(), 1)
+      else
+        result =
+          name.regexpCapture(this.repoUsesParser(), 1) + "/" +
+            name.regexpCapture(this.repoUsesParser(), 2) + "/" +
+            name.regexpCapture(this.repoUsesParser(), 3)
+    )
+  }
+
+  /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
+  override string getVersion() {
+    exists(string name |
+      this.(YamlScalar).getValue() = name and
+      if not name.matches("\\.%")
+      then result = this.(YamlScalar).getValue().regexpCapture(this.repoUsesParser(), 4)
+      else none()
+    )
+  }
+
+  override Expression getArgument(string key) {
+    job.(YamlMapping).lookup("with").(YamlMapping).lookup(key) = result
   }
 }
 

@@ -87,6 +87,8 @@ module Completion {
 module CfgScope {
   abstract class CfgScope extends AstNode { }
 
+  private class ReusableWorkflowScope extends CfgScope instanceof ReusableWorkflowStmt { }
+
   private class JobScope extends CfgScope instanceof JobStmt { }
 }
 
@@ -120,9 +122,15 @@ private module Implementation implements CfgShared::InputSig<Location> {
 
   int maxSplits() { result = 0 }
 
-  predicate scopeFirst(CfgScope scope, AstNode e) { first(scope.(JobStmt), e) }
+  predicate scopeFirst(CfgScope scope, AstNode e) {
+    first(scope.(ReusableWorkflowStmt).getParams(), e) or
+    first(scope.(JobStmt), e)
+  }
 
-  predicate scopeLast(CfgScope scope, AstNode e, Completion c) { last(scope.(JobStmt), e, c) }
+  predicate scopeLast(CfgScope scope, AstNode e, Completion c) {
+    last(scope.(ReusableWorkflowStmt), e, c) or
+    last(scope.(JobStmt), e, c)
+  }
 
   predicate successorTypeIsSimple(SuccessorType t) { t instanceof NormalSuccessor }
 
@@ -139,11 +147,30 @@ private import CfgImpl
 private import Completion
 private import CfgScope
 
+private class ReusableWorkflowTree extends StandardPreOrderTree instanceof ReusableWorkflowStmt {
+  override ControlFlowTree getChildNode(int i) { result = super.getParams() and i = 0 }
+}
+
+private class ReusableWorkflowParamsTree extends StandardPreOrderTree instanceof ParamsStmt {
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](Expression child, Location l |
+        child = super.getParamExpr(_) and l = child.getLocation()
+      |
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
+      )
+  }
+}
+
+private class ParamExprTree extends LeafTree instanceof ParamExpr { }
+
 private class JobTree extends StandardPreOrderTree instanceof JobStmt {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](Expression child, Location l |
-        (child = super.getAStep() or child = super.getOutputStmt()) and
+        (child = super.getAStep() or child = super.getOutputStmt() or child = super.getUsesExpr()) and
         l = child.getLocation()
       |
         child
@@ -157,7 +184,20 @@ private class JobOutputTree extends StandardPreOrderTree instanceof JobOutputStm
   override ControlFlowTree getChildNode(int i) { result = super.asYamlMapping().getValueNode(i) }
 }
 
-private class UsesTree extends StandardPreOrderTree instanceof UsesExpr {
+private class StepUsesTree extends StandardPreOrderTree instanceof StepUsesExpr {
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](Expression child, Location l |
+        child = super.getArgument(_) and l = child.getLocation()
+      |
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
+      )
+  }
+}
+
+private class JobUsesTree extends StandardPreOrderTree instanceof JobUsesExpr {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](Expression child, Location l |
