@@ -1,7 +1,7 @@
 /** Definitions for the insecure local authentication query. */
 
 import java
-import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.DataFlow
 
 /** A base class that is used as a callback for biometric authentication. */
 private class AuthenticationCallbackClass extends Class {
