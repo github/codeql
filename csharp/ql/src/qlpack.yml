@@ -1,5 +1,5 @@
 name: codeql/csharp-queries
-version: 0.8.8-dev
+version: 0.8.9-dev
 groups:
   - csharp
   - queries

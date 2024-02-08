@@ -203,12 +203,6 @@ Instruction getMemoryOperandDefinition(
 }
 
 /**
- * Holds if the partial operand of this `ChiInstruction` updates the bit range
- * `[startBitOffset, endBitOffset)` of the total operand.
- */
-predicate getIntervalUpdatedByChi(ChiInstruction chi, int startBit, int endBit) { none() }
-
-/**
  * Holds if the operand totally overlaps with its definition and consumes the
  * bit range `[startBitOffset, endBitOffset)`.
  */
