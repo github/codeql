@@ -374,7 +374,8 @@ predicate controllerTemplateFile(ActionControllerClass cls, ErbFile templateFile
     controllerPath = getActionControllerClassRelativePath(cls) and
     // `sourcePrefix` is either a prefix path ending in a slash, or empty if
     // the rails app is at the source root
-    sourcePrefix = [controllerPath.regexpCapture("^(.*/)app/controllers/(?:.*?)/(?:[^/]*)$", 1), ""] and
+    sourcePrefix =
+      [controllerPath.regexpCapture("^(.*/)app/controllers/(?:[^/]+/)?(?:[^/]*)$", 1), ""] and
     controllerPath = sourcePrefix + "app/controllers/" + subPath + "_controller.rb"
   |
     sourcePrefix + "app/views/" + subPath = templateFile.getParentContainer().getRelativePath()

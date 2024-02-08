@@ -348,7 +348,25 @@ httpResponses
 | app/controllers/foo/bars_controller.rb:44:5:44:17 | call to render | app/controllers/foo/bars_controller.rb:44:12:44:17 | "show" |
 actionControllerHelperMethods
 getAssociatedControllerClasses
+| app/controllers/comments_controller.rb:1:1:104:3 | CommentsController | app/views/comments/create.html.erb:0:0:0:0 | app/views/comments/create.html.erb |
+| app/controllers/comments_controller.rb:1:1:104:3 | CommentsController | app/views/comments/destroy.html.erb:0:0:0:0 | app/views/comments/destroy.html.erb |
+| app/controllers/comments_controller.rb:1:1:104:3 | CommentsController | app/views/comments/index.html.erb:0:0:0:0 | app/views/comments/index.html.erb |
+| app/controllers/comments_controller.rb:1:1:104:3 | CommentsController | app/views/comments/show.html.erb:0:0:0:0 | app/views/comments/show.html.erb |
+| app/controllers/photos_controller.rb:1:1:10:3 | PhotosController | app/views/photos/foo.html.erb:0:0:0:0 | app/views/photos/foo.html.erb |
+| app/controllers/photos_controller.rb:1:1:10:3 | PhotosController | app/views/photos/show.html.erb:0:0:0:0 | app/views/photos/show.html.erb |
+| app/controllers/posts_controller.rb:1:1:32:3 | PostsController | app/views/posts/index.html.erb:0:0:0:0 | app/views/posts/index.html.erb |
+| app/controllers/posts_controller.rb:1:1:32:3 | PostsController | app/views/posts/show.html.erb:0:0:0:0 | app/views/posts/show.html.erb |
+| app/controllers/posts_controller.rb:1:1:32:3 | PostsController | app/views/posts/upvote.html.erb:0:0:0:0 | app/views/posts/upvote.html.erb |
 controllerTemplateFiles
+| app/controllers/comments_controller.rb:1:1:104:3 | CommentsController | app/views/comments/create.html.erb:0:0:0:0 | app/views/comments/create.html.erb |
+| app/controllers/comments_controller.rb:1:1:104:3 | CommentsController | app/views/comments/destroy.html.erb:0:0:0:0 | app/views/comments/destroy.html.erb |
+| app/controllers/comments_controller.rb:1:1:104:3 | CommentsController | app/views/comments/index.html.erb:0:0:0:0 | app/views/comments/index.html.erb |
+| app/controllers/comments_controller.rb:1:1:104:3 | CommentsController | app/views/comments/show.html.erb:0:0:0:0 | app/views/comments/show.html.erb |
+| app/controllers/photos_controller.rb:1:1:10:3 | PhotosController | app/views/photos/foo.html.erb:0:0:0:0 | app/views/photos/foo.html.erb |
+| app/controllers/photos_controller.rb:1:1:10:3 | PhotosController | app/views/photos/show.html.erb:0:0:0:0 | app/views/photos/show.html.erb |
+| app/controllers/posts_controller.rb:1:1:32:3 | PostsController | app/views/posts/index.html.erb:0:0:0:0 | app/views/posts/index.html.erb |
+| app/controllers/posts_controller.rb:1:1:32:3 | PostsController | app/views/posts/show.html.erb:0:0:0:0 | app/views/posts/show.html.erb |
+| app/controllers/posts_controller.rb:1:1:32:3 | PostsController | app/views/posts/upvote.html.erb:0:0:0:0 | app/views/posts/upvote.html.erb |
 headerWriteAccesses
 | app/controllers/comments_controller.rb:30:5:30:35 | call to []= | content-type | app/controllers/comments_controller.rb:30:39:30:49 | ... = ... |
 | app/controllers/comments_controller.rb:31:5:31:46 | call to set_header | content-length | app/controllers/comments_controller.rb:31:43:31:45 | 100 |
