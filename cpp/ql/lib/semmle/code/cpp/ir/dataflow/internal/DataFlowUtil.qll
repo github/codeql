@@ -999,6 +999,8 @@ private module RawIndirectNodes {
 
     override Declaration getEnclosingCallable() { result = this.getFunction() }
 
+    override predicate isGLValue() { this.getOperand().isGLValue() }
+
     override DataFlowType getType() {
       exists(int sub, DataFlowType type, boolean isGLValue |
         type = getOperandType(this.getOperand(), isGLValue) and
@@ -1040,6 +1042,8 @@ private module RawIndirectNodes {
     override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
     override Declaration getEnclosingCallable() { result = this.getFunction() }
+
+    override predicate isGLValue() { this.getInstruction().isGLValue() }
 
     override DataFlowType getType() {
       exists(int sub, DataFlowType type, boolean isGLValue |

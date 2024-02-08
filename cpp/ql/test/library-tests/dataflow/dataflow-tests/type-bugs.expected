@@ -3,32 +3,16 @@ irTypeBugs
 incorrectBaseType
 | clang.cpp:22:8:22:20 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
 | clang.cpp:23:17:23:29 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
-| dispatch.cpp:60:3:60:14 | *globalBottom | Expected 'Node.getType()' to be Top, but it was Top * |
-| dispatch.cpp:61:3:61:14 | *globalMiddle | Expected 'Node.getType()' to be Top, but it was Top * |
 | flowOut.cpp:50:14:50:15 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
 | flowOut.cpp:84:9:84:10 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
 | flowOut.cpp:101:13:101:14 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
-| flowOut.cpp:168:3:168:10 | ** ... | Expected 'Node.getType()' to be char, but it was char * |
 | self_parameter_flow.cpp:8:8:8:9 | *& ... | Expected 'Node.getType()' to be unsigned char, but it was unsigned char * |
 | test.cpp:67:28:67:37 | (reference dereference) | Expected 'Node.getType()' to be const int, but it was int * |
-| test.cpp:526:3:526:4 | ** ... | Expected 'Node.getType()' to be const int, but it was const int * |
 | test.cpp:531:39:531:40 | *& ... | Expected 'Node.getType()' to be int, but it was const int * |
-| test.cpp:562:5:562:13 | *globalInt | Expected 'Node.getType()' to be int, but it was int * |
-| test.cpp:576:5:576:13 | *globalInt | Expected 'Node.getType()' to be int, but it was int * |
-| test.cpp:584:3:584:3 | *x | Expected 'Node.getType()' to be int, but it was int * |
-| test.cpp:596:3:596:7 | *access to array | Expected 'Node.getType()' to be int, but it was int * |
 | test.cpp:615:13:615:21 | *& ... | Expected 'Node.getType()' to be int, but it was void |
 | test.cpp:704:22:704:25 | *& ... | Expected 'Node.getType()' to be int, but it was int * |
 | test.cpp:715:24:715:25 | *& ... | Expected 'Node.getType()' to be unsigned char, but it was unsigned char * |
-| test.cpp:727:3:727:3 | *p | Expected 'Node.getType()' to be int, but it was int * |
-| test.cpp:808:5:808:21 | ** ... | Expected 'Node.getType()' to be int, but it was int * |
-| test.cpp:832:5:832:17 | *global_direct | Expected 'Node.getType()' to be int *, but it was int ** |
 | test.cpp:848:23:848:25 | (reference dereference) | Expected 'Node.getType()' to be int, but it was int * |
 | test.cpp:854:10:854:36 | * ... | Expected 'Node.getType()' to be const int, but it was int |
 | test.cpp:867:10:867:30 | * ... | Expected 'Node.getType()' to be const int, but it was int |
-| test.cpp:931:5:931:18 | *global_pointer | Expected 'Node.getType()' to be int, but it was int * |
-| test.cpp:988:5:988:14 | *translated | Expected 'Node.getType()' to be char, but it was char * |
-| test.cpp:1001:5:1001:14 | *translated | Expected 'Node.getType()' to be char, but it was char * |
-| test.cpp:1015:5:1015:14 | *translated | Expected 'Node.getType()' to be char, but it was char * |
-| test.cpp:1029:5:1029:14 | *translated | Expected 'Node.getType()' to be char, but it was char * |
 failures
