@@ -3173,7 +3173,7 @@ class TranslatedConditionDeclExpr extends TranslatedNonConstantExpr {
   private TranslatedConditionDecl getDecl() { result = getTranslatedConditionDecl(expr) }
 
   private TranslatedExpr getConditionExpr() {
-    result = getTranslatedExpr(expr.getVariableAccess().getFullyConverted())
+    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
   }
 }
 
