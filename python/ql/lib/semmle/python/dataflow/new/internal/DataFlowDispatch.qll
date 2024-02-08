@@ -1397,6 +1397,13 @@ abstract class DataFlowCall extends TDataFlowCall {
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
+
+  // #47: Stubs below
+  /** Gets an argument to this call as a Node. */
+  ArgumentNode getAnArgumentNode(){ none() } // TODO: JB1 return an argument as a DataFlow ArgumentNode
+
+  /** Gets the target of the call, as a DataFlowCallable. */
+  DataFlowCallable getARuntimeTarget(){ none() } // TODO
 }
 
 /** A call found in the program source (as opposed to a synthesised call). */

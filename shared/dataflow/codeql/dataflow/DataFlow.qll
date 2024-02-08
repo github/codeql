@@ -54,10 +54,20 @@ signature module InputSig {
   Node exprNode(DataFlowExpr e);
 
   class DataFlowCall {
+
+    /**
+     * Gets a run-time target of this call. A target is always a source
+     * declaration, and if the callable has both CIL and source code, only
+     * the source code version is returned.
+     */
+    DataFlowCallable getARuntimeTarget();
+
     /** Gets a textual representation of this element. */
     string toString();
 
     DataFlowCallable getEnclosingCallable();
+
+    ArgumentNode getAnArgumentNode();
   }
 
   class DataFlowCallable {
@@ -508,11 +518,11 @@ module DataFlowMake<InputSig Lang> {
       /** Gets the underlying Node. */
       Node getNode();
 
-      /** Gets a successor of this node, if any. */
-      PathNode getASuccessor();
-
       /** Holds if this node is a source. */
       predicate isSource();
+
+      /** Gets a successor of this node, if any. */
+      PathNode getASuccessor();
     }
 
     /**

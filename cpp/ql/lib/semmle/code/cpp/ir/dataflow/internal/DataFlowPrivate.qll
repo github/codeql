@@ -919,6 +919,13 @@ class DataFlowType = Type;
 /** A function call relevant for data flow. */
 class DataFlowCall extends CallInstruction {
   DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
+
+  // #43: Stub Implementation
+  /** Gets an argument to this call as a Node. */
+  ArgumentNode getAnArgumentNode(){ none() } // TODO: JB1 return an argument as a DataFlow ArgumentNode
+
+  /** Gets the target of the call, as a DataFlowCallable. */
+  DataFlowCallable getARuntimeTarget(){ none() } // TODO getCallTarget() returns `Instruction`
 }
 
 module IsUnreachableInCall {
