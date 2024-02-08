@@ -494,15 +494,21 @@ func extract(workspace project.GoWorkspace) {
 	if workspace.DepMode == project.GoGetWithModules {
 		extractorArgs = append(extractorArgs, workspace.ModMode.ArgsForGoVersion(toolchain.GetEnvGoSemVer())...)
 	}
-	for _, module := range workspace.Modules {
-		relModPath, relErr := filepath.Rel(workspace.BaseDir, filepath.Dir(module.Path))
 
-		if relErr != nil {
-			log.Printf(
-				"Unable to make module path %s relative to workspace base dir %s: %s\n",
-				filepath.Dir(module.Path), workspace.BaseDir, relErr.Error())
-		} else {
-			extractorArgs = append(extractorArgs, relModPath)
+	if len(workspace.Modules) == 0 {
+		// There may be no modules if we are using e.g. Dep or Glide
+		extractorArgs = append(extractorArgs, "./...")
+	} else {
+		for _, module := range workspace.Modules {
+			relModPath, relErr := filepath.Rel(workspace.BaseDir, filepath.Dir(module.Path))
+
+			if relErr != nil {
+				log.Printf(
+					"Unable to make module path %s relative to workspace base dir %s: %s\n",
+					filepath.Dir(module.Path), workspace.BaseDir, relErr.Error())
+			} else {
+				extractorArgs = append(extractorArgs, relModPath)
+			}
 		}
 	}
 
