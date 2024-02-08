@@ -152,12 +152,12 @@ class RootSanitizerMethodCall extends SanitizerMethodCall {
     exists(Expr q, AbstractValue v |
       this.getQualifier() = q and
       v.(AbstractValues::BooleanValue).getValue() = true and
-      exists(MethodCallGetFullPath mcGetFullPath | safeCombineGetFullPathSequence(mcGetFullPath, q))
+      safeCombineGetFullPathSequence(_, q)
     )
   }
 
   /**
-   * The qualifier of this method call, which represents the File Path (implicit) argument.
+   * Gets the qualifier of this method call, which represents the File Path (implicit) argument.
    */
   override Expr getFilePathArgument() { result = this.getQualifier() }
 }
@@ -233,7 +233,7 @@ abstract private class AbstractWrapperSanitizerMethod extends AbstractSanitizerM
   }
 
   /**
-   * The parameter of this Method that represents the File Path.
+   * Gets the parameter of this Method that represents the File Path.
    */
   Parameter paramFilePath() { result = paramFilename }
 }
@@ -350,7 +350,7 @@ class WrapperSanitizerMethodCall extends SanitizerMethodCall {
   }
 
   /**
-   * The argument that represents the File Path.
+   * Gets the argument that represents the File Path.
    */
   override Expr getFilePathArgument() {
     result = this.getArgument(wrapperMethod.paramFilePath().getIndex())
