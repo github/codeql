@@ -1,6 +1,4 @@
-## 0.12.5
-
-### New Features
-
+---
+category: feature
+---
 * Added the `PreprocBlock.qll` library to this repository.  This library offers a view of `#if`, `#elif`, `#else` and similar directives as a tree with navigable parent-child relationships.
-* Added a new `ThrowingFunction` abstract class that can be used to model an external function that may throw an exception.

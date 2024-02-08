@@ -1,7 +1,3 @@
-## 0.2.8
-
-No user-facing changes.
-
 ## 0.2.7
 
 ### Minor Analysis Improvements
