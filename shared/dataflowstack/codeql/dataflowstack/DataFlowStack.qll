@@ -211,7 +211,7 @@ module DataFlowStackMake<DF::InputSig Lang>{
             FlowStackFrame getASucceedingTerminalStateFrame(){
                 result = this.getChildStackFrame() and
                 // There are no other direct children that are further in the flow
-                not result.getASuccessor+() = this.getChildStackFrame() and
+                not result.getASuccessor+() = this.getChildStackFrame()
             }
 
             /**
@@ -260,7 +260,7 @@ module DataFlowStackMake<DF::InputSig Lang>{
              * Unpacks the CallFrame associated with this FlowStackFrame
              */
             CallFrame getCallFrame(){
-                this = TFlowStackFrame(_, result) and
+                this = TFlowStackFrame(_, result)
             }
         }
 
