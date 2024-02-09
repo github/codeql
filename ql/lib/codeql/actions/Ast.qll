@@ -31,11 +31,9 @@ class Expression extends Statement { }
  * A Github Actions Workflow
  */
 class WorkflowStmt extends Statement instanceof Actions::Workflow {
-  JobStmt getAJob() { result = super.getJob(_) }
+  JobStmt getAJobStmt() { result = super.getJob(_) }
 
-  JobStmt getJob(string id) { result = super.getJob(id) }
-
-  predicate isReusable() { this instanceof ReusableWorkflowStmt }
+  JobStmt getJobStmt(string id) { result = super.getJob(id) }
 }
 
 class ReusableWorkflowStmt extends WorkflowStmt {
@@ -45,15 +43,19 @@ class ReusableWorkflowStmt extends WorkflowStmt {
     this.(Actions::Workflow).getOn().getNode("workflow_call") = workflow_call
   }
 
-  InputsStmt getInputs() { result = workflow_call.(YamlMapping).lookup("inputs") }
+  ReusableWorkflowInputsStmt getInputsStmt() {
+    result = workflow_call.(YamlMapping).lookup("inputs")
+  }
 
-  OutputsStmt getOutputs() { result = workflow_call.(YamlMapping).lookup("outputs") }
+  ReusableWorkflowOutputsStmt getOutputsStmt() {
+    result = workflow_call.(YamlMapping).lookup("outputs")
+  }
 
   string getName() { result = this.getLocation().getFile().getRelativePath() }
 }
 
-class InputsStmt extends Statement instanceof YamlMapping {
-  InputsStmt() {
+class ReusableWorkflowInputsStmt extends Statement instanceof YamlMapping {
+  ReusableWorkflowInputsStmt() {
     exists(Actions::On on | on.getNode("workflow_call").(YamlMapping).lookup("inputs") = this)
   }
 
@@ -70,16 +72,16 @@ class InputsStmt extends Statement instanceof YamlMapping {
    *       token:
    *         required: true
    */
-  InputExpr getInputExpr(string name) {
+  ReusableWorkflowInputExpr getInputExpr(string name) {
     result.(YamlString).getValue() = name and
     this.(YamlMapping).maps(result, _)
   }
 }
 
-class InputExpr extends Expression instanceof YamlString { }
+class ReusableWorkflowInputExpr extends Expression instanceof YamlString { }
 
-class OutputsStmt extends Statement instanceof YamlMapping {
-  OutputsStmt() {
+class ReusableWorkflowOutputsStmt extends Statement instanceof YamlMapping {
+  ReusableWorkflowOutputsStmt() {
     exists(Actions::On on | on.getNode("workflow_call").(YamlMapping).lookup("outputs") = this)
   }
 
@@ -96,12 +98,12 @@ class OutputsStmt extends Statement instanceof YamlMapping {
    *         description: "The second output string"
    *         value: ${{ jobs.example_job.outputs.output2 }}
    */
-  OutputExpr getOutputExpr(string name) {
+  ReusableWorkflowOutputExpr getOutputExpr(string name) {
     this.(YamlMapping).lookup(name).(YamlMapping).lookup("value") = result
   }
 }
 
-class OutputExpr extends Expression instanceof YamlString { }
+class ReusableWorkflowOutputExpr extends Expression instanceof YamlString { }
 
 /**
  * A Job is a collection of steps that run in an execution environment.
@@ -114,10 +116,10 @@ class JobStmt extends Statement instanceof Actions::Job {
   string getId() { result = super.getId() }
 
   /** Gets the step at the given index within this job. */
-  StepStmt getStep(int index) { result = super.getStep(index) }
+  StepStmt getStepStmt(int index) { result = super.getStep(index) }
 
   /** Gets any steps that are defined within this job. */
-  StepStmt getAStep() { result = super.getStep(_) }
+  StepStmt getAStepStmt() { result = super.getStep(_) }
 
   /**
    * Gets a needed job.
@@ -147,7 +149,7 @@ class JobStmt extends Statement instanceof Actions::Job {
    *   with:
    *     arg1: value1
    */
-  JobUsesExpr getUsesExpr() { result.getJob() = this }
+  JobUsesExpr getUsesExpr() { result.getJobStmt() = this }
 }
 
 /**
@@ -178,7 +180,7 @@ class JobOutputStmt extends Statement instanceof YamlMapping {
 class StepStmt extends Statement instanceof Actions::Step {
   string getId() { result = super.getId() }
 
-  JobStmt getJob() { result = super.getJob() }
+  JobStmt getJobStmt() { result = super.getJob() }
 }
 
 /**
@@ -189,7 +191,7 @@ abstract class UsesExpr extends Expression {
 
   abstract string getVersion();
 
-  abstract Expression getArgument(string key);
+  abstract Expression getArgumentExpr(string key);
 }
 
 /**
@@ -204,7 +206,7 @@ class StepUsesExpr extends StepStmt, UsesExpr {
 
   override string getVersion() { result = uses.getVersion() }
 
-  override Expression getArgument(string key) {
+  override Expression getArgumentExpr(string key) {
     exists(Actions::With with |
       with.getStep() = this and
       result = with.lookup(key)
@@ -220,7 +222,7 @@ class JobUsesExpr extends UsesExpr instanceof YamlMapping {
     this instanceof JobStmt and this.maps(any(YamlString s | s.getValue() = "uses"), _)
   }
 
-  JobStmt getJob() { result = this }
+  JobStmt getJobStmt() { result = this }
 
   /**
    * Gets a regular expression that parses an `owner/repo@version` reference within a `uses` field in an Actions job step.
@@ -255,7 +257,7 @@ class JobUsesExpr extends UsesExpr instanceof YamlMapping {
     )
   }
 
-  override Expression getArgument(string key) {
+  override Expression getArgumentExpr(string key) {
     this.(YamlMapping).lookup("with").(YamlMapping).lookup(key) = result
   }
 }
@@ -290,8 +292,7 @@ class ExprAccessExpr extends Expression instanceof YamlString {
 
   string getExpression() { result = expr }
 
-  JobStmt getJob() { result.getAChildNode*() = this }
-  //override string toString() { result = expr }
+  JobStmt getJobStmt() { result.getAChildNode*() = this }
 }
 
 /**
@@ -313,7 +314,7 @@ class StepOutputAccessExpr extends ExprAccessExpr {
 
   string getVarName() { result = varName }
 
-  StepStmt getStep() { result.getId() = stepId }
+  StepStmt getStepStmt() { result.getId() = stepId }
 }
 
 /**
@@ -368,7 +369,7 @@ class ReusableWorkflowInputAccessExpr extends ExprAccessExpr {
   Expression getInputExpr() {
     exists(ReusableWorkflowStmt w |
       w.getLocation().getFile() = this.getLocation().getFile() and
-      w.getInputs().getInputExpr(paramName) = result
+      w.getInputsStmt().getInputExpr(paramName) = result
     )
   }
 }

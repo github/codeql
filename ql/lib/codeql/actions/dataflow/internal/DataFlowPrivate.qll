@@ -20,14 +20,14 @@ class OutNode extends ExprNode {
 }
 
 /**
- * Not used
+ * Not implemented
  */
 class CastNode extends Node {
   CastNode() { none() }
 }
 
 /**
- * Not used
+ * Not implemented
  */
 class PostUpdateNode extends Node {
   PostUpdateNode() { none() }
@@ -45,8 +45,6 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall call, ArgumentPosition p
 
 DataFlowCallable nodeGetEnclosingCallable(Node node) {
   node = TExprNode(any(DataFlowExpr e | result = e.getScope()))
-  // node = TReturningNode(any(Cfg::Node n | result = n.getScope()))
-  // node = TParameterNode(any(InputExpr p | p = result.(ReusableWorkflowStmt).getInputs().getInputExpr(_)))
 }
 
 DataFlowType getNodeType(Node node) { any() }
@@ -84,10 +82,7 @@ class DataFlowCallable instanceof Cfg::CfgScope {
   string getName() {
     if this instanceof ReusableWorkflowStmt
     then result = this.(ReusableWorkflowStmt).getName()
-    else
-      if this instanceof JobStmt
-      then result = this.(JobStmt).getId()
-      else none()
+    else none()
   }
 }
 
@@ -105,16 +100,6 @@ class NormalReturn extends ReturnKind, TNormalReturn {
 /** Gets a viable implementation of the target of the given `Call`. */
 DataFlowCallable viableCallable(DataFlowCall c) { c.getName() = result.getName() }
 
-// /**
-//  * Holds if the set of viable implementations that can be called by `call`
-//  * might be improved by knowing the call context.
-//  */
-// predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
-// /**
-//  * Gets a viable dispatch target of `call` in the context `ctx`. This is
-//  * restricted to those `call`s for which a context might make a difference.
-//  */
-// DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 /**
  * Gets a node that can read the value returned from `call` with return kind
  * `kind`.
@@ -162,17 +147,17 @@ class ContentApprox extends TContentApprox {
 ContentApprox getContentApprox(Content c) { none() }
 
 /**
- * Made a string to match the ArgumentPosition type
+ * Made a string to match the ArgumentPosition type.
  */
 class ParameterPosition extends string {
-  ParameterPosition() { exists(any(ReusableWorkflowStmt w).getInputs().getInputExpr(this)) }
+  ParameterPosition() { exists(any(ReusableWorkflowStmt w).getInputsStmt().getInputExpr(this)) }
 }
 
 /**
  * Made a string to match `With:` keys in the AST
  */
 class ArgumentPosition extends string {
-  ArgumentPosition() { exists(any(UsesExpr e).getArgument(this)) }
+  ArgumentPosition() { exists(any(UsesExpr e).getArgumentExpr(this)) }
 }
 
 /**
@@ -185,7 +170,7 @@ predicate stepUsesOutputDefToUse(Node nodeFrom, Node nodeTo) {
     uses = nodeFrom.asExpr() and
     outputRead = nodeTo.asExpr() and
     outputRead.getStepId() = uses.getId() and
-    uses.getJob() = outputRead.getJob()
+    uses.getJobStmt() = outputRead.getJobStmt()
   )
 }
 
@@ -195,7 +180,7 @@ predicate runOutputDefToUse(Node nodeFrom, Node nodeTo) {
     uses = nodeFrom.asExpr() and
     outputRead = nodeTo.asExpr() and
     outputRead.getStepId() = uses.getId() and
-    uses.getJob() = outputRead.getJob()
+    uses.getJobStmt() = outputRead.getJobStmt()
   )
 }
 
@@ -223,7 +208,12 @@ predicate reusableWorkflowInputDefToUse(Node nodeFrom, Node nodeTo) {
  * Local flow steps are always between two nodes in the same Cfg scope (job definition).
  */
 pragma[nomagic]
-predicate localFlowStep(Node nodeFrom, Node nodeTo) { none() }
+predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+  stepUsesOutputDefToUse(nodeFrom, nodeTo) or
+  runOutputDefToUse(nodeFrom, nodeTo) or
+  jobOutputDefToUse(nodeFrom, nodeTo) or
+  reusableWorkflowInputDefToUse(nodeFrom, nodeTo)
+}
 
 /**
  * a simple local flow step that should always preserve the call context (same callable)
@@ -238,12 +228,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { localFlowStep(nodeFr
  * AKA teleport steps
  * local steps are preferible since they are more predictable and easier to control
  */
-predicate jumpStep(Node nodeFrom, Node nodeTo) {
-  stepUsesOutputDefToUse(nodeFrom, nodeTo) or
-  runOutputDefToUse(nodeFrom, nodeTo) or
-  jobOutputDefToUse(nodeFrom, nodeTo) or
-  reusableWorkflowInputDefToUse(nodeFrom, nodeTo)
-}
+predicate jumpStep(Node nodeFrom, Node nodeTo) { none() }
 
 /**
  * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
