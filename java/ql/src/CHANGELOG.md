@@ -1,3 +1,67 @@
+## 0.8.8
+
+### New Queries
+
+* Added a new query `java/android/sensitive-text` to detect instances of sensitive data being exposed through text fields without being properly masked. 
+* Added a new query `java/android/sensitive-notification` to detect instances of sensitive data being exposed through Android notifications. 
+
+## 0.8.7
+
+### New Queries
+
+* Added the `java/exec-tainted-environment` query, to detect the injection of environment variables names or values from remote input.
+
+### Minor Analysis Improvements
+
+* A manual neutral summary model for a callable now blocks all generated summary models for that callable from having any effect.
+
+## 0.8.6
+
+### New Queries
+
+* Added the `java/insecure-randomness` query to detect uses of weakly random values which an attacker may be able to predict. Also added the `crypto-parameter` sink kind for sinks which represent the parameters and keys of cryptographic operations. 
+
+### Minor Analysis Improvements
+
+* Modified the `java/potentially-weak-cryptographic-algorithm` query to include the use of weak cryptographic algorithms from configuration values specified in properties files.
+* The query `java/android/missing-certificate-pinning` should no longer alert about requests pointing to the local filesystem.
+* Removed some spurious sinks related to `com.opensymphony.xwork2.TextProvider.getText` from the query `java/ognl-injection`.
+
+### Bug Fixes
+
+* The three queries `java/insufficient-key-size`, `java/server-side-template-injection`, and `java/android/implicit-pendingintents` had accidentally general extension points allowing arbitrary string-based flow state. This has been fixed and the old extension points have been deprecated where possible, and otherwise updated.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+No user-facing changes.
+
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* The query `java/unsafe-deserialization` has been improved to detect insecure calls to `ObjectMessage.getObject` in JMS.
+
+## 0.8.2
+
+### Minor Analysis Improvements
+
+* java/summary/lines-of-code now gives the total number of lines of Java and Kotlin code, and is the only query tagged `lines-of-code`. java/summary/lines-of-code-java and java/summary/lines-of-code-kotlin give the per-language counts.
+* The query `java/spring-disabled-csrf-protection` has been improved to detect more ways of disabling CSRF in Spring.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Most data flow queries that track flow from *remote* flow sources now use the current *threat model* configuration instead. This doesn't lead to any changes in the produced alerts (as the default configuration is *remote* flow sources) unless the threat model configuration is changed.
+
+## 0.8.0
+
+No user-facing changes.
+
 ## 0.7.5
 
 No user-facing changes.

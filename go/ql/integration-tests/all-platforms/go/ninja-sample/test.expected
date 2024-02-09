@@ -1,4 +1,4 @@
+#select
+| src/test.go:0:0:0:0 | src/test.go |
 htmlFiles
 extractionErrors
-#select
-| test.go:0:0:0:0 | test.go |

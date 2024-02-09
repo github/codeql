@@ -99,7 +99,7 @@ module PrivateUrlFlowsToAuthCodeUrlCallConfig implements DataFlow::ConfigSig {
     or
     // Propagate across Sprintf and similar calls
     exists(DataFlow::CallNode cn |
-      cn.getACalleeIncludingExternals().asFunction() instanceof Fmt::AppenderOrSprinter
+      cn.getACalleeIncludingExternals().asFunction() instanceof Fmt::AppenderOrSprinterFunc
     |
       pred = cn.getASyntacticArgument() and succ = cn.getResult()
     )

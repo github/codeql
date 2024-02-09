@@ -47,7 +47,7 @@ endif
 qhelp-to-markdown:
 	scripts/qhelp-to-markdown.sh ql/src "$(QHELP_OUT_DIR)"
 
-tools: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))) tools/tokenizer.jar
+tools: tools-codeql tools/tokenizer.jar
 
 .PHONY: $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES)))
 $(addsuffix $(EXE),$(addprefix tools/bin/,$(BINARIES))):
@@ -67,7 +67,10 @@ tools-osx64: $(addprefix tools/osx64/,$(BINARIES))
 
 .PHONY: $(addprefix tools/osx64/,$(BINARIES))
 $(addprefix tools/osx64/,$(BINARIES)):
-	GOOS=darwin GOARCH=amd64 go build -C extractor -mod=vendor -o ../$@ ./cli/$(@F)
+	GOOS=darwin GOARCH=amd64 go build -C extractor -mod=vendor -o ../$@.amd64 ./cli/$(@F)
+	GOOS=darwin GOARCH=arm64 go build -C extractor -mod=vendor -o ../$@.arm64 ./cli/$(@F)
+	lipo -create $@.amd64 $@.arm64 -output $@
+	rm $@.amd64 $@.arm64
 
 tools-win64: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES)))
 

@@ -1,0 +1,7 @@
+name: codeql/rangeanalysis
+version: 0.0.8-dev
+groups: shared
+library: true
+dependencies:
+  codeql/util: ${workspace}
+warnOnImplicitThis: true

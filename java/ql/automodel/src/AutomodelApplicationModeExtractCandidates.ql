@@ -25,20 +25,20 @@ private import AutomodelJavaUtil
 bindingset[limit]
 private Endpoint getSampleForSignature(
   int limit, string package, string type, string subtypes, string name, string signature,
-  string input, string output, string isVarargs, string extensibleType
+  string input, string output, string isVarargs, string extensibleType, string alreadyAiModeled
 ) {
   exists(int n, int num_endpoints, ApplicationModeMetadataExtractor meta |
     num_endpoints =
       count(Endpoint e |
-        e.getExtensibleType() = extensibleType and
-        meta.hasMetadata(e, package, type, subtypes, name, signature, input, output, isVarargs)
+        meta.hasMetadata(e, package, type, subtypes, name, signature, input, output, isVarargs,
+          alreadyAiModeled, extensibleType)
       )
   |
     result =
       rank[n](Endpoint e, Location loc |
         loc = e.asTop().getLocation() and
-        e.getExtensibleType() = extensibleType and
-        meta.hasMetadata(e, package, type, subtypes, name, signature, input, output, isVarargs)
+        meta.hasMetadata(e, package, type, subtypes, name, signature, input, output, isVarargs,
+          alreadyAiModeled, extensibleType)
       |
         e
         order by
@@ -55,31 +55,15 @@ private Endpoint getSampleForSignature(
 }
 
 from
-  Endpoint endpoint, ApplicationModeMetadataExtractor meta, DollarAtString package,
-  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString output, DollarAtString isVarargsArray,
-  DollarAtString alreadyAiModeled, DollarAtString extensibleType
+  Endpoint endpoint, DollarAtString package, DollarAtString type, DollarAtString subtypes,
+  DollarAtString name, DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString isVarargsArray, DollarAtString alreadyAiModeled, DollarAtString extensibleType
 where
-  not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
-    u.appliesToEndpoint(endpoint)
-  ) and
-  CharacteristicsImpl::isSinkCandidate(endpoint, _) and
+  isCandidate(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray,
+    extensibleType, alreadyAiModeled) and
   endpoint =
     getSampleForSignature(9, package, type, subtypes, name, signature, input, output,
-      isVarargsArray, extensibleType) and
-  // If a node is already modeled in MaD, we don't include it as a candidate. Otherwise, we might include it as a
-  // candidate for query A, but the model will label it as a sink for one of the sink types of query B, for which it's
-  // already a known sink. This would result in overlap between our detected sinks and the pre-existing modeling. We
-  // assume that, if a sink has already been modeled in a MaD model, then it doesn't belong to any additional sink
-  // types, and we don't need to reexamine it.
-  (
-    not CharacteristicsImpl::isModeled(endpoint, _, _, _) and alreadyAiModeled = ""
-    or
-    alreadyAiModeled.matches("%ai-%") and
-    CharacteristicsImpl::isModeled(endpoint, _, _, alreadyAiModeled)
-  ) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
-  includeAutomodelCandidate(package, type, name, signature)
+      isVarargsArray, extensibleType, alreadyAiModeled)
 select endpoint.asNode(),
   "Related locations: $@, $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //

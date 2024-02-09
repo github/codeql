@@ -9,6 +9,7 @@ import semmle.code.cpp.exprs.Call
 import semmle.code.cpp.metrics.MetricFunction
 import semmle.code.cpp.Linkage
 private import semmle.code.cpp.internal.ResolveClass
+private import semmle.code.cpp.internal.ResolveFunction
 
 /**
  * A C/C++ function [N4140 8.3.5]. Both member functions and non-member
@@ -25,6 +26,8 @@ private import semmle.code.cpp.internal.ResolveClass
  * in more detail in `Declaration.qll`.
  */
 class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
+  Function() { isFunction(underlyingElement(this)) }
+
   override string getName() { functions(underlyingElement(this), result, _) }
 
   /**
@@ -111,6 +114,16 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * whether a class would have had those members implicitly deleted.
    */
   predicate isDeleted() { function_deleted(underlyingElement(this)) }
+
+  /**
+   * Holds if this function has a prototyped interface.
+   *
+   * Functions generally have a prototyped interface, unless they are
+   * K&R-style functions either without any forward function declaration,
+   * or with all the forward declarations omitting the parameters of the
+   * function.
+   */
+  predicate isPrototyped() { function_prototyped(underlyingElement(this)) }
 
   /**
    * Holds if this function is explicitly defaulted with the `= default`
@@ -318,6 +331,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   MetricFunction getMetrics() { result = this }
 
   /** Holds if this function calls the function `f`. */
+  pragma[nomagic]
   predicate calls(Function f) { this.calls(f, _) }
 
   /**
@@ -326,10 +340,6 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    */
   predicate calls(Function f, Locatable l) {
     exists(FunctionCall call |
-      call.getEnclosingFunction() = this and call.getTarget() = f and call = l
-    )
-    or
-    exists(DestructorCall call |
       call.getEnclosingFunction() = this and call.getTarget() = f and call = l
     )
   }
@@ -875,3 +885,17 @@ class BuiltInFunction extends Function {
 }
 
 private predicate suppressUnusedThis(Function f) { any() }
+
+/**
+ * A C++ user-defined literal [N4140 13.5.8].
+ */
+class UserDefinedLiteral extends Function {
+  UserDefinedLiteral() { functions(underlyingElement(this), _, 7) }
+}
+
+/**
+ * A C++ deduction guide [N4659 17.9].
+ */
+class DeductionGuide extends Function {
+  DeductionGuide() { functions(underlyingElement(this), _, 8) }
+}

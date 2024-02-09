@@ -431,6 +431,29 @@ public class E
         i = null;
         return @is.Any();
     }
+
+    static void Ex45(string s)
+    {
+        if (s is null)
+        {
+            s.ToString(); // BAD (always)
+        }
+
+        if (s is not not null)
+        {
+            s.ToString(); // BAD (always) (FALSE NEGATIVE)
+        }
+
+        if (s is not null)
+        {
+            s.ToString(); // GOOD
+        }
+
+        if (s is object)
+        {
+            s.ToString(); // GOOD
+        }
+    }
 }
 
 public static class Extensions

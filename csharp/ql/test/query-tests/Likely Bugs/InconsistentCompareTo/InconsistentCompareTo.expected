@@ -1,4 +1,4 @@
 | InconsistentCompareTo.cs:34:7:34:19 | BadComparable | Class BadComparable implements CompareTo but does not override Equals; the two could be inconsistent. |
 | InconsistentCompareTo.cs:40:7:40:22 | BadComparableInt | Class BadComparableInt implements CompareTo but does not override Equals; the two could be inconsistent. |
-| InconsistentCompareTo.cs:46:7:46:23 | BadComparableT<> | Class BadComparableT<> implements CompareTo but does not override Equals; the two could be inconsistent. |
+| InconsistentCompareTo.cs:46:7:46:23 | BadComparableT`1 | Class BadComparableT`1 implements CompareTo but does not override Equals; the two could be inconsistent. |
 | InconsistentCompareTo.cs:52:7:52:28 | BadComparableNewEquals | Class BadComparableNewEquals implements CompareTo but does not override Equals; the two could be inconsistent. |

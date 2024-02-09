@@ -2,6 +2,7 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using Microsoft.Build.Framework;
 using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
@@ -14,12 +15,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal class NugetPackages
     {
         private readonly string? nugetExe;
-        private readonly ProgressMonitor progressMonitor;
+        private readonly Util.Logging.ILogger logger;
 
         /// <summary>
         /// The list of package files.
         /// </summary>
         private readonly FileInfo[] packageFiles;
+
+        public int PackageCount => packageFiles.Length;
 
         /// <summary>
         /// The computed packages directory.
@@ -31,10 +34,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Create the package manager for a specified source tree.
         /// </summary>
-        public NugetPackages(string sourceDir, TemporaryDirectory packageDirectory, ProgressMonitor progressMonitor)
+        public NugetPackages(string sourceDir, TemporaryDirectory packageDirectory, Util.Logging.ILogger logger)
         {
             this.packageDirectory = packageDirectory;
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
 
             packageFiles = new DirectoryInfo(sourceDir)
                 .EnumerateFiles("packages.config", SearchOption.AllDirectories)
@@ -42,11 +45,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (packageFiles.Length > 0)
             {
+                logger.LogInfo($"Found {packageFiles.Length} packages.config files, trying to use nuget.exe for package restore");
                 nugetExe = ResolveNugetExe(sourceDir);
             }
             else
             {
-                progressMonitor.LogInfo("Found no packages.config file");
+                logger.LogInfo("Found no packages.config file");
             }
         }
 
@@ -65,14 +69,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var nuget = Path.Combine(directory, "nuget", "nuget.exe");
             if (File.Exists(nuget))
             {
-                progressMonitor.FoundNuGet(nuget);
+                logger.LogInfo($"Found nuget.exe at {nuget}");
                 return nuget;
             }
-            else
-            {
-                progressMonitor.LogInfo($"Nuget.exe could not be found at {nuget}");
-                return DownloadNugetExe(sourceDir);
-            }
+
+            return DownloadNugetExe(sourceDir);
         }
 
         private string DownloadNugetExe(string sourceDir)
@@ -83,16 +84,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             // Nuget.exe already exists in the .nuget directory.
             if (File.Exists(nuget))
             {
-                progressMonitor.FoundNuGet(nuget);
+                logger.LogInfo($"Found nuget.exe at {nuget}");
                 return nuget;
             }
 
             Directory.CreateDirectory(directory);
-            progressMonitor.LogInfo("Attempting to download nuget.exe");
+            logger.LogInfo("Attempting to download nuget.exe");
             try
             {
                 FileUtils.DownloadFile(FileUtils.NugetExeUrl, nuget);
-                progressMonitor.LogInfo($"Downloaded nuget.exe to {nuget}");
+                logger.LogInfo($"Downloaded nuget.exe to {nuget}");
                 return nuget;
             }
             catch
@@ -106,9 +107,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Restore all files in a specified package.
         /// </summary>
         /// <param name="package">The package file.</param>
-        private void RestoreNugetPackage(string package)
+        private bool TryRestoreNugetPackage(string package)
         {
-            progressMonitor.NugetInstall(package);
+            logger.LogInfo($"Restoring file {package}...");
 
             /* Use nuget.exe to install a package.
              * Note that there is a clutch of NuGet assemblies which could be used to
@@ -135,41 +136,28 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 UseShellExecute = false
             };
 
-            try
+            var threadId = Environment.CurrentManagedThreadId;
+            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onError(string s) => logger.LogError(s, threadId);
+            var exitCode = pi.ReadOutput(out var _, onOut, onError);
+            if (exitCode != 0)
             {
-                using var p = Process.Start(pi);
-
-                if (p is null)
-                {
-                    progressMonitor.FailedNugetCommand(pi.FileName, pi.Arguments, "Couldn't start process.");
-                    return;
-                }
-
-                var output = p.StandardOutput.ReadToEnd();
-                var error = p.StandardError.ReadToEnd();
-
-                p.WaitForExit();
-                if (p.ExitCode != 0)
-                {
-                    progressMonitor.FailedNugetCommand(pi.FileName, pi.Arguments, output + error);
-                }
+                logger.LogError($"Command {pi.FileName} {pi.Arguments} failed with exit code {exitCode}");
+                return false;
             }
-            catch (Exception ex)
-                when (ex is System.ComponentModel.Win32Exception || ex is FileNotFoundException)
+            else
             {
-                progressMonitor.FailedNugetCommand(pi.FileName, pi.Arguments, ex.Message);
+                logger.LogInfo($"Restored file {package}");
+                return true;
             }
         }
 
         /// <summary>
         /// Download the packages to the temp folder.
         /// </summary>
-        public void InstallPackages()
+        public int InstallPackages()
         {
-            foreach (var package in packageFiles)
-            {
-                RestoreNugetPackage(package.FullName);
-            }
+            return packageFiles.Count(package => TryRestoreNugetPackage(package.FullName));
         }
     }
 }

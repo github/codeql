@@ -438,6 +438,20 @@ edges
 | E.cs:23:25:23:25 | access to local variable o : Object | E.cs:23:17:23:26 | call to method CreateS : S [field Field] : Object |
 | E.cs:24:14:24:14 | access to local variable s : S [field Field] : Object | E.cs:24:14:24:20 | access to field Field |
 | E.cs:24:14:24:14 | access to local variable s : S [field Field] : Object | E.cs:24:14:24:20 | access to field Field |
+| E.cs:43:46:43:46 | o : Object | E.cs:46:22:46:22 | access to parameter o : Object |
+| E.cs:43:46:43:46 | o : Object | E.cs:46:22:46:22 | access to parameter o : Object |
+| E.cs:46:22:46:22 | access to parameter o : Object | E.cs:46:9:46:9 | [post] access to parameter s : RefS [field RefField] : Object |
+| E.cs:46:22:46:22 | access to parameter o : Object | E.cs:46:9:46:9 | [post] access to parameter s : RefS [field RefField] : Object |
+| E.cs:54:21:54:37 | call to method Source<Object> : Object | E.cs:55:29:55:33 | access to local variable taint : Object |
+| E.cs:54:21:54:37 | call to method Source<Object> : Object | E.cs:55:29:55:33 | access to local variable taint : Object |
+| E.cs:55:23:55:26 | [post] access to local variable refs : RefS [field RefField] : Object | E.cs:57:14:57:17 | access to local variable refs : RefS [field RefField] : Object |
+| E.cs:55:23:55:26 | [post] access to local variable refs : RefS [field RefField] : Object | E.cs:57:14:57:17 | access to local variable refs : RefS [field RefField] : Object |
+| E.cs:55:29:55:33 | access to local variable taint : Object | E.cs:43:46:43:46 | o : Object |
+| E.cs:55:29:55:33 | access to local variable taint : Object | E.cs:43:46:43:46 | o : Object |
+| E.cs:55:29:55:33 | access to local variable taint : Object | E.cs:55:23:55:26 | [post] access to local variable refs : RefS [field RefField] : Object |
+| E.cs:55:29:55:33 | access to local variable taint : Object | E.cs:55:23:55:26 | [post] access to local variable refs : RefS [field RefField] : Object |
+| E.cs:57:14:57:17 | access to local variable refs : RefS [field RefField] : Object | E.cs:57:14:57:26 | access to field RefField |
+| E.cs:57:14:57:17 | access to local variable refs : RefS [field RefField] : Object | E.cs:57:14:57:26 | access to field RefField |
 | F.cs:6:28:6:29 | o1 : Object | F.cs:6:65:6:66 | access to parameter o1 : Object |
 | F.cs:6:28:6:29 | o1 : Object | F.cs:6:65:6:66 | access to parameter o1 : Object |
 | F.cs:6:39:6:40 | o2 : Object | F.cs:6:78:6:79 | access to parameter o2 : Object |
@@ -1403,6 +1417,22 @@ nodes
 | E.cs:24:14:24:14 | access to local variable s : S [field Field] : Object | semmle.label | access to local variable s : S [field Field] : Object |
 | E.cs:24:14:24:20 | access to field Field | semmle.label | access to field Field |
 | E.cs:24:14:24:20 | access to field Field | semmle.label | access to field Field |
+| E.cs:43:46:43:46 | o : Object | semmle.label | o : Object |
+| E.cs:43:46:43:46 | o : Object | semmle.label | o : Object |
+| E.cs:46:9:46:9 | [post] access to parameter s : RefS [field RefField] : Object | semmle.label | [post] access to parameter s : RefS [field RefField] : Object |
+| E.cs:46:9:46:9 | [post] access to parameter s : RefS [field RefField] : Object | semmle.label | [post] access to parameter s : RefS [field RefField] : Object |
+| E.cs:46:22:46:22 | access to parameter o : Object | semmle.label | access to parameter o : Object |
+| E.cs:46:22:46:22 | access to parameter o : Object | semmle.label | access to parameter o : Object |
+| E.cs:54:21:54:37 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| E.cs:54:21:54:37 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| E.cs:55:23:55:26 | [post] access to local variable refs : RefS [field RefField] : Object | semmle.label | [post] access to local variable refs : RefS [field RefField] : Object |
+| E.cs:55:23:55:26 | [post] access to local variable refs : RefS [field RefField] : Object | semmle.label | [post] access to local variable refs : RefS [field RefField] : Object |
+| E.cs:55:29:55:33 | access to local variable taint : Object | semmle.label | access to local variable taint : Object |
+| E.cs:55:29:55:33 | access to local variable taint : Object | semmle.label | access to local variable taint : Object |
+| E.cs:57:14:57:17 | access to local variable refs : RefS [field RefField] : Object | semmle.label | access to local variable refs : RefS [field RefField] : Object |
+| E.cs:57:14:57:17 | access to local variable refs : RefS [field RefField] : Object | semmle.label | access to local variable refs : RefS [field RefField] : Object |
+| E.cs:57:14:57:26 | access to field RefField | semmle.label | access to field RefField |
+| E.cs:57:14:57:26 | access to field RefField | semmle.label | access to field RefField |
 | F.cs:6:28:6:29 | o1 : Object | semmle.label | o1 : Object |
 | F.cs:6:28:6:29 | o1 : Object | semmle.label | o1 : Object |
 | F.cs:6:39:6:40 | o2 : Object | semmle.label | o2 : Object |
@@ -2004,6 +2034,8 @@ subpaths
 | D.cs:47:14:47:14 | access to local variable d : D [field trivialPropField] : Object | D.cs:14:9:14:11 | this : D [field trivialPropField] : Object | D.cs:14:22:14:42 | access to field trivialPropField : Object | D.cs:47:14:47:26 | access to property ComplexProp |
 | E.cs:23:25:23:25 | access to local variable o : Object | E.cs:8:29:8:29 | o : Object | E.cs:12:16:12:18 | access to local variable ret : S [field Field] : Object | E.cs:23:17:23:26 | call to method CreateS : S [field Field] : Object |
 | E.cs:23:25:23:25 | access to local variable o : Object | E.cs:8:29:8:29 | o : Object | E.cs:12:16:12:18 | access to local variable ret : S [field Field] : Object | E.cs:23:17:23:26 | call to method CreateS : S [field Field] : Object |
+| E.cs:55:29:55:33 | access to local variable taint : Object | E.cs:43:46:43:46 | o : Object | E.cs:46:9:46:9 | [post] access to parameter s : RefS [field RefField] : Object | E.cs:55:23:55:26 | [post] access to local variable refs : RefS [field RefField] : Object |
+| E.cs:55:29:55:33 | access to local variable taint : Object | E.cs:43:46:43:46 | o : Object | E.cs:46:9:46:9 | [post] access to parameter s : RefS [field RefField] : Object | E.cs:55:23:55:26 | [post] access to local variable refs : RefS [field RefField] : Object |
 | F.cs:11:24:11:24 | access to local variable o : Object | F.cs:6:28:6:29 | o1 : Object | F.cs:6:46:6:81 | object creation of type F : F [field Field1] : Object | F.cs:11:17:11:31 | call to method Create : F [field Field1] : Object |
 | F.cs:11:24:11:24 | access to local variable o : Object | F.cs:6:28:6:29 | o1 : Object | F.cs:6:46:6:81 | object creation of type F : F [field Field1] : Object | F.cs:11:17:11:31 | call to method Create : F [field Field1] : Object |
 | F.cs:15:26:15:42 | call to method Source<Object> : Object | F.cs:6:39:6:40 | o2 : Object | F.cs:6:46:6:81 | object creation of type F : F [field Field2] : Object | F.cs:15:13:15:43 | call to method Create : F [field Field2] : Object |
@@ -2109,6 +2141,8 @@ subpaths
 | D.cs:47:14:47:26 | access to property ComplexProp | D.cs:43:32:43:48 | call to method Source<Object> : Object | D.cs:47:14:47:26 | access to property ComplexProp | $@ | D.cs:43:32:43:48 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | E.cs:24:14:24:20 | access to field Field | E.cs:22:17:22:33 | call to method Source<Object> : Object | E.cs:24:14:24:20 | access to field Field | $@ | E.cs:22:17:22:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | E.cs:24:14:24:20 | access to field Field | E.cs:22:17:22:33 | call to method Source<Object> : Object | E.cs:24:14:24:20 | access to field Field | $@ | E.cs:22:17:22:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| E.cs:57:14:57:26 | access to field RefField | E.cs:54:21:54:37 | call to method Source<Object> : Object | E.cs:57:14:57:26 | access to field RefField | $@ | E.cs:54:21:54:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| E.cs:57:14:57:26 | access to field RefField | E.cs:54:21:54:37 | call to method Source<Object> : Object | E.cs:57:14:57:26 | access to field RefField | $@ | E.cs:54:21:54:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | F.cs:12:14:12:21 | access to field Field1 | F.cs:10:17:10:33 | call to method Source<Object> : Object | F.cs:12:14:12:21 | access to field Field1 | $@ | F.cs:10:17:10:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | F.cs:12:14:12:21 | access to field Field1 | F.cs:10:17:10:33 | call to method Source<Object> : Object | F.cs:12:14:12:21 | access to field Field1 | $@ | F.cs:10:17:10:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | F.cs:17:14:17:21 | access to field Field2 | F.cs:15:26:15:42 | call to method Source<Object> : Object | F.cs:17:14:17:21 | access to field Field2 | $@ | F.cs:15:26:15:42 | call to method Source<Object> : Object | call to method Source<Object> : Object |

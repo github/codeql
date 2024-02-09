@@ -17,7 +17,7 @@ import semmle.code.java.dataflow.TaintTracking
 import NonConstantTimeComparisonFlow::PathGraph
 
 /** A static method that uses a non-constant-time algorithm for comparing inputs. */
-private class NonConstantTimeComparisonCall extends StaticMethodAccess {
+private class NonConstantTimeComparisonCall extends StaticMethodCall {
   NonConstantTimeComparisonCall() {
     this.getMethod()
         .hasQualifiedName("org.apache.commons.lang3", "StringUtils",
@@ -26,7 +26,7 @@ private class NonConstantTimeComparisonCall extends StaticMethodAccess {
 }
 
 /** Methods that use a non-constant-time algorithm for comparing inputs. */
-private class NonConstantTimeEqualsCall extends MethodAccess {
+private class NonConstantTimeEqualsCall extends MethodCall {
   NonConstantTimeEqualsCall() {
     this.getMethod()
         .hasQualifiedName("java.lang", "String", ["equals", "contentEquals", "equalsIgnoreCase"])
@@ -43,7 +43,7 @@ private predicate isNonConstantComparisonCallArgument(Expr p) {
 
 class ClientSuppliedIpTokenCheck extends DataFlow::Node {
   ClientSuppliedIpTokenCheck() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("getHeader") and
       ma.getArgument(0).(CompileTimeConstantExpr).getStringValue().toLowerCase() in [
           "x-auth-token", "x-csrf-token", "http_x_csrf_token", "x-csrf-param", "x-csrf-header",

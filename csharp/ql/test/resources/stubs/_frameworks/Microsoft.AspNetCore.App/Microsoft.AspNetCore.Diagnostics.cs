@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Diagnostics, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Diagnostics, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -21,12 +21,14 @@ namespace Microsoft
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseExceptionHandler(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseExceptionHandler(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string errorHandlingPath) => throw null;
+                public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseExceptionHandler(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string errorHandlingPath, bool createScopeForErrors) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseExceptionHandler(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> configure) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseExceptionHandler(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, Microsoft.AspNetCore.Builder.ExceptionHandlerOptions options) => throw null;
             }
             public class ExceptionHandlerOptions
             {
                 public bool AllowStatusCode404Response { get => throw null; set { } }
+                public bool CreateScopeForErrors { get => throw null; set { } }
                 public ExceptionHandlerOptions() => throw null;
                 public Microsoft.AspNetCore.Http.RequestDelegate ExceptionHandler { get => throw null; set { } }
                 public Microsoft.AspNetCore.Http.PathString ExceptionHandlingPath { get => throw null; set { } }
@@ -79,6 +81,10 @@ namespace Microsoft
                 public ExceptionHandlerMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory, Microsoft.Extensions.Options.IOptions<Microsoft.AspNetCore.Builder.ExceptionHandlerOptions> options, System.Diagnostics.DiagnosticListener diagnosticListener) => throw null;
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
             }
+            public interface IExceptionHandler
+            {
+                System.Threading.Tasks.ValueTask<bool> TryHandleAsync(Microsoft.AspNetCore.Http.HttpContext httpContext, System.Exception exception, System.Threading.CancellationToken cancellationToken);
+            }
             public class StatusCodeContext
             {
                 public StatusCodeContext(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Builder.StatusCodePagesOptions options, Microsoft.AspNetCore.Http.RequestDelegate next) => throw null;
@@ -103,6 +109,7 @@ namespace Microsoft
                 public string OriginalPath { get => throw null; set { } }
                 public string OriginalPathBase { get => throw null; set { } }
                 public string OriginalQueryString { get => throw null; set { } }
+                public int OriginalStatusCode { get => throw null; }
                 public Microsoft.AspNetCore.Routing.RouteValueDictionary RouteValues { get => throw null; set { } }
             }
             public class WelcomePageMiddleware
@@ -120,6 +127,7 @@ namespace Microsoft
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddExceptionHandler(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.Builder.ExceptionHandlerOptions> configureOptions) => throw null;
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddExceptionHandler<TService>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.Builder.ExceptionHandlerOptions, TService> configureOptions) where TService : class => throw null;
+                public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddExceptionHandler<T>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) where T : class, Microsoft.AspNetCore.Diagnostics.IExceptionHandler => throw null;
             }
         }
     }

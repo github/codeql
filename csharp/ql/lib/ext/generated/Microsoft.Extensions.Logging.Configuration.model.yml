@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Logging.Configuration", "ILoggerProviderConfiguration<T>", "get_Configuration", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Configuration", "ILoggerProviderConfigurationFactory", "GetConfiguration", "(System.Type)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Configuration", "LoggerProviderOptions", "RegisterProviderOptions<TOptions,TProvider>", "(Microsoft.Extensions.DependencyInjection.IServiceCollection)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Configuration", "LoggerProviderOptionsChangeTokenSource<TOptions,TProvider>", "LoggerProviderOptionsChangeTokenSource", "(Microsoft.Extensions.Logging.Configuration.ILoggerProviderConfiguration<TProvider>)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.Configuration", "LoggingBuilderConfigurationExtensions", "AddConfiguration", "(Microsoft.Extensions.Logging.ILoggingBuilder)", "summary", "df-generated"]

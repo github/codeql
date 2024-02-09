@@ -1,7 +1,7 @@
 private import cil
 private import codeql.ssa.Ssa as SsaImplCommon
 
-private module SsaInput implements SsaImplCommon::InputSig {
+private module SsaInput implements SsaImplCommon::InputSig<CIL::Location> {
   class BasicBlock = CIL::BasicBlock;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
@@ -29,7 +29,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
   }
 }
 
-import SsaImplCommon::Make<SsaInput>
+import SsaImplCommon::Make<CIL::Location, SsaInput>
 
 cached
 private module Cached {
@@ -77,26 +77,6 @@ import Cached
 
 private module Deprecated {
   private import CIL
-
-  deprecated ReadAccess getAFirstRead(Definition def) {
-    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-      def.definesAt(_, bb1, i1) and
-      adjacentDefRead(def, bb1, i1, bb2, i2) and
-      result = bb2.getNode(i2)
-    )
-  }
-
-  deprecated predicate hasAdjacentReads(Definition def, ReadAccess first, ReadAccess second) {
-    exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
-      first = bb1.getNode(i1) and
-      adjacentDefRead(def, bb1, i1, bb2, i2) and
-      second = bb2.getNode(i2)
-    )
-  }
-
-  deprecated predicate lastRefBeforeRedef(Definition def, BasicBlock bb, int i, Definition next) {
-    lastRefRedef(def, bb, i, next)
-  }
 }
 
 import Deprecated

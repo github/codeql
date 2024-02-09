@@ -13,9 +13,6 @@ class SslClass extends RefType {
   }
 }
 
-/** DEPRECATED: Alias for SslClass */
-deprecated class SSLClass = SslClass;
-
 class X509TrustManager extends RefType {
   X509TrustManager() { this.hasQualifiedName("javax.net.ssl", "X509TrustManager") }
 }
@@ -29,47 +26,29 @@ class SslSocketFactory extends RefType {
   SslSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
 }
 
-/** DEPRECATED: Alias for SslSocketFactory */
-deprecated class SSLSocketFactory = SslSocketFactory;
-
 class SslContext extends RefType {
   SslContext() { this.hasQualifiedName("javax.net.ssl", "SSLContext") }
 }
-
-/** DEPRECATED: Alias for SslContext */
-deprecated class SSLContext = SslContext;
 
 /** The `javax.net.ssl.SslSession` class. */
 class SslSession extends RefType {
   SslSession() { this.hasQualifiedName("javax.net.ssl", "SSLSession") }
 }
 
-/** DEPRECATED: Alias for SslSession */
-deprecated class SSLSession = SslSession;
-
 /** The `javax.net.ssl.SslEngine` class. */
 class SslEngine extends RefType {
   SslEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
 }
-
-/** DEPRECATED: Alias for SslEngine */
-deprecated class SSLEngine = SslEngine;
 
 /** The `javax.net.ssl.SslSocket` class. */
 class SslSocket extends RefType {
   SslSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
 }
 
-/** DEPRECATED: Alias for SslSocket */
-deprecated class SSLSocket = SslSocket;
-
 /** The `javax.net.ssl.SslParameters` class. */
 class SslParameters extends RefType {
   SslParameters() { this.hasQualifiedName("javax.net.ssl", "SSLParameters") }
 }
-
-/** DEPRECATED: Alias for SslParameters */
-deprecated class SSLParameters = SslParameters;
 
 class HostnameVerifier extends RefType {
   HostnameVerifier() { this.hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
@@ -310,7 +289,7 @@ class JavaxCryptoCipher extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 class JavaxCryptoSecretKey extends JavaxCryptoAlgoSpec {
@@ -335,7 +314,7 @@ class JavaxCryptoKeyGenerator extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
@@ -346,7 +325,7 @@ class JavaxCryptoKeyAgreement extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 class JavaxCryptoKeyFactory extends JavaxCryptoAlgoSpec {
@@ -357,7 +336,7 @@ class JavaxCryptoKeyFactory extends JavaxCryptoAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 abstract class JavaSecurityAlgoSpec extends CryptoAlgoSpec { }
@@ -396,7 +375,7 @@ class JavaSecurityKeyPairGenerator extends JavaSecurityAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 /** The Java class `java.security.AlgorithmParameterGenerator`. */
@@ -423,7 +402,7 @@ class JavaSecurityAlgoParamGenerator extends JavaSecurityAlgoSpec {
     )
   }
 
-  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+  override Expr getAlgoSpec() { result = this.(MethodCall).getArgument(0) }
 }
 
 /** An implementation of the `java.security.spec.AlgorithmParameterSpec` interface. */

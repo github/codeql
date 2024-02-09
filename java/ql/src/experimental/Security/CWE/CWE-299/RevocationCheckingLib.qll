@@ -22,10 +22,10 @@ module DisabledRevocationCheckingFlow = TaintTracking::Global<DisabledRevocation
  */
 class SetRevocationEnabledSink extends DataFlow::ExprNode {
   SetRevocationEnabledSink() {
-    exists(MethodAccess setRevocationEnabledCall |
+    exists(MethodCall setRevocationEnabledCall |
       setRevocationEnabledCall.getMethod() instanceof SetRevocationEnabledMethod and
       setRevocationEnabledCall.getArgument(0) = this.getExpr() and
-      not exists(MethodAccess ma, Method m | m = ma.getMethod() |
+      not exists(MethodCall ma, Method m | m = ma.getMethod() |
         (m instanceof AddCertPathCheckerMethod or m instanceof SetCertPathCheckersMethod) and
         ma.getQualifier().(VarAccess).getVariable() =
           setRevocationEnabledCall.getQualifier().(VarAccess).getVariable()

@@ -16,6 +16,7 @@
  */
 
 import semmle.code.cpp.ir.dataflow.TaintTracking
+import semmle.code.cpp.models.implementations.GetText
 import semmle.code.cpp.commons.Printf
 
 // For the following `...gettext` functions, we assume that
@@ -26,30 +27,21 @@ predicate whitelistFunction(Function f, int arg) {
   // basic variations of gettext
   f.getName() = "_" and arg = 0
   or
-  f.getName() = "gettext" and arg = 0
-  or
-  f.getName() = "dgettext" and arg = 1
-  or
-  f.getName() = "dcgettext" and arg = 1
-  or
-  // plural variations of gettext that take one format string for singular and another for plural form
-  f.getName() = "ngettext" and
-  (arg = 0 or arg = 1)
-  or
-  f.getName() = "dngettext" and
-  (arg = 1 or arg = 2)
-  or
-  f.getName() = "dcngettext" and
-  (arg = 1 or arg = 2)
+  exists(FunctionInput input |
+    f.(GetTextFunction).hasDataFlow(input, _) and
+    input.isParameterDeref(arg)
+  )
 }
 
-// we assume that ALL uses of the `_` macro
+// we assume that ALL uses of the `_` macro (and calls to `gettext`)
 // return constant string literals
 predicate underscoreMacro(Expr e) {
   exists(MacroInvocation mi |
     mi.getMacroName() = "_" and
     mi.getExpr() = e
   )
+  or
+  e = any(GetTextFunction gettext).getACallToThisFunction()
 }
 
 /**

@@ -39,6 +39,7 @@ class StmtTranslator : public AstTranslatorBase<StmtTranslator> {
   codeql::YieldStmt translateYieldStmt(const swift::YieldStmt& stmt);
   codeql::FailStmt translateFailStmt(const swift::FailStmt& stmt);
   codeql::PoundAssertStmt translatePoundAssertStmt(const swift::PoundAssertStmt& stmt);
+  codeql::DiscardStmt translateDiscardStmt(const swift::DiscardStmt& stmt);
 
  private:
   void fillLabeledStmt(const swift::LabeledStmt& stmt, codeql::LabeledStmt& entry);

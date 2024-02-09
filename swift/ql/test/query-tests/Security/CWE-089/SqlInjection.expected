@@ -97,6 +97,13 @@ edges
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:117:16:117:16 | unsafeQuery1 |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:119:16:119:16 | unsafeQuery1 |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:132:20:132:20 | remoteString |
+| other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:50:22:50:22 | remoteString |
+| other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:52:14:52:14 | remoteString |
+| other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:53:14:53:14 | remoteString |
+| other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:54:31:54:31 | remoteString |
+| other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:55:14:55:14 | remoteString |
+| other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:57:16:57:16 | remoteString |
+| other.swift:54:31:54:31 | remoteString | other.swift:54:14:54:43 | call to NSString.init(string:) |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:133:33:133:33 | unsafeQuery1 |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:134:33:134:33 | unsafeQuery2 |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 |
@@ -222,6 +229,14 @@ nodes
 | SQLite.swift:117:16:117:16 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:119:16:119:16 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:132:20:132:20 | remoteString | semmle.label | remoteString |
+| other.swift:46:25:46:79 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
+| other.swift:50:22:50:22 | remoteString | semmle.label | remoteString |
+| other.swift:52:14:52:14 | remoteString | semmle.label | remoteString |
+| other.swift:53:14:53:14 | remoteString | semmle.label | remoteString |
+| other.swift:54:14:54:43 | call to NSString.init(string:) | semmle.label | call to NSString.init(string:) |
+| other.swift:54:31:54:31 | remoteString | semmle.label | remoteString |
+| other.swift:55:14:55:14 | remoteString | semmle.label | remoteString |
+| other.swift:57:16:57:16 | remoteString | semmle.label | remoteString |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
 | sqlite3_c_api.swift:133:33:133:33 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | sqlite3_c_api.swift:134:33:134:33 | unsafeQuery2 | semmle.label | unsafeQuery2 |
@@ -336,6 +351,12 @@ subpaths
 | SQLite.swift:117:16:117:16 | unsafeQuery1 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:117:16:117:16 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
 | SQLite.swift:119:16:119:16 | unsafeQuery1 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:119:16:119:16 | unsafeQuery1 | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
 | SQLite.swift:132:20:132:20 | remoteString | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | SQLite.swift:132:20:132:20 | remoteString | This query depends on a $@. | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) | user-provided value |
+| other.swift:50:22:50:22 | remoteString | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:50:22:50:22 | remoteString | This query depends on a $@. | other.swift:46:25:46:79 | call to String.init(contentsOf:) | user-provided value |
+| other.swift:52:14:52:14 | remoteString | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:52:14:52:14 | remoteString | This query depends on a $@. | other.swift:46:25:46:79 | call to String.init(contentsOf:) | user-provided value |
+| other.swift:53:14:53:14 | remoteString | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:53:14:53:14 | remoteString | This query depends on a $@. | other.swift:46:25:46:79 | call to String.init(contentsOf:) | user-provided value |
+| other.swift:54:14:54:43 | call to NSString.init(string:) | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:54:14:54:43 | call to NSString.init(string:) | This query depends on a $@. | other.swift:46:25:46:79 | call to String.init(contentsOf:) | user-provided value |
+| other.swift:55:14:55:14 | remoteString | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:55:14:55:14 | remoteString | This query depends on a $@. | other.swift:46:25:46:79 | call to String.init(contentsOf:) | user-provided value |
+| other.swift:57:16:57:16 | remoteString | other.swift:46:25:46:79 | call to String.init(contentsOf:) | other.swift:57:16:57:16 | remoteString | This query depends on a $@. | other.swift:46:25:46:79 | call to String.init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:133:33:133:33 | unsafeQuery1 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:133:33:133:33 | unsafeQuery1 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:134:33:134:33 | unsafeQuery2 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:134:33:134:33 | unsafeQuery2 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |

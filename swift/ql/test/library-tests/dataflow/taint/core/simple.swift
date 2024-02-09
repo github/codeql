@@ -86,3 +86,68 @@ func taintThroughBitwiseOperators() {
 
   sink(arg: ~source()) // $ tainted=87
 }
+
+// --- globals and class member variables ---
+
+let g1 = source()
+let g2 = source() + 1
+let g3 = g1
+var gv = source()
+
+class MyClass {
+	let m1 = source()
+	let m2 = source() + 1
+	let m3 = g1
+	var mv = source()
+
+	static let s1 = source()
+	static let s2 = source() + 1
+	static let s3 = s1
+	static var sv = source()
+
+	func test() {
+		sink(arg: g1) // $ MISSING: tainted=92
+		sink(arg: g2) // $ MISSING: tainted=93
+		sink(arg: g3) // $ MISSING: tainted=94
+		sink(arg: gv)
+		gv = 0
+		sink(arg: gv)
+
+		sink(arg: m1) // $ MISSING: tainted=98
+		sink(arg: m2) // $ MISSING: tainted=99
+		sink(arg: m3) // $ MISSING: tainted=100
+		sink(arg: mv)
+		mv = 0
+		sink(arg: mv)
+
+		sink(arg: MyClass.s1) // $ MISSING: tainted=103
+		sink(arg: MyClass.s2) // $ MISSING: tainted=104
+		sink(arg: MyClass.s3) // $ MISSING: tainted=105
+		sink(arg: MyClass.sv)
+		MyClass.sv = 0
+		sink(arg: MyClass.sv)
+	}
+}
+
+func test_instantiate_MyClass() {
+  let mc = MyClass()
+
+  mc.test()
+
+  sink(arg: g1) // $ MISSING: tainted=92
+  sink(arg: mc.m1) // $ MISSING: tainted=98
+  sink(arg: MyClass.s1) // $ MISSING: tainted=103
+}
+
+class MyClass2_NeverInstantiated {
+	let m1 = source()
+	static let s1 = source()
+
+	func test() {
+		sink(arg: g1) // $ MISSING: tainted=92
+		sink(arg: m1) // $ MISSING: tainted=143
+		sink(arg: MyClass2_NeverInstantiated.s1) // $ MISSING: tainted=144
+  }
+}
+
+// ---

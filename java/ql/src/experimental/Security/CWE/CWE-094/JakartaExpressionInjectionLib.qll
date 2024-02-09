@@ -29,7 +29,7 @@ module JakartaExpressionInjectionFlow = TaintTracking::Global<JakartaExpressionI
  */
 private class ExpressionEvaluationSink extends DataFlow::ExprNode {
   ExpressionEvaluationSink() {
-    exists(MethodAccess ma, Method m, Expr taintFrom |
+    exists(MethodCall ma, Method m, Expr taintFrom |
       ma.getMethod() = m and taintFrom = this.asExpr()
     |
       m.getDeclaringType() instanceof ValueExpression and
@@ -64,7 +64,7 @@ private class TaintPropagatingCall extends Call {
   TaintPropagatingCall() {
     taintFromExpr = this.getArgument(1) and
     (
-      exists(Method m | this.(MethodAccess).getMethod() = m |
+      exists(Method m | this.(MethodCall).getMethod() = m |
         m.getDeclaringType() instanceof ExpressionFactory and
         m.hasName(["createValueExpression", "createMethodExpression"]) and
         taintFromExpr.getType() instanceof TypeString

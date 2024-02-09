@@ -61,5 +61,5 @@ private Expr arrayReference(ArrayAccess arrayAccess) {
   result = arrayAccess.getArray().(VarAccess).getVariable().getAnAccess()
   or
   // Array is returned from a method.
-  result.(MethodAccess).getMethod() = arrayAccess.getArray().(MethodAccess).getMethod()
+  result.(MethodCall).getMethod() = arrayAccess.getArray().(MethodCall).getMethod()
 }

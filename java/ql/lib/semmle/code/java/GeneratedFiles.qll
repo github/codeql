@@ -44,7 +44,7 @@ abstract class GeneratedFile extends File { }
 /**
  * A file detected as generated based on commonly-used marker comments.
  */
-library class MarkerCommentGeneratedFile extends GeneratedFile {
+class MarkerCommentGeneratedFile extends GeneratedFile {
   MarkerCommentGeneratedFile() { any(GeneratedFileMarker t).getFile() = this }
 }
 

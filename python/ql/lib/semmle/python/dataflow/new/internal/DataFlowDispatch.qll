@@ -36,26 +36,32 @@ private import python
 private import DataFlowPublic
 private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
-private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import semmle.python.internal.CachedStages
-private import semmle.python.dataflow.new.internal.TypeTracker::CallGraphConstruction as CallGraphConstruction
+private import semmle.python.dataflow.new.internal.TypeTrackingImpl::CallGraphConstruction as CallGraphConstruction
 
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfParameterPosition() or
+  /**
+   * This is used for tracking flow through captured variables, and
+   * we use separate parameter/argument positions in order to distinguish
+   * "lambda self" from "normal self", as lambdas may also access outer `self`
+   * variables (through variable capture).
+   */
+  TLambdaSelfParameterPosition() or
   TPositionalParameterPosition(int index) {
     index = any(Parameter p).getPosition()
     or
     // since synthetic parameters are made for a synthetic summary callable, based on
     // what Argument positions they have flow for, we need to make sure we have such
     // parameter positions available.
-    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalArgumentPosition(_, index)
+    FlowSummaryImpl::ParsePositions::isParsedPositionalArgumentPosition(_, index)
   } or
   TKeywordParameterPosition(string name) {
     name = any(Parameter p).getName()
     or
     // see comment for TPositionalParameterPosition
-    FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
+    FlowSummaryImpl::ParsePositions::isParsedKeywordArgumentPosition(_, name)
   } or
   TStarArgsParameterPosition(int index) {
     // since `.getPosition` does not work for `*args`, we need *args parameter positions
@@ -78,6 +84,9 @@ newtype TParameterPosition =
 class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `self`/`cls` parameter. */
   predicate isSelf() { this = TSelfParameterPosition() }
+
+  /** Holds if this position represents a reference to a lambda itself. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfParameterPosition() }
 
   /** Holds if this position represents a positional parameter at (0-based) `index`. */
   predicate isPositional(int index) { this = TPositionalParameterPosition(index) }
@@ -110,6 +119,8 @@ class ParameterPosition extends TParameterPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     exists(int index | this.isPositional(index) and result = "position " + index)
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
@@ -130,19 +141,26 @@ class ParameterPosition extends TParameterPosition {
 newtype TArgumentPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfArgumentPosition() or
+  /**
+   * This is used for tracking flow through captured variables, and
+   * we use separate parameter/argument positions in order to distinguish
+   * "lambda self" from "normal self", as lambdas may also access outer `self`
+   * variables (through variable capture).
+   */
+  TLambdaSelfArgumentPosition() or
   TPositionalArgumentPosition(int index) {
     exists(any(CallNode c).getArg(index))
     or
     // since synthetic calls within a summarized callable could use a unique argument
     // position, we need to ensure we make these available (these are specified as
     // parameters in the flow-summary spec)
-    FlowSummaryImplSpecific::ParsePositions::isParsedPositionalParameterPosition(_, index)
+    FlowSummaryImpl::ParsePositions::isParsedPositionalParameterPosition(_, index)
   } or
   TKeywordArgumentPosition(string name) {
     exists(any(CallNode c).getArgByName(name))
     or
     // see comment for TPositionalArgumentPosition
-    FlowSummaryImplSpecific::ParsePositions::isParsedKeywordParameterPosition(_, name)
+    FlowSummaryImpl::ParsePositions::isParsedKeywordParameterPosition(_, name)
   } or
   TStarArgsArgumentPosition(int index) {
     exists(Call c | c.getPositionalArg(index) instanceof Starred)
@@ -153,6 +171,9 @@ newtype TArgumentPosition =
 class ArgumentPosition extends TArgumentPosition {
   /** Holds if this position represents a `self`/`cls` argument. */
   predicate isSelf() { this = TSelfArgumentPosition() }
+
+  /** Holds if this position represents a lambda `self` argument. Only used for tracking flow through captured variables. */
+  predicate isLambdaSelf() { this = TLambdaSelfArgumentPosition() }
 
   /** Holds if this position represents a positional argument at (0-based) `index`. */
   predicate isPositional(int index) { this = TPositionalArgumentPosition(index) }
@@ -170,6 +191,8 @@ class ArgumentPosition extends TArgumentPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
+    this.isLambdaSelf() and result = "lambda self"
+    or
     exists(int pos | this.isPositional(pos) and result = "position " + pos)
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
@@ -183,6 +206,8 @@ class ArgumentPosition extends TArgumentPosition {
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
+  or
+  ppos.isLambdaSelf() and apos.isLambdaSelf()
   or
   exists(int index | ppos.isPositional(index) and apos.isPositional(index))
   or
@@ -237,6 +262,19 @@ predicate isClassmethod(Function func) {
 predicate hasPropertyDecorator(Function func) {
   exists(NameNode id | id.getId() = "property" and id.isGlobal() |
     func.getADecorator() = id.getNode()
+  )
+}
+
+/**
+ * Holds if the function `func` has a `contextlib.contextmanager`.
+ */
+predicate hasContextmanagerDecorator(Function func) {
+  exists(ControlFlowNode contextmanager |
+    contextmanager.(NameNode).getId() = "contextmanager" and contextmanager.(NameNode).isGlobal()
+    or
+    contextmanager.(AttrNode).getObject("contextmanager").(NameNode).getId() = "contextlib"
+  |
+    func.getADecorator() = contextmanager.getNode()
   )
 }
 
@@ -1339,7 +1377,10 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract ControlFlowNode getNode();
 
   /** Gets the enclosing callable of this call. */
-  abstract DataFlowCallable getEnclosingCallable();
+  DataFlowCallable getEnclosingCallable() { result = getCallableScope(this.getScope()) }
+
+  /** Gets the scope of this node, if any. */
+  abstract Scope getScope();
 
   /** Gets the location of this dataflow call. */
   abstract Location getLocation();
@@ -1387,7 +1428,7 @@ class NormalCall extends ExtractedDataFlowCall, TNormalCall {
 
   override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
+  override Scope getScope() { result = call.getScope() }
 
   override DataFlowCallable getCallable() { result.(DataFlowFunction).getScope() = target }
 
@@ -1437,7 +1478,7 @@ class PotentialLibraryCall extends ExtractedDataFlowCall, TPotentialLibraryCall 
 
   override ControlFlowNode getNode() { result = call }
 
-  override DataFlowCallable getEnclosingCallable() { result.getScope() = call.getScope() }
+  override Scope getScope() { result = call.getScope() }
 }
 
 /**
@@ -1460,6 +1501,8 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
+
+  override Scope getScope() { none() }
 
   override DataFlowCallable getCallable() { none() }
 
@@ -1487,6 +1530,37 @@ abstract class ParameterNodeImpl extends Node {
   predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos) {
     this = c.getParameter(ppos)
   }
+}
+
+/**
+ * A synthetic parameter representing the values of the variables captured
+ * by the callable being called. This parameter represents a single object
+ * where all the values are stored as attributes.
+ * This is also known as the environment part of a closure.
+ *
+ * This is used for tracking flow through captured variables.
+ */
+class SynthCapturedVariablesParameterNode extends ParameterNodeImpl,
+  TSynthCapturedVariablesParameterNode
+{
+  private Function callable;
+
+  SynthCapturedVariablesParameterNode() { this = TSynthCapturedVariablesParameterNode(callable) }
+
+  final Function getCallable() { result = callable }
+
+  override Parameter getParameter() { none() }
+
+  override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+    c = TFunction(callable) and
+    pos.isLambdaSelf()
+  }
+
+  override Scope getScope() { result = callable }
+
+  override Location getLocation() { result = callable.getLocation() }
+
+  override string toString() { result = "lambda self in " + callable }
 }
 
 /** A parameter for a library callable with a flow summary. */
@@ -1541,12 +1615,15 @@ private class SummaryReturnNode extends FlowSummaryNode, ReturnNode {
 }
 
 private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+  private SummaryCall call_;
+  private ArgumentPosition pos_;
+
   SummaryArgumentNode() {
-    FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+    FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
   }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
+    call = call_ and pos = pos_
   }
 }
 
@@ -1558,6 +1635,39 @@ private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNodeImpl 
   }
 
   override Node getPreUpdateNode() { result = pre }
+}
+
+/**
+ * A synthetic argument representing the values of the variables captured
+ * by the callable being called. This argument represents a single object
+ * where all the values are stored as attributes.
+ * This is also known as the environment part of a closure.
+ *
+ * This is used for tracking flow through captured variables.
+ *
+ * TODO:
+ * We might want a synthetic node here, but currently that incurs problems
+ * with non-monotonic recursion, because of the use of `resolveCall` in the
+ * char pred. This may be solvable by using
+ * `CallGraphConstruction::Make` in stead of
+ * `CallGraphConstruction::Simple::Make` appropriately.
+ */
+class CapturedVariablesArgumentNode extends CfgNode, ArgumentNode {
+  CallNode callNode;
+
+  CapturedVariablesArgumentNode() {
+    node = callNode.getFunction() and
+    exists(Function target | resolveCall(callNode, target, _) |
+      target = any(VariableCapture::CapturedVariable v).getACapturingScope()
+    )
+  }
+
+  override string toString() { result = "Capturing closure argument" }
+
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    callNode = call.getNode() and
+    pos.isLambdaSelf()
+  }
 }
 
 /** Gets a viable run-time target for the call `call`. */
@@ -1604,6 +1714,24 @@ class ExtractedReturnNode extends ReturnNode, CfgNode {
   override ReturnKind getKind() { any() }
 }
 
+/**
+ * A data flow node that represents the value yielded by a callable with a
+ * `contextlib.contextmanager` decorator. We treat this as a normal return, which makes
+ * things just work when used in a `with` statement -- technically calling the function
+ * directly will give you a `contextlib._GeneratorContextManager` instance, so it's a
+ * slight workaround solution.
+ *
+ * See https://docs.python.org/3/library/contextlib.html#contextlib.contextmanager
+ */
+class YieldNodeInContextManagerFunction extends ReturnNode, CfgNode {
+  YieldNodeInContextManagerFunction() {
+    hasContextmanagerDecorator(node.getScope()) and
+    node = any(Yield yield).getValue().getAFlowNode()
+  }
+
+  override ReturnKind getKind() { any() }
+}
+
 /** A data-flow node that represents the output of a call. */
 abstract class OutNode extends Node {
   /** Gets the underlying call, where this node is a corresponding output of kind `kind`. */
@@ -1626,10 +1754,16 @@ private module OutNodes {
   }
 
   private class SummaryOutNode extends FlowSummaryNode, OutNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
+    private SummaryCall call;
+    private ReturnKind kind_;
+
+    SummaryOutNode() {
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), kind_)
+    }
 
     override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
+      result = call and
+      kind = kind_
     }
   }
 }

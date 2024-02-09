@@ -1,6 +1,7 @@
 using System;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.WebPages;
 
 public class UrlRedirectHandler : IHttpHandler
 {
@@ -40,7 +41,7 @@ public class UrlRedirectHandler : IHttpHandler
         // GOOD: Redirecting to the RawUrl only reloads the current Url
         ctx.Response.Redirect(ctx.Request.RawUrl);
 
-        // GOOD: The attacker can only control the parameters, not the locaiton
+        // GOOD: The attacker can only control the parameters, not the location
         ctx.Response.Redirect("foo.asp?param=" + url);
 
         // BAD: Using Transfer with unvalidated user input
@@ -48,6 +49,31 @@ public class UrlRedirectHandler : IHttpHandler
 
         // GOOD: request parameter is URL encoded
         ctx.Response.Redirect(HttpUtility.UrlEncode(ctx.Request.QueryString["page"]));
+
+        // GOOD: whitelisted redirect
+        var url3 = ctx.Request.QueryString["page"];
+        if (new HttpRequestWrapper(ctx.Request).IsUrlLocalToHost(url3))
+        {
+            ctx.Response.Redirect(url3);
+        }
+
+        // GOOD: The attacker can only control the parameters, not the location
+        ctx.Response.Redirect($"foo.asp?param={url}");
+
+        // BAD: The attacker can control the location
+        ctx.Response.Redirect($"{url}.asp?param=foo");
+
+        // GOOD: The attacker can only control the parameters, not the location
+        ctx.Response.Redirect(string.Format("foo.asp?param={0}", url));
+
+        // BAD: The attacker can control the location
+        ctx.Response.Redirect(string.Format("{0}.asp?param=foo", url));
+
+        // GOOD: The attacker can only control the parameters, not the location
+        ctx.Response.Redirect(string.Format("foo.asp?{1}param={0}", url, url));
+
+        // BAD: The attacker can control the location
+        ctx.Response.Redirect(string.Format("{1}.asp?{0}param=foo", url, url));
     }
 
     // Implementation as recommended by Microsoft.

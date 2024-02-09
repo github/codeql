@@ -110,8 +110,8 @@ private predicate loopConditionAlwaysUponEntry(ControlFlowNode loop, Expr condit
  * should be in this relation.
  */
 pragma[noinline]
-private predicate isFunction(Element el) {
-  el instanceof Function
+private predicate isFunction(@element el) {
+  el instanceof @function
   or
   el.(Expr).getParent() = el
 }
@@ -122,7 +122,7 @@ private predicate isFunction(Element el) {
  */
 pragma[noopt]
 private predicate callHasNoTarget(@funbindexpr fc) {
-  exists(Function f |
+  exists(@function f |
     funbind(fc, f) and
     not isFunction(f)
   )
@@ -366,12 +366,12 @@ class CompileTimeConstantInt extends Expr {
   int getIntValue() { result = val }
 }
 
-library class CompileTimeVariableExpr extends Expr {
+class CompileTimeVariableExpr extends Expr {
   CompileTimeVariableExpr() { not this instanceof CompileTimeConstantInt }
 }
 
 /** A helper class for evaluation of expressions. */
-library class ExprEvaluator extends int {
+class ExprEvaluator extends int {
   /*
    * 0 = ConditionEvaluator,
    * 1 = SwitchEvaluator,
@@ -956,7 +956,7 @@ private predicate returnStmt(Function f, Expr value) {
 }
 
 /** A helper class for evaluation of conditions. */
-library class ConditionEvaluator extends ExprEvaluator {
+class ConditionEvaluator extends ExprEvaluator {
   ConditionEvaluator() { this = 0 }
 
   override predicate interesting(Expr e) {
@@ -967,7 +967,7 @@ library class ConditionEvaluator extends ExprEvaluator {
 }
 
 /** A helper class for evaluation of switch expressions. */
-library class SwitchEvaluator extends ExprEvaluator {
+class SwitchEvaluator extends ExprEvaluator {
   SwitchEvaluator() { this = 1 }
 
   override predicate interesting(Expr e) { e = getASwitchExpr(_, _) }
@@ -976,7 +976,7 @@ library class SwitchEvaluator extends ExprEvaluator {
 private int getSwitchValue(Expr e) { exists(SwitchEvaluator x | result = x.getValue(e)) }
 
 /** A helper class for evaluation of loop entry conditions. */
-library class LoopEntryConditionEvaluator extends ExprEvaluator {
+class LoopEntryConditionEvaluator extends ExprEvaluator {
   LoopEntryConditionEvaluator() { this in [2 .. 3] }
 
   abstract override predicate interesting(Expr e);
@@ -1149,7 +1149,7 @@ library class LoopEntryConditionEvaluator extends ExprEvaluator {
 }
 
 /** A helper class for evaluation of while-loop entry conditions. */
-library class WhileLoopEntryConditionEvaluator extends LoopEntryConditionEvaluator {
+class WhileLoopEntryConditionEvaluator extends LoopEntryConditionEvaluator {
   WhileLoopEntryConditionEvaluator() { this = 2 }
 
   override predicate interesting(Expr e) { exists(WhileStmt while | e = while.getCondition()) }
@@ -1162,7 +1162,7 @@ library class WhileLoopEntryConditionEvaluator extends LoopEntryConditionEvaluat
 }
 
 /** A helper class for evaluation of for-loop entry conditions. */
-library class ForLoopEntryConditionEvaluator extends LoopEntryConditionEvaluator {
+class ForLoopEntryConditionEvaluator extends LoopEntryConditionEvaluator {
   ForLoopEntryConditionEvaluator() { this = 3 }
 
   override predicate interesting(Expr e) { exists(ForStmt for | e = for.getCondition()) }

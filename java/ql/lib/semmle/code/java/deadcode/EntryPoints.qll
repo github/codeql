@@ -94,7 +94,7 @@ abstract class ReflectivelyConstructedClass extends EntryPoint, Class {
 /**
  * Classes that are deserialized by Jackson are reflectively constructed.
  */
-library class JacksonReflectivelyConstructedClass extends ReflectivelyConstructedClass instanceof JacksonDeserializableType
+class JacksonReflectivelyConstructedClass extends ReflectivelyConstructedClass instanceof JacksonDeserializableType
 {
   override Callable getALiveCallable() {
     // Constructors may be called by Jackson, if they are a no-arg, they have a suitable annotation,
@@ -135,14 +135,10 @@ class JaxAnnotationReflectivelyConstructedClass extends ReflectivelyConstructedC
   }
 }
 
-/** DEPRECATED: Alias for JaxAnnotationReflectivelyConstructedClass */
-deprecated class JAXAnnotationReflectivelyConstructedClass =
-  JaxAnnotationReflectivelyConstructedClass;
-
 class DeserializedClass extends ReflectivelyConstructedClass {
   DeserializedClass() {
     exists(CastingExpr cast, ReadObjectMethod readObject |
-      cast.getExpr().(MethodAccess).getMethod() = readObject
+      cast.getExpr().(MethodCall).getMethod() = readObject
     |
       hasDescendant(cast.getType(), this)
     )
@@ -164,13 +160,16 @@ class NewInstanceCall extends EntryPoint, NewInstance {
 /**
  * A call to either `Class.getMethod(...)` or `Class.getDeclaredMethod(...)`.
  */
-class ReflectiveMethodAccessEntryPoint extends EntryPoint, ReflectiveMethodAccess {
+class ReflectiveGetMethodCallEntryPoint extends EntryPoint, ReflectiveGetMethodCall {
   override Method getALiveCallable() {
     result = this.inferAccessedMethod() and
     // The `getMethod(...)` call must be used in a live context.
     isLive(this.getEnclosingCallable())
   }
 }
+
+/** DEPRECATED: Alias for `ReflectiveGetMethodCallEntryPoint`. */
+deprecated class ReflectiveMethodAccessEntryPoint = ReflectiveGetMethodCallEntryPoint;
 
 /**
  * Classes that are entry points recognised by annotations.
@@ -321,9 +320,6 @@ class EjbHome extends Interface, EntryPoint {
   override Callable getALiveCallable() { result = this.getACallable() }
 }
 
-/** DEPRECATED: Alias for EjbHome */
-deprecated class EJBHome = EjbHome;
-
 /**
  * Entry point for EJB object interfaces.
  */
@@ -332,9 +328,6 @@ class EjbObject extends Interface, EntryPoint {
 
   override Callable getALiveCallable() { result = this.getACallable() }
 }
-
-/** DEPRECATED: Alias for EjbObject */
-deprecated class EJBObject = EjbObject;
 
 class GsonDeserializationEntryPoint extends ReflectivelyConstructedClass {
   GsonDeserializationEntryPoint() {
@@ -357,9 +350,6 @@ class JaxbDeserializationEntryPoint extends ReflectivelyConstructedClass {
     )
   }
 }
-
-/** DEPRECATED: Alias for JaxbDeserializationEntryPoint */
-deprecated class JAXBDeserializationEntryPoint = JaxbDeserializationEntryPoint;
 
 /**
  * A `javax.annotation` for a method that is called after or before dependency injection on a type.

@@ -73,6 +73,10 @@ private int isSource(Expr bufferExpr, Element why) {
   )
 }
 
+/** Same as `getBufferSize`, but with the `why` column projected away to prevent large duplications. */
+pragma[nomagic]
+int getBufferSizeProj(Expr bufferExpr) { result = getBufferSize(bufferExpr, _) }
+
 /**
  * Get the size in bytes of the buffer pointed to by an expression (if this can be determined).
  */
@@ -87,7 +91,7 @@ int getBufferSize(Expr bufferExpr, Element why) {
     why = bufferVar and
     parentPtr = bufferExpr.(VariableAccess).getQualifier() and
     parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
-    result = getBufferSize(parentPtr, _) + bufferSize - parentClass.getSize()
+    result = getBufferSizeProj(parentPtr) + bufferSize - parentClass.getSize()
   |
     if exists(bufferVar.getType().getSize())
     then bufferSize = bufferVar.getType().getSize()
@@ -95,7 +99,6 @@ int getBufferSize(Expr bufferExpr, Element why) {
   )
   or
   // dataflow (all sources must be the same size)
-  result = unique(Expr def | DataFlow::localExprFlowStep(def, bufferExpr) | getBufferSize(def, _)) and
-  // find reason
+  result = unique(Expr def | DataFlow::localExprFlowStep(def, bufferExpr) | getBufferSizeProj(def)) and
   exists(Expr def | DataFlow::localExprFlowStep(def, bufferExpr) | exists(getBufferSize(def, why)))
 }

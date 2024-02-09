@@ -5,6 +5,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
 private import experimental.semmle.code.java.frameworks.SpringResource
+private import semmle.code.java.security.Sanitizers
 
 private class ActiveModels extends ActiveExperimentalModels {
   ActiveModels() { this = "unsafe-url-forward" }
@@ -19,7 +20,7 @@ abstract class UnsafeUrlForwardSanitizer extends DataFlow::Node { }
 /** An argument to `getRequestDispatcher`. */
 private class RequestDispatcherSink extends UnsafeUrlForwardSink {
   RequestDispatcherSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof GetRequestDispatcherMethod and
       ma.getArgument(0) = this.asExpr()
     )
@@ -93,7 +94,7 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
     or
     sinkNode(this, "get-resource")
     or
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       (
         ma.getMethod() instanceof GetServletResourceAsStreamMethod or
         ma.getMethod() instanceof GetFacesResourceAsStreamMethod or
@@ -109,7 +110,7 @@ private class GetResourceSink extends UnsafeUrlForwardSink {
 /** A sink for methods that load Spring resources. */
 private class SpringResourceSink extends UnsafeUrlForwardSink {
   SpringResourceSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod() instanceof GetResourceUtilsMethod and
       ma.getArgument(0) = this.asExpr()
     )
@@ -128,12 +129,7 @@ private class SpringModelAndViewSink extends UnsafeUrlForwardSink {
   }
 }
 
-private class PrimitiveSanitizer extends UnsafeUrlForwardSanitizer {
-  PrimitiveSanitizer() {
-    this.getType() instanceof PrimitiveType or
-    this.getType() instanceof BoxedType or
-    this.getType() instanceof NumberType
-  }
+private class PrimitiveSanitizer extends UnsafeUrlForwardSanitizer instanceof SimpleTypeSanitizer {
 }
 
 private class SanitizingPrefix extends InterestingPrefix {

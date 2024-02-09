@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.JSInterop, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.JSInterop, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace JSInterop
@@ -145,6 +145,7 @@ namespace Microsoft
         {
             public static void InvokeVoid(this Microsoft.JSInterop.IJSInProcessRuntime jsRuntime, string identifier, params object[] args) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)64, AllowMultiple = true)]
         public sealed class JSInvokableAttribute : System.Attribute
         {
             public JSInvokableAttribute() => throw null;

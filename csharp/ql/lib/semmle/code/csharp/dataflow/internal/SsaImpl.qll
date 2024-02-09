@@ -6,7 +6,7 @@ import csharp
 private import codeql.ssa.Ssa as SsaImplCommon
 private import AssignableDefinitions
 
-private module SsaInput implements SsaImplCommon::InputSig {
+private module SsaInput implements SsaImplCommon::InputSig<Location> {
   class BasicBlock = ControlFlow::BasicBlock;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
@@ -49,7 +49,7 @@ private module SsaInput implements SsaImplCommon::InputSig {
   }
 }
 
-private import SsaImplCommon::Make<SsaInput> as Impl
+private import SsaImplCommon::Make<Location, SsaInput> as Impl
 
 class Definition = Impl::Definition;
 
@@ -310,7 +310,12 @@ private module CallGraph {
       c = any(DelegateCall dc | e = dc.getExpr()) and
       libraryDelegateCall = false
       or
-      c.getTarget().fromLibrary() and
+      exists(Callable target |
+        target = c.getTarget() and
+        not target.hasBody()
+      |
+        if target instanceof Accessor then not target.fromSource() else any()
+      ) and
       e = c.getAnArgument() and
       e.getType() instanceof SystemLinqExpressions::DelegateExtType and
       libraryDelegateCall = true

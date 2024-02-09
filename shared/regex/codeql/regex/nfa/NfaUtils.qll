@@ -64,9 +64,6 @@ module Make<RegexTreeViewSig TreeImpl> {
     }
   }
 
-  /** DEPRECATED: Use `EmptyPositiveSubPattern` instead. */
-  deprecated class EmptyPositiveSubPatttern = EmptyPositiveSubPattern;
-
   final private class FinalRegExpTerm = RegExpTerm;
 
   /**
@@ -164,17 +161,17 @@ module Make<RegexTreeViewSig TreeImpl> {
     /** An input symbol corresponding to character `c`. */
     Char(string c) {
       c =
-        getCodepointAt(any(RegexpCharacterConstant cc |
+        getACodepoint(any(RegexpCharacterConstant cc |
             cc instanceof RelevantRegExpTerm and
             not isIgnoreCase(cc.getRootTerm())
-          ).getValue(), _)
+          ).getValue())
       or
       // normalize everything to lower case if the regexp is case insensitive
       c =
         any(RegexpCharacterConstant cc, string char |
           cc instanceof RelevantRegExpTerm and
           isIgnoreCase(cc.getRootTerm()) and
-          char = getCodepointAt(cc.getValue(), _)
+          char = getACodepoint(cc.getValue())
         |
           char.toLowerCase()
         )
@@ -370,7 +367,7 @@ module Make<RegexTreeViewSig TreeImpl> {
     string getARelevantChar() {
       exists(asciiPrintable(result))
       or
-      exists(RegexpCharacterConstant c | result = getCodepointAt(c.getValue(), _))
+      exists(RegexpCharacterConstant c | result = getACodepoint(c.getValue()))
       or
       classEscapeMatches(_, result)
     }
@@ -1258,7 +1255,7 @@ module Make<RegexTreeViewSig TreeImpl> {
        * Gets a `char` that occurs in a `pump` string.
        */
       private string getAProcessChar() {
-        result = getCodepointAt(any(string s | isReDoSCandidate(_, s)), _)
+        result = getACodepoint(any(string s | isReDoSCandidate(_, s)))
       }
     }
 

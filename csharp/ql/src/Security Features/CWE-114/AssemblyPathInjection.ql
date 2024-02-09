@@ -32,7 +32,7 @@ module AssemblyPathInjectionConfig implements DataFlow::ConfigSig {
       mc.getTarget()
           .getDeclaringType()
           .getABaseType*()
-          .hasQualifiedName("System.Reflection", "Assembly") and
+          .hasFullyQualifiedName("System.Reflection", "Assembly") and
       mc.getArgument(arg) = sink.asExpr()
     |
       name = "LoadFrom" and arg = 0 and mc.getNumberOfArguments() = [1 .. 2]

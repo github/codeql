@@ -43,7 +43,9 @@ module Kernel {
    * ```
    */
   private predicate isPublicKernelMethod(string method) {
-    method in ["class", "clone", "frozen?", "tap", "then", "yield_self", "send"]
+    method in [
+        "class", "clone", "frozen?", "tap", "then", "yield_self", "send", "public_send", "__send__"
+      ]
   }
 
   /**
@@ -167,7 +169,7 @@ module Kernel {
    * ```
    */
   class SendCallCodeExecution extends CodeExecution::Range, KernelMethodCall {
-    SendCallCodeExecution() { this.getMethodName() = "send" }
+    SendCallCodeExecution() { this.getMethodName() = ["send", "public_send", "__send__"] }
 
     override DataFlow::Node getCode() { result = this.getArgument(0) }
 
@@ -177,7 +179,7 @@ module Kernel {
   private class TapSummary extends SimpleSummarizedCallable {
     TapSummary() { this = "tap" }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       input = "Argument[self]" and
       output = ["ReturnValue", "Argument[block].Parameter[0]"] and
       preservesValue = true
@@ -219,7 +221,7 @@ module Kernel {
       )
     }
 
-    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
       (
         // already an array
         input = "Argument[0].WithElement[0..]" and

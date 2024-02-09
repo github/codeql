@@ -40,7 +40,9 @@ class MapMethod extends Method {
 
 /** A method that mutates the map it belongs to. */
 class MapMutator extends MapMethod {
-  MapMutator() { pragma[only_bind_into](this).getName().regexpMatch("(put.*|remove|clear)") }
+  MapMutator() {
+    pragma[only_bind_into](this).getName().regexpMatch("(put.*|remove|clear|replace.*)")
+  }
 }
 
 /** The `size` method of `java.util.Map`. */
@@ -49,7 +51,7 @@ class MapSizeMethod extends MapMethod {
 }
 
 /** A method call that mutates a map. */
-class MapMutation extends MethodAccess {
+class MapMutation extends MethodCall {
   MapMutation() { this.getMethod() instanceof MapMutator }
 
   /** Holds if the result of this call is not immediately discarded. */
@@ -76,7 +78,7 @@ class FreshMap extends ClassInstanceExpr {
 /**
  * A call to `Map.put(key, value)`.
  */
-class MapPutCall extends MethodAccess {
+class MapPutCall extends MethodCall {
   MapPutCall() { this.getCallee().(MapMethod).hasName("put") }
 
   /** Gets the key argument of this call. */

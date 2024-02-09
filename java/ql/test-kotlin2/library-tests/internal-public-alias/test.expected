@@ -1,0 +1,6 @@
+| User.java:3:21:3:24 | test |
+| test.kt:3:3:3:30 | getInternalVal$main |
+| test.kt:6:3:6:36 | getInternalVal |
+| test.kt:8:3:8:30 | getInternalVar$main |
+| test.kt:8:3:8:30 | setInternalVar$main |
+| test.kt:10:3:10:32 | internalFun$main |

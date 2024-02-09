@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -12,20 +14,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     internal partial class DotNet : IDotNet
     {
         private readonly IDotNetCliInvoker dotnetCliInvoker;
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
+        private readonly TemporaryDirectory? tempWorkingDirectory;
 
-        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor)
+        private DotNet(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, TemporaryDirectory? tempWorkingDirectory = null)
         {
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
+            this.tempWorkingDirectory = tempWorkingDirectory;
             this.dotnetCliInvoker = dotnetCliInvoker;
             Info();
         }
 
-        private DotNet(IDependencyOptions options, ProgressMonitor progressMonitor) : this(new DotNetCliInvoker(progressMonitor, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), progressMonitor) { }
+        private DotNet(IDependencyOptions options, ILogger logger, TemporaryDirectory tempWorkingDirectory) : this(new DotNetCliInvoker(logger, Path.Combine(options.DotNetPath ?? string.Empty, "dotnet")), logger, tempWorkingDirectory) { }
 
-        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ProgressMonitor progressMonitor) => new DotNet(dotnetCliInvoker, progressMonitor);
+        internal static IDotNet Make(IDotNetCliInvoker dotnetCliInvoker, ILogger logger) => new DotNet(dotnetCliInvoker, logger);
 
-        public static IDotNet Make(IDependencyOptions options, ProgressMonitor progressMonitor) => new DotNet(options, progressMonitor);
+        public static IDotNet Make(IDependencyOptions options, ILogger logger, TemporaryDirectory tempWorkingDirectory) => new DotNet(options, logger, tempWorkingDirectory);
 
         private void Info()
         {
@@ -37,36 +41,41 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private static string GetRestoreArgs(string projectOrSolutionFile, string packageDirectory) =>
-            $"restore --no-dependencies \"{projectOrSolutionFile}\" --packages \"{packageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true";
-
-        public bool RestoreProjectToDirectory(string projectFile, string packageDirectory, string? pathToNugetConfig = null)
+        private string GetRestoreArgs(RestoreSettings restoreSettings)
         {
-            var args = GetRestoreArgs(projectFile, packageDirectory);
-            if (pathToNugetConfig != null)
+            var args = $"restore --no-dependencies \"{restoreSettings.File}\" --packages \"{restoreSettings.PackageDirectory}\" /p:DisableImplicitNuGetFallbackFolder=true --verbosity normal";
+
+            if (restoreSettings.ForceDotnetRefAssemblyFetching)
             {
-                args += $" --configfile \"{pathToNugetConfig}\"";
+                // Ugly hack: we set the TargetFrameworkRootPath and NetCoreTargetingPackRoot properties to an empty folder:
+                var path = ".empty";
+                if (tempWorkingDirectory != null)
+                {
+                    path = Path.Combine(tempWorkingDirectory.ToString(), "emptyFakeDotnetRoot");
+                    Directory.CreateDirectory(path);
+                }
+
+                args += $" /p:TargetFrameworkRootPath=\"{path}\" /p:NetCoreTargetingPackRoot=\"{path}\"";
             }
 
-            return dotnetCliInvoker.RunCommand(args);
+            if (restoreSettings.PathToNugetConfig != null)
+            {
+                args += $" --configfile \"{restoreSettings.PathToNugetConfig}\"";
+            }
+
+            if (restoreSettings.ForceReevaluation)
+            {
+                args += " --force";
+            }
+
+            return args;
         }
 
-        public bool RestoreSolutionToDirectory(string solutionFile, string packageDirectory, out IEnumerable<string> projects)
+        public RestoreResult Restore(RestoreSettings restoreSettings)
         {
-            var args = GetRestoreArgs(solutionFile, packageDirectory);
-            args += " --verbosity normal";
-            if (dotnetCliInvoker.RunCommand(args, out var output))
-            {
-                var regex = RestoreProjectRegex();
-                projects = output
-                    .Select(line => regex.Match(line))
-                    .Where(match => match.Success)
-                    .Select(match => match.Groups[1].Value);
-                return true;
-            }
-
-            projects = Array.Empty<string>();
-            return false;
+            var args = GetRestoreArgs(restoreSettings);
+            var success = dotnetCliInvoker.RunCommand(args, out var output);
+            return new(success, output);
         }
 
         public bool New(string folder)
@@ -99,8 +108,5 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var args = $"exec {execArgs}";
             return dotnetCliInvoker.RunCommand(args);
         }
-
-        [GeneratedRegex("Restored\\s+(.+\\.csproj)", RegexOptions.Compiled)]
-        private static partial Regex RestoreProjectRegex();
     }
 }

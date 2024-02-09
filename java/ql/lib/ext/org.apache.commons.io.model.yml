@@ -3,6 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["org.apache.commons.io", "FileUtils", False, "listFiles", "(File,IOFileFilter,IOFileFilter)", "", "Argument[0]", "ReturnValue.Element", "taint", "ai-manual"]
+      - ["org.apache.commons.io", "FileUtils", False, "listFiles", "(File,String[],boolean)", "", "Argument[0]", "ReturnValue.Element", "taint", "ai-manual"]
       # Models that are not yet auto generated or where the generated summaries will
       # be ignored.
       # Note that if a callable has any handwritten summary, all generated summaries
@@ -16,8 +18,14 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["org.apache.commons.io", "FileUtils", False, "forceMkdir", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["org.apache.commons.io", "FileUtils", False, "moveDirectory", "(File,File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["org.apache.commons.io", "FileUtils", False, "readFileToByteArray", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["org.apache.commons.io", "FileUtils", False, "writeLines", "(File,String,Collection,String)", "", "Argument[3]", "file-content-store", "ai-manual"]
+      - ["org.apache.commons.io", "FileUtils", False, "writeStringToFile", "(File,String,Charset,boolean)", "", "Argument[1]", "file-content-store", "ai-manual"]
       - ["org.apache.commons.io", "FileUtils", True, "copyInputStreamToFile", "(InputStream,File)", "", "Argument[0]", "file-content-store", "ai-manual"]
       - ["org.apache.commons.io", "FileUtils", True, "copyInputStreamToFile", "(InputStream,File)", "", "Argument[1]", "path-injection", "manual"]
       - ["org.apache.commons.io", "FileUtils", True, "copyToFile", "(InputStream,File)", "", "Argument[0]", "file-content-store", "ai-manual"]
       - ["org.apache.commons.io", "FileUtils", True, "copyToFile", "(InputStream,File)", "", "Argument[1]", "path-injection", "manual"]
       - ["org.apache.commons.io", "FileUtils", True, "openInputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["org.apache.commons.io", "IOUtils", False, "resourceToString", "(String,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]

@@ -27,10 +27,8 @@
 
 private import javascript
 import AbstractValues
-import AbstractProperties
 private import InferredTypes
 private import Refinements
-private import internal.AbstractValuesImpl
 import internal.BasicExprTypeInference
 import internal.InterModuleTypeInference
 import internal.InterProceduralTypeInference

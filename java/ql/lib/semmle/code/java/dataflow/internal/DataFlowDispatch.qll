@@ -38,7 +38,7 @@ private module DispatchImpl {
    * might be improved by knowing the call context. This is the case if the
    * qualifier is the `i`th parameter of the enclosing callable `c`.
    */
-  private predicate mayBenefitFromCallContext(MethodAccess ma, Callable c, int i) {
+  private predicate mayBenefitFromCallContext(MethodCall ma, Callable c, int i) {
     exists(Parameter p |
       2 <= strictcount(sourceDispatch(ma)) and
       ma.getQualifier().(VarAccess).getVariable() = p and
@@ -58,7 +58,7 @@ private module DispatchImpl {
 
   /**
    * Holds if the call `ctx` might act as a context that improves the set of
-   * dispatch targets of a `MethodAccess` that occurs in a viable target of
+   * dispatch targets of a `MethodCall` that occurs in a viable target of
    * `ctx`.
    */
   pragma[nomagic]
@@ -116,10 +116,10 @@ private module DispatchImpl {
   /**
    * Holds if the set of viable implementations that can be called by `call`
    * might be improved by knowing the call context. This is the case if the
-   * qualifier is a parameter of the enclosing callable `c`.
+   * qualifier is a parameter of the enclosing callable of `call`.
    */
-  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
-    mayBenefitFromCallContext(call.asCall(), c.asCallable(), _)
+  predicate mayBenefitFromCallContext(DataFlowCall call) {
+    mayBenefitFromCallContext(call.asCall(), _, _)
   }
 
   /**
@@ -128,7 +128,7 @@ private module DispatchImpl {
    */
   DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
     result = viableCallable(call) and
-    exists(int i, Callable c, Method def, RefType t, boolean exact, MethodAccess ma |
+    exists(int i, Callable c, Method def, RefType t, boolean exact, MethodCall ma |
       ma = call.asCall() and
       mayBenefitFromCallContext(ma, c, i) and
       c = viableCallable(ctx).asCallable() and

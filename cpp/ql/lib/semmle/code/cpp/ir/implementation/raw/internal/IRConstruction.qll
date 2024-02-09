@@ -203,12 +203,6 @@ Instruction getMemoryOperandDefinition(
 }
 
 /**
- * Holds if the partial operand of this `ChiInstruction` updates the bit range
- * `[startBitOffset, endBitOffset)` of the total operand.
- */
-predicate getIntervalUpdatedByChi(ChiInstruction chi, int startBit, int endBit) { none() }
-
-/**
  * Holds if the operand totally overlaps with its definition and consumes the
  * bit range `[startBitOffset, endBitOffset)`.
  */
@@ -285,7 +279,7 @@ private predicate backEdgeCandidate(
   // is a back edge. This includes edges from `continue` and the fall-through
   // edge(s) after the last instruction(s) in the body.
   exists(TranslatedWhileStmt s |
-    targetInstruction = s.getFirstConditionInstruction() and
+    targetInstruction = s.getFirstConditionInstruction(_) and
     targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
     requiredAncestor = s.getBody()
   )
@@ -296,7 +290,7 @@ private predicate backEdgeCandidate(
   // { ... } while (0)` statement. Note that all `continue` statements in a
   // do-while loop produce forward edges.
   exists(TranslatedDoStmt s |
-    targetInstruction = s.getBody().getFirstInstruction() and
+    targetInstruction = s.getBody().getFirstInstruction(_) and
     targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
     requiredAncestor = s.getCondition()
   )
@@ -308,7 +302,7 @@ private predicate backEdgeCandidate(
   // last instruction(s) in the body. A for loop may not have a condition, in
   // which case `getFirstConditionInstruction` returns the body instead.
   exists(TranslatedForStmt s |
-    targetInstruction = s.getFirstConditionInstruction() and
+    targetInstruction = s.getFirstConditionInstruction(_) and
     targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
     (
       requiredAncestor = s.getUpdate()
@@ -322,7 +316,7 @@ private predicate backEdgeCandidate(
   // Any edge from within the update of the loop to the condition of
   // the loop is a back edge.
   exists(TranslatedRangeBasedForStmt s |
-    targetInstruction = s.getCondition().getFirstInstruction() and
+    targetInstruction = s.getCondition().getFirstInstruction(_) and
     targetInstruction = sourceElement.getInstructionSuccessor(sourceTag, kind) and
     requiredAncestor = s.getUpdate()
   )

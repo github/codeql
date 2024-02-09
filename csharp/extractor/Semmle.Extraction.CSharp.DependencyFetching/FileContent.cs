@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -15,7 +16,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     // </summary>
     internal partial class FileContent
     {
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
         private readonly IUnsafeFileReader unsafeFileReader;
         private readonly IEnumerable<string> files;
         private readonly HashSet<string> allPackages = new HashSet<string>();
@@ -31,21 +32,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private bool useAspNetDlls = false;
+        private bool useAspNetCoreDlls = false;
 
         /// <summary>
-        /// True if any file in the source directory indicates that ASP.NET is used.
-        /// The following heuristic is used to decide, if ASP.NET is used:
+        /// True if any file in the source directory indicates that ASP.NET Core is used.
+        /// The following heuristic is used to decide, if ASP.NET Core is used:
         /// If any file in the source directory contains something like (this will most like be a .csproj file)
         ///     <Project Sdk="Microsoft.NET.Sdk.Web">
         ///     <FrameworkReference Include="Microsoft.AspNetCore.App"/>
         /// </summary>
-        public bool UseAspNetDlls
+        public bool UseAspNetCoreDlls
         {
             get
             {
                 initialize.Run();
-                return useAspNetDlls;
+                return useAspNetCoreDlls;
             }
         }
 
@@ -60,6 +61,49 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private bool useWpf = false;
+
+        public bool UseWpf
+        {
+            get
+            {
+                initialize.Run();
+                return useWpf;
+            }
+        }
+
+        private bool useWindowsForms = false;
+
+        public bool UseWindowsForms
+        {
+            get
+            {
+                initialize.Run();
+                return useWindowsForms;
+            }
+        }
+
+        private bool isLegacyProjectStructureUsed = false;
+
+        public bool IsLegacyProjectStructureUsed
+        {
+            get
+            {
+                initialize.Run();
+                return isLegacyProjectStructureUsed;
+            }
+        }
+
+        private bool isNewProjectStructureUsed = false;
+        public bool IsNewProjectStructureUsed
+        {
+            get
+            {
+                initialize.Run();
+                return isNewProjectStructureUsed;
+            }
+        }
+
         public HashSet<string> CustomImplicitUsings
         {
             get
@@ -69,24 +113,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        internal FileContent(ProgressMonitor progressMonitor,
+        internal FileContent(ILogger logger,
             IEnumerable<string> files,
             IUnsafeFileReader unsafeFileReader)
         {
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
             this.files = files;
             this.unsafeFileReader = unsafeFileReader;
             this.initialize = new Initializer(DoInitialize);
         }
 
 
-        public FileContent(ProgressMonitor progressMonitor, IEnumerable<string> files) : this(progressMonitor, files, new UnsafeFileReader())
+        public FileContent(ILogger logger, IEnumerable<string> files) : this(logger, files, new UnsafeFileReader())
         { }
 
-        private static string GetGroup(ReadOnlySpan<char> input, ValueMatch valueMatch, string groupPrefix, bool toLower)
+        private static string GetGroup(ReadOnlySpan<char> input, ValueMatch valueMatch, string groupPrefix)
         {
             var match = input.Slice(valueMatch.Index, valueMatch.Length);
-            var includeIndex = match.IndexOf(groupPrefix, StringComparison.InvariantCultureIgnoreCase);
+            var includeIndex = match.IndexOf(groupPrefix, StringComparison.OrdinalIgnoreCase);
             if (includeIndex == -1)
             {
                 return string.Empty;
@@ -97,14 +141,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var quoteIndex1 = match.IndexOf("\"");
             var quoteIndex2 = match.Slice(quoteIndex1 + 1).IndexOf("\"");
 
-            var result = match.Slice(quoteIndex1 + 1, quoteIndex2).ToString();
-
-            if (toLower)
-            {
-                result = result.ToLowerInvariant();
-            }
-
-            return result;
+            return match.Slice(quoteIndex1 + 1, quoteIndex2).ToString();
         }
 
         private static bool IsGroupMatch(ReadOnlySpan<char> line, Regex regex, string groupPrefix, string value)
@@ -112,7 +149,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             foreach (var valueMatch in regex.EnumerateMatches(line))
             {
                 // We can't get the group from the ValueMatch, so doing it manually:
-                if (GetGroup(line, valueMatch, groupPrefix, toLower: true) == value.ToLowerInvariant())
+                if (string.Equals(GetGroup(line, valueMatch, groupPrefix), value, StringComparison.OrdinalIgnoreCase))
                 {
                     return true;
                 }
@@ -128,12 +165,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     foreach (ReadOnlySpan<char> line in unsafeFileReader.ReadLines(file))
                     {
-
                         // Find all the packages.
                         foreach (var valueMatch in PackageReference().EnumerateMatches(line))
                         {
                             // We can't get the group from the ValueMatch, so doing it manually:
-                            var packageName = GetGroup(line, valueMatch, "Include", toLower: true);
+                            var packageName = GetGroup(line, valueMatch, "Include").ToLowerInvariant();
                             if (!string.IsNullOrEmpty(packageName))
                             {
                                 allPackages.Add(packageName);
@@ -141,49 +177,63 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         }
 
                         // Determine if ASP.NET is used.
-                        if (!useAspNetDlls)
-                        {
-                            useAspNetDlls =
-                                IsGroupMatch(line, ProjectSdk(), "Sdk", "Microsoft.NET.Sdk.Web") ||
-                                IsGroupMatch(line, FrameworkReference(), "Include", "Microsoft.AspNetCore.App");
-                        }
+                        useAspNetCoreDlls = useAspNetCoreDlls
+                            || IsGroupMatch(line, ProjectSdk(), "Sdk", "Microsoft.NET.Sdk.Web")
+                            || IsGroupMatch(line, FrameworkReference(), "Include", "Microsoft.AspNetCore.App");
 
                         // Determine if implicit usings are used.
-                        if (!useImplicitUsings)
-                        {
-                            useImplicitUsings = line.Contains("<ImplicitUsings>enable</ImplicitUsings>".AsSpan(), StringComparison.Ordinal) ||
-                                                line.Contains("<ImplicitUsings>true</ImplicitUsings>".AsSpan(), StringComparison.Ordinal);
-                        }
+                        useImplicitUsings = useImplicitUsings
+                            || line.Contains("<ImplicitUsings>enable</ImplicitUsings>".AsSpan(), StringComparison.OrdinalIgnoreCase)
+                            || line.Contains("<ImplicitUsings>true</ImplicitUsings>".AsSpan(), StringComparison.OrdinalIgnoreCase);
+
+                        // Determine if WPF is used.
+                        useWpf = useWpf
+                            || line.Contains("<UseWPF>true</UseWPF>".AsSpan(), StringComparison.OrdinalIgnoreCase);
+
+                        // Determine if Windows Forms is used.
+                        useWindowsForms = useWindowsForms
+                            || line.Contains("<UseWindowsForms>true</UseWindowsForms>".AsSpan(), StringComparison.OrdinalIgnoreCase);
 
                         // Find all custom implicit usings.
                         foreach (var valueMatch in CustomImplicitUsingDeclarations().EnumerateMatches(line))
                         {
-                            var ns = GetGroup(line, valueMatch, "Include", toLower: false);
+                            var ns = GetGroup(line, valueMatch, "Include");
                             if (!string.IsNullOrEmpty(ns))
                             {
                                 implicitUsingNamespaces.Add(ns);
                             }
                         }
+
+                        // Determine project structure:
+                        isLegacyProjectStructureUsed = isLegacyProjectStructureUsed || MicrosoftCSharpTargets().IsMatch(line);
+                        isNewProjectStructureUsed = isNewProjectStructureUsed
+                            || ProjectSdk().IsMatch(line)
+                            || FrameworkReference().IsMatch(line);
+                        // TODO: we could also check `<Sdk Name="Microsoft.NET.Sdk" />`
                     }
                 }
                 catch (Exception ex)
                 {
-                    progressMonitor.FailedToReadFile(file, ex);
+                    logger.LogInfo($"Failed to read file {file}");
+                    logger.LogDebug($"Failed to read file {file}, exception: {ex}");
                 }
             }
         }
 
-        [GeneratedRegex("<PackageReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex("(?<!<!--.*)<PackageReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex PackageReference();
 
-        [GeneratedRegex("<FrameworkReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex("(?<!<!--.*)<FrameworkReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex FrameworkReference();
 
-        [GeneratedRegex("<(.*\\s)?Project.*\\sSdk=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex("(?<!<!--.*)<(.*\\s)?Project.*\\sSdk=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex ProjectSdk();
 
-        [GeneratedRegex("<Using.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex("(?<!<!--.*)<Using.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex CustomImplicitUsingDeclarations();
+
+        [GeneratedRegex("(?<!<!--.*)<Import.*\\sProject=\".*Microsoft\\.CSharp\\.targets\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex MicrosoftCSharpTargets();
     }
 
     internal interface IUnsafeFileReader

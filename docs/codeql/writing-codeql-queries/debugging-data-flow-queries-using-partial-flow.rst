@@ -59,7 +59,7 @@ Partial flow
 
 A naive next step could be to change the sink definition to ``any()``. This would mean that we would get a lot of flow to all the places that are reachable from the sources. While this approach may work in some cases, you might find that it produces so many results that it's very hard to explore the findings. It can also dramatically affect query performance. More importantly, you might not even see all the partial flow paths. This is because the data-flow library tries very hard to prune impossible paths and, since field stores and reads must be evenly matched along a path, we will never see paths going through a store that fail to reach a corresponding read. This can make it hard to see where flow actually stops.
 
-To avoid these problems, the data-flow library comes with a mechanism for exploring partial flow that tries to deal with these caveats. This is the ``MyFlow::FlowExploration<explorationLimit/0>::partialFlow`` predicate:
+To avoid these problems, the data-flow library comes with a mechanism for exploring partial flow that tries to deal with these caveats. This is the ``MyFlow::FlowExplorationFwd<explorationLimit/0>::partialFlow`` predicate:
 
 .. code-block:: ql
 
@@ -77,27 +77,25 @@ To avoid these problems, the data-flow library comes with a mechanism for explor
        */
       predicate partialFlow(PartialPathNode source, PartialPathNode node, int dist) {
 
-There is also a ``partialFlowRev`` for exploring flow backwards from a sink.
+There is also a ``MyFlow::FlowExplorationRev<explorationLimit/0>::partialFlow`` for exploring flow backwards from a sink.
 
-To get access to these predicates you must instantiate the ``MyFlow::FlowExploration<>`` module with an exploration limit. For example:
+To get access to these predicates you must instantiate the ``MyFlow::FlowExplorationFwd<>`` module with an exploration limit (or the ``MyFlow::FlowExplorationRev<>`` module for reverse flow). For example:
 
 .. code-block:: ql
 
     int explorationLimit() { result = 5 }
 
-    module MyPartialFlow = MyFlow::FlowExploration<explorationLimit/0>;
+    module MyPartialFlow = MyFlow::FlowExplorationFwd<explorationLimit/0>;
 
 This defines the exploration radius within which ``partialFlow`` returns results.
 
-To get good performance when using ``partialFlow`` it is important to ensure the ``isSink`` predicate of the configuration has no results. Likewise, when using ``partialFlowRev`` the ``isSource`` predicate of the configuration should have no results.
-
-It is also useful to focus on a single source at a time as the starting point for the flow exploration. This is most easily done by adding a temporary restriction in the ``isSource`` predicate.
+It is useful to focus on a single source at a time as the starting point for the flow exploration. This is most easily done by adding a temporary restriction in the ``isSource`` predicate.
 
 To do quick evaluations of partial flow it is often easiest to add a predicate to the query that is solely intended for quick evaluation (right-click the predicate name and choose "CodeQL: Quick Evaluation"). A good starting point is something like:
 
 .. code-block:: ql
 
-    predicate adhocPartialFlow(Callable c, MyPartialFlow::PartialPathNode n, Node src, int dist) {
+    predicate adhocPartialFlow(Callable c, MyPartialFlow::PartialPathNode n, DataFlow::Node src, int dist) {
       exists(MyPartialFlow::PartialPathNode source |
         MyPartialFlow::partialFlow(source, n, dist) and
         src = source.getNode() and
