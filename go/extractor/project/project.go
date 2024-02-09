@@ -243,7 +243,7 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 		WorkspaceFile: workFile,
 		Modules:       loadGoModules(goModFilePaths),
 		DepMode:       GoGetWithModules,
-		ModMode:       getModMode(GoGetWithModules, baseDir),
+		ModMode:       ModReadonly, // Workspaces only support "readonly"
 	}
 }
 
