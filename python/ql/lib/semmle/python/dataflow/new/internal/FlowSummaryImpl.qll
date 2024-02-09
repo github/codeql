@@ -195,6 +195,11 @@ module ParsePositions {
     i = AccessPath::parseInt(c)
   }
 
+  predicate isParsedArgumentLowerBoundPosition(string c, int i) {
+    isArgBody(c) and
+    i = AccessPath::parseLowerBound(c)
+  }
+
   predicate isParsedKeywordArgumentPosition(string c, string argName) {
     isArgBody(c) and
     c = argName + ":"
