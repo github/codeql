@@ -273,7 +273,7 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 		return results
 	} else {
 		// We have found `go.work` files, try to load them all.
-		log.Printf("Found go.work files in %s.\n", strings.Join(goWorkFiles, ", "))
+		log.Printf("Found go.work file(s) in: %s.\n", strings.Join(goWorkFiles, ", "))
 
 		if emitDiagnostics {
 			diagnostics.EmitGoWorkFound(goWorkFiles)
