@@ -3255,7 +3255,12 @@ module MakeImpl<InputSig Lang> {
           then t = nt
           else (
             compatibleTypes(nt, t0) and
-            t = t0
+            // t = t0
+            if inSummaryCtx = true and node instanceof ParamNodeEx
+            then
+              t = nt and
+              compatibleTypes(origT, t)
+            else t = t0
           )
         )
       else t = t0
