@@ -44,7 +44,12 @@ string computeReturnPath(
   result = "ReturnValue"
   or
   outNode.(DataFlow::PostUpdateNode).getPreUpdateNode() = argument and
-  result = computeArgumentPath(parameter, function)
+  (
+    result = computeArgumentPath(parameter, function)
+    or
+    not exists(computeArgumentPath(parameter, function)) and
+    result = "Argument[?]"
+  )
 }
 
 bindingset[parameter]
