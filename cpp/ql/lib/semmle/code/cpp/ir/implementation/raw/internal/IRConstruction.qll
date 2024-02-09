@@ -261,7 +261,7 @@ CppType getInstructionOperandType(Instruction instruction, TypedOperandTag tag) 
 Instruction getPhiInstructionBlockStart(PhiInstruction instr) { none() }
 
 Instruction getInstructionSuccessor(Instruction instruction, EdgeKind kind) {
-            result =
+  result =
     getInstructionTranslatedElement(instruction)
         .getInstructionSuccessor(getInstructionTag(instruction), kind)
 }

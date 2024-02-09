@@ -27,7 +27,9 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
     kind instanceof GotoEdge
   }
 
-  override Instruction getALastInstructionInternal() { result = this.getInstruction(ExitFunctionTag()) }
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(ExitFunctionTag())
+  }
 
   override TranslatedElement getChild(int n) {
     n = 1 and

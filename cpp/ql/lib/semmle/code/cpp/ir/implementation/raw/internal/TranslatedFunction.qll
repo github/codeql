@@ -407,7 +407,9 @@ abstract class TranslatedParameter extends TranslatedElement {
     result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    none()
+  }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = InitializerVariableAddressTag() and
@@ -762,7 +764,7 @@ class TranslatedReadEffects extends TranslatedElement, TTranslatedReadEffects {
             .getFirstInstruction(any(GotoEdge goto))
     else result = this.getParent().getChildSuccessor(this, any(GotoEdge goto))
   }
-  
+
   override TranslatedElement getLastChild() {
     result = this.getChild(max(int id | exists(this.getChild(id))))
   }

@@ -447,7 +447,9 @@ private int initializeAllocationGroup() { result = 3 }
 abstract class TranslatedSideEffect extends TranslatedElement {
   final override TranslatedElement getChild(int n) { none() }
 
-  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    none()
+  }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getInstruction(OnlyInstructionTag()) and

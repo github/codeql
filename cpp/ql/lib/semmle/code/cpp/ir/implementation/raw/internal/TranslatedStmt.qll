@@ -384,7 +384,9 @@ class TranslatedExprStmt extends TranslatedStmt {
     result = this.getExpr().getFirstInstruction(kind)
   }
 
-  override Instruction getALastInstructionInternal() { result = this.getExpr().getALastInstruction() }
+  override Instruction getALastInstructionInternal() {
+    result = this.getExpr().getALastInstruction()
+  }
 
   override TranslatedElement getLastChild() { result = this.getExpr() }
 
@@ -997,7 +999,8 @@ class TranslatedForStmt extends TranslatedLoop {
     child = this.getUpdate() and result = this.getFirstConditionInstruction(kind)
     or
     exists(int lastDestructorIndex |
-      lastDestructorIndex = max(int n | exists(this.getChild(n)) and n >= this.getFirstDestructorCallIndex()) and
+      lastDestructorIndex =
+        max(int n | exists(this.getChild(n)) and n >= this.getFirstDestructorCallIndex()) and
       child = this.getChild(lastDestructorIndex) and
       result = this.getParent().getChildSuccessor(this, kind)
     )
@@ -1162,7 +1165,9 @@ class TranslatedSwitchStmt extends TranslatedStmt {
     else result = this.getFirstExprInstruction(kind)
   }
 
-  override Instruction getALastInstructionInternal() { result = this.getBody().getALastInstruction() }
+  override Instruction getALastInstructionInternal() {
+    result = this.getBody().getALastInstruction()
+  }
 
   override TranslatedElement getLastChild() { result = this.getBody() }
 

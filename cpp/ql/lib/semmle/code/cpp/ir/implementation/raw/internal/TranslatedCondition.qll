@@ -70,7 +70,9 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
     none()
   }
 
-  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    none()
+  }
 
   abstract TranslatedCondition getOperand();
 }
@@ -96,7 +98,9 @@ class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
 abstract class TranslatedNativeCondition extends TranslatedCondition, TTranslatedNativeCondition {
   TranslatedNativeCondition() { this = TTranslatedNativeCondition(expr) }
 
-  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    none()
+  }
 }
 
 abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeCondition, ConditionContext {
