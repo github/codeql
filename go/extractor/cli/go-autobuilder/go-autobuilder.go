@@ -484,7 +484,7 @@ func installDependencies(workspace project.GoWorkspace) {
 }
 
 // Run the extractor.
-func extract(workspace project.GoWorkspace) {
+func extract(workspace project.GoWorkspace) bool {
 	extractor, err := util.GetExtractorPath()
 	if err != nil {
 		log.Fatalf("Could not determine path of extractor: %v.\n", err)
@@ -519,8 +519,11 @@ func extract(workspace project.GoWorkspace) {
 	cmd.Stderr = os.Stderr
 	err = cmd.Run()
 	if err != nil {
-		log.Fatalf("Extraction failed: %s\n", err.Error())
+		log.Printf("Extraction failed for %s: %s\n", workspace.BaseDir, err.Error())
+		return false
 	}
+
+	return true
 }
 
 // Build the project and run the extractor.
@@ -542,7 +545,8 @@ func installDependenciesAndBuild() {
 	// Remove temporary extractor files (e.g. auto-generated go.mod files) when we are done
 	defer project.RemoveTemporaryExtractorFiles()
 
-	for _, workspace := range workspaces {
+	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
+	for i, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
 
 		// This diagnostic is not required if the system Go version is 1.21 or greater, since the
@@ -606,7 +610,35 @@ func installDependenciesAndBuild() {
 			}
 		}
 
-		extract(workspace)
+		workspaces[i].Extracted = extract(workspace)
+	}
+
+	// Find all projects which could not be extracted successfully
+	var unsuccessfulProjects = []string{}
+
+	for _, workspace := range workspaces {
+		if !workspace.Extracted {
+			unsuccessfulProjects = append(unsuccessfulProjects, workspace.BaseDir)
+		}
+	}
+
+	// If all projects could not be extracted successfully, we fail the overall extraction.
+	if len(unsuccessfulProjects) == len(workspaces) {
+		log.Fatalln("Extraction failed for all discovered Go projects.")
+	}
+
+	// If there is at least one project that could not be extracted successfully,
+	// emit a diagnostic that reports which projects we could not extract successfully.
+	// We only consider this a warning, since there may be test projects etc. which
+	// do not matter if they cannot be extracted successfully.
+	if len(unsuccessfulProjects) > 0 {
+		log.Printf(
+			"Warning: extraction failed for %d project(s): %s\n",
+			len(unsuccessfulProjects),
+			strings.Join(unsuccessfulProjects, ", "))
+		diagnostics.EmitExtractionFailedForProjects(unsuccessfulProjects)
+	} else {
+		log.Println("Success: extraction succeeded for all discovered projects.")
 	}
 }
 

@@ -44,6 +44,7 @@ type GoWorkspace struct {
 	Modules       []*GoModule             // A list of `go.mod` files
 	DepMode       DependencyInstallerMode // A value indicating how to install dependencies for this workspace
 	ModMode       ModMode                 // A value indicating which module mode to use for this workspace
+	Extracted     bool                    // A value indicating whether this workspace was extracted successfully
 }
 
 // Represents a nullable version string.
