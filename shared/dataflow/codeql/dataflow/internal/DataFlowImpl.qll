@@ -3228,11 +3228,12 @@ module MakeImpl<InputSig Lang> {
     // private predicate mostBusyNodeFwd4 = Stage4::mostBusyNodeFwd/10;
     private predicate mostBusyNodeFwd5 = Stage5::mostBusyNodeFwd/10;
 
-    bindingset[node, t0, inSummaryCtx]
+    bindingset[node, origT, t0, inSummaryCtx]
     private predicate strengthenType(
       NodeEx node, DataFlowType origT, DataFlowType t0, DataFlowType t, boolean inSummaryCtx
     ) {
       exists(inSummaryCtx) and
+      exists(origT) and
       // if node instanceof RetNodeEx and inSummaryCtx = true
       // then t = node.getDataFlowType() and compatibleTypes(t, t0)
       // else
@@ -3254,12 +3255,7 @@ module MakeImpl<InputSig Lang> {
           then t = nt
           else (
             compatibleTypes(nt, t0) and
-            // t = t0
-            if inSummaryCtx = true and node instanceof ParamNodeEx
-            then
-              t = nt and
-              compatibleTypes(origT, t)
-            else t = t0
+            t = t0
           )
         )
       else t = t0
@@ -3545,6 +3541,7 @@ module MakeImpl<InputSig Lang> {
       abstract AccessPathFront getFront();
 
       /** Holds if this is a representation of `head` followed by the `typ,tail` pair. */
+      bindingset[head, typ, tail]
       abstract predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail);
     }
 
@@ -3557,6 +3554,7 @@ module MakeImpl<InputSig Lang> {
 
       override AccessPathFront getFront() { result = TFrontNil() }
 
+      bindingset[head, typ, tail]
       override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) { none() }
     }
 
@@ -3579,6 +3577,7 @@ module MakeImpl<InputSig Lang> {
 
       override AccessPathFront getFront() { result = TFrontHead(c) }
 
+      bindingset[head, typ, tail]
       override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) {
         head = c and typ = t and tail = TNil()
       }
@@ -3604,6 +3603,7 @@ module MakeImpl<InputSig Lang> {
 
       override AccessPathFront getFront() { result = TFrontHead(c1) }
 
+      bindingset[head, typ, tail]
       override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) {
         head = c1 and
         typ = t and
@@ -3636,6 +3636,7 @@ module MakeImpl<InputSig Lang> {
 
       override AccessPathFront getFront() { result = TFrontHead(c) }
 
+      bindingset[head, typ, tail]
       override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) {
         head = c and
         (
@@ -3691,13 +3692,15 @@ module MakeImpl<InputSig Lang> {
 
       ApHeadContent projectToHeadContent(Content c) { result = c }
 
-      class ApOption = AccessPathFrontOption;
+      // class ApOption = AccessPathFrontOption;
+      class ApOption = AccessPathApproxOption;
 
-      // class ApOption = AccessPathApproxOption;
-      ApOption apNone() { result = TAccessPathFrontNone() }
+      ApOption apNone() { result = TAccessPathApproxNone() }
 
-      ApOption apSome(Ap ap) { result = TAccessPathFrontSome(ap.getFront()) }
+      ApOption apSome(Ap ap) { result = TAccessPathApproxSome(ap) }
 
+      // ApOption apNone() { result = TAccessPathFrontNone() }
+      // ApOption apSome(Ap ap) { result = TAccessPathFrontSome(ap.getFront()) }
       import Level1CallContext
       import LocalCallContext
 
@@ -3747,7 +3750,7 @@ module MakeImpl<InputSig Lang> {
         Stage5::parameterMayFlowThrough(p, _) and
         Stage5::revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, apa0) and
         Stage5::fwdFlow(n, state, any(CallContextCall ccc), TParamNodeSome(p.asNode()), _,
-          TAccessPathFrontSome(apa.getFront()), _, _, apa0, _)
+          TAccessPathApproxSome(apa), _, _, apa0, _)
       )
     }
 
