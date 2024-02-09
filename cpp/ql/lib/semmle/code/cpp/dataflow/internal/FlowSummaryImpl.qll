@@ -9,6 +9,7 @@ private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific as DataFlowImplSpecific
 private import semmle.code.cpp.dataflow.ExternalFlow
+private import semmle.code.cpp.ir.IR
 
 module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
   class SummarizedCallableBase = Function;
@@ -164,6 +165,21 @@ module SourceSinkInterpretationInput implements
       // Allow fields to be picked as input nodes.
       c = "" and
       e.getQualifier() = n.asExpr()
+      or
+      // Allow variables (without a qualifier) to be picked as input nodes.
+      // We could simply do this as `e = n.asExpr()`, but that would not allow
+      // us to pick `x` as a sink in an example such as `x = source()` (but
+      // only subsequent uses of `x`) since the variable access on `x` doesn't
+      // actually load the value of `x`. So instead, we pick the instruction
+      // node corresponding to the generated `StoreInstruction` and use the
+      // expression associated with the destination instruction. This means
+      // that the `x` in `x = source()` can be marked as an input.
+      c = "" and
+      not exists(e.getQualifier()) and
+      exists(StoreInstruction store |
+        store.getDestinationAddress().getUnconvertedResultExpression() = e and
+        n.asInstruction() = store
+      )
       or
       // Allow post update nodes to be picked as input nodes when the `input` column
       // of the row is `PostUpdate`.
