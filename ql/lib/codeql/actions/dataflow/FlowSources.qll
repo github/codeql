@@ -1,5 +1,6 @@
 import actions
 import codeql.actions.DataFlow
+import codeql.actions.dataflow.ExternalFlow
 
 /**
  * A data flow source.
@@ -124,14 +125,22 @@ private class EventSource extends RemoteFlowSource {
   override string getSourceType() { result = "User-controlled events" }
 }
 
-private class ChangedFilesSource extends RemoteFlowSource {
-  ChangedFilesSource() {
-    exists(UsesExpr uses |
-      uses.getCallee() = "tj-actions/changed-files" and
-      uses.getVersion() = ["v10", "v20", "v30", "v40"] and
-      uses = this.asExpr()
+private class ExternallyDefinedSource extends RemoteFlowSource {
+  string soutceType;
+
+  ExternallyDefinedSource() {
+    exists(UsesExpr uses, string action, string version, /*string output,*/ string kind |
+      sourceModel(action, version, _, kind) and
+      uses.getCallee() = action and
+      (
+        if version.trim() = "*"
+        then uses.getVersion() = any(string v)
+        else uses.getVersion() = version.splitAt(",").trim()
+      ) and
+      uses = this.asExpr() and
+      soutceType = kind
     )
   }
 
-  override string getSourceType() { result = "User-controlled list of changed files" }
+  override string getSourceType() { result = soutceType }
 }
