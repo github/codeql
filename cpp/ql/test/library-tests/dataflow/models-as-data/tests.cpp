@@ -239,11 +239,11 @@ void test_class_members() {
 
 	mc.memberMadSinkArg0(source()); // $ ir
 
-	mc.memberMadSinkVar = source(); // $ MISSING: ir
+	mc.memberMadSinkVar = source(); // $ ir
 
 	mnc.namespaceMemberMadSinkArg0(source()); // $ ir
 	MyNamespace::MyClass::namespaceStaticMemberMadSinkArg0(source()); // $ ir
-	mnc.namespaceMemberMadSinkVar = source(); // $ MISSING: ir
+	mnc.namespaceMemberMadSinkVar = source(); // $ ir
 	MyNamespace::MyClass::namespaceStaticMemberMadSinkVar = source(); // $ ir
 
 	// test class member summaries

@@ -166,7 +166,7 @@ module SourceSinkInterpretationInput implements
       c = "" and
       e.getQualifier() = n.asExpr()
       or
-      // Allow variables (without a qualifier) to be picked as input nodes.
+      // Allow variables to be picked as input nodes.
       // We could simply do this as `e = n.asExpr()`, but that would not allow
       // us to pick `x` as a sink in an example such as `x = source()` (but
       // only subsequent uses of `x`) since the variable access on `x` doesn't
@@ -175,7 +175,6 @@ module SourceSinkInterpretationInput implements
       // expression associated with the destination instruction. This means
       // that the `x` in `x = source()` can be marked as an input.
       c = "" and
-      not exists(e.getQualifier()) and
       exists(StoreInstruction store |
         store.getDestinationAddress().getUnconvertedResultExpression() = e and
         n.asInstruction() = store
