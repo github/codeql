@@ -27,7 +27,7 @@ class Node extends TNode {
 }
 
 /**
- * Any Ast Expression
+ * Any Ast Expression.
  * UsesExpr, RunExpr, ArgumentExpr, VarAccessExpr, ...
  */
 class ExprNode extends Node, TExprNode {
@@ -48,34 +48,34 @@ class ExprNode extends Node, TExprNode {
  * Reusable workflow input nodes
  */
 class ParameterNode extends ExprNode {
-  private InputExpr parameter;
+  private ReusableWorkflowInputExpr parameter;
 
   ParameterNode() {
     this.asExpr() = parameter and
-    parameter = any(ReusableWorkflowStmt w).getInputs().getInputExpr(_)
+    parameter = any(ReusableWorkflowStmt w).getInputsStmt().getInputExpr(_)
   }
 
   predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-    parameter = c.(ReusableWorkflowStmt).getInputs().getInputExpr(pos)
+    parameter = c.(ReusableWorkflowStmt).getInputsStmt().getInputExpr(pos)
   }
 
   override string toString() { result = parameter.toString() }
 
   override Location getLocation() { result = parameter.getLocation() }
 
-  InputExpr getInputExpr() { result = parameter }
+  ReusableWorkflowInputExpr getInputExpr() { result = parameter }
 }
 
 /**
- * An argument to a Uses step (call)
+ * An argument to a Uses step (call).
  */
 class ArgumentNode extends ExprNode {
-  ArgumentNode() { this.getCfgNode().getAstNode() = any(UsesExpr e).getArgument(_) }
+  ArgumentNode() { this.getCfgNode().getAstNode() = any(UsesExpr e).getArgumentExpr(_) }
 
   predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     this.getCfgNode() = call.(Cfg::Node).getASuccessor+() and
     call.(Cfg::Node).getAstNode() =
-      any(UsesExpr e | e.getArgument(pos) = this.getCfgNode().getAstNode())
+      any(UsesExpr e | e.getArgumentExpr(pos) = this.getCfgNode().getAstNode())
   }
 }
 
@@ -87,7 +87,7 @@ class ReturnNode extends ExprNode {
 
   ReturnNode() {
     this.getCfgNode() = node and
-    node.getAstNode() = any(ReusableWorkflowStmt w).getOutputs().getOutputExpr(_)
+    node.getAstNode() = any(ReusableWorkflowStmt w).getOutputsStmt().getOutputExpr(_)
   }
 
   ReturnKind getKind() { result = TNormalReturn() }
