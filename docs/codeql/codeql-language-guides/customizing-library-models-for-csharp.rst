@@ -10,7 +10,7 @@ You can model the methods and callables that control data flow in any framework 
 About this article
 ------------------
 
-This article contains reference material about how to define custom models for sources, sinks and flow summaries for C# dependencies in data extension files.
+This article contains reference material about how to define custom models for sources, sinks, and flow summaries for C# dependencies in data extension files.
 
 About data extensions
 ---------------------
