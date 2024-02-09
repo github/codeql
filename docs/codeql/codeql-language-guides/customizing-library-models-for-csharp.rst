@@ -281,12 +281,12 @@ The remaining values are used to define the ``access path``, the ``kind``, and t
 
 For the first row:
 
-- The seventh value is ``Argument[this].Element``, which is the access path to the elements of the qualifier (the elements of the enumerable ``stream`` in the example).
-- The eight value is ``Argument[0].Parameter[0]``, which is the access path to the first parameter of the ``System.Func<TSource,TResult>`` argument of ``Select`` (the lambda parameter ``item`` in the example).
+- The seventh value is ``Argument[0].Element``, which is the access path to the elements of the qualifier (the elements of the enumerable ``stream`` in the example).
+- The eight value is ``Argument[1].Parameter[0]``, which is the access path to the first parameter of the ``System.Func<TSource,TResult>`` argument of ``Select`` (the lambda parameter ``item`` in the example).
 
 For the second row:
 
-- The seventh value is ``Argument[0].ReturnValue``, which is the access path to the return value of the ``System.Func<TSource,TResult>`` argument of ``Select`` (the return value of the lambda in the example).
+- The seventh value is ``Argument[1].ReturnValue``, which is the access path to the return value of the ``System.Func<TSource,TResult>`` argument of ``Select`` (the return value of the lambda in the example).
 - The eighth value is ``ReturnValue.Element``, which is the access path to the elements of the return value of ``Select`` (the elements of the enumerable ``lines`` in the example).
 
 For the remaining values for both rows:
