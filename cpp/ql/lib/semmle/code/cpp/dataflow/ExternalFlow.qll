@@ -434,6 +434,12 @@ private Element interpretElement0(
       subtypes = false and
       classWithMember = namedClass
     )
+    or
+    // Global or namespace variables
+    signature = "" and
+    type = "" and
+    subtypes = false and
+    result = any(GlobalOrNamespaceVariable v | v.hasQualifiedName(namespace, name))
   )
 }
 
