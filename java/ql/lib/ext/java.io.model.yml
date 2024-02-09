@@ -7,6 +7,7 @@ extensions:
       - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "path-injection", "ai-manual"]
       - ["java.io", "File", True, "exists", "()", "", "Argument[this]", "path-injection", "manual"]
       - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[this]", "path-injection", "ai-manual"]
       - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.io", "FileInputStream", True, "FileInputStream", "(FileDescriptor)", "", "Argument[0]", "path-injection", "manual"]
       - ["java.io", "FileInputStream", True, "FileInputStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]

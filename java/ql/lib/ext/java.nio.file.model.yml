@@ -62,6 +62,7 @@ extensions:
       - ["java.nio.file", "FileSystem", True, "getPath", "(String,String[])", "", "Argument[1]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "FileSystem", True, "getPathMatcher", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "FileSystem", True, "getRootDirectories", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "FileSystems", False, "getFileSystem", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Path", True, "getFileName", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "getParent", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "normalize", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
