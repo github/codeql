@@ -94,13 +94,13 @@ void test_sinks() {
 	int a = source();
 	madSinkIndirectArg0(&a); // $ MISSING: ir
 
-	madSinkVar = source();  // $ MISSING: ir
+	madSinkVar = source();  // $ ir
 
 	// test sources + sinks together
 
 	madSinkArg0(localMadSource()); // $ ir
 	madSinkIndirectArg0(remoteMadSourceIndirect()); // $ MISSING: ir
-	madSinkVar = remoteMadSourceVar; // $ MISSING: ir
+	madSinkVar = remoteMadSourceVar; // $ ir
 }
 
 void madSinkParam0(int x) {
@@ -244,7 +244,7 @@ void test_class_members() {
 	mnc.namespaceMemberMadSinkArg0(source()); // $ ir
 	MyNamespace::MyClass::namespaceStaticMemberMadSinkArg0(source()); // $ ir
 	mnc.namespaceMemberMadSinkVar = source(); // $ MISSING: ir
-	MyNamespace::MyClass::namespaceStaticMemberMadSinkVar = source(); // $ MISSING: ir
+	MyNamespace::MyClass::namespaceStaticMemberMadSinkVar = source(); // $ ir
 
 	// test class member summaries
 
