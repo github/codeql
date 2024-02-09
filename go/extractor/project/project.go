@@ -287,8 +287,8 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 	}
 }
 
-// Returns the directory to run the go build in and whether to use a go.mod
-// file.
+// Discovers Go workspaces in the current working directory.
+// Returns an array of Go workspaces and the total number of module files which we discovered.
 func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModuleFiles int) {
 	goWorkspaces = discoverWorkspaces(emitDiagnostics)
 
