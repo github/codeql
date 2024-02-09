@@ -430,6 +430,7 @@ private Element interpretElement0(
 }
 
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
+cached
 Element interpretElement(
   string package, string type, boolean subtypes, string name, string signature, string ext
 ) {
