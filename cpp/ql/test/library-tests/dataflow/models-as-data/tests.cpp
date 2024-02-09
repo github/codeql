@@ -50,13 +50,13 @@ void test_sources() {
 	sink(c);
 	sink(d); // $ MISSING: ir
 
-	sink(remoteMadSourceVar); // $ MISSING: ir
+	sink(remoteMadSourceVar); // $ ir
 
 	int e = localMadSource();
 	sink(e); // $ ir
 
 	sink(MyNamespace::namespaceLocalMadSource()); // $: ir
-	sink(MyNamespace::namespaceLocalMadSourceVar); // $ MISSING: ir
+	sink(MyNamespace::namespaceLocalMadSourceVar); // $ ir
 	sink(MyNamespace::MyNamespace2::namespace2LocalMadSource()); // $ ir
 	sink(MyNamespace::localMadSource()); // $ (the MyNamespace version of this function is not a source)
 	sink(namespaceLocalMadSource()); // (the global namespace version of this function is not a source)
