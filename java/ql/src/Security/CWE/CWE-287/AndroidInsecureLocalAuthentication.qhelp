@@ -5,7 +5,7 @@
 
 <overview>
 <p>
-Biometric local authentication such as fingerprint recognistion can be used to protect sensitive data or actions within an application. 
+Biometric local authentication such as fingerprint recognition can be used to protect sensitive data or actions within an application. 
 However, if this authentication does not make use of a <code>KeyStore</code>-backed key, it is able to be bypassed by a privileged malicious application or an attacker with physical access.
 </p>
 </overview>
