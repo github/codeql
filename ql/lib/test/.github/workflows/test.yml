@@ -13,7 +13,7 @@ jobs:
           fetch-depth: 0
 
       - name: Get changed files
-        id: source 
+        id: source
         uses: tj-actions/changed-files@v40
 
       - name: Remove foo from changed files
@@ -21,8 +21,12 @@ jobs:
         uses: mad9000/actions-find-and-replace-string@3
         with:
           source: ${{ steps.source.outputs.all_changed_files }}
-          find: 'foo'
-          replace: ''
+          find: "foo"
+          replace: ""
+      - id: simplesink1
+        run: echo ${{ steps.source.outputs.all_changed_files }}
+      - id: simplesink2
+        run: ${{ github.event.pull_request.head.ref }}
 
   job2:
     runs-on: ubuntu-latest

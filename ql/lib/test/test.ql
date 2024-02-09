@@ -12,7 +12,11 @@ query predicate jobNodes(JobStmt s) { any() }
 
 query predicate stepNodes(StepStmt s) { any() }
 
-query predicate usesNodes(UsesExpr s) { any() }
+query predicate allUsesNodes(UsesExpr s) { any() }
+
+query predicate stepUsesNodes(StepUsesExpr s) { any() }
+
+query predicate jobUsesNodes(JobUsesExpr s) { any() }
 
 query predicate usesSteps(UsesExpr call, string argname, Expression arg) {
   call.getArgument(argname) = arg
@@ -42,18 +46,25 @@ query predicate nonOrphanVarAccesses(ExprAccessExpr va, string var, AstNode pare
 
 query predicate parentNodes(AstNode child, AstNode parent) { child.getParentNode() = parent }
 
-query predicate cfgNodes(Cfg::Node n) { any() }
+query predicate cfgNodes(Cfg::Node n) {
+  //any()
+  n.getAstNode() instanceof OutputsStmt
+}
 
-query predicate dfNodes(DataFlow::Node e) { any() }
+query predicate dfNodes(DataFlow::Node e) {
+  e.getLocation().getFile().getBaseName() = "simple1.yml"
+}
 
 query predicate exprNodes(DataFlow::ExprNode e) { any() }
 
 query predicate argumentNodes(DataFlow::ArgumentNode e) { any() }
 
-query predicate localFlow(UsesExpr s, StepOutputAccessExpr o) { s.getId() = o.getStepId() }
+query predicate localFlow(StepUsesExpr s, StepOutputAccessExpr o) { s.getId() = o.getStepId() }
 
-query predicate usesIds(UsesExpr s, string a) { s.getId() = a }
+query predicate usesIds(StepUsesExpr s, string a) { s.getId() = a }
 
 query predicate varIds(StepOutputAccessExpr s, string a) { s.getStepId() = a }
 
 query predicate nodeLocations(DataFlow::Node n, Location l) { n.getLocation() = l }
+
+query predicate scopes(Cfg::CfgScope c) { any() }

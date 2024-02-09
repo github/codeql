@@ -8,22 +8,6 @@ private import DataFlowPublic
 cached
 newtype TNode = TExprNode(DataFlowExpr e)
 
-/**
- * Not used
- */
-class ParameterNode extends Node {
-  ParameterNode() { none() }
-}
-
-/**
- * Not used
- */
-class ReturnNode extends Node {
-  ReturnNode() { none() }
-
-  ReturnKind getKind() { none() }
-}
-
 class OutNode extends ExprNode {
   private DataFlowCall call;
 
@@ -35,17 +19,25 @@ class OutNode extends ExprNode {
   }
 }
 
+/**
+ * Not used
+ */
 class CastNode extends Node {
   CastNode() { none() }
 }
 
+/**
+ * Not used
+ */
 class PostUpdateNode extends Node {
   PostUpdateNode() { none() }
 
   Node getPreUpdateNode() { none() }
 }
 
-predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) { none() }
+predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
+  p.isParameterOf(c, pos)
+}
 
 predicate isArgumentNode(ArgumentNode arg, DataFlowCall call, ArgumentPosition pos) {
   arg.argumentOf(call, pos)
@@ -53,6 +45,8 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall call, ArgumentPosition p
 
 DataFlowCallable nodeGetEnclosingCallable(Node node) {
   node = TExprNode(any(DataFlowExpr e | result = e.getScope()))
+  // node = TReturningNode(any(Cfg::Node n | result = n.getScope()))
+  // node = TParameterNode(any(InputExpr p | p = result.(ReusableWorkflowStmt).getInputs().getInputExpr(_)))
 }
 
 DataFlowType getNodeType(Node node) { any() }
@@ -64,7 +58,7 @@ class DataFlowExpr extends Cfg::Node {
 }
 
 /**
- * A call corresponds to a Uses steps where a 3rd party action gets called
+ * A call corresponds to a Uses steps where a 3rd party action or a reusable workflow gets called
  */
 class DataFlowCall instanceof Cfg::Node {
   DataFlowCall() { super.getAstNode() instanceof UsesExpr }
@@ -74,21 +68,13 @@ class DataFlowCall instanceof Cfg::Node {
 
   Location getLocation() { result = super.getLocation() }
 
-  string getName() { result = super.getAstNode().(UsesExpr).getTarget() }
+  string getName() { result = super.getAstNode().(UsesExpr).getCallee() }
 
   DataFlowCallable getEnclosingCallable() { result = super.getScope() }
 }
 
-// class DataFlowCallable instanceof Cfg::CfgScope {
-//   DataFlowCallable() { none() }
-//
-//   string toString() { result = super.toString() }
-//
-//   string getName() { result = "none" }
-// }
 /**
  * A Cfg scope that can be called
- * There are no callables in Actions, at least not in the AST
  */
 class DataFlowCallable instanceof Cfg::CfgScope {
   string toString() { result = super.toString() }
@@ -96,9 +82,12 @@ class DataFlowCallable instanceof Cfg::CfgScope {
   Location getLocation() { result = super.getLocation() }
 
   string getName() {
-    if this instanceof StepStmt
-    then result = this.(StepStmt).getId()
-    else result = this.(JobStmt).getId()
+    if this instanceof ReusableWorkflowStmt
+    then result = this.(ReusableWorkflowStmt).getName()
+    else
+      if this instanceof JobStmt
+      then result = this.(JobStmt).getId()
+      else none()
   }
 }
 
@@ -114,7 +103,7 @@ class NormalReturn extends ReturnKind, TNormalReturn {
 }
 
 /** Gets a viable implementation of the target of the given `Call`. */
-DataFlowCallable viableCallable(DataFlowCall c) { none() }
+DataFlowCallable viableCallable(DataFlowCall c) { c.getName() = result.getName() }
 
 // /**
 //  * Holds if the set of viable implementations that can be called by `call`
@@ -173,11 +162,10 @@ class ContentApprox extends TContentApprox {
 ContentApprox getContentApprox(Content c) { none() }
 
 /**
- * Not used since we dont have Callables in the AST
  * Made a string to match the ArgumentPosition type
  */
 class ParameterPosition extends string {
-  ParameterPosition() { none() }
+  ParameterPosition() { exists(any(ReusableWorkflowStmt w).getInputs().getInputExpr(this)) }
 }
 
 /**
@@ -188,18 +176,12 @@ class ArgumentPosition extends string {
 }
 
 /**
- * Not really used since we dont have Callables in the AST but needed for the InputSig signature
  */
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 
-/**
- * a simple local flow step
- */
-predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { localFlowStep(nodeFrom, nodeTo) }
-
-predicate usesOutputDefToUse(Node nodeFrom, Node nodeTo) {
+predicate stepUsesOutputDefToUse(Node nodeFrom, Node nodeTo) {
   // nodeTo is an OutputVarAccessExpr scoped with the namespace of the nodeFrom Step output
-  exists(UsesExpr uses, StepOutputAccessExpr outputRead |
+  exists(StepUsesExpr uses, StepOutputAccessExpr outputRead |
     uses = nodeFrom.asExpr() and
     outputRead = nodeTo.asExpr() and
     outputRead.getStepId() = uses.getId() and
@@ -226,24 +208,42 @@ predicate jobOutputDefToUse(Node nodeFrom, Node nodeTo) {
   )
 }
 
+predicate reusableWorkflowInputDefToUse(Node nodeFrom, Node nodeTo) {
+  // nodeTo is a ReusableWorkflowInputAccessExpr and nodeFrom is the ReusableWorkflowStmt corresponding parameter expression
+  exists(Expression astFrom, ReusableWorkflowInputAccessExpr astTo |
+    astFrom = nodeFrom.asExpr() and
+    astTo = nodeTo.asExpr() and
+    astTo.getInputExpr() = astFrom
+  )
+}
+
 /**
  * Holds if there is a local flow step from `nodeFrom` to `nodeTo`.
  * For Actions, we dont need SSA nodes since it should be already in SSA form
  * Local flow steps are always between two nodes in the same Cfg scope (job definition).
  */
 pragma[nomagic]
-predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  usesOutputDefToUse(nodeFrom, nodeTo) or
-  runOutputDefToUse(nodeFrom, nodeTo) or
-  jobOutputDefToUse(nodeFrom, nodeTo)
-}
+predicate localFlowStep(Node nodeFrom, Node nodeTo) { none() }
+
+/**
+ * a simple local flow step that should always preserve the call context (same callable)
+ */
+predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { localFlowStep(nodeFrom, nodeTo) }
 
 /**
  * Holds if data can flow from `node1` to `node2` through a non-local step
  * that does not follow a call edge. For example, a step through a global
  * variable.
+ * We throw away the call context and let us jump to any location
+ * AKA teleport steps
+ * local steps are preferible since they are more predictable and easier to control
  */
-predicate jumpStep(Node node1, Node node2) { none() }
+predicate jumpStep(Node nodeFrom, Node nodeTo) {
+  stepUsesOutputDefToUse(nodeFrom, nodeTo) or
+  runOutputDefToUse(nodeFrom, nodeTo) or
+  jobOutputDefToUse(nodeFrom, nodeTo) or
+  reusableWorkflowInputDefToUse(nodeFrom, nodeTo)
+}
 
 /**
  * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,

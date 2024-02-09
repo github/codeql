@@ -1,18 +1,38 @@
-on: push
+name: Call a reusable workflow and use its outputs
+
+on:
+  workflow_dispatch:
 
 jobs:
-  call-workflow-1-in-local-repo:
+  call1:
     uses: octo-org/this-repo/.github/workflows/reusable_workflow.yml@172239021f7ba04fe7327647b213799853a9eb89
     with:
       config-path: ${{ github.event.pull_request.head.ref }}
     secrets: inherit
-  call-workflow-2-in-local-repo:
+  call2:
     uses: ./.github/workflows/reusable_workflow.yml
     with:
       config-path: ${{ github.event.pull_request.head.ref }}
     secrets: inherit
-  call-workflow-in-another-repo:
+  call3:
     uses: octo-org/another-repo/.github/workflows/workflow.yml@v1
     with:
       config-path: ${{ github.event.pull_request.head.ref }}
     secrets: inherit
+
+  job1:
+    runs-on: ubuntu-latest
+    needs: call1
+    steps:
+      - run: echo ${{ needs.call1.outputs.workflow-output }}
+  job2:
+    runs-on: ubuntu-latest
+    needs: call2
+    steps:
+      - run: echo ${{ needs.call2.outputs.workflow-output1 }}
+      - run: echo ${{ needs.call2.outputs.workflow-output2 }}
+  job3:
+    runs-on: ubuntu-latest
+    needs: call3
+    steps:
+      - run: echo ${{ needs.call3.outputs.workflow-output }}

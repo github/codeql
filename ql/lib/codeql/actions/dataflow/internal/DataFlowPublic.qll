@@ -45,16 +45,56 @@ class ExprNode extends Node, TExprNode {
 }
 
 /**
+ * Reusable workflow input nodes
+ */
+class ParameterNode extends ExprNode {
+  private InputExpr parameter;
+
+  ParameterNode() {
+    this.asExpr() = parameter and
+    parameter = any(ReusableWorkflowStmt w).getInputs().getInputExpr(_)
+  }
+
+  predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+    parameter = c.(ReusableWorkflowStmt).getInputs().getInputExpr(pos)
+  }
+
+  override string toString() { result = parameter.toString() }
+
+  override Location getLocation() { result = parameter.getLocation() }
+
+  InputExpr getInputExpr() { result = parameter }
+}
+
+/**
  * An argument to a Uses step (call)
  */
 class ArgumentNode extends ExprNode {
   ArgumentNode() { this.getCfgNode().getAstNode() = any(UsesExpr e).getArgument(_) }
 
   predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-    this.getCfgNode() = call.(Cfg::Node).getAPredecessor+() and
+    this.getCfgNode() = call.(Cfg::Node).getASuccessor+() and
     call.(Cfg::Node).getAstNode() =
       any(UsesExpr e | e.getArgument(pos) = this.getCfgNode().getAstNode())
   }
+}
+
+/**
+ * Reusable workflow output nodes
+ */
+class ReturnNode extends ExprNode {
+  private Cfg::Node node;
+
+  ReturnNode() {
+    this.getCfgNode() = node and
+    node.getAstNode() = any(ReusableWorkflowStmt w).getOutputs().getOutputExpr(_)
+  }
+
+  ReturnKind getKind() { result = TNormalReturn() }
+
+  override string toString() { result = "return " + node.toString() }
+
+  override Location getLocation() { result = node.getLocation() }
 }
 
 /** Gets the node corresponding to `e`. */
