@@ -942,7 +942,7 @@ private Type getTypeImpl0(Type t, int indirectionIndex) {
   or
   indirectionIndex > 0 and
   exists(Type stripped |
-    stripped = stripPointer(t) and
+    stripped = stripPointer(t.stripTopLevelSpecifiers()) and
     // We need to avoid the case where `stripPointer(t) = t` (which can happen
     // on iterators that specify a `value_type` that is the iterator itself).
     // Such a type would create an infinite loop otherwise. For these cases we
