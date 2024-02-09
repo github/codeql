@@ -6,18 +6,18 @@ class FormFile extends AspNetRemoteFlowSource {
   FormFile() {
     // openReadStream is already implemented but I'm putting this here because of having a uniform class for FormFile
     exists(MethodCall mc |
-      mc.getTarget().hasQualifiedName("Microsoft.AspNetCore.Http", "IFormFile", "OpenReadStream") and
+      mc.getTarget().hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IFormFile", "OpenReadStream") and
       this.asExpr() = mc
     )
     or
     exists(MethodCall mc |
       mc.getTarget()
-          .hasQualifiedName("Microsoft.AspNetCore.Http", "IFormFile", ["CopyTo", "CopyToAsync"]) and
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IFormFile", ["CopyTo", "CopyToAsync"]) and
       this.asParameter() = mc.getTarget().getParameter(0)
     )
     or
     exists(Property fa |
-      fa.getDeclaringType().hasQualifiedName("Microsoft.AspNetCore.Http", "IFormFile") and
+      fa.getDeclaringType().hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IFormFile") and
       fa.hasName(["ContentType", "ContentDisposition", "Name", "FileName"]) and
       this.asExpr() = fa.getAnAccess()
     )
@@ -30,7 +30,7 @@ class FormFile extends AspNetRemoteFlowSource {
 class FormCollection extends AspNetRemoteFlowSource {
   FormCollection() {
     exists(Property fa |
-      fa.getDeclaringType().hasQualifiedName("Microsoft.AspNetCore.Http", "IFormCollection") and
+      fa.getDeclaringType().hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IFormCollection") and
       fa.hasName("Keys") and
       this.asExpr() = fa.getAnAccess()
     )
@@ -38,7 +38,7 @@ class FormCollection extends AspNetRemoteFlowSource {
     exists(Call c |
       c.getTarget()
           .getDeclaringType()
-          .hasQualifiedName("Microsoft.AspNetCore.Http", "IFormCollection") and
+          .hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IFormCollection") and
       c.getTarget().getName() = "TryGetValue" and
       this.asDefinition().getTargetAccess() = c.getArgument(1)
     )
@@ -53,7 +53,7 @@ class FormCollection extends AspNetRemoteFlowSource {
 class HeaderDictionary extends AspNetRemoteFlowSource {
   HeaderDictionary() {
     exists(Property fa |
-      fa.getDeclaringType().hasQualifiedName("Microsoft.AspNetCore.Http", "IHeaderDictionary") and
+      fa.getDeclaringType().hasFullyQualifiedName("Microsoft.AspNetCore.Http", "IHeaderDictionary") and
       this.asExpr() = fa.getAnAccess()
     )
   }

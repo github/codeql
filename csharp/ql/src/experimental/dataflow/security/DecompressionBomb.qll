@@ -21,7 +21,7 @@ module SystemIoCompression {
   class ZipArchiveOpen extends MethodCall {
     ZipArchiveOpen() {
       exists(MethodCall c |
-        c.getTarget().hasQualifiedName("System.IO.Compression", "ZipFile", "Open") and
+        c.getTarget().hasFullyQualifiedName("System.IO.Compression", "ZipFile", "Open") and
         this = c
       )
     }
@@ -31,7 +31,7 @@ module SystemIoCompression {
   class ZipArchiveEntryOpen extends DecompressionBomb::Sink {
     ZipArchiveEntryOpen() {
       exists(MethodCall c |
-        c.getTarget().hasQualifiedName("System.IO.Compression", "ZipArchiveEntry", "Open") and
+        c.getTarget().hasFullyQualifiedName("System.IO.Compression", "ZipArchiveEntry", "Open") and
         this.asExpr() = c
       )
     }
@@ -42,18 +42,19 @@ module SystemIoCompression {
     ZipFileExtensionsCallSink() {
       exists(MethodCall mc |
         mc.getTarget()
-            .hasQualifiedName("System.IO.Compression", "ZipFileExtensions", "ExtractToFile") and
+            .hasFullyQualifiedName("System.IO.Compression", "ZipFileExtensions", "ExtractToFile") and
         this.asExpr() = mc.getArgumentForName("source") and
         mc.getArgumentForName("source")
             .getType()
-            .hasQualifiedName("System.IO.Compression", "ZipArchiveEntry")
+            .hasFullyQualifiedName("System.IO.Compression", "ZipArchiveEntry")
         or
         mc.getTarget()
-            .hasQualifiedName("System.IO.Compression", "ZipFileExtensions", "ExtractToDirectory") and
+            .hasFullyQualifiedName("System.IO.Compression", "ZipFileExtensions",
+              "ExtractToDirectory") and
         this.asExpr() = mc.getArgumentForName("source") and
         mc.getArgumentForName("source")
             .getType()
-            .hasQualifiedName("System.IO.Compression", "ZipArchive")
+            .hasFullyQualifiedName("System.IO.Compression", "ZipArchive")
       )
     }
   }
@@ -62,11 +63,11 @@ module SystemIoCompression {
   class GZipStreamSink extends DecompressionBomb::Sink {
     GZipStreamSink() {
       exists(Constructor mc |
-        mc.getDeclaringType().hasQualifiedName("System.IO.Compression", "GZipStream") and
+        mc.getDeclaringType().hasFullyQualifiedName("System.IO.Compression", "GZipStream") and
         this.asExpr() = mc.getACall().getArgument(0) and
         mc.getACall().getArgument(1) =
           any(EnumConstant e |
-            e.hasQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
+            e.hasFullyQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
           ).getAnAccess()
       )
     }
@@ -76,11 +77,11 @@ module SystemIoCompression {
   class BrotliStreamSink extends DecompressionBomb::Sink {
     BrotliStreamSink() {
       exists(Constructor mc |
-        mc.getDeclaringType().hasQualifiedName("System.IO.Compression", "BrotliStream") and
+        mc.getDeclaringType().hasFullyQualifiedName("System.IO.Compression", "BrotliStream") and
         this.asExpr() = mc.getACall().getArgument(0) and
         mc.getACall().getArgument(1) =
           any(EnumConstant e |
-            e.hasQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
+            e.hasFullyQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
           ).getAnAccess()
       )
     }
@@ -90,11 +91,11 @@ module SystemIoCompression {
   class DeflateStreamSink extends DecompressionBomb::Sink {
     DeflateStreamSink() {
       exists(Constructor mc |
-        mc.getDeclaringType().hasQualifiedName("System.IO.Compression", "DeflateStream") and
+        mc.getDeclaringType().hasFullyQualifiedName("System.IO.Compression", "DeflateStream") and
         this.asExpr() = mc.getACall().getArgument(0) and
         mc.getACall().getArgument(1) =
           any(EnumConstant e |
-            e.hasQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
+            e.hasFullyQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
           ).getAnAccess()
       )
     }
@@ -104,11 +105,11 @@ module SystemIoCompression {
   class ZLibStreamSink extends DecompressionBomb::Sink {
     ZLibStreamSink() {
       exists(Constructor mc |
-        mc.getDeclaringType().hasQualifiedName("System.IO.Compression", "ZLibStream") and
+        mc.getDeclaringType().hasFullyQualifiedName("System.IO.Compression", "ZLibStream") and
         this.asExpr() = mc.getACall().getArgument(0) and
         mc.getACall().getArgument(1) =
           any(EnumConstant e |
-            e.hasQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
+            e.hasFullyQualifiedName("System.IO.Compression", "CompressionMode", "Decompress")
           ).getAnAccess()
       )
     }
@@ -118,19 +119,21 @@ module SystemIoCompression {
     override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       exists(MethodCall mc |
         mc.getTarget()
-            .hasQualifiedName("System.IO.Compression", "ZipFileExtensions", "ExtractToFile") and
+            .hasFullyQualifiedName("System.IO.Compression", "ZipFileExtensions", "ExtractToFile") and
         node2.asExpr() = mc and
         node1.asExpr() = mc.getArgumentForName("source")
       )
       or
       exists(MethodCall mc |
-        mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipArchive", "GetEntry") and
+        mc.getTarget().hasFullyQualifiedName("System.IO.Compression", "ZipArchive", "GetEntry") and
         node1.asExpr() = mc.getQualifier() and
         node2.asExpr() = mc
       )
       or
       exists(Call mc |
-        mc.getTarget().getDeclaringType().hasQualifiedName("System.IO.Compression", "ZipArchive") and
+        mc.getTarget()
+            .getDeclaringType()
+            .hasFullyQualifiedName("System.IO.Compression", "ZipArchive") and
         node1.asExpr() = mc.getArgument(0) and
         node2.asExpr() = mc
       )
@@ -141,7 +144,7 @@ module SystemIoCompression {
       )
       or
       exists(MethodCall mc |
-        mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipArchiveEntry", "Open")
+        mc.getTarget().hasFullyQualifiedName("System.IO.Compression", "ZipArchiveEntry", "Open")
       |
         node1.asExpr() = mc.getQualifier() and
         node2.asExpr() = mc
@@ -154,7 +157,7 @@ module K4osLz4 {
   /** A Decode MethodCall of LZ4Stream */
   class K4osLZ4InitializeMethod extends MethodCall {
     K4osLZ4InitializeMethod() {
-      this.getTarget().hasQualifiedName("K4os.Compression.LZ4.Streams", "LZ4Stream", "Decode")
+      this.getTarget().hasFullyQualifiedName("K4os.Compression.LZ4.Streams", "LZ4Stream", "Decode")
     }
   }
 
@@ -163,7 +166,7 @@ module K4osLz4 {
     K4osLZ4DecompressionMethod() {
       exists(string methodName | methodName = ["Read", "ReadAsync", "CopyToAsync", "CopyTo"] |
         this.getTarget()
-            .hasQualifiedName("K4os.Compression.LZ4.Streams", "LZ4DecoderStream", methodName)
+            .hasFullyQualifiedName("K4os.Compression.LZ4.Streams", "LZ4DecoderStream", methodName)
       )
     }
   }
@@ -192,12 +195,13 @@ module K4osLz4 {
 module SharpZip {
   class SharpZipLibType extends RefType {
     SharpZipLibType() {
-      this.hasQualifiedName("ICSharpCode.SharpZipLib.Zip", "ZipInputStream") or
-      this.hasQualifiedName("ICSharpCode.SharpZipLib.BZip2", "BZip2InputStream") or
-      this.hasQualifiedName("ICSharpCode.SharpZipLib.GZip", "GZipInputStream") or
-      this.hasQualifiedName("ICSharpCode.SharpZipLib.Lzw", "LzwInputStream") or
-      this.hasQualifiedName("ICSharpCode.SharpZipLib.Tar", "TarInputStream") or
-      this.hasQualifiedName("ICSharpCode.SharpZipLib.Zip.Compression.Streams", "InflaterInputStream")
+      this.hasFullyQualifiedName("ICSharpCode.SharpZipLib.Zip", "ZipInputStream") or
+      this.hasFullyQualifiedName("ICSharpCode.SharpZipLib.BZip2", "BZip2InputStream") or
+      this.hasFullyQualifiedName("ICSharpCode.SharpZipLib.GZip", "GZipInputStream") or
+      this.hasFullyQualifiedName("ICSharpCode.SharpZipLib.Lzw", "LzwInputStream") or
+      this.hasFullyQualifiedName("ICSharpCode.SharpZipLib.Tar", "TarInputStream") or
+      this.hasFullyQualifiedName("ICSharpCode.SharpZipLib.Zip.Compression.Streams",
+        "InflaterInputStream")
     }
   }
 
@@ -212,17 +216,17 @@ module SharpZip {
           ]
       |
         this.getTarget()
-            .hasQualifiedName("ICSharpCode.SharpZipLib.Zip", "ZipInputStream", methodName) or
+            .hasFullyQualifiedName("ICSharpCode.SharpZipLib.Zip", "ZipInputStream", methodName) or
         this.getTarget()
-            .hasQualifiedName("ICSharpCode.SharpZipLib.BZip2", "BZip2InputStream", methodName) or
+            .hasFullyQualifiedName("ICSharpCode.SharpZipLib.BZip2", "BZip2InputStream", methodName) or
         this.getTarget()
-            .hasQualifiedName("ICSharpCode.SharpZipLib.GZip", "GZipInputStream", methodName) or
+            .hasFullyQualifiedName("ICSharpCode.SharpZipLib.GZip", "GZipInputStream", methodName) or
         this.getTarget()
-            .hasQualifiedName("ICSharpCode.SharpZipLib.Lzw", "LzwInputStream", methodName) or
+            .hasFullyQualifiedName("ICSharpCode.SharpZipLib.Lzw", "LzwInputStream", methodName) or
         this.getTarget()
-            .hasQualifiedName("ICSharpCode.SharpZipLib.Tar", "TarInputStream", methodName) or
+            .hasFullyQualifiedName("ICSharpCode.SharpZipLib.Tar", "TarInputStream", methodName) or
         this.getTarget()
-            .hasQualifiedName("ICSharpCode.SharpZipLib.Zip.Compression.Streams",
+            .hasFullyQualifiedName("ICSharpCode.SharpZipLib.Zip.Compression.Streams",
               "InflaterInputStream", methodName)
       )
     }
@@ -240,7 +244,7 @@ module SharpZip {
     SharpZipLibFastZipSink() {
       exists(MethodCall mc |
         mc.getTarget()
-            .hasQualifiedName("ICSharpCode.SharpZipLib.Zip", "ZipInputStream", "ExtractZip") and
+            .hasFullyQualifiedName("ICSharpCode.SharpZipLib.Zip", "ZipInputStream", "ExtractZip") and
         this.asExpr() = mc.getArgument(0)
       )
     }
@@ -257,7 +261,7 @@ module SharpZip {
       |
         (
           mc.getTarget().getDeclaringType() instanceof SharpZipLibType or
-          mc.getTarget().hasQualifiedName("System.IO", "Stream", methodName)
+          mc.getTarget().hasFullyQualifiedName("System.IO", "Stream", methodName)
         ) and
         node1.asExpr() = mc.getQualifier() and
         node2.asExpr() = mc.getArgument(0)
