@@ -127,7 +127,7 @@ private class EventSource extends RemoteFlowSource {
 private class ChangedFilesSource extends RemoteFlowSource {
   ChangedFilesSource() {
     exists(UsesExpr uses |
-      uses.getTarget() = "tj-actions/changed-files" and
+      uses.getCallee() = "tj-actions/changed-files" and
       uses.getVersion() = ["v10", "v20", "v30", "v40"] and
       uses = this.asExpr()
     )

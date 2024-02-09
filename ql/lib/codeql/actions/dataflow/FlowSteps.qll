@@ -26,7 +26,7 @@ class AdditionalTaintStep extends Unit {
 private class ActionsFindAndReplaceStringStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(UsesExpr u |
-      u.getTarget() = "mad9000/actions-find-and-replace-string" and
+      u.getCallee() = "mad9000/actions-find-and-replace-string" and
       pred.asExpr() = u.getArgument(["source", "replace"]) and
       succ.asExpr() = u
     )

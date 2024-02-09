@@ -87,9 +87,9 @@ module Completion {
 module CfgScope {
   abstract class CfgScope extends AstNode { }
 
-  private class ReusableWorkflowScope extends CfgScope instanceof ReusableWorkflowStmt { }
+  class ReusableWorkflowScope extends CfgScope instanceof ReusableWorkflowStmt { }
 
-  private class JobScope extends CfgScope instanceof JobStmt { }
+  class JobScope extends CfgScope instanceof JobStmt { }
 }
 
 private module Implementation implements CfgShared::InputSig<Location> {
@@ -123,7 +123,7 @@ private module Implementation implements CfgShared::InputSig<Location> {
   int maxSplits() { result = 0 }
 
   predicate scopeFirst(CfgScope scope, AstNode e) {
-    first(scope.(ReusableWorkflowStmt).getParams(), e) or
+    first(scope.(ReusableWorkflowStmt).getInputs(), e) or
     first(scope.(JobStmt), e)
   }
 
@@ -148,14 +148,11 @@ private import Completion
 private import CfgScope
 
 private class ReusableWorkflowTree extends StandardPreOrderTree instanceof ReusableWorkflowStmt {
-  override ControlFlowTree getChildNode(int i) { result = super.getParams() and i = 0 }
-}
-
-private class ReusableWorkflowParamsTree extends StandardPreOrderTree instanceof ParamsStmt {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](Expression child, Location l |
-        child = super.getParamExpr(_) and l = child.getLocation()
+        (child = super.getInputs() or child = super.getOutputs()) and
+        l = child.getLocation()
       |
         child
         order by
@@ -164,7 +161,35 @@ private class ReusableWorkflowParamsTree extends StandardPreOrderTree instanceof
   }
 }
 
-private class ParamExprTree extends LeafTree instanceof ParamExpr { }
+private class ReusableWorkflowInputsTree extends StandardPreOrderTree instanceof InputsStmt {
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](Expression child, Location l |
+        child = super.getInputExpr(_) and l = child.getLocation()
+      |
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
+      )
+  }
+}
+
+private class InputExprTree extends LeafTree instanceof InputExpr { }
+
+private class ReusableWorkflowOutputsTree extends StandardPreOrderTree instanceof OutputsStmt {
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](Expression child, Location l |
+        child = super.getOutputExpr(_) and l = child.getLocation()
+      |
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
+      )
+  }
+}
+
+private class OutputExprTree extends LeafTree instanceof OutputExpr { }
 
 private class JobTree extends StandardPreOrderTree instanceof JobStmt {
   override ControlFlowTree getChildNode(int i) {

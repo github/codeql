@@ -48,7 +48,7 @@ query predicate parentNodes(AstNode child, AstNode parent) { child.getParentNode
 
 query predicate cfgNodes(Cfg::Node n) {
   //any()
-  n.getAstNode() instanceof JobUsesExpr
+  n.getAstNode() instanceof OutputsStmt
 }
 
 query predicate dfNodes(DataFlow::Node e) {
@@ -66,3 +66,5 @@ query predicate usesIds(StepUsesExpr s, string a) { s.getId() = a }
 query predicate varIds(StepOutputAccessExpr s, string a) { s.getStepId() = a }
 
 query predicate nodeLocations(DataFlow::Node n, Location l) { n.getLocation() = l }
+
+query predicate scopes(Cfg::CfgScope c) { any() }

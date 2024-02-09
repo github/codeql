@@ -39,23 +39,21 @@ class WorkflowStmt extends Statement instanceof Actions::Workflow {
 }
 
 class ReusableWorkflowStmt extends WorkflowStmt {
-  YamlMapping parameters;
+  YamlValue workflow_call;
 
   ReusableWorkflowStmt() {
-    exists(Actions::On on |
-      on.getWorkflow() = this and
-      on.getNode("workflow_call").(YamlMapping).lookup("inputs") = parameters
-    )
+    this.(Actions::Workflow).getOn().getNode("workflow_call") = workflow_call
   }
 
-  ParamsStmt getParams() { result = parameters }
+  InputsStmt getInputs() { result = workflow_call.(YamlMapping).lookup("inputs") }
 
-  // TODO: implemnt callable name
+  OutputsStmt getOutputs() { result = workflow_call.(YamlMapping).lookup("outputs") }
+
   string getName() { result = this.getLocation().getFile().getRelativePath() }
 }
 
-class ParamsStmt extends Statement instanceof YamlMapping {
-  ParamsStmt() {
+class InputsStmt extends Statement instanceof YamlMapping {
+  InputsStmt() {
     exists(Actions::On on | on.getNode("workflow_call").(YamlMapping).lookup("inputs") = this)
   }
 
@@ -72,12 +70,38 @@ class ParamsStmt extends Statement instanceof YamlMapping {
    *       token:
    *         required: true
    */
-  ParamExpr getParamExpr(string name) {
-    this.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+  InputExpr getInputExpr(string name) {
+    result.(YamlString).getValue() = name and
+    this.(YamlMapping).maps(result, _)
   }
 }
 
-class ParamExpr extends Expression instanceof YamlValue { }
+class InputExpr extends Expression instanceof YamlString { }
+
+class OutputsStmt extends Statement instanceof YamlMapping {
+  OutputsStmt() {
+    exists(Actions::On on | on.getNode("workflow_call").(YamlMapping).lookup("outputs") = this)
+  }
+
+  /**
+   * Gets a specific parameter expression (YamlMapping) by name.
+   * eg:
+   * on:
+   *   workflow_call:
+   *     outputs:
+   *       firstword:
+   *         description: "The first output string"
+   *         value: ${{ jobs.example_job.outputs.output1 }}
+   *       secondword:
+   *         description: "The second output string"
+   *         value: ${{ jobs.example_job.outputs.output2 }}
+   */
+  OutputExpr getOutputExpr(string name) {
+    this.(YamlMapping).lookup(name).(YamlMapping).lookup("value") = result
+  }
+}
+
+class OutputExpr extends Expression instanceof YamlString { }
 
 /**
  * A Job is a collection of steps that run in an execution environment.
@@ -117,8 +141,13 @@ class JobStmt extends Statement instanceof Actions::Job {
 
   /**
    * Reusable workflow jobs may have Uses children
+   * eg:
+   * call-job:
+   *   uses: ./.github/workflows/reusable_workflow.yml
+   *   with:
+   *     arg1: value1
    */
-  JobUsesExpr getUsesExpr() { result = this.(Actions::Job).lookup("uses") }
+  JobUsesExpr getUsesExpr() { result.getJob() = this }
 }
 
 /**
@@ -152,8 +181,11 @@ class StepStmt extends Statement instanceof Actions::Step {
   JobStmt getJob() { result = super.getJob() }
 }
 
+/**
+ * Abstract class representing a call to a 3rd party action or reusable workflow.
+ */
 abstract class UsesExpr extends Expression {
-  abstract string getTarget();
+  abstract string getCallee();
 
   abstract string getVersion();
 
@@ -168,7 +200,7 @@ class StepUsesExpr extends StepStmt, UsesExpr {
 
   StepUsesExpr() { uses.getStep() = this }
 
-  override string getTarget() { result = uses.getGitHubRepository() }
+  override string getCallee() { result = uses.getGitHubRepository() }
 
   override string getVersion() { result = uses.getVersion() }
 
@@ -183,12 +215,12 @@ class StepUsesExpr extends StepStmt, UsesExpr {
 /**
  * A Uses step represents a call to an action that is defined in a GitHub repository.
  */
-class JobUsesExpr extends UsesExpr instanceof YamlScalar {
-  JobStmt job;
+class JobUsesExpr extends UsesExpr instanceof YamlMapping {
+  JobUsesExpr() {
+    this instanceof JobStmt and this.maps(any(YamlString s | s.getValue() = "uses"), _)
+  }
 
-  JobUsesExpr() { job.(YamlMapping).lookup("uses") = this }
-
-  JobStmt getJob() { result = job }
+  JobStmt getJob() { result = this }
 
   /**
    * Gets a regular expression that parses an `owner/repo@version` reference within a `uses` field in an Actions job step.
@@ -200,31 +232,31 @@ class JobUsesExpr extends UsesExpr instanceof YamlScalar {
 
   private string pathUsesParser() { result = "\\./(.+)" }
 
-  override string getTarget() {
-    exists(string name |
-      this.(YamlScalar).getValue() = name and
-      if name.matches("./%")
-      then result = name.regexpCapture(this.pathUsesParser(), 1)
+  override string getCallee() {
+    exists(YamlString name |
+      this.(YamlMapping).lookup("uses") = name and
+      if name.getValue().matches("./%")
+      then result = name.getValue().regexpCapture(this.pathUsesParser(), 1)
       else
         result =
-          name.regexpCapture(this.repoUsesParser(), 1) + "/" +
-            name.regexpCapture(this.repoUsesParser(), 2) + "/" +
-            name.regexpCapture(this.repoUsesParser(), 3)
+          name.getValue().regexpCapture(this.repoUsesParser(), 1) + "/" +
+            name.getValue().regexpCapture(this.repoUsesParser(), 2) + "/" +
+            name.getValue().regexpCapture(this.repoUsesParser(), 3)
     )
   }
 
   /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
   override string getVersion() {
-    exists(string name |
-      this.(YamlScalar).getValue() = name and
-      if not name.matches("\\.%")
-      then result = this.(YamlScalar).getValue().regexpCapture(this.repoUsesParser(), 4)
+    exists(YamlString name |
+      this.(YamlMapping).lookup("uses") = name and
+      if not name.getValue().matches("\\.%")
+      then result = name.getValue().regexpCapture(this.repoUsesParser(), 4)
       else none()
     )
   }
 
   override Expression getArgument(string key) {
-    job.(YamlMapping).lookup("with").(YamlMapping).lookup(key) = result
+    this.(YamlMapping).lookup("with").(YamlMapping).lookup(key) = result
   }
 }
 
@@ -287,6 +319,7 @@ class StepOutputAccessExpr extends ExprAccessExpr {
 /**
  * A ExprAccessExpr where the expression evaluated is a job output read.
  * eg: `${{ needs.job1.outputs.foo}}`
+ * eg: `${{ jobs.job1.outputs.foo}}` (for reusable workflows)
  */
 class JobOutputAccessExpr extends ExprAccessExpr {
   string jobId;
@@ -294,9 +327,11 @@ class JobOutputAccessExpr extends ExprAccessExpr {
 
   JobOutputAccessExpr() {
     jobId =
-      this.getExpression().regexpCapture("needs\\.([A-Za-z0-9_-]+)\\.outputs\\.[A-Za-z0-9_-]+", 1) and
+      this.getExpression()
+          .regexpCapture("(needs|jobs)\\.([A-Za-z0-9_-]+)\\.outputs\\.[A-Za-z0-9_-]+", 2) and
     varName =
-      this.getExpression().regexpCapture("needs\\.[A-Za-z0-9_-]+\\.outputs\\.([A-Za-z0-9_-]+)", 1)
+      this.getExpression()
+          .regexpCapture("(needs|jobs)\\.[A-Za-z0-9_-]+\\.outputs\\.([A-Za-z0-9_-]+)", 2)
   }
 
   string getVarName() { result = varName }
@@ -305,7 +340,35 @@ class JobOutputAccessExpr extends ExprAccessExpr {
     exists(JobStmt job |
       job.getId() = jobId and
       job.getLocation().getFile() = this.getLocation().getFile() and
-      job.getOutputStmt().getOutputExpr(varName) = result
+      (
+        // A Job can have multiple outputs, so we need to check both
+        // jobs.<job_id>.outputs.<output_name>
+        job.getOutputStmt().getOutputExpr(varName) = result
+        or
+        // jobs.<job_id>.uses (variables returned from the reusable workflow
+        job.getUsesExpr() = result
+      )
+    )
+  }
+}
+
+/**
+ * A ExprAccessExpr where the expression evaluated is a reusable workflow input read.
+ * eg: `${{ inputs.foo}}`
+ */
+class ReusableWorkflowInputAccessExpr extends ExprAccessExpr {
+  string paramName;
+
+  ReusableWorkflowInputAccessExpr() {
+    paramName = this.getExpression().regexpCapture("inputs\\.([A-Za-z0-9_-]+)", 1)
+  }
+
+  string getParamName() { result = paramName }
+
+  Expression getInputExpr() {
+    exists(ReusableWorkflowStmt w |
+      w.getLocation().getFile() = this.getLocation().getFile() and
+      w.getInputs().getInputExpr(paramName) = result
     )
   }
 }
