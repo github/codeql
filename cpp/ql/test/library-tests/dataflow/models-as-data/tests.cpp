@@ -5,23 +5,22 @@ void sink(int val);
 
 // --- global MAD sources ---
 
-int localMadSource();
-int remoteMadSource();
+int localMadSource(); // $ interpretElement
+int remoteMadSource(); // $ interpretElement
 int notASource();
-int localMadSourceVoid(void);
-int localMadSourceHasBody() { return 0; }
-int *remoteMadSourceIndirect();
-void remoteMadSourceArg0(int *x, int *y);
-void remoteMadSourceArg1(int &x, int &y);
-int remoteMadSourceVar;
-void remoteMadSourceParam0(int x);
+int localMadSourceVoid(void); // $ interpretElement
+int localMadSourceHasBody() { return 0; } // $ interpretElement
+int *remoteMadSourceIndirect(); // $ MISSING: interpretElement
+void remoteMadSourceArg0(int *x, int *y); // $ interpretElement
+void remoteMadSourceArg1(int &x, int &y); // $ interpretElement
+int remoteMadSourceVar; // $ interpretElement
 
 namespace MyNamespace {
-	int namespaceLocalMadSource();
-	int namespaceLocalMadSourceVar;
+	int namespaceLocalMadSource(); // $ interpretElement
+	int namespaceLocalMadSourceVar; // $ interpretElement
 
 	namespace MyNamespace2 {
-		int namespace2LocalMadSource();
+		int namespace2LocalMadSource(); // $ interpretElement
 	}
 
 	int localMadSource(); // (not a source)
@@ -62,20 +61,20 @@ void test_sources() {
 	sink(namespaceLocalMadSource()); // (the global namespace version of this function is not a source)
 }
 
-void remoteMadSourceParam0(int x)
+void remoteMadSourceParam0(int x) // $ interpretElement
 {
 	sink(x); // $ ir
 }
 
 // --- global MAD sinks ---
 
-void madSinkArg0(int x);
+void madSinkArg0(int x); // $ interpretElement
 void notASink(int x);
-void madSinkArg1(int x, int y);
-void madSinkArg01(int x, int y, int z);
-void madSinkArg02(int x, int y, int z);
-void madSinkIndirectArg0(int *x);
-int madSinkVar;
+void madSinkArg1(int x, int y); // $ interpretElement
+void madSinkArg01(int x, int y, int z); // $ interpretElement
+void madSinkArg02(int x, int y, int z); // $ interpretElement
+void madSinkIndirectArg0(int *x); // $ MISSING: interpretElement
+int madSinkVar; // $ interpretElement
 
 void test_sinks() {
 	// test sinks
@@ -103,7 +102,7 @@ void test_sinks() {
 	madSinkVar = remoteMadSourceVar; // $ ir
 }
 
-void madSinkParam0(int x) {
+void madSinkParam0(int x) { // $ interpretElement
 	x = source(); // $ MISSING: ir
 }
 
@@ -113,16 +112,16 @@ struct MyContainer {
 	int value;
 };
 
-int madArg0ToReturn(int x);
+int madArg0ToReturn(int x); // $ interpretElement
 int notASummary(int x);
-int madArg0ToReturnValueFlow(int x);
-int madArg0IndirectToReturn(int *x);
-void madArg0ToArg1(int x, int &y);
-void madArg0IndirectToArg1(const int *x, int *y);
+int madArg0ToReturnValueFlow(int x); // $ interpretElement
+int madArg0IndirectToReturn(int *x); // $ MISSING: interpretElement
+void madArg0ToArg1(int x, int &y); // $ interpretElement
+void madArg0IndirectToArg1(const int *x, int *y); // $ MISSING: interpretElement
 
-int madArg0FieldToReturn(MyContainer mc);
-int madArg0IndirectFieldToReturn(MyContainer *mc);
-MyContainer madArg0ToReturnField(int x);
+int madArg0FieldToReturn(MyContainer mc); // $ interpretElement
+int madArg0IndirectFieldToReturn(MyContainer *mc); // $ MISSING: interpretElement
+MyContainer madArg0ToReturnField(int x); // $ interpretElement
 
 void test_summaries() {
 	// test summaries
@@ -169,29 +168,29 @@ void test_summaries() {
 class MyClass {
 public:
 	// sources
-	int memberRemoteMadSource();
-	void memberRemoteMadSourceArg0(int *x);
-	int memberRemoteMadSourceVar;
+	int memberRemoteMadSource(); // $ interpretElement
+	void memberRemoteMadSourceArg0(int *x); // $ interpretElement
+	int memberRemoteMadSourceVar; // $ interpretElement
 
 	// sinks
-	void memberMadSinkArg0(int x);
-	int memberMadSinkVar;
+	void memberMadSinkArg0(int x); // $ interpretElement
+	int memberMadSinkVar; // $ interpretElement
 
 	// summaries
-	void madArg0ToSelf(int x);
-	int madSelfToReturn();
+	void madArg0ToSelf(int x); // $ interpretElement
+	int madSelfToReturn(); // $ interpretElement
 	int notASummary();
-	void madArg0ToField(int x);
-	int madFieldToReturn();
+	void madArg0ToField(int x); // $ interpretElement
+	int madFieldToReturn(); // $ interpretElement
 
 	int val;
 };
 
 class MyDerivedClass : public MyClass {
 public:
-	int subtypeRemoteMadSource1();
+	int subtypeRemoteMadSource1(); // $ interpretElement
 	int subtypeNonSource();
-	int subtypeRemoteMadSource2();
+	int subtypeRemoteMadSource2(); // $ interpretElement
 };
 
 MyClass source2();
@@ -201,13 +200,13 @@ namespace MyNamespace {
 	class MyClass {
 	public:
 		// sinks
-		void namespaceMemberMadSinkArg0(int x);
-		static void namespaceStaticMemberMadSinkArg0(int x);
-		int namespaceMemberMadSinkVar;
-		static int namespaceStaticMemberMadSinkVar;
+		void namespaceMemberMadSinkArg0(int x); // $ interpretElement
+		static void namespaceStaticMemberMadSinkArg0(int x); // $ interpretElement
+		int namespaceMemberMadSinkVar; // $ interpretElement
+		static int namespaceStaticMemberMadSinkVar; // $ interpretElement
 
 		// summaries
-		int namespaceMadSelfToReturn();
+		int namespaceMadSelfToReturn(); // $ interpretElement
 	};
 }
 
