@@ -2,7 +2,7 @@
  * Provides classes and predicates for defining flow summaries.
  */
 
-private import cpp
+private import cpp as Cpp
 private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
@@ -70,7 +70,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 module SourceSinkInterpretationInput implements
   Impl::Private::External::SourceSinkInterpretationInputSig<Location>
 {
-  class Element = Element;
+  class Element = Cpp::Element;
 
   class SourceOrSinkElement = Element;
 
