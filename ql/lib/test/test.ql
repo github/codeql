@@ -3,6 +3,7 @@ import codeql.actions.Ast
 import codeql.actions.Cfg as Cfg
 import codeql.actions.DataFlow
 import codeql.Locations
+import codeql.actions.dataflow.ExternalFlow
 
 query predicate files(File f) { any() }
 
@@ -19,7 +20,7 @@ query predicate stepUsesNodes(StepUsesExpr s) { any() }
 query predicate jobUsesNodes(JobUsesExpr s) { any() }
 
 query predicate usesSteps(UsesExpr call, string argname, Expression arg) {
-  call.getArgument(argname) = arg
+  call.getArgumentExpr(argname) = arg
 }
 
 query predicate runSteps1(RunExpr run, string body) { run.getScript() = body }
@@ -48,7 +49,7 @@ query predicate parentNodes(AstNode child, AstNode parent) { child.getParentNode
 
 query predicate cfgNodes(Cfg::Node n) {
   //any()
-  n.getAstNode() instanceof OutputsStmt
+  n.getAstNode() instanceof ReusableWorkflowOutputsStmt
 }
 
 query predicate dfNodes(DataFlow::Node e) {
@@ -68,3 +69,11 @@ query predicate varIds(StepOutputAccessExpr s, string a) { s.getStepId() = a }
 query predicate nodeLocations(DataFlow::Node n, Location l) { n.getLocation() = l }
 
 query predicate scopes(Cfg::CfgScope c) { any() }
+
+query predicate sources(string action, string version, string output, string kind) {
+  sourceModel(action, version, output, kind)
+}
+
+query predicate summaries(string action, string version, string input, string output, string kind) {
+  summaryModel(action, version, input, output, kind)
+}

@@ -15,9 +15,13 @@
 import actions
 import codeql.actions.TaintTracking
 import codeql.actions.dataflow.FlowSources
+import codeql.actions.dataflow.ExternalFlow
 
 private class ExpressionInjectionSink extends DataFlow::Node {
-  ExpressionInjectionSink() { exists(RunExpr e | e.getScriptExpr() = this.asExpr()) }
+  ExpressionInjectionSink() {
+    exists(RunExpr e | e.getScriptExpr() = this.asExpr()) or
+    sinkNode(this, "expression-injection")
+  }
 }
 
 private module MyConfig implements DataFlow::ConfigSig {

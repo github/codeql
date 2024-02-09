@@ -5,6 +5,7 @@
 import actions
 private import codeql.util.Unit
 private import codeql.actions.DataFlow
+import codeql.actions.dataflow.ExternalFlow
 
 /**
  * A unit class for adding additional taint steps.
@@ -20,16 +21,23 @@ class AdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
-/**
- * Holds if actions-find-and-replace-string step is used.
- */
-private class ActionsFindAndReplaceStringStep extends AdditionalTaintStep {
+predicate externallyDefinedSummary(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(UsesExpr uses, string action, string version, string input |
+    /*, string output */ summaryModel(action, version, input, _, "taint") and
+    uses.getCallee() = action and
+    (
+      if version.trim() = "*"
+      then uses.getVersion() = any(string v)
+      else uses.getVersion() = version.splitAt(",").trim()
+    ) and
+    pred.asExpr() = uses.getArgumentExpr(input.splitAt(",").trim()) and
+    succ.asExpr() = uses
+  )
+}
+
+private class ExternallyDefinedSummary extends AdditionalTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(UsesExpr u |
-      u.getCallee() = "mad9000/actions-find-and-replace-string" and
-      pred.asExpr() = u.getArgumentExpr(["source", "replace"]) and
-      succ.asExpr() = u
-    )
+    externallyDefinedSummary(pred, succ)
   }
 }
 
@@ -46,10 +54,12 @@ private class ActionsFindAndReplaceStringStep extends AdditionalTaintStep {
  *      echo "::set-output name=initial_url::$INITIAL_URL"
  */
 private class RunEnvToScriptStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) { test(pred, succ) }
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    runEnvToScriptstep(pred, succ)
+  }
 }
 
-predicate test(DataFlow::Node pred, DataFlow::Node succ) {
+predicate runEnvToScriptstep(DataFlow::Node pred, DataFlow::Node succ) {
   exists(RunExpr r, string varName |
     r.getEnvExpr(varName) = pred.asExpr() and
     exists(string script, string line |
