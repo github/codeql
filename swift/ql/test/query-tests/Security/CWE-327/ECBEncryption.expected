@@ -1,10 +1,10 @@
 edges
-| test.swift:34:9:34:13 | call to ECB.init() | test.swift:54:37:54:53 | call to getECBBlockMode() |
-| test.swift:34:9:34:13 | call to ECB.init() | test.swift:55:37:55:53 | call to getECBBlockMode() |
-| test.swift:34:9:34:13 | call to ECB.init() | test.swift:67:42:67:58 | call to getECBBlockMode() |
-| test.swift:45:12:45:16 | call to ECB.init() | test.swift:50:37:50:37 | ecb |
-| test.swift:45:12:45:16 | call to ECB.init() | test.swift:51:37:51:37 | ecb |
-| test.swift:45:12:45:16 | call to ECB.init() | test.swift:65:42:65:42 | ecb |
+| test.swift:34:9:34:13 | call to ECB.init() | test.swift:54:37:54:53 | call to getECBBlockMode() | provenance |  |
+| test.swift:34:9:34:13 | call to ECB.init() | test.swift:55:37:55:53 | call to getECBBlockMode() | provenance |  |
+| test.swift:34:9:34:13 | call to ECB.init() | test.swift:67:42:67:58 | call to getECBBlockMode() | provenance |  |
+| test.swift:45:12:45:16 | call to ECB.init() | test.swift:50:37:50:37 | ecb | provenance |  |
+| test.swift:45:12:45:16 | call to ECB.init() | test.swift:51:37:51:37 | ecb | provenance |  |
+| test.swift:45:12:45:16 | call to ECB.init() | test.swift:65:42:65:42 | ecb | provenance |  |
 nodes
 | test.swift:34:9:34:13 | call to ECB.init() | semmle.label | call to ECB.init() |
 | test.swift:45:12:45:16 | call to ECB.init() | semmle.label | call to ECB.init() |

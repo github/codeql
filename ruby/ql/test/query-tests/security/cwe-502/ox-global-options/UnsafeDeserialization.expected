@@ -1,7 +1,7 @@
 edges
-| OxGlobalOptions.rb:6:5:6:12 | xml_data | OxGlobalOptions.rb:7:22:7:29 | xml_data |
-| OxGlobalOptions.rb:6:16:6:21 | call to params | OxGlobalOptions.rb:6:16:6:27 | ...[...] |
-| OxGlobalOptions.rb:6:16:6:27 | ...[...] | OxGlobalOptions.rb:6:5:6:12 | xml_data |
+| OxGlobalOptions.rb:6:5:6:12 | xml_data | OxGlobalOptions.rb:7:22:7:29 | xml_data | provenance |  |
+| OxGlobalOptions.rb:6:16:6:21 | call to params | OxGlobalOptions.rb:6:16:6:27 | ...[...] | provenance |  |
+| OxGlobalOptions.rb:6:16:6:27 | ...[...] | OxGlobalOptions.rb:6:5:6:12 | xml_data | provenance |  |
 nodes
 | OxGlobalOptions.rb:6:5:6:12 | xml_data | semmle.label | xml_data |
 | OxGlobalOptions.rb:6:16:6:21 | call to params | semmle.label | call to params |

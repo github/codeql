@@ -1,13 +1,13 @@
 edges
-| NFEAndroidDoS.java:13:24:13:34 | getIntent(...) : Intent | NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : String |
-| NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : String | NFEAndroidDoS.java:14:21:14:51 | parseDouble(...) |
-| NFEAndroidDoS.java:22:21:22:31 | getIntent(...) : Intent | NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : String |
-| NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : String | NFEAndroidDoS.java:23:15:23:40 | parseInt(...) |
-| NFEAndroidDoS.java:25:22:25:32 | getIntent(...) : Intent | NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : String |
-| NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : String | NFEAndroidDoS.java:26:16:26:42 | parseInt(...) |
-| NFEAndroidDoS.java:43:24:43:34 | getIntent(...) : Intent | NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : String |
-| NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : String | NFEAndroidDoS.java:44:21:44:43 | new Double(...) |
-| NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : String | NFEAndroidDoS.java:47:21:47:47 | valueOf(...) |
+| NFEAndroidDoS.java:13:24:13:34 | getIntent(...) : Intent | NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : String | provenance |  |
+| NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : String | NFEAndroidDoS.java:14:21:14:51 | parseDouble(...) | provenance |  |
+| NFEAndroidDoS.java:22:21:22:31 | getIntent(...) : Intent | NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : String | provenance |  |
+| NFEAndroidDoS.java:22:21:22:55 | getStringExtra(...) : String | NFEAndroidDoS.java:23:15:23:40 | parseInt(...) | provenance |  |
+| NFEAndroidDoS.java:25:22:25:32 | getIntent(...) : Intent | NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : String | provenance |  |
+| NFEAndroidDoS.java:25:22:25:57 | getStringExtra(...) : String | NFEAndroidDoS.java:26:16:26:42 | parseInt(...) | provenance |  |
+| NFEAndroidDoS.java:43:24:43:34 | getIntent(...) : Intent | NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : String | provenance |  |
+| NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : String | NFEAndroidDoS.java:44:21:44:43 | new Double(...) | provenance |  |
+| NFEAndroidDoS.java:43:24:43:61 | getStringExtra(...) : String | NFEAndroidDoS.java:47:21:47:47 | valueOf(...) | provenance |  |
 nodes
 | NFEAndroidDoS.java:13:24:13:34 | getIntent(...) : Intent | semmle.label | getIntent(...) : Intent |
 | NFEAndroidDoS.java:13:24:13:61 | getStringExtra(...) : String | semmle.label | getStringExtra(...) : String |

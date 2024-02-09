@@ -1,9 +1,9 @@
 edges
-| Dsn.go:47:10:47:30 | call to FormValue | Dsn.go:49:102:49:105 | name |
-| Dsn.go:49:11:49:106 | []type{args} [array] | Dsn.go:49:11:49:106 | call to Sprintf |
-| Dsn.go:49:11:49:106 | call to Sprintf | Dsn.go:50:29:50:33 | dbDSN |
-| Dsn.go:49:102:49:105 | name | Dsn.go:49:11:49:106 | []type{args} [array] |
-| Dsn.go:49:102:49:105 | name | Dsn.go:49:11:49:106 | call to Sprintf |
+| Dsn.go:47:10:47:30 | call to FormValue | Dsn.go:49:102:49:105 | name | provenance |  |
+| Dsn.go:49:11:49:106 | []type{args} [array] | Dsn.go:49:11:49:106 | call to Sprintf | provenance |  |
+| Dsn.go:49:11:49:106 | call to Sprintf | Dsn.go:50:29:50:33 | dbDSN | provenance |  |
+| Dsn.go:49:102:49:105 | name | Dsn.go:49:11:49:106 | []type{args} [array] | provenance |  |
+| Dsn.go:49:102:49:105 | name | Dsn.go:49:11:49:106 | call to Sprintf | provenance |  |
 nodes
 | Dsn.go:47:10:47:30 | call to FormValue | semmle.label | call to FormValue |
 | Dsn.go:49:11:49:106 | []type{args} [array] | semmle.label | []type{args} [array] |

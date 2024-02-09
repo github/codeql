@@ -1,7 +1,7 @@
 edges
-| lib/unsafeHtml.rb:2:31:2:34 | name | lib/unsafeHtml.rb:3:10:3:16 | #{...} |
-| lib/unsafeHtml.rb:9:27:9:30 | name | lib/unsafeHtml.rb:11:13:11:19 | #{...} |
-| lib/unsafeHtml.rb:16:19:16:22 | name | lib/unsafeHtml.rb:17:28:17:31 | name |
+| lib/unsafeHtml.rb:2:31:2:34 | name | lib/unsafeHtml.rb:3:10:3:16 | #{...} | provenance |  |
+| lib/unsafeHtml.rb:9:27:9:30 | name | lib/unsafeHtml.rb:11:13:11:19 | #{...} | provenance |  |
+| lib/unsafeHtml.rb:16:19:16:22 | name | lib/unsafeHtml.rb:17:28:17:31 | name | provenance |  |
 nodes
 | lib/unsafeHtml.rb:2:31:2:34 | name | semmle.label | name |
 | lib/unsafeHtml.rb:3:10:3:16 | #{...} | semmle.label | #{...} |

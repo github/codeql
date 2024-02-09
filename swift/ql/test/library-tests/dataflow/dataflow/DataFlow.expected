@@ -1,637 +1,637 @@
 edges
-| file://:0:0:0:0 | .wrappedValue | test.swift:949:15:949:15 | x |
-| file://:0:0:0:0 | .wrappedValue | test.swift:951:15:951:15 | x |
-| file://:0:0:0:0 | KeyPathComponent [some:0] | test.swift:663:13:663:29 | exit #keyPath(...) [some:0] |
-| file://:0:0:0:0 | [post] self [wrappedValue] | file://:0:0:0:0 | self [wrappedValue] |
-| file://:0:0:0:0 | self [a, x] | file://:0:0:0:0 | .a [x] |
-| file://:0:0:0:0 | self [s, x] | file://:0:0:0:0 | .s [x] |
-| file://:0:0:0:0 | self [str] | file://:0:0:0:0 | .str |
-| file://:0:0:0:0 | self [v2, some:0] | file://:0:0:0:0 | .v2 [some:0] |
-| file://:0:0:0:0 | self [v2] | file://:0:0:0:0 | .v2 |
-| file://:0:0:0:0 | self [v3] | file://:0:0:0:0 | .v3 |
-| file://:0:0:0:0 | self [v] | file://:0:0:0:0 | .v |
-| file://:0:0:0:0 | self [wrappedValue] | test.swift:958:9:958:9 | self [wrappedValue] |
-| file://:0:0:0:0 | self [x, some:0] | file://:0:0:0:0 | .x [some:0] |
-| file://:0:0:0:0 | self [x] | file://:0:0:0:0 | .x |
-| file://:0:0:0:0 | self [x] | file://:0:0:0:0 | .x |
-| file://:0:0:0:0 | self [x] | file://:0:0:0:0 | .x |
-| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v2] |
-| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v3] |
-| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v] |
-| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [wrappedValue] |
-| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [x] |
-| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [x] |
-| file://:0:0:0:0 | value | test.swift:938:9:938:9 | newValue |
-| file://:0:0:0:0 | value | test.swift:957:9:957:9 | value |
-| file://:0:0:0:0 | value | test.swift:965:9:965:9 | newValue |
-| file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [v2, some:0] |
-| file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [x, some:0] |
-| test.swift:6:19:6:26 | call to source() | test.swift:7:15:7:15 | t1 |
-| test.swift:6:19:6:26 | call to source() | test.swift:9:15:9:15 | t1 |
-| test.swift:6:19:6:26 | call to source() | test.swift:10:15:10:15 | t2 |
-| test.swift:25:20:25:27 | call to source() | test.swift:29:18:29:21 | x |
-| test.swift:26:26:26:33 | call to source() | test.swift:29:26:29:29 | y |
-| test.swift:29:18:29:21 | x | test.swift:30:15:30:15 | x |
-| test.swift:29:26:29:29 | y | test.swift:31:15:31:15 | y |
-| test.swift:35:12:35:19 | call to source() | test.swift:39:15:39:29 | call to callee_source() |
-| test.swift:43:19:43:26 | call to source() | test.swift:50:15:50:15 | t |
-| test.swift:53:1:56:1 | arg[return] | test.swift:61:23:61:23 | [post] x |
-| test.swift:54:11:54:18 | call to source() | test.swift:53:1:56:1 | arg[return] |
-| test.swift:61:23:61:23 | [post] x | test.swift:62:15:62:15 | x |
-| test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] |
-| test.swift:73:18:73:25 | call to source() | test.swift:75:22:75:22 | x |
-| test.swift:73:18:73:25 | call to source() | test.swift:76:15:76:15 | x |
-| test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 |
-| test.swift:75:22:75:22 | x | test.swift:75:32:75:32 | [post] y |
-| test.swift:75:32:75:32 | [post] y | test.swift:77:15:77:15 | y |
-| test.swift:80:1:82:1 | arg[return] | test.swift:97:40:97:40 | [post] x |
-| test.swift:81:11:81:18 | call to source() | test.swift:80:1:82:1 | arg[return] |
-| test.swift:84:1:91:1 | arg[return] | test.swift:104:41:104:41 | [post] x |
-| test.swift:86:15:86:22 | call to source() | test.swift:84:1:91:1 | arg[return] |
-| test.swift:89:15:89:22 | call to source() | test.swift:84:1:91:1 | arg[return] |
-| test.swift:97:40:97:40 | [post] x | test.swift:98:19:98:19 | x |
-| test.swift:104:41:104:41 | [post] x | test.swift:105:19:105:19 | x |
-| test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg |
-| test.swift:113:14:113:19 | arg | test.swift:114:19:114:19 | arg |
-| test.swift:113:14:113:19 | arg | test.swift:114:19:114:19 | arg |
-| test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg |
-| test.swift:114:19:114:19 | arg | test.swift:114:12:114:22 | call to ... |
-| test.swift:114:19:114:19 | arg | test.swift:114:12:114:22 | call to ... |
-| test.swift:114:19:114:19 | arg | test.swift:123:10:123:13 | i |
-| test.swift:118:18:118:25 | call to source() | test.swift:119:31:119:31 | x |
-| test.swift:119:18:119:44 | call to forward(arg:lambda:) | test.swift:120:15:120:15 | y |
-| test.swift:119:31:119:31 | x | test.swift:113:14:113:19 | arg |
-| test.swift:119:31:119:31 | x | test.swift:119:18:119:44 | call to forward(arg:lambda:) |
-| test.swift:122:18:125:6 | call to forward(arg:lambda:) | test.swift:126:15:126:15 | z |
-| test.swift:122:31:122:38 | call to source() | test.swift:113:14:113:19 | arg |
-| test.swift:122:31:122:38 | call to source() | test.swift:122:18:125:6 | call to forward(arg:lambda:) |
-| test.swift:123:10:123:13 | i | test.swift:124:16:124:16 | i |
-| test.swift:142:10:142:13 | i | test.swift:143:16:143:16 | i |
-| test.swift:145:23:145:30 | call to source() | test.swift:142:10:142:13 | i |
-| test.swift:145:23:145:30 | call to source() | test.swift:145:15:145:31 | call to ... |
-| test.swift:149:16:149:23 | call to source() | test.swift:151:15:151:28 | call to ... |
-| test.swift:149:16:149:23 | call to source() | test.swift:159:16:159:29 | call to ... |
-| test.swift:154:10:154:13 | i | test.swift:155:19:155:19 | i |
-| test.swift:157:16:157:23 | call to source() | test.swift:154:10:154:13 | i |
-| test.swift:159:16:159:29 | call to ... | test.swift:154:10:154:13 | i |
-| test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | self [x] |
-| test.swift:163:7:163:7 | value | file://:0:0:0:0 | value |
-| test.swift:169:12:169:22 | value | test.swift:170:9:170:9 | value |
-| test.swift:170:5:170:5 | [post] self [x] | test.swift:169:3:171:3 | self[return] [x] |
-| test.swift:170:9:170:9 | value | test.swift:163:7:163:7 | value |
-| test.swift:170:9:170:9 | value | test.swift:170:5:170:5 | [post] self [x] |
-| test.swift:173:8:173:8 | self [x] | test.swift:174:12:174:12 | self [x] |
-| test.swift:174:12:174:12 | self [x] | test.swift:163:7:163:7 | self [x] |
-| test.swift:174:12:174:12 | self [x] | test.swift:174:12:174:12 | .x |
-| test.swift:180:3:180:3 | [post] a [x] | test.swift:181:13:181:13 | a [x] |
-| test.swift:180:9:180:16 | call to source() | test.swift:163:7:163:7 | value |
-| test.swift:180:9:180:16 | call to source() | test.swift:180:3:180:3 | [post] a [x] |
-| test.swift:181:13:181:13 | a [x] | test.swift:163:7:163:7 | self [x] |
-| test.swift:181:13:181:13 | a [x] | test.swift:181:13:181:15 | .x |
-| test.swift:185:7:185:7 | self [a, x] | file://:0:0:0:0 | self [a, x] |
-| test.swift:194:3:194:3 | [post] b [a, x] | test.swift:195:13:195:13 | b [a, x] |
-| test.swift:194:3:194:5 | [post] getter for .a [x] | test.swift:194:3:194:3 | [post] b [a, x] |
-| test.swift:194:11:194:18 | call to source() | test.swift:163:7:163:7 | value |
-| test.swift:194:11:194:18 | call to source() | test.swift:194:3:194:5 | [post] getter for .a [x] |
-| test.swift:195:13:195:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] |
-| test.swift:195:13:195:13 | b [a, x] | test.swift:195:13:195:15 | .a [x] |
-| test.swift:195:13:195:15 | .a [x] | test.swift:163:7:163:7 | self [x] |
-| test.swift:195:13:195:15 | .a [x] | test.swift:195:13:195:17 | .x |
-| test.swift:200:3:200:3 | [post] a [x] | test.swift:201:13:201:13 | a [x] |
-| test.swift:200:9:200:16 | call to source() | test.swift:169:12:169:22 | value |
-| test.swift:200:9:200:16 | call to source() | test.swift:200:3:200:3 | [post] a [x] |
-| test.swift:201:13:201:13 | a [x] | test.swift:163:7:163:7 | self [x] |
-| test.swift:201:13:201:13 | a [x] | test.swift:201:13:201:15 | .x |
-| test.swift:206:3:206:3 | [post] a [x] | test.swift:207:13:207:13 | a [x] |
-| test.swift:206:9:206:16 | call to source() | test.swift:163:7:163:7 | value |
-| test.swift:206:9:206:16 | call to source() | test.swift:206:3:206:3 | [post] a [x] |
-| test.swift:207:13:207:13 | a [x] | test.swift:173:8:173:8 | self [x] |
-| test.swift:207:13:207:13 | a [x] | test.swift:207:13:207:19 | call to get() |
-| test.swift:212:3:212:3 | [post] a [x] | test.swift:213:13:213:13 | a [x] |
-| test.swift:212:9:212:16 | call to source() | test.swift:169:12:169:22 | value |
-| test.swift:212:9:212:16 | call to source() | test.swift:212:3:212:3 | [post] a [x] |
-| test.swift:213:13:213:13 | a [x] | test.swift:173:8:173:8 | self [x] |
-| test.swift:213:13:213:13 | a [x] | test.swift:213:13:213:19 | call to get() |
-| test.swift:218:3:218:3 | [post] b [a, x] | test.swift:219:13:219:13 | b [a, x] |
-| test.swift:218:3:218:5 | [post] getter for .a [x] | test.swift:218:3:218:3 | [post] b [a, x] |
-| test.swift:218:11:218:18 | call to source() | test.swift:169:12:169:22 | value |
-| test.swift:218:11:218:18 | call to source() | test.swift:218:3:218:5 | [post] getter for .a [x] |
-| test.swift:219:13:219:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] |
-| test.swift:219:13:219:13 | b [a, x] | test.swift:219:13:219:15 | .a [x] |
-| test.swift:219:13:219:15 | .a [x] | test.swift:163:7:163:7 | self [x] |
-| test.swift:219:13:219:15 | .a [x] | test.swift:219:13:219:17 | .x |
-| test.swift:225:14:225:21 | call to source() | test.swift:235:13:235:15 | .source_value |
-| test.swift:225:14:225:21 | call to source() | test.swift:238:13:238:15 | .source_value |
-| test.swift:259:12:259:19 | call to source() | test.swift:259:12:259:19 | call to source() [some:0] |
-| test.swift:259:12:259:19 | call to source() | test.swift:263:13:263:28 | call to optionalSource() |
-| test.swift:259:12:259:19 | call to source() | test.swift:536:13:536:28 | call to optionalSource() |
-| test.swift:259:12:259:19 | call to source() | test.swift:563:13:563:28 | call to optionalSource() |
-| test.swift:259:12:259:19 | call to source() [some:0] | test.swift:263:13:263:28 | call to optionalSource() [some:0] |
-| test.swift:259:12:259:19 | call to source() [some:0] | test.swift:536:13:536:28 | call to optionalSource() [some:0] |
-| test.swift:259:12:259:19 | call to source() [some:0] | test.swift:563:13:563:28 | call to optionalSource() [some:0] |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:265:15:265:15 | x |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:267:15:267:16 | ...! |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:271:15:271:16 | ...? |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:274:15:274:20 | ... ??(_:_:) ... |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:275:15:275:27 | ... ??(_:_:) ... |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:279:15:279:31 | ... ? ... : ... |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:280:15:280:38 | ... ? ... : ... |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:285:19:285:19 | z |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:291:16:291:17 | ...? |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:300:15:300:15 | z1 |
-| test.swift:263:13:263:28 | call to optionalSource() | test.swift:303:15:303:16 | ...! |
-| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:267:15:267:15 | x [some:0] |
-| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:279:26:279:26 | x [some:0] |
-| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:280:26:280:26 | x [some:0] |
-| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:284:8:284:12 | let ...? [some:0] |
-| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:291:16:291:17 | ...? [some:0] |
-| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:298:11:298:15 | let ...? [some:0] |
-| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:303:15:303:15 | x [some:0] |
-| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:306:13:306:24 | .some(...) [some:0] |
-| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:314:10:314:21 | .some(...) [some:0] |
-| test.swift:267:15:267:15 | x [some:0] | test.swift:267:15:267:16 | ...! |
-| test.swift:270:15:270:22 | call to source() | test.swift:270:15:270:31 | call to signum() |
-| test.swift:271:15:271:16 | ...? | test.swift:271:15:271:25 | call to signum() |
-| test.swift:271:15:271:25 | call to signum() | test.swift:271:15:271:25 | OptionalEvaluationExpr |
-| test.swift:275:20:275:27 | call to source() | test.swift:275:15:275:27 | ... ??(_:_:) ... |
-| test.swift:277:20:277:27 | call to source() | test.swift:277:15:277:27 | ... ??(_:_:) ... |
-| test.swift:279:26:279:26 | x [some:0] | test.swift:279:26:279:27 | ...! |
-| test.swift:279:26:279:27 | ...! | test.swift:279:15:279:31 | ... ? ... : ... |
-| test.swift:280:26:280:26 | x [some:0] | test.swift:280:26:280:27 | ...! |
-| test.swift:280:26:280:27 | ...! | test.swift:280:15:280:38 | ... ? ... : ... |
-| test.swift:280:31:280:38 | call to source() | test.swift:280:15:280:38 | ... ? ... : ... |
-| test.swift:282:31:282:38 | call to source() | test.swift:282:15:282:38 | ... ? ... : ... |
-| test.swift:284:8:284:12 | let ...? [some:0] | test.swift:284:12:284:12 | z |
-| test.swift:284:12:284:12 | z | test.swift:285:19:285:19 | z |
-| test.swift:291:8:291:12 | let ...? [some:0] | test.swift:291:12:291:12 | z |
-| test.swift:291:12:291:12 | z | test.swift:292:19:292:19 | z |
-| test.swift:291:16:291:17 | ...? | test.swift:291:16:291:26 | call to signum() |
-| test.swift:291:16:291:17 | ...? [some:0] | test.swift:291:16:291:26 | call to signum() [some:0] |
-| test.swift:291:16:291:26 | call to signum() | test.swift:291:16:291:26 | call to signum() [some:0] |
-| test.swift:291:16:291:26 | call to signum() | test.swift:292:19:292:19 | z |
-| test.swift:291:16:291:26 | call to signum() [some:0] | test.swift:291:8:291:12 | let ...? [some:0] |
-| test.swift:298:11:298:15 | let ...? [some:0] | test.swift:298:15:298:15 | z1 |
-| test.swift:298:15:298:15 | z1 | test.swift:300:15:300:15 | z1 |
-| test.swift:303:15:303:15 | x [some:0] | test.swift:303:15:303:16 | ...! |
-| test.swift:303:15:303:16 | ...! | test.swift:303:15:303:25 | call to signum() |
-| test.swift:306:13:306:24 | .some(...) [some:0] | test.swift:306:23:306:23 | z |
-| test.swift:306:23:306:23 | z | test.swift:307:19:307:19 | z |
-| test.swift:314:10:314:21 | .some(...) [some:0] | test.swift:314:20:314:20 | z |
-| test.swift:314:20:314:20 | z | test.swift:315:19:315:19 | z |
-| test.swift:331:14:331:26 | (...) [Tuple element at index 1] | test.swift:335:15:335:15 | t1 [Tuple element at index 1] |
-| test.swift:331:18:331:25 | call to source() | test.swift:331:14:331:26 | (...) [Tuple element at index 1] |
-| test.swift:335:15:335:15 | t1 [Tuple element at index 1] | test.swift:335:15:335:18 | .1 |
-| test.swift:343:5:343:5 | [post] t1 [Tuple element at index 0] | test.swift:346:15:346:15 | t1 [Tuple element at index 0] |
-| test.swift:343:12:343:19 | call to source() | test.swift:343:5:343:5 | [post] t1 [Tuple element at index 0] |
-| test.swift:346:15:346:15 | t1 [Tuple element at index 0] | test.swift:346:15:346:18 | .0 |
-| test.swift:351:14:351:45 | (...) [Tuple element at index 0] | test.swift:353:9:353:17 | (...) [Tuple element at index 0] |
-| test.swift:351:14:351:45 | (...) [Tuple element at index 0] | test.swift:356:15:356:15 | t1 [Tuple element at index 0] |
-| test.swift:351:14:351:45 | (...) [Tuple element at index 0] | test.swift:360:15:360:15 | t2 [Tuple element at index 0] |
-| test.swift:351:14:351:45 | (...) [Tuple element at index 1] | test.swift:353:9:353:17 | (...) [Tuple element at index 1] |
-| test.swift:351:14:351:45 | (...) [Tuple element at index 1] | test.swift:357:15:357:15 | t1 [Tuple element at index 1] |
-| test.swift:351:14:351:45 | (...) [Tuple element at index 1] | test.swift:361:15:361:15 | t2 [Tuple element at index 1] |
-| test.swift:351:18:351:25 | call to source() | test.swift:351:14:351:45 | (...) [Tuple element at index 0] |
-| test.swift:351:31:351:38 | call to source() | test.swift:351:14:351:45 | (...) [Tuple element at index 1] |
-| test.swift:353:9:353:17 | (...) [Tuple element at index 0] | test.swift:353:10:353:10 | a |
-| test.swift:353:9:353:17 | (...) [Tuple element at index 1] | test.swift:353:13:353:13 | b |
-| test.swift:353:10:353:10 | a | test.swift:363:15:363:15 | a |
-| test.swift:353:13:353:13 | b | test.swift:364:15:364:15 | b |
-| test.swift:356:15:356:15 | t1 [Tuple element at index 0] | test.swift:356:15:356:18 | .0 |
-| test.swift:357:15:357:15 | t1 [Tuple element at index 1] | test.swift:357:15:357:18 | .1 |
-| test.swift:360:15:360:15 | t2 [Tuple element at index 0] | test.swift:360:15:360:18 | .0 |
-| test.swift:361:15:361:15 | t2 [Tuple element at index 1] | test.swift:361:15:361:18 | .1 |
-| test.swift:368:22:368:36 | t [Tuple element at index 1] | test.swift:369:13:369:13 | t [Tuple element at index 1] |
-| test.swift:369:13:369:13 | t [Tuple element at index 1] | test.swift:369:13:369:15 | .1 |
-| test.swift:369:13:369:15 | .1 | test.swift:369:12:369:19 | (...) [Tuple element at index 0] |
-| test.swift:375:14:375:26 | (...) [Tuple element at index 1] | test.swift:376:30:376:30 | t1 [Tuple element at index 1] |
-| test.swift:375:14:375:26 | (...) [Tuple element at index 1] | test.swift:377:30:377:30 | t1 [Tuple element at index 1] |
-| test.swift:375:14:375:26 | (...) [Tuple element at index 1] | test.swift:380:15:380:15 | t1 [Tuple element at index 1] |
-| test.swift:375:18:375:25 | call to source() | test.swift:375:14:375:26 | (...) [Tuple element at index 1] |
-| test.swift:376:14:376:32 | call to tupleShiftLeft1(_:) [Tuple element at index 0] | test.swift:381:15:381:15 | t2 [Tuple element at index 0] |
-| test.swift:376:30:376:30 | t1 [Tuple element at index 1] | test.swift:368:22:368:36 | t [Tuple element at index 1] |
-| test.swift:376:30:376:30 | t1 [Tuple element at index 1] | test.swift:376:14:376:32 | call to tupleShiftLeft1(_:) [Tuple element at index 0] |
-| test.swift:377:14:377:32 | call to tupleShiftLeft2(_:) [Tuple element at index 0] | test.swift:383:15:383:15 | t3 [Tuple element at index 0] |
-| test.swift:377:30:377:30 | t1 [Tuple element at index 1] | test.swift:377:14:377:32 | call to tupleShiftLeft2(_:) [Tuple element at index 0] |
-| test.swift:380:15:380:15 | t1 [Tuple element at index 1] | test.swift:380:15:380:18 | .1 |
-| test.swift:381:15:381:15 | t2 [Tuple element at index 0] | test.swift:381:15:381:18 | .0 |
-| test.swift:383:15:383:15 | t3 [Tuple element at index 0] | test.swift:383:15:383:18 | .0 |
-| test.swift:394:16:394:21 | v | test.swift:394:61:394:61 | v |
-| test.swift:394:61:394:61 | v | test.swift:394:45:394:62 | call to ... [mySingle:0] |
-| test.swift:396:18:396:23 | v | test.swift:396:59:396:59 | v |
-| test.swift:396:59:396:59 | v | test.swift:396:45:396:60 | call to ... [some:0] |
-| test.swift:422:9:422:27 | call to ... [mySingle:0] | test.swift:427:10:427:25 | .mySingle(...) [mySingle:0] |
-| test.swift:422:9:422:27 | call to ... [mySingle:0] | test.swift:436:13:436:28 | .mySingle(...) [mySingle:0] |
-| test.swift:422:19:422:26 | call to source() | test.swift:422:9:422:27 | call to ... [mySingle:0] |
-| test.swift:427:10:427:25 | .mySingle(...) [mySingle:0] | test.swift:427:24:427:24 | a |
-| test.swift:427:24:427:24 | a | test.swift:428:19:428:19 | a |
-| test.swift:436:13:436:28 | .mySingle(...) [mySingle:0] | test.swift:436:27:436:27 | x |
-| test.swift:436:27:436:27 | x | test.swift:437:19:437:19 | x |
-| test.swift:444:9:444:34 | call to ... [myPair:1] | test.swift:451:10:451:30 | .myPair(...) [myPair:1] |
-| test.swift:444:9:444:34 | call to ... [myPair:1] | test.swift:461:13:461:33 | .myPair(...) [myPair:1] |
-| test.swift:444:9:444:34 | call to ... [myPair:1] | test.swift:466:33:466:33 | a [myPair:1] |
-| test.swift:444:9:444:34 | call to ... [myPair:1] | test.swift:495:13:495:13 | a [myPair:1] |
-| test.swift:444:26:444:33 | call to source() | test.swift:444:9:444:34 | call to ... [myPair:1] |
-| test.swift:451:10:451:30 | .myPair(...) [myPair:1] | test.swift:451:29:451:29 | b |
-| test.swift:451:29:451:29 | b | test.swift:453:19:453:19 | b |
-| test.swift:461:13:461:33 | .myPair(...) [myPair:1] | test.swift:461:32:461:32 | y |
-| test.swift:461:32:461:32 | y | test.swift:463:19:463:19 | y |
-| test.swift:466:21:466:34 | call to ... [myCons:1, myPair:1] | test.swift:476:14:476:38 | .myCons(...) [myCons:1, myPair:1] |
-| test.swift:466:21:466:34 | call to ... [myCons:1, myPair:1] | test.swift:491:17:491:41 | .myCons(...) [myCons:1, myPair:1] |
-| test.swift:466:21:466:34 | call to ... [myCons:1, myPair:1] | test.swift:495:16:495:16 | b [myCons:1, myPair:1] |
-| test.swift:466:33:466:33 | a [myPair:1] | test.swift:466:21:466:34 | call to ... [myCons:1, myPair:1] |
-| test.swift:476:14:476:38 | .myCons(...) [myCons:1, myPair:1] | test.swift:476:25:476:37 | .myPair(...) [myPair:1] |
-| test.swift:476:25:476:37 | .myPair(...) [myPair:1] | test.swift:476:36:476:36 | c |
-| test.swift:476:36:476:36 | c | test.swift:479:19:479:19 | c |
-| test.swift:487:13:487:39 | .myPair(...) [myPair:0] | test.swift:487:31:487:31 | x |
-| test.swift:487:31:487:31 | x | test.swift:488:19:488:19 | x |
-| test.swift:487:43:487:62 | call to ... [myPair:0] | test.swift:487:13:487:39 | .myPair(...) [myPair:0] |
-| test.swift:487:51:487:58 | call to source() | test.swift:487:43:487:62 | call to ... [myPair:0] |
-| test.swift:491:17:491:41 | .myCons(...) [myCons:1, myPair:1] | test.swift:491:28:491:40 | .myPair(...) [myPair:1] |
-| test.swift:491:28:491:40 | .myPair(...) [myPair:1] | test.swift:491:39:491:39 | c |
-| test.swift:491:39:491:39 | c | test.swift:492:19:492:19 | c |
-| test.swift:495:12:495:17 | (...) [Tuple element at index 0, myPair:1] | test.swift:496:14:496:55 | (...) [Tuple element at index 0, myPair:1] |
-| test.swift:495:12:495:17 | (...) [Tuple element at index 1, myCons:1, myPair:1] | test.swift:496:14:496:55 | (...) [Tuple element at index 1, myCons:1, myPair:1] |
-| test.swift:495:13:495:13 | a [myPair:1] | test.swift:495:12:495:17 | (...) [Tuple element at index 0, myPair:1] |
-| test.swift:495:16:495:16 | b [myCons:1, myPair:1] | test.swift:495:12:495:17 | (...) [Tuple element at index 1, myCons:1, myPair:1] |
-| test.swift:496:14:496:55 | (...) [Tuple element at index 0, myPair:1] | test.swift:496:15:496:27 | .myPair(...) [myPair:1] |
-| test.swift:496:14:496:55 | (...) [Tuple element at index 1, myCons:1, myPair:1] | test.swift:496:30:496:54 | .myCons(...) [myCons:1, myPair:1] |
-| test.swift:496:15:496:27 | .myPair(...) [myPair:1] | test.swift:496:26:496:26 | b |
-| test.swift:496:26:496:26 | b | test.swift:498:19:498:19 | b |
-| test.swift:496:30:496:54 | .myCons(...) [myCons:1, myPair:1] | test.swift:496:41:496:53 | .myPair(...) [myPair:1] |
-| test.swift:496:41:496:53 | .myPair(...) [myPair:1] | test.swift:496:52:496:52 | e |
-| test.swift:496:52:496:52 | e | test.swift:501:19:501:19 | e |
-| test.swift:507:14:507:38 | call to ... [mySingle:0] | test.swift:513:13:513:35 | .mySingle(...) [mySingle:0] |
-| test.swift:507:30:507:37 | call to source() | test.swift:507:14:507:38 | call to ... [mySingle:0] |
-| test.swift:509:14:509:32 | call to mkMyEnum1(_:) [mySingle:0] | test.swift:515:13:515:35 | .mySingle(...) [mySingle:0] |
-| test.swift:509:24:509:31 | call to source() | test.swift:394:16:394:21 | v |
-| test.swift:509:24:509:31 | call to source() | test.swift:509:14:509:32 | call to mkMyEnum1(_:) [mySingle:0] |
-| test.swift:511:14:511:32 | call to mkMyEnum2(_:) [mySingle:0] | test.swift:517:13:517:35 | .mySingle(...) [mySingle:0] |
-| test.swift:511:24:511:31 | call to source() | test.swift:511:14:511:32 | call to mkMyEnum2(_:) [mySingle:0] |
-| test.swift:513:13:513:35 | .mySingle(...) [mySingle:0] | test.swift:513:33:513:33 | d2 |
-| test.swift:513:33:513:33 | d2 | test.swift:513:54:513:54 | d2 |
-| test.swift:515:13:515:35 | .mySingle(...) [mySingle:0] | test.swift:515:33:515:33 | d4 |
-| test.swift:515:33:515:33 | d4 | test.swift:515:54:515:54 | d4 |
-| test.swift:517:13:517:35 | .mySingle(...) [mySingle:0] | test.swift:517:33:517:33 | d6 |
-| test.swift:517:33:517:33 | d6 | test.swift:517:54:517:54 | d6 |
-| test.swift:520:14:520:36 | call to ... [some:0] | test.swift:526:15:526:15 | e2 [some:0] |
-| test.swift:520:28:520:35 | call to source() | test.swift:520:14:520:36 | call to ... [some:0] |
-| test.swift:522:14:522:34 | call to mkOptional1(_:) [some:0] | test.swift:528:15:528:15 | e4 [some:0] |
-| test.swift:522:26:522:33 | call to source() | test.swift:396:18:396:23 | v |
-| test.swift:522:26:522:33 | call to source() | test.swift:522:14:522:34 | call to mkOptional1(_:) [some:0] |
-| test.swift:524:14:524:34 | call to mkOptional2(_:) [some:0] | test.swift:530:15:530:15 | e6 [some:0] |
-| test.swift:524:26:524:33 | call to source() | test.swift:524:14:524:34 | call to mkOptional2(_:) [some:0] |
-| test.swift:526:15:526:15 | e2 [some:0] | test.swift:526:15:526:17 | ...! |
-| test.swift:528:15:528:15 | e4 [some:0] | test.swift:528:15:528:17 | ...! |
-| test.swift:530:15:530:15 | e6 [some:0] | test.swift:530:15:530:17 | ...! |
-| test.swift:536:13:536:28 | call to optionalSource() | test.swift:539:19:539:19 | a |
-| test.swift:536:13:536:28 | call to optionalSource() [some:0] | test.swift:538:8:538:12 | let ...? [some:0] |
-| test.swift:536:13:536:28 | call to optionalSource() [some:0] | test.swift:543:19:543:19 | x [some:0] |
-| test.swift:538:8:538:12 | let ...? [some:0] | test.swift:538:12:538:12 | a |
-| test.swift:538:12:538:12 | a | test.swift:539:19:539:19 | a |
-| test.swift:543:18:543:23 | (...) [Tuple element at index 0, some:0] | test.swift:545:10:545:37 | (...) [Tuple element at index 0, some:0] |
-| test.swift:543:19:543:19 | x [some:0] | test.swift:543:18:543:23 | (...) [Tuple element at index 0, some:0] |
-| test.swift:545:10:545:37 | (...) [Tuple element at index 0, some:0] | test.swift:545:11:545:22 | .some(...) [some:0] |
-| test.swift:545:11:545:22 | .some(...) [some:0] | test.swift:545:21:545:21 | a |
-| test.swift:545:21:545:21 | a | test.swift:546:19:546:19 | a |
-| test.swift:559:9:559:9 | self [x, some:0] | file://:0:0:0:0 | self [x, some:0] |
-| test.swift:559:9:559:9 | self [x] | file://:0:0:0:0 | self [x] |
-| test.swift:559:9:559:9 | value | file://:0:0:0:0 | value |
-| test.swift:559:9:559:9 | value [some:0] | file://:0:0:0:0 | value [some:0] |
-| test.swift:563:13:563:28 | call to optionalSource() | test.swift:565:12:565:12 | x |
-| test.swift:563:13:563:28 | call to optionalSource() [some:0] | test.swift:565:12:565:12 | x [some:0] |
-| test.swift:565:5:565:5 | [post] cx [x, some:0] | test.swift:569:20:569:20 | cx [x, some:0] |
-| test.swift:565:5:565:5 | [post] cx [x] | test.swift:569:20:569:20 | cx [x] |
-| test.swift:565:12:565:12 | x | test.swift:559:9:559:9 | value |
-| test.swift:565:12:565:12 | x | test.swift:565:5:565:5 | [post] cx [x] |
-| test.swift:565:12:565:12 | x [some:0] | test.swift:559:9:559:9 | value [some:0] |
-| test.swift:565:12:565:12 | x [some:0] | test.swift:565:5:565:5 | [post] cx [x, some:0] |
-| test.swift:569:11:569:15 | let ...? [some:0] | test.swift:569:15:569:15 | z1 |
-| test.swift:569:15:569:15 | z1 | test.swift:570:15:570:15 | z1 |
-| test.swift:569:20:569:20 | cx [x, some:0] | test.swift:559:9:559:9 | self [x, some:0] |
-| test.swift:569:20:569:20 | cx [x, some:0] | test.swift:569:20:569:23 | .x [some:0] |
-| test.swift:569:20:569:20 | cx [x] | test.swift:559:9:559:9 | self [x] |
-| test.swift:569:20:569:20 | cx [x] | test.swift:569:20:569:23 | .x |
-| test.swift:569:20:569:23 | .x | test.swift:570:15:570:15 | z1 |
-| test.swift:569:20:569:23 | .x [some:0] | test.swift:569:11:569:15 | let ...? [some:0] |
-| test.swift:576:14:576:21 | call to source() | test.swift:576:13:576:21 | call to +(_:) |
-| test.swift:585:9:585:9 | self [str] | file://:0:0:0:0 | self [str] |
-| test.swift:586:10:586:13 | s | test.swift:587:13:587:13 | s |
-| test.swift:587:7:587:7 | [post] self [str] | test.swift:586:5:588:5 | self[return] [str] |
-| test.swift:587:13:587:13 | s | test.swift:587:7:587:7 | [post] self [str] |
-| test.swift:592:17:595:5 | self[return] [str] | test.swift:600:13:600:41 | call to MyClass.init(contentsOfFile:) [str] |
-| test.swift:593:7:593:7 | [post] self [str] | test.swift:592:17:595:5 | self[return] [str] |
-| test.swift:593:7:593:7 | [post] self [str] | test.swift:594:17:594:17 | self [str] |
-| test.swift:593:20:593:28 | call to source3() | test.swift:586:10:586:13 | s |
-| test.swift:593:20:593:28 | call to source3() | test.swift:593:7:593:7 | [post] self [str] |
-| test.swift:594:17:594:17 | self [str] | test.swift:594:17:594:17 | .str |
-| test.swift:599:13:599:33 | call to MyClass.init(s:) [str] | test.swift:585:9:585:9 | self [str] |
-| test.swift:599:13:599:33 | call to MyClass.init(s:) [str] | test.swift:599:13:599:35 | .str |
-| test.swift:599:24:599:32 | call to source3() | test.swift:586:10:586:13 | s |
-| test.swift:599:24:599:32 | call to source3() | test.swift:599:13:599:33 | call to MyClass.init(s:) [str] |
-| test.swift:600:13:600:41 | call to MyClass.init(contentsOfFile:) [str] | test.swift:585:9:585:9 | self [str] |
-| test.swift:600:13:600:41 | call to MyClass.init(contentsOfFile:) [str] | test.swift:600:13:600:43 | .str |
-| test.swift:615:7:615:7 | self [x] | file://:0:0:0:0 | self [x] |
-| test.swift:617:8:617:11 | x | test.swift:618:14:618:14 | x |
-| test.swift:618:5:618:5 | [post] self [x] | test.swift:617:3:619:3 | self[return] [x] |
-| test.swift:618:14:618:14 | x | test.swift:618:5:618:5 | [post] self [x] |
-| test.swift:623:11:623:24 | call to S.init(x:) [x] | test.swift:625:13:625:13 | s [x] |
-| test.swift:623:11:623:24 | call to S.init(x:) [x] | test.swift:628:13:628:13 | s [x] |
-| test.swift:623:16:623:23 | call to source() | test.swift:617:8:617:11 | x |
-| test.swift:623:16:623:23 | call to source() | test.swift:623:11:623:24 | call to S.init(x:) [x] |
-| test.swift:624:11:624:14 | enter #keyPath(...) [x] | test.swift:624:14:624:14 | KeyPathComponent |
-| test.swift:624:14:624:14 | KeyPathComponent | test.swift:624:11:624:14 | exit #keyPath(...) |
-| test.swift:625:13:625:13 | s [x] | test.swift:624:11:624:14 | enter #keyPath(...) [x] |
-| test.swift:625:13:625:13 | s [x] | test.swift:625:13:625:25 | \\...[...] |
-| test.swift:627:36:627:38 | enter #keyPath(...) [x] | test.swift:627:38:627:38 | KeyPathComponent |
-| test.swift:627:38:627:38 | KeyPathComponent | test.swift:627:36:627:38 | exit #keyPath(...) |
-| test.swift:628:13:628:13 | s [x] | test.swift:627:36:627:38 | enter #keyPath(...) [x] |
-| test.swift:628:13:628:13 | s [x] | test.swift:628:13:628:32 | \\...[...] |
-| test.swift:632:7:632:7 | self [s, x] | file://:0:0:0:0 | self [s, x] |
-| test.swift:634:8:634:11 | s [x] | test.swift:635:14:635:14 | s [x] |
-| test.swift:635:5:635:5 | [post] self [s, x] | test.swift:634:3:636:3 | self[return] [s, x] |
-| test.swift:635:14:635:14 | s [x] | test.swift:635:5:635:5 | [post] self [s, x] |
-| test.swift:640:11:640:24 | call to S.init(x:) [x] | test.swift:641:18:641:18 | s [x] |
-| test.swift:640:16:640:23 | call to source() | test.swift:617:8:617:11 | x |
-| test.swift:640:16:640:23 | call to source() | test.swift:640:11:640:24 | call to S.init(x:) [x] |
-| test.swift:641:12:641:19 | call to S2.init(s:) [s, x] | test.swift:643:13:643:13 | s2 [s, x] |
-| test.swift:641:18:641:18 | s [x] | test.swift:634:8:634:11 | s [x] |
-| test.swift:641:18:641:18 | s [x] | test.swift:641:12:641:19 | call to S2.init(s:) [s, x] |
-| test.swift:642:11:642:17 | enter #keyPath(...) [s, x] | test.swift:642:15:642:15 | KeyPathComponent [x] |
-| test.swift:642:15:642:15 | KeyPathComponent [x] | test.swift:642:17:642:17 | KeyPathComponent |
-| test.swift:642:17:642:17 | KeyPathComponent | test.swift:642:11:642:17 | exit #keyPath(...) |
-| test.swift:643:13:643:13 | s2 [s, x] | test.swift:642:11:642:17 | enter #keyPath(...) [s, x] |
-| test.swift:643:13:643:13 | s2 [s, x] | test.swift:643:13:643:26 | \\...[...] |
-| test.swift:647:17:647:26 | [...] [Collection element] | test.swift:649:15:649:15 | array [Collection element] |
-| test.swift:647:18:647:25 | call to source() | test.swift:647:17:647:26 | [...] [Collection element] |
-| test.swift:648:13:648:22 | enter #keyPath(...) [Collection element] | test.swift:648:20:648:22 | KeyPathComponent |
-| test.swift:648:20:648:22 | KeyPathComponent | test.swift:648:13:648:22 | exit #keyPath(...) |
-| test.swift:649:15:649:15 | array [Collection element] | test.swift:648:13:648:22 | enter #keyPath(...) [Collection element] |
-| test.swift:649:15:649:15 | array [Collection element] | test.swift:649:15:649:31 | \\...[...] |
-| test.swift:655:8:655:12 | s [some:0, x] | test.swift:656:14:656:14 | s [some:0, x] |
-| test.swift:656:5:656:5 | [post] self [s, some:0, x] | test.swift:655:3:657:3 | self[return] [s, some:0, x] |
-| test.swift:656:14:656:14 | s [some:0, x] | test.swift:656:5:656:5 | [post] self [s, some:0, x] |
-| test.swift:661:13:661:26 | call to S.init(x:) [x] | test.swift:662:29:662:29 | s [x] |
-| test.swift:661:18:661:25 | call to source() | test.swift:617:8:617:11 | x |
-| test.swift:661:18:661:25 | call to source() | test.swift:661:13:661:26 | call to S.init(x:) [x] |
-| test.swift:662:14:662:30 | call to S2_Optional.init(s:) [s, some:0, x] | test.swift:664:15:664:15 | s2 [s, some:0, x] |
-| test.swift:662:29:662:29 | s [some:0, x] | test.swift:655:8:655:12 | s [some:0, x] |
-| test.swift:662:29:662:29 | s [some:0, x] | test.swift:662:14:662:30 | call to S2_Optional.init(s:) [s, some:0, x] |
-| test.swift:662:29:662:29 | s [x] | test.swift:662:29:662:29 | s [some:0, x] |
-| test.swift:663:13:663:29 | enter #keyPath(...) [s, some:0, x] | test.swift:663:26:663:26 | KeyPathComponent [some:0, x] |
-| test.swift:663:26:663:26 | KeyPathComponent [some:0, x] | test.swift:663:27:663:27 | KeyPathComponent [x] |
-| test.swift:663:27:663:27 | KeyPathComponent [x] | test.swift:663:29:663:29 | KeyPathComponent |
-| test.swift:663:29:663:29 | KeyPathComponent | file://:0:0:0:0 | KeyPathComponent [some:0] |
-| test.swift:664:15:664:15 | s2 [s, some:0, x] | test.swift:663:13:663:29 | enter #keyPath(...) [s, some:0, x] |
-| test.swift:664:15:664:15 | s2 [s, some:0, x] | test.swift:664:15:664:28 | \\...[...] [some:0] |
-| test.swift:664:15:664:28 | \\...[...] [some:0] | test.swift:664:15:664:29 | ...! |
-| test.swift:668:13:668:20 | call to source() | test.swift:676:15:676:15 | y |
-| test.swift:678:9:678:16 | call to source() | test.swift:680:11:680:11 | x |
-| test.swift:678:9:678:16 | call to source() | test.swift:681:15:681:15 | x |
-| test.swift:680:11:680:11 | x | test.swift:680:15:680:15 | [post] y |
-| test.swift:680:15:680:15 | [post] y | test.swift:682:15:682:15 | y |
-| test.swift:688:5:688:5 | [post] arr1 [Collection element] | test.swift:689:15:689:15 | arr1 [Collection element] |
-| test.swift:688:15:688:22 | call to source() | test.swift:688:5:688:5 | [post] arr1 [Collection element] |
-| test.swift:689:15:689:15 | arr1 [Collection element] | test.swift:689:15:689:21 | ...[...] |
-| test.swift:692:16:692:25 | [...] [Collection element] | test.swift:693:15:693:15 | arr2 [Collection element] |
-| test.swift:692:17:692:24 | call to source() | test.swift:692:16:692:25 | [...] [Collection element] |
-| test.swift:693:15:693:15 | arr2 [Collection element] | test.swift:693:15:693:21 | ...[...] |
-| test.swift:695:18:695:29 | [...] [Collection element, Collection element] | test.swift:697:15:697:15 | matrix [Collection element, Collection element] |
-| test.swift:695:19:695:28 | [...] [Collection element] | test.swift:695:18:695:29 | [...] [Collection element, Collection element] |
-| test.swift:695:20:695:27 | call to source() | test.swift:695:19:695:28 | [...] [Collection element] |
-| test.swift:697:15:697:15 | matrix [Collection element, Collection element] | test.swift:697:15:697:23 | ...[...] [Collection element] |
-| test.swift:697:15:697:23 | ...[...] [Collection element] | test.swift:697:15:697:26 | ...[...] |
-| test.swift:700:5:700:5 | [post] matrix2 [Collection element, Collection element] | test.swift:701:15:701:15 | matrix2 [Collection element, Collection element] |
-| test.swift:700:5:700:14 | [post] getter for ...[...] [Collection element] | test.swift:700:5:700:5 | [post] matrix2 [Collection element, Collection element] |
-| test.swift:700:21:700:28 | call to source() | test.swift:700:5:700:14 | [post] getter for ...[...] [Collection element] |
-| test.swift:701:15:701:15 | matrix2 [Collection element, Collection element] | test.swift:701:15:701:24 | ...[...] [Collection element] |
-| test.swift:701:15:701:24 | ...[...] [Collection element] | test.swift:701:15:701:27 | ...[...] |
-| test.swift:708:16:708:51 | call to Array<Element>.init(repeating:count:) [Collection element] | test.swift:709:15:709:15 | arr5 [Collection element] |
-| test.swift:708:33:708:40 | call to source() | test.swift:708:16:708:51 | call to Array<Element>.init(repeating:count:) [Collection element] |
-| test.swift:709:15:709:15 | arr5 [Collection element] | test.swift:709:15:709:21 | ...[...] |
-| test.swift:712:5:712:5 | [post] arr6 [Collection element] | test.swift:713:15:713:15 | arr6 [Collection element] |
-| test.swift:712:17:712:24 | call to source() | test.swift:712:5:712:5 | [post] arr6 [Collection element] |
-| test.swift:713:15:713:15 | arr6 [Collection element] | test.swift:713:15:713:21 | ...[...] |
-| test.swift:715:16:715:25 | [...] [Collection element] | test.swift:716:15:716:15 | arr7 [Collection element] |
-| test.swift:715:17:715:24 | call to source() | test.swift:715:16:715:25 | [...] [Collection element] |
-| test.swift:716:15:716:15 | arr7 [Collection element] | test.swift:716:15:716:34 | call to randomElement() [some:0] |
-| test.swift:716:15:716:34 | call to randomElement() [some:0] | test.swift:716:15:716:35 | ...! |
-| test.swift:722:5:722:5 | [post] set1 [Collection element] | test.swift:723:15:723:15 | set1 [Collection element] |
-| test.swift:722:17:722:24 | call to source() | test.swift:722:5:722:5 | [post] set1 [Collection element] |
-| test.swift:723:15:723:15 | set1 [Collection element] | test.swift:723:15:723:34 | call to randomElement() [some:0] |
-| test.swift:723:15:723:34 | call to randomElement() [some:0] | test.swift:723:15:723:35 | ...! |
-| test.swift:725:16:725:30 | call to Set<Element>.init(_:) [Collection element] | test.swift:726:15:726:15 | set2 [Collection element] |
-| test.swift:725:20:725:29 | [...] [Collection element] | test.swift:725:16:725:30 | call to Set<Element>.init(_:) [Collection element] |
-| test.swift:725:21:725:28 | call to source() | test.swift:725:20:725:29 | [...] [Collection element] |
-| test.swift:726:15:726:15 | set2 [Collection element] | test.swift:726:15:726:34 | call to randomElement() [some:0] |
-| test.swift:726:15:726:34 | call to randomElement() [some:0] | test.swift:726:15:726:35 | ...! |
-| test.swift:731:9:731:9 | self [v2, some:0] | file://:0:0:0:0 | self [v2, some:0] |
-| test.swift:731:9:731:9 | self [v2] | file://:0:0:0:0 | self [v2] |
-| test.swift:731:9:731:9 | value | file://:0:0:0:0 | value |
-| test.swift:731:9:731:9 | value [some:0] | file://:0:0:0:0 | value [some:0] |
-| test.swift:732:9:732:9 | self [v3] | file://:0:0:0:0 | self [v3] |
-| test.swift:732:9:732:9 | value | file://:0:0:0:0 | value |
-| test.swift:742:5:742:5 | v1 [some:0] | test.swift:752:15:752:15 | v1 [some:0] |
-| test.swift:742:11:742:18 | call to source() | test.swift:742:5:742:5 | v1 [some:0] |
-| test.swift:743:10:743:17 | call to source() | test.swift:743:10:743:17 | call to source() [some:0] |
-| test.swift:743:10:743:17 | call to source() | test.swift:753:15:753:17 | ...! |
-| test.swift:743:10:743:17 | call to source() [some:0] | test.swift:753:15:753:15 | v2 [some:0] |
-| test.swift:744:10:744:17 | call to source() | test.swift:754:15:754:15 | v3 |
-| test.swift:746:5:746:5 | [post] mo1 [v2, some:0] | test.swift:747:5:747:5 | mo1 [v2, some:0] |
-| test.swift:746:5:746:5 | [post] mo1 [v2] | test.swift:747:5:747:5 | mo1 [v2] |
-| test.swift:746:14:746:21 | call to source() | test.swift:731:9:731:9 | value |
-| test.swift:746:14:746:21 | call to source() | test.swift:746:5:746:5 | [post] mo1 [v2] |
-| test.swift:746:14:746:21 | call to source() | test.swift:746:14:746:21 | call to source() [some:0] |
-| test.swift:746:14:746:21 | call to source() [some:0] | test.swift:731:9:731:9 | value [some:0] |
-| test.swift:746:14:746:21 | call to source() [some:0] | test.swift:746:5:746:5 | [post] mo1 [v2, some:0] |
-| test.swift:747:5:747:5 | [post] mo1 [v3] | test.swift:757:15:757:15 | mo1 [v3] |
-| test.swift:747:5:747:5 | mo1 [v2, some:0] | test.swift:756:15:756:15 | mo1 [v2, some:0] |
-| test.swift:747:5:747:5 | mo1 [v2] | test.swift:756:15:756:15 | mo1 [v2] |
-| test.swift:747:14:747:21 | call to source() | test.swift:732:9:732:9 | value |
-| test.swift:747:14:747:21 | call to source() | test.swift:747:5:747:5 | [post] mo1 [v3] |
-| test.swift:752:15:752:15 | v1 [some:0] | test.swift:752:15:752:17 | ...! |
-| test.swift:753:15:753:15 | v2 [some:0] | test.swift:753:15:753:17 | ...! |
-| test.swift:756:15:756:15 | mo1 [v2, some:0] | test.swift:731:9:731:9 | self [v2, some:0] |
-| test.swift:756:15:756:15 | mo1 [v2, some:0] | test.swift:756:15:756:19 | .v2 [some:0] |
-| test.swift:756:15:756:15 | mo1 [v2] | test.swift:731:9:731:9 | self [v2] |
-| test.swift:756:15:756:15 | mo1 [v2] | test.swift:756:15:756:19 | .v2 |
-| test.swift:756:15:756:19 | .v2 | test.swift:756:15:756:21 | ...! |
-| test.swift:756:15:756:19 | .v2 [some:0] | test.swift:756:15:756:21 | ...! |
-| test.swift:757:15:757:15 | mo1 [v3] | test.swift:732:9:732:9 | self [v3] |
-| test.swift:757:15:757:15 | mo1 [v3] | test.swift:757:15:757:19 | .v3 |
-| test.swift:764:13:764:26 | call to S.init(x:) [x] | test.swift:765:29:765:29 | s [x] |
-| test.swift:764:18:764:25 | call to source() | test.swift:617:8:617:11 | x |
-| test.swift:764:18:764:25 | call to source() | test.swift:764:13:764:26 | call to S.init(x:) [x] |
-| test.swift:765:14:765:30 | call to S2_Optional.init(s:) [s, some:0, x] | test.swift:767:15:767:15 | s2 [s, some:0, x] |
-| test.swift:765:29:765:29 | s [some:0, x] | test.swift:655:8:655:12 | s [some:0, x] |
-| test.swift:765:29:765:29 | s [some:0, x] | test.swift:765:14:765:30 | call to S2_Optional.init(s:) [s, some:0, x] |
-| test.swift:765:29:765:29 | s [x] | test.swift:765:29:765:29 | s [some:0, x] |
-| test.swift:766:13:766:29 | enter #keyPath(...) [s, some:0, x] | test.swift:766:26:766:26 | KeyPathComponent [some:0, x] |
-| test.swift:766:26:766:26 | KeyPathComponent [some:0, x] | test.swift:766:26:766:26 | KeyPathComponent [x] |
-| test.swift:766:26:766:26 | KeyPathComponent [x] | test.swift:766:29:766:29 | KeyPathComponent |
-| test.swift:766:29:766:29 | KeyPathComponent | test.swift:766:13:766:29 | exit #keyPath(...) |
-| test.swift:767:15:767:15 | s2 [s, some:0, x] | test.swift:766:13:766:29 | enter #keyPath(...) [s, some:0, x] |
-| test.swift:767:15:767:15 | s2 [s, some:0, x] | test.swift:767:15:767:28 | \\...[...] |
-| test.swift:774:5:774:5 | [post] dict1 [Collection element, Tuple element at index 1] | test.swift:776:15:776:15 | dict1 [Collection element, Tuple element at index 1] |
-| test.swift:774:5:774:12 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:774:5:774:5 | [post] dict1 [Collection element, Tuple element at index 1] |
-| test.swift:774:16:774:23 | call to source() | test.swift:774:5:774:12 | DictionarySubscriptNode [Tuple element at index 1] |
-| test.swift:776:15:776:15 | dict1 [Collection element, Tuple element at index 1] | test.swift:776:15:776:22 | DictionarySubscriptNode [Tuple element at index 1] |
-| test.swift:776:15:776:22 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:776:15:776:22 | ...[...] |
-| test.swift:778:17:778:29 | [...] [Collection element, Tuple element at index 0] | test.swift:781:25:781:25 | dict2 [Collection element, Tuple element at index 0] |
-| test.swift:778:18:778:25 | call to source() | test.swift:778:18:778:28 | (...) [Tuple element at index 0] |
-| test.swift:778:18:778:28 | (...) [Tuple element at index 0] | test.swift:778:17:778:29 | [...] [Collection element, Tuple element at index 0] |
-| test.swift:781:5:781:5 | $generator [Collection element, Tuple element at index 0] | test.swift:781:5:781:5 | call to next() [some:0, Tuple element at index 0] |
-| test.swift:781:5:781:5 | call to next() [some:0, Tuple element at index 0] | test.swift:781:9:781:20 | (...) [Tuple element at index 0] |
-| test.swift:781:9:781:20 | (...) [Tuple element at index 0] | test.swift:781:10:781:10 | key |
-| test.swift:781:10:781:10 | key | test.swift:782:19:782:19 | key |
-| test.swift:781:25:781:25 | call to makeIterator() [Collection element, Tuple element at index 0] | test.swift:781:5:781:5 | $generator [Collection element, Tuple element at index 0] |
-| test.swift:781:25:781:25 | dict2 [Collection element, Tuple element at index 0] | test.swift:781:25:781:25 | call to makeIterator() [Collection element, Tuple element at index 0] |
-| test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:787:15:787:15 | dict3 [Collection element, Tuple element at index 1] |
-| test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:789:5:789:5 | dict3 [Collection element, Tuple element at index 1] |
-| test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:792:15:792:15 | dict3 [Collection element, Tuple element at index 1] |
-| test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 1] |
-| test.swift:786:18:786:28 | (...) [Tuple element at index 1] | test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] |
-| test.swift:786:21:786:28 | call to source() | test.swift:786:18:786:28 | (...) [Tuple element at index 1] |
-| test.swift:787:15:787:15 | dict3 [Collection element, Tuple element at index 1] | test.swift:787:15:787:22 | DictionarySubscriptNode [Tuple element at index 1] |
-| test.swift:787:15:787:22 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:787:15:787:22 | ...[...] |
-| test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 0] | test.swift:791:15:791:15 | dict3 [Collection element, Tuple element at index 0] |
-| test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 0] | test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 0] |
-| test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 1] | test.swift:792:15:792:15 | dict3 [Collection element, Tuple element at index 1] |
-| test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 1] | test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 1] |
-| test.swift:789:5:789:5 | dict3 [Collection element, Tuple element at index 1] | test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 1] |
-| test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 0] | test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 0] |
-| test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 1] |
-| test.swift:789:11:789:18 | call to source() | test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 0] |
-| test.swift:791:15:791:15 | dict3 [Collection element, Tuple element at index 0] | test.swift:791:15:791:35 | call to randomElement() [some:0, Tuple element at index 0] |
-| test.swift:791:15:791:35 | call to randomElement() [some:0, Tuple element at index 0] | test.swift:791:15:791:36 | ...! [Tuple element at index 0] |
-| test.swift:791:15:791:36 | ...! [Tuple element at index 0] | test.swift:791:15:791:38 | .0 |
-| test.swift:792:15:792:15 | dict3 [Collection element, Tuple element at index 1] | test.swift:792:15:792:35 | call to randomElement() [some:0, Tuple element at index 1] |
-| test.swift:792:15:792:35 | call to randomElement() [some:0, Tuple element at index 1] | test.swift:792:15:792:36 | ...! [Tuple element at index 1] |
-| test.swift:792:15:792:36 | ...! [Tuple element at index 1] | test.swift:792:15:792:38 | .1 |
-| test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 0] | test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 0] |
-| test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 1] | test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 1] |
-| test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 0] | test.swift:794:9:794:20 | (...) [Tuple element at index 0] |
-| test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 1] | test.swift:794:9:794:20 | (...) [Tuple element at index 1] |
-| test.swift:794:9:794:20 | (...) [Tuple element at index 0] | test.swift:794:10:794:10 | key |
-| test.swift:794:9:794:20 | (...) [Tuple element at index 1] | test.swift:794:15:794:15 | value |
-| test.swift:794:10:794:10 | key | test.swift:795:19:795:19 | key |
-| test.swift:794:15:794:15 | value | test.swift:796:19:796:19 | value |
-| test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 0] | test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 0] |
-| test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 1] | test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 1] |
-| test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 0] | test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 0] |
-| test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 1] | test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 1] |
-| test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | test.swift:800:15:800:15 | dict4 [Collection element, Tuple element at index 1] |
-| test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | test.swift:801:15:801:15 | dict4 [Collection element, Tuple element at index 1] |
-| test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | test.swift:803:15:803:15 | dict4 [Collection element, Tuple element at index 1] |
-| test.swift:799:18:799:27 | (...) [Tuple element at index 1] | test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] |
-| test.swift:799:20:799:27 | call to source() | test.swift:799:18:799:27 | (...) [Tuple element at index 1] |
-| test.swift:800:15:800:15 | [post] dict4 [Collection element, Tuple element at index 0] | test.swift:802:15:802:15 | dict4 [Collection element, Tuple element at index 0] |
-| test.swift:800:15:800:15 | dict4 [Collection element, Tuple element at index 1] | test.swift:800:15:800:52 | call to updateValue(_:forKey:) [some:0] |
-| test.swift:800:15:800:52 | call to updateValue(_:forKey:) [some:0] | test.swift:800:15:800:53 | ...! |
-| test.swift:800:44:800:51 | call to source() | test.swift:800:15:800:15 | [post] dict4 [Collection element, Tuple element at index 0] |
-| test.swift:801:15:801:15 | [post] dict4 [Collection element, Tuple element at index 1] | test.swift:803:15:803:15 | dict4 [Collection element, Tuple element at index 1] |
-| test.swift:801:15:801:15 | dict4 [Collection element, Tuple element at index 1] | test.swift:801:15:801:52 | call to updateValue(_:forKey:) [some:0] |
-| test.swift:801:15:801:52 | call to updateValue(_:forKey:) [some:0] | test.swift:801:15:801:53 | ...! |
-| test.swift:801:33:801:40 | call to source() | test.swift:801:15:801:15 | [post] dict4 [Collection element, Tuple element at index 1] |
-| test.swift:802:15:802:15 | dict4 [Collection element, Tuple element at index 0] | test.swift:802:15:802:35 | call to randomElement() [some:0, Tuple element at index 0] |
-| test.swift:802:15:802:35 | call to randomElement() [some:0, Tuple element at index 0] | test.swift:802:15:802:36 | ...! [Tuple element at index 0] |
-| test.swift:802:15:802:36 | ...! [Tuple element at index 0] | test.swift:802:15:802:38 | .0 |
-| test.swift:803:15:803:15 | dict4 [Collection element, Tuple element at index 1] | test.swift:803:15:803:35 | call to randomElement() [some:0, Tuple element at index 1] |
-| test.swift:803:15:803:35 | call to randomElement() [some:0, Tuple element at index 1] | test.swift:803:15:803:36 | ...! [Tuple element at index 1] |
-| test.swift:803:15:803:36 | ...! [Tuple element at index 1] | test.swift:803:15:803:38 | .1 |
-| test.swift:809:8:809:13 | v | test.swift:810:14:810:14 | v |
-| test.swift:810:5:810:5 | [post] self [v] | test.swift:809:3:811:3 | self[return] [v] |
-| test.swift:810:14:810:14 | v | test.swift:810:5:810:5 | [post] self [v] |
-| test.swift:813:8:813:8 | self [v] | test.swift:813:31:813:31 | self [v] |
-| test.swift:813:31:813:31 | self [v] | test.swift:813:31:813:31 | .v |
-| test.swift:813:31:813:31 | self [v] | test.swift:815:7:815:7 | self [v] |
-| test.swift:815:7:815:7 | self [v] | file://:0:0:0:0 | self [v] |
-| test.swift:815:7:815:7 | value | file://:0:0:0:0 | value |
-| test.swift:819:14:819:25 | call to S3.init(_:) [v] | test.swift:822:15:822:15 | s1 [v] |
-| test.swift:819:14:819:25 | call to S3.init(_:) [v] | test.swift:824:15:824:15 | s1 [v] |
-| test.swift:819:17:819:24 | call to source() | test.swift:809:8:809:13 | v |
-| test.swift:819:17:819:24 | call to source() | test.swift:819:14:819:25 | call to S3.init(_:) [v] |
-| test.swift:822:15:822:15 | s1 [v] | test.swift:815:7:815:7 | self [v] |
-| test.swift:822:15:822:15 | s1 [v] | test.swift:822:15:822:18 | .v |
-| test.swift:824:15:824:15 | s1 [v] | test.swift:813:8:813:8 | self [v] |
-| test.swift:824:15:824:15 | s1 [v] | test.swift:824:15:824:23 | call to getv() |
-| test.swift:828:5:828:5 | [post] s2 [v] | test.swift:831:15:831:15 | s2 [v] |
-| test.swift:828:5:828:5 | [post] s2 [v] | test.swift:833:15:833:15 | s2 [v] |
-| test.swift:828:12:828:19 | call to source() | test.swift:815:7:815:7 | value |
-| test.swift:828:12:828:19 | call to source() | test.swift:828:5:828:5 | [post] s2 [v] |
-| test.swift:831:15:831:15 | s2 [v] | test.swift:815:7:815:7 | self [v] |
-| test.swift:831:15:831:15 | s2 [v] | test.swift:831:15:831:18 | .v |
-| test.swift:833:15:833:15 | s2 [v] | test.swift:813:8:813:8 | self [v] |
-| test.swift:833:15:833:15 | s2 [v] | test.swift:833:15:833:23 | call to getv() |
-| test.swift:839:11:839:17 | [post] exit #keyPath(...) | test.swift:839:17:839:17 | [post] KeyPathComponent |
-| test.swift:839:15:839:15 | [post] KeyPathComponent [x] | test.swift:839:11:839:17 | [post] enter #keyPath(...) [s, x] |
-| test.swift:839:17:839:17 | [post] KeyPathComponent | test.swift:839:15:839:15 | [post] KeyPathComponent [x] |
-| test.swift:840:3:840:3 | [post] s2 [s, x] | test.swift:841:13:841:13 | s2 [s, x] |
-| test.swift:840:3:840:16 | \\...[...] | test.swift:839:11:839:17 | [post] exit #keyPath(...) |
-| test.swift:840:3:840:16 | \\...[...] | test.swift:840:3:840:3 | [post] s2 [s, x] |
-| test.swift:840:20:840:27 | call to source() | test.swift:840:3:840:16 | \\...[...] |
-| test.swift:841:13:841:13 | s2 [s, x] | test.swift:632:7:632:7 | self [s, x] |
-| test.swift:841:13:841:13 | s2 [s, x] | test.swift:841:13:841:16 | .s [x] |
-| test.swift:841:13:841:16 | .s [x] | test.swift:615:7:615:7 | self [x] |
-| test.swift:841:13:841:16 | .s [x] | test.swift:841:13:841:18 | .x |
-| test.swift:844:19:844:28 | args [Collection element] | test.swift:846:15:846:15 | args [Collection element] |
-| test.swift:846:15:846:15 | args [Collection element] | test.swift:846:15:846:21 | ...[...] |
-| test.swift:849:19:849:24 | v | test.swift:850:15:850:15 | v |
-| test.swift:856:29:856:40 | args [Collection element] | test.swift:859:15:859:15 | args [Collection element] |
-| test.swift:856:29:856:40 | args [Collection element] | test.swift:860:15:860:15 | args [Collection element] |
-| test.swift:856:29:856:40 | args [Collection element] | test.swift:862:16:862:16 | args [Collection element] |
-| test.swift:856:29:856:40 | args [Collection element] | test.swift:867:15:867:15 | args [Collection element] |
-| test.swift:859:15:859:15 | args [Collection element] | test.swift:859:15:859:21 | ...[...] |
-| test.swift:860:15:860:15 | args [Collection element] | test.swift:860:15:860:21 | ...[...] |
-| test.swift:862:5:862:5 | $arg$generator [Collection element] | test.swift:862:5:862:5 | call to next() [some:0] |
-| test.swift:862:5:862:5 | call to next() [some:0] | test.swift:862:9:862:9 | arg |
-| test.swift:862:9:862:9 | arg | test.swift:863:19:863:19 | arg |
-| test.swift:862:16:862:16 | args [Collection element] | test.swift:862:16:862:16 | call to makeIterator() [Collection element] |
-| test.swift:862:16:862:16 | call to makeIterator() [Collection element] | test.swift:862:5:862:5 | $arg$generator [Collection element] |
-| test.swift:866:21:866:29 | enter #keyPath(...) [Collection element] | test.swift:866:27:866:29 | KeyPathComponent |
-| test.swift:866:27:866:29 | KeyPathComponent | test.swift:866:21:866:29 | exit #keyPath(...) |
-| test.swift:867:15:867:15 | args [Collection element] | test.swift:866:21:866:29 | enter #keyPath(...) [Collection element] |
-| test.swift:867:15:867:15 | args [Collection element] | test.swift:867:15:867:38 | \\...[...] |
-| test.swift:871:24:871:31 | [...] [Collection element] | test.swift:844:19:844:28 | args [Collection element] |
-| test.swift:871:24:871:31 | [...] [Collection element] | test.swift:871:24:871:31 | [...] [Collection element] |
-| test.swift:871:24:871:31 | call to source() | test.swift:871:24:871:31 | [...] [Collection element] |
-| test.swift:872:18:872:25 | call to source() | test.swift:849:19:849:24 | v |
-| test.swift:873:21:873:31 | [...] [Collection element] | test.swift:856:29:856:40 | args [Collection element] |
-| test.swift:873:21:873:31 | [...] [Collection element] | test.swift:873:21:873:31 | [...] [Collection element] |
-| test.swift:873:24:873:31 | call to source() | test.swift:873:21:873:31 | [...] [Collection element] |
-| test.swift:877:16:877:30 | call to Set<Element>.init(_:) [Collection element] | test.swift:879:17:879:17 | set1 [Collection element] |
-| test.swift:877:16:877:30 | call to Set<Element>.init(_:) [Collection element] | test.swift:883:21:883:21 | set1 [Collection element] |
-| test.swift:877:20:877:29 | [...] [Collection element] | test.swift:877:16:877:30 | call to Set<Element>.init(_:) [Collection element] |
-| test.swift:877:21:877:28 | call to source() | test.swift:877:20:877:29 | [...] [Collection element] |
-| test.swift:879:5:879:5 | $elem$generator [Collection element] | test.swift:879:5:879:5 | call to next() [some:0] |
-| test.swift:879:5:879:5 | call to next() [some:0] | test.swift:879:9:879:9 | elem |
-| test.swift:879:9:879:9 | elem | test.swift:880:19:880:19 | elem |
-| test.swift:879:17:879:17 | call to makeIterator() [Collection element] | test.swift:879:5:879:5 | $elem$generator [Collection element] |
-| test.swift:879:17:879:17 | set1 [Collection element] | test.swift:879:17:879:17 | call to makeIterator() [Collection element] |
-| test.swift:883:21:883:21 | set1 [Collection element] | test.swift:883:21:883:39 | call to makeIterator() [Collection element] |
-| test.swift:883:21:883:39 | call to makeIterator() [Collection element] | test.swift:884:15:884:15 | generator [Collection element] |
-| test.swift:884:15:884:15 | generator [Collection element] | test.swift:884:15:884:30 | call to next() [some:0] |
-| test.swift:884:15:884:30 | call to next() [some:0] | test.swift:884:15:884:31 | ...! |
-| test.swift:908:19:908:26 | call to source() | test.swift:904:13:904:18 | call to ... |
-| test.swift:927:12:927:31 | call to source(_:) | test.swift:927:12:927:31 | OpenExistentialExpr |
-| test.swift:929:12:929:57 | call to source(_:) | test.swift:929:12:929:57 | OpenExistentialExpr |
-| test.swift:937:22:937:29 | call to source() | file://:0:0:0:0 | .wrappedValue |
-| test.swift:938:9:938:9 | newValue | test.swift:938:25:938:25 | newValue |
-| test.swift:941:10:941:24 | wrappedValue | test.swift:942:19:942:19 | wrappedValue |
-| test.swift:943:29:943:36 | call to source() | test.swift:938:9:938:9 | newValue |
-| test.swift:948:33:948:33 | value | file://:0:0:0:0 | value |
-| test.swift:948:42:948:49 | call to source() | test.swift:941:10:941:24 | wrappedValue |
-| test.swift:950:9:950:16 | call to source() | test.swift:948:33:948:33 | value |
-| test.swift:957:9:957:9 | value | file://:0:0:0:0 | value |
-| test.swift:958:9:958:9 | self [wrappedValue] | test.swift:959:23:959:23 | self [wrappedValue] |
-| test.swift:959:23:959:23 | self [wrappedValue] | test.swift:959:23:959:23 | .wrappedValue |
-| test.swift:965:9:965:9 | newValue | test.swift:967:28:967:28 | newValue |
-| test.swift:967:28:967:28 | newValue | test.swift:957:9:957:9 | value |
-| test.swift:971:10:971:24 | wrappedValue | test.swift:972:19:972:19 | wrappedValue |
-| test.swift:978:34:978:34 | value | file://:0:0:0:0 | value |
-| test.swift:980:9:980:16 | call to source() | test.swift:978:34:978:34 | value |
-| test.swift:983:38:983:45 | call to source() | test.swift:971:10:971:24 | wrappedValue |
-| test.swift:988:34:988:34 | value | file://:0:0:0:0 | value |
-| test.swift:991:10:991:17 | call to source() | test.swift:988:34:988:34 | value |
+| file://:0:0:0:0 | .wrappedValue | test.swift:949:15:949:15 | x | provenance |  |
+| file://:0:0:0:0 | .wrappedValue | test.swift:951:15:951:15 | x | provenance |  |
+| file://:0:0:0:0 | KeyPathComponent [some:0] | test.swift:663:13:663:29 | exit #keyPath(...) [some:0] | provenance |  |
+| file://:0:0:0:0 | [post] self [wrappedValue] | file://:0:0:0:0 | self [wrappedValue] | provenance |  |
+| file://:0:0:0:0 | self [a, x] | file://:0:0:0:0 | .a [x] | provenance |  |
+| file://:0:0:0:0 | self [s, x] | file://:0:0:0:0 | .s [x] | provenance |  |
+| file://:0:0:0:0 | self [str] | file://:0:0:0:0 | .str | provenance |  |
+| file://:0:0:0:0 | self [v2, some:0] | file://:0:0:0:0 | .v2 [some:0] | provenance |  |
+| file://:0:0:0:0 | self [v2] | file://:0:0:0:0 | .v2 | provenance |  |
+| file://:0:0:0:0 | self [v3] | file://:0:0:0:0 | .v3 | provenance |  |
+| file://:0:0:0:0 | self [v] | file://:0:0:0:0 | .v | provenance |  |
+| file://:0:0:0:0 | self [wrappedValue] | test.swift:958:9:958:9 | self [wrappedValue] | provenance |  |
+| file://:0:0:0:0 | self [x, some:0] | file://:0:0:0:0 | .x [some:0] | provenance |  |
+| file://:0:0:0:0 | self [x] | file://:0:0:0:0 | .x | provenance |  |
+| file://:0:0:0:0 | self [x] | file://:0:0:0:0 | .x | provenance |  |
+| file://:0:0:0:0 | self [x] | file://:0:0:0:0 | .x | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v2] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v3] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [v] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [wrappedValue] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [x] | provenance |  |
+| file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [x] | provenance |  |
+| file://:0:0:0:0 | value | test.swift:938:9:938:9 | newValue | provenance |  |
+| file://:0:0:0:0 | value | test.swift:957:9:957:9 | value | provenance |  |
+| file://:0:0:0:0 | value | test.swift:965:9:965:9 | newValue | provenance |  |
+| file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [v2, some:0] | provenance |  |
+| file://:0:0:0:0 | value [some:0] | file://:0:0:0:0 | [post] self [x, some:0] | provenance |  |
+| test.swift:6:19:6:26 | call to source() | test.swift:7:15:7:15 | t1 | provenance |  |
+| test.swift:6:19:6:26 | call to source() | test.swift:9:15:9:15 | t1 | provenance |  |
+| test.swift:6:19:6:26 | call to source() | test.swift:10:15:10:15 | t2 | provenance |  |
+| test.swift:25:20:25:27 | call to source() | test.swift:29:18:29:21 | x | provenance |  |
+| test.swift:26:26:26:33 | call to source() | test.swift:29:26:29:29 | y | provenance |  |
+| test.swift:29:18:29:21 | x | test.swift:30:15:30:15 | x | provenance |  |
+| test.swift:29:26:29:29 | y | test.swift:31:15:31:15 | y | provenance |  |
+| test.swift:35:12:35:19 | call to source() | test.swift:39:15:39:29 | call to callee_source() | provenance |  |
+| test.swift:43:19:43:26 | call to source() | test.swift:50:15:50:15 | t | provenance |  |
+| test.swift:53:1:56:1 | arg[return] | test.swift:61:23:61:23 | [post] x | provenance |  |
+| test.swift:54:11:54:18 | call to source() | test.swift:53:1:56:1 | arg[return] | provenance |  |
+| test.swift:61:23:61:23 | [post] x | test.swift:62:15:62:15 | x | provenance |  |
+| test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | provenance |  |
+| test.swift:73:18:73:25 | call to source() | test.swift:75:22:75:22 | x | provenance |  |
+| test.swift:73:18:73:25 | call to source() | test.swift:76:15:76:15 | x | provenance |  |
+| test.swift:75:22:75:22 | x | test.swift:65:16:65:28 | arg1 | provenance |  |
+| test.swift:75:22:75:22 | x | test.swift:75:32:75:32 | [post] y | provenance |  |
+| test.swift:75:32:75:32 | [post] y | test.swift:77:15:77:15 | y | provenance |  |
+| test.swift:80:1:82:1 | arg[return] | test.swift:97:40:97:40 | [post] x | provenance |  |
+| test.swift:81:11:81:18 | call to source() | test.swift:80:1:82:1 | arg[return] | provenance |  |
+| test.swift:84:1:91:1 | arg[return] | test.swift:104:41:104:41 | [post] x | provenance |  |
+| test.swift:86:15:86:22 | call to source() | test.swift:84:1:91:1 | arg[return] | provenance |  |
+| test.swift:89:15:89:22 | call to source() | test.swift:84:1:91:1 | arg[return] | provenance |  |
+| test.swift:97:40:97:40 | [post] x | test.swift:98:19:98:19 | x | provenance |  |
+| test.swift:104:41:104:41 | [post] x | test.swift:105:19:105:19 | x | provenance |  |
+| test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | provenance |  |
+| test.swift:113:14:113:19 | arg | test.swift:114:19:114:19 | arg | provenance |  |
+| test.swift:113:14:113:19 | arg | test.swift:114:19:114:19 | arg | provenance |  |
+| test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | provenance |  |
+| test.swift:114:19:114:19 | arg | test.swift:114:12:114:22 | call to ... | provenance |  |
+| test.swift:114:19:114:19 | arg | test.swift:114:12:114:22 | call to ... | provenance |  |
+| test.swift:114:19:114:19 | arg | test.swift:123:10:123:13 | i | provenance |  |
+| test.swift:118:18:118:25 | call to source() | test.swift:119:31:119:31 | x | provenance |  |
+| test.swift:119:18:119:44 | call to forward(arg:lambda:) | test.swift:120:15:120:15 | y | provenance |  |
+| test.swift:119:31:119:31 | x | test.swift:113:14:113:19 | arg | provenance |  |
+| test.swift:119:31:119:31 | x | test.swift:119:18:119:44 | call to forward(arg:lambda:) | provenance |  |
+| test.swift:122:18:125:6 | call to forward(arg:lambda:) | test.swift:126:15:126:15 | z | provenance |  |
+| test.swift:122:31:122:38 | call to source() | test.swift:113:14:113:19 | arg | provenance |  |
+| test.swift:122:31:122:38 | call to source() | test.swift:122:18:125:6 | call to forward(arg:lambda:) | provenance |  |
+| test.swift:123:10:123:13 | i | test.swift:124:16:124:16 | i | provenance |  |
+| test.swift:142:10:142:13 | i | test.swift:143:16:143:16 | i | provenance |  |
+| test.swift:145:23:145:30 | call to source() | test.swift:142:10:142:13 | i | provenance |  |
+| test.swift:145:23:145:30 | call to source() | test.swift:145:15:145:31 | call to ... | provenance |  |
+| test.swift:149:16:149:23 | call to source() | test.swift:151:15:151:28 | call to ... | provenance |  |
+| test.swift:149:16:149:23 | call to source() | test.swift:159:16:159:29 | call to ... | provenance |  |
+| test.swift:154:10:154:13 | i | test.swift:155:19:155:19 | i | provenance |  |
+| test.swift:157:16:157:23 | call to source() | test.swift:154:10:154:13 | i | provenance |  |
+| test.swift:159:16:159:29 | call to ... | test.swift:154:10:154:13 | i | provenance |  |
+| test.swift:163:7:163:7 | self [x] | file://:0:0:0:0 | self [x] | provenance |  |
+| test.swift:163:7:163:7 | value | file://:0:0:0:0 | value | provenance |  |
+| test.swift:169:12:169:22 | value | test.swift:170:9:170:9 | value | provenance |  |
+| test.swift:170:5:170:5 | [post] self [x] | test.swift:169:3:171:3 | self[return] [x] | provenance |  |
+| test.swift:170:9:170:9 | value | test.swift:163:7:163:7 | value | provenance |  |
+| test.swift:170:9:170:9 | value | test.swift:170:5:170:5 | [post] self [x] | provenance |  |
+| test.swift:173:8:173:8 | self [x] | test.swift:174:12:174:12 | self [x] | provenance |  |
+| test.swift:174:12:174:12 | self [x] | test.swift:163:7:163:7 | self [x] | provenance |  |
+| test.swift:174:12:174:12 | self [x] | test.swift:174:12:174:12 | .x | provenance |  |
+| test.swift:180:3:180:3 | [post] a [x] | test.swift:181:13:181:13 | a [x] | provenance |  |
+| test.swift:180:9:180:16 | call to source() | test.swift:163:7:163:7 | value | provenance |  |
+| test.swift:180:9:180:16 | call to source() | test.swift:180:3:180:3 | [post] a [x] | provenance |  |
+| test.swift:181:13:181:13 | a [x] | test.swift:163:7:163:7 | self [x] | provenance |  |
+| test.swift:181:13:181:13 | a [x] | test.swift:181:13:181:15 | .x | provenance |  |
+| test.swift:185:7:185:7 | self [a, x] | file://:0:0:0:0 | self [a, x] | provenance |  |
+| test.swift:194:3:194:3 | [post] b [a, x] | test.swift:195:13:195:13 | b [a, x] | provenance |  |
+| test.swift:194:3:194:5 | [post] getter for .a [x] | test.swift:194:3:194:3 | [post] b [a, x] | provenance |  |
+| test.swift:194:11:194:18 | call to source() | test.swift:163:7:163:7 | value | provenance |  |
+| test.swift:194:11:194:18 | call to source() | test.swift:194:3:194:5 | [post] getter for .a [x] | provenance |  |
+| test.swift:195:13:195:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] | provenance |  |
+| test.swift:195:13:195:13 | b [a, x] | test.swift:195:13:195:15 | .a [x] | provenance |  |
+| test.swift:195:13:195:15 | .a [x] | test.swift:163:7:163:7 | self [x] | provenance |  |
+| test.swift:195:13:195:15 | .a [x] | test.swift:195:13:195:17 | .x | provenance |  |
+| test.swift:200:3:200:3 | [post] a [x] | test.swift:201:13:201:13 | a [x] | provenance |  |
+| test.swift:200:9:200:16 | call to source() | test.swift:169:12:169:22 | value | provenance |  |
+| test.swift:200:9:200:16 | call to source() | test.swift:200:3:200:3 | [post] a [x] | provenance |  |
+| test.swift:201:13:201:13 | a [x] | test.swift:163:7:163:7 | self [x] | provenance |  |
+| test.swift:201:13:201:13 | a [x] | test.swift:201:13:201:15 | .x | provenance |  |
+| test.swift:206:3:206:3 | [post] a [x] | test.swift:207:13:207:13 | a [x] | provenance |  |
+| test.swift:206:9:206:16 | call to source() | test.swift:163:7:163:7 | value | provenance |  |
+| test.swift:206:9:206:16 | call to source() | test.swift:206:3:206:3 | [post] a [x] | provenance |  |
+| test.swift:207:13:207:13 | a [x] | test.swift:173:8:173:8 | self [x] | provenance |  |
+| test.swift:207:13:207:13 | a [x] | test.swift:207:13:207:19 | call to get() | provenance |  |
+| test.swift:212:3:212:3 | [post] a [x] | test.swift:213:13:213:13 | a [x] | provenance |  |
+| test.swift:212:9:212:16 | call to source() | test.swift:169:12:169:22 | value | provenance |  |
+| test.swift:212:9:212:16 | call to source() | test.swift:212:3:212:3 | [post] a [x] | provenance |  |
+| test.swift:213:13:213:13 | a [x] | test.swift:173:8:173:8 | self [x] | provenance |  |
+| test.swift:213:13:213:13 | a [x] | test.swift:213:13:213:19 | call to get() | provenance |  |
+| test.swift:218:3:218:3 | [post] b [a, x] | test.swift:219:13:219:13 | b [a, x] | provenance |  |
+| test.swift:218:3:218:5 | [post] getter for .a [x] | test.swift:218:3:218:3 | [post] b [a, x] | provenance |  |
+| test.swift:218:11:218:18 | call to source() | test.swift:169:12:169:22 | value | provenance |  |
+| test.swift:218:11:218:18 | call to source() | test.swift:218:3:218:5 | [post] getter for .a [x] | provenance |  |
+| test.swift:219:13:219:13 | b [a, x] | test.swift:185:7:185:7 | self [a, x] | provenance |  |
+| test.swift:219:13:219:13 | b [a, x] | test.swift:219:13:219:15 | .a [x] | provenance |  |
+| test.swift:219:13:219:15 | .a [x] | test.swift:163:7:163:7 | self [x] | provenance |  |
+| test.swift:219:13:219:15 | .a [x] | test.swift:219:13:219:17 | .x | provenance |  |
+| test.swift:225:14:225:21 | call to source() | test.swift:235:13:235:15 | .source_value | provenance |  |
+| test.swift:225:14:225:21 | call to source() | test.swift:238:13:238:15 | .source_value | provenance |  |
+| test.swift:259:12:259:19 | call to source() | test.swift:259:12:259:19 | call to source() [some:0] | provenance |  |
+| test.swift:259:12:259:19 | call to source() | test.swift:263:13:263:28 | call to optionalSource() | provenance |  |
+| test.swift:259:12:259:19 | call to source() | test.swift:536:13:536:28 | call to optionalSource() | provenance |  |
+| test.swift:259:12:259:19 | call to source() | test.swift:563:13:563:28 | call to optionalSource() | provenance |  |
+| test.swift:259:12:259:19 | call to source() [some:0] | test.swift:263:13:263:28 | call to optionalSource() [some:0] | provenance |  |
+| test.swift:259:12:259:19 | call to source() [some:0] | test.swift:536:13:536:28 | call to optionalSource() [some:0] | provenance |  |
+| test.swift:259:12:259:19 | call to source() [some:0] | test.swift:563:13:563:28 | call to optionalSource() [some:0] | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:265:15:265:15 | x | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:267:15:267:16 | ...! | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:271:15:271:16 | ...? | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:274:15:274:20 | ... ??(_:_:) ... | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:275:15:275:27 | ... ??(_:_:) ... | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:279:15:279:31 | ... ? ... : ... | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:280:15:280:38 | ... ? ... : ... | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:285:19:285:19 | z | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:291:16:291:17 | ...? | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:300:15:300:15 | z1 | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() | test.swift:303:15:303:16 | ...! | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:267:15:267:15 | x [some:0] | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:279:26:279:26 | x [some:0] | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:280:26:280:26 | x [some:0] | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:284:8:284:12 | let ...? [some:0] | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:291:16:291:17 | ...? [some:0] | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:298:11:298:15 | let ...? [some:0] | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:303:15:303:15 | x [some:0] | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:306:13:306:24 | .some(...) [some:0] | provenance |  |
+| test.swift:263:13:263:28 | call to optionalSource() [some:0] | test.swift:314:10:314:21 | .some(...) [some:0] | provenance |  |
+| test.swift:267:15:267:15 | x [some:0] | test.swift:267:15:267:16 | ...! | provenance |  |
+| test.swift:270:15:270:22 | call to source() | test.swift:270:15:270:31 | call to signum() | provenance |  |
+| test.swift:271:15:271:16 | ...? | test.swift:271:15:271:25 | call to signum() | provenance |  |
+| test.swift:271:15:271:25 | call to signum() | test.swift:271:15:271:25 | OptionalEvaluationExpr | provenance |  |
+| test.swift:275:20:275:27 | call to source() | test.swift:275:15:275:27 | ... ??(_:_:) ... | provenance |  |
+| test.swift:277:20:277:27 | call to source() | test.swift:277:15:277:27 | ... ??(_:_:) ... | provenance |  |
+| test.swift:279:26:279:26 | x [some:0] | test.swift:279:26:279:27 | ...! | provenance |  |
+| test.swift:279:26:279:27 | ...! | test.swift:279:15:279:31 | ... ? ... : ... | provenance |  |
+| test.swift:280:26:280:26 | x [some:0] | test.swift:280:26:280:27 | ...! | provenance |  |
+| test.swift:280:26:280:27 | ...! | test.swift:280:15:280:38 | ... ? ... : ... | provenance |  |
+| test.swift:280:31:280:38 | call to source() | test.swift:280:15:280:38 | ... ? ... : ... | provenance |  |
+| test.swift:282:31:282:38 | call to source() | test.swift:282:15:282:38 | ... ? ... : ... | provenance |  |
+| test.swift:284:8:284:12 | let ...? [some:0] | test.swift:284:12:284:12 | z | provenance |  |
+| test.swift:284:12:284:12 | z | test.swift:285:19:285:19 | z | provenance |  |
+| test.swift:291:8:291:12 | let ...? [some:0] | test.swift:291:12:291:12 | z | provenance |  |
+| test.swift:291:12:291:12 | z | test.swift:292:19:292:19 | z | provenance |  |
+| test.swift:291:16:291:17 | ...? | test.swift:291:16:291:26 | call to signum() | provenance |  |
+| test.swift:291:16:291:17 | ...? [some:0] | test.swift:291:16:291:26 | call to signum() [some:0] | provenance |  |
+| test.swift:291:16:291:26 | call to signum() | test.swift:291:16:291:26 | call to signum() [some:0] | provenance |  |
+| test.swift:291:16:291:26 | call to signum() | test.swift:292:19:292:19 | z | provenance |  |
+| test.swift:291:16:291:26 | call to signum() [some:0] | test.swift:291:8:291:12 | let ...? [some:0] | provenance |  |
+| test.swift:298:11:298:15 | let ...? [some:0] | test.swift:298:15:298:15 | z1 | provenance |  |
+| test.swift:298:15:298:15 | z1 | test.swift:300:15:300:15 | z1 | provenance |  |
+| test.swift:303:15:303:15 | x [some:0] | test.swift:303:15:303:16 | ...! | provenance |  |
+| test.swift:303:15:303:16 | ...! | test.swift:303:15:303:25 | call to signum() | provenance |  |
+| test.swift:306:13:306:24 | .some(...) [some:0] | test.swift:306:23:306:23 | z | provenance |  |
+| test.swift:306:23:306:23 | z | test.swift:307:19:307:19 | z | provenance |  |
+| test.swift:314:10:314:21 | .some(...) [some:0] | test.swift:314:20:314:20 | z | provenance |  |
+| test.swift:314:20:314:20 | z | test.swift:315:19:315:19 | z | provenance |  |
+| test.swift:331:14:331:26 | (...) [Tuple element at index 1] | test.swift:335:15:335:15 | t1 [Tuple element at index 1] | provenance |  |
+| test.swift:331:18:331:25 | call to source() | test.swift:331:14:331:26 | (...) [Tuple element at index 1] | provenance |  |
+| test.swift:335:15:335:15 | t1 [Tuple element at index 1] | test.swift:335:15:335:18 | .1 | provenance |  |
+| test.swift:343:5:343:5 | [post] t1 [Tuple element at index 0] | test.swift:346:15:346:15 | t1 [Tuple element at index 0] | provenance |  |
+| test.swift:343:12:343:19 | call to source() | test.swift:343:5:343:5 | [post] t1 [Tuple element at index 0] | provenance |  |
+| test.swift:346:15:346:15 | t1 [Tuple element at index 0] | test.swift:346:15:346:18 | .0 | provenance |  |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 0] | test.swift:353:9:353:17 | (...) [Tuple element at index 0] | provenance |  |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 0] | test.swift:356:15:356:15 | t1 [Tuple element at index 0] | provenance |  |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 0] | test.swift:360:15:360:15 | t2 [Tuple element at index 0] | provenance |  |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 1] | test.swift:353:9:353:17 | (...) [Tuple element at index 1] | provenance |  |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 1] | test.swift:357:15:357:15 | t1 [Tuple element at index 1] | provenance |  |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 1] | test.swift:361:15:361:15 | t2 [Tuple element at index 1] | provenance |  |
+| test.swift:351:18:351:25 | call to source() | test.swift:351:14:351:45 | (...) [Tuple element at index 0] | provenance |  |
+| test.swift:351:31:351:38 | call to source() | test.swift:351:14:351:45 | (...) [Tuple element at index 1] | provenance |  |
+| test.swift:353:9:353:17 | (...) [Tuple element at index 0] | test.swift:353:10:353:10 | a | provenance |  |
+| test.swift:353:9:353:17 | (...) [Tuple element at index 1] | test.swift:353:13:353:13 | b | provenance |  |
+| test.swift:353:10:353:10 | a | test.swift:363:15:363:15 | a | provenance |  |
+| test.swift:353:13:353:13 | b | test.swift:364:15:364:15 | b | provenance |  |
+| test.swift:356:15:356:15 | t1 [Tuple element at index 0] | test.swift:356:15:356:18 | .0 | provenance |  |
+| test.swift:357:15:357:15 | t1 [Tuple element at index 1] | test.swift:357:15:357:18 | .1 | provenance |  |
+| test.swift:360:15:360:15 | t2 [Tuple element at index 0] | test.swift:360:15:360:18 | .0 | provenance |  |
+| test.swift:361:15:361:15 | t2 [Tuple element at index 1] | test.swift:361:15:361:18 | .1 | provenance |  |
+| test.swift:368:22:368:36 | t [Tuple element at index 1] | test.swift:369:13:369:13 | t [Tuple element at index 1] | provenance |  |
+| test.swift:369:13:369:13 | t [Tuple element at index 1] | test.swift:369:13:369:15 | .1 | provenance |  |
+| test.swift:369:13:369:15 | .1 | test.swift:369:12:369:19 | (...) [Tuple element at index 0] | provenance |  |
+| test.swift:375:14:375:26 | (...) [Tuple element at index 1] | test.swift:376:30:376:30 | t1 [Tuple element at index 1] | provenance |  |
+| test.swift:375:14:375:26 | (...) [Tuple element at index 1] | test.swift:377:30:377:30 | t1 [Tuple element at index 1] | provenance |  |
+| test.swift:375:14:375:26 | (...) [Tuple element at index 1] | test.swift:380:15:380:15 | t1 [Tuple element at index 1] | provenance |  |
+| test.swift:375:18:375:25 | call to source() | test.swift:375:14:375:26 | (...) [Tuple element at index 1] | provenance |  |
+| test.swift:376:14:376:32 | call to tupleShiftLeft1(_:) [Tuple element at index 0] | test.swift:381:15:381:15 | t2 [Tuple element at index 0] | provenance |  |
+| test.swift:376:30:376:30 | t1 [Tuple element at index 1] | test.swift:368:22:368:36 | t [Tuple element at index 1] | provenance |  |
+| test.swift:376:30:376:30 | t1 [Tuple element at index 1] | test.swift:376:14:376:32 | call to tupleShiftLeft1(_:) [Tuple element at index 0] | provenance |  |
+| test.swift:377:14:377:32 | call to tupleShiftLeft2(_:) [Tuple element at index 0] | test.swift:383:15:383:15 | t3 [Tuple element at index 0] | provenance |  |
+| test.swift:377:30:377:30 | t1 [Tuple element at index 1] | test.swift:377:14:377:32 | call to tupleShiftLeft2(_:) [Tuple element at index 0] | provenance |  |
+| test.swift:380:15:380:15 | t1 [Tuple element at index 1] | test.swift:380:15:380:18 | .1 | provenance |  |
+| test.swift:381:15:381:15 | t2 [Tuple element at index 0] | test.swift:381:15:381:18 | .0 | provenance |  |
+| test.swift:383:15:383:15 | t3 [Tuple element at index 0] | test.swift:383:15:383:18 | .0 | provenance |  |
+| test.swift:394:16:394:21 | v | test.swift:394:61:394:61 | v | provenance |  |
+| test.swift:394:61:394:61 | v | test.swift:394:45:394:62 | call to ... [mySingle:0] | provenance |  |
+| test.swift:396:18:396:23 | v | test.swift:396:59:396:59 | v | provenance |  |
+| test.swift:396:59:396:59 | v | test.swift:396:45:396:60 | call to ... [some:0] | provenance |  |
+| test.swift:422:9:422:27 | call to ... [mySingle:0] | test.swift:427:10:427:25 | .mySingle(...) [mySingle:0] | provenance |  |
+| test.swift:422:9:422:27 | call to ... [mySingle:0] | test.swift:436:13:436:28 | .mySingle(...) [mySingle:0] | provenance |  |
+| test.swift:422:19:422:26 | call to source() | test.swift:422:9:422:27 | call to ... [mySingle:0] | provenance |  |
+| test.swift:427:10:427:25 | .mySingle(...) [mySingle:0] | test.swift:427:24:427:24 | a | provenance |  |
+| test.swift:427:24:427:24 | a | test.swift:428:19:428:19 | a | provenance |  |
+| test.swift:436:13:436:28 | .mySingle(...) [mySingle:0] | test.swift:436:27:436:27 | x | provenance |  |
+| test.swift:436:27:436:27 | x | test.swift:437:19:437:19 | x | provenance |  |
+| test.swift:444:9:444:34 | call to ... [myPair:1] | test.swift:451:10:451:30 | .myPair(...) [myPair:1] | provenance |  |
+| test.swift:444:9:444:34 | call to ... [myPair:1] | test.swift:461:13:461:33 | .myPair(...) [myPair:1] | provenance |  |
+| test.swift:444:9:444:34 | call to ... [myPair:1] | test.swift:466:33:466:33 | a [myPair:1] | provenance |  |
+| test.swift:444:9:444:34 | call to ... [myPair:1] | test.swift:495:13:495:13 | a [myPair:1] | provenance |  |
+| test.swift:444:26:444:33 | call to source() | test.swift:444:9:444:34 | call to ... [myPair:1] | provenance |  |
+| test.swift:451:10:451:30 | .myPair(...) [myPair:1] | test.swift:451:29:451:29 | b | provenance |  |
+| test.swift:451:29:451:29 | b | test.swift:453:19:453:19 | b | provenance |  |
+| test.swift:461:13:461:33 | .myPair(...) [myPair:1] | test.swift:461:32:461:32 | y | provenance |  |
+| test.swift:461:32:461:32 | y | test.swift:463:19:463:19 | y | provenance |  |
+| test.swift:466:21:466:34 | call to ... [myCons:1, myPair:1] | test.swift:476:14:476:38 | .myCons(...) [myCons:1, myPair:1] | provenance |  |
+| test.swift:466:21:466:34 | call to ... [myCons:1, myPair:1] | test.swift:491:17:491:41 | .myCons(...) [myCons:1, myPair:1] | provenance |  |
+| test.swift:466:21:466:34 | call to ... [myCons:1, myPair:1] | test.swift:495:16:495:16 | b [myCons:1, myPair:1] | provenance |  |
+| test.swift:466:33:466:33 | a [myPair:1] | test.swift:466:21:466:34 | call to ... [myCons:1, myPair:1] | provenance |  |
+| test.swift:476:14:476:38 | .myCons(...) [myCons:1, myPair:1] | test.swift:476:25:476:37 | .myPair(...) [myPair:1] | provenance |  |
+| test.swift:476:25:476:37 | .myPair(...) [myPair:1] | test.swift:476:36:476:36 | c | provenance |  |
+| test.swift:476:36:476:36 | c | test.swift:479:19:479:19 | c | provenance |  |
+| test.swift:487:13:487:39 | .myPair(...) [myPair:0] | test.swift:487:31:487:31 | x | provenance |  |
+| test.swift:487:31:487:31 | x | test.swift:488:19:488:19 | x | provenance |  |
+| test.swift:487:43:487:62 | call to ... [myPair:0] | test.swift:487:13:487:39 | .myPair(...) [myPair:0] | provenance |  |
+| test.swift:487:51:487:58 | call to source() | test.swift:487:43:487:62 | call to ... [myPair:0] | provenance |  |
+| test.swift:491:17:491:41 | .myCons(...) [myCons:1, myPair:1] | test.swift:491:28:491:40 | .myPair(...) [myPair:1] | provenance |  |
+| test.swift:491:28:491:40 | .myPair(...) [myPair:1] | test.swift:491:39:491:39 | c | provenance |  |
+| test.swift:491:39:491:39 | c | test.swift:492:19:492:19 | c | provenance |  |
+| test.swift:495:12:495:17 | (...) [Tuple element at index 0, myPair:1] | test.swift:496:14:496:55 | (...) [Tuple element at index 0, myPair:1] | provenance |  |
+| test.swift:495:12:495:17 | (...) [Tuple element at index 1, myCons:1, myPair:1] | test.swift:496:14:496:55 | (...) [Tuple element at index 1, myCons:1, myPair:1] | provenance |  |
+| test.swift:495:13:495:13 | a [myPair:1] | test.swift:495:12:495:17 | (...) [Tuple element at index 0, myPair:1] | provenance |  |
+| test.swift:495:16:495:16 | b [myCons:1, myPair:1] | test.swift:495:12:495:17 | (...) [Tuple element at index 1, myCons:1, myPair:1] | provenance |  |
+| test.swift:496:14:496:55 | (...) [Tuple element at index 0, myPair:1] | test.swift:496:15:496:27 | .myPair(...) [myPair:1] | provenance |  |
+| test.swift:496:14:496:55 | (...) [Tuple element at index 1, myCons:1, myPair:1] | test.swift:496:30:496:54 | .myCons(...) [myCons:1, myPair:1] | provenance |  |
+| test.swift:496:15:496:27 | .myPair(...) [myPair:1] | test.swift:496:26:496:26 | b | provenance |  |
+| test.swift:496:26:496:26 | b | test.swift:498:19:498:19 | b | provenance |  |
+| test.swift:496:30:496:54 | .myCons(...) [myCons:1, myPair:1] | test.swift:496:41:496:53 | .myPair(...) [myPair:1] | provenance |  |
+| test.swift:496:41:496:53 | .myPair(...) [myPair:1] | test.swift:496:52:496:52 | e | provenance |  |
+| test.swift:496:52:496:52 | e | test.swift:501:19:501:19 | e | provenance |  |
+| test.swift:507:14:507:38 | call to ... [mySingle:0] | test.swift:513:13:513:35 | .mySingle(...) [mySingle:0] | provenance |  |
+| test.swift:507:30:507:37 | call to source() | test.swift:507:14:507:38 | call to ... [mySingle:0] | provenance |  |
+| test.swift:509:14:509:32 | call to mkMyEnum1(_:) [mySingle:0] | test.swift:515:13:515:35 | .mySingle(...) [mySingle:0] | provenance |  |
+| test.swift:509:24:509:31 | call to source() | test.swift:394:16:394:21 | v | provenance |  |
+| test.swift:509:24:509:31 | call to source() | test.swift:509:14:509:32 | call to mkMyEnum1(_:) [mySingle:0] | provenance |  |
+| test.swift:511:14:511:32 | call to mkMyEnum2(_:) [mySingle:0] | test.swift:517:13:517:35 | .mySingle(...) [mySingle:0] | provenance |  |
+| test.swift:511:24:511:31 | call to source() | test.swift:511:14:511:32 | call to mkMyEnum2(_:) [mySingle:0] | provenance |  |
+| test.swift:513:13:513:35 | .mySingle(...) [mySingle:0] | test.swift:513:33:513:33 | d2 | provenance |  |
+| test.swift:513:33:513:33 | d2 | test.swift:513:54:513:54 | d2 | provenance |  |
+| test.swift:515:13:515:35 | .mySingle(...) [mySingle:0] | test.swift:515:33:515:33 | d4 | provenance |  |
+| test.swift:515:33:515:33 | d4 | test.swift:515:54:515:54 | d4 | provenance |  |
+| test.swift:517:13:517:35 | .mySingle(...) [mySingle:0] | test.swift:517:33:517:33 | d6 | provenance |  |
+| test.swift:517:33:517:33 | d6 | test.swift:517:54:517:54 | d6 | provenance |  |
+| test.swift:520:14:520:36 | call to ... [some:0] | test.swift:526:15:526:15 | e2 [some:0] | provenance |  |
+| test.swift:520:28:520:35 | call to source() | test.swift:520:14:520:36 | call to ... [some:0] | provenance |  |
+| test.swift:522:14:522:34 | call to mkOptional1(_:) [some:0] | test.swift:528:15:528:15 | e4 [some:0] | provenance |  |
+| test.swift:522:26:522:33 | call to source() | test.swift:396:18:396:23 | v | provenance |  |
+| test.swift:522:26:522:33 | call to source() | test.swift:522:14:522:34 | call to mkOptional1(_:) [some:0] | provenance |  |
+| test.swift:524:14:524:34 | call to mkOptional2(_:) [some:0] | test.swift:530:15:530:15 | e6 [some:0] | provenance |  |
+| test.swift:524:26:524:33 | call to source() | test.swift:524:14:524:34 | call to mkOptional2(_:) [some:0] | provenance |  |
+| test.swift:526:15:526:15 | e2 [some:0] | test.swift:526:15:526:17 | ...! | provenance |  |
+| test.swift:528:15:528:15 | e4 [some:0] | test.swift:528:15:528:17 | ...! | provenance |  |
+| test.swift:530:15:530:15 | e6 [some:0] | test.swift:530:15:530:17 | ...! | provenance |  |
+| test.swift:536:13:536:28 | call to optionalSource() | test.swift:539:19:539:19 | a | provenance |  |
+| test.swift:536:13:536:28 | call to optionalSource() [some:0] | test.swift:538:8:538:12 | let ...? [some:0] | provenance |  |
+| test.swift:536:13:536:28 | call to optionalSource() [some:0] | test.swift:543:19:543:19 | x [some:0] | provenance |  |
+| test.swift:538:8:538:12 | let ...? [some:0] | test.swift:538:12:538:12 | a | provenance |  |
+| test.swift:538:12:538:12 | a | test.swift:539:19:539:19 | a | provenance |  |
+| test.swift:543:18:543:23 | (...) [Tuple element at index 0, some:0] | test.swift:545:10:545:37 | (...) [Tuple element at index 0, some:0] | provenance |  |
+| test.swift:543:19:543:19 | x [some:0] | test.swift:543:18:543:23 | (...) [Tuple element at index 0, some:0] | provenance |  |
+| test.swift:545:10:545:37 | (...) [Tuple element at index 0, some:0] | test.swift:545:11:545:22 | .some(...) [some:0] | provenance |  |
+| test.swift:545:11:545:22 | .some(...) [some:0] | test.swift:545:21:545:21 | a | provenance |  |
+| test.swift:545:21:545:21 | a | test.swift:546:19:546:19 | a | provenance |  |
+| test.swift:559:9:559:9 | self [x, some:0] | file://:0:0:0:0 | self [x, some:0] | provenance |  |
+| test.swift:559:9:559:9 | self [x] | file://:0:0:0:0 | self [x] | provenance |  |
+| test.swift:559:9:559:9 | value | file://:0:0:0:0 | value | provenance |  |
+| test.swift:559:9:559:9 | value [some:0] | file://:0:0:0:0 | value [some:0] | provenance |  |
+| test.swift:563:13:563:28 | call to optionalSource() | test.swift:565:12:565:12 | x | provenance |  |
+| test.swift:563:13:563:28 | call to optionalSource() [some:0] | test.swift:565:12:565:12 | x [some:0] | provenance |  |
+| test.swift:565:5:565:5 | [post] cx [x, some:0] | test.swift:569:20:569:20 | cx [x, some:0] | provenance |  |
+| test.swift:565:5:565:5 | [post] cx [x] | test.swift:569:20:569:20 | cx [x] | provenance |  |
+| test.swift:565:12:565:12 | x | test.swift:559:9:559:9 | value | provenance |  |
+| test.swift:565:12:565:12 | x | test.swift:565:5:565:5 | [post] cx [x] | provenance |  |
+| test.swift:565:12:565:12 | x [some:0] | test.swift:559:9:559:9 | value [some:0] | provenance |  |
+| test.swift:565:12:565:12 | x [some:0] | test.swift:565:5:565:5 | [post] cx [x, some:0] | provenance |  |
+| test.swift:569:11:569:15 | let ...? [some:0] | test.swift:569:15:569:15 | z1 | provenance |  |
+| test.swift:569:15:569:15 | z1 | test.swift:570:15:570:15 | z1 | provenance |  |
+| test.swift:569:20:569:20 | cx [x, some:0] | test.swift:559:9:559:9 | self [x, some:0] | provenance |  |
+| test.swift:569:20:569:20 | cx [x, some:0] | test.swift:569:20:569:23 | .x [some:0] | provenance |  |
+| test.swift:569:20:569:20 | cx [x] | test.swift:559:9:559:9 | self [x] | provenance |  |
+| test.swift:569:20:569:20 | cx [x] | test.swift:569:20:569:23 | .x | provenance |  |
+| test.swift:569:20:569:23 | .x | test.swift:570:15:570:15 | z1 | provenance |  |
+| test.swift:569:20:569:23 | .x [some:0] | test.swift:569:11:569:15 | let ...? [some:0] | provenance |  |
+| test.swift:576:14:576:21 | call to source() | test.swift:576:13:576:21 | call to +(_:) | provenance |  |
+| test.swift:585:9:585:9 | self [str] | file://:0:0:0:0 | self [str] | provenance |  |
+| test.swift:586:10:586:13 | s | test.swift:587:13:587:13 | s | provenance |  |
+| test.swift:587:7:587:7 | [post] self [str] | test.swift:586:5:588:5 | self[return] [str] | provenance |  |
+| test.swift:587:13:587:13 | s | test.swift:587:7:587:7 | [post] self [str] | provenance |  |
+| test.swift:592:17:595:5 | self[return] [str] | test.swift:600:13:600:41 | call to MyClass.init(contentsOfFile:) [str] | provenance |  |
+| test.swift:593:7:593:7 | [post] self [str] | test.swift:592:17:595:5 | self[return] [str] | provenance |  |
+| test.swift:593:7:593:7 | [post] self [str] | test.swift:594:17:594:17 | self [str] | provenance |  |
+| test.swift:593:20:593:28 | call to source3() | test.swift:586:10:586:13 | s | provenance |  |
+| test.swift:593:20:593:28 | call to source3() | test.swift:593:7:593:7 | [post] self [str] | provenance |  |
+| test.swift:594:17:594:17 | self [str] | test.swift:594:17:594:17 | .str | provenance |  |
+| test.swift:599:13:599:33 | call to MyClass.init(s:) [str] | test.swift:585:9:585:9 | self [str] | provenance |  |
+| test.swift:599:13:599:33 | call to MyClass.init(s:) [str] | test.swift:599:13:599:35 | .str | provenance |  |
+| test.swift:599:24:599:32 | call to source3() | test.swift:586:10:586:13 | s | provenance |  |
+| test.swift:599:24:599:32 | call to source3() | test.swift:599:13:599:33 | call to MyClass.init(s:) [str] | provenance |  |
+| test.swift:600:13:600:41 | call to MyClass.init(contentsOfFile:) [str] | test.swift:585:9:585:9 | self [str] | provenance |  |
+| test.swift:600:13:600:41 | call to MyClass.init(contentsOfFile:) [str] | test.swift:600:13:600:43 | .str | provenance |  |
+| test.swift:615:7:615:7 | self [x] | file://:0:0:0:0 | self [x] | provenance |  |
+| test.swift:617:8:617:11 | x | test.swift:618:14:618:14 | x | provenance |  |
+| test.swift:618:5:618:5 | [post] self [x] | test.swift:617:3:619:3 | self[return] [x] | provenance |  |
+| test.swift:618:14:618:14 | x | test.swift:618:5:618:5 | [post] self [x] | provenance |  |
+| test.swift:623:11:623:24 | call to S.init(x:) [x] | test.swift:625:13:625:13 | s [x] | provenance |  |
+| test.swift:623:11:623:24 | call to S.init(x:) [x] | test.swift:628:13:628:13 | s [x] | provenance |  |
+| test.swift:623:16:623:23 | call to source() | test.swift:617:8:617:11 | x | provenance |  |
+| test.swift:623:16:623:23 | call to source() | test.swift:623:11:623:24 | call to S.init(x:) [x] | provenance |  |
+| test.swift:624:11:624:14 | enter #keyPath(...) [x] | test.swift:624:14:624:14 | KeyPathComponent | provenance |  |
+| test.swift:624:14:624:14 | KeyPathComponent | test.swift:624:11:624:14 | exit #keyPath(...) | provenance |  |
+| test.swift:625:13:625:13 | s [x] | test.swift:624:11:624:14 | enter #keyPath(...) [x] | provenance |  |
+| test.swift:625:13:625:13 | s [x] | test.swift:625:13:625:25 | \\...[...] | provenance |  |
+| test.swift:627:36:627:38 | enter #keyPath(...) [x] | test.swift:627:38:627:38 | KeyPathComponent | provenance |  |
+| test.swift:627:38:627:38 | KeyPathComponent | test.swift:627:36:627:38 | exit #keyPath(...) | provenance |  |
+| test.swift:628:13:628:13 | s [x] | test.swift:627:36:627:38 | enter #keyPath(...) [x] | provenance |  |
+| test.swift:628:13:628:13 | s [x] | test.swift:628:13:628:32 | \\...[...] | provenance |  |
+| test.swift:632:7:632:7 | self [s, x] | file://:0:0:0:0 | self [s, x] | provenance |  |
+| test.swift:634:8:634:11 | s [x] | test.swift:635:14:635:14 | s [x] | provenance |  |
+| test.swift:635:5:635:5 | [post] self [s, x] | test.swift:634:3:636:3 | self[return] [s, x] | provenance |  |
+| test.swift:635:14:635:14 | s [x] | test.swift:635:5:635:5 | [post] self [s, x] | provenance |  |
+| test.swift:640:11:640:24 | call to S.init(x:) [x] | test.swift:641:18:641:18 | s [x] | provenance |  |
+| test.swift:640:16:640:23 | call to source() | test.swift:617:8:617:11 | x | provenance |  |
+| test.swift:640:16:640:23 | call to source() | test.swift:640:11:640:24 | call to S.init(x:) [x] | provenance |  |
+| test.swift:641:12:641:19 | call to S2.init(s:) [s, x] | test.swift:643:13:643:13 | s2 [s, x] | provenance |  |
+| test.swift:641:18:641:18 | s [x] | test.swift:634:8:634:11 | s [x] | provenance |  |
+| test.swift:641:18:641:18 | s [x] | test.swift:641:12:641:19 | call to S2.init(s:) [s, x] | provenance |  |
+| test.swift:642:11:642:17 | enter #keyPath(...) [s, x] | test.swift:642:15:642:15 | KeyPathComponent [x] | provenance |  |
+| test.swift:642:15:642:15 | KeyPathComponent [x] | test.swift:642:17:642:17 | KeyPathComponent | provenance |  |
+| test.swift:642:17:642:17 | KeyPathComponent | test.swift:642:11:642:17 | exit #keyPath(...) | provenance |  |
+| test.swift:643:13:643:13 | s2 [s, x] | test.swift:642:11:642:17 | enter #keyPath(...) [s, x] | provenance |  |
+| test.swift:643:13:643:13 | s2 [s, x] | test.swift:643:13:643:26 | \\...[...] | provenance |  |
+| test.swift:647:17:647:26 | [...] [Collection element] | test.swift:649:15:649:15 | array [Collection element] | provenance |  |
+| test.swift:647:18:647:25 | call to source() | test.swift:647:17:647:26 | [...] [Collection element] | provenance |  |
+| test.swift:648:13:648:22 | enter #keyPath(...) [Collection element] | test.swift:648:20:648:22 | KeyPathComponent | provenance |  |
+| test.swift:648:20:648:22 | KeyPathComponent | test.swift:648:13:648:22 | exit #keyPath(...) | provenance |  |
+| test.swift:649:15:649:15 | array [Collection element] | test.swift:648:13:648:22 | enter #keyPath(...) [Collection element] | provenance |  |
+| test.swift:649:15:649:15 | array [Collection element] | test.swift:649:15:649:31 | \\...[...] | provenance |  |
+| test.swift:655:8:655:12 | s [some:0, x] | test.swift:656:14:656:14 | s [some:0, x] | provenance |  |
+| test.swift:656:5:656:5 | [post] self [s, some:0, x] | test.swift:655:3:657:3 | self[return] [s, some:0, x] | provenance |  |
+| test.swift:656:14:656:14 | s [some:0, x] | test.swift:656:5:656:5 | [post] self [s, some:0, x] | provenance |  |
+| test.swift:661:13:661:26 | call to S.init(x:) [x] | test.swift:662:29:662:29 | s [x] | provenance |  |
+| test.swift:661:18:661:25 | call to source() | test.swift:617:8:617:11 | x | provenance |  |
+| test.swift:661:18:661:25 | call to source() | test.swift:661:13:661:26 | call to S.init(x:) [x] | provenance |  |
+| test.swift:662:14:662:30 | call to S2_Optional.init(s:) [s, some:0, x] | test.swift:664:15:664:15 | s2 [s, some:0, x] | provenance |  |
+| test.swift:662:29:662:29 | s [some:0, x] | test.swift:655:8:655:12 | s [some:0, x] | provenance |  |
+| test.swift:662:29:662:29 | s [some:0, x] | test.swift:662:14:662:30 | call to S2_Optional.init(s:) [s, some:0, x] | provenance |  |
+| test.swift:662:29:662:29 | s [x] | test.swift:662:29:662:29 | s [some:0, x] | provenance |  |
+| test.swift:663:13:663:29 | enter #keyPath(...) [s, some:0, x] | test.swift:663:26:663:26 | KeyPathComponent [some:0, x] | provenance |  |
+| test.swift:663:26:663:26 | KeyPathComponent [some:0, x] | test.swift:663:27:663:27 | KeyPathComponent [x] | provenance |  |
+| test.swift:663:27:663:27 | KeyPathComponent [x] | test.swift:663:29:663:29 | KeyPathComponent | provenance |  |
+| test.swift:663:29:663:29 | KeyPathComponent | file://:0:0:0:0 | KeyPathComponent [some:0] | provenance |  |
+| test.swift:664:15:664:15 | s2 [s, some:0, x] | test.swift:663:13:663:29 | enter #keyPath(...) [s, some:0, x] | provenance |  |
+| test.swift:664:15:664:15 | s2 [s, some:0, x] | test.swift:664:15:664:28 | \\...[...] [some:0] | provenance |  |
+| test.swift:664:15:664:28 | \\...[...] [some:0] | test.swift:664:15:664:29 | ...! | provenance |  |
+| test.swift:668:13:668:20 | call to source() | test.swift:676:15:676:15 | y | provenance |  |
+| test.swift:678:9:678:16 | call to source() | test.swift:680:11:680:11 | x | provenance |  |
+| test.swift:678:9:678:16 | call to source() | test.swift:681:15:681:15 | x | provenance |  |
+| test.swift:680:11:680:11 | x | test.swift:680:15:680:15 | [post] y | provenance |  |
+| test.swift:680:15:680:15 | [post] y | test.swift:682:15:682:15 | y | provenance |  |
+| test.swift:688:5:688:5 | [post] arr1 [Collection element] | test.swift:689:15:689:15 | arr1 [Collection element] | provenance |  |
+| test.swift:688:15:688:22 | call to source() | test.swift:688:5:688:5 | [post] arr1 [Collection element] | provenance |  |
+| test.swift:689:15:689:15 | arr1 [Collection element] | test.swift:689:15:689:21 | ...[...] | provenance |  |
+| test.swift:692:16:692:25 | [...] [Collection element] | test.swift:693:15:693:15 | arr2 [Collection element] | provenance |  |
+| test.swift:692:17:692:24 | call to source() | test.swift:692:16:692:25 | [...] [Collection element] | provenance |  |
+| test.swift:693:15:693:15 | arr2 [Collection element] | test.swift:693:15:693:21 | ...[...] | provenance |  |
+| test.swift:695:18:695:29 | [...] [Collection element, Collection element] | test.swift:697:15:697:15 | matrix [Collection element, Collection element] | provenance |  |
+| test.swift:695:19:695:28 | [...] [Collection element] | test.swift:695:18:695:29 | [...] [Collection element, Collection element] | provenance |  |
+| test.swift:695:20:695:27 | call to source() | test.swift:695:19:695:28 | [...] [Collection element] | provenance |  |
+| test.swift:697:15:697:15 | matrix [Collection element, Collection element] | test.swift:697:15:697:23 | ...[...] [Collection element] | provenance |  |
+| test.swift:697:15:697:23 | ...[...] [Collection element] | test.swift:697:15:697:26 | ...[...] | provenance |  |
+| test.swift:700:5:700:5 | [post] matrix2 [Collection element, Collection element] | test.swift:701:15:701:15 | matrix2 [Collection element, Collection element] | provenance |  |
+| test.swift:700:5:700:14 | [post] getter for ...[...] [Collection element] | test.swift:700:5:700:5 | [post] matrix2 [Collection element, Collection element] | provenance |  |
+| test.swift:700:21:700:28 | call to source() | test.swift:700:5:700:14 | [post] getter for ...[...] [Collection element] | provenance |  |
+| test.swift:701:15:701:15 | matrix2 [Collection element, Collection element] | test.swift:701:15:701:24 | ...[...] [Collection element] | provenance |  |
+| test.swift:701:15:701:24 | ...[...] [Collection element] | test.swift:701:15:701:27 | ...[...] | provenance |  |
+| test.swift:708:16:708:51 | call to Array<Element>.init(repeating:count:) [Collection element] | test.swift:709:15:709:15 | arr5 [Collection element] | provenance |  |
+| test.swift:708:33:708:40 | call to source() | test.swift:708:16:708:51 | call to Array<Element>.init(repeating:count:) [Collection element] | provenance |  |
+| test.swift:709:15:709:15 | arr5 [Collection element] | test.swift:709:15:709:21 | ...[...] | provenance |  |
+| test.swift:712:5:712:5 | [post] arr6 [Collection element] | test.swift:713:15:713:15 | arr6 [Collection element] | provenance |  |
+| test.swift:712:17:712:24 | call to source() | test.swift:712:5:712:5 | [post] arr6 [Collection element] | provenance |  |
+| test.swift:713:15:713:15 | arr6 [Collection element] | test.swift:713:15:713:21 | ...[...] | provenance |  |
+| test.swift:715:16:715:25 | [...] [Collection element] | test.swift:716:15:716:15 | arr7 [Collection element] | provenance |  |
+| test.swift:715:17:715:24 | call to source() | test.swift:715:16:715:25 | [...] [Collection element] | provenance |  |
+| test.swift:716:15:716:15 | arr7 [Collection element] | test.swift:716:15:716:34 | call to randomElement() [some:0] | provenance |  |
+| test.swift:716:15:716:34 | call to randomElement() [some:0] | test.swift:716:15:716:35 | ...! | provenance |  |
+| test.swift:722:5:722:5 | [post] set1 [Collection element] | test.swift:723:15:723:15 | set1 [Collection element] | provenance |  |
+| test.swift:722:17:722:24 | call to source() | test.swift:722:5:722:5 | [post] set1 [Collection element] | provenance |  |
+| test.swift:723:15:723:15 | set1 [Collection element] | test.swift:723:15:723:34 | call to randomElement() [some:0] | provenance |  |
+| test.swift:723:15:723:34 | call to randomElement() [some:0] | test.swift:723:15:723:35 | ...! | provenance |  |
+| test.swift:725:16:725:30 | call to Set<Element>.init(_:) [Collection element] | test.swift:726:15:726:15 | set2 [Collection element] | provenance |  |
+| test.swift:725:20:725:29 | [...] [Collection element] | test.swift:725:16:725:30 | call to Set<Element>.init(_:) [Collection element] | provenance |  |
+| test.swift:725:21:725:28 | call to source() | test.swift:725:20:725:29 | [...] [Collection element] | provenance |  |
+| test.swift:726:15:726:15 | set2 [Collection element] | test.swift:726:15:726:34 | call to randomElement() [some:0] | provenance |  |
+| test.swift:726:15:726:34 | call to randomElement() [some:0] | test.swift:726:15:726:35 | ...! | provenance |  |
+| test.swift:731:9:731:9 | self [v2, some:0] | file://:0:0:0:0 | self [v2, some:0] | provenance |  |
+| test.swift:731:9:731:9 | self [v2] | file://:0:0:0:0 | self [v2] | provenance |  |
+| test.swift:731:9:731:9 | value | file://:0:0:0:0 | value | provenance |  |
+| test.swift:731:9:731:9 | value [some:0] | file://:0:0:0:0 | value [some:0] | provenance |  |
+| test.swift:732:9:732:9 | self [v3] | file://:0:0:0:0 | self [v3] | provenance |  |
+| test.swift:732:9:732:9 | value | file://:0:0:0:0 | value | provenance |  |
+| test.swift:742:5:742:5 | v1 [some:0] | test.swift:752:15:752:15 | v1 [some:0] | provenance |  |
+| test.swift:742:11:742:18 | call to source() | test.swift:742:5:742:5 | v1 [some:0] | provenance |  |
+| test.swift:743:10:743:17 | call to source() | test.swift:743:10:743:17 | call to source() [some:0] | provenance |  |
+| test.swift:743:10:743:17 | call to source() | test.swift:753:15:753:17 | ...! | provenance |  |
+| test.swift:743:10:743:17 | call to source() [some:0] | test.swift:753:15:753:15 | v2 [some:0] | provenance |  |
+| test.swift:744:10:744:17 | call to source() | test.swift:754:15:754:15 | v3 | provenance |  |
+| test.swift:746:5:746:5 | [post] mo1 [v2, some:0] | test.swift:747:5:747:5 | mo1 [v2, some:0] | provenance |  |
+| test.swift:746:5:746:5 | [post] mo1 [v2] | test.swift:747:5:747:5 | mo1 [v2] | provenance |  |
+| test.swift:746:14:746:21 | call to source() | test.swift:731:9:731:9 | value | provenance |  |
+| test.swift:746:14:746:21 | call to source() | test.swift:746:5:746:5 | [post] mo1 [v2] | provenance |  |
+| test.swift:746:14:746:21 | call to source() | test.swift:746:14:746:21 | call to source() [some:0] | provenance |  |
+| test.swift:746:14:746:21 | call to source() [some:0] | test.swift:731:9:731:9 | value [some:0] | provenance |  |
+| test.swift:746:14:746:21 | call to source() [some:0] | test.swift:746:5:746:5 | [post] mo1 [v2, some:0] | provenance |  |
+| test.swift:747:5:747:5 | [post] mo1 [v3] | test.swift:757:15:757:15 | mo1 [v3] | provenance |  |
+| test.swift:747:5:747:5 | mo1 [v2, some:0] | test.swift:756:15:756:15 | mo1 [v2, some:0] | provenance |  |
+| test.swift:747:5:747:5 | mo1 [v2] | test.swift:756:15:756:15 | mo1 [v2] | provenance |  |
+| test.swift:747:14:747:21 | call to source() | test.swift:732:9:732:9 | value | provenance |  |
+| test.swift:747:14:747:21 | call to source() | test.swift:747:5:747:5 | [post] mo1 [v3] | provenance |  |
+| test.swift:752:15:752:15 | v1 [some:0] | test.swift:752:15:752:17 | ...! | provenance |  |
+| test.swift:753:15:753:15 | v2 [some:0] | test.swift:753:15:753:17 | ...! | provenance |  |
+| test.swift:756:15:756:15 | mo1 [v2, some:0] | test.swift:731:9:731:9 | self [v2, some:0] | provenance |  |
+| test.swift:756:15:756:15 | mo1 [v2, some:0] | test.swift:756:15:756:19 | .v2 [some:0] | provenance |  |
+| test.swift:756:15:756:15 | mo1 [v2] | test.swift:731:9:731:9 | self [v2] | provenance |  |
+| test.swift:756:15:756:15 | mo1 [v2] | test.swift:756:15:756:19 | .v2 | provenance |  |
+| test.swift:756:15:756:19 | .v2 | test.swift:756:15:756:21 | ...! | provenance |  |
+| test.swift:756:15:756:19 | .v2 [some:0] | test.swift:756:15:756:21 | ...! | provenance |  |
+| test.swift:757:15:757:15 | mo1 [v3] | test.swift:732:9:732:9 | self [v3] | provenance |  |
+| test.swift:757:15:757:15 | mo1 [v3] | test.swift:757:15:757:19 | .v3 | provenance |  |
+| test.swift:764:13:764:26 | call to S.init(x:) [x] | test.swift:765:29:765:29 | s [x] | provenance |  |
+| test.swift:764:18:764:25 | call to source() | test.swift:617:8:617:11 | x | provenance |  |
+| test.swift:764:18:764:25 | call to source() | test.swift:764:13:764:26 | call to S.init(x:) [x] | provenance |  |
+| test.swift:765:14:765:30 | call to S2_Optional.init(s:) [s, some:0, x] | test.swift:767:15:767:15 | s2 [s, some:0, x] | provenance |  |
+| test.swift:765:29:765:29 | s [some:0, x] | test.swift:655:8:655:12 | s [some:0, x] | provenance |  |
+| test.swift:765:29:765:29 | s [some:0, x] | test.swift:765:14:765:30 | call to S2_Optional.init(s:) [s, some:0, x] | provenance |  |
+| test.swift:765:29:765:29 | s [x] | test.swift:765:29:765:29 | s [some:0, x] | provenance |  |
+| test.swift:766:13:766:29 | enter #keyPath(...) [s, some:0, x] | test.swift:766:26:766:26 | KeyPathComponent [some:0, x] | provenance |  |
+| test.swift:766:26:766:26 | KeyPathComponent [some:0, x] | test.swift:766:26:766:26 | KeyPathComponent [x] | provenance |  |
+| test.swift:766:26:766:26 | KeyPathComponent [x] | test.swift:766:29:766:29 | KeyPathComponent | provenance |  |
+| test.swift:766:29:766:29 | KeyPathComponent | test.swift:766:13:766:29 | exit #keyPath(...) | provenance |  |
+| test.swift:767:15:767:15 | s2 [s, some:0, x] | test.swift:766:13:766:29 | enter #keyPath(...) [s, some:0, x] | provenance |  |
+| test.swift:767:15:767:15 | s2 [s, some:0, x] | test.swift:767:15:767:28 | \\...[...] | provenance |  |
+| test.swift:774:5:774:5 | [post] dict1 [Collection element, Tuple element at index 1] | test.swift:776:15:776:15 | dict1 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:774:5:774:12 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:774:5:774:5 | [post] dict1 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:774:16:774:23 | call to source() | test.swift:774:5:774:12 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test.swift:776:15:776:15 | dict1 [Collection element, Tuple element at index 1] | test.swift:776:15:776:22 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test.swift:776:15:776:22 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:776:15:776:22 | ...[...] | provenance |  |
+| test.swift:778:17:778:29 | [...] [Collection element, Tuple element at index 0] | test.swift:781:25:781:25 | dict2 [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:778:18:778:25 | call to source() | test.swift:778:18:778:28 | (...) [Tuple element at index 0] | provenance |  |
+| test.swift:778:18:778:28 | (...) [Tuple element at index 0] | test.swift:778:17:778:29 | [...] [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:781:5:781:5 | $generator [Collection element, Tuple element at index 0] | test.swift:781:5:781:5 | call to next() [some:0, Tuple element at index 0] | provenance |  |
+| test.swift:781:5:781:5 | call to next() [some:0, Tuple element at index 0] | test.swift:781:9:781:20 | (...) [Tuple element at index 0] | provenance |  |
+| test.swift:781:9:781:20 | (...) [Tuple element at index 0] | test.swift:781:10:781:10 | key | provenance |  |
+| test.swift:781:10:781:10 | key | test.swift:782:19:782:19 | key | provenance |  |
+| test.swift:781:25:781:25 | call to makeIterator() [Collection element, Tuple element at index 0] | test.swift:781:5:781:5 | $generator [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:781:25:781:25 | dict2 [Collection element, Tuple element at index 0] | test.swift:781:25:781:25 | call to makeIterator() [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:787:15:787:15 | dict3 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:789:5:789:5 | dict3 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:792:15:792:15 | dict3 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:786:18:786:28 | (...) [Tuple element at index 1] | test.swift:786:17:786:29 | [...] [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:786:21:786:28 | call to source() | test.swift:786:18:786:28 | (...) [Tuple element at index 1] | provenance |  |
+| test.swift:787:15:787:15 | dict3 [Collection element, Tuple element at index 1] | test.swift:787:15:787:22 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test.swift:787:15:787:22 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:787:15:787:22 | ...[...] | provenance |  |
+| test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 0] | test.swift:791:15:791:15 | dict3 [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 0] | test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 1] | test.swift:792:15:792:15 | dict3 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 1] | test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:789:5:789:5 | dict3 [Collection element, Tuple element at index 1] | test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 1] | provenance |  |
+| test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 0] | test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 1] | test.swift:789:5:789:5 | [post] dict3 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:789:11:789:18 | call to source() | test.swift:789:5:789:19 | DictionarySubscriptNode [Tuple element at index 0] | provenance |  |
+| test.swift:791:15:791:15 | dict3 [Collection element, Tuple element at index 0] | test.swift:791:15:791:35 | call to randomElement() [some:0, Tuple element at index 0] | provenance |  |
+| test.swift:791:15:791:35 | call to randomElement() [some:0, Tuple element at index 0] | test.swift:791:15:791:36 | ...! [Tuple element at index 0] | provenance |  |
+| test.swift:791:15:791:36 | ...! [Tuple element at index 0] | test.swift:791:15:791:38 | .0 | provenance |  |
+| test.swift:792:15:792:15 | dict3 [Collection element, Tuple element at index 1] | test.swift:792:15:792:35 | call to randomElement() [some:0, Tuple element at index 1] | provenance |  |
+| test.swift:792:15:792:35 | call to randomElement() [some:0, Tuple element at index 1] | test.swift:792:15:792:36 | ...! [Tuple element at index 1] | provenance |  |
+| test.swift:792:15:792:36 | ...! [Tuple element at index 1] | test.swift:792:15:792:38 | .1 | provenance |  |
+| test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 0] | test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 0] | provenance |  |
+| test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 1] | test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 1] | provenance |  |
+| test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 0] | test.swift:794:9:794:20 | (...) [Tuple element at index 0] | provenance |  |
+| test.swift:794:5:794:5 | call to next() [some:0, Tuple element at index 1] | test.swift:794:9:794:20 | (...) [Tuple element at index 1] | provenance |  |
+| test.swift:794:9:794:20 | (...) [Tuple element at index 0] | test.swift:794:10:794:10 | key | provenance |  |
+| test.swift:794:9:794:20 | (...) [Tuple element at index 1] | test.swift:794:15:794:15 | value | provenance |  |
+| test.swift:794:10:794:10 | key | test.swift:795:19:795:19 | key | provenance |  |
+| test.swift:794:15:794:15 | value | test.swift:796:19:796:19 | value | provenance |  |
+| test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 0] | test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 1] | test.swift:794:5:794:5 | $generator [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 0] | test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:794:25:794:25 | dict3 [Collection element, Tuple element at index 1] | test.swift:794:25:794:25 | call to makeIterator() [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | test.swift:800:15:800:15 | dict4 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | test.swift:801:15:801:15 | dict4 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | test.swift:803:15:803:15 | dict4 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:799:18:799:27 | (...) [Tuple element at index 1] | test.swift:799:17:799:28 | [...] [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:799:20:799:27 | call to source() | test.swift:799:18:799:27 | (...) [Tuple element at index 1] | provenance |  |
+| test.swift:800:15:800:15 | [post] dict4 [Collection element, Tuple element at index 0] | test.swift:802:15:802:15 | dict4 [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:800:15:800:15 | dict4 [Collection element, Tuple element at index 1] | test.swift:800:15:800:52 | call to updateValue(_:forKey:) [some:0] | provenance |  |
+| test.swift:800:15:800:52 | call to updateValue(_:forKey:) [some:0] | test.swift:800:15:800:53 | ...! | provenance |  |
+| test.swift:800:44:800:51 | call to source() | test.swift:800:15:800:15 | [post] dict4 [Collection element, Tuple element at index 0] | provenance |  |
+| test.swift:801:15:801:15 | [post] dict4 [Collection element, Tuple element at index 1] | test.swift:803:15:803:15 | dict4 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:801:15:801:15 | dict4 [Collection element, Tuple element at index 1] | test.swift:801:15:801:52 | call to updateValue(_:forKey:) [some:0] | provenance |  |
+| test.swift:801:15:801:52 | call to updateValue(_:forKey:) [some:0] | test.swift:801:15:801:53 | ...! | provenance |  |
+| test.swift:801:33:801:40 | call to source() | test.swift:801:15:801:15 | [post] dict4 [Collection element, Tuple element at index 1] | provenance |  |
+| test.swift:802:15:802:15 | dict4 [Collection element, Tuple element at index 0] | test.swift:802:15:802:35 | call to randomElement() [some:0, Tuple element at index 0] | provenance |  |
+| test.swift:802:15:802:35 | call to randomElement() [some:0, Tuple element at index 0] | test.swift:802:15:802:36 | ...! [Tuple element at index 0] | provenance |  |
+| test.swift:802:15:802:36 | ...! [Tuple element at index 0] | test.swift:802:15:802:38 | .0 | provenance |  |
+| test.swift:803:15:803:15 | dict4 [Collection element, Tuple element at index 1] | test.swift:803:15:803:35 | call to randomElement() [some:0, Tuple element at index 1] | provenance |  |
+| test.swift:803:15:803:35 | call to randomElement() [some:0, Tuple element at index 1] | test.swift:803:15:803:36 | ...! [Tuple element at index 1] | provenance |  |
+| test.swift:803:15:803:36 | ...! [Tuple element at index 1] | test.swift:803:15:803:38 | .1 | provenance |  |
+| test.swift:809:8:809:13 | v | test.swift:810:14:810:14 | v | provenance |  |
+| test.swift:810:5:810:5 | [post] self [v] | test.swift:809:3:811:3 | self[return] [v] | provenance |  |
+| test.swift:810:14:810:14 | v | test.swift:810:5:810:5 | [post] self [v] | provenance |  |
+| test.swift:813:8:813:8 | self [v] | test.swift:813:31:813:31 | self [v] | provenance |  |
+| test.swift:813:31:813:31 | self [v] | test.swift:813:31:813:31 | .v | provenance |  |
+| test.swift:813:31:813:31 | self [v] | test.swift:815:7:815:7 | self [v] | provenance |  |
+| test.swift:815:7:815:7 | self [v] | file://:0:0:0:0 | self [v] | provenance |  |
+| test.swift:815:7:815:7 | value | file://:0:0:0:0 | value | provenance |  |
+| test.swift:819:14:819:25 | call to S3.init(_:) [v] | test.swift:822:15:822:15 | s1 [v] | provenance |  |
+| test.swift:819:14:819:25 | call to S3.init(_:) [v] | test.swift:824:15:824:15 | s1 [v] | provenance |  |
+| test.swift:819:17:819:24 | call to source() | test.swift:809:8:809:13 | v | provenance |  |
+| test.swift:819:17:819:24 | call to source() | test.swift:819:14:819:25 | call to S3.init(_:) [v] | provenance |  |
+| test.swift:822:15:822:15 | s1 [v] | test.swift:815:7:815:7 | self [v] | provenance |  |
+| test.swift:822:15:822:15 | s1 [v] | test.swift:822:15:822:18 | .v | provenance |  |
+| test.swift:824:15:824:15 | s1 [v] | test.swift:813:8:813:8 | self [v] | provenance |  |
+| test.swift:824:15:824:15 | s1 [v] | test.swift:824:15:824:23 | call to getv() | provenance |  |
+| test.swift:828:5:828:5 | [post] s2 [v] | test.swift:831:15:831:15 | s2 [v] | provenance |  |
+| test.swift:828:5:828:5 | [post] s2 [v] | test.swift:833:15:833:15 | s2 [v] | provenance |  |
+| test.swift:828:12:828:19 | call to source() | test.swift:815:7:815:7 | value | provenance |  |
+| test.swift:828:12:828:19 | call to source() | test.swift:828:5:828:5 | [post] s2 [v] | provenance |  |
+| test.swift:831:15:831:15 | s2 [v] | test.swift:815:7:815:7 | self [v] | provenance |  |
+| test.swift:831:15:831:15 | s2 [v] | test.swift:831:15:831:18 | .v | provenance |  |
+| test.swift:833:15:833:15 | s2 [v] | test.swift:813:8:813:8 | self [v] | provenance |  |
+| test.swift:833:15:833:15 | s2 [v] | test.swift:833:15:833:23 | call to getv() | provenance |  |
+| test.swift:839:11:839:17 | [post] exit #keyPath(...) | test.swift:839:17:839:17 | [post] KeyPathComponent | provenance |  |
+| test.swift:839:15:839:15 | [post] KeyPathComponent [x] | test.swift:839:11:839:17 | [post] enter #keyPath(...) [s, x] | provenance |  |
+| test.swift:839:17:839:17 | [post] KeyPathComponent | test.swift:839:15:839:15 | [post] KeyPathComponent [x] | provenance |  |
+| test.swift:840:3:840:3 | [post] s2 [s, x] | test.swift:841:13:841:13 | s2 [s, x] | provenance |  |
+| test.swift:840:3:840:16 | \\...[...] | test.swift:839:11:839:17 | [post] exit #keyPath(...) | provenance |  |
+| test.swift:840:3:840:16 | \\...[...] | test.swift:840:3:840:3 | [post] s2 [s, x] | provenance |  |
+| test.swift:840:20:840:27 | call to source() | test.swift:840:3:840:16 | \\...[...] | provenance |  |
+| test.swift:841:13:841:13 | s2 [s, x] | test.swift:632:7:632:7 | self [s, x] | provenance |  |
+| test.swift:841:13:841:13 | s2 [s, x] | test.swift:841:13:841:16 | .s [x] | provenance |  |
+| test.swift:841:13:841:16 | .s [x] | test.swift:615:7:615:7 | self [x] | provenance |  |
+| test.swift:841:13:841:16 | .s [x] | test.swift:841:13:841:18 | .x | provenance |  |
+| test.swift:844:19:844:28 | args [Collection element] | test.swift:846:15:846:15 | args [Collection element] | provenance |  |
+| test.swift:846:15:846:15 | args [Collection element] | test.swift:846:15:846:21 | ...[...] | provenance |  |
+| test.swift:849:19:849:24 | v | test.swift:850:15:850:15 | v | provenance |  |
+| test.swift:856:29:856:40 | args [Collection element] | test.swift:859:15:859:15 | args [Collection element] | provenance |  |
+| test.swift:856:29:856:40 | args [Collection element] | test.swift:860:15:860:15 | args [Collection element] | provenance |  |
+| test.swift:856:29:856:40 | args [Collection element] | test.swift:862:16:862:16 | args [Collection element] | provenance |  |
+| test.swift:856:29:856:40 | args [Collection element] | test.swift:867:15:867:15 | args [Collection element] | provenance |  |
+| test.swift:859:15:859:15 | args [Collection element] | test.swift:859:15:859:21 | ...[...] | provenance |  |
+| test.swift:860:15:860:15 | args [Collection element] | test.swift:860:15:860:21 | ...[...] | provenance |  |
+| test.swift:862:5:862:5 | $arg$generator [Collection element] | test.swift:862:5:862:5 | call to next() [some:0] | provenance |  |
+| test.swift:862:5:862:5 | call to next() [some:0] | test.swift:862:9:862:9 | arg | provenance |  |
+| test.swift:862:9:862:9 | arg | test.swift:863:19:863:19 | arg | provenance |  |
+| test.swift:862:16:862:16 | args [Collection element] | test.swift:862:16:862:16 | call to makeIterator() [Collection element] | provenance |  |
+| test.swift:862:16:862:16 | call to makeIterator() [Collection element] | test.swift:862:5:862:5 | $arg$generator [Collection element] | provenance |  |
+| test.swift:866:21:866:29 | enter #keyPath(...) [Collection element] | test.swift:866:27:866:29 | KeyPathComponent | provenance |  |
+| test.swift:866:27:866:29 | KeyPathComponent | test.swift:866:21:866:29 | exit #keyPath(...) | provenance |  |
+| test.swift:867:15:867:15 | args [Collection element] | test.swift:866:21:866:29 | enter #keyPath(...) [Collection element] | provenance |  |
+| test.swift:867:15:867:15 | args [Collection element] | test.swift:867:15:867:38 | \\...[...] | provenance |  |
+| test.swift:871:24:871:31 | [...] [Collection element] | test.swift:844:19:844:28 | args [Collection element] | provenance |  |
+| test.swift:871:24:871:31 | [...] [Collection element] | test.swift:871:24:871:31 | [...] [Collection element] | provenance |  |
+| test.swift:871:24:871:31 | call to source() | test.swift:871:24:871:31 | [...] [Collection element] | provenance |  |
+| test.swift:872:18:872:25 | call to source() | test.swift:849:19:849:24 | v | provenance |  |
+| test.swift:873:21:873:31 | [...] [Collection element] | test.swift:856:29:856:40 | args [Collection element] | provenance |  |
+| test.swift:873:21:873:31 | [...] [Collection element] | test.swift:873:21:873:31 | [...] [Collection element] | provenance |  |
+| test.swift:873:24:873:31 | call to source() | test.swift:873:21:873:31 | [...] [Collection element] | provenance |  |
+| test.swift:877:16:877:30 | call to Set<Element>.init(_:) [Collection element] | test.swift:879:17:879:17 | set1 [Collection element] | provenance |  |
+| test.swift:877:16:877:30 | call to Set<Element>.init(_:) [Collection element] | test.swift:883:21:883:21 | set1 [Collection element] | provenance |  |
+| test.swift:877:20:877:29 | [...] [Collection element] | test.swift:877:16:877:30 | call to Set<Element>.init(_:) [Collection element] | provenance |  |
+| test.swift:877:21:877:28 | call to source() | test.swift:877:20:877:29 | [...] [Collection element] | provenance |  |
+| test.swift:879:5:879:5 | $elem$generator [Collection element] | test.swift:879:5:879:5 | call to next() [some:0] | provenance |  |
+| test.swift:879:5:879:5 | call to next() [some:0] | test.swift:879:9:879:9 | elem | provenance |  |
+| test.swift:879:9:879:9 | elem | test.swift:880:19:880:19 | elem | provenance |  |
+| test.swift:879:17:879:17 | call to makeIterator() [Collection element] | test.swift:879:5:879:5 | $elem$generator [Collection element] | provenance |  |
+| test.swift:879:17:879:17 | set1 [Collection element] | test.swift:879:17:879:17 | call to makeIterator() [Collection element] | provenance |  |
+| test.swift:883:21:883:21 | set1 [Collection element] | test.swift:883:21:883:39 | call to makeIterator() [Collection element] | provenance |  |
+| test.swift:883:21:883:39 | call to makeIterator() [Collection element] | test.swift:884:15:884:15 | generator [Collection element] | provenance |  |
+| test.swift:884:15:884:15 | generator [Collection element] | test.swift:884:15:884:30 | call to next() [some:0] | provenance |  |
+| test.swift:884:15:884:30 | call to next() [some:0] | test.swift:884:15:884:31 | ...! | provenance |  |
+| test.swift:908:19:908:26 | call to source() | test.swift:904:13:904:18 | call to ... | provenance |  |
+| test.swift:927:12:927:31 | call to source(_:) | test.swift:927:12:927:31 | OpenExistentialExpr | provenance |  |
+| test.swift:929:12:929:57 | call to source(_:) | test.swift:929:12:929:57 | OpenExistentialExpr | provenance |  |
+| test.swift:937:22:937:29 | call to source() | file://:0:0:0:0 | .wrappedValue | provenance |  |
+| test.swift:938:9:938:9 | newValue | test.swift:938:25:938:25 | newValue | provenance |  |
+| test.swift:941:10:941:24 | wrappedValue | test.swift:942:19:942:19 | wrappedValue | provenance |  |
+| test.swift:943:29:943:36 | call to source() | test.swift:938:9:938:9 | newValue | provenance |  |
+| test.swift:948:33:948:33 | value | file://:0:0:0:0 | value | provenance |  |
+| test.swift:948:42:948:49 | call to source() | test.swift:941:10:941:24 | wrappedValue | provenance |  |
+| test.swift:950:9:950:16 | call to source() | test.swift:948:33:948:33 | value | provenance |  |
+| test.swift:957:9:957:9 | value | file://:0:0:0:0 | value | provenance |  |
+| test.swift:958:9:958:9 | self [wrappedValue] | test.swift:959:23:959:23 | self [wrappedValue] | provenance |  |
+| test.swift:959:23:959:23 | self [wrappedValue] | test.swift:959:23:959:23 | .wrappedValue | provenance |  |
+| test.swift:965:9:965:9 | newValue | test.swift:967:28:967:28 | newValue | provenance |  |
+| test.swift:967:28:967:28 | newValue | test.swift:957:9:957:9 | value | provenance |  |
+| test.swift:971:10:971:24 | wrappedValue | test.swift:972:19:972:19 | wrappedValue | provenance |  |
+| test.swift:978:34:978:34 | value | file://:0:0:0:0 | value | provenance |  |
+| test.swift:980:9:980:16 | call to source() | test.swift:978:34:978:34 | value | provenance |  |
+| test.swift:983:38:983:45 | call to source() | test.swift:971:10:971:24 | wrappedValue | provenance |  |
+| test.swift:988:34:988:34 | value | file://:0:0:0:0 | value | provenance |  |
+| test.swift:991:10:991:17 | call to source() | test.swift:988:34:988:34 | value | provenance |  |
 nodes
 | file://:0:0:0:0 | .a [x] | semmle.label | .a [x] |
 | file://:0:0:0:0 | .s [x] | semmle.label | .s [x] |

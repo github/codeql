@@ -1,19 +1,19 @@
 edges
-| tests.go:8:24:8:24 | definition of f | tests.go:9:8:9:8 | f |
-| tests.go:12:32:12:32 | definition of f | tests.go:13:13:13:13 | capture variable f |
-| tests.go:13:13:13:13 | capture variable f | tests.go:14:3:14:3 | f |
-| tests.go:31:5:31:78 | ... := ...[0] | tests.go:32:21:32:21 | f |
-| tests.go:31:5:31:78 | ... := ...[0] | tests.go:33:29:33:29 | f |
-| tests.go:32:21:32:21 | f | tests.go:8:24:8:24 | definition of f |
-| tests.go:33:29:33:29 | f | tests.go:12:32:12:32 | definition of f |
-| tests.go:45:5:45:76 | ... := ...[0] | tests.go:46:21:46:21 | f |
-| tests.go:45:5:45:76 | ... := ...[0] | tests.go:47:29:47:29 | f |
-| tests.go:46:21:46:21 | f | tests.go:8:24:8:24 | definition of f |
-| tests.go:47:29:47:29 | f | tests.go:12:32:12:32 | definition of f |
-| tests.go:54:5:54:78 | ... := ...[0] | tests.go:56:3:56:3 | f |
-| tests.go:66:5:66:76 | ... := ...[0] | tests.go:68:3:68:3 | f |
-| tests.go:108:5:108:78 | ... := ...[0] | tests.go:110:9:110:9 | f |
-| tests.go:125:5:125:78 | ... := ...[0] | tests.go:129:3:129:3 | f |
+| tests.go:8:24:8:24 | definition of f | tests.go:9:8:9:8 | f | provenance |  |
+| tests.go:12:32:12:32 | definition of f | tests.go:13:13:13:13 | capture variable f | provenance |  |
+| tests.go:13:13:13:13 | capture variable f | tests.go:14:3:14:3 | f | provenance |  |
+| tests.go:31:5:31:78 | ... := ...[0] | tests.go:32:21:32:21 | f | provenance |  |
+| tests.go:31:5:31:78 | ... := ...[0] | tests.go:33:29:33:29 | f | provenance |  |
+| tests.go:32:21:32:21 | f | tests.go:8:24:8:24 | definition of f | provenance |  |
+| tests.go:33:29:33:29 | f | tests.go:12:32:12:32 | definition of f | provenance |  |
+| tests.go:45:5:45:76 | ... := ...[0] | tests.go:46:21:46:21 | f | provenance |  |
+| tests.go:45:5:45:76 | ... := ...[0] | tests.go:47:29:47:29 | f | provenance |  |
+| tests.go:46:21:46:21 | f | tests.go:8:24:8:24 | definition of f | provenance |  |
+| tests.go:47:29:47:29 | f | tests.go:12:32:12:32 | definition of f | provenance |  |
+| tests.go:54:5:54:78 | ... := ...[0] | tests.go:56:3:56:3 | f | provenance |  |
+| tests.go:66:5:66:76 | ... := ...[0] | tests.go:68:3:68:3 | f | provenance |  |
+| tests.go:108:5:108:78 | ... := ...[0] | tests.go:110:9:110:9 | f | provenance |  |
+| tests.go:125:5:125:78 | ... := ...[0] | tests.go:129:3:129:3 | f | provenance |  |
 nodes
 | tests.go:8:24:8:24 | definition of f | semmle.label | definition of f |
 | tests.go:9:8:9:8 | f | semmle.label | f |

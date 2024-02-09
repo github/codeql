@@ -1,5 +1,5 @@
 edges
-| StoredXSS.cs:22:60:22:86 | call to method GetString : String | StoredXSS.cs:22:44:22:86 | ... + ... |
+| StoredXSS.cs:22:60:22:86 | call to method GetString : String | StoredXSS.cs:22:44:22:86 | ... + ... | provenance |  |
 nodes
 | StoredXSS.cs:22:44:22:86 | ... + ... | semmle.label | ... + ... |
 | StoredXSS.cs:22:60:22:86 | call to method GetString : String | semmle.label | call to method GetString : String |

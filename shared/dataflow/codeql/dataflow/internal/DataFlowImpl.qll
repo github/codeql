@@ -3724,7 +3724,11 @@ module MakeImpl<InputSig Lang> {
      */
     module PathGraph implements PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-      query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b }
+      query predicate edges(PathNode a, PathNode b, string key, string val) {
+        a.getASuccessor() = b and
+        key = "provenance" and
+        val = ""
+      }
 
       /** Holds if `n` is a node in the graph of data flow path explanations. */
       query predicate nodes(PathNode n, string key, string val) {

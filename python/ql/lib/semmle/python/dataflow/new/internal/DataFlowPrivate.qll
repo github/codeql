@@ -474,7 +474,7 @@ import StepRelationTransformations
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
   or
-  summaryFlowSteps(nodeFrom, nodeTo)
+  summaryLocalStep(nodeFrom, nodeTo)
   or
   variableCaptureLocalFlowStep(nodeFrom, nodeTo)
 }
@@ -493,10 +493,6 @@ predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
 private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
     nodeTo.(FlowSummaryNode).getSummaryNode(), true)
-}
-
-predicate summaryFlowSteps(Node nodeFrom, Node nodeTo) {
-  IncludePostUpdateFlow<PhaseDependentFlow<summaryLocalStep/2>::step/2>::step(nodeFrom, nodeTo)
 }
 
 predicate variableCaptureLocalFlowStep(Node nodeFrom, Node nodeTo) {

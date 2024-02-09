@@ -1,74 +1,74 @@
 edges
-| test.cpp:34:10:34:12 | buf | test.cpp:34:5:34:24 | access to array |
-| test.cpp:35:10:35:12 | buf | test.cpp:35:5:35:22 | access to array |
-| test.cpp:36:10:36:12 | buf | test.cpp:36:5:36:24 | access to array |
-| test.cpp:39:14:39:16 | buf | test.cpp:39:9:39:19 | access to array |
-| test.cpp:43:14:43:16 | buf | test.cpp:43:9:43:19 | access to array |
-| test.cpp:48:10:48:12 | buf | test.cpp:48:5:48:24 | access to array |
-| test.cpp:49:10:49:12 | buf | test.cpp:49:5:49:22 | access to array |
-| test.cpp:50:10:50:12 | buf | test.cpp:50:5:50:24 | access to array |
-| test.cpp:53:14:53:16 | buf | test.cpp:53:9:53:19 | access to array |
-| test.cpp:57:14:57:16 | buf | test.cpp:57:9:57:19 | access to array |
-| test.cpp:61:14:61:16 | buf | test.cpp:61:9:61:19 | access to array |
-| test.cpp:70:33:70:33 | p | test.cpp:71:5:71:17 | access to array |
-| test.cpp:70:33:70:33 | p | test.cpp:72:5:72:15 | access to array |
-| test.cpp:76:26:76:46 | & ... | test.cpp:66:32:66:32 | p |
-| test.cpp:76:32:76:34 | buf | test.cpp:76:26:76:46 | & ... |
-| test.cpp:77:26:77:44 | & ... | test.cpp:66:32:66:32 | p |
-| test.cpp:77:32:77:34 | buf | test.cpp:77:26:77:44 | & ... |
-| test.cpp:79:27:79:34 | buf | test.cpp:70:33:70:33 | p |
-| test.cpp:79:32:79:34 | buf | test.cpp:79:27:79:34 | buf |
-| test.cpp:85:34:85:36 | buf | test.cpp:87:5:87:31 | access to array |
-| test.cpp:85:34:85:36 | buf | test.cpp:88:5:88:27 | access to array |
-| test.cpp:96:13:96:15 | arr | test.cpp:96:13:96:18 | access to array |
-| test.cpp:111:17:111:19 | arr | test.cpp:111:17:111:22 | access to array |
-| test.cpp:111:17:111:19 | arr | test.cpp:115:35:115:40 | access to array |
-| test.cpp:111:17:111:19 | arr | test.cpp:119:17:119:22 | access to array |
-| test.cpp:115:35:115:37 | arr | test.cpp:111:17:111:22 | access to array |
-| test.cpp:115:35:115:37 | arr | test.cpp:115:35:115:40 | access to array |
-| test.cpp:115:35:115:37 | arr | test.cpp:119:17:119:22 | access to array |
-| test.cpp:119:17:119:19 | arr | test.cpp:111:17:111:22 | access to array |
-| test.cpp:119:17:119:19 | arr | test.cpp:115:35:115:40 | access to array |
-| test.cpp:119:17:119:19 | arr | test.cpp:119:17:119:22 | access to array |
-| test.cpp:128:9:128:11 | arr | test.cpp:128:9:128:14 | access to array |
-| test.cpp:134:25:134:27 | arr | test.cpp:136:9:136:16 | ... += ... |
-| test.cpp:136:9:136:16 | ... += ... | test.cpp:138:13:138:15 | arr |
-| test.cpp:143:18:143:21 | asdf | test.cpp:134:25:134:27 | arr |
-| test.cpp:143:18:143:21 | asdf | test.cpp:143:18:143:21 | asdf |
-| test.cpp:146:26:146:26 | *p | test.cpp:147:4:147:9 | -- ... |
-| test.cpp:156:12:156:14 | buf | test.cpp:156:12:156:18 | ... + ... |
-| test.cpp:156:12:156:18 | ... + ... | test.cpp:158:17:158:18 | *& ... |
-| test.cpp:158:17:158:18 | *& ... | test.cpp:146:26:146:26 | *p |
-| test.cpp:218:23:218:28 | buffer | test.cpp:220:5:220:11 | access to array |
-| test.cpp:218:23:218:28 | buffer | test.cpp:221:5:221:11 | access to array |
-| test.cpp:229:25:229:29 | array | test.cpp:231:5:231:10 | access to array |
-| test.cpp:229:25:229:29 | array | test.cpp:232:5:232:10 | access to array |
-| test.cpp:245:30:245:30 | p | test.cpp:261:27:261:30 | access to array |
-| test.cpp:245:30:245:30 | p | test.cpp:261:27:261:30 | access to array |
-| test.cpp:274:14:274:20 | buffer3 | test.cpp:245:30:245:30 | p |
-| test.cpp:274:14:274:20 | buffer3 | test.cpp:274:14:274:20 | buffer3 |
-| test.cpp:277:35:277:35 | p | test.cpp:278:14:278:14 | p |
-| test.cpp:278:14:278:14 | p | test.cpp:245:30:245:30 | p |
-| test.cpp:283:19:283:25 | buffer1 | test.cpp:277:35:277:35 | p |
-| test.cpp:283:19:283:25 | buffer1 | test.cpp:283:19:283:25 | buffer1 |
-| test.cpp:286:19:286:25 | buffer2 | test.cpp:277:35:277:35 | p |
-| test.cpp:286:19:286:25 | buffer2 | test.cpp:286:19:286:25 | buffer2 |
-| test.cpp:289:19:289:25 | buffer3 | test.cpp:277:35:277:35 | p |
-| test.cpp:289:19:289:25 | buffer3 | test.cpp:289:19:289:25 | buffer3 |
-| test.cpp:292:25:292:27 | arr | test.cpp:299:16:299:21 | access to array |
-| test.cpp:292:25:292:27 | arr | test.cpp:299:16:299:21 | access to array |
-| test.cpp:306:20:306:23 | arr1 | test.cpp:292:25:292:27 | arr |
-| test.cpp:306:20:306:23 | arr1 | test.cpp:306:20:306:23 | arr1 |
-| test.cpp:309:20:309:23 | arr2 | test.cpp:292:25:292:27 | arr |
-| test.cpp:309:20:309:23 | arr2 | test.cpp:309:20:309:23 | arr2 |
-| test.cpp:319:19:319:22 | temp | test.cpp:319:19:319:27 | ... + ... |
-| test.cpp:319:19:319:22 | temp | test.cpp:324:23:324:32 | ... + ... |
-| test.cpp:319:19:319:27 | ... + ... | test.cpp:325:24:325:26 | end |
-| test.cpp:322:19:322:22 | temp | test.cpp:322:19:322:27 | ... + ... |
-| test.cpp:322:19:322:22 | temp | test.cpp:324:23:324:32 | ... + ... |
-| test.cpp:322:19:322:27 | ... + ... | test.cpp:325:24:325:26 | end |
-| test.cpp:324:23:324:26 | temp | test.cpp:324:23:324:32 | ... + ... |
-| test.cpp:324:23:324:32 | ... + ... | test.cpp:325:15:325:19 | temp2 |
+| test.cpp:34:10:34:12 | buf | test.cpp:34:5:34:24 | access to array | provenance |  |
+| test.cpp:35:10:35:12 | buf | test.cpp:35:5:35:22 | access to array | provenance |  |
+| test.cpp:36:10:36:12 | buf | test.cpp:36:5:36:24 | access to array | provenance |  |
+| test.cpp:39:14:39:16 | buf | test.cpp:39:9:39:19 | access to array | provenance |  |
+| test.cpp:43:14:43:16 | buf | test.cpp:43:9:43:19 | access to array | provenance |  |
+| test.cpp:48:10:48:12 | buf | test.cpp:48:5:48:24 | access to array | provenance |  |
+| test.cpp:49:10:49:12 | buf | test.cpp:49:5:49:22 | access to array | provenance |  |
+| test.cpp:50:10:50:12 | buf | test.cpp:50:5:50:24 | access to array | provenance |  |
+| test.cpp:53:14:53:16 | buf | test.cpp:53:9:53:19 | access to array | provenance |  |
+| test.cpp:57:14:57:16 | buf | test.cpp:57:9:57:19 | access to array | provenance |  |
+| test.cpp:61:14:61:16 | buf | test.cpp:61:9:61:19 | access to array | provenance |  |
+| test.cpp:70:33:70:33 | p | test.cpp:71:5:71:17 | access to array | provenance |  |
+| test.cpp:70:33:70:33 | p | test.cpp:72:5:72:15 | access to array | provenance |  |
+| test.cpp:76:26:76:46 | & ... | test.cpp:66:32:66:32 | p | provenance |  |
+| test.cpp:76:32:76:34 | buf | test.cpp:76:26:76:46 | & ... | provenance |  |
+| test.cpp:77:26:77:44 | & ... | test.cpp:66:32:66:32 | p | provenance |  |
+| test.cpp:77:32:77:34 | buf | test.cpp:77:26:77:44 | & ... | provenance |  |
+| test.cpp:79:27:79:34 | buf | test.cpp:70:33:70:33 | p | provenance |  |
+| test.cpp:79:32:79:34 | buf | test.cpp:79:27:79:34 | buf | provenance |  |
+| test.cpp:85:34:85:36 | buf | test.cpp:87:5:87:31 | access to array | provenance |  |
+| test.cpp:85:34:85:36 | buf | test.cpp:88:5:88:27 | access to array | provenance |  |
+| test.cpp:96:13:96:15 | arr | test.cpp:96:13:96:18 | access to array | provenance |  |
+| test.cpp:111:17:111:19 | arr | test.cpp:111:17:111:22 | access to array | provenance |  |
+| test.cpp:111:17:111:19 | arr | test.cpp:115:35:115:40 | access to array | provenance |  |
+| test.cpp:111:17:111:19 | arr | test.cpp:119:17:119:22 | access to array | provenance |  |
+| test.cpp:115:35:115:37 | arr | test.cpp:111:17:111:22 | access to array | provenance |  |
+| test.cpp:115:35:115:37 | arr | test.cpp:115:35:115:40 | access to array | provenance |  |
+| test.cpp:115:35:115:37 | arr | test.cpp:119:17:119:22 | access to array | provenance |  |
+| test.cpp:119:17:119:19 | arr | test.cpp:111:17:111:22 | access to array | provenance |  |
+| test.cpp:119:17:119:19 | arr | test.cpp:115:35:115:40 | access to array | provenance |  |
+| test.cpp:119:17:119:19 | arr | test.cpp:119:17:119:22 | access to array | provenance |  |
+| test.cpp:128:9:128:11 | arr | test.cpp:128:9:128:14 | access to array | provenance |  |
+| test.cpp:134:25:134:27 | arr | test.cpp:136:9:136:16 | ... += ... | provenance |  |
+| test.cpp:136:9:136:16 | ... += ... | test.cpp:138:13:138:15 | arr | provenance |  |
+| test.cpp:143:18:143:21 | asdf | test.cpp:134:25:134:27 | arr | provenance |  |
+| test.cpp:143:18:143:21 | asdf | test.cpp:143:18:143:21 | asdf | provenance |  |
+| test.cpp:146:26:146:26 | *p | test.cpp:147:4:147:9 | -- ... | provenance |  |
+| test.cpp:156:12:156:14 | buf | test.cpp:156:12:156:18 | ... + ... | provenance |  |
+| test.cpp:156:12:156:18 | ... + ... | test.cpp:158:17:158:18 | *& ... | provenance |  |
+| test.cpp:158:17:158:18 | *& ... | test.cpp:146:26:146:26 | *p | provenance |  |
+| test.cpp:218:23:218:28 | buffer | test.cpp:220:5:220:11 | access to array | provenance |  |
+| test.cpp:218:23:218:28 | buffer | test.cpp:221:5:221:11 | access to array | provenance |  |
+| test.cpp:229:25:229:29 | array | test.cpp:231:5:231:10 | access to array | provenance |  |
+| test.cpp:229:25:229:29 | array | test.cpp:232:5:232:10 | access to array | provenance |  |
+| test.cpp:245:30:245:30 | p | test.cpp:261:27:261:30 | access to array | provenance |  |
+| test.cpp:245:30:245:30 | p | test.cpp:261:27:261:30 | access to array | provenance |  |
+| test.cpp:274:14:274:20 | buffer3 | test.cpp:245:30:245:30 | p | provenance |  |
+| test.cpp:274:14:274:20 | buffer3 | test.cpp:274:14:274:20 | buffer3 | provenance |  |
+| test.cpp:277:35:277:35 | p | test.cpp:278:14:278:14 | p | provenance |  |
+| test.cpp:278:14:278:14 | p | test.cpp:245:30:245:30 | p | provenance |  |
+| test.cpp:283:19:283:25 | buffer1 | test.cpp:277:35:277:35 | p | provenance |  |
+| test.cpp:283:19:283:25 | buffer1 | test.cpp:283:19:283:25 | buffer1 | provenance |  |
+| test.cpp:286:19:286:25 | buffer2 | test.cpp:277:35:277:35 | p | provenance |  |
+| test.cpp:286:19:286:25 | buffer2 | test.cpp:286:19:286:25 | buffer2 | provenance |  |
+| test.cpp:289:19:289:25 | buffer3 | test.cpp:277:35:277:35 | p | provenance |  |
+| test.cpp:289:19:289:25 | buffer3 | test.cpp:289:19:289:25 | buffer3 | provenance |  |
+| test.cpp:292:25:292:27 | arr | test.cpp:299:16:299:21 | access to array | provenance |  |
+| test.cpp:292:25:292:27 | arr | test.cpp:299:16:299:21 | access to array | provenance |  |
+| test.cpp:306:20:306:23 | arr1 | test.cpp:292:25:292:27 | arr | provenance |  |
+| test.cpp:306:20:306:23 | arr1 | test.cpp:306:20:306:23 | arr1 | provenance |  |
+| test.cpp:309:20:309:23 | arr2 | test.cpp:292:25:292:27 | arr | provenance |  |
+| test.cpp:309:20:309:23 | arr2 | test.cpp:309:20:309:23 | arr2 | provenance |  |
+| test.cpp:319:19:319:22 | temp | test.cpp:319:19:319:27 | ... + ... | provenance |  |
+| test.cpp:319:19:319:22 | temp | test.cpp:324:23:324:32 | ... + ... | provenance |  |
+| test.cpp:319:19:319:27 | ... + ... | test.cpp:325:24:325:26 | end | provenance |  |
+| test.cpp:322:19:322:22 | temp | test.cpp:322:19:322:27 | ... + ... | provenance |  |
+| test.cpp:322:19:322:22 | temp | test.cpp:324:23:324:32 | ... + ... | provenance |  |
+| test.cpp:322:19:322:27 | ... + ... | test.cpp:325:24:325:26 | end | provenance |  |
+| test.cpp:324:23:324:26 | temp | test.cpp:324:23:324:32 | ... + ... | provenance |  |
+| test.cpp:324:23:324:32 | ... + ... | test.cpp:325:15:325:19 | temp2 | provenance |  |
 nodes
 | test.cpp:34:5:34:24 | access to array | semmle.label | access to array |
 | test.cpp:34:10:34:12 | buf | semmle.label | buf |
