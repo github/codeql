@@ -21,7 +21,7 @@ class AuthenticationSuccessCallback extends Method {
     this.hasName("onAuthenticationSucceeded")
   }
 
-  /** Gets the parameter containing the `authenticationResult` */
+  /** Gets the parameter containing the `authenticationResult`. */
   Parameter getResultParameter() { result = this.getParameter(0) }
 
   /** Gets a use of the result parameter that's used in a `super` call to the base `AuthenticationCallback` class. */

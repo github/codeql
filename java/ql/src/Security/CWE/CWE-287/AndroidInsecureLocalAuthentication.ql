@@ -3,7 +3,7 @@
  * @description Local authentication that does not make use of a `CryptoObject` can be bypassed.
  * @kind problem
  * @problem.severity warning
- * @security-severity 9.3
+ * @security-severity 4.4
  * @precision high
  * @id java/android/insecure-local-authentication
  * @tags security
