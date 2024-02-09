@@ -89,6 +89,7 @@ class DataFlowSummarizedCallable instanceof FlowSummary::SummarizedCallable {
   string toString() { result = super.toString() }
 }
 
+cached
 private module Cached {
   /**
    * The following heuristic is used to rank when to use source code or when to use summaries for DataFlowCallables.
