@@ -144,6 +144,10 @@ predicate readStep(Node nodeFrom, CapturedVariableContent c, Node nodeTo) {
   Flow::readStep(asClosureNode(nodeFrom), c.getVariable(), asClosureNode(nodeTo))
 }
 
+predicate clearsContent(Node node, CapturedVariableContent c) {
+  Flow::clearsContent(asClosureNode(node), c.getVariable())
+}
+
 predicate valueStep(Node nodeFrom, Node nodeTo) {
   Flow::localFlowStep(asClosureNode(nodeFrom), asClosureNode(nodeTo))
 }
