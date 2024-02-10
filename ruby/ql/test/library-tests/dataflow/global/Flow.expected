@@ -114,6 +114,8 @@ edges
 | captured_variables.rb:187:18:187:19 | self [@x] | captured_variables.rb:187:18:187:19 | @x | provenance |  |
 | captured_variables.rb:193:1:193:1 | [post] c [@x] | captured_variables.rb:194:1:194:1 | c [@x] | provenance |  |
 | captured_variables.rb:194:1:194:1 | c [@x] | captured_variables.rb:185:5:189:7 | self in baz [@x] | provenance |  |
+| captured_variables.rb:197:9:197:17 | call to taint | captured_variables.rb:199:10:199:10 | x | provenance |  |
+| captured_variables.rb:206:13:206:21 | call to taint | captured_variables.rb:208:14:208:14 | x | provenance |  |
 | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:18:11:18 | x | provenance |  |
 | instance_variables.rb:11:18:11:18 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | provenance |  |
 | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:16:14:21 | self [@field] | provenance |  |
@@ -368,6 +370,10 @@ nodes
 | captured_variables.rb:187:18:187:19 | self [@x] | semmle.label | self [@x] |
 | captured_variables.rb:193:1:193:1 | [post] c [@x] | semmle.label | [post] c [@x] |
 | captured_variables.rb:194:1:194:1 | c [@x] | semmle.label | c [@x] |
+| captured_variables.rb:197:9:197:17 | call to taint | semmle.label | call to taint |
+| captured_variables.rb:199:10:199:10 | x | semmle.label | x |
+| captured_variables.rb:206:13:206:21 | call to taint | semmle.label | call to taint |
+| captured_variables.rb:208:14:208:14 | x | semmle.label | x |
 | instance_variables.rb:10:19:10:19 | x | semmle.label | x |
 | instance_variables.rb:11:9:11:14 | [post] self [@field] | semmle.label | [post] self [@field] |
 | instance_variables.rb:11:18:11:18 | x | semmle.label | x |
@@ -575,6 +581,8 @@ subpaths
 | captured_variables.rb:154:14:154:15 | @x | captured_variables.rb:147:10:147:18 | call to taint | captured_variables.rb:154:14:154:15 | @x | $@ | captured_variables.rb:147:10:147:18 | call to taint | call to taint |
 | captured_variables.rb:169:18:169:19 | @x | captured_variables.rb:160:14:160:22 | call to taint | captured_variables.rb:169:18:169:19 | @x | $@ | captured_variables.rb:160:14:160:22 | call to taint | call to taint |
 | captured_variables.rb:187:18:187:19 | @x | captured_variables.rb:178:14:178:22 | call to taint | captured_variables.rb:187:18:187:19 | @x | $@ | captured_variables.rb:178:14:178:22 | call to taint | call to taint |
+| captured_variables.rb:199:10:199:10 | x | captured_variables.rb:197:9:197:17 | call to taint | captured_variables.rb:199:10:199:10 | x | $@ | captured_variables.rb:197:9:197:17 | call to taint | call to taint |
+| captured_variables.rb:208:14:208:14 | x | captured_variables.rb:206:13:206:21 | call to taint | captured_variables.rb:208:14:208:14 | x | $@ | captured_variables.rb:206:13:206:21 | call to taint | call to taint |
 | instance_variables.rb:20:10:20:13 | @foo | instance_variables.rb:19:12:19:21 | call to taint | instance_variables.rb:20:10:20:13 | @foo | $@ | instance_variables.rb:19:12:19:21 | call to taint | call to taint |
 | instance_variables.rb:36:10:36:33 | call to get_field | instance_variables.rb:36:14:36:22 | call to taint | instance_variables.rb:36:10:36:33 | call to get_field | $@ | instance_variables.rb:36:14:36:22 | call to taint | call to taint |
 | instance_variables.rb:39:6:39:33 | call to get_field | instance_variables.rb:39:14:39:22 | call to taint | instance_variables.rb:39:6:39:33 | call to get_field | $@ | instance_variables.rb:39:14:39:22 | call to taint | call to taint |
