@@ -161,3 +161,14 @@ private class ExternallyDefinedSource extends RemoteFlowSource {
 
   override string getSourceType() { result = soutceType }
 }
+
+/**
+ * Composite action input sources
+ */
+private class CompositeActionInputSource extends RemoteFlowSource {
+  CompositeActionStmt c;
+
+  CompositeActionInputSource() { c.getInputsStmt().getInputExpr(_) = this.asExpr() }
+
+  override string getSourceType() { result = "Composite action input" }
+}

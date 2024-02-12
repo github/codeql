@@ -45,7 +45,7 @@ query predicate parentNodes(AstNode child, AstNode parent) { child.getParentNode
 
 query predicate cfgNodes(Cfg::Node n) {
   //any()
-  n.getAstNode() instanceof ReusableWorkflowOutputsStmt
+  n.getAstNode() instanceof OutputsStmt
 }
 
 query predicate dfNodes(DataFlow::Node e) {
