@@ -184,26 +184,6 @@ class StepStmt extends Statement instanceof Actions::Step {
   string getId() { result = super.getId() }
 
   JobStmt getJobStmt() { result = super.getJob() }
-
-  /**
-   * Gets a environment variable expression by name in the scope of the current step.
-   */
-  Expression getEnvExpr(string name) {
-    exists(Actions::StepEnv env |
-      env.getStep() = this and
-      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
-    )
-    or
-    exists(Actions::JobEnv env |
-      env.getJob() = this.getJobStmt() and
-      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
-    )
-    or
-    exists(Actions::WorkflowEnv env |
-      env.getWorkflow() = this.getJobStmt().getWorkflowStmt() and
-      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
-    )
-  }
 }
 
 /**
@@ -238,7 +218,25 @@ class StepUsesExpr extends StepStmt, UsesExpr {
     )
   }
 
-  override Expression getEnvExpr(string name) { result = this.(StepStmt).getEnvExpr(name) }
+  /**
+   * Gets a environment variable expression by name in the scope of the current step.
+   */
+  override Expression getEnvExpr(string name) {
+    exists(Actions::StepEnv env |
+      env.getStep() = this and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+    or
+    exists(Actions::JobEnv env |
+      env.getJob() = this.getJobStmt() and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+    or
+    exists(Actions::WorkflowEnv env |
+      env.getWorkflow() = this.getJobStmt().getWorkflowStmt() and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+  }
 }
 
 /**
@@ -317,6 +315,26 @@ class RunExpr extends StepStmt, Expression {
   Expression getScriptExpr() { result = scriptExpr }
 
   string getScript() { result = scriptExpr.getValue() }
+
+  /**
+   * Gets a environment variable expression by name in the scope of the current node.
+   */
+  Expression getEnvExpr(string name) {
+    exists(Actions::StepEnv env |
+      env.getStep() = this and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+    or
+    exists(Actions::JobEnv env |
+      env.getJob() = this.getJobStmt() and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+    or
+    exists(Actions::WorkflowEnv env |
+      env.getWorkflow() = this.getJobStmt().getWorkflowStmt() and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+  }
 }
 
 /**
@@ -330,11 +348,14 @@ class ExprAccessExpr extends Expression instanceof YamlString {
   string getExpression() { result = expr }
 
   JobStmt getJobStmt() { result.getAChildNode*() = this }
+
+  abstract Expression getRefExpr();
 }
 
 /**
- * A ExprAccessExpr where the expression evaluated is a step output read.
- * eg: `${{ steps.changed-files.outputs.all_changed_files }}`
+ * Holds for an ExprAccessExpr accesing the `steps` context.
+ * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
+ * e.g. `${{ steps.changed-files.outputs.all_changed_files }}`
  */
 class StepOutputAccessExpr extends ExprAccessExpr {
   string stepId;
@@ -347,17 +368,16 @@ class StepOutputAccessExpr extends ExprAccessExpr {
       this.getExpression().regexpCapture("steps\\.[A-Za-z0-9_-]+\\.outputs\\.([A-Za-z0-9_-]+)", 1)
   }
 
-  string getStepId() { result = stepId }
-
-  string getVarName() { result = varName }
-
-  StepStmt getStepStmt() { result.getId() = stepId }
+  override Expression getRefExpr() {
+    this.getJobStmt() = result.(StepStmt).getJobStmt() and
+    result.(StepStmt).getId() = stepId
+  }
 }
 
 /**
- * A ExprAccessExpr where the expression evaluated is a job output read.
- * eg: `${{ needs.job1.outputs.foo}}`
- * eg: `${{ jobs.job1.outputs.foo}}` (for reusable workflows)
+ * Holds for an ExprAccessExpr accesing the `needs` or `job` contexts.
+ * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
+ * e.g. `${{ needs.job1.outputs.foo}}` or `${{ jobs.job1.outputs.foo}}` (for reusable workflows)
  */
 class JobOutputAccessExpr extends ExprAccessExpr {
   string jobId;
@@ -372,9 +392,7 @@ class JobOutputAccessExpr extends ExprAccessExpr {
           .regexpCapture("(needs|jobs)\\.[A-Za-z0-9_-]+\\.outputs\\.([A-Za-z0-9_-]+)", 2)
   }
 
-  string getVarName() { result = varName }
-
-  Expression getOutputExpr() {
+  override Expression getRefExpr() {
     exists(JobStmt job |
       job.getId() = jobId and
       job.getLocation().getFile() = this.getLocation().getFile() and
@@ -391,8 +409,9 @@ class JobOutputAccessExpr extends ExprAccessExpr {
 }
 
 /**
- * A ExprAccessExpr where the expression evaluated is a reusable workflow input read.
- * eg: `${{ inputs.foo}}`
+ * Holds for an ExprAccessExpr accesing the `inputs` context.
+ * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
+ * e.g. `${{ inputs.foo }}`
  */
 class ReusableWorkflowInputAccessExpr extends ExprAccessExpr {
   string paramName;
@@ -401,12 +420,29 @@ class ReusableWorkflowInputAccessExpr extends ExprAccessExpr {
     paramName = this.getExpression().regexpCapture("inputs\\.([A-Za-z0-9_-]+)", 1)
   }
 
-  string getParamName() { result = paramName }
-
-  Expression getInputExpr() {
+  override Expression getRefExpr() {
     exists(ReusableWorkflowStmt w |
       w.getLocation().getFile() = this.getLocation().getFile() and
       w.getInputsStmt().getInputExpr(paramName) = result
     )
+  }
+}
+
+/**
+ * Holds for an ExprAccessExpr accesing the `env` context.
+ * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
+ * e.g. `${{ env.foo }}`
+ */
+class EnvAccessExpr extends ExprAccessExpr {
+  string varName;
+
+  EnvAccessExpr() { varName = this.getExpression().regexpCapture("env\\.([A-Za-z0-9_-]+)", 1) }
+
+  override Expression getRefExpr() {
+    exists(JobUsesExpr s | s.getEnvExpr(varName) = result)
+    or
+    exists(StepUsesExpr s | s.getEnvExpr(varName) = result)
+    or
+    exists(RunExpr s | s.getEnvExpr(varName) = result)
   }
 }

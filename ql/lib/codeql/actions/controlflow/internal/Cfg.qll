@@ -227,7 +227,8 @@ private class StepUsesTree extends StandardPreOrderTree instanceof StepUsesExpr 
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](Expression child, Location l |
-        child = super.getArgumentExpr(_) and l = child.getLocation()
+        (child = super.getArgumentExpr(_) or child = super.getEnvExpr(_)) and
+        l = child.getLocation()
       |
         child
         order by
@@ -240,7 +241,8 @@ private class JobUsesTree extends StandardPreOrderTree instanceof JobUsesExpr {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](Expression child, Location l |
-        child = super.getArgumentExpr(_) and l = child.getLocation()
+        (child = super.getArgumentExpr(_) or child = super.getEnvExpr(_)) and
+        l = child.getLocation()
       |
         child
         order by
