@@ -255,12 +255,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             try
             {
-                File.Delete(nugetConfigPath);
-
-                if (backupNugetConfig is not null)
+                if (backupNugetConfig is null)
                 {
-                    File.Move(backupNugetConfig, nugetConfigPath);
+                    logger.LogInfo("Removing nuget.config file");
+                    File.Delete(nugetConfigPath);
+                    return;
                 }
+
+                logger.LogInfo("Reverting nuget.config file content");
+                // The content of the original nuget.config file is reverted without changing the file's attributes or casing:
+                using (var backup = File.OpenRead(backupNugetConfig))
+                using (var current = File.OpenWrite(nugetConfigPath))
+                {
+                    current.SetLength(0);
+                    backup.CopyTo(current);
+                }
+
+                logger.LogInfo("Deleting backup nuget.config file");
+                File.Delete(backupNugetConfig);
             }
             catch (Exception exc)
             {
