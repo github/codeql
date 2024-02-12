@@ -267,8 +267,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 using (var backup = File.OpenRead(backupNugetConfig))
                 using (var current = File.OpenWrite(nugetConfigPath))
                 {
-                    current.SetLength(0);
-                    backup.CopyTo(current);
+                    current.SetLength(0);   // Truncate file
+                    backup.CopyTo(current); // Restore original content
                 }
 
                 logger.LogInfo("Deleting backup nuget.config file");
