@@ -121,7 +121,9 @@ private API::Node getPreferredPredecessor(API::Node node, string name, int badne
 }
 
 /**
- * Holds if values escpin
+ * Holds if `(package, name)` is a potential name to associate with `sink`.
+ *
+ * `badness` is bound to the associated badness of the name.
  */
 private predicate sinkHasNameCandidate(API::Node sink, string package, string name, int badness) {
   sink = API::moduleExport(package) and
@@ -137,7 +139,7 @@ private predicate sinkHasNameCandidate(API::Node sink, string package, string na
 }
 
 /**
- * Holds if `(package, name)` is the primary name to associate with `node`.
+ * Holds if `(package, name)` is the primary name to associate with `sink`.
  *
  * `badness` is bound to the associated badness of the name.
  */
