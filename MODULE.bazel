@@ -1,0 +1,33 @@
+module(
+    name = "codeql",
+    version = "0.0",
+)
+
+# see https://registry.bazel.build/ for a list of available packages
+
+bazel_dep(name = "platforms", version = "0.0.8")
+bazel_dep(name = "rules_pkg", version = "0.9.1")
+bazel_dep(name = "rules_python", version = "0.29.0")
+bazel_dep(name = "bazel_skylib", version = "1.5.0")
+bazel_dep(name = "abseil-cpp", version = "20240116.0", repo_name = "absl")
+bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
+bazel_dep(name = "fmt", version = "10.0.0")
+
+pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
+pip.parse(
+    hub_name = "codegen_deps",
+    python_version = "3.11",
+    requirements_lock = "//misc/codegen:requirements_lock.txt",
+)
+use_repo(pip, "codegen_deps")
+
+swift_deps = use_extension("//swift/third_party:load.bzl", "swift_deps")
+use_repo(
+    swift_deps,
+    "binlog",
+    "picosha2",
+    "swift_prebuilt_darwin_x86_64",
+    "swift_prebuilt_linux",
+    "swift_toolchain_linux",
+    "swift_toolchain_macos",
+)

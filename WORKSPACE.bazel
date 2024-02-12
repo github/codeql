@@ -2,11 +2,3 @@
 # and for internal use only.
 
 workspace(name = "codeql")
-
-load("//misc/bazel:workspace.bzl", "codeql_workspace")
-
-codeql_workspace()
-
-load("//misc/bazel:workspace_deps.bzl", "codeql_workspace_deps")
-
-codeql_workspace_deps()
