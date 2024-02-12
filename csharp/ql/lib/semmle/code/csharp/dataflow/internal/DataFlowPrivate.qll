@@ -69,6 +69,17 @@ abstract class NodeImpl extends Node {
   abstract string toStringImpl();
 }
 
+// TODO: Remove once static initializers are folded into the
+// static constructors
+private DataFlowCallable getEnclosingStaticFieldOrProperty(Expr e) {
+  result.asFieldOrProperty() =
+    any(FieldOrProperty f |
+      f.isStatic() and
+      e = f.getAChild+() and
+      not exists(e.getEnclosingCallable())
+    )
+}
+
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
     result.asCallable() =
@@ -76,6 +87,8 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
         this.getExpr().(CIL::Expr).getEnclosingCallable().(DotNet::Callable),
         this.getControlFlowNodeImpl().getEnclosingCallable()
       ]
+    or
+    result = getEnclosingStaticFieldOrProperty(this.asExpr())
   }
 
   override DotNet::Type getTypeImpl() {
@@ -911,7 +924,8 @@ private module Cached {
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
       callCfn = any(Call c | isParamsArg(c, _, _)).getAControlFlowNode()
-    }
+    } or
+    TFlowInsensitiveFieldNode(FieldOrProperty f) { f.isFieldLike() }
 
   /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -1021,6 +1035,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof ParamsArgumentNode
   or
   n.asExpr() = any(WithExpr we).getInitializer()
+  or
+  n instanceof FlowInsensitiveFieldNode
 }
 
 /** A CIL SSA definition, viewed as a node in a data flow graph. */
@@ -1346,6 +1362,8 @@ private module ArgumentNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = cfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(cfn.getAstNode())
     }
 
     override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
@@ -1385,6 +1403,8 @@ private module ArgumentNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = callCfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(callCfn.getAstNode())
     }
 
     override Type getTypeImpl() { result = this.getParameter().getType() }
@@ -1785,6 +1805,30 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
 }
 
 /**
+ * A data flow node used for control-flow insensitive flow through fields
+ * and properties.
+ *
+ * In global data flow this is used to model flow through static fields and
+ * properties, while for lambda flow we additionally use it to track assignments
+ * in constructors to uses within the same class.
+ */
+class FlowInsensitiveFieldNode extends NodeImpl, TFlowInsensitiveFieldNode {
+  private FieldOrProperty f;
+
+  FlowInsensitiveFieldNode() { this = TFlowInsensitiveFieldNode(f) }
+
+  override DataFlowCallable getEnclosingCallableImpl() { result.asFieldOrProperty() = f }
+
+  override Type getTypeImpl() { result = f.getType() }
+
+  override ControlFlow::Node getControlFlowNodeImpl() { none() }
+
+  override Location getLocationImpl() { result = f.getLocation() }
+
+  override string toStringImpl() { result = "[flow-insensitive] " + f }
+}
+
+/**
  * Holds if `pred` can flow to `succ`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
@@ -1792,13 +1836,16 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
 predicate jumpStep(Node pred, Node succ) {
   pred.(NonLocalJumpNode).getAJumpSuccessor(true) = succ
   or
-  exists(FieldOrProperty fl, FieldOrPropertyRead flr |
-    fl.isStatic() and
-    fl.isFieldLike() and
-    fl.getAnAssignedValue() = pred.asExpr() and
-    fl.getAnAccess() = flr and
-    flr = succ.asExpr() and
-    flr.hasNonlocalValue()
+  exists(FieldOrProperty f | f.isStatic() |
+    f.getAnAssignedValue() = pred.asExpr() and
+    succ = TFlowInsensitiveFieldNode(f)
+    or
+    exists(FieldOrPropertyRead fr |
+      pred = TFlowInsensitiveFieldNode(f) and
+      f.getAnAccess() = fr and
+      fr = succ.asExpr() and
+      fr.hasNonlocalValue()
+    )
   )
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
@@ -2258,6 +2305,8 @@ module PostUpdateNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = cfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(oc)
     }
 
     override DotNet::Type getTypeImpl() { result = oc.getType() }
@@ -2289,6 +2338,8 @@ module PostUpdateNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = cfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(cfn.getAstNode())
     }
 
     override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
@@ -2436,6 +2487,24 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     nodeFrom.asExpr() = aee.getRValue() and
     nodeTo.asExpr().(EventRead).getTarget() = aee.getTarget() and
     preservesValue = false
+  )
+  or
+  preservesValue = true and
+  exists(FieldOrProperty f, FieldOrPropertyAccess fa |
+    fa = f.getAnAccess() and
+    fa.targetIsLocalInstance()
+  |
+    exists(AssignableDefinition def |
+      def.getTargetAccess() = fa and
+      nodeFrom.asExpr() = def.getSource() and
+      nodeTo = TFlowInsensitiveFieldNode(f) and
+      nodeFrom.getEnclosingCallable() instanceof Constructor
+    )
+    or
+    nodeFrom = TFlowInsensitiveFieldNode(f) and
+    f.getAnAccess() = fa and
+    fa = nodeTo.asExpr() and
+    fa.(FieldOrPropertyRead).hasNonlocalValue()
   )
 }
 
