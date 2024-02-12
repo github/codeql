@@ -1043,5 +1043,5 @@ void* memset(void*, int, size_t);
 
 void memset_test(char* buf) { // $ ast-def=buf
 	memset(buf, source(), 10);
-	sink(*buf); // $ MISSING: ast ir
+	sink(*buf); // $ ir MISSING: ast
 }
