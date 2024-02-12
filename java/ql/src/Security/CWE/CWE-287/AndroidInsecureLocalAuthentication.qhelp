@@ -6,14 +6,13 @@
 <overview>
 <p>
 Biometric local authentication such as fingerprint recognition can be used to protect sensitive data or actions within an application. 
-However, if this authentication does not make use of a <code>KeyStore</code>-backed key, it is able to be bypassed by a privileged malicious application or an attacker with physical access, 
-using application hooking tools such as Frida.
+However, if this authentication does not use a <code>KeyStore</code>-backed key, it can be bypassed by a privileged malicious application, or by an attacker with physical access using application hooking tools such as Frida.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Generate a secure key in the Android <code>KeyStore</code> and ensure that the <code>onAuthenticaionSuccess</code> callback for a biometric prompt uses it 
+Generate a secure key in the Android <code>KeyStore</code>. Ensure that the <code>onAuthenticationSuccess</code> callback for a biometric prompt uses it 
 in a way that is required for the sensitive parts of the application to function, such as by using it to decrypt sensitive data or credentials. 
 </p>
 </recommendation>
@@ -21,7 +20,7 @@ in a way that is required for the sensitive parts of the application to function
 <example>
 <p>In the following (bad) case, no <code>CryptoObject</code> is required for the biometric prompt to grant access, so it can be bypassed.</p>
 <sample src="AndroidInsecureLocalAuthenticationBad.java" />
-<p>In the following (good) case, a secret key is generated in the Android <code>KeyStore</code> that is required for the application to grant access by decrypting data.</p>
+<p>In the following (good) case, a secret key is generated in the Android <code>KeyStore</code>. The application requires this secret key for access, using it to decrypt data.</p>
 <sample src="AndroidInsecureLocalAuthenticationGood.java" />
 </example>
 
