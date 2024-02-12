@@ -25,7 +25,7 @@ jobs:
 
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@main
         with:
           languages: javascript # does not matter
       - uses: ./.github/actions/os-version
