@@ -88,6 +88,8 @@ module CfgScope {
   abstract class CfgScope extends AstNode { }
 
   class WorkflowScope extends CfgScope instanceof WorkflowStmt { }
+
+  class CompositeActionScope extends CfgScope instanceof CompositeActionStmt { }
 }
 
 private module Implementation implements CfgShared::InputSig<Location> {
@@ -120,9 +122,15 @@ private module Implementation implements CfgShared::InputSig<Location> {
 
   int maxSplits() { result = 0 }
 
-  predicate scopeFirst(CfgScope scope, AstNode e) { first(scope.(WorkflowStmt), e) }
+  predicate scopeFirst(CfgScope scope, AstNode e) {
+    first(scope.(WorkflowStmt), e) or
+    first(scope.(CompositeActionStmt), e)
+  }
 
-  predicate scopeLast(CfgScope scope, AstNode e, Completion c) { last(scope.(WorkflowStmt), e, c) }
+  predicate scopeLast(CfgScope scope, AstNode e, Completion c) {
+    last(scope.(WorkflowStmt), e, c) or
+    last(scope.(CompositeActionStmt), e, c)
+  }
 
   predicate successorTypeIsSimple(SuccessorType t) { t instanceof NormalSuccessor }
 
@@ -138,6 +146,28 @@ module CfgImpl = CfgShared::Make<Location, Implementation>;
 private import CfgImpl
 private import Completion
 private import CfgScope
+
+private class CompositeActionTree extends StandardPreOrderTree instanceof CompositeActionStmt {
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](Expression child, Location l |
+        (
+          child = this.(CompositeActionStmt).getInputsStmt() or
+          child = this.(CompositeActionStmt).getOutputsStmt() or
+          child = this.(CompositeActionStmt).getRunsStmt()
+        ) and
+        l = child.getLocation()
+      |
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
+      )
+  }
+}
+
+private class RunsTree extends StandardPreOrderTree instanceof RunsStmt {
+  override ControlFlowTree getChildNode(int i) { result = super.getStepStmt(i) }
+}
 
 private class WorkflowTree extends StandardPreOrderTree instanceof WorkflowStmt {
   override ControlFlowTree getChildNode(int i) {
@@ -169,8 +199,7 @@ private class WorkflowTree extends StandardPreOrderTree instanceof WorkflowStmt 
   }
 }
 
-private class ReusableWorkflowInputsTree extends StandardPreOrderTree instanceof ReusableWorkflowInputsStmt
-{
+private class InputsTree extends StandardPreOrderTree instanceof InputsStmt {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](Expression child, Location l |
@@ -183,10 +212,9 @@ private class ReusableWorkflowInputsTree extends StandardPreOrderTree instanceof
   }
 }
 
-private class InputExprTree extends LeafTree instanceof ReusableWorkflowInputExpr { }
+private class InputExprTree extends LeafTree instanceof InputExpr { }
 
-private class ReusableWorkflowOutputsTree extends StandardPreOrderTree instanceof ReusableWorkflowOutputsStmt
-{
+private class OutputsTree extends StandardPreOrderTree instanceof OutputsStmt {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](Expression child, Location l |
@@ -199,7 +227,7 @@ private class ReusableWorkflowOutputsTree extends StandardPreOrderTree instanceo
   }
 }
 
-private class OutputExprTree extends LeafTree instanceof ReusableWorkflowOutputExpr { }
+private class OutputExprTree extends LeafTree instanceof OutputExpr { }
 
 private class JobTree extends StandardPreOrderTree instanceof JobStmt {
   override ControlFlowTree getChildNode(int i) {

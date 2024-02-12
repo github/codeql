@@ -82,7 +82,10 @@ class DataFlowCallable instanceof Cfg::CfgScope {
   string getName() {
     if this instanceof ReusableWorkflowStmt
     then result = this.(ReusableWorkflowStmt).getName()
-    else none()
+    else
+      if this instanceof CompositeActionStmt
+      then result = this.(CompositeActionStmt).getName()
+      else none()
   }
 }
 
@@ -190,11 +193,11 @@ predicate jobsCtxLocalStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
- * Holds if there is a local flow step between a ${{}} expression accesing a reusable workflow input variable and the input itself
+ * Holds if there is a local flow step between a ${{}} expression accesing an input variable and the input itself
  * e.g. ${{ inputs.foo }}
  */
 predicate inputsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, ReusableWorkflowInputAccessExpr astTo |
+  exists(Expression astFrom, InputAccessExpr astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom

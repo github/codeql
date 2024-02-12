@@ -28,6 +28,25 @@ class Statement extends AstNode { }
 class Expression extends Statement { }
 
 /**
+ * A composite action
+ */
+class CompositeActionStmt extends Statement instanceof Actions::CompositeAction {
+  RunsStmt getRunsStmt() { result = super.getRuns() }
+
+  InputsStmt getInputsStmt() { result = this.(YamlMapping).lookup("inputs") }
+
+  OutputsStmt getOutputsStmt() { result = this.(YamlMapping).lookup("outputs") }
+
+  string getName() { result = this.getLocation().getFile().getRelativePath() }
+}
+
+class RunsStmt extends Statement instanceof Actions::Runs {
+  StepStmt getAStepStmt() { result = super.getSteps().getElementNode(_) }
+
+  StepStmt getStepStmt(int i) { result = super.getSteps().getElementNode(i) }
+}
+
+/**
  * A Github Actions Workflow
  */
 class WorkflowStmt extends Statement instanceof Actions::Workflow {
@@ -43,67 +62,45 @@ class ReusableWorkflowStmt extends WorkflowStmt {
     this.(Actions::Workflow).getOn().getNode("workflow_call") = workflow_call
   }
 
-  ReusableWorkflowInputsStmt getInputsStmt() {
-    result = workflow_call.(YamlMapping).lookup("inputs")
-  }
+  InputsStmt getInputsStmt() { result = workflow_call.(YamlMapping).lookup("inputs") }
 
-  ReusableWorkflowOutputsStmt getOutputsStmt() {
-    result = workflow_call.(YamlMapping).lookup("outputs")
-  }
+  OutputsStmt getOutputsStmt() { result = workflow_call.(YamlMapping).lookup("outputs") }
 
   string getName() { result = this.getLocation().getFile().getRelativePath() }
 }
 
-class ReusableWorkflowInputsStmt extends Statement instanceof YamlMapping {
-  ReusableWorkflowInputsStmt() {
-    exists(Actions::On on | on.getNode("workflow_call").(YamlMapping).lookup("inputs") = this)
-  }
+class InputsStmt extends Statement instanceof YamlMapping {
+  YamlMapping parent;
+
+  InputsStmt() { parent.lookup("inputs") = this }
 
   /**
-   * Gets a specific parameter expression (YamlMapping) by name.
-   * eg:
-   * on:
-   *   workflow_call:
-   *     inputs:
-   *       config-path:
-   *         required: true
-   *         type: string
-   *     secrets:
-   *       token:
-   *         required: true
+   * Gets a specific input expression (YamlMapping) by name.
    */
-  ReusableWorkflowInputExpr getInputExpr(string name) {
+  InputExpr getInputExpr(string name) {
     result.(YamlString).getValue() = name and
     this.(YamlMapping).maps(result, _)
   }
 }
 
-class ReusableWorkflowInputExpr extends Expression instanceof YamlString { }
+class OutputsStmt extends Statement instanceof YamlMapping {
+  YamlMapping parent;
 
-class ReusableWorkflowOutputsStmt extends Statement instanceof YamlMapping {
-  ReusableWorkflowOutputsStmt() {
-    exists(Actions::On on | on.getNode("workflow_call").(YamlMapping).lookup("outputs") = this)
-  }
+  OutputsStmt() { parent.lookup("outputs") = this }
 
   /**
-   * Gets a specific parameter expression (YamlMapping) by name.
-   * eg:
-   * on:
-   *   workflow_call:
-   *     outputs:
-   *       firstword:
-   *         description: "The first output string"
-   *         value: ${{ jobs.example_job.outputs.output1 }}
-   *       secondword:
-   *         description: "The second output string"
-   *         value: ${{ jobs.example_job.outputs.output2 }}
+   * Gets a specific output expression (YamlMapping) by name.
    */
-  ReusableWorkflowOutputExpr getOutputExpr(string name) {
+  OutputExpr getOutputExpr(string name) {
     this.(YamlMapping).lookup(name).(YamlMapping).lookup("value") = result
   }
 }
 
-class ReusableWorkflowOutputExpr extends Expression instanceof YamlString { }
+// TODO: Needs a characteristic predicate otherwise anything is an output expression
+class InputExpr extends Expression instanceof YamlString { }
+
+// TODO: Needs a characteristic predicate otherwise anything is an output expression
+class OutputExpr extends Expression instanceof YamlString { }
 
 /**
  * A Job is a collection of steps that run in an execution environment.
@@ -369,7 +366,7 @@ class StepOutputAccessExpr extends ExprAccessExpr {
   }
 
   override Expression getRefExpr() {
-    this.getJobStmt() = result.(StepStmt).getJobStmt() and
+    this.getLocation().getFile() = result.getLocation().getFile() and
     result.(StepStmt).getId() = stepId
   }
 }
@@ -413,10 +410,10 @@ class JobOutputAccessExpr extends ExprAccessExpr {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ inputs.foo }}`
  */
-class ReusableWorkflowInputAccessExpr extends ExprAccessExpr {
+class InputAccessExpr extends ExprAccessExpr {
   string paramName;
 
-  ReusableWorkflowInputAccessExpr() {
+  InputAccessExpr() {
     paramName = this.getExpression().regexpCapture("inputs\\.([A-Za-z0-9_-]+)", 1)
   }
 
@@ -424,6 +421,11 @@ class ReusableWorkflowInputAccessExpr extends ExprAccessExpr {
     exists(ReusableWorkflowStmt w |
       w.getLocation().getFile() = this.getLocation().getFile() and
       w.getInputsStmt().getInputExpr(paramName) = result
+    )
+    or
+    exists(CompositeActionStmt a |
+      a.getLocation().getFile() = this.getLocation().getFile() and
+      a.getInputsStmt().getInputExpr(paramName) = result
     )
   }
 }

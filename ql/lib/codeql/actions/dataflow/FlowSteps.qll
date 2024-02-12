@@ -83,7 +83,7 @@ predicate runEnvToScriptstep(DataFlow::Node pred, DataFlow::Node succ) {
       line = script.splitAt("\n") and
       (
         line.regexpMatch(".*::set-output\\s+name.*") or
-        line.regexpMatch(".*>>\\s*$GITHUB_ENV.*")
+        line.regexpMatch(".*>>\\s*\\$GITHUB_OUTPUT.*")
       ) and
       script.indexOf("$" + ["", "{", "ENV{"] + varName) > 0
     ) and

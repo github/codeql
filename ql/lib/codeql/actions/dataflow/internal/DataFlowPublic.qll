@@ -48,7 +48,7 @@ class ExprNode extends Node, TExprNode {
  * Reusable workflow input nodes
  */
 class ParameterNode extends ExprNode {
-  private ReusableWorkflowInputExpr parameter;
+  private InputExpr parameter;
 
   ParameterNode() {
     this.asExpr() = parameter and
@@ -63,7 +63,7 @@ class ParameterNode extends ExprNode {
 
   override Location getLocation() { result = parameter.getLocation() }
 
-  ReusableWorkflowInputExpr getInputExpr() { result = parameter }
+  InputExpr getInputExpr() { result = parameter } 
 }
 
 /**
@@ -87,7 +87,8 @@ class ReturnNode extends ExprNode {
 
   ReturnNode() {
     this.getCfgNode() = node and
-    node.getAstNode() = any(ReusableWorkflowStmt w).getOutputsStmt().getOutputExpr(_)
+    (node.getAstNode() = any(ReusableWorkflowStmt w).getOutputsStmt().getOutputExpr(_) or
+    node.getAstNode() = any(CompositeActionStmt a).getOutputsStmt().getOutputExpr(_))
   }
 
   ReturnKind getKind() { result = TNormalReturn() }
