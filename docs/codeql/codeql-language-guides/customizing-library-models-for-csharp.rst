@@ -56,7 +56,7 @@ Extensible predicates used to create custom models in C#
 The CodeQL library for C# analysis exposes the following extensible predicates:
 
 - ``sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model sources of potentially tainted data.
-- ``sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)``. This is used to model sinks where tainted data maybe used in a way that makes the code vulnerable.
+- ``sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)``. This is used to model sinks where tainted data may be used in a way that makes the code vulnerable.
 - ``summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to model flow through elements.
 - ``neutralModel(namespace, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis.
 
@@ -76,10 +76,8 @@ This is the constructor of the ``SqlCommand`` class, which is located in the ``S
 .. code-block:: csharp
 
    public static void TaintSink(SqlConnection conn, string query) {
-      using (connection) {
         SqlCommand command = new SqlCommand(query, connection) // The argument to this method is a SQL injection sink.
         ...
-      }
    }
 
 We need to add a tuple to the ``sinkModel``\(namespace, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate by updating a data extension file.
@@ -270,7 +268,7 @@ These are the same for both of the rows above as we are adding two summaries for
 - The first value ``System.Linq`` is the namespace name.
 - The second value ``Enumerable`` is the class (type) name.
 - The third value ``False`` is a flag that indicates whether or not the summary also applies to all overrides of the method.
-- The fourth value ``Select<TSource,TResult>`` is the method name, along with the generics for the method. The names of the generic type parameters provided in the model must match the names of the generic type parameters in the method signature in the source code.
+- The fourth value ``Select<TSource,TResult>`` is the method name, along with the type parameters for the method. The names of the generic type parameters provided in the model must match the names of the generic type parameters in the method signature in the source code.
 - The fifth value ``(System.Collections.Generic.IEnumerable<TSource>,System.Func<TSource,TResult>)`` is the method input type signature. The generics in the signature must match the generics in the method signature in the source code. 
 
 The sixth value should be left empty and is out of scope for this documentation.
