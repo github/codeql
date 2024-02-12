@@ -1,7 +1,16 @@
+/**
+ * Provides default sources, sinks, and sanitizers for reasoning about
+ * JWT vulnerabilities, as well as extension points for adding your own.
+ */
+
 import go
 private import semmle.go.dataflow.ExternalFlow
 private import codeql.util.Unit
 
+/**
+ * Provides extension points for customizing the data-flow tracking configuration for reasoning
+ * about JWT vulnerabilities.
+ */
 module MissingJwtSignatureCheck {
   /**
    * A data flow source for JWT vulnerabilities.

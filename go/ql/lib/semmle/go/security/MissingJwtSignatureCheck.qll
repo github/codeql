@@ -11,6 +11,7 @@ import go
 module MissingJwtSignatureCheck {
   import MissingJwtSignatureCheckCustomizations::MissingJwtSignatureCheck
 
+  /** Config for reasoning about JWT vulnerabilities. */
   module Config implements DataFlow::ConfigSig {
     predicate isSource(DataFlow::Node source) {
       source instanceof Source and
@@ -24,6 +25,7 @@ module MissingJwtSignatureCheck {
     }
   }
 
+  /** Tracks taint flow for reasoning about JWT vulnerabilities. */
   module Flow = TaintTracking::Global<Config>;
 
   private module SafeParseConfig implements DataFlow::ConfigSig {
