@@ -31,10 +31,6 @@ query predicate runStepChildren(RunExpr run, AstNode child) { child.getParentNod
 
 query predicate varAccesses(ExprAccessExpr ea, string expr) { expr = ea.getExpression() }
 
-query predicate outputAccesses(StepOutputAccessExpr va, string id, string var) {
-  id = va.getStepId() and var = va.getVarName()
-}
-
 query predicate orphanVarAccesses(ExprAccessExpr va, string var) {
   var = va.getExpression() and
   not exists(AstNode n | n = va.getParentNode())
@@ -53,25 +49,21 @@ query predicate cfgNodes(Cfg::Node n) {
 }
 
 query predicate dfNodes(DataFlow::Node e) {
-  e.getLocation().getFile().getBaseName() = "simple1.yml"
+  e.getLocation().getFile().getBaseName() = "argus_case_study.yml"
 }
 
 query predicate exprNodes(DataFlow::ExprNode e) { any() }
 
 query predicate argumentNodes(DataFlow::ArgumentNode e) { any() }
 
-query predicate localFlow(StepUsesExpr s, StepOutputAccessExpr o) { s.getId() = o.getStepId() }
-
 query predicate usesIds(StepUsesExpr s, string a) { s.getId() = a }
-
-query predicate varIds(StepOutputAccessExpr s, string a) { s.getStepId() = a }
 
 query predicate nodeLocations(DataFlow::Node n, Location l) { n.getLocation() = l }
 
 query predicate scopes(Cfg::CfgScope c) { any() }
 
-query predicate sources(string action, string version, string output, string kind) {
-  sourceModel(action, version, output, kind)
+query predicate sources(string action, string version, string output, string trigger, string kind) {
+  sourceModel(action, version, output, trigger, kind)
 }
 
 query predicate summaries(string action, string version, string input, string output, string kind) {
