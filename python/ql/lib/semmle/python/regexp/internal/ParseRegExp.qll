@@ -116,13 +116,14 @@ class RegExp extends Expr instanceof StrConst {
 
   /**
    * Gets a mode (if any) of this regular expression. Can be any of:
-   * DEBUG
-   * IGNORECASE
-   * LOCALE
-   * MULTILINE
-   * DOTALL
-   * UNICODE
-   * VERBOSE
+   * - DEBUG
+   * - ASCII
+   * - IGNORECASE
+   * - LOCALE
+   * - MULTILINE
+   * - DOTALL
+   * - UNICODE
+   * - VERBOSE
    */
   string getAMode() {
     result = FindRegexMode::getAMode(this)
@@ -705,19 +706,19 @@ class RegExp extends Expr instanceof StrConst {
   private predicate flag_group_start_no_modes(int start, int end) {
     this.isGroupStart(start) and
     this.getChar(start + 1) = "?" and
-    this.getChar(start + 2) in ["i", "L", "m", "s", "u", "x"] and
+    this.getChar(start + 2) in ["a", "i", "L", "m", "s", "u", "x"] and
     end = start + 2
   }
 
   /**
-   * Holds if `pos` contains a mo character from the
+   * Holds if `pos` contains a mode character from the
    * flag group starting at `start`.
    */
   private predicate mode_character(int start, int pos) {
     this.flag_group_start_no_modes(start, pos)
     or
     this.mode_character(start, pos - 1) and
-    this.getChar(pos) in ["i", "L", "m", "s", "u", "x"]
+    this.getChar(pos) in ["a", "i", "L", "m", "s", "u", "x"]
   }
 
   /**
@@ -740,6 +741,8 @@ class RegExp extends Expr instanceof StrConst {
    */
   string getModeFromPrefix() {
     exists(string c | this.flag(c) |
+      c = "a" and result = "ASCII"
+      or
       c = "i" and result = "IGNORECASE"
       or
       c = "L" and result = "LOCALE"

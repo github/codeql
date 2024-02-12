@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -13,11 +14,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal class Assets
     {
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
 
-        internal Assets(ProgressMonitor progressMonitor)
+        internal Assets(ILogger logger)
         {
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
         }
 
         /// <summary>
@@ -35,7 +36,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         /// <summary>
         /// Add the package dependencies from the assets file to dependencies.
-        /// 
+        ///
         /// Parse a part of the JSon assets file and add the paths
         /// to the dependencies required for compilation (and collect
         /// information about used packages).
@@ -60,7 +61,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         ///     }
         ///   }
         /// }
-        /// 
+        ///
         /// Adds the following dependencies
         ///   Paths: {
         ///     "castle.core/4.4.1/lib/netstandard1.5/Castle.Core.dll",
@@ -85,7 +86,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (references is null)
             {
-                progressMonitor.LogDebug("No references found in the targets section in the assets file.");
+                logger.LogDebug("No references found in the targets section in the assets file.");
                 return;
             }
 
@@ -157,7 +158,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (frameworks is null)
             {
-                progressMonitor.LogDebug("No framework section in assets.json.");
+                logger.LogDebug("No framework section in assets.json.");
                 return;
             }
 
@@ -171,7 +172,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (references is null)
             {
-                progressMonitor.LogDebug("No framework references in assets.json.");
+                logger.LogDebug("No framework references in assets.json.");
                 return;
             }
 
@@ -196,12 +197,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             catch (Exception e)
             {
-                progressMonitor.LogDebug($"Failed to parse assets file (unexpected error): {e.Message}");
+                logger.LogDebug($"Failed to parse assets file (unexpected error): {e.Message}");
                 return false;
             }
         }
 
-        private static bool TryReadAllText(string path, ProgressMonitor progressMonitor, [NotNullWhen(returnValue: true)] out string? content)
+        private static bool TryReadAllText(string path, ILogger logger, [NotNullWhen(returnValue: true)] out string? content)
         {
             try
             {
@@ -210,19 +211,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             catch (Exception e)
             {
-                progressMonitor.LogInfo($"Failed to read assets file '{path}': {e.Message}");
+                logger.LogInfo($"Failed to read assets file '{path}': {e.Message}");
                 content = null;
                 return false;
             }
         }
 
-        public static DependencyContainer GetCompilationDependencies(ProgressMonitor progressMonitor, IEnumerable<string> assets)
+        public static DependencyContainer GetCompilationDependencies(ILogger logger, IEnumerable<string> assets)
         {
-            var parser = new Assets(progressMonitor);
+            var parser = new Assets(logger);
             var dependencies = new DependencyContainer();
             assets.ForEach(asset =>
             {
-                if (TryReadAllText(asset, progressMonitor, out var json))
+                if (TryReadAllText(asset, logger, out var json))
                 {
                     parser.TryParse(json, dependencies);
                 }

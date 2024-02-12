@@ -1,6 +1,9 @@
 require_relative "./other"
 
 class A
+  def initialize(x, y)
+  end
+
   def foo(x, y, key1:, **kwargs, &block)
   end
 

@@ -116,9 +116,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         string? IBuildActions.GetEnvironmentVariable(string name)
         {
-            if (!GetEnvironmentVariable.TryGetValue(name, out var ret))
-                throw new ArgumentException("Missing GetEnvironmentVariable " + name);
-
+            GetEnvironmentVariable.TryGetValue(name, out var ret);
             return ret;
         }
 

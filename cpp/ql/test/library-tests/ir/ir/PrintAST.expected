@@ -1815,6 +1815,42 @@ ir.c:
 #   15|               Type = [CharPointerType] char *
 #   15|               ValueCategory = prvalue
 #   16|     getStmt(1): [ReturnStmt] return ...
+#   18| [TopLevelFunction] void ExRaiseAccessViolation(int)
+#   18|   <params>: 
+#   18|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   18|         Type = [IntType] int
+#   21| [TopLevelFunction] int TryExceptTest(int)
+#   21|   <params>: 
+#   21|     getParameter(0): [Parameter] x
+#   21|         Type = [IntType] int
+#   21|   getEntryPoint(): [BlockStmt] { ... }
+#   22|     getStmt(0): [DeclStmt] declaration
+#   22|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of localPtr
+#   22|           Type = [IntPointerType] int *
+#   24|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   24|       getStmt(): [BlockStmt] { ... }
+#   25|         getStmt(0): [ExprStmt] ExprStmt
+#   25|           getExpr(): [FunctionCall] call to ExRaiseAccessViolation
+#   25|               Type = [VoidType] void
+#   25|               ValueCategory = prvalue
+#   25|             getArgument(0): [VariableAccess] x
+#   25|                 Type = [IntType] int
+#   25|                 ValueCategory = prvalue(load)
+#   26|       getCondition(): [Literal] 1
+#   26|           Type = [IntType] int
+#   26|           Value = [Literal] 1
+#   26|           ValueCategory = prvalue
+#   26|       getExcept(): [BlockStmt] { ... }
+#   27|         getStmt(0): [ReturnStmt] return ...
+#   27|           getExpr(): [Literal] 1
+#   27|               Type = [IntType] int
+#   27|               Value = [Literal] 1
+#   27|               ValueCategory = prvalue
+#   29|     getStmt(2): [ReturnStmt] return ...
+#   29|       getExpr(): [Literal] 0
+#   29|           Type = [IntType] int
+#   29|           Value = [Literal] 0
+#   29|           ValueCategory = prvalue
 ir.cpp:
 #    1| [TopLevelFunction] void Constants()
 #    1|   <params>: 
@@ -5565,6 +5601,30 @@ ir.cpp:
 #  619|                 Type = [PointerType] const char *
 #  619|                 ValueCategory = prvalue
 #  620|     getStmt(4): [ReturnStmt] return ...
+#  620|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+#  620|           Type = [VoidType] void
+#  620|           ValueCategory = prvalue
+#  620|         getQualifier(): [VariableAccess] s4
+#  620|             Type = [Struct] String
+#  620|             ValueCategory = lvalue
+#  620|       getImplicitDestructorCall(1): [DestructorCall] call to ~String
+#  620|           Type = [VoidType] void
+#  620|           ValueCategory = prvalue
+#  620|         getQualifier(): [VariableAccess] s3
+#  620|             Type = [Struct] String
+#  620|             ValueCategory = lvalue
+#  620|       getImplicitDestructorCall(2): [DestructorCall] call to ~String
+#  620|           Type = [VoidType] void
+#  620|           ValueCategory = prvalue
+#  620|         getQualifier(): [VariableAccess] s2
+#  620|             Type = [Struct] String
+#  620|             ValueCategory = lvalue
+#  620|       getImplicitDestructorCall(3): [DestructorCall] call to ~String
+#  620|           Type = [VoidType] void
+#  620|           ValueCategory = prvalue
+#  620|         getQualifier(): [VariableAccess] s1
+#  620|             Type = [Struct] String
+#  620|             ValueCategory = lvalue
 #  622| [TopLevelFunction] void CallMethods(String&, String*, String)
 #  622|   <params>: 
 #  622|     getParameter(0): [Parameter] r
@@ -7312,6 +7372,24 @@ ir.cpp:
 #  839|             Type = [PointerType] Base *
 #  839|             ValueCategory = prvalue
 #  840|     getStmt(34): [ReturnStmt] return ...
+#  840|       getImplicitDestructorCall(0): [DestructorCall] call to ~Derived
+#  840|           Type = [VoidType] void
+#  840|           ValueCategory = prvalue
+#  840|         getQualifier(): [VariableAccess] d
+#  840|             Type = [Struct] Derived
+#  840|             ValueCategory = lvalue
+#  840|       getImplicitDestructorCall(1): [DestructorCall] call to ~Middle
+#  840|           Type = [VoidType] void
+#  840|           ValueCategory = prvalue
+#  840|         getQualifier(): [VariableAccess] m
+#  840|             Type = [Struct] Middle
+#  840|             ValueCategory = lvalue
+#  840|       getImplicitDestructorCall(2): [DestructorCall] call to ~Base
+#  840|           Type = [VoidType] void
+#  840|           ValueCategory = prvalue
+#  840|         getQualifier(): [VariableAccess] b
+#  840|             Type = [Struct,VirtualBaseClass] Base
+#  840|             ValueCategory = lvalue
 #  842| [CopyAssignmentOperator] PolymorphicBase& PolymorphicBase::operator=(PolymorphicBase const&)
 #  842|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -7475,6 +7553,18 @@ ir.cpp:
 #  864|               Type = [PointerType] const void *
 #  864|               ValueCategory = prvalue
 #  865|     getStmt(10): [ReturnStmt] return ...
+#  865|       getImplicitDestructorCall(0): [DestructorCall] call to ~PolymorphicDerived
+#  865|           Type = [VoidType] void
+#  865|           ValueCategory = prvalue
+#  865|         getQualifier(): [VariableAccess] d
+#  865|             Type = [Struct] PolymorphicDerived
+#  865|             ValueCategory = lvalue
+#  865|       getImplicitDestructorCall(1): [DestructorCall] call to ~PolymorphicBase
+#  865|           Type = [VoidType] void
+#  865|           ValueCategory = prvalue
+#  865|         getQualifier(): [VariableAccess] b
+#  865|             Type = [Struct] PolymorphicBase
+#  865|             ValueCategory = lvalue
 #  867| [Constructor] void String::String()
 #  867|   <params>: 
 #  867|   <initializations>: 
@@ -8954,6 +9044,18 @@ ir.cpp:
 # 1055|             Value = [CStyleCast] 6.0
 # 1055|             ValueCategory = prvalue
 # 1056|     getStmt(15): [ReturnStmt] return ...
+# 1056|       getImplicitDestructorCall(0): [DestructorCall] call to ~<unnamed>
+# 1056|           Type = [VoidType] void
+# 1056|           ValueCategory = prvalue
+# 1056|         getQualifier(): [VariableAccess] lambda_val_explicit
+# 1056|             Type = [Closure,LocalClass] decltype([...](...){...})
+# 1056|             ValueCategory = lvalue
+# 1056|       getImplicitDestructorCall(1): [DestructorCall] call to ~<unnamed>
+# 1056|           Type = [VoidType] void
+# 1056|           ValueCategory = prvalue
+# 1056|         getQualifier(): [VariableAccess] lambda_val
+# 1056|             Type = [Closure,LocalClass] decltype([...](...){...})
+# 1056|             ValueCategory = lvalue
 # 1041| [CopyAssignmentOperator] (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)& (void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23)::operator=((void Lambda(int, String const&))::(lambda [] type at line 1041, col. 23) const&)
 # 1041|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -10149,6 +10251,24 @@ ir.cpp:
 # 1243|                 Type = [PointerType] const char *
 # 1243|                 ValueCategory = prvalue(load)
 # 1244|     getStmt(3): [ReturnStmt] return ...
+# 1244|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 1244|           Type = [VoidType] void
+# 1244|           ValueCategory = prvalue
+# 1244|         getQualifier(): [VariableAccess] c
+# 1244|             Type = [Struct] String
+# 1244|             ValueCategory = lvalue
+# 1244|       getImplicitDestructorCall(1): [DestructorCall] call to ~String
+# 1244|           Type = [VoidType] void
+# 1244|           ValueCategory = prvalue
+# 1244|         getQualifier(): [VariableAccess] b
+# 1244|             Type = [Struct] String
+# 1244|             ValueCategory = lvalue
+# 1244|       getImplicitDestructorCall(2): [DestructorCall] call to ~String
+# 1244|           Type = [VoidType] void
+# 1244|           ValueCategory = prvalue
+# 1244|         getQualifier(): [VariableAccess] a
+# 1244|             Type = [Struct] String
+# 1244|             ValueCategory = lvalue
 # 1248| [TopLevelFunction] char* strcpy(char*, char const*)
 # 1248|   <params>: 
 # 1248|     getParameter(0): [Parameter] destination
@@ -10403,6 +10523,12 @@ ir.cpp:
 # 1286|             Type = [PointerType] A *
 # 1286|             ValueCategory = prvalue
 # 1287|     getStmt(12): [ReturnStmt] return ...
+# 1287|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
+# 1287|           Type = [VoidType] void
+# 1287|           ValueCategory = prvalue
+# 1287|         getQualifier(): [VariableAccess] c
+# 1287|             Type = [Class] C
+# 1287|             ValueCategory = lvalue
 # 1289| [TopLevelFunction] int missingReturnValue(bool, int)
 # 1289|   <params>: 
 # 1289|     getParameter(0): [Parameter] b
@@ -10957,6 +11083,12 @@ ir.cpp:
 # 1376|           Type = [Struct] String
 # 1376|           ValueCategory = prvalue
 # 1377|     getStmt(9): [ReturnStmt] return ...
+# 1377|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 1377|           Type = [VoidType] void
+# 1377|           ValueCategory = prvalue
+# 1377|         getQualifier(): [VariableAccess] s
+# 1377|             Type = [Struct] String
+# 1377|             ValueCategory = lvalue
 # 1379| [TopLevelFunction] void temporary_destructor_only()
 # 1379|   <params>: 
 # 1379|   getEntryPoint(): [BlockStmt] { ... }
@@ -11040,6 +11172,18 @@ ir.cpp:
 # 1388|           Type = [Class] destructor_only
 # 1388|           ValueCategory = prvalue
 # 1389|     getStmt(8): [ReturnStmt] return ...
+# 1389|       getImplicitDestructorCall(0): [DestructorCall] call to ~destructor_only
+# 1389|           Type = [VoidType] void
+# 1389|           ValueCategory = prvalue
+# 1389|         getQualifier(): [VariableAccess] d2
+# 1389|             Type = [Class] destructor_only
+# 1389|             ValueCategory = lvalue
+# 1389|       getImplicitDestructorCall(1): [DestructorCall] call to ~destructor_only
+# 1389|           Type = [VoidType] void
+# 1389|           ValueCategory = prvalue
+# 1389|         getQualifier(): [VariableAccess] d
+# 1389|             Type = [Class] destructor_only
+# 1389|             ValueCategory = lvalue
 # 1391| [TopLevelFunction] void temporary_copy_constructor()
 # 1391|   <params>: 
 # 1391|   getEntryPoint(): [BlockStmt] { ... }
@@ -14696,6 +14840,12 @@ ir.cpp:
 # 1925|               Value = [Literal] 10
 # 1925|               ValueCategory = prvalue
 # 1926|     getStmt(7): [ReturnStmt] return ...
+# 1926|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
+# 1926|           Type = [VoidType] void
+# 1926|           ValueCategory = prvalue
+# 1926|         getQualifier(): [VariableAccess] c
+# 1926|             Type = [Class] C
+# 1926|             ValueCategory = lvalue
 # 1928| [TopLevelFunction] void test_double_assign()
 # 1928|   <params>: 
 # 1928|   getEntryPoint(): [BlockStmt] { ... }
@@ -15048,6 +15198,12 @@ ir.cpp:
 # 1993|               Type = [Class] C
 # 1993|               ValueCategory = lvalue
 # 1994|     getStmt(3): [ReturnStmt] return ...
+# 1994|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
+# 1994|           Type = [VoidType] void
+# 1994|           ValueCategory = prvalue
+# 1994|         getQualifier(): [VariableAccess] c
+# 1994|             Type = [Class] C
+# 1994|             ValueCategory = lvalue
 # 1996| [TopLevelFunction] void TernaryTestInt(bool, int, int, int)
 # 1996|   <params>: 
 # 1996|     getParameter(0): [Parameter] a
@@ -16062,6 +16218,12 @@ smart_ptr.cpp:
 #   12|               Type = [CTypedefType,NestedTypedefType] type
 #   12|               ValueCategory = prvalue(load)
 #   13|     getStmt(2): [ReturnStmt] return ...
+#   13|       getImplicitDestructorCall(0): [DestructorCall] call to ~unique_ptr
+#   13|           Type = [VoidType] void
+#   13|           ValueCategory = prvalue
+#   13|         getQualifier(): [VariableAccess] up
+#   13|             Type = [ClassTemplateInstantiation] unique_ptr<int, default_delete<int>>
+#   13|             ValueCategory = lvalue
 #   15| [TopLevelFunction] void shared_ptr_arg(std::shared_ptr<float>)
 #   15|   <params>: 
 #   15|     getParameter(0): [Parameter] sp
@@ -16102,6 +16264,12 @@ smart_ptr.cpp:
 #   19|             Type = [ClassTemplateInstantiation] shared_ptr<float>
 #   19|             ValueCategory = lvalue
 #   20|     getStmt(2): [ReturnStmt] return ...
+#   20|       getImplicitDestructorCall(0): [DestructorCall] call to ~shared_ptr
+#   20|           Type = [VoidType] void
+#   20|           ValueCategory = prvalue
+#   20|         getQualifier(): [VariableAccess] sp
+#   20|             Type = [ClassTemplateInstantiation] shared_ptr<float>
+#   20|             ValueCategory = lvalue
 #   22| [TopLevelFunction] void shared_ptr_const_int(std::shared_ptr<int const>)
 #   22|   <params>: 
 #   22|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -16241,6 +16409,36 @@ smart_ptr.cpp:
 #   47|             Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<const int>>
 #   47|             ValueCategory = lvalue
 #   48|     getStmt(10): [ReturnStmt] return ...
+#   48|       getImplicitDestructorCall(0): [DestructorCall] call to ~shared_ptr
+#   48|           Type = [VoidType] void
+#   48|           ValueCategory = prvalue
+#   48|         getQualifier(): [VariableAccess] sp_const_sp_const_int
+#   48|             Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<const int>>
+#   48|             ValueCategory = lvalue
+#   48|       getImplicitDestructorCall(1): [DestructorCall] call to ~shared_ptr
+#   48|           Type = [VoidType] void
+#   48|           ValueCategory = prvalue
+#   48|         getQualifier(): [VariableAccess] sp_const_sp_int
+#   48|             Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<int>>
+#   48|             ValueCategory = lvalue
+#   48|       getImplicitDestructorCall(2): [DestructorCall] call to ~shared_ptr
+#   48|           Type = [VoidType] void
+#   48|           ValueCategory = prvalue
+#   48|         getQualifier(): [VariableAccess] sp_sp_const_int
+#   48|             Type = [ClassTemplateInstantiation] shared_ptr<shared_ptr<const int>>
+#   48|             ValueCategory = lvalue
+#   48|       getImplicitDestructorCall(3): [DestructorCall] call to ~shared_ptr
+#   48|           Type = [VoidType] void
+#   48|           ValueCategory = prvalue
+#   48|         getQualifier(): [VariableAccess] sp_const_int_pointer
+#   48|             Type = [ClassTemplateInstantiation] shared_ptr<int *const>
+#   48|             ValueCategory = lvalue
+#   48|       getImplicitDestructorCall(4): [DestructorCall] call to ~shared_ptr
+#   48|           Type = [VoidType] void
+#   48|           ValueCategory = prvalue
+#   48|         getQualifier(): [VariableAccess] sp_const_int
+#   48|             Type = [ClassTemplateInstantiation] shared_ptr<const int>
+#   48|             ValueCategory = lvalue
 struct_init.cpp:
 #    1| [TopLevelFunction] int handler1(void*)
 #    1|   <params>: 

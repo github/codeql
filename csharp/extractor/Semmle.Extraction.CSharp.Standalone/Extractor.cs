@@ -137,7 +137,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             stopwatch.Start();
 
             using var logger = new ConsoleLogger(options.Verbosity, logThreadId: true);
-            logger.Log(Severity.Info, "Running C# standalone extractor");
+            logger.Log(Severity.Info, "Extracting C# in buildless mode");
             using var a = new Analysis(logger, options);
             var sourceFileCount = a.Extraction.Sources.Count;
 
