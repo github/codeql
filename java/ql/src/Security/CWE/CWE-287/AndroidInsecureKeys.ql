@@ -3,7 +3,7 @@
  * @description Keys used for local biometric authentication should be generated with secure parameters.
  * @kind problem
  * @problem.severity warning
- * @security-severity 9.3
+ * @security-severity 4.4
  * @precision medium
  * @id java/android/insecure-local-key-gen
  * @tags security
