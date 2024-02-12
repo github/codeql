@@ -2190,4 +2190,18 @@ class Bool2 {
     ~Bool2();
 };
 
+void WhileLoopDestructors(bool b) {
+    {
+        String s;
+        while(b) {
+            b = false;
+        }
+    }
+
+    {
+        while (Bool B = Bool(b)) {
+            b = false;
+        }
+    }
+}
 // semmle-extractor-options: -std=c++17 --clang

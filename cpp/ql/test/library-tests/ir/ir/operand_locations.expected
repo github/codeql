@@ -10758,6 +10758,76 @@
 | ir.cpp:2182:5:2182:5 | SideEffect | m2181_8 |
 | ir.cpp:2182:5:2182:5 | SideEffect | ~m2181_6 |
 | ir.cpp:2182:5:2182:5 | SideEffect | ~m2182_9 |
+| ir.cpp:2193:6:2193:25 | ChiPartial | partial:m2193_3 |
+| ir.cpp:2193:6:2193:25 | ChiTotal | total:m2193_2 |
+| ir.cpp:2193:6:2193:25 | SideEffect | ~m2202_17 |
+| ir.cpp:2193:32:2193:32 | Address | &:r2193_5 |
+| ir.cpp:2195:16:2195:16 | Address | &:r2195_1 |
+| ir.cpp:2195:16:2195:16 | Address | &:r2195_1 |
+| ir.cpp:2195:16:2195:16 | Arg(this) | this:r2195_1 |
+| ir.cpp:2195:16:2195:16 | CallTarget | func:r2195_3 |
+| ir.cpp:2195:16:2195:16 | ChiPartial | partial:m2195_5 |
+| ir.cpp:2195:16:2195:16 | ChiPartial | partial:m2195_7 |
+| ir.cpp:2195:16:2195:16 | ChiTotal | total:m2193_4 |
+| ir.cpp:2195:16:2195:16 | ChiTotal | total:m2195_2 |
+| ir.cpp:2195:16:2195:16 | SideEffect | ~m2193_4 |
+| ir.cpp:2196:15:2196:15 | Address | &:r2196_2 |
+| ir.cpp:2196:15:2196:15 | Condition | r2196_3 |
+| ir.cpp:2196:15:2196:15 | Load | m2196_1 |
+| ir.cpp:2196:15:2196:15 | Phi | from 0:m2193_6 |
+| ir.cpp:2196:15:2196:15 | Phi | from 2:m2197_3 |
+| ir.cpp:2197:13:2197:13 | Address | &:r2197_2 |
+| ir.cpp:2197:17:2197:21 | StoreValue | r2197_1 |
+| ir.cpp:2199:5:2199:5 | Address | &:r2199_1 |
+| ir.cpp:2199:5:2199:5 | Address | &:r2199_1 |
+| ir.cpp:2199:5:2199:5 | Arg(this) | this:r2199_1 |
+| ir.cpp:2199:5:2199:5 | CallTarget | func:r2199_2 |
+| ir.cpp:2199:5:2199:5 | ChiPartial | partial:m2199_4 |
+| ir.cpp:2199:5:2199:5 | ChiPartial | partial:m2199_7 |
+| ir.cpp:2199:5:2199:5 | ChiTotal | total:m2195_6 |
+| ir.cpp:2199:5:2199:5 | ChiTotal | total:m2195_8 |
+| ir.cpp:2199:5:2199:5 | SideEffect | m2195_8 |
+| ir.cpp:2199:5:2199:5 | SideEffect | ~m2195_6 |
+| ir.cpp:2202:16:2202:31 | Address | &:r2202_3 |
+| ir.cpp:2202:16:2202:31 | Address | &:r2202_3 |
+| ir.cpp:2202:16:2202:31 | Arg(this) | this:r2202_3 |
+| ir.cpp:2202:16:2202:31 | Condition | r2202_21 |
+| ir.cpp:2202:16:2202:31 | Phi | from 3:m2196_1 |
+| ir.cpp:2202:16:2202:31 | Phi | from 3:~m2199_5 |
+| ir.cpp:2202:16:2202:31 | Phi | from 5:m2203_3 |
+| ir.cpp:2202:16:2202:31 | Phi | from 5:~m2204_5 |
+| ir.cpp:2202:21:2202:21 | Address | &:r2202_13 |
+| ir.cpp:2202:21:2202:21 | Address | &:r2202_13 |
+| ir.cpp:2202:21:2202:21 | Arg(this) | this:r2202_13 |
+| ir.cpp:2202:21:2202:21 | CallTarget | func:r2202_14 |
+| ir.cpp:2202:21:2202:21 | ChiPartial | partial:m2202_16 |
+| ir.cpp:2202:21:2202:21 | ChiPartial | partial:m2202_19 |
+| ir.cpp:2202:21:2202:21 | ChiTotal | total:m2202_10 |
+| ir.cpp:2202:21:2202:21 | ChiTotal | total:m2202_12 |
+| ir.cpp:2202:21:2202:21 | SideEffect | m2202_12 |
+| ir.cpp:2202:21:2202:21 | SideEffect | ~m2202_10 |
+| ir.cpp:2202:21:2202:21 | Unary | r2202_15 |
+| ir.cpp:2202:24:2202:31 | CallTarget | func:r2202_5 |
+| ir.cpp:2202:24:2202:31 | ChiPartial | partial:m2202_9 |
+| ir.cpp:2202:24:2202:31 | ChiPartial | partial:m2202_11 |
+| ir.cpp:2202:24:2202:31 | ChiTotal | total:m2202_1 |
+| ir.cpp:2202:24:2202:31 | ChiTotal | total:m2202_4 |
+| ir.cpp:2202:24:2202:31 | SideEffect | ~m2202_1 |
+| ir.cpp:2202:30:2202:30 | Address | &:r2202_6 |
+| ir.cpp:2202:30:2202:30 | Arg(0) | 0:r2202_7 |
+| ir.cpp:2202:30:2202:30 | Load | m2202_2 |
+| ir.cpp:2203:13:2203:13 | Address | &:r2203_2 |
+| ir.cpp:2203:17:2203:21 | StoreValue | r2203_1 |
+| ir.cpp:2204:9:2204:9 | Address | &:r2204_1 |
+| ir.cpp:2204:9:2204:9 | Address | &:r2204_1 |
+| ir.cpp:2204:9:2204:9 | Arg(this) | this:r2204_1 |
+| ir.cpp:2204:9:2204:9 | CallTarget | func:r2204_2 |
+| ir.cpp:2204:9:2204:9 | ChiPartial | partial:m2204_4 |
+| ir.cpp:2204:9:2204:9 | ChiPartial | partial:m2204_7 |
+| ir.cpp:2204:9:2204:9 | ChiTotal | total:m2202_17 |
+| ir.cpp:2204:9:2204:9 | ChiTotal | total:m2202_20 |
+| ir.cpp:2204:9:2204:9 | SideEffect | m2202_20 |
+| ir.cpp:2204:9:2204:9 | SideEffect | ~m2202_17 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_7 |
