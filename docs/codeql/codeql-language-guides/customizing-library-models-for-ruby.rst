@@ -23,7 +23,7 @@ A data extension for Ruby is a YAML file of the form:
         - <tuple2>
         - ...
 
-The CodeQL library for JavaScript exposes the following extensible predicates:
+The CodeQL library for Ruby exposes the following extensible predicates:
 
 - **sourceModel**\(type, path, kind)
 - **sinkModel**\(type, path, kind)
@@ -66,10 +66,10 @@ For this example, you can use the following data extension:
 
 - **command-injection** indicates that this is considered a sink for the command injection query.
 
-Example: Taint sources from `sinatra` block parameters
+Example: Taint sources from 'sinatra' block parameters
 ------------------------------------------------------
 
-In this example, we'll show how the `x` parameter below could be marked as a remote flow source:
+In this example, we'll show how the 'x' parameter below could be marked as a remote flow source:
 
 .. code-block:: ruby
 
@@ -160,7 +160,7 @@ model to indicate that **Mysql2::EM::Client** is a subclass of **Mysql2::Client*
 Example: Adding flow through 'URI.decode_uri_component'
 -------------------------------------------------------
 
-In this example, we'll show how to add flow through calls to `URI.decode_uri_component`:
+In this example, we'll show how to add flow through calls to 'URI.decode_uri_component':
 
 .. code-block:: ruby
 
@@ -176,7 +176,7 @@ We can model this using the following data extension:
         extensible: summaryModel
       data:
         - [
-            "URI",
+            "URI!",
             "Method[decode_uri_component]",
             "Argument[0]",
             "ReturnValue",
@@ -187,7 +187,7 @@ We can model this using the following data extension:
 - Since we're adding flow through a method call, we add a tuple to the **summaryModel** extensible predicate.
 - The first column, **"URI!"**, begins the search for relevant calls at references to the **URI** class.
 - The **!** suffix indicates that we are looking for the class itself, rather than instances of the class.
-- The second column, **Member[decode_uri_component]**, is a path leading to the method calls we wish to model.
+- The second column, **Method[decode_uri_component]**, is a path leading to the method calls we wish to model.
   In this case, we select references to the **decode_uri_component** method from the **URI** class.
 - The third column, **Argument[0]**, indicates the input of the flow. In this case, the first argument to the method call.
 - The fourth column, **ReturnValue**, indicates the output of the flow. In this case, the return value of the method call.
@@ -393,11 +393,11 @@ Unlike sources, sinks tend to be highly query-specific, rarely affecting more th
 Not every query supports customizable sinks. If the following sinks are not suitable for your use case, you should add a new query.
 
 - **code-injection**: A sink that can be used to inject code, such as in calls to **eval**.
-- **command-injection**: A sink that can be used to inject shell commands, such as in calls to **child_process.spawn**.
-- **path-injection**: A sink that can be used for path injection in a file system access, such as in calls to **fs.readFile**.
-- **sql-injection**: A sink that can be used for SQL injection, such as in a MySQL **query** call.
+- **command-injection**: A sink that can be used to inject shell commands, such as in calls to **Process.spawn**.
+- **path-injection**: A sink that can be used for path injection in a file system access, such as in calls to **File.open**.
+- **sql-injection**: A sink that can be used for SQL injection, such as in an ActiveRecord **where** call.
 - **url-redirection**: A sink that can be used to redirect the user to a malicious URL.
-- **log-injection**: A sink that can be used for log injection, such as in a **console.log** call.
+- **log-injection**: A sink that can be used for log injection, such as in a **Rails.logger** call.
 
 Summary kinds
 ~~~~~~~~~~~~~
