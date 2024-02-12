@@ -1,5 +1,9 @@
 common --enable_platform_specific_config --experimental_enable_bzlmod
 
+# when using repo standalone, we want still to unlock loading the internal repository module
+# actually using things from that module will obviously end up in an error
+common --override_module=codeql_internal=%workspace%/misc/bazel/codeql_internal_stub
+
 build --repo_env=CC=clang --repo_env=CXX=clang++
 
 build:linux --cxxopt=-std=c++20
