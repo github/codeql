@@ -340,6 +340,28 @@ func AnyGoFilesOutsideDirs(root string, dirsToSkip ...string) bool {
 	return found
 }
 
+// Returns an array of any Go source files in locations which do not have a Go.mod
+// file in the same directory or higher up in the file hierarchy, relative to the `root`.
+func GoFilesOutsideDirs(root string, dirsToSkip ...string) []string {
+	result := []string{}
+
+	filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() && slices.Contains(dirsToSkip, path) {
+			return filepath.SkipDir
+		}
+		if filepath.Ext(d.Name()) == ".go" {
+			log.Printf("Found stray Go source file in %s.\n", path)
+			result = append(result, path)
+		}
+		return nil
+	})
+
+	return result
+}
+
 // For every file path in the input array, return the parent directory.
 func GetParentDirs(paths []string) []string {
 	dirs := make([]string, len(paths))
