@@ -164,41 +164,52 @@ class ArgumentPosition extends string {
  */
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 
-predicate stepUsesOutputDefToUse(Node nodeFrom, Node nodeTo) {
-  // nodeTo is an OutputVarAccessExpr scoped with the namespace of the nodeFrom Step output
-  exists(StepUsesExpr uses, StepOutputAccessExpr outputRead |
-    uses = nodeFrom.asExpr() and
-    outputRead = nodeTo.asExpr() and
-    outputRead.getStepId() = uses.getId() and
-    uses.getJobStmt() = outputRead.getJobStmt()
+/**
+ * Holds if there is a local flow step between a ${{}} expression accesing a step output variable and the step output itself
+ * e.g. ${{ steps.step1.output.foo }}
+ */
+predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
+  exists(StepStmt astFrom, StepOutputAccessExpr astTo |
+    (astFrom instanceof UsesExpr or astFrom instanceof RunExpr) and
+    astFrom = nodeFrom.asExpr() and
+    astTo = nodeTo.asExpr() and
+    astTo.getRefExpr() = astFrom
   )
 }
 
-predicate runOutputDefToUse(Node nodeFrom, Node nodeTo) {
-  // nodeTo is an OutputVarAccessExpr scoped with the namespace of the nodeFrom Step output
-  exists(RunExpr uses, StepOutputAccessExpr outputRead |
-    uses = nodeFrom.asExpr() and
-    outputRead = nodeTo.asExpr() and
-    outputRead.getStepId() = uses.getId() and
-    uses.getJobStmt() = outputRead.getJobStmt()
-  )
-}
-
-predicate jobOutputDefToUse(Node nodeFrom, Node nodeTo) {
-  // nodeTo is a JobOutputAccessExpr and nodeFrom is the Job output expression
+/**
+ * Holds if there is a local flow step between a ${{}} expression accesing a job output variable and the job output itself
+ * e.g. ${{ needs.job1.output.foo }} or ${{ job.job1.output.foo }}
+ */
+predicate jobsCtxLocalStep(Node nodeFrom, Node nodeTo) {
   exists(Expression astFrom, JobOutputAccessExpr astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
-    astTo.getOutputExpr() = astFrom
+    astTo.getRefExpr() = astFrom
   )
 }
 
-predicate reusableWorkflowInputDefToUse(Node nodeFrom, Node nodeTo) {
-  // nodeTo is a ReusableWorkflowInputAccessExpr and nodeFrom is the ReusableWorkflowStmt corresponding parameter expression
+/**
+ * Holds if there is a local flow step between a ${{}} expression accesing a reusable workflow input variable and the input itself
+ * e.g. ${{ inputs.foo }}
+ */
+predicate inputsCtxLocalStep(Node nodeFrom, Node nodeTo) {
   exists(Expression astFrom, ReusableWorkflowInputAccessExpr astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
-    astTo.getInputExpr() = astFrom
+    astTo.getRefExpr() = astFrom
+  )
+}
+
+/**
+ * Holds if there is a local flow step between a ${{}} expression accesing an env var and the var definition itself
+ * e.g. ${{ env.foo }}
+ */
+predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
+  exists(Expression astFrom, EnvAccessExpr astTo |
+    astFrom = nodeFrom.asExpr() and
+    astTo = nodeTo.asExpr() and
+    astTo.getRefExpr() = astFrom
   )
 }
 
@@ -209,10 +220,10 @@ predicate reusableWorkflowInputDefToUse(Node nodeFrom, Node nodeTo) {
  */
 pragma[nomagic]
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
-  stepUsesOutputDefToUse(nodeFrom, nodeTo) or
-  runOutputDefToUse(nodeFrom, nodeTo) or
-  jobOutputDefToUse(nodeFrom, nodeTo) or
-  reusableWorkflowInputDefToUse(nodeFrom, nodeTo)
+  stepsCtxLocalStep(nodeFrom, nodeTo) or
+  jobsCtxLocalStep(nodeFrom, nodeTo) or
+  inputsCtxLocalStep(nodeFrom, nodeTo) or
+  envCtxLocalStep(nodeFrom, nodeTo)
 }
 
 /**
