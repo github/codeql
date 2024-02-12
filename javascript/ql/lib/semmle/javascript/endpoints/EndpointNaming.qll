@@ -49,7 +49,8 @@ private predicate isExported(API::Node node) {
   or
   exists(API::Node pred |
     isExported(pred) and
-    memberEdge(pred, node)
+    memberEdge(pred, node) and
+    not isPrivateLike(node)
   )
 }
 
@@ -82,7 +83,6 @@ private API::Node getASuccessor(API::Node node, string name, int badness) {
   isExported(node) and
   exists(string member |
     result = node.getMember(member) and
-    not isPrivateLike(node) and
     if member = "default"
     then
       if defaultExportCanBeInterpretedAsNamespaceExport(node)
