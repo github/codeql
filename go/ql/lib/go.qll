@@ -52,6 +52,7 @@ import semmle.go.frameworks.GoMicro
 import semmle.go.frameworks.GoRestfulHttp
 import semmle.go.frameworks.Gqlgen
 import semmle.go.frameworks.Iris
+import semmle.go.frameworks.Jwt
 import semmle.go.frameworks.K8sIoApimachineryPkgRuntime
 import semmle.go.frameworks.K8sIoApiCoreV1
 import semmle.go.frameworks.K8sIoClientGo
