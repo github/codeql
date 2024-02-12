@@ -368,7 +368,8 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 	}
 
 	goModDirs := util.GetParentDirs(goModPaths)
-	if util.AnyGoFilesOutsideDirs(".", goModDirs...) {
+	straySourceFiles := util.GoFilesOutsideDirs(".", goModDirs...)
+	if len(straySourceFiles) > 0 {
 		if emitDiagnostics {
 			diagnostics.EmitGoFilesOutsideGoModules(goModPaths)
 		}
