@@ -11,6 +11,7 @@ env:
 
 jobs:
   analyze:
+    if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
     steps:
       ### Build the queries ###

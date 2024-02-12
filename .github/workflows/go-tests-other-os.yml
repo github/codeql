@@ -46,6 +46,7 @@ jobs:
           make test cache="${{ steps.query-cache.outputs.cache-dir }}"
 
   test-win:
+    if: github.repository_owner == 'github'
     name: Test Windows
     runs-on: windows-latest-xl
     steps:

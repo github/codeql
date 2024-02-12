@@ -50,6 +50,7 @@ jobs:
            xargs codeql execute upgrades testdb
           diff -q testdb/ruby.dbscheme downgrades/initial/ruby.dbscheme
   qltest:
+    if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
     strategy:
       fail-fast: false
