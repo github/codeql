@@ -115,6 +115,9 @@ class JobStmt extends Statement instanceof Actions::Job {
    */
   string getId() { result = super.getId() }
 
+  /** Gets the workflow that this job is a part of. */
+  WorkflowStmt getWorkflowStmt() { result = super.getWorkflow() }
+
   /** Gets the step at the given index within this job. */
   StepStmt getStepStmt(int index) { result = super.getStep(index) }
 
@@ -181,6 +184,26 @@ class StepStmt extends Statement instanceof Actions::Step {
   string getId() { result = super.getId() }
 
   JobStmt getJobStmt() { result = super.getJob() }
+
+  /**
+   * Gets a environment variable expression by name in the scope of the current step.
+   */
+  Expression getEnvExpr(string name) {
+    exists(Actions::StepEnv env |
+      env.getStep() = this and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+    or
+    exists(Actions::JobEnv env |
+      env.getJob() = this.getJobStmt() and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+    or
+    exists(Actions::WorkflowEnv env |
+      env.getWorkflow() = this.getJobStmt().getWorkflowStmt() and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+  }
 }
 
 /**
@@ -192,6 +215,8 @@ abstract class UsesExpr extends Expression {
   abstract string getVersion();
 
   abstract Expression getArgumentExpr(string key);
+
+  abstract Expression getEnvExpr(string name);
 }
 
 /**
@@ -212,6 +237,8 @@ class StepUsesExpr extends StepStmt, UsesExpr {
       result = with.lookup(key)
     )
   }
+
+  override Expression getEnvExpr(string name) { result = this.(StepStmt).getEnvExpr(name) }
 }
 
 /**
@@ -260,6 +287,23 @@ class JobUsesExpr extends UsesExpr instanceof YamlMapping {
   override Expression getArgumentExpr(string key) {
     this.(YamlMapping).lookup("with").(YamlMapping).lookup(key) = result
   }
+
+  /**
+   * Gets a environment variable expression by name in the scope of the current node.
+   */
+  override Expression getEnvExpr(string name) {
+    this.(YamlMapping).lookup("env").(YamlMapping).lookup(name) = result
+    or
+    exists(Actions::JobEnv env |
+      env.getJob() = this.getJobStmt() and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+    or
+    exists(Actions::WorkflowEnv env |
+      env.getWorkflow() = this.getJobStmt().getWorkflowStmt() and
+      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
+    )
+  }
 }
 
 /**
@@ -271,13 +315,6 @@ class RunExpr extends StepStmt, Expression {
   RunExpr() { scriptExpr.getStep() = this }
 
   Expression getScriptExpr() { result = scriptExpr }
-
-  Expression getEnvExpr(string name) {
-    exists(Actions::StepEnv env |
-      env.getStep() = this and
-      env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
-    )
-  }
 
   string getScript() { result = scriptExpr.getValue() }
 }

@@ -125,19 +125,36 @@ private class EventSource extends RemoteFlowSource {
   override string getSourceType() { result = "User-controlled events" }
 }
 
+/**
+ * MaD sources
+ * Fields:
+ *    - action: Fully-qualified action name (NWO)
+ *    - version: Either '*' or a specific SHA/Tag
+ *    - output arg: To node (prefixed with either `env.` or `output.`)
+ *    - trigger: Triggering event under which this model introduces tainted data. Use `*` for any event.
+ */
 private class ExternallyDefinedSource extends RemoteFlowSource {
   string soutceType;
 
   ExternallyDefinedSource() {
-    exists(UsesExpr uses, string action, string version, /*string output,*/ string kind |
-      sourceModel(action, version, _, kind) and
+    exists(
+      UsesExpr uses, string action, string version, string output, string trigger, string kind
+    |
+      sourceModel(action, version, output, trigger, kind) and
       uses.getCallee() = action and
       (
         if version.trim() = "*"
         then uses.getVersion() = any(string v)
-        else uses.getVersion() = version.splitAt(",").trim()
+        else uses.getVersion() = version.trim()
       ) and
-      uses = this.asExpr() and
+      (
+        if output.trim().matches("env.%")
+        then this.asExpr() = uses.getEnvExpr(output.trim().replaceAll("output\\.", ""))
+        else
+          // 'output.' is the default qualifier
+          // TODO: Taint just the specified output
+          this.asExpr() = uses
+      ) and
       soutceType = kind
     )
   }

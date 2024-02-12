@@ -5,7 +5,9 @@
 /**
  * Holds if a source model exists for the given parameters.
  */
-extensible predicate sourceModel(string action, string version, string output, string kind);
+extensible predicate sourceModel(
+  string action, string version, string output, string trigger, string kind
+);
 
 /**
  * Holds if a summary model exists for the given parameters.

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: summaryModel
+    data:
+      - [ "frabert/replace-string-action", "*", "string", "replaced", "taint" ]
+      - [ "frabert/replace-string-action", "*", "replace-with", "replaced", "taint" ]
