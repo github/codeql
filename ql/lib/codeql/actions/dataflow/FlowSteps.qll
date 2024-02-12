@@ -21,16 +21,32 @@ class AdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
+/**
+ * MaD summaries
+ * Fields:
+ *    - action: Fully-qualified action name (NWO)
+ *    - version: Either '*' or a specific SHA/Tag
+ *    - input arg: From node (prefixed with either `env.` or `input.`)
+ *    - output arg: To node (prefixed with either `env.` or `output.`)
+ *    - kind: Either 'Taint' or 'Value'
+ */
 predicate externallyDefinedSummary(DataFlow::Node pred, DataFlow::Node succ) {
   exists(UsesExpr uses, string action, string version, string input |
-    /*, string output */ summaryModel(action, version, input, _, "taint") and
+    // `output` not used yet
+    summaryModel(action, version, input, _, "taint") and
     uses.getCallee() = action and
     (
       if version.trim() = "*"
       then uses.getVersion() = any(string v)
-      else uses.getVersion() = version.splitAt(",").trim()
+      else uses.getVersion() = version.trim()
     ) and
-    pred.asExpr() = uses.getArgumentExpr(input.splitAt(",").trim()) and
+    (
+      if input.trim().matches("env.%")
+      then pred.asExpr() = uses.getEnvExpr(input.trim().replaceAll("env\\.", ""))
+      else
+        // 'input.' is the default qualifier
+        pred.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input\\.", ""))
+    ) and
     succ.asExpr() = uses
   )
 }

@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: summaryModel
+    data:
+      - [ "mad9000/actions-find-and-replace-string", "*", "source", "value", "taint" ]
+      - [ "mad9000/actions-find-and-replace-string", "*", "replace", "value", "taint" ]
+      - [ "frabert/replace-string-action", "*", "string", "replaced", "taint" ]
+      - [ "frabert/replace-string-action", "*", "replace-with", "replaced", "taint" ]
