@@ -7,7 +7,7 @@
      <recommendation>
      <p>Always verify the signature by using the appropriate methods depending on the JWT library,
           or use a library that verifies it by default.</p>
-     <recommendation>
+     </recommendation>
      <example>
           <p>The following example shows a case where a JWT is parsed without verifying the
                signature.</p>
