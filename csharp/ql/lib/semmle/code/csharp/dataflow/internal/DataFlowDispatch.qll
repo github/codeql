@@ -89,6 +89,7 @@ class DataFlowSummarizedCallable instanceof FlowSummary::SummarizedCallable {
   string toString() { result = super.toString() }
 }
 
+cached
 private module Cached {
   /**
    * The following heuristic is used to rank when to use source code or when to use summaries for DataFlowCallables.
@@ -98,7 +99,8 @@ private module Cached {
   cached
   newtype TDataFlowCallable =
     TDotNetCallable(DotNet::Callable c) { c.isUnboundDeclaration() } or
-    TSummarizedCallable(DataFlowSummarizedCallable sc)
+    TSummarizedCallable(DataFlowSummarizedCallable sc) or
+    TFieldOrProperty(FieldOrProperty f)
 
   cached
   newtype TDataFlowCall =
@@ -247,22 +249,33 @@ class ImplicitCapturedReturnKind extends ReturnKind, TImplicitCapturedReturnKind
 
 /** A callable used for data flow. */
 class DataFlowCallable extends TDataFlowCallable {
-  /** Get the underlying source code callable, if any. */
+  /** Gets the underlying source code callable, if any. */
   DotNet::Callable asCallable() { this = TDotNetCallable(result) }
 
-  /** Get the underlying summarized callable, if any. */
+  /** Gets the underlying summarized callable, if any. */
   FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
-  /** Get the underlying callable. */
+  /** Gets the underlying field or property, if any. */
+  FieldOrProperty asFieldOrProperty() { this = TFieldOrProperty(result) }
+
+  /** Gets the underlying callable. */
   DotNet::Callable getUnderlyingCallable() {
     result = this.asCallable() or result = this.asSummarizedCallable()
   }
 
   /** Gets a textual representation of this dataflow callable. */
-  string toString() { result = this.getUnderlyingCallable().toString() }
+  string toString() {
+    result = this.getUnderlyingCallable().toString()
+    or
+    result = this.asFieldOrProperty().toString()
+  }
 
   /** Get the location of this dataflow callable. */
-  Location getLocation() { result = this.getUnderlyingCallable().getLocation() }
+  Location getLocation() {
+    result = this.getUnderlyingCallable().getLocation()
+    or
+    result = this.asFieldOrProperty().getLocation()
+  }
 }
 
 /** A call relevant for data flow. */

@@ -1,8 +1,8 @@
 edges
-| ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | ResponseSplitting.java:23:23:23:28 | cookie |
-| ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie |
-| ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:27 | t : String |
-| ResponseSplitting.java:59:27:59:27 | t : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) |
+| ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | ResponseSplitting.java:23:23:23:28 | cookie | provenance |  |
+| ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | provenance |  |
+| ResponseSplitting.java:53:14:53:48 | getParameter(...) : String | ResponseSplitting.java:59:27:59:27 | t : String | provenance |  |
+| ResponseSplitting.java:59:27:59:27 | t : String | ResponseSplitting.java:59:27:59:57 | replaceFirst(...) | provenance |  |
 nodes
 | ResponseSplitting.java:22:20:22:67 | new Cookie(...) : Cookie | semmle.label | new Cookie(...) : Cookie |
 | ResponseSplitting.java:22:39:22:66 | getParameter(...) : String | semmle.label | getParameter(...) : String |

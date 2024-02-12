@@ -232,6 +232,9 @@ signature module OutputSig<LocationSig Location, InputSig<Location> I> {
 
   /** Holds if this-to-this summaries are expected for `c`. */
   predicate heuristicAllowInstanceParameterReturnInSelf(I::Callable c);
+
+  /** Holds if captured variable `v` is cleared at `node`. */
+  predicate clearsContent(ClosureNode node, I::CapturedVariable v);
 }
 
 /**
@@ -957,6 +960,13 @@ module Flow<LocationSig Location, InputSig<Location> Input> implements OutputSig
         captureRead(v, bb, i, false, vr) and
         node2 = TExprNode(vr, false)
       )
+    )
+  }
+
+  predicate clearsContent(ClosureNode node, CapturedVariable v) {
+    exists(BasicBlock bb, int i |
+      captureWrite(v, bb, i, false, _) and
+      node = TSynthThisQualifier(bb, i, false)
     )
   }
 }

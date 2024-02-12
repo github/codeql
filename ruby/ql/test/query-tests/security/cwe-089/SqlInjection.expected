@@ -1,83 +1,83 @@
 edges
-| ActiveRecordInjection.rb:8:25:8:28 | name | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" |
-| ActiveRecordInjection.rb:8:31:8:34 | pass | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" |
-| ActiveRecordInjection.rb:20:22:20:30 | condition | ActiveRecordInjection.rb:23:16:23:24 | condition |
-| ActiveRecordInjection.rb:35:30:35:35 | call to params | ActiveRecordInjection.rb:35:30:35:44 | ...[...] |
-| ActiveRecordInjection.rb:39:18:39:23 | call to params | ActiveRecordInjection.rb:39:18:39:32 | ...[...] |
-| ActiveRecordInjection.rb:43:29:43:34 | call to params | ActiveRecordInjection.rb:43:29:43:39 | ...[...] |
-| ActiveRecordInjection.rb:43:29:43:39 | ...[...] | ActiveRecordInjection.rb:43:20:43:42 | "id = '#{...}'" |
-| ActiveRecordInjection.rb:48:30:48:35 | call to params | ActiveRecordInjection.rb:48:30:48:40 | ...[...] |
-| ActiveRecordInjection.rb:48:30:48:40 | ...[...] | ActiveRecordInjection.rb:48:21:48:43 | "id = '#{...}'" |
-| ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | ActiveRecordInjection.rb:52:21:52:45 | call to [] |
-| ActiveRecordInjection.rb:52:31:52:36 | call to params | ActiveRecordInjection.rb:52:31:52:41 | ...[...] |
-| ActiveRecordInjection.rb:52:31:52:41 | ...[...] | ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" |
-| ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | ActiveRecordInjection.rb:57:22:57:46 | call to [] |
-| ActiveRecordInjection.rb:57:32:57:37 | call to params | ActiveRecordInjection.rb:57:32:57:42 | ...[...] |
-| ActiveRecordInjection.rb:57:32:57:42 | ...[...] | ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" |
-| ActiveRecordInjection.rb:62:21:62:26 | call to params | ActiveRecordInjection.rb:62:21:62:35 | ...[...] |
-| ActiveRecordInjection.rb:62:21:62:35 | ...[...] | ActiveRecordInjection.rb:61:16:61:21 | <<-SQL |
-| ActiveRecordInjection.rb:68:34:68:39 | call to params | ActiveRecordInjection.rb:68:34:68:44 | ...[...] |
-| ActiveRecordInjection.rb:68:34:68:44 | ...[...] | ActiveRecordInjection.rb:68:20:68:47 | "user.id = '#{...}'" |
-| ActiveRecordInjection.rb:70:23:70:28 | call to params | ActiveRecordInjection.rb:70:23:70:35 | ...[...] |
-| ActiveRecordInjection.rb:70:23:70:35 | ...[...] | ActiveRecordInjection.rb:8:25:8:28 | name |
-| ActiveRecordInjection.rb:70:38:70:43 | call to params | ActiveRecordInjection.rb:70:38:70:50 | ...[...] |
-| ActiveRecordInjection.rb:70:38:70:50 | ...[...] | ActiveRecordInjection.rb:8:31:8:34 | pass |
-| ActiveRecordInjection.rb:74:41:74:46 | call to params | ActiveRecordInjection.rb:74:41:74:51 | ...[...] |
-| ActiveRecordInjection.rb:74:41:74:51 | ...[...] | ActiveRecordInjection.rb:74:32:74:54 | "id = '#{...}'" |
-| ActiveRecordInjection.rb:79:23:79:28 | call to params | ActiveRecordInjection.rb:79:23:79:35 | ...[...] |
-| ActiveRecordInjection.rb:83:17:83:22 | call to params | ActiveRecordInjection.rb:83:17:83:31 | ...[...] |
-| ActiveRecordInjection.rb:84:19:84:24 | call to params | ActiveRecordInjection.rb:84:19:84:33 | ...[...] |
-| ActiveRecordInjection.rb:88:18:88:23 | call to params | ActiveRecordInjection.rb:88:18:88:35 | ...[...] |
-| ActiveRecordInjection.rb:92:21:92:26 | call to params | ActiveRecordInjection.rb:92:21:92:35 | ...[...] |
-| ActiveRecordInjection.rb:100:31:100:36 | call to params | ActiveRecordInjection.rb:100:31:100:52 | ...[...] |
-| ActiveRecordInjection.rb:100:31:100:52 | ...[...] | ActiveRecordInjection.rb:100:20:100:55 | "name = '#{...}'" |
-| ActiveRecordInjection.rb:104:30:104:35 | call to params | ActiveRecordInjection.rb:104:30:104:51 | ...[...] |
-| ActiveRecordInjection.rb:104:30:104:51 | ...[...] | ActiveRecordInjection.rb:104:19:104:54 | "name = '#{...}'" |
-| ActiveRecordInjection.rb:106:18:106:23 | call to params | ActiveRecordInjection.rb:106:18:106:35 | ...[...] |
-| ActiveRecordInjection.rb:108:23:108:28 | call to params | ActiveRecordInjection.rb:108:23:108:47 | ...[...] |
-| ActiveRecordInjection.rb:114:5:114:6 | ps | ActiveRecordInjection.rb:115:11:115:12 | ps |
-| ActiveRecordInjection.rb:114:10:114:15 | call to params | ActiveRecordInjection.rb:114:5:114:6 | ps |
-| ActiveRecordInjection.rb:115:5:115:7 | uid | ActiveRecordInjection.rb:116:5:116:9 | uidEq |
-| ActiveRecordInjection.rb:115:11:115:12 | ps | ActiveRecordInjection.rb:115:11:115:17 | ...[...] |
-| ActiveRecordInjection.rb:115:11:115:17 | ...[...] | ActiveRecordInjection.rb:115:5:115:7 | uid |
-| ActiveRecordInjection.rb:116:5:116:9 | uidEq | ActiveRecordInjection.rb:120:20:120:32 | ... + ... |
-| ActiveRecordInjection.rb:116:5:116:9 | uidEq | ActiveRecordInjection.rb:120:28:120:32 | uidEq |
-| ActiveRecordInjection.rb:120:20:120:32 | ... + ... [element] | ActiveRecordInjection.rb:120:20:120:32 | ... + ... |
-| ActiveRecordInjection.rb:120:28:120:32 | uidEq | ActiveRecordInjection.rb:120:20:120:32 | ... + ... [element] |
-| ActiveRecordInjection.rb:153:21:153:26 | call to params | ActiveRecordInjection.rb:153:21:153:44 | ...[...] |
-| ActiveRecordInjection.rb:153:21:153:26 | call to params | ActiveRecordInjection.rb:153:21:153:44 | ...[...] |
-| ActiveRecordInjection.rb:153:21:153:44 | ...[...] | ActiveRecordInjection.rb:20:22:20:30 | condition |
-| ActiveRecordInjection.rb:167:59:167:64 | call to params | ActiveRecordInjection.rb:167:59:167:74 | ...[...] |
-| ActiveRecordInjection.rb:167:59:167:74 | ...[...] | ActiveRecordInjection.rb:167:27:167:76 | "this is an unsafe annotation:..." |
-| ActiveRecordInjection.rb:178:5:178:13 | my_params | ActiveRecordInjection.rb:179:47:179:55 | my_params |
-| ActiveRecordInjection.rb:178:17:178:32 | call to permitted_params | ActiveRecordInjection.rb:178:5:178:13 | my_params |
-| ActiveRecordInjection.rb:179:5:179:9 | query | ActiveRecordInjection.rb:180:37:180:41 | query |
-| ActiveRecordInjection.rb:179:47:179:55 | my_params | ActiveRecordInjection.rb:179:47:179:65 | ...[...] |
-| ActiveRecordInjection.rb:179:47:179:65 | ...[...] | ActiveRecordInjection.rb:179:5:179:9 | query |
-| ActiveRecordInjection.rb:185:5:185:10 | call to params | ActiveRecordInjection.rb:185:5:185:27 | call to require |
-| ActiveRecordInjection.rb:185:5:185:27 | call to require | ActiveRecordInjection.rb:185:5:185:59 | call to permit |
-| ActiveRecordInjection.rb:185:5:185:59 | call to permit | ActiveRecordInjection.rb:178:17:178:32 | call to permitted_params |
-| ActiveRecordInjection.rb:185:5:185:59 | call to permit | ActiveRecordInjection.rb:189:77:189:92 | call to permitted_params |
-| ActiveRecordInjection.rb:185:5:185:59 | call to permit | ActiveRecordInjection.rb:190:69:190:84 | call to permitted_params |
-| ActiveRecordInjection.rb:189:77:189:92 | call to permitted_params | ActiveRecordInjection.rb:189:77:189:102 | ...[...] |
-| ActiveRecordInjection.rb:189:77:189:102 | ...[...] | ActiveRecordInjection.rb:189:43:189:104 | "SELECT * FROM users WHERE id ..." |
-| ActiveRecordInjection.rb:190:69:190:84 | call to permitted_params | ActiveRecordInjection.rb:190:69:190:94 | ...[...] |
-| ActiveRecordInjection.rb:190:69:190:94 | ...[...] | ActiveRecordInjection.rb:190:35:190:96 | "SELECT * FROM users WHERE id ..." |
-| ArelInjection.rb:4:5:4:8 | name | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." |
-| ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:4:12:4:29 | ...[...] |
-| ArelInjection.rb:4:12:4:29 | ...[...] | ArelInjection.rb:4:5:4:8 | name |
-| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:13:5:13:8 | qry1 |
-| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:19:5:19:8 | qry2 |
-| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:31:5:31:8 | qry3 |
-| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:43:5:43:8 | qry3 |
-| PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:6:12:6:24 | ...[...] |
-| PgInjection.rb:6:12:6:24 | ...[...] | PgInjection.rb:6:5:6:8 | name |
-| PgInjection.rb:13:5:13:8 | qry1 | PgInjection.rb:14:15:14:18 | qry1 |
-| PgInjection.rb:13:5:13:8 | qry1 | PgInjection.rb:15:21:15:24 | qry1 |
-| PgInjection.rb:19:5:19:8 | qry2 | PgInjection.rb:20:22:20:25 | qry2 |
-| PgInjection.rb:19:5:19:8 | qry2 | PgInjection.rb:21:28:21:31 | qry2 |
-| PgInjection.rb:31:5:31:8 | qry3 | PgInjection.rb:32:29:32:32 | qry3 |
-| PgInjection.rb:43:5:43:8 | qry3 | PgInjection.rb:44:29:44:32 | qry3 |
+| ActiveRecordInjection.rb:8:25:8:28 | name | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | provenance |  |
+| ActiveRecordInjection.rb:8:31:8:34 | pass | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | provenance |  |
+| ActiveRecordInjection.rb:20:22:20:30 | condition | ActiveRecordInjection.rb:23:16:23:24 | condition | provenance |  |
+| ActiveRecordInjection.rb:35:30:35:35 | call to params | ActiveRecordInjection.rb:35:30:35:44 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:39:18:39:23 | call to params | ActiveRecordInjection.rb:39:18:39:32 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:43:29:43:34 | call to params | ActiveRecordInjection.rb:43:29:43:39 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:43:29:43:39 | ...[...] | ActiveRecordInjection.rb:43:20:43:42 | "id = '#{...}'" | provenance |  |
+| ActiveRecordInjection.rb:48:30:48:35 | call to params | ActiveRecordInjection.rb:48:30:48:40 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:48:30:48:40 | ...[...] | ActiveRecordInjection.rb:48:21:48:43 | "id = '#{...}'" | provenance |  |
+| ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | ActiveRecordInjection.rb:52:21:52:45 | call to [] | provenance |  |
+| ActiveRecordInjection.rb:52:31:52:36 | call to params | ActiveRecordInjection.rb:52:31:52:41 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:52:31:52:41 | ...[...] | ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | provenance |  |
+| ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | ActiveRecordInjection.rb:57:22:57:46 | call to [] | provenance |  |
+| ActiveRecordInjection.rb:57:32:57:37 | call to params | ActiveRecordInjection.rb:57:32:57:42 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:57:32:57:42 | ...[...] | ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | provenance |  |
+| ActiveRecordInjection.rb:62:21:62:26 | call to params | ActiveRecordInjection.rb:62:21:62:35 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:62:21:62:35 | ...[...] | ActiveRecordInjection.rb:61:16:61:21 | <<-SQL | provenance |  |
+| ActiveRecordInjection.rb:68:34:68:39 | call to params | ActiveRecordInjection.rb:68:34:68:44 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:68:34:68:44 | ...[...] | ActiveRecordInjection.rb:68:20:68:47 | "user.id = '#{...}'" | provenance |  |
+| ActiveRecordInjection.rb:70:23:70:28 | call to params | ActiveRecordInjection.rb:70:23:70:35 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:70:23:70:35 | ...[...] | ActiveRecordInjection.rb:8:25:8:28 | name | provenance |  |
+| ActiveRecordInjection.rb:70:38:70:43 | call to params | ActiveRecordInjection.rb:70:38:70:50 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:70:38:70:50 | ...[...] | ActiveRecordInjection.rb:8:31:8:34 | pass | provenance |  |
+| ActiveRecordInjection.rb:74:41:74:46 | call to params | ActiveRecordInjection.rb:74:41:74:51 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:74:41:74:51 | ...[...] | ActiveRecordInjection.rb:74:32:74:54 | "id = '#{...}'" | provenance |  |
+| ActiveRecordInjection.rb:79:23:79:28 | call to params | ActiveRecordInjection.rb:79:23:79:35 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:83:17:83:22 | call to params | ActiveRecordInjection.rb:83:17:83:31 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:84:19:84:24 | call to params | ActiveRecordInjection.rb:84:19:84:33 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:88:18:88:23 | call to params | ActiveRecordInjection.rb:88:18:88:35 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:92:21:92:26 | call to params | ActiveRecordInjection.rb:92:21:92:35 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:100:31:100:36 | call to params | ActiveRecordInjection.rb:100:31:100:52 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:100:31:100:52 | ...[...] | ActiveRecordInjection.rb:100:20:100:55 | "name = '#{...}'" | provenance |  |
+| ActiveRecordInjection.rb:104:30:104:35 | call to params | ActiveRecordInjection.rb:104:30:104:51 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:104:30:104:51 | ...[...] | ActiveRecordInjection.rb:104:19:104:54 | "name = '#{...}'" | provenance |  |
+| ActiveRecordInjection.rb:106:18:106:23 | call to params | ActiveRecordInjection.rb:106:18:106:35 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:108:23:108:28 | call to params | ActiveRecordInjection.rb:108:23:108:47 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:114:5:114:6 | ps | ActiveRecordInjection.rb:115:11:115:12 | ps | provenance |  |
+| ActiveRecordInjection.rb:114:10:114:15 | call to params | ActiveRecordInjection.rb:114:5:114:6 | ps | provenance |  |
+| ActiveRecordInjection.rb:115:5:115:7 | uid | ActiveRecordInjection.rb:116:5:116:9 | uidEq | provenance |  |
+| ActiveRecordInjection.rb:115:11:115:12 | ps | ActiveRecordInjection.rb:115:11:115:17 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:115:11:115:17 | ...[...] | ActiveRecordInjection.rb:115:5:115:7 | uid | provenance |  |
+| ActiveRecordInjection.rb:116:5:116:9 | uidEq | ActiveRecordInjection.rb:120:20:120:32 | ... + ... | provenance |  |
+| ActiveRecordInjection.rb:116:5:116:9 | uidEq | ActiveRecordInjection.rb:120:28:120:32 | uidEq | provenance |  |
+| ActiveRecordInjection.rb:120:20:120:32 | ... + ... [element] | ActiveRecordInjection.rb:120:20:120:32 | ... + ... | provenance |  |
+| ActiveRecordInjection.rb:120:28:120:32 | uidEq | ActiveRecordInjection.rb:120:20:120:32 | ... + ... [element] | provenance |  |
+| ActiveRecordInjection.rb:153:21:153:26 | call to params | ActiveRecordInjection.rb:153:21:153:44 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:153:21:153:26 | call to params | ActiveRecordInjection.rb:153:21:153:44 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:153:21:153:44 | ...[...] | ActiveRecordInjection.rb:20:22:20:30 | condition | provenance |  |
+| ActiveRecordInjection.rb:167:59:167:64 | call to params | ActiveRecordInjection.rb:167:59:167:74 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:167:59:167:74 | ...[...] | ActiveRecordInjection.rb:167:27:167:76 | "this is an unsafe annotation:..." | provenance |  |
+| ActiveRecordInjection.rb:178:5:178:13 | my_params | ActiveRecordInjection.rb:179:47:179:55 | my_params | provenance |  |
+| ActiveRecordInjection.rb:178:17:178:32 | call to permitted_params | ActiveRecordInjection.rb:178:5:178:13 | my_params | provenance |  |
+| ActiveRecordInjection.rb:179:5:179:9 | query | ActiveRecordInjection.rb:180:37:180:41 | query | provenance |  |
+| ActiveRecordInjection.rb:179:47:179:55 | my_params | ActiveRecordInjection.rb:179:47:179:65 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:179:47:179:65 | ...[...] | ActiveRecordInjection.rb:179:5:179:9 | query | provenance |  |
+| ActiveRecordInjection.rb:185:5:185:10 | call to params | ActiveRecordInjection.rb:185:5:185:27 | call to require | provenance |  |
+| ActiveRecordInjection.rb:185:5:185:27 | call to require | ActiveRecordInjection.rb:185:5:185:59 | call to permit | provenance |  |
+| ActiveRecordInjection.rb:185:5:185:59 | call to permit | ActiveRecordInjection.rb:178:17:178:32 | call to permitted_params | provenance |  |
+| ActiveRecordInjection.rb:185:5:185:59 | call to permit | ActiveRecordInjection.rb:189:77:189:92 | call to permitted_params | provenance |  |
+| ActiveRecordInjection.rb:185:5:185:59 | call to permit | ActiveRecordInjection.rb:190:69:190:84 | call to permitted_params | provenance |  |
+| ActiveRecordInjection.rb:189:77:189:92 | call to permitted_params | ActiveRecordInjection.rb:189:77:189:102 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:189:77:189:102 | ...[...] | ActiveRecordInjection.rb:189:43:189:104 | "SELECT * FROM users WHERE id ..." | provenance |  |
+| ActiveRecordInjection.rb:190:69:190:84 | call to permitted_params | ActiveRecordInjection.rb:190:69:190:94 | ...[...] | provenance |  |
+| ActiveRecordInjection.rb:190:69:190:94 | ...[...] | ActiveRecordInjection.rb:190:35:190:96 | "SELECT * FROM users WHERE id ..." | provenance |  |
+| ArelInjection.rb:4:5:4:8 | name | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | provenance |  |
+| ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:4:12:4:29 | ...[...] | provenance |  |
+| ArelInjection.rb:4:12:4:29 | ...[...] | ArelInjection.rb:4:5:4:8 | name | provenance |  |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:13:5:13:8 | qry1 | provenance |  |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:19:5:19:8 | qry2 | provenance |  |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:31:5:31:8 | qry3 | provenance |  |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:43:5:43:8 | qry3 | provenance |  |
+| PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:6:12:6:24 | ...[...] | provenance |  |
+| PgInjection.rb:6:12:6:24 | ...[...] | PgInjection.rb:6:5:6:8 | name | provenance |  |
+| PgInjection.rb:13:5:13:8 | qry1 | PgInjection.rb:14:15:14:18 | qry1 | provenance |  |
+| PgInjection.rb:13:5:13:8 | qry1 | PgInjection.rb:15:21:15:24 | qry1 | provenance |  |
+| PgInjection.rb:19:5:19:8 | qry2 | PgInjection.rb:20:22:20:25 | qry2 | provenance |  |
+| PgInjection.rb:19:5:19:8 | qry2 | PgInjection.rb:21:28:21:31 | qry2 | provenance |  |
+| PgInjection.rb:31:5:31:8 | qry3 | PgInjection.rb:32:29:32:32 | qry3 | provenance |  |
+| PgInjection.rb:43:5:43:8 | qry3 | PgInjection.rb:44:29:44:32 | qry3 | provenance |  |
 nodes
 | ActiveRecordInjection.rb:8:25:8:28 | name | semmle.label | name |
 | ActiveRecordInjection.rb:8:31:8:34 | pass | semmle.label | pass |
