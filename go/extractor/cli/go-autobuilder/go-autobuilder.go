@@ -545,6 +545,31 @@ func installDependenciesAndBuild() {
 	// Remove temporary extractor files (e.g. auto-generated go.mod files) when we are done
 	defer project.RemoveTemporaryExtractorFiles()
 
+	// If there is only one workspace and it needs a GOPATH set up, which may be the case if
+	// we don't use Go modules, then we move the repository to a temporary directory and set
+	// the GOPATH to it.
+	if len(workspaces) == 1 {
+		workspace := workspaces[0]
+
+		importpath := getImportPath()
+		needGopath := getNeedGopath(workspace, importpath)
+
+		inLGTM := os.Getenv("LGTM_SRC") != "" || os.Getenv("LGTM_INDEX_NEED_GOPATH") != ""
+
+		if inLGTM && needGopath {
+			paths := moveToTemporaryGopath(srcdir, importpath)
+
+			// schedule restoring the contents of newdir to their original location after this function completes:
+			defer restoreRepoLayout(paths.newdir, paths.files, filepath.Base(paths.scratch), srcdir)
+
+			pt := createPathTransformerFile(paths.newdir)
+			defer os.Remove(pt.Name())
+
+			writePathTransformerFile(pt, paths.realSrc, paths.root, paths.newdir)
+			setGopath(paths.root)
+		}
+	}
+
 	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
 	for i, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
@@ -564,24 +589,6 @@ func installDependenciesAndBuild() {
 		fixGoVendorIssues(&workspace, goVersionInfo.Found)
 
 		tryUpdateGoModAndGoSum(workspace)
-
-		importpath := getImportPath()
-		needGopath := getNeedGopath(workspace, importpath)
-
-		inLGTM := os.Getenv("LGTM_SRC") != "" || os.Getenv("LGTM_INDEX_NEED_GOPATH") != ""
-
-		if inLGTM && needGopath {
-			paths := moveToTemporaryGopath(srcdir, importpath)
-
-			// schedule restoring the contents of newdir to their original location after this function completes:
-			defer restoreRepoLayout(paths.newdir, paths.files, filepath.Base(paths.scratch), srcdir)
-
-			pt := createPathTransformerFile(paths.newdir)
-			defer os.Remove(pt.Name())
-
-			writePathTransformerFile(pt, paths.realSrc, paths.root, paths.newdir)
-			setGopath(paths.root)
-		}
 
 		// check whether an explicit dependency installation command was provided
 		inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
