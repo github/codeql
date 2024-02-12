@@ -5,7 +5,7 @@ java_test(
     deps = [
         "//javascript/extractor",
         "//javascript/extractor:deps",
-        "@//resources/lib/java/DO_NOT_DISTRIBUTE:junit",
+        "@codeql_internal//resources/lib/java/DO_NOT_DISTRIBUTE:junit",
     ],
 )
 

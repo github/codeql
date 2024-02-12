@@ -3,10 +3,17 @@ module(
     version = "0.0",
 )
 
+bazel_dep(name = "codeql_internal", version = "0.0")
+local_path_override(
+    module_name = "codeql_internal",
+    path = "..",
+)
+
 # see https://registry.bazel.build/ for a list of available packages
 
 bazel_dep(name = "platforms", version = "0.0.8")
 bazel_dep(name = "rules_pkg", version = "0.9.1")
+bazel_dep(name = "rules_nodejs", version = "6.0.3")
 bazel_dep(name = "rules_python", version = "0.29.0")
 bazel_dep(name = "bazel_skylib", version = "1.5.0")
 bazel_dep(name = "abseil-cpp", version = "20240116.0", repo_name = "absl")
@@ -30,4 +37,15 @@ use_repo(
     "swift_prebuilt_linux",
     "swift_toolchain_linux",
     "swift_toolchain_macos",
+)
+
+node = use_extension("@rules_nodejs//nodejs:extensions.bzl", "node")
+node.toolchain(
+    name = "nodejs",
+    node_version = "18.15.0",
+)
+use_repo(node, "nodejs", "nodejs_toolchains")
+
+register_toolchains(
+    "@nodejs_toolchains//:all",
 )
