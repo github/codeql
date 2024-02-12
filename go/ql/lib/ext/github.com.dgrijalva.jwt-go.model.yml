@@ -18,4 +18,4 @@ extensions:
       - ["github.com/dgrijalva/jwt-go", "", True, "ParseECPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["github.com/dgrijalva/jwt-go", "", True, "ParseRSAPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["github.com/dgrijalva/jwt-go", "", True, "ParseRSAPrivateKeyFromPEMWithPassword", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["github.com/dgrijalva/jwt-go", "", True, ParseRSAPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", True, "ParseRSAPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
