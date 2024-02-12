@@ -110,7 +110,14 @@ private API::Node getPreferredPredecessor(API::Node node, string name, int badne
   not isPackageExport(node) and
   // Rank predecessors by name-badness, export-distance, and name.
   // Since min() can only return a single value, we need a separate min() call per column.
-  badness = min(int b | exists(getAPredecessor(node, _, b)) | b) and
+  badness =
+    min(API::Node pred, int b |
+      pred = getAPredecessor(node, _, b) and
+      // ensure the preferred predecessor is strictly closer to a root export, even if it means accepting more badness
+      distanceFromPackageExport(pred) < distanceFromPackageExport(node)
+    |
+      b
+    ) and
   result =
     min(API::Node pred, string name1 |
       pred = getAPredecessor(node, name1, badness)
@@ -133,7 +140,7 @@ private predicate sinkHasNameCandidate(API::Node sink, string package, string na
   exists(API::Node baseNode, string baseName, int baseBadness, string step, int stepBadness |
     sinkHasNameCandidate(baseNode, package, baseName, baseBadness) and
     baseNode = getPreferredPredecessor(sink, step, stepBadness) and
-    badness = (baseBadness + stepBadness).minimum(20) and
+    badness = baseBadness + stepBadness and
     name = join(baseName, step)
   )
 }
