@@ -214,7 +214,7 @@ class Capture
     {
         return () =>
         {
-            Check(s); // missing flow from lines 221 and 223
+            Check(s);
         };
     }
 
@@ -243,12 +243,12 @@ class Capture
 
         Action a = () =>
         {
-            Check(c.Field); // missing flow from line 242
+            Check(c.Field);
             c.Field = "taint source";
         };
         a();
 
-        Check(c.Field); // missing flow from line 247
+        Check(c.Field);
     }
 
     void M7(bool b)
@@ -265,7 +265,7 @@ class Capture
         };
         a();
 
-        Check(c.Field); // missing flow from line 264
+        Check(c.Field);
     }
 
     void M8()
@@ -298,12 +298,12 @@ class Capture
 
         Action a = () =>
         {
-            Check(this.Field); // missing flow from line 297
+            Check(this.Field);
             this.Field = "taint source";
         };
         a();
 
-        Check(this.Field); // missing flow from line 302
+        Check(this.Field);
     }
 
     void M11()

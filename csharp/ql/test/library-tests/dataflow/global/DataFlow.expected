@@ -13,15 +13,20 @@
 | Capture.cs:171:15:171:20 | access to local variable sink37 |
 | Capture.cs:197:15:197:20 | access to local variable sink38 |
 | Capture.cs:206:19:206:19 | access to parameter s |
+| Capture.cs:217:19:217:19 | access to parameter s |
 | Capture.cs:231:19:231:19 | access to local variable x |
 | Capture.cs:234:15:234:15 | access to local variable x |
+| Capture.cs:246:19:246:25 | access to field Field |
 | Capture.cs:251:15:251:21 | access to field Field |
+| Capture.cs:268:15:268:21 | access to field Field |
 | Capture.cs:273:30:273:30 | access to parameter x |
 | Capture.cs:284:23:284:23 | access to local variable x |
 | Capture.cs:292:15:292:15 | access to local variable x |
+| Capture.cs:301:19:301:28 | access to field Field |
 | Capture.cs:306:15:306:24 | access to field Field |
 | Capture.cs:312:15:312:15 | access to local variable x |
 | Capture.cs:319:19:319:19 | access to local variable x |
+| Capture.cs:330:47:330:47 | access to local variable x |
 | Capture.cs:339:45:339:45 | access to local variable x |
 | GlobalDataFlow.cs:19:15:19:29 | access to field SinkField0 |
 | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 |

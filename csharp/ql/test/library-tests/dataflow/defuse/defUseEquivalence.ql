@@ -1,7 +1,10 @@
 import csharp
+private import semmle.code.csharp.controlflow.internal.PreSsa
 
 /** "Naive" def-use implementation. */
-predicate defReaches(AssignableDefinition def, LocalScopeVariable v, ControlFlow::Node cfn) {
+predicate defReaches(
+  AssignableDefinition def, PreSsa::SimpleLocalScopeVariable v, ControlFlow::Node cfn
+) {
   def.getTarget() = v and cfn = def.getAControlFlowNode().getASuccessor()
   or
   exists(ControlFlow::Node mid | defReaches(def, v, mid) |
