@@ -65,7 +65,7 @@ predicate isNonConst(DataFlow::Node node) {
   or
   // Parameters of uncalled functions that aren't const
   exists(UncalledFunction f, Parameter p |
-    not hasConstSpecifier(p.getType()) and
+    //not hasConstSpecifier(p.getType()) and
     f.getAParameter() = p and
     p = node.asParameter()
   )
@@ -78,11 +78,13 @@ predicate isNonConst(DataFlow::Node node) {
   // The function's output must also not be const to be considered a non-const source
   exists(Call c |
     exists(Expr arg | c.getAnArgument() = arg |
-      arg = node.asDefiningArgument() and
-      not hasConstSpecifier(arg.getType())
+      arg = node.asDefiningArgument() 
+      // and
+      // not hasConstSpecifier(arg.getType())
     )
     or
-    c = node.asIndirectExpr() and not hasConstSpecifier(c.getType())
+    c = node.asIndirectExpr() 
+    // and not hasConstSpecifier(c.getType())
   ) and
   not exists(Function func, FunctionInput input, FunctionOutput output, CallInstruction call |
     // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
