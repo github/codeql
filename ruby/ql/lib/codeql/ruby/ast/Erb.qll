@@ -252,7 +252,7 @@ class ErbGraphqlDirective extends ErbDirective {
 class ErbOutputDirective extends ErbDirective {
   private Erb::OutputDirective g;
 
-  ErbOutputDirective() { this = TOutputDirective(g) or this = TRawOutputDirective(g) }
+  ErbOutputDirective() { this = TOutputDirective(g) }
 
   override ErbCode getToken() { toGenerated(result) = g.getChild() }
 
@@ -262,7 +262,9 @@ class ErbOutputDirective extends ErbDirective {
    * <%== foo %>
    * ```
    */
-  predicate isRaw() { this = TRawOutputDirective(g) }
+  predicate isRaw() {
+    exists(Erb::Token t | t.getParentIndex() = 0 and t.getParent() = g and t.getValue() = "<%==")
+  }
 
   final override string toString() {
     this.isRaw() and
