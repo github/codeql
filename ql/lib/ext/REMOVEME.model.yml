@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/actions-all
-      extensible: sinkModel
-    data:
-      - [ "FAKE-mad9000/actions-find-and-replace-string", "*", "source", "expression-injection" ]

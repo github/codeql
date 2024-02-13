@@ -22,7 +22,7 @@ predicate sinkModel(string action, string version, string input, string kind) {
  * Fields:
  *    - action: Fully-qualified action name (NWO)
  *    - version: Either '*' or a specific SHA/Tag
- *    - input arg: sink node (prefixed with either `env.` or `input.`)
+ *    - input: sink node (prefixed with either `env.` or `input.`)
  *    - kind: sink kind
  */
 predicate sinkNode(DataFlow::ExprNode sink, string kind) {

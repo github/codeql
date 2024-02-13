@@ -1,0 +1,19 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: sourceModel
+    data:
+      - [ "jitterbit/get-changed-files", "*", "all", "pull_request", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "all", "pull_request_target", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "added", "pull_request", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "added", "pull_request_target", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "modified", "pull_request", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "modified", "pull_request_target", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "removed", "pull_request", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "removed", "pull_request_target", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "renamed", "pull_request", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "renamed", "pull_request_target", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "added_modified", "pull_request", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "added_modified", "pull_request_target", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "deleted", "pull_request", "PR changed files" ]
+      - [ "jitterbit/get-changed-files", "*", "deleted", "pull_request_target", "PR changed files" ]
