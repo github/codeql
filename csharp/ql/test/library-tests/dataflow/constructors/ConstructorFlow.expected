@@ -20,7 +20,6 @@ edges
 | Constructors.cs:50:32:50:36 | this : C2 [field Obj21] : Object | Constructors.cs:50:32:50:36 | this access : C2 [field Obj21] : Object | provenance |  |
 | Constructors.cs:50:32:50:36 | this access : C2 [field Obj21] : Object | Constructors.cs:50:32:50:36 | access to field Obj21 : Object | provenance |  |
 | Constructors.cs:52:35:52:35 | o : Object | Constructors.cs:54:13:54:24 | SSA def(o22param) : Object | provenance |  |
-| Constructors.cs:52:35:52:35 | o : Object | Constructors.cs:54:24:54:24 | access to parameter o : Object | provenance |  |
 | Constructors.cs:57:54:57:55 | o2 : Object | Constructors.cs:59:13:59:19 | SSA def(o1) : Object | provenance |  |
 | Constructors.cs:62:41:62:41 | o : Object | Constructors.cs:64:37:64:37 | access to parameter o : Object | provenance |  |
 | Constructors.cs:64:37:64:37 | access to parameter o : Object | Constructors.cs:57:54:57:55 | o2 : Object | provenance |  |
@@ -85,7 +84,6 @@ nodes
 | Constructors.cs:50:32:50:36 | this access : C2 [field Obj21] : Object | semmle.label | this access : C2 [field Obj21] : Object |
 | Constructors.cs:52:35:52:35 | o : Object | semmle.label | o : Object |
 | Constructors.cs:54:13:54:24 | SSA def(o22param) : Object | semmle.label | SSA def(o22param) : Object |
-| Constructors.cs:54:24:54:24 | access to parameter o : Object | semmle.label | access to parameter o : Object |
 | Constructors.cs:57:54:57:55 | o2 : Object | semmle.label | o2 : Object |
 | Constructors.cs:59:13:59:19 | SSA def(o1) : Object | semmle.label | SSA def(o1) : Object |
 | Constructors.cs:62:41:62:41 | o : Object | semmle.label | o : Object |
@@ -126,7 +124,6 @@ subpaths
 | Constructors.cs:81:14:81:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | access to parameter o22param : Object | Constructors.cs:81:14:81:21 | access to property Obj22 |
 | Constructors.cs:82:14:82:15 | access to local variable c2 : C2 [field Obj21] : Object | Constructors.cs:50:32:50:36 | this : C2 [field Obj21] : Object | Constructors.cs:50:32:50:36 | access to field Obj21 : Object | Constructors.cs:82:14:82:21 | access to property Obj23 |
 | Constructors.cs:92:19:92:23 | access to local variable taint : Object | Constructors.cs:52:35:52:35 | o : Object | Constructors.cs:54:13:54:24 | SSA def(o22param) : Object | Constructors.cs:92:9:92:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object |
-| Constructors.cs:92:19:92:23 | access to local variable taint : Object | Constructors.cs:52:35:52:35 | o : Object | Constructors.cs:54:24:54:24 | access to parameter o : Object | Constructors.cs:92:9:92:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object |
 | Constructors.cs:93:14:93:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | access to parameter o22param : Object | Constructors.cs:93:14:93:21 | access to property Obj22 |
 | Constructors.cs:100:25:100:29 | access to local variable taint : Object | Constructors.cs:62:41:62:41 | o : Object | Constructors.cs:64:27:64:34 | SSA def(o22param) : Object | Constructors.cs:100:9:100:10 | [post] access to local variable c2 : C2 [parameter o22param] : Object |
 | Constructors.cs:101:14:101:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | access to parameter o22param : Object | Constructors.cs:101:14:101:21 | access to property Obj22 |

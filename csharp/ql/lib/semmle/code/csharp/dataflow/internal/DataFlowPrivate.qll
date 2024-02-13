@@ -2023,24 +2023,14 @@ private PropertyContent getResultContent() {
 }
 
 private predicate primaryConstructorParameterStore(
-  Node node1, PrimaryConstructorParameterContent c, Node node2
+  SsaDefinitionExtNode node1, PrimaryConstructorParameterContent c, Node node2
 ) {
-  exists(ControlFlow::Node cfn, Parameter p |
+  exists(Ssa::ExplicitDefinition def, ControlFlow::Node cfn, Parameter p |
+    def = node1.getDefinitionExt() and
+    p = def.getSourceVariable().getAssignable() and
+    cfn = def.getControlFlowNode() and
     node2 = TInstanceParameterAccessNode(cfn, true) and
     c.getParameter() = p
-  |
-    // direct assignment
-    exists(LocalFlow::LocalExprStepConfiguration conf, AssignableDefinition def |
-      conf.hasDefPath(_, node1.(ExprNode).getControlFlowNode(), def, cfn) and
-      p = def.getTarget()
-    )
-    or
-    // indirect assignment (for example as an `out` argument)
-    exists(Ssa::ExplicitDefinition def |
-      def = node1.(SsaDefinitionExtNode).getDefinitionExt() and
-      p = def.getSourceVariable().getAssignable() and
-      cfn = def.getControlFlowNode()
-    )
   )
 }
 
