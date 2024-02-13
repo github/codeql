@@ -13246,11 +13246,19 @@ ir.cpp:
 # 2204|     m2204_8(Bool)           = Chi                             : total:m2202_20, partial:m2204_7
 #-----|   Goto (back edge) -> Block 4
 
-# 2206|   Block 6
-# 2206|     v2206_1(void) = NoOp         : 
-# 2193|     v2193_7(void) = ReturnVoid   : 
-# 2193|     v2193_8(void) = AliasedUse   : ~m2202_17
-# 2193|     v2193_9(void) = ExitFunction : 
+# 2204|   Block 6
+# 2204|     r2204_9(glval<Bool>)     = VariableAddress[B]              : 
+# 2204|     r2204_10(glval<unknown>) = FunctionAddress[~Bool]          : 
+# 2204|     v2204_11(void)           = Call[~Bool]                     : func:r2204_10, this:r2204_9
+# 2204|     m2204_12(unknown)        = ^CallSideEffect                 : ~m2202_17
+# 2204|     m2204_13(unknown)        = Chi                             : total:m2202_17, partial:m2204_12
+# 2204|     v2204_14(void)           = ^IndirectReadSideEffect[-1]     : &:r2204_9, m2202_20
+# 2204|     m2204_15(Bool)           = ^IndirectMayWriteSideEffect[-1] : &:r2204_9
+# 2204|     m2204_16(Bool)           = Chi                             : total:m2202_20, partial:m2204_15
+# 2206|     v2206_1(void)            = NoOp                            : 
+# 2193|     v2193_7(void)            = ReturnVoid                      : 
+# 2193|     v2193_8(void)            = AliasedUse                      : ~m2204_13
+# 2193|     v2193_9(void)            = ExitFunction                    : 
 
 perf-regression.cpp:
 #    6| void Big::Big()

@@ -12304,7 +12304,7 @@ ir.cpp:
 # 2202|     mu2202_14(Bool)          = ^IndirectMayWriteSideEffect[-1] : &:r2202_9
 # 2202|     r2202_15(bool)           = CopyValue                       : r2202_11
 # 2202|     v2202_16(void)           = ConditionalBranch               : r2202_15
-#-----|   False -> Block 7
+#-----|   False -> Block 6
 #-----|   True -> Block 5
 
 # 2203|   Block 5
@@ -12326,13 +12326,10 @@ ir.cpp:
 # 2204|     mu2204_10(unknown)      = ^CallSideEffect                 : ~m?
 # 2204|     v2204_11(void)          = ^IndirectReadSideEffect[-1]     : &:r2204_7, ~m?
 # 2204|     mu2204_12(Bool)         = ^IndirectMayWriteSideEffect[-1] : &:r2204_7
-#-----|   Goto -> Block 7
-
-# 2206|   Block 7
-# 2206|     v2206_1(void) = NoOp         : 
-# 2193|     v2193_6(void) = ReturnVoid   : 
-# 2193|     v2193_7(void) = AliasedUse   : ~m?
-# 2193|     v2193_8(void) = ExitFunction : 
+# 2206|     v2206_1(void)           = NoOp                            : 
+# 2193|     v2193_6(void)           = ReturnVoid                      : 
+# 2193|     v2193_7(void)           = AliasedUse                      : ~m?
+# 2193|     v2193_8(void)           = ExitFunction                    : 
 
 perf-regression.cpp:
 #    6| void Big::Big()

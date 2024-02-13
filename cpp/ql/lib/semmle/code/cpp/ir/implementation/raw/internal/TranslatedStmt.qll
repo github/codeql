@@ -805,12 +805,10 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
   }
 
   override Instruction getALastInstructionInternal() {
-    result = this.getElse().getALastInstruction() or result = this.getThen().getALastInstruction() // FIXME: how do we handle the CFG merge here
+    result = this.getElse().getALastInstruction() or result = this.getThen().getALastInstruction()
   }
 
-  override TranslatedElement getLastChild() {
-    result = this.getElse() or result = this.getThen() // FIXME: how do we handle the CFG merge here
-  }
+  override TranslatedElement getLastChild() { result = this.getElse() or result = this.getThen() }
 
   override TranslatedElement getChildInternal(int id) {
     id = 0 and result = this.getInitialization()
@@ -873,7 +871,7 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
   override Loop stmt;
 
   override Instruction getALastInstructionInternal() {
-    result = this.getCondition().getALastInstruction() // FIXME: how do we handle the branch here
+    result = this.getCondition().getALastInstruction()
   }
 
   override TranslatedElement getLastChild() { result = this.getCondition() }
@@ -919,6 +917,26 @@ abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
 class TranslatedWhileStmt extends TranslatedLoop {
   TranslatedWhileStmt() { stmt instanceof WhileStmt }
 
+  override TranslatedElement getChildInternal(int id) {
+    id = 0 and result = this.getCondition()
+    or
+    id = 1 and result = this.getBody()
+    or
+    exists(int n |
+      result.getAst() = stmt.getImplicitDestructorCall(n) and
+      id = 2 + n
+    )
+  }
+
+  override predicate handlesDestructorsExplicitly() { any() }
+
+  final override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
+    child = this.getCondition() and
+    if this.hasAnImplicitDestructorCall()
+    then result = this.getChild(this.getFirstDestructorCallIndex()).getFirstInstruction(kind)
+    else result = this.getParent().getChildSuccessor(this, kind)
+  }
+
   override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getFirstConditionInstruction(kind)
   }
@@ -926,6 +944,9 @@ class TranslatedWhileStmt extends TranslatedLoop {
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getBody() and
     result = this.getFirstConditionInstruction(kind)
+    or
+    child = this.getChild(this.getFirstDestructorCallIndex()) and
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 }
 
