@@ -26,6 +26,10 @@ public class UrlRedirectHandler2 : IHttpHandler
             // GOOD: The redirect is to a relative URL
             ctx.Response.Redirect(url.ToString());
         }
-        
+
+        if (url.Host == "example.org") {
+            // GOOD: The redirect is to a known host
+            ctx.Response.Redirect(url.ToString());
+        }
     }
 }

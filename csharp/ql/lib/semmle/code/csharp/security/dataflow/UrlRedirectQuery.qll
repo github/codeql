@@ -183,6 +183,31 @@ class RelativeUrlSanitizer extends Sanitizer {
 }
 
 /**
+ * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
+ * E.g. `url.Host == "example.org"`
+ */
+private predicate isHostComparisonSanitizer(Guard guard, Expr e, AbstractValue v) {
+  exists(EqualityOperation comparison | comparison = guard |
+    exists(PropertyAccess access | access = comparison.getAnOperand() |
+      access.getProperty().getName() = "Host" and
+      e = access.getQualifier()
+    ) and
+    if comparison instanceof EQExpr
+    then v.(AbstractValues::BooleanValue).getValue() = true
+    else v.(AbstractValues::BooleanValue).getValue() = false
+  )
+}
+
+/**
+ * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
+ */
+class HostComparisonSanitizer extends Sanitizer {
+  HostComparisonSanitizer() {
+    this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
+  }
+}
+
+/**
  * A call to the getter of the RawUrl property, whose value is considered to be safe for URL
  * redirects.
  */
