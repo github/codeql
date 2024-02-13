@@ -86,15 +86,14 @@ predicate isNonConst(DataFlow::Node node) {
     c = node.asIndirectExpr() 
     // and not hasConstSpecifier(c.getType())
   ) and
-  not exists(Function func, FunctionInput input, FunctionOutput output, CallInstruction call |
+  not exists(FunctionInput input, FunctionOutput output, CallInstruction call |
     // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
     // variant function's output are now possible non-const sources
     (
-      func.(DataFlowFunction).hasDataFlow(input, output) or
-      func.(TaintFunction).hasTaintFlow(input, output)
+      pragma[only_bind_out](call.getStaticCallTarget()).(DataFlowFunction).hasDataFlow(input, output) or
+      pragma[only_bind_out](call.getStaticCallTarget()).(TaintFunction).hasTaintFlow(input, output)
     ) and
-    node = callOutput(call, output) and
-    call.getStaticCallTarget() = func
+    node = callOutput(call, output) 
   ) and
   not exists(Call c |
     c.getTarget().hasDefinition() and
