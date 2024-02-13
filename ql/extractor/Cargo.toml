@@ -17,4 +17,4 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
 rayon = "1.8.1"
 regex = "1.10.3"
-codeql-extractor = { path = "../../shared/tree-sitter-extractor" }
+codeql-extractor = { path = "../../ruby/extractor/codeql-extractor" }

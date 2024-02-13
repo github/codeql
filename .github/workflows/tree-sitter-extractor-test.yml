@@ -3,14 +3,14 @@ name: Test tree-sitter-extractor
 on:
   push:
     paths:
-      - "shared/tree-sitter-extractor/**"
+      - "ruby/extractor/codeql-extractor/**"
       - .github/workflows/tree-sitter-extractor-test.yml
     branches:
       - main
       - "rc/*"
   pull_request:
     paths:
-      - "shared/tree-sitter-extractor/**"
+      - "ruby/extractor/codeql-extractor/**"
       - .github/workflows/tree-sitter-extractor-test.yml
     branches:
       - main
@@ -21,7 +21,7 @@ env:
 
 defaults:
   run:
-    working-directory: shared/tree-sitter-extractor
+    working-directory: ruby/extractor/codeql-extractor
 
 jobs:
   test:
@@ -33,13 +33,13 @@ jobs:
       - name: Run tests
         run: cargo test --verbose
   fmt:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Check formatting
         run: cargo fmt --check
   clippy:
-    runs-on: ubuntu-latest  
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - name: Run clippy
