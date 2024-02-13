@@ -673,9 +673,7 @@ class TranslatedBlock extends TranslatedStmt {
     else result = this.getStmt(this.getStmtCount() - 1).getFirstInstruction(any(GotoEdge goto))
   }
 
-  override TranslatedElement getLastChild() {
-    result = this.getStmt(this.getStmtCount() - 1)
-  }
+  override TranslatedElement getLastChild() { result = this.getStmt(this.getStmtCount() - 1) }
 
   private predicate isEmpty() { not exists(stmt.getStmt(0)) }
 
