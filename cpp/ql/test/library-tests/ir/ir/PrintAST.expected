@@ -16337,6 +16337,12 @@ ir.cpp:
 # 2141|               Type = [PlainCharType] char
 # 2141|               Value = [CharLiteral] 97
 # 2141|               ValueCategory = prvalue
+# 2141|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2141|           Type = [VoidType] void
+# 2141|           ValueCategory = prvalue
+# 2141|         getQualifier(): [VariableAccess] x
+# 2141|             Type = [Class] ClassWithDestructor
+# 2141|             ValueCategory = lvalue
 # 2143|     getStmt(2): [SwitchStmt] switch (...) ... 
 # 2143|       getInitialization(): [DeclStmt] declaration
 # 2143|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
