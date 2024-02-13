@@ -80,7 +80,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
                 string? monoDir = null;
 
-                var monoPathEnv = Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_BUILDLESS_MONO_PATH");
+                var monoPathEnv = Environment.GetEnvironmentVariable(EnvironmentVariableNames.MonoPath);
                 if (monoPathEnv is not null)
                 {
                     if (Directory.Exists(monoPathEnv))
@@ -89,7 +89,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     }
                     else
                     {
-                        logger.LogError($"The directory specified in CODEQL_EXTRACTOR_CSHARP_BUILDLESS_MONO_PATH does not exist: {monoPathEnv}");
+                        logger.LogError($"The directory specified in {EnvironmentVariableNames.MonoPath} does not exist: {monoPathEnv}");
                     }
                 }
                 else
