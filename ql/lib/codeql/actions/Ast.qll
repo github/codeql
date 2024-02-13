@@ -92,15 +92,23 @@ class OutputsStmt extends Statement instanceof YamlMapping {
    * Gets a specific output expression (YamlMapping) by name.
    */
   OutputExpr getOutputExpr(string name) {
-    this.(YamlMapping).lookup(name).(YamlMapping).lookup("value") = result
+    this.(YamlMapping).lookup(name).(YamlMapping).lookup("value") = result or
+    this.(YamlMapping).lookup(name) = result
   }
 }
 
-// TODO: Needs a characteristic predicate otherwise anything is an output expression
-class InputExpr extends Expression instanceof YamlString { }
+class InputExpr extends Expression instanceof YamlString {
+  InputExpr() { exists(InputsStmt inputs | inputs.(YamlMapping).maps(this, _)) }
+}
 
-// TODO: Needs a characteristic predicate otherwise anything is an output expression
-class OutputExpr extends Expression instanceof YamlString { }
+class OutputExpr extends Expression instanceof YamlString {
+  OutputExpr() {
+    exists(OutputsStmt outputs |
+      outputs.(YamlMapping).lookup(_).(YamlMapping).lookup("value") = this or
+      outputs.(YamlMapping).lookup(_) = this
+    )
+  }
+}
 
 /**
  * A Job is a collection of steps that run in an execution environment.

@@ -35,11 +35,7 @@ module Completion {
 
     override string toString() { result = "BooleanCompletion(" + value + ")" }
 
-    override predicate isValidForSpecific(AstNode e) {
-      none()
-      // TODO: add support for conditional expressions?
-      //e = any(ConditionalExpression c).getCondition()
-    }
+    override predicate isValidForSpecific(AstNode e) { none() }
 
     override BooleanSuccessor getAMatchingSuccessorType() { result.getValue() = value }
 
