@@ -1065,6 +1065,8 @@ struct vector {
         bool operator!=(iterator right) const;
     };
 
+    vector(T);
+    ~vector();
     iterator begin() const;
     iterator end() const;
 };
