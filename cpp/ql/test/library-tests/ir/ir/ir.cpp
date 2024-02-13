@@ -2120,4 +2120,4 @@ void call_as_child_of_ConditionDeclExpr() {
   if(HasOperatorBool b = HasOperatorBool()) {}
 }
 
-// semmle-extractor-options: -std=c++17 --clang
+// semmle-extractor-options: -std=c++20 --clang
