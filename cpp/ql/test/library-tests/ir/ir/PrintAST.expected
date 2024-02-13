@@ -9479,7 +9479,43 @@ ir.cpp:
 # 1079|   getEntryPoint(): [BlockStmt] { ... }
 # 1080|     getStmt(0): [RangeBasedForStmt] for(...:...) ...
 # 1080|       getChild(0): [DeclStmt] declaration
+# 1080|         getDeclarationEntry(0): (no string representation)
+# 1080|             Type = [LValueReferenceType] const vector<int> &
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
+# 1080|             getExpr(): [VariableAccess] v
+# 1080|                 Type = [LValueReferenceType] const vector<int> &
+# 1080|                 ValueCategory = prvalue(load)
+# 1080|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1080|                 Type = [LValueReferenceType] const vector<int> &
+# 1080|                 ValueCategory = prvalue
+# 1080|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1080|                   Type = [SpecifiedType] const vector<int>
+# 1080|                   ValueCategory = lvalue
 # 1080|       getBeginEndDeclaration(): [DeclStmt] declaration
+# 1080|         getDeclarationEntry(0): (no string representation)
+# 1080|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
+# 1080|             getExpr(): [FunctionCall] call to begin
+# 1080|                 Type = [NestedStruct] iterator
+# 1080|                 ValueCategory = prvalue
+# 1080|               getQualifier(): [VariableAccess] (__range)
+# 1080|                   Type = [LValueReferenceType] const vector<int> &
+# 1080|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [SpecifiedType] const vector<int>
+#-----|                   ValueCategory = lvalue
+# 1080|         getDeclarationEntry(1): (no string representation)
+# 1080|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
+# 1080|             getExpr(): [FunctionCall] call to end
+# 1080|                 Type = [NestedStruct] iterator
+# 1080|                 ValueCategory = prvalue
+# 1080|               getQualifier(): [VariableAccess] (__range)
+# 1080|                   Type = [LValueReferenceType] const vector<int> &
+# 1080|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [SpecifiedType] const vector<int>
+#-----|                   ValueCategory = lvalue
 # 1080|       getCondition(): [FunctionCall] call to operator!=
 # 1080|           Type = [BoolType] bool
 # 1080|           ValueCategory = prvalue
@@ -9500,6 +9536,22 @@ ir.cpp:
 # 1080|             Type = [NestedStruct] iterator
 # 1080|             ValueCategory = lvalue
 # 1080|       getChild(4): [DeclStmt] declaration
+# 1080|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of e
+# 1080|             Type = [IntType] int
+# 1080|           getVariable().getInitializer(): [Initializer] initializer for e
+# 1080|             getExpr(): [OverloadedPointerDereferenceExpr] call to operator*
+# 1080|                 Type = [LValueReferenceType] int &
+# 1080|                 ValueCategory = prvalue
+# 1080|               getQualifier(): [VariableAccess] (__begin)
+# 1080|                   Type = [NestedStruct] iterator
+# 1080|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const iterator
+#-----|                   ValueCategory = lvalue
+# 1080|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 1080|                 Type = [IntType] int
+# 1080|                 ValueCategory = prvalue(load)
 # 1080|       getStmt(): [BlockStmt] { ... }
 # 1081|         getStmt(0): [IfStmt] if (...) ... 
 # 1081|           getCondition(): [GTExpr] ... > ...
@@ -9520,7 +9572,43 @@ ir.cpp:
 # 1080|           ValueCategory = lvalue
 # 1086|     getStmt(1): [RangeBasedForStmt] for(...:...) ...
 # 1086|       getChild(0): [DeclStmt] declaration
+# 1086|         getDeclarationEntry(0): (no string representation)
+# 1086|             Type = [LValueReferenceType] const vector<int> &
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
+# 1086|             getExpr(): [VariableAccess] v
+# 1086|                 Type = [LValueReferenceType] const vector<int> &
+# 1086|                 ValueCategory = prvalue(load)
+# 1086|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1086|                 Type = [LValueReferenceType] const vector<int> &
+# 1086|                 ValueCategory = prvalue
+# 1086|               getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1086|                   Type = [SpecifiedType] const vector<int>
+# 1086|                   ValueCategory = lvalue
 # 1086|       getBeginEndDeclaration(): [DeclStmt] declaration
+# 1086|         getDeclarationEntry(0): (no string representation)
+# 1086|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
+# 1086|             getExpr(): [FunctionCall] call to begin
+# 1086|                 Type = [NestedStruct] iterator
+# 1086|                 ValueCategory = prvalue
+# 1086|               getQualifier(): [VariableAccess] (__range)
+# 1086|                   Type = [LValueReferenceType] const vector<int> &
+# 1086|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [SpecifiedType] const vector<int>
+#-----|                   ValueCategory = lvalue
+# 1086|         getDeclarationEntry(1): (no string representation)
+# 1086|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
+# 1086|             getExpr(): [FunctionCall] call to end
+# 1086|                 Type = [NestedStruct] iterator
+# 1086|                 ValueCategory = prvalue
+# 1086|               getQualifier(): [VariableAccess] (__range)
+# 1086|                   Type = [LValueReferenceType] const vector<int> &
+# 1086|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                   Type = [SpecifiedType] const vector<int>
+#-----|                   ValueCategory = lvalue
 # 1086|       getCondition(): [FunctionCall] call to operator!=
 # 1086|           Type = [BoolType] bool
 # 1086|           ValueCategory = prvalue
@@ -9541,6 +9629,29 @@ ir.cpp:
 # 1086|             Type = [NestedStruct] iterator
 # 1086|             ValueCategory = lvalue
 # 1086|       getChild(4): [DeclStmt] declaration
+# 1086|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of e
+# 1086|             Type = [LValueReferenceType] const int &
+# 1086|           getVariable().getInitializer(): [Initializer] initializer for e
+# 1086|             getExpr(): [OverloadedPointerDereferenceExpr] call to operator*
+# 1086|                 Type = [LValueReferenceType] int &
+# 1086|                 ValueCategory = prvalue
+# 1086|               getQualifier(): [VariableAccess] (__begin)
+# 1086|                   Type = [NestedStruct] iterator
+# 1086|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const iterator
+#-----|                   ValueCategory = lvalue
+# 1086|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 1086|                 Type = [LValueReferenceType] const int &
+# 1086|                 ValueCategory = prvalue
+# 1086|               getExpr(): [CStyleCast] (const int)...
+# 1086|                   Conversion = [GlvalueConversion] glvalue conversion
+# 1086|                   Type = [SpecifiedType] const int
+# 1086|                   ValueCategory = lvalue
+# 1086|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 1086|                     Type = [IntType] int
+# 1086|                     ValueCategory = lvalue
 # 1086|       getStmt(): [BlockStmt] { ... }
 # 1087|         getStmt(0): [IfStmt] if (...) ... 
 # 1087|           getCondition(): [LTExpr] ... < ...
@@ -16410,7 +16521,48 @@ ir.cpp:
 # 2152|               ValueCategory = prvalue
 # 2153|     getStmt(5): [RangeBasedForStmt] for(...:...) ...
 # 2153|       getChild(0): [DeclStmt] declaration
+# 2153|         getDeclarationEntry(0): (no string representation)
+# 2153|             Type = [LValueReferenceType] vector<ClassWithDestructor> &
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
+# 2153|             getExpr(): [VariableAccess] ys
+# 2153|                 Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2153|                 ValueCategory = lvalue
+# 2153|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2153|                 Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2153|                 ValueCategory = prvalue
 # 2153|       getBeginEndDeclaration(): [DeclStmt] declaration
+# 2153|         getDeclarationEntry(0): (no string representation)
+# 2153|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
+# 2153|             getExpr(): [FunctionCall] call to begin
+# 2153|                 Type = [NestedStruct] iterator
+# 2153|                 ValueCategory = prvalue
+# 2153|               getQualifier(): [VariableAccess] (__range)
+# 2153|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2153|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<ClassWithDestructor>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<ClassWithDestructor>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+#-----|                     ValueCategory = lvalue
+# 2153|         getDeclarationEntry(1): (no string representation)
+# 2153|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
+# 2153|             getExpr(): [FunctionCall] call to end
+# 2153|                 Type = [NestedStruct] iterator
+# 2153|                 ValueCategory = prvalue
+# 2153|               getQualifier(): [VariableAccess] (__range)
+# 2153|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2153|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<ClassWithDestructor>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<ClassWithDestructor>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+#-----|                     ValueCategory = lvalue
 # 2153|       getCondition(): [FunctionCall] call to operator!=
 # 2153|           Type = [BoolType] bool
 # 2153|           ValueCategory = prvalue
@@ -16431,6 +16583,22 @@ ir.cpp:
 # 2153|             Type = [NestedStruct] iterator
 # 2153|             ValueCategory = lvalue
 # 2153|       getChild(4): [DeclStmt] declaration
+# 2153|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2153|             Type = [Class] ClassWithDestructor
+# 2153|           getVariable().getInitializer(): [Initializer] initializer for y
+# 2153|             getExpr(): [OverloadedPointerDereferenceExpr] call to operator*
+# 2153|                 Type = [LValueReferenceType] ClassWithDestructor &
+# 2153|                 ValueCategory = prvalue
+# 2153|               getQualifier(): [VariableAccess] (__begin)
+# 2153|                   Type = [NestedStruct] iterator
+# 2153|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const iterator
+#-----|                   ValueCategory = lvalue
+# 2153|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2153|                 Type = [Class] ClassWithDestructor
+# 2153|                 ValueCategory = prvalue(load)
 # 2154|       getStmt(): [ExprStmt] ExprStmt
 # 2154|         getExpr(): [FunctionCall] call to set_x
 # 2154|             Type = [VoidType] void
