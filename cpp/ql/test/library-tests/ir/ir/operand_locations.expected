@@ -10464,6 +10464,7 @@
 | ir.cpp:2149:1:2149:1 | SideEffect | ~m2149_6 |
 | ir.cpp:2151:6:2151:19 | ChiPartial | partial:m2151_3 |
 | ir.cpp:2151:6:2151:19 | ChiTotal | total:m2151_2 |
+| ir.cpp:2151:6:2151:19 | SideEffect | ~m2161_54 |
 | ir.cpp:2152:10:2152:10 | Address | &:r2152_1 |
 | ir.cpp:2152:13:2152:16 | StoreValue | r2152_2 |
 | ir.cpp:2153:16:2153:16 | Address | &:r2153_1 |
@@ -10647,7 +10648,17 @@
 | ir.cpp:2159:5:2159:5 | SideEffect | ~m2158_6 |
 | ir.cpp:2161:16:2161:16 | Address | &:r2161_1 |
 | ir.cpp:2161:16:2161:16 | Address | &:r2161_1 |
+| ir.cpp:2161:16:2161:16 | Address | &:r2161_50 |
+| ir.cpp:2161:16:2161:16 | Address | &:r2161_50 |
 | ir.cpp:2161:16:2161:16 | Arg(this) | this:r2161_1 |
+| ir.cpp:2161:16:2161:16 | Arg(this) | this:r2161_50 |
+| ir.cpp:2161:16:2161:16 | CallTarget | func:r2161_51 |
+| ir.cpp:2161:16:2161:16 | ChiPartial | partial:m2161_53 |
+| ir.cpp:2161:16:2161:16 | ChiPartial | partial:m2161_56 |
+| ir.cpp:2161:16:2161:16 | ChiTotal | total:m2161_23 |
+| ir.cpp:2161:16:2161:16 | ChiTotal | total:m2161_46 |
+| ir.cpp:2161:16:2161:16 | SideEffect | m2161_23 |
+| ir.cpp:2161:16:2161:16 | SideEffect | ~m2161_46 |
 | ir.cpp:2161:18:2161:24 | Address | &:r2161_5 |
 | ir.cpp:2161:18:2161:24 | Arg(0) | 0:r2161_5 |
 | ir.cpp:2161:18:2161:24 | SideEffect | ~m2151_3 |

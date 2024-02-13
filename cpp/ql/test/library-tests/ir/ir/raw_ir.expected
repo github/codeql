@@ -12182,8 +12182,6 @@ ir.cpp:
 # 2161|     mu2161_36(unknown)       = ^CallSideEffect                 : ~m?
 # 2161|     v2161_37(void)           = ^IndirectReadSideEffect[-1]     : &:r2161_33, ~m?
 # 2161|     mu2161_38(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2161_33
-
-# 2161|   Block 10
 # 2161|     r2161_39(glval<String>)  = VariableAddress[s]              : 
 # 2161|     r2161_40(glval<unknown>) = FunctionAddress[~String]        : 
 # 2161|     v2161_41(void)           = Call[~String]                   : func:r2161_40, this:r2161_39

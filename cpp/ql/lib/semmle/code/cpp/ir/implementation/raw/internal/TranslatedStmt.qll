@@ -1019,6 +1019,12 @@ class TranslatedForStmt extends TranslatedLoop {
     or
     child = this.getUpdate() and result = this.getFirstConditionInstruction(kind)
     or
+    exists(int destructorId |
+      destructorId >= this.getFirstDestructorCallIndex() and
+      child = this.getChild(destructorId) and
+      result = this.getChild(destructorId + 1).getFirstInstruction(kind)
+    )
+    or
     exists(int lastDestructorIndex |
       lastDestructorIndex =
         max(int n | exists(this.getChild(n)) and n >= this.getFirstDestructorCallIndex()) and

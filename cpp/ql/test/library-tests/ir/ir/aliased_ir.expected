@@ -13085,6 +13085,18 @@ ir.cpp:
 # 2161|     v2161_47(void)           = ^IndirectReadSideEffect[-1]     : &:r2161_42, m2161_22
 # 2161|     m2161_48(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2161_42
 # 2161|     m2161_49(String)         = Chi                             : total:m2161_22, partial:m2161_48
+# 2161|     r2161_50(glval<String>)  = VariableAddress[s]              : 
+# 2161|     r2161_51(glval<unknown>) = FunctionAddress[~String]        : 
+# 2161|     v2161_52(void)           = Call[~String]                   : func:r2161_51, this:r2161_50
+# 2161|     m2161_53(unknown)        = ^CallSideEffect                 : ~m2161_46
+# 2161|     m2161_54(unknown)        = Chi                             : total:m2161_46, partial:m2161_53
+# 2161|     v2161_55(void)           = ^IndirectReadSideEffect[-1]     : &:r2161_50, m2161_23
+# 2161|     m2161_56(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2161_50
+# 2161|     m2161_57(String)         = Chi                             : total:m2161_23, partial:m2161_56
+# 2164|     v2164_1(void)            = NoOp                            : 
+# 2151|     v2151_5(void)            = ReturnVoid                      : 
+# 2151|     v2151_6(void)            = AliasedUse                      : ~m2161_54
+# 2151|     v2151_7(void)            = ExitFunction                    : 
 
 # 2166| void IfDestructors2(bool)
 # 2166|   Block 0
