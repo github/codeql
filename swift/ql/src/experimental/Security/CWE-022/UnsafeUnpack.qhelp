@@ -27,7 +27,7 @@ The following examples unpacks a remote zip using `Zip.unzipFile()` which is vul
 <p>
 The following examples unpacks a remote zip using `fileManager.unzipItem()` which is vulnerable to symlink path traversal.
 </p>
-<sample src="ZIPFoundationBad.swift" />
+<sample src="ZipFoundationBad.swift" />
 
 
 <p>Consider using a safer module, such as: <code>ZIPArchive</code></p>
