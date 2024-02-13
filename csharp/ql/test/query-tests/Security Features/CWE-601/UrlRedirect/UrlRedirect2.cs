@@ -14,6 +14,12 @@ public class UrlRedirectHandler2 : IHttpHandler
         ctx.Response.Redirect(ctx.Request.QueryString["page"]);
 
         List<string> VALID_REDIRECTS = new List<string>{ "http://cwe.mitre.org/data/definitions/601.html", "http://cwe.mitre.org/data/definitions/79.html" };
+        var redirectUrl = ctx.Request.QueryString["page"];
+        if (VALID_REDIRECTS.Contains(redirectUrl))
+        {
+            // GOOD: the request parameter is validated against set of known fixed strings
+            ctx.Response.Redirect(redirectUrl);
+        }
         
     }
 }

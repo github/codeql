@@ -140,6 +140,28 @@ class LocalUrlSanitizer extends Sanitizer {
 }
 
 /**
+ * A argument to a call to `List.Contains()` that is a sanitizer for URL redirects.
+ */
+private predicate isContainsUrlSanitizer(Guard guard, Expr e, AbstractValue v) {
+  exists(MethodCall method | method = guard |
+    exists(Method m | m = method.getTarget() |
+      m.hasName("Contains") and
+      e = method.getArgument(0)
+    ) and
+    v.(AbstractValues::BooleanValue).getValue() = true
+  )
+}
+
+/**
+ * A URL argument to a call to `List.Contains()` that is a sanitizer for URL redirects.
+ */
+class ContainsUrlSanitizer extends Sanitizer {
+  ContainsUrlSanitizer() {
+    this = DataFlow::BarrierGuard<isContainsUrlSanitizer/3>::getABarrierNode()
+  }
+}
+
+/**
  * A call to the getter of the RawUrl property, whose value is considered to be safe for URL
  * redirects.
  */
