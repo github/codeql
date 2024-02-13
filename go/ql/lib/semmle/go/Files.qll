@@ -142,6 +142,13 @@ class GoFile extends File {
   override string getAPrimaryQlClass() { result = "GoFile" }
 }
 
+/** A dummy file. */
+class DummyFile extends ExtractedOrExternalFile {
+  DummyFile() { this.getBaseName() = "-" }
+
+  override string getAPrimaryQlClass() { result = "DummyFile" }
+}
+
 /** An HTML file. */
 class HtmlFile extends File {
   HtmlFile() { this.getExtension().regexpMatch("x?html?") }
