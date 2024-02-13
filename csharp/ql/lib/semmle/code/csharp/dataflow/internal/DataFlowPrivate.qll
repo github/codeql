@@ -39,17 +39,15 @@ predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos)
 }
 
 /**
- * Gets the control flow node used for data flow purposes for the primary constructor
+ * Gets a control flow node used for data flow purposes for the primary constructor
  * parameter access `pa`.
  */
-private ControlFlow::Node getPrimaryConstructorParameterCfn(ParameterAccess pa) {
+private ControlFlow::Node getAPrimaryConstructorParameterCfn(ParameterAccess pa) {
   pa.getTarget().getCallable() instanceof PrimaryConstructor and
   (
-    pa instanceof ParameterRead and
-    result = pa.getAControlFlowNode()
+    result = pa.(ParameterRead).getAControlFlowNode()
     or
-    pa instanceof ParameterWrite and
-    exists(AssignExpr ae | pa = ae.getLValue() and result = ae.getAControlFlowNode())
+    pa = any(AssignableDefinition def | result = def.getAControlFlowNode()).getTargetAccess()
   )
 }
 
@@ -141,9 +139,10 @@ private module ThisFlow {
     or
     n.asExprAtNode(cfn) = any(Expr e | e instanceof ThisAccess or e instanceof BaseAccess)
     or
-    exists(InstanceParameterAccessNode pan | pan = n |
-      pan.getUnderlyingControlFlowNode() = cfn and pan.isPreUpdate()
-    )
+    n =
+      any(InstanceParameterAccessNode pan |
+        pan.getUnderlyingControlFlowNode() = cfn and pan.isPreUpdate()
+      )
   }
 
   private predicate thisAccess(Node n, BasicBlock bb, int i) {
@@ -230,7 +229,7 @@ CIL::DataFlowNode asCilDataFlowNode(Node node) {
 
 /** Provides predicates related to local data flow. */
 module LocalFlow {
-  private class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
+  class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
     LocalExprStepConfiguration() { this = "LocalExprStepConfiguration" }
 
     override predicate candidate(
@@ -955,7 +954,7 @@ private module Cached {
     } or
     TFlowInsensitiveFieldNode(FieldOrProperty f) { f.isFieldLike() } or
     TInstanceParameterAccessNode(ControlFlow::Node cfn, boolean isPostUpdate) {
-      exists(ParameterAccess pa | cfn = getPrimaryConstructorParameterCfn(pa) |
+      exists(ParameterAccess pa | cfn = getAPrimaryConstructorParameterCfn(pa) |
         isPostUpdate = false
         or
         pa instanceof ParameterWrite and isPostUpdate = true
@@ -1795,6 +1794,19 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
 
 /**
  * A data-flow node used to model reading and writing of primary constructor parameters.
+ * For example, in
+ * ```csharp
+ * public class C(object o)
+ * {
+ *    public object GetParam() => o; // (1)
+ *
+ *    public void SetParam(object value) => o = value; // (2)
+ * }
+ * ```
+ * the first access to o (1) is modeled as this.o_backing_field and
+ * the second access to o (2) is modeled as this.o_backing_field = value.
+ * Both models need a pre-update this node, and the latter need an additional post-update this access,
+ * all of which are represented by an InstanceParameterAccessNode node.
  */
 class InstanceParameterAccessNode extends NodeImpl, TInstanceParameterAccessNode {
   private ControlFlow::Node cfn;
@@ -1803,7 +1815,7 @@ class InstanceParameterAccessNode extends NodeImpl, TInstanceParameterAccessNode
 
   InstanceParameterAccessNode() {
     this = TInstanceParameterAccessNode(cfn, isPostUpdate) and
-    exists(ParameterAccess pa | cfn = getPrimaryConstructorParameterCfn(pa) and pa.getTarget() = p)
+    exists(ParameterAccess pa | cfn = getAPrimaryConstructorParameterCfn(pa) and pa.getTarget() = p)
   }
 
   override DataFlowCallable getEnclosingCallableImpl() {
@@ -1836,6 +1848,16 @@ class InstanceParameterAccessNode extends NodeImpl, TInstanceParameterAccessNode
 
 /**
  * A data-flow node used to synthesize the body of a primary constructor.
+ *
+ * For example, in
+ * ```csharp
+ * public class C(object o) { }
+ * ```
+ * we synthesize the primary constructor for C as
+ * ```csharp
+ * public C(object o) => this.o_backing_field = o;
+ * ```
+ * The synthesized (pre/post-update) this access is represented an PrimaryConstructorThisAccessNode node.
  */
 class PrimaryConstructorThisAccessNode extends NodeImpl, TPrimaryConstructorThisAccessNode {
   private Parameter p;
@@ -2000,13 +2022,25 @@ private PropertyContent getResultContent() {
   result.getProperty() = any(SystemThreadingTasksTaskTClass c_).getResultProperty()
 }
 
-private predicate primaryConstructorParameterStore(Node node1, ContentSet c, Node node2) {
-  exists(AssignExpr ae, ParameterWrite pa, PrimaryConstructor constructor |
-    ae.getLValue() = pa and
-    pa.getTarget() = constructor.getAParameter() and
-    node1.asExpr() = ae.getRValue() and
-    node2 = TInstanceParameterAccessNode(ae.getAControlFlowNode(), true) and
-    c.(PrimaryConstructorParameterContent).getParameter() = pa.getTarget()
+private predicate primaryConstructorParameterStore(
+  Node node1, PrimaryConstructorParameterContent c, Node node2
+) {
+  exists(ControlFlow::Node cfn, Parameter p |
+    node2 = TInstanceParameterAccessNode(cfn, true) and
+    c.getParameter() = p
+  |
+    // direct assignment
+    exists(LocalFlow::LocalExprStepConfiguration conf, AssignableDefinition def |
+      conf.hasDefPath(_, node1.(ExprNode).getControlFlowNode(), def, cfn) and
+      p = def.getTarget()
+    )
+    or
+    // indirect assignment (for example as an `out` argument)
+    exists(Ssa::ExplicitDefinition def |
+      def = node1.(SsaDefinitionExtNode).getDefinitionExt() and
+      p = def.getSourceVariable().getAssignable() and
+      cfn = def.getControlFlowNode()
+    )
   )
 }
 
@@ -2147,10 +2181,12 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
     c = getResultContent()
     or
-    exists(InstanceParameterAccessNode n | n = node1 |
-      n.getUnderlyingControlFlowNode() = node2.(ExprNode).getControlFlowNode() and
-      n.getParameter() = c.(PrimaryConstructorParameterContent).getParameter()
-    ) and
+    node1 =
+      any(InstanceParameterAccessNode n |
+        n.getUnderlyingControlFlowNode() = node2.(ExprNode).getControlFlowNode() and
+        n.getParameter() = c.(PrimaryConstructorParameterContent).getParameter() and
+        n.isPreUpdate()
+      ) and
     node2.asExpr() instanceof ParameterRead
     or
     // node1 = (..., node2, ...)
@@ -2216,9 +2252,7 @@ predicate clearsContent(Node n, ContentSet c) {
     not f.isRef()
   )
   or
-  exists(Node n1 |
-    primaryConstructorParameterStore(_, c, n1) and n = n1.(PostUpdateNode).getPreUpdateNode()
-  )
+  n = any(PostUpdateNode n1 | primaryConstructorParameterStore(_, c, n1)).getPreUpdateNode()
 }
 
 /**
@@ -2512,11 +2546,11 @@ module PostUpdateNodes {
   private class InstanceParameterAccessPostUpdateNode extends PostUpdateNode,
     InstanceParameterAccessNode
   {
-    private ControlFlow::Node cfg;
+    private ControlFlow::Node cfn;
 
-    InstanceParameterAccessPostUpdateNode() { this = TInstanceParameterAccessNode(cfg, true) }
+    InstanceParameterAccessPostUpdateNode() { this = TInstanceParameterAccessNode(cfn, true) }
 
-    override Node getPreUpdateNode() { result = TInstanceParameterAccessNode(cfg, false) }
+    override Node getPreUpdateNode() { result = TInstanceParameterAccessNode(cfn, false) }
 
     override string toStringImpl() { result = "[post] this" }
   }

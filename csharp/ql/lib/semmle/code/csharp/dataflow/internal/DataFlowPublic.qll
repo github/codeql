@@ -251,7 +251,7 @@ class PrimaryConstructorParameterContent extends Content, TPrimaryConstructorPar
   /** Gets the underlying parameter. */
   Parameter getParameter() { result = p }
 
-  override string toString() { result = "parameter field " + p.getName() }
+  override string toString() { result = "parameter " + p.getName() }
 
   override Location getLocation() { result = p.getLocation() }
 }

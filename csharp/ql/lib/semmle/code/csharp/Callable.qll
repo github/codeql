@@ -370,15 +370,6 @@ class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @
   predicate isParameterless() { this.getNumberOfParameters() = 0 }
 
   override string getUndecoratedName() { result = ".ctor" }
-
-  /**
-   * Holds if this a primary constructor in source code.
-   */
-  predicate isPrimary() {
-    not this.hasBody() and
-    this.getDeclaringType().fromSource() and
-    this.fromSource()
-  }
 }
 
 /**
@@ -424,7 +415,11 @@ class InstanceConstructor extends Constructor {
  * ```
  */
 class PrimaryConstructor extends Constructor {
-  PrimaryConstructor() { this.isPrimary() }
+  PrimaryConstructor() {
+    not this.hasBody() and
+    this.getDeclaringType().fromSource() and
+    this.fromSource()
+  }
 
   override string getAPrimaryQlClass() { result = "PrimaryConstructor" }
 }
