@@ -17,6 +17,8 @@ import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.internal.DataFlowPublic
 import semmle.python.dataflow.new.RemoteFlowSources
 
+// The Unicode compatibility normalization calls from unicodedata, unidecode, pyunormalize
+// and textnorm modules. The use of argIdx is to constraint the argument being normalized.
 class UnicodeCompatibilityNormalize extends API::CallNode {
   int argIdx;
 
@@ -66,10 +68,12 @@ predicate underAValue(DataFlow::GuardNode g, ControlFlowNode node, boolean branc
     exists(API::CallNode lenCall, Cmpop op_gt, Cmpop op_lt, Node n |
       lenCall = n.getALocalSource() and
       (
+        // arg <= LIMIT OR arg < LIMIT
         (op_lt = any(LtE lte) or op_lt = any(Lt lt)) and
         branch = true and
         cn.operands(n.asCfgNode(), op_lt, _)
         or
+        // LIMIT >= arg OR LIMIT > arg 
         (op_gt = any(GtE gte) or op_gt = any(Gt gt)) and
         branch = true and
         cn.operands(_, op_gt, n.asCfgNode())
@@ -88,12 +92,16 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
+    // underAValue is a check to ensure that the length of the user-provided value is limited to a certain amount
     sanitizer = DataFlow::BarrierGuard<underAValue/3>::getABarrierNode()
   }
 
   override predicate isSink(DataFlow::Node sink) {
+    // Any call to the Unicode compatibility normalization is a costly operation
     sink = any(UnicodeCompatibilityNormalize ucn).getPathArg()
     or
+    // The call to secure_filename() from pallets/werkzeug uses the Unicode compatibility normalization
+    // under the hood, https://github.com/pallets/werkzeug/blob/d3dd65a27388fbd39d146caacf2563639ba622f0/src/werkzeug/utils.py#L218
     sink = API::moduleImport("werkzeug").getMember("secure_filename").getACall().getArg(_)
     or
     sink =
@@ -102,7 +110,6 @@ class Configuration extends TaintTracking::Configuration {
           .getMember("secure_filename")
           .getACall()
           .getArg(_)
-  
   }
 }
 
