@@ -355,6 +355,14 @@ predicate functionHasPrimaryName(DataFlow::FunctionNode function, string package
 /**
  * Holds if `(aliasPackage, aliasName)` is an alias for `(primaryPackage, primaryName)`,
  * defined at `aliasDef`.
+ *
+ * Only the last component of an access path is reported as an alias, the prefix always
+ * uses the primary name for that access path. The aliases for the prefix are reported
+ * as separate tuples.
+ *
+ * For example, we might report that `a.b.C` is an alias for `a.b.c`, and that `a.B` is an alias for `a.b`.
+ * By combining the two aliasing facts, we may conclude that `a.B.C` is an alias for `a.b.c`, but this fact is not
+ * reported separately.
  */
 predicate aliasDefinition(
   string primaryPackage, string primaryName, string aliasPackage, string aliasName,
