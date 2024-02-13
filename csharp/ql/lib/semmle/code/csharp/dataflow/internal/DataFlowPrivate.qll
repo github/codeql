@@ -1803,8 +1803,8 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
  *    public void SetParam(object value) => o = value; // (2)
  * }
  * ```
- * the first access to o (1) is modeled as `this.o_backing_field` and
- * the second access to o (2) is modeled as `this.o_backing_field = value`.
+ * the first access to `o` (1) is modeled as `this.o_backing_field` and
+ * the second access to `o` (2) is modeled as `this.o_backing_field = value`.
  * Both models need a pre-update this node, and the latter need an additional post-update this access,
  * all of which are represented by an `InstanceParameterAccessNode` node.
  */
