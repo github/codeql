@@ -93,6 +93,16 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink = any(UnicodeCompatibilityNormalize ucn).getPathArg()
+    or
+    sink = API::moduleImport("werkzeug").getMember("secure_filename").getACall().getArg(_)
+    or
+    sink =
+      API::moduleImport("werkzeug")
+          .getMember("utils")
+          .getMember("secure_filename")
+          .getACall()
+          .getArg(_)
+  
   }
 }
 
