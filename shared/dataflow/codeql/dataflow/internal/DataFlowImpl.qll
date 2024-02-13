@@ -1133,7 +1133,7 @@ module MakeImpl<InputSig Lang> {
       exists(int b, int j |
         b = branch(ret) and
         j = join(out) and
-        if b.minimum(j) <= Config::fieldFlowBranchLimit()
+        if j <= Config::fieldFlowBranchLimit()
         then allowsFieldFlow = true
         else allowsFieldFlow = false
       )
@@ -1149,13 +1149,14 @@ module MakeImpl<InputSig Lang> {
       DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow
     ) {
       flowIntoCallNodeCand1(call, arg, p) and
-      exists(int b, int j |
-        b = branch(arg) and
-        j = join(p) and
-        if b.minimum(j) <= Config::fieldFlowBranchLimit()
-        then allowsFieldFlow = true
-        else allowsFieldFlow = false
-      )
+      allowsFieldFlow = true
+      // exists(int b, int j |
+      //   b = branch(arg) and
+      //   j = join(p) and
+      //   if b.minimum(j) <= Config::fieldFlowBranchLimit()
+      //   then allowsFieldFlow = true
+      //   else allowsFieldFlow = false
+      // )
     }
 
     private signature module StageSig {
