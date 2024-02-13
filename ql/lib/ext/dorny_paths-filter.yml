@@ -3,5 +3,5 @@ extensions:
       pack: codeql/actions-all
       extensible: sourceModel
     data:
-      - [ "dorny/paths-filter", "*", "changes", "pull_request", "PR changed files" ]
-      - [ "dorny/paths-filter", "*", "changes", "pull_request_target", "PR changed files" ]
+      - ["dorny/paths-filter", "*", "changes", "pull_request", "PR changed files"]
+      - ["dorny/paths-filter", "*", "changes", "pull_request_target", "PR changed files"]

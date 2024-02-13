@@ -3,7 +3,7 @@ extensions:
       pack: codeql/actions-all
       extensible: sourceModel
     data:
-      - [ "ahmadnassri/action-changed-files", "*", "files", "pull_request", "PR changed files" ]
-      - [ "ahmadnassri/action-changed-files", "*", "files", "pull_request_target", "PR changed files" ]
-      - [ "ahmadnassri/action-changed-files", "*", "json", "pull_request", "PR changed files" ]
-      - [ "ahmadnassri/action-changed-files", "*", "json", "pull_request_target", "PR changed files" ]
+      - ["ahmadnassri/action-changed-files", "*", "files", "pull_request", "PR changed files"]
+      - ["ahmadnassri/action-changed-files", "*", "files", "pull_request_target", "PR changed files"]
+      - ["ahmadnassri/action-changed-files", "*", "json", "pull_request", "PR changed files"]
+      - ["ahmadnassri/action-changed-files", "*", "json", "pull_request_target", "PR changed files"]
