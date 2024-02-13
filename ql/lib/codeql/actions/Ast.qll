@@ -92,7 +92,8 @@ class OutputsStmt extends Statement instanceof YamlMapping {
    * Gets a specific output expression (YamlMapping) by name.
    */
   OutputExpr getOutputExpr(string name) {
-    this.(YamlMapping).lookup(name).(YamlMapping).lookup("value") = result
+    this.(YamlMapping).lookup(name).(YamlMapping).lookup("value") = result or
+    this.(YamlMapping).lookup(name) = result
   }
 }
 
@@ -101,7 +102,12 @@ class InputExpr extends Expression instanceof YamlString {
 }
 
 class OutputExpr extends Expression instanceof YamlString {
-  OutputExpr() { exists(OutputsStmt outputs | outputs.(YamlMapping).maps(_, this)) }
+  OutputExpr() {
+    exists(OutputsStmt outputs |
+      outputs.(YamlMapping).lookup(_).(YamlMapping).lookup("value") = this or
+      outputs.(YamlMapping).lookup(_) = this
+    )
+  }
 }
 
 /**

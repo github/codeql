@@ -15,16 +15,16 @@ import codeql.actions.TaintTracking
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.dataflow.ExternalFlow
 
-private class OutputVariableSink extends DataFlow::Node {
-  OutputVariableSink() { exists(OutputsStmt s | s.getOutputExpr(_) = this.asExpr()) }
-}
-
 private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
+    source instanceof DataFlow::ParameterNode and
     exists(CompositeActionStmt c | c.getInputsStmt().getInputExpr(_) = source.asExpr())
   }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof OutputVariableSink }
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof DataFlow::ReturnNode and
+    exists(CompositeActionStmt c | c.getOutputsStmt().getOutputExpr(_) = sink.asExpr())
+  }
 }
 
 module MyFlow = TaintTracking::Global<MyConfig>;
