@@ -12130,206 +12130,265 @@ ir.cpp:
 # 2157|     r2157_61(glval<iterator>) = CopyValue                       : r2157_57
 #-----|   Goto (back edge) -> Block 4
 
-# 2160|   Block 6
-# 2160|     v2160_1(void) = NoOp         : 
-# 2151|     v2151_4(void) = ReturnVoid   : 
-# 2151|     v2151_5(void) = AliasedUse   : ~m?
-# 2151|     v2151_6(void) = ExitFunction : 
+# 2161|   Block 6
+# 2161|     r2161_1(glval<String>)   = VariableAddress[s]              : 
+# 2161|     mu2161_2(String)         = Uninitialized[s]                : &:r2161_1
+# 2161|     r2161_3(glval<unknown>)  = FunctionAddress[String]         : 
+# 2161|     r2161_4(glval<char[6]>)  = StringConstant["hello"]         : 
+# 2161|     r2161_5(char *)          = Convert                         : r2161_4
+# 2161|     v2161_6(void)            = Call[String]                    : func:r2161_3, this:r2161_1, 0:r2161_5
+# 2161|     mu2161_7(unknown)        = ^CallSideEffect                 : ~m?
+# 2161|     v2161_8(void)            = ^BufferReadSideEffect[0]        : &:r2161_5, ~m?
+# 2161|     mu2161_9(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2161_1
+# 2161|     r2161_10(glval<String>)  = VariableAddress[s2]             : 
+# 2161|     mu2161_11(String)        = Uninitialized[s2]               : &:r2161_10
+# 2161|     r2161_12(glval<unknown>) = FunctionAddress[String]         : 
+# 2161|     r2161_13(glval<char[6]>) = StringConstant["world"]         : 
+# 2161|     r2161_14(char *)         = Convert                         : r2161_13
+# 2161|     v2161_15(void)           = Call[String]                    : func:r2161_12, this:r2161_10, 0:r2161_14
+# 2161|     mu2161_16(unknown)       = ^CallSideEffect                 : ~m?
+# 2161|     v2161_17(void)           = ^BufferReadSideEffect[0]        : &:r2161_14, ~m?
+# 2161|     mu2161_18(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2161_10
+#-----|   Goto -> Block 7
 
-# 2162| void IfDestructors2(bool)
-# 2162|   Block 0
-# 2162|     v2162_1(void)           = EnterFunction                   : 
-# 2162|     mu2162_2(unknown)       = AliasedDefinition               : 
-# 2162|     mu2162_3(unknown)       = InitializeNonLocal              : 
-# 2162|     r2162_4(glval<bool>)    = VariableAddress[b]              : 
-# 2162|     mu2162_5(bool)          = InitializeParameter[b]          : &:r2162_4
-# 2163|     r2163_1(glval<String>)  = VariableAddress[s]              : 
-# 2163|     mu2163_2(String)        = Uninitialized[s]                : &:r2163_1
-# 2163|     r2163_3(glval<unknown>) = FunctionAddress[String]         : 
-# 2163|     r2163_4(glval<char[6]>) = StringConstant["hello"]         : 
-# 2163|     r2163_5(char *)         = Convert                         : r2163_4
-# 2163|     v2163_6(void)           = Call[String]                    : func:r2163_3, this:r2163_1, 0:r2163_5
-# 2163|     mu2163_7(unknown)       = ^CallSideEffect                 : ~m?
-# 2163|     v2163_8(void)           = ^BufferReadSideEffect[0]        : &:r2163_5, ~m?
-# 2163|     mu2163_9(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2163_1
-# 2163|     r2163_10(glval<bool>)   = VariableAddress[b]              : 
-# 2163|     r2163_11(bool)          = Load[b]                         : &:r2163_10, ~m?
-# 2163|     v2163_12(void)          = ConditionalBranch               : r2163_11
-#-----|   False -> Block 2
-#-----|   True -> Block 1
+# 2161|   Block 7
+# 2161|     r2161_19(glval<char>) = VariableAddress[c] : 
+# 2161|     r2161_20(char)        = Load[c]            : &:r2161_19, ~m?
+# 2161|     r2161_21(int)         = Convert            : r2161_20
+# 2161|     r2161_22(int)         = Constant[0]        : 
+# 2161|     r2161_23(bool)        = CompareNE          : r2161_21, r2161_22
+# 2161|     v2161_24(void)        = ConditionalBranch  : r2161_23
+#-----|   False -> Block 9
+#-----|   True -> Block 8
 
-# 2164|   Block 1
-# 2164|     r2164_1(glval<int>) = VariableAddress[x] : 
-# 2164|     r2164_2(int)        = Constant[0]        : 
-# 2164|     mu2164_3(int)       = Store[x]           : &:r2164_1, r2164_2
-#-----|   Goto -> Block 3
+# 2162|   Block 8
+# 2162|     r2162_1(char)            = Constant[0]                     : 
+# 2162|     r2162_2(glval<char>)     = VariableAddress[c]              : 
+# 2162|     mu2162_3(char)           = Store[c]                        : &:r2162_2, r2162_1
+# 2161|     r2161_25(glval<String>)  = VariableAddress[s]              : 
+# 2161|     r2161_26(glval<unknown>) = FunctionAddress[pop_back]       : 
+# 2161|     r2161_27(char)           = Call[pop_back]                  : func:r2161_26, this:r2161_25
+# 2161|     mu2161_28(unknown)       = ^CallSideEffect                 : ~m?
+# 2161|     v2161_29(void)           = ^IndirectReadSideEffect[-1]     : &:r2161_25, ~m?
+# 2161|     mu2161_30(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2161_25
+# 2161|     r2161_31(glval<char>)    = VariableAddress[c]              : 
+# 2161|     mu2161_32(char)          = Store[c]                        : &:r2161_31, r2161_27
+#-----|   Goto (back edge) -> Block 7
 
-# 2166|   Block 2
-# 2166|     r2166_1(glval<int>) = VariableAddress[y] : 
-# 2166|     r2166_2(int)        = Constant[0]        : 
-# 2166|     mu2166_3(int)       = Store[y]           : &:r2166_1, r2166_2
-#-----|   Goto -> Block 3
+# 2161|   Block 9
+# 2161|     r2161_33(glval<String>)  = VariableAddress[s2]             : 
+# 2161|     r2161_34(glval<unknown>) = FunctionAddress[~String]        : 
+# 2161|     v2161_35(void)           = Call[~String]                   : func:r2161_34, this:r2161_33
+# 2161|     mu2161_36(unknown)       = ^CallSideEffect                 : ~m?
+# 2161|     v2161_37(void)           = ^IndirectReadSideEffect[-1]     : &:r2161_33, ~m?
+# 2161|     mu2161_38(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2161_33
 
-# 2167|   Block 3
+# 2161|   Block 10
+# 2161|     r2161_39(glval<String>)  = VariableAddress[s]              : 
+# 2161|     r2161_40(glval<unknown>) = FunctionAddress[~String]        : 
+# 2161|     v2161_41(void)           = Call[~String]                   : func:r2161_40, this:r2161_39
+# 2161|     mu2161_42(unknown)       = ^CallSideEffect                 : ~m?
+# 2161|     v2161_43(void)           = ^IndirectReadSideEffect[-1]     : &:r2161_39, ~m?
+# 2161|     mu2161_44(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2161_39
+# 2164|     v2164_1(void)            = NoOp                            : 
+# 2151|     v2151_4(void)            = ReturnVoid                      : 
+# 2151|     v2151_5(void)            = AliasedUse                      : ~m?
+# 2151|     v2151_6(void)            = ExitFunction                    : 
+
+# 2166| void IfDestructors2(bool)
+# 2166|   Block 0
+# 2166|     v2166_1(void)           = EnterFunction                   : 
+# 2166|     mu2166_2(unknown)       = AliasedDefinition               : 
+# 2166|     mu2166_3(unknown)       = InitializeNonLocal              : 
+# 2166|     r2166_4(glval<bool>)    = VariableAddress[b]              : 
+# 2166|     mu2166_5(bool)          = InitializeParameter[b]          : &:r2166_4
 # 2167|     r2167_1(glval<String>)  = VariableAddress[s]              : 
-# 2167|     r2167_2(glval<unknown>) = FunctionAddress[~String]        : 
-# 2167|     v2167_3(void)           = Call[~String]                   : func:r2167_2, this:r2167_1
-# 2167|     mu2167_4(unknown)       = ^CallSideEffect                 : ~m?
-# 2167|     v2167_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2167_1, ~m?
-# 2167|     mu2167_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2167_1
-# 2168|     v2168_1(void)           = NoOp                            : 
-# 2162|     v2162_6(void)           = ReturnVoid                      : 
-# 2162|     v2162_7(void)           = AliasedUse                      : ~m?
-# 2162|     v2162_8(void)           = ExitFunction                    : 
-
-# 2177| void IfDestructors3(bool)
-# 2177|   Block 0
-# 2177|     v2177_1(void)            = EnterFunction                   : 
-# 2177|     mu2177_2(unknown)        = AliasedDefinition               : 
-# 2177|     mu2177_3(unknown)        = InitializeNonLocal              : 
-# 2177|     r2177_4(glval<bool>)     = VariableAddress[b]              : 
-# 2177|     mu2177_5(bool)           = InitializeParameter[b]          : &:r2177_4
-# 2178|     r2178_1(glval<Bool>)     = VariableAddress[B]              : 
-# 2178|     mu2178_2(Bool)           = Uninitialized[B]                : &:r2178_1
-# 2178|     r2178_3(glval<unknown>)  = FunctionAddress[Bool]           : 
-# 2178|     r2178_4(glval<bool>)     = VariableAddress[b]              : 
-# 2178|     r2178_5(bool)            = Load[b]                         : &:r2178_4, ~m?
-# 2178|     v2178_6(void)            = Call[Bool]                      : func:r2178_3, this:r2178_1, 0:r2178_5
-# 2178|     mu2178_7(unknown)        = ^CallSideEffect                 : ~m?
-# 2178|     mu2178_8(Bool)           = ^IndirectMayWriteSideEffect[-1] : &:r2178_1
-# 2178|     r2178_9(glval<Bool>)     = VariableAddress[B]              : 
-# 2178|     r2178_10(glval<unknown>) = FunctionAddress[operator bool]  : 
-# 2178|     r2178_11(bool)           = Call[operator bool]             : func:r2178_10, this:r2178_9
-# 2178|     mu2178_12(unknown)       = ^CallSideEffect                 : ~m?
-# 2178|     v2178_13(void)           = ^IndirectReadSideEffect[-1]     : &:r2178_9, ~m?
-# 2178|     mu2178_14(Bool)          = ^IndirectMayWriteSideEffect[-1] : &:r2178_9
-# 2178|     r2178_15(bool)           = CopyValue                       : r2178_11
-# 2178|     v2178_16(void)           = ConditionalBranch               : r2178_15
+# 2167|     mu2167_2(String)        = Uninitialized[s]                : &:r2167_1
+# 2167|     r2167_3(glval<unknown>) = FunctionAddress[String]         : 
+# 2167|     r2167_4(glval<char[6]>) = StringConstant["hello"]         : 
+# 2167|     r2167_5(char *)         = Convert                         : r2167_4
+# 2167|     v2167_6(void)           = Call[String]                    : func:r2167_3, this:r2167_1, 0:r2167_5
+# 2167|     mu2167_7(unknown)       = ^CallSideEffect                 : ~m?
+# 2167|     v2167_8(void)           = ^BufferReadSideEffect[0]        : &:r2167_5, ~m?
+# 2167|     mu2167_9(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2167_1
+# 2167|     r2167_10(glval<bool>)   = VariableAddress[b]              : 
+# 2167|     r2167_11(bool)          = Load[b]                         : &:r2167_10, ~m?
+# 2167|     v2167_12(void)          = ConditionalBranch               : r2167_11
 #-----|   False -> Block 2
 #-----|   True -> Block 1
 
-# 2179|   Block 1
-# 2179|     r2179_1(glval<String>)  = VariableAddress[s1]             : 
-# 2179|     mu2179_2(String)        = Uninitialized[s1]               : &:r2179_1
-# 2179|     r2179_3(glval<unknown>) = FunctionAddress[String]         : 
-# 2179|     v2179_4(void)           = Call[String]                    : func:r2179_3, this:r2179_1
-# 2179|     mu2179_5(unknown)       = ^CallSideEffect                 : ~m?
-# 2179|     mu2179_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2179_1
-# 2180|     r2180_1(glval<String>)  = VariableAddress[s1]             : 
-# 2180|     r2180_2(glval<unknown>) = FunctionAddress[~String]        : 
-# 2180|     v2180_3(void)           = Call[~String]                   : func:r2180_2, this:r2180_1
-# 2180|     mu2180_4(unknown)       = ^CallSideEffect                 : ~m?
-# 2180|     v2180_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2180_1, ~m?
-# 2180|     mu2180_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2180_1
+# 2168|   Block 1
+# 2168|     r2168_1(glval<int>) = VariableAddress[x] : 
+# 2168|     r2168_2(int)        = Constant[0]        : 
+# 2168|     mu2168_3(int)       = Store[x]           : &:r2168_1, r2168_2
 #-----|   Goto -> Block 3
 
-# 2181|   Block 2
-# 2181|     r2181_1(glval<String>)  = VariableAddress[s2]             : 
-# 2181|     mu2181_2(String)        = Uninitialized[s2]               : &:r2181_1
-# 2181|     r2181_3(glval<unknown>) = FunctionAddress[String]         : 
-# 2181|     v2181_4(void)           = Call[String]                    : func:r2181_3, this:r2181_1
-# 2181|     mu2181_5(unknown)       = ^CallSideEffect                 : ~m?
-# 2181|     mu2181_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2181_1
-# 2182|     r2182_1(glval<String>)  = VariableAddress[s2]             : 
-# 2182|     r2182_2(glval<unknown>) = FunctionAddress[~String]        : 
-# 2182|     v2182_3(void)           = Call[~String]                   : func:r2182_2, this:r2182_1
-# 2182|     mu2182_4(unknown)       = ^CallSideEffect                 : ~m?
-# 2182|     v2182_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2182_1, ~m?
-# 2182|     mu2182_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2182_1
+# 2170|   Block 2
+# 2170|     r2170_1(glval<int>) = VariableAddress[y] : 
+# 2170|     r2170_2(int)        = Constant[0]        : 
+# 2170|     mu2170_3(int)       = Store[y]           : &:r2170_1, r2170_2
 #-----|   Goto -> Block 3
 
-# 2182|   Block 3
-# 2182|     r2182_7(glval<Bool>)    = VariableAddress[B]              : 
-# 2182|     r2182_8(glval<unknown>) = FunctionAddress[~Bool]          : 
-# 2182|     v2182_9(void)           = Call[~Bool]                     : func:r2182_8, this:r2182_7
-# 2182|     mu2182_10(unknown)      = ^CallSideEffect                 : ~m?
-# 2182|     v2182_11(void)          = ^IndirectReadSideEffect[-1]     : &:r2182_7, ~m?
-# 2182|     mu2182_12(Bool)         = ^IndirectMayWriteSideEffect[-1] : &:r2182_7
-# 2183|     v2183_1(void)           = NoOp                            : 
-# 2177|     v2177_6(void)           = ReturnVoid                      : 
-# 2177|     v2177_7(void)           = AliasedUse                      : ~m?
-# 2177|     v2177_8(void)           = ExitFunction                    : 
+# 2171|   Block 3
+# 2171|     r2171_1(glval<String>)  = VariableAddress[s]              : 
+# 2171|     r2171_2(glval<unknown>) = FunctionAddress[~String]        : 
+# 2171|     v2171_3(void)           = Call[~String]                   : func:r2171_2, this:r2171_1
+# 2171|     mu2171_4(unknown)       = ^CallSideEffect                 : ~m?
+# 2171|     v2171_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2171_1, ~m?
+# 2171|     mu2171_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2171_1
+# 2172|     v2172_1(void)           = NoOp                            : 
+# 2166|     v2166_6(void)           = ReturnVoid                      : 
+# 2166|     v2166_7(void)           = AliasedUse                      : ~m?
+# 2166|     v2166_8(void)           = ExitFunction                    : 
 
-# 2193| void WhileLoopDestructors(bool)
-# 2193|   Block 0
-# 2193|     v2193_1(void)           = EnterFunction                   : 
-# 2193|     mu2193_2(unknown)       = AliasedDefinition               : 
-# 2193|     mu2193_3(unknown)       = InitializeNonLocal              : 
-# 2193|     r2193_4(glval<bool>)    = VariableAddress[b]              : 
-# 2193|     mu2193_5(bool)          = InitializeParameter[b]          : &:r2193_4
-# 2195|     r2195_1(glval<String>)  = VariableAddress[s]              : 
-# 2195|     mu2195_2(String)        = Uninitialized[s]                : &:r2195_1
-# 2195|     r2195_3(glval<unknown>) = FunctionAddress[String]         : 
-# 2195|     v2195_4(void)           = Call[String]                    : func:r2195_3, this:r2195_1
-# 2195|     mu2195_5(unknown)       = ^CallSideEffect                 : ~m?
-# 2195|     mu2195_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2195_1
+# 2181| void IfDestructors3(bool)
+# 2181|   Block 0
+# 2181|     v2181_1(void)            = EnterFunction                   : 
+# 2181|     mu2181_2(unknown)        = AliasedDefinition               : 
+# 2181|     mu2181_3(unknown)        = InitializeNonLocal              : 
+# 2181|     r2181_4(glval<bool>)     = VariableAddress[b]              : 
+# 2181|     mu2181_5(bool)           = InitializeParameter[b]          : &:r2181_4
+# 2182|     r2182_1(glval<Bool>)     = VariableAddress[B]              : 
+# 2182|     mu2182_2(Bool)           = Uninitialized[B]                : &:r2182_1
+# 2182|     r2182_3(glval<unknown>)  = FunctionAddress[Bool]           : 
+# 2182|     r2182_4(glval<bool>)     = VariableAddress[b]              : 
+# 2182|     r2182_5(bool)            = Load[b]                         : &:r2182_4, ~m?
+# 2182|     v2182_6(void)            = Call[Bool]                      : func:r2182_3, this:r2182_1, 0:r2182_5
+# 2182|     mu2182_7(unknown)        = ^CallSideEffect                 : ~m?
+# 2182|     mu2182_8(Bool)           = ^IndirectMayWriteSideEffect[-1] : &:r2182_1
+# 2182|     r2182_9(glval<Bool>)     = VariableAddress[B]              : 
+# 2182|     r2182_10(glval<unknown>) = FunctionAddress[operator bool]  : 
+# 2182|     r2182_11(bool)           = Call[operator bool]             : func:r2182_10, this:r2182_9
+# 2182|     mu2182_12(unknown)       = ^CallSideEffect                 : ~m?
+# 2182|     v2182_13(void)           = ^IndirectReadSideEffect[-1]     : &:r2182_9, ~m?
+# 2182|     mu2182_14(Bool)          = ^IndirectMayWriteSideEffect[-1] : &:r2182_9
+# 2182|     r2182_15(bool)           = CopyValue                       : r2182_11
+# 2182|     v2182_16(void)           = ConditionalBranch               : r2182_15
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2183|   Block 1
+# 2183|     r2183_1(glval<String>)  = VariableAddress[s1]             : 
+# 2183|     mu2183_2(String)        = Uninitialized[s1]               : &:r2183_1
+# 2183|     r2183_3(glval<unknown>) = FunctionAddress[String]         : 
+# 2183|     v2183_4(void)           = Call[String]                    : func:r2183_3, this:r2183_1
+# 2183|     mu2183_5(unknown)       = ^CallSideEffect                 : ~m?
+# 2183|     mu2183_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2183_1
+# 2184|     r2184_1(glval<String>)  = VariableAddress[s1]             : 
+# 2184|     r2184_2(glval<unknown>) = FunctionAddress[~String]        : 
+# 2184|     v2184_3(void)           = Call[~String]                   : func:r2184_2, this:r2184_1
+# 2184|     mu2184_4(unknown)       = ^CallSideEffect                 : ~m?
+# 2184|     v2184_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2184_1, ~m?
+# 2184|     mu2184_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2184_1
+#-----|   Goto -> Block 3
+
+# 2185|   Block 2
+# 2185|     r2185_1(glval<String>)  = VariableAddress[s2]             : 
+# 2185|     mu2185_2(String)        = Uninitialized[s2]               : &:r2185_1
+# 2185|     r2185_3(glval<unknown>) = FunctionAddress[String]         : 
+# 2185|     v2185_4(void)           = Call[String]                    : func:r2185_3, this:r2185_1
+# 2185|     mu2185_5(unknown)       = ^CallSideEffect                 : ~m?
+# 2185|     mu2185_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2185_1
+# 2186|     r2186_1(glval<String>)  = VariableAddress[s2]             : 
+# 2186|     r2186_2(glval<unknown>) = FunctionAddress[~String]        : 
+# 2186|     v2186_3(void)           = Call[~String]                   : func:r2186_2, this:r2186_1
+# 2186|     mu2186_4(unknown)       = ^CallSideEffect                 : ~m?
+# 2186|     v2186_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2186_1, ~m?
+# 2186|     mu2186_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2186_1
+#-----|   Goto -> Block 3
+
+# 2186|   Block 3
+# 2186|     r2186_7(glval<Bool>)    = VariableAddress[B]              : 
+# 2186|     r2186_8(glval<unknown>) = FunctionAddress[~Bool]          : 
+# 2186|     v2186_9(void)           = Call[~Bool]                     : func:r2186_8, this:r2186_7
+# 2186|     mu2186_10(unknown)      = ^CallSideEffect                 : ~m?
+# 2186|     v2186_11(void)          = ^IndirectReadSideEffect[-1]     : &:r2186_7, ~m?
+# 2186|     mu2186_12(Bool)         = ^IndirectMayWriteSideEffect[-1] : &:r2186_7
+# 2187|     v2187_1(void)           = NoOp                            : 
+# 2181|     v2181_6(void)           = ReturnVoid                      : 
+# 2181|     v2181_7(void)           = AliasedUse                      : ~m?
+# 2181|     v2181_8(void)           = ExitFunction                    : 
+
+# 2197| void WhileLoopDestructors(bool)
+# 2197|   Block 0
+# 2197|     v2197_1(void)           = EnterFunction                   : 
+# 2197|     mu2197_2(unknown)       = AliasedDefinition               : 
+# 2197|     mu2197_3(unknown)       = InitializeNonLocal              : 
+# 2197|     r2197_4(glval<bool>)    = VariableAddress[b]              : 
+# 2197|     mu2197_5(bool)          = InitializeParameter[b]          : &:r2197_4
+# 2199|     r2199_1(glval<String>)  = VariableAddress[s]              : 
+# 2199|     mu2199_2(String)        = Uninitialized[s]                : &:r2199_1
+# 2199|     r2199_3(glval<unknown>) = FunctionAddress[String]         : 
+# 2199|     v2199_4(void)           = Call[String]                    : func:r2199_3, this:r2199_1
+# 2199|     mu2199_5(unknown)       = ^CallSideEffect                 : ~m?
+# 2199|     mu2199_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2199_1
 #-----|   Goto -> Block 1
 
-# 2196|   Block 1
-# 2196|     r2196_1(glval<bool>) = VariableAddress[b] : 
-# 2196|     r2196_2(bool)        = Load[b]            : &:r2196_1, ~m?
-# 2196|     v2196_3(void)        = ConditionalBranch  : r2196_2
+# 2200|   Block 1
+# 2200|     r2200_1(glval<bool>) = VariableAddress[b] : 
+# 2200|     r2200_2(bool)        = Load[b]            : &:r2200_1, ~m?
+# 2200|     v2200_3(void)        = ConditionalBranch  : r2200_2
 #-----|   False -> Block 3
 #-----|   True -> Block 2
 
-# 2197|   Block 2
-# 2197|     r2197_1(bool)        = Constant[0]        : 
-# 2197|     r2197_2(glval<bool>) = VariableAddress[b] : 
-# 2197|     mu2197_3(bool)       = Store[b]           : &:r2197_2, r2197_1
+# 2201|   Block 2
+# 2201|     r2201_1(bool)        = Constant[0]        : 
+# 2201|     r2201_2(glval<bool>) = VariableAddress[b] : 
+# 2201|     mu2201_3(bool)       = Store[b]           : &:r2201_2, r2201_1
 #-----|   Goto (back edge) -> Block 1
 
-# 2199|   Block 3
-# 2199|     r2199_1(glval<String>)  = VariableAddress[s]              : 
-# 2199|     r2199_2(glval<unknown>) = FunctionAddress[~String]        : 
-# 2199|     v2199_3(void)           = Call[~String]                   : func:r2199_2, this:r2199_1
-# 2199|     mu2199_4(unknown)       = ^CallSideEffect                 : ~m?
-# 2199|     v2199_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2199_1, ~m?
-# 2199|     mu2199_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2199_1
+# 2203|   Block 3
+# 2203|     r2203_1(glval<String>)  = VariableAddress[s]              : 
+# 2203|     r2203_2(glval<unknown>) = FunctionAddress[~String]        : 
+# 2203|     v2203_3(void)           = Call[~String]                   : func:r2203_2, this:r2203_1
+# 2203|     mu2203_4(unknown)       = ^CallSideEffect                 : ~m?
+# 2203|     v2203_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2203_1, ~m?
+# 2203|     mu2203_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2203_1
 #-----|   Goto -> Block 4
 
-# 2202|   Block 4
-# 2202|     r2202_1(glval<Bool>)     = VariableAddress[B]              : 
-# 2202|     mu2202_2(Bool)           = Uninitialized[B]                : &:r2202_1
-# 2202|     r2202_3(glval<unknown>)  = FunctionAddress[Bool]           : 
-# 2202|     r2202_4(glval<bool>)     = VariableAddress[b]              : 
-# 2202|     r2202_5(bool)            = Load[b]                         : &:r2202_4, ~m?
-# 2202|     v2202_6(void)            = Call[Bool]                      : func:r2202_3, this:r2202_1, 0:r2202_5
-# 2202|     mu2202_7(unknown)        = ^CallSideEffect                 : ~m?
-# 2202|     mu2202_8(Bool)           = ^IndirectMayWriteSideEffect[-1] : &:r2202_1
-# 2202|     r2202_9(glval<Bool>)     = VariableAddress[B]              : 
-# 2202|     r2202_10(glval<unknown>) = FunctionAddress[operator bool]  : 
-# 2202|     r2202_11(bool)           = Call[operator bool]             : func:r2202_10, this:r2202_9
-# 2202|     mu2202_12(unknown)       = ^CallSideEffect                 : ~m?
-# 2202|     v2202_13(void)           = ^IndirectReadSideEffect[-1]     : &:r2202_9, ~m?
-# 2202|     mu2202_14(Bool)          = ^IndirectMayWriteSideEffect[-1] : &:r2202_9
-# 2202|     r2202_15(bool)           = CopyValue                       : r2202_11
-# 2202|     v2202_16(void)           = ConditionalBranch               : r2202_15
+# 2206|   Block 4
+# 2206|     r2206_1(glval<Bool>)     = VariableAddress[B]              : 
+# 2206|     mu2206_2(Bool)           = Uninitialized[B]                : &:r2206_1
+# 2206|     r2206_3(glval<unknown>)  = FunctionAddress[Bool]           : 
+# 2206|     r2206_4(glval<bool>)     = VariableAddress[b]              : 
+# 2206|     r2206_5(bool)            = Load[b]                         : &:r2206_4, ~m?
+# 2206|     v2206_6(void)            = Call[Bool]                      : func:r2206_3, this:r2206_1, 0:r2206_5
+# 2206|     mu2206_7(unknown)        = ^CallSideEffect                 : ~m?
+# 2206|     mu2206_8(Bool)           = ^IndirectMayWriteSideEffect[-1] : &:r2206_1
+# 2206|     r2206_9(glval<Bool>)     = VariableAddress[B]              : 
+# 2206|     r2206_10(glval<unknown>) = FunctionAddress[operator bool]  : 
+# 2206|     r2206_11(bool)           = Call[operator bool]             : func:r2206_10, this:r2206_9
+# 2206|     mu2206_12(unknown)       = ^CallSideEffect                 : ~m?
+# 2206|     v2206_13(void)           = ^IndirectReadSideEffect[-1]     : &:r2206_9, ~m?
+# 2206|     mu2206_14(Bool)          = ^IndirectMayWriteSideEffect[-1] : &:r2206_9
+# 2206|     r2206_15(bool)           = CopyValue                       : r2206_11
+# 2206|     v2206_16(void)           = ConditionalBranch               : r2206_15
 #-----|   False -> Block 6
 #-----|   True -> Block 5
 
-# 2203|   Block 5
-# 2203|     r2203_1(bool)           = Constant[0]                     : 
-# 2203|     r2203_2(glval<bool>)    = VariableAddress[b]              : 
-# 2203|     mu2203_3(bool)          = Store[b]                        : &:r2203_2, r2203_1
-# 2204|     r2204_1(glval<Bool>)    = VariableAddress[B]              : 
-# 2204|     r2204_2(glval<unknown>) = FunctionAddress[~Bool]          : 
-# 2204|     v2204_3(void)           = Call[~Bool]                     : func:r2204_2, this:r2204_1
-# 2204|     mu2204_4(unknown)       = ^CallSideEffect                 : ~m?
-# 2204|     v2204_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2204_1, ~m?
-# 2204|     mu2204_6(Bool)          = ^IndirectMayWriteSideEffect[-1] : &:r2204_1
+# 2207|   Block 5
+# 2207|     r2207_1(bool)           = Constant[0]                     : 
+# 2207|     r2207_2(glval<bool>)    = VariableAddress[b]              : 
+# 2207|     mu2207_3(bool)          = Store[b]                        : &:r2207_2, r2207_1
+# 2208|     r2208_1(glval<Bool>)    = VariableAddress[B]              : 
+# 2208|     r2208_2(glval<unknown>) = FunctionAddress[~Bool]          : 
+# 2208|     v2208_3(void)           = Call[~Bool]                     : func:r2208_2, this:r2208_1
+# 2208|     mu2208_4(unknown)       = ^CallSideEffect                 : ~m?
+# 2208|     v2208_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2208_1, ~m?
+# 2208|     mu2208_6(Bool)          = ^IndirectMayWriteSideEffect[-1] : &:r2208_1
 #-----|   Goto (back edge) -> Block 4
 
-# 2204|   Block 6
-# 2204|     r2204_7(glval<Bool>)    = VariableAddress[B]              : 
-# 2204|     r2204_8(glval<unknown>) = FunctionAddress[~Bool]          : 
-# 2204|     v2204_9(void)           = Call[~Bool]                     : func:r2204_8, this:r2204_7
-# 2204|     mu2204_10(unknown)      = ^CallSideEffect                 : ~m?
-# 2204|     v2204_11(void)          = ^IndirectReadSideEffect[-1]     : &:r2204_7, ~m?
-# 2204|     mu2204_12(Bool)         = ^IndirectMayWriteSideEffect[-1] : &:r2204_7
-# 2206|     v2206_1(void)           = NoOp                            : 
-# 2193|     v2193_6(void)           = ReturnVoid                      : 
-# 2193|     v2193_7(void)           = AliasedUse                      : ~m?
-# 2193|     v2193_8(void)           = ExitFunction                    : 
+# 2208|   Block 6
+# 2208|     r2208_7(glval<Bool>)    = VariableAddress[B]              : 
+# 2208|     r2208_8(glval<unknown>) = FunctionAddress[~Bool]          : 
+# 2208|     v2208_9(void)           = Call[~Bool]                     : func:r2208_8, this:r2208_7
+# 2208|     mu2208_10(unknown)      = ^CallSideEffect                 : ~m?
+# 2208|     v2208_11(void)          = ^IndirectReadSideEffect[-1]     : &:r2208_7, ~m?
+# 2208|     mu2208_12(Bool)         = ^IndirectMayWriteSideEffect[-1] : &:r2208_7
+# 2210|     v2210_1(void)           = NoOp                            : 
+# 2197|     v2197_6(void)           = ReturnVoid                      : 
+# 2197|     v2197_7(void)           = AliasedUse                      : ~m?
+# 2197|     v2197_8(void)           = ExitFunction                    : 
 
 perf-regression.cpp:
 #    6| void Big::Big()

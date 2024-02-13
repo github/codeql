@@ -2157,6 +2157,10 @@ void ForDestructors() {
     for(String s : vector<String>(String("hello"))) {
         String s2;
     }
+    
+    for(String s("hello"), s2("world"); c != 0; c = s.pop_back()) {
+        c = 0;
+    }
 }
 
 void IfDestructors2(bool b) {

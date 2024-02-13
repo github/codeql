@@ -6,6 +6,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir.cpp:2161:28:2161:29 | IndirectMayWriteSideEffect: s2 | Instruction 'IndirectMayWriteSideEffect: s2' has no successors in function '$@'. | ir.cpp:2151:6:2151:19 | void ForDestructors() | void ForDestructors() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
