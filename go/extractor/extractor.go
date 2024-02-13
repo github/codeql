@@ -551,6 +551,7 @@ func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, 
 			log.Printf("Warning: failed to evaluate symlinks for %s", wd)
 		}
 		file = filepath.Join(ewd, "-")
+		extraction.extractFileInfo(tw, file)
 	} else {
 		var rawfile string
 		if parts := threePartPos.FindStringSubmatch(pos); parts != nil {
