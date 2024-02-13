@@ -507,7 +507,11 @@ func extract(workspace project.GoWorkspace) bool {
 					"Unable to make module path %s relative to workspace base dir %s: %s\n",
 					filepath.Dir(module.Path), workspace.BaseDir, relErr.Error())
 			} else {
-				extractorArgs = append(extractorArgs, relModPath)
+				if relModPath != "." {
+					extractorArgs = append(extractorArgs, "."+string(os.PathSeparator)+relModPath+"/...")
+				} else {
+					extractorArgs = append(extractorArgs, relModPath+"/...")
+				}
 			}
 		}
 	}
