@@ -168,7 +168,7 @@ predicate sinkHasPrimaryName(API::Node sink, string package, string name) {
  *
  * This means it is a valid name for it, but was not chosen as the primary name.
  */
-predicate sinkHasAlias(API::Node sink, string package, string name) {
+private predicate sinkHasAlias(API::Node sink, string package, string name) {
   not sinkHasPrimaryName(sink, package, name) and
   (
     exists(string baseName, string step |
@@ -237,15 +237,6 @@ private predicate classObjectHasPrimaryName(
 /** Holds if `(package, name)` is the primary name for the class object of `cls`. */
 predicate classObjectHasPrimaryName(DataFlow::ClassNode cls, string package, string name) {
   classObjectHasPrimaryName(cls, package, name, _)
-}
-
-/** Holds if `(package, name)` is an alias for the class object of `cls`. */
-predicate classObjectHasAlias(DataFlow::ClassNode cls, string package, string name) {
-  not classObjectHasPrimaryName(cls, package, name) and
-  exists(int badness |
-    classObjectHasNameCandidate(cls, package, name, badness) and
-    badness < 100
-  )
 }
 
 /** Holds if an instance of `cls` can be exposed to client code. */
@@ -362,14 +353,28 @@ predicate functionHasPrimaryName(DataFlow::FunctionNode function, string package
 }
 
 /**
- * Holds if `(package, name)` is an alias for the given `function`.
+ * Holds if `(aliasPackage, aliasName)` is an alias for `(primaryPackage, primaryName)`,
+ * defined at `aliasDef`.
  */
-predicate functionHasAlias(DataFlow::FunctionNode function, string package, string name) {
-  not functionHasPrimaryName(function, package, name) and
-  exists(int badness |
-    functionHasNameCandidate(function, package, name, badness) and
-    badness < 100
+predicate aliasDefinition(
+  string primaryPackage, string primaryName, string aliasPackage, string aliasName,
+  API::Node aliasDef
+) {
+  exists(DataFlow::SourceNode source |
+    classObjectHasPrimaryName(source, primaryPackage, primaryName)
+    or
+    functionHasPrimaryName(source, primaryPackage, primaryName)
+  |
+    aliasDef.getAValueReachingSink() = source and
+    sinkHasPrimaryName(aliasDef, aliasPackage, aliasName, _) and
+    not (
+      primaryPackage = aliasPackage and
+      primaryName = aliasName
+    )
   )
+  or
+  sinkHasPrimaryName(aliasDef, primaryPackage, primaryName) and
+  sinkHasAlias(aliasDef, aliasPackage, aliasName)
 }
 
 /**

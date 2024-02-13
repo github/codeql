@@ -12,6 +12,8 @@ module TestConfig implements TestSig {
     result = "class"
     or
     result = "method"
+    or
+    result = "alias"
   }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
@@ -27,13 +29,25 @@ module TestConfig implements TestSig {
         EndpointNaming::classInstanceHasPrimaryName(cls, package, name)
       )
       or
-      element = "" and
       exists(DataFlow::FunctionNode function |
         not function.getFunction() = any(ConstructorDeclaration decl | decl.isSynthetic()).getBody() and
         location = function.getFunction().getLocation() and
         tag = "method" and
         EndpointNaming::functionHasPrimaryName(function, package, name)
       )
+    )
+    or
+    element = "" and
+    tag = "alias" and
+    exists(
+      API::Node aliasDef, string primaryPackage, string primaryName, string aliasPackage,
+      string aliasName
+    |
+      EndpointNaming::aliasDefinition(primaryPackage, primaryName, aliasPackage, aliasName, aliasDef) and
+      value =
+        EndpointNaming::renderName(aliasPackage, aliasName) + "==" +
+          EndpointNaming::renderName(primaryPackage, primaryName) and
+      location = aliasDef.asSink().asExpr().getLocation()
     )
   }
 }
