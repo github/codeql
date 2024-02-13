@@ -283,6 +283,43 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 		for i, workFilePath := range goWorkFiles {
 			results[i] = discoverWorkspace(workFilePath)
 		}
+
+		// Add all stray `go.mod` files (i.e. those not referenced by `go.work` files)
+		// as separate workspaces.
+		goModFiles := findGoModFiles(".")
+
+		for _, goModFile := range goModFiles {
+			// Check to see whether we already have this module file under an existing workspace.
+			found := false
+			for _, workspace := range results {
+				if workspace.Modules == nil {
+					break
+				}
+
+				for _, module := range workspace.Modules {
+					if module.Path == goModFile {
+						found = true
+						break
+					}
+				}
+
+				if found {
+					break
+				}
+			}
+
+			// If not, add it to the array.
+			if !found {
+				log.Printf("Module %s is not referenced by any go.work file; adding it separately.\n", goModFile)
+				results = append(results, GoWorkspace{
+					BaseDir: filepath.Dir(goModFile),
+					Modules: loadGoModules([]string{goModFile}),
+					DepMode: GoGetWithModules,
+					ModMode: getModMode(GoGetWithModules, filepath.Dir(goModFile)),
+				})
+			}
+		}
+
 		return results
 	}
 }
