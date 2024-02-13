@@ -1067,7 +1067,7 @@ class TranslatedConstructorBareInit extends TranslatedElement, TTranslatedConstr
     result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getALastInstructionInternal() { none() } // FIXME: does this need to be filled in?
+  override Instruction getALastInstructionInternal() { none() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()

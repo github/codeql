@@ -181,7 +181,6 @@ private class SmartPtrDestructor extends Destructor, SideEffectFunction, AliasFu
    * Gets the destructor associated with the base type of this smart pointer.
    */
   private Destructor getBaseTypeDestructor() {
-    // TODO: Check if this is join ordered correctly.
     result.getDeclaringType() = declaringType.getBaseType()
   }
 
