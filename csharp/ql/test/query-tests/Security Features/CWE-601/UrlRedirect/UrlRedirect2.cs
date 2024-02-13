@@ -20,6 +20,12 @@ public class UrlRedirectHandler2 : IHttpHandler
             // GOOD: the request parameter is validated against set of known fixed strings
             ctx.Response.Redirect(redirectUrl);
         }
+
+        var url = new Uri(redirectUrl, UriKind.RelativeOrAbsolute);
+        if (!url.IsAbsoluteUri) {
+            // GOOD: The redirect is to a relative URL
+            ctx.Response.Redirect(url.ToString());
+        }
         
     }
 }
