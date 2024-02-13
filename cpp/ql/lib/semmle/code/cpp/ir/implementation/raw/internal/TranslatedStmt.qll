@@ -674,7 +674,7 @@ class TranslatedBlock extends TranslatedStmt {
   }
 
   override TranslatedElement getLastChild() {
-    not this.isEmpty() and result = this.getStmt(this.getStmtCount() - 1)
+    result = this.getStmt(this.getStmtCount() - 1)
   }
 
   private predicate isEmpty() { not exists(stmt.getStmt(0)) }
