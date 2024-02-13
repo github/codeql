@@ -5,6 +5,7 @@ import (
 	"os"
 	"path/filepath"
 	"regexp"
+	"slices"
 	"sort"
 	"strings"
 
@@ -411,16 +412,32 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 			diagnostics.EmitGoFilesOutsideGoModules(goModPaths)
 		}
 
-		// Try to initialize a `go.mod` file automatically for the stray source files.
-		initGoModForLegacyProject(".")
+		// We need to initialise Go modules for the stray source files. Our goal is to initialise
+		// as few Go modules as possible, in locations which do not overlap with existing Go
+		// modules.
+		for _, straySourceFile := range straySourceFiles {
+			path := "."
+			components := strings.Split(filepath.Dir(straySourceFile), string(os.PathSeparator))
 
-		goWorkspaces = append(goWorkspaces, GoWorkspace{
-			BaseDir: ".",
-			Modules: loadGoModules([]string{"go.mod"}),
-			DepMode: GoGetWithModules,
-			ModMode: ModUnset,
-		})
-		totalModuleFiles += 1
+			for _, component := range components {
+				path = filepath.Join(path, component)
+
+				// Try to initialize a `go.mod` file automatically for the stray source files.
+				if !slices.Contains(goModDirs, path) {
+					initGoModForLegacyProject(path)
+					goWorkspaces = append(goWorkspaces, GoWorkspace{
+						BaseDir: path,
+						Modules: loadGoModules([]string{filepath.Join(path, "go.mod")}),
+						DepMode: GoGetWithModules,
+						ModMode: ModUnset,
+					})
+					totalModuleFiles += 1
+					goModDirs = append(goModDirs, path)
+					break
+				}
+			}
+		}
+
 		return
 	}
 
