@@ -61,7 +61,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             try
             {
                 this.dotnet = DotNet.Make(options, logger, tempWorkingDirectory);
-                runtimeLazy = new Lazy<Runtime>(() => new Runtime(dotnet));
+                runtimeLazy = new Lazy<Runtime>(() => new Runtime(dotnet, logger));
             }
             catch
             {
@@ -303,7 +303,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var packagesInPrioOrder = FrameworkPackageNames.NetFrameworks;
 
             var frameworkPaths = packagesInPrioOrder
-                .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
+                .Select((s, index) => (Index: index, Path: GetPackageDirectory(s, packageDirectory)))
                 .Where(pair => pair.Path is not null)
                 .ToArray();
 
@@ -335,6 +335,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             else if (fileContent.IsLegacyProjectStructureUsed)
             {
                 runtimeLocation = Runtime.DesktopRuntime;
+
+                if (runtimeLocation is null)
+                {
+                    logger.LogInfo("No .NET Desktop Runtime location found. Attempting to restore the .NET Framework reference assemblies manually.");
+
+                    if (TryRestorePackageManually(FrameworkPackageNames.LatestNetFrameworkReferenceAssemblies, null))
+                    {
+                        runtimeLocation = GetPackageDirectory(FrameworkPackageNames.LatestNetFrameworkReferenceAssemblies, missingPackageDirectory);
+                    }
+                }
             }
 
             runtimeLocation ??= Runtime.ExecutingRuntime;
@@ -374,7 +384,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             // First try to find ASP.NET Core assemblies in the NuGet packages
-            if (GetPackageDirectory(FrameworkPackageNames.AspNetCoreFramework) is string aspNetCorePackage)
+            if (GetPackageDirectory(FrameworkPackageNames.AspNetCoreFramework, packageDirectory) is string aspNetCorePackage)
             {
                 SelectNewestFrameworkPath(aspNetCorePackage, "ASP.NET Core", dllPaths, frameworkLocations);
                 return;
@@ -390,15 +400,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void AddMicrosoftWindowsDesktopDlls(ISet<string> dllPaths, ISet<string> frameworkLocations)
         {
-            if (GetPackageDirectory(FrameworkPackageNames.WindowsDesktopFramework) is string windowsDesktopApp)
+            if (GetPackageDirectory(FrameworkPackageNames.WindowsDesktopFramework, packageDirectory) is string windowsDesktopApp)
             {
                 SelectNewestFrameworkPath(windowsDesktopApp, "Windows Desktop App", dllPaths, frameworkLocations);
             }
         }
 
-        private string? GetPackageDirectory(string packagePrefix)
+        private string? GetPackageDirectory(string packagePrefix, TemporaryDirectory root)
         {
-            return new DirectoryInfo(packageDirectory.DirInfo.FullName)
+            return new DirectoryInfo(root.DirInfo.FullName)
                 .EnumerateDirectories(packagePrefix + "*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
                 .FirstOrDefault()?
                 .FullName;
@@ -434,19 +444,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             // Hardcoded values from https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview#implicit-using-directives
-            usings.UnionWith(new[] { "System", "System.Collections.Generic", "System.IO", "System.Linq", "System.Net.Http", "System.Threading",
-                "System.Threading.Tasks" });
+            usings.UnionWith([ "System", "System.Collections.Generic", "System.IO", "System.Linq", "System.Net.Http", "System.Threading",
+                "System.Threading.Tasks" ]);
 
             if (fileContent.UseAspNetCoreDlls)
             {
-                usings.UnionWith(new[] { "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
+                usings.UnionWith([ "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
                     "Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Routing", "Microsoft.Extensions.Configuration",
-                    "Microsoft.Extensions.DependencyInjection", "Microsoft.Extensions.Hosting", "Microsoft.Extensions.Logging" });
+                    "Microsoft.Extensions.DependencyInjection", "Microsoft.Extensions.Hosting", "Microsoft.Extensions.Logging" ]);
             }
 
             if (fileContent.UseWindowsForms)
             {
-                usings.UnionWith(new[] { "System.Drawing", "System.Windows.Forms" });
+                usings.UnionWith(["System.Drawing", "System.Windows.Forms"]);
             }
 
             usings.UnionWith(fileContent.CustomImplicitUsings);
@@ -828,36 +838,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
             {
-                logger.LogInfo($"Restoring package {package}...");
-                using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package, "missingpackages_workingdir"));
-                var success = dotnet.New(tempDir.DirInfo.FullName);
+                var success = TryRestorePackageManually(package, nugetConfig);
                 if (!success)
                 {
                     return;
-                }
-
-                success = dotnet.AddPackage(tempDir.DirInfo.FullName, package);
-                if (!success)
-                {
-                    return;
-                }
-
-                var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig));
-                if (!res.Success)
-                {
-                    if (res.HasNugetPackageSourceError)
-                    {
-                        // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
-                        res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: null, ForceReevaluation: true));
-                    }
-
-                    // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
-
-                    if (!res.Success)
-                    {
-                        logger.LogInfo($"Failed to restore nuget package {package}");
-                        return;
-                    }
                 }
 
                 lock (sync)
@@ -869,6 +853,43 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             CompilationInfos.Add(("Successfully ran fallback nuget restore", successCount.ToString()));
 
             dllPaths.Add(missingPackageDirectory.DirInfo.FullName);
+        }
+
+        private bool TryRestorePackageManually(string package, string? nugetConfig)
+        {
+            logger.LogInfo($"Restoring package {package}...");
+            using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package, "missingpackages_workingdir"));
+            var success = dotnet.New(tempDir.DirInfo.FullName);
+            if (!success)
+            {
+                return false;
+            }
+
+            success = dotnet.AddPackage(tempDir.DirInfo.FullName, package);
+            if (!success)
+            {
+                return false;
+            }
+
+            var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig));
+            if (!res.Success)
+            {
+                if (res.HasNugetPackageSourceError && nugetConfig is not null)
+                {
+                    // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
+                    res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: null, ForceReevaluation: true));
+                }
+
+                // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
+
+                if (!res.Success)
+                {
+                    logger.LogInfo($"Failed to restore nuget package {package}");
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         public void Dispose(TemporaryDirectory? dir, string name)

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -17,12 +18,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private const string aspNetCoreApp = "Microsoft.AspNetCore.App";
 
         private readonly IDotNet dotNet;
+        private readonly ILogger logger;
         private readonly Lazy<Dictionary<string, DotNetVersion>> newestRuntimes;
         private Dictionary<string, DotNetVersion> NewestRuntimes => newestRuntimes.Value;
 
-        public Runtime(IDotNet dotNet)
+        public Runtime(IDotNet dotNet, ILogger logger)
         {
             this.dotNet = dotNet;
+            this.logger = logger;
             this.newestRuntimes = new(GetNewestRuntimes);
         }
 
@@ -65,7 +68,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Locates .NET Desktop Runtimes.
         /// This includes Mono and Microsoft.NET.
         /// </summary>
-        private static IEnumerable<string> DesktopRuntimes
+        private IEnumerable<string> DesktopRuntimes
         {
             get
             {
@@ -75,21 +78,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         .OrderByDescending(Path.GetFileName);
                 }
 
-                var monoPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
-                var monoDirs = monoPath is not null
-                    ? new[] { Path.GetFullPath(Path.Combine(monoPath, "..", "lib", "mono")), monoPath }
-                    : new[] { "/usr/lib/mono", "/usr/local/mono", "/usr/local/bin/mono", @"C:\Program Files\Mono\lib\mono" };
+                string? monoDir = null;
 
-                var dir = monoDirs.FirstOrDefault(Directory.Exists);
-
-                if (dir is not null)
+                var monoPathEnv = Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_BUILDLESS_MONO_PATH");
+                if (monoPathEnv is not null)
                 {
-                    return Directory.EnumerateDirectories(dir)
-                        .Where(d => Char.IsDigit(Path.GetFileName(d)[0]))
+                    if (Directory.Exists(monoPathEnv))
+                    {
+                        monoDir = monoPathEnv;
+                    }
+                    else
+                    {
+                        logger.LogError($"The directory specified in CODEQL_EXTRACTOR_CSHARP_BUILDLESS_MONO_PATH does not exist: {monoPathEnv}");
+                    }
+                }
+                else
+                {
+                    var monoPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
+                    string[] monoDirs = monoPath is not null
+                        ? [Path.GetFullPath(Path.Combine(monoPath, "..", "lib", "mono")), monoPath]
+                        : ["/usr/lib/mono", "/usr/local/mono", "/usr/local/bin/mono", @"C:\Program Files\Mono\lib\mono"];
+
+                    monoDir = monoDirs.FirstOrDefault(Directory.Exists);
+                }
+
+                if (monoDir is not null)
+                {
+                    return Directory.EnumerateDirectories(monoDir)
+                        .Where(d => char.IsDigit(Path.GetFileName(d)[0]))
                         .OrderByDescending(Path.GetFileName);
                 }
 
-                return Enumerable.Empty<string>();
+                return [];
             }
         }
 

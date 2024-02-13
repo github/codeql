@@ -47,7 +47,7 @@ namespace Semmle.Extraction.Tests
                 "Microsoft.NETCore.App 7.0.2 [/path/dotnet/shared/Microsoft.NETCore.App]"
                 };
             var dotnet = new DotNetStub(listedRuntimes, null!);
-            var runtime = new Runtime(dotnet);
+            var runtime = new Runtime(dotnet, new LoggerStub());
 
             // Execute
             var runtimes = runtime.GetNewestRuntimes();
@@ -73,7 +73,7 @@ namespace Semmle.Extraction.Tests
                 "Microsoft.NETCore.App 8.0.0-preview.5.23280.8 [/path/dotnet/shared/Microsoft.NETCore.App]"
             };
             var dotnet = new DotNetStub(listedRuntimes, null!);
-            var runtime = new Runtime(dotnet);
+            var runtime = new Runtime(dotnet, new LoggerStub());
 
             // Execute
             var runtimes = runtime.GetNewestRuntimes();
@@ -96,7 +96,7 @@ namespace Semmle.Extraction.Tests
                 "Microsoft.NETCore.App 8.0.0-preview.5.23280.8 [/path/dotnet/shared/Microsoft.NETCore.App]"
             };
             var dotnet = new DotNetStub(listedRuntimes, null!);
-            var runtime = new Runtime(dotnet);
+            var runtime = new Runtime(dotnet, new LoggerStub());
 
             // Execute
             var runtimes = runtime.GetNewestRuntimes();
@@ -125,7 +125,7 @@ namespace Semmle.Extraction.Tests
                 @"Microsoft.WindowsDesktop.App 7.0.4 [C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App]"
             };
             var dotnet = new DotNetStub(listedRuntimes, null!);
-            var runtime = new Runtime(dotnet);
+            var runtime = new Runtime(dotnet, new LoggerStub());
 
             // Execute
             var runtimes = runtime.GetNewestRuntimes();
