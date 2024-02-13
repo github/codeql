@@ -7,15 +7,6 @@ private import codeql.dataflow.internal.DataFlowImplConsistency
 private module Input implements InputSig<CsharpDataFlow> {
   private import CsharpDataFlow
 
-  predicate uniqueEnclosingCallableExclude(Node n) {
-    // TODO: Remove once static initializers are folded into the
-    // static constructors
-    exists(ControlFlow::Node cfn |
-      cfn.getAstNode() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
-      cfn = n.getControlFlowNode()
-    )
-  }
-
   predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
     // TODO: Remove once static initializers are folded into the
     // static constructors
@@ -30,6 +21,8 @@ private module Input implements InputSig<CsharpDataFlow> {
     n instanceof ParameterNode
     or
     missingLocationExclude(n)
+    or
+    n instanceof FlowInsensitiveFieldNode
   }
 
   predicate missingLocationExclude(Node n) {

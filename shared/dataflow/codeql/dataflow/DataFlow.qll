@@ -584,7 +584,7 @@ module DataFlowMake<InputSig Lang> {
 
   signature module PathGraphSig<PathNodeSig PathNode> {
     /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-    predicate edges(PathNode a, PathNode b);
+    predicate edges(PathNode a, PathNode b, string key, string val);
 
     /** Holds if `n` is a node in the graph of data flow path explanations. */
     predicate nodes(PathNode n, string key, string val);
@@ -648,9 +648,9 @@ module DataFlowMake<InputSig Lang> {
      */
     module PathGraph implements PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-      query predicate edges(PathNode a, PathNode b) {
-        Graph1::edges(a.asPathNode1(), b.asPathNode1()) or
-        Graph2::edges(a.asPathNode2(), b.asPathNode2())
+      query predicate edges(PathNode a, PathNode b, string key, string val) {
+        Graph1::edges(a.asPathNode1(), b.asPathNode1(), key, val) or
+        Graph2::edges(a.asPathNode2(), b.asPathNode2(), key, val)
       }
 
       /** Holds if `n` is a node in the graph of data flow path explanations. */
@@ -719,7 +719,9 @@ module DataFlowMake<InputSig Lang> {
      */
     module PathGraph implements PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-      query predicate edges(PathNode a, PathNode b) { Merged::PathGraph::edges(a, b) }
+      query predicate edges(PathNode a, PathNode b, string key, string val) {
+        Merged::PathGraph::edges(a, b, key, val)
+      }
 
       /** Holds if `n` is a node in the graph of data flow path explanations. */
       query predicate nodes(PathNode n, string key, string val) {

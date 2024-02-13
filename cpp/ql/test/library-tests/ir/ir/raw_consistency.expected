@@ -6,6 +6,10 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir.cpp:2138:21:2138:21 | IndirectMayWriteSideEffect: x | Instruction 'IndirectMayWriteSideEffect: x' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
+| ir.cpp:2140:39:2140:39 | IndirectMayWriteSideEffect: call to ClassWithDestructor | Instruction 'IndirectMayWriteSideEffect: call to ClassWithDestructor' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
+| ir.cpp:2140:42:2140:76 | Constant: initialization_with_destructor_bool | Instruction 'Constant: initialization_with_destructor_bool' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
+| ir.cpp:2141:9:2141:9 | IndirectMayWriteSideEffect: x | Instruction 'IndirectMayWriteSideEffect: x' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -20,7 +24,7 @@ multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
-| ir.cpp:1486:8:1486:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1486:8:1486:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
+| ir.cpp:1488:8:1488:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1488:8:1488:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:39:15:39:15 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:32:6:32:6 | void h(int) | void h(int) |
@@ -37,4 +41,5 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
+| ir.cpp:2153:68:2153:69 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
 missingCppType

@@ -128,9 +128,31 @@ class DelegateFlow
     void M19(Action a, bool b)
     {
         if (b)
-            a = () => {};
+            a = () => { };
         a();
     }
 
-    void M20(bool b) => M19(() => {}, b);
+    void M20(bool b) => M19(() => { }, b);
+
+    Action<int> Field;
+    Action<int> Prop2 { get; set; }
+
+    DelegateFlow(Action<int> a, Action<int> b)
+    {
+        Field = a;
+        Prop2 = b;
+    }
+
+    void M20()
+    {
+        new DelegateFlow(
+            _ => { },
+            _ => { }
+        );
+
+        this.Field(0);
+        this.Prop2(0);
+        Field(0);
+        Prop2(0);
+    }
 }

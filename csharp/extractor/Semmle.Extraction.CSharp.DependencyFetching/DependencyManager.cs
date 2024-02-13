@@ -116,8 +116,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
                 shouldExtractWebViews)
             {
+                CompilationInfos.Add(("WebView extraction enabled", "1"));
                 GenerateSourceFilesFromWebViews(allNonBinaryFiles);
             }
+            else
+            {
+                CompilationInfos.Add(("WebView extraction enabled", "0"));
+            }
+
+            CompilationInfos.Add(("UseWPF set", fileContent.UseWpf ? "1" : "0"));
+            CompilationInfos.Add(("UseWindowsForms set", fileContent.UseWindowsForms ? "1" : "0"));
 
             GenerateSourceFileFromImplicitUsings();
 
@@ -161,13 +169,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             try
             {
-                var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, logger);
-                var count = nuget.InstallPackages();
-
-                if (nuget.PackageCount > 0)
+                using (var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, logger))
                 {
-                    CompilationInfos.Add(("packages.config files", nuget.PackageCount.ToString()));
-                    CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
+                    var count = nuget.InstallPackages();
+
+                    if (nuget.PackageCount > 0)
+                    {
+                        CompilationInfos.Add(("packages.config files", nuget.PackageCount.ToString()));
+                        CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
+                    }
                 }
 
                 var nugetPackageDlls = legacyPackageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
@@ -432,6 +442,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 usings.UnionWith(new[] { "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
                     "Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Routing", "Microsoft.Extensions.Configuration",
                     "Microsoft.Extensions.DependencyInjection", "Microsoft.Extensions.Hosting", "Microsoft.Extensions.Logging" });
+            }
+
+            if (fileContent.UseWindowsForms)
+            {
+                usings.UnionWith(new[] { "System.Drawing", "System.Windows.Forms" });
             }
 
             usings.UnionWith(fileContent.CustomImplicitUsings);

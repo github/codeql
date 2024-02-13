@@ -1,20 +1,20 @@
 edges
-| tests2.cpp:50:13:50:19 | **global1 | tests2.cpp:82:14:82:20 | *global1 |
-| tests2.cpp:50:23:50:43 | *call to mysql_get_client_info | tests2.cpp:50:13:50:19 | **global1 |
-| tests2.cpp:78:18:78:38 | *call to mysql_get_client_info | tests2.cpp:81:14:81:19 | *buffer |
-| tests2.cpp:91:42:91:45 | *str1 | tests2.cpp:93:14:93:17 | *str1 |
-| tests2.cpp:101:8:101:15 | *call to getpwuid | tests2.cpp:102:14:102:15 | *pw |
-| tests2.cpp:109:3:109:4 | *c1 [post update] [*ptr] | tests2.cpp:111:14:111:15 | *c1 [*ptr] |
-| tests2.cpp:109:3:109:36 | *... = ... | tests2.cpp:109:3:109:4 | *c1 [post update] [*ptr] |
-| tests2.cpp:109:12:109:17 | *call to getenv | tests2.cpp:109:3:109:36 | *... = ... |
-| tests2.cpp:111:14:111:15 | *c1 [*ptr] | tests2.cpp:111:14:111:19 | *ptr |
-| tests2.cpp:111:14:111:15 | *c1 [*ptr] | tests2.cpp:111:17:111:19 | *ptr |
-| tests2.cpp:111:17:111:19 | *ptr | tests2.cpp:111:14:111:19 | *ptr |
-| tests_sockets.cpp:26:15:26:20 | *call to getenv | tests_sockets.cpp:39:19:39:22 | *path |
-| tests_sockets.cpp:26:15:26:20 | *call to getenv | tests_sockets.cpp:43:20:43:23 | *path |
-| tests_sockets.cpp:63:15:63:20 | *call to getenv | tests_sockets.cpp:76:19:76:22 | *path |
-| tests_sockets.cpp:63:15:63:20 | *call to getenv | tests_sockets.cpp:80:20:80:23 | *path |
-| tests_sysconf.cpp:36:21:36:27 | confstr output argument | tests_sysconf.cpp:39:19:39:25 | *pathbuf |
+| tests2.cpp:50:13:50:19 | **global1 | tests2.cpp:82:14:82:20 | *global1 | provenance |  |
+| tests2.cpp:50:23:50:43 | *call to mysql_get_client_info | tests2.cpp:50:13:50:19 | **global1 | provenance |  |
+| tests2.cpp:78:18:78:38 | *call to mysql_get_client_info | tests2.cpp:81:14:81:19 | *buffer | provenance |  |
+| tests2.cpp:91:42:91:45 | *str1 | tests2.cpp:93:14:93:17 | *str1 | provenance |  |
+| tests2.cpp:101:8:101:15 | *call to getpwuid | tests2.cpp:102:14:102:15 | *pw | provenance |  |
+| tests2.cpp:109:3:109:4 | *c1 [post update] [*ptr] | tests2.cpp:111:14:111:15 | *c1 [*ptr] | provenance |  |
+| tests2.cpp:109:3:109:36 | *... = ... | tests2.cpp:109:3:109:4 | *c1 [post update] [*ptr] | provenance |  |
+| tests2.cpp:109:12:109:17 | *call to getenv | tests2.cpp:109:3:109:36 | *... = ... | provenance |  |
+| tests2.cpp:111:14:111:15 | *c1 [*ptr] | tests2.cpp:111:14:111:19 | *ptr | provenance |  |
+| tests2.cpp:111:14:111:15 | *c1 [*ptr] | tests2.cpp:111:17:111:19 | *ptr | provenance |  |
+| tests2.cpp:111:17:111:19 | *ptr | tests2.cpp:111:14:111:19 | *ptr | provenance |  |
+| tests_sockets.cpp:26:15:26:20 | *call to getenv | tests_sockets.cpp:39:19:39:22 | *path | provenance |  |
+| tests_sockets.cpp:26:15:26:20 | *call to getenv | tests_sockets.cpp:43:20:43:23 | *path | provenance |  |
+| tests_sockets.cpp:63:15:63:20 | *call to getenv | tests_sockets.cpp:76:19:76:22 | *path | provenance |  |
+| tests_sockets.cpp:63:15:63:20 | *call to getenv | tests_sockets.cpp:80:20:80:23 | *path | provenance |  |
+| tests_sysconf.cpp:36:21:36:27 | confstr output argument | tests_sysconf.cpp:39:19:39:25 | *pathbuf | provenance |  |
 nodes
 | tests2.cpp:50:13:50:19 | **global1 | semmle.label | **global1 |
 | tests2.cpp:50:23:50:43 | *call to mysql_get_client_info | semmle.label | *call to mysql_get_client_info |

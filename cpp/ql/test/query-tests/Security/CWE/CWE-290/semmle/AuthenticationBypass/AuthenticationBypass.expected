@@ -1,10 +1,10 @@
 edges
-| test.cpp:16:25:16:42 | *call to getenv | test.cpp:20:14:20:20 | *address |
-| test.cpp:27:25:27:42 | *call to getenv | test.cpp:31:14:31:20 | *address |
-| test.cpp:38:25:38:42 | *call to getenv | test.cpp:42:14:42:20 | *address |
-| test.cpp:49:25:49:42 | *call to getenv | test.cpp:52:14:52:20 | *address |
-| test.cpp:49:25:49:42 | *call to getenv | test.cpp:56:14:56:20 | *address |
-| test.cpp:49:25:49:42 | *call to getenv | test.cpp:60:14:60:20 | *address |
+| test.cpp:16:25:16:42 | *call to getenv | test.cpp:20:14:20:20 | *address | provenance |  |
+| test.cpp:27:25:27:42 | *call to getenv | test.cpp:31:14:31:20 | *address | provenance |  |
+| test.cpp:38:25:38:42 | *call to getenv | test.cpp:42:14:42:20 | *address | provenance |  |
+| test.cpp:49:25:49:42 | *call to getenv | test.cpp:52:14:52:20 | *address | provenance |  |
+| test.cpp:49:25:49:42 | *call to getenv | test.cpp:56:14:56:20 | *address | provenance |  |
+| test.cpp:49:25:49:42 | *call to getenv | test.cpp:60:14:60:20 | *address | provenance |  |
 nodes
 | test.cpp:16:25:16:42 | *call to getenv | semmle.label | *call to getenv |
 | test.cpp:20:14:20:20 | *address | semmle.label | *address |
