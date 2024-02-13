@@ -6,15 +6,7 @@ import testUtilities.InlineExpectationsTest
 import EndpointNaming::Debug
 
 module TestConfig implements TestSig {
-  string getARelevantTag() {
-    result = "instance"
-    or
-    result = "class"
-    or
-    result = "method"
-    or
-    result = "alias"
-  }
+  string getARelevantTag() { result = ["instance", "class", "method", "alias"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(string package, string name |
