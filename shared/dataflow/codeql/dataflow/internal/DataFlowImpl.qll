@@ -3259,7 +3259,8 @@ module MakeImpl<InputSig Lang> {
     private module Stage3 = MkStage<Stage2_5>::Stage<Stage3Param>;
 
     // private predicate mostBusyNodeFwd3 = Stage3::mostBusyNodeFwd/10;
-    // private predicate mostBusyNodeFwd3_5 = Stage3_5::mostBusyNodeFwd/10;
+    private predicate mostBusyNodeFwd3_5 = Stage3_5::mostBusyNodeFwd/10;
+
     // private predicate mostBusyNodeFwd4 = Stage4::mostBusyNodeFwd/10;
     private predicate mostBusyNodeFwd5 = Stage5::mostBusyNodeFwd/10;
 
