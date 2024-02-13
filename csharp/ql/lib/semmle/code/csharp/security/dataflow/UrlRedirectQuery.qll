@@ -167,7 +167,7 @@ class ContainsUrlSanitizer extends Sanitizer {
 private predicate isRelativeUrlSanitizer(Guard guard, Expr e, AbstractValue v) {
   exists(PropertyAccess access | access = guard |
     access.getProperty().getName() = "IsAbsoluteUri" and
-    // TOOD: type = URL?
+    access.getQualifier().getType().getFullyQualifiedName() = "System.Uri" and
     e = access.getQualifier() and
     v.(AbstractValues::BooleanValue).getValue() = false
   )
@@ -190,6 +190,7 @@ private predicate isHostComparisonSanitizer(Guard guard, Expr e, AbstractValue v
   exists(EqualityOperation comparison | comparison = guard |
     exists(PropertyAccess access | access = comparison.getAnOperand() |
       access.getProperty().getName() = "Host" and
+      access.getQualifier().getType().getFullyQualifiedName() = "System.Uri" and
       e = access.getQualifier()
     ) and
     if comparison instanceof EQExpr
