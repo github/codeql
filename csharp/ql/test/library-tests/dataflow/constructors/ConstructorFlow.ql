@@ -4,7 +4,7 @@
 
 import csharp
 import TestUtilities.InlineFlowTest
-import DefaultFlowTest
+import ValueFlowTest<DefaultFlowConfig>
 import PathGraph
 
 from PathNode source, PathNode sink
