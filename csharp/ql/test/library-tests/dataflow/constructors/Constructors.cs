@@ -53,6 +53,16 @@ public class Constructors
         {
             o22param = o;
         }
+
+        private void SetObjOut(out object o1, object o2)
+        {
+            o1 = o2;
+        }
+
+        public void SetObjViaOut(object o)
+        {
+            SetObjOut(out o22param, o);
+        }
     }
 
     public void M1()
@@ -81,6 +91,14 @@ public class Constructors
         var taint = Source<object>(4);
         c2.SetObj(taint);
         Sink(c2.Obj22); // $ hasValueFlow=4
+    }
+
+    public void M4()
+    {
+        var c2 = new C2(new object(), new object());
+        var taint = Source<object>(5);
+        c2.SetObjViaOut(taint);
+        Sink(c2.Obj22); // $ hasValueFlow=5
     }
 
     public static void Sink(object o) { }
