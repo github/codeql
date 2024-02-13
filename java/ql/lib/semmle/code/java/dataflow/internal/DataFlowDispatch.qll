@@ -33,6 +33,11 @@ private module DispatchImpl {
     result.asSummarizedCallable().getACall() = c.asCall()
   }
 
+  private DataFlowCallable testviableCallable(DataFlowCall c) {
+    result = viableCallable(c) and
+    result.asCallable().hasName("_getMember")
+  }
+
   private DataFlowCallable viableCallable(DataFlowCall c, int k) {
     result = viableCallable(c) and
     k = strictcount(viableCallable(c))
