@@ -404,7 +404,7 @@ predicate isPositiveExample(
  */
 private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
+  UnexploitableIsCharacteristic() { this = "argument of is-style boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getName().matches("is%") and
@@ -430,7 +430,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::Neither
  */
 private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
+  UnexploitableExistsCharacteristic() { this = "argument of existence-checking boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     exists(Callable callable |
@@ -454,7 +454,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Nei
  */
 private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  ExceptionCharacteristic() { this = "exception" }
+  ExceptionCharacteristic() { this = "argument/result of exception-related method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable and
