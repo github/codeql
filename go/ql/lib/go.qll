@@ -46,6 +46,7 @@ import semmle.go.frameworks.Gin
 import semmle.go.frameworks.GinCors
 import semmle.go.frameworks.Glog
 import semmle.go.frameworks.Gogf
+import semmle.go.frameworks.GoJose
 import semmle.go.frameworks.GoKit
 import semmle.go.frameworks.GoMicro
 import semmle.go.frameworks.GoRestfulHttp
@@ -62,7 +63,6 @@ import semmle.go.frameworks.Protobuf
 import semmle.go.frameworks.Revel
 import semmle.go.frameworks.Spew
 import semmle.go.frameworks.SQL
-import semmle.go.frameworks.Square
 import semmle.go.frameworks.Stdlib
 import semmle.go.frameworks.SystemCommandExecutors
 import semmle.go.frameworks.Testing
