@@ -574,21 +574,25 @@ func installDependenciesAndBuild() {
 		}
 	}
 
+	// Find the greatest version of Go that is required by the workspaces to check it against the version
+	// of Go that is installed on the system.
+	greatestGoVersion := project.RequiredGoVersion(&workspaces)
+
+	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
+	// Go tooling should install required Go versions as needed.
+	if semver.Compare(toolchain.GetEnvGoSemVer(), "v1.21.0") < 0 && greatestGoVersion.Found && semver.Compare("v"+greatestGoVersion.Version, toolchain.GetEnvGoSemVer()) > 0 {
+		diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer(), "v"+greatestGoVersion.Version)
+		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
+			log.Printf(
+				"A go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
+				"v"+greatestGoVersion.Version,
+				toolchain.GetEnvGoSemVer())
+		}
+	}
+
 	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
 	for i, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
-
-		// This diagnostic is not required if the system Go version is 1.21 or greater, since the
-		// Go tooling should install required Go versions as needed.
-		if semver.Compare(toolchain.GetEnvGoSemVer(), "v1.21.0") < 0 && goVersionInfo.Found && semver.Compare("v"+goVersionInfo.Version, toolchain.GetEnvGoSemVer()) > 0 {
-			diagnostics.EmitNewerGoVersionNeeded(toolchain.GetEnvGoSemVer(), "v"+goVersionInfo.Version)
-			if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
-				log.Printf(
-					"The go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
-					"v"+goVersionInfo.Version,
-					toolchain.GetEnvGoSemVer())
-			}
-		}
 
 		fixGoVendorIssues(&workspace, goVersionInfo.Found)
 
