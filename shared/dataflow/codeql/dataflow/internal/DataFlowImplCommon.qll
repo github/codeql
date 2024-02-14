@@ -386,7 +386,7 @@ module MakeImplCommon<InputSig Lang> {
   }
 
   private DataFlowCallable viableCallableExt(DataFlowCall call) {
-    result = viableCallable(call)
+    result = viableCallableCached(call)
     or
     result = viableCallableLambda(call, _)
   }
@@ -478,6 +478,9 @@ module MakeImplCommon<InputSig Lang> {
     predicate argumentNode(Node n, DataFlowCall call, ArgumentPosition pos) {
       isArgumentNode(n, call, pos)
     }
+
+    cached
+    DataFlowCallable viableCallableCached(DataFlowCall call) { result = viableCallable(call) }
 
     /**
      * Gets a viable target for the lambda call `call`.
