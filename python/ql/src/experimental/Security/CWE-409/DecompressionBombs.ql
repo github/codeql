@@ -1,11 +1,11 @@
 /**
- * @name Uncontrolled file decompression
+ * @name Decompression Bomb
  * @description Uncontrolled data that flows into decompression library APIs without checking the compression rate is dangerous
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.8
  * @precision high
- * @id py/uncontrolled-file-decompression
+ * @id py/decompression-bomb
  * @tags security
  *       experimental
  *       external/cwe/cwe-409
