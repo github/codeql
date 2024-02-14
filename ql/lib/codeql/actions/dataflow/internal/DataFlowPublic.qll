@@ -83,18 +83,18 @@ class ArgumentNode extends ExprNode {
  * Reusable workflow output nodes
  */
 class ReturnNode extends ExprNode {
-  private OutputExpr output;
+  private OutputsStmt outputs;
 
   ReturnNode() {
-    this.asExpr() = output and
-    output = any(OutputsStmt s).getOutputExpr(_)
+    this.asExpr() = outputs and
+    outputs = any(ReusableWorkflowStmt s).getOutputsStmt()
   }
 
   ReturnKind getKind() { result = TNormalReturn() }
 
-  override string toString() { result = "output " + output.toString() }
+  override string toString() { result = "output " + outputs.toString() }
 
-  override Location getLocation() { result = output.getLocation() }
+  override Location getLocation() { result = outputs.getLocation() }
 }
 
 /** Gets the node corresponding to `e`. */
@@ -106,13 +106,38 @@ Node exprNode(DataFlowExpr e) { result = TExprNode(e) }
  * The set may be interpreted differently depending on whether it is
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
-class ContentSet extends TContentSet {
-  /** Gets a textual representation of this element. */
-  string toString() { none() }
-
+class ContentSet instanceof Content {
   /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() { none() }
+  Content getAStoreContent() { result = this }
 
   /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() { none() }
+  Content getAReadContent() { result = this }
+
+  /** Gets a textual representation of this content set. */
+  string toString() { result = super.toString() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+}
+
+/** A field of an object, for example an instance variable. */
+class FieldContent extends Content, TFieldContent {
+  private string name;
+
+  FieldContent() { this = TFieldContent(name) }
+
+  /** Gets the name of the field. */
+  string getName() { result = name }
+
+  override string toString() { result = name }
 }
