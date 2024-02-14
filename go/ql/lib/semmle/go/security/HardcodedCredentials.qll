@@ -47,7 +47,7 @@ module HardcodedCredentials {
 
   /**
    * Holds if the guard `g` in its branch `branch` validates the expression `e`
-   * by comparing it to a disallowed literal.
+   * by comparing it to a literal.
    */
   private predicate constantValueCheck(DataFlow::Node g, Expr e, boolean branch) {
     exists(Literal lit, DataFlow::EqualityTestNode eq | eq = g |
@@ -59,7 +59,7 @@ module HardcodedCredentials {
   }
 
   /**
-   * A value validated by comparing it to a disallowed constant value.
+   * A value validated by comparing it to a constant value.
    * For example, in the context `if key != "invalid_key" { ... }`,
    * if `"invalid_key"` is indeed the only dangerous key then guarded uses of `key` are likely
    * to be safe.
