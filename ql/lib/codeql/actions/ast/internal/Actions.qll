@@ -294,8 +294,10 @@ module Actions {
     /** Gets the owner and name of the repository where the Action comes from, e.g. `actions/checkout` in `actions/checkout@v2`. */
     string getGitHubRepository() {
       result =
-        this.getValue().regexpCapture(usesParser(), 1) + "/" +
-          this.getValue().regexpCapture(usesParser(), 2)
+        (
+          this.getValue().regexpCapture(usesParser(), 1) + "/" +
+            this.getValue().regexpCapture(usesParser(), 2)
+        ).toLowerCase()
     }
 
     /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */

@@ -20,7 +20,7 @@ import codeql.actions.dataflow.ExternalFlow
 private class ExpressionInjectionSink extends DataFlow::Node {
   ExpressionInjectionSink() {
     exists(RunExpr e | e.getScriptExpr() = this.asExpr()) or
-    sinkNode(this, "expression-injection")
+    externallyDefinedSink(this, "expression-injection")
   }
 }
 
@@ -37,5 +37,5 @@ import MyFlow::PathGraph
 from MyFlow::PathNode source, MyFlow::PathNode sink
 where MyFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Potential injection from the ${{ " + sink.getNode().asExpr().(ExprAccessExpr).getExpression() +
+  "Potential injection from the ${{ " + sink.getNode().asExpr().(CtxAccessExpr).getExpression() +
     " }}, which may be controlled by an external user."

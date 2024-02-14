@@ -4,6 +4,8 @@ private import codeql.actions.Cfg as Cfg
 private import codeql.Locations
 private import codeql.actions.controlflow.BasicBlocks
 private import DataFlowPublic
+private import codeql.actions.dataflow.ExternalFlow
+private import codeql.actions.dataflow.FlowSteps
 
 cached
 newtype TNode = TExprNode(DataFlowExpr e)
@@ -129,25 +131,43 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { t1 = t2 }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
-private newtype TContent = TNoContent() { none() }
+newtype TContent =
+  TFieldContent(string name) {
+    name = any(StepsCtxAccessExpr a).getFieldName() or
+    name = any(NeedsCtxAccessExpr a).getFieldName() or
+    name = any(JobsCtxAccessExpr a).getFieldName()
+  }
 
+/**
+ * A reference contained in an object. Examples include instance fields, the
+ * contents of a collection object, the contents of an array or pointer.
+ */
 class Content extends TContent {
+  /** Gets the type of the contained data for the purpose of type pruning. */
+  DataFlowType getType() { any() }
+
   /** Gets a textual representation of this element. */
-  string toString() { none() }
+  abstract string toString();
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
+  }
 }
 
-predicate forceHighPrecision(Content c) { none() }
+predicate forceHighPrecision(Content c) { c instanceof FieldContent }
 
-newtype TContentSet = TNoContentSet() { none() }
+class ContentApprox = ContentSet;
 
-private newtype TContentApprox = TNoContentApprox() { none() }
-
-class ContentApprox extends TContentApprox {
-  /** Gets a textual representation of this element. */
-  string toString() { none() }
-}
-
-ContentApprox getContentApprox(Content c) { none() }
+ContentApprox getContentApprox(Content c) { result = c }
 
 /**
  * Made a string to match the ArgumentPosition type.
@@ -169,11 +189,15 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos =
 
 /**
  * Holds if there is a local flow step between a ${{}} expression accesing a step output variable and the step output itself
+ * But only for those cases where the step output is defined externally in a MaD specification.
+ * The reason for this is that we don't currently have a way to specify that a source starts with a non-empty access
+ * path so  the easiest thing is to add the corresponding read steps of that field as local flow steps as well.
  * e.g. ${{ steps.step1.output.foo }}
  */
 predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(StepStmt astFrom, StepOutputAccessExpr astTo |
-    (astFrom instanceof UsesExpr or astFrom instanceof RunExpr) and
+  exists(StepStmt astFrom, StepsCtxAccessExpr astTo |
+    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
+    astFrom instanceof UsesExpr and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom
@@ -182,13 +206,14 @@ predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
 
 /**
  * Holds if there is a local flow step between a ${{}} expression accesing a job output variable and the job output itself
- * e.g. ${{ needs.job1.output.foo }} or ${{ job.job1.output.foo }}
+ * e.g. ${{ needs.job1.output.foo }} or ${{ jobs.job1.output.foo }}
  */
 predicate jobsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, JobOutputAccessExpr astTo |
+  exists(Expression astFrom, CtxAccessExpr astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
-    astTo.getRefExpr() = astFrom
+    astTo.getRefExpr() = astFrom and
+    (astTo instanceof NeedsCtxAccessExpr or astTo instanceof JobsCtxAccessExpr)
   )
 }
 
@@ -197,7 +222,7 @@ predicate jobsCtxLocalStep(Node nodeFrom, Node nodeTo) {
  * e.g. ${{ inputs.foo }}
  */
 predicate inputsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, InputAccessExpr astTo |
+  exists(Expression astFrom, InputsCtxAccessExpr astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom
@@ -209,10 +234,13 @@ predicate inputsCtxLocalStep(Node nodeFrom, Node nodeTo) {
  * e.g. ${{ env.foo }}
  */
 predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, EnvAccessExpr astTo |
+  exists(Expression astFrom, EnvCtxAccessExpr astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
-    astTo.getRefExpr() = astFrom
+    (
+      externallyDefinedSource(nodeFrom, _, "env." + astTo.getFieldName()) or
+      astTo.getRefExpr() = astFrom
+    )
   )
 }
 
@@ -245,18 +273,62 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { localFlowStep(nodeFr
 predicate jumpStep(Node nodeFrom, Node nodeTo) { none() }
 
 /**
+ * A read step to read the value of a ReusableWork uses step  and connect it to its
+ * corresponding JobOutputAccessExpr
+ */
+predicate reusableWorkflowReturnReadStep(Node node1, Node node2, ContentSet c) {
+  exists(NeedsCtxAccessExpr expr, string fieldName |
+    expr.usesReusableWorkflow() and
+    expr.getRefExpr() = node1.asExpr() and
+    expr.getFieldName() = fieldName and
+    expr = node2.asExpr() and
+    c = any(FieldContent ct | ct.getName() = fieldName)
+  )
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
  * `node1` references an object with a content `c.getAReadContent()` whose
  * value ends up in `node2`.
  */
-predicate readStep(Node node1, ContentSet c, Node node2) { none() }
+predicate readStep(Node node1, ContentSet c, Node node2) {
+  // TODO: Extract to its own predicate
+  exists(StepsCtxAccessExpr access |
+    c = any(FieldContent ct | ct.getName() = access.getFieldName()) and
+    node1.asExpr() = access.getRefExpr() and
+    node2.asExpr() = access
+  )
+  or
+  reusableWorkflowReturnReadStep(node1, node2, c)
+}
+
+/**
+ * A store step to store the value of a ReusableWorkflowStmt output expr into the return node (node2)
+ * with a given access path (fieldName)
+ */
+predicate reusableWorkflowReturnStoreStep(Node node1, Node node2, ContentSet c) {
+  exists(ReusableWorkflowStmt stmt, OutputsStmt out, string fieldName |
+    out = stmt.getOutputsStmt() and
+    node1.asExpr() = out.getOutputExpr(fieldName) and
+    node2.asExpr() = out and
+    c = any(FieldContent ct | ct.getName() = fieldName)
+  )
+}
 
 /**
  * Holds if data can flow from `node1` to `node2` via a store into `c`.  Thus,
  * `node2` references an object with a content `c.getAStoreContent()` that
  * contains the value of `node1`.
  */
-predicate storeStep(Node node1, ContentSet c, Node node2) { none() }
+predicate storeStep(Node node1, ContentSet c, Node node2) {
+  reusableWorkflowReturnStoreStep(node1, node2, c)
+  or
+  // TODO: rename to xxxxStoreStep
+  externallyDefinedSummary(node1, node2, c)
+  or
+  // TODO: rename to xxxxStoreStep
+  runEnvToScriptstep(node1, node2, c)
+}
 
 /**
  * Holds if values stored inside content `c` are cleared at node `n`. For example,

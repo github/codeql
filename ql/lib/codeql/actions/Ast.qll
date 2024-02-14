@@ -95,6 +95,8 @@ class OutputsStmt extends Statement instanceof YamlMapping {
     this.(YamlMapping).lookup(name).(YamlMapping).lookup("value") = result or
     this.(YamlMapping).lookup(name) = result
   }
+
+  string getAnOutputName() { this.(YamlMapping).maps(any(YamlString s | s.getValue() = result), _) }
 }
 
 class InputExpr extends Expression instanceof YamlString {
@@ -158,6 +160,10 @@ class JobStmt extends Statement instanceof Actions::Job {
    *     arg1: value1
    */
   JobUsesExpr getUsesExpr() { result.getJobStmt() = this }
+
+  predicate usesReusableWorkflow() {
+    this.(YamlMapping).maps(any(YamlString s | s.getValue() = "uses"), _)
+  }
 }
 
 /**
@@ -353,25 +359,50 @@ class ExprAccessExpr extends Expression instanceof YamlString {
   string getExpression() { result = expr }
 
   JobStmt getJobStmt() { result.getAChildNode*() = this }
+}
+
+/**
+ * A context access expression.
+ * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
+ */
+class CtxAccessExpr extends ExprAccessExpr {
+  CtxAccessExpr() {
+    expr.regexpMatch([
+        stepsCtxRegex(), needsCtxRegex(), jobsCtxRegex(), envCtxRegex(), inputsCtxRegex()
+      ])
+  }
+
+  abstract string getFieldName();
 
   abstract Expression getRefExpr();
 }
 
+private string stepsCtxRegex() { result = "steps\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)" }
+
+private string needsCtxRegex() { result = "needs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)" }
+
+private string jobsCtxRegex() { result = "jobs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)" }
+
+private string envCtxRegex() { result = "env\\.([A-Za-z0-9_-]+)" }
+
+private string inputsCtxRegex() { result = "inputs\\.([A-Za-z0-9_-]+)" }
+
 /**
- * Holds for an ExprAccessExpr accesing the `steps` context.
+ * Holds for an expression accesing the `steps` context.
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ steps.changed-files.outputs.all_changed_files }}`
  */
-class StepOutputAccessExpr extends ExprAccessExpr {
+class StepsCtxAccessExpr extends CtxAccessExpr {
   string stepId;
-  string varName;
+  string fieldName;
 
-  StepOutputAccessExpr() {
-    stepId =
-      this.getExpression().regexpCapture("steps\\.([A-Za-z0-9_-]+)\\.outputs\\.[A-Za-z0-9_-]+", 1) and
-    varName =
-      this.getExpression().regexpCapture("steps\\.[A-Za-z0-9_-]+\\.outputs\\.([A-Za-z0-9_-]+)", 1)
+  StepsCtxAccessExpr() {
+    expr.regexpMatch(stepsCtxRegex()) and
+    stepId = expr.regexpCapture(stepsCtxRegex(), 1) and
+    fieldName = expr.regexpCapture(stepsCtxRegex(), 2)
   }
+
+  override string getFieldName() { result = fieldName }
 
   override Expression getRefExpr() {
     this.getLocation().getFile() = result.getLocation().getFile() and
@@ -380,79 +411,112 @@ class StepOutputAccessExpr extends ExprAccessExpr {
 }
 
 /**
- * Holds for an ExprAccessExpr accesing the `needs` or `job` contexts.
+ * Holds for an expression accesing the `needs` context.
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
- * e.g. `${{ needs.job1.outputs.foo}}` or `${{ jobs.job1.outputs.foo}}` (for reusable workflows)
+ * e.g. `${{ needs.job1.outputs.foo}}`
  */
-class JobOutputAccessExpr extends ExprAccessExpr {
+class NeedsCtxAccessExpr extends CtxAccessExpr {
+  JobStmt job;
   string jobId;
-  string varName;
+  string fieldName;
 
-  JobOutputAccessExpr() {
-    jobId =
-      this.getExpression()
-          .regexpCapture("(needs|jobs)\\.([A-Za-z0-9_-]+)\\.outputs\\.[A-Za-z0-9_-]+", 2) and
-    varName =
-      this.getExpression()
-          .regexpCapture("(needs|jobs)\\.[A-Za-z0-9_-]+\\.outputs\\.([A-Za-z0-9_-]+)", 2)
+  NeedsCtxAccessExpr() {
+    expr.regexpMatch(needsCtxRegex()) and
+    jobId = expr.regexpCapture(needsCtxRegex(), 1) and
+    fieldName = expr.regexpCapture(needsCtxRegex(), 2) and
+    job.getId() = jobId
   }
+
+  predicate usesReusableWorkflow() { job.usesReusableWorkflow() }
+
+  override string getFieldName() { result = fieldName }
+
+  override Expression getRefExpr() {
+    job.getLocation().getFile() = this.getLocation().getFile() and
+    (
+      // regular jobs
+      job.getOutputStmt().getOutputExpr(fieldName) = result
+      or
+      // jobs calling reusable workflows
+      job.getUsesExpr() = result
+    )
+  }
+}
+
+/**
+ * Holds for an expression accesing the `jobs` context.
+ * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
+ * e.g. `${{ jobs.job1.outputs.foo}}` (within reusable workflows)
+ */
+class JobsCtxAccessExpr extends CtxAccessExpr {
+  string jobId;
+  string fieldName;
+
+  JobsCtxAccessExpr() {
+    expr.regexpMatch(jobsCtxRegex()) and
+    jobId = expr.regexpCapture(jobsCtxRegex(), 1) and
+    fieldName = expr.regexpCapture(jobsCtxRegex(), 2)
+  }
+
+  override string getFieldName() { result = fieldName }
 
   override Expression getRefExpr() {
     exists(JobStmt job |
       job.getId() = jobId and
       job.getLocation().getFile() = this.getLocation().getFile() and
-      (
-        // A Job can have multiple outputs, so we need to check both
-        // jobs.<job_id>.outputs.<output_name>
-        job.getOutputStmt().getOutputExpr(varName) = result
-        or
-        // jobs.<job_id>.uses (variables returned from the reusable workflow
-        job.getUsesExpr() = result
-      )
+      job.getOutputStmt().getOutputExpr(fieldName) = result
     )
   }
 }
 
 /**
- * Holds for an ExprAccessExpr accesing the `inputs` context.
+ * Holds for an expression the `inputs` context.
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ inputs.foo }}`
  */
-class InputAccessExpr extends ExprAccessExpr {
-  string paramName;
+class InputsCtxAccessExpr extends CtxAccessExpr {
+  string fieldName;
 
-  InputAccessExpr() {
-    paramName = this.getExpression().regexpCapture("inputs\\.([A-Za-z0-9_-]+)", 1)
+  InputsCtxAccessExpr() {
+    expr.regexpMatch(inputsCtxRegex()) and
+    fieldName = expr.regexpCapture(inputsCtxRegex(), 1)
   }
+
+  override string getFieldName() { result = fieldName }
 
   override Expression getRefExpr() {
     exists(ReusableWorkflowStmt w |
       w.getLocation().getFile() = this.getLocation().getFile() and
-      w.getInputsStmt().getInputExpr(paramName) = result
+      w.getInputsStmt().getInputExpr(fieldName) = result
     )
     or
     exists(CompositeActionStmt a |
       a.getLocation().getFile() = this.getLocation().getFile() and
-      a.getInputsStmt().getInputExpr(paramName) = result
+      a.getInputsStmt().getInputExpr(fieldName) = result
     )
   }
 }
 
 /**
- * Holds for an ExprAccessExpr accesing the `env` context.
+ * Holds for an expression accesing the `env` context.
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ env.foo }}`
  */
-class EnvAccessExpr extends ExprAccessExpr {
-  string varName;
+class EnvCtxAccessExpr extends CtxAccessExpr {
+  string fieldName;
 
-  EnvAccessExpr() { varName = this.getExpression().regexpCapture("env\\.([A-Za-z0-9_-]+)", 1) }
+  EnvCtxAccessExpr() {
+    expr.regexpMatch(envCtxRegex()) and
+    fieldName = expr.regexpCapture(envCtxRegex(), 1)
+  }
+
+  override string getFieldName() { result = fieldName }
 
   override Expression getRefExpr() {
-    exists(JobUsesExpr s | s.getEnvExpr(varName) = result)
+    exists(JobUsesExpr s | s.getEnvExpr(fieldName) = result)
     or
-    exists(StepUsesExpr s | s.getEnvExpr(varName) = result)
+    exists(StepUsesExpr s | s.getEnvExpr(fieldName) = result)
     or
-    exists(RunExpr s | s.getEnvExpr(varName) = result)
+    exists(RunExpr s | s.getEnvExpr(fieldName) = result)
   }
 }

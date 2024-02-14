@@ -33,4 +33,10 @@ jobs:
             echo "$file was changed"
           done
 
+      - name: List all changed files
+        id: no-flow
+        run: |
+          for file in ${{ steps.source.outputs.all_changed_files_count }}; do
+            echo "$file was changed"
+          done
 
