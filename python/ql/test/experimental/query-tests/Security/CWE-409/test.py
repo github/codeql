@@ -55,26 +55,21 @@ async def bomb(file_path):
     pandas.read_table(file_path, compression='gzip')  # $ result=BAD
     pandas.read_xml(file_path, compression='gzip')  # $ result=BAD
 
-    pandas.read_csv(filepath_or_buffer=file_path,
-                    compression='gzip')  # $ result=BAD
+    pandas.read_csv(filepath_or_buffer=file_path, compression='gzip')  # $ result=BAD
     pandas.read_json(file_path, compression='gzip')  # $ result=BAD
     pandas.read_sas(file_path, compression='gzip')  # $ result=BAD
-    pandas.read_stata(filepath_or_buffer=file_path,
-                      compression='gzip')  # $ result=BAD
+    pandas.read_stata(filepath_or_buffer=file_path, compression='gzip')  # $ result=BAD
     pandas.read_table(file_path, compression='gzip')  # $ result=BAD
-    pandas.read_xml(path_or_buffer=file_path,
-                    compression='gzip')  # $ result=BAD
+    pandas.read_xml(path_or_buffer=file_path, compression='gzip')  # $ result=BAD
 
     # no compression no DOS
     pandas.read_table(file_path, compression='tar')  # $result=OK
     pandas.read_xml(file_path, compression='tar')  # $result=OK
 
-    pandas.read_csv(filepath_or_buffer=file_path,
-                    compression='tar')  # $result=OK
+    pandas.read_csv(filepath_or_buffer=file_path, compression='tar')  # $result=OK
     pandas.read_json(file_path, compression='tar')  # $result=OK
     pandas.read_sas(file_path, compression='tar')  # $result=OK
-    pandas.read_stata(filepath_or_buffer=file_path,
-                      compression='tar')  # $result=OK
+    pandas.read_stata(filepath_or_buffer=file_path, compression='tar')  # $result=OK
     pandas.read_table(file_path, compression='tar')  # $result=OK
     pandas.read_xml(path_or_buffer=file_path, compression='tar')  # $result=OK
 
