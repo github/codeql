@@ -14,7 +14,7 @@ import (
 )
 
 func check_ok() (interface{}, error) {
-	key := []byte(`key`)
+	key := []byte(`some_key`)
 	return cristal.NewSignerHS(cristal.HS256, key) // BAD
 }
 
