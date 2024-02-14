@@ -3,6 +3,7 @@ private import DataFlowUtil
 private import semmle.code.cpp.ir.IR
 private import DataFlowDispatch
 private import semmle.code.cpp.ir.internal.IRCppLanguage
+private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
@@ -381,9 +382,23 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
   override predicate argumentOf(DataFlowCall dfCall, ArgumentPosition pos) {
     exists(int indirectionIndex |
       pos = TIndirectionPosition(argumentIndex, pragma[only_bind_into](indirectionIndex)) and
-      this.getCallInstruction() = dfCall and
+      this.getCallInstruction() = dfCall.asCallInstruction() and // TODO: or summarized call?
       super.hasAddressOperandAndIndirectionIndex(_, pragma[only_bind_into](indirectionIndex))
     )
+  }
+}
+
+class SummaryArgumentNode extends ArgumentNode, FlowSummaryNode {
+  private SummaryCall call_;
+  private ArgumentPosition pos_;
+
+  SummaryArgumentNode() {
+    FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
+  }
+
+  override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    call = call_ and
+    pos = pos_
   }
 }
 
@@ -659,19 +674,19 @@ private class DirectCallOutNode extends OutNode {
 
   DirectCallOutNode() { simpleOutNode(this, call) }
 
-  override DataFlowCall getCall() { result = call }
+  override DataFlowCall getCall() { result.asCallInstruction() = call } // TODO: or summarized call?
 
   override ReturnKind getReturnKind() { result = TNormalReturnKind(0) }
 }
 
 private class IndirectCallOutNode extends OutNode, IndirectReturnOutNode {
-  override DataFlowCall getCall() { result = this.getCallInstruction() }
+  override DataFlowCall getCall() { result.asCallInstruction() = this.getCallInstruction() } // TODO: or summarized call?
 
   override ReturnKind getReturnKind() { result = TNormalReturnKind(this.getIndirectionIndex()) }
 }
 
 private class SideEffectOutNode extends OutNode, IndirectArgumentOutNode {
-  override DataFlowCall getCall() { result = this.getCallInstruction() }
+  override DataFlowCall getCall() { result.asCallInstruction() = this.getCallInstruction() } // TODO: or summarized call?
 
   override ReturnKind getReturnKind() {
     result = TIndirectReturnKind(this.getArgumentIndex(), this.getIndirectionIndex())
@@ -938,9 +953,111 @@ class DataFlowExpr = Expr;
 
 class DataFlowType = Type;
 
-/** A function call relevant for data flow. */
-class DataFlowCall extends CallInstruction {
-  DataFlowCallable getEnclosingCallable() { result = this.getEnclosingFunction() }
+cached
+newtype TDataFlowCall =
+  TNormalCall(CallInstruction call) or
+  TSummaryCall(
+    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+  ) {
+    FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
+  }
+
+/**
+ * A function call relevant for data flow. This includes calls from source
+ * code and calls inside library callables with a flow summary.
+ */
+class DataFlowCall extends TDataFlowCall {
+  /**
+   * Gets the underlying data flow call instruction, if any.
+   */
+  CallInstruction asCallInstruction() { none() }
+
+  /**
+   * Gets the operand the specifies the target function of the call.
+   */
+  CallTargetOperand getCallTargetOperand() { none() }
+
+  /**
+   * Gets the `Function` that the call targets, if this is statically known.
+   */
+  Function getStaticCallTarget() { none() }
+
+  /**
+   * Gets the `index`'th argument operand. The qualifier is considered to have index `-1`.
+   */
+  ArgumentOperand getArgumentOperand(int index) { none() }
+
+  /**
+   * Gets the argument at the specified index, or `this` if `index` is `-1`.
+   */
+  pragma[noinline]
+  final Instruction getArgument(int index) { result = this.getArgumentOperand(index).getDef() }
+
+  /**
+   * Gets the number of arguments of the call, including the `this` pointer, if any.
+   */
+  final int getNumberOfArguments() { result = count(this.getArgumentOperand(_)) }
+
+  /**
+   * Gets the enclosing callable, if any.
+   */
+  DataFlowCallable getEnclosingCallable() { none() }
+
+  /**
+   * Gets a textual representation of this call.
+   */
+  string toString() { none() }
+
+  /**
+   * Gets the location of this call.
+   */
+  Location getLocation() { none() }
+}
+
+private class NormalCall extends DataFlowCall, TNormalCall {
+  private CallInstruction call;
+
+  NormalCall() { this = TNormalCall(call) }
+
+  override CallInstruction asCallInstruction() { result = call }
+
+  override CallTargetOperand getCallTargetOperand() { result = call.getCallTargetOperand() }
+
+  override Function getStaticCallTarget() { result = call.getStaticCallTarget() }
+
+  override ArgumentOperand getArgumentOperand(int index) {
+    result = call.getArgumentOperand(index)
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = call.getEnclosingFunction() }
+
+  override string toString() { result = call.toString() }
+
+  override Location getLocation() { result = call.getLocation() }
+}
+
+class SummaryCall extends DataFlowCall, TSummaryCall {
+  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
+
+  SummaryCall() { this = TSummaryCall(c, receiver) }
+
+  /** Gets the data flow node that this call targets. */
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
+
+//  override CallTargetOperand getCallTargetOperand() TODO
+
+  override Function getStaticCallTarget() { // TODO: should this return DataFlowCallable?
+    result = c
+  }
+
+//  override ArgumentOperand getArgumentOperand(int index) TODO
+
+//  override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) } TODO
+
+  override string toString() { result = "[summary] call to " + receiver + " in " + c }
+
+  override UnknownLocation getLocation() { any() }
 }
 
 module IsUnreachableInCall {

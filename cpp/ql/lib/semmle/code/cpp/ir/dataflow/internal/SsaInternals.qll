@@ -740,7 +740,7 @@ private predicate isArgumentOfCallableInstruction(DataFlowCall call, Instruction
 }
 
 private predicate isArgumentOfCallableOperand(DataFlowCall call, Operand operand) {
-  operand.(ArgumentOperand).getCall() = call
+  operand = call.getArgumentOperand(_)
   or
   exists(FieldAddressInstruction fai |
     fai.getObjectAddressOperand() = operand and

@@ -23,7 +23,7 @@ DataFlowCallable defaultViableCallable(DataFlowCall call) {
   // function with the right signature is present in the database, we return
   // that as a potential callee.
   exists(string qualifiedName, int nparams |
-    callSignatureWithoutBody(qualifiedName, nparams, call) and
+    callSignatureWithoutBody(qualifiedName, nparams, call.asCallInstruction()) and
     functionSignatureWithBody(qualifiedName, nparams, result) and
     strictcount(Function other | functionSignatureWithBody(qualifiedName, nparams, other)) = 1
   )
@@ -40,7 +40,7 @@ DataFlowCallable viableCallable(DataFlowCall call) {
   result = defaultViableCallable(call)
   or
   // Additional call targets
-  result = any(AdditionalCallTarget additional).viableTarget(call.getUnconvertedResultExpression())
+  result = any(AdditionalCallTarget additional).viableTarget(call.asCallInstruction().getUnconvertedResultExpression())
 }
 
 /**
@@ -179,7 +179,7 @@ private module VirtualDispatch {
       exists(this.getStaticCallTarget().(VirtualFunction).getAnOverridingFunction())
     }
 
-    override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getThisArgument() }
+    override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getArgument(-1) }
 
     override MemberFunction resolve() {
       exists(Class overridingClass |
