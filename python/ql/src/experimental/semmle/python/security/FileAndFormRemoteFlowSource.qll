@@ -1,5 +1,4 @@
 import python
-import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
 
@@ -8,10 +7,10 @@ import semmle.python.ApiGraphs
  */
 module FileAndFormRemoteFlowSource {
   /**
-   * A
+   * A FastAPI Remote Flow Source for requests with multipart data in the body or requests with single file in the body
    */
-  class FastAPI extends DataFlow::Node {
-    FastAPI() {
+  class FastApi extends DataFlow::Node {
+    FastApi() {
       exists(API::Node fastApiParam, Expr fastApiUploadFile |
         fastApiParam =
           API::moduleImport("fastapi")

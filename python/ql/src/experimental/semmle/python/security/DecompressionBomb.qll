@@ -1,5 +1,4 @@
 import python
-import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.RemoteFlowSources
@@ -26,7 +25,7 @@ module DecompressionBomb {
 
 module ZipFile {
   /**
-   * A `zipfile` Instance
+   * Gets `zipfile` Instance
    *
    * ```python
    * zipfile.ZipFile()
@@ -129,7 +128,7 @@ module TarFile {
   }
 
   /**
-   * A tarfile instance for extracting compressed data
+   * Gets tarfile instance for extracting compressed data
    */
   API::Node tarfileExtractMember() {
     result =
@@ -374,7 +373,7 @@ module BombsConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource
     or
-    source instanceof FastAPI
+    source instanceof FastApi
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionBomb::Sink }

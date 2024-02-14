@@ -12,11 +12,6 @@
  */
 
 import python
-import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.TaintTracking
-import semmle.python.ApiGraphs
-import semmle.python.dataflow.new.RemoteFlowSources
-import semmle.python.dataflow.new.internal.DataFlowPublic
 import experimental.semmle.python.security.DecompressionBomb
 import BombsFlow::PathGraph
 
