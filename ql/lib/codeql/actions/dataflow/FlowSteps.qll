@@ -40,7 +40,7 @@ class AdditionalTaintStep extends Unit {
  *      echo "foo=$(echo $TAINTED)" >> $GITHUB_OUTPUT
  *      echo "test=${{steps.step1.outputs.MSG}}" >> "$GITHUB_OUTPUT"
  */
-predicate runEnvToScriptstep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
+predicate runEnvToScriptStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
   exists(RunExpr r, string varName, string output |
     c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output\\.", "")) and
     r.getEnvExpr(varName) = pred.asExpr() and
