@@ -35,7 +35,7 @@ private class GinJwtSign extends HardcodedCredentials::Sink {
 private class SquareJoseKey extends HardcodedCredentials::Sink {
   SquareJoseKey() {
     exists(Field f, string pkg |
-      pkg = ["github.com/square/go-jose/v3", "gopkg.in/square/go-jose.v2"]
+      pkg = [package("github.com/square/go-jose", ""), "gopkg.in/square/go-jose.v2"]
     |
       f.hasQualifiedName(pkg, ["Recipient", "SigningKey"], "Key") and
       f.getAWrite().getRhs() = this
