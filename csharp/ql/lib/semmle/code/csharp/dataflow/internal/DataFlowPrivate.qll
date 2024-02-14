@@ -69,6 +69,17 @@ abstract class NodeImpl extends Node {
   abstract string toStringImpl();
 }
 
+// TODO: Remove once static initializers are folded into the
+// static constructors
+private DataFlowCallable getEnclosingStaticFieldOrProperty(Expr e) {
+  result.asFieldOrProperty() =
+    any(FieldOrProperty f |
+      f.isStatic() and
+      e = f.getAChild+() and
+      not exists(e.getEnclosingCallable())
+    )
+}
+
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
     result.asCallable() =
@@ -76,6 +87,8 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
         this.getExpr().(CIL::Expr).getEnclosingCallable().(DotNet::Callable),
         this.getControlFlowNodeImpl().getEnclosingCallable()
       ]
+    or
+    result = getEnclosingStaticFieldOrProperty(this.asExpr())
   }
 
   override DotNet::Type getTypeImpl() {
@@ -247,6 +260,15 @@ module LocalFlow {
         isSuccessor = true
         or
         e1 = e2.(UncheckedExpr).getExpr() and
+        scope = e2 and
+        isSuccessor = true
+        or
+        e1 = e2.(CollectionExpression).getAnElement() and
+        e1 instanceof SpreadElementExpr and
+        scope = e2 and
+        isSuccessor = true
+        or
+        e1 = e2.(SpreadElementExpr).getExpr() and
         scope = e2 and
         isSuccessor = true
         or
@@ -531,6 +553,8 @@ module LocalFlow {
       not t instanceof NullType
       or
       t = any(TypeParameter tp | not tp.isValueType())
+      or
+      t.(Struct).isRef()
     ) and
     not exists(getALastEvalNode(result))
   }
@@ -602,18 +626,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   nodeTo.(ObjectCreationNode).getPreUpdateNode() = nodeFrom.(ObjectInitializerNode)
 }
 
-pragma[noinline]
-private Expr getImplicitArgument(Call c, int pos) {
-  result = c.getArgument(pos) and
-  not exists(result.getExplicitArgumentName())
-}
-
-pragma[nomagic]
-private Expr getExplicitArgument(Call c, string name) {
-  result = c.getAnArgument() and
-  result.getExplicitArgumentName() = name
-}
-
 /**
  * Holds if `arg` is a `params` argument of `c`, for parameter `p`, and `arg` will
  * be wrapped in an array by the C# compiler.
@@ -624,11 +636,7 @@ private predicate isParamsArg(Call c, Expr arg, Parameter p) {
     p = target.getAParameter() and
     p.isParams() and
     numArgs = c.getNumberOfArguments() and
-    arg =
-      [
-        getImplicitArgument(c, [p.getPosition() .. numArgs - 1]),
-        getExplicitArgument(c, p.getName())
-      ]
+    arg = c.getArgumentForParameter(p)
   |
     numArgs > target.getNumberOfParameters()
     or
@@ -676,11 +684,11 @@ private predicate fieldOrPropertyStore(Expr e, Content c, Expr src, Expr q, bool
       f instanceof InstanceFieldOrProperty
       or
       exists(
-        FlowSummaryImpl::Public::SummarizedCallable sc,
-        FlowSummaryImpl::Public::SummaryComponentStack input
+        FlowSummaryImpl::Private::SummarizedCallableImpl sc,
+        FlowSummaryImpl::Private::SummaryComponentStack input
       |
         sc.propagatesFlow(input, _, _) and
-        input.contains(FlowSummary::SummaryComponent::content(f.getContent()))
+        input.contains(FlowSummaryImpl::Private::SummaryComponent::content(f.getContent()))
       )
     )
   |
@@ -752,6 +760,15 @@ private predicate fieldOrPropertyRead(Expr e1, Content c, FieldOrPropertyRead e2
       overridesOrImplementsSourceDecl(target, ret)
     )
   )
+}
+
+/**
+ * Holds if `ce` is a collection expression that adds `src` to the collection `ce`.
+ */
+private predicate collectionStore(Expr src, CollectionExpression ce) {
+  // Collection expression, `[1, src, 3]`
+  src = ce.getAnElement() and
+  not src instanceof SpreadElementExpr
 }
 
 /**
@@ -907,7 +924,8 @@ private module Cached {
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
       callCfn = any(Call c | isParamsArg(c, _, _)).getAControlFlowNode()
-    }
+    } or
+    TFlowInsensitiveFieldNode(FieldOrProperty f) { f.isFieldLike() }
 
   /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -1017,6 +1035,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof ParamsArgumentNode
   or
   n.asExpr() = any(WithExpr we).getInitializer()
+  or
+  n instanceof FlowInsensitiveFieldNode
 }
 
 /** A CIL SSA definition, viewed as a node in a data flow graph. */
@@ -1342,6 +1362,8 @@ private module ArgumentNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = cfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(cfn.getAstNode())
     }
 
     override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
@@ -1381,6 +1403,8 @@ private module ArgumentNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = callCfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(callCfn.getAstNode())
     }
 
     override Type getTypeImpl() { result = this.getParameter().getType() }
@@ -1393,11 +1417,11 @@ private module ArgumentNodes {
   }
 
   private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNodeImpl {
-    private DataFlowCall call_;
+    private SummaryCall call_;
     private ArgumentPosition pos_;
 
     SummaryArgumentNode() {
-      FlowSummaryImpl::Private::summaryArgumentNode(call_, this.getSummaryNode(), pos_)
+      FlowSummaryImpl::Private::summaryArgumentNode(call_.getReceiver(), this.getSummaryNode(), pos_)
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -1683,11 +1707,11 @@ private module OutNodes {
   }
 
   private class SummaryOutNode extends FlowSummaryNode, OutNode {
-    private DataFlowCall call;
+    private SummaryCall call;
     private ReturnKind kind_;
 
     SummaryOutNode() {
-      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), kind_)
+      FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), kind_)
     }
 
     override DataFlowCall getCall(ReturnKind kind) { result = call and kind = kind_ }
@@ -1700,7 +1724,7 @@ import OutNodes
 class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
-  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
+  FlowSummary::SummarizedCallable getSummarizedCallable() {
     result = this.getSummaryNode().getSummarizedCallable()
   }
 
@@ -1781,6 +1805,30 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
 }
 
 /**
+ * A data flow node used for control-flow insensitive flow through fields
+ * and properties.
+ *
+ * In global data flow this is used to model flow through static fields and
+ * properties, while for lambda flow we additionally use it to track assignments
+ * in constructors to uses within the same class.
+ */
+class FlowInsensitiveFieldNode extends NodeImpl, TFlowInsensitiveFieldNode {
+  private FieldOrProperty f;
+
+  FlowInsensitiveFieldNode() { this = TFlowInsensitiveFieldNode(f) }
+
+  override DataFlowCallable getEnclosingCallableImpl() { result.asFieldOrProperty() = f }
+
+  override Type getTypeImpl() { result = f.getType() }
+
+  override ControlFlow::Node getControlFlowNodeImpl() { none() }
+
+  override Location getLocationImpl() { result = f.getLocation() }
+
+  override string toStringImpl() { result = "[flow-insensitive] " + f }
+}
+
+/**
  * Holds if `pred` can flow to `succ`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
@@ -1788,13 +1836,16 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
 predicate jumpStep(Node pred, Node succ) {
   pred.(NonLocalJumpNode).getAJumpSuccessor(true) = succ
   or
-  exists(FieldOrProperty fl, FieldOrPropertyRead flr |
-    fl.isStatic() and
-    fl.isFieldLike() and
-    fl.getAnAssignedValue() = pred.asExpr() and
-    fl.getAnAccess() = flr and
-    flr = succ.asExpr() and
-    flr.hasNonlocalValue()
+  exists(FieldOrProperty f | f.isStatic() |
+    f.getAnAssignedValue() = pred.asExpr() and
+    succ = TFlowInsensitiveFieldNode(f)
+    or
+    exists(FieldOrPropertyRead fr |
+      pred = TFlowInsensitiveFieldNode(f) and
+      f.getAnAccess() = fr and
+      fr = succ.asExpr() and
+      fr.hasNonlocalValue()
+    )
   )
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
@@ -1812,6 +1863,11 @@ private class StoreStepConfiguration extends ControlFlowReachabilityConfiguratio
     or
     exactScope = false and
     arrayStore(scope, e1, e2, isSuccessor.booleanNot())
+    or
+    exactScope = false and
+    isSuccessor = true and
+    collectionStore(e1, e2) and
+    scope = e2
     or
     exactScope = false and
     isSuccessor = true and
@@ -1837,6 +1893,10 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     fieldOrPropertyStore(_, c, node1.asExpr(), node.getExpr(), postUpdate)
     or
     arrayStore(_, node1.asExpr(), node.getExpr(), postUpdate) and c instanceof ElementContent
+  )
+  or
+  exists(StoreStepConfiguration x | hasNodePath(x, node1, node2) |
+    collectionStore(node1.asExpr(), node2.asExpr()) and c instanceof ElementContent
   )
   or
   exists(StoreStepConfiguration x, Expr arg, ControlFlow::Node callCfn |
@@ -2004,6 +2064,14 @@ predicate clearsContent(Node n, ContentSet c) {
     f = oi.getAMemberInitializer().getInitializedMember() and
     c = f.getContent()
   )
+  or
+  exists(Argument a, Struct s, Field f |
+    a = n.(PostUpdateNode).getPreUpdateNode().asExpr() and
+    a.getType() = s and
+    f = s.getAField() and
+    c.(FieldContent).getField() = f.getUnboundDeclaration() and
+    not f.isRef()
+  )
 }
 
 /**
@@ -2012,6 +2080,8 @@ predicate clearsContent(Node n, ContentSet c) {
  */
 predicate expectsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryExpectsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
+  n.asExpr() instanceof SpreadElementExpr and c instanceof ElementContent
 }
 
 /**
@@ -2235,6 +2305,8 @@ module PostUpdateNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = cfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(oc)
     }
 
     override DotNet::Type getTypeImpl() { result = oc.getType() }
@@ -2266,6 +2338,8 @@ module PostUpdateNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = cfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(cfn.getAstNode())
     }
 
     override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
@@ -2414,6 +2488,24 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     nodeTo.asExpr().(EventRead).getTarget() = aee.getTarget() and
     preservesValue = false
   )
+  or
+  preservesValue = true and
+  exists(FieldOrProperty f, FieldOrPropertyAccess fa |
+    fa = f.getAnAccess() and
+    fa.targetIsLocalInstance()
+  |
+    exists(AssignableDefinition def |
+      def.getTargetAccess() = fa and
+      nodeFrom.asExpr() = def.getSource() and
+      nodeTo = TFlowInsensitiveFieldNode(f) and
+      nodeFrom.getEnclosingCallable() instanceof Constructor
+    )
+    or
+    nodeFrom = TFlowInsensitiveFieldNode(f) and
+    f.getAnAccess() = fa and
+    fa = nodeTo.asExpr() and
+    fa.(FieldOrPropertyRead).hasNonlocalValue()
+  )
 }
 
 /**
@@ -2424,7 +2516,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
-  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  exists(DataFlowCallable c, ParameterPosition pos |
+    parameterNode(p, c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
+  )
 }
 
 /** An approximated `Content`. */

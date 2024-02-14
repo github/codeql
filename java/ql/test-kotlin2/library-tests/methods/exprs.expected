@@ -277,19 +277,19 @@
 | enumClass.kt:8:3:11:4 | VAL | TypeAccess |
 | enumClass.kt:8:3:11:4 | new EnumWithFunctions(...) | ClassInstanceExpr |
 | enumClass.kt:8:3:11:4 | new VAL(...) | ClassInstanceExpr |
-| enumClass.kt:9:14:9:30 | int | TypeAccess |
+| enumClass.kt:9:5:9:30 | int | TypeAccess |
 | enumClass.kt:9:20:9:25 | int | TypeAccess |
 | enumClass.kt:9:30:9:30 | i | VarAccess |
-| enumClass.kt:10:14:10:42 | int | TypeAccess |
+| enumClass.kt:10:5:10:42 | int | TypeAccess |
 | enumClass.kt:10:20:10:25 | int | TypeAccess |
 | enumClass.kt:10:30:10:33 | this | ThisAccess |
 | enumClass.kt:10:30:10:38 | f(...) | MethodCall |
 | enumClass.kt:10:30:10:42 | ... + ... | AddExpr |
 | enumClass.kt:10:37:10:37 | i | VarAccess |
 | enumClass.kt:10:42:10:42 | i | VarAccess |
-| enumClass.kt:13:12:13:29 | int | TypeAccess |
+| enumClass.kt:13:3:13:29 | int | TypeAccess |
 | enumClass.kt:13:18:13:23 | int | TypeAccess |
-| enumClass.kt:14:12:14:29 | int | TypeAccess |
+| enumClass.kt:14:3:14:29 | int | TypeAccess |
 | enumClass.kt:14:18:14:23 | int | TypeAccess |
 | methods2.kt:4:1:5:1 | Unit | TypeAccess |
 | methods2.kt:4:26:4:31 | int | TypeAccess |
@@ -341,15 +341,15 @@
 | methods4.kt:7:5:7:34 | Unit | TypeAccess |
 | methods4.kt:7:11:7:29 | InsideNestedTest | TypeAccess |
 | methods5.kt:3:1:11:1 | Unit | TypeAccess |
-| methods5.kt:4:7:4:7 | x | LocalVariableDeclExpr |
+| methods5.kt:4:3:4:11 | x | LocalVariableDeclExpr |
 | methods5.kt:4:11:4:11 | 5 | IntegerLiteral |
 | methods5.kt:5:3:5:27 | int | TypeAccess |
 | methods5.kt:5:13:5:18 | int | TypeAccess |
 | methods5.kt:5:23:5:23 | i | VarAccess |
 | methods5.kt:5:23:5:27 | ... + ... | AddExpr |
 | methods5.kt:5:27:5:27 | x | VarAccess |
-| methods5.kt:6:3:6:3 | x | VarAccess |
 | methods5.kt:6:3:6:7 | ...=... | AssignExpr |
+| methods5.kt:6:3:6:7 | x | VarAccess |
 | methods5.kt:6:7:6:7 | 6 | IntegerLiteral |
 | methods5.kt:7:3:7:15 | <implicit coercion to unit> | ImplicitCoercionToUnitExpr |
 | methods5.kt:7:3:7:15 | Object | TypeAccess |
@@ -358,8 +358,8 @@
 | methods5.kt:7:3:7:15 | a(...) | MethodCall |
 | methods5.kt:7:3:7:15 | new (...) | ClassInstanceExpr |
 | methods5.kt:7:13:7:14 | 42 | IntegerLiteral |
-| methods5.kt:8:3:8:3 | x | VarAccess |
 | methods5.kt:8:3:8:7 | ...=... | AssignExpr |
+| methods5.kt:8:3:8:7 | x | VarAccess |
 | methods5.kt:8:7:8:7 | 7 | IntegerLiteral |
 | methods5.kt:9:3:9:32 | int | TypeAccess |
 | methods5.kt:9:12:9:17 | C1<T1> | TypeAccess |
@@ -376,7 +376,7 @@
 | methods5.kt:10:13:10:18 | <implicit coercion to unit> | ImplicitCoercionToUnitExpr |
 | methods5.kt:10:13:10:18 | Unit | TypeAccess |
 | methods5.kt:10:16:10:17 | 42 | IntegerLiteral |
-| methods6.kt:3:9:4:1 | Unit | TypeAccess |
+| methods6.kt:3:1:4:1 | Unit | TypeAccess |
 | methods.kt:2:1:3:1 | Unit | TypeAccess |
 | methods.kt:2:20:2:25 | int | TypeAccess |
 | methods.kt:2:28:2:33 | int | TypeAccess |
@@ -394,9 +394,9 @@
 | methods.kt:11:9:11:28 | topLevelMethod(...) | MethodCall |
 | methods.kt:11:24:11:24 | b | VarAccess |
 | methods.kt:11:27:11:27 | 4 | IntegerLiteral |
-| methods.kt:14:12:14:29 | Unit | TypeAccess |
-| methods.kt:15:15:15:35 | Unit | TypeAccess |
-| methods.kt:16:13:16:31 | Unit | TypeAccess |
-| methods.kt:17:14:17:33 | Unit | TypeAccess |
+| methods.kt:14:5:14:29 | Unit | TypeAccess |
+| methods.kt:15:5:15:35 | Unit | TypeAccess |
+| methods.kt:16:5:16:31 | Unit | TypeAccess |
+| methods.kt:17:5:17:33 | Unit | TypeAccess |
 | methods.kt:18:5:18:36 | Unit | TypeAccess |
-| methods.kt:19:12:19:29 | Unit | TypeAccess |
+| methods.kt:19:5:19:29 | Unit | TypeAccess |

@@ -9,7 +9,7 @@ import DefaultFlowTest
 import TaintFlow::PathGraph
 import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
 
-query predicate mayBenefitFromCallContext = DataFlowDispatch::mayBenefitFromCallContext/2;
+query predicate mayBenefitFromCallContext = DataFlowDispatch::mayBenefitFromCallContext/1;
 
 query predicate viableImplInCallContext = DataFlowDispatch::viableImplInCallContext/2;
 

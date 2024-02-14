@@ -6,6 +6,7 @@
 import java
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.security.SqlInjectionQuery
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A taint-tracking configuration for reasoning about local user input that is
@@ -16,11 +17,7 @@ module LocalUserInputToQueryInjectionFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
-    node.getType() instanceof NumberType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(AdditionalQueryInjectionTaintStep s).step(node1, node2)

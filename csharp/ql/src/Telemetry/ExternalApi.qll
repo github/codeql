@@ -134,7 +134,8 @@ module Results<relevantApi/1 getRelevantUsages> {
       strictcount(Call c, ExternalApi api |
         c.getTarget().getUnboundDeclaration() = api and
         apiName = api.getApiName() and
-        getRelevantUsages(api)
+        getRelevantUsages(api) and
+        c.fromSource()
       )
   }
 

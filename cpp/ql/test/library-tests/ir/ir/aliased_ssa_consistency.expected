@@ -6,13 +6,18 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir.cpp:2138:9:2138:9 | Chi: x | Instruction 'Chi: x' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
 instructionWithoutUniqueBlock
+missingCanonicalLanguageType
+multipleCanonicalLanguageTypes
 containsLoopOfForwardEdges
+missingIRType
+multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
@@ -24,8 +29,4 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
-missingCanonicalLanguageType
-multipleCanonicalLanguageTypes
-missingIRType
-multipleIRTypes
 missingCppType

@@ -26,14 +26,15 @@ module KindValidation<KindValidationConfigSig Config> {
       this =
         [
           // shared
-          "code-injection", "command-injection", "file-content-store", "html-injection",
-          "js-injection", "ldap-injection", "log-injection", "path-injection", "request-forgery",
-          "sql-injection", "url-redirection",
+          "code-injection", "command-injection", "environment-injection", "file-content-store",
+          "html-injection", "js-injection", "ldap-injection", "log-injection", "path-injection",
+          "request-forgery", "sql-injection", "url-redirection",
           // Java-only currently, but may be shared in the future
           "bean-validation", "fragment-injection", "groovy-injection", "hostname-verification",
           "information-leak", "intent-redirection", "jexl-injection", "jndi-injection",
-          "mvel-injection", "ognl-injection", "pending-intents", "response-splitting",
-          "trust-boundary-violation", "template-injection", "xpath-injection", "xslt-injection",
+          "mvel-injection", "notification", "ognl-injection", "pending-intents",
+          "response-splitting", "trust-boundary-violation", "template-injection", "xpath-injection",
+          "xslt-injection",
           // JavaScript-only currently, but may be shared in the future
           "mongodb.sink", "nosql-injection", "unsafe-deserialization",
           // Swift-only currently, but may be shared in the future

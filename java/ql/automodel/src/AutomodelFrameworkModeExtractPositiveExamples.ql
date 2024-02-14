@@ -13,15 +13,12 @@ private import AutomodelEndpointTypes
 private import AutomodelJavaUtil
 
 from
-  Endpoint endpoint, EndpointType endpointType, FrameworkModeMetadataExtractor meta,
-  DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
-  DollarAtString signature, DollarAtString input, DollarAtString output,
-  DollarAtString parameterName, DollarAtString extensibleType
+  Endpoint endpoint, EndpointType endpointType, DollarAtString package, DollarAtString type,
+  DollarAtString subtypes, DollarAtString name, DollarAtString signature, DollarAtString input,
+  DollarAtString output, DollarAtString parameterName, DollarAtString extensibleType
 where
-  endpoint.getExtensibleType() = extensibleType and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName) and
-  // Extract positive examples of sinks belonging to the existing ATM query configurations.
-  CharacteristicsImpl::isKnownAs(endpoint, endpointType, _)
+  isPositiveExample(endpoint, endpointType, package, type, subtypes, name, signature, input, output,
+    parameterName, extensibleType)
 select endpoint,
   endpointType + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //

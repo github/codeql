@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -10,13 +11,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// </summary>
     internal sealed class DotNetCliInvoker : IDotNetCliInvoker
     {
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
 
         public string Exec { get; }
 
-        public DotNetCliInvoker(ProgressMonitor progressMonitor, string exec)
+        public DotNetCliInvoker(ILogger logger, string exec)
         {
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
             this.Exec = exec;
         }
 
@@ -30,26 +31,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             };
             // Set the .NET CLI language to English to avoid localized output.
             startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
+            startInfo.EnvironmentVariables["MSBUILDDISABLENODEREUSE"] = "1";
+            startInfo.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"] = "true";
             return startInfo;
         }
 
         private bool RunCommandAux(string args, out IList<string> output)
         {
-            progressMonitor.RunningProcess($"{Exec} {args}");
+            logger.LogInfo($"Running {Exec} {args}");
             var pi = MakeDotnetStartInfo(args);
-            var threadId = $"[{Environment.CurrentManagedThreadId:D3}]";
-            void onOut(string s)
-            {
-                Console.Out.WriteLine($"{threadId} {s}");
-            }
-            void onError(string s)
-            {
-                Console.Error.WriteLine($"{threadId} {s}");
-            }
+            var threadId = Environment.CurrentManagedThreadId;
+            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onError(string s) => logger.LogError(s, threadId);
             var exitCode = pi.ReadOutput(out output, onOut, onError);
             if (exitCode != 0)
             {
-                progressMonitor.CommandFailed(Exec, args, exitCode);
+                logger.LogError($"Command {Exec} {args} failed with exit code {exitCode}");
                 return false;
             }
             return true;

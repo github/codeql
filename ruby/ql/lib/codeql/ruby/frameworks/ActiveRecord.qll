@@ -77,7 +77,11 @@ private predicate isUnlikelyExternalCall(API::MethodAccessNode node) {
 }
 
 private API::Node activeRecordConnectionInstance() {
-  result = activeRecordBaseClass().getReturn("connection")
+  result =
+    [
+      activeRecordBaseClass().getReturn("connection"),
+      activeRecordBaseClass().getInstance().getReturn("connection")
+    ]
 }
 
 /**
@@ -173,7 +177,7 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
         "delete_all", "delete_by", "destroy_all", "destroy_by", "exists?", "find_by", "find_by!",
         "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "from",
         "group", "having", "joins", "lock", "not", "order", "reorder", "pluck", "where", "rewhere",
-        "select", "reselect", "update_all"
+        "select", "reselect"
       ]) and
   sink = call.getArgument(0)
   or
@@ -198,6 +202,20 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
   or
   call = activeRecordConnectionInstance().getAMethodCall("execute") and
   sink = call.getArgument(0)
+  or
+  call = activeRecordQueryBuilderCall("update_all") and
+  (
+    // `update_all([sink, var1, var2, var3])`
+    sink = call.getArgument(0).getALocalSource().(DataFlow::ArrayLiteralNode).getElement(0)
+    or
+    // or arg0 is not of a known "safe" type
+    sink = call.getArgument(0) and
+    not (
+      sink.getALocalSource() = any(DataFlow::ArrayLiteralNode arr) or
+      sink.getALocalSource() = any(DataFlow::HashLiteralNode hash) or
+      sink.getALocalSource() = any(DataFlow::PairNode pair)
+    )
+  )
 }
 
 private predicate sqlFragmentArgument(DataFlow::CallNode call, DataFlow::Node sink) {

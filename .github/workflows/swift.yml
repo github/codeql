@@ -73,6 +73,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/run-integration-tests
+  clang-format:
+    if : ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
+        name: Check that python code is properly formatted
+        with:
+          extra_args: clang-format --all-files
   codegen:
     if : ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
@@ -82,12 +91,12 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version-file: 'swift/.python-version'
-      - uses: pre-commit/action@v3.0.0
+      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         name: Check that python code is properly formatted
         with:
           extra_args: autopep8 --all-files
       - uses: ./.github/actions/fetch-codeql
-      - uses: pre-commit/action@v3.0.0
+      - uses: pre-commit/action@646c83fcd040023954eafda54b4db0192ce70507
         name: Check that QL generated code was checked in
         with:
           extra_args: swift-codegen --all-files

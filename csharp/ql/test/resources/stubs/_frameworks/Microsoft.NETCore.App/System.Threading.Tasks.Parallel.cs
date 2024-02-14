@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Threading.Tasks.Parallel, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Threading.Tasks.Parallel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Threading
@@ -20,6 +20,9 @@ namespace System
                 public static System.Threading.Tasks.ParallelLoopResult For<TLocal>(int fromInclusive, int toExclusive, System.Threading.Tasks.ParallelOptions parallelOptions, System.Func<TLocal> localInit, System.Func<int, System.Threading.Tasks.ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally) => throw null;
                 public static System.Threading.Tasks.ParallelLoopResult For<TLocal>(long fromInclusive, long toExclusive, System.Func<TLocal> localInit, System.Func<long, System.Threading.Tasks.ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally) => throw null;
                 public static System.Threading.Tasks.ParallelLoopResult For<TLocal>(long fromInclusive, long toExclusive, System.Threading.Tasks.ParallelOptions parallelOptions, System.Func<TLocal> localInit, System.Func<long, System.Threading.Tasks.ParallelLoopState, TLocal, TLocal> body, System.Action<TLocal> localFinally) => throw null;
+                public static System.Threading.Tasks.Task ForAsync<T>(T fromInclusive, T toExclusive, System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask> body) where T : System.Numerics.IBinaryInteger<T> => throw null;
+                public static System.Threading.Tasks.Task ForAsync<T>(T fromInclusive, T toExclusive, System.Threading.CancellationToken cancellationToken, System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask> body) where T : System.Numerics.IBinaryInteger<T> => throw null;
+                public static System.Threading.Tasks.Task ForAsync<T>(T fromInclusive, T toExclusive, System.Threading.Tasks.ParallelOptions parallelOptions, System.Func<T, System.Threading.CancellationToken, System.Threading.Tasks.ValueTask> body) where T : System.Numerics.IBinaryInteger<T> => throw null;
                 public static System.Threading.Tasks.ParallelLoopResult ForEach<TSource>(System.Collections.Concurrent.OrderablePartitioner<TSource> source, System.Action<TSource, System.Threading.Tasks.ParallelLoopState, long> body) => throw null;
                 public static System.Threading.Tasks.ParallelLoopResult ForEach<TSource>(System.Collections.Concurrent.OrderablePartitioner<TSource> source, System.Threading.Tasks.ParallelOptions parallelOptions, System.Action<TSource, System.Threading.Tasks.ParallelLoopState, long> body) => throw null;
                 public static System.Threading.Tasks.ParallelLoopResult ForEach<TSource>(System.Collections.Concurrent.Partitioner<TSource> source, System.Action<TSource, System.Threading.Tasks.ParallelLoopState> body) => throw null;

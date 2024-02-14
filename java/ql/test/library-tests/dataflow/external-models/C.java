@@ -32,6 +32,11 @@ public class C {
     // The summary for the first parameter is ignored, because it is generated and
     // because there is hand written summary for the second parameter.
     stepArgResGeneratedIgnored(arg1, arg2);
+
+    stepArgQualGenerated(arg1);
+    // The summary for the first parameter is ignored, because it is generated and
+    // because there is hand written neutral summary model for this callable.
+    stepArgQualGeneratedIgnored(arg1);
   }
 
   Object stepArgRes(Object x) { return null; }
@@ -47,4 +52,8 @@ public class C {
   Object stepArgResGenerated(Object x) { return null; }
 
   Object stepArgResGeneratedIgnored(Object x, Object y) { return null; }
+
+  Object stepArgQualGenerated(Object x) { return null; }
+  
+  Object stepArgQualGeneratedIgnored(Object x) { return null; }
 }

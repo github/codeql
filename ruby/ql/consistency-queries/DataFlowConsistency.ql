@@ -43,10 +43,6 @@ private module Input implements InputSig<RubyDataFlow> {
       arg.asExpr().getASuccessor(any(SuccessorTypes::ConditionalSuccessor c)).getASuccessor*() = n and
       n.getASplit() instanceof Split::ConditionalCompletionSplit
     )
-    or
-    // Synthetic block parameter nodes are passed directly as lambda-self reference
-    // arguments to all `yield` calls
-    arg instanceof ArgumentNodes::BlockParameterArgumentNode
   }
 }
 

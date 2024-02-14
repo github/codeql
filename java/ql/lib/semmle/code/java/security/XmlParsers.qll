@@ -2,7 +2,8 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow3
+deprecated import semmle.code.java.dataflow.DataFlow3
+private import semmle.code.java.dataflow.DataFlow3
 private import semmle.code.java.dataflow.RangeUtils
 
 private module Frameworks {
@@ -263,9 +264,6 @@ Expr configOptionSupportDtd() {
     f.getDeclaringType() instanceof XmlInputFactory
   )
 }
-
-/** DEPRECATED: Alias for configOptionSupportDtd */
-deprecated Expr configOptionSupportDTD() { result = configOptionSupportDtd() }
 
 /**
  * A safely configured `XmlInputFactory`.
@@ -745,9 +743,6 @@ Expr configAccessExternalDtd() {
     f.getDeclaringType() instanceof XmlConstants
   )
 }
-
-/** DEPRECATED: Alias for configAccessExternalDtd */
-deprecated Expr configAccessExternalDTD() { result = configAccessExternalDtd() }
 
 /** A configuration specific for transformers. */
 Expr configAccessExternalStyleSheet() {

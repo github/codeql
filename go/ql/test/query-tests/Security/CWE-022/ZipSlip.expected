@@ -1,16 +1,16 @@
 edges
-| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate |
-| UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join |
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname |
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name |
-| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate |
-| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate |
-| ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:12:24:12:29 | selection of Name |
-| ZipSlip.go:12:3:12:30 | ... := ...[0] | ZipSlip.go:14:20:14:20 | p |
-| ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:3:12:30 | ... := ...[0] |
-| tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:23:16:33 | selection of Name |
-| tarslip.go:16:23:16:33 | selection of Name | tarslip.go:16:14:16:34 | call to Dir |
-| tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path |
+| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | provenance |  |
+| UnsafeUnzipSymlinkGood.go:61:53:61:61 | candidate | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | provenance |  |
+| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | provenance |  |
+| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | provenance |  |
+| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | provenance |  |
+| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | provenance |  |
+| ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:12:24:12:29 | selection of Name | provenance |  |
+| ZipSlip.go:12:3:12:30 | ... := ...[0] | ZipSlip.go:14:20:14:20 | p | provenance |  |
+| ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:3:12:30 | ... := ...[0] | provenance |  |
+| tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:23:16:33 | selection of Name | provenance |  |
+| tarslip.go:16:23:16:33 | selection of Name | tarslip.go:16:14:16:34 | call to Dir | provenance |  |
+| tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path | provenance |  |
 nodes
 | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | semmle.label | definition of candidate |
 | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | semmle.label | call to Join |

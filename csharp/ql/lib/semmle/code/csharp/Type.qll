@@ -11,6 +11,7 @@ private import dotnet
 private import semmle.code.csharp.metrics.Coupling
 private import TypeRef
 private import semmle.code.csharp.frameworks.System
+private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
 
 /**
  * A type.
@@ -1006,6 +1007,58 @@ class NullableType extends ValueType, ConstructedType, @nullable_type {
   override Type getTypeArgument(int p) { p = 0 and result = this.getUnderlyingType() }
 
   override string getAPrimaryQlClass() { result = "NullableType" }
+}
+
+/**
+ * An inline array type, for example `MyInlineArray` in
+ * ```csharp
+ * [System.Runtime.CompilerServices.InlineArray(10)]
+ * public struct MyInlineArray
+ * {
+ *     private int _elements0;
+ * }
+ * ```
+ */
+class InlineArrayType extends ValueType, @inline_array_type {
+  private SystemRuntimeCompilerServicesInlineArrayAttribute inline_attribute;
+  private Field element_type_field;
+
+  InlineArrayType() {
+    inline_attribute = this.(Attributable).getAnAttribute() and
+    element_type_field = this.getAField() and
+    not element_type_field.isStatic() and
+    not element_type_field.isConst()
+  }
+
+  /**
+   * Gets the element type of this inline array.
+   */
+  Type getElementType() { result = element_type_field.getType() }
+
+  /**
+   * Gets the rank of this inline array (inline arrays always have rank 1).
+   */
+  int getRank() { result = 1 }
+
+  /**
+   * Gets the length of this inline array.
+   */
+  int getLength() { result = inline_attribute.getLength() }
+
+  /**
+   * Gets the dimension of this inline array.
+   */
+  int getDimension() {
+    exists(Type elem | elem = this.getElementType() |
+      result = elem.(InlineArrayType).getDimension() + 1
+      or
+      result = elem.(ArrayType).getDimension() + 1
+      or
+      not elem instanceof ArrayType and not elem instanceof InlineArrayType and result = 1
+    )
+  }
+
+  override string getAPrimaryQlClass() { result = "InlineArrayType" }
 }
 
 /**

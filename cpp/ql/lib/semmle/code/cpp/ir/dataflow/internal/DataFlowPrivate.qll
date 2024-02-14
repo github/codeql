@@ -6,6 +6,10 @@ private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
+private import Node0ToString
+private import ModelUtil
+private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as IO
+private import semmle.code.cpp.models.interfaces.DataFlow as DF
 
 cached
 private module Cached {
@@ -57,6 +61,41 @@ private module Cached {
 
 import Cached
 private import Nodes0
+
+/**
+ * A module for calculating the number of stars (i.e., `*`s) needed for various
+ * dataflow node `toString` predicates.
+ */
+module NodeStars {
+  private int getNumberOfIndirections(Node n) {
+    result = n.(RawIndirectOperand).getIndirectionIndex()
+    or
+    result = n.(RawIndirectInstruction).getIndirectionIndex()
+    or
+    result = n.(VariableNode).getIndirectionIndex()
+    or
+    result = n.(PostUpdateNodeImpl).getIndirectionIndex()
+    or
+    result = n.(FinalParameterNode).getIndirectionIndex()
+  }
+
+  private int maxNumberOfIndirections() { result = max(getNumberOfIndirections(_)) }
+
+  private string repeatStars(int n) {
+    n = 0 and result = ""
+    or
+    n = [1 .. maxNumberOfIndirections()] and
+    result = "*" + repeatStars(n - 1)
+  }
+
+  /**
+   * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
+   * output for `n`.
+   */
+  string stars(Node n) { result = repeatStars(getNumberOfIndirections(n)) }
+}
+
+import NodeStars
 
 class Node0Impl extends TIRDataFlowNode0 {
   /**
@@ -138,11 +177,7 @@ abstract class InstructionNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getInstructionType(instr, _) }
 
-  override string toStringImpl() {
-    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = instr.getAst().toString()
-  }
+  override string toStringImpl() { result = instructionToString(instr) }
 
   override Location getLocationImpl() {
     if exists(instr.getAst().getLocation())
@@ -187,11 +222,7 @@ abstract class OperandNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getOperandType(op, _) }
 
-  override string toStringImpl() {
-    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = op.getDef().getAst().toString()
-  }
+  override string toStringImpl() { result = operandToString(op) }
 
   override Location getLocationImpl() {
     if exists(op.getDef().getAst().getLocation())
@@ -1147,5 +1178,84 @@ private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, Parame
       |
         strictcount(phi.getAnInput())
       )
+  )
+}
+
+pragma[nomagic]
+private predicate isInputOutput(
+  DF::DataFlowFunction target, Node node1, Node node2, IO::FunctionInput input,
+  IO::FunctionOutput output
+) {
+  exists(CallInstruction call |
+    node1 = callInput(call, input) and
+    node2 = callOutput(call, output) and
+    call.getStaticCallTarget() = target and
+    target.hasDataFlow(input, output)
+  )
+}
+
+/**
+ * Holds if the data-flow step from `node1` to `node2` can be used to
+ * determine where side-effects may return from a callable.
+ * For C/C++, this means that the step from `node1` to `node2` not only
+ * preserves the value, but also preserves the identity of the value.
+ * For example, the assignment to `x` that reads the value of `*p` in
+ * ```cpp
+ * int* p = ...
+ * int x = *p;
+ * ```
+ * does not preserve the identity of `*p`.
+ *
+ * Similarly, a function that copies the contents of a string into a new location
+ * does not also preserve the identity. For example, `strdup(p)` does not
+ * preserve the identity of `*p` (since it allocates new storage and copies
+ * the string into the new storage).
+ */
+bindingset[node1, node2]
+pragma[inline_late]
+predicate validParameterAliasStep(Node node1, Node node2) {
+  // When flow-through summaries are computed we track which parameters flow to out-going parameters.
+  // In an example such as:
+  // ```
+  // modify(int* px) { *px = source(); }
+  // void modify_copy(int* p) {
+  //   int x = *p;
+  //   modify(&x);
+  // }
+  // ```
+  // since dataflow tracks each indirection as a separate SSA variable dataflow
+  // sees the above roughly as
+  // ```
+  // modify(int* px, int deref_px) { deref_px = source(); }
+  // void modify_copy(int* p, int deref_p) {
+  //   int x = deref_p;
+  //   modify(&x, x);
+  // }
+  // ```
+  // and when dataflow computes flow from a parameter to a post-update node to
+  // conclude which parameters are "updated" by the call to `modify_copy` it
+  // finds flow from `x [post update]` to `deref_p [post update]`.
+  // To prevent this we exclude steps that don't preserve identity. We do this
+  // by excluding flow from the right-hand side of `StoreInstruction`s to the
+  // `StoreInstruction`. This is sufficient because, for flow-through summaries,
+  // we're only interested in indirect parameters such as `deref_p` in the
+  // exampe above (i.e., the parameters with a non-zero indirection index), and
+  // if that ever flows to the right-hand side of a `StoreInstruction` then
+  // there must have been a dereference to reduce its indirection index down to
+  // 0.
+  not exists(Operand operand |
+    node1.asOperand() = operand and
+    node2.asInstruction().(StoreInstruction).getSourceValueOperand() = operand
+  ) and
+  (
+    // Either this is not a modeled flow.
+    not isInputOutput(_, node1, node2, _, _)
+    or
+    exists(DF::DataFlowFunction target, IO::FunctionInput input, IO::FunctionOutput output |
+      // Or it is a modeled flow and there's `*input` to `*output` flow
+      isInputOutput(target, node1, node2, input.getIndirectionInput(), output.getIndirectionOutput()) and
+      // and in that case there should also be `input` to `output` flow
+      target.hasDataFlow(input, output)
+    )
   )
 }

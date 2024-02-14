@@ -173,7 +173,7 @@ void Log::flushImpl() {
   }
 }
 
-void Log::diagnoseImpl(const SwiftDiagnostic& source,
+void Log::diagnoseImpl(const Diagnostic& source,
                        const std::chrono::nanoseconds& elapsed,
                        std::string_view message) {
   using Clock = std::chrono::system_clock;

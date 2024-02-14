@@ -42,33 +42,17 @@ deprecated class TemplateInjectionFlowConfig extends TaintTracking::Configuratio
 }
 
 /** A taint tracking configuration to reason about server-side template injection (SST) vulnerabilities */
-module TemplateInjectionFlowConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowState;
+module TemplateInjectionFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof TemplateInjectionSource }
 
-  predicate isSource(DataFlow::Node source, FlowState state) {
-    source.(TemplateInjectionSource).hasState(state)
-  }
-
-  predicate isSink(DataFlow::Node sink, FlowState state) {
-    sink.(TemplateInjectionSink).hasState(state)
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof TemplateInjectionSink }
 
   predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof TemplateInjectionSanitizer }
-
-  predicate isBarrier(DataFlow::Node sanitizer, FlowState state) {
-    sanitizer.(TemplateInjectionSanitizerWithState).hasState(state)
-  }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(TemplateInjectionAdditionalTaintStep a).isAdditionalTaintStep(node1, node2)
   }
-
-  predicate isAdditionalFlowStep(
-    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
-  ) {
-    any(TemplateInjectionAdditionalTaintStep a).isAdditionalTaintStep(node1, state1, node2, state2)
-  }
 }
 
 /** Tracks server-side template injection (SST) vulnerabilities */
-module TemplateInjectionFlow = TaintTracking::GlobalWithState<TemplateInjectionFlowConfig>;
+module TemplateInjectionFlow = TaintTracking::Global<TemplateInjectionFlowConfig>;
