@@ -57,11 +57,11 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
 predicate containerReadStep(Node node1, Node node2, Content c) {
   c instanceof ArrayContent and
   (
-    node2.(Read).readsElement(node1, _) and
-    (
-      node1.getType() instanceof ArrayType or
-      node1.getType() instanceof SliceType
-    )
+    node1.getType() instanceof ArrayType or
+    node1.getType() instanceof SliceType
+  ) and
+  (
+    node2.(Read).readsElement(node1, _)
     or
     node2.(RangeElementNode).getBase() = node1
     or
@@ -85,5 +85,5 @@ predicate containerReadStep(Node node1, Node node2, Content c) {
   or
   c instanceof MapValueContent and
   node1.getType() instanceof MapType and
-  node2.(Read).readsElement(node1, _)
+  (node2.(Read).readsElement(node1, _) or node2.(RangeElementNode).getBase() = node1)
 }
