@@ -32,7 +32,7 @@ predicate summaryModel(string action, string version, string input, string outpu
  * Fields:
  *    - action: Fully-qualified action name (NWO)
  *    - version: Either '*' or a specific SHA/Tag
- *    - input arg: sink node (prefixed with either `env.` or `input.`)
+ *    - input: sink node (prefixed with either `env.` or `input.`)
  *    - kind: sink kind
  */
 predicate sinkModel(string action, string version, string input, string kind) {
