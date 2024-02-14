@@ -39,7 +39,7 @@ private string join(string x, string y) {
 private predicate isPackageExport(API::Node node) { node = API::moduleExport(_) }
 
 private predicate relevantEdge(API::Node pred, API::Node succ) {
-  succ = pred.getAMember() and
+  succ = pred.getMember(_) and
   not isPrivateLike(succ)
 }
 
