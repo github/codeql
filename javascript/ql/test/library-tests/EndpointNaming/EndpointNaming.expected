@@ -8,6 +8,7 @@ testFailures
 | pack12/index.js:7:28:7:50 | // $ me ... k12).f2 | Missing result:method=(pack12).f2 |
 | pack12/index.js:10:19:10:25 |  | Unexpected result: alias=(pack12).g1==(pack12).f1 |
 | pack12/index.js:10:28:10:50 | // $ me ... k12).g1 | Missing result:method=(pack12).g1 |
+failures
 ambiguousPreferredPredecessor
 | pack2/lib.js:1:1:3:1 | def moduleImport("pack2").getMember("exports").getMember("lib").getMember("LibClass").getInstance() |
 | pack2/lib.js:8:22:8:34 | def moduleImport("pack2").getMember("exports").getMember("lib").getMember("LibClass").getMember("foo") |
@@ -16,4 +17,3 @@ ambiguousSinkName
 ambiguousClassObjectName
 ambiguousClassInstanceName
 ambiguousFunctionName
-failures
