@@ -3611,7 +3611,7 @@
 | localFunctionCalls.kt:11:18:11:19 | 42 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
 | samConversion.kt:1:1:14:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:1:10:1:19 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:2:9:2:14 | isEven | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:2:5:2:45 | isEven | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
 | samConversion.kt:2:18:2:45 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:2:18:2:45 | ...=... | samConversion.kt:2:18:2:45 |  | AssignExpr |
 | samConversion.kt:2:18:2:45 | <fn> | samConversion.kt:2:18:2:45 |  | VarAccess |
@@ -3639,7 +3639,7 @@
 | samConversion.kt:2:33:2:43 | ... (value equals) ... | samConversion.kt:2:31:2:45 | invoke | ValueEQExpr |
 | samConversion.kt:2:38:2:38 | 2 | samConversion.kt:2:31:2:45 | invoke | IntegerLiteral |
 | samConversion.kt:2:43:2:43 | 0 | samConversion.kt:2:31:2:45 | invoke | IntegerLiteral |
-| samConversion.kt:4:9:4:10 | i0 | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:4:5:4:42 | i0 | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
 | samConversion.kt:4:14:4:42 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:4:14:4:42 | ...=... | samConversion.kt:4:14:4:42 |  | AssignExpr |
 | samConversion.kt:4:14:4:42 | <fn> | samConversion.kt:4:14:4:42 |  | VarAccess |
@@ -3668,7 +3668,7 @@
 | samConversion.kt:4:29:4:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:4:32:4:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:4:37:4:40 | INSTANCE | samConversion.kt:4:27:4:42 | invoke | VarAccess |
-| samConversion.kt:5:9:5:10 | i1 | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:5:5:5:32 | i1 | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
 | samConversion.kt:5:14:5:32 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:5:14:5:32 | ...=... | samConversion.kt:5:14:5:32 |  | AssignExpr |
 | samConversion.kt:5:14:5:32 | <fn> | samConversion.kt:5:14:5:32 |  | VarAccess |
@@ -3698,7 +3698,7 @@
 | samConversion.kt:5:27:5:31 | a0 | samConversion.kt:5:27:5:31 | invoke | VarAccess |
 | samConversion.kt:5:27:5:31 | a1 | samConversion.kt:5:27:5:31 | invoke | VarAccess |
 | samConversion.kt:5:27:5:31 | fn2(...) | samConversion.kt:5:27:5:31 | invoke | MethodCall |
-| samConversion.kt:7:9:7:9 | i | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:7:5:7:46 | i | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
 | samConversion.kt:7:13:7:46 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:7:13:7:46 | ...=... | samConversion.kt:7:13:7:46 |  | AssignExpr |
 | samConversion.kt:7:13:7:46 | <fn> | samConversion.kt:7:13:7:46 |  | VarAccess |
@@ -3729,7 +3729,7 @@
 | samConversion.kt:7:36:7:39 | this | samConversion.kt:7:29:7:46 | invoke | ExtensionReceiverAccess |
 | samConversion.kt:7:36:7:45 | ... (value equals) ... | samConversion.kt:7:29:7:46 | invoke | ValueEQExpr |
 | samConversion.kt:7:44:7:45 | "" | samConversion.kt:7:29:7:46 | invoke | StringLiteral |
-| samConversion.kt:9:9:9:9 | x | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
+| samConversion.kt:9:5:13:6 | x | samConversion.kt:1:1:14:1 | main | LocalVariableDeclExpr |
 | samConversion.kt:9:13:13:6 | (...)... | samConversion.kt:1:1:14:1 | main | CastExpr |
 | samConversion.kt:9:13:13:6 | ...=... | samConversion.kt:9:13:13:6 |  | AssignExpr |
 | samConversion.kt:9:13:13:6 | <fn> | samConversion.kt:9:13:13:6 |  | VarAccess |
@@ -3746,7 +3746,6 @@
 | samConversion.kt:9:13:13:6 | new (...) | samConversion.kt:1:1:14:1 | main | ClassInstanceExpr |
 | samConversion.kt:9:13:13:6 | this | samConversion.kt:9:13:13:6 |  | ThisAccess |
 | samConversion.kt:9:13:13:6 | this.<fn> | samConversion.kt:9:13:13:6 |  | VarAccess |
-| samConversion.kt:9:26:13:5 | true | samConversion.kt:1:1:14:1 | main | BooleanLiteral |
 | samConversion.kt:9:26:13:5 | when ... | samConversion.kt:1:1:14:1 | main | WhenExpr |
 | samConversion.kt:9:30:9:30 | b | samConversion.kt:1:1:14:1 | main | VarAccess |
 | samConversion.kt:9:33:11:5 | ...->... | samConversion.kt:1:1:14:1 | main | LambdaExpr |
@@ -3765,6 +3764,7 @@
 | samConversion.kt:11:12:13:5 | Function1<Integer,Boolean> | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:11:12:13:5 | Integer | samConversion.kt:1:1:14:1 | main | TypeAccess |
 | samConversion.kt:11:12:13:5 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:11:12:13:5 | true | samConversion.kt:1:1:14:1 | main | BooleanLiteral |
 | samConversion.kt:12:13:12:13 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:12:18:12:18 | j | samConversion.kt:11:12:13:5 | invoke | VarAccess |
 | samConversion.kt:12:18:12:22 | ... % ... | samConversion.kt:11:12:13:5 | invoke | RemExpr |
@@ -3833,7 +3833,7 @@
 | samConversion.kt:38:49:38:52 | true | samConversion.kt:36:1:38:52 | ff | BooleanLiteral |
 | samConversion.kt:40:1:47:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:40:8:40:19 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:41:9:41:9 | a | samConversion.kt:40:1:47:1 | fn | LocalVariableDeclExpr |
+| samConversion.kt:41:5:41:16 | a | samConversion.kt:40:1:47:1 | fn | LocalVariableDeclExpr |
 | samConversion.kt:41:13:41:16 | 0 | samConversion.kt:41:13:41:16 | invoke | IntegerLiteral |
 | samConversion.kt:41:13:41:16 | 1 | samConversion.kt:41:13:41:16 | invoke | IntegerLiteral |
 | samConversion.kt:41:13:41:16 | 2 | samConversion.kt:41:13:41:16 | invoke | IntegerLiteral |
@@ -3955,7 +3955,7 @@
 | samConversion.kt:41:13:41:16 | int | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
 | samConversion.kt:41:13:41:16 | int | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
 | samConversion.kt:41:13:41:16 | int | samConversion.kt:41:13:41:16 | invoke | TypeAccess |
-| samConversion.kt:42:9:42:9 | b | samConversion.kt:40:1:47:1 | fn | LocalVariableDeclExpr |
+| samConversion.kt:42:5:42:32 | b | samConversion.kt:40:1:47:1 | fn | LocalVariableDeclExpr |
 | samConversion.kt:42:13:42:32 | 23 | samConversion.kt:42:13:42:32 | accept | IntegerLiteral |
 | samConversion.kt:42:13:42:32 | (...)... | samConversion.kt:40:1:47:1 | fn | CastExpr |
 | samConversion.kt:42:13:42:32 | ...=... | samConversion.kt:42:13:42:32 |  | AssignExpr |
@@ -4020,7 +4020,7 @@
 | samConversion.kt:42:13:42:32 | this.<fn> | samConversion.kt:42:13:42:32 |  | VarAccess |
 | samConversion.kt:42:13:42:32 | {...} | samConversion.kt:42:13:42:32 | accept | ArrayInit |
 | samConversion.kt:42:31:42:31 | a | samConversion.kt:40:1:47:1 | fn | VarAccess |
-| samConversion.kt:43:9:43:9 | c | samConversion.kt:40:1:47:1 | fn | LocalVariableDeclExpr |
+| samConversion.kt:43:5:45:68 | c | samConversion.kt:40:1:47:1 | fn | LocalVariableDeclExpr |
 | samConversion.kt:43:13:45:68 | 23 | samConversion.kt:43:13:45:68 | accept | IntegerLiteral |
 | samConversion.kt:43:13:45:68 | (...)... | samConversion.kt:40:1:47:1 | fn | CastExpr |
 | samConversion.kt:43:13:45:68 | ...=... | samConversion.kt:43:13:45:68 |  | AssignExpr |
@@ -4229,7 +4229,7 @@
 | samConversion.kt:45:42:45:49 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:45:52:45:59 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:45:64:45:67 | true | samConversion.kt:43:31:45:68 | invoke | BooleanLiteral |
-| samConversion.kt:46:9:46:9 | d | samConversion.kt:40:1:47:1 | fn | LocalVariableDeclExpr |
+| samConversion.kt:46:5:46:44 | d | samConversion.kt:40:1:47:1 | fn | LocalVariableDeclExpr |
 | samConversion.kt:46:13:46:44 | (...)... | samConversion.kt:40:1:47:1 | fn | CastExpr |
 | samConversion.kt:46:13:46:44 | ...=... | samConversion.kt:46:13:46:44 |  | AssignExpr |
 | samConversion.kt:46:13:46:44 | <fn> | samConversion.kt:46:13:46:44 |  | VarAccess |
@@ -4257,20 +4257,20 @@
 | samConversion.kt:46:39:46:42 | true | samConversion.kt:46:32:46:44 | invoke | BooleanLiteral |
 | samConversion.kt:50:5:50:25 | boolean | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:50:12:50:15 | T | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:54:13:54:35 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:54:5:54:35 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:54:21:54:26 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:54:29:54:34 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:57:9:60:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:58:9:58:10 | i0 | samConversion.kt:57:9:60:1 | test | LocalVariableDeclExpr |
-| samConversion.kt:58:14:58:45 | (...)... | samConversion.kt:57:9:60:1 | test | CastExpr |
+| samConversion.kt:57:1:60:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
+| samConversion.kt:58:5:58:45 | i0 | samConversion.kt:57:1:60:1 | test | LocalVariableDeclExpr |
+| samConversion.kt:58:14:58:45 | (...)... | samConversion.kt:57:1:60:1 | test | CastExpr |
 | samConversion.kt:58:14:58:45 | ...=... | samConversion.kt:58:14:58:45 |  | AssignExpr |
 | samConversion.kt:58:14:58:45 | <fn> | samConversion.kt:58:14:58:45 |  | VarAccess |
 | samConversion.kt:58:14:58:45 | <fn> | samConversion.kt:58:14:58:45 | fn1 | VarAccess |
 | samConversion.kt:58:14:58:45 | Function2<Integer,Integer,Unit> | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:58:14:58:45 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:58:14:58:45 | Integer | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:58:14:58:45 | InterfaceFn1Sus | samConversion.kt:57:9:60:1 | test | TypeAccess |
-| samConversion.kt:58:14:58:45 | InterfaceFn1Sus | samConversion.kt:57:9:60:1 | test | TypeAccess |
+| samConversion.kt:58:14:58:45 | InterfaceFn1Sus | samConversion.kt:57:1:60:1 | test | TypeAccess |
+| samConversion.kt:58:14:58:45 | InterfaceFn1Sus | samConversion.kt:57:1:60:1 | test | TypeAccess |
 | samConversion.kt:58:14:58:45 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:58:14:58:45 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:58:14:58:45 | i | samConversion.kt:58:14:58:45 | fn1 | VarAccess |
@@ -4278,22 +4278,22 @@
 | samConversion.kt:58:14:58:45 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:58:14:58:45 | invoke(...) | samConversion.kt:58:14:58:45 | fn1 | MethodCall |
 | samConversion.kt:58:14:58:45 | j | samConversion.kt:58:14:58:45 | fn1 | VarAccess |
-| samConversion.kt:58:14:58:45 | new (...) | samConversion.kt:57:9:60:1 | test | ClassInstanceExpr |
+| samConversion.kt:58:14:58:45 | new (...) | samConversion.kt:57:1:60:1 | test | ClassInstanceExpr |
 | samConversion.kt:58:14:58:45 | this | samConversion.kt:58:14:58:45 |  | ThisAccess |
 | samConversion.kt:58:14:58:45 | this.<fn> | samConversion.kt:58:14:58:45 |  | VarAccess |
-| samConversion.kt:58:30:58:45 | ...->... | samConversion.kt:57:9:60:1 | test | LambdaExpr |
-| samConversion.kt:58:30:58:45 | Function2<Integer,Integer,Unit> | samConversion.kt:57:9:60:1 | test | TypeAccess |
-| samConversion.kt:58:30:58:45 | Integer | samConversion.kt:57:9:60:1 | test | TypeAccess |
-| samConversion.kt:58:30:58:45 | Integer | samConversion.kt:57:9:60:1 | test | TypeAccess |
+| samConversion.kt:58:30:58:45 | ...->... | samConversion.kt:57:1:60:1 | test | LambdaExpr |
+| samConversion.kt:58:30:58:45 | Function2<Integer,Integer,Unit> | samConversion.kt:57:1:60:1 | test | TypeAccess |
+| samConversion.kt:58:30:58:45 | Integer | samConversion.kt:57:1:60:1 | test | TypeAccess |
+| samConversion.kt:58:30:58:45 | Integer | samConversion.kt:57:1:60:1 | test | TypeAccess |
 | samConversion.kt:58:30:58:45 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:58:30:58:45 | Unit | samConversion.kt:57:9:60:1 | test | TypeAccess |
+| samConversion.kt:58:30:58:45 | Unit | samConversion.kt:57:1:60:1 | test | TypeAccess |
 | samConversion.kt:58:32:58:32 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:58:35:58:35 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:58:40:58:43 | INSTANCE | samConversion.kt:58:30:58:45 | invoke | VarAccess |
-| samConversion.kt:59:5:59:6 | i0 | samConversion.kt:57:9:60:1 | test | VarAccess |
-| samConversion.kt:59:5:59:15 | fn1(...) | samConversion.kt:57:9:60:1 | test | MethodCall |
-| samConversion.kt:59:12:59:12 | 1 | samConversion.kt:57:9:60:1 | test | IntegerLiteral |
-| samConversion.kt:59:14:59:14 | 2 | samConversion.kt:57:9:60:1 | test | IntegerLiteral |
+| samConversion.kt:59:5:59:6 | i0 | samConversion.kt:57:1:60:1 | test | VarAccess |
+| samConversion.kt:59:5:59:15 | fn1(...) | samConversion.kt:57:1:60:1 | test | MethodCall |
+| samConversion.kt:59:12:59:12 | 1 | samConversion.kt:57:1:60:1 | test | IntegerLiteral |
+| samConversion.kt:59:14:59:14 | 2 | samConversion.kt:57:1:60:1 | test | IntegerLiteral |
 | samConversion.kt:63:5:63:13 | ...=... | samConversion.kt:62:1:64:1 | PropertyRefsTest | KtInitializerAssignExpr |
 | samConversion.kt:63:5:63:13 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:63:5:63:13 | int | file://:0:0:0:0 | <none> | TypeAccess |
@@ -4306,7 +4306,7 @@
 | samConversion.kt:71:5:71:16 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:74:1:77:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | samConversion.kt:74:22:74:42 | PropertyRefsTest | file://:0:0:0:0 | <none> | TypeAccess |
-| samConversion.kt:75:9:75:13 | test1 | samConversion.kt:74:1:77:1 | propertyRefsTest | LocalVariableDeclExpr |
+| samConversion.kt:75:5:75:33 | test1 | samConversion.kt:74:1:77:1 | propertyRefsTest | LocalVariableDeclExpr |
 | samConversion.kt:75:17:75:33 | (...)... | samConversion.kt:74:1:77:1 | propertyRefsTest | CastExpr |
 | samConversion.kt:75:17:75:33 | ...=... | samConversion.kt:75:17:75:33 |  | AssignExpr |
 | samConversion.kt:75:17:75:33 | <fn> | samConversion.kt:75:17:75:33 |  | VarAccess |
@@ -4334,7 +4334,7 @@
 | samConversion.kt:75:27:75:32 | this | samConversion.kt:75:27:75:32 | invoke | ThisAccess |
 | samConversion.kt:75:27:75:32 | this.<dispatchReceiver> | samConversion.kt:75:27:75:32 |  | VarAccess |
 | samConversion.kt:75:27:75:32 | this.<dispatchReceiver> | samConversion.kt:75:27:75:32 | get | VarAccess |
-| samConversion.kt:76:9:76:13 | test2 | samConversion.kt:74:1:77:1 | propertyRefsTest | LocalVariableDeclExpr |
+| samConversion.kt:76:5:76:55 | test2 | samConversion.kt:74:1:77:1 | propertyRefsTest | LocalVariableDeclExpr |
 | samConversion.kt:76:17:76:55 | (...)... | samConversion.kt:74:1:77:1 | propertyRefsTest | CastExpr |
 | samConversion.kt:76:17:76:55 | ...=... | samConversion.kt:76:17:76:55 |  | AssignExpr |
 | samConversion.kt:76:17:76:55 | <fn> | samConversion.kt:76:17:76:55 |  | VarAccess |
