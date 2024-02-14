@@ -1,7 +1,8 @@
 testFailures
 ambiguousPreferredPredecessor
+| pack2/lib.js:8:22:8:34 | def moduleImport("pack2").getMember("exports").getMember("lib").getMember("LibClass").getMember("foo") |
 ambiguousSinkName
 ambiguousClassObjectName
 ambiguousClassInstanceName
-ambiguousFunctionName
 failures
+ambiguousFunctionName
