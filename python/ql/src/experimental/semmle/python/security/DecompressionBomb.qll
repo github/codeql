@@ -5,14 +5,13 @@ import semmle.python.ApiGraphs
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.internal.DataFlowPublic
 import FileAndFormRemoteFlowSource::FileAndFormRemoteFlowSource
+import codeql.util.Unit
 
 module DecompressionBomb {
   /**
    * The additional taint steps that need for creating taint tracking or dataflow.
    */
-  abstract class AdditionalTaintStep extends string {
-    AdditionalTaintStep() { this = "AdditionalTaintStep" }
-
+  class AdditionalTaintStep extends Unit {
     /**
      * Holds if there is a additional taint step between pred and succ.
      */
@@ -98,8 +97,6 @@ module ZipFile {
    * ```
    */
   class DecompressionAdditionalTaintStep extends DecompressionBomb::AdditionalTaintStep {
-    DecompressionAdditionalTaintStep() { this = "AdditionalTaintStep" }
-
     override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       exists(API::Node zipFileInstance | zipFileInstance = zipFileClass() |
         nodeFrom =
@@ -172,8 +169,6 @@ module TarFile {
    * The Additional taint steps that are necessary for data flow query
    */
   class DecompressionAdditionalTaintStep extends DecompressionBomb::AdditionalTaintStep {
-    DecompressionAdditionalTaintStep() { this = "AdditionalTaintStep" }
-
     override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       exists(API::Node tarfileInstance | tarfileInstance = tarfileExtractMember() |
         nodeFrom = tarfileInstance.getACall().getParameter(0, "name").asSink() and
