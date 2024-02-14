@@ -745,3 +745,16 @@ void test_realloc_2_indirections(int **buffer) {
   buffer = (int**)realloc(buffer, 16);
   sink(**buffer); // $ ir MISSING: ast
 }
+
+int sprintf(char *, const char *, ...);
+
+void call_sprintf_twice(char* path, char* data) {
+	sprintf(path, "%s", "abc");
+	sprintf(path, "%s", data);
+}
+
+void test_call_sprintf() {
+	char path[10];
+	call_sprintf_twice(path, indirect_source());
+	sink(*path); // $ ir ast
+}
