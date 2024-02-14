@@ -54,12 +54,7 @@ module ZipFile {
       exists(API::Node zipOpen | zipOpen = zipFileClass().getReturn().getMember("open") |
         // this open function must reads uncompressed data with buffer
         // and checks the accumulated size at the end of each read to be called safe
-        not TaintTracking::localExprTaint(zipOpen
-              .getReturn()
-              .getMember("read")
-              .getParameter(0)
-              .asSink()
-              .asExpr(), any(Compare i).getASubExpression*()) and
+        not zipFileDecompressionBombSanitizer(zipOpen) and
         this = zipOpen.getACall()
       )
     }
