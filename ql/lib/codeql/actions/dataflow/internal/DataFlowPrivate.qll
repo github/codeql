@@ -133,9 +133,10 @@ predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 newtype TContent =
   TFieldContent(string name) {
-    // We only use field flow for steps and jobs outputs, not for accessing other context fields such as jobs, env or inputs
+    // We only use field flow for steps and jobs outputs, not for accessing other context fields such as env or inputs
     name = any(StepsCtxAccessExpr a).getFieldName() or
-    name = any(NeedsCtxAccessExpr a).getFieldName()
+    name = any(NeedsCtxAccessExpr a).getFieldName() or
+    name = any(JobsCtxAccessExpr a).getFieldName()
   }
 
 /**
@@ -196,9 +197,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos =
  * field name.
  */
 predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(StepStmt astFrom, StepsCtxAccessExpr astTo |
+  exists(UsesExpr astFrom, StepsCtxAccessExpr astTo |
     externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
-    astFrom instanceof UsesExpr and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom
@@ -259,9 +259,16 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { localFlowStep(nodeFr
  */
 predicate jumpStep(Node nodeFrom, Node nodeTo) { none() }
 
+/**
+ * Holds if a CtxAccessExpr reads a field from a job (needs/jobs), step (steps) output via a read of `c` (fieldname)
+ */
 predicate ctxFieldReadStep(Node node1, Node node2, ContentSet c) {
   exists(CtxAccessExpr access |
-    (access instanceof NeedsCtxAccessExpr or access instanceof StepsCtxAccessExpr) and
+    (
+      access instanceof NeedsCtxAccessExpr or
+      access instanceof StepsCtxAccessExpr or
+      access instanceof JobsCtxAccessExpr
+    ) and
     c = any(FieldContent ct | ct.getName() = access.getFieldName()) and
     node1.asExpr() = access.getRefExpr() and
     node2.asExpr() = access
@@ -272,12 +279,13 @@ predicate ctxFieldReadStep(Node node1, Node node2, ContentSet c) {
  * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
  * `node1` references an object with a content `c.getAReadContent()` whose
  * value ends up in `node2`.
+ * Store steps without corresponding reads are pruned aggressively very early, since they can never contribute to a complete path.
  */
 predicate readStep(Node node1, ContentSet c, Node node2) { ctxFieldReadStep(node1, node2, c) }
 
 /**
- * A store step to store an output expression (node1) into its OutputsStm node (node2)
- * with a given access path (fieldName)
+ * Stores an output expression (node1) into its OutputsStm node (node2)
+ * using the output variable name as the access path
  */
 predicate fieldStoreStep(Node node1, Node node2, ContentSet c) {
   exists(OutputsStmt out, string fieldName |
@@ -291,6 +299,7 @@ predicate fieldStoreStep(Node node1, Node node2, ContentSet c) {
  * Holds if data can flow from `node1` to `node2` via a store into `c`.  Thus,
  * `node2` references an object with a content `c.getAStoreContent()` that
  * contains the value of `node1`.
+ * Store steps without corresponding reads are pruned aggressively very early, since they can never contribute to a complete path.
  */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
   fieldStoreStep(node1, node2, c) or
