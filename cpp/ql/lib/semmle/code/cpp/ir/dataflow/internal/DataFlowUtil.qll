@@ -10,6 +10,7 @@ private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.models.interfaces.DataFlow
+private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowPrivate
 private import ModelUtil
 private import SsaInternals as Ssa
@@ -1965,6 +1966,9 @@ private module Cached {
     // by a function. This allows data to flow 'in' through references returned by a modeled
     // function such as `operator[]`.
     reverseFlow(nodeFrom, nodeTo)
+    or
+    // models-as-data summarized flow
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
