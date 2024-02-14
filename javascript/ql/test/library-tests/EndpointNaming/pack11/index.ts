@@ -43,3 +43,17 @@ export class C3 {
         }
     }
 } // $ class=(pack11).C3 instance=(pack11).C3.prototype
+
+
+const f4 = {
+    m() {} // $ method=(pack11).C4.really.long.name.m
+};
+
+export const C4 = {
+    [Math.random()]: f4,
+    really: {
+        long: {
+            name: f4
+        }
+    }
+}
