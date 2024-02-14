@@ -3,8 +3,8 @@ function wrap(fn) {
 }
 
 function f() {}
-export const f1 = wrap(f); // $ method=(pack12).f1
-export const f2 = wrap(f); // $ method=(pack12).f2
+export const f1 = wrap(f); // $ name=(pack12).f1
+export const f2 = wrap(f); // $ name=(pack12).f2
 
 function g() {}
-export const g1 = wrap(g); // $ method=(pack12).g1
+export const g1 = wrap(g); // $ name=(pack12).g1

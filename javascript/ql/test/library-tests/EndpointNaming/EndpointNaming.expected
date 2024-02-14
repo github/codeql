@@ -1,13 +1,8 @@
 testFailures
-| pack11/index.ts:33:1:33:16 |  | Unexpected result: method=(pack11).C3.privateField |
-| pack11/index.ts:33:18:33:69 | // $ me ... ng.name | Missing result:method=(pack11).C3.publicField.really.long.name |
-| pack11/index.ts:41:23:41:24 |  | Unexpected result: alias=(pack11).C3.publicField.really.long.name==(pack11).C3.privateField |
-failures
 ambiguousPreferredPredecessor
 | pack2/lib.js:1:1:3:1 | def moduleImport("pack2").getMember("exports").getMember("lib").getMember("LibClass").getInstance() |
 | pack2/lib.js:8:22:8:34 | def moduleImport("pack2").getMember("exports").getMember("lib").getMember("LibClass").getMember("foo") |
 | pack2/main.js:1:1:3:1 | def moduleImport("pack2").getMember("exports").getMember("MainClass").getInstance() |
 ambiguousSinkName
-ambiguousClassObjectName
-ambiguousClassInstanceName
 ambiguousFunctionName
+failures

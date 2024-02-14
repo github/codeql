@@ -1,5 +1,5 @@
 const f1 = {
-    m() {} // $ method=(pack11).C1.publicField.really.long.name.m
+    m() {} // $ name=(pack11).C1.publicField.really.long.name.m
 };
 
 export class C1 {
@@ -12,10 +12,10 @@ export class C1 {
             }
         }
     }
-} // $ class=(pack11).C1 instance=(pack11).C1.prototype
+} // $ name=(pack11).C1
 
 const f2 = {
-    m() {} // $ method=(pack11).C2.publicField.really.long.name.m
+    m() {} // $ name=(pack11).C2.publicField.really.long.name.m
 }
 
 export class C2 {
@@ -28,9 +28,9 @@ export class C2 {
             }
         }
     }
-} // $ class=(pack11).C2 instance=(pack11).C2.prototype
+} // $ name=(pack11).C2
 
-function f3() {} // $ method=(pack11).C3.publicField.really.long.name
+function f3() {} // $ name=(pack11).C3.publicField.really.long.name
 
 export class C3 {
     private static privateField = f3;
@@ -42,11 +42,11 @@ export class C3 {
             }
         }
     }
-} // $ class=(pack11).C3 instance=(pack11).C3.prototype
+} // $ name=(pack11).C3
 
 
 const f4 = {
-    m() {} // $ method=(pack11).C4.really.long.name.m
+    m() {} // $ name=(pack11).C4.really.long.name.m
 };
 
 export const C4 = {

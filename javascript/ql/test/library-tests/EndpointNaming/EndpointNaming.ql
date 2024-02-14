@@ -10,28 +10,16 @@ private predicate isIgnored(DataFlow::FunctionNode function) {
 }
 
 module TestConfig implements TestSig {
-  string getARelevantTag() { result = ["instance", "class", "method", "alias"] }
+  string getARelevantTag() { result = ["name", "alias"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(string package, string name |
-      element = "" and
+    element = "" and
+    tag = "name" and
+    exists(DataFlow::SourceNode function, string package, string name |
+      EndpointNaming::functionHasPrimaryName(function, package, name) and
+      not isIgnored(function) and
+      location = function.getAstNode().getLocation() and
       value = EndpointNaming::renderName(package, name)
-    |
-      exists(DataFlow::ClassNode cls | location = cls.getAstNode().getLocation() |
-        tag = "class" and
-        EndpointNaming::classObjectHasPrimaryName(cls, package, name)
-        or
-        tag = "instance" and
-        EndpointNaming::classInstanceHasPrimaryName(cls, package, name)
-      )
-      or
-      exists(DataFlow::SourceNode function |
-        not isIgnored(function) and
-        location = function.getAstNode().getLocation() and
-        tag = "method" and
-        EndpointNaming::functionHasPrimaryName(function, package, name) and
-        not function instanceof DataFlow::ClassNode // reported with class tag
-      )
     )
     or
     element = "" and

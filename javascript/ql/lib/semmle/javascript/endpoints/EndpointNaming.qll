@@ -167,24 +167,6 @@ predicate sinkHasPrimaryName(API::Node sink, string package, string name) {
   sinkHasPrimaryName(sink, package, name, _)
 }
 
-/**
- * Holds if `(package, name)` is an alias for `node`.
- *
- * This means it is a valid name for it, but was not chosen as the primary name.
- */
-private predicate sinkHasAlias(API::Node sink, string package, string name) {
-  not sinkHasPrimaryName(sink, package, name) and
-  (
-    exists(string baseName, string step |
-      sinkHasPrimaryName(getAPredecessor(sink, step, _), package, baseName) and
-      name = join(baseName, step)
-    )
-    or
-    sink = API::moduleExport(package) and
-    name = ""
-  )
-}
-
 /** Gets a source node that can flow to `sink` without using a return step. */
 private DataFlow::SourceNode nodeReachingSink(API::Node sink, DataFlow::TypeBackTracker t) {
   t.start() and
@@ -243,49 +225,8 @@ private predicate classObjectHasNameCandidate(
   )
   or
   nameFromExterns(cls, package, name, badness)
-}
-
-private predicate classObjectHasPrimaryName(
-  DataFlow::ClassNode cls, string package, string name, int badness
-) {
-  badness = min(int b | classObjectHasNameCandidate(cls, _, _, b) | b) and
-  package = min(string p | classObjectHasNameCandidate(cls, p, _, badness) | p) and
-  name = min(string n | classObjectHasNameCandidate(cls, package, n, badness) | n)
-}
-
-/** Holds if `(package, name)` is the primary name for the class object of `cls`. */
-predicate classObjectHasPrimaryName(DataFlow::ClassNode cls, string package, string name) {
-  classObjectHasPrimaryName(cls, package, name, _)
-}
-
-/** Holds if an instance of `cls` can be exposed to client code. */
-private predicate hasEscapingInstance(DataFlow::ClassNode cls) {
-  cls.getAnInstanceReference().flowsTo(any(API::Node n).asSink())
-}
-
-/**
- * Holds if `(package, name)` is a potential name to use for instances of `cls`, with the given `badness`.
- */
-private predicate classInstanceHasNameCandidate(
-  DataFlow::ClassNode cls, string package, string name, int badness
-) {
-  exists(string baseName |
-    classObjectHasPrimaryName(cls, package, baseName, badness) and
-    name = join(baseName, "prototype")
-  )
   or
-  // In case the class itself is unaccessible, but an instance is exposed via an access path,
-  // consider using that access path. For example:
-  //
-  //   class InternalClass {}
-  //   module.exports.foo = new InternalClass();
-  //
-  exists(int baseBadness |
-    sinkHasPrimaryName(getASinkNode(cls.getAnInstanceReference()), package, name, baseBadness) and
-    badness = baseBadness + 30 // add penalty, as we prefer to base this on the class name
-  )
-  or
-  // If neither the class nor its instances are accessible via an access path, but instances of the
+  // If the class is not accessible via an access path, but instances of the
   // class can still escape via more complex access patterns, resort to a synthesized name.
   // For example:
   //
@@ -297,54 +238,13 @@ private predicate classInstanceHasNameCandidate(
   hasEscapingInstance(cls) and
   exists(string baseName |
     InternalModuleNaming::fallbackModuleName(cls.getTopLevel(), package, baseName, badness - 100) and
-    name = join(baseName, cls.getName()) + ".prototype"
+    name = join(baseName, cls.getName())
   )
 }
 
-private predicate classInstanceHasPrimaryName(
-  DataFlow::ClassNode cls, string package, string name, int badness
-) {
-  badness = min(int b | classInstanceHasNameCandidate(cls, _, _, b) | b) and
-  package = min(string p | classInstanceHasNameCandidate(cls, p, _, badness) | p) and
-  name =
-    min(string n |
-      classInstanceHasNameCandidate(cls, package, n, badness)
-    |
-      n order by n.length(), n
-    )
-}
-
-/** Holds if `(package, name)` is the primary name to use for instances of `cls`. */
-predicate classInstanceHasPrimaryName(DataFlow::ClassNode cls, string package, string name) {
-  classInstanceHasPrimaryName(cls, package, name, _)
-}
-
-/** Holds if `(package, name)` is an alias referring to some instance of `cls`. */
-predicate classInstanceHasAlias(DataFlow::ClassNode cls, string package, string name) {
-  not classInstanceHasPrimaryName(cls, package, name) and
-  exists(int badness |
-    classInstanceHasNameCandidate(cls, package, name, badness) and
-    badness < 100 // Badness 100 is when we start to synthesize names. Do not suggest these as aliases.
-  )
-}
-
-private predicate functionHasNameCandidate(
-  DataFlow::FunctionNode function, string package, string name, int badness
-) {
-  sinkHasPrimaryName(getASinkNode(function), package, name, badness)
-  or
-  exists(DataFlow::ClassNode cls |
-    function = cls.getConstructor() and
-    classObjectHasPrimaryName(cls, package, name, badness)
-    or
-    exists(string baseName, string memberName |
-      function = cls.getStaticMethod(memberName) and
-      classObjectHasPrimaryName(cls, package, baseName, badness) and
-      name = join(baseName, memberName)
-    )
-  )
-  or
-  nameFromExterns(function, package, name, badness)
+/** Holds if an instance of `cls` can be exposed to client code. */
+private predicate hasEscapingInstance(DataFlow::ClassNode cls) {
+  cls.getAnInstanceReference().flowsTo(any(API::Node n).asSink())
 }
 
 private predicate sourceNodeHasNameCandidate(
@@ -352,7 +252,7 @@ private predicate sourceNodeHasNameCandidate(
 ) {
   sinkHasPrimaryName(getASinkNode(node), package, name, badness)
   or
-  functionHasNameCandidate(node, package, name, badness)
+  nameFromExterns(node, package, name, badness)
   or
   classObjectHasNameCandidate(node, package, name, badness)
 }
@@ -371,13 +271,18 @@ private predicate sourceNodeHasPrimaryName(
  * Holds if `node` is a function or a call that returns a function.
  */
 private predicate isFunctionSource(DataFlow::SourceNode node) {
-  node instanceof DataFlow::FunctionNode
-  or
-  node instanceof DataFlow::InvokeNode and
-  exists(node.getABoundFunctionValue(_)) and
-  // `getASinkNode` steps through imports (but not other calls) so exclude calls that are imports (i.e. require calls)
-  // as we want to get as close to the source as possible.
-  not node instanceof DataFlow::ModuleImportNode
+  exists(getASinkNode(node)) and
+  (
+    node instanceof DataFlow::FunctionNode
+    or
+    node instanceof DataFlow::ClassNode
+    or
+    node instanceof DataFlow::InvokeNode and
+    exists(node.getABoundFunctionValue(_)) and
+    // `getASinkNode` steps through imports (but not other calls) so exclude calls that are imports (i.e. require calls)
+    // as we want to get as close to the source as possible.
+    not node instanceof DataFlow::ModuleImportNode
+  )
 }
 
 /**
@@ -523,28 +428,6 @@ module Debug {
     result =
       concat(string package, string name |
         sinkHasPrimaryName(node, package, name)
-      |
-        renderName(package, name), ", "
-      )
-  }
-
-  /** Holds if the given `node` has multiple primary names. */
-  query string ambiguousClassObjectName(DataFlow::ClassNode node) {
-    strictcount(string package, string name | classObjectHasPrimaryName(node, package, name)) > 1 and
-    result =
-      concat(string package, string name |
-        classObjectHasPrimaryName(node, package, name)
-      |
-        renderName(package, name), ", "
-      )
-  }
-
-  /** Holds if the given `node` has multiple primary names. */
-  query string ambiguousClassInstanceName(DataFlow::ClassNode node) {
-    strictcount(string package, string name | classInstanceHasPrimaryName(node, package, name)) > 1 and
-    result =
-      concat(string package, string name |
-        classInstanceHasPrimaryName(node, package, name)
       |
         renderName(package, name), ", "
       )
