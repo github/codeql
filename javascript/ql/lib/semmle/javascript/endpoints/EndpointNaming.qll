@@ -47,14 +47,7 @@ private predicate relevantEdge(API::Node pred, API::Node succ) {
 private int distanceFromPackageExport(API::Node nd) =
   shortestDistances(isPackageExport/1, relevantEdge/2)(_, nd, result)
 
-private predicate isExported(API::Node node) {
-  isPackageExport(node)
-  or
-  exists(API::Node pred |
-    isExported(pred) and
-    relevantEdge(pred, node)
-  )
-}
+private predicate isExported(API::Node node) { exists(distanceFromPackageExport(node)) }
 
 /**
  * Holds if `node` is a default export that can be reinterpreted as a namespace export,
