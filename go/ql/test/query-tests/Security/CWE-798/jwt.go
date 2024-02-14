@@ -138,56 +138,56 @@ func gogfjwt() interface{} {
 }
 
 func irisjwt() interface{} {
-	safeName := []byte("key12")
+	key := []byte("key12")
 	token := iris.NewTokenWithClaims(nil, nil)
-	tokenString, _ := token.SignedString(safeName) // BAD
+	tokenString, _ := token.SignedString(key) // BAD
 	return tokenString
 }
 
 func iris12jwt2() interface{} {
-	safeName := []byte("key13")
+	key := []byte("key13")
 
 	s := &iris12.Signer{
 		Alg:    nil,
-		Key:    safeName, // BAD
+		Key:    key, // BAD
 		MaxAge: 3 * time.Second,
 	}
 	return s
 }
 
 func irisjwt3() interface{} {
-	safeName := []byte("key14")
-	signer := iris12.NewSigner(nil, safeName, 3*time.Second) // BAD
+	key := []byte("key14")
+	signer := iris12.NewSigner(nil, key, 3*time.Second) // BAD
 	return signer
 }
 
 func katarasJwt() interface{} {
-	safeName := []byte("key15")
-	token, _ := kataras.Sign(nil, safeName, nil, nil) // BAD
+	key := []byte("key15")
+	token, _ := kataras.Sign(nil, key, nil, nil) // BAD
 	return token
 }
 
 func katarasJwt2() interface{} {
-	safeName := []byte("key16")
-	token, _ := kataras.SignEncrypted(nil, safeName, nil, nil) // BAD
+	key := []byte("key16")
+	token, _ := kataras.SignEncrypted(nil, key, nil, nil) // BAD
 	return token
 }
 
 func katarasJwt3() interface{} {
-	safeName := []byte("key17")
-	token, _ := kataras.SignEncryptedWithHeader(nil, safeName, nil, nil, nil) // BAD
+	key := []byte("key17")
+	token, _ := kataras.SignEncryptedWithHeader(nil, key, nil, nil, nil) // BAD
 	return token
 }
 
 func katarasJwt4() interface{} {
-	safeName := []byte("key18")
-	token, _ := kataras.SignWithHeader(nil, safeName, nil, nil) // BAD
+	key := []byte("key18")
+	token, _ := kataras.SignWithHeader(nil, key, nil, nil) // BAD
 	return token
 }
 
 func katarasJwt5() {
-	safeName := []byte("key19")
+	key := []byte("key19")
 	var keys kataras.Keys
 	var alg kataras.Alg
-	keys.Register(alg, "api", nil, safeName) // BAD
+	keys.Register(alg, "api", nil, key) // BAD
 }
