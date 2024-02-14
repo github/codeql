@@ -7,7 +7,6 @@
 import go
 private import semmle.go.StringOps
 private import semmle.go.dataflow.ExternalFlow
-private import semmle.go.security.Jwt
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
