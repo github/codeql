@@ -130,6 +130,31 @@ class ContentSet instanceof Content {
   }
 }
 
+/**
+ * A reference contained in an object. Examples include instance fields, the
+ * contents of a collection object, the contents of an array or pointer.
+ */
+class Content extends TContent {
+  /** Gets the type of the contained data for the purpose of type pruning. */
+  DataFlowType getType() { any() }
+
+  /** Gets a textual representation of this element. */
+  abstract string toString();
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
+  }
+}
+
 /** A field of an object, for example an instance variable. */
 class FieldContent extends Content, TFieldContent {
   private string name;

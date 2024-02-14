@@ -23,8 +23,14 @@ private module MyConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink instanceof DataFlow::ReturnNode and
     exists(CompositeActionStmt c | c.getOutputsStmt().getOutputExpr(_) = sink.asExpr())
+  }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet set) {
+    allowImplicitRead(node, set)
+    or
+    isSink(node) and
+    set instanceof DataFlow::FieldContent
   }
 }
 
