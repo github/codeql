@@ -273,13 +273,7 @@ func IdentifyEnvironment() {
 	defer project.RemoveTemporaryExtractorFiles()
 
 	// Find the greatest Go version required by any of the workspaces.
-	greatestGoVersion := project.GoVersionInfo{Version: "", Found: false}
-	for _, workspace := range workspaces {
-		goVersionInfo := workspace.RequiredGoVersion()
-		if goVersionInfo.Found && (!greatestGoVersion.Found || semver.Compare("v"+goVersionInfo.Version, "v"+greatestGoVersion.Version) > 0) {
-			greatestGoVersion = goVersionInfo
-		}
-	}
+	greatestGoVersion := project.RequiredGoVersion(&workspaces)
 	v.goModVersion, v.goModVersionFound = greatestGoVersion.Version, greatestGoVersion.Found
 
 	// Find which, if any, version of Go is installed on the system already.

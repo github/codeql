@@ -89,6 +89,19 @@ func (workspace *GoWorkspace) RequiredGoVersion() GoVersionInfo {
 	return GoVersionInfo{Version: "", Found: false}
 }
 
+// Finds the greatest Go version required by any of the given `workspaces`.
+// Returns a `GoVersionInfo` value with `Found: false` if no version information is available.
+func RequiredGoVersion(workspaces *[]GoWorkspace) GoVersionInfo {
+	greatestGoVersion := GoVersionInfo{Version: "", Found: false}
+	for _, workspace := range *workspaces {
+		goVersionInfo := workspace.RequiredGoVersion()
+		if goVersionInfo.Found && (!greatestGoVersion.Found || semver.Compare("v"+goVersionInfo.Version, "v"+greatestGoVersion.Version) > 0) {
+			greatestGoVersion = goVersionInfo
+		}
+	}
+	return greatestGoVersion
+}
+
 // Determines whether any of the directory paths in the input are nested.
 func checkDirsNested(inputDirs []string) (string, bool) {
 	// replace "." with "" so that we can check if all the paths are nested
