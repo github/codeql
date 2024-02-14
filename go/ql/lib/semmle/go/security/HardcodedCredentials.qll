@@ -76,33 +76,8 @@ module HardcodedCredentials {
    * where we can be reasonably confident downstream users will not mistake
    * that empty string for a usable key.
    */
-  private class ReturnedAlongsideErrorSanitizer extends Sanitizer {
-    ReturnedAlongsideErrorSanitizer() {
-      exists(ReturnStmt r, DataFlow::CallNode c |
-        c.getTarget().hasQualifiedName("errors", "New") and
-        r.getNumChild() > 1 and
-        r.getAChild() = c.getAResult().getASuccessor*().asExpr() and
-        r.getAChild() = this.asExpr()
-      )
-    }
-  }
-
-  /**
-   * A value returned alongside an error-value that is known
-   * to be non-nil by virtue of a guarding check.
-   *
-   * For example, `if err != nil { return "", err }` is unlikely to be
-   * contributing a dangerous hardcoded key.
-   */
-  private class ReturnedAlongsideErrorSanitizerGuard extends Sanitizer {
-    ReturnedAlongsideErrorSanitizerGuard() {
-      exists(ControlFlow::ConditionGuardNode guard, SsaWithFields errorVar, ReturnStmt r |
-        guard.ensuresNeq(errorVar.getAUse(), Builtin::nil().getARead()) and
-        guard.dominates(this.getBasicBlock()) and
-        r.getExpr(1) = errorVar.getAUse().asExpr() and
-        this.asExpr() = r.getExpr(0)
-      )
-    }
+  private class ReturnedWithErrorSanitizer extends Sanitizer {
+    ReturnedWithErrorSanitizer() { DataFlow::isReturnedWithError(this) }
   }
 
   /** The result of a formatting string call. */
