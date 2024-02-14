@@ -9479,7 +9479,7 @@ ir.cpp:
 # 1079|   getEntryPoint(): [BlockStmt] { ... }
 # 1080|     getStmt(0): [RangeBasedForStmt] for(...:...) ...
 # 1080|       getChild(0): [DeclStmt] declaration
-# 1080|         getDeclarationEntry(0): (no string representation)
+# 1080|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
 # 1080|             Type = [LValueReferenceType] const vector<int> &
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
 # 1080|             getExpr(): [VariableAccess] v
@@ -9492,7 +9492,7 @@ ir.cpp:
 # 1080|                   Type = [SpecifiedType] const vector<int>
 # 1080|                   ValueCategory = lvalue
 # 1080|       getBeginEndDeclaration(): [DeclStmt] declaration
-# 1080|         getDeclarationEntry(0): (no string representation)
+# 1080|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
 # 1080|             Type = [NestedStruct] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 1080|             getExpr(): [FunctionCall] call to begin
@@ -9504,7 +9504,7 @@ ir.cpp:
 #-----|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|                   Type = [SpecifiedType] const vector<int>
 #-----|                   ValueCategory = lvalue
-# 1080|         getDeclarationEntry(1): (no string representation)
+# 1080|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
 # 1080|             Type = [NestedStruct] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 1080|             getExpr(): [FunctionCall] call to end
@@ -9572,7 +9572,7 @@ ir.cpp:
 # 1080|           ValueCategory = lvalue
 # 1086|     getStmt(1): [RangeBasedForStmt] for(...:...) ...
 # 1086|       getChild(0): [DeclStmt] declaration
-# 1086|         getDeclarationEntry(0): (no string representation)
+# 1086|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
 # 1086|             Type = [LValueReferenceType] const vector<int> &
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
 # 1086|             getExpr(): [VariableAccess] v
@@ -9585,7 +9585,7 @@ ir.cpp:
 # 1086|                   Type = [SpecifiedType] const vector<int>
 # 1086|                   ValueCategory = lvalue
 # 1086|       getBeginEndDeclaration(): [DeclStmt] declaration
-# 1086|         getDeclarationEntry(0): (no string representation)
+# 1086|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
 # 1086|             Type = [NestedStruct] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 1086|             getExpr(): [FunctionCall] call to begin
@@ -9597,7 +9597,7 @@ ir.cpp:
 #-----|               getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|                   Type = [SpecifiedType] const vector<int>
 #-----|                   ValueCategory = lvalue
-# 1086|         getDeclarationEntry(1): (no string representation)
+# 1086|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
 # 1086|             Type = [NestedStruct] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 1086|             getExpr(): [FunctionCall] call to end
@@ -11814,7 +11814,7 @@ ir.cpp:
 # 1465|                 ValueCategory = prvalue
 # 1467|     getStmt(1): [BlockStmt] { ... }
 # 1468|       getStmt(0): [DeclStmt] declaration
-# 1468|         getDeclarationEntry(0): (no string representation)
+# 1468|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of (unnamed local variable)
 # 1468|             Type = [LValueReferenceType] int(&)[2]
 # 1468|           getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
 # 1468|             getExpr(): [VariableAccess] xs
@@ -12160,7 +12160,7 @@ ir.cpp:
 # 1502|               ValueCategory = prvalue
 # 1504|     getStmt(1): [BlockStmt] { ... }
 # 1505|       getStmt(0): [DeclStmt] declaration
-# 1505|         getDeclarationEntry(0): (no string representation)
+# 1505|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of (unnamed local variable)
 # 1505|             Type = [Struct] StructuredBindingDataMemberStruct
 # 1505|           getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
 # 1505|             getExpr(): [VariableAccess] s
@@ -12645,7 +12645,7 @@ ir.cpp:
 # 1582|               ValueCategory = prvalue
 # 1584|     getStmt(1): [BlockStmt] { ... }
 # 1585|       getStmt(0): [DeclStmt] declaration
-# 1585|         getDeclarationEntry(0): (no string representation)
+# 1585|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of (unnamed local variable)
 # 1585|             Type = [Struct] StructuredBindingTupleRefGet
 # 1585|           getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
 # 1585|             getExpr(): [VariableAccess] t
@@ -13010,7 +13010,7 @@ ir.cpp:
 # 1648|               ValueCategory = prvalue
 # 1650|     getStmt(1): [BlockStmt] { ... }
 # 1651|       getStmt(0): [DeclStmt] declaration
-# 1651|         getDeclarationEntry(0): (no string representation)
+# 1651|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of (unnamed local variable)
 # 1651|             Type = [LValueReferenceType] StructuredBindingTupleNoRefGet &
 # 1651|           getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
 # 1651|             getExpr(): [VariableAccess] t
@@ -13309,7 +13309,7 @@ ir.cpp:
 # 1675|                 Value = [Literal] 2
 # 1675|                 ValueCategory = prvalue
 # 1676|     getStmt(1): [DeclStmt] declaration
-# 1676|       getDeclarationEntry(0): (no string representation)
+# 1676|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of (unnamed local variable)
 # 1676|           Type = [ArrayType] int[2]
 # 1676|         getVariable().getInitializer(): [Initializer] initializer for (unnamed local variable)
 # 1676|           getExpr(): [VariableAccess] xs
@@ -16521,7 +16521,7 @@ ir.cpp:
 # 2152|               ValueCategory = prvalue
 # 2153|     getStmt(5): [RangeBasedForStmt] for(...:...) ...
 # 2153|       getChild(0): [DeclStmt] declaration
-# 2153|         getDeclarationEntry(0): (no string representation)
+# 2153|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
 # 2153|             Type = [LValueReferenceType] vector<ClassWithDestructor> &
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
 # 2153|             getExpr(): [VariableAccess] ys
@@ -16531,7 +16531,7 @@ ir.cpp:
 # 2153|                 Type = [LValueReferenceType] vector<ClassWithDestructor> &
 # 2153|                 ValueCategory = prvalue
 # 2153|       getBeginEndDeclaration(): [DeclStmt] declaration
-# 2153|         getDeclarationEntry(0): (no string representation)
+# 2153|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
 # 2153|             Type = [NestedStruct] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
 # 2153|             getExpr(): [FunctionCall] call to begin
@@ -16547,7 +16547,7 @@ ir.cpp:
 #-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
 #-----|                     ValueCategory = lvalue
-# 2153|         getDeclarationEntry(1): (no string representation)
+# 2153|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
 # 2153|             Type = [NestedStruct] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
 # 2153|             getExpr(): [FunctionCall] call to end
