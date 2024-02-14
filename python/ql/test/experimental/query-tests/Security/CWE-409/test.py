@@ -15,7 +15,7 @@ async def bomb(file_path):
             a = myfile.readline()
 
     with zipfile.ZipFile(file_path) as myzip:
-        with myzip.open('ZZ', mode="w") as myfile:    # $result=OK
+        with myzip.open('ZZ', mode="w") as myfile: # $ SPURIOUS: result=BAD
             myfile.write(b"tmpppp")
 
     zipfile.ZipFile(file_path).read("aFileNameInTheZipFile")  # $ result=BAD
@@ -26,9 +26,9 @@ async def bomb(file_path):
     tarfile.TarFile.gzopen(file_path).extractall()  # $ result=BAD
     tarfile.TarFile.open(file_path).extractfile("file1.txt")  # $ result=BAD
 
-    tarfile.open(file_path, mode="w")  # $result=OK
-    tarfile.TarFile.gzopen(file_path, mode="w")  # $result=OK
-    tarfile.TarFile.open(file_path, mode="r:")  # $ result=BAD
+    tarfile.open(file_path, mode="w") # ok, writing
+    tarfile.TarFile.gzopen(file_path, mode="w") # ok, writing
+    tarfile.TarFile.open(file_path, mode="r:") # potential problem, depending on usage
     import shutil
 
     shutil.unpack_archive(file_path)  # $ result=BAD
@@ -63,14 +63,14 @@ async def bomb(file_path):
     pandas.read_xml(path_or_buffer=file_path, compression='gzip')  # $ result=BAD
 
     # no compression no DOS
-    pandas.read_table(file_path, compression='tar')  # $result=OK
-    pandas.read_xml(file_path, compression='tar')  # $result=OK
+    pandas.read_table(file_path, compression='tar')
+    pandas.read_xml(file_path, compression='tar')
 
-    pandas.read_csv(filepath_or_buffer=file_path, compression='tar')  # $result=OK
-    pandas.read_json(file_path, compression='tar')  # $result=OK
-    pandas.read_sas(file_path, compression='tar')  # $result=OK
-    pandas.read_stata(filepath_or_buffer=file_path, compression='tar')  # $result=OK
-    pandas.read_table(file_path, compression='tar')  # $result=OK
-    pandas.read_xml(path_or_buffer=file_path, compression='tar')  # $result=OK
+    pandas.read_csv(filepath_or_buffer=file_path, compression='tar')
+    pandas.read_json(file_path, compression='tar')
+    pandas.read_sas(file_path, compression='tar')
+    pandas.read_stata(filepath_or_buffer=file_path, compression='tar')
+    pandas.read_table(file_path, compression='tar')
+    pandas.read_xml(path_or_buffer=file_path, compression='tar')
 
     return {"message": "bomb"}
