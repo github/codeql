@@ -133,6 +133,7 @@ predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 newtype TContent =
   TFieldContent(string name) {
+    // We only use field flow for steps and jobs outputs, not for accessing other context fields such as env or inputs
     name = any(StepsCtxAccessExpr a).getFieldName() or
     name = any(NeedsCtxAccessExpr a).getFieldName() or
     name = any(JobsCtxAccessExpr a).getFieldName()
@@ -188,32 +189,19 @@ class ArgumentPosition extends string {
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 
 /**
- * Holds if there is a local flow step between a ${{}} expression accesing a step output variable and the step output itself
- * But only for those cases where the step output is defined externally in a MaD specification.
- * The reason for this is that we don't currently have a way to specify that a source starts with a non-empty access
- * path so  the easiest thing is to add the corresponding read steps of that field as local flow steps as well.
- * e.g. ${{ steps.step1.output.foo }}
+ * Holds if there is a local flow step between a ${{ steps.xxx.outputs.yyy }} expression accesing a step output field
+ * and the step output itself. But only for those cases where the step output is defined externally in a MaD Source
+ * specification. The reason for this is that we don't currently have a way to specify that a source starts with a
+ * non-empty access path so we cannot write a Source that stores the taint in a Content, we can only do that for steps
+ * (storeStep). The easiest thing is to add this local flow step that simulates a read step from the source node for a specific
+ * field name.
  */
 predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(StepStmt astFrom, StepsCtxAccessExpr astTo |
+  exists(UsesExpr astFrom, StepsCtxAccessExpr astTo |
     externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
-    astFrom instanceof UsesExpr and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom
-  )
-}
-
-/**
- * Holds if there is a local flow step between a ${{}} expression accesing a job output variable and the job output itself
- * e.g. ${{ needs.job1.output.foo }} or ${{ jobs.job1.output.foo }}
- */
-predicate jobsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, CtxAccessExpr astTo |
-    astFrom = nodeFrom.asExpr() and
-    astTo = nodeTo.asExpr() and
-    astTo.getRefExpr() = astFrom and
-    (astTo instanceof NeedsCtxAccessExpr or astTo instanceof JobsCtxAccessExpr)
   )
 }
 
@@ -252,7 +240,6 @@ predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
 pragma[nomagic]
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   stepsCtxLocalStep(nodeFrom, nodeTo) or
-  jobsCtxLocalStep(nodeFrom, nodeTo) or
   inputsCtxLocalStep(nodeFrom, nodeTo) or
   envCtxLocalStep(nodeFrom, nodeTo)
 }
@@ -273,16 +260,18 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { localFlowStep(nodeFr
 predicate jumpStep(Node nodeFrom, Node nodeTo) { none() }
 
 /**
- * A read step to read the value of a ReusableWork uses step  and connect it to its
- * corresponding JobOutputAccessExpr
+ * Holds if a CtxAccessExpr reads a field from a job (needs/jobs), step (steps) output via a read of `c` (fieldname)
  */
-predicate reusableWorkflowReturnReadStep(Node node1, Node node2, ContentSet c) {
-  exists(NeedsCtxAccessExpr expr, string fieldName |
-    expr.usesReusableWorkflow() and
-    expr.getRefExpr() = node1.asExpr() and
-    expr.getFieldName() = fieldName and
-    expr = node2.asExpr() and
-    c = any(FieldContent ct | ct.getName() = fieldName)
+predicate ctxFieldReadStep(Node node1, Node node2, ContentSet c) {
+  exists(CtxAccessExpr access |
+    (
+      access instanceof NeedsCtxAccessExpr or
+      access instanceof StepsCtxAccessExpr or
+      access instanceof JobsCtxAccessExpr
+    ) and
+    c = any(FieldContent ct | ct.getName() = access.getFieldName()) and
+    node1.asExpr() = access.getRefExpr() and
+    node2.asExpr() = access
   )
 }
 
@@ -290,25 +279,16 @@ predicate reusableWorkflowReturnReadStep(Node node1, Node node2, ContentSet c) {
  * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
  * `node1` references an object with a content `c.getAReadContent()` whose
  * value ends up in `node2`.
+ * Store steps without corresponding reads are pruned aggressively very early, since they can never contribute to a complete path.
  */
-predicate readStep(Node node1, ContentSet c, Node node2) {
-  // TODO: Extract to its own predicate
-  exists(StepsCtxAccessExpr access |
-    c = any(FieldContent ct | ct.getName() = access.getFieldName()) and
-    node1.asExpr() = access.getRefExpr() and
-    node2.asExpr() = access
-  )
-  or
-  reusableWorkflowReturnReadStep(node1, node2, c)
-}
+predicate readStep(Node node1, ContentSet c, Node node2) { ctxFieldReadStep(node1, node2, c) }
 
 /**
- * A store step to store the value of a ReusableWorkflowStmt output expr into the return node (node2)
- * with a given access path (fieldName)
+ * Stores an output expression (node1) into its OutputsStm node (node2)
+ * using the output variable name as the access path
  */
-predicate reusableWorkflowReturnStoreStep(Node node1, Node node2, ContentSet c) {
-  exists(ReusableWorkflowStmt stmt, OutputsStmt out, string fieldName |
-    out = stmt.getOutputsStmt() and
+predicate fieldStoreStep(Node node1, Node node2, ContentSet c) {
+  exists(OutputsStmt out, string fieldName |
     node1.asExpr() = out.getOutputExpr(fieldName) and
     node2.asExpr() = out and
     c = any(FieldContent ct | ct.getName() = fieldName)
@@ -319,15 +299,12 @@ predicate reusableWorkflowReturnStoreStep(Node node1, Node node2, ContentSet c) 
  * Holds if data can flow from `node1` to `node2` via a store into `c`.  Thus,
  * `node2` references an object with a content `c.getAStoreContent()` that
  * contains the value of `node1`.
+ * Store steps without corresponding reads are pruned aggressively very early, since they can never contribute to a complete path.
  */
 predicate storeStep(Node node1, ContentSet c, Node node2) {
-  reusableWorkflowReturnStoreStep(node1, node2, c)
-  or
-  // TODO: rename to xxxxStoreStep
-  externallyDefinedSummary(node1, node2, c)
-  or
-  // TODO: rename to xxxxStoreStep
-  runEnvToScriptstep(node1, node2, c)
+  fieldStoreStep(node1, node2, c) or
+  externallyDefinedStoreStep(node1, node2, c) or
+  runEnvToScriptStoreStep(node1, node2, c)
 }
 
 /**
