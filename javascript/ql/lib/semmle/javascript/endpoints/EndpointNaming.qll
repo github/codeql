@@ -185,9 +185,24 @@ private predicate sinkHasAlias(API::Node sink, string package, string name) {
   )
 }
 
+/** Gets a source node that can flow to `sink` without using a return step. */
+private DataFlow::SourceNode nodeReachingSink(API::Node sink, DataFlow::TypeBackTracker t) {
+  t.start() and
+  result = sink.asSink().getALocalSource()
+  or
+  exists(DataFlow::TypeBackTracker t2 |
+    result = nodeReachingSink(sink, t2).backtrack(t2, t) and
+    t.hasReturn() = false
+  )
+}
+
+/** Gets a source node that can flow to `sink` without using a return step. */
+DataFlow::SourceNode nodeReachingSink(API::Node sink) {
+  result = nodeReachingSink(sink, DataFlow::TypeBackTracker::end())
+}
+
 /** Gets a sink node reachable from `node`. */
-bindingset[node]
-private API::Node getASinkNode(DataFlow::SourceNode node) { result.getAValueReachingSink() = node }
+private API::Node getASinkNode(DataFlow::SourceNode node) { node = nodeReachingSink(result) }
 
 /**
  * Holds if `node` is a declaration in an externs file.
