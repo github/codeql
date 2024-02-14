@@ -3544,7 +3544,7 @@
 | kFunctionInvoke.kt:7:1:10:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | kFunctionInvoke.kt:7:12:7:15 | A | file://:0:0:0:0 | <none> | TypeAccess |
 | kFunctionInvoke.kt:7:18:7:26 | String | file://:0:0:0:0 | <none> | TypeAccess |
-| kFunctionInvoke.kt:8:9:8:14 | toCall | kFunctionInvoke.kt:7:1:10:1 | useRef | LocalVariableDeclExpr |
+| kFunctionInvoke.kt:8:5:8:47 | toCall | kFunctionInvoke.kt:7:1:10:1 | useRef | LocalVariableDeclExpr |
 | kFunctionInvoke.kt:8:44:8:44 | a | kFunctionInvoke.kt:7:1:10:1 | useRef | VarAccess |
 | kFunctionInvoke.kt:8:44:8:47 | 1 | kFunctionInvoke.kt:8:44:8:47 |  | IntegerLiteral |
 | kFunctionInvoke.kt:8:44:8:47 | ...::... | kFunctionInvoke.kt:7:1:10:1 | useRef | MemberRefExpr |
