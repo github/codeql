@@ -44,7 +44,6 @@ func gjwtt() (interface{}, error) {
 
 func gin_jwt() (interface{}, error) {
 	var identityKey = "id"
-	// authMiddleware, err :=
 	return jwt.New(&jwt.GinJWTMiddleware{
 		Realm:       "test zone",
 		Key:         []byte("key2"), // BAD
@@ -124,7 +123,7 @@ func lejwt2() (interface{}, error) {
 func gogfjwt() interface{} {
 	return &gogf.GfJWTMiddleware{
 		Realm:           "test zone",
-		Key:             []byte("key11"),
+		Key:             []byte("key11"), // BAD
 		Timeout:         time.Minute * 5,
 		MaxRefresh:      time.Minute * 5,
 		IdentityKey:     "id",
@@ -139,60 +138,56 @@ func gogfjwt() interface{} {
 }
 
 func irisjwt() interface{} {
-	mySecret := []byte("key12")
+	safeName := []byte("key12")
 	token := iris.NewTokenWithClaims(nil, nil)
-	tokenString, _ := token.SignedString(mySecret)
+	tokenString, _ := token.SignedString(safeName) // BAD
 	return tokenString
 }
 
 func iris12jwt2() interface{} {
-	mySecret := []byte("key13")
+	safeName := []byte("key13")
 
 	s := &iris12.Signer{
 		Alg:    nil,
-		Key:    mySecret,
+		Key:    safeName, // BAD
 		MaxAge: 3 * time.Second,
 	}
 	return s
 }
 
 func irisjwt3() interface{} {
-	secret := []byte("key14")
-	signer := iris12.NewSigner(nil, secret, 3*time.Second)
+	safeName := []byte("key14")
+	signer := iris12.NewSigner(nil, safeName, 3*time.Second) // BAD
 	return signer
 }
 
 func katarasJwt() interface{} {
-	secret := []byte("key15")
-	token, _ := kataras.Sign(nil, secret, nil, nil)
+	safeName := []byte("key15")
+	token, _ := kataras.Sign(nil, safeName, nil, nil) // BAD
 	return token
 }
 
 func katarasJwt2() interface{} {
-	secret := []byte("key16")
-	token, _ := kataras.SignEncrypted(nil, secret, nil, nil)
+	safeName := []byte("key16")
+	token, _ := kataras.SignEncrypted(nil, safeName, nil, nil) // BAD
 	return token
 }
 
 func katarasJwt3() interface{} {
-	secret := []byte("key17")
-	token, _ := kataras.SignEncryptedWithHeader(nil, secret, nil, nil, nil)
+	safeName := []byte("key17")
+	token, _ := kataras.SignEncryptedWithHeader(nil, safeName, nil, nil, nil) // BAD
 	return token
 }
 
 func katarasJwt4() interface{} {
-	secret := []byte("key18")
-	token, _ := kataras.SignWithHeader(nil, secret, nil, nil)
+	safeName := []byte("key18")
+	token, _ := kataras.SignWithHeader(nil, safeName, nil, nil) // BAD
 	return token
 }
 
 func katarasJwt5() {
-	secret := []byte("key19")
+	safeName := []byte("key19")
 	var keys kataras.Keys
 	var alg kataras.Alg
-	keys.Register(alg, "api", nil, secret)
-}
-
-func main() {
-	return
+	keys.Register(alg, "api", nil, safeName) // BAD
 }
