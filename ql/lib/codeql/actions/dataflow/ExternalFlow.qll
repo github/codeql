@@ -50,22 +50,22 @@ predicate externallyDefinedSource(DataFlow::Node source, string sourceType, stri
     ) and
     (
       if fieldName.trim().matches("env.%")
-      then source.asExpr() = uses.getEnvExpr(fieldName.trim().replaceAll("env\\.", ""))
+      then source.asExpr() = uses.getEnvExpr(fieldName.trim().replaceAll("env.", ""))
       else
         if fieldName.trim().matches("output.%")
-        then
-          // 'output.' is the default qualifier
-          source.asExpr() = uses
+        then source.asExpr() = uses
         else none()
     ) and
     sourceType = kind
   )
 }
 
-predicate externallyDefinedSummary(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
+predicate externallyDefinedStoreStep(
+  DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c
+) {
   exists(UsesExpr uses, string action, string version, string input, string output |
-    c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output\\.", "")) and
     summaryModel(action, version, input, output, "taint") and
+    c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output.", "")) and
     uses.getCallee() = action.toLowerCase() and
     (
       if version.trim() = "*"
@@ -74,10 +74,11 @@ predicate externallyDefinedSummary(DataFlow::Node pred, DataFlow::Node succ, Dat
     ) and
     (
       if input.trim().matches("env.%")
-      then pred.asExpr() = uses.getEnvExpr(input.trim().replaceAll("env\\.", ""))
+      then pred.asExpr() = uses.getEnvExpr(input.trim().replaceAll("env.", ""))
       else
-        // 'input.' is the default qualifier
-        pred.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input\\.", ""))
+        if input.trim().matches("input.%")
+        then pred.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
+        else none()
     ) and
     succ.asExpr() = uses
   )
@@ -87,8 +88,11 @@ predicate externallyDefinedSink(DataFlow::ExprNode sink, string kind) {
   exists(UsesExpr uses, string action, string version, string input |
     (
       if input.trim().matches("env.%")
-      then sink.asExpr() = uses.getEnvExpr(input.trim().replaceAll("input\\.", ""))
-      else sink.asExpr() = uses.getArgumentExpr(input.trim())
+      then sink.asExpr() = uses.getEnvExpr(input.trim().replaceAll("env.", ""))
+      else
+        if input.trim().matches("input.%")
+        then sink.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
+        else none()
     ) and
     sinkModel(action, version, input, kind) and
     uses.getCallee() = action.toLowerCase() and
