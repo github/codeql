@@ -47,7 +47,6 @@ predicate sensitiveAssignment(
 predicate hardcodedPrivateKey(DataFlow::Node node, SensitiveExpr::Classification type) {
   node.getStringValue()
       .regexpMatch("(?s)-+BEGIN\\b.*\\bPRIVATE KEY-+.+-+END\\b.*\\bPRIVATE KEY-+\n?") and
-  (node.asExpr() instanceof StringLit or node.asExpr() instanceof AddExpr) and
   type = SensitiveExpr::certificate()
 }
 
