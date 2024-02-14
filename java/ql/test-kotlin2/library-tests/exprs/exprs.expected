@@ -3564,15 +3564,15 @@
 | kFunctionInvoke.kt:9:5:9:13 | invoke(...) | kFunctionInvoke.kt:7:1:10:1 | useRef | MethodCall |
 | kFunctionInvoke.kt:9:12:9:12 | s | kFunctionInvoke.kt:7:1:10:1 | useRef | VarAccess |
 | localFunctionCalls.kt:3:1:12:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| localFunctionCalls.kt:4:9:4:9 | x | localFunctionCalls.kt:3:1:12:1 | x | LocalVariableDeclExpr |
+| localFunctionCalls.kt:4:5:4:13 | x | localFunctionCalls.kt:3:1:12:1 | x | LocalVariableDeclExpr |
 | localFunctionCalls.kt:4:13:4:13 | 5 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:5:5:5:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | localFunctionCalls.kt:5:15:5:20 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | localFunctionCalls.kt:5:25:5:25 | i | localFunctionCalls.kt:5:5:5:29 | a | VarAccess |
 | localFunctionCalls.kt:5:25:5:29 | ... + ... | localFunctionCalls.kt:5:5:5:29 | a | AddExpr |
 | localFunctionCalls.kt:5:29:5:29 | x | localFunctionCalls.kt:5:5:5:29 | a | VarAccess |
-| localFunctionCalls.kt:6:5:6:5 | x | localFunctionCalls.kt:3:1:12:1 | x | VarAccess |
 | localFunctionCalls.kt:6:5:6:9 | ...=... | localFunctionCalls.kt:3:1:12:1 | x | AssignExpr |
+| localFunctionCalls.kt:6:5:6:9 | x | localFunctionCalls.kt:3:1:12:1 | x | VarAccess |
 | localFunctionCalls.kt:6:9:6:9 | 6 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:7:5:7:17 | <implicit coercion to unit> | localFunctionCalls.kt:3:1:12:1 | x | ImplicitCoercionToUnitExpr |
 | localFunctionCalls.kt:7:5:7:17 | Object | localFunctionCalls.kt:3:1:12:1 | x | TypeAccess |
@@ -3581,8 +3581,8 @@
 | localFunctionCalls.kt:7:5:7:17 | a(...) | localFunctionCalls.kt:3:1:12:1 | x | MethodCall |
 | localFunctionCalls.kt:7:5:7:17 | new (...) | localFunctionCalls.kt:3:1:12:1 | x | ClassInstanceExpr |
 | localFunctionCalls.kt:7:15:7:16 | 42 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
-| localFunctionCalls.kt:8:5:8:5 | x | localFunctionCalls.kt:3:1:12:1 | x | VarAccess |
 | localFunctionCalls.kt:8:5:8:9 | ...=... | localFunctionCalls.kt:3:1:12:1 | x | AssignExpr |
+| localFunctionCalls.kt:8:5:8:9 | x | localFunctionCalls.kt:3:1:12:1 | x | VarAccess |
 | localFunctionCalls.kt:8:9:8:9 | 7 | localFunctionCalls.kt:3:1:12:1 | x | IntegerLiteral |
 | localFunctionCalls.kt:9:5:9:34 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | localFunctionCalls.kt:9:14:9:19 | C1<T1> | file://:0:0:0:0 | <none> | TypeAccess |
