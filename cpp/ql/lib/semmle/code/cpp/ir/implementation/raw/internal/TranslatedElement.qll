@@ -209,6 +209,8 @@ private predicate usedAsCondition(Expr expr) {
   or
   exists(IfStmt ifStmt | ifStmt.getCondition().getFullyConverted() = expr)
   or
+  exists(ConstexprIfStmt ifStmt | ifStmt.getCondition().getFullyConverted() = expr)
+  or
   exists(ConditionalExpr condExpr |
     // The two-operand form of `ConditionalExpr` treats its condition as a value, since it needs to
     // be reused as a value if the condition is true.
