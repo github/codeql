@@ -149,7 +149,7 @@ class JobStmt extends Statement instanceof Actions::Job {
    *   out1: ${steps.foo.bar}
    *   out2: ${steps.foo.baz}
    */
-  JobOutputStmt getOutputStmt() { result = this.(Actions::Job).lookup("outputs") }
+  OutputsStmt getOutputsStmt() { result = this.(Actions::Job).lookup("outputs") }
 
   /**
    * Reusable workflow jobs may have Uses children
@@ -163,28 +163,6 @@ class JobStmt extends Statement instanceof Actions::Job {
 
   predicate usesReusableWorkflow() {
     this.(YamlMapping).maps(any(YamlString s | s.getValue() = "uses"), _)
-  }
-}
-
-/**
- * Declaration of the outputs for the job.
- * eg:
- *   out1: ${steps.foo.bar}
- *   out2: ${steps.foo.baz}
- */
-class JobOutputStmt extends Statement instanceof YamlMapping {
-  JobStmt job;
-
-  JobOutputStmt() { job.(YamlMapping).lookup("outputs") = this }
-
-  YamlMapping asYamlMapping() { result = this }
-
-  /**
-   * Gets a specific value expression
-   * eg: ${steps.foo.bar}
-   */
-  Expression getOutputExpr(string id) {
-    this.(YamlMapping).maps(any(YamlScalar s | s.getValue() = id), result)
   }
 }
 
@@ -435,9 +413,9 @@ class NeedsCtxAccessExpr extends CtxAccessExpr {
     job.getLocation().getFile() = this.getLocation().getFile() and
     (
       // regular jobs
-      job.getOutputStmt().getOutputExpr(fieldName) = result
+      job.getOutputsStmt() = result
       or
-      // jobs calling reusable workflows
+      // reusable workflow calling jobs
       job.getUsesExpr() = result
     )
   }
@@ -464,7 +442,7 @@ class JobsCtxAccessExpr extends CtxAccessExpr {
     exists(JobStmt job |
       job.getId() = jobId and
       job.getLocation().getFile() = this.getLocation().getFile() and
-      job.getOutputStmt().getOutputExpr(fieldName) = result
+      job.getOutputsStmt() = result
     )
   }
 }
