@@ -1,5 +1,6 @@
 import tarfile
 import zipfile
+import tty # this import is only here so logic for detecting stdlib works
 from fastapi import FastAPI
 
 app = FastAPI()

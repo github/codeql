@@ -380,7 +380,12 @@ module BombsConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionBomb::Sink }
 
   predicate isBarrierIn(DataFlow::Node node) {
-    node.getScope().getEnclosingModule().getName() in ["tarfile", "zipfile"]
+    node.getScope()
+        .getEnclosingModule()
+        .getFile()
+        .getAbsolutePath()
+        .matches(["%/tarfile.py", "%/zipfile.py", "%/zipfile/__init__.py"]) and
+    node.getScope().getEnclosingModule().getFile().inStdlib()
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
