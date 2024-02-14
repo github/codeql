@@ -38,19 +38,21 @@ private string join(string x, string y) {
 
 private predicate isPackageExport(API::Node node) { node = API::moduleExport(_) }
 
-private predicate memberEdge(API::Node pred, API::Node succ) { succ = pred.getAMember() }
+private predicate relevantEdge(API::Node pred, API::Node succ) {
+  succ = pred.getAMember() and
+  not isPrivateLike(succ)
+}
 
 /** Gets the shortest distance from a packaeg export to `nd` in the API graph. */
 private int distanceFromPackageExport(API::Node nd) =
-  shortestDistances(isPackageExport/1, memberEdge/2)(_, nd, result)
+  shortestDistances(isPackageExport/1, relevantEdge/2)(_, nd, result)
 
 private predicate isExported(API::Node node) {
   isPackageExport(node)
   or
   exists(API::Node pred |
     isExported(pred) and
-    memberEdge(pred, node) and
-    not isPrivateLike(node)
+    relevantEdge(pred, node)
   )
 }
 
@@ -81,6 +83,7 @@ private predicate isPrivateLike(API::Node node) { isPrivateAssignment(node.asSin
 
 private API::Node getASuccessor(API::Node node, string name, int badness) {
   isExported(node) and
+  isExported(result) and
   exists(string member |
     result = node.getMember(member) and
     if member = "default"
