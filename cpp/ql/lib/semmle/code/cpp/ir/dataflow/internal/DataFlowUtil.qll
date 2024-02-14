@@ -57,7 +57,8 @@ private newtype TIRDataFlowNode =
     hasFinalParameterNode(_, p, indirectionIndex)
   } or
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
-  TInitialGlobalValue(Ssa::GlobalDef globalUse)
+  TInitialGlobalValue(Ssa::GlobalDef globalUse) or
+  TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
 
 /**
  * Holds if `(p, indirectionIndex)` should define a `TFinalParameterNode`
@@ -758,6 +759,31 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
   final override Location getLocationImpl() { result = globalDef.getLocation() }
 
   override string toStringImpl() { result = globalDef.toString() }
+}
+
+/**
+ * A data-flow node used to model flow summaries.
+ */
+class FlowSummaryNode extends Node, TFlowSummaryNode {
+  FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
+
+  /**
+   * TODO: QLDoc.
+   */
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
+    result = this.getSummaryNode().getSummarizedCallable()
+  }
+
+  /**
+   * TODO: QLDoc.
+   */
+  override DataFlowCallable getEnclosingCallable() {
+    none() //result.asSummarizedCallable() = this.getSummarizedCallable() TODO
+  }
+
+  override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
+
+  override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
 
 /**

@@ -1,0 +1,14 @@
+| tests.cpp:115:5:115:19 | [summary param] 0 in madArg0ToReturn |  | madArg0ToReturn |  |
+| tests.cpp:115:5:115:19 | [summary] to write: ReturnValue in madArg0ToReturn |  | madArg0ToReturn |  |
+| tests.cpp:117:5:117:28 | [summary param] 0 in madArg0ToReturnValueFlow |  | madArg0ToReturnValueFlow |  |
+| tests.cpp:117:5:117:28 | [summary] to write: ReturnValue in madArg0ToReturnValueFlow |  | madArg0ToReturnValueFlow |  |
+| tests.cpp:119:6:119:18 | [summary param] 0 in madArg0ToArg1 |  | madArg0ToArg1 |  |
+| tests.cpp:119:6:119:18 | [summary param] 1 in madArg0ToArg1 |  | madArg0ToArg1 |  |
+| tests.cpp:119:6:119:18 | [summary] to write: Argument[1] in madArg0ToArg1 |  | madArg0ToArg1 |  |
+| tests.cpp:180:7:180:19 | [summary param] 0 in madArg0ToSelf |  | madArg0ToSelf |  |
+| tests.cpp:180:7:180:19 | [summary param] this in madArg0ToSelf |  | madArg0ToSelf |  |
+| tests.cpp:180:7:180:19 | [summary] to write: Argument[this] in madArg0ToSelf |  | madArg0ToSelf |  |
+| tests.cpp:181:6:181:20 | [summary param] this in madSelfToReturn |  | madSelfToReturn |  |
+| tests.cpp:181:6:181:20 | [summary] to write: ReturnValue in madSelfToReturn |  | madSelfToReturn |  |
+| tests.cpp:209:7:209:30 | [summary param] this in namespaceMadSelfToReturn |  | namespaceMadSelfToReturn |  |
+| tests.cpp:209:7:209:30 | [summary] to write: ReturnValue in namespaceMadSelfToReturn |  | namespaceMadSelfToReturn |  |
