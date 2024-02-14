@@ -1395,12 +1395,12 @@
 | exprs.kt:145:9:145:9 | d | exprs.kt:144:1:146:1 | getClass | LocalVariableDeclExpr |
 | exprs.kt:145:13:145:16 | true | exprs.kt:144:1:146:1 | getClass | BooleanLiteral |
 | exprs.kt:145:13:145:23 | ::class | exprs.kt:144:1:146:1 | getClass | ClassExpr |
-| exprs.kt:148:9:148:18 | ...=... | exprs.kt:148:1:150:1 | C | KtInitializerAssignExpr |
+| exprs.kt:148:9:148:18 | ...=... | exprs.kt:148:8:148:19 | C | KtInitializerAssignExpr |
 | exprs.kt:148:9:148:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:148:9:148:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:148:9:148:18 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:148:9:148:18 | n | exprs.kt:148:1:150:1 | C | VarAccess |
-| exprs.kt:148:9:148:18 | n | exprs.kt:148:1:150:1 | C | VarAccess |
+| exprs.kt:148:9:148:18 | n | exprs.kt:148:8:148:19 | C | VarAccess |
+| exprs.kt:148:9:148:18 | n | exprs.kt:148:8:148:19 | C | VarAccess |
 | exprs.kt:148:9:148:18 | this | exprs.kt:148:9:148:18 | getN | ThisAccess |
 | exprs.kt:148:9:148:18 | this.n | exprs.kt:148:9:148:18 | getN | VarAccess |
 | exprs.kt:149:5:149:33 | C | file://:0:0:0:0 | <none> | TypeAccess |
