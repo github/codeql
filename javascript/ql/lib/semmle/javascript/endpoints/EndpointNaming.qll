@@ -41,6 +41,8 @@ private predicate isPackageExport(API::Node node) { node = API::moduleExport(_) 
 private predicate relevantEdge(API::Node pred, API::Node succ) {
   succ = pred.getMember(_) and
   not isPrivateLike(succ)
+  or
+  succ = pred.getInstance()
 }
 
 /** Gets the shortest distance from a packaeg export to `nd` in the API graph. */
@@ -77,19 +79,25 @@ private predicate isPrivateLike(API::Node node) { isPrivateAssignment(node.asSin
 private API::Node getASuccessor(API::Node node, string name, int badness) {
   isExported(node) and
   isExported(result) and
-  exists(string member |
-    result = node.getMember(member) and
-    if member = "default"
-    then
-      if defaultExportCanBeInterpretedAsNamespaceExport(node)
-      then (
-        badness = 5 and name = ""
-      ) else (
-        badness = 10 and name = "default"
+  (
+    exists(string member |
+      result = node.getMember(member) and
+      if member = "default"
+      then
+        if defaultExportCanBeInterpretedAsNamespaceExport(node)
+        then (
+          badness = 5 and name = ""
+        ) else (
+          badness = 10 and name = "default"
+        )
+      else (
+        name = member and badness = 0
       )
-    else (
-      name = member and badness = 0
     )
+    or
+    result = node.getInstance() and
+    name = "prototype" and
+    badness = 0
   )
 }
 
@@ -315,10 +323,6 @@ private predicate functionHasNameCandidate(
     classObjectHasPrimaryName(cls, package, name, badness)
     or
     exists(string baseName, string memberName |
-      function = cls.getInstanceMethod(memberName) and
-      classInstanceHasPrimaryName(cls, package, baseName, badness) and
-      name = join(baseName, memberName)
-      or
       function = cls.getStaticMethod(memberName) and
       classObjectHasPrimaryName(cls, package, baseName, badness) and
       name = join(baseName, memberName)
