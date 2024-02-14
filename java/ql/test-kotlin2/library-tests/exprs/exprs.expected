@@ -4383,6 +4383,6 @@
 | whenExpr.kt:6:5:6:5 | tmp0_subject | whenExpr.kt:1:1:9:1 | testWhen | VarAccess |
 | whenExpr.kt:6:16:6:44 | Exception | whenExpr.kt:1:1:9:1 | testWhen | TypeAccess |
 | whenExpr.kt:6:16:6:44 | new Exception(...) | whenExpr.kt:1:1:9:1 | testWhen | ClassInstanceExpr |
-| whenExpr.kt:6:27:6:42 | "No threes please" | whenExpr.kt:1:1:9:1 | testWhen | StringLiteral |
+| whenExpr.kt:6:26:6:43 | "No threes please" | whenExpr.kt:1:1:9:1 | testWhen | StringLiteral |
 | whenExpr.kt:7:13:7:15 | 999 | whenExpr.kt:1:1:9:1 | testWhen | IntegerLiteral |
 | whenExpr.kt:7:13:7:15 | true | whenExpr.kt:1:1:9:1 | testWhen | BooleanLiteral |
