@@ -2,10 +2,10 @@
 <qhelp>
      <overview>
           <p>Applications decoding a JSON Web Token (JWT) may be vulnerable when the
-               signature is not correctly verified in the process.</p>
+               signature is not correctly verified.</p>
      </overview>
      <recommendation>
-     <p>Always verify the signature by using the appropriate methods depending on the JWT library,
+     <p>Always verify the signature by using the appropriate methods provided by the JWT library,
           or use a library that verifies it by default.</p>
      </recommendation>
      <example>
