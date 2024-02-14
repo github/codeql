@@ -3,5 +3,5 @@ extensions:
       pack: codeql/go-all
       extensible: sinkModel
     data:
-      - ["github.com/golang-jwt/jwt/$ANYVERSION", "Token", True, "SignedString", "", "", "Argument[0]", "credentials-key", "manual"]
-      - ["github.com/golang-jwt/jwt/$ANYVERSION", "SigningMethod", True, "Sign", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["github.com/golang-jwt/jwt", "Token", True, "SignedString", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["github.com/golang-jwt/jwt", "SigningMethod", True, "Sign", "", "", "Argument[1]", "credentials-key", "manual"]
