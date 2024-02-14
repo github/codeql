@@ -379,6 +379,10 @@ module BombsConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof DecompressionBomb::Sink }
 
+  predicate isBarrierIn(DataFlow::Node node) {
+    node.getScope().getEnclosingModule().getName() in ["tarfile", "zipfile"]
+  }
+
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     (
       any(DecompressionBomb::AdditionalTaintStep a).isAdditionalTaintStep(pred, succ) or

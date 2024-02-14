@@ -1,41 +1,24 @@
 edges
-| file:///usr/lib/python3.8/tarfile.py:1654:21:1654:24 | ControlFlowNode for name | file:///usr/lib/python3.8/tarfile.py:1667:32:1667:35 | ControlFlowNode for name | provenance |  |
-| file:///usr/lib/python3.8/tarfile.py:1715:21:1715:24 | ControlFlowNode for name | file:///usr/lib/python3.8/tarfile.py:1727:28:1727:42 | ControlFlowNode for BoolExpr | provenance |  |
-| file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | provenance |  |
-| file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | provenance |  |
-| file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | test.py:23:5:23:52 | ControlFlowNode for Attribute() | provenance |  |
-| file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | test.py:27:5:27:60 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:10:21:10:29 | ControlFlowNode for file_path | provenance |  |
-| test.py:10:21:10:29 | ControlFlowNode for file_path | file:///usr/lib/python3.8/zipfile.py:1700:14:1700:39 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:10:21:10:29 | ControlFlowNode for file_path | test.py:10:5:10:52 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:10:21:10:29 | ControlFlowNode for file_path | test.py:11:21:11:29 | ControlFlowNode for file_path | provenance |  |
-| test.py:11:21:11:29 | ControlFlowNode for file_path | file:///usr/lib/python3.8/zipfile.py:1700:14:1700:39 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:11:21:11:29 | ControlFlowNode for file_path | test.py:11:5:11:48 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:11:21:11:29 | ControlFlowNode for file_path | test.py:13:26:13:34 | ControlFlowNode for file_path | provenance |  |
 | test.py:13:26:13:34 | ControlFlowNode for file_path | test.py:14:14:14:29 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:13:26:13:34 | ControlFlowNode for file_path | test.py:17:26:17:34 | ControlFlowNode for file_path | provenance |  |
 | test.py:17:26:17:34 | ControlFlowNode for file_path | test.py:18:14:18:39 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:17:26:17:34 | ControlFlowNode for file_path | test.py:21:21:21:29 | ControlFlowNode for file_path | provenance |  |
-| test.py:21:21:21:29 | ControlFlowNode for file_path | file:///usr/lib/python3.8/zipfile.py:1475:14:1475:38 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:21:21:21:29 | ControlFlowNode for file_path | test.py:21:5:21:60 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:21:21:21:29 | ControlFlowNode for file_path | test.py:23:18:23:26 | ControlFlowNode for file_path | provenance |  |
-| test.py:23:18:23:26 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | provenance |  |
-| test.py:23:18:23:26 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:23:18:23:26 | ControlFlowNode for file_path | test.py:23:5:23:52 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:23:18:23:26 | ControlFlowNode for file_path | test.py:24:26:24:34 | ControlFlowNode for file_path | provenance |  |
 | test.py:24:26:24:34 | ControlFlowNode for file_path | test.py:24:5:24:55 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:24:26:24:34 | ControlFlowNode for file_path | test.py:25:28:25:36 | ControlFlowNode for file_path | provenance |  |
-| test.py:25:28:25:36 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:1715:21:1715:24 | ControlFlowNode for name | provenance |  |
 | test.py:25:28:25:36 | ControlFlowNode for file_path | test.py:25:5:25:57 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:25:28:25:36 | ControlFlowNode for file_path | test.py:26:28:26:36 | ControlFlowNode for file_path | provenance |  |
-| test.py:26:28:26:36 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:1654:21:1654:24 | ControlFlowNode for name | provenance |  |
-| test.py:26:28:26:36 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:2028:13:2029:53 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:26:28:26:36 | ControlFlowNode for file_path | test.py:26:5:26:50 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:26:28:26:36 | ControlFlowNode for file_path | test.py:27:26:27:34 | ControlFlowNode for file_path | provenance |  |
-| test.py:27:26:27:34 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | provenance |  |
-| test.py:27:26:27:34 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | provenance |  |
 | test.py:27:26:27:34 | ControlFlowNode for file_path | test.py:27:5:27:60 | ControlFlowNode for Attribute() | provenance |  |
-| test.py:27:26:27:34 | ControlFlowNode for file_path | test.py:30:28:30:36 | ControlFlowNode for file_path | provenance |  |
 | test.py:27:26:27:34 | ControlFlowNode for file_path | test.py:34:27:34:35 | ControlFlowNode for file_path | provenance |  |
 | test.py:27:26:27:34 | ControlFlowNode for file_path | test.py:38:15:38:23 | ControlFlowNode for file_path | provenance |  |
 | test.py:27:26:27:34 | ControlFlowNode for file_path | test.py:39:19:39:27 | ControlFlowNode for file_path | provenance |  |
@@ -52,17 +35,7 @@ edges
 | test.py:27:26:27:34 | ControlFlowNode for file_path | test.py:62:42:62:50 | ControlFlowNode for file_path | provenance |  |
 | test.py:27:26:27:34 | ControlFlowNode for file_path | test.py:64:23:64:31 | ControlFlowNode for file_path | provenance |  |
 | test.py:27:26:27:34 | ControlFlowNode for file_path | test.py:65:36:65:44 | ControlFlowNode for file_path | provenance |  |
-| test.py:30:28:30:36 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:1654:21:1654:24 | ControlFlowNode for name | provenance |  |
 nodes
-| file:///usr/lib/python3.8/tarfile.py:1654:21:1654:24 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
-| file:///usr/lib/python3.8/tarfile.py:1667:32:1667:35 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
-| file:///usr/lib/python3.8/tarfile.py:1715:21:1715:24 | ControlFlowNode for name | semmle.label | ControlFlowNode for name |
-| file:///usr/lib/python3.8/tarfile.py:1727:28:1727:42 | ControlFlowNode for BoolExpr | semmle.label | ControlFlowNode for BoolExpr |
-| file:///usr/lib/python3.8/tarfile.py:2028:13:2029:53 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| file:///usr/lib/python3.8/zipfile.py:1475:14:1475:38 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| file:///usr/lib/python3.8/zipfile.py:1700:14:1700:39 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:9:16:9:24 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 | test.py:10:5:10:52 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:10:21:10:29 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
@@ -84,7 +57,6 @@ nodes
 | test.py:26:28:26:36 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 | test.py:27:5:27:60 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:27:26:27:34 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
-| test.py:30:28:30:36 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 | test.py:34:27:34:35 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 | test.py:38:15:38:23 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 | test.py:39:19:39:27 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
@@ -103,12 +75,6 @@ nodes
 | test.py:65:36:65:44 | ControlFlowNode for file_path | semmle.label | ControlFlowNode for file_path |
 subpaths
 #select
-| file:///usr/lib/python3.8/tarfile.py:1667:32:1667:35 | ControlFlowNode for name | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:1667:32:1667:35 | ControlFlowNode for name | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
-| file:///usr/lib/python3.8/tarfile.py:1727:28:1727:42 | ControlFlowNode for BoolExpr | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:1727:28:1727:42 | ControlFlowNode for BoolExpr | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
-| file:///usr/lib/python3.8/tarfile.py:2028:13:2029:53 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:2028:13:2029:53 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
-| file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.8/tarfile.py:2111:24:2111:72 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
-| file:///usr/lib/python3.8/zipfile.py:1475:14:1475:38 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.8/zipfile.py:1475:14:1475:38 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
-| file:///usr/lib/python3.8/zipfile.py:1700:14:1700:39 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | file:///usr/lib/python3.8/zipfile.py:1700:14:1700:39 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
 | test.py:10:5:10:52 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:10:5:10:52 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
 | test.py:11:5:11:48 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:11:5:11:48 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
 | test.py:14:14:14:29 | ControlFlowNode for Attribute() | test.py:9:16:9:24 | ControlFlowNode for file_path | test.py:14:14:14:29 | ControlFlowNode for Attribute() | This uncontrolled file extraction is $@. | test.py:9:16:9:24 | ControlFlowNode for file_path | depends on this user controlled data |
