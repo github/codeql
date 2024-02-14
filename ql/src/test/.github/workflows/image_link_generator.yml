@@ -14,35 +14,39 @@ jobs:
 
       - name: Extract and Clean Initial URL
         id: extract-url
+        env:
+          BODY: ${{ github.event.comment.body }}
         run: |
-          INITIAL_URL=$(echo "${{ github.event.comment.body }}" | grep -o 'https://github.com/github/release-assets/assets/[^ >]*')
+          INITIAL_URL=$(echo "$BODY" | grep -o 'https://github.com/github/release-assets/assets/[^ >]*')
           echo "Cleaned Initial URL: $INITIAL_URL"
           echo "::set-output name=initial_url::$INITIAL_URL"
 
       - name: Get Redirected URL with Debugging
         id: curl
+        env:
+          INITIAL_URL: ${{ steps.extract-url.outputs.initial_url }}
         run: |
-          REDIRECTED_URL=$(curl -L -o /dev/null -w %{url_effective} -sS "${{ steps.extract-url.outputs.initial_url }}")
+          REDIRECTED_URL=$(curl -L -o /dev/null -w %{url_effective} -sS "$INITIAL_URL")
           echo "Curl Command Executed"
           echo "Redirected URL: $REDIRECTED_URL"
           echo "::set-output name=redirected_url::$REDIRECTED_URL"
 
       - name: Trim URL after PNG
         id: trim-url
+        env:
+          REDIRECTED_URL: ${{ steps.curl.outputs.redirected_url }}
         run: |
-          TRIMMED_URL=$(echo "${{ steps.curl.outputs.redirected_url }}" | sed 's/\(.*\.png\).*/\1/')
+          TRIMMED_URL=$(echo "$REDIRECTED_URL" | sed 's/\(.*\.png\).*/\1/')
           echo "Trimmed URL: $TRIMMED_URL"
           echo "::set-output name=trimmed_url::$TRIMMED_URL"
 
-      - name: Output Final Trimmed URL
-        run: |
-          echo "Final Trimmed Image URL: ${{ steps.trim-url.outputs.trimmed_url }}"
-
       - name: Update Comment with New URL
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          COMMENT_URL: ${{ github.event.comment.url }}
+          ORIGINAL_COMMENT_BODY: ${{ github.event.comment.body }}
         run: |
-          COMMENT_URL="${{ github.event.comment.url }}"
           NEW_COMMENT_BODY="Use this link to include this asset in your changelog: ${{ steps.trim-url.outputs.trimmed_url }}"
-          ORIGINAL_COMMENT_BODY="${{ github.event.comment.body }}"
           UPDATED_COMMENT="${ORIGINAL_COMMENT_BODY} 👀 ${NEW_COMMENT_BODY}"
 
           PAYLOAD=$(jq -n --arg body "$UPDATED_COMMENT" '{"body": $body}')
@@ -51,5 +55,3 @@ jobs:
                -H "Accept: application/vnd.github.v3+json" \
                "${COMMENT_URL}" \
                -d "$PAYLOAD"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
