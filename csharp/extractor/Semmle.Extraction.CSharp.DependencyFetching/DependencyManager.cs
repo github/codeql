@@ -169,13 +169,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             try
             {
-                var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, logger);
-                var count = nuget.InstallPackages();
-
-                if (nuget.PackageCount > 0)
+                using (var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, logger))
                 {
-                    CompilationInfos.Add(("packages.config files", nuget.PackageCount.ToString()));
-                    CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
+                    var count = nuget.InstallPackages();
+
+                    if (nuget.PackageCount > 0)
+                    {
+                        CompilationInfos.Add(("packages.config files", nuget.PackageCount.ToString()));
+                        CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
+                    }
                 }
 
                 var nugetPackageDlls = legacyPackageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });

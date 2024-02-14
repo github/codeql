@@ -1038,3 +1038,10 @@ namespace test_gettext {
     indirect_sink(translated); // clean
   }
 }
+
+void* memset(void*, int, size_t);
+
+void memset_test(char* buf) { // $ ast-def=buf
+	memset(buf, source(), 10);
+	sink(*buf); // $ ir MISSING: ast
+}

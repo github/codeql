@@ -878,7 +878,7 @@ Record.cs:
 #   27|       1: [Parameter] right
 #   27|   14: [Property] EqualityContract
 #   27|     3: [Getter] get_EqualityContract
-#   27|   15: [InstanceConstructor] Person1
+#   27|   15: [InstanceConstructor,PrimaryConstructor] Person1
 #-----|     2: (Parameters)
 #   27|       0: [Parameter] FirstName
 #   27|         -1: [TypeMention] string
@@ -905,7 +905,7 @@ Record.cs:
 #   29|       1: [Parameter] right
 #   29|   15: [Property] EqualityContract
 #   29|     3: [Getter] get_EqualityContract
-#   29|   16: [InstanceConstructor] Teacher1
+#   29|   16: [InstanceConstructor,PrimaryConstructor] Teacher1
 #-----|     2: (Parameters)
 #   29|       0: [Parameter] FirstName
 #   29|         -1: [TypeMention] string
@@ -929,7 +929,7 @@ Record.cs:
 #   32|       1: [Parameter] right
 #   32|   15: [Property] EqualityContract
 #   32|     3: [Getter] get_EqualityContract
-#   32|   16: [InstanceConstructor] Student1
+#   32|   16: [InstanceConstructor,PrimaryConstructor] Student1
 #-----|     2: (Parameters)
 #   32|       0: [Parameter] FirstName
 #   32|         -1: [TypeMention] string
@@ -953,7 +953,7 @@ Record.cs:
 #   35|       1: [Parameter] right
 #   35|   14: [Property] EqualityContract
 #   35|     3: [Getter] get_EqualityContract
-#   35|   15: [InstanceConstructor] Pet
+#   35|   15: [InstanceConstructor,PrimaryConstructor] Pet
 #-----|     2: (Parameters)
 #   35|       0: [Parameter] Name
 #   35|         -1: [TypeMention] string
@@ -977,7 +977,7 @@ Record.cs:
 #-----|     2: (Parameters)
 #   41|       0: [Parameter] left
 #   41|       1: [Parameter] right
-#   41|   14: [InstanceConstructor] Dog
+#   41|   14: [InstanceConstructor,PrimaryConstructor] Dog
 #-----|     2: (Parameters)
 #   41|       0: [Parameter] Name
 #   41|         -1: [TypeMention] string
@@ -1018,7 +1018,7 @@ Record.cs:
 #   54|       1: [Parameter] right
 #   54|   14: [Property] EqualityContract
 #   54|     3: [Getter] get_EqualityContract
-#   54|   15: [InstanceConstructor] R1
+#   54|   15: [InstanceConstructor,PrimaryConstructor] R1
 #-----|     2: (Parameters)
 #   54|       0: [Parameter] A
 #   54|         -1: [TypeMention] string
@@ -1038,7 +1038,7 @@ Record.cs:
 #   56|       1: [Parameter] right
 #   56|   15: [Property] EqualityContract
 #   56|     3: [Getter] get_EqualityContract
-#   56|   16: [InstanceConstructor] R2
+#   56|   16: [InstanceConstructor,PrimaryConstructor] R2
 #-----|     2: (Parameters)
 #   56|       0: [Parameter] A
 #   56|         -1: [TypeMention] string

@@ -407,6 +407,24 @@ class InstanceConstructor extends Constructor {
 }
 
 /**
+ * A primary constructor, for example `public class C(object o)` on line 1 in
+ * ```csharp
+ * public class C(object o) {
+ *  ...
+ * }
+ * ```
+ */
+class PrimaryConstructor extends Constructor {
+  PrimaryConstructor() {
+    not this.hasBody() and
+    this.getDeclaringType().fromSource() and
+    this.fromSource()
+  }
+
+  override string getAPrimaryQlClass() { result = "PrimaryConstructor" }
+}
+
+/**
  * A destructor, for example `~C() { }` on line 2 in
  *
  * ```csharp
