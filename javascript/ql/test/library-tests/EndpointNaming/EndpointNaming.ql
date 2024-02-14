@@ -5,6 +5,10 @@ import semmle.javascript.endpoints.EndpointNaming as EndpointNaming
 import testUtilities.InlineExpectationsTest
 import EndpointNaming::Debug
 
+private predicate isIgnored(DataFlow::FunctionNode function) {
+  function.getFunction() = any(ConstructorDeclaration decl | decl.isSynthetic()).getBody()
+}
+
 module TestConfig implements TestSig {
   string getARelevantTag() { result = ["instance", "class", "method", "alias"] }
 
@@ -21,11 +25,12 @@ module TestConfig implements TestSig {
         EndpointNaming::classInstanceHasPrimaryName(cls, package, name)
       )
       or
-      exists(DataFlow::FunctionNode function |
-        not function.getFunction() = any(ConstructorDeclaration decl | decl.isSynthetic()).getBody() and
-        location = function.getFunction().getLocation() and
+      exists(DataFlow::SourceNode function |
+        not isIgnored(function) and
+        location = function.getAstNode().getLocation() and
         tag = "method" and
-        EndpointNaming::functionHasPrimaryName(function, package, name)
+        EndpointNaming::functionHasPrimaryName(function, package, name) and
+        not function instanceof DataFlow::ClassNode // reported with class tag
       )
     )
     or

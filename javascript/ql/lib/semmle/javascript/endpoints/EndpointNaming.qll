@@ -347,26 +347,6 @@ private predicate functionHasNameCandidate(
   nameFromExterns(function, package, name, badness)
 }
 
-private predicate functionHasPrimaryName(
-  DataFlow::FunctionNode function, string package, string name, int badness
-) {
-  badness = min(int b | functionHasNameCandidate(function, _, _, b) | b) and
-  package = min(string p | functionHasNameCandidate(function, p, _, badness) | p) and
-  name =
-    min(string n |
-      functionHasNameCandidate(function, package, n, badness)
-    |
-      n order by n.length(), n
-    )
-}
-
-/**
- * Holds if `(package, name)` is the primary name for the given `function`.
- */
-predicate functionHasPrimaryName(DataFlow::FunctionNode function, string package, string name) {
-  functionHasPrimaryName(function, package, name, _)
-}
-
 private predicate sourceNodeHasNameCandidate(
   DataFlow::SourceNode node, string package, string name, int badness
 ) {
@@ -385,6 +365,29 @@ private predicate sourceNodeHasPrimaryName(
     min(string p | sourceNodeHasNameCandidate(node, p, _, badness) | p order by p.length(), p) and
   name =
     min(string n | sourceNodeHasNameCandidate(node, package, n, badness) | n order by n.length(), n)
+}
+
+/**
+ * Holds if `node` is a function or a call that returns a function.
+ */
+private predicate isFunctionSource(DataFlow::SourceNode node) {
+  node instanceof DataFlow::FunctionNode
+  or
+  node instanceof DataFlow::InvokeNode and
+  exists(node.getABoundFunctionValue(_)) and
+  // `getASinkNode` steps through imports (but not other calls) so exclude calls that are imports (i.e. require calls)
+  // as we want to get as close to the source as possible.
+  not node instanceof DataFlow::ModuleImportNode
+}
+
+/**
+ * Holds if `(package, name)` is the primary name for the given `function`.
+ *
+ * The `function` node may be an actual function expression, or a call site from which a function is returned.
+ */
+predicate functionHasPrimaryName(DataFlow::SourceNode function, string package, string name) {
+  sourceNodeHasPrimaryName(function, package, name, _) and
+  isFunctionSource(function)
 }
 
 private predicate sinkHasSourceName(API::Node sink, string package, string name, int badness) {
