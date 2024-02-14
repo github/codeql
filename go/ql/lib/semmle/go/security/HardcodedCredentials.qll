@@ -7,6 +7,7 @@
 import go
 private import semmle.go.StringOps
 private import semmle.go.dataflow.ExternalFlow
+private import semmle.go.security.SensitiveActions
 
 /**
  * Provides default sources, sinks and sanitizers for reasoning about
@@ -36,7 +37,11 @@ module HardcodedCredentials {
 
   /** A hardcoded string literal as a source for hardcoded credentials. */
   private class HardcodedStringSource extends Source {
-    HardcodedStringSource() { this.asExpr() instanceof StringLit }
+    HardcodedStringSource() {
+      exists(StringLit val | this.asExpr() = val |
+        not PasswordHeuristics::isDummyPassword(val.getStringValue())
+      )
+    }
   }
 
   /** A use of a credential. */
