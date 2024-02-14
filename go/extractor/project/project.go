@@ -128,7 +128,7 @@ func checkDirsNested(inputDirs []string) (string, bool) {
 var filesToRemove []string = []string{}
 
 // Try to initialize a go.mod file for projects that do not already have one.
-func initGoModForLegacyProject(path string) {
+func InitGoModForLegacyProject(path string) {
 	log.Printf("Project appears to be a legacy Go project, attempting to initialize go.mod in %s\n", path)
 
 	modInit := toolchain.InitModule(path)
@@ -395,7 +395,7 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 		}
 
 		// Try to initialize a `go.mod` file automatically.
-		initGoModForLegacyProject(".")
+		InitGoModForLegacyProject(".")
 
 		goWorkspaces = []GoWorkspace{{
 			BaseDir: ".",
@@ -437,7 +437,7 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 
 				// Try to initialize a `go.mod` file automatically for the stray source files.
 				if !slices.Contains(goModDirs, path) {
-					initGoModForLegacyProject(path)
+					InitGoModForLegacyProject(path)
 					goWorkspaces = append(goWorkspaces, GoWorkspace{
 						BaseDir: path,
 						Modules: loadGoModules([]string{filepath.Join(path, "go.mod")}),
