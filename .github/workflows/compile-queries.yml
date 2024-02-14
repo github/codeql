@@ -10,6 +10,7 @@ on:
 
 jobs:
   compile-queries:
+    if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
 
     steps:
