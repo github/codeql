@@ -37,7 +37,7 @@ module FileAndFormRemoteFlowSource {
         exists(For f, Attribute attr |
           fastApiParam.getAValueReachableFromSource().asExpr() = f.getIter().getASubExpression*()
         |
-          TaintTracking::localExprTaint(f.getIter(), attr.getObject()) and
+          DataFlow::localFlow(DataFlow::exprNode(f.getIter()), DataFlow::exprNode(attr.getObject())) and
           attr.getName() = ["filename", "content_type", "headers", "file", "read"] and
           this.asExpr() = attr
         )

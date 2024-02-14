@@ -73,8 +73,8 @@ module ZipFile {
    * ```
    */
   predicate zipFileDecompressionBombSanitizer(API::Node n) {
-    TaintTracking::localExprTaint(n.getReturn().getMember("read").getParameter(0).asSink().asExpr(),
-      any(Compare i).getASubExpression*())
+    DataFlow::localFlow(n.getReturn().getMember("read").getParameter(0).asSink(),
+      DataFlow::exprNode(any(Compare i).getASubExpression*()))
   }
 
   /**
