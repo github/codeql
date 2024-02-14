@@ -473,6 +473,11 @@ func installDependencies(workspace project.GoWorkspace) {
 		log.Println("Installing dependencies using `glide install`")
 		util.RunCmd(install)
 	} else {
+		if workspace.Modules == nil {
+			project.InitGoModForLegacyProject(workspace.BaseDir)
+			workspace.Modules = project.LoadGoModules([]string{filepath.Join(workspace.BaseDir, "go.mod")})
+		}
+
 		// get dependencies for all modules
 		for _, module := range workspace.Modules {
 			install = exec.Command("go", "get", "-v", "./...")

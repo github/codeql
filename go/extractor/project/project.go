@@ -179,7 +179,7 @@ func findGoModFiles(root string) []string {
 // Given a list of `go.mod` file paths, try to parse them all. The resulting array of `GoModule` objects
 // will be the same length as the input array and the objects will contain at least the `go.mod` path.
 // If parsing the corresponding file is successful, then the parsed contents will also be available.
-func loadGoModules(goModFilePaths []string) []*GoModule {
+func LoadGoModules(goModFilePaths []string) []*GoModule {
 	results := make([]*GoModule, len(goModFilePaths))
 
 	for i, goModFilePath := range goModFilePaths {
@@ -219,7 +219,7 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 		log.Printf("Unable to read %s, falling back to finding `go.mod` files manually:\n%s\n", workFilePath, err.Error())
 		return GoWorkspace{
 			BaseDir: baseDir,
-			Modules: loadGoModules(findGoModFiles(baseDir)),
+			Modules: LoadGoModules(findGoModFiles(baseDir)),
 			DepMode: GoGetWithModules,
 			ModMode: getModMode(GoGetWithModules, baseDir),
 		}
@@ -232,7 +232,7 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 		log.Printf("Unable to parse %s, falling back to finding `go.mod` files manually:\n%s\n", workFilePath, err.Error())
 		return GoWorkspace{
 			BaseDir: baseDir,
-			Modules: loadGoModules(findGoModFiles(baseDir)),
+			Modules: LoadGoModules(findGoModFiles(baseDir)),
 			DepMode: GoGetWithModules,
 			ModMode: getModMode(GoGetWithModules, baseDir),
 		}
@@ -255,7 +255,7 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 	return GoWorkspace{
 		BaseDir:       baseDir,
 		WorkspaceFile: workFile,
-		Modules:       loadGoModules(goModFilePaths),
+		Modules:       LoadGoModules(goModFilePaths),
 		DepMode:       GoGetWithModules,
 		ModMode:       ModReadonly, // Workspaces only support "readonly"
 	}
@@ -278,7 +278,7 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 		for i, goModFile := range goModFiles {
 			results[i] = GoWorkspace{
 				BaseDir: filepath.Dir(goModFile),
-				Modules: loadGoModules([]string{goModFile}),
+				Modules: LoadGoModules([]string{goModFile}),
 				DepMode: GoGetWithModules,
 				ModMode: getModMode(GoGetWithModules, filepath.Dir(goModFile)),
 			}
@@ -327,7 +327,7 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 				log.Printf("Module %s is not referenced by any go.work file; adding it separately.\n", goModFile)
 				results = append(results, GoWorkspace{
 					BaseDir: filepath.Dir(goModFile),
-					Modules: loadGoModules([]string{goModFile}),
+					Modules: LoadGoModules([]string{goModFile}),
 					DepMode: GoGetWithModules,
 					ModMode: getModMode(GoGetWithModules, filepath.Dir(goModFile)),
 				})
@@ -394,16 +394,12 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 			return
 		}
 
-		// Try to initialize a `go.mod` file automatically.
-		InitGoModForLegacyProject(".")
-
 		goWorkspaces = []GoWorkspace{{
 			BaseDir: ".",
-			DepMode: GoGetWithModules,
-			Modules: loadGoModules([]string{"go.mod"}),
+			DepMode: GoGetNoModules,
 			ModMode: getModMode(GoGetWithModules, "."),
 		}}
-		totalModuleFiles = 1
+		totalModuleFiles = 0
 		return
 	}
 
@@ -437,14 +433,11 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 
 				// Try to initialize a `go.mod` file automatically for the stray source files.
 				if !slices.Contains(goModDirs, path) {
-					InitGoModForLegacyProject(path)
 					goWorkspaces = append(goWorkspaces, GoWorkspace{
 						BaseDir: path,
-						Modules: loadGoModules([]string{filepath.Join(path, "go.mod")}),
-						DepMode: GoGetWithModules,
+						DepMode: GoGetNoModules,
 						ModMode: ModUnset,
 					})
-					totalModuleFiles += 1
 					goModDirs = append(goModDirs, path)
 					break
 				}
