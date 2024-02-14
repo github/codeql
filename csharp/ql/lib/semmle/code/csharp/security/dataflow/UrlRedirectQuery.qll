@@ -140,20 +140,24 @@ class LocalUrlSanitizer extends Sanitizer {
 }
 
 /**
- * A argument to a call to `List.Contains()` that is a sanitizer for URL redirects.
+ * An argument to a call to `List.Contains()` that is a sanitizer for URL redirects.
  */
 private predicate isContainsUrlSanitizer(Guard guard, Expr e, AbstractValue v) {
-  exists(MethodCall method | method = guard |
-    exists(Method m | m = method.getTarget() |
-      m.hasName("Contains") and
-      e = method.getArgument(0)
-    ) and
-    v.(AbstractValues::BooleanValue).getValue() = true
-  )
+  guard =
+    any(MethodCall method |
+      exists(Method m | m = method.getTarget() |
+        m.hasName("Contains") and
+        e = method.getArgument(0)
+      ) and
+      v.(AbstractValues::BooleanValue).getValue() = true
+    )
 }
 
 /**
- * A URL argument to a call to `List.Contains()` that is a sanitizer for URL redirects.
+ * An URL argument to a call to `.Contains()` that is a sanitizer for URL redirects.
+ *
+ * This `Contains` method is usually called on a list, but the sanitizer matches any call to a method
+ * called `Contains`, so other methods with the same name will also be considered sanitizers.
  */
 class ContainsUrlSanitizer extends Sanitizer {
   ContainsUrlSanitizer() {
@@ -165,12 +169,12 @@ class ContainsUrlSanitizer extends Sanitizer {
  * A check that the URL is relative, and therefore safe for URL redirects.
  */
 private predicate isRelativeUrlSanitizer(Guard guard, Expr e, AbstractValue v) {
-  exists(PropertyAccess access | access = guard |
-    access.getProperty().getName() = "IsAbsoluteUri" and
-    access.getQualifier().getType().getFullyQualifiedName() = "System.Uri" and
-    e = access.getQualifier() and
-    v.(AbstractValues::BooleanValue).getValue() = false
-  )
+  guard =
+    any(PropertyAccess access |
+      access.getProperty().hasFullyQualifiedName("System", "Uri", "IsAbsoluteUri") and
+      e = access.getQualifier() and
+      v.(AbstractValues::BooleanValue).getValue() = false
+    )
 }
 
 /**
@@ -187,16 +191,16 @@ class RelativeUrlSanitizer extends Sanitizer {
  * E.g. `url.Host == "example.org"`
  */
 private predicate isHostComparisonSanitizer(Guard guard, Expr e, AbstractValue v) {
-  exists(EqualityOperation comparison | comparison = guard |
-    exists(PropertyAccess access | access = comparison.getAnOperand() |
-      access.getProperty().getName() = "Host" and
-      access.getQualifier().getType().getFullyQualifiedName() = "System.Uri" and
-      e = access.getQualifier()
-    ) and
-    if comparison instanceof EQExpr
-    then v.(AbstractValues::BooleanValue).getValue() = true
-    else v.(AbstractValues::BooleanValue).getValue() = false
-  )
+  guard =
+    any(EqualityOperation comparison |
+      exists(PropertyAccess access | access = comparison.getAnOperand() |
+        access.getProperty().hasFullyQualifiedName("System", "Uri", "Host") and
+        e = access.getQualifier()
+      ) and
+      if comparison instanceof EQExpr
+      then v.(AbstractValues::BooleanValue).getValue() = true
+      else v.(AbstractValues::BooleanValue).getValue() = false
+    )
 }
 
 /**
