@@ -352,8 +352,70 @@ predicate functionHasPrimaryName(DataFlow::FunctionNode function, string package
   functionHasPrimaryName(function, package, name, _)
 }
 
+private predicate sourceNodeHasNameCandidate(
+  DataFlow::SourceNode node, string package, string name, int badness
+) {
+  sinkHasPrimaryName(getASinkNode(node), package, name, badness)
+  or
+  functionHasNameCandidate(node, package, name, badness)
+  or
+  classObjectHasNameCandidate(node, package, name, badness)
+}
+
+private predicate sourceNodeHasPrimaryName(
+  DataFlow::SourceNode node, string package, string name, int badness
+) {
+  badness = min(int b | sourceNodeHasNameCandidate(node, _, _, b) | b) and
+  package =
+    min(string p | sourceNodeHasNameCandidate(node, p, _, badness) | p order by p.length(), p) and
+  name =
+    min(string n | sourceNodeHasNameCandidate(node, package, n, badness) | n order by n.length(), n)
+}
+
+private predicate sinkHasSourceName(API::Node sink, string package, string name, int badness) {
+  exists(DataFlow::SourceNode source |
+    sink = getASinkNode(source) and
+    sourceNodeHasPrimaryName(source, package, name, badness)
+  )
+}
+
+private predicate sinkHasPrimarySourceName(API::Node sink, string package, string name, int badness) {
+  badness = min(int b | sinkHasSourceName(sink, _, _, b) | b) and
+  package = min(string p | sinkHasSourceName(sink, p, _, badness) | p order by p.length(), p) and
+  name = min(string n | sinkHasSourceName(sink, package, n, badness) | n order by n.length(), n)
+}
+
+private predicate sinkHasPrimarySourceName(API::Node sink, string package, string name) {
+  sinkHasPrimarySourceName(sink, package, name, _)
+}
+
+private predicate aliasCandidate(
+  string package, string name, string targetPackage, string targetName, API::Node aliasDef
+) {
+  sinkHasPrimaryName(aliasDef, package, name) and
+  sinkHasPrimarySourceName(aliasDef, targetPackage, targetName) and
+  not (
+    package = targetPackage and
+    name = targetName
+  )
+}
+
+private predicate nonAlias(string package, string name) {
+  // `(package, name)` appears to be an alias for multiple things. Treat it as a primary name instead.
+  strictcount(string targetPackage, string targetName |
+    aliasCandidate(package, name, targetPackage, targetName, _)
+  ) > 1
+  or
+  // Not all sinks with this name agree on the alias target
+  exists(API::Node sink, string targetPackage, string targetName |
+    aliasCandidate(package, name, targetPackage, targetName, _) and
+    sinkHasPrimaryName(sink, package, name) and
+    not sinkHasPrimarySourceName(sink, targetPackage, targetName, _)
+  )
+}
+
 /**
- * Holds if `(aliasPackage, aliasName)` is an alias for `(primaryPackage, primaryName)`,
+ * Holds if `(package, name)` is an alias for `(targetPackage, targetName)`,
  * defined at `aliasDef`.
  *
  * Only the last component of an access path is reported as an alias, the prefix always
@@ -365,24 +427,10 @@ predicate functionHasPrimaryName(DataFlow::FunctionNode function, string package
  * reported separately.
  */
 predicate aliasDefinition(
-  string primaryPackage, string primaryName, string aliasPackage, string aliasName,
-  API::Node aliasDef
+  string package, string name, string targetPackage, string targetName, API::Node aliasDef
 ) {
-  exists(DataFlow::SourceNode source |
-    classObjectHasPrimaryName(source, primaryPackage, primaryName)
-    or
-    functionHasPrimaryName(source, primaryPackage, primaryName)
-  |
-    aliasDef.getAValueReachingSink() = source and
-    sinkHasPrimaryName(aliasDef, aliasPackage, aliasName, _) and
-    not (
-      primaryPackage = aliasPackage and
-      primaryName = aliasName
-    )
-  )
-  or
-  sinkHasPrimaryName(aliasDef, primaryPackage, primaryName) and
-  sinkHasAlias(aliasDef, aliasPackage, aliasName)
+  aliasCandidate(package, name, targetPackage, targetName, aliasDef) and
+  not nonAlias(package, name)
 }
 
 /**

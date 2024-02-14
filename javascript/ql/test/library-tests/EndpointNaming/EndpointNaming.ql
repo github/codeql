@@ -35,7 +35,7 @@ module TestConfig implements TestSig {
       API::Node aliasDef, string primaryPackage, string primaryName, string aliasPackage,
       string aliasName
     |
-      EndpointNaming::aliasDefinition(primaryPackage, primaryName, aliasPackage, aliasName, aliasDef) and
+      EndpointNaming::aliasDefinition(aliasPackage, aliasName, primaryPackage, primaryName, aliasDef) and
       value =
         EndpointNaming::renderName(aliasPackage, aliasName) + "==" +
           EndpointNaming::renderName(primaryPackage, primaryName) and

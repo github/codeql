@@ -5,4 +5,4 @@ class AmbiguousClass {
 export default AmbiguousClass; // $ alias=(pack2).lib.default==(pack2).lib.LibClass
 export { AmbiguousClass as LibClass }
 
-AmbiguousClass.foo = function() {} // $ method=(pack2).lib.LibClass.foo alias=(pack2).lib.default.foo==(pack2).lib.LibClass.foo
+AmbiguousClass.foo = function() {} // $ method=(pack2).lib.LibClass.foo
