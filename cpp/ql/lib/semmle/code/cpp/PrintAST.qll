@@ -835,7 +835,11 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(OverloadedArrayExpr).getArrayOffset() = ele and pred = "getArrayOffset()"
     or
-    expr.(OverloadedPointerDereferenceExpr).getExpr() = ele and pred = "getExpr()"
+    // OverloadedPointerDereferenceExpr::getExpr/0 also considers qualifiers, which are already handled above for all Call classes.
+    not expr.(OverloadedPointerDereferenceExpr).getQualifier() =
+      expr.(OverloadedPointerDereferenceExpr).getExpr() and
+    expr.(OverloadedPointerDereferenceExpr).getExpr() = ele and
+    pred = "getExpr()"
     or
     expr.(CommaExpr).getLeftOperand() = ele and pred = "getLeftOperand()"
     or
