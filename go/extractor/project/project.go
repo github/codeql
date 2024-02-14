@@ -206,7 +206,7 @@ func loadGoModules(goModFilePaths []string) []*GoModule {
 	return results
 }
 
-// Given a path to a `go.work` file, this function attempts to parse the `go.work`. If unsuccessful,
+// Given a path to a `go.work` file, this function attempts to parse the `go.work` file. If unsuccessful,
 // we attempt to discover `go.mod` files within subdirectories of the directory containing the `go.work`
 // file ourselves.
 func discoverWorkspace(workFilePath string) GoWorkspace {
