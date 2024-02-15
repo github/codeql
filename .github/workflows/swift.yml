@@ -33,6 +33,9 @@ on:
       - rc/*
       - codeql-cli-*
 
+permissions:
+  contents: read
+
 jobs:
   # not using a matrix as you cannot depend on a specific job in a matrix, and we want to start linux checks
   # without waiting for the macOS build

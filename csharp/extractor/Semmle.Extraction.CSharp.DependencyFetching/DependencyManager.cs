@@ -417,7 +417,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var allPackageDirectories = GetAllPackageDirectories();
 
             logger.LogInfo($"Restored {allPackageDirectories.Count} packages");
-            logger.LogInfo($"Found {dependencies.Packages.Count} packages in project.asset.json files");
+            logger.LogInfo($"Found {dependencies.Packages.Count} packages in project.assets.json files");
 
             allPackageDirectories
                 .Where(package => !dependencies.Packages.Contains(package))

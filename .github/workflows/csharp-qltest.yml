@@ -25,6 +25,9 @@ defaults:
   run:
     working-directory: csharp
 
+permissions:
+  contents: read
+
 jobs:
   qlupgrade:
     runs-on: ubuntu-latest
