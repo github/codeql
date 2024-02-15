@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -10,8 +12,16 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Constructor : Method
     {
+        private readonly Lazy<List<SyntaxNode>> DeclaringReferenceSyntax;
+
         private Constructor(Context cx, IMethodSymbol init)
-            : base(cx, init) { }
+            : base(cx, init)
+        {
+            DeclaringReferenceSyntax = new(() =>
+                Symbol.DeclaringSyntaxReferences
+                    .Select(r => r.GetSyntax())
+                    .ToList());
+        }
 
         public override void Populate(TextWriter trapFile)
         {
@@ -33,16 +43,17 @@ namespace Semmle.Extraction.CSharp.Entities
         protected override void ExtractInitializers(TextWriter trapFile)
         {
             // Do not extract initializers for constructed types.
-            if (!IsSourceDeclaration)
+            // Only extract initializers for constructors with a body and primary constructors.
+            if (Block is null && ExpressionBody is null && !IsPrimary ||
+                !IsSourceDeclaration)
+            {
                 return;
+            }
 
-            var syntax = Syntax;
-            var initializer = syntax?.Initializer;
-
-            if (initializer is not null)
+            if (OrdinaryConstructorSyntax?.Initializer is ConstructorInitializerSyntax initializer)
             {
                 ITypeSymbol initializerType;
-                var symbolInfo = Context.GetSymbolInfo(initializer);
+                var initializerInfo = Context.GetSymbolInfo(initializer);
 
                 switch (initializer.Kind())
                 {
@@ -57,27 +68,14 @@ namespace Semmle.Extraction.CSharp.Entities
                         return;
                 }
 
-                var initInfo = new ExpressionInfo(Context,
-                    AnnotatedTypeSymbol.CreateNotAnnotated(initializerType),
-                    Context.CreateLocation(initializer.ThisOrBaseKeyword.GetLocation()),
-                    Kinds.ExprKind.CONSTRUCTOR_INIT,
-                    this,
-                    -1,
-                    false,
-                    null);
+                ExtractSourceInitializer(trapFile, initializerType, (IMethodSymbol?)initializerInfo.Symbol, initializer.ArgumentList, initializer.ThisOrBaseKeyword.GetLocation());
+            }
+            else if (PrimaryBase is PrimaryConstructorBaseTypeSyntax primaryInitializer)
+            {
+                var primaryInfo = Context.GetSymbolInfo(primaryInitializer);
+                var primarySymbol = primaryInfo.Symbol;
 
-                var init = new Expression(initInfo);
-
-                var target = Constructor.Create(Context, (IMethodSymbol?)symbolInfo.Symbol);
-                if (target is null)
-                {
-                    Context.ModelError(Symbol, "Unable to resolve call");
-                    return;
-                }
-
-                trapFile.expr_call(init, target);
-
-                init.PopulateArguments(trapFile, initializer.ArgumentList, 0);
+                ExtractSourceInitializer(trapFile, primarySymbol?.ContainingType, (IMethodSymbol?)primarySymbol, primaryInitializer.ArgumentList, primaryInitializer.GetLocation());
             }
             else if (Symbol.MethodKind is MethodKind.Constructor)
             {
@@ -113,16 +111,49 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        private ConstructorDeclarationSyntax? Syntax
+        private void ExtractSourceInitializer(TextWriter trapFile, ITypeSymbol? type, IMethodSymbol? symbol, ArgumentListSyntax arguments, Location location)
         {
-            get
+            var initInfo = new ExpressionInfo(Context,
+                AnnotatedTypeSymbol.CreateNotAnnotated(type),
+                Context.CreateLocation(location),
+                Kinds.ExprKind.CONSTRUCTOR_INIT,
+                this,
+                -1,
+                false,
+                null);
+
+            var init = new Expression(initInfo);
+
+            var target = Constructor.Create(Context, symbol);
+            if (target is null)
             {
-                return Symbol.DeclaringSyntaxReferences
-                    .Select(r => r.GetSyntax())
-                    .OfType<ConstructorDeclarationSyntax>()
-                    .FirstOrDefault();
+                Context.ModelError(Symbol, "Unable to resolve call");
+                return;
             }
+
+            trapFile.expr_call(init, target);
+
+            init.PopulateArguments(trapFile, arguments, 0);
         }
+
+        private ConstructorDeclarationSyntax? OrdinaryConstructorSyntax =>
+            DeclaringReferenceSyntax.Value
+                .OfType<ConstructorDeclarationSyntax>()
+                .FirstOrDefault();
+
+        private TypeDeclarationSyntax? PrimaryConstructorSyntax =>
+            DeclaringReferenceSyntax.Value
+                    .OfType<TypeDeclarationSyntax>()
+                    .FirstOrDefault(t => t is ClassDeclarationSyntax or StructDeclarationSyntax or RecordDeclarationSyntax);
+
+        private PrimaryConstructorBaseTypeSyntax? PrimaryBase =>
+            PrimaryConstructorSyntax?
+                .BaseList?
+                .Types
+                .OfType<PrimaryConstructorBaseTypeSyntax>()
+                .FirstOrDefault();
+
+        private bool IsPrimary => PrimaryConstructorSyntax is not null;
 
         [return: NotNullIfNotNull("constructor")]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
@@ -158,19 +189,20 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.Write(";constructor");
         }
 
-        private ConstructorDeclarationSyntax? GetSyntax() =>
-            Symbol.DeclaringSyntaxReferences.Select(r => r.GetSyntax()).OfType<ConstructorDeclarationSyntax>().FirstOrDefault();
-
         public override Microsoft.CodeAnalysis.Location? FullLocation => ReportingLocation;
 
         public override Microsoft.CodeAnalysis.Location? ReportingLocation
         {
             get
             {
-                var syn = GetSyntax();
-                if (syn is not null)
+                if (OrdinaryConstructorSyntax is not null)
                 {
-                    return syn.Identifier.GetLocation();
+                    return OrdinaryConstructorSyntax.Identifier.GetLocation();
+                }
+
+                if (PrimaryConstructorSyntax is not null)
+                {
+                    return PrimaryConstructorSyntax.Identifier.GetLocation();
                 }
 
                 if (Symbol.IsImplicitlyDeclared)
