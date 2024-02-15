@@ -398,14 +398,14 @@ void flowThroughMemcpy_blockvar_with_local_flow(int source1, int b) {
 void cleanedByMemcpy_ssa(int clean1) { // currently modeled with BlockVar, not SSA
   int tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // $ SPURIOUS: ast,ir
+  sink(tmp); // $ SPURIOUS: ast
 }
 
 void cleanedByMemcpy_blockvar(int clean1) {
   int tmp;
   int *capture = &tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // $ SPURIOUS: ast,ir
+  sink(tmp); // $ SPURIOUS: ast
 }
 
 void intRefSource(int &ref_source);

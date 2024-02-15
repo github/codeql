@@ -212,7 +212,7 @@ void test_swap() {
 
 	std::swap(x, y);
 
-	sink(x); // $ SPURIOUS: ast,ir
+	sink(x); // $ SPURIOUS: ast
 	sink(y); // $ ast,ir
 }
 
@@ -756,5 +756,5 @@ void call_sprintf_twice(char* path, char* data) {
 void test_call_sprintf() {
 	char path[10];
 	call_sprintf_twice(path, indirect_source());
-	sink(*path); // $ ir ast
+	sink(*path); // $ ast MISSING: ir
 }

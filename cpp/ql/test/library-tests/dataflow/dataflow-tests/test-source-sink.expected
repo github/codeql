@@ -238,8 +238,6 @@ irFlow
 | test.cpp:382:48:382:54 | source1 | test.cpp:385:8:385:10 | tmp |
 | test.cpp:388:53:388:59 | source1 | test.cpp:392:8:392:10 | tmp |
 | test.cpp:388:53:388:59 | source1 | test.cpp:394:10:394:12 | tmp |
-| test.cpp:399:7:399:9 | definition of tmp | test.cpp:401:8:401:10 | tmp |
-| test.cpp:405:7:405:9 | definition of tmp | test.cpp:408:8:408:10 | tmp |
 | test.cpp:416:7:416:11 | definition of local | test.cpp:418:8:418:12 | local |
 | test.cpp:417:16:417:20 | intRefSource output argument | test.cpp:418:8:418:12 | local |
 | test.cpp:422:7:422:11 | definition of local | test.cpp:424:8:424:12 | local |
