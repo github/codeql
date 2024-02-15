@@ -480,9 +480,17 @@ func installDependencies(workspace project.GoWorkspace) {
 
 		// get dependencies for all modules
 		for _, module := range workspace.Modules {
+			path := filepath.Dir(module.Path)
+
+			if util.DirExists(filepath.Join(path, "vendor")) {
+				vendor := toolchain.VendorModule(path)
+				log.Printf("Synchronizing vendor file using `go mod vendor` in %s.\n", path)
+				util.RunCmd(vendor)
+			}
+
 			install = exec.Command("go", "get", "-v", "./...")
-			install.Dir = filepath.Dir(module.Path)
-			log.Printf("Installing dependencies using `go get -v ./...` in `%s`.\n", filepath.Dir(module.Path))
+			install.Dir = path
+			log.Printf("Installing dependencies using `go get -v ./...` in `%s`.\n", path)
 			util.RunCmd(install)
 		}
 	}

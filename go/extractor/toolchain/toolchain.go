@@ -85,3 +85,10 @@ func InitModule(path string) *exec.Cmd {
 	modInit.Dir = path
 	return modInit
 }
+
+// Constructs a command to run `go mod vendor` in the directory given by `path`.
+func VendorModule(path string) *exec.Cmd {
+	modVendor := exec.Command("go", "mod", "vendor")
+	modVendor.Dir = path
+	return modVendor
+}
