@@ -137,7 +137,7 @@ private class ExternallyDefinedSource extends RemoteFlowSource {
 }
 
 /**
- * Composite action input sources
+ * An input for a Composite Action
  */
 private class CompositeActionInputSource extends RemoteFlowSource {
   CompositeActionStmt c;
