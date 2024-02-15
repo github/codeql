@@ -247,3 +247,23 @@ void pointer_arithmetic_test_on_bad_string(){
     printf(hello); // BAD
   }
 }
+
+struct struct1 {
+  char *non_const;
+  const char* const_member = "TEST";
+  char * const_member2 = "TEST";
+  struct struct2{
+    char *nested_non_const;
+    const char* nested_const_member = "TEST";
+    char * nested_const_member2 = "TEST";
+  } nested;
+};
+
+int test_uncalled_func_with_struct_param(struct struct1 *s) {
+  printf(s->non_const); // BAD [FALSE NEGATIVE]
+  printf(s->const_member); // GOOD
+  printf(s->const_member2); // GOOD
+  printf(s->nested.nested_non_const); // BAD [FALSE NEGATIVE]
+  printf(s->nested.nested_const_member); // GOOD
+  printf(s->nested.nested_const_member2); // GOOD
+}

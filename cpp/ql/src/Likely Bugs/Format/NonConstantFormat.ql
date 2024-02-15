@@ -1,9 +1,17 @@
 /**
  * @name Non-constant format string
- * @description Passing a non-constant 'format' string to a printf-like function can lead
+ * @description Passing a value that is not a string literal 'format' string to a printf-like function can lead
  *              to a mismatch between the number of arguments defined by the 'format' and the number
  *              of arguments actually passed to the function. If the format string ultimately stems
  *              from an untrusted source, this can be used for exploits.
+ *              This query finds all sources leading to a format string that cannot be verified to be literal.
+ *              Even if the format string type is `const char*` it is still considered non-constant if the
+ *              value is not a string literal. For example, a parameter to a function that is never observed to be called
+ *              that takes in a `const char*` and uses it as a format string, there is no way to verify the originating
+ *              value was a string literal. This is especially problematic with conversion of c strings to char *,
+ *              via `c_str()`, which returns a `const char*`, regardless if the original string was a string literal or not.
+ *              The query does not consider uninitialized variables as non-constant sources. Uninitialized
+ *              variables are a separate vulnerability concern and should be addressed by a separate query.
  * @kind problem
  * @problem.severity recommendation
  * @security-severity 9.3
@@ -32,40 +40,37 @@ class UncalledFunction extends Function {
   }
 }
 
-/*
- * const char* means (const char)*, so the pointer is not const, the pointed to value is.
- * Grabs the base type of the underlying type of `t` if `t` is a pointer and checks `isConst()` else
- * checks on the underlying type of `t` alone.
- */
-predicate hasConstSpecifier(Type t) {
-  if t.getUnderlyingType() instanceof PointerType
-  then t.getUnderlyingType().(PointerType).getBaseType().isConst()
-  else t.getUnderlyingType().isConst()
-}
-
 /**
- * Holds if `node` is a non-constant source of data flow.
+ * Holds if `node` is a non-constant source of data flow for non-const format string detection.
  * This is defined as either:
  * 1) a `FlowSource`
  * 2) a parameter of an 'uncalled' function
  * 3) an argument to a function with no definition that is not known to define the output through its input
  * 4) an out arg of a function with no definition that is not known to define the output through its input
  *
- * With exception to `FlowSource` all non-const values have a type that is not const
- * (declared without a `const` specifier)
- * ASSUMPTION: any const values are assumed to be static if their assignment is not seen
- * i.e., assuming users did not get non-const data and cast into a const
- *
  * The latter two cases address identifying standard string manipulation libraries as input sources
- * e.g., strcpy, but it will identify unknown function calls as possible non-constant source
- * since it cannot be determined if the out argument or return is constant.
+ * e.g., strcpy. More simply, functions without definitions that are known to manipulate the
+ * input to produce an output are not sources. Instead the ultimate source of input to these functions
+ * should be considered as the source.
+ *
+ * False Negative Implication: This approach has false negatives (fails to identify non-const sources)
+ * when the source is a field of a struct or object and the initialization is not observed statically.
+ * There are 3 general cases where this can occur:
+ * 1) Parameters of uncalled functions that are structs/objects and a field is accessed for a format string.
+ * 2) A local variable that is a struct/object and initialization of the field occurs in code that is unseen statically.
+ *    e.g., an object constructor isn't known statically, or a function sets fields
+ *    of a struct, but the function is not known statically.
+ * 3) A function meeting cases (3) and (4) above returns (through an out argument or return value)
+ *    a struct or object where a field containing a format string has been initialized.
+ *
+ * Note, uninitialized variables used as format strings are never detected by design.
+ * Uninitialized variables are a separate vulnerability concern and should be addressed by a separate query.
  */
 predicate isNonConst(DataFlow::Node node) {
   node instanceof FlowSource
   or
   // Parameters of uncalled functions that aren't const
   exists(UncalledFunction f, Parameter p |
-    //not hasConstSpecifier(p.getType()) and
     f.getAParameter() = p and
     p = node.asParameter()
   )
@@ -77,23 +82,20 @@ predicate isNonConst(DataFlow::Node node) {
   //       are considered as possible non-const sources
   // The function's output must also not be const to be considered a non-const source
   exists(Call c |
-    exists(Expr arg | c.getAnArgument() = arg |
-      arg = node.asDefiningArgument() 
-      // and
-      // not hasConstSpecifier(arg.getType())
-    )
+    exists(Expr arg | c.getAnArgument() = arg | arg = node.asDefiningArgument())
     or
-    c = node.asIndirectExpr() 
-    // and not hasConstSpecifier(c.getType())
+    c = node.asIndirectExpr()
   ) and
   not exists(FunctionInput input, FunctionOutput output, CallInstruction call |
     // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
     // variant function's output are now possible non-const sources
     (
-      pragma[only_bind_out](call.getStaticCallTarget()).(DataFlowFunction).hasDataFlow(input, output) or
+      pragma[only_bind_out](call.getStaticCallTarget())
+          .(DataFlowFunction)
+          .hasDataFlow(input, output) or
       pragma[only_bind_out](call.getStaticCallTarget()).(TaintFunction).hasTaintFlow(input, output)
     ) and
-    node = callOutput(call, output) 
+    node = callOutput(call, output)
   ) and
   not exists(Call c |
     c.getTarget().hasDefinition() and
