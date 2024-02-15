@@ -39,80 +39,78 @@ namespace Semmle.Extraction.CSharp.Entities
             var syntax = Syntax;
             var initializer = syntax?.Initializer;
 
-            if (initializer is null)
+            if (initializer is not null)
             {
-                if (Symbol.MethodKind is MethodKind.Constructor)
+                ITypeSymbol initializerType;
+                var symbolInfo = Context.GetSymbolInfo(initializer);
+
+                switch (initializer.Kind())
                 {
-                    var baseType = Symbol.ContainingType.BaseType;
-                    if (baseType is null)
-                    {
-                        if (Symbol.ContainingType.SpecialType != SpecialType.System_Object)
-                        {
-                            Context.ModelError(Symbol, "Unable to resolve base type in implicit constructor initializer");
-                        }
+                    case SyntaxKind.BaseConstructorInitializer:
+                        initializerType = Symbol.ContainingType.BaseType!;
+                        break;
+                    case SyntaxKind.ThisConstructorInitializer:
+                        initializerType = Symbol.ContainingType;
+                        break;
+                    default:
+                        Context.ModelError(initializer, "Unknown initializer");
                         return;
-                    }
-
-                    var baseConstructor = baseType.InstanceConstructors.FirstOrDefault(c => c.Arity is 0);
-
-                    if (baseConstructor is null)
-                    {
-                        Context.ModelError(Symbol, "Unable to resolve implicit constructor initializer call");
-                        return;
-                    }
-
-                    var baseConstructorTarget = Create(Context, baseConstructor);
-                    var info = new ExpressionInfo(Context,
-                        AnnotatedTypeSymbol.CreateNotAnnotated(baseType),
-                        Location,
-                        Kinds.ExprKind.CONSTRUCTOR_INIT,
-                        this,
-                        -1,
-                        isCompilerGenerated: true,
-                        null);
-
-                    trapFile.expr_call(new Expression(info), baseConstructorTarget);
                 }
-                return;
-            }
 
-            ITypeSymbol initializerType;
-            var symbolInfo = Context.GetSymbolInfo(initializer);
+                var initInfo = new ExpressionInfo(Context,
+                    AnnotatedTypeSymbol.CreateNotAnnotated(initializerType),
+                    Context.CreateLocation(initializer.ThisOrBaseKeyword.GetLocation()),
+                    Kinds.ExprKind.CONSTRUCTOR_INIT,
+                    this,
+                    -1,
+                    false,
+                    null);
 
-            switch (initializer.Kind())
-            {
-                case SyntaxKind.BaseConstructorInitializer:
-                    initializerType = Symbol.ContainingType.BaseType!;
-                    break;
-                case SyntaxKind.ThisConstructorInitializer:
-                    initializerType = Symbol.ContainingType;
-                    break;
-                default:
-                    Context.ModelError(initializer, "Unknown initializer");
+                var init = new Expression(initInfo);
+
+                var target = Constructor.Create(Context, (IMethodSymbol?)symbolInfo.Symbol);
+                if (target is null)
+                {
+                    Context.ModelError(Symbol, "Unable to resolve call");
                     return;
+                }
+
+                trapFile.expr_call(init, target);
+
+                init.PopulateArguments(trapFile, initializer.ArgumentList, 0);
             }
-
-            var initInfo = new ExpressionInfo(Context,
-                AnnotatedTypeSymbol.CreateNotAnnotated(initializerType),
-                Context.CreateLocation(initializer.ThisOrBaseKeyword.GetLocation()),
-                Kinds.ExprKind.CONSTRUCTOR_INIT,
-                this,
-                -1,
-                false,
-                null);
-
-            var init = new Expression(initInfo);
-
-            var target = Constructor.Create(Context, (IMethodSymbol?)symbolInfo.Symbol);
-            if (target is null)
+            else if (Symbol.MethodKind is MethodKind.Constructor)
             {
-                Context.ModelError(Symbol, "Unable to resolve call");
-                return;
+                var baseType = Symbol.ContainingType.BaseType;
+                if (baseType is null)
+                {
+                    if (Symbol.ContainingType.SpecialType != SpecialType.System_Object)
+                    {
+                        Context.ModelError(Symbol, "Unable to resolve base type in implicit constructor initializer");
+                    }
+                    return;
+                }
+
+                var baseConstructor = baseType.InstanceConstructors.FirstOrDefault(c => c.Arity is 0);
+
+                if (baseConstructor is null)
+                {
+                    Context.ModelError(Symbol, "Unable to resolve implicit constructor initializer call");
+                    return;
+                }
+
+                var baseConstructorTarget = Create(Context, baseConstructor);
+                var info = new ExpressionInfo(Context,
+                    AnnotatedTypeSymbol.CreateNotAnnotated(baseType),
+                    Location,
+                    Kinds.ExprKind.CONSTRUCTOR_INIT,
+                    this,
+                    -1,
+                    isCompilerGenerated: true,
+                    null);
+
+                trapFile.expr_call(new Expression(info), baseConstructorTarget);
             }
-
-            trapFile.expr_call(init, target);
-
-            init.PopulateArguments(trapFile, initializer.ArgumentList, 0);
         }
 
         private ConstructorDeclarationSyntax? Syntax
