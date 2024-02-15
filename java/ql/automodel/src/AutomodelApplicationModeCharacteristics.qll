@@ -465,7 +465,7 @@ predicate isPositiveExample(
  * TODO: this might filter too much, it's possible that methods with more than one parameter contain interesting sinks
  */
 private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
-  UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
+  UnexploitableIsCharacteristic() { this = "argument of is-style boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getName().matches("is%") and
@@ -483,7 +483,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
  * dangerous/interesting thing, so we want the latter to be modeled as the sink.
  */
 private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
-  UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
+  UnexploitableExistsCharacteristic() { this = "argument of existence-checking boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     exists(Callable callable | callable = e.getCallable() |
@@ -499,7 +499,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
  */
 private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  ExceptionCharacteristic() { this = "exception" }
+  ExceptionCharacteristic() { this = "argument/result of exception-related method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable and
