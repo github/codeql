@@ -32,6 +32,9 @@ defaults:
   run:
     working-directory: ruby
 
+permissions:
+  contents: read
+
 jobs:
   build:
     strategy:
