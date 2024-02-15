@@ -12,7 +12,7 @@
  *              via `c_str()`, which returns a `const char*`, regardless if the original string was a string literal or not.
  *              The query does not consider uninitialized variables as non-constant sources. Uninitialized
  *              variables are a separate vulnerability concern and should be addressed by a separate query.
- * @kind problem
+ * @kind path-problem
  * @problem.severity recommendation
  * @security-severity 9.3
  * @precision high
@@ -30,6 +30,7 @@ import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.ir.IR
+import NonConstFlow::PathGraph
 
 class UncalledFunction extends Function {
   UncalledFunction() {
@@ -72,7 +73,11 @@ predicate isNonConst(DataFlow::Node node) {
   // Parameters of uncalled functions that aren't const
   exists(UncalledFunction f, Parameter p |
     f.getAParameter() = p and
-    p = node.asParameter()
+    p = node.asParameter() and 
+    // Exclude main in this instance since that should have its own defined FlowSource
+    // and including main would likely result in redundancy. 
+    // Note, argc is not a flow source, so only filter out argv
+    (p.getFunction().getName() = "main" implies not p.getName() = "argv")
   )
   or
   // Consider as an input any out arg of a function or a function's return where the function is not:
@@ -127,11 +132,13 @@ module NonConstFlowConfig implements DataFlow::ConfigSig {
 
 module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;
 
-from FormattingFunctionCall call, Expr formatString, DataFlow::Node sink
+from
+  FormattingFunctionCall call, Expr formatString, NonConstFlow::PathNode sink,
+  NonConstFlow::PathNode source
 where
+  isSinkImpl(sink.getNode(), formatString) and
   call.getArgument(call.getFormatParameterIndex()) = formatString and
-  NonConstFlow::flowTo(sink) and
-  isSinkImpl(sink, formatString)
-select formatString,
-  "The format string argument to " + call.getTarget().getName() +
-    " should be constant to prevent security issues and other potential errors."
+  NonConstFlow::flowPath(source, sink)
+select sink.getNode(), source, sink,
+  "The format string argument to $@ has a source which cannot be " +
+    "verified to originate from a string literal.", call, call.getTarget().getName()
