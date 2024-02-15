@@ -214,7 +214,8 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
       string input
     |
       sinkSpec(e, package, type, subtypes, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
+      ExternalFlow::sinkModel(package, type, subtypes, name, [signature, ""], ext, input, kind,
+        provenance)
     )
   }
 
