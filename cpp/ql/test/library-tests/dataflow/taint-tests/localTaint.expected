@@ -6490,6 +6490,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:607:10:607:16 | call to _strinc | taint.cpp:609:8:609:12 | dest1 |  |
 | taint.cpp:607:18:607:23 | source | taint.cpp:607:10:607:16 | call to _strinc | TAINT |
 | taint.cpp:607:26:607:31 | locale | taint.cpp:607:10:607:16 | call to _strinc | TAINT |
+| taint.cpp:607:26:607:31 | locale | taint.cpp:607:26:607:31 | ref arg locale | TAINT |
 | taint.cpp:607:26:607:31 | ref arg locale | taint.cpp:606:82:606:87 | locale |  |
 | taint.cpp:607:26:607:31 | ref arg locale | taint.cpp:611:25:611:30 | locale |  |
 | taint.cpp:608:7:608:11 | ref arg dest1 | taint.cpp:606:52:606:56 | dest1 |  |
@@ -6501,6 +6502,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:611:10:611:16 | call to _strinc | taint.cpp:613:8:613:12 | dest2 |  |
 | taint.cpp:611:18:611:22 | clean | taint.cpp:611:10:611:16 | call to _strinc | TAINT |
 | taint.cpp:611:25:611:30 | locale | taint.cpp:611:10:611:16 | call to _strinc | TAINT |
+| taint.cpp:611:25:611:30 | locale | taint.cpp:611:25:611:30 | ref arg locale | TAINT |
 | taint.cpp:611:25:611:30 | ref arg locale | taint.cpp:606:82:606:87 | locale |  |
 | taint.cpp:612:7:612:11 | ref arg dest2 | taint.cpp:606:65:606:69 | dest2 |  |
 | taint.cpp:612:7:612:11 | ref arg dest2 | taint.cpp:613:8:613:12 | dest2 |  |

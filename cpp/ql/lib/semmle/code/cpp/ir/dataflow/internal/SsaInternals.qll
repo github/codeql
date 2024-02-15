@@ -5,6 +5,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc
 private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
 private import semmle.code.cpp.models.interfaces.Taint as Taint
+private import semmle.code.cpp.models.interfaces.PartialFlow as PartialFlow
 private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as FIO
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
@@ -816,10 +817,15 @@ private predicate inOut(FIO::FunctionInput input, FIO::FunctionOutput output) {
  * flows to `n`).
  */
 private predicate modeledFlowBarrier(Node n) {
-  exists(FIO::FunctionInput input, FIO::FunctionOutput output, CallInstruction call |
+  exists(
+    FIO::FunctionInput input, FIO::FunctionOutput output, CallInstruction call,
+    PartialFlow::PartialFlowFunction partialFlowFunc
+  |
     n = callInput(call, input) and
     inOut(input, output) and
-    exists(callOutput(call, output))
+    exists(callOutput(call, output)) and
+    partialFlowFunc = call.getStaticCallTarget() and
+    not partialFlowFunc.isPartialWrite(output)
   |
     call.getStaticCallTarget().(DataFlow::DataFlowFunction).hasDataFlow(_, output)
     or
