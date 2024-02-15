@@ -2418,3 +2418,5 @@ expressions.cs:
 #-----|       2: (Parameters)
 #  520|         0: [Parameter] oc2
 #  520|           -1: [TypeMention] object
+#  520|       3: [ConstructorInitializer] call to constructor ClassC1
+#  520|         0: [ParameterAccess] access to parameter oc2
