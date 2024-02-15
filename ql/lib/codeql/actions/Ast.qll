@@ -355,15 +355,21 @@ class CtxAccessExpr extends ExprAccessExpr {
   abstract Expression getRefExpr();
 }
 
-private string stepsCtxRegex() { result = "steps\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)" }
+private string stepsCtxRegex() {
+  result = "\\bsteps\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)\\b"
+}
 
-private string needsCtxRegex() { result = "needs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)" }
+private string needsCtxRegex() {
+  result = "\\bneeds\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)\\b"
+}
 
-private string jobsCtxRegex() { result = "jobs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)" }
+private string jobsCtxRegex() {
+  result = "\\bjobs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)\\b"
+}
 
-private string envCtxRegex() { result = "env\\.([A-Za-z0-9_-]+)" }
+private string envCtxRegex() { result = "\\benv\\.([A-Za-z0-9_-]+)\\b" }
 
-private string inputsCtxRegex() { result = "inputs\\.([A-Za-z0-9_-]+)" }
+private string inputsCtxRegex() { result = "\\binputs\\.([A-Za-z0-9_-]+)\\b" }
 
 /**
  * Holds for an expression accesing the `steps` context.
