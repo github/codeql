@@ -18,7 +18,7 @@ extern "C" int snprintf ( char * s, int n, const char * format, ... );
 struct A {
   void do_print(const char *fmt0) {
     char buf[32];
-    snprintf(buf, 32, fmt0); // GOOD, all paths to year use const char*
+    snprintf(buf, 32, fmt0); // BAD, all paths from unknown const char*, not assuming literal
   }
 };
 
@@ -34,7 +34,7 @@ struct C {
   void do_some_printing(const char *fmt) {
     b.do_printing(fmt);
   }
-  const char *ext_fmt_str(void);
+  const char *ext_fmt_str(void); // NOTE: not assuming result is literal
 };
 
 void foo(void) {
@@ -76,7 +76,7 @@ void diagnostic(const char *fmt, ...)
 }
 
 void bar(void) {
-    diagnostic (some_instance->get_fmt());  // GOOD get_fmt is const char* assumed static
+    diagnostic (some_instance->get_fmt());  // BAD const char* but not assuming literal
 }
 
 namespace ns {
