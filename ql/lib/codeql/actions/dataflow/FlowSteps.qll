@@ -21,11 +21,6 @@ class AdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
-// private class RunEnvToScriptStep extends AdditionalTaintStep {
-//   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-//     runEnvToScriptstep(pred, succ)
-//   }
-// }
 /**
  * Holds if a Run step declares an environment variable, uses it in its script and sets an output in its script.
  * e.g.
@@ -34,11 +29,9 @@ class AdditionalTaintStep extends Unit {
  *    env:
  *      BODY: ${{ github.event.comment.body }}
  *    run: |
- *      INITIAL_URL=$(echo "$BODY" | grep -o 'https://github.com/github/release-assets/assets/[^ >]*')
- *      echo "Cleaned Initial URL: $INITIAL_URL"
- *      echo "::set-output name=initial_url::$INITIAL_URL"
- *      echo "foo=$(echo $TAINTED)" >> $GITHUB_OUTPUT
- *      echo "test=${{steps.step1.outputs.MSG}}" >> "$GITHUB_OUTPUT"
+ *      echo "::set-output name=foo::$BODY"
+ *      echo "foo=$(echo $BODY)" >> $GITHUB_OUTPUT
+ *      echo "foo=$(echo $BODY)" >> "$GITHUB_OUTPUT"
  */
 predicate runEnvToScriptStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
   exists(RunExpr r, string varName, string output |
@@ -51,8 +44,7 @@ predicate runEnvToScriptStoreStep(DataFlow::Node pred, DataFlow::Node succ, Data
         output = line.regexpCapture(".*::set-output\\s+name=(.*)::.*", 1) or
         output = line.regexpCapture(".*echo\\s*\"(.*)=.*\\s*>>\\s*(\")?\\$GITHUB_OUTPUT.*", 1)
       ) and
-      // TODO: repalce script with line below
-      script.indexOf("$" + ["", "{", "ENV{"] + varName) > 0
+      line.indexOf("$" + ["", "{", "ENV{"] + varName) > 0
     ) and
     succ.asExpr() = r
   )
