@@ -34,14 +34,15 @@ export async function newCodeQL(): Promise<CodeQLConfig> {
 export async function runCommand(
   config: CodeQLConfig,
   args: string[],
-  cwd?: string,
+  cwd_arg?: string,
 ): Promise<any> {
   var bin = path.join(config.path, "codeql");
   let output = "";
-  var _cwd: string = process.cwd();
-  if (cwd) {
-    _cwd = cwd;
+  var cwd: string = process.cwd();
+  if (cwd_arg) {
+    cwd = cwd_arg;
   }
+  core.info("Current working directory: " + cwd);
   var options = {
     cwd: cwd,
     listeners: {
