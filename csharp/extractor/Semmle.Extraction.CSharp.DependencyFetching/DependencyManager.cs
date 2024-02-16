@@ -163,6 +163,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             _ = bool.TryParse(frameworkReferencesUseSubfolders, out var useSubfolders);
             if (!string.IsNullOrWhiteSpace(frameworkReferences))
             {
+                RemoveFrameworkNugetPackages(dllPaths);
+                RemoveNugetPackageReference(FrameworkPackageNames.AspNetCoreFramework, dllPaths);
+                RemoveNugetPackageReference(FrameworkPackageNames.WindowsDesktopFramework, dllPaths);
+
                 var frameworkPaths = frameworkReferences.Split(FileUtils.NewLineCharacters, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var path in frameworkPaths)
@@ -246,9 +250,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 nugetPackageDllPaths.ExceptWith(excludedPaths);
                 dllPaths.UnionWith(nugetPackageDllPaths);
             }
-            catch (Exception)
+            catch (Exception exc)
             {
-                logger.LogError("Failed to restore Nuget packages with nuget.exe");
+                logger.LogError($"Failed to restore Nuget packages with nuget.exe: {exc.Message}");
             }
 
             var restoredProjects = RestoreSolutions(allSolutions, out var assets1);
@@ -339,6 +343,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .ToArray();
         }
 
+        private void RemoveFrameworkNugetPackages(ISet<string> dllPaths, int fromIndex = 0)
+        {
+            var packagesInPrioOrder = FrameworkPackageNames.NetFrameworks;
+            for (var i = fromIndex; i < packagesInPrioOrder.Length; i++)
+            {
+                RemoveNugetPackageReference(packagesInPrioOrder[i], dllPaths);
+            }
+        }
+
         private void AddNetFrameworkDlls(ISet<string> dllPaths, ISet<string> frameworkLocations)
         {
             // Multiple dotnet framework packages could be present.
@@ -360,12 +373,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
 
                 SelectNewestFrameworkPath(frameworkPath.Path, ".NET Framework", dllPaths, frameworkLocations);
-
-                for (var i = frameworkPath.Index + 1; i < packagesInPrioOrder.Length; i++)
-                {
-                    RemoveNugetPackageReference(packagesInPrioOrder[i], dllPaths);
-                }
-
+                RemoveFrameworkNugetPackages(dllPaths, frameworkPath.Index + 1);
                 return;
             }
 
