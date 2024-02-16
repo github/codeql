@@ -111,7 +111,9 @@ export async function installPack(
   dir: string,
 ): Promise<boolean> {
   try {
+    await runCommand(codeql, ["pack", "download"], path.join(dir, "/ql/lib"));
     await runCommand(codeql, ["pack", "install"], path.join(dir, "/ql/lib"));
+    await runCommand(codeql, ["pack", "download"], path.join(dir, "/ql/src"));
     await runCommand(codeql, ["pack", "install"], path.join(dir, "/ql/src"));
     return true;
   } catch (error) {
