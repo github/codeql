@@ -41,11 +41,14 @@ edges
 | tests.cpp:73:23:73:43 | call to XercesDOMParser | tests.cpp:80:2:80:2 | *p | provenance |  |
 | tests.cpp:85:24:85:44 | call to XercesDOMParser | tests.cpp:88:3:88:3 | *q | provenance |  |
 | tests.cpp:100:24:100:44 | call to XercesDOMParser | tests.cpp:104:3:104:3 | *q | provenance |  |
+| tests.cpp:112:39:112:39 | *p | tests.cpp:112:39:112:39 | *p | provenance |  |
 | tests.cpp:112:39:112:39 | *p | tests.cpp:113:2:113:2 | *p | provenance |  |
 | tests.cpp:116:39:116:39 | *p | tests.cpp:117:2:117:2 | *p | provenance |  |
 | tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:126:18:126:18 | *q | provenance |  |
 | tests.cpp:122:23:122:43 | call to XercesDOMParser | tests.cpp:128:18:128:18 | *q | provenance |  |
 | tests.cpp:126:18:126:18 | *q | tests.cpp:112:39:112:39 | *p | provenance |  |
+| tests.cpp:126:18:126:18 | *q | tests.cpp:126:18:126:18 | test10_doParseB output argument | provenance |  |
+| tests.cpp:126:18:126:18 | test10_doParseB output argument | tests.cpp:128:18:128:18 | *q | provenance |  |
 | tests.cpp:128:18:128:18 | *q | tests.cpp:116:39:116:39 | *p | provenance |  |
 nodes
 | tests2.cpp:20:17:20:31 | call to SAXParser | semmle.label | call to SAXParser |
@@ -117,13 +120,16 @@ nodes
 | tests.cpp:100:24:100:44 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:104:3:104:3 | *q | semmle.label | *q |
 | tests.cpp:112:39:112:39 | *p | semmle.label | *p |
+| tests.cpp:112:39:112:39 | *p | semmle.label | *p |
 | tests.cpp:113:2:113:2 | *p | semmle.label | *p |
 | tests.cpp:116:39:116:39 | *p | semmle.label | *p |
 | tests.cpp:117:2:117:2 | *p | semmle.label | *p |
 | tests.cpp:122:23:122:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:126:18:126:18 | *q | semmle.label | *q |
+| tests.cpp:126:18:126:18 | test10_doParseB output argument | semmle.label | test10_doParseB output argument |
 | tests.cpp:128:18:128:18 | *q | semmle.label | *q |
 subpaths
+| tests.cpp:126:18:126:18 | *q | tests.cpp:112:39:112:39 | *p | tests.cpp:112:39:112:39 | *p | tests.cpp:126:18:126:18 | test10_doParseB output argument |
 #select
 | tests2.cpp:22:2:22:2 | *p | tests2.cpp:20:17:20:31 | call to SAXParser | tests2.cpp:22:2:22:2 | *p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests2.cpp:20:17:20:31 | call to SAXParser | XML parser |
 | tests2.cpp:37:2:37:2 | *p | tests2.cpp:33:17:33:31 | call to SAXParser | tests2.cpp:37:2:37:2 | *p | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests2.cpp:33:17:33:31 | call to SAXParser | XML parser |

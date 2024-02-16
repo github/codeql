@@ -33,11 +33,14 @@ edges
 | test.cpp:76:20:76:29 | *call to mk_array_p [p] | test.cpp:83:9:83:11 | *arr [p] | provenance |  |
 | test.cpp:79:9:79:11 | *arr [p] | test.cpp:79:14:79:14 | p | provenance |  |
 | test.cpp:83:9:83:11 | *arr [p] | test.cpp:83:14:83:14 | p | provenance |  |
+| test.cpp:87:28:87:30 | *arr [p] | test.cpp:87:28:87:30 | *arr [p] | provenance |  |
 | test.cpp:87:28:87:30 | *arr [p] | test.cpp:89:9:89:11 | *arr [p] | provenance |  |
 | test.cpp:87:28:87:30 | *arr [p] | test.cpp:93:9:93:11 | *arr [p] | provenance |  |
 | test.cpp:89:9:89:11 | *arr [p] | test.cpp:89:14:89:14 | p | provenance |  |
 | test.cpp:93:9:93:11 | *arr [p] | test.cpp:93:14:93:14 | p | provenance |  |
 | test.cpp:98:18:98:27 | *call to mk_array_p [p] | test.cpp:87:28:87:30 | *arr [p] | provenance |  |
+| test.cpp:98:18:98:27 | *call to mk_array_p [p] | test.cpp:98:18:98:27 | test6_callee output argument [p] | provenance |  |
+| test.cpp:98:18:98:27 | test6_callee output argument [p] | test.cpp:98:18:98:27 | *call to mk_array_p [p] | provenance |  |
 nodes
 | test.cpp:4:17:4:22 | call to malloc | semmle.label | call to malloc |
 | test.cpp:6:9:6:11 | arr | semmle.label | arr |
@@ -77,12 +80,15 @@ nodes
 | test.cpp:83:9:83:11 | *arr [p] | semmle.label | *arr [p] |
 | test.cpp:83:14:83:14 | p | semmle.label | p |
 | test.cpp:87:28:87:30 | *arr [p] | semmle.label | *arr [p] |
+| test.cpp:87:28:87:30 | *arr [p] | semmle.label | *arr [p] |
 | test.cpp:89:9:89:11 | *arr [p] | semmle.label | *arr [p] |
 | test.cpp:89:14:89:14 | p | semmle.label | p |
 | test.cpp:93:9:93:11 | *arr [p] | semmle.label | *arr [p] |
 | test.cpp:93:14:93:14 | p | semmle.label | p |
 | test.cpp:98:18:98:27 | *call to mk_array_p [p] | semmle.label | *call to mk_array_p [p] |
+| test.cpp:98:18:98:27 | test6_callee output argument [p] | semmle.label | test6_callee output argument [p] |
 subpaths
+| test.cpp:98:18:98:27 | *call to mk_array_p [p] | test.cpp:87:28:87:30 | *arr [p] | test.cpp:87:28:87:30 | *arr [p] | test.cpp:98:18:98:27 | test6_callee output argument [p] |
 #select
 | test.cpp:10:9:10:11 | arr | test.cpp:4:17:4:22 | call to malloc | test.cpp:10:9:10:11 | arr | Off-by one error allocated at $@ bounded by $@. | test.cpp:4:17:4:22 | call to malloc | call to malloc | test.cpp:4:24:4:27 | size | size |
 | test.cpp:10:9:10:11 | arr | test.cpp:4:17:4:22 | call to malloc | test.cpp:10:9:10:11 | arr | Off-by one error allocated at $@ bounded by $@. | test.cpp:4:17:4:22 | call to malloc | call to malloc | test.cpp:4:24:4:27 | size | size |
