@@ -107,11 +107,11 @@ export async function downloadPack(codeql: CodeQLConfig): Promise<boolean> {
 
 export async function installPack(
   codeql: CodeQLConfig,
-  path: string,
+  dir: string,
 ): Promise<boolean> {
   try {
-    await runCommand(codeql, ["pack", "install"], path);
-    await runCommand(codeql, ["pack", "install"], path);
+    await runCommand(codeql, ["pack", "install"], path.join(dir, "/ql/lib"));
+    await runCommand(codeql, ["pack", "install"], path.join(dir, "/ql/src"));
     return true;
   } catch (error) {
     core.warning("Failed to install local packs ...");
