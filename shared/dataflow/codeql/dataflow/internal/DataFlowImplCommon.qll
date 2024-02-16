@@ -83,7 +83,7 @@ module MakeImplCommon<InputSig Lang> {
     class LocalSourceNode extends Node {
       LocalSourceNode() {
         storeStep(_, this, _) or
-        loadStep(_, this, _) or
+        loadStep0(_, this, _) or
         jumpStepCached(_, this) or
         this instanceof ParamNode or
         this instanceof OutNodeExt
@@ -115,11 +115,13 @@ module MakeImplCommon<InputSig Lang> {
     // TODO: support setters
     predicate storeStep(Node n1, Node n2, Content f) { storeSet(n1, f, n2, _, _) }
 
-    predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
+    private predicate loadStep0(Node n1, Node n2, Content f) {
       readSet(n1, f, n2)
       or
       argumentValueFlowsThrough(n1, TReadStepTypesSome(_, f, _), n2)
     }
+
+    predicate loadStep(Node n1, LocalSourceNode n2, Content f) { loadStep0(n1, n2, f) }
 
     predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content f1, Content f2) { none() }
 
