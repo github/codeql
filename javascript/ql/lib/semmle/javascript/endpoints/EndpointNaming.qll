@@ -187,12 +187,9 @@ DataFlow::SourceNode nodeReachingSink(API::Node sink) {
 private API::Node getASinkNode(DataFlow::SourceNode node) { node = nodeReachingSink(result) }
 
 /**
- * Holds if `node` is a declaration in an externs file.
- *
- * This is to ensure that functions/classes in externs are not named after a re-export in a package.
+ * Holds if `node` is assigned to a global access path. Note that such nodes generally do not have API nodes.
  */
-private predicate nameFromExterns(DataFlow::Node node, string package, string name, int badness) {
-  node.getTopLevel().isExterns() and
+private predicate nameFromGlobal(DataFlow::Node node, string package, string name, int badness) {
   package = "global" and
   node = AccessPath::getAnAssignmentTo(name) and
   badness = -10
@@ -224,7 +221,7 @@ private predicate classObjectHasNameCandidate(
     badness = baseBadness + getBadnessOfClassName(name)
   )
   or
-  nameFromExterns(cls, package, name, badness)
+  nameFromGlobal(cls, package, name, badness)
   or
   // If the class is not accessible via an access path, but instances of the
   // class can still escape via more complex access patterns, resort to a synthesized name.
@@ -252,7 +249,7 @@ private predicate sourceNodeHasNameCandidate(
 ) {
   sinkHasPrimaryName(getASinkNode(node), package, name, badness)
   or
-  nameFromExterns(node, package, name, badness)
+  nameFromGlobal(node, package, name, badness)
   or
   classObjectHasNameCandidate(node, package, name, badness)
 }
@@ -290,7 +287,11 @@ private DataFlow::SourceNode functionValue() {
  * Holds if `node` is a function or a call that returns a function.
  */
 private predicate isFunctionSource(DataFlow::SourceNode node) {
-  exists(getASinkNode(node)) and
+  (
+    exists(getASinkNode(node))
+    or
+    nameFromGlobal(node, _, _, _)
+  ) and
   (
     node instanceof DataFlow::FunctionNode
     or
