@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>
+               Not verifying the JWT algorithim present in a JWT token when verifying its signature may result in algorithim confusion.
+          </p>
+
+     </overview>
+     <recommendation>
+
+          <p>
+               Before presenting a key to verify a signature, ensure that the key corresponds to the algorithim present in the JWT token.
+          </p>
+
+     </recommendation>
+     <example>
+
+          <p>
+               The following code uses the asymmetric public key to verify the JWT token and assumes that the algorithim is RSA.
+               By not checking the signature, an attacker can specify the HMAC option and use the same public key, which is assumed to be public and often at endpoint /jwt/jwks.jso, to sign the JWT token and bypass authentication.
+          </p>
+
+          <sample src="Algorithm.go" />
+
+     </example>
+
+     <references>
+          <li>Pentesterlab: <a
+          href="https://blog.pentesterlab.com/exploring-algorithm-confusion-attacks-on-jwt-exploiting-ecdsa-23f7ff83390f">Exploring Algorithm Confusion Attacks on JWT</a>.
+          </li>
+     </references>
+
+</qhelp>

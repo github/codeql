@@ -71,6 +71,13 @@ string golangJwtPackage() {
 }
 
 /**
+ * Gets `github.com/golang-jwt/jwt/(v4 and v5)` whose APIs have changed from previous versions.
+ */
+string golangJwtModern() {
+  result = ["github.com/golang-jwt/jwt/v5", "github.com/golang-jwt/jwt/v4"]
+}
+
+/**
  * A class that contains the following function and method:
  *
  * func (p *Parser) Parse(tokenString string, keyFunc Keyfunc)
@@ -205,6 +212,20 @@ class GoJoseUnsafeClaims extends JwtUnverifiedParse {
   }
 
   override int getTokenArgNum() { result = -1 }
+}
+
+/**
+ * A function in golang-jwt to specify allowed algorithms.
+ */
+class WithValidMethods extends Function {
+  WithValidMethods() { this.hasQualifiedName(golangJwtModern(), "WithValidMethods") }
+}
+
+/**
+ * A function in golang-jwt to create new parser.
+ */
+class NewParser extends Function {
+  NewParser() { this.hasQualifiedName(golangJwtModern(), "NewParser") }
 }
 
 /**

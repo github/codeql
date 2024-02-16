@@ -1,0 +1,3 @@
+| JWTParsingAlgorithm.go:22:4:22:27 | call to Parse | This Parse Call to Verify the JWT token may be vulnerable to algorithim confusion |
+| JWTParsingAlgorithm.go:37:22:40:5 | call to Parse | This Parse Call to Verify the JWT token may be vulnerable to algorithim confusion |
+| golang-jwt-v5.go:48:23:48:84 | call to ParseWithClaims | This Parse Call to Verify the JWT token may be vulnerable to algorithim confusion |
