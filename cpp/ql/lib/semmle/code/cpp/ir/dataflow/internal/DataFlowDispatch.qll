@@ -80,7 +80,7 @@ private module VirtualDispatch {
         exists(DataFlowCall call, Position i |
           other
               .(DataFlow::ParameterNode)
-              .isParameterOf(pragma[only_bind_into](call).getStaticCallTarget(), i) and
+              .isParameterOf(TSourceCallable(pragma[only_bind_into](call).getStaticCallTarget()), i) and
           src.(ArgumentNode).argumentOf(call, pragma[only_bind_into](pragma[only_bind_out](i)))
         ) and
         allowOtherFromArg = true and

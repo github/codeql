@@ -340,7 +340,7 @@ DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCalla
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-  p.isParameterOf(c.asSourceCallable(), pos) // TODO: if c is a summary node?
+  p.isParameterOf(c, pos)
 }
 
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -967,10 +967,6 @@ class DataFlowCallable extends TDataFlowCallable {
   Cpp::Declaration asSourceCallable() { this = TSourceCallable(result) }
 
   FlowSummaryImpl::Public::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
-
-/*  Callable::TypeRange getUnderlyingCallable() { TODO
-    result = this.asSummarizedCallable() or result = this.asSourceCallable()
-  }*/
 }
 
 private class SourceCallable extends DataFlowCallable, TSourceCallable {
@@ -1207,7 +1203,9 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
  * by default as a heuristic.
  */
-predicate allowParameterReturnInSelf(ParameterNode p) { p instanceof IndirectParameterNode }
+predicate allowParameterReturnInSelf(ParameterNode p) { p instanceof IndirectParameterNode
+  // TODO: Swift has a case for summarized callables here.
+}
 
 private predicate fieldHasApproxName(Field f, string s) {
   s = f.getName().charAt(0) and
