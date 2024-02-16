@@ -77,23 +77,25 @@ predicate isNonConst(DataFlow::Node node) {
   // i.e., functions that with unknown bodies and are not known to define the output through its input
   //       are considered as possible non-const sources
   // The function's output must also not be const to be considered a non-const source
-  exists(Call c |
-    exists(Expr arg | c.getAnArgument() = arg | arg = node.asDefiningArgument())
+  exists(Function func, CallInstruction call |
+    // NOTE: could use `Call` getAnArgument() instead of `CallInstruction` but requires two 
+    // variables representing the same call.
+    exists(Expr arg | call.getPositionalArgumentOperand(_).getDef().getUnconvertedResultExpression() = arg and
+    arg = node.asDefiningArgument()
+    )
     or
-    c = node.asIndirectExpr()
-  ) and
-  not exists(FunctionInput input, FunctionOutput output, CallInstruction call |
-    // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
-    // variant function's output are now possible non-const sources
-    (
-      pragma[only_bind_out](call.getStaticCallTarget())
-          .(DataFlowFunction)
-          .hasDataFlow(input, output) or
-      pragma[only_bind_out](call.getStaticCallTarget()).(TaintFunction).hasTaintFlow(input, output)
-    ) and
-    node = callOutput(call, output)
-  ) and
-  not exists(Call c |
+    call.getUnconvertedResultExpression() = node.asIndirectExpr()
+  |
+    func = call.getStaticCallTarget() and
+    not exists(FunctionOutput output |
+      // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
+      // variant function's output are now possible non-const sources
+      pragma[only_bind_out](func).(DataFlowFunction).hasDataFlow(_, output) or
+      pragma[only_bind_out](func).(TaintFunction).hasTaintFlow(_, output)
+    |
+      node = callOutput(call, output)
+    )
+  ) not exists(Call c |
     c.getTarget().hasDefinition() and
     if node instanceof DataFlow::DefinitionByReferenceNode
     then c.getAnArgument() = node.asDefiningArgument()
