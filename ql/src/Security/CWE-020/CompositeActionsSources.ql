@@ -7,6 +7,7 @@
  * @precision high
  * @id actions/composite-action-sources
  * @tags actions
+ *       model-generator
  *       external/cwe/cwe-020
  */
 

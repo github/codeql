@@ -8,15 +8,11 @@ inputs:
 
   source-root:
     description: "Path of the root source code directory, relative to $GITHUB_WORKSPACE."
-    default: "./"
+    default: ${{ github.workspace }}
 
-  sarif:
+  sarif-output:
     description: "SARIF File Output"
     default: "codeql-actions.sarif"
-
-# runs:
-#   using: "node16"
-#   main: ".github/action/dist/index.js"
 
 runs:
   using: 'composite'
