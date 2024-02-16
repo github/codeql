@@ -26,6 +26,7 @@ import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.ir.IR
+import NonConstFlow::PathGraph
 
 class UncalledFunction extends Function {
   UncalledFunction() {
@@ -127,11 +128,13 @@ module NonConstFlowConfig implements DataFlow::ConfigSig {
 
 module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;
 
-from FormattingFunctionCall call, Expr formatString, DataFlow::Node sink
+from
+  FormattingFunctionCall call, Expr formatString, NonConstFlow::PathNode sink,
+  NonConstFlow::PathNode source
 where
+  isSinkImpl(sink.getNode(), formatString) and
   call.getArgument(call.getFormatParameterIndex()) = formatString and
-  NonConstFlow::flowTo(sink) and
-  isSinkImpl(sink, formatString)
-select formatString,
-  "The format string argument to " + call.getTarget().getName() +
-    " should be constant to prevent security issues and other potential errors."
+  NonConstFlow::flowPath(source, sink)
+select sink.getNode(), source, sink,
+  "The format string argument to $@ has a source which cannot be " +
+    "verified to originate from a string literal.", call, call.getTarget().getName()
