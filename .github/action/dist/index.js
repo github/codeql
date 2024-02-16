@@ -28707,7 +28707,7 @@ async function codeqlDatabaseAnalyze(codeql, database_path) {
         codeql_output,
     ];
     // remote pack or local pack
-    if (codeql.pack.startsWith("GitHubSecurityLab/")) {
+    if (codeql.pack.startsWith("githubsecuritylab/")) {
         var suite = codeql.pack + ":" + codeql.suite;
     }
     else {
@@ -28779,7 +28779,7 @@ async function run() {
             throw new Error("CodeQL Yaml extractor not installed");
         }
         // download pack
-        core.info(`Downloading CodeQL IaC pack '${codeql.pack}'`);
+        core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
         var pack_downloaded = await cql.downloadPack(codeql);
         if (pack_downloaded === false) {
             var action_path = path.resolve(path.join(__dirname, "..", "..", ".."));

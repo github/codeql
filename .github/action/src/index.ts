@@ -29,7 +29,7 @@ export async function run(): Promise<void> {
     }
 
     // download pack
-    core.info(`Downloading CodeQL IaC pack '${codeql.pack}'`);
+    core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
     var pack_downloaded = await cql.downloadPack(codeql);
 
     if (pack_downloaded === false) {

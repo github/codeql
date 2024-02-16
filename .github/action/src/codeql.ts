@@ -148,7 +148,7 @@ export async function codeqlDatabaseAnalyze(
   ];
 
   // remote pack or local pack
-  if (codeql.pack.startsWith("GitHubSecurityLab/")) {
+  if (codeql.pack.startsWith("githubsecuritylab/")) {
     var suite = codeql.pack + ":" + codeql.suite;
   } else {
     // assume path
