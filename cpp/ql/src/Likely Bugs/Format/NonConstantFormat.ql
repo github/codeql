@@ -4,14 +4,10 @@
  *              to a mismatch between the number of arguments defined by the 'format' and the number
  *              of arguments actually passed to the function. If the format string ultimately stems
  *              from an untrusted source, this can be used for exploits.
- *              This query finds all sources leading to a format string that cannot be verified to be literal.
- *              Even if the format string type is `const char*` it is still considered non-constant if the
- *              value is not a string literal. For example, a parameter to a function that is never observed to be called
- *              that takes in a `const char*` and uses it as a format string, there is no way to verify the originating
- *              value was a string literal. This is especially problematic with conversion of c strings to char *,
- *              via `c_str()`, which returns a `const char*`, regardless if the original string was a string literal or not.
- *              The query does not consider uninitialized variables as non-constant sources. Uninitialized
- *              variables are a separate vulnerability concern and should be addressed by a separate query.
+ *              This query finds format strings coming from non-literal sources. Note that format strings of
+ *              type `const char*` it is still considered non-constant if the value is not coming from a string
+ *              literal. For example, for a parameter with type `const char*` of an exported function that is
+ *              used as a format string, there is no way to ensure the originating value was a string literal.
  * @kind path-problem
  * @problem.severity recommendation
  * @security-severity 9.3
@@ -30,7 +26,6 @@ import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.ir.IR
-import NonConstFlow::PathGraph
 
 class UncalledFunction extends Function {
   UncalledFunction() {
@@ -73,11 +68,7 @@ predicate isNonConst(DataFlow::Node node) {
   // Parameters of uncalled functions that aren't const
   exists(UncalledFunction f, Parameter p |
     f.getAParameter() = p and
-    p = node.asParameter() and 
-    // Exclude main in this instance since that should have its own defined FlowSource
-    // and including main would likely result in redundancy. 
-    // Note, argc is not a flow source, so only filter out argv
-    (p.getFunction().getName() = "main" implies not p.getName() = "argv")
+    p = node.asParameter()
   )
   or
   // Consider as an input any out arg of a function or a function's return where the function is not:
@@ -86,21 +77,25 @@ predicate isNonConst(DataFlow::Node node) {
   // i.e., functions that with unknown bodies and are not known to define the output through its input
   //       are considered as possible non-const sources
   // The function's output must also not be const to be considered a non-const source
-  exists(Call c |
-    exists(Expr arg | c.getAnArgument() = arg | arg = node.asDefiningArgument())
+  exists(Function func, CallInstruction call |
+    // NOTE: could use `Call` getAnArgument() instead of `CallInstruction` but requires two
+    // variables representing the same call in ordoer to use `callOutput` below.
+    exists(Expr arg |
+      call.getPositionalArgumentOperand(_).getDef().getUnconvertedResultExpression() = arg and
+      arg = node.asDefiningArgument()
+    )
     or
-    c = node.asIndirectExpr()
-  ) and
-  not exists(FunctionInput input, FunctionOutput output, CallInstruction call |
-    // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
-    // variant function's output are now possible non-const sources
-    (
-      pragma[only_bind_out](call.getStaticCallTarget())
-          .(DataFlowFunction)
-          .hasDataFlow(input, output) or
-      pragma[only_bind_out](call.getStaticCallTarget()).(TaintFunction).hasTaintFlow(input, output)
-    ) and
-    node = callOutput(call, output)
+    call.getUnconvertedResultExpression() = node.asIndirectExpr()
+  |
+    func = call.getStaticCallTarget() and
+    not exists(FunctionOutput output |
+      // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
+      // variant function's output are now possible non-const sources
+      pragma[only_bind_out](func).(DataFlowFunction).hasDataFlow(_, output) or
+      pragma[only_bind_out](func).(TaintFunction).hasTaintFlow(_, output)
+    |
+      node = callOutput(call, output)
+    )
   ) and
   not exists(Call c |
     c.getTarget().hasDefinition() and
@@ -132,13 +127,11 @@ module NonConstFlowConfig implements DataFlow::ConfigSig {
 
 module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;
 
-from
-  FormattingFunctionCall call, Expr formatString, NonConstFlow::PathNode sink,
-  NonConstFlow::PathNode source
+from FormattingFunctionCall call, Expr formatString, DataFlow::Node sink
 where
-  isSinkImpl(sink.getNode(), formatString) and
   call.getArgument(call.getFormatParameterIndex()) = formatString and
-  NonConstFlow::flowPath(source, sink)
-select sink.getNode(), source, sink,
-  "The format string argument to $@ has a source which cannot be " +
-    "verified to originate from a string literal.", call, call.getTarget().getName()
+  NonConstFlow::flowTo(sink) and
+  isSinkImpl(sink, formatString)
+select formatString,
+  "The format string argument to " + call.getTarget().getName() +
+    " should be constant to prevent security issues and other potential errors."
