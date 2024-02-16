@@ -264,6 +264,7 @@ irFlow
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:568:10:568:19 | * ... |
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:572:10:572:19 | * ... |
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:578:10:578:19 | * ... |
+| test.cpp:583:11:583:16 | call to source | test.cpp:590:8:590:8 | x |
 | test.cpp:594:12:594:26 | *call to indirect_source | test.cpp:597:8:597:13 | * ... |
 | test.cpp:601:20:601:20 | intPointerSource output argument | test.cpp:603:8:603:9 | * ... |
 | test.cpp:607:20:607:20 | intPointerSource output argument | test.cpp:609:8:609:9 | * ... |

@@ -756,5 +756,5 @@ void call_sprintf_twice(char* path, char* data) {
 void test_call_sprintf() {
 	char path[10];
 	call_sprintf_twice(path, indirect_source());
-	sink(*path); // $ ast MISSING: ir
+	sink(*path); // $ ast,ir
 }

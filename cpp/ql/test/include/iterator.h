@@ -65,7 +65,7 @@ namespace std {
 	};
 
 	template<class Container>
-	constexpr back_insert_iterator<Container> back_inserter(Container& x) {
+	constexpr back_insert_iterator<Container> back_inserter(Container& x) { // $ ir-def=*x
 		return back_insert_iterator<Container>(x);
 	}
 
@@ -89,7 +89,7 @@ namespace std {
 		constexpr front_insert_iterator operator++(int);
 	};
 	template<class Container>
-	constexpr front_insert_iterator<Container> front_inserter(Container& x) {
+	constexpr front_insert_iterator<Container> front_inserter(Container& x) { // $ ir-def=*x
 		return front_insert_iterator<Container>(x);
 	}
 }
