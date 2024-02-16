@@ -7,7 +7,7 @@ private void generateSecretKey() {
         // GOOD: Secure parameters are used to generate a key for biometric authentication.
         .setUserAuthenticationRequired(true)
         .setInvalidatedByBiometricEnrollment(true)
-        .setUserAuthenticationParamters(0, KeyProperties.AUTH_BIOMETRIC_STRONG)
+        .setUserAuthenticationParameters(0, KeyProperties.AUTH_BIOMETRIC_STRONG)
         .build();
     KeyGenerator keyGenerator = KeyGenerator.getInstance(
             KeyProperties.KEY_ALGORITHM_AES, "AndroidKeyStore");

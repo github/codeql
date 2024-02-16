@@ -26,6 +26,9 @@ When generating a key for use with biometric authentication, ensure that the fol
 <example>
 <p>The following example demonstrates a key that is configured with secure paramaters:</p>
 <sample src="AndroidInsecureKeysGood.java"/>
+
+<p>In each of the following cases, a parameter is set insecurely:</p>
+<sample src="AndroidInsecureKeysBad.java"/>
 </example>
 
 <references>
