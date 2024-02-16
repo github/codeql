@@ -32,6 +32,12 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
             trapFile.constructor_location(this, Location);
 
+            if (IsPrimary)
+            {
+                // Create a synthetic empty body for primary constructors.
+                Statements.SyntheticEmptyBlock.Create(Context, this, 0, Location);
+            }
+
             if (Symbol.IsImplicitlyDeclared)
             {
                 var lineCounts = new LineCounts() { Total = 2, Code = 1, Comment = 0 };

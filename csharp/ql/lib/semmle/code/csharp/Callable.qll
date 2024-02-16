@@ -416,7 +416,9 @@ class InstanceConstructor extends Constructor {
  */
 class PrimaryConstructor extends Constructor {
   PrimaryConstructor() {
-    not this.hasBody() and
+    // In the extractor we use the constructor location as the location for the
+    // synthesized empty body of the constructor.
+    this.getLocation() = this.getBody().getLocation() and
     this.getDeclaringType().fromSource() and
     this.fromSource()
   }
