@@ -158,6 +158,49 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var frameworkLocations = new HashSet<string>();
 
+            var frameworkReferences = Environment.GetEnvironmentVariable(EnvironmentVariableNames.DotnetFrameworkReferences);
+            var frameworkReferencesUseSubfolders = Environment.GetEnvironmentVariable(EnvironmentVariableNames.DotnetFrameworkReferencesUseSubfolders);
+            _ = bool.TryParse(frameworkReferencesUseSubfolders, out var useSubfolders);
+            if (!string.IsNullOrWhiteSpace(frameworkReferences))
+            {
+                var frameworkPaths = frameworkReferences.Split(FileUtils.NewLineCharacters, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var path in frameworkPaths)
+                {
+                    if (!Directory.Exists(path))
+                    {
+                        logger.LogError($"Specified framework reference path '{path}' does not exist.");
+                        continue;
+                    }
+
+                    if (useSubfolders)
+                    {
+                        dllPaths.Add(path);
+                        frameworkLocations.Add(path);
+                        continue;
+                    }
+
+                    try
+                    {
+                        var dlls = Directory.GetFiles(path, "*.dll", new EnumerationOptions { RecurseSubdirectories = false, MatchCasing = MatchCasing.CaseInsensitive });
+                        if (dlls.Length == 0)
+                        {
+                            logger.LogError($"No DLLs found in specified framework reference path '{path}'.");
+                            continue;
+                        }
+
+                        dllPaths.UnionWith(dlls);
+                        frameworkLocations.UnionWith(dlls);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.LogError($"Error while searching for DLLs in '{path}': {e.Message}");
+                    }
+                }
+
+                return frameworkLocations;
+            }
+
             AddNetFrameworkDlls(dllPaths, frameworkLocations);
             AddAspNetCoreFrameworkDlls(dllPaths, frameworkLocations);
             AddMicrosoftWindowsDesktopDlls(dllPaths, frameworkLocations);

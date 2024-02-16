@@ -78,30 +78,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         .OrderByDescending(Path.GetFileName);
                 }
 
-                string? monoDir = null;
+                var monoPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
+                string[] monoDirs = monoPath is not null
+                    ? [Path.GetFullPath(Path.Combine(monoPath, "..", "lib", "mono")), monoPath]
+                    : ["/usr/lib/mono", "/usr/local/mono", "/usr/local/bin/mono", @"C:\Program Files\Mono\lib\mono"];
 
-                var monoPathEnv = Environment.GetEnvironmentVariable(EnvironmentVariableNames.MonoPath);
-                if (monoPathEnv is not null)
-                {
-                    if (Directory.Exists(monoPathEnv))
-                    {
-                        monoDir = monoPathEnv;
-                    }
-                    else
-                    {
-                        logger.LogError($"The directory specified in {EnvironmentVariableNames.MonoPath} does not exist: {monoPathEnv}");
-                    }
-                }
-                else
-                {
-                    var monoPath = FileUtils.FindProgramOnPath(Win32.IsWindows() ? "mono.exe" : "mono");
-                    string[] monoDirs = monoPath is not null
-                        ? [Path.GetFullPath(Path.Combine(monoPath, "..", "lib", "mono")), monoPath]
-                        : ["/usr/lib/mono", "/usr/local/mono", "/usr/local/bin/mono", @"C:\Program Files\Mono\lib\mono"];
-
-                    monoDir = monoDirs.FirstOrDefault(Directory.Exists);
-                }
-
+                var monoDir = monoDirs.FirstOrDefault(Directory.Exists);
                 if (monoDir is not null)
                 {
                     return Directory.EnumerateDirectories(monoDir)

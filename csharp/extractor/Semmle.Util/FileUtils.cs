@@ -13,6 +13,8 @@ namespace Semmle.Util
     {
         public const string NugetExeUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
 
+        public static readonly char[] NewLineCharacters = ['\r', '\n'];
+
         public static string ConvertToWindows(string path)
         {
             return path.Replace('/', '\\');
