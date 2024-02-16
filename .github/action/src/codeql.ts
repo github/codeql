@@ -116,7 +116,6 @@ export async function installPack(
   } catch (error) {
     core.warning("Failed to install local packs ...");
   }
-  core.info("Installed local packs ...");
   return false;
 }
 

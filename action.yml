@@ -14,6 +14,17 @@ inputs:
     description: "SARIF File Output"
     default: "codeql-actions.sarif"
 
+# runs:
+#   using: "node16"
+#   main: ".github/action/dist/index.js"
+
 runs:
-  using: "node16"
-  main: ".github/action/dist/index.js"
+  using: 'composite'
+  steps:
+    - name: Do something with context
+      shell: bash
+      env:
+        GH_TOKEN: ${{ github.token }}
+      run: |
+        node .github/action/dist/index.js
+        node ${{ github.action_path }}/.github/action/dist/index.js

@@ -28678,12 +28678,12 @@ async function installPack(codeql, path) {
     try {
         await runCommand(codeql, ["pack", "install"], path);
         await runCommand(codeql, ["pack", "install"], path);
+        core.info("Installed local packs ...");
         return true;
     }
     catch (error) {
         core.warning("Failed to install local packs ...");
     }
-    core.info("Installed local packs ...");
     return false;
 }
 exports.installPack = installPack;

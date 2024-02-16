@@ -12,7 +12,7 @@ export interface GHConfig {
 
 export async function newGHConfig(): Promise<GHConfig> {
   return {
-    path: "",
+    path: "/usr/bin/",
   };
 }
 
