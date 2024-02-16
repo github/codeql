@@ -142,12 +142,11 @@ private newtype TDefOrUseImpl =
     isIteratorUse(container, iteratorAddress, _, indirectionIndex)
   } or
   TFinalParameterUse(Parameter p, int indirectionIndex) {
-    // Avoid creating parameter nodes if there is no definitions of the variable other than the initializaion.
-    exists(SsaInternals0::Def def |
-      def.getSourceVariable().getBaseVariable().(BaseIRVariable).getIRVariable().getAst() = p and
-      not def.getValue().asInstruction() instanceof InitializeParameterInstruction and
-      underlyingTypeIsModifiableAt(p.getUnderlyingType(), indirectionIndex)
-    )
+    underlyingTypeIsModifiableAt(p.getUnderlyingType(), indirectionIndex) and
+    // Only create an SSA read for the final use of a parameter if there's
+    // actually a body of the enclosing function. If there's no function body
+    // then we'll never need to flow out of the function anyway.
+    p.getFunction().hasDefinition()
   }
 
 private predicate isGlobalUse(
