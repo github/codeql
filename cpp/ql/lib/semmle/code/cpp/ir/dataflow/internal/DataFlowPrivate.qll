@@ -513,7 +513,7 @@ private class IndirectReturnKind extends ReturnKind, TIndirectReturnKind {
 }
 
 /** A data flow node that occurs as the result of a `ReturnStmt`. */
-class ReturnNode extends Node instanceof IndirectReturnNode {
+abstract class ReturnNode extends Node {
   /** Gets the kind of this returned value. */
   abstract ReturnKind getKind();
 }
@@ -542,6 +542,14 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
       result = TIndirectReturnKind(argumentIndex, indirectionIndex)
     )
   }
+}
+
+private class SummaryReturnNode extends ReturnNode, FlowSummaryNode {
+  private ReturnKind rk;
+
+  SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) }
+
+  override ReturnKind getKind() { result = rk }
 }
 
 private Operand fullyConvertedCallStepImpl(Operand op) {
