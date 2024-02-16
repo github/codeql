@@ -1,7 +1,7 @@
 /**
  * Provides an abstract class to override the implicit assumption that a
  * dataflow/taint-tracking model always fully override the parameters they are
- * are modelled as writing to. To use this QL library, create a QL class
+ * are modeled as writing to. To use this QL library, create a QL class
  * extending `PartialFlowFunction` with a characteristic predicate that selects
  * the function or set of functions you are modeling and override the
  * `isPartialWrite` predicate.
