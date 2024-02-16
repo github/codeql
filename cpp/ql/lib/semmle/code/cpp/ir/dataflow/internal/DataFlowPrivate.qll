@@ -104,7 +104,7 @@ class Node0Impl extends TIRDataFlowNode0 {
   /**
    * INTERNAL: Do not use.
    */
-  Declaration getEnclosingCallable() { none() } // overridden in subclasses
+  DataFlowCallable getEnclosingCallable() { none() } // overridden in subclasses
 
   /** Gets the function to which this node belongs, if any. */
   Declaration getFunction() { none() } // overridden in subclasses
@@ -174,7 +174,7 @@ abstract class InstructionNode0 extends Node0Impl {
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(this.getFunction()) }
 
   override Declaration getFunction() { result = instr.getEnclosingFunction() }
 
@@ -219,7 +219,7 @@ abstract class OperandNode0 extends Node0Impl {
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = op }
 
-  override Declaration getEnclosingCallable() { result = this.getFunction() }
+  override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(this.getFunction()) }
 
   override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
 
@@ -340,7 +340,7 @@ DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCalla
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-  p.isParameterOf(c, pos)
+  p.isParameterOf(c.asSourceCallable(), pos) // TODO: if c is a summary node?
 }
 
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -941,13 +941,57 @@ class CastNode extends Node {
   CastNode() { none() } // stub implementation
 }
 
+cached
+newtype TDataFlowCallable =
+  TSourceCallable(Cpp::Declaration decl) { not decl instanceof FlowSummaryImpl::Public::SummarizedCallable } or
+  TSummarizedCallable(FlowSummaryImpl::Public::SummarizedCallable c)
+
 /**
- * A function that may contain code or a variable that may contain itself. When
- * flow crosses from one _enclosing callable_ to another, the interprocedural
- * data-flow library discards call contexts and inserts a node in the big-step
- * relation used for human-readable path explanations.
+ * A callable, which may be:
+ *  - a function (that may contain code)
+ *  - a summarized function (that may contain only `FlowSummaryNode`s)
+ *  - a variable (this is used as context for global initialization, and also
+ *    for the mid-point in interprocedural data flow between a write and read
+ *    of a global variable in different functions).
+ * When flow crosses from one _enclosing callable_ to another, the
+ * interprocedural data-flow library discards call contexts and inserts a node
+ * in the big-step relation used for human-readable path explanations.
  */
-class DataFlowCallable = Cpp::Declaration;
+class DataFlowCallable extends TDataFlowCallable {
+  /** Gets the location of this callable. */
+  Location getLocation() { none() }
+
+  /** Gets a textual representation of this callable. */
+  string toString() { none() }
+
+  Cpp::Declaration asSourceCallable() { this = TSourceCallable(result) }
+
+  FlowSummaryImpl::Public::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
+
+/*  Callable::TypeRange getUnderlyingCallable() { TODO
+    result = this.asSummarizedCallable() or result = this.asSourceCallable()
+  }*/
+}
+
+private class SourceCallable extends DataFlowCallable, TSourceCallable {
+  Cpp::Declaration decl;
+
+  SourceCallable() { this = TSourceCallable(decl) }
+
+  override string toString() { result = decl.toString() }
+
+  override Location getLocation() { result = decl.getLocation() }
+}
+
+private class SummarizedCallable extends DataFlowCallable, TSummarizedCallable {
+  FlowSummaryImpl::Public::SummarizedCallable sc;
+
+  SummarizedCallable() { this = TSummarizedCallable(sc) }
+
+  override string toString() { result = sc.toString() }
+
+  override Location getLocation() { result = sc.getLocation() }
+}
 
 class DataFlowExpr = Expr;
 
@@ -980,7 +1024,7 @@ class DataFlowCall extends TDataFlowCall {
   /**
    * Gets the `Function` that the call targets, if this is statically known.
    */
-  Function getStaticCallTarget() { none() }
+  Function getStaticCallTarget() { none() } // TODO: should this return DataFlowCallable?
 
   /**
    * Gets the `index`'th argument operand. The qualifier is considered to have index `-1`.
@@ -1029,7 +1073,7 @@ private class NormalCall extends DataFlowCall, TNormalCall {
     result = call.getArgumentOperand(index)
   }
 
-  override DataFlowCallable getEnclosingCallable() { result = call.getEnclosingFunction() }
+  override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(call.getEnclosingFunction()) }
 
   override string toString() { result = call.toString() }
 
@@ -1053,7 +1097,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 
 //  override ArgumentOperand getArgumentOperand(int index) TODO
 
-//  override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) } TODO
+  override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 

@@ -119,7 +119,10 @@ module SourceSinkInterpretationInput implements
     }
 
     /** Gets the callable that this node corresponds to, if any. */
-    DataFlowCallable asCallable() { result.(Function) = this.asElement() }
+    DataFlowCallable asCallable() {
+      result.asSourceCallable() = this.asElement()
+      // TODO: or summary callable?
+    }
 
     /** Gets the target of this call, if any. */
     Element getCallTarget() { result = this.asCall().getStaticCallTarget() }

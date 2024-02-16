@@ -14,7 +14,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
 cached
 DataFlowCallable defaultViableCallable(DataFlowCall call) {
   DataFlowImplCommon::forceCachingInSameStage() and
-  result = call.getStaticCallTarget()
+  result = TSourceCallable(call.getStaticCallTarget())
   or
   // If the target of the call does not have a body in the snapshot, it might
   // be because the target is just a header declaration, and the real target
@@ -24,12 +24,12 @@ DataFlowCallable defaultViableCallable(DataFlowCall call) {
   // that as a potential callee.
   exists(string qualifiedName, int nparams |
     callSignatureWithoutBody(qualifiedName, nparams, call.asCallInstruction()) and
-    functionSignatureWithBody(qualifiedName, nparams, result) and
+    functionSignatureWithBody(qualifiedName, nparams, result.asSourceCallable()) and
     strictcount(Function other | functionSignatureWithBody(qualifiedName, nparams, other)) = 1
   )
   or
   // Virtual dispatch
-  result = call.(VirtualDispatch::DataSensitiveCall).resolve()
+  result = TSourceCallable(call.(VirtualDispatch::DataSensitiveCall).resolve())
 }
 
 /**
@@ -89,7 +89,7 @@ private module VirtualDispatch {
         // Call return
         exists(DataFlowCall call, ReturnKind returnKind |
           other = getAnOutNode(call, returnKind) and
-          returnNodeWithKindAndEnclosingCallable(src, returnKind, call.getStaticCallTarget())
+          returnNodeWithKindAndEnclosingCallable(src, returnKind, TSourceCallable(call.getStaticCallTarget()))
         ) and
         allowFromArg = false
         or
@@ -258,12 +258,12 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f) {
  * value is given as the `arg`'th argument to `f`.
  */
 private predicate mayBenefitFromCallContext(
-  VirtualDispatch::DataSensitiveCall call, Function f, int arg
+  VirtualDispatch::DataSensitiveCall call, DataFlowCallable f, int arg
 ) {
   f = pragma[only_bind_out](call).getEnclosingCallable() and
   exists(InitializeParameterInstruction init |
     not exists(call.getStaticCallTarget()) and
-    init.getEnclosingFunction() = f and
+    init.getEnclosingFunction() = f.asSourceCallable() and
     call.flowsFrom(DataFlow::instructionNode(init), _) and
     init.getParameter().getIndex() = arg
   )
@@ -275,10 +275,10 @@ private predicate mayBenefitFromCallContext(
  */
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
   result = viableCallable(call) and
-  exists(int i, Function f |
+  exists(int i, DataFlowCallable f |
     mayBenefitFromCallContext(pragma[only_bind_into](call), f, i) and
-    f = ctx.getStaticCallTarget() and
-    result = ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget()
+    f.asSourceCallable() = ctx.getStaticCallTarget() and
+    result = TSourceCallable(ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget())
   )
 }
 
