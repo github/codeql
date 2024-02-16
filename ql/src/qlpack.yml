@@ -1,6 +1,6 @@
 ---
 library: false
-name: codeql/actions-queries
+name: GitHubSecurityLab/actions-queries
 version: 0.0.1
 groups:
   - actions

@@ -1,0 +1,19 @@
+name: "codeql-actions"
+description: "CodeQL Pack for GitHub Actions and Workflows"
+
+inputs:
+  token:
+    description: GitHub Token
+    default: ${{ github.token }}
+
+  source-root:
+    description: "Path of the root source code directory, relative to $GITHUB_WORKSPACE."
+    default: "./"
+
+  sarif:
+    description: "SARIF File Output"
+    default: "codeql-actions.sarif"
+
+runs:
+  using: "node16"
+  main: ".github/action/dist/index.js"

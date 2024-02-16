@@ -1,0 +1,30 @@
+name: Build and Compile Action
+
+on:
+  pull_request:
+    branches: ["master", "develop"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  packages: read
+  pull-requests: read
+
+jobs:
+  action:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50
+        id: changes
+        with:
+          filters: |
+            src:
+              - '.github/action/**'
+              - 'action.yml'
+
+      - name: Run action
+        if: steps.changes.outputs.src == 'true'
+        uses: ./
+        with:
+          extractor-version: latest
