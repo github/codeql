@@ -10,6 +10,7 @@ instructionWithoutSuccessor
 | ir.cpp:2140:39:2140:39 | IndirectMayWriteSideEffect: call to ClassWithDestructor | Instruction 'IndirectMayWriteSideEffect: call to ClassWithDestructor' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
 | ir.cpp:2140:42:2140:76 | Constant: initialization_with_destructor_bool | Instruction 'Constant: initialization_with_destructor_bool' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
 | ir.cpp:2141:9:2141:9 | IndirectMayWriteSideEffect: x | Instruction 'IndirectMayWriteSideEffect: x' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
+| ir.cpp:2246:9:2246:26 | NoOp: return ... | Instruction 'NoOp: return ...' has no successors in function '$@'. | ir.cpp:2240:6:2240:24 | void IfReturnDestructors(bool) | void IfReturnDestructors(bool) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

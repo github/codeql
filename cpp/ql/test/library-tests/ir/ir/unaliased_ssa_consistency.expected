@@ -7,6 +7,7 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 | ir.cpp:2138:21:2138:21 | IndirectMayWriteSideEffect: x | Instruction 'IndirectMayWriteSideEffect: x' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
+| ir.cpp:2246:9:2246:26 | NoOp: return ... | Instruction 'NoOp: return ...' has no successors in function '$@'. | ir.cpp:2240:6:2240:24 | void IfReturnDestructors(bool) | void IfReturnDestructors(bool) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

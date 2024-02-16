@@ -413,7 +413,23 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariable
   TranslatedReturnValueStmt() { stmt.hasExpr() and hasReturnValue(stmt.getEnclosingFunction()) }
 
   final override Instruction getInitializationSuccessor(EdgeKind kind) {
-    result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
+    if this.hasAnImplicitDestructorCall()
+    then result = this.getChild(1).getFirstInstruction(kind)
+    else result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
+  }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    result = TranslatedVariableInitialization.super.getChildSuccessorInternal(child, kind)
+    or
+    exists(int id |
+      this.getChild(id) = child and
+      (
+        result = this.getChild(id + 1).getFirstInstruction(kind)
+        or
+        not exists(this.getChild(id + 1)) and
+        result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
+      )
+    )
   }
 
   final override TranslatedElement getChildInternal(int id) {
@@ -429,6 +445,8 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariable
   final override IRVariable getIRVariable() {
     result = this.getEnclosingFunction().getReturnVariable()
   }
+
+  override predicate handlesDestructorsExplicitly() { any() }
 }
 
 /**
@@ -449,7 +467,10 @@ class TranslatedReturnVoidExpressionStmt extends TranslatedReturnStmt {
   }
 
   override Instruction getALastInstructionInternal() {
-    result = this.getInstruction(OnlyInstructionTag())
+    if this.hasAnImplicitDestructorCall()
+    then
+      result = this.getChildInternal(max(int id | exists(this.getChild(id)))).getALastInstruction()
+    else result = this.getInstruction(OnlyInstructionTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -460,16 +481,34 @@ class TranslatedReturnVoidExpressionStmt extends TranslatedReturnStmt {
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
+    if this.hasAnImplicitDestructorCall()
+    then result = this.getChildInternal(1).getFirstInstruction(kind)
+    else result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
   }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getExpr() and
     result = this.getInstruction(OnlyInstructionTag()) and
     kind instanceof GotoEdge
+    or
+    exists(int id |
+      child = this.getChild(id) and
+      id >= this.getFirstDestructorCallIndex() and
+      result = this.getChild(id + 1).getFirstInstruction(kind)
+    )
+    or
+    exists(int id |
+      child = this.getChild(id) and
+      id >= this.getFirstDestructorCallIndex() and
+      exists(this.getChild(id)) and
+      not exists(this.getChild(id + 1)) and
+      result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
+    )
   }
 
   private TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.getExpr()) }
+
+  override predicate handlesDestructorsExplicitly() { any() }
 }
 
 /**
@@ -489,7 +528,9 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
   }
 
   override Instruction getALastInstructionInternal() {
-    result = this.getInstruction(OnlyInstructionTag())
+    if this.hasAnImplicitDestructorCall()
+    then result = this.getChild(max(int id | exists(this.getChild(id)))).getALastInstruction()
+    else result = this.getInstruction(OnlyInstructionTag())
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -500,10 +541,24 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
 
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
+    if this.hasAnImplicitDestructorCall()
+    then result = this.getChild(0).getFirstInstruction(kind)
+    else result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
   }
 
-  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) { none() }
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    exists(int id |
+      this.getChild(id) = child and
+      (
+        result = this.getChild(id + 1).getFirstInstruction(kind)
+        or
+        not exists(this.getChild(id + 1)) and
+        result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
+      )
+    )
+  }
+
+  override predicate handlesDestructorsExplicitly() { any() }
 }
 
 /**
