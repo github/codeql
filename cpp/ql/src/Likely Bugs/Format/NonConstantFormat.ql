@@ -78,10 +78,11 @@ predicate isNonConst(DataFlow::Node node) {
   //       are considered as possible non-const sources
   // The function's output must also not be const to be considered a non-const source
   exists(Function func, CallInstruction call |
-    // NOTE: could use `Call` getAnArgument() instead of `CallInstruction` but requires two 
+    // NOTE: could use `Call` getAnArgument() instead of `CallInstruction` but requires two
     // variables representing the same call in ordoer to use `callOutput` below.
-    exists(Expr arg | call.getPositionalArgumentOperand(_).getDef().getUnconvertedResultExpression() = arg and
-    arg = node.asDefiningArgument()
+    exists(Expr arg |
+      call.getPositionalArgumentOperand(_).getDef().getUnconvertedResultExpression() = arg and
+      arg = node.asDefiningArgument()
     )
     or
     call.getUnconvertedResultExpression() = node.asIndirectExpr()
