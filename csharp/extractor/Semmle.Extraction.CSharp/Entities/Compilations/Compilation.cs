@@ -39,7 +39,33 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.compilation_assembly(this, assembly);
 
             // Arguments
-            Compilation.Settings.Args.ForEach((arg, index) => trapFile.compilation_args(this, index, arg));
+            var expandedIndex = 0;
+            for (var i = 0; i < Compilation.Settings.Args.Length; i++)
+            {
+                var arg = Compilation.Settings.Args[i];
+                trapFile.compilation_args(this, i, arg);
+
+                if (CommandLineExtensions.IsFileArgument(arg))
+                {
+                    try
+                    {
+                        var rspFileContent = System.IO.File.ReadAllText(arg[1..]);
+                        var rspArgs = CommandLineParser.SplitCommandLineIntoArguments(rspFileContent, removeHashComments: true);
+                        foreach (var rspArg in rspArgs)
+                        {
+                            trapFile.compilation_expanded_args(this, expandedIndex++, rspArg);
+                        }
+                    }
+                    catch (Exception exc)
+                    {
+                        Context.ExtractionError($"Couldn't read compiler argument file: {arg}. {exc.Message}", null, null, exc.StackTrace);
+                    }
+                }
+                else
+                {
+                    trapFile.compilation_expanded_args(this, expandedIndex++, arg);
+                }
+            }
 
             // Files
             Context.Compilation.SyntaxTrees.Select(tree => File.Create(Context, tree.FilePath)).ForEach((file, index) => trapFile.compilation_compiling_files(this, index, file));

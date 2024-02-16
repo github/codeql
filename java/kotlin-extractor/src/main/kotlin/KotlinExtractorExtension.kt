@@ -2,6 +2,7 @@ package com.github.codeql
 
 import com.github.codeql.utils.versions.usesK2
 import com.semmle.util.files.FileUtil
+import com.semmle.util.trap.pathtransformers.PathTransformer
 import java.io.BufferedInputStream
 import java.io.BufferedOutputStream
 import java.io.BufferedReader
@@ -371,9 +372,9 @@ private fun doFile(
         context.clear()
     }
 
-    val srcFileRelativePath = srcFilePath.replace(':', '_')
+    val srcFileRelativePath = PathTransformer.std().fileAsDatabaseString(File(srcFilePath))
 
-    val dbSrcFilePath = Paths.get("$dbSrcDir/$srcFileRelativePath")
+    val dbSrcFilePath =  FileUtil.appendAbsolutePath(dbSrcDir, srcFileRelativePath).toPath()
     val dbSrcDirPath = dbSrcFilePath.parent
     Files.createDirectories(dbSrcDirPath)
     val srcTmpFile =
@@ -385,7 +386,7 @@ private fun doFile(
     srcTmpFile.outputStream().use { Files.copy(Paths.get(srcFilePath), it) }
     srcTmpFile.renameTo(dbSrcFilePath.toFile())
 
-    val trapFileName = "$dbTrapDir/$srcFileRelativePath.trap"
+    val trapFileName = FileUtil.appendAbsolutePath(dbTrapDir, "$srcFileRelativePath.trap").getAbsolutePath()
     val trapFileWriter = getTrapFileWriter(compression, logger, trapFileName)
 
     if (checkTrapIdentical || !trapFileWriter.exists()) {

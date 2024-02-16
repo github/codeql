@@ -2844,6 +2844,7 @@
 | local_dataflow.rb:1:1:7:3 | synthetic splat parameter | local_dataflow.rb:1:9:1:9 | a |
 | local_dataflow.rb:1:1:150:3 | <uninitialized> x | local_dataflow.rb:10:9:10:9 | x |
 | local_dataflow.rb:1:1:150:3 | self (local_dataflow.rb) | local_dataflow.rb:49:1:53:3 | self |
+| local_dataflow.rb:1:1:150:3 | self in local_dataflow.rb | local_dataflow.rb:1:1:150:3 | self (local_dataflow.rb) |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:1:9:1:9 | a |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:2:7:2:7 | a |
 | local_dataflow.rb:2:3:2:3 | b | local_dataflow.rb:3:13:3:13 | b |
@@ -3072,7 +3073,6 @@
 | local_dataflow.rb:96:3:96:9 | self | local_dataflow.rb:98:7:98:15 | self |
 | local_dataflow.rb:98:3:98:3 | a | local_dataflow.rb:99:8:99:8 | a |
 | local_dataflow.rb:98:7:98:15 | [post] self | local_dataflow.rb:98:20:98:28 | self |
-| local_dataflow.rb:98:7:98:15 | call to source | local_dataflow.rb:98:7:98:28 | ... && ... |
 | local_dataflow.rb:98:7:98:15 | self | local_dataflow.rb:98:20:98:28 | self |
 | local_dataflow.rb:98:7:98:28 | ... && ... | local_dataflow.rb:98:3:98:3 | a |
 | local_dataflow.rb:98:7:98:28 | ... && ... | local_dataflow.rb:98:3:98:28 | ... = ... |
@@ -3084,7 +3084,6 @@
 | local_dataflow.rb:100:7:100:31 | ( ... ) | local_dataflow.rb:100:3:100:3 | b |
 | local_dataflow.rb:100:7:100:31 | ( ... ) | local_dataflow.rb:100:3:100:31 | ... = ... |
 | local_dataflow.rb:100:8:100:16 | [post] self | local_dataflow.rb:100:22:100:30 | self |
-| local_dataflow.rb:100:8:100:16 | call to source | local_dataflow.rb:100:8:100:30 | ... and ... |
 | local_dataflow.rb:100:8:100:16 | self | local_dataflow.rb:100:22:100:30 | self |
 | local_dataflow.rb:100:8:100:30 | ... and ... | local_dataflow.rb:100:7:100:31 | ( ... ) |
 | local_dataflow.rb:100:8:100:30 | SSA phi read(self) | local_dataflow.rb:101:3:101:9 | self |
@@ -3109,7 +3108,6 @@
 | local_dataflow.rb:106:7:106:15 | call to source | local_dataflow.rb:106:3:106:3 | b |
 | local_dataflow.rb:106:7:106:15 | call to source | local_dataflow.rb:106:3:106:15 | ... = ... |
 | local_dataflow.rb:106:7:106:15 | self | local_dataflow.rb:107:9:107:17 | self |
-| local_dataflow.rb:107:3:107:3 | b | local_dataflow.rb:107:5:107:7 | ... && ... |
 | local_dataflow.rb:107:3:107:3 | b | local_dataflow.rb:108:8:108:8 | b |
 | local_dataflow.rb:107:5:107:7 | ... && ... | local_dataflow.rb:107:3:107:3 | b |
 | local_dataflow.rb:107:5:107:7 | ... && ... | local_dataflow.rb:107:3:107:17 | ... = ... |
@@ -3189,8 +3187,6 @@
 | local_dataflow.rb:137:7:138:9 | SSA phi read(x) | local_dataflow.rb:133:5:139:7 | SSA phi read(x) |
 | local_dataflow.rb:137:7:138:9 | if ... | local_dataflow.rb:135:5:138:9 | else ... |
 | local_dataflow.rb:137:10:137:15 | [post] self | local_dataflow.rb:137:21:137:26 | self |
-| local_dataflow.rb:137:10:137:15 | call to use | local_dataflow.rb:137:10:137:26 | [false] ... && ... |
-| local_dataflow.rb:137:10:137:15 | call to use | local_dataflow.rb:137:10:137:26 | [true] ... && ... |
 | local_dataflow.rb:137:10:137:15 | self | local_dataflow.rb:137:21:137:26 | self |
 | local_dataflow.rb:137:10:137:26 | SSA phi read(self) | local_dataflow.rb:137:7:138:9 | SSA phi read(self) |
 | local_dataflow.rb:137:10:137:26 | SSA phi read(x) | local_dataflow.rb:137:7:138:9 | SSA phi read(x) |
@@ -3214,8 +3210,6 @@
 | local_dataflow.rb:141:19:141:37 | [false] ( ... ) | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... |
 | local_dataflow.rb:141:19:141:37 | [true] ( ... ) | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... |
 | local_dataflow.rb:141:20:141:25 | [post] self | local_dataflow.rb:141:31:141:36 | self |
-| local_dataflow.rb:141:20:141:25 | call to use | local_dataflow.rb:141:20:141:36 | [false] ... && ... |
-| local_dataflow.rb:141:20:141:25 | call to use | local_dataflow.rb:141:20:141:36 | [true] ... && ... |
 | local_dataflow.rb:141:20:141:25 | self | local_dataflow.rb:141:31:141:36 | self |
 | local_dataflow.rb:141:20:141:36 | SSA phi read(self) | local_dataflow.rb:143:11:143:16 | self |
 | local_dataflow.rb:141:20:141:36 | SSA phi read(x) | local_dataflow.rb:143:15:143:15 | x |

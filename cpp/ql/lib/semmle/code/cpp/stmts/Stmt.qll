@@ -59,6 +59,28 @@ class Stmt extends StmtParent, @stmt {
     )
   }
 
+  /**
+   * Gets the `n`th compiler-generated destructor call that is performed after this statement, in
+   * order of destruction.
+   *
+   * For instance, in the following code, `getImplicitDestructorCall(0)` for the block will be the
+   * destructor call for `c2`:
+   * ```cpp
+   * {
+   *      MyClass c1;
+   *      MyClass c2;
+   * }
+   * ```
+   */
+  DestructorCall getImplicitDestructorCall(int n) {
+    synthetic_destructor_call(this, max(int i | synthetic_destructor_call(this, i, _)) - n, result)
+  }
+
+  /**
+   * Gets a compiler-generated destructor call that is performed after this statement.
+   */
+  DestructorCall getAnImplicitDestructorCall() { synthetic_destructor_call(this, _, result) }
+
   override Location getLocation() { stmts(underlyingElement(this), _, result) }
 
   override string toString() { none() }

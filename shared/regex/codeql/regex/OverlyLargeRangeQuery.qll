@@ -132,6 +132,9 @@ module Make<RegexTreeViewSig TreeImpl> {
     or
     // the range 0123456789:;<=>? is intentional
     result.isRange("0", "?")
+    or
+    // [@-Z] is intentional, it's the same as [A-Z@]
+    result.isRange("@", "Z")
   }
 
   /** Gets a char between (and including) `low` and `high`. */

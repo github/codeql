@@ -267,7 +267,11 @@ namespace Semmle.Autobuild.Shared
 
         protected DiagnosticClassifier DiagnosticClassifier { get; }
 
-        private readonly ILogger logger = new ConsoleLogger(Verbosity.Info, logThreadId: false);
+        private readonly ILogger logger = new ConsoleLogger(
+            VerbosityExtensions.ParseVerbosity(
+                Environment.GetEnvironmentVariable("CODEQL_VERBOSITY"),
+                logThreadId: false) ?? Verbosity.Info,
+            logThreadId: false);
 
         private readonly IDiagnosticsWriter diagnostics;
 

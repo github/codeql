@@ -20,6 +20,7 @@ reverseRead
 argHasPostUpdate
 postWithInFlow
 | flowOut.cpp:84:3:84:14 | *access to array | PostUpdateNode should not be the target of local flow. |
+| flowOut.cpp:111:28:111:31 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
 | test.cpp:384:10:384:13 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
 | test.cpp:391:10:391:13 | memcpy output argument | PostUpdateNode should not be the target of local flow. |
 | test.cpp:400:10:400:13 | memcpy output argument | PostUpdateNode should not be the target of local flow. |

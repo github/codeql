@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text.RegularExpressions;
 using Semmle.Util;
+using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
@@ -15,7 +16,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     // </summary>
     internal partial class FileContent
     {
-        private readonly ProgressMonitor progressMonitor;
+        private readonly ILogger logger;
         private readonly IUnsafeFileReader unsafeFileReader;
         private readonly IEnumerable<string> files;
         private readonly HashSet<string> allPackages = new HashSet<string>();
@@ -90,18 +91,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        internal FileContent(ProgressMonitor progressMonitor,
+        internal FileContent(ILogger logger,
             IEnumerable<string> files,
             IUnsafeFileReader unsafeFileReader)
         {
-            this.progressMonitor = progressMonitor;
+            this.logger = logger;
             this.files = files;
             this.unsafeFileReader = unsafeFileReader;
             this.initialize = new Initializer(DoInitialize);
         }
 
 
-        public FileContent(ProgressMonitor progressMonitor, IEnumerable<string> files) : this(progressMonitor, files, new UnsafeFileReader())
+        public FileContent(ILogger logger, IEnumerable<string> files) : this(logger, files, new UnsafeFileReader())
         { }
 
         private static string GetGroup(ReadOnlySpan<char> input, ValueMatch valueMatch, string groupPrefix, bool toLower)
@@ -192,7 +193,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 catch (Exception ex)
                 {
-                    progressMonitor.FailedToReadFile(file, ex);
+                    logger.LogInfo($"Failed to read file {file}");
+                    logger.LogDebug($"Failed to read file {file}, exception: {ex}");
                 }
             }
         }

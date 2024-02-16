@@ -5,6 +5,7 @@
 import csharp
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.frameworks.Format
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.Mvc
 private import semmle.code.csharp.security.Sanitizers
@@ -160,6 +161,36 @@ class ConcatenationSanitizer extends Sanitizer {
   ConcatenationSanitizer() {
     this.getType() instanceof StringType and
     this.getExpr().(AddExpr).getLeftOperand().getValue().matches("%?%")
+  }
+}
+
+/**
+ * A string interpolation expression, where the first part (before any inserts) of the
+ * expression contains the character "?".
+ *
+ * This is considered a sanitizer by the same reasoning as `ConcatenationSanitizer`.
+ */
+private class InterpolationSanitizer extends Sanitizer {
+  InterpolationSanitizer() {
+    this.getExpr().(InterpolatedStringExpr).getText(0).getValue().matches("%?%")
+  }
+}
+
+/**
+ * A call to `string.Format`, where the format expression (before any inserts)
+ * contains the character "?".
+ *
+ * This is considered a sanitizer by the same reasoning as `ConcatenationSanitizer`.
+ */
+private class StringFormatSanitizer extends Sanitizer {
+  StringFormatSanitizer() {
+    exists(FormatCall c, Expr e, int index, string format |
+      c = this.getExpr() and e = c.getFormatExpr()
+    |
+      format = e.(StringLiteral).getValue() and
+      exists(format.regexpFind("\\{[0-9]+\\}", 0, index)) and
+      format.substring(0, index).matches("%?%")
+    )
   }
 }
 

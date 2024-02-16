@@ -165,31 +165,49 @@ module AccessTargetStatsReport = ReportStats<AccessTargetStats>;
 
 module ExprStatsReport = ReportStats<ExprStats>;
 
+predicate analyzerAssemblies(string key, float value) {
+  exists(Compilation c, string arg |
+    c.getExpandedArgument(_) = arg and
+    arg.indexOf("/analyzer:") = 0 and
+    key = "CSC analyzer: " + arg.substring(10, arg.length())
+  ) and
+  value = 1.0
+}
+
 from string key, float value
 where
-  fileCount(key, value) or
-  fileCountByExtension(key, value) or
-  totalNumberOfLines(key, value) or
-  numberOfLinesOfCode(key, value) or
-  totalNumberOfLinesByExtension(key, value) or
-  numberOfLinesOfCodeByExtension(key, value) or
-  extractorDiagnostics(key, value) or
-  numberOfAmbiguityCompilerErrors(key, value) or
-  numberOfDistinctAmbiguityCompilerErrorMessages(key, value) or
-  extractionIsStandalone(key, value) or
-  CallTargetStatsReport::numberOfOk(key, value) or
-  CallTargetStatsReport::numberOfNotOk(key, value) or
-  CallTargetStatsReport::percentageOfOk(key, value) or
-  ExprTypeStatsReport::numberOfOk(key, value) or
-  ExprTypeStatsReport::numberOfNotOk(key, value) or
-  ExprTypeStatsReport::percentageOfOk(key, value) or
-  TypeMentionTypeStatsReport::numberOfOk(key, value) or
-  TypeMentionTypeStatsReport::numberOfNotOk(key, value) or
-  TypeMentionTypeStatsReport::percentageOfOk(key, value) or
-  AccessTargetStatsReport::numberOfOk(key, value) or
-  AccessTargetStatsReport::numberOfNotOk(key, value) or
-  AccessTargetStatsReport::percentageOfOk(key, value) or
-  ExprStatsReport::numberOfOk(key, value) or
-  ExprStatsReport::numberOfNotOk(key, value) or
-  ExprStatsReport::percentageOfOk(key, value)
+  (
+    fileCount(key, value) or
+    fileCountByExtension(key, value) or
+    totalNumberOfLines(key, value) or
+    numberOfLinesOfCode(key, value) or
+    totalNumberOfLinesByExtension(key, value) or
+    numberOfLinesOfCodeByExtension(key, value) or
+    extractorDiagnostics(key, value) or
+    numberOfAmbiguityCompilerErrors(key, value) or
+    numberOfDistinctAmbiguityCompilerErrorMessages(key, value) or
+    extractionIsStandalone(key, value) or
+    CallTargetStatsReport::numberOfOk(key, value) or
+    CallTargetStatsReport::numberOfNotOk(key, value) or
+    CallTargetStatsReport::percentageOfOk(key, value) or
+    ExprTypeStatsReport::numberOfOk(key, value) or
+    ExprTypeStatsReport::numberOfNotOk(key, value) or
+    ExprTypeStatsReport::percentageOfOk(key, value) or
+    TypeMentionTypeStatsReport::numberOfOk(key, value) or
+    TypeMentionTypeStatsReport::numberOfNotOk(key, value) or
+    TypeMentionTypeStatsReport::percentageOfOk(key, value) or
+    AccessTargetStatsReport::numberOfOk(key, value) or
+    AccessTargetStatsReport::numberOfNotOk(key, value) or
+    AccessTargetStatsReport::percentageOfOk(key, value) or
+    ExprStatsReport::numberOfOk(key, value) or
+    ExprStatsReport::numberOfNotOk(key, value) or
+    ExprStatsReport::percentageOfOk(key, value) or
+    analyzerAssemblies(key, value)
+  ) and
+  /* Infinity */
+  value != 1.0 / 0.0 and
+  /* -Infinity */
+  value != -1.0 / 0.0 and
+  /* NaN */
+  value != 0.0 / 0.0
 select key, value

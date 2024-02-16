@@ -1,0 +1,383 @@
+#-----| [CopyAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag const&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const __va_list_tag &
+#-----| [MoveAssignmentOperator] __va_list_tag& __va_list_tag::operator=(__va_list_tag&&)
+#-----|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] __va_list_tag &&
+destructors.cpp:
+#    2| [CopyAssignmentOperator] C& C::operator=(C const&)
+#    2|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const C &
+#    2| [CopyConstructor] void C::C(C const&)
+#    2|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const C &
+#    4| [Constructor] void C::C(int)
+#    4|   <params>: 
+#    4|     getParameter(0): [Parameter] x
+#    4|         Type = [IntType] int
+#    5| [Destructor] void C::~C()
+#    5|   <params>: 
+#    8| [TopLevelFunction] void f(int, int)
+#    8|   <params>: 
+#    8|     getParameter(0): [Parameter] b1
+#    8|         Type = [IntType] int
+#    8|     getParameter(1): [Parameter] b2
+#    8|         Type = [IntType] int
+#    8|   getEntryPoint(): [BlockStmt] { ... }
+#    9|     getStmt(0): [DeclStmt] declaration
+#    9|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c10
+#    9|           Type = [Class] C
+#    9|         getVariable().getInitializer(): [Initializer] initializer for c10
+#    9|           getExpr(): [ConstructorCall] call to C
+#    9|               Type = [VoidType] void
+#    9|               ValueCategory = prvalue
+#    9|             getArgument(0): [Literal] 110
+#    9|                 Type = [IntType] int
+#    9|                 Value = [Literal] 110
+#    9|                 ValueCategory = prvalue
+#   10|     getStmt(1): [BlockStmt] { ... }
+#   11|       getStmt(0): [DeclStmt] declaration
+#   11|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of c20
+#   11|             Type = [Class] C
+#   11|           getVariable().getInitializer(): [Initializer] initializer for c20
+#   11|             getExpr(): [ConstructorCall] call to C
+#   11|                 Type = [VoidType] void
+#   11|                 ValueCategory = prvalue
+#   11|               getArgument(0): [Literal] 120
+#   11|                   Type = [IntType] int
+#   11|                   Value = [Literal] 120
+#   11|                   ValueCategory = prvalue
+#   12|       getStmt(1): [BlockStmt] { ... }
+#   13|         getStmt(0): [DeclStmt] declaration
+#   13|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of c30
+#   13|               Type = [Class] C
+#   13|             getVariable().getInitializer(): [Initializer] initializer for c30
+#   13|               getExpr(): [ConstructorCall] call to C
+#   13|                   Type = [VoidType] void
+#   13|                   ValueCategory = prvalue
+#   13|                 getArgument(0): [Literal] 130
+#   13|                     Type = [IntType] int
+#   13|                     Value = [Literal] 130
+#   13|                     ValueCategory = prvalue
+#   14|         getImplicitDestructorCall(0): [DestructorCall] call to ~C
+#   14|             Type = [VoidType] void
+#   14|             ValueCategory = prvalue
+#   14|           getQualifier(): [VariableAccess] c30
+#   14|               Type = [Class] C
+#   14|               ValueCategory = lvalue
+#   15|       getStmt(2): [BlockStmt] { ... }
+#   16|         getStmt(0): [DeclStmt] declaration
+#   16|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of c31
+#   16|               Type = [Class] C
+#   16|             getVariable().getInitializer(): [Initializer] initializer for c31
+#   16|               getExpr(): [ConstructorCall] call to C
+#   16|                   Type = [VoidType] void
+#   16|                   ValueCategory = prvalue
+#   16|                 getArgument(0): [Literal] 131
+#   16|                     Type = [IntType] int
+#   16|                     Value = [Literal] 131
+#   16|                     ValueCategory = prvalue
+#   17|         getStmt(1): [IfStmt] if (...) ... 
+#   17|           getCondition(): [VariableAccess] b1
+#   17|               Type = [IntType] int
+#   17|               ValueCategory = prvalue(load)
+#   17|           getThen(): [GotoStmt] goto ...
+#   21|             getImplicitDestructorCall(0): [DestructorCall] call to ~C
+#   21|                 Type = [VoidType] void
+#   21|                 ValueCategory = prvalue
+#   21|               getQualifier(): [VariableAccess] c31
+#   21|                   Type = [Class] C
+#   21|                   ValueCategory = lvalue
+#   26|             getImplicitDestructorCall(1): [DestructorCall] call to ~C
+#   26|                 Type = [VoidType] void
+#   26|                 ValueCategory = prvalue
+#   26|               getQualifier(): [VariableAccess] c20
+#   26|                   Type = [Class] C
+#   26|                   ValueCategory = lvalue
+#   17|           getCondition().getFullyConverted(): [CStyleCast] (bool)...
+#   17|               Conversion = [BoolConversion] conversion to bool
+#   17|               Type = [BoolType] bool
+#   17|               ValueCategory = prvalue
+#   18|         getStmt(2): [DeclStmt] declaration
+#   18|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of c32
+#   18|               Type = [Class] C
+#   18|             getVariable().getInitializer(): [Initializer] initializer for c32
+#   18|               getExpr(): [ConstructorCall] call to C
+#   18|                   Type = [VoidType] void
+#   18|                   ValueCategory = prvalue
+#   18|                 getArgument(0): [Literal] 132
+#   18|                     Type = [IntType] int
+#   18|                     Value = [Literal] 132
+#   18|                     ValueCategory = prvalue
+#   19|         getStmt(3): [IfStmt] if (...) ... 
+#   19|           getCondition(): [VariableAccess] b2
+#   19|               Type = [IntType] int
+#   19|               ValueCategory = prvalue(load)
+#   19|           getThen(): [ReturnStmt] return ...
+#   21|             getImplicitDestructorCall(0): [DestructorCall] call to ~C
+#   21|                 Type = [VoidType] void
+#   21|                 ValueCategory = prvalue
+#   21|               getQualifier(): [VariableAccess] c32
+#   21|                   Type = [Class] C
+#   21|                   ValueCategory = lvalue
+#   21|             getImplicitDestructorCall(1): [DestructorCall] call to ~C
+#   21|                 Type = [VoidType] void
+#   21|                 ValueCategory = prvalue
+#   21|               getQualifier(): [VariableAccess] c31
+#   21|                   Type = [Class] C
+#   21|                   ValueCategory = lvalue
+#   26|             getImplicitDestructorCall(2): [DestructorCall] call to ~C
+#   26|                 Type = [VoidType] void
+#   26|                 ValueCategory = prvalue
+#   26|               getQualifier(): [VariableAccess] c20
+#   26|                   Type = [Class] C
+#   26|                   ValueCategory = lvalue
+#   35|             getImplicitDestructorCall(3): [DestructorCall] call to ~C
+#   35|                 Type = [VoidType] void
+#   35|                 ValueCategory = prvalue
+#   35|               getQualifier(): [VariableAccess] c10
+#   35|                   Type = [Class] C
+#   35|                   ValueCategory = lvalue
+#   19|           getCondition().getFullyConverted(): [CStyleCast] (bool)...
+#   19|               Conversion = [BoolConversion] conversion to bool
+#   19|               Type = [BoolType] bool
+#   19|               ValueCategory = prvalue
+#   20|         getStmt(4): [DeclStmt] declaration
+#   20|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of c33
+#   20|               Type = [Class] C
+#   20|             getVariable().getInitializer(): [Initializer] initializer for c33
+#   20|               getExpr(): [ConstructorCall] call to C
+#   20|                   Type = [VoidType] void
+#   20|                   ValueCategory = prvalue
+#   20|                 getArgument(0): [Literal] 133
+#   20|                     Type = [IntType] int
+#   20|                     Value = [Literal] 133
+#   20|                     ValueCategory = prvalue
+#   21|         getImplicitDestructorCall(0): [DestructorCall] call to ~C
+#   21|             Type = [VoidType] void
+#   21|             ValueCategory = prvalue
+#   21|           getQualifier(): [VariableAccess] c33
+#   21|               Type = [Class] C
+#   21|               ValueCategory = lvalue
+#   21|         getImplicitDestructorCall(1): [DestructorCall] call to ~C
+#   21|             Type = [VoidType] void
+#   21|             ValueCategory = prvalue
+#   21|           getQualifier(): [VariableAccess] c32
+#   21|               Type = [Class] C
+#   21|               ValueCategory = lvalue
+#   21|         getImplicitDestructorCall(2): [DestructorCall] call to ~C
+#   21|             Type = [VoidType] void
+#   21|             ValueCategory = prvalue
+#   21|           getQualifier(): [VariableAccess] c31
+#   21|               Type = [Class] C
+#   21|               ValueCategory = lvalue
+#   22|       getStmt(3): [BlockStmt] { ... }
+#   23|         getStmt(0): [DeclStmt] declaration
+#   23|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of c34
+#   23|               Type = [Class] C
+#   23|             getVariable().getInitializer(): [Initializer] initializer for c34
+#   23|               getExpr(): [ConstructorCall] call to C
+#   23|                   Type = [VoidType] void
+#   23|                   ValueCategory = prvalue
+#   23|                 getArgument(0): [Literal] 134
+#   23|                     Type = [IntType] int
+#   23|                     Value = [Literal] 134
+#   23|                     ValueCategory = prvalue
+#   24|         getImplicitDestructorCall(0): [DestructorCall] call to ~C
+#   24|             Type = [VoidType] void
+#   24|             ValueCategory = prvalue
+#   24|           getQualifier(): [VariableAccess] c34
+#   24|               Type = [Class] C
+#   24|               ValueCategory = lvalue
+#   25|       getStmt(4): [DeclStmt] declaration
+#   25|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of c21
+#   25|             Type = [Class] C
+#   25|           getVariable().getInitializer(): [Initializer] initializer for c21
+#   25|             getExpr(): [ConstructorCall] call to C
+#   25|                 Type = [VoidType] void
+#   25|                 ValueCategory = prvalue
+#   25|               getArgument(0): [Literal] 121
+#   25|                   Type = [IntType] int
+#   25|                   Value = [Literal] 121
+#   25|                   ValueCategory = prvalue
+#   26|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
+#   26|           Type = [VoidType] void
+#   26|           ValueCategory = prvalue
+#   26|         getQualifier(): [VariableAccess] c21
+#   26|             Type = [Class] C
+#   26|             ValueCategory = lvalue
+#   26|       getImplicitDestructorCall(1): [DestructorCall] call to ~C
+#   26|           Type = [VoidType] void
+#   26|           ValueCategory = prvalue
+#   26|         getQualifier(): [VariableAccess] c20
+#   26|             Type = [Class] C
+#   26|             ValueCategory = lvalue
+#   27|     getStmt(2): [BlockStmt] { ... }
+#   28|       getStmt(0): [DeclStmt] declaration
+#   28|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of c22
+#   28|             Type = [Class] C
+#   28|           getVariable().getInitializer(): [Initializer] initializer for c22
+#   28|             getExpr(): [ConstructorCall] call to C
+#   28|                 Type = [VoidType] void
+#   28|                 ValueCategory = prvalue
+#   28|               getArgument(0): [Literal] 122
+#   28|                   Type = [IntType] int
+#   28|                   Value = [Literal] 122
+#   28|                   ValueCategory = prvalue
+#   29|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
+#   29|           Type = [VoidType] void
+#   29|           ValueCategory = prvalue
+#   29|         getQualifier(): [VariableAccess] c22
+#   29|             Type = [Class] C
+#   29|             ValueCategory = lvalue
+#   30|     getStmt(3): [BlockStmt] { ... }
+#   31|       getStmt(0): [LabelStmt] label ...:
+#   32|       getStmt(1): [DeclStmt] declaration
+#   32|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of c23
+#   32|             Type = [Class] C
+#   32|           getVariable().getInitializer(): [Initializer] initializer for c23
+#   32|             getExpr(): [ConstructorCall] call to C
+#   32|                 Type = [VoidType] void
+#   32|                 ValueCategory = prvalue
+#   32|               getArgument(0): [Literal] 123
+#   32|                   Type = [IntType] int
+#   32|                   Value = [Literal] 123
+#   32|                   ValueCategory = prvalue
+#   33|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
+#   33|           Type = [VoidType] void
+#   33|           ValueCategory = prvalue
+#   33|         getQualifier(): [VariableAccess] c23
+#   33|             Type = [Class] C
+#   33|             ValueCategory = lvalue
+#   34|     getStmt(4): [DeclStmt] declaration
+#   34|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c11
+#   34|           Type = [Class] C
+#   34|         getVariable().getInitializer(): [Initializer] initializer for c11
+#   34|           getExpr(): [ConstructorCall] call to C
+#   34|               Type = [VoidType] void
+#   34|               ValueCategory = prvalue
+#   34|             getArgument(0): [Literal] 111
+#   34|                 Type = [IntType] int
+#   34|                 Value = [Literal] 111
+#   34|                 ValueCategory = prvalue
+#   35|     getStmt(5): [ReturnStmt] return ...
+#   35|       getImplicitDestructorCall(0): [DestructorCall] call to ~C
+#   35|           Type = [VoidType] void
+#   35|           ValueCategory = prvalue
+#   35|         getQualifier(): [VariableAccess] c11
+#   35|             Type = [Class] C
+#   35|             ValueCategory = lvalue
+#   35|       getImplicitDestructorCall(1): [DestructorCall] call to ~C
+#   35|           Type = [VoidType] void
+#   35|           ValueCategory = prvalue
+#   35|         getQualifier(): [VariableAccess] c10
+#   35|             Type = [Class] C
+#   35|             ValueCategory = lvalue
+destructors2.cpp:
+#    5| [CopyAssignmentOperator] Class2& Class2::operator=(Class2 const&)
+#    5|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Class2 &
+#    5| [CopyConstructor] void Class2::Class2(Class2 const&)
+#    5|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Class2 &
+#    5|   <initializations>: 
+#    5|   getEntryPoint(): [BlockStmt] { ... }
+#    5|     getStmt(0): [ReturnStmt] return ...
+#    7| [Constructor] void Class2::Class2()
+#    7|   <params>: 
+#    8| [Destructor] void Class2::~Class2()
+#    8|   <params>: 
+#   11| [TopLevelFunction] Class2 getClass2()
+#   11|   <params>: 
+#   13| [CopyAssignmentOperator] Outer& Outer::operator=(Outer const&)
+#   13|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Outer &
+#   13| [MoveAssignmentOperator] Outer& Outer::operator=(Outer&&)
+#   13|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] Outer &&
+#   15| [CopyAssignmentOperator] Outer::Inner& Outer::Inner::operator=(Outer::Inner const public&)
+#   15|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Inner &
+#   15| [CopyConstructor] void Outer::Inner::Inner(Outer::Inner const public&)
+#   15|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Inner &
+#   17| [Constructor] void Outer::Inner::Inner(Class2 const&)
+#   17|   <params>: 
+#   17|     getParameter(0): [Parameter] c
+#   17|         Type = [LValueReferenceType] const Class2 &
+#   17|   <initializations>: 
+#   17|   getEntryPoint(): [BlockStmt] { ... }
+#   17|     getStmt(0): [ReturnStmt] return ...
+#   18| [Destructor] void Outer::Inner::~Inner()
+#   18|   <params>: 
+#   18|   getEntryPoint(): [BlockStmt] { ... }
+#   18|     getStmt(0): [ReturnStmt] return ...
+#   18|   <destructions>: 
+#   21| [MemberFunction] void Outer::f2(int)
+#   21|   <params>: 
+#   21|     getParameter(0): [Parameter] i
+#   21|         Type = [IntType] int
+#   21|   getEntryPoint(): [BlockStmt] { ... }
+#   22|     getStmt(0): [DeclStmt] declaration
+#   22|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+#   22|           Type = [Class] Class2
+#   22|         getVariable().getInitializer(): [Initializer] initializer for c
+#   22|           getExpr(): [FunctionCall] call to getClass2
+#   22|               Type = [Class] Class2
+#   22|               ValueCategory = prvalue
+#   23|     getStmt(1): [IfStmt] if (...) ... 
+#   23|       getCondition(): [VariableAccess] i
+#   23|           Type = [IntType] int
+#   23|           ValueCategory = prvalue(load)
+#   23|       getThen(): [BlockStmt] { ... }
+#   24|         getStmt(0): [ReturnStmt] return ...
+#   27|           getImplicitDestructorCall(0): [DestructorCall] call to ~Class2
+#   27|               Type = [VoidType] void
+#   27|               ValueCategory = prvalue
+#   27|             getQualifier(): [VariableAccess] c
+#   27|                 Type = [Class] Class2
+#   27|                 ValueCategory = lvalue
+#   23|       getCondition().getFullyConverted(): [CStyleCast] (bool)...
+#   23|           Conversion = [BoolConversion] conversion to bool
+#   23|           Type = [BoolType] bool
+#   23|           ValueCategory = prvalue
+#   26|     getStmt(2): [DeclStmt] declaration
+#   26|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of inner
+#   26|           Type = [NestedClass] Inner
+#   26|         getVariable().getInitializer(): [Initializer] initializer for inner
+#   26|           getExpr(): [ConstructorCall] call to Inner
+#   26|               Type = [VoidType] void
+#   26|               ValueCategory = prvalue
+#   26|             getArgument(0): [VariableAccess] c
+#   26|                 Type = [Class] Class2
+#   26|                 ValueCategory = lvalue
+#   26|             getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   26|                 Type = [LValueReferenceType] const Class2 &
+#   26|                 ValueCategory = prvalue
+#   26|               getExpr(): [CStyleCast] (const Class2)...
+#   26|                   Conversion = [GlvalueConversion] glvalue conversion
+#   26|                   Type = [SpecifiedType] const Class2
+#   26|                   ValueCategory = lvalue
+#   27|     getStmt(3): [ReturnStmt] return ...
+#   27|       getImplicitDestructorCall(0): [DestructorCall] call to ~Inner
+#   27|           Type = [VoidType] void
+#   27|           ValueCategory = prvalue
+#   27|         getQualifier(): [VariableAccess] inner
+#   27|             Type = [NestedClass] Inner
+#   27|             ValueCategory = lvalue
+#   27|       getImplicitDestructorCall(1): [DestructorCall] call to ~Class2
+#   27|           Type = [VoidType] void
+#   27|           ValueCategory = prvalue
+#   27|         getQualifier(): [VariableAccess] c
+#   27|             Type = [Class] Class2
+#   27|             ValueCategory = lvalue

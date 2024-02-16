@@ -809,6 +809,58 @@ ir.c:
 #   13|     v13_11(void)         = AliasedUse                 : m13_3
 #   13|     v13_12(void)         = ExitFunction               : 
 
+#   21| int TryExceptTest(int)
+#   21|   Block 0
+#   21|     v21_1(void)           = EnterFunction                           : 
+#   21|     m21_2(unknown)        = AliasedDefinition                       : 
+#   21|     m21_3(unknown)        = InitializeNonLocal                      : 
+#   21|     m21_4(unknown)        = Chi                                     : total:m21_2, partial:m21_3
+#   21|     r21_5(glval<int>)     = VariableAddress[x]                      : 
+#   21|     m21_6(int)            = InitializeParameter[x]                  : &:r21_5
+#   22|     r22_1(glval<int *>)   = VariableAddress[localPtr]               : 
+#   22|     m22_2(int *)          = Uninitialized[localPtr]                 : &:r22_1
+#   25|     r25_1(glval<unknown>) = FunctionAddress[ExRaiseAccessViolation] : 
+#   25|     r25_2(glval<int>)     = VariableAddress[x]                      : 
+#   25|     r25_3(int)            = Load[x]                                 : &:r25_2, m21_6
+#   25|     v25_4(void)           = Call[ExRaiseAccessViolation]            : func:r25_1, 0:r25_3
+#   25|     m25_5(unknown)        = ^CallSideEffect                         : ~m21_4
+#   25|     m25_6(unknown)        = Chi                                     : total:m21_4, partial:m25_5
+#-----|   Exception -> Block 3
+
+#   26|   Block 1
+#   26|     r26_1(int)  = Constant[0]       : 
+#   26|     r26_2(bool) = CompareEQ         : r26_7, r26_1
+#   26|     v26_3(void) = ConditionalBranch : r26_2
+#-----|   False -> Block 2
+#-----|   True -> Block 5
+
+#   26|   Block 2
+#   26|     r26_4(int)  = Constant[1]       : 
+#   26|     r26_5(bool) = CompareEQ         : r26_7, r26_4
+#   26|     v26_6(void) = ConditionalBranch : r26_5
+#-----|   False -> Block 5
+#-----|   True -> Block 4
+
+#   26|   Block 3
+#   26|     r26_7(int)   = Constant[1]       : 
+#   26|     r26_8(int)   = Constant[-1]      : 
+#   26|     r26_9(bool)  = CompareEQ         : r26_7, r26_8
+#   26|     v26_10(void) = ConditionalBranch : r26_9
+#-----|   False -> Block 1
+#-----|   True -> Block 5
+
+#   27|   Block 4
+#   27|     r27_1(glval<int>) = VariableAddress[#return] : 
+#   27|     r27_2(int)        = Constant[1]              : 
+#   27|     m27_3(int)        = Store[#return]           : &:r27_1, r27_2
+#   21|     r21_7(glval<int>) = VariableAddress[#return] : 
+#   21|     v21_8(void)       = ReturnValue              : &:r21_7, m27_3
+#   21|     v21_9(void)       = AliasedUse               : ~m25_6
+#   21|     v21_10(void)      = ExitFunction             : 
+
+#   21|   Block 5
+#   21|     v21_11(void) = Unreached : 
+
 ir.cpp:
 #    1| void Constants()
 #    1|   Block 0
