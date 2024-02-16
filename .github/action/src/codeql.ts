@@ -34,10 +34,16 @@ export async function newCodeQL(): Promise<CodeQLConfig> {
 export async function runCommand(
   config: CodeQLConfig,
   args: string[],
+  cwd?: string,
 ): Promise<any> {
   var bin = path.join(config.path, "codeql");
   let output = "";
+  var _cwd: string = process.cwd();
+  if (cwd) {
+    _cwd = cwd;
+  }
   var options = {
+    cwd: cwd,
     listeners: {
       stdout: (data: Buffer) => {
         output += data.toString();
@@ -96,6 +102,21 @@ export async function downloadPack(codeql: CodeQLConfig): Promise<boolean> {
   } catch (error) {
     core.warning("Failed to download pack from GitHub...");
   }
+  return false;
+}
+
+export async function installPack(
+  codeql: CodeQLConfig,
+  path: string,
+): Promise<boolean> {
+  try {
+    await runCommand(codeql, ["pack", "install"], path);
+    await runCommand(codeql, ["pack", "install"], path);
+    return true;
+  } catch (error) {
+    core.warning("Failed to install local packs ...");
+  }
+  core.info("Installed local packs ...");
   return false;
 }
 

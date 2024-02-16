@@ -43,9 +43,17 @@ export async function runCommandJson(
   return JSON.parse(await runCommand(config, args));
 }
 
-export async function clonePackRepo(gh: GHConfig): Promise<boolean> {
+export async function clonePackRepo(
+  gh: GHConfig,
+  path: string,
+): Promise<boolean> {
   try {
-    await runCommand(gh, ["repo", "clone", "GitHubSecurityLab/codeql-actions"]);
+    await runCommand(gh, [
+      "repo",
+      "clone",
+      "GitHubSecurityLab/codeql-actions",
+      path,
+    ]);
     return true;
   } catch (error) {
     core.warning("Failed to clone pack from GitHub...");

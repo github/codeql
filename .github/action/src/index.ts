@@ -39,7 +39,10 @@ export async function run(): Promise<void> {
     // download pack
     core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
     //var pack_downloaded = await cql.downloadPack(codeql);
-    var pack_downloaded = await gh.clonePackRepo(ghc);
+
+    let pack_path = "/tmp/codeql-actions";
+    var pack_downloaded = await gh.clonePackRepo(ghc, pack_path);
+    await cql.installPack(codeql, pack_path);
 
     if (pack_downloaded === false) {
       var action_path = path.resolve(path.join(__dirname, "..", "..", ".."));

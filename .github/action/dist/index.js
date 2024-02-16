@@ -28596,7 +28596,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.codeqlDatabaseAnalyze = exports.codeqlDatabaseCreate = exports.downloadPack = exports.runCommandJson = exports.runCommand = exports.newCodeQL = void 0;
+exports.codeqlDatabaseAnalyze = exports.codeqlDatabaseCreate = exports.installPack = exports.downloadPack = exports.runCommandJson = exports.runCommand = exports.newCodeQL = void 0;
 const fs = __importStar(__nccwpck_require__(7147));
 const path = __importStar(__nccwpck_require__(1017));
 const core = __importStar(__nccwpck_require__(2186));
@@ -28613,10 +28613,15 @@ async function newCodeQL() {
     };
 }
 exports.newCodeQL = newCodeQL;
-async function runCommand(config, args) {
+async function runCommand(config, args, cwd) {
     var bin = path.join(config.path, "codeql");
     let output = "";
+    var _cwd = process.cwd();
+    if (cwd) {
+        _cwd = cwd;
+    }
     var options = {
+        cwd: cwd,
         listeners: {
             stdout: (data) => {
                 output += data.toString();
@@ -28669,6 +28674,19 @@ async function downloadPack(codeql) {
     return false;
 }
 exports.downloadPack = downloadPack;
+async function installPack(codeql, path) {
+    try {
+        await runCommand(codeql, ["pack", "install"], path);
+        await runCommand(codeql, ["pack", "install"], path);
+        return true;
+    }
+    catch (error) {
+        core.warning("Failed to install local packs ...");
+    }
+    core.info("Installed local packs ...");
+    return false;
+}
+exports.installPack = installPack;
 async function codeqlDatabaseCreate(codeql) {
     // get runner temp directory for database
     var temp = process.env["RUNNER_TEMP"];
@@ -28776,9 +28794,14 @@ async function runCommandJson(config, args) {
     return JSON.parse(await runCommand(config, args));
 }
 exports.runCommandJson = runCommandJson;
-async function clonePackRepo(gh) {
+async function clonePackRepo(gh, path) {
     try {
-        await runCommand(gh, ["repo", "clone", "GitHubSecurityLab/codeql-actions"]);
+        await runCommand(gh, [
+            "repo",
+            "clone",
+            "GitHubSecurityLab/codeql-actions",
+            path,
+        ]);
         return true;
     }
     catch (error) {
@@ -28853,7 +28876,9 @@ async function run() {
         // download pack
         core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
         //var pack_downloaded = await cql.downloadPack(codeql);
-        var pack_downloaded = await gh.clonePackRepo(ghc);
+        let pack_path = "/tmp/codeql-actions";
+        var pack_downloaded = await gh.clonePackRepo(ghc, pack_path);
+        await cql.installPack(codeql, pack_path);
         if (pack_downloaded === false) {
             var action_path = path.resolve(path.join(__dirname, "..", "..", ".."));
             core.info(`Pack path: '${action_path}'`);
