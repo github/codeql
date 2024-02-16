@@ -69,7 +69,7 @@ predicate isNonConst(DataFlow::Node node) {
   // Parameters of uncalled functions that aren't const
   exists(UncalledFunction f, Parameter p |
     f.getAParameter() = p and
-    p = node.asParameter() and 
+    p = node.asParameter() and
     // Ignore main's argv parameter as it is already considered a `FlowSource`
     // not ignoring it will result in path redundancies
     (f.getName() = "main" implies p.getName() != "argv")
