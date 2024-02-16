@@ -142,7 +142,7 @@ private newtype TDefOrUseImpl =
     exists(SsaInternals0::Def def |
       def.getSourceVariable().getBaseVariable().(BaseIRVariable).getIRVariable().getAst() = p and
       not def.getValue().asInstruction() instanceof InitializeParameterInstruction and
-      unspecifiedTypeIsModifiableAt(p.getUnspecifiedType(), indirectionIndex)
+      underlyingTypeIsModifiableAt(p.getUnderlyingType(), indirectionIndex)
     )
   }
 
@@ -172,11 +172,13 @@ private predicate isGlobalDefImpl(
   )
 }
 
-private predicate unspecifiedTypeIsModifiableAt(Type unspecified, int indirectionIndex) {
-  indirectionIndex = [1 .. getIndirectionForUnspecifiedType(unspecified).getNumberOfIndirections()] and
+private predicate underlyingTypeIsModifiableAt(Type underlying, int indirectionIndex) {
+  indirectionIndex =
+    [1 .. getIndirectionForUnspecifiedType(underlying.getUnspecifiedType())
+          .getNumberOfIndirections()] and
   exists(CppType cppType |
-    cppType.hasUnspecifiedType(unspecified, _) and
-    isModifiableAt(cppType, indirectionIndex + 1)
+    cppType.hasUnderlyingType(underlying, false) and
+    isModifiableAt(cppType, indirectionIndex)
   )
 }
 
