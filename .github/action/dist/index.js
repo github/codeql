@@ -28873,9 +28873,6 @@ async function run() {
             core.setFailed("CodeQL Yaml extractor not installed");
             throw new Error("CodeQL Yaml extractor not installed");
         }
-        // download pack
-        // core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
-        // var pack_downloaded = await cql.downloadPack(codeql);
         core.info(`Cloning CodeQL Actions pack into '${codeql.pack}'`);
         let pack_path = "/tmp/codeql-actions";
         var pack_cloned = await gh.clonePackRepo(ghc, pack_path);
