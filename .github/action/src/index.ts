@@ -37,23 +37,28 @@ export async function run(): Promise<void> {
     }
 
     // download pack
-    core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
-    //var pack_downloaded = await cql.downloadPack(codeql);
+    // core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
+    // var pack_downloaded = await cql.downloadPack(codeql);
 
+    core.info(`Cloning CodeQL Actions pack into '${codeql.pack}'`);
     let pack_path = "/tmp/codeql-actions";
-    var pack_downloaded = await gh.clonePackRepo(ghc, pack_path);
-    await cql.installPack(codeql, pack_path);
+    var pack_cloned = await gh.clonePackRepo(ghc, pack_path);
+    core.info(`Cloned CodeQL Actions pack into '${pack_path}'`);
 
-    if (pack_downloaded === false) {
-      var action_path = path.resolve(path.join(__dirname, "..", "..", ".."));
-      core.info(`Pack path: '${action_path}'`);
-      codeql.pack = path.join(action_path, "ql", "src");
-      core.info(`Codeql pack path: '${codeql.path}'`);
-
-      core.info(`Pack defaulting back to local pack: '${codeql.pack}'`);
-    } else {
-      core.info(`Pack downloaded '${codeql.pack}'`);
+    if (pack_cloned === false) {
+      throw new Error("Could not clone the actions ql pack");
     }
+
+    core.info(`Installing CodeQL Actions packs from '${pack_path}'`);
+    var pack_installed = await cql.installPack(codeql, pack_path);
+
+    if (pack_installed === false) {
+      throw new Error("Could not install the actions ql packs");
+    }
+
+    core.info(`Pack path: '${pack_path}'`);
+    codeql.pack = path.join(pack_path, "ql", "src");
+    core.info(`Codeql Queries pack path: '${codeql.pack}'`);
 
     core.info("Creating CodeQL database...");
     var database_path = await cql.codeqlDatabaseCreate(codeql);

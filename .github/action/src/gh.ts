@@ -1,8 +1,5 @@
-import * as fs from "fs";
 import * as path from "path";
-
 import * as core from "@actions/core";
-import * as toolcache from "@actions/tool-cache";
 import * as toolrunner from "@actions/exec/lib/toolrunner";
 
 export interface GHConfig {
