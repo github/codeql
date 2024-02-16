@@ -1,7 +1,2 @@
 testFailures
-| A.java:16:14:16:47 | // $ EqCc="2" SrcCc="2" SinkCc="2" | Missing result:EqCc="2" |
-| A.java:16:14:16:47 | // $ EqCc="2" SrcCc="2" SinkCc="2" | Missing result:SrcCc="2" |
-| A.java:28:14:28:47 | // $ EqCc="4" SrcCc="4" SinkCc="4" | Missing result:EqCc="4" |
-| A.java:28:14:28:47 | // $ EqCc="4" SrcCc="4" SinkCc="4" | Missing result:SrcCc="4" |
-| A.java:42:14:42:27 | // $ SrcCc="6" | Missing result:SrcCc="6" |
 failures

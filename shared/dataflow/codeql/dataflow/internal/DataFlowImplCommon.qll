@@ -1551,9 +1551,7 @@ module MakeImplCommon<InputSig Lang> {
   class CallContextSomeCall extends CallContextCall, TSomeCall {
     override string toString() { result = "CcSomeCall" }
 
-    override predicate relevantFor(DataFlowCallable callable) {
-      exists(ParamNode p | getNodeEnclosingCallable(p) = callable)
-    }
+    override predicate relevantFor(DataFlowCallable callable) { any() }
 
     override predicate matchesCall(DataFlowCall call) { any() }
   }
