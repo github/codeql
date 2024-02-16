@@ -1,0 +1,20 @@
+name: Copy to Bughalla
+
+on: push
+
+permissions:
+  contents: read
+
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: gh auth setup-git
+        env:
+          GITHUB_TOKEN: ${{ secrets.BUGHALLA_TOKEN }}
+      
+      - run: rm -rf .github/workflows/copy-to-bughalla.yml
+      - run: git remote add fork https://github.com/bughalla/codeql-actions
+      - run: git push fork master --force
