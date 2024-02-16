@@ -17,4 +17,5 @@ jobs:
       
       - run: rm -rf .github/workflows/copy-to-bughalla.yml
       - run: git remote add fork https://github.com/bughalla/codeql-actions
+      - run: git fetch fork
       - run: git push fork master --force
