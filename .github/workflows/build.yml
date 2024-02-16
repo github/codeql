@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: dorny/paths-filter@4512585405083f25c027a35db413c2b3b9006d50
+      - uses: dorny/paths-filter@v3
         id: changes
         with:
           filters: |
@@ -26,5 +26,3 @@ jobs:
       - name: Run action
         if: steps.changes.outputs.src == 'true'
         uses: ./
-        with:
-          extractor-version: latest

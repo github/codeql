@@ -1,7 +1,6 @@
 import * as path from "path";
 import * as core from "@actions/core";
 import * as cql from "./codeql";
-import * as gh from "./gh";
 
 /**
  * The main function for the action.
@@ -9,13 +8,6 @@ import * as gh from "./gh";
  */
 export async function run(): Promise<void> {
   try {
-    // set up gh
-    var ghc = await gh.newGHConfig();
-
-    core.debug(`GH CLI found at '${ghc.path}'`);
-
-    await gh.runCommand(ghc, ["version"]);
-
     // set up codeql
     var codeql = await cql.newCodeQL();
 
@@ -36,25 +28,18 @@ export async function run(): Promise<void> {
       throw new Error("CodeQL Yaml extractor not installed");
     }
 
-    core.info(`Cloning CodeQL Actions pack into '${codeql.pack}'`);
-    let pack_path = "/tmp/codeql-actions";
-    var pack_cloned = await gh.clonePackRepo(ghc, pack_path);
-    core.info(`Cloned CodeQL Actions pack into '${pack_path}'`);
+    // download pack
+    core.info(`Downloading CodeQL IaC pack '${codeql.pack}'`);
+    var pack_downloaded = await cql.downloadPack(codeql);
 
-    if (pack_cloned === false) {
-      throw new Error("Could not clone the actions ql pack");
+    if (pack_downloaded === false) {
+      var action_path = path.resolve(path.join(__dirname, "..", "..", ".."));
+      codeql.pack = path.join(action_path, "ql", "src");
+
+      core.info(`Pack defaulting back to local pack: '${codeql.pack}'`);
+    } else {
+      core.info(`Pack downloaded '${codeql.pack}'`);
     }
-
-    core.info(`Installing CodeQL Actions packs from '${pack_path}'`);
-    var pack_installed = await cql.installPack(codeql, pack_path);
-
-    if (pack_installed === false) {
-      throw new Error("Could not install the actions ql packs");
-    }
-
-    core.info(`Pack path: '${pack_path}'`);
-    codeql.pack = path.join(pack_path, "ql", "src");
-    core.info(`Codeql Queries pack path: '${codeql.pack}'`);
 
     core.info("Creating CodeQL database...");
     var database_path = await cql.codeqlDatabaseCreate(codeql);
