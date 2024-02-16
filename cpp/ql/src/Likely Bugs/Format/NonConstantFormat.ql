@@ -95,7 +95,8 @@ predicate isNonConst(DataFlow::Node node) {
     |
       node = callOutput(call, output)
     )
-  ) not exists(Call c |
+  ) and
+  not exists(Call c |
     c.getTarget().hasDefinition() and
     if node instanceof DataFlow::DefinitionByReferenceNode
     then c.getAnArgument() = node.asDefiningArgument()
