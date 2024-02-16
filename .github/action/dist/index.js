@@ -28606,7 +28606,7 @@ async function newCodeQL() {
     return {
         language: "yaml",
         path: await findCodeQL(),
-        pack: "GitHubSecurityLab/actions-queries",
+        pack: "githubsecuritylab/actions-queries",
         suite: "codeql-suites/actions-code-scanning.qls",
         source_root: core.getInput("source-root"),
         output: core.getInput("sarif"),
