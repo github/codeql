@@ -13492,6 +13492,57 @@ ir.cpp:
 # 2223|     v2223_8(void)            = AliasedUse                      : ~m2234_13
 # 2223|     v2223_9(void)            = ExitFunction                    : 
 
+# 2238| void IfReturnDestructors(bool)
+# 2238|   Block 0
+# 2238|     v2238_1(void)           = EnterFunction                   : 
+# 2238|     m2238_2(unknown)        = AliasedDefinition               : 
+# 2238|     m2238_3(unknown)        = InitializeNonLocal              : 
+# 2238|     m2238_4(unknown)        = Chi                             : total:m2238_2, partial:m2238_3
+# 2238|     r2238_5(glval<bool>)    = VariableAddress[b]              : 
+# 2238|     m2238_6(bool)           = InitializeParameter[b]          : &:r2238_5
+# 2239|     r2239_1(glval<String>)  = VariableAddress[s]              : 
+# 2239|     m2239_2(String)         = Uninitialized[s]                : &:r2239_1
+# 2239|     r2239_3(glval<unknown>) = FunctionAddress[String]         : 
+# 2239|     v2239_4(void)           = Call[String]                    : func:r2239_3, this:r2239_1
+# 2239|     m2239_5(unknown)        = ^CallSideEffect                 : ~m2238_4
+# 2239|     m2239_6(unknown)        = Chi                             : total:m2238_4, partial:m2239_5
+# 2239|     m2239_7(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2239_1
+# 2239|     m2239_8(String)         = Chi                             : total:m2239_2, partial:m2239_7
+# 2240|     r2240_1(glval<bool>)    = VariableAddress[b]              : 
+# 2240|     r2240_2(bool)           = Load[b]                         : &:r2240_1, m2238_6
+# 2240|     v2240_3(void)           = ConditionalBranch               : r2240_2
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2241|   Block 1
+# 2241|     v2241_1(void)           = NoOp                            : 
+# 2244|     r2244_1(glval<String>)  = VariableAddress[s]              : 
+# 2244|     r2244_2(glval<unknown>) = FunctionAddress[~String]        : 
+# 2244|     v2244_3(void)           = Call[~String]                   : func:r2244_2, this:r2244_1
+# 2244|     m2244_4(unknown)        = ^CallSideEffect                 : ~m2239_6
+# 2244|     m2244_5(unknown)        = Chi                             : total:m2239_6, partial:m2244_4
+# 2244|     v2244_6(void)           = ^IndirectReadSideEffect[-1]     : &:r2244_1, m2239_8
+# 2244|     m2244_7(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2244_1
+# 2244|     m2244_8(String)         = Chi                             : total:m2239_8, partial:m2244_7
+#-----|   Goto -> Block 2
+
+# 2243|   Block 2
+# 2243|     m2243_1(String)          = Phi                             : from 0:m2239_8, from 1:m2244_8
+# 2243|     m2243_2(unknown)         = Phi                             : from 0:~m2239_6, from 1:~m2244_5
+# 2243|     r2243_3(glval<String>)   = VariableAddress[s]              : 
+# 2244|     v2244_9(void)            = NoOp                            : 
+# 2244|     r2244_10(glval<String>)  = VariableAddress[s]              : 
+# 2244|     r2244_11(glval<unknown>) = FunctionAddress[~String]        : 
+# 2244|     v2244_12(void)           = Call[~String]                   : func:r2244_11, this:r2244_10
+# 2244|     m2244_13(unknown)        = ^CallSideEffect                 : ~m2243_2
+# 2244|     m2244_14(unknown)        = Chi                             : total:m2243_2, partial:m2244_13
+# 2244|     v2244_15(void)           = ^IndirectReadSideEffect[-1]     : &:r2244_10, m2243_1
+# 2244|     m2244_16(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2244_10
+# 2244|     m2244_17(String)         = Chi                             : total:m2243_1, partial:m2244_16
+# 2238|     v2238_7(void)            = ReturnVoid                      : 
+# 2238|     v2238_8(void)            = AliasedUse                      : ~m2244_14
+# 2238|     v2238_9(void)            = ExitFunction                    : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

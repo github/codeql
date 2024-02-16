@@ -2235,4 +2235,12 @@ void WhileLoopDestructors(bool b) {
     }
 }
 
+void IfReturnDestructors(bool b) {
+    String s;
+    if(b) {
+        return;
+    }
+    s;
+}
+
 // semmle-extractor-options: -std=c++20 --clang

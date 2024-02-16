@@ -11042,6 +11042,46 @@
 | ir.cpp:2234:9:2234:9 | SideEffect | m2232_20 |
 | ir.cpp:2234:9:2234:9 | SideEffect | ~m2232_17 |
 | ir.cpp:2234:9:2234:9 | SideEffect | ~m2232_17 |
+| ir.cpp:2238:6:2238:24 | ChiPartial | partial:m2238_3 |
+| ir.cpp:2238:6:2238:24 | ChiTotal | total:m2238_2 |
+| ir.cpp:2238:6:2238:24 | SideEffect | ~m2244_14 |
+| ir.cpp:2238:31:2238:31 | Address | &:r2238_5 |
+| ir.cpp:2239:12:2239:12 | Address | &:r2239_1 |
+| ir.cpp:2239:12:2239:12 | Address | &:r2239_1 |
+| ir.cpp:2239:12:2239:12 | Arg(this) | this:r2239_1 |
+| ir.cpp:2239:12:2239:12 | CallTarget | func:r2239_3 |
+| ir.cpp:2239:12:2239:12 | ChiPartial | partial:m2239_5 |
+| ir.cpp:2239:12:2239:12 | ChiPartial | partial:m2239_7 |
+| ir.cpp:2239:12:2239:12 | ChiTotal | total:m2238_4 |
+| ir.cpp:2239:12:2239:12 | ChiTotal | total:m2239_2 |
+| ir.cpp:2239:12:2239:12 | SideEffect | ~m2238_4 |
+| ir.cpp:2240:8:2240:8 | Address | &:r2240_1 |
+| ir.cpp:2240:8:2240:8 | Condition | r2240_2 |
+| ir.cpp:2240:8:2240:8 | Load | m2238_6 |
+| ir.cpp:2243:5:2243:5 | Phi | from 0:m2239_8 |
+| ir.cpp:2243:5:2243:5 | Phi | from 0:~m2239_6 |
+| ir.cpp:2243:5:2243:5 | Phi | from 1:m2244_8 |
+| ir.cpp:2243:5:2243:5 | Phi | from 1:~m2244_5 |
+| ir.cpp:2244:1:2244:1 | Address | &:r2244_1 |
+| ir.cpp:2244:1:2244:1 | Address | &:r2244_1 |
+| ir.cpp:2244:1:2244:1 | Address | &:r2244_10 |
+| ir.cpp:2244:1:2244:1 | Address | &:r2244_10 |
+| ir.cpp:2244:1:2244:1 | Arg(this) | this:r2244_1 |
+| ir.cpp:2244:1:2244:1 | Arg(this) | this:r2244_10 |
+| ir.cpp:2244:1:2244:1 | CallTarget | func:r2244_2 |
+| ir.cpp:2244:1:2244:1 | CallTarget | func:r2244_11 |
+| ir.cpp:2244:1:2244:1 | ChiPartial | partial:m2244_4 |
+| ir.cpp:2244:1:2244:1 | ChiPartial | partial:m2244_7 |
+| ir.cpp:2244:1:2244:1 | ChiPartial | partial:m2244_13 |
+| ir.cpp:2244:1:2244:1 | ChiPartial | partial:m2244_16 |
+| ir.cpp:2244:1:2244:1 | ChiTotal | total:m2239_6 |
+| ir.cpp:2244:1:2244:1 | ChiTotal | total:m2239_8 |
+| ir.cpp:2244:1:2244:1 | ChiTotal | total:m2243_1 |
+| ir.cpp:2244:1:2244:1 | ChiTotal | total:m2243_2 |
+| ir.cpp:2244:1:2244:1 | SideEffect | m2239_8 |
+| ir.cpp:2244:1:2244:1 | SideEffect | m2243_1 |
+| ir.cpp:2244:1:2244:1 | SideEffect | ~m2239_6 |
+| ir.cpp:2244:1:2244:1 | SideEffect | ~m2243_2 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_7 |
