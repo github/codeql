@@ -28613,13 +28613,14 @@ async function newCodeQL() {
     };
 }
 exports.newCodeQL = newCodeQL;
-async function runCommand(config, args, cwd) {
+async function runCommand(config, args, cwd_arg) {
     var bin = path.join(config.path, "codeql");
     let output = "";
-    var _cwd = process.cwd();
-    if (cwd) {
-        _cwd = cwd;
+    var cwd = process.cwd();
+    if (cwd_arg) {
+        cwd = cwd_arg;
     }
+    core.info("Current working directory: " + cwd);
     var options = {
         cwd: cwd,
         listeners: {
@@ -28674,11 +28675,10 @@ async function downloadPack(codeql) {
     return false;
 }
 exports.downloadPack = downloadPack;
-async function installPack(codeql, path) {
+async function installPack(codeql, dir) {
     try {
-        await runCommand(codeql, ["pack", "install"], path);
-        await runCommand(codeql, ["pack", "install"], path);
-        core.info("Installed local packs ...");
+        await runCommand(codeql, ["pack", "install"], path.join(dir, "/ql/lib"));
+        await runCommand(codeql, ["pack", "install"], path.join(dir, "/ql/src"));
         return true;
     }
     catch (error) {
@@ -28771,7 +28771,7 @@ const core = __importStar(__nccwpck_require__(2186));
 const toolrunner = __importStar(__nccwpck_require__(8159));
 async function newGHConfig() {
     return {
-        path: "",
+        path: "/usr/bin/",
     };
 }
 exports.newGHConfig = newGHConfig;
@@ -28874,21 +28874,23 @@ async function run() {
             throw new Error("CodeQL Yaml extractor not installed");
         }
         // download pack
-        core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
-        //var pack_downloaded = await cql.downloadPack(codeql);
+        // core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
+        // var pack_downloaded = await cql.downloadPack(codeql);
+        core.info(`Cloning CodeQL Actions pack into '${codeql.pack}'`);
         let pack_path = "/tmp/codeql-actions";
-        var pack_downloaded = await gh.clonePackRepo(ghc, pack_path);
-        await cql.installPack(codeql, pack_path);
-        if (pack_downloaded === false) {
-            var action_path = path.resolve(path.join(__dirname, "..", "..", ".."));
-            core.info(`Pack path: '${action_path}'`);
-            codeql.pack = path.join(action_path, "ql", "src");
-            core.info(`Codeql pack path: '${codeql.path}'`);
-            core.info(`Pack defaulting back to local pack: '${codeql.pack}'`);
+        var pack_cloned = await gh.clonePackRepo(ghc, pack_path);
+        core.info(`Cloned CodeQL Actions pack into '${pack_path}'`);
+        if (pack_cloned === false) {
+            throw new Error("Could not clone the actions ql pack");
         }
-        else {
-            core.info(`Pack downloaded '${codeql.pack}'`);
+        core.info(`Installing CodeQL Actions packs from '${pack_path}'`);
+        var pack_installed = await cql.installPack(codeql, pack_path);
+        if (pack_installed === false) {
+            throw new Error("Could not install the actions ql packs");
         }
+        core.info(`Pack path: '${pack_path}'`);
+        codeql.pack = path.join(pack_path, "ql", "src");
+        core.info(`Codeql Queries pack path: '${codeql.pack}'`);
         core.info("Creating CodeQL database...");
         var database_path = await cql.codeqlDatabaseCreate(codeql);
         core.info("Running CodeQL analysis...");
