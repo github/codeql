@@ -267,6 +267,25 @@ private predicate sourceNodeHasPrimaryName(
     min(string n | sourceNodeHasNameCandidate(node, package, n, badness) | n order by n.length(), n)
 }
 
+/** Gets a data flow node referring to a function value. */
+private DataFlow::SourceNode functionValue(DataFlow::TypeTracker t) {
+  t.start() and
+  (
+    result instanceof DataFlow::FunctionNode
+    or
+    result instanceof DataFlow::ClassNode
+    or
+    result instanceof DataFlow::PartialInvokeNode
+  )
+  or
+  exists(DataFlow::TypeTracker t2 | result = functionValue(t2).track(t2, t))
+}
+
+/** Gets a data flow node referring to a function value. */
+private DataFlow::SourceNode functionValue() {
+  result = functionValue(DataFlow::TypeTracker::end())
+}
+
 /**
  * Holds if `node` is a function or a call that returns a function.
  */
@@ -277,6 +296,7 @@ private predicate isFunctionSource(DataFlow::SourceNode node) {
     or
     node instanceof DataFlow::ClassNode
     or
+    node = functionValue() and
     node instanceof DataFlow::InvokeNode and
     exists(node.getABoundFunctionValue(_)) and
     // `getASinkNode` steps through imports (but not other calls) so exclude calls that are imports (i.e. require calls)
