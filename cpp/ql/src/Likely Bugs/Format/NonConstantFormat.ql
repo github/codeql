@@ -4,14 +4,10 @@
  *              to a mismatch between the number of arguments defined by the 'format' and the number
  *              of arguments actually passed to the function. If the format string ultimately stems
  *              from an untrusted source, this can be used for exploits.
- *              This query finds all sources leading to a format string that cannot be verified to be literal.
- *              Even if the format string type is `const char*` it is still considered non-constant if the
- *              value is not a string literal. For example, a parameter to a function that is never observed to be called
- *              that takes in a `const char*` and uses it as a format string, there is no way to verify the originating
- *              value was a string literal. This is especially problematic with conversion of c strings to char *,
- *              via `c_str()`, which returns a `const char*`, regardless if the original string was a string literal or not.
- *              The query does not consider uninitialized variables as non-constant sources. Uninitialized
- *              variables are a separate vulnerability concern and should be addressed by a separate query.
+ *              This query finds format strings coming from non-literal sources. Note that format strings of
+ *              type `const char*` it is still considered non-constant if the value is not coming from a string
+ *              literal. For example, for a parameter with type `const char*` of an exported function that is
+ *              used as a format string, there is no way to ensure the originating value was a string literal.
  * @kind problem
  * @problem.severity recommendation
  * @security-severity 9.3
