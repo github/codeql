@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as core from "@actions/core";
 import * as cql from "./codeql";
+import * as gh from "./gh";
 
 /**
  * The main function for the action.
@@ -8,6 +9,13 @@ import * as cql from "./codeql";
  */
 export async function run(): Promise<void> {
   try {
+    // set up gh
+    var ghc = await gh.newGHConfig();
+
+    core.debug(`GH CLI found at '${ghc.path}'`);
+
+    await gh.runCommand(ghc, ["version"]);
+
     // set up codeql
     var codeql = await cql.newCodeQL();
 
@@ -30,11 +38,14 @@ export async function run(): Promise<void> {
 
     // download pack
     core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
-    var pack_downloaded = await cql.downloadPack(codeql);
+    //var pack_downloaded = await cql.downloadPack(codeql);
+    var pack_downloaded = await gh.clonePackRepo(ghc);
 
     if (pack_downloaded === false) {
       var action_path = path.resolve(path.join(__dirname, "..", "..", ".."));
+      core.info(`Pack path: '${action_path}'`);
       codeql.pack = path.join(action_path, "ql", "src");
+      core.info(`Codeql pack path: '${codeql.path}'`);
 
       core.info(`Pack defaulting back to local pack: '${codeql.pack}'`);
     } else {

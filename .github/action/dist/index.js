@@ -28718,6 +28718,79 @@ exports.codeqlDatabaseAnalyze = codeqlDatabaseAnalyze;
 
 /***/ }),
 
+/***/ 1772:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    var desc = Object.getOwnPropertyDescriptor(m, k);
+    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
+      desc = { enumerable: true, get: function() { return m[k]; } };
+    }
+    Object.defineProperty(o, k2, desc);
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.clonePackRepo = exports.runCommandJson = exports.runCommand = exports.newGHConfig = void 0;
+const path = __importStar(__nccwpck_require__(1017));
+const core = __importStar(__nccwpck_require__(2186));
+const toolrunner = __importStar(__nccwpck_require__(8159));
+async function newGHConfig() {
+    return {
+        path: "",
+    };
+}
+exports.newGHConfig = newGHConfig;
+async function runCommand(config, args) {
+    var bin = path.join(config.path, "gh");
+    let output = "";
+    var options = {
+        listeners: {
+            stdout: (data) => {
+                output += data.toString();
+            },
+        },
+    };
+    await new toolrunner.ToolRunner(bin, args, options).exec();
+    core.debug(`Finished running command :: ${bin} ${args.join(" ")}`);
+    return output.trim();
+}
+exports.runCommand = runCommand;
+async function runCommandJson(config, args) {
+    return JSON.parse(await runCommand(config, args));
+}
+exports.runCommandJson = runCommandJson;
+async function clonePackRepo(gh) {
+    try {
+        await runCommand(gh, ["repo", "clone", "GitHubSecurityLab/codeql-actions"]);
+        return true;
+    }
+    catch (error) {
+        core.warning("Failed to clone pack from GitHub...");
+    }
+    return false;
+}
+exports.clonePackRepo = clonePackRepo;
+
+
+/***/ }),
+
 /***/ 6144:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -28751,12 +28824,17 @@ exports.run = void 0;
 const path = __importStar(__nccwpck_require__(1017));
 const core = __importStar(__nccwpck_require__(2186));
 const cql = __importStar(__nccwpck_require__(950));
+const gh = __importStar(__nccwpck_require__(1772));
 /**
  * The main function for the action.
  * @returns {Promise<void>} Resolves when the action is complete.
  */
 async function run() {
     try {
+        // set up gh
+        var ghc = await gh.newGHConfig();
+        core.debug(`GH CLI found at '${ghc.path}'`);
+        await gh.runCommand(ghc, ["version"]);
         // set up codeql
         var codeql = await cql.newCodeQL();
         core.debug(`CodeQL CLI found at '${codeql.path}'`);
@@ -28774,10 +28852,13 @@ async function run() {
         }
         // download pack
         core.info(`Downloading CodeQL Actions pack '${codeql.pack}'`);
-        var pack_downloaded = await cql.downloadPack(codeql);
+        //var pack_downloaded = await cql.downloadPack(codeql);
+        var pack_downloaded = await gh.clonePackRepo(ghc);
         if (pack_downloaded === false) {
             var action_path = path.resolve(path.join(__dirname, "..", "..", ".."));
+            core.info(`Pack path: '${action_path}'`);
             codeql.pack = path.join(action_path, "ql", "src");
+            core.info(`Codeql pack path: '${codeql.path}'`);
             core.info(`Pack defaulting back to local pack: '${codeql.pack}'`);
         }
         else {
