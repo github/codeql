@@ -54,7 +54,7 @@ methodWithDuplicate
 | AbstractList<E> | set | int |
 | AbstractList<E> | subList | int |
 | AbstractList<E> | subListRangeCheck | int |
-| AbstractMap | containsEntry$kotlin_stdlib | Entry<?,?> |
+| AbstractMap | containsEntry$main | Entry<?,?> |
 | AbstractMap | containsKey | Object |
 | AbstractMap | containsValue | Object |
 | AbstractMap | equals | Object |
@@ -79,7 +79,7 @@ methodWithDuplicate
 | AbstractMap<K,V> | put | V |
 | AbstractMap<K,V> | putAll | Map<? extends K,? extends V> |
 | AbstractMap<K,V> | remove | Object |
-| AbstractMap<String,String> | containsEntry$kotlin_stdlib | Entry<?,?> |
+| AbstractMap<String,String> | containsEntry$main | Entry<?,?> |
 | AbstractMap<String,String> | containsKey | Object |
 | AbstractMap<String,String> | containsValue | Object |
 | AbstractMap<String,String> | equals | Object |
@@ -121,7 +121,6 @@ methodWithDuplicate
 | Collection<Entry<K,V>> | addAll | Collection<? extends Entry<K,V>> |
 | Collection<Entry<K,V>> | contains | Object |
 | Collection<Entry<K,V>> | containsAll | Collection<?> |
-| Collection<Entry<K,V>> | equals | Object |
 | Collection<Entry<K,V>> | remove | Object |
 | Collection<Entry<K,V>> | removeAll | Collection<?> |
 | Collection<Entry<K,V>> | removeIf | Predicate<? super Entry<K,V>> |
@@ -132,7 +131,6 @@ methodWithDuplicate
 | Collection<K> | addAll | Collection<? extends K> |
 | Collection<K> | contains | Object |
 | Collection<K> | containsAll | Collection<?> |
-| Collection<K> | equals | Object |
 | Collection<K> | remove | Object |
 | Collection<K> | removeAll | Collection<?> |
 | Collection<K> | removeIf | Predicate<? super K> |
@@ -154,7 +152,6 @@ methodWithDuplicate
 | Collection<V> | addAll | Collection<? extends V> |
 | Collection<V> | contains | Object |
 | Collection<V> | containsAll | Collection<?> |
-| Collection<V> | equals | Object |
 | Collection<V> | remove | Object |
 | Collection<V> | removeAll | Collection<?> |
 | Collection<V> | removeIf | Predicate<? super V> |
@@ -194,7 +191,6 @@ methodWithDuplicate
 | List<E> | contains | Object |
 | List<E> | containsAll | Collection<?> |
 | List<E> | copyOf | Collection<? extends E> |
-| List<E> | equals | Object |
 | List<E> | get | int |
 | List<E> | indexOf | Object |
 | List<E> | lastIndexOf | Object |
@@ -279,7 +275,6 @@ methodWithDuplicate
 | Map<Identity,Entry<?>> | copyOf | Map<? extends K,? extends V> |
 | Map<Identity,Entry<?>> | entry | K |
 | Map<Identity,Entry<?>> | entry | V |
-| Map<Identity,Entry<?>> | equals | Object |
 | Map<Identity,Entry<?>> | forEach | BiConsumer<? super Identity,? super Entry<?>> |
 | Map<Identity,Entry<?>> | get | Object |
 | Map<Identity,Entry<?>> | getOrDefault | Entry<?> |
@@ -310,7 +305,6 @@ methodWithDuplicate
 | Map<K,V> | copyOf | Map<? extends K,? extends V> |
 | Map<K,V> | entry | K |
 | Map<K,V> | entry | V |
-| Map<K,V> | equals | Object |
 | Map<K,V> | forEach | BiConsumer<? super K,? super V> |
 | Map<K,V> | get | Object |
 | Map<K,V> | getOrDefault | Object |
@@ -341,7 +335,6 @@ methodWithDuplicate
 | Map<Object,Object> | copyOf | Map<? extends K,? extends V> |
 | Map<Object,Object> | entry | K |
 | Map<Object,Object> | entry | V |
-| Map<Object,Object> | equals | Object |
 | Map<Object,Object> | forEach | BiConsumer<? super Object,? super Object> |
 | Map<Object,Object> | get | Object |
 | Map<Object,Object> | getOrDefault | Object |

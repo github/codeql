@@ -870,6 +870,39 @@ private module CapturedVariableImpl {
       )
     )
   }
+
+  /**
+   * Holds if captured local scope variable `v` is written inside the callable
+   * to which `bb` belongs.
+   *
+   * In this case a pseudo-read is inserted at the exit node at index `i` in `bb`,
+   * in order to make the write live.
+   *
+   * Example:
+   *
+   * ```csharp
+   * class C {
+   *   void M1() {
+   *     int i = 0;
+   *     void M2() { i = 2; };
+   *     M2();
+   *     System.Console.WriteLine(i);
+   *   }
+   * }
+   * ```
+   *
+   * The write to `i` inside `M2` on line 4 is live because of the implicit call
+   * definition on line 5.
+   */
+  predicate capturedExitRead(
+    ControlFlow::BasicBlock bb, int i, CapturedWrittenLocalScopeSourceVariable v
+  ) {
+    exists(ControlFlow::Nodes::AnnotatedExitNode exit |
+      exit.isNormal() and
+      variableDefinition(bb.getAPredecessor*(), _, v, _) and
+      exit = bb.getNode(i)
+    )
+  }
 }
 
 /**
@@ -1083,7 +1116,7 @@ private predicate variableReadPseudo(ControlFlow::BasicBlock bb, int i, Ssa::Sou
   or
   refReadBeforeWrite(bb, i, v)
   or
-  capturedReadOut(bb, i, v, _, _, _)
+  CapturedVariableImpl::capturedExitRead(bb, i, v)
   or
   capturedReadIn(bb, i, v, _, _, _)
 }

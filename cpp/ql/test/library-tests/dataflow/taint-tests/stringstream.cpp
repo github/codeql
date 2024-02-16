@@ -118,9 +118,9 @@ void test_stringstream_swap()
 	ss4.swap(ss3);
 
 	sink(ss1); // $ ast,ir
-	sink(ss2); // $ SPURIOUS: ast
+	sink(ss2); // $ SPURIOUS: ast,ir
 	sink(ss3); // $ ast,ir
-	sink(ss4); // $ SPURIOUS: ast
+	sink(ss4); // $ SPURIOUS: ast,ir
 }
 
 void test_stringstream_in()

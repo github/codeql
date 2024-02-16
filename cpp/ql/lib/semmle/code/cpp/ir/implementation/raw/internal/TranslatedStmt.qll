@@ -774,6 +774,72 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
   }
 }
 
+class TranslatedConstExprIfStmt extends TranslatedStmt, ConditionContext {
+  override ConstexprIfStmt stmt;
+
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    if this.hasInitialization()
+    then result = this.getInitialization().getFirstInstruction(kind)
+    else result = this.getFirstConditionInstruction(kind)
+  }
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and result = this.getInitialization()
+    or
+    id = 1 and result = this.getCondition()
+    or
+    id = 2 and result = this.getThen()
+    or
+    id = 3 and result = this.getElse()
+  }
+
+  private predicate hasInitialization() { exists(stmt.getInitialization()) }
+
+  private TranslatedStmt getInitialization() {
+    result = getTranslatedStmt(stmt.getInitialization())
+  }
+
+  private TranslatedCondition getCondition() {
+    result = getTranslatedCondition(stmt.getCondition().getFullyConverted())
+  }
+
+  private Instruction getFirstConditionInstruction(EdgeKind kind) {
+    result = this.getCondition().getFirstInstruction(kind)
+  }
+
+  private TranslatedStmt getThen() { result = getTranslatedStmt(stmt.getThen()) }
+
+  private TranslatedStmt getElse() { result = getTranslatedStmt(stmt.getElse()) }
+
+  private predicate hasElse() { exists(stmt.getElse()) }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
+    child = this.getCondition() and
+    result = this.getThen().getFirstInstruction(kind)
+  }
+
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
+    child = this.getCondition() and
+    if this.hasElse()
+    then result = this.getElse().getFirstInstruction(kind)
+    else result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+    child = this.getInitialization() and
+    result = this.getFirstConditionInstruction(kind)
+    or
+    (child = this.getThen() or child = this.getElse()) and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    none()
+  }
+}
+
 abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
   override Loop stmt;
 

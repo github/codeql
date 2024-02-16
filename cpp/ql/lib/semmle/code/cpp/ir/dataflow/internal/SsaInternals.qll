@@ -2,11 +2,8 @@ private import codeql.ssa.Ssa as SsaImplCommon
 private import semmle.code.cpp.ir.IR
 private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
-private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc
 private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
-private import semmle.code.cpp.models.interfaces.FlowOutBarrier as FOB
-private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as FIO
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import DataFlowPrivate
 private import ssa0.SsaInternals as SsaInternals0
@@ -145,7 +142,7 @@ private newtype TDefOrUseImpl =
     exists(SsaInternals0::Def def |
       def.getSourceVariable().getBaseVariable().(BaseIRVariable).getIRVariable().getAst() = p and
       not def.getValue().asInstruction() instanceof InitializeParameterInstruction and
-      unspecifiedTypeIsModifiableAt(p.getUnspecifiedType(), indirectionIndex)
+      underlyingTypeIsModifiableAt(p.getUnderlyingType(), indirectionIndex)
     )
   }
 
@@ -175,11 +172,13 @@ private predicate isGlobalDefImpl(
   )
 }
 
-private predicate unspecifiedTypeIsModifiableAt(Type unspecified, int indirectionIndex) {
-  indirectionIndex = [1 .. getIndirectionForUnspecifiedType(unspecified).getNumberOfIndirections()] and
+private predicate underlyingTypeIsModifiableAt(Type underlying, int indirectionIndex) {
+  indirectionIndex =
+    [1 .. getIndirectionForUnspecifiedType(underlying.getUnspecifiedType())
+          .getNumberOfIndirections()] and
   exists(CppType cppType |
-    cppType.hasUnspecifiedType(unspecified, _) and
-    isModifiableAt(cppType, indirectionIndex + 1)
+    cppType.hasUnderlyingType(underlying, false) and
+    isModifiableAt(cppType, indirectionIndex)
   )
 }
 
@@ -797,30 +796,10 @@ private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
   )
 }
 
-/**
- * Holds if there should not be use-use flow out of `n` (or a conversion that
- * flows to `n`).
- */
-private predicate modeledFlowBarrier(Node n) {
-  exists(FIO::FunctionInput input, CallInstruction call |
-    call.getStaticCallTarget().(FOB::FlowOutBarrierFunction).isFlowOutBarrier(input) and
-    n = callInput(call, input)
-  )
-  or
-  exists(Operand operand, Instruction instr, Node n0, int indirectionIndex |
-    modeledFlowBarrier(n0) and
-    nodeHasInstruction(n0, instr, indirectionIndex) and
-    conversionFlow(operand, instr, false, _) and
-    nodeHasOperand(n, operand, indirectionIndex)
-  )
-}
-
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   exists(Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
-    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and
-    not modeledFlowBarrier(nFrom) and
-    nodeFrom != nodeTo
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and nodeFrom != nodeTo
   |
     if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(defOrUse)] else nodeFrom = nFrom
   )
