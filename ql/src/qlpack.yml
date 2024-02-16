@@ -9,6 +9,6 @@ suites: codeql-suites
 extractor: yaml
 defaultSuiteFile: codeql-suites/actions-code-scanning.qls
 dependencies:
-  codeql/actions-all: ${workspace}
+  githubsecuritylab/actions-all: ${workspace}
 warnOnImplicitThis: true
 tests: test

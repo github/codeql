@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: codeql/actions-all
+      pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
       - ["tj-actions/verify-changed-files", "*", "output.changed-files", "pull_request", "PR changed files"]
