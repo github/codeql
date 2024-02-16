@@ -459,12 +459,15 @@ class DataFlowCall extends TDataFlowCall {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
-  // #44: Stub Implementation
   /** Gets an argument to this call as a Node. */
-  ArgumentNode getAnArgumentNode(){ none() } // TODO: JB1 return an argument as a DataFlow ArgumentNode
+  ArgumentNode getAnArgumentNode(){
+    result = exprNode(this.asCall().getAnArgument())
+  }
 
   /** Gets the target of the call, as a DataFlowCallable. */
-  DataFlowCallable getARuntimeTarget(){ none() }
+  DataFlowCallable getARuntimeTarget(){
+    result.asCallable() = this.asCall().getCallee()
+  }
 }
 
 /** A source call, that is, a `Call`. */
