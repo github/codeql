@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Semmle.Util;
 using Semmle.Util.Logging;
@@ -14,7 +15,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    public sealed class DependencyManager : IDisposable
+    public sealed partial class DependencyManager : IDisposable
     {
         private readonly AssemblyCache assemblyCache;
         private readonly ILogger logger;
@@ -783,13 +784,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             CompilationInfos.Add(("Successfully restored project files", successCount.ToString()));
         }
 
+        [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex LegacyNugetPackage();
+
         private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<string> dllPaths)
         {
             var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName)
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
             var notYetDownloadedPackages = fileContent.AllPackages
                 .Except(alreadyDownloadedPackages)
-                .ToList();
+                .ToHashSet();
+
+            var oldPackageDirectories = Directory.GetDirectories(legacyPackageDirectory.DirInfo.FullName)
+                .Select(d => Path.GetFileName(d).ToLowerInvariant());
+            foreach (var oldPackageDirectory in oldPackageDirectories)
+            {
+                // nuget install restores packages to 'packagename.version' folders (dotnet restore to 'packagename/version' folders)
+                // typical folder names look like:
+                //   newtonsoft.json.13.0.3
+                // there are more complex ones too, such as:
+                //   runtime.tizen.4.0.0-armel.Microsoft.NETCore.DotNetHostResolver.2.0.0-preview2-25407-01
+
+                var match = LegacyNugetPackage().Match(oldPackageDirectory);
+                if (!match.Success)
+                {
+                    logger.LogWarning($"Package directory '{oldPackageDirectory}' doesn't match the expected pattern.");
+                    continue;
+                }
+
+                var packageName = match.Groups[1].Value.ToLowerInvariant();
+                notYetDownloadedPackages.Remove(packageName);
+            }
+
             if (notYetDownloadedPackages.Count == 0)
             {
                 return;
