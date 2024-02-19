@@ -28,5 +28,4 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
-| ir.cpp:2153:68:2153:69 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
 missingCppType
