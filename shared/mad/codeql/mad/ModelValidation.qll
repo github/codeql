@@ -39,7 +39,9 @@ module KindValidation<KindValidationConfigSig Config> {
           "mongodb.sink", "nosql-injection", "unsafe-deserialization",
           // Swift-only currently, but may be shared in the future
           "database-store", "format-string", "hash-iteration-count", "predicate-injection",
-          "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe"
+          "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe",
+          // Go-only currently, but may be shared in the future
+          "jwt"
         ]
       or
       this.matches([
