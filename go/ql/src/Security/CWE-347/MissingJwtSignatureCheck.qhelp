@@ -9,11 +9,11 @@
                library, or use a library that verifies it by default.</p>
      </recommendation>
      <example>
-          <p>The following example shows a case where a JWT is parsed without verifying the
+          <p>The following (bad) example shows a case where a JWT is parsed without verifying the
                signature.</p>
           <sample src="MissingJwtSignatureCheckBad.go" />
-          <p>In the example below, the appropriate function for parsing a JWT
-               and verifying its signature is used.</p>
+          <p>The following (good) example uses the appropriate function for parsing a JWT
+               and verifying its signature.</p>
           <sample src="MissingJwtSignatureCheckGood.go" />
      </example>
      <references>
