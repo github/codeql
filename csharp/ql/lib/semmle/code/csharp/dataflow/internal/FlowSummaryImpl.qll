@@ -358,63 +358,6 @@ private module BidirectionalImports {
   private import semmle.code.csharp.frameworks.EntityFramework
 }
 
-private predicate recordConstructorFlow(Constructor c, int i, Property p) {
-  c = any(RecordType r).getAMember() and
-  exists(string name |
-    c.getParameter(i).getName() = name and
-    c.getDeclaringType().getAMember(name) = p
-  )
-}
-
-private class RecordConstructorFlow extends Impl::Private::SummarizedCallableImpl {
-  RecordConstructorFlow() { recordConstructorFlow(this, _, _) }
-
-  predicate propagatesFlowImpl(
-    Impl::Private::SummaryComponentStack input, Impl::Private::SummaryComponentStack output,
-    boolean preservesValue
-  ) {
-    exists(int i, Property p |
-      recordConstructorFlow(this, i, p) and
-      input = Private::SummaryComponentStack::argument(i) and
-      output =
-        Private::SummaryComponentStack::propertyOf(p, Private::SummaryComponentStack::return()) and
-      preservesValue = true
-    )
-  }
-
-  override predicate propagatesFlow(
-    Impl::Private::SummaryComponentStack input, Impl::Private::SummaryComponentStack output,
-    boolean preservesValue
-  ) {
-    this.propagatesFlowImpl(input, output, preservesValue)
-  }
-
-  override predicate hasProvenance(Public::Provenance provenance) { provenance = "manual" }
-}
-
-// see `SummarizedCallableImpl` qldoc
-private class RecordConstructorFlowAdapter extends Impl::Public::SummarizedCallable instanceof RecordConstructorFlow
-{
-  override predicate propagatesFlow(string input, string output, boolean preservesValue) { none() }
-
-  override predicate hasProvenance(Public::Provenance provenance) {
-    RecordConstructorFlow.super.hasProvenance(provenance)
-  }
-}
-
-private class RecordConstructorFlowRequiredSummaryComponentStack extends Impl::Private::RequiredSummaryComponentStack
-{
-  override predicate required(
-    Impl::Private::SummaryComponent head, Impl::Private::SummaryComponentStack tail
-  ) {
-    exists(Property p |
-      recordConstructorFlow(_, _, p) and
-      head = Private::SummaryComponent::property(p) and
-      tail = Private::SummaryComponentStack::return()
-    )
-  }
-}
-
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 
 private predicate mayInvokeCallback(Callable c, int n) {
