@@ -62,8 +62,22 @@ predicate executedOften(Assignment e, LoopStmt loop) {
   not exists(BreakStmt b | b.getEnclosingStmt() = e.getEnclosingStmt().getEnclosingStmt())
 }
 
+predicate executedOftenCFG(Assignment a) {
+  a.getDest().getType() instanceof TypeString and
+  exists(ControlFlowNode n | a.getControlFlowNode() = n | n.getASuccessor+() = n)
+}
+
+ControlFlowNode test(ControlFlowNode n) {
+  exists(Assignment a | a.getControlFlowNode() = n | a.getDest().getType() instanceof TypeString) and
+  result = n.getASuccessor+()
+}
+
 from Assignment a, Variable v
 where
   useAndDef(a, v) and
-  exists(LoopStmt loop | executedOften(a, loop) | not declaredInLoop(v, loop))
+  (
+    exists(LoopStmt loop | executedOften(a, loop) | not declaredInLoop(v, loop))
+    or
+    executedOftenCFG(a)
+  )
 select a, "The string " + v.getName() + " is built-up in a loop: use string buffer."

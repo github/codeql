@@ -1,4 +1,6 @@
 public class ConcatenationInLoops {
+	private String cs = "";
+
 	public static void main(String[] args) {
 		// Random r = 42;
 		long start = System.currentTimeMillis();
@@ -30,5 +32,12 @@ public class ConcatenationInLoops {
 					s += 42; // Will be executed many times.
 					break;
 				}
+	}
+
+	public void test(int bound) {
+		if (bound > 0) {
+			cs += "a";
+			test(bound - 1);
+		} 
 	}
 }
