@@ -58,7 +58,7 @@ The CodeQL library for C# analysis exposes the following extensible predicates:
 - ``sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance)``. This is used to model sources of potentially tainted data.
 - ``sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance)``. This is used to model sinks where tainted data may be used in a way that makes the code vulnerable.
 - ``summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance)``. This is used to model flow through elements.
-- ``neutralModel(namespace, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis. Manual neutral models (those with a provenance such as ``manual`` or ``ai-manual``) can be used to override generated summary models (those a provenance such as ``df-generated``), such that the summary model will be ignored. Other than that, neutral models have no effect.
+- ``neutralModel(namespace, type, name, signature, kind, provenance)``. This is similar to a summary model but used to model the flow of values that have only a minor impact on the dataflow analysis. Manual neutral models (those with a provenance such as ``manual`` or ``ai-manual``) can be used to override generated summary models (those with a provenance such as ``df-generated``), so that the summary model will be ignored. Other than that, neutral models have no effect.
 
 The extensible predicates are populated using the models defined in data extension files.
 
@@ -192,7 +192,7 @@ The remaining values are used to define the ``access path``, the ``kind``, and t
 - The ninth value ``taint`` is the kind of the flow. ``taint`` means that taint is propagated through the call.
 - The tenth value ``manual`` is the provenance of the summary, which is used to identify the origin of the summary.
 
-It would also be possible to merge the two rows into one by using a comma separated list in the seventh value. This would be useful if the method has many arguments and the flow is the same for all of them.
+It would also be possible to merge the two rows into one by using a comma-separated list in the seventh value. This would be useful if the method has many arguments and the flow is the same for all of them.
 
 .. code-block:: yaml
 
