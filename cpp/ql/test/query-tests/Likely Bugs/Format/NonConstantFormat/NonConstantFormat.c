@@ -23,7 +23,7 @@ extern char *dcngettext (const char *__domainname, const char *__msgid1,
 extern char *any_random_function(const char *);
 
 #define NULL ((void*)0)
-#define _(X) any_random_function((X))
+#define _(X) gettext(X)
 
 int main(int argc, char **argv) {
 	if(argc > 1)
@@ -40,10 +40,9 @@ int main(int argc, char **argv) {
 	printf(gettext("%d arguments\n"), argc-1); // GOOD
 	printf(any_random_function("%d arguments\n"), argc-1); // BAD
 
-	// Even though `_` is mapped to `some_random_function` above,
-	// the following call should not  be flagged.
-	printf(_(any_random_function("%d arguments\n")),
-			argc-1); // GOOD
+
+
+	printf(_(any_random_function("%d arguments\n")), argc-1); // BAD
 
 	return 0;
 }
