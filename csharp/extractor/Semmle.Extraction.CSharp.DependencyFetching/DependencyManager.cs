@@ -167,7 +167,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 RemoveNugetPackageReference(FrameworkPackageNames.AspNetCoreFramework, dllPaths);
                 RemoveNugetPackageReference(FrameworkPackageNames.WindowsDesktopFramework, dllPaths);
 
-                var frameworkPaths = frameworkReferences.Split(FileUtils.NewLineCharacters, StringSplitOptions.RemoveEmptyEntries);
+                var frameworkPaths = frameworkReferences.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
 
                 foreach (var path in frameworkPaths)
                 {
