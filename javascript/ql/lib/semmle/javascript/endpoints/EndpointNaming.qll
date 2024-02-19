@@ -38,18 +38,91 @@ private string join(string x, string y) {
 
 private predicate isPackageExport(API::Node node) { node = API::moduleExport(_) }
 
+/**
+ * A version of `getInstance()` only from sink nodes to the special `ClassInstance` node.
+ *
+ * This ensures we see instance methods, but not side effects on `this` or on instantiations of the class.
+ */
+private predicate instanceEdge(API::Node pred, API::Node succ) {
+  exists(DataFlow::ClassNode cls |
+    pred.getAValueReachingSink() = cls and
+    succ = API::Internal::getClassInstance(cls)
+  )
+}
+
+/** Holds if `pred -> succ` is an edge we can use for naming. */
 private predicate relevantEdge(API::Node pred, API::Node succ) {
   succ = pred.getMember(_) and
   not isPrivateLike(succ)
   or
-  succ = pred.getInstance()
+  instanceEdge(pred, succ)
 }
 
-/** Gets the shortest distance from a packaeg export to `nd` in the API graph. */
-private int distanceFromPackageExport(API::Node nd) =
-  shortestDistances(isPackageExport/1, relevantEdge/2)(_, nd, result)
+private signature predicate isRootNodeSig(API::Node node);
 
-private predicate isExported(API::Node node) { exists(distanceFromPackageExport(node)) }
+private signature predicate edgeSig(API::Node pred, API::Node succ);
+
+/** Builds `shortestDistances` using the API graph root node as the only origin node, to ensure unique results. */
+private module ApiGraphDistance<isRootNodeSig/1 isRootNode, edgeSig/2 edges> {
+  private predicate edgesWithEntry(API::Node pred, API::Node succ) {
+    edges(pred, succ)
+    or
+    pred = API::root() and
+    isRootNode(succ)
+  }
+
+  int distanceTo(API::Node node) = shortestDistances(API::root/0, edgesWithEntry/2)(_, node, result)
+}
+
+/** Gets the shortest distance from a package export to `nd` in the API graph. */
+private predicate distanceFromPackageExport =
+  ApiGraphDistance<isPackageExport/1, relevantEdge/2>::distanceTo/1;
+
+/**
+ * Holds if `(package, name)` is the fallback name for `cls`, to be used as a last resort
+ * in order to name its instance methods.
+ *
+ * This happens when the class is not accessible via an access path, but instances of the
+ * class can still escape via more complex access patterns, for example:
+ *
+ *   class InternalClass {}
+ *   function foo() {
+ *     return new InternalClass();
+ *   }
+ */
+private predicate classHasFallbackName(
+  DataFlow::ClassNode cls, string package, string name, int badness
+) {
+  hasEscapingInstance(cls) and
+  not exists(distanceFromPackageExport(any(API::Node node | node.getAValueReachingSink() = cls))) and
+  exists(string baseName |
+    InternalModuleNaming::fallbackModuleName(cls.getTopLevel(), package, baseName, badness - 100) and
+    name = join(baseName, cls.getName())
+  )
+}
+
+/** Holds if `node` describes instances of a class that has a fallback name. */
+private predicate isClassInstanceWithFallbackName(API::Node node) {
+  exists(DataFlow::ClassNode cls |
+    classHasFallbackName(cls, _, _, _) and
+    node = API::Internal::getClassInstance(cls)
+  )
+}
+
+/** Gets the shortest distance from a node with a fallback name, to `nd` in the API graph. */
+private predicate distanceFromFallbackName =
+  ApiGraphDistance<isClassInstanceWithFallbackName/1, relevantEdge/2>::distanceTo/1;
+
+/** Gets the shortest distance from a name-root (package export or fallback name) to `nd` */
+private int distanceFromRoot(API::Node nd) {
+  result = distanceFromPackageExport(nd)
+  or
+  not exists(distanceFromPackageExport(nd)) and
+  result = 100 + distanceFromFallbackName(nd)
+}
+
+/** Holds if `nd` can be given a name. */
+private predicate isRelevant(API::Node node) { exists(distanceFromRoot(node)) }
 
 /**
  * Holds if `node` is a default export that can be reinterpreted as a namespace export,
@@ -76,26 +149,27 @@ private predicate isPrivateAssignment(DataFlow::Node node) {
 
 private predicate isPrivateLike(API::Node node) { isPrivateAssignment(node.asSink()) }
 
+bindingset[name]
+private int getNameBadness(string name) {
+  if name = ["constructor", "default"] then result = 10 else result = 0
+}
+
 private API::Node getASuccessor(API::Node node, string name, int badness) {
-  isExported(node) and
-  isExported(result) and
+  isRelevant(node) and
+  isRelevant(result) and
   (
     exists(string member |
       result = node.getMember(member) and
-      if member = "default"
-      then
-        if defaultExportCanBeInterpretedAsNamespaceExport(node)
-        then (
-          badness = 5 and name = ""
-        ) else (
-          badness = 10 and name = "default"
-        )
-      else (
-        name = member and badness = 0
+      if member = "default" and defaultExportCanBeInterpretedAsNamespaceExport(node)
+      then (
+        badness = 5 and name = ""
+      ) else (
+        name = member and
+        badness = getNameBadness(name)
       )
     )
     or
-    result = node.getInstance() and
+    instanceEdge(node, result) and
     name = "prototype" and
     badness = 0
   )
@@ -118,15 +192,17 @@ private API::Node getPreferredPredecessor(API::Node node, string name, int badne
     min(API::Node pred, int b |
       pred = getAPredecessor(node, _, b) and
       // ensure the preferred predecessor is strictly closer to a root export, even if it means accepting more badness
-      distanceFromPackageExport(pred) < distanceFromPackageExport(node)
+      distanceFromRoot(pred) < distanceFromRoot(node)
     |
       b
     ) and
   result =
     min(API::Node pred, string name1 |
-      pred = getAPredecessor(node, name1, badness)
+      pred = getAPredecessor(node, name1, badness) and
+      // ensure the preferred predecessor is strictly closer to a root export, even if it means accepting more badness
+      distanceFromRoot(pred) < distanceFromRoot(node)
     |
-      pred order by distanceFromPackageExport(pred), name1
+      pred order by distanceFromRoot(pred), name1
     ) and
   name = min(string n | result = getAPredecessor(node, n, badness) | n)
 }
@@ -140,6 +216,12 @@ private predicate sinkHasNameCandidate(API::Node sink, string package, string na
   sink = API::moduleExport(package) and
   name = "" and
   badness = 0
+  or
+  exists(DataFlow::ClassNode cls, string className |
+    sink = API::Internal::getClassInstance(cls) and
+    classHasFallbackName(cls, package, className, badness) and
+    name = join(className, "prototype")
+  )
   or
   exists(API::Node baseNode, string baseName, int baseBadness, string step, int stepBadness |
     sinkHasNameCandidate(baseNode, package, baseName, baseBadness) and
@@ -192,51 +274,7 @@ private API::Node getASinkNode(DataFlow::SourceNode node) { node = nodeReachingS
 private predicate nameFromGlobal(DataFlow::Node node, string package, string name, int badness) {
   package = "global" and
   node = AccessPath::getAnAssignmentTo(name) and
-  badness = -10
-}
-
-bindingset[qualifiedName]
-private int getBadnessOfClassName(string qualifiedName) {
-  if qualifiedName.matches("%.constructor")
-  then result = 10
-  else
-    if qualifiedName = ""
-    then result = 5
-    else result = 0
-}
-
-/** Holds if `(package, name)` is a potential name for `cls`, with the given `badness`. */
-private predicate classObjectHasNameCandidate(
-  DataFlow::ClassNode cls, string package, string name, int badness
-) {
-  // There can be multiple API nodes associated with `cls`.
-  // For example:
-  ///
-  //    class C {}
-  //    module.exports.A = C; // first sink
-  //    module.exports.B = C; // second sink
-  //
-  exists(int baseBadness |
-    sinkHasPrimaryName(getASinkNode(cls), package, name, baseBadness) and
-    badness = baseBadness + getBadnessOfClassName(name)
-  )
-  or
-  nameFromGlobal(cls, package, name, badness)
-  or
-  // If the class is not accessible via an access path, but instances of the
-  // class can still escape via more complex access patterns, resort to a synthesized name.
-  // For example:
-  //
-  //   class InternalClass {}
-  //   function foo() {
-  //     return new InternalClass();
-  //   }
-  //
-  hasEscapingInstance(cls) and
-  exists(string baseName |
-    InternalModuleNaming::fallbackModuleName(cls.getTopLevel(), package, baseName, badness - 100) and
-    name = join(baseName, cls.getName())
-  )
+  (if node.getTopLevel().isExterns() then badness = -10 else badness = 10)
 }
 
 /** Holds if an instance of `cls` can be exposed to client code. */
@@ -250,8 +288,6 @@ private predicate sourceNodeHasNameCandidate(
   sinkHasPrimaryName(getASinkNode(node), package, name, badness)
   or
   nameFromGlobal(node, package, name, badness)
-  or
-  classObjectHasNameCandidate(node, package, name, badness)
 }
 
 private predicate sourceNodeHasPrimaryName(
@@ -273,6 +309,11 @@ private DataFlow::SourceNode functionValue(DataFlow::TypeTracker t) {
     result instanceof DataFlow::ClassNode
     or
     result instanceof DataFlow::PartialInvokeNode
+    or
+    result = DataFlow::globalVarRef(["Function", "eval"]).getAnInvocation()
+    or
+    // Assume double-invocation of Function also returns a function
+    result = DataFlow::globalVarRef("Function").getAnInvocation().getAnInvocation()
   )
   or
   exists(DataFlow::TypeTracker t2 | result = functionValue(t2).track(t2, t))
@@ -299,7 +340,6 @@ private predicate isFunctionSource(DataFlow::SourceNode node) {
     or
     node = functionValue() and
     node instanceof DataFlow::InvokeNode and
-    exists(node.getABoundFunctionValue(_)) and
     // `getASinkNode` steps through imports (but not other calls) so exclude calls that are imports (i.e. require calls)
     // as we want to get as close to the source as possible.
     not node instanceof DataFlow::ModuleImportNode
@@ -323,14 +363,9 @@ private predicate sinkHasSourceName(API::Node sink, string package, string name,
   )
 }
 
-private predicate sinkHasPrimarySourceName(API::Node sink, string package, string name, int badness) {
-  badness = min(int b | sinkHasSourceName(sink, _, _, b) | b) and
-  package = min(string p | sinkHasSourceName(sink, p, _, badness) | p order by p.length(), p) and
-  name = min(string n | sinkHasSourceName(sink, package, n, badness) | n order by n.length(), n)
-}
-
 private predicate sinkHasPrimarySourceName(API::Node sink, string package, string name) {
-  sinkHasPrimarySourceName(sink, package, name, _)
+  strictcount(string p, string n | sinkHasSourceName(sink, p, n, _)) = 1 and
+  sinkHasSourceName(sink, package, name, _)
 }
 
 private predicate aliasCandidate(
@@ -338,10 +373,7 @@ private predicate aliasCandidate(
 ) {
   sinkHasPrimaryName(aliasDef, package, name) and
   sinkHasPrimarySourceName(aliasDef, targetPackage, targetName) and
-  not (
-    package = targetPackage and
-    name = targetName
-  )
+  not sinkHasSourceName(_, package, name, _) // (package, name) cannot be an alias if a source has it as its primary name
 }
 
 private predicate nonAlias(string package, string name) {
@@ -354,7 +386,7 @@ private predicate nonAlias(string package, string name) {
   exists(API::Node sink, string targetPackage, string targetName |
     aliasCandidate(package, name, targetPackage, targetName, _) and
     sinkHasPrimaryName(sink, package, name) and
-    not sinkHasPrimarySourceName(sink, targetPackage, targetName, _)
+    not sinkHasPrimarySourceName(sink, targetPackage, targetName)
   )
 }
 
@@ -424,8 +456,6 @@ private module InternalModuleNaming {
 
   /** Holds if `(package, name)` should be used to refer to code inside `mod`. */
   predicate fallbackModuleName(Module mod, string package, string name, int badness) {
-    sinkHasPrimaryName(getASinkNode(mod.getDefaultOrBulkExport()), package, name, badness)
-    or
     badness = 50 and
     package = getPackageRelativePath(mod) and
     name = ""

@@ -4,7 +4,9 @@ class PrivateClass {}
 
 export const ExportedConst = class ExportedConstClass {} // $ name=(pack1).ExportedConst
 
-class ClassWithEscapingInstance {}
+class ClassWithEscapingInstance {
+    m() {} // $ name=(pack1).ClassWithEscapingInstance.prototype.m
+}
 
 export function getEscapingInstance() {
     return new ClassWithEscapingInstance();
