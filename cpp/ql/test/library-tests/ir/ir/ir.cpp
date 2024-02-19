@@ -2129,6 +2129,7 @@ public:
     ~ClassWithDestructor() { delete x; }
 
     void set_x(char y) { *x = y; }
+    char get_x() { return *x; }
 };
 
 constexpr bool initialization_with_destructor_bool = true;
@@ -2152,6 +2153,17 @@ void initialization_with_destructor(bool b, char c) {
     ClassWithDestructor x;
     for(vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys)
       y.set_x('a');
+
+    for(vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys) {
+      y.set_x('a');
+      if (y.get_x() == 'b')
+        return;
+    }
+
+    for(vector<int> ys(1); int y : ys) {
+      if (y == 1)
+        return;
+    }
 }
 
 // semmle-extractor-options: -std=c++20 --clang
