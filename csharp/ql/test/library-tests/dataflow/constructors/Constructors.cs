@@ -134,6 +134,17 @@ public class Constructors
         Sink(c4.Obj2); // $ hasValueFlow=8
     }
 
+    public record R1(object Obj1, object Obj2);
+
+    public void M7()
+    {
+        var o1 = Source<object>(9);
+        var o2 = Source<object>(10);
+        var r1 = new R1(o1, o2);
+        Sink(r1.Obj1); // $ hasValueFlow=9
+        Sink(r1.Obj2); // $ hasValueFlow=10
+    }
+
     public static void Sink(object o) { }
 
     public static T Source<T>(object source) => throw null;
