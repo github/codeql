@@ -1,4 +1,2 @@
-# Please notice that any bazel targets and definitions in this repository are currently experimental
-# and for internal use only.
-
-workspace(name = "codeql")
+# plase use MODULE.bazel to add dependencies
+# this empty file is required by internal repositories, don't remove it
