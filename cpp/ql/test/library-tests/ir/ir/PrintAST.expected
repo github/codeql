@@ -9478,7 +9478,7 @@ ir.cpp:
 # 1079|         Type = [LValueReferenceType] const vector<int> &
 # 1079|   getEntryPoint(): [BlockStmt] { ... }
 # 1080|     getStmt(0): [RangeBasedForStmt] for(...:...) ...
-# 1080|       getChild(0): [DeclStmt] declaration
+# 1080|       getChild(1): [DeclStmt] declaration
 # 1080|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
 # 1080|             Type = [LValueReferenceType] const vector<int> &
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
@@ -9535,7 +9535,7 @@ ir.cpp:
 # 1080|         getQualifier(): [VariableAccess] (__begin)
 # 1080|             Type = [NestedStruct] iterator
 # 1080|             ValueCategory = lvalue
-# 1080|       getChild(4): [DeclStmt] declaration
+# 1080|       getChild(5): [DeclStmt] declaration
 # 1080|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of e
 # 1080|             Type = [IntType] int
 # 1080|           getVariable().getInitializer(): [Initializer] initializer for e
@@ -9571,7 +9571,7 @@ ir.cpp:
 # 1080|           Type = [NestedStruct] iterator
 # 1080|           ValueCategory = lvalue
 # 1086|     getStmt(1): [RangeBasedForStmt] for(...:...) ...
-# 1086|       getChild(0): [DeclStmt] declaration
+# 1086|       getChild(1): [DeclStmt] declaration
 # 1086|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
 # 1086|             Type = [LValueReferenceType] const vector<int> &
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
@@ -9628,7 +9628,7 @@ ir.cpp:
 # 1086|         getQualifier(): [VariableAccess] (__begin)
 # 1086|             Type = [NestedStruct] iterator
 # 1086|             ValueCategory = lvalue
-# 1086|       getChild(4): [DeclStmt] declaration
+# 1086|       getChild(5): [DeclStmt] declaration
 # 1086|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of e
 # 1086|             Type = [LValueReferenceType] const int &
 # 1086|           getVariable().getInitializer(): [Initializer] initializer for e
@@ -16520,7 +16520,20 @@ ir.cpp:
 # 2152|               Type = [VoidType] void
 # 2152|               ValueCategory = prvalue
 # 2153|     getStmt(5): [RangeBasedForStmt] for(...:...) ...
-# 2153|       getChild(0): [DeclStmt] declaration
+# 2153|       getInitialization(): [DeclStmt] declaration
+# 2153|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ys
+# 2153|             Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2153|           getVariable().getInitializer(): [Initializer] initializer for ys
+# 2153|             getExpr(): [ConstructorCall] call to vector
+# 2153|                 Type = [VoidType] void
+# 2153|                 ValueCategory = prvalue
+# 2153|               getArgument(0): [VariableAccess] x
+# 2153|                   Type = [Class] ClassWithDestructor
+# 2153|                   ValueCategory = prvalue(load)
+# 2153|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2153|                   Type = [Class] ClassWithDestructor
+# 2153|                   ValueCategory = lvalue
+# 2153|       getChild(1): [DeclStmt] declaration
 # 2153|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
 # 2153|             Type = [LValueReferenceType] vector<ClassWithDestructor> &
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
@@ -16582,7 +16595,7 @@ ir.cpp:
 # 2153|         getQualifier(): [VariableAccess] (__begin)
 # 2153|             Type = [NestedStruct] iterator
 # 2153|             ValueCategory = lvalue
-# 2153|       getChild(4): [DeclStmt] declaration
+# 2153|       getChild(5): [DeclStmt] declaration
 # 2153|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
 # 2153|             Type = [Class] ClassWithDestructor
 # 2153|           getVariable().getInitializer(): [Initializer] initializer for y

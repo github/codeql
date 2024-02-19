@@ -2050,11 +2050,8 @@ switch_body(
     int body_id: @stmt ref
 );
 
-@stmt_for_or_range_based_for = @stmt_for
-                             | @stmt_range_based_for;
-
 for_initialization(
-    unique int for_stmt: @stmt_for_or_range_based_for ref,
+    unique int for_stmt: @stmt_for ref,
     int init_id: @stmt ref
 );
 
