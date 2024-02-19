@@ -7,8 +7,8 @@ private import semmle.python.dataflow.new.internal.DataFlowPrivate
 private import semmle.python.dataflow.new.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.frameworks.data.ModelsAsData
 private import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions
+private import Modeling.internal.Util as Util
 
-// private import queries.modeling.internal.Util as Util
 /**
  * Gets the namespace of an endpoint in `file`.
  */
@@ -17,10 +17,6 @@ string getNamespace(File file) { result = "" }
 /**
  * Holds if this method is a constructor for a module.
  */
-// predicate isConstructor(DataFlow::MethodNode method) {
-//   method.getMethodName() = "initialize" and
-//   exists(DataFlow::ModuleNode m | m.getOwnInstanceMethod(method.getMethodName()) = method)
-// }
 abstract class Endpoint instanceof Scope {
   string getNamespace() { result = getNamespace(super.getLocation().getFile()) }
 
