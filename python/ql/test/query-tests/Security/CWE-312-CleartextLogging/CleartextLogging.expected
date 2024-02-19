@@ -1,14 +1,14 @@
 edges
-| test.py:19:5:19:12 | ControlFlowNode for password | test.py:20:48:20:55 | ControlFlowNode for password |
-| test.py:19:5:19:12 | ControlFlowNode for password | test.py:22:58:22:65 | ControlFlowNode for password |
-| test.py:19:5:19:12 | ControlFlowNode for password | test.py:23:58:23:65 | ControlFlowNode for password |
-| test.py:19:5:19:12 | ControlFlowNode for password | test.py:27:40:27:47 | ControlFlowNode for password |
-| test.py:19:5:19:12 | ControlFlowNode for password | test.py:30:58:30:65 | ControlFlowNode for password |
-| test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:19:5:19:12 | ControlFlowNode for password |
-| test.py:44:5:44:5 | ControlFlowNode for x | test.py:45:11:45:11 | ControlFlowNode for x |
-| test.py:44:9:44:25 | ControlFlowNode for Attribute() | test.py:44:5:44:5 | ControlFlowNode for x |
-| test.py:70:5:70:10 | ControlFlowNode for config | test.py:74:11:74:31 | ControlFlowNode for Subscript |
-| test.py:72:21:72:37 | ControlFlowNode for Attribute | test.py:70:5:70:10 | ControlFlowNode for config |
+| test.py:19:5:19:12 | ControlFlowNode for password | test.py:20:48:20:55 | ControlFlowNode for password | provenance |  |
+| test.py:19:5:19:12 | ControlFlowNode for password | test.py:22:58:22:65 | ControlFlowNode for password | provenance |  |
+| test.py:19:5:19:12 | ControlFlowNode for password | test.py:23:58:23:65 | ControlFlowNode for password | provenance |  |
+| test.py:19:5:19:12 | ControlFlowNode for password | test.py:27:40:27:47 | ControlFlowNode for password | provenance |  |
+| test.py:19:5:19:12 | ControlFlowNode for password | test.py:30:58:30:65 | ControlFlowNode for password | provenance |  |
+| test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:19:5:19:12 | ControlFlowNode for password | provenance |  |
+| test.py:44:5:44:5 | ControlFlowNode for x | test.py:45:11:45:11 | ControlFlowNode for x | provenance |  |
+| test.py:44:9:44:25 | ControlFlowNode for Attribute() | test.py:44:5:44:5 | ControlFlowNode for x | provenance |  |
+| test.py:70:5:70:10 | ControlFlowNode for config | test.py:74:11:74:31 | ControlFlowNode for Subscript | provenance |  |
+| test.py:72:21:72:37 | ControlFlowNode for Attribute | test.py:70:5:70:10 | ControlFlowNode for config | provenance |  |
 nodes
 | test.py:19:5:19:12 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
 | test.py:19:16:19:29 | ControlFlowNode for get_password() | semmle.label | ControlFlowNode for get_password() |

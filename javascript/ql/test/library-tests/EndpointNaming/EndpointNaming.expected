@@ -1,0 +1,7 @@
+testFailures
+ambiguousPreferredPredecessor
+ambiguousSinkName
+ambiguousClassObjectName
+ambiguousClassInstanceName
+ambiguousFunctionName
+failures

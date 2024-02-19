@@ -56,6 +56,8 @@ VariableAccess commonException() {
   // Finally, exclude functions that contain assembly blocks. It's
   // anyone's guess what happens in those.
   containsInlineAssembly(result.getEnclosingFunction())
+  or
+  exists(Call c | c.getQualifier() = result | c.getTarget().isStatic())
 }
 
 predicate isSinkImpl(Instruction sink, VariableAccess va) {

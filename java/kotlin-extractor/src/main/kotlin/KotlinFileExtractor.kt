@@ -205,7 +205,7 @@ open class KotlinFileExtractor(
     }
 
     @OptIn(ObsoleteDescriptorBasedAPI::class)
-    private fun isFake(d: IrDeclarationWithVisibility): Boolean {
+    fun isFake(d: IrDeclarationWithVisibility): Boolean {
         val hasFakeVisibility =
             d.visibility.let {
                 it is DelegatedDescriptorVisibility && it.delegate == Visibilities.InvisibleFake
@@ -990,21 +990,26 @@ open class KotlinFileExtractor(
                             }
                         }
                     } else {
-                        c.declarations.forEach {
-                            extractDeclaration(
-                                it,
-                                extractPrivateMembers = extractPrivateMembers,
-                                extractFunctionBodies = extractFunctionBodies,
-                                extractAnnotations = true
+                        try {
+                            c.declarations.forEach {
+                                extractDeclaration(
+                                    it,
+                                    extractPrivateMembers = extractPrivateMembers,
+                                    extractFunctionBodies = extractFunctionBodies,
+                                    extractAnnotations = true
+                                )
+                            }
+                            if (extractStaticInitializer) extractStaticInitializer(c, { id })
+                            extractJvmStaticProxyMethods(
+                                c,
+                                id,
+                                extractPrivateMembers,
+                                extractFunctionBodies
                             )
+                        } catch (e: IllegalArgumentException) {
+                            // A Kotlin bug causes this to throw: https://youtrack.jetbrains.com/issue/KT-63847/K2-IllegalStateException-IrFieldPublicSymbolImpl-for-java.time-Clock.OffsetClock.offset0-is-already-bound
+                            // TODO: This should either be removed or log something, once the bug is fixed
                         }
-                        if (extractStaticInitializer) extractStaticInitializer(c, { id })
-                        extractJvmStaticProxyMethods(
-                            c,
-                            id,
-                            extractPrivateMembers,
-                            extractFunctionBodies
-                        )
                     }
                 }
                 if (c.isNonCompanionObject) {
@@ -1612,8 +1617,9 @@ open class KotlinFileExtractor(
             cls.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB
 
     private fun needsInterfaceForwarder(f: IrFunction) =
-        // forAllMethodsWithBody means -Xjvm-default=all or all-compatibility, in which case real
-        // Java default interfaces are used, and we don't need to do anything.
+        // jvmDefaultModeEnabledIsEnabled means that -Xjvm-default=all or all-compatibility was
+        // used, in which case real Java default interfaces are used, and we don't need to do
+        // anything.
         // Otherwise, for a Kotlin-defined method inheriting a Kotlin-defined default, we need to
         // create a synthetic method like
         // `int f(int x) { return super.InterfaceWithDefault.f(x); }`, because kotlinc will generate
@@ -1621,9 +1627,9 @@ open class KotlinFileExtractor(
         // (NB. kotlinc's actual implementation strategy is different -- it makes an inner class
         // called InterfaceWithDefault$DefaultImpls and stores the default methods
         // there to allow default method usage in Java < 8, but this is hopefully niche.
-        !pluginContext.languageVersionSettings
-            .getFlag(JvmAnalysisFlags.jvmDefaultMode)
-            .forAllMethodsWithBody &&
+        !jvmDefaultModeEnabledIsEnabled(
+            pluginContext.languageVersionSettings
+            .getFlag(JvmAnalysisFlags.jvmDefaultMode)) &&
             f.parentClassOrNull.let {
                 it != null &&
                     it.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB &&

@@ -239,6 +239,23 @@ class PropertyContent extends Content, TPropertyContent {
   override Location getLocation() { result = p.getLocation() }
 }
 
+/**
+ * A reference to a synthetic field corresponding to a
+ * primary constructor parameter.
+ */
+class PrimaryConstructorParameterContent extends Content, TPrimaryConstructorParameterContent {
+  private Parameter p;
+
+  PrimaryConstructorParameterContent() { this = TPrimaryConstructorParameterContent(p) }
+
+  /** Gets the underlying parameter. */
+  Parameter getParameter() { result = p }
+
+  override string toString() { result = "parameter " + p.getName() }
+
+  override Location getLocation() { result = p.getLocation() }
+}
+
 /** A reference to an element in a collection. */
 class ElementContent extends Content, TElementContent {
   override string toString() { result = "element" }

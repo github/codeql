@@ -9,6 +9,7 @@ import java.nio.file.Paths;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Supplier;
 import java.io.File;
+import java.io.FileFilter;
 import java.nio.file.FileVisitOption;
 import java.net.URLConnection;
 import java.util.concurrent.FutureTask;
@@ -22,7 +23,7 @@ class Test {
 	}
 
 	public static void callSupplier(Supplier<String> supplier) {
-		supplier.get(); // $ sourceModelCandidate=get():ReturnValue sinkModelCandidate=get():Argument[this]
+		supplier.get(); // $ sourceModelCandidate=get():ReturnValue
 	}
 
 	public static void copyFiles(Path source, Path target, CopyOption option) throws Exception {
@@ -39,11 +40,12 @@ class Test {
 		); // $ sourceModelCandidate=newInputStream(Path,OpenOption[]):ReturnValue
 	}
 
-	public static InputStream getInputStream(String openPath) throws Exception {
+	public static InputStream getInputStream(String openPath, String otherPath) throws Exception {
 		return Test.getInputStream( // the call is not a source candidate (argument to local call)
 			Paths.get(
-				openPath // $ negativeSinkExample=get(String,String[]):Argument[0] // modeled as a flow step
-			) // $ sourceModelCandidate=get(String,String[]):ReturnValue
+				openPath, // $ negativeSinkExample=get(String,String[]):Argument[0] // modeled as a flow step
+				otherPath
+			) // $ sourceModelCandidate=get(String,String[]):ReturnValue negativeSinkExample=get(String,String[]):Argument[1]
 		);
 	}
 
@@ -64,6 +66,12 @@ class Test {
 
 	public static void WebSocketExample(URLConnection c) throws Exception {
 		c.getInputStream(); // $ sinkModelCandidate=getInputStream():Argument[this] positiveSourceExample=getInputStream():ReturnValue(remote) // not a source candidate (manual modeling)
+	}
+
+	public static void fileFilterExample(File f, FileFilter ff) {
+		f.listFiles( // $ sinkModelCandidate=listFiles(FileFilter):Argument[this]
+			ff
+		); // $ sourceModelCandidate=listFiles(FileFilter):ReturnValue
 	}
 }
 

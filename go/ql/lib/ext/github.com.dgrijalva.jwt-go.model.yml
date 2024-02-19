@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sinkModel
+    data:
+      - ["github.com/dgrijalva/jwt-go", "SigningMethod", True, "Sign", "", "", "Argument[1]", "credentials-key", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "Token", True, "SignedString", "", "", "Argument[0]", "credentials-key", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "Parser", True, "ParseUnverified", "", "", "Argument[0]", "jwt", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["github.com/dgrijalva/jwt-go", "", True, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "Parser", True, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", True, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "Parser", True, "ParseWithClaims", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", True, "ParseECPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", True, "ParseECPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", True, "ParseRSAPrivateKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", True, "ParseRSAPrivateKeyFromPEMWithPassword", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/dgrijalva/jwt-go", "", True, "ParseRSAPublicKeyFromPEM", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]

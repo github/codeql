@@ -178,6 +178,10 @@ private predicate captureReadStep(Node node1, CapturedVariableContent c, Node no
   CaptureFlow::readStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
 }
 
+private predicate captureClearsContent(Node node, CapturedVariableContent c) {
+  CaptureFlow::clearsContent(asClosureNode(node), c.getVariable())
+}
+
 predicate captureValueStep(Node node1, Node node2) {
   CaptureFlow::localFlowStep(asClosureNode(node1), asClosureNode(node2))
 }
@@ -311,6 +315,8 @@ predicate clearsContent(Node n, ContentSet c) {
   )
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
+  captureClearsContent(n, c)
 }
 
 /**

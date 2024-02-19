@@ -94,6 +94,7 @@ namespace Semmle.Autobuild.CSharp
                     env = new Dictionary<string, string>{
                             { "DOTNET_MULTILEVEL_LOOKUP", "false" }, // prevent look up of other .NET Core SDKs
                             { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
+                            { "MSBUILDDISABLENODEREUSE", "1" },
                             { "PATH", installDir + delim + path }
                         };
                 }

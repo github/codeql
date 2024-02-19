@@ -594,6 +594,9 @@ module API {
       exportedName = "" and
       result = getAModuleImportRaw(moduleName)
     }
+
+    /** Gets a sink node that represents instances of `cls`. */
+    Node getClassInstance(DataFlow::ClassNode cls) { result = Impl::MkClassInstance(cls) }
   }
 
   /**
@@ -1621,6 +1624,7 @@ private predicate exports(string m, DataFlow::Node rhs) {
   exists(Module mod | mod = importableModule(m) |
     rhs = mod.(AmdModule).getDefine().getModuleExpr().flow()
     or
+    not mod.(ES2015Module).hasBothNamedAndDefaultExports() and
     exports(m, "default", rhs)
     or
     exists(ExportAssignDeclaration assgn | assgn.getTopLevel() = mod |
@@ -1634,6 +1638,7 @@ private predicate exports(string m, DataFlow::Node rhs) {
 /** Holds if module `m` exports `rhs` under the name `prop`. */
 private predicate exports(string m, string prop, DataFlow::Node rhs) {
   exists(ExportDeclaration exp | exp.getEnclosingModule() = importableModule(m) |
+    not exp.isTypeOnly() and
     rhs = exp.getSourceNode(prop)
     or
     exists(Variable v |

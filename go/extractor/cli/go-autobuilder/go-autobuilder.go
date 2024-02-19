@@ -546,9 +546,12 @@ func installDependenciesAndBuild() {
 	// This diagnostic is not required if the system Go version is 1.21 or greater, since the
 	// Go tooling should install required Go versions as needed.
 	if semver.Compare(getEnvGoSemVer(), "v1.21.0") < 0 && goVersionInfo.Found && semver.Compare("v"+goVersionInfo.Version, getEnvGoSemVer()) > 0 {
-		diagnostics.EmitNewerGoVersionNeeded()
+		diagnostics.EmitNewerGoVersionNeeded(getEnvGoSemVer(), "v"+goVersionInfo.Version)
 		if val, _ := os.LookupEnv("GITHUB_ACTIONS"); val == "true" {
-			log.Printf("The go.mod version is newer than the installed version of Go. Consider adding an actions/setup-go step to your workflow.\n")
+			log.Printf(
+				"The go.mod file requires version %s of Go, but version %s is installed. Consider adding an actions/setup-go step to your workflow.\n",
+				"v"+goVersionInfo.Version,
+				getEnvGoSemVer())
 		}
 	}
 

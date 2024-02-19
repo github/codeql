@@ -70,7 +70,7 @@ void modify_copy_via_strdup(char* p) { // $ ast-def=p
 
 void test_modify_copy_via_strdup(char* p) { // $ ast-def=p
   modify_copy_via_strdup(p);
-  sink(*p); // $ SPURIOUS: ir
+  sink(*p); // clean
 }
 
 int* deref(int** p) { // $ ast-def=p
@@ -100,4 +100,104 @@ void test2() {
   int* p = &x;
   addtaint2(&p);
   sink(*p); // $ ir MISSING: ast
+}
+
+using size_t = decltype(sizeof(int));
+
+void* memcpy(void* dest, const void* src, size_t);
+
+void modify_copy_via_memcpy(char* p) { // $ ast-def=p
+  char* dest;
+  char* p2 = (char*)memcpy(dest, p, 10);
+  source_ref(p2);
+}
+
+void test_modify_copy_via_memcpy(char* p) { // $ ast-def=p
+  modify_copy_via_memcpy(p);
+  sink(*p); // clean
+}
+
+// These functions from any real database. We add a dataflow model of
+// them as part of dataflow library testing.
+// `r = strdup_ptr_001`(p) has flow from **p to **r
+// `r = strdup_ptr_011`(p) has flow from *p to *r, and **p to **r
+// `r = strdup_ptr_111`(p) has flow from p to r, *p to *r, **p to **r
+char** strdup_ptr_001(const char** p);
+char** strdup_ptr_011(const char** p);
+char** strdup_ptr_111(const char** p);
+
+void source_ref_ref(char** toTaint) { // $ ast-def=toTaint ir-def=*toTaint ir-def=**toTaint 
+  // source -> **toTaint
+  **toTaint = source(true);
+}
+
+// This function copies the value of **p into a new location **p2 and then
+// taints **p. Thus, **p does not contain tainted data after returning from
+// this function.
+void modify_copy_via_strdup_ptr_001(char** p) { // $ ast-def=p
+  // **p -> **p2
+  char** p2 = strdup_ptr_001(p);
+  // source -> **p2
+  source_ref_ref(p2);
+}
+
+void test_modify_copy_via_strdup_001(char** p) { // $ ast-def=p
+  modify_copy_via_strdup_ptr_001(p);
+  sink(**p); // clean
+}
+
+// This function copies the value of *p into a new location *p2 and then
+// taints **p2. Thus, **p contains tainted data after returning from this
+// function.
+void modify_copy_via_strdup_ptr_011(char** p) { // $ ast-def=p
+  // **p -> **p2 and *p -> *p2
+  char** p2 = strdup_ptr_011(p);
+  // source -> **p2
+  source_ref_ref(p2);
+}
+
+void test_modify_copy_via_strdup_011(char** p) { // $ ast-def=p
+  modify_copy_via_strdup_ptr_011(p);
+  sink(**p); // $ ir MISSING: ast
+}
+
+char* source(int);
+
+void source_ref_2(char** toTaint) { // $ ast-def=toTaint ir-def=*toTaint ir-def=**toTaint
+  // source -> *toTaint
+  *toTaint = source(42);
+}
+
+// This function copies the value of p into a new location p2 and then
+// taints *p2. Thus, *p contains tainted data after returning from this
+// function.
+void modify_copy_via_strdup_ptr_111_taint_ind(char** p) { // $ ast-def=p
+  // **p -> **p2, *p -> *p2, and p -> p2
+  char** p2 = strdup_ptr_111(p);
+  // source -> *p2
+  source_ref_2(p2);
+}
+
+void sink(char*);
+
+void test_modify_copy_via_strdup_111_taint_ind(char** p) { // $ ast-def=p
+  modify_copy_via_strdup_ptr_111_taint_ind(p);
+  sink(*p); // $ ir MISSING: ast
+}
+
+// This function copies the value of p into a new location p2 and then
+// taints **p2. Thus, **p contains tainted data after returning from this
+// function.
+void modify_copy_via_strdup_ptr_111_taint_ind_ind(char** p) { // $ ast-def=p
+  // **p -> **p2, *p -> *p2, and p -> p2
+  char** p2 = strdup_ptr_111(p);
+  // source -> **p2
+  source_ref_ref(p2);
+}
+
+void sink(char*);
+
+void test_modify_copy_via_strdup_111_taint_ind_ind(char** p) { // $ ast-def=p
+  modify_copy_via_strdup_ptr_111_taint_ind_ind(p);
+  sink(**p); // $ ir MISSING: ast
 }

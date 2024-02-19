@@ -15,10 +15,16 @@ on:
       - .github/workflows/go-tests.yml
       - .github/actions/**
       - codeql-workspace.yml
+
 env:
   GO_VERSION: '~1.21.0'
+
+permissions:
+  contents: read
+
 jobs:
   test-linux:
+    if: github.repository_owner == 'github'
     name: Test Linux (Ubuntu)
     runs-on: ubuntu-latest-xl
     steps:

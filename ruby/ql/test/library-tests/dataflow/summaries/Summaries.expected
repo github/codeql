@@ -1,258 +1,258 @@
 testFailures
 edges
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:2:6:2:12 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:2:6:2:12 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:4:24:4:30 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:4:24:4:30 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:16:36:16:42 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:16:36:16:42 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:20:25:20:31 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:26:31:26:37 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:30:24:30:30 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:31:27:31:33 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:34:16:34:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:34:16:34:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:35:16:35:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:35:16:35:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:36:21:36:27 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:36:21:36:27 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:37:36:37:42 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:37:36:37:42 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:51:24:51:30 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:56:22:56:28 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:57:17:57:23 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:59:27:59:33 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:63:32:63:38 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:65:23:65:29 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:122:16:122:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:128:14:128:20 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:131:16:131:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:131:16:131:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:131:16:131:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:132:21:132:27 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:132:21:132:27 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:135:26:135:32 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:135:26:135:32 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:137:23:137:29 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:137:23:137:29 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:140:19:140:25 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:140:19:140:25 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:141:19:141:25 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:141:19:141:25 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:145:26:145:32 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:145:26:145:32 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:147:16:147:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:147:16:147:22 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:150:39:150:45 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:150:39:150:45 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:154:20:154:26 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:154:20:154:26 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:155:28:155:34 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:155:28:155:34 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:156:27:156:33 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:156:27:156:33 | tainted |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:157:14:160:3 | do ... end [captured tainted] |
-| summaries.rb:1:11:1:36 | call to identity | summaries.rb:157:14:160:3 | do ... end [captured tainted] |
-| summaries.rb:1:20:1:36 | call to source | summaries.rb:1:11:1:36 | call to identity |
-| summaries.rb:1:20:1:36 | call to source | summaries.rb:1:11:1:36 | call to identity |
-| summaries.rb:4:1:4:8 | tainted2 | summaries.rb:9:6:9:13 | tainted2 |
-| summaries.rb:4:1:4:8 | tainted2 | summaries.rb:9:6:9:13 | tainted2 |
-| summaries.rb:4:12:7:3 | call to apply_block | summaries.rb:4:1:4:8 | tainted2 |
-| summaries.rb:4:12:7:3 | call to apply_block | summaries.rb:4:1:4:8 | tainted2 |
-| summaries.rb:4:24:4:30 | tainted | summaries.rb:4:12:7:3 | call to apply_block |
-| summaries.rb:4:24:4:30 | tainted | summaries.rb:4:12:7:3 | call to apply_block |
-| summaries.rb:4:24:4:30 | tainted | summaries.rb:4:36:4:36 | x |
-| summaries.rb:4:24:4:30 | tainted | summaries.rb:4:36:4:36 | x |
-| summaries.rb:4:36:4:36 | x | summaries.rb:5:8:5:8 | x |
-| summaries.rb:4:36:4:36 | x | summaries.rb:5:8:5:8 | x |
-| summaries.rb:11:17:11:17 | x | summaries.rb:12:8:12:8 | x |
-| summaries.rb:11:17:11:17 | x | summaries.rb:12:8:12:8 | x |
-| summaries.rb:16:1:16:8 | tainted3 | summaries.rb:18:6:18:13 | tainted3 |
-| summaries.rb:16:1:16:8 | tainted3 | summaries.rb:18:6:18:13 | tainted3 |
-| summaries.rb:16:12:16:43 | call to apply_lambda | summaries.rb:16:1:16:8 | tainted3 |
-| summaries.rb:16:12:16:43 | call to apply_lambda | summaries.rb:16:1:16:8 | tainted3 |
-| summaries.rb:16:36:16:42 | tainted | summaries.rb:11:17:11:17 | x |
-| summaries.rb:16:36:16:42 | tainted | summaries.rb:11:17:11:17 | x |
-| summaries.rb:16:36:16:42 | tainted | summaries.rb:16:12:16:43 | call to apply_lambda |
-| summaries.rb:16:36:16:42 | tainted | summaries.rb:16:12:16:43 | call to apply_lambda |
-| summaries.rb:20:1:20:8 | tainted4 | summaries.rb:21:6:21:13 | tainted4 |
-| summaries.rb:20:12:20:32 | call to firstArg | summaries.rb:20:1:20:8 | tainted4 |
-| summaries.rb:20:25:20:31 | tainted | summaries.rb:20:12:20:32 | call to firstArg |
-| summaries.rb:26:1:26:8 | tainted5 | summaries.rb:27:6:27:13 | tainted5 |
-| summaries.rb:26:12:26:38 | call to secondArg | summaries.rb:26:1:26:8 | tainted5 |
-| summaries.rb:26:31:26:37 | tainted | summaries.rb:26:12:26:38 | call to secondArg |
-| summaries.rb:30:24:30:30 | tainted | summaries.rb:30:6:30:42 | call to onlyWithBlock |
-| summaries.rb:31:27:31:33 | tainted | summaries.rb:31:6:31:34 | call to onlyWithoutBlock |
-| summaries.rb:40:3:40:3 | t | summaries.rb:41:24:41:24 | t |
-| summaries.rb:40:3:40:3 | t | summaries.rb:42:24:42:24 | t |
-| summaries.rb:40:3:40:3 | t | summaries.rb:44:8:44:8 | t |
-| summaries.rb:40:7:40:17 | call to source | summaries.rb:40:3:40:3 | t |
-| summaries.rb:41:24:41:24 | t | summaries.rb:41:8:41:25 | call to matchedByName |
-| summaries.rb:42:24:42:24 | t | summaries.rb:42:8:42:25 | call to matchedByName |
-| summaries.rb:44:8:44:8 | t | summaries.rb:44:8:44:27 | call to matchedByNameRcv |
-| summaries.rb:48:24:48:41 | call to source | summaries.rb:48:8:48:42 | call to preserveTaint |
-| summaries.rb:51:24:51:30 | tainted | summaries.rb:51:6:51:31 | call to namedArg |
-| summaries.rb:53:1:53:4 | args [element :foo] | summaries.rb:54:21:54:24 | args [element :foo] |
-| summaries.rb:53:15:53:31 | call to source | summaries.rb:53:1:53:4 | args [element :foo] |
-| summaries.rb:54:19:54:24 | ** ... [element :foo] | summaries.rb:54:6:54:25 | call to namedArg |
-| summaries.rb:54:21:54:24 | args [element :foo] | summaries.rb:54:19:54:24 | ** ... [element :foo] |
-| summaries.rb:56:22:56:28 | tainted | summaries.rb:56:6:56:29 | call to anyArg |
-| summaries.rb:57:17:57:23 | tainted | summaries.rb:57:6:57:24 | call to anyArg |
-| summaries.rb:59:27:59:33 | tainted | summaries.rb:59:6:59:34 | call to anyNamedArg |
-| summaries.rb:63:32:63:38 | tainted | summaries.rb:63:6:63:39 | call to anyPositionFromOne |
-| summaries.rb:65:23:65:29 | tainted | summaries.rb:65:40:65:40 | x |
-| summaries.rb:65:40:65:40 | x | summaries.rb:66:8:66:8 | x |
-| summaries.rb:73:24:73:53 | call to source | summaries.rb:73:8:73:54 | call to preserveTaint |
-| summaries.rb:76:26:76:56 | call to source | summaries.rb:76:8:76:57 | call to preserveTaint |
-| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:82:6:82:6 | a [element 1] |
-| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:82:6:82:6 | a [element 1] |
-| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:83:6:83:6 | a [element 1] |
-| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:83:6:83:6 | a [element 1] |
-| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:85:6:85:6 | a [element 1] |
-| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:85:6:85:6 | a [element 1] |
-| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:87:5:87:5 | a [element 1] |
-| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:87:5:87:5 | a [element 1] |
-| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:91:5:91:5 | a [element 1] |
-| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:91:5:91:5 | a [element 1] |
-| summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:86:6:86:6 | a [element 2] |
-| summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:86:6:86:6 | a [element 2] |
-| summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:95:1:95:1 | a [element 2] |
-| summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:95:1:95:1 | a [element 2] |
-| summaries.rb:79:15:79:29 | call to source | summaries.rb:79:1:79:1 | a [element 1] |
-| summaries.rb:79:15:79:29 | call to source | summaries.rb:79:1:79:1 | a [element 1] |
-| summaries.rb:79:32:79:46 | call to source | summaries.rb:79:1:79:1 | a [element 2] |
-| summaries.rb:79:32:79:46 | call to source | summaries.rb:79:1:79:1 | a [element 2] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:82:6:82:6 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:82:6:82:6 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:84:6:84:6 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:84:6:84:6 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:85:6:85:6 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:85:6:85:6 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:86:6:86:6 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:86:6:86:6 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:87:5:87:5 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:87:5:87:5 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:95:1:95:1 | a [element] |
-| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:95:1:95:1 | a [element] |
-| summaries.rb:81:13:81:27 | call to source | summaries.rb:81:1:81:1 | [post] a [element] |
-| summaries.rb:81:13:81:27 | call to source | summaries.rb:81:1:81:1 | [post] a [element] |
-| summaries.rb:82:6:82:6 | a [element 1] | summaries.rb:82:6:82:24 | call to readElementOne |
-| summaries.rb:82:6:82:6 | a [element 1] | summaries.rb:82:6:82:24 | call to readElementOne |
-| summaries.rb:82:6:82:6 | a [element] | summaries.rb:82:6:82:24 | call to readElementOne |
-| summaries.rb:82:6:82:6 | a [element] | summaries.rb:82:6:82:24 | call to readElementOne |
-| summaries.rb:83:6:83:6 | a [element 1] | summaries.rb:83:6:83:31 | call to readExactlyElementOne |
-| summaries.rb:83:6:83:6 | a [element 1] | summaries.rb:83:6:83:31 | call to readExactlyElementOne |
-| summaries.rb:84:6:84:6 | a [element] | summaries.rb:84:6:84:9 | ...[...] |
-| summaries.rb:84:6:84:6 | a [element] | summaries.rb:84:6:84:9 | ...[...] |
-| summaries.rb:85:6:85:6 | a [element 1] | summaries.rb:85:6:85:9 | ...[...] |
-| summaries.rb:85:6:85:6 | a [element 1] | summaries.rb:85:6:85:9 | ...[...] |
-| summaries.rb:85:6:85:6 | a [element] | summaries.rb:85:6:85:9 | ...[...] |
-| summaries.rb:85:6:85:6 | a [element] | summaries.rb:85:6:85:9 | ...[...] |
-| summaries.rb:86:6:86:6 | a [element 2] | summaries.rb:86:6:86:9 | ...[...] |
-| summaries.rb:86:6:86:6 | a [element 2] | summaries.rb:86:6:86:9 | ...[...] |
-| summaries.rb:86:6:86:6 | a [element] | summaries.rb:86:6:86:9 | ...[...] |
-| summaries.rb:86:6:86:6 | a [element] | summaries.rb:86:6:86:9 | ...[...] |
-| summaries.rb:87:1:87:1 | b [element 1] | summaries.rb:89:6:89:6 | b [element 1] |
-| summaries.rb:87:1:87:1 | b [element 1] | summaries.rb:89:6:89:6 | b [element 1] |
-| summaries.rb:87:1:87:1 | b [element] | summaries.rb:88:6:88:6 | b [element] |
-| summaries.rb:87:1:87:1 | b [element] | summaries.rb:88:6:88:6 | b [element] |
-| summaries.rb:87:1:87:1 | b [element] | summaries.rb:89:6:89:6 | b [element] |
-| summaries.rb:87:1:87:1 | b [element] | summaries.rb:89:6:89:6 | b [element] |
-| summaries.rb:87:1:87:1 | b [element] | summaries.rb:90:6:90:6 | b [element] |
-| summaries.rb:87:1:87:1 | b [element] | summaries.rb:90:6:90:6 | b [element] |
-| summaries.rb:87:5:87:5 | a [element 1] | summaries.rb:87:5:87:22 | call to withElementOne [element 1] |
-| summaries.rb:87:5:87:5 | a [element 1] | summaries.rb:87:5:87:22 | call to withElementOne [element 1] |
-| summaries.rb:87:5:87:5 | a [element] | summaries.rb:87:5:87:22 | call to withElementOne [element] |
-| summaries.rb:87:5:87:5 | a [element] | summaries.rb:87:5:87:22 | call to withElementOne [element] |
-| summaries.rb:87:5:87:22 | call to withElementOne [element 1] | summaries.rb:87:1:87:1 | b [element 1] |
-| summaries.rb:87:5:87:22 | call to withElementOne [element 1] | summaries.rb:87:1:87:1 | b [element 1] |
-| summaries.rb:87:5:87:22 | call to withElementOne [element] | summaries.rb:87:1:87:1 | b [element] |
-| summaries.rb:87:5:87:22 | call to withElementOne [element] | summaries.rb:87:1:87:1 | b [element] |
-| summaries.rb:88:6:88:6 | b [element] | summaries.rb:88:6:88:9 | ...[...] |
-| summaries.rb:88:6:88:6 | b [element] | summaries.rb:88:6:88:9 | ...[...] |
-| summaries.rb:89:6:89:6 | b [element 1] | summaries.rb:89:6:89:9 | ...[...] |
-| summaries.rb:89:6:89:6 | b [element 1] | summaries.rb:89:6:89:9 | ...[...] |
-| summaries.rb:89:6:89:6 | b [element] | summaries.rb:89:6:89:9 | ...[...] |
-| summaries.rb:89:6:89:6 | b [element] | summaries.rb:89:6:89:9 | ...[...] |
-| summaries.rb:90:6:90:6 | b [element] | summaries.rb:90:6:90:9 | ...[...] |
-| summaries.rb:90:6:90:6 | b [element] | summaries.rb:90:6:90:9 | ...[...] |
-| summaries.rb:91:1:91:1 | c [element 1] | summaries.rb:93:6:93:6 | c [element 1] |
-| summaries.rb:91:1:91:1 | c [element 1] | summaries.rb:93:6:93:6 | c [element 1] |
-| summaries.rb:91:5:91:5 | a [element 1] | summaries.rb:91:5:91:29 | call to withExactlyElementOne [element 1] |
-| summaries.rb:91:5:91:5 | a [element 1] | summaries.rb:91:5:91:29 | call to withExactlyElementOne [element 1] |
-| summaries.rb:91:5:91:29 | call to withExactlyElementOne [element 1] | summaries.rb:91:1:91:1 | c [element 1] |
-| summaries.rb:91:5:91:29 | call to withExactlyElementOne [element 1] | summaries.rb:91:1:91:1 | c [element 1] |
-| summaries.rb:93:6:93:6 | c [element 1] | summaries.rb:93:6:93:9 | ...[...] |
-| summaries.rb:93:6:93:6 | c [element 1] | summaries.rb:93:6:93:9 | ...[...] |
-| summaries.rb:95:1:95:1 | [post] a [element 2] | summaries.rb:98:6:98:6 | a [element 2] |
-| summaries.rb:95:1:95:1 | [post] a [element 2] | summaries.rb:98:6:98:6 | a [element 2] |
-| summaries.rb:95:1:95:1 | [post] a [element 2] | summaries.rb:99:1:99:1 | a [element 2] |
-| summaries.rb:95:1:95:1 | [post] a [element 2] | summaries.rb:99:1:99:1 | a [element 2] |
-| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:96:6:96:6 | a [element] |
-| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:96:6:96:6 | a [element] |
-| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:97:6:97:6 | a [element] |
-| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:97:6:97:6 | a [element] |
-| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:98:6:98:6 | a [element] |
-| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:98:6:98:6 | a [element] |
-| summaries.rb:95:1:95:1 | a [element 2] | summaries.rb:95:1:95:1 | [post] a [element 2] |
-| summaries.rb:95:1:95:1 | a [element 2] | summaries.rb:95:1:95:1 | [post] a [element 2] |
-| summaries.rb:95:1:95:1 | a [element] | summaries.rb:95:1:95:1 | [post] a [element] |
-| summaries.rb:95:1:95:1 | a [element] | summaries.rb:95:1:95:1 | [post] a [element] |
-| summaries.rb:96:6:96:6 | a [element] | summaries.rb:96:6:96:9 | ...[...] |
-| summaries.rb:96:6:96:6 | a [element] | summaries.rb:96:6:96:9 | ...[...] |
-| summaries.rb:97:6:97:6 | a [element] | summaries.rb:97:6:97:9 | ...[...] |
-| summaries.rb:97:6:97:6 | a [element] | summaries.rb:97:6:97:9 | ...[...] |
-| summaries.rb:98:6:98:6 | a [element 2] | summaries.rb:98:6:98:9 | ...[...] |
-| summaries.rb:98:6:98:6 | a [element 2] | summaries.rb:98:6:98:9 | ...[...] |
-| summaries.rb:98:6:98:6 | a [element] | summaries.rb:98:6:98:9 | ...[...] |
-| summaries.rb:98:6:98:6 | a [element] | summaries.rb:98:6:98:9 | ...[...] |
-| summaries.rb:99:1:99:1 | [post] a [element 2] | summaries.rb:102:6:102:6 | a [element 2] |
-| summaries.rb:99:1:99:1 | [post] a [element 2] | summaries.rb:102:6:102:6 | a [element 2] |
-| summaries.rb:99:1:99:1 | a [element 2] | summaries.rb:99:1:99:1 | [post] a [element 2] |
-| summaries.rb:99:1:99:1 | a [element 2] | summaries.rb:99:1:99:1 | [post] a [element 2] |
-| summaries.rb:102:6:102:6 | a [element 2] | summaries.rb:102:6:102:9 | ...[...] |
-| summaries.rb:102:6:102:6 | a [element 2] | summaries.rb:102:6:102:9 | ...[...] |
-| summaries.rb:103:1:103:1 | [post] d [element 3] | summaries.rb:104:1:104:1 | d [element 3] |
-| summaries.rb:103:1:103:1 | [post] d [element 3] | summaries.rb:104:1:104:1 | d [element 3] |
-| summaries.rb:103:8:103:22 | call to source | summaries.rb:103:1:103:1 | [post] d [element 3] |
-| summaries.rb:103:8:103:22 | call to source | summaries.rb:103:1:103:1 | [post] d [element 3] |
-| summaries.rb:104:1:104:1 | [post] d [element 3] | summaries.rb:108:6:108:6 | d [element 3] |
-| summaries.rb:104:1:104:1 | [post] d [element 3] | summaries.rb:108:6:108:6 | d [element 3] |
-| summaries.rb:104:1:104:1 | d [element 3] | summaries.rb:104:1:104:1 | [post] d [element 3] |
-| summaries.rb:104:1:104:1 | d [element 3] | summaries.rb:104:1:104:1 | [post] d [element 3] |
-| summaries.rb:108:6:108:6 | d [element 3] | summaries.rb:108:6:108:9 | ...[...] |
-| summaries.rb:108:6:108:6 | d [element 3] | summaries.rb:108:6:108:9 | ...[...] |
-| summaries.rb:111:1:111:1 | [post] x [@value] | summaries.rb:112:6:112:6 | x [@value] |
-| summaries.rb:111:1:111:1 | [post] x [@value] | summaries.rb:112:6:112:6 | x [@value] |
-| summaries.rb:111:13:111:26 | call to source | summaries.rb:111:1:111:1 | [post] x [@value] |
-| summaries.rb:111:13:111:26 | call to source | summaries.rb:111:1:111:1 | [post] x [@value] |
-| summaries.rb:112:6:112:6 | x [@value] | summaries.rb:112:6:112:16 | call to get_value |
-| summaries.rb:112:6:112:6 | x [@value] | summaries.rb:112:6:112:16 | call to get_value |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:128:14:128:20 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:131:16:131:22 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:131:16:131:22 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:132:21:132:27 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:135:26:135:32 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:137:23:137:29 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:140:19:140:25 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:141:19:141:25 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:145:26:145:32 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:147:16:147:22 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:150:39:150:45 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:154:20:154:26 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:155:28:155:34 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:156:27:156:33 | tainted |
-| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:157:14:160:3 | do ... end [captured tainted] |
-| summaries.rb:122:16:122:22 | tainted | summaries.rb:122:16:122:22 | [post] tainted |
-| summaries.rb:122:16:122:22 | tainted | summaries.rb:122:25:122:25 | [post] y |
-| summaries.rb:122:16:122:22 | tainted | summaries.rb:122:33:122:33 | [post] z |
-| summaries.rb:122:25:122:25 | [post] y | summaries.rb:124:6:124:6 | y |
-| summaries.rb:122:33:122:33 | [post] z | summaries.rb:125:6:125:6 | z |
-| summaries.rb:128:1:128:1 | [post] x | summaries.rb:129:6:129:6 | x |
-| summaries.rb:128:14:128:20 | tainted | summaries.rb:128:1:128:1 | [post] x |
-| summaries.rb:131:16:131:22 | tainted | summaries.rb:131:1:131:23 | synthetic splat argument |
-| summaries.rb:157:14:160:3 | do ... end [captured tainted] | summaries.rb:158:15:158:21 | tainted |
-| summaries.rb:157:14:160:3 | do ... end [captured tainted] | summaries.rb:158:15:158:21 | tainted |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:2:6:2:12 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:2:6:2:12 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:4:24:4:30 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:4:24:4:30 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:16:36:16:42 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:16:36:16:42 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:20:25:20:31 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:26:31:26:37 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:30:24:30:30 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:31:27:31:33 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:34:16:34:22 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:34:16:34:22 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:35:16:35:22 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:35:16:35:22 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:36:21:36:27 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:36:21:36:27 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:37:36:37:42 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:37:36:37:42 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:51:24:51:30 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:56:22:56:28 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:57:17:57:23 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:59:27:59:33 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:63:32:63:38 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:65:23:65:29 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:122:16:122:22 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:128:14:128:20 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:131:16:131:22 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:131:16:131:22 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:131:16:131:22 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:132:21:132:27 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:132:21:132:27 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:135:26:135:32 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:135:26:135:32 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:137:23:137:29 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:137:23:137:29 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:140:19:140:25 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:140:19:140:25 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:141:19:141:25 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:141:19:141:25 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:145:26:145:32 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:145:26:145:32 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:147:16:147:22 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:147:16:147:22 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:150:39:150:45 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:150:39:150:45 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:154:20:154:26 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:154:20:154:26 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:155:28:155:34 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:155:28:155:34 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:156:27:156:33 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:156:27:156:33 | tainted | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:157:14:160:3 | do ... end [captured tainted] | provenance |  |
+| summaries.rb:1:11:1:36 | call to identity | summaries.rb:157:14:160:3 | do ... end [captured tainted] | provenance |  |
+| summaries.rb:1:20:1:36 | call to source | summaries.rb:1:11:1:36 | call to identity | provenance |  |
+| summaries.rb:1:20:1:36 | call to source | summaries.rb:1:11:1:36 | call to identity | provenance |  |
+| summaries.rb:4:1:4:8 | tainted2 | summaries.rb:9:6:9:13 | tainted2 | provenance |  |
+| summaries.rb:4:1:4:8 | tainted2 | summaries.rb:9:6:9:13 | tainted2 | provenance |  |
+| summaries.rb:4:12:7:3 | call to apply_block | summaries.rb:4:1:4:8 | tainted2 | provenance |  |
+| summaries.rb:4:12:7:3 | call to apply_block | summaries.rb:4:1:4:8 | tainted2 | provenance |  |
+| summaries.rb:4:24:4:30 | tainted | summaries.rb:4:12:7:3 | call to apply_block | provenance |  |
+| summaries.rb:4:24:4:30 | tainted | summaries.rb:4:12:7:3 | call to apply_block | provenance |  |
+| summaries.rb:4:24:4:30 | tainted | summaries.rb:4:36:4:36 | x | provenance |  |
+| summaries.rb:4:24:4:30 | tainted | summaries.rb:4:36:4:36 | x | provenance |  |
+| summaries.rb:4:36:4:36 | x | summaries.rb:5:8:5:8 | x | provenance |  |
+| summaries.rb:4:36:4:36 | x | summaries.rb:5:8:5:8 | x | provenance |  |
+| summaries.rb:11:17:11:17 | x | summaries.rb:12:8:12:8 | x | provenance |  |
+| summaries.rb:11:17:11:17 | x | summaries.rb:12:8:12:8 | x | provenance |  |
+| summaries.rb:16:1:16:8 | tainted3 | summaries.rb:18:6:18:13 | tainted3 | provenance |  |
+| summaries.rb:16:1:16:8 | tainted3 | summaries.rb:18:6:18:13 | tainted3 | provenance |  |
+| summaries.rb:16:12:16:43 | call to apply_lambda | summaries.rb:16:1:16:8 | tainted3 | provenance |  |
+| summaries.rb:16:12:16:43 | call to apply_lambda | summaries.rb:16:1:16:8 | tainted3 | provenance |  |
+| summaries.rb:16:36:16:42 | tainted | summaries.rb:11:17:11:17 | x | provenance |  |
+| summaries.rb:16:36:16:42 | tainted | summaries.rb:11:17:11:17 | x | provenance |  |
+| summaries.rb:16:36:16:42 | tainted | summaries.rb:16:12:16:43 | call to apply_lambda | provenance |  |
+| summaries.rb:16:36:16:42 | tainted | summaries.rb:16:12:16:43 | call to apply_lambda | provenance |  |
+| summaries.rb:20:1:20:8 | tainted4 | summaries.rb:21:6:21:13 | tainted4 | provenance |  |
+| summaries.rb:20:12:20:32 | call to firstArg | summaries.rb:20:1:20:8 | tainted4 | provenance |  |
+| summaries.rb:20:25:20:31 | tainted | summaries.rb:20:12:20:32 | call to firstArg | provenance |  |
+| summaries.rb:26:1:26:8 | tainted5 | summaries.rb:27:6:27:13 | tainted5 | provenance |  |
+| summaries.rb:26:12:26:38 | call to secondArg | summaries.rb:26:1:26:8 | tainted5 | provenance |  |
+| summaries.rb:26:31:26:37 | tainted | summaries.rb:26:12:26:38 | call to secondArg | provenance |  |
+| summaries.rb:30:24:30:30 | tainted | summaries.rb:30:6:30:42 | call to onlyWithBlock | provenance |  |
+| summaries.rb:31:27:31:33 | tainted | summaries.rb:31:6:31:34 | call to onlyWithoutBlock | provenance |  |
+| summaries.rb:40:3:40:3 | t | summaries.rb:41:24:41:24 | t | provenance |  |
+| summaries.rb:40:3:40:3 | t | summaries.rb:42:24:42:24 | t | provenance |  |
+| summaries.rb:40:3:40:3 | t | summaries.rb:44:8:44:8 | t | provenance |  |
+| summaries.rb:40:7:40:17 | call to source | summaries.rb:40:3:40:3 | t | provenance |  |
+| summaries.rb:41:24:41:24 | t | summaries.rb:41:8:41:25 | call to matchedByName | provenance |  |
+| summaries.rb:42:24:42:24 | t | summaries.rb:42:8:42:25 | call to matchedByName | provenance |  |
+| summaries.rb:44:8:44:8 | t | summaries.rb:44:8:44:27 | call to matchedByNameRcv | provenance |  |
+| summaries.rb:48:24:48:41 | call to source | summaries.rb:48:8:48:42 | call to preserveTaint | provenance |  |
+| summaries.rb:51:24:51:30 | tainted | summaries.rb:51:6:51:31 | call to namedArg | provenance |  |
+| summaries.rb:53:1:53:4 | args [element :foo] | summaries.rb:54:21:54:24 | args [element :foo] | provenance |  |
+| summaries.rb:53:15:53:31 | call to source | summaries.rb:53:1:53:4 | args [element :foo] | provenance |  |
+| summaries.rb:54:19:54:24 | ** ... [element :foo] | summaries.rb:54:6:54:25 | call to namedArg | provenance |  |
+| summaries.rb:54:21:54:24 | args [element :foo] | summaries.rb:54:19:54:24 | ** ... [element :foo] | provenance |  |
+| summaries.rb:56:22:56:28 | tainted | summaries.rb:56:6:56:29 | call to anyArg | provenance |  |
+| summaries.rb:57:17:57:23 | tainted | summaries.rb:57:6:57:24 | call to anyArg | provenance |  |
+| summaries.rb:59:27:59:33 | tainted | summaries.rb:59:6:59:34 | call to anyNamedArg | provenance |  |
+| summaries.rb:63:32:63:38 | tainted | summaries.rb:63:6:63:39 | call to anyPositionFromOne | provenance |  |
+| summaries.rb:65:23:65:29 | tainted | summaries.rb:65:40:65:40 | x | provenance |  |
+| summaries.rb:65:40:65:40 | x | summaries.rb:66:8:66:8 | x | provenance |  |
+| summaries.rb:73:24:73:53 | call to source | summaries.rb:73:8:73:54 | call to preserveTaint | provenance |  |
+| summaries.rb:76:26:76:56 | call to source | summaries.rb:76:8:76:57 | call to preserveTaint | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:82:6:82:6 | a [element 1] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:82:6:82:6 | a [element 1] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:83:6:83:6 | a [element 1] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:83:6:83:6 | a [element 1] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:85:6:85:6 | a [element 1] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:85:6:85:6 | a [element 1] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:87:5:87:5 | a [element 1] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:87:5:87:5 | a [element 1] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:91:5:91:5 | a [element 1] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 1] | summaries.rb:91:5:91:5 | a [element 1] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:86:6:86:6 | a [element 2] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:86:6:86:6 | a [element 2] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:95:1:95:1 | a [element 2] | provenance |  |
+| summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:95:1:95:1 | a [element 2] | provenance |  |
+| summaries.rb:79:15:79:29 | call to source | summaries.rb:79:1:79:1 | a [element 1] | provenance |  |
+| summaries.rb:79:15:79:29 | call to source | summaries.rb:79:1:79:1 | a [element 1] | provenance |  |
+| summaries.rb:79:32:79:46 | call to source | summaries.rb:79:1:79:1 | a [element 2] | provenance |  |
+| summaries.rb:79:32:79:46 | call to source | summaries.rb:79:1:79:1 | a [element 2] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:82:6:82:6 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:82:6:82:6 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:84:6:84:6 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:84:6:84:6 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:85:6:85:6 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:85:6:85:6 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:86:6:86:6 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:86:6:86:6 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:87:5:87:5 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:87:5:87:5 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:95:1:95:1 | a [element] | provenance |  |
+| summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:95:1:95:1 | a [element] | provenance |  |
+| summaries.rb:81:13:81:27 | call to source | summaries.rb:81:1:81:1 | [post] a [element] | provenance |  |
+| summaries.rb:81:13:81:27 | call to source | summaries.rb:81:1:81:1 | [post] a [element] | provenance |  |
+| summaries.rb:82:6:82:6 | a [element 1] | summaries.rb:82:6:82:24 | call to readElementOne | provenance |  |
+| summaries.rb:82:6:82:6 | a [element 1] | summaries.rb:82:6:82:24 | call to readElementOne | provenance |  |
+| summaries.rb:82:6:82:6 | a [element] | summaries.rb:82:6:82:24 | call to readElementOne | provenance |  |
+| summaries.rb:82:6:82:6 | a [element] | summaries.rb:82:6:82:24 | call to readElementOne | provenance |  |
+| summaries.rb:83:6:83:6 | a [element 1] | summaries.rb:83:6:83:31 | call to readExactlyElementOne | provenance |  |
+| summaries.rb:83:6:83:6 | a [element 1] | summaries.rb:83:6:83:31 | call to readExactlyElementOne | provenance |  |
+| summaries.rb:84:6:84:6 | a [element] | summaries.rb:84:6:84:9 | ...[...] | provenance |  |
+| summaries.rb:84:6:84:6 | a [element] | summaries.rb:84:6:84:9 | ...[...] | provenance |  |
+| summaries.rb:85:6:85:6 | a [element 1] | summaries.rb:85:6:85:9 | ...[...] | provenance |  |
+| summaries.rb:85:6:85:6 | a [element 1] | summaries.rb:85:6:85:9 | ...[...] | provenance |  |
+| summaries.rb:85:6:85:6 | a [element] | summaries.rb:85:6:85:9 | ...[...] | provenance |  |
+| summaries.rb:85:6:85:6 | a [element] | summaries.rb:85:6:85:9 | ...[...] | provenance |  |
+| summaries.rb:86:6:86:6 | a [element 2] | summaries.rb:86:6:86:9 | ...[...] | provenance |  |
+| summaries.rb:86:6:86:6 | a [element 2] | summaries.rb:86:6:86:9 | ...[...] | provenance |  |
+| summaries.rb:86:6:86:6 | a [element] | summaries.rb:86:6:86:9 | ...[...] | provenance |  |
+| summaries.rb:86:6:86:6 | a [element] | summaries.rb:86:6:86:9 | ...[...] | provenance |  |
+| summaries.rb:87:1:87:1 | b [element 1] | summaries.rb:89:6:89:6 | b [element 1] | provenance |  |
+| summaries.rb:87:1:87:1 | b [element 1] | summaries.rb:89:6:89:6 | b [element 1] | provenance |  |
+| summaries.rb:87:1:87:1 | b [element] | summaries.rb:88:6:88:6 | b [element] | provenance |  |
+| summaries.rb:87:1:87:1 | b [element] | summaries.rb:88:6:88:6 | b [element] | provenance |  |
+| summaries.rb:87:1:87:1 | b [element] | summaries.rb:89:6:89:6 | b [element] | provenance |  |
+| summaries.rb:87:1:87:1 | b [element] | summaries.rb:89:6:89:6 | b [element] | provenance |  |
+| summaries.rb:87:1:87:1 | b [element] | summaries.rb:90:6:90:6 | b [element] | provenance |  |
+| summaries.rb:87:1:87:1 | b [element] | summaries.rb:90:6:90:6 | b [element] | provenance |  |
+| summaries.rb:87:5:87:5 | a [element 1] | summaries.rb:87:5:87:22 | call to withElementOne [element 1] | provenance |  |
+| summaries.rb:87:5:87:5 | a [element 1] | summaries.rb:87:5:87:22 | call to withElementOne [element 1] | provenance |  |
+| summaries.rb:87:5:87:5 | a [element] | summaries.rb:87:5:87:22 | call to withElementOne [element] | provenance |  |
+| summaries.rb:87:5:87:5 | a [element] | summaries.rb:87:5:87:22 | call to withElementOne [element] | provenance |  |
+| summaries.rb:87:5:87:22 | call to withElementOne [element 1] | summaries.rb:87:1:87:1 | b [element 1] | provenance |  |
+| summaries.rb:87:5:87:22 | call to withElementOne [element 1] | summaries.rb:87:1:87:1 | b [element 1] | provenance |  |
+| summaries.rb:87:5:87:22 | call to withElementOne [element] | summaries.rb:87:1:87:1 | b [element] | provenance |  |
+| summaries.rb:87:5:87:22 | call to withElementOne [element] | summaries.rb:87:1:87:1 | b [element] | provenance |  |
+| summaries.rb:88:6:88:6 | b [element] | summaries.rb:88:6:88:9 | ...[...] | provenance |  |
+| summaries.rb:88:6:88:6 | b [element] | summaries.rb:88:6:88:9 | ...[...] | provenance |  |
+| summaries.rb:89:6:89:6 | b [element 1] | summaries.rb:89:6:89:9 | ...[...] | provenance |  |
+| summaries.rb:89:6:89:6 | b [element 1] | summaries.rb:89:6:89:9 | ...[...] | provenance |  |
+| summaries.rb:89:6:89:6 | b [element] | summaries.rb:89:6:89:9 | ...[...] | provenance |  |
+| summaries.rb:89:6:89:6 | b [element] | summaries.rb:89:6:89:9 | ...[...] | provenance |  |
+| summaries.rb:90:6:90:6 | b [element] | summaries.rb:90:6:90:9 | ...[...] | provenance |  |
+| summaries.rb:90:6:90:6 | b [element] | summaries.rb:90:6:90:9 | ...[...] | provenance |  |
+| summaries.rb:91:1:91:1 | c [element 1] | summaries.rb:93:6:93:6 | c [element 1] | provenance |  |
+| summaries.rb:91:1:91:1 | c [element 1] | summaries.rb:93:6:93:6 | c [element 1] | provenance |  |
+| summaries.rb:91:5:91:5 | a [element 1] | summaries.rb:91:5:91:29 | call to withExactlyElementOne [element 1] | provenance |  |
+| summaries.rb:91:5:91:5 | a [element 1] | summaries.rb:91:5:91:29 | call to withExactlyElementOne [element 1] | provenance |  |
+| summaries.rb:91:5:91:29 | call to withExactlyElementOne [element 1] | summaries.rb:91:1:91:1 | c [element 1] | provenance |  |
+| summaries.rb:91:5:91:29 | call to withExactlyElementOne [element 1] | summaries.rb:91:1:91:1 | c [element 1] | provenance |  |
+| summaries.rb:93:6:93:6 | c [element 1] | summaries.rb:93:6:93:9 | ...[...] | provenance |  |
+| summaries.rb:93:6:93:6 | c [element 1] | summaries.rb:93:6:93:9 | ...[...] | provenance |  |
+| summaries.rb:95:1:95:1 | [post] a [element 2] | summaries.rb:98:6:98:6 | a [element 2] | provenance |  |
+| summaries.rb:95:1:95:1 | [post] a [element 2] | summaries.rb:98:6:98:6 | a [element 2] | provenance |  |
+| summaries.rb:95:1:95:1 | [post] a [element 2] | summaries.rb:99:1:99:1 | a [element 2] | provenance |  |
+| summaries.rb:95:1:95:1 | [post] a [element 2] | summaries.rb:99:1:99:1 | a [element 2] | provenance |  |
+| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:96:6:96:6 | a [element] | provenance |  |
+| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:96:6:96:6 | a [element] | provenance |  |
+| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:97:6:97:6 | a [element] | provenance |  |
+| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:97:6:97:6 | a [element] | provenance |  |
+| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:98:6:98:6 | a [element] | provenance |  |
+| summaries.rb:95:1:95:1 | [post] a [element] | summaries.rb:98:6:98:6 | a [element] | provenance |  |
+| summaries.rb:95:1:95:1 | a [element 2] | summaries.rb:95:1:95:1 | [post] a [element 2] | provenance |  |
+| summaries.rb:95:1:95:1 | a [element 2] | summaries.rb:95:1:95:1 | [post] a [element 2] | provenance |  |
+| summaries.rb:95:1:95:1 | a [element] | summaries.rb:95:1:95:1 | [post] a [element] | provenance |  |
+| summaries.rb:95:1:95:1 | a [element] | summaries.rb:95:1:95:1 | [post] a [element] | provenance |  |
+| summaries.rb:96:6:96:6 | a [element] | summaries.rb:96:6:96:9 | ...[...] | provenance |  |
+| summaries.rb:96:6:96:6 | a [element] | summaries.rb:96:6:96:9 | ...[...] | provenance |  |
+| summaries.rb:97:6:97:6 | a [element] | summaries.rb:97:6:97:9 | ...[...] | provenance |  |
+| summaries.rb:97:6:97:6 | a [element] | summaries.rb:97:6:97:9 | ...[...] | provenance |  |
+| summaries.rb:98:6:98:6 | a [element 2] | summaries.rb:98:6:98:9 | ...[...] | provenance |  |
+| summaries.rb:98:6:98:6 | a [element 2] | summaries.rb:98:6:98:9 | ...[...] | provenance |  |
+| summaries.rb:98:6:98:6 | a [element] | summaries.rb:98:6:98:9 | ...[...] | provenance |  |
+| summaries.rb:98:6:98:6 | a [element] | summaries.rb:98:6:98:9 | ...[...] | provenance |  |
+| summaries.rb:99:1:99:1 | [post] a [element 2] | summaries.rb:102:6:102:6 | a [element 2] | provenance |  |
+| summaries.rb:99:1:99:1 | [post] a [element 2] | summaries.rb:102:6:102:6 | a [element 2] | provenance |  |
+| summaries.rb:99:1:99:1 | a [element 2] | summaries.rb:99:1:99:1 | [post] a [element 2] | provenance |  |
+| summaries.rb:99:1:99:1 | a [element 2] | summaries.rb:99:1:99:1 | [post] a [element 2] | provenance |  |
+| summaries.rb:102:6:102:6 | a [element 2] | summaries.rb:102:6:102:9 | ...[...] | provenance |  |
+| summaries.rb:102:6:102:6 | a [element 2] | summaries.rb:102:6:102:9 | ...[...] | provenance |  |
+| summaries.rb:103:1:103:1 | [post] d [element 3] | summaries.rb:104:1:104:1 | d [element 3] | provenance |  |
+| summaries.rb:103:1:103:1 | [post] d [element 3] | summaries.rb:104:1:104:1 | d [element 3] | provenance |  |
+| summaries.rb:103:8:103:22 | call to source | summaries.rb:103:1:103:1 | [post] d [element 3] | provenance |  |
+| summaries.rb:103:8:103:22 | call to source | summaries.rb:103:1:103:1 | [post] d [element 3] | provenance |  |
+| summaries.rb:104:1:104:1 | [post] d [element 3] | summaries.rb:108:6:108:6 | d [element 3] | provenance |  |
+| summaries.rb:104:1:104:1 | [post] d [element 3] | summaries.rb:108:6:108:6 | d [element 3] | provenance |  |
+| summaries.rb:104:1:104:1 | d [element 3] | summaries.rb:104:1:104:1 | [post] d [element 3] | provenance |  |
+| summaries.rb:104:1:104:1 | d [element 3] | summaries.rb:104:1:104:1 | [post] d [element 3] | provenance |  |
+| summaries.rb:108:6:108:6 | d [element 3] | summaries.rb:108:6:108:9 | ...[...] | provenance |  |
+| summaries.rb:108:6:108:6 | d [element 3] | summaries.rb:108:6:108:9 | ...[...] | provenance |  |
+| summaries.rb:111:1:111:1 | [post] x [@value] | summaries.rb:112:6:112:6 | x [@value] | provenance |  |
+| summaries.rb:111:1:111:1 | [post] x [@value] | summaries.rb:112:6:112:6 | x [@value] | provenance |  |
+| summaries.rb:111:13:111:26 | call to source | summaries.rb:111:1:111:1 | [post] x [@value] | provenance |  |
+| summaries.rb:111:13:111:26 | call to source | summaries.rb:111:1:111:1 | [post] x [@value] | provenance |  |
+| summaries.rb:112:6:112:6 | x [@value] | summaries.rb:112:6:112:16 | call to get_value | provenance |  |
+| summaries.rb:112:6:112:6 | x [@value] | summaries.rb:112:6:112:16 | call to get_value | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:128:14:128:20 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:131:16:131:22 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:131:16:131:22 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:132:21:132:27 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:135:26:135:32 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:137:23:137:29 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:140:19:140:25 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:141:19:141:25 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:145:26:145:32 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:147:16:147:22 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:150:39:150:45 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:154:20:154:26 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:155:28:155:34 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:156:27:156:33 | tainted | provenance |  |
+| summaries.rb:122:16:122:22 | [post] tainted | summaries.rb:157:14:160:3 | do ... end [captured tainted] | provenance |  |
+| summaries.rb:122:16:122:22 | tainted | summaries.rb:122:16:122:22 | [post] tainted | provenance |  |
+| summaries.rb:122:16:122:22 | tainted | summaries.rb:122:25:122:25 | [post] y | provenance |  |
+| summaries.rb:122:16:122:22 | tainted | summaries.rb:122:33:122:33 | [post] z | provenance |  |
+| summaries.rb:122:25:122:25 | [post] y | summaries.rb:124:6:124:6 | y | provenance |  |
+| summaries.rb:122:33:122:33 | [post] z | summaries.rb:125:6:125:6 | z | provenance |  |
+| summaries.rb:128:1:128:1 | [post] x | summaries.rb:129:6:129:6 | x | provenance |  |
+| summaries.rb:128:14:128:20 | tainted | summaries.rb:128:1:128:1 | [post] x | provenance |  |
+| summaries.rb:131:16:131:22 | tainted | summaries.rb:131:1:131:23 | synthetic splat argument | provenance |  |
+| summaries.rb:157:14:160:3 | do ... end [captured tainted] | summaries.rb:158:15:158:21 | tainted | provenance |  |
+| summaries.rb:157:14:160:3 | do ... end [captured tainted] | summaries.rb:158:15:158:21 | tainted | provenance |  |
 nodes
 | summaries.rb:1:11:1:36 | call to identity | semmle.label | call to identity |
 | summaries.rb:1:11:1:36 | call to identity | semmle.label | call to identity |

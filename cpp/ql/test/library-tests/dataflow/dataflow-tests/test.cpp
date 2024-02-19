@@ -937,3 +937,111 @@ namespace global_variable_conflation_test {
     sink(*global_pointer); // $ ir MISSING: ast
   }
 }
+
+char* gettext(const char*);
+char* dgettext(const char*, const char*);
+char* ngettext(const char*, const char*, unsigned long int);
+char* dngettext (const char*, const char *, const char *, unsigned long int);
+
+namespace test_gettext {
+  char* source();
+  char* indirect_source();
+
+  void test_gettext() {
+    char* data = source();
+    char* translated = gettext(data);
+    sink(translated); // clean 
+    indirect_sink(translated); // clean
+  }
+
+  void indirect_test_dgettext() {
+    char* data = indirect_source();
+    char* translated = gettext(data);
+    sink(translated); // clean
+    indirect_sink(translated); // $ ir MISSING: ast
+  }
+
+  void test_dgettext() {
+    char* data = source();
+    char* domain = source(); // Should not trace from this source
+    char* translated = dgettext(domain, data);
+    sink(translated); // clean 
+    indirect_sink(translated); // clean
+  }
+
+  void indirect_test_gettext() {
+    char* data = indirect_source();
+    char* domain = indirect_source(); // Should not trace from this source
+    char* translated = dgettext(domain, data);
+    sink(translated); // clean
+    indirect_sink(translated); // $ ir MISSING: ast
+  }
+
+  void test_ngettext() {
+    char* data = source();
+    char* np = nullptr; // Don't coun't as a source
+    
+    char* translated = ngettext(data, np, 0);
+    sink(translated); // clean 
+    indirect_sink(translated); // clean
+
+    translated = ngettext(np, data, 0);
+    sink(translated); // clean 
+    indirect_sink(translated); // clean
+  }
+
+  void indirect_test_ngettext() {
+    char* data = indirect_source();
+    char* np = nullptr; // Don't coun't as a source
+    
+    char* translated = ngettext(data, np, 0);
+    sink(translated); // clean 
+    indirect_sink(translated); // $ ir MISSING: ast
+
+    translated = ngettext(np, data, 0);
+    sink(translated); // clean 
+    indirect_sink(translated); // $ ir MISSING: ast
+  }
+
+  void test_dngettext() {
+    char* data = source();
+    char* np = nullptr; // Don't coun't as a source
+    char* domain = source(); // Should not trace from this source
+    
+    char* translated = dngettext(domain, data, np, 0);
+    sink(translated); // clean 
+    indirect_sink(translated); // clean
+
+    translated = dngettext(domain, np, data, 0);
+    sink(translated); // clean 
+    indirect_sink(translated); // clean
+  }
+
+  void indirect_test_dngettext() {
+    char* data = indirect_source();
+    char* np = nullptr; // Don't coun't as a source
+    char* domain = indirect_source(); // Should not trace from this source
+    
+    char* translated = dngettext(domain, data, np, 0);
+    sink(translated); // clean 
+    indirect_sink(translated); // $ ir MISSING: ast
+
+    translated = dngettext(domain, np, data, 0);
+    sink(translated); // clean 
+    indirect_sink(translated); // $ ir MISSING: ast
+  }
+
+  void indirect_test_gettext_no_flow_from_domain() {
+    char* domain = source(); // Should not trace from this source
+    char* translated = dgettext(domain, nullptr);
+    sink(translated); // clean 
+    indirect_sink(translated); // clean
+  }
+}
+
+void* memset(void*, int, size_t);
+
+void memset_test(char* buf) { // $ ast-def=buf
+	memset(buf, source(), 10);
+	sink(*buf); // $ ir MISSING: ast
+}

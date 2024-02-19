@@ -1,5 +1,5 @@
 edges
-| test.cpp:22:27:22:30 | **argv | test.cpp:29:13:29:20 | *filePath |
+| test.cpp:22:27:22:30 | **argv | test.cpp:29:13:29:20 | *filePath | provenance |  |
 nodes
 | test.cpp:22:27:22:30 | **argv | semmle.label | **argv |
 | test.cpp:29:13:29:20 | *filePath | semmle.label | *filePath |

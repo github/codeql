@@ -77,3 +77,6 @@
 
 <%# GOOD: input is sanitized %>
 <%= sanitize(params[:comment]).html_safe %>
+
+<%# BAD: A local rendered raw as a local variable %>
+<%== display_text %>

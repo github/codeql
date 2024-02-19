@@ -1,34 +1,34 @@
 edges
-| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:10:27:10:61 | access to indexer : String |
-| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:16:33:16:33 | access to local variable s |
-| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:19:29:19:29 | access to local variable s |
-| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:28:20:28:20 | access to local variable s |
-| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:34:30:34:30 | access to local variable s |
-| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:40:21:40:21 | access to local variable s |
-| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:46:22:46:22 | access to local variable s |
-| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:52:21:52:21 | access to local variable s |
-| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:16:33:16:33 | access to local variable s |
-| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:19:29:19:29 | access to local variable s |
-| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:28:20:28:20 | access to local variable s |
-| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:34:30:34:30 | access to local variable s |
-| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:40:21:40:21 | access to local variable s |
-| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:46:22:46:22 | access to local variable s |
-| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:52:21:52:21 | access to local variable s |
-| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:11:27:11:61 | access to indexer : String |
-| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:16:33:16:33 | access to local variable s |
-| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:19:29:19:29 | access to local variable s |
-| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:28:20:28:20 | access to local variable s |
-| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:34:30:34:30 | access to local variable s |
-| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:40:21:40:21 | access to local variable s |
-| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:46:22:46:22 | access to local variable s |
-| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:52:21:52:21 | access to local variable s |
-| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:16:33:16:33 | access to local variable s |
-| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:19:29:19:29 | access to local variable s |
-| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:28:20:28:20 | access to local variable s |
-| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:34:30:34:30 | access to local variable s |
-| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:40:21:40:21 | access to local variable s |
-| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:46:22:46:22 | access to local variable s |
-| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:52:21:52:21 | access to local variable s |
+| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:10:27:10:61 | access to indexer : String | provenance |  |
+| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:16:33:16:33 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:19:29:19:29 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:28:20:28:20 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:34:30:34:30 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:40:21:40:21 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:46:22:46:22 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:52:21:52:21 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:16:33:16:33 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:19:29:19:29 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:28:20:28:20 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:34:30:34:30 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:40:21:40:21 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:46:22:46:22 | access to local variable s | provenance |  |
+| XPathInjection.cs:10:27:10:61 | access to indexer : String | XPathInjection.cs:52:21:52:21 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:11:27:11:61 | access to indexer : String | provenance |  |
+| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:16:33:16:33 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:19:29:19:29 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:28:20:28:20 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:34:30:34:30 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:40:21:40:21 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:46:22:46:22 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:52:21:52:21 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:16:33:16:33 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:19:29:19:29 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:28:20:28:20 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:34:30:34:30 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:40:21:40:21 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:46:22:46:22 | access to local variable s | provenance |  |
+| XPathInjection.cs:11:27:11:61 | access to indexer : String | XPathInjection.cs:52:21:52:21 | access to local variable s | provenance |  |
 nodes
 | XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | XPathInjection.cs:10:27:10:61 | access to indexer : String | semmle.label | access to indexer : String |

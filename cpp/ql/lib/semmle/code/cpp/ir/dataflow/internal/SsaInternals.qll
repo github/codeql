@@ -142,7 +142,7 @@ private newtype TDefOrUseImpl =
     exists(SsaInternals0::Def def |
       def.getSourceVariable().getBaseVariable().(BaseIRVariable).getIRVariable().getAst() = p and
       not def.getValue().asInstruction() instanceof InitializeParameterInstruction and
-      unspecifiedTypeIsModifiableAt(p.getUnspecifiedType(), indirectionIndex)
+      underlyingTypeIsModifiableAt(p.getUnderlyingType(), indirectionIndex)
     )
   }
 
@@ -172,11 +172,13 @@ private predicate isGlobalDefImpl(
   )
 }
 
-private predicate unspecifiedTypeIsModifiableAt(Type unspecified, int indirectionIndex) {
-  indirectionIndex = [1 .. getIndirectionForUnspecifiedType(unspecified).getNumberOfIndirections()] and
+private predicate underlyingTypeIsModifiableAt(Type underlying, int indirectionIndex) {
+  indirectionIndex =
+    [1 .. getIndirectionForUnspecifiedType(underlying.getUnspecifiedType())
+          .getNumberOfIndirections()] and
   exists(CppType cppType |
-    cppType.hasUnspecifiedType(unspecified, _) and
-    isModifiableAt(cppType, indirectionIndex + 1)
+    cppType.hasUnderlyingType(underlying, false) and
+    isModifiableAt(cppType, indirectionIndex)
   )
 }
 
@@ -545,6 +547,11 @@ class GlobalUse extends UseImpl, TGlobalUse {
    */
   Type getUnspecifiedType() { result = global.getUnspecifiedType() }
 
+  /**
+   * Gets the type of this use, after typedefs have been resolved.
+   */
+  Type getUnderlyingType() { result = global.getUnderlyingType() }
+
   override predicate isCertain() { any() }
 
   override BaseSourceVariableInstruction getBase() { none() }
@@ -588,10 +595,15 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
   int getIndirection() { result = indirectionIndex }
 
   /**
-   * Gets the type of this use after specifiers have been deeply stripped
-   * and typedefs have been resolved.
+   * Gets the type of this definition after specifiers have been deeply
+   * stripped and typedefs have been resolved.
    */
   Type getUnspecifiedType() { result = global.getUnspecifiedType() }
+
+  /**
+   * Gets the type of this definition, after typedefs have been resolved.
+   */
+  Type getUnderlyingType() { result = global.getUnderlyingType() }
 
   override string toString() { result = "Def of " + this.getSourceVariable() }
 
@@ -1091,6 +1103,11 @@ class GlobalDef extends TGlobalDef, SsaDefOrUse {
    * and typedefs have been resolved.
    */
   DataFlowType getUnspecifiedType() { result = global.getUnspecifiedType() }
+
+  /**
+   * Gets the type of this definition, after typedefs have been resolved.
+   */
+  DataFlowType getUnderlyingType() { result = global.getUnderlyingType() }
 
   /** Gets the `IRFunction` whose body is evaluated after this definition. */
   IRFunction getIRFunction() { result = global.getIRFunction() }
