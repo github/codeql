@@ -51,6 +51,11 @@ jobs:
         run: |
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
+      - name: Prepare Windows
+        if: runner.os == 'Windows'
+        shell: powershell
+        run: |
+          git config --global core.longpaths true
       - uses: ./.github/actions/os-version
         id: os_version
       - name: Cache entire extractor
