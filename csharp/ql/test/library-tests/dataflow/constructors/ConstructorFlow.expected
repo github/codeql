@@ -1,4 +1,5 @@
 testFailures
+| Constructors.cs:134:24:134:42 | // ... | Missing result:hasValueFlow=8 |
 edges
 | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | Constructors.cs:9:27:9:41 | object creation of type C_no_ctor : C_no_ctor [field s1] : Object | provenance |  |
 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | provenance |  |
@@ -64,6 +65,13 @@ edges
 | Constructors.cs:112:25:112:27 | access to local variable o31 : Object | Constructors.cs:112:18:112:28 | object creation of type C3 : C3 [parameter o31param] : Object | provenance |  |
 | Constructors.cs:113:14:113:15 | access to local variable c3 : C3 [parameter o31param] : Object | Constructors.cs:106:32:106:39 | this : C3 [parameter o31param] : Object | provenance |  |
 | Constructors.cs:113:14:113:15 | access to local variable c3 : C3 [parameter o31param] : Object | Constructors.cs:113:14:113:21 | access to property Obj31 | provenance |  |
+| Constructors.cs:121:26:121:28 | oc1 : Object | Constructors.cs:123:20:123:22 | access to parameter oc1 : Object | provenance |  |
+| Constructors.cs:123:20:123:22 | access to parameter oc1 : Object | Constructors.cs:123:13:123:16 | [post] this access : C4 [property Obj1] : Object | provenance |  |
+| Constructors.cs:130:18:130:34 | call to method Source<Object> : Object | Constructors.cs:132:25:132:26 | access to local variable o1 : Object | provenance |  |
+| Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj1] : Object | Constructors.cs:133:14:133:15 | access to local variable c4 : C4 [property Obj1] : Object | provenance |  |
+| Constructors.cs:132:25:132:26 | access to local variable o1 : Object | Constructors.cs:121:26:121:28 | oc1 : Object | provenance |  |
+| Constructors.cs:132:25:132:26 | access to local variable o1 : Object | Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj1] : Object | provenance |  |
+| Constructors.cs:133:14:133:15 | access to local variable c4 : C4 [property Obj1] : Object | Constructors.cs:133:14:133:20 | access to property Obj1 | provenance |  |
 nodes
 | Constructors.cs:5:24:5:25 | [post] this access : C_no_ctor [field s1] : Object | semmle.label | [post] this access : C_no_ctor [field s1] : Object |
 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
@@ -134,6 +142,14 @@ nodes
 | Constructors.cs:112:25:112:27 | access to local variable o31 : Object | semmle.label | access to local variable o31 : Object |
 | Constructors.cs:113:14:113:15 | access to local variable c3 : C3 [parameter o31param] : Object | semmle.label | access to local variable c3 : C3 [parameter o31param] : Object |
 | Constructors.cs:113:14:113:21 | access to property Obj31 | semmle.label | access to property Obj31 |
+| Constructors.cs:121:26:121:28 | oc1 : Object | semmle.label | oc1 : Object |
+| Constructors.cs:123:13:123:16 | [post] this access : C4 [property Obj1] : Object | semmle.label | [post] this access : C4 [property Obj1] : Object |
+| Constructors.cs:123:20:123:22 | access to parameter oc1 : Object | semmle.label | access to parameter oc1 : Object |
+| Constructors.cs:130:18:130:34 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj1] : Object | semmle.label | object creation of type C4 : C4 [property Obj1] : Object |
+| Constructors.cs:132:25:132:26 | access to local variable o1 : Object | semmle.label | access to local variable o1 : Object |
+| Constructors.cs:133:14:133:15 | access to local variable c4 : C4 [property Obj1] : Object | semmle.label | access to local variable c4 : C4 [property Obj1] : Object |
+| Constructors.cs:133:14:133:20 | access to property Obj1 | semmle.label | access to property Obj1 |
 subpaths
 | Constructors.cs:64:37:64:37 | access to parameter o : Object | Constructors.cs:57:54:57:55 | o2 : Object | Constructors.cs:59:13:59:19 | SSA def(o1) : Object | Constructors.cs:64:27:64:34 | SSA def(o22param) : Object |
 | Constructors.cs:71:25:71:25 | access to local variable o : Object | Constructors.cs:41:26:41:26 | o : Object | Constructors.cs:41:32:41:34 | [post] this access : C1 [field Obj] : Object | Constructors.cs:71:18:71:26 | object creation of type C1 : C1 [field Obj] : Object |
@@ -147,6 +163,7 @@ subpaths
 | Constructors.cs:101:14:101:15 | access to local variable c2 : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | this : C2 [parameter o22param] : Object | Constructors.cs:48:32:48:39 | access to parameter o22param : Object | Constructors.cs:101:14:101:21 | access to property Obj22 |
 | Constructors.cs:112:25:112:27 | access to local variable o31 : Object | Constructors.cs:104:28:104:35 | o31param : Object | Constructors.cs:104:28:104:35 | o31param : Object | Constructors.cs:112:18:112:28 | object creation of type C3 : C3 [parameter o31param] : Object |
 | Constructors.cs:113:14:113:15 | access to local variable c3 : C3 [parameter o31param] : Object | Constructors.cs:106:32:106:39 | this : C3 [parameter o31param] : Object | Constructors.cs:106:32:106:39 | access to parameter o31param : Object | Constructors.cs:113:14:113:21 | access to property Obj31 |
+| Constructors.cs:132:25:132:26 | access to local variable o1 : Object | Constructors.cs:121:26:121:28 | oc1 : Object | Constructors.cs:123:13:123:16 | [post] this access : C4 [property Obj1] : Object | Constructors.cs:132:18:132:31 | object creation of type C4 : C4 [property Obj1] : Object |
 #select
 | Constructors.cs:15:18:15:19 | access to field s1 | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | Constructors.cs:15:18:15:19 | access to field s1 | $@ | Constructors.cs:5:29:5:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Constructors.cs:33:18:33:19 | access to field s1 | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | Constructors.cs:33:18:33:19 | access to field s1 | $@ | Constructors.cs:21:29:21:45 | call to method Source<Object> : Object | call to method Source<Object> : Object |
@@ -157,3 +174,4 @@ subpaths
 | Constructors.cs:93:14:93:21 | access to property Obj22 | Constructors.cs:91:21:91:37 | call to method Source<Object> : Object | Constructors.cs:93:14:93:21 | access to property Obj22 | $@ | Constructors.cs:91:21:91:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Constructors.cs:101:14:101:21 | access to property Obj22 | Constructors.cs:99:21:99:37 | call to method Source<Object> : Object | Constructors.cs:101:14:101:21 | access to property Obj22 | $@ | Constructors.cs:99:21:99:37 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | Constructors.cs:113:14:113:21 | access to property Obj31 | Constructors.cs:111:19:111:35 | call to method Source<Object> : Object | Constructors.cs:113:14:113:21 | access to property Obj31 | $@ | Constructors.cs:111:19:111:35 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| Constructors.cs:133:14:133:20 | access to property Obj1 | Constructors.cs:130:18:130:34 | call to method Source<Object> : Object | Constructors.cs:133:14:133:20 | access to property Obj1 | $@ | Constructors.cs:130:18:130:34 | call to method Source<Object> : Object | call to method Source<Object> : Object |
