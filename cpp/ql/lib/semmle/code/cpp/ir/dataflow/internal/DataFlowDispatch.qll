@@ -14,7 +14,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
 cached
 DataFlowCallable defaultViableCallable(DataFlowCall call) {
   DataFlowImplCommon::forceCachingInSameStage() and
-  result = TSourceCallable(call.getStaticCallTarget())
+  result = call.getStaticCallTarget()
   or
   // If the target of the call does not have a body in the snapshot, it might
   // be because the target is just a header declaration, and the real target
@@ -80,7 +80,7 @@ private module VirtualDispatch {
         exists(DataFlowCall call, Position i |
           other
               .(DataFlow::ParameterNode)
-              .isParameterOf(TSourceCallable(pragma[only_bind_into](call).getStaticCallTarget()), i) and
+              .isParameterOf(pragma[only_bind_into](call).getStaticCallTarget(), i) and
           src.(ArgumentNode).argumentOf(call, pragma[only_bind_into](pragma[only_bind_out](i)))
         ) and
         allowOtherFromArg = true and
@@ -89,7 +89,7 @@ private module VirtualDispatch {
         // Call return
         exists(DataFlowCall call, ReturnKind returnKind |
           other = getAnOutNode(call, returnKind) and
-          returnNodeWithKindAndEnclosingCallable(src, returnKind, TSourceCallable(call.getStaticCallTarget()))
+          returnNodeWithKindAndEnclosingCallable(src, returnKind, call.getStaticCallTarget())
         ) and
         allowFromArg = false
         or
@@ -176,7 +176,7 @@ private module VirtualDispatch {
   /** Call to a virtual function. */
   private class DataSensitiveOverriddenFunctionCall extends DataSensitiveCall {
     DataSensitiveOverriddenFunctionCall() {
-      exists(this.getStaticCallTarget().(VirtualFunction).getAnOverridingFunction())
+      exists(this.getStaticCallTarget().asSourceCallable().(VirtualFunction).getAnOverridingFunction())
     }
 
     override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getArgument(-1) }
@@ -194,7 +194,7 @@ private module VirtualDispatch {
      */
     pragma[noinline]
     private predicate overrideMayAffectCall(Class overridingClass, MemberFunction overridingFunction) {
-      overridingFunction.getAnOverriddenFunction+() = this.getStaticCallTarget().(VirtualFunction) and
+      overridingFunction.getAnOverriddenFunction+() = this.getStaticCallTarget().asSourceCallable().(VirtualFunction) and
       overridingFunction.getDeclaringType() = overridingClass
     }
 
@@ -277,7 +277,7 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
   result = viableCallable(call) and
   exists(int i, DataFlowCallable f |
     mayBenefitFromCallContext(pragma[only_bind_into](call), f, i) and
-    f.asSourceCallable() = ctx.getStaticCallTarget() and
+    f = ctx.getStaticCallTarget() and
     result = TSourceCallable(ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget())
   )
 }

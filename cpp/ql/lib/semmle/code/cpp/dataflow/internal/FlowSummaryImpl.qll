@@ -65,7 +65,7 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
 private import Make<DataFlowImplSpecific::CppDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
-  DataFlowCall getACall(Public::SummarizedCallable sc) { result.getStaticCallTarget() = sc }
+  DataFlowCall getACall(Public::SummarizedCallable sc) { result.getStaticCallTarget() = TSummarizedCallable(sc) }
 }
 
 module SourceSinkInterpretationInput implements
@@ -125,7 +125,7 @@ module SourceSinkInterpretationInput implements
     }
 
     /** Gets the target of this call, if any. */
-    Element getCallTarget() { result = this.asCall().getStaticCallTarget() }
+    Element getCallTarget() { result = this.asCall().getStaticCallTarget().asSourceCallable() } // TODO: summarized target???
 
     /** Gets a textual representation of this node. */
     string toString() {
