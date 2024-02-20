@@ -787,16 +787,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex LegacyNugetPackage();
 
-        private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<string> dllPaths)
-        {
-            var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName)
-                .Select(d => Path.GetFileName(d).ToLowerInvariant());
-            var notYetDownloadedPackages = fileContent.AllPackages
-                .Except(alreadyDownloadedPackages)
-                .ToHashSet();
 
-            var oldPackageDirectories = Directory.GetDirectories(legacyPackageDirectory.DirInfo.FullName)
+        private static IEnumerable<string> GetRestoredPackageDirectoryNames(DirectoryInfo root)
+        {
+            return Directory.GetDirectories(root.FullName)
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
+        }
+
+        private IEnumerable<string> GetRestoredLegacyPackageNames()
+        {
+            var oldPackageDirectories = GetRestoredPackageDirectoryNames(legacyPackageDirectory.DirInfo);
             foreach (var oldPackageDirectory in oldPackageDirectories)
             {
                 // nuget install restores packages to 'packagename.version' folders (dotnet restore to 'packagename/version' folders)
@@ -812,8 +812,23 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     continue;
                 }
 
-                var packageName = match.Groups[1].Value.ToLowerInvariant();
-                notYetDownloadedPackages.Remove(packageName);
+                yield return match.Groups[1].Value.ToLowerInvariant();
+            }
+        }
+
+        private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<string> dllPaths)
+        {
+            var alreadyDownloadedPackages = GetRestoredPackageDirectoryNames(packageDirectory.DirInfo);
+            var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
+
+            var notYetDownloadedPackages = new HashSet<string>(fileContent.AllPackages);
+            foreach (var alreadyDownloadedPackage in alreadyDownloadedPackages)
+            {
+                notYetDownloadedPackages.Remove(alreadyDownloadedPackage);
+            }
+            foreach (var alreadyDownloadedLegacyPackage in alreadyDownloadedLegacyPackages)
+            {
+                notYetDownloadedPackages.Remove(alreadyDownloadedLegacyPackage);
             }
 
             if (notYetDownloadedPackages.Count == 0)
