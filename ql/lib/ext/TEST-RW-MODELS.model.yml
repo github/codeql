@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: summaryModel
+    data:
+      - ["octo-org/this-repo/.github/workflows/workflow.yml", "*", "input.config-path", "output.workflow-output", "taint"]
+      - ["octo-org/summary-repo/.github/workflows/workflow.yml", "*", "input.config-path", "output.workflow-output", "taint"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sourceModel
+    data:
+      - ["octo-org/source-repo/.github/workflows/workflow.yml", "*", "output.workflow-output", "*", "Foo"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["octo-org/sink-repo/.github/workflows/workflow.yml", "*", "input.config-path", "expression-injection"]

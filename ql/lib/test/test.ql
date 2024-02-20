@@ -43,14 +43,9 @@ query predicate nonOrphanVarAccesses(ExprAccessExpr va, string var, AstNode pare
 
 query predicate parentNodes(AstNode child, AstNode parent) { child.getParentNode() = parent }
 
-query predicate cfgNodes(Cfg::Node n) {
-  //any()
-  n.getAstNode() instanceof OutputsStmt
-}
+query predicate cfgNodes(Cfg::Node n) { any() }
 
-query predicate dfNodes(DataFlow::Node e) {
-  e.getLocation().getFile().getBaseName() = "argus_case_study.yml"
-}
+query predicate dfNodes(DataFlow::Node e) { any() }
 
 query predicate exprNodes(DataFlow::ExprNode e) { any() }
 
@@ -69,3 +64,7 @@ query predicate sources(string action, string version, string output, string tri
 query predicate summaries(string action, string version, string input, string output, string kind) {
   summaryModel(action, version, input, output, kind)
 }
+
+query predicate calls(DataFlow::CallNode call, string callee) { callee = call.getCallee() }
+
+query predicate needs(DataFlow::ExprNode e) { e.asExpr() instanceof NeedsCtxAccessExpr }
