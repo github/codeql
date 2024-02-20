@@ -74,14 +74,6 @@ module DecompressionBombs {
         |
           this = m.getACall().getReceiver()
         )
-        or
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("github.com/klauspost/compress/zstd", "Decoder", ["WriteTo", "Read"]) and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
       }
     }
 
@@ -178,18 +170,6 @@ module DecompressionBombs {
    * Provides decompression bomb sinks and additional flow steps for `github.com/ulikunitz/xz` package
    */
   module UlikunitzXz {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("github.com/ulikunitz/xz", "Reader", "Read") and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -216,18 +196,6 @@ module DecompressionBombs {
    * Provides decompression bomb sinks and additional flow steps for `compress/gzip` package
    */
   module CompressGzipBombs {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("compress/gzip", "Reader", "Read") and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -255,19 +223,6 @@ module DecompressionBombs {
    * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/gzip` package
    */
   module KlauspostGzipAndPgzip {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName(["github.com/klauspost/compress/gzip", "github.com/klauspost/pgzip"],
-            "Reader", ["Read", "WriteTo"]) and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -301,18 +256,6 @@ module DecompressionBombs {
    * Provides decompression bomb sinks and additional flow steps for `compress/bzip2` package
    */
   module CompressBzip2 {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("compress/bzip2", "reader", "Read") and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -340,18 +283,6 @@ module DecompressionBombs {
    * Provides decompression bomb sinks and additional flow steps for `github.com/dsnet/compress/bzip2` package
    */
   module DsnetBzip2 {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("github.com/dsnet/compress/bzip2", "Reader", "Read") and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -379,18 +310,6 @@ module DecompressionBombs {
    * Provides decompression bomb sinks and additional flow steps for `github.com/dsnet/compress/flate` package
    */
   module DsnetFlate {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("github.com/dsnet/compress/flate", "Reader", "Read") and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -496,18 +415,6 @@ module DecompressionBombs {
    * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/zlib` package
    */
   module KlauspostZlib {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("github.com/klauspost/compress/zlib", "reader", "Read") and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -535,18 +442,6 @@ module DecompressionBombs {
    * Provides decompression bomb sinks and additional flow steps for `compress/zlib` package
    */
   module CompressZlibBombs {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("compress/zlib", "reader", "Read") and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -574,18 +469,6 @@ module DecompressionBombs {
    * Provides decompression bomb sinks and additional flow steps for `github.com/golang/snappy` package
    */
   module GolangSnappy {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("github.com/golang/snappy", "Reader", ["Read", "ReadByte"]) and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -643,8 +526,7 @@ module DecompressionBombs {
     class TheSink extends Sink {
       TheSink() {
         exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("github.com/klauspost/compress/s2", "Reader",
-            ["DecodeConcurrent", "ReadByte", "Read"]) and
+          m.hasQualifiedName("github.com/klauspost/compress/s2", "Reader", "DecodeConcurrent") and
           cn = m.getACall()
         |
           this = cn.getReceiver() and
@@ -690,14 +572,12 @@ module DecompressionBombs {
         )
         or
         exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("io", "Reader", "Read") and cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-        or
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("archive/tar", "Reader", "Read") and cn = m.getACall()
+          (
+            m.implements("io", "Reader", "Read") or
+            m.implements("io", "ByteReader", "ReadByte") or
+            m.implements("io", "WriterTo", "WriteTo")
+          ) and
+          cn = m.getACall()
         |
           this = cn.getReceiver() and
           not hasFlowToComparison(cn.getResult(0))
