@@ -3,10 +3,10 @@
  * @description Using user-controlled GitHub Actions contexts like `run:` or `script:` may allow a malicious
  *              user to inject code into the GitHub action.
  * @kind path-problem
- * @problem.severity warning
- * @security-severity 5.0
+ * @problem.severity error
+ * @security-severity 9
  * @precision high
- * @id actions/expression-injection
+ * @id actions/critical-expression-injection
  * @tags actions
  *       security
  *       external/cwe/cwe-094
@@ -35,6 +35,13 @@ module MyFlow = TaintTracking::Global<MyConfig>;
 import MyFlow::PathGraph
 
 from MyFlow::PathNode source, MyFlow::PathNode sink
-where MyFlow::flowPath(source, sink)
+where
+  MyFlow::flowPath(source, sink) and
+  source
+      .getNode()
+      .asExpr()
+      .(Statement)
+      .getEnclosingWorkflowStmt()
+      .hasTriggerEvent("pull_request_target")
 select sink.getNode(), source, sink,
   "Potential expression injection, which may be controlled by an external user."
