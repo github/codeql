@@ -12,15 +12,15 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Constructor : Method
     {
-        private readonly Lazy<List<SyntaxNode>> DeclaringReferenceSyntax;
+        private readonly List<SyntaxNode> declaringReferenceSyntax;
 
         private Constructor(Context cx, IMethodSymbol init)
             : base(cx, init)
         {
-            DeclaringReferenceSyntax = new(() =>
+            declaringReferenceSyntax =
                 Symbol.DeclaringSyntaxReferences
                     .Select(r => r.GetSyntax())
-                    .ToList());
+                    .ToList();
         }
 
         public override void Populate(TextWriter trapFile)
@@ -143,12 +143,12 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         private ConstructorDeclarationSyntax? OrdinaryConstructorSyntax =>
-            DeclaringReferenceSyntax.Value
+            declaringReferenceSyntax
                 .OfType<ConstructorDeclarationSyntax>()
                 .FirstOrDefault();
 
         private TypeDeclarationSyntax? PrimaryConstructorSyntax =>
-            DeclaringReferenceSyntax.Value
+            declaringReferenceSyntax
                     .OfType<TypeDeclarationSyntax>()
                     .FirstOrDefault(t => t is ClassDeclarationSyntax or StructDeclarationSyntax or RecordDeclarationSyntax);
 
