@@ -54,12 +54,13 @@ namespace Semmle.Extraction.CSharp.Entities
             var block = Block;
             var expr = ExpressionBody;
 
+            Context.PopulateLater(() => ExtractInitializers(trapFile));
+
             if (block is not null || expr is not null)
             {
                 Context.PopulateLater(
                    () =>
                    {
-                       ExtractInitializers(trapFile);
                        if (block is not null)
                            Statements.Block.Create(Context, block, this, 0);
                        else

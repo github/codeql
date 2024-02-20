@@ -101,6 +101,18 @@ public class Constructors
         Sink(c2.Obj22); // $ hasValueFlow=5
     }
 
+    public class C3(object o31param)
+    {
+        public object Obj31 => o31param;
+    }
+
+    public void M5()
+    {
+        var o31 = Source<object>(6);
+        var c3 = new C3(o31);
+        Sink(c3.Obj31); // $ hasValueFlow=6
+    }
+
     public static void Sink(object o) { }
 
     public static T Source<T>(object source) => throw null;
