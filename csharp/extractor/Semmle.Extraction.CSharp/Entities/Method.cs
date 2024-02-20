@@ -232,7 +232,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="cx"></param>
         /// <param name="methodDecl"></param>
         /// <returns></returns>
-        [return: NotNullIfNotNull("methodDecl")]
+        [return: NotNullIfNotNull(nameof(methodDecl))]
         public static Method? Create(Context cx, IMethodSymbol? methodDecl)
         {
             if (methodDecl is null)
