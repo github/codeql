@@ -414,7 +414,8 @@ func S2(file io.Reader) {
 
 	s2Reader := s2.NewReader(file)
 	var out []byte = make([]byte, 70)
-	s2Reader.Read(out) // $ hasValueFlow="s2Reader"
+	s2Reader.Read(out)  // $ hasValueFlow="s2Reader"
+	s2Reader.ReadByte() // $ hasValueFlow="s2Reader"
 	var buf bytes.Buffer
 	s2Reader.DecodeConcurrent(&buf, 2) // $ hasValueFlow="s2Reader"
 	tarRead = tar.NewReader(s2Reader)
