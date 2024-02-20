@@ -28,20 +28,7 @@ class DollarAtString extends string {
  * descriptions.
  */
 predicate isKnownKind(string kind, AutomodelEndpointTypes::EndpointType type) {
-  kind = "path-injection" and
-  type instanceof AutomodelEndpointTypes::PathInjectionSinkType
-  or
-  kind = "sql-injection" and
-  type instanceof AutomodelEndpointTypes::SqlInjectionSinkType
-  or
-  kind = "request-forgery" and
-  type instanceof AutomodelEndpointTypes::RequestForgerySinkType
-  or
-  kind = "command-injection" and
-  type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
-  or
-  kind = "remote" and
-  type instanceof AutomodelEndpointTypes::RemoteSourceType
+  kind = type.getKind()
 }
 
 /**
