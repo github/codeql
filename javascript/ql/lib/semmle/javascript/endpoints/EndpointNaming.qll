@@ -121,7 +121,7 @@ private int distanceFromRoot(API::Node nd) {
   result = 100 + distanceFromFallbackName(nd)
 }
 
-/** Holds if `nd` can be given a name. */
+/** Holds if `node` can be given a name. */
 private predicate isRelevant(API::Node node) { exists(distanceFromRoot(node)) }
 
 /**
