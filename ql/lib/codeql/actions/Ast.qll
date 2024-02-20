@@ -369,7 +369,10 @@ private string jobsCtxRegex() {
 
 private string envCtxRegex() { result = "\\benv\\.([A-Za-z0-9_-]+)\\b" }
 
-private string inputsCtxRegex() { result = "\\binputs\\.([A-Za-z0-9_-]+)\\b" }
+private string inputsCtxRegex() {
+  result = "\\binputs\\.([A-Za-z0-9_-]+)\\b" or
+  result = "\\bgithub\\.event\\.inputs\\.([A-Za-z0-9_-]+)\\b"
+}
 
 /**
  * Holds for an expression accesing the `steps` context.
