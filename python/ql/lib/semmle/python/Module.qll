@@ -1,7 +1,6 @@
 import python
 private import semmle.python.objects.Modules
 private import semmle.python.internal.CachedStages
-private import semmle.python.dataflow.new.internal.ImportResolution
 
 /**
  * A module. This is the top level element in an AST, corresponding to a source file.
@@ -71,7 +70,9 @@ class Module extends Module_, Scope, AstNode {
   string getAnExport() {
     py_exports(this, result)
     or
-    ImportResolution::module_export(this, result, _)
+    exists(ModuleObjectInternal mod | mod.getSource() = this.getEntryNode() |
+      mod.(ModuleValue).exports(result)
+    )
   }
 
   /** Gets the source file for this module */
