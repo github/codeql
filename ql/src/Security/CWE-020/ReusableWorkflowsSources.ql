@@ -1,11 +1,11 @@
 /**
- * @name Composite Action Sources
- * @description Actions that pass user-controlled data to their output variables.
+ * @name Reusable Workflow Sources
+ * @description Reusable Workflow that pass user-controlled data to their output variables.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 9.3
  * @precision high
- * @id actions/composite-action-sources
+ * @id actions/reusable-workflow-sources
  * @tags actions
  *       model-generator
  *       external/cwe/cwe-020
@@ -20,11 +20,11 @@ private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
     not source instanceof DataFlow::ParameterNode and
-    exists(CompositeActionStmt c | c.getAChildNode*() = source.asExpr())
+    exists(ReusableWorkflowStmt w | w.getAChildNode*() = source.asExpr())
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(CompositeActionStmt c | c.getOutputsStmt().getOutputExpr(_) = sink.asExpr())
+    exists(ReusableWorkflowStmt w | w.getOutputsStmt().getOutputExpr(_) = sink.asExpr())
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet set) {
