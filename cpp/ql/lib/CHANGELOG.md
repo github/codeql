@@ -1,3 +1,9 @@
+## 0.12.6
+
+### New Features
+
+* A `getInitialization` predicate was added to the `RangeBasedForStmt` class that yields the C++20-style initializer of the range-based `for` statement when it exists.
+
 ## 0.12.5
 
 ### New Features

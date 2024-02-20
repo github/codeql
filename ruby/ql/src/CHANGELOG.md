@@ -1,3 +1,7 @@
+## 0.8.9
+
+No user-facing changes.
+
 ## 0.8.8
 
 ### New Queries
