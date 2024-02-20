@@ -126,7 +126,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
-        [return: NotNullIfNotNull("constructor")]
+        [return: NotNullIfNotNull(nameof(constructor))]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)
         {
             if (constructor is null)
