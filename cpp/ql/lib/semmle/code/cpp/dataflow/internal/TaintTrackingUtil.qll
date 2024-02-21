@@ -167,7 +167,7 @@ private predicate noFlowFromChildExpr(Expr e) {
 }
 
 /**
- * This predicate checks if there is a data flow from `exprIn` to `exprOut` in the code.
+ * Holds if there is a data flow from `exprIn` to `exprOut` in the code.
  * The predicate also handles taint flows, where the data flow is from a tainted source to a sink.
  * It checks if there is a taint flow from `exprIn` to `exprOut` by considering the same cases as above.
  */
@@ -216,7 +216,7 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
 }
 
 /**
- * This predicate checks if there is a data flow from an expression to a definition by reference.
+ * Holds if there is a data flow from an expression to a definition by reference.
  */
 private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel, int argOutIndex |
@@ -260,7 +260,7 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
 }
 
 /**
- * This predicate checks if there is a partial definition step between two expressions.
+ * Holds if there is a partial definition step between two expressions.
  */
 private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
   exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
