@@ -1,16 +1,31 @@
+| my_auto_ptr.cpp:43:22:43:30 | new | This memory is never freed. |
+| my_auto_ptr.cpp:45:30:45:39 | new | This memory is never freed. |
+| my_auto_ptr.cpp:55:23:55:27 | new | This memory is never freed. |
 | my_auto_ptr.cpp:55:23:55:27 | new | This memory is never freed. |
 | my_auto_ptr.cpp:57:25:57:29 | new | This memory is never freed. |
+| my_auto_ptr.cpp:57:25:57:29 | new | This memory is never freed. |
+| my_auto_ptr.cpp:71:38:71:58 | new | This memory is never freed. |
 | my_auto_ptr.cpp:71:38:71:58 | new | This memory is never freed. |
 | my_auto_ptr.cpp:80:12:80:18 | new | This memory is never freed. |
 | my_auto_ptr.cpp:81:15:81:21 | new | This memory is never freed. |
 | my_auto_ptr.cpp:82:9:82:15 | new | This memory is never freed. |
+| my_auto_ptr.cpp:84:27:84:34 | new | This memory is never freed. |
+| my_auto_ptr.cpp:85:28:85:36 | new | This memory is never freed. |
+| my_auto_ptr.cpp:92:46:92:72 | new | This memory is never freed. |
+| test.cpp:24:18:24:23 | call to malloc | This memory is never freed. |
 | test.cpp:26:18:26:23 | call to malloc | This memory is never freed. |
+| test.cpp:41:18:41:23 | call to malloc | This memory is never freed. |
 | test.cpp:42:18:42:23 | call to malloc | This memory is never freed. |
+| test.cpp:71:18:71:23 | call to malloc | This memory is never freed. |
 | test.cpp:73:18:73:23 | call to malloc | This memory is never freed. |
+| test.cpp:88:18:88:23 | call to malloc | This memory is never freed. |
 | test.cpp:89:18:89:23 | call to malloc | This memory is never freed. |
 | test.cpp:156:3:156:26 | new | This memory is never freed. |
 | test.cpp:157:3:157:26 | new[] | This memory is never freed. |
 | test.cpp:169:14:169:19 | call to strdup | This memory is never freed. |
+| test_free.cpp:153:15:153:20 | call to malloc | This memory is never freed. |
 | test_free.cpp:167:15:167:21 | call to realloc | This memory is never freed. |
-| test_free.cpp:253:14:253:19 | call to malloc | This memory is never freed. |
-| test_free.cpp:261:6:261:12 | new | This memory is never freed. |
+| virtual.cpp:13:7:13:12 | new | This memory is never freed. |
+| virtual.cpp:14:7:14:12 | new | This memory is never freed. |
+| virtual.cpp:33:7:33:12 | new | This memory is never freed. |
+| virtual.cpp:34:7:34:12 | new | This memory is never freed. |
