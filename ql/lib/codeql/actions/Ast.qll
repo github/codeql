@@ -23,7 +23,7 @@ class AstNode instanceof YamlNode {
 class Statement extends AstNode {
   /** Gets the workflow that this job is a part of. */
   WorkflowStmt getEnclosingWorkflowStmt() {
-    exists(WorkflowStmt w | w.getAChildNode*() = this and result = w)
+    this = result.getAChildNode*()
   }
 }
 
