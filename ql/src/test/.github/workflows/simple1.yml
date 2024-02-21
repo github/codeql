@@ -5,12 +5,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - id: source 
+      - id: summary
         uses: mad9000/actions-find-and-replace-string@3
         with:
           source: ${{ github.event.head_commit.message }}
           find: 'foo'
           replace: ''
-      - id: sink
+      - id: flow 
         run: |
-          echo "${{steps.source.outputs.value}}"
+          echo "${{steps.summary.outputs.value}}"
+      - id: no-flow
+        run: |
+          echo "${{steps.summary.outputs.foo}}"

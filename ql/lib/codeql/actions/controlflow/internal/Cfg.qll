@@ -231,7 +231,7 @@ private class JobTree extends StandardPreOrderTree instanceof JobStmt {
       rank[i](Expression child, Location l |
         (
           child = super.getAStepStmt() or
-          child = super.getOutputStmt() or
+          child = super.getOutputsStmt() or
           child = super.getUsesExpr()
         ) and
         l = child.getLocation()
@@ -243,25 +243,9 @@ private class JobTree extends StandardPreOrderTree instanceof JobStmt {
   }
 }
 
-private class JobOutputTree extends StandardPreOrderTree instanceof JobOutputStmt {
-  override ControlFlowTree getChildNode(int i) { result = super.asYamlMapping().getValueNode(i) }
-}
+private class UsesExprTree extends LeafTree instanceof UsesExpr { }
 
-private class StepUsesTree extends StandardPreOrderTree instanceof StepUsesExpr {
-  override ControlFlowTree getChildNode(int i) {
-    result =
-      rank[i](Expression child, Location l |
-        (child = super.getArgumentExpr(_) or child = super.getEnvExpr(_)) and
-        l = child.getLocation()
-      |
-        child
-        order by
-          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
-      )
-  }
-}
-
-private class JobUsesTree extends StandardPreOrderTree instanceof JobUsesExpr {
+private class UsesTree extends StandardPreOrderTree instanceof UsesExpr {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](Expression child, Location l |

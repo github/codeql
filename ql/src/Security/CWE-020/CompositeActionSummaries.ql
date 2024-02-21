@@ -7,6 +7,7 @@
  * @precision high
  * @id actions/composite-action-summaries
  * @tags actions
+ *       model-generator
  *       external/cwe/cwe-020
  */
 
@@ -17,12 +18,10 @@ import codeql.actions.dataflow.ExternalFlow
 
 private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof DataFlow::ParameterNode and
     exists(CompositeActionStmt c | c.getInputsStmt().getInputExpr(_) = source.asExpr())
   }
 
   predicate isSink(DataFlow::Node sink) {
-    sink instanceof DataFlow::ReturnNode and
     exists(CompositeActionStmt c | c.getOutputsStmt().getOutputExpr(_) = sink.asExpr())
   }
 }
@@ -32,5 +31,7 @@ module MyFlow = TaintTracking::Global<MyConfig>;
 import MyFlow::PathGraph
 
 from MyFlow::PathNode source, MyFlow::PathNode sink
-where MyFlow::flowPath(source, sink)
+where
+  MyFlow::flowPath(source, sink) and
+  source.getNode().getLocation().getFile() = sink.getNode().getLocation().getFile()
 select sink.getNode(), source, sink, "Summary"

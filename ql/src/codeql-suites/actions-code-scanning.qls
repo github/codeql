@@ -1,0 +1,19 @@
+- description: Standard Code Scanning queries for Actions
+- queries: .
+
+- include:
+    kind:
+      - problem
+      - path-problem
+    tags contain:
+      - security
+      - maintainability
+
+- include:
+    kind:
+      - diagnostic
+
+- exclude:
+    tags contain:
+      - experimental
+      - testing

@@ -126,44 +126,18 @@ private class EventSource extends RemoteFlowSource {
 }
 
 /**
- * MaD sources
- * Fields:
- *    - action: Fully-qualified action name (NWO)
- *    - version: Either '*' or a specific SHA/Tag
- *    - output arg: To node (prefixed with either `env.` or `output.`)
- *    - trigger: Triggering event under which this model introduces tainted data. Use `*` for any event.
+ * A Source of untrusted data defined in a MaD specification
  */
 private class ExternallyDefinedSource extends RemoteFlowSource {
-  string soutceType;
+  string sourceType;
 
-  ExternallyDefinedSource() {
-    exists(
-      UsesExpr uses, string action, string version, string output, string trigger, string kind
-    |
-      sourceModel(action, version, output, trigger, kind) and
-      uses.getCallee() = action and
-      (
-        if version.trim() = "*"
-        then uses.getVersion() = any(string v)
-        else uses.getVersion() = version.trim()
-      ) and
-      (
-        if output.trim().matches("env.%")
-        then this.asExpr() = uses.getEnvExpr(output.trim().replaceAll("output\\.", ""))
-        else
-          // 'output.' is the default qualifier
-          // TODO: Taint just the specified output
-          this.asExpr() = uses
-      ) and
-      soutceType = kind
-    )
-  }
+  ExternallyDefinedSource() { externallyDefinedSource(this, sourceType, _) }
 
-  override string getSourceType() { result = soutceType }
+  override string getSourceType() { result = sourceType }
 }
 
 /**
- * Composite action input sources
+ * An input for a Composite Action
  */
 private class CompositeActionInputSource extends RemoteFlowSource {
   CompositeActionStmt c;

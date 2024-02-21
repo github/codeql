@@ -22,42 +22,6 @@ class AdditionalTaintStep extends Unit {
 }
 
 /**
- * MaD summaries
- * Fields:
- *    - action: Fully-qualified action name (NWO)
- *    - version: Either '*' or a specific SHA/Tag
- *    - input arg: From node (prefixed with either `env.` or `input.`)
- *    - output arg: To node (prefixed with either `env.` or `output.`)
- *    - kind: Either 'Taint' or 'Value'
- */
-predicate externallyDefinedSummary(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(UsesExpr uses, string action, string version, string input |
-    // `output` not used yet
-    summaryModel(action, version, input, _, "taint") and
-    uses.getCallee() = action and
-    (
-      if version.trim() = "*"
-      then uses.getVersion() = any(string v)
-      else uses.getVersion() = version.trim()
-    ) and
-    (
-      if input.trim().matches("env.%")
-      then pred.asExpr() = uses.getEnvExpr(input.trim().replaceAll("env\\.", ""))
-      else
-        // 'input.' is the default qualifier
-        pred.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input\\.", ""))
-    ) and
-    succ.asExpr() = uses
-  )
-}
-
-private class ExternallyDefinedSummary extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    externallyDefinedSummary(pred, succ)
-  }
-}
-
-/**
  * Holds if a Run step declares an environment variable, uses it in its script and sets an output in its script.
  * e.g.
  *  - name: Extract and Clean Initial URL
@@ -65,27 +29,22 @@ private class ExternallyDefinedSummary extends AdditionalTaintStep {
  *    env:
  *      BODY: ${{ github.event.comment.body }}
  *    run: |
- *      INITIAL_URL=$(echo "$BODY" | grep -o 'https://github.com/github/release-assets/assets/[^ >]*')
- *      echo "Cleaned Initial URL: $INITIAL_URL"
- *      echo "::set-output name=initial_url::$INITIAL_URL"
+ *      echo "::set-output name=foo::$BODY"
+ *      echo "foo=$(echo $BODY)" >> $GITHUB_OUTPUT
+ *      echo "foo=$(echo $BODY)" >> "$GITHUB_OUTPUT"
  */
-private class RunEnvToScriptStep extends AdditionalTaintStep {
-  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    runEnvToScriptstep(pred, succ)
-  }
-}
-
-predicate runEnvToScriptstep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(RunExpr r, string varName |
+predicate runEnvToScriptStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
+  exists(RunExpr r, string varName, string output |
+    c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output\\.", "")) and
     r.getEnvExpr(varName) = pred.asExpr() and
     exists(string script, string line |
       script = r.getScript() and
       line = script.splitAt("\n") and
       (
-        line.regexpMatch(".*::set-output\\s+name.*") or
-        line.regexpMatch(".*>>\\s*\\$GITHUB_OUTPUT.*")
+        output = line.regexpCapture(".*::set-output\\s+name=(.*)::.*", 1) or
+        output = line.regexpCapture(".*echo\\s*\"(.*)=.*\\s*>>\\s*(\")?\\$GITHUB_OUTPUT.*", 1)
       ) and
-      script.indexOf("$" + ["", "{", "ENV{"] + varName) > 0
+      line.indexOf("$" + ["", "{", "ENV{"] + varName) > 0
     ) and
     succ.asExpr() = r
   )

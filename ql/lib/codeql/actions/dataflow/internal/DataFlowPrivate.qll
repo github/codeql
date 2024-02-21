@@ -4,6 +4,8 @@ private import codeql.actions.Cfg as Cfg
 private import codeql.Locations
 private import codeql.actions.controlflow.BasicBlocks
 private import DataFlowPublic
+private import codeql.actions.dataflow.ExternalFlow
+private import codeql.actions.dataflow.FlowSteps
 
 cached
 newtype TNode = TExprNode(DataFlowExpr e)
@@ -56,7 +58,7 @@ class DataFlowExpr extends Cfg::Node {
 }
 
 /**
- * A call corresponds to a Uses steps where a 3rd party action or a reusable workflow gets called
+ * A call corresponds to a Uses steps where a 3rd party action or a reusable workflow get called
  */
 class DataFlowCall instanceof Cfg::Node {
   DataFlowCall() { super.getAstNode() instanceof UsesExpr }
@@ -129,25 +131,19 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { t1 = t2 }
 
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
-private newtype TContent = TNoContent() { none() }
+newtype TContent =
+  TFieldContent(string name) {
+    // We only use field flow for steps and jobs outputs, not for accessing other context fields such as env or inputs
+    name = any(StepsCtxAccessExpr a).getFieldName() or
+    name = any(NeedsCtxAccessExpr a).getFieldName() or
+    name = any(JobsCtxAccessExpr a).getFieldName()
+  }
 
-class Content extends TContent {
-  /** Gets a textual representation of this element. */
-  string toString() { none() }
-}
+predicate forceHighPrecision(Content c) { c instanceof FieldContent }
 
-predicate forceHighPrecision(Content c) { none() }
+class ContentApprox = ContentSet;
 
-newtype TContentSet = TNoContentSet() { none() }
-
-private newtype TContentApprox = TNoContentApprox() { none() }
-
-class ContentApprox extends TContentApprox {
-  /** Gets a textual representation of this element. */
-  string toString() { none() }
-}
-
-ContentApprox getContentApprox(Content c) { none() }
+ContentApprox getContentApprox(Content c) { result = c }
 
 /**
  * Made a string to match the ArgumentPosition type.
@@ -168,12 +164,16 @@ class ArgumentPosition extends string {
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
 
 /**
- * Holds if there is a local flow step between a ${{}} expression accesing a step output variable and the step output itself
- * e.g. ${{ steps.step1.output.foo }}
+ * Holds if there is a local flow step between a ${{ steps.xxx.outputs.yyy }} expression accesing a step output field
+ * and the step output itself. But only for those cases where the step output is defined externally in a MaD Source
+ * specification. The reason for this is that we don't currently have a way to specify that a source starts with a
+ * non-empty access path so we cannot write a Source that stores the taint in a Content, we can only do that for steps
+ * (storeStep). The easiest thing is to add this local flow step that simulates a read step from the source node for a specific
+ * field name.
  */
 predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(StepStmt astFrom, StepOutputAccessExpr astTo |
-    (astFrom instanceof UsesExpr or astFrom instanceof RunExpr) and
+  exists(UsesExpr astFrom, StepsCtxAccessExpr astTo |
+    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom
@@ -181,11 +181,16 @@ predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
- * Holds if there is a local flow step between a ${{}} expression accesing a job output variable and the job output itself
- * e.g. ${{ needs.job1.output.foo }} or ${{ job.job1.output.foo }}
+ * Holds if there is a local flow step between a ${{ needs.xxx.outputs.yyy }} expression accesing a job output field
+ * and the step output itself. But only for those cases where the job (needs) output is defined externally in a MaD Source
+ * specification. The reason for this is that we don't currently have a way to specify that a source starts with a
+ * non-empty access path so we cannot write a Source that stores the taint in a Content, we can only do that for steps
+ * (storeStep). The easiest thing is to add this local flow step that simulates a read step from the source node for a specific
+ * field name.
  */
-predicate jobsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, JobOutputAccessExpr astTo |
+predicate needsCtxLocalStep(Node nodeFrom, Node nodeTo) {
+  exists(UsesExpr astFrom, NeedsCtxAccessExpr astTo |
+    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom
@@ -197,7 +202,7 @@ predicate jobsCtxLocalStep(Node nodeFrom, Node nodeTo) {
  * e.g. ${{ inputs.foo }}
  */
 predicate inputsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, InputAccessExpr astTo |
+  exists(Expression astFrom, InputsCtxAccessExpr astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom
@@ -209,10 +214,13 @@ predicate inputsCtxLocalStep(Node nodeFrom, Node nodeTo) {
  * e.g. ${{ env.foo }}
  */
 predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, EnvAccessExpr astTo |
+  exists(Expression astFrom, EnvCtxAccessExpr astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
-    astTo.getRefExpr() = astFrom
+    (
+      externallyDefinedSource(nodeFrom, _, "env." + astTo.getFieldName()) or
+      astTo.getRefExpr() = astFrom
+    )
   )
 }
 
@@ -224,7 +232,7 @@ predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
 pragma[nomagic]
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   stepsCtxLocalStep(nodeFrom, nodeTo) or
-  jobsCtxLocalStep(nodeFrom, nodeTo) or
+  needsCtxLocalStep(nodeFrom, nodeTo) or
   inputsCtxLocalStep(nodeFrom, nodeTo) or
   envCtxLocalStep(nodeFrom, nodeTo)
 }
@@ -245,18 +253,52 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { localFlowStep(nodeFr
 predicate jumpStep(Node nodeFrom, Node nodeTo) { none() }
 
 /**
+ * Holds if a CtxAccessExpr reads a field from a job (needs/jobs), step (steps) output via a read of `c` (fieldname)
+ */
+predicate ctxFieldReadStep(Node node1, Node node2, ContentSet c) {
+  exists(CtxAccessExpr access |
+    (
+      access instanceof NeedsCtxAccessExpr or
+      access instanceof StepsCtxAccessExpr or
+      access instanceof JobsCtxAccessExpr
+    ) and
+    c = any(FieldContent ct | ct.getName() = access.getFieldName()) and
+    node1.asExpr() = access.getRefExpr() and
+    node2.asExpr() = access
+  )
+}
+
+/**
  * Holds if data can flow from `node1` to `node2` via a read of `c`.  Thus,
  * `node1` references an object with a content `c.getAReadContent()` whose
  * value ends up in `node2`.
+ * Store steps without corresponding reads are pruned aggressively very early, since they can never contribute to a complete path.
  */
-predicate readStep(Node node1, ContentSet c, Node node2) { none() }
+predicate readStep(Node node1, ContentSet c, Node node2) { ctxFieldReadStep(node1, node2, c) }
+
+/**
+ * Stores an output expression (node1) into its OutputsStm node (node2)
+ * using the output variable name as the access path
+ */
+predicate fieldStoreStep(Node node1, Node node2, ContentSet c) {
+  exists(OutputsStmt out, string fieldName |
+    node1.asExpr() = out.getOutputExpr(fieldName) and
+    node2.asExpr() = out and
+    c = any(FieldContent ct | ct.getName() = fieldName)
+  )
+}
 
 /**
  * Holds if data can flow from `node1` to `node2` via a store into `c`.  Thus,
  * `node2` references an object with a content `c.getAStoreContent()` that
  * contains the value of `node1`.
+ * Store steps without corresponding reads are pruned aggressively very early, since they can never contribute to a complete path.
  */
-predicate storeStep(Node node1, ContentSet c, Node node2) { none() }
+predicate storeStep(Node node1, ContentSet c, Node node2) {
+  fieldStoreStep(node1, node2, c) or
+  externallyDefinedStoreStep(node1, node2, c) or
+  runEnvToScriptStoreStep(node1, node2, c)
+}
 
 /**
  * Holds if values stored inside content `c` are cleared at node `n`. For example,

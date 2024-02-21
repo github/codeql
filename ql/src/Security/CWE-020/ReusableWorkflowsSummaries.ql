@@ -1,11 +1,11 @@
 /**
- * @name Composite Action Sources
- * @description Actions that pass user-controlled data to their output variables.
+ * @name Reusable Workflows Summaries
+ * @description Reusable workflow that pass user-controlled data to their output variables.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 9.3
  * @precision high
- * @id actions/composite-action-sources
+ * @id actions/reusable-workflow-summaries
  * @tags actions
  *       model-generator
  *       external/cwe/cwe-020
@@ -18,20 +18,11 @@ import codeql.actions.dataflow.ExternalFlow
 
 private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource and
-    not source instanceof DataFlow::ParameterNode and
-    exists(CompositeActionStmt c | c.getAChildNode*() = source.asExpr())
+    exists(ReusableWorkflowStmt w | w.getInputsStmt().getInputExpr(_) = source.asExpr())
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(CompositeActionStmt c | c.getOutputsStmt().getOutputExpr(_) = sink.asExpr())
-  }
-
-  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet set) {
-    allowImplicitRead(node, set)
-    or
-    isSink(node) and
-    set instanceof DataFlow::FieldContent
+    exists(ReusableWorkflowStmt w | w.getOutputsStmt().getOutputExpr(_) = sink.asExpr())
   }
 }
 
@@ -43,4 +34,4 @@ from MyFlow::PathNode source, MyFlow::PathNode sink
 where
   MyFlow::flowPath(source, sink) and
   source.getNode().getLocation().getFile() = sink.getNode().getLocation().getFile()
-select sink.getNode(), source, sink, "Source"
+select sink.getNode(), source, sink, "Summary"

@@ -1,15 +1,14 @@
 /**
- * @name Expression injection in Actions
- * @description Using user-controlled GitHub Actions contexts like `run:` or `script:` may allow a malicious
- *              user to inject code into the GitHub action.
+ * @name Composite Action Sinks
+ * @description Actions passing input variables to expression injection sinks.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 9.3
  * @precision high
- * @id actions/expression-injection
+ * @id actions/composite-action-sinks
  * @tags actions
- *       security
- *       external/cwe/cwe-094
+ *       model-generator
+ *       external/cwe/cwe-020
  */
 
 import actions
@@ -25,7 +24,9 @@ private class ExpressionInjectionSink extends DataFlow::Node {
 }
 
 private module MyConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) {
+    exists(CompositeActionStmt c | c.getInputsStmt().getInputExpr(_) = source.asExpr())
+  }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionInjectionSink }
 }
@@ -35,6 +36,7 @@ module MyFlow = TaintTracking::Global<MyConfig>;
 import MyFlow::PathGraph
 
 from MyFlow::PathNode source, MyFlow::PathNode sink
-where MyFlow::flowPath(source, sink)
-select sink.getNode(), source, sink,
-  "Potential expression injection, which may be controlled by an external user."
+where
+  MyFlow::flowPath(source, sink) and
+  source.getNode().getLocation().getFile() = sink.getNode().getLocation().getFile()
+select sink.getNode(), source, sink, "Sink"
