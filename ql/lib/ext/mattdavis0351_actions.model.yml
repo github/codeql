@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: summaryModel
+    data:
+      - ["mattdavis0351/actions", "*", "input.image-name", "output.imageUrl", "taint"]
+      - ["mattdavis0351/actions", "*", "input.tag", "output.imageUrl", "taint"]

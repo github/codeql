@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: sourceModel
+    data:
+      - ["xt0rted/slash-command-action", "*", "output.command-arguments", "issue_comment", ""]
+      - ["xt0rted/slash-command-action", "*", "output.command-arguments", "pull_request_comment", ""]

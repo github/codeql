@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: summaryModel
+    data:
+      - ["game-ci/unity-test-runner", "*", "input.artifactsPath", "output.artifactsPath", "taint"]
