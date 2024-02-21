@@ -39,8 +39,10 @@ predicate sinkModel(string action, string version, string input, string kind) {
   Extensions::sinkModel(action, version, input, kind)
 }
 
-predicate externallyDefinedSource(DataFlow::Node source, string sourceType, string fieldName) {
-  exists(UsesExpr uses, string action, string version, string trigger, string kind |
+predicate externallyDefinedSource(
+  DataFlow::Node source, string sourceType, string fieldName, string trigger
+) {
+  exists(UsesExpr uses, string action, string version, string kind |
     sourceModel(action, version, fieldName, trigger, kind) and
     uses.getCallee() = action.toLowerCase() and
     (

@@ -20,7 +20,12 @@ class AstNode instanceof YamlNode {
  * A statement is a group of expressions and/or statements that you design to carry out a task or an action.
  * Any statement that can return a value is automatically qualified to be used as an expression.
  */
-class Statement extends AstNode { }
+class Statement extends AstNode {
+  /** Gets the workflow that this job is a part of. */
+  WorkflowStmt getEnclosingWorkflowStmt() {
+    this = result.getAChildNode*()
+  }
+}
 
 /**
  * An expression is any word or group of words or symbols that is a value. In programming, an expression is a value, or anything that executes and ends up being a value.
@@ -53,6 +58,14 @@ class WorkflowStmt extends Statement instanceof Actions::Workflow {
   JobStmt getAJobStmt() { result = super.getJob(_) }
 
   JobStmt getJobStmt(string id) { result = super.getJob(id) }
+
+  predicate hasTriggerEvent(string trigger) {
+    exists(YamlNode n | n = super.getOn().(YamlMappingLikeNode).getNode(trigger))
+  }
+
+  string getATriggerEvent() {
+    exists(YamlNode n | n = super.getOn().(YamlMappingLikeNode).getNode(result))
+  }
 }
 
 class ReusableWorkflowStmt extends WorkflowStmt {
@@ -121,9 +134,6 @@ class JobStmt extends Statement instanceof Actions::Job {
    * This is the job's key within the `jobs` mapping.
    */
   string getId() { result = super.getId() }
-
-  /** Gets the workflow that this job is a part of. */
-  WorkflowStmt getWorkflowStmt() { result = super.getWorkflow() }
 
   /** Gets the step at the given index within this job. */
   StepStmt getStepStmt(int index) { result = super.getStep(index) }
@@ -222,7 +232,7 @@ class StepUsesExpr extends StepStmt, UsesExpr {
     )
     or
     exists(Actions::WorkflowEnv env |
-      env.getWorkflow() = this.getJobStmt().getWorkflowStmt() and
+      env.getWorkflow() = this.getJobStmt().getEnclosingWorkflowStmt() and
       env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
     )
   }
@@ -287,7 +297,7 @@ class JobUsesExpr extends UsesExpr instanceof YamlMapping {
     )
     or
     exists(Actions::WorkflowEnv env |
-      env.getWorkflow() = this.getJobStmt().getWorkflowStmt() and
+      env.getWorkflow() = this.getJobStmt().getEnclosingWorkflowStmt() and
       env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
     )
   }
@@ -320,7 +330,7 @@ class RunExpr extends StepStmt, Expression {
     )
     or
     exists(Actions::WorkflowEnv env |
-      env.getWorkflow() = this.getJobStmt().getWorkflowStmt() and
+      env.getWorkflow() = this.getJobStmt().getEnclosingWorkflowStmt() and
       env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
     )
   }

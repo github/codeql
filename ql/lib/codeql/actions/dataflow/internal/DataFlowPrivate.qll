@@ -173,7 +173,7 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos =
  */
 predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
   exists(UsesExpr astFrom, StepsCtxAccessExpr astTo |
-    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
+    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName(), _) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom
@@ -190,7 +190,7 @@ predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
  */
 predicate needsCtxLocalStep(Node nodeFrom, Node nodeTo) {
   exists(UsesExpr astFrom, NeedsCtxAccessExpr astTo |
-    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
+    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName(), _) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom
@@ -218,7 +218,7 @@ predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     (
-      externallyDefinedSource(nodeFrom, _, "env." + astTo.getFieldName()) or
+      externallyDefinedSource(nodeFrom, _, "env." + astTo.getFieldName(), _) or
       astTo.getRefExpr() = astFrom
     )
   )
