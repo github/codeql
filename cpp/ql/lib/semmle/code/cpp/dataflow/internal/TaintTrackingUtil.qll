@@ -176,7 +176,6 @@ private predicate noFlowFromChildExpr(Expr e) {
  *
  * @param exprIn The input expression from which the data flow originates.
  * @param exprOut The output expression to which the data flow reaches.
- * @return `true` if there is a data flow from `exprIn` to `exprOut`, `false` otherwise.
  */
 private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel |
@@ -229,7 +228,6 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
  * For taint functions, it checks if the expression is an argument that is passed by reference or if it is the qualifier object.
  * @param exprIn The input expression.
  * @param argOut The output expression (definition by reference).
- * @return True if there is a data flow from exprIn to argOut by reference, false otherwise.
  */
 private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel, int argOutIndex |
@@ -274,7 +272,7 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
 
 /**
  * This predicate checks if there is a partial definition step between two expressions.
- * It returns true if there exists a TaintFunction call, with a corresponding inModel and outModel,
+ * It holds if there exists a TaintFunction call, with a corresponding inModel and outModel,
  * such that the exprOut is the qualifier of the call and outModel is a qualifier object.
  * Additionally, it checks if the TaintFunction has a taint flow between the inModel and outModel.
  * It also checks if there exists an argument index such that the exprIn matches the argument at that index,
@@ -284,7 +282,6 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
  *
  * @param exprIn The input expression.
  * @param exprOut The output expression.
- * @return True if there is a partial definition step between the expressions, false otherwise.
  */
 private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
   exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
