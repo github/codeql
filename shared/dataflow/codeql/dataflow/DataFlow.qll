@@ -6,21 +6,24 @@
 
 /** Provides language-specific data flow parameters. */
 signature module InputSig {
-  class Node {
-    /** Gets a textual representation of this element. */
-    string toString();
-
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+  /**
+     * Represents a node in the data flow graph.
      */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    );
-  }
+    class Node {
+      /** Gets a textual representation of this element. */
+      string toString();
+
+      /**
+       * Holds if this element is at the specified location.
+       * The location spans column `startcolumn` of line `startline` to
+       * column `endcolumn` of line `endline` in file `filepath`.
+       * For more information, see
+       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+       */
+      predicate hasLocationInfo(
+        string filepath, int startline, int startcolumn, int endline, int endcolumn
+      );
+    }
 
   class ParameterNode extends Node;
 
@@ -30,9 +33,19 @@ signature module InputSig {
     ReturnKind getKind();
   }
 
+  /**
+   * Represents a node in the data flow graph that represents an output.
+   */
   class OutNode extends Node;
 
+  /**
+   * Represents a node in the data flow graph that corresponds to a post-update operation.
+   */
   class PostUpdateNode extends Node {
+    /**
+     * Retrieves the node that represents the pre-update operation.
+     * @return The pre-update node.
+     */
     Node getPreUpdateNode();
   }
 
@@ -131,6 +144,12 @@ signature module InputSig {
     string toString();
   }
 
+  /**
+   * Predicate to force high precision for the given content.
+   *
+   * @param c The content to force high precision for.
+   * @return True if high precision is forced for the content, false otherwise.
+   */
   predicate forceHighPrecision(Content c);
 
   /**
@@ -150,10 +169,16 @@ signature module InputSig {
     Content getAReadContent();
   }
 
-  class ContentApprox {
-    /** Gets a textual representation of this element. */
-    string toString();
-  }
+  /**
+     * Represents a content approximation.
+     */
+    class ContentApprox {
+      /** 
+       * Gets a textual representation of this element.
+       * @return The textual representation of this element.
+       */
+      string toString();
+    }
 
   ContentApprox getContentApprox(Content c);
 
@@ -169,8 +194,22 @@ signature module InputSig {
     string toString();
   }
 
+  /**
+   * Checks if the given parameter position matches the argument position.
+   *
+   * @param ppos The parameter position.
+   * @param apos The argument position.
+   * @return True if the parameter position matches the argument position, false otherwise.
+   */
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
+  /**
+   * Represents a simple local flow step between two nodes.
+   *
+   * @param node1 The first node in the flow step.
+   * @param node2 The second node in the flow step.
+   * @return True if there is a simple local flow step between node1 and node2, false otherwise.
+   */
   predicate simpleLocalFlowStep(Node node1, Node node2);
 
   /**

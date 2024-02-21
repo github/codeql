@@ -160,17 +160,49 @@ signature module Semantic {
   /** Gets a tiebreaker id in case `getBlockId1` is not unique. */
   default string getBlockId2(BasicBlock bb) { result = "" }
 
+  /**
+   * Represents a guard in the range analysis.
+   */
   class Guard {
+    /**
+     * Returns a string representation of the guard.
+     */
     string toString();
 
+    /**
+     * Returns the basic block associated with the guard.
+     */
     BasicBlock getBasicBlock();
 
+    /**
+     * Returns the guard as an expression.
+     */
     Expr asExpr();
 
+    /**
+     * Checks if the guard directly controls a given basic block.
+     * @param controlled The basic block to check.
+     * @param branch Indicates if the control is a branch or not.
+     * @returns True if the guard directly controls the basic block, false otherwise.
+     */
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
+    /**
+     * Checks if the guard represents an equality between two expressions.
+     * @param e1 The first expression.
+     * @param e2 The second expression.
+     * @param polarity The polarity of the equality.
+     * @returns True if the guard represents the equality, false otherwise.
+     */
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
 
+    /**
+     * Checks if there is a branch edge between two basic blocks.
+     * @param bb1 The first basic block.
+     * @param bb2 The second basic block.
+     * @param branch Indicates if the edge is a branch or not.
+     * @returns True if there is a branch edge between the basic blocks, false otherwise.
+     */
     predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
   }
 
@@ -194,18 +226,43 @@ signature module Semantic {
   /** Gets the type of an expression. */
   Type getExprType(Expr e);
 
+  /**
+   * Represents a single static single assignment (SSA) variable.
+   */
   class SsaVariable {
+    /**
+     * Returns the expression where this SSA variable is used.
+     */
     Expr getAUse();
 
+    /**
+     * Returns the basic block where this SSA variable is defined.
+     */
     BasicBlock getBasicBlock();
   }
 
+  /**
+   * Represents a phi node in the SSA form.
+   */
   class SsaPhiNode extends SsaVariable {
-    /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
+    /**
+     * Holds if `inp` is an input to the phi node along the edge originating in `bb`.
+     * @param inp The input variable.
+     * @param bb The basic block.
+     * @return True if `inp` is an input to the phi node along the edge originating in `bb`, false otherwise.
+     */
     predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb);
   }
 
+  /**
+   * Represents a single update to a variable in the SSA form.
+   */
   class SsaExplicitUpdate extends SsaVariable {
+    /**
+     * Retrieves the expression that defines the value of the variable in this update.
+     *
+     * @return The defining expression.
+     */
     Expr getDefiningExpr();
   }
 
@@ -296,11 +353,24 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
 }
 
 signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
+  /**
+   * Represents a semantic bound.
+   */
   class SemBound {
+    /**
+     * Returns a string representation of the semantic bound.
+     */
     string toString();
 
+    /**
+     * Returns the location of the semantic bound.
+     */
     Location getLocation();
 
+    /**
+     * Returns the expression associated with the semantic bound, given a delta.
+     * @param delta - The delta value.
+     */
     Sem::Expr getExpr(D::Delta delta);
   }
 
