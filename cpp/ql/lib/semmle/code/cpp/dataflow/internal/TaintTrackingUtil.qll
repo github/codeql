@@ -166,6 +166,18 @@ private predicate noFlowFromChildExpr(Expr e) {
   e instanceof FieldAccess
 }
 
+/**
+ * This predicate checks if there is a data flow from `exprIn` to `exprOut` in the code.
+ * It considers two cases:
+ * 1. If `exprOut` is a function call and the return value is dereferenced, it checks if there is a data flow from an argument of the function call to the dereference.
+ * 2. If `exprOut` is a function call and the return value is not dereferenced, it checks if there is a data flow from an argument of the function call to the return value.
+ * The predicate also handles taint flows, where the data flow is from a tainted source to a sink.
+ * It checks if there is a taint flow from `exprIn` to `exprOut` by considering the same cases as above.
+ *
+ * @param exprIn The input expression from which the data flow originates.
+ * @param exprOut The output expression to which the data flow reaches.
+ * @return `true` if there is a data flow from `exprIn` to `exprOut`, `false` otherwise.
+ */
 private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel |
     call.getTarget() = f and
@@ -210,6 +222,15 @@ private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
   )
 }
 
+/**
+ * This predicate checks if there is a data flow from an expression to a definition by reference.
+ * It considers both function calls and taint functions.
+ * For function calls, it checks if the expression is an argument that is passed by reference to the called function.
+ * For taint functions, it checks if the expression is an argument that is passed by reference or if it is the qualifier object.
+ * @param exprIn The input expression.
+ * @param argOut The output expression (definition by reference).
+ * @return True if there is a data flow from exprIn to argOut by reference, false otherwise.
+ */
 private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel, int argOutIndex |
     call.getTarget() = f and
@@ -251,6 +272,20 @@ private predicate exprToDefinitionByReferenceStep(Expr exprIn, Expr argOut) {
   )
 }
 
+/**
+ * This predicate checks if there is a partial definition step between two expressions.
+ * It returns true if there exists a TaintFunction call, with a corresponding inModel and outModel,
+ * such that the exprOut is the qualifier of the call and outModel is a qualifier object.
+ * Additionally, it checks if the TaintFunction has a taint flow between the inModel and outModel.
+ * It also checks if there exists an argument index such that the exprIn matches the argument at that index,
+ * either by direct assignment or by passing by reference.
+ * Alternatively, it checks if there exists an Assignment where exprOut is an iterator dereference,
+ * and the lValue of the assignment is exprOut and the rValue is exprIn.
+ *
+ * @param exprIn The input expression.
+ * @param exprOut The output expression.
+ * @return True if there is a partial definition step between the expressions, false otherwise.
+ */
 private predicate exprToPartialDefinitionStep(Expr exprIn, Expr exprOut) {
   exists(TaintFunction f, Call call, FunctionInput inModel, FunctionOutput outModel |
     call.getTarget() = f and

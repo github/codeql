@@ -114,15 +114,28 @@ abstract class OutNode extends Node {
   abstract DataFlowCall getCall();
 }
 
+/**
+ * Represents a private class that extends OutNode and ExprNode.
+ * This class is used for expressing data flow analysis in C++ code.
+ */
 private class ExprOutNode extends OutNode, ExprNode {
   ExprOutNode() { this.getExpr() instanceof Call }
 
-  /** Gets the underlying call. */
+  /**
+   * Gets the underlying call.
+   * @return The DataFlowCall representing the underlying call.
+   */
   override DataFlowCall getCall() { result = this.getExpr() }
 }
 
+/**
+ * Represents a private class RefOutNode that extends OutNode and DefinitionByReferenceOrIteratorNode.
+ */
 private class RefOutNode extends OutNode, DefinitionByReferenceOrIteratorNode {
-  /** Gets the underlying call. */
+  /**
+   * Gets the underlying call.
+   * @return The underlying call.
+   */
   override DataFlowCall getCall() { result = this.getArgument().getParent() }
 }
 

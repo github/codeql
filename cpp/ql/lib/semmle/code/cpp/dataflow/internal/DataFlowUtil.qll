@@ -166,6 +166,10 @@ class ExplicitParameterNode extends ParameterNode, TExplicitParameterNode {
   override predicate isParameterOf(Function f, int i) { f.getParameter(i) = param }
 }
 
+/**
+ * Represents an implicit parameter node in the data flow analysis.
+ * An implicit parameter node is a special kind of parameter node that represents the "this" parameter.
+ */
 class ImplicitParameterNode extends ParameterNode, TInstanceParameterNode {
   MemberFunction f;
 
