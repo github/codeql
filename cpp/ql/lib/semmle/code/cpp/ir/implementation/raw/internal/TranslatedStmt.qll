@@ -404,6 +404,19 @@ abstract class TranslatedReturnStmt extends TranslatedStmt {
   final TranslatedFunction getEnclosingFunction() {
     result = getTranslatedFunction(stmt.getEnclosingFunction())
   }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    exists(int id |
+      child = this.getChild(id) and
+      id >= this.getFirstDestructorCallIndex() and
+      (
+        result = this.getChild(id + 1).getFirstInstruction(kind)
+        or
+        not exists(this.getChild(id + 1)) and
+        result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
+      )
+    )
+  }
 }
 
 /**
@@ -421,15 +434,7 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariable
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     result = TranslatedVariableInitialization.super.getChildSuccessorInternal(child, kind)
     or
-    exists(int id |
-      this.getChild(id) = child and
-      (
-        result = this.getChild(id + 1).getFirstInstruction(kind)
-        or
-        not exists(this.getChild(id + 1)) and
-        result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
-      )
-    )
+    result = TranslatedReturnStmt.super.getChildSuccessorInternal(child, kind)
   }
 
   final override TranslatedElement getChildInternal(int id) {
@@ -491,19 +496,7 @@ class TranslatedReturnVoidExpressionStmt extends TranslatedReturnStmt {
     result = this.getInstruction(OnlyInstructionTag()) and
     kind instanceof GotoEdge
     or
-    exists(int id |
-      child = this.getChild(id) and
-      id >= this.getFirstDestructorCallIndex() and
-      result = this.getChild(id + 1).getFirstInstruction(kind)
-    )
-    or
-    exists(int id |
-      child = this.getChild(id) and
-      id >= this.getFirstDestructorCallIndex() and
-      exists(this.getChild(id)) and
-      not exists(this.getChild(id + 1)) and
-      result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
-    )
+    result = TranslatedReturnStmt.super.getChildSuccessorInternal(child, kind)
   }
 
   private TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.getExpr()) }
@@ -580,6 +573,12 @@ class TranslatedNoValueReturnStmt extends TranslatedReturnStmt, TranslatedVariab
     result = TranslatedVariableInitialization.super.getChildInternal(id)
   }
 
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    result = TranslatedVariableInitialization.super.getChildSuccessorInternal(child, kind)
+    or
+    result = TranslatedReturnStmt.super.getChildSuccessorInternal(child, kind)
+  }
+
   final override Type getTargetType() { result = this.getEnclosingFunction().getReturnType() }
 
   final override TranslatedInitialization getInitialization() { none() }
@@ -587,6 +586,8 @@ class TranslatedNoValueReturnStmt extends TranslatedReturnStmt, TranslatedVariab
   final override IRVariable getIRVariable() {
     result = this.getEnclosingFunction().getReturnVariable()
   }
+
+  override predicate handlesDestructorsExplicitly() { any() }
 }
 
 /**
