@@ -1,4 +1,4 @@
 module(
-    name = "codeql_internal",
+    name = "semmle_code",
     version = "0.0",
 )

@@ -5,9 +5,9 @@ module(
 
 # this points to our internal repository when `codeql` is checked out as a submodule thereof
 # when building things from `codeql` independently this is stubbed out in `.bazelrc`
-bazel_dep(name = "codeql_internal", version = "0.0")
+bazel_dep(name = "semmle_code", version = "0.0")
 local_path_override(
-    module_name = "codeql_internal",
+    module_name = "semmle_code",
     path = "..",
 )
 

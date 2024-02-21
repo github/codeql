@@ -16,6 +16,6 @@ java_test(
         "//javascript/extractor",
         "//javascript/extractor:deps",
         "@bazel_tools//tools/java/runfiles",
-        "@codeql_internal//resources/lib/java/DO_NOT_DISTRIBUTE:junit",
+        "@semmle_code//resources/lib/java/DO_NOT_DISTRIBUTE:junit",
     ],
 )
