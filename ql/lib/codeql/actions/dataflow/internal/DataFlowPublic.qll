@@ -67,6 +67,17 @@ class ParameterNode extends ExprNode {
 }
 
 /**
+ * A call to a data flow callable (Uses).
+ */
+class CallNode extends ExprNode {
+  private DataFlowCall call;
+
+  CallNode() { this.getCfgNode() instanceof DataFlowCall }
+
+  string getCallee() { result = this.getCfgNode().(DataFlowCall).getName() }
+}
+
+/**
  * An argument to a Uses step (call).
  */
 class ArgumentNode extends ExprNode {

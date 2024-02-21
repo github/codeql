@@ -58,7 +58,7 @@ class DataFlowExpr extends Cfg::Node {
 }
 
 /**
- * A call corresponds to a Uses steps where a 3rd party action or a reusable workflow gets called
+ * A call corresponds to a Uses steps where a 3rd party action or a reusable workflow get called
  */
 class DataFlowCall instanceof Cfg::Node {
   DataFlowCall() { super.getAstNode() instanceof UsesExpr }
@@ -181,6 +181,23 @@ predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
+ * Holds if there is a local flow step between a ${{ needs.xxx.outputs.yyy }} expression accesing a job output field
+ * and the step output itself. But only for those cases where the job (needs) output is defined externally in a MaD Source
+ * specification. The reason for this is that we don't currently have a way to specify that a source starts with a
+ * non-empty access path so we cannot write a Source that stores the taint in a Content, we can only do that for steps
+ * (storeStep). The easiest thing is to add this local flow step that simulates a read step from the source node for a specific
+ * field name.
+ */
+predicate needsCtxLocalStep(Node nodeFrom, Node nodeTo) {
+  exists(UsesExpr astFrom, NeedsCtxAccessExpr astTo |
+    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
+    astFrom = nodeFrom.asExpr() and
+    astTo = nodeTo.asExpr() and
+    astTo.getRefExpr() = astFrom
+  )
+}
+
+/**
  * Holds if there is a local flow step between a ${{}} expression accesing an input variable and the input itself
  * e.g. ${{ inputs.foo }}
  */
@@ -215,6 +232,7 @@ predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
 pragma[nomagic]
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   stepsCtxLocalStep(nodeFrom, nodeTo) or
+  needsCtxLocalStep(nodeFrom, nodeTo) or
   inputsCtxLocalStep(nodeFrom, nodeTo) or
   envCtxLocalStep(nodeFrom, nodeTo)
 }
