@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: summaryModel
+    data:
+      - ["jsdaniell/create-json", "*", "input.name", "output.successfully", "taint"]
+      - ["jsdaniell/create-json", "*", "input.json", "output.successfully", "taint"]
+      - ["jsdaniell/create-json", "*", "input.dir", "output.successfully", "taint"]

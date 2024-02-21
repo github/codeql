@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: summaryModel
+    data:
+      - ["timheuer/base64-to-file", "*", "input.fileName", "output.filePath", "taint"]
+      - ["timheuer/base64-to-file", "*", "input.fileDir", "output.filePath", "taint"]

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: summaryModel
+    data:
+      - ["salsify/action-detect-and-tag-new-version", "*", "input.tag-template", "output.tag", "taint"]

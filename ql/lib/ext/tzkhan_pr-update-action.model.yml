@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: sourceModel
+    data:
+      - ["tzkhan/pr-update-action", "*", "output.headMatch", "pull_request_target", ""]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/actions-all
+      extensible: summaryModel
+    data:
+      - ["ashley-taylor/regex-property-action", "*", "input.replacement", "output.value", "taint"]
+      - ["ashley-taylor/regex-property-action", "*", "input.value", "output.value", "taint"]
