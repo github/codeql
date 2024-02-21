@@ -3,17 +3,10 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["jitterbit/get-changed-files", "*", "output.all", "pull_request", "PR changed files"]
       - ["jitterbit/get-changed-files", "*", "output.all", "pull_request_target", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.added", "pull_request", "PR changed files"]
       - ["jitterbit/get-changed-files", "*", "output.added", "pull_request_target", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.modified", "pull_request", "PR changed files"]
       - ["jitterbit/get-changed-files", "*", "output.modified", "pull_request_target", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.removed", "pull_request", "PR changed files"]
       - ["jitterbit/get-changed-files", "*", "output.removed", "pull_request_target", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.renamed", "pull_request", "PR changed files"]
       - ["jitterbit/get-changed-files", "*", "output.renamed", "pull_request_target", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.added_modified", "pull_request", "PR changed files"]
       - ["jitterbit/get-changed-files", "*", "output.added_modified", "pull_request_target", "PR changed files"]
-      - ["jitterbit/get-changed-files", "*", "output.deleted", "pull_request", "PR changed files"]
       - ["jitterbit/get-changed-files", "*", "output.deleted", "pull_request_target", "PR changed files"]

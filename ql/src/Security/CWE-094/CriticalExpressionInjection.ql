@@ -42,6 +42,6 @@ where
       .asExpr()
       .(Statement)
       .getEnclosingWorkflowStmt()
-      .hasTriggerEvent("pull_request_target")
+      .hasTriggerEvent(source.getNode().(RemoteFlowSource).getATriggerEvent())
 select sink.getNode(), source, sink,
   "Potential expression injection, which may be controlled by an external user."
