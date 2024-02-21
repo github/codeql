@@ -9,21 +9,21 @@ signature module InputSig {
   /**
      * Represents a node in the data flow graph.
      */
-    class Node {
-      /** Gets a textual representation of this element. */
-      string toString();
+  class Node {
+    /** Gets a textual representation of this element. */
+    string toString();
 
-      /**
-       * Holds if this element is at the specified location.
-       * The location spans column `startcolumn` of line `startline` to
-       * column `endcolumn` of line `endline` in file `filepath`.
-       * For more information, see
-       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-       */
-      predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      );
-    }
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    );
+  }
 
   class ParameterNode extends Node;
 
@@ -172,13 +172,10 @@ signature module InputSig {
   /**
      * Represents a content approximation.
      */
-    class ContentApprox {
-      /** 
-       * Gets a textual representation of this element.
-       * @return The textual representation of this element.
-       */
-      string toString();
-    }
+  class ContentApprox {
+    /** Gets a textual representation of this element. */
+    string toString();
+  }
 
   ContentApprox getContentApprox(Content c);
 

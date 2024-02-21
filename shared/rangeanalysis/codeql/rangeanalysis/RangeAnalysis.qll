@@ -245,12 +245,7 @@ signature module Semantic {
    * Represents a phi node in the SSA form.
    */
   class SsaPhiNode extends SsaVariable {
-    /**
-     * Holds if `inp` is an input to the phi node along the edge originating in `bb`.
-     * @param inp The input variable.
-     * @param bb The basic block.
-     * @return True if `inp` is an input to the phi node along the edge originating in `bb`, false otherwise.
-     */
+    /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
     predicate hasInputFromBlock(SsaVariable inp, BasicBlock bb);
   }
 
