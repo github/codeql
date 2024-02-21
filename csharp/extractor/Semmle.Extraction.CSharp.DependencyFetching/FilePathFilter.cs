@@ -31,7 +31,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         public IEnumerable<FileInfo> Filter(IEnumerable<FileInfo> files)
         {
-            var filters = (Environment.GetEnvironmentVariable("LGTM_INDEX_FILTERS") ?? string.Empty).Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries);
+            var filters = (Environment.GetEnvironmentVariable("LGTM_INDEX_FILTERS") ?? string.Empty).Split(FileUtils.NewLineCharacters, StringSplitOptions.RemoveEmptyEntries);
             if (filters.Length == 0)
             {
                 return files;
