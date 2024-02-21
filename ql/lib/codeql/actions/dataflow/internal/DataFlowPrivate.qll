@@ -190,7 +190,7 @@ predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
  */
 predicate needsCtxLocalStep(Node nodeFrom, Node nodeTo) {
   exists(UsesExpr astFrom, NeedsCtxAccessExpr astTo |
-    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
+    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName(), _) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getRefExpr() = astFrom
