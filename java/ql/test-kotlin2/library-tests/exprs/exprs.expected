@@ -1997,9 +1997,9 @@
 | exprs.kt:331:5:331:6 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:331:5:331:6 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:331:6:331:6 | l | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:332:9:332:10 | l0 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
+| exprs.kt:332:5:332:20 | l0 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:332:20:332:20 | 1 | exprs.kt:285:1:346:1 | unaryExprs | LongLiteral |
-| exprs.kt:333:9:333:10 | l1 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
+| exprs.kt:333:5:333:20 | l1 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:333:20:333:20 | 1 | exprs.kt:285:1:346:1 | unaryExprs | LongLiteral |
 | exprs.kt:334:5:334:6 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:334:5:334:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
