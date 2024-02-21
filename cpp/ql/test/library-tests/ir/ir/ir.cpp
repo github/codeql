@@ -2164,6 +2164,11 @@ void initialization_with_destructor(bool b, char c) {
       if (y == 1)
         return;
     }
+
+    for(vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys) {
+      ClassWithDestructor z1;
+      ClassWithDestructor z2;
+    }
 }
 
 void static_variable_with_destructor_1() {
