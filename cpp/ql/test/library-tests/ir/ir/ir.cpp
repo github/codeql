@@ -2166,4 +2166,22 @@ void initialization_with_destructor(bool b, char c) {
     }
 }
 
+void static_variable_with_destructor_1() {
+    ClassWithDestructor a;
+    static ClassWithDestructor b;
+}
+
+void static_variable_with_destructor_2() {
+    static ClassWithDestructor a;
+    ClassWithDestructor b;
+}
+
+void static_variable_with_destructor_3() {
+    ClassWithDestructor a;
+    ClassWithDestructor b;
+    static ClassWithDestructor c;
+}
+
+static ClassWithDestructor global_class_with_destructor;
+
 // semmle-extractor-options: -std=c++20 --clang

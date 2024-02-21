@@ -10404,24 +10404,6 @@ ir.cpp:
 # 1245|                 Type = [PointerType] const char *
 # 1245|                 ValueCategory = prvalue(load)
 # 1246|     getStmt(3): [ReturnStmt] return ...
-# 1246|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
-# 1246|           Type = [VoidType] void
-# 1246|           ValueCategory = prvalue
-# 1246|         getQualifier(): [VariableAccess] c
-# 1246|             Type = [Struct] String
-# 1246|             ValueCategory = lvalue
-# 1246|       getImplicitDestructorCall(1): [DestructorCall] call to ~String
-# 1246|           Type = [VoidType] void
-# 1246|           ValueCategory = prvalue
-# 1246|         getQualifier(): [VariableAccess] b
-# 1246|             Type = [Struct] String
-# 1246|             ValueCategory = lvalue
-# 1246|       getImplicitDestructorCall(2): [DestructorCall] call to ~String
-# 1246|           Type = [VoidType] void
-# 1246|           ValueCategory = prvalue
-# 1246|         getQualifier(): [VariableAccess] a
-# 1246|             Type = [Struct] String
-# 1246|             ValueCategory = lvalue
 # 1250| [TopLevelFunction] char* strcpy(char*, char const*)
 # 1250|   <params>: 
 # 1250|     getParameter(0): [Parameter] destination
@@ -16901,6 +16883,96 @@ ir.cpp:
 # 2167|         getQualifier(): [VariableAccess] x
 # 2167|             Type = [Class] ClassWithDestructor
 # 2167|             ValueCategory = lvalue
+# 2169| [TopLevelFunction] void static_variable_with_destructor_1()
+# 2169|   <params>: 
+# 2169|   getEntryPoint(): [BlockStmt] { ... }
+# 2170|     getStmt(0): [DeclStmt] declaration
+# 2170|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
+# 2170|           Type = [Class] ClassWithDestructor
+# 2170|         getVariable().getInitializer(): [Initializer] initializer for a
+# 2170|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2170|               Type = [VoidType] void
+# 2170|               ValueCategory = prvalue
+# 2171|     getStmt(1): [DeclStmt] declaration
+# 2171|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 2171|           Type = [Class] ClassWithDestructor
+#-----|         getVariable().getInitializer(): [Initializer] initializer for b
+#-----|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+# 2172|     getStmt(2): [ReturnStmt] return ...
+# 2172|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2172|           Type = [VoidType] void
+# 2172|           ValueCategory = prvalue
+# 2172|         getQualifier(): [VariableAccess] a
+# 2172|             Type = [Class] ClassWithDestructor
+# 2172|             ValueCategory = lvalue
+# 2174| [TopLevelFunction] void static_variable_with_destructor_2()
+# 2174|   <params>: 
+# 2174|   getEntryPoint(): [BlockStmt] { ... }
+# 2175|     getStmt(0): [DeclStmt] declaration
+# 2175|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
+# 2175|           Type = [Class] ClassWithDestructor
+#-----|         getVariable().getInitializer(): [Initializer] initializer for a
+#-----|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+# 2176|     getStmt(1): [DeclStmt] declaration
+# 2176|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 2176|           Type = [Class] ClassWithDestructor
+# 2176|         getVariable().getInitializer(): [Initializer] initializer for b
+# 2176|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2176|               Type = [VoidType] void
+# 2176|               ValueCategory = prvalue
+# 2177|     getStmt(2): [ReturnStmt] return ...
+# 2177|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2177|           Type = [VoidType] void
+# 2177|           ValueCategory = prvalue
+# 2177|         getQualifier(): [VariableAccess] b
+# 2177|             Type = [Class] ClassWithDestructor
+# 2177|             ValueCategory = lvalue
+# 2179| [TopLevelFunction] void static_variable_with_destructor_3()
+# 2179|   <params>: 
+# 2179|   getEntryPoint(): [BlockStmt] { ... }
+# 2180|     getStmt(0): [DeclStmt] declaration
+# 2180|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
+# 2180|           Type = [Class] ClassWithDestructor
+# 2180|         getVariable().getInitializer(): [Initializer] initializer for a
+# 2180|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2180|               Type = [VoidType] void
+# 2180|               ValueCategory = prvalue
+# 2181|     getStmt(1): [DeclStmt] declaration
+# 2181|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 2181|           Type = [Class] ClassWithDestructor
+# 2181|         getVariable().getInitializer(): [Initializer] initializer for b
+# 2181|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2181|               Type = [VoidType] void
+# 2181|               ValueCategory = prvalue
+# 2182|     getStmt(2): [DeclStmt] declaration
+# 2182|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 2182|           Type = [Class] ClassWithDestructor
+#-----|         getVariable().getInitializer(): [Initializer] initializer for c
+#-----|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+# 2183|     getStmt(3): [ReturnStmt] return ...
+# 2183|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2183|           Type = [VoidType] void
+# 2183|           ValueCategory = prvalue
+# 2183|         getQualifier(): [VariableAccess] b
+# 2183|             Type = [Class] ClassWithDestructor
+# 2183|             ValueCategory = lvalue
+# 2183|       getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor
+# 2183|           Type = [VoidType] void
+# 2183|           ValueCategory = prvalue
+# 2183|         getQualifier(): [VariableAccess] a
+# 2183|             Type = [Class] ClassWithDestructor
+# 2183|             ValueCategory = lvalue
+# 2185| [GlobalVariable] ClassWithDestructor global_class_with_destructor
+# 2185|   getInitializer(): [Initializer] initializer for global_class_with_destructor
+# 2185|     getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2185|         Type = [VoidType] void
+# 2185|         ValueCategory = prvalue
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
