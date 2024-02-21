@@ -169,7 +169,6 @@ private predicate noFlowFromChildExpr(Expr e) {
 /**
  * Holds if there is a data flow from `exprIn` to `exprOut` in the code.
  * The predicate also handles taint flows, where the data flow is from a tainted source to a sink.
- * It checks if there is a taint flow from `exprIn` to `exprOut` by considering the same cases as above.
  */
 private predicate exprToExprStep(Expr exprIn, Expr exprOut) {
   exists(DataFlowFunction f, Call call, FunctionOutput outModel |
