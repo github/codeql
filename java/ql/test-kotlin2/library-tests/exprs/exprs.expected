@@ -1609,16 +1609,16 @@
 | exprs.kt:215:13:215:14 | d0 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:215:18:215:44 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |
 | exprs.kt:215:18:215:44 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodCall |
-| exprs.kt:215:38:215:42 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
+| exprs.kt:215:37:215:43 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
 | exprs.kt:216:13:216:14 | d1 | exprs.kt:206:5:217:5 | x | LocalVariableDeclExpr |
 | exprs.kt:216:24:216:39 | Color | exprs.kt:206:5:217:5 | x | TypeAccess |
 | exprs.kt:216:24:216:39 | valueOf(...) | exprs.kt:206:5:217:5 | x | MethodCall |
-| exprs.kt:216:33:216:37 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
+| exprs.kt:216:32:216:38 | "GREEN" | exprs.kt:206:5:217:5 | x | StringLiteral |
 | exprs.kt:220:1:222:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:221:5:221:10 | StandardKt | exprs.kt:220:1:222:1 | todo | TypeAccess |
 | exprs.kt:221:5:221:10 | TODO(...) | exprs.kt:220:1:222:1 | todo | MethodCall |
 | exprs.kt:225:1:227:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:226:9:226:9 | x | exprs.kt:225:1:227:1 | fnClassRef | LocalVariableDeclExpr |
+| exprs.kt:226:5:226:29 | x | exprs.kt:225:1:227:1 | fnClassRef | LocalVariableDeclExpr |
 | exprs.kt:226:13:226:29 | SomeClass1 | exprs.kt:225:1:227:1 | fnClassRef | TypeAccess |
 | exprs.kt:226:13:226:29 | SomeClass1.class | exprs.kt:225:1:227:1 | fnClassRef | TypeLiteral |
 | exprs.kt:229:1:250:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
@@ -1719,23 +1719,23 @@
 | exprs.kt:256:30:256:39 | double | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:257:18:257:26 | float | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:257:29:257:37 | float | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:259:7:259:7 | i | exprs.kt:252:1:265:1 | mulOperators | LocalVariableDeclExpr |
+| exprs.kt:259:3:259:15 | i | exprs.kt:252:1:265:1 | mulOperators | LocalVariableDeclExpr |
 | exprs.kt:259:11:259:11 | x | exprs.kt:252:1:265:1 | mulOperators | VarAccess |
 | exprs.kt:259:11:259:15 | ... * ... | exprs.kt:252:1:265:1 | mulOperators | MulExpr |
 | exprs.kt:259:15:259:15 | y | exprs.kt:252:1:265:1 | mulOperators | VarAccess |
-| exprs.kt:260:7:260:7 | b | exprs.kt:252:1:265:1 | mulOperators | LocalVariableDeclExpr |
+| exprs.kt:260:3:260:19 | b | exprs.kt:252:1:265:1 | mulOperators | LocalVariableDeclExpr |
 | exprs.kt:260:11:260:13 | byx | exprs.kt:252:1:265:1 | mulOperators | VarAccess |
 | exprs.kt:260:11:260:19 | ... * ... | exprs.kt:252:1:265:1 | mulOperators | MulExpr |
 | exprs.kt:260:17:260:19 | byy | exprs.kt:252:1:265:1 | mulOperators | VarAccess |
-| exprs.kt:261:7:261:7 | l | exprs.kt:252:1:265:1 | mulOperators | LocalVariableDeclExpr |
+| exprs.kt:261:3:261:17 | l | exprs.kt:252:1:265:1 | mulOperators | LocalVariableDeclExpr |
 | exprs.kt:261:11:261:12 | lx | exprs.kt:252:1:265:1 | mulOperators | VarAccess |
 | exprs.kt:261:11:261:17 | ... * ... | exprs.kt:252:1:265:1 | mulOperators | MulExpr |
 | exprs.kt:261:16:261:17 | ly | exprs.kt:252:1:265:1 | mulOperators | VarAccess |
-| exprs.kt:262:7:262:7 | d | exprs.kt:252:1:265:1 | mulOperators | LocalVariableDeclExpr |
+| exprs.kt:262:3:262:17 | d | exprs.kt:252:1:265:1 | mulOperators | LocalVariableDeclExpr |
 | exprs.kt:262:11:262:12 | dx | exprs.kt:252:1:265:1 | mulOperators | VarAccess |
 | exprs.kt:262:11:262:17 | ... * ... | exprs.kt:252:1:265:1 | mulOperators | MulExpr |
 | exprs.kt:262:16:262:17 | dy | exprs.kt:252:1:265:1 | mulOperators | VarAccess |
-| exprs.kt:263:7:263:7 | f | exprs.kt:252:1:265:1 | mulOperators | LocalVariableDeclExpr |
+| exprs.kt:263:3:263:17 | f | exprs.kt:252:1:265:1 | mulOperators | LocalVariableDeclExpr |
 | exprs.kt:263:11:263:12 | fx | exprs.kt:252:1:265:1 | mulOperators | VarAccess |
 | exprs.kt:263:11:263:17 | ... * ... | exprs.kt:252:1:265:1 | mulOperators | MulExpr |
 | exprs.kt:263:16:263:17 | fy | exprs.kt:252:1:265:1 | mulOperators | VarAccess |
