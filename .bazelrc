@@ -1,4 +1,4 @@
-common --enable_platform_specific_config --experimental_enable_bzlmod
+common --enable_platform_specific_config --enable_bzlmod
 
 # when using repo standalone, we want still to unlock loading the internal repository module
 # actually using things from that module will obviously end up in an error
