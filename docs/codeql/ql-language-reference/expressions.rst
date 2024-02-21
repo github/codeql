@@ -149,7 +149,7 @@ Instead of overriding both definitions, it uses the definition from ``B``.
     
     class C extends A, B {
       // Need to define `int getANumber()`; otherwise it would be ambiguous
-      int getANumber() { 
+      override int getANumber() {
         result = B.super.getANumber()
       }
     }

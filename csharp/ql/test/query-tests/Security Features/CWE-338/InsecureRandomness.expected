@@ -1,19 +1,19 @@
 edges
-| InsecureRandomness.cs:28:13:28:16 | [post] access to local variable data : Byte[] [element] : Byte | InsecureRandomness.cs:29:57:29:60 | access to local variable data : Byte[] [element] : Byte |
-| InsecureRandomness.cs:28:23:28:43 | (...) ... : Byte | InsecureRandomness.cs:28:13:28:16 | [post] access to local variable data : Byte[] [element] : Byte |
-| InsecureRandomness.cs:28:29:28:43 | call to method Next : Int32 | InsecureRandomness.cs:28:23:28:43 | (...) ... : Byte |
-| InsecureRandomness.cs:29:13:29:18 | [post] access to local variable result : StringBuilder | InsecureRandomness.cs:31:16:31:21 | access to local variable result : StringBuilder |
-| InsecureRandomness.cs:29:27:29:61 | call to method GetString : String | InsecureRandomness.cs:29:13:29:18 | [post] access to local variable result : StringBuilder |
-| InsecureRandomness.cs:29:57:29:60 | access to local variable data : Byte[] [element] : Byte | InsecureRandomness.cs:29:27:29:61 | call to method GetString : String |
-| InsecureRandomness.cs:31:16:31:21 | access to local variable result : StringBuilder | InsecureRandomness.cs:31:16:31:32 | call to method ToString : String |
-| InsecureRandomness.cs:31:16:31:32 | call to method ToString : String | InsecureRandomness.cs:12:27:12:50 | call to method InsecureRandomString |
-| InsecureRandomness.cs:60:23:60:40 | access to array element : String | InsecureRandomness.cs:62:16:62:21 | access to local variable result : String |
-| InsecureRandomness.cs:60:31:60:39 | call to method Next : Int32 | InsecureRandomness.cs:60:23:60:40 | access to array element : String |
-| InsecureRandomness.cs:62:16:62:21 | access to local variable result : String | InsecureRandomness.cs:62:16:62:32 | call to method ToString : String |
-| InsecureRandomness.cs:62:16:62:32 | call to method ToString : String | InsecureRandomness.cs:13:20:13:56 | call to method InsecureRandomStringFromSelection |
-| InsecureRandomness.cs:72:23:72:40 | access to indexer : String | InsecureRandomness.cs:74:16:74:21 | access to local variable result : String |
-| InsecureRandomness.cs:72:31:72:39 | call to method Next : Int32 | InsecureRandomness.cs:72:23:72:40 | access to indexer : String |
-| InsecureRandomness.cs:74:16:74:21 | access to local variable result : String | InsecureRandomness.cs:14:20:14:54 | call to method InsecureRandomStringFromIndexer |
+| InsecureRandomness.cs:28:13:28:16 | [post] access to local variable data : Byte[] [element] : Byte | InsecureRandomness.cs:29:57:29:60 | access to local variable data : Byte[] [element] : Byte | provenance |  |
+| InsecureRandomness.cs:28:23:28:43 | (...) ... : Byte | InsecureRandomness.cs:28:13:28:16 | [post] access to local variable data : Byte[] [element] : Byte | provenance |  |
+| InsecureRandomness.cs:28:29:28:43 | call to method Next : Int32 | InsecureRandomness.cs:28:23:28:43 | (...) ... : Byte | provenance |  |
+| InsecureRandomness.cs:29:13:29:18 | [post] access to local variable result : StringBuilder | InsecureRandomness.cs:31:16:31:21 | access to local variable result : StringBuilder | provenance |  |
+| InsecureRandomness.cs:29:27:29:61 | call to method GetString : String | InsecureRandomness.cs:29:13:29:18 | [post] access to local variable result : StringBuilder | provenance |  |
+| InsecureRandomness.cs:29:57:29:60 | access to local variable data : Byte[] [element] : Byte | InsecureRandomness.cs:29:27:29:61 | call to method GetString : String | provenance |  |
+| InsecureRandomness.cs:31:16:31:21 | access to local variable result : StringBuilder | InsecureRandomness.cs:31:16:31:32 | call to method ToString : String | provenance |  |
+| InsecureRandomness.cs:31:16:31:32 | call to method ToString : String | InsecureRandomness.cs:12:27:12:50 | call to method InsecureRandomString | provenance |  |
+| InsecureRandomness.cs:60:23:60:40 | access to array element : String | InsecureRandomness.cs:62:16:62:21 | access to local variable result : String | provenance |  |
+| InsecureRandomness.cs:60:31:60:39 | call to method Next : Int32 | InsecureRandomness.cs:60:23:60:40 | access to array element : String | provenance |  |
+| InsecureRandomness.cs:62:16:62:21 | access to local variable result : String | InsecureRandomness.cs:62:16:62:32 | call to method ToString : String | provenance |  |
+| InsecureRandomness.cs:62:16:62:32 | call to method ToString : String | InsecureRandomness.cs:13:20:13:56 | call to method InsecureRandomStringFromSelection | provenance |  |
+| InsecureRandomness.cs:72:23:72:40 | access to indexer : String | InsecureRandomness.cs:74:16:74:21 | access to local variable result : String | provenance |  |
+| InsecureRandomness.cs:72:31:72:39 | call to method Next : Int32 | InsecureRandomness.cs:72:23:72:40 | access to indexer : String | provenance |  |
+| InsecureRandomness.cs:74:16:74:21 | access to local variable result : String | InsecureRandomness.cs:14:20:14:54 | call to method InsecureRandomStringFromIndexer | provenance |  |
 nodes
 | InsecureRandomness.cs:12:27:12:50 | call to method InsecureRandomString | semmle.label | call to method InsecureRandomString |
 | InsecureRandomness.cs:13:20:13:56 | call to method InsecureRandomStringFromSelection | semmle.label | call to method InsecureRandomStringFromSelection |

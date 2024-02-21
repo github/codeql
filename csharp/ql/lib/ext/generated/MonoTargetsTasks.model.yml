@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["MonoTargetsTasks", "MarshalingPInvokeScanner", "Execute", "()", "summary", "df-generated"]
+      - ["MonoTargetsTasks", "MarshalingPInvokeScanner", "get_Assemblies", "()", "summary", "df-generated"]
+      - ["MonoTargetsTasks", "MarshalingPInvokeScanner", "get_IncompatibleAssemblies", "()", "summary", "df-generated"]
+      - ["MonoTargetsTasks", "MarshalingPInvokeScanner", "set_Assemblies", "(System.String[])", "summary", "df-generated"]
+      - ["MonoTargetsTasks", "MarshalingPInvokeScanner", "set_IncompatibleAssemblies", "(System.String[])", "summary", "df-generated"]

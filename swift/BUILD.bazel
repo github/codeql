@@ -75,13 +75,6 @@ pkg_filegroup(
     visibility = ["//visibility:public"],
 )
 
-pkg_files(
-    name = "swift-test-sdk-arch",
-    srcs = ["//swift/third_party/swift-llvm-support:swift-test-sdk"],
-    prefix = "qltest/" + codeql_platform,
-    strip_prefix = strip_prefix.from_pkg(),
-)
-
 pkg_filegroup(
     name = "extractor-pack-arch",
     srcs = select({
@@ -89,7 +82,6 @@ pkg_filegroup(
         "//conditions:default": [
             ":extractor",
             ":resource-dir-arch",
-            ":swift-test-sdk-arch",
         ],
     }) + select({
         "@platforms//os:macos": [

@@ -6,6 +6,7 @@ private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.frameworks.owasp.Esapi
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A source of data that crosses a trust boundary.
@@ -57,9 +58,7 @@ module TrustBoundaryConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) {
     node instanceof TrustBoundaryValidationSanitizer or
     node.getType() instanceof HttpServletSession or
-    node.getType() instanceof NumberType or
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType
+    node instanceof SimpleTypeSanitizer
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof TrustBoundaryViolationSink }

@@ -50,7 +50,7 @@ module UnsafeShellCommandConstruction {
     source = backtrackShellExec(TypeTracker::TypeBackTracker::end(), shellExec)
   }
 
-  import semmle.python.dataflow.new.TypeTracker as TypeTracker
+  import semmle.python.dataflow.new.TypeTracking as TypeTracker
 
   private DataFlow::LocalSourceNode backtrackShellExec(
     TypeTracker::TypeBackTracker t, Concepts::SystemCommandExecution shellExec

@@ -5,6 +5,7 @@
 import csharp
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.controlflow.Guards
+private import semmle.code.csharp.frameworks.Format
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.web.Mvc
 private import semmle.code.csharp.security.Sanitizers
@@ -139,6 +140,79 @@ class LocalUrlSanitizer extends Sanitizer {
 }
 
 /**
+ * An argument to a call to `List.Contains()` that is a sanitizer for URL redirects.
+ */
+private predicate isContainsUrlSanitizer(Guard guard, Expr e, AbstractValue v) {
+  guard =
+    any(MethodCall method |
+      exists(Method m | m = method.getTarget() |
+        m.hasName("Contains") and
+        e = method.getArgument(0)
+      ) and
+      v.(AbstractValues::BooleanValue).getValue() = true
+    )
+}
+
+/**
+ * An URL argument to a call to `.Contains()` that is a sanitizer for URL redirects.
+ *
+ * This `Contains` method is usually called on a list, but the sanitizer matches any call to a method
+ * called `Contains`, so other methods with the same name will also be considered sanitizers.
+ */
+class ContainsUrlSanitizer extends Sanitizer {
+  ContainsUrlSanitizer() {
+    this = DataFlow::BarrierGuard<isContainsUrlSanitizer/3>::getABarrierNode()
+  }
+}
+
+/**
+ * A check that the URL is relative, and therefore safe for URL redirects.
+ */
+private predicate isRelativeUrlSanitizer(Guard guard, Expr e, AbstractValue v) {
+  guard =
+    any(PropertyAccess access |
+      access.getProperty().hasFullyQualifiedName("System", "Uri", "IsAbsoluteUri") and
+      e = access.getQualifier() and
+      v.(AbstractValues::BooleanValue).getValue() = false
+    )
+}
+
+/**
+ * A check that the URL is relative, and therefore safe for URL redirects.
+ */
+class RelativeUrlSanitizer extends Sanitizer {
+  RelativeUrlSanitizer() {
+    this = DataFlow::BarrierGuard<isRelativeUrlSanitizer/3>::getABarrierNode()
+  }
+}
+
+/**
+ * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
+ * E.g. `url.Host == "example.org"`
+ */
+private predicate isHostComparisonSanitizer(Guard guard, Expr e, AbstractValue v) {
+  guard =
+    any(EqualityOperation comparison |
+      exists(PropertyAccess access | access = comparison.getAnOperand() |
+        access.getProperty().hasFullyQualifiedName("System", "Uri", "Host") and
+        e = access.getQualifier()
+      ) and
+      if comparison instanceof EQExpr
+      then v.(AbstractValues::BooleanValue).getValue() = true
+      else v.(AbstractValues::BooleanValue).getValue() = false
+    )
+}
+
+/**
+ * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
+ */
+class HostComparisonSanitizer extends Sanitizer {
+  HostComparisonSanitizer() {
+    this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
+  }
+}
+
+/**
  * A call to the getter of the RawUrl property, whose value is considered to be safe for URL
  * redirects.
  */
@@ -160,6 +234,36 @@ class ConcatenationSanitizer extends Sanitizer {
   ConcatenationSanitizer() {
     this.getType() instanceof StringType and
     this.getExpr().(AddExpr).getLeftOperand().getValue().matches("%?%")
+  }
+}
+
+/**
+ * A string interpolation expression, where the first part (before any inserts) of the
+ * expression contains the character "?".
+ *
+ * This is considered a sanitizer by the same reasoning as `ConcatenationSanitizer`.
+ */
+private class InterpolationSanitizer extends Sanitizer {
+  InterpolationSanitizer() {
+    this.getExpr().(InterpolatedStringExpr).getText(0).getValue().matches("%?%")
+  }
+}
+
+/**
+ * A call to `string.Format`, where the format expression (before any inserts)
+ * contains the character "?".
+ *
+ * This is considered a sanitizer by the same reasoning as `ConcatenationSanitizer`.
+ */
+private class StringFormatSanitizer extends Sanitizer {
+  StringFormatSanitizer() {
+    exists(FormatCall c, Expr e, int index, string format |
+      c = this.getExpr() and e = c.getFormatExpr()
+    |
+      format = e.(StringLiteral).getValue() and
+      exists(format.regexpFind("\\{[0-9]+\\}", 0, index)) and
+      format.substring(0, index).matches("%?%")
+    )
   }
 }
 

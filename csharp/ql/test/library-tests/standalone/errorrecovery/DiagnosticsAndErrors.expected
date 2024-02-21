@@ -41,4 +41,3 @@ extractorMessages
 | errors.cs:91:45:91:45 | Failed to resolve name |
 | errors.cs:92:45:92:45 | Failed to determine type |
 | errors.cs:92:45:92:45 | Failed to resolve name |
-| file://:0:0:0:0 | Extracting default argument value 'object RecordNumber = default' instead of 'object RecordNumber = -1'. The latter is not supported in C#. |

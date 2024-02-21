@@ -3,7 +3,6 @@
  * @kind problem
  * @problem.severity recommendation
  * @id py/meta/call-graph-shared
- * @tags meta
  * @precision very-low
  */
 

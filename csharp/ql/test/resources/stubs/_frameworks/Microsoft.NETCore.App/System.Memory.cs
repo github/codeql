@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Memory, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
+// Generated from `System.Memory, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 namespace System
 {
     namespace Buffers
@@ -14,6 +14,7 @@ namespace System
             public int FreeCapacity { get => throw null; }
             public System.Memory<T> GetMemory(int sizeHint = default(int)) => throw null;
             public System.Span<T> GetSpan(int sizeHint = default(int)) => throw null;
+            public void ResetWrittenCount() => throw null;
             public int WrittenCount { get => throw null; }
             public System.ReadOnlyMemory<T> WrittenMemory { get => throw null; }
             public System.ReadOnlySpan<T> WrittenSpan { get => throw null; }
@@ -26,20 +27,28 @@ namespace System
                 public static double ReadDoubleLittleEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static System.Half ReadHalfBigEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static System.Half ReadHalfLittleEndian(System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Int128 ReadInt128BigEndian(System.ReadOnlySpan<byte> source) => throw null;
+                public static System.Int128 ReadInt128LittleEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static short ReadInt16BigEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static short ReadInt16LittleEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static int ReadInt32BigEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static int ReadInt32LittleEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static long ReadInt64BigEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static long ReadInt64LittleEndian(System.ReadOnlySpan<byte> source) => throw null;
+                public static nint ReadIntPtrBigEndian(System.ReadOnlySpan<byte> source) => throw null;
+                public static nint ReadIntPtrLittleEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static float ReadSingleBigEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static float ReadSingleLittleEndian(System.ReadOnlySpan<byte> source) => throw null;
+                public static System.UInt128 ReadUInt128BigEndian(System.ReadOnlySpan<byte> source) => throw null;
+                public static System.UInt128 ReadUInt128LittleEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static ushort ReadUInt16BigEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static ushort ReadUInt16LittleEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static uint ReadUInt32BigEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static uint ReadUInt32LittleEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static ulong ReadUInt64BigEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static ulong ReadUInt64LittleEndian(System.ReadOnlySpan<byte> source) => throw null;
+                public static nuint ReadUIntPtrBigEndian(System.ReadOnlySpan<byte> source) => throw null;
+                public static nuint ReadUIntPtrLittleEndian(System.ReadOnlySpan<byte> source) => throw null;
                 public static byte ReverseEndianness(byte value) => throw null;
                 public static short ReverseEndianness(short value) => throw null;
                 public static int ReverseEndianness(int value) => throw null;
@@ -48,60 +57,98 @@ namespace System
                 public static ushort ReverseEndianness(ushort value) => throw null;
                 public static uint ReverseEndianness(uint value) => throw null;
                 public static ulong ReverseEndianness(ulong value) => throw null;
+                public static nint ReverseEndianness(nint value) => throw null;
+                public static nuint ReverseEndianness(nuint value) => throw null;
+                public static System.Int128 ReverseEndianness(System.Int128 value) => throw null;
+                public static System.UInt128 ReverseEndianness(System.UInt128 value) => throw null;
+                public static void ReverseEndianness(System.ReadOnlySpan<int> source, System.Span<int> destination) => throw null;
+                public static void ReverseEndianness(System.ReadOnlySpan<System.Int128> source, System.Span<System.Int128> destination) => throw null;
+                public static void ReverseEndianness(System.ReadOnlySpan<long> source, System.Span<long> destination) => throw null;
+                public static void ReverseEndianness(System.ReadOnlySpan<nint> source, System.Span<nint> destination) => throw null;
+                public static void ReverseEndianness(System.ReadOnlySpan<short> source, System.Span<short> destination) => throw null;
+                public static void ReverseEndianness(System.ReadOnlySpan<nuint> source, System.Span<nuint> destination) => throw null;
+                public static void ReverseEndianness(System.ReadOnlySpan<uint> source, System.Span<uint> destination) => throw null;
+                public static void ReverseEndianness(System.ReadOnlySpan<System.UInt128> source, System.Span<System.UInt128> destination) => throw null;
+                public static void ReverseEndianness(System.ReadOnlySpan<ulong> source, System.Span<ulong> destination) => throw null;
+                public static void ReverseEndianness(System.ReadOnlySpan<ushort> source, System.Span<ushort> destination) => throw null;
                 public static bool TryReadDoubleBigEndian(System.ReadOnlySpan<byte> source, out double value) => throw null;
                 public static bool TryReadDoubleLittleEndian(System.ReadOnlySpan<byte> source, out double value) => throw null;
                 public static bool TryReadHalfBigEndian(System.ReadOnlySpan<byte> source, out System.Half value) => throw null;
                 public static bool TryReadHalfLittleEndian(System.ReadOnlySpan<byte> source, out System.Half value) => throw null;
+                public static bool TryReadInt128BigEndian(System.ReadOnlySpan<byte> source, out System.Int128 value) => throw null;
+                public static bool TryReadInt128LittleEndian(System.ReadOnlySpan<byte> source, out System.Int128 value) => throw null;
                 public static bool TryReadInt16BigEndian(System.ReadOnlySpan<byte> source, out short value) => throw null;
                 public static bool TryReadInt16LittleEndian(System.ReadOnlySpan<byte> source, out short value) => throw null;
                 public static bool TryReadInt32BigEndian(System.ReadOnlySpan<byte> source, out int value) => throw null;
                 public static bool TryReadInt32LittleEndian(System.ReadOnlySpan<byte> source, out int value) => throw null;
                 public static bool TryReadInt64BigEndian(System.ReadOnlySpan<byte> source, out long value) => throw null;
                 public static bool TryReadInt64LittleEndian(System.ReadOnlySpan<byte> source, out long value) => throw null;
+                public static bool TryReadIntPtrBigEndian(System.ReadOnlySpan<byte> source, out nint value) => throw null;
+                public static bool TryReadIntPtrLittleEndian(System.ReadOnlySpan<byte> source, out nint value) => throw null;
                 public static bool TryReadSingleBigEndian(System.ReadOnlySpan<byte> source, out float value) => throw null;
                 public static bool TryReadSingleLittleEndian(System.ReadOnlySpan<byte> source, out float value) => throw null;
+                public static bool TryReadUInt128BigEndian(System.ReadOnlySpan<byte> source, out System.UInt128 value) => throw null;
+                public static bool TryReadUInt128LittleEndian(System.ReadOnlySpan<byte> source, out System.UInt128 value) => throw null;
                 public static bool TryReadUInt16BigEndian(System.ReadOnlySpan<byte> source, out ushort value) => throw null;
                 public static bool TryReadUInt16LittleEndian(System.ReadOnlySpan<byte> source, out ushort value) => throw null;
                 public static bool TryReadUInt32BigEndian(System.ReadOnlySpan<byte> source, out uint value) => throw null;
                 public static bool TryReadUInt32LittleEndian(System.ReadOnlySpan<byte> source, out uint value) => throw null;
                 public static bool TryReadUInt64BigEndian(System.ReadOnlySpan<byte> source, out ulong value) => throw null;
                 public static bool TryReadUInt64LittleEndian(System.ReadOnlySpan<byte> source, out ulong value) => throw null;
+                public static bool TryReadUIntPtrBigEndian(System.ReadOnlySpan<byte> source, out nuint value) => throw null;
+                public static bool TryReadUIntPtrLittleEndian(System.ReadOnlySpan<byte> source, out nuint value) => throw null;
                 public static bool TryWriteDoubleBigEndian(System.Span<byte> destination, double value) => throw null;
                 public static bool TryWriteDoubleLittleEndian(System.Span<byte> destination, double value) => throw null;
                 public static bool TryWriteHalfBigEndian(System.Span<byte> destination, System.Half value) => throw null;
                 public static bool TryWriteHalfLittleEndian(System.Span<byte> destination, System.Half value) => throw null;
+                public static bool TryWriteInt128BigEndian(System.Span<byte> destination, System.Int128 value) => throw null;
+                public static bool TryWriteInt128LittleEndian(System.Span<byte> destination, System.Int128 value) => throw null;
                 public static bool TryWriteInt16BigEndian(System.Span<byte> destination, short value) => throw null;
                 public static bool TryWriteInt16LittleEndian(System.Span<byte> destination, short value) => throw null;
                 public static bool TryWriteInt32BigEndian(System.Span<byte> destination, int value) => throw null;
                 public static bool TryWriteInt32LittleEndian(System.Span<byte> destination, int value) => throw null;
                 public static bool TryWriteInt64BigEndian(System.Span<byte> destination, long value) => throw null;
                 public static bool TryWriteInt64LittleEndian(System.Span<byte> destination, long value) => throw null;
+                public static bool TryWriteIntPtrBigEndian(System.Span<byte> destination, nint value) => throw null;
+                public static bool TryWriteIntPtrLittleEndian(System.Span<byte> destination, nint value) => throw null;
                 public static bool TryWriteSingleBigEndian(System.Span<byte> destination, float value) => throw null;
                 public static bool TryWriteSingleLittleEndian(System.Span<byte> destination, float value) => throw null;
+                public static bool TryWriteUInt128BigEndian(System.Span<byte> destination, System.UInt128 value) => throw null;
+                public static bool TryWriteUInt128LittleEndian(System.Span<byte> destination, System.UInt128 value) => throw null;
                 public static bool TryWriteUInt16BigEndian(System.Span<byte> destination, ushort value) => throw null;
                 public static bool TryWriteUInt16LittleEndian(System.Span<byte> destination, ushort value) => throw null;
                 public static bool TryWriteUInt32BigEndian(System.Span<byte> destination, uint value) => throw null;
                 public static bool TryWriteUInt32LittleEndian(System.Span<byte> destination, uint value) => throw null;
                 public static bool TryWriteUInt64BigEndian(System.Span<byte> destination, ulong value) => throw null;
                 public static bool TryWriteUInt64LittleEndian(System.Span<byte> destination, ulong value) => throw null;
+                public static bool TryWriteUIntPtrBigEndian(System.Span<byte> destination, nuint value) => throw null;
+                public static bool TryWriteUIntPtrLittleEndian(System.Span<byte> destination, nuint value) => throw null;
                 public static void WriteDoubleBigEndian(System.Span<byte> destination, double value) => throw null;
                 public static void WriteDoubleLittleEndian(System.Span<byte> destination, double value) => throw null;
                 public static void WriteHalfBigEndian(System.Span<byte> destination, System.Half value) => throw null;
                 public static void WriteHalfLittleEndian(System.Span<byte> destination, System.Half value) => throw null;
+                public static void WriteInt128BigEndian(System.Span<byte> destination, System.Int128 value) => throw null;
+                public static void WriteInt128LittleEndian(System.Span<byte> destination, System.Int128 value) => throw null;
                 public static void WriteInt16BigEndian(System.Span<byte> destination, short value) => throw null;
                 public static void WriteInt16LittleEndian(System.Span<byte> destination, short value) => throw null;
                 public static void WriteInt32BigEndian(System.Span<byte> destination, int value) => throw null;
                 public static void WriteInt32LittleEndian(System.Span<byte> destination, int value) => throw null;
                 public static void WriteInt64BigEndian(System.Span<byte> destination, long value) => throw null;
                 public static void WriteInt64LittleEndian(System.Span<byte> destination, long value) => throw null;
+                public static void WriteIntPtrBigEndian(System.Span<byte> destination, nint value) => throw null;
+                public static void WriteIntPtrLittleEndian(System.Span<byte> destination, nint value) => throw null;
                 public static void WriteSingleBigEndian(System.Span<byte> destination, float value) => throw null;
                 public static void WriteSingleLittleEndian(System.Span<byte> destination, float value) => throw null;
+                public static void WriteUInt128BigEndian(System.Span<byte> destination, System.UInt128 value) => throw null;
+                public static void WriteUInt128LittleEndian(System.Span<byte> destination, System.UInt128 value) => throw null;
                 public static void WriteUInt16BigEndian(System.Span<byte> destination, ushort value) => throw null;
                 public static void WriteUInt16LittleEndian(System.Span<byte> destination, ushort value) => throw null;
                 public static void WriteUInt32BigEndian(System.Span<byte> destination, uint value) => throw null;
                 public static void WriteUInt32LittleEndian(System.Span<byte> destination, uint value) => throw null;
                 public static void WriteUInt64BigEndian(System.Span<byte> destination, ulong value) => throw null;
                 public static void WriteUInt64LittleEndian(System.Span<byte> destination, ulong value) => throw null;
+                public static void WriteUIntPtrBigEndian(System.Span<byte> destination, nuint value) => throw null;
+                public static void WriteUIntPtrLittleEndian(System.Span<byte> destination, nuint value) => throw null;
             }
         }
         public static partial class BuffersExtensions
@@ -297,6 +344,8 @@ namespace System
         public static System.ReadOnlySpan<char> AsSpan(this string text) => throw null;
         public static System.ReadOnlySpan<char> AsSpan(this string text, int start) => throw null;
         public static System.ReadOnlySpan<char> AsSpan(this string text, int start, int length) => throw null;
+        public static System.ReadOnlySpan<char> AsSpan(this string text, System.Index startIndex) => throw null;
+        public static System.ReadOnlySpan<char> AsSpan(this string text, System.Range range) => throw null;
         public static System.Span<T> AsSpan<T>(this System.ArraySegment<T> segment) => throw null;
         public static System.Span<T> AsSpan<T>(this System.ArraySegment<T> segment, System.Index startIndex) => throw null;
         public static System.Span<T> AsSpan<T>(this System.ArraySegment<T> segment, int start) => throw null;
@@ -321,8 +370,34 @@ namespace System
         public static bool Contains(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> value, System.StringComparison comparisonType) => throw null;
         public static bool Contains<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
         public static bool Contains<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.Span<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAny<T>(this System.Span<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.Span<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExcept<T>(this System.Span<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static bool ContainsAnyExceptInRange<T>(this System.ReadOnlySpan<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
+        public static bool ContainsAnyExceptInRange<T>(this System.Span<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
+        public static bool ContainsAnyInRange<T>(this System.ReadOnlySpan<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
+        public static bool ContainsAnyInRange<T>(this System.Span<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
         public static void CopyTo<T>(this T[] source, System.Memory<T> destination) => throw null;
         public static void CopyTo<T>(this T[] source, System.Span<T> destination) => throw null;
+        public static int Count<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static int Count<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static int Count<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
+        public static int Count<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
         public static bool EndsWith(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> value, System.StringComparison comparisonType) => throw null;
         public static bool EndsWith<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
         public static bool EndsWith<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
@@ -336,44 +411,62 @@ namespace System
         public static int IndexOf<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
         public static int IndexOf<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
         public static int IndexOf<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAny<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAny<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAny<T>(this System.Span<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAny<T>(this System.Span<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.Span<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.Span<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAnyExcept<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int IndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static int IndexOfAnyExceptInRange<T>(this System.ReadOnlySpan<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
+        public static int IndexOfAnyExceptInRange<T>(this System.Span<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
+        public static int IndexOfAnyInRange<T>(this System.ReadOnlySpan<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
+        public static int IndexOfAnyInRange<T>(this System.Span<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
         public static bool IsWhiteSpace(this System.ReadOnlySpan<char> span) => throw null;
         public static int LastIndexOf(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> value, System.StringComparison comparisonType) => throw null;
         public static int LastIndexOf<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOf<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOf<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOf<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAny<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAny<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAny<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAny<T>(this System.Span<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAny<T>(this System.Span<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.Span<T> span, T value) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.Span<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.Span<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAnyExcept<T>(this System.Span<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.Span<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, T value0, T value1, T value2) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, System.Buffers.SearchValues<T> values) where T : System.IEquatable<T> => throw null;
         public static int LastIndexOfAnyExcept<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> values) where T : System.IEquatable<T> => throw null;
+        public static int LastIndexOfAnyExceptInRange<T>(this System.ReadOnlySpan<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
+        public static int LastIndexOfAnyExceptInRange<T>(this System.Span<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
+        public static int LastIndexOfAnyInRange<T>(this System.ReadOnlySpan<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
+        public static int LastIndexOfAnyInRange<T>(this System.Span<T> span, T lowInclusive, T highInclusive) where T : System.IComparable<T> => throw null;
         public static bool Overlaps<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> other) => throw null;
         public static bool Overlaps<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> other, out int elementOffset) => throw null;
         public static bool Overlaps<T>(this System.Span<T> span, System.ReadOnlySpan<T> other) => throw null;
         public static bool Overlaps<T>(this System.Span<T> span, System.ReadOnlySpan<T> other, out int elementOffset) => throw null;
+        public static void Replace<T>(this System.Span<T> span, T oldValue, T newValue) where T : System.IEquatable<T> => throw null;
+        public static void Replace<T>(this System.ReadOnlySpan<T> source, System.Span<T> destination, T oldValue, T newValue) where T : System.IEquatable<T> => throw null;
         public static void Reverse<T>(this System.Span<T> span) => throw null;
         public static int SequenceCompareTo<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> other) where T : System.IComparable<T> => throw null;
         public static int SequenceCompareTo<T>(this System.Span<T> span, System.ReadOnlySpan<T> other) where T : System.IComparable<T> => throw null;
@@ -387,6 +480,10 @@ namespace System
         public static void Sort<TKey, TValue>(this System.Span<TKey> keys, System.Span<TValue> items, System.Comparison<TKey> comparison) => throw null;
         public static void Sort<T, TComparer>(this System.Span<T> span, TComparer comparer) where TComparer : System.Collections.Generic.IComparer<T> => throw null;
         public static void Sort<TKey, TValue, TComparer>(this System.Span<TKey> keys, System.Span<TValue> items, TComparer comparer) where TComparer : System.Collections.Generic.IComparer<TKey> => throw null;
+        public static int Split(this System.ReadOnlySpan<char> source, System.Span<System.Range> destination, char separator, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
+        public static int Split(this System.ReadOnlySpan<char> source, System.Span<System.Range> destination, System.ReadOnlySpan<char> separator, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
+        public static int SplitAny(this System.ReadOnlySpan<char> source, System.Span<System.Range> destination, System.ReadOnlySpan<char> separators, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
+        public static int SplitAny(this System.ReadOnlySpan<char> source, System.Span<System.Range> destination, System.ReadOnlySpan<string> separators, System.StringSplitOptions options = default(System.StringSplitOptions)) => throw null;
         public static bool StartsWith(this System.ReadOnlySpan<char> span, System.ReadOnlySpan<char> value, System.StringComparison comparisonType) => throw null;
         public static bool StartsWith<T>(this System.ReadOnlySpan<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
         public static bool StartsWith<T>(this System.Span<T> span, System.ReadOnlySpan<T> value) where T : System.IEquatable<T> => throw null;
@@ -438,6 +535,11 @@ namespace System
         public static System.Span<T> TrimStart<T>(this System.Span<T> span, T trimElement) where T : System.IEquatable<T> => throw null;
         public static bool TryWrite(this System.Span<char> destination, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument("destination")] ref System.MemoryExtensions.TryWriteInterpolatedStringHandler handler, out int charsWritten) => throw null;
         public static bool TryWrite(this System.Span<char> destination, System.IFormatProvider provider, [System.Runtime.CompilerServices.InterpolatedStringHandlerArgument(new[] { "destination", "provider" })] ref System.MemoryExtensions.TryWriteInterpolatedStringHandler handler, out int charsWritten) => throw null;
+        public static bool TryWrite<TArg0>(this System.Span<char> destination, System.IFormatProvider provider, System.Text.CompositeFormat format, out int charsWritten, TArg0 arg0) => throw null;
+        public static bool TryWrite<TArg0, TArg1>(this System.Span<char> destination, System.IFormatProvider provider, System.Text.CompositeFormat format, out int charsWritten, TArg0 arg0, TArg1 arg1) => throw null;
+        public static bool TryWrite<TArg0, TArg1, TArg2>(this System.Span<char> destination, System.IFormatProvider provider, System.Text.CompositeFormat format, out int charsWritten, TArg0 arg0, TArg1 arg1, TArg2 arg2) => throw null;
+        public static bool TryWrite(this System.Span<char> destination, System.IFormatProvider provider, System.Text.CompositeFormat format, out int charsWritten, params object[] args) => throw null;
+        public static bool TryWrite(this System.Span<char> destination, System.IFormatProvider provider, System.Text.CompositeFormat format, out int charsWritten, System.ReadOnlySpan<object> args) => throw null;
         [System.Runtime.CompilerServices.InterpolatedStringHandler]
         public struct TryWriteInterpolatedStringHandler
         {
@@ -469,7 +571,7 @@ namespace System
                 public static System.ReadOnlySpan<TTo> Cast<TFrom, TTo>(System.ReadOnlySpan<TFrom> span) where TFrom : struct where TTo : struct => throw null;
                 public static System.Span<TTo> Cast<TFrom, TTo>(System.Span<TFrom> span) where TFrom : struct where TTo : struct => throw null;
                 public static System.Memory<T> CreateFromPinnedArray<T>(T[] array, int start, int length) => throw null;
-                public static System.ReadOnlySpan<T> CreateReadOnlySpan<T>(ref T reference, int length) => throw null;
+                public static System.ReadOnlySpan<T> CreateReadOnlySpan<T>(ref readonly T reference, int length) => throw null;
                 public static unsafe System.ReadOnlySpan<byte> CreateReadOnlySpanFromNullTerminated(byte* value) => throw null;
                 public static unsafe System.ReadOnlySpan<char> CreateReadOnlySpanFromNullTerminated(char* value) => throw null;
                 public static System.Span<T> CreateSpan<T>(ref T reference, int length) => throw null;
@@ -484,8 +586,8 @@ namespace System
                 public static bool TryGetMemoryManager<T, TManager>(System.ReadOnlyMemory<T> memory, out TManager manager, out int start, out int length) where TManager : System.Buffers.MemoryManager<T> => throw null;
                 public static bool TryGetString(System.ReadOnlyMemory<char> memory, out string text, out int start, out int length) => throw null;
                 public static bool TryRead<T>(System.ReadOnlySpan<byte> source, out T value) where T : struct => throw null;
-                public static bool TryWrite<T>(System.Span<byte> destination, ref T value) where T : struct => throw null;
-                public static void Write<T>(System.Span<byte> destination, ref T value) where T : struct => throw null;
+                public static bool TryWrite<T>(System.Span<byte> destination, in T value) where T : struct => throw null;
+                public static void Write<T>(System.Span<byte> destination, in T value) where T : struct => throw null;
             }
             public static class SequenceMarshal
             {

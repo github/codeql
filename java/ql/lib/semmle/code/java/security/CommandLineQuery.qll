@@ -12,6 +12,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.CommandArguments
 private import semmle.code.java.security.ExternalProcess
+private import semmle.code.java.security.Sanitizers
 
 /** A sink for command injection vulnerabilities. */
 abstract class CommandInjectionSink extends DataFlow::Node { }
@@ -38,11 +39,7 @@ private class DefaultCommandInjectionSink extends CommandInjectionSink {
 
 private class DefaultCommandInjectionSanitizer extends CommandInjectionSanitizer {
   DefaultCommandInjectionSanitizer() {
-    this.getType() instanceof PrimitiveType
-    or
-    this.getType() instanceof BoxedType
-    or
-    this.getType() instanceof NumberType
+    this instanceof SimpleTypeSanitizer
     or
     isSafeCommandArgument(this.asExpr())
   }

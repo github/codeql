@@ -234,7 +234,16 @@ class VariableDeclarationEntry extends DeclarationEntry, @var_decl {
    * int f(int y) { return y; }
    * ```
    */
-  override string getName() { var_decls(underlyingElement(this), _, _, result, _) and result != "" }
+  override string getName() {
+    exists(string name |
+      var_decls(underlyingElement(this), _, _, name, _) and
+      (
+        name != "" and result = name
+        or
+        name = "" and result = this.getVariable().(LocalVariable).getName()
+      )
+    )
+  }
 
   /**
    * Gets the type of the variable which is being declared or defined.

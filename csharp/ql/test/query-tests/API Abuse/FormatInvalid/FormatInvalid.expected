@@ -1,6 +1,6 @@
 edges
-| FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | FormatMissingArgument.cs:28:24:28:29 | format : String |
-| FormatMissingArgument.cs:28:24:28:29 | format : String | FormatMissingArgument.cs:31:23:31:28 | access to parameter format |
+| FormatMissingArgument.cs:22:16:22:20 | "{1}" : String | FormatMissingArgument.cs:28:24:28:29 | format : String | provenance |  |
+| FormatMissingArgument.cs:28:24:28:29 | format : String | FormatMissingArgument.cs:31:23:31:28 | access to parameter format | provenance |  |
 nodes
 | FormatInvalid.cs:9:23:9:27 | "{0}" | semmle.label | "{0}" |
 | FormatInvalid.cs:12:23:12:29 | "{0,1}" | semmle.label | "{0,1}" |

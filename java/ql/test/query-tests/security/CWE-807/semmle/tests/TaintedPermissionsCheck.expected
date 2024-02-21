@@ -1,5 +1,5 @@
 edges
-| TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) : String | TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... |
+| TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) : String | TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... | provenance |  |
 nodes
 | TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... | semmle.label | ... + ... |

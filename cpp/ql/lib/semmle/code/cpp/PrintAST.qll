@@ -306,7 +306,14 @@ class ExprNode extends AstNode {
 
   ExprNode() { expr = ast }
 
-  override AstNode getChildInternal(int childIndex) { result.getAst() = expr.getChild(childIndex) }
+  override AstNode getChildInternal(int childIndex) {
+    result.getAst() = expr.getChild(childIndex)
+    or
+    exists(int destructorIndex |
+      result.getAst() = expr.getImplicitDestructorCall(destructorIndex) and
+      childIndex = destructorIndex + max(int index | exists(expr.getChild(index)) or index = 0) + 1
+    )
+  }
 
   override string getProperty(string key) {
     result = super.getProperty(key)
@@ -438,6 +445,11 @@ class StmtNode extends AstNode {
         result.getAst() = child.(Expr) or
         result.getAst() = child.(Stmt)
       )
+    )
+    or
+    exists(int destructorIndex |
+      result.getAst() = stmt.getImplicitDestructorCall(destructorIndex) and
+      childIndex = destructorIndex + max(int index | exists(stmt.getChild(index)) or index = 0) + 1
     )
   }
 
@@ -662,6 +674,10 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
       or
       not namedStmtChildPredicates(s, child, _) and
       exists(int n | s.getChild(n) = child and result = "getChild(" + n + ")")
+      or
+      exists(int n |
+        s.getImplicitDestructorCall(n) = child and result = "getImplicitDestructorCall(" + n + ")"
+      )
     )
     or
     exists(Expr expr | expr = parent |
@@ -669,6 +685,11 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
       or
       not namedExprChildPredicates(expr, child, _) and
       exists(int n | expr.getChild(n) = child and result = "getChild(" + n + ")")
+      or
+      exists(int n |
+        expr.getImplicitDestructorCall(n) = child and
+        result = "getImplicitDestructorCall(" + n + ")"
+      )
     )
   )
 }
@@ -714,7 +735,9 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(ForStmt).getStmt() = e and pred = "getStmt()"
     or
-    s.(RangeBasedForStmt).getChild(0) = e and pred = "getChild(0)"
+    s.(RangeBasedForStmt).getInitialization() = e and pred = "getInitialization()"
+    or
+    s.(RangeBasedForStmt).getChild(1) = e and pred = "getChild(1)"
     or
     s.(RangeBasedForStmt).getBeginEndDeclaration() = e and pred = "getBeginEndDeclaration()"
     or
@@ -722,7 +745,7 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(RangeBasedForStmt).getUpdate() = e and pred = "getUpdate()"
     or
-    s.(RangeBasedForStmt).getChild(4) = e and pred = "getChild(4)"
+    s.(RangeBasedForStmt).getChild(5) = e and pred = "getChild(5)"
     or
     s.(RangeBasedForStmt).getStmt() = e and pred = "getStmt()"
     or
@@ -814,7 +837,11 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     or
     expr.(OverloadedArrayExpr).getArrayOffset() = ele and pred = "getArrayOffset()"
     or
-    expr.(OverloadedPointerDereferenceExpr).getExpr() = ele and pred = "getExpr()"
+    // OverloadedPointerDereferenceExpr::getExpr/0 also considers qualifiers, which are already handled above for all Call classes.
+    not expr.(OverloadedPointerDereferenceExpr).getQualifier() =
+      expr.(OverloadedPointerDereferenceExpr).getExpr() and
+    expr.(OverloadedPointerDereferenceExpr).getExpr() = ele and
+    pred = "getExpr()"
     or
     expr.(CommaExpr).getLeftOperand() = ele and pred = "getLeftOperand()"
     or

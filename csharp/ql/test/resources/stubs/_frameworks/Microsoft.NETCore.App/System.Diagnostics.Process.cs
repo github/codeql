@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.Process, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Diagnostics.Process, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace Microsoft
 {
     namespace Win32
@@ -158,6 +158,7 @@ namespace System
             public ProcessStartInfo() => throw null;
             public ProcessStartInfo(string fileName) => throw null;
             public ProcessStartInfo(string fileName, string arguments) => throw null;
+            public ProcessStartInfo(string fileName, System.Collections.Generic.IEnumerable<string> arguments) => throw null;
             public string Domain { get => throw null; set { } }
             public System.Collections.Generic.IDictionary<string, string> Environment { get => throw null; }
             public System.Collections.Specialized.StringDictionary EnvironmentVariables { get => throw null; }
@@ -173,6 +174,7 @@ namespace System
             public System.Text.Encoding StandardErrorEncoding { get => throw null; set { } }
             public System.Text.Encoding StandardInputEncoding { get => throw null; set { } }
             public System.Text.Encoding StandardOutputEncoding { get => throw null; set { } }
+            public bool UseCredentialsForNetworkingOnly { get => throw null; set { } }
             public string UserName { get => throw null; set { } }
             public bool UseShellExecute { get => throw null; set { } }
             public string Verb { get => throw null; set { } }

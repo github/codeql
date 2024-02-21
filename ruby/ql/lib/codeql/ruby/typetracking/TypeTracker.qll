@@ -5,6 +5,7 @@
  */
 
 private import TypeTrackerSpecific
+private import codeql.util.Boolean
 
 cached
 private module Cached {
@@ -389,8 +390,6 @@ deprecated module StepSummary {
     or
     smallstepCall(nodeFrom, nodeTo, summary)
   }
-
-  deprecated predicate localSourceStoreStep = flowsToStoreStep/3;
 
   /** Gets the step summary for a level step. */
   StepSummary levelStep() { result = LevelStep() }

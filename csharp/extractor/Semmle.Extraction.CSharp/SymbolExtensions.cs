@@ -524,6 +524,17 @@ namespace Semmle.Extraction.CSharp
         public static bool IsUnboundReadOnlySpan(this ITypeSymbol type) =>
             type.ToString() == "System.ReadOnlySpan<T>";
 
+        public static bool IsInlineArray(this ITypeSymbol type)
+        {
+            var attributes = type.GetAttributes();
+            var isInline = attributes.Any(attribute =>
+                    attribute.AttributeClass is INamedTypeSymbol nt &&
+                    nt.Name == "InlineArrayAttribute" &&
+                    nt.ContainingNamespace.ToString() == "System.Runtime.CompilerServices"
+            );
+            return isInline;
+        }
+
         /// <summary>
         /// Holds if this type is of the form <code>System.ReadOnlySpan<byte></code>.
         /// </summary>
@@ -580,7 +591,7 @@ namespace Semmle.Extraction.CSharp
         public static INamedTypeSymbol? GetNonObjectBaseType(this ITypeSymbol symbol, Context cx) =>
             symbol is ITypeParameterSymbol || SymbolEqualityComparer.Default.Equals(symbol.BaseType, cx.Compilation.ObjectType) ? null : symbol.BaseType;
 
-        [return: NotNullIfNotNull("symbol")]
+        [return: NotNullIfNotNull(nameof(symbol))]
         public static IEntity? CreateEntity(this Context cx, ISymbol symbol)
         {
             if (symbol is null)

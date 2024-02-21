@@ -741,43 +741,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     defAdjacentRead(def, bb1, bb2, i2)
   }
 
-  pragma[noinline]
-  deprecated private predicate adjacentDefRead(
-    Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2, SourceVariable v
-  ) {
-    adjacentDefRead(def, bb1, i1, bb2, i2) and
-    v = def.getSourceVariable()
-  }
-
-  deprecated private predicate adjacentDefReachesRead(
-    Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-  ) {
-    exists(SourceVariable v | adjacentDefRead(def, bb1, i1, bb2, i2, v) |
-      ssaRef(bb1, i1, v, SsaDef())
-      or
-      variableRead(bb1, i1, v, true)
-    )
-    or
-    exists(BasicBlock bb3, int i3 |
-      adjacentDefReachesRead(def, bb1, i1, bb3, i3) and
-      variableRead(bb3, i3, _, false) and
-      adjacentDefRead(def, bb3, i3, bb2, i2)
-    )
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `adjacentDefRead`, but ignores uncertain reads.
-   */
-  pragma[nomagic]
-  deprecated predicate adjacentDefNoUncertainReads(
-    Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-  ) {
-    adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-    variableRead(bb2, i2, _, true)
-  }
-
   /**
    * NB: If this predicate is exposed, it should be cached.
    *
@@ -838,31 +801,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
     lastRefRedef(inp, _, _, def)
   }
 
-  deprecated private predicate adjacentDefReachesUncertainRead(
-    Definition def, BasicBlock bb1, int i1, BasicBlock bb2, int i2
-  ) {
-    adjacentDefReachesRead(def, bb1, i1, bb2, i2) and
-    variableRead(bb2, i2, _, false)
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `lastRefRedef`, but ignores uncertain reads.
-   */
-  pragma[nomagic]
-  deprecated predicate lastRefRedefNoUncertainReads(
-    Definition def, BasicBlock bb, int i, Definition next
-  ) {
-    lastRefRedef(def, bb, i, next) and
-    not variableRead(bb, i, def.getSourceVariable(), false)
-    or
-    exists(BasicBlock bb0, int i0 |
-      lastRefRedef(def, bb0, i0, next) and
-      adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
-    )
-  }
-
   /**
    * NB: If this predicate is exposed, it should be cached.
    *
@@ -905,22 +843,6 @@ module Make<LocationSig Location, InputSig<Location> Input> {
       or
       // Can reach a block using one or more steps, where `def` is no longer live
       varBlockReachesExit(def, bb)
-    )
-  }
-
-  /**
-   * NB: If this predicate is exposed, it should be cached.
-   *
-   * Same as `lastRefRedef`, but ignores uncertain reads.
-   */
-  pragma[nomagic]
-  deprecated predicate lastRefNoUncertainReads(Definition def, BasicBlock bb, int i) {
-    lastRef(def, bb, i) and
-    not variableRead(bb, i, def.getSourceVariable(), false)
-    or
-    exists(BasicBlock bb0, int i0 |
-      lastRef(def, bb0, i0) and
-      adjacentDefReachesUncertainRead(def, bb, i, bb0, i0)
     )
   }
 

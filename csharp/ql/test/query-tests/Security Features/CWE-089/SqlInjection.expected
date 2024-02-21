@@ -1,37 +1,37 @@
 edges
-| SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | SqlInjection.cs:33:21:33:40 | access to property Text : String |
-| SqlInjection.cs:33:21:33:40 | access to property Text : String | SqlInjection.cs:34:50:34:55 | access to local variable query1 |
-| SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:68:33:68:52 | access to property Text : String |
-| SqlInjection.cs:68:33:68:52 | access to property Text : String | SqlInjection.cs:69:56:69:61 | access to local variable query1 |
-| SqlInjection.cs:68:33:68:52 | access to property Text : String | SqlInjection.cs:70:55:70:60 | access to local variable query1 |
-| SqlInjection.cs:82:21:82:29 | access to property Text : String | SqlInjection.cs:83:50:83:55 | access to local variable query1 |
-| SqlInjection.cs:92:21:92:29 | access to property Text : String | SqlInjection.cs:93:42:93:52 | access to local variable queryString |
-| SqlInjection.cs:92:21:92:29 | access to property Text : String | SqlInjection.cs:93:42:93:52 | access to local variable queryString : String |
-| SqlInjection.cs:93:27:93:53 | object creation of type SqlCommand : SqlCommand | SqlInjection.cs:94:50:94:52 | access to local variable cmd |
-| SqlInjection.cs:93:42:93:52 | access to local variable queryString : String | SqlInjection.cs:93:27:93:53 | object creation of type SqlCommand : SqlCommand |
-| SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | SqlInjectionDapper.cs:21:55:21:59 | access to local variable query |
-| SqlInjectionDapper.cs:29:86:29:94 | access to property Text : String | SqlInjectionDapper.cs:30:66:30:70 | access to local variable query |
-| SqlInjectionDapper.cs:38:86:38:94 | access to property Text : String | SqlInjectionDapper.cs:39:63:39:67 | access to local variable query |
-| SqlInjectionDapper.cs:47:86:47:94 | access to property Text : String | SqlInjectionDapper.cs:49:47:49:51 | access to local variable query |
-| SqlInjectionDapper.cs:57:86:57:94 | access to property Text : String | SqlInjectionDapper.cs:58:42:58:46 | access to local variable query |
-| SqlInjectionDapper.cs:66:86:66:94 | access to property Text : String | SqlInjectionDapper.cs:67:42:67:46 | access to local variable query |
-| SqlInjectionDapper.cs:75:86:75:94 | access to property Text : String | SqlInjectionDapper.cs:77:52:77:56 | access to local variable query |
-| SqlInjectionSqlite.cs:19:51:19:63 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:19:51:19:68 | access to property Text |
-| SqlInjectionSqlite.cs:24:23:24:71 | object creation of type SQLiteCommand : SQLiteCommand | SqlInjectionSqlite.cs:44:45:44:47 | access to local variable cmd |
-| SqlInjectionSqlite.cs:24:41:24:53 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:24:41:24:58 | access to property Text |
-| SqlInjectionSqlite.cs:24:41:24:53 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:24:41:24:58 | access to property Text : String |
-| SqlInjectionSqlite.cs:24:41:24:58 | access to property Text : String | SqlInjectionSqlite.cs:24:23:24:71 | object creation of type SQLiteCommand : SQLiteCommand |
-| SqlInjectionSqlite.cs:33:49:33:61 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:33:49:33:66 | access to property Text |
-| SqlInjectionSqlite.cs:39:45:39:57 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:39:45:39:62 | access to property Text |
-| SqlInjectionSqlite.cs:49:36:49:84 | object creation of type FileStream : FileStream | SqlInjectionSqlite.cs:51:59:51:60 | access to local variable fs : FileStream |
-| SqlInjectionSqlite.cs:49:51:49:63 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:49:51:49:68 | access to property Text : String |
-| SqlInjectionSqlite.cs:49:51:49:68 | access to property Text : String | SqlInjectionSqlite.cs:49:36:49:84 | object creation of type FileStream : FileStream |
-| SqlInjectionSqlite.cs:51:42:51:76 | object creation of type StreamReader : StreamReader | SqlInjectionSqlite.cs:54:35:54:36 | access to local variable sr : StreamReader |
-| SqlInjectionSqlite.cs:51:59:51:60 | access to local variable fs : FileStream | SqlInjectionSqlite.cs:51:42:51:76 | object creation of type StreamReader : StreamReader |
-| SqlInjectionSqlite.cs:54:35:54:36 | access to local variable sr : StreamReader | SqlInjectionSqlite.cs:54:35:54:47 | call to method ReadLine : String |
-| SqlInjectionSqlite.cs:54:35:54:47 | call to method ReadLine : String | SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String |
-| SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String |
-| SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | SqlInjectionSqlite.cs:61:53:61:55 | access to local variable sql |
+| SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | SqlInjection.cs:33:21:33:40 | access to property Text : String | provenance |  |
+| SqlInjection.cs:33:21:33:40 | access to property Text : String | SqlInjection.cs:34:50:34:55 | access to local variable query1 | provenance |  |
+| SqlInjection.cs:68:33:68:47 | access to field categoryTextBox : TextBox | SqlInjection.cs:68:33:68:52 | access to property Text : String | provenance |  |
+| SqlInjection.cs:68:33:68:52 | access to property Text : String | SqlInjection.cs:69:56:69:61 | access to local variable query1 | provenance |  |
+| SqlInjection.cs:68:33:68:52 | access to property Text : String | SqlInjection.cs:70:55:70:60 | access to local variable query1 | provenance |  |
+| SqlInjection.cs:82:21:82:29 | access to property Text : String | SqlInjection.cs:83:50:83:55 | access to local variable query1 | provenance |  |
+| SqlInjection.cs:92:21:92:29 | access to property Text : String | SqlInjection.cs:93:42:93:52 | access to local variable queryString | provenance |  |
+| SqlInjection.cs:92:21:92:29 | access to property Text : String | SqlInjection.cs:93:42:93:52 | access to local variable queryString : String | provenance |  |
+| SqlInjection.cs:93:27:93:53 | object creation of type SqlCommand : SqlCommand | SqlInjection.cs:94:50:94:52 | access to local variable cmd | provenance |  |
+| SqlInjection.cs:93:42:93:52 | access to local variable queryString : String | SqlInjection.cs:93:27:93:53 | object creation of type SqlCommand : SqlCommand | provenance |  |
+| SqlInjectionDapper.cs:20:86:20:94 | access to property Text : String | SqlInjectionDapper.cs:21:55:21:59 | access to local variable query | provenance |  |
+| SqlInjectionDapper.cs:29:86:29:94 | access to property Text : String | SqlInjectionDapper.cs:30:66:30:70 | access to local variable query | provenance |  |
+| SqlInjectionDapper.cs:38:86:38:94 | access to property Text : String | SqlInjectionDapper.cs:39:63:39:67 | access to local variable query | provenance |  |
+| SqlInjectionDapper.cs:47:86:47:94 | access to property Text : String | SqlInjectionDapper.cs:49:47:49:51 | access to local variable query | provenance |  |
+| SqlInjectionDapper.cs:57:86:57:94 | access to property Text : String | SqlInjectionDapper.cs:58:42:58:46 | access to local variable query | provenance |  |
+| SqlInjectionDapper.cs:66:86:66:94 | access to property Text : String | SqlInjectionDapper.cs:67:42:67:46 | access to local variable query | provenance |  |
+| SqlInjectionDapper.cs:75:86:75:94 | access to property Text : String | SqlInjectionDapper.cs:77:52:77:56 | access to local variable query | provenance |  |
+| SqlInjectionSqlite.cs:19:51:19:63 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:19:51:19:68 | access to property Text | provenance |  |
+| SqlInjectionSqlite.cs:24:23:24:71 | object creation of type SQLiteCommand : SQLiteCommand | SqlInjectionSqlite.cs:44:45:44:47 | access to local variable cmd | provenance |  |
+| SqlInjectionSqlite.cs:24:41:24:53 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:24:41:24:58 | access to property Text | provenance |  |
+| SqlInjectionSqlite.cs:24:41:24:53 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:24:41:24:58 | access to property Text : String | provenance |  |
+| SqlInjectionSqlite.cs:24:41:24:58 | access to property Text : String | SqlInjectionSqlite.cs:24:23:24:71 | object creation of type SQLiteCommand : SQLiteCommand | provenance |  |
+| SqlInjectionSqlite.cs:33:49:33:61 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:33:49:33:66 | access to property Text | provenance |  |
+| SqlInjectionSqlite.cs:39:45:39:57 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:39:45:39:62 | access to property Text | provenance |  |
+| SqlInjectionSqlite.cs:49:36:49:84 | object creation of type FileStream : FileStream | SqlInjectionSqlite.cs:51:59:51:60 | access to local variable fs : FileStream | provenance |  |
+| SqlInjectionSqlite.cs:49:51:49:63 | access to field untrustedData : TextBox | SqlInjectionSqlite.cs:49:51:49:68 | access to property Text : String | provenance |  |
+| SqlInjectionSqlite.cs:49:51:49:68 | access to property Text : String | SqlInjectionSqlite.cs:49:36:49:84 | object creation of type FileStream : FileStream | provenance |  |
+| SqlInjectionSqlite.cs:51:42:51:76 | object creation of type StreamReader : StreamReader | SqlInjectionSqlite.cs:54:35:54:36 | access to local variable sr : StreamReader | provenance |  |
+| SqlInjectionSqlite.cs:51:59:51:60 | access to local variable fs : FileStream | SqlInjectionSqlite.cs:51:42:51:76 | object creation of type StreamReader : StreamReader | provenance |  |
+| SqlInjectionSqlite.cs:54:35:54:36 | access to local variable sr : StreamReader | SqlInjectionSqlite.cs:54:35:54:47 | call to method ReadLine : String | provenance |  |
+| SqlInjectionSqlite.cs:54:35:54:47 | call to method ReadLine : String | SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | provenance |  |
+| SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | provenance |  |
+| SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | SqlInjectionSqlite.cs:61:53:61:55 | access to local variable sql | provenance |  |
 nodes
 | SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
 | SqlInjection.cs:33:21:33:40 | access to property Text : String | semmle.label | access to property Text : String |

@@ -1,5 +1,5 @@
 edges
-| StoredCommandInjection.cs:22:54:22:80 | call to method GetString : String | StoredCommandInjection.cs:22:46:22:80 | ... + ... |
+| StoredCommandInjection.cs:22:54:22:80 | call to method GetString : String | StoredCommandInjection.cs:22:46:22:80 | ... + ... | provenance |  |
 nodes
 | StoredCommandInjection.cs:22:46:22:80 | ... + ... | semmle.label | ... + ... |
 | StoredCommandInjection.cs:22:54:22:80 | call to method GetString : String | semmle.label | call to method GetString : String |

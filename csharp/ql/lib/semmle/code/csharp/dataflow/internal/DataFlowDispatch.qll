@@ -89,6 +89,7 @@ class DataFlowSummarizedCallable instanceof FlowSummary::SummarizedCallable {
   string toString() { result = super.toString() }
 }
 
+cached
 private module Cached {
   /**
    * The following heuristic is used to rank when to use source code or when to use summaries for DataFlowCallables.
@@ -98,7 +99,8 @@ private module Cached {
   cached
   newtype TDataFlowCallable =
     TDotNetCallable(DotNet::Callable c) { c.isUnboundDeclaration() } or
-    TSummarizedCallable(DataFlowSummarizedCallable sc)
+    TSummarizedCallable(DataFlowSummarizedCallable sc) or
+    TFieldOrProperty(FieldOrProperty f)
 
   cached
   newtype TDataFlowCall =
@@ -116,9 +118,7 @@ private module Cached {
       // No need to include calls that are compiled from source
       not call.getImplementation().getMethod().compiledFromSource()
     } or
-    TSummaryCall(
-      FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
-    ) {
+    TSummaryCall(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
     }
 
@@ -150,16 +150,16 @@ private module Cached {
 import Cached
 
 private module DispatchImpl {
-  /**
-   * Holds if the set of viable implementations that can be called by `call`
-   * might be improved by knowing the call context. This is the case if the
-   * call is a delegate call, or if the qualifier accesses a parameter of
-   * the enclosing callable `c` (including the implicit `this` parameter).
-   */
-  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
+  private predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) {
     c = call.getEnclosingCallable() and
     call.(NonDelegateDataFlowCall).getDispatchCall().mayBenefitFromCallContext()
   }
+
+  /**
+   * Holds if the set of viable implementations that can be called by `call`
+   * might be improved by knowing the call context.
+   */
+  predicate mayBenefitFromCallContext(DataFlowCall call) { mayBenefitFromCallContext(call, _) }
 
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
@@ -249,22 +249,33 @@ class ImplicitCapturedReturnKind extends ReturnKind, TImplicitCapturedReturnKind
 
 /** A callable used for data flow. */
 class DataFlowCallable extends TDataFlowCallable {
-  /** Get the underlying source code callable, if any. */
+  /** Gets the underlying source code callable, if any. */
   DotNet::Callable asCallable() { this = TDotNetCallable(result) }
 
-  /** Get the underlying summarized callable, if any. */
+  /** Gets the underlying summarized callable, if any. */
   FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
-  /** Get the underlying callable. */
+  /** Gets the underlying field or property, if any. */
+  FieldOrProperty asFieldOrProperty() { this = TFieldOrProperty(result) }
+
+  /** Gets the underlying callable. */
   DotNet::Callable getUnderlyingCallable() {
     result = this.asCallable() or result = this.asSummarizedCallable()
   }
 
   /** Gets a textual representation of this dataflow callable. */
-  string toString() { result = this.getUnderlyingCallable().toString() }
+  string toString() {
+    result = this.getUnderlyingCallable().toString()
+    or
+    result = this.asFieldOrProperty().toString()
+  }
 
   /** Get the location of this dataflow callable. */
-  Location getLocation() { result = this.getUnderlyingCallable().getLocation() }
+  Location getLocation() {
+    result = this.getUnderlyingCallable().getLocation()
+    or
+    result = this.asFieldOrProperty().getLocation()
+  }
 }
 
 /** A call relevant for data flow. */
@@ -446,7 +457,7 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
  * the method `Select`.
  */
 class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
+  private FlowSummary::SummarizedCallable c;
   private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }

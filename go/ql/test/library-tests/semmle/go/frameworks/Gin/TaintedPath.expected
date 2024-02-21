@@ -1,8 +1,8 @@
 edges
-| Gin.go:24:15:24:33 | call to Query | Gin.go:25:10:25:17 | filepath |
-| Gin.go:24:15:24:33 | call to Query | Gin.go:26:39:26:46 | filepath |
-| Gin.go:24:15:24:33 | call to Query | Gin.go:27:20:27:27 | filepath |
-| Gin.go:24:15:24:33 | call to Query | Gin.go:29:32:29:39 | filepath |
+| Gin.go:24:15:24:33 | call to Query | Gin.go:25:10:25:17 | filepath | provenance |  |
+| Gin.go:24:15:24:33 | call to Query | Gin.go:26:39:26:46 | filepath | provenance |  |
+| Gin.go:24:15:24:33 | call to Query | Gin.go:27:20:27:27 | filepath | provenance |  |
+| Gin.go:24:15:24:33 | call to Query | Gin.go:29:32:29:39 | filepath | provenance |  |
 nodes
 | Gin.go:24:15:24:33 | call to Query | semmle.label | call to Query |
 | Gin.go:25:10:25:17 | filepath | semmle.label | filepath |

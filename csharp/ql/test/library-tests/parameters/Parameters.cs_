@@ -29,6 +29,7 @@ public class ParametersDll
     public void M21([Optional, DefaultParameterValue("mystring")] MyStruct arg10) => throw null;
     public void M22(nuint arg11 = 0) => throw null;
     public void M23(nint arg12 = 0) => throw null;
+    public void M24([Optional, DefaultParameterValue(7)] object arg13) => throw null;
 
     public struct MyStruct
     {

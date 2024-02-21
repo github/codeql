@@ -16,9 +16,6 @@ class OcniComment extends Javadoc {
   }
 }
 
-/** DEPRECATED: Alias for OcniComment */
-deprecated class OCNIComment = OcniComment;
-
 /** Auxiliary predicate: `ocni` is an OCNI comment associated with method `m`. */
 private predicate ocniComment(OcniComment ocni, Method m) {
   // The associated callable must be marked as `native` ...
@@ -40,9 +37,6 @@ class OcniMethodComment extends OcniComment {
   Method getImplementedMethod() { ocniComment(this, result) }
 }
 
-/** DEPRECATED: Alias for OcniMethodComment */
-deprecated class OCNIMethodComment = OcniMethodComment;
-
 /**
  * An Objective-C Native Interface (OCNI) native import comment.
  */
@@ -54,6 +48,3 @@ class OcniImport extends OcniComment {
     )
   }
 }
-
-/** DEPRECATED: Alias for OcniImport */
-deprecated class OCNIImport = OcniImport;

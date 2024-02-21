@@ -2,7 +2,7 @@
 
 private import swift
 private import ControlFlowGraph
-private import internal.ControlFlowGraphImpl
+private import internal.ControlFlowGraphImpl as Impl
 private import internal.ControlFlowElements
 private import CfgNodes
 private import SuccessorTypes
@@ -133,7 +133,9 @@ private module Cached {
   private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
 
   /** Holds if `bb` is an exit basic block that represents normal exit. */
-  private predicate normalExitBB(BasicBlock bb) { bb.getANode().(AnnotatedExitNode).isNormal() }
+  private predicate normalExitBB(BasicBlock bb) {
+    bb.getANode().(Impl::AnnotatedExitNode).isNormal()
+  }
 
   /** Holds if `dom` is an immediate post-dominator of `bb`. */
   cached
@@ -167,7 +169,9 @@ private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof EntryNod
 class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() { entryBB(this) }
 
-  override CfgScope getScope() { this.getFirstNode() = TEntryNode(result) }
+  override CfgScope getScope() {
+    this.getFirstNode() = any(EntryNode node | node.getScope() = result)
+  }
 }
 
 /**
@@ -178,7 +182,7 @@ class AnnotatedExitBasicBlock extends BasicBlock {
   private boolean normal;
 
   AnnotatedExitBasicBlock() {
-    exists(AnnotatedExitNode n |
+    exists(Impl::AnnotatedExitNode n |
       n = this.getANode() and
       if n.isNormal() then normal = true else normal = false
     )
