@@ -482,7 +482,7 @@ class TranslatedReturnVoidExpressionStmt extends TranslatedReturnStmt {
   override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
     if this.hasAnImplicitDestructorCall()
-    then result = this.getChildInternal(1).getFirstInstruction(kind)
+    then result = this.getChild(1).getFirstInstruction(kind)
     else result = this.getEnclosingFunction().getReturnSuccessorInstruction(kind)
   }
 

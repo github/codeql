@@ -13526,21 +13526,21 @@ ir.cpp:
 #-----|   True -> Block 3
 
 # 2240|   Block 1
-# 2240|     m2240_7(unknown) = Phi          : from 3:~m2249_5, from 6:~m2249_14
+# 2240|     m2240_7(unknown) = Phi          : from 2:~m2249_21, from 2:~m2249_5, from 5:~m2249_21, from 5:~m2249_5, from 3:~m2249_13, from 2:~m2249_21, from 2:~m2249_5, from 5:~m2249_21, from 5:~m2249_5, from 6:~m2249_30
 # 2240|     v2240_8(void)    = ReturnVoid   : 
 # 2240|     v2240_9(void)    = AliasedUse   : ~m2240_7
 # 2240|     v2240_10(void)   = ExitFunction : 
 
 # 2243|   Block 3
-# 2243|     v2243_1(void)           = NoOp                            : 
-# 2249|     r2249_1(glval<String>)  = VariableAddress[s]              : 
-# 2249|     r2249_2(glval<unknown>) = FunctionAddress[~String]        : 
-# 2249|     v2249_3(void)           = Call[~String]                   : func:r2249_2, this:r2249_1
-# 2249|     m2249_4(unknown)        = ^CallSideEffect                 : ~m2241_6
-# 2249|     m2249_5(unknown)        = Chi                             : total:m2241_6, partial:m2249_4
-# 2249|     v2249_6(void)           = ^IndirectReadSideEffect[-1]     : &:r2249_1, m2241_8
-# 2249|     m2249_7(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2249_1
-# 2249|     m2249_8(String)         = Chi                             : total:m2241_8, partial:m2249_7
+# 2243|     v2243_1(void)            = NoOp                            : 
+# 2249|     r2249_9(glval<String>)   = VariableAddress[s]              : 
+# 2249|     r2249_10(glval<unknown>) = FunctionAddress[~String]        : 
+# 2249|     v2249_11(void)           = Call[~String]                   : func:r2249_10, this:r2249_9
+# 2249|     m2249_12(unknown)        = ^CallSideEffect                 : ~m2241_6
+# 2249|     m2249_13(unknown)        = Chi                             : total:m2241_6, partial:m2249_12
+# 2249|     v2249_14(void)           = ^IndirectReadSideEffect[-1]     : &:r2249_9, m2241_8
+# 2249|     m2249_15(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2249_9
+# 2249|     m2249_16(String)         = Chi                             : total:m2241_8, partial:m2249_15
 #-----|   Goto -> Block 1
 
 # 2245|   Block 4
@@ -13552,25 +13552,35 @@ ir.cpp:
 #-----|   True -> Block 5
 
 # 2246|   Block 5
-# 2246|     r2246_6(glval<unknown>) = FunctionAddress[VoidFunc] : 
-# 2246|     v2246_7(void)           = Call[VoidFunc]            : func:r2246_1, func:r2246_6
-# 2246|     m2246_8(unknown)        = ^CallSideEffect           : ~m2241_6
-# 2246|     m2246_9(unknown)        = Chi                       : total:m2241_6, partial:m2246_3, partial:m2246_8
-# 2246|     v2246_5(void)           = NoOp                      : 
+# 2246|     r2246_6(glval<unknown>)  = FunctionAddress[VoidFunc]       : 
+# 2246|     v2246_7(void)            = Call[VoidFunc]                  : func:r2246_1, func:r2246_6
+# 2246|     m2246_8(unknown)         = ^CallSideEffect                 : ~m2241_6
+# 2246|     m2246_9(unknown)         = Chi                             : total:m2241_6, partial:m2246_3, partial:m2246_8
+# 2246|     v2246_5(void)            = NoOp                            : 
+# 2249|     r2249_1(glval<String>)   = VariableAddress[s]              : 
+# 2249|     r2249_2(glval<unknown>)  = FunctionAddress[~String]        : 
+# 2249|     v2249_3(void)            = Call[~String]                   : func:r2249_18, func:r2249_2, this:r2249_1, this:r2249_17
+# 2249|     m2249_4(unknown)         = ^CallSideEffect                 : ~m2246_4, ~m2246_9
+# 2249|     m2249_5(unknown)         = Chi                             : total:m2246_4, total:m2246_9, partial:m2249_20, partial:m2249_4
+# 2249|     v2249_6(void)            = ^IndirectReadSideEffect[-1]     : &:r2249_1, &:r2249_17, m2241_8
+# 2249|     m2249_7(String)          = ^IndirectMayWriteSideEffect[-1] : &:r2249_1, &:r2249_17
+# 2249|     m2249_8(String)          = Chi                             : total:m2241_8, partial:m2249_23, partial:m2249_7
+#-----|   Goto -> Block 1
 
 # 2246|   Block 5
+#-----|   Goto -> Block 1
 
 # 2248|   Block 6
 # 2248|     r2248_1(glval<String>)   = VariableAddress[s]              : 
-# 2249|     v2249_9(void)            = NoOp                            : 
-# 2249|     r2249_10(glval<String>)  = VariableAddress[s]              : 
-# 2249|     r2249_11(glval<unknown>) = FunctionAddress[~String]        : 
-# 2249|     v2249_12(void)           = Call[~String]                   : func:r2249_11, this:r2249_10
-# 2249|     m2249_13(unknown)        = ^CallSideEffect                 : ~m2241_6
-# 2249|     m2249_14(unknown)        = Chi                             : total:m2241_6, partial:m2249_13
-# 2249|     v2249_15(void)           = ^IndirectReadSideEffect[-1]     : &:r2249_10, m2241_8
-# 2249|     m2249_16(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2249_10
-# 2249|     m2249_17(String)         = Chi                             : total:m2241_8, partial:m2249_16
+# 2249|     v2249_25(void)           = NoOp                            : 
+# 2249|     r2249_26(glval<String>)  = VariableAddress[s]              : 
+# 2249|     r2249_27(glval<unknown>) = FunctionAddress[~String]        : 
+# 2249|     v2249_28(void)           = Call[~String]                   : func:r2249_27, this:r2249_26
+# 2249|     m2249_29(unknown)        = ^CallSideEffect                 : ~m2241_6
+# 2249|     m2249_30(unknown)        = Chi                             : total:m2241_6, partial:m2249_29
+# 2249|     v2249_31(void)           = ^IndirectReadSideEffect[-1]     : &:r2249_26, m2241_8
+# 2249|     m2249_32(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2249_26
+# 2249|     m2249_33(String)         = Chi                             : total:m2241_8, partial:m2249_32
 #-----|   Goto -> Block 1
 
 # 2251| int IfReturnDestructors3(bool)
