@@ -148,7 +148,6 @@ signature module InputSig {
    * Predicate to force high precision for the given content.
    *
    * @param c The content to force high precision for.
-   * @return True if high precision is forced for the content, false otherwise.
    */
   predicate forceHighPrecision(Content c);
 
@@ -196,7 +195,6 @@ signature module InputSig {
    *
    * @param ppos The parameter position.
    * @param apos The argument position.
-   * @return True if the parameter position matches the argument position, false otherwise.
    */
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
@@ -205,7 +203,6 @@ signature module InputSig {
    *
    * @param node1 The first node in the flow step.
    * @param node2 The second node in the flow step.
-   * @return True if there is a simple local flow step between node1 and node2, false otherwise.
    */
   predicate simpleLocalFlowStep(Node node1, Node node2);
 

@@ -183,7 +183,6 @@ signature module Semantic {
      * Checks if the guard directly controls a given basic block.
      * @param controlled The basic block to check.
      * @param branch Indicates if the control is a branch or not.
-     * @returns True if the guard directly controls the basic block, false otherwise.
      */
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
@@ -192,7 +191,6 @@ signature module Semantic {
      * @param e1 The first expression.
      * @param e2 The second expression.
      * @param polarity The polarity of the equality.
-     * @returns True if the guard represents the equality, false otherwise.
      */
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
 
@@ -201,7 +199,6 @@ signature module Semantic {
      * @param bb1 The first basic block.
      * @param bb2 The second basic block.
      * @param branch Indicates if the edge is a branch or not.
-     * @returns True if there is a branch edge between the basic blocks, false otherwise.
      */
     predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
   }
