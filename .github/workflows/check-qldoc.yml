@@ -10,6 +10,9 @@ on:
       - main
       - "rc/*"
 
+permissions:
+  contents: read
+
 jobs:
   qldoc:
     runs-on: ubuntu-latest

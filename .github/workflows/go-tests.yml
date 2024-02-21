@@ -15,10 +15,16 @@ on:
       - .github/workflows/go-tests.yml
       - .github/actions/**
       - codeql-workspace.yml
+
 env:
-  GO_VERSION: '~1.21.0'
+  GO_VERSION: '~1.22.0'
+
+permissions:
+  contents: read
+
 jobs:
   test-linux:
+    if: github.repository_owner == 'github'
     name: Test Linux (Ubuntu)
     runs-on: ubuntu-latest-xl
     steps:
@@ -26,6 +32,7 @@ jobs:
         uses: actions/setup-go@v5
         with:
           go-version: ${{ env.GO_VERSION }}
+          cache: false
         id: go
 
       - name: Check out code

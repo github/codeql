@@ -49,6 +49,18 @@ private module Shared {
   }
 
   /**
+   * A value interpolated using a raw erb output directive, which does not perform HTML escaping.
+   * ```erb
+   * <%== sink %>
+   * ```
+   */
+  class ErbRawOutputDirective extends Sink {
+    ErbRawOutputDirective() {
+      exists(ErbOutputDirective d | d.isRaw() | this.asExpr().getExpr() = d.getTerminalStmt())
+    }
+  }
+
+  /**
    * An `html_safe` call marking the output as not requiring HTML escaping,
    * considered as a flow sink.
    */

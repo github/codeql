@@ -921,6 +921,78 @@ class TranslatedIfStmt extends TranslatedStmt, ConditionContext {
   }
 }
 
+class TranslatedConstExprIfStmt extends TranslatedStmt, ConditionContext {
+  override ConstexprIfStmt stmt;
+
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    if this.hasInitialization()
+    then result = this.getInitialization().getFirstInstruction(kind)
+    else result = this.getFirstConditionInstruction(kind)
+  }
+
+  override TranslatedElement getChildInternal(int id) {
+    id = 0 and result = this.getInitialization()
+    or
+    id = 1 and result = this.getCondition()
+    or
+    id = 2 and result = this.getThen()
+    or
+    id = 3 and result = this.getElse()
+  }
+
+  private predicate hasInitialization() { exists(stmt.getInitialization()) }
+
+  private TranslatedStmt getInitialization() {
+    result = getTranslatedStmt(stmt.getInitialization())
+  }
+
+  private TranslatedCondition getCondition() {
+    result = getTranslatedCondition(stmt.getCondition().getFullyConverted())
+  }
+
+  private Instruction getFirstConditionInstruction(EdgeKind kind) {
+    result = this.getCondition().getFirstInstruction(kind)
+  }
+
+  private TranslatedStmt getThen() { result = getTranslatedStmt(stmt.getThen()) }
+
+  private TranslatedStmt getElse() { result = getTranslatedStmt(stmt.getElse()) }
+
+  private predicate hasElse() { exists(stmt.getElse()) }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getChildTrueSuccessor(TranslatedCondition child, EdgeKind kind) {
+    child = this.getCondition() and
+    result = this.getThen().getFirstInstruction(kind)
+  }
+
+  override Instruction getChildFalseSuccessor(TranslatedCondition child, EdgeKind kind) {
+    child = this.getCondition() and
+    if this.hasElse()
+    then result = this.getElse().getFirstInstruction(kind)
+    else result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getInitialization() and
+    result = this.getFirstConditionInstruction(kind)
+    or
+    (child = this.getThen() or child = this.getElse()) and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    none()
+  }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getThen().getALastInstruction()
+    or
+    result = this.getElse().getALastInstruction()
+  }
+}
+
 abstract class TranslatedLoop extends TranslatedStmt, ConditionContext {
   override Loop stmt;
 
@@ -1099,22 +1171,32 @@ class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
   override RangeBasedForStmt stmt;
 
   override TranslatedElement getChildInternal(int id) {
-    id = 0 and result = this.getRangeVariableDeclStmt()
+    id = 0 and result = this.getInitialization()
+    or
+    id = 1 and result = this.getRangeVariableDeclStmt()
     or
     // Note: `__begin` and `__end` are declared by the same `DeclStmt`
-    id = 1 and result = this.getBeginEndVariableDeclStmt()
+    id = 2 and result = this.getBeginEndVariableDeclStmt()
     or
-    id = 2 and result = this.getCondition()
+    id = 3 and result = this.getCondition()
     or
-    id = 3 and result = this.getUpdate()
+    id = 4 and result = this.getUpdate()
     or
-    id = 4 and result = this.getVariableDeclStmt()
+    id = 5 and result = this.getVariableDeclStmt()
     or
-    id = 5 and result = this.getBody()
+    id = 6 and result = this.getBody()
+  }
+
+  private predicate hasInitialization() { exists(stmt.getInitialization()) }
+
+  private TranslatedStmt getInitialization() {
+    result = getTranslatedStmt(stmt.getInitialization())
   }
 
   override Instruction getFirstInstruction(EdgeKind kind) {
-    result = this.getRangeVariableDeclStmt().getFirstInstruction(kind)
+    if this.hasInitialization()
+    then result = this.getInitialization().getFirstInstruction(kind)
+    else result = this.getFirstRangeVariableDeclStmtInstruction(kind)
   }
 
   override Instruction getALastInstructionInternal() {
@@ -1124,6 +1206,9 @@ class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
   override TranslatedElement getLastChild() { result = this.getCondition() }
 
   override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    child = this.getInitialization() and
+    result = this.getFirstRangeVariableDeclStmtInstruction(kind)
+    or
     child = this.getRangeVariableDeclStmt() and
     result = this.getBeginEndVariableDeclStmt().getFirstInstruction(kind)
     or
@@ -1161,6 +1246,10 @@ class TranslatedRangeBasedForStmt extends TranslatedStmt, ConditionContext {
       entry.getDeclaration() = stmt.getRangeVariable() and
       result.getAnIRDeclarationEntry() = entry
     )
+  }
+
+  private Instruction getFirstRangeVariableDeclStmtInstruction(EdgeKind kind) {
+    result = this.getRangeVariableDeclStmt().getFirstInstruction(kind)
   }
 
   private TranslatedDeclStmt getBeginEndVariableDeclStmt() {

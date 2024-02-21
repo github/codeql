@@ -6,10 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.cpp:2138:21:2138:21 | IndirectMayWriteSideEffect: x | Instruction 'IndirectMayWriteSideEffect: x' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
-| ir.cpp:2140:39:2140:39 | IndirectMayWriteSideEffect: call to ClassWithDestructor | Instruction 'IndirectMayWriteSideEffect: call to ClassWithDestructor' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
-| ir.cpp:2140:42:2140:76 | Constant: initialization_with_destructor_bool | Instruction 'Constant: initialization_with_destructor_bool' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
-| ir.cpp:2141:9:2141:9 | IndirectMayWriteSideEffect: x | Instruction 'IndirectMayWriteSideEffect: x' has no successors in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -41,5 +37,8 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
-| ir.cpp:2153:68:2153:69 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2136:6:2136:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
+| ir.cpp:2154:68:2154:69 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2137:6:2137:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
+| ir.cpp:2157:68:2157:69 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2137:6:2137:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
+| ir.cpp:2163:36:2163:37 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2137:6:2137:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
+| ir.cpp:2168:68:2168:69 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2137:6:2137:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
 missingCppType

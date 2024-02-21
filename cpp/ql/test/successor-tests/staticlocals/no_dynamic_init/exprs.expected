@@ -2,5 +2,3 @@
 | no_dynamic_init.cpp:5:12:5:35 | no_dynamic_init.cpp:5:12:5:35 | no_dynamic_init.cpp:5:12:5:35 | Goodbye cruel world.\n |
 | no_dynamic_init.cpp:5:12:5:35 | no_dynamic_init.cpp:5:12:5:35 | no_dynamic_init.cpp:5:12:5:35 | array to pointer conversion |
 | no_dynamic_init.cpp:11:10:11:10 | no_dynamic_init.cpp:11:10:11:10 | no_dynamic_init.cpp:11:10:11:10 | 0 |
-| no_dynamic_init.cpp:12:1:12:1 | no_dynamic_init.cpp:12:1:12:1 | no_dynamic_init.cpp:12:1:12:1 | call to ~Magic |
-| no_dynamic_init.cpp:12:1:12:1 | no_dynamic_init.cpp:12:1:12:1 | no_dynamic_init.cpp:12:1:12:1 | m |

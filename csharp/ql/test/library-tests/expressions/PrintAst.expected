@@ -2406,3 +2406,19 @@ expressions.cs:
 #  512|         0: [IntLiteral] 10
 #  515|     5: [Field] myInlineArrayElements
 #  515|       -1: [TypeMention] int
+#  518|   22: [Class] ClassC1
+#  518|     4: [InstanceConstructor,PrimaryConstructor] ClassC1
+#-----|       2: (Parameters)
+#  518|         0: [Parameter] oc1
+#  518|           -1: [TypeMention] object
+#  518|       4: [BlockStmt] {...}
+#  520|   23: [Class] ClassC2
+#-----|     3: (Base types)
+#  520|       0: [TypeMention] ClassC1
+#  520|     4: [InstanceConstructor,PrimaryConstructor] ClassC2
+#-----|       2: (Parameters)
+#  520|         0: [Parameter] oc2
+#  520|           -1: [TypeMention] object
+#  520|       3: [ConstructorInitializer] call to constructor ClassC1
+#  520|         0: [ParameterAccess] access to parameter oc2
+#  520|       4: [BlockStmt] {...}

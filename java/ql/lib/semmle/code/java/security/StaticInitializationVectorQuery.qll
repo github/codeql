@@ -80,18 +80,21 @@ private class ArrayUpdate extends Expr {
   Expr getArray() { result = array }
 }
 
-/**
- * A config that tracks dataflow from creating an array to an operation that updates it.
- */
-private module ArrayUpdateConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof StaticByteArrayCreation }
-
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(ArrayUpdate upd).getArray() }
-
-  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
+private predicate arrayUpdateSrc(DataFlow::Node source) {
+  source.asExpr() instanceof StaticByteArrayCreation
 }
 
-private module ArrayUpdateFlow = DataFlow::Global<ArrayUpdateConfig>;
+private predicate arrayUpdateSink(DataFlow::Node sink) {
+  sink.asExpr() = any(ArrayUpdate upd).getArray()
+}
+
+private module ArrayUpdateFlowFwd = DataFlow::SimpleGlobal<arrayUpdateSrc/1>;
+
+private module ArrayUpdateFlow = ArrayUpdateFlowFwd::Graph<arrayUpdateSink/1>;
+
+private predicate arrayReachesUpdate(StaticByteArrayCreation array) {
+  exists(ArrayUpdateFlow::PathNode src | src.isSource() and src.getNode().asExpr() = array)
+}
 
 /**
  * A source that defines an array that doesn't get updated.
@@ -99,7 +102,7 @@ private module ArrayUpdateFlow = DataFlow::Global<ArrayUpdateConfig>;
 private class StaticInitializationVectorSource extends DataFlow::Node {
   StaticInitializationVectorSource() {
     exists(StaticByteArrayCreation array | array = this.asExpr() |
-      not ArrayUpdateFlow::flow(DataFlow::exprNode(array), _) and
+      not arrayReachesUpdate(array) and
       // Reduce FPs from utility methods that return an empty array in an exceptional case
       not exists(ReturnStmt ret |
         array.getADimension().(CompileTimeConstantExpr).getIntValue() = 0 and

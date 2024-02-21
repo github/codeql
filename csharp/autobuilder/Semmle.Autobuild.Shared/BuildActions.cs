@@ -140,7 +140,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Returns the file name and extension of the specified path string.
         /// </summary>
-        [return: NotNullIfNotNull("path")]
+        [return: NotNullIfNotNull(nameof(path))]
         string? GetFileName(string? path);
 
         /// <summary>
