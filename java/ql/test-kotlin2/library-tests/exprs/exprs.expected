@@ -2002,38 +2002,38 @@
 | exprs.kt:333:9:333:10 | l1 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
 | exprs.kt:333:20:333:20 | 1 | exprs.kt:285:1:346:1 | unaryExprs | LongLiteral |
 | exprs.kt:334:5:334:6 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:334:5:334:6 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:334:5:334:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:334:5:334:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:334:5:334:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:334:5:334:8 | <unary> | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
+| exprs.kt:334:5:334:8 | <unary> | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
+| exprs.kt:334:5:334:8 | <unary> | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:334:5:334:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:334:5:334:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
-| exprs.kt:334:5:334:8 | tmp6 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
-| exprs.kt:334:5:334:8 | tmp6 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:334:5:334:8 | tmp6 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
+| exprs.kt:334:5:334:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
+| exprs.kt:335:5:335:6 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:335:5:335:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:335:5:335:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:335:5:335:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:335:5:335:8 | inc(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
-| exprs.kt:335:7:335:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
+| exprs.kt:335:7:335:7 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:335:7:335:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:335:7:335:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:335:7:335:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:336:5:336:6 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:336:5:336:6 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:336:5:336:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:336:5:336:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:336:5:336:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
+| exprs.kt:336:5:336:8 | <unary> | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
+| exprs.kt:336:5:336:8 | <unary> | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
+| exprs.kt:336:5:336:8 | <unary> | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:336:5:336:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
 | exprs.kt:336:5:336:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
-| exprs.kt:336:5:336:8 | tmp7 | exprs.kt:285:1:346:1 | unaryExprs | LocalVariableDeclExpr |
-| exprs.kt:336:5:336:8 | tmp7 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
-| exprs.kt:336:5:336:8 | tmp7 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
+| exprs.kt:336:5:336:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
+| exprs.kt:337:5:337:6 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
 | exprs.kt:337:5:337:8 | <Stmt> | exprs.kt:285:1:346:1 | unaryExprs | StmtExpr |
 | exprs.kt:337:5:337:8 | <implicit coercion to unit> | exprs.kt:285:1:346:1 | unaryExprs | ImplicitCoercionToUnitExpr |
 | exprs.kt:337:5:337:8 | Unit | exprs.kt:285:1:346:1 | unaryExprs | TypeAccess |
-| exprs.kt:337:5:337:8 | dec(...) | exprs.kt:285:1:346:1 | unaryExprs | MethodCall |
-| exprs.kt:337:7:337:8 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
+| exprs.kt:337:7:337:7 | ...=... | exprs.kt:285:1:346:1 | unaryExprs | AssignExpr |
 | exprs.kt:337:7:337:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:337:7:337:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
 | exprs.kt:337:7:337:8 | l0 | exprs.kt:285:1:346:1 | unaryExprs | VarAccess |
