@@ -86,6 +86,13 @@ mySink(Steps.preserveAllButFirstArgument(getSource())) # NO FLOW
 mySink(Steps.preserveAllButFirstArgument("foo", getSource())) # FLOW
 mySink(Steps.preserveAllButFirstArgument("foo", "bar", getSource())) # FLOW
 
+inst = Steps.Class()
+mySink(inst.preserveTaint(getSource())) # FLOW
+mySink(inst.preserveTaint(x = getSource())) # FLOW
+x = "safe"
+inst.transferTaint(getSource(), x)
+mySink(x) # FLOW
+
 CallFilter.arityOne(one) # match
 CallFilter.arityOne(one=one) # NO match
 CallFilter.arityOne(one, two=two) # match - on both the named and positional arguments
