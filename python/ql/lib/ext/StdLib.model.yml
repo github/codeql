@@ -13,6 +13,12 @@ extensions:
       pack: codeql/python-all
       extensible: summaryModel
     data:
+      - ["argparse", "Member[ArgumentParser].Instance.Member[parse_args]", "Argument[1]", "ReturnValue", "taint"]
+      - ["argparse", "Member[ArgumentParser].Instance.Member[parse_args]", "Argument[args:]", "ReturnValue", "taint"]
+      - ["argparse", "Member[ArgumentParser].Instance.Member[parse_args]", "Argument[1]", "Argument[1]", "taint"]
+      - ["argparse", "Member[ArgumentParser].Instance.Member[parse_args]", "Argument[args:]", "Argument[args:]", "taint"]
+      - ["argparse", "Member[ArgumentParser].Instance.Member[_parse_known_args]", "Argument[1]", "ReturnValue", "taint"]
+      - ["argparse", "Member[ArgumentParser].Instance.Member[_parse_known_args]", "Argument[arg_strings:]", "ReturnValue", "taint"]
       - ["ArgumentParser", "Member[_parse_known_args]", "Argument[1]", "ReturnValue", "taint"]
       - ["ArgumentParser", "Member[_parse_known_args]", "Argument[arg_strings:]", "ReturnValue", "taint"]
       - ["ArgumentParser", "Member[_read_args_from_files]", "Argument[1]", "ReturnValue", "taint"]
