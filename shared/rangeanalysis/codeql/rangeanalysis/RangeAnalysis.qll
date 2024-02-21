@@ -165,29 +165,29 @@ signature module Semantic {
    */
   class Guard {
     /**
-     * Returns a string representation of the guard.
+     * Gets a string representation of the guard.
      */
     string toString();
 
     /**
-     * Returns the basic block associated with the guard.
+     * Gets the basic block associated with the guard.
      */
     BasicBlock getBasicBlock();
 
     /**
-     * Returns the guard as an expression.
+     * Gets the guard as an expression.
      */
     Expr asExpr();
 
     /**
-     * Checks if the guard directly controls a given basic block.
+     * Holds if the guard directly controls a given basic block.
      * @param controlled The basic block to check.
      * @param branch Indicates if the control is a branch or not.
      */
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
     /**
-     * Checks if the guard represents an equality between two expressions.
+     * Holds if the guard represents an equality between two expressions.
      * @param e1 The first expression.
      * @param e2 The second expression.
      * @param polarity The polarity of the equality.
@@ -195,7 +195,7 @@ signature module Semantic {
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
 
     /**
-     * Checks if there is a branch edge between two basic blocks.
+     * Holds if there is a branch edge between two basic blocks.
      * @param bb1 The first basic block.
      * @param bb2 The second basic block.
      * @param branch Indicates if the edge is a branch or not.
@@ -228,12 +228,12 @@ signature module Semantic {
    */
   class SsaVariable {
     /**
-     * Returns the expression where this SSA variable is used.
+     * Gets the expression where this SSA variable is used.
      */
     Expr getAUse();
 
     /**
-     * Returns the basic block where this SSA variable is defined.
+     * Gets the basic block where this SSA variable is defined.
      */
     BasicBlock getBasicBlock();
   }
@@ -251,7 +251,7 @@ signature module Semantic {
    */
   class SsaExplicitUpdate extends SsaVariable {
     /**
-     * Retrieves the expression that defines the value of the variable in this update.
+     * Gets the expression that defines the value of the variable in this update.
      *
      * @return The defining expression.
      */
@@ -350,17 +350,17 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
    */
   class SemBound {
     /**
-     * Returns a string representation of the semantic bound.
+     * Gets a string representation of the semantic bound.
      */
     string toString();
 
     /**
-     * Returns the location of the semantic bound.
+     * Gets the location of the semantic bound.
      */
     Location getLocation();
 
     /**
-     * Returns the expression associated with the semantic bound, given a delta.
+     * Gets the expression associated with the semantic bound, given a delta.
      * @param delta - The delta value.
      */
     Sem::Expr getExpr(D::Delta delta);

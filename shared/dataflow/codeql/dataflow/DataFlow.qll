@@ -43,7 +43,7 @@ signature module InputSig {
    */
   class PostUpdateNode extends Node {
     /**
-     * Retrieves the node that represents the pre-update operation.
+     * Gets the node that represents the pre-update operation.
      * @return The pre-update node.
      */
     Node getPreUpdateNode();
@@ -145,7 +145,7 @@ signature module InputSig {
   }
 
   /**
-   * Predicate to force high precision for the given content.
+   * Holds if high precision should be used for the given content.
    *
    * @param c The content to force high precision for.
    */
@@ -191,7 +191,7 @@ signature module InputSig {
   }
 
   /**
-   * Checks if the given parameter position matches the argument position.
+   * Holds if the given parameter position matches the argument position.
    *
    * @param ppos The parameter position.
    * @param apos The argument position.
@@ -199,7 +199,7 @@ signature module InputSig {
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
   /**
-   * Represents a simple local flow step between two nodes.
+   * Holds if there is a simple local flow step between two nodes.
    *
    * @param node1 The first node in the flow step.
    * @param node2 The second node in the flow step.
