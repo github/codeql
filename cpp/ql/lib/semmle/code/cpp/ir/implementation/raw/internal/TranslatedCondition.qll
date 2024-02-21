@@ -50,19 +50,29 @@ abstract class TranslatedFlexibleCondition extends TranslatedCondition, Conditio
 {
   TranslatedFlexibleCondition() { this = TTranslatedFlexibleCondition(expr) }
 
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
+
   final override TranslatedElement getChild(int id) { id = 0 and result = this.getOperand() }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
     result = this.getOperand().getFirstInstruction(kind)
   }
 
+  final override Instruction getALastInstructionInternal() {
+    result = this.getOperand().getALastInstruction()
+  }
+
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
 
-  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    none()
+  }
 
   abstract TranslatedCondition getOperand();
 }
@@ -88,11 +98,15 @@ class TranslatedParenthesisCondition extends TranslatedFlexibleCondition {
 abstract class TranslatedNativeCondition extends TranslatedCondition, TTranslatedNativeCondition {
   TranslatedNativeCondition() { this = TTranslatedNativeCondition(expr) }
 
-  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
+  final override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
+    none()
+  }
 }
 
 abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeCondition, ConditionContext {
   override BinaryLogicalOperation expr;
+
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
 
   final override TranslatedElement getChild(int id) {
     id = 0 and result = this.getLeftOperand()
@@ -104,11 +118,19 @@ abstract class TranslatedBinaryLogicalOperation extends TranslatedNativeConditio
     result = this.getLeftOperand().getFirstInstruction(kind)
   }
 
+  final override Instruction getALastInstructionInternal() {
+    result = this.getLeftOperand().getALastInstruction()
+    or
+    result = this.getRightOperand().getALastInstruction()
+  }
+
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+  final override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    none()
+  }
 
   final TranslatedCondition getLeftOperand() {
     result = getTranslatedCondition(expr.getLeftOperand().getFullyConverted())
@@ -162,19 +184,25 @@ class TranslatedValueCondition extends TranslatedCondition, TTranslatedValueCond
     result = this.getValueExpr().getFirstInstruction(kind)
   }
 
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(ValueConditionConditionalBranchTag())
+  }
+
+  final override predicate handlesDestructorsExplicitly() { none() } // TODO: this needs to be revisted when we get unnamed destructors
+
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = ValueConditionConditionalBranchTag() and
     opcode instanceof Opcode::ConditionalBranch and
     resultType = getVoidType()
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getValueExpr() and
     result = this.getInstruction(ValueConditionConditionalBranchTag()) and
     kind instanceof GotoEdge
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     tag = ValueConditionConditionalBranchTag() and
     (
       kind instanceof TrueEdge and

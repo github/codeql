@@ -168,3 +168,57 @@ private class SmartPtrSetterFunction extends MemberFunction, AliasFunction, Side
     )
   }
 }
+
+/** A destructor assocaited with a smart pointer. */
+private class SmartPtrDestructor extends Destructor, SideEffectFunction, AliasFunction {
+  SmartPtr declaringType;
+
+  SmartPtrDestructor() {
+    declaringType = this.getDeclaringType() and not this.isFromUninstantiatedTemplate(_)
+  }
+
+  /**
+   * Gets the destructor associated with the base type of this smart pointer.
+   */
+  private Destructor getBaseTypeDestructor() {
+    result.getDeclaringType() = declaringType.getBaseType()
+  }
+
+  override predicate hasOnlySpecificReadSideEffects() {
+    this.getBaseTypeDestructor().(SideEffectFunction).hasOnlySpecificReadSideEffects()
+    or
+    // If there's no declared destructor for the base type then it won't have
+    // any strange read side effects.
+    not exists(this.getBaseTypeDestructor())
+  }
+
+  override predicate hasOnlySpecificWriteSideEffects() {
+    this.getBaseTypeDestructor().(SideEffectFunction).hasOnlySpecificWriteSideEffects()
+    or
+    // If there's no declared destructor for the base type then it won't have
+    // any strange write side effects.
+    not exists(this.getBaseTypeDestructor())
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
+  }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    i = -1 and buffer = false and mustWrite = true
+  }
+
+  override predicate parameterNeverEscapes(int index) {
+    this.getBaseTypeDestructor().(AliasFunction).parameterNeverEscapes(index)
+    or
+    // If there's no declared destructor for the base type then it won't cause
+    // anything to escape.
+    not exists(this.getBaseTypeDestructor()) and
+    index = -1
+  }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) {
+    // A destructor call does not have a return value
+    none()
+  }
+}

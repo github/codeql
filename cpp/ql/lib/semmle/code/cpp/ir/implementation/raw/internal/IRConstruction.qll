@@ -11,6 +11,7 @@ private import InstructionTag
 private import TranslatedCondition
 private import TranslatedElement
 private import TranslatedExpr
+private import TranslatedCall
 private import TranslatedStmt
 private import TranslatedFunction
 private import TranslatedGlobalVar
