@@ -882,14 +882,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var alreadyDownloadedPackages = GetRestoredPackageDirectoryNames(packageDirectory.DirInfo);
             var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
 
-            var notYetDownloadedPackages = new HashSet<string>(fileContent.AllPackages);
+            var notYetDownloadedPackages = new HashSet<PackageReference>(fileContent.AllPackages);
             foreach (var alreadyDownloadedPackage in alreadyDownloadedPackages)
             {
-                notYetDownloadedPackages.Remove(alreadyDownloadedPackage);
+                notYetDownloadedPackages.Remove(new(alreadyDownloadedPackage, PackageReferenceSource.SdkCsProj));
             }
             foreach (var alreadyDownloadedLegacyPackage in alreadyDownloadedLegacyPackages)
             {
-                notYetDownloadedPackages.Remove(alreadyDownloadedLegacyPackage);
+                notYetDownloadedPackages.Remove(new(alreadyDownloadedLegacyPackage, PackageReferenceSource.PackagesConfig));
             }
 
             if (notYetDownloadedPackages.Count == 0)
@@ -930,7 +930,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
             {
-                var success = TryRestorePackageManually(package, nugetConfig);
+                var success = TryRestorePackageManually(package.Name, nugetConfig, package.PackageReferenceSource);
                 if (!success)
                 {
                     return;
@@ -947,7 +947,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             dllPaths.Add(missingPackageDirectory.DirInfo.FullName);
         }
 
-        private bool TryRestorePackageManually(string package, string? nugetConfig)
+        [GeneratedRegex(@"<TargetFramework>.*</TargetFramework>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex TargetFramework();
+
+        private bool TryRestorePackageManually(string package, string? nugetConfig, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj)
         {
             logger.LogInfo($"Restoring package {package}...");
             using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package, "missingpackages_workingdir"));
@@ -955,6 +958,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (!success)
             {
                 return false;
+            }
+
+            if (packageReferenceSource == PackageReferenceSource.PackagesConfig)
+            {
+                TryChangeTargetFrameworkMoniker(tempDir.DirInfo);
             }
 
             success = dotnet.AddPackage(tempDir.DirInfo.FullName, package);
@@ -972,7 +980,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: null, ForceReevaluation: true));
                 }
 
-                // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
+                // TODO: the restore might fail, we could retry with
+                // - a prerelease (*-* instead of *) version of the package,
+                // - a different target framework moniker.
 
                 if (!res.Success)
                 {
@@ -982,6 +992,38 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             return true;
+        }
+
+        private void TryChangeTargetFrameworkMoniker(DirectoryInfo tempDir)
+        {
+            try
+            {
+                logger.LogInfo($"Changing the target framework moniker in {tempDir.FullName}...");
+
+                var csprojs = tempDir.GetFiles("*.csproj", new EnumerationOptions { RecurseSubdirectories = false, MatchCasing = MatchCasing.CaseInsensitive });
+                if (csprojs.Length != 1)
+                {
+                    logger.LogError($"Could not find the .csproj file in {tempDir.FullName}, count = {csprojs.Length}");
+                    return;
+                }
+
+                var csproj = csprojs[0];
+                var content = File.ReadAllText(csproj.FullName);
+                var matches = TargetFramework().Matches(content);
+                if (matches.Count == 0)
+                {
+                    logger.LogError($"Could not find target framework in {csproj.FullName}");
+                }
+                else
+                {
+                    content = TargetFramework().Replace(content, $"<TargetFramework>{FrameworkPackageNames.LatestNetFrameworkMoniker}</TargetFramework>", 1);
+                    File.WriteAllText(csproj.FullName, content);
+                }
+            }
+            catch (Exception exc)
+            {
+                logger.LogError($"Failed to update target framework in {tempDir.FullName}: {exc}");
+            }
         }
 
         public void Dispose(TemporaryDirectory? dir, string name)

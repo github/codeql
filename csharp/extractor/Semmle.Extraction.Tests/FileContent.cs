@@ -55,9 +55,9 @@ namespace Semmle.Extraction.Tests
             // Verify
             Assert.False(useAspNetDlls);
             Assert.Equal(3, allPackages.Count);
-            Assert.Contains("DotNetAnalyzers.DocumentationAnalyzers".ToLowerInvariant(), allPackages);
-            Assert.Contains("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), allPackages);
-            Assert.Contains("StyleCop.Analyzers".ToLowerInvariant(), allPackages);
+            Assert.Contains(new PackageReference("DotNetAnalyzers.DocumentationAnalyzers".ToLowerInvariant(), PackageReferenceSource.SdkCsProj), allPackages);
+            Assert.Contains(new PackageReference("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), PackageReferenceSource.SdkCsProj), allPackages);
+            Assert.Contains(new PackageReference("StyleCop.Analyzers".ToLowerInvariant(), PackageReferenceSource.SdkCsProj), allPackages);
         }
 
         [Fact]
@@ -80,8 +80,8 @@ namespace Semmle.Extraction.Tests
             // Verify
             Assert.True(useAspNetDlls);
             Assert.Equal(2, allPackages.Count);
-            Assert.Contains("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), allPackages);
-            Assert.Contains("StyleCop.Analyzers".ToLowerInvariant(), allPackages);
+            Assert.Contains(new PackageReference("Microsoft.CodeAnalysis.NetAnalyzers".ToLowerInvariant(), PackageReferenceSource.SdkCsProj), allPackages);
+            Assert.Contains(new PackageReference("StyleCop.Analyzers".ToLowerInvariant(), PackageReferenceSource.SdkCsProj), allPackages);
         }
 
         private static void CsProjSettingsTest(string line, bool expected, Func<FileContent, bool> func)

@@ -19,11 +19,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly ILogger logger;
         private readonly IUnsafeFileReader unsafeFileReader;
         private readonly IEnumerable<string> files;
-        private readonly HashSet<string> allPackages = new HashSet<string>();
+        private readonly HashSet<PackageReference> allPackages = new HashSet<PackageReference>();
         private readonly HashSet<string> implicitUsingNamespaces = new HashSet<string>();
         private readonly Initializer initialize;
 
-        public HashSet<string> AllPackages
+        public HashSet<PackageReference> AllPackages
         {
             get
             {
@@ -157,7 +157,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return false;
         }
 
-        private void AddPackageReference(ReadOnlySpan<char> line, string groupName, Func<Regex> regex)
+        private void AddPackageReference(ReadOnlySpan<char> line, string groupName, Func<Regex> regex, PackageReferenceSource source)
         {
             foreach (var valueMatch in regex().EnumerateMatches(line))
             {
@@ -165,7 +165,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var packageName = GetGroup(line, valueMatch, groupName).ToLowerInvariant();
                 if (!string.IsNullOrEmpty(packageName))
                 {
-                    allPackages.Add(packageName);
+                    allPackages.Add(new PackageReference(packageName, source));
                 }
             }
         }
@@ -181,11 +181,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     foreach (ReadOnlySpan<char> line in unsafeFileReader.ReadLines(file))
                     {
                         // Find all the packages.
-                        AddPackageReference(line, "Include", PackageReference);
-
                         if (isPackagesConfig)
                         {
-                            AddPackageReference(line, "id", LegacyPackageReference);
+                            AddPackageReference(line, "id", LegacyPackageReference, PackageReferenceSource.PackagesConfig);
+                        }
+                        else
+                        {
+                            AddPackageReference(line, "Include", PackageReference, PackageReferenceSource.SdkCsProj);
                         }
 
                         // Determine if ASP.NET is used.
@@ -268,4 +270,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
     }
+
+    public enum PackageReferenceSource
+    {
+        SdkCsProj,
+        PackagesConfig
+    }
+
+    public record PackageReference(string Name, PackageReferenceSource PackageReferenceSource);
 }
