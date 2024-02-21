@@ -121,10 +121,7 @@ abstract class OutNode extends Node {
 private class ExprOutNode extends OutNode, ExprNode {
   ExprOutNode() { this.getExpr() instanceof Call }
 
-  /**
-   * Gets the underlying call.
-   * @return The DataFlowCall representing the underlying call.
-   */
+  /** Gets the underlying call. */
   override DataFlowCall getCall() { result = this.getExpr() }
 }
 
@@ -132,10 +129,7 @@ private class ExprOutNode extends OutNode, ExprNode {
  * Represents a private class RefOutNode that extends OutNode and DefinitionByReferenceOrIteratorNode.
  */
 private class RefOutNode extends OutNode, DefinitionByReferenceOrIteratorNode {
-  /**
-   * Gets the underlying call.
-   * @return The underlying call.
-   */
+  /** Gets the underlying call. */
   override DataFlowCall getCall() { result = this.getArgument().getParent() }
 }
 
