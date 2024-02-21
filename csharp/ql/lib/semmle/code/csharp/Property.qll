@@ -127,6 +127,13 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
     properties(this, _, _, getTypeRef(result), _)
   }
 
+  private predicate isAutoPartial() {
+    this.fromSource() and
+    not this.isExtern() and
+    not this.isAbstract() and
+    not this.getAnAccessor().hasBody()
+  }
+
   /**
    * Holds if this property is automatically implemented. For example, `P1`
    * on line 2 is automatically implemented, while `P2` on line 5 is not in
@@ -147,11 +154,22 @@ class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @proper
    * code.
    */
   predicate isAutoImplemented() {
-    this.fromSource() and
-    this.isReadWrite() and
-    not this.isExtern() and
-    not this.isAbstract() and
-    not this.getAnAccessor().hasBody()
+    this.isAutoPartial() and
+    this.isReadWrite()
+  }
+
+  /**
+   * Holds if this property is automatically implemented and read-only. For
+   * example, `P1` on line 2 is automatically implemented and read-only
+   * ```csharp
+   * class C {
+   *   public int P1 { get; }
+   * }
+   * ```
+   */
+  predicate isAutoImplementedReadOnly() {
+    this.isAutoPartial() and
+    this.isReadOnly()
   }
 
   override Property getUnboundDeclaration() { properties(this, _, _, _, result) }
