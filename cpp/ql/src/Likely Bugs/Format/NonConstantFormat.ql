@@ -72,7 +72,7 @@ predicate isNonConst(DataFlow::Node node) {
     p = node.asParameter() and
     // Ignore main's argv parameter as it is already considered a `FlowSource`
     // not ignoring it will result in path redundancies
-    (f.getName() = "main" implies p.getName() != "argv")
+    (f.getName() = "main" implies p != f.getParameter(1))
   )
   or
   // Consider as an input any out arg of a function or a function's return where the function is not:
