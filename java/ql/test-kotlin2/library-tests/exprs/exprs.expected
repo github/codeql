@@ -1521,27 +1521,27 @@
 | exprs.kt:179:5:179:18 | Color | exprs.kt:0:0:0:0 | <clinit> | TypeAccess |
 | exprs.kt:179:5:179:18 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:179:5:179:18 | Color.RED | exprs.kt:0:0:0:0 | <clinit> | VarAccess |
-| exprs.kt:179:5:179:18 | new Color(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
+| exprs.kt:179:8:179:17 | new Color(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
 | exprs.kt:179:9:179:16 | 16711680 | exprs.kt:0:0:0:0 | <clinit> | IntegerLiteral |
 | exprs.kt:180:5:180:20 | ...=... | exprs.kt:0:0:0:0 | <clinit> | KtInitializerAssignExpr |
 | exprs.kt:180:5:180:20 | Color | exprs.kt:0:0:0:0 | <clinit> | TypeAccess |
 | exprs.kt:180:5:180:20 | Color | exprs.kt:0:0:0:0 | <clinit> | TypeAccess |
 | exprs.kt:180:5:180:20 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:180:5:180:20 | Color.GREEN | exprs.kt:0:0:0:0 | <clinit> | VarAccess |
-| exprs.kt:180:5:180:20 | new Color(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
+| exprs.kt:180:10:180:19 | new Color(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
 | exprs.kt:180:11:180:18 | 65280 | exprs.kt:0:0:0:0 | <clinit> | IntegerLiteral |
 | exprs.kt:181:5:181:18 | ...=... | exprs.kt:0:0:0:0 | <clinit> | KtInitializerAssignExpr |
 | exprs.kt:181:5:181:18 | Color | exprs.kt:0:0:0:0 | <clinit> | TypeAccess |
 | exprs.kt:181:5:181:18 | Color | exprs.kt:0:0:0:0 | <clinit> | TypeAccess |
 | exprs.kt:181:5:181:18 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:181:5:181:18 | Color.BLUE | exprs.kt:0:0:0:0 | <clinit> | VarAccess |
-| exprs.kt:181:5:181:18 | new Color(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
+| exprs.kt:181:9:181:18 | new Color(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
 | exprs.kt:181:10:181:17 | 255 | exprs.kt:0:0:0:0 | <clinit> | IntegerLiteral |
 | exprs.kt:184:1:187:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:185:9:185:13 | south | exprs.kt:184:1:187:1 | enums | LocalVariableDeclExpr |
+| exprs.kt:185:5:185:31 | south | exprs.kt:184:1:187:1 | enums | LocalVariableDeclExpr |
 | exprs.kt:185:27:185:31 | Direction | exprs.kt:184:1:187:1 | enums | TypeAccess |
 | exprs.kt:185:27:185:31 | Direction.SOUTH | exprs.kt:184:1:187:1 | enums | VarAccess |
-| exprs.kt:186:9:186:13 | green | exprs.kt:184:1:187:1 | enums | LocalVariableDeclExpr |
+| exprs.kt:186:5:186:27 | green | exprs.kt:184:1:187:1 | enums | LocalVariableDeclExpr |
 | exprs.kt:186:23:186:27 | Color | exprs.kt:184:1:187:1 | enums | TypeAccess |
 | exprs.kt:186:23:186:27 | Color.GREEN | exprs.kt:184:1:187:1 | enums | VarAccess |
 | exprs.kt:192:5:192:14 | ...=... | exprs.kt:191:1:199:1 | Class1 | KtInitializerAssignExpr |
