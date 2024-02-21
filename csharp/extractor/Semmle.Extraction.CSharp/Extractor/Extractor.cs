@@ -386,7 +386,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (compilerArguments.GeneratedFilesOutputDirectory is not null)
                     {
-                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", SearchOption.AllDirectories));
+                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive }));
                     }
 
                     return ReadSyntaxTrees(
