@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: codeql/actions-all
+      pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
       - ["csexton/release-asset-action", "*", "input.release-url", "output.url", "taint"]

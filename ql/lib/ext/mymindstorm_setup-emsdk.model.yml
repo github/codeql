@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: codeql/actions-all
+      pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
       - ["mymindstorm/setup-emsdk", "*", "input.actions-cache-folder", "env.EMSDK", "taint"]

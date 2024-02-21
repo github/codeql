@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: codeql/actions-all
+      pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
       - ["franzdiebold/github-env-vars-action", "*", "output.CI_PR_DESCRIPTION", "pull_request_target", "PR body"]

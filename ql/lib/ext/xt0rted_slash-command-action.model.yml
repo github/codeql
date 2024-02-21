@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: codeql/actions-all
+      pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
       - ["xt0rted/slash-command-action", "*", "output.command-arguments", "issue_comment", ""]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: codeql/actions-all
+      pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
       - ["game-ci/unity-test-runner", "*", "input.artifactsPath", "output.artifactsPath", "taint"]

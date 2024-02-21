@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: codeql/actions-all
+      pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
       - ["metro-digital/setup-tools-for-waas", "*", "input.gcp_sa_key", "env.GCLOUD_PROJECT", "taint"]

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
-      pack: codeql/actions-all
+      pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
       - ["mattdavis0351/actions", "*", "input.image-name", "output.imageUrl", "taint"]
