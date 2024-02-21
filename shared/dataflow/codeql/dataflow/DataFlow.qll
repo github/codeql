@@ -7,8 +7,8 @@
 /** Provides language-specific data flow parameters. */
 signature module InputSig {
   /**
-     * Represents a node in the data flow graph.
-     */
+   * Represents a node in the data flow graph.
+   */
   class Node {
     /** Gets a textual representation of this element. */
     string toString();
@@ -44,6 +44,7 @@ signature module InputSig {
   class PostUpdateNode extends Node {
     /**
      * Gets the node that represents the pre-update operation.
+     *
      * @return The pre-update node.
      */
     Node getPreUpdateNode();
@@ -169,8 +170,8 @@ signature module InputSig {
   }
 
   /**
-     * Represents a content approximation.
-     */
+   * Represents a content approximation.
+   */
   class ContentApprox {
     /** Gets a textual representation of this element. */
     string toString();
@@ -194,7 +195,6 @@ signature module InputSig {
    * Holds if the given parameter position matches the argument position.
    *
    * @param ppos The parameter position.
-   * @param apos The argument position.
    */
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
@@ -202,7 +202,6 @@ signature module InputSig {
    * Holds if there is a simple local flow step between two nodes.
    *
    * @param node1 The first node in the flow step.
-   * @param node2 The second node in the flow step.
    */
   predicate simpleLocalFlowStep(Node node1, Node node2);
 

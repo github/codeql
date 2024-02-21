@@ -181,24 +181,22 @@ signature module Semantic {
 
     /**
      * Holds if the guard directly controls a given basic block.
+     *
      * @param controlled The basic block to check.
-     * @param branch Indicates if the control is a branch or not.
      */
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
     /**
      * Holds if the guard represents an equality between two expressions.
+     *
      * @param e1 The first expression.
-     * @param e2 The second expression.
-     * @param polarity The polarity of the equality.
      */
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
 
     /**
      * Holds if there is a branch edge between two basic blocks.
+     *
      * @param bb1 The first basic block.
-     * @param bb2 The second basic block.
-     * @param branch Indicates if the edge is a branch or not.
      */
     predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
   }
@@ -361,6 +359,7 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
 
     /**
      * Gets the expression associated with the semantic bound, given a delta.
+     *
      * @param delta - The delta value.
      */
     Sem::Expr getExpr(D::Delta delta);
