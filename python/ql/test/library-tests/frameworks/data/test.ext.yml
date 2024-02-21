@@ -67,6 +67,9 @@ extensions:
       - ["testlib", "Member[Steps].Member[taintIntoCallback]", "Argument[0]", "Argument[1..2].Parameter[0]", "taint"]
       - ["testlib", "Member[Steps].Member[preserveArgZeroAndTwo]", "Argument[0,2]", "ReturnValue", "taint"]
       - ["testlib", "Member[Steps].Member[preserveAllButFirstArgument].Call", "Argument[1..]", "ReturnValue", "taint"]
+      - ["testlib", "Member[Steps].Member[Class].Instance.Member[preserveTaint].Call", "Argument[0]", "ReturnValue", "taint"]
+      - ["testlib", "Member[Steps].Member[Class].Instance.Member[preserveTaint].Call", "Argument[x:]", "ReturnValue", "taint"]
+      - ["testlib", "Member[Steps].Member[Class].Instance.Member[transferTaint].Call", "Argument[0]", "Argument[1]", "taint"]
 
   - addsTo:
       pack: codeql/python-all
