@@ -682,8 +682,6 @@ has_modifiers(
   int id: @modifiable_direct ref,
   int mod_id: @modifier ref);
 
-compiler_generated(unique int id: @modifiable ref);
-
 /** MEMBERS **/
 
 @member = @method | @constructor | @destructor | @field | @property | @event | @operator | @indexer | @type;
@@ -1271,9 +1269,6 @@ mutator_invocation_mode(
   unique int id: @operator_invocation_expr ref,
   int mode: int ref /* prefix = 1, postfix = 2*/);
 
-expr_compiler_generated(
-  unique int id: @expr ref);
-
 expr_value(
   unique int id: @expr ref,
   string value: string ref);
@@ -1315,6 +1310,10 @@ expr_argument_name(
 lambda_expr_return_type(
   unique int id: @lambda_expr ref,
   int type_id: @type_or_ref ref);
+
+/* Compiler generated */
+
+compiler_generated(unique int id: @element ref);
 
 /** CONTROL/DATA FLOW **/
 
