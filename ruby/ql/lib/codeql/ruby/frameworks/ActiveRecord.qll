@@ -176,10 +176,15 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
     activeRecordQueryBuilderCall([
         "delete_all", "delete_by", "destroy_all", "destroy_by", "exists?", "find_by", "find_by!",
         "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "from",
-        "group", "having", "joins", "lock", "not", "order", "reorder", "pluck", "where", "rewhere",
-        "select", "reselect"
+        "having", "lock", "not", "where", "rewhere"
       ]) and
   sink = call.getArgument(0)
+  or
+  call =
+    activeRecordQueryBuilderCall([
+        "group", "joins", "order", "reorder", "pluck", "select", "reselect"
+      ]) and
+  sink = call.getArgument(_)
   or
   call = activeRecordQueryBuilderCall("calculate") and
   sink = call.getArgument(1)
