@@ -1,4 +1,5 @@
 testFailures
+| captured_variables.rb:227:13:227:31 | # $ hasValueFlow=18 | Missing result:hasValueFlow=18 |
 edges
 | blocks.rb:14:12:14:20 | call to source | blocks.rb:8:10:8:14 | yield ... | provenance |  |
 | captured_variables.rb:9:24:9:24 | x | captured_variables.rb:10:10:10:23 | -> { ... } [captured x] | provenance |  |
