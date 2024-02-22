@@ -2075,10 +2075,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     node1 = TExplicitParameterNode(p) and
     node2 = TPrimaryConstructorThisAccessNode(p, true) and
     exists(Type t | t = p.getCallable().getDeclaringType() |
-      if t instanceof RecordType then
-        c.(PropertyContent).getProperty().getName() = p.getName()
-      else
-        c.(PrimaryConstructorParameterContent).getParameter() = p
+      if t instanceof RecordType
+      then c.(PropertyContent).getProperty().getName() = p.getName()
+      else c.(PrimaryConstructorParameterContent).getParameter() = p
     )
   )
   or
