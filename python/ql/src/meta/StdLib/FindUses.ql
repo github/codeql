@@ -3,13 +3,25 @@ import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.internal.FlowSummaryImpl as FlowSummaryImpl
 
+predicate debug(
+  DataFlow::Node nodeFrom, DataFlow::Node nodeTo, FlowSummaryImpl::Public::SummarizedCallable sc
+) {
+  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, sc)
+}
+
 pragma[inline]
 predicate inStdLib(DataFlow::Node node) { node.getLocation().getFile().inStdlib() }
 
 pragma[inline]
 string stepsTo(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  if DataFlow::localFlow(nodeFrom, nodeTo)
-  then result = "local"
+  if
+    DataFlow::localFlow(nodeFrom, nodeTo)
+    or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
+    or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom,
+      nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode(), _)
+  then result = "value"
   else
     if
       TaintTracking::localTaint(nodeFrom, nodeTo)
@@ -17,6 +29,9 @@ string stepsTo(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
       exists(TaintTracking::AdditionalTaintStep s | s.step(nodeFrom, nodeTo))
       or
       FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
+      or
+      FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom,
+        nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode(), _)
     then result = "taint"
     else result = "no"
 }
@@ -602,5 +617,5 @@ from
 where
   e.entryPoint(argument, parameter, functionName, outNode, alreadyModelled, madSummary) and
   alreadyModelled = "no"
-// select e, parameter, functionName, madSummary
-select parameter, functionName, madSummary
+select e, argument, parameter, functionName, outNode, madSummary
+// select parameter, functionName, madSummary
