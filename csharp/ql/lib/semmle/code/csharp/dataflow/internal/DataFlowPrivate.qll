@@ -2074,7 +2074,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(Parameter p |
     node1 = TExplicitParameterNode(p) and
     node2 = TPrimaryConstructorThisAccessNode(p, true) and
-    c.(PrimaryConstructorParameterContent).getParameter() = p
+    if p.getCallable().getDeclaringType() instanceof RecordType
+    then c.(PropertyContent).getProperty().getName() = p.getName()
+    else c.(PrimaryConstructorParameterContent).getParameter() = p
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
