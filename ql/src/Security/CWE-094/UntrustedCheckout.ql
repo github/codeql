@@ -6,7 +6,7 @@
  * @kind problem
  * @problem.severity warning
  * @precision low
- * @id actions/pull-request-target
+ * @id actions/untrusted-checkout
  * @tags actions
  *       security
  *       external/cwe/cwe-094
