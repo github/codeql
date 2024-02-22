@@ -1,5 +1,6 @@
 common --enable_platform_specific_config
 common --enable_bzlmod
+common --lockfile_mode=update
 
 # when building from this repository in isolation, the internal repository will not be found at ..
 # where `MODULE.bazel` looks for it. The following will get us past the module loading phase, so
