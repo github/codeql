@@ -417,6 +417,8 @@ abstract class TranslatedReturnStmt extends TranslatedStmt {
       )
     )
   }
+
+  final override predicate handlesDestructorsExplicitly() { any() }
 }
 
 /**
@@ -450,8 +452,6 @@ class TranslatedReturnValueStmt extends TranslatedReturnStmt, TranslatedVariable
   final override IRVariable getIRVariable() {
     result = this.getEnclosingFunction().getReturnVariable()
   }
-
-  override predicate handlesDestructorsExplicitly() { any() }
 }
 
 /**
@@ -500,8 +500,6 @@ class TranslatedReturnVoidExpressionStmt extends TranslatedReturnStmt {
   }
 
   private TranslatedExpr getExpr() { result = getTranslatedExpr(stmt.getExpr()) }
-
-  override predicate handlesDestructorsExplicitly() { any() }
 }
 
 /**
@@ -550,8 +548,6 @@ class TranslatedReturnVoidStmt extends TranslatedReturnStmt {
       )
     )
   }
-
-  override predicate handlesDestructorsExplicitly() { any() }
 }
 
 /**
@@ -586,8 +582,6 @@ class TranslatedNoValueReturnStmt extends TranslatedReturnStmt, TranslatedVariab
   final override IRVariable getIRVariable() {
     result = this.getEnclosingFunction().getReturnVariable()
   }
-
-  override predicate handlesDestructorsExplicitly() { any() }
 }
 
 /**
