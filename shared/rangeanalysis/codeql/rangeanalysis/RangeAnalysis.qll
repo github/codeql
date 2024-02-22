@@ -161,7 +161,7 @@ signature module Semantic {
   default string getBlockId2(BasicBlock bb) { result = "" }
 
   /**
-   * Represents a guard in the range analysis.
+   * A guard in the range analysis.
    */
   class Guard {
     /**
@@ -180,7 +180,15 @@ signature module Semantic {
     Expr asExpr();
 
     /**
-     * Holds if the guard directly controls a given basic block.
+     * Holds if the guard directly controls a given basic block. For example in
+     * the following code, the guard `(x > y)` directly controls the block
+     * beneath it:
+     * ```
+     * if (x > y)
+     * {
+     *   Console.WriteLine("x is greater than y");
+     * }
+     * ```
      *
      * @param controlled The basic block to check.
      */
@@ -194,7 +202,17 @@ signature module Semantic {
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
 
     /**
-     * Holds if there is a branch edge between two basic blocks.
+     * Holds if there is a branch edge between two basic blocks. For example
+     * in the following C code, there are two branch edges from the basic block
+     * containing the condition `(x > y)` to the beginnings of the true and
+     * false blocks that follow:
+     * ```
+     * if (x > y) {
+     *   printf("x is greater than y\n");
+     * } else {
+     *   printf("x is not greater than y\n");
+     * }
+     * ```
      *
      * @param bb1 The first basic block.
      */
@@ -222,7 +240,7 @@ signature module Semantic {
   Type getExprType(Expr e);
 
   /**
-   * Represents a single static single assignment (SSA) variable.
+   * A single static single assignment (SSA) variable.
    */
   class SsaVariable {
     /**
@@ -237,7 +255,9 @@ signature module Semantic {
   }
 
   /**
-   * Represents a phi node in the SSA form.
+   * A phi node in the SSA form. A phi node is a kind of node in the SSA form
+   * that represents a merge point where multiple control flow paths converge
+   * and the value of a variable needs to be selected.
    */
   class SsaPhiNode extends SsaVariable {
     /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
@@ -245,7 +265,7 @@ signature module Semantic {
   }
 
   /**
-   * Represents a single update to a variable in the SSA form.
+   * A single update to a variable in the SSA form.
    */
   class SsaExplicitUpdate extends SsaVariable {
     /**
@@ -344,7 +364,8 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
 
 signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
   /**
-   * Represents a semantic bound.
+   * A semantic bound, which defines a constraint on the possible values of an
+   * expression.
    */
   class SemBound {
     /**

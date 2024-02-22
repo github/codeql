@@ -7,7 +7,7 @@
 /** Provides language-specific data flow parameters. */
 signature module InputSig {
   /**
-   * Represents a node in the data flow graph.
+   * A node in the data flow graph.
    */
   class Node {
     /** Gets a textual representation of this element. */
@@ -34,16 +34,23 @@ signature module InputSig {
   }
 
   /**
-   * Represents a node in the data flow graph that represents an output.
+   * A node in the data flow graph that represents an output.
    */
   class OutNode extends Node;
 
   /**
-   * Represents a node in the data flow graph that corresponds to a post-update operation.
+   * A node in the data flow graph representing the value of an argument after
+   * a function call returns. For example, consider the following C++ code:
+   * ```
+   * int a = 1;
+   * increment(&a);
+   * ```
+   * The post-update node for `&a` represents the value of `&a` after
+   * modification by the call to `increment`.
    */
   class PostUpdateNode extends Node {
     /**
-     * Gets the node that represents the pre-update operation.
+     * Gets the node that represents the same value prior to the operation.
      *
      * @return The pre-update node.
      */
@@ -170,7 +177,7 @@ signature module InputSig {
   }
 
   /**
-   * Represents a content approximation.
+   * A content approximation.
    */
   class ContentApprox {
     /** Gets a textual representation of this element. */
