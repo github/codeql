@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using Semmle.Autobuild.Shared;
+﻿using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp
 {
