@@ -1,7 +1,9 @@
-common --enable_platform_specific_config --enable_bzlmod
+common --enable_platform_specific_config
+common --enable_bzlmod
 
-# when using repo standalone, we want still to unlock loading the internal repository module
-# actually using things from that module will obviously end up in an error
+# when building from this repository in isolation, the internal repository will not be found at ..
+# where `MODULE.bazel` looks for it. The following will get us past the module loading phase, so
+# that we can build things that do not rely on that
 common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 
 build --repo_env=CC=clang --repo_env=CXX=clang++
