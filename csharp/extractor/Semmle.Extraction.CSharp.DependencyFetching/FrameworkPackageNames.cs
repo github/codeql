@@ -4,7 +4,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     internal static class FrameworkPackageNames
     {
-        public static string LatestNetFrameworkReferenceAssemblies { get; } = "microsoft.netframework.referenceassemblies.net481";
+        public const string LatestNetFrameworkMoniker = "net481";
+
+        public static string LatestNetFrameworkReferenceAssemblies { get; } = $"microsoft.netframework.referenceassemblies.{LatestNetFrameworkMoniker}";
 
         public static string AspNetCoreFramework { get; } = "microsoft.aspnetcore.app.ref";
 
