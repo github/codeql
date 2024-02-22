@@ -1,8 +1,8 @@
 package java.io;
 
 public class File {
-    public int compareTo( // $ negativeSinkExample=compareTo(File):Argument[this] negativeSourceExample=compareTo(File):Parameter[this] // modeled as neutral
-        File pathname // $ negativeSinkExample=compareTo(File):Argument[0] negativeSourceExample=compareTo(File):Parameter[0] // modeled as neutral
+    public int compareTo( // $ negativeSinkExample=compareTo(File):Argument[this] sourceModelCandidate=compareTo(File):Parameter[this] // modeled as neutral for sinks
+        File pathname // $ negativeSinkExample=compareTo(File):Argument[0] sourceModelCandidate=compareTo(File):Parameter[0] // modeled as neutral for sinks
     ) {
         return 0;
     }

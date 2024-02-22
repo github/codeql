@@ -453,6 +453,10 @@ module VariableCapture {
     Flow::localFlowStep(asClosureNode(node1), asClosureNode(node2))
   }
 
+  predicate clearsContent(Node node, Content::CapturedVariableContent c) {
+    Flow::clearsContent(asClosureNode(node), c.getVariable())
+  }
+
   class CapturedSsaDefinitionExt extends SsaImpl::DefinitionExt {
     CapturedSsaDefinitionExt() { this.getSourceVariable() instanceof CapturedVariable }
   }
@@ -1930,6 +1934,8 @@ predicate clearsContent(Node n, ContentSet c) {
     c.isKnownOrUnknownElement(TKnownElementContent(cv)) and
     cv.isSymbol(name)
   )
+  or
+  VariableCapture::clearsContent(n, any(Content::CapturedVariableContent v | c.isSingleton(v)))
 }
 
 /**
@@ -2171,7 +2177,7 @@ predicate allowParameterReturnInSelf(ParameterNodeImpl p) {
     FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asLibraryCallable(), pos)
   )
   or
-  VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(SelfParameterNode)
+  VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(LambdaSelfReferenceNode)
         .getCallable())
 }
 

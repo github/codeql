@@ -44,6 +44,7 @@ extensions:
       - ["java.net", "InetSocketAddress", True, "InetSocketAddress", "(String,int)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
       - ["java.net", "URI", False, "resolve", "(URI)", "", "Argument[this]", "ReturnValue", "taint", "ai-manual"]
       - ["java.net", "URI", False, "URI", "(String,String,String,int,String,String,String)", "", "Argument[5]", "Argument[this].SyntheticField[java.net.URI.query]", "taint", "ai-manual"]
+      - ["java.net", "URI", False, "URI", "(String,String,String)", "", "Argument[1]", "ReturnValue", "taint", "ai-manual"]
       - ["java.net", "URI", False, "URI", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.net", "URI", False, "create", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URI", False, "resolve", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]

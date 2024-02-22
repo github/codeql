@@ -1,11 +1,11 @@
 testFailures
 | views/index.erb:2:10:2:12 | call to foo | Unexpected result: hasTaintFlow= |
 edges
-| app.rb:75:5:75:8 | [post] self [@foo] | app.rb:76:32:76:35 | self [@foo] |
-| app.rb:75:12:75:17 | call to params | app.rb:75:12:75:24 | ...[...] |
-| app.rb:75:12:75:24 | ...[...] | app.rb:75:5:75:8 | [post] self [@foo] |
-| app.rb:76:32:76:35 | @foo | views/index.erb:2:10:2:12 | call to foo |
-| app.rb:76:32:76:35 | self [@foo] | app.rb:76:32:76:35 | @foo |
+| app.rb:75:5:75:8 | [post] self [@foo] | app.rb:76:32:76:35 | self [@foo] | provenance |  |
+| app.rb:75:12:75:17 | call to params | app.rb:75:12:75:24 | ...[...] | provenance |  |
+| app.rb:75:12:75:24 | ...[...] | app.rb:75:5:75:8 | [post] self [@foo] | provenance |  |
+| app.rb:76:32:76:35 | @foo | views/index.erb:2:10:2:12 | call to foo | provenance |  |
+| app.rb:76:32:76:35 | self [@foo] | app.rb:76:32:76:35 | @foo | provenance |  |
 nodes
 | app.rb:75:5:75:8 | [post] self [@foo] | semmle.label | [post] self [@foo] |
 | app.rb:75:12:75:17 | call to params | semmle.label | call to params |

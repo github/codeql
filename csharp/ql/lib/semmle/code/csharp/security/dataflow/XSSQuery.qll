@@ -42,14 +42,18 @@ predicate xssFlow(XssNode source, XssNode sink, string message) {
  */
 module PathGraph {
   /** Holds if `(pred,succ)` is an edge in the graph of data flow path explanations. */
-  query predicate edges(XssNode pred, XssNode succ) {
-    exists(XssTracking::PathNode a, XssTracking::PathNode b | XssTracking::PathGraph::edges(a, b) |
+  query predicate edges(XssNode pred, XssNode succ, string key, string val) {
+    exists(XssTracking::PathNode a, XssTracking::PathNode b |
+      XssTracking::PathGraph::edges(a, b, key, val)
+    |
       pred.asDataFlowNode() = a and
       succ.asDataFlowNode() = b
     )
     or
     xssFlow(pred, succ, _) and
-    pred instanceof XssAspNode
+    pred instanceof XssAspNode and
+    key = "provenance" and
+    val = ""
   }
 
   /** Holds if `n` is a node in the graph of data flow path explanations. */

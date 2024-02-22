@@ -21,6 +21,7 @@ private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.cil.Ssa::Ssa as CilSsa
 private import semmle.code.cil.internal.SsaImpl as CilSsaImpl
 private import codeql.util.Unit
+private import codeql.util.Boolean
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) {
@@ -35,6 +36,19 @@ predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition
 /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
 predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
   arg.argumentOf(c, pos)
+}
+
+/**
+ * Gets a control flow node used for data flow purposes for the primary constructor
+ * parameter access `pa`.
+ */
+private ControlFlow::Node getAPrimaryConstructorParameterCfn(ParameterAccess pa) {
+  pa.getTarget().getCallable() instanceof PrimaryConstructor and
+  (
+    result = pa.(ParameterRead).getAControlFlowNode()
+    or
+    pa = any(AssignableDefinition def | result = def.getAControlFlowNode()).getTargetAccess()
+  )
 }
 
 abstract class NodeImpl extends Node {
@@ -69,6 +83,17 @@ abstract class NodeImpl extends Node {
   abstract string toStringImpl();
 }
 
+// TODO: Remove once static initializers are folded into the
+// static constructors
+private DataFlowCallable getEnclosingStaticFieldOrProperty(Expr e) {
+  result.asFieldOrProperty() =
+    any(FieldOrProperty f |
+      f.isStatic() and
+      e = f.getAChild+() and
+      not exists(e.getEnclosingCallable())
+    )
+}
+
 private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallableImpl() {
     result.asCallable() =
@@ -76,6 +101,8 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
         this.getExpr().(CIL::Expr).getEnclosingCallable().(DotNet::Callable),
         this.getControlFlowNodeImpl().getEnclosingCallable()
       ]
+    or
+    result = getEnclosingStaticFieldOrProperty(this.asExpr())
   }
 
   override DotNet::Type getTypeImpl() {
@@ -111,9 +138,22 @@ private module ThisFlow {
     n.(InstanceParameterNode).getCallable() = cfn.(ControlFlow::Nodes::EntryNode).getCallable()
     or
     n.asExprAtNode(cfn) = any(Expr e | e instanceof ThisAccess or e instanceof BaseAccess)
+    or
+    n =
+      any(InstanceParameterAccessNode pan |
+        pan.getUnderlyingControlFlowNode() = cfn and pan.isPreUpdate()
+      )
   }
 
-  private predicate thisAccess(Node n, BasicBlock bb, int i) { thisAccess(n, bb.getNode(i)) }
+  private predicate thisAccess(Node n, BasicBlock bb, int i) {
+    thisAccess(n, bb.getNode(i))
+    or
+    exists(Parameter p | n.(PrimaryConstructorThisAccessNode).getParameter() = p |
+      bb.getCallable() = p.getCallable() and
+      i = p.getPosition() + 1 and
+      not n instanceof PostUpdateNode
+    )
+  }
 
   private predicate thisRank(Node n, BasicBlock bb, int rankix) {
     exists(int i |
@@ -189,7 +229,7 @@ CIL::DataFlowNode asCilDataFlowNode(Node node) {
 
 /** Provides predicates related to local data flow. */
 module LocalFlow {
-  private class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
+  class LocalExprStepConfiguration extends ControlFlowReachabilityConfiguration {
     LocalExprStepConfiguration() { this = "LocalExprStepConfiguration" }
 
     override predicate candidate(
@@ -911,6 +951,13 @@ private module Cached {
     TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TParamsArgumentNode(ControlFlow::Node callCfn) {
       callCfn = any(Call c | isParamsArg(c, _, _)).getAControlFlowNode()
+    } or
+    TFlowInsensitiveFieldNode(FieldOrProperty f) { f.isFieldLike() } or
+    TInstanceParameterAccessNode(ControlFlow::Node cfn, Boolean isPostUpdate) {
+      cfn = getAPrimaryConstructorParameterCfn(_)
+    } or
+    TPrimaryConstructorThisAccessNode(Parameter p, Boolean isPostUpdate) {
+      p.getCallable() instanceof PrimaryConstructor
     }
 
   /**
@@ -947,14 +994,20 @@ private module Cached {
     TFieldContent(Field f) { f.isUnboundDeclaration() } or
     TPropertyContent(Property p) { p.isUnboundDeclaration() } or
     TElementContent() or
-    TSyntheticFieldContent(SyntheticField f)
+    TSyntheticFieldContent(SyntheticField f) or
+    TPrimaryConstructorParameterContent(Parameter p) {
+      p.getCallable() instanceof PrimaryConstructor
+    }
 
   cached
   newtype TContentApprox =
     TFieldApproxContent(string firstChar) { firstChar = approximateFieldContent(_) } or
     TPropertyApproxContent(string firstChar) { firstChar = approximatePropertyContent(_) } or
     TElementApproxContent() or
-    TSyntheticFieldApproxContent()
+    TSyntheticFieldApproxContent() or
+    TPrimaryConstructorParameterApproxContent(string firstChar) {
+      firstChar = approximatePrimaryConstructorParameterContent(_)
+    }
 
   pragma[nomagic]
   private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantGvnType t2) {
@@ -1021,6 +1074,12 @@ predicate nodeIsHidden(Node n) {
   n instanceof ParamsArgumentNode
   or
   n.asExpr() = any(WithExpr we).getInitializer()
+  or
+  n instanceof FlowInsensitiveFieldNode
+  or
+  n instanceof InstanceParameterAccessNode
+  or
+  n instanceof PrimaryConstructorThisAccessNode
 }
 
 /** A CIL SSA definition, viewed as a node in a data flow graph. */
@@ -1346,6 +1405,8 @@ private module ArgumentNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = cfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(cfn.getAstNode())
     }
 
     override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
@@ -1385,6 +1446,8 @@ private module ArgumentNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = callCfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(callCfn.getAstNode())
     }
 
     override Type getTypeImpl() { result = this.getParameter().getType() }
@@ -1725,6 +1788,100 @@ class FlowSummaryNode extends NodeImpl, TFlowSummaryNode {
   override string toStringImpl() { result = this.getSummaryNode().toString() }
 }
 
+/**
+ * A data-flow node used to model reading and writing of primary constructor parameters.
+ * For example, in
+ * ```csharp
+ * public class C(object o)
+ * {
+ *    public object GetParam() => o; // (1)
+ *
+ *    public void SetParam(object value) => o = value; // (2)
+ * }
+ * ```
+ * the first access to `o` (1) is modeled as `this.o_backing_field` and
+ * the second access to `o` (2) is modeled as `this.o_backing_field = value`.
+ * Both models need a pre-update this node, and the latter need an additional post-update this access,
+ * all of which are represented by an `InstanceParameterAccessNode` node.
+ */
+class InstanceParameterAccessNode extends NodeImpl, TInstanceParameterAccessNode {
+  private ControlFlow::Node cfn;
+  private boolean isPostUpdate;
+  private Parameter p;
+
+  InstanceParameterAccessNode() {
+    this = TInstanceParameterAccessNode(cfn, isPostUpdate) and
+    exists(ParameterAccess pa | cfn = getAPrimaryConstructorParameterCfn(pa) and pa.getTarget() = p)
+  }
+
+  override DataFlowCallable getEnclosingCallableImpl() {
+    result.asCallable() = cfn.getEnclosingCallable()
+  }
+
+  override Type getTypeImpl() { result = cfn.getEnclosingCallable().getDeclaringType() }
+
+  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { none() }
+
+  override Location getLocationImpl() { result = cfn.getLocation() }
+
+  override string toStringImpl() { result = "this" }
+
+  /**
+   * Gets the underlying control flow node.
+   */
+  ControlFlow::Node getUnderlyingControlFlowNode() { result = cfn }
+
+  /**
+   * Gets the primary constructor parameter that this is a this access to.
+   */
+  Parameter getParameter() { result = p }
+
+  /**
+   * Holds if the this parameter access node corresponds to a pre-update node.
+   */
+  predicate isPreUpdate() { isPostUpdate = false }
+}
+
+/**
+ * A data-flow node used to synthesize the body of a primary constructor.
+ *
+ * For example, in
+ * ```csharp
+ * public class C(object o) { }
+ * ```
+ * we synthesize the primary constructor for `C` as
+ * ```csharp
+ * public C(object o) => this.o_backing_field = o;
+ * ```
+ * The synthesized (pre/post-update) this access is represented an `PrimaryConstructorThisAccessNode` node.
+ */
+class PrimaryConstructorThisAccessNode extends NodeImpl, TPrimaryConstructorThisAccessNode {
+  private Parameter p;
+  private boolean isPostUpdate;
+
+  PrimaryConstructorThisAccessNode() { this = TPrimaryConstructorThisAccessNode(p, isPostUpdate) }
+
+  override DataFlowCallable getEnclosingCallableImpl() { result.asCallable() = p.getCallable() }
+
+  override Type getTypeImpl() { result = p.getCallable().getDeclaringType() }
+
+  override ControlFlow::Nodes::ElementNode getControlFlowNodeImpl() { none() }
+
+  override Location getLocationImpl() { result = p.getLocation() }
+
+  override string toStringImpl() { result = "this" }
+
+  /**
+   * Gets the primary constructor parameter that this is a this access to.
+   */
+  Parameter getParameter() { result = p }
+
+  /**
+   * Holds if this is a this access for a primary constructor parameter write.
+   */
+  predicate isPostUpdate() { isPostUpdate = true }
+}
+
 /** A field or a property. */
 class FieldOrProperty extends Assignable, Modifiable {
   FieldOrProperty() {
@@ -1741,6 +1898,8 @@ class FieldOrProperty extends Assignable, Modifiable {
         not p.isOverridableOrImplementable() and
         (
           p.isAutoImplemented()
+          or
+          p.isAutoImplementedReadOnly()
           or
           p.matchesHandle(any(CIL::TrivialProperty tp))
           or
@@ -1785,6 +1944,30 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
 }
 
 /**
+ * A data flow node used for control-flow insensitive flow through fields
+ * and properties.
+ *
+ * In global data flow this is used to model flow through static fields and
+ * properties, while for lambda flow we additionally use it to track assignments
+ * in constructors to uses within the same class.
+ */
+class FlowInsensitiveFieldNode extends NodeImpl, TFlowInsensitiveFieldNode {
+  private FieldOrProperty f;
+
+  FlowInsensitiveFieldNode() { this = TFlowInsensitiveFieldNode(f) }
+
+  override DataFlowCallable getEnclosingCallableImpl() { result.asFieldOrProperty() = f }
+
+  override Type getTypeImpl() { result = f.getType() }
+
+  override ControlFlow::Node getControlFlowNodeImpl() { none() }
+
+  override Location getLocationImpl() { result = f.getLocation() }
+
+  override string toStringImpl() { result = "[flow-insensitive] " + f }
+}
+
+/**
  * Holds if `pred` can flow to `succ`, by jumping from one callable to
  * another. Additional steps specified by the configuration are *not*
  * taken into account.
@@ -1792,13 +1975,16 @@ private class FieldOrPropertyRead extends FieldOrPropertyAccess, AssignableRead 
 predicate jumpStep(Node pred, Node succ) {
   pred.(NonLocalJumpNode).getAJumpSuccessor(true) = succ
   or
-  exists(FieldOrProperty fl, FieldOrPropertyRead flr |
-    fl.isStatic() and
-    fl.isFieldLike() and
-    fl.getAnAssignedValue() = pred.asExpr() and
-    fl.getAnAccess() = flr and
-    flr = succ.asExpr() and
-    flr.hasNonlocalValue()
+  exists(FieldOrProperty f | f.isStatic() |
+    f.getAnAssignedValue() = pred.asExpr() and
+    succ = TFlowInsensitiveFieldNode(f)
+    or
+    exists(FieldOrPropertyRead fr |
+      pred = TFlowInsensitiveFieldNode(f) and
+      f.getAnAccess() = fr and
+      fr = succ.asExpr() and
+      fr.hasNonlocalValue()
+    )
   )
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),
@@ -1832,6 +2018,18 @@ private class StoreStepConfiguration extends ControlFlowReachabilityConfiguratio
 pragma[nomagic]
 private PropertyContent getResultContent() {
   result.getProperty() = any(SystemThreadingTasksTaskTClass c_).getResultProperty()
+}
+
+private predicate primaryConstructorParameterStore(
+  SsaDefinitionExtNode node1, PrimaryConstructorParameterContent c, Node node2
+) {
+  exists(Ssa::ExplicitDefinition def, ControlFlow::Node cfn, Parameter p |
+    def = node1.getDefinitionExt() and
+    p = def.getSourceVariable().getAssignable() and
+    cfn = def.getControlFlowNode() and
+    node2 = TInstanceParameterAccessNode(cfn, true) and
+    c.getParameter() = p
+  )
 }
 
 /**
@@ -1869,6 +2067,16 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     e = node1.asExpr() and
     node2.(AsyncReturnNode).getExpr() = e and
     c = getResultContent()
+  )
+  or
+  primaryConstructorParameterStore(node1, c, node2)
+  or
+  exists(Parameter p |
+    node1 = TExplicitParameterNode(p) and
+    node2 = TPrimaryConstructorThisAccessNode(p, true) and
+    if p.getCallable().getDeclaringType() instanceof RecordType
+    then c.(PropertyContent).getProperty().getName() = p.getName()
+    else c.(PrimaryConstructorParameterContent).getParameter() = p
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
@@ -1963,6 +2171,14 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.asExpr().(AwaitExpr).getExpr() = node1.asExpr() and
     c = getResultContent()
     or
+    node1 =
+      any(InstanceParameterAccessNode n |
+        n.getUnderlyingControlFlowNode() = node2.(ExprNode).getControlFlowNode() and
+        n.getParameter() = c.(PrimaryConstructorParameterContent).getParameter() and
+        n.isPreUpdate()
+      ) and
+    node2.asExpr() instanceof ParameterRead
+    or
     // node1 = (..., node2, ...)
     // node1.ItemX flows to node2
     exists(TupleExpr te, int i, Expr item |
@@ -2025,6 +2241,8 @@ predicate clearsContent(Node n, ContentSet c) {
     c.(FieldContent).getField() = f.getUnboundDeclaration() and
     not f.isRef()
   )
+  or
+  n = any(PostUpdateNode n1 | primaryConstructorParameterStore(_, c, n1)).getPreUpdateNode()
 }
 
 /**
@@ -2258,6 +2476,8 @@ module PostUpdateNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = cfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(oc)
     }
 
     override DotNet::Type getTypeImpl() { result = oc.getType() }
@@ -2289,6 +2509,8 @@ module PostUpdateNodes {
 
     override DataFlowCallable getEnclosingCallableImpl() {
       result.asCallable() = cfn.getEnclosingCallable()
+      or
+      result = getEnclosingStaticFieldOrProperty(cfn.getAstNode())
     }
 
     override Type getTypeImpl() { result = cfn.getAstNode().(Expr).getType() }
@@ -2309,6 +2531,32 @@ module PostUpdateNodes {
     }
 
     override Node getPreUpdateNode() { result.(FlowSummaryNode).getSummaryNode() = preUpdateNode }
+  }
+
+  private class InstanceParameterAccessPostUpdateNode extends PostUpdateNode,
+    InstanceParameterAccessNode
+  {
+    private ControlFlow::Node cfn;
+
+    InstanceParameterAccessPostUpdateNode() { this = TInstanceParameterAccessNode(cfn, true) }
+
+    override Node getPreUpdateNode() { result = TInstanceParameterAccessNode(cfn, false) }
+
+    override string toStringImpl() { result = "[post] this" }
+  }
+
+  private class PrimaryConstructorThisAccessPostUpdateNode extends PostUpdateNode,
+    PrimaryConstructorThisAccessNode
+  {
+    private Parameter p;
+
+    PrimaryConstructorThisAccessPostUpdateNode() {
+      this = TPrimaryConstructorThisAccessNode(p, true)
+    }
+
+    override Node getPreUpdateNode() { result = TPrimaryConstructorThisAccessNode(p, false) }
+
+    override string toStringImpl() { result = "[post] this" }
   }
 }
 
@@ -2437,6 +2685,24 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
     nodeTo.asExpr().(EventRead).getTarget() = aee.getTarget() and
     preservesValue = false
   )
+  or
+  preservesValue = true and
+  exists(FieldOrProperty f, FieldOrPropertyAccess fa |
+    fa = f.getAnAccess() and
+    fa.targetIsLocalInstance()
+  |
+    exists(AssignableDefinition def |
+      def.getTargetAccess() = fa and
+      nodeFrom.asExpr() = def.getSource() and
+      nodeTo = TFlowInsensitiveFieldNode(f) and
+      nodeFrom.getEnclosingCallable() instanceof Constructor
+    )
+    or
+    nodeFrom = TFlowInsensitiveFieldNode(f) and
+    f.getAnAccess() = fa and
+    fa = nodeTo.asExpr() and
+    fa.(FieldOrPropertyRead).hasNonlocalValue()
+  )
 }
 
 /**
@@ -2468,6 +2734,11 @@ class ContentApprox extends TContentApprox {
     this = TElementApproxContent() and result = "element"
     or
     this = TSyntheticFieldApproxContent() and result = "approximated synthetic field"
+    or
+    exists(string firstChar |
+      this = TPrimaryConstructorParameterApproxContent(firstChar) and
+      result = "approximated parameter field " + firstChar
+    )
   }
 }
 
@@ -2481,6 +2752,14 @@ private string approximatePropertyContent(PropertyContent pc) {
   result = pc.getProperty().getName().prefix(1)
 }
 
+/**
+ * Gets a string for approximating the name of a synthetic field corresponding
+ * to a primary constructor parameter.
+ */
+private string approximatePrimaryConstructorParameterContent(PrimaryConstructorParameterContent pc) {
+  result = pc.getParameter().getName().prefix(1)
+}
+
 /** Gets an approximated value for content `c`. */
 pragma[nomagic]
 ContentApprox getContentApprox(Content c) {
@@ -2491,6 +2770,9 @@ ContentApprox getContentApprox(Content c) {
   c instanceof ElementContent and result = TElementApproxContent()
   or
   c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
+  or
+  result =
+    TPrimaryConstructorParameterApproxContent(approximatePrimaryConstructorParameterContent(c))
 }
 
 /**

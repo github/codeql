@@ -1,17 +1,17 @@
 edges
-| main.cpp:6:27:6:30 | **argv | main.cpp:10:20:10:23 | **argv |
-| main.cpp:10:20:10:23 | **argv | tests.cpp:657:32:657:35 | **argv |
-| tests.cpp:613:19:613:24 | *source | tests.cpp:615:17:615:22 | *source |
-| tests.cpp:622:19:622:24 | *source | tests.cpp:625:2:625:16 | *... = ... |
-| tests.cpp:625:2:625:2 | *s [post update] [*home] | tests.cpp:628:14:628:14 | *s [*home] |
-| tests.cpp:625:2:625:16 | *... = ... | tests.cpp:625:2:625:2 | *s [post update] [*home] |
-| tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:14:628:19 | *home |
-| tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:16:628:19 | *home |
-| tests.cpp:628:16:628:19 | *home | tests.cpp:628:14:628:19 | *home |
-| tests.cpp:657:32:657:35 | **argv | tests.cpp:682:9:682:15 | *access to array |
-| tests.cpp:657:32:657:35 | **argv | tests.cpp:683:9:683:15 | *access to array |
-| tests.cpp:682:9:682:15 | *access to array | tests.cpp:613:19:613:24 | *source |
-| tests.cpp:683:9:683:15 | *access to array | tests.cpp:622:19:622:24 | *source |
+| main.cpp:6:27:6:30 | **argv | main.cpp:10:20:10:23 | **argv | provenance |  |
+| main.cpp:10:20:10:23 | **argv | tests.cpp:657:32:657:35 | **argv | provenance |  |
+| tests.cpp:613:19:613:24 | *source | tests.cpp:615:17:615:22 | *source | provenance |  |
+| tests.cpp:622:19:622:24 | *source | tests.cpp:625:2:625:16 | *... = ... | provenance |  |
+| tests.cpp:625:2:625:2 | *s [post update] [*home] | tests.cpp:628:14:628:14 | *s [*home] | provenance |  |
+| tests.cpp:625:2:625:16 | *... = ... | tests.cpp:625:2:625:2 | *s [post update] [*home] | provenance |  |
+| tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:14:628:19 | *home | provenance |  |
+| tests.cpp:628:14:628:14 | *s [*home] | tests.cpp:628:16:628:19 | *home | provenance |  |
+| tests.cpp:628:16:628:19 | *home | tests.cpp:628:14:628:19 | *home | provenance |  |
+| tests.cpp:657:32:657:35 | **argv | tests.cpp:682:9:682:15 | *access to array | provenance |  |
+| tests.cpp:657:32:657:35 | **argv | tests.cpp:683:9:683:15 | *access to array | provenance |  |
+| tests.cpp:682:9:682:15 | *access to array | tests.cpp:613:19:613:24 | *source | provenance |  |
+| tests.cpp:683:9:683:15 | *access to array | tests.cpp:622:19:622:24 | *source | provenance |  |
 nodes
 | main.cpp:6:27:6:30 | **argv | semmle.label | **argv |
 | main.cpp:10:20:10:23 | **argv | semmle.label | **argv |

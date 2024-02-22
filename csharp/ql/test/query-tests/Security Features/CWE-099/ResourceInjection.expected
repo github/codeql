@@ -1,9 +1,9 @@
 edges
-| ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | ResourceInjection.cs:8:27:8:61 | access to indexer : String |
-| ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | ResourceInjection.cs:11:57:11:72 | access to local variable connectionString |
-| ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | ResourceInjection.cs:13:42:13:57 | access to local variable connectionString |
-| ResourceInjection.cs:8:27:8:61 | access to indexer : String | ResourceInjection.cs:11:57:11:72 | access to local variable connectionString |
-| ResourceInjection.cs:8:27:8:61 | access to indexer : String | ResourceInjection.cs:13:42:13:57 | access to local variable connectionString |
+| ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | ResourceInjection.cs:8:27:8:61 | access to indexer : String | provenance |  |
+| ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | ResourceInjection.cs:11:57:11:72 | access to local variable connectionString | provenance |  |
+| ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | ResourceInjection.cs:13:42:13:57 | access to local variable connectionString | provenance |  |
+| ResourceInjection.cs:8:27:8:61 | access to indexer : String | ResourceInjection.cs:11:57:11:72 | access to local variable connectionString | provenance |  |
+| ResourceInjection.cs:8:27:8:61 | access to indexer : String | ResourceInjection.cs:13:42:13:57 | access to local variable connectionString | provenance |  |
 nodes
 | ResourceInjection.cs:8:27:8:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | ResourceInjection.cs:8:27:8:61 | access to indexer : String | semmle.label | access to indexer : String |

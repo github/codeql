@@ -1,0 +1,25 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+     <overview>
+          <p>Applications decoding a JSON Web Token (JWT) may be vulnerable when the
+               signature is not correctly verified.</p>
+     </overview>
+     <recommendation>
+          <p>Always verify the signature by using the appropriate methods provided by the JWT
+               library, or use a library that verifies it by default.</p>
+     </recommendation>
+     <example>
+          <p>The following (bad) example shows a case where a JWT is parsed without verifying the
+               signature.</p>
+          <sample src="MissingJwtSignatureCheckBad.go" />
+          <p>The following (good) example uses the appropriate function for parsing a JWT
+               and verifying its signature.</p>
+          <sample src="MissingJwtSignatureCheckGood.go" />
+     </example>
+     <references>
+          <li>JWT IO: <a href="https://jwt.io/introduction">Introduction to JSON Web Tokens</a>.</li>
+          <li>jwt-go: <a href="https://pkg.go.dev/github.com/golang-jwt/jwt/v5">Documentation</a>.</li>
+          <li>Go JOSE: <a href="https://pkg.go.dev/github.com/go-jose/go-jose/v3">Documentation</a>.</li>
+     </references>
+
+</qhelp>

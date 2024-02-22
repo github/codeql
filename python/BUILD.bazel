@@ -1,3 +1,5 @@
+load("@rules_pkg//:mappings.bzl", "pkg_filegroup", "pkg_files")
+
 package(default_visibility = ["//visibility:public"])
 
 alias(
@@ -8,4 +10,21 @@ alias(
 alias(
     name = "dbscheme-stats",
     actual = "//python/ql/lib:dbscheme-stats",
+)
+
+pkg_files(
+    name = "dbscheme-group",
+    srcs = [
+        ":dbscheme",
+        ":dbscheme-stats",
+    ],
+    strip_prefix = None,
+)
+
+pkg_filegroup(
+    name = "db-files",
+    srcs = [
+        ":dbscheme-group",
+        "//python/downgrades",
+    ],
 )

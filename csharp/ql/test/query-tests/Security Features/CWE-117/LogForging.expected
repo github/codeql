@@ -1,12 +1,12 @@
 edges
-| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:18:27:18:61 | access to indexer : String |
-| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:21:21:21:43 | ... + ... |
-| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:29:50:29:72 | ... + ... |
-| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:33:26:33:33 | access to local variable username |
-| LogForging.cs:18:27:18:61 | access to indexer : String | LogForging.cs:21:21:21:43 | ... + ... |
-| LogForging.cs:18:27:18:61 | access to indexer : String | LogForging.cs:29:50:29:72 | ... + ... |
-| LogForging.cs:18:27:18:61 | access to indexer : String | LogForging.cs:33:26:33:33 | access to local variable username |
-| LogForgingAsp.cs:8:32:8:39 | username : String | LogForgingAsp.cs:12:21:12:43 | ... + ... |
+| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:18:27:18:61 | access to indexer : String | provenance |  |
+| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:21:21:21:43 | ... + ... | provenance |  |
+| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:29:50:29:72 | ... + ... | provenance |  |
+| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:33:26:33:33 | access to local variable username | provenance |  |
+| LogForging.cs:18:27:18:61 | access to indexer : String | LogForging.cs:21:21:21:43 | ... + ... | provenance |  |
+| LogForging.cs:18:27:18:61 | access to indexer : String | LogForging.cs:29:50:29:72 | ... + ... | provenance |  |
+| LogForging.cs:18:27:18:61 | access to indexer : String | LogForging.cs:33:26:33:33 | access to local variable username | provenance |  |
+| LogForgingAsp.cs:8:32:8:39 | username : String | LogForgingAsp.cs:12:21:12:43 | ... + ... | provenance |  |
 nodes
 | LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | LogForging.cs:18:27:18:61 | access to indexer : String | semmle.label | access to indexer : String |

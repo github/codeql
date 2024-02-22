@@ -32,6 +32,9 @@ defaults:
   run:
     working-directory: ruby
 
+permissions:
+  contents: read
+
 jobs:
   build:
     strategy:
@@ -111,6 +114,7 @@ jobs:
             ruby/extractor/target/release/codeql-extractor-ruby.exe
           retention-days: 1
   compile-queries:
+    if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
     steps:
       - uses: actions/checkout@v4

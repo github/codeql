@@ -32,12 +32,3 @@ cc_library(
     }),
     visibility = ["//visibility:public"],
 )
-
-pkg_files(
-    name = "swift-test-sdk",
-    srcs = glob([
-        "sdk/**/*",
-    ]),
-    strip_prefix = strip_prefix.from_pkg(),
-    visibility = ["//visibility:public"],
-)

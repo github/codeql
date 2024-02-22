@@ -1,5 +1,5 @@
 edges
-| IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:12:38:12:39 | re |
+| IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | IncompleteHostnameRegexp.go:12:38:12:39 | re | provenance |  |
 nodes
 | IncompleteHostnameRegexp.go:11:8:11:36 | "^((www\|beta).)?example.com/" | semmle.label | "^((www\|beta).)?example.com/" |
 | IncompleteHostnameRegexp.go:12:38:12:39 | re | semmle.label | re |

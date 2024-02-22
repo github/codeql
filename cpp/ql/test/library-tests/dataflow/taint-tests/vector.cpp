@@ -114,10 +114,10 @@ void test_vector_swap() {
 	v1.swap(v2);
 	v3.swap(v4);
 
-	sink(v1); // $ SPURIOUS: ast
+	sink(v1); // $ SPURIOUS: ast,ir
 	sink(v2); // $ ast,ir
 	sink(v3); // $ ast,ir
-	sink(v4); // $ SPURIOUS: ast
+	sink(v4); // $ SPURIOUS: ast,ir
 }
 
 void test_vector_clear() {

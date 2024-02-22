@@ -1,7 +1,6 @@
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Alias
-import semmle.code.cpp.models.interfaces.FlowOutBarrier
 
 /**
  * The standard function `swap`. A use of `swap` looks like this:
@@ -9,7 +8,7 @@ import semmle.code.cpp.models.interfaces.FlowOutBarrier
  * std::swap(obj1, obj2)
  * ```
  */
-private class Swap extends DataFlowFunction, FlowOutBarrierFunction {
+private class Swap extends DataFlowFunction {
   Swap() { this.hasQualifiedName(["std", "bsl"], "swap") }
 
   override predicate hasDataFlow(FunctionInput input, FunctionOutput output) {
@@ -19,8 +18,6 @@ private class Swap extends DataFlowFunction, FlowOutBarrierFunction {
     input.isParameterDeref(1) and
     output.isParameterDeref(0)
   }
-
-  override predicate isFlowOutBarrier(FunctionInput input) { input.isParameterDeref([0, 1]) }
 }
 
 /**
@@ -29,9 +26,7 @@ private class Swap extends DataFlowFunction, FlowOutBarrierFunction {
  * obj1.swap(obj2)
  * ```
  */
-private class MemberSwap extends TaintFunction, MemberFunction, AliasFunction,
-  FlowOutBarrierFunction
-{
+private class MemberSwap extends TaintFunction, MemberFunction, AliasFunction {
   MemberSwap() {
     this.hasName("swap") and
     this.getNumberOfParameters() = 1 and
@@ -52,8 +47,4 @@ private class MemberSwap extends TaintFunction, MemberFunction, AliasFunction,
   override predicate parameterEscapesOnlyViaReturn(int index) { index = 0 }
 
   override predicate parameterIsAlwaysReturned(int index) { index = 0 }
-
-  override predicate isFlowOutBarrier(FunctionInput input) {
-    input.isQualifierObject() or input.isParameterDeref(0)
-  }
 }

@@ -6,3 +6,5 @@
 | expressions.cs:271:16:271:24 | IntVector | expressions.cs:271:16:271:24 | call to constructor Object | file://:0:0:0:0 | Object |
 | expressions.cs:311:16:311:20 | Digit | expressions.cs:311:16:311:20 | call to constructor ValueType | file://:0:0:0:0 | ValueType |
 | expressions.cs:481:20:481:22 | Num | expressions.cs:481:20:481:22 | call to constructor Object | file://:0:0:0:0 | Object |
+| expressions.cs:518:11:518:17 | ClassC1 | expressions.cs:518:11:518:17 | call to constructor Object | file://:0:0:0:0 | Object |
+| expressions.cs:520:11:520:17 | ClassC2 | expressions.cs:520:33:520:44 | call to constructor ClassC1 | expressions.cs:518:11:518:17 | ClassC1 |

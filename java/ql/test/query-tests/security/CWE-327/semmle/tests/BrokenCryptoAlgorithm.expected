@@ -1,5 +1,5 @@
 edges
-| WeakHashing.java:21:86:21:90 | "MD5" : String | WeakHashing.java:21:56:21:91 | getProperty(...) |
+| WeakHashing.java:21:86:21:90 | "MD5" : String | WeakHashing.java:21:56:21:91 | getProperty(...) | provenance |  |
 nodes
 | Test.java:19:45:19:49 | "DES" | semmle.label | "DES" |
 | Test.java:42:33:42:37 | "RC2" | semmle.label | "RC2" |

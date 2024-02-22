@@ -1,28 +1,27 @@
 input
-| A | Method[bar] | Argument[0] | lib/mylib.rb:13:11:13:11 | x | parameter |
-| A | Method[bar] | Argument[self] | lib/mylib.rb:13:3:14:5 | self in bar | parameter |
-| A | Method[foo] | Argument[0] | lib/mylib.rb:7:11:7:11 | x | parameter |
-| A | Method[foo] | Argument[1] | lib/mylib.rb:7:14:7:14 | y | parameter |
-| A | Method[foo] | Argument[2] | lib/mylib.rb:7:17:7:20 | key1 | parameter |
-| A | Method[foo] | Argument[block] | lib/mylib.rb:8:5:8:32 | call to call | parameter |
-| A | Method[foo] | Argument[block] | lib/mylib.rb:10:5:10:26 | yield ... | parameter |
-| A | Method[foo] | Argument[block].Parameter[0] | lib/mylib.rb:8:16:8:16 | x | parameter |
-| A | Method[foo] | Argument[block].Parameter[0] | lib/mylib.rb:10:11:10:11 | x | parameter |
-| A | Method[foo] | Argument[block].Parameter[1] | lib/mylib.rb:8:19:8:19 | y | parameter |
-| A | Method[foo] | Argument[block].Parameter[1] | lib/mylib.rb:10:14:10:14 | y | parameter |
-| A | Method[foo] | Argument[block].Parameter[key2:] | lib/mylib.rb:8:28:8:31 | key1 | parameter |
-| A | Method[foo] | Argument[block].Parameter[key2:] | lib/mylib.rb:10:23:10:26 | key1 | parameter |
-| A | Method[foo] | Argument[key1:] | lib/mylib.rb:7:17:7:20 | key1 | parameter |
-| A | Method[foo] | Argument[self] | lib/mylib.rb:7:3:11:5 | self in foo | parameter |
+| A | Method[bar] | Argument[0] | lib/mylib.rb:14:11:14:11 | x | parameter |
+| A | Method[bar] | Argument[self] | lib/mylib.rb:14:3:15:5 | self in bar | parameter |
+| A | Method[foo] | Argument[0] | lib/mylib.rb:8:11:8:11 | x | parameter |
+| A | Method[foo] | Argument[1] | lib/mylib.rb:8:14:8:14 | y | parameter |
+| A | Method[foo] | Argument[2] | lib/mylib.rb:8:17:8:20 | key1 | parameter |
+| A | Method[foo] | Argument[block] | lib/mylib.rb:9:5:9:32 | call to call | parameter |
+| A | Method[foo] | Argument[block] | lib/mylib.rb:11:5:11:26 | yield ... | parameter |
+| A | Method[foo] | Argument[block].Parameter[0] | lib/mylib.rb:9:16:9:16 | x | parameter |
+| A | Method[foo] | Argument[block].Parameter[0] | lib/mylib.rb:11:11:11:11 | x | parameter |
+| A | Method[foo] | Argument[block].Parameter[1] | lib/mylib.rb:9:19:9:19 | y | parameter |
+| A | Method[foo] | Argument[block].Parameter[1] | lib/mylib.rb:11:14:11:14 | y | parameter |
+| A | Method[foo] | Argument[block].Parameter[key2:] | lib/mylib.rb:9:28:9:31 | key1 | parameter |
+| A | Method[foo] | Argument[block].Parameter[key2:] | lib/mylib.rb:11:23:11:26 | key1 | parameter |
+| A | Method[foo] | Argument[key1:] | lib/mylib.rb:8:17:8:20 | key1 | parameter |
+| A | Method[foo] | Argument[self] | lib/mylib.rb:8:3:12:5 | self in foo | parameter |
 | A! | Method[new] | Argument[0] | lib/mylib.rb:4:18:4:18 | x | parameter |
 | A! | Method[new] | Argument[1] | lib/mylib.rb:4:21:4:21 | y | parameter |
-| A! | Method[new] | Argument[self] | lib/mylib.rb:4:3:5:5 | self in initialize | parameter |
-| A! | Method[self_foo] | Argument[0] | lib/mylib.rb:16:21:16:21 | x | parameter |
-| A! | Method[self_foo] | Argument[1] | lib/mylib.rb:16:24:16:24 | y | parameter |
-| A! | Method[self_foo] | Argument[self] | lib/mylib.rb:16:3:17:5 | self in self_foo | parameter |
-| A::ANested | Method[foo] | Argument[0] | lib/mylib.rb:25:13:25:13 | x | parameter |
-| A::ANested | Method[foo] | Argument[1] | lib/mylib.rb:25:16:25:16 | y | parameter |
-| A::ANested | Method[foo] | Argument[self] | lib/mylib.rb:25:5:26:7 | self in foo | parameter |
+| A! | Method[self_foo] | Argument[0] | lib/mylib.rb:17:21:17:21 | x | parameter |
+| A! | Method[self_foo] | Argument[1] | lib/mylib.rb:17:24:17:24 | y | parameter |
+| A! | Method[self_foo] | Argument[self] | lib/mylib.rb:17:3:18:5 | self in self_foo | parameter |
+| A::ANested | Method[foo] | Argument[0] | lib/mylib.rb:26:13:26:13 | x | parameter |
+| A::ANested | Method[foo] | Argument[1] | lib/mylib.rb:26:16:26:16 | y | parameter |
+| A::ANested | Method[foo] | Argument[self] | lib/mylib.rb:26:5:27:7 | self in foo | parameter |
 | B | Method[foo] | Argument[0] | lib/other.rb:6:11:6:11 | x | parameter |
 | B | Method[foo] | Argument[1] | lib/other.rb:6:14:6:14 | y | parameter |
 | B | Method[foo] | Argument[self] | lib/other.rb:6:3:7:5 | self in foo | parameter |
@@ -36,31 +35,31 @@ input
 | OtherLib::A | Method[foo] | Argument[1] | other_lib/lib/other_gem.rb:3:20:3:20 | y | parameter |
 | OtherLib::A | Method[foo] | Argument[self] | other_lib/lib/other_gem.rb:3:9:4:11 | self in foo | parameter |
 output
-| A | Method[bar] | Argument[0] | lib/mylib.rb:13:11:13:11 | x | parameter |
-| A | Method[bar] | Argument[self] | lib/mylib.rb:13:3:14:5 | self in bar | parameter |
-| A | Method[foo] | Argument[0] | lib/mylib.rb:7:11:7:11 | x | parameter |
-| A | Method[foo] | Argument[1] | lib/mylib.rb:7:14:7:14 | y | parameter |
-| A | Method[foo] | Argument[2] | lib/mylib.rb:7:17:7:20 | key1 | parameter |
-| A | Method[foo] | Argument[block] | lib/mylib.rb:8:5:8:32 | call to call | parameter |
-| A | Method[foo] | Argument[block] | lib/mylib.rb:10:5:10:26 | yield ... | parameter |
-| A | Method[foo] | Argument[block].Parameter[0] | lib/mylib.rb:8:16:8:16 | x | parameter |
-| A | Method[foo] | Argument[block].Parameter[0] | lib/mylib.rb:10:11:10:11 | x | parameter |
-| A | Method[foo] | Argument[block].Parameter[1] | lib/mylib.rb:8:19:8:19 | y | parameter |
-| A | Method[foo] | Argument[block].Parameter[1] | lib/mylib.rb:10:14:10:14 | y | parameter |
-| A | Method[foo] | Argument[block].Parameter[key2:] | lib/mylib.rb:8:28:8:31 | key1 | parameter |
-| A | Method[foo] | Argument[block].Parameter[key2:] | lib/mylib.rb:10:23:10:26 | key1 | parameter |
-| A | Method[foo] | Argument[key1:] | lib/mylib.rb:7:17:7:20 | key1 | parameter |
-| A | Method[foo] | Argument[self] | lib/mylib.rb:7:3:11:5 | self in foo | parameter |
-| A | Method[foo] | ReturnValue | lib/mylib.rb:10:5:10:26 | yield ... | return |
+| A | Method[bar] | Argument[0] | lib/mylib.rb:14:11:14:11 | x | parameter |
+| A | Method[bar] | Argument[self] | lib/mylib.rb:14:3:15:5 | self in bar | parameter |
+| A | Method[foo] | Argument[0] | lib/mylib.rb:8:11:8:11 | x | parameter |
+| A | Method[foo] | Argument[1] | lib/mylib.rb:8:14:8:14 | y | parameter |
+| A | Method[foo] | Argument[2] | lib/mylib.rb:8:17:8:20 | key1 | parameter |
+| A | Method[foo] | Argument[block] | lib/mylib.rb:9:5:9:32 | call to call | parameter |
+| A | Method[foo] | Argument[block] | lib/mylib.rb:11:5:11:26 | yield ... | parameter |
+| A | Method[foo] | Argument[block].Parameter[0] | lib/mylib.rb:9:16:9:16 | x | parameter |
+| A | Method[foo] | Argument[block].Parameter[0] | lib/mylib.rb:11:11:11:11 | x | parameter |
+| A | Method[foo] | Argument[block].Parameter[1] | lib/mylib.rb:9:19:9:19 | y | parameter |
+| A | Method[foo] | Argument[block].Parameter[1] | lib/mylib.rb:11:14:11:14 | y | parameter |
+| A | Method[foo] | Argument[block].Parameter[key2:] | lib/mylib.rb:9:28:9:31 | key1 | parameter |
+| A | Method[foo] | Argument[block].Parameter[key2:] | lib/mylib.rb:11:23:11:26 | key1 | parameter |
+| A | Method[foo] | Argument[key1:] | lib/mylib.rb:8:17:8:20 | key1 | parameter |
+| A | Method[foo] | Argument[self] | lib/mylib.rb:8:3:12:5 | self in foo | parameter |
+| A | Method[foo] | ReturnValue | lib/mylib.rb:11:5:11:26 | yield ... | return |
 | A! | Method[new] | Argument[0] | lib/mylib.rb:4:18:4:18 | x | parameter |
 | A! | Method[new] | Argument[1] | lib/mylib.rb:4:21:4:21 | y | parameter |
-| A! | Method[new] | Argument[self] | lib/mylib.rb:4:3:5:5 | self in initialize | parameter |
-| A! | Method[self_foo] | Argument[0] | lib/mylib.rb:16:21:16:21 | x | parameter |
-| A! | Method[self_foo] | Argument[1] | lib/mylib.rb:16:24:16:24 | y | parameter |
-| A! | Method[self_foo] | Argument[self] | lib/mylib.rb:16:3:17:5 | self in self_foo | parameter |
-| A::ANested | Method[foo] | Argument[0] | lib/mylib.rb:25:13:25:13 | x | parameter |
-| A::ANested | Method[foo] | Argument[1] | lib/mylib.rb:25:16:25:16 | y | parameter |
-| A::ANested | Method[foo] | Argument[self] | lib/mylib.rb:25:5:26:7 | self in foo | parameter |
+| A! | Method[new] | ReturnValue | lib/mylib.rb:4:3:6:5 | self in initialize | return |
+| A! | Method[self_foo] | Argument[0] | lib/mylib.rb:17:21:17:21 | x | parameter |
+| A! | Method[self_foo] | Argument[1] | lib/mylib.rb:17:24:17:24 | y | parameter |
+| A! | Method[self_foo] | Argument[self] | lib/mylib.rb:17:3:18:5 | self in self_foo | parameter |
+| A::ANested | Method[foo] | Argument[0] | lib/mylib.rb:26:13:26:13 | x | parameter |
+| A::ANested | Method[foo] | Argument[1] | lib/mylib.rb:26:16:26:16 | y | parameter |
+| A::ANested | Method[foo] | Argument[self] | lib/mylib.rb:26:5:27:7 | self in foo | parameter |
 | B | Method[foo] | Argument[0] | lib/other.rb:6:11:6:11 | x | parameter |
 | B | Method[foo] | Argument[1] | lib/other.rb:6:14:6:14 | y | parameter |
 | B | Method[foo] | Argument[self] | lib/other.rb:6:3:7:5 | self in foo | parameter |

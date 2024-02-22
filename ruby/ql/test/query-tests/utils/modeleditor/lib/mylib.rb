@@ -2,6 +2,7 @@ require_relative "./other"
 
 class A
   def initialize(x, y)
+    @x = x
   end
 
   def foo(x, y, key1:, **kwargs, &block)

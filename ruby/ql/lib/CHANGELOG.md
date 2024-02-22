@@ -1,3 +1,16 @@
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* Raw output ERB tags of the form `<%== ... %>` are now recognised as cross-site scripting sinks.
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.8.8
+
+### Minor Analysis Improvements
+
+* Flow is now tracked through Rails `render` calls, when the argument is a `ViewComponent`. In this case, data flow is tracked into the accompanying `.html.erb` file.
+
 ## 0.8.7
 
 ### Minor Analysis Improvements

@@ -192,3 +192,39 @@ end
 c = CaptureInstanceSelf2.new
 c.foo
 c.baz
+
+class CaptureOverwrite
+    x = taint(16)
+
+    sink(x) # $ hasValueFlow=16
+
+    x = nil
+
+    sink(x)
+
+    fn = -> {
+        x = taint(17)
+
+        sink(x) # $ hasValueFlow=17
+
+        x = nil
+
+        sink(x)
+    }
+
+    fn.call()
+end
+
+def multi_capture
+    x = taint(18)
+    y = 123
+
+    fn1 = -> {
+        y = x
+    }
+
+    fn1.call()
+    sink(y) # $ hasValueFlow=18
+end
+
+multi_capture

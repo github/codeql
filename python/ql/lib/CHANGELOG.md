@@ -1,3 +1,20 @@
+## 0.11.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+* Added modeling of the `psycopg` PyPI package as a SQL database library.
+
+## 0.11.8
+
+### Minor Analysis Improvements
+
+* Added `html.escape` as a sanitizer for HTML.
+
+### Bug Fixes
+
+* Fixed the `a` (ASCII) inline flag not being recognized by the regular expression library.
+
 ## 0.11.7
 
 ### Minor Analysis Improvements

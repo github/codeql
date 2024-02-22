@@ -1,9 +1,9 @@
 edges
-| tests.cpp:26:15:26:23 | **badSource | tests.cpp:51:12:51:20 | *call to badSource |
-| tests.cpp:33:34:33:39 | *call to getenv | tests.cpp:38:39:38:49 | *environment |
-| tests.cpp:38:25:38:36 | strncat output argument | tests.cpp:26:15:26:23 | **badSource |
-| tests.cpp:38:39:38:49 | *environment | tests.cpp:38:25:38:36 | strncat output argument |
-| tests.cpp:51:12:51:20 | *call to badSource | tests.cpp:53:16:53:19 | *data |
+| tests.cpp:26:15:26:23 | **badSource | tests.cpp:51:12:51:20 | *call to badSource | provenance |  |
+| tests.cpp:33:34:33:39 | *call to getenv | tests.cpp:38:39:38:49 | *environment | provenance |  |
+| tests.cpp:38:25:38:36 | strncat output argument | tests.cpp:26:15:26:23 | **badSource | provenance |  |
+| tests.cpp:38:39:38:49 | *environment | tests.cpp:38:25:38:36 | strncat output argument | provenance |  |
+| tests.cpp:51:12:51:20 | *call to badSource | tests.cpp:53:16:53:19 | *data | provenance |  |
 nodes
 | tests.cpp:26:15:26:23 | **badSource | semmle.label | **badSource |
 | tests.cpp:33:34:33:39 | *call to getenv | semmle.label | *call to getenv |

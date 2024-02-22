@@ -1,3 +1,37 @@
+## 0.8.9
+
+### Deprecated APIs
+
+* The `PathCreation` class in `PathCreation.qll` has been deprecated.
+
+### Minor Analysis Improvements
+
+* An extension point for sanitizers of the query `java/unvalidated-url-redirection` has been added.
+* Added models for the following packages:
+
+  * java.io
+  * java.lang
+  * java.net
+  * java.net.http
+  * java.nio.file
+  * java.util.zip
+  * javax.servlet
+  * org.apache.commons.io
+  * org.apache.hadoop.fs
+  * org.apache.hadoop.fs.s3a
+  * org.eclipse.jetty.client
+  * org.gradle.api.file
+
+## 0.8.8
+
+### Minor Analysis Improvements
+
+* Added models for the following packages:
+
+  * com.fasterxml.jackson.databind
+  * javax.servlet
+* Added the `java.util.Date` and `java.util.UUID` classes to the list of types in the `SimpleTypeSanitizer` class in `semmle.code.java.security.Sanitizers`.
+
 ## 0.8.7
 
 ### New Features

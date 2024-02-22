@@ -10,6 +10,7 @@ private import ruby
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import queries.modeling.internal.Util as Util
+private import ModelEditor
 
 predicate simpleParameters(string type, string path, string value, DataFlow::Node node) {
   exists(DataFlow::MethodNode methodNode, DataFlow::ParameterNode paramNode |
@@ -19,7 +20,9 @@ predicate simpleParameters(string type, string path, string value, DataFlow::Nod
       // Block parameter explicitly excluded because it's already included
       // as part of the blockArguments predicate
       paramNode = Util::getAnyParameter(methodNode) and
-      paramNode != methodNode.getBlockParameter()
+      paramNode != methodNode.getBlockParameter() and
+      // The self parameter of a constructor is not a parameter that can be used in any models
+      (not isConstructor(methodNode) or paramNode != methodNode.getSelfParameter())
     )
   |
     Util::pathToMethod(methodNode, type, path) and
@@ -58,11 +61,24 @@ predicate blockArguments(string type, string path, string value, DataFlow::Node 
 predicate returnValue(string type, string path, string value, DataFlow::Node node) {
   exists(DataFlow::MethodNode methodNode, DataFlow::Node returnNode |
     methodNode.getLocation().getFile() instanceof Util::RelevantFile and
-    returnNode = methodNode.getAReturnNode()
+    returnNode = methodNode.getAReturnNode() and
+    not isConstructor(methodNode)
   |
     Util::pathToMethod(methodNode, type, path) and
     value = "ReturnValue" and
     node = returnNode
+  )
+  or
+  // A constructor has a return node for every statement, but we always want
+  // to return 1 node for the ReturnValue, so we return the self parameter
+  // instead.
+  exists(DataFlow::MethodNode methodNode |
+    methodNode.getLocation().getFile() instanceof Util::RelevantFile and
+    isConstructor(methodNode)
+  |
+    Util::pathToMethod(methodNode, type, path) and
+    value = "ReturnValue" and
+    node = methodNode.getSelfParameter()
   )
 }
 
