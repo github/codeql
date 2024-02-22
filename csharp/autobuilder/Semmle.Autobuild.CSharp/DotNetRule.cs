@@ -163,18 +163,8 @@ namespace Semmle.Autobuild.CSharp
 
             if (ensureDotNetAvailable)
             {
-                return BuildScript.Bind(GetInfoScript(builder.Actions), (infoLines, infoRet) =>
-                {
-                    if (infoRet == 0)
-                    {
-                        return BuildScript.Failure;
-                    }
-
-                    const string latestDotNetSdkVersion = "8.0.101";
-                    builder.Log(Severity.Info, $"No .NET Core SDK found. Attempting to install version {latestDotNetSdkVersion}.");
-                    return DownloadDotNetVersion(builder, installDir, latestDotNetSdkVersion, checkInstalledSdkVersion: false);
-                });
-
+                const string latestDotNetSdkVersion = "8.0.101";
+                return DownloadDotNetVersion(builder, installDir, latestDotNetSdkVersion, needExactVersion: false);
             }
 
             return BuildScript.Failure;
@@ -186,19 +176,24 @@ namespace Semmle.Autobuild.CSharp
         ///
         /// See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script.
         /// </summary>
-        private static BuildScript DownloadDotNetVersion(IAutobuilder<AutobuildOptionsShared> builder, string path, string version, bool checkInstalledSdkVersion = true)
+        private static BuildScript DownloadDotNetVersion(IAutobuilder<AutobuildOptionsShared> builder, string path, string version, bool needExactVersion = true)
         {
-            var firstScript = checkInstalledSdkVersion
-                ? GetInstalledSdksScript(builder.Actions)
-                : BuildScript.Success;
-
-            return BuildScript.Bind(firstScript, (sdks, sdksRet) =>
+            return BuildScript.Bind(GetInstalledSdksScript(builder.Actions), (sdks, sdksRet) =>
                 {
-                    if (checkInstalledSdkVersion && sdksRet == 0 && sdks.Count == 1 && sdks[0].StartsWith(version + " ", StringComparison.Ordinal))
+                    if (needExactVersion && sdksRet == 0 && sdks.Count == 1 && sdks[0].StartsWith(version + " ", StringComparison.Ordinal))
                     {
                         // The requested SDK is already installed (and no other SDKs are installed), so
                         // no need to reinstall
                         return BuildScript.Failure;
+                    }
+                    else if (!needExactVersion && sdksRet == 0 && sdks.Count > 0)
+                    {
+                        // there's at least one SDK installed, so no need to reinstall
+                        return BuildScript.Failure;
+                    }
+                    else if (!needExactVersion && sdksRet != 0)
+                    {
+                        builder.Log(Severity.Info, "No .NET Core SDK found.");
                     }
 
                     builder.Log(Severity.Info, "Attempting to download .NET Core {0}", version);
@@ -267,14 +262,6 @@ namespace Semmle.Autobuild.CSharp
                 RunCommand("dotnet").
                 Argument("--list-sdks");
             return listSdks.Script;
-        }
-
-        private static BuildScript GetInfoScript(IBuildActions actions)
-        {
-            var info = new CommandBuilder(actions, silent: true).
-                RunCommand("dotnet").
-                Argument("--info");
-            return info.Script;
         }
 
         private static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
