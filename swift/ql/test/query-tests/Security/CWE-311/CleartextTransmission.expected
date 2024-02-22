@@ -1,37 +1,37 @@
 edges
-| file://:0:0:0:0 | self | file://:0:0:0:0 | .value |
-| testAlamofire.swift:150:45:150:45 | password | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... |
-| testAlamofire.swift:152:51:152:51 | password | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... |
-| testAlamofire.swift:154:38:154:38 | email | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... |
-| testSend.swift:33:14:33:32 | call to Data.init(_:) | testSend.swift:37:19:37:19 | data2 |
-| testSend.swift:33:19:33:19 | passwordPlain | testSend.swift:33:14:33:32 | call to Data.init(_:) |
-| testSend.swift:41:10:41:18 | data | testSend.swift:41:45:41:45 | data |
-| testSend.swift:58:13:58:13 | password | testSend.swift:65:27:65:27 | str1 |
-| testSend.swift:59:13:59:13 | password | testSend.swift:66:27:66:27 | str2 |
-| testSend.swift:60:13:60:25 | call to pad(_:) | testSend.swift:67:27:67:27 | str3 |
-| testSend.swift:60:17:60:17 | password | testSend.swift:41:10:41:18 | data |
-| testSend.swift:60:17:60:17 | password | testSend.swift:60:13:60:25 | call to pad(_:) |
-| testSend.swift:86:7:86:7 | self | file://:0:0:0:0 | self |
-| testSend.swift:94:27:94:30 | .password | testSend.swift:86:7:86:7 | self |
-| testSend.swift:94:27:94:30 | .password | testSend.swift:94:27:94:39 | .value |
-| testURL.swift:39:50:39:50 | passwd | testURL.swift:39:18:39:50 | ... .+(_:_:) ... |
-| testURL.swift:41:51:41:51 | account_no | testURL.swift:41:18:41:51 | ... .+(_:_:) ... |
-| testURL.swift:42:51:42:51 | credit_card_no | testURL.swift:42:18:42:51 | ... .+(_:_:) ... |
-| testURL.swift:50:51:50:51 | e_mail | testURL.swift:50:18:50:51 | ... .+(_:_:) ... |
-| testURL.swift:52:53:52:53 | a_homeaddr_z | testURL.swift:52:18:52:53 | ... .+(_:_:) ... |
-| testURL.swift:54:51:54:51 | resident_ID | testURL.swift:54:18:54:51 | ... .+(_:_:) ... |
-| testURL.swift:73:52:73:67 | call to get_secret_key() | testURL.swift:73:18:73:67 | ... .+(_:_:) ... |
-| testURL.swift:75:53:75:69 | call to get_cert_string() | testURL.swift:75:18:75:69 | ... .+(_:_:) ... |
-| testURL.swift:96:51:96:51 | certificate | testURL.swift:96:18:96:18 | "..." |
-| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) |
-| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:105:32:105:32 | data |
-| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:106:20:106:20 | "..." |
-| testURL.swift:105:6:105:10 | let ...? [some:0] | testURL.swift:105:10:105:10 | string |
-| testURL.swift:105:10:105:10 | string | testURL.swift:106:20:106:20 | "..." |
-| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] |
-| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | testURL.swift:106:20:106:20 | "..." |
-| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | testURL.swift:105:6:105:10 | let ...? [some:0] |
-| testURL.swift:105:32:105:32 | data | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] |
+| file://:0:0:0:0 | self | file://:0:0:0:0 | .value | provenance |  |
+| testAlamofire.swift:150:45:150:45 | password | testAlamofire.swift:150:13:150:45 | ... .+(_:_:) ... | provenance |  |
+| testAlamofire.swift:152:51:152:51 | password | testAlamofire.swift:152:19:152:51 | ... .+(_:_:) ... | provenance |  |
+| testAlamofire.swift:154:38:154:38 | email | testAlamofire.swift:154:14:154:46 | ... .+(_:_:) ... | provenance |  |
+| testSend.swift:33:14:33:32 | call to Data.init(_:) | testSend.swift:37:19:37:19 | data2 | provenance |  |
+| testSend.swift:33:19:33:19 | passwordPlain | testSend.swift:33:14:33:32 | call to Data.init(_:) | provenance |  |
+| testSend.swift:41:10:41:18 | data | testSend.swift:41:45:41:45 | data | provenance |  |
+| testSend.swift:58:13:58:13 | password | testSend.swift:65:27:65:27 | str1 | provenance |  |
+| testSend.swift:59:13:59:13 | password | testSend.swift:66:27:66:27 | str2 | provenance |  |
+| testSend.swift:60:13:60:25 | call to pad(_:) | testSend.swift:67:27:67:27 | str3 | provenance |  |
+| testSend.swift:60:17:60:17 | password | testSend.swift:41:10:41:18 | data | provenance |  |
+| testSend.swift:60:17:60:17 | password | testSend.swift:60:13:60:25 | call to pad(_:) | provenance |  |
+| testSend.swift:86:7:86:7 | self | file://:0:0:0:0 | self | provenance |  |
+| testSend.swift:94:27:94:30 | .password | testSend.swift:86:7:86:7 | self | provenance |  |
+| testSend.swift:94:27:94:30 | .password | testSend.swift:94:27:94:39 | .value | provenance |  |
+| testURL.swift:39:50:39:50 | passwd | testURL.swift:39:18:39:50 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:41:51:41:51 | account_no | testURL.swift:41:18:41:51 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:42:51:42:51 | credit_card_no | testURL.swift:42:18:42:51 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:50:51:50:51 | e_mail | testURL.swift:50:18:50:51 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:52:53:52:53 | a_homeaddr_z | testURL.swift:52:18:52:53 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:54:51:54:51 | resident_ID | testURL.swift:54:18:54:51 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:73:52:73:67 | call to get_secret_key() | testURL.swift:73:18:73:67 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:75:53:75:69 | call to get_cert_string() | testURL.swift:75:18:75:69 | ... .+(_:_:) ... | provenance |  |
+| testURL.swift:96:51:96:51 | certificate | testURL.swift:96:18:96:18 | "..." | provenance |  |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | provenance |  |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:105:32:105:32 | data | provenance |  |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:106:20:106:20 | "..." | provenance |  |
+| testURL.swift:105:6:105:10 | let ...? [some:0] | testURL.swift:105:10:105:10 | string | provenance |  |
+| testURL.swift:105:10:105:10 | string | testURL.swift:106:20:106:20 | "..." | provenance |  |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | provenance |  |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | testURL.swift:106:20:106:20 | "..." | provenance |  |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | testURL.swift:105:6:105:10 | let ...? [some:0] | provenance |  |
+| testURL.swift:105:32:105:32 | data | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | provenance |  |
 nodes
 | file://:0:0:0:0 | .value | semmle.label | .value |
 | file://:0:0:0:0 | self | semmle.label | self |

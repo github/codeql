@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Semmle.Util;
 using Semmle.Util.Logging;
@@ -14,7 +15,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    public sealed class DependencyManager : IDisposable
+    public sealed partial class DependencyManager : IDisposable
     {
         private readonly AssemblyCache assemblyCache;
         private readonly ILogger logger;
@@ -116,8 +117,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
                 shouldExtractWebViews)
             {
+                CompilationInfos.Add(("WebView extraction enabled", "1"));
                 GenerateSourceFilesFromWebViews(allNonBinaryFiles);
             }
+            else
+            {
+                CompilationInfos.Add(("WebView extraction enabled", "0"));
+            }
+
+            CompilationInfos.Add(("UseWPF set", fileContent.UseWpf ? "1" : "0"));
+            CompilationInfos.Add(("UseWindowsForms set", fileContent.UseWindowsForms ? "1" : "0"));
 
             GenerateSourceFileFromImplicitUsings();
 
@@ -133,6 +142,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             logger.LogInfo($"{conflictedReferences,align} resolved assembly conflicts");
             logger.LogInfo($"{dotnetFrameworkVersionVariantCount,align} restored .NET framework variants");
             logger.LogInfo($"Build analysis completed in {DateTime.Now - startTime}");
+
+            CompilationInfos.AddRange([
+                ("Source files on filesystem", nonGeneratedSources.Count.ToString()),
+                ("Source files generated", generatedSources.Count.ToString()),
+                ("Solution files on filesystem", allSolutions.Count.ToString()),
+                ("Project files on filesystem", allProjects.Count.ToString()),
+                ("Resolved references", usedReferences.Keys.Count.ToString()),
+                ("Unresolved references", unresolvedReferences.Count.ToString()),
+                ("Resolved assembly conflicts", conflictedReferences.ToString()),
+                ("Restored .NET framework variants", dotnetFrameworkVersionVariantCount.ToString()),
+            ]);
         }
 
         private HashSet<string> AddFrameworkDlls(HashSet<string> dllPaths)
@@ -150,8 +170,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             try
             {
-                var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, logger);
-                nuget.InstallPackages();
+                using (var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, logger))
+                {
+                    var count = nuget.InstallPackages();
+
+                    if (nuget.PackageCount > 0)
+                    {
+                        CompilationInfos.Add(("packages.config files", nuget.PackageCount.ToString()));
+                        CompilationInfos.Add(("Successfully restored packages.config files", count.ToString()));
+                    }
+                }
 
                 var nugetPackageDlls = legacyPackageDirectory.DirInfo.GetFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true });
                 var nugetPackageDllPaths = nugetPackageDlls.Select(f => f.FullName).ToHashSet();
@@ -390,7 +418,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var allPackageDirectories = GetAllPackageDirectories();
 
             logger.LogInfo($"Restored {allPackageDirectories.Count} packages");
-            logger.LogInfo($"Found {dependencies.Packages.Count} packages in project.asset.json files");
+            logger.LogInfo($"Found {dependencies.Packages.Count} packages in project.assets.json files");
 
             allPackageDirectories
                 .Where(package => !dependencies.Packages.Contains(package))
@@ -415,6 +443,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 usings.UnionWith(new[] { "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
                     "Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Routing", "Microsoft.Extensions.Configuration",
                     "Microsoft.Extensions.DependencyInjection", "Microsoft.Extensions.Hosting", "Microsoft.Extensions.Logging" });
+            }
+
+            if (fileContent.UseWindowsForms)
+            {
+                usings.UnionWith(new[] { "System.Drawing", "System.Windows.Forms" });
             }
 
             usings.UnionWith(fileContent.CustomImplicitUsings);
@@ -630,6 +663,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public IEnumerable<string> UnresolvedReferences => unresolvedReferences.Select(r => r.Key);
 
         /// <summary>
+        /// List of `(key, value)` tuples, that are stored in the DB for telemetry purposes.
+        /// </summary>
+        public List<(string, string)> CompilationInfos { get; } = new List<(string, string)>();
+
+        /// <summary>
         /// Record that a particular reference couldn't be resolved.
         /// Note that this records at most one project file per missing reference.
         /// </summary>
@@ -699,15 +737,22 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="solutions">A list of paths to solution files.</param>
         private IEnumerable<string> RestoreSolutions(IEnumerable<string> solutions, out IEnumerable<string> assets)
         {
+            var successCount = 0;
             var assetFiles = new List<string>();
             var projects = solutions.SelectMany(solution =>
                 {
                     logger.LogInfo($"Restoring solution {solution}...");
                     var res = dotnet.Restore(new(solution, packageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
+                    if (res.Success)
+                    {
+                        successCount++;
+                    }
                     assetFiles.AddRange(res.AssetsFilePaths);
                     return res.RestoredProjects;
-                });
+                }).ToList();
             assets = assetFiles;
+            CompilationInfos.Add(("Successfully restored solution files", successCount.ToString()));
+            CompilationInfos.Add(("Restored projects through solution files", projects.Count.ToString()));
             return projects;
         }
 
@@ -719,23 +764,73 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="projects">A list of paths to project files.</param>
         private void RestoreProjects(IEnumerable<string> projects, out IEnumerable<string> assets)
         {
+            var successCount = 0;
             var assetFiles = new List<string>();
+            var sync = new object();
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
             {
                 logger.LogInfo($"Restoring project {project}...");
                 var res = dotnet.Restore(new(project, packageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
-                assetFiles.AddRange(res.AssetsFilePaths);
+                lock (sync)
+                {
+                    if (res.Success)
+                    {
+                        successCount++;
+                    }
+                    assetFiles.AddRange(res.AssetsFilePaths);
+                }
             });
             assets = assetFiles;
+            CompilationInfos.Add(("Successfully restored project files", successCount.ToString()));
+        }
+
+        [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex LegacyNugetPackage();
+
+
+        private static IEnumerable<string> GetRestoredPackageDirectoryNames(DirectoryInfo root)
+        {
+            return Directory.GetDirectories(root.FullName)
+                .Select(d => Path.GetFileName(d).ToLowerInvariant());
+        }
+
+        private IEnumerable<string> GetRestoredLegacyPackageNames()
+        {
+            var oldPackageDirectories = GetRestoredPackageDirectoryNames(legacyPackageDirectory.DirInfo);
+            foreach (var oldPackageDirectory in oldPackageDirectories)
+            {
+                // nuget install restores packages to 'packagename.version' folders (dotnet restore to 'packagename/version' folders)
+                // typical folder names look like:
+                //   newtonsoft.json.13.0.3
+                // there are more complex ones too, such as:
+                //   runtime.tizen.4.0.0-armel.Microsoft.NETCore.DotNetHostResolver.2.0.0-preview2-25407-01
+
+                var match = LegacyNugetPackage().Match(oldPackageDirectory);
+                if (!match.Success)
+                {
+                    logger.LogWarning($"Package directory '{oldPackageDirectory}' doesn't match the expected pattern.");
+                    continue;
+                }
+
+                yield return match.Groups[1].Value.ToLowerInvariant();
+            }
         }
 
         private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<string> dllPaths)
         {
-            var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName)
-                .Select(d => Path.GetFileName(d).ToLowerInvariant());
-            var notYetDownloadedPackages = fileContent.AllPackages
-                .Except(alreadyDownloadedPackages)
-                .ToList();
+            var alreadyDownloadedPackages = GetRestoredPackageDirectoryNames(packageDirectory.DirInfo);
+            var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
+
+            var notYetDownloadedPackages = new HashSet<string>(fileContent.AllPackages);
+            foreach (var alreadyDownloadedPackage in alreadyDownloadedPackages)
+            {
+                notYetDownloadedPackages.Remove(alreadyDownloadedPackage);
+            }
+            foreach (var alreadyDownloadedLegacyPackage in alreadyDownloadedLegacyPackages)
+            {
+                notYetDownloadedPackages.Remove(alreadyDownloadedLegacyPackage);
+            }
+
             if (notYetDownloadedPackages.Count == 0)
             {
                 return;
@@ -767,6 +862,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Using nuget.config file {nugetConfig}.");
             }
 
+            CompilationInfos.Add(("Fallback nuget restore", notYetDownloadedPackages.Count.ToString()));
+
+            var successCount = 0;
+            var sync = new object();
+
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
             {
                 logger.LogInfo($"Restoring package {package}...");
@@ -797,9 +897,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     if (!res.Success)
                     {
                         logger.LogInfo($"Failed to restore nuget package {package}");
+                        return;
                     }
                 }
+
+                lock (sync)
+                {
+                    successCount++;
+                }
             });
+
+            CompilationInfos.Add(("Successfully ran fallback nuget restore", successCount.ToString()));
 
             dllPaths.Add(missingPackageDirectory.DirInfo.FullName);
         }

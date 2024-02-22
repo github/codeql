@@ -69,7 +69,7 @@
   }
 }
 {
-  "markdownMessage": "Reading the dependency graph from build files provided 3 classpath entries",
+  "markdownMessage": "Reading the dependency graph from build files provided 4 classpath entries",
   "severity": "unknown",
   "source": {
     "extractorName": "java",

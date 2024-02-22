@@ -514,4 +514,8 @@ namespace Expressions
     {
         private int myInlineArrayElements;
     }
+
+    class ClassC1(object oc1) { }
+
+    class ClassC2(object oc2) : ClassC1(oc2) { }
 }

@@ -1,14 +1,14 @@
 edges
-| HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | HtmlEncode.cs:10:28:10:65 | ... + ... |
-| InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 |
-| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | InappropriateEncoding.cs:35:32:35:43 | access to local variable encodedValue |
-| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | InappropriateEncoding.cs:36:22:36:59 | ... + ... |
-| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String |
-| InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String | InappropriateEncoding.cs:37:22:37:71 | call to method Format |
-| InappropriateEncoding.cs:55:28:55:56 | call to method HtmlEncode : String | InappropriateEncoding.cs:56:31:56:42 | access to local variable encodedValue |
-| InappropriateEncoding.cs:66:16:66:42 | call to method Replace : String | InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String |
-| SqlEncode.cs:14:62:14:87 | call to method Replace : String | SqlEncode.cs:15:46:15:50 | access to local variable query |
-| UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | UrlEncode.cs:10:31:10:69 | ... + ... |
+| HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | HtmlEncode.cs:10:28:10:65 | ... + ... | provenance |  |
+| InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | InappropriateEncoding.cs:18:46:18:51 | access to local variable query1 | provenance |  |
+| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | InappropriateEncoding.cs:35:32:35:43 | access to local variable encodedValue | provenance |  |
+| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | InappropriateEncoding.cs:36:22:36:59 | ... + ... | provenance |  |
+| InappropriateEncoding.cs:34:28:34:55 | call to method UrlEncode : String | InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String | provenance |  |
+| InappropriateEncoding.cs:37:59:37:70 | access to local variable encodedValue : String | InappropriateEncoding.cs:37:22:37:71 | call to method Format | provenance |  |
+| InappropriateEncoding.cs:55:28:55:56 | call to method HtmlEncode : String | InappropriateEncoding.cs:56:31:56:42 | access to local variable encodedValue | provenance |  |
+| InappropriateEncoding.cs:66:16:66:42 | call to method Replace : String | InappropriateEncoding.cs:13:28:13:40 | call to method Encode : String | provenance |  |
+| SqlEncode.cs:14:62:14:87 | call to method Replace : String | SqlEncode.cs:15:46:15:50 | access to local variable query | provenance |  |
+| UrlEncode.cs:10:43:10:69 | call to method HtmlEncode : String | UrlEncode.cs:10:31:10:69 | ... + ... | provenance |  |
 nodes
 | HtmlEncode.cs:10:28:10:65 | ... + ... | semmle.label | ... + ... |
 | HtmlEncode.cs:10:40:10:65 | call to method UrlEncode : String | semmle.label | call to method UrlEncode : String |

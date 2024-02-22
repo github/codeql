@@ -50,7 +50,7 @@ the result is within the destination directory. If provided with a zip file cont
 path like <code>..\sneaky-file</code>, then this file would be written outside the destination
 directory.</p>
 
-<sample src="ZipSlipBad.cs" />
+<sample src="examples/ZipSlipBad.cs" />
 
 <p>To fix this vulnerability, we need to make three changes. Firstly, we need to resolve any
 directory traversal or other special characters in the path by using <code>Path.GetFullPath</code>.
@@ -59,7 +59,7 @@ Secondly, we need to identify the destination output directory, again using
 the resolved output starts with the resolved destination directory, and throw an exception if this
 is not the case.</p>
 
-<sample src="ZipSlipGood.cs" />
+<sample src="examples/ZipSlipGood.cs" />
 
 </example>
 <references>

@@ -1,10 +1,10 @@
 edges
-| test2.cpp:62:18:62:25 | password | test2.cpp:65:31:65:34 | cpy1 |
-| test2.cpp:72:15:72:24 | password | test2.cpp:73:30:73:32 | *buf |
-| test2.cpp:72:15:72:24 | password | test2.cpp:76:30:76:32 | *buf |
-| test2.cpp:98:45:98:52 | password | test2.cpp:99:27:99:32 | *buffer |
-| test.cpp:70:38:70:48 | thePassword | test.cpp:73:43:73:53 | thePassword |
-| test.cpp:73:63:73:73 | thePassword | test.cpp:73:43:73:53 | thePassword |
+| test2.cpp:62:18:62:25 | password | test2.cpp:65:31:65:34 | cpy1 | provenance |  |
+| test2.cpp:72:15:72:24 | password | test2.cpp:73:30:73:32 | *buf | provenance |  |
+| test2.cpp:72:15:72:24 | password | test2.cpp:76:30:76:32 | *buf | provenance |  |
+| test2.cpp:98:45:98:52 | password | test2.cpp:99:27:99:32 | *buffer | provenance |  |
+| test.cpp:70:38:70:48 | thePassword | test.cpp:73:43:73:53 | thePassword | provenance |  |
+| test.cpp:73:63:73:73 | thePassword | test.cpp:73:43:73:53 | thePassword | provenance |  |
 nodes
 | test2.cpp:43:36:43:43 | password | semmle.label | password |
 | test2.cpp:44:37:44:45 | thepasswd | semmle.label | thepasswd |

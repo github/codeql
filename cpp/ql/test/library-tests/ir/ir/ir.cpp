@@ -1065,6 +1065,8 @@ struct vector {
         bool operator!=(iterator right) const;
     };
 
+    vector(T);
+    ~vector();
     iterator begin() const;
     iterator end() const;
 };
@@ -2112,4 +2114,56 @@ char* test_strtod(char *s) {
   return end;
 }
 
-// semmle-extractor-options: -std=c++17 --clang
+struct HasOperatorBool {
+    operator bool();
+};
+
+void call_as_child_of_ConditionDeclExpr() {
+  if(HasOperatorBool b = HasOperatorBool()) {}
+}
+
+class ClassWithDestructor {
+    char *x;
+public:
+    ClassWithDestructor() { x = new char; }
+    ~ClassWithDestructor() { delete x; }
+
+    void set_x(char y) { *x = y; }
+    char get_x() { return *x; }
+};
+
+constexpr bool initialization_with_destructor_bool = true;
+
+void initialization_with_destructor(bool b, char c) {
+    if (ClassWithDestructor x; b)
+        x.set_x('a');
+
+    if constexpr (ClassWithDestructor x; initialization_with_destructor_bool)
+        x.set_x('a');
+
+    switch(ClassWithDestructor x; c) {
+        case 'a':
+          x.set_x('a');
+          break;
+        default:
+          x.set_x('b');
+          break;
+    }
+
+    ClassWithDestructor x;
+    for(vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys)
+      y.set_x('a');
+
+    for(vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys) {
+      y.set_x('a');
+      if (y.get_x() == 'b')
+        return;
+    }
+
+    for(vector<int> ys(1); int y : ys) {
+      if (y == 1)
+        return;
+    }
+}
+
+// semmle-extractor-options: -std=c++20 --clang

@@ -83,4 +83,9 @@ class Compilation extends @compilation {
 
   /** Gets the elapsed seconds for the entire extractor process. */
   float getElapsedSeconds() { compilation_finished(this, _, result) }
+
+  /**
+   * Gets the piece of compilation information with the given key, if any.
+   */
+  string getInfo(string key) { compilation_info(this, key, result) }
 }

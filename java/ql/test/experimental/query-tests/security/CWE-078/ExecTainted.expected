@@ -1,6 +1,6 @@
 edges
-| JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | JSchOSInjectionTest.java:27:52:27:68 | ... + ... |
-| JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) : String | JSchOSInjectionTest.java:53:36:53:52 | ... + ... |
+| JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | JSchOSInjectionTest.java:27:52:27:68 | ... + ... | provenance |  |
+| JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) : String | JSchOSInjectionTest.java:53:36:53:52 | ... + ... | provenance |  |
 nodes
 | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JSchOSInjectionTest.java:27:52:27:68 | ... + ... | semmle.label | ... + ... |

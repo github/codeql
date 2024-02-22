@@ -1,13 +1,13 @@
 edges
-| test1.c:7:26:7:29 | **argv | test1.c:9:9:9:9 | i |
-| test1.c:7:26:7:29 | **argv | test1.c:11:9:11:9 | i |
-| test1.c:7:26:7:29 | **argv | test1.c:13:9:13:9 | i |
-| test1.c:9:9:9:9 | i | test1.c:16:16:16:16 | i |
-| test1.c:11:9:11:9 | i | test1.c:32:16:32:16 | i |
-| test1.c:13:9:13:9 | i | test1.c:48:16:48:16 | i |
-| test1.c:16:16:16:16 | i | test1.c:18:16:18:16 | i |
-| test1.c:32:16:32:16 | i | test1.c:33:11:33:11 | i |
-| test1.c:48:16:48:16 | i | test1.c:53:15:53:15 | j |
+| test1.c:7:26:7:29 | **argv | test1.c:9:9:9:9 | i | provenance |  |
+| test1.c:7:26:7:29 | **argv | test1.c:11:9:11:9 | i | provenance |  |
+| test1.c:7:26:7:29 | **argv | test1.c:13:9:13:9 | i | provenance |  |
+| test1.c:9:9:9:9 | i | test1.c:16:16:16:16 | i | provenance |  |
+| test1.c:11:9:11:9 | i | test1.c:32:16:32:16 | i | provenance |  |
+| test1.c:13:9:13:9 | i | test1.c:48:16:48:16 | i | provenance |  |
+| test1.c:16:16:16:16 | i | test1.c:18:16:18:16 | i | provenance |  |
+| test1.c:32:16:32:16 | i | test1.c:33:11:33:11 | i | provenance |  |
+| test1.c:48:16:48:16 | i | test1.c:53:15:53:15 | j | provenance |  |
 nodes
 | test1.c:7:26:7:29 | **argv | semmle.label | **argv |
 | test1.c:9:9:9:9 | i | semmle.label | i |

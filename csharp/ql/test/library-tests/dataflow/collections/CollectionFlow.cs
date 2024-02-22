@@ -481,4 +481,40 @@ public class CollectionFlow
         IntegerCollection ic1 = [.. ic0];
         Sink(ic1.Payload); // No flow
     }
+
+    public void SpanConstructorFlow()
+    {
+        var a = new A();
+        Span<A> span = new Span<A>(ref a);
+        Sink(span[0]); // flow
+    }
+
+    public void SpanToArrayFlow()
+    {
+        var a = new A();
+        Span<A> span = new Span<A>(ref a);
+        var arr = span.ToArray();
+        Sink(arr[0]); // flow
+    }
+
+    public void SpanFillFlow(Span<A> target)
+    {
+        var a = new A();
+        target.Fill(a);
+        Sink(target[0]); // flow
+    }
+
+    public void SpanCopyToFlow(Span<A> target)
+    {
+        var source = new Span<A>(new[] { new A() });
+        source.CopyTo(target);
+        Sink(target[0]); // flow
+    }
+
+    public void ReadOnlySpanConstructorFlow()
+    {
+        var a = new A();
+        ReadOnlySpan<A> span = new ReadOnlySpan<A>(new[] { a });
+        Sink(span[0]); // flow
+    }
 }

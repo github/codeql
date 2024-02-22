@@ -1,12 +1,12 @@
 edges
-| gorestful.go:15:15:15:44 | call to QueryParameters | gorestful.go:15:15:15:47 | index expression |
-| gorestful.go:17:12:17:39 | call to BodyParameter | gorestful.go:18:15:18:17 | val |
-| gorestful.go:21:15:21:38 | call to PathParameters | gorestful.go:21:15:21:45 | index expression |
-| gorestful.go:23:21:23:24 | &... | gorestful.go:24:15:24:21 | selection of cmd |
-| gorestful_v2.go:15:15:15:44 | call to QueryParameters | gorestful_v2.go:15:15:15:47 | index expression |
-| gorestful_v2.go:17:12:17:39 | call to BodyParameter | gorestful_v2.go:18:15:18:17 | val |
-| gorestful_v2.go:21:15:21:38 | call to PathParameters | gorestful_v2.go:21:15:21:45 | index expression |
-| gorestful_v2.go:23:21:23:24 | &... | gorestful_v2.go:24:15:24:21 | selection of cmd |
+| gorestful.go:15:15:15:44 | call to QueryParameters | gorestful.go:15:15:15:47 | index expression | provenance |  |
+| gorestful.go:17:12:17:39 | call to BodyParameter | gorestful.go:18:15:18:17 | val | provenance |  |
+| gorestful.go:21:15:21:38 | call to PathParameters | gorestful.go:21:15:21:45 | index expression | provenance |  |
+| gorestful.go:23:21:23:24 | &... | gorestful.go:24:15:24:21 | selection of cmd | provenance |  |
+| gorestful_v2.go:15:15:15:44 | call to QueryParameters | gorestful_v2.go:15:15:15:47 | index expression | provenance |  |
+| gorestful_v2.go:17:12:17:39 | call to BodyParameter | gorestful_v2.go:18:15:18:17 | val | provenance |  |
+| gorestful_v2.go:21:15:21:38 | call to PathParameters | gorestful_v2.go:21:15:21:45 | index expression | provenance |  |
+| gorestful_v2.go:23:21:23:24 | &... | gorestful_v2.go:24:15:24:21 | selection of cmd | provenance |  |
 nodes
 | gorestful.go:15:15:15:44 | call to QueryParameters | semmle.label | call to QueryParameters |
 | gorestful.go:15:15:15:47 | index expression | semmle.label | index expression |

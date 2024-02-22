@@ -2682,6 +2682,7 @@ module MakeImpl<InputSig Lang> {
       ) {
         not isUnreachableInCall1(node2, cc) and
         not inBarrier(node2, state) and
+        not outBarrier(node1, state) and
         (
           localFlowEntry(node1, pragma[only_bind_into](state)) and
           (
@@ -3724,7 +3725,11 @@ module MakeImpl<InputSig Lang> {
      */
     module PathGraph implements PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-      query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b }
+      query predicate edges(PathNode a, PathNode b, string key, string val) {
+        a.getASuccessor() = b and
+        key = "provenance" and
+        val = ""
+      }
 
       /** Holds if `n` is a node in the graph of data flow path explanations. */
       query predicate nodes(PathNode n, string key, string val) {
@@ -3757,6 +3762,9 @@ module MakeImpl<InputSig Lang> {
 
       override NodeEx getNodeEx() { result = node }
 
+      pragma[inline]
+      final NodeEx getNodeExOutgoing() { result = node and not outBarrier(node, state) }
+
       override FlowState getState() { result = state }
 
       CallContext getCallContext() { result = cc }
@@ -3773,14 +3781,11 @@ module MakeImpl<InputSig Lang> {
       }
 
       override PathNodeImpl getASuccessorImpl() {
-        not outBarrier(node, state) and
-        (
-          // an intermediate step to another intermediate node
-          result = this.getSuccMid()
-          or
-          // a final step to a sink
-          result = this.getSuccMid().projectToSink()
-        )
+        // an intermediate step to another intermediate node
+        result = this.getSuccMid()
+        or
+        // a final step to a sink
+        result = this.getSuccMid().projectToSink()
       }
 
       override predicate isSource() {
@@ -3931,14 +3936,14 @@ module MakeImpl<InputSig Lang> {
         ap instanceof AccessPathNil
       )
       or
-      jumpStepEx(mid.getNodeEx(), node) and
+      jumpStepEx(mid.getNodeExOutgoing(), node) and
       state = mid.getState() and
       cc instanceof CallContextAny and
       sc instanceof SummaryCtxNone and
       t = mid.getType() and
       ap = mid.getAp()
       or
-      additionalJumpStep(mid.getNodeEx(), node) and
+      additionalJumpStep(mid.getNodeExOutgoing(), node) and
       state = mid.getState() and
       cc instanceof CallContextAny and
       sc instanceof SummaryCtxNone and
@@ -3946,7 +3951,7 @@ module MakeImpl<InputSig Lang> {
       t = node.getDataFlowType() and
       ap = TAccessPathNil()
       or
-      additionalJumpStateStep(mid.getNodeEx(), mid.getState(), node, state) and
+      additionalJumpStateStep(mid.getNodeExOutgoing(), mid.getState(), node, state) and
       cc instanceof CallContextAny and
       sc instanceof SummaryCtxNone and
       mid.getAp() instanceof AccessPathNil and
@@ -3981,7 +3986,7 @@ module MakeImpl<InputSig Lang> {
     ) {
       ap0 = mid.getAp() and
       c = ap0.getHead() and
-      Stage5::readStepCand(mid.getNodeEx(), c, node) and
+      Stage5::readStepCand(mid.getNodeExOutgoing(), c, node) and
       state = mid.getState() and
       cc = mid.getCallContext()
     }
@@ -3994,7 +3999,7 @@ module MakeImpl<InputSig Lang> {
       exists(DataFlowType contentType |
         t0 = mid.getType() and
         ap0 = mid.getAp() and
-        Stage5::storeStepCand(mid.getNodeEx(), _, c, node, contentType, t) and
+        Stage5::storeStepCand(mid.getNodeExOutgoing(), _, c, node, contentType, t) and
         state = mid.getState() and
         cc = mid.getCallContext() and
         compatibleTypes(t0, contentType)
@@ -4012,7 +4017,8 @@ module MakeImpl<InputSig Lang> {
         not outBarrier(retNode, state) and
         innercc = mid.getCallContext() and
         innercc instanceof CallContextNoCall and
-        apa = mid.getAp().getApprox()
+        apa = mid.getAp().getApprox() and
+        not outBarrier(retNode, state)
       )
     }
 
@@ -4133,7 +4139,8 @@ module MakeImpl<InputSig Lang> {
         pathNode(_, ret, state, cc, sc, t, ap, _) and
         kind = ret.getKind() and
         apa = ap.getApprox() and
-        parameterFlowThroughAllowed(sc.getParamNode(), kind)
+        parameterFlowThroughAllowed(sc.getParamNode(), kind) and
+        not outBarrier(ret, state)
       )
     }
 

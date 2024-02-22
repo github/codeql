@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public IEnumerable<string> GenerateFiles(IEnumerable<string> cshtmls, IEnumerable<string> references, string workingDirectory)
         {
             var name = Guid.NewGuid().ToString("N").ToUpper();
-            var tempPath = FileUtils.GetTemporaryWorkingDirectory(out var _);
+            var tempPath = FileUtils.GetTemporaryWorkingDirectory(out var shouldCleanUp);
             var analyzerConfig = Path.Combine(tempPath, $"{name}.txt");
             var dllPath = Path.Combine(tempPath, $"{name}.dll");
             var cscArgsPath = Path.Combine(tempPath, $"{name}.rsp");
@@ -105,21 +105,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             finally
             {
-                DeleteFile(analyzerConfig);
-                DeleteFile(dllPath);
-                DeleteFile(cscArgsPath);
+                if (shouldCleanUp)
+                {
+                    DeleteFile(analyzerConfig);
+                    DeleteFile(dllPath);
+                    DeleteFile(cscArgsPath);
+                }
             }
         }
 
-        private static void DeleteFile(string path)
+        private void DeleteFile(string path)
         {
             try
             {
                 File.Delete(path);
             }
-            catch
+            catch (Exception exc)
             {
-                // Ignore
+                logger.LogWarning($"Failed to delete file {path}: {exc}");
             }
         }
     }

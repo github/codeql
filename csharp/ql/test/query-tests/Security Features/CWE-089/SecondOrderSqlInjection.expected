@@ -1,19 +1,19 @@
 edges
-| SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... |
-| SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream |
-| SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader | SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader |
-| SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader |
-| SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader | SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String |
-| SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String |
-| SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String |
-| SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql |
-| SqlInjectionSqlite.cs:49:36:49:84 | object creation of type FileStream : FileStream | SqlInjectionSqlite.cs:51:59:51:60 | access to local variable fs : FileStream |
-| SqlInjectionSqlite.cs:51:42:51:76 | object creation of type StreamReader : StreamReader | SqlInjectionSqlite.cs:54:35:54:36 | access to local variable sr : StreamReader |
-| SqlInjectionSqlite.cs:51:59:51:60 | access to local variable fs : FileStream | SqlInjectionSqlite.cs:51:42:51:76 | object creation of type StreamReader : StreamReader |
-| SqlInjectionSqlite.cs:54:35:54:36 | access to local variable sr : StreamReader | SqlInjectionSqlite.cs:54:35:54:47 | call to method ReadLine : String |
-| SqlInjectionSqlite.cs:54:35:54:47 | call to method ReadLine : String | SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String |
-| SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String |
-| SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | SqlInjectionSqlite.cs:61:53:61:55 | access to local variable sql |
+| SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | provenance |  |
+| SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | provenance |  |
+| SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader | SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader | provenance |  |
+| SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader | provenance |  |
+| SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader | SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | provenance |  |
+| SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | provenance |  |
+| SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | provenance |  |
+| SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | provenance |  |
+| SqlInjectionSqlite.cs:49:36:49:84 | object creation of type FileStream : FileStream | SqlInjectionSqlite.cs:51:59:51:60 | access to local variable fs : FileStream | provenance |  |
+| SqlInjectionSqlite.cs:51:42:51:76 | object creation of type StreamReader : StreamReader | SqlInjectionSqlite.cs:54:35:54:36 | access to local variable sr : StreamReader | provenance |  |
+| SqlInjectionSqlite.cs:51:59:51:60 | access to local variable fs : FileStream | SqlInjectionSqlite.cs:51:42:51:76 | object creation of type StreamReader : StreamReader | provenance |  |
+| SqlInjectionSqlite.cs:54:35:54:36 | access to local variable sr : StreamReader | SqlInjectionSqlite.cs:54:35:54:47 | call to method ReadLine : String | provenance |  |
+| SqlInjectionSqlite.cs:54:35:54:47 | call to method ReadLine : String | SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | provenance |  |
+| SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | provenance |  |
+| SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | SqlInjectionSqlite.cs:61:53:61:55 | access to local variable sql | provenance |  |
 nodes
 | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | semmle.label | ... + ... |
 | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | semmle.label | call to method GetString : String |

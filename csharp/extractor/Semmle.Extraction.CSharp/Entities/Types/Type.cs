@@ -57,7 +57,7 @@ namespace Semmle.Extraction.CSharp.Entities
                                 {
                                     return Kinds.TypeKind.TUPLE;
                                 }
-                                return Symbol.IsInlineArray() 
+                                return Symbol.IsInlineArray()
                                     ? Kinds.TypeKind.INLINE_ARRAY
                                     : Kinds.TypeKind.STRUCT;
                             }

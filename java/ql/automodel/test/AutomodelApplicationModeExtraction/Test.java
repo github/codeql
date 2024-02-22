@@ -40,11 +40,12 @@ class Test {
 		); // $ sourceModelCandidate=newInputStream(Path,OpenOption[]):ReturnValue
 	}
 
-	public static InputStream getInputStream(String openPath) throws Exception {
+	public static InputStream getInputStream(String openPath, String otherPath) throws Exception {
 		return Test.getInputStream( // the call is not a source candidate (argument to local call)
 			Paths.get(
-				openPath // $ negativeSinkExample=get(String,String[]):Argument[0] // modeled as a flow step
-			) // $ sourceModelCandidate=get(String,String[]):ReturnValue
+				openPath, // $ negativeSinkExample=get(String,String[]):Argument[0] // modeled as a flow step
+				otherPath
+			) // $ sourceModelCandidate=get(String,String[]):ReturnValue negativeSinkExample=get(String,String[]):Argument[1]
 		);
 	}
 

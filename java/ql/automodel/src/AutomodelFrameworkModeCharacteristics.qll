@@ -209,46 +209,72 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
   predicate isSink(Endpoint e, string kind, string provenance) {
-    exists(string package, string type, string name, string signature, string ext, string input |
-      sinkSpec(e, package, type, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      string input
+    |
+      sinkSpec(e, package, type, subtypes, name, signature, ext, input) and
+      ExternalFlow::sinkModel(package, type, subtypes, name, [signature, ""], ext, input, kind,
+        provenance)
     )
   }
 
   predicate isSource(Endpoint e, string kind, string provenance) {
-    exists(string package, string type, string name, string signature, string ext, string output |
-      sourceSpec(e, package, type, name, signature, ext, output) and
-      ExternalFlow::sourceModel(package, type, _, name, [signature, ""], ext, output, kind,
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      string output
+    |
+      sourceSpec(e, package, type, subtypes, name, signature, ext, output) and
+      ExternalFlow::sourceModel(package, type, subtypes, name, [signature, ""], ext, output, kind,
         provenance)
     )
   }
 
   predicate isNeutral(Endpoint e) {
-    exists(string package, string type, string name, string signature |
-      (
-        sinkSpec(e, package, type, name, signature, _, _)
-        or
-        sourceSpec(e, package, type, name, signature, _, _)
-      ) and
-      ExternalFlow::neutralModel(package, type, name, [signature, ""], "sink", _)
+    exists(string package, string type, string name, string signature, string endpointType |
+      sinkSpec(e, package, type, _, name, signature, _, _) and
+      endpointType = "sink"
+      or
+      sourceSpec(e, package, type, _, name, signature, _, _) and
+      endpointType = "source"
+    |
+      ExternalFlow::neutralModel(package, type, name, [signature, ""], endpointType, _)
+    )
+  }
+
+  /**
+   * Holds if the endpoint concerns a callable with the given package, type, name and signature.
+   *
+   * If `subtypes` is `false`, only the exact callable is considered. If `true`, the callable and
+   * all its overrides are considered.
+   */
+  additional predicate endpointCallable(
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature
+  ) {
+    exists(Callable c |
+      c = e.getCallable() and subtypes in [true, false]
+      or
+      e.getCallable().(Method).getSourceDeclaration().overrides+(c) and subtypes = true
+    |
+      c.hasQualifiedName(package, type, name) and
+      signature = ExternalFlow::paramsString(c)
     )
   }
 
   additional predicate sinkSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext, string input
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    string ext, string input
   ) {
-    e.getCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getCallable()) and
+    endpointCallable(e, package, type, subtypes, name, signature) and
     ext = "" and
     input = e.getMaDInput()
   }
 
   additional predicate sourceSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext,
-    string output
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    string ext, string output
   ) {
-    e.getCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getCallable()) and
+    endpointCallable(e, package, type, subtypes, name, signature) and
     ext = "" and
     output = e.getMaDOutput()
   }
@@ -404,7 +430,7 @@ predicate isPositiveExample(
  */
 private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
+  UnexploitableIsCharacteristic() { this = "argument of is-style boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getName().matches("is%") and
@@ -430,7 +456,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::Neither
  */
 private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
+  UnexploitableExistsCharacteristic() { this = "argument of existence-checking boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     exists(Callable callable |
@@ -454,7 +480,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Nei
  */
 private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  ExceptionCharacteristic() { this = "exception" }
+  ExceptionCharacteristic() { this = "argument/result of exception-related method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable and

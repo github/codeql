@@ -8,8 +8,12 @@ on:
       - "codeql-cli-*"
   pull_request:
 
+permissions:
+  contents: read
+
 jobs:
   compile-queries:
+    if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
 
     steps:

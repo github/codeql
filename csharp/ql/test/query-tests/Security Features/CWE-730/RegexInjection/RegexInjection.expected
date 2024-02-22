@@ -1,7 +1,7 @@
 edges
-| RegexInjection.cs:10:24:10:46 | access to property QueryString : NameValueCollection | RegexInjection.cs:10:24:10:55 | access to indexer : String |
-| RegexInjection.cs:10:24:10:46 | access to property QueryString : NameValueCollection | RegexInjection.cs:14:19:14:23 | access to local variable regex |
-| RegexInjection.cs:10:24:10:55 | access to indexer : String | RegexInjection.cs:14:19:14:23 | access to local variable regex |
+| RegexInjection.cs:10:24:10:46 | access to property QueryString : NameValueCollection | RegexInjection.cs:10:24:10:55 | access to indexer : String | provenance |  |
+| RegexInjection.cs:10:24:10:46 | access to property QueryString : NameValueCollection | RegexInjection.cs:14:19:14:23 | access to local variable regex | provenance |  |
+| RegexInjection.cs:10:24:10:55 | access to indexer : String | RegexInjection.cs:14:19:14:23 | access to local variable regex | provenance |  |
 nodes
 | RegexInjection.cs:10:24:10:46 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | RegexInjection.cs:10:24:10:55 | access to indexer : String | semmle.label | access to indexer : String |

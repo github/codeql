@@ -12,6 +12,10 @@ class User < ApplicationRecord
   def self.from(user_group_id)
     UserGroup.find_by(id: user_group_id).users
   end
+
+  def exec(q)
+    connection.execute(q)
+  end
 end
 
 class Admin < User

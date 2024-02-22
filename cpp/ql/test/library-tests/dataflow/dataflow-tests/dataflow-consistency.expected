@@ -165,6 +165,7 @@ postWithInFlow
 | test.cpp:931:5:931:18 | global_pointer [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:932:5:932:19 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:932:6:932:19 | global_pointer [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:1045:9:1045:11 | ref arg buf | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition

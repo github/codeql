@@ -77,7 +77,11 @@ private predicate isUnlikelyExternalCall(API::MethodAccessNode node) {
 }
 
 private API::Node activeRecordConnectionInstance() {
-  result = activeRecordBaseClass().getReturn("connection")
+  result =
+    [
+      activeRecordBaseClass().getReturn("connection"),
+      activeRecordBaseClass().getInstance().getReturn("connection")
+    ]
 }
 
 /**

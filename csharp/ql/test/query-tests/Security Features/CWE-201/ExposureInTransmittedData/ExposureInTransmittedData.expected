@@ -1,9 +1,9 @@
 edges
-| ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | ExposureInTransmittedData.cs:24:32:24:50 | access to indexer |
-| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:31:53:31:53 | access to local variable p |
-| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:31:56:31:56 | access to local variable p |
-| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:32:24:32:52 | ... + ... |
-| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:33:27:33:27 | access to local variable p |
+| ExposureInTransmittedData.cs:24:32:24:38 | access to property Data : IDictionary | ExposureInTransmittedData.cs:24:32:24:50 | access to indexer | provenance |  |
+| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:31:53:31:53 | access to local variable p | provenance |  |
+| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:31:56:31:56 | access to local variable p | provenance |  |
+| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:32:24:32:52 | ... + ... | provenance |  |
+| ExposureInTransmittedData.cs:30:17:30:36 | call to method GetField : String | ExposureInTransmittedData.cs:33:27:33:27 | access to local variable p | provenance |  |
 nodes
 | ExposureInTransmittedData.cs:14:32:14:39 | access to local variable password | semmle.label | access to local variable password |
 | ExposureInTransmittedData.cs:18:32:18:44 | call to method ToString | semmle.label | call to method ToString |

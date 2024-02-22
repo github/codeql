@@ -75,7 +75,7 @@ module HeuristicNames {
    * Gets a regular expression that identifies strings that may indicate the presence of
    * a certificate.
    */
-  string maybeCertificate() { result = "(?is).*(cert)(?!.*(format|name)).*" }
+  string maybeCertificate() { result = "(?is).*(cert)(?!.*(format|name|ification)).*" }
 
   /**
    * Gets a regular expression that identifies strings that may indicate the presence

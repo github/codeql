@@ -1,3 +1,9 @@
+## 0.3.9
+
+### New Queries
+
+* Added a new experimental query, `swift/unsafe-unpacking`, that detects unpacking user controlled zips without validating the destination file path is within the destination directory.
+
 ## 0.3.8
 
 No user-facing changes.
