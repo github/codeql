@@ -1,1 +1,1 @@
-export default class C {} // $ class=(pack4) instance=(pack4).prototype
+export default class C {} // $ name=(pack4)

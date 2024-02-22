@@ -101,6 +101,50 @@ public class Constructors
         Sink(c2.Obj22); // $ hasValueFlow=5
     }
 
+    public class C3(object o31param)
+    {
+        public object Obj31 => o31param;
+    }
+
+    public void M5()
+    {
+        var o31 = Source<object>(6);
+        var c3 = new C3(o31);
+        Sink(c3.Obj31); // $ hasValueFlow=6
+    }
+
+    public class C4
+    {
+        public object Obj1 { get; init; }
+        public object Obj2 { get; }
+
+        public C4(object oc1, object oc2)
+        {
+            Obj1 = oc1;
+            Obj2 = oc2;
+        }
+    }
+
+    public void M6()
+    {
+        var o1 = Source<object>(7);
+        var o2 = Source<object>(8);
+        var c4 = new C4(o1, o2);
+        Sink(c4.Obj1); // $ hasValueFlow=7
+        Sink(c4.Obj2); // $ hasValueFlow=8
+    }
+
+    public record R1(object Obj1, object Obj2);
+
+    public void M7()
+    {
+        var o1 = Source<object>(9);
+        var o2 = Source<object>(10);
+        var r1 = new R1(o1, o2);
+        Sink(r1.Obj1); // $ hasValueFlow=9
+        Sink(r1.Obj2); // $ hasValueFlow=10
+    }
+
     public static void Sink(object o) { }
 
     public static T Source<T>(object source) => throw null;

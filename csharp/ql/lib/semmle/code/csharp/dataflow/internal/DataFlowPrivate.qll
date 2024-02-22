@@ -953,12 +953,8 @@ private module Cached {
       callCfn = any(Call c | isParamsArg(c, _, _)).getAControlFlowNode()
     } or
     TFlowInsensitiveFieldNode(FieldOrProperty f) { f.isFieldLike() } or
-    TInstanceParameterAccessNode(ControlFlow::Node cfn, boolean isPostUpdate) {
-      exists(ParameterAccess pa | cfn = getAPrimaryConstructorParameterCfn(pa) |
-        isPostUpdate = false
-        or
-        pa instanceof ParameterWrite and isPostUpdate = true
-      )
+    TInstanceParameterAccessNode(ControlFlow::Node cfn, Boolean isPostUpdate) {
+      cfn = getAPrimaryConstructorParameterCfn(_)
     } or
     TPrimaryConstructorThisAccessNode(Parameter p, Boolean isPostUpdate) {
       p.getCallable() instanceof PrimaryConstructor
@@ -1903,6 +1899,8 @@ class FieldOrProperty extends Assignable, Modifiable {
         (
           p.isAutoImplemented()
           or
+          p.isAutoImplementedReadOnly()
+          or
           p.matchesHandle(any(CIL::TrivialProperty tp))
           or
           p.getDeclaringType() instanceof AnonymousClass
@@ -2076,7 +2074,9 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   exists(Parameter p |
     node1 = TExplicitParameterNode(p) and
     node2 = TPrimaryConstructorThisAccessNode(p, true) and
-    c.(PrimaryConstructorParameterContent).getParameter() = p
+    if p.getCallable().getDeclaringType() instanceof RecordType
+    then c.(PropertyContent).getProperty().getName() = p.getName()
+    else c.(PrimaryConstructorParameterContent).getParameter() = p
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,

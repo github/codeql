@@ -75,7 +75,7 @@ namespace Semmle.Autobuild.Shared
                 return defaultValue;
 
             return value.
-                Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries).
+                Split(FileUtils.NewLineCharacters, StringSplitOptions.RemoveEmptyEntries).
                 Select(s => AsStringWithExpandedEnvVars(s, actions)).ToArray();
         }
 

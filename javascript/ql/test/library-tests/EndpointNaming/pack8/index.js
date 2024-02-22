@@ -1,4 +1,4 @@
-class Main {} // $ class=(pack8) instance=(pack8).prototype
+class Main {} // $ name=(pack8)
 
 Main.Foo = require('./foo');
 

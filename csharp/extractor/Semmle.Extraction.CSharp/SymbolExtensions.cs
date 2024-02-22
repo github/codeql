@@ -591,7 +591,7 @@ namespace Semmle.Extraction.CSharp
         public static INamedTypeSymbol? GetNonObjectBaseType(this ITypeSymbol symbol, Context cx) =>
             symbol is ITypeParameterSymbol || SymbolEqualityComparer.Default.Equals(symbol.BaseType, cx.Compilation.ObjectType) ? null : symbol.BaseType;
 
-        [return: NotNullIfNotNull("symbol")]
+        [return: NotNullIfNotNull(nameof(symbol))]
         public static IEntity? CreateEntity(this Context cx, ISymbol symbol)
         {
             if (symbol is null)

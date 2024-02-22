@@ -1,1 +1,1 @@
-export default class FooClass {} // $ class=(pack10).Foo instance=(pack10).Foo.prototype
+export default class FooClass {} // $ name=(pack10).Foo

@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Semmle.Util;
 using Semmle.Util.Logging;
@@ -14,7 +15,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// <summary>
     /// Main implementation of the build analysis.
     /// </summary>
-    public sealed class DependencyManager : IDisposable
+    public sealed partial class DependencyManager : IDisposable
     {
         private readonly AssemblyCache assemblyCache;
         private readonly ILogger logger;
@@ -61,7 +62,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             try
             {
                 this.dotnet = DotNet.Make(options, logger, tempWorkingDirectory);
-                runtimeLazy = new Lazy<Runtime>(() => new Runtime(dotnet));
+                runtimeLazy = new Lazy<Runtime>(() => new Runtime(dotnet, logger));
             }
             catch
             {
@@ -111,7 +112,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Unresolved reference {r.Key} in project {r.Value}");
             }
 
-            var webViewExtractionOption = Environment.GetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_STANDALONE_EXTRACT_WEB_VIEWS");
+            var webViewExtractionOption = Environment.GetEnvironmentVariable(EnvironmentVariableNames.WebViewGeneration);
             if (webViewExtractionOption == null ||
                 bool.TryParse(webViewExtractionOption, out var shouldExtractWebViews) &&
                 shouldExtractWebViews)
@@ -158,6 +159,53 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var frameworkLocations = new HashSet<string>();
 
+            var frameworkReferences = Environment.GetEnvironmentVariable(EnvironmentVariableNames.DotnetFrameworkReferences);
+            var frameworkReferencesUseSubfolders = Environment.GetEnvironmentVariable(EnvironmentVariableNames.DotnetFrameworkReferencesUseSubfolders);
+            _ = bool.TryParse(frameworkReferencesUseSubfolders, out var useSubfolders);
+            if (!string.IsNullOrWhiteSpace(frameworkReferences))
+            {
+                RemoveFrameworkNugetPackages(dllPaths);
+                RemoveNugetPackageReference(FrameworkPackageNames.AspNetCoreFramework, dllPaths);
+                RemoveNugetPackageReference(FrameworkPackageNames.WindowsDesktopFramework, dllPaths);
+
+                var frameworkPaths = frameworkReferences.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries);
+
+                foreach (var path in frameworkPaths)
+                {
+                    if (!Directory.Exists(path))
+                    {
+                        logger.LogError($"Specified framework reference path '{path}' does not exist.");
+                        continue;
+                    }
+
+                    if (useSubfolders)
+                    {
+                        dllPaths.Add(path);
+                        frameworkLocations.Add(path);
+                        continue;
+                    }
+
+                    try
+                    {
+                        var dlls = Directory.GetFiles(path, "*.dll", new EnumerationOptions { RecurseSubdirectories = false, MatchCasing = MatchCasing.CaseInsensitive });
+                        if (dlls.Length == 0)
+                        {
+                            logger.LogError($"No DLLs found in specified framework reference path '{path}'.");
+                            continue;
+                        }
+
+                        dllPaths.UnionWith(dlls);
+                        frameworkLocations.UnionWith(dlls);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.LogError($"Error while searching for DLLs in '{path}': {e.Message}");
+                    }
+                }
+
+                return frameworkLocations;
+            }
+
             AddNetFrameworkDlls(dllPaths, frameworkLocations);
             AddAspNetCoreFrameworkDlls(dllPaths, frameworkLocations);
             AddMicrosoftWindowsDesktopDlls(dllPaths, frameworkLocations);
@@ -203,9 +251,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 nugetPackageDllPaths.ExceptWith(excludedPaths);
                 dllPaths.UnionWith(nugetPackageDllPaths);
             }
-            catch (Exception)
+            catch (Exception exc)
             {
-                logger.LogError("Failed to restore Nuget packages with nuget.exe");
+                logger.LogError($"Failed to restore Nuget packages with nuget.exe: {exc.Message}");
             }
 
             var restoredProjects = RestoreSolutions(allSolutions, out var assets1);
@@ -296,6 +344,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .ToArray();
         }
 
+        private void RemoveFrameworkNugetPackages(ISet<string> dllPaths, int fromIndex = 0)
+        {
+            var packagesInPrioOrder = FrameworkPackageNames.NetFrameworks;
+            for (var i = fromIndex; i < packagesInPrioOrder.Length; i++)
+            {
+                RemoveNugetPackageReference(packagesInPrioOrder[i], dllPaths);
+            }
+        }
+
         private void AddNetFrameworkDlls(ISet<string> dllPaths, ISet<string> frameworkLocations)
         {
             // Multiple dotnet framework packages could be present.
@@ -303,7 +360,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var packagesInPrioOrder = FrameworkPackageNames.NetFrameworks;
 
             var frameworkPaths = packagesInPrioOrder
-                .Select((s, index) => (Index: index, Path: GetPackageDirectory(s)))
+                .Select((s, index) => (Index: index, Path: GetPackageDirectory(s, packageDirectory)))
                 .Where(pair => pair.Path is not null)
                 .ToArray();
 
@@ -317,12 +374,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
 
                 SelectNewestFrameworkPath(frameworkPath.Path, ".NET Framework", dllPaths, frameworkLocations);
-
-                for (var i = frameworkPath.Index + 1; i < packagesInPrioOrder.Length; i++)
-                {
-                    RemoveNugetPackageReference(packagesInPrioOrder[i], dllPaths);
-                }
-
+                RemoveFrameworkNugetPackages(dllPaths, frameworkPath.Index + 1);
                 return;
             }
 
@@ -335,6 +387,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             else if (fileContent.IsLegacyProjectStructureUsed)
             {
                 runtimeLocation = Runtime.DesktopRuntime;
+
+                if (runtimeLocation is null)
+                {
+                    logger.LogInfo("No .NET Desktop Runtime location found. Attempting to restore the .NET Framework reference assemblies manually.");
+
+                    if (TryRestorePackageManually(FrameworkPackageNames.LatestNetFrameworkReferenceAssemblies, null))
+                    {
+                        runtimeLocation = GetPackageDirectory(FrameworkPackageNames.LatestNetFrameworkReferenceAssemblies, missingPackageDirectory);
+                    }
+                }
             }
 
             runtimeLocation ??= Runtime.ExecutingRuntime;
@@ -374,7 +436,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             // First try to find ASP.NET Core assemblies in the NuGet packages
-            if (GetPackageDirectory(FrameworkPackageNames.AspNetCoreFramework) is string aspNetCorePackage)
+            if (GetPackageDirectory(FrameworkPackageNames.AspNetCoreFramework, packageDirectory) is string aspNetCorePackage)
             {
                 SelectNewestFrameworkPath(aspNetCorePackage, "ASP.NET Core", dllPaths, frameworkLocations);
                 return;
@@ -390,15 +452,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void AddMicrosoftWindowsDesktopDlls(ISet<string> dllPaths, ISet<string> frameworkLocations)
         {
-            if (GetPackageDirectory(FrameworkPackageNames.WindowsDesktopFramework) is string windowsDesktopApp)
+            if (GetPackageDirectory(FrameworkPackageNames.WindowsDesktopFramework, packageDirectory) is string windowsDesktopApp)
             {
                 SelectNewestFrameworkPath(windowsDesktopApp, "Windows Desktop App", dllPaths, frameworkLocations);
             }
         }
 
-        private string? GetPackageDirectory(string packagePrefix)
+        private string? GetPackageDirectory(string packagePrefix, TemporaryDirectory root)
         {
-            return new DirectoryInfo(packageDirectory.DirInfo.FullName)
+            return new DirectoryInfo(root.DirInfo.FullName)
                 .EnumerateDirectories(packagePrefix + "*", new EnumerationOptions { MatchCasing = MatchCasing.CaseInsensitive, RecurseSubdirectories = false })
                 .FirstOrDefault()?
                 .FullName;
@@ -434,19 +496,19 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             // Hardcoded values from https://learn.microsoft.com/en-us/dotnet/core/project-sdk/overview#implicit-using-directives
-            usings.UnionWith(new[] { "System", "System.Collections.Generic", "System.IO", "System.Linq", "System.Net.Http", "System.Threading",
-                "System.Threading.Tasks" });
+            usings.UnionWith([ "System", "System.Collections.Generic", "System.IO", "System.Linq", "System.Net.Http", "System.Threading",
+                "System.Threading.Tasks" ]);
 
             if (fileContent.UseAspNetCoreDlls)
             {
-                usings.UnionWith(new[] { "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
+                usings.UnionWith([ "System.Net.Http.Json", "Microsoft.AspNetCore.Builder", "Microsoft.AspNetCore.Hosting",
                     "Microsoft.AspNetCore.Http", "Microsoft.AspNetCore.Routing", "Microsoft.Extensions.Configuration",
-                    "Microsoft.Extensions.DependencyInjection", "Microsoft.Extensions.Hosting", "Microsoft.Extensions.Logging" });
+                    "Microsoft.Extensions.DependencyInjection", "Microsoft.Extensions.Hosting", "Microsoft.Extensions.Logging" ]);
             }
 
             if (fileContent.UseWindowsForms)
             {
-                usings.UnionWith(new[] { "System.Drawing", "System.Windows.Forms" });
+                usings.UnionWith(["System.Drawing", "System.Windows.Forms"]);
             }
 
             usings.UnionWith(fileContent.CustomImplicitUsings);
@@ -783,13 +845,53 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             CompilationInfos.Add(("Successfully restored project files", successCount.ToString()));
         }
 
+        [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex LegacyNugetPackage();
+
+
+        private static IEnumerable<string> GetRestoredPackageDirectoryNames(DirectoryInfo root)
+        {
+            return Directory.GetDirectories(root.FullName)
+                .Select(d => Path.GetFileName(d).ToLowerInvariant());
+        }
+
+        private IEnumerable<string> GetRestoredLegacyPackageNames()
+        {
+            var oldPackageDirectories = GetRestoredPackageDirectoryNames(legacyPackageDirectory.DirInfo);
+            foreach (var oldPackageDirectory in oldPackageDirectories)
+            {
+                // nuget install restores packages to 'packagename.version' folders (dotnet restore to 'packagename/version' folders)
+                // typical folder names look like:
+                //   newtonsoft.json.13.0.3
+                // there are more complex ones too, such as:
+                //   runtime.tizen.4.0.0-armel.Microsoft.NETCore.DotNetHostResolver.2.0.0-preview2-25407-01
+
+                var match = LegacyNugetPackage().Match(oldPackageDirectory);
+                if (!match.Success)
+                {
+                    logger.LogWarning($"Package directory '{oldPackageDirectory}' doesn't match the expected pattern.");
+                    continue;
+                }
+
+                yield return match.Groups[1].Value.ToLowerInvariant();
+            }
+        }
+
         private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<string> dllPaths)
         {
-            var alreadyDownloadedPackages = Directory.GetDirectories(packageDirectory.DirInfo.FullName)
-                .Select(d => Path.GetFileName(d).ToLowerInvariant());
-            var notYetDownloadedPackages = fileContent.AllPackages
-                .Except(alreadyDownloadedPackages)
-                .ToList();
+            var alreadyDownloadedPackages = GetRestoredPackageDirectoryNames(packageDirectory.DirInfo);
+            var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
+
+            var notYetDownloadedPackages = new HashSet<PackageReference>(fileContent.AllPackages);
+            foreach (var alreadyDownloadedPackage in alreadyDownloadedPackages)
+            {
+                notYetDownloadedPackages.Remove(new(alreadyDownloadedPackage, PackageReferenceSource.SdkCsProj));
+            }
+            foreach (var alreadyDownloadedLegacyPackage in alreadyDownloadedLegacyPackages)
+            {
+                notYetDownloadedPackages.Remove(new(alreadyDownloadedLegacyPackage, PackageReferenceSource.PackagesConfig));
+            }
+
             if (notYetDownloadedPackages.Count == 0)
             {
                 return;
@@ -828,36 +930,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
             {
-                logger.LogInfo($"Restoring package {package}...");
-                using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package, "missingpackages_workingdir"));
-                var success = dotnet.New(tempDir.DirInfo.FullName);
+                var success = TryRestorePackageManually(package.Name, nugetConfig, package.PackageReferenceSource);
                 if (!success)
                 {
                     return;
-                }
-
-                success = dotnet.AddPackage(tempDir.DirInfo.FullName, package);
-                if (!success)
-                {
-                    return;
-                }
-
-                var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig));
-                if (!res.Success)
-                {
-                    if (res.HasNugetPackageSourceError)
-                    {
-                        // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
-                        res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: null, ForceReevaluation: true));
-                    }
-
-                    // TODO: the restore might fail, we could retry with a prerelease (*-* instead of *) version of the package.
-
-                    if (!res.Success)
-                    {
-                        logger.LogInfo($"Failed to restore nuget package {package}");
-                        return;
-                    }
                 }
 
                 lock (sync)
@@ -869,6 +945,85 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             CompilationInfos.Add(("Successfully ran fallback nuget restore", successCount.ToString()));
 
             dllPaths.Add(missingPackageDirectory.DirInfo.FullName);
+        }
+
+        [GeneratedRegex(@"<TargetFramework>.*</TargetFramework>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex TargetFramework();
+
+        private bool TryRestorePackageManually(string package, string? nugetConfig, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj)
+        {
+            logger.LogInfo($"Restoring package {package}...");
+            using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package, "missingpackages_workingdir"));
+            var success = dotnet.New(tempDir.DirInfo.FullName);
+            if (!success)
+            {
+                return false;
+            }
+
+            if (packageReferenceSource == PackageReferenceSource.PackagesConfig)
+            {
+                TryChangeTargetFrameworkMoniker(tempDir.DirInfo);
+            }
+
+            success = dotnet.AddPackage(tempDir.DirInfo.FullName, package);
+            if (!success)
+            {
+                return false;
+            }
+
+            var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig));
+            if (!res.Success)
+            {
+                if (res.HasNugetPackageSourceError && nugetConfig is not null)
+                {
+                    // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
+                    res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: null, ForceReevaluation: true));
+                }
+
+                // TODO: the restore might fail, we could retry with
+                // - a prerelease (*-* instead of *) version of the package,
+                // - a different target framework moniker.
+
+                if (!res.Success)
+                {
+                    logger.LogInfo($"Failed to restore nuget package {package}");
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private void TryChangeTargetFrameworkMoniker(DirectoryInfo tempDir)
+        {
+            try
+            {
+                logger.LogInfo($"Changing the target framework moniker in {tempDir.FullName}...");
+
+                var csprojs = tempDir.GetFiles("*.csproj", new EnumerationOptions { RecurseSubdirectories = false, MatchCasing = MatchCasing.CaseInsensitive });
+                if (csprojs.Length != 1)
+                {
+                    logger.LogError($"Could not find the .csproj file in {tempDir.FullName}, count = {csprojs.Length}");
+                    return;
+                }
+
+                var csproj = csprojs[0];
+                var content = File.ReadAllText(csproj.FullName);
+                var matches = TargetFramework().Matches(content);
+                if (matches.Count == 0)
+                {
+                    logger.LogError($"Could not find target framework in {csproj.FullName}");
+                }
+                else
+                {
+                    content = TargetFramework().Replace(content, $"<TargetFramework>{FrameworkPackageNames.LatestNetFrameworkMoniker}</TargetFramework>", 1);
+                    File.WriteAllText(csproj.FullName, content);
+                }
+            }
+            catch (Exception exc)
+            {
+                logger.LogError($"Failed to update target framework in {tempDir.FullName}: {exc}");
+            }
         }
 
         public void Dispose(TemporaryDirectory? dir, string name)

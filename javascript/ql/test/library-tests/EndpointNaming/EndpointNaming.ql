@@ -5,28 +5,21 @@ import semmle.javascript.endpoints.EndpointNaming as EndpointNaming
 import testUtilities.InlineExpectationsTest
 import EndpointNaming::Debug
 
+private predicate isIgnored(DataFlow::FunctionNode function) {
+  function.getFunction() = any(ConstructorDeclaration decl | decl.isSynthetic()).getBody()
+}
+
 module TestConfig implements TestSig {
-  string getARelevantTag() { result = ["instance", "class", "method", "alias"] }
+  string getARelevantTag() { result = ["name", "alias"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(string package, string name |
-      element = "" and
+    element = "" and
+    tag = "name" and
+    exists(DataFlow::SourceNode function, string package, string name |
+      EndpointNaming::functionHasPrimaryName(function, package, name) and
+      not isIgnored(function) and
+      location = function.getAstNode().getLocation() and
       value = EndpointNaming::renderName(package, name)
-    |
-      exists(DataFlow::ClassNode cls | location = cls.getAstNode().getLocation() |
-        tag = "class" and
-        EndpointNaming::classObjectHasPrimaryName(cls, package, name)
-        or
-        tag = "instance" and
-        EndpointNaming::classInstanceHasPrimaryName(cls, package, name)
-      )
-      or
-      exists(DataFlow::FunctionNode function |
-        not function.getFunction() = any(ConstructorDeclaration decl | decl.isSynthetic()).getBody() and
-        location = function.getFunction().getLocation() and
-        tag = "method" and
-        EndpointNaming::functionHasPrimaryName(function, package, name)
-      )
     )
     or
     element = "" and
@@ -35,7 +28,7 @@ module TestConfig implements TestSig {
       API::Node aliasDef, string primaryPackage, string primaryName, string aliasPackage,
       string aliasName
     |
-      EndpointNaming::aliasDefinition(primaryPackage, primaryName, aliasPackage, aliasName, aliasDef) and
+      EndpointNaming::aliasDefinition(aliasPackage, aliasName, primaryPackage, primaryName, aliasDef) and
       value =
         EndpointNaming::renderName(aliasPackage, aliasName) + "==" +
           EndpointNaming::renderName(primaryPackage, primaryName) and

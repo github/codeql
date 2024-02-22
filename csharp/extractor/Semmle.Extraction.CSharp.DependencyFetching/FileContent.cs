@@ -19,11 +19,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly ILogger logger;
         private readonly IUnsafeFileReader unsafeFileReader;
         private readonly IEnumerable<string> files;
-        private readonly HashSet<string> allPackages = new HashSet<string>();
+        private readonly HashSet<PackageReference> allPackages = new HashSet<PackageReference>();
         private readonly HashSet<string> implicitUsingNamespaces = new HashSet<string>();
         private readonly Initializer initialize;
 
-        public HashSet<string> AllPackages
+        public HashSet<PackageReference> AllPackages
         {
             get
             {
@@ -157,23 +157,37 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return false;
         }
 
+        private void AddPackageReference(ReadOnlySpan<char> line, string groupName, Func<Regex> regex, PackageReferenceSource source)
+        {
+            foreach (var valueMatch in regex().EnumerateMatches(line))
+            {
+                // We can't get the group from the ValueMatch, so doing it manually:
+                var packageName = GetGroup(line, valueMatch, groupName).ToLowerInvariant();
+                if (!string.IsNullOrEmpty(packageName))
+                {
+                    allPackages.Add(new PackageReference(packageName, source));
+                }
+            }
+        }
+
         private void DoInitialize()
         {
             foreach (var file in files)
             {
                 try
                 {
+                    var isPackagesConfig = file.EndsWith("packages.config", StringComparison.OrdinalIgnoreCase);
+
                     foreach (ReadOnlySpan<char> line in unsafeFileReader.ReadLines(file))
                     {
                         // Find all the packages.
-                        foreach (var valueMatch in PackageReference().EnumerateMatches(line))
+                        if (isPackagesConfig)
                         {
-                            // We can't get the group from the ValueMatch, so doing it manually:
-                            var packageName = GetGroup(line, valueMatch, "Include").ToLowerInvariant();
-                            if (!string.IsNullOrEmpty(packageName))
-                            {
-                                allPackages.Add(packageName);
-                            }
+                            AddPackageReference(line, "id", LegacyPackageReference, PackageReferenceSource.PackagesConfig);
+                        }
+                        else
+                        {
+                            AddPackageReference(line, "Include", PackageReference, PackageReferenceSource.SdkCsProj);
                         }
 
                         // Determine if ASP.NET is used.
@@ -223,6 +237,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         [GeneratedRegex("(?<!<!--.*)<PackageReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex PackageReference();
 
+        [GeneratedRegex("(?<!<!--.*)<package.*\\sid=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex LegacyPackageReference();
+
         [GeneratedRegex("(?<!<!--.*)<FrameworkReference.*\\sInclude=\"(.*?)\".*/?>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex FrameworkReference();
 
@@ -253,4 +270,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
     }
+
+    public enum PackageReferenceSource
+    {
+        SdkCsProj,
+        PackagesConfig
+    }
+
+    public record PackageReference(string Name, PackageReferenceSource PackageReferenceSource);
 }
