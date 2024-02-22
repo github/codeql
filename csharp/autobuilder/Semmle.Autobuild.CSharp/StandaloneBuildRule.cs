@@ -9,12 +9,10 @@ namespace Semmle.Autobuild.CSharp
     internal class StandaloneBuildRule : IBuildRule<CSharpAutobuildOptions>
     {
         private readonly string? dotNetPath;
-        private readonly IDictionary<string, string>? env;
 
-        internal StandaloneBuildRule(string? dotNetPath, IDictionary<string, string>? env)
+        internal StandaloneBuildRule(string? dotNetPath)
         {
             this.dotNetPath = dotNetPath;
-            this.env = env;
         }
 
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
@@ -27,7 +25,7 @@ namespace Semmle.Autobuild.CSharp
             }
 
             var standalone = builder.Actions.PathCombine(builder.CodeQLExtractorLangRoot, "tools", builder.CodeQlPlatform, "Semmle.Extraction.CSharp.Standalone");
-            var cmd = new CommandBuilder(builder.Actions, environment: this.env);
+            var cmd = new CommandBuilder(builder.Actions);
             cmd.RunCommand(standalone);
 
             if (!string.IsNullOrEmpty(this.dotNetPath))
