@@ -1,7 +1,7 @@
 common --enable_platform_specific_config
 common --enable_bzlmod
-# put common --lockfile_mode=update in your local.bazelrc if you want to auto-update the lock file
-common --lockfile_mode=error
+# because we use --override_module with `%workspace%`, the lock file is not stable
+common --lockfile_mode=off
 
 # when building from this repository in isolation, the internal repository will not be found at ..
 # where `MODULE.bazel` looks for it. The following will get us past the module loading phase, so
