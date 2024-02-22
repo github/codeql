@@ -16,7 +16,10 @@ import FunctionInputsAndOutputs
 import semmle.code.cpp.models.Models
 
 /**
- * A function that may (but not always) updates (part of) a `FunctionOutput`.
+ * A function that may update part of a `FunctionOutput`.
+ *
+ * For example, the destination argument of `strcat` only updates part of the
+ * argument.
  */
 abstract class PartialFlowFunction extends Function {
   /**
