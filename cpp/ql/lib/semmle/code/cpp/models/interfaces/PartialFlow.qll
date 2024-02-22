@@ -20,9 +20,9 @@ import semmle.code.cpp.models.Models
  */
 abstract class PartialFlowFunction extends Function {
   /**
-   * Holds if the write to `output` either is:
-   * - Only partially updating the `output`
-   * - Is not unconditional
+   * Holds if the write to output does not overwrite the entire value that was
+   * there before, or does not do so reliably. For example the destination
+   * argument of `strcat` is modified but not overwritten.
    */
   predicate isPartialWrite(FunctionOutput output) { none() }
 }
