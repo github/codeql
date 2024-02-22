@@ -611,8 +611,6 @@ namespace Semmle.Autobuild.CSharp.Tests
         {
             actions.RunProcess["dotnet --info"] = 1;
             actions.RunProcessOut["dotnet --info"] = "";
-            actions.RunProcess["dotnet --list-sdks"] = 1;
-            actions.RunProcessOut["dotnet --list-sdks"] = "";
             actions.RunProcess[@"chmod u+x scratch/.dotnet/dotnet-install.sh"] = 0;
             actions.RunProcess[@"scratch/.dotnet/dotnet-install.sh --channel release --version 8.0.101 --install-dir scratch/.dotnet"] = 0;
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone --dotnet scratch/.dotnet"] = 0;
@@ -626,7 +624,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.CreateDirectories.Add(@"scratch/.dotnet");
 
             var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 0, 5);
+            TestAutobuilderScript(autobuilder, 0, 4);
         }
 
         private void SkipVsWhere()
