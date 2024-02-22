@@ -1,4 +1,4 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
 using Semmle.Autobuild.Shared;
 
 namespace Semmle.Autobuild.CSharp
@@ -9,44 +9,34 @@ namespace Semmle.Autobuild.CSharp
     internal class StandaloneBuildRule : IBuildRule<CSharpAutobuildOptions>
     {
         private readonly string? dotNetPath;
+        private readonly IDictionary<string, string>? env;
 
-        internal StandaloneBuildRule(string? dotNetPath)
+        internal StandaloneBuildRule(string? dotNetPath, IDictionary<string, string>? env)
         {
             this.dotNetPath = dotNetPath;
+            this.env = env;
         }
 
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
-            BuildScript GetCommand()
-            {
-                string standalone;
-                if (builder.CodeQLExtractorLangRoot is not null && builder.CodeQlPlatform is not null)
-                {
-                    standalone = builder.Actions.PathCombine(builder.CodeQLExtractorLangRoot, "tools", builder.CodeQlPlatform, "Semmle.Extraction.CSharp.Standalone");
-                }
-                else
-                {
-                    return BuildScript.Failure;
-                }
-
-                var cmd = new CommandBuilder(builder.Actions);
-                cmd.RunCommand(standalone);
-
-                if (!string.IsNullOrEmpty(this.dotNetPath))
-                {
-                    cmd.Argument("--dotnet");
-                    cmd.QuoteArgument(this.dotNetPath);
-                }
-
-                return cmd.Script;
-            }
-
-            if (!builder.Options.Buildless)
+            if (!builder.Options.Buildless
+                || builder.CodeQLExtractorLangRoot is null
+                || builder.CodeQlPlatform is null)
             {
                 return BuildScript.Failure;
             }
 
-            return GetCommand();
+            var standalone = builder.Actions.PathCombine(builder.CodeQLExtractorLangRoot, "tools", builder.CodeQlPlatform, "Semmle.Extraction.CSharp.Standalone");
+            var cmd = new CommandBuilder(builder.Actions, environment: this.env);
+            cmd.RunCommand(standalone);
+
+            if (!string.IsNullOrEmpty(this.dotNetPath))
+            {
+                cmd.Argument("--dotnet");
+                cmd.QuoteArgument(this.dotNetPath);
+            }
+
+            return cmd.Script;
         }
     }
 }

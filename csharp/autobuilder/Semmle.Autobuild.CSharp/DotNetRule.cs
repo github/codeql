@@ -46,7 +46,7 @@ namespace Semmle.Autobuild.CSharp
                 builder.Log(Severity.Info, "Attempting to build using .NET Core");
             }
 
-            return WithDotNet(builder, (dotNetPath, environment) =>
+            return WithDotNet(builder, ensureDotNetAvailable: false, (dotNetPath, environment) =>
                 {
                     var ret = GetInfoCommand(builder.Actions, dotNetPath, environment);
                     foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
@@ -79,10 +79,10 @@ namespace Semmle.Autobuild.CSharp
         /// variables needed by the installed .NET Core (<code>null</code> when no variables
         /// are needed).
         /// </summary>
-        public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, Func<string?, IDictionary<string, string>?, BuildScript> f)
+        public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, bool ensureDotNetAvailable, Func<string?, IDictionary<string, string>?, BuildScript> f)
         {
             var installDir = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var _), ".dotnet");
-            var installScript = DownloadDotNet(builder, installDir);
+            var installScript = DownloadDotNet(builder, installDir, ensureDotNetAvailable);
             return BuildScript.Bind(installScript, installed =>
             {
                 Dictionary<string, string>? env;
@@ -100,8 +100,12 @@ namespace Semmle.Autobuild.CSharp
                 }
                 else
                 {
+                    // The .NET SDK was not installed, either because the installation failed or because it was already installed.
                     installDir = null;
-                    env = null;
+                    env = new Dictionary<string, string> {
+                            { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
+                            { "MSBUILDDISABLENODEREUSE", "1" }
+                        };
                 }
 
                 return f(installDir, env);
@@ -117,14 +121,14 @@ namespace Semmle.Autobuild.CSharp
         /// are needed).
         /// </summary>
         public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, Func<IDictionary<string, string>?, BuildScript> f)
-            => WithDotNet(builder, (_1, env) => f(env));
+            => WithDotNet(builder, ensureDotNetAvailable: false, (_, env) => f(env));
 
         /// <summary>
         /// Returns a script for downloading relevant versions of the
         /// .NET Core SDK. The SDK(s) will be installed at <code>installDir</code>
         /// (provided that the script succeeds).
         /// </summary>
-        private static BuildScript DownloadDotNet(IAutobuilder<AutobuildOptionsShared> builder, string installDir)
+        private static BuildScript DownloadDotNet(IAutobuilder<AutobuildOptionsShared> builder, string installDir, bool ensureDotNetAvailable)
         {
             if (!string.IsNullOrEmpty(builder.Options.DotNetVersion))
                 // Specific version supplied in configuration: always use that
@@ -152,7 +156,28 @@ namespace Semmle.Autobuild.CSharp
                 validGlobalJson = true;
             }
 
-            return validGlobalJson ? installScript : BuildScript.Failure;
+            if (validGlobalJson)
+            {
+                return installScript;
+            }
+
+            if (ensureDotNetAvailable)
+            {
+                return BuildScript.Bind(GetInfoScript(builder.Actions), (infoLines, infoRet) =>
+                {
+                    if (infoRet == 0)
+                    {
+                        return BuildScript.Failure;
+                    }
+
+                    const string latestDotNetSdkVersion = "8.0.101";
+                    builder.Log(Severity.Info, $"No .NET Core SDK found. Attempting to install version {latestDotNetSdkVersion}.");
+                    return DownloadDotNetVersion(builder, installDir, latestDotNetSdkVersion);
+                });
+
+            }
+
+            return BuildScript.Failure;
         }
 
         /// <summary>
@@ -236,6 +261,14 @@ namespace Semmle.Autobuild.CSharp
                 RunCommand("dotnet").
                 Argument("--list-sdks");
             return listSdks.Script;
+        }
+
+        private static BuildScript GetInfoScript(IBuildActions actions)
+        {
+            var info = new CommandBuilder(actions, silent: true).
+                RunCommand("dotnet").
+                Argument("--info");
+            return info.Script;
         }
 
         private static string DotNetCommand(IBuildActions actions, string? dotNetPath) =>
