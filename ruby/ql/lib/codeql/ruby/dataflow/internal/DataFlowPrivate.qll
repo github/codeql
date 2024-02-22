@@ -2177,7 +2177,7 @@ predicate allowParameterReturnInSelf(ParameterNodeImpl p) {
     FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asLibraryCallable(), pos)
   )
   or
-  VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(SelfParameterNode)
+  VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(LambdaSelfReferenceNode)
         .getCallable())
 }
 
