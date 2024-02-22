@@ -40,10 +40,6 @@ edges
 | test.py:195:28:195:28 | ControlFlowNode for x | test.py:181:28:181:28 | ControlFlowNode for x | provenance |  |
 | test.py:197:18:197:18 | ControlFlowNode for x | test.py:198:28:198:28 | ControlFlowNode for x | provenance |  |
 | test.py:198:28:198:28 | ControlFlowNode for x | test.py:181:28:181:28 | ControlFlowNode for x | provenance |  |
-| test.py:222:26:222:26 | ControlFlowNode for x | test.py:223:9:223:9 | ControlFlowNode for x | provenance |  |
-| test.py:223:5:223:5 | ControlFlowNode for y | test.py:224:5:224:5 | ControlFlowNode for y | provenance |  |
-| test.py:223:9:223:9 | ControlFlowNode for x | test.py:223:9:223:16 | ControlFlowNode for Attribute() | provenance |  |
-| test.py:223:9:223:16 | ControlFlowNode for Attribute() | test.py:223:5:223:5 | ControlFlowNode for y | provenance |  |
 nodes
 | test.py:2:12:2:12 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
 | test.py:3:5:3:5 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
@@ -111,11 +107,6 @@ nodes
 | test.py:195:28:195:28 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:197:18:197:18 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:198:28:198:28 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:222:26:222:26 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:223:5:223:5 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
-| test.py:223:9:223:9 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
-| test.py:223:9:223:16 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
-| test.py:224:5:224:5 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
 subpaths
 #select
 | test.py:3:5:3:5 | ControlFlowNode for l | test.py:2:12:2:12 | ControlFlowNode for l | test.py:3:5:3:5 | ControlFlowNode for l | This expression mutates a $@. | test.py:2:12:2:12 | ControlFlowNode for l | default value |
@@ -147,4 +138,3 @@ subpaths
 | test.py:185:9:185:9 | ControlFlowNode for x | test.py:197:18:197:18 | ControlFlowNode for x | test.py:185:9:185:9 | ControlFlowNode for x | This expression mutates a $@. | test.py:197:18:197:18 | ControlFlowNode for x | default value |
 | test.py:187:9:187:9 | ControlFlowNode for x | test.py:194:18:194:18 | ControlFlowNode for x | test.py:187:9:187:9 | ControlFlowNode for x | This expression mutates a $@. | test.py:194:18:194:18 | ControlFlowNode for x | default value |
 | test.py:187:9:187:9 | ControlFlowNode for x | test.py:197:18:197:18 | ControlFlowNode for x | test.py:187:9:187:9 | ControlFlowNode for x | This expression mutates a $@. | test.py:197:18:197:18 | ControlFlowNode for x | default value |
-| test.py:224:5:224:5 | ControlFlowNode for y | test.py:222:26:222:26 | ControlFlowNode for x | test.py:224:5:224:5 | ControlFlowNode for y | This expression mutates a $@. | test.py:222:26:222:26 | ControlFlowNode for x | default value |

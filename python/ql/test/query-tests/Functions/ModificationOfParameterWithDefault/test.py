@@ -221,4 +221,4 @@ def flow_through_deepcopy_fp(x=[]):
 
 def flow_through_copy_fp(x=[]):
     y = x.copy()
-    y.append(1) #$ SPURIOUS: modification=y
+    y.append(1)
