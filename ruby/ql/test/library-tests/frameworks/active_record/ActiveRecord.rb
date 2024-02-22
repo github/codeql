@@ -14,12 +14,12 @@ class User < ApplicationRecord
   end
 
   def exec(q)
+    connection.create(q)
     connection.delete(q)
     connection.exec_query(q)
     connection.exec_insert(q)
     connection.exec_delete(q)
     connection.exec_update(q)
-    connection.exec_insert(q)
     connection.execute(q)
     connection.insert(q)
     connection.select_all(q)

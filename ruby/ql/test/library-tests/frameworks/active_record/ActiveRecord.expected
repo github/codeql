@@ -122,8 +122,8 @@ activeRecordInstances
 activeRecordSqlExecutionRanges
 | ActiveRecord.rb:9:33:9:67 | "name='#{...}' and pass='#{...}'" |
 | ActiveRecord.rb:17:23:17:23 | q |
-| ActiveRecord.rb:18:27:18:27 | q |
-| ActiveRecord.rb:19:28:19:28 | q |
+| ActiveRecord.rb:18:23:18:23 | q |
+| ActiveRecord.rb:19:27:19:27 | q |
 | ActiveRecord.rb:20:28:20:28 | q |
 | ActiveRecord.rb:21:28:21:28 | q |
 | ActiveRecord.rb:22:28:22:28 | q |
