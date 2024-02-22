@@ -1,6 +1,6 @@
 /**
  * @name Insecurely generated keys for local authentication
- * @description Keys used for local biometric authentication should be generated with secure parameters.
+ * @description Generation of keys with insecure parameters for local biometric authentication can allow attackers with physical access to bypass authentication checks.
  * @kind problem
  * @problem.severity warning
  * @security-severity 4.4
