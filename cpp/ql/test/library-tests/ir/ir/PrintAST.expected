@@ -9450,7 +9450,11 @@ ir.cpp:
 # 1068|   <params>: 
 # 1068|     getParameter(0): [Parameter] (unnamed parameter 0)
 # 1068|         Type = [IntType] int
+# 1069| [Destructor] void vector<ClassWithDestructor>::~vector()
+# 1069|   <params>: 
 # 1069| [Destructor] void vector<T>::~vector()
+# 1069|   <params>: 
+# 1069| [Destructor] void vector<int>::~vector()
 # 1069|   <params>: 
 # 1070| [ConstMemberFunction] vector<ClassWithDestructor>::iterator vector<ClassWithDestructor>::begin() const
 # 1070|   <params>: 
@@ -16622,6 +16626,18 @@ ir.cpp:
 # 2155|               Type = [PlainCharType] char
 # 2155|               Value = [CharLiteral] 97
 # 2155|               ValueCategory = prvalue
+# 2154|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2154|             Type = [VoidType] void
+# 2154|             ValueCategory = prvalue
+# 2154|           getQualifier(): [VariableAccess] y
+# 2154|               Type = [Class] ClassWithDestructor
+# 2154|               ValueCategory = lvalue
+# 2154|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2154|           Type = [VoidType] void
+# 2154|           ValueCategory = prvalue
+# 2154|         getQualifier(): [VariableAccess] ys
+# 2154|             Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2154|             ValueCategory = lvalue
 # 2154|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2154|           Type = [NestedStruct] iterator
 # 2154|           ValueCategory = lvalue
@@ -16754,12 +16770,36 @@ ir.cpp:
 # 2159|                 Value = [CStyleCast] 98
 # 2159|                 ValueCategory = prvalue
 # 2160|           getThen(): [ReturnStmt] return ...
-# 2172|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2157|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2157|                 Type = [VoidType] void
+# 2157|                 ValueCategory = prvalue
+# 2157|               getQualifier(): [VariableAccess] y
+# 2157|                   Type = [Class] ClassWithDestructor
+# 2157|                   ValueCategory = lvalue
+# 2157|             getImplicitDestructorCall(1): [DestructorCall] call to ~vector
+# 2157|                 Type = [VoidType] void
+# 2157|                 ValueCategory = prvalue
+# 2157|               getQualifier(): [VariableAccess] ys
+# 2157|                   Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2157|                   ValueCategory = lvalue
+# 2172|             getImplicitDestructorCall(2): [DestructorCall] call to ~ClassWithDestructor
 # 2172|                 Type = [VoidType] void
 # 2172|                 ValueCategory = prvalue
 # 2172|               getQualifier(): [VariableAccess] x
 # 2172|                   Type = [Class] ClassWithDestructor
 # 2172|                   ValueCategory = lvalue
+# 2157|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2157|             Type = [VoidType] void
+# 2157|             ValueCategory = prvalue
+# 2157|           getQualifier(): [VariableAccess] y
+# 2157|               Type = [Class] ClassWithDestructor
+# 2157|               ValueCategory = lvalue
+# 2157|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2157|           Type = [VoidType] void
+# 2157|           ValueCategory = prvalue
+# 2157|         getQualifier(): [VariableAccess] ys
+# 2157|             Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2157|             ValueCategory = lvalue
 # 2157|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2157|           Type = [NestedStruct] iterator
 # 2157|           ValueCategory = lvalue
@@ -16867,12 +16907,24 @@ ir.cpp:
 # 2164|                 Value = [Literal] 1
 # 2164|                 ValueCategory = prvalue
 # 2165|           getThen(): [ReturnStmt] return ...
-# 2172|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2163|             getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2163|                 Type = [VoidType] void
+# 2163|                 ValueCategory = prvalue
+# 2163|               getQualifier(): [VariableAccess] ys
+# 2163|                   Type = [ClassTemplateInstantiation,Struct] vector<int>
+# 2163|                   ValueCategory = lvalue
+# 2172|             getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor
 # 2172|                 Type = [VoidType] void
 # 2172|                 ValueCategory = prvalue
 # 2172|               getQualifier(): [VariableAccess] x
 # 2172|                   Type = [Class] ClassWithDestructor
 # 2172|                   ValueCategory = lvalue
+# 2163|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2163|           Type = [VoidType] void
+# 2163|           ValueCategory = prvalue
+# 2163|         getQualifier(): [VariableAccess] ys
+# 2163|             Type = [ClassTemplateInstantiation,Struct] vector<int>
+# 2163|             ValueCategory = lvalue
 # 2163|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2163|           Type = [NestedStruct] iterator
 # 2163|           ValueCategory = lvalue
@@ -16996,6 +17048,18 @@ ir.cpp:
 # 2171|           getQualifier(): [VariableAccess] z1
 # 2171|               Type = [Class] ClassWithDestructor
 # 2171|               ValueCategory = lvalue
+# 2168|         getImplicitDestructorCall(2): [DestructorCall] call to ~ClassWithDestructor
+# 2168|             Type = [VoidType] void
+# 2168|             ValueCategory = prvalue
+# 2168|           getQualifier(): [VariableAccess] y
+# 2168|               Type = [Class] ClassWithDestructor
+# 2168|               ValueCategory = lvalue
+# 2168|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2168|           Type = [VoidType] void
+# 2168|           ValueCategory = prvalue
+# 2168|         getQualifier(): [VariableAccess] ys
+# 2168|             Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2168|             ValueCategory = lvalue
 # 2168|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
 # 2168|           Type = [NestedStruct] iterator
 # 2168|           ValueCategory = lvalue
