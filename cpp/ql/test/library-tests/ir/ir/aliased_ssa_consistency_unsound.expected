@@ -28,8 +28,4 @@ nonUniqueEnclosingIRFunction
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 nonUniqueIRVariable
-| ir.cpp:2154:68:2154:69 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2137:6:2137:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
-| ir.cpp:2157:68:2157:69 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2137:6:2137:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
-| ir.cpp:2163:36:2163:37 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2137:6:2137:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
-| ir.cpp:2168:68:2168:69 | VariableAddress: ys | Variable address instruction 'VariableAddress: ys' has no associated variable, in function '$@'. | ir.cpp:2137:6:2137:35 | void initialization_with_destructor(bool, char) | void initialization_with_destructor(bool, char) |
 missingCppType
