@@ -812,8 +812,14 @@ private predicate inOut(FIO::FunctionInput input, FIO::FunctionOutput output) {
 }
 
 /**
- * Holds if there should not be use-use flow out of `n` (or a conversion that
- * flows to `n`).
+ * Holds if there should not be use-use flow out of `n`. That is, `n` is
+ * an out-barrier to use-use flow. This includes:
+ *
+ * - an input to a call that would be assumed to have use-use flow to the same
+ *   argument as an output, but this flow should be blocked because the
+ *   function is modeled with another flow to that output (for example the
+ *   first argument of `strcpy`).
+ * - a conversion that flows to such an input.
  */
 private predicate modeledFlowBarrier(Node n) {
   exists(
