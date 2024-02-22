@@ -5,14 +5,19 @@ suppressNullableWarnings
 | NullableRefTypes.cs:88:13:88:14 | ...! | NullableRefTypes.cs:88:13:88:13 | access to local variable x |
 | NullableRefTypes.cs:113:36:113:44 | ...! | NullableRefTypes.cs:113:36:113:43 | access to field Property |
 nullableDataFlow
+| NullableRefTypes.cs:84:17:84:17 | access to local variable x | NullableRefTypes.cs:84:17:84:28 | SSA def(x) |
 | NullableRefTypes.cs:84:17:84:28 | SSA def(x) | NullableRefTypes.cs:85:20:85:20 | access to local variable x |
-| NullableRefTypes.cs:84:21:84:28 | "source" | NullableRefTypes.cs:84:17:84:28 | SSA def(x) |
+| NullableRefTypes.cs:84:21:84:28 | "source" | NullableRefTypes.cs:84:17:84:17 | access to local variable x |
 | NullableRefTypes.cs:85:20:85:20 | access to local variable x | NullableRefTypes.cs:85:20:85:21 | ...! |
 | NullableRefTypes.cs:85:20:85:20 | access to local variable x | NullableRefTypes.cs:86:13:86:13 | access to local variable x |
+| NullableRefTypes.cs:85:20:85:21 | ...! | NullableRefTypes.cs:85:16:85:16 | access to local variable y |
 | NullableRefTypes.cs:86:13:86:13 | access to local variable x | NullableRefTypes.cs:86:13:86:14 | ...! |
+| NullableRefTypes.cs:86:13:86:14 | ...! | NullableRefTypes.cs:86:9:86:9 | access to local variable y |
+| NullableRefTypes.cs:87:9:87:9 | access to local variable x | NullableRefTypes.cs:87:9:87:16 | SSA def(x) |
 | NullableRefTypes.cs:87:9:87:16 | SSA def(x) | NullableRefTypes.cs:88:13:88:13 | access to local variable x |
-| NullableRefTypes.cs:87:13:87:16 | null | NullableRefTypes.cs:87:9:87:16 | SSA def(x) |
+| NullableRefTypes.cs:87:13:87:16 | null | NullableRefTypes.cs:87:9:87:9 | access to local variable x |
 | NullableRefTypes.cs:88:13:88:13 | access to local variable x | NullableRefTypes.cs:88:13:88:14 | ...! |
+| NullableRefTypes.cs:88:13:88:14 | ...! | NullableRefTypes.cs:88:9:88:9 | access to local variable y |
 nullableControlFlow
 | NullableRefTypes.cs:82:10:82:40 | enter TestSuppressNullableWarningExpr | NullableRefTypes.cs:83:5:89:5 | {...} | successor |
 | NullableRefTypes.cs:82:10:82:40 | exit TestSuppressNullableWarningExpr (normal) | NullableRefTypes.cs:82:10:82:40 | exit TestSuppressNullableWarningExpr | successor |

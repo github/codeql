@@ -10,7 +10,8 @@ edges
 | Async.cs:21:32:21:36 | access to parameter input : String | Async.cs:21:20:21:37 | call to method ReturnAwait : Task<String> [property Result] : String | provenance |  |
 | Async.cs:21:32:21:36 | access to parameter input : String | Async.cs:35:51:35:51 | x : String | provenance |  |
 | Async.cs:24:41:24:45 | input : String | Async.cs:26:35:26:39 | access to parameter input : String | provenance |  |
-| Async.cs:26:17:26:40 | await ... : String | Async.cs:27:14:27:14 | access to local variable x | provenance |  |
+| Async.cs:26:13:26:13 | access to local variable x : String | Async.cs:27:14:27:14 | access to local variable x | provenance |  |
+| Async.cs:26:17:26:40 | await ... : String | Async.cs:26:13:26:13 | access to local variable x : String | provenance |  |
 | Async.cs:26:23:26:40 | call to method ReturnAwait : Task<String> [property Result] : String | Async.cs:26:17:26:40 | await ... : String | provenance |  |
 | Async.cs:26:35:26:39 | access to parameter input : String | Async.cs:26:23:26:40 | call to method ReturnAwait : Task<String> [property Result] : String | provenance |  |
 | Async.cs:26:35:26:39 | access to parameter input : String | Async.cs:35:51:35:51 | x : String | provenance |  |
@@ -47,6 +48,7 @@ nodes
 | Async.cs:21:20:21:37 | call to method ReturnAwait : Task<String> [property Result] : String | semmle.label | call to method ReturnAwait : Task<String> [property Result] : String |
 | Async.cs:21:32:21:36 | access to parameter input : String | semmle.label | access to parameter input : String |
 | Async.cs:24:41:24:45 | input : String | semmle.label | input : String |
+| Async.cs:26:13:26:13 | access to local variable x : String | semmle.label | access to local variable x : String |
 | Async.cs:26:17:26:40 | await ... : String | semmle.label | await ... : String |
 | Async.cs:26:23:26:40 | call to method ReturnAwait : Task<String> [property Result] : String | semmle.label | call to method ReturnAwait : Task<String> [property Result] : String |
 | Async.cs:26:35:26:39 | access to parameter input : String | semmle.label | access to parameter input : String |

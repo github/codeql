@@ -45,8 +45,10 @@ edges
 | dataflow.cs:100:30:100:33 | null : null | dataflow.cs:72:39:72:52 | call to method IndirectNull : null | provenance |  |
 | dataflow.cs:100:30:100:33 | null : null | dataflow.cs:106:20:106:33 | call to method IndirectNull | provenance |  |
 | dataflow.cs:100:30:100:33 | null : null | dataflow.cs:106:20:106:33 | call to method IndirectNull : null | provenance |  |
-| dataflow.cs:106:20:106:33 | call to method IndirectNull : null | dataflow.cs:108:16:108:16 | access to local variable x : null | provenance |  |
-| dataflow.cs:107:23:107:26 | null : null | dataflow.cs:108:16:108:16 | access to local variable x : null | provenance |  |
+| dataflow.cs:106:16:106:16 | access to local variable x : null | dataflow.cs:108:16:108:16 | access to local variable x : null | provenance |  |
+| dataflow.cs:106:20:106:33 | call to method IndirectNull : null | dataflow.cs:106:16:106:16 | access to local variable x : null | provenance |  |
+| dataflow.cs:107:19:107:19 | access to local variable x : null | dataflow.cs:108:16:108:16 | access to local variable x : null | provenance |  |
+| dataflow.cs:107:23:107:26 | null : null | dataflow.cs:107:19:107:19 | access to local variable x : null | provenance |  |
 | dataflow.cs:108:16:108:16 | access to local variable x : null | dataflow.cs:72:21:72:34 | call to method NullFunction : null | provenance |  |
 | dataflow.cs:108:16:108:16 | access to local variable x : null | dataflow.cs:87:31:87:44 | call to method NullFunction : null | provenance |  |
 nodes
@@ -104,8 +106,10 @@ nodes
 | dataflow.cs:87:24:87:51 | ... ? ... : ... | semmle.label | ... ? ... : ... |
 | dataflow.cs:87:31:87:44 | call to method NullFunction : null | semmle.label | call to method NullFunction : null |
 | dataflow.cs:100:30:100:33 | null : null | semmle.label | null : null |
+| dataflow.cs:106:16:106:16 | access to local variable x : null | semmle.label | access to local variable x : null |
 | dataflow.cs:106:20:106:33 | call to method IndirectNull | semmle.label | call to method IndirectNull |
 | dataflow.cs:106:20:106:33 | call to method IndirectNull : null | semmle.label | call to method IndirectNull : null |
+| dataflow.cs:107:19:107:19 | access to local variable x : null | semmle.label | access to local variable x : null |
 | dataflow.cs:107:23:107:26 | null : null | semmle.label | null : null |
 | dataflow.cs:108:16:108:16 | access to local variable x : null | semmle.label | access to local variable x : null |
 subpaths
