@@ -22,9 +22,7 @@ class AstNode instanceof YamlNode {
  */
 class Statement extends AstNode {
   /** Gets the workflow that this job is a part of. */
-  WorkflowStmt getEnclosingWorkflowStmt() {
-    this = result.getAChildNode*()
-  }
+  WorkflowStmt getEnclosingWorkflowStmt() { this = result.getAChildNode*() }
 }
 
 /**
@@ -174,6 +172,8 @@ class JobStmt extends Statement instanceof Actions::Job {
   predicate usesReusableWorkflow() {
     this.(YamlMapping).maps(any(YamlString s | s.getValue() = "uses"), _)
   }
+
+  IfStmt getIfStmt() { result = super.getIf() }
 }
 
 /**
@@ -183,6 +183,24 @@ class StepStmt extends Statement instanceof Actions::Step {
   string getId() { result = super.getId() }
 
   JobStmt getJobStmt() { result = super.getJob() }
+
+  IfStmt getIfStmt() { result = super.getIf() }
+}
+
+/**
+ * An If node representing a conditional statement.
+ */
+class IfStmt extends Statement {
+  YamlMapping parent;
+
+  IfStmt() {
+    (parent instanceof Actions::Step or parent instanceof Actions::Job) and
+    parent.lookup("if") = this
+  }
+
+  Statement getEnclosingStatement() { result = parent }
+
+  string getCondition() { result = this.(YamlScalar).getValue() }
 }
 
 /**
