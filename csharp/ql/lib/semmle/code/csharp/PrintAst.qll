@@ -27,7 +27,8 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
 }
 
 private predicate shouldPrint(Element e, Location l) {
-  exists(PrintAstConfiguration config | config.shouldPrint(e, l))
+  exists(PrintAstConfiguration config | config.shouldPrint(e, l)) and
+  not e.(Stmt).isCompilerGenerated()
 }
 
 private predicate isImplicitExpression(ControlFlowElement element) {
