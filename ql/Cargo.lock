@@ -121,9 +121,9 @@ dependencies = [
 
 [[package]]
 name = "cc"
-version = "1.0.79"
+version = "1.0.86"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "50d30906286121d95be3d479533b458f87493b30a4b5f79a607db8f5d11aa91f"
+checksum = "7f9fa1897e4325be0d68d48df6aa1a71ac2ed4d27723887e7754192705350730"
 
 [[package]]
 name = "cfg-if"
@@ -203,7 +203,7 @@ dependencies = [
  "serde",
  "serde_json",
  "tracing",
- "tree-sitter",
+ "tree-sitter 0.20.10",
 ]
 
 [[package]]
@@ -216,7 +216,7 @@ dependencies = [
  "regex",
  "tracing",
  "tracing-subscriber",
- "tree-sitter",
+ "tree-sitter 0.21.0",
  "tree-sitter-blame",
  "tree-sitter-json",
  "tree-sitter-ql",
@@ -938,11 +938,21 @@ dependencies = [
 ]
 
 [[package]]
+name = "tree-sitter"
+version = "0.21.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "705bf7c0958d0171dd7d3a6542f2f4f21d87ed5f1dc8db52919d3a6bed9a359a"
+dependencies = [
+ "cc",
+ "regex",
+]
+
+[[package]]
 name = "tree-sitter-blame"
 version = "0.0.1"
 dependencies = [
  "cc",
- "tree-sitter",
+ "tree-sitter 0.20.10",
 ]
 
 [[package]]
@@ -951,7 +961,7 @@ version = "0.20.0"
 source = "git+https://github.com/tausbn/tree-sitter-json.git?rev=745663ee997f1576fe1e7187e6347e0db36ec7a9#745663ee997f1576fe1e7187e6347e0db36ec7a9"
 dependencies = [
  "cc",
- "tree-sitter",
+ "tree-sitter 0.20.10",
 ]
 
 [[package]]
@@ -960,7 +970,7 @@ version = "0.19.0"
 source = "git+https://github.com/tree-sitter/tree-sitter-ql.git?rev=d08db734f8dc52f6bc04db53a966603122bc6985#d08db734f8dc52f6bc04db53a966603122bc6985"
 dependencies = [
  "cc",
- "tree-sitter",
+ "tree-sitter 0.20.10",
 ]
 
 [[package]]
@@ -969,7 +979,7 @@ version = "0.0.1"
 source = "git+https://github.com/erik-krogh/tree-sitter-ql-dbscheme.git?rev=63e1344353f63931e88bfbc2faa2e78e1421b213#63e1344353f63931e88bfbc2faa2e78e1421b213"
 dependencies = [
  "cc",
- "tree-sitter",
+ "tree-sitter 0.20.10",
 ]
 
 [[package]]
