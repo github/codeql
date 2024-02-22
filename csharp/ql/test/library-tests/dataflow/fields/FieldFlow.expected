@@ -814,6 +814,8 @@ edges
 | J.cs:22:18:22:41 | object creation of type RecordClass : RecordClass [property Prop1] : Object | J.cs:27:14:27:15 | access to local variable r2 : RecordClass [property Prop1] : Object | provenance |  |
 | J.cs:22:18:22:41 | object creation of type RecordClass : RecordClass [property Prop1] : Object | J.cs:31:14:31:15 | access to local variable r3 : RecordClass [property Prop1] : Object | provenance |  |
 | J.cs:22:18:22:41 | object creation of type RecordClass : RecordClass [property Prop1] : Object | J.cs:31:14:31:15 | access to local variable r3 : RecordClass [property Prop1] : Object | provenance |  |
+| J.cs:22:34:22:34 | access to local variable o : Object | J.cs:6:40:6:44 | Prop1 : Object | provenance |  |
+| J.cs:22:34:22:34 | access to local variable o : Object | J.cs:6:40:6:44 | Prop1 : Object | provenance |  |
 | J.cs:22:34:22:34 | access to local variable o : Object | J.cs:22:18:22:41 | object creation of type RecordClass : RecordClass [property Prop1] : Object | provenance |  |
 | J.cs:22:34:22:34 | access to local variable o : Object | J.cs:22:18:22:41 | object creation of type RecordClass : RecordClass [property Prop1] : Object | provenance |  |
 | J.cs:23:14:23:15 | access to local variable r1 : RecordClass [property Prop1] : Object | J.cs:23:14:23:21 | access to property Prop1 | provenance |  |
@@ -836,6 +838,8 @@ edges
 | J.cs:42:18:42:42 | object creation of type RecordStruct : RecordStruct [property Prop1] : Object | J.cs:47:14:47:15 | access to local variable r2 : RecordStruct [property Prop1] : Object | provenance |  |
 | J.cs:42:18:42:42 | object creation of type RecordStruct : RecordStruct [property Prop1] : Object | J.cs:51:14:51:15 | access to local variable r3 : RecordStruct [property Prop1] : Object | provenance |  |
 | J.cs:42:18:42:42 | object creation of type RecordStruct : RecordStruct [property Prop1] : Object | J.cs:51:14:51:15 | access to local variable r3 : RecordStruct [property Prop1] : Object | provenance |  |
+| J.cs:42:35:42:35 | access to local variable o : Object | J.cs:8:42:8:46 | Prop1 : Object | provenance |  |
+| J.cs:42:35:42:35 | access to local variable o : Object | J.cs:8:42:8:46 | Prop1 : Object | provenance |  |
 | J.cs:42:35:42:35 | access to local variable o : Object | J.cs:42:18:42:42 | object creation of type RecordStruct : RecordStruct [property Prop1] : Object | provenance |  |
 | J.cs:42:35:42:35 | access to local variable o : Object | J.cs:42:18:42:42 | object creation of type RecordStruct : RecordStruct [property Prop1] : Object | provenance |  |
 | J.cs:43:14:43:15 | access to local variable r1 : RecordStruct [property Prop1] : Object | J.cs:43:14:43:21 | access to property Prop1 | provenance |  |
@@ -1781,6 +1785,10 @@ nodes
 | I.cs:40:14:40:14 | access to parameter i : I [field Field1] : Object | semmle.label | access to parameter i : I [field Field1] : Object |
 | I.cs:40:14:40:21 | access to field Field1 | semmle.label | access to field Field1 |
 | I.cs:40:14:40:21 | access to field Field1 | semmle.label | access to field Field1 |
+| J.cs:6:40:6:44 | Prop1 : Object | semmle.label | Prop1 : Object |
+| J.cs:6:40:6:44 | Prop1 : Object | semmle.label | Prop1 : Object |
+| J.cs:8:42:8:46 | Prop1 : Object | semmle.label | Prop1 : Object |
+| J.cs:8:42:8:46 | Prop1 : Object | semmle.label | Prop1 : Object |
 | J.cs:14:26:14:30 | field : Object | semmle.label | field : Object |
 | J.cs:14:26:14:30 | field : Object | semmle.label | field : Object |
 | J.cs:14:40:14:43 | prop : Object | semmle.label | prop : Object |
@@ -2022,6 +2030,10 @@ subpaths
 | H.cs:147:25:147:38 | call to method Source<A> : A | H.cs:138:27:138:27 | o : A | H.cs:142:16:142:34 | access to field FieldB : A | H.cs:147:17:147:39 | call to method Through : A |
 | H.cs:164:22:164:22 | access to local variable o : Object | H.cs:153:32:153:32 | o : Object | H.cs:157:9:157:9 | [post] access to parameter a : A [field FieldA, field FieldB] : Object | H.cs:164:19:164:19 | [post] access to local variable a : A [field FieldA, field FieldB] : Object |
 | H.cs:164:22:164:22 | access to local variable o : Object | H.cs:153:32:153:32 | o : Object | H.cs:157:9:157:9 | [post] access to parameter a : A [field FieldA, field FieldB] : Object | H.cs:164:19:164:19 | [post] access to local variable a : A [field FieldA, field FieldB] : Object |
+| J.cs:22:34:22:34 | access to local variable o : Object | J.cs:6:40:6:44 | Prop1 : Object | J.cs:6:40:6:44 | Prop1 : Object | J.cs:22:18:22:41 | object creation of type RecordClass : RecordClass [property Prop1] : Object |
+| J.cs:22:34:22:34 | access to local variable o : Object | J.cs:6:40:6:44 | Prop1 : Object | J.cs:6:40:6:44 | Prop1 : Object | J.cs:22:18:22:41 | object creation of type RecordClass : RecordClass [property Prop1] : Object |
+| J.cs:42:35:42:35 | access to local variable o : Object | J.cs:8:42:8:46 | Prop1 : Object | J.cs:8:42:8:46 | Prop1 : Object | J.cs:42:18:42:42 | object creation of type RecordStruct : RecordStruct [property Prop1] : Object |
+| J.cs:42:35:42:35 | access to local variable o : Object | J.cs:8:42:8:46 | Prop1 : Object | J.cs:8:42:8:46 | Prop1 : Object | J.cs:42:18:42:42 | object creation of type RecordStruct : RecordStruct [property Prop1] : Object |
 | J.cs:62:29:62:29 | access to local variable o : Object | J.cs:14:26:14:30 | field : Object | J.cs:14:50:14:54 | [post] this access : Struct [field Field] : Object | J.cs:62:18:62:36 | object creation of type Struct : Struct [field Field] : Object |
 | J.cs:62:29:62:29 | access to local variable o : Object | J.cs:14:26:14:30 | field : Object | J.cs:14:50:14:54 | [post] this access : Struct [field Field] : Object | J.cs:62:18:62:36 | object creation of type Struct : Struct [field Field] : Object |
 | J.cs:80:35:80:35 | access to local variable o : Object | J.cs:14:40:14:43 | prop : Object | J.cs:14:57:14:60 | [post] this access : Struct [property Prop] : Object | J.cs:80:18:80:36 | object creation of type Struct : Struct [property Prop] : Object |
