@@ -611,16 +611,27 @@ newtype TTranslatedElement =
   TTranslatedInitialization(Expr expr) {
     not ignoreExpr(expr) and
     (
-      exists(Initializer init | init.getExpr().getFullyConverted() = expr) or
-      exists(ClassAggregateLiteral initList | initList.getAFieldExpr(_).getFullyConverted() = expr) or
+      exists(Initializer init | init.getExpr().getFullyConverted() = expr)
+      or
+      exists(ClassAggregateLiteral initList | initList.getAFieldExpr(_).getFullyConverted() = expr)
+      or
       exists(ArrayOrVectorAggregateLiteral initList |
         initList.getAnElementExpr(_).getFullyConverted() = expr
-      ) or
-      exists(ReturnStmt returnStmt | returnStmt.getExpr().getFullyConverted() = expr and hasReturnValue(returnStmt.getEnclosingFunction())) or
-      exists(ConstructorFieldInit fieldInit | fieldInit.getExpr().getFullyConverted() = expr) or
-      exists(NewExpr newExpr | newExpr.getInitializer().getFullyConverted() = expr) or
-      exists(ThrowExpr throw | throw.getExpr().getFullyConverted() = expr) or
-      exists(TemporaryObjectExpr temp | temp.getExpr() = expr) or
+      )
+      or
+      exists(ReturnStmt returnStmt |
+        returnStmt.getExpr().getFullyConverted() = expr and
+        hasReturnValue(returnStmt.getEnclosingFunction())
+      )
+      or
+      exists(ConstructorFieldInit fieldInit | fieldInit.getExpr().getFullyConverted() = expr)
+      or
+      exists(NewExpr newExpr | newExpr.getInitializer().getFullyConverted() = expr)
+      or
+      exists(ThrowExpr throw | throw.getExpr().getFullyConverted() = expr)
+      or
+      exists(TemporaryObjectExpr temp | temp.getExpr() = expr)
+      or
       exists(LambdaExpression lambda | lambda.getInitializer().getFullyConverted() = expr)
     )
   } or
