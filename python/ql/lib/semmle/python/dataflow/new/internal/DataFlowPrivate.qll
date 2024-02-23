@@ -650,6 +650,8 @@ predicate storeStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
   dictStoreStep(nodeFrom, c, nodeTo)
   or
   moreDictStoreSteps(nodeFrom, c, nodeTo)
+  or
+  iterableUnpackingStoreStep(nodeFrom, c, nodeTo)
 }
 
 /**
@@ -664,8 +666,6 @@ predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   setStoreStep(nodeFrom, c, nodeTo)
   or
   comprehensionStoreStep(nodeFrom, c, nodeTo)
-  or
-  iterableUnpackingStoreStep(nodeFrom, c, nodeTo)
   or
   attributeStoreStep(nodeFrom, c, nodeTo)
   or
@@ -903,6 +903,8 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, Node nodeTo) {
  */
 predicate readStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
+  or
+  iterableUnpackingReadStep(nodeFrom, c, nodeTo)
 }
 
 /**
@@ -910,8 +912,6 @@ predicate readStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
  */
 predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   readStepCommon(nodeFrom, c, nodeTo)
-  or
-  iterableUnpackingReadStep(nodeFrom, c, nodeTo)
   or
   matchReadStep(nodeFrom, c, nodeTo)
   or

@@ -17,7 +17,7 @@ def return_func_in_tuple():
 tup = return_func_in_tuple() # $ pt,tt=return_func_in_tuple
 
 f2, _ = tup
-f2() # $ pt=func MISSING: tt
+f2() # $ pt,tt=func
 
 f3 = tup[0]
 f3() # $ tt,pt=func
