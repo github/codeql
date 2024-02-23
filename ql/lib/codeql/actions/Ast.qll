@@ -500,15 +500,10 @@ class InputsCtxAccessExpr extends CtxAccessExpr {
   override string getFieldName() { result = fieldName }
 
   override Expression getRefExpr() {
-    exists(ReusableWorkflowStmt w |
-      w.getLocation().getFile() = this.getLocation().getFile() and
-      w.getInputsStmt().getInputExpr(fieldName) = result
-    )
+    result.getLocation().getFile() = this.getLocation().getFile() and
+    exists(ReusableWorkflowStmt w | w.getInputsStmt().getInputExpr(fieldName) = result)
     or
-    exists(CompositeActionStmt a |
-      a.getLocation().getFile() = this.getLocation().getFile() and
-      a.getInputsStmt().getInputExpr(fieldName) = result
-    )
+    exists(CompositeActionStmt a | a.getInputsStmt().getInputExpr(fieldName) = result)
   }
 }
 
@@ -528,6 +523,7 @@ class EnvCtxAccessExpr extends CtxAccessExpr {
   override string getFieldName() { result = fieldName }
 
   override Expression getRefExpr() {
+    result.getLocation().getFile() = this.getLocation().getFile() and
     exists(JobUsesExpr s | s.getEnvExpr(fieldName) = result)
     or
     exists(StepUsesExpr s | s.getEnvExpr(fieldName) = result)
