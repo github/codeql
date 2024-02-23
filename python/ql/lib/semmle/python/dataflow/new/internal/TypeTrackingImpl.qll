@@ -102,10 +102,7 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
 
   class LocalSourceNode = DataFlowPublic::LocalSourceNode;
 
-  class Content extends DataFlowPublic::Content {
-    // this char-pred is just a temporary restriction while transitioning to more general content
-    Content() { this instanceof DataFlowPublic::AttributeContent }
-  }
+  class Content = DataFlowPublic::Content;
 
   /**
    * A label to use for `WithContent` and `WithoutContent` steps, restricting
