@@ -175,7 +175,18 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
       nodeTo = a.getObject()
     )
     or
-    DataFlowPrivate::storeStepCommon(nodeFrom, content, nodeTo)
+    // type-tracking doesn't really handle PostUpdateNodes, so for some assignment steps
+    // like `my_dict["foo"] = foo` the data-flow step targets the PostUpdateNode for
+    // `my_dict`, where we want to translate that into a type-tracking step that targets
+    // the normal/non-PostUpdateNode for `my_dict`.
+    exists(DataFlowPublic::Node storeTarget |
+      DataFlowPrivate::storeStepCommon(nodeFrom, content, storeTarget)
+    |
+      not storeTarget instanceof DataFlowPrivate::SyntheticPostUpdateNode and
+      nodeTo = storeTarget
+      or
+      nodeTo = storeTarget.(DataFlowPrivate::SyntheticPostUpdateNode).getPreUpdateNode()
+    )
     or
     TypeTrackerSummaryFlow::basicStoreStep(nodeFrom, nodeTo, content)
   }

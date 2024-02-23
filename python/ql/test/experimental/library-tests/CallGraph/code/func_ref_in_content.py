@@ -37,7 +37,7 @@ def return_func_in_dict_update():
 dct2 = return_func_in_dict_update() # $ pt,tt=return_func_in_dict_update
 
 f5 = dct2['func']
-f5() # $ MISSING: tt=func
+f5() # $ tt=func
 
 
 def return_func_in_list():

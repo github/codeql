@@ -648,6 +648,8 @@ predicate storeStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
   tupleStoreStep(nodeFrom, c, nodeTo)
   or
   dictStoreStep(nodeFrom, c, nodeTo)
+  or
+  moreDictStoreSteps(nodeFrom, c, nodeTo)
 }
 
 /**
@@ -660,8 +662,6 @@ predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
   listStoreStep(nodeFrom, c, nodeTo)
   or
   setStoreStep(nodeFrom, c, nodeTo)
-  or
-  moreDictStoreSteps(nodeFrom, c, nodeTo)
   or
   comprehensionStoreStep(nodeFrom, c, nodeTo)
   or

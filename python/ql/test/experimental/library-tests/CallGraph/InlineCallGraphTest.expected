@@ -39,6 +39,7 @@ typeTracker_found_pointsTo_notFound
 | code/class_super.py:108:1:108:8 | ControlFlowNode for Attribute() | Z.foo |
 | code/def_in_function.py:22:5:22:11 | ControlFlowNode for Attribute() | test.A.foo |
 | code/func_ref_in_content.py:29:1:29:4 | ControlFlowNode for f4() | func |
+| code/func_ref_in_content.py:40:1:40:4 | ControlFlowNode for f5() | func |
 | code/isinstance.py:9:13:9:22 | ControlFlowNode for Attribute() | A.foo |
 | code/isinstance.py:9:13:9:22 | ControlFlowNode for Attribute() | ASub.foo |
 | code/isinstance.py:14:13:14:22 | ControlFlowNode for Attribute() | A.foo |
