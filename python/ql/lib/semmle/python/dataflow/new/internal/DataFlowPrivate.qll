@@ -642,10 +642,17 @@ predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
 // Field flow
 //--------
 /**
+ * Subset of `storeStep` that should be shared with type-tracking.
+ */
+predicate storeStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) { none() }
+
+/**
  * Holds if data can flow from `nodeFrom` to `nodeTo` via an assignment to
  * content `c`.
  */
 predicate storeStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+  storeStepCommon(nodeFrom, c, nodeTo)
+  or
   listStoreStep(nodeFrom, c, nodeTo)
   or
   setStoreStep(nodeFrom, c, nodeTo)
@@ -892,9 +899,16 @@ predicate attributeStoreStep(Node nodeFrom, AttributeContent c, Node nodeTo) {
 }
 
 /**
+ * Subset of `readStep` that should be shared with type-tracking.
+ */
+predicate readStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) { none() }
+
+/**
  * Holds if data can flow from `nodeFrom` to `nodeTo` via a read of content `c`.
  */
 predicate readStep(Node nodeFrom, ContentSet c, Node nodeTo) {
+  readStepCommon(nodeFrom, c, nodeTo)
+  or
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)

@@ -175,6 +175,8 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
       nodeTo = a.getObject()
     )
     or
+    DataFlowPrivate::storeStepCommon(nodeFrom, content, nodeTo)
+    or
     TypeTrackerSummaryFlow::basicStoreStep(nodeFrom, nodeTo, content)
   }
 
@@ -188,6 +190,8 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
       nodeFrom = a.getObject() and
       nodeTo = a
     )
+    or
+    DataFlowPrivate::readStepCommon(nodeFrom, content, nodeTo)
     or
     TypeTrackerSummaryFlow::basicLoadStep(nodeFrom, nodeTo, content)
   }
