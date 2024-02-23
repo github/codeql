@@ -17,7 +17,7 @@ f2, _ = tup
 f2() # $ pt=func MISSING: tt
 
 f3 = tup[0]
-f3() # $ pt=func MISSING: tt
+f3() # $ tt,pt=func
 
 
 def return_func_in_dict():

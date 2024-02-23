@@ -16,7 +16,6 @@ pointsTo_found_typeTracker_notFound
 | code/func_defined_outside_class.py:42:1:42:7 | ControlFlowNode for Attribute() | B._gen.func |
 | code/func_defined_outside_class.py:43:1:43:7 | ControlFlowNode for Attribute() | B._gen.func |
 | code/func_ref_in_content.py:17:1:17:4 | ControlFlowNode for f2() | func |
-| code/func_ref_in_content.py:20:1:20:4 | ControlFlowNode for f3() | func |
 | code/funky_regression.py:15:9:15:17 | ControlFlowNode for Attribute() | Wat.f2 |
 | code/type_tracking_limitation.py:8:1:8:3 | ControlFlowNode for x() | my_func |
 typeTracker_found_pointsTo_notFound
