@@ -273,6 +273,9 @@ signature module InputSig {
   ) {
     any()
   }
+
+  /** Holds if `fieldFlowBranchLimit` should be ignored for flow going into/out of `c`. */
+  default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
 }
 
 module Configs<InputSig Lang> {

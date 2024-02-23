@@ -1117,7 +1117,9 @@ module MakeImpl<InputSig Lang> {
       exists(int b, int j |
         b = branch(ret) and
         j = join(out) and
-        if b.minimum(j) <= Config::fieldFlowBranchLimit()
+        if
+          b.minimum(j) <= Config::fieldFlowBranchLimit() or
+          ignoreFieldFlowBranchLimit(ret.getEnclosingCallable())
         then allowsFieldFlow = true
         else allowsFieldFlow = false
       )
@@ -1136,7 +1138,9 @@ module MakeImpl<InputSig Lang> {
       exists(int b, int j |
         b = branch(arg) and
         j = join(p) and
-        if b.minimum(j) <= Config::fieldFlowBranchLimit()
+        if
+          b.minimum(j) <= Config::fieldFlowBranchLimit() or
+          ignoreFieldFlowBranchLimit(p.getEnclosingCallable())
         then allowsFieldFlow = true
         else allowsFieldFlow = false
       )
