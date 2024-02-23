@@ -2291,4 +2291,9 @@ int IfReturnDestructors3(bool b) {
     return 0;
 }
 
+void VoidReturnDestructors() {
+    String s;
+    return VoidFunc();
+}
+
 // semmle-extractor-options: -std=c++20 --clang

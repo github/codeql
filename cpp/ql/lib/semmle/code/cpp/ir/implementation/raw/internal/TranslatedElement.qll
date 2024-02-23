@@ -616,7 +616,7 @@ newtype TTranslatedElement =
       exists(ArrayOrVectorAggregateLiteral initList |
         initList.getAnElementExpr(_).getFullyConverted() = expr
       ) or
-      exists(ReturnStmt returnStmt | returnStmt.getExpr().getFullyConverted() = expr) or
+      exists(ReturnStmt returnStmt | returnStmt.getExpr().getFullyConverted() = expr and hasReturnValue(returnStmt.getEnclosingFunction())) or
       exists(ConstructorFieldInit fieldInit | fieldInit.getExpr().getFullyConverted() = expr) or
       exists(NewExpr newExpr | newExpr.getInitializer().getFullyConverted() = expr) or
       exists(ThrowExpr throw | throw.getExpr().getFullyConverted() = expr) or

@@ -474,7 +474,7 @@ class TranslatedReturnVoidExpressionStmt extends TranslatedReturnStmt {
   override Instruction getALastInstructionInternal() {
     if this.hasAnImplicitDestructorCall()
     then
-      result = this.getChildInternal(max(int id | exists(this.getChild(id)))).getALastInstruction()
+      result = this.getChild(max(int id | exists(this.getChild(id)))).getALastInstruction()
     else result = this.getInstruction(OnlyInstructionTag())
   }
 

@@ -17895,6 +17895,26 @@ ir.cpp:
 # 2292|         getQualifier(): [VariableAccess] s
 # 2292|             Type = [Struct] String
 # 2292|             ValueCategory = lvalue
+# 2294| [TopLevelFunction] void VoidReturnDestructors()
+# 2294|   <params>: 
+# 2294|   getEntryPoint(): [BlockStmt] { ... }
+# 2295|     getStmt(0): [DeclStmt] declaration
+# 2295|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2295|           Type = [Struct] String
+# 2295|         getVariable().getInitializer(): [Initializer] initializer for s
+# 2295|           getExpr(): [ConstructorCall] call to String
+# 2295|               Type = [VoidType] void
+# 2295|               ValueCategory = prvalue
+# 2296|     getStmt(1): [ReturnStmt] return ...
+# 2296|       getExpr(): [FunctionCall] call to VoidFunc
+# 2296|           Type = [VoidType] void
+# 2296|           ValueCategory = prvalue
+# 2297|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2297|           Type = [VoidType] void
+# 2297|           ValueCategory = prvalue
+# 2297|         getQualifier(): [VariableAccess] s
+# 2297|             Type = [Struct] String
+# 2297|             ValueCategory = lvalue
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
