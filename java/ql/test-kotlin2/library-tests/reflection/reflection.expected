@@ -263,30 +263,70 @@ modifiers
 | reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | override |
 | reflection.kt:162:25:162:45 | ...::... | reflection.kt:162:25:162:45 | invoke | public |
 compGenerated
+| file://<external>/AccessMode.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/CharProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/CharProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/CharRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/CharRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/Character$UnicodeScript.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ChronoField.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ChronoUnit.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
+| file://<external>/Collector$Characteristics.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ConstantPool$Tag.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/DateTimeFormatterBuilder$SettingsParser.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/DayOfWeek.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/DirectMethodHandleDesc$Kind.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ElementType.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/EnumEntries.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/EnumEntries.class:0:0:0:0 | toArray | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/FormatStyle.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/IntProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/IsoEra.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/KTypeProjection.class:0:0:0:0 | contravariant | Proxy static method for a @JvmStatic-annotated function or property |
 | file://<external>/KTypeProjection.class:0:0:0:0 | copy$default | Forwarder for Kotlin calls that need default arguments filling in |
 | file://<external>/KTypeProjection.class:0:0:0:0 | covariant | Proxy static method for a @JvmStatic-annotated function or property |
 | file://<external>/KTypeProjection.class:0:0:0:0 | invariant | Proxy static method for a @JvmStatic-annotated function or property |
+| file://<external>/LambdaForm$BasicType.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/LambdaForm$Kind.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/LinkOption.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Locale$Category.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Locale$FilteringMode.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Locale$IsoCountryCode.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/LongProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/LongProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/LongRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/LongRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/MethodHandleImpl$ArrayAccess.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/MethodHandleImpl$Intrinsic.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/MethodHandles$Lookup$ClassOption.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ModuleDescriptor$Exports$Modifier.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ModuleDescriptor$Modifier.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ModuleDescriptor$Opens$Modifier.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ModuleDescriptor$Requires$Modifier.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Month.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ObjectInputFilter$Status.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Proxy$Type.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ResolverStyle.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/RetentionPolicy.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/SignStyle.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/StackWalker$ExtendedOption.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/StackWalker$Option.class:0:0:0:0 | getEntries | Default property accessor |
 | file://<external>/String.class:0:0:0:0 | isEmpty | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/TextStyle.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Thread$State.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/TimeUnit.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/VarHandle$AccessMode.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/VarHandle$AccessType.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/Wrapper.class:0:0:0:0 | getEntries | Default property accessor |
+| file://<external>/ZoneOffsetTransitionRule$TimeDefinition.class:0:0:0:0 | getEntries | Default property accessor |
 | reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
