@@ -10,6 +10,7 @@ private import semmle.code.java.dataflow.FlowSummary
 private import FlowSummaryImpl as FlowSummaryImpl
 private import DataFlowNodes
 private import codeql.dataflow.VariableCapture as VariableCapture
+private import semmle.code.java.dispatch.VirtualDispatch as VirtualDispatch
 import DataFlowNodes::Private
 
 private newtype TReturnKind = TNormalReturnKind()
@@ -204,12 +205,52 @@ predicate jumpStep(Node node1, Node node2) {
  * Holds if `fa` is an access to an instance field that occurs as the
  * destination of an assignment of the value `src`.
  */
-private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
-  exists(AssignExpr a |
-    a.getSource() = src and
-    a.getDest() = fa and
-    fa.getField() instanceof InstanceField
+private predicate instanceFieldAssign(AssignExpr a, Expr src, FieldAccess fa) {
+  a.getSource() = src and
+  a.getDest() = fa and
+  fa.getField() instanceof InstanceField
+}
+
+pragma[nomagic]
+private predicate isExactArgument(ArgumentNode arg, BasicBlock bb, Method m, ArgumentPosition apos) {
+  exists(MethodCall mc, DataFlowCall call |
+    mc = call.asCall() and
+    m = VirtualDispatch::exactVirtualMethod(mc) and
+    arg.argumentOf(call, apos) and
+    bb = mc.getBasicBlock()
   )
+}
+
+pragma[nomagic]
+private predicate setsInstanceField(Field f, Node qualifier, BasicBlock bb) {
+  exists(AssignExpr a, FieldAccess fa |
+    instanceFieldAssign(a, _, fa) and
+    f = fa.getField() and
+    bb = a.getBasicBlock() and
+    qualifier = getFieldQualifier(fa)
+  )
+  or
+  exists(Method m, ArgumentPosition apos |
+    isExactArgument(qualifier, bb, m, apos) and
+    isInstanceFieldSetter(m, apos, f)
+  )
+}
+
+pragma[nomagic]
+private predicate isInstanceFieldSetter(Method m, ArgumentPosition apos, Field f) {
+  exists(BasicBlock bb, Node qualifier, ParameterNode p, ParameterPosition ppos |
+    setsInstanceField(f, qualifier, bb) and
+    m = bb.getEnclosingCallable() and
+    bb.bbPostDominates(m.getBody().getBasicBlock()) and
+    localMustFlowStep+(p, qualifier) and
+    p.isParameterOf(_, ppos) and
+    parameterMatch(ppos, apos)
+  )
+}
+
+private predicate sdf(Field f, Class c) {
+  f.getName() = "m_clusterRoot" and
+  c.hasName("Folder")
 }
 
 /**
@@ -219,7 +260,7 @@ private predicate instanceFieldAssign(Expr src, FieldAccess fa) {
  */
 predicate storeStep(Node node1, ContentSet f, Node node2) {
   exists(FieldAccess fa |
-    instanceFieldAssign(node1.asExpr(), fa) and
+    instanceFieldAssign(_, node1.asExpr(), fa) and
     node2.(PostUpdateNode).getPreUpdateNode() = getFieldQualifier(fa) and
     f.(FieldContent).getField() = fa.getField()
   )
@@ -308,8 +349,9 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
  * in `x.f = newValue`.
  */
 predicate clearsContent(Node n, ContentSet c) {
+  // setsInstanceField(c.(FieldContent).getField(), n, _)
   exists(FieldAccess fa |
-    instanceFieldAssign(_, fa) and
+    instanceFieldAssign(_, _, fa) and
     n = getFieldQualifier(fa) and
     c.(FieldContent).getField() = fa.getField()
   )
@@ -352,6 +394,7 @@ class DataFlowType extends SrcRefType {
 pragma[nomagic]
 predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { t1.getASourceSupertype+() = t2 }
 
+// predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 pragma[noinline]
 DataFlowType getNodeType(Node n) {
   result = getErasedRepr(n.getTypeBound())
@@ -369,6 +412,12 @@ string ppReprType(DataFlowType t) {
 pragma[nomagic]
 private predicate compatibleTypes0(DataFlowType t1, DataFlowType t2) {
   erasedHaveIntersection(t1, t2)
+}
+
+private predicate sdef(DataFlowType t1, DataFlowType t2) {
+  t1.toString() = "String" and
+  t2.toString() = "ArrayList" and
+  compatibleTypes(t1, t2)
 }
 
 /**

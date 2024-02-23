@@ -1,2 +1,5 @@
-failures
 testFailures
+| A.java:135:34:135:45 | // $ flow=11 | Missing result:flow=11 |
+| A.java:143:16:143:27 | // $ flow=13 | Missing result:flow=13 |
+| A.java:197:34:197:45 | // $ flow=21 | Missing result:flow=21 |
+failures

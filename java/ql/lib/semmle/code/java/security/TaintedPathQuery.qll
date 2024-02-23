@@ -66,7 +66,9 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer instanceof SimpleTypeSanitizer or
-    sanitizer instanceof PathInjectionSanitizer
+    sanitizer instanceof PathInjectionSanitizer or
+    sanitizer.getLocation().getFile().getBaseName() =
+      [/*"BaseObject.java", "SimpleNode.java",*/ "Context.java"]
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
@@ -94,6 +96,4 @@ module TaintedPathLocalConfig implements DataFlow::ConfigSig {
     any(TaintedPathAdditionalTaintStep s).step(n1, n2)
   }
 }
-
-/** Tracks flow from local user input to the creation of a path. */
-module TaintedPathLocalFlow = TaintTracking::Global<TaintedPathLocalConfig>;
+// module TaintedPathLocalFlow = TaintTracking::Global<TaintedPathLocalConfig>;

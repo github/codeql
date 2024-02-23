@@ -33,6 +33,16 @@ private module DispatchImpl {
     result.asSummarizedCallable().getACall() = c.asCall()
   }
 
+  private DataFlowCallable testviableCallable(DataFlowCall c) {
+    result = viableCallable(c) and
+    result.asCallable().hasName("_getMember")
+  }
+
+  private DataFlowCallable viableCallable(DataFlowCall c, int k) {
+    result = viableCallable(c) and
+    k = strictcount(viableCallable(c))
+  }
+
   /**
    * Holds if the set of viable implementations that can be called by `ma`
    * might be improved by knowing the call context. This is the case if the
@@ -120,6 +130,26 @@ private module DispatchImpl {
    */
   predicate mayBenefitFromCallContext(DataFlowCall call) {
     mayBenefitFromCallContext(call.asCall(), _, _)
+  }
+
+  private DataFlowCallable testviableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
+    result = viableImplInCallContext(call, ctx) and
+    call.toString() = "getClassName(...)"
+  }
+
+  pragma[nomagic]
+  private predicate foo(DataFlowCall call, DataFlowCall ctx1, DataFlowCall ctx2) {
+    forex(DataFlowCallable c | c = viableImplInCallContext(call, ctx1) |
+      c = viableImplInCallContext(call, ctx2)
+    )
+  }
+
+  private DataFlowCallable testviableImplInCallContext(
+    DataFlowCall call, DataFlowCall ctx1, DataFlowCall ctx2
+  ) {
+    result = viableImplInCallContext(call, ctx1) and
+    foo(call, ctx1, ctx2) and
+    foo(call, ctx2, ctx1)
   }
 
   /**

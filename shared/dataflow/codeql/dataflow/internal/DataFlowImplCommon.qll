@@ -109,7 +109,7 @@ module MakeImplCommon<InputSig Lang> {
     predicate levelStepNoCall(Node n1, LocalSourceNode n2) { none() }
 
     predicate levelStepCall(Node n1, LocalSourceNode n2) {
-      argumentValueFlowsThrough(n1, TReadStepTypesNone(), n2)
+      argumentValueFlowsThrough(n1, _, TReadStepTypesNone(), n2)
     }
 
     // TODO: support setters
@@ -118,7 +118,7 @@ module MakeImplCommon<InputSig Lang> {
     private predicate loadStep0(Node n1, Node n2, Content f) {
       readSet(n1, f, n2)
       or
-      argumentValueFlowsThrough(n1, TReadStepTypesSome(_, f, _), n2)
+      argumentValueFlowsThrough(n1, _, TReadStepTypesSome(f, _), n2)
     }
 
     predicate loadStep(Node n1, LocalSourceNode n2, Content f) { loadStep0(n1, n2, f) }
@@ -660,73 +660,106 @@ module MakeImplCommon<InputSig Lang> {
          * If a read step was taken, then `read` captures the `Content`, the
          * container type, and the content type.
          */
-        predicate parameterValueFlow(ParamNode p, Node node, ReadStepTypesOption read) {
-          parameterValueFlow0(p, node, read) and
-          if node instanceof CastingNode
-          then
-            // normal flow through
-            read = TReadStepTypesNone() and
-            compatibleTypes(getNodeDataFlowType(p), getNodeDataFlowType(node))
-            or
-            // getter
-            compatibleTypes(read.getContentType(), getNodeDataFlowType(node))
-          else any()
+        predicate parameterValueFlow(
+          ParamNode p, Node node, DataFlowType t, ReadStepTypesOption read
+        ) {
+          exists(DataFlowType t0 |
+            parameterValueFlow0(p, node, t0, read) and
+            if node instanceof CastingNode
+            then
+              exists(DataFlowType nt | nt = getNodeDataFlowType(node) |
+                if typeStrongerThan(nt, t0)
+                then t = nt
+                else (
+                  compatibleTypes(nt, t0) and
+                  t = t0
+                )
+              )
+            else t = t0
+          )
+          //   // normal flow through
+          //   read = TReadStepTypesNone() and
+          //   compatibleTypes(getNodeDataFlowType(p), getNodeDataFlowType(node))
+          //   or
+          //   // getter
+          //   compatibleTypes(read.getContentType(), getNodeDataFlowType(node))
+          // else any()
         }
 
         pragma[nomagic]
-        private predicate parameterValueFlow0(ParamNode p, Node node, ReadStepTypesOption read) {
+        private predicate parameterValueFlow0(
+          ParamNode p, Node node, DataFlowType t, ReadStepTypesOption read
+        ) {
           p = node and
           Cand::cand(p, _) and
-          read = TReadStepTypesNone()
+          read = TReadStepTypesNone() and
+          t = getNodeDataFlowType(node)
           or
           // local flow
           exists(Node mid |
-            parameterValueFlow(p, mid, read) and
+            parameterValueFlow(p, mid, t, read) and
             simpleLocalFlowStep(mid, node) and
             validParameterAliasStep(mid, node)
           )
           or
           // read
-          exists(Node mid |
-            parameterValueFlow(p, mid, TReadStepTypesNone()) and
-            readStepWithTypes(mid, read.getContainerType(), read.getContent(), node,
-              read.getContentType()) and
+          exists(Node mid, DataFlowType t0, DataFlowType rt |
+            parameterValueFlow(p, mid, t0, TReadStepTypesNone()) and
+            rt = read.getContentType() and
+            readStepWithTypes(mid, t, read.getContent(), node, rt) and
             Cand::parameterValueFlowReturnCand(p, _, true) and
-            compatibleTypes(getNodeDataFlowType(p), read.getContainerType())
+            compatibleTypes(t0, rt)
           )
           or
-          parameterValueFlow0_0(TReadStepTypesNone(), p, node, read)
-        }
-
-        pragma[nomagic]
-        private predicate parameterValueFlow0_0(
-          ReadStepTypesOption mustBeNone, ParamNode p, Node node, ReadStepTypesOption read
-        ) {
           // flow through: no prior read
-          exists(ArgNode arg |
-            parameterValueFlowArg(p, arg, mustBeNone) and
-            argumentValueFlowsThrough(arg, read, node)
+          exists(ArgNode arg, DataFlowType t1, DataFlowType t2 |
+            parameterValueFlowArg(p, arg, t1, TReadStepTypesNone()) and
+            argumentValueFlowsThrough(arg, t2, read, node) and
+            if read = TReadStepTypesNone()
+            then
+              if typeStrongerThan(t1, t2)
+              then t = t1
+              else
+                if typeStrongerThan(t2, t1)
+                then t = t2
+                else (
+                  compatibleTypes(t1, t2) and t = t1
+                )
+            else t = t2
           )
           or
           // flow through: no read inside method
-          exists(ArgNode arg |
-            parameterValueFlowArg(p, arg, read) and
-            argumentValueFlowsThrough(arg, mustBeNone, node)
+          exists(ArgNode arg, DataFlowType t1, DataFlowType t2 |
+            parameterValueFlowArg(p, arg, t1, read) and
+            argumentValueFlowsThrough(arg, t2, TReadStepTypesNone(), node) and
+            if typeStrongerThan(t1, t2)
+            then t = t1
+            else
+              if typeStrongerThan(t2, t1)
+              then t = t2
+              else (
+                compatibleTypes(t1, t2) and t = t1
+              )
           )
         }
 
         pragma[nomagic]
-        private predicate parameterValueFlowArg(ParamNode p, ArgNode arg, ReadStepTypesOption read) {
-          parameterValueFlow(p, arg, read) and
+        private predicate parameterValueFlowArg(
+          ParamNode p, ArgNode arg, DataFlowType t, ReadStepTypesOption read
+        ) {
+          parameterValueFlow(p, arg, t, read) and
           Cand::argumentValueFlowsThroughCand(arg, _, _)
         }
 
         pragma[nomagic]
         private predicate argumentValueFlowsThrough0(
-          DataFlowCall call, ArgNode arg, ReturnKind kind, ReadStepTypesOption read
+          DataFlowCall call, ArgNode arg, ReturnKind kind, DataFlowType t, ReadStepTypesOption read
         ) {
-          exists(ParamNode param | viableParamArg(call, param, arg) |
-            parameterValueFlowReturn(param, kind, read)
+          exists(ParamNode param, DataFlowType pt, DataFlowType at |
+            viableParamArg(call, param, arg) and
+            parameterValueFlowReturn(param, kind, pt, read) and
+            at = getNodeDataFlowType(arg) and
+            if read = TReadStepTypesNone() and typeStrongerThan(at, pt) then t = at else t = pt
           )
         }
 
@@ -739,18 +772,27 @@ module MakeImplCommon<InputSig Lang> {
          * container type, and the content type.
          */
         cached
-        predicate argumentValueFlowsThrough(ArgNode arg, ReadStepTypesOption read, Node out) {
-          exists(DataFlowCall call, ReturnKind kind |
-            argumentValueFlowsThrough0(call, arg, kind, read) and
-            out = getAnOutNode(call, kind)
-          |
-            // normal flow through
-            read = TReadStepTypesNone() and
-            compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(out))
-            or
-            // getter
-            compatibleTypes(getNodeDataFlowType(arg), read.getContainerType()) and
-            compatibleTypes(read.getContentType(), getNodeDataFlowType(out))
+        predicate argumentValueFlowsThrough(
+          ArgNode arg, DataFlowType t, ReadStepTypesOption read, Node out
+        ) {
+          exists(DataFlowCall call, ReturnKind kind, DataFlowType at, DataFlowType ot |
+            argumentValueFlowsThrough0(call, arg, kind, at, read) and
+            out = getAnOutNode(call, kind) and
+            ot = getNodeDataFlowType(out) and
+            if typeStrongerThan(ot, at)
+            then t = ot
+            else (
+              t = at and
+              compatibleTypes(at, ot)
+            )
+            // |
+            //   // normal flow through
+            //   read = TReadStepTypesNone() and
+            //   compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(out))
+            //   or
+            //   // getter
+            //   compatibleTypes(getNodeDataFlowType(arg), read.getContainerType()) and
+            //   compatibleTypes(read.getContentType(), getNodeDataFlowType(out))
           )
         }
 
@@ -762,7 +804,7 @@ module MakeImplCommon<InputSig Lang> {
          * This predicate is exposed for testing only.
          */
         predicate getterStep(ArgNode arg, ContentSet c, Node out) {
-          argumentValueFlowsThrough(arg, TReadStepTypesSome(_, c, _), out)
+          argumentValueFlowsThrough(arg, _, TReadStepTypesSome(c, _), out)
         }
 
         /**
@@ -774,10 +816,10 @@ module MakeImplCommon<InputSig Lang> {
          * container type, and the content type.
          */
         private predicate parameterValueFlowReturn(
-          ParamNode p, ReturnKind kind, ReadStepTypesOption read
+          ParamNode p, ReturnKind kind, DataFlowType t, ReadStepTypesOption read
         ) {
           exists(ReturnNode ret |
-            parameterValueFlow(p, ret, read) and
+            parameterValueFlow(p, ret, t, read) and
             kind = ret.getKind()
           )
         }
@@ -893,7 +935,7 @@ module MakeImplCommon<InputSig Lang> {
      * node `n`, in the same callable, using only value-preserving steps.
      */
     private predicate parameterValueFlowsToPreUpdate(ParamNode p, PostUpdateNode n) {
-      parameterValueFlow(p, n.getPreUpdateNode(), TReadStepTypesNone())
+      parameterValueFlow(p, n.getPreUpdateNode(), _, TReadStepTypesNone())
     }
 
     cached
@@ -911,7 +953,7 @@ module MakeImplCommon<InputSig Lang> {
         n1 = node1.(PostUpdateNode).getPreUpdateNode() and
         n2 = node2.(PostUpdateNode).getPreUpdateNode()
       |
-        argumentValueFlowsThrough(n2, TReadStepTypesSome(containerType, c, contentType), n1)
+        argumentValueFlowsThrough(n2, containerType, TReadStepTypesSome(c, contentType), n1)
         or
         readSet(n2, c, n1) and
         contentType = getNodeDataFlowType(n1) and
@@ -953,10 +995,10 @@ module MakeImplCommon<InputSig Lang> {
           // from function input to output?
           fromPre = getAnOutNode(c, _) and
           toPre.(ArgNode).argumentOf(c, _) and
-          simpleLocalFlowStep(toPre.(ArgNode), fromPre)
+          simpleLocalFlowStep(toPre, fromPre)
         )
         or
-        argumentValueFlowsThrough(toPre, TReadStepTypesNone(), fromPre)
+        argumentValueFlowsThrough(toPre, _, TReadStepTypesNone(), fromPre)
       )
     }
 
@@ -1482,18 +1524,17 @@ module MakeImplCommon<InputSig Lang> {
 
   private newtype TReadStepTypesOption =
     TReadStepTypesNone() or
-    TReadStepTypesSome(DataFlowType container, ContentSet c, DataFlowType content) {
-      readStepWithTypes(_, container, c, _, content)
+    TReadStepTypesSome(ContentSet c, DataFlowType content) {
+      readStepWithTypes(_, _, c, _, content)
     }
 
   private class ReadStepTypesOption extends TReadStepTypesOption {
     predicate isSome() { this instanceof TReadStepTypesSome }
 
-    DataFlowType getContainerType() { this = TReadStepTypesSome(result, _, _) }
+    // DataFlowType getContainerType() { this = TReadStepTypesSome(result, _, _) }
+    ContentSet getContent() { this = TReadStepTypesSome(result, _) }
 
-    ContentSet getContent() { this = TReadStepTypesSome(_, result, _) }
-
-    DataFlowType getContentType() { this = TReadStepTypesSome(_, _, result) }
+    DataFlowType getContentType() { this = TReadStepTypesSome(_, result) }
 
     string toString() { if this.isSome() then result = "Some(..)" else result = "None()" }
   }
