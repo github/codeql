@@ -16,8 +16,7 @@ namespace Semmle.Autobuild.CSharp
 
         public BuildScript Analyse(IAutobuilder<CSharpAutobuildOptions> builder, bool auto)
         {
-            if (!builder.Options.Buildless
-                || builder.CodeQLExtractorLangRoot is null
+            if (builder.CodeQLExtractorLangRoot is null
                 || builder.CodeQlPlatform is null)
             {
                 return BuildScript.Failure;

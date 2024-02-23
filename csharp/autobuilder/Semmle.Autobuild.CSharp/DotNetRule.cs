@@ -85,27 +85,23 @@ namespace Semmle.Autobuild.CSharp
             var installScript = DownloadDotNet(builder, installDir, ensureDotNetAvailable);
             return BuildScript.Bind(installScript, installed =>
             {
-                Dictionary<string, string>? env;
+                var env = new Dictionary<string, string>
+                {
+                    { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
+                    { "MSBUILDDISABLENODEREUSE", "1" }
+                };
                 if (installed == 0)
                 {
                     // The installation succeeded, so use the newly installed .NET Core
                     var path = builder.Actions.GetEnvironmentVariable("PATH");
                     var delim = builder.Actions.IsWindows() ? ";" : ":";
-                    env = new Dictionary<string, string>{
-                            { "DOTNET_MULTILEVEL_LOOKUP", "false" }, // prevent look up of other .NET Core SDKs
-                            { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
-                            { "MSBUILDDISABLENODEREUSE", "1" },
-                            { "PATH", installDir + delim + path }
-                        };
+                    env.Add("DOTNET_MULTILEVEL_LOOKUP", "false"); // prevent look up of other .NET Core SDKs
+                    env.Add("PATH", installDir + delim + path);
                 }
                 else
                 {
                     // The .NET SDK was not installed, either because the installation failed or because it was already installed.
                     installDir = null;
-                    env = new Dictionary<string, string> {
-                            { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
-                            { "MSBUILDDISABLENODEREUSE", "1" }
-                        };
                 }
 
                 return f(installDir, env);
@@ -163,8 +159,7 @@ namespace Semmle.Autobuild.CSharp
 
             if (ensureDotNetAvailable)
             {
-                const string latestDotNetSdkVersion = "8.0.101";
-                return DownloadDotNetVersion(builder, installDir, latestDotNetSdkVersion, needExactVersion: false);
+                return DownloadDotNetVersion(builder, installDir, Constants.LatestDotNetSdkVersion, needExactVersion: false);
             }
 
             return BuildScript.Failure;
