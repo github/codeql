@@ -41,11 +41,11 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
   or
   c instanceof MapKeyContent and
   node2.getType() instanceof MapType and
-  exists(Write w | w.writesElement(node2, node1, _))
+  exists(Write w | w.writesElement(node2.(PostUpdateNode).getPreUpdateNode(), node1, _))
   or
   c instanceof MapValueContent and
   node2.getType() instanceof MapType and
-  exists(Write w | w.writesElement(node2, _, node1))
+  exists(Write w | w.writesElement(node2.(PostUpdateNode).getPreUpdateNode(), _, node1))
 }
 
 /**
