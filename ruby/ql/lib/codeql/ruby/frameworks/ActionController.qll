@@ -67,6 +67,8 @@ module ActionController {
  */
 class ActionControllerClass extends DataFlow::ClassNode {
   ActionControllerClass() {
+    // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
+    // treat it separately in case the `ApplicationController` definition is not in the database.
     this = DataFlow::getConstant("ApplicationController").getADescendentModule()
     or
     this = actionControllerBaseClass().getADescendentModule() and
@@ -97,8 +99,6 @@ class ActionControllerClass extends DataFlow::ClassNode {
 private DataFlow::ConstRef actionControllerBaseClass() {
   result =
     [
-      // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
-      // treat it separately in case the `ApplicationController` definition is not in the database.
       DataFlow::getConstant("ActionController").getConstant("Base"),
       // ActionController::Metal and ActionController::API technically don't contain all of the
       // methods available in Base, such as those for rendering views.
