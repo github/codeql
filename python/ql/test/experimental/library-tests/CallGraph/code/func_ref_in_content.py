@@ -26,7 +26,7 @@ def return_func_in_dict():
 dct = return_func_in_dict() # $ pt,tt=return_func_in_dict
 
 f4 = dct['func']
-f4() # $ MISSING: tt=func
+f4() # $ tt=func
 
 
 def return_func_in_dict_update():
