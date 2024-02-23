@@ -442,6 +442,11 @@ class ActionControllerSkipForgeryProtectionCall extends CsrfProtectionSetting::R
 }
 
 /**
+ * DEPRECATED: Use `ActionController::ProtectFromForgeryCall` instead.
+ */
+deprecated class ActionControllerProtectFromForgeryCall = ActionController::ProtectFromForgeryCall;
+
+/**
  * A call to `send_file`, which sends the file at the given path to the client.
  */
 private class SendFile extends FileSystemAccess::Range, Http::Server::HttpResponse::Range,
