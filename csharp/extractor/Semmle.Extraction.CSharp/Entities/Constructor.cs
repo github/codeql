@@ -32,9 +32,9 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.constructors(this, Symbol.ContainingType.Name, ContainingType, (Constructor)OriginalDefinition);
             trapFile.constructor_location(this, Location);
 
-            if (IsPrimary)
+            if (MakeSynthetic)
             {
-                // Create a synthetic empty body for primary constructors.
+                // Create a synthetic empty body for primary and default constructors.
                 Statements.SyntheticEmptyBlock.Create(Context, this, 0, Location);
             }
 
@@ -49,9 +49,9 @@ namespace Semmle.Extraction.CSharp.Entities
         protected override void ExtractInitializers(TextWriter trapFile)
         {
             // Do not extract initializers for constructed types.
-            // Only extract initializers for constructors with a body and primary constructors.
-            if (Block is null && ExpressionBody is null && !IsPrimary ||
-                !IsSourceDeclaration)
+            // Extract initializers for constructors with a body, primary constructors
+            // and default constructors for classes and structs declared in source code.
+            if (Block is null && ExpressionBody is null && !MakeSynthetic)
             {
                 return;
             }
@@ -160,6 +160,16 @@ namespace Semmle.Extraction.CSharp.Entities
                 .FirstOrDefault();
 
         private bool IsPrimary => PrimaryConstructorSyntax is not null;
+
+        // This is a default constructor in a class or struct declared in source.
+        private bool IsDefault =>
+            Symbol.IsImplicitlyDeclared &&
+            Symbol.ContainingType.FromSource() &&
+            Symbol.ContainingType.TypeKind is TypeKind.Class or TypeKind.Struct &&
+            Symbol.ContainingType.IsSourceDeclaration() &&
+            !Symbol.ContainingType.IsAnonymousType;
+
+        private bool MakeSynthetic => IsPrimary || IsDefault;
 
         [return: NotNullIfNotNull(nameof(constructor))]
         public static new Constructor? Create(Context cx, IMethodSymbol? constructor)

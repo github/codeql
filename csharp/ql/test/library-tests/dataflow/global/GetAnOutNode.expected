@@ -1,3 +1,4 @@
+| Capture.cs:5:7:5:13 | call to constructor Object | normal | Capture.cs:5:7:5:13 | call to constructor Object |
 | Capture.cs:33:9:33:40 | call to method Select<String,String> | normal | Capture.cs:33:9:33:40 | call to method Select<String,String> |
 | Capture.cs:33:9:33:50 | call to method ToArray<String> | normal | Capture.cs:33:9:33:50 | call to method ToArray<String> |
 | Capture.cs:71:9:71:21 | call to local function CaptureOut1 | captured sink30 | Capture.cs:71:9:71:21 | SSA call def(sink30) |
@@ -17,6 +18,7 @@
 | Capture.cs:191:20:191:22 | call to local function M | normal | Capture.cs:191:20:191:22 | call to local function M |
 | Capture.cs:194:22:194:32 | call to local function Id | normal | Capture.cs:194:22:194:32 | call to local function Id |
 | Capture.cs:196:20:196:25 | call to local function Id | normal | Capture.cs:196:20:196:25 | call to local function Id |
+| GlobalDataFlow.cs:13:14:13:21 | call to constructor Object | normal | GlobalDataFlow.cs:13:14:13:21 | call to constructor Object |
 | GlobalDataFlow.cs:26:9:26:26 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:26:9:26:26 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:30:9:30:29 | access to property NonSinkProperty0 | normal | GlobalDataFlow.cs:30:9:30:29 | access to property NonSinkProperty0 |
@@ -147,17 +149,20 @@
 | GlobalDataFlow.cs:249:24:249:34 | access to property Result | normal | GlobalDataFlow.cs:249:24:249:34 | access to property Result |
 | GlobalDataFlow.cs:300:17:300:38 | call to method ApplyFunc<T,T> | normal | GlobalDataFlow.cs:300:17:300:38 | call to method ApplyFunc<T,T> |
 | GlobalDataFlow.cs:389:16:389:19 | delegate call | normal | GlobalDataFlow.cs:389:16:389:19 | delegate call |
+| GlobalDataFlow.cs:415:11:415:14 | call to constructor Object | normal | GlobalDataFlow.cs:415:11:415:14 | call to constructor Object |
 | GlobalDataFlow.cs:448:22:448:65 | call to method Join | normal | GlobalDataFlow.cs:448:22:448:65 | call to method Join |
 | GlobalDataFlow.cs:451:23:451:65 | call to method Join | normal | GlobalDataFlow.cs:451:23:451:65 | call to method Join |
 | GlobalDataFlow.cs:457:20:457:49 | call to method Run<String> | normal | GlobalDataFlow.cs:457:20:457:49 | call to method Run<String> |
 | GlobalDataFlow.cs:458:25:458:50 | call to method ConfigureAwait | normal | GlobalDataFlow.cs:458:25:458:50 | call to method ConfigureAwait |
 | GlobalDataFlow.cs:459:23:459:44 | call to method GetAwaiter | normal | GlobalDataFlow.cs:459:23:459:44 | call to method GetAwaiter |
 | GlobalDataFlow.cs:460:22:460:40 | call to method GetResult | normal | GlobalDataFlow.cs:460:22:460:40 | call to method GetResult |
+| GlobalDataFlow.cs:476:18:476:28 | call to constructor Object | normal | GlobalDataFlow.cs:476:18:476:28 | call to constructor Object |
 | GlobalDataFlow.cs:488:18:488:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:488:18:488:34 | object creation of type SimpleClass |
 | GlobalDataFlow.cs:489:18:489:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:489:18:489:34 | object creation of type SimpleClass |
 | GlobalDataFlow.cs:494:18:494:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:494:18:494:34 | object creation of type SimpleClass |
 | GlobalDataFlow.cs:495:18:495:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:495:18:495:34 | object creation of type SimpleClass |
 | GlobalDataFlow.cs:496:18:496:34 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:496:18:496:34 | object creation of type SimpleClass |
+| GlobalDataFlow.cs:503:19:503:32 | call to constructor SimpleClass | normal | GlobalDataFlow.cs:503:19:503:32 | call to constructor SimpleClass |
 | GlobalDataFlow.cs:507:17:507:36 | object creation of type SubSimpleClass | normal | GlobalDataFlow.cs:507:17:507:36 | object creation of type SubSimpleClass |
 | GlobalDataFlow.cs:514:17:514:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:514:17:514:33 | object creation of type SimpleClass |
 | GlobalDataFlow.cs:522:17:522:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:522:17:522:33 | object creation of type SimpleClass |
@@ -165,6 +170,7 @@
 | GlobalDataFlow.cs:524:17:524:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:524:17:524:33 | object creation of type SimpleClass |
 | GlobalDataFlow.cs:545:17:545:33 | object creation of type SimpleClass | normal | GlobalDataFlow.cs:545:17:545:33 | object creation of type SimpleClass |
 | GlobalDataFlow.cs:558:44:558:47 | delegate call | normal | GlobalDataFlow.cs:558:44:558:47 | delegate call |
+| GlobalDataFlowStringBuilder.cs:13:14:13:34 | call to constructor Object | normal | GlobalDataFlowStringBuilder.cs:13:14:13:34 | call to constructor Object |
 | GlobalDataFlowStringBuilder.cs:19:9:19:20 | call to method Append | normal | GlobalDataFlowStringBuilder.cs:19:9:19:20 | call to method Append |
 | GlobalDataFlowStringBuilder.cs:24:9:24:27 | call to method Append | normal | GlobalDataFlowStringBuilder.cs:24:9:24:27 | call to method Append |
 | GlobalDataFlowStringBuilder.cs:29:18:29:36 | object creation of type StringBuilder | normal | GlobalDataFlowStringBuilder.cs:29:18:29:36 | object creation of type StringBuilder |
@@ -178,6 +184,7 @@
 | GlobalDataFlowStringBuilder.cs:44:9:44:18 | call to method Clear | normal | GlobalDataFlowStringBuilder.cs:44:9:44:18 | call to method Clear |
 | GlobalDataFlowStringBuilder.cs:45:23:45:35 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:45:23:45:35 | call to method ToString |
 | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString | normal | GlobalDataFlowStringBuilder.cs:49:21:49:33 | call to method ToString |
+| Splitting.cs:1:7:1:15 | call to constructor Object | normal | Splitting.cs:1:7:1:15 | call to constructor Object |
 | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): false] call to method Return<String> |
 | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> | normal | Splitting.cs:8:17:8:31 | [b (line 3): true] call to method Return<String> |
 | Splitting.cs:20:22:20:30 | call to method Return<String> | normal | Splitting.cs:20:22:20:30 | call to method Return<String> |
