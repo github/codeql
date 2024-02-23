@@ -1,6 +1,9 @@
 def func():
     print("func()")
 
+def func2():
+    print("func2()")
+
 def return_func():
     return func
 
@@ -32,12 +35,19 @@ f4() # $ tt=func
 def return_func_in_dict_update():
     d = {}
     d["func"] = func
+    d["func2"] = func2
+    d["contested"] = func
+    d["contested"] = func2
     return d
 
 dct2 = return_func_in_dict_update() # $ pt,tt=return_func_in_dict_update
 
 f5 = dct2['func']
 f5() # $ tt=func
+
+dct2['func2']() # $ tt=func2
+
+dct2['contested']() # $ tt=func2 SPURIOUS: tt=func
 
 
 def return_func_in_list():
