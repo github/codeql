@@ -208,16 +208,10 @@ predicate hasNodePath(ControlFlowReachabilityConfiguration conf, ExprNode n1, No
     cfn2 = n2.(ExprNode).getControlFlowNode()
   )
   or
-  exists(
-    ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef,
-    Ssa::ExplicitDefinition ssaDef
-  |
-    conf.hasDefPath(_, cfn, def, cfnDef)
-  |
+  exists(ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef |
+    conf.hasDefPath(_, cfn, def, cfnDef) and
     cfn = n1.getControlFlowNode() and
-    ssaDef.getADefinition() = def and
-    ssaDef.getControlFlowNode() = cfnDef and
-    n2.(SsaDefinitionExtNode).getDefinitionExt() = ssaDef
+    n2 = TAssignableDefinitionNode(def, cfnDef)
   )
 }
 
@@ -544,6 +538,13 @@ module LocalFlow {
     ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
     CilFlow::localFlowStepCil(nodeFrom, nodeTo)
+    or
+    exists(AssignableDefinition def, ControlFlow::Node cfn, Ssa::ExplicitDefinition ssaDef |
+      ssaDef.getADefinition() = def and
+      ssaDef.getControlFlowNode() = cfn and
+      nodeFrom = TAssignableDefinitionNode(def, cfn) and
+      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = ssaDef
+    )
   }
 
   /**
@@ -599,7 +600,7 @@ module LocalFlow {
     or
     hasNodePath(any(LocalExprStepConfiguration x), node1, node2) and
     (
-      node2 instanceof SsaDefinitionExtNode or
+      node2 instanceof AssignableDefinitionNode or
       node2.asExpr() instanceof Cast or
       node2.asExpr() instanceof AssignExpr
     )
@@ -906,6 +907,11 @@ private module Cached {
       not def.(Ssa::ExplicitDefinition).getADefinition() instanceof
         AssignableDefinitions::ImplicitParameterDefinition
     } or
+    TAssignableDefinitionNode(AssignableDefinition def, ControlFlow::Node cfn) {
+      cfn = def.getAControlFlowNode() and
+      // Handled by `TExplicitParameterNode` below
+      not def instanceof AssignableDefinitions::ImplicitParameterDefinition
+    } or
     TExplicitParameterNode(DotNet::Parameter p) {
       p = any(DataFlowCallable dfc).asCallable().getAParameter()
     } or
@@ -1044,15 +1050,7 @@ import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
-  exists(SsaImpl::DefinitionExt def | def = n.(SsaDefinitionExtNode).getDefinitionExt() |
-    def instanceof Ssa::PhiNode
-    or
-    def instanceof SsaImpl::PhiReadNode
-    or
-    def instanceof Ssa::ImplicitEntryDefinition
-    or
-    def instanceof Ssa::ImplicitCallDefinition
-  )
+  n instanceof SsaDefinitionExtNode
   or
   exists(Parameter p | p = n.(ParameterNode).getParameter() | not p.fromSource())
   or
@@ -1080,6 +1078,8 @@ predicate nodeIsHidden(Node n) {
   n instanceof InstanceParameterAccessNode
   or
   n instanceof PrimaryConstructorThisAccessNode
+  or
+  n = any(AssignableDefinitionNode def | not exists(def.getDefinition().getTargetAccess()))
 }
 
 /** A CIL SSA definition, viewed as a node in a data flow graph. */
@@ -1126,6 +1126,43 @@ class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
   override Location getLocationImpl() { result = def.getLocation() }
 
   override string toStringImpl() { result = def.toString() }
+}
+
+/** A definition, viewed as a node in a data flow graph. */
+class AssignableDefinitionNodeImpl extends NodeImpl, TAssignableDefinitionNode {
+  private AssignableDefinition def;
+  private ControlFlow::Node cfn_;
+
+  AssignableDefinitionNodeImpl() { this = TAssignableDefinitionNode(def, cfn_) }
+
+  /** Gets the underlying definition. */
+  AssignableDefinition getDefinition() { result = def }
+
+  /** Gets the underlying definition, at control flow node `cfn`, if any. */
+  AssignableDefinition getDefinitionAtNode(ControlFlow::Node cfn) {
+    result = def and
+    cfn = cfn_
+  }
+
+  override DataFlowCallable getEnclosingCallableImpl() {
+    result.asCallable() = cfn_.getEnclosingCallable()
+  }
+
+  override Type getTypeImpl() { result = def.getTarget().getType() }
+
+  override ControlFlow::Node getControlFlowNodeImpl() { result = cfn_ }
+
+  override Location getLocationImpl() {
+    result = def.getTargetAccess().getLocation()
+    or
+    not exists(def.getTargetAccess()) and result = def.getLocation()
+  }
+
+  override string toStringImpl() {
+    result = def.getTargetAccess().toString()
+    or
+    not exists(def.getTargetAccess()) and result = def.toString()
+  }
 }
 
 abstract class ParameterNodeImpl extends NodeImpl {
@@ -2021,12 +2058,11 @@ private PropertyContent getResultContent() {
 }
 
 private predicate primaryConstructorParameterStore(
-  SsaDefinitionExtNode node1, PrimaryConstructorParameterContent c, Node node2
+  AssignableDefinitionNode node1, PrimaryConstructorParameterContent c, Node node2
 ) {
-  exists(Ssa::ExplicitDefinition def, ControlFlow::Node cfn, Parameter p |
-    def = node1.getDefinitionExt() and
-    p = def.getSourceVariable().getAssignable() and
-    cfn = def.getControlFlowNode() and
+  exists(AssignableDefinition def, ControlFlow::Node cfn, Parameter p |
+    node1 = TAssignableDefinitionNode(def, cfn) and
+    p = def.getTarget() and
     node2 = TInstanceParameterAccessNode(cfn, true) and
     c.getParameter() = p
   )
@@ -2193,18 +2229,16 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       hasNodePath(x, node1, node2)
       or
       // item = variable in node1 = (..., variable, ...)
-      exists(AssignableDefinitions::TupleAssignmentDefinition tad, Ssa::ExplicitDefinition def |
-        node2.(SsaDefinitionExtNode).getDefinitionExt() = def and
-        def.getADefinition() = tad and
+      exists(AssignableDefinitions::TupleAssignmentDefinition tad |
+        node2.(AssignableDefinitionNode).getDefinition() = tad and
         tad.getLeaf() = item and
         hasNodePath(x, node1, node2)
       )
       or
       // item = variable in node1 = (..., variable, ...) in a case/is var (..., ...)
       te = any(PatternExpr pe).getAChildExpr*() and
-      exists(AssignableDefinitions::LocalVariableDefinition lvd, Ssa::ExplicitDefinition def |
-        node2.(SsaDefinitionExtNode).getDefinitionExt() = def and
-        def.getADefinition() = lvd and
+      exists(AssignableDefinitions::LocalVariableDefinition lvd |
+        node2.(AssignableDefinitionNode).getDefinition() = lvd and
         lvd.getDeclaration() = item and
         hasNodePath(x, node1, node2)
       )

@@ -40,10 +40,10 @@
 | GlobalDataFlow.cs:71:28:71:45 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:71:28:71:45 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:73:29:73:64 | call to method GetMethod | normal | GlobalDataFlow.cs:73:29:73:64 | call to method GetMethod |
 | GlobalDataFlow.cs:73:29:73:101 | call to method Invoke | normal | GlobalDataFlow.cs:73:29:73:101 | call to method Invoke |
-| GlobalDataFlow.cs:76:9:76:46 | call to method ReturnOut<String> | out parameter 1 | GlobalDataFlow.cs:76:30:76:34 | SSA def(sink2) |
-| GlobalDataFlow.cs:76:9:76:46 | call to method ReturnOut<String> | ref parameter 1 | GlobalDataFlow.cs:76:30:76:34 | SSA def(sink2) |
-| GlobalDataFlow.cs:79:9:79:46 | call to method ReturnRef<String> | out parameter 1 | GlobalDataFlow.cs:79:30:79:34 | SSA def(sink3) |
-| GlobalDataFlow.cs:79:9:79:46 | call to method ReturnRef<String> | ref parameter 1 | GlobalDataFlow.cs:79:30:79:34 | SSA def(sink3) |
+| GlobalDataFlow.cs:76:9:76:46 | call to method ReturnOut<String> | out parameter 1 | GlobalDataFlow.cs:76:30:76:34 | access to local variable sink2 |
+| GlobalDataFlow.cs:76:9:76:46 | call to method ReturnOut<String> | ref parameter 1 | GlobalDataFlow.cs:76:30:76:34 | access to local variable sink2 |
+| GlobalDataFlow.cs:79:9:79:46 | call to method ReturnRef<String> | out parameter 1 | GlobalDataFlow.cs:79:30:79:34 | access to local variable sink3 |
+| GlobalDataFlow.cs:79:9:79:46 | call to method ReturnRef<String> | ref parameter 1 | GlobalDataFlow.cs:79:30:79:34 | access to local variable sink3 |
 | GlobalDataFlow.cs:81:22:81:85 | call to method SelectEven<String,String> | normal | GlobalDataFlow.cs:81:22:81:85 | call to method SelectEven<String,String> |
 | GlobalDataFlow.cs:81:22:81:93 | call to method First<String> | normal | GlobalDataFlow.cs:81:22:81:93 | call to method First<String> |
 | GlobalDataFlow.cs:83:22:83:87 | call to method Select<String,String> | normal | GlobalDataFlow.cs:83:22:83:87 | call to method Select<String,String> |
@@ -55,25 +55,25 @@
 | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> | normal | GlobalDataFlow.cs:89:22:89:110 | call to method Aggregate<String,String,String> |
 | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> | normal | GlobalDataFlow.cs:91:22:91:110 | call to method Aggregate<String,String,String> |
 | GlobalDataFlow.cs:94:9:94:42 | call to method TryParse | normal | GlobalDataFlow.cs:94:9:94:42 | call to method TryParse |
-| GlobalDataFlow.cs:94:9:94:42 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:94:36:94:41 | SSA def(sink21) |
-| GlobalDataFlow.cs:94:9:94:42 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:94:36:94:41 | SSA def(sink21) |
+| GlobalDataFlow.cs:94:9:94:42 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 |
+| GlobalDataFlow.cs:94:9:94:42 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:94:36:94:41 | access to local variable sink21 |
 | GlobalDataFlow.cs:97:9:97:41 | call to method TryParse | normal | GlobalDataFlow.cs:97:9:97:41 | call to method TryParse |
-| GlobalDataFlow.cs:97:9:97:41 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:97:35:97:40 | SSA def(sink22) |
-| GlobalDataFlow.cs:97:9:97:41 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:97:35:97:40 | SSA def(sink22) |
+| GlobalDataFlow.cs:97:9:97:41 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:97:35:97:40 | access to local variable sink22 |
+| GlobalDataFlow.cs:97:9:97:41 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:97:35:97:40 | access to local variable sink22 |
 | GlobalDataFlow.cs:100:9:100:89 | call to method TryParse | normal | GlobalDataFlow.cs:100:9:100:89 | call to method TryParse |
-| GlobalDataFlow.cs:100:9:100:89 | call to method TryParse | out parameter 3 | GlobalDataFlow.cs:100:82:100:88 | SSA def(sink21b) |
-| GlobalDataFlow.cs:100:9:100:89 | call to method TryParse | ref parameter 3 | GlobalDataFlow.cs:100:82:100:88 | SSA def(sink21b) |
+| GlobalDataFlow.cs:100:9:100:89 | call to method TryParse | out parameter 3 | GlobalDataFlow.cs:100:82:100:88 | access to local variable sink21b |
+| GlobalDataFlow.cs:100:9:100:89 | call to method TryParse | ref parameter 3 | GlobalDataFlow.cs:100:82:100:88 | access to local variable sink21b |
 | GlobalDataFlow.cs:104:24:104:33 | call to method Return<String> | normal | GlobalDataFlow.cs:104:24:104:33 | call to method Return<String> |
 | GlobalDataFlow.cs:106:28:106:63 | call to method GetMethod | normal | GlobalDataFlow.cs:106:28:106:63 | call to method GetMethod |
 | GlobalDataFlow.cs:106:28:106:103 | call to method Invoke | normal | GlobalDataFlow.cs:106:28:106:103 | call to method Invoke |
-| GlobalDataFlow.cs:108:9:108:49 | call to method ReturnOut<String> | out parameter 1 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:108:9:108:49 | call to method ReturnOut<String> | ref parameter 1 | GlobalDataFlow.cs:108:27:108:34 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:110:9:110:49 | call to method ReturnOut<String> | out parameter 2 | GlobalDataFlow.cs:110:41:110:48 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:110:9:110:49 | call to method ReturnOut<String> | ref parameter 2 | GlobalDataFlow.cs:110:41:110:48 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:112:9:112:49 | call to method ReturnRef<String> | out parameter 1 | GlobalDataFlow.cs:112:27:112:34 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:112:9:112:49 | call to method ReturnRef<String> | ref parameter 1 | GlobalDataFlow.cs:112:27:112:34 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:114:9:114:49 | call to method ReturnRef<String> | out parameter 1 | GlobalDataFlow.cs:114:30:114:34 | SSA def(sink1) |
-| GlobalDataFlow.cs:114:9:114:49 | call to method ReturnRef<String> | ref parameter 1 | GlobalDataFlow.cs:114:30:114:34 | SSA def(sink1) |
+| GlobalDataFlow.cs:108:9:108:49 | call to method ReturnOut<String> | out parameter 1 | GlobalDataFlow.cs:108:27:108:34 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:108:9:108:49 | call to method ReturnOut<String> | ref parameter 1 | GlobalDataFlow.cs:108:27:108:34 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:110:9:110:49 | call to method ReturnOut<String> | out parameter 2 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:110:9:110:49 | call to method ReturnOut<String> | ref parameter 2 | GlobalDataFlow.cs:110:41:110:48 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:112:9:112:49 | call to method ReturnRef<String> | out parameter 1 | GlobalDataFlow.cs:112:27:112:34 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:112:9:112:49 | call to method ReturnRef<String> | ref parameter 1 | GlobalDataFlow.cs:112:27:112:34 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:114:9:114:49 | call to method ReturnRef<String> | out parameter 1 | GlobalDataFlow.cs:114:30:114:34 | access to local variable sink1 |
+| GlobalDataFlow.cs:114:9:114:49 | call to method ReturnRef<String> | ref parameter 1 | GlobalDataFlow.cs:114:30:114:34 | access to local variable sink1 |
 | GlobalDataFlow.cs:116:20:116:86 | call to method SelectEven<String,String> | normal | GlobalDataFlow.cs:116:20:116:86 | call to method SelectEven<String,String> |
 | GlobalDataFlow.cs:116:20:116:94 | call to method First<String> | normal | GlobalDataFlow.cs:116:20:116:94 | call to method First<String> |
 | GlobalDataFlow.cs:118:20:118:82 | call to method Select<String,String> | normal | GlobalDataFlow.cs:118:20:118:82 | call to method Select<String,String> |
@@ -86,11 +86,11 @@
 | GlobalDataFlow.cs:126:20:126:109 | call to method Aggregate<String,String,String> | normal | GlobalDataFlow.cs:126:20:126:109 | call to method Aggregate<String,String,String> |
 | GlobalDataFlow.cs:128:20:128:107 | call to method Aggregate<String,String,String> | normal | GlobalDataFlow.cs:128:20:128:107 | call to method Aggregate<String,String,String> |
 | GlobalDataFlow.cs:131:9:131:46 | call to method TryParse | normal | GlobalDataFlow.cs:131:9:131:46 | call to method TryParse |
-| GlobalDataFlow.cs:131:9:131:46 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:131:38:131:45 | SSA def(nonSink2) |
-| GlobalDataFlow.cs:131:9:131:46 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:131:38:131:45 | SSA def(nonSink2) |
+| GlobalDataFlow.cs:131:9:131:46 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:131:38:131:45 | access to local variable nonSink2 |
+| GlobalDataFlow.cs:131:9:131:46 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:131:38:131:45 | access to local variable nonSink2 |
 | GlobalDataFlow.cs:134:9:134:45 | call to method TryParse | normal | GlobalDataFlow.cs:134:9:134:45 | call to method TryParse |
-| GlobalDataFlow.cs:134:9:134:45 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:134:37:134:44 | SSA def(nonSink3) |
-| GlobalDataFlow.cs:134:9:134:45 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:134:37:134:44 | SSA def(nonSink3) |
+| GlobalDataFlow.cs:134:9:134:45 | call to method TryParse | out parameter 1 | GlobalDataFlow.cs:134:37:134:44 | access to local variable nonSink3 |
+| GlobalDataFlow.cs:134:9:134:45 | call to method TryParse | ref parameter 1 | GlobalDataFlow.cs:134:37:134:44 | access to local variable nonSink3 |
 | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> | normal | GlobalDataFlow.cs:138:45:138:64 | call to method ApplyFunc<String,String> |
 | GlobalDataFlow.cs:139:21:139:34 | delegate call | normal | GlobalDataFlow.cs:139:21:139:34 | delegate call |
 | GlobalDataFlow.cs:143:20:143:36 | delegate call | normal | GlobalDataFlow.cs:143:20:143:36 | delegate call |
@@ -98,18 +98,18 @@
 | GlobalDataFlow.cs:151:20:151:40 | call to method ApplyFunc<String,String> | normal | GlobalDataFlow.cs:151:20:151:40 | call to method ApplyFunc<String,String> |
 | GlobalDataFlow.cs:153:20:153:44 | call to method ApplyFunc<String,String> | normal | GlobalDataFlow.cs:153:20:153:44 | call to method ApplyFunc<String,String> |
 | GlobalDataFlow.cs:157:21:157:25 | call to method Out | normal | GlobalDataFlow.cs:157:21:157:25 | call to method Out |
-| GlobalDataFlow.cs:160:9:160:25 | call to method OutOut | out parameter 0 | GlobalDataFlow.cs:160:20:160:24 | SSA def(sink7) |
-| GlobalDataFlow.cs:160:9:160:25 | call to method OutOut | ref parameter 0 | GlobalDataFlow.cs:160:20:160:24 | SSA def(sink7) |
-| GlobalDataFlow.cs:163:9:163:25 | call to method OutRef | out parameter 0 | GlobalDataFlow.cs:163:20:163:24 | SSA def(sink8) |
-| GlobalDataFlow.cs:163:9:163:25 | call to method OutRef | ref parameter 0 | GlobalDataFlow.cs:163:20:163:24 | SSA def(sink8) |
+| GlobalDataFlow.cs:160:9:160:25 | call to method OutOut | out parameter 0 | GlobalDataFlow.cs:160:20:160:24 | access to local variable sink7 |
+| GlobalDataFlow.cs:160:9:160:25 | call to method OutOut | ref parameter 0 | GlobalDataFlow.cs:160:20:160:24 | access to local variable sink7 |
+| GlobalDataFlow.cs:163:9:163:25 | call to method OutRef | out parameter 0 | GlobalDataFlow.cs:163:20:163:24 | access to local variable sink8 |
+| GlobalDataFlow.cs:163:9:163:25 | call to method OutRef | ref parameter 0 | GlobalDataFlow.cs:163:20:163:24 | access to local variable sink8 |
 | GlobalDataFlow.cs:165:22:165:31 | call to method OutYield | normal | GlobalDataFlow.cs:165:22:165:31 | call to method OutYield |
 | GlobalDataFlow.cs:165:22:165:39 | call to method First<String> | normal | GlobalDataFlow.cs:165:22:165:39 | call to method First<String> |
 | GlobalDataFlow.cs:167:22:167:43 | call to method TaintedParam | normal | GlobalDataFlow.cs:167:22:167:43 | call to method TaintedParam |
 | GlobalDataFlow.cs:171:20:171:27 | call to method NonOut | normal | GlobalDataFlow.cs:171:20:171:27 | call to method NonOut |
-| GlobalDataFlow.cs:173:9:173:31 | call to method NonOutOut | out parameter 0 | GlobalDataFlow.cs:173:23:173:30 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:173:9:173:31 | call to method NonOutOut | ref parameter 0 | GlobalDataFlow.cs:173:23:173:30 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:175:9:175:31 | call to method NonOutRef | out parameter 0 | GlobalDataFlow.cs:175:23:175:30 | SSA def(nonSink0) |
-| GlobalDataFlow.cs:175:9:175:31 | call to method NonOutRef | ref parameter 0 | GlobalDataFlow.cs:175:23:175:30 | SSA def(nonSink0) |
+| GlobalDataFlow.cs:173:9:173:31 | call to method NonOutOut | out parameter 0 | GlobalDataFlow.cs:173:23:173:30 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:173:9:173:31 | call to method NonOutOut | ref parameter 0 | GlobalDataFlow.cs:173:23:173:30 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:175:9:175:31 | call to method NonOutRef | out parameter 0 | GlobalDataFlow.cs:175:23:175:30 | access to local variable nonSink0 |
+| GlobalDataFlow.cs:175:9:175:31 | call to method NonOutRef | ref parameter 0 | GlobalDataFlow.cs:175:23:175:30 | access to local variable nonSink0 |
 | GlobalDataFlow.cs:177:20:177:32 | call to method NonOutYield | normal | GlobalDataFlow.cs:177:20:177:32 | call to method NonOutYield |
 | GlobalDataFlow.cs:177:20:177:40 | call to method First<String> | normal | GlobalDataFlow.cs:177:20:177:40 | call to method First<String> |
 | GlobalDataFlow.cs:179:20:179:44 | call to method NonTaintedParam | normal | GlobalDataFlow.cs:179:20:179:44 | call to method NonTaintedParam |
