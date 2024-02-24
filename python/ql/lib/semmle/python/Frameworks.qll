@@ -46,6 +46,7 @@ private import semmle.python.frameworks.MySQLdb
 private import semmle.python.frameworks.Numpy
 private import semmle.python.frameworks.Oracledb
 private import semmle.python.frameworks.Pandas
+private import semmle.python.frameworks.Paramiko
 private import semmle.python.frameworks.Peewee
 private import semmle.python.frameworks.Phoenixdb
 private import semmle.python.frameworks.Psycopg

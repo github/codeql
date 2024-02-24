@@ -1,5 +1,5 @@
 /**
- * @name RCE with user provided command with paramiko ssh client
+ * @name Command execution on a secondary remote server
  * @description user provided command can lead to execute code on a external server that can be belong to other users or admins
  * @kind path-problem
  * @problem.severity error
@@ -13,9 +13,9 @@
 
 import python
 import experimental.semmle.python.security.SecondaryServerCmdInjection
-import ParamikoFlow::PathGraph
+import SecondaryCommandInjectionFlow::PathGraph
 
-from ParamikoFlow::PathNode source, ParamikoFlow::PathNode sink
-where ParamikoFlow::flowPath(source, sink)
+from SecondaryCommandInjectionFlow::PathNode source, SecondaryCommandInjectionFlow::PathNode sink
+where SecondaryCommandInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This code execution depends on a $@.", source.getNode(),
   "a user-provided value"
