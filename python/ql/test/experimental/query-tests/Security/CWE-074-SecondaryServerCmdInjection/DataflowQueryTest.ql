@@ -1,0 +1,4 @@
+import python
+import experimental.dataflow.TestUtil.DataflowQueryTest
+import experimental.semmle.python.security.SecondaryServerCmdInjection
+import FromTaintTrackingConfig<ParamikoConfig>
