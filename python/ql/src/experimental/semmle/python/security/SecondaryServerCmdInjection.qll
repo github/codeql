@@ -1,27 +1,32 @@
-/**
- * @name RCE with user provided command with paramiko ssh client
- * @description user provided command can lead to execute code on a external server that can be belong to other users or admins
- * @kind path-problem
- * @problem.severity error
- * @security-severity 9.3
- * @precision high
- * @id py/paramiko-command-injection
- * @tags security
- *       experimental
- *       external/cwe/cwe-074
- */
-
 import python
-import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.ApiGraphs
+import semmle.python.dataflow.new.internal.DataFlowPublic
+import codeql.util.Unit
+
+module SecondaryCommandInjection {
+  /**
+   * The additional taint steps that need for creating taint tracking or dataflow.
+   */
+  class AdditionalTaintStep extends Unit {
+    /**
+     * Holds if there is a additional taint step between pred and succ.
+     */
+    abstract predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ);
+  }
+
+  /**
+   * A abstract class responsible for extending new decompression sinks
+   */
+  abstract class Sink extends DataFlow::Node { }
+}
 
 private API::Node paramikoClient() {
   result = API::moduleImport("paramiko").getMember("SSHClient").getReturn()
 }
 
-private module ParamikoConfig implements DataFlow::ConfigSig {
+module ParamikoConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   /**
@@ -50,10 +55,3 @@ private module ParamikoConfig implements DataFlow::ConfigSig {
 
 /** Global taint-tracking for detecting "paramiko command injection" vulnerabilities. */
 module ParamikoFlow = TaintTracking::Global<ParamikoConfig>;
-
-import ParamikoFlow::PathGraph
-
-from ParamikoFlow::PathNode source, ParamikoFlow::PathNode sink
-where ParamikoFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "This code execution depends on a $@.", source.getNode(),
-  "a user-provided value"
