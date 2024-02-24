@@ -2,16 +2,18 @@
 <qhelp>
     <overview>
         <p>
-            Processing an unvalidated user input can allow an attacker to inject arbitrary command in your local and remote servers when creating a ssh connection.
+            Running user-controlled values into a secondary remote servers without proper authorization can allow an attacker to inject arbitrary command in the secondary remote servers from within your primary remote servers.
         </p>
     </overview>
     <recommendation>
         <p>
-            This vulnerability can be prevented by not allowing untrusted user input to be passed as ProxyCommand or exec_command.
+            This vulnerability can be prevented by implementing proper authorization rules for untrusted user input that can be passed to your secondary servers.
         </p>
     </recommendation>
     <example>
-        <p>In the example below, the ProxyCommand and exec_command are controlled by the user and hence leads to a vulnerability.</p>
+        <p>In the example below, the exec_command is controlled by the user and hence leads to a vulnerability.</p>
         <sample src="paramikoBad.py" />
+        <p>In the example below, the exec_command is controlled by the an Authorized user and hence it is safe.</p>
+        <sample src="paramikoGood.py" />
     </example>
 </qhelp>

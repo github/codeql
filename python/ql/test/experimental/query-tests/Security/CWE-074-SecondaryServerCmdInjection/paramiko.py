@@ -23,5 +23,5 @@ async def read_item(cmd: str):
 
 @app.get("/bad3")
 async def read_item(cmd: str):
-    stdin, stdout, stderr = paramiko_ssh_client.connect('hostname', username='user',password='yourpassword',sock=paramiko.ProxyCommand(cmd))  # $ result=BAD
+    paramiko_ssh_client.connect('hostname', username='user',password='yourpassword',sock=paramiko.ProxyCommand(cmd))  # $ result=BAD
     return {"success": "OK"}
