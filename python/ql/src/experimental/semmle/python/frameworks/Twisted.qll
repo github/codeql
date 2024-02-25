@@ -14,7 +14,7 @@ import experimental.semmle.python.Concepts
 
 /**
  * Provides models for the `twisted` PyPI package.
- * See https://twistedmatrix.com/.
+ * See https://docs.twistedmatrix.com/en/stable/api/twisted.conch.endpoints.SSHCommandClientEndpoint.html
  */
 private module Twisted {
   /**
