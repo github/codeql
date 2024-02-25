@@ -8,7 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
-import experimental.semmle.python.security.SecondaryServerCmdInjectionCustomizations
+import experimental.semmle.python.Concepts
 
 /**
  * Provides models for the `scrapli` PyPI package.
@@ -33,7 +33,7 @@ private module Scrapli {
   /**
    * A `send_command` method responsible for executing commands on remote secondary servers.
    */
-  class ScrapliSendCommand extends SecondaryCommandInjection::Sink {
+  class ScrapliSendCommand extends SecondaryCommandInjection {
     ScrapliSendCommand() {
       this =
         scrapliCore()
