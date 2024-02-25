@@ -1,8 +1,8 @@
 edges
-| Crypto.go:16:9:16:16 | password | Crypto.go:19:25:19:27 | buf |
-| Crypto.go:16:9:16:16 | password | Crypto.go:22:10:22:12 | buf |
-| Crypto.go:16:9:16:16 | password | Crypto.go:25:16:25:18 | buf |
-| Crypto.go:16:9:16:16 | password | Crypto.go:28:11:28:13 | buf |
+| Crypto.go:16:9:16:16 | password | Crypto.go:19:25:19:27 | buf | provenance |  |
+| Crypto.go:16:9:16:16 | password | Crypto.go:22:10:22:12 | buf | provenance |  |
+| Crypto.go:16:9:16:16 | password | Crypto.go:25:16:25:18 | buf | provenance |  |
+| Crypto.go:16:9:16:16 | password | Crypto.go:28:11:28:13 | buf | provenance |  |
 nodes
 | Crypto.go:16:9:16:16 | password | semmle.label | password |
 | Crypto.go:19:25:19:27 | buf | semmle.label | buf |

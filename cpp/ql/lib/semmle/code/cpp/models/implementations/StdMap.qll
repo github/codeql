@@ -3,6 +3,7 @@
  */
 
 import semmle.code.cpp.models.interfaces.Taint
+import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Iterator
 
 /**
@@ -53,6 +54,8 @@ private class StdMapInsert extends TaintFunction {
       output.isReturnValue()
     )
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -75,6 +78,8 @@ private class StdMapEmplace extends TaintFunction {
     input.isQualifierObject() and
     output.isReturnValue()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -102,6 +107,8 @@ private class StdMapTryEmplace extends TaintFunction {
     input.isQualifierObject() and
     output.isReturnValue()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -115,6 +122,8 @@ private class StdMapMerge extends TaintFunction {
     input.isParameterDeref(0) and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -132,6 +141,8 @@ private class StdMapAt extends TaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**

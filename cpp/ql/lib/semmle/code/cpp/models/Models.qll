@@ -3,6 +3,7 @@ private import implementations.Deallocation
 private import implementations.Fread
 private import implementations.Getenv
 private import implementations.Gets
+private import implementations.GetText
 private import implementations.IdentityFunction
 private import implementations.Inet
 private import implementations.Iterator

@@ -31,6 +31,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             };
             // Set the .NET CLI language to English to avoid localized output.
             startInfo.EnvironmentVariables["DOTNET_CLI_UI_LANGUAGE"] = "en";
+            startInfo.EnvironmentVariables["MSBUILDDISABLENODEREUSE"] = "1";
+            startInfo.EnvironmentVariables["DOTNET_SKIP_FIRST_TIME_EXPERIENCE"] = "true";
             return startInfo;
         }
 

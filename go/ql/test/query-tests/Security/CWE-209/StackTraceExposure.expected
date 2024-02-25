@@ -1,5 +1,5 @@
 edges
-| test.go:14:2:14:4 | definition of buf | test.go:17:10:17:12 | buf |
+| test.go:14:2:14:4 | definition of buf | test.go:17:10:17:12 | buf | provenance |  |
 nodes
 | test.go:14:2:14:4 | definition of buf | semmle.label | definition of buf |
 | test.go:17:10:17:12 | buf | semmle.label | buf |

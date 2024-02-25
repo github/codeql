@@ -11,6 +11,9 @@ on:
       - ".github/workflows/mad_regenerate-models.yml"
       - ".github/actions/fetch-codeql/action.yml"
 
+permissions:
+  contents: read
+
 jobs:
   regenerate-models:
     runs-on: ubuntu-latest

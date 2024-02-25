@@ -29,7 +29,8 @@ class PackageJson extends JsonObject {
       parentDir.getAChildContainer+() = currentDir and
       pkgNameDiff = currentDir.getAbsolutePath().suffix(parentDir.getAbsolutePath().length()) and
       not exists(pkgNameDiff.indexOf("/node_modules/")) and
-      result = parentPkgName + pkgNameDiff
+      result = parentPkgName + pkgNameDiff and
+      not parentPkg.isPrivate()
     )
   }
 

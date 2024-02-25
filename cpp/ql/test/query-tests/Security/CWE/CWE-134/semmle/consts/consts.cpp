@@ -75,7 +75,7 @@ void a() {
  // GOOD: constFuncToArray() always returns a value from gc1, which is always constant
  printf(constFuncToArray(0));
   
- // BAD: format string is not constant
+ // BAD: format string is not constant [NOT DETECTED]
  char c8[10];
  sprintf(c8, "%d", 1);
  printf(c8);

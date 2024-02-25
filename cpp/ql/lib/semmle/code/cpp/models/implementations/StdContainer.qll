@@ -118,6 +118,8 @@ private class StdSequenceContainerData extends TaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -147,6 +149,8 @@ private class StdSequenceContainerPushModel extends StdSequenceContainerPush, Ta
     input.isParameterDeref(0) and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -207,6 +211,8 @@ private class StdSequenceContainerInsertModel extends StdSequenceContainerInsert
       output.isReturnValue()
     )
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -263,6 +269,8 @@ private class StdSequenceContainerAt extends TaintFunction {
     input.isReturnValueDeref() and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -297,6 +305,8 @@ private class StdSequenceEmplaceModel extends StdSequenceEmplace, TaintFunction 
       output.isReturnValue()
     )
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**
@@ -335,6 +345,8 @@ private class StdSequenceEmplaceBackModel extends StdSequenceEmplaceBack, TaintF
     input.isParameterDeref([0 .. this.getNumberOfParameters() - 1]) and
     output.isQualifierObject()
   }
+
+  override predicate isPartialWrite(FunctionOutput output) { output.isQualifierObject() }
 }
 
 /**

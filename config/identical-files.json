@@ -431,13 +431,6 @@
     "java/ql/src/experimental/Security/CWE/CWE-400/LocalThreadResourceAbuse.qhelp",
     "java/ql/src/experimental/Security/CWE/CWE-400/ThreadResourceAbuse.qhelp"
   ],
-  "IDE Contextual Queries": [
-    "cpp/ql/lib/IDEContextual.qll",
-    "csharp/ql/lib/IDEContextual.qll",
-    "java/ql/lib/IDEContextual.qll",
-    "javascript/ql/lib/IDEContextual.qll",
-    "python/ql/lib/analysis/IDEContextual.qll"
-  ],
   "CryptoAlgorithms Python/JS/Ruby": [
     "javascript/ql/lib/semmle/javascript/security/CryptoAlgorithms.qll",
     "python/ql/lib/semmle/python/concepts/CryptoAlgorithms.qll",

@@ -109,18 +109,13 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
 }
 
 /** A definition, viewed as a node in a data flow graph. */
-class AssignableDefinitionNode extends Node, TSsaDefinitionExtNode {
-  private Ssa::ExplicitDefinition edef;
-
-  AssignableDefinitionNode() { this = TSsaDefinitionExtNode(edef) }
-
+class AssignableDefinitionNode extends Node instanceof AssignableDefinitionNodeImpl {
   /** Gets the underlying definition. */
-  AssignableDefinition getDefinition() { result = this.getDefinitionAtNode(_) }
+  AssignableDefinition getDefinition() { result = super.getDefinition() }
 
   /** Gets the underlying definition, at control flow node `cfn`, if any. */
   AssignableDefinition getDefinitionAtNode(ControlFlow::Node cfn) {
-    result = edef.getADefinition() and
-    cfn = edef.getControlFlowNode()
+    result = super.getDefinitionAtNode(cfn)
   }
 }
 
@@ -235,6 +230,23 @@ class PropertyContent extends Content, TPropertyContent {
   Property getProperty() { result = p }
 
   override string toString() { result = "property " + p.getName() }
+
+  override Location getLocation() { result = p.getLocation() }
+}
+
+/**
+ * A reference to a synthetic field corresponding to a
+ * primary constructor parameter.
+ */
+class PrimaryConstructorParameterContent extends Content, TPrimaryConstructorParameterContent {
+  private Parameter p;
+
+  PrimaryConstructorParameterContent() { this = TPrimaryConstructorParameterContent(p) }
+
+  /** Gets the underlying parameter. */
+  Parameter getParameter() { result = p }
+
+  override string toString() { result = "parameter " + p.getName() }
 
   override Location getLocation() { result = p.getLocation() }
 }

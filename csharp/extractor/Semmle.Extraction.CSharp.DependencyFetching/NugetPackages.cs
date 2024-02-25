@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using Microsoft.Build.Framework;
 using Semmle.Util;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// Locates packages in a source tree and downloads all of the
     /// referenced assemblies to a temp folder.
     /// </summary>
-    internal class NugetPackages
+    internal class NugetPackages : IDisposable
     {
         private readonly string? nugetExe;
         private readonly Util.Logging.ILogger logger;
@@ -21,6 +21,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// The list of package files.
         /// </summary>
         private readonly FileInfo[] packageFiles;
+
+        public int PackageCount => packageFiles.Length;
+
+        private readonly string? backupNugetConfig;
+        private readonly string? nugetConfigPath;
 
         /// <summary>
         /// The computed packages directory.
@@ -45,6 +50,41 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 logger.LogInfo($"Found {packageFiles.Length} packages.config files, trying to use nuget.exe for package restore");
                 nugetExe = ResolveNugetExe(sourceDir);
+                if (HasNoPackageSource())
+                {
+                    // We only modify or add a top level nuget.config file
+                    nugetConfigPath = Path.Combine(sourceDir, "nuget.config");
+                    try
+                    {
+                        if (File.Exists(nugetConfigPath))
+                        {
+                            var tempFolderPath = FileUtils.GetTemporaryWorkingDirectory(out var _);
+
+                            do
+                            {
+                                backupNugetConfig = Path.Combine(tempFolderPath, Path.GetRandomFileName());
+                            }
+                            while (File.Exists(backupNugetConfig));
+                            File.Copy(nugetConfigPath, backupNugetConfig, true);
+                        }
+                        else
+                        {
+                            File.WriteAllText(nugetConfigPath,
+                                """
+                                <?xml version="1.0" encoding="utf-8"?>
+                                <configuration>
+                                  <packageSources>
+                                  </packageSources>
+                                </configuration>
+                                """);
+                        }
+                        AddDefaultPackageSource(nugetConfigPath);
+                    }
+                    catch (Exception e)
+                    {
+                        logger.LogError($"Failed to add default package source to {nugetConfigPath}: {e}");
+                    }
+                }
             }
             else
             {
@@ -105,7 +145,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// Restore all files in a specified package.
         /// </summary>
         /// <param name="package">The package file.</param>
-        private void RestoreNugetPackage(string package)
+        private bool TryRestoreNugetPackage(string package)
         {
             logger.LogInfo($"Restoring file {package}...");
 
@@ -116,15 +156,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
              */
 
             string exe, args;
-            if (Util.Win32.IsWindows())
+            if (Win32.IsWindows())
             {
                 exe = nugetExe!;
-                args = string.Format("install -OutputDirectory {0} {1}", packageDirectory, package);
+                args = $"install -OutputDirectory {packageDirectory} {package}";
             }
             else
             {
                 exe = "mono";
-                args = string.Format("{0} install -OutputDirectory {1} {2}", nugetExe, packageDirectory, package);
+                args = $"{nugetExe} install -OutputDirectory {packageDirectory} {package}";
             }
 
             var pi = new ProcessStartInfo(exe, args)
@@ -141,21 +181,102 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (exitCode != 0)
             {
                 logger.LogError($"Command {pi.FileName} {pi.Arguments} failed with exit code {exitCode}");
+                return false;
             }
             else
             {
                 logger.LogInfo($"Restored file {package}");
+                return true;
             }
         }
 
         /// <summary>
         /// Download the packages to the temp folder.
         /// </summary>
-        public void InstallPackages()
+        public int InstallPackages()
         {
-            foreach (var package in packageFiles)
+            return packageFiles.Count(package => TryRestoreNugetPackage(package.FullName));
+        }
+
+        private bool HasNoPackageSource()
+        {
+            if (Win32.IsWindows())
             {
-                RestoreNugetPackage(package.FullName);
+                return false;
+            }
+
+            try
+            {
+                logger.LogInfo("Checking if default package source is available...");
+                RunMonoNugetCommand("sources list -ForceEnglishOutput", out var stdout);
+                if (stdout.All(line => line != "No sources found."))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                logger.LogWarning($"Failed to check if default package source is added: {e}");
+                return false;
+            }
+        }
+
+        private void RunMonoNugetCommand(string command, out IList<string> stdout)
+        {
+            var exe = "mono";
+            var args = $"{nugetExe} {command}";
+            var pi = new ProcessStartInfo(exe, args)
+            {
+                RedirectStandardOutput = true,
+                RedirectStandardError = true,
+                UseShellExecute = false
+            };
+
+            var threadId = Environment.CurrentManagedThreadId;
+            void onOut(string s) => logger.LogInfo(s, threadId);
+            void onError(string s) => logger.LogError(s, threadId);
+            pi.ReadOutput(out stdout, onOut, onError);
+        }
+
+        private void AddDefaultPackageSource(string nugetConfig)
+        {
+            logger.LogInfo("Adding default package source...");
+            RunMonoNugetCommand($"sources add -Name DefaultNugetOrg -Source https://api.nuget.org/v3/index.json -ConfigFile \"{nugetConfig}\"", out var _);
+        }
+
+        public void Dispose()
+        {
+            if (nugetConfigPath is null)
+            {
+                return;
+            }
+
+            try
+            {
+                if (backupNugetConfig is null)
+                {
+                    logger.LogInfo("Removing nuget.config file");
+                    File.Delete(nugetConfigPath);
+                    return;
+                }
+
+                logger.LogInfo("Reverting nuget.config file content");
+                // The content of the original nuget.config file is reverted without changing the file's attributes or casing:
+                using (var backup = File.OpenRead(backupNugetConfig))
+                using (var current = File.OpenWrite(nugetConfigPath))
+                {
+                    current.SetLength(0);   // Truncate file
+                    backup.CopyTo(current); // Restore original content
+                }
+
+                logger.LogInfo("Deleting backup nuget.config file");
+                File.Delete(backupNugetConfig);
+            }
+            catch (Exception exc)
+            {
+                logger.LogError($"Failed to restore original nuget.config file: {exc}");
             }
         }
     }
