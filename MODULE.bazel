@@ -59,11 +59,11 @@ crate = use_extension(
 )
 
 crate.from_cargo(
-    name = "ruby_deps",  # short name due to long path issues on windows
+    name = "r",  # short name due to long path issues on windows
     cargo_lockfile = "//ruby/extractor:Cargo.lock",
     manifests = [
         "//ruby/extractor:Cargo.toml",
     ],
 )
 
-use_repo(crate, "ruby_deps")
+use_repo(crate, "r")
