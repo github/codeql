@@ -10,6 +10,7 @@ private import experimental.semmle.python.frameworks.Werkzeug
 private import experimental.semmle.python.frameworks.LDAP
 private import experimental.semmle.python.frameworks.Netmiko
 private import experimental.semmle.python.frameworks.Paramiko
+private import experimental.semmle.python.frameworks.Pexpect
 private import experimental.semmle.python.frameworks.Scrapli
 private import experimental.semmle.python.frameworks.JWT
 private import experimental.semmle.python.frameworks.Csv

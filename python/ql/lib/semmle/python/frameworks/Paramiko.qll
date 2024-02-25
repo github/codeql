@@ -14,7 +14,7 @@ private import semmle.python.ApiGraphs
  * See https://pypi.org/project/paramiko/.
  */
 private module Paramiko {
-  /*
+  /**
    * The first argument of `paramiko.ProxyCommand`.
    *
    * the `paramiko.ProxyCommand` is equivalent of `ssh -o ProxyCommand="CMD"`
@@ -22,7 +22,6 @@ private module Paramiko {
    *
    * See https://paramiko.pydata.org/docs/reference/api/paramiko.eval.html
    */
-
   class ParamikoProxyCommand extends SystemCommandExecution::Range, API::CallNode {
     ParamikoProxyCommand() {
       this = API::moduleImport("paramiko").getMember("ProxyCommand").getACall()
