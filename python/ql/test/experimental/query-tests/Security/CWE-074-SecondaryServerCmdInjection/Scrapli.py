@@ -8,14 +8,6 @@ from scrapli.driver import GenericDriver
 
 
 app = FastAPI()
-cisco_881 = {
-    'device_type': 'cisco_ios',
-    'host': '10.10.10.10',
-    'username': 'test',
-    'password': 'password',
-    'port': 8022,  # optional, defaults to 22
-    'secret': 'secret',  # optional, defaults to ''
-}
 
 @app.get("/bad1")
 async def bad1(cmd: str):
