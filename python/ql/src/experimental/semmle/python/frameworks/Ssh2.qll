@@ -8,7 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
-import experimental.semmle.python.security.SecondaryServerCmdInjectionCustomizations
+import experimental.semmle.python.Concepts
 
 /**
  * Provides models for the `ssh2-python` PyPI package.
@@ -21,19 +21,16 @@ private module Ssh2 {
   private API::Node ssh2() { result = API::moduleImport("ssh2") }
 
   /**
-   * Gets `ssh2.session` package.
-   */
-  private API::Node ssh2Session() { result = API::moduleImport("ssh2").getMember("session") }
-
-  /**
    * Gets `ssh2.session.Session` return value.
    */
-  private API::Node ssh2Session() { result = ssh2Session().getMember("Session").getReturn() }
+  private API::Node ssh2Session() {
+    result = ssh2().getMember("session").getMember("Session").getReturn()
+  }
 
   /**
    * A `execute` method responsible for executing commands on remote secondary servers.
    */
-  class Ssh2Execute extends SecondaryCommandInjection::Sink {
+  class Ssh2Execute extends SecondaryCommandInjection {
     Ssh2Execute() {
       this =
         ssh2Session()

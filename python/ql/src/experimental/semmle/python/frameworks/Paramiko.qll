@@ -8,7 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
-import experimental.semmle.python.security.SecondaryServerCmdInjectionCustomizations
+import experimental.semmle.python.Concepts
 
 /**
  * Provides models for the `paramiko` PyPI package.
@@ -28,7 +28,7 @@ private module Paramiko {
   /**
    * The `exec_command` of `paramiko.SSHClient` class execute command on ssh target server
    */
-  class ParamikoExecCommand extends SecondaryCommandInjection::Sink {
+  class ParamikoExecCommand extends SecondaryCommandInjection {
     ParamikoExecCommand() {
       this =
         paramikoClient().getMember("exec_command").getACall().getParameter(0, "command").asSink()

@@ -8,7 +8,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
-import experimental.semmle.python.security.SecondaryServerCmdInjectionCustomizations
+import experimental.semmle.python.Concepts
 
 /**
  * Provides models for the `netmiko` PyPI package.
@@ -30,7 +30,7 @@ private module Netmiko {
   /**
    * The `send_*` methods responsible for executing commands on remote secondary servers.
    */
-  class NetmikoSendCommand extends SecondaryCommandInjection::Sink {
+  class NetmikoSendCommand extends SecondaryCommandInjection {
     NetmikoSendCommand() {
       this =
         netmikoConnectHandler()
