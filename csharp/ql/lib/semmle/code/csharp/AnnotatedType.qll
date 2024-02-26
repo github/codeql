@@ -174,7 +174,7 @@ private module Annotations {
   Nullability getChildNullability(Nullability n, int i) {
     result = getChildNullability0(n, i)
     or
-    not exists(getChildNullability0(n, _)) and
+    not exists(getChildNullability0(n, i)) and
     result = n
   }
 
