@@ -3,7 +3,7 @@
 | arguments.c | 3 | --edg |
 | arguments.c | 4 | --disable_system_macros |
 | arguments.c | 5 | --edg |
-| arguments.c | 6 | --verbosity |
+| arguments.c | 6 | --codeql-verbosity |
 | arguments.c | 7 | --edg |
 | arguments.c | 8 | 2 |
 | arguments.c | 9 | --edg |
