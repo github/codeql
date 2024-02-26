@@ -159,6 +159,11 @@ private module Annotations {
     getNoFlagsNullability(result) = getChildNullability(annotations.getNullability(), i)
   }
 
+  pragma[nomagic]
+  private Nullability getChildNullability0(Nullability n, int i) {
+    nullability_parent(getNullability(result), i, getNullability(n))
+  }
+
   /**
    * Gets the `i`th child of nullability `n`.
    * Returns `n` if the nullability is not explicitly
@@ -167,9 +172,10 @@ private module Annotations {
    */
   bindingset[i]
   Nullability getChildNullability(Nullability n, int i) {
-    if nullability_parent(_, i, getNullability(n))
-    then nullability_parent(getNullability(result), i, getNullability(n))
-    else result = n
+    result = getChildNullability0(n, i)
+    or
+    not exists(getChildNullability0(n, i)) and
+    result = n
   }
 
   /**
@@ -276,6 +282,11 @@ private Annotations::Nullability getElementNullability(@has_type_annotation elem
   else result instanceof Annotations::NoNullability
 }
 
+pragma[nomagic]
+private predicate isNoFlagsNoNullability(Annotations::TypeAnnotations annotations) {
+  Annotations::getNoFlagsNullability(annotations) instanceof Annotations::NoNullability
+}
+
 private newtype TAnnotatedType =
   TAnnotatedTypeNullability(Type type, Annotations::TypeAnnotations annotations) {
     Annotations::elementTypeAnnotations(_, type, annotations)
@@ -288,7 +299,7 @@ private newtype TAnnotatedType =
     Annotations::getNoFlagsNullability(annotations) = getTypeParameterNullability(_, type)
     or
     // All types have at least one annotated type
-    Annotations::getNoFlagsNullability(annotations) instanceof Annotations::NoNullability
+    isNoFlagsNoNullability(annotations) and exists(type)
     or
     exists(AnnotatedArrayType at |
       type = at.getType().(ArrayType).getElementType() and
