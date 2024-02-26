@@ -7,6 +7,8 @@
 // non-monotonic recursion errors in queries that use both the data flow
 // library and the `SubBasicBlocks` library.
 /**
+ * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+ *
  * Provides the `SubBasicBlock` class, used for partitioning basic blocks in
  * smaller pieces.
  */
