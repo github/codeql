@@ -25,7 +25,10 @@ class ActorCheckStmt extends IfStmt {
  * An If node that contains a `label` check
  */
 class LabelCheckStmt extends IfStmt {
-  LabelCheckStmt() { this.getCondition().regexpMatch(".*github\\.event\\.pull_request\\.labels.*") }
+  LabelCheckStmt() {
+    this.getCondition().regexpMatch(".*github\\.event\\.pull_request\\.labels.*") or
+    this.getCondition().regexpMatch(".*github\\.event\\.label\\.name.*")
+  }
 }
 
 from WorkflowStmt w, JobStmt job, StepUsesExpr checkoutStep
