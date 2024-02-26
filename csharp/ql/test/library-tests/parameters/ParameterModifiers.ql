@@ -15,3 +15,5 @@ query predicate parameterIsOut(TestParameter p) { p.isOut() }
 query predicate parameterIsRef(TestParameter p) { p.isRef() }
 
 query predicate parameterIsParams(TestParameter p) { p.isParams() }
+
+query predicate parameterIsReadonlyRef(TestParameter p) { p.isReadonlyRef() }
