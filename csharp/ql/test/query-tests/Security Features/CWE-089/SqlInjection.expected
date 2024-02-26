@@ -1,16 +1,17 @@
 edges
-<<<<<<< HEAD
-| SqlInjection.cs:32:21:32:26 | access to local variable query1 : String | SqlInjection.cs:34:50:34:55 | access to local variable query1 | provenance |  |
-=======
 | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | provenance |  |
-| SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | provenance |  |
-| SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader | SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader | provenance |  |
+| SecondOrderSqlInjection.cs:33:31:33:32 | access to local variable fs : FileStream | SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | provenance |  |
+| SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | SecondOrderSqlInjection.cs:33:31:33:32 | access to local variable fs : FileStream | provenance |  |
+| SecondOrderSqlInjection.cs:35:37:35:38 | access to local variable sr : StreamReader | SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader | provenance |  |
+| SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader | SecondOrderSqlInjection.cs:35:37:35:38 | access to local variable sr : StreamReader | provenance |  |
 | SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader | provenance |  |
+| SecondOrderSqlInjection.cs:38:29:38:31 | access to local variable sql : String | SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | provenance |  |
 | SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader | SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | provenance |  |
-| SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | provenance |  |
+| SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | SecondOrderSqlInjection.cs:38:29:38:31 | access to local variable sql : String | provenance |  |
+| SecondOrderSqlInjection.cs:40:25:40:27 | access to local variable sql : String | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | provenance |  |
 | SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | provenance |  |
-| SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | provenance |  |
->>>>>>> 1ebb89f785 (Fix test expectations)
+| SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | SecondOrderSqlInjection.cs:40:25:40:27 | access to local variable sql : String | provenance |  |
+| SqlInjection.cs:32:21:32:26 | access to local variable query1 : String | SqlInjection.cs:34:50:34:55 | access to local variable query1 | provenance |  |
 | SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | SqlInjection.cs:33:21:33:40 | access to property Text : String | provenance |  |
 | SqlInjection.cs:33:21:33:40 | access to property Text : String | SqlInjection.cs:32:21:32:26 | access to local variable query1 : String | provenance |  |
 | SqlInjection.cs:67:25:67:30 | access to local variable query1 : String | SqlInjection.cs:69:56:69:61 | access to local variable query1 | provenance |  |
@@ -61,20 +62,21 @@ edges
 | SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | provenance |  |
 | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | SqlInjectionSqlite.cs:56:25:56:27 | access to local variable sql : String | provenance |  |
 nodes
-<<<<<<< HEAD
-| SqlInjection.cs:32:21:32:26 | access to local variable query1 : String | semmle.label | access to local variable query1 : String |
-=======
 | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | semmle.label | ... + ... |
 | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | semmle.label | call to method GetString : String |
+| SecondOrderSqlInjection.cs:33:31:33:32 | access to local variable fs : FileStream | semmle.label | access to local variable fs : FileStream |
 | SecondOrderSqlInjection.cs:33:36:33:78 | object creation of type FileStream : FileStream | semmle.label | object creation of type FileStream : FileStream |
+| SecondOrderSqlInjection.cs:35:37:35:38 | access to local variable sr : StreamReader | semmle.label | access to local variable sr : StreamReader |
 | SecondOrderSqlInjection.cs:35:42:35:76 | object creation of type StreamReader : StreamReader | semmle.label | object creation of type StreamReader : StreamReader |
 | SecondOrderSqlInjection.cs:35:59:35:60 | access to local variable fs : FileStream | semmle.label | access to local variable fs : FileStream |
+| SecondOrderSqlInjection.cs:38:29:38:31 | access to local variable sql : String | semmle.label | access to local variable sql : String |
 | SecondOrderSqlInjection.cs:38:35:38:36 | access to local variable sr : StreamReader | semmle.label | access to local variable sr : StreamReader |
 | SecondOrderSqlInjection.cs:38:35:38:47 | call to method ReadLine : String | semmle.label | call to method ReadLine : String |
+| SecondOrderSqlInjection.cs:40:25:40:27 | access to local variable sql : String | semmle.label | access to local variable sql : String |
 | SecondOrderSqlInjection.cs:40:31:40:33 | access to local variable sql : String | semmle.label | access to local variable sql : String |
 | SecondOrderSqlInjection.cs:40:31:40:40 | call to method Trim : String | semmle.label | call to method Trim : String |
 | SecondOrderSqlInjection.cs:45:57:45:59 | access to local variable sql | semmle.label | access to local variable sql |
->>>>>>> 1ebb89f785 (Fix test expectations)
+| SqlInjection.cs:32:21:32:26 | access to local variable query1 : String | semmle.label | access to local variable query1 : String |
 | SqlInjection.cs:33:21:33:35 | access to field categoryTextBox : TextBox | semmle.label | access to field categoryTextBox : TextBox |
 | SqlInjection.cs:33:21:33:40 | access to property Text : String | semmle.label | access to property Text : String |
 | SqlInjection.cs:34:50:34:55 | access to local variable query1 | semmle.label | access to local variable query1 |
