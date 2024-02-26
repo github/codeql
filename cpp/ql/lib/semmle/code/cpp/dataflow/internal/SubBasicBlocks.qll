@@ -1,14 +1,12 @@
 // NOTE: There are two copies of this file, and they must be kept identical:
 // - semmle/code/cpp/controlflow/SubBasicBlocks.qll
-// - semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll
+// - semmle/code/cpp/dataflow/internal/SubBasicBlocks.qll [now DEPRECATED]
 //
 // The second one is a private copy of the `SubBasicBlocks` library for
 // internal use by the data flow library. Having an extra copy prevents
 // non-monotonic recursion errors in queries that use both the data flow
 // library and the `SubBasicBlocks` library.
 /**
- * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow` instead.
- *
  * Provides the `SubBasicBlock` class, used for partitioning basic blocks in
  * smaller pieces.
  */
