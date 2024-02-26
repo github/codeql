@@ -1,5 +1,6 @@
 using System;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
@@ -150,3 +151,4 @@ class Class1
     [Params(args: new[] { 1 }, s2: "b", s1: "a")]
     public void M4() { }
 }
+
