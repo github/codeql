@@ -29,10 +29,12 @@ private module UnsafeYamlDeserializationConfig implements DataFlow::StateConfigS
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   /**
-   * A taint step related to the result of `YAML.parse` calls, or similar.
+   * Holds if taint with state `stateFrom` can flow from `pred` to `succ` with state `stateTo`.
+   *
+   * This is a taint step related to the result of `YAML.parse` calls, or similar.
    * In the following example, this step will propagate taint from
    * `source` to `sink`:
-   * this contains two seperate steps:
+   * this contains two separate steps:
    * ```rb
    * x = source
    * sink = YAML.parse(x)
