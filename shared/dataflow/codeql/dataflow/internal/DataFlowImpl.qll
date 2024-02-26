@@ -1127,12 +1127,11 @@ module MakeImpl<InputSig Lang> {
      * contexts.
      */
     pragma[nomagic]
-    private int branch(NodeEx n1) {
+    private int branch(ArgNodeEx n1) {
       result =
         strictcount(DataFlowCallable c |
             exists(NodeEx n |
-              flowOutOfCallNodeCand1(_, n1, _, n) or flowIntoCallNodeCand1(_, n1, n)
-            |
+              flowIntoCallNodeCand1(_, n1, n) and
               c = n.getEnclosingCallable()
             )
           ) + sum(ParamNodeEx p1 | | getLanguageSpecificFlowIntoCallNodeCand1(n1, p1))
@@ -1144,12 +1143,11 @@ module MakeImpl<InputSig Lang> {
      * contexts.
      */
     pragma[nomagic]
-    private int join(NodeEx n2) {
+    private int join(ParamNodeEx n2) {
       result =
         strictcount(DataFlowCallable c |
             exists(NodeEx n |
-              flowOutOfCallNodeCand1(_, n, _, n2) or flowIntoCallNodeCand1(_, n, n2)
-            |
+              flowIntoCallNodeCand1(_, n, n2) and
               c = n.getEnclosingCallable()
             )
           ) + sum(ArgNodeEx arg2 | | getLanguageSpecificFlowIntoCallNodeCand1(arg2, n2))
