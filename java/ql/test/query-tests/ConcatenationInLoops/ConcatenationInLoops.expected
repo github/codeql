@@ -1,2 +1,3 @@
 | ConcatenationInLoops.java:9:4:9:10 | ...+=... | The string s is built-up in a loop: use string buffer. |
 | ConcatenationInLoops.java:32:6:32:12 | ...+=... | The string s is built-up in a loop: use string buffer. |
+| ConcatenationInLoops.java:39:4:39:12 | ...+=... | The string cs is built-up in a loop: use string buffer. |

@@ -6,7 +6,7 @@ public class ConcatenationInLoops {
 		long start = System.currentTimeMillis();
 		String s = "";
 		for (int i = 0; i < 65536; i++)
-			s += 42;//r.nextInt(2);
+			s += 42;  // $ loopConcat=s 
 		System.out.println(System.currentTimeMillis() - start);  // This prints roughly 4500.
 
 		// r = 42;
@@ -29,14 +29,14 @@ public class ConcatenationInLoops {
 		for (int i = 0; i < 65536; i++)
 			for (int j = 0; i < 65536; i++)
 				if (j > 10) {
-					s += 42; // Will be executed many times.
+					s += 42; // $ loopConcat=s
 					break;
 				}
 	}
 
 	public void test(int bound) {
 		if (bound > 0) {
-			cs += "a";
+			cs += "a";   // $ loopConcat=cs
 			test(bound - 1);
 		} 
 	}
