@@ -150,19 +150,19 @@ jobs:
     needs: [build, compile-queries]
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: ruby.dbscheme
           path: ruby/ruby
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: extractor-ubuntu-latest
           path: ruby/linux64
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: extractor-windows-latest
           path: ruby/win64
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: extractor-macos-latest
           path: ruby/osx64
@@ -180,7 +180,7 @@ jobs:
           name: codeql-ruby-pack
           path: ruby/codeql-ruby.zip
           retention-days: 1
-      - uses: actions/download-artifact@v3
+      - uses: actions/download-artifact@v4
         with:
           name: codeql-ruby-queries
           path: ruby/qlpacks
@@ -215,7 +215,7 @@ jobs:
         uses: ./.github/actions/fetch-codeql
 
       - name: Download Ruby bundle
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: codeql-ruby-bundle
           path: ${{ runner.temp }}
@@ -266,7 +266,7 @@ jobs:
       # https://github.com/actions/runner/issues/2185
 
       - name: Download Ruby bundle
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: codeql-ruby-bundle
           path: ${{ runner.temp }}
