@@ -2,13 +2,22 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.dataflow.new.internal.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.python.dataflow.new.internal.ImportResolution
 
-predicate debug(
-  DataFlow::Node nodeFrom, DataFlow::Node nodeTo, FlowSummaryImpl::Public::SummarizedCallable sc
-) {
-  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, sc)
-}
-
+// predicate debug(
+//   DataFlow::Node nodeFrom, DataFlow::Node nodeTo, FlowSummaryImpl::Public::SummarizedCallable sc
+// ) {
+//   FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, sc)
+// }
+// string fullyQualifiedName(DataFlow::Node def) {
+//   exists(Module mod, string relevantName | ImportResolution::module_export(mod, relevantName, def) |
+//     mod.isPackageInit() and
+//     result = mod.getPackageName() + "." + relevantName
+//     or
+//     not mod.isPackageInit() and
+//     result = mod.getName() + "." + relevantName
+//   )
+// }
 pragma[inline]
 predicate inStdLib(DataFlow::Node node) { node.getLocation().getFile().inStdlib() }
 
@@ -34,6 +43,41 @@ string stepsTo(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
         nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode(), _)
     then result = "taint"
     else result = "no"
+}
+
+string computeScopePath(Scope scope) {
+  // base case
+  if scope instanceof Module
+  then
+    scope.(Module).isPackageInit() and
+    result = scope.(Module).getPackageName()
+    or
+    not scope.(Module).isPackageInit() and
+    result = scope.(Module).getName()
+  else
+    //recursive cases
+    if scope instanceof Class
+    then
+      result = computeScopePath(scope.(Class).getEnclosingScope()) + "." + scope.(Class).getName()
+    else
+      if scope instanceof Function
+      then
+        result =
+          computeScopePath(scope.(Function).getEnclosingScope()) + "." + scope.(Function).getName()
+      else result = "unknown: " + scope.toString()
+}
+
+string computeFunctionName(Function function) { result = computeScopePath(function) }
+
+bindingset[fullyQualified]
+predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
+  exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
+    type2 = fullyQualified.prefix(firstDot) and
+    path =
+      ("Member[" + fullyQualified.suffix(firstDot + 1).replaceAll(".", "].Member[") + "]")
+          .replaceAll(".Member[__init__].", "")
+          .replaceAll("Member[__init__].", "")
+  )
 }
 
 pragma[inline]
@@ -72,19 +116,7 @@ string madSummary(
   DataFlow::Node argument, string parameter, Function function, DataFlow::Node outNode
 ) {
   exists(string package, string functionPath, string argumentPath, string returnPath, string mode |
-    (
-      exists(string moduleName |
-        package = function.getScope().getName().splitAt(".", 0) and
-        moduleName = function.getScope().getName().splitAt(".", 1) and
-        if moduleName = "__init__"
-        then functionPath = "Member[" + function.getName() + "]"
-        else functionPath = "Member[" + moduleName + "].Member[" + function.getName() + "]"
-      )
-      or
-      not exists(function.getScope().getName().splitAt(".", 1)) and
-      package = function.getScope().getName() and
-      functionPath = "Member[" + function.getName() + "]"
-    ) and
+    fullyQualifiedToYamlFormat(computeFunctionName(function), package, functionPath) and
     (
       argumentPath = computeArgumentPath(parameter, function)
       or
@@ -120,7 +152,7 @@ abstract class EntryPointsByQuery extends string {
   ) {
     exists(DataFlow::ParameterNode parameter, Function function |
       parameterName = parameter.getParameter().getName() and
-      functionName = function.getLocation().getFile().getShortName() + ":" + function.getName()
+      functionName = computeFunctionName(function)
     |
       this.subpath(argument, parameter, outNode) and
       not inStdLib(argument) and
@@ -140,26 +172,127 @@ abstract class EntryPointsByQuery extends string {
 }
 
 // Not in a separate configuration file.
-// module EntryPointsForHardcodedCredentialsQuery {
-//     private import semmle.python.security.dataflow.HardcodedCredentialsQuery
-//     module Flow = HardcodedCredentialsFlow;
-//     private import Flow::PathGraph
-//     private class EntryPointsForHardcodedCredentialsQuery extends EntryPointsByQuery {
-//         EntryPointsForHardcodedCredentialsQuery() { this = "HardcodedCredentialsQuery" }
-//         override predicate subpath(
-//             DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
-//         ) {
-//             exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
-//                 subpaths(arg, par, _, out)
-//             |
-//                 argument = arg.getNode() and
-//                 parameter = par.getNode() and
-//                 outNode = out.getNode()
-//             )
-//         }
-//     }
-// }
-//
+// Code repeated here instead.
+module EntryPointsForHardcodedCredentialsQuery {
+  bindingset[char, fraction]
+  predicate fewer_characters_than(StrConst str, string char, float fraction) {
+    exists(string text, int chars |
+      text = str.getText() and
+      chars = count(int i | text.charAt(i) = char)
+    |
+      /* Allow one character */
+      chars = 1 or
+      chars < text.length() * fraction
+    )
+  }
+
+  predicate possible_reflective_name(string name) {
+    exists(any(ModuleValue m).attr(name))
+    or
+    exists(any(ClassValue c).lookup(name))
+    or
+    any(ClassValue c).getName() = name
+    or
+    exists(Module::named(name))
+    or
+    exists(Value::named(name))
+  }
+
+  int char_count(StrConst str) { result = count(string c | c = str.getText().charAt(_)) }
+
+  predicate capitalized_word(StrConst str) { str.getText().regexpMatch("[A-Z][a-z]+") }
+
+  predicate format_string(StrConst str) { str.getText().matches("%{%}%") }
+
+  predicate maybeCredential(ControlFlowNode f) {
+    /* A string that is not too short and unlikely to be text or an identifier. */
+    exists(StrConst str | str = f.getNode() |
+      /* At least 10 characters */
+      str.getText().length() > 9 and
+      /* Not too much whitespace */
+      fewer_characters_than(str, " ", 0.05) and
+      /* or underscores */
+      fewer_characters_than(str, "_", 0.2) and
+      /* Not too repetitive */
+      exists(int chars | chars = char_count(str) |
+        chars > 15 or
+        chars * 3 > str.getText().length() * 2
+      ) and
+      not possible_reflective_name(str.getText()) and
+      not capitalized_word(str) and
+      not format_string(str)
+    )
+    or
+    /* Or, an integer with over 32 bits */
+    exists(IntegerLiteral lit | f.getNode() = lit |
+      not exists(lit.getValue()) and
+      /* Not a set of flags or round number */
+      not lit.getN().matches("%00%")
+    )
+  }
+
+  class HardcodedValueSource extends DataFlow::Node {
+    HardcodedValueSource() { maybeCredential(this.asCfgNode()) }
+  }
+
+  class CredentialSink extends DataFlow::Node {
+    CredentialSink() {
+      exists(string name |
+        name.regexpMatch(getACredentialRegex()) and
+        not name.matches("%file")
+      |
+        any(FunctionValue func).getNamedArgumentForCall(_, name) = this.asCfgNode()
+        or
+        exists(Keyword k | k.getArg() = name and k.getValue().getAFlowNode() = this.asCfgNode())
+        or
+        exists(CompareNode cmp, NameNode n | n.getId() = name |
+          cmp.operands(this.asCfgNode(), any(Eq eq), n)
+          or
+          cmp.operands(n, any(Eq eq), this.asCfgNode())
+        )
+      )
+    }
+  }
+
+  /**
+   * Gets a regular expression for matching names of locations (variables, parameters, keys) that
+   * indicate the value being held is a credential.
+   */
+  private string getACredentialRegex() {
+    result = "(?i).*pass(wd|word|code|phrase)(?!.*question).*" or
+    result = "(?i).*(puid|username|userid).*" or
+    result = "(?i).*(cert)(?!.*(format|name)).*"
+  }
+
+  private module HardcodedCredentialsConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof HardcodedValueSource }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof CredentialSink }
+  }
+
+  module HardcodedCredentialsFlow = TaintTracking::Global<HardcodedCredentialsConfig>;
+
+  module Flow = HardcodedCredentialsFlow;
+
+  private import Flow::PathGraph
+
+  private class EntryPointsForHardcodedCredentialsQuery extends EntryPointsByQuery {
+    EntryPointsForHardcodedCredentialsQuery() { this = "HardcodedCredentialsQuery" }
+
+    override predicate subpath(
+      DataFlow::Node argument, DataFlow::ParameterNode parameter, DataFlow::Node outNode
+    ) {
+      exists(Flow::PathNode arg, Flow::PathNode par, Flow::PathNode out |
+        subpaths(arg, par, _, out)
+      |
+        argument = arg.getNode() and
+        parameter = par.getNode() and
+        outNode = out.getNode()
+      )
+    }
+  }
+}
+
 module EntryPointsForPolynomialReDoSQuery {
   private import semmle.python.security.dataflow.PolynomialReDoSQuery
 
@@ -617,5 +750,6 @@ from
 where
   e.entryPoint(argument, parameter, functionName, outNode, alreadyModelled, madSummary) and
   alreadyModelled = "no"
+// select e, functionName
 select e, argument, parameter, functionName, outNode, madSummary
 // select parameter, functionName, madSummary
