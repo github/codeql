@@ -26,12 +26,6 @@ codeql_java_project(
     ],
 )
 
-pkg_files(
-    name = "javascript-extractor-resources",
-    srcs = glob(["resources/**"]),
-    strip_prefix = "resources",
-)
-
 codeql_fat_jar(
     name = "extractor-javascript",
     srcs = [
@@ -49,7 +43,6 @@ codeql_fat_jar(
         "@semmle_code//util-java7",
         "@semmle_code//util-java8",
     ],
-    files = [":javascript-extractor-resources"],
     main_class = "com.semmle.js.extractor.Main",
 )
 
