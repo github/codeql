@@ -1,3 +1,23 @@
+## 0.12.6
+
+### New Features
+
+* A `getInitialization` predicate was added to the `RangeBasedForStmt` class that yields the C++20-style initializer of the range-based `for` statement when it exists.
+
+## 0.12.5
+
+### New Features
+
+* Added the `PreprocBlock.qll` library to this repository.  This library offers a view of `#if`, `#elif`, `#else` and similar directives as a tree with navigable parent-child relationships.
+* Added a new `ThrowingFunction` abstract class that can be used to model an external function that may throw an exception.
+
+## 0.12.4
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `XML`, `SSA`, `SAL`, `SQL`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `StrcatFunction` class, use `semmle.code.cpp.models.implementations.Strcat.qll` instead.
+
 ## 0.12.3
 
 ### Deprecated APIs

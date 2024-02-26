@@ -1,3 +1,20 @@
+## 0.3.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.3.8
+
+No user-facing changes.
+
+## 0.3.7
+
+### Minor Analysis Improvements
+
+* Swift upgraded to 5.9.2
+* The control flow graph library (`codeql.swift.controlflow`) has been transitioned to use the shared implementation from the `codeql/controlflow` qlpack. No result changes are expected due to this change.
+
 ## 0.3.6
 
 ### Minor Analysis Improvements

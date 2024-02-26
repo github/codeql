@@ -3,20 +3,20 @@ private predicate hasDefinition(@globalvariable g) {
 }
 
 private predicate onlyOneCompleteGlobalVariableExistsWithMangledName(@mangledname name) {
-  strictcount(@globalvariable g | hasDefinition(g) and mangled_name(g, name)) = 1
+  strictcount(@globalvariable g | hasDefinition(g) and mangled_name(g, name, _)) = 1
 }
 
 /** Holds if `g` is a unique global variable with a definition named `name`. */
 private predicate isGlobalWithMangledNameAndWithDefinition(@mangledname name, @globalvariable g) {
   hasDefinition(g) and
-  mangled_name(g, name) and
+  mangled_name(g, name, _) and
   onlyOneCompleteGlobalVariableExistsWithMangledName(name)
 }
 
 /** Holds if `g` is a global variable without a definition named `name`. */
 private predicate isGlobalWithMangledNameAndWithoutDefinition(@mangledname name, @globalvariable g) {
   not hasDefinition(g) and
-  mangled_name(g, name)
+  mangled_name(g, name, _)
 }
 
 /**

@@ -16,24 +16,12 @@ private import AutomodelFrameworkModeCharacteristics
 private import AutomodelJavaUtil
 
 from
-  Endpoint endpoint, FrameworkModeMetadataExtractor meta, DollarAtString package,
-  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString output, DollarAtString parameterName,
-  DollarAtString alreadyAiModeled, DollarAtString extensibleType
+  Endpoint endpoint, DollarAtString package, DollarAtString type, DollarAtString subtypes,
+  DollarAtString name, DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString parameterName, DollarAtString alreadyAiModeled, DollarAtString extensibleType
 where
-  not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
-    u.appliesToEndpoint(endpoint)
-  ) and
-  CharacteristicsImpl::isCandidate(endpoint, _) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
-    alreadyAiModeled, extensibleType) and
-  // If a node is already modeled in MaD, we don't include it as a candidate. Otherwise, we might include it as a
-  // candidate for query A, but the model will label it as a sink for one of the sink types of query B, for which it's
-  // already a known sink. This would result in overlap between our detected sinks and the pre-existing modeling. We
-  // assume that, if a sink has already been modeled in a MaD model, then it doesn't belong to any additional sink
-  // types, and we don't need to reexamine it.
-  alreadyAiModeled.matches(["", "%ai-%"]) and
-  includeAutomodelCandidate(package, type, name, signature)
+  isCandidate(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
+    extensibleType, alreadyAiModeled)
 select endpoint,
   "Related locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //

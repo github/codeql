@@ -124,6 +124,7 @@ class ExtractedOrExternalFile extends Container, Impl::File, Documentable, ExprP
 /** A file that has been extracted. */
 class File extends ExtractedOrExternalFile {
   File() {
+    not this.getBaseName() = "-" and
     // getAChild is specifically for the Go AST and so does not apply to non-go files
     // we care about all non-go extracted files, as only go files can have `@file` entries due to requiring a file entry for diagnostic errors
     not this.getExtension() = "go"
@@ -139,6 +140,13 @@ class GoFile extends File {
   GoFile() { this.getExtension() = "go" }
 
   override string getAPrimaryQlClass() { result = "GoFile" }
+}
+
+/** A dummy file. */
+class DummyFile extends ExtractedOrExternalFile {
+  DummyFile() { this.getBaseName() = "-" }
+
+  override string getAPrimaryQlClass() { result = "DummyFile" }
 }
 
 /** An HTML file. */

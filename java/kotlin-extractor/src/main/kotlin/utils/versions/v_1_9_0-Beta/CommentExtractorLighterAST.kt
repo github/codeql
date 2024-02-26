@@ -15,6 +15,9 @@ import org.jetbrains.kotlin.kdoc.lexer.KDocTokens
 import org.jetbrains.kotlin.lexer.KtTokens
 import org.jetbrains.kotlin.util.getChildren
 
+// TODO: This doesn't give owners to as many comments as the PSI extractor does.
+// See the library-tests/comments tests for details.
+
 class CommentExtractorLighterAST(
     fileExtractor: KotlinFileExtractor,
     file: IrFile,

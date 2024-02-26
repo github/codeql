@@ -116,9 +116,7 @@ namespace Semmle.Autobuild.CSharp.Tests
 
         string? IBuildActions.GetEnvironmentVariable(string name)
         {
-            if (!GetEnvironmentVariable.TryGetValue(name, out var ret))
-                throw new ArgumentException("Missing GetEnvironmentVariable " + name);
-
+            GetEnvironmentVariable.TryGetValue(name, out var ret);
             return ret;
         }
 
@@ -560,6 +558,8 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestLinuxBuildlessExtractionSuccess()
         {
+            actions.RunProcess["dotnet --list-sdks"] = 0;
+            actions.RunProcessOut["dotnet --list-sdks"] = "any version";
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -569,12 +569,14 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
             var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 0, 1);
+            TestAutobuilderScript(autobuilder, 0, 2);
         }
 
         [Fact]
         public void TestLinuxBuildlessExtractionFailed()
         {
+            actions.RunProcess["dotnet --list-sdks"] = 0;
+            actions.RunProcessOut["dotnet --list-sdks"] = "any version";
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 10;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -584,12 +586,14 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
             var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 10, 1);
+            TestAutobuilderScript(autobuilder, 10, 2);
         }
 
         [Fact]
         public void TestLinuxBuildlessExtractionSolution()
         {
+            actions.RunProcess["dotnet --list-sdks"] = 0;
+            actions.RunProcessOut["dotnet --list-sdks"] = "any version";
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -599,7 +603,28 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
             var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 0, 1);
+            TestAutobuilderScript(autobuilder, 0, 2);
+        }
+
+        [Fact]
+        public void TestLinuxBuildlessExtractionNoDotnet()
+        {
+            actions.RunProcess["dotnet --list-sdks"] = 1;
+            actions.RunProcessOut["dotnet --list-sdks"] = "";
+            actions.RunProcess[@"chmod u+x scratch/.dotnet/dotnet-install.sh"] = 0;
+            actions.RunProcess[@"scratch/.dotnet/dotnet-install.sh --channel release --version 8.0.101 --install-dir scratch/.dotnet"] = 0;
+            actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone --dotnet scratch/.dotnet"] = 0;
+            actions.FileExists["csharp.log"] = true;
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SOURCE_ARCHIVE_DIR"] = "";
+            actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_SCRATCH_DIR"] = "scratch";
+            actions.EnumerateFiles[@"C:\Project"] = "foo.cs\ntest.sln";
+            actions.EnumerateDirectories[@"C:\Project"] = "";
+            actions.DownloadFiles.Add(("https://dot.net/v1/dotnet-install.sh", "scratch/.dotnet/dotnet-install.sh"));
+            actions.CreateDirectories.Add(@"scratch/.dotnet");
+
+            var autobuilder = CreateAutoBuilder(false, buildless: "true");
+            TestAutobuilderScript(autobuilder, 0, 4);
         }
 
         private void SkipVsWhere()
@@ -890,6 +915,8 @@ namespace Semmle.Autobuild.CSharp.Tests
         [Fact]
         public void TestSkipNugetBuildless()
         {
+            actions.RunProcess["dotnet --list-sdks"] = 0;
+            actions.RunProcessOut["dotnet --list-sdks"] = "any version";
             actions.RunProcess[@"C:\codeql\csharp/tools/linux64/Semmle.Extraction.CSharp.Standalone"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -899,7 +926,7 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.EnumerateDirectories[@"C:\Project"] = "";
 
             var autobuilder = CreateAutoBuilder(false, buildless: "true");
-            TestAutobuilderScript(autobuilder, 0, 1);
+            TestAutobuilderScript(autobuilder, 0, 2);
         }
 
 

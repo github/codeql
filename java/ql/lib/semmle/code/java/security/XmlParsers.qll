@@ -265,9 +265,6 @@ Expr configOptionSupportDtd() {
   )
 }
 
-/** DEPRECATED: Alias for configOptionSupportDtd */
-deprecated Expr configOptionSupportDTD() { result = configOptionSupportDtd() }
-
 /**
  * A safely configured `XmlInputFactory`.
  */
@@ -746,9 +743,6 @@ Expr configAccessExternalDtd() {
     f.getDeclaringType() instanceof XmlConstants
   )
 }
-
-/** DEPRECATED: Alias for configAccessExternalDtd */
-deprecated Expr configAccessExternalDTD() { result = configAccessExternalDtd() }
 
 /** A configuration specific for transformers. */
 Expr configAccessExternalStyleSheet() {

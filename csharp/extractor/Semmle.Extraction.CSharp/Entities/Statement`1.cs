@@ -10,12 +10,15 @@ namespace Semmle.Extraction.CSharp.Entities
         protected readonly TSyntax Stmt;
         private readonly Location location;
 
-        protected Statement(Context cx, TSyntax stmt, Kinds.StmtKind kind, IStatementParentEntity parent, int child, Location location)
+        protected Statement(Context cx, TSyntax stmt, Kinds.StmtKind kind, IStatementParentEntity parent, int child, Location location, bool isCompilerGenerated = false)
             : base(cx, kind, parent, child)
         {
             Stmt = stmt;
             this.location = location;
-            cx.BindComments(this, location.Symbol);
+            if (!isCompilerGenerated)
+            {
+                cx.BindComments(this, location.Symbol);
+            }
         }
 
         protected Statement(Context cx, TSyntax stmt, Kinds.StmtKind kind, IStatementParentEntity parent, int child)

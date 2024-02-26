@@ -4,6 +4,7 @@ import java
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A source for server-side template injection (SST) vulnerabilities.
@@ -89,10 +90,5 @@ private class DefaultTemplateInjectionSink extends TemplateInjectionSink {
   DefaultTemplateInjectionSink() { sinkNode(this, "template-injection") }
 }
 
-private class DefaultTemplateInjectionSanitizer extends TemplateInjectionSanitizer {
-  DefaultTemplateInjectionSanitizer() {
-    this.getType() instanceof PrimitiveType or
-    this.getType() instanceof BoxedType or
-    this.getType() instanceof NumericType
-  }
-}
+private class DefaultTemplateInjectionSanitizer extends TemplateInjectionSanitizer instanceof SimpleTypeSanitizer
+{ }

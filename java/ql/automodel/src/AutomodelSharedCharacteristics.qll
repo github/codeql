@@ -21,6 +21,11 @@ signature module CandidateSig {
      * Gets the kind of this endpoint, either "sourceModel" or "sinkModel".
      */
     string getExtensibleType();
+
+    /**
+     * Gets a string representation of this endpoint.
+     */
+    string toString();
   }
 
   /**

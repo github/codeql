@@ -134,7 +134,7 @@ class ValidFormatString extends StringLiteral {
     result = this.getValue().regexpFind(getValidFormatTokenRegex(), _, outPosition)
   }
 
-  /**Gets the insert number at the given position in the string. */
+  /** Gets the insert number at the given position in the string. */
   int getInsert(int position) {
     result = this.getToken(position).regexpCapture(getFormatInsertRegex(), 1).toInt()
   }

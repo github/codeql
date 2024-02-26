@@ -1,8 +1,40 @@
+## 0.8.9
+
+### New Queries
+
+* Added a new query `java/android/insecure-local-authentication` for finding uses of biometric authentication APIs that do not make use of a `KeyStore`-backed key and thus may be bypassed.
+
+### Query Metadata Changes
+
+* The `security-severity` score of the query `java/relative-path-command` has been reduced to better adjust it to the specific conditions needed for exploitation.
+
+### Major Analysis Improvements
+
+* The sinks of the queries `java/path-injection` and `java/path-injection-local` have been reworked. Path creation sinks have been converted to summaries instead, while sinks now are actual file read/write operations only. This has reduced the false positive ratio of both queries.
+
+### Minor Analysis Improvements
+
+* The sanitizer for the path injection queries has been improved to handle more cases where `equals` is used to check an exact path match.
+* The query `java/unvalidated-url-redirection` now sanitizes results following the same logic as the query `java/ssrf`. URLs the destination of which cannot be externally controlled will not be reported anymore.
+
+## 0.8.8
+
+### New Queries
+
+* Added a new query `java/android/sensitive-text` to detect instances of sensitive data being exposed through text fields without being properly masked. 
+* Added a new query `java/android/sensitive-notification` to detect instances of sensitive data being exposed through Android notifications. 
+
+## 0.8.7
+
+### New Queries
+
+* Added the `java/exec-tainted-environment` query, to detect the injection of environment variables names or values from remote input.
+
+### Minor Analysis Improvements
+
+* A manual neutral summary model for a callable now blocks all generated summary models for that callable from having any effect.
+
 ## 0.8.6
-
-### Deprecated Queries
-
-* The three queries `java/insufficient-key-size`, `java/server-side-template-injection`, and `java/android/implicit-pendingintents` had accidentally general extension points allowing arbitrary string-based flow state. This has been fixed and the old extension points have been deprecated where possible, and otherwise updated.
 
 ### New Queries
 
@@ -13,6 +45,10 @@
 * Modified the `java/potentially-weak-cryptographic-algorithm` query to include the use of weak cryptographic algorithms from configuration values specified in properties files.
 * The query `java/android/missing-certificate-pinning` should no longer alert about requests pointing to the local filesystem.
 * Removed some spurious sinks related to `com.opensymphony.xwork2.TextProvider.getText` from the query `java/ognl-injection`.
+
+### Bug Fixes
+
+* The three queries `java/insufficient-key-size`, `java/server-side-template-injection`, and `java/android/implicit-pendingintents` had accidentally general extension points allowing arbitrary string-based flow state. This has been fixed and the old extension points have been deprecated where possible, and otherwise updated.
 
 ## 0.8.5
 

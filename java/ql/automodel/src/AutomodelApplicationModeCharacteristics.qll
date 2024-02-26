@@ -35,14 +35,10 @@ newtype TApplicationModeEndpoint =
     arg = DataFlow::getInstanceArgument(call) and
     not call instanceof ConstructorCall
   } or
-  TImplicitVarargsArray(Call call, DataFlow::Node arg, int idx) {
+  TImplicitVarargsArray(Call call, DataFlow::ImplicitVarargsArray arg, int idx) {
     AutomodelJavaUtil::isFromSource(call) and
-    exists(Argument argExpr |
-      arg.asExpr() = argExpr and
-      call.getArgument(idx) = argExpr and
-      argExpr.isVararg() and
-      not exists(int i | i < idx and call.getArgument(i).(Argument).isVararg())
-    )
+    call = arg.getCall() and
+    idx = call.getCallee().getVaragsParameterIndex()
   } or
   TMethodReturnValue(Call call) {
     AutomodelJavaUtil::isFromSource(call) and
@@ -239,13 +235,12 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) {
     exists(t) and
-    (
-      e.asNode().getType() instanceof BoxedType
-      or
-      e.asNode().getType() instanceof PrimitiveType
-      or
-      e.asNode().getType() instanceof NumberType
-    )
+    AutomodelJavaUtil::isUnexploitableType([
+        // for most endpoints, we can get the type from the node
+        e.asNode().getType(),
+        // but not for calls to void methods, where we need to go via the AST
+        e.asTop().(Expr).getType()
+      ])
     or
     t instanceof AutomodelEndpointTypes::PathInjectionSinkType and
     e.asNode() instanceof PathSanitizer::PathInjectionSanitizer
@@ -256,45 +251,74 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
   predicate isSink(Endpoint e, string kind, string provenance) {
-    exists(string package, string type, string name, string signature, string ext, string input |
-      sinkSpec(e, package, type, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      string input
+    |
+      sinkSpec(e, package, type, subtypes, name, signature, ext, input) and
+      ExternalFlow::sinkModel(package, type, subtypes, name, [signature, ""], ext, input, kind,
+        provenance)
     )
     or
     isCustomSink(e, kind) and provenance = "custom-sink"
   }
 
   predicate isSource(Endpoint e, string kind, string provenance) {
-    exists(string package, string type, string name, string signature, string ext, string output |
-      sourceSpec(e, package, type, name, signature, ext, output) and
-      ExternalFlow::sourceModel(package, type, _, name, [signature, ""], ext, output, kind,
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      string output
+    |
+      sourceSpec(e, package, type, subtypes, name, signature, ext, output) and
+      ExternalFlow::sourceModel(package, type, subtypes, name, [signature, ""], ext, output, kind,
         provenance)
     )
   }
 
   predicate isNeutral(Endpoint e) {
-    exists(string package, string type, string name, string signature |
-      sinkSpec(e, package, type, name, signature, _, _) and
-      ExternalFlow::neutralModel(package, type, name, [signature, ""], "sink", _)
+    exists(string package, string type, string name, string signature, string endpointType |
+      sinkSpec(e, package, type, _, name, signature, _, _) and
+      endpointType = "sink"
+      or
+      sourceSpec(e, package, type, _, name, signature, _, _) and
+      endpointType = "source"
+    |
+      ExternalFlow::neutralModel(package, type, name, [signature, ""], endpointType, _)
     )
   }
 
-  // XXX how to extend to support sources?
-  additional predicate sinkSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext, string input
+  /**
+   * Holds if the endpoint concerns a callable with the given package, type, name and signature.
+   *
+   * If `subtypes` is `false`, only the exact callable is considered. If `true`, the callable and
+   * all its overrides are considered.
+   */
+  additional predicate endpointCallable(
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature
   ) {
-    e.getCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getCallable()) and
+    exists(Callable c |
+      c = e.getCallable() and subtypes in [true, false]
+      or
+      e.getCallable().(Method).getSourceDeclaration().overrides+(c) and subtypes = true
+    |
+      c.hasQualifiedName(package, type, name) and
+      signature = ExternalFlow::paramsString(c)
+    )
+  }
+
+  additional predicate sinkSpec(
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    string ext, string input
+  ) {
+    endpointCallable(e, package, type, subtypes, name, signature) and
     ext = "" and
     input = e.getMaDInput()
   }
 
   additional predicate sourceSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext,
-    string output
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    string ext, string output
   ) {
-    e.getCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getCallable()) and
+    endpointCallable(e, package, type, subtypes, name, signature) and
     ext = "" and
     output = e.getMaDOutput()
   }
@@ -372,13 +396,92 @@ class ApplicationModeMetadataExtractor extends string {
   }
 }
 
+/**
+ * Holds if the given `endpoint` should be considered a candidate for the `extensibleType`.
+ *
+ * The other parameters record various other properties of interest.
+ */
+predicate isCandidate(
+  Endpoint endpoint, string package, string type, string subtypes, string name, string signature,
+  string input, string output, string isVarargs, string extensibleType, string alreadyAiModeled
+) {
+  CharacteristicsImpl::isCandidate(endpoint, _) and
+  not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
+    u.appliesToEndpoint(endpoint)
+  ) and
+  any(ApplicationModeMetadataExtractor meta)
+      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargs,
+        alreadyAiModeled, extensibleType) and
+  // If a node is already modeled in MaD, we don't include it as a candidate. Otherwise, we might include it as a
+  // candidate for query A, but the model will label it as a sink for one of the sink types of query B, for which it's
+  // already a known sink. This would result in overlap between our detected sinks and the pre-existing modeling. We
+  // assume that, if a sink has already been modeled in a MaD model, then it doesn't belong to any additional sink
+  // types, and we don't need to reexamine it.
+  alreadyAiModeled.matches(["", "%ai-%"]) and
+  AutomodelJavaUtil::includeAutomodelCandidate(package, type, name, signature)
+}
+
+/**
+ * Holds if the given `endpoint` is a negative example for the `extensibleType`
+ * because of the `characteristic`.
+ *
+ * The other parameters record various other properties of interest.
+ */
+predicate isNegativeExample(
+  Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string package,
+  string type, string subtypes, string name, string signature, string input, string output,
+  string isVarargsArray, string extensibleType
+) {
+  characteristic.appliesToEndpoint(endpoint) and
+  // the node is known not to be an endpoint of any appropriate type
+  forall(AutomodelEndpointTypes::EndpointType tp |
+    tp = CharacteristicsImpl::getAPotentialType(endpoint)
+  |
+    characteristic.hasImplications(tp, false, _)
+  ) and
+  // the lowest confidence across all endpoint types should be at least highConfidence
+  confidence =
+    min(float c |
+      characteristic.hasImplications(CharacteristicsImpl::getAPotentialType(endpoint), false, c)
+    ) and
+  confidence >= SharedCharacteristics::highConfidence() and
+  any(ApplicationModeMetadataExtractor meta)
+      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output,
+        isVarargsArray, _, extensibleType) and
+  // It's valid for a node to be both a potential source/sanitizer and a sink. We don't want to include such nodes
+  // as negative examples in the prompt, because they're ambiguous and might confuse the model, so we explicitly exclude them here.
+  not exists(EndpointCharacteristic characteristic2, float confidence2 |
+    characteristic2 != characteristic
+  |
+    characteristic2.appliesToEndpoint(endpoint) and
+    confidence2 >= SharedCharacteristics::maximalConfidence() and
+    characteristic2
+        .hasImplications(CharacteristicsImpl::getAPotentialType(endpoint), true, confidence2)
+  )
+}
+
+/**
+ * Holds if the given `endpoint` is a positive example for the `endpointType`.
+ *
+ * The other parameters record various other properties of interest.
+ */
+predicate isPositiveExample(
+  Endpoint endpoint, string endpointType, string package, string type, string subtypes, string name,
+  string signature, string input, string output, string isVarargsArray, string extensibleType
+) {
+  any(ApplicationModeMetadataExtractor meta)
+      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output,
+        isVarargsArray, _, extensibleType) and
+  CharacteristicsImpl::isKnownAs(endpoint, endpointType, _) and
+  exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()))
+}
+
 /*
  * EndpointCharacteristic classes that are specific to Automodel for Java.
  */
 
 /**
- * A negative characteristic that indicates that parameters of an is-style boolean method should not be considered sinks,
- * and its return value should not be considered a source.
+ * A negative characteristic that indicates that parameters of an is-style boolean method should not be considered sinks.
  *
  * A sink is highly unlikely to be exploitable if its callable's name starts with `is` and the callable has a boolean return
  * type (e.g. `isDirectory`). These kinds of calls normally do only checks, and appear before the proper call that does
@@ -386,48 +489,31 @@ class ApplicationModeMetadataExtractor extends string {
  *
  * TODO: this might filter too much, it's possible that methods with more than one parameter contain interesting sinks
  */
-private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
-{
-  UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
+private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+  UnexploitableIsCharacteristic() { this = "argument of is-style boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getName().matches("is%") and
     e.getCallable().getReturnType() instanceof BooleanType and
-    (
-      e.getExtensibleType() = "sinkModel" and
-      not ApplicationCandidatesImpl::isSink(e, _, _)
-      or
-      e.getExtensibleType() = "sourceModel" and
-      not ApplicationCandidatesImpl::isSource(e, _, _) and
-      e.getMaDOutput() = "ReturnValue"
-    )
+    not ApplicationCandidatesImpl::isSink(e, _, _)
   }
 }
 
 /**
  * A negative characteristic that indicates that parameters of an existence-checking boolean method should not be
- * considered sinks, and its return value should not be considered a source.
+ * considered sinks.
  *
  * A sink is highly unlikely to be exploitable if its callable's name is `exists` or `notExists` and the callable has a
  * boolean return type. These kinds of calls normally do only checks, and appear before the proper call that does the
  * dangerous/interesting thing, so we want the latter to be modeled as the sink.
  */
-private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
-{
-  UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
+private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+  UnexploitableExistsCharacteristic() { this = "argument of existence-checking boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    exists(Callable callable |
-      callable = e.getCallable() and
+    exists(Callable callable | callable = e.getCallable() |
       callable.getName().toLowerCase() = ["exists", "notexists"] and
       callable.getReturnType() instanceof BooleanType
-    |
-      e.getExtensibleType() = "sinkModel" and
-      not ApplicationCandidatesImpl::isSink(e, _, _)
-      or
-      e.getExtensibleType() = "sourceModel" and
-      not ApplicationCandidatesImpl::isSource(e, _, _) and
-      e.getMaDOutput() = "ReturnValue"
     )
   }
 }
@@ -438,7 +524,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Nei
  */
 private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  ExceptionCharacteristic() { this = "exception" }
+  ExceptionCharacteristic() { this = "argument/result of exception-related method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable and
@@ -540,6 +626,15 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
 }
 
 /**
+ * Holds if the type of the given expression is annotated with `@FunctionalInterface`.
+ */
+predicate hasFunctionalInterfaceType(Expr e) {
+  exists(RefType tp | tp = e.getType().getErasure() |
+    tp.getAnAssociatedAnnotation().getType().hasQualifiedName("java.lang", "FunctionalInterface")
+  )
+}
+
+/**
  * A characteristic that marks functional expression as likely not sinks.
  *
  * These expressions may well _contain_ sinks, but rarely are sinks themselves.
@@ -547,7 +642,11 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
 private class FunctionValueCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic {
   FunctionValueCharacteristic() { this = "function value" }
 
-  override predicate appliesToEndpoint(Endpoint e) { e.asNode().asExpr() instanceof FunctionalExpr }
+  override predicate appliesToEndpoint(Endpoint e) {
+    exists(Expr expr | expr = e.asNode().asExpr() |
+      expr instanceof FunctionalExpr or hasFunctionalInterfaceType(expr)
+    )
+  }
 }
 
 /**

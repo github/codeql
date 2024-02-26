@@ -1,3 +1,19 @@
+## 0.8.9
+
+### Bug Fixes
+
+* The left operand of the `&&` operator no longer propagates data flow by default.
+
+## 0.8.8
+
+No user-facing changes.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Added support for [doT](https://github.com/olado/doT) templates. 
+
 ## 0.8.6
 
 No user-facing changes.

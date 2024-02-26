@@ -5,6 +5,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
 private import experimental.semmle.code.java.frameworks.SpringResource
+private import semmle.code.java.security.Sanitizers
 
 private class ActiveModels extends ActiveExperimentalModels {
   ActiveModels() { this = "unsafe-url-forward" }
@@ -128,12 +129,7 @@ private class SpringModelAndViewSink extends UnsafeUrlForwardSink {
   }
 }
 
-private class PrimitiveSanitizer extends UnsafeUrlForwardSanitizer {
-  PrimitiveSanitizer() {
-    this.getType() instanceof PrimitiveType or
-    this.getType() instanceof BoxedType or
-    this.getType() instanceof NumberType
-  }
+private class PrimitiveSanitizer extends UnsafeUrlForwardSanitizer instanceof SimpleTypeSanitizer {
 }
 
 private class SanitizingPrefix extends InterestingPrefix {

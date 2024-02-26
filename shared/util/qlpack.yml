@@ -1,5 +1,5 @@
 name: codeql/util
-version: 0.2.7-dev
+version: 0.2.10-dev
 groups: shared
 library: true
 dependencies: null

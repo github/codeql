@@ -32,4 +32,23 @@ class File extends Generated::File {
         )
       )
   }
+
+  /**
+   * Gets the relative path of this file from the root folder of the
+   * analyzed source location. The relative path of the root folder itself
+   * would be the empty string.
+   *
+   * This has no result if the file is outside the source root, that is,
+   * if the root folder is not a reflexive, transitive parent of this file.
+   */
+  string getRelativePath() {
+    exists(string absPath, string pref |
+      absPath = this.getAbsolutePath() and sourceLocationPrefix(pref)
+    |
+      absPath = pref and result = ""
+      or
+      absPath = pref.regexpReplaceAll("/$", "") + "/" + result and
+      not result.matches("/%")
+    )
+  }
 }

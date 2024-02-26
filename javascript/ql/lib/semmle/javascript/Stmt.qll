@@ -295,9 +295,6 @@ class AsmJSDirective extends KnownDirective {
   AsmJSDirective() { this.getDirectiveText() = "use asm" }
 }
 
-/** DEPRECATED: Alias for AsmJSDirective */
-deprecated class ASMJSDirective = AsmJSDirective;
-
 /**
  * A Babel directive.
  *

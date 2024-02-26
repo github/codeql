@@ -481,11 +481,16 @@ class DereferenceableExpr extends Expr {
 }
 
 /**
+ * DEPRECATED: Use `EnumerableCollectionExpr` instead.
+ */
+deprecated class CollectionExpr = EnumerableCollectionExpr;
+
+/**
  * An expression that evaluates to a collection. That is, an expression whose
  * (transitive, reflexive) base type is `IEnumerable`.
  */
-class CollectionExpr extends Expr {
-  CollectionExpr() {
+class EnumerableCollectionExpr extends Expr {
+  EnumerableCollectionExpr() {
     this.getType().(ValueOrRefType).getABaseType*() instanceof SystemCollectionsIEnumerableInterface
   }
 
@@ -1431,7 +1436,7 @@ module Internal {
           or
           val.branch(_, _, e)
           or
-          e instanceof CollectionExpr and
+          e instanceof EnumerableCollectionExpr and
           val = TEmptyCollectionValue(_)
         ) and
         not e = any(ExprStmt es).getExpr() and
@@ -1570,7 +1575,9 @@ module Internal {
           (g1 != g2 or v1 != v2)
         )
         or
-        exists(boolean isEmpty | g1 = g2.(CollectionExpr).getAnEmptinessCheck(v1, isEmpty) |
+        exists(boolean isEmpty |
+          g1 = g2.(EnumerableCollectionExpr).getAnEmptinessCheck(v1, isEmpty)
+        |
           v2 =
             any(EmptyCollectionValue ecv | if ecv.isEmpty() then isEmpty = true else isEmpty = false) and
           g1 != g2

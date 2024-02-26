@@ -1,16 +1,16 @@
 edges
-| test.py:2:26:2:32 | ControlFlowNode for ImportMember | test.py:2:26:2:32 | ControlFlowNode for request |
-| test.py:2:26:2:32 | ControlFlowNode for request | test.py:7:12:7:18 | ControlFlowNode for request |
-| test.py:7:5:7:8 | ControlFlowNode for text | test.py:8:30:8:33 | ControlFlowNode for text |
-| test.py:7:5:7:8 | ControlFlowNode for text | test.py:9:32:9:35 | ControlFlowNode for text |
-| test.py:7:5:7:8 | ControlFlowNode for text | test.py:12:17:12:20 | ControlFlowNode for text |
-| test.py:7:5:7:8 | ControlFlowNode for text | test.py:18:28:18:31 | ControlFlowNode for text |
-| test.py:7:5:7:8 | ControlFlowNode for text | test.py:21:18:21:21 | ControlFlowNode for text |
-| test.py:7:12:7:18 | ControlFlowNode for request | test.py:7:12:7:23 | ControlFlowNode for Attribute |
-| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:7:12:7:35 | ControlFlowNode for Attribute() |
-| test.py:7:12:7:35 | ControlFlowNode for Attribute() | test.py:7:5:7:8 | ControlFlowNode for text |
-| test.py:14:33:14:39 | ControlFlowNode for my_text | test.py:16:24:16:30 | ControlFlowNode for my_text |
-| test.py:18:28:18:31 | ControlFlowNode for text | test.py:14:33:14:39 | ControlFlowNode for my_text |
+| test.py:2:26:2:32 | ControlFlowNode for ImportMember | test.py:2:26:2:32 | ControlFlowNode for request | provenance |  |
+| test.py:2:26:2:32 | ControlFlowNode for request | test.py:7:12:7:18 | ControlFlowNode for request | provenance |  |
+| test.py:7:5:7:8 | ControlFlowNode for text | test.py:8:30:8:33 | ControlFlowNode for text | provenance |  |
+| test.py:7:5:7:8 | ControlFlowNode for text | test.py:9:32:9:35 | ControlFlowNode for text | provenance |  |
+| test.py:7:5:7:8 | ControlFlowNode for text | test.py:12:17:12:20 | ControlFlowNode for text | provenance |  |
+| test.py:7:5:7:8 | ControlFlowNode for text | test.py:18:28:18:31 | ControlFlowNode for text | provenance |  |
+| test.py:7:5:7:8 | ControlFlowNode for text | test.py:21:18:21:21 | ControlFlowNode for text | provenance |  |
+| test.py:7:12:7:18 | ControlFlowNode for request | test.py:7:12:7:23 | ControlFlowNode for Attribute | provenance |  |
+| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:7:12:7:35 | ControlFlowNode for Attribute() | provenance |  |
+| test.py:7:12:7:35 | ControlFlowNode for Attribute() | test.py:7:5:7:8 | ControlFlowNode for text | provenance |  |
+| test.py:14:33:14:39 | ControlFlowNode for my_text | test.py:16:24:16:30 | ControlFlowNode for my_text | provenance |  |
+| test.py:18:28:18:31 | ControlFlowNode for text | test.py:14:33:14:39 | ControlFlowNode for my_text | provenance |  |
 nodes
 | test.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | test.py:2:26:2:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |

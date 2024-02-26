@@ -48,7 +48,11 @@ module Types {
     // class Type2 < Type1
     // class Type2; include Type1
     exists(Module m1, Module m2 |
-      m2.getAnImmediateAncestor() = m1 and not m2.isBuiltin() and not m1.isBuiltin()
+      m2.getAnImmediateAncestor() = m1 and
+      not m2.isBuiltin() and
+      not m1.isBuiltin() and
+      m1.getLocation().getFile() instanceof Util::RelevantFile and
+      m2.getLocation().getFile() instanceof Util::RelevantFile
     |
       m1.getQualifiedName() = type1 and m2.getQualifiedName() = type2 and path = ""
     )

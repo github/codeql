@@ -15,9 +15,6 @@ namespace Semmle.Extraction.CSharp.Standalone
         {
             switch (key)
             {
-                case "silent":
-                    Verbosity = value ? Verbosity.Off : Verbosity.Info;
-                    return true;
                 case "help":
                     Help = true;
                     return true;

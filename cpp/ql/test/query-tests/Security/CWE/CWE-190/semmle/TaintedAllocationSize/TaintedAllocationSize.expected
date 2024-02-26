@@ -1,28 +1,28 @@
 edges
-| test.cpp:39:27:39:30 | **argv | test.cpp:43:38:43:44 | tainted |
-| test.cpp:39:27:39:30 | **argv | test.cpp:44:38:44:63 | ... * ... |
-| test.cpp:39:27:39:30 | **argv | test.cpp:46:38:46:63 | ... + ... |
-| test.cpp:39:27:39:30 | **argv | test.cpp:49:32:49:35 | size |
-| test.cpp:39:27:39:30 | **argv | test.cpp:50:17:50:30 | size |
-| test.cpp:39:27:39:30 | **argv | test.cpp:53:35:53:60 | ... * ... |
-| test.cpp:124:18:124:31 | *call to getenv | test.cpp:128:24:128:41 | ... * ... |
-| test.cpp:133:19:133:32 | *call to getenv | test.cpp:135:10:135:27 | ... * ... |
-| test.cpp:148:20:148:33 | *call to getenv | test.cpp:152:11:152:28 | ... * ... |
-| test.cpp:209:8:209:23 | *get_tainted_size | test.cpp:241:9:241:24 | call to get_tainted_size |
-| test.cpp:211:14:211:27 | *call to getenv | test.cpp:209:8:209:23 | *get_tainted_size |
-| test.cpp:230:21:230:21 | s | test.cpp:231:21:231:21 | s |
-| test.cpp:237:24:237:37 | *call to getenv | test.cpp:239:9:239:18 | local_size |
-| test.cpp:237:24:237:37 | *call to getenv | test.cpp:245:11:245:20 | local_size |
-| test.cpp:237:24:237:37 | *call to getenv | test.cpp:247:10:247:19 | local_size |
-| test.cpp:247:10:247:19 | local_size | test.cpp:230:21:230:21 | s |
-| test.cpp:250:20:250:27 | *out_size | test.cpp:289:17:289:20 | get_size output argument |
-| test.cpp:250:20:250:27 | *out_size | test.cpp:305:18:305:21 | get_size output argument |
-| test.cpp:251:18:251:31 | *call to getenv | test.cpp:250:20:250:27 | *out_size |
-| test.cpp:259:20:259:33 | *call to getenv | test.cpp:263:11:263:29 | ... * ... |
-| test.cpp:289:17:289:20 | get_size output argument | test.cpp:291:11:291:28 | ... * ... |
-| test.cpp:305:18:305:21 | get_size output argument | test.cpp:308:10:308:27 | ... * ... |
-| test.cpp:353:18:353:31 | *call to getenv | test.cpp:355:35:355:38 | size |
-| test.cpp:353:18:353:31 | *call to getenv | test.cpp:356:35:356:38 | size |
+| test.cpp:39:27:39:30 | **argv | test.cpp:43:38:43:44 | tainted | provenance |  |
+| test.cpp:39:27:39:30 | **argv | test.cpp:44:38:44:63 | ... * ... | provenance |  |
+| test.cpp:39:27:39:30 | **argv | test.cpp:46:38:46:63 | ... + ... | provenance |  |
+| test.cpp:39:27:39:30 | **argv | test.cpp:49:32:49:35 | size | provenance |  |
+| test.cpp:39:27:39:30 | **argv | test.cpp:50:17:50:30 | size | provenance |  |
+| test.cpp:39:27:39:30 | **argv | test.cpp:53:35:53:60 | ... * ... | provenance |  |
+| test.cpp:124:18:124:31 | *call to getenv | test.cpp:128:24:128:41 | ... * ... | provenance |  |
+| test.cpp:133:19:133:32 | *call to getenv | test.cpp:135:10:135:27 | ... * ... | provenance |  |
+| test.cpp:148:20:148:33 | *call to getenv | test.cpp:152:11:152:28 | ... * ... | provenance |  |
+| test.cpp:209:8:209:23 | *get_tainted_size | test.cpp:241:9:241:24 | call to get_tainted_size | provenance |  |
+| test.cpp:211:14:211:27 | *call to getenv | test.cpp:209:8:209:23 | *get_tainted_size | provenance |  |
+| test.cpp:230:21:230:21 | s | test.cpp:231:21:231:21 | s | provenance |  |
+| test.cpp:237:24:237:37 | *call to getenv | test.cpp:239:9:239:18 | local_size | provenance |  |
+| test.cpp:237:24:237:37 | *call to getenv | test.cpp:245:11:245:20 | local_size | provenance |  |
+| test.cpp:237:24:237:37 | *call to getenv | test.cpp:247:10:247:19 | local_size | provenance |  |
+| test.cpp:247:10:247:19 | local_size | test.cpp:230:21:230:21 | s | provenance |  |
+| test.cpp:250:20:250:27 | *out_size | test.cpp:289:17:289:20 | get_size output argument | provenance |  |
+| test.cpp:250:20:250:27 | *out_size | test.cpp:305:18:305:21 | get_size output argument | provenance |  |
+| test.cpp:251:18:251:31 | *call to getenv | test.cpp:250:20:250:27 | *out_size | provenance |  |
+| test.cpp:259:20:259:33 | *call to getenv | test.cpp:263:11:263:29 | ... * ... | provenance |  |
+| test.cpp:289:17:289:20 | get_size output argument | test.cpp:291:11:291:28 | ... * ... | provenance |  |
+| test.cpp:305:18:305:21 | get_size output argument | test.cpp:308:10:308:27 | ... * ... | provenance |  |
+| test.cpp:353:18:353:31 | *call to getenv | test.cpp:355:35:355:38 | size | provenance |  |
+| test.cpp:353:18:353:31 | *call to getenv | test.cpp:356:35:356:38 | size | provenance |  |
 nodes
 | test.cpp:39:27:39:30 | **argv | semmle.label | **argv |
 | test.cpp:43:38:43:44 | tainted | semmle.label | tainted |

@@ -70,7 +70,7 @@ deprecated class RequiredSummaryComponentStack = Impl::Private::RequiredSummaryC
  */
 private module LibraryCallbackSummaries {
   private predicate libraryCall(CfgNodes::ExprNodes::CallCfgNode call) {
-    not exists(getTarget(call))
+    not exists(getTarget(TNormalCall(call)))
   }
 
   private DataFlow::LocalSourceNode trackLambdaCreation(TypeTracker t) {

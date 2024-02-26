@@ -12,24 +12,11 @@ predicate hasattr(CallNode c, ControlFlowNode obj, string attr) {
   c.getArg(1).getNode().(StrConst).getText() = attr
 }
 
-/** Holds if `c` is a call to `callable(obj)`. */
-deprecated predicate is_callable(CallNode c, ControlFlowNode obj) {
-  c.getFunction().(NameNode).getId() = "callable" and
-  obj = c.getArg(0)
-}
-
 /** Holds if `c` is a call to `isinstance(use, cls)`. */
 predicate isinstance(CallNode fc, ControlFlowNode cls, ControlFlowNode use) {
   fc.getFunction().(NameNode).getId() = "isinstance" and
   cls = fc.getArg(1) and
   fc.getArg(0) = use
-}
-
-/** Holds if `c` is a call to `issubclass(use, cls)`. */
-deprecated predicate issubclass(CallNode fc, ControlFlowNode cls, ControlFlowNode use) {
-  fc.getFunction().(NameNode).getId() = "issubclass" and
-  fc.getArg(0) = use and
-  cls = fc.getArg(1)
 }
 
 /** Holds if `c` is a test comparing `x` and `y`. `is` is true if the operator is `is` or `==`, it is false if the operator is `is not` or `!=`. */

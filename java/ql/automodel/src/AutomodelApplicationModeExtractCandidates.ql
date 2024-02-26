@@ -55,27 +55,15 @@ private Endpoint getSampleForSignature(
 }
 
 from
-  Endpoint endpoint, ApplicationModeMetadataExtractor meta, DollarAtString package,
-  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
-  DollarAtString input, DollarAtString output, DollarAtString isVarargsArray,
-  DollarAtString alreadyAiModeled, DollarAtString extensibleType
+  Endpoint endpoint, DollarAtString package, DollarAtString type, DollarAtString subtypes,
+  DollarAtString name, DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString isVarargsArray, DollarAtString alreadyAiModeled, DollarAtString extensibleType
 where
-  not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
-    u.appliesToEndpoint(endpoint)
-  ) and
-  CharacteristicsImpl::isCandidate(endpoint, _) and
+  isCandidate(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray,
+    extensibleType, alreadyAiModeled) and
   endpoint =
     getSampleForSignature(9, package, type, subtypes, name, signature, input, output,
-      isVarargsArray, extensibleType, alreadyAiModeled) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output,
-    isVarargsArray, alreadyAiModeled, extensibleType) and
-  // If a node is already modeled in MaD, we don't include it as a candidate. Otherwise, we might include it as a
-  // candidate for query A, but the model will label it as a sink for one of the sink types of query B, for which it's
-  // already a known sink. This would result in overlap between our detected sinks and the pre-existing modeling. We
-  // assume that, if a sink has already been modeled in a MaD model, then it doesn't belong to any additional sink
-  // types, and we don't need to reexamine it.
-  alreadyAiModeled.matches(["", "%ai-%"]) and
-  includeAutomodelCandidate(package, type, name, signature)
+      isVarargsArray, extensibleType, alreadyAiModeled)
 select endpoint.asNode(),
   "Related locations: $@, $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //

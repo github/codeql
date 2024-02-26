@@ -18,10 +18,8 @@ from
   DollarAtString signature, DollarAtString input, DollarAtString output,
   DollarAtString isVarargsArray, DollarAtString extensibleType
 where
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output,
-    isVarargsArray, _, extensibleType) and
-  CharacteristicsImpl::isKnownAs(endpoint, endpointType, _) and
-  exists(CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()))
+  isPositiveExample(endpoint, endpointType, package, type, subtypes, name, signature, input, output,
+    isVarargsArray, extensibleType)
 select endpoint.asNode(),
   endpointType + "\nrelated locations: $@, $@, $@." +
     "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //

@@ -25,9 +25,7 @@ newtype JavaRelatedLocationType =
 newtype TFrameworkModeEndpoint =
   TExplicitParameter(Parameter p) {
     AutomodelJavaUtil::isFromSource(p) and
-    not p.getType() instanceof PrimitiveType and
-    not p.getType() instanceof BoxedType and
-    not p.getType() instanceof NumberType
+    not AutomodelJavaUtil::isUnexploitableType(p.getType())
   } or
   TQualifier(Callable c) { AutomodelJavaUtil::isFromSource(c) and not c instanceof Constructor } or
   TReturnValue(Callable c) {
@@ -36,25 +34,19 @@ newtype TFrameworkModeEndpoint =
     or
     AutomodelJavaUtil::isFromSource(c) and
     c instanceof Method and
-    (
-      not c.getReturnType() instanceof VoidType and
-      not c.getReturnType() instanceof PrimitiveType
-    )
+    not AutomodelJavaUtil::isUnexploitableType(c.getReturnType())
   } or
   TOverridableParameter(Method m, Parameter p) {
     AutomodelJavaUtil::isFromSource(p) and
+    not AutomodelJavaUtil::isUnexploitableType(p.getType()) and
     p.getCallable() = m and
     m instanceof ModelExclusions::ModelApi and
-    not m.getDeclaringType().isFinal() and
-    not m.isFinal() and
-    not m.isStatic()
+    AutomodelJavaUtil::isOverridable(m)
   } or
   TOverridableQualifier(Method m) {
     AutomodelJavaUtil::isFromSource(m) and
     m instanceof ModelExclusions::ModelApi and
-    not m.getDeclaringType().isFinal() and
-    not m.isFinal() and
-    not m.isStatic()
+    AutomodelJavaUtil::isOverridable(m)
   }
 
 /**
@@ -217,46 +209,72 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
   predicate isSink(Endpoint e, string kind, string provenance) {
-    exists(string package, string type, string name, string signature, string ext, string input |
-      sinkSpec(e, package, type, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, provenance)
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      string input
+    |
+      sinkSpec(e, package, type, subtypes, name, signature, ext, input) and
+      ExternalFlow::sinkModel(package, type, subtypes, name, [signature, ""], ext, input, kind,
+        provenance)
     )
   }
 
   predicate isSource(Endpoint e, string kind, string provenance) {
-    exists(string package, string type, string name, string signature, string ext, string output |
-      sourceSpec(e, package, type, name, signature, ext, output) and
-      ExternalFlow::sourceModel(package, type, _, name, [signature, ""], ext, output, kind,
+    exists(
+      string package, string type, boolean subtypes, string name, string signature, string ext,
+      string output
+    |
+      sourceSpec(e, package, type, subtypes, name, signature, ext, output) and
+      ExternalFlow::sourceModel(package, type, subtypes, name, [signature, ""], ext, output, kind,
         provenance)
     )
   }
 
   predicate isNeutral(Endpoint e) {
-    exists(string package, string type, string name, string signature |
-      (
-        sinkSpec(e, package, type, name, signature, _, _)
-        or
-        sourceSpec(e, package, type, name, signature, _, _)
-      ) and
-      ExternalFlow::neutralModel(package, type, name, [signature, ""], "sink", _)
+    exists(string package, string type, string name, string signature, string endpointType |
+      sinkSpec(e, package, type, _, name, signature, _, _) and
+      endpointType = "sink"
+      or
+      sourceSpec(e, package, type, _, name, signature, _, _) and
+      endpointType = "source"
+    |
+      ExternalFlow::neutralModel(package, type, name, [signature, ""], endpointType, _)
+    )
+  }
+
+  /**
+   * Holds if the endpoint concerns a callable with the given package, type, name and signature.
+   *
+   * If `subtypes` is `false`, only the exact callable is considered. If `true`, the callable and
+   * all its overrides are considered.
+   */
+  additional predicate endpointCallable(
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature
+  ) {
+    exists(Callable c |
+      c = e.getCallable() and subtypes in [true, false]
+      or
+      e.getCallable().(Method).getSourceDeclaration().overrides+(c) and subtypes = true
+    |
+      c.hasQualifiedName(package, type, name) and
+      signature = ExternalFlow::paramsString(c)
     )
   }
 
   additional predicate sinkSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext, string input
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    string ext, string input
   ) {
-    e.getCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getCallable()) and
+    endpointCallable(e, package, type, subtypes, name, signature) and
     ext = "" and
     input = e.getMaDInput()
   }
 
   additional predicate sourceSpec(
-    Endpoint e, string package, string type, string name, string signature, string ext,
-    string output
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    string ext, string output
   ) {
-    e.getCallable().hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(e.getCallable()) and
+    endpointCallable(e, package, type, subtypes, name, signature) and
     ext = "" and
     output = e.getMaDOutput()
   }
@@ -317,6 +335,85 @@ class FrameworkModeMetadataExtractor extends string {
   }
 }
 
+/**
+ * Holds if the given `endpoint` should be considered a candidate for the `extensibleType`.
+ *
+ * The other parameters record various other properties of interest.
+ */
+predicate isCandidate(
+  Endpoint endpoint, string package, string type, string subtypes, string name, string signature,
+  string input, string output, string parameterName, string extensibleType, string alreadyAiModeled
+) {
+  CharacteristicsImpl::isCandidate(endpoint, _) and
+  not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
+    u.appliesToEndpoint(endpoint)
+  ) and
+  any(FrameworkModeMetadataExtractor meta)
+      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
+        alreadyAiModeled, extensibleType) and
+  // If a node is already modeled in MaD, we don't include it as a candidate. Otherwise, we might include it as a
+  // candidate for query A, but the model will label it as a sink for one of the sink types of query B, for which it's
+  // already a known sink. This would result in overlap between our detected sinks and the pre-existing modeling. We
+  // assume that, if a sink has already been modeled in a MaD model, then it doesn't belong to any additional sink
+  // types, and we don't need to reexamine it.
+  alreadyAiModeled.matches(["", "%ai-%"]) and
+  AutomodelJavaUtil::includeAutomodelCandidate(package, type, name, signature)
+}
+
+/**
+ * Holds if the given `endpoint` is a negative example for the `extensibleType`
+ * because of the `characteristic`.
+ *
+ * The other parameters record various other properties of interest.
+ */
+predicate isNegativeExample(
+  Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string package,
+  string type, string subtypes, string name, string signature, string input, string output,
+  string parameterName, string extensibleType
+) {
+  characteristic.appliesToEndpoint(endpoint) and
+  // the node is known not to be an endpoint of any appropriate type
+  forall(AutomodelEndpointTypes::EndpointType tp |
+    tp = CharacteristicsImpl::getAPotentialType(endpoint)
+  |
+    characteristic.hasImplications(tp, false, _)
+  ) and
+  // the lowest confidence across all endpoint types should be at least highConfidence
+  confidence =
+    min(float c |
+      characteristic.hasImplications(CharacteristicsImpl::getAPotentialType(endpoint), false, c)
+    ) and
+  confidence >= SharedCharacteristics::highConfidence() and
+  any(FrameworkModeMetadataExtractor meta)
+      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
+        _, extensibleType) and
+  // It's valid for a node to be both a potential source/sanitizer and a sink. We don't want to include such nodes
+  // as negative examples in the prompt, because they're ambiguous and might confuse the model, so we explicitly exclude them here.
+  not exists(EndpointCharacteristic characteristic2, float confidence2 |
+    characteristic2 != characteristic
+  |
+    characteristic2.appliesToEndpoint(endpoint) and
+    confidence2 >= SharedCharacteristics::maximalConfidence() and
+    characteristic2
+        .hasImplications(CharacteristicsImpl::getAPotentialType(endpoint), true, confidence2)
+  )
+}
+
+/**
+ * Holds if the given `endpoint` is a positive example for the `endpointType`.
+ *
+ * The other parameters record various other properties of interest.
+ */
+predicate isPositiveExample(
+  Endpoint endpoint, string endpointType, string package, string type, string subtypes, string name,
+  string signature, string input, string output, string parameterName, string extensibleType
+) {
+  any(FrameworkModeMetadataExtractor meta)
+      .hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, parameterName,
+        _, extensibleType) and
+  CharacteristicsImpl::isKnownAs(endpoint, endpointType, _)
+}
+
 /*
  * EndpointCharacteristic classes that are specific to Automodel for Java.
  */
@@ -333,7 +430,7 @@ class FrameworkModeMetadataExtractor extends string {
  */
 private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
+  UnexploitableIsCharacteristic() { this = "argument of is-style boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getName().matches("is%") and
@@ -359,7 +456,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::Neither
  */
 private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
+  UnexploitableExistsCharacteristic() { this = "argument of existence-checking boolean method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     exists(Callable callable |
@@ -383,7 +480,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Nei
  */
 private class ExceptionCharacteristic extends CharacteristicsImpl::NeitherSourceNorSinkCharacteristic
 {
-  ExceptionCharacteristic() { this = "exception" }
+  ExceptionCharacteristic() { this = "argument/result of exception-related method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
     e.getCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable and
