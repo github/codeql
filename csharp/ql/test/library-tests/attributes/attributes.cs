@@ -152,3 +152,9 @@ class Class1
     public void M4() { }
 }
 
+[Experimental("MyExperimentalClass")]
+public class MyExperimentalClass
+{
+    [Experimental("MyExperimentalMethod")]
+    public void MyExperimentalMethod() { }
+}

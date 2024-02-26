@@ -36,6 +36,8 @@
 | attributes.cs:146:17:146:18 | M2 | attributes.cs:145:6:145:11 | [Params(...)] | Class1+ParamsAttribute |
 | attributes.cs:149:17:149:18 | M3 | attributes.cs:148:6:148:11 | [Params(...)] | Class1+ParamsAttribute |
 | attributes.cs:152:17:152:18 | M4 | attributes.cs:151:6:151:11 | [Params(...)] | Class1+ParamsAttribute |
+| attributes.cs:156:14:156:32 | MyExperimentalClass | attributes.cs:155:2:155:13 | [Experimental(...)] | System.Diagnostics.CodeAnalysis.ExperimentalAttribute |
+| attributes.cs:159:17:159:36 | MyExperimentalMethod | attributes.cs:158:6:158:17 | [Experimental(...)] | System.Diagnostics.CodeAnalysis.ExperimentalAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:11:12:11:24 | [assembly: AssemblyTitle(...)] | System.Reflection.AssemblyTitleAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:12:12:12:30 | [assembly: AssemblyDescription(...)] | System.Reflection.AssemblyDescriptionAttribute |
 | attributes.dll:0:0:0:0 | attributes, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null | attributes.cs:13:12:13:32 | [assembly: AssemblyConfiguration(...)] | System.Reflection.AssemblyConfigurationAttribute |

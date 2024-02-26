@@ -461,3 +461,15 @@ attributes.cs:
 #  151|           -1: [ArrayInitializer] { ..., ... }
 #  151|             0: [IntLiteral] 1
 #  152|     4: [BlockStmt] {...}
+#  156| [Class] MyExperimentalClass
+#-----|   0: (Attributes)
+#  155|     1: [DefaultAttribute] [Experimental(...)]
+#  155|       -1: [TypeMention] ExperimentalAttribute
+#  155|       0: [StringLiteralUtf16] "MyExperimentalClass"
+#  159|   5: [Method] MyExperimentalMethod
+#  159|     -1: [TypeMention] Void
+#-----|     0: (Attributes)
+#  158|       1: [DefaultAttribute] [Experimental(...)]
+#  158|         -1: [TypeMention] ExperimentalAttribute
+#  158|         0: [StringLiteralUtf16] "MyExperimentalMethod"
+#  159|     4: [BlockStmt] {...}
