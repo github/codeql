@@ -18,16 +18,27 @@ module Open3 {
   class Open3Call extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
     Open3Call() {
       this =
-        API::getTopLevelMember(["Open3", "Open4"])
-            .getAMethodCall([
-                "popen3", "popen2", "popen2e", "capture3", "capture2", "capture2e", "popen4"
-              ])
+        API::getTopLevelMember("Open3")
+            .getAMethodCall(["popen3", "popen2", "popen2e", "capture3", "capture2", "capture2e"])
     }
 
     override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) {
       // These Open3 methods invoke a subshell if you provide a single string as argument
+      super.getNumberOfArguments() = 1 and
+      arg = this.getAnArgument()
+    }
+  }
+
+  class Open4Call extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
+    Open4Call() {
+      this = API::getTopLevelMember("Open4").getAMethodCall(["open4", "popen4", "spawn"])
+    }
+
+    override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) {
       super.getNumberOfArguments() = 1 and
       arg = this.getAnArgument()
     }

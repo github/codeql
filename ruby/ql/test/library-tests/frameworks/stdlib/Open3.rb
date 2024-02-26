@@ -9,3 +9,7 @@ Open3.pipeline_r("echo foo", "grep bar")
 Open3.pipeline_w("echo foo", "grep bar")
 Open3.pipeline_start("echo foo", "grep bar")
 Open3.pipeline("echo foo", "grep bar")
+
+Open4::open4("echo foo")
+Open4::popen4("echo foo")
+Open4.spawn("echo bar")
