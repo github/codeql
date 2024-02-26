@@ -135,11 +135,8 @@ module Kernel {
    * spawn([env,] command... [,options]) -> pid
    * ```
    */
-  class KernelSpawnCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
-    KernelSpawnCall() {
-      this.getMethodName() = "spawn" and
-      this instanceof KernelMethodCall
-    }
+  class KernelSpawnCall extends SystemCommandExecution::Range instanceof KernelMethodCall {
+    KernelSpawnCall() { this.getMethodName() = "spawn" }
 
     override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
 

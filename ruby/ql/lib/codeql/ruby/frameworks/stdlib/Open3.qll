@@ -31,6 +31,11 @@ module Open3 {
     }
   }
 
+  /**
+   * A system command executed via one of the `Open4` methods.
+   * These methods take the same argument forms as `Kernel.system`.
+   * See `KernelSystemCall` for details.
+   */
   class Open4Call extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
     Open4Call() {
       this = API::getTopLevelMember("Open4").getAMethodCall(["open4", "popen4", "spawn"])
