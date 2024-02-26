@@ -888,7 +888,7 @@ params(
   string name: string ref,
   int type_id: @type_or_ref ref,
   int index: int ref,
-  int mode: int ref, /* value = 0, ref = 1, out = 2, array = 3, this = 4 */
+  int mode: int ref, /* value = 0, ref = 1, out = 2, params/array = 3, this = 4, in = 5, ref readonly = 6 */
   int parent_id: @parameterizable ref,
   int unbound_id: @parameter ref);
 
