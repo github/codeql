@@ -48,13 +48,7 @@ module Arel {
     SqlLiteralNewSummary() { this = "Arel::Nodes::SqlLiteral.new" }
 
     override MethodCall getACall() {
-      result =
-        API::getTopLevelMember("Arel")
-            .getMember("Nodes")
-            .getMember("SqlLiteral")
-            .getAMethodCall("new")
-            .asExpr()
-            .getExpr()
+      result = any(ArelSqlLiteralNewConstruction c).asExpr().getExpr()
     }
 
     override predicate propagatesFlow(string input, string output, boolean preservesValue) {
