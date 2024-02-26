@@ -6,7 +6,6 @@ private import codeql.ruby.dataflow.FlowSteps
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
 
-
 /**
  * Gets A Node ends with YAML parse, parse_stream, parse_file methods
  */
