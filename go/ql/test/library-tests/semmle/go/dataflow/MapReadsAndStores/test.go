@@ -17,7 +17,7 @@ func main() {
 }
 
 func testLiteral() {
-        someMap := map[string]string {"someKey": source()}
+        someMap := map[string]string{"someKey": source()}
 
         for _, val := range someMap {
                 sink(val) // $ hasValueFlow="val"
