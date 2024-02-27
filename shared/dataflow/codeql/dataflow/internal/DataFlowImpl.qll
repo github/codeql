@@ -4308,8 +4308,7 @@ module MakeImpl<InputSig Lang> {
           pragma[only_bind_into](apout)) and
         pathIntoCallable(arg, par, _, _, innercc, sc, _) and
         paramFlowsThrough(kind, pragma[only_bind_into](sout), innercc, sc,
-          pragma[only_bind_into](t), pragma[only_bind_into](apout), _) and
-        not arg.isHidden()
+          pragma[only_bind_into](t), pragma[only_bind_into](apout), _)
       }
 
       /**
@@ -4340,9 +4339,8 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      private PathNodeImpl localStepToHidden(PathNodeImpl n) {
+      private PathNodeImpl localStep(PathNodeImpl n) {
         n.getASuccessorImpl() = result and
-        result.isHidden() and
         exists(NodeEx n1, NodeEx n2 | n1 = n.getNodeEx() and n2 = result.getNodeEx() |
           localFlowBigStep(n1, _, n2, _, _, _, _) or
           storeEx(n1, _, n2, _, _) or
@@ -4350,30 +4348,87 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
+      private PathNodeImpl summaryCtxStep(PathNodeImpl n) {
+        n.getASuccessorImpl() = result and
+        exists(SummaryCtxSome sc |
+          pathNode(n, _, _, _, pragma[only_bind_into](sc), _, _, _) and
+          pathNode(result, _, _, _, pragma[only_bind_into](sc), _, _, _)
+        )
+      }
+
+      private PathNodeImpl localStepToHidden(PathNodeImpl n) {
+        result = localStep(n) and
+        result.isHidden()
+      }
+
+      private PathNodeImpl localStepFromHidden(PathNodeImpl n) {
+        n = localStep(result) and
+        result.isHidden()
+      }
+
       pragma[nomagic]
       private predicate hasSuccessor(PathNodeImpl pred, PathNodeMid succ, NodeEx succNode) {
-        succ = pred.getANonHiddenSuccessor() and
+        succ = pred.getASuccessorImpl() and
         succNode = succ.getNodeEx()
+      }
+
+      /**
+       * Holds if `(arg, par, ret, out)` forms a subpath-tuple.
+       *
+       * All of the nodes may be hidden.
+       */
+      pragma[nomagic]
+      private predicate subpaths04(
+        PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out
+      ) {
+        exists(
+          ParamNodeEx p, NodeEx o, FlowState sout, DataFlowType t, AccessPath apout,
+          PathNodeMid out0
+        |
+          pragma[only_bind_into](arg).getASuccessorImpl() = pragma[only_bind_into](out0) and
+          subpaths03(pragma[only_bind_into](arg), p, ret, o, sout, t, apout) and
+          hasSuccessor(pragma[only_bind_into](arg), par, p) and
+          pathNode(out0, o, sout, _, _, t, apout, _)
+        |
+          out = out0 or out = out0.projectToSink()
+        )
+      }
+
+      /**
+       * Holds if `(arg, par, ret, out)` forms a subpath-tuple.
+       *
+       * `par` and `ret` are not hidden.
+       */
+      pragma[nomagic]
+      private predicate subpaths05(
+        PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out
+      ) {
+        // direct subpath
+        subpaths04(arg, localStepFromHidden*(par), localStepToHidden*(ret), out) and
+        not par.isHidden() and
+        not ret.isHidden() and
+        ret = summaryCtxStep*(par)
+        or
+        // wrapped subpath using hidden nodes, e.g. flow through a callback inside
+        // a summarized callable
+        exists(PathNodeImpl par0, PathNodeImpl ret0 |
+          subpaths05(localStepToHidden*(par0), par, ret, localStepFromHidden*(ret0)) and
+          subpaths04(arg, par0, ret0, out)
+        )
       }
 
       /**
        * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
        * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
        * `ret -> out` is summarized as the edge `arg -> out`.
+       *
+       * None of the nodes are hidden.
        */
+      pragma[nomagic]
       predicate subpaths(PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out) {
-        exists(
-          ParamNodeEx p, NodeEx o, FlowState sout, DataFlowType t, AccessPath apout,
-          PathNodeMid out0
-        |
-          pragma[only_bind_into](arg).getANonHiddenSuccessor() = pragma[only_bind_into](out0) and
-          subpaths03(pragma[only_bind_into](arg), p, localStepToHidden*(ret), o, sout, t, apout) and
-          hasSuccessor(pragma[only_bind_into](arg), par, p) and
-          not ret.isHidden() and
-          pathNode(out0, o, sout, _, _, t, apout, _)
-        |
-          out = out0 or out = out0.projectToSink()
-        )
+        subpaths05(localStepToHidden*(arg), par, ret, localStepFromHidden*(out)) and
+        not arg.isHidden() and
+        not out.isHidden()
       }
 
       /**
