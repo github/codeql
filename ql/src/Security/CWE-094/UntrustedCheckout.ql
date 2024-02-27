@@ -6,6 +6,7 @@
  * @kind problem
  * @problem.severity warning
  * @precision low
+ * @security-severity 9.3
  * @id actions/untrusted-checkout
  * @tags actions
  *       security

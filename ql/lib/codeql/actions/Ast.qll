@@ -54,8 +54,6 @@ class CompositeActionStmt extends Statement instanceof Actions::CompositeAction 
   InputsStmt getInputsStmt() { result = this.(YamlMapping).lookup("inputs") }
 
   OutputsStmt getOutputsStmt() { result = this.(YamlMapping).lookup("outputs") }
-
-  string getName() { result = this.getLocation().getFile().getRelativePath() }
 }
 
 class RunsStmt extends Statement instanceof Actions::Runs {
@@ -68,6 +66,8 @@ class RunsStmt extends Statement instanceof Actions::Runs {
  * A Github Actions Workflow
  */
 class WorkflowStmt extends Statement instanceof Actions::Workflow {
+  string getName() { result = super.getName() }
+
   JobStmt getAJobStmt() { result = super.getJob(_) }
 
   JobStmt getJobStmt(string id) { result = super.getJob(id) }
@@ -79,6 +79,8 @@ class WorkflowStmt extends Statement instanceof Actions::Workflow {
   string getATriggerEvent() {
     exists(YamlNode n | n = super.getOn().(YamlMappingLikeNode).getNode(result))
   }
+
+  Statement getPermissionsStmt() { result = this.(YamlMapping).lookup("permissions") }
 }
 
 class ReusableWorkflowStmt extends WorkflowStmt {
@@ -91,8 +93,6 @@ class ReusableWorkflowStmt extends WorkflowStmt {
   InputsStmt getInputsStmt() { result = workflow_call.(YamlMapping).lookup("inputs") }
 
   OutputsStmt getOutputsStmt() { result = workflow_call.(YamlMapping).lookup("outputs") }
-
-  string getName() { result = this.getLocation().getFile().getRelativePath() }
 }
 
 class InputsStmt extends Statement instanceof YamlMapping {
@@ -189,6 +189,8 @@ class JobStmt extends Statement instanceof Actions::Job {
   }
 
   IfStmt getIfStmt() { result = super.getIf() }
+
+  Statement getPermissionsStmt() { result = this.(YamlMapping).lookup("permissions") }
 }
 
 /**

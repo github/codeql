@@ -2,6 +2,7 @@
 name: Issue Type Predicter
 # This workflow uses https://github.com/DynamoDS/IssuesTypePredicter to predict the type of a github issue
 
+permissions: {}
 on:
   issues:
     types: [opened, edited]
