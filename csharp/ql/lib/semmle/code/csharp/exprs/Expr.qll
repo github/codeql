@@ -38,11 +38,11 @@ private import semmle.code.csharp.TypeRef
  * interpolated string (`InterpolatedStringExpr`), a qualifiable expression
  * (`QualifiableExpr`), or a literal (`Literal`).
  */
-class Expr extends DotNet::Expr, ControlFlowElement, @expr {
+class Expr extends ControlFlowElement, @expr {
   override Location getALocation() { expr_location(this, result) }
 
   /** Gets the type of this expression. */
-  override Type getType() {
+  Type getType() {
     expressions(this, _, result)
     or
     not expressions(this, _, any(Type t)) and
@@ -53,7 +53,10 @@ class Expr extends DotNet::Expr, ControlFlowElement, @expr {
   final AnnotatedType getAnnotatedType() { result.appliesTo(this) }
 
   /** Gets the value of this expression, if any */
-  override string getValue() { expr_value(this, result) }
+  string getValue() { expr_value(this, result) }
+
+  /** Holds if this expression has a value. */
+  final predicate hasValue() { exists(this.getValue()) }
 
   /** Gets the enclosing statement of this expression, if any. */
   final Stmt getEnclosingStmt() { enclosingStmt(this, result) }
@@ -88,6 +91,10 @@ class Expr extends DotNet::Expr, ControlFlowElement, @expr {
    */
   string getExplicitArgumentName() { expr_argument_name(this, result) }
 
+  /**
+   * Gets the parent of this expression. This is for example the element
+   * that uses the result of this expression.
+   */
   override Element getParent() { result = ControlFlowElement.super.getParent() }
 
   /** Holds if the nullable flow state of this expression is not null. */
