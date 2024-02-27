@@ -452,7 +452,7 @@ private module IsModifiableAtImpl {
   private predicate impl(CppType cppType, int indirectionIndex) {
     exists(Type pointerType, Type base |
       isUnderlyingIndirectionType(pointerType) and
-      cppType.hasUnderlyingType(pointerType, _) and
+      cppType.hasUnderlyingType(pointerType, false) and
       base = getTypeImpl(pointerType, indirectionIndex)
     |
       // The value cannot be modified if it has a const specifier,

@@ -1,5 +1,5 @@
 edges
-| test.cpp:20:29:20:47 | *call to getenv | test.cpp:24:10:24:35 | ! ... |
+| test.cpp:20:29:20:47 | *call to getenv | test.cpp:24:10:24:35 | ! ... | provenance |  |
 nodes
 | test.cpp:20:29:20:47 | *call to getenv | semmle.label | *call to getenv |
 | test.cpp:24:10:24:35 | ! ... | semmle.label | ! ... |

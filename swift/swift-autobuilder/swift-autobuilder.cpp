@@ -12,13 +12,14 @@ static constexpr std::string_view unitTest = "com.apple.product-type.bundle.unit
 static constexpr std::string_view unknownType = "<unknown_target_type>";
 
 const std::string_view codeql::programName = "autobuilder";
+const std::string_view codeql::extractorName = "swift";
 
-constexpr codeql::SwiftDiagnostic noProjectFound{
+constexpr codeql::Diagnostic noProjectFound{
     .id = "no-project-found",
     .name = "No Xcode project or workspace found",
     .action = "Set up a [manual build command][1].\n\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
 
-constexpr codeql::SwiftDiagnostic noSwiftTarget{
+constexpr codeql::Diagnostic noSwiftTarget{
     .id = "no-swift-target",
     .name = "No Swift compilation target found",
     .action = "To analyze a custom set of source files, set up a [manual build "
@@ -54,11 +55,6 @@ static bool buildSwiftPackages(const std::vector<std::filesystem::path>& swiftPa
   return any_successful;
 }
 
-static void installDependencies(const CLIArgs& args) {
-  auto structure = scanProjectStructure(args.workingDir);
-  installDependencies(structure, args.dryRun);
-}
-
 static bool autobuild(const CLIArgs& args) {
   auto structure = scanProjectStructure(args.workingDir);
   auto& xcodeTargets = structure.xcodeTargets;
@@ -87,6 +83,7 @@ static bool autobuild(const CLIArgs& args) {
     return false;
   } else if (!xcodeTargets.empty()) {
     LOG_INFO("Building Xcode target: {}", xcodeTargets.front());
+    installDependencies(structure, args.dryRun);
     auto buildSucceeded = buildXcodeTarget(xcodeTargets.front(), args.dryRun);
     // If build failed, try to build Swift packages
     if (!buildSucceeded && !swiftPackages.empty()) {
@@ -117,7 +114,6 @@ static CLIArgs parseCLIArgs(int argc, char** argv) {
 
 int main(int argc, char** argv) {
   auto args = parseCLIArgs(argc, argv);
-  installDependencies(args);
   auto success = autobuild(args);
   codeql::Log::flush();
   if (!success) {

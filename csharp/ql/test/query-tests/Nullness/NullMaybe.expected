@@ -443,6 +443,8 @@ nodes
 | NullAlwaysBad.cs:9:30:9:30 | access to parameter s |
 | NullMaybeBad.cs:7:27:7:27 | access to parameter o |
 | NullMaybeBad.cs:13:17:13:20 | null |
+| Params.cs:14:17:14:20 | access to parameter args |
+| Params.cs:20:12:20:15 | null |
 | StringConcatenation.cs:14:16:14:23 | SSA def(s) |
 | StringConcatenation.cs:15:16:15:16 | access to local variable s |
 | StringConcatenation.cs:16:17:16:17 | access to local variable s |
@@ -831,6 +833,7 @@ edges
 | GuardedString.cs:34:26:34:26 | 0 | GuardedString.cs:35:31:35:31 | access to local variable s |
 | NullAlwaysBad.cs:7:29:7:29 | SSA param(s) | NullAlwaysBad.cs:9:30:9:30 | access to parameter s |
 | NullMaybeBad.cs:13:17:13:20 | null | NullMaybeBad.cs:7:27:7:27 | access to parameter o |
+| Params.cs:20:12:20:15 | null | Params.cs:14:17:14:20 | access to parameter args |
 | StringConcatenation.cs:14:16:14:23 | SSA def(s) | StringConcatenation.cs:15:16:15:16 | access to local variable s |
 | StringConcatenation.cs:15:16:15:16 | access to local variable s | StringConcatenation.cs:16:17:16:17 | access to local variable s |
 #select
@@ -918,4 +921,5 @@ edges
 | E.cs:417:34:417:34 | access to parameter i | E.cs:417:24:417:40 | SSA capture def(i) | E.cs:417:34:417:34 | access to parameter i | Variable $@ may be null at this access because it has a nullable type. | E.cs:415:27:415:27 | i | i | E.cs:415:27:415:27 | i | this |
 | GuardedString.cs:35:31:35:31 | access to local variable s | GuardedString.cs:7:16:7:32 | SSA def(s) | GuardedString.cs:35:31:35:31 | access to local variable s | Variable $@ may be null at this access because of $@ assignment. | GuardedString.cs:7:16:7:16 | s | s | GuardedString.cs:7:16:7:32 | String s = ... | this |
 | NullMaybeBad.cs:7:27:7:27 | access to parameter o | NullMaybeBad.cs:13:17:13:20 | null | NullMaybeBad.cs:7:27:7:27 | access to parameter o | Variable $@ may be null at this access because of $@ null argument. | NullMaybeBad.cs:5:25:5:25 | o | o | NullMaybeBad.cs:13:17:13:20 | null | this |
+| Params.cs:14:17:14:20 | access to parameter args | Params.cs:20:12:20:15 | null | Params.cs:14:17:14:20 | access to parameter args | Variable $@ may be null at this access because of $@ null argument. | Params.cs:12:36:12:39 | args | args | Params.cs:20:12:20:15 | null | this |
 | StringConcatenation.cs:16:17:16:17 | access to local variable s | StringConcatenation.cs:14:16:14:23 | SSA def(s) | StringConcatenation.cs:16:17:16:17 | access to local variable s | Variable $@ may be null at this access because of $@ assignment. | StringConcatenation.cs:14:16:14:16 | s | s | StringConcatenation.cs:14:16:14:23 | String s = ... | this |

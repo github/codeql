@@ -4,7 +4,11 @@ private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc
 private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
+private import semmle.code.cpp.models.interfaces.Taint as Taint
+private import semmle.code.cpp.models.interfaces.PartialFlow as PartialFlow
+private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as FIO
 private import semmle.code.cpp.ir.internal.IRCppLanguage
+private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 private import DataFlowPrivate
 private import ssa0.SsaInternals as SsaInternals0
 import SsaInternalsCommon
@@ -147,22 +151,26 @@ private newtype TDefOrUseImpl =
     isIteratorUse(container, iteratorAddress, _, indirectionIndex)
   } or
   TFinalParameterUse(Parameter p, int indirectionIndex) {
-    // Avoid creating parameter nodes if there is no definitions of the variable other than the initializaion.
-    exists(SsaInternals0::Def def |
-      def.getSourceVariable().getBaseVariable().(BaseIRVariable).getIRVariable().getAst() = p and
-      not def.getValue().asInstruction() instanceof InitializeParameterInstruction and
-      unspecifiedTypeIsModifiableAt(p.getUnspecifiedType(), indirectionIndex)
-    )
+    underlyingTypeIsModifiableAt(p.getUnderlyingType(), indirectionIndex) and
+    // Only create an SSA read for the final use of a parameter if there's
+    // actually a body of the enclosing function. If there's no function body
+    // then we'll never need to flow out of the function anyway.
+    p.getFunction().hasDefinition()
   }
 
 private predicate isGlobalUse(
   GlobalLikeVariable v, IRFunction f, int indirection, int indirectionIndex
 ) {
-  exists(VariableAddressInstruction vai |
-    vai.getEnclosingIRFunction() = f and
-    vai.getAstVariable() = v and
-    isDef(_, _, _, vai, indirection, indirectionIndex)
-  )
+  // Generate a "global use" at the end of the function body if there's a
+  // direct definition somewhere in the body of the function
+  indirection =
+    min(int cand, VariableAddressInstruction vai |
+      vai.getEnclosingIRFunction() = f and
+      vai.getAstVariable() = v and
+      isDef(_, _, _, vai, cand, indirectionIndex)
+    |
+      cand
+    )
 }
 
 private predicate isGlobalDefImpl(
@@ -176,11 +184,13 @@ private predicate isGlobalDefImpl(
   )
 }
 
-private predicate unspecifiedTypeIsModifiableAt(Type unspecified, int indirectionIndex) {
-  indirectionIndex = [1 .. getIndirectionForUnspecifiedType(unspecified).getNumberOfIndirections()] and
+private predicate underlyingTypeIsModifiableAt(Type underlying, int indirectionIndex) {
+  indirectionIndex =
+    [1 .. getIndirectionForUnspecifiedType(underlying.getUnspecifiedType())
+          .getNumberOfIndirections()] and
   exists(CppType cppType |
-    cppType.hasUnspecifiedType(unspecified, _) and
-    isModifiableAt(cppType, indirectionIndex + 1)
+    cppType.hasUnderlyingType(underlying, false) and
+    isModifiableAt(cppType, indirectionIndex)
   )
 }
 
@@ -458,6 +468,57 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
   }
 }
 
+/**
+ * A use that models a synthetic "last use" of a global variable just before a
+ * function returns.
+ *
+ * We model global variable flow by:
+ * - Inserting a last use of any global variable that's modified by a function
+ * - Flowing from the last use to the `VariableNode` that represents the global
+ *   variable.
+ * - Flowing from the `VariableNode` to an "initial def" of the global variable
+ * in any function that may read the global variable.
+ * - Flowing from the initial definition to any subsequent uses of the global
+ *   variable in the function body.
+ *
+ * For example, consider the following pair of functions:
+ * ```cpp
+ * int global;
+ * int source();
+ * void sink(int);
+ *
+ * void set_global() {
+ *   global = source();
+ * }
+ *
+ * void read_global() {
+ *  sink(global);
+ * }
+ * ```
+ * we insert global uses and defs so that (from the point-of-view of dataflow)
+ * the above scenario looks like:
+ * ```cpp
+ * int global; // (1)
+ * int source();
+ * void sink(int);
+ *
+ * void set_global() {
+ *   global = source();
+ *   __global_use(global); // (2)
+ * }
+ *
+ * void read_global() {
+ *  global = __global_def; // (3)
+ *  sink(global); // (4)
+ * }
+ * ```
+ * and flow from `source()` to the argument of `sink` is then modeled as
+ * follows:
+ * 1. Flow from `source()` to `(2)` (via SSA).
+ * 2. Flow from `(2)` to `(1)` (via a `jumpStep`).
+ * 3. Flow from `(1)` to `(3)` (via a `jumpStep`).
+ * 4. Flow from `(3)` to `(4)` (via SSA).
+ */
 class GlobalUse extends UseImpl, TGlobalUse {
   GlobalLikeVariable global;
   IRFunction f;
@@ -500,11 +561,22 @@ class GlobalUse extends UseImpl, TGlobalUse {
    */
   Type getUnspecifiedType() { result = global.getUnspecifiedType() }
 
+  /**
+   * Gets the type of this use, after typedefs have been resolved.
+   */
+  Type getUnderlyingType() { result = global.getUnderlyingType() }
+
   override predicate isCertain() { any() }
 
   override BaseSourceVariableInstruction getBase() { none() }
 }
 
+/**
+ * A definition that models a synthetic "initial definition" of a global
+ * variable just after the function entry point.
+ *
+ * See the QLDoc for `GlobalUse` for how this is used.
+ */
 class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
   GlobalLikeVariable global;
   IRFunction f;
@@ -537,10 +609,15 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
   int getIndirection() { result = indirectionIndex }
 
   /**
-   * Gets the type of this use after specifiers have been deeply stripped
-   * and typedefs have been resolved.
+   * Gets the type of this definition after specifiers have been deeply
+   * stripped and typedefs have been resolved.
    */
   Type getUnspecifiedType() { result = global.getUnspecifiedType() }
+
+  /**
+   * Gets the type of this definition, after typedefs have been resolved.
+   */
+  Type getUnderlyingType() { result = global.getUnderlyingType() }
 
   override string toString() { result = "Def of " + this.getSourceVariable() }
 
@@ -558,7 +635,10 @@ class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
  */
 predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
   exists(IRBlock bb1, int i1, SourceVariable v |
-    defOrUse1.asDefOrUse().hasIndexInBlock(bb1, i1, v)
+    defOrUse1
+        .asDefOrUse()
+        .hasIndexInBlock(pragma[only_bind_out](bb1), pragma[only_bind_out](i1),
+          pragma[only_bind_out](v))
   |
     exists(IRBlock bb2, int i2, DefinitionExt def |
       adjacentDefReadExt(pragma[only_bind_into](def), pragma[only_bind_into](bb1),
@@ -580,7 +660,11 @@ predicate adjacentDefRead(DefOrUse defOrUse1, UseOrPhi use) {
  * flows to `useOrPhi`.
  */
 private predicate globalDefToUse(GlobalDef globalDef, UseOrPhi useOrPhi) {
-  exists(IRBlock bb1, int i1, SourceVariable v | globalDef.hasIndexInBlock(bb1, i1, v) |
+  exists(IRBlock bb1, int i1, SourceVariable v |
+    globalDef
+        .hasIndexInBlock(pragma[only_bind_out](bb1), pragma[only_bind_out](i1),
+          pragma[only_bind_out](v))
+  |
     exists(IRBlock bb2, int i2 |
       adjacentDefReadExt(_, pragma[only_bind_into](bb1), pragma[only_bind_into](i1),
         pragma[only_bind_into](bb2), pragma[only_bind_into](i2)) and
@@ -726,10 +810,58 @@ private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
   )
 }
 
+private predicate inOut(FIO::FunctionInput input, FIO::FunctionOutput output) {
+  exists(int indirectionIndex |
+    input.isQualifierObject(indirectionIndex) and
+    output.isQualifierObject(indirectionIndex)
+    or
+    exists(int i |
+      input.isParameterDeref(i, indirectionIndex) and
+      output.isParameterDeref(i, indirectionIndex)
+    )
+  )
+}
+
+/**
+ * Holds if there should not be use-use flow out of `n`. That is, `n` is
+ * an out-barrier to use-use flow. This includes:
+ *
+ * - an input to a call that would be assumed to have use-use flow to the same
+ *   argument as an output, but this flow should be blocked because the
+ *   function is modeled with another flow to that output (for example the
+ *   first argument of `strcpy`).
+ * - a conversion that flows to such an input.
+ */
+private predicate modeledFlowBarrier(Node n) {
+  exists(
+    FIO::FunctionInput input, FIO::FunctionOutput output, CallInstruction call,
+    PartialFlow::PartialFlowFunction partialFlowFunc
+  |
+    n = callInput(call, input) and
+    inOut(input, output) and
+    exists(callOutput(call, output)) and
+    partialFlowFunc = call.getStaticCallTarget() and
+    not partialFlowFunc.isPartialWrite(output)
+  |
+    call.getStaticCallTarget().(DataFlow::DataFlowFunction).hasDataFlow(_, output)
+    or
+    call.getStaticCallTarget().(Taint::TaintFunction).hasTaintFlow(_, output)
+  )
+  or
+  exists(Operand operand, Instruction instr, Node n0, int indirectionIndex |
+    modeledFlowBarrier(n0) and
+    nodeHasInstruction(n0, instr, indirectionIndex) and
+    conversionFlow(operand, instr, false, _) and
+    nodeHasOperand(n, operand, indirectionIndex)
+  )
+}
+
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   exists(Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
-    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and nodeFrom != nodeTo
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and
+    not modeledFlowBarrier(nFrom) and
+    nodeFrom != nodeTo
   |
     if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(defOrUse)] else nodeFrom = nFrom
   )
@@ -1033,6 +1165,11 @@ class GlobalDef extends TGlobalDef, SsaDefOrUse {
    * and typedefs have been resolved.
    */
   DataFlowType getUnspecifiedType() { result = global.getUnspecifiedType() }
+
+  /**
+   * Gets the type of this definition, after typedefs have been resolved.
+   */
+  DataFlowType getUnderlyingType() { result = global.getUnderlyingType() }
 
   /** Gets the `IRFunction` whose body is evaluated after this definition. */
   IRFunction getIRFunction() { result = global.getIRFunction() }

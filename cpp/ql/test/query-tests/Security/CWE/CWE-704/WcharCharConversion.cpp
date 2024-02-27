@@ -32,3 +32,25 @@ void Test()
 	fconstWChar((LPCWSTR)lpWchar);	// Valid
 	fWChar(lpWchar);				// Valid
 }
+
+void NewBufferFalsePositiveTest()
+{
+	wchar_t *lpWchar = NULL;
+
+	lpWchar = (LPWSTR)new char[56]; // Possible False Positive
+}
+
+typedef unsigned char BYTE;
+typedef BYTE* PBYTE;
+
+void NonStringFalsePositiveTest1(PBYTE buffer)
+{
+	wchar_t *lpWchar = NULL;
+	lpWchar = (LPWSTR)buffer; // Possible False Positive
+}
+
+void NonStringFalsePositiveTest2(unsigned char* buffer)
+{
+	wchar_t *lpWchar = NULL;
+	lpWchar = (LPWSTR)buffer; // Possible False Positive
+}

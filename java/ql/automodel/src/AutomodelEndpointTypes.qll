@@ -30,11 +30,6 @@ abstract class SinkType extends EndpointType {
   SinkType() { any() }
 }
 
-/** The `Negative` class for non-sinks. */
-class NegativeSinkType extends SinkType {
-  NegativeSinkType() { this = "non-sink" }
-}
-
 /** A sink relevant to the SQL injection query */
 class SqlInjectionSinkType extends SinkType {
   SqlInjectionSinkType() { this = "sql-injection" }

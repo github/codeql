@@ -313,9 +313,6 @@ class ReverseDnsMethod extends Method {
   }
 }
 
-/** DEPRECATED: Alias for ReverseDnsMethod */
-deprecated class ReverseDNSMethod = ReverseDnsMethod;
-
 /** Android `Intent` that may have come from a hostile application. */
 class AndroidIntentInput extends DataFlow::Node {
   Type receiverType;

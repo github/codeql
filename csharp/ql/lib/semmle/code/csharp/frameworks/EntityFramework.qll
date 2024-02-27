@@ -12,6 +12,7 @@ private import semmle.code.csharp.frameworks.Sql
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Public
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.code.csharp.security.dataflow.flowsources.Stored as Stored
 
 /**
  * Definitions relating to the `System.ComponentModel.DataAnnotations`
@@ -44,7 +45,7 @@ module EntityFramework {
   }
 
   /** A taint source where the data has come from a mapped property stored in the database. */
-  class StoredFlowSource extends DataFlow::Node {
+  class StoredFlowSource extends Stored::DatabaseInputSource {
     StoredFlowSource() {
       this.asExpr() = any(PropertyRead read | read.getTarget() instanceof MappedProperty)
     }

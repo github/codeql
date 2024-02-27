@@ -249,9 +249,7 @@ private predicate functionSignature(Function f, string qualifiedName, int nparam
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f) {
-  mayBenefitFromCallContext(call, f, _)
-}
+predicate mayBenefitFromCallContext(DataFlowCall call) { mayBenefitFromCallContext(call, _, _) }
 
 /**
  * Holds if `call` is a call through a function pointer, and the pointer

@@ -17,6 +17,29 @@ private import semmle.python.dataflow.new.BarrierGuards
  */
 module UrlRedirect {
   /**
+   * A state value to track whether the untrusted data may contain backslashes.
+   */
+  abstract class FlowState extends string {
+    bindingset[this]
+    FlowState() { any() }
+  }
+
+  /**
+   * A state value signifying that the untrusted data may contain backslashes.
+   */
+  class MayContainBackslashes extends UrlRedirect::FlowState {
+    MayContainBackslashes() { this = "MayContainBackslashes" }
+  }
+
+  /**
+   * A state value signifying that any backslashes in the untrusted data have
+   * been eliminated, but no other sanitization has happened.
+   */
+  class NoBackslashes extends UrlRedirect::FlowState {
+    NoBackslashes() { this = "NoBackslashes" }
+  }
+
+  /**
    * A data flow source for "URL redirection" vulnerabilities.
    */
   abstract class Source extends DataFlow::Node { }
@@ -29,7 +52,28 @@ module UrlRedirect {
   /**
    * A sanitizer for "URL redirection" vulnerabilities.
    */
-  abstract class Sanitizer extends DataFlow::Node { }
+  abstract class Sanitizer extends DataFlow::Node {
+    /**
+     * Holds if this sanitizer sanitizes flow in the given state.
+     */
+    abstract predicate sanitizes(FlowState state);
+  }
+
+  /**
+   * An additional flow step for "URL redirection" vulnerabilities.
+   */
+  abstract class AdditionalFlowStep extends DataFlow::Node {
+    /**
+     * Holds if there should be an additional flow step from `nodeFrom` in `stateFrom`
+     * to `nodeTo` in `stateTo`.
+     *
+     * For example, a call to `replace` that replaces backslashes with forward slashes
+     * takes flow from `MayContainBackslashes` to `NoBackslashes`.
+     */
+    abstract predicate step(
+      DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
+    );
+  }
 
   /**
    * A source of remote user input, considered as a flow source.
@@ -57,10 +101,46 @@ module UrlRedirect {
         string_concat.getRight() = this.asCfgNode()
       )
     }
+
+    override predicate sanitizes(FlowState state) {
+      // sanitize all flow states
+      any()
+    }
+  }
+
+  /**
+   * A call that replaces backslashes with forward slashes or eliminates them
+   * altogether, considered as a partial sanitizer, as well as an additional
+   * flow step.
+   */
+  class ReplaceBackslashesSanitizer extends Sanitizer, AdditionalFlowStep, DataFlow::MethodCallNode {
+    DataFlow::Node receiver;
+
+    ReplaceBackslashesSanitizer() {
+      this.calls(receiver, "replace") and
+      this.getArg(0).asExpr().(StrConst).getText() = "\\" and
+      this.getArg(1).asExpr().(StrConst).getText() in ["/", ""]
+    }
+
+    override predicate sanitizes(FlowState state) { state instanceof MayContainBackslashes }
+
+    override predicate step(
+      DataFlow::Node nodeFrom, FlowState stateFrom, DataFlow::Node nodeTo, FlowState stateTo
+    ) {
+      nodeFrom = receiver and
+      stateFrom instanceof MayContainBackslashes and
+      nodeTo = this and
+      stateTo instanceof NoBackslashes
+    }
   }
 
   /**
    * A comparison with a constant string, considered as a sanitizer-guard.
    */
-  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier { }
+  class StringConstCompareAsSanitizerGuard extends Sanitizer, StringConstCompareBarrier {
+    override predicate sanitizes(FlowState state) {
+      // sanitize all flow states
+      any()
+    }
+  }
 }

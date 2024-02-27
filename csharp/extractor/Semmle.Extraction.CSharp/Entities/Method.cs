@@ -54,12 +54,13 @@ namespace Semmle.Extraction.CSharp.Entities
             var block = Block;
             var expr = ExpressionBody;
 
+            Context.PopulateLater(() => ExtractInitializers(trapFile));
+
             if (block is not null || expr is not null)
             {
                 Context.PopulateLater(
                    () =>
                    {
-                       ExtractInitializers(trapFile);
                        if (block is not null)
                            Statements.Block.Create(Context, block, this, 0);
                        else
@@ -232,7 +233,7 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="cx"></param>
         /// <param name="methodDecl"></param>
         /// <returns></returns>
-        [return: NotNullIfNotNull("methodDecl")]
+        [return: NotNullIfNotNull(nameof(methodDecl))]
         public static Method? Create(Context cx, IMethodSymbol? methodDecl)
         {
             if (methodDecl is null)

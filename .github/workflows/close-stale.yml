@@ -5,6 +5,9 @@ on:
   schedule:
     - cron: "30 1 * * *"
 
+permissions:
+  issues: write
+
 jobs:
   stale:
     if: github.repository == 'github/codeql'

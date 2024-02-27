@@ -9,11 +9,6 @@ private import codeql.ruby.frameworks.data.ModelsAsData
 private import codeql.ruby.frameworks.data.internal.ApiGraphModelsExtensions
 private import queries.modeling.internal.Util as Util
 
-/** Holds if the given callable is not worth supporting. */
-private predicate isUninteresting(DataFlow::MethodNode c) {
-  c.getLocation().getFile() instanceof TestFile
-}
-
 private predicate gemFileStep(Gem::GemSpec gem, Folder folder, int n) {
   n = 0 and folder.getAFile() = gem.(File)
   or
@@ -35,6 +30,14 @@ string getNamespace(File file) {
     not gemFileStep(_, folder, _) and
     result = ""
   )
+}
+
+/**
+ * Holds if this method is a constructor for a module.
+ */
+predicate isConstructor(DataFlow::MethodNode method) {
+  method.getMethodName() = "initialize" and
+  exists(DataFlow::ModuleNode m | m.getOwnInstanceMethod(method.getMethodName()) = method)
 }
 
 abstract class Endpoint instanceof DataFlow::Node {
@@ -63,19 +66,32 @@ abstract class Endpoint instanceof DataFlow::Node {
 class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
   MethodEndpoint() {
     this.isPublic() and
-    not isUninteresting(this)
+    this.(DataFlow::MethodNode).getLocation().getFile() instanceof Util::RelevantFile
   }
 
   DataFlow::MethodNode getNode() { result = this }
 
-  override string getName() { result = super.getMethodName() }
+  override string getName() {
+    result = super.getMethodName() and not this.isConstructor()
+    or
+    // Constructors are modeled as Type!#new rather than Type#initialize
+    result = "new" and this.isConstructor()
+  }
 
   /**
    * Gets the unbound type name of this endpoint.
    */
   override string getType() {
     result =
-      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getName()) = this).getQualifiedName() or
+      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(this.getName()) = this).getQualifiedName() and
+    not this.isConstructor()
+    or
+    // Constructors are modeled on `Type!`, not on `Type`
+    result =
+      any(DataFlow::ModuleNode m | m.getOwnInstanceMethod(super.getMethodName()) = this)
+            .getQualifiedName() + "!" and
+    this.isConstructor()
+    or
     result =
       any(DataFlow::ModuleNode m | m.getOwnSingletonMethod(this.getName()) = this)
             .getQualifiedName() + "!"
@@ -104,7 +120,7 @@ class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
 
   /** Holds if this API has a supported summary. */
   pragma[nomagic]
-  predicate hasSummary() { none() }
+  predicate hasSummary() { this.getNode() instanceof SummaryCallable }
 
   /** Holds if this API is a known source. */
   pragma[nomagic]
@@ -116,7 +132,7 @@ class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
-  predicate isNeutral() { none() }
+  predicate isNeutral() { this.getNode() instanceof NeutralCallable }
 
   /**
    * Holds if this API is supported by existing CodeQL libraries, that is, it is either a
@@ -141,20 +157,18 @@ class MethodEndpoint extends Endpoint instanceof DataFlow::MethodNode {
     or
     not this.isSupported() and result = ""
   }
+
+  /**
+   * Holds if this method is a constructor for a module.
+   */
+  private predicate isConstructor() { isConstructor(this) }
 }
 
 string methodClassification(Call method) {
-  method.getFile() instanceof TestFile and result = "test"
+  method.getFile() instanceof Util::TestFile and result = "test"
   or
-  not method.getFile() instanceof TestFile and
+  not method.getFile() instanceof Util::TestFile and
   result = "source"
-}
-
-class TestFile extends File {
-  TestFile() {
-    this.getRelativePath().regexpMatch(".*(test|spec|examples).+") and
-    not this.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
-  }
 }
 
 /**
@@ -184,6 +198,30 @@ class SourceCallable extends DataFlow::CallableNode {
 }
 
 /**
+ * A callable where there exists a MaD summary model that applies to it.
+ */
+class SummaryCallable extends DataFlow::CallableNode {
+  SummaryCallable() {
+    exists(string type, string path |
+      Util::pathToMethod(this, type, path) and
+      summaryModel(type, path, _, _, _)
+    )
+  }
+}
+
+/**
+ * A callable where there exists a MaD neutral model that applies to it.
+ */
+class NeutralCallable extends DataFlow::CallableNode {
+  NeutralCallable() {
+    exists(string type, string path |
+      Util::pathToMethod(this, type, path) and
+      neutralModel(type, path, _)
+    )
+  }
+}
+
+/**
  * A module defined in source code
  */
 class ModuleEndpoint extends Endpoint {
@@ -198,7 +236,7 @@ class ModuleEndpoint extends Endpoint {
         n order by loc.getFile().getAbsolutePath(), loc.getStartLine(), loc.getStartColumn()
       ) and
     not moduleNode.(Module).isBuiltin() and
-    not moduleNode.getLocation().getFile() instanceof TestFile
+    moduleNode.getLocation().getFile() instanceof Util::RelevantFile
   }
 
   DataFlow::ModuleNode getNode() { result = moduleNode }

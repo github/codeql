@@ -42,25 +42,13 @@ Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
 
 from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
-  ApplicationModeMetadataExtractor meta, DollarAtString package, DollarAtString type,
-  DollarAtString subtypes, DollarAtString name, DollarAtString signature, DollarAtString input,
-  DollarAtString output, DollarAtString isVarargsArray, DollarAtString extensibleType
+  DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
+  DollarAtString signature, DollarAtString input, DollarAtString output,
+  DollarAtString isVarargsArray, DollarAtString extensibleType
 where
   endpoint = getSampleForCharacteristic(characteristic, 100) and
-  extensibleType = endpoint.getExtensibleType() and
-  confidence >= SharedCharacteristics::highConfidence() and
-  characteristic.hasImplications(any(NegativeSinkType negative), true, confidence) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, output, isVarargsArray) and
-  // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
-  // treated by the actual query as a sanitizer, since the final logic is something like
-  // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as negative examples in the prompt, because
-  // they're ambiguous and might confuse the model, so we explicitly exclude all known sinks from the negative examples.
-  not exists(EndpointCharacteristic characteristic2, float confidence2, SinkType positiveType |
-    not positiveType instanceof NegativeSinkType and
-    characteristic2.appliesToEndpoint(endpoint) and
-    confidence2 >= SharedCharacteristics::maximalConfidence() and
-    characteristic2.hasImplications(positiveType, true, confidence2)
-  ) and
+  isNegativeExample(endpoint, characteristic, confidence, package, type, subtypes, name, signature,
+    input, output, isVarargsArray, extensibleType) and
   message = characteristic
 select endpoint.asNode(),
   message + "\nrelated locations: $@, $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@, $@, $@.", //

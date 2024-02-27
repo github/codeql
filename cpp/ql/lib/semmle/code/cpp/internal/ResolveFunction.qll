@@ -3,20 +3,20 @@ private predicate hasDefinition(@function f) {
 }
 
 private predicate onlyOneCompleteFunctionExistsWithMangledName(@mangledname name) {
-  strictcount(@function f | hasDefinition(f) and mangled_name(f, name)) = 1
+  strictcount(@function f | hasDefinition(f) and mangled_name(f, name, true)) = 1
 }
 
 /** Holds if `f` is a unique function with a definition named `name`. */
 private predicate isFunctionWithMangledNameAndWithDefinition(@mangledname name, @function f) {
   hasDefinition(f) and
-  mangled_name(f, name) and
+  mangled_name(f, name, true) and
   onlyOneCompleteFunctionExistsWithMangledName(name)
 }
 
 /** Holds if `f` is a function without a definition named `name`. */
 private predicate isFunctionWithMangledNameAndWithoutDefinition(@mangledname name, @function f) {
   not hasDefinition(f) and
-  mangled_name(f, name)
+  mangled_name(f, name, true)
 }
 
 /**

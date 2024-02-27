@@ -16,7 +16,17 @@ signature module CandidateSig {
    * An endpoint is a potential candidate for modeling. This will typically be bound to the language's
    * DataFlow node class, or a subtype thereof.
    */
-  class Endpoint;
+  class Endpoint {
+    /**
+     * Gets the kind of this endpoint, either "sourceModel" or "sinkModel".
+     */
+    string getExtensibleType();
+
+    /**
+     * Gets a string representation of this endpoint.
+     */
+    string toString();
+  }
 
   /**
    * A related location for an endpoint. This will typically be bound to the supertype of all AST nodes (eg., `Top`).
@@ -31,14 +41,19 @@ signature module CandidateSig {
   class RelatedLocationType;
 
   /**
-   * A class kind for an endpoint.
+   * An endpoint type considered by this specification.
    */
   class EndpointType extends string;
 
   /**
-   * An EndpointType that denotes the absence of any sink.
+   * A sink endpoint type considered by this specification.
    */
-  class NegativeEndpointType extends EndpointType;
+  class SinkType extends EndpointType;
+
+  /**
+   * A source endpoint type considered by this specification.
+   */
+  class SourceType extends EndpointType;
 
   /**
    * Gets the endpoint as a location.
@@ -103,7 +118,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
   }
 
   /**
-   * Holds if `endpoint` is modeled as `endpointType` (endpoint type must not be negative).
+   * Holds if `endpoint` is modeled as `endpointType`.
    */
   predicate isKnownAs(
     Candidate::Endpoint endpoint, Candidate::EndpointType endpointType,
@@ -111,19 +126,31 @@ module SharedCharacteristics<CandidateSig Candidate> {
   ) {
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
-    not endpointType instanceof Candidate::NegativeEndpointType and
     characteristic.appliesToEndpoint(endpoint) and
     characteristic.hasImplications(endpointType, true, maximalConfidence())
   }
 
   /**
-   * Holds if the candidate sink `candidateSink` should be considered as a possible sink of type `sinkType`, and
-   * classified by the ML model. A candidate sink is a node that cannot be excluded from `sinkType` based on its
-   * characteristics.
+   * Gets a potential type of this endpoint to make sure that sources are
+   * associated with source types and sinks with sink types.
    */
-  predicate isSinkCandidate(Candidate::Endpoint candidateSink, Candidate::EndpointType sinkType) {
-    not sinkType instanceof Candidate::NegativeEndpointType and
-    not exists(getAReasonSinkExcluded(candidateSink, sinkType))
+  Candidate::EndpointType getAPotentialType(Candidate::Endpoint endpoint) {
+    endpoint.getExtensibleType() = "sourceModel" and
+    result instanceof Candidate::SourceType
+    or
+    endpoint.getExtensibleType() = "sinkModel" and
+    result instanceof Candidate::SinkType
+  }
+
+  /**
+   * Holds if the given `endpoint` should be considered as a candidate for type `endpointType`,
+   * and classified by the ML model.
+   *
+   * A candidate is an endpoint that cannot be excluded from `endpointType` based on its characteristics.
+   */
+  predicate isCandidate(Candidate::Endpoint endpoint, Candidate::EndpointType endpointType) {
+    endpointType = getAPotentialType(endpoint) and
+    not exists(getAnExcludingCharacteristic(endpoint, endpointType))
   }
 
   /**
@@ -139,27 +166,16 @@ module SharedCharacteristics<CandidateSig Candidate> {
   }
 
   /**
-   * Gets the list of characteristics that cause `candidateSink` to be excluded as an effective sink for a given sink
-   * type.
+   * Gets a characteristics that disbar `endpoint` from being a candidate for `endpointType`
+   * with at least medium confidence.
    */
-  EndpointCharacteristic getAReasonSinkExcluded(
-    Candidate::Endpoint candidateSink, Candidate::EndpointType sinkType
+  EndpointCharacteristic getAnExcludingCharacteristic(
+    Candidate::Endpoint endpoint, Candidate::EndpointType endpointType
   ) {
-    // An endpoint is a sink candidate if none of its characteristics give much indication whether or not it is a sink.
-    not sinkType instanceof Candidate::NegativeEndpointType and
-    result.appliesToEndpoint(candidateSink) and
-    (
-      // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
-      exists(float confidence |
-        confidence >= mediumConfidence() and
-        result.hasImplications(any(Candidate::NegativeEndpointType t), true, confidence)
-      )
-      or
-      // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
-      exists(float confidence |
-        confidence >= mediumConfidence() and
-        result.hasImplications(sinkType, false, confidence)
-      )
+    result.appliesToEndpoint(endpoint) and
+    exists(float confidence |
+      confidence >= mediumConfidence() and
+      result.hasImplications(endpointType, false, confidence)
     )
   }
 
@@ -250,9 +266,43 @@ module SharedCharacteristics<CandidateSig Candidate> {
     override predicate hasImplications(
       Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
     ) {
-      endpointType instanceof Candidate::NegativeEndpointType and
-      isPositiveIndicator = true and
+      endpointType instanceof Candidate::SinkType and
+      isPositiveIndicator = false and
       confidence = highConfidence()
+    }
+  }
+
+  /**
+   * A high-confidence characteristic that indicates that an endpoint is not a source of any type. These endpoints can be
+   * used as negative samples for training or for a few-shot prompt.
+   */
+  abstract class NotASourceCharacteristic extends EndpointCharacteristic {
+    bindingset[this]
+    NotASourceCharacteristic() { any() }
+
+    override predicate hasImplications(
+      Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
+    ) {
+      endpointType instanceof Candidate::SourceType and
+      isPositiveIndicator = false and
+      confidence = highConfidence()
+    }
+  }
+
+  /**
+   * A high-confidence characteristic that indicates that an endpoint is neither a source nor a sink of any type.
+   */
+  abstract class NeitherSourceNorSinkCharacteristic extends NotASinkCharacteristic,
+    NotASourceCharacteristic
+  {
+    bindingset[this]
+    NeitherSourceNorSinkCharacteristic() { any() }
+
+    final override predicate hasImplications(
+      Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
+    ) {
+      NotASinkCharacteristic.super.hasImplications(endpointType, isPositiveIndicator, confidence) or
+      NotASourceCharacteristic.super.hasImplications(endpointType, isPositiveIndicator, confidence)
     }
   }
 
@@ -269,8 +319,8 @@ module SharedCharacteristics<CandidateSig Candidate> {
     override predicate hasImplications(
       Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
     ) {
-      endpointType instanceof Candidate::NegativeEndpointType and
-      isPositiveIndicator = true and
+      endpointType instanceof Candidate::SinkType and
+      isPositiveIndicator = false and
       confidence = mediumConfidence()
     }
   }
@@ -290,8 +340,8 @@ module SharedCharacteristics<CandidateSig Candidate> {
     override predicate hasImplications(
       Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
     ) {
-      endpointType instanceof Candidate::NegativeEndpointType and
-      isPositiveIndicator = true and
+      endpointType instanceof Candidate::SinkType and
+      isPositiveIndicator = false and
       confidence = mediumConfidence()
     }
   }
@@ -344,17 +394,16 @@ module SharedCharacteristics<CandidateSig Candidate> {
     /**
      * A negative characteristic that indicates that an endpoint was manually modeled as a neutral model.
      */
-    private class NeutralModelCharacteristic extends NotASinkCharacteristic {
+    private class NeutralModelCharacteristic extends NeitherSourceNorSinkCharacteristic {
       NeutralModelCharacteristic() { this = "known non-sink" }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isNeutral(e) }
     }
 
     /**
-     * A negative characteristic that indicates that an endpoint is not part of the source code for the project being
-     * analyzed.
+     * A negative characteristic that indicates that an endpoint is a sanitizer, and thus not a source.
      */
-    private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
+    private class IsSanitizerCharacteristic extends NotASourceCharacteristic {
       IsSanitizerCharacteristic() { this = "known sanitizer" }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSanitizer(e, _) }

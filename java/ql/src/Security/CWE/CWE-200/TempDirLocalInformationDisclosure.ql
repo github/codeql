@@ -25,7 +25,11 @@ import semmle.code.java.security.TempDirLocalInformationDisclosureQuery
  * resulting in a zero-length paths.
  */
 module InsecureMethodPathGraph implements DataFlow::PathGraphSig<MethodCallInsecureFileCreation> {
-  predicate edges(MethodCallInsecureFileCreation n1, MethodCallInsecureFileCreation n2) { none() }
+  predicate edges(
+    MethodCallInsecureFileCreation n1, MethodCallInsecureFileCreation n2, string key, string value
+  ) {
+    none()
+  }
 
   predicate nodes(MethodCallInsecureFileCreation n, string key, string val) {
     key = "semmle.label" and val = n.toString()

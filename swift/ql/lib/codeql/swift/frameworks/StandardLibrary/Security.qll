@@ -8,6 +8,6 @@ private import codeql.swift.dataflow.ExternalFlow
 
 private class SensitiveSources extends SourceModelCsv {
   override predicate row(string row) {
-    row = ";;false;SecKeyCopyExternalRepresentation(_:_:);;;ReturnValue;sensitive-credential"
+    row = ";;false;SecKeyCopyExternalRepresentation(_:_:);;;ReturnValue;sensitive-password"
   }
 }

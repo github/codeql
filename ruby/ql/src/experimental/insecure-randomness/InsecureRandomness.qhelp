@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Using a cryptographically weak pseudo-random number generator to generate a security-sensitive value, 
+such as a password, makes it easier for an attacker to predict the value.
+
+Pseudo-random number generators generate a sequence of numbers that only approximates the
+properties of random numbers. The sequence is not truly random because it is completely 
+determined by a relatively small set of initial values, the seed. If the random number generator is 
+cryptographically weak, then this sequence may be easily predictable through outside observations.
+</p>
+</overview>
+
+<recommendation>
+<p>
+When generating values for use in security-sensitive contexts, it's essential to utilize a 
+cryptographically secure pseudo-random number generator. As a general guideline, a value 
+should be deemed "security-sensitive" if its predictability would empower an attacker to 
+perform actions that would otherwise be beyond their reach. For instance, if an attacker could 
+predict a newly generated user's random password, they would gain unauthorized access to that user's 
+account.
+
+For Ruby, <code>SecureRandom</code> provides a cryptographically secure pseudo-random number generator. 
+<code>rand</code> is not cryptographically secure, and should be avoided in security contexts. 
+For contexts which are not security sensitive, <code>Random</code> may be preferable as it has a more convenient 
+interface.
+
+</p>
+</recommendation>
+
+<example>
+<p>
+The following examples show different ways of generating a password.
+</p>
+
+<p>The first example uses <code>Random.rand()</code> which is not for security purposes</p>
+
+<sample src="examples/InsecureRandomnessBad.rb" />
+
+<p>In the second example, the password is generated using <code>SecureRandom.random_bytes()</code> which is a 
+cryptographically secure method.</p>
+
+<sample src="examples/InsecureRandomnessGood.rb" />
+</example>
+
+<references>
+<li>Wikipedia: <a href="http://en.wikipedia.org/wiki/Pseudorandom_number_generator">Pseudo-random number generator</a>.</li>
+<li>Common Weakness Enumeration: <a href="https://cwe.mitre.org/data/definitions/338.html">CWE-338</a>.</li>
+<li>Ruby-doc: <a href="https://ruby-doc.org/core-3.1.2/Random.html">Random</a>.</li>
+</references>
+</qhelp>

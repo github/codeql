@@ -37,8 +37,9 @@ abstract class InitializationContext extends TranslatedElement {
 abstract class TranslatedVariableInitialization extends TranslatedElement, InitializationContext {
   final override TranslatedElement getChild(int id) { id = 0 and result = this.getInitialization() }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getInstruction(InitializerVariableAddressTag())
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(InitializerVariableAddressTag()) and
+    kind instanceof GotoEdge
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -55,24 +56,24 @@ abstract class TranslatedVariableInitialization extends TranslatedElement, Initi
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     (
       tag = InitializerVariableAddressTag() and
-      kind instanceof GotoEdge and
       if this.hasUninitializedInstruction()
-      then result = this.getInstruction(InitializerStoreTag())
-      else result = this.getInitialization().getFirstInstruction()
+      then kind instanceof GotoEdge and result = this.getInstruction(InitializerStoreTag())
+      else result = this.getInitialization().getFirstInstruction(kind)
     )
     or
     this.hasUninitializedInstruction() and
-    kind instanceof GotoEdge and
     tag = InitializerStoreTag() and
     (
-      result = this.getInitialization().getFirstInstruction()
+      result = this.getInitialization().getFirstInstruction(kind)
       or
-      not exists(this.getInitialization()) and result = this.getInitializationSuccessor()
+      not exists(this.getInitialization()) and
+      result = this.getInitializationSuccessor(kind)
     )
   }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getInitialization() and result = this.getInitializationSuccessor()
+  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+    child = this.getInitialization() and
+    result = this.getInitializationSuccessor(kind)
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -107,8 +108,9 @@ abstract class TranslatedVariableInitialization extends TranslatedElement, Initi
 
   /**
    * Gets the `Instruction` to be executed immediately after the initialization.
+   * The successor edge kind is specified by `kind`.
    */
-  abstract Instruction getInitializationSuccessor();
+  abstract Instruction getInitializationSuccessor(EdgeKind kind);
 
   /**
    * Holds if this initialization requires an `Uninitialized` instruction to be emitted before
@@ -168,18 +170,19 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
  * Represents the IR translation of an initialization from an initializer list.
  */
 abstract class TranslatedListInitialization extends TranslatedInitialization, InitializationContext {
-  override Instruction getFirstInstruction() {
-    result = this.getChild(0).getFirstInstruction()
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getChild(0).getFirstInstruction(kind)
     or
-    not exists(this.getChild(0)) and result = this.getParent().getChildSuccessor(this)
+    not exists(this.getChild(0)) and
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     exists(int index |
       child = this.getChild(index) and
       if exists(this.getChild(index + 1))
-      then result = this.getChild(index + 1).getFirstInstruction()
-      else result = this.getParent().getChildSuccessor(this)
+      then result = this.getChild(index + 1).getFirstInstruction(kind)
+      else result = this.getParent().getChildSuccessor(this, kind)
     )
   }
 
@@ -239,8 +242,8 @@ abstract class TranslatedDirectInitialization extends TranslatedInitialization {
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getInitializer() }
 
-  override Instruction getFirstInstruction() {
-    result = this.getInitializer().getFirstInstruction()
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInitializer().getFirstInstruction(kind)
   }
 
   final TranslatedExpr getInitializer() { result = getTranslatedExpr(expr) }
@@ -265,12 +268,13 @@ class TranslatedSimpleDirectInitialization extends TranslatedDirectInitializatio
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = InitializerStoreTag() and
-    result = this.getParent().getChildSuccessor(this) and
-    kind instanceof GotoEdge
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getInitializer() and result = this.getInstruction(InitializerStoreTag())
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+    child = this.getInitializer() and
+    result = this.getInstruction(InitializerStoreTag()) and
+    kind instanceof GotoEdge
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -335,12 +339,13 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
-    (
-      tag = InitializerLoadStringTag() and
-      result = this.getInstruction(InitializerStoreTag())
-      or
-      if this.zeroInitRange(_, _)
-      then (
+    tag = InitializerLoadStringTag() and
+    result = this.getInstruction(InitializerStoreTag())
+    or
+    if this.zeroInitRange(_, _)
+    then (
+      kind instanceof GotoEdge and
+      (
         tag = InitializerStoreTag() and
         result = this.getInstruction(ZeroPadStringConstantTag())
         or
@@ -352,18 +357,20 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
         or
         tag = ZeroPadStringElementAddressTag() and
         result = this.getInstruction(ZeroPadStringStoreTag())
-        or
-        tag = ZeroPadStringStoreTag() and
-        result = this.getParent().getChildSuccessor(this)
-      ) else (
-        tag = InitializerStoreTag() and
-        result = this.getParent().getChildSuccessor(this)
       )
+      or
+      tag = ZeroPadStringStoreTag() and
+      result = this.getParent().getChildSuccessor(this, kind)
+    ) else (
+      tag = InitializerStoreTag() and
+      result = this.getParent().getChildSuccessor(this, kind)
     )
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getInitializer() and result = this.getInstruction(InitializerLoadStringTag())
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+    child = this.getInitializer() and
+    result = this.getInstruction(InitializerLoadStringTag()) and
+    kind instanceof GotoEdge
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -456,8 +463,8 @@ class TranslatedConstructorInitialization extends TranslatedDirectInitialization
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getInitializer() and result = this.getParent().getChildSuccessor(this)
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+    child = this.getInitializer() and result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
@@ -502,8 +509,9 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
     result = getEnclosingVariable(ast).(StaticInitializedStaticLocalVariable)
   }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getInstruction(this.getFieldAddressTag())
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(this.getFieldAddressTag()) and
+    kind instanceof GotoEdge
   }
 
   /**
@@ -558,12 +566,11 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = this.getFieldAddressTag() and
-    result = this.getInitialization().getFirstInstruction() and
-    kind instanceof GotoEdge
+    result = this.getInitialization().getFirstInstruction(kind)
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getInitialization() and result = this.getParent().getChildSuccessor(this)
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+    child = this.getInitialization() and result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getInitialization() }
@@ -608,10 +615,10 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
       or
       tag = this.getFieldDefaultValueTag() and
       result = this.getInstruction(this.getFieldDefaultValueStoreTag())
-      or
-      tag = this.getFieldDefaultValueStoreTag() and
-      result = this.getParent().getChildSuccessor(this)
     )
+    or
+    tag = this.getFieldDefaultValueStoreTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
@@ -632,7 +639,7 @@ class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
     )
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
 
   override TranslatedElement getChild(int id) { none() }
 
@@ -667,8 +674,9 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = getEnclosingVariable(initList).(StaticInitializedStaticLocalVariable)
   }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getInstruction(this.getElementIndexTag())
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(this.getElementIndexTag()) and
+    kind instanceof GotoEdge
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -745,12 +753,11 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
     result = TranslatedElementInitialization.super.getInstructionSuccessor(tag, kind)
     or
     tag = this.getElementAddressTag() and
-    result = this.getInitialization().getFirstInstruction() and
-    kind instanceof GotoEdge
+    result = this.getInitialization().getFirstInstruction(kind)
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getInitialization() and result = this.getParent().getChildSuccessor(this)
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+    child = this.getInitialization() and result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getInitialization() }
@@ -803,10 +810,10 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
       or
       tag = this.getElementDefaultValueTag() and
       result = this.getInstruction(this.getElementDefaultValueStoreTag())
-      or
-      tag = this.getElementDefaultValueStoreTag() and
-      result = this.getParent().getChildSuccessor(this)
     )
+    or
+    tag = this.getElementDefaultValueStoreTag() and
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   override string getInstructionConstantValue(InstructionTag tag) {
@@ -829,7 +836,7 @@ class TranslatedElementValueInitialization extends TranslatedElementInitializati
     )
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
 
   override TranslatedElement getChild(int id) { none() }
 
@@ -869,9 +876,9 @@ abstract class TranslatedStructorCallFromStructor extends TranslatedElement, Str
 
   final override Function getFunction() { result = getEnclosingFunction(call) }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) {
+  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     child = this.getStructorCall() and
-    result = this.getParent().getChildSuccessor(this)
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   final TranslatedExpr getStructorCall() { result = getTranslatedExpr(call) }
@@ -882,8 +889,9 @@ abstract class TranslatedStructorCallFromStructor extends TranslatedElement, Str
  * destructor from within a derived class constructor or destructor.
  */
 abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStructor {
-  final override Instruction getFirstInstruction() {
-    result = this.getInstruction(OnlyInstructionTag())
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(OnlyInstructionTag()) and
+    kind instanceof GotoEdge
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -894,8 +902,7 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    kind instanceof GotoEdge and
-    result = this.getStructorCall().getFirstInstruction()
+    result = this.getStructorCall().getFirstInstruction(kind)
   }
 
   final override Instruction getReceiver() { result = this.getInstruction(OnlyInstructionTag()) }
@@ -936,8 +943,8 @@ class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromC
 
   final override string toString() { result = "delegation construct: " + call.toString() }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getStructorCall().getFirstInstruction()
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getStructorCall().getFirstInstruction(kind)
   }
 
   final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -998,7 +1005,9 @@ class TranslatedConstructorBareInit extends TranslatedElement, TTranslatedConstr
 
   final override string toString() { result = "construct base (no constructor)" }
 
-  override Instruction getFirstInstruction() { result = this.getParent().getChildSuccessor(this) }
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
@@ -1010,7 +1019,7 @@ class TranslatedConstructorBareInit extends TranslatedElement, TTranslatedConstr
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
-  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) { none() }
 }
 
 TranslatedConstructorBareInit getTranslatedConstructorBareInit(ConstructorInit init) {

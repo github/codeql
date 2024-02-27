@@ -481,11 +481,16 @@ class DereferenceableExpr extends Expr {
 }
 
 /**
+ * DEPRECATED: Use `EnumerableCollectionExpr` instead.
+ */
+deprecated class CollectionExpr = EnumerableCollectionExpr;
+
+/**
  * An expression that evaluates to a collection. That is, an expression whose
  * (transitive, reflexive) base type is `IEnumerable`.
  */
-class CollectionExpr extends Expr {
-  CollectionExpr() {
+class EnumerableCollectionExpr extends Expr {
+  EnumerableCollectionExpr() {
     this.getType().(ValueOrRefType).getABaseType*() instanceof SystemCollectionsIEnumerableInterface
   }
 
@@ -1008,10 +1013,16 @@ module Internal {
      * Holds if pre-basic-block `bb` only is reached when guard `g` has abstract value `v`,
      * not taking implications into account.
      */
+    pragma[nomagic]
     private predicate preControlsDirect(Guard g, PreBasicBlocks::PreBasicBlock bb, AbstractValue v) {
       exists(PreBasicBlocks::ConditionBlock cb, ConditionalSuccessor s | cb.controls(bb, s) |
         v.branch(cb.getLastElement(), s, g)
       )
+    }
+
+    pragma[nomagic]
+    private predicate preControlsDefDirect(Guard g, PreSsa::Definition def, AbstractValue v) {
+      preControlsDirect(g, def.getBasicBlock(), v)
     }
 
     /** Holds if pre-basic-block `bb` only is reached when guard `g` has abstract value `v`. */
@@ -1106,36 +1117,47 @@ module Internal {
       )
     }
 
-    pragma[noinline]
+    pragma[nomagic]
     private predicate conditionalAssign0(
       Guard guard, AbstractValue vGuard, PreSsa::PhiNode phi, Expr e, PreSsa::Definition upd,
-      PreBasicBlocks::PreBasicBlock bbGuard
+      PreBasicBlocks::PreBasicBlock bbGuard, PreBasicBlocks::PreBasicBlock bbPhi
     ) {
       e = upd.getDefinition().getSource() and
       upd = phi.getAnInput() and
-      preControlsDirect(guard, upd.getBasicBlock(), vGuard) and
+      preControlsDefDirect(guard, upd, vGuard) and
       bbGuard.getAnElement() = guard and
-      bbGuard.strictlyDominates(phi.getBasicBlock()) and
-      not preControlsDirect(guard, phi.getBasicBlock(), vGuard)
+      bbPhi = phi.getBasicBlock()
     }
 
     pragma[noinline]
     private predicate conditionalAssign1(
       Guard guard, AbstractValue vGuard, PreSsa::PhiNode phi, Expr e, PreSsa::Definition upd,
+      PreBasicBlocks::PreBasicBlock bbGuard
+    ) {
+      exists(PreBasicBlocks::PreBasicBlock bbPhi |
+        conditionalAssign0(guard, vGuard, phi, e, upd, bbGuard, bbPhi) and
+        bbGuard.strictlyDominates(bbPhi) and
+        not preControlsDefDirect(guard, phi, vGuard)
+      )
+    }
+
+    pragma[noinline]
+    private predicate conditionalAssign2(
+      Guard guard, AbstractValue vGuard, PreSsa::PhiNode phi, Expr e, PreSsa::Definition upd,
       PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
     ) {
-      conditionalAssign0(guard, vGuard, phi, e, upd, bbGuard) and
+      conditionalAssign1(guard, vGuard, phi, e, upd, bbGuard) and
       other != upd and
       other = phi.getAnInput()
     }
 
     pragma[noinline]
-    private predicate conditionalAssign2(
+    private predicate conditionalAssign3(
       Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
       PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
     ) {
-      conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other) and
-      preControlsDirect(guard, other.getBasicBlock(), vGuard.getDualValue())
+      conditionalAssign2(guard, vGuard, def, e, upd, bbGuard, other) and
+      preControlsDefDirect(guard, other, vGuard.getDualValue())
     }
 
     /** Gets the successor block that is reached when guard `g` has abstract value `v`. */
@@ -1148,11 +1170,11 @@ module Internal {
     }
 
     pragma[noinline]
-    private predicate conditionalAssign3(
+    private predicate conditionalAssign4(
       Guard guard, AbstractValue vGuard, PreSsa::Definition def, Expr e, PreSsa::Definition upd,
       PreBasicBlocks::PreBasicBlock bbGuard, PreSsa::Definition other
     ) {
-      conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other) and
+      conditionalAssign2(guard, vGuard, def, e, upd, bbGuard, other) and
       other.getBasicBlock().dominates(bbGuard) and
       not other.isLiveAtEndOfBlock(getConditionalSuccessor(guard, vGuard))
     }
@@ -1179,10 +1201,10 @@ module Internal {
       )
       or
       exists(PreSsa::Definition upd, PreBasicBlocks::PreBasicBlock bbGuard |
-        conditionalAssign0(guard, vGuard, def, e, upd, bbGuard)
+        conditionalAssign1(guard, vGuard, def, e, upd, bbGuard)
       |
         forall(PreSsa::Definition other |
-          conditionalAssign1(guard, vGuard, def, e, upd, bbGuard, other)
+          conditionalAssign2(guard, vGuard, def, e, upd, bbGuard, other)
         |
           // For example:
           //   if (guard)
@@ -1190,14 +1212,14 @@ module Internal {
           //   else
           //     other = b;
           //   def = phi(upd, other)
-          conditionalAssign2(guard, vGuard, def, e, upd, bbGuard, other)
+          conditionalAssign3(guard, vGuard, def, e, upd, bbGuard, other)
           or
           // For example:
           //   other = a;
           //   if (guard)
           //       upd = b;
           //   def = phi(other, upd)
-          conditionalAssign3(guard, vGuard, def, e, upd, bbGuard, other)
+          conditionalAssign4(guard, vGuard, def, e, upd, bbGuard, other)
         )
       )
     }
@@ -1431,7 +1453,7 @@ module Internal {
           or
           val.branch(_, _, e)
           or
-          e instanceof CollectionExpr and
+          e instanceof EnumerableCollectionExpr and
           val = TEmptyCollectionValue(_)
         ) and
         not e = any(ExprStmt es).getExpr() and
@@ -1570,7 +1592,9 @@ module Internal {
           (g1 != g2 or v1 != v2)
         )
         or
-        exists(boolean isEmpty | g1 = g2.(CollectionExpr).getAnEmptinessCheck(v1, isEmpty) |
+        exists(boolean isEmpty |
+          g1 = g2.(EnumerableCollectionExpr).getAnEmptinessCheck(v1, isEmpty)
+        |
           v2 =
             any(EmptyCollectionValue ecv | if ecv.isEmpty() then isEmpty = true else isEmpty = false) and
           g1 != g2

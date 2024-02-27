@@ -22,6 +22,7 @@
 | p;Joiner;false;setEmptyValue;(CharSequence);;Argument[0];Argument[this];taint;df-generated |
 | p;Joiner;false;setEmptyValue;(CharSequence);;Argument[this];ReturnValue;value;df-generated |
 | p;Joiner;false;toString;();;Argument[this];ReturnValue;taint;df-generated |
+| p;MultipleImpl2$IInterface;true;m;(Object);;Argument[0];ReturnValue;taint;df-generated |
 | p;MultipleImpls$Strat2;true;getValue;();;Argument[this];ReturnValue;taint;df-generated |
 | p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[this];taint;df-generated |
 | p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];ReturnValue;taint;df-generated |

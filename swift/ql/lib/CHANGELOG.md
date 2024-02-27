@@ -1,3 +1,31 @@
+## 0.3.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.3.8
+
+No user-facing changes.
+
+## 0.3.7
+
+### Minor Analysis Improvements
+
+* Swift upgraded to 5.9.2
+* The control flow graph library (`codeql.swift.controlflow`) has been transitioned to use the shared implementation from the `codeql/controlflow` qlpack. No result changes are expected due to this change.
+
+## 0.3.6
+
+### Minor Analysis Improvements
+
+* Expanded flow models for `UnsafePointer` and similar classes.
+* Added flow models for non-member `withUnsafePointer` and similar functions.
+* Added flow models for `withMemoryRebound`, `assumingMemoryBound` and `bindMemory` member functions of library pointer classes.
+* Added a sensitive data model for `SecKeyCopyExternalRepresentation`.
+* Added imprecise flow models for `append` and `insert` methods, and initializer calls with a `data` argument.
+* Tyes for patterns are now included in the database and made available through the `Pattern::getType()` method.
+
 ## 0.3.5
 
 No user-facing changes.

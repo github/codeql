@@ -58,6 +58,19 @@ class Expr extends StmtParent, @expr {
   /** Gets the parent of this expression, if any. */
   Element getParent() { exprparents(underlyingElement(this), _, unresolveElement(result)) }
 
+  /**
+   * Gets the `n`th compiler-generated destructor call that is performed after this expression, in
+   * order of destruction.
+   */
+  DestructorCall getImplicitDestructorCall(int n) {
+    synthetic_destructor_call(this, max(int i | synthetic_destructor_call(this, i, _)) - n, result)
+  }
+
+  /**
+   * Gets a compiler-generated destructor call that is performed after this expression.
+   */
+  DestructorCall getAnImplicitDestructorCall() { synthetic_destructor_call(this, _, result) }
+
   /** Gets the location of this expression. */
   override Location getLocation() {
     result = this.getExprLocationOverride()

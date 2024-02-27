@@ -168,11 +168,11 @@ func EmitCannotFindPackages(pkgPaths []string) {
 	)
 }
 
-func EmitNewerGoVersionNeeded() {
+func EmitNewerGoVersionNeeded(installedVersion string, requiredVersion string) {
 	emitDiagnostic(
 		"go/autobuilder/newer-go-version-needed",
 		"Newer Go version needed",
-		"The detected version of Go is lower than the version specified in `go.mod`. [Install a newer version](https://github.com/actions/setup-go#basic).",
+		"Version `"+installedVersion+"` of Go is installed, but this is lower than `"+requiredVersion+"` required by your project's `go.mod`. [Install a newer version of Go before analyzing your project](https://github.com/actions/setup-go#basic).",
 		severityError,
 		fullVisibility,
 		noLocation,

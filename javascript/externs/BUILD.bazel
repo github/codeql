@@ -1,4 +1,4 @@
-load("@//:dist.bzl", "pack_zip")
+load("@semmle_code//:dist.bzl", "pack_zip")
 
 pack_zip(
     name = "externs",

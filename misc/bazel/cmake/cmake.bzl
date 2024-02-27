@@ -22,7 +22,13 @@ CmakeInfo = provider(
 )
 
 def _cmake_name(label):
-    return ("%s_%s_%s" % (label.workspace_name, label.package, label.name)).replace("/", "_")
+    # strip away the bzlmod module version for now
+    workspace_name, _, _ = label.workspace_name.partition("~")
+    ret = ("%s_%s_%s" % (workspace_name, label.package, label.name)).replace("/", "_")
+    internal_transition_suffix = "_INTERNAL_TRANSITION"
+    if ret.endswith(internal_transition_suffix):
+        ret = ret[:-len(internal_transition_suffix)]
+    return ret
 
 def _cmake_file(file):
     if not file.is_source:
@@ -116,7 +122,6 @@ def _cmake_aspect_impl(target, ctx):
                 prefix,  # source
                 "${BAZEL_EXEC_ROOT}/%s/%s" % (ctx.var["BINDIR"], prefix),  # generated
             ]
-
     deps = [dep[CmakeInfo] for dep in deps if CmakeInfo in dep]
 
     # by the book this should be done with depsets, but so far the performance implication is negligible

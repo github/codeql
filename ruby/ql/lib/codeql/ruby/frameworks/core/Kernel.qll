@@ -43,7 +43,9 @@ module Kernel {
    * ```
    */
   private predicate isPublicKernelMethod(string method) {
-    method in ["class", "clone", "frozen?", "tap", "then", "yield_self", "send"]
+    method in [
+        "class", "clone", "frozen?", "tap", "then", "yield_self", "send", "public_send", "__send__"
+      ]
   }
 
   /**
@@ -167,7 +169,7 @@ module Kernel {
    * ```
    */
   class SendCallCodeExecution extends CodeExecution::Range, KernelMethodCall {
-    SendCallCodeExecution() { this.getMethodName() = "send" }
+    SendCallCodeExecution() { this.getMethodName() = ["send", "public_send", "__send__"] }
 
     override DataFlow::Node getCode() { result = this.getArgument(0) }
 

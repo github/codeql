@@ -1,11 +1,11 @@
 edges
-| test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:1:26:1:32 | ControlFlowNode for request |
-| test.py:1:26:1:32 | ControlFlowNode for request | test.py:9:19:9:25 | ControlFlowNode for request |
-| test.py:1:26:1:32 | ControlFlowNode for request | test.py:20:19:20:25 | ControlFlowNode for request |
-| test.py:9:5:9:15 | ControlFlowNode for xml_content | test.py:10:34:10:44 | ControlFlowNode for xml_content |
-| test.py:9:19:9:25 | ControlFlowNode for request | test.py:9:5:9:15 | ControlFlowNode for xml_content |
-| test.py:20:5:20:15 | ControlFlowNode for xml_content | test.py:31:34:31:44 | ControlFlowNode for xml_content |
-| test.py:20:19:20:25 | ControlFlowNode for request | test.py:20:5:20:15 | ControlFlowNode for xml_content |
+| test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:1:26:1:32 | ControlFlowNode for request | provenance |  |
+| test.py:1:26:1:32 | ControlFlowNode for request | test.py:9:19:9:25 | ControlFlowNode for request | provenance |  |
+| test.py:1:26:1:32 | ControlFlowNode for request | test.py:20:19:20:25 | ControlFlowNode for request | provenance |  |
+| test.py:9:5:9:15 | ControlFlowNode for xml_content | test.py:10:34:10:44 | ControlFlowNode for xml_content | provenance |  |
+| test.py:9:19:9:25 | ControlFlowNode for request | test.py:9:5:9:15 | ControlFlowNode for xml_content | provenance |  |
+| test.py:20:5:20:15 | ControlFlowNode for xml_content | test.py:31:34:31:44 | ControlFlowNode for xml_content | provenance |  |
+| test.py:20:19:20:25 | ControlFlowNode for request | test.py:20:5:20:15 | ControlFlowNode for xml_content | provenance |  |
 nodes
 | test.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | test.py:1:26:1:32 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |

@@ -43,8 +43,11 @@
 | Capture.cs:130:13:130:13 | c | Capture.cs:133:13:133:17 | SSA def(c) | Capture.cs:133:13:133:17 | ... = ... |
 | Capture.cs:139:13:139:13 | d | Capture.cs:139:13:139:18 | SSA def(d) | Capture.cs:139:13:139:18 | Int32 d = ... |
 | Capture.cs:139:13:139:13 | d | Capture.cs:142:13:142:17 | SSA def(d) | Capture.cs:142:13:142:17 | ... = ... |
+| Capture.cs:147:13:147:13 | e | Capture.cs:147:13:147:18 | SSA def(e) | Capture.cs:147:13:147:18 | Int32 e = ... |
+| Capture.cs:147:13:147:13 | e | Capture.cs:151:13:151:17 | SSA def(e) | Capture.cs:151:13:151:17 | ... = ... |
 | Capture.cs:154:13:154:13 | f | Capture.cs:154:13:154:18 | SSA def(f) | Capture.cs:154:13:154:18 | Int32 f = ... |
 | Capture.cs:154:13:154:13 | f | Capture.cs:158:13:158:17 | SSA def(f) | Capture.cs:158:13:158:17 | ... = ... |
+| Capture.cs:168:13:168:13 | h | Capture.cs:168:13:168:18 | SSA def(h) | Capture.cs:168:13:168:18 | Int32 h = ... |
 | Capture.cs:168:13:168:13 | h | Capture.cs:171:13:171:17 | SSA def(h) | Capture.cs:171:13:171:17 | ... = ... |
 | Capture.cs:168:13:168:13 | h | Capture.cs:174:17:174:21 | SSA def(h) | Capture.cs:174:17:174:21 | ... = ... |
 | Capture.cs:182:17:182:17 | i | Capture.cs:182:17:182:21 | SSA def(i) | Capture.cs:182:17:182:21 | Int32 i = ... |
@@ -58,6 +61,7 @@
 | Capture.cs:229:13:229:13 | i | Capture.cs:232:9:232:13 | SSA def(i) | Capture.cs:232:9:232:13 | ... = ... |
 | Capture.cs:229:13:229:13 | i | Capture.cs:235:21:235:25 | SSA def(i) | Capture.cs:235:21:235:25 | ... = ... |
 | Capture.cs:242:13:242:13 | i | Capture.cs:242:13:242:17 | SSA def(i) | Capture.cs:242:13:242:17 | Int32 i = ... |
+| Capture.cs:242:13:242:13 | i | Capture.cs:245:13:245:17 | SSA def(i) | Capture.cs:245:13:245:17 | ... = ... |
 | Capture.cs:242:13:242:13 | i | Capture.cs:254:27:254:27 | SSA def(i) | Capture.cs:254:27:254:27 | access to local variable i |
 | Capture.cs:248:36:248:36 | j | Capture.cs:251:13:251:17 | SSA def(j) | Capture.cs:251:13:251:17 | ... = ... |
 | Consistency.cs:7:25:7:25 | b | Consistency.cs:7:25:7:25 | SSA param(b) | Consistency.cs:7:25:7:25 | b |
@@ -65,6 +69,7 @@
 | Consistency.cs:15:17:15:17 | i | Consistency.cs:15:17:15:21 | [finally: exception(Exception)] SSA def(i) | Consistency.cs:15:17:15:21 | Int32 i = ... |
 | Consistency.cs:25:29:25:29 | c | Consistency.cs:25:29:25:29 | SSA def(c) | Consistency.cs:25:29:25:29 | Consistency c |
 | Consistency.cs:30:30:30:30 | c | Consistency.cs:32:9:32:29 | SSA def(c) | Consistency.cs:32:9:32:29 | ... = ... |
+| Consistency.cs:38:13:38:13 | i | Consistency.cs:38:13:38:13 | SSA def(i) | Consistency.cs:38:13:38:13 | Int32 i |
 | Consistency.cs:38:13:38:13 | i | Consistency.cs:39:28:39:32 | SSA def(i) | Consistency.cs:39:28:39:32 | ... = ... |
 | Consistency.cs:44:11:44:11 | s | Consistency.cs:44:11:44:11 | SSA def(s) | Consistency.cs:44:11:44:11 | S s |
 | Consistency.cs:49:30:49:30 | a | Consistency.cs:49:30:49:30 | SSA param(a) | Consistency.cs:49:30:49:30 | a |
@@ -88,6 +93,7 @@
 | DefUse.cs:53:9:53:13 | this.Field | DefUse.cs:53:9:53:17 | SSA def(this.Field) | DefUse.cs:53:9:53:17 | ... = ... |
 | DefUse.cs:56:9:56:12 | this.Prop | DefUse.cs:56:9:56:16 | SSA def(this.Prop) | DefUse.cs:56:9:56:16 | ... = ... |
 | DefUse.cs:59:13:59:13 | i | DefUse.cs:59:13:59:17 | SSA def(i) | DefUse.cs:59:13:59:17 | Int32 i = ... |
+| DefUse.cs:59:13:59:13 | i | DefUse.cs:60:37:60:41 | SSA def(i) | DefUse.cs:60:37:60:41 | ... = ... |
 | DefUse.cs:59:13:59:13 | i | DefUse.cs:71:9:71:13 | SSA def(i) | DefUse.cs:71:9:71:13 | ... = ... |
 | DefUse.cs:59:13:59:13 | i | DefUse.cs:72:9:72:11 | SSA def(i) | DefUse.cs:72:9:72:11 | ...++ |
 | DefUse.cs:59:13:59:13 | i | DefUse.cs:75:9:75:13 | SSA def(i) | DefUse.cs:75:9:75:13 | ... = ... |

@@ -3,6 +3,9 @@ name: Build framework coverage timeseries reports
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   build:
     runs-on: ubuntu-latest

@@ -1,6 +1,7 @@
 #include "swift/logging/SwiftAssert.h"
 
 const std::string_view codeql::programName = "test";
+const std::string_view codeql::extractorName = "swift";
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"main"};

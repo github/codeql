@@ -474,7 +474,7 @@ import StepRelationTransformations
 predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
   or
-  summaryFlowSteps(nodeFrom, nodeTo)
+  summaryLocalStep(nodeFrom, nodeTo)
   or
   variableCaptureLocalFlowStep(nodeFrom, nodeTo)
 }
@@ -493,10 +493,6 @@ predicate simpleLocalFlowStepForTypetracking(Node nodeFrom, Node nodeTo) {
 private predicate summaryLocalStep(Node nodeFrom, Node nodeTo) {
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
     nodeTo.(FlowSummaryNode).getSummaryNode(), true)
-}
-
-predicate summaryFlowSteps(Node nodeFrom, Node nodeTo) {
-  IncludePostUpdateFlow<PhaseDependentFlow<summaryLocalStep/2>::step/2>::step(nodeFrom, nodeTo)
 }
 
 predicate variableCaptureLocalFlowStep(Node nodeFrom, Node nodeTo) {
@@ -983,6 +979,8 @@ predicate clearsContent(Node n, ContentSet c) {
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
   dictSplatParameterNodeClearStep(n, c)
+  or
+  VariableCapture::clearsContent(n, c)
 }
 
 /**
@@ -1008,22 +1006,6 @@ predicate attributeClearStep(Node n, AttributeContent c) {
  * Holds if the node `n` is unreachable when the call context is `call`.
  */
 predicate isUnreachableInCall(Node n, DataFlowCall call) { none() }
-
-//--------
-// Virtual dispatch with call context
-//--------
-/**
- * Gets a viable dispatch target of `call` in the context `ctx`. This is
- * restricted to those `call`s for which a context might make a difference.
- */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
-
-/**
- * Holds if the set of viable implementations that can be called by `call`
- * might be improved by knowing the call context. This is the case if the qualifier accesses a parameter of
- * the enclosing callable `c` (including the implicit `this` parameter).
- */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
 
 /**
  * Holds if access paths with `c` at their head always should be tracked at high

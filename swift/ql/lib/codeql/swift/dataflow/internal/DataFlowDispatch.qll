@@ -302,18 +302,6 @@ private module Cached {
 
 import Cached
 
-/**
- * Holds if the set of viable implementations that can be called by `call`
- * might be improved by knowing the call context.
- */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c) { none() }
-
-/**
- * Gets a viable dispatch target of `call` in the context `ctx`. This is
- * restricted to those `call`s for which a context might make a difference.
- */
-DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
-
 /** A parameter position. */
 class ParameterPosition extends TParameterPosition {
   /** Gets a textual representation of this position. */

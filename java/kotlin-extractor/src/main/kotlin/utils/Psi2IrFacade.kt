@@ -7,5 +7,6 @@ import org.jetbrains.kotlin.psi.KtFile
 
 interface Psi2IrFacade {
     fun getKtFile(irFile: IrFile): KtFile?
+
     fun findPsiElement(irElement: IrElement, irFile: IrFile): PsiElement?
 }

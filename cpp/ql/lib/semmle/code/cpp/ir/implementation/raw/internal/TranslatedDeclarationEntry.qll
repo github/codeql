@@ -67,8 +67,8 @@ abstract class TranslatedLocalVariableDeclaration extends TranslatedVariableInit
       getTranslatedInitialization(this.getVariable().getInitializer().getExpr().getFullyConverted())
   }
 
-  final override Instruction getInitializationSuccessor() {
-    result = this.getParent().getChildSuccessor(this)
+  final override Instruction getInitializationSuccessor(EdgeKind kind) {
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
   final override IRVariable getIRVariable() {
@@ -147,8 +147,9 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     type = getBoolType()
   }
 
-  final override Instruction getFirstInstruction() {
-    result = this.getInstruction(DynamicInitializationFlagAddressTag())
+  final override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(DynamicInitializationFlagAddressTag()) and
+    kind instanceof GotoEdge
   }
 
   final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -163,10 +164,10 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     tag = DynamicInitializationConditionalBranchTag() and
     (
       kind instanceof TrueEdge and
-      result = this.getParent().getChildSuccessor(this)
+      result = this.getParent().getChildSuccessor(this, any(GotoEdge edge))
       or
       kind instanceof FalseEdge and
-      result = this.getInitialization().getFirstInstruction()
+      result = this.getInitialization().getFirstInstruction(any(GotoEdge edge))
     )
     or
     tag = DynamicInitializationFlagConstantTag() and
@@ -174,13 +175,13 @@ class TranslatedStaticLocalVariableDeclarationEntry extends TranslatedDeclaratio
     result = this.getInstruction(DynamicInitializationFlagStoreTag())
     or
     tag = DynamicInitializationFlagStoreTag() and
-    kind instanceof GotoEdge and
-    result = this.getParent().getChildSuccessor(this)
+    result = this.getParent().getChildSuccessor(this, kind)
   }
 
-  final override Instruction getChildSuccessor(TranslatedElement child) {
+  final override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
     child = this.getInitialization() and
-    result = this.getInstruction(DynamicInitializationFlagConstantTag())
+    result = this.getInstruction(DynamicInitializationFlagConstantTag()) and
+    kind instanceof GotoEdge
   }
 
   final override IRDynamicInitializationFlag getInstructionVariable(InstructionTag tag) {

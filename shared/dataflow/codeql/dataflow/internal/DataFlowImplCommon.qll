@@ -83,7 +83,7 @@ module MakeImplCommon<InputSig Lang> {
     class LocalSourceNode extends Node {
       LocalSourceNode() {
         storeStep(_, this, _) or
-        loadStep(_, this, _) or
+        loadStep0(_, this, _) or
         jumpStepCached(_, this) or
         this instanceof ParamNode or
         this instanceof OutNodeExt
@@ -115,11 +115,13 @@ module MakeImplCommon<InputSig Lang> {
     // TODO: support setters
     predicate storeStep(Node n1, Node n2, Content f) { storeSet(n1, f, n2, _, _) }
 
-    predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
+    private predicate loadStep0(Node n1, Node n2, Content f) {
       readSet(n1, f, n2)
       or
       argumentValueFlowsThrough(n1, TReadStepTypesSome(_, f, _), n2)
     }
+
+    predicate loadStep(Node n1, LocalSourceNode n2, Content f) { loadStep0(n1, n2, f) }
 
     predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content f1, Content f2) { none() }
 
@@ -386,7 +388,7 @@ module MakeImplCommon<InputSig Lang> {
   }
 
   private DataFlowCallable viableCallableExt(DataFlowCall call) {
-    result = viableCallable(call)
+    result = viableCallableCached(call)
     or
     result = viableCallableLambda(call, _)
   }
@@ -478,6 +480,9 @@ module MakeImplCommon<InputSig Lang> {
     predicate argumentNode(Node n, DataFlowCall call, ArgumentPosition pos) {
       isArgumentNode(n, call, pos)
     }
+
+    cached
+    DataFlowCallable viableCallableCached(DataFlowCall call) { result = viableCallable(call) }
 
     /**
      * Gets a viable target for the lambda call `call`.
@@ -791,10 +796,12 @@ module MakeImplCommon<InputSig Lang> {
        */
       pragma[nomagic]
       private predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
-        mayBenefitFromCallContext(call, callable)
-        or
-        callEnclosingCallable(call, callable) and
-        exists(viableCallableLambda(call, TDataFlowCallSome(_)))
+        (
+          mayBenefitFromCallContext(call)
+          or
+          exists(viableCallableLambda(call, TDataFlowCallSome(_)))
+        ) and
+        callEnclosingCallable(call, callable)
       }
 
       /**
@@ -1546,9 +1553,7 @@ module MakeImplCommon<InputSig Lang> {
   class CallContextSomeCall extends CallContextCall, TSomeCall {
     override string toString() { result = "CcSomeCall" }
 
-    override predicate relevantFor(DataFlowCallable callable) {
-      exists(ParamNode p | getNodeEnclosingCallable(p) = callable)
-    }
+    override predicate relevantFor(DataFlowCallable callable) { any() }
 
     override predicate matchesCall(DataFlowCall call) { any() }
   }

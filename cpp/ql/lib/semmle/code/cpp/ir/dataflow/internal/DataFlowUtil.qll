@@ -55,6 +55,10 @@ private newtype TIRDataFlowNode =
   } or
   TFinalParameterNode(Parameter p, int indirectionIndex) {
     hasFinalParameterNode(_, p, indirectionIndex)
+    exists(Ssa::FinalParameterUse use |
+      use.getParameter() = p and
+      use.getIndirectionIndex() = indirectionIndex
+    )
   } or
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
   TInitialGlobalValue(Ssa::GlobalDef globalUse) or
@@ -69,22 +73,6 @@ predicate hasFinalParameterNode(Ssa::FinalParameterUse use, Parameter p, int ind
   use.getParameter() = p and
   use.getIndirectionIndex() = indirectionIndex and
   parameterIsRedefined(p)
-}
-
-/**
- * Holds if the value of `*p` (or `**p`, `***p`, etc.) is redefined somewhere in the body
- * of the enclosing function of `p`.
- *
- * Only parameters satisfying this predicate will generate a `FinalParameterNode` transferring
- * flow out of the function.
- */
-private predicate parameterIsRedefined(Parameter p) {
-  exists(Ssa::Def def |
-    def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst() = p and
-    def.getIndirectionIndex() = 0 and
-    def.getIndirection() > 1 and
-    not def.getValue().asInstruction() instanceof InitializeParameterInstruction
-  )
 }
 
 /**
@@ -718,7 +706,7 @@ class FinalGlobalValue extends Node, TFinalGlobalValue {
   override DataFlowType getType() {
     exists(int indirectionIndex |
       indirectionIndex = globalUse.getIndirectionIndex() and
-      result = getTypeImpl(globalUse.getUnspecifiedType(), indirectionIndex - 1)
+      result = getTypeImpl(globalUse.getUnderlyingType(), indirectionIndex - 1)
     )
   }
 
@@ -749,7 +737,7 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
 
   override DataFlowType getType() {
     exists(DataFlowType type |
-      type = globalDef.getUnspecifiedType() and
+      type = globalDef.getUnderlyingType() and
       if this.isGLValue()
       then result = type
       else result = getTypeImpl(type, globalDef.getIndirectionIndex() - 1)
@@ -980,10 +968,13 @@ private Type getTypeImpl0(Type t, int indirectionIndex) {
   indirectionIndex > 0 and
   exists(Type stripped |
     stripped = stripPointer(t.stripTopLevelSpecifiers()) and
-    // We need to avoid the case where `stripPointer(t) = t` (which can happen on
-    // iterators that specify a `value_type` that is the iterator itself). Such a type
-    // would create an infinite loop otherwise. For these cases we simply don't produce
-    // a result for `getTypeImpl`.
+    // We need to avoid the case where `stripPointer(t) = t` (which can happen
+    // on iterators that specify a `value_type` that is the iterator itself).
+    // Such a type would create an infinite loop otherwise. For these cases we
+    // simply don't produce a result for `getTypeImpl`.
+    // To be on the safe side, we check whether the _unspecified_ type has
+    // changed since this also prevents an infinite loop when `stripped` and
+    // `t` only differ by const'ness or volatile'ness.
     stripped.getUnspecifiedType() != t.getUnspecifiedType() and
     result = getTypeImpl0(stripped, indirectionIndex - 1)
   )
@@ -1033,12 +1024,14 @@ private module RawIndirectNodes {
 
     override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(this.getFunction()) }
 
+    override predicate isGLValue() { this.getOperand().isGLValue() }
+
     override DataFlowType getType() {
       exists(int sub, DataFlowType type, boolean isGLValue |
         type = getOperandType(this.getOperand(), isGLValue) and
         if isGLValue = true then sub = 1 else sub = 0
       |
-        result = getTypeImpl(type.getUnspecifiedType(), indirectionIndex - sub)
+        result = getTypeImpl(type.getUnderlyingType(), indirectionIndex - sub)
       )
     }
 
@@ -1075,12 +1068,14 @@ private module RawIndirectNodes {
 
     override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(this.getFunction()) }
 
+    override predicate isGLValue() { this.getInstruction().isGLValue() }
+
     override DataFlowType getType() {
       exists(int sub, DataFlowType type, boolean isGLValue |
         type = getInstructionType(this.getInstruction(), isGLValue) and
         if isGLValue = true then sub = 1 else sub = 0
       |
-        result = getTypeImpl(type.getUnspecifiedType(), indirectionIndex - sub)
+        result = getTypeImpl(type.getUnderlyingType(), indirectionIndex - sub)
       )
     }
 
@@ -1173,7 +1168,7 @@ class FinalParameterNode extends Node, TFinalParameterNode {
 
   override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(this.getFunction()) }
 
-  override DataFlowType getType() { result = getTypeImpl(p.getUnspecifiedType(), indirectionIndex) }
+  override DataFlowType getType() { result = getTypeImpl(p.getUnderlyingType(), indirectionIndex) }
 
   final override Location getLocationImpl() {
     // Parameters can have multiple locations. When there's a unique location we use
@@ -1431,11 +1426,24 @@ abstract private class ExprNodeBase extends Node {
   final Expr getExpr(int n) { result = this.getConvertedExpr(n).getUnconverted() }
 }
 
+/**
+ * Holds if there exists a dataflow node whose `asExpr(n)` should evaluate
+ * to `e`.
+ */
+private predicate exprNodeShouldBe(Expr e, int n) {
+  exprNodeShouldBeInstruction(_, e, n) or
+  exprNodeShouldBeOperand(_, e, n) or
+  exprNodeShouldBeIndirectOutNode(_, e, n)
+}
+
 private class InstructionExprNode extends ExprNodeBase, InstructionNode {
   InstructionExprNode() {
     exists(Expr e, int n |
       exprNodeShouldBeInstruction(this, e, n) and
-      not exprNodeShouldBeInstruction(_, e, n + 1)
+      not exists(Expr conv |
+        exprNodeShouldBe(conv, n + 1) and
+        conv.getUnconverted() = e.getUnconverted()
+      )
     )
   }
 
@@ -1446,7 +1454,10 @@ private class OperandExprNode extends ExprNodeBase, OperandNode {
   OperandExprNode() {
     exists(Expr e, int n |
       exprNodeShouldBeOperand(this, e, n) and
-      not exprNodeShouldBeOperand(_, e, n + 1)
+      not exists(Expr conv |
+        exprNodeShouldBe(conv, n + 1) and
+        conv.getUnconverted() = e.getUnconverted()
+      )
     )
   }
 
@@ -1511,10 +1522,15 @@ private module IndirectNodeToIndirectExpr<IndirectNodeToIndirectExprSig Sig> {
       indirectNodeHasIndirectExpr(node, e, n, indirectionIndex) and
       not exists(Expr conv, int adjustedIndirectionIndex |
         adjustForReference(e, indirectionIndex, conv, adjustedIndirectionIndex) and
-        indirectNodeHasIndirectExpr(_, conv, n + 1, adjustedIndirectionIndex)
+        indirectExprNodeShouldBe(conv, n + 1, adjustedIndirectionIndex)
       )
     )
   }
+}
+
+private predicate indirectExprNodeShouldBe(Expr e, int n, int indirectionIndex) {
+  indirectExprNodeShouldBeIndirectOperand(_, e, n, indirectionIndex) or
+  indirectExprNodeShouldBeIndirectInstruction(_, e, n, indirectionIndex)
 }
 
 private module IndirectOperandIndirectExprNodeImpl implements IndirectNodeToIndirectExprSig {
@@ -1825,7 +1841,7 @@ class VariableNode extends Node, TVariableNode {
   }
 
   override DataFlowType getType() {
-    result = getTypeImpl(v.getUnspecifiedType(), indirectionIndex - 1)
+    result = getTypeImpl(v.getUnderlyingType(), indirectionIndex - 1)
   }
 
   final override Location getLocationImpl() {

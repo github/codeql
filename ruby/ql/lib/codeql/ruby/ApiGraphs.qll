@@ -801,12 +801,6 @@ module API {
     bindingset[this]
     EntryPoint() { any() }
 
-    /** DEPRECATED. This predicate has been renamed to `getASource`. */
-    deprecated DataFlow::LocalSourceNode getAUse() { none() }
-
-    /** DEPRECATED. This predicate has been renamed to `getASink`. */
-    deprecated DataFlow::Node getARhs() { none() }
-
     /** Gets a data-flow node corresponding to a use-node for this entry point. */
     DataFlow::LocalSourceNode getASource() { none() }
 

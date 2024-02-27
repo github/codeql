@@ -1,3 +1,252 @@
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----|  ... = ...
+#-----|  -> exit set (normal)
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| &...
+#-----|  -> yield ...
+
+#-----| .b
+#-----|  -> return ...
+
+#-----| .b
+#-----|  -> value
+
+#-----| .bs
+#-----|  -> return ...
+
+#-----| .bs
+#-----|  -> value
+
+#-----| .c
+#-----|  -> return ...
+
+#-----| .field
+#-----|  -> return ...
+
+#-----| .field
+#-----|  -> value
+
+#-----| .mayB
+#-----|  -> return ...
+
+#-----| .mayB
+#-----|  -> value
+
+#-----| .myInt
+#-----|  -> return ...
+
+#-----| .x
+#-----|  -> return ...
+
+#-----| .x
+#-----|  -> value
+
+#-----| .x
+#-----|  -> return ...
+
+#-----| .x
+#-----|  -> value
+
+#-----| .x
+#-----|  -> return ...
+
+#-----| .x
+#-----|  -> value
+
+#-----| KeyPathComponent
+#-----|  -> #keyPath(...)
+
+#-----| await ...
+#-----|  -> for ... in ... { ... }
+
+#-----| getter for .b
+#-----|  -> &...
+
+#-----| getter for .bs
+#-----|  -> &...
+
+#-----| getter for .field
+#-----|  -> &...
+
+#-----| getter for .mayB
+#-----|  -> &...
+
+#-----| getter for .x
+#-----|  -> &...
+
+#-----| getter for .x
+#-----|  -> &...
+
+#-----| getter for .x
+#-----|  -> &...
+
+#-----| n
+#-----|  -> _unimplementedInitializer(className:initName:file:line:column:)
+
+#-----| return
+#-----| return -> exit Derived.init(n:) (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| return ...
+#-----| return -> exit get (normal)
+
+#-----| self
+#-----|  -> .myInt
+
+#-----| self
+#-----|  -> .c
+
+#-----| self
+#-----|  -> .field
+
+#-----| self
+#-----|  -> .field
+
+#-----| self
+#-----|  -> getter for .field
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> getter for .x
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> getter for .x
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> .x
+
+#-----| self
+#-----|  -> getter for .x
+
+#-----| self
+#-----|  -> .mayB
+
+#-----| self
+#-----|  -> .mayB
+
+#-----| self
+#-----|  -> getter for .mayB
+
+#-----| self
+#-----|  -> .bs
+
+#-----| self
+#-----|  -> .bs
+
+#-----| self
+#-----|  -> getter for .bs
+
+#-----| self
+#-----|  -> .b
+
+#-----| self
+#-----|  -> .b
+
+#-----| self
+#-----|  -> getter for .b
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| value
+#-----|  ->  ... = ...
+
+#-----| var ... = ...
+#-----|  -> .next()
+
+#-----| var ... = ...
+#-----|  -> .next()
+
+#-----| var ... = ...
+#-----|  -> .next()
+
 cfg.swift:
 #    5| enter returnZero()
 #-----|  -> returnZero()
@@ -956,6 +1205,7 @@ cfg.swift:
 #-----|  -> self
 
 #   99| self
+#-----|  -> self
 
 #  100| self
 #-----|  -> n
@@ -1456,6 +1706,7 @@ cfg.swift:
 #-----|  -> ....(_:_:)
 
 #  138| call to makeIterator()
+#-----|  -> var ... = ...
 
 #  138| ....(_:_:)
 #-----|  -> Int.Type
@@ -4606,6 +4857,7 @@ cfg.swift:
 #-----|  -> self
 
 #  353| self
+#-----|  -> self
 
 #  354| self
 #-----|  -> arg
@@ -4875,6 +5127,7 @@ cfg.swift:
 #-----|  -> cfg.Derived
 
 #  377| call to _unimplementedInitializer(className:initName:file:line:column:)
+#-----|  -> return
 
 #  377| cfg.Derived
 #-----|  -> #...
@@ -4905,6 +5158,7 @@ cfg.swift:
 #-----|  -> exit Derived.init(n:)
 
 #  377| self
+#-----|  -> n
 
 #  378| self
 #-----|  -> C.init(n:)
@@ -5069,16 +5323,19 @@ cfg.swift:
 #-----|  -> self
 
 #  394| self
+#-----|  -> self
 
 #  394| self
 #-----|  -> value
 
 #  394| self
+#-----|  -> self
 
 #  394| set
 #-----|  -> self
 
 #  394| value
+#-----|  -> self
 
 #  394| yield ...
 #-----|  -> exit _modify (normal)
@@ -5241,16 +5498,19 @@ cfg.swift:
 #-----|  -> self
 
 #  410| self
+#-----|  -> self
 
 #  410| self
 #-----|  -> value
 
 #  410| self
+#-----|  -> self
 
 #  410| set
 #-----|  -> self
 
 #  410| value
+#-----|  -> self
 
 #  410| yield ...
 #-----|  -> exit _modify (normal)
@@ -5318,16 +5578,19 @@ cfg.swift:
 #-----|  -> self
 
 #  417| self
+#-----|  -> self
 
 #  417| self
 #-----|  -> value
 
 #  417| self
+#-----|  -> self
 
 #  417| set
 #-----|  -> self
 
 #  417| value
+#-----|  -> self
 
 #  417| yield ...
 #-----|  -> exit _modify (normal)
@@ -5410,16 +5673,19 @@ cfg.swift:
 #-----|  -> self
 
 #  446| self
+#-----|  -> self
 
 #  446| self
 #-----|  -> value
 
 #  446| self
+#-----|  -> self
 
 #  446| set
 #-----|  -> self
 
 #  446| value
+#-----|  -> self
 
 #  446| yield ...
 #-----|  -> exit _modify (normal)
@@ -5455,16 +5721,19 @@ cfg.swift:
 #-----|  -> self
 
 #  450| self
+#-----|  -> self
 
 #  450| self
 #-----|  -> value
 
 #  450| self
+#-----|  -> self
 
 #  450| set
 #-----|  -> self
 
 #  450| value
+#-----|  -> self
 
 #  450| yield ...
 #-----|  -> exit _modify (normal)
@@ -5500,16 +5769,19 @@ cfg.swift:
 #-----|  -> self
 
 #  451| self
+#-----|  -> self
 
 #  451| self
 #-----|  -> value
 
 #  451| self
+#-----|  -> self
 
 #  451| set
 #-----|  -> self
 
 #  451| value
+#-----|  -> self
 
 #  451| yield ...
 #-----|  -> exit _modify (normal)
@@ -5545,16 +5817,19 @@ cfg.swift:
 #-----|  -> self
 
 #  452| self
+#-----|  -> self
 
 #  452| self
 #-----|  -> value
 
 #  452| self
+#-----|  -> self
 
 #  452| set
 #-----|  -> self
 
 #  452| value
+#-----|  -> self
 
 #  452| yield ...
 #-----|  -> exit _modify (normal)
@@ -5687,6 +5962,7 @@ cfg.swift:
 #-----|  -> KeyPathComponent
 
 #  459| KeyPathComponent
+#-----|  -> KeyPathComponent
 
 #  461| var ... = ...
 #-----|  -> apply_kpGet_bs_0_x
@@ -6132,6 +6408,7 @@ cfg.swift:
 #-----|  -> ....(_:_:)
 
 #  526| call to makeIterator()
+#-----|  -> var ... = ...
 
 #  526| ....(_:_:)
 #-----|  -> Int.Type
@@ -6173,6 +6450,7 @@ cfg.swift:
 #-----|  -> $i$generator
 
 #  533| call to next()
+#-----|  -> await ...
 
 #  533| for ... in ... { ... }
 #-----| empty -> exit testAsyncFor() (normal)
@@ -6191,6 +6469,7 @@ cfg.swift:
 #-----|  -> stream
 
 #  533| call to makeAsyncIterator()
+#-----|  -> var ... = ...
 
 #  533| stream
 #-----|  -> (AsyncStream<Int>) ...
