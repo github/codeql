@@ -7,7 +7,6 @@ import Assignable
 import Callable
 import Element
 import Type
-private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
 private import TypeRef
 

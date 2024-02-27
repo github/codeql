@@ -42,7 +42,9 @@ class Declaration extends DotNet::Declaration, Element, @cil_declaration {
   }
 }
 
-private CS::Declaration toCSharpNonTypeParameter(Declaration d) { result.matchesHandle(d) }
+private CS::Declaration toCSharpNonTypeParameter(Declaration d) {
+  result.(DotNet::Declaration).matchesHandle(d)
+}
 
 private CS::TypeParameter toCSharpTypeParameter(TypeParameter tp) {
   toCSharpTypeParameterJoin(tp, result.getIndex(), result.getGeneric())

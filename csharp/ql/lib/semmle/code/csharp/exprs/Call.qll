@@ -64,7 +64,7 @@ class Call extends Expr, @call {
    * consider default arguments.
    */
   cached
-  Expr getArgumentForParameter(DotNet::Parameter p) {
+  Expr getArgumentForParameter(Parameter p) {
     // Appears in the positional part of the call
     result = this.getImplicitArgument(p)
     or
@@ -74,7 +74,7 @@ class Call extends Expr, @call {
   }
 
   pragma[noinline]
-  private Expr getImplicitArgument(DotNet::Parameter p) {
+  private Expr getImplicitArgument(Parameter p) {
     this.getTarget().getAParameter() = p and
     not exists(result.getExplicitArgumentName()) and
     (

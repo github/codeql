@@ -5,8 +5,6 @@
 import Member
 import Stmt
 import Type
-private import cil
-private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
 private import TypeRef
 
@@ -558,8 +556,6 @@ class TrivialProperty extends Property {
     this.isAutoImplemented()
     or
     this.getGetter().trivialGetterField() = this.getSetter().trivialSetterField()
-    or
-    exists(CIL::TrivialProperty prop | this.matchesHandle(prop))
   }
 }
 

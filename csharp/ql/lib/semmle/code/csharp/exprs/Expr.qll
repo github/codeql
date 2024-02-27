@@ -18,7 +18,6 @@ import semmle.code.csharp.controlflow.ControlFlowElement
 import semmle.code.csharp.Location
 import semmle.code.csharp.Stmt
 import semmle.code.csharp.Type
-private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.TypeRef
@@ -950,13 +949,13 @@ class InterpolatedStringExpr extends Expr, @interpolated_string_expr {
  * A `throw` element. Either a `throw` expression (`ThrowExpr`)
  * or a `throw` statement (`ThrowStmt`).
  */
-class ThrowElement extends ControlFlowElement, DotNet::Throw, @throw_element {
+class ThrowElement extends ControlFlowElement, @throw_element {
   /**
    * Gets the expression of the exception being thrown, if any.
    *
    * For example, `new Exception("Syntax error")` in `throw new Exception("Syntax error");`.
    */
-  override Expr getExpr() { result = this.getChild(0) }
+  Expr getExpr() { result = this.getChild(0) }
 
   /** Gets the type of exception being thrown. */
   Class getThrownExceptionType() {

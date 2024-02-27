@@ -3,7 +3,6 @@
 private import semmle.code.csharp.commons.QualifiedName
 import Element
 import Type
-private import dotnet
 
 /**
  * A type container. Either a namespace (`Namespace`) or a type (`Type`).
