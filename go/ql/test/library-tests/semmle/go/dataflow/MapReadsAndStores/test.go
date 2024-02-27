@@ -15,3 +15,11 @@ func main() {
 		sink(val) // $ hasValueFlow="val"
 	}
 }
+
+func testLiteral() {
+        someMap := map[string]string {"someKey": source()}
+
+        for _, val := range someMap {
+                sink(val) // $ hasValueFlow="val"
+        }
+}
