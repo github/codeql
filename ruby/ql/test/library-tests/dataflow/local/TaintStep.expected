@@ -2804,6 +2804,7 @@
 | file://:0:0:0:0 | [summary param] position 0 in ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: Argument[self] in ActionController::Parameters#merge! |
 | file://:0:0:0:0 | [summary param] position 0 in ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: ReturnValue in ActionController::Parameters#merge! |
 | file://:0:0:0:0 | [summary param] position 0 in Arel.sql | file://:0:0:0:0 | [summary] to write: ReturnValue in Arel.sql |
+| file://:0:0:0:0 | [summary param] position 0 in Arel::Nodes::SqlLiteral.new | file://:0:0:0:0 | [summary] to write: ReturnValue in Arel::Nodes::SqlLiteral.new |
 | file://:0:0:0:0 | [summary param] position 0 in Base64.decode64() | file://:0:0:0:0 | [summary] to write: ReturnValue in Base64.decode64() |
 | file://:0:0:0:0 | [summary param] position 0 in ERB.new | file://:0:0:0:0 | [summary] to write: ReturnValue in ERB.new |
 | file://:0:0:0:0 | [summary param] position 0 in File.absolute_path | file://:0:0:0:0 | [summary] to write: ReturnValue in File.absolute_path |
