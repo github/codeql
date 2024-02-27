@@ -9414,6 +9414,8 @@ summary
 | System.Net.Http;HttpMethod;false;HttpMethod;(System.String);;Argument[0];Argument[this];taint;df-generated |
 | System.Net.Http;HttpMethod;false;ToString;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Net.Http;HttpMethod;false;get_Method;();;Argument[this];ReturnValue;taint;df-generated |
+| System.Net.Http;HttpRequestMessage;false;HttpRequestMessage;(System.Net.Http.HttpMethod,System.String);;Argument[0];Argument[this];taint;manual |
+| System.Net.Http;HttpRequestMessage;false;HttpRequestMessage;(System.Net.Http.HttpMethod,System.String);;Argument[1];Argument[this];taint;manual |
 | System.Net.Http;HttpRequestMessage;false;HttpRequestMessage;(System.Net.Http.HttpMethod,System.Uri);;Argument[0];Argument[this];taint;df-generated |
 | System.Net.Http;HttpRequestMessage;false;HttpRequestMessage;(System.Net.Http.HttpMethod,System.Uri);;Argument[1];Argument[this];taint;df-generated |
 | System.Net.Http;HttpRequestMessage;false;ToString;();;Argument[this];ReturnValue;taint;df-generated |
