@@ -17160,6 +17160,167 @@ ir.cpp:
 # 2190|     getExpr(): [ConstructorCall] call to ClassWithDestructor
 # 2190|         Type = [VoidType] void
 # 2190|         ValueCategory = prvalue
+# 2194| [FunctionTemplateInstantiation,TopLevelFunction] ClassWithDestructor& vacuous_destructor_call::get<ClassWithDestructor>(ClassWithDestructor&)
+# 2194|   <params>: 
+# 2194|     getParameter(0): [Parameter] t
+# 2194|         Type = [LValueReferenceType] ClassWithDestructor &
+# 2194|   getEntryPoint(): [BlockStmt] { ... }
+# 2194|     getStmt(0): [ReturnStmt] return ...
+# 2194|       getExpr(): [VariableAccess] t
+# 2194|           Type = [LValueReferenceType] ClassWithDestructor &
+# 2194|           ValueCategory = prvalue(load)
+# 2194|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2194|           Type = [LValueReferenceType] ClassWithDestructor &
+# 2194|           ValueCategory = prvalue
+# 2194|         getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 2194|             Type = [Class] ClassWithDestructor
+# 2194|             ValueCategory = lvalue
+# 2194| [TemplateFunction,TopLevelFunction] T& vacuous_destructor_call::get<T>(T&)
+# 2194|   <params>: 
+# 2194|     getParameter(0): [Parameter] t
+# 2194|         Type = [LValueReferenceType] T &
+# 2194|   getEntryPoint(): [BlockStmt] { ... }
+# 2194|     getStmt(0): [ReturnStmt] return ...
+# 2194|       getExpr(): [VariableAccess] t
+# 2194|           Type = [LValueReferenceType] T &
+# 2194|           ValueCategory = prvalue(load)
+# 2194|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2194|           Type = [TemplateParameter] T
+# 2194|           ValueCategory = lvalue
+# 2194| [FunctionTemplateInstantiation,TopLevelFunction] int& vacuous_destructor_call::get<int>(int&)
+# 2194|   <params>: 
+# 2194|     getParameter(0): [Parameter] t
+# 2194|         Type = [LValueReferenceType] int &
+# 2194|   getEntryPoint(): [BlockStmt] { ... }
+# 2194|     getStmt(0): [ReturnStmt] return ...
+# 2194|       getExpr(): [VariableAccess] t
+# 2194|           Type = [LValueReferenceType] int &
+# 2194|           ValueCategory = prvalue(load)
+# 2194|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2194|           Type = [LValueReferenceType] int &
+# 2194|           ValueCategory = prvalue
+# 2194|         getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 2194|             Type = [IntType] int
+# 2194|             ValueCategory = lvalue
+# 2197| [FunctionTemplateInstantiation,TopLevelFunction] void vacuous_destructor_call::call_destructor<ClassWithDestructor>(ClassWithDestructor&)
+# 2197|   <params>: 
+# 2197|     getParameter(0): [Parameter] t
+# 2197|         Type = [LValueReferenceType] ClassWithDestructor &
+# 2197|   getEntryPoint(): [BlockStmt] { ... }
+# 2198|     getStmt(0): [ExprStmt] ExprStmt
+# 2198|       getExpr(): [DestructorCall] call to ~ClassWithDestructor
+# 2198|           Type = [VoidType] void
+# 2198|           ValueCategory = prvalue
+# 2198|         getQualifier(): [FunctionCall] call to get
+# 2198|             Type = [LValueReferenceType] ClassWithDestructor &
+# 2198|             ValueCategory = prvalue
+# 2198|           getArgument(0): [VariableAccess] t
+# 2198|               Type = [LValueReferenceType] ClassWithDestructor &
+# 2198|               ValueCategory = prvalue(load)
+# 2198|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2198|               Type = [LValueReferenceType] ClassWithDestructor &
+# 2198|               ValueCategory = prvalue
+# 2198|             getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 2198|                 Type = [Class] ClassWithDestructor
+# 2198|                 ValueCategory = lvalue
+# 2198|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2198|             Type = [Class] ClassWithDestructor
+# 2198|             ValueCategory = lvalue
+# 2199|     getStmt(1): [ReturnStmt] return ...
+# 2197| [TemplateFunction,TopLevelFunction] void vacuous_destructor_call::call_destructor<T>(T&)
+# 2197|   <params>: 
+# 2197|     getParameter(0): [Parameter] t
+# 2197|         Type = [LValueReferenceType] T &
+# 2197|   getEntryPoint(): [BlockStmt] { ... }
+# 2198|     getStmt(0): [ExprStmt] ExprStmt
+# 2198|       getExpr(): [ExprCall] call to expression
+# 2198|           Type = [UnknownType] unknown
+# 2198|           ValueCategory = prvalue
+# 2198|         getExpr(): [Literal] Unknown literal
+# 2198|             Type = [UnknownType] unknown
+# 2198|             ValueCategory = prvalue
+# 2198|           getChild(-1): [ExprCall] call to expression
+# 2198|               Type = [UnknownType] unknown
+# 2198|               ValueCategory = prvalue
+# 2198|             getExpr(): [Literal] Unknown literal
+# 2198|                 Type = [UnknownType] unknown
+# 2198|                 ValueCategory = prvalue
+# 2198|             getArgument(0): [VariableAccess] t
+# 2198|                 Type = [LValueReferenceType] T &
+# 2198|                 ValueCategory = prvalue(load)
+# 2198|             getArgument(0).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2198|                 Type = [TemplateParameter] T
+# 2198|                 ValueCategory = lvalue
+# 2199|     getStmt(1): [ReturnStmt] return ...
+# 2197| [FunctionTemplateInstantiation,TopLevelFunction] void vacuous_destructor_call::call_destructor<int>(int&)
+# 2197|   <params>: 
+# 2197|     getParameter(0): [Parameter] t
+# 2197|         Type = [LValueReferenceType] int &
+# 2197|   getEntryPoint(): [BlockStmt] { ... }
+# 2198|     getStmt(0): [ExprStmt] ExprStmt
+# 2198|       getExpr(): [VacuousDestructorCall] (vacuous destructor call)
+# 2198|           Type = [VoidType] void
+# 2198|           ValueCategory = prvalue
+# 2198|         getChild(0): [FunctionCall] call to get
+# 2198|             Type = [LValueReferenceType] int &
+# 2198|             ValueCategory = prvalue
+# 2198|           getArgument(0): [VariableAccess] t
+# 2198|               Type = [LValueReferenceType] int &
+# 2198|               ValueCategory = prvalue(load)
+# 2198|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2198|               Type = [LValueReferenceType] int &
+# 2198|               ValueCategory = prvalue
+# 2198|             getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 2198|                 Type = [IntType] int
+# 2198|                 ValueCategory = lvalue
+# 2198|         getChild(0).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2198|             Type = [IntType] int
+# 2198|             ValueCategory = lvalue
+# 2199|     getStmt(1): [ReturnStmt] return ...
+# 2201| [TopLevelFunction] void vacuous_destructor_call::non_vacuous_destructor_call()
+# 2201|   <params>: 
+# 2201|   getEntryPoint(): [BlockStmt] { ... }
+# 2202|     getStmt(0): [DeclStmt] declaration
+# 2202|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 2202|           Type = [Class] ClassWithDestructor
+# 2202|         getVariable().getInitializer(): [Initializer] initializer for c
+# 2202|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2202|               Type = [VoidType] void
+# 2202|               ValueCategory = prvalue
+# 2203|     getStmt(1): [ExprStmt] ExprStmt
+# 2203|       getExpr(): [FunctionCall] call to call_destructor
+# 2203|           Type = [VoidType] void
+# 2203|           ValueCategory = prvalue
+# 2203|         getArgument(0): [VariableAccess] c
+# 2203|             Type = [Class] ClassWithDestructor
+# 2203|             ValueCategory = lvalue
+# 2203|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2203|             Type = [LValueReferenceType] ClassWithDestructor &
+# 2203|             ValueCategory = prvalue
+# 2204|     getStmt(2): [ReturnStmt] return ...
+# 2204|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2204|           Type = [VoidType] void
+# 2204|           ValueCategory = prvalue
+# 2204|         getQualifier(): [VariableAccess] c
+# 2204|             Type = [Class] ClassWithDestructor
+# 2204|             ValueCategory = lvalue
+# 2206| [TopLevelFunction] void vacuous_destructor_call::vacuous_destructor_call()
+# 2206|   <params>: 
+# 2206|   getEntryPoint(): [BlockStmt] { ... }
+# 2207|     getStmt(0): [DeclStmt] declaration
+# 2207|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 2207|           Type = [IntType] int
+# 2208|     getStmt(1): [ExprStmt] ExprStmt
+# 2208|       getExpr(): [FunctionCall] call to call_destructor
+# 2208|           Type = [VoidType] void
+# 2208|           ValueCategory = prvalue
+# 2208|         getArgument(0): [VariableAccess] i
+# 2208|             Type = [IntType] int
+# 2208|             ValueCategory = lvalue
+# 2208|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2208|             Type = [LValueReferenceType] int &
+# 2208|             ValueCategory = prvalue
+# 2209|     getStmt(2): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

@@ -12366,6 +12366,149 @@ ir.cpp:
 # 2190|     v2190_9(void)                       = AliasedUse                                    : ~m?
 # 2190|     v2190_10(void)                      = ExitFunction                                  : 
 
+# 2194| ClassWithDestructor& vacuous_destructor_call::get<ClassWithDestructor>(ClassWithDestructor&)
+# 2194|   Block 0
+# 2194|     v2194_1(void)                          = EnterFunction            : 
+# 2194|     mu2194_2(unknown)                      = AliasedDefinition        : 
+# 2194|     mu2194_3(unknown)                      = InitializeNonLocal       : 
+# 2194|     r2194_4(glval<ClassWithDestructor &>)  = VariableAddress[t]       : 
+# 2194|     mu2194_5(ClassWithDestructor &)        = InitializeParameter[t]   : &:r2194_4
+# 2194|     r2194_6(ClassWithDestructor &)         = Load[t]                  : &:r2194_4, ~m?
+# 2194|     mu2194_7(unknown)                      = InitializeIndirection[t] : &:r2194_6
+# 2194|     r2194_8(glval<ClassWithDestructor &>)  = VariableAddress[#return] : 
+# 2194|     r2194_9(glval<ClassWithDestructor &>)  = VariableAddress[t]       : 
+# 2194|     r2194_10(ClassWithDestructor &)        = Load[t]                  : &:r2194_9, ~m?
+# 2194|     r2194_11(glval<ClassWithDestructor>)   = CopyValue                : r2194_10
+# 2194|     r2194_12(ClassWithDestructor &)        = CopyValue                : r2194_11
+# 2194|     mu2194_13(ClassWithDestructor &)       = Store[#return]           : &:r2194_8, r2194_12
+# 2194|     v2194_14(void)                         = ReturnIndirection[t]     : &:r2194_6, ~m?
+# 2194|     r2194_15(glval<ClassWithDestructor &>) = VariableAddress[#return] : 
+# 2194|     v2194_16(void)                         = ReturnValue              : &:r2194_15, ~m?
+# 2194|     v2194_17(void)                         = AliasedUse               : ~m?
+# 2194|     v2194_18(void)                         = ExitFunction             : 
+
+# 2194| int& vacuous_destructor_call::get<int>(int&)
+# 2194|   Block 0
+# 2194|     v2194_1(void)          = EnterFunction            : 
+# 2194|     mu2194_2(unknown)      = AliasedDefinition        : 
+# 2194|     mu2194_3(unknown)      = InitializeNonLocal       : 
+# 2194|     r2194_4(glval<int &>)  = VariableAddress[t]       : 
+# 2194|     mu2194_5(int &)        = InitializeParameter[t]   : &:r2194_4
+# 2194|     r2194_6(int &)         = Load[t]                  : &:r2194_4, ~m?
+# 2194|     mu2194_7(unknown)      = InitializeIndirection[t] : &:r2194_6
+# 2194|     r2194_8(glval<int &>)  = VariableAddress[#return] : 
+# 2194|     r2194_9(glval<int &>)  = VariableAddress[t]       : 
+# 2194|     r2194_10(int &)        = Load[t]                  : &:r2194_9, ~m?
+# 2194|     r2194_11(glval<int>)   = CopyValue                : r2194_10
+# 2194|     r2194_12(int &)        = CopyValue                : r2194_11
+# 2194|     mu2194_13(int &)       = Store[#return]           : &:r2194_8, r2194_12
+# 2194|     v2194_14(void)         = ReturnIndirection[t]     : &:r2194_6, ~m?
+# 2194|     r2194_15(glval<int &>) = VariableAddress[#return] : 
+# 2194|     v2194_16(void)         = ReturnValue              : &:r2194_15, ~m?
+# 2194|     v2194_17(void)         = AliasedUse               : ~m?
+# 2194|     v2194_18(void)         = ExitFunction             : 
+
+# 2197| void vacuous_destructor_call::call_destructor<ClassWithDestructor>(ClassWithDestructor&)
+# 2197|   Block 0
+# 2197|     v2197_1(void)                         = EnterFunction                         : 
+# 2197|     mu2197_2(unknown)                     = AliasedDefinition                     : 
+# 2197|     mu2197_3(unknown)                     = InitializeNonLocal                    : 
+# 2197|     r2197_4(glval<ClassWithDestructor &>) = VariableAddress[t]                    : 
+# 2197|     mu2197_5(ClassWithDestructor &)       = InitializeParameter[t]                : &:r2197_4
+# 2197|     r2197_6(ClassWithDestructor &)        = Load[t]                               : &:r2197_4, ~m?
+# 2197|     mu2197_7(unknown)                     = InitializeIndirection[t]              : &:r2197_6
+# 2198|     r2198_1(glval<unknown>)               = FunctionAddress[get]                  : 
+# 2198|     r2198_2(glval<ClassWithDestructor &>) = VariableAddress[t]                    : 
+# 2198|     r2198_3(ClassWithDestructor &)        = Load[t]                               : &:r2198_2, ~m?
+# 2198|     r2198_4(glval<ClassWithDestructor>)   = CopyValue                             : r2198_3
+# 2198|     r2198_5(ClassWithDestructor &)        = CopyValue                             : r2198_4
+# 2198|     r2198_6(ClassWithDestructor &)        = Call[get]                             : func:r2198_1, 0:r2198_5
+# 2198|     mu2198_7(unknown)                     = ^CallSideEffect                       : ~m?
+# 2198|     v2198_8(void)                         = ^BufferReadSideEffect[0]              : &:r2198_5, ~m?
+# 2198|     mu2198_9(unknown)                     = ^BufferMayWriteSideEffect[0]          : &:r2198_5
+# 2198|     r2198_10(glval<ClassWithDestructor>)  = CopyValue                             : r2198_6
+# 2198|     r2198_11(glval<unknown>)              = FunctionAddress[~ClassWithDestructor] : 
+# 2198|     v2198_12(void)                        = Call[~ClassWithDestructor]            : func:r2198_11
+# 2198|     mu2198_13(unknown)                    = ^CallSideEffect                       : ~m?
+# 2198|     v2198_14(void)                        = ^IndirectReadSideEffect[-1]           : &:r2198_10, ~m?
+# 2198|     mu2198_15(ClassWithDestructor)        = ^IndirectMayWriteSideEffect[-1]       : &:r2198_10
+# 2199|     v2199_1(void)                         = NoOp                                  : 
+# 2197|     v2197_8(void)                         = ReturnIndirection[t]                  : &:r2197_6, ~m?
+# 2197|     v2197_9(void)                         = ReturnVoid                            : 
+# 2197|     v2197_10(void)                        = AliasedUse                            : ~m?
+# 2197|     v2197_11(void)                        = ExitFunction                          : 
+
+# 2197| void vacuous_destructor_call::call_destructor<int>(int&)
+# 2197|   Block 0
+# 2197|     v2197_1(void)         = EnterFunction            : 
+# 2197|     mu2197_2(unknown)     = AliasedDefinition        : 
+# 2197|     mu2197_3(unknown)     = InitializeNonLocal       : 
+# 2197|     r2197_4(glval<int &>) = VariableAddress[t]       : 
+# 2197|     mu2197_5(int &)       = InitializeParameter[t]   : &:r2197_4
+# 2197|     r2197_6(int &)        = Load[t]                  : &:r2197_4, ~m?
+# 2197|     mu2197_7(unknown)     = InitializeIndirection[t] : &:r2197_6
+
+# 2198|   Block 1
+# 2198|     r2198_1(glval<unknown>) = FunctionAddress[get]         : 
+# 2198|     r2198_2(glval<int &>)   = VariableAddress[t]           : 
+# 2198|     r2198_3(int &)          = Load[t]                      : &:r2198_2, ~m?
+# 2198|     r2198_4(glval<int>)     = CopyValue                    : r2198_3
+# 2198|     r2198_5(int &)          = CopyValue                    : r2198_4
+# 2198|     r2198_6(int &)          = Call[get]                    : func:r2198_1, 0:r2198_5
+# 2198|     mu2198_7(unknown)       = ^CallSideEffect              : ~m?
+# 2198|     v2198_8(void)           = ^BufferReadSideEffect[0]     : &:r2198_5, ~m?
+# 2198|     mu2198_9(unknown)       = ^BufferMayWriteSideEffect[0] : &:r2198_5
+# 2198|     r2198_10(glval<int>)    = CopyValue                    : r2198_6
+
+# 2199|   Block 2
+# 2199|     v2199_1(void)  = NoOp                 : 
+# 2197|     v2197_8(void)  = ReturnIndirection[t] : &:r2197_6, ~m?
+# 2197|     v2197_9(void)  = ReturnVoid           : 
+# 2197|     v2197_10(void) = AliasedUse           : ~m?
+# 2197|     v2197_11(void) = ExitFunction         : 
+
+# 2201| void vacuous_destructor_call::non_vacuous_destructor_call()
+# 2201|   Block 0
+# 2201|     v2201_1(void)                       = EnterFunction                        : 
+# 2201|     mu2201_2(unknown)                   = AliasedDefinition                    : 
+# 2201|     mu2201_3(unknown)                   = InitializeNonLocal                   : 
+# 2202|     r2202_1(glval<ClassWithDestructor>) = VariableAddress[c]                   : 
+# 2202|     mu2202_2(ClassWithDestructor)       = Uninitialized[c]                     : &:r2202_1
+# 2202|     r2202_3(glval<unknown>)             = FunctionAddress[ClassWithDestructor] : 
+# 2202|     v2202_4(void)                       = Call[ClassWithDestructor]            : func:r2202_3, this:r2202_1
+# 2202|     mu2202_5(unknown)                   = ^CallSideEffect                      : ~m?
+# 2202|     mu2202_6(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]      : &:r2202_1
+# 2203|     r2203_1(glval<unknown>)             = FunctionAddress[call_destructor]     : 
+# 2203|     r2203_2(glval<ClassWithDestructor>) = VariableAddress[c]                   : 
+# 2203|     r2203_3(ClassWithDestructor &)      = CopyValue                            : r2203_2
+# 2203|     v2203_4(void)                       = Call[call_destructor]                : func:r2203_1, 0:r2203_3
+# 2203|     mu2203_5(unknown)                   = ^CallSideEffect                      : ~m?
+# 2203|     v2203_6(void)                       = ^BufferReadSideEffect[0]             : &:r2203_3, ~m?
+# 2203|     mu2203_7(unknown)                   = ^BufferMayWriteSideEffect[0]         : &:r2203_3
+# 2204|     v2204_1(void)                       = NoOp                                 : 
+# 2201|     v2201_4(void)                       = ReturnVoid                           : 
+# 2201|     v2201_5(void)                       = AliasedUse                           : ~m?
+# 2201|     v2201_6(void)                       = ExitFunction                         : 
+
+# 2206| void vacuous_destructor_call::vacuous_destructor_call()
+# 2206|   Block 0
+# 2206|     v2206_1(void)           = EnterFunction                    : 
+# 2206|     mu2206_2(unknown)       = AliasedDefinition                : 
+# 2206|     mu2206_3(unknown)       = InitializeNonLocal               : 
+# 2207|     r2207_1(glval<int>)     = VariableAddress[i]               : 
+# 2207|     mu2207_2(int)           = Uninitialized[i]                 : &:r2207_1
+# 2208|     r2208_1(glval<unknown>) = FunctionAddress[call_destructor] : 
+# 2208|     r2208_2(glval<int>)     = VariableAddress[i]               : 
+# 2208|     r2208_3(int &)          = CopyValue                        : r2208_2
+# 2208|     v2208_4(void)           = Call[call_destructor]            : func:r2208_1, 0:r2208_3
+# 2208|     mu2208_5(unknown)       = ^CallSideEffect                  : ~m?
+# 2208|     v2208_6(void)           = ^BufferReadSideEffect[0]         : &:r2208_3, ~m?
+# 2208|     mu2208_7(unknown)       = ^BufferMayWriteSideEffect[0]     : &:r2208_3
+# 2209|     v2209_1(void)           = NoOp                             : 
+# 2206|     v2206_4(void)           = ReturnVoid                       : 
+# 2206|     v2206_5(void)           = AliasedUse                       : ~m?
+# 2206|     v2206_6(void)           = ExitFunction                     : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

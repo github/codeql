@@ -6,6 +6,8 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir.cpp:2197:29:2197:29 | InitializeIndirection: t | Instruction 'InitializeIndirection: t' has no successors in function '$@'. | ir.cpp:2197:10:2197:10 | void vacuous_destructor_call::call_destructor<int>(int&) | void vacuous_destructor_call::call_destructor<int>(int&) |
+| ir.cpp:2198:12:2198:15 | CopyValue: (reference dereference) | Instruction 'CopyValue: (reference dereference)' has no successors in function '$@'. | ir.cpp:2197:10:2197:10 | void vacuous_destructor_call::call_destructor<int>(int&) | void vacuous_destructor_call::call_destructor<int>(int&) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -21,6 +23,7 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | ir.cpp:1488:8:1488:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1488:8:1488:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
+| ir.cpp:2197:29:2197:29 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:2197:10:2197:10 | void vacuous_destructor_call::call_destructor<int>(int&) | void vacuous_destructor_call::call_destructor<int>(int&) |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:39:15:39:15 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:32:6:32:6 | void h(int) | void h(int) |
