@@ -4,7 +4,6 @@ import Callable
 import Element
 import Modifier
 import Variable
-private import dotnet
 private import Implements
 private import TypeRef
 private import commons.QualifiedName
@@ -536,10 +535,24 @@ class Virtualizable extends Overridable, Member, @virtualizable {
  * A parameterizable declaration. Either a callable (`Callable`), a delegate
  * type (`DelegateType`), or an indexer (`Indexer`).
  */
-class Parameterizable extends DotNet::Parameterizable, Declaration, @parameterizable {
-  override Parameter getRawParameter(int i) { params(result, _, _, i, _, this, _) }
+class Parameterizable extends Declaration, @parameterizable {
+  /** Gets raw parameter `i`, including the `this` parameter at index 0. */
+  Parameter getRawParameter(int i) { params(result, _, _, i, _, this, _) }
 
-  override Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
+  /** Gets the `i`th parameter, excluding the `this` parameter. */
+  Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
+
+  /** Gets the number of parameters of this callable. */
+  int getNumberOfParameters() { result = count(this.getAParameter()) }
+
+  /** Holds if this declaration has no parameters. */
+  predicate hasNoParameters() { not exists(this.getAParameter()) }
+
+  /** Gets a parameter, if any. */
+  Parameter getAParameter() { result = this.getParameter(_) }
+
+  /** Gets a raw parameter (including the qualifier), if any. */
+  final Parameter getARawParameter() { result = this.getRawParameter(_) }
 
   /**
    * Gets the type of the parameter, possibly prefixed
