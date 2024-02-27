@@ -605,7 +605,7 @@ struct String {
     String& operator=(String&&);
 
     const char* c_str() const;
-
+    char pop_back();
 private:
     const char* p;
 };
@@ -2188,5 +2188,112 @@ void static_variable_with_destructor_3() {
 }
 
 static ClassWithDestructor global_class_with_destructor;
+
+void TryCatchDestructors(bool b) {
+  try {
+    String s;
+    if (b) {
+      throw "string literal";
+    }
+    String s2;
+  }
+  catch (const char* s) {
+    throw String(s);
+  }
+  catch (const String& e) {
+  }
+  catch (...) {
+    throw;
+  }
+}
+
+void IfDestructors(bool b) {
+    String s1;
+    if(b) {
+        String s2;
+    } else {
+        String s3;
+    }
+    String s4;
+}
+
+void ForDestructors() {
+    char c = 'a';
+    for(String s("hello"); c != 0; c = s.pop_back()) {
+        String s2;
+    }
+
+    for(String s : vector<String>(String("hello"))) {
+        String s2;
+    }
+    
+    for(String s("hello"), s2("world"); c != 0; c = s.pop_back()) {
+        c = 0;
+    }
+}
+
+void IfDestructors2(bool b) {
+    if(String s = String("hello"); b) {
+        int x = 0;
+    } else {
+        int y = 0;
+    }
+}
+
+class Bool {
+    public:
+    Bool(bool b_);
+    operator bool();
+    ~Bool();
+};
+
+void IfDestructors3(bool b) {
+    if(Bool B = Bool(b)) {
+        String s1;
+    } else {
+        String s2;
+    }
+}
+
+void WhileLoopDestructors(bool b) {
+    {
+        String s;
+        while(b) {
+            b = false;
+        }
+    }
+
+    {
+        while (Bool B = Bool(b)) {
+            b = false;
+        }
+    }
+}
+
+void VoidFunc() {}
+
+void IfReturnDestructors(bool b) {
+    String s;
+    if(b) {
+        return;
+    }
+    if(b) {
+        return VoidFunc();
+    }
+    s;
+}
+
+int IfReturnDestructors3(bool b) {
+    String s;
+    if(b) {
+        return 1;
+    }
+    return 0;
+}
+
+void VoidReturnDestructors() {
+    String s;
+    return VoidFunc();
+}
 
 // semmle-extractor-options: -std=c++20 --clang
