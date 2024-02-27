@@ -2,14 +2,12 @@
  * @name Print CFG
  * @description Produces a representation of a file's Control Flow Graph.
  *              This query is used by the VS Code extension.
- * @id rb/print-cfg
+ * @id cs/print-cfg
  * @kind graph
  * @tags ide-contextual-queries/print-cfg
  */
 
-private import codeql.Locations
-private import codeql.ruby.controlflow.internal.ControlFlowGraphImpl
-private import codeql.ruby.controlflow.ControlFlowGraph
+private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl
 
 external string selectedSourceFile();
 
@@ -34,7 +32,18 @@ module ViewCfgQueryInput implements ViewCfgQueryInputSig<File> {
     CfgScope scope, File file, int startLine, int startColumn, int endLine, int endColumn
   ) {
     file = scope.getFile() and
-    scope.getLocation().hasLocationInfo(_, startLine, startColumn, endLine, endColumn)
+    scope.getLocation().getStartLine() = startLine and
+    scope.getLocation().getStartColumn() = startColumn and
+    exists(Location loc |
+      loc.getEndLine() = endLine and
+      loc.getEndColumn() = endColumn
+    |
+      loc = scope.(Callable).getBody().getLocation()
+      or
+      loc = scope.(Field).getInitializer().getLocation()
+      or
+      loc = scope.(Property).getInitializer().getLocation()
+    )
   }
 }
 
