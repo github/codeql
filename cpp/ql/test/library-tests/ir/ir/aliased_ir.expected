@@ -14579,6 +14579,14 @@ ir.cpp:
 # 2314|     v2314_6(void)           = AliasedUse                      : ~m2317_5
 # 2314|     v2314_7(void)           = ExitFunction                    : 
 
+# 2327| return_routine_type::VoidToIntMemberFunc return_routine_type::GetVoidToIntFunc()
+# 2327|   Block 0
+# 2327|     v2327_1(void)          = EnterFunction            : 
+# 2327|     m2327_2(unknown)       = AliasedDefinition        : 
+# 2327|     m2327_3(unknown)       = InitializeNonLocal       : 
+# 2327|     m2327_4(unknown)       = Chi                      : total:m2327_2, partial:m2327_3
+# 2329|     r2329_1(glval<..:: *>) = VariableAddress[#return] : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

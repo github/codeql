@@ -1,4 +1,5 @@
 missingOperand
+| ir.cpp:2329:16:2329:43 | Store: VoidToInt | Instruction 'Store' is missing an expected operand with tag 'StoreValue' in function '$@'. | ir.cpp:2327:32:2327:47 | return_routine_type::VoidToIntMemberFunc return_routine_type::GetVoidToIntFunc() | return_routine_type::VoidToIntMemberFunc return_routine_type::GetVoidToIntFunc() |
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
@@ -6,6 +7,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ir.cpp:2329:9:2329:44 | VariableAddress: return ... | Instruction 'VariableAddress: return ...' has no successors in function '$@'. | ir.cpp:2327:32:2327:47 | return_routine_type::VoidToIntMemberFunc return_routine_type::GetVoidToIntFunc() | return_routine_type::VoidToIntMemberFunc return_routine_type::GetVoidToIntFunc() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -21,6 +23,7 @@ lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | ir.cpp:1488:8:1488:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1488:8:1488:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
+| ir.cpp:2329:9:2329:44 | Address | Operand 'Address' is not dominated by its definition in function '$@'. | ir.cpp:2327:32:2327:47 | return_routine_type::VoidToIntMemberFunc return_routine_type::GetVoidToIntFunc() | return_routine_type::VoidToIntMemberFunc return_routine_type::GetVoidToIntFunc() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:39:15:39:15 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:32:6:32:6 | void h(int) | void h(int) |

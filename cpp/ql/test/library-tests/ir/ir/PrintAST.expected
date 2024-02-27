@@ -18076,6 +18076,25 @@ ir.cpp:
 # 2317|         getQualifier(): [VariableAccess] s
 # 2317|             Type = [Struct] String
 # 2317|             ValueCategory = lvalue
+# 2320| [CopyAssignmentOperator] return_routine_type::HasVoidToIntFunc& return_routine_type::HasVoidToIntFunc::operator=(return_routine_type::HasVoidToIntFunc const&)
+# 2320|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const HasVoidToIntFunc &
+# 2320| [MoveAssignmentOperator] return_routine_type::HasVoidToIntFunc& return_routine_type::HasVoidToIntFunc::operator=(return_routine_type::HasVoidToIntFunc&&)
+# 2320|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] HasVoidToIntFunc &&
+# 2322| [MemberFunction] void return_routine_type::HasVoidToIntFunc::VoidToInt(int)
+# 2322|   <params>: 
+# 2322|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 2322|         Type = [IntType] int
+# 2327| [TopLevelFunction] return_routine_type::VoidToIntMemberFunc return_routine_type::GetVoidToIntFunc()
+# 2327|   <params>: 
+# 2328|   getEntryPoint(): [BlockStmt] { ... }
+# 2329|     getStmt(0): [ReturnStmt] return ...
+# 2329|       getExpr(): [FunctionAccess] VoidToInt
+# 2329|           Type = [RoutineType] ..()(..)
+# 2329|           ValueCategory = prvalue
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

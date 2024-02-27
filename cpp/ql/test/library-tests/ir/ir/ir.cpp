@@ -2316,4 +2316,19 @@ void VoidReturnDestructors() {
     return VoidFunc();
 }
 
+namespace return_routine_type {
+    struct HasVoidToIntFunc
+    {
+        void VoidToInt(int);
+    };
+
+    typedef void (HasVoidToIntFunc::*VoidToIntMemberFunc)(int);
+
+    static VoidToIntMemberFunc GetVoidToIntFunc()
+    {
+        return &HasVoidToIntFunc::VoidToInt;
+    }
+
+}
+
 // semmle-extractor-options: -std=c++20 --clang
