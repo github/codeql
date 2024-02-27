@@ -2209,6 +2209,43 @@ class TranslatedDestructorFieldDestruction extends TranslatedNonConstantExpr, St
 }
 
 /**
+ * The IR translation of a vacuous destructor call. That is, an expression that
+ * looks like a destructor call, but has no effect.
+ *
+ * Note that, even though there's no destructor call, we should still evaluate
+ * the qualifier.
+ */
+class TranslatedVacuousDestructorCall extends TranslatedNonConstantExpr {
+  override VacuousDestructorCall expr;
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  final TranslatedExpr getQualifier() {
+    result = getTranslatedExpr(expr.getQualifier().getFullyConverted())
+  }
+
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getQualifier().getFirstInstruction(kind)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+    child = this.getQualifier() and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and
+    result = this.getQualifier()
+  }
+
+  override Instruction getResult() { none() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    none()
+  }
+}
+
+/**
  * The IR translation of the `?:` operator. This class has the portions of the implementation that
  * are shared between the standard three-operand form (`a ? b : c`) and the GCC-extension
  * two-operand form (`a ?: c`).
