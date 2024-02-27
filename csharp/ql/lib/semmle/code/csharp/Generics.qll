@@ -202,7 +202,10 @@ class UnboundGenericType extends ValueOrRefType, UnboundGeneric {
 /**
  * A type parameter, for example `T` in `List<T>`.
  */
-class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
+class TypeParameter extends Type, @type_parameter {
+  /** Gets the generic type or method declaring this type parameter. */
+  UnboundGeneric getDeclaringGeneric() { this = result.getATypeParameter() }
+
   /** Gets the constraints on this type parameter, if any. */
   TypeParameterConstraints getConstraints() { result.getTypeParameter() = this }
 
@@ -258,7 +261,12 @@ class TypeParameter extends DotNet::TypeParameter, Type, @type_parameter {
     result = this.getASuppliedType().(TypeParameter).getAnUltimatelySuppliedType()
   }
 
+  /** Gets the index of this type parameter. For example the index of `U` in `Func<T,U>` is 1. */
   override int getIndex() { type_parameters(this, result, _, _) }
+
+  final override string getLabel() { result = "!" + this.getIndex() }
+
+  override string getUndecoratedName() { result = "!" + this.getIndex() }
 
   /** Gets the generic that defines this type parameter. */
   UnboundGeneric getGeneric() { type_parameters(this, _, result, _) }
