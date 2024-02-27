@@ -6,6 +6,7 @@ on:
   push:
     branches:
       - master
+permissions: {}
 jobs:
   cherry_pick:
     runs-on: ubuntu-latest

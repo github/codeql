@@ -3,6 +3,7 @@ name: Issue Workflow
 on: 
   issues:
     types: [opened,edited]
+permissions: {}
 jobs: 
   #This job will check the issue to determine if it should be moved to a different repository
   redirectIssue:

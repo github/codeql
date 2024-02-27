@@ -83,10 +83,10 @@ class DataFlowCallable instanceof Cfg::CfgScope {
 
   string getName() {
     if this instanceof ReusableWorkflowStmt
-    then result = this.(ReusableWorkflowStmt).getName()
+    then result = this.(ReusableWorkflowStmt).getLocation().getFile().getRelativePath()
     else
       if this instanceof CompositeActionStmt
-      then result = this.(CompositeActionStmt).getName()
+      then result = this.(CompositeActionStmt).getLocation().getFile().getRelativePath()
       else none()
   }
 }
