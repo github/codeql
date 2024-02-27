@@ -123,9 +123,7 @@ module CallTargetStats implements StatsSig {
 }
 
 private class SourceExpr extends Expr {
-  SourceExpr() {
-    this.getFile().isSourceFile()
-  }
+  SourceExpr() { this.getFile().isSourceFile() }
 }
 
 private predicate hasGoodType(Expr e) {
