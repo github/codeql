@@ -65,7 +65,10 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
 private import Make<DataFlowImplSpecific::CppDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
-  DataFlowCall getACall(Public::SummarizedCallable sc) { result.getStaticCallTarget() = TSummarizedCallable(sc) }
+  DataFlowCall getACall(Public::SummarizedCallable sc) {
+    result.getStaticCallTarget().asSourceCallable() = sc or
+    result.getStaticCallTarget().asSummarizedCallable() = sc // TODO: this should be the only case
+  }
 }
 
 module SourceSinkInterpretationInput implements
@@ -114,7 +117,8 @@ module SourceSinkInterpretationInput implements
     Node asNode() { this = TNode_(result) }
 
     /** Gets the call that this node corresponds to, if any. */
-    DataFlowCall asCall() { this.asElement() = result.asCallInstruction().getUnconvertedResultExpression()
+    DataFlowCall asCall() {
+      this.asElement() = result.asCallInstruction().getUnconvertedResultExpression()
       // TODO: or summary call?
     }
 
