@@ -1,7 +1,7 @@
-import dotnet
+import csharp
 import semmle.code.csharp.commons.Disposal
 
-from DotNet::Callable c, DotNet::Parameter param, int p
+from Callable c, Parameter param, int p
 where
   mayBeDisposed(param) and
   param = c.getParameter(p) and

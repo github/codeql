@@ -31,10 +31,7 @@ private module Input implements InputSig<CsharpDataFlow> {
     n instanceof FlowInsensitiveFieldNode
   }
 
-  predicate missingLocationExclude(Node n) {
-    // Some CIL methods are missing locations
-    n.asParameter() instanceof CIL::Parameter
-  }
+  predicate missingLocationExclude(Node n) { none() }
 
   predicate postWithInFlowExclude(Node n) {
     n instanceof FlowSummaryNode
@@ -48,8 +45,6 @@ private module Input implements InputSig<CsharpDataFlow> {
     not exists(LocalFlow::getAPostUpdateNodeForArg(n.getControlFlowNode()))
     or
     n instanceof ParamsArgumentNode
-    or
-    n.asExpr() instanceof CIL::Expr
   }
 
   predicate postHasUniquePreExclude(PostUpdateNode n) {

@@ -1,4 +1,4 @@
-import dotnet::DotNet
+import csharp
 
 from NamedElement ne
 where ne.fromSource()

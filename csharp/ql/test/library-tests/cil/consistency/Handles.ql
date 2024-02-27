@@ -59,7 +59,7 @@ query predicate csharpLocationViolation(Element e) {
 }
 
 query predicate matchingObjectMethods(string s1, string s2) {
-  exists(Callable m1, CIL::Method m2 |
+  exists(DotNet::Callable m1, CIL::Method m2 |
     m1.getDeclaringType().hasFullyQualifiedName("System", "Object") and
     m1.matchesHandle(m2) and
     s1 = m1.toStringWithTypes() and
