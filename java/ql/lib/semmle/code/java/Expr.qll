@@ -2132,7 +2132,7 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   /** Gets the compilation unit in which this type access occurs. */
   override CompilationUnit getCompilationUnit() { result = Expr.super.getCompilationUnit() }
 
-  string toNormalString() {
+  private string toNormalString() {
     result = this.getQualifier().toString() + "." + this.getType().toString()
     or
     not this.hasQualifier() and result = this.getType().toString()
