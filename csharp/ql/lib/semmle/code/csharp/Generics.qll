@@ -16,7 +16,6 @@
 import Location
 import Namespace
 private import commons.QualifiedName
-private import dotnet
 private import TypeRef
 
 /**
