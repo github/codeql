@@ -12440,15 +12440,13 @@ ir.cpp:
 
 # 2197| void vacuous_destructor_call::call_destructor<int>(int&)
 # 2197|   Block 0
-# 2197|     v2197_1(void)         = EnterFunction            : 
-# 2197|     mu2197_2(unknown)     = AliasedDefinition        : 
-# 2197|     mu2197_3(unknown)     = InitializeNonLocal       : 
-# 2197|     r2197_4(glval<int &>) = VariableAddress[t]       : 
-# 2197|     mu2197_5(int &)       = InitializeParameter[t]   : &:r2197_4
-# 2197|     r2197_6(int &)        = Load[t]                  : &:r2197_4, ~m?
-# 2197|     mu2197_7(unknown)     = InitializeIndirection[t] : &:r2197_6
-
-# 2198|   Block 1
+# 2197|     v2197_1(void)           = EnterFunction                : 
+# 2197|     mu2197_2(unknown)       = AliasedDefinition            : 
+# 2197|     mu2197_3(unknown)       = InitializeNonLocal           : 
+# 2197|     r2197_4(glval<int &>)   = VariableAddress[t]           : 
+# 2197|     mu2197_5(int &)         = InitializeParameter[t]       : &:r2197_4
+# 2197|     r2197_6(int &)          = Load[t]                      : &:r2197_4, ~m?
+# 2197|     mu2197_7(unknown)       = InitializeIndirection[t]     : &:r2197_6
 # 2198|     r2198_1(glval<unknown>) = FunctionAddress[get]         : 
 # 2198|     r2198_2(glval<int &>)   = VariableAddress[t]           : 
 # 2198|     r2198_3(int &)          = Load[t]                      : &:r2198_2, ~m?
@@ -12459,13 +12457,11 @@ ir.cpp:
 # 2198|     v2198_8(void)           = ^BufferReadSideEffect[0]     : &:r2198_5, ~m?
 # 2198|     mu2198_9(unknown)       = ^BufferMayWriteSideEffect[0] : &:r2198_5
 # 2198|     r2198_10(glval<int>)    = CopyValue                    : r2198_6
-
-# 2199|   Block 2
-# 2199|     v2199_1(void)  = NoOp                 : 
-# 2197|     v2197_8(void)  = ReturnIndirection[t] : &:r2197_6, ~m?
-# 2197|     v2197_9(void)  = ReturnVoid           : 
-# 2197|     v2197_10(void) = AliasedUse           : ~m?
-# 2197|     v2197_11(void) = ExitFunction         : 
+# 2199|     v2199_1(void)           = NoOp                         : 
+# 2197|     v2197_8(void)           = ReturnIndirection[t]         : &:r2197_6, ~m?
+# 2197|     v2197_9(void)           = ReturnVoid                   : 
+# 2197|     v2197_10(void)          = AliasedUse                   : ~m?
+# 2197|     v2197_11(void)          = ExitFunction                 : 
 
 # 2201| void vacuous_destructor_call::non_vacuous_destructor_call()
 # 2201|   Block 0

@@ -13350,14 +13350,31 @@ ir.cpp:
 
 # 2197| void vacuous_destructor_call::call_destructor<int>(int&)
 # 2197|   Block 0
-# 2197|     v2197_1(void)         = EnterFunction            : 
-# 2197|     m2197_2(unknown)      = AliasedDefinition        : 
-# 2197|     m2197_3(unknown)      = InitializeNonLocal       : 
-# 2197|     m2197_4(unknown)      = Chi                      : total:m2197_2, partial:m2197_3
-# 2197|     r2197_5(glval<int &>) = VariableAddress[t]       : 
-# 2197|     m2197_6(int &)        = InitializeParameter[t]   : &:r2197_5
-# 2197|     r2197_7(int &)        = Load[t]                  : &:r2197_5, m2197_6
-# 2197|     m2197_8(unknown)      = InitializeIndirection[t] : &:r2197_7
+# 2197|     v2197_1(void)           = EnterFunction                : 
+# 2197|     m2197_2(unknown)        = AliasedDefinition            : 
+# 2197|     m2197_3(unknown)        = InitializeNonLocal           : 
+# 2197|     m2197_4(unknown)        = Chi                          : total:m2197_2, partial:m2197_3
+# 2197|     r2197_5(glval<int &>)   = VariableAddress[t]           : 
+# 2197|     m2197_6(int &)          = InitializeParameter[t]       : &:r2197_5
+# 2197|     r2197_7(int &)          = Load[t]                      : &:r2197_5, m2197_6
+# 2197|     m2197_8(unknown)        = InitializeIndirection[t]     : &:r2197_7
+# 2198|     r2198_1(glval<unknown>) = FunctionAddress[get]         : 
+# 2198|     r2198_2(glval<int &>)   = VariableAddress[t]           : 
+# 2198|     r2198_3(int &)          = Load[t]                      : &:r2198_2, m2197_6
+# 2198|     r2198_4(glval<int>)     = CopyValue                    : r2198_3
+# 2198|     r2198_5(int &)          = CopyValue                    : r2198_4
+# 2198|     r2198_6(int &)          = Call[get]                    : func:r2198_1, 0:r2198_5
+# 2198|     m2198_7(unknown)        = ^CallSideEffect              : ~m2197_4
+# 2198|     m2198_8(unknown)        = Chi                          : total:m2197_4, partial:m2198_7
+# 2198|     v2198_9(void)           = ^BufferReadSideEffect[0]     : &:r2198_5, ~m2197_8
+# 2198|     m2198_10(unknown)       = ^BufferMayWriteSideEffect[0] : &:r2198_5
+# 2198|     m2198_11(unknown)       = Chi                          : total:m2197_8, partial:m2198_10
+# 2198|     r2198_12(glval<int>)    = CopyValue                    : r2198_6
+# 2199|     v2199_1(void)           = NoOp                         : 
+# 2197|     v2197_9(void)           = ReturnIndirection[t]         : &:r2197_7, m2198_11
+# 2197|     v2197_10(void)          = ReturnVoid                   : 
+# 2197|     v2197_11(void)          = AliasedUse                   : ~m2198_8
+# 2197|     v2197_12(void)          = ExitFunction                 : 
 
 # 2201| void vacuous_destructor_call::non_vacuous_destructor_call()
 # 2201|   Block 0
