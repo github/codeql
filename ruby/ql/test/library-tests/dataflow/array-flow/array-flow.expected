@@ -298,7 +298,9 @@ edges
 | array_flow.rb:251:9:251:9 | a [element 2] | array_flow.rb:251:30:251:30 | x | provenance |  |
 | array_flow.rb:251:9:254:7 | call to collect_concat [element] | array_flow.rb:251:5:251:5 | b [element] | provenance |  |
 | array_flow.rb:251:30:251:30 | x | array_flow.rb:252:14:252:14 | x | provenance |  |
+| array_flow.rb:251:30:251:30 | x | array_flow.rb:253:10:253:10 | x | provenance |  |
 | array_flow.rb:253:9:253:25 | call to [] [element 1] | array_flow.rb:251:9:254:7 | call to collect_concat [element] | provenance |  |
+| array_flow.rb:253:10:253:10 | x | array_flow.rb:253:9:253:25 | call to [] [element 0] | provenance |  |
 | array_flow.rb:253:13:253:24 | call to source | array_flow.rb:253:9:253:25 | call to [] [element 1] | provenance |  |
 | array_flow.rb:255:10:255:10 | b [element] | array_flow.rb:255:10:255:13 | ...[...] | provenance |  |
 | array_flow.rb:256:5:256:5 | b [element] | array_flow.rb:260:10:260:10 | b [element] | provenance |  |
@@ -631,6 +633,7 @@ edges
 | array_flow.rb:507:9:507:9 | a [element 3] | array_flow.rb:507:26:507:26 | x | provenance |  |
 | array_flow.rb:507:9:510:7 | call to filter_map [element] | array_flow.rb:507:5:507:5 | b [element] | provenance |  |
 | array_flow.rb:507:26:507:26 | x | array_flow.rb:508:14:508:14 | x | provenance |  |
+| array_flow.rb:507:26:507:26 | x | array_flow.rb:509:9:509:9 | x | provenance |  |
 | array_flow.rb:511:10:511:10 | b [element] | array_flow.rb:511:10:511:13 | ...[...] | provenance |  |
 | array_flow.rb:518:5:518:5 | d [element] | array_flow.rb:521:10:521:10 | d [element] | provenance |  |
 | array_flow.rb:518:9:520:7 | call to filter_map [element] | array_flow.rb:518:5:518:5 | d [element] | provenance |  |
@@ -718,7 +721,9 @@ edges
 | array_flow.rb:571:9:571:9 | a [element 2] | array_flow.rb:571:24:571:24 | x | provenance |  |
 | array_flow.rb:571:9:574:7 | call to flat_map [element] | array_flow.rb:571:5:571:5 | b [element] | provenance |  |
 | array_flow.rb:571:24:571:24 | x | array_flow.rb:572:14:572:14 | x | provenance |  |
+| array_flow.rb:571:24:571:24 | x | array_flow.rb:573:10:573:10 | x | provenance |  |
 | array_flow.rb:573:9:573:25 | call to [] [element 1] | array_flow.rb:571:9:574:7 | call to flat_map [element] | provenance |  |
+| array_flow.rb:573:10:573:10 | x | array_flow.rb:573:9:573:25 | call to [] [element 0] | provenance |  |
 | array_flow.rb:573:13:573:24 | call to source | array_flow.rb:573:9:573:25 | call to [] [element 1] | provenance |  |
 | array_flow.rb:575:10:575:10 | b [element] | array_flow.rb:575:10:575:13 | ...[...] | provenance |  |
 | array_flow.rb:576:5:576:5 | b [element] | array_flow.rb:580:10:580:10 | b [element] | provenance |  |
@@ -2337,7 +2342,9 @@ edges
 | array_flow.rb:1677:16:1677:28 | call to source | array_flow.rb:1677:9:1677:29 | call to [] [element 2] | provenance |  |
 | array_flow.rb:1678:5:1678:5 | b [element] | array_flow.rb:1681:10:1681:10 | b [element] | provenance |  |
 | array_flow.rb:1678:9:1678:9 | a [element 2] | array_flow.rb:1678:9:1680:7 | call to map [element] | provenance |  |
+| array_flow.rb:1678:9:1678:9 | a [element 2] | array_flow.rb:1678:19:1678:19 | x | provenance |  |
 | array_flow.rb:1678:9:1680:7 | call to map [element] | array_flow.rb:1678:5:1678:5 | b [element] | provenance |  |
+| array_flow.rb:1678:19:1678:19 | x | array_flow.rb:1679:9:1679:9 | x | provenance |  |
 | array_flow.rb:1681:10:1681:10 | b [element] | array_flow.rb:1681:10:1681:13 | ...[...] | provenance |  |
 | array_flow.rb:1685:5:1685:5 | a [element 2] | array_flow.rb:1686:18:1686:18 | a [element 2] | provenance |  |
 | array_flow.rb:1685:5:1685:5 | a [element 3] | array_flow.rb:1686:18:1686:18 | a [element 3] | provenance |  |
@@ -2674,7 +2681,9 @@ nodes
 | array_flow.rb:251:9:254:7 | call to collect_concat [element] | semmle.label | call to collect_concat [element] |
 | array_flow.rb:251:30:251:30 | x | semmle.label | x |
 | array_flow.rb:252:14:252:14 | x | semmle.label | x |
+| array_flow.rb:253:9:253:25 | call to [] [element 0] | semmle.label | call to [] [element 0] |
 | array_flow.rb:253:9:253:25 | call to [] [element 1] | semmle.label | call to [] [element 1] |
+| array_flow.rb:253:10:253:10 | x | semmle.label | x |
 | array_flow.rb:253:13:253:24 | call to source | semmle.label | call to source |
 | array_flow.rb:255:10:255:10 | b [element] | semmle.label | b [element] |
 | array_flow.rb:255:10:255:13 | ...[...] | semmle.label | ...[...] |
@@ -3041,6 +3050,7 @@ nodes
 | array_flow.rb:507:9:510:7 | call to filter_map [element] | semmle.label | call to filter_map [element] |
 | array_flow.rb:507:26:507:26 | x | semmle.label | x |
 | array_flow.rb:508:14:508:14 | x | semmle.label | x |
+| array_flow.rb:509:9:509:9 | x | semmle.label | x |
 | array_flow.rb:511:10:511:10 | b [element] | semmle.label | b [element] |
 | array_flow.rb:511:10:511:13 | ...[...] | semmle.label | ...[...] |
 | array_flow.rb:518:5:518:5 | d [element] | semmle.label | d [element] |
@@ -3132,7 +3142,9 @@ nodes
 | array_flow.rb:571:9:574:7 | call to flat_map [element] | semmle.label | call to flat_map [element] |
 | array_flow.rb:571:24:571:24 | x | semmle.label | x |
 | array_flow.rb:572:14:572:14 | x | semmle.label | x |
+| array_flow.rb:573:9:573:25 | call to [] [element 0] | semmle.label | call to [] [element 0] |
 | array_flow.rb:573:9:573:25 | call to [] [element 1] | semmle.label | call to [] [element 1] |
+| array_flow.rb:573:10:573:10 | x | semmle.label | x |
 | array_flow.rb:573:13:573:24 | call to source | semmle.label | call to source |
 | array_flow.rb:575:10:575:10 | b [element] | semmle.label | b [element] |
 | array_flow.rb:575:10:575:13 | ...[...] | semmle.label | ...[...] |
@@ -4821,6 +4833,8 @@ nodes
 | array_flow.rb:1678:5:1678:5 | b [element] | semmle.label | b [element] |
 | array_flow.rb:1678:9:1678:9 | a [element 2] | semmle.label | a [element 2] |
 | array_flow.rb:1678:9:1680:7 | call to map [element] | semmle.label | call to map [element] |
+| array_flow.rb:1678:19:1678:19 | x | semmle.label | x |
+| array_flow.rb:1679:9:1679:9 | x | semmle.label | x |
 | array_flow.rb:1681:10:1681:10 | b [element] | semmle.label | b [element] |
 | array_flow.rb:1681:10:1681:13 | ...[...] | semmle.label | ...[...] |
 | array_flow.rb:1685:5:1685:5 | a [element 2] | semmle.label | a [element 2] |
@@ -4836,6 +4850,10 @@ nodes
 | array_flow.rb:1689:10:1689:10 | z | semmle.label | z |
 | array_flow.rb:1690:10:1690:10 | w | semmle.label | w |
 subpaths
+| array_flow.rb:251:9:251:9 | a [element 2] | array_flow.rb:251:30:251:30 | x | array_flow.rb:253:9:253:25 | call to [] [element 0] | array_flow.rb:251:9:254:7 | call to collect_concat [element] |
+| array_flow.rb:507:9:507:9 | a [element 3] | array_flow.rb:507:26:507:26 | x | array_flow.rb:509:9:509:9 | x | array_flow.rb:507:9:510:7 | call to filter_map [element] |
+| array_flow.rb:571:9:571:9 | a [element 2] | array_flow.rb:571:24:571:24 | x | array_flow.rb:573:9:573:25 | call to [] [element 0] | array_flow.rb:571:9:574:7 | call to flat_map [element] |
+| array_flow.rb:1678:9:1678:9 | a [element 2] | array_flow.rb:1678:19:1678:19 | x | array_flow.rb:1679:9:1679:9 | x | array_flow.rb:1678:9:1680:7 | call to map [element] |
 arrayLiteral
 | array_flow.rb:9:9:9:25 | call to [] |
 | array_flow.rb:33:9:33:22 | call to [] |
