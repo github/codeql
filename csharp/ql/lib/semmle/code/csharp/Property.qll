@@ -113,7 +113,7 @@ class DeclarationWithGetSetAccessors extends DeclarationWithAccessors, TopLevelE
  * }
  * ```
  */
-class Property extends DotNet::Property, DeclarationWithGetSetAccessors, @property {
+class Property extends DeclarationWithGetSetAccessors, @property {
   override string getName() { properties(this, result, _, _, _) }
 
   override string getUndecoratedName() { properties(this, result, _, _, _) }

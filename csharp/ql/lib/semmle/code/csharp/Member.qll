@@ -26,8 +26,46 @@ private module FullyQualifiedNameInput implements QualifiedNameInputSig {
  *
  * Either a modifiable (`Modifiable`) or an assignable (`Assignable`).
  */
-class Declaration extends DotNet::Declaration, Element, @declaration {
-  override ValueOrRefType getDeclaringType() { none() }
+class Declaration extends NamedElement, @declaration {
+  /** Gets the name of this declaration, without additional decoration such as `<...>`. */
+  string getUndecoratedName() { none() }
+
+  /** Holds if this element has undecorated name 'name'. */
+  final predicate hasUndecoratedName(string name) { name = this.getUndecoratedName() }
+
+  /**
+   * Gets the unbound version of this declaration, that is, the declaration where
+   * all type arguments have been removed. For example, in
+   *
+   * ```csharp
+   * class C<T>
+   * {
+   *     class Nested
+   *     {
+   *     }
+   *
+   *     void Method<S>() { }
+   * }
+   * ```
+   *
+   * we have the following
+   *
+   * | Declaration             | Unbound declaration |
+   * |-------------------------|---------------------|
+   * | `C<int>`                | ``C`1``             |
+   * | ``C`1.Nested``          | ``C`1.Nested``      |
+   * | `C<int>.Nested`         | ``C`1.Nested``      |
+   * | ``C`1.Method`1``        | ``C`1.Method`1``    |
+   * | ``C<int>.Method`1``     | ``C`1.Method`1``    |
+   * | `C<int>.Method<string>` | ``C`1.Method`1``    |
+   */
+  Declaration getUnboundDeclaration() { result = this }
+
+  /** Holds if this declaration is unbound. */
+  final predicate isUnboundDeclaration() { this.getUnboundDeclaration() = this }
+
+  /** Gets the type containing this declaration, if any. */
+  ValueOrRefType getDeclaringType() { none() }
 
   /** Holds if this declaration is unconstructed and in source code. */
   final predicate isSourceDeclaration() { this.fromSource() and this.isUnboundDeclaration() }
@@ -222,33 +260,54 @@ class Modifiable extends Declaration, @modifiable {
 }
 
 /** A declaration that is a member of a type. */
-class Member extends DotNet::Member, Modifiable, @member {
+class Member extends Modifiable, @member {
   /** Gets an access to this member. */
   MemberAccess getAnAccess() { result.getTarget() = this }
 
+  /** Holds if this member is declared `public`. */
   override predicate isPublic() { Modifiable.super.isPublic() }
 
+  /** Holds if this member is declared `protected.` */
   override predicate isProtected() { Modifiable.super.isProtected() }
 
+  /** Holds if this member is `private`. */
   override predicate isPrivate() { Modifiable.super.isPrivate() }
 
+  /** Holds if this member is `internal`. */
   override predicate isInternal() { Modifiable.super.isInternal() }
 
+  /** Holds if this member is `sealed`. */
   override predicate isSealed() { Modifiable.super.isSealed() }
 
+  /** Holds if this member is `abstract`. */
   override predicate isAbstract() { Modifiable.super.isAbstract() }
 
+  /** Holds if this member is `static`. */
   override predicate isStatic() { Modifiable.super.isStatic() }
 
+  /** Holds if this member is declared `required`. */
   override predicate isRequired() { Modifiable.super.isRequired() }
 
+  /** Holds if this member is declared `file` local. */
   override predicate isFile() { Modifiable.super.isFile() }
 
-  deprecated final override predicate hasQualifiedName(string namespace, string type, string name) {
+  /**
+   * DEPRECATED: Use `hasFullyQualifiedName` instead.
+   *
+   * Holds if this member has name `name` and is defined in type `type`
+   * with namespace `namespace`.
+   */
+  cached
+  deprecated final predicate hasQualifiedName(string namespace, string type, string name) {
     QualifiedName<QualifiedNameInput>::hasQualifiedName(this, namespace, type, name)
   }
 
-  final override predicate hasFullyQualifiedName(string namespace, string type, string name) {
+  /**
+   * Holds if this member has name `name` and is defined in type `type`
+   * with namespace `namespace`.
+   */
+  cached
+  final predicate hasFullyQualifiedName(string namespace, string type, string name) {
     QualifiedName<FullyQualifiedNameInput>::hasQualifiedName(this, namespace, type, name)
   }
 }
