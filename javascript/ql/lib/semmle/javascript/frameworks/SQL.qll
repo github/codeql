@@ -467,7 +467,7 @@ private module Tedious {
       }
       override DataFlow::Node getAQueryArgument(){
           exists(API::NewNode request | 
-            request = API::moduleImport("tedious").getMember("Request").getAnInstantiation() and
+            request = tedious().getMember("Request").getAnInstantiation() and
             this.getParameter(0).asSink() = request.getReturn().getAValueReachableFromSource() and 
             result = request.getArgument(0)
           )
