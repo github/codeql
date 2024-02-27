@@ -23,7 +23,7 @@ private import TypeRef
  * A generic declaration. Either an unbound generic (`UnboundGeneric`) or a
  * constructed generic (`ConstructedGeneric`).
  */
-class Generic extends DotNet::Generic, Declaration, @generic {
+class Generic extends Declaration, @generic {
   Generic() {
     type_parameters(_, _, this, _) or
     type_arguments(_, _, this) or
@@ -37,16 +37,23 @@ class Generic extends DotNet::Generic, Declaration, @generic {
  * Either an unbound generic type (`UnboundGenericType`) or an unbound generic method
  * (`UnboundGenericMethod`).
  */
-class UnboundGeneric extends DotNet::UnboundGeneric, Generic {
+class UnboundGeneric extends Generic {
   UnboundGeneric() { type_parameters(_, _, this, _) }
 
-  final override TypeParameter getTypeParameter(int n) { type_parameters(result, n, this, _) }
+  /** Gets the `i`th type parameter, if any. */
+  final TypeParameter getTypeParameter(int n) { type_parameters(result, n, this, _) }
 
-  override ConstructedGeneric getAConstructedGeneric() { result.getUnboundGeneric() = this }
+  /** Gets a type parameter. */
+  TypeParameter getATypeParameter() { result = this.getTypeParameter(_) }
 
-  override TypeParameter getATypeParameter() {
-    result = DotNet::UnboundGeneric.super.getATypeParameter()
-  }
+  /**
+   * Gets one of the constructed versions of this declaration,
+   * which has been bound to a specific set of types.
+   */
+  ConstructedGeneric getAConstructedGeneric() { result.getUnboundGeneric() = this }
+
+  /** Gets the total number of type parameters. */
+  int getNumberOfTypeParameters() { result = count(int i | exists(this.getTypeParameter(i))) }
 }
 
 /** Gets the type parameters as a comma-separated string. */
@@ -67,25 +74,61 @@ private string getTypeParameterBacktick(UnboundGeneric ug) {
  * Either a constructed generic type (`ConstructedType`) or a constructed
  * generic method (`ConstructedMethod`).
  */
-class ConstructedGeneric extends DotNet::ConstructedGeneric, Generic {
+class ConstructedGeneric extends Generic {
   ConstructedGeneric() {
     type_arguments(_, _, this)
     or
     nullable_underlying_type(this, _)
   }
 
-  override UnboundGeneric getUnboundGeneric() { constructed_generic(this, result) }
+  /**
+   * Gets the unbound generic declaration from which this declaration was
+   * constructed.
+   */
+  UnboundGeneric getUnboundGeneric() { constructed_generic(this, result) }
 
   override UnboundGeneric getUnboundDeclaration() {
     result = this.getUnboundGeneric().getUnboundDeclaration()
   }
 
-  override Type getTypeArgument(int i) { none() }
+  /** Gets the `i`th type argument, if any. */
+  Type getTypeArgument(int i) { none() }
 
-  override Type getATypeArgument() { result = this.getTypeArgument(_) }
+  /** Gets a type argument. */
+  Type getATypeArgument() { result = this.getTypeArgument(_) }
 
   /** Gets the annotated type of type argument `i`. */
   final AnnotatedType getAnnotatedTypeArgument(int i) { result.appliesToTypeArgument(this, i) }
+
+  /** Gets the total number of type arguments. */
+  final int getNumberOfTypeArguments() { result = count(int i | exists(this.getTypeArgument(i))) }
+}
+
+/**
+ * INTERNAL: Do not use.
+ *
+ * Constructs the label suffix for a generic method or type.
+ */
+string getGenericsLabel(Generic g) {
+  result = "`" + g.(UnboundGeneric).getNumberOfTypeParameters()
+  or
+  result = "<" + typeArgs(g) + ">"
+}
+
+pragma[noinline]
+private string getTypeArgumentLabel(ConstructedGeneric generic, int p) {
+  result = generic.getTypeArgument(p).getLabel()
+}
+
+language[monotonicAggregates]
+pragma[nomagic]
+private string typeArgs(ConstructedGeneric generic) {
+  result =
+    concat(int p |
+      p in [0 .. generic.getNumberOfTypeArguments() - 1]
+    |
+      getTypeArgumentLabel(generic, p), ","
+    )
 }
 
 /** Gets the type arguments as a comma-separated string. */
