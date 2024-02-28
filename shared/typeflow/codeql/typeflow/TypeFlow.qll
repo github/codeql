@@ -112,7 +112,6 @@ private import internal.TypeFlowImpl as Impl
 /**
  * Provides an implementation of type-flow using input `I`.
  */
-cached
 module Make<TypeFlowInput I> {
   import Impl::TypeFlow<I>
 }
