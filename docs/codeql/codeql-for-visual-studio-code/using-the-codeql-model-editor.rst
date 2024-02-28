@@ -39,7 +39,9 @@ Displaying the CodeQL model editor
 Modeling the calls your codebase makes to external APIs
 -------------------------------------------------------
 
-You typically use this approach when you are looking at a specific codebase where you want to improve the precision of CodeQL results. This is useful when the codebase uses frameworks or libraries that are not supported by CodeQL and if the source code of the framework or library is not included in the analysis. This section uses an open source Java project called "sofa-jraft" as an example. The experience of modeling other static languages is similar.
+You typically use this approach when you are looking at a specific codebase where you want to improve the precision of CodeQL results. This is useful when the codebase uses frameworks or libraries that are not supported by CodeQL and if the source code of the framework or library is not included in the analysis.
+
+This section uses an open source Java project called "sofa-jraft" as an example. The experience of modeling calls to external APIs written in other static languages is similar.
 
 #. Select the CodeQL database that you want to improve CodeQL coverage for.
 #. Display the CodeQL model editor. By default the editor runs in application mode, so the list of external APIs used by the selected codebase is shown.
@@ -90,7 +92,7 @@ The models are stored in a series of YAML data extension files, one for each ext
 Modeling the public API of a codebase
 -------------------------------------
 
-This section uses an open source Java project called "sofa-jraft" as an example. The experience of modeling other static languages is similar.
+This section uses an open source Java project called "sofa-jraft" as an example. The experience of modeling the public API written using other static languages is similar.
 
 You typically use this method when you want to model a framework or library that your organization uses in more than one codebase. Once you have finished creating and testing the model, you can publish the CodeQL model pack to the GitHub Container Registry for your whole organization to use.
 
