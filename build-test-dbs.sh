@@ -1,4 +1,6 @@
 #!/bin/bash
+rm -rf ql/lib/test/test.testproj || true
+rm -rf ql/src/test/test.testproj || true
 rm -rf src-test.testproj || true
 rm -rf lib-test.testproj || true
 codeql database create src-test.testproj -l yaml -s ql/src/test
