@@ -1,0 +1,7 @@
+1,0-1,1:            RBRACE         '}'
+1,1-1,2:            NEWLINE        '\n'
+2,0-2,1:            RPAR           ')'
+2,1-2,2:            NEWLINE        '\n'
+3,0-3,1:            RSQB           ']'
+3,1-3,2:            NEWLINE        '\n'
+4,0-4,0:            ENDMARKER      ''

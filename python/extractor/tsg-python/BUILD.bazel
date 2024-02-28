@@ -1,0 +1,16 @@
+load("@tsg_python_crate_index//:defs.bzl", "aliases", "all_crate_deps")
+load("//:common.bzl", "codeql_rust_binary")
+
+codeql_rust_binary(
+    name = "tsg-python",
+    srcs = ["src/main.rs"],
+    aliases = aliases(),
+    data = ["python.tsg"],
+    proc_macro_deps = all_crate_deps(
+        proc_macro = True,
+    ),
+    visibility = ["//visibility:public"],
+    deps = all_crate_deps(
+        normal = True,
+    ) + ["//extractor-python/tsg-python/tree-sitter-python"],
+)

@@ -1,0 +1,5 @@
+name: extractor-python
+dependencies:
+  codeql/python-all: "*"
+  codeql/python-queries: "*"
+extractor: python
