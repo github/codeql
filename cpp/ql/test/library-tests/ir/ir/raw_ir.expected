@@ -13510,6 +13510,19 @@ ir.cpp:
 # 2314|     v2314_5(void)           = AliasedUse                      : ~m?
 # 2314|     v2314_6(void)           = ExitFunction                    : 
 
+# 2327| return_routine_type::VoidToIntMemberFunc return_routine_type::GetVoidToIntFunc()
+# 2327|   Block 0
+# 2327|     v2327_1(void)          = EnterFunction              : 
+# 2327|     mu2327_2(unknown)      = AliasedDefinition          : 
+# 2327|     mu2327_3(unknown)      = InitializeNonLocal         : 
+# 2329|     r2329_1(glval<..:: *>) = VariableAddress[#return]   : 
+# 2329|     r2329_2(..()(..))      = FunctionAddress[VoidToInt] : 
+# 2329|     mu2329_3(..:: *)       = Store[#return]             : &:r2329_1, r2329_2
+# 2327|     r2327_4(glval<..:: *>) = VariableAddress[#return]   : 
+# 2327|     v2327_5(void)          = ReturnValue                : &:r2327_4, ~m?
+# 2327|     v2327_6(void)          = AliasedUse                 : ~m?
+# 2327|     v2327_7(void)          = ExitFunction               : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

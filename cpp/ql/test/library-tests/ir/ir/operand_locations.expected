@@ -12029,6 +12029,13 @@
 | ir.cpp:2317:1:2317:1 | ChiTotal | total:m2316_4 |
 | ir.cpp:2317:1:2317:1 | SideEffect | m2315_8 |
 | ir.cpp:2317:1:2317:1 | SideEffect | ~m2316_4 |
+| ir.cpp:2327:32:2327:47 | Address | &:r2327_5 |
+| ir.cpp:2327:32:2327:47 | ChiPartial | partial:m2327_3 |
+| ir.cpp:2327:32:2327:47 | ChiTotal | total:m2327_2 |
+| ir.cpp:2327:32:2327:47 | Load | m2329_3 |
+| ir.cpp:2327:32:2327:47 | SideEffect | m2327_3 |
+| ir.cpp:2329:9:2329:44 | Address | &:r2329_1 |
+| ir.cpp:2329:16:2329:43 | StoreValue | r2329_2 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_7 |
