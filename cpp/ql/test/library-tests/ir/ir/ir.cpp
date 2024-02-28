@@ -2189,6 +2189,26 @@ void static_variable_with_destructor_3() {
 
 static ClassWithDestructor global_class_with_destructor;
 
+namespace vacuous_destructor_call {
+    template<typename T>
+    T& get(T& t) { return t; }
+
+    template<typename T>
+    void call_destructor(T& t) {
+        get(t).~T();
+    }
+
+    void non_vacuous_destructor_call() {
+        ClassWithDestructor c;
+        call_destructor(c);
+    }
+
+    void vacuous_destructor_call() {
+        int i;
+        call_destructor(i);
+    }
+}
+
 void TryCatchDestructors(bool b) {
   try {
     String s;
@@ -2294,6 +2314,21 @@ int IfReturnDestructors3(bool b) {
 void VoidReturnDestructors() {
     String s;
     return VoidFunc();
+}
+
+namespace return_routine_type {
+    struct HasVoidToIntFunc
+    {
+        void VoidToInt(int);
+    };
+
+    typedef void (HasVoidToIntFunc::*VoidToIntMemberFunc)(int);
+
+    static VoidToIntMemberFunc GetVoidToIntFunc()
+    {
+        return &HasVoidToIntFunc::VoidToInt;
+    }
+
 }
 
 // semmle-extractor-options: -std=c++20 --clang

@@ -11,7 +11,7 @@ private int getTypeSizeWorkaround(Type type) {
   exists(Type unspecifiedType |
     unspecifiedType = type.getUnspecifiedType() and
     (
-      unspecifiedType instanceof FunctionReferenceType and
+      (unspecifiedType instanceof FunctionReferenceType or unspecifiedType instanceof RoutineType) and
       result = getPointerSize()
       or
       exists(PointerToMemberType ptmType |
@@ -176,7 +176,7 @@ private IRType getIRTypeForPRValue(Type type) {
     isPointerIshType(unspecifiedType) and
     result.(IRAddressType).getByteSize() = getTypeSize(unspecifiedType)
     or
-    unspecifiedType instanceof FunctionPointerIshType and
+    (unspecifiedType instanceof FunctionPointerIshType or unspecifiedType instanceof RoutineType) and
     result.(IRFunctionAddressType).getByteSize() = getTypeSize(type)
     or
     unspecifiedType instanceof VoidType and result instanceof IRVoidType
