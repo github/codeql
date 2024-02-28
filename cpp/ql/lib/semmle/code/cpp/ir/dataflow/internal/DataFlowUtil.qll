@@ -1010,7 +1010,9 @@ private module RawIndirectNodes {
       result = this.getOperand().getDef().getEnclosingFunction()
     }
 
-    override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(this.getFunction()) }
+    override DataFlowCallable getEnclosingCallable() {
+      result = TSourceCallable(this.getFunction())
+    }
 
     override predicate isGLValue() { this.getOperand().isGLValue() }
 
@@ -1054,7 +1056,9 @@ private module RawIndirectNodes {
 
     override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
-    override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(this.getFunction()) }
+    override DataFlowCallable getEnclosingCallable() {
+      result = TSourceCallable(this.getFunction())
+    }
 
     override predicate isGLValue() { this.getInstruction().isGLValue() }
 
@@ -1672,7 +1676,8 @@ private class ExplicitParameterNode extends ParameterNode, DirectParameterNode {
   ExplicitParameterNode() { exists(instr.getParameter()) }
 
   override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    f.asSourceCallable().(Function).getParameter(pos.(DirectPosition).getIndex()) = instr.getParameter()
+    f.getUnderlyingCallable().(Function).getParameter(pos.(DirectPosition).getIndex()) =
+      instr.getParameter()
   }
 
   override string toStringImpl() { result = instr.getParameter().toString() }
@@ -1685,7 +1690,8 @@ class ThisParameterNode extends ParameterNode, DirectParameterNode {
   ThisParameterNode() { instr.getIRVariable() instanceof IRThisVariable }
 
   override predicate isParameterOf(DataFlowCallable f, ParameterPosition pos) {
-    pos.(DirectPosition).getIndex() = -1 and instr.getEnclosingFunction() = f.asSourceCallable()
+    pos.(DirectPosition).getIndex() = -1 and
+    instr.getEnclosingFunction() = f.getUnderlyingCallable()
   }
 
   override string toStringImpl() { result = "this" }
@@ -1704,7 +1710,7 @@ class SummaryParameterNode extends ParameterNode, FlowSummaryNode {
   }
 
   override predicate isParameterOf(DataFlowCallable c, ParameterPosition p) {
-    c.asSummarizedCallable() = this.getSummarizedCallable() and
+    c.getUnderlyingCallable() = this.getSummarizedCallable() and
     p = this.getPosition()
   }
 }

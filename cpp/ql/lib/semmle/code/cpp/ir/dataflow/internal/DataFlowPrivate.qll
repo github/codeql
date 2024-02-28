@@ -978,6 +978,11 @@ class DataFlowCallable extends TDataFlowCallable {
   Cpp::Declaration asSourceCallable() { this = TSourceCallable(result) }
 
   FlowSummaryImpl::Public::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
+
+  Cpp::Declaration getUnderlyingCallable() {
+    result = this.asSummarizedCallable() or // SummarizedCallable = Function (in CPP)
+    result = this.asSourceCallable()
+  }
 }
 
 private class SourceCallable extends DataFlowCallable, TSourceCallable {
@@ -1031,7 +1036,7 @@ class DataFlowCall extends TDataFlowCall {
   /**
    * Gets the `Function` that the call targets, if this is statically known.
    */
-  DataFlowCallable getStaticCallTarget() { none() } // TODO: should this return DataFlowCallable?
+  DataFlowCallable getStaticCallTarget() { none() }
 
   /**
    * Gets the `index`'th argument operand. The qualifier is considered to have index `-1`.
@@ -1104,7 +1109,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 
 //  override ArgumentOperand getArgumentOperand(int index) TODO
 
-  override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) }
+  override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) } // TODO: is this right?
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 

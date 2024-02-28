@@ -24,7 +24,7 @@ DataFlowCallable defaultViableCallable(DataFlowCall call) {
   // that as a potential callee.
   exists(string qualifiedName, int nparams |
     callSignatureWithoutBody(qualifiedName, nparams, call.asCallInstruction()) and
-    functionSignatureWithBody(qualifiedName, nparams, result.asSourceCallable()) and
+    functionSignatureWithBody(qualifiedName, nparams, result.getUnderlyingCallable()) and
     strictcount(Function other | functionSignatureWithBody(qualifiedName, nparams, other)) = 1
   )
   or
@@ -40,7 +40,9 @@ DataFlowCallable viableCallable(DataFlowCall call) {
   result = defaultViableCallable(call)
   or
   // Additional call targets
-  result = any(AdditionalCallTarget additional).viableTarget(call.asCallInstruction().getUnconvertedResultExpression())
+  result =
+    any(AdditionalCallTarget additional)
+        .viableTarget(call.asCallInstruction().getUnconvertedResultExpression())
 }
 
 /**
@@ -176,7 +178,12 @@ private module VirtualDispatch {
   /** Call to a virtual function. */
   private class DataSensitiveOverriddenFunctionCall extends DataSensitiveCall {
     DataSensitiveOverriddenFunctionCall() {
-      exists(this.getStaticCallTarget().asSourceCallable().(VirtualFunction).getAnOverridingFunction())
+      exists(
+        this.getStaticCallTarget()
+            .getUnderlyingCallable()
+            .(VirtualFunction)
+            .getAnOverridingFunction()
+      )
     }
 
     override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getArgument(-1) }
@@ -194,7 +201,8 @@ private module VirtualDispatch {
      */
     pragma[noinline]
     private predicate overrideMayAffectCall(Class overridingClass, MemberFunction overridingFunction) {
-      overridingFunction.getAnOverriddenFunction+() = this.getStaticCallTarget().asSourceCallable().(VirtualFunction) and
+      overridingFunction.getAnOverriddenFunction+() =
+        this.getStaticCallTarget().getUnderlyingCallable().(VirtualFunction) and
       overridingFunction.getDeclaringType() = overridingClass
     }
 
@@ -261,7 +269,7 @@ private predicate mayBenefitFromCallContext(
   f = pragma[only_bind_out](call).getEnclosingCallable() and
   exists(InitializeParameterInstruction init |
     not exists(call.getStaticCallTarget()) and
-    init.getEnclosingFunction() = f.asSourceCallable() and
+    init.getEnclosingFunction() = f.getUnderlyingCallable() and
     call.flowsFrom(DataFlow::instructionNode(init), _) and
     init.getParameter().getIndex() = arg
   )
@@ -276,7 +284,11 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
   exists(int i, DataFlowCallable f |
     mayBenefitFromCallContext(pragma[only_bind_into](call), f, i) and
     f = ctx.getStaticCallTarget() and
-    result = TSourceCallable(ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget())
+    result =
+      TSourceCallable(ctx.getArgument(i)
+            .getUnconvertedResultExpression()
+            .(FunctionAccess)
+            .getTarget())
   )
 }
 
