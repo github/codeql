@@ -12,18 +12,18 @@ About testing queries in VS Code
 
 To ensure that your CodeQL queries produce the expected results, you can run tests that compare the expected query results with the actual results.
 
-The CodeQL extension automatically registers itself with the **Test Explorer** view. The **Test Explorer** view displays all tests found in your current workspace and provides a UI for exploring and running tests in your workspace.
+The CodeQL extension automatically registers itself with the **Testing** view. The **Testing** view displays all tests found in your current workspace and provides a UI for exploring and running tests in your workspace.
 
 For more information about how CodeQL tests work, see "`Testing custom queries <https://docs.github.com/en/code-security/codeql-cli/using-the-codeql-cli/testing-custom-queries>`__" in the CLI help.
 
 Testing the results of your queries
 -----------------------------------
 
-1. Open the **Test Explorer** view in the sidebar.
+1. Open the **Testing** view in the sidebar.
 
-   .. image:: ../images/codeql-for-visual-studio-code/open-test-explorer.png
+   .. image:: ../images/codeql-for-visual-studio-code/open-testing-view.png
       :width: 350
-      :alt: Open the Test Explorer view
+      :alt: Open the Testing view
 
 2. To run a specific test, hover over the file or folder name and click the play button. To run all tests in your workspace, click the play button at the top of the view. If a test takes too long to run, you can click the stop button at the top of the view to cancel the test.
 3. The icons show whether a test passed or failed. If it failed, click the test in the **Test Results** panel to display the differences between the expected output and the actual output.
@@ -32,11 +32,11 @@ Testing the results of your queries
       :width: 800
       :alt: View the Test Results panel
 
-4. Compare the results. If you want to update the test with the actual output, right-click the test in the **Test Explorer** view and click **Accept Test Output**.
+4. Compare the results. If you want to update the test with the actual output, right-click the test in the **Testing** view and click **Accept Test Output**.
 
    .. image:: ../images/codeql-for-visual-studio-code/accept-test-output.png
       :width: 400
-      :alt: Acccept test output in the Test Explorer view
+      :alt: Acccept test output in the Testing view
 
 Monitoring the performance of your queries
 ------------------------------------------
