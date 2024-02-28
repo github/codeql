@@ -227,6 +227,8 @@ extensions:
       - ["java.util", "Map", True, "replace", "(Object,Object,Object)", "", "Argument[0]", "Argument[this].MapKey", "value", "manual"]
       - ["java.util", "Map", True, "replace", "(Object,Object,Object)", "", "Argument[2]", "Argument[this].MapValue", "value", "manual"]
       - ["java.util", "Map", True, "values", "()", "", "Argument[this].MapValue", "ReturnValue.Element", "value", "manual"]
+      - ["java.util", "Map$Entry", True, "copyOf", "(Map$Entry)", "", "Argument[0].MapKey", "ReturnValue.MapKey", "value", "df-generated"]
+      - ["java.util", "Map$Entry", True, "copyOf", "(Map$Entry)", "", "Argument[0].MapValue", "ReturnValue.MapValue", "value", "df-generated"]
       - ["java.util", "Map$Entry", True, "getKey", "", "", "Argument[this].MapKey", "ReturnValue", "value", "manual"]
       - ["java.util", "Map$Entry", True, "getValue", "", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
       - ["java.util", "Map$Entry", True, "setValue", "", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
