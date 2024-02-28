@@ -1,0 +1,152 @@
+edges
+| .github/workflows/argus_case_study.yml:15:9:24:6 | name: R ... g chars [replaced] | .github/workflows/argus_case_study.yml:26:14:27:95 | \| |
+| .github/workflows/argus_case_study.yml:17:24:17:52 | ${{gith ... title}} | .github/workflows/argus_case_study.yml:22:19:22:38 | ${{env.ISSUE_TITLE}} |
+| .github/workflows/argus_case_study.yml:22:19:22:38 | ${{env.ISSUE_TITLE}} | .github/workflows/argus_case_study.yml:15:9:24:6 | name: R ... g chars [replaced] |
+| .github/workflows/calling_workflow.yml:12:5:15:2 | uses: . ... low.yml [workflow-output1] | .github/workflows/calling_workflow.yml:35:14:35:61 | echo ${ ... put1 }} |
+| .github/workflows/calling_workflow.yml:12:5:15:2 | uses: . ... low.yml [workflow-output2] | .github/workflows/calling_workflow.yml:36:14:36:61 | echo ${ ... put2 }} |
+| .github/workflows/calling_workflow.yml:14:20:14:60 | ${{ git ... .ref }} | .github/workflows/calling_workflow.yml:12:5:15:2 | uses: . ... low.yml [workflow-output1] |
+| .github/workflows/calling_workflow.yml:14:20:14:60 | ${{ git ... .ref }} | .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path |
+| .github/workflows/calling_workflow.yml:16:5:19:2 | uses: o ... .yml@v1 [workflow-output] | .github/workflows/calling_workflow.yml:41:14:41:60 | echo ${ ... tput }} |
+| .github/workflows/calling_workflow.yml:18:20:18:60 | ${{ git ... .ref }} | .github/workflows/calling_workflow.yml:16:5:19:2 | uses: o ... .yml@v1 [workflow-output] |
+| .github/workflows/calling_workflow.yml:20:5:21:2 | uses: o ... .yml@v1 | .github/workflows/calling_workflow.yml:46:14:46:60 | echo ${ ... tput }} |
+| .github/workflows/changed-files.yml:16:9:20:6 | name: G ... d files | .github/workflows/changed-files.yml:21:14:24:15 | \| |
+| .github/workflows/cross3.yml:27:7:37:4 | name: R ... g chars [replaced] | .github/workflows/cross3.yml:39:30:39:74 | ${{step ... laced}} |
+| .github/workflows/cross3.yml:27:7:37:4 | name: R ... g chars [replaced] | .github/workflows/cross3.yml:57:28:57:72 | ${{step ... laced}} |
+| .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:27:7:37:4 | name: R ... g chars [replaced] |
+| .github/workflows/cross3.yml:39:30:39:74 | ${{step ... laced}} | .github/workflows/cross3.yml:41:12:43:5 | \| |
+| .github/workflows/cross3.yml:57:28:57:72 | ${{step ... laced}} | .github/workflows/cross3.yml:61:21:68:47 | \| |
+| .github/workflows/cross3.yml:61:21:68:47 | \| | .github/workflows/cross3.yml:47:12:53:109 | \| |
+| .github/workflows/image_link_generator.yml:15:9:22:6 | name: E ... ial URL [initial_url] | .github/workflows/image_link_generator.yml:25:24:25:67 | ${{ ste ... _url }} |
+| .github/workflows/image_link_generator.yml:18:17:18:48 | ${{ git ... body }} | .github/workflows/image_link_generator.yml:15:9:22:6 | name: E ... ial URL [initial_url] |
+| .github/workflows/image_link_generator.yml:22:9:28:6 | name: G ... bugging [redirected_url] | .github/workflows/image_link_generator.yml:31:27:31:66 | ${{ ste ... _url }} |
+| .github/workflows/image_link_generator.yml:25:24:25:67 | ${{ ste ... _url }} | .github/workflows/image_link_generator.yml:22:9:28:6 | name: G ... bugging [redirected_url] |
+| .github/workflows/image_link_generator.yml:28:9:35:6 | name: T ... ter PNG [trimmed_url] | .github/workflows/image_link_generator.yml:36:14:37:126 | \| |
+| .github/workflows/image_link_generator.yml:31:27:31:66 | ${{ ste ... _url }} | .github/workflows/image_link_generator.yml:28:9:35:6 | name: T ... ter PNG [trimmed_url] |
+| .github/workflows/inter-job.yml:8:7:10:4 | job_out ... alue }} [job_output] | .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} |
+| .github/workflows/inter-job.yml:8:19:8:49 | ${{ ste ... alue }} | .github/workflows/inter-job.yml:8:7:10:4 | job_out ... alue }} [job_output] |
+| .github/workflows/inter-job.yml:15:9:19:6 | name: G ... d files | .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} |
+| .github/workflows/inter-job.yml:19:9:27:2 | name: R ... d files [value] | .github/workflows/inter-job.yml:8:19:8:49 | ${{ ste ... alue }} |
+| .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} | .github/workflows/inter-job.yml:19:9:27:2 | name: R ... d files [value] |
+| .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | .github/workflows/reusable_workflow.yml:27:24:27:48 | ${{ inp ... path }} |
+| .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | .github/workflows/reusable_workflow.yml:28:14:30:62 | \| |
+| .github/workflows/reusable_workflow.yml:10:7:14:4 | output workflow-output1: [workflow-output2] | .github/workflows/calling_workflow.yml:12:5:15:2 | uses: . ... low.yml [workflow-output2] |
+| .github/workflows/reusable_workflow.yml:11:16:11:51 | ${{ job ... put1 }} | .github/workflows/reusable_workflow.yml:10:7:14:4 | output workflow-output1: [workflow-output1] |
+| .github/workflows/reusable_workflow.yml:13:16:13:51 | ${{ job ... put2 }} | .github/workflows/reusable_workflow.yml:10:7:14:4 | output workflow-output1: [workflow-output2] |
+| .github/workflows/reusable_workflow.yml:22:7:24:4 | job-out ... utput}} [job-output1] | .github/workflows/reusable_workflow.yml:11:16:11:51 | ${{ job ... put1 }} |
+| .github/workflows/reusable_workflow.yml:22:7:24:4 | job-out ... utput}} [job-output2] | .github/workflows/reusable_workflow.yml:13:16:13:51 | ${{ job ... put2 }} |
+| .github/workflows/reusable_workflow.yml:22:20:22:56 | ${{ ste ... utput}} | .github/workflows/reusable_workflow.yml:22:7:24:4 | job-out ... utput}} [job-output1] |
+| .github/workflows/reusable_workflow.yml:23:20:23:62 | ${{ ste ... files}} | .github/workflows/reusable_workflow.yml:22:7:24:4 | job-out ... utput}} [job-output2] |
+| .github/workflows/reusable_workflow.yml:25:9:31:6 | id: step1 [step-output] | .github/workflows/reusable_workflow.yml:22:20:22:56 | ${{ ste ... utput}} |
+| .github/workflows/reusable_workflow.yml:27:24:27:48 | ${{ inp ... path }} | .github/workflows/reusable_workflow.yml:25:9:31:6 | id: step1 [step-output] |
+| .github/workflows/reusable_workflow.yml:31:9:33:43 | name: G ... d files | .github/workflows/reusable_workflow.yml:23:20:23:62 | ${{ ste ... files}} |
+| .github/workflows/simple1.yml:8:9:14:6 | id: summary [value] | .github/workflows/simple1.yml:15:14:16:50 | \| |
+| .github/workflows/simple1.yml:11:19:11:57 | ${{ git ... sage }} | .github/workflows/simple1.yml:8:9:14:6 | id: summary [value] |
+| .github/workflows/simple2.yml:14:9:18:6 | name: G ... d files | .github/workflows/simple2.yml:22:19:22:63 | ${{ ste ... iles }} |
+| .github/workflows/simple2.yml:18:9:26:6 | name: R ... d files [value] | .github/workflows/simple2.yml:28:14:31:15 | \| |
+| .github/workflows/simple2.yml:22:19:22:63 | ${{ ste ... iles }} | .github/workflows/simple2.yml:18:9:26:6 | name: R ... d files [value] |
+| .github/workflows/test.yml:8:7:10:4 | job_out ... test }} [job_output] | .github/workflows/test.yml:37:14:37:52 | echo ${ ... utput}} |
+| .github/workflows/test.yml:8:19:8:49 | ${{ ste ... test }} | .github/workflows/test.yml:8:7:10:4 | job_out ... test }} [job_output] |
+| .github/workflows/test.yml:12:9:18:6 | id: step0  [value] | .github/workflows/test.yml:20:17:20:47 | ${{ ste ... value}} |
+| .github/workflows/test.yml:15:19:15:57 | ${{ git ... sage }} | .github/workflows/test.yml:12:9:18:6 | id: step0  [value] |
+| .github/workflows/test.yml:18:9:24:6 | id: step1 [MSG] | .github/workflows/test.yml:26:18:26:45 | ${{step ... s.MSG}} |
+| .github/workflows/test.yml:20:17:20:47 | ${{ ste ... value}} | .github/workflows/test.yml:18:9:24:6 | id: step1 [MSG] |
+| .github/workflows/test.yml:24:9:29:2 | id: step2 [test] | .github/workflows/test.yml:8:19:8:49 | ${{ ste ... test }} |
+| .github/workflows/test.yml:26:18:26:45 | ${{step ... s.MSG}} | .github/workflows/test.yml:24:9:29:2 | id: step2 [test] |
+| composite-actions/action.yml:4:3:4:14 | input who-to-greet | composite-actions/action.yml:28:17:28:42 | ${{ inp ... reet }} |
+| composite-actions/action.yml:4:3:4:14 | input who-to-greet | composite-actions/action.yml:35:12:35:51 | echo "H ... et }}." |
+| composite-actions/action.yml:24:7:31:4 | name: Remove foo [value] | composite-actions/action.yml:32:12:32:50 | echo ${ ... alue }} |
+| composite-actions/action.yml:28:17:28:42 | ${{ inp ... reet }} | composite-actions/action.yml:24:7:31:4 | name: Remove foo [value] |
+nodes
+| .github/workflows/argus_case_study.yml:15:9:24:6 | name: R ... g chars [replaced] | semmle.label | name: R ... g chars [replaced] |
+| .github/workflows/argus_case_study.yml:17:24:17:52 | ${{gith ... title}} | semmle.label | ${{gith ... title}} |
+| .github/workflows/argus_case_study.yml:22:19:22:38 | ${{env.ISSUE_TITLE}} | semmle.label | ${{env.ISSUE_TITLE}} |
+| .github/workflows/argus_case_study.yml:26:14:27:95 | \| | semmle.label | \| |
+| .github/workflows/calling_workflow.yml:12:5:15:2 | uses: . ... low.yml [workflow-output1] | semmle.label | uses: . ... low.yml [workflow-output1] |
+| .github/workflows/calling_workflow.yml:12:5:15:2 | uses: . ... low.yml [workflow-output2] | semmle.label | uses: . ... low.yml [workflow-output2] |
+| .github/workflows/calling_workflow.yml:14:20:14:60 | ${{ git ... .ref }} | semmle.label | ${{ git ... .ref }} |
+| .github/workflows/calling_workflow.yml:16:5:19:2 | uses: o ... .yml@v1 [workflow-output] | semmle.label | uses: o ... .yml@v1 [workflow-output] |
+| .github/workflows/calling_workflow.yml:18:20:18:60 | ${{ git ... .ref }} | semmle.label | ${{ git ... .ref }} |
+| .github/workflows/calling_workflow.yml:20:5:21:2 | uses: o ... .yml@v1 | semmle.label | uses: o ... .yml@v1 |
+| .github/workflows/calling_workflow.yml:35:14:35:61 | echo ${ ... put1 }} | semmle.label | echo ${ ... put1 }} |
+| .github/workflows/calling_workflow.yml:36:14:36:61 | echo ${ ... put2 }} | semmle.label | echo ${ ... put2 }} |
+| .github/workflows/calling_workflow.yml:41:14:41:60 | echo ${ ... tput }} | semmle.label | echo ${ ... tput }} |
+| .github/workflows/calling_workflow.yml:46:14:46:60 | echo ${ ... tput }} | semmle.label | echo ${ ... tput }} |
+| .github/workflows/changed-files.yml:16:9:20:6 | name: G ... d files | semmle.label | name: G ... d files |
+| .github/workflows/changed-files.yml:21:14:24:15 | \| | semmle.label | \| |
+| .github/workflows/cross3.yml:27:7:37:4 | name: R ... g chars [replaced] | semmle.label | name: R ... g chars [replaced] |
+| .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | semmle.label | ${{gith ... ssage}} |
+| .github/workflows/cross3.yml:39:30:39:74 | ${{step ... laced}} | semmle.label | ${{step ... laced}} |
+| .github/workflows/cross3.yml:41:12:43:5 | \| | semmle.label | \| |
+| .github/workflows/cross3.yml:47:12:53:109 | \| | semmle.label | \| |
+| .github/workflows/cross3.yml:57:28:57:72 | ${{step ... laced}} | semmle.label | ${{step ... laced}} |
+| .github/workflows/cross3.yml:61:21:68:47 | \| | semmle.label | \| |
+| .github/workflows/image_link_generator.yml:15:9:22:6 | name: E ... ial URL [initial_url] | semmle.label | name: E ... ial URL [initial_url] |
+| .github/workflows/image_link_generator.yml:18:17:18:48 | ${{ git ... body }} | semmle.label | ${{ git ... body }} |
+| .github/workflows/image_link_generator.yml:22:9:28:6 | name: G ... bugging [redirected_url] | semmle.label | name: G ... bugging [redirected_url] |
+| .github/workflows/image_link_generator.yml:25:24:25:67 | ${{ ste ... _url }} | semmle.label | ${{ ste ... _url }} |
+| .github/workflows/image_link_generator.yml:28:9:35:6 | name: T ... ter PNG [trimmed_url] | semmle.label | name: T ... ter PNG [trimmed_url] |
+| .github/workflows/image_link_generator.yml:31:27:31:66 | ${{ ste ... _url }} | semmle.label | ${{ ste ... _url }} |
+| .github/workflows/image_link_generator.yml:36:14:37:126 | \| | semmle.label | \| |
+| .github/workflows/inter-job.yml:8:7:10:4 | job_out ... alue }} [job_output] | semmle.label | job_out ... alue }} [job_output] |
+| .github/workflows/inter-job.yml:8:19:8:49 | ${{ ste ... alue }} | semmle.label | ${{ ste ... alue }} |
+| .github/workflows/inter-job.yml:15:9:19:6 | name: G ... d files | semmle.label | name: G ... d files |
+| .github/workflows/inter-job.yml:19:9:27:2 | name: R ... d files [value] | semmle.label | name: R ... d files [value] |
+| .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} | semmle.label | echo ${ ... utput}} |
+| .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | semmle.label | input config-path |
+| .github/workflows/reusable_workflow.yml:10:7:14:4 | output workflow-output1: [workflow-output1] | semmle.label | output workflow-output1: [workflow-output1] |
+| .github/workflows/reusable_workflow.yml:10:7:14:4 | output workflow-output1: [workflow-output2] | semmle.label | output workflow-output1: [workflow-output2] |
+| .github/workflows/reusable_workflow.yml:11:16:11:51 | ${{ job ... put1 }} | semmle.label | ${{ job ... put1 }} |
+| .github/workflows/reusable_workflow.yml:13:16:13:51 | ${{ job ... put2 }} | semmle.label | ${{ job ... put2 }} |
+| .github/workflows/reusable_workflow.yml:22:7:24:4 | job-out ... utput}} [job-output1] | semmle.label | job-out ... utput}} [job-output1] |
+| .github/workflows/reusable_workflow.yml:22:7:24:4 | job-out ... utput}} [job-output2] | semmle.label | job-out ... utput}} [job-output2] |
+| .github/workflows/reusable_workflow.yml:22:20:22:56 | ${{ ste ... utput}} | semmle.label | ${{ ste ... utput}} |
+| .github/workflows/reusable_workflow.yml:23:20:23:62 | ${{ ste ... files}} | semmle.label | ${{ ste ... files}} |
+| .github/workflows/reusable_workflow.yml:25:9:31:6 | id: step1 [step-output] | semmle.label | id: step1 [step-output] |
+| .github/workflows/reusable_workflow.yml:27:24:27:48 | ${{ inp ... path }} | semmle.label | ${{ inp ... path }} |
+| .github/workflows/reusable_workflow.yml:28:14:30:62 | \| | semmle.label | \| |
+| .github/workflows/reusable_workflow.yml:31:9:33:43 | name: G ... d files | semmle.label | name: G ... d files |
+| .github/workflows/simple1.yml:8:9:14:6 | id: summary [value] | semmle.label | id: summary [value] |
+| .github/workflows/simple1.yml:11:19:11:57 | ${{ git ... sage }} | semmle.label | ${{ git ... sage }} |
+| .github/workflows/simple1.yml:15:14:16:50 | \| | semmle.label | \| |
+| .github/workflows/simple2.yml:14:9:18:6 | name: G ... d files | semmle.label | name: G ... d files |
+| .github/workflows/simple2.yml:18:9:26:6 | name: R ... d files [value] | semmle.label | name: R ... d files [value] |
+| .github/workflows/simple2.yml:22:19:22:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| .github/workflows/simple2.yml:28:14:31:15 | \| | semmle.label | \| |
+| .github/workflows/test.yml:8:7:10:4 | job_out ... test }} [job_output] | semmle.label | job_out ... test }} [job_output] |
+| .github/workflows/test.yml:8:19:8:49 | ${{ ste ... test }} | semmle.label | ${{ ste ... test }} |
+| .github/workflows/test.yml:12:9:18:6 | id: step0  [value] | semmle.label | id: step0  [value] |
+| .github/workflows/test.yml:15:19:15:57 | ${{ git ... sage }} | semmle.label | ${{ git ... sage }} |
+| .github/workflows/test.yml:18:9:24:6 | id: step1 [MSG] | semmle.label | id: step1 [MSG] |
+| .github/workflows/test.yml:20:17:20:47 | ${{ ste ... value}} | semmle.label | ${{ ste ... value}} |
+| .github/workflows/test.yml:24:9:29:2 | id: step2 [test] | semmle.label | id: step2 [test] |
+| .github/workflows/test.yml:26:18:26:45 | ${{step ... s.MSG}} | semmle.label | ${{step ... s.MSG}} |
+| .github/workflows/test.yml:37:14:37:52 | echo ${ ... utput}} | semmle.label | echo ${ ... utput}} |
+| composite-actions/action.yml:4:3:4:14 | input who-to-greet | semmle.label | input who-to-greet |
+| composite-actions/action.yml:24:7:31:4 | name: Remove foo [value] | semmle.label | name: Remove foo [value] |
+| composite-actions/action.yml:28:17:28:42 | ${{ inp ... reet }} | semmle.label | ${{ inp ... reet }} |
+| composite-actions/action.yml:32:12:32:50 | echo ${ ... alue }} | semmle.label | echo ${ ... alue }} |
+| composite-actions/action.yml:35:12:35:51 | echo "H ... et }}." | semmle.label | echo "H ... et }}." |
+subpaths
+| .github/workflows/calling_workflow.yml:14:20:14:60 | ${{ git ... .ref }} | .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | .github/workflows/reusable_workflow.yml:10:7:14:4 | output workflow-output1: [workflow-output1] | .github/workflows/calling_workflow.yml:12:5:15:2 | uses: . ... low.yml [workflow-output1] |
+#select
+| .github/workflows/argus_case_study.yml:26:14:27:95 | \| | .github/workflows/argus_case_study.yml:17:24:17:52 | ${{gith ... title}} | .github/workflows/argus_case_study.yml:26:14:27:95 | \| | Potential injection from the ${{ steps.remove_quotations.outputs.replaced }}, which may be controlled by an external user. |
+| .github/workflows/calling_workflow.yml:35:14:35:61 | echo ${ ... put1 }} | .github/workflows/calling_workflow.yml:14:20:14:60 | ${{ git ... .ref }} | .github/workflows/calling_workflow.yml:35:14:35:61 | echo ${ ... put1 }} | Potential injection from the ${{ needs.call2.outputs.workflow-output1 }}, which may be controlled by an external user. |
+| .github/workflows/calling_workflow.yml:36:14:36:61 | echo ${ ... put2 }} | .github/workflows/reusable_workflow.yml:31:9:33:43 | name: G ... d files | .github/workflows/calling_workflow.yml:36:14:36:61 | echo ${ ... put2 }} | Potential injection from the ${{ needs.call2.outputs.workflow-output2 }}, which may be controlled by an external user. |
+| .github/workflows/calling_workflow.yml:41:14:41:60 | echo ${ ... tput }} | .github/workflows/calling_workflow.yml:18:20:18:60 | ${{ git ... .ref }} | .github/workflows/calling_workflow.yml:41:14:41:60 | echo ${ ... tput }} | Potential injection from the ${{ needs.call3.outputs.workflow-output }}, which may be controlled by an external user. |
+| .github/workflows/calling_workflow.yml:46:14:46:60 | echo ${ ... tput }} | .github/workflows/calling_workflow.yml:20:5:21:2 | uses: o ... .yml@v1 | .github/workflows/calling_workflow.yml:46:14:46:60 | echo ${ ... tput }} | Potential injection from the ${{ needs.call4.outputs.workflow-output }}, which may be controlled by an external user. |
+| .github/workflows/changed-files.yml:21:14:24:15 | \| | .github/workflows/changed-files.yml:16:9:20:6 | name: G ... d files | .github/workflows/changed-files.yml:21:14:24:15 | \| | Potential injection from the ${{ steps.changed-files.outputs.all_changed_files }}, which may be controlled by an external user. |
+| .github/workflows/cross3.yml:41:12:43:5 | \| | .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:41:12:43:5 | \| | Potential injection from the ${{ env.ISSUE_BODY_PARSED }}, which may be controlled by an external user. |
+| .github/workflows/cross3.yml:47:12:53:109 | \| | .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:47:12:53:109 | \| | Potential injection from the ${{ env.auto_branch }}, which may be controlled by an external user. |
+| .github/workflows/cross3.yml:47:12:53:109 | \| | .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:47:12:53:109 | \| | Potential injection from the ${{ env.destination_branch }}, which may be controlled by an external user. |
+| .github/workflows/cross3.yml:47:12:53:109 | \| | .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:47:12:53:109 | \| | Potential injection from the ${{ env.pr_message }}, which may be controlled by an external user. |
+| .github/workflows/cross3.yml:47:12:53:109 | \| | .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:47:12:53:109 | \| | Potential injection from the ${{ env.user_name }}, which may be controlled by an external user. |
+| .github/workflows/cross3.yml:47:12:53:109 | \| | .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:47:12:53:109 | \| | Potential injection from the ${{ github.event.after }}, which may be controlled by an external user. |
+| .github/workflows/image_link_generator.yml:36:14:37:126 | \| | .github/workflows/image_link_generator.yml:18:17:18:48 | ${{ git ... body }} | .github/workflows/image_link_generator.yml:36:14:37:126 | \| | Potential injection from the ${{ steps.trim-url.outputs.trimmed_url }}, which may be controlled by an external user. |
+| .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} | .github/workflows/inter-job.yml:15:9:19:6 | name: G ... d files | .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} | Potential injection from the ${{ needs.job1.outputs.job_output }}, which may be controlled by an external user. |
+| .github/workflows/reusable_workflow.yml:28:14:30:62 | \| | .github/workflows/calling_workflow.yml:14:20:14:60 | ${{ git ... .ref }} | .github/workflows/reusable_workflow.yml:28:14:30:62 | \| | Potential injection from the ${{ inputs.config-path }}, which may be controlled by an external user. |
+| .github/workflows/simple1.yml:15:14:16:50 | \| | .github/workflows/simple1.yml:11:19:11:57 | ${{ git ... sage }} | .github/workflows/simple1.yml:15:14:16:50 | \| | Potential injection from the ${{ steps.summary.outputs.value }}, which may be controlled by an external user. |
+| .github/workflows/simple2.yml:28:14:31:15 | \| | .github/workflows/simple2.yml:14:9:18:6 | name: G ... d files | .github/workflows/simple2.yml:28:14:31:15 | \| | Potential injection from the ${{ steps.step.outputs.value }}, which may be controlled by an external user. |
+| .github/workflows/test.yml:37:14:37:52 | echo ${ ... utput}} | .github/workflows/test.yml:15:19:15:57 | ${{ git ... sage }} | .github/workflows/test.yml:37:14:37:52 | echo ${ ... utput}} | Potential injection from the ${{ needs.job1.outputs.job_output }}, which may be controlled by an external user. |
+| composite-actions/action.yml:32:12:32:50 | echo ${ ... alue }} | composite-actions/action.yml:4:3:4:14 | input who-to-greet | composite-actions/action.yml:32:12:32:50 | echo ${ ... alue }} | Potential injection from the ${{ steps.replace.outputs.value }}, which may be controlled by an external user. |
+| composite-actions/action.yml:35:12:35:51 | echo "H ... et }}." | composite-actions/action.yml:4:3:4:14 | input who-to-greet | composite-actions/action.yml:35:12:35:51 | echo "H ... et }}." | Potential injection from the ${{ inputs.who-to-greet }}, which may be controlled by an external user. |
