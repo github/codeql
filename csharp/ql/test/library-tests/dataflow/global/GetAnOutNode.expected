@@ -1,23 +1,19 @@
 | Capture.cs:5:7:5:13 | call to constructor Object | normal | Capture.cs:5:7:5:13 | call to constructor Object |
 | Capture.cs:33:9:33:40 | call to method Select<String,String> | normal | Capture.cs:33:9:33:40 | call to method Select<String,String> |
 | Capture.cs:33:9:33:50 | call to method ToArray<String> | normal | Capture.cs:33:9:33:50 | call to method ToArray<String> |
-| Capture.cs:71:9:71:21 | call to local function CaptureOut1 | captured sink30 | Capture.cs:71:9:71:21 | SSA call def(sink30) |
-| Capture.cs:83:9:83:21 | [transitive] call to local function CaptureOut2 | captured sink31 | Capture.cs:83:9:83:21 | SSA call def(sink31) |
-| Capture.cs:92:9:92:41 | [transitive] call to method Select<String,String> | captured sink32 | Capture.cs:92:9:92:41 | SSA call def(sink32) |
 | Capture.cs:92:9:92:41 | call to method Select<String,String> | normal | Capture.cs:92:9:92:41 | call to method Select<String,String> |
 | Capture.cs:92:9:92:51 | call to method ToArray<String> | normal | Capture.cs:92:9:92:51 | call to method ToArray<String> |
-| Capture.cs:121:9:121:35 | [transitive] call to local function CaptureOutMultipleLambdas | captured nonSink0 | Capture.cs:121:9:121:35 | SSA call def(nonSink0) |
-| Capture.cs:121:9:121:35 | [transitive] call to local function CaptureOutMultipleLambdas | captured sink40 | Capture.cs:121:9:121:35 | SSA call def(sink40) |
-| Capture.cs:132:9:132:25 | call to local function CaptureThrough1 | captured sink33 | Capture.cs:132:9:132:25 | SSA call def(sink33) |
-| Capture.cs:144:9:144:25 | [transitive] call to local function CaptureThrough2 | captured sink34 | Capture.cs:144:9:144:25 | SSA call def(sink34) |
-| Capture.cs:153:9:153:45 | [transitive] call to method Select<String,String> | captured sink35 | Capture.cs:153:9:153:45 | SSA call def(sink35) |
-| Capture.cs:153:9:153:45 | call to method Select<String,String> | normal | Capture.cs:153:9:153:45 | call to method Select<String,String> |
-| Capture.cs:153:9:153:55 | call to method ToArray<String> | normal | Capture.cs:153:9:153:55 | call to method ToArray<String> |
-| Capture.cs:160:22:160:38 | call to local function CaptureThrough4 | normal | Capture.cs:160:22:160:38 | call to local function CaptureThrough4 |
-| Capture.cs:168:9:168:32 | call to local function CaptureThrough5 | captured sink37 | Capture.cs:168:9:168:32 | SSA call def(sink37) |
-| Capture.cs:191:20:191:22 | call to local function M | normal | Capture.cs:191:20:191:22 | call to local function M |
-| Capture.cs:194:22:194:32 | call to local function Id | normal | Capture.cs:194:22:194:32 | call to local function Id |
-| Capture.cs:196:20:196:25 | call to local function Id | normal | Capture.cs:196:20:196:25 | call to local function Id |
+| Capture.cs:155:9:155:45 | call to method Select<String,String> | normal | Capture.cs:155:9:155:45 | call to method Select<String,String> |
+| Capture.cs:155:9:155:55 | call to method ToArray<String> | normal | Capture.cs:155:9:155:55 | call to method ToArray<String> |
+| Capture.cs:162:22:162:38 | call to local function CaptureThrough4 | normal | Capture.cs:162:22:162:38 | call to local function CaptureThrough4 |
+| Capture.cs:193:20:193:22 | call to local function M | normal | Capture.cs:193:20:193:22 | call to local function M |
+| Capture.cs:196:22:196:32 | call to local function Id | normal | Capture.cs:196:22:196:32 | call to local function Id |
+| Capture.cs:198:20:198:25 | call to local function Id | normal | Capture.cs:198:20:198:25 | call to local function Id |
+| Capture.cs:221:18:221:35 | call to method M3 | normal | Capture.cs:221:18:221:35 | call to method M3 |
+| Capture.cs:223:28:223:45 | call to method M3 | normal | Capture.cs:223:28:223:45 | call to method M3 |
+| Capture.cs:227:24:227:48 | object creation of type List<Int32> | normal | Capture.cs:227:24:227:48 | object creation of type List<Int32> |
+| Capture.cs:241:17:241:29 | object creation of type Capture | normal | Capture.cs:241:17:241:29 | object creation of type Capture |
+| Capture.cs:256:17:256:29 | object creation of type Capture | normal | Capture.cs:256:17:256:29 | object creation of type Capture |
 | GlobalDataFlow.cs:13:14:13:21 | call to constructor Object | normal | GlobalDataFlow.cs:13:14:13:21 | call to constructor Object |
 | GlobalDataFlow.cs:26:9:26:26 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:26:9:26:26 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 | normal | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 |

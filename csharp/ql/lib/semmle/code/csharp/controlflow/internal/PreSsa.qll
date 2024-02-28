@@ -31,9 +31,52 @@ module PreSsa {
   }
 
   predicate implicitEntryDef(Callable c, SsaInput::BasicBlock bb, SsaInput::SourceVariable v) {
-    not v instanceof LocalScopeVariable and
     c = v.getACallable() and
-    scopeFirst(c, bb)
+    scopeFirst(c, bb) and
+    (
+      not v instanceof LocalScopeVariable
+      or
+      v.(SimpleLocalScopeVariable).isReadonlyCapturedBy(c)
+    )
+  }
+
+  /** Holds if `a` is assigned in callable `c`. */
+  pragma[nomagic]
+  private predicate assignableDefinition(Assignable a, Callable c) {
+    exists(AssignableDefinition def |
+      def.getTarget() = a and
+      c = def.getEnclosingCallable()
+    |
+      not c instanceof Constructor or
+      a instanceof LocalScopeVariable
+    )
+  }
+
+  pragma[nomagic]
+  private predicate assignableUniqueWriter(Assignable a, Callable c) {
+    c = unique(Callable c0 | assignableDefinition(a, c0) | c0)
+  }
+
+  /** Holds if `a` is accessed in callable `c`. */
+  pragma[nomagic]
+  private predicate assignableAccess(Assignable a, Callable c) {
+    exists(AssignableAccess aa | aa.getTarget() = a | c = aa.getEnclosingCallable())
+  }
+
+  /**
+   * A local scope variable that is amenable to SSA analysis.
+   *
+   * This is either a local variable that is not captured, or one
+   * where all writes happen in the defining callable.
+   */
+  class SimpleLocalScopeVariable extends LocalScopeVariable {
+    SimpleLocalScopeVariable() { assignableUniqueWriter(this, this.getCallable()) }
+
+    /** Holds if this local scope variable is read-only captured by `c`. */
+    predicate isReadonlyCapturedBy(Callable c) {
+      assignableAccess(this, c) and
+      c != this.getCallable()
+    }
   }
 
   module SsaInput implements SsaImplCommon::InputSig<Location> {
@@ -45,40 +88,6 @@ module PreSsa {
 
     class ExitBasicBlock extends BasicBlock {
       ExitBasicBlock() { scopeLast(_, this.getLastElement(), _) }
-    }
-
-    /** Holds if `a` is assigned in non-constructor callable `c`. */
-    pragma[nomagic]
-    private predicate assignableDefinition(Assignable a, Callable c) {
-      exists(AssignableDefinition def | def.getTarget() = a |
-        c = def.getEnclosingCallable() and
-        not c instanceof Constructor
-      )
-    }
-
-    /** Holds if `a` is accessed in callable `c`. */
-    pragma[nomagic]
-    private predicate assignableAccess(Assignable a, Callable c) {
-      exists(AssignableAccess aa | aa.getTarget() = a | c = aa.getEnclosingCallable())
-    }
-
-    pragma[nomagic]
-    private predicate assignableNoCapturing(Assignable a, Callable c) {
-      assignableAccess(a, c) and
-      /*
-       * The code below is equivalent to
-       * ```ql
-       * not exists(Callable other | assignableDefinition(a, other) | other != c)
-       * ```
-       * but it avoids a Cartesian product in the compiler generated antijoin
-       * predicate.
-       */
-
-      (
-        not assignableDefinition(a, _)
-        or
-        c = unique(Callable c0 | assignableDefinition(a, c0) | c0)
-      )
     }
 
     pragma[noinline]
@@ -94,15 +103,22 @@ module PreSsa {
       private Callable c;
 
       SourceVariable() {
+        assignableAccess(this, c) and
         (
-          this instanceof LocalScopeVariable
+          this instanceof SimpleLocalScopeVariable
           or
-          this = any(Field f | not f.isVolatile())
-          or
-          this = any(TrivialProperty tp | not tp.isOverridableOrImplementable())
-        ) and
-        assignableNoCapturing(this, c) and
-        assignableNoComplexQualifiers(this)
+          (
+            this = any(Field f | not f.isVolatile())
+            or
+            this = any(TrivialProperty tp | not tp.isOverridableOrImplementable())
+          ) and
+          (
+            not assignableDefinition(this, _)
+            or
+            assignableUniqueWriter(this, c)
+          ) and
+          assignableNoComplexQualifiers(this)
+        )
       }
 
       /** Gets a callable in which this simple assignable can be analyzed. */

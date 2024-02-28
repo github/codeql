@@ -258,6 +258,17 @@ class ElementContent extends Content, TElementContent {
   override Location getLocation() { result instanceof EmptyLocation }
 }
 
+/** A captured variable. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  private VariableCapture::CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  override string toString() { result = "captured " + v }
+
+  override Location getLocation() { result = v.getLocation() }
+}
+
 /**
  * An entity that represents a set of `Content`s.
  *

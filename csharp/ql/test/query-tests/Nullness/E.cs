@@ -420,14 +420,14 @@ public class E
     static bool Ex43(int? i, IEnumerable<int> @is)
     {
         if (i.HasValue)
-            return @is.Any(j => j == i.Value); // GOOD
+            return @is.Any(j => j == i.Value); // GOOD (FALSE POSITIVE)
         return false;
     }
 
     static bool Ex44(int? i, IEnumerable<int> @is)
     {
         if (i.HasValue)
-            @is = @is.Where(j => j == i.Value); // BAD (always) (FALSE NEGATIVE)
+            @is = @is.Where(j => j == i.Value); // BAD (always)
         i = null;
         return @is.Any();
     }

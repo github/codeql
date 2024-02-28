@@ -47,8 +47,6 @@ private module Input implements InputSig<CsharpDataFlow> {
     or
     not exists(LocalFlow::getAPostUpdateNodeForArg(n.getControlFlowNode()))
     or
-    n instanceof ImplicitCapturedArgumentNode
-    or
     n instanceof ParamsArgumentNode
     or
     n.asExpr() instanceof CIL::Expr
@@ -103,8 +101,6 @@ private module Input implements InputSig<CsharpDataFlow> {
         split = call.getControlFlowNode().getASplit() and
         not split = cfn.getASplit()
       )
-      or
-      call instanceof TransitiveCapturedDataFlowCall
       or
       call.(NonDelegateDataFlowCall).getDispatchCall().isReflection()
     )
