@@ -69,7 +69,7 @@ module SqlInjection = TaintTracking::Global<SqlInjectionConfig>;
  *
  * A source of remote user input.
  */
-deprecated class RemoteSource extends Source instanceof RemoteFlowSource { }
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /**
  * DEPRECATED: Use `ThreatModelSource` instead.

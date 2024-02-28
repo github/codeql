@@ -69,7 +69,7 @@ module XpathInjection = TaintTracking::Global<XpathInjectionConfig>;
  *
  * A source of remote user input.
  */
-deprecated class RemoteSource extends Source instanceof RemoteFlowSource { }
+deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource { }
 
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
