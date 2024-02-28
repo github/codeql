@@ -61,7 +61,13 @@ class AmdModuleDefinition extends CallExpr instanceof AmdModuleDefinition::Range
   }
 
   /** Gets the `i`th dependency of this module definition. */
-  PathExpr getDependency(int i) { result = this.getDependencies().getElement(i) }
+  PathExpr getDependency(int i) {
+    exists(Expr expr |
+      expr = this.getDependencies().getElement(i) and
+      not isPseudoDependency(expr.getStringValue()) and
+      result = expr
+    )
+  }
 
   /** Gets a dependency of this module definition. */
   PathExpr getADependency() {
@@ -203,11 +209,15 @@ class AmdModuleDefinition extends CallExpr instanceof AmdModuleDefinition::Range
   }
 }
 
+private predicate isPseudoDependency(string s) { s = ["exports", "require", "module"] }
+
 /** An AMD dependency, considered as a path expression. */
 private class AmdDependencyPath extends PathExprCandidate {
   AmdDependencyPath() {
     exists(AmdModuleDefinition amd |
-      this = amd.getDependencies().getAnElement() or
+      this = amd.getDependencies().getAnElement() and
+      not isPseudoDependency(this.getStringValue())
+      or
       this = amd.getARequireCall().getAnArgument()
     )
   }
