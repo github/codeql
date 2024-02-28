@@ -34,7 +34,7 @@ New Features
     On Windows machines, the Python extractor will expect to find :code:`py.exe` on the system :code:`PATH` by default.
     If the Python executable has a different name, you can set the new extractor option to override this value and look for :code:`python.exe` or :code:`python3.exe`.
     
-    More detail can be found in `the extractor option documentation <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/extractor-options>`__.
+    For more information about using the extractor option with the CodeQL CLI, see `Extractor options <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/extractor-options>`__.
 
 Security Updates
 ~~~~~~~~~~~~~~~~
