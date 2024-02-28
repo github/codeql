@@ -84,7 +84,7 @@ Java
 """"
 
 *   The sanitizer for the path injection queries has been improved to handle more cases where :code:`equals` is used to check an exact path match.
-*   The query :code:`java/unvalidated-url-redirection` now sanitizes results following the same logic as the query :code:`java/ssrf`. URLs the destination of which cannot be externally controlled will not be reported anymore.
+*   The query :code:`java/unvalidated-url-redirection` now sanitizes results following the same logic as the query :code:`java/ssrf`. URLs where the destination cannot be controlled externally are no longer reported.
 
 New Queries
 ~~~~~~~~~~~
