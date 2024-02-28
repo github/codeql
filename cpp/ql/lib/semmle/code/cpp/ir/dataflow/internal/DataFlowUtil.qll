@@ -741,6 +741,9 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
  * A data-flow node used to model flow summaries.
  */
 class FlowSummaryNode extends Node, TFlowSummaryNode {
+  /**
+   * TODO: QLDoc.
+   */
   FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
   /**

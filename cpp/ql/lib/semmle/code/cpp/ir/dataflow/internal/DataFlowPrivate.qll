@@ -391,6 +391,9 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
   }
 }
 
+/**
+ * TODO: QLDoc.
+ */
 class SummaryArgumentNode extends ArgumentNode, FlowSummaryNode {
   private SummaryCall call_;
   private ArgumentPosition pos_;
@@ -985,6 +988,9 @@ class DataFlowCallable extends TDataFlowCallable {
   }
 }
 
+/**
+ * TODO: QLDoc.
+ */
 private class SourceCallable extends DataFlowCallable, TSourceCallable {
   Cpp::Declaration decl;
 
@@ -995,6 +1001,9 @@ private class SourceCallable extends DataFlowCallable, TSourceCallable {
   override Location getLocation() { result = decl.getLocation() }
 }
 
+/**
+ * TODO: QLDoc.
+ */
 private class SummarizedCallable extends DataFlowCallable, TSummarizedCallable {
   FlowSummaryImpl::Public::SummarizedCallable sc;
 
@@ -1070,6 +1079,9 @@ class DataFlowCall extends TDataFlowCall {
   Location getLocation() { none() }
 }
 
+/**
+ * TODO: QLDoc.
+ */
 private class NormalCall extends DataFlowCall, TNormalCall {
   private CallInstruction call;
 
@@ -1092,6 +1104,11 @@ private class NormalCall extends DataFlowCall, TNormalCall {
   override Location getLocation() { result = call.getLocation() }
 }
 
+/**
+ * A synthesized call inside a callable with a flow summary.
+ *
+ * TODO: example.
+ */
 class SummaryCall extends DataFlowCall, TSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable c;
   private FlowSummaryImpl::Private::SummaryNode receiver;
