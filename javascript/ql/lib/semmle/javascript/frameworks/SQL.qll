@@ -454,3 +454,27 @@ private module SpannerCsv {
     }
   }
 }
+
+/**
+ * Provides classes modeling the `tedious` package.
+ */
+private module Tedious {
+  API::Node tedious() { result = API::moduleImport("tedious")}
+
+  class QueryCall extends DatabaseAccess, API::CallNode {
+      QueryCall(){
+          this = tedious().getMember("Connection").getInstance().getMember("execSql").getACall()
+      }
+      override DataFlow::Node getAQueryArgument(){
+          exists(API::NewNode request | 
+            request = tedious().getMember("Request").getAnInstantiation() and
+            this.getParameter(0).asSink() = request.getReturn().getAValueReachableFromSource() and 
+            result = request.getArgument(0)
+          )
+      }
+  }
+
+  class QueryString extends SQL::SqlString { 
+      QueryString() {this = any(QueryCall qc).getAQueryArgument()}
+  }
+}
