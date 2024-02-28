@@ -32,7 +32,7 @@ Displaying the CodeQL model editor
 #. The CodeQL model editor runs a series of telemetry queries to identify APIs in the code and the editor is displayed in a new tab.
 #. When the telemetry queries are complete, the APIs that have been identified are shown in the editor.
 
-.. tip::
+.. pull-quote:: Tip
 
    The "CodeQL method modeling" section is a view that you can move from the primary sidebar to the secondary sidebar, when you want more space while you are modeling calls or methods. If you close the view, you can reopen it from the "Open Views" option in the **View** menu.
 
