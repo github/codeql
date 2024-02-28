@@ -3,5 +3,5 @@
 
 t = (SOURCE, NONSOURCE)
 a, b = t
-SINK(a) #$ MISSING: flow="SOURCE, l:-2 -> a"
+SINK(a) #$ flow="SOURCE, l:-2 -> a"
 SINK_F(b)

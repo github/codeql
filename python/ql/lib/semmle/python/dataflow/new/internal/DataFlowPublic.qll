@@ -467,7 +467,7 @@ class IterableSequenceNode extends Node, TIterableSequenceNode {
 
   override string toString() { result = "IterableSequence" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -484,7 +484,7 @@ class IterableElementNode extends Node, TIterableElementNode {
 
   override string toString() { result = "IterableElement" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
@@ -499,7 +499,7 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 
   override string toString() { result = "StarPatternElement" }
 
-  override DataFlowCallable getEnclosingCallable() { result = consumer.getEnclosingCallable() }
+  override Scope getScope() { result = consumer.getScope() }
 
   override Location getLocation() { result = consumer.getLocation() }
 }
