@@ -1,9 +1,0 @@
-callTargets
-#select
-| Test.java:5:17:5:20 | void | file://:0:0:0:0 | void |
-| Test.java:7:5:7:7 | <TypeAccess of ErrorType> | file://:0:0:0:0 | <CodeQL error type> |
-| Test.java:7:5:7:20 | <Call to unknown method> | file://:0:0:0:0 | <CodeQL error type> |
-| Test.java:8:5:8:24 | <Call to unknown method> | file://:0:0:0:0 | <CodeQL error type> |
-| Test.java:8:5:8:34 | <Call to unknown method> | file://:0:0:0:0 | <CodeQL error type> |
-| Test.java:8:6:8:14 | <ClassInstanceExpr that calls a missing constructor> | file://:0:0:0:0 | <CodeQL error type> |
-| Test.java:8:10:8:12 | <TypeAccess of ErrorType> | file://:0:0:0:0 | <CodeQL error type> |
