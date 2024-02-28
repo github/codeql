@@ -106,8 +106,8 @@ arguments
 | attributes.cs:151:6:151:11 | [Params(...)] | 0 | attributes.cs:151:45:151:47 | "a" |
 | attributes.cs:151:6:151:11 | [Params(...)] | 1 | attributes.cs:151:36:151:38 | "b" |
 | attributes.cs:151:6:151:11 | [Params(...)] | 2 | attributes.cs:151:19:151:29 | array creation of type Int32[] |
-| attributes.cs:155:2:155:13 | [Experimental(...)] | 0 | attributes.cs:155:15:155:35 | "MyExperimentalClass" |
-| attributes.cs:158:6:158:17 | [Experimental(...)] | 0 | attributes.cs:158:19:158:40 | "MyExperimentalMethod" |
+| attributes.cs:155:2:155:13 | [Experimental(...)] | 0 | attributes.cs:155:15:155:37 | "MyExperimentalClassId" |
+| attributes.cs:158:6:158:17 | [Experimental(...)] | 0 | attributes.cs:158:19:158:42 | "MyExperimentalMethodId" |
 constructorArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 1 |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | 0 | Assembly1.dll:0:0:0:0 | 3 |
@@ -204,8 +204,8 @@ constructorArguments
 | attributes.cs:151:6:151:11 | [Params(...)] | 0 | attributes.cs:151:45:151:47 | "a" |
 | attributes.cs:151:6:151:11 | [Params(...)] | 1 | attributes.cs:151:36:151:38 | "b" |
 | attributes.cs:151:6:151:11 | [Params(...)] | 2 | attributes.cs:151:19:151:29 | array creation of type Int32[] |
-| attributes.cs:155:2:155:13 | [Experimental(...)] | 0 | attributes.cs:155:15:155:35 | "MyExperimentalClass" |
-| attributes.cs:158:6:158:17 | [Experimental(...)] | 0 | attributes.cs:158:19:158:40 | "MyExperimentalMethod" |
+| attributes.cs:155:2:155:13 | [Experimental(...)] | 0 | attributes.cs:155:15:155:37 | "MyExperimentalClassId" |
+| attributes.cs:158:6:158:17 | [Experimental(...)] | 0 | attributes.cs:158:19:158:42 | "MyExperimentalMethodId" |
 namedArguments
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |
 | Assembly1.dll:0:0:0:0 | [Custom(...)] | Prop2 | Assembly1.dll:0:0:0:0 | array creation of type Object[] |

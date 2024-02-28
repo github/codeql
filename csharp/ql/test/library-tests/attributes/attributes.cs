@@ -152,9 +152,9 @@ class Class1
     public void M4() { }
 }
 
-[Experimental("MyExperimentalClass")]
+[Experimental("MyExperimentalClassId")]
 public class MyExperimentalClass
 {
-    [Experimental("MyExperimentalMethod")]
+    [Experimental("MyExperimentalMethodId")]
     public void MyExperimentalMethod() { }
 }
