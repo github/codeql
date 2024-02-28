@@ -27,6 +27,10 @@ edges
 | .github/workflows/inter-job.yml:15:9:19:6 | name: G ... d files | .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} |
 | .github/workflows/inter-job.yml:19:9:27:2 | name: R ... d files [value] | .github/workflows/inter-job.yml:8:19:8:49 | ${{ ste ... alue }} |
 | .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} | .github/workflows/inter-job.yml:19:9:27:2 | name: R ... d files [value] |
+| .github/workflows/matrix.yml:15:7:16:4 | matrix: ... iles }} [matrix] | .github/workflows/matrix.yml:34:19:34:69 | ${{ fro ... rix) }} |
+| .github/workflows/matrix.yml:15:15:15:63 | ${{ ste ... iles }} | .github/workflows/matrix.yml:15:7:16:4 | matrix: ... iles }} [matrix] |
+| .github/workflows/matrix.yml:17:9:21:2 | name: G ... d files | .github/workflows/matrix.yml:15:15:15:63 | ${{ ste ... iles }} |
+| .github/workflows/matrix.yml:34:19:34:69 | ${{ fro ... rix) }} | .github/workflows/matrix.yml:41:12:42:31 | \|  |
 | .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | .github/workflows/reusable_workflow.yml:27:24:27:48 | ${{ inp ... path }} |
 | .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | .github/workflows/reusable_workflow.yml:28:14:30:62 | \| |
 | .github/workflows/reusable_workflow.yml:10:7:14:4 | output workflow-output1: [workflow-output2] | .github/workflows/calling_workflow.yml:12:5:15:2 | uses: . ... low.yml [workflow-output2] |
@@ -93,6 +97,11 @@ nodes
 | .github/workflows/inter-job.yml:19:9:27:2 | name: R ... d files [value] | semmle.label | name: R ... d files [value] |
 | .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
 | .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} | semmle.label | echo ${ ... utput}} |
+| .github/workflows/matrix.yml:15:7:16:4 | matrix: ... iles }} [matrix] | semmle.label | matrix: ... iles }} [matrix] |
+| .github/workflows/matrix.yml:15:15:15:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| .github/workflows/matrix.yml:17:9:21:2 | name: G ... d files | semmle.label | name: G ... d files |
+| .github/workflows/matrix.yml:34:19:34:69 | ${{ fro ... rix) }} | semmle.label | ${{ fro ... rix) }} |
+| .github/workflows/matrix.yml:41:12:42:31 | \|  | semmle.label | \|  |
 | .github/workflows/reusable_workflow.yml:6:7:6:17 | input config-path | semmle.label | input config-path |
 | .github/workflows/reusable_workflow.yml:10:7:14:4 | output workflow-output1: [workflow-output1] | semmle.label | output workflow-output1: [workflow-output1] |
 | .github/workflows/reusable_workflow.yml:10:7:14:4 | output workflow-output1: [workflow-output2] | semmle.label | output workflow-output1: [workflow-output2] |
@@ -144,6 +153,7 @@ subpaths
 | .github/workflows/cross3.yml:47:12:53:109 | \| | .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:47:12:53:109 | \| | Potential injection from the ${{ github.event.after }}, which may be controlled by an external user. |
 | .github/workflows/image_link_generator.yml:36:14:37:126 | \| | .github/workflows/image_link_generator.yml:18:17:18:48 | ${{ git ... body }} | .github/workflows/image_link_generator.yml:36:14:37:126 | \| | Potential injection from the ${{ steps.trim-url.outputs.trimmed_url }}, which may be controlled by an external user. |
 | .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} | .github/workflows/inter-job.yml:15:9:19:6 | name: G ... d files | .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} | Potential injection from the ${{ needs.job1.outputs.job_output }}, which may be controlled by an external user. |
+| .github/workflows/matrix.yml:41:12:42:31 | \|  | .github/workflows/matrix.yml:17:9:21:2 | name: G ... d files | .github/workflows/matrix.yml:41:12:42:31 | \|  | Potential injection from the ${{ matrix.language }}, which may be controlled by an external user. |
 | .github/workflows/reusable_workflow.yml:28:14:30:62 | \| | .github/workflows/calling_workflow.yml:14:20:14:60 | ${{ git ... .ref }} | .github/workflows/reusable_workflow.yml:28:14:30:62 | \| | Potential injection from the ${{ inputs.config-path }}, which may be controlled by an external user. |
 | .github/workflows/simple1.yml:15:14:16:50 | \| | .github/workflows/simple1.yml:11:19:11:57 | ${{ git ... sage }} | .github/workflows/simple1.yml:15:14:16:50 | \| | Potential injection from the ${{ steps.summary.outputs.value }}, which may be controlled by an external user. |
 | .github/workflows/simple2.yml:28:14:31:15 | \| | .github/workflows/simple2.yml:14:9:18:6 | name: G ... d files | .github/workflows/simple2.yml:28:14:31:15 | \| | Potential injection from the ${{ steps.step.outputs.value }}, which may be controlled by an external user. |
