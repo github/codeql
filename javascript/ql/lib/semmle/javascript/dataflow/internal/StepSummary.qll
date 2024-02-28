@@ -156,6 +156,9 @@ private module Cached {
         exists(string prop |
           param.getAPropertyRead(prop).flowsTo(fun.getAReturn()) and
           summary = LoadStep(prop)
+          or
+          fun.getAReturn().getALocalSource().getAPropertySource(prop) = param and
+          summary = StoreStep(prop)
         )
       ) and
       if param = fun.getAParameter()
