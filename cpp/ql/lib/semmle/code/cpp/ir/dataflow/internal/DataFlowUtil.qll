@@ -34,7 +34,7 @@ private import Node0ToString
 cached
 private newtype TIRDataFlowNode =
   TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
-  TVariableNode(Variable var, int indirectionIndex) {
+  TVariableNode(GlobalLikeVariable var, int indirectionIndex) {
     indirectionIndex =
       [getMinIndirectionsForType(var.getUnspecifiedType()) .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
   } or
