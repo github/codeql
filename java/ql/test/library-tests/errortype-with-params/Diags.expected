@@ -1,1 +1,2 @@
+| Test.java:1:30:1:48 | Unknown or erroneous type for expression of kind TypeAccess |
 | file://:0:0:0:0 | 1 errors during annotation processing |
