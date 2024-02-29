@@ -153,7 +153,10 @@ signature module InputSig {
   }
 
   /**
-   * Holds if high precision should be used for the content `c`.
+   * Holds if access paths with `c` at their head always should be tracked at
+   * high precision. This disables adaptive access path precision for such
+   * access paths. This may be beneficial for content that indicates an
+   * element of an array or container.
    */
   predicate forceHighPrecision(Content c);
 
