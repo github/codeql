@@ -1751,9 +1751,12 @@ class DefinitionByReferenceNode extends IndirectArgumentOutNode {
 }
 
 /**
- * A `Node` corresponding to a variable in the program, as opposed to the
- * value of that variable at some particular point. This can be used for
- * modeling flow in and out of global variables.
+ * A `Node` corresponding to a global (or `static` local) variable in the
+ * program, as opposed to the value of that variable at some particular point.
+ * This is used to model flow through global variables (and `static` local
+ * variables).
+ *
+ * There is no `VariableNode` for non-`static` local variables.
  */
 class VariableNode extends Node, TGlobalLikeVariableNode {
   Variable v;
