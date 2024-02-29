@@ -189,8 +189,6 @@ signature module Semantic {
      *   Console.WriteLine("x is greater than y");
      * }
      * ```
-     *
-     * @param controlled The basic block to check.
      */
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
@@ -213,8 +211,6 @@ signature module Semantic {
      *   printf("x is not greater than y\n");
      * }
      * ```
-     *
-     * @param bb1 The first basic block.
      */
     predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
   }
@@ -280,9 +276,8 @@ signature module Semantic {
    */
   class SsaExplicitUpdate extends SsaVariable {
     /**
-     * Gets the expression that defines the value of the variable in this update.
-     *
-     * @return The defining expression.
+     * Gets the expression that defines the value of the variable in this
+     * update.
      */
     Expr getDefiningExpr();
   }
@@ -391,8 +386,6 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
 
     /**
      * Gets the expression associated with the semantic bound, given a delta.
-     *
-     * @param delta - The delta value.
      */
     Sem::Expr getExpr(D::Delta delta);
   }
