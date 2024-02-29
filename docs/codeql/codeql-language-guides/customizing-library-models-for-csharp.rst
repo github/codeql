@@ -144,7 +144,7 @@ The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the ``access path``, the ``kind``, and the ``provenance`` (origin) of the source.
 
 - The seventh value ``ReturnValue`` is the access path to the return of the method, which means that it is the return value that should be considered a source of tainted input.
-- The eighth value ``remote`` is the kind of the source. The source kind is used to define the threat model where the source is in scope. ``remote`` applies to many of the security related queries as it means a remote source of untrusted data. As an example the SQL injection query uses ``remote`` sources. For more information, see ":ref:`Threat models <threat-models>`."
+- The eighth value ``remote`` is the kind of the source. The source kind is used to define the threat model where the source is in scope. ``remote`` applies to many of the security related queries as it means a remote source of untrusted data. As an example the SQL injection query uses ``remote`` sources. For more information, see ":ref:`Threat models <threat-models-csharp>`."
 - The ninth value ``manual`` is the provenance of the source, which is used to identify the origin of the source.
 
 Example: Add flow through the ``Concat`` method
