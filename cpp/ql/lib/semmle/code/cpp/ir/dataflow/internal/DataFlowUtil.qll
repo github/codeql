@@ -34,7 +34,7 @@ private import Node0ToString
 cached
 private newtype TIRDataFlowNode =
   TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
-  TVariableNode(GlobalLikeVariable var, int indirectionIndex) {
+  TGlobalLikeVariableNode(GlobalLikeVariable var, int indirectionIndex) {
     indirectionIndex =
       [getMinIndirectionsForType(var.getUnspecifiedType()) .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
   } or
@@ -396,7 +396,7 @@ class Node extends TIRDataFlowNode {
    * modeling flow in and out of global variables.
    */
   Variable asVariable() {
-    this = TVariableNode(result, getMinIndirectionsForType(result.getUnspecifiedType()))
+    this = TGlobalLikeVariableNode(result, getMinIndirectionsForType(result.getUnspecifiedType()))
   }
 
   /**
@@ -406,7 +406,7 @@ class Node extends TIRDataFlowNode {
    */
   Variable asIndirectVariable(int indirectionIndex) {
     indirectionIndex > getMinIndirectionsForType(result.getUnspecifiedType()) and
-    this = TVariableNode(result, indirectionIndex)
+    this = TGlobalLikeVariableNode(result, indirectionIndex)
   }
 
   /** Gets an indirection of this node's underlying variable, if any. */
@@ -1755,11 +1755,11 @@ class DefinitionByReferenceNode extends IndirectArgumentOutNode {
  * value of that variable at some particular point. This can be used for
  * modeling flow in and out of global variables.
  */
-class VariableNode extends Node, TVariableNode {
+class VariableNode extends Node, TGlobalLikeVariableNode {
   Variable v;
   int indirectionIndex;
 
-  VariableNode() { this = TVariableNode(v, indirectionIndex) }
+  VariableNode() { this = TGlobalLikeVariableNode(v, indirectionIndex) }
 
   /** Gets the variable corresponding to this node. */
   Variable getVariable() { result = v }
