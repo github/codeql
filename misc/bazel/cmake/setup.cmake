@@ -14,25 +14,25 @@ if (NOT DEFINED CODEQL_BAZEL_WORKSPACE)
 endif ()
 
 macro(bazel)
-    execute_process(COMMAND ${BAZEL_BIN} ${ARGN}
+    execute_process(COMMAND ${BAZEL_BIN} ${BAZEL_STARTUP_OPTIONS} ${ARGN}
             COMMAND_ERROR_IS_FATAL ANY
             OUTPUT_STRIP_TRAILING_WHITESPACE
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 endmacro()
 
 macro(bazel_even_if_failing)
-    execute_process(COMMAND ${BAZEL_BIN} ${ARGN}
+    execute_process(COMMAND ${BAZEL_BIN} ${BAZEL_STARTUP_OPTIONS} ${ARGN}
             OUTPUT_STRIP_TRAILING_WHITESPACE
             WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 endmacro()
 
 bazel(info workspace OUTPUT_VARIABLE BAZEL_WORKSPACE)
-
 bazel(info output_base OUTPUT_VARIABLE BAZEL_OUTPUT_BASE)
 set(BAZEL_EXEC_ROOT ${BAZEL_OUTPUT_BASE}/execroot/_main)
+set(BAZEL_BUILD_OPTIONS --nocheck_visibility --keep_going)
 
 macro(include_generated BAZEL_TARGET)
-    bazel(build ${BAZEL_TARGET} --nocheck_visibility)
+    bazel(build ${BAZEL_TARGET} ${BAZEL_BUILD_OPTIONS})
     string(REPLACE "@" "/external/" BAZEL_TARGET_PATH ${BAZEL_TARGET})
     string(REPLACE "//" "/" BAZEL_TARGET_PATH ${BAZEL_TARGET_PATH})
     string(REPLACE ":" "/" BAZEL_TARGET_PATH ${BAZEL_TARGET_PATH})
@@ -42,7 +42,7 @@ endmacro()
 macro(generate_and_include)
     file(REMOVE "${BAZEL_WORKSPACE}/.bazel-cmake/BUILD.bazel")
     # use aquery to only get targets compatible with the current platform
-    bazel_even_if_failing(aquery "kind(\"cc_test|cc_binary\", ${ARGN})" --nocheck_visibility --keep_going --output=jsonproto OUTPUT_VARIABLE BAZEL_AQUERY_RESULT)
+    bazel_even_if_failing(aquery "kind(\"cc_test|cc_binary\", ${ARGN})" ${BAZEL_BUILD_OPTIONS} --output=jsonproto OUTPUT_VARIABLE BAZEL_AQUERY_RESULT)
     string(JSON BAZEL_JSON_TARGETS GET "${BAZEL_AQUERY_RESULT}" targets)
     string(JSON LAST_IDX LENGTH "${BAZEL_JSON_TARGETS}")
     math(EXPR LAST_IDX "${LAST_IDX} - 1")
