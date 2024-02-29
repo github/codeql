@@ -1,5 +1,5 @@
 {
-  "checksum": "54f1095f5a2e74da736682bc8d355b3dbce47558983feba04faba84cf3abfaca",
+  "checksum": "5ea5454a42d65412a64a48233e83f21d17461b20f8c283260a3de1d964645868",
   "crates": {
     "ahash 0.4.7": {
       "name": "ahash",
@@ -2152,8 +2152,8 @@
   },
   "binary_crates": [],
   "workspace_members": {
-    "tree-sitter-python 0.19.0": "extractor-python/tsg-python/tree-sitter-python",
-    "tsg-python 0.1.0": "extractor-python/tsg-python"
+    "tree-sitter-python 0.19.0": "python/extractor/tsg-python/tree-sitter-python",
+    "tsg-python 0.1.0": "python/extractor/tsg-python"
   },
   "conditions": {
     "aarch64-apple-darwin": [
