@@ -970,12 +970,10 @@ namespace Semmle.Autobuild.CSharp.Tests
             actions.RunProcess["dotnet --list-sdks"] = 0;
             actions.RunProcessOut["dotnet --list-sdks"] = @"2.1.3 [C:\Program Files\dotnet\sdks]
 2.1.4 [C:\Program Files\dotnet\sdks]";
-            actions.RunProcess[@"chmod u+x scratch/.dotnet/dotnet-install.sh"] = 0;
-            actions.RunProcess[@"scratch/.dotnet/dotnet-install.sh --channel release --version 2.1.3 --install-dir scratch/.dotnet"] = 0;
-            actions.RunProcess[@"scratch/.dotnet/dotnet --info"] = 0;
-            actions.RunProcess[@"scratch/.dotnet/dotnet clean C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"scratch/.dotnet/dotnet restore C:\Project/test.csproj"] = 0;
-            actions.RunProcess[@"scratch/.dotnet/dotnet build --no-incremental C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"dotnet --info"] = 0;
+            actions.RunProcess[@"dotnet clean C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"dotnet restore C:\Project/test.csproj"] = 0;
+            actions.RunProcess[@"dotnet build --no-incremental C:\Project/test.csproj"] = 0;
             actions.FileExists["csharp.log"] = true;
             actions.FileExists["test.csproj"] = true;
             actions.GetEnvironmentVariable["CODEQL_EXTRACTOR_CSHARP_TRAP_DIR"] = "";
@@ -993,17 +991,15 @@ namespace Semmle.Autobuild.CSharp.Tests
 
 </Project>");
             actions.LoadXml[@"C:\Project/test.csproj"] = xml;
-            actions.DownloadFiles.Add(("https://dot.net/v1/dotnet-install.sh", "scratch/.dotnet/dotnet-install.sh"));
-            actions.CreateDirectories.Add(@"scratch/.dotnet");
 
             var autobuilder = CreateAutoBuilder(false, dotnetVersion: "2.1.3");
-            TestAutobuilderScript(autobuilder, 0, 7);
+            TestAutobuilderScript(autobuilder, 0, 5);
         }
 
         private void TestDotnetVersionWindows(Action action, int commandsRun)
         {
             actions.RunProcess["cmd.exe /C dotnet --list-sdks"] = 0;
-            actions.RunProcessOut["cmd.exe /C dotnet --list-sdks"] = "2.1.3 [C:\\Program Files\\dotnet\\sdks]\n2.1.4 [C:\\Program Files\\dotnet\\sdks]";
+            actions.RunProcessOut["cmd.exe /C dotnet --list-sdks"] = "2.1.4 [C:\\Program Files\\dotnet\\sdks]";
             action();
             actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet --info"] = 0;
             actions.RunProcess[@"cmd.exe /C scratch\.dotnet\dotnet clean C:\Project\test.csproj"] = 0;

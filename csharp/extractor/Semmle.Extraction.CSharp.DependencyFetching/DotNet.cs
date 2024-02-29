@@ -120,74 +120,85 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             if (!string.IsNullOrEmpty(version))
                 // Specific version requested
-                return DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, version);
+                return DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, [version]);
 
             // Download versions mentioned in `global.json` files
             // See https://docs.microsoft.com/en-us/dotnet/core/tools/global-json
-            var installScript = BuildScript.Success;
-            var validGlobalJson = false;
+            var versions = new List<string>();
 
             foreach (var path in files.Where(p => p.EndsWith("global.json", StringComparison.Ordinal)))
             {
                 try
                 {
                     var o = JObject.Parse(File.ReadAllText(path));
-                    version = (string)(o?["sdk"]?["version"]!);
+                    versions.Add((string)o?["sdk"]?["version"]!);
                 }
                 catch
                 {
-                    // not a valid global.json file
+                    // not a valid `global.json` file
                     continue;
                 }
-
-                installScript &= DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, version);
-                validGlobalJson = true;
             }
 
-            if (validGlobalJson)
+            if (versions.Count > 0)
             {
-                return installScript;
+                return DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, versions);
             }
 
             if (ensureDotNetAvailable)
             {
-                return DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, LatestDotNetSdkVersion, needExactVersion: false);
+                return DownloadDotNetVersion(actions, logger, tempWorkingDirectory, shouldCleanUp, installDir, [LatestDotNetSdkVersion], needExactVersion: false);
             }
 
             return BuildScript.Failure;
         }
 
         /// <summary>
-        /// Returns a script for downloading a specific .NET SDK version, if the
-        /// version is not already installed.
+        /// Returns a script for downloading specific .NET SDK versions, if the
+        /// versions are not already installed.
         ///
         /// See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script.
         /// </summary>
-        private static BuildScript DownloadDotNetVersion(IBuildActions actions, ILogger logger, string tempWorkingDirectory, bool shouldCleanUp, string path, string version, bool needExactVersion = true)
+        private static BuildScript DownloadDotNetVersion(IBuildActions actions, ILogger logger, string tempWorkingDirectory, bool shouldCleanUp, string path, IEnumerable<string> versions, bool needExactVersion = true)
         {
+            if (!versions.Any())
+            {
+                logger.LogInfo("No .NET SDK versions requested.");
+                return BuildScript.Failure;
+            }
+
             return BuildScript.Bind(GetInstalledSdksScript(actions), (sdks, sdksRet) =>
+            {
+                if (
+                    needExactVersion &&
+                    sdksRet == 0 &&
+                    // quadratic; should be OK, given that both `version` and `sdks` are expected to be small
+                    versions.All(version => sdks.Any(sdk => sdk.StartsWith(version + " ", StringComparison.Ordinal))))
                 {
-                    if (needExactVersion && sdksRet == 0 && sdks.Count == 1 && sdks[0].StartsWith(version + " ", StringComparison.Ordinal))
-                    {
-                        // The requested SDK is already installed (and no other SDKs are installed), so
-                        // no need to reinstall
-                        return BuildScript.Failure;
-                    }
-                    else if (!needExactVersion && sdksRet == 0 && sdks.Count > 0)
-                    {
-                        // there's at least one SDK installed, so no need to reinstall
-                        return BuildScript.Failure;
-                    }
-                    else if (!needExactVersion && sdksRet != 0)
-                    {
-                        logger.LogInfo("No .NET SDK found.");
-                    }
+                    // The requested SDKs are already installed, so no need to reinstall
+                    return BuildScript.Failure;
+                }
+                else if (!needExactVersion && sdksRet == 0 && sdks.Count > 0)
+                {
+                    // there's at least one SDK installed, so no need to reinstall
+                    return BuildScript.Failure;
+                }
+                else if (!needExactVersion && sdksRet != 0)
+                {
+                    logger.LogInfo("No .NET SDK found.");
+                }
 
-                    logger.LogInfo($"Attempting to download .NET {version}");
+                BuildScript prelude;
+                BuildScript postlude;
+                Func<string, BuildScript> getInstall;
 
-                    if (actions.IsWindows())
+                if (actions.IsWindows())
+                {
+                    prelude = BuildScript.Success;
+                    postlude = BuildScript.Success;
+
+                    getInstall = version =>
                     {
-
                         var psCommand = $"[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; &([scriptblock]::Create((Invoke-WebRequest -UseBasicParsing 'https://dot.net/v1/dotnet-install.ps1'))) -Version {version} -InstallDir {path}";
 
                         BuildScript GetInstall(string pwsh) =>
@@ -201,40 +212,55 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                             Script;
 
                         return GetInstall("pwsh") | GetInstall("powershell");
-                    }
-                    else
+                    };
+                }
+                else
+                {
+                    var dotnetInstallPath = actions.PathCombine(tempWorkingDirectory, ".dotnet", "dotnet-install.sh");
+
+                    var downloadDotNetInstallSh = BuildScript.DownloadFile(
+                        "https://dot.net/v1/dotnet-install.sh",
+                        dotnetInstallPath,
+                        e => logger.LogWarning($"Failed to download 'dotnet-install.sh': {e.Message}"));
+
+                    var chmod = new CommandBuilder(actions).
+                        RunCommand("chmod").
+                        Argument("u+x").
+                        Argument(dotnetInstallPath);
+
+                    prelude = downloadDotNetInstallSh & chmod.Script;
+                    postlude = shouldCleanUp ? BuildScript.DeleteFile(dotnetInstallPath) : BuildScript.Success;
+
+                    getInstall = version => new CommandBuilder(actions).
+                        RunCommand(dotnetInstallPath).
+                        Argument("--channel").
+                        Argument("release").
+                        Argument("--version").
+                        Argument(version).
+                        Argument("--install-dir").
+                        Argument(path).Script;
+                }
+
+                var installScript = prelude & BuildScript.Failure;
+
+                var attempted = new HashSet<string>();
+                foreach (var version in versions)
+                {
+                    if (!attempted.Add(version))
+                        continue;
+
+                    installScript = BuildScript.Bind(installScript, combinedExit =>
                     {
-                        var dotnetInstallPath = actions.PathCombine(tempWorkingDirectory, ".dotnet", "dotnet-install.sh");
+                        logger.LogInfo($"Attempting to download .NET {version}");
 
-                        var downloadDotNetInstallSh = BuildScript.DownloadFile(
-                            "https://dot.net/v1/dotnet-install.sh",
-                            dotnetInstallPath,
-                            e => logger.LogWarning($"Failed to download 'dotnet-install.sh': {e.Message}"));
+                        // When there are multiple versions requested, we want to try to fetch them all, reporting
+                        // a successful exit code when at least one of them succeeds
+                        return combinedExit != 0 ? getInstall(version) : BuildScript.Bind(getInstall(version), _ => BuildScript.Success);
+                    });
+                }
 
-                        var chmod = new CommandBuilder(actions).
-                            RunCommand("chmod").
-                            Argument("u+x").
-                            Argument(dotnetInstallPath);
-
-                        var install = new CommandBuilder(actions).
-                            RunCommand(dotnetInstallPath).
-                            Argument("--channel").
-                            Argument("release").
-                            Argument("--version").
-                            Argument(version).
-                            Argument("--install-dir").
-                            Argument(path);
-
-                        var buildScript = downloadDotNetInstallSh & chmod.Script & install.Script;
-
-                        if (shouldCleanUp)
-                        {
-                            buildScript &= BuildScript.DeleteFile(dotnetInstallPath);
-                        }
-
-                        return buildScript;
-                    }
-                });
+                return installScript & postlude;
+            });
         }
 
         private static BuildScript GetInstalledSdksScript(IBuildActions actions)
