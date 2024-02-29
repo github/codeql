@@ -195,9 +195,9 @@ signature module Semantic {
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
     /**
-     * Holds if the guard represents an equality between two expressions.
-     *
-     * @param e1 The first expression.
+     * Holds if this guard is an equality test between `e1` and `e2`. If the
+     * test is negated, that is `!=`, then `polarity` is false, otherwise
+     * `polarity` is true.
      */
     predicate isEquality(Expr e1, Expr e2, boolean polarity);
 
