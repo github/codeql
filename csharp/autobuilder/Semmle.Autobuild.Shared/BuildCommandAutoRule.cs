@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+
+using Semmle.Util;
 using Semmle.Util.Logging;
 
 namespace Semmle.Autobuild.Shared

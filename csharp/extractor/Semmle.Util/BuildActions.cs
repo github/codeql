@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Xml;
 using Semmle.Util;
 
-namespace Semmle.Autobuild.Shared
+namespace Semmle.Util
 {
     public delegate void BuildOutputHandler(string? data);
 

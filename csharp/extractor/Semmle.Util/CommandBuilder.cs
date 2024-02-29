@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Semmle.Autobuild.Shared
+namespace Semmle.Util
 {
     /// <summary>
     /// Utility to construct a build command.
