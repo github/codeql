@@ -17,7 +17,9 @@ import semmle.code.csharp.frameworks.Format
 import FormatString::PathGraph
 
 module FormatStringConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
+  predicate isSource(DataFlow::Node source) {
+    source instanceof ThreatModelFlowSource or source instanceof LocalFlowSource
+  }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(FormatCall call | call.hasInsertions()).getFormatExpr()
