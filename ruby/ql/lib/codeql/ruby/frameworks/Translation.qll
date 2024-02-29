@@ -4,6 +4,7 @@ private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.Concepts
 private import codeql.ruby.frameworks.ActionView
+private import codeql.ruby.frameworks.ActionController
 
 /** Gets a call to `I18n.translate`, which can use keyword arguments as inputs for string interpolation. */
 private MethodCall getI18nTranslateCall() {
@@ -25,9 +26,9 @@ private MethodCall getViewHelperTranslateCall() {
  */
 private MethodCall getControllerHelperTranslateCall() {
   result =
-    API::getTopLevelMember("ActionController")
-        .getMember("Base")
-        .getInstance()
+    any(ActionControllerClass c)
+        .getSelf()
+        .track()
         .getAMethodCall(["t", "translate"])
         .asExpr()
         .getExpr()
