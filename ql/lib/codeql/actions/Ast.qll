@@ -270,7 +270,12 @@ class StepUsesExpr extends StepStmt, UsesExpr {
 
   override string getCallee() { result = uses.getGitHubRepository() }
 
-  override string getVersion() { result = uses.getVersion() }
+  override string getVersion() {
+    result = uses.getVersion()
+    or
+    not exists(uses.getVersion()) and
+    result = "main"
+  }
 
   override Expression getArgumentExpr(string key) {
     exists(Actions::With with |

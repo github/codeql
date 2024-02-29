@@ -1,0 +1,12 @@
+---
+name: githubsecuritylab/actions-tests
+groups:
+  - actions
+  - test
+dependencies:
+  githubsecuritylab/actions-all: ${workspace}
+  githubsecuritylab/actions-queries: ${workspace}
+extractor: yaml
+tests: .
+warnOnImplicitThis: true
+

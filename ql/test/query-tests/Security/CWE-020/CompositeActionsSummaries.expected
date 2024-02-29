@@ -1,0 +1,12 @@
+edges
+| action1/action.yml:4:3:4:14 | input who-to-greet | action1/action.yml:41:29:41:54 | ${{ inp ... reet }} |
+| action1/action.yml:37:7:42:4 | id: reflector  [reflected] | action1/action.yml:11:12:11:51 | ${{ ste ... cted }} |
+| action1/action.yml:41:29:41:54 | ${{ inp ... reet }} | action1/action.yml:37:7:42:4 | id: reflector  [reflected] |
+nodes
+| action1/action.yml:4:3:4:14 | input who-to-greet | semmle.label | input who-to-greet |
+| action1/action.yml:11:12:11:51 | ${{ ste ... cted }} | semmle.label | ${{ ste ... cted }} |
+| action1/action.yml:37:7:42:4 | id: reflector  [reflected] | semmle.label | id: reflector  [reflected] |
+| action1/action.yml:41:29:41:54 | ${{ inp ... reet }} | semmle.label | ${{ inp ... reet }} |
+subpaths
+#select
+| action1/action.yml:11:12:11:51 | ${{ ste ... cted }} | action1/action.yml:4:3:4:14 | input who-to-greet | action1/action.yml:11:12:11:51 | ${{ ste ... cted }} | Summary |

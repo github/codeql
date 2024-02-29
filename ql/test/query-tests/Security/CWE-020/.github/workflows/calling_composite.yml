@@ -12,3 +12,4 @@ jobs:
           who-to-greet: ${{ github.event.pull_request.head.ref }} 
       - run: echo ${{ steps.foo.outputs.reflected}}
       - run: echo ${{ steps.foo.outputs.tainted}}
+
