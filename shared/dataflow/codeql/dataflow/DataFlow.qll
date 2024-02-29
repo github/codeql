@@ -206,7 +206,9 @@ signature module InputSig {
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
   /**
-   * Holds if there is a simple local flow step from `node1` to `node2`.
+   * Holds if there is a simple local flow step from `node1` to `node2`. This
+   * is the local flow predicate that's used as a building block in global
+   * data flow. It may have less flow than the `localFlowStep` predicate.
    */
   predicate simpleLocalFlowStep(Node node1, Node node2);
 
