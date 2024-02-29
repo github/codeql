@@ -39,4 +39,34 @@ module Arel {
 
     override DataFlow::Node getSql() { result = this.getArgument(0) }
   }
+
+  /**
+   * Flow summary for `Arel::Nodes::SqlLiteral.new`. This method wraps a SQL string, marking it as
+   * safe.
+   */
+  private class SqlLiteralNewSummary extends SummarizedCallable {
+    SqlLiteralNewSummary() { this = "Arel::Nodes::SqlLiteral.new" }
+
+    override MethodCall getACall() {
+      result = any(ArelSqlLiteralNewConstruction c).asExpr().getExpr()
+    }
+
+    override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
+    }
+  }
+
+  /** A call to `Arel::Nodes::SqlLiteral.new`, considered as a SQL construction. */
+  private class ArelSqlLiteralNewConstruction extends SqlConstruction::Range, DataFlow::CallNode {
+    ArelSqlLiteralNewConstruction() {
+      this.asExpr() =
+        API::getTopLevelMember("Arel")
+            .getMember("Nodes")
+            .getMember("SqlLiteral")
+            .getAMethodCall("new")
+            .asExpr()
+    }
+
+    override DataFlow::Node getSql() { result = this.getArgument(0) }
+  }
 }

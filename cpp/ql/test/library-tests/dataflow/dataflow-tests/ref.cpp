@@ -12,7 +12,7 @@ namespace withoutFields {
   }
 
   template<typename T>
-  void assignWrapper(T &lhs, T rhs) { // $ ast-def=lhs ast-def=lhs
+  void assignWrapper(T &lhs, T rhs) { // $ ast-def=lhs ast-def=lhs ir-def=*lhs
     assign(lhs, rhs);
   }
 
@@ -71,15 +71,15 @@ namespace withFields {
     int val;
   };
 
-  void assign(Int &lhs, int rhs) { // $ ast-def=lhs 
+  void assign(Int &lhs, int rhs) { // $ ast-def=lhs ir-def=*lhs
     lhs.val = rhs;
   }
 
-  void assignWrapper(Int &lhs, int rhs) { // $ ast-def=lhs
+  void assignWrapper(Int &lhs, int rhs) { // $ ast-def=lhs ir-def=*lhs
     assign(lhs, rhs);
   }
 
-  void notAssign(Int &lhs, int rhs) { // $ ast-def=lhs
+  void notAssign(Int &lhs, int rhs) { // $ ast-def=lhs ir-def=*lhs
     lhs.val = rhs;
     // Field flow ignores that the field is subsequently overwritten, leading
     // to false flow here.
@@ -90,14 +90,14 @@ namespace withFields {
     }
   }
 
-  void sourceToParam(Int &out) { // $ ast-def=out
+  void sourceToParam(Int &out) { // $ ast-def=out ir-def=*out
     out.val = source();
     if (arbitrary) {
       out.val = 1;
     }
   }
 
-  void sourceToParamWrapper(Int &out) { // $ ast-def=out
+  void sourceToParamWrapper(Int &out) { // $ ast-def=out ir-def=*out 
     if (arbitrary) {
       sourceToParam(out);
     } else {
@@ -105,7 +105,7 @@ namespace withFields {
     }
   }
 
-  void notSource(Int &out) { // $ ast-def=out
+  void notSource(Int &out) { // $ ast-def=out ir-def=*out
     out.val = source();
     // Field flow ignores that the field is subsequently overwritten, leading
     // to false flow here.

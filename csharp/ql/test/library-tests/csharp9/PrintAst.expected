@@ -884,7 +884,6 @@ Record.cs:
 #   27|         -1: [TypeMention] string
 #   27|       1: [Parameter] LastName
 #   27|         -1: [TypeMention] string
-#   27|     4: [BlockStmt] {...}
 #   27|   16: [Property] FirstName
 #   27|     3: [Getter] get_FirstName
 #   27|     4: [Setter] set_FirstName
@@ -917,7 +916,6 @@ Record.cs:
 #   30|     3: [ConstructorInitializer] call to constructor Person1
 #   30|       0: [ParameterAccess] access to parameter FirstName
 #   30|       1: [ParameterAccess] access to parameter LastName
-#   29|     4: [BlockStmt] {...}
 #   29|   17: [Property] Subject
 #   29|     3: [Getter] get_Subject
 #   29|     4: [Setter] set_Subject
@@ -945,7 +943,6 @@ Record.cs:
 #   33|     3: [ConstructorInitializer] call to constructor Person1
 #   33|       0: [ParameterAccess] access to parameter FirstName
 #   33|       1: [ParameterAccess] access to parameter LastName
-#   32|     4: [BlockStmt] {...}
 #   32|   17: [Property] Level
 #   32|     3: [Getter] get_Level
 #   32|     4: [Setter] set_Level
@@ -966,7 +963,6 @@ Record.cs:
 #-----|     2: (Parameters)
 #   35|       0: [Parameter] Name
 #   35|         -1: [TypeMention] string
-#   35|     4: [BlockStmt] {...}
 #   35|   16: [Property] Name
 #   35|     3: [Getter] get_Name
 #   35|     4: [Setter] set_Name
@@ -993,7 +989,6 @@ Record.cs:
 #   41|         -1: [TypeMention] string
 #   41|     3: [ConstructorInitializer] call to constructor Pet
 #   41|       0: [ParameterAccess] access to parameter Name
-#   41|     4: [BlockStmt] {...}
 #   41|   15: [Property] EqualityContract
 #   41|     3: [Getter] get_EqualityContract
 #   43|   16: [Method] WagTail
@@ -1035,7 +1030,6 @@ Record.cs:
 #-----|     2: (Parameters)
 #   54|       0: [Parameter] A
 #   54|         -1: [TypeMention] string
-#   54|     4: [BlockStmt] {...}
 #   54|   16: [Property] A
 #   54|     3: [Getter] get_A
 #   54|     4: [Setter] set_A
@@ -1060,7 +1054,6 @@ Record.cs:
 #   56|         -1: [TypeMention] string
 #   56|     3: [ConstructorInitializer] call to constructor R1
 #   56|       0: [ParameterAccess] access to parameter A
-#   56|     4: [BlockStmt] {...}
 #   56|   17: [Property] B
 #   56|     3: [Getter] get_B
 #   56|     4: [Setter] set_B

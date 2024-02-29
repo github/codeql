@@ -164,9 +164,6 @@ namespace Semmle.Extraction.CSharp
         internal static void expr_call(this TextWriter trapFile, Expression expr, Method target) =>
             trapFile.WriteTuple("expr_call", expr, target);
 
-        internal static void expr_compiler_generated(this TextWriter trapFile, Expression expr) =>
-            trapFile.WriteTuple("expr_compiler_generated", expr);
-
         internal static void expr_flowstate(this TextWriter trapFile, Expression expr, int flowState) =>
             trapFile.WriteTuple("expr_flowstate", expr, flowState);
 
