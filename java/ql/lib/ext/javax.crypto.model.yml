@@ -7,3 +7,20 @@ extensions:
       - ["javax.crypto", "Cipher", True, "init", "(int,Key,AlgorithmParameterSpec,SecureRandom)", "", "Argument[2]", "encryption-iv", "manual"]
       - ["javax.crypto", "Cipher", False, "unwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "hq-generated"]
       - ["javax.crypto", "CipherSpi", True, "engineUnwrap", "(byte[],String,int)", "", "Argument[0]", "credentials-key", "hq-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.crypto", "Cipher", "doFinal", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "getAlgorithm", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "getExemptionMechanism", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "getInstance", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "getIV", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "getParameters", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "getProvider", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "init", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "toString", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "unwrap", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "update", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "updateAAD", "", "summary", "manual"]
+      - ["javax.crypto", "Cipher", "wrap", "", "summary", "manual"]
