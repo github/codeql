@@ -40,7 +40,8 @@ signature module InputSig {
 
   /**
    * A node in the data flow graph representing the value of an argument after
-   * an operation that might have changed its state. For example, consider the following C++ code:
+   * an operation that might have changed its state. For example, consider the
+   * following C++ code:
    * ```
    * int a = 1;
    * increment(&a);
