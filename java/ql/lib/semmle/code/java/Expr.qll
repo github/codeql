@@ -378,7 +378,17 @@ class ArrayInit extends Expr, @arrayinit {
   override string getAPrimaryQlClass() { result = "ArrayInit" }
 }
 
-/** A common super-class that represents all varieties of assignments. */
+/**
+ * A common super-class that represents many varieties of assignments.
+ *
+ * This does not cover unary assignments such as `i++`, and initialization of
+ * local variables at their declaration such as `int i = 0;`.
+ *
+ * To cover more cases of variable updates, see the classes `VariableAssign`,
+ * `VariableUpdate` and `VarWrite`. But consider that they don't cover array
+ * element assignments since there the assignment destination is not directly
+ * the array variable but instead an `ArrayAccess`.
+ */
 class Assignment extends Expr, @assignment {
   /** Gets the destination (left-hand side) of the assignment. */
   Expr getDest() { result.isNthChildOf(this, 0) }
@@ -1781,6 +1791,9 @@ class VariableUpdate extends Expr {
 
 /**
  * An assignment to a variable or an initialization of the variable.
+ *
+ * This does not cover compound assignments such as `i += 1`, or unary
+ * assignments such as `i++`; use the class `VariableUpdate` for that.
  */
 class VariableAssign extends VariableUpdate {
   VariableAssign() {
@@ -1979,6 +1992,9 @@ class ExtensionReceiverAccess extends VarAccess {
 
 /**
  * A write access to a variable, which occurs as the destination of an assignment.
+ *
+ * This does not cover the initialization of local variables at their declaration,
+ * use the class `VariableUpdate` if you want to cover that as well.
  */
 class VarWrite extends VarAccess {
   VarWrite() { this.isVarWrite() }

@@ -74,3 +74,7 @@ javascript/ql/experimental/adaptivethreatmodeling/test/endpoint_large_scale/auto
 
 # Auto-generated modeling for Python
 python/ql/lib/semmle/python/frameworks/data/internal/subclass-capture/*.yml linguist-generated=true
+
+# auto-generated bazel lock file
+ruby/extractor/cargo-bazel-lock.json linguist-generated=true
+ruby/extractor/cargo-bazel-lock.json -merge

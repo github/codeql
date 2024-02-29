@@ -1,16 +1,16 @@
 edges
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
-| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data |
+| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | provenance |  |
+| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | provenance |  |
+| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | provenance |  |
+| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | provenance |  |
+| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | provenance |  |
+| examples.cpp:22:26:22:33 | call to rand | examples.cpp:25:31:25:34 | data | provenance |  |
+| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | provenance |  |
+| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | provenance |  |
+| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | provenance |  |
+| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | provenance |  |
+| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | provenance |  |
+| examples.cpp:35:26:35:33 | call to rand | examples.cpp:38:9:38:12 | data | provenance |  |
 nodes
 | examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |
 | examples.cpp:22:26:22:33 | call to rand | semmle.label | call to rand |

@@ -17,6 +17,9 @@ on:
       - .github/workflows/ruby-dataset-measure.yml
   workflow_dispatch:
 
+permissions:
+  contents: read
+
 jobs:
   measure:
     env:

@@ -39,6 +39,20 @@ class ES2015Module extends Module {
     // modules are implicitly strict
     any()
   }
+
+  /**
+   * Holds if this module contains both named and `default` exports.
+   *
+   * This is used to determine whether a default-import of the module should be reinterpreted
+   * as a namespace-import, to accommodate the non-standard behavior implemented by some compilers.
+   *
+   * When a module has both named and `default` exports, the non-standard interpretation can lead to
+   * ambiguities, so we only allow the standard interpretation in that case.
+   */
+  predicate hasBothNamedAndDefaultExports() {
+    hasNamedExports(this) and
+    hasDefaultExport(this)
+  }
 }
 
 /**
@@ -62,17 +76,6 @@ private predicate hasDefaultExport(ES2015Module mod) {
   or
   // export { foo as default };
   mod.getAnExport().(ExportNamedDeclaration).getASpecifier().getExportedName() = "default"
-}
-
-/**
- * Holds if `mod` contains both named and `default` exports.
- *
- * This is used to determine whether a default-import of the module should be reinterpreted
- * as a namespace-import, to accommodate the non-standard behavior implemented by some compilers.
- */
-private predicate hasBothNamedAndDefaultExports(ES2015Module mod) {
-  hasNamedExports(mod) and
-  hasDefaultExport(mod)
 }
 
 /**
@@ -131,7 +134,7 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
       // For compatibility with the non-standard implementation of default imports,
       // treat default imports as namespace imports in cases where it can't cause ambiguity
       // between named exports and the properties of a default-exported object.
-      not hasBothNamedAndDefaultExports(this.getImportedModule()) and
+      not this.getImportedModule().(ES2015Module).hasBothNamedAndDefaultExports() and
       is.getImportedName() = "default"
     )
     or

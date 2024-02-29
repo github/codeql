@@ -13,14 +13,18 @@
 import csharp
 import Flow::PathGraph
 
-query predicate edges(Flow::PathNode a, Flow::PathNode b) {
-  Flow::PathGraph::edges(a, b)
+query predicate edges(Flow::PathNode a, Flow::PathNode b, string key, string val) {
+  Flow::PathGraph::edges(a, b, key, val)
   or
   FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallableConfig::isSink(a.getNode()) and
-  FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig::isSource(b.getNode())
+  FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig::isSource(b.getNode()) and
+  key = "provenance" and
+  val = ""
   or
   FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig::isSink(a.getNode()) and
-  FlowsFromTimeComparisonCallableToSelectionStatementConditionConfig::isSource(b.getNode())
+  FlowsFromTimeComparisonCallableToSelectionStatementConditionConfig::isSource(b.getNode()) and
+  key = "provenance" and
+  val = ""
 }
 
 /**

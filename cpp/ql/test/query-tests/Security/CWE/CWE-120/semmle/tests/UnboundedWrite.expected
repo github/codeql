@@ -1,7 +1,7 @@
 edges
-| tests.c:16:26:16:29 | **argv | tests.c:28:22:28:28 | *access to array |
-| tests.c:16:26:16:29 | **argv | tests.c:29:28:29:34 | *access to array |
-| tests.c:16:26:16:29 | **argv | tests.c:34:10:34:16 | *access to array |
+| tests.c:16:26:16:29 | **argv | tests.c:28:22:28:28 | *access to array | provenance |  |
+| tests.c:16:26:16:29 | **argv | tests.c:29:28:29:34 | *access to array | provenance |  |
+| tests.c:16:26:16:29 | **argv | tests.c:34:10:34:16 | *access to array | provenance |  |
 nodes
 | tests.c:16:26:16:29 | **argv | semmle.label | **argv |
 | tests.c:28:22:28:28 | *access to array | semmle.label | *access to array |

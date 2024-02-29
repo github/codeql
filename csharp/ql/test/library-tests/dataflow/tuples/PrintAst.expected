@@ -363,7 +363,7 @@ Tuples.cs:
 #   95|         1: [Parameter] right
 #   95|     14: [Property] EqualityContract
 #   95|       3: [Getter] get_EqualityContract
-#   95|     15: [InstanceConstructor] R1
+#   95|     15: [InstanceConstructor,PrimaryConstructor] R1
 #-----|       2: (Parameters)
 #   95|         0: [Parameter] i
 #   95|           -1: [TypeMention] string

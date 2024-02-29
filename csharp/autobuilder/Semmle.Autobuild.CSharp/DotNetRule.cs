@@ -46,7 +46,7 @@ namespace Semmle.Autobuild.CSharp
                 builder.Log(Severity.Info, "Attempting to build using .NET Core");
             }
 
-            return WithDotNet(builder, (dotNetPath, environment) =>
+            return WithDotNet(builder, ensureDotNetAvailable: false, (dotNetPath, environment) =>
                 {
                     var ret = GetInfoCommand(builder.Actions, dotNetPath, environment);
                     foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
@@ -79,29 +79,29 @@ namespace Semmle.Autobuild.CSharp
         /// variables needed by the installed .NET Core (<code>null</code> when no variables
         /// are needed).
         /// </summary>
-        public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, Func<string?, IDictionary<string, string>?, BuildScript> f)
+        public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, bool ensureDotNetAvailable, Func<string?, IDictionary<string, string>?, BuildScript> f)
         {
             var installDir = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var _), ".dotnet");
-            var installScript = DownloadDotNet(builder, installDir);
+            var installScript = DownloadDotNet(builder, installDir, ensureDotNetAvailable);
             return BuildScript.Bind(installScript, installed =>
             {
-                Dictionary<string, string>? env;
+                var env = new Dictionary<string, string>
+                {
+                    { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
+                    { "MSBUILDDISABLENODEREUSE", "1" }
+                };
                 if (installed == 0)
                 {
                     // The installation succeeded, so use the newly installed .NET Core
                     var path = builder.Actions.GetEnvironmentVariable("PATH");
                     var delim = builder.Actions.IsWindows() ? ";" : ":";
-                    env = new Dictionary<string, string>{
-                            { "DOTNET_MULTILEVEL_LOOKUP", "false" }, // prevent look up of other .NET Core SDKs
-                            { "DOTNET_SKIP_FIRST_TIME_EXPERIENCE", "true" },
-                            { "MSBUILDDISABLENODEREUSE", "1" },
-                            { "PATH", installDir + delim + path }
-                        };
+                    env.Add("DOTNET_MULTILEVEL_LOOKUP", "false"); // prevent look up of other .NET Core SDKs
+                    env.Add("PATH", installDir + delim + path);
                 }
                 else
                 {
+                    // The .NET SDK was not installed, either because the installation failed or because it was already installed.
                     installDir = null;
-                    env = null;
                 }
 
                 return f(installDir, env);
@@ -117,14 +117,14 @@ namespace Semmle.Autobuild.CSharp
         /// are needed).
         /// </summary>
         public static BuildScript WithDotNet(IAutobuilder<AutobuildOptionsShared> builder, Func<IDictionary<string, string>?, BuildScript> f)
-            => WithDotNet(builder, (_1, env) => f(env));
+            => WithDotNet(builder, ensureDotNetAvailable: false, (_, env) => f(env));
 
         /// <summary>
         /// Returns a script for downloading relevant versions of the
         /// .NET Core SDK. The SDK(s) will be installed at <code>installDir</code>
         /// (provided that the script succeeds).
         /// </summary>
-        private static BuildScript DownloadDotNet(IAutobuilder<AutobuildOptionsShared> builder, string installDir)
+        private static BuildScript DownloadDotNet(IAutobuilder<AutobuildOptionsShared> builder, string installDir, bool ensureDotNetAvailable)
         {
             if (!string.IsNullOrEmpty(builder.Options.DotNetVersion))
                 // Specific version supplied in configuration: always use that
@@ -152,7 +152,17 @@ namespace Semmle.Autobuild.CSharp
                 validGlobalJson = true;
             }
 
-            return validGlobalJson ? installScript : BuildScript.Failure;
+            if (validGlobalJson)
+            {
+                return installScript;
+            }
+
+            if (ensureDotNetAvailable)
+            {
+                return DownloadDotNetVersion(builder, installDir, Constants.LatestDotNetSdkVersion, needExactVersion: false);
+            }
+
+            return BuildScript.Failure;
         }
 
         /// <summary>
@@ -161,14 +171,25 @@ namespace Semmle.Autobuild.CSharp
         ///
         /// See https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script.
         /// </summary>
-        private static BuildScript DownloadDotNetVersion(IAutobuilder<AutobuildOptionsShared> builder, string path, string version)
+        private static BuildScript DownloadDotNetVersion(IAutobuilder<AutobuildOptionsShared> builder, string path, string version, bool needExactVersion = true)
         {
             return BuildScript.Bind(GetInstalledSdksScript(builder.Actions), (sdks, sdksRet) =>
                 {
-                    if (sdksRet == 0 && sdks.Count == 1 && sdks[0].StartsWith(version + " ", StringComparison.Ordinal))
+                    if (needExactVersion && sdksRet == 0 && sdks.Count == 1 && sdks[0].StartsWith(version + " ", StringComparison.Ordinal))
+                    {
                         // The requested SDK is already installed (and no other SDKs are installed), so
                         // no need to reinstall
                         return BuildScript.Failure;
+                    }
+                    else if (!needExactVersion && sdksRet == 0 && sdks.Count > 0)
+                    {
+                        // there's at least one SDK installed, so no need to reinstall
+                        return BuildScript.Failure;
+                    }
+                    else if (!needExactVersion && sdksRet != 0)
+                    {
+                        builder.Log(Severity.Info, "No .NET Core SDK found.");
+                    }
 
                     builder.Log(Severity.Info, "Attempting to download .NET Core {0}", version);
 

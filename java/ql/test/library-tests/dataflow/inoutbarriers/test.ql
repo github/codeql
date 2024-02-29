@@ -12,6 +12,11 @@ predicate sink0(Node n) {
     sink.getMethod().hasName("sink") and
     sink.getAnArgument() = n.asExpr()
   )
+  or
+  exists(AssignExpr assign |
+    assign.getDest().(FieldAccess).getField().hasName("fsink") and
+    n.asExpr() = assign.getSource()
+  )
 }
 
 module Conf1 implements ConfigSig {

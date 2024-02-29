@@ -453,6 +453,10 @@ module VariableCapture {
     Flow::localFlowStep(asClosureNode(node1), asClosureNode(node2))
   }
 
+  predicate clearsContent(Node node, Content::CapturedVariableContent c) {
+    Flow::clearsContent(asClosureNode(node), c.getVariable())
+  }
+
   class CapturedSsaDefinitionExt extends SsaImpl::DefinitionExt {
     CapturedSsaDefinitionExt() { this.getSourceVariable() instanceof CapturedVariable }
   }
@@ -796,7 +800,17 @@ predicate nodeIsHidden(Node n) {
   or
   n = LocalFlow::getParameterDefNode(_)
   or
-  isDesugarNode(n.(ExprNode).getExprNode().getExpr())
+  exists(AstNode desug |
+    isDesugarNode(desug) and
+    desug.isSynthesized() and
+    not desug = [any(ArrayLiteral al).getDesugared(), any(HashLiteral hl).getDesugared()]
+  |
+    desug = n.asExpr().getExpr()
+    or
+    desug = n.(PostUpdateNode).getPreUpdateNode().asExpr().getExpr()
+    or
+    desug = n.(ParameterNode).getParameter()
+  )
   or
   n instanceof FlowSummaryNode
   or
@@ -1930,6 +1944,8 @@ predicate clearsContent(Node n, ContentSet c) {
     c.isKnownOrUnknownElement(TKnownElementContent(cv)) and
     cv.isSymbol(name)
   )
+  or
+  VariableCapture::clearsContent(n, any(Content::CapturedVariableContent v | c.isSingleton(v)))
 }
 
 /**
@@ -2171,7 +2187,7 @@ predicate allowParameterReturnInSelf(ParameterNodeImpl p) {
     FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asLibraryCallable(), pos)
   )
   or
-  VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(SelfParameterNode)
+  VariableCapture::Flow::heuristicAllowInstanceParameterReturnInSelf(p.(LambdaSelfReferenceNode)
         .getCallable())
 }
 

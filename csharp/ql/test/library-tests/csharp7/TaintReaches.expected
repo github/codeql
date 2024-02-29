@@ -1,7 +1,15 @@
+| CSharp7.cs:39:13:39:21 | "tainted" | CSharp7.cs:39:9:39:9 | access to parameter x |
 | CSharp7.cs:39:13:39:21 | "tainted" | CSharp7.cs:39:9:39:21 | SSA def(x) |
+| CSharp7.cs:77:23:77:24 | "" | CSharp7.cs:77:9:77:28 | ... = ... |
+| CSharp7.cs:107:29:107:37 | "DefUse1" | CSharp7.cs:107:9:107:46 | ... = ... |
 | CSharp7.cs:107:29:107:37 | "DefUse1" | CSharp7.cs:107:9:107:46 | SSA def(m1) |
+| CSharp7.cs:107:29:107:37 | "DefUse1" | CSharp7.cs:110:10:110:11 | access to local variable m3 |
 | CSharp7.cs:107:29:107:37 | "DefUse1" | CSharp7.cs:110:27:110:28 | access to local variable m1 |
+| CSharp7.cs:112:50:112:58 | "DefUse2" | CSharp7.cs:112:39:112:40 | access to local variable m1 |
+| CSharp7.cs:121:28:121:36 | "DefUse3" | CSharp7.cs:121:16:121:18 | access to local variable m13 |
+| CSharp7.cs:121:28:121:36 | "DefUse3" | CSharp7.cs:121:22:121:24 | access to local variable m12 |
 | CSharp7.cs:121:28:121:36 | "DefUse3" | CSharp7.cs:121:22:121:36 | ... = ... |
+| CSharp7.cs:175:22:175:30 | "tainted" | CSharp7.cs:175:16:175:18 | access to local variable src |
 | CSharp7.cs:175:22:175:30 | "tainted" | CSharp7.cs:175:16:175:30 | SSA def(src) |
 | CSharp7.cs:175:22:175:30 | "tainted" | CSharp7.cs:180:23:180:25 | access to local variable src |
 | CSharp7.cs:175:22:175:30 | "tainted" | CSharp7.cs:181:23:181:25 | access to local variable src |

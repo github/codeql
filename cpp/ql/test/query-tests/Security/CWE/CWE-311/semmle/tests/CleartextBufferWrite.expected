@@ -1,5 +1,5 @@
 edges
-| test.cpp:53:27:53:30 | **argv | test.cpp:58:25:58:29 | *input |
+| test.cpp:53:27:53:30 | **argv | test.cpp:58:25:58:29 | *input | provenance |  |
 nodes
 | test2.cpp:110:3:110:6 | *call to gets | semmle.label | *call to gets |
 | test.cpp:53:27:53:30 | **argv | semmle.label | **argv |

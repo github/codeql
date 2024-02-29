@@ -1,7 +1,7 @@
 edges
-| test.cpp:22:17:22:21 | ... * ... | test.cpp:23:33:23:37 | size1 |
-| test.cpp:37:24:37:27 | size | test.cpp:37:46:37:49 | size |
-| test.cpp:45:36:45:40 | ... * ... | test.cpp:37:24:37:27 | size |
+| test.cpp:22:17:22:21 | ... * ... | test.cpp:23:33:23:37 | size1 | provenance |  |
+| test.cpp:37:24:37:27 | size | test.cpp:37:46:37:49 | size | provenance |  |
+| test.cpp:45:36:45:40 | ... * ... | test.cpp:37:24:37:27 | size | provenance |  |
 nodes
 | test.cpp:13:33:13:37 | ... * ... | semmle.label | ... * ... |
 | test.cpp:15:31:15:35 | ... * ... | semmle.label | ... * ... |

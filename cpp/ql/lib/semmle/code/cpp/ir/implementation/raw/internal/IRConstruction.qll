@@ -11,6 +11,7 @@ private import InstructionTag
 private import TranslatedCondition
 private import TranslatedElement
 private import TranslatedExpr
+private import TranslatedCall
 private import TranslatedStmt
 private import TranslatedFunction
 private import TranslatedGlobalVar
@@ -201,12 +202,6 @@ Instruction getMemoryOperandDefinition(
 ) {
   none()
 }
-
-/**
- * Holds if the partial operand of this `ChiInstruction` updates the bit range
- * `[startBitOffset, endBitOffset)` of the total operand.
- */
-predicate getIntervalUpdatedByChi(ChiInstruction chi, int startBit, int endBit) { none() }
 
 /**
  * Holds if the operand totally overlaps with its definition and consumes the

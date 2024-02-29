@@ -1,3 +1,13 @@
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.8.8
+
+No user-facing changes.
+
 ## 0.8.7
 
 ### Minor Analysis Improvements

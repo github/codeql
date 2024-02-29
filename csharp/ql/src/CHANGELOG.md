@@ -1,3 +1,15 @@
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* Added sanitizers for relative URLs, `List.Contains()`, and checking the `.Host` property on an URI to the `cs/web/unvalidated-url-redirection` query.
+
+## 0.8.8
+
+### Minor Analysis Improvements
+
+* Added string interpolation expressions and `string.Format` as possible sanitizers for the `cs/web/unvalidated-url-redirection` query.
+
 ## 0.8.7
 
 ### Minor Analysis Improvements

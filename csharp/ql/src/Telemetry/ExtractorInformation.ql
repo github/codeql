@@ -9,6 +9,17 @@
 import csharp
 import semmle.code.csharp.commons.Diagnostics
 
+predicate compilationInfo(string key, float value) {
+  exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
+    key = infoKey and
+    value = infoValue.toFloat()
+    or
+    not exists(infoValue.toFloat()) and
+    key = infoKey + ": " + infoValue and
+    value = 1
+  )
+}
+
 predicate fileCount(string key, int value) {
   key = "Number of files" and
   value = strictcount(File f)
@@ -177,6 +188,7 @@ predicate analyzerAssemblies(string key, float value) {
 from string key, float value
 where
   (
+    compilationInfo(key, value) or
     fileCount(key, value) or
     fileCountByExtension(key, value) or
     totalNumberOfLines(key, value) or

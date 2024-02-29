@@ -1693,7 +1693,11 @@ module DataFlow {
     exists(Expr predExpr, Expr succExpr |
       pred = valueNode(predExpr) and succ = valueNode(succExpr)
     |
-      predExpr = succExpr.(LogicalBinaryExpr).getAnOperand()
+      predExpr = succExpr.(LogicalOrExpr).getAnOperand()
+      or
+      predExpr = succExpr.(NullishCoalescingExpr).getAnOperand()
+      or
+      predExpr = succExpr.(LogicalAndExpr).getRightOperand()
       or
       predExpr = succExpr.(ConditionalExpr).getABranch()
       or

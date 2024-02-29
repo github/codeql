@@ -1081,8 +1081,8 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
           SummaryComponentStack outputContents
         |
           summary(c, inputContents, outputContents, preservesValue) and
-          pred = summaryNodeInputState(c, inputContents) and
-          succ = summaryNodeOutputState(c, outputContents)
+          pred = summaryNodeInputState(pragma[only_bind_into](c), inputContents) and
+          succ = summaryNodeOutputState(pragma[only_bind_into](c), outputContents)
         |
           preservesValue = true
           or

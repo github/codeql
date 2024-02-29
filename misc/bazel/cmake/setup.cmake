@@ -29,8 +29,7 @@ endmacro()
 bazel(info workspace OUTPUT_VARIABLE BAZEL_WORKSPACE)
 
 bazel(info output_base OUTPUT_VARIABLE BAZEL_OUTPUT_BASE)
-string(REPLACE "-" "_" BAZEL_EXEC_ROOT ${PROJECT_NAME})
-set(BAZEL_EXEC_ROOT ${BAZEL_OUTPUT_BASE}/execroot/${BAZEL_EXEC_ROOT})
+set(BAZEL_EXEC_ROOT ${BAZEL_OUTPUT_BASE}/execroot/_main)
 
 macro(include_generated BAZEL_TARGET)
     bazel(build ${BAZEL_TARGET} --nocheck_visibility)
