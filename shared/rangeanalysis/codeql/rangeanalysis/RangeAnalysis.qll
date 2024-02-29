@@ -189,6 +189,8 @@ signature module Semantic {
      *   Console.WriteLine("x is greater than y");
      * }
      * ```
+     * `branch` indicates whether the basic block is entered when the guard
+     * evaluates to `true` or when it evaluates to `false`.
      */
     predicate directlyControls(BasicBlock controlled, boolean branch);
 
@@ -211,6 +213,8 @@ signature module Semantic {
      *   printf("x is not greater than y\n");
      * }
      * ```
+     * `branch` indicates whether the second basic block is the one entered
+     * when the guard evaluates to `true` or when it evaluates to `false`.
      */
     predicate hasBranchEdge(BasicBlock bb1, BasicBlock bb2, boolean branch);
   }
