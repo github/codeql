@@ -13,3 +13,9 @@ export function getEscapingInstance() {
 } // $ name=(pack1).getEscapingInstance
 
 export function publicFunction() {} // $ name=(pack1).publicFunction
+
+// Escapes into an upstream library, but is not exposed downstream
+class InternalClass {
+    m() {}
+}
+require('foo').bar(new InternalClass());
