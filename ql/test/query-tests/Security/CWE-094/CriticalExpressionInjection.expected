@@ -1,0 +1,227 @@
+edges
+| .github/workflows/argus_case_study.yml:15:9:24:6 | name: R ... g chars [replaced] | .github/workflows/argus_case_study.yml:26:14:27:95 | \| |
+| .github/workflows/argus_case_study.yml:17:24:17:52 | ${{gith ... title}} | .github/workflows/argus_case_study.yml:22:19:22:38 | ${{env.ISSUE_TITLE}} |
+| .github/workflows/argus_case_study.yml:22:19:22:38 | ${{env.ISSUE_TITLE}} | .github/workflows/argus_case_study.yml:15:9:24:6 | name: R ... g chars [replaced] |
+| .github/workflows/changed-files.yml:16:9:20:6 | name: G ... d files | .github/workflows/changed-files.yml:21:14:24:15 | \| |
+| .github/workflows/cross3.yml:27:7:37:4 | name: R ... g chars [replaced] | .github/workflows/cross3.yml:39:30:39:74 | ${{step ... laced}} |
+| .github/workflows/cross3.yml:27:7:37:4 | name: R ... g chars [replaced] | .github/workflows/cross3.yml:57:28:57:72 | ${{step ... laced}} |
+| .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:27:7:37:4 | name: R ... g chars [replaced] |
+| .github/workflows/cross3.yml:39:30:39:74 | ${{step ... laced}} | .github/workflows/cross3.yml:41:12:43:5 | \| |
+| .github/workflows/cross3.yml:57:28:57:72 | ${{step ... laced}} | .github/workflows/cross3.yml:61:21:68:47 | \| |
+| .github/workflows/cross3.yml:61:21:68:47 | \| | .github/workflows/cross3.yml:47:12:53:109 | \| |
+| .github/workflows/image_link_generator.yml:15:9:22:6 | name: E ... ial URL [initial_url] | .github/workflows/image_link_generator.yml:25:24:25:67 | ${{ ste ... _url }} |
+| .github/workflows/image_link_generator.yml:18:17:18:48 | ${{ git ... body }} | .github/workflows/image_link_generator.yml:15:9:22:6 | name: E ... ial URL [initial_url] |
+| .github/workflows/image_link_generator.yml:22:9:28:6 | name: G ... bugging [redirected_url] | .github/workflows/image_link_generator.yml:31:27:31:66 | ${{ ste ... _url }} |
+| .github/workflows/image_link_generator.yml:25:24:25:67 | ${{ ste ... _url }} | .github/workflows/image_link_generator.yml:22:9:28:6 | name: G ... bugging [redirected_url] |
+| .github/workflows/image_link_generator.yml:28:9:35:6 | name: T ... ter PNG [trimmed_url] | .github/workflows/image_link_generator.yml:36:14:37:126 | \| |
+| .github/workflows/image_link_generator.yml:31:27:31:66 | ${{ ste ... _url }} | .github/workflows/image_link_generator.yml:28:9:35:6 | name: T ... ter PNG [trimmed_url] |
+| .github/workflows/inter-job.yml:8:7:10:4 | job_out ... alue }} [job_output] | .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} |
+| .github/workflows/inter-job.yml:8:19:8:49 | ${{ ste ... alue }} | .github/workflows/inter-job.yml:8:7:10:4 | job_out ... alue }} [job_output] |
+| .github/workflows/inter-job.yml:15:9:19:6 | name: G ... d files | .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} |
+| .github/workflows/inter-job.yml:19:9:27:2 | name: R ... d files [value] | .github/workflows/inter-job.yml:8:19:8:49 | ${{ ste ... alue }} |
+| .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} | .github/workflows/inter-job.yml:19:9:27:2 | name: R ... d files [value] |
+| .github/workflows/issues.yaml:4:15:4:45 | ${{ git ... itle }} | .github/workflows/issues.yaml:15:12:15:39 | echo '$ ... env }}' |
+| .github/workflows/issues.yaml:10:16:10:46 | ${{ git ... itle }} | .github/workflows/issues.yaml:17:12:17:36 | echo '$ ... env }}' |
+| .github/workflows/issues.yaml:20:19:20:49 | ${{ git ... itle }} | .github/workflows/issues.yaml:18:12:18:37 | echo '$ ... env }}' |
+| .github/workflows/matrix.yml:15:7:16:4 | matrix: ... iles }} [matrix] | .github/workflows/matrix.yml:34:19:34:69 | ${{ fro ... rix) }} |
+| .github/workflows/matrix.yml:15:15:15:63 | ${{ ste ... iles }} | .github/workflows/matrix.yml:15:7:16:4 | matrix: ... iles }} [matrix] |
+| .github/workflows/matrix.yml:17:9:21:2 | name: G ... d files | .github/workflows/matrix.yml:15:15:15:63 | ${{ ste ... iles }} |
+| .github/workflows/matrix.yml:34:19:34:69 | ${{ fro ... rix) }} | .github/workflows/matrix.yml:41:12:42:31 | \|  |
+| .github/workflows/simple1.yml:8:9:14:6 | id: summary [value] | .github/workflows/simple1.yml:15:14:16:50 | \| |
+| .github/workflows/simple1.yml:11:19:11:57 | ${{ git ... sage }} | .github/workflows/simple1.yml:8:9:14:6 | id: summary [value] |
+| .github/workflows/simple2.yml:14:9:18:6 | name: G ... d files | .github/workflows/simple2.yml:22:19:22:63 | ${{ ste ... iles }} |
+| .github/workflows/simple2.yml:18:9:26:6 | name: R ... d files [value] | .github/workflows/simple2.yml:28:14:31:15 | \| |
+| .github/workflows/simple2.yml:22:19:22:63 | ${{ ste ... iles }} | .github/workflows/simple2.yml:18:9:26:6 | name: R ... d files [value] |
+| .github/workflows/test.yml:8:7:10:4 | job_out ... test }} [job_output] | .github/workflows/test.yml:37:14:37:52 | echo ${ ... utput}} |
+| .github/workflows/test.yml:8:19:8:49 | ${{ ste ... test }} | .github/workflows/test.yml:8:7:10:4 | job_out ... test }} [job_output] |
+| .github/workflows/test.yml:12:9:18:6 | id: step0  [value] | .github/workflows/test.yml:20:17:20:47 | ${{ ste ... value}} |
+| .github/workflows/test.yml:15:19:15:57 | ${{ git ... sage }} | .github/workflows/test.yml:12:9:18:6 | id: step0  [value] |
+| .github/workflows/test.yml:18:9:24:6 | id: step1 [MSG] | .github/workflows/test.yml:26:18:26:45 | ${{step ... s.MSG}} |
+| .github/workflows/test.yml:20:17:20:47 | ${{ ste ... value}} | .github/workflows/test.yml:18:9:24:6 | id: step1 [MSG] |
+| .github/workflows/test.yml:24:9:29:2 | id: step2 [test] | .github/workflows/test.yml:8:19:8:49 | ${{ ste ... test }} |
+| .github/workflows/test.yml:26:18:26:45 | ${{step ... s.MSG}} | .github/workflows/test.yml:24:9:29:2 | id: step2 [test] |
+nodes
+| .github/workflows/argus_case_study.yml:15:9:24:6 | name: R ... g chars [replaced] | semmle.label | name: R ... g chars [replaced] |
+| .github/workflows/argus_case_study.yml:17:24:17:52 | ${{gith ... title}} | semmle.label | ${{gith ... title}} |
+| .github/workflows/argus_case_study.yml:22:19:22:38 | ${{env.ISSUE_TITLE}} | semmle.label | ${{env.ISSUE_TITLE}} |
+| .github/workflows/argus_case_study.yml:26:14:27:95 | \| | semmle.label | \| |
+| .github/workflows/changed-files.yml:16:9:20:6 | name: G ... d files | semmle.label | name: G ... d files |
+| .github/workflows/changed-files.yml:21:14:24:15 | \| | semmle.label | \| |
+| .github/workflows/comment_issue.yml:7:12:8:48 | \| | semmle.label | \| |
+| .github/workflows/comment_issue.yml:13:12:13:50 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/comment_issue.yml:14:12:14:48 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/comment_issue.yml:15:12:15:49 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/comment_issue_newline.yml:9:14:10:50 | \| | semmle.label | \| |
+| .github/workflows/cross3.yml:27:7:37:4 | name: R ... g chars [replaced] | semmle.label | name: R ... g chars [replaced] |
+| .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | semmle.label | ${{gith ... ssage}} |
+| .github/workflows/cross3.yml:39:30:39:74 | ${{step ... laced}} | semmle.label | ${{step ... laced}} |
+| .github/workflows/cross3.yml:41:12:43:5 | \| | semmle.label | \| |
+| .github/workflows/cross3.yml:47:12:53:109 | \| | semmle.label | \| |
+| .github/workflows/cross3.yml:57:28:57:72 | ${{step ... laced}} | semmle.label | ${{step ... laced}} |
+| .github/workflows/cross3.yml:61:21:68:47 | \| | semmle.label | \| |
+| .github/workflows/discussion.yml:7:12:7:54 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/discussion.yml:8:12:8:53 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/discussion_comment.yml:7:12:7:54 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/discussion_comment.yml:8:12:8:53 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/discussion_comment.yml:9:12:9:50 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/gollum.yml:7:12:7:52 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/gollum.yml:8:12:8:53 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/gollum.yml:9:12:9:56 | echo '$ ... ame }}' | semmle.label | echo '$ ... ame }}' |
+| .github/workflows/gollum.yml:10:12:10:59 | echo '$ ... ame }}' | semmle.label | echo '$ ... ame }}' |
+| .github/workflows/image_link_generator.yml:15:9:22:6 | name: E ... ial URL [initial_url] | semmle.label | name: E ... ial URL [initial_url] |
+| .github/workflows/image_link_generator.yml:18:17:18:48 | ${{ git ... body }} | semmle.label | ${{ git ... body }} |
+| .github/workflows/image_link_generator.yml:22:9:28:6 | name: G ... bugging [redirected_url] | semmle.label | name: G ... bugging [redirected_url] |
+| .github/workflows/image_link_generator.yml:25:24:25:67 | ${{ ste ... _url }} | semmle.label | ${{ ste ... _url }} |
+| .github/workflows/image_link_generator.yml:28:9:35:6 | name: T ... ter PNG [trimmed_url] | semmle.label | name: T ... ter PNG [trimmed_url] |
+| .github/workflows/image_link_generator.yml:31:27:31:66 | ${{ ste ... _url }} | semmle.label | ${{ ste ... _url }} |
+| .github/workflows/image_link_generator.yml:36:14:37:126 | \| | semmle.label | \| |
+| .github/workflows/inter-job.yml:8:7:10:4 | job_out ... alue }} [job_output] | semmle.label | job_out ... alue }} [job_output] |
+| .github/workflows/inter-job.yml:8:19:8:49 | ${{ ste ... alue }} | semmle.label | ${{ ste ... alue }} |
+| .github/workflows/inter-job.yml:15:9:19:6 | name: G ... d files | semmle.label | name: G ... d files |
+| .github/workflows/inter-job.yml:19:9:27:2 | name: R ... d files [value] | semmle.label | name: R ... d files [value] |
+| .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} | semmle.label | echo ${ ... utput}} |
+| .github/workflows/issues.yaml:4:15:4:45 | ${{ git ... itle }} | semmle.label | ${{ git ... itle }} |
+| .github/workflows/issues.yaml:10:16:10:46 | ${{ git ... itle }} | semmle.label | ${{ git ... itle }} |
+| .github/workflows/issues.yaml:13:12:13:49 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/issues.yaml:14:12:14:48 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/issues.yaml:15:12:15:39 | echo '$ ... env }}' | semmle.label | echo '$ ... env }}' |
+| .github/workflows/issues.yaml:17:12:17:36 | echo '$ ... env }}' | semmle.label | echo '$ ... env }}' |
+| .github/workflows/issues.yaml:18:12:18:37 | echo '$ ... env }}' | semmle.label | echo '$ ... env }}' |
+| .github/workflows/issues.yaml:20:19:20:49 | ${{ git ... itle }} | semmle.label | ${{ git ... itle }} |
+| .github/workflows/matrix.yml:15:7:16:4 | matrix: ... iles }} [matrix] | semmle.label | matrix: ... iles }} [matrix] |
+| .github/workflows/matrix.yml:15:15:15:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| .github/workflows/matrix.yml:17:9:21:2 | name: G ... d files | semmle.label | name: G ... d files |
+| .github/workflows/matrix.yml:34:19:34:69 | ${{ fro ... rix) }} | semmle.label | ${{ fro ... rix) }} |
+| .github/workflows/matrix.yml:41:12:42:31 | \|  | semmle.label | \|  |
+| .github/workflows/pull_request_review.yml:7:12:7:56 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/pull_request_review.yml:8:12:8:55 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/pull_request_review.yml:9:12:9:61 | echo '$ ... bel }}' | semmle.label | echo '$ ... bel }}' |
+| .github/workflows/pull_request_review.yml:10:12:10:75 | echo '$ ... nch }}' | semmle.label | echo '$ ... nch }}' |
+| .github/workflows/pull_request_review.yml:11:12:11:72 | echo '$ ... ion }}' | semmle.label | echo '$ ... ion }}' |
+| .github/workflows/pull_request_review.yml:12:12:12:69 | echo '$ ... age }}' | semmle.label | echo '$ ... age }}' |
+| .github/workflows/pull_request_review.yml:13:12:13:59 | echo '$ ... ref }}' | semmle.label | echo '$ ... ref }}' |
+| .github/workflows/pull_request_review.yml:14:12:14:49 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/pull_request_review_comment.yml:7:12:7:56 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/pull_request_review_comment.yml:8:12:8:55 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/pull_request_review_comment.yml:9:12:9:61 | echo '$ ... bel }}' | semmle.label | echo '$ ... bel }}' |
+| .github/workflows/pull_request_review_comment.yml:10:12:10:75 | echo '$ ... nch }}' | semmle.label | echo '$ ... nch }}' |
+| .github/workflows/pull_request_review_comment.yml:11:12:11:72 | echo '$ ... ion }}' | semmle.label | echo '$ ... ion }}' |
+| .github/workflows/pull_request_review_comment.yml:12:12:12:69 | echo '$ ... age }}' | semmle.label | echo '$ ... age }}' |
+| .github/workflows/pull_request_review_comment.yml:13:12:13:59 | echo '$ ... ref }}' | semmle.label | echo '$ ... ref }}' |
+| .github/workflows/pull_request_review_comment.yml:14:12:14:50 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/pull_request_target.yml:7:12:7:49 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/pull_request_target.yml:8:12:8:48 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/pull_request_target.yml:9:12:9:56 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/pull_request_target.yml:10:12:10:55 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+| .github/workflows/pull_request_target.yml:11:12:11:61 | echo '$ ... bel }}' | semmle.label | echo '$ ... bel }}' |
+| .github/workflows/pull_request_target.yml:12:12:12:75 | echo '$ ... nch }}' | semmle.label | echo '$ ... nch }}' |
+| .github/workflows/pull_request_target.yml:13:12:13:72 | echo '$ ... ion }}' | semmle.label | echo '$ ... ion }}' |
+| .github/workflows/pull_request_target.yml:14:12:14:69 | echo '$ ... age }}' | semmle.label | echo '$ ... age }}' |
+| .github/workflows/pull_request_target.yml:15:12:15:59 | echo '$ ... ref }}' | semmle.label | echo '$ ... ref }}' |
+| .github/workflows/pull_request_target.yml:16:12:16:40 | echo '$ ... ref }}' | semmle.label | echo '$ ... ref }}' |
+| .github/workflows/push.yml:7:12:7:57 | echo '$ ... age }}' | semmle.label | echo '$ ... age }}' |
+| .github/workflows/push.yml:8:12:8:62 | echo '$ ... ail }}' | semmle.label | echo '$ ... ail }}' |
+| .github/workflows/push.yml:9:12:9:61 | echo '$ ... ame }}' | semmle.label | echo '$ ... ame }}' |
+| .github/workflows/push.yml:10:12:10:57 | echo '$ ... age }}' | semmle.label | echo '$ ... age }}' |
+| .github/workflows/push.yml:11:12:11:62 | echo '$ ... ail }}' | semmle.label | echo '$ ... ail }}' |
+| .github/workflows/push.yml:12:12:12:61 | echo '$ ... ame }}' | semmle.label | echo '$ ... ame }}' |
+| .github/workflows/push.yml:13:12:13:65 | echo '$ ... ail }}' | semmle.label | echo '$ ... ail }}' |
+| .github/workflows/push.yml:14:12:14:64 | echo '$ ... ame }}' | semmle.label | echo '$ ... ame }}' |
+| .github/workflows/push.yml:15:12:15:65 | echo '$ ... ail }}' | semmle.label | echo '$ ... ail }}' |
+| .github/workflows/push.yml:16:12:16:64 | echo '$ ... ame }}' | semmle.label | echo '$ ... ame }}' |
+| .github/workflows/simple1.yml:8:9:14:6 | id: summary [value] | semmle.label | id: summary [value] |
+| .github/workflows/simple1.yml:11:19:11:57 | ${{ git ... sage }} | semmle.label | ${{ git ... sage }} |
+| .github/workflows/simple1.yml:15:14:16:50 | \| | semmle.label | \| |
+| .github/workflows/simple2.yml:14:9:18:6 | name: G ... d files | semmle.label | name: G ... d files |
+| .github/workflows/simple2.yml:18:9:26:6 | name: R ... d files [value] | semmle.label | name: R ... d files [value] |
+| .github/workflows/simple2.yml:22:19:22:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| .github/workflows/simple2.yml:28:14:31:15 | \| | semmle.label | \| |
+| .github/workflows/test.yml:8:7:10:4 | job_out ... test }} [job_output] | semmle.label | job_out ... test }} [job_output] |
+| .github/workflows/test.yml:8:19:8:49 | ${{ ste ... test }} | semmle.label | ${{ ste ... test }} |
+| .github/workflows/test.yml:12:9:18:6 | id: step0  [value] | semmle.label | id: step0  [value] |
+| .github/workflows/test.yml:15:19:15:57 | ${{ git ... sage }} | semmle.label | ${{ git ... sage }} |
+| .github/workflows/test.yml:18:9:24:6 | id: step1 [MSG] | semmle.label | id: step1 [MSG] |
+| .github/workflows/test.yml:20:17:20:47 | ${{ ste ... value}} | semmle.label | ${{ ste ... value}} |
+| .github/workflows/test.yml:24:9:29:2 | id: step2 [test] | semmle.label | id: step2 [test] |
+| .github/workflows/test.yml:26:18:26:45 | ${{step ... s.MSG}} | semmle.label | ${{step ... s.MSG}} |
+| .github/workflows/test.yml:37:14:37:52 | echo ${ ... utput}} | semmle.label | echo ${ ... utput}} |
+| .github/workflows/workflow_run.yml:9:12:9:64 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
+| .github/workflows/workflow_run.yml:10:12:10:70 | echo '$ ... age }}' | semmle.label | echo '$ ... age }}' |
+| .github/workflows/workflow_run.yml:11:12:11:75 | echo '$ ... ail }}' | semmle.label | echo '$ ... ail }}' |
+| .github/workflows/workflow_run.yml:12:12:12:74 | echo '$ ... ame }}' | semmle.label | echo '$ ... ame }}' |
+| .github/workflows/workflow_run.yml:13:12:13:78 | echo '$ ... ail }}' | semmle.label | echo '$ ... ail }}' |
+| .github/workflows/workflow_run.yml:14:12:14:77 | echo '$ ... ame }}' | semmle.label | echo '$ ... ame }}' |
+| .github/workflows/workflow_run.yml:15:12:15:62 | echo '$ ... nch }}' | semmle.label | echo '$ ... nch }}' |
+| .github/workflows/workflow_run.yml:16:12:16:78 | echo '$ ... ion }}' | semmle.label | echo '$ ... ion }}' |
+| action1/action.yml:14:12:14:50 | echo '$ ... ody }}' | semmle.label | echo '$ ... ody }}' |
+subpaths
+#select
+| .github/workflows/argus_case_study.yml:26:14:27:95 | \| | .github/workflows/argus_case_study.yml:17:24:17:52 | ${{gith ... title}} | .github/workflows/argus_case_study.yml:26:14:27:95 | \| | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/comment_issue.yml:7:12:8:48 | \| | .github/workflows/comment_issue.yml:7:12:8:48 | \| | .github/workflows/comment_issue.yml:7:12:8:48 | \| | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/comment_issue.yml:13:12:13:50 | echo '$ ... ody }}' | .github/workflows/comment_issue.yml:13:12:13:50 | echo '$ ... ody }}' | .github/workflows/comment_issue.yml:13:12:13:50 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/comment_issue.yml:14:12:14:48 | echo '$ ... ody }}' | .github/workflows/comment_issue.yml:14:12:14:48 | echo '$ ... ody }}' | .github/workflows/comment_issue.yml:14:12:14:48 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/comment_issue.yml:15:12:15:49 | echo '$ ... tle }}' | .github/workflows/comment_issue.yml:15:12:15:49 | echo '$ ... tle }}' | .github/workflows/comment_issue.yml:15:12:15:49 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/comment_issue_newline.yml:9:14:10:50 | \| | .github/workflows/comment_issue_newline.yml:9:14:10:50 | \| | .github/workflows/comment_issue_newline.yml:9:14:10:50 | \| | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/cross3.yml:41:12:43:5 | \| | .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:41:12:43:5 | \| | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/cross3.yml:47:12:53:109 | \| | .github/workflows/cross3.yml:32:17:32:52 | ${{gith ... ssage}} | .github/workflows/cross3.yml:47:12:53:109 | \| | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/discussion.yml:7:12:7:54 | echo '$ ... tle }}' | .github/workflows/discussion.yml:7:12:7:54 | echo '$ ... tle }}' | .github/workflows/discussion.yml:7:12:7:54 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/discussion.yml:8:12:8:53 | echo '$ ... ody }}' | .github/workflows/discussion.yml:8:12:8:53 | echo '$ ... ody }}' | .github/workflows/discussion.yml:8:12:8:53 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/discussion_comment.yml:7:12:7:54 | echo '$ ... tle }}' | .github/workflows/discussion_comment.yml:7:12:7:54 | echo '$ ... tle }}' | .github/workflows/discussion_comment.yml:7:12:7:54 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/discussion_comment.yml:8:12:8:53 | echo '$ ... ody }}' | .github/workflows/discussion_comment.yml:8:12:8:53 | echo '$ ... ody }}' | .github/workflows/discussion_comment.yml:8:12:8:53 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/discussion_comment.yml:9:12:9:50 | echo '$ ... ody }}' | .github/workflows/discussion_comment.yml:9:12:9:50 | echo '$ ... ody }}' | .github/workflows/discussion_comment.yml:9:12:9:50 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/gollum.yml:7:12:7:52 | echo '$ ... tle }}' | .github/workflows/gollum.yml:7:12:7:52 | echo '$ ... tle }}' | .github/workflows/gollum.yml:7:12:7:52 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/gollum.yml:8:12:8:53 | echo '$ ... tle }}' | .github/workflows/gollum.yml:8:12:8:53 | echo '$ ... tle }}' | .github/workflows/gollum.yml:8:12:8:53 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/gollum.yml:9:12:9:56 | echo '$ ... ame }}' | .github/workflows/gollum.yml:9:12:9:56 | echo '$ ... ame }}' | .github/workflows/gollum.yml:9:12:9:56 | echo '$ ... ame }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/gollum.yml:10:12:10:59 | echo '$ ... ame }}' | .github/workflows/gollum.yml:10:12:10:59 | echo '$ ... ame }}' | .github/workflows/gollum.yml:10:12:10:59 | echo '$ ... ame }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/image_link_generator.yml:36:14:37:126 | \| | .github/workflows/image_link_generator.yml:18:17:18:48 | ${{ git ... body }} | .github/workflows/image_link_generator.yml:36:14:37:126 | \| | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/issues.yaml:13:12:13:49 | echo '$ ... tle }}' | .github/workflows/issues.yaml:13:12:13:49 | echo '$ ... tle }}' | .github/workflows/issues.yaml:13:12:13:49 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/issues.yaml:14:12:14:48 | echo '$ ... ody }}' | .github/workflows/issues.yaml:14:12:14:48 | echo '$ ... ody }}' | .github/workflows/issues.yaml:14:12:14:48 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/issues.yaml:15:12:15:39 | echo '$ ... env }}' | .github/workflows/issues.yaml:4:15:4:45 | ${{ git ... itle }} | .github/workflows/issues.yaml:15:12:15:39 | echo '$ ... env }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/issues.yaml:17:12:17:36 | echo '$ ... env }}' | .github/workflows/issues.yaml:10:16:10:46 | ${{ git ... itle }} | .github/workflows/issues.yaml:17:12:17:36 | echo '$ ... env }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/issues.yaml:18:12:18:37 | echo '$ ... env }}' | .github/workflows/issues.yaml:20:19:20:49 | ${{ git ... itle }} | .github/workflows/issues.yaml:18:12:18:37 | echo '$ ... env }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review.yml:7:12:7:56 | echo '$ ... tle }}' | .github/workflows/pull_request_review.yml:7:12:7:56 | echo '$ ... tle }}' | .github/workflows/pull_request_review.yml:7:12:7:56 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review.yml:8:12:8:55 | echo '$ ... ody }}' | .github/workflows/pull_request_review.yml:8:12:8:55 | echo '$ ... ody }}' | .github/workflows/pull_request_review.yml:8:12:8:55 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review.yml:9:12:9:61 | echo '$ ... bel }}' | .github/workflows/pull_request_review.yml:9:12:9:61 | echo '$ ... bel }}' | .github/workflows/pull_request_review.yml:9:12:9:61 | echo '$ ... bel }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review.yml:10:12:10:75 | echo '$ ... nch }}' | .github/workflows/pull_request_review.yml:10:12:10:75 | echo '$ ... nch }}' | .github/workflows/pull_request_review.yml:10:12:10:75 | echo '$ ... nch }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review.yml:11:12:11:72 | echo '$ ... ion }}' | .github/workflows/pull_request_review.yml:11:12:11:72 | echo '$ ... ion }}' | .github/workflows/pull_request_review.yml:11:12:11:72 | echo '$ ... ion }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review.yml:12:12:12:69 | echo '$ ... age }}' | .github/workflows/pull_request_review.yml:12:12:12:69 | echo '$ ... age }}' | .github/workflows/pull_request_review.yml:12:12:12:69 | echo '$ ... age }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review.yml:13:12:13:59 | echo '$ ... ref }}' | .github/workflows/pull_request_review.yml:13:12:13:59 | echo '$ ... ref }}' | .github/workflows/pull_request_review.yml:13:12:13:59 | echo '$ ... ref }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review.yml:14:12:14:49 | echo '$ ... ody }}' | .github/workflows/pull_request_review.yml:14:12:14:49 | echo '$ ... ody }}' | .github/workflows/pull_request_review.yml:14:12:14:49 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review_comment.yml:7:12:7:56 | echo '$ ... tle }}' | .github/workflows/pull_request_review_comment.yml:7:12:7:56 | echo '$ ... tle }}' | .github/workflows/pull_request_review_comment.yml:7:12:7:56 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review_comment.yml:8:12:8:55 | echo '$ ... ody }}' | .github/workflows/pull_request_review_comment.yml:8:12:8:55 | echo '$ ... ody }}' | .github/workflows/pull_request_review_comment.yml:8:12:8:55 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review_comment.yml:9:12:9:61 | echo '$ ... bel }}' | .github/workflows/pull_request_review_comment.yml:9:12:9:61 | echo '$ ... bel }}' | .github/workflows/pull_request_review_comment.yml:9:12:9:61 | echo '$ ... bel }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review_comment.yml:10:12:10:75 | echo '$ ... nch }}' | .github/workflows/pull_request_review_comment.yml:10:12:10:75 | echo '$ ... nch }}' | .github/workflows/pull_request_review_comment.yml:10:12:10:75 | echo '$ ... nch }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review_comment.yml:11:12:11:72 | echo '$ ... ion }}' | .github/workflows/pull_request_review_comment.yml:11:12:11:72 | echo '$ ... ion }}' | .github/workflows/pull_request_review_comment.yml:11:12:11:72 | echo '$ ... ion }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review_comment.yml:12:12:12:69 | echo '$ ... age }}' | .github/workflows/pull_request_review_comment.yml:12:12:12:69 | echo '$ ... age }}' | .github/workflows/pull_request_review_comment.yml:12:12:12:69 | echo '$ ... age }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review_comment.yml:13:12:13:59 | echo '$ ... ref }}' | .github/workflows/pull_request_review_comment.yml:13:12:13:59 | echo '$ ... ref }}' | .github/workflows/pull_request_review_comment.yml:13:12:13:59 | echo '$ ... ref }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_review_comment.yml:14:12:14:50 | echo '$ ... ody }}' | .github/workflows/pull_request_review_comment.yml:14:12:14:50 | echo '$ ... ody }}' | .github/workflows/pull_request_review_comment.yml:14:12:14:50 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_target.yml:9:12:9:56 | echo '$ ... tle }}' | .github/workflows/pull_request_target.yml:9:12:9:56 | echo '$ ... tle }}' | .github/workflows/pull_request_target.yml:9:12:9:56 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_target.yml:10:12:10:55 | echo '$ ... ody }}' | .github/workflows/pull_request_target.yml:10:12:10:55 | echo '$ ... ody }}' | .github/workflows/pull_request_target.yml:10:12:10:55 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_target.yml:11:12:11:61 | echo '$ ... bel }}' | .github/workflows/pull_request_target.yml:11:12:11:61 | echo '$ ... bel }}' | .github/workflows/pull_request_target.yml:11:12:11:61 | echo '$ ... bel }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_target.yml:12:12:12:75 | echo '$ ... nch }}' | .github/workflows/pull_request_target.yml:12:12:12:75 | echo '$ ... nch }}' | .github/workflows/pull_request_target.yml:12:12:12:75 | echo '$ ... nch }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_target.yml:13:12:13:72 | echo '$ ... ion }}' | .github/workflows/pull_request_target.yml:13:12:13:72 | echo '$ ... ion }}' | .github/workflows/pull_request_target.yml:13:12:13:72 | echo '$ ... ion }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_target.yml:14:12:14:69 | echo '$ ... age }}' | .github/workflows/pull_request_target.yml:14:12:14:69 | echo '$ ... age }}' | .github/workflows/pull_request_target.yml:14:12:14:69 | echo '$ ... age }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_target.yml:15:12:15:59 | echo '$ ... ref }}' | .github/workflows/pull_request_target.yml:15:12:15:59 | echo '$ ... ref }}' | .github/workflows/pull_request_target.yml:15:12:15:59 | echo '$ ... ref }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/pull_request_target.yml:16:12:16:40 | echo '$ ... ref }}' | .github/workflows/pull_request_target.yml:16:12:16:40 | echo '$ ... ref }}' | .github/workflows/pull_request_target.yml:16:12:16:40 | echo '$ ... ref }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/push.yml:7:12:7:57 | echo '$ ... age }}' | .github/workflows/push.yml:7:12:7:57 | echo '$ ... age }}' | .github/workflows/push.yml:7:12:7:57 | echo '$ ... age }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/push.yml:8:12:8:62 | echo '$ ... ail }}' | .github/workflows/push.yml:8:12:8:62 | echo '$ ... ail }}' | .github/workflows/push.yml:8:12:8:62 | echo '$ ... ail }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/push.yml:9:12:9:61 | echo '$ ... ame }}' | .github/workflows/push.yml:9:12:9:61 | echo '$ ... ame }}' | .github/workflows/push.yml:9:12:9:61 | echo '$ ... ame }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/push.yml:10:12:10:57 | echo '$ ... age }}' | .github/workflows/push.yml:10:12:10:57 | echo '$ ... age }}' | .github/workflows/push.yml:10:12:10:57 | echo '$ ... age }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/push.yml:11:12:11:62 | echo '$ ... ail }}' | .github/workflows/push.yml:11:12:11:62 | echo '$ ... ail }}' | .github/workflows/push.yml:11:12:11:62 | echo '$ ... ail }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/push.yml:12:12:12:61 | echo '$ ... ame }}' | .github/workflows/push.yml:12:12:12:61 | echo '$ ... ame }}' | .github/workflows/push.yml:12:12:12:61 | echo '$ ... ame }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/push.yml:13:12:13:65 | echo '$ ... ail }}' | .github/workflows/push.yml:13:12:13:65 | echo '$ ... ail }}' | .github/workflows/push.yml:13:12:13:65 | echo '$ ... ail }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/push.yml:14:12:14:64 | echo '$ ... ame }}' | .github/workflows/push.yml:14:12:14:64 | echo '$ ... ame }}' | .github/workflows/push.yml:14:12:14:64 | echo '$ ... ame }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/push.yml:15:12:15:65 | echo '$ ... ail }}' | .github/workflows/push.yml:15:12:15:65 | echo '$ ... ail }}' | .github/workflows/push.yml:15:12:15:65 | echo '$ ... ail }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/push.yml:16:12:16:64 | echo '$ ... ame }}' | .github/workflows/push.yml:16:12:16:64 | echo '$ ... ame }}' | .github/workflows/push.yml:16:12:16:64 | echo '$ ... ame }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/simple1.yml:15:14:16:50 | \| | .github/workflows/simple1.yml:11:19:11:57 | ${{ git ... sage }} | .github/workflows/simple1.yml:15:14:16:50 | \| | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/simple2.yml:28:14:31:15 | \| | .github/workflows/simple2.yml:14:9:18:6 | name: G ... d files | .github/workflows/simple2.yml:28:14:31:15 | \| | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/test.yml:37:14:37:52 | echo ${ ... utput}} | .github/workflows/test.yml:15:19:15:57 | ${{ git ... sage }} | .github/workflows/test.yml:37:14:37:52 | echo ${ ... utput}} | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/workflow_run.yml:9:12:9:64 | echo '$ ... tle }}' | .github/workflows/workflow_run.yml:9:12:9:64 | echo '$ ... tle }}' | .github/workflows/workflow_run.yml:9:12:9:64 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/workflow_run.yml:10:12:10:70 | echo '$ ... age }}' | .github/workflows/workflow_run.yml:10:12:10:70 | echo '$ ... age }}' | .github/workflows/workflow_run.yml:10:12:10:70 | echo '$ ... age }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/workflow_run.yml:11:12:11:75 | echo '$ ... ail }}' | .github/workflows/workflow_run.yml:11:12:11:75 | echo '$ ... ail }}' | .github/workflows/workflow_run.yml:11:12:11:75 | echo '$ ... ail }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/workflow_run.yml:12:12:12:74 | echo '$ ... ame }}' | .github/workflows/workflow_run.yml:12:12:12:74 | echo '$ ... ame }}' | .github/workflows/workflow_run.yml:12:12:12:74 | echo '$ ... ame }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/workflow_run.yml:13:12:13:78 | echo '$ ... ail }}' | .github/workflows/workflow_run.yml:13:12:13:78 | echo '$ ... ail }}' | .github/workflows/workflow_run.yml:13:12:13:78 | echo '$ ... ail }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/workflow_run.yml:14:12:14:77 | echo '$ ... ame }}' | .github/workflows/workflow_run.yml:14:12:14:77 | echo '$ ... ame }}' | .github/workflows/workflow_run.yml:14:12:14:77 | echo '$ ... ame }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/workflow_run.yml:15:12:15:62 | echo '$ ... nch }}' | .github/workflows/workflow_run.yml:15:12:15:62 | echo '$ ... nch }}' | .github/workflows/workflow_run.yml:15:12:15:62 | echo '$ ... nch }}' | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/workflow_run.yml:16:12:16:78 | echo '$ ... ion }}' | .github/workflows/workflow_run.yml:16:12:16:78 | echo '$ ... ion }}' | .github/workflows/workflow_run.yml:16:12:16:78 | echo '$ ... ion }}' | Potential expression injection, which may be controlled by an external user. |

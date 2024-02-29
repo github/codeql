@@ -10,7 +10,6 @@ dependencies:
   codeql/dataflow: ^0.1.7
 dbscheme: yaml.dbscheme
 extractor: yaml
-tests: test
 groups:
   - yaml
 dataExtensions:

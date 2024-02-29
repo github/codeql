@@ -1,0 +1,1 @@
+| .github/workflows/missing_perms.yml:6:5:9:32 | name: Build and test | Actions Job or Workflow does not set permissions |

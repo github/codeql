@@ -2,3 +2,4 @@
 **/*.testproj
 ql/lib/.codeql/
 ql/src/.codeql/
+ql/test/.codeql/

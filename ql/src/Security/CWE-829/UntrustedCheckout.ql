@@ -10,7 +10,7 @@
  * @id actions/untrusted-checkout
  * @tags actions
  *       security
- *       external/cwe/cwe-094
+ *       external/cwe/cwe-829
  */
 
 import actions

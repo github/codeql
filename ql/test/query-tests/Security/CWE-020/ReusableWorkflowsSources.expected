@@ -1,0 +1,12 @@
+edges
+| .github/workflows/reusable_workflow.yml:22:7:24:4 | job-out ... utput}} [job-output2] | .github/workflows/reusable_workflow.yml:13:16:13:51 | ${{ job ... put2 }} |
+| .github/workflows/reusable_workflow.yml:23:20:23:62 | ${{ ste ... files}} | .github/workflows/reusable_workflow.yml:22:7:24:4 | job-out ... utput}} [job-output2] |
+| .github/workflows/reusable_workflow.yml:31:9:33:43 | name: G ... d files | .github/workflows/reusable_workflow.yml:23:20:23:62 | ${{ ste ... files}} |
+nodes
+| .github/workflows/reusable_workflow.yml:13:16:13:51 | ${{ job ... put2 }} | semmle.label | ${{ job ... put2 }} |
+| .github/workflows/reusable_workflow.yml:22:7:24:4 | job-out ... utput}} [job-output2] | semmle.label | job-out ... utput}} [job-output2] |
+| .github/workflows/reusable_workflow.yml:23:20:23:62 | ${{ ste ... files}} | semmle.label | ${{ ste ... files}} |
+| .github/workflows/reusable_workflow.yml:31:9:33:43 | name: G ... d files | semmle.label | name: G ... d files |
+subpaths
+#select
+| .github/workflows/reusable_workflow.yml:13:16:13:51 | ${{ job ... put2 }} | .github/workflows/reusable_workflow.yml:31:9:33:43 | name: G ... d files | .github/workflows/reusable_workflow.yml:13:16:13:51 | ${{ job ... put2 }} | Source |

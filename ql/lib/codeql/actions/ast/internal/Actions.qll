@@ -6,7 +6,6 @@
 import codeql.actions.ast.internal.Yaml
 import codeql.files.FileSystem
 
-// ALVARO: Make it private
 /**
  * Libraries for modeling GitHub Actions workflow files written in YAML.
  * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
@@ -376,7 +375,6 @@ module Actions {
   }
 
   /**
-   * ALVARO
    * https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idneeds
    */
   class Needs extends YamlNode {

@@ -24,15 +24,15 @@ private predicate isTrustedOrg(string repo) {
 from StepUsesExpr uses, string repo, string version, WorkflowStmt workflow, string name
 where
   uses.getCallee() = repo and
-  uses.getVersion() = version and
   uses.getEnclosingWorkflowStmt() = workflow and
   (
     workflow.getName() = name
     or
     not exists(workflow.getName()) and workflow.getLocation().getFile().getBaseName() = name
   ) and
-  not isPinnedCommit(version) and
-  not isTrustedOrg(repo)
+  uses.getVersion() = version and
+  not isTrustedOrg(repo) and
+  not isPinnedCommit(version)
 select uses,
   "Unpinned 3rd party Action '" + name + "' step $@ uses '" + repo + "' with ref '" + version +
     "', not a pinned commit hash", uses, uses.toString()

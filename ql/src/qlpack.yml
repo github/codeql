@@ -11,4 +11,3 @@ defaultSuiteFile: codeql-suites/actions-code-scanning.qls
 dependencies:
   githubsecuritylab/actions-all: ${workspace}
 warnOnImplicitThis: true
-tests: test

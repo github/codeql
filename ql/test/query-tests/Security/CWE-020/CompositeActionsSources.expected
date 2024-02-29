@@ -1,0 +1,12 @@
+edges
+| action1/action.yml:42:7:44:4 | id: changed-files | action1/action.yml:48:18:48:69 | ${{ ste ... iles }} |
+| action1/action.yml:44:7:48:70 | id: source [tainted] | action1/action.yml:14:12:14:45 | ${{ ste ... inted}} |
+| action1/action.yml:48:18:48:69 | ${{ ste ... iles }} | action1/action.yml:44:7:48:70 | id: source [tainted] |
+nodes
+| action1/action.yml:14:12:14:45 | ${{ ste ... inted}} | semmle.label | ${{ ste ... inted}} |
+| action1/action.yml:42:7:44:4 | id: changed-files | semmle.label | id: changed-files |
+| action1/action.yml:44:7:48:70 | id: source [tainted] | semmle.label | id: source [tainted] |
+| action1/action.yml:48:18:48:69 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+subpaths
+#select
+| action1/action.yml:14:12:14:45 | ${{ ste ... inted}} | action1/action.yml:42:7:44:4 | id: changed-files | action1/action.yml:14:12:14:45 | ${{ ste ... inted}} | Source |
