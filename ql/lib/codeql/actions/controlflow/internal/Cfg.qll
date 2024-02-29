@@ -174,6 +174,7 @@ private class WorkflowTree extends StandardPreOrderTree instanceof WorkflowStmt 
           (
             child = this.(ReusableWorkflowStmt).getInputsStmt() or
             child = this.(ReusableWorkflowStmt).getOutputsStmt() or
+            child = this.(ReusableWorkflowStmt).getStrategyStmt() or
             child = this.(ReusableWorkflowStmt).getAJobStmt()
           ) and
           l = child.getLocation()
@@ -185,7 +186,10 @@ private class WorkflowTree extends StandardPreOrderTree instanceof WorkflowStmt 
     else
       result =
         rank[i](Expression child, Location l |
-          child = super.getAJobStmt() and
+          (
+            child = super.getAJobStmt() or
+            child = super.getStrategyStmt()
+          ) and
           l = child.getLocation()
         |
           child
@@ -225,6 +229,21 @@ private class OutputsTree extends StandardPreOrderTree instanceof OutputsStmt {
 
 private class OutputExprTree extends LeafTree instanceof OutputExpr { }
 
+private class StrategyTree extends StandardPreOrderTree instanceof StrategyStmt {
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](Expression child, Location l |
+        child = super.getMatrixVariableExpr(_) and l = child.getLocation()
+      |
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
+      )
+  }
+}
+
+private class MatrixVariableExprTree extends LeafTree instanceof MatrixVariableExpr { }
+
 private class JobTree extends StandardPreOrderTree instanceof JobStmt {
   override ControlFlowTree getChildNode(int i) {
     result =
@@ -232,6 +251,7 @@ private class JobTree extends StandardPreOrderTree instanceof JobStmt {
         (
           child = super.getAStepStmt() or
           child = super.getOutputsStmt() or
+          child = super.getStrategyStmt() or
           child = super.getUsesExpr()
         ) and
         l = child.getLocation()

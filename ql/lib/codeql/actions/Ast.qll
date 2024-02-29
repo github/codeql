@@ -81,6 +81,8 @@ class WorkflowStmt extends Statement instanceof Actions::Workflow {
   }
 
   Statement getPermissionsStmt() { result = this.(YamlMapping).lookup("permissions") }
+
+  StrategyStmt getStrategyStmt() { result = this.(YamlMapping).lookup("strategy") }
 }
 
 class ReusableWorkflowStmt extends WorkflowStmt {
@@ -125,6 +127,23 @@ class OutputsStmt extends Statement instanceof YamlMapping {
   string getAnOutputName() { this.(YamlMapping).maps(any(YamlString s | s.getValue() = result), _) }
 }
 
+class StrategyStmt extends Statement instanceof YamlMapping {
+  YamlMapping parent;
+
+  StrategyStmt() { parent.lookup("strategy") = this }
+
+  /**
+   * Gets a specific matric expression (YamlMapping) by name.
+   */
+  MatrixVariableExpr getMatrixVariableExpr(string name) {
+    this.(YamlMapping).lookup("matrix").(YamlMapping).lookup(name) = result
+  }
+
+  string getAMatrixVariableName() {
+    this.(YamlMapping).maps(any(YamlString s | s.getValue() = result), _)
+  }
+}
+
 class InputExpr extends Expression instanceof YamlString {
   InputExpr() { exists(InputsStmt inputs | inputs.(YamlMapping).maps(this, _)) }
 }
@@ -134,6 +153,14 @@ class OutputExpr extends Expression instanceof YamlString {
     exists(OutputsStmt outputs |
       outputs.(YamlMapping).lookup(_).(YamlMapping).lookup("value") = this or
       outputs.(YamlMapping).lookup(_) = this
+    )
+  }
+}
+
+class MatrixVariableExpr extends Expression instanceof YamlString {
+  MatrixVariableExpr() {
+    exists(StrategyStmt outputs |
+      outputs.(YamlMapping).lookup("matrix").(YamlMapping).lookup(_) = this
     )
   }
 }
@@ -191,6 +218,8 @@ class JobStmt extends Statement instanceof Actions::Job {
   IfStmt getIfStmt() { result = super.getIf() }
 
   Statement getPermissionsStmt() { result = this.(YamlMapping).lookup("permissions") }
+
+  StrategyStmt getStrategyStmt() { result = this.(YamlMapping).lookup("strategy") }
 }
 
 /**
@@ -332,7 +361,8 @@ class ExprAccessExpr extends Expression instanceof YamlString {
 class CtxAccessExpr extends ExprAccessExpr {
   CtxAccessExpr() {
     expr.regexpMatch([
-        stepsCtxRegex(), needsCtxRegex(), jobsCtxRegex(), envCtxRegex(), inputsCtxRegex()
+        stepsCtxRegex(), needsCtxRegex(), jobsCtxRegex(), envCtxRegex(), inputsCtxRegex(),
+        matrixCtxRegex()
       ])
   }
 
@@ -342,22 +372,28 @@ class CtxAccessExpr extends ExprAccessExpr {
 }
 
 private string stepsCtxRegex() {
-  result = "\\bsteps\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)\\b"
+  result = wrapRegexp("steps\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
 }
 
 private string needsCtxRegex() {
-  result = "\\bneeds\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)\\b"
+  result = wrapRegexp("needs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
 }
 
 private string jobsCtxRegex() {
-  result = "\\bjobs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)\\b"
+  result = wrapRegexp("jobs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
 }
 
-private string envCtxRegex() { result = "\\benv\\.([A-Za-z0-9_-]+)\\b" }
+private string envCtxRegex() { result = wrapRegexp("env\\.([A-Za-z0-9_-]+)") }
+
+private string matrixCtxRegex() { result = wrapRegexp("matrix\\.([A-Za-z0-9_-]+)") }
 
 private string inputsCtxRegex() {
-  result = "\\binputs\\.([A-Za-z0-9_-]+)\\b" or
-  result = "\\bgithub\\.event\\.inputs\\.([A-Za-z0-9_-]+)\\b"
+  result = wrapRegexp(["inputs\\.([A-Za-z0-9_-]+)", "github\\.event\\.inputs\\.([A-Za-z0-9_-]+)"])
+}
+
+bindingset[regex]
+private string wrapRegexp(string regex) {
+  result = ["\\b" + regex + "\\b", "fromJSON\\(" + regex + "\\)", "toJSON\\(" + regex + "\\)"]
 }
 
 /**
@@ -484,6 +520,34 @@ class EnvCtxAccessExpr extends CtxAccessExpr {
     exists(Statement s |
       s.getEnvExpr(fieldName) = result and
       s.getAChildNode*() = this
+    )
+  }
+}
+
+/**
+ * Holds for an expression accesing the `matrix` context.
+ * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
+ * e.g. `${{ matrix.foo }}`
+ */
+class MatrixCtxAccessExpr extends CtxAccessExpr {
+  string fieldName;
+
+  MatrixCtxAccessExpr() {
+    expr.regexpMatch(matrixCtxRegex()) and
+    fieldName = expr.regexpCapture(matrixCtxRegex(), 1)
+  }
+
+  override string getFieldName() { result = fieldName }
+
+  override Expression getRefExpr() {
+    exists(WorkflowStmt w |
+      w.getStrategyStmt().getMatrixVariableExpr(fieldName) = result and
+      w.getAChildNode*() = this
+    )
+    or
+    exists(JobStmt j |
+      j.getStrategyStmt().getMatrixVariableExpr(fieldName) = result and
+      j.getAChildNode*() = this
     )
   }
 }

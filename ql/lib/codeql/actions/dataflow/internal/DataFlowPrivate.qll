@@ -133,7 +133,7 @@ predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 newtype TContent =
   TFieldContent(string name) {
-    // We only use field flow for steps and jobs outputs, not for accessing other context fields such as env or inputs
+    // We only use field flow for steps and jobs outputs, not for accessing other context fields such as env, matrix or inputs
     name = any(StepsCtxAccessExpr a).getFieldName() or
     name = any(NeedsCtxAccessExpr a).getFieldName() or
     name = any(JobsCtxAccessExpr a).getFieldName()
@@ -210,6 +210,18 @@ predicate inputsCtxLocalStep(Node nodeFrom, Node nodeTo) {
 }
 
 /**
+ * Holds if there is a local flow step between a ${{}} expression accesing a matrix variable and the matrix itself
+ * e.g. ${{ matrix.foo }}
+ */
+predicate matrixCtxLocalStep(Node nodeFrom, Node nodeTo) {
+  exists(Expression astFrom, MatrixCtxAccessExpr astTo |
+    astFrom = nodeFrom.asExpr() and
+    astTo = nodeTo.asExpr() and
+    astTo.getRefExpr() = astFrom
+  )
+}
+
+/**
  * Holds if there is a local flow step between a ${{}} expression accesing an env var and the var definition itself
  * e.g. ${{ env.foo }}
  */
@@ -234,6 +246,7 @@ predicate localFlowStep(Node nodeFrom, Node nodeTo) {
   stepsCtxLocalStep(nodeFrom, nodeTo) or
   needsCtxLocalStep(nodeFrom, nodeTo) or
   inputsCtxLocalStep(nodeFrom, nodeTo) or
+  matrixCtxLocalStep(nodeFrom, nodeTo) or
   envCtxLocalStep(nodeFrom, nodeTo)
 }
 
