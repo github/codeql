@@ -257,7 +257,18 @@ signature module Semantic {
   /**
    * A phi node in the SSA form. A phi node is a kind of node in the SSA form
    * that represents a merge point where multiple control flow paths converge
-   * and the value of a variable needs to be selected.
+   * and the value of a variable needs to be selected according to which
+   * control flow path was taken. For example, in the following Ruby code:
+   * ```rb
+   * if b
+   *   x = 0
+   * else
+   *   x = 1
+   * end
+   * puts x
+   * ```
+   * A phi node for `x` is inserted just before the call `puts x`, since the
+   * value of `x` may come from either `x = 0` or `x = 1`.
    */
   class SsaPhiNode extends SsaVariable {
     /** Holds if `inp` is an input to the phi node along the edge originating in `bb`. */
