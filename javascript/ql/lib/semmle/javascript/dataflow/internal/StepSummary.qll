@@ -78,7 +78,7 @@ private module Cached {
   }
 
   /**
-   * Holds if `loadProp` of `parameter` is stored in the `storeProp` property of the return value of `fun`.
+   * Holds if `loadProp` of `param` is stored in the `storeProp` property of the return value of `fun`.
    */
   pragma[nomagic]
   private predicate summarizedLoadStoreStep(
