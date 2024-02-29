@@ -55,7 +55,7 @@ namespace Semmle.Autobuild.Shared
 
         public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
-            builder.Log(Severity.Info, "Attempting to locate build script");
+            builder.Logger.LogInfo("Attempting to locate build script");
 
             // a list of extensions for files that we consider to be scripts on the current platform
             var extensions = builder.Actions.IsWindows() ? winExtensions : linuxExtensions;

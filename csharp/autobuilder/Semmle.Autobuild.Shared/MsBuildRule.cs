@@ -40,7 +40,7 @@ namespace Semmle.Autobuild.Shared
                 return BuildScript.Failure;
 
             if (auto)
-                builder.Log(Severity.Info, "Attempting to build using MSBuild");
+                builder.Logger.LogInfo("Attempting to build using MSBuild");
 
             var vsTools = GetVcVarsBatFile(builder);
 
@@ -54,7 +54,7 @@ namespace Semmle.Autobuild.Shared
 
             if (vsTools is null && builder.Actions.IsWindows())
             {
-                builder.Log(Severity.Warning, "Could not find a suitable version of VsDevCmd.bat/vcvarsall.bat");
+                builder.Logger.LogWarning("Could not find a suitable version of VsDevCmd.bat/vcvarsall.bat");
             }
 
             // Use `nuget.exe` from source code repo, if present, otherwise first attempt with global
@@ -165,18 +165,18 @@ namespace Semmle.Autobuild.Shared
                 {
                     foreach (var b in BuildTools.VcVarsAllBatFiles(builder.Actions))
                     {
-                        builder.Log(Severity.Info, "Found {0} version {1}", b.Path, b.ToolsVersion);
+                        builder.Logger.Log(Severity.Info, "Found {0} version {1}", b.Path, b.ToolsVersion);
                     }
 
                     vsTools = BuildTools.FindCompatibleVcVars(builder.Actions, msToolsVersion);
                     if (vsTools is null)
-                        builder.Log(Severity.Warning, "Could not find build tools matching version {0}", msToolsVersion);
+                        builder.Logger.LogWarning("Could not find build tools matching version {0}", msToolsVersion);
                     else
-                        builder.Log(Severity.Info, "Setting Visual Studio tools to {0}", vsTools.Path);
+                        builder.Logger.Log(Severity.Info, "Setting Visual Studio tools to {0}", vsTools.Path);
                 }
                 else
                 {
-                    builder.Log(Severity.Error, "The format of vstools_version is incorrect. Please specify an integer.");
+                    builder.Logger.LogError("The format of vstools_version is incorrect. Please specify an integer.");
                 }
             }
 
@@ -189,18 +189,18 @@ namespace Semmle.Autobuild.Shared
         private static BuildScript DownloadNugetExe<TAutobuildOptions>(IAutobuilder<TAutobuildOptions> builder, string path) where TAutobuildOptions : AutobuildOptionsShared =>
             BuildScript.Create(_ =>
             {
-                builder.Log(Severity.Info, "Attempting to download nuget.exe");
+                builder.Logger.LogInfo("Attempting to download nuget.exe");
                 return 0;
             })
             &
             BuildScript.DownloadFile(
                 FileUtils.NugetExeUrl,
                 path,
-                e => builder.Log(Severity.Warning, $"Failed to download 'nuget.exe': {e.Message}"))
+                e => builder.Logger.LogWarning($"Failed to download 'nuget.exe': {e.Message}"))
             &
             BuildScript.Create(_ =>
             {
-                builder.Log(Severity.Info, $"Successfully downloaded {path}");
+                builder.Logger.LogInfo($"Successfully downloaded {path}");
                 return 0;
             });
     }

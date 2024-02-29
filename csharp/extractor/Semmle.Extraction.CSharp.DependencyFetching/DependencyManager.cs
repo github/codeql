@@ -7,6 +7,7 @@ using System.Security.Cryptography;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+
 using Semmle.Util;
 using Semmle.Util.Logging;
 
@@ -27,8 +28,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private readonly List<string> generatedSources;
         private int dotnetFrameworkVersionVariantCount = 0;
         private int conflictedReferences = 0;
-        private readonly IDependencyOptions options;
         private readonly DirectoryInfo sourceDir;
+        private string? dotnetPath;
         private readonly IDotNet dotnet;
         private readonly FileContent fileContent;
         private readonly TemporaryDirectory packageDirectory;
@@ -45,11 +46,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// </summary>
         /// <param name="options">Dependency fetching options</param>
         /// <param name="logger">Logger for dependency fetching progress.</param>
-        public DependencyManager(string srcDir, IDependencyOptions options, ILogger logger)
+        public DependencyManager(string srcDir, ILogger logger)
         {
             var startTime = DateTime.Now;
 
-            this.options = options;
             this.logger = logger;
             this.sourceDir = new DirectoryInfo(srcDir);
 
@@ -58,17 +58,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             missingPackageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "missingpackages"));
 
             tempWorkingDirectory = new TemporaryDirectory(FileUtils.GetTemporaryWorkingDirectory(out cleanupTempWorkingDirectory));
-
-            try
-            {
-                this.dotnet = DotNet.Make(options, logger, tempWorkingDirectory);
-                runtimeLazy = new Lazy<Runtime>(() => new Runtime(dotnet, logger));
-            }
-            catch
-            {
-                logger.LogError("Missing dotnet CLI");
-                throw;
-            }
 
             logger.LogInfo($"Finding files in {srcDir}...");
 
@@ -84,6 +73,33 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var dllPaths = allFiles.SelectFileNamesByExtension(".dll").ToHashSet();
 
             logger.LogInfo($"Found {allFiles.Count} files, {nonGeneratedSources.Count} source files, {allProjects.Count} project files, {allSolutions.Count} solution files, {dllPaths.Count} DLLs.");
+
+            void startCallback(string s, bool silent)
+            {
+                logger.Log(silent ? Severity.Debug : Severity.Info, $"\nRunning {s}");
+            }
+
+            void exitCallback(int ret, string msg, bool silent)
+            {
+                logger.Log(silent ? Severity.Debug : Severity.Info, $"Exit code {ret}{(string.IsNullOrEmpty(msg) ? "" : $": {msg}")}");
+            }
+
+            DotNet.WithDotNet(SystemBuildActions.Instance, logger, smallNonBinaryFiles, tempWorkingDirectory.ToString(), shouldCleanUp: false, ensureDotNetAvailable: true, version: null, installDir =>
+            {
+                this.dotnetPath = installDir;
+                return BuildScript.Success;
+            }).Run(SystemBuildActions.Instance, startCallback, exitCallback);
+
+            try
+            {
+                this.dotnet = DotNet.Make(logger, dotnetPath, tempWorkingDirectory);
+                runtimeLazy = new Lazy<Runtime>(() => new Runtime(dotnet));
+            }
+            catch
+            {
+                logger.LogError("Missing dotnet CLI");
+                throw;
+            }
 
             RestoreNugetPackages(allNonBinaryFiles, allProjects, allSolutions, dllPaths);
             // Find DLLs in the .Net / Asp.Net Framework
@@ -570,15 +586,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        public DependencyManager(string srcDir) : this(srcDir, DependencyOptions.Default, new ConsoleLogger(Verbosity.Info, logThreadId: true)) { }
-
         private IEnumerable<FileInfo> GetAllFiles()
         {
             IEnumerable<FileInfo> files = sourceDir.GetFiles("*.*", new EnumerationOptions { RecurseSubdirectories = true });
 
-            if (options.DotNetPath != null)
+            if (dotnetPath != null)
             {
-                files = files.Where(f => !f.FullName.StartsWith(options.DotNetPath, StringComparison.OrdinalIgnoreCase));
+                files = files.Where(f => !f.FullName.StartsWith(dotnetPath, StringComparison.OrdinalIgnoreCase));
             }
 
             files = files.Where(f =>
@@ -590,12 +604,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         return true;
                     }
 
-                    logger.Log(Severity.Warning, $"File {f.FullName} could not be processed.");
+                    logger.LogWarning($"File {f.FullName} could not be processed.");
                     return false;
                 }
                 catch (Exception ex)
                 {
-                    logger.Log(Severity.Warning, $"File {f.FullName} could not be processed: {ex.Message}");
+                    logger.LogWarning($"File {f.FullName} could not be processed: {ex.Message}");
                     return false;
                 }
             });
@@ -651,7 +665,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
                 catch (AssemblyLoadException)
                 {
-                    logger.Log(Severity.Warning, $"Could not load assembly information from {usedReference.Key}");
+                    logger.LogWarning($"Could not load assembly information from {usedReference.Key}");
                 }
             }
 
@@ -738,7 +752,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void AnalyseSolutions(IEnumerable<string> solutions)
         {
-            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, solutionFile =>
+            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = EnvironmentVariables.GetDefaultNumberOfThreads() }, solutionFile =>
             {
                 try
                 {
@@ -828,7 +842,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var assetFiles = new List<string>();
             var sync = new object();
-            Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, project =>
+            Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = EnvironmentVariables.GetDefaultNumberOfThreads() }, project =>
             {
                 logger.LogInfo($"Restoring project {project}...");
                 var res = dotnet.Restore(new(project, packageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
@@ -928,7 +942,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var sync = new object();
 
-            Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = options.Threads }, package =>
+            Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = EnvironmentVariables.GetDefaultNumberOfThreads() }, package =>
             {
                 var success = TryRestorePackageManually(package.Name, nugetConfig, package.PackageReferenceSource);
                 if (!success)
