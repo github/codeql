@@ -162,8 +162,10 @@ edges
 | semantics.rb:116:5:116:5 | h [element :a] | semantics.rb:117:16:117:16 | h [element :a] | provenance |  |
 | semantics.rb:116:5:116:5 | h [element :a] | semantics.rb:121:22:121:22 | h [element :a] | provenance |  |
 | semantics.rb:116:5:116:5 | h [element :a] | semantics.rb:121:22:121:22 | h [element :a] | provenance |  |
-| semantics.rb:116:14:116:14 | a | semantics.rb:116:5:116:5 | h [element :a] | provenance |  |
-| semantics.rb:116:14:116:14 | a | semantics.rb:116:5:116:5 | h [element :a] | provenance |  |
+| semantics.rb:116:9:116:22 | call to [] [element :a] | semantics.rb:116:5:116:5 | h [element :a] | provenance |  |
+| semantics.rb:116:9:116:22 | call to [] [element :a] | semantics.rb:116:5:116:5 | h [element :a] | provenance |  |
+| semantics.rb:116:14:116:14 | a | semantics.rb:116:9:116:22 | call to [] [element :a] | provenance |  |
+| semantics.rb:116:14:116:14 | a | semantics.rb:116:9:116:22 | call to [] [element :a] | provenance |  |
 | semantics.rb:117:14:117:16 | ** ... [element :a] | semantics.rb:117:10:117:17 | call to s16 | provenance |  |
 | semantics.rb:117:14:117:16 | ** ... [element :a] | semantics.rb:117:10:117:17 | call to s16 | provenance |  |
 | semantics.rb:117:16:117:16 | h [element :a] | semantics.rb:117:14:117:16 | ** ... [element :a] | provenance |  |
@@ -212,10 +214,14 @@ edges
 | semantics.rb:135:5:135:7 | arr [element 0] | semantics.rb:136:15:136:17 | arr [element 0] | provenance |  |
 | semantics.rb:135:5:135:7 | arr [element 1] | semantics.rb:136:15:136:17 | arr [element 1] | provenance |  |
 | semantics.rb:135:5:135:7 | arr [element 1] | semantics.rb:136:15:136:17 | arr [element 1] | provenance |  |
-| semantics.rb:135:12:135:12 | a | semantics.rb:135:5:135:7 | arr [element 0] | provenance |  |
-| semantics.rb:135:12:135:12 | a | semantics.rb:135:5:135:7 | arr [element 0] | provenance |  |
-| semantics.rb:135:15:135:15 | b | semantics.rb:135:5:135:7 | arr [element 1] | provenance |  |
-| semantics.rb:135:15:135:15 | b | semantics.rb:135:5:135:7 | arr [element 1] | provenance |  |
+| semantics.rb:135:11:135:16 | call to [] [element 0] | semantics.rb:135:5:135:7 | arr [element 0] | provenance |  |
+| semantics.rb:135:11:135:16 | call to [] [element 0] | semantics.rb:135:5:135:7 | arr [element 0] | provenance |  |
+| semantics.rb:135:11:135:16 | call to [] [element 1] | semantics.rb:135:5:135:7 | arr [element 1] | provenance |  |
+| semantics.rb:135:11:135:16 | call to [] [element 1] | semantics.rb:135:5:135:7 | arr [element 1] | provenance |  |
+| semantics.rb:135:12:135:12 | a | semantics.rb:135:11:135:16 | call to [] [element 0] | provenance |  |
+| semantics.rb:135:12:135:12 | a | semantics.rb:135:11:135:16 | call to [] [element 0] | provenance |  |
+| semantics.rb:135:15:135:15 | b | semantics.rb:135:11:135:16 | call to [] [element 1] | provenance |  |
+| semantics.rb:135:15:135:15 | b | semantics.rb:135:11:135:16 | call to [] [element 1] | provenance |  |
 | semantics.rb:136:14:136:17 | * ... [element 0] | semantics.rb:136:10:136:18 | call to s18 | provenance |  |
 | semantics.rb:136:14:136:17 | * ... [element 0] | semantics.rb:136:10:136:18 | call to s18 | provenance |  |
 | semantics.rb:136:14:136:17 | * ... [element 1] | semantics.rb:136:10:136:18 | call to s18 | provenance |  |
@@ -1275,6 +1281,8 @@ nodes
 | semantics.rb:115:9:115:18 | call to source | semmle.label | call to source |
 | semantics.rb:116:5:116:5 | h [element :a] | semmle.label | h [element :a] |
 | semantics.rb:116:5:116:5 | h [element :a] | semmle.label | h [element :a] |
+| semantics.rb:116:9:116:22 | call to [] [element :a] | semmle.label | call to [] [element :a] |
+| semantics.rb:116:9:116:22 | call to [] [element :a] | semmle.label | call to [] [element :a] |
 | semantics.rb:116:14:116:14 | a | semmle.label | a |
 | semantics.rb:116:14:116:14 | a | semmle.label | a |
 | semantics.rb:117:10:117:17 | call to s16 | semmle.label | call to s16 |
@@ -1332,6 +1340,10 @@ nodes
 | semantics.rb:135:5:135:7 | arr [element 0] | semmle.label | arr [element 0] |
 | semantics.rb:135:5:135:7 | arr [element 1] | semmle.label | arr [element 1] |
 | semantics.rb:135:5:135:7 | arr [element 1] | semmle.label | arr [element 1] |
+| semantics.rb:135:11:135:16 | call to [] [element 0] | semmle.label | call to [] [element 0] |
+| semantics.rb:135:11:135:16 | call to [] [element 0] | semmle.label | call to [] [element 0] |
+| semantics.rb:135:11:135:16 | call to [] [element 1] | semmle.label | call to [] [element 1] |
+| semantics.rb:135:11:135:16 | call to [] [element 1] | semmle.label | call to [] [element 1] |
 | semantics.rb:135:12:135:12 | a | semmle.label | a |
 | semantics.rb:135:12:135:12 | a | semmle.label | a |
 | semantics.rb:135:15:135:15 | b | semmle.label | b |

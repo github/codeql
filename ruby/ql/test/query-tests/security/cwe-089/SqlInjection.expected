@@ -8,10 +8,12 @@ edges
 | ActiveRecordInjection.rb:43:29:43:39 | ...[...] | ActiveRecordInjection.rb:43:20:43:42 | "id = '#{...}'" | provenance |  |
 | ActiveRecordInjection.rb:48:30:48:35 | call to params | ActiveRecordInjection.rb:48:30:48:40 | ...[...] | provenance |  |
 | ActiveRecordInjection.rb:48:30:48:40 | ...[...] | ActiveRecordInjection.rb:48:21:48:43 | "id = '#{...}'" | provenance |  |
-| ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | ActiveRecordInjection.rb:52:21:52:45 | call to [] | provenance |  |
+| ActiveRecordInjection.rb:52:21:52:45 | call to [] [element 0] | ActiveRecordInjection.rb:52:21:52:45 | call to [] | provenance |  |
+| ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | ActiveRecordInjection.rb:52:21:52:45 | call to [] [element 0] | provenance |  |
 | ActiveRecordInjection.rb:52:31:52:36 | call to params | ActiveRecordInjection.rb:52:31:52:41 | ...[...] | provenance |  |
 | ActiveRecordInjection.rb:52:31:52:41 | ...[...] | ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | provenance |  |
-| ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | ActiveRecordInjection.rb:57:22:57:46 | call to [] | provenance |  |
+| ActiveRecordInjection.rb:57:22:57:46 | call to [] [element 0] | ActiveRecordInjection.rb:57:22:57:46 | call to [] | provenance |  |
+| ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | ActiveRecordInjection.rb:57:22:57:46 | call to [] [element 0] | provenance |  |
 | ActiveRecordInjection.rb:57:32:57:37 | call to params | ActiveRecordInjection.rb:57:32:57:42 | ...[...] | provenance |  |
 | ActiveRecordInjection.rb:57:32:57:42 | ...[...] | ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | provenance |  |
 | ActiveRecordInjection.rb:62:21:62:26 | call to params | ActiveRecordInjection.rb:62:21:62:35 | ...[...] | provenance |  |
@@ -105,10 +107,12 @@ nodes
 | ActiveRecordInjection.rb:48:30:48:35 | call to params | semmle.label | call to params |
 | ActiveRecordInjection.rb:48:30:48:40 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:52:21:52:45 | call to [] | semmle.label | call to [] |
+| ActiveRecordInjection.rb:52:21:52:45 | call to [] [element 0] | semmle.label | call to [] [element 0] |
 | ActiveRecordInjection.rb:52:22:52:44 | "id = '#{...}'" | semmle.label | "id = '#{...}'" |
 | ActiveRecordInjection.rb:52:31:52:36 | call to params | semmle.label | call to params |
 | ActiveRecordInjection.rb:52:31:52:41 | ...[...] | semmle.label | ...[...] |
 | ActiveRecordInjection.rb:57:22:57:46 | call to [] | semmle.label | call to [] |
+| ActiveRecordInjection.rb:57:22:57:46 | call to [] [element 0] | semmle.label | call to [] [element 0] |
 | ActiveRecordInjection.rb:57:23:57:45 | "id = '#{...}'" | semmle.label | "id = '#{...}'" |
 | ActiveRecordInjection.rb:57:32:57:37 | call to params | semmle.label | call to params |
 | ActiveRecordInjection.rb:57:32:57:42 | ...[...] | semmle.label | ...[...] |

@@ -1672,3 +1672,20 @@ class M139
         sink(a2[i]) # $ hasValueFlow=139.2
     end
 end
+
+def m139
+    a = [0, 1, source(139.1)]
+    b = a.map do |x|
+        x
+    end
+    sink b[2] # $ hasValueFlow=139.1
+end
+
+def m140
+    a = [0, 1, source(140.1), source(140.2)]
+    x, y, z, w = a
+    sink x
+    sink y
+    sink z # $ hasValueFlow=140.1
+    sink w # $ hasValueFlow=140.2
+end
