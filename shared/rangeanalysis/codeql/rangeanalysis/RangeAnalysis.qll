@@ -393,7 +393,10 @@ signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
     Location getLocation();
 
     /**
-     * Gets the expression associated with the semantic bound, given a delta.
+     * Gets an expression that equals this bound plus `delta`.
+     *
+     * For the zero-bound this gets integer constants equal to `delta`, and for
+     * other bounds this gets expressions equal to the bound while `delta = 0`.
      */
     Sem::Expr getExpr(D::Delta delta);
   }
