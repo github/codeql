@@ -21,7 +21,7 @@ private predicate isTrustedOrg(string repo) {
   exists(string org | org in ["actions", "github", "advanced-security"] | repo.matches(org + "/%"))
 }
 
-from StepUses uses, string repo, string version, Workflow workflow, string name
+from UsesStep uses, string repo, string version, Workflow workflow, string name
 where
   uses.getCallee() = repo and
   uses.getEnclosingWorkflow() = workflow and

@@ -32,14 +32,14 @@ class LabelCheck extends If {
   }
 }
 
-from Workflow w, Job job, StepUses checkoutStep
+from Workflow w, Job job, UsesStep checkoutStep
 where
   w.hasTriggerEvent("pull_request_target") and
   w.getAJob() = job and
   job.getAStep() = checkoutStep and
   checkoutStep.getCallee() = "actions/checkout" and
   checkoutStep
-      .getArgumentExpr("ref")
+      .getArgument("ref")
       .(Expression)
       .getExpression()
       .matches([

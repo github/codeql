@@ -18,7 +18,7 @@ import codeql.actions.dataflow.ExternalFlow
 
 private class ExpressionInjectionSink extends DataFlow::Node {
   ExpressionInjectionSink() {
-    exists(Run e | e.getScriptExpr() = this.asExpr()) or
+    exists(Run e | e.getScript() = this.asExpr()) or
     externallyDefinedSink(this, "expression-injection")
   }
 }

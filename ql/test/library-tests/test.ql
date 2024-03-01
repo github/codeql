@@ -1,4 +1,4 @@
-import codeql.actions.ast.internal.Actions
+import codeql.actions.ast.internal.Yaml
 import codeql.actions.Ast
 import codeql.actions.Cfg as Cfg
 import codeql.actions.DataFlow
@@ -15,29 +15,29 @@ query predicate stepNodes(Step s) { any() }
 
 query predicate allUsesNodes(Uses s) { any() }
 
-query predicate stepUsesNodes(StepUses s) { any() }
+query predicate stepUsesNodes(UsesStep s) { any() }
 
-query predicate jobUsesNodes(JobUses s) { any() }
+query predicate jobUsesNodes(UsesStep s) { any() }
 
 query predicate usesSteps(Uses call, string argname, Expression arg) {
-  call.getArgumentExpr(argname) = arg
+  call.getArgument(argname) = arg
 }
 
-query predicate runSteps(Run run, string body) { run.getScript() = body }
+query predicate runSteps(Run run, string body) { run.getScript().getValue() = body }
 
 query predicate runStepChildren(Run run, AstNode child) { child.getParentNode() = run }
 
 query predicate parentNodes(AstNode child, AstNode parent) { child.getParentNode() = parent }
 
-query predicate cfgNodes(Cfg::Node n) { n.getLocation().getFile().getBaseName() = "test.yml" } //any() }
+query predicate cfgNodes(Cfg::Node n) { any() }
 
-query predicate dfNodes(DataFlow::Node e) { e.getLocation().getFile().getBaseName() = "test.yml" } //any() }
+query predicate dfNodes(DataFlow::Node e) { any() }
 
 query predicate exprNodes(DataFlow::Node e) { any() }
 
 query predicate argumentNodes(DataFlow::ArgumentNode e) { any() }
 
-query predicate usesIds(StepUses s, string a) { s.getId() = a }
+query predicate usesIds(UsesStep s, string a) { s.getId() = a }
 
 query predicate nodeLocations(DataFlow::Node n, Location l) { n.getLocation() = l }
 

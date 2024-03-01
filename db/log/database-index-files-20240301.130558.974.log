@@ -1,0 +1,44 @@
+[2024-03-01 13:05:58] This is codeql database index-files --include-extension=.yaml --include-extension=.yml --size-limit=5m --language=yaml /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/db
+[2024-03-01 13:05:58] Log file was started late.
+[2024-03-01 13:05:59] Using index-files script /Users/pwntester/.local/share/gh/extensions/gh-codeql/dist/release/v2.16.3/yaml/tools/index-files.sh.
+[2024-03-01 13:05:59] [PROGRESS] database index-files> Scanning for files in /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094...
+[2024-03-01 13:05:59] Calling plumbing command: codeql resolve files --include-extension=.yaml --include-extension=.yml --size-limit=5m /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094 --format=json
+[2024-03-01 13:05:59] [PROGRESS] resolve files> Scanning /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094...
+[2024-03-01 13:05:59] [PROGRESS] resolve files> Scanning /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/action2...
+[2024-03-01 13:05:59] [PROGRESS] resolve files> Scanning /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github...
+[2024-03-01 13:05:59] [PROGRESS] resolve files> Scanning /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows...
+[2024-03-01 13:05:59] [PROGRESS] resolve files> Scanning /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/action1...
+[2024-03-01 13:05:59] Plumbing command codeql resolve files completed:
+                      [
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/action2/action.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/cross1.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/cross3.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/cross2.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/argus_case_study.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/changed-files.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/image_link_generator.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/comment_issue_newline.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/test.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/pull_request_target.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/pull_request_review.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/push.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/comment_issue.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/no-flow1.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/no-flow2.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/inter-job.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/matrix.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/issues.yaml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/pull_request_review_comment.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/discussion.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/workflow_run.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/simple1.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/simple2.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/gollum.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/.github/workflows/discussion_comment.yml",
+                        "/Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094/action1/action.yml"
+                      ]
+[2024-03-01 13:05:59] [DETAILS] database index-files> Found 26 files.
+[2024-03-01 13:05:59] [PROGRESS] database index-files> /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/db: Indexing files in in /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094...
+[2024-03-01 13:05:59] Using index-files script /Users/pwntester/.local/share/gh/extensions/gh-codeql/dist/release/v2.16.3/yaml/tools/index-files.sh.
+[2024-03-01 13:05:59] [PROGRESS] database index-files> Running command in /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094: [/Users/pwntester/.local/share/gh/extensions/gh-codeql/dist/release/v2.16.3/yaml/tools/index-files.sh, /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/db/working/files-to-index11395055735303062068.list]
+[2024-03-01 13:05:59] Terminating normally.

@@ -1,11 +1,11 @@
 edges
 | action1/action.yml:4:3:4:14 | input who-to-greet | action1/action.yml:28:17:28:42 | ${{ inp ... reet }} |
 | action1/action.yml:4:3:4:14 | input who-to-greet | action1/action.yml:35:12:35:51 | echo "H ... et }}." |
-| action1/action.yml:24:7:31:4 | name: Remove foo [value] | action1/action.yml:32:12:32:50 | echo ${ ... alue }} |
-| action1/action.yml:28:17:28:42 | ${{ inp ... reet }} | action1/action.yml:24:7:31:4 | name: Remove foo [value] |
+| action1/action.yml:24:7:31:4 | Uses Step: replace [value] | action1/action.yml:32:12:32:50 | echo ${ ... alue }} |
+| action1/action.yml:28:17:28:42 | ${{ inp ... reet }} | action1/action.yml:24:7:31:4 | Uses Step: replace [value] |
 nodes
 | action1/action.yml:4:3:4:14 | input who-to-greet | semmle.label | input who-to-greet |
-| action1/action.yml:24:7:31:4 | name: Remove foo [value] | semmle.label | name: Remove foo [value] |
+| action1/action.yml:24:7:31:4 | Uses Step: replace [value] | semmle.label | Uses Step: replace [value] |
 | action1/action.yml:28:17:28:42 | ${{ inp ... reet }} | semmle.label | ${{ inp ... reet }} |
 | action1/action.yml:32:12:32:50 | echo ${ ... alue }} | semmle.label | echo ${ ... alue }} |
 | action1/action.yml:35:12:35:51 | echo "H ... et }}." | semmle.label | echo "H ... et }}." |

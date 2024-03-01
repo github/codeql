@@ -77,7 +77,6 @@ module Completion {
   class ReturnSuccessor extends SuccessorType, TReturnSuccessor {
     override string toString() { result = "return" }
   }
-  // Why is there no conditional successor type?
 }
 
 module CfgScope {
@@ -149,7 +148,7 @@ private class CompositeActionTree extends StandardPreOrderTree instanceof Compos
       rank[i](AstNode child, Location l |
         (
           child = this.(CompositeAction).getAnInput() or
-          child = this.(CompositeAction).getAnOutputExpr() or
+          child = this.(CompositeAction).getAnOutput() or
           child = this.(CompositeAction).getRuns()
         ) and
         l = child.getLocation()
@@ -172,10 +171,10 @@ private class WorkflowTree extends StandardPreOrderTree instanceof Workflow {
       result =
         rank[i](AstNode child, Location l |
           (
-            child = this.(ReusableWorkflow).getAJob() or
             child = this.(ReusableWorkflow).getAnInput() or
-            child = this.(ReusableWorkflow).getAnOutputExpr() or
-            child = this.(ReusableWorkflow).getStrategy()
+            child = this.(ReusableWorkflow).getAnOutput() or
+            child = this.(ReusableWorkflow).getStrategy() or
+            child = this.(ReusableWorkflow).getAJob()
           ) and
           l = child.getLocation()
         |
@@ -203,7 +202,7 @@ private class OutputsTree extends StandardPreOrderTree instanceof Outputs {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        child = super.getOutputExpr(_) and l = child.getLocation()
+        child = super.getOutput(_) and l = child.getLocation()
       |
         child
         order by
@@ -216,7 +215,7 @@ private class StrategyTree extends StandardPreOrderTree instanceof Strategy {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        child = super.getMatrixVariableExpr(_) and l = child.getLocation()
+        child = super.getMatrixVariable(_) and l = child.getLocation()
       |
         child
         order by
@@ -248,7 +247,7 @@ private class UsesTree extends StandardPreOrderTree instanceof Uses {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        (child = super.getArgumentExpr(_) or child = super.getEnvExpr(_)) and
+        (child = super.getArgument(_) or child = super.getEnvVar(_)) and
         l = child.getLocation()
       |
         child
@@ -262,7 +261,7 @@ private class RunTree extends StandardPreOrderTree instanceof Run {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        (child = super.getEnvExpr(_) or child = super.getScriptExpr()) and
+        (child = super.getEnvVar(_) or child = super.getScript()) and
         l = child.getLocation()
       |
         child
@@ -276,11 +275,4 @@ private class UsesLeaf extends LeafTree instanceof Uses { }
 
 private class InputTree extends LeafTree instanceof Input { }
 
-// private class OutputExprTree extends LeafTree instanceof OutputExpr { }
-//
-// private class MatrixVariableExprTree extends LeafTree instanceof MatrixVariableExpr { }
-//
-// private class EnvExprTree extends LeafTree instanceof EnvExpr { }
-private class ExprAccessTree extends LeafTree instanceof ContextExpression { }
-
-private class AstNodeLeaf extends LeafTree instanceof Expression { }
+private class StringLiteralLeaf extends LeafTree instanceof StringLiteral { }

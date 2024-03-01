@@ -162,7 +162,7 @@ class ParameterPosition extends string {
  * Made a string to match `With:` keys in the AST
  */
 class ArgumentPosition extends string {
-  ArgumentPosition() { exists(any(Uses e).getArgumentExpr(this)) }
+  ArgumentPosition() { exists(any(Uses e).getArgument(this)) }
 }
 
 /**
@@ -301,7 +301,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) { ctxFieldReadStep(node
  */
 predicate fieldStoreStep(Node node1, Node node2, ContentSet c) {
   exists(Outputs out, string fieldName |
-    node1.asExpr() = out.getOutputExpr(fieldName) and
+    node1.asExpr() = out.getOutput(fieldName) and
     node2.asExpr() = out and
     c = any(FieldContent ct | ct.getName() = fieldName)
   )

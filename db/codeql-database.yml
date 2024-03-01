@@ -1,0 +1,10 @@
+---
+sourceLocationPrefix: /Users/pwntester/src/github.com/githubsecuritylab/codeql-actions/ql/test/query-tests/Security/CWE-094
+baselineLinesOfCode: 0
+unicodeNewlines: false
+columnKind: utf16
+primaryLanguage: yaml
+creationMetadata:
+  cliVersion: 2.16.3
+  creationTime: 2024-03-01T12:05:58.598849Z
+finalised: true
