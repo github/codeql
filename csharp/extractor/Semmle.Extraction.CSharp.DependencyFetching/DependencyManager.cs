@@ -40,6 +40,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private readonly Lazy<Runtime> runtimeLazy;
         private Runtime Runtime => runtimeLazy.Value;
+        private readonly int threads = EnvironmentVariables.GetDefaultNumberOfThreads();
 
         /// <summary>
         /// Performs C# dependency fetching.
@@ -752,7 +753,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private void AnalyseSolutions(IEnumerable<string> solutions)
         {
-            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = EnvironmentVariables.GetDefaultNumberOfThreads() }, solutionFile =>
+            Parallel.ForEach(solutions, new ParallelOptions { MaxDegreeOfParallelism = threads }, solutionFile =>
             {
                 try
                 {
@@ -842,7 +843,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var assetFiles = new List<string>();
             var sync = new object();
-            Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = EnvironmentVariables.GetDefaultNumberOfThreads() }, project =>
+            Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = threads }, project =>
             {
                 logger.LogInfo($"Restoring project {project}...");
                 var res = dotnet.Restore(new(project, packageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: true));
@@ -942,7 +943,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var successCount = 0;
             var sync = new object();
 
-            Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = EnvironmentVariables.GetDefaultNumberOfThreads() }, package =>
+            Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = threads }, package =>
             {
                 var success = TryRestorePackageManually(package.Name, nugetConfig, package.PackageReferenceSource);
                 if (!success)
