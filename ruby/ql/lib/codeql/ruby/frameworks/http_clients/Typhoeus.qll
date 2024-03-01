@@ -69,6 +69,7 @@ private module TyphoeusDisablesCertificateValidationConfig implements DataFlow::
 private module TyphoeusDisablesCertificateValidationFlow =
   DataFlow::Global<TyphoeusDisablesCertificateValidationConfig>;
 
+/** Gets the body from the given `requestNode` representing a Typhoeus request */
 private DataFlow::Node getBodyFromRequest(API::Node requestNode) {
   result =
     [
@@ -77,17 +78,20 @@ private DataFlow::Node getBodyFromRequest(API::Node requestNode) {
     ]
 }
 
+/** Gets the response from the given `requestNode` representing a Typhoeus request */
 private API::Node getResponseFromRequest(API::Node requestNode) {
   result =
     [
       requestNode.getReturn(["run", "response"]),
       requestNode
-          .getMethod(["on_complete", "on_success", "on_headers", "on_failure", "on_progress"])
+          // on_headers does not carry a response body
+          .getMethod(["on_complete", "on_success", "on_failure", "on_progress"])
           .getBlock()
           .getParameter(0)
     ]
 }
 
+/** Gets the body from the given `responseNode` representing a Typhoeus request */
 private DataFlow::Node getBodyFromResponse(API::Node responseNode) {
   result = responseNode.getAMethodCall(["body", "response_body"])
 }
