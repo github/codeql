@@ -17,8 +17,7 @@ private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /** A data flow source of remote user input. */
 abstract class RemoteFlowSource extends SourceNode {
-  /** Gets a string that describes the type of this remote flow source. */
-  abstract string getSourceType();
+  override string getSourceType() { result = "remote flow source" }
 
   override string getThreatModel() { result = "remote" }
 }

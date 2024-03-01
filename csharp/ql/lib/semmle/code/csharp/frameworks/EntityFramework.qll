@@ -49,6 +49,8 @@ module EntityFramework {
     StoredFlowSource() {
       this.asExpr() = any(PropertyRead read | read.getTarget() instanceof MappedProperty)
     }
+
+    override string getSourceType() { result = "ORM mapped property" }
   }
 
   private class EFClass extends Class {
