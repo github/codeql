@@ -14,7 +14,7 @@
 | tests.cpp:209:7:209:30 | [summary] to write: ReturnValue in namespaceMadSelfToReturn | ReturnNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
 | tests.cpp:285:5:285:29 | [summary param] 0 in madCallArg0ReturnToReturn | ParameterNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
 | tests.cpp:285:5:285:29 | [summary] read: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | PostUpdateNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:285:5:285:29 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturn |  | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:285:5:285:29 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturn | OutNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
 | tests.cpp:285:5:285:29 | [summary] to write: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | ArgumentNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
 | tests.cpp:285:5:285:29 | [summary] to write: ReturnValue in madCallArg0ReturnToReturn | ReturnNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
 | tests.cpp:287:6:287:25 | [summary param] 0 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |

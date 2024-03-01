@@ -385,7 +385,7 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
   override predicate argumentOf(DataFlowCall dfCall, ArgumentPosition pos) {
     exists(int indirectionIndex |
       pos = TIndirectionPosition(argumentIndex, pragma[only_bind_into](indirectionIndex)) and
-      this.getCallInstruction() = dfCall.asCallInstruction() and // TODO: or summarized call?
+      this.getCallInstruction() = dfCall.asCallInstruction() and
       super.hasAddressOperandAndIndirectionIndex(_, pragma[only_bind_into](indirectionIndex))
     )
   }
@@ -678,6 +678,9 @@ class OutNode extends Node {
     or
     // Modified arguments hidden behind indirections
     this instanceof IndirectArgumentOutNode
+    or
+    // Summary node
+    FlowSummaryImpl::Private::summaryOutNode(_, this.(FlowSummaryNode).getSummaryNode(), _)
   }
 
   /** Gets the underlying call. */
@@ -692,23 +695,39 @@ private class DirectCallOutNode extends OutNode {
 
   DirectCallOutNode() { simpleOutNode(this, call) }
 
-  override DataFlowCall getCall() { result.asCallInstruction() = call } // TODO: or summarized call?
+  override DataFlowCall getCall() { result.asCallInstruction() = call }
 
   override ReturnKind getReturnKind() { result = TNormalReturnKind(0) }
 }
 
 private class IndirectCallOutNode extends OutNode, IndirectReturnOutNode {
-  override DataFlowCall getCall() { result.asCallInstruction() = this.getCallInstruction() } // TODO: or summarized call?
+  override DataFlowCall getCall() { result.asCallInstruction() = this.getCallInstruction() }
 
   override ReturnKind getReturnKind() { result = TNormalReturnKind(this.getIndirectionIndex()) }
 }
 
 private class SideEffectOutNode extends OutNode, IndirectArgumentOutNode {
-  override DataFlowCall getCall() { result.asCallInstruction() = this.getCallInstruction() } // TODO: or summarized call?
+  override DataFlowCall getCall() { result.asCallInstruction() = this.getCallInstruction() }
 
   override ReturnKind getReturnKind() {
     result = TIndirectReturnKind(this.getArgumentIndex(), this.getIndirectionIndex())
   }
+}
+
+/**
+ * TODO: QLDoc.
+ */
+private class SummaryOutNode extends OutNode, FlowSummaryNode {
+  private SummaryCall call;
+  private ReturnKind kind_;
+
+  SummaryOutNode() {
+    FlowSummaryImpl::Private::summaryOutNode(call.getReceiver(), this.getSummaryNode(), kind_)
+  }
+
+  override DataFlowCall getCall() { result = call }
+
+  override ReturnKind getReturnKind() { result = kind_ }
 }
 
 /**
@@ -1099,7 +1118,7 @@ private class NormalCall extends DataFlowCall, TNormalCall {
 
   override ArgumentOperand getArgumentOperand(int index) {
     result = call.getArgumentOperand(index)
-  }
+   }
 
   override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(call.getEnclosingFunction()) }
 
