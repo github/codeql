@@ -178,13 +178,18 @@ signature module InputSig {
   }
 
   /**
-   * A content approximation.
+   * A content approximation. A content approximation corresponds with one or
+   * more `Content`s, and is used to provide an in-between level of precision
+   * for pruning.
    */
   class ContentApprox {
     /** Gets a textual representation of this element. */
     string toString();
   }
 
+  /**
+   * Gets the content approximation for content `c`.
+   */
   ContentApprox getContentApprox(Content c);
 
   class ParameterPosition {
