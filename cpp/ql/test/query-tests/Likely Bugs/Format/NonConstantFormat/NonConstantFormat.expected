@@ -1,31 +1,31 @@
 edges
-| NonConstantFormat.c:28:27:28:30 | **argv | NonConstantFormat.c:30:10:30:16 | *access to array |
-| NonConstantFormat.c:45:11:45:47 | *call to any_random_function | NonConstantFormat.c:45:9:45:48 | *call to gettext |
-| nested.cpp:19:29:19:32 | *fmt0 | nested.cpp:21:23:21:26 | *fmt0 |
-| nested.cpp:27:32:27:34 | *fmt | nested.cpp:28:16:28:18 | *fmt |
-| nested.cpp:28:16:28:18 | *fmt | nested.cpp:19:29:19:32 | *fmt0 |
-| nested.cpp:34:37:34:39 | *fmt | nested.cpp:35:19:35:21 | *fmt |
-| nested.cpp:35:19:35:21 | *fmt | nested.cpp:27:32:27:34 | *fmt |
-| nested.cpp:42:24:42:34 | *call to ext_fmt_str | nested.cpp:34:37:34:39 | *fmt |
-| nested.cpp:86:19:86:46 | *call to __builtin_alloca | nested.cpp:87:18:87:20 | *fmt |
-| test.cpp:27:39:27:39 | n | test.cpp:27:13:27:24 | **make_message |
-| test.cpp:46:14:46:17 | argc | test.cpp:51:23:51:30 | ... - ... |
-| test.cpp:46:27:46:30 | **argv | test.cpp:130:20:130:26 | *access to array |
-| test.cpp:51:23:51:30 | ... - ... | test.cpp:27:39:27:39 | n |
-| test.cpp:51:23:51:30 | ... - ... | test.cpp:51:10:51:21 | *call to make_message |
-| test.cpp:155:27:155:30 | data | test.cpp:157:12:157:15 | data |
-| test.cpp:167:31:167:34 | data | test.cpp:170:12:170:14 | *res |
-| test.cpp:193:32:193:34 | str | test.cpp:195:31:195:33 | str |
-| test.cpp:193:32:193:34 | str | test.cpp:197:11:197:14 | *wstr |
-| test.cpp:204:25:204:36 | *call to get_string | test.cpp:205:12:205:20 | *... + ... |
-| test.cpp:204:25:204:36 | *call to get_string | test.cpp:206:12:206:16 | *hello |
-| test.cpp:209:25:209:36 | *call to get_string | test.cpp:211:12:211:16 | *hello |
-| test.cpp:215:25:215:36 | *call to get_string | test.cpp:217:12:217:16 | *hello |
-| test.cpp:221:25:221:36 | *call to get_string | test.cpp:223:12:223:16 | *hello |
-| test.cpp:227:25:227:36 | *call to get_string | test.cpp:228:12:228:18 | *++ ... |
-| test.cpp:232:25:232:36 | *call to get_string | test.cpp:235:12:235:16 | *hello |
-| test.cpp:239:25:239:36 | *call to get_string | test.cpp:242:12:242:16 | *hello |
-| test.cpp:245:25:245:36 | *call to get_string | test.cpp:247:12:247:16 | *hello |
+| NonConstantFormat.c:28:27:28:30 | **argv | NonConstantFormat.c:30:10:30:16 | *access to array | provenance |  |
+| NonConstantFormat.c:45:11:45:47 | *call to any_random_function | NonConstantFormat.c:45:9:45:48 | *call to gettext | provenance |  |
+| nested.cpp:19:29:19:32 | *fmt0 | nested.cpp:21:23:21:26 | *fmt0 | provenance |  |
+| nested.cpp:27:32:27:34 | *fmt | nested.cpp:28:16:28:18 | *fmt | provenance |  |
+| nested.cpp:28:16:28:18 | *fmt | nested.cpp:19:29:19:32 | *fmt0 | provenance |  |
+| nested.cpp:34:37:34:39 | *fmt | nested.cpp:35:19:35:21 | *fmt | provenance |  |
+| nested.cpp:35:19:35:21 | *fmt | nested.cpp:27:32:27:34 | *fmt | provenance |  |
+| nested.cpp:42:24:42:34 | *call to ext_fmt_str | nested.cpp:34:37:34:39 | *fmt | provenance |  |
+| nested.cpp:86:19:86:46 | *call to __builtin_alloca | nested.cpp:87:18:87:20 | *fmt | provenance |  |
+| test.cpp:27:39:27:39 | n | test.cpp:27:13:27:24 | **make_message | provenance |  |
+| test.cpp:46:14:46:17 | argc | test.cpp:51:23:51:30 | ... - ... | provenance |  |
+| test.cpp:46:27:46:30 | **argv | test.cpp:130:20:130:26 | *access to array | provenance |  |
+| test.cpp:51:23:51:30 | ... - ... | test.cpp:27:39:27:39 | n | provenance |  |
+| test.cpp:51:23:51:30 | ... - ... | test.cpp:51:10:51:21 | *call to make_message | provenance |  |
+| test.cpp:155:27:155:30 | data | test.cpp:157:12:157:15 | data | provenance |  |
+| test.cpp:167:31:167:34 | data | test.cpp:170:12:170:14 | *res | provenance |  |
+| test.cpp:193:32:193:34 | str | test.cpp:195:31:195:33 | str | provenance |  |
+| test.cpp:193:32:193:34 | str | test.cpp:197:11:197:14 | *wstr | provenance |  |
+| test.cpp:204:25:204:36 | *call to get_string | test.cpp:205:12:205:20 | *... + ... | provenance |  |
+| test.cpp:204:25:204:36 | *call to get_string | test.cpp:206:12:206:16 | *hello | provenance |  |
+| test.cpp:209:25:209:36 | *call to get_string | test.cpp:211:12:211:16 | *hello | provenance |  |
+| test.cpp:215:25:215:36 | *call to get_string | test.cpp:217:12:217:16 | *hello | provenance |  |
+| test.cpp:221:25:221:36 | *call to get_string | test.cpp:223:12:223:16 | *hello | provenance |  |
+| test.cpp:227:25:227:36 | *call to get_string | test.cpp:228:12:228:18 | *++ ... | provenance |  |
+| test.cpp:232:25:232:36 | *call to get_string | test.cpp:235:12:235:16 | *hello | provenance |  |
+| test.cpp:239:25:239:36 | *call to get_string | test.cpp:242:12:242:16 | *hello | provenance |  |
+| test.cpp:245:25:245:36 | *call to get_string | test.cpp:247:12:247:16 | *hello | provenance |  |
 nodes
 | NonConstantFormat.c:28:27:28:30 | **argv | semmle.label | **argv |
 | NonConstantFormat.c:30:10:30:16 | *access to array | semmle.label | *access to array |
