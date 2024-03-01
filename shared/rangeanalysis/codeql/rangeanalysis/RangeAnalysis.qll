@@ -276,7 +276,7 @@ signature module Semantic {
   }
 
   /**
-   * A single update to a variable in the SSA form.
+   * An SSA variable representing the value of an explicit update of the source variable.
    */
   class SsaExplicitUpdate extends SsaVariable {
     /**
@@ -374,17 +374,21 @@ signature module LangSig<Semantic Sem, DeltaSig D> {
 
 signature module BoundSig<LocationSig Location, Semantic Sem, DeltaSig D> {
   /**
-   * A semantic bound, which defines a constraint on the possible values of an
-   * expression.
+   * A bound that the range analysis can infer for a variable. This includes
+   * constant bounds represented by the abstract value zero, SSA bounds for when
+   * a variable is bounded by the value of a different variable, and possibly
+   * other abstract values that may be useful variable bounds. Since all bounds
+   * are combined with an integer delta there's no need to represent constant
+   * bounds other than zero.
    */
   class SemBound {
     /**
-     * Gets a string representation of the semantic bound.
+     * Gets a string representation of this bound.
      */
     string toString();
 
     /**
-     * Gets the location of the semantic bound.
+     * Gets the location of this bound.
      */
     Location getLocation();
 
