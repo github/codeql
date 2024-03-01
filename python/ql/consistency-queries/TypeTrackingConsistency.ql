@@ -20,6 +20,10 @@ private module ConsistencyChecksInput implements ConsistencyChecksInputSig {
     exists(DataFlow::Node m | m.asCfgNode().getNode() instanceof MatchCapturePattern |
       TypeTrackingInput::simpleLocalSmallStep*(m, n)
     )
+    or
+    // TODO: when adding support for proper content, handle iterable unpacking better
+    // such as `for k,v in items:`, or `a, (b,c) = ...`
+    n instanceof DataFlow::IterableSequenceNode
   }
 }
 
