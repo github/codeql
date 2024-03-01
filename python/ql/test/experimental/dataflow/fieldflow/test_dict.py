@@ -52,7 +52,7 @@ def test_dict_update_fresh_key():
     # for keys used in "inline update" like this
     d = {}
     d["fresh_key"] = SOURCE
-    SINK(d["fresh_key"])  # $ MISSING: flow="SOURCE, l:-1 -> d['fresh_key']"
+    SINK(d["fresh_key"])  # $ flow="SOURCE, l:-1 -> d['fresh_key']"
 
 
 @expects(3) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
