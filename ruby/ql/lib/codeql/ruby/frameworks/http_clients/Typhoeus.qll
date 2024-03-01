@@ -91,7 +91,7 @@ private API::Node getResponseFromRequest(API::Node requestNode) {
     ]
 }
 
-/** Gets the body from the given `responseNode` representing a Typhoeus request */
+/** Gets the body from the given `responseNode` representing a Typhoeus response */
 private DataFlow::Node getBodyFromResponse(API::Node responseNode) {
   result = responseNode.getAMethodCall(["body", "response_body"])
 }
