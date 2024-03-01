@@ -6,6 +6,8 @@ private import semmle.python.dataflow.new.internal.TypeTrackingImpl
 private module ConsistencyChecksInput implements ConsistencyChecksInputSig {
   predicate unreachableNodeExclude(DataFlow::Node n) {
     not exists(n.getLocation().getFile().getRelativePath())
+    or
+    n instanceof DataFlowPrivate::SyntheticPostUpdateNode
   }
 }
 
