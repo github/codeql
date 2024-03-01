@@ -9504,6 +9504,8 @@ ir.cpp:
 # 1068|         Type = [IntType] int
 # 1069| [Destructor] void vector<ClassWithDestructor>::~vector()
 # 1069|   <params>: 
+# 1069| [Destructor] void vector<String>::~vector()
+# 1069|   <params>: 
 # 1069| [Destructor] void vector<T>::~vector()
 # 1069|   <params>: 
 # 1069| [Destructor] void vector<int>::~vector()
