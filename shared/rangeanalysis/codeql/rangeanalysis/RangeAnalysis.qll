@@ -175,7 +175,7 @@ signature module Semantic {
     BasicBlock getBasicBlock();
 
     /**
-     * Gets the guard as an expression.
+     * Gets the guard as an expression, if any.
      */
     Expr asExpr();
 
@@ -240,11 +240,11 @@ signature module Semantic {
   Type getExprType(Expr e);
 
   /**
-   * A single static single assignment (SSA) variable.
+   * A static single-assignment (SSA) variable.
    */
   class SsaVariable {
     /**
-     * Gets the expression where this SSA variable is used.
+     * Gets an expression reading the value of this SSA variable.
      */
     Expr getAUse();
 

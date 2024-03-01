@@ -34,20 +34,20 @@ signature module InputSig {
   }
 
   /**
-   * A node in the data flow graph that represents an output.
+   * A node in the data flow graph that represents an output of a call.
    */
   class OutNode extends Node;
 
   /**
-   * A node in the data flow graph representing the value of an argument after
-   * an operation that might have changed its state. For example, consider the
-   * following C++ code:
+   * A node in the data flow graph representing the value of some other node
+   * after an operation that might have changed its state. A typical example is
+   * an argument, which may have been modified by the callee. For example,
+   * consider the following code calling a setter method:
    * ```
-   * int a = 1;
-   * increment(&a);
+   * x.setFoo(y);
    * ```
-   * The post-update node for `&a` represents the value of `&a` after
-   * modification by the call to `increment`.
+   * The post-update node for the argument node `x` is the node representing the
+   * value of `x` after the field `foo` has been updated.
    */
   class PostUpdateNode extends Node {
     /**
@@ -206,9 +206,8 @@ signature module InputSig {
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
   /**
-   * Holds if there is a simple local flow step from `node1` to `node2`. This
-   * is the local flow predicate that's used as a building block in global
-   * data flow. It may have less flow than the `localFlowStep` predicate.
+   * Holds if there is a simple local flow step from `node1` to `node2`. These
+   * are the value-preserving intra-callable flow steps.
    */
   predicate simpleLocalFlowStep(Node node1, Node node2);
 
