@@ -36,6 +36,8 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
+      - ["System.IO", "BufferedStream", False, "BufferedStream", "(System.IO.Stream)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["System.IO", "BufferedStream", False, "BufferedStream", "(System.IO.Stream,System.Int32)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["System.IO", "FileStream", False, "FileStream", "(System.String,System.IO.FileMode)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["System.IO", "FileStream", False, "FileStream", "(System.String,System.IO.FileMode,System.IO.FileAccess)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["System.IO", "FileStream", False, "FileStream", "(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
