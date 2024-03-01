@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 
-namespace Semmle.Autobuild.Shared
+namespace Semmle.Util
 {
     /// <summary>
     /// A build script.

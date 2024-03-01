@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 using System.Xml;
 using Semmle.Util;
 
-namespace Semmle.Autobuild.Shared
+namespace Semmle.Util
 {
     public delegate void BuildOutputHandler(string? data);
 
@@ -286,5 +286,31 @@ namespace Semmle.Autobuild.Shared
         public IDiagnosticsWriter CreateDiagnosticsWriter(string filename) => new DiagnosticsStream(filename);
 
         public static IBuildActions Instance { get; } = new SystemBuildActions();
+    }
+
+    public static class BuildActionExtensions
+    {
+        private static void FindFiles(this IBuildActions actions, string dir, int depth, int? maxDepth, IList<(string, int)> results)
+        {
+            foreach (var f in actions.EnumerateFiles(dir))
+            {
+                results.Add((f, depth));
+            }
+
+            if (depth < maxDepth)
+            {
+                foreach (var d in actions.EnumerateDirectories(dir))
+                {
+                    actions.FindFiles(d, depth + 1, maxDepth, results);
+                }
+            }
+        }
+
+        public static (string path, int depth)[] FindFiles(this IBuildActions actions, string dir, int? maxDepth)
+        {
+            var results = new List<(string, int)>();
+            actions.FindFiles(dir, 0, maxDepth, results);
+            return results.OrderBy(f => f.Item2).ToArray();
+        }
     }
 }
