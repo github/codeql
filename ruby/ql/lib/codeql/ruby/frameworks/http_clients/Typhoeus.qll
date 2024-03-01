@@ -16,17 +16,30 @@ private import codeql.ruby.DataFlow
  */
 class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   API::Node requestNode;
+  boolean directResponse;
 
   TyphoeusHttpRequest() {
     this = requestNode.asSource() and
-    requestNode =
-      API::getTopLevelMember("Typhoeus")
-          .getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
+    (
+      directResponse = true and
+      requestNode =
+        API::getTopLevelMember("Typhoeus")
+            .getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
+      or
+      directResponse = false and
+      requestNode = API::getTopLevelMember("Typhoeus").getMember("Request").getReturn("new")
+    )
   }
 
   override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
 
-  override DataFlow::Node getResponseBody() { result = requestNode.getAMethodCall("body") }
+  override DataFlow::Node getResponseBody() {
+    directResponse = true and
+    result = getBodyFromResponse(requestNode)
+    or
+    directResponse = false and
+    result = getBodyFromRequest(requestNode)
+  }
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {
@@ -55,3 +68,26 @@ private module TyphoeusDisablesCertificateValidationConfig implements DataFlow::
 
 private module TyphoeusDisablesCertificateValidationFlow =
   DataFlow::Global<TyphoeusDisablesCertificateValidationConfig>;
+
+private DataFlow::Node getBodyFromRequest(API::Node requestNode) {
+  result =
+    [
+      getBodyFromResponse(getResponseFromRequest(requestNode)),
+      requestNode.getMethod("on_body").getBlock().getParameter(0).asSource()
+    ]
+}
+
+private API::Node getResponseFromRequest(API::Node requestNode) {
+  result =
+    [
+      requestNode.getReturn(["run", "response"]),
+      requestNode
+          .getMethod(["on_complete", "on_success", "on_headers", "on_failure", "on_progress"])
+          .getBlock()
+          .getParameter(0)
+    ]
+}
+
+private DataFlow::Node getBodyFromResponse(API::Node responseNode) {
+  result = responseNode.getAMethodCall(["body", "response_body"])
+}
