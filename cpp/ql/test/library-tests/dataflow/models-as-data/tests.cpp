@@ -106,7 +106,7 @@ void madSinkParam0(int x) { // $ interpretElement
 	x = source(); // $ MISSING: ir
 }
 
-// --- MAD summaries ---
+// --- global MAD summaries ---
 
 struct MyContainer {
 	int value;
@@ -273,4 +273,29 @@ void test_class_members() {
 
 	mc6.madArg0ToField(source());
 	sink(mc6.madFieldToReturn()); // $ MISSING: ir
+}
+
+// --- MAD cases involving function pointers ---
+
+struct intPair {
+	int first;
+	int second;
+};
+
+int madCallArg0ReturnToReturn(int (*fun_ptr)()); // $ interpretElement
+intPair madCallArg0ReturnToReturnFirst(int (*fun_ptr)()); // $ interpretElement
+void madCallArg0WithValue(void (*fun_ptr)(int), int value); // $ interpretElement
+
+int getTainted() { return source(); }
+void useValue(int x) { sink(x); }
+
+void test_function_pointers() {
+	sink(madCallArg0ReturnToReturn(&notASource));
+	sink(madCallArg0ReturnToReturn(&getTainted)); // $ MISSING: ir
+	sink(madCallArg0ReturnToReturn(&source)); // $ MISSING: ir
+	sink(madCallArg0ReturnToReturnFirst(&source).first); // $ MISSING: ir
+	sink(madCallArg0ReturnToReturnFirst(&source).second);
+	madCallArg0WithValue(&useValue, 0);
+	madCallArg0WithValue(&useValue, source()); // $ MISSING: ir
+	madCallArg0WithValue(&sink, source()); // $ MISSING: ir
 }
