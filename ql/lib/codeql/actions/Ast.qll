@@ -2,7 +2,7 @@ private import codeql.actions.ast.internal.Actions
 private import codeql.Locations
 
 /**
- * Base class for thejAST tree. Based on YamlNode from the Yaml library.
+ * Base class for the AST tree. Based on YamlNode from the Yaml library.
  */
 class AstNode instanceof YamlNode {
   AstNode getParentNode() { result = super.getParentNode() }
@@ -23,7 +23,7 @@ class AstNode instanceof YamlNode {
   /**
    * Gets a environment variable expression by name in the scope of the current node.
    */
-  EnvExpr getEnvExpr(string name) {
+  Expression getEnvExpr(string name) {
     exists(Actions::Env env |
       env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
     |
@@ -42,9 +42,18 @@ class AstNode instanceof YamlNode {
 class CompositeAction extends AstNode instanceof Actions::CompositeAction {
   Runs getRuns() { result = super.getRuns() }
 
-  Inputs getInputs() { result = this.(YamlMapping).lookup("inputs") }
-
   Outputs getOutputs() { result = this.(YamlMapping).lookup("outputs") }
+
+  Expression getAnOutputExpr() { result = this.getOutputs().getAnOutputExpr() }
+
+  Expression getOutputExpr(string name) { result = this.getOutputs().getOutputExpr(name) }
+
+  Input getAnInput() { this.(YamlMapping).lookup("inputs").(YamlMapping).maps(result, _) }
+
+  Input getInput(string name) {
+    this.(YamlMapping).lookup("inputs").(YamlMapping).maps(result, _) and
+    result.(YamlString).getValue() = name
+  }
 }
 
 class Runs extends AstNode instanceof Actions::Runs {
@@ -81,23 +90,24 @@ class ReusableWorkflow extends Workflow {
 
   ReusableWorkflow() { this.(Actions::Workflow).getOn().getNode("workflow_call") = workflow_call }
 
-  Inputs getInputs() { result = workflow_call.(YamlMapping).lookup("inputs") }
-
   Outputs getOutputs() { result = workflow_call.(YamlMapping).lookup("outputs") }
+
+  Expression getAnOutputExpr() { result = this.getOutputs().getAnOutputExpr() }
+
+  Expression getOutputExpr(string name) { result = this.getOutputs().getOutputExpr(name) }
+
+  Input getAnInput() { workflow_call.(YamlMapping).lookup("inputs").(YamlMapping).maps(result, _) }
+
+  Input getInput(string name) {
+    workflow_call.(YamlMapping).lookup("inputs").(YamlMapping).maps(result, _) and
+    result.(YamlString).getValue() = name
+  }
 }
 
-class Inputs extends AstNode instanceof YamlMapping {
+class Input extends AstNode {
   YamlMapping parent;
 
-  Inputs() { parent.lookup("inputs") = this }
-
-  /**
-   * Gets a specific input expression (YamlMapping) by name.
-   */
-  InputExpr getInputExpr(string name) {
-    result.(YamlString).getValue() = name and
-    this.(YamlMapping).maps(result, _)
-  }
+  Input() { parent.lookup("inputs").(YamlMapping).maps(this, _) }
 }
 
 class Outputs extends AstNode instanceof YamlMapping {
@@ -106,9 +116,17 @@ class Outputs extends AstNode instanceof YamlMapping {
   Outputs() { parent.lookup("outputs") = this }
 
   /**
-   * Gets a specific output expression (YamlMapping) by name.
+   * Gets an output expression.
    */
-  OutputExpr getOutputExpr(string name) {
+  Expression getAnOutputExpr() {
+    this.(YamlMapping).lookup(_).(YamlMapping).lookup("value") = result or
+    this.(YamlMapping).lookup(_) = result
+  }
+
+  /**
+   * Gets a specific output expression by name.
+   */
+  Expression getOutputExpr(string name) {
     this.(YamlMapping).lookup(name).(YamlMapping).lookup("value") = result or
     this.(YamlMapping).lookup(name) = result
   }
@@ -130,7 +148,7 @@ class Strategy extends AstNode instanceof YamlMapping {
   /**
    * Gets a specific matric expression (YamlMapping) by name.
    */
-  MatrixVariableExpr getMatrixVariableExpr(string name) {
+  Expression getMatrixVariableExpr(string name) {
     this.(YamlMapping).lookup("matrix").(YamlMapping).lookup(name) = result
   }
 
@@ -318,41 +336,40 @@ class Run extends Step {
   string getScript() { result = scriptExpr.getValue() }
 }
 
-/**
- * An AST node associated with a Reusable Workflow input.
- */
-class InputExpr extends AstNode {
-  InputExpr() { exists(Inputs inputs | inputs.(YamlMapping).maps(this, _)) }
-}
-
-/**
- * An AST node holding an Env var value.
- */
-class EnvExpr extends AstNode {
-  EnvExpr() { exists(Actions::Env env | env.(YamlMapping).lookup(_) = this) }
-}
-
-/**
- * An AST node holding a job or workflow output var.
- */
-class OutputExpr extends AstNode {
-  OutputExpr() {
-    exists(Outputs outputs |
-      outputs.(YamlMapping).lookup(_).(YamlMapping).lookup("value") = this or
-      outputs.(YamlMapping).lookup(_) = this
-    )
-  }
-}
-
-/**
- * An AST node holding a matrix var.
- */
-class MatrixVariableExpr extends AstNode {
-  MatrixVariableExpr() {
-    exists(Strategy outputs | outputs.(YamlMapping).lookup("matrix").(YamlMapping).lookup(_) = this)
-  }
-}
-
+// /**
+//  * An AST node associated with a Reusable Workflow input.
+//  */
+// class InputExpr extends AstNode {
+//   InputExpr() { exists(Inputs inputs | inputs.(YamlMapping).maps(this, _)) }
+// }
+//
+// /**
+//  * An AST node holding an Env var value.
+//  */
+// class EnvExpr extends AstNode {
+//   EnvExpr() { exists(Actions::Env env | env.(YamlMapping).lookup(_) = this) }
+// }
+//
+// /**
+//  * An AST node holding a job or workflow output var.
+//  */
+// class OutputExpr extends AstNode {
+//   OutputExpr() {
+//     exists(Outputs outputs |
+//       outputs.(YamlMapping).lookup(_).(YamlMapping).lookup("value") = this or
+//       outputs.(YamlMapping).lookup(_) = this
+//     )
+//   }
+// }
+//
+// /**
+//  * An AST node holding a matrix var.
+//  */
+// class MatrixVariableExpr extends AstNode {
+//   MatrixVariableExpr() {
+//     exists(Strategy outputs | outputs.(YamlMapping).lookup("matrix").(YamlMapping).lookup(_) = this)
+//   }
+// }
 /**
  * Evaluation of a workflow expression ${{}}.
  */
@@ -508,9 +525,9 @@ class InputsExpression extends ContextExpression {
   override AstNode getTarget() {
     result.getLocation().getFile() = this.getLocation().getFile() and
     (
-      exists(ReusableWorkflow w | w.getInputs().getInputExpr(fieldName) = result)
+      exists(ReusableWorkflow w | w.getInput(fieldName) = result)
       or
-      exists(CompositeAction a | a.getInputs().getInputExpr(fieldName) = result)
+      exists(CompositeAction a | a.getInput(fieldName) = result)
     )
   }
 }

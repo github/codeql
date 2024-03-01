@@ -18,11 +18,11 @@ import codeql.actions.dataflow.ExternalFlow
 
 private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(CompositeAction c | c.getInputs().getInputExpr(_) = source.asExpr())
+    exists(CompositeAction c | c.getAnInput() = source.asExpr())
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(CompositeAction c | c.getOutputs().getOutputExpr(_) = sink.asExpr())
+    exists(CompositeAction c | c.getAnOutputExpr() = sink.asExpr())
   }
 }
 

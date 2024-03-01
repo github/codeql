@@ -54,8 +54,13 @@ DataFlowType getNodeType(Node node) { any() }
 predicate nodeIsHidden(Node node) { none() }
 
 class DataFlowExpr extends Cfg::Node {
-  DataFlowExpr() { any() }
-  //DataFlowExpr() { this.getAstNode() instanceof Expression }
+  DataFlowExpr() {
+    this.getAstNode() instanceof Expression or
+    this.getAstNode() instanceof Uses or
+    this.getAstNode() instanceof Run or
+    this.getAstNode() instanceof Outputs or
+    this.getAstNode() instanceof Input
+  }
 }
 
 /**
@@ -150,7 +155,7 @@ ContentApprox getContentApprox(Content c) { result = c }
  * Made a string to match the ArgumentPosition type.
  */
 class ParameterPosition extends string {
-  ParameterPosition() { exists(any(ReusableWorkflow w).getInputs().getInputExpr(this)) }
+  ParameterPosition() { exists(any(ReusableWorkflow w).getInput(this)) }
 }
 
 /**

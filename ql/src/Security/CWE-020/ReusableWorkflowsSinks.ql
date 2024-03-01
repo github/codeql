@@ -25,7 +25,7 @@ private class ExpressionInjectionSink extends DataFlow::Node {
 
 private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(ReusableWorkflow w | w.getInputs().getInputExpr(_) = source.asExpr())
+    exists(ReusableWorkflow w | w.getAnInput() = source.asExpr())
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionInjectionSink }

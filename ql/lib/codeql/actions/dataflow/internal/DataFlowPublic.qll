@@ -48,22 +48,19 @@ class ExprNode extends Node, TExprNode {
  * Reusable workflow input nodes
  */
 class ParameterNode extends ExprNode {
-  private InputExpr input;
+  private Input input;
 
-  ParameterNode() {
-    this.asExpr() = input and
-    input = any(Inputs s).getInputExpr(_)
-  }
+  ParameterNode() { this.asExpr() = input }
 
   predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-    input = c.(ReusableWorkflow).getInputs().getInputExpr(pos)
+    input = c.(ReusableWorkflow).getInput(pos)
   }
 
   override string toString() { result = "input " + input.toString() }
 
   override Location getLocation() { result = input.getLocation() }
 
-  InputExpr getInputExpr() { result = input }
+  Input getInput() { result = input }
 }
 
 /**

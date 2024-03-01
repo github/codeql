@@ -160,7 +160,7 @@ private class ExternallyDefinedSource extends RemoteFlowSource {
 private class CompositeActionInputSource extends RemoteFlowSource {
   CompositeAction c;
 
-  CompositeActionInputSource() { c.getInputs().getInputExpr(_) = this.asExpr() }
+  CompositeActionInputSource() { c.getAnInput() = this.asExpr() }
 
   override string getSourceType() { result = "Composite action input" }
 

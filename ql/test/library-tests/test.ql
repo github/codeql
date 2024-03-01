@@ -29,13 +29,9 @@ query predicate runStepChildren(Run run, AstNode child) { child.getParentNode() 
 
 query predicate parentNodes(AstNode child, AstNode parent) { child.getParentNode() = parent }
 
-query predicate cfgNodes(Cfg::Node n) {
-  n.getLocation().getFile().getBaseName() = "argus_case_study.yml"
-} //any() }
+query predicate cfgNodes(Cfg::Node n) { n.getLocation().getFile().getBaseName() = "test.yml" } //any() }
 
-query predicate dfNodes(DataFlow::Node e) {
-  e.getLocation().getFile().getBaseName() = "argus_case_study.yml"
-} //any() }
+query predicate dfNodes(DataFlow::Node e) { e.getLocation().getFile().getBaseName() = "test.yml" } //any() }
 
 query predicate exprNodes(DataFlow::Node e) { any() }
 
