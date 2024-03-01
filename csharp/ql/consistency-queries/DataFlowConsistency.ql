@@ -1,5 +1,4 @@
 import csharp
-import cil
 private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific

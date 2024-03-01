@@ -4,7 +4,7 @@ private import CIL
 private import semmle.code.csharp.Location as CS
 
 /** An attribute to a declaration, such as a method, field, type or parameter. */
-class Attribute extends Element, @cil_attribute {
+deprecated class Attribute extends Element, @cil_attribute {
   /** Gets the declaration this attribute is attached to. */
   Declaration getDeclaration() { cil_attribute(this, result, _) }
 
@@ -29,7 +29,7 @@ class Attribute extends Element, @cil_attribute {
 }
 
 /** A generic attribute to a declaration. */
-class GenericAttribute extends Attribute {
+deprecated class GenericAttribute extends Attribute {
   private ConstructedType type;
 
   GenericAttribute() { type = this.getType() }
