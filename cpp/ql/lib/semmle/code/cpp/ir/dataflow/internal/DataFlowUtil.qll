@@ -1788,6 +1788,20 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
 }
 
 /**
+ * TODO: QLDoc.
+ */
+class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
+  SummaryPostUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), _)
+  }
+
+  override Node getPreUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(),
+      result.(FlowSummaryNode).getSummaryNode())
+  }
+}
+
+/**
  * A node that represents the value of a variable after a function call that
  * may have changed the variable because it's passed by reference.
  *
