@@ -1,7 +1,0 @@
-unreachableNode
-| wrong_arguments.py:65:1:65:7 | SynthDictSplatArgumentNode | Unreachable node in step of kind call. |
-| wrong_arguments.py:66:1:66:7 | SynthDictSplatArgumentNode | Unreachable node in step of kind call. |
-| wrong_arguments.py:67:1:67:12 | SynthDictSplatArgumentNode | Unreachable node in step of kind call. |
-| wrong_arguments.py:71:1:71:7 | SynthDictSplatArgumentNode | Unreachable node in step of kind call. |
-| wrong_arguments.py:72:1:72:12 | SynthDictSplatArgumentNode | Unreachable node in step of kind call. |
-| wrong_arguments.py:73:1:73:7 | SynthDictSplatArgumentNode | Unreachable node in step of kind call. |

@@ -8,6 +8,9 @@ private module ConsistencyChecksInput implements ConsistencyChecksInputSig {
     n instanceof DataFlowPrivate::SyntheticPostUpdateNode
     or
     n instanceof DataFlowPrivate::SyntheticPreUpdateNode
+    or
+    // TODO: when adding support for proper content, handle **kwargs passing better!
+    n instanceof DataFlowPrivate::SynthDictSplatArgumentNode
   }
 }
 
