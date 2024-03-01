@@ -88,3 +88,7 @@ class Foo
 end
 
 UnknownModule.system("ls")
+
+method("exit").call
+public_method("exit").call
+singleton_method("foo").call
