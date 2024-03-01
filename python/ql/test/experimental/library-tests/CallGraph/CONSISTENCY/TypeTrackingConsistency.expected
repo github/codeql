@@ -1,2 +1,0 @@
-| code/func_ref_in_content.py:19:1:19:5 | IterableElement | Unreachable node in step of kind store Tuple element at index 0. |
-| code/func_ref_in_content.py:19:1:19:5 | IterableElement | Unreachable node in step of kind store Tuple element at index 1. |
