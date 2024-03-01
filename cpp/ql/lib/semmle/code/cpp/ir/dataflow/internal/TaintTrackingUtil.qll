@@ -6,6 +6,7 @@ private import semmle.code.cpp.models.interfaces.SideEffect
 private import DataFlowUtil
 private import DataFlowPrivate
 private import SsaInternals as Ssa
+private import semmle.code.cpp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
@@ -37,6 +38,9 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   )
   or
   any(Ssa::Indirection ind).isAdditionalTaintStep(nodeFrom, nodeTo)
+  or
+  // models-as-data summarized flow
+  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
 }
 
 /**

@@ -129,7 +129,7 @@ void test_summaries() {
 	int a, b, c;
 
 	sink(madArg0ToReturn(0));
-	sink(madArg0ToReturn(source())); // $ MISSING: ir
+	sink(madArg0ToReturn(source())); // $ ir
 	sink(notASummary(source()));
 	sink(madArg0ToReturnValueFlow(0));
 	sink(madArg0ToReturnValueFlow(source())); // $ ir
@@ -158,7 +158,7 @@ void test_summaries() {
 
 	// test source + sinks + summaries together
 
-	madSinkArg0(madArg0ToReturn(remoteMadSource())); // $ MISSING: ir
+	madSinkArg0(madArg0ToReturn(remoteMadSource())); // $ ir
 	madSinkArg0(madArg0ToReturnValueFlow(remoteMadSource())); // $ ir
 	madSinkArg0(madArg0IndirectToReturn(remoteMadSourceIndirect())); // $ MISSING: ir*/
 }
@@ -256,13 +256,13 @@ void test_class_members() {
 	mc3.madArg0ToField(source());
 	sink(mc3.val); // $ MISSING: ir
 
-	sink(source2().madSelfToReturn()); // $ MISSING: ir
+	sink(source2().madSelfToReturn()); // $ ir
 	sink(source2().notASummary());
 
 	mc4.val = source();
 	sink(mc4.madFieldToReturn()); // $ MISSING: ir
 
-	sink(source3().namespaceMadSelfToReturn()); // $ MISSING: ir
+	sink(source3().namespaceMadSelfToReturn()); // $ ir
 
 	// test class member sources + sinks + summaries together
 
