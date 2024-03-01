@@ -664,7 +664,10 @@ predicate simpleOutNode(Node node, CallInstruction call) {
   instructionForFullyConvertedCall(node.asInstruction(), call)
 }
 
-/** A data flow node that represents the output of a call. */
+/**
+ * A data flow node that represents the output of a call (for example, a
+ * return value) at the call site.
+ */
 class OutNode extends Node {
   OutNode() {
     // Return values not hidden behind indirections
@@ -680,6 +683,7 @@ class OutNode extends Node {
   /** Gets the underlying call. */
   abstract DataFlowCall getCall();
 
+  /** Gets the kind of this out node. */
   abstract ReturnKind getReturnKind();
 }
 
