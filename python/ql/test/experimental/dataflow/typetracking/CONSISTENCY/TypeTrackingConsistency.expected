@@ -1,2 +1,0 @@
-unreachableNode
-| attribute_tests.py:159:12:159:21 | [pre] ControlFlowNode for MyClass2() | Unreachable node in step of kind call. |
