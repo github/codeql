@@ -11,6 +11,15 @@ private module ConsistencyChecksInput implements ConsistencyChecksInputSig {
     or
     // TODO: when adding support for proper content, handle **kwargs passing better!
     n instanceof DataFlowPrivate::SynthDictSplatArgumentNode
+    or
+    // TODO: when adding support for proper content, handle unpacking tuples in match
+    // cases better, such as
+    //
+    // match (NONSOURCE, SOURCE):
+    //   case (x, y): ...
+    exists(DataFlow::Node m | m.asCfgNode().getNode() instanceof MatchCapturePattern |
+      TypeTrackingInput::simpleLocalSmallStep*(m, n)
+    )
   }
 }
 
