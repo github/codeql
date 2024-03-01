@@ -369,7 +369,6 @@ Tuples.cs:
 #   95|           -1: [TypeMention] string
 #   95|         1: [Parameter] j
 #   95|           -1: [TypeMention] int
-#   95|       4: [BlockStmt] {...}
 #   95|     16: [Property] i
 #   95|       3: [Getter] get_i
 #   95|       4: [Setter] set_i

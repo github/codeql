@@ -3,7 +3,7 @@ load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 load("//swift/third_party:load.bzl", load_swift_dependencies = "load_dependencies")
 
 def codeql_workspace(repository_name = "codeql"):
-    load_swift_dependencies(repository_name)
+    load_swift_dependencies(repository_name = repository_name)
     maybe(
         repo_rule = http_archive,
         name = "rules_pkg",

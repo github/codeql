@@ -16,11 +16,10 @@ edges
 | Types.cs:38:12:38:18 | object creation of type D : D | Types.cs:67:25:67:25 | x : D | provenance |  |
 | Types.cs:39:12:39:18 | object creation of type D : D | Types.cs:69:25:69:25 | x : D | provenance |  |
 | Types.cs:40:12:40:18 | object creation of type D : D | Types.cs:71:25:71:25 | x : D | provenance |  |
-| Types.cs:43:20:43:23 | null : null | Types.cs:44:14:44:14 | access to local variable o | provenance |  |
-| Types.cs:47:22:47:22 | a : C | Types.cs:49:18:49:20 | SSA def(c) : C | provenance |  |
-| Types.cs:49:18:49:20 | SSA def(c) : C | Types.cs:50:18:50:18 | access to local variable c | provenance |  |
-| Types.cs:53:22:53:22 | a : D | Types.cs:57:18:57:20 | SSA def(d) : D | provenance |  |
-| Types.cs:57:18:57:20 | SSA def(d) : D | Types.cs:58:22:58:22 | access to local variable d | provenance |  |
+| Types.cs:43:16:43:16 | access to local variable o : null | Types.cs:44:14:44:14 | access to local variable o | provenance |  |
+| Types.cs:43:20:43:23 | null : null | Types.cs:43:16:43:16 | access to local variable o : null | provenance |  |
+| Types.cs:47:22:47:22 | a : C | Types.cs:50:18:50:18 | access to local variable c | provenance |  |
+| Types.cs:53:22:53:22 | a : D | Types.cs:58:22:58:22 | access to local variable d | provenance |  |
 | Types.cs:63:22:63:22 | a : C | Types.cs:63:33:63:36 | (...) ... | provenance |  |
 | Types.cs:65:25:65:25 | x : C | Types.cs:65:36:65:36 | access to parameter x | provenance |  |
 | Types.cs:65:25:65:25 | x : D | Types.cs:65:36:65:36 | access to parameter x | provenance |  |
@@ -29,10 +28,10 @@ edges
 | Types.cs:69:25:69:25 | x : C | Types.cs:69:52:69:52 | access to parameter x | provenance |  |
 | Types.cs:69:25:69:25 | x : D | Types.cs:69:52:69:52 | access to parameter x | provenance |  |
 | Types.cs:71:25:71:25 | x : D | Types.cs:73:21:73:21 | (...) ... : D | provenance |  |
-| Types.cs:73:21:73:21 | (...) ... : D | Types.cs:74:9:74:9 | access to local variable d : D | provenance |  |
+| Types.cs:73:17:73:17 | access to local variable d : D | Types.cs:74:9:74:9 | access to local variable d : D | provenance |  |
+| Types.cs:73:21:73:21 | (...) ... : D | Types.cs:73:17:73:17 | access to local variable d : D | provenance |  |
 | Types.cs:74:9:74:9 | access to local variable d : D | Types.cs:16:30:16:30 | this : D | provenance |  |
-| Types.cs:77:22:77:22 | a : C | Types.cs:79:18:79:25 | SSA def(b) : C | provenance |  |
-| Types.cs:79:18:79:25 | SSA def(b) : C | Types.cs:80:18:80:18 | access to local variable b | provenance |  |
+| Types.cs:77:22:77:22 | a : C | Types.cs:80:18:80:18 | access to local variable b | provenance |  |
 | Types.cs:90:22:90:22 | e : Types+E<D>.E2 | Types.cs:92:26:92:26 | access to parameter e : Types+E<D>.E2 | provenance |  |
 | Types.cs:92:13:92:16 | [post] this access : Types+E<T> [field Field] : Types+E<D>.E2 | Types.cs:93:13:93:16 | this access : Types+E<T> [field Field] : Types+E<D>.E2 | provenance |  |
 | Types.cs:92:26:92:26 | access to parameter e : Types+E<D>.E2 | Types.cs:92:13:92:16 | [post] this access : Types+E<T> [field Field] : Types+E<D>.E2 | provenance |  |
@@ -40,8 +39,10 @@ edges
 | Types.cs:110:25:110:32 | object creation of type E2 : Types+E<D>.E2 | Types.cs:90:22:90:22 | e : Types+E<D>.E2 | provenance |  |
 | Types.cs:113:34:113:34 | this : Types+E<T> [field Field] : Types+E<D>.E2 | Types.cs:115:22:115:25 | this access : Types+E<T> [field Field] : Types+E<D>.E2 | provenance |  |
 | Types.cs:115:22:115:25 | this access : Types+E<T> [field Field] : Types+E<D>.E2 | Types.cs:115:22:115:31 | access to field Field | provenance |  |
-| Types.cs:120:25:120:31 | object creation of type A : A | Types.cs:122:30:122:30 | access to local variable a : A | provenance |  |
-| Types.cs:121:26:121:33 | object creation of type E2 : Types+E<D>.E2 | Types.cs:123:30:123:31 | access to local variable e2 : Types+E<D>.E2 | provenance |  |
+| Types.cs:120:21:120:21 | access to local variable a : A | Types.cs:122:30:122:30 | access to local variable a : A | provenance |  |
+| Types.cs:120:25:120:31 | object creation of type A : A | Types.cs:120:21:120:21 | access to local variable a : A | provenance |  |
+| Types.cs:121:21:121:22 | access to local variable e2 : Types+E<D>.E2 | Types.cs:123:30:123:31 | access to local variable e2 : Types+E<D>.E2 | provenance |  |
+| Types.cs:121:26:121:33 | object creation of type E2 : Types+E<D>.E2 | Types.cs:121:21:121:22 | access to local variable e2 : Types+E<D>.E2 | provenance |  |
 | Types.cs:122:30:122:30 | access to local variable a : A | Types.cs:122:22:122:31 | call to method Through | provenance |  |
 | Types.cs:122:30:122:30 | access to local variable a : A | Types.cs:130:34:130:34 | x : A | provenance |  |
 | Types.cs:123:30:123:31 | access to local variable e2 : Types+E<D>.E2 | Types.cs:123:22:123:32 | call to method Through | provenance |  |
@@ -76,13 +77,12 @@ nodes
 | Types.cs:38:12:38:18 | object creation of type D : D | semmle.label | object creation of type D : D |
 | Types.cs:39:12:39:18 | object creation of type D : D | semmle.label | object creation of type D : D |
 | Types.cs:40:12:40:18 | object creation of type D : D | semmle.label | object creation of type D : D |
+| Types.cs:43:16:43:16 | access to local variable o : null | semmle.label | access to local variable o : null |
 | Types.cs:43:20:43:23 | null : null | semmle.label | null : null |
 | Types.cs:44:14:44:14 | access to local variable o | semmle.label | access to local variable o |
 | Types.cs:47:22:47:22 | a : C | semmle.label | a : C |
-| Types.cs:49:18:49:20 | SSA def(c) : C | semmle.label | SSA def(c) : C |
 | Types.cs:50:18:50:18 | access to local variable c | semmle.label | access to local variable c |
 | Types.cs:53:22:53:22 | a : D | semmle.label | a : D |
-| Types.cs:57:18:57:20 | SSA def(d) : D | semmle.label | SSA def(d) : D |
 | Types.cs:58:22:58:22 | access to local variable d | semmle.label | access to local variable d |
 | Types.cs:63:22:63:22 | a : C | semmle.label | a : C |
 | Types.cs:63:33:63:36 | (...) ... | semmle.label | (...) ... |
@@ -96,10 +96,10 @@ nodes
 | Types.cs:69:25:69:25 | x : D | semmle.label | x : D |
 | Types.cs:69:52:69:52 | access to parameter x | semmle.label | access to parameter x |
 | Types.cs:71:25:71:25 | x : D | semmle.label | x : D |
+| Types.cs:73:17:73:17 | access to local variable d : D | semmle.label | access to local variable d : D |
 | Types.cs:73:21:73:21 | (...) ... : D | semmle.label | (...) ... : D |
 | Types.cs:74:9:74:9 | access to local variable d : D | semmle.label | access to local variable d : D |
 | Types.cs:77:22:77:22 | a : C | semmle.label | a : C |
-| Types.cs:79:18:79:25 | SSA def(b) : C | semmle.label | SSA def(b) : C |
 | Types.cs:80:18:80:18 | access to local variable b | semmle.label | access to local variable b |
 | Types.cs:90:22:90:22 | e : Types+E<D>.E2 | semmle.label | e : Types+E<D>.E2 |
 | Types.cs:92:13:92:16 | [post] this access : Types+E<T> [field Field] : Types+E<D>.E2 | semmle.label | [post] this access : Types+E<T> [field Field] : Types+E<D>.E2 |
@@ -109,7 +109,9 @@ nodes
 | Types.cs:113:34:113:34 | this : Types+E<T> [field Field] : Types+E<D>.E2 | semmle.label | this : Types+E<T> [field Field] : Types+E<D>.E2 |
 | Types.cs:115:22:115:25 | this access : Types+E<T> [field Field] : Types+E<D>.E2 | semmle.label | this access : Types+E<T> [field Field] : Types+E<D>.E2 |
 | Types.cs:115:22:115:31 | access to field Field | semmle.label | access to field Field |
+| Types.cs:120:21:120:21 | access to local variable a : A | semmle.label | access to local variable a : A |
 | Types.cs:120:25:120:31 | object creation of type A : A | semmle.label | object creation of type A : A |
+| Types.cs:121:21:121:22 | access to local variable e2 : Types+E<D>.E2 | semmle.label | access to local variable e2 : Types+E<D>.E2 |
 | Types.cs:121:26:121:33 | object creation of type E2 : Types+E<D>.E2 | semmle.label | object creation of type E2 : Types+E<D>.E2 |
 | Types.cs:122:22:122:31 | call to method Through | semmle.label | call to method Through |
 | Types.cs:122:30:122:30 | access to local variable a : A | semmle.label | access to local variable a : A |

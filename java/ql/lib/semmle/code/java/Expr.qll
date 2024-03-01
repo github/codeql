@@ -2065,7 +2065,11 @@ class MethodCall extends Expr, Call, @methodaccess {
   override Stmt getEnclosingStmt() { result = Expr.super.getEnclosingStmt() }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = this.printAccess() }
+  override string toString() {
+    if exists(this.getMethod())
+    then result = this.printAccess()
+    else result = "<Call to unknown method>"
+  }
 
   /** Gets a printable representation of this expression. */
   string printAccess() { result = this.getMethod().getName() + "(...)" }
@@ -2128,11 +2132,17 @@ class TypeAccess extends Expr, Annotatable, @typeaccess {
   /** Gets the compilation unit in which this type access occurs. */
   override CompilationUnit getCompilationUnit() { result = Expr.super.getCompilationUnit() }
 
-  /** Gets a printable representation of this expression. */
-  override string toString() {
+  private string toNormalString() {
     result = this.getQualifier().toString() + "." + this.getType().toString()
     or
     not this.hasQualifier() and result = this.getType().toString()
+  }
+
+  /** Gets a printable representation of this expression. */
+  override string toString() {
+    if this.getType() instanceof ErrorType
+    then result = "<TypeAccess of ErrorType>"
+    else result = this.toNormalString()
   }
 
   override string getAPrimaryQlClass() { result = "TypeAccess" }

@@ -800,7 +800,17 @@ predicate nodeIsHidden(Node n) {
   or
   n = LocalFlow::getParameterDefNode(_)
   or
-  isDesugarNode(n.(ExprNode).getExprNode().getExpr())
+  exists(AstNode desug |
+    isDesugarNode(desug) and
+    desug.isSynthesized() and
+    not desug = [any(ArrayLiteral al).getDesugared(), any(HashLiteral hl).getDesugared()]
+  |
+    desug = n.asExpr().getExpr()
+    or
+    desug = n.(PostUpdateNode).getPreUpdateNode().asExpr().getExpr()
+    or
+    desug = n.(ParameterNode).getParameter()
+  )
   or
   n instanceof FlowSummaryNode
   or

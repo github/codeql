@@ -168,6 +168,18 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   predicate isParams() { params(this, _, _, _, 3, _, _) }
 
   /**
+   * Holds if this parameter if a ref readonly parameter.
+   * For example, `p` is a ref readonly parameter in
+   *
+   * ```csharp
+   * void M(ref readonly int p) {
+   *   ...
+   * }
+   * ```
+   */
+  predicate isReadonlyRef() { params(this, _, _, _, 6, _, _) }
+
+  /**
    * Holds this parameter is the first parameter of an extension method.
    * For example, `list` is the first parameter of the extension method
    * `Count` in
