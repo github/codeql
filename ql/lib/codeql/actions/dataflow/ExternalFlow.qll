@@ -42,7 +42,7 @@ predicate sinkModel(string action, string version, string input, string kind) {
 predicate externallyDefinedSource(
   DataFlow::Node source, string sourceType, string fieldName, string trigger
 ) {
-  exists(UsesExpr uses, string action, string version, string kind |
+  exists(Uses uses, string action, string version, string kind |
     sourceModel(action, version, fieldName, trigger, kind) and
     uses.getCallee() = action.toLowerCase() and
     (
@@ -65,7 +65,7 @@ predicate externallyDefinedSource(
 predicate externallyDefinedStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c
 ) {
-  exists(UsesExpr uses, string action, string version, string input, string output |
+  exists(Uses uses, string action, string version, string input, string output |
     summaryModel(action, version, input, output, "taint") and
     c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output.", "")) and
     uses.getCallee() = action.toLowerCase() and
@@ -87,7 +87,7 @@ predicate externallyDefinedStoreStep(
 }
 
 predicate externallyDefinedSink(DataFlow::ExprNode sink, string kind) {
-  exists(UsesExpr uses, string action, string version, string input |
+  exists(Uses uses, string action, string version, string input |
     (
       if input.trim().matches("env.%")
       then sink.asExpr() = uses.getEnvExpr(input.trim().replaceAll("env.", ""))

@@ -18,34 +18,34 @@ import actions
 /**
  * An If node that contains an `actor` check
  */
-class ActorCheckStmt extends IfStmt {
-  ActorCheckStmt() { this.getCondition().regexpMatch(".*github\\.(triggering_)?actor.*") }
+class ActorCheck extends If {
+  ActorCheck() { this.getCondition().regexpMatch(".*github\\.(triggering_)?actor.*") }
 }
 
 /**
  * An If node that contains a `label` check
  */
-class LabelCheckStmt extends IfStmt {
-  LabelCheckStmt() {
+class LabelCheck extends If {
+  LabelCheck() {
     this.getCondition().regexpMatch(".*github\\.event\\.pull_request\\.labels.*") or
     this.getCondition().regexpMatch(".*github\\.event\\.label\\.name.*")
   }
 }
 
-from WorkflowStmt w, JobStmt job, StepUsesExpr checkoutStep
+from Workflow w, Job job, StepUses checkoutStep
 where
   w.hasTriggerEvent("pull_request_target") and
-  w.getAJobStmt() = job and
-  job.getAStepStmt() = checkoutStep and
+  w.getAJob() = job and
+  job.getAStep() = checkoutStep and
   checkoutStep.getCallee() = "actions/checkout" and
   checkoutStep
       .getArgumentExpr("ref")
-      .(ExprAccessExpr)
+      .(Expression)
       .getExpression()
       .matches([
           "%github.event.pull_request.head.ref%", "%github.event.pull_request.head.sha%",
           "%github.event.pull_request.number%", "%github.event.number%", "%github.head_ref%"
         ]) and
-  not exists(ActorCheckStmt check | job.getIfStmt() = check or checkoutStep.getIfStmt() = check) and
-  not exists(LabelCheckStmt check | job.getIfStmt() = check or checkoutStep.getIfStmt() = check)
+  not exists(ActorCheck check | job.getIf() = check or checkoutStep.getIf() = check) and
+  not exists(LabelCheck check | job.getIf() = check or checkoutStep.getIf() = check)
 select checkoutStep, "Potential unsafe checkout of untrusted pull request on 'pull_request_target'."

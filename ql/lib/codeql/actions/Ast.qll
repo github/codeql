@@ -2,7 +2,7 @@ private import codeql.actions.ast.internal.Actions
 private import codeql.Locations
 
 /**
- * Base class for the AST tree. Based on YamlNode from the Yaml library.
+ * Base class for thejAST tree. Based on YamlNode from the Yaml library.
  */
 class AstNode instanceof YamlNode {
   AstNode getParentNode() { result = super.getParentNode() }
@@ -14,20 +14,16 @@ class AstNode instanceof YamlNode {
   string getAPrimaryQlClass() { result = super.getAPrimaryQlClass() }
 
   Location getLocation() { result = super.getLocation() }
-}
-
-/**
- * A statement is a group of expressions and/or statements that you design to carry out a task or an action.
- * Any statement that can return a value is automatically qualified to be used as an expression.
- */
-class Statement extends AstNode {
-  /** Gets the workflow that this job is a part of. */
-  WorkflowStmt getEnclosingWorkflowStmt() { this = result.getAChildNode*() }
 
   /**
-   * Gets a environment variable expression by name in the scope of the current step.
+   * Gets the enclosing workflow statement.
    */
-  Expression getEnvExpr(string name) {
+  Workflow getEnclosingWorkflow() { this = result.getAChildNode*() }
+
+  /**
+   * Gets a environment variable expression by name in the scope of the current node.
+   */
+  EnvExpr getEnvExpr(string name) {
     exists(Actions::Env env |
       env.(YamlMapping).maps(any(YamlScalar s | s.getValue() = name), result)
     |
@@ -41,36 +37,31 @@ class Statement extends AstNode {
 }
 
 /**
- * An expression is any word or group of words or symbols that is a value. In programming, an expression is a value, or anything that executes and ends up being a value.
- */
-class Expression extends Statement { }
-
-/**
  * A composite action
  */
-class CompositeActionStmt extends Statement instanceof Actions::CompositeAction {
-  RunsStmt getRunsStmt() { result = super.getRuns() }
+class CompositeAction extends AstNode instanceof Actions::CompositeAction {
+  Runs getRuns() { result = super.getRuns() }
 
-  InputsStmt getInputsStmt() { result = this.(YamlMapping).lookup("inputs") }
+  Inputs getInputs() { result = this.(YamlMapping).lookup("inputs") }
 
-  OutputsStmt getOutputsStmt() { result = this.(YamlMapping).lookup("outputs") }
+  Outputs getOutputs() { result = this.(YamlMapping).lookup("outputs") }
 }
 
-class RunsStmt extends Statement instanceof Actions::Runs {
-  StepStmt getAStepStmt() { result = super.getSteps().getElementNode(_) }
+class Runs extends AstNode instanceof Actions::Runs {
+  Step getAStep() { result = super.getSteps().getElementNode(_) }
 
-  StepStmt getStepStmt(int i) { result = super.getSteps().getElementNode(i) }
+  Step getStep(int i) { result = super.getSteps().getElementNode(i) }
 }
 
 /**
  * A Github Actions Workflow
  */
-class WorkflowStmt extends Statement instanceof Actions::Workflow {
+class Workflow extends AstNode instanceof Actions::Workflow {
   string getName() { result = super.getName() }
 
-  JobStmt getAJobStmt() { result = super.getJob(_) }
+  Job getAJob() { result = super.getJob(_) }
 
-  JobStmt getJobStmt(string id) { result = super.getJob(id) }
+  Job getJob(string id) { result = super.getJob(id) }
 
   predicate hasTriggerEvent(string trigger) {
     exists(YamlNode n | n = super.getOn().(YamlMappingLikeNode).getNode(trigger))
@@ -80,27 +71,25 @@ class WorkflowStmt extends Statement instanceof Actions::Workflow {
     exists(YamlNode n | n = super.getOn().(YamlMappingLikeNode).getNode(result))
   }
 
-  Statement getPermissionsStmt() { result = this.(YamlMapping).lookup("permissions") }
+  Permissions getPermissions() { result = this.(YamlMapping).lookup("permissions") }
 
-  StrategyStmt getStrategyStmt() { result = this.(YamlMapping).lookup("strategy") }
+  Strategy getStrategy() { result = this.(YamlMapping).lookup("strategy") }
 }
 
-class ReusableWorkflowStmt extends WorkflowStmt {
+class ReusableWorkflow extends Workflow {
   YamlValue workflow_call;
 
-  ReusableWorkflowStmt() {
-    this.(Actions::Workflow).getOn().getNode("workflow_call") = workflow_call
-  }
+  ReusableWorkflow() { this.(Actions::Workflow).getOn().getNode("workflow_call") = workflow_call }
 
-  InputsStmt getInputsStmt() { result = workflow_call.(YamlMapping).lookup("inputs") }
+  Inputs getInputs() { result = workflow_call.(YamlMapping).lookup("inputs") }
 
-  OutputsStmt getOutputsStmt() { result = workflow_call.(YamlMapping).lookup("outputs") }
+  Outputs getOutputs() { result = workflow_call.(YamlMapping).lookup("outputs") }
 }
 
-class InputsStmt extends Statement instanceof YamlMapping {
+class Inputs extends AstNode instanceof YamlMapping {
   YamlMapping parent;
 
-  InputsStmt() { parent.lookup("inputs") = this }
+  Inputs() { parent.lookup("inputs") = this }
 
   /**
    * Gets a specific input expression (YamlMapping) by name.
@@ -111,10 +100,10 @@ class InputsStmt extends Statement instanceof YamlMapping {
   }
 }
 
-class OutputsStmt extends Statement instanceof YamlMapping {
+class Outputs extends AstNode instanceof YamlMapping {
   YamlMapping parent;
 
-  OutputsStmt() { parent.lookup("outputs") = this }
+  Outputs() { parent.lookup("outputs") = this }
 
   /**
    * Gets a specific output expression (YamlMapping) by name.
@@ -127,10 +116,16 @@ class OutputsStmt extends Statement instanceof YamlMapping {
   string getAnOutputName() { this.(YamlMapping).maps(any(YamlString s | s.getValue() = result), _) }
 }
 
-class StrategyStmt extends Statement instanceof YamlMapping {
+class Permissions extends AstNode instanceof YamlMapping {
   YamlMapping parent;
 
-  StrategyStmt() { parent.lookup("strategy") = this }
+  Permissions() { parent.lookup("permissions") = this }
+}
+
+class Strategy extends AstNode instanceof YamlMapping {
+  YamlMapping parent;
+
+  Strategy() { parent.lookup("strategy") = this }
 
   /**
    * Gets a specific matric expression (YamlMapping) by name.
@@ -144,31 +139,10 @@ class StrategyStmt extends Statement instanceof YamlMapping {
   }
 }
 
-class InputExpr extends Expression instanceof YamlString {
-  InputExpr() { exists(InputsStmt inputs | inputs.(YamlMapping).maps(this, _)) }
-}
-
-class OutputExpr extends Expression instanceof YamlString {
-  OutputExpr() {
-    exists(OutputsStmt outputs |
-      outputs.(YamlMapping).lookup(_).(YamlMapping).lookup("value") = this or
-      outputs.(YamlMapping).lookup(_) = this
-    )
-  }
-}
-
-class MatrixVariableExpr extends Expression instanceof YamlString {
-  MatrixVariableExpr() {
-    exists(StrategyStmt outputs |
-      outputs.(YamlMapping).lookup("matrix").(YamlMapping).lookup(_) = this
-    )
-  }
-}
-
 /**
  * A Job is a collection of steps that run in an execution environment.
  */
-class JobStmt extends Statement instanceof Actions::Job {
+class Job extends AstNode instanceof Actions::Job {
   /**
    * Gets the ID of this job, as a string.
    * This is the job's key within the `jobs` mapping.
@@ -176,20 +150,20 @@ class JobStmt extends Statement instanceof Actions::Job {
   string getId() { result = super.getId() }
 
   /** Gets the step at the given index within this job. */
-  StepStmt getStepStmt(int index) { result = super.getStep(index) }
+  Step getStep(int index) { result = super.getStep(index) }
 
   /** Gets any steps that are defined within this job. */
-  StepStmt getAStepStmt() { result = super.getStep(_) }
+  Step getAStep() { result = super.getStep(_) }
 
   /**
    * Gets a needed job.
    * eg:
    *     - needs: [job1, job2]
    */
-  JobStmt getNeededJob() {
+  Job getNeededJob() {
     exists(Actions::Needs needs |
       needs.getJob() = this and
-      result = needs.getANeededJob().(JobStmt)
+      result = needs.getANeededJob()
     )
   }
 
@@ -199,7 +173,7 @@ class JobStmt extends Statement instanceof Actions::Job {
    *   out1: ${steps.foo.bar}
    *   out2: ${steps.foo.baz}
    */
-  OutputsStmt getOutputsStmt() { result = this.(Actions::Job).lookup("outputs") }
+  Outputs getOutputs() { result = this.(Actions::Job).lookup("outputs") }
 
   /**
    * Reusable workflow jobs may have Uses children
@@ -209,42 +183,42 @@ class JobStmt extends Statement instanceof Actions::Job {
    *   with:
    *     arg1: value1
    */
-  JobUsesExpr getUsesExpr() { result.getJobStmt() = this }
+  JobUses getUses() { result.getJob() = this }
 
   predicate usesReusableWorkflow() {
     this.(YamlMapping).maps(any(YamlString s | s.getValue() = "uses"), _)
   }
 
-  IfStmt getIfStmt() { result = super.getIf() }
+  If getIf() { result = super.getIf() }
 
-  Statement getPermissionsStmt() { result = this.(YamlMapping).lookup("permissions") }
+  Permissions getPermissions() { result = this.(YamlMapping).lookup("permissions") }
 
-  StrategyStmt getStrategyStmt() { result = this.(YamlMapping).lookup("strategy") }
+  Strategy getStrategy() { result = this.(YamlMapping).lookup("strategy") }
 }
 
 /**
  * A Step is a single task that can be executed as part of a job.
  */
-class StepStmt extends Statement instanceof Actions::Step {
+class Step extends AstNode instanceof Actions::Step {
   string getId() { result = super.getId() }
 
-  JobStmt getJobStmt() { result = super.getJob() }
+  Job getJob() { result = super.getJob() }
 
-  IfStmt getIfStmt() { result = super.getIf() }
+  If getIf() { result = super.getIf() }
 }
 
 /**
  * An If node representing a conditional statement.
  */
-class IfStmt extends Statement {
+class If extends AstNode {
   YamlMapping parent;
 
-  IfStmt() {
+  If() {
     (parent instanceof Actions::Step or parent instanceof Actions::Job) and
     parent.lookup("if") = this
   }
 
-  Statement getEnclosingStatement() { result = parent }
+  AstNode getEnclosingNode() { result = parent }
 
   string getCondition() { result = this.(YamlScalar).getValue() }
 }
@@ -252,7 +226,7 @@ class IfStmt extends Statement {
 /**
  * Abstract class representing a call to a 3rd party action or reusable workflow.
  */
-abstract class UsesExpr extends Expression {
+abstract class Uses extends AstNode {
   abstract string getCallee();
 
   abstract string getVersion();
@@ -263,10 +237,10 @@ abstract class UsesExpr extends Expression {
 /**
  * A Uses step represents a call to an action that is defined in a GitHub repository.
  */
-class StepUsesExpr extends StepStmt, UsesExpr {
+class StepUses extends Step, Uses {
   Actions::Uses uses;
 
-  StepUsesExpr() { uses.getStep() = this }
+  StepUses() { uses.getStep() = this }
 
   override string getCallee() { result = uses.getGitHubRepository() }
 
@@ -288,12 +262,10 @@ class StepUsesExpr extends StepStmt, UsesExpr {
 /**
  * A Uses step represents a call to an action that is defined in a GitHub repository.
  */
-class JobUsesExpr extends UsesExpr instanceof YamlMapping {
-  JobUsesExpr() {
-    this instanceof JobStmt and this.maps(any(YamlString s | s.getValue() = "uses"), _)
-  }
+class JobUses extends Uses instanceof YamlMapping {
+  JobUses() { this instanceof Job and this.maps(any(YamlString s | s.getValue() = "uses"), _) }
 
-  JobStmt getJobStmt() { result = this }
+  Job getJob() { result = this }
 
   /**
    * Gets a regular expression that parses an `owner/repo@version` reference within a `uses` field in an Actions job step.
@@ -336,10 +308,10 @@ class JobUsesExpr extends UsesExpr instanceof YamlMapping {
 /**
  * A Run step represents the evaluation of a provided script
  */
-class RunExpr extends StepStmt, Expression {
+class Run extends Step {
   Actions::Run scriptExpr;
 
-  RunExpr() { scriptExpr.getStep() = this }
+  Run() { scriptExpr.getStep() = this }
 
   Expression getScriptExpr() { result = scriptExpr }
 
@@ -347,24 +319,59 @@ class RunExpr extends StepStmt, Expression {
 }
 
 /**
- * Evaluation of a workflow expression ${{}}.
+ * An AST node associated with a Reusable Workflow input.
  */
-class ExprAccessExpr extends Expression instanceof YamlString {
-  string expr;
-
-  ExprAccessExpr() { expr = Actions::getASimpleReferenceExpression(this) }
-
-  string getExpression() { result = expr }
-
-  JobStmt getJobStmt() { result.getAChildNode*() = this }
+class InputExpr extends AstNode {
+  InputExpr() { exists(Inputs inputs | inputs.(YamlMapping).maps(this, _)) }
 }
 
 /**
- * A context access expression.
+ * An AST node holding an Env var value.
+ */
+class EnvExpr extends AstNode {
+  EnvExpr() { exists(Actions::Env env | env.(YamlMapping).lookup(_) = this) }
+}
+
+/**
+ * An AST node holding a job or workflow output var.
+ */
+class OutputExpr extends AstNode {
+  OutputExpr() {
+    exists(Outputs outputs |
+      outputs.(YamlMapping).lookup(_).(YamlMapping).lookup("value") = this or
+      outputs.(YamlMapping).lookup(_) = this
+    )
+  }
+}
+
+/**
+ * An AST node holding a matrix var.
+ */
+class MatrixVariableExpr extends AstNode {
+  MatrixVariableExpr() {
+    exists(Strategy outputs | outputs.(YamlMapping).lookup("matrix").(YamlMapping).lookup(_) = this)
+  }
+}
+
+/**
+ * Evaluation of a workflow expression ${{}}.
+ */
+class Expression extends AstNode instanceof YamlString {
+  string expr;
+
+  Expression() { expr = Actions::getASimpleReferenceExpression(this) }
+
+  string getExpression() { result = expr }
+
+  Job getJob() { result.getAChildNode*() = this }
+}
+
+/**
+ * A ${{}} expression accessing a context variable.
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  */
-class CtxAccessExpr extends ExprAccessExpr {
-  CtxAccessExpr() {
+class ContextExpression extends Expression {
+  ContextExpression() {
     expr.regexpMatch([
         stepsCtxRegex(), needsCtxRegex(), jobsCtxRegex(), envCtxRegex(), inputsCtxRegex(),
         matrixCtxRegex()
@@ -373,7 +380,7 @@ class CtxAccessExpr extends ExprAccessExpr {
 
   abstract string getFieldName();
 
-  abstract Expression getRefExpr();
+  abstract AstNode getTarget();
 }
 
 private string stepsCtxRegex() {
@@ -406,11 +413,11 @@ private string wrapRegexp(string regex) {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ steps.changed-files.outputs.all_changed_files }}`
  */
-class StepsCtxAccessExpr extends CtxAccessExpr {
+class StepsExpression extends ContextExpression {
   string stepId;
   string fieldName;
 
-  StepsCtxAccessExpr() {
+  StepsExpression() {
     expr.regexpMatch(stepsCtxRegex()) and
     stepId = expr.regexpCapture(stepsCtxRegex(), 1) and
     fieldName = expr.regexpCapture(stepsCtxRegex(), 2)
@@ -418,9 +425,9 @@ class StepsCtxAccessExpr extends CtxAccessExpr {
 
   override string getFieldName() { result = fieldName }
 
-  override Expression getRefExpr() {
+  override AstNode getTarget() {
     this.getLocation().getFile() = result.getLocation().getFile() and
-    result.(StepStmt).getId() = stepId
+    result.(Step).getId() = stepId
   }
 }
 
@@ -429,12 +436,12 @@ class StepsCtxAccessExpr extends CtxAccessExpr {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ needs.job1.outputs.foo}}`
  */
-class NeedsCtxAccessExpr extends CtxAccessExpr {
-  JobStmt job;
+class NeedsExpression extends ContextExpression {
+  Job job;
   string jobId;
   string fieldName;
 
-  NeedsCtxAccessExpr() {
+  NeedsExpression() {
     expr.regexpMatch(needsCtxRegex()) and
     jobId = expr.regexpCapture(needsCtxRegex(), 1) and
     fieldName = expr.regexpCapture(needsCtxRegex(), 2) and
@@ -445,14 +452,14 @@ class NeedsCtxAccessExpr extends CtxAccessExpr {
 
   override string getFieldName() { result = fieldName }
 
-  override Expression getRefExpr() {
+  override AstNode getTarget() {
     job.getLocation().getFile() = this.getLocation().getFile() and
     (
       // regular jobs
-      job.getOutputsStmt() = result
+      job.getOutputs() = result
       or
       // reusable workflow calling jobs
-      job.getUsesExpr() = result
+      job.getUses() = result
     )
   }
 }
@@ -462,11 +469,11 @@ class NeedsCtxAccessExpr extends CtxAccessExpr {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ jobs.job1.outputs.foo}}` (within reusable workflows)
  */
-class JobsCtxAccessExpr extends CtxAccessExpr {
+class JobsExpression extends ContextExpression {
   string jobId;
   string fieldName;
 
-  JobsCtxAccessExpr() {
+  JobsExpression() {
     expr.regexpMatch(jobsCtxRegex()) and
     jobId = expr.regexpCapture(jobsCtxRegex(), 1) and
     fieldName = expr.regexpCapture(jobsCtxRegex(), 2)
@@ -474,11 +481,11 @@ class JobsCtxAccessExpr extends CtxAccessExpr {
 
   override string getFieldName() { result = fieldName }
 
-  override Expression getRefExpr() {
-    exists(JobStmt job |
+  override AstNode getTarget() {
+    exists(Job job |
       job.getId() = jobId and
       job.getLocation().getFile() = this.getLocation().getFile() and
-      job.getOutputsStmt() = result
+      job.getOutputs() = result
     )
   }
 }
@@ -488,21 +495,23 @@ class JobsCtxAccessExpr extends CtxAccessExpr {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ inputs.foo }}`
  */
-class InputsCtxAccessExpr extends CtxAccessExpr {
+class InputsExpression extends ContextExpression {
   string fieldName;
 
-  InputsCtxAccessExpr() {
+  InputsExpression() {
     expr.regexpMatch(inputsCtxRegex()) and
     fieldName = expr.regexpCapture(inputsCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
 
-  override Expression getRefExpr() {
+  override AstNode getTarget() {
     result.getLocation().getFile() = this.getLocation().getFile() and
-    exists(ReusableWorkflowStmt w | w.getInputsStmt().getInputExpr(fieldName) = result)
-    or
-    exists(CompositeActionStmt a | a.getInputsStmt().getInputExpr(fieldName) = result)
+    (
+      exists(ReusableWorkflow w | w.getInputs().getInputExpr(fieldName) = result)
+      or
+      exists(CompositeAction a | a.getInputs().getInputExpr(fieldName) = result)
+    )
   }
 }
 
@@ -511,18 +520,18 @@ class InputsCtxAccessExpr extends CtxAccessExpr {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ env.foo }}`
  */
-class EnvCtxAccessExpr extends CtxAccessExpr {
+class EnvExpression extends ContextExpression {
   string fieldName;
 
-  EnvCtxAccessExpr() {
+  EnvExpression() {
     expr.regexpMatch(envCtxRegex()) and
     fieldName = expr.regexpCapture(envCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
 
-  override Expression getRefExpr() {
-    exists(Statement s |
+  override AstNode getTarget() {
+    exists(AstNode s |
       s.getEnvExpr(fieldName) = result and
       s.getAChildNode*() = this
     )
@@ -534,24 +543,24 @@ class EnvCtxAccessExpr extends CtxAccessExpr {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ matrix.foo }}`
  */
-class MatrixCtxAccessExpr extends CtxAccessExpr {
+class MatrixExpression extends ContextExpression {
   string fieldName;
 
-  MatrixCtxAccessExpr() {
+  MatrixExpression() {
     expr.regexpMatch(matrixCtxRegex()) and
     fieldName = expr.regexpCapture(matrixCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
 
-  override Expression getRefExpr() {
-    exists(WorkflowStmt w |
-      w.getStrategyStmt().getMatrixVariableExpr(fieldName) = result and
+  override AstNode getTarget() {
+    exists(Workflow w |
+      w.getStrategy().getMatrixVariableExpr(fieldName) = result and
       w.getAChildNode*() = this
     )
     or
-    exists(JobStmt j |
-      j.getStrategyStmt().getMatrixVariableExpr(fieldName) = result and
+    exists(Job j |
+      j.getStrategy().getMatrixVariableExpr(fieldName) = result and
       j.getAChildNode*() = this
     )
   }

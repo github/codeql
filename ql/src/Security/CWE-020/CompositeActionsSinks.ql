@@ -18,14 +18,14 @@ import codeql.actions.dataflow.ExternalFlow
 
 private class ExpressionInjectionSink extends DataFlow::Node {
   ExpressionInjectionSink() {
-    exists(RunExpr e | e.getScriptExpr() = this.asExpr()) or
+    exists(Run e | e.getScriptExpr() = this.asExpr()) or
     externallyDefinedSink(this, "expression-injection")
   }
 }
 
 private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(CompositeActionStmt c | c.getInputsStmt().getInputExpr(_) = source.asExpr())
+    exists(CompositeAction c | c.getInputs().getInputExpr(_) = source.asExpr())
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionInjectionSink }

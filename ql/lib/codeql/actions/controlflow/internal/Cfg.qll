@@ -83,9 +83,9 @@ module Completion {
 module CfgScope {
   abstract class CfgScope extends AstNode { }
 
-  class WorkflowScope extends CfgScope instanceof WorkflowStmt { }
+  class WorkflowScope extends CfgScope instanceof Workflow { }
 
-  class CompositeActionScope extends CfgScope instanceof CompositeActionStmt { }
+  class CompositeActionScope extends CfgScope instanceof CompositeAction { }
 }
 
 private module Implementation implements CfgShared::InputSig<Location> {
@@ -119,13 +119,13 @@ private module Implementation implements CfgShared::InputSig<Location> {
   int maxSplits() { result = 0 }
 
   predicate scopeFirst(CfgScope scope, AstNode e) {
-    first(scope.(WorkflowStmt), e) or
-    first(scope.(CompositeActionStmt), e)
+    first(scope.(Workflow), e) or
+    first(scope.(CompositeAction), e)
   }
 
   predicate scopeLast(CfgScope scope, AstNode e, Completion c) {
-    last(scope.(WorkflowStmt), e, c) or
-    last(scope.(CompositeActionStmt), e, c)
+    last(scope.(Workflow), e, c) or
+    last(scope.(CompositeAction), e, c)
   }
 
   predicate successorTypeIsSimple(SuccessorType t) { t instanceof NormalSuccessor }
@@ -143,14 +143,14 @@ private import CfgImpl
 private import Completion
 private import CfgScope
 
-private class CompositeActionTree extends StandardPreOrderTree instanceof CompositeActionStmt {
+private class CompositeActionTree extends StandardPreOrderTree instanceof CompositeAction {
   override ControlFlowTree getChildNode(int i) {
     result =
-      rank[i](Expression child, Location l |
+      rank[i](AstNode child, Location l |
         (
-          child = this.(CompositeActionStmt).getInputsStmt() or
-          child = this.(CompositeActionStmt).getOutputsStmt() or
-          child = this.(CompositeActionStmt).getRunsStmt()
+          child = this.(CompositeAction).getInputs() or
+          child = this.(CompositeAction).getOutputs() or
+          child = this.(CompositeAction).getRuns()
         ) and
         l = child.getLocation()
       |
@@ -161,21 +161,21 @@ private class CompositeActionTree extends StandardPreOrderTree instanceof Compos
   }
 }
 
-private class RunsTree extends StandardPreOrderTree instanceof RunsStmt {
-  override ControlFlowTree getChildNode(int i) { result = super.getStepStmt(i) }
+private class RunsTree extends StandardPreOrderTree instanceof Runs {
+  override ControlFlowTree getChildNode(int i) { result = super.getStep(i) }
 }
 
-private class WorkflowTree extends StandardPreOrderTree instanceof WorkflowStmt {
+private class WorkflowTree extends StandardPreOrderTree instanceof Workflow {
   override ControlFlowTree getChildNode(int i) {
-    if this instanceof ReusableWorkflowStmt
+    if this instanceof ReusableWorkflow
     then
       result =
-        rank[i](Expression child, Location l |
+        rank[i](AstNode child, Location l |
           (
-            child = this.(ReusableWorkflowStmt).getInputsStmt() or
-            child = this.(ReusableWorkflowStmt).getOutputsStmt() or
-            child = this.(ReusableWorkflowStmt).getStrategyStmt() or
-            child = this.(ReusableWorkflowStmt).getAJobStmt()
+            child = this.(ReusableWorkflow).getInputs() or
+            child = this.(ReusableWorkflow).getOutputs() or
+            child = this.(ReusableWorkflow).getStrategy() or
+            child = this.(ReusableWorkflow).getAJob()
           ) and
           l = child.getLocation()
         |
@@ -185,10 +185,10 @@ private class WorkflowTree extends StandardPreOrderTree instanceof WorkflowStmt 
         )
     else
       result =
-        rank[i](Expression child, Location l |
+        rank[i](AstNode child, Location l |
           (
-            child = super.getAJobStmt() or
-            child = super.getStrategyStmt()
+            child = super.getAJob() or
+            child = super.getStrategy()
           ) and
           l = child.getLocation()
         |
@@ -199,10 +199,10 @@ private class WorkflowTree extends StandardPreOrderTree instanceof WorkflowStmt 
   }
 }
 
-private class InputsTree extends StandardPreOrderTree instanceof InputsStmt {
+private class InputsTree extends StandardPreOrderTree instanceof Inputs {
   override ControlFlowTree getChildNode(int i) {
     result =
-      rank[i](Expression child, Location l |
+      rank[i](AstNode child, Location l |
         child = super.getInputExpr(_) and l = child.getLocation()
       |
         child
@@ -212,12 +212,10 @@ private class InputsTree extends StandardPreOrderTree instanceof InputsStmt {
   }
 }
 
-private class InputExprTree extends LeafTree instanceof InputExpr { }
-
-private class OutputsTree extends StandardPreOrderTree instanceof OutputsStmt {
+private class OutputsTree extends StandardPreOrderTree instanceof Outputs {
   override ControlFlowTree getChildNode(int i) {
     result =
-      rank[i](Expression child, Location l |
+      rank[i](AstNode child, Location l |
         child = super.getOutputExpr(_) and l = child.getLocation()
       |
         child
@@ -227,12 +225,10 @@ private class OutputsTree extends StandardPreOrderTree instanceof OutputsStmt {
   }
 }
 
-private class OutputExprTree extends LeafTree instanceof OutputExpr { }
-
-private class StrategyTree extends StandardPreOrderTree instanceof StrategyStmt {
+private class StrategyTree extends StandardPreOrderTree instanceof Strategy {
   override ControlFlowTree getChildNode(int i) {
     result =
-      rank[i](Expression child, Location l |
+      rank[i](AstNode child, Location l |
         child = super.getMatrixVariableExpr(_) and l = child.getLocation()
       |
         child
@@ -242,17 +238,15 @@ private class StrategyTree extends StandardPreOrderTree instanceof StrategyStmt 
   }
 }
 
-private class MatrixVariableExprTree extends LeafTree instanceof MatrixVariableExpr { }
-
-private class JobTree extends StandardPreOrderTree instanceof JobStmt {
+private class JobTree extends StandardPreOrderTree instanceof Job {
   override ControlFlowTree getChildNode(int i) {
     result =
-      rank[i](Expression child, Location l |
+      rank[i](AstNode child, Location l |
         (
-          child = super.getAStepStmt() or
-          child = super.getOutputsStmt() or
-          child = super.getStrategyStmt() or
-          child = super.getUsesExpr()
+          child = super.getAStep() or
+          child = super.getOutputs() or
+          child = super.getStrategy() or
+          child = super.getUses()
         ) and
         l = child.getLocation()
       |
@@ -263,12 +257,10 @@ private class JobTree extends StandardPreOrderTree instanceof JobStmt {
   }
 }
 
-private class UsesExprTree extends LeafTree instanceof UsesExpr { }
-
-private class UsesTree extends StandardPreOrderTree instanceof UsesExpr {
+private class UsesTree extends StandardPreOrderTree instanceof Uses {
   override ControlFlowTree getChildNode(int i) {
     result =
-      rank[i](Expression child, Location l |
+      rank[i](AstNode child, Location l |
         (child = super.getArgumentExpr(_) or child = super.getEnvExpr(_)) and
         l = child.getLocation()
       |
@@ -279,11 +271,10 @@ private class UsesTree extends StandardPreOrderTree instanceof UsesExpr {
   }
 }
 
-private class RunTree extends StandardPreOrderTree instanceof RunExpr {
-  //override ControlFlowTree getChildNode(int i) { result = super.getScriptExpr() and i = 0 }
+private class RunTree extends StandardPreOrderTree instanceof Run {
   override ControlFlowTree getChildNode(int i) {
     result =
-      rank[i](Expression child, Location l |
+      rank[i](AstNode child, Location l |
         (child = super.getEnvExpr(_) or child = super.getScriptExpr()) and
         l = child.getLocation()
       |
@@ -294,4 +285,16 @@ private class RunTree extends StandardPreOrderTree instanceof RunExpr {
   }
 }
 
-private class ExprAccessTree extends LeafTree instanceof ExprAccessExpr { }
+private class UsesLeaf extends LeafTree instanceof Uses { }
+
+private class InputExprTree extends LeafTree instanceof InputExpr { }
+
+private class OutputExprTree extends LeafTree instanceof OutputExpr { }
+
+private class MatrixVariableExprTree extends LeafTree instanceof MatrixVariableExpr { }
+
+private class EnvExprTree extends LeafTree instanceof EnvExpr { }
+
+private class ExprAccessTree extends LeafTree instanceof ContextExpression { }
+
+private class AstNodeLeaf extends LeafTree instanceof Expression { }

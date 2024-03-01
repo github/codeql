@@ -20,11 +20,11 @@ private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
     not source instanceof DataFlow::ParameterNode and
-    exists(CompositeActionStmt c | c.getAChildNode*() = source.asExpr())
+    exists(CompositeAction c | c.getAChildNode*() = source.asExpr())
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(CompositeActionStmt c | c.getOutputsStmt().getOutputExpr(_) = sink.asExpr())
+    exists(CompositeAction c | c.getOutputs().getOutputExpr(_) = sink.asExpr())
   }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet set) {

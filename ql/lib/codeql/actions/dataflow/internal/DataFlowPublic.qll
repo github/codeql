@@ -52,11 +52,11 @@ class ParameterNode extends ExprNode {
 
   ParameterNode() {
     this.asExpr() = input and
-    input = any(InputsStmt s).getInputExpr(_)
+    input = any(Inputs s).getInputExpr(_)
   }
 
   predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-    input = c.(ReusableWorkflowStmt).getInputsStmt().getInputExpr(pos)
+    input = c.(ReusableWorkflow).getInputs().getInputExpr(pos)
   }
 
   override string toString() { result = "input " + input.toString() }
@@ -81,12 +81,12 @@ class CallNode extends ExprNode {
  * An argument to a Uses step (call).
  */
 class ArgumentNode extends ExprNode {
-  ArgumentNode() { this.getCfgNode().getAstNode() = any(UsesExpr e).getArgumentExpr(_) }
+  ArgumentNode() { this.getCfgNode().getAstNode() = any(Uses e).getArgumentExpr(_) }
 
   predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     this.getCfgNode() = call.(Cfg::Node).getASuccessor+() and
     call.(Cfg::Node).getAstNode() =
-      any(UsesExpr e | e.getArgumentExpr(pos) = this.getCfgNode().getAstNode())
+      any(Uses e | e.getArgumentExpr(pos) = this.getCfgNode().getAstNode())
   }
 }
 
@@ -94,11 +94,11 @@ class ArgumentNode extends ExprNode {
  * Reusable workflow output nodes
  */
 class ReturnNode extends ExprNode {
-  private OutputsStmt outputs;
+  private Outputs outputs;
 
   ReturnNode() {
     this.asExpr() = outputs and
-    outputs = any(ReusableWorkflowStmt s).getOutputsStmt()
+    outputs = any(ReusableWorkflow s).getOutputs()
   }
 
   ReturnKind getKind() { result = TNormalReturn() }

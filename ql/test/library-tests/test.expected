@@ -90,18 +90,11 @@ stepUsesNodes
 | .github/workflows/test.yml:19:9:26:6 | name: R ... d files |
 jobUsesNodes
 usesSteps
-| .github/workflows/test.yml:11:9:15:6 | uses: a ... kout@v4 | fetch-depth | .github/workflows/test.yml:13:24:13:24 | 0 |
-| .github/workflows/test.yml:19:9:26:6 | name: R ... d files | find | .github/workflows/test.yml:24:17:24:21 | "foo" |
-| .github/workflows/test.yml:19:9:26:6 | name: R ... d files | replace | .github/workflows/test.yml:25:20:25:21 | "" |
 | .github/workflows/test.yml:19:9:26:6 | name: R ... d files | source | .github/workflows/test.yml:23:19:23:63 | ${{ ste ... iles }} |
-runSteps1
+runSteps
 | .github/workflows/test.yml:26:9:28:6 | id: simplesink1 | echo ${{ steps.source.outputs.all_changed_files }} |
 | .github/workflows/test.yml:28:9:31:2 | id: simplesink2 | ${{ github.event.pull_request.head.ref }} |
 | .github/workflows/test.yml:39:9:40:53 | id: sink | echo ${{needs.job1.outputs.job_output}} |
-runSteps2
-| .github/workflows/test.yml:26:9:28:6 | id: simplesink1 | .github/workflows/test.yml:27:14:27:63 | echo ${ ... iles }} |
-| .github/workflows/test.yml:28:9:31:2 | id: simplesink2 | .github/workflows/test.yml:29:14:29:54 | ${{ git ... .ref }} |
-| .github/workflows/test.yml:39:9:40:53 | id: sink | .github/workflows/test.yml:40:14:40:52 | echo ${ ... utput}} |
 runStepChildren
 | .github/workflows/test.yml:26:9:28:6 | id: simplesink1 | .github/workflows/test.yml:26:9:26:10 | id |
 | .github/workflows/test.yml:26:9:28:6 | id: simplesink1 | .github/workflows/test.yml:26:13:26:23 | simplesink1 |
@@ -115,21 +108,6 @@ runStepChildren
 | .github/workflows/test.yml:39:9:40:53 | id: sink | .github/workflows/test.yml:39:13:39:16 | sink |
 | .github/workflows/test.yml:39:9:40:53 | id: sink | .github/workflows/test.yml:40:9:40:11 | run |
 | .github/workflows/test.yml:39:9:40:53 | id: sink | .github/workflows/test.yml:40:14:40:52 | echo ${ ... utput}} |
-varAccesses
-| .github/workflows/test.yml:8:19:8:49 | ${{ ste ... alue }} | steps.step.outputs.value |
-| .github/workflows/test.yml:23:19:23:63 | ${{ ste ... iles }} | steps.source.outputs.all_changed_files |
-| .github/workflows/test.yml:27:14:27:63 | echo ${ ... iles }} | steps.source.outputs.all_changed_files |
-| .github/workflows/test.yml:29:14:29:54 | ${{ git ... .ref }} | github.event.pull_request.head.ref |
-| .github/workflows/test.yml:34:9:34:23 | ${{ always() }} | always() |
-| .github/workflows/test.yml:40:14:40:52 | echo ${ ... utput}} | needs.job1.outputs.job_output |
-orphanVarAccesses
-nonOrphanVarAccesses
-| .github/workflows/test.yml:8:19:8:49 | ${{ ste ... alue }} | steps.step.outputs.value | .github/workflows/test.yml:8:7:10:4 | job_out ... alue }} |
-| .github/workflows/test.yml:23:19:23:63 | ${{ ste ... iles }} | steps.source.outputs.all_changed_files | .github/workflows/test.yml:23:11:26:6 | source: ... iles }} |
-| .github/workflows/test.yml:27:14:27:63 | echo ${ ... iles }} | steps.source.outputs.all_changed_files | .github/workflows/test.yml:26:9:28:6 | id: simplesink1 |
-| .github/workflows/test.yml:29:14:29:54 | ${{ git ... .ref }} | github.event.pull_request.head.ref | .github/workflows/test.yml:28:9:31:2 | id: simplesink2 |
-| .github/workflows/test.yml:34:9:34:23 | ${{ always() }} | always() | .github/workflows/test.yml:32:5:40:53 | runs-on ... -latest |
-| .github/workflows/test.yml:40:14:40:52 | echo ${ ... utput}} | needs.job1.outputs.job_output | .github/workflows/test.yml:39:9:40:53 | id: sink |
 parentNodes
 | .github/workflows/test.yml:1:1:1:2 | on | .github/workflows/test.yml:1:1:40:53 | on: push |
 | .github/workflows/test.yml:1:5:1:8 | push | .github/workflows/test.yml:1:1:40:53 | on: push |
@@ -200,41 +178,11 @@ parentNodes
 | .github/workflows/test.yml:40:9:40:11 | run | .github/workflows/test.yml:39:9:40:53 | id: sink |
 | .github/workflows/test.yml:40:14:40:52 | echo ${ ... utput}} | .github/workflows/test.yml:39:9:40:53 | id: sink |
 cfgNodes
+dfNodes
+exprNodes
 | .github/workflows/test.yml:1:1:40:53 | enter on: push |
 | .github/workflows/test.yml:1:1:40:53 | exit on: push |
 | .github/workflows/test.yml:1:1:40:53 | exit on: push (normal) |
-| .github/workflows/test.yml:1:1:40:53 | on: push |
-| .github/workflows/test.yml:5:5:31:2 | runs-on ... -latest |
-| .github/workflows/test.yml:8:7:10:4 | job_out ... alue }} |
-| .github/workflows/test.yml:8:19:8:49 | ${{ ste ... alue }} |
-| .github/workflows/test.yml:11:9:15:6 | uses: a ... kout@v4 |
-| .github/workflows/test.yml:15:9:19:6 | name: G ... d files |
-| .github/workflows/test.yml:19:9:26:6 | name: R ... d files |
-| .github/workflows/test.yml:23:19:23:63 | ${{ ste ... iles }} |
-| .github/workflows/test.yml:26:9:28:6 | id: simplesink1 |
-| .github/workflows/test.yml:27:14:27:63 | echo ${ ... iles }} |
-| .github/workflows/test.yml:28:9:31:2 | id: simplesink2 |
-| .github/workflows/test.yml:29:14:29:54 | ${{ git ... .ref }} |
-| .github/workflows/test.yml:32:5:40:53 | runs-on ... -latest |
-| .github/workflows/test.yml:39:9:40:53 | id: sink |
-| .github/workflows/test.yml:40:14:40:52 | echo ${ ... utput}} |
-dfNodes
-| .github/workflows/test.yml:1:1:40:53 | on: push |
-| .github/workflows/test.yml:5:5:31:2 | runs-on ... -latest |
-| .github/workflows/test.yml:8:7:10:4 | job_out ... alue }} |
-| .github/workflows/test.yml:8:19:8:49 | ${{ ste ... alue }} |
-| .github/workflows/test.yml:11:9:15:6 | uses: a ... kout@v4 |
-| .github/workflows/test.yml:15:9:19:6 | name: G ... d files |
-| .github/workflows/test.yml:19:9:26:6 | name: R ... d files |
-| .github/workflows/test.yml:23:19:23:63 | ${{ ste ... iles }} |
-| .github/workflows/test.yml:26:9:28:6 | id: simplesink1 |
-| .github/workflows/test.yml:27:14:27:63 | echo ${ ... iles }} |
-| .github/workflows/test.yml:28:9:31:2 | id: simplesink2 |
-| .github/workflows/test.yml:29:14:29:54 | ${{ git ... .ref }} |
-| .github/workflows/test.yml:32:5:40:53 | runs-on ... -latest |
-| .github/workflows/test.yml:39:9:40:53 | id: sink |
-| .github/workflows/test.yml:40:14:40:52 | echo ${ ... utput}} |
-exprNodes
 | .github/workflows/test.yml:1:1:40:53 | on: push |
 | .github/workflows/test.yml:5:5:31:2 | runs-on ... -latest |
 | .github/workflows/test.yml:8:7:10:4 | job_out ... alue }} |
@@ -256,6 +204,9 @@ usesIds
 | .github/workflows/test.yml:15:9:19:6 | name: G ... d files | source |
 | .github/workflows/test.yml:19:9:26:6 | name: R ... d files | step |
 nodeLocations
+| .github/workflows/test.yml:1:1:40:53 | enter on: push | .github/workflows/test.yml:1:1:40:53 | .github/workflows/test.yml@1:1:40:53 |
+| .github/workflows/test.yml:1:1:40:53 | exit on: push | .github/workflows/test.yml:1:1:40:53 | .github/workflows/test.yml@1:1:40:53 |
+| .github/workflows/test.yml:1:1:40:53 | exit on: push (normal) | .github/workflows/test.yml:1:1:40:53 | .github/workflows/test.yml@1:1:40:53 |
 | .github/workflows/test.yml:1:1:40:53 | on: push | .github/workflows/test.yml:1:1:40:53 | .github/workflows/test.yml@1:1:40:53 |
 | .github/workflows/test.yml:5:5:31:2 | runs-on ... -latest | .github/workflows/test.yml:5:5:31:2 | .github/workflows/test.yml@5:5:31:2 |
 | .github/workflows/test.yml:8:7:10:4 | job_out ... alue }} | .github/workflows/test.yml:8:7:10:4 | .github/workflows/test.yml@8:7:10:4 |
