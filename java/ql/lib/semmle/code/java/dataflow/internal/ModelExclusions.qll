@@ -63,7 +63,8 @@ private predicate isInternal(CompilationUnit cu) {
 private class LambdaFlowMethod extends Method {
   LambdaFlowMethod() {
     this.hasQualifiedName("java.lang", "Runnable", "run") or
-    this.hasQualifiedName("java.util", "Comparator", "comparing") or
+    this.hasQualifiedName("java.util", "Comparator",
+      ["comparing", "comparingDouble", "comparingInt", "comparingLong"]) or
     this.hasQualifiedName("java.util.function", "BiConsumer", "accept") or
     this.hasQualifiedName("java.util.function", "BiFunction", "apply") or
     this.hasQualifiedName("java.util.function", "Consumer", "accept") or
