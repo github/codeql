@@ -13,26 +13,21 @@
 
 import go
 
-class BuiltInMake extends DataFlow::Node {
-  BuiltInMake() { this = Builtin::make().getACall().getArgument(0) }
-}
 
 /**
- * Holds if `g` is a barrier-guard which checks `e` is nonzero on `branch`.
+ * Class for defining a predicate to check for denial of service sanitizer guard.
  */
 predicate denialOfServiceSanitizerGuard(DataFlow::Node g, Expr e, boolean branch) {
   exists(DataFlow::Node lesser |
     e = lesser.asExpr() and
-    g.(DataFlow::RelationalComparisonNode).leq(branch, lesser, _, _)
-  )
-  or
-  exists(LogicalBinaryExpr lbe, DataFlow::Node lesser |
-    lbe.getAnOperand() = g.(DataFlow::RelationalComparisonNode).asExpr() and
-    e = lesser.asExpr() and
-    g.(DataFlow::RelationalComparisonNode).leq(branch, lesser, _, _)
+    g.(DataFlow::RelationalComparisonNode).leq(branch, lesser, _, _) and
+    not e.isConst()
   )
 }
 
+/*
+ * Module for defining predicates and tracking taint flow related to denial of service issues.
+ */
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
@@ -48,7 +43,7 @@ module Config implements DataFlow::ConfigSig {
     node = DataFlow::BarrierGuard<denialOfServiceSanitizerGuard/3>::getABarrierNode()
   }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof BuiltInMake }
+  predicate isSink(DataFlow::Node sink) { sink = Builtin::make().getACall().getArgument(0) }
 }
 
 /**
