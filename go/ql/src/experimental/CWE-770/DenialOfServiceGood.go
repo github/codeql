@@ -12,11 +12,11 @@ func OutOfMemoryGood(w http.ResponseWriter, r *http.Request) {
 	MaxValue := 6
 	queryStr := query.Get("n")
 	collectionSize, err := strconv.Atoi(queryStr)
-	if err != nil || collectionSize < 0 {
-		http.Error(w, "Bad request", http.StatusBadRequest)
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	if collectionSize > MaxValue {
+	if collectionSize < 0 || collectionSize > MaxValue {
 		http.Error(w, "Bad request", http.StatusBadRequest)
 		return
 	}
