@@ -320,7 +320,7 @@ func FindAllFilesWithName(root string, name string, dirsToSkip ...string) []stri
 	return paths
 }
 
-// Returns an array of any Go source files in locations which do not have a Go.mod
+// Returns an array of any Go source files in locations which do not have a `go.mod`
 // file in the same directory or higher up in the file hierarchy, relative to the `root`.
 func GoFilesOutsideDirs(root string, dirsToSkip ...string) []string {
 	result := []string{}
