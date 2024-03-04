@@ -9,8 +9,7 @@ from diagnostics_test_utils import *
 # need it to be set for the call to "go clean -modcache" later
 goPath = os.path.join(os.path.abspath(os.getcwd()), ".go")
 os.environ['GOPATH'] = goPath
-os.environ['LGTM_INDEX_IMPORT_PATH'] = "test"
-run_codeql_database_create([], lang="go", source="work")
+run_codeql_database_create([], lang="go", source="src")
 
 check_diagnostics()
 
