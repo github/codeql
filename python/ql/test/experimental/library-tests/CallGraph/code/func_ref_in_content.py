@@ -50,6 +50,17 @@ dct2['func2']() # $ tt=func2
 dct2['contested']() # $ tt=func2 SPURIOUS: tt=func
 
 
+## non-precise access is not supported right now
+for k in dct2:
+    dct2[k]() # $ MISSING: tt=func tt=func2
+
+for v in dct2.values():
+    v() # $ MISSING: tt=func tt=func2
+
+for k, v in dct2.items():
+    v() # $ MISSING: tt=func tt=func2
+
+
 def return_func_in_list():
     return [func, 42]
 
