@@ -21,6 +21,8 @@ module CppDataFlow implements InputSig {
 
   predicate getAdditionalFlowIntoCallNodeTerm = Private::getAdditionalFlowIntoCallNodeTerm/2;
 
+  predicate getSecondLevelScope = Private::getSecondLevelScope/1;
+
   predicate validParameterAliasStep = Private::validParameterAliasStep/2;
 
   predicate mayBenefitFromCallContext = Private::mayBenefitFromCallContext/1;

@@ -1084,15 +1084,33 @@ module MakeImpl<InputSig Lang> {
       result = getAdditionalFlowIntoCallNodeTerm(arg.projectToNode(), p.projectToNode())
     }
 
+    private module SndLevelScopeOption = Option<DataFlowSecondLevelScope>;
+
+    private class SndLevelScopeOption = SndLevelScopeOption::Option;
+
     pragma[nomagic]
-    private predicate returnCallEdge1(DataFlowCallable c, DataFlowCall call, NodeEx out) {
+    private SndLevelScopeOption getScope(RetNodeEx ret) {
+      result = SndLevelScopeOption::some(getSecondLevelScope(ret.asNode()))
+      or
+      result instanceof SndLevelScopeOption::None and not exists(getSecondLevelScope(ret.asNode()))
+    }
+
+    pragma[nomagic]
+    private predicate returnCallEdge1(
+      DataFlowCallable c, SndLevelScopeOption scope, DataFlowCall call, NodeEx out
+    ) {
       exists(RetNodeEx ret |
-        flowOutOfCallNodeCand1(call, ret, _, out) and c = ret.getEnclosingCallable()
+        flowOutOfCallNodeCand1(call, ret, _, out) and
+        c = ret.getEnclosingCallable() and
+        scope = getScope(ret)
       )
     }
 
     private int simpleDispatchFanoutOnReturn(DataFlowCall call, NodeEx out) {
-      result = strictcount(DataFlowCallable c | returnCallEdge1(c, call, out))
+      result =
+        strictcount(DataFlowCallable c, SndLevelScopeOption scope |
+          returnCallEdge1(c, scope, call, out)
+        )
     }
 
     private int ctxDispatchFanoutOnReturn(NodeEx out, DataFlowCall ctx) {
@@ -1100,12 +1118,12 @@ module MakeImpl<InputSig Lang> {
         simpleDispatchFanoutOnReturn(call, out) > 1 and
         not Stage1::revFlow(out, false) and
         call.getEnclosingCallable() = c and
-        returnCallEdge1(c, ctx, _) and
+        returnCallEdge1(c, _, ctx, _) and
         mayBenefitFromCallContextExt(call, _) and
         result =
-          count(DataFlowCallable tgt |
+          count(DataFlowCallable tgt, SndLevelScopeOption scope |
             tgt = viableImplInCallContextExt(call, ctx) and
-            returnCallEdge1(tgt, call, out)
+            returnCallEdge1(tgt, scope, call, out)
           )
       )
     }
