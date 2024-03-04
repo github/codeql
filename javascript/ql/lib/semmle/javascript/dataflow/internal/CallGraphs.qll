@@ -249,7 +249,13 @@ module CallGraph {
       or
       result = node.(DataFlow::ObjectLiteralNode).getPropertySetter(_)
     ) and
-    not node.getTopLevel().isExterns()
+    not node.getTopLevel().isExterns() and
+    // Do not track instance methods on classes
+    not exists(DataFlow::ClassNode cls |
+      node = cls.getConstructor().getReceiver()
+      or
+      node = cls.(DataFlow::ClassNode::FunctionStyleClass).getAPrototypeReference()
+    )
   }
 
   private predicate shouldTrackObjectWithMethods(DataFlow::SourceNode node) {
