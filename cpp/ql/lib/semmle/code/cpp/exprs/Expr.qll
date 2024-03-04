@@ -1322,3 +1322,23 @@ class CoYieldExpr extends UnaryOperation, @co_yield {
 
   override int getPrecedence() { result = 2 }
 }
+
+class ReuseExpr extends Expr, @reuseexpr {
+  override string getAPrimaryQlClass() { result = "ReuseExpr" }
+
+  override string toString() {
+    result = "reuse of " + this.getReusedExpr().toString()
+  }
+
+  override Type getType() {
+    result = this.getReusedExpr().getType()
+  }
+
+  override string getValueCategoryString() {
+    result = this.getReusedExpr().getValueCategoryString()
+  }
+
+  Expr getReusedExpr() {
+    expr_reuse(underlyingElement(this), unresolveElement(result))
+  }
+}
