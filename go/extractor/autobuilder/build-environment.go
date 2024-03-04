@@ -12,7 +12,7 @@ import (
 )
 
 const minGoVersion = "1.11"
-const maxGoVersion = "1.21"
+const maxGoVersion = "1.22"
 
 type versionInfo struct {
 	goModVersion      string // The version of Go found in the go directive in the `go.mod` file.
