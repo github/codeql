@@ -34,11 +34,11 @@ class AdditionalTaintStep extends Unit {
  *      echo "foo=$(echo $BODY)" >> "$GITHUB_OUTPUT"
  */
 predicate runEnvToScriptStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
-  exists(RunExpr r, string varName, string output |
+  exists(Run r, string varName, string output |
     c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output\\.", "")) and
-    r.getEnvExpr(varName) = pred.asExpr() and
+    r.getEnvVar(varName) = pred.asExpr() and
     exists(string script, string line |
-      script = r.getScript() and
+      script = r.getScript().getValue() and
       line = script.splitAt("\n") and
       (
         output = line.regexpCapture(".*::set-output\\s+name=(.*)::.*", 1) or

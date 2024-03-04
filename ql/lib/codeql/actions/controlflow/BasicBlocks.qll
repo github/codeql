@@ -442,4 +442,3 @@ class ConditionBlock extends BasicBlock {
    */
   predicate controls(BasicBlock controlled, BooleanSuccessor s) { controls(this, controlled, s) }
 }
-

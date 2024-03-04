@@ -42,7 +42,7 @@ predicate sinkModel(string action, string version, string input, string kind) {
 predicate externallyDefinedSource(
   DataFlow::Node source, string sourceType, string fieldName, string trigger
 ) {
-  exists(UsesExpr uses, string action, string version, string kind |
+  exists(Uses uses, string action, string version, string kind |
     sourceModel(action, version, fieldName, trigger, kind) and
     uses.getCallee() = action.toLowerCase() and
     (
@@ -52,7 +52,7 @@ predicate externallyDefinedSource(
     ) and
     (
       if fieldName.trim().matches("env.%")
-      then source.asExpr() = uses.getEnvExpr(fieldName.trim().replaceAll("env.", ""))
+      then source.asExpr() = uses.getEnvVar(fieldName.trim().replaceAll("env.", ""))
       else
         if fieldName.trim().matches("output.%")
         then source.asExpr() = uses
@@ -65,7 +65,7 @@ predicate externallyDefinedSource(
 predicate externallyDefinedStoreStep(
   DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c
 ) {
-  exists(UsesExpr uses, string action, string version, string input, string output |
+  exists(Uses uses, string action, string version, string input, string output |
     summaryModel(action, version, input, output, "taint") and
     c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output.", "")) and
     uses.getCallee() = action.toLowerCase() and
@@ -76,10 +76,10 @@ predicate externallyDefinedStoreStep(
     ) and
     (
       if input.trim().matches("env.%")
-      then pred.asExpr() = uses.getEnvExpr(input.trim().replaceAll("env.", ""))
+      then pred.asExpr() = uses.getEnvVar(input.trim().replaceAll("env.", ""))
       else
         if input.trim().matches("input.%")
-        then pred.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
+        then pred.asExpr() = uses.getArgument(input.trim().replaceAll("input.", ""))
         else none()
     ) and
     succ.asExpr() = uses
@@ -87,13 +87,13 @@ predicate externallyDefinedStoreStep(
 }
 
 predicate externallyDefinedSink(DataFlow::ExprNode sink, string kind) {
-  exists(UsesExpr uses, string action, string version, string input |
+  exists(Uses uses, string action, string version, string input |
     (
       if input.trim().matches("env.%")
-      then sink.asExpr() = uses.getEnvExpr(input.trim().replaceAll("env.", ""))
+      then sink.asExpr() = uses.getEnvVar(input.trim().replaceAll("env.", ""))
       else
         if input.trim().matches("input.%")
-        then sink.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
+        then sink.asExpr() = uses.getArgument(input.trim().replaceAll("input.", ""))
         else none()
     ) and
     sinkModel(action, version, input, kind) and

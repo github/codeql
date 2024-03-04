@@ -1,1 +1,1 @@
-| .github/workflows/untrusted_checkout.yml:9:7:13:4 | uses: a ... kout@v2 | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |
+| .github/workflows/untrusted_checkout.yml:9:7:13:4 | Uses Step | Potential unsafe checkout of untrusted pull request on 'pull_request_target'. |

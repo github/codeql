@@ -54,21 +54,27 @@ DataFlowType getNodeType(Node node) { any() }
 predicate nodeIsHidden(Node node) { none() }
 
 class DataFlowExpr extends Cfg::Node {
-  DataFlowExpr() { this.getAstNode() instanceof Expression }
+  DataFlowExpr() {
+    this.getAstNode() instanceof Expression or
+    this.getAstNode() instanceof Uses or
+    this.getAstNode() instanceof Run or
+    this.getAstNode() instanceof Outputs or
+    this.getAstNode() instanceof Input
+  }
 }
 
 /**
  * A call corresponds to a Uses steps where a 3rd party action or a reusable workflow get called
  */
 class DataFlowCall instanceof Cfg::Node {
-  DataFlowCall() { super.getAstNode() instanceof UsesExpr }
+  DataFlowCall() { super.getAstNode() instanceof Uses }
 
   /** Gets a textual representation of this element. */
   string toString() { result = super.toString() }
 
   Location getLocation() { result = super.getLocation() }
 
-  string getName() { result = super.getAstNode().(UsesExpr).getCallee() }
+  string getName() { result = super.getAstNode().(Uses).getCallee() }
 
   DataFlowCallable getEnclosingCallable() { result = super.getScope() }
 }
@@ -82,11 +88,11 @@ class DataFlowCallable instanceof Cfg::CfgScope {
   Location getLocation() { result = super.getLocation() }
 
   string getName() {
-    if this instanceof ReusableWorkflowStmt
-    then result = this.(ReusableWorkflowStmt).getLocation().getFile().getRelativePath()
+    if this instanceof ReusableWorkflow
+    then result = this.(ReusableWorkflow).getLocation().getFile().getRelativePath()
     else
-      if this instanceof CompositeActionStmt
-      then result = this.(CompositeActionStmt).getLocation().getFile().getRelativePath()
+      if this instanceof CompositeAction
+      then result = this.(CompositeAction).getLocation().getFile().getRelativePath()
       else none()
   }
 }
@@ -134,9 +140,9 @@ predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 newtype TContent =
   TFieldContent(string name) {
     // We only use field flow for steps and jobs outputs, not for accessing other context fields such as env, matrix or inputs
-    name = any(StepsCtxAccessExpr a).getFieldName() or
-    name = any(NeedsCtxAccessExpr a).getFieldName() or
-    name = any(JobsCtxAccessExpr a).getFieldName()
+    name = any(StepsExpression a).getFieldName() or
+    name = any(NeedsExpression a).getFieldName() or
+    name = any(JobsExpression a).getFieldName()
   }
 
 predicate forceHighPrecision(Content c) { c instanceof FieldContent }
@@ -149,14 +155,14 @@ ContentApprox getContentApprox(Content c) { result = c }
  * Made a string to match the ArgumentPosition type.
  */
 class ParameterPosition extends string {
-  ParameterPosition() { exists(any(ReusableWorkflowStmt w).getInputsStmt().getInputExpr(this)) }
+  ParameterPosition() { exists(any(ReusableWorkflow w).getInput(this)) }
 }
 
 /**
  * Made a string to match `With:` keys in the AST
  */
 class ArgumentPosition extends string {
-  ArgumentPosition() { exists(any(UsesExpr e).getArgumentExpr(this)) }
+  ArgumentPosition() { exists(any(Uses e).getArgument(this)) }
 }
 
 /**
@@ -172,11 +178,11 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos =
  * field name.
  */
 predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(UsesExpr astFrom, StepsCtxAccessExpr astTo |
+  exists(Uses astFrom, StepsExpression astTo |
     externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName(), _) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
-    astTo.getRefExpr() = astFrom
+    astTo.getTarget() = astFrom
   )
 }
 
@@ -189,11 +195,11 @@ predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
  * field name.
  */
 predicate needsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(UsesExpr astFrom, NeedsCtxAccessExpr astTo |
+  exists(Uses astFrom, NeedsExpression astTo |
     externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName(), _) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
-    astTo.getRefExpr() = astFrom
+    astTo.getTarget() = astFrom
   )
 }
 
@@ -202,10 +208,10 @@ predicate needsCtxLocalStep(Node nodeFrom, Node nodeTo) {
  * e.g. ${{ inputs.foo }}
  */
 predicate inputsCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, InputsCtxAccessExpr astTo |
+  exists(AstNode astFrom, InputsExpression astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
-    astTo.getRefExpr() = astFrom
+    astTo.getTarget() = astFrom
   )
 }
 
@@ -214,10 +220,10 @@ predicate inputsCtxLocalStep(Node nodeFrom, Node nodeTo) {
  * e.g. ${{ matrix.foo }}
  */
 predicate matrixCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, MatrixCtxAccessExpr astTo |
+  exists(AstNode astFrom, MatrixExpression astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
-    astTo.getRefExpr() = astFrom
+    astTo.getTarget() = astFrom
   )
 }
 
@@ -226,12 +232,12 @@ predicate matrixCtxLocalStep(Node nodeFrom, Node nodeTo) {
  * e.g. ${{ env.foo }}
  */
 predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, EnvCtxAccessExpr astTo |
+  exists(Expression astFrom, EnvExpression astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     (
       externallyDefinedSource(nodeFrom, _, "env." + astTo.getFieldName(), _) or
-      astTo.getRefExpr() = astFrom
+      astTo.getTarget() = astFrom
     )
   )
 }
@@ -266,17 +272,17 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) { localFlowStep(nodeFr
 predicate jumpStep(Node nodeFrom, Node nodeTo) { none() }
 
 /**
- * Holds if a CtxAccessExpr reads a field from a job (needs/jobs), step (steps) output via a read of `c` (fieldname)
+ * Holds if a Expression reads a field from a job (needs/jobs), step (steps) output via a read of `c` (fieldname)
  */
 predicate ctxFieldReadStep(Node node1, Node node2, ContentSet c) {
-  exists(CtxAccessExpr access |
+  exists(ContextExpression access |
     (
-      access instanceof NeedsCtxAccessExpr or
-      access instanceof StepsCtxAccessExpr or
-      access instanceof JobsCtxAccessExpr
+      access instanceof NeedsExpression or
+      access instanceof StepsExpression or
+      access instanceof JobsExpression
     ) and
     c = any(FieldContent ct | ct.getName() = access.getFieldName()) and
-    node1.asExpr() = access.getRefExpr() and
+    node1.asExpr() = access.getTarget() and
     node2.asExpr() = access
   )
 }
@@ -294,8 +300,8 @@ predicate readStep(Node node1, ContentSet c, Node node2) { ctxFieldReadStep(node
  * using the output variable name as the access path
  */
 predicate fieldStoreStep(Node node1, Node node2, ContentSet c) {
-  exists(OutputsStmt out, string fieldName |
-    node1.asExpr() = out.getOutputExpr(fieldName) and
+  exists(Outputs out, string fieldName |
+    node1.asExpr() = out.getOutput(fieldName) and
     node2.asExpr() = out and
     c = any(FieldContent ct | ct.getName() = fieldName)
   )

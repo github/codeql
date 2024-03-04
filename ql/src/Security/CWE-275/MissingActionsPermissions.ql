@@ -13,11 +13,11 @@
 
 import actions
 
-from WorkflowStmt workflow, JobStmt job
+from Workflow workflow, Job job
 where
-  job = workflow.getAJobStmt() and
+  job = workflow.getAJob() and
   (
-    not exists(workflow.getPermissionsStmt()) and
-    not exists(job.getPermissionsStmt())
+    not exists(workflow.getPermissions()) and
+    not exists(job.getPermissions())
   )
 select job, "Actions Job or Workflow does not set permissions"

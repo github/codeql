@@ -114,7 +114,7 @@ private class EventSource extends RemoteFlowSource {
   string trigger;
 
   EventSource() {
-    exists(ExprAccessExpr e, string context | this.asExpr() = e and context = e.getExpression() |
+    exists(Expression e, string context | this.asExpr() = e and context = e.getExpression() |
       trigger = ["issues", "issue_comment"] and isExternalUserControlledIssue(context)
       or
       trigger = ["pull_request_target", "pull_request_review", "pull_request_review_comment"] and
@@ -158,9 +158,9 @@ private class ExternallyDefinedSource extends RemoteFlowSource {
  * An input for a Composite Action
  */
 private class CompositeActionInputSource extends RemoteFlowSource {
-  CompositeActionStmt c;
+  CompositeAction c;
 
-  CompositeActionInputSource() { c.getInputsStmt().getInputExpr(_) = this.asExpr() }
+  CompositeActionInputSource() { c.getAnInput() = this.asExpr() }
 
   override string getSourceType() { result = "Composite action input" }
 
