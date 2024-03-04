@@ -86,6 +86,12 @@ class ExprNode extends Node, TExprNode {
   }
 }
 
+pragma[nomagic]
+private predicate isParameterOf0(DataFlowCallable c, ParameterPosition ppos, Parameter p) {
+  p.getCallable() = c.asCallable() and
+  p.getPosition() = ppos.getPosition()
+}
+
 /**
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
@@ -95,7 +101,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
   Parameter getParameter() {
     exists(DataFlowCallable c, ParameterPosition ppos |
       super.isParameterOf(c, ppos) and
-      result = c.asCallable().getParameter(ppos.getPosition())
+      isParameterOf0(c, ppos, result)
     )
   }
 }
