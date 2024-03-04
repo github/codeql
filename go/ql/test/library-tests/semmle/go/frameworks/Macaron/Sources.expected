@@ -1,0 +1,12 @@
+| sources.go:10:6:10:20 | call to AllParams |
+| sources.go:11:6:11:22 | call to GetCookie |
+| sources.go:12:2:12:31 | ... = ...[0] |
+| sources.go:13:2:13:40 | ... = ...[0] |
+| sources.go:14:2:14:26 | ... = ...[0] |
+| sources.go:15:6:15:19 | call to Params |
+| sources.go:16:6:16:25 | call to ParamsEscape |
+| sources.go:17:6:17:18 | call to Query |
+| sources.go:18:6:18:24 | call to QueryEscape |
+| sources.go:19:6:19:25 | call to QueryStrings |
+| sources.go:20:2:20:20 | ... = ...[0] |
+| sources.go:21:2:21:21 | ... = ...[0] |
