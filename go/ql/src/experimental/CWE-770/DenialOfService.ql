@@ -13,7 +13,6 @@
 
 import go
 
-
 /**
  * Holds if the guard `g` on its branch `branch` checks that `e` is not constant and is less than some other value.
  */
@@ -25,7 +24,7 @@ predicate denialOfServiceSanitizerGuard(DataFlow::Node g, Expr e, boolean branch
   )
 }
 
-/*
+/**
  * Module for defining predicates and tracking taint flow related to denial of service issues.
  */
 module Config implements DataFlow::ConfigSig {
