@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogLoggerProvider", False, "CreateLogger", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogLoggerProvider", False, "CreateLogger", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogLoggerProvider", False, "EventLogLoggerProvider", "(Microsoft.Extensions.Logging.EventLog.EventLogSettings)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogLoggerProvider", False, "SetScopeProvider", "(Microsoft.Extensions.Logging.IExternalScopeProvider)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogLoggerProvider", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogLoggerProvider", "EventLogLoggerProvider", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Logging.EventLog.EventLogSettings>)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "get_Filter", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "get_LogName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "get_MachineName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "get_SourceName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "set_LogName", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "set_MachineName", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Logging.EventLog", "EventLogSettings", "set_SourceName", "(System.String)", "summary", "df-generated"]

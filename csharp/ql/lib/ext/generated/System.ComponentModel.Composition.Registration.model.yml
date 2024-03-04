@@ -1,0 +1,44 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.ComponentModel.Composition.Registration", "ExportBuilder", False, "AddMetadata", "(System.String,System.Object)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ExportBuilder", False, "AsContractName", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ExportBuilder", False, "AsContractName", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ExportBuilder", False, "AsContractType", "(System.Type)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ExportBuilder", False, "AsContractType", "(System.Type)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ExportBuilder", False, "AsContractType<T>", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ExportBuilder", False, "Inherited", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ImportBuilder", False, "AllowDefault", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ImportBuilder", False, "AllowRecomposition", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ImportBuilder", False, "AsContractName", "(System.String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ImportBuilder", False, "AsContractName", "(System.String)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ImportBuilder", False, "AsContractType", "(System.Type)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ImportBuilder", False, "AsContractType", "(System.Type)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ImportBuilder", False, "AsContractType<T>", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ImportBuilder", False, "AsMany", "(System.Boolean)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ImportBuilder", False, "RequiredCreationPolicy", "(System.ComponentModel.Composition.CreationPolicy)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "ImportBuilder", False, "Source", "(System.ComponentModel.Composition.ImportSource)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "PartBuilder", False, "AddMetadata", "(System.String,System.Object)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "PartBuilder", False, "Export", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "PartBuilder", False, "Export<T>", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "PartBuilder", False, "ExportInterfaces", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "PartBuilder", False, "SetCreationPolicy", "(System.ComponentModel.Composition.CreationPolicy)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", False, "ExportProperty", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", False, "ExportProperty<TContract>", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", False, "ImportProperty", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", False, "ImportProperty<TContract>", "(System.Linq.Expressions.Expression<System.Func<T,System.Object>>)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "PartBuilder<T>", False, "SelectConstructor", "(System.Linq.Expressions.Expression<System.Func<System.ComponentModel.Composition.Registration.ParameterImportBuilder,T>>)", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", False, "GetCustomAttributes", "(System.Reflection.MemberInfo,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", False, "GetCustomAttributes", "(System.Reflection.ParameterInfo,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1].Element", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.ComponentModel.Composition.Registration", "ParameterImportBuilder", "Import<T>", "()", "summary", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", "ForType", "(System.Type)", "summary", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", "ForType<T>", "()", "summary", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", "ForTypesDerivedFrom", "(System.Type)", "summary", "df-generated"]
+      - ["System.ComponentModel.Composition.Registration", "RegistrationBuilder", "ForTypesDerivedFrom<T>", "()", "summary", "df-generated"]

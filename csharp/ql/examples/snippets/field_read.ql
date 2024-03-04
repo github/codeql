@@ -11,6 +11,6 @@ import csharp
 from Field f, FieldRead read
 where
   f.hasName("VirtualAddress") and
-  f.getDeclaringType().hasQualifiedName("Mono.Cecil.PE", "Section") and
+  f.getDeclaringType().hasFullyQualifiedName("Mono.Cecil.PE", "Section") and
   f = read.getTarget()
 select read

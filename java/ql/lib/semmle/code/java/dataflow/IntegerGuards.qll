@@ -15,10 +15,10 @@ private Expr exprWithIntValue(int i) {
 
 /**
  * An expression for which the predicate `integerGuard` is relevant.
- * This includes `RValue` and `MethodAccess`.
+ * This includes `VarRead` and `MethodCall`.
  */
 class IntComparableExpr extends Expr {
-  IntComparableExpr() { this instanceof RValue or this instanceof MethodAccess }
+  IntComparableExpr() { this instanceof VarRead or this instanceof MethodCall }
 
   /** Gets an integer that is directly assigned to the expression in case of a variable; or zero. */
   int relevantInt() {
@@ -132,7 +132,7 @@ Expr integerGuard(IntComparableExpr e, boolean branch, int k, boolean is_k) {
  * If `branch_with_lower_bound_k` is true then `result` is equivalent to `k <= x`
  * and if it is false then `result` is equivalent to `k > x`.
  */
-Expr intBoundGuard(RValue x, boolean branch_with_lower_bound_k, int k) {
+Expr intBoundGuard(VarRead x, boolean branch_with_lower_bound_k, int k) {
   exists(ComparisonExpr comp, ConstantIntegerExpr c, int val |
     comp = result and
     comp.hasOperands(x, c) and

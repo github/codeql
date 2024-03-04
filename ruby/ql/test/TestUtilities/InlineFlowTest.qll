@@ -12,6 +12,7 @@ private import internal.InlineExpectationsTestImpl
 private module FlowTestImpl implements InputSig<RubyDataFlow> {
   import TestUtilities.InlineFlowTestUtil
 
+  bindingset[src, sink]
   string getArgString(DataFlow::Node src, DataFlow::Node sink) {
     (if exists(getSourceArgString(src)) then result = getSourceArgString(src) else result = "") and
     exists(sink)

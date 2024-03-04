@@ -1,8 +1,8 @@
 edges
-| StoredCommand.go:11:2:11:27 | ... := ...[0] | StoredCommand.go:13:2:13:5 | rows |
-| StoredCommand.go:13:2:13:5 | rows | StoredCommand.go:13:12:13:19 | &... |
-| StoredCommand.go:13:12:13:19 | &... | StoredCommand.go:13:12:13:19 | &... |
-| StoredCommand.go:13:12:13:19 | &... | StoredCommand.go:14:22:14:28 | cmdName |
+| StoredCommand.go:11:2:11:27 | ... := ...[0] | StoredCommand.go:13:2:13:5 | rows | provenance |  |
+| StoredCommand.go:13:2:13:5 | rows | StoredCommand.go:13:12:13:19 | &... | provenance |  |
+| StoredCommand.go:13:12:13:19 | &... | StoredCommand.go:13:12:13:19 | &... | provenance |  |
+| StoredCommand.go:13:12:13:19 | &... | StoredCommand.go:14:22:14:28 | cmdName | provenance |  |
 nodes
 | StoredCommand.go:11:2:11:27 | ... := ...[0] | semmle.label | ... := ...[0] |
 | StoredCommand.go:13:2:13:5 | rows | semmle.label | rows |

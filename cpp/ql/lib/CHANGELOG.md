@@ -1,3 +1,100 @@
+## 0.12.6
+
+### New Features
+
+* A `getInitialization` predicate was added to the `RangeBasedForStmt` class that yields the C++20-style initializer of the range-based `for` statement when it exists.
+
+## 0.12.5
+
+### New Features
+
+* Added the `PreprocBlock.qll` library to this repository.  This library offers a view of `#if`, `#elif`, `#else` and similar directives as a tree with navigable parent-child relationships.
+* Added a new `ThrowingFunction` abstract class that can be used to model an external function that may throw an exception.
+
+## 0.12.4
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `XML`, `SSA`, `SAL`, `SQL`, etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `StrcatFunction` class, use `semmle.code.cpp.models.implementations.Strcat.qll` instead.
+
+## 0.12.3
+
+### Deprecated APIs
+
+* The `isUserInput`, `userInputArgument`, and `userInputReturned` predicates from `SecurityOptions` have been deprecated. Use `FlowSource` instead.
+
+### New Features
+
+* `UserDefineLiteral` and `DeductionGuide` classes have been added, representing C++11 user defined literals and C++17 deduction guides.
+
+### Minor Analysis Improvements
+
+* Changed the output of `Node.toString` to better reflect how many indirections a given dataflow node has.
+* Added a new predicate `Node.asDefinition` on `DataFlow::Node`s for selecting the dataflow node corresponding to a particular definition.
+* The deprecated `DefaultTaintTracking` library has been removed.
+* The `Guards` library has been replaced with the API-compatible `IRGuards` implementation, which has better precision in some cases.
+
+### Bug Fixes
+
+* Under certain circumstances a function declaration that is not also a definition could be associated with a `Function` that did not have the definition as a `FunctionDeclarationEntry`. This is now fixed when only one definition exists, and a unique `Function` will exist that has both the declaration and the definition as a `FunctionDeclarationEntry`.
+
+## 0.12.2
+
+No user-facing changes.
+
+## 0.12.1
+
+### New Features
+
+* Added an `isPrototyped` predicate to `Function` that holds when the function has a prototype.
+
+## 0.12.0
+
+### Breaking Changes
+
+* The expressions `AssignPointerAddExpr` and `AssignPointerSubExpr` are no longer subtypes of `AssignBitwiseOperation`.
+
+### Minor Analysis Improvements
+
+* The "Returning stack-allocated memory" (`cpp/return-stack-allocated-memory`) query now also detects returning stack-allocated memory allocated by calls to `alloca`, `strdupa`, and `strndupa`.
+* Added models for `strlcpy` and `strlcat`.
+* Added models for the `sprintf` variants from the `StrSafe.h` header.
+* Added SQL API models for `ODBC`.
+* Added taint models for `realloc` and related functions.
+
+## 0.11.0
+
+### Breaking Changes
+
+* The `Container` and `Folder` classes now derive from `ElementBase` instead of `Locatable`, and no longer expose the `getLocation` predicate. Use `getURL` instead.
+
+### New Features
+
+* Added a new class `AdditionalCallTarget` for specifying additional call targets.
+
+### Minor Analysis Improvements
+
+* More field accesses are identified as `ImplicitThisFieldAccess`.
+* Added support for new floating-point types in C23 and C++23.
+
+## 0.10.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `AnalysedString` class, use the new name `AnalyzedString`.
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+
+## 0.10.0
+
+### Minor Analysis Improvements
+
+* Functions that do not return due to calling functions that don't return (e.g. `exit`) are now detected as
+ non-returning in the IR and dataflow.
+* Treat functions that reach the end of the function as returning in the IR.
+  They used to be treated as unreachable but it is allowed in C. 
+* The `DataFlow::asDefiningArgument` predicate now takes its argument from the range starting at `1` instead of `2`. Queries that depend on the single-parameter version of `DataFlow::asDefiningArgument` should have their arguments updated accordingly.
+
 ## 0.9.3
 
 No user-facing changes.

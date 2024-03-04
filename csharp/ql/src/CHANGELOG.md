@@ -1,3 +1,60 @@
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* Added sanitizers for relative URLs, `List.Contains()`, and checking the `.Host` property on an URI to the `cs/web/unvalidated-url-redirection` query.
+
+## 0.8.8
+
+### Minor Analysis Improvements
+
+* Added string interpolation expressions and `string.Format` as possible sanitizers for the `cs/web/unvalidated-url-redirection` query.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Modelled additional flow steps to track flow from handler methods of a `PageModel` class to the corresponding Razor Page (`.cshtml`) file, which may result in additional results for queries such as `cs/web/xss`.
+
+## 0.8.6
+
+### Minor Analysis Improvements
+
+* Fixed a Log forging false positive when using `String.Replace` to sanitize the input.    
+* Fixed a URL redirection from remote source false positive when guarding a redirect with `HttpRequestBase.IsUrlLocalToHost()`
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Modelled additional flow steps to track flow from a `View` call in an MVC controller to the corresponding Razor View (`.cshtml`) file, which may result in additional results for queries such as `cs/web/xss`.
+
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* CIL extraction is now disabled by default. It is still possible to turn on CIL extraction by setting the `cil` extractor option to `true` or by setting the environment variable `$CODEQL_EXTRACTOR_CSHARP_OPTION_CIL` to `true`. This is the first step towards sun-setting the CIL extractor entirely.
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* The `cs/web/insecure-direct-object-reference` and `cs/web/missing-function-level-access-control` have been improved to better recognize attributes on generic classes.
+
+## 0.8.0
+
+### New Queries
+
+* Added a new query, `cs/web/insecure-direct-object-reference`, to find instances of missing authorization checks for resources selected by an ID parameter.
+
 ## 0.7.5
 
 No user-facing changes.

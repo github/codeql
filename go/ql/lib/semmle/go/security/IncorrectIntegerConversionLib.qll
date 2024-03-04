@@ -1,16 +1,44 @@
 import go
 
-/**
- * Gets the maximum value of an integer (signed if `isSigned`
- * is true, unsigned otherwise) with `bitSize` bits.
- */
-float getMaxIntValue(int bitSize, boolean isSigned) {
-  bitSize in [8, 16, 32] and
-  (
-    isSigned = true and result = 2.pow(bitSize - 1) - 1
-    or
-    isSigned = false and result = 2.pow(bitSize) - 1
-  )
+/** The constant `math.MaxInt` or the constant `math.MaxUint`. */
+abstract private class MaxIntOrMaxUint extends DeclaredConstant {
+  /**
+   * Gets the (binary) order of magnitude when the architecture has bit size
+   * `architectureBitSize`, which is defined to be the integer `x` such that
+   * `2.pow(x) - 1` is the value of this constant.
+   */
+  abstract int getOrder(int architectureBitSize);
+
+  /**
+   * Holds if the value of this constant given `architectureBitSize` minus
+   * `strictnessOffset` is less than or equal to `2.pow(b) - 1`.
+   */
+  predicate isBoundFor(int b, int architectureBitSize, float strictnessOffset) {
+    // 2.pow(x) - 1 - strictnessOffset <= 2.pow(b) - 1
+    // For the values that we are restricting `b` to, `strictnessOffset` has no
+    // effect on the result, so we can ignore it.
+    b = validBitSize() and
+    strictnessOffset = [0, 1] and
+    this.getOrder(architectureBitSize) <= b
+  }
+}
+
+/** The constant `math.MaxInt`. */
+private class MaxInt extends MaxIntOrMaxUint {
+  MaxInt() { this.hasQualifiedName("math", "MaxInt") }
+
+  override int getOrder(int architectureBitSize) {
+    architectureBitSize = [32, 64] and result = architectureBitSize - 1
+  }
+}
+
+/** The constant `math.MaxUint`. */
+private class MaxUint extends MaxIntOrMaxUint {
+  MaxUint() { this.hasQualifiedName("math", "MaxUint") }
+
+  override int getOrder(int architectureBitSize) {
+    architectureBitSize = [32, 64] and result = architectureBitSize
+  }
 }
 
 /**
@@ -195,27 +223,31 @@ private class MaxValueState extends TMaxValueState {
    */
   int getBitSize() { this = TMkMaxValueState(result, _) }
 
-  /** Gets whether the architecture is 32 bit or 64 bit, or if it is unknown. */
-  ArchitectureBitSize getArchitectureBitSize() { this = TMkMaxValueState(_, result) }
+  private ArchitectureBitSize architectureBitSize() { this = TMkMaxValueState(_, result) }
+
+  /** Gets whether the architecture is 32 bit or 64 bit, if it is known. */
+  int getArchitectureBitSize() { result = this.architectureBitSize().toInt() }
+
+  /** Holds if the architecture is not known. */
+  predicate architectureBitSizeUnknown() { this.architectureBitSize().isUnknown() }
 
   /**
-   * Gets the bitsize we should use for a sink.
+   * Gets the bitsize we should use for a sink of type `uint`.
    *
    * If the architecture bit size is known, then we should use that. Otherwise,
    * we should use 32 bits, because that will find results that only exist on
    * 32-bit architectures.
    */
-  bindingset[default]
-  int getSinkBitSize(int default) {
-    if this = TMkMaxValueState(_, TMk64Bit()) then result = 64 else result = default
+  int getSinkBitSize() {
+    if this = TMkMaxValueState(_, TMk64Bit()) then result = 64 else result = 32
   }
 
   /** Gets a textual representation of this element. */
   string toString() {
     exists(string suffix |
-      suffix = " (on " + this.getArchitectureBitSize().toInt() + "-bit architecture)"
+      suffix = " (on " + this.getArchitectureBitSize() + "-bit architecture)"
       or
-      this.getArchitectureBitSize().isUnknown() and suffix = ""
+      this.architectureBitSizeUnknown() and suffix = ""
     |
       result = "MaxValueState(max value <= 2^(" + this.getBitSize() + ")-1" + suffix
     )
@@ -253,15 +285,27 @@ private predicate upperBoundCheckGuard(DataFlow::Node g, Expr e, boolean branch)
 /** An upper bound check that compares a variable to a constant value. */
 class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
   UpperBoundCheckGuard() {
+    // Note that even though `x > c` and `x >= c` do not look like upper bound
+    // checks, on the branches where they are false the conditions are `x <= c`
+    // and `x < c` respectively, which are upper bound checks.
     count(expr.getAnOperand().getExactValue()) = 1 and
     expr.getAnOperand().getType().getUnderlyingType() instanceof IntegerType
   }
 
   /**
-   * Holds if this upper bound check ensures the non-constant operand is less
-   * than or equal to `2^(bitsize) - 1`. In this  case, the upper bound check
-   * is a barrier guard. `architectureBitSize` is used if the constant operand
-   * is `math.MaxInt` or `math.MaxUint`.
+   * Holds if this upper bound check should stop flow for a flow state with bit
+   * size `bitSize` and architecture bit size `architectureBitSize`.
+   *
+   * A flow state has bit size `bitSize` if that is the smallest valid bit size
+   * `b` such that the maximum value that could get to that point is less than
+   * or equal to `2^(b) - 1`. So the flow should be stopped if there is a valid
+   * bit size `b` which is less than `bitSize` such that the maximum value that
+   * could get to that point is than or equal to `2^(b) - 1`. In this  case,
+   * the upper bound check is a barrier guard, because the flow should have bit
+   * size equal to the smallest such `b` instead of `bitSize`.
+   *
+   * The argument `architectureBitSize` is only used if the constant operand is
+   * `math.MaxInt` or `math.MaxUint`.
    *
    * Note that we have to use floats here because integers in CodeQL are
    * represented by 32-bit signed integers, which cannot represent some of the
@@ -270,25 +314,25 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
   predicate isBoundFor(int bitSize, int architectureBitSize) {
     bitSize = validBitSize() and
     architectureBitSize = [32, 64] and
-    exists(float bound, float strictnessOffset |
-      // For `x < c` the bound is `c-1`. For `x >= c` we will be an upper bound
-      // on the `branch` argument of `checks` is false, which is equivalent to
-      // `x < c`.
+    exists(int b, float strictnessOffset |
+      // It is sufficient to check for the next valid bit size below `bitSize`.
+      b = max(int a | a = validBitSize() and a < bitSize) and
+      // We will use the format `x <= c - strictnessOffset`. Since `x < c` is
+      // the same as `x <= c-1`, we set `strictnessOffset` to 1 in this case.
+      // For `x >= c` we will be dealing with the case where the `branch`
+      // argument of `checks` is false, which is equivalent to `x < c`.
       if expr instanceof LssExpr or expr instanceof GeqExpr
       then strictnessOffset = 1
       else strictnessOffset = 0
     |
-      exists(DeclaredConstant maxint, DeclaredConstant maxuint |
-        maxint.hasQualifiedName("math", "MaxInt") and maxuint.hasQualifiedName("math", "MaxUint")
-      |
-        if expr.getAnOperand() = maxint.getAReference()
-        then bound = getMaxIntValue(architectureBitSize, true)
-        else
-          if expr.getAnOperand() = maxuint.getAReference()
-          then bound = getMaxIntValue(architectureBitSize, false)
-          else bound = expr.getAnOperand().getExactValue().toFloat()
-      ) and
-      bound - strictnessOffset < 2.pow(bitSize) - 1
+      if expr.getAnOperand() = any(MaxIntOrMaxUint m).getAReference()
+      then
+        any(MaxIntOrMaxUint m | expr.getAnOperand() = m.getAReference())
+            .isBoundFor(b, architectureBitSize, strictnessOffset)
+      else
+        // We want `x <= c - strictnessOffset` to guarantee that `x <= 2^b - 1`,
+        // which is equivalent to saying `c - strictnessOffset <= 2^b - 1`.
+        expr.getAnOperand().getExactValue().toFloat() - strictnessOffset <= 2.pow(b) - 1
     )
   }
 
@@ -312,7 +356,7 @@ class UpperBoundCheckGuard extends DataFlow::RelationalComparisonNode {
  *   _ = uint16(parsed)
  * }
  * ```
- * `parsed < math.MaxInt16` is an `UpperBoundCheckGuard` and `uint16(parsed)`
+ * `parsed <= math.MaxInt16` is an `UpperBoundCheckGuard` and `uint16(parsed)`
  * is an `UpperBoundCheck` that would be a barrier for flow states with bit
  * size greater than 15 and would transform them to a flow state with bit size
  * 15 and the same architecture bit size.
@@ -336,9 +380,7 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
   }
 
   override predicate barrierFor(MaxValueState flowstate) {
-    // Use a default value of 32 for `MaxValueState.getSinkBitSize` because
-    // this will find results that only exist on 32-bit architectures.
-    g.isBoundFor(flowstate.getBitSize(), flowstate.getSinkBitSize(32))
+    g.isBoundFor(flowstate.getBitSize(), flowstate.getSinkBitSize())
   }
 
   override MaxValueState transform(MaxValueState state) {
@@ -347,11 +389,13 @@ class UpperBoundCheck extends BarrierFlowStateTransformer {
       max(int bitsize |
         bitsize = validBitSize() and
         bitsize < state.getBitSize() and
-        // Use a default value of 32 for `MaxValueState.getSinkBitSize` because
-        // this will find results that only exist on 32-bit architectures.
-        not g.isBoundFor(bitsize, state.getSinkBitSize(32))
+        not g.isBoundFor(bitsize, state.getSinkBitSize())
       ) and
-    result.getArchitectureBitSize() = state.getArchitectureBitSize()
+    (
+      result.getArchitectureBitSize() = state.getArchitectureBitSize()
+      or
+      state.architectureBitSizeUnknown() and result.architectureBitSizeUnknown()
+    )
   }
 }
 
@@ -395,10 +439,10 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
       then
         exists(int b | b = [32, 64] |
           state.getBitSize() = adjustBitSize(0, sourceIsSigned, b) and
-          state.getArchitectureBitSize().toInt() = b
+          state.getArchitectureBitSize() = b
         )
       else (
-        state.getArchitectureBitSize().isUnknown() and
+        state.architectureBitSizeUnknown() and
         state.getBitSize() =
           min(int bitsize |
             bitsize = validBitSize() and
@@ -419,10 +463,8 @@ private module ConversionWithoutBoundsCheckConfig implements DataFlow::StateConf
   additional predicate isSink2(DataFlow::TypeCastNode sink, FlowState state) {
     sink.asExpr() instanceof ConversionExpr and
     exists(int architectureBitSize, IntegerType integerType, int sinkBitsize, boolean sinkIsSigned |
-      // Use a default value of 32 for `MaxValueState.getSinkBitSize` because
-      // this will find results that only exist on 32-bit architectures.
-      architectureBitSize = getIntTypeBitSize(sink.getFile(), state.getSinkBitSize(32)) and
-      not (state.getArchitectureBitSize().toInt() = 32 and architectureBitSize = 64) and
+      architectureBitSize = getIntTypeBitSize(sink.getFile(), state.getSinkBitSize()) and
+      not (state.getArchitectureBitSize() = 32 and architectureBitSize = 64) and
       sink.getResultType().getUnderlyingType() = integerType and
       (
         sinkBitsize = integerType.getSize()

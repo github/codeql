@@ -9,15 +9,18 @@
 private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `urllib3` PyPI package.
  *
  * See
  * - https://pypi.org/project/urllib3/
  * - https://urllib3.readthedocs.io/en/stable/reference/
  */
-private module Urllib3 {
+module Urllib3 {
   /**
    * Provides models for the `urllib3.request.RequestMethods` class and subclasses, such
    * as the `urllib3.PoolManager` class
@@ -30,7 +33,7 @@ private module Urllib3 {
    */
   module PoolManager {
     /** Gets a reference to the `urllib3.PoolManager` class. */
-    private API::Node classRef() {
+    API::Node classRef() {
       result =
         API::moduleImport("urllib3")
             .getMember(["PoolManager", "ProxyManager", "HTTPConnectionPool", "HTTPSConnectionPool"])
@@ -40,6 +43,8 @@ private module Urllib3 {
             .getMember("request")
             .getMember("RequestMethods")
             .getASubclass+()
+      or
+      result = ModelOutput::getATypeNode("urllib3.PoolManager~Subclass").getASubclass*()
     }
 
     /**

@@ -1,0 +1,31 @@
+def_count
+| 4 |
+def
+| def_use_flow.py:10:5:10:5 | Essa node definition |
+| def_use_flow.py:17:11:17:11 | Essa node definition |
+| def_use_flow.py:19:9:19:9 | Essa node definition |
+| def_use_flow.py:21:7:21:7 | Essa node definition |
+implicit_use_count
+| 0 |
+implicit_use
+source_use_count
+| 3 |
+source_use
+| def_use_flow.py:28:15:28:15 | ControlFlowNode for x |
+| def_use_flow.py:30:13:30:13 | ControlFlowNode for x |
+| def_use_flow.py:32:11:32:11 | ControlFlowNode for x |
+def_use_edge_count
+| 12 |
+def_use_edge
+| def_use_flow.py:10:5:10:5 | SSA variable x | def_use_flow.py:28:15:28:15 | ControlFlowNode for x |
+| def_use_flow.py:10:5:10:5 | SSA variable x | def_use_flow.py:30:13:30:13 | ControlFlowNode for x |
+| def_use_flow.py:10:5:10:5 | SSA variable x | def_use_flow.py:32:11:32:11 | ControlFlowNode for x |
+| def_use_flow.py:17:11:17:11 | SSA variable x | def_use_flow.py:28:15:28:15 | ControlFlowNode for x |
+| def_use_flow.py:17:11:17:11 | SSA variable x | def_use_flow.py:30:13:30:13 | ControlFlowNode for x |
+| def_use_flow.py:17:11:17:11 | SSA variable x | def_use_flow.py:32:11:32:11 | ControlFlowNode for x |
+| def_use_flow.py:19:9:19:9 | SSA variable x | def_use_flow.py:28:15:28:15 | ControlFlowNode for x |
+| def_use_flow.py:19:9:19:9 | SSA variable x | def_use_flow.py:30:13:30:13 | ControlFlowNode for x |
+| def_use_flow.py:19:9:19:9 | SSA variable x | def_use_flow.py:32:11:32:11 | ControlFlowNode for x |
+| def_use_flow.py:21:7:21:7 | SSA variable x | def_use_flow.py:28:15:28:15 | ControlFlowNode for x |
+| def_use_flow.py:21:7:21:7 | SSA variable x | def_use_flow.py:30:13:30:13 | ControlFlowNode for x |
+| def_use_flow.py:21:7:21:7 | SSA variable x | def_use_flow.py:32:11:32:11 | ControlFlowNode for x |

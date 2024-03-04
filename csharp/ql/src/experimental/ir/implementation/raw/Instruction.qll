@@ -116,14 +116,14 @@ class Instruction extends Construction::TStageInstruction {
 
   private int getLineRank() {
     this.shouldGenerateDumpStrings() and
-    this =
-      rank[result](Instruction instr |
-        instr =
-          getAnInstructionAtLine(this.getEnclosingIRFunction(), this.getLocation().getFile(),
-            this.getLocation().getStartLine())
-      |
-        instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
-      )
+    exists(IRFunction enclosing, Language::File file, int line |
+      this =
+        rank[result](Instruction instr |
+          instr = getAnInstructionAtLine(enclosing, file, line)
+        |
+          instr order by instr.getBlock().getDisplayIndex(), instr.getDisplayIndexInBlock()
+        )
+    )
   }
 
   /**
@@ -2124,13 +2124,6 @@ class ChiInstruction extends Instruction {
    * Gets the operand that represents the new value written by the memory write.
    */
   final Instruction getPartial() { result = this.getPartialOperand().getDef() }
-
-  /**
-   * Gets the bit range `[startBit, endBit)` updated by the partial operand of this `ChiInstruction`, relative to the start address of the total operand.
-   */
-  final predicate getUpdatedInterval(int startBit, int endBit) {
-    Construction::getIntervalUpdatedByChi(this, startBit, endBit)
-  }
 
   /**
    * Holds if the `ChiPartialOperand` totally, but not exactly, overlaps with the `ChiTotalOperand`.

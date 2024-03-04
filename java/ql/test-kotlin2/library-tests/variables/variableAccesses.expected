@@ -1,0 +1,36 @@
+varAcc
+| variables.kt:3:5:3:21 | prop |
+| variables.kt:3:5:3:21 | this.prop |
+| variables.kt:7:17:7:22 | local1 |
+| variables.kt:9:17:9:22 | local2 |
+| variables.kt:10:22:10:26 | param |
+| variables.kt:11:17:11:22 | local3 |
+| variables.kt:15:1:15:21 | VariablesKt.topLevel |
+| variables.kt:15:1:15:21 | VariablesKt.topLevel |
+| variables.kt:21:11:21:18 | o |
+| variables.kt:21:11:21:18 | o |
+| variables.kt:21:11:21:18 | this.o |
+| variables.kt:29:9:29:12 | this |
+| variables.kt:30:9:30:12 | this |
+| variables.kt:32:9:32:12 | this |
+| variables.kt:33:9:33:12 | this |
+extensionReceiverAcc
+| variables.kt:29:9:29:12 | this |
+| variables.kt:30:9:30:12 | this |
+| variables.kt:32:9:32:12 | this |
+| variables.kt:33:9:33:12 | this |
+instAcc
+| variables.kt:3:5:3:21 | this |
+| variables.kt:21:11:21:18 | this |
+| variables.kt:26:9:26:9 | this |
+| variables.kt:26:9:26:15 | this |
+| variables.kt:31:9:31:12 | C2.this |
+| variables.kt:36:9:36:15 | C2.this |
+| variables.kt:37:9:37:15 | C2.this |
+| variables.kt:46:13:46:16 | this |
+| variables.kt:47:13:47:19 | C3.this |
+instAccQualifier
+| variables.kt:31:9:31:12 | C2.this | variables.kt:31:9:31:12 | C2 |
+| variables.kt:36:9:36:15 | C2.this | variables.kt:36:9:36:15 | C2 |
+| variables.kt:37:9:37:15 | C2.this | variables.kt:37:9:37:15 | C2 |
+| variables.kt:47:13:47:19 | C3.this | variables.kt:47:13:47:19 | C3 |

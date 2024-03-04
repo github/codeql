@@ -9,6 +9,7 @@ private import python
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.ClickhouseDriver
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -24,6 +25,8 @@ module Aioch {
     /** Gets a reference to the `aioch.Client` class or any subclass. */
     API::Node subclassRef() {
       result = API::moduleImport("aioch").getMember("Client").getASubclass*()
+      or
+      result = ModelOutput::getATypeNode("aioch.Client~Subclass").getASubclass*()
     }
 
     /** Gets a reference to an instance of `clickhouse_driver.Client` or any subclass. */

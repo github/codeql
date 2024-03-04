@@ -1,5 +1,5 @@
 import semmle.code.csharp.frameworks.Sql
-import semmle.code.csharp.dataflow.ExternalFlow
+import semmle.code.csharp.dataflow.internal.ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowPublic
 
 query predicate sqlExpressions(SqlExpr se, Expr e) { se.getSql() = e }

@@ -3,8 +3,8 @@
  */
 
 import go
-private import semmle.go.dataflow.FlowSummary
 private import semmle.go.dataflow.internal.DataFlowPrivate
+private import semmle.go.dataflow.internal.FlowSummaryImpl::Private
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
@@ -154,7 +154,7 @@ module NetHttp {
       )
       or
       exists(
-        SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack input,
+        SummarizedCallableImpl callable, DataFlow::CallNode call, SummaryComponentStack input,
         SummaryComponentStack output
       |
         this = call.getASyntacticArgument() and
@@ -287,5 +287,19 @@ module NetHttp {
     }
 
     override predicate guardedBy(DataFlow::Node check) { check = handlerReg.getArgument(0) }
+  }
+
+  /**
+   * The File system access sinks
+   */
+  class HttpServeFile extends FileSystemAccess::Range, DataFlow::CallNode {
+    HttpServeFile() {
+      exists(Function f |
+        f.hasQualifiedName("net/http", "ServeFile") and
+        this = f.getACall()
+      )
+    }
+
+    override DataFlow::Node getAPathArgument() { result = this.getArgument(2) }
   }
 }

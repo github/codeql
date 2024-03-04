@@ -1,6 +1,7 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 private import SsaInternals as Ssa
 private import PrintIRUtilities
 
@@ -33,9 +34,9 @@ private string getNodeProperty(Node node, string key) {
   key = "flow" and
   result =
     strictconcat(string flow, boolean to, int order1, int order2 |
-      flow = getFromFlow(node, order1, order2) + "->" + starsForNode(node) + "@" and to = false
+      flow = getFromFlow(node, order1, order2) + "->" + stars(node) + "@" and to = false
       or
-      flow = starsForNode(node) + "@->" + getToFlow(node, order1, order2) and to = true
+      flow = stars(node) + "@->" + getToFlow(node, order1, order2) and to = true
     |
       flow, ", " order by to, order1, order2, flow
     )
@@ -59,8 +60,4 @@ class LocalFlowPropertyProvider extends IRPropertyProvider {
       result = getNodeProperty(node, key)
     )
   }
-
-  override predicate shouldPrintOperand(Operand operand) { not Ssa::ignoreOperand(operand) }
-
-  override predicate shouldPrintInstruction(Instruction instr) { not Ssa::ignoreInstruction(instr) }
 }

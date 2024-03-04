@@ -48,7 +48,7 @@ namespace Semmle.Extraction
 
             writerLazy = new Lazy<StreamWriter>(() =>
             {
-                var tempPath = trap ?? Path.GetTempPath();
+                var tempPath = trap ?? FileUtils.GetTemporaryWorkingDirectory(out var _);
 
                 do
                 {
@@ -227,7 +227,7 @@ namespace Semmle.Extraction
             {
                 // If this happened, it was probably because the same file was compiled multiple times.
                 // In any case, this is not a fatal error.
-                logger.Log(Severity.Warning, "Problem archiving " + dest + ": " + ex);
+                logger.LogWarning("Problem archiving " + dest + ": " + ex);
             }
         }
 

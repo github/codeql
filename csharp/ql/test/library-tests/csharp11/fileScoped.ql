@@ -21,7 +21,7 @@ query predicate typemodifiers(Type t, string modifier) {
 query predicate qualifiedtypes(Type t, string qualifiedName) {
   isInteresting(t) and
   exists(string qualifier, string name |
-    t.hasQualifiedName(qualifier, name) and
+    t.hasFullyQualifiedName(qualifier, name) and
     qualifiedName = getQualifiedName(qualifier, name)
   )
 }

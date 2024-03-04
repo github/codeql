@@ -9,3 +9,4 @@
 | Test.java:98:47:98:60 | queryFromField | Query built by concatenation with $@, which may be untrusted. | Test.java:97:8:97:19 | categoryName | this expression |
 | Test.java:108:47:108:61 | querySbToString | Query built by concatenation with $@, which may be untrusted. | Test.java:104:19:104:30 | categoryName | this expression |
 | Test.java:118:47:118:62 | querySb2ToString | Query built by concatenation with $@, which may be untrusted. | Test.java:114:46:114:57 | categoryName | this expression |
+| Test.java:221:81:221:111 | ... + ... | Query built by concatenation with $@, which may be untrusted. | Test.java:221:95:221:102 | category | this expression |

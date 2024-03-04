@@ -1,4 +1,18 @@
 AccessorCalls.cs:
+#    1| call to constructor Object
+#-----|  -> {...}
+
+#    1| enter AccessorCalls
+#-----|  -> call to constructor Object
+
+#    1| exit AccessorCalls
+
+#    1| exit AccessorCalls (normal)
+#-----|  -> exit AccessorCalls
+
+#    1| {...}
+#-----|  -> exit AccessorCalls (normal)
+
 #    5| enter get_Item
 #-----|  -> access to parameter i
 
@@ -929,6 +943,20 @@ AccessorCalls.cs:
 #-----|  -> dynamic access to element
 
 ArrayCreation.cs:
+#    1| call to constructor Object
+#-----|  -> {...}
+
+#    1| enter ArrayCreation
+#-----|  -> call to constructor Object
+
+#    1| exit ArrayCreation
+
+#    1| exit ArrayCreation (normal)
+#-----|  -> exit ArrayCreation
+
+#    1| {...}
+#-----|  -> exit ArrayCreation (normal)
+
 #    3| enter M1
 #-----|  -> 0
 
@@ -1022,6 +1050,20 @@ ArrayCreation.cs:
 #-----|  -> { ..., ... }
 
 Assert.cs:
+#    5| call to constructor Object
+#-----|  -> {...}
+
+#    5| enter AssertTests
+#-----|  -> call to constructor Object
+
+#    5| exit AssertTests
+
+#    5| exit AssertTests (normal)
+#-----|  -> exit AssertTests
+
+#    5| {...}
+#-----|  -> exit AssertTests (normal)
+
 #    7| enter M1
 #-----|  -> {...}
 
@@ -2794,6 +2836,20 @@ Assert.cs:
 #-----| return -> exit M13 (normal)
 
 Assignments.cs:
+#    1| call to constructor Object
+#-----|  -> {...}
+
+#    1| enter Assignments
+#-----|  -> call to constructor Object
+
+#    1| exit Assignments
+
+#    1| exit Assignments (normal)
+#-----|  -> exit Assignments
+
+#    1| {...}
+#-----|  -> exit Assignments (normal)
+
 #    3| enter M
 #-----|  -> {...}
 
@@ -2924,6 +2980,20 @@ Assignments.cs:
 #-----|  -> return ...;
 
 BreakInTry.cs:
+#    1| call to constructor Object
+#-----|  -> {...}
+
+#    1| enter BreakInTry
+#-----|  -> call to constructor Object
+
+#    1| exit BreakInTry
+
+#    1| exit BreakInTry (normal)
+#-----|  -> exit BreakInTry
+
+#    1| {...}
+#-----|  -> exit BreakInTry (normal)
+
 #    3| enter M1
 #-----|  -> {...}
 
@@ -3274,6 +3344,20 @@ BreakInTry.cs:
 #-----| break -> exit M4 (normal)
 
 CompileTimeOperators.cs:
+#    3| call to constructor Object
+#-----|  -> {...}
+
+#    3| enter CompileTimeOperators
+#-----|  -> call to constructor Object
+
+#    3| exit CompileTimeOperators
+
+#    3| exit CompileTimeOperators (normal)
+#-----|  -> exit CompileTimeOperators
+
+#    3| {...}
+#-----|  -> exit CompileTimeOperators (normal)
+
 #    5| enter Default
 #-----|  -> {...}
 
@@ -3342,6 +3426,20 @@ CompileTimeOperators.cs:
 #   22| nameof(...)
 #-----|  -> return ...;
 
+#   26| call to constructor Object
+#-----|  -> {...}
+
+#   26| enter GotoInTryFinally
+#-----|  -> call to constructor Object
+
+#   26| exit GotoInTryFinally
+
+#   26| exit GotoInTryFinally (normal)
+#-----|  -> exit GotoInTryFinally
+
+#   26| {...}
+#-----|  -> exit GotoInTryFinally (normal)
+
 #   28| enter M
 #-----|  -> {...}
 
@@ -3387,6 +3485,20 @@ CompileTimeOperators.cs:
 #-----|  -> call to method WriteLine
 
 ConditionalAccess.cs:
+#    1| call to constructor Object
+#-----|  -> {...}
+
+#    1| enter ConditionalAccess
+#-----|  -> call to constructor Object
+
+#    1| exit ConditionalAccess
+
+#    1| exit ConditionalAccess (normal)
+#-----|  -> exit ConditionalAccess
+
+#    1| {...}
+#-----|  -> exit ConditionalAccess (normal)
+
 #    3| enter M1
 #-----|  -> access to parameter i
 
@@ -3657,6 +3769,20 @@ ConditionalAccess.cs:
 #-----|  -> ... + ...
 
 Conditions.cs:
+#    1| call to constructor Object
+#-----|  -> {...}
+
+#    1| enter Conditions
+#-----|  -> call to constructor Object
+
+#    1| exit Conditions
+
+#    1| exit Conditions (normal)
+#-----|  -> exit Conditions
+
+#    1| {...}
+#-----|  -> exit Conditions (normal)
+
 #    3| enter IncrOrDecr
 #-----|  -> {...}
 
@@ -4866,6 +4992,20 @@ Conditions.cs:
 #-----|  -> $"..."
 
 ExitMethods.cs:
+#    6| call to constructor Object
+#-----|  -> {...}
+
+#    6| enter ExitMethods
+#-----|  -> call to constructor Object
+
+#    6| exit ExitMethods
+
+#    6| exit ExitMethods (normal)
+#-----|  -> exit ExitMethods
+
+#    6| {...}
+#-----|  -> exit ExitMethods (normal)
+
 #    8| enter M1
 #-----|  -> {...}
 
@@ -5537,6 +5677,20 @@ Extensions.cs:
 #-----|  -> call to method ToBool
 
 Finally.cs:
+#    3| call to constructor Object
+#-----|  -> {...}
+
+#    3| enter Finally
+#-----|  -> call to constructor Object
+
+#    3| exit Finally
+
+#    3| exit Finally (normal)
+#-----|  -> exit Finally
+
+#    3| {...}
+#-----|  -> exit Finally (normal)
+
 #    7| enter M1
 #-----|  -> {...}
 
@@ -7019,6 +7173,48 @@ Finally.cs:
 #  167| [finally: exception(Exception)] ""
 #-----|  -> [finally: exception(Exception)] call to method WriteLine
 
+#  172| call to constructor Exception
+#-----|  -> {...}
+
+#  172| enter ExceptionA
+#-----|  -> call to constructor Exception
+
+#  172| exit ExceptionA
+
+#  172| exit ExceptionA (normal)
+#-----|  -> exit ExceptionA
+
+#  172| {...}
+#-----|  -> exit ExceptionA (normal)
+
+#  173| call to constructor Exception
+#-----|  -> {...}
+
+#  173| enter ExceptionB
+#-----|  -> call to constructor Exception
+
+#  173| exit ExceptionB
+
+#  173| exit ExceptionB (normal)
+#-----|  -> exit ExceptionB
+
+#  173| {...}
+#-----|  -> exit ExceptionB (normal)
+
+#  174| call to constructor Exception
+#-----|  -> {...}
+
+#  174| enter ExceptionC
+#-----|  -> call to constructor Exception
+
+#  174| exit ExceptionC
+
+#  174| exit ExceptionC (normal)
+#-----|  -> exit ExceptionC
+
+#  174| {...}
+#-----|  -> exit ExceptionC (normal)
+
 #  176| enter M9
 #-----|  -> {...}
 
@@ -7915,6 +8111,20 @@ Finally.cs:
 #-----|  -> [finally: exception(Exception)] ... + ...
 
 Foreach.cs:
+#    4| call to constructor Object
+#-----|  -> {...}
+
+#    4| enter Foreach
+#-----|  -> call to constructor Object
+
+#    4| exit Foreach
+
+#    4| exit Foreach (normal)
+#-----|  -> exit Foreach
+
+#    4| {...}
+#-----|  -> exit Foreach (normal)
+
 #    6| enter M1
 #-----|  -> {...}
 
@@ -8089,6 +8299,17 @@ Foreach.cs:
 #-----|  -> foreach (... ... in ...) ...
 
 Initializers.cs:
+#    3| enter Initializers
+#-----|  -> {...}
+
+#    3| exit Initializers
+
+#    3| exit Initializers (normal)
+#-----|  -> exit Initializers
+
+#    3| {...}
+#-----|  -> exit Initializers (normal)
+
 #    5| this access
 #-----|  -> access to field H
 
@@ -8262,13 +8483,19 @@ Initializers.cs:
 #   18| 1
 #-----|  -> ... = ...
 
-#   20| enter NoConstructor
+#   20| call to constructor Object
 #-----|  -> this access
+
+#   20| enter NoConstructor
+#-----|  -> call to constructor Object
 
 #   20| exit NoConstructor
 
 #   20| exit NoConstructor (normal)
 #-----|  -> exit NoConstructor
+
+#   20| {...}
+#-----|  -> exit NoConstructor (normal)
 
 #   22| this access
 #-----|  -> 0
@@ -8283,7 +8510,7 @@ Initializers.cs:
 #-----|  -> 1
 
 #   23| ... = ...
-#-----|  -> exit NoConstructor (normal)
+#-----|  -> {...}
 
 #   23| 1
 #-----|  -> ... = ...
@@ -8389,6 +8616,34 @@ Initializers.cs:
 
 #   35| access to parameter j
 #-----|  -> ... + ...
+
+#   39| call to constructor Object
+#-----|  -> {...}
+
+#   39| enter IndexInitializers
+#-----|  -> call to constructor Object
+
+#   39| exit IndexInitializers
+
+#   39| exit IndexInitializers (normal)
+#-----|  -> exit IndexInitializers
+
+#   39| {...}
+#-----|  -> exit IndexInitializers (normal)
+
+#   41| call to constructor Object
+#-----|  -> {...}
+
+#   41| enter Compound
+#-----|  -> call to constructor Object
+
+#   41| exit Compound
+
+#   41| exit Compound (normal)
+#-----|  -> exit Compound
+
+#   41| {...}
+#-----|  -> exit Compound (normal)
 
 #   51| enter Test
 #-----|  -> {...}
@@ -8705,6 +8960,20 @@ Initializers.cs:
 #-----|  -> ... = ...
 
 LoopUnrolling.cs:
+#    5| call to constructor Object
+#-----|  -> {...}
+
+#    5| enter LoopUnrolling
+#-----|  -> call to constructor Object
+
+#    5| exit LoopUnrolling
+
+#    5| exit LoopUnrolling (normal)
+#-----|  -> exit LoopUnrolling
+
+#    5| {...}
+#-----|  -> exit LoopUnrolling (normal)
+
 #    7| enter M1
 #-----|  -> {...}
 
@@ -9320,6 +9589,13 @@ LoopUnrolling.cs:
 #-----|  -> call to method WriteLine
 
 MultiImplementationA.cs:
+#    4| call to constructor Object
+#-----|  -> {...}
+
+#    4| {...}
+#-----|  -> exit C1 (normal)
+#-----|  -> exit C1 (normal)
+
 #    6| throw ...
 #-----| exception(NullReferenceException) -> exit get_P1 (abnormal)
 #-----| exception(NullReferenceException) -> exit get_P1 (abnormal)
@@ -9381,6 +9657,12 @@ MultiImplementationA.cs:
 #-----|  -> exit set_Item (normal)
 #-----|  -> exit set_Item (normal)
 
+#   16| exit M1
+
+MultiImplementationB.cs:
+#   14| exit M1
+
+MultiImplementationA.cs:
 #   17| {...}
 #-----|  -> M2(...)
 
@@ -9448,12 +9730,26 @@ MultiImplementationA.cs:
 #   24| 0
 #-----|  -> access to property P
 
+#   28| call to constructor Object
+#-----|  -> {...}
+
+#   28| {...}
+#-----|  -> exit C3 (normal)
+#-----|  -> exit C3 (normal)
+
 #   30| throw ...
 #-----| exception(NullReferenceException) -> exit get_P3 (abnormal)
 #-----| exception(NullReferenceException) -> exit get_P3 (abnormal)
 
 #   30| null
 #-----|  -> throw ...
+
+#   34| call to constructor Object
+#-----|  -> {...}
+
+#   34| {...}
+#-----|  -> exit C4 (normal)
+#-----|  -> exit C4 (normal)
 
 #   36| {...}
 #-----|  -> null
@@ -9483,6 +9779,39 @@ MultiImplementationA.cs:
 #-----|  -> throw ...;
 
 MultiImplementationB.cs:
+#    1| call to constructor Object
+#-----|  -> {...}
+
+MultiImplementationA.cs:
+#    4| enter C1
+#-----|  -> call to constructor Object
+#-----|  -> call to constructor Object
+
+MultiImplementationB.cs:
+#    1| enter C1
+#-----|  -> call to constructor Object
+#-----|  -> call to constructor Object
+
+MultiImplementationA.cs:
+#    4| exit C1
+
+MultiImplementationB.cs:
+#    1| exit C1
+
+MultiImplementationA.cs:
+#    4| exit C1 (normal)
+#-----|  -> exit C1
+#-----|  -> exit C1
+
+MultiImplementationB.cs:
+#    1| exit C1 (normal)
+#-----|  -> exit C1
+#-----|  -> exit C1
+
+#    1| {...}
+#-----|  -> exit C1 (normal)
+#-----|  -> exit C1 (normal)
+
 #    3| 0
 #-----|  -> exit get_P1 (normal)
 #-----|  -> exit get_P1 (normal)
@@ -9788,12 +10117,6 @@ MultiImplementationB.cs:
 #-----|  -> {...}
 
 MultiImplementationA.cs:
-#   16| exit M1
-
-MultiImplementationB.cs:
-#   14| exit M1
-
-MultiImplementationA.cs:
 #   16| exit M1 (normal)
 #-----|  -> exit M1
 #-----|  -> exit M1
@@ -10010,6 +10333,39 @@ MultiImplementationB.cs:
 #   22| 1
 #-----|  -> access to property P
 
+#   25| call to constructor Object
+#-----|  -> {...}
+
+MultiImplementationA.cs:
+#   28| enter C3
+#-----|  -> call to constructor Object
+#-----|  -> call to constructor Object
+
+MultiImplementationB.cs:
+#   25| enter C3
+#-----|  -> call to constructor Object
+#-----|  -> call to constructor Object
+
+MultiImplementationA.cs:
+#   28| exit C3
+
+MultiImplementationB.cs:
+#   25| exit C3
+
+MultiImplementationA.cs:
+#   28| exit C3 (normal)
+#-----|  -> exit C3
+#-----|  -> exit C3
+
+MultiImplementationB.cs:
+#   25| exit C3 (normal)
+#-----|  -> exit C3
+#-----|  -> exit C3
+
+#   25| {...}
+#-----|  -> exit C3 (normal)
+#-----|  -> exit C3 (normal)
+
 MultiImplementationA.cs:
 #   30| enter get_P3
 #-----|  -> null
@@ -10033,6 +10389,39 @@ MultiImplementationB.cs:
 #   27| exit get_P3 (abnormal)
 #-----|  -> exit get_P3
 #-----|  -> exit get_P3
+
+#   30| call to constructor Object
+#-----|  -> {...}
+
+MultiImplementationA.cs:
+#   34| enter C4
+#-----|  -> call to constructor Object
+#-----|  -> call to constructor Object
+
+MultiImplementationB.cs:
+#   30| enter C4
+#-----|  -> call to constructor Object
+#-----|  -> call to constructor Object
+
+MultiImplementationA.cs:
+#   34| exit C4
+
+MultiImplementationB.cs:
+#   30| exit C4
+
+MultiImplementationA.cs:
+#   34| exit C4 (normal)
+#-----|  -> exit C4
+#-----|  -> exit C4
+
+MultiImplementationB.cs:
+#   30| exit C4 (normal)
+#-----|  -> exit C4
+#-----|  -> exit C4
+
+#   30| {...}
+#-----|  -> exit C4 (normal)
+#-----|  -> exit C4 (normal)
 
 MultiImplementationA.cs:
 #   36| enter M1
@@ -10075,6 +10464,20 @@ MultiImplementationB.cs:
 #-----|  -> exit M1 (normal)
 
 NullCoalescing.cs:
+#    1| call to constructor Object
+#-----|  -> {...}
+
+#    1| enter NullCoalescing
+#-----|  -> call to constructor Object
+
+#    1| exit NullCoalescing
+
+#    1| exit NullCoalescing (normal)
+#-----|  -> exit NullCoalescing
+
+#    1| {...}
+#-----|  -> exit NullCoalescing (normal)
+
 #    3| enter M1
 #-----|  -> access to parameter i
 
@@ -10355,6 +10758,20 @@ PartialImplementationB.cs:
 #-----|  -> access to property P
 
 Patterns.cs:
+#    3| call to constructor Object
+#-----|  -> {...}
+
+#    3| enter Patterns
+#-----|  -> call to constructor Object
+
+#    3| exit Patterns
+
+#    3| exit Patterns (normal)
+#-----|  -> exit Patterns
+
+#    3| {...}
+#-----|  -> exit Patterns (normal)
+
 #    5| enter M1
 #-----|  -> {...}
 
@@ -10995,6 +11412,20 @@ Patterns.cs:
 #-----|  -> call to method WriteLine
 
 PostDominance.cs:
+#    3| call to constructor Object
+#-----|  -> {...}
+
+#    3| enter PostDominance
+#-----|  -> call to constructor Object
+
+#    3| exit PostDominance
+
+#    3| exit PostDominance (normal)
+#-----|  -> exit PostDominance
+
+#    3| {...}
+#-----|  -> exit PostDominance (normal)
+
 #    5| enter M1
 #-----|  -> {...}
 
@@ -11103,6 +11534,20 @@ PostDominance.cs:
 #-----|  -> call to method WriteLine
 
 Qualifiers.cs:
+#    1| call to constructor Object
+#-----|  -> {...}
+
+#    1| enter Qualifiers
+#-----|  -> call to constructor Object
+
+#    1| exit Qualifiers
+
+#    1| exit Qualifiers (normal)
+#-----|  -> exit Qualifiers
+
+#    1| {...}
+#-----|  -> exit Qualifiers (normal)
+
 #    7| enter Method
 #-----|  -> null
 
@@ -11299,6 +11744,20 @@ Qualifiers.cs:
 #-----|  -> ... = ...
 
 Switch.cs:
+#    3| call to constructor Object
+#-----|  -> {...}
+
+#    3| enter Switch
+#-----|  -> call to constructor Object
+
+#    3| exit Switch
+
+#    3| exit Switch (normal)
+#-----|  -> exit Switch
+
+#    3| {...}
+#-----|  -> exit Switch (normal)
+
 #    5| enter M1
 #-----|  -> {...}
 
@@ -12144,6 +12603,20 @@ Switch.cs:
 #-----|  -> $"..."
 
 TypeAccesses.cs:
+#    1| call to constructor Object
+#-----|  -> {...}
+
+#    1| enter TypeAccesses
+#-----|  -> call to constructor Object
+
+#    1| exit TypeAccesses
+
+#    1| exit TypeAccesses (normal)
+#-----|  -> exit TypeAccesses
+
+#    1| {...}
+#-----|  -> exit TypeAccesses (normal)
+
 #    3| enter M
 #-----|  -> {...}
 
@@ -12208,6 +12681,20 @@ TypeAccesses.cs:
 #-----|  -> Type t = ...
 
 VarDecls.cs:
+#    3| call to constructor Object
+#-----|  -> {...}
+
+#    3| enter VarDecls
+#-----|  -> call to constructor Object
+
+#    3| exit VarDecls
+
+#    3| exit VarDecls (normal)
+#-----|  -> exit VarDecls
+
+#    3| {...}
+#-----|  -> exit VarDecls (normal)
+
 #    5| enter M1
 #-----|  -> {...}
 
@@ -12352,6 +12839,20 @@ VarDecls.cs:
 
 #   25| access to local variable y
 #-----|  -> ... ? ... : ...
+
+#   28| call to constructor Object
+#-----|  -> {...}
+
+#   28| enter C
+#-----|  -> call to constructor Object
+
+#   28| exit C
+
+#   28| exit C (normal)
+#-----|  -> exit C
+
+#   28| {...}
+#-----|  -> exit C (normal)
 
 #   28| enter Dispose
 #-----|  -> {...}
@@ -14376,6 +14877,20 @@ cflow.cs:
 #  286| {...}
 #-----|  -> exit ControlFlowSub (normal)
 
+#  289| call to constructor Object
+#-----|  -> {...}
+
+#  289| enter DelegateCall
+#-----|  -> call to constructor Object
+
+#  289| exit DelegateCall
+
+#  289| exit DelegateCall (normal)
+#-----|  -> exit DelegateCall
+
+#  289| {...}
+#-----|  -> exit DelegateCall (normal)
+
 #  291| enter M
 #-----|  -> access to parameter f
 
@@ -14457,6 +14972,20 @@ cflow.cs:
 
 #  300| ""
 #-----|  -> object creation of type NegationInConstructor
+
+#  304| call to constructor Object
+#-----|  -> {...}
+
+#  304| enter LambdaGetter
+#-----|  -> call to constructor Object
+
+#  304| exit LambdaGetter
+
+#  304| exit LambdaGetter (normal)
+#-----|  -> exit LambdaGetter
+
+#  304| {...}
+#-----|  -> exit LambdaGetter (normal)
 
 #  306| (...) => ...
 #-----|  -> exit get__getter (normal)

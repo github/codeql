@@ -25,13 +25,6 @@ module SqlInjection {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for SQL-injection vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
   /** A source of untrusted data, considered as a taint source for SQL injection. */
   class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
 

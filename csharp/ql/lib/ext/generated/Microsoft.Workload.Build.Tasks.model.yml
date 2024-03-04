@@ -1,0 +1,23 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "Execute", "()", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "get_InstallTargets", "()", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "get_LocalNuGetsPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "get_OnlyUpdateManifests", "()", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "get_SdkWithNoWorkloadInstalledPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "get_TemplateNuGetConfigPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "get_VersionBandForManifestPackages", "()", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "get_VersionBandForSdkManifestsDir", "()", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "get_WorkloadIds", "()", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "set_InstallTargets", "(Microsoft.Build.Framework.ITaskItem[])", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "set_LocalNuGetsPath", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "set_OnlyUpdateManifests", "(System.Boolean)", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "set_SdkWithNoWorkloadInstalledPath", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "set_TemplateNuGetConfigPath", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "set_VersionBandForManifestPackages", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "set_VersionBandForSdkManifestsDir", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Workload.Build.Tasks", "InstallWorkloadFromArtifacts", "set_WorkloadIds", "(Microsoft.Build.Framework.ITaskItem[])", "summary", "df-generated"]

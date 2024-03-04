@@ -120,6 +120,27 @@ def test_nested_list_display():
     SINK(x[0]) #$ MISSING:flow="SOURCE, l:-1 -> x[0]"
 
 
+@expects(6)
+def test_list_comprehension_with_tuple_result():
+    # confirms that this simple case works as expected
+    t = (SOURCE, NONSOURCE)
+    SINK(t[0]) # $ flow="SOURCE, l:-1 -> t[0]"
+    SINK_F(t[1])
+
+    # confirms that this simple case works as expected
+    l1 = [(SOURCE, NONSOURCE) for _ in [1]]
+    SINK(l1[0][0]) # $ flow="SOURCE, l:-1 -> l1[0][0]"
+    SINK_F(l1[0][1])
+
+    # stops working when using reference to variable, due to variables being captured by
+    # the function we internally generate for the comprehension body.
+    s = SOURCE
+    ns = NONSOURCE
+    l3 = [(s, ns) for _ in [1]]
+    SINK(l3[0][0]) # $ MISSING: flow="SOURCE, l:-3 -> l3[0][0]"
+    SINK_F(l3[0][1])
+
+
 # 6.2.6. Set displays
 def test_set_display():
     x = {SOURCE}
@@ -338,9 +359,9 @@ class C:
 
 @expects(2)
 def test_attribute_reference():
-    SINK(C.a) #$ MISSING:flow="SOURCE, l:-4 -> C.a"
+    SINK(C.a) # $ flow="SOURCE, l:-5 -> C.a"
     c = C()
-    SINK(c.a) #$ MISSING:flow="SOURCE, l:-6 -> c.a"
+    SINK(c.a) # $ MISSING: flow="SOURCE, l:-7 -> c.a"
 
 # overriding __getattr__ should be tested by the class coverage tests
 
@@ -435,10 +456,14 @@ def test_and(x = True):
 
 
 # 6.12. Assignment expressions
-def test_assignment_expression():
+def test_assignment_expression_flow_lhs():
     x = NONSOURCE
-    SINK(x := SOURCE) #$ MISSING:flow="SOURCE -> x"
+    if x := SOURCE:
+        SINK(x) #$ flow="SOURCE, l:-1 -> x"
 
+def test_assignment_expression_flow_out():
+    x = NONSOURCE
+    SINK(x := SOURCE) #$ flow="SOURCE -> AssignExpr"
 
 # 6.13. Conditional expressions
 def test_conditional_true():
@@ -460,13 +485,13 @@ def test_conditional_false_guards():
 # Condition is evaluated first, so x is SOURCE once chosen
 def test_conditional_evaluation_true():
     x = NONSOURCE
-    SINK(x if (SOURCE == (x := SOURCE)) else NONSOURCE) #$ MISSING:flow="SOURCE -> IfExp"
+    SINK(x if (SOURCE == (x := SOURCE)) else NONSOURCE) #$ flow="SOURCE -> IfExp"
 
 
 # Condition is evaluated first, so x is SOURCE once chosen
 def test_conditional_evaluation_false():
     x = NONSOURCE
-    SINK(NONSOURCE if (NONSOURCE == (x := SOURCE)) else x) #$ MISSING:flow="SOURCE -> IfExp"
+    SINK(NONSOURCE if (NONSOURCE == (x := SOURCE)) else x) #$ flow="SOURCE -> IfExp"
 
 
 # 6.14. Lambdas

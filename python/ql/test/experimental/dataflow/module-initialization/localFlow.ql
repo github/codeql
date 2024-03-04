@@ -11,8 +11,11 @@ module ImportTimeLocalFlowTest implements FlowTestSig {
     nodeFrom.getLocation().getFile().getBaseName() = "multiphase.py" and
     // results are displayed next to `nodeTo`, so we need a line to write on
     nodeTo.getLocation().getStartLine() > 0 and
-    nodeTo.asVar() instanceof GlobalSsaVariable and
-    DP::importTimeLocalFlowStep(nodeFrom, nodeTo)
+    exists(GlobalSsaVariable g |
+      nodeTo.asCfgNode() = g.getDefinition().(EssaNodeDefinition).getDefiningNode()
+    ) and
+    // nodeTo.asVar() instanceof GlobalSsaVariable and
+    DP::PhaseDependentFlow<DP::LocalFlow::localFlowStep/2>::importTimeStep(nodeFrom, nodeTo)
   }
 }
 

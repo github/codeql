@@ -186,14 +186,20 @@ SINK(asyncio.run(c.coro(SOURCE))) # $ MISSING: flow
 class A:
 
   def __await__(self):
-    # yield SOURCE  -- see https://groups.google.com/g/dev-python/c/_lrrc-vp9TI?pli=1
-    return (yield from asyncio.coroutine(lambda: SOURCE)())
+    fut = asyncio.Future()
+    fut.set_result(SOURCE)
+    yield from fut
 
-async def agen(x):
+async def atest_custom_await_impl():
   a = A()
-  return await a
+  x = await a
+  # TODO: Figure out how to actually return something from our custom __await__
+  # implementation. The problem is we have to play nicely with the asyncio framework,
+  # which have their own expectations on what a return value from __await__ should look
+  # like.
+  assert x is None
+  SINK_F(x)
 
-SINK(asyncio.run(agen(SOURCE))) # $ MISSING: flow
 
 # Asynchronous generator functions
 # A function or method which is defined using async def and which uses the yield statement is called a asynchronous generator function. Such a function, when called, returns an asynchronous iterator object which can be used in an async for statement to execute the body of the function.

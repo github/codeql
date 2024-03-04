@@ -7,5 +7,5 @@ where
   t1.getDimension() = 2 and
   t1.getElementType() = t2 and
   t2.getDimension() = 1 and
-  t2.getElementType().(Class).hasQualifiedName("Types", "Class")
+  t2.getElementType().(Class).hasFullyQualifiedName("Types", "Class")
 select t1, t2

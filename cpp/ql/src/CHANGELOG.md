@@ -1,3 +1,82 @@
+## 0.9.5
+
+### Minor Analysis Improvements
+
+* The "non-constant format string" query (`cpp/non-constant-format`) has been updated to produce fewer false positives.
+* Added dataflow models for the `gettext` function variants. 
+
+## 0.9.4
+
+### Minor Analysis Improvements
+
+* Corrected 2 false positive with `cpp/incorrect-string-type-conversion`: conversion of byte arrays to wchar and new array allocations converted to wchar.
+* The "Incorrect return-value check for a 'scanf'-like function" query (`cpp/incorrectly-checked-scanf`) no longer reports an alert when an explicit check for EOF is added.
+* The "Incorrect return-value check for a 'scanf'-like function" query (`cpp/incorrectly-checked-scanf`) now recognizes more EOF checks.
+* The "Potentially uninitialized local variable" query (`cpp/uninitialized-local`) no longer reports an alert when the local variable is used as a qualifier to a static member function call.
+* The diagnostic query `cpp/diagnostics/successfully-extracted-files` now considers any C/C++ file seen during extraction, even one with some errors, to be extracted / scanned. This affects the Code Scanning UI measure of scanned C/C++ files.
+
+## 0.9.3
+
+### Minor Analysis Improvements
+
+* The `cpp/include-non-header` style query will now ignore the `.def` extension for textual header inclusions.
+
+## 0.9.2
+
+### New Queries
+
+* Added a new query, `cpp/use-of-unique-pointer-after-lifetime-ends`, to detect uses of the contents unique pointers that will be destroyed immediately.
+* The `cpp/incorrectly-checked-scanf` query has been added. This finds results where the return value of scanf is not checked correctly. Some of these were previously found by `cpp/missing-check-scanf` and will no longer be reported there.
+
+### Minor Analysis Improvements
+
+* The `cpp/badly-bounded-write` query could report false positives when a pointer was first initialized with a literal and later assigned a dynamically allocated array. These false positives now no longer occur.
+
+## 0.9.1
+
+No user-facing changes.
+
+## 0.9.0
+
+### Breaking Changes
+
+* The `cpp/tainted-format-string-through-global` query has been deleted. This does not lead to a loss of relevant alerts, as the query duplicated a subset of the alerts from `cpp/tainted-format-string`.
+
+### New Queries
+
+* Added a new query, `cpp/use-of-string-after-lifetime-ends`, to detect calls to `c_str` on strings that will be destroyed immediately.
+
+## 0.8.3
+
+### Minor Analysis Improvements
+
+* The `cpp/uninitialized-local` query has been improved to produce fewer false positives.
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### New Queries
+
+* The query `cpp/redundant-null-check-simple` has been promoted to Code Scanning. The query finds cases where a pointer is compared to null after it has already been dereferenced. Such comparisons likely indicate a bug at the place where the pointer is dereferenced, or where the pointer is compared to null.
+
+  Note: This query was incorrectly noted as being promoted to Code Scanning in CodeQL version 2.14.6.
+
+## 0.8.0
+
+### Query Metadata Changes
+
+* The `cpp/double-free` query has been further improved to reduce false positives and its precision has been increased from `medium` to `high`.
+* The `cpp/use-after-free` query has been further improved to reduce false positives and its precision has been increased from `medium` to `high`.
+
+### Minor Analysis Improvements
+
+* The queries `cpp/double-free` and `cpp/use-after-free` find fewer false positives
+  in cases where a non-returning function is called.
+* The number of duplicated dataflow paths reported by queries has been significantly reduced.
+
 ## 0.7.5
 
 No user-facing changes.

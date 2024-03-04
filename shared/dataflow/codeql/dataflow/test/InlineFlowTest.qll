@@ -35,6 +35,7 @@ signature module InputSig<DF::InputSig DataFlowLang> {
 
   predicate defaultSink(DataFlowLang::Node source);
 
+  bindingset[src, sink]
   string getArgString(DataFlowLang::Node src, DataFlowLang::Node sink);
 }
 
@@ -62,7 +63,13 @@ module InlineFlowTestMake<
     predicate isSink(DataFlowLang::Node sink) { none() }
   }
 
-  module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig> {
+  bindingset[src, sink]
+  signature string getArgStringSig(DataFlowLang::Node src, DataFlowLang::Node sink);
+
+  module FlowTestArgString<
+    DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig,
+    getArgStringSig/2 getArgString>
+  {
     module ValueFlow = DataFlow::Global<ValueFlowConfig>;
 
     module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
@@ -82,7 +89,7 @@ module InlineFlowTestMake<
         exists(DataFlowLang::Node src, DataFlowLang::Node sink | ValueFlow::flow(src, sink) |
           hasLocationInfo(sink, location) and
           element = sink.toString() and
-          value = Impl::getArgString(src, sink)
+          value = getArgString(src, sink)
         )
         or
         tag = "hasTaintFlow" and
@@ -91,7 +98,7 @@ module InlineFlowTestMake<
         |
           hasLocationInfo(sink, location) and
           element = sink.toString() and
-          value = Impl::getArgString(src, sink)
+          value = getArgString(src, sink)
         )
       }
     }
@@ -105,13 +112,27 @@ module InlineFlowTestMake<
     }
   }
 
+  module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig> {
+    import FlowTestArgString<ValueFlowConfig, TaintFlowConfig, Impl::getArgString/2>
+  }
+
   module DefaultFlowTest = FlowTest<DefaultFlowConfig, DefaultFlowConfig>;
 
+  module ValueFlowTestArgString<DataFlow::ConfigSig ValueFlowConfig, getArgStringSig/2 getArgString>
+  {
+    import FlowTestArgString<ValueFlowConfig, NoFlowConfig, getArgString/2>
+  }
+
   module ValueFlowTest<DataFlow::ConfigSig ValueFlowConfig> {
-    import FlowTest<ValueFlowConfig, NoFlowConfig>
+    import ValueFlowTestArgString<ValueFlowConfig, Impl::getArgString/2>
+  }
+
+  module TaintFlowTestArgString<DataFlow::ConfigSig TaintFlowConfig, getArgStringSig/2 getArgString>
+  {
+    import FlowTestArgString<NoFlowConfig, TaintFlowConfig, getArgString/2>
   }
 
   module TaintFlowTest<DataFlow::ConfigSig TaintFlowConfig> {
-    import FlowTest<NoFlowConfig, TaintFlowConfig>
+    import TaintFlowTestArgString<TaintFlowConfig, Impl::getArgString/2>
   }
 }

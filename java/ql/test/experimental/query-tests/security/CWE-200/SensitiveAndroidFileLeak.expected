@@ -1,23 +1,23 @@
 edges
-| FileService.java:20:31:20:43 | intent : Intent | FileService.java:21:28:21:33 | intent : Intent |
-| FileService.java:21:28:21:33 | intent : Intent | FileService.java:21:28:21:64 | getStringExtra(...) : String |
-| FileService.java:21:28:21:64 | getStringExtra(...) : String | FileService.java:25:42:25:50 | localPath : String |
-| FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] | FileService.java:40:41:40:55 | params : Object[] |
-| FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] [[]] : String | FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] |
-| FileService.java:25:42:25:50 | localPath : String | FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] [[]] : String |
-| FileService.java:25:42:25:50 | localPath : String | FileService.java:32:13:32:28 | sourceUri : String |
-| FileService.java:32:13:32:28 | sourceUri : String | FileService.java:35:17:35:25 | sourceUri : String |
-| FileService.java:34:20:36:13 | {...} : Object[] [[]] : String | FileService.java:34:20:36:13 | new Object[] : Object[] [[]] : String |
-| FileService.java:35:17:35:25 | sourceUri : String | FileService.java:34:20:36:13 | {...} : Object[] [[]] : String |
-| FileService.java:40:41:40:55 | params : Object[] | FileService.java:44:33:44:52 | (...)... : String[] |
-| FileService.java:44:33:44:52 | (...)... : String[] | FileService.java:45:53:45:59 | ...[...] |
-| LeakFileActivity2.java:15:13:15:18 | intent : Intent | LeakFileActivity2.java:16:26:16:31 | intent : Intent |
-| LeakFileActivity2.java:16:26:16:31 | intent : Intent | FileService.java:20:31:20:43 | intent : Intent |
-| LeakFileActivity.java:14:35:14:38 | data : Intent | LeakFileActivity.java:18:40:18:59 | contentIntent : Intent |
-| LeakFileActivity.java:18:40:18:59 | contentIntent : Intent | LeakFileActivity.java:19:31:19:43 | contentIntent : Intent |
-| LeakFileActivity.java:19:31:19:43 | contentIntent : Intent | LeakFileActivity.java:19:31:19:53 | getData(...) : Uri |
-| LeakFileActivity.java:19:31:19:53 | getData(...) : Uri | LeakFileActivity.java:21:58:21:72 | streamsToUpload : Uri |
-| LeakFileActivity.java:21:58:21:72 | streamsToUpload : Uri | LeakFileActivity.java:21:58:21:82 | getPath(...) |
+| FileService.java:20:31:20:43 | intent : Intent | FileService.java:21:28:21:33 | intent : Intent | provenance |  |
+| FileService.java:21:28:21:33 | intent : Intent | FileService.java:21:28:21:64 | getStringExtra(...) : String | provenance |  |
+| FileService.java:21:28:21:64 | getStringExtra(...) : String | FileService.java:25:42:25:50 | localPath : String | provenance |  |
+| FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] | FileService.java:40:41:40:55 | params : Object[] | provenance |  |
+| FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] [[]] : String | FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] | provenance |  |
+| FileService.java:25:42:25:50 | localPath : String | FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] [[]] : String | provenance |  |
+| FileService.java:25:42:25:50 | localPath : String | FileService.java:32:13:32:28 | sourceUri : String | provenance |  |
+| FileService.java:32:13:32:28 | sourceUri : String | FileService.java:35:17:35:25 | sourceUri : String | provenance |  |
+| FileService.java:34:20:36:13 | {...} : Object[] [[]] : String | FileService.java:34:20:36:13 | new Object[] : Object[] [[]] : String | provenance |  |
+| FileService.java:35:17:35:25 | sourceUri : String | FileService.java:34:20:36:13 | {...} : Object[] [[]] : String | provenance |  |
+| FileService.java:40:41:40:55 | params : Object[] | FileService.java:44:33:44:52 | (...)... : String[] | provenance |  |
+| FileService.java:44:33:44:52 | (...)... : String[] | FileService.java:45:53:45:59 | ...[...] | provenance |  |
+| LeakFileActivity2.java:15:13:15:18 | intent : Intent | LeakFileActivity2.java:16:26:16:31 | intent : Intent | provenance |  |
+| LeakFileActivity2.java:16:26:16:31 | intent : Intent | FileService.java:20:31:20:43 | intent : Intent | provenance |  |
+| LeakFileActivity.java:14:35:14:38 | data : Intent | LeakFileActivity.java:18:40:18:59 | contentIntent : Intent | provenance |  |
+| LeakFileActivity.java:18:40:18:59 | contentIntent : Intent | LeakFileActivity.java:19:31:19:43 | contentIntent : Intent | provenance |  |
+| LeakFileActivity.java:19:31:19:43 | contentIntent : Intent | LeakFileActivity.java:19:31:19:53 | getData(...) : Uri | provenance |  |
+| LeakFileActivity.java:19:31:19:53 | getData(...) : Uri | LeakFileActivity.java:21:58:21:72 | streamsToUpload : Uri | provenance |  |
+| LeakFileActivity.java:21:58:21:72 | streamsToUpload : Uri | LeakFileActivity.java:21:58:21:82 | getPath(...) | provenance |  |
 nodes
 | FileService.java:20:31:20:43 | intent : Intent | semmle.label | intent : Intent |
 | FileService.java:21:28:21:33 | intent : Intent | semmle.label | intent : Intent |

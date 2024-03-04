@@ -137,7 +137,7 @@ private IRType getIRTypeForPRValue(Type type) {
   )
 }
 
-string getOpaqueTagIdentityString(Type tag) { result = tag.getQualifiedName() }
+string getOpaqueTagIdentityString(Type tag) { result = tag.getFullyQualifiedName() }
 
 cached
 private newtype TCSharpType =

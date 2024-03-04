@@ -8,6 +8,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.Sanitizers
 import semmle.code.java.security.QueryInjection
 
 /**
@@ -37,15 +38,11 @@ deprecated class QueryInjectionFlowConfig extends TaintTracking::Configuration {
  * A taint-tracking configuration for unvalidated user input that is used in SQL queries.
  */
 module QueryInjectionFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node src) { src instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
-    node.getType() instanceof NumberType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(AdditionalQueryInjectionTaintStep s).step(node1, node2)

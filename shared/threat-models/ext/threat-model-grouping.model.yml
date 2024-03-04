@@ -1,0 +1,22 @@
+extensions:
+
+  - addsTo:
+      pack: codeql/threat-models
+      extensible: threatModelGrouping
+    data:
+      # Default threat model
+      - ["remote", "default"]
+
+      # Remote threat models
+      - ["request", "remote"]
+      - ["response", "remote"]
+
+      # Local threat models
+      - ["database", "local"]
+      - ["commandargs", "local"]
+      - ["environment", "local"]
+      - ["file", "local"]
+
+      # Android threat models
+      - ["android-external-storage-dir", "android"]
+      - ["contentprovider", "android"]

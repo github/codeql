@@ -9,12 +9,15 @@ private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `MarkupSafe` PyPI package.
  * See https://markupsafe.palletsprojects.com/en/2.0.x/.
  */
-private module MarkupSafeModel {
+module MarkupSafeModel {
   /**
    * Provides models for the `markupsafe.Markup` class
    *
@@ -26,6 +29,8 @@ private module MarkupSafeModel {
       result = API::moduleImport("markupsafe").getMember("Markup")
       or
       result = API::moduleImport("flask").getMember("Markup")
+      or
+      result = ModelOutput::getATypeNode("markupsafe.Markup~Subclass").getASubclass*()
     }
 
     /**

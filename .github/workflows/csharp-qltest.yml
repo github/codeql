@@ -25,6 +25,9 @@ defaults:
   run:
     working-directory: csharp
 
+permissions:
+  contents: read
+
 jobs:
   qlupgrade:
     runs-on: ubuntu-latest
@@ -46,6 +49,7 @@ jobs:
            xargs codeql execute upgrades testdb
           diff -q testdb/semmlecode.csharp.dbscheme downgrades/initial/semmlecode.csharp.dbscheme
   qltest:
+    if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
     strategy:
       fail-fast: false
@@ -72,15 +76,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Setup dotnet
-        uses: actions/setup-dotnet@v3
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 7.0.102
+          dotnet-version: 8.0.101
       - name: Extractor unit tests
         run: |
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 extractor/Semmle.Util.Tests
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 extractor/Semmle.Extraction.Tests
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 autobuilder/Semmle.Autobuild.CSharp.Tests
-          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=8.0.1 extractor/Semmle.Util.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.1 extractor/Semmle.Extraction.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.1 autobuilder/Semmle.Autobuild.CSharp.Tests
+          dotnet test -p:RuntimeFrameworkVersion=8.0.1 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"
         shell: bash
   stubgentest:
     runs-on: ubuntu-latest
@@ -91,7 +95,7 @@ jobs:
         run: |
           # Generate (Asp)NetCore stubs
           STUBS_PATH=stubs_output
-          python3 ql/src/Stubs/make_stubs_nuget.py webapp Swashbuckle.AspNetCore.Swagger latest "$STUBS_PATH"
+          python3 scripts/stubs/make_stubs_nuget.py webapp Swashbuckle.AspNetCore.Swagger 6.5.0 "$STUBS_PATH"
           rm -rf ql/test/resources/stubs/_frameworks
           # Update existing stubs in the repo with the freshly generated ones
           mv "$STUBS_PATH/output/stubs/_frameworks" ql/test/resources/stubs/

@@ -2,7 +2,7 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow3
+deprecated import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.security.CleartextStorageQuery
 
 private class CookieCleartextStorageSink extends CleartextStorageSink {
@@ -28,7 +28,7 @@ class Cookie extends Storable, ClassInstanceExpr {
 }
 
 private predicate cookieStore(DataFlow::Node cookie, Expr store) {
-  exists(MethodAccess m, Method def |
+  exists(MethodCall m, Method def |
     m.getMethod() = def and
     def.getName() = "addCookie" and
     def.getDeclaringType().hasQualifiedName("javax.servlet.http", "HttpServletResponse") and

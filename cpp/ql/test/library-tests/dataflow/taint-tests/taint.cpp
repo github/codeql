@@ -13,8 +13,8 @@ void arithAssignments(int source1, int clean1) {
   source1++;
   ++source1;
   source1 += 1;
-  sink(source1); // $ ast ir=12:13 ir=12:22
-  sink(++source1); // $ ast ir=12:13 ir=12:22
+  sink(source1); // $ ast,ir
+  sink(++source1); // $ ast,ir
 }
 
 // --- globals ---
@@ -212,7 +212,7 @@ void test_swap() {
 
 	std::swap(x, y);
 
-	sink(x); // $ SPURIOUS: ast,ir
+	sink(x); // $ SPURIOUS: ast
 	sink(y); // $ ast,ir
 }
 
@@ -710,4 +710,51 @@ void test_strncpy(char* d, char* s) {
 	argument_source(s);
 	strncpy(d, s, 16);
 	sink(d); // $ ast ir
+}
+
+char* indirect_source();
+
+void test_strtok_indirect() {
+	char *source = indirect_source();
+	const char* delim = ",.-;:_";
+	char* tokenized = strtok(source, delim);
+	sink(*tokenized); // $ ir MISSING: ast
+	sink(*delim);
+}
+
+long int strtol(const char*, char**, int);
+
+void test_strtol(char *source) {
+	char* endptr = nullptr;
+	long l = strtol(source, &endptr, 10);
+	sink(l); // $ ast,ir
+	sink(endptr); // $ ast,ir
+	sink(*endptr); // $ ast,ir
+}
+
+void *realloc(void *, size_t);
+
+void test_realloc() {
+	char *source = indirect_source();
+	char *dest = (char*)realloc(source, 16);
+	sink(dest); // $ ir MISSING: ast
+}
+
+void test_realloc_2_indirections(int **buffer) {
+  **buffer = source();
+  buffer = (int**)realloc(buffer, 16);
+  sink(**buffer); // $ ir MISSING: ast
+}
+
+int sprintf(char *, const char *, ...);
+
+void call_sprintf_twice(char* path, char* data) {
+	sprintf(path, "%s", "abc");
+	sprintf(path, "%s", data);
+}
+
+void test_call_sprintf() {
+	char path[10];
+	call_sprintf_twice(path, indirect_source());
+	sink(*path); // $ ast,ir
 }

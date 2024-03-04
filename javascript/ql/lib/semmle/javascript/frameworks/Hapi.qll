@@ -88,26 +88,10 @@ module Hapi {
   }
 
   /**
-   * DEPRECATED: Use `ResponseNode` instead.
-   * A Hapi response expression.
-   */
-  deprecated class ResponseExpr extends HTTP::Servers::StandardResponseExpr {
-    ResponseExpr() { this.flow() instanceof ResponseNode }
-  }
-
-  /**
    * A Hapi response node.
    */
   class ResponseNode extends Http::Servers::StandardResponseNode {
     override ResponseSource src;
-  }
-
-  /**
-   * DEPRECATED: Use `RequestNode` instead.
-   * An Hapi request expression.
-   */
-  deprecated class RequestExpr extends HTTP::Servers::StandardRequestExpr {
-    RequestExpr() { this.flow() instanceof RequestNode }
   }
 
   /**
@@ -254,8 +238,6 @@ module Hapi {
 
     pragma[noinline]
     private DataFlow::Node getRouteHandler() { result = handler }
-
-    deprecated Expr getRouteHandlerExpr() { result = handler.asExpr() }
 
     override DataFlow::Node getServer() { result = server }
   }

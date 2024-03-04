@@ -30,10 +30,6 @@ deprecated module ReflectedXss {
 
     override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
-      guard instanceof SanitizerGuard
-    }
-
     override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
       isAdditionalXssTaintStep(node1, node2)
     }

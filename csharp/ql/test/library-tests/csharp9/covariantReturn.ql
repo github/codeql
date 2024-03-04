@@ -7,7 +7,7 @@ from
 where
   m.getAnOverrider() = overrider and
   m.getFile().getStem() = "CovariantReturn" and
-  m.hasQualifiedName(mnamespace, mtype, mname) and
-  overrider.hasQualifiedName(onamespace, otype, oname)
+  m.hasFullyQualifiedName(mnamespace, mtype, mname) and
+  overrider.hasFullyQualifiedName(onamespace, otype, oname)
 select getQualifiedName(mnamespace, mtype, mname), m.getReturnType().toString(),
   getQualifiedName(onamespace, otype, oname), overrider.getReturnType().toString()

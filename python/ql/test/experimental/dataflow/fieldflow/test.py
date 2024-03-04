@@ -238,6 +238,124 @@ def test_field_on_compound_arg(cond_true=True, cond_false=False):
     SINK_F(z.attr) # $ MISSING: flow
 
 # ------------------------------------------------------------------------------
+# Content in class attribute
+# ------------------------------------------------------------------------------
+
+class WithTuple:
+    my_tuple = (SOURCE, NONSOURCE)
+
+    def test_inst(self):
+        SINK(self.my_tuple[0]) # $ MISSING: flow
+        SINK_F(self.my_tuple[1])
+
+    def test_inst_no_call(self):
+        SINK(self.my_tuple[0]) # $ MISSING: flow
+        SINK_F(self.my_tuple[1])
+
+    @classmethod
+    def test_cm(cls):
+        SINK(cls.my_tuple[0]) # $ flow="SOURCE, l:-12 -> cls.my_tuple[0]"
+        SINK_F(cls.my_tuple[1])
+
+    @classmethod
+    def test_cm_no_call(cls):
+        SINK(cls.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-8 -> cls.my_tuple[0]"
+        SINK_F(cls.my_tuple[1])
+
+
+@expects(2*4) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_WithTuple():
+    SINK(WithTuple.my_tuple[0]) # $ flow="SOURCE, l:-23 -> WithTuple.my_tuple[0]"
+    SINK_F(WithTuple.my_tuple[1])
+
+    WithTuple.test_cm()
+
+    inst = WithTuple()
+    inst.test_inst()
+
+    SINK(inst.my_tuple[0]) # $ MISSING: flow
+    SINK_F(inst.my_tuple[1])
+
+
+@expects(4) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_inst_override():
+    inst = WithTuple()
+
+    # setting attribute on instance does not override class attribute, it's only on the
+    # instance!
+    inst.my_tuple = (NONSOURCE, SOURCE)
+
+    SINK_F(inst.my_tuple[0])
+    SINK(inst.my_tuple[1]) # $ flow="SOURCE, l:-3 -> inst.my_tuple[1]"
+
+    SINK(WithTuple.my_tuple[0]) # $ flow="SOURCE, l:-46 -> WithTuple.my_tuple[0]"
+    SINK_F(WithTuple.my_tuple[1])
+
+
+class WithTuple2:
+    my_tuple = (NONSOURCE,)
+
+def set_to_source():
+    WithTuple2.my_tuple = (SOURCE,)
+
+@expects(4) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_global_flow_to_class_attribute():
+    inst = WithTuple2()
+    SINK_F(WithTuple2.my_tuple[0])
+    SINK_F(inst.my_tuple[0])
+
+    set_to_source()
+
+    SINK(WithTuple2.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-10 -> WithTuple2.my_tuple[0]"
+    SINK(inst.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-11 -> inst.my_tuple[0]"
+
+
+class Outer:
+    src = SOURCE
+    class Inner:
+        src = SOURCE
+
+@expects(2) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_nested_class():
+    SINK(Outer.src) # $ flow="SOURCE, l:-6 -> Outer.src"
+    SINK(Outer.Inner.src) # $ flow="SOURCE, l:-5 -> Outer.Inner.src"
+
+# --------------------------------------
+# unique classes from functions
+# --------------------------------------
+def make_class():
+    # a fresh class is returned each time this function is called
+    class C:
+        my_tuple = (NONSOURCE,)
+    return C
+
+@expects(8) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
+def test_unique_class():
+    # This test highlights that if we use the _ClassExpr_ itself as the target/source
+    # for jumpsteps, we will end up with spurious flow (that is, we will think that
+    # x_cls and y_cls are the same, so by updating .my_tuple on x_cls we might propagate
+    # that to y_cls as well -- it might not matter too much in reality, but certainly an
+    # interesting corner case)
+    x_cls = make_class()
+    y_cls = make_class()
+
+    assert x_cls != y_cls
+
+    x_inst = x_cls()
+    y_inst = y_cls()
+
+    SINK_F(x_cls.my_tuple[0])
+    SINK_F(x_inst.my_tuple[0])
+    SINK_F(y_cls.my_tuple[0])
+    SINK_F(y_inst.my_tuple[0])
+
+    x_cls.my_tuple = (SOURCE,)
+    SINK(x_cls.my_tuple[0]) # $ flow="SOURCE, l:-1 -> x_cls.my_tuple[0]"
+    SINK(x_inst.my_tuple[0]) # $ MISSING: flow="SOURCE, l:-2 -> x_inst.my_tuple[0]"
+    SINK_F(y_cls.my_tuple[0])
+    SINK_F(y_inst.my_tuple[0])
+
+# ------------------------------------------------------------------------------
 # Crosstalk test -- using different function based on conditional
 # ------------------------------------------------------------------------------
 # NOTE: These tests use `SINK(objy.y, not_present_at_runtime=True)` since it's not

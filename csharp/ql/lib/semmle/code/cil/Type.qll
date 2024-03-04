@@ -51,9 +51,18 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
    */
   Type getUnboundType() { cil_type(this, _, _, _, result) }
 
-  override predicate hasQualifiedName(string qualifier, string name) {
+  deprecated override predicate hasQualifiedName(string qualifier, string name) {
     name = this.getName() and
     exists(string pqualifier, string pname | this.getParent().hasQualifiedName(pqualifier, pname) |
+      qualifier = getQualifiedName(pqualifier, pname)
+    )
+  }
+
+  override predicate hasFullyQualifiedName(string qualifier, string name) {
+    name = this.getName() and
+    exists(string pqualifier, string pname |
+      this.getParent().hasFullyQualifiedName(pqualifier, pname)
+    |
       qualifier = getQualifiedName(pqualifier, pname)
     )
   }

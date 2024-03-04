@@ -21,9 +21,16 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
       node2.getType() instanceof SliceType
     ) and
     (
-      exists(Write w | w.writesElement(node2, _, node1))
+      exists(Write w | w.writesElement(node2.(PostUpdateNode).getPreUpdateNode(), _, node1))
       or
       node1 = node2.(ImplicitVarargsSlice).getCallNode().getAnImplicitVarargsArgument()
+      or
+      // To model data flow from array elements of the base of a `SliceNode` to
+      // the `SliceNode` itself, we consider there to be a read step with array
+      // content from the base to the corresponding `SliceElementNode` and then
+      // a store step with array content from the `SliceelementNode` to the
+      // `SliceNode` itself.
+      node2 = node1.(SliceElementNode).getSliceNode()
     )
   )
   or
@@ -34,11 +41,11 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
   or
   c instanceof MapKeyContent and
   node2.getType() instanceof MapType and
-  exists(Write w | w.writesElement(node2, node1, _))
+  exists(Write w | w.writesElement(node2.(PostUpdateNode).getPreUpdateNode(), node1, _))
   or
   c instanceof MapValueContent and
   node2.getType() instanceof MapType and
-  exists(Write w | w.writesElement(node2, _, node1))
+  exists(Write w | w.writesElement(node2.(PostUpdateNode).getPreUpdateNode(), _, node1))
 }
 
 /**
@@ -50,13 +57,20 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
 predicate containerReadStep(Node node1, Node node2, Content c) {
   c instanceof ArrayContent and
   (
-    node2.(Read).readsElement(node1, _) and
-    (
-      node1.getType() instanceof ArrayType or
-      node1.getType() instanceof SliceType
-    )
+    node1.getType() instanceof ArrayType or
+    node1.getType() instanceof SliceType
+  ) and
+  (
+    node2.(Read).readsElement(node1, _)
     or
     node2.(RangeElementNode).getBase() = node1
+    or
+    // To model data flow from array elements of the base of a `SliceNode` to
+    // the `SliceNode` itself, we consider there to be a read step with array
+    // content from the base to the corresponding `SliceElementNode` and then
+    // a store step with array content from the `SliceelementNode` to the
+    // `SliceNode` itself.
+    node2.(SliceElementNode).getSliceNode().getBase() = node1
   )
   or
   c instanceof CollectionContent and
@@ -71,5 +85,5 @@ predicate containerReadStep(Node node1, Node node2, Content c) {
   or
   c instanceof MapValueContent and
   node1.getType() instanceof MapType and
-  node2.(Read).readsElement(node1, _)
+  (node2.(Read).readsElement(node1, _) or node2.(RangeElementNode).getBase() = node1)
 }

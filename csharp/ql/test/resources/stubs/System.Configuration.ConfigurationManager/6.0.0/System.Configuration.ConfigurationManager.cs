@@ -4,6 +4,7 @@ namespace System
 {
     namespace Configuration
     {
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class ApplicationScopedSettingAttribute : System.Configuration.SettingAttribute
         {
             public ApplicationScopedSettingAttribute() => throw null;
@@ -21,16 +22,16 @@ namespace System
             protected virtual void OnSettingsLoaded(object sender, System.Configuration.SettingsLoadedEventArgs e) => throw null;
             protected virtual void OnSettingsSaving(object sender, System.ComponentModel.CancelEventArgs e) => throw null;
             public override System.Configuration.SettingsPropertyCollection Properties { get => throw null; }
-            public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged { add { } remove { } }
+            public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
             public override System.Configuration.SettingsPropertyValueCollection PropertyValues { get => throw null; }
             public override System.Configuration.SettingsProviderCollection Providers { get => throw null; }
             public void Reload() => throw null;
             public void Reset() => throw null;
             public override void Save() => throw null;
-            public event System.Configuration.SettingChangingEventHandler SettingChanging { add { } remove { } }
+            public event System.Configuration.SettingChangingEventHandler SettingChanging;
             public string SettingsKey { get => throw null; set { } }
-            public event System.Configuration.SettingsLoadedEventHandler SettingsLoaded { add { } remove { } }
-            public event System.Configuration.SettingsSavingEventHandler SettingsSaving { add { } remove { } }
+            public event System.Configuration.SettingsLoadedEventHandler SettingsLoaded;
+            public event System.Configuration.SettingsSavingEventHandler SettingsSaving;
             public override object this[string propertyName] { get => throw null; set { } }
             public virtual void Upgrade() => throw null;
         }
@@ -59,6 +60,7 @@ namespace System
             public CallbackValidator(System.Type type, System.Configuration.ValidatorCallback callback) => throw null;
             public override void Validate(object value) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class CallbackValidatorAttribute : System.Configuration.ConfigurationValidatorAttribute
         {
             public string CallbackMethodName { get => throw null; set { } }
@@ -131,6 +133,7 @@ namespace System
             MachineToRoamingUser = 200,
             MachineToLocalUser = 300,
         }
+        [System.AttributeUsage((System.AttributeTargets)132)]
         public sealed class ConfigurationCollectionAttribute : System.Attribute
         {
             public string AddItemName { get => throw null; set { } }
@@ -349,6 +352,7 @@ namespace System
             public System.Type Type { get => throw null; }
             public System.Configuration.ConfigurationValidatorBase Validator { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class ConfigurationPropertyAttribute : System.Attribute
         {
             public ConfigurationPropertyAttribute(string name) => throw null;
@@ -457,6 +461,7 @@ namespace System
             PerUserRoaming = 10,
             PerUserRoamingAndLocal = 20,
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public class ConfigurationValidatorAttribute : System.Attribute
         {
             protected ConfigurationValidatorAttribute() => throw null;
@@ -537,6 +542,7 @@ namespace System
             protected override void ResetModified() => throw null;
             protected override string SerializeSection(System.Configuration.ConfigurationElement parentSection, string name, System.Configuration.ConfigurationSaveMode saveMode) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class DefaultSettingValueAttribute : System.Attribute
         {
             public DefaultSettingValueAttribute(string value) => throw null;
@@ -651,6 +657,7 @@ namespace System
             public IntegerValidator(int minValue, int maxValue, bool rangeIsExclusive, int resolution) => throw null;
             public override void Validate(object value) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class IntegerValidatorAttribute : System.Configuration.ConfigurationValidatorAttribute
         {
             public IntegerValidatorAttribute() => throw null;
@@ -811,8 +818,8 @@ namespace System
             }
             public interface IInternalConfigRoot
             {
-                event System.Configuration.Internal.InternalConfigEventHandler ConfigChanged { add { } remove { } }
-                event System.Configuration.Internal.InternalConfigEventHandler ConfigRemoved { add { } remove { } }
+                event System.Configuration.Internal.InternalConfigEventHandler ConfigChanged;
+                event System.Configuration.Internal.InternalConfigEventHandler ConfigRemoved;
                 System.Configuration.Internal.IInternalConfigRecord GetConfigRecord(string configPath);
                 object GetSection(string section, string configPath);
                 string GetUniqueConfigPath(string configPath);
@@ -899,6 +906,7 @@ namespace System
             public LongValidator(long minValue, long maxValue, bool rangeIsExclusive, long resolution) => throw null;
             public override void Validate(object value) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class LongValidatorAttribute : System.Configuration.ConfigurationValidatorAttribute
         {
             public LongValidatorAttribute() => throw null;
@@ -939,6 +947,7 @@ namespace System
             protected virtual string KeyAttributeName { get => throw null; }
             protected virtual string ValueAttributeName { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class NoSettingsVersionUpgradeAttribute : System.Attribute
         {
             public NoSettingsVersionUpgradeAttribute() => throw null;
@@ -955,6 +964,7 @@ namespace System
             public PositiveTimeSpanValidator() => throw null;
             public override void Validate(object value) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class PositiveTimeSpanValidatorAttribute : System.Configuration.ConfigurationValidatorAttribute
         {
             public PositiveTimeSpanValidatorAttribute() => throw null;
@@ -991,11 +1001,11 @@ namespace System
         }
         public static class ProtectedConfiguration
         {
-            public static string DataProtectionProviderName;
+            public const string DataProtectionProviderName = default;
             public static string DefaultProvider { get => throw null; }
-            public static string ProtectedDataSectionName;
+            public const string ProtectedDataSectionName = default;
             public static System.Configuration.ProtectedConfigurationProviderCollection Providers { get => throw null; }
-            public static string RsaProviderName;
+            public const string RsaProviderName = default;
         }
         public abstract class ProtectedConfigurationProvider : System.Configuration.Provider.ProviderBase
         {
@@ -1085,6 +1095,7 @@ namespace System
             public RegexStringValidator(string regex) => throw null;
             public override void Validate(object value) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class RegexStringValidatorAttribute : System.Configuration.ConfigurationValidatorAttribute
         {
             public RegexStringValidatorAttribute(string regex) => throw null;
@@ -1155,6 +1166,7 @@ namespace System
             public string Type { get => throw null; set { } }
             public void UnprotectSection() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public class SettingAttribute : System.Attribute
         {
             public SettingAttribute() => throw null;
@@ -1215,16 +1227,19 @@ namespace System
             public SettingsContext() => throw null;
             protected SettingsContext(System.Runtime.Serialization.SerializationInfo serializationInfo, System.Runtime.Serialization.StreamingContext streamingContext) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class SettingsDescriptionAttribute : System.Attribute
         {
             public SettingsDescriptionAttribute(string description) => throw null;
             public string Description { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class SettingsGroupDescriptionAttribute : System.Attribute
         {
             public SettingsGroupDescriptionAttribute(string description) => throw null;
             public string Description { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class SettingsGroupNameAttribute : System.Attribute
         {
             public SettingsGroupNameAttribute(string groupName) => throw null;
@@ -1240,6 +1255,7 @@ namespace System
         {
             Roaming = 0,
         }
+        [System.AttributeUsage((System.AttributeTargets)132)]
         public sealed class SettingsManageabilityAttribute : System.Attribute
         {
             public SettingsManageabilityAttribute(System.Configuration.SettingsManageability manageability) => throw null;
@@ -1260,7 +1276,7 @@ namespace System
             public bool ThrowOnErrorDeserializing { get => throw null; set { } }
             public bool ThrowOnErrorSerializing { get => throw null; set { } }
         }
-        public class SettingsPropertyCollection : System.Collections.IEnumerable, System.ICloneable, System.Collections.ICollection
+        public class SettingsPropertyCollection : System.ICloneable, System.Collections.ICollection, System.Collections.IEnumerable
         {
             public void Add(System.Configuration.SettingsProperty property) => throw null;
             public void Clear() => throw null;
@@ -1306,7 +1322,7 @@ namespace System
             public object SerializedValue { get => throw null; set { } }
             public bool UsingDefaultValue { get => throw null; }
         }
-        public class SettingsPropertyValueCollection : System.Collections.IEnumerable, System.ICloneable, System.Collections.ICollection
+        public class SettingsPropertyValueCollection : System.ICloneable, System.Collections.ICollection, System.Collections.IEnumerable
         {
             public void Add(System.Configuration.SettingsPropertyValue property) => throw null;
             public void Clear() => throw null;
@@ -1335,6 +1351,7 @@ namespace System
             public abstract System.Configuration.SettingsPropertyValueCollection GetPropertyValues(System.Configuration.SettingsContext context, System.Configuration.SettingsPropertyCollection collection);
             public abstract void SetPropertyValues(System.Configuration.SettingsContext context, System.Configuration.SettingsPropertyValueCollection collection);
         }
+        [System.AttributeUsage((System.AttributeTargets)132)]
         public sealed class SettingsProviderAttribute : System.Attribute
         {
             public SettingsProviderAttribute(string providerTypeName) => throw null;
@@ -1355,6 +1372,7 @@ namespace System
             Binary = 2,
             ProviderSpecific = 3,
         }
+        [System.AttributeUsage((System.AttributeTargets)132)]
         public sealed class SettingsSerializeAsAttribute : System.Attribute
         {
             public SettingsSerializeAsAttribute(System.Configuration.SettingsSerializeAs serializeAs) => throw null;
@@ -1384,6 +1402,7 @@ namespace System
             ConnectionString = 0,
             WebServiceUrl = 1,
         }
+        [System.AttributeUsage((System.AttributeTargets)132)]
         public sealed class SpecialSettingAttribute : System.Attribute
         {
             public SpecialSettingAttribute(System.Configuration.SpecialSetting specialSetting) => throw null;
@@ -1397,6 +1416,7 @@ namespace System
             public StringValidator(int minLength, int maxLength, string invalidCharacters) => throw null;
             public override void Validate(object value) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class StringValidatorAttribute : System.Configuration.ConfigurationValidatorAttribute
         {
             public StringValidatorAttribute() => throw null;
@@ -1411,6 +1431,7 @@ namespace System
             public SubclassTypeValidator(System.Type baseClass) => throw null;
             public override void Validate(object value) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class SubclassTypeValidatorAttribute : System.Configuration.ConfigurationValidatorAttribute
         {
             public System.Type BaseClass { get => throw null; }
@@ -1449,6 +1470,7 @@ namespace System
             public TimeSpanValidator(System.TimeSpan minValue, System.TimeSpan maxValue, bool rangeIsExclusive, long resolutionInSeconds) => throw null;
             public override void Validate(object value) => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class TimeSpanValidatorAttribute : System.Configuration.ConfigurationValidatorAttribute
         {
             public TimeSpanValidatorAttribute() => throw null;
@@ -1457,8 +1479,8 @@ namespace System
             public string MaxValueString { get => throw null; set { } }
             public System.TimeSpan MinValue { get => throw null; }
             public string MinValueString { get => throw null; set { } }
-            public static string TimeSpanMaxValue;
-            public static string TimeSpanMinValue;
+            public const string TimeSpanMaxValue = default;
+            public const string TimeSpanMinValue = default;
             public override System.Configuration.ConfigurationValidatorBase ValidatorInstance { get => throw null; }
         }
         public sealed class TypeNameConverter : System.Configuration.ConfigurationConverterBase
@@ -1475,6 +1497,7 @@ namespace System
             protected override System.Configuration.ConfigurationPropertyCollection Properties { get => throw null; }
             public System.Configuration.SchemeSettingElementCollection SchemeSettings { get => throw null; }
         }
+        [System.AttributeUsage((System.AttributeTargets)128)]
         public sealed class UserScopedSettingAttribute : System.Configuration.SettingAttribute
         {
             public UserScopedSettingAttribute() => throw null;

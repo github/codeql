@@ -18,6 +18,7 @@
 | UselessConditional.js:94:16:94:16 | x | This use of variable 'x' always evaluates to false. |
 | UselessConditional.js:100:13:100:24 | true && true | This expression always evaluates to true. |
 | UselessConditional.js:101:18:101:18 | x | This use of variable 'x' always evaluates to false. |
+| UselessConditional.js:102:13:102:20 | y && (x) | This expression always evaluates to false. |
 | UselessConditional.js:102:19:102:19 | x | This use of variable 'x' always evaluates to false. |
 | UselessConditional.js:103:23:103:23 | x | This use of variable 'x' always evaluates to false. |
 | UselessConditional.js:109:15:109:16 | {} | This expression always evaluates to true. |

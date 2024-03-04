@@ -8,7 +8,7 @@ private import semmle.code.java.StringFormat
  * A taint-tracking configuration for externally controlled format string vulnerabilities.
  */
 module ExternallyControlledFormatStringConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(StringFormat formatCall).getFormatArgument()

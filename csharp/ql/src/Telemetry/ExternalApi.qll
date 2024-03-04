@@ -2,10 +2,10 @@
 
 private import csharp
 private import semmle.code.csharp.dispatch.Dispatch
-private import semmle.code.csharp.dataflow.ExternalFlow
 private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
@@ -42,7 +42,7 @@ class ExternalApi extends Callable {
    * Gets the namespace of this API.
    */
   bindingset[this]
-  string getNamespace() { this.getDeclaringType().hasQualifiedName(result, _) }
+  string getNamespace() { this.getDeclaringType().hasFullyQualifiedName(result, _) }
 
   /**
    * Gets the namespace and signature of this API.
@@ -134,7 +134,8 @@ module Results<relevantApi/1 getRelevantUsages> {
       strictcount(Call c, ExternalApi api |
         c.getTarget().getUnboundDeclaration() = api and
         apiName = api.getApiName() and
-        getRelevantUsages(api)
+        getRelevantUsages(api) and
+        c.fromSource()
       )
   }
 

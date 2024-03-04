@@ -50,3 +50,29 @@ void badFunc() {
   snprintf(query1, 1000, "SELECT UID FROM USERS where name = \"%s\"", userName);
   mysql_query(0, query1); // BAD
 }
+
+//ODBC Library Rountines
+typedef unsigned char SQLCHAR;
+typedef long int SQLINTEGER;
+typedef int SQLRETURN;
+typedef void* SQLHSTMT;
+
+char* gets(char *str);
+
+
+SQLRETURN SQLPrepare(  
+     SQLHSTMT      StatementHandle,  
+     SQLCHAR *     StatementText,  
+     SQLINTEGER    TextLength);  
+
+     SQLRETURN SQLExecDirect(  
+     SQLHSTMT     StatementHandle,  
+     SQLCHAR *    StatementText,  
+     SQLINTEGER   TextLength);  
+
+void ODBCTests(){
+  char userInput[100];
+  gets(userInput);
+  SQLPrepare(0, userInput, 100); // BAD
+  SQLExecDirect(0, userInput, 100); // BAD
+}

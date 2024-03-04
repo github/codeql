@@ -39,7 +39,7 @@ Changing the labels of query history items
 
 The query history **Format** setting controls how the extension lists queries in the query history. By default, each item has a label with the following format::
     
-    %q on %d - %s, %r result count [%t]
+    %q on %d - %s %r [%t]
 
 - ``%q`` is the query name
 - ``%d`` is the database name
@@ -106,6 +106,19 @@ You can also edit the items shown in the Variant Analysis Repositories panel by 
   }
 
 You can change the items shown in the panel or add new items by directly editing this file.
+
+Configuring settings for adding databases
+------------------------------------------------
+
+To automatically add database source folders to your workspace, you can enable the **Adding Databases > Add Database Source to Workspace** setting.
+
+This setting is disabled by default. You may want to enable the setting if you regularly browse the source code of databases, for example to view the abstract syntax tree of the code. For more information, see ":ref:`Exploring the structure of your source code <exploring-the-structure-of-your-source-code>`."
+
+.. pull-quote:: Note
+
+   If you are in a single-folder workspace, adding database source folders will cause the workspace to reload as a multi-root workspace. This may cause query history and database lists to be reset.
+
+   Before enabling this setting, we recommend that you save your workspace as a multi-root workspace. For more information, see "`Multi-root Workspaces <https://code.visualstudio.com/docs/editor/multi-root-workspaces>`__" in the Visual Studio Code help.
 
 Configuring settings for testing queries locally
 ------------------------------------------------

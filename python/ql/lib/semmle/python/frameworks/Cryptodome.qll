@@ -128,6 +128,8 @@ private module CryptodomeModel {
       this = newCall.getReturn().getMember(methodName).getACall()
     }
 
+    override DataFlow::Node getInitialization() { result = newCall }
+
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(cipherName) }
 
     override DataFlow::Node getAnInput() {
@@ -181,20 +183,22 @@ private module CryptodomeModel {
   class CryptodomeGenericSignatureOperation extends Cryptography::CryptographicOperation::Range,
     DataFlow::CallCfgNode
   {
+    API::CallNode newCall;
     string methodName;
     string signatureName;
 
     CryptodomeGenericSignatureOperation() {
       methodName in ["sign", "verify"] and
-      this =
+      newCall =
         API::moduleImport(["Crypto", "Cryptodome"])
             .getMember("Signature")
             .getMember(signatureName)
             .getMember("new")
-            .getReturn()
-            .getMember(methodName)
-            .getACall()
+            .getACall() and
+      this = newCall.getReturn().getMember(methodName).getACall()
     }
+
+    override DataFlow::Node getInitialization() { result = newCall }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() {
       result.matchesName(signatureName)
@@ -221,18 +225,22 @@ private module CryptodomeModel {
   class CryptodomeGenericHashOperation extends Cryptography::CryptographicOperation::Range,
     DataFlow::CallCfgNode
   {
+    API::CallNode newCall;
     string hashName;
 
     CryptodomeGenericHashOperation() {
       exists(API::Node hashModule |
         hashModule =
-          API::moduleImport(["Crypto", "Cryptodome"]).getMember("Hash").getMember(hashName)
+          API::moduleImport(["Crypto", "Cryptodome"]).getMember("Hash").getMember(hashName) and
+        newCall = hashModule.getMember("new").getACall()
       |
-        this = hashModule.getMember("new").getACall()
+        this = newCall
         or
-        this = hashModule.getMember("new").getReturn().getMember("update").getACall()
+        this = newCall.getReturn().getMember("update").getACall()
       )
     }
+
+    override DataFlow::Node getInitialization() { result = newCall }
 
     override Cryptography::CryptographicAlgorithm getAlgorithm() { result.matchesName(hashName) }
 

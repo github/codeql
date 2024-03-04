@@ -27,6 +27,8 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
     output.isReturnValue()
   }
 
+  override predicate isPartialWrite(FunctionOutput output) { output.isParameterDeref(2) }
+
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isParameter(2) and
     output.isParameterDeref(0)
@@ -49,10 +51,10 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
   }
 
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
-    output.isParameterDeref(0) and
-    description = "string read by " + this.getName()
-    or
-    output.isReturnValue() and
+    (
+      output.isParameterDeref(0) or
+      output.isReturnValueDeref()
+    ) and
     description = "string read by " + this.getName()
   }
 
@@ -101,7 +103,6 @@ private class GetsFunction extends DataFlowFunction, ArrayFunction, AliasFunctio
   override predicate hasLocalFlowSource(FunctionOutput output, string description) {
     (
       output.isParameterDeref(0) or
-      output.isReturnValue() or
       output.isReturnValueDeref()
     ) and
     description = "string read by " + this.getName()

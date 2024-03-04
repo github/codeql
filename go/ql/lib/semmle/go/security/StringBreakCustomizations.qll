@@ -39,13 +39,6 @@ module StringBreak {
     Quote getQuote() { any() }
   }
 
-  /**
-   * DEPRECATED: Use `Sanitizer` instead.
-   *
-   * A sanitizer guard for unsafe-quoting vulnerabilities.
-   */
-  abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
-
   /** Holds if `l` contains a `quote` (either single or double). */
   private predicate containsQuote(StringOps::ConcatenationLeaf l, Quote quote) {
     quote = l.getStringValue().regexpFind("['\"]", _, _)

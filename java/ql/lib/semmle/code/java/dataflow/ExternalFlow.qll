@@ -89,12 +89,13 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow::DataFlow
+private import FlowSummary as FlowSummary
 private import internal.DataFlowPrivate
+private import internal.FlowSummaryImpl
+private import internal.FlowSummaryImpl::Public
+private import internal.FlowSummaryImpl::Private
 private import internal.FlowSummaryImpl::Private::External
-private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
-private import internal.AccessPathSyntax
-private import ExternalFlowExtensions as Extensions
-private import FlowSummary
+private import internal.ExternalFlowExtensions as Extensions
 private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
@@ -234,6 +235,21 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
+  private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
+
+  private predicate getRelevantAccessPath(string path) {
+    summaryModel(_, _, _, _, _, _, path, _, _, _) or
+    summaryModel(_, _, _, _, _, _, _, path, _, _) or
+    sinkModel(_, _, _, _, _, _, path, _, _) or
+    sourceModel(_, _, _, _, _, _, path, _, _)
+  }
+
+  private module MkAccessPath = AccessPathSyntax::AccessPath<getRelevantAccessPath/1>;
+
+  class AccessPath = MkAccessPath::AccessPath;
+
+  class AccessPathToken = MkAccessPath::AccessPathToken;
+
   private string getInvalidModelInput() {
     exists(string pred, AccessPath input, AccessPathToken part |
       sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
@@ -414,6 +430,7 @@ private Element interpretElement0(
 }
 
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
+cached
 Element interpretElement(
   string package, string type, boolean subtypes, string name, string signature, string ext
 ) {
@@ -478,7 +495,9 @@ private module Cached {
    */
   cached
   predicate sourceNode(Node node, string kind) {
-    exists(FlowSummaryImplSpecific::InterpretNode n | isSourceNode(n, kind) and n.asNode() = node)
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSourceNode(n, kind) and n.asNode() = node
+    )
   }
 
   /**
@@ -487,8 +506,60 @@ private module Cached {
    */
   cached
   predicate sinkNode(Node node, string kind) {
-    exists(FlowSummaryImplSpecific::InterpretNode n | isSinkNode(n, kind) and n.asNode() = node)
+    exists(SourceSinkInterpretationInput::InterpretNode n |
+      isSinkNode(n, kind) and n.asNode() = node
+    )
   }
 }
 
 import Cached
+
+// adapter class for converting Mad summaries to `SummarizedCallable`s
+private class SummarizedCallableAdapter extends SummarizedCallable {
+  SummarizedCallableAdapter() { summaryElement(this, _, _, _, _) }
+
+  private predicate relevantSummaryElementManual(string input, string output, string kind) {
+    exists(Provenance provenance |
+      summaryElement(this, input, output, kind, provenance) and
+      provenance.isManual()
+    )
+  }
+
+  private predicate relevantSummaryElementGenerated(string input, string output, string kind) {
+    exists(Provenance provenance |
+      summaryElement(this, input, output, kind, provenance) and
+      provenance.isGenerated()
+    ) and
+    not exists(Provenance provenance |
+      neutralElement(this, "summary", provenance) and
+      provenance.isManual()
+    )
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    exists(string kind |
+      this.relevantSummaryElementManual(input, output, kind)
+      or
+      not this.relevantSummaryElementManual(_, _, _) and
+      this.relevantSummaryElementGenerated(input, output, kind)
+    |
+      if kind = "value" then preservesValue = true else preservesValue = false
+    )
+  }
+
+  override predicate hasProvenance(Provenance provenance) {
+    summaryElement(this, _, _, _, provenance)
+  }
+}
+
+// adapter class for converting Mad neutrals to `NeutralCallable`s
+private class NeutralCallableAdapter extends NeutralCallable {
+  string kind;
+  string provenance_;
+
+  NeutralCallableAdapter() { neutralElement(this, kind, provenance_) }
+
+  override string getKind() { result = kind }
+
+  override predicate hasProvenance(Provenance provenance) { provenance = provenance_ }
+}

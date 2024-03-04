@@ -14,7 +14,6 @@
 
 import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 import semmle.javascript.security.dataflow.SqlInjectionCustomizations
-import semmle.javascript.security.dataflow.TaintedPathCustomizations
 import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 import semmle.javascript.security.dataflow.ShellCommandInjectionFromEnvironmentCustomizations
 import experimental.adaptivethreatmodeling.NosqlInjectionATM as NosqlInjectionAtm

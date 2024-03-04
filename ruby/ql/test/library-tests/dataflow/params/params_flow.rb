@@ -135,3 +135,73 @@ def splatall(*args)
 end
 
 splatall(*[taint(69), taint(70), taint(71)])
+
+def hashSplatSideEffect(**kwargs)
+    kwargs[:p1].insert(0, kwargs[:p2])
+end
+
+kwargs = { p1: [], p2: taint(72) }
+sink(kwargs[:p1][0])
+hashSplatSideEffect(**kwargs)
+sink(kwargs[:p1][0]) # $ MISSING: hasValueFlow=72
+
+p1 = []
+sink(p1[0])
+hashSplatSideEffect(p1: p1, p2: taint(73))
+sink(p1[0]) # $ MISSING: hasValueFlow=73
+
+def keywordSideEffect(p1:, p2:)
+    p1.insert(0, p2)
+end
+
+kwargs = { p1: [], p2: taint(74) }
+sink(kwargs[:p1][0])
+keywordSideEffect(**kwargs)
+sink(kwargs[:p1][0]) # $ MISSING: hasValueFlow=74
+
+p1 = []
+sink(p1[0])
+keywordSideEffect(p1: p1, p2: taint(75))
+sink(p1[0]) # $ hasValueFlow=75
+
+def splatSideEffect(*posargs)
+    posargs[0].insert(0, posargs[1])
+end
+
+posargs = [ [], taint(76) ]
+sink(posargs[0][0])
+splatSideEffect(*posargs)
+sink(posargs[0][0]) # $ MISSING: hasValueFlow=76
+
+p1 = []
+sink(p1[0])
+splatSideEffect(p1, taint(77))
+sink(p1[0]) # $ MISSING: hasValueFlow=77
+
+def positionSideEffect(p1, p2)
+    p1.insert(0, p2)
+end
+
+args = [ [], taint(78) ]
+sink(args[0][0])
+positionSideEffect(*args)
+sink(args[0][0]) # $ MISSING: hasValueFlow=78
+
+p1 = []
+sink(p1[0])
+positionSideEffect(p1, taint(79))
+sink(p1[0]) # $ hasValueFlow=79
+
+int_hash = {
+    0 => taint(80),
+    1 => "B"
+}
+
+def foo(x, y)
+    sink (x[0])
+    sink (x[1]) # $ MISSING: hasValueFlow=80
+    sink (y[0])
+    sink (y[1])
+end
+
+foo(*int_hash)

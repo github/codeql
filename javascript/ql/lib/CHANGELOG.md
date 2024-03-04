@@ -1,3 +1,70 @@
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.8.8
+
+No user-facing changes.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `CPU`, `TLD`, `SSA`, `ASM` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getMessageSuffix` predicates in `CodeInjectionCustomizations.qll`.
+* Deleted the deprecated `semmle/javascript/security/dataflow/ExternalAPIUsedWithUntrustedData.qll` file.
+* Deleted the deprecated `getANonHtmlHeaderDefinition` and `nonHtmlContentTypeHeader` predicates from `ReflectedXssCustomizations.qll`.
+* Deleted the deprecated `semmle/javascript/security/OverlyLargeRangeQuery.qll`, `semmle/javascript/security/regexp/ExponentialBackTracking.qll`, `semmle/javascript/security/regexp/NfaUtils.qll`, and `semmle/javascript/security/regexp/NfaUtils.qll` files.
+* Deleted the deprecated `Expressions/TypoDatabase.qll` file.
+* The diagnostic query `js/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned JavaScript and TypeScript files, now considers any JavaScript and TypeScript file seen during extraction, even one with some errors, to be extracted / scanned.
+
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Added models for the `sqlite` and `better-sqlite3` npm packages.
+* TypeScript 5.3 is now supported.
+
+## 0.8.3
+
+No user-facing changes.
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* The contents of `.jsp` files are now extracted, and any `<script>` tags inside these files will be parsed as JavaScript.
+* [Import attributes](https://github.com/tc39/proposal-import-attributes) are now supported in JavaScript code.
+  Note that import attributes are an evolution of an earlier proposal called "import assertions", which were implemented in TypeScript 4.5.
+  The QL library includes new predicates named `getImportAttributes()` that should be used in favor of the now deprecated `getImportAssertion()`;
+  in addition, the `getImportAttributes()` method of the `DynamicImportExpr` has been renamed to `getImportOptions()`. 
+* Deleted the deprecated `getAnImmediateUse`, `getAUse`, `getARhs`, and `getAValueReachingRhs` predicates from the `API::Node` class.
+* Deleted the deprecated `mayReferToParameter` predicate from `DataFlow::Node`.
+* Deleted the deprecated `getStaticMethod` and `getAStaticMethod` predicates from `DataFlow::ClassNode`.
+* Deleted the deprecated `isLibaryFile` predicate from `ClassifyFiles.qll`, use `isLibraryFile` instead.
+* Deleted many library models that were build on the AST. Use the new models that are build on the dataflow library instead.
+* Deleted the deprecated `semmle.javascript.security.performance` folder, use `semmle.javascript.security.regexp` instead.
+* Tagged template literals have been added to `DataFlow::CallNode`. This allows the analysis to find flow into functions called with a tagged template literal, 
+  and the arguments to a tagged template literal are part of the API-graph in `ApiGraphs.qll`.
+
+## 0.8.0
+
+No user-facing changes.
+
 ## 0.7.5
 
 No user-facing changes.

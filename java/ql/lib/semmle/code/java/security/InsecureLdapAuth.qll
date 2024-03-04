@@ -44,7 +44,7 @@ class InsecureLdapUrlSink extends DataFlow::Node {
 /**
  * Holds if `ma` sets `java.naming.security.authentication` (also known as `Context.SECURITY_AUTHENTICATION`) to `simple` in some `Hashtable`.
  */
-predicate isBasicAuthEnv(MethodAccess ma) {
+predicate isBasicAuthEnv(MethodCall ma) {
   hasFieldValueEnv(ma, "java.naming.security.authentication", "simple") or
   hasFieldNameEnv(ma, "SECURITY_AUTHENTICATION", "simple")
 }
@@ -52,7 +52,7 @@ predicate isBasicAuthEnv(MethodAccess ma) {
 /**
  * Holds if `ma` sets `java.naming.security.protocol` (also known as `Context.SECURITY_PROTOCOL`) to `ssl` in some `Hashtable`.
  */
-predicate isSslEnv(MethodAccess ma) {
+predicate isSslEnv(MethodCall ma) {
   hasFieldValueEnv(ma, "java.naming.security.protocol", "ssl") or
   hasFieldNameEnv(ma, "SECURITY_PROTOCOL", "ssl")
 }
@@ -60,7 +60,7 @@ predicate isSslEnv(MethodAccess ma) {
 /**
  * Holds if `ma` writes the `java.naming.provider.url` (also known as `Context.PROVIDER_URL`) key of a `Hashtable`.
  */
-predicate isProviderUrlSetter(MethodAccess ma) {
+predicate isProviderUrlSetter(MethodCall ma) {
   ma.getMethod().getDeclaringType().getAnAncestor() instanceof TypeHashtable and
   ma.getMethod().hasName(["put", "setProperty"]) and
   (
@@ -103,7 +103,7 @@ private string getHostname(Expr expr) {
  * Holds if `ma` sets `fieldValue` to `envValue` in some `Hashtable`.
  */
 bindingset[fieldValue, envValue]
-private predicate hasFieldValueEnv(MethodAccess ma, string fieldValue, string envValue) {
+private predicate hasFieldValueEnv(MethodCall ma, string fieldValue, string envValue) {
   // environment.put("java.naming.security.authentication", "simple")
   ma.getMethod().getDeclaringType().getAnAncestor() instanceof TypeHashtable and
   ma.getMethod().hasName(["put", "setProperty"]) and
@@ -115,7 +115,7 @@ private predicate hasFieldValueEnv(MethodAccess ma, string fieldValue, string en
  * Holds if `ma` sets attribute name `fieldName` to `envValue` in some `Hashtable`.
  */
 bindingset[fieldName, envValue]
-private predicate hasFieldNameEnv(MethodAccess ma, string fieldName, string envValue) {
+private predicate hasFieldNameEnv(MethodCall ma, string fieldName, string envValue) {
   // environment.put(Context.SECURITY_AUTHENTICATION, "simple")
   ma.getMethod().getDeclaringType().getAnAncestor() instanceof TypeHashtable and
   ma.getMethod().hasName(["put", "setProperty"]) and

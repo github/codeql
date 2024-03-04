@@ -1,0 +1,15 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationProvider", False, "MemoryConfigurationProvider", "(Microsoft.Extensions.Configuration.Memory.MemoryConfigurationSource)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationSource", False, "Build", "(Microsoft.Extensions.Configuration.IConfigurationBuilder)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationProvider", "Add", "(System.String,System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationSource", "get_InitialData", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Configuration.Memory", "MemoryConfigurationSource", "set_InitialData", "(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.String>>)", "summary", "df-generated"]

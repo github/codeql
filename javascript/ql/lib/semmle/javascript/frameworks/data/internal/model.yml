@@ -17,6 +17,11 @@ extensions:
 
   - addsTo:
       pack: codeql/javascript-all
+      extensible: neutralModel
+    data: []
+
+  - addsTo:
+      pack: codeql/javascript-all
       extensible: typeModel
     data: []
 

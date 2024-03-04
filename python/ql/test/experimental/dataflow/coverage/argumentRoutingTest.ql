@@ -10,13 +10,11 @@ module Argument1RoutingTest implements RoutingTestSig {
 
   predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink, Argument arg) {
     (
-      exists(Argument1ExtraRoutingConfig cfg | cfg.hasFlow(source, sink))
+      Argument1ExtraRoutingFlow::flow(source, sink)
       or
-      exists(ArgumentRoutingConfig cfg |
-        cfg.hasFlow(source, sink) and
-        cfg.isArgSource(source, 1) and
-        cfg.isGoodSink(sink, 1)
-      )
+      ArgumentRoutingFlow::flow(source, sink) and
+      ArgumentRoutingConfig::isArgSource(source, 1) and
+      ArgumentRoutingConfig::isGoodSink(sink, 1)
     ) and
     exists(arg)
   }
@@ -26,32 +24,28 @@ class ArgNumber extends int {
   ArgNumber() { this in [1 .. 7] }
 }
 
-class ArgumentRoutingConfig extends DataFlow::Configuration {
-  ArgumentRoutingConfig() { this = "ArgumentRoutingConfig" }
-
-  predicate isArgSource(DataFlow::Node node, ArgNumber argNumber) {
+module ArgumentRoutingConfig implements DataFlow::ConfigSig {
+  additional predicate isArgSource(DataFlow::Node node, ArgNumber argNumber) {
     node.(DataFlow::CfgNode).getNode().(NameNode).getId() = "arg" + argNumber
   }
 
-  override predicate isSource(DataFlow::Node node) { this.isArgSource(node, _) }
+  predicate isSource(DataFlow::Node node) { isArgSource(node, _) }
 
-  predicate isGoodSink(DataFlow::Node node, ArgNumber argNumber) {
+  additional predicate isGoodSink(DataFlow::Node node, ArgNumber argNumber) {
     exists(CallNode call |
       call.getFunction().(NameNode).getId() = "SINK" + argNumber and
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
 
-  predicate isBadSink(DataFlow::Node node, ArgNumber argNumber) {
+  additional predicate isBadSink(DataFlow::Node node, ArgNumber argNumber) {
     exists(CallNode call |
       call.getFunction().(NameNode).getId() = "SINK" + argNumber + "_F" and
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
     )
   }
 
-  override predicate isSink(DataFlow::Node node) {
-    this.isGoodSink(node, _) or this.isBadSink(node, _)
-  }
+  predicate isSink(DataFlow::Node node) { isGoodSink(node, _) or isBadSink(node, _) }
 
   /**
    * We want to be able to use `arg` in a sequence of calls such as `func(kw=arg); ... ; func(arg)`.
@@ -59,22 +53,22 @@ class ArgumentRoutingConfig extends DataFlow::Configuration {
    * making it seem like we handle all cases even if we only handle the last one.
    * We make the test honest by preventing flow into source nodes.
    */
-  override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
-class Argument1ExtraRoutingConfig extends DataFlow::Configuration {
-  Argument1ExtraRoutingConfig() { this = "Argument1ExtraRoutingConfig" }
+module ArgumentRoutingFlow = DataFlow::Global<ArgumentRoutingConfig>;
 
-  override predicate isSource(DataFlow::Node node) {
+module Argument1ExtraRoutingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     exists(AssignmentDefinition def, DataFlow::CallCfgNode call |
-      def.getVariable() = node.(DataFlow::EssaNode).getVar() and
+      def.getDefiningNode() = node.(DataFlow::CfgNode).getNode() and
       def.getValue() = call.getNode() and
       call.getFunction().asCfgNode().(NameNode).getId().matches("With\\_%")
     ) and
-    node.(DataFlow::EssaNode).getVar().getName().matches("with\\_%")
+    node.(DataFlow::CfgNode).getNode().(NameNode).getId().matches("with\\_%")
   }
 
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     exists(CallNode call |
       call.getFunction().(NameNode).getId() = "SINK1" and
       node.(DataFlow::CfgNode).getNode() = call.getAnArg()
@@ -87,8 +81,10 @@ class Argument1ExtraRoutingConfig extends DataFlow::Configuration {
    * making it seem like we handle all cases even if we only handle the last one.
    * We make the test honest by preventing flow into source nodes.
    */
-  override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
+
+module Argument1ExtraRoutingFlow = DataFlow::Global<Argument1ExtraRoutingConfig>;
 
 module RestArgumentRoutingTest implements RoutingTestSig {
   class Argument = ArgNumber;
@@ -96,11 +92,9 @@ module RestArgumentRoutingTest implements RoutingTestSig {
   string flowTag(Argument arg) { result = "arg" + arg }
 
   predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink, Argument arg) {
-    exists(ArgumentRoutingConfig cfg |
-      cfg.hasFlow(source, sink) and
-      cfg.isArgSource(source, arg) and
-      cfg.isGoodSink(sink, arg)
-    ) and
+    ArgumentRoutingFlow::flow(source, sink) and
+    ArgumentRoutingConfig::isArgSource(source, arg) and
+    ArgumentRoutingConfig::isGoodSink(sink, arg) and
     arg > 1
   }
 }
@@ -112,11 +106,9 @@ module BadArgumentRoutingTestSinkF implements RoutingTestSig {
   string flowTag(Argument arg) { result = "bad" + arg }
 
   predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink, Argument arg) {
-    exists(ArgumentRoutingConfig cfg |
-      cfg.hasFlow(source, sink) and
-      cfg.isArgSource(source, arg) and
-      cfg.isBadSink(sink, arg)
-    )
+    ArgumentRoutingFlow::flow(source, sink) and
+    ArgumentRoutingConfig::isArgSource(source, arg) and
+    ArgumentRoutingConfig::isBadSink(sink, arg)
   }
 }
 
@@ -127,14 +119,12 @@ module BadArgumentRoutingTestWrongSink implements RoutingTestSig {
   string flowTag(Argument arg) { result = "bad" + arg }
 
   predicate relevantFlow(DataFlow::Node source, DataFlow::Node sink, Argument arg) {
-    exists(ArgumentRoutingConfig cfg |
-      cfg.hasFlow(source, sink) and
-      cfg.isArgSource(source, any(ArgNumber i | not i = arg)) and
-      (
-        cfg.isGoodSink(sink, arg)
-        or
-        cfg.isBadSink(sink, arg)
-      )
+    ArgumentRoutingFlow::flow(source, sink) and
+    ArgumentRoutingConfig::isArgSource(source, any(ArgNumber i | not i = arg)) and
+    (
+      ArgumentRoutingConfig::isGoodSink(sink, arg)
+      or
+      ArgumentRoutingConfig::isBadSink(sink, arg)
     )
   }
 }

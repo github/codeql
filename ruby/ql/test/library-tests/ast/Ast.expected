@@ -1275,6 +1275,19 @@ control/cases.rb:
 #  162|       getKey: [SymbolLiteral] :y
 #  162|         getComponent: [StringTextComponent] y
 #  162|       getValue: [IntegerLiteral] 1
+#  164|   getStmt: [CaseExpr] case ...
+#  165|     getValue: [LocalVariableAccess] foo
+#  166|     getBranch: [WhenClause] when ...
+#  166|       getPattern: [IntegerLiteral] 1
+#  166|       getBody: [StmtSequence] then ...
+#  166|         getStmt: [IntegerLiteral] 2
+#  169|   getStmt: [CaseExpr] case ...
+#  170|     getValue: [LocalVariableAccess] foo
+#  171|     getBranch: [InClause] in ... then ...
+#  171|       getPattern: [IntegerLiteral] 3
+#  171|       getBody: [StmtSequence] then ...
+#  171|         getStmt: [StringLiteral] "three"
+#  171|           getComponent: [StringTextComponent] three
 modules/classes.rb:
 #    2| [Toplevel] classes.rb
 #    3|   getStmt: [ClassDeclaration] Foo
@@ -2888,6 +2901,9 @@ operations/operations.rb:
 #  104|       getElement: [IntegerLiteral] 1
 #  104|       getElement: [IntegerLiteral] 2
 #  104|       getElement: [IntegerLiteral] 3
+#  106|   getStmt: [DivExpr] ... / ...
+#  106|     getAnOperand/getLeftOperand/getReceiver: [LocalVariableAccess] foo
+#  107|     getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 5
 params/params.rb:
 #    1| [Toplevel] params.rb
 #    4|   getStmt: [Method] identifier_method_params

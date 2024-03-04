@@ -7,16 +7,22 @@ module MakeImplCommon<InputSig Lang> {
   import Cached
 
   module DataFlowImplCommonPublic {
-    /** Provides `FlowState = string`. */
-    module FlowStateString {
+    /**
+     * DEPRECATED: Generally, a custom `FlowState` type should be used instead,
+     * but `string` can of course still be used without referring to this
+     * module.
+     *
+     * Provides `FlowState = string`.
+     */
+    deprecated module FlowStateString {
       /** A state value to track during data flow. */
-      class FlowState = string;
+      deprecated class FlowState = string;
 
       /**
        * The default state, which is used when the state is unspecified for a source
        * or a sink.
        */
-      class FlowStateEmpty extends FlowState {
+      deprecated class FlowStateEmpty extends FlowState {
         FlowStateEmpty() { this = "" }
       }
     }
@@ -77,7 +83,7 @@ module MakeImplCommon<InputSig Lang> {
     class LocalSourceNode extends Node {
       LocalSourceNode() {
         storeStep(_, this, _) or
-        loadStep(_, this, _) or
+        loadStep0(_, this, _) or
         jumpStepCached(_, this) or
         this instanceof ParamNode or
         this instanceof OutNodeExt
@@ -109,11 +115,13 @@ module MakeImplCommon<InputSig Lang> {
     // TODO: support setters
     predicate storeStep(Node n1, Node n2, Content f) { storeSet(n1, f, n2, _, _) }
 
-    predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
+    private predicate loadStep0(Node n1, Node n2, Content f) {
       readSet(n1, f, n2)
       or
       argumentValueFlowsThrough(n1, TReadStepTypesSome(_, f, _), n2)
     }
+
+    predicate loadStep(Node n1, LocalSourceNode n2, Content f) { loadStep0(n1, n2, f) }
 
     predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content f1, Content f2) { none() }
 
@@ -380,7 +388,7 @@ module MakeImplCommon<InputSig Lang> {
   }
 
   private DataFlowCallable viableCallableExt(DataFlowCall call) {
-    result = viableCallable(call)
+    result = viableCallableCached(call)
     or
     result = viableCallableLambda(call, _)
   }
@@ -473,6 +481,9 @@ module MakeImplCommon<InputSig Lang> {
       isArgumentNode(n, call, pos)
     }
 
+    cached
+    DataFlowCallable viableCallableCached(DataFlowCall call) { result = viableCallable(call) }
+
     /**
      * Gets a viable target for the lambda call `call`.
      *
@@ -551,7 +562,8 @@ module MakeImplCommon<InputSig Lang> {
           // local flow
           exists(Node mid |
             parameterValueFlowCand(p, mid, read) and
-            simpleLocalFlowStep(mid, node)
+            simpleLocalFlowStep(mid, node) and
+            validParameterAliasStep(mid, node)
           )
           or
           // read
@@ -670,7 +682,8 @@ module MakeImplCommon<InputSig Lang> {
           // local flow
           exists(Node mid |
             parameterValueFlow(p, mid, read) and
-            simpleLocalFlowStep(mid, node)
+            simpleLocalFlowStep(mid, node) and
+            validParameterAliasStep(mid, node)
           )
           or
           // read
@@ -783,10 +796,12 @@ module MakeImplCommon<InputSig Lang> {
        */
       pragma[nomagic]
       private predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
-        mayBenefitFromCallContext(call, callable)
-        or
-        callEnclosingCallable(call, callable) and
-        exists(viableCallableLambda(call, TDataFlowCallSome(_)))
+        (
+          mayBenefitFromCallContext(call)
+          or
+          exists(viableCallableLambda(call, TDataFlowCallSome(_)))
+        ) and
+        callEnclosingCallable(call, callable)
       }
 
       /**
@@ -974,6 +989,9 @@ module MakeImplCommon<InputSig Lang> {
     predicate paramMustFlow(ParamNode p, ArgNode arg) { localMustFlowStep+(p, arg) }
 
     cached
+    ContentApprox getContentApproxCached(Content c) { result = getContentApprox(c) }
+
+    cached
     newtype TCallContext =
       TAnyCallContext() or
       TSpecificCall(DataFlowCall call) { recordDataFlowCallSite(call, _) } or
@@ -1121,8 +1139,8 @@ module MakeImplCommon<InputSig Lang> {
       Input::enableTypeFlow() and
       (
         exists(ParamNode p, DataFlowType at, DataFlowType pt |
-          at = getNodeType(arg) and
-          pt = getNodeType(p) and
+          nodeDataFlowType(arg, at) and
+          nodeDataFlowType(p, pt) and
           relevantCallEdge(_, _, arg, p) and
           typeStrongerThan0(pt, at)
         )
@@ -1131,8 +1149,8 @@ module MakeImplCommon<InputSig Lang> {
           // A call edge may implicitly strengthen a type by ensuring that a
           // specific argument node was reached if the type of that argument was
           // strengthened via a cast.
-          at = getNodeType(arg) and
-          pt = getNodeType(p) and
+          nodeDataFlowType(arg, at) and
+          nodeDataFlowType(p, pt) and
           paramMustFlow(p, arg) and
           relevantCallEdge(_, _, arg, _) and
           typeStrongerThan0(at, pt)
@@ -1172,8 +1190,8 @@ module MakeImplCommon<InputSig Lang> {
       or
       exists(ArgNode arg, DataFlowType at, DataFlowType pt |
         trackedParamTypeCand(p) and
-        at = getNodeType(arg) and
-        pt = getNodeType(p) and
+        nodeDataFlowType(arg, at) and
+        nodeDataFlowType(p, pt) and
         relevantCallEdge(_, _, arg, p) and
         typeStrongerThan0(at, pt)
       )
@@ -1535,9 +1553,7 @@ module MakeImplCommon<InputSig Lang> {
   class CallContextSomeCall extends CallContextCall, TSomeCall {
     override string toString() { result = "CcSomeCall" }
 
-    override predicate relevantFor(DataFlowCallable callable) {
-      exists(ParamNode p | getNodeEnclosingCallable(p) = callable)
-    }
+    override predicate relevantFor(DataFlowCallable callable) { any() }
 
     override predicate matchesCall(DataFlowCall call) { any() }
   }
@@ -1883,7 +1899,7 @@ module MakeImplCommon<InputSig Lang> {
     Content getAHead() {
       exists(ContentApprox cont |
         this = TApproxFrontHead(cont) and
-        cont = getContentApprox(result)
+        cont = getContentApproxCached(result)
       )
     }
   }

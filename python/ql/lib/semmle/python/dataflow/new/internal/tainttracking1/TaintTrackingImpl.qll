@@ -1,4 +1,6 @@
 /**
+ * DEPRECATED: Use `Global` and `GlobalWithState` instead.
+ *
  * Provides an implementation of global (interprocedural) taint tracking.
  * This file re-exports the local (intraprocedural) taint-tracking analysis
  * from `TaintTrackingParameter::Public` and adds a global analysis, mainly
@@ -12,6 +14,8 @@ import TaintTrackingParameter::Public
 private import TaintTrackingParameter::Private
 
 /**
+ * DEPRECATED: Use `Global` and `GlobalWithState` instead.
+ *
  * A configuration of interprocedural taint tracking analysis. This defines
  * sources, sinks, and any other configurable aspect of the analysis. Each
  * use of the taint tracking library must define its own unique extension of
@@ -51,7 +55,7 @@ private import TaintTrackingParameter::Private
  * Instead, the dependency should go to a `TaintTracking2::Configuration` or a
  * `DataFlow2::Configuration`, `DataFlow3::Configuration`, etc.
  */
-abstract class Configuration extends DataFlow::Configuration {
+abstract deprecated class Configuration extends DataFlow::Configuration {
   bindingset[this]
   Configuration() { any() }
 
@@ -115,33 +119,6 @@ abstract class Configuration extends DataFlow::Configuration {
   predicate isSanitizerOut(DataFlow::Node node) { none() }
 
   final override predicate isBarrierOut(DataFlow::Node node) { this.isSanitizerOut(node) }
-
-  /**
-   * DEPRECATED: Use `isSanitizer` and `BarrierGuard` module instead.
-   *
-   * Holds if taint propagation through nodes guarded by `guard` is prohibited.
-   */
-  deprecated predicate isSanitizerGuard(DataFlow::BarrierGuard guard) { none() }
-
-  deprecated final override predicate isBarrierGuard(DataFlow::BarrierGuard guard) {
-    this.isSanitizerGuard(guard)
-  }
-
-  /**
-   * DEPRECATED: Use `isSanitizer` and `BarrierGuard` module instead.
-   *
-   * Holds if taint propagation through nodes guarded by `guard` is prohibited
-   * when the flow state is `state`.
-   */
-  deprecated predicate isSanitizerGuard(DataFlow::BarrierGuard guard, DataFlow::FlowState state) {
-    none()
-  }
-
-  deprecated final override predicate isBarrierGuard(
-    DataFlow::BarrierGuard guard, DataFlow::FlowState state
-  ) {
-    this.isSanitizerGuard(guard, state)
-  }
 
   /**
    * Holds if taint may propagate from `node1` to `node2` in addition to the normal data-flow and taint steps.

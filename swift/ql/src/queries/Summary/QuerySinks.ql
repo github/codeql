@@ -30,7 +30,8 @@ import codeql.swift.security.CleartextLoggingQuery
 import codeql.swift.security.CleartextStoragePreferencesQuery
 import codeql.swift.security.HardcodedEncryptionKeyQuery
 import codeql.swift.security.ECBEncryptionQuery
-import codeql.swift.security.WeakSensitiveDataHashingQuery
+import codeql.swift.security.WeakSensitiveDataHashingQuery as WeakSensitiveDataHashingQuery
+import codeql.swift.security.WeakPasswordHashingQuery as WeakPasswordHashingQuery
 import codeql.swift.security.XXEQuery
 import codeql.swift.security.InsecureTLSQuery
 import codeql.swift.security.ConstantSaltQuery
@@ -65,7 +66,11 @@ string queryForSink(DataFlow::Node sink) {
   or
   EcbEncryptionConfig::isSink(sink) and result = "swift/ecb-encryption"
   or
-  WeakHashingConfig::isSink(sink) and result = "swift/weak-sensitive-data-hashing"
+  WeakSensitiveDataHashingQuery::WeakSensitiveDataHashingConfig::isSink(sink) and
+  result = "swift/weak-sensitive-data-hashing"
+  or
+  WeakPasswordHashingQuery::WeakPasswordHashingConfig::isSink(sink) and
+  result = "swift/weak-password-hashing"
   or
   XxeConfig::isSink(sink) and result = "swift/xxe"
   or

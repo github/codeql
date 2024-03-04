@@ -1,3 +1,58 @@
+## 0.7.9
+
+### New Queries
+
+* The query "Missing JWT signature check" (`go/missing-jwt-signature-check`) has been promoted from experimental to the main query pack. Its results will now appear by default. This query was originally [submitted as an experimental query by @am0o0](https://github.com/github/codeql/pull/14075).
+
+### Major Analysis Improvements
+
+* The query "Use of a hardcoded key for signing JWT" (`go/hardcoded-key`) has been promoted from experimental to the main query pack. Its results will now appear by default as part of `go/hardcoded-credentials`. This query was originally [submitted as an experimental query by @porcupineyhairs](https://github.com/github/codeql/pull/9378).
+
+## 0.7.8
+
+No user-facing changes.
+
+## 0.7.7
+
+### Minor Analysis Improvements
+
+* The query `go/insecure-randomness` now recognizes the selection of candidates from a predefined set using a weak RNG when the result is used in a sensitive operation. Also, false positives have been reduced by adding more sink exclusions for functions in the `crypto` package not related to cryptographic operations.
+* Added more sources and sinks to the query `go/clear-text-logging`.
+
+## 0.7.6
+
+### Minor Analysis Improvements
+
+* There was a bug in the query `go/incorrect-integer-conversion` which meant that upper bound checks using a strict inequality (`<`) and comparing against `math.MaxInt` or `math.MaxUint` were not considered correctly, which led to false positives. This has now been fixed.
+
+## 0.7.5
+
+No user-facing changes.
+
+## 0.7.4
+
+No user-facing changes.
+
+## 0.7.3
+
+No user-facing changes.
+
+## 0.7.2
+
+### Minor Analysis Improvements
+
+* The query `go/incorrect-integer-conversion` now correctly recognizes more guards of the form `if val <= x` to protect a conversion `uintX(val)`.
+
+## 0.7.1
+
+### Minor Analysis Improvements
+
+* The query "Incorrect conversion between integer types" (`go/incorrect-integer-conversion`) has been improved. It can now detect parsing an unsigned integer type (like `uint32`) and converting it to the signed integer type of the same size (like `int32`), which may lead to more results. It also treats `int` and `uint` more carefully, which may lead to more results or fewer incorrect results.
+
+## 0.7.0
+
+No user-facing changes.
+
 ## 0.6.5
 
 No user-facing changes.

@@ -1,11 +1,19 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Connections.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Connections.Abstractions, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
     {
         namespace Connections
         {
+            namespace Abstractions
+            {
+                public interface IStatefulReconnectFeature
+                {
+                    void DisableReconnect();
+                    void OnReconnected(System.Func<System.IO.Pipelines.PipeWriter, System.Threading.Tasks.Task> notifyOnReconnect);
+                }
+            }
             public class AddressInUseException : System.InvalidOperationException
             {
                 public AddressInUseException(string message) => throw null;
@@ -41,6 +49,7 @@ namespace Microsoft
             {
                 public static Microsoft.AspNetCore.Connections.IConnectionBuilder Run(this Microsoft.AspNetCore.Connections.IConnectionBuilder connectionBuilder, System.Func<Microsoft.AspNetCore.Connections.ConnectionContext, System.Threading.Tasks.Task> middleware) => throw null;
                 public static Microsoft.AspNetCore.Connections.IConnectionBuilder Use(this Microsoft.AspNetCore.Connections.IConnectionBuilder connectionBuilder, System.Func<Microsoft.AspNetCore.Connections.ConnectionContext, System.Func<System.Threading.Tasks.Task>, System.Threading.Tasks.Task> middleware) => throw null;
+                public static Microsoft.AspNetCore.Connections.IConnectionBuilder Use(this Microsoft.AspNetCore.Connections.IConnectionBuilder connectionBuilder, System.Func<Microsoft.AspNetCore.Connections.ConnectionContext, Microsoft.AspNetCore.Connections.ConnectionDelegate, System.Threading.Tasks.Task> middleware) => throw null;
                 public static Microsoft.AspNetCore.Connections.IConnectionBuilder UseConnectionHandler<TConnectionHandler>(this Microsoft.AspNetCore.Connections.IConnectionBuilder connectionBuilder) where TConnectionHandler : Microsoft.AspNetCore.Connections.ConnectionHandler => throw null;
             }
             public abstract class ConnectionContext : Microsoft.AspNetCore.Connections.BaseConnectionContext, System.IAsyncDisposable
@@ -137,6 +146,14 @@ namespace Microsoft
                     System.Threading.CancellationToken ConnectionClosedRequested { get; set; }
                     void RequestClose();
                 }
+                public interface IConnectionMetricsTagsFeature
+                {
+                    System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>> Tags { get; }
+                }
+                public interface IConnectionNamedPipeFeature
+                {
+                    System.IO.Pipes.NamedPipeServerStream NamedPipe { get; }
+                }
                 public interface IConnectionSocketFeature
                 {
                     System.Net.Sockets.Socket Socket { get; }
@@ -185,8 +202,10 @@ namespace Microsoft
                     int CipherStrength { get; }
                     System.Security.Authentication.HashAlgorithmType HashAlgorithm { get; }
                     int HashStrength { get; }
+                    virtual string HostName { get => throw null; }
                     System.Security.Authentication.ExchangeAlgorithmType KeyExchangeAlgorithm { get; }
                     int KeyExchangeStrength { get; }
+                    virtual System.Net.Security.TlsCipherSuite? NegotiatedCipherSuite { get => throw null; }
                     System.Security.Authentication.SslProtocols Protocol { get; }
                 }
                 public interface ITransferFormatFeature
@@ -227,6 +246,10 @@ namespace Microsoft
             {
                 System.Threading.Tasks.ValueTask<Microsoft.AspNetCore.Connections.IConnectionListener> BindAsync(System.Net.EndPoint endpoint, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
+            public interface IConnectionListenerFactorySelector
+            {
+                bool CanBind(System.Net.EndPoint endpoint);
+            }
             public interface IMultiplexedConnectionBuilder
             {
                 System.IServiceProvider ApplicationServices { get; }
@@ -261,6 +284,16 @@ namespace Microsoft
                 protected MultiplexedConnectionContext() => throw null;
             }
             public delegate System.Threading.Tasks.Task MultiplexedConnectionDelegate(Microsoft.AspNetCore.Connections.MultiplexedConnectionContext connection);
+            public sealed class NamedPipeEndPoint : System.Net.EndPoint
+            {
+                public NamedPipeEndPoint(string pipeName) => throw null;
+                public NamedPipeEndPoint(string pipeName, string serverName) => throw null;
+                public override bool Equals(object obj) => throw null;
+                public override int GetHashCode() => throw null;
+                public string PipeName { get => throw null; }
+                public string ServerName { get => throw null; }
+                public override string ToString() => throw null;
+            }
             public class TlsConnectionCallbackContext
             {
                 public System.Net.Security.SslClientHelloInfo ClientHelloInfo { get => throw null; set { } }

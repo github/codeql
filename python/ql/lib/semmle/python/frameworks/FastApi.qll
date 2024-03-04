@@ -11,18 +11,23 @@ private import semmle.python.Concepts
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Pydantic
 private import semmle.python.frameworks.Starlette
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
+ * INTERNAL: Do not use.
+ *
  * Provides models for the `fastapi` PyPI package.
  * See https://fastapi.tiangolo.com/.
  */
-private module FastApi {
+module FastApi {
   /**
    * Provides models for FastAPI applications (an instance of `fastapi.FastAPI`).
    */
   module App {
+    API::Node cls() { result = API::moduleImport("fastapi").getMember("FastAPI") }
+
     /** Gets a reference to a FastAPI application (an instance of `fastapi.FastAPI`). */
-    API::Node instance() { result = API::moduleImport("fastapi").getMember("FastAPI").getReturn() }
+    API::Node instance() { result = cls().getReturn() }
   }
 
   /**
@@ -31,10 +36,14 @@ private module FastApi {
    * See https://fastapi.tiangolo.com/tutorial/bigger-applications/.
    */
   module ApiRouter {
-    /** Gets a reference to an instance of `fastapi.ApiRouter`. */
-    API::Node instance() {
-      result = API::moduleImport("fastapi").getMember("APIRouter").getASubclass*().getReturn()
+    API::Node cls() {
+      result = API::moduleImport("fastapi").getMember("APIRouter").getASubclass*()
+      or
+      result = ModelOutput::getATypeNode("fastapi.APIRouter~Subclass").getASubclass*()
     }
+
+    /** Gets a reference to an instance of `fastapi.ApiRouter`. */
+    API::Node instance() { result = cls().getReturn() }
   }
 
   // ---------------------------------------------------------------------------
@@ -66,6 +75,9 @@ private module FastApi {
       result = this.getARequestHandler().getArgByName(_) and
       // type-annotated with `Response`
       not any(Response::RequestHandlerParam src).asExpr() = result
+      or
+      // **kwargs
+      result = this.getARequestHandler().getKwarg()
     }
 
     override DataFlow::Node getUrlPatternArg() {

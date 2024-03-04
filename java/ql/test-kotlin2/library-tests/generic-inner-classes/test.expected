@@ -1,0 +1,60 @@
+callArgs
+| KotlinUser.kt:7:13:7:31 | new OuterGeneric<Integer>(...) | KotlinUser.kt:7:13:7:31 | OuterGeneric<Integer> | -3 |
+| KotlinUser.kt:7:33:7:61 | new InnerGeneric<String>(...) | KotlinUser.kt:7:13:7:31 | new OuterGeneric<Integer>(...) | -2 |
+| KotlinUser.kt:7:33:7:61 | new InnerGeneric<String>(...) | KotlinUser.kt:7:33:7:61 | InnerGeneric<String> | -3 |
+| KotlinUser.kt:7:33:7:61 | new InnerGeneric<String>(...) | KotlinUser.kt:7:54:7:60 | "hello" | 0 |
+| KotlinUser.kt:8:14:8:32 | new OuterGeneric<Integer>(...) | KotlinUser.kt:8:14:8:32 | OuterGeneric<Integer> | -3 |
+| KotlinUser.kt:8:34:8:54 | new InnerGeneric<String>(...) | KotlinUser.kt:8:14:8:32 | new OuterGeneric<Integer>(...) | -2 |
+| KotlinUser.kt:8:34:8:54 | new InnerGeneric<String>(...) | KotlinUser.kt:8:34:8:54 | InnerGeneric<String> | -3 |
+| KotlinUser.kt:8:34:8:54 | new InnerGeneric<String>(...) | KotlinUser.kt:8:47:8:53 | "hello" | 0 |
+| KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | KotlinUser.kt:9:13:9:31 | OuterGeneric<Integer> | -3 |
+| KotlinUser.kt:9:33:9:49 | new InnerNotGeneric<>(...) | KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | -2 |
+| KotlinUser.kt:9:33:9:49 | new InnerNotGeneric<>(...) | KotlinUser.kt:9:33:9:49 | InnerNotGeneric<> | -3 |
+| KotlinUser.kt:10:13:10:29 | new OuterNotGeneric(...) | KotlinUser.kt:10:13:10:29 | OuterNotGeneric | -3 |
+| KotlinUser.kt:10:31:10:52 | new InnerGeneric<String>(...) | KotlinUser.kt:10:13:10:29 | new OuterNotGeneric(...) | -2 |
+| KotlinUser.kt:10:31:10:52 | new InnerGeneric<String>(...) | KotlinUser.kt:10:31:10:52 | InnerGeneric<String> | -3 |
+| KotlinUser.kt:12:19:12:44 | returnsecond(...) | KotlinUser.kt:12:19:12:19 | a | -1 |
+| KotlinUser.kt:12:19:12:44 | returnsecond(...) | KotlinUser.kt:12:34:12:34 | 0 | 0 |
+| KotlinUser.kt:12:19:12:44 | returnsecond(...) | KotlinUser.kt:12:37:12:43 | "hello" | 1 |
+| KotlinUser.kt:13:19:13:31 | identity(...) | KotlinUser.kt:13:19:13:19 | b | -1 |
+| KotlinUser.kt:13:19:13:31 | identity(...) | KotlinUser.kt:13:30:13:30 | 5 | 0 |
+| KotlinUser.kt:14:19:14:37 | identity(...) | KotlinUser.kt:14:19:14:19 | c | -1 |
+| KotlinUser.kt:14:19:14:37 | identity(...) | KotlinUser.kt:14:30:14:36 | "world" | 0 |
+genericTypes
+| OuterGeneric.kt:3:1:21:1 | OuterGeneric | OuterGeneric.kt:3:27:3:27 | T |
+| OuterGeneric.kt:11:3:19:3 | InnerGeneric | OuterGeneric.kt:11:35:11:35 | S |
+| OuterNotGeneric.kt:5:3:9:3 | InnerGeneric | OuterNotGeneric.kt:5:35:5:35 | S |
+paramTypes
+| OuterGeneric.kt:3:1:21:1 | OuterGeneric | T |
+| OuterGeneric.kt:11:3:19:3 | InnerGeneric | S |
+| OuterNotGeneric.kt:5:3:9:3 | InnerGeneric | S |
+| file:///!unknown-binary-location/testuser/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | String |
+| file:///!unknown-binary-location/testuser/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | Integer |
+| file:///!unknown-binary-location/testuser/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | String |
+constructors
+| KotlinUser.kt:3:1:18:1 | User |
+| OuterGeneric.kt:3:1:21:1 | OuterGeneric |
+| OuterGeneric.kt:5:3:9:3 | InnerNotGeneric |
+| OuterGeneric.kt:13:5:13:21 | InnerGeneric |
+| OuterGeneric.kt:15:5:15:25 | InnerGeneric |
+| OuterNotGeneric.kt:3:1:11:1 | OuterNotGeneric |
+| OuterNotGeneric.kt:5:3:9:3 | InnerGeneric |
+| file:///!unknown-binary-location/testuser/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| file:///!unknown-binary-location/testuser/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+| file:///!unknown-binary-location/testuser/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> |
+| file:///!unknown-binary-location/testuser/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| file:///!unknown-binary-location/testuser/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> |
+nestedTypes
+| OuterGeneric.kt:5:3:9:3 | InnerNotGeneric | OuterGeneric.kt:3:1:21:1 | OuterGeneric |
+| OuterGeneric.kt:11:3:19:3 | InnerGeneric | OuterGeneric.kt:3:1:21:1 | OuterGeneric |
+| OuterNotGeneric.kt:5:3:9:3 | InnerGeneric | OuterNotGeneric.kt:3:1:11:1 | OuterNotGeneric |
+| file:///!unknown-binary-location/testuser/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | file:///!unknown-binary-location/testuser/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| file:///!unknown-binary-location/testuser/OuterGeneric$InnerNotGeneric.class:0:0:0:0 | InnerNotGeneric<> | file:///!unknown-binary-location/testuser/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> |
+| file:///!unknown-binary-location/testuser/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | OuterNotGeneric.kt:3:1:11:1 | OuterNotGeneric |
+#select
+| KotlinUser.kt:7:13:7:31 | new OuterGeneric<Integer>(...) | file:///!unknown-binary-location/testuser/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | file:///!unknown-binary-location/testuser/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | KotlinUser.kt:7:13:7:31 | Integer |
+| KotlinUser.kt:7:33:7:61 | new InnerGeneric<String>(...) | file:///!unknown-binary-location/testuser/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | file:///!unknown-binary-location/testuser/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | KotlinUser.kt:7:33:7:61 | String |
+| KotlinUser.kt:8:14:8:32 | new OuterGeneric<Integer>(...) | file:///!unknown-binary-location/testuser/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | file:///!unknown-binary-location/testuser/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | KotlinUser.kt:8:14:8:32 | Integer |
+| KotlinUser.kt:8:34:8:54 | new InnerGeneric<String>(...) | file:///!unknown-binary-location/testuser/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | file:///!unknown-binary-location/testuser/OuterGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | KotlinUser.kt:8:34:8:54 | String |
+| KotlinUser.kt:9:13:9:31 | new OuterGeneric<Integer>(...) | file:///!unknown-binary-location/testuser/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | file:///!unknown-binary-location/testuser/OuterGeneric.class:0:0:0:0 | OuterGeneric<Integer> | KotlinUser.kt:9:13:9:31 | Integer |
+| KotlinUser.kt:10:31:10:52 | new InnerGeneric<String>(...) | file:///!unknown-binary-location/testuser/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | file:///!unknown-binary-location/testuser/OuterNotGeneric$InnerGeneric.class:0:0:0:0 | InnerGeneric<String> | KotlinUser.kt:10:31:10:52 | String |

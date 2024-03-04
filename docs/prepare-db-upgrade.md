@@ -142,3 +142,7 @@ cp ql/lib/<mylang>.dbscheme ql/lib/upgrades/454f1e15151422355049dc4f1f0486a03bae
 ```
 
 4. Put a copy of the `.dbscheme` from `main` in that directory and create an `upgrade.properties` file that performs the downgrade (as described above).
+
+### Debugging your scripts
+
+Database upgrade/downgrade may fail for several reasons. To find out the exact issue it is recommended to rerun the `codeql test run` commands from above in a verbose mode, e.g. `codeql test run -vvvv ...`.

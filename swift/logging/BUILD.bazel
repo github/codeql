@@ -8,5 +8,6 @@ cc_library(
         "@binlog",
         "@fmt",
         "@json",
+        "//shared/cpp:extractor_shared",
     ],
 )

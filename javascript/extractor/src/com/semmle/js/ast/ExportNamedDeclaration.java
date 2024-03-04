@@ -15,22 +15,30 @@ public class ExportNamedDeclaration extends ExportDeclaration {
   private final Statement declaration;
   private final List<ExportSpecifier> specifiers;
   private final Literal source;
-  private final Expression assertion;
+  private final Expression attributes;
   private final boolean hasTypeKeyword;
 
   public ExportNamedDeclaration(
-      SourceLocation loc, Statement declaration, List<ExportSpecifier> specifiers, Literal source, Expression assertion) {
-    this(loc, declaration, specifiers, source, assertion, false);
+      SourceLocation loc,
+      Statement declaration,
+      List<ExportSpecifier> specifiers,
+      Literal source,
+      Expression attributes) {
+    this(loc, declaration, specifiers, source, attributes, false);
   }
 
   public ExportNamedDeclaration(
-      SourceLocation loc, Statement declaration, List<ExportSpecifier> specifiers, Literal source,
-      Expression assertion, boolean hasTypeKeyword) {
+      SourceLocation loc,
+      Statement declaration,
+      List<ExportSpecifier> specifiers,
+      Literal source,
+      Expression attributes,
+      boolean hasTypeKeyword) {
     super("ExportNamedDeclaration", loc);
     this.declaration = declaration;
     this.specifiers = specifiers;
     this.source = source;
-    this.assertion = assertion;
+    this.attributes = attributes;
     this.hasTypeKeyword = hasTypeKeyword;
   }
 
@@ -59,9 +67,12 @@ public class ExportNamedDeclaration extends ExportDeclaration {
     return v.visit(this, c);
   }
 
-  /** Returns the expression after the <code>assert</code> keyword, if any, such as <code>{ type: "json" }</code>. */
-  public Expression getAssertion() {
-    return assertion;
+  /**
+   * Returns the expression after the <code>with</code> keyword, if any, such as <code>
+   * { type: "json" }</code>.
+   */
+  public Expression getAttributes() {
+    return attributes;
   }
 
   /** Returns true if this is an <code>export type</code> declaration. */

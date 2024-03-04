@@ -1,0 +1,13 @@
+| switch.swift:3:4:5:7 | case ... | 0 | switch.swift:3:9:3:9 | =~ ... |
+| switch.swift:6:4:7:20 | case ... | 0 | switch.swift:6:9:6:9 | =~ ... |
+| switch.swift:6:4:7:20 | case ... | 1 | switch.swift:6:12:6:12 | =~ ... |
+| switch.swift:8:4:9:18 | case ... | 0 | switch.swift:8:9:8:26 | x where ... |
+| switch.swift:10:4:11:22 | case ... | 0 | switch.swift:10:4:10:4 | _ |
+| switch.swift:22:3:23:5 | case ... | 0 | switch.swift:22:8:22:9 | .one |
+| switch.swift:24:3:25:5 | case ... | 0 | switch.swift:24:8:24:40 | .two(...) where ... |
+| switch.swift:26:3:27:5 | case ... | 0 | switch.swift:26:8:26:25 | .two(...) |
+| switch.swift:28:3:29:5 | case ... | 0 | switch.swift:28:8:28:23 | .three(...) |
+| switch.swift:33:3:39:5 | case ... | 0 | switch.swift:33:8:33:21 | .two(...) |
+| switch.swift:35:8:36:16 | case ... | 0 | switch.swift:35:13:35:13 | =~ ... |
+| switch.swift:37:8:38:16 | case ... | 0 | switch.swift:37:8:37:8 | _ |
+| switch.swift:40:3:41:5 | case ... | 0 | switch.swift:40:3:40:3 | _ |

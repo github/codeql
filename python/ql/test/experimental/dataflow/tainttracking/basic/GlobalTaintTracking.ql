@@ -2,14 +2,12 @@ import python
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.DataFlow
 
-class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
-  TestTaintTrackingConfiguration() { this = "TestTaintTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module TestTaintTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.(DataFlow::CfgNode).getNode().(NameNode).getId() = "SOURCE"
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(CallNode call |
       call.getFunction().(NameNode).getId() = "SINK" and
       sink.(DataFlow::CfgNode).getNode() = call.getAnArg()
@@ -17,6 +15,8 @@ class TestTaintTrackingConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from TestTaintTrackingConfiguration config, DataFlow::Node source, DataFlow::Node sink
-where config.hasFlow(source, sink)
+module TestTaintTrackingFlow = DataFlow::Global<TestTaintTrackingConfig>;
+
+from DataFlow::Node source, DataFlow::Node sink
+where TestTaintTrackingFlow::flow(source, sink)
 select source, sink

@@ -8,7 +8,7 @@ Members.cs:
 #    3|         -1: [TypeMention] object
 #    6|   2: [Class] Class
 #    9|     5: [Class] NestedClass
-#   12|       5: [Method] Method<>
+#   12|       5: [Method] Method`1
 #   12|         -1: [TypeMention] string
 #-----|         1: (Type parameters)
 #   12|           0: [TypeParameter] T
@@ -84,7 +84,7 @@ Members.cs:
 #   32|           0: [Parameter] value
 #   35|   3: [Class] Class2
 #   37|     5: [Class] NestedClass2
-#   39|       5: [Method] Method<>
+#   39|       5: [Method] Method`1
 #   39|         -1: [TypeMention] string
 #-----|         1: (Type parameters)
 #   39|           0: [TypeParameter] T

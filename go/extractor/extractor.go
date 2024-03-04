@@ -551,6 +551,7 @@ func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, 
 			log.Printf("Warning: failed to evaluate symlinks for %s", wd)
 		}
 		file = filepath.Join(ewd, "-")
+		extraction.extractFileInfo(tw, file, true)
 	} else {
 		var rawfile string
 		if parts := threePartPos.FindStringSubmatch(pos); parts != nil {
@@ -585,7 +586,7 @@ func (extraction *Extraction) extractError(tw *trap.Writer, err packages.Error, 
 			file = afile
 		}
 
-		extraction.extractFileInfo(tw, file)
+		extraction.extractFileInfo(tw, file, false)
 	}
 
 	extraction.Lock.Lock()
@@ -654,7 +655,7 @@ func (extraction *Extraction) extractFile(ast *ast.File, pkg *packages.Package) 
 		return err
 	}
 
-	extraction.extractFileInfo(tw, path)
+	extraction.extractFileInfo(tw, path, false)
 
 	extractScopes(tw, ast, pkg)
 
@@ -672,7 +673,7 @@ func (extraction *Extraction) extractFile(ast *ast.File, pkg *packages.Package) 
 
 // extractFileInfo extracts file-system level information for the given file, populating
 // the `files` and `containerparent` tables
-func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
+func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string, isDummy bool) {
 	// We may visit the same file twice because `extractError` calls this function to describe files containing
 	// compilation errors. It is also called for user source files being extracted.
 	extraction.Lock.Lock()
@@ -704,7 +705,9 @@ func (extraction *Extraction) extractFileInfo(tw *trap.Writer, file string) {
 			dbscheme.HasLocationTable.Emit(tw, lbl, emitLocation(tw, lbl, 0, 0, 0, 0))
 			extraction.Lock.Lock()
 			slbl := extraction.StatWriter.Labeler.FileLabelFor(file)
-			dbscheme.CompilationCompilingFilesTable.Emit(extraction.StatWriter, extraction.Label, extraction.GetFileIdx(file), slbl)
+			if !isDummy {
+				dbscheme.CompilationCompilingFilesTable.Emit(extraction.StatWriter, extraction.Label, extraction.GetFileIdx(file), slbl)
+			}
 			extraction.Lock.Unlock()
 			break
 		}

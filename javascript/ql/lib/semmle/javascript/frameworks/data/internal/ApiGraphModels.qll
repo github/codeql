@@ -70,8 +70,8 @@ private module API = Specific::API;
 
 private module DataFlow = Specific::DataFlow;
 
-private import Specific::AccessPathSyntax
 private import ApiGraphModelsExtensions as Extensions
+private import codeql.dataflow.internal.AccessPathSyntax
 
 /** Module containing hooks for providing input data to be interpreted as a model. */
 module ModelInput {
@@ -327,29 +327,29 @@ predicate isRelevantFullPath(string type, string path) {
 }
 
 /** A string from a CSV row that should be parsed as an access path. */
-private class AccessPathRange extends AccessPath::Range {
-  AccessPathRange() {
-    isRelevantFullPath(_, this)
-    or
-    exists(string type | isRelevantType(type) |
-      summaryModel(type, _, this, _, _) or
-      summaryModel(type, _, _, this, _)
-    )
-    or
-    typeVariableModel(_, this)
-  }
+private predicate accessPathRange(string s) {
+  isRelevantFullPath(_, s)
+  or
+  exists(string type | isRelevantType(type) |
+    summaryModel(type, _, s, _, _) or
+    summaryModel(type, _, _, s, _)
+  )
+  or
+  typeVariableModel(_, s)
 }
+
+import AccessPath<accessPathRange/1>
 
 /**
  * Gets a successor of `node` in the API graph.
  */
 bindingset[token]
-API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
+API::Node getSuccessorFromNode(API::Node node, AccessPathTokenBase token) {
   // API graphs use the same label for arguments and parameters. An edge originating from a
   // use-node represents an argument, and an edge originating from a def-node represents a parameter.
   // We just map both to the same thing.
   token.getName() = ["Argument", "Parameter"] and
-  result = node.getParameter(AccessPath::parseIntUnbounded(token.getAnArgument()))
+  result = node.getParameter(parseIntUnbounded(token.getAnArgument()))
   or
   token.getName() = "ReturnValue" and
   result = node.getReturn()
@@ -362,11 +362,9 @@ API::Node getSuccessorFromNode(API::Node node, AccessPathToken token) {
  * Gets an API-graph successor for the given invocation.
  */
 bindingset[token]
-API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathToken token) {
+API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathTokenBase token) {
   token.getName() = "Argument" and
-  result =
-    invoke
-        .getParameter(AccessPath::parseIntWithArity(token.getAnArgument(), invoke.getNumArgument()))
+  result = invoke.getParameter(parseIntWithArity(token.getAnArgument(), invoke.getNumArgument()))
   or
   token.getName() = "ReturnValue" and
   result = invoke.getReturn()
@@ -378,10 +376,12 @@ API::Node getSuccessorFromInvoke(Specific::InvokeNode invoke, AccessPathToken to
 /**
  * Holds if `invoke` invokes a call-site filter given by `token`.
  */
-pragma[inline]
-private predicate invocationMatchesCallSiteFilter(Specific::InvokeNode invoke, AccessPathToken token) {
+bindingset[token]
+private predicate invocationMatchesCallSiteFilter(
+  Specific::InvokeNode invoke, AccessPathTokenBase token
+) {
   token.getName() = "WithArity" and
-  invoke.getNumArgument() = AccessPath::parseIntUnbounded(token.getAnArgument())
+  invoke.getNumArgument() = parseIntUnbounded(token.getAnArgument())
   or
   Specific::invocationMatchesExtraCallSiteFilter(invoke, token)
 }

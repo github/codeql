@@ -90,9 +90,29 @@ class FooController < ActionController::Base
     # BAD: executes `UPDATE "users" SET #{params[:fields]}`
     # where `params[:fields]` is unsanitized
     User.update_all(params[:fields])
-    
+
+    # GOOD -- `update_all` sanitizes its bind variable arguments
+    User.find_by(name: params[:user_name])
+      .update_all(['name = ?', params[:new_user_name]])
+
+    # BAD -- `update_all` does not sanitize its query (array arg)
+    User.find_by(name: params[:user_name])
+      .update_all(["name = '#{params[:new_user_name]}'"])
+
+    # BAD -- `update_all` does not sanitize its query (string arg)
+    User.find_by(name: params[:user_name])
+      .update_all("name = '#{params[:new_user_name]}'")
+
     User.reorder(params[:direction])
-    
+
+    User.select('a','b', params[:column])
+    User.reselect('a','b', params[:column])
+    User.order('a ASC', "b #{params[:direction]}")
+    User.reorder('a ASC', "b #{params[:direction]}")
+    User.group('a', params[:column])
+    User.pluck('a', params[:column])
+    User.joins(:a, params[:column])
+
     User.count_by_sql(params[:custom_sql_query])
   end
 end
@@ -168,11 +188,11 @@ class RegressionController < ActionController::Base
     result = Regression.find_by_sql(query)
   end
 
-  
+
   def permitted_params
     params.require(:my_key).permit(:id, :user_id, :my_type)
   end
-  
+
   def show
     ActiveRecord::Base.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}")
     Regression.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}")

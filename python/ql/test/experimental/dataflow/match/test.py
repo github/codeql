@@ -64,7 +64,7 @@ class Unsafe:
 def test_value_pattern():
     match SOURCE:
         case Unsafe.VALUE as x:
-            SINK(x) #$ flow="SOURCE, l:-2 -> x" MISSING: flow="SOURCE, l:-5 -> x"
+            SINK(x) #$ flow="SOURCE, l:-2 -> x" flow="SOURCE, l:-5 -> x"
 
 @expects(2)
 def test_sequence_pattern_tuple():

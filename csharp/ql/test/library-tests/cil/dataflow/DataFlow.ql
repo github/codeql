@@ -13,8 +13,8 @@ private predicate relevantPathNode(Flow::PathNode n) {
   )
 }
 
-query predicate edges(Flow::PathNode a, Flow::PathNode b) {
-  Flow::PathGraph::edges(a, b) and
+query predicate edges(Flow::PathNode a, Flow::PathNode b, string key, string val) {
+  Flow::PathGraph::edges(a, b, key, val) and
   relevantPathNode(a) and
   relevantPathNode(b)
 }

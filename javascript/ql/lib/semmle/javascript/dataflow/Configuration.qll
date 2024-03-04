@@ -71,7 +71,6 @@
 private import javascript
 private import internal.FlowSteps
 private import internal.AccessPaths
-private import internal.CallGraphs
 private import semmle.javascript.Unit
 private import semmle.javascript.internal.CachedStages
 

@@ -15,6 +15,6 @@ import semmle.code.csharp.frameworks.system.web.Http
 
 from IndexerAccess ia
 where
-  ia.getTarget().getDeclaringType().hasQualifiedName("System.Web", "HttpRequest") and
+  ia.getTarget().getDeclaringType().hasFullyQualifiedName("System.Web", "HttpRequest") and
   isServerVariable(ia.getIndex(0))
 select ia, "Ambiguous access to server variable."

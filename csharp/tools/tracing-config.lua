@@ -23,6 +23,10 @@ function RegisterExtractorPack(id)
                not isDotnetPath(arg)
     end
 
+    local function isPathToExecutable(path)
+        return path:match('%.exe$') or path:match('%.dll')
+    end
+
     function DotnetMatcherBuild(compilerName, compilerPath, compilerArguments,
                                 _languageId)
         if not isDotnet(compilerName) then
@@ -56,8 +60,16 @@ function RegisterExtractorPack(id)
             NativeArgumentsToArgv(compilerArguments.nativeArgumentPointer)
         end
         for i, arg in ipairs(argv) do
+            -- if dotnet is being used to execute any application except dotnet itself, we should
+            -- not inject any flags.
+            if not match and isPathToExecutable(arg) and not isDotnetPath(arg) then
+                Log(1, 'Execute a .NET application usage detected')
+                Log(1, 'Dotnet path-to-application detected: %s', arg)
+                break
+            end
             if isPossibleDotnetSubcommand(arg) then
-                if (not match) and inSubCommandPosition then
+                if not match and inSubCommandPosition then
+                    Log(1, 'Execute a .NET SDK command usage detected')
                     Log(1, 'Dotnet subcommand detected: %s', arg)
                 end
                 -- only respond to strings that look like sub-command names if we have not yet
@@ -80,15 +92,14 @@ function RegisterExtractorPack(id)
                     end
                 end
 
-                -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
-                -- if an `exe` or `dll` is passed as an argument as the call is forwarded to vstest.
-                if testMatch and (arg:match('%.exe$') or arg:match('%.dll')) then
-                    match = false
-                    break
-                end
-
                 -- we have found a sub-command, ignore all strings that look like sub-command names from now on
                 inSubCommandPosition = false
+            end
+            -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
+            -- if an `exe` or `dll` is passed as an argument as the call is forwarded to vstest.
+            if testMatch and isPathToExecutable(arg) then
+                match = false
+                break
             end
             -- if we see a separator to `dotnet run`, inject just prior to the existing separator
             if arg == '--' then

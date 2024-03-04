@@ -37,7 +37,7 @@ def out():
     def captureOut1():
         sinkO1["x"] = SOURCE
     captureOut1()
-    SINK(sinkO1["x"]) #$ MISSING:captured
+    SINK(sinkO1["x"]) #$ captured
 
     sinkO2 = { "x": "" }
     def captureOut2():
@@ -45,7 +45,7 @@ def out():
             sinkO2["x"] = SOURCE
         m()
     captureOut2()
-    SINK(sinkO2["x"]) #$ MISSING:captured
+    SINK(sinkO2["x"]) #$ captured
 
     nonSink0 = { "x": "" }
     def captureOut1NotCalled():
@@ -67,7 +67,7 @@ def through(tainted):
     def captureOut1():
         sinkO1["x"] = tainted
     captureOut1()
-    SINK(sinkO1["x"]) #$ MISSING:captured
+    SINK(sinkO1["x"]) #$ captured
 
     sinkO2 = { "x": "" }
     def captureOut2():
@@ -75,7 +75,7 @@ def through(tainted):
             sinkO2["x"] = tainted
         m()
     captureOut2()
-    SINK(sinkO2["x"]) #$ MISSING:captured
+    SINK(sinkO2["x"]) #$ captured
 
     nonSink1 = { "x": "" }
     def captureOut1NotCalled():

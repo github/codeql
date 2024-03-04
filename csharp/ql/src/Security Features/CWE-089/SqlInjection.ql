@@ -14,14 +14,9 @@
 import csharp
 import semmle.code.csharp.security.dataflow.SqlInjectionQuery
 import SqlInjection::PathGraph
-import semmle.code.csharp.security.dataflow.flowsources.Remote
-import semmle.code.csharp.security.dataflow.flowsources.Local
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
-string getSourceType(DataFlow::Node node) {
-  result = node.(RemoteFlowSource).getSourceType()
-  or
-  result = node.(LocalFlowSource).getSourceType()
-}
+string getSourceType(DataFlow::Node node) { result = node.(SourceNode).getSourceType() }
 
 from SqlInjection::PathNode source, SqlInjection::PathNode sink
 where SqlInjection::flowPath(source, sink)

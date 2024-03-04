@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Mvc.TagHelpers, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Mvc.TagHelpers, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -206,6 +206,7 @@ namespace Microsoft
                     public InputTagHelper(Microsoft.AspNetCore.Mvc.ViewFeatures.IHtmlGenerator generator) => throw null;
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExpression For { get => throw null; set { } }
                     public string Format { get => throw null; set { } }
+                    public string FormName { get => throw null; set { } }
                     protected Microsoft.AspNetCore.Mvc.ViewFeatures.IHtmlGenerator Generator { get => throw null; }
                     protected string GetInputType(Microsoft.AspNetCore.Mvc.ViewFeatures.ModelExplorer modelExplorer, out string inputTypeHint) => throw null;
                     public string InputTypeName { get => throw null; set { } }

@@ -1,0 +1,1 @@
+//semmle-extractor-options: --javac-args @${testdir}/argfile

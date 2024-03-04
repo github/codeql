@@ -2,6 +2,7 @@ fnptr
 | delegate* managed<!0,Int32> | 1 | Int32 | 0 |
 | delegate* managed<A,B> | 1 | B | 0 |
 | delegate* managed<B,A> | 1 | A | 0 |
+| delegate* managed<Byte&,Void> | 1 | void | 0 |
 | delegate* managed<Int32&,Object& modreq(OutAttribute),Int32& modreq(InAttribute),Int32&> | 3 | Int32& | 0 |
 | delegate* managed<Int32&,Object& modreq(OutAttribute),Int32> | 2 | Int32 | 0 |
 | delegate* managed<Int32*,Void*> | 1 | Void* | 0 |
@@ -10,11 +11,13 @@ fnptr
 | delegate* managed<Object,Void> | 1 | void | 0 |
 | delegate* managed<Void*,Int32*> | 1 | Int32* | 0 |
 | delegate* managed<Void*,Object> | 1 | Object | 0 |
+| delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | 7 | void | 9 |
 | delegate* unmanaged<Char*,IntPtr,Void> | 2 | void | 9 |
 | delegate* unmanaged<Int32,PosixSignal,Int32> | 2 | Int32 | 9 |
 | delegate* unmanaged<IntPtr,Guid*,IntPtr*,Int32> | 3 | Int32 | 9 |
 | delegate* unmanaged<IntPtr,Int32> | 1 | Int32 | 9 |
 | delegate* unmanaged<IntPtr,Void> | 1 | void | 9 |
+| delegate* unmanaged<NoGCRegionCallbackFinalizerWorkItem*,Void> | 1 | void | 9 |
 | delegate* unmanaged<Void*,Byte*,Void> | 2 | void | 9 |
 | delegate* unmanaged<Void*,Void*,Void*,GCConfigurationType,Int64,Void> | 5 | void | 9 |
 | delegate* unmanaged<Void> | 0 | void | 9 |
@@ -23,6 +26,7 @@ params
 | delegate* managed<!0,Int32> | 0 | Parameter 0 of delegate* managed<!0,Int32> | !0 |
 | delegate* managed<A,B> | 0 | Parameter 0 of delegate* managed<A,B> | A |
 | delegate* managed<B,A> | 0 | Parameter 0 of delegate* managed<B,A> | B |
+| delegate* managed<Byte&,Void> | 0 | Parameter 0 of delegate* managed<Byte&,Void> | Byte& |
 | delegate* managed<Int32&,Object& modreq(OutAttribute),Int32& modreq(InAttribute),Int32&> | 0 | Parameter 0 of delegate* managed<Int32&,Object& modreq(OutAttribute),Int32& modreq(InAttribute),Int32&> | Int32& |
 | delegate* managed<Int32&,Object& modreq(OutAttribute),Int32& modreq(InAttribute),Int32&> | 1 | Parameter 1 of delegate* managed<Int32&,Object& modreq(OutAttribute),Int32& modreq(InAttribute),Int32&> | Object& |
 | delegate* managed<Int32&,Object& modreq(OutAttribute),Int32& modreq(InAttribute),Int32&> | 2 | Parameter 2 of delegate* managed<Int32&,Object& modreq(OutAttribute),Int32& modreq(InAttribute),Int32&> | Int32& |
@@ -35,6 +39,13 @@ params
 | delegate* managed<Object,Void> | 0 | Parameter 0 of delegate* managed<Object,Void> | Object |
 | delegate* managed<Void*,Int32*> | 0 | Parameter 0 of delegate* managed<Void*,Int32*> | Void* |
 | delegate* managed<Void*,Object> | 0 | Parameter 0 of delegate* managed<Void*,Object> | Void* |
+| delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | 0 | Parameter 0 of delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | Byte* |
+| delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | 1 | Parameter 1 of delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | Int32 |
+| delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | 2 | Parameter 2 of delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | Byte |
+| delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | 3 | Parameter 3 of delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | Int64 |
+| delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | 4 | Parameter 4 of delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | Int64 |
+| delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | 5 | Parameter 5 of delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | EVENT_FILTER_DESCRIPTOR* |
+| delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | 6 | Parameter 6 of delegate* unmanaged<Byte*,Int32,Byte,Int64,Int64,EVENT_FILTER_DESCRIPTOR*,Void*,Void> | Void* |
 | delegate* unmanaged<Char*,IntPtr,Void> | 0 | Parameter 0 of delegate* unmanaged<Char*,IntPtr,Void> | Char* |
 | delegate* unmanaged<Char*,IntPtr,Void> | 1 | Parameter 1 of delegate* unmanaged<Char*,IntPtr,Void> | IntPtr |
 | delegate* unmanaged<Int32,PosixSignal,Int32> | 0 | Parameter 0 of delegate* unmanaged<Int32,PosixSignal,Int32> | Int32 |
@@ -44,6 +55,7 @@ params
 | delegate* unmanaged<IntPtr,Guid*,IntPtr*,Int32> | 2 | Parameter 2 of delegate* unmanaged<IntPtr,Guid*,IntPtr*,Int32> | IntPtr* |
 | delegate* unmanaged<IntPtr,Int32> | 0 | Parameter 0 of delegate* unmanaged<IntPtr,Int32> | IntPtr |
 | delegate* unmanaged<IntPtr,Void> | 0 | Parameter 0 of delegate* unmanaged<IntPtr,Void> | IntPtr |
+| delegate* unmanaged<NoGCRegionCallbackFinalizerWorkItem*,Void> | 0 | Parameter 0 of delegate* unmanaged<NoGCRegionCallbackFinalizerWorkItem*,Void> | NoGCRegionCallbackFinalizerWorkItem* |
 | delegate* unmanaged<Void*,Byte*,Void> | 0 | Parameter 0 of delegate* unmanaged<Void*,Byte*,Void> | Void* |
 | delegate* unmanaged<Void*,Byte*,Void> | 1 | Parameter 1 of delegate* unmanaged<Void*,Byte*,Void> | Byte* |
 | delegate* unmanaged<Void*,Void*,Void*,GCConfigurationType,Int64,Void> | 0 | Parameter 0 of delegate* unmanaged<Void*,Void*,Void*,GCConfigurationType,Int64,Void> | Void* |
