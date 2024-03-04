@@ -7,16 +7,16 @@ import (
 )
 
 func sources(ctx *macaron.Context, body *macaron.RequestBody) {
-	_ = ctx.AllParams()
-	_ = ctx.GetCookie("")
-	_, _ = ctx.GetSecureCookie("")
-	_, _ = ctx.GetSuperSecureCookie("", "")
-	_, _, _ = ctx.GetFile("")
-	_ = ctx.Params("")
-	_ = ctx.ParamsEscape("")
-	_ = ctx.Query("")
-	_ = ctx.QueryEscape("")
-	_ = ctx.QueryStrings("")
-	_, _ = body.Bytes()
-	_, _ = body.String()
+	_ = ctx.AllParams()                     // $UntrustedFlowSource
+	_ = ctx.GetCookie("")                   // $UntrustedFlowSource
+	_, _ = ctx.GetSecureCookie("")          // $UntrustedFlowSource
+	_, _ = ctx.GetSuperSecureCookie("", "") // $UntrustedFlowSource
+	_, _, _ = ctx.GetFile("")               // $UntrustedFlowSource
+	_ = ctx.Params("")                      // $UntrustedFlowSource
+	_ = ctx.ParamsEscape("")                // $UntrustedFlowSource
+	_ = ctx.Query("")                       // $UntrustedFlowSource
+	_ = ctx.QueryEscape("")                 // $UntrustedFlowSource
+	_ = ctx.QueryStrings("")                // $UntrustedFlowSource
+	_, _ = body.Bytes()                     // $UntrustedFlowSource
+	_, _ = body.String()                    // $UntrustedFlowSource
 }
