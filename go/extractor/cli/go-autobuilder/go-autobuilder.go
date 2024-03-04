@@ -664,7 +664,7 @@ func installDependenciesAndBuild() {
 			strings.Join(unsuccessfulProjects, ", "))
 		diagnostics.EmitExtractionFailedForProjects(unsuccessfulProjects)
 	} else {
-		log.Println("Success: extraction succeeded for all discovered projects.")
+		log.Printf("Success: extraction succeeded for all %d discovered project(s).\n", len(workspaces))
 	}
 }
 
