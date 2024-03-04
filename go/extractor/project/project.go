@@ -129,7 +129,7 @@ var filesToRemove []string = []string{}
 
 // Try to initialize a go.mod file for projects that do not already have one.
 func InitGoModForLegacyProject(path string) {
-	log.Printf("Project appears to be a legacy Go project, attempting to initialize go.mod in %s\n", path)
+	log.Printf("The code in %s seems to be missing a go.mod file, attempting to initialize one...\n", path)
 
 	modInit := toolchain.InitModule(path)
 
