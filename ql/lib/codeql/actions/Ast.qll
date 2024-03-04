@@ -214,19 +214,20 @@ class Strategy extends AstNode instanceof YamlMapping {
   /**
    * Gets a specific matric expression (YamlMapping) by name.
    */
-  StringLiteral getMatrixVariable(string name) {
+  StringLiteral getMatrixVar(string name) {
     super.lookup("matrix").(YamlMapping).lookup(name) = result
   }
 
-  string getAMatrixVariableName() {
-    this.(YamlMapping).maps(any(YamlString s | s.getValue() = result), _)
-  }
+  /**
+   * Gets a specific matric expression (YamlMapping) by name.
+   */
+  StringLiteral getAMatrixVar() { super.lookup("matrix").(YamlMapping).lookup(_) = result }
 }
 
 /**
  * https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idneeds
  */
-class Needs extends AstNode {
+class Needs extends AstNode instanceof YamlMappingLikeNode {
   Job job;
 
   Needs() { job.(YamlMapping).lookup("needs") = this }
@@ -234,16 +235,18 @@ class Needs extends AstNode {
   Job getJob() { result = job }
 
   Job getANeededJob() {
-    if this instanceof YamlString
-    then
-      result.getId() = this.(YamlString).getValue() and
-      result.getLocation().getFile() = job.getLocation().getFile()
-    else
-      if this instanceof YamlSequence
-      then
-        result.getId() = this.(YamlSequence).getElementNode(_).(YamlString).getValue() and
-        result.getLocation().getFile() = job.getLocation().getFile()
-      else none()
+    result.getId() = super.getNode(_).(YamlString).getValue() and
+    result.getLocation().getFile() = job.getLocation().getFile()
+    // if this instanceof YamlString
+    // then
+    //   result.getId() = this.(YamlString).getValue() and
+    //   result.getLocation().getFile() = job.getLocation().getFile()
+    // else
+    //   if this instanceof YamlSequence
+    //   then
+    //     result.getId() = this.(YamlSequence).getElementNode(_).(YamlString).getValue() and
+    //     result.getLocation().getFile() = job.getLocation().getFile()
+    //   else none()
   }
 }
 
@@ -583,29 +586,30 @@ class StepsExpression extends ContextExpression {
  * e.g. `${{ needs.job1.outputs.foo}}`
  */
 class NeedsExpression extends ContextExpression {
-  Job job;
-  string jobId;
+  Job neededJob;
+  string neededJobId;
   string fieldName;
 
   NeedsExpression() {
     expr.regexpMatch(needsCtxRegex()) and
-    jobId = expr.regexpCapture(needsCtxRegex(), 1) and
+    neededJobId = expr.regexpCapture(needsCtxRegex(), 1) and
     fieldName = expr.regexpCapture(needsCtxRegex(), 2) and
-    job.getId() = jobId
+    neededJob.getId() = neededJobId
   }
 
-  predicate usesReusableWorkflow() { job.usesReusableWorkflow() }
+  predicate usesReusableWorkflow() { neededJob.usesReusableWorkflow() }
 
   override string getFieldName() { result = fieldName }
 
   override AstNode getTarget() {
-    job.getLocation().getFile() = this.getLocation().getFile() and
+    neededJob.getLocation().getFile() = this.getLocation().getFile() and
+    this.getJob().getANeededJob() = neededJob and
     (
       // regular jobs
-      job.getOutputs() = result
+      neededJob.getOutputs() = result
       or
       // reusable workflow calling jobs
-      job.getUses() = result
+      neededJob.getUses() = result
     )
   }
 }
@@ -701,12 +705,12 @@ class MatrixExpression extends ContextExpression {
 
   override AstNode getTarget() {
     exists(Workflow w |
-      w.getStrategy().getMatrixVariable(fieldName) = result and
+      w.getStrategy().getMatrixVar(fieldName) = result and
       w.getAChildNode*() = this
     )
     or
     exists(Job j |
-      j.getStrategy().getMatrixVariable(fieldName) = result and
+      j.getStrategy().getMatrixVar(fieldName) = result and
       j.getAChildNode*() = this
     )
   }

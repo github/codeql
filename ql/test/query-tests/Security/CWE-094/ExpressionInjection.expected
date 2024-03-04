@@ -15,11 +15,26 @@ edges
 | .github/workflows/image_link_generator.yml:25:24:25:67 | ${{ ste ... _url }} | .github/workflows/image_link_generator.yml:22:9:28:6 | Run Step: curl [redirected_url] |
 | .github/workflows/image_link_generator.yml:28:9:35:6 | Run Step: trim-url [trimmed_url] | .github/workflows/image_link_generator.yml:36:14:37:126 | \| |
 | .github/workflows/image_link_generator.yml:31:27:31:66 | ${{ ste ... _url }} | .github/workflows/image_link_generator.yml:28:9:35:6 | Run Step: trim-url [trimmed_url] |
-| .github/workflows/inter-job.yml:8:7:10:4 | Job outputs node [job_output] | .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} |
-| .github/workflows/inter-job.yml:8:19:8:49 | ${{ ste ... alue }} | .github/workflows/inter-job.yml:8:7:10:4 | Job outputs node [job_output] |
-| .github/workflows/inter-job.yml:15:9:19:6 | Uses Step: source | .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} |
-| .github/workflows/inter-job.yml:19:9:27:2 | Uses Step: step [value] | .github/workflows/inter-job.yml:8:19:8:49 | ${{ ste ... alue }} |
-| .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} | .github/workflows/inter-job.yml:19:9:27:2 | Uses Step: step [value] |
+| .github/workflows/inter-job0.yml:15:7:17:4 | Job outputs node [job_output] | .github/workflows/inter-job0.yml:43:14:43:52 | echo ${ ... utput}} |
+| .github/workflows/inter-job0.yml:15:19:15:49 | ${{ ste ... alue }} | .github/workflows/inter-job0.yml:15:7:17:4 | Job outputs node [job_output] |
+| .github/workflows/inter-job0.yml:22:9:26:6 | Uses Step: source | .github/workflows/inter-job0.yml:30:19:30:63 | ${{ ste ... iles }} |
+| .github/workflows/inter-job0.yml:26:9:34:2 | Uses Step: step [value] | .github/workflows/inter-job0.yml:15:19:15:49 | ${{ ste ... alue }} |
+| .github/workflows/inter-job0.yml:30:19:30:63 | ${{ ste ... iles }} | .github/workflows/inter-job0.yml:26:9:34:2 | Uses Step: step [value] |
+| .github/workflows/inter-job1.yml:15:7:17:4 | Job outputs node [job_output] | .github/workflows/inter-job1.yml:43:14:43:52 | echo ${ ... utput}} |
+| .github/workflows/inter-job1.yml:15:19:15:49 | ${{ ste ... alue }} | .github/workflows/inter-job1.yml:15:7:17:4 | Job outputs node [job_output] |
+| .github/workflows/inter-job1.yml:22:9:26:6 | Uses Step: source | .github/workflows/inter-job1.yml:30:19:30:63 | ${{ ste ... iles }} |
+| .github/workflows/inter-job1.yml:26:9:34:2 | Uses Step: step [value] | .github/workflows/inter-job1.yml:15:19:15:49 | ${{ ste ... alue }} |
+| .github/workflows/inter-job1.yml:30:19:30:63 | ${{ ste ... iles }} | .github/workflows/inter-job1.yml:26:9:34:2 | Uses Step: step [value] |
+| .github/workflows/inter-job2.yml:15:7:17:4 | Job outputs node [job_output] | .github/workflows/inter-job2.yml:45:14:45:52 | echo ${ ... utput}} |
+| .github/workflows/inter-job2.yml:15:19:15:49 | ${{ ste ... alue }} | .github/workflows/inter-job2.yml:15:7:17:4 | Job outputs node [job_output] |
+| .github/workflows/inter-job2.yml:22:9:26:6 | Uses Step: source | .github/workflows/inter-job2.yml:30:19:30:63 | ${{ ste ... iles }} |
+| .github/workflows/inter-job2.yml:26:9:34:2 | Uses Step: step [value] | .github/workflows/inter-job2.yml:15:19:15:49 | ${{ ste ... alue }} |
+| .github/workflows/inter-job2.yml:30:19:30:63 | ${{ ste ... iles }} | .github/workflows/inter-job2.yml:26:9:34:2 | Uses Step: step [value] |
+| .github/workflows/inter-job4.yml:15:7:17:4 | Job outputs node [job_output] | .github/workflows/inter-job4.yml:44:14:44:52 | echo ${ ... utput}} |
+| .github/workflows/inter-job4.yml:15:19:15:49 | ${{ ste ... alue }} | .github/workflows/inter-job4.yml:15:7:17:4 | Job outputs node [job_output] |
+| .github/workflows/inter-job4.yml:22:9:26:6 | Uses Step: source | .github/workflows/inter-job4.yml:30:19:30:63 | ${{ ste ... iles }} |
+| .github/workflows/inter-job4.yml:26:9:34:2 | Uses Step: step [value] | .github/workflows/inter-job4.yml:15:19:15:49 | ${{ ste ... alue }} |
+| .github/workflows/inter-job4.yml:30:19:30:63 | ${{ ste ... iles }} | .github/workflows/inter-job4.yml:26:9:34:2 | Uses Step: step [value] |
 | .github/workflows/issues.yaml:4:15:4:45 | ${{ git ... itle }} | .github/workflows/issues.yaml:15:12:15:39 | echo '$ ... env }}' |
 | .github/workflows/issues.yaml:10:16:10:46 | ${{ git ... itle }} | .github/workflows/issues.yaml:17:12:17:36 | echo '$ ... env }}' |
 | .github/workflows/issues.yaml:20:19:20:49 | ${{ git ... itle }} | .github/workflows/issues.yaml:18:12:18:37 | echo '$ ... env }}' |
@@ -75,12 +90,30 @@ nodes
 | .github/workflows/image_link_generator.yml:28:9:35:6 | Run Step: trim-url [trimmed_url] | semmle.label | Run Step: trim-url [trimmed_url] |
 | .github/workflows/image_link_generator.yml:31:27:31:66 | ${{ ste ... _url }} | semmle.label | ${{ ste ... _url }} |
 | .github/workflows/image_link_generator.yml:36:14:37:126 | \| | semmle.label | \| |
-| .github/workflows/inter-job.yml:8:7:10:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
-| .github/workflows/inter-job.yml:8:19:8:49 | ${{ ste ... alue }} | semmle.label | ${{ ste ... alue }} |
-| .github/workflows/inter-job.yml:15:9:19:6 | Uses Step: source | semmle.label | Uses Step: source |
-| .github/workflows/inter-job.yml:19:9:27:2 | Uses Step: step [value] | semmle.label | Uses Step: step [value] |
-| .github/workflows/inter-job.yml:23:19:23:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
-| .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} | semmle.label | echo ${ ... utput}} |
+| .github/workflows/inter-job0.yml:15:7:17:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
+| .github/workflows/inter-job0.yml:15:19:15:49 | ${{ ste ... alue }} | semmle.label | ${{ ste ... alue }} |
+| .github/workflows/inter-job0.yml:22:9:26:6 | Uses Step: source | semmle.label | Uses Step: source |
+| .github/workflows/inter-job0.yml:26:9:34:2 | Uses Step: step [value] | semmle.label | Uses Step: step [value] |
+| .github/workflows/inter-job0.yml:30:19:30:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| .github/workflows/inter-job0.yml:43:14:43:52 | echo ${ ... utput}} | semmle.label | echo ${ ... utput}} |
+| .github/workflows/inter-job1.yml:15:7:17:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
+| .github/workflows/inter-job1.yml:15:19:15:49 | ${{ ste ... alue }} | semmle.label | ${{ ste ... alue }} |
+| .github/workflows/inter-job1.yml:22:9:26:6 | Uses Step: source | semmle.label | Uses Step: source |
+| .github/workflows/inter-job1.yml:26:9:34:2 | Uses Step: step [value] | semmle.label | Uses Step: step [value] |
+| .github/workflows/inter-job1.yml:30:19:30:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| .github/workflows/inter-job1.yml:43:14:43:52 | echo ${ ... utput}} | semmle.label | echo ${ ... utput}} |
+| .github/workflows/inter-job2.yml:15:7:17:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
+| .github/workflows/inter-job2.yml:15:19:15:49 | ${{ ste ... alue }} | semmle.label | ${{ ste ... alue }} |
+| .github/workflows/inter-job2.yml:22:9:26:6 | Uses Step: source | semmle.label | Uses Step: source |
+| .github/workflows/inter-job2.yml:26:9:34:2 | Uses Step: step [value] | semmle.label | Uses Step: step [value] |
+| .github/workflows/inter-job2.yml:30:19:30:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| .github/workflows/inter-job2.yml:45:14:45:52 | echo ${ ... utput}} | semmle.label | echo ${ ... utput}} |
+| .github/workflows/inter-job4.yml:15:7:17:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
+| .github/workflows/inter-job4.yml:15:19:15:49 | ${{ ste ... alue }} | semmle.label | ${{ ste ... alue }} |
+| .github/workflows/inter-job4.yml:22:9:26:6 | Uses Step: source | semmle.label | Uses Step: source |
+| .github/workflows/inter-job4.yml:26:9:34:2 | Uses Step: step [value] | semmle.label | Uses Step: step [value] |
+| .github/workflows/inter-job4.yml:30:19:30:63 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| .github/workflows/inter-job4.yml:44:14:44:52 | echo ${ ... utput}} | semmle.label | echo ${ ... utput}} |
 | .github/workflows/issues.yaml:4:15:4:45 | ${{ git ... itle }} | semmle.label | ${{ git ... itle }} |
 | .github/workflows/issues.yaml:10:16:10:46 | ${{ git ... itle }} | semmle.label | ${{ git ... itle }} |
 | .github/workflows/issues.yaml:13:12:13:49 | echo '$ ... tle }}' | semmle.label | echo '$ ... tle }}' |
@@ -176,7 +209,10 @@ subpaths
 | .github/workflows/gollum.yml:9:12:9:56 | echo '$ ... ame }}' | .github/workflows/gollum.yml:9:12:9:56 | echo '$ ... ame }}' | .github/workflows/gollum.yml:9:12:9:56 | echo '$ ... ame }}' | Potential expression injection, which may be controlled by an external user. |
 | .github/workflows/gollum.yml:10:12:10:59 | echo '$ ... ame }}' | .github/workflows/gollum.yml:10:12:10:59 | echo '$ ... ame }}' | .github/workflows/gollum.yml:10:12:10:59 | echo '$ ... ame }}' | Potential expression injection, which may be controlled by an external user. |
 | .github/workflows/image_link_generator.yml:36:14:37:126 | \| | .github/workflows/image_link_generator.yml:18:17:18:48 | ${{ git ... body }} | .github/workflows/image_link_generator.yml:36:14:37:126 | \| | Potential expression injection, which may be controlled by an external user. |
-| .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} | .github/workflows/inter-job.yml:15:9:19:6 | Uses Step: source | .github/workflows/inter-job.yml:36:14:36:52 | echo ${ ... utput}} | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/inter-job0.yml:43:14:43:52 | echo ${ ... utput}} | .github/workflows/inter-job0.yml:22:9:26:6 | Uses Step: source | .github/workflows/inter-job0.yml:43:14:43:52 | echo ${ ... utput}} | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/inter-job1.yml:43:14:43:52 | echo ${ ... utput}} | .github/workflows/inter-job1.yml:22:9:26:6 | Uses Step: source | .github/workflows/inter-job1.yml:43:14:43:52 | echo ${ ... utput}} | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/inter-job2.yml:45:14:45:52 | echo ${ ... utput}} | .github/workflows/inter-job2.yml:22:9:26:6 | Uses Step: source | .github/workflows/inter-job2.yml:45:14:45:52 | echo ${ ... utput}} | Potential expression injection, which may be controlled by an external user. |
+| .github/workflows/inter-job4.yml:44:14:44:52 | echo ${ ... utput}} | .github/workflows/inter-job4.yml:22:9:26:6 | Uses Step: source | .github/workflows/inter-job4.yml:44:14:44:52 | echo ${ ... utput}} | Potential expression injection, which may be controlled by an external user. |
 | .github/workflows/issues.yaml:13:12:13:49 | echo '$ ... tle }}' | .github/workflows/issues.yaml:13:12:13:49 | echo '$ ... tle }}' | .github/workflows/issues.yaml:13:12:13:49 | echo '$ ... tle }}' | Potential expression injection, which may be controlled by an external user. |
 | .github/workflows/issues.yaml:14:12:14:48 | echo '$ ... ody }}' | .github/workflows/issues.yaml:14:12:14:48 | echo '$ ... ody }}' | .github/workflows/issues.yaml:14:12:14:48 | echo '$ ... ody }}' | Potential expression injection, which may be controlled by an external user. |
 | .github/workflows/issues.yaml:15:12:15:39 | echo '$ ... env }}' | .github/workflows/issues.yaml:4:15:4:45 | ${{ git ... itle }} | .github/workflows/issues.yaml:15:12:15:39 | echo '$ ... env }}' | Potential expression injection, which may be controlled by an external user. |

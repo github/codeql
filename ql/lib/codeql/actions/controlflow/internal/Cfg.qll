@@ -215,7 +215,7 @@ private class StrategyTree extends StandardPreOrderTree instanceof Strategy {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        child = super.getMatrixVariable(_) and l = child.getLocation()
+        child = super.getAMatrixVar() and l = child.getLocation()
       |
         child
         order by
