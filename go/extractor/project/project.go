@@ -217,9 +217,13 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 	if err != nil {
 		// We couldn't read the `go.work` file for some reason; let's try to find `go.mod` files ourselves
 		log.Printf("Unable to read %s, falling back to finding `go.mod` files manually:\n%s\n", workFilePath, err.Error())
+
+		goModFilePaths := findGoModFiles(baseDir)
+		log.Printf("Discovered the following Go modules in %s:\n%s\n", baseDir, strings.Join(goModFilePaths, "\n"))
+
 		return GoWorkspace{
 			BaseDir: baseDir,
-			Modules: LoadGoModules(findGoModFiles(baseDir)),
+			Modules: LoadGoModules(goModFilePaths),
 			DepMode: GoGetWithModules,
 			ModMode: getModMode(GoGetWithModules, baseDir),
 		}
@@ -230,9 +234,13 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 	if err != nil {
 		// The `go.work` file couldn't be parsed for some reason; let's try to find `go.mod` files ourselves
 		log.Printf("Unable to parse %s, falling back to finding `go.mod` files manually:\n%s\n", workFilePath, err.Error())
+
+		goModFilePaths := findGoModFiles(baseDir)
+		log.Printf("Discovered the following Go modules in %s:\n%s\n", baseDir, strings.Join(goModFilePaths, "\n"))
+
 		return GoWorkspace{
 			BaseDir: baseDir,
-			Modules: LoadGoModules(findGoModFiles(baseDir)),
+			Modules: LoadGoModules(goModFilePaths),
 			DepMode: GoGetWithModules,
 			ModMode: getModMode(GoGetWithModules, baseDir),
 		}
