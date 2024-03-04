@@ -51,7 +51,7 @@
 | delegatedProperties.kt:6:32:9:9 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:7:13:7:27 | ConsoleKt | delegatedProperties.kt:6:32:9:9 | invoke | TypeAccess |
 | delegatedProperties.kt:7:13:7:27 | println(...) | delegatedProperties.kt:6:32:9:9 | invoke | MethodCall |
-| delegatedProperties.kt:7:22:7:25 | "init" | delegatedProperties.kt:6:32:9:9 | invoke | StringLiteral |
+| delegatedProperties.kt:7:21:7:26 | "init" | delegatedProperties.kt:6:32:9:9 | invoke | StringLiteral |
 | delegatedProperties.kt:8:13:8:13 | 5 | delegatedProperties.kt:6:32:9:9 | invoke | IntegerLiteral |
 | delegatedProperties.kt:10:9:10:22 | ConsoleKt | delegatedProperties.kt:5:5:12:5 | fn | TypeAccess |
 | delegatedProperties.kt:10:9:10:22 | println(...) | delegatedProperties.kt:5:5:12:5 | fn | MethodCall |
