@@ -308,6 +308,24 @@ signature module InputSig<LocationSig Location> {
    */
   default int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }
 
+  /**
+   * A second-level control-flow scope in a callable.
+   *
+   * This is used to provide a more fine-grained separation of a callable
+   * context for the purpose of identifying uncertain control flow. For most
+   * languages, this is not needed, as this separation is handled through
+   * virtual dispatch, but for some cases (for example, C++) this can be used to
+   * identify, for example, large top-level switch statements acting like
+   * virtual dispatch.
+   */
+  class DataFlowSecondLevelScope {
+    /** Gets a textual representation of this element. */
+    string toString();
+  }
+
+  /** Gets the second-level scope containing the node `n`, if any. */
+  default DataFlowSecondLevelScope getSecondLevelScope(Node n) { none() }
+
   bindingset[call, p, arg]
   default predicate golangSpecificParamArgFilter(
     DataFlowCall call, ParameterNode p, ArgumentNode arg
