@@ -129,7 +129,7 @@ var filesToRemove []string = []string{}
 
 // Try to initialize a go.mod file for projects that do not already have one.
 func InitGoModForLegacyProject(path string) {
-	log.Printf("Project appears to be a legacy Go project, attempting to initialize go.mod in %s\n", path)
+	log.Printf("The code in %s seems to be missing a go.mod file. Attempting to initialize one...\n", path)
 
 	modInit := toolchain.InitModule(path)
 
@@ -217,9 +217,13 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 	if err != nil {
 		// We couldn't read the `go.work` file for some reason; let's try to find `go.mod` files ourselves
 		log.Printf("Unable to read %s, falling back to finding `go.mod` files manually:\n%s\n", workFilePath, err.Error())
+
+		goModFilePaths := findGoModFiles(baseDir)
+		log.Printf("Discovered the following Go modules in %s:\n%s\n", baseDir, strings.Join(goModFilePaths, "\n"))
+
 		return GoWorkspace{
 			BaseDir: baseDir,
-			Modules: LoadGoModules(findGoModFiles(baseDir)),
+			Modules: LoadGoModules(goModFilePaths),
 			DepMode: GoGetWithModules,
 			ModMode: getModMode(GoGetWithModules, baseDir),
 		}
@@ -230,9 +234,13 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 	if err != nil {
 		// The `go.work` file couldn't be parsed for some reason; let's try to find `go.mod` files ourselves
 		log.Printf("Unable to parse %s, falling back to finding `go.mod` files manually:\n%s\n", workFilePath, err.Error())
+
+		goModFilePaths := findGoModFiles(baseDir)
+		log.Printf("Discovered the following Go modules in %s:\n%s\n", baseDir, strings.Join(goModFilePaths, "\n"))
+
 		return GoWorkspace{
 			BaseDir: baseDir,
-			Modules: LoadGoModules(findGoModFiles(baseDir)),
+			Modules: LoadGoModules(goModFilePaths),
 			DepMode: GoGetWithModules,
 			ModMode: getModMode(GoGetWithModules, baseDir),
 		}
@@ -471,8 +479,10 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 
 // Finds Go workspaces in the current working directory.
 func GetWorkspaceInfo(emitDiagnostics bool) []GoWorkspace {
-	bazelPaths := util.FindAllFilesWithName(".", "BUILD", "vendor")
-	bazelPaths = append(bazelPaths, util.FindAllFilesWithName(".", "BUILD.bazel", "vendor")...)
+	bazelPaths := slices.Concat(
+		util.FindAllFilesWithName(".", "BUILD", "vendor"),
+		util.FindAllFilesWithName(".", "BUILD.bazel", "vendor"),
+	)
 	if len(bazelPaths) > 0 {
 		// currently not supported
 		if emitDiagnostics {
