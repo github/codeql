@@ -148,7 +148,7 @@ abstract private class LocalFunctionCreationNode extends NodeImpl, TLocalFunctio
   LocalFunction getFunction() { result = function }
 
   ExprNode getAnAccess(boolean inSameCallable) {
-    result.getExpr().(LocalFunctionAccess).getTarget() = this.getFunction() and
+    isLocalFunctionCallReceiver(_, result.getExpr(), this.getFunction()) and
     if result.getEnclosingCallable() = this.getEnclosingCallable()
     then inSameCallable = true
     else inSameCallable = false
@@ -399,7 +399,11 @@ module VariableCapture {
 
       predicate hasBody(Callable body) { body = c }
 
-      predicate hasAliasedAccess(Expr f) { closureFlowStep+(this, f) and not closureFlowStep(f, _) }
+      predicate hasAliasedAccess(Expr f) {
+        closureFlowStep+(this, f) and not closureFlowStep(f, _)
+        or
+        isLocalFunctionCallReceiver(_, f.getAstNode(), c)
+      }
     }
 
     class Callable extends Cs::Callable {
@@ -881,7 +885,7 @@ module LocalFlow {
       exists(SsaImpl::getAReadAtNode(def, node2.(ExprNode).getControlFlowNode()))
     )
     or
-    delegateCreationStep(node1, node2)
+    node2 = node1.(LocalFunctionCreationNode).getAnAccess(true)
     or
     node1 =
       unique(FlowSummaryNode n1 |
@@ -2549,9 +2553,10 @@ class DataFlowType extends TDataFlowType {
    * creations associated with the same type.
    */
   ControlFlowElement getADelegateCreation() {
-    exists(Callable callable |
-      lambdaCreationExpr(result, callable) and
-      this = TDelegateDataFlowType(callable)
+    exists(Callable callable | this = TDelegateDataFlowType(callable) |
+      lambdaCreationExpr(result, callable)
+      or
+      isLocalFunctionCallReceiver(_, result, callable)
     )
   }
 
@@ -2566,12 +2571,7 @@ class DataFlowType extends TDataFlowType {
 DataFlowType getNodeType(Node n) {
   result = n.(NodeImpl).getDataFlowType() and
   not lambdaCreation(n, _, _) and
-  not delegateCreationStep(_, n)
-  or
-  exists(Node arg |
-    delegateCreationStep(arg, n) and
-    result = getNodeType(arg)
-  )
+  not isLocalFunctionCallReceiver(_, n.asExpr(), _)
   or
   [
     n.asExpr().(ControlFlowElement),
@@ -2896,7 +2896,7 @@ private predicate lambdaCreationExpr(ControlFlowElement creation, Callable c) {
   c =
     [
       creation.(AnonymousFunctionExpr),
-      creation.(CallableAccess).getTarget().getUnboundDeclaration(),
+      creation.(DelegateCreation).getArgument().(CallableAccess).getTarget().getUnboundDeclaration(),
       creation.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration(),
       creation.(LocalFunctionStmt).getLocalFunction()
     ]
@@ -2908,6 +2908,13 @@ class LambdaCallKind = Unit;
 predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c) {
   lambdaCreationExpr(creation.asExpr(), c.asCallable()) and
   exists(kind)
+}
+
+private predicate isLocalFunctionCallReceiver(
+  LocalFunctionCall call, LocalFunctionAccess receiver, LocalFunction f
+) {
+  receiver.getParent() = call and
+  f = receiver.getTarget().getUnboundDeclaration()
 }
 
 private class LambdaConfiguration extends ControlFlowReachabilityConfiguration {
@@ -2926,7 +2933,7 @@ private class LambdaConfiguration extends ControlFlowReachabilityConfiguration {
     scope = e2 and
     isSuccessor = true
     or
-    e1.(LocalFunctionAccess).getParent() = e2.(LocalFunctionCall) and
+    isLocalFunctionCallReceiver(e2, e1, _) and
     exactScope = false and
     scope = e2 and
     isSuccessor = true
