@@ -603,6 +603,9 @@ func installDependenciesAndBuild() {
 		}
 	}
 
+	// Track all projects which could not be extracted successfully
+	var unsuccessfulProjects = []string{}
+
 	// Attempt to extract all workspaces; we will tolerate individual extraction failures here
 	for i, workspace := range workspaces {
 		goVersionInfo := workspace.RequiredGoVersion()
@@ -639,13 +642,8 @@ func installDependenciesAndBuild() {
 		}
 
 		workspaces[i].Extracted = extract(workspace)
-	}
 
-	// Find all projects which could not be extracted successfully
-	var unsuccessfulProjects = []string{}
-
-	for _, workspace := range workspaces {
-		if !workspace.Extracted {
+		if !workspaces[i].Extracted {
 			unsuccessfulProjects = append(unsuccessfulProjects, workspace.BaseDir)
 		}
 	}
