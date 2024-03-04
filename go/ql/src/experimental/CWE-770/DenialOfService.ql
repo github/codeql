@@ -15,7 +15,7 @@ import go
 
 
 /**
- * Class for defining a predicate to check for denial of service sanitizer guard.
+ * Holds if the guard `g` on its branch `branch` checks that `e` is not constant and is less than some other value.
  */
 predicate denialOfServiceSanitizerGuard(DataFlow::Node g, Expr e, boolean branch) {
   exists(DataFlow::Node lesser |
