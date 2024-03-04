@@ -7,7 +7,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.ImportStar
-private import semmle.python.dataflow.new.TypeTracker
+private import semmle.python.dataflow.new.TypeTracking
 private import semmle.python.dataflow.new.internal.DataFlowPrivate
 
 /**

@@ -10,6 +10,7 @@ private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
 
 private newtype TSensitiveDataType =
+  TPassword() or
   TCredential() or
   TPrivateInfo()
 
@@ -26,18 +27,32 @@ abstract class SensitiveDataType extends TSensitiveDataType {
 }
 
 /**
- * The type of sensitive expression for passwords and other credentials.
+ * The type of sensitive expression for passwords.
+ */
+class SensitivePassword extends SensitiveDataType, TPassword {
+  override string toString() { result = "password" }
+
+  override string getRegexp() {
+    result = HeuristicNames::maybeSensitiveRegexp(SensitiveDataClassification::password())
+    or
+    result = "(?is).*pass.?phrase.*"
+  }
+}
+
+/**
+ * The type of sensitive expression for credentials and secrets other than passwords.
  */
 class SensitiveCredential extends SensitiveDataType, TCredential {
   override string toString() { result = "credential" }
 
   override string getRegexp() {
     exists(SensitiveDataClassification classification |
+      not classification = SensitiveDataClassification::password() and // covered by `SensitivePassword`
       not classification = SensitiveDataClassification::id() and // not accurate enough
       result = HeuristicNames::maybeSensitiveRegexp(classification)
     )
     or
-    result = "(?is).*((account|accnt|licen(se|ce)).?(id|key)|one.?time.?code|pass.?phrase).*"
+    result = "(?is).*((account|accnt|licen(se|ce)).?(id|key)|one.?time.?code).*"
   }
 }
 
@@ -57,7 +72,8 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
         // Contact information, such as home addresses
         "post.?code|zip.?code|home.?addr|" +
         // and telephone numbers
-        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no|phone)|" + "emergency.?contact|" +
+        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax|phone).?(num|no)|telephone|" +
+        "emergency.?contact|" +
         // Geographic location - where the user is (or was)
         "l(atitude|ongitude)|nationality|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
@@ -176,6 +192,11 @@ class SensitiveExpr extends Expr {
     not label.regexpMatch(regexpProbablySafe())
     or
     (
+      // modeled sensitive password
+      sourceNode(DataFlow::exprNode(this), "sensitive-password") and
+      sensitiveType = TPassword() and
+      label = "password"
+      or
       // modeled sensitive credential
       sourceNode(DataFlow::exprNode(this), "sensitive-credential") and
       sensitiveType = TCredential() and

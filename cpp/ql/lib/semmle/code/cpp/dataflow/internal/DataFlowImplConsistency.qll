@@ -1,4 +1,6 @@
 /**
+ * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+ *
  * Provides consistency queries for checking invariants in the language-specific
  * data-flow classes and predicates.
  */

@@ -8,7 +8,7 @@ private import semmle.python.ApiGraphs
  * `getACall` predicate on `SummarizedCallable`.
  */
 module RecursionGuard {
-  private import semmle.python.dataflow.new.internal.TypeTrackerSpecific as TT
+  private import semmle.python.dataflow.new.internal.TypeTrackingImpl::TypeTrackingInput as TT
 
   private class RecursionGuard extends SummarizedCallable {
     RecursionGuard() { this = "TypeTrackingSummariesRecursionGuard" }

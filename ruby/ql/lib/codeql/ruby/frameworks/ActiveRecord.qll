@@ -77,7 +77,11 @@ private predicate isUnlikelyExternalCall(API::MethodAccessNode node) {
 }
 
 private API::Node activeRecordConnectionInstance() {
-  result = activeRecordBaseClass().getReturn("connection")
+  result =
+    [
+      activeRecordBaseClass().getReturn("connection"),
+      activeRecordBaseClass().getInstance().getReturn("connection")
+    ]
 }
 
 /**
@@ -172,10 +176,15 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
     activeRecordQueryBuilderCall([
         "delete_all", "delete_by", "destroy_all", "destroy_by", "exists?", "find_by", "find_by!",
         "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "from",
-        "group", "having", "joins", "lock", "not", "order", "reorder", "pluck", "where", "rewhere",
-        "select", "reselect"
+        "having", "lock", "not", "where", "rewhere"
       ]) and
   sink = call.getArgument(0)
+  or
+  call =
+    activeRecordQueryBuilderCall([
+        "group", "joins", "order", "reorder", "pluck", "select", "reselect"
+      ]) and
+  sink = call.getArgument(_)
   or
   call = activeRecordQueryBuilderCall("calculate") and
   sink = call.getArgument(1)
@@ -196,7 +205,13 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
   call = activeRecordQueryBuilderCall("annotate") and
   sink = call.getArgument(_)
   or
-  call = activeRecordConnectionInstance().getAMethodCall("execute") and
+  call =
+    activeRecordConnectionInstance()
+        .getAMethodCall([
+            "create", "delete", "exec_query", "exec_delete", "exec_insert", "exec_update",
+            "execute", "insert", "select_all", "select_one", "select_rows", "select_value",
+            "select_values", "update"
+          ]) and
   sink = call.getArgument(0)
   or
   call = activeRecordQueryBuilderCall("update_all") and

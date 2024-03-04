@@ -2,6 +2,7 @@ import java
 import semmle.code.java.frameworks.javaee.ejb.EJBRestrictions
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.Sanitizers
 
 module ExecCmdFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -20,8 +21,7 @@ module ExecCmdFlowConfig implements DataFlow::ConfigSig {
     node instanceof AssignToNonZeroIndex or
     node instanceof ArrayInitAtNonZeroIndex or
     node instanceof StreamConcatAtNonZeroIndex or
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType
+    node instanceof SimpleTypeSanitizer
   }
 }
 
@@ -41,10 +41,7 @@ module ExecUserFlowConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof SimpleTypeSanitizer }
 }
 
 /** Tracks flow of unvalidated user input that is used in Runtime.Exec */

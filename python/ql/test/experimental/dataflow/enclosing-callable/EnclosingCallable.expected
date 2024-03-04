@@ -18,7 +18,6 @@
 | generator.py:1:1:1:23 | Function generator_func | generator.py:2:12:2:26 | ControlFlowNode for .0 |
 | generator.py:1:1:1:23 | Function generator_func | generator.py:2:12:2:26 | ControlFlowNode for .0 |
 | generator.py:1:1:1:23 | Function generator_func | generator.py:2:12:2:26 | ControlFlowNode for ListComp |
-| generator.py:1:1:1:23 | Function generator_func | generator.py:2:12:2:26 | Entry node for Function listcomp |
 | generator.py:1:1:1:23 | Function generator_func | generator.py:2:13:2:13 | ControlFlowNode for Yield |
 | generator.py:1:1:1:23 | Function generator_func | generator.py:2:13:2:13 | ControlFlowNode for x |
 | generator.py:1:1:1:23 | Function generator_func | generator.py:2:19:2:19 | ControlFlowNode for x |

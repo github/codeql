@@ -5,6 +5,7 @@ import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView> as SuperlinearBa
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.regex.RegexFlowConfigs
 import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.Sanitizers
 
 /** A sink for polynomial redos queries, where a regex is matched. */
 class PolynomialRedosSink extends DataFlow::Node {
@@ -75,8 +76,7 @@ module PolynomialRedosConfig implements DataFlow::ConfigSig {
   }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
+    node instanceof SimpleTypeSanitizer or
     node.asExpr().(MethodCall).getMethod() instanceof LengthRestrictedMethod
   }
 }

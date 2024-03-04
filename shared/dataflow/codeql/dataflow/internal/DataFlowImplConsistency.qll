@@ -319,4 +319,9 @@ module MakeConsistency<
     strictcount(DataFlowCall call0 | multipleArgumentCallInclude(arg, call0)) > 1 and
     msg = "Multiple calls for argument node."
   }
+
+  query predicate lambdaCallEnclosingCallableMismatch(DataFlowCall call, Node receiver) {
+    lambdaCall(call, _, receiver) and
+    not nodeGetEnclosingCallable(receiver) = call.getEnclosingCallable()
+  }
 }

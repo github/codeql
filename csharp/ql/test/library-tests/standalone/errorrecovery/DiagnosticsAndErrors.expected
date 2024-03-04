@@ -37,6 +37,7 @@ extractorMessages
 | errors.cs:22:31:22:40 | Unable to resolve target for call. (Compilation error?) |
 | errors.cs:22:38:22:39 | Failed to determine type |
 | errors.cs:55:20:55:20 | Failed to determine type |
+| errors.cs:79:11:79:12 | Unable to resolve implicit constructor initializer call |
 | errors.cs:91:45:91:45 | Failed to determine type |
 | errors.cs:91:45:91:45 | Failed to resolve name |
 | errors.cs:92:45:92:45 | Failed to determine type |

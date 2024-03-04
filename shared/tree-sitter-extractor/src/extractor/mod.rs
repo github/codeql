@@ -43,7 +43,16 @@ fn populate_empty_file(writer: &mut trap::Writer) -> trap::Label {
 
 pub fn populate_empty_location(writer: &mut trap::Writer) {
     let file_label = populate_empty_file(writer);
-    location(writer, file_label, 0, 0, 0, 0);
+    global_location(
+        writer,
+        file_label,
+        trap::Location {
+            start_line: 0,
+            start_column: 0,
+            end_line: 0,
+            end_column: 0,
+        },
+    );
 }
 
 pub fn populate_parent_folders(
@@ -85,17 +94,19 @@ pub fn populate_parent_folders(
     }
 }
 
-fn location(
+/** Get the label for the given location, defining it a global ID if it doesn't exist yet. */
+fn global_location(
     writer: &mut trap::Writer,
     file_label: trap::Label,
-    start_line: usize,
-    start_column: usize,
-    end_line: usize,
-    end_column: usize,
+    location: trap::Location,
 ) -> trap::Label {
     let (loc_label, fresh) = writer.global_id(&format!(
         "loc,{{{}}},{},{},{},{}",
-        file_label, start_line, start_column, end_line, end_column
+        file_label,
+        location.start_line,
+        location.start_column,
+        location.end_line,
+        location.end_column
     ));
     if fresh {
         writer.add_tuple(
@@ -103,10 +114,34 @@ fn location(
             vec![
                 trap::Arg::Label(loc_label),
                 trap::Arg::Label(file_label),
-                trap::Arg::Int(start_line),
-                trap::Arg::Int(start_column),
-                trap::Arg::Int(end_line),
-                trap::Arg::Int(end_column),
+                trap::Arg::Int(location.start_line),
+                trap::Arg::Int(location.start_column),
+                trap::Arg::Int(location.end_line),
+                trap::Arg::Int(location.end_column),
+            ],
+        );
+    }
+    loc_label
+}
+
+/** Get the label for the given location, creating it as a fresh ID if we haven't seen the location
+ * yet for this file. */
+fn location_label(
+    writer: &mut trap::Writer,
+    file_label: trap::Label,
+    location: trap::Location,
+) -> trap::Label {
+    let (loc_label, fresh) = writer.location_label(location);
+    if fresh {
+        writer.add_tuple(
+            "locations_default",
+            vec![
+                trap::Arg::Label(loc_label),
+                trap::Arg::Label(file_label),
+                trap::Arg::Int(location.start_line),
+                trap::Arg::Int(location.start_column),
+                trap::Arg::Int(location.end_line),
+                trap::Arg::Int(location.end_column),
             ],
         );
     }
@@ -245,26 +280,25 @@ impl<'a> Visitor<'a> {
         node: Node,
         status_page: bool,
     ) {
-        let (start_line, start_column, end_line, end_column) = location_for(self, node);
-        let loc = location(
-            self.trap_writer,
-            self.file_label,
-            start_line,
-            start_column,
-            end_line,
-            end_column,
-        );
+        let loc = location_for(self, node);
+        let loc_label = location_label(self.trap_writer, self.file_label, loc);
         let mut mesg = self.diagnostics_writer.new_entry(
             "parse-error",
             "Could not process some files due to syntax errors",
         );
         mesg.severity(diagnostics::Severity::Warning)
-            .location(self.path, start_line, start_column, end_line, end_column)
+            .location(
+                self.path,
+                loc.start_line,
+                loc.start_column,
+                loc.end_line,
+                loc.end_column,
+            )
             .message(message, args);
         if status_page {
             mesg.status_page();
         }
-        self.record_parse_error(loc, &mesg);
+        self.record_parse_error(loc_label, &mesg);
     }
 
     fn enter_node(&mut self, node: Node) -> bool {
@@ -298,15 +332,8 @@ impl<'a> Visitor<'a> {
             return;
         }
         let (id, _, child_nodes) = self.stack.pop().expect("Vistor: empty stack");
-        let (start_line, start_column, end_line, end_column) = location_for(self, node);
-        let loc = location(
-            self.trap_writer,
-            self.file_label,
-            start_line,
-            start_column,
-            end_line,
-            end_column,
-        );
+        let loc = location_for(self, node);
+        let loc_label = location_label(self.trap_writer, self.file_label, loc);
         let table = self
             .schema
             .get(&TypeName {
@@ -333,7 +360,7 @@ impl<'a> Visitor<'a> {
                         trap::Arg::Label(id),
                         trap::Arg::Label(parent_id),
                         trap::Arg::Int(parent_index),
-                        trap::Arg::Label(loc),
+                        trap::Arg::Label(loc_label),
                     ],
                 );
                 self.trap_writer.add_tuple(
@@ -356,7 +383,7 @@ impl<'a> Visitor<'a> {
                             trap::Arg::Label(id),
                             trap::Arg::Label(parent_id),
                             trap::Arg::Int(parent_index),
-                            trap::Arg::Label(loc),
+                            trap::Arg::Label(loc_label),
                         ],
                     );
                     let mut all_args = vec![trap::Arg::Label(id)];
@@ -366,14 +393,20 @@ impl<'a> Visitor<'a> {
             }
             _ => {
                 self.record_parse_error(
-                    loc,
+                    loc_label,
                     self.diagnostics_writer
                         .new_entry(
                             "parse-error",
                             "Could not process some files due to syntax errors",
                         )
                         .severity(diagnostics::Severity::Warning)
-                        .location(self.path, start_line, start_column, end_line, end_column)
+                        .location(
+                            self.path,
+                            loc.start_line,
+                            loc.start_column,
+                            loc.end_line,
+                            loc.end_column,
+                        )
                         .message(
                             "Unknown table type: {}",
                             &[diagnostics::MessageArg::Code(node.kind())],
@@ -555,7 +588,7 @@ fn sliced_source_arg(source: &[u8], n: Node) -> trap::Arg {
 // Emit a pair of `TrapEntry`s for the provided node, appropriately calibrated.
 // The first is the location and label definition, and the second is the
 // 'Located' entry.
-fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) {
+fn location_for(visitor: &mut Visitor, n: Node) -> trap::Location {
     // Tree-sitter row, column values are 0-based while CodeQL starts
     // counting at 1. In addition Tree-sitter's row and column for the
     // end position are exclusive while CodeQL's end positions are inclusive.
@@ -565,16 +598,16 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
     // the end column is 0 (start of a line). In such cases the end position must be
     // set to the end of the previous line.
     let start_line = n.start_position().row + 1;
-    let start_col = n.start_position().column + 1;
+    let start_column = n.start_position().column + 1;
     let mut end_line = n.end_position().row + 1;
-    let mut end_col = n.end_position().column;
-    if start_line > end_line || start_line == end_line && start_col > end_col {
+    let mut end_column = n.end_position().column;
+    if start_line > end_line || start_line == end_line && start_column > end_column {
         // the range is empty, clip it to sensible values
         end_line = start_line;
-        end_col = start_col - 1;
-    } else if end_col == 0 {
+        end_column = start_column - 1;
+    } else if end_column == 0 {
         let source = visitor.source;
-        // end_col = 0 means that we are at the start of a line
+        // end_column = 0 means that we are at the start of a line
         // unfortunately 0 is invalid as column number, therefore
         // we should update the end location to be the end of the
         // previous line
@@ -591,10 +624,10 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
                 );
             }
             end_line -= 1;
-            end_col = 1;
+            end_column = 1;
             while index > 0 && source[index - 1] != b'\n' {
                 index -= 1;
-                end_col += 1;
+                end_column += 1;
             }
         } else {
             visitor.diagnostics_writer.write(
@@ -612,7 +645,12 @@ fn location_for(visitor: &mut Visitor, n: Node) -> (usize, usize, usize, usize) 
             );
         }
     }
-    (start_line, start_col, end_line, end_col)
+    trap::Location {
+        start_line,
+        start_column,
+        end_line,
+        end_column,
+    }
 }
 
 fn traverse(tree: &Tree, visitor: &mut Visitor) {

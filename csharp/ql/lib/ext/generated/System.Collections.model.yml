@@ -105,6 +105,8 @@ extensions:
       - ["System.Collections", "BitArray", "BitArray", "(System.Int32,System.Boolean)", "summary", "df-generated"]
       - ["System.Collections", "BitArray", "BitArray", "(System.Int32[])", "summary", "df-generated"]
       - ["System.Collections", "BitArray", "Get", "(System.Int32)", "summary", "df-generated"]
+      - ["System.Collections", "BitArray", "HasAllSet", "()", "summary", "df-generated"]
+      - ["System.Collections", "BitArray", "HasAnySet", "()", "summary", "df-generated"]
       - ["System.Collections", "BitArray", "Set", "(System.Int32,System.Boolean)", "summary", "df-generated"]
       - ["System.Collections", "BitArray", "SetAll", "(System.Boolean)", "summary", "df-generated"]
       - ["System.Collections", "BitArray", "get_Count", "()", "summary", "df-generated"]

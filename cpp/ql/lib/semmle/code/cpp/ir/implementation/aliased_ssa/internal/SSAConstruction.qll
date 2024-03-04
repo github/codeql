@@ -234,20 +234,6 @@ private module Cached {
   }
 
   /**
-   * Holds if the partial operand of this `ChiInstruction` updates the bit range
-   * `[startBitOffset, endBitOffset)` of the total operand.
-   */
-  cached
-  predicate getIntervalUpdatedByChi(ChiInstruction chi, int startBitOffset, int endBitOffset) {
-    exists(Alias::MemoryLocation location, OldInstruction oldInstruction |
-      oldInstruction = getOldInstruction(chi.getPartial()) and
-      location = Alias::getResultMemoryLocation(oldInstruction) and
-      startBitOffset = Alias::getStartBitOffset(location) and
-      endBitOffset = Alias::getEndBitOffset(location)
-    )
-  }
-
-  /**
    * Holds if `operand` totally overlaps with its definition and consumes the bit range
    * `[startBitOffset, endBitOffset)`.
    */
@@ -1068,6 +1054,3 @@ module Ssa {
 
   predicate hasUnreachedInstruction = Cached::hasUnreachedInstructionCached/1;
 }
-
-/** DEPRECATED: Alias for Ssa */
-deprecated module SSA = Ssa;

@@ -74,6 +74,8 @@ if __name__ == "__main__":
     check_tests_valid("variable-capture.dict")
     check_tests_valid("variable-capture.test_collections")
     check_tests_valid("variable-capture.by_value")
+    check_tests_valid("variable-capture.test_library_calls")
+    check_tests_valid("variable-capture.test_fields")
     check_tests_valid("module-initialization.multiphase")
     check_tests_valid("fieldflow.test")
     check_tests_valid("fieldflow.test_dict")

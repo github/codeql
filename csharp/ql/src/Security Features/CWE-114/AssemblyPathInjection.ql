@@ -13,7 +13,7 @@
  */
 
 import csharp
-import semmle.code.csharp.security.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 import semmle.code.csharp.commons.Util
 import AssemblyPathInjection::PathGraph
 
@@ -22,7 +22,7 @@ import AssemblyPathInjection::PathGraph
  */
 module AssemblyPathInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    source instanceof RemoteFlowSource or
+    source instanceof ThreatModelFlowSource or
     source.asExpr() = any(MainMethod main).getParameter(0).getAnAccess()
   }
 

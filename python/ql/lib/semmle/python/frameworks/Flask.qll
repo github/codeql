@@ -14,6 +14,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.security.dataflow.PathInjectionCustomizations
 private import semmle.python.dataflow.new.FlowSummary
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -39,6 +40,10 @@ module Flask {
                   "MethodView"
                 ])
               .getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("flask.View~Subclass").getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("flask.MethodView~Subclass").getASubclass*()
       }
     }
 
@@ -52,6 +57,8 @@ module Flask {
       API::Node subclassRef() {
         result =
           API::moduleImport("flask").getMember("views").getMember("MethodView").getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("flask.MethodView~Subclass").getASubclass*()
       }
     }
   }
@@ -63,7 +70,10 @@ module Flask {
    */
   module FlaskApp {
     /** Gets a reference to the `flask.Flask` class. */
-    API::Node classRef() { result = API::moduleImport("flask").getMember("Flask") }
+    API::Node classRef() {
+      result = API::moduleImport("flask").getMember("Flask") or
+      result = ModelOutput::getATypeNode("flask.Flask~Subclass").getASubclass*()
+    }
 
     /** Gets a reference to an instance of `flask.Flask` (a flask application). */
     API::Node instance() { result = classRef().getReturn() }
@@ -80,6 +90,8 @@ module Flask {
       result = API::moduleImport("flask").getMember("Blueprint")
       or
       result = API::moduleImport("flask").getMember("blueprints").getMember("Blueprint")
+      or
+      result = ModelOutput::getATypeNode("flask.Blueprint~Subclass").getASubclass*()
     }
 
     /** Gets a reference to an instance of `flask.Blueprint`. */
@@ -87,7 +99,9 @@ module Flask {
   }
 
   /** Gets a reference to the `flask.request` object. */
-  API::Node request() { result = API::moduleImport("flask").getMember("request") }
+  API::Node request() {
+    result = API::moduleImport(["flask", "flask_restful"]).getMember("request")
+  }
 
   /**
    * Provides models for the `flask.Response` class
@@ -104,6 +118,8 @@ module Flask {
       result = API::moduleImport("flask").getMember("Response")
       or
       result = [FlaskApp::classRef(), FlaskApp::instance()].getMember("response_class")
+      or
+      result = ModelOutput::getATypeNode("flask.Response~Subclass").getASubclass*()
     }
 
     /**

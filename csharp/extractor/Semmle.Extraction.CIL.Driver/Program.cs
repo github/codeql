@@ -38,7 +38,7 @@ namespace Semmle.Extraction.CIL.Driver
             }
 
             var options = new ExtractorOptions(args);
-            using var logger = new ConsoleLogger(options.Verbosity, logThreadId: false);
+            using ILogger logger = new ConsoleLogger(options.Verbosity, logThreadId: false);
 
             var actions = options.AssembliesToExtract
                 .Select(asm => asm.Filename)
@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CIL.Driver
                 .ToArray();
 
             foreach (var missingRef in options.MissingReferences)
-                logger.Log(Severity.Info, "  Missing assembly " + missingRef);
+                logger.LogInfo("  Missing assembly " + missingRef);
 
             var sw = new Stopwatch();
             sw.Start();

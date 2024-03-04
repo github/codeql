@@ -16,6 +16,7 @@ private import semmle.python.frameworks.internal.PoorMansFunctionResolution
 private import semmle.python.frameworks.internal.SelfRefMixin
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.security.dataflow.UrlRedirectCustomizations
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * INTERNAL: Do not use.
@@ -83,6 +84,10 @@ module Django {
           // `django.views.View` alias
           this = API::moduleImport("django").getMember("views").getMember("View")
         }
+      }
+
+      private class MaDSubclass extends ModeledSubclass {
+        MaDSubclass() { this = ModelOutput::getATypeNode("Django.Views.View~Subclass") }
       }
 
       /** Gets a reference to the `django.views.generic.View` class or any subclass. */
@@ -183,6 +188,10 @@ module Django {
                 .getMember("models")
                 .getMember(["ModelForm", "BaseModelForm"])
         }
+      }
+
+      private class MaDSubclass extends ModeledSubclass {
+        MaDSubclass() { this = ModelOutput::getATypeNode("django.forms.BaseForm~Subclass") }
       }
 
       /** Gets a reference to the `django.forms.forms.BaseForm` class or any subclass. */
@@ -288,6 +297,10 @@ module Django {
                 .getMember("models")
                 .getMember(["InlineForeignKeyField", "ModelChoiceField", "ModelMultipleChoiceField"])
         }
+      }
+
+      private class MaDSubclass extends ModeledSubclass {
+        MaDSubclass() { this = ModelOutput::getATypeNode("Django.Forms.Field~Subclass") }
       }
 
       /** Gets a reference to the `django.forms.fields.Field` class or any subclass. */
@@ -596,6 +609,8 @@ module PrivateDjango {
                   .getMember("models")
                   .getMember("PolymorphicModel")
                   .getASubclass*()
+            or
+            result = ModelOutput::getATypeNode("Django.db.models.Model~Subclass").getASubclass*()
           }
 
           /**
@@ -766,6 +781,9 @@ module PrivateDjango {
                     .getMember(className)
                     .getASubclass*()
             )
+            or
+            result =
+              ModelOutput::getATypeNode("django.db.models.FileField~Subclass").getASubclass*()
           }
         }
 
@@ -823,6 +841,10 @@ module PrivateDjango {
               or
               // Commonly used alias
               result = models().getMember("RawSQL")
+              or
+              result =
+                ModelOutput::getATypeNode("django.db.models.expressions.RawSQL~Subclass")
+                    .getASubclass*()
             }
 
             /**
@@ -1132,9 +1154,6 @@ module PrivateDjango {
     /** Gets a reference to the `django.http` module. */
     API::Node http() { result = django().getMember("http") }
 
-    /** DEPRECATED: Alias for `DjangoHttp` */
-    deprecated module http = DjangoHttp;
-
     /** Provides models for the `django.http` module */
     module DjangoHttp {
       // ---------------------------------------------------------------------------
@@ -1157,6 +1176,9 @@ module PrivateDjango {
             or
             // handle django.http.HttpRequest alias
             result = http().getMember("HttpRequest")
+            or
+            result =
+              ModelOutput::getATypeNode("django.http.request.HttpRequest~Subclass").getASubclass*()
           }
 
           /**
@@ -1322,7 +1344,13 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponse` class or any subclass. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*()
+            or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponse~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponse`, extend this class to model new instances.
@@ -1383,7 +1411,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to a subclass of the `django.http.response.HttpResponseRedirect` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseRedirect~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseRedirect`, extend this class to model new instances.
@@ -1446,7 +1479,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponsePermanentRedirect` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponsePermanentRedirect~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponsePermanentRedirect`, extend this class to model new instances.
@@ -1510,7 +1548,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotModified` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseNotModified~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseNotModified`, extend this class to model new instances.
@@ -1562,7 +1605,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseBadRequest` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseBadRequest~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseBadRequest`, extend this class to model new instances.
@@ -1616,7 +1664,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotFound` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseNotFound~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseNotFound`, extend this class to model new instances.
@@ -1670,7 +1723,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseForbidden` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseForbidden~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseForbidden`, extend this class to model new instances.
@@ -1724,7 +1782,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseNotAllowed` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseNotAllowed~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseNotAllowed`, extend this class to model new instances.
@@ -1779,7 +1842,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseGone` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseGone~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseGone`, extend this class to model new instances.
@@ -1833,7 +1901,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.HttpResponseServerError` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.HttpResponseServerError~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.HttpResponseServerError`, extend this class to model new instances.
@@ -1887,7 +1960,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.JsonResponse` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.JsonResponse~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.JsonResponse`, extend this class to model new instances.
@@ -1944,7 +2022,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.StreamingHttpResponse` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.StreamingHttpResponse~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.StreamingHttpResponse`, extend this class to model new instances.
@@ -1998,7 +2081,12 @@ module PrivateDjango {
           }
 
           /** Gets a reference to the `django.http.response.FileResponse` class. */
-          API::Node classRef() { result = baseClassRef().getASubclass*() }
+          API::Node classRef() {
+            result = baseClassRef().getASubclass*() or
+            result =
+              ModelOutput::getATypeNode("django.http.response.FileResponse~Subclass")
+                  .getASubclass*()
+          }
 
           /**
            * A source of instances of `django.http.response.FileResponse`, extend this class to model new instances.
@@ -2836,6 +2924,11 @@ module PrivateDjango {
   private class DjangoAllowedUrl extends UrlRedirect::Sanitizer {
     DjangoAllowedUrl() {
       this = DataFlow::BarrierGuard<djangoUrlHasAllowedHostAndScheme/3>::getABarrierNode()
+    }
+
+    override predicate sanitizes(UrlRedirect::FlowState state) {
+      // sanitize all flow states
+      any()
     }
   }
 }

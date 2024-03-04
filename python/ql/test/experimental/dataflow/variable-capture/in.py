@@ -34,17 +34,17 @@ def SINK_F(x):
 def inParam(tainted):
     def captureIn1():
         sinkI1 = tainted
-        SINK(sinkI1) #$ MISSING:captured
+        SINK(sinkI1) #$ captured
     captureIn1()
 
     def captureIn2():
         def m():
             sinkI2 = tainted
-            SINK(sinkI2) #$ MISSING:captured
+            SINK(sinkI2) #$ captured
         m()
     captureIn2()
 
-    captureIn3 = lambda arg: SINK(tainted)
+    captureIn3 = lambda arg: SINK(tainted) #$ captured
     captureIn3("")
 
     def captureIn1NotCalled():
@@ -68,17 +68,17 @@ def inLocal():
 
     def captureIn1():
         sinkI1 = tainted
-        SINK(sinkI1) #$ MISSING:captured
+        SINK(sinkI1) #$ captured
     captureIn1()
 
     def captureIn2():
         def m():
             sinkI2 = tainted
-            SINK(sinkI2) #$ MISSING:captured
+            SINK(sinkI2) #$ captured
         m()
     captureIn2()
 
-    captureIn3 = lambda arg: SINK(tainted)
+    captureIn3 = lambda arg: SINK(tainted) #$ captured
     captureIn3("")
 
     def captureIn1NotCalled():

@@ -53,6 +53,7 @@ namespace Semmle.Extraction.CSharp.Entities
                     trapFile.type_annotation(this, Kinds.TypeAnnotation.Ref);
                     break;
                 case RefKind.RefReadOnly:
+                case RefKind.RefReadOnlyParameter:
                     trapFile.type_annotation(this, Kinds.TypeAnnotation.ReadonlyRef);
                     break;
             }

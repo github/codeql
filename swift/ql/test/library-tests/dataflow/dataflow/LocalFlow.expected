@@ -1165,3 +1165,57 @@
 | test.swift:926:45:926:48 | y | test.swift:926:45:926:48 | SSA def(y) |
 | test.swift:927:12:927:31 | call to source(_:) | test.swift:927:12:927:31 | OpenExistentialExpr |
 | test.swift:929:12:929:57 | call to source(_:) | test.swift:929:12:929:57 | OpenExistentialExpr |
+| test.swift:936:9:936:9 | self | test.swift:936:9:936:9 | SSA def(self) |
+| test.swift:937:9:937:9 | SSA def(self) | test.swift:937:9:937:31 | self[return] |
+| test.swift:937:9:937:9 | self | test.swift:937:9:937:9 | SSA def(self) |
+| test.swift:938:9:938:9 | SSA def(newValue) | test.swift:938:25:938:25 | newValue |
+| test.swift:938:9:938:9 | SSA def(self) | test.swift:938:9:938:35 | self[return] |
+| test.swift:938:9:938:9 | newValue | test.swift:938:9:938:9 | SSA def(newValue) |
+| test.swift:938:9:938:9 | self | test.swift:938:9:938:9 | SSA def(self) |
+| test.swift:941:5:941:5 | SSA def(self) | test.swift:943:9:943:9 | self |
+| test.swift:941:5:941:5 | self | test.swift:941:5:941:5 | SSA def(self) |
+| test.swift:941:10:941:24 | SSA def(wrappedValue) | test.swift:942:19:942:19 | wrappedValue |
+| test.swift:941:10:941:24 | wrappedValue | test.swift:941:10:941:24 | SSA def(wrappedValue) |
+| test.swift:943:9:943:9 | [post] self | test.swift:941:5:944:5 | self[return] |
+| test.swift:943:9:943:9 | self | test.swift:941:5:944:5 | self[return] |
+| test.swift:948:6:948:49 | call to MyTaintPropertyWrapper.init(wrappedValue:) | test.swift:948:33:948:36 | ... as ... |
+| test.swift:948:33:948:33 | value | test.swift:948:33:948:33 | SSA def(value) |
+| test.swift:948:33:948:36 | ... as ... | test.swift:948:33:948:33 | x |
+| test.swift:957:9:957:9 | self | test.swift:957:9:957:9 | SSA def(self) |
+| test.swift:957:9:957:9 | self | test.swift:957:9:957:9 | SSA def(self) |
+| test.swift:957:9:957:9 | self | test.swift:957:9:957:9 | SSA def(self) |
+| test.swift:957:9:957:9 | value | test.swift:957:9:957:9 | SSA def(value) |
+| test.swift:958:9:958:9 | SSA def(self) | test.swift:959:23:959:23 | self |
+| test.swift:958:9:958:9 | self | test.swift:958:9:958:9 | SSA def(self) |
+| test.swift:959:23:959:23 | [post] self | test.swift:958:9:960:9 | self[return] |
+| test.swift:959:23:959:23 | self | test.swift:958:9:960:9 | self[return] |
+| test.swift:963:9:963:9 | self | test.swift:963:9:963:9 | SSA def(self) |
+| test.swift:964:9:964:9 | SSA def(self) | test.swift:964:15:964:15 | self |
+| test.swift:964:9:964:9 | self | test.swift:964:9:964:9 | SSA def(self) |
+| test.swift:964:15:964:15 | [post] self | test.swift:964:9:964:28 | self[return] |
+| test.swift:964:15:964:15 | self | test.swift:964:9:964:28 | self[return] |
+| test.swift:965:9:965:9 | SSA def(newValue) | test.swift:967:28:967:28 | newValue |
+| test.swift:965:9:965:9 | SSA def(self) | test.swift:966:23:966:23 | self |
+| test.swift:965:9:965:9 | newValue | test.swift:965:9:965:9 | SSA def(newValue) |
+| test.swift:965:9:965:9 | self | test.swift:965:9:965:9 | SSA def(self) |
+| test.swift:966:23:966:23 | [post] self | test.swift:967:13:967:13 | self |
+| test.swift:966:23:966:23 | self | test.swift:967:13:967:13 | self |
+| test.swift:967:13:967:13 | [post] self | test.swift:965:9:968:9 | self[return] |
+| test.swift:967:13:967:13 | self | test.swift:965:9:968:9 | self[return] |
+| test.swift:971:5:971:5 | SSA def(self) | test.swift:973:9:973:9 | self |
+| test.swift:971:5:971:5 | self | test.swift:971:5:971:5 | SSA def(self) |
+| test.swift:971:10:971:24 | SSA def(wrappedValue) | test.swift:972:19:972:19 | wrappedValue |
+| test.swift:971:10:971:24 | wrappedValue | test.swift:971:10:971:24 | SSA def(wrappedValue) |
+| test.swift:972:19:972:19 | [post] wrappedValue | test.swift:973:29:973:29 | wrappedValue |
+| test.swift:972:19:972:19 | wrappedValue | test.swift:973:29:973:29 | wrappedValue |
+| test.swift:973:9:973:9 | [post] self | test.swift:971:5:974:5 | self[return] |
+| test.swift:973:9:973:9 | self | test.swift:971:5:974:5 | self[return] |
+| test.swift:978:6:978:38 | call to MySimplePropertyWrapper.init(wrappedValue:) | test.swift:978:34:978:34 | a |
+| test.swift:978:34:978:34 | value | test.swift:978:34:978:34 | SSA def(value) |
+| test.swift:978:34:978:34 | value | test.swift:978:34:978:34 | SSA def(value) |
+| test.swift:983:6:983:45 | call to MySimplePropertyWrapper.init(wrappedValue:) | test.swift:983:34:983:34 | b |
+| test.swift:983:34:983:34 | value | test.swift:983:34:983:34 | SSA def(value) |
+| test.swift:983:34:983:34 | value | test.swift:983:34:983:34 | SSA def(value) |
+| test.swift:988:6:988:38 | call to MySimplePropertyWrapper.init(wrappedValue:) | test.swift:988:34:988:34 | c |
+| test.swift:988:34:988:34 | value | test.swift:988:34:988:34 | SSA def(value) |
+| test.swift:988:34:988:34 | value | test.swift:988:34:988:34 | SSA def(value) |

@@ -50,9 +50,6 @@ class JmxRegistrationCall extends MethodCall {
   }
 }
 
-/** DEPRECATED: Alias for JmxRegistrationCall */
-deprecated class JMXRegistrationCall = JmxRegistrationCall;
-
 /**
  * A method used to register `MBean` and `MXBean` instances with the `MBeanServer`.
  *
@@ -90,9 +87,6 @@ class JmxRegistrationMethod extends Method {
   }
 }
 
-/** DEPRECATED: Alias for JmxRegistrationMethod */
-deprecated class JMXRegistrationMethod = JmxRegistrationMethod;
-
 /** The class `javax.management.remote.JMXConnectorFactory`. */
 class TypeJmxConnectorFactory extends Class {
   TypeJmxConnectorFactory() {
@@ -100,21 +94,12 @@ class TypeJmxConnectorFactory extends Class {
   }
 }
 
-/** DEPRECATED: Alias for TypeJmxConnectorFactory */
-deprecated class TypeJMXConnectorFactory = TypeJmxConnectorFactory;
-
 /** The class `javax.management.remote.JMXServiceURL`. */
 class TypeJmxServiceUrl extends Class {
   TypeJmxServiceUrl() { this.hasQualifiedName("javax.management.remote", "JMXServiceURL") }
 }
 
-/** DEPRECATED: Alias for TypeJmxServiceUrl */
-deprecated class TypeJMXServiceURL = TypeJmxServiceUrl;
-
 /** The class `javax.management.remote.rmi.RMIConnector`. */
 class TypeRmiConnector extends Class {
   TypeRmiConnector() { this.hasQualifiedName("javax.management.remote.rmi", "RMIConnector") }
 }
-
-/** DEPRECATED: Alias for TypeRmiConnector */
-deprecated class TypeRMIConnector = TypeRmiConnector;

@@ -7,9 +7,10 @@
  */
 
 import ruby
+import codeql.ruby.AST
 import ModelEditor
 
-from PublicEndpointFromSource endpoint
-select endpoint, endpoint.getNamespace(), endpoint.getTypeName(), endpoint.getName(),
-  endpoint.getParameterTypes(), endpoint.getSupportedStatus(), endpoint.getFile().getBaseName(),
+from Endpoint endpoint
+select endpoint, endpoint.getNamespace(), endpoint.getType(), endpoint.getName(),
+  endpoint.getParameters(), endpoint.getSupportedStatus(), endpoint.getFileName(),
   endpoint.getSupportedType()

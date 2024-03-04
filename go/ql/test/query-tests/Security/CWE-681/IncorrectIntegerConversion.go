@@ -491,3 +491,10 @@ func typeAssertion(s string) {
 	}
 
 }
+
+func dealWithArchSizeCorrectly(s string) uint {
+	if i, err := strconv.ParseUint(s, 10, 64); err == nil && i < math.MaxUint {
+		return uint(i)
+	}
+	return 0
+}

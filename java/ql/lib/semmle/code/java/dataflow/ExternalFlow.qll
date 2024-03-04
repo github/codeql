@@ -430,6 +430,7 @@ private Element interpretElement0(
 }
 
 /** Gets the source/sink/summary/neutral element corresponding to the supplied parameters. */
+cached
 Element interpretElement(
   string package, string type, boolean subtypes, string name, string signature, string ext
 ) {
@@ -528,6 +529,10 @@ private class SummarizedCallableAdapter extends SummarizedCallable {
     exists(Provenance provenance |
       summaryElement(this, input, output, kind, provenance) and
       provenance.isGenerated()
+    ) and
+    not exists(Provenance provenance |
+      neutralElement(this, "summary", provenance) and
+      provenance.isManual()
     )
   }
 

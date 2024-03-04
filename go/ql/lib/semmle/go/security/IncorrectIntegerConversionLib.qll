@@ -15,15 +15,11 @@ abstract private class MaxIntOrMaxUint extends DeclaredConstant {
    */
   predicate isBoundFor(int b, int architectureBitSize, float strictnessOffset) {
     // 2.pow(x) - 1 - strictnessOffset <= 2.pow(b) - 1
-    exists(int x |
-      x = this.getOrder(architectureBitSize) and
-      b = validBitSize() and
-      (
-        strictnessOffset = 0 and x <= b
-        or
-        strictnessOffset = 1 and x <= b - 1
-      )
-    )
+    // For the values that we are restricting `b` to, `strictnessOffset` has no
+    // effect on the result, so we can ignore it.
+    b = validBitSize() and
+    strictnessOffset = [0, 1] and
+    this.getOrder(architectureBitSize) <= b
   }
 }
 

@@ -273,6 +273,8 @@ extensions:
       - ["System.Data.Common", "DbBatch", "set_DbTransaction", "(System.Data.Common.DbTransaction)", "summary", "df-generated"]
       - ["System.Data.Common", "DbBatch", "set_Timeout", "(System.Int32)", "summary", "df-generated"]
       - ["System.Data.Common", "DbBatch", "set_Transaction", "(System.Data.Common.DbTransaction)", "summary", "df-generated"]
+      - ["System.Data.Common", "DbBatchCommand", "CreateParameter", "()", "summary", "df-generated"]
+      - ["System.Data.Common", "DbBatchCommand", "get_CanCreateParameter", "()", "summary", "df-generated"]
       - ["System.Data.Common", "DbBatchCommand", "get_CommandText", "()", "summary", "df-generated"]
       - ["System.Data.Common", "DbBatchCommand", "get_CommandType", "()", "summary", "df-generated"]
       - ["System.Data.Common", "DbBatchCommand", "get_DbParameterCollection", "()", "summary", "df-generated"]

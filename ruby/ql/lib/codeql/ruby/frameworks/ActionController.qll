@@ -24,16 +24,6 @@ module ActionController {
 }
 
 /**
- * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
- */
-deprecated class ParamsCall = Rails::ParamsCall;
-
-/**
- * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::CookiesCall` instead.
- */
-deprecated class CookiesCall = Rails::CookiesCall;
-
-/**
  * A class that extends `ActionController::Base`.
  * For example,
  *
@@ -85,22 +75,6 @@ class ActionControllerClass extends DataFlow::ClassNode {
 
 private API::Node actionControllerInstance() {
   result = any(ActionControllerClass cls).getSelf().track()
-}
-
-/**
- * DEPRECATED. Use `ActionControllerClass` instead.
- *
- * A `ClassDeclaration` corresponding to an `ActionControllerClass`.
- */
-deprecated class ActionControllerControllerClass extends ClassDeclaration {
-  ActionControllerControllerClass() { this = any(ActionControllerClass cls).getADeclaration() }
-
-  /**
-   * Gets a `ActionControllerActionMethod` defined in this class.
-   */
-  ActionControllerActionMethod getAnAction() {
-    result = this.getAMethod().(Method) and result.isPrivate()
-  }
 }
 
 /**
@@ -400,7 +374,8 @@ predicate controllerTemplateFile(ActionControllerClass cls, ErbFile templateFile
     controllerPath = getActionControllerClassRelativePath(cls) and
     // `sourcePrefix` is either a prefix path ending in a slash, or empty if
     // the rails app is at the source root
-    sourcePrefix = [controllerPath.regexpCapture("^(.*/)app/controllers/(?:.*?)/(?:[^/]*)$", 1), ""] and
+    sourcePrefix =
+      [controllerPath.regexpCapture("^(.*/)app/controllers/(?:[^/]+/)?(?:[^/]*)$", 1), ""] and
     controllerPath = sourcePrefix + "app/controllers/" + subPath + "_controller.rb"
   |
     sourcePrefix + "app/views/" + subPath = templateFile.getParentContainer().getRelativePath()
@@ -512,7 +487,7 @@ private module ParamsSummaries {
         "dig", "each", "each_key", "each_pair", "each_value", "except", "keep_if", "merge",
         "merge!", "permit", "reject", "reject!", "require", "reverse_merge", "reverse_merge!",
         "select", "select!", "slice", "slice!", "transform_keys", "transform_keys!",
-        "transform_values", "transform_values!", "with_defaults", "with_defaults!"
+        "transform_values", "transform_values!", "with_defaults", "with_defaults!", "[]"
       ]
   }
 

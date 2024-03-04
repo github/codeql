@@ -117,15 +117,6 @@ class AssignableRead extends AssignableAccess {
       cfn = this.getAnAdjacentReadSameVar()
     )
   }
-
-  /**
-   * Gets a reachable read of the same underlying assignable. That is, a read
-   * that can be reached from this read, and which is guaranteed to read the
-   * same value.
-   *
-   * This is the transitive closure of `getANextRead()`.
-   */
-  deprecated AssignableRead getAReachableRead() { result = this.getANextRead+() }
 }
 
 /**
@@ -488,15 +479,6 @@ class AssignableDefinition extends TAssignableDefinition {
       )
     )
   }
-
-  /**
-   * Gets a reachable read of the same underlying assignable. That is, a read
-   * that can be reached from this definition, and which is guaranteed to read
-   * the value assigned in this definition.
-   *
-   * This is the equivalent with `getAFirstRead().getANextRead*()`.
-   */
-  deprecated AssignableRead getAReachableRead() { result = this.getAFirstRead().getANextRead*() }
 
   /** Gets a textual representation of this assignable definition. */
   string toString() { none() }

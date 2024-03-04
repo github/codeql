@@ -168,11 +168,11 @@ func EmitCannotFindPackages(pkgPaths []string) {
 	)
 }
 
-func EmitNewerGoVersionNeeded() {
+func EmitNewerGoVersionNeeded(installedVersion string, requiredVersion string) {
 	emitDiagnostic(
 		"go/autobuilder/newer-go-version-needed",
 		"Newer Go version needed",
-		"The detected version of Go is lower than the version specified in `go.mod`. [Install a newer version](https://github.com/actions/setup-go#basic).",
+		"Version `"+installedVersion+"` of Go is installed, but this is lower than `"+requiredVersion+"` required by your project's `go.mod`. [Install a newer version of Go before analyzing your project](https://github.com/actions/setup-go#basic).",
 		severityError,
 		fullVisibility,
 		noLocation,
@@ -489,6 +489,21 @@ func EmitNewerSystemGoRequired(requiredVersion string) {
 		"The Go version installed on the system is too old to support this project",
 		"At least Go version `"+requiredVersion+"` is required to build this project, but the version installed on the system is older. [Install a newer version](https://github.com/actions/setup-go#basic).",
 		severityError,
+		fullVisibility,
+		noLocation,
+	)
+}
+
+func EmitExtractionFailedForProjects(path []string) {
+	emitDiagnostic(
+		"go/autobuilder/extraction-failed-for-project",
+		fmt.Sprintf("Unable to extract %d Go projects", len(path)),
+		fmt.Sprintf(
+			"The following %d Go project%s could not be extracted successfully:\n\n`%s`\n",
+			len(path),
+			plural(len(path), "", "s"),
+			strings.Join(path, "`, `")),
+		severityWarning,
 		fullVisibility,
 		noLocation,
 	)

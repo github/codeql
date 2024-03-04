@@ -1,11 +1,11 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-_swift_prebuilt_version = "swift-5.9.1-RELEASE.255"
+_swift_prebuilt_version = "swift-5.9.2-RELEASE.299"
 _swift_sha_map = {
-    "Linux-X64": "0d5682d8acbe3ab81c2a0b8dc0dfadc0240895e28722cca6467d2ab71a69e004",
-    "macOS-ARM64": "ee53def6f89f97ce0882375121629d71fd87a673baa194f4c510920720d7bce6",
-    "macOS-X64": "61c2879ee89d6796f3b58fada8a5890756f5a8c053597f4faca019d660743d70",
+    "Linux-X64": "19e8150251601e7b27e76d1a405a72c459f9a3e2949a1e360fde15ebb4d87409",
+    "macOS-ARM64": "4aaec59489c1607be0bd9ea522c1772f9368e7e29197167d3db73e0eb4fa605f",
+    "macOS-X64": "16f3a248269a06b00c6a40567ca06d5494d9a0ce24e7dd7cb8534828639418e8",
 }
 
 _swift_arch_map = {
@@ -20,13 +20,13 @@ _toolchain_info = {
         platform = "ubuntu2004",
         suffix = "ubuntu20.04",
         extension = "tar.gz",
-        sha = "057f6c0c3c6472b733e4d5bd8f10e83dd8536c1db1d0ec4a1dca414cd023ab0d",
+        sha = "93477b80db16f3e5085738ade05478ed435793e39864418e737a10ac306cbd8c",
     ),
     "macos": struct(
         platform = "xcode",
         suffix = "osx",
         extension = "pkg",
-        sha = "fa4d3a67c4db8d63897e10d52903af40599cc351e8a73d6f5a4eb3cfd07c4605",
+        sha = "68951c313b4b559878fc5be27e460c877f98d14e161f755220b063123919e896",
     ),
 }
 
@@ -40,7 +40,7 @@ def _get_toolchain_url(info):
         info.extension,
     )
 
-def _toolchains(workspace_name):
+def _toolchains(repository_name):
     rules = {
         "tar.gz": http_archive,
         "pkg": _pkg_archive,
@@ -51,7 +51,7 @@ def _toolchains(workspace_name):
             name = "swift_toolchain_%s" % arch,
             url = _get_toolchain_url(info),
             sha256 = info.sha,
-            build_file = _build(workspace_name, "swift-toolchain-%s" % arch),
+            build_file = _build(repository_name, "swift-toolchain-%s" % arch),
             strip_prefix = "%s-%s" % (_swift_version, info.suffix),
         )
 
@@ -109,10 +109,10 @@ def _github_archive(*, name, repository, commit, build_file = None, sha256 = Non
         sha256 = sha256,
     )
 
-def _build(workspace_name, package):
-    return "@%s//swift/third_party:BUILD.%s.bazel" % (workspace_name, package)
+def _build(repository_name, package):
+    return "@%s//swift/third_party:BUILD.%s.bazel" % (repository_name, package)
 
-def load_dependencies(workspace_name):
+def load_dependencies(module_ctx = None, repository_name = "codeql"):
     for repo_arch, arch in _swift_arch_map.items():
         sha256 = _swift_sha_map[repo_arch]
 
@@ -122,11 +122,11 @@ def load_dependencies(workspace_name):
                 _swift_prebuilt_version,
                 repo_arch,
             ),
-            build_file = _build(workspace_name, "swift-llvm-support"),
+            build_file = _build(repository_name, "swift-llvm-support"),
             sha256 = sha256,
             patch_args = ["-p1"],
             patches = [
-                "@%s//swift/third_party/swift-llvm-support:patches/%s.patch" % (workspace_name, patch_name)
+                "@%s//swift/third_party/swift-llvm-support:patches/%s.patch" % (repository_name, patch_name)
                 for patch_name in (
                     "remove-redundant-operators",
                     "add-constructor-to-Compilation",
@@ -134,11 +134,11 @@ def load_dependencies(workspace_name):
             ],
         )
 
-    _toolchains(workspace_name)
+    _toolchains(repository_name)
 
     _github_archive(
         name = "picosha2",
-        build_file = _build(workspace_name, "picosha2"),
+        build_file = _build(repository_name, "picosha2"),
         repository = "okdshin/PicoSHA2",
         commit = "27fcf6979298949e8a462e16d09a0351c18fcaf2",
         sha256 = "d6647ca45a8b7bdaf027ecb68d041b22a899a0218b7206dee755c558a2725abb",
@@ -146,30 +146,34 @@ def load_dependencies(workspace_name):
 
     _github_archive(
         name = "binlog",
-        build_file = _build(workspace_name, "binlog"),
+        build_file = _build(repository_name, "binlog"),
         repository = "morganstanley/binlog",
         commit = "3fef8846f5ef98e64211e7982c2ead67e0b185a6",
         sha256 = "f5c61d90a6eff341bf91771f2f465be391fd85397023e1b391c17214f9cbd045",
     )
 
-    _github_archive(
-        name = "absl",
-        repository = "abseil/abseil-cpp",
-        commit = "d2c5297a3c3948de765100cb7e5cccca1210d23c",
-        sha256 = "735a9efc673f30b3212bfd57f38d5deb152b543e35cd58b412d1363b15242049",
-    )
+    if module_ctx == None:
+        # legacy workspace loading, remove when transition is complete
+        _github_archive(
+            name = "absl",
+            repository = "abseil/abseil-cpp",
+            commit = "d2c5297a3c3948de765100cb7e5cccca1210d23c",
+            sha256 = "735a9efc673f30b3212bfd57f38d5deb152b543e35cd58b412d1363b15242049",
+        )
 
-    _github_archive(
-        name = "json",
-        repository = "nlohmann/json",
-        commit = "6af826d0bdb55e4b69e3ad817576745335f243ca",
-        sha256 = "702bb0231a5e21c0374230fed86c8ae3d07ee50f34ffd420e7f8249854b7d85b",
-    )
+        _github_archive(
+            name = "json",
+            repository = "nlohmann/json",
+            commit = "6af826d0bdb55e4b69e3ad817576745335f243ca",
+            sha256 = "702bb0231a5e21c0374230fed86c8ae3d07ee50f34ffd420e7f8249854b7d85b",
+        )
 
-    _github_archive(
-        name = "fmt",
-        repository = "fmtlib/fmt",
-        build_file = _build(workspace_name, "fmt"),
-        commit = "a0b8a92e3d1532361c2f7feb63babc5c18d00ef2",
-        sha256 = "ccf872fd4aa9ab3d030d62cffcb258ca27f021b2023a0244b2cf476f984be955",
-    )
+        _github_archive(
+            name = "fmt",
+            repository = "fmtlib/fmt",
+            build_file = _build(repository_name, "fmt"),
+            commit = "a0b8a92e3d1532361c2f7feb63babc5c18d00ef2",
+            sha256 = "ccf872fd4aa9ab3d030d62cffcb258ca27f021b2023a0244b2cf476f984be955",
+        )
+
+swift_deps = module_extension(load_dependencies)

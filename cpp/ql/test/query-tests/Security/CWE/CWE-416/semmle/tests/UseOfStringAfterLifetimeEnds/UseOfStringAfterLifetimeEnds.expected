@@ -9,4 +9,5 @@
 | test.cpp:188:39:188:42 | call to data | The underlying string object is destroyed after the call to 'data' returns. |
 | test.cpp:189:44:189:47 | call to data | The underlying string object is destroyed after the call to 'data' returns. |
 | test.cpp:191:29:191:32 | call to data | The underlying string object is destroyed after the call to 'data' returns. |
-| test.cpp:193:31:193:35 | call to c_str | The underlying string object is destroyed after the call to 'c_str' returns. |
+| test.cpp:193:47:193:51 | call to c_str | The underlying string object is destroyed after the call to 'c_str' returns. |
+| test.cpp:195:31:195:35 | call to c_str | The underlying string object is destroyed after the call to 'c_str' returns. |

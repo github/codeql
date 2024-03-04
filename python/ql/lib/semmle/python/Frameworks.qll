@@ -48,6 +48,7 @@ private import semmle.python.frameworks.Oracledb
 private import semmle.python.frameworks.Pandas
 private import semmle.python.frameworks.Peewee
 private import semmle.python.frameworks.Phoenixdb
+private import semmle.python.frameworks.Psycopg
 private import semmle.python.frameworks.Psycopg2
 private import semmle.python.frameworks.Pycurl
 private import semmle.python.frameworks.Pydantic

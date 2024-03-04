@@ -1,24 +1,24 @@
 edges
-| Test.java:10:31:10:41 | data : byte[] | Test.java:11:23:11:26 | data : byte[] |
-| Test.java:11:23:11:26 | data : byte[] | Test.java:11:12:11:51 | new String(...) : String |
-| Test.java:19:5:19:25 | getInputStream(...) : InputStream | Test.java:19:32:19:35 | data [post update] : byte[] |
-| Test.java:19:32:19:35 | data [post update] : byte[] | Test.java:22:49:22:52 | data : byte[] |
-| Test.java:19:32:19:35 | data [post update] : byte[] | Test.java:25:69:25:72 | data : byte[] |
-| Test.java:22:49:22:52 | data : byte[] | Test.java:10:31:10:41 | data : byte[] |
-| Test.java:22:49:22:52 | data : byte[] | Test.java:22:36:22:53 | byteToString(...) |
-| Test.java:25:56:25:73 | byteToString(...) : String | Test.java:25:26:25:80 | ... + ... |
-| Test.java:25:69:25:72 | data : byte[] | Test.java:10:31:10:41 | data : byte[] |
-| Test.java:25:69:25:72 | data : byte[] | Test.java:25:56:25:73 | byteToString(...) : String |
-| Test.java:41:21:41:49 | readEnv(...) : String | Test.java:44:26:44:68 | ... + ... |
-| Test.java:41:21:41:49 | readEnv(...) : String | Test.java:47:36:47:41 | result |
-| Test.java:64:5:64:13 | System.in : InputStream | Test.java:64:20:64:23 | data [post update] : byte[] |
-| Test.java:64:20:64:23 | data [post update] : byte[] | Test.java:67:69:67:72 | data : byte[] |
-| Test.java:64:20:64:23 | data [post update] : byte[] | Test.java:70:49:70:52 | data : byte[] |
-| Test.java:67:56:67:73 | byteToString(...) : String | Test.java:67:26:67:80 | ... + ... |
-| Test.java:67:69:67:72 | data : byte[] | Test.java:10:31:10:41 | data : byte[] |
-| Test.java:67:69:67:72 | data : byte[] | Test.java:67:56:67:73 | byteToString(...) : String |
-| Test.java:70:49:70:52 | data : byte[] | Test.java:10:31:10:41 | data : byte[] |
-| Test.java:70:49:70:52 | data : byte[] | Test.java:70:36:70:53 | byteToString(...) |
+| Test.java:10:31:10:41 | data : byte[] | Test.java:11:23:11:26 | data : byte[] | provenance |  |
+| Test.java:11:23:11:26 | data : byte[] | Test.java:11:12:11:51 | new String(...) : String | provenance |  |
+| Test.java:19:5:19:25 | getInputStream(...) : InputStream | Test.java:19:32:19:35 | data [post update] : byte[] | provenance |  |
+| Test.java:19:32:19:35 | data [post update] : byte[] | Test.java:22:49:22:52 | data : byte[] | provenance |  |
+| Test.java:19:32:19:35 | data [post update] : byte[] | Test.java:25:69:25:72 | data : byte[] | provenance |  |
+| Test.java:22:49:22:52 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | provenance |  |
+| Test.java:22:49:22:52 | data : byte[] | Test.java:22:36:22:53 | byteToString(...) | provenance |  |
+| Test.java:25:56:25:73 | byteToString(...) : String | Test.java:25:26:25:80 | ... + ... | provenance |  |
+| Test.java:25:69:25:72 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | provenance |  |
+| Test.java:25:69:25:72 | data : byte[] | Test.java:25:56:25:73 | byteToString(...) : String | provenance |  |
+| Test.java:41:21:41:49 | readEnv(...) : String | Test.java:44:26:44:68 | ... + ... | provenance |  |
+| Test.java:41:21:41:49 | readEnv(...) : String | Test.java:47:36:47:41 | result | provenance |  |
+| Test.java:64:5:64:13 | System.in : InputStream | Test.java:64:20:64:23 | data [post update] : byte[] | provenance |  |
+| Test.java:64:20:64:23 | data [post update] : byte[] | Test.java:67:69:67:72 | data : byte[] | provenance |  |
+| Test.java:64:20:64:23 | data [post update] : byte[] | Test.java:70:49:70:52 | data : byte[] | provenance |  |
+| Test.java:67:56:67:73 | byteToString(...) : String | Test.java:67:26:67:80 | ... + ... | provenance |  |
+| Test.java:67:69:67:72 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | provenance |  |
+| Test.java:67:69:67:72 | data : byte[] | Test.java:67:56:67:73 | byteToString(...) : String | provenance |  |
+| Test.java:70:49:70:52 | data : byte[] | Test.java:10:31:10:41 | data : byte[] | provenance |  |
+| Test.java:70:49:70:52 | data : byte[] | Test.java:70:36:70:53 | byteToString(...) | provenance |  |
 nodes
 | Test.java:10:31:10:41 | data : byte[] | semmle.label | data : byte[] |
 | Test.java:11:12:11:51 | new String(...) : String | semmle.label | new String(...) : String |

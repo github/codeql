@@ -66,18 +66,6 @@ class AndroidServiceIntentMethod extends Method {
 }
 
 /**
- * The method `Context.startActivity` or `startActivities`.
- *
- * DEPRECATED: Use `StartActivityMethod` instead.
- */
-deprecated class ContextStartActivityMethod extends Method {
-  ContextStartActivityMethod() {
-    (this.hasName("startActivity") or this.hasName("startActivities")) and
-    this.getDeclaringType() instanceof TypeContext
-  }
-}
-
-/**
  * The method `Context.startActivity`, `Context.startActivities`,
  * `Activity.startActivity`,`Activity.startActivities`,
  * `Activity.startActivityForResult`, `Activity.startActivityIfNeeded`,

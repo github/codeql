@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Semmle.Util;
 using Semmle.Util.Logging;
 using Semmle.Extraction.CSharp.Populators;
 
@@ -240,6 +241,8 @@ namespace Semmle.Extraction.CSharp
                 var cx = new Context(extractor, compilation.Clone(), trapWriter, new AssemblyScope(assembly, assemblyPath), addAssemblyTrapPrefix);
 
                 compilationEntity = Entities.Compilation.Create(cx);
+
+                extractor.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {

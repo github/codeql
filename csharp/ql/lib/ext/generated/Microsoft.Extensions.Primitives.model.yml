@@ -5,6 +5,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["Microsoft.Extensions.Primitives", "Extensions", False, "Append", "(System.Text.StringBuilder,Microsoft.Extensions.Primitives.StringSegment)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", False, "Split", "(System.Char[])", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", False, "Split", "(System.Char[])", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringTokenizer+Enumerator", False, "Enumerator", "(Microsoft.Extensions.Primitives.StringTokenizer)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
@@ -27,6 +28,13 @@ extensions:
       - ["Microsoft.Extensions.Primitives", "CompositeChangeToken", "get_HasChanged", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "IChangeToken", "get_ActiveChangeCallbacks", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "IChangeToken", "get_HasChanged", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "Append", "(Microsoft.Extensions.Primitives.StringSegment)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "Append", "(System.Char)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "Append", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "Append", "(System.String,System.Int32,System.Int32)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "InplaceStringBuilder", "(System.Int32)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "get_Capacity", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Primitives", "InplaceStringBuilder", "set_Capacity", "(System.Int32)", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "AsMemory", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "AsSpan", "()", "summary", "df-generated"]
       - ["Microsoft.Extensions.Primitives", "StringSegment", "AsSpan", "(System.Int32)", "summary", "df-generated"]

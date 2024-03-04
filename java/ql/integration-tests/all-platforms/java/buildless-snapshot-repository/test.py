@@ -1,6 +1,7 @@
 import sys
 
 from create_database_utils import *
+from buildless_test_utils import *
 import subprocess
 
 repo_server_process = subprocess.Popen(["python3", "-m", "http.server", "9427"], cwd = "repo")
@@ -10,3 +11,4 @@ try:
 finally:
   repo_server_process.kill()
 
+check_buildless_fetches()

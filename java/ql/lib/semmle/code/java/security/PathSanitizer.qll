@@ -56,7 +56,7 @@ private predicate exactPathMatchGuard(Guard g, Expr e, boolean branch) {
     t instanceof StringsKt or
     t instanceof FilesKt
   |
-    e = getVisualQualifier(ma).getUnderlyingExpr() and
+    e = [getVisualQualifier(ma).getUnderlyingExpr(), getVisualArgument(ma, 0)] and
     ma.getMethod().getDeclaringType() = t and
     ma = g and
     getSourceMethod(ma.getMethod()).hasName(["equals", "equalsIgnoreCase"]) and

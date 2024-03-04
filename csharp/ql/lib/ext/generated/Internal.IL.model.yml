@@ -43,6 +43,7 @@ extensions:
       - ["Internal.IL", "MethodIL", True, "GetMethodILDefinition", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
       - ["Internal.IL", "MethodILScope", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["Internal.IL", "MethodILScope", True, "GetMethodILScopeDefinition", "()", "", "Argument[this]", "ReturnValue", "value", "df-generated"]
+      - ["Internal.IL", "UnsafeAccessors", False, "TryGetIL", "(Internal.TypeSystem.Ecma.EcmaMethod)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: neutralModel

@@ -9,18 +9,12 @@ class JaxbElement extends Class {
   }
 }
 
-/** DEPRECATED: Alias for JaxbElement */
-deprecated class JAXBElement = JaxbElement;
-
 class JaxbMarshalMethod extends Method {
   JaxbMarshalMethod() {
     this.getDeclaringType().getQualifiedName() = "javax.xml.bind.Marshaller" and
     this.getName() = "marshal"
   }
 }
-
-/** DEPRECATED: Alias for JaxbMarshalMethod */
-deprecated class JAXBMarshalMethod = JaxbMarshalMethod;
 
 class JaxbAnnotationType extends AnnotationType {
   JaxbAnnotationType() { this.getPackage().getName() = "javax.xml.bind.annotation" }

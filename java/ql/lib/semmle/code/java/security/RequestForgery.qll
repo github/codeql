@@ -10,6 +10,7 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.Properties
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.security.Sanitizers
 
 /**
  * A unit class for adding additional taint steps that are specific to server-side request forgery (SSRF) attacks.
@@ -59,13 +60,7 @@ private class DefaultRequestForgerySink extends RequestForgerySink {
 /** A sanitizer for request forgery vulnerabilities. */
 abstract class RequestForgerySanitizer extends DataFlow::Node { }
 
-private class PrimitiveSanitizer extends RequestForgerySanitizer {
-  PrimitiveSanitizer() {
-    this.getType() instanceof PrimitiveType or
-    this.getType() instanceof BoxedType or
-    this.getType() instanceof NumberType
-  }
-}
+private class PrimitiveSanitizer extends RequestForgerySanitizer instanceof SimpleTypeSanitizer { }
 
 private class HostnameSanitizingPrefix extends InterestingPrefix {
   int offset;

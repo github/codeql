@@ -62,6 +62,7 @@ extensions:
       - ["System.Configuration", "ConfigurationElement", True, "GetTransformedTypeString", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["System.Configuration", "ConfigurationElement", True, "Reset", "(System.Configuration.ConfigurationElement)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Configuration", "ConfigurationElement", True, "SerializeElement", "(System.Xml.XmlWriter,System.Boolean)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
+      - ["System.Configuration", "ConfigurationElement", True, "SerializeToXmlElement", "(System.Xml.XmlWriter,System.String)", "", "Argument[1]", "Argument[0]", "taint", "df-generated"]
       - ["System.Configuration", "ConfigurationElement", True, "SerializeToXmlElement", "(System.Xml.XmlWriter,System.String)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["System.Configuration", "ConfigurationElement", True, "Unmerge", "(System.Configuration.ConfigurationElement,System.Configuration.ConfigurationElement,System.Configuration.ConfigurationSaveMode)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Configuration", "ConfigurationElement", True, "get_ElementProperty", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

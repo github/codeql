@@ -685,9 +685,6 @@ module Ldap {
   }
 }
 
-/** DEPRECATED: Alias for Ldap */
-deprecated module LDAP = Ldap;
-
 /**
  * A data-flow node that escapes meta-characters, which could be used to prevent
  * injection attacks.
@@ -1156,9 +1153,6 @@ module Http {
   // TODO: investigate whether we should treat responses to client requests as
   // remote-flow-sources in general.
 }
-
-/** DEPRECATED: Alias for Http */
-deprecated module HTTP = Http;
 
 /**
  * Provides models for cryptographic things.

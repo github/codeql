@@ -177,7 +177,7 @@ private predicate legalDottedName(string name) {
 }
 
 bindingset[name]
-private predicate legalShortName(string name) { name.regexpMatch("(\\p{L}|_)(\\p{L}|\\d|_)*") }
+predicate legalShortName(string name) { name.regexpMatch("(\\p{L}|_)(\\p{L}|\\d|_)*") }
 
 private string moduleNameFromBase(Container file) {
   // We used to also require `isPotentialPackage(f)` to hold in this case,

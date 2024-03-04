@@ -6,6 +6,7 @@ extensions:
     data:
       - ["System.Formats.Asn1", "AsnReader", False, "AsnReader", "(System.ReadOnlyMemory<System.Byte>,System.Formats.Asn1.AsnEncodingRules,System.Formats.Asn1.AsnReaderOptions)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["System.Formats.Asn1", "AsnReader", False, "AsnReader", "(System.ReadOnlyMemory<System.Byte>,System.Formats.Asn1.AsnEncodingRules,System.Formats.Asn1.AsnReaderOptions)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["System.Formats.Asn1", "AsnReader", False, "Clone", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Asn1", "AsnReader", False, "PeekContentBytes", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Asn1", "AsnReader", False, "PeekEncodedValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["System.Formats.Asn1", "AsnReader", False, "ReadEncodedValue", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]

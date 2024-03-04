@@ -2126,13 +2126,6 @@ class ChiInstruction extends Instruction {
   final Instruction getPartial() { result = this.getPartialOperand().getDef() }
 
   /**
-   * Gets the bit range `[startBit, endBit)` updated by the partial operand of this `ChiInstruction`, relative to the start address of the total operand.
-   */
-  final predicate getUpdatedInterval(int startBit, int endBit) {
-    Construction::getIntervalUpdatedByChi(this, startBit, endBit)
-  }
-
-  /**
    * Holds if the `ChiPartialOperand` totally, but not exactly, overlaps with the `ChiTotalOperand`.
    * This means that the `ChiPartialOperand` will not override the entire memory associated with the
    * `ChiTotalOperand`.
