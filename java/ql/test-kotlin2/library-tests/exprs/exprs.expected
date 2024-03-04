@@ -311,9 +311,9 @@
 | delegatedProperties.kt:60:1:60:24 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:60:1:60:24 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:60:24:60:24 | 0 | delegatedProperties.kt:0:0:0:0 | <clinit> | IntegerLiteral |
-| delegatedProperties.kt:62:25:62:48 | ...=... | delegatedProperties.kt:62:1:62:49 | ClassWithDelegate | KtInitializerAssignExpr |
-| delegatedProperties.kt:62:25:62:48 | anotherClassInt | delegatedProperties.kt:62:1:62:49 | ClassWithDelegate | VarAccess |
-| delegatedProperties.kt:62:25:62:48 | anotherClassInt | delegatedProperties.kt:62:1:62:49 | ClassWithDelegate | VarAccess |
+| delegatedProperties.kt:62:25:62:48 | ...=... | delegatedProperties.kt:62:24:62:49 | ClassWithDelegate | KtInitializerAssignExpr |
+| delegatedProperties.kt:62:25:62:48 | anotherClassInt | delegatedProperties.kt:62:24:62:49 | ClassWithDelegate | VarAccess |
+| delegatedProperties.kt:62:25:62:48 | anotherClassInt | delegatedProperties.kt:62:24:62:49 | ClassWithDelegate | VarAccess |
 | delegatedProperties.kt:62:25:62:48 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:62:25:62:48 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:62:25:62:48 | int | file://:0:0:0:0 | <none> | TypeAccess |
