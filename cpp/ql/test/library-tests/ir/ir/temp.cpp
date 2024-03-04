@@ -34,3 +34,7 @@ void temp_test4() {
     ClassWithDestructor2 c;
     const ClassWithDestructor2& rs2 = returnValue<ClassWithDestructor2>();
 }
+
+void temp_test5(bool b) {
+  b ? ClassWithDestructor2() : ClassWithDestructor2();
+}
