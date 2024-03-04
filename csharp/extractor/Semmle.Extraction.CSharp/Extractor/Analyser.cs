@@ -66,9 +66,6 @@ namespace Semmle.Extraction.CSharp
         {
             foreach (var assembly in compilation.References.OfType<PortableExecutableReference>())
             {
-                // CIL first - it takes longer.
-                if (options.CIL)
-                    extractionTasks.Add(() => DoExtractCIL(assembly));
                 extractionTasks.Add(() => DoAnalyseReferenceAssembly(assembly));
             }
         }
@@ -175,17 +172,6 @@ namespace Semmle.Extraction.CSharp
             {
                 Logger.Log(Severity.Error, "  Unhandled exception analyzing {0}: {1}", r.FilePath, ex);
             }
-        }
-
-        private void DoExtractCIL(PortableExecutableReference r)
-        {
-            var currentTaskId = IncrementTaskCount();
-            ReportProgressTaskStarted(currentTaskId, r.FilePath);
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            CIL.Analyser.ExtractCIL(r.FilePath!, Logger, options, out var trapFile, out var extracted);
-            stopwatch.Stop();
-            ReportProgressTaskDone(currentTaskId, r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }
 
         private void DoExtractTree(SyntaxTree tree)
