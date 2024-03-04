@@ -159,9 +159,9 @@ where
     extractorTotalDiagnostics(key, value) or
     CallTargetStatsReport::numberOfOk(key, value) or
     CallTargetStatsReport::numberOfNotOk(key, value) or
-    CallTargetStatsReport::percentageOfOk(key, value) or
+    CallTargetStatsReport::percentageOfOk(key, any(float x | value = x.floor())) or
     ExprTypeStatsReport::numberOfOk(key, value) or
     ExprTypeStatsReport::numberOfNotOk(key, value) or
-    ExprTypeStatsReport::percentageOfOk(key, value)
+    ExprTypeStatsReport::percentageOfOk(key, any(float x | value = x.floor()))
   )
 select key, value
