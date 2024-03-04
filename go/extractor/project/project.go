@@ -471,8 +471,10 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 
 // Finds Go workspaces in the current working directory.
 func GetWorkspaceInfo(emitDiagnostics bool) []GoWorkspace {
-	bazelPaths := util.FindAllFilesWithName(".", "BUILD", "vendor")
-	bazelPaths = append(bazelPaths, util.FindAllFilesWithName(".", "BUILD.bazel", "vendor")...)
+	bazelPaths := slices.Concat(
+		util.FindAllFilesWithName(".", "BUILD", "vendor"),
+		util.FindAllFilesWithName(".", "BUILD.bazel", "vendor"),
+	)
 	if len(bazelPaths) > 0 {
 		// currently not supported
 		if emitDiagnostics {
