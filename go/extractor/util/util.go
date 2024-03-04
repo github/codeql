@@ -320,26 +320,6 @@ func FindAllFilesWithName(root string, name string, dirsToSkip ...string) []stri
 	return paths
 }
 
-// Determines whether there are any Go source files in locations which do not have a Go.mod
-// file in the same directory or higher up in the file hierarchy, relative to the `root`.
-func AnyGoFilesOutsideDirs(root string, dirsToSkip ...string) bool {
-	found := false
-	filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
-		if err != nil {
-			return err
-		}
-		if d.IsDir() && slices.Contains(dirsToSkip, path) {
-			return filepath.SkipDir
-		}
-		if filepath.Ext(d.Name()) == ".go" {
-			found = true
-			return filepath.SkipAll
-		}
-		return nil
-	})
-	return found
-}
-
 // Returns an array of any Go source files in locations which do not have a Go.mod
 // file in the same directory or higher up in the file hierarchy, relative to the `root`.
 func GoFilesOutsideDirs(root string, dirsToSkip ...string) []string {
