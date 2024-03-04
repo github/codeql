@@ -147,12 +147,12 @@
 | delegatedProperties.kt:26:13:26:28 | this.curValue | delegatedProperties.kt:26:13:26:28 | getCurValue | VarAccess |
 | delegatedProperties.kt:26:13:26:28 | this.curValue | delegatedProperties.kt:26:13:26:28 | setCurValue | VarAccess |
 | delegatedProperties.kt:26:28:26:28 | 0 | delegatedProperties.kt:25:64:31:9 |  | IntegerLiteral |
-| delegatedProperties.kt:27:22:27:88 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:27:13:27:88 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:27:35:27:47 | Object | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:27:50:27:71 | ? ... | file://:0:0:0:0 | <none> | WildcardTypeAccess |
 | delegatedProperties.kt:27:50:27:71 | KProperty<?> | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:27:81:27:88 | getCurValue(...) | delegatedProperties.kt:27:22:27:88 | getValue | MethodCall |
-| delegatedProperties.kt:27:81:27:88 | this | delegatedProperties.kt:27:22:27:88 | getValue | ThisAccess |
+| delegatedProperties.kt:27:81:27:88 | getCurValue(...) | delegatedProperties.kt:27:13:27:88 | getValue | MethodCall |
+| delegatedProperties.kt:27:81:27:88 | this | delegatedProperties.kt:27:13:27:88 | getValue | ThisAccess |
 | delegatedProperties.kt:28:22:30:13 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:28:35:28:47 | Object | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:28:50:28:71 | ? ... | file://:0:0:0:0 | <none> | WildcardTypeAccess |
