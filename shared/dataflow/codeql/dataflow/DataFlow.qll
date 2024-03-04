@@ -178,7 +178,7 @@ signature module InputSig {
   }
 
   /**
-   * A content approximation. A content approximation corresponds with one or
+   * A content approximation. A content approximation corresponds to one or
    * more `Content`s, and is used to provide an in-between level of precision
    * for pruning.
    */
