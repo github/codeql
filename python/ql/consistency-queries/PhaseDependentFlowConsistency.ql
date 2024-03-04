@@ -8,7 +8,7 @@ where
   not exists(node.getScope()) and
   exists(Node nodeFrom, Node nodeTo | node in [nodeFrom, nodeTo] |
     // the list of step relations used with PhaseDependentFlow has been compiled
-    // manually, and there isn't really a good way to do so manually :|
+    // manually, and there isn't really a good way to do so automatically :|
     DataFlowPrivate::LocalFlow::definitionFlowStep(nodeFrom, nodeTo)
     or
     DataFlowPrivate::LocalFlow::expressionFlowStep(nodeFrom, nodeTo)
