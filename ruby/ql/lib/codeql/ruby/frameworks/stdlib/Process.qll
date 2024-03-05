@@ -32,4 +32,18 @@ module Process {
       super.getNumberOfArguments() = 1 and arg = this.getAnArgument()
     }
   }
+
+  /**
+   * A system command executed via the `Process.exec` method.
+   */
+  class ExecCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
+    ExecCall() { this = DataFlow::getConstant("Process").getAMethodCall("exec") }
+
+    override DataFlow::Node getAnArgument() { result = super.getArgument(_) }
+
+    override predicate isShellInterpreted(DataFlow::Node arg) {
+      // Process.exec invokes a subshell if you provide a single string as argument
+      super.getNumberOfArguments() = 1 and arg = this.getAnArgument()
+    }
+  }
 }
