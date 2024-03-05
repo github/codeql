@@ -412,6 +412,8 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) { no
 /** Extra data-flow steps needed for lambda flow analysis. */
 predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preservesValue) { none() }
 
+class DataFlowSecondLevelScope = Unit;
+
 /**
  * Holds if flow is allowed to pass from parameter `p` and back to itself as a
  * side-effect, resulting in a summary from `p` to itself.
