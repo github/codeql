@@ -83,9 +83,8 @@ module SQL {
           |
             fn.hasQualifiedName(sq, ["Delete", "Expr", "Insert", "Select", "Update"])
             or
-            // first argument to the `OrderBy`, `Prefix`, `Suffix` or `Where` method of one of the `*Builder` classes
             exists(Method m, string builder | m = fn |
-              builder.matches("%Builder") and
+              builder = ["DeleteBuilder", "InsertBuilder", "SelectBuilder", "UpdateBuilder"] and
               m.hasQualifiedName(sq, builder,
                 ["Columns", "From", "Options", "OrderBy", "Prefix", "Suffix", "Where"])
               or
