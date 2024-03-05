@@ -983,8 +983,11 @@ class CastNode extends Node {
 
 cached
 newtype TDataFlowCallable =
-  TSourceCallable(Cpp::Declaration decl) /*{ not decl instanceof FlowSummaryImpl::Public::SummarizedCallable }*/ or // TODO: figure this out
-  TSummarizedCallable(FlowSummaryImpl::Public::SummarizedCallable c)
+  TSourceCallable(Cpp::Declaration decl) or
+  /*{ not decl instanceof FlowSummaryImpl::Public::SummarizedCallable }*/ TSummarizedCallable(
+    // TODO: figure this out
+    FlowSummaryImpl::Public::SummarizedCallable c
+  )
 
 /**
  * A callable, which may be:
@@ -1006,7 +1009,9 @@ class DataFlowCallable extends TDataFlowCallable {
 
   Cpp::Declaration asSourceCallable() { this = TSourceCallable(result) }
 
-  FlowSummaryImpl::Public::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
+  FlowSummaryImpl::Public::SummarizedCallable asSummarizedCallable() {
+    this = TSummarizedCallable(result)
+  }
 
   Cpp::Declaration getUnderlyingCallable() {
     result = this.asSummarizedCallable() or // SummarizedCallable = Function (in CPP)
@@ -1117,13 +1122,15 @@ private class NormalCall extends DataFlowCall, TNormalCall {
 
   override CallTargetOperand getCallTargetOperand() { result = call.getCallTargetOperand() }
 
-  override DataFlowCallable getStaticCallTarget() { result = TSourceCallable(call.getStaticCallTarget()) }
+  override DataFlowCallable getStaticCallTarget() {
+    result = TSourceCallable(call.getStaticCallTarget())
+  }
 
-  override ArgumentOperand getArgumentOperand(int index) {
-    result = call.getArgumentOperand(index)
-   }
+  override ArgumentOperand getArgumentOperand(int index) { result = call.getArgumentOperand(index) }
 
-  override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(call.getEnclosingFunction()) }
+  override DataFlowCallable getEnclosingCallable() {
+    result = TSourceCallable(call.getEnclosingFunction())
+  }
 
   override string toString() { result = call.toString() }
 
@@ -1144,14 +1151,10 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
-//  override CallTargetOperand getCallTargetOperand() TODO
+  //  override CallTargetOperand getCallTargetOperand() TODO
+  override DataFlowCallable getStaticCallTarget() { result = TSummarizedCallable(c) }
 
-  override DataFlowCallable getStaticCallTarget() {
-    result = TSummarizedCallable(c)
-  }
-
-//  override ArgumentOperand getArgumentOperand(int index) TODO
-
+  //  override ArgumentOperand getArgumentOperand(int index) TODO
   override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) } // TODO: is this right?
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
@@ -1262,7 +1265,8 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * One example would be to allow flow like `p.foo = p.bar;`, which is disallowed
  * by default as a heuristic.
  */
-predicate allowParameterReturnInSelf(ParameterNode p) { p instanceof IndirectParameterNode
+predicate allowParameterReturnInSelf(ParameterNode p) {
+  p instanceof IndirectParameterNode
   // TODO: Swift has a case for summarized callables here.
 }
 
