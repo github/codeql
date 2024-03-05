@@ -481,7 +481,7 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 // Determines whether `str` starts with any of `prefixes`.
 func startsWithAnyOf(str string, prefixes []string) bool {
 	for _, prefix := range prefixes {
-		if strings.HasPrefix(str, prefix) {
+		if relPath, err := filepath.Rel(str, prefix); err == nil && !strings.HasPrefix(relPath, "..") {
 			return true
 		}
 	}
