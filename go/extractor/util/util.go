@@ -6,9 +6,11 @@ import (
 	"io"
 	"io/fs"
 	"log"
+	"net/url"
 	"os"
 	"os/exec"
 	"path/filepath"
+	"regexp"
 	"runtime"
 	"slices"
 	"strings"
@@ -349,4 +351,61 @@ func GetParentDirs(paths []string) []string {
 		dirs[i] = filepath.Dir(path)
 	}
 	return dirs
+}
+
+// Returns the import path of the package being built, or "" if it cannot be determined.
+func GetImportPath() (importpath string) {
+	importpath = os.Getenv("LGTM_INDEX_IMPORT_PATH")
+	if importpath == "" {
+		repourl := os.Getenv("SEMMLE_REPO_URL")
+		if repourl == "" {
+			githubrepo := os.Getenv("GITHUB_REPOSITORY")
+			if githubrepo == "" {
+				log.Printf("Unable to determine import path, as neither LGTM_INDEX_IMPORT_PATH nor GITHUB_REPOSITORY is set\n")
+				return ""
+			} else {
+				importpath = "github.com/" + githubrepo
+			}
+		} else {
+			importpath = getImportPathFromRepoURL(repourl)
+			if importpath == "" {
+				log.Printf("Failed to determine import path from SEMMLE_REPO_URL '%s'\n", repourl)
+				return
+			}
+		}
+	}
+	log.Printf("Import path is '%s'\n", importpath)
+	return
+}
+
+// Returns the import path of the package being built from `repourl`, or "" if it cannot be
+// determined.
+func getImportPathFromRepoURL(repourl string) string {
+	// check for scp-like URL as in "git@github.com:github/codeql-go.git"
+	shorturl := regexp.MustCompile(`^([^@]+@)?([^:]+):([^/].*?)(\.git)?$`)
+	m := shorturl.FindStringSubmatch(repourl)
+	if m != nil {
+		return m[2] + "/" + m[3]
+	}
+
+	// otherwise parse as proper URL
+	u, err := url.Parse(repourl)
+	if err != nil {
+		log.Fatalf("Malformed repository URL '%s'\n", repourl)
+	}
+
+	if u.Scheme == "file" {
+		// we can't determine import paths from file paths
+		return ""
+	}
+
+	if u.Hostname() == "" || u.Path == "" {
+		return ""
+	}
+
+	host := u.Hostname()
+	path := u.Path
+	// strip off leading slashes and trailing `.git` if present
+	path = regexp.MustCompile(`^/+|\.git$`).ReplaceAllString(path, "")
+	return host + "/" + path
 }
