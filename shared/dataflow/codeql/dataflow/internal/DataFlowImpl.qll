@@ -3986,8 +3986,8 @@ module MakeImpl<InputSig Lang> {
       AccessPath ap
     ) {
       exists(DataFlowType t0 |
-        pathStep0(mid, node, state, cc, sc, t0, ap) and
-        Stage5::revFlow(node, state, ap.getApprox()) and
+        pathStep0(mid, pragma[only_bind_into](node), pragma[only_bind_into](state), cc, sc, t0, ap) and
+        Stage5::revFlow(pragma[only_bind_into](node), pragma[only_bind_into](state), ap.getApprox()) and
         strengthenType(node, t0, t) and
         not inBarrier(node, state)
       )
