@@ -5,8 +5,10 @@ import (
 	"log"
 	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
 
+	"github.com/github/codeql-go/extractor/util"
 	"golang.org/x/mod/semver"
 )
 
@@ -81,7 +83,20 @@ func TidyModule(path string) *exec.Cmd {
 
 // Run `go mod init` in the directory given by `path`.
 func InitModule(path string) *exec.Cmd {
-	modInit := exec.Command("go", "mod", "init", "codeql/auto-project")
+	moduleName := "codeql/auto-project"
+
+	if importpath := util.GetImportPath(); importpath != "" {
+		// This should be something like `github.com/user/repo`
+		moduleName = importpath
+
+		// If we are not initialising the new module in the root directory of the workspace,
+		// append the relative path to the module name.
+		if relPath, err := filepath.Rel(".", path); err != nil && relPath != "." {
+			moduleName = moduleName + "/" + relPath
+		}
+	}
+
+	modInit := exec.Command("go", "mod", "init", moduleName)
 	modInit.Dir = path
 	return modInit
 }
