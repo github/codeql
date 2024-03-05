@@ -392,7 +392,7 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
 }
 
 /**
- * TODO: QLDoc.
+ * An argument node that is part of a summary.
  */
 class SummaryArgumentNode extends ArgumentNode, FlowSummaryNode {
   private SummaryCall call_;
@@ -550,6 +550,9 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
   }
 }
 
+/**
+ * An return node that is part of a summary.
+ */
 private class SummaryReturnNode extends ReturnNode, FlowSummaryNode {
   private ReturnKind rk;
 
@@ -715,7 +718,7 @@ private class SideEffectOutNode extends OutNode, IndirectArgumentOutNode {
 }
 
 /**
- * TODO: QLDoc.
+ * An output node that is part of a summary.
  */
 private class SummaryOutNode extends OutNode, FlowSummaryNode {
   private SummaryCall call;
