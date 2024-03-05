@@ -127,9 +127,6 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(BuiltInVarArgsStart vaStartExpr |
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
   )
-  or
-  // suppress destructors of temporary variables until proper support is added for them.
-  exists(Expr parent | parent.getAnImplicitDestructorCall() = expr)
 }
 
 /**
