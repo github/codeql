@@ -4639,67 +4639,127 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
      *
      * Calculates per-stage metrics for data flow.
      */
-    predicate stageStats(
-      int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
-      int calledges, int tfnodes, int tftuples
-    ) {
-      stage = "1 Fwd" and
-      n = 10 and
-      Stage1::stats(true, nodes, fields, conscand, states, tuples, calledges) and
-      tfnodes = -1 and
-      tftuples = -1
-      or
-      stage = "1 Rev" and
-      n = 15 and
-      Stage1::stats(false, nodes, fields, conscand, states, tuples, calledges) and
-      tfnodes = -1 and
-      tftuples = -1
-      or
-      stage = "2 Fwd" and
-      n = 20 and
-      Stage2::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "2 Rev" and
-      n = 25 and
-      Stage2::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "3 Fwd" and
-      n = 30 and
-      Stage3::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "3 Rev" and
-      n = 35 and
-      Stage3::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "4 Fwd" and
-      n = 40 and
-      Stage4::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "4 Rev" and
-      n = 45 and
-      Stage4::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "5 Fwd" and
-      n = 50 and
-      Stage5::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "5 Rev" and
-      n = 55 and
-      Stage5::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
-      or
-      stage = "6 Fwd" and
-      n = 60 and
-      finalStats(true, nodes, fields, conscand, states, tuples) and
-      calledges = -1 and
-      tfnodes = -1 and
-      tftuples = -1
-      or
-      stage = "6 Rev" and
-      n = 65 and
-      finalStats(false, nodes, fields, conscand, states, tuples) and
-      calledges = -1 and
-      tfnodes = -1 and
-      tftuples = -1
+    predicate stageStats = Debug::stageStats/10;
+
+    private module Stage2alias = Stage2;
+
+    private module Stage3alias = Stage3;
+
+    private module Stage4alias = Stage4;
+
+    private module Stage5alias = Stage5;
+
+    /**
+     * INTERNAL: Only for debugging.
+     *
+     * Contains references to individual pruning stages.
+     */
+    module Debug {
+      module Stage2 = Stage2alias;
+
+      module Stage3 = Stage3alias;
+
+      module Stage4 = Stage4alias;
+
+      module Stage5 = Stage5alias;
+
+      predicate stageStats1(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stage = "1 Fwd" and
+        n = 10 and
+        Stage1::stats(true, nodes, fields, conscand, states, tuples, calledges) and
+        tfnodes = -1 and
+        tftuples = -1
+        or
+        stage = "1 Rev" and
+        n = 15 and
+        Stage1::stats(false, nodes, fields, conscand, states, tuples, calledges) and
+        tfnodes = -1 and
+        tftuples = -1
+      }
+
+      predicate stageStats2(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats1(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "2 Fwd" and
+        n = 20 and
+        Stage2::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "2 Rev" and
+        n = 25 and
+        Stage2::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats3(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats2(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "3 Fwd" and
+        n = 30 and
+        Stage3::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "3 Rev" and
+        n = 35 and
+        Stage3::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats4(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats3(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "4 Fwd" and
+        n = 40 and
+        Stage4::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "4 Rev" and
+        n = 45 and
+        Stage4::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats5(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats4(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "5 Fwd" and
+        n = 50 and
+        Stage5::stats(true, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "5 Rev" and
+        n = 55 and
+        Stage5::stats(false, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+      }
+
+      predicate stageStats(
+        int n, string stage, int nodes, int fields, int conscand, int states, int tuples,
+        int calledges, int tfnodes, int tftuples
+      ) {
+        stageStats5(n, stage, nodes, fields, conscand, states, tuples, calledges, tfnodes, tftuples)
+        or
+        stage = "6 Fwd" and
+        n = 60 and
+        finalStats(true, nodes, fields, conscand, states, tuples) and
+        calledges = -1 and
+        tfnodes = -1 and
+        tftuples = -1
+        or
+        stage = "6 Rev" and
+        n = 65 and
+        finalStats(false, nodes, fields, conscand, states, tuples) and
+        calledges = -1 and
+        tfnodes = -1 and
+        tftuples = -1
+      }
     }
 
     private signature predicate flag();
