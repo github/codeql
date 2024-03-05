@@ -10,14 +10,9 @@ abstract class UnsafeUrlForwardSink extends DataFlow::Node { }
 /** A sanitizer for unsafe URL forward vulnerabilities. */
 abstract class UnsafeUrlForwardSanitizer extends DataFlow::Node { }
 
-/** An argument to `getRequestDispatcher`. */
-private class RequestDispatcherSink extends UnsafeUrlForwardSink {
-  RequestDispatcherSink() {
-    exists(MethodCall ma |
-      ma.getMethod() instanceof GetRequestDispatcherMethod and
-      ma.getArgument(0) = this.asExpr()
-    )
-  }
+/** A default sink representing methods susceptible to unsafe URL forwarding. */
+private class DefaultUnsafeUrlForwardSink extends UnsafeUrlForwardSink {
+  DefaultUnsafeUrlForwardSink() { sinkNode(this, "url-forward") }
 }
 
 // TODO: look into `StaplerResponse.forward`, etc., and think about re-adding the MaD "request-forgery" sinks as a result
