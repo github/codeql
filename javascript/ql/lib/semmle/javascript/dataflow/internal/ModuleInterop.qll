@@ -18,6 +18,8 @@ abstract private class ModuleInteropCall extends DataFlow::CallNode {
     or
     exists(this.getImportedModule().getAnExportedValue("__esModule"))
   }
+
+  abstract predicate step(DataFlow::Node pred, DataFlow::Node succ);
 }
 
 /** A call that wraps the imported object in a `default` property, unless it is from an ES2015 module. */
@@ -32,6 +34,16 @@ private class InteropRequireCall extends ModuleInteropCall {
     or
     (not this.isImportingESModule() or this.getCalleeName() = "_interopRequireWildcard") and
     result = this.getAPropertyRead("default")
+  }
+
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    pred = this.getArgument(0) and
+    succ = this.getImportedObjectRef()
+    or
+    exists(string prop |
+      pred = this.getImportedModule().getAnExportedValue(prop) and
+      succ = this.getImportedObjectRef().getAPropertyRead(prop)
+    )
   }
 }
 
@@ -51,32 +63,20 @@ private class InteropDefaultCall extends ModuleInteropCall {
     not exists(this.getDefaultExport()) and
     result = this.getArgument(0)
   }
-}
 
-predicate interopModuleStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(InteropRequireCall call |
-    pred = call.getArgument(0) and
-    succ = call.getImportedObjectRef()
+  override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+    pred = this.getImportedObjectSource() and
+    succ = this
     or
     exists(string prop |
-      pred = call.getImportedModule().getAnExportedValue(prop) and
-      succ = call.getImportedObjectRef().getAPropertyRead(prop)
+      pred = this.getDefaultExport().getALocalSource().getAPropertyWrite(prop).getRhs() and
+      succ = this.getAPropertyRead(prop)
     )
-  )
-  or
-  exists(InteropDefaultCall call |
-    pred = call.getImportedObjectSource() and
-    succ = call
-    or
-    exists(string prop |
-      pred = call.getDefaultExport().getALocalSource().getAPropertyWrite(prop).getRhs() and
-      succ = call.getAPropertyRead(prop)
-    )
-  )
+  }
 }
 
 private class Step extends PCG::PreCallGraphStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    interopModuleStep(pred, succ)
+    any(ModuleInteropCall call).step(pred, succ)
   }
 }
