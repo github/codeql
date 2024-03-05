@@ -5,7 +5,6 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.security.PathSanitizer
-private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.controlflow.Guards
 
 /** A URL forward sink. */
