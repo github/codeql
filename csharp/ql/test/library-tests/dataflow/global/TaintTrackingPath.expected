@@ -24,8 +24,8 @@ edges
 | Capture.cs:33:30:33:39 | access to local variable captureIn3 : (...) => ... [captured tainted] : String | Capture.cs:29:26:29:32 | access to parameter tainted : String | provenance |  |
 | Capture.cs:33:30:33:39 | access to local variable captureIn3 : Func<String,String> [captured tainted] : String | Capture.cs:29:26:29:32 | access to parameter tainted : String | provenance |  |
 | Capture.cs:50:50:50:55 | sink39 : String | Capture.cs:52:23:59:13 | (...) => ... : (...) => ... [captured sink39] : String | provenance |  |
-| Capture.cs:52:23:59:13 | (...) => ... : (...) => ... [captured sink39] : String | Capture.cs:348:34:348:34 | a : (...) => ... [captured sink39] : String | provenance |  |
-| Capture.cs:55:27:58:17 | (...) => ... : (...) => ... [captured sink39] : String | Capture.cs:348:34:348:34 | a : (...) => ... [captured sink39] : String | provenance |  |
+| Capture.cs:52:23:59:13 | (...) => ... : (...) => ... [captured sink39] : String | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | provenance |  |
+| Capture.cs:55:27:58:17 | (...) => ... : (...) => ... [captured sink39] : String | Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | provenance |  |
 | Capture.cs:61:36:61:42 | access to parameter tainted : String | Capture.cs:50:50:50:55 | sink39 : String | provenance |  |
 | Capture.cs:69:22:69:35 | "taint source" : String | Capture.cs:71:9:71:19 | [post] access to local function CaptureOut1 : CaptureOut1 [captured sink30] : String | provenance |  |
 | Capture.cs:71:9:71:19 | [post] access to local function CaptureOut1 : CaptureOut1 [captured sink30] : String | Capture.cs:72:15:72:20 | access to local variable sink30 | provenance |  |
@@ -35,7 +35,7 @@ edges
 | Capture.cs:89:22:89:35 | "taint source" : String | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | provenance |  |
 | Capture.cs:92:30:92:40 | [post] access to local variable captureOut3 : (...) => ... [captured sink32] : String | Capture.cs:93:15:93:20 | access to local variable sink32 | provenance |  |
 | Capture.cs:114:23:117:13 | [post] (...) => ... : (...) => ... [captured sink40] : String | Capture.cs:123:9:123:33 | [post] access to local function CaptureOutMultipleLambdas : CaptureOutMultipleLambdas [captured sink40] : String | provenance |  |
-| Capture.cs:116:26:116:39 | "taint source" : String | Capture.cs:350:9:350:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | provenance |  |
+| Capture.cs:116:26:116:39 | "taint source" : String | Capture.cs:352:9:352:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | provenance |  |
 | Capture.cs:123:9:123:33 | [post] access to local function CaptureOutMultipleLambdas : CaptureOutMultipleLambdas [captured sink40] : String | Capture.cs:124:15:124:20 | access to local variable sink40 | provenance |  |
 | Capture.cs:127:25:127:31 | tainted : String | Capture.cs:130:9:133:9 | CaptureThrough1(...) : CaptureThrough1 [captured tainted] : String | provenance |  |
 | Capture.cs:127:25:127:31 | tainted : String | Capture.cs:134:9:134:23 | access to local function CaptureThrough1 : CaptureThrough1 [captured tainted] : String | provenance |  |
@@ -85,7 +85,7 @@ edges
 | Capture.cs:221:18:221:35 | call to method M3 : (...) => ... [captured s] : String | Capture.cs:217:19:217:19 | access to parameter s | provenance |  |
 | Capture.cs:221:21:221:34 | "taint source" : String | Capture.cs:213:22:213:22 | s : String | provenance |  |
 | Capture.cs:221:21:221:34 | "taint source" : String | Capture.cs:221:18:221:35 | call to method M3 : (...) => ... [captured s] : String | provenance |  |
-| Capture.cs:223:28:223:45 | call to method M3 : (...) => ... [captured s] : String | Capture.cs:348:34:348:34 | a : (...) => ... [captured s] : String | provenance |  |
+| Capture.cs:223:28:223:45 | call to method M3 : (...) => ... [captured s] : String | Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | provenance |  |
 | Capture.cs:223:31:223:44 | "taint source" : String | Capture.cs:213:22:213:22 | s : String | provenance |  |
 | Capture.cs:223:31:223:44 | "taint source" : String | Capture.cs:223:28:223:45 | call to method M3 : (...) => ... [captured s] : String | provenance |  |
 | Capture.cs:228:17:228:30 | "taint source" : String | Capture.cs:229:20:233:9 | (...) => ... : (...) => ... [captured x] : String | provenance |  |
@@ -111,7 +111,7 @@ edges
 | Capture.cs:266:9:266:9 | [post] access to local variable a : (...) => ... [captured c, field Field] : String | Capture.cs:268:15:268:15 | access to local variable c : Capture [field Field] : String | provenance |  |
 | Capture.cs:268:15:268:15 | access to local variable c : Capture [field Field] : String | Capture.cs:268:15:268:21 | access to field Field | provenance |  |
 | Capture.cs:273:19:273:19 | x : String | Capture.cs:273:30:273:30 | access to parameter x | provenance |  |
-| Capture.cs:273:34:273:47 | "taint source" : String | Capture.cs:353:45:353:45 | x : String | provenance |  |
+| Capture.cs:273:34:273:47 | "taint source" : String | Capture.cs:355:45:355:45 | x : String | provenance |  |
 | Capture.cs:278:17:278:30 | "taint source" : String | Capture.cs:280:25:288:9 | (...) => ... : (...) => ... [captured x] : String | provenance |  |
 | Capture.cs:278:17:278:30 | "taint source" : String | Capture.cs:290:9:290:14 | access to local variable middle : Action [captured x] : String | provenance |  |
 | Capture.cs:278:17:278:30 | "taint source" : String | Capture.cs:292:15:292:15 | access to local variable x | provenance |  |
@@ -144,25 +144,30 @@ edges
 | Capture.cs:311:17:311:30 | "taint source" : String | Capture.cs:312:15:312:15 | access to local variable x | provenance |  |
 | Capture.cs:318:17:318:30 | "taint source" : String | Capture.cs:319:19:319:19 | access to local variable x | provenance |  |
 | Capture.cs:328:17:328:30 | "taint source" : String | Capture.cs:330:9:330:49 | CapturedLocalFunction(...) : CapturedLocalFunction [captured x] : String | provenance |  |
+| Capture.cs:328:17:328:30 | "taint source" : String | Capture.cs:332:9:332:65 | CapturingLocalFunction(...) : CapturingLocalFunction [captured x] : String | provenance |  |
+| Capture.cs:328:17:328:30 | "taint source" : String | Capture.cs:334:9:334:30 | access to local function CapturingLocalFunction : CapturingLocalFunction [captured x] : String | provenance |  |
 | Capture.cs:330:9:330:49 | CapturedLocalFunction(...) : CapturedLocalFunction [captured x] : String | Capture.cs:332:42:332:62 | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String | provenance |  |
+| Capture.cs:332:9:332:65 | CapturingLocalFunction(...) : CapturingLocalFunction [captured x] : String | Capture.cs:334:9:334:30 | access to local function CapturingLocalFunction : CapturingLocalFunction [captured x] : String | provenance |  |
 | Capture.cs:332:42:332:62 | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String | Capture.cs:330:47:330:47 | access to local variable x | provenance |  |
-| Capture.cs:337:17:337:30 | "taint source" : String | Capture.cs:339:33:339:46 | (...) => ... : (...) => ... [captured x] : String | provenance |  |
-| Capture.cs:339:33:339:46 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:341:34:341:55 | (...) => ... : (...) => ... [captured capturedLambda, captured x] : String | provenance |  |
-| Capture.cs:339:33:339:46 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:343:9:343:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | provenance |  |
-| Capture.cs:341:16:341:30 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | Capture.cs:343:9:343:23 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | provenance |  |
-| Capture.cs:341:34:341:55 | (...) => ... : (...) => ... [captured capturedLambda, captured x] : String | Capture.cs:341:16:341:30 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | provenance |  |
-| Capture.cs:341:40:341:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | Capture.cs:339:45:339:45 | access to local variable x | provenance |  |
-| Capture.cs:343:9:343:23 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | Capture.cs:341:40:341:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | provenance |  |
-| Capture.cs:343:9:343:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | Capture.cs:341:40:341:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | provenance |  |
-| Capture.cs:348:34:348:34 | a : (...) => ... [captured s] : String | Capture.cs:350:9:350:9 | access to parameter a : (...) => ... [captured s] : String | provenance |  |
-| Capture.cs:348:34:348:34 | a : (...) => ... [captured sink39] : String | Capture.cs:350:9:350:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
-| Capture.cs:348:34:348:34 | a : (...) => ... [captured sink39] : String | Capture.cs:350:9:350:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
-| Capture.cs:350:9:350:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | Capture.cs:114:23:117:13 | [post] (...) => ... : (...) => ... [captured sink40] : String | provenance |  |
-| Capture.cs:350:9:350:9 | access to parameter a : (...) => ... [captured s] : String | Capture.cs:217:19:217:19 | access to parameter s | provenance |  |
-| Capture.cs:350:9:350:9 | access to parameter a : (...) => ... [captured sink39] : String | Capture.cs:55:27:58:17 | (...) => ... : (...) => ... [captured sink39] : String | provenance |  |
-| Capture.cs:350:9:350:9 | access to parameter a : (...) => ... [captured sink39] : String | Capture.cs:57:27:57:32 | access to parameter sink39 | provenance |  |
-| Capture.cs:353:45:353:45 | x : String | Capture.cs:355:11:355:11 | access to parameter x : String | provenance |  |
-| Capture.cs:355:11:355:11 | access to parameter x : String | Capture.cs:273:19:273:19 | x : String | provenance |  |
+| Capture.cs:332:42:332:62 | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String | Capture.cs:330:47:330:47 | access to local variable x | provenance |  |
+| Capture.cs:334:9:334:30 | access to local function CapturingLocalFunction : CapturingLocalFunction [captured x] : String | Capture.cs:332:42:332:62 | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String | provenance |  |
+| Capture.cs:339:17:339:30 | "taint source" : String | Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | provenance |  |
+| Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:343:34:343:55 | (...) => ... : (...) => ... [captured capturedLambda, captured x] : String | provenance |  |
+| Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | provenance |  |
+| Capture.cs:343:16:343:30 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | Capture.cs:345:9:345:23 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | provenance |  |
+| Capture.cs:343:34:343:55 | (...) => ... : (...) => ... [captured capturedLambda, captured x] : String | Capture.cs:343:16:343:30 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | provenance |  |
+| Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | Capture.cs:341:45:341:45 | access to local variable x | provenance |  |
+| Capture.cs:345:9:345:23 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | provenance |  |
+| Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | provenance |  |
+| Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | provenance |  |
+| Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
+| Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | provenance |  |
+| Capture.cs:352:9:352:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | Capture.cs:114:23:117:13 | [post] (...) => ... : (...) => ... [captured sink40] : String | provenance |  |
+| Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | Capture.cs:217:19:217:19 | access to parameter s | provenance |  |
+| Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | Capture.cs:55:27:58:17 | (...) => ... : (...) => ... [captured sink39] : String | provenance |  |
+| Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | Capture.cs:57:27:57:32 | access to parameter sink39 | provenance |  |
+| Capture.cs:355:45:355:45 | x : String | Capture.cs:357:11:357:11 | access to parameter x : String | provenance |  |
+| Capture.cs:357:11:357:11 | access to parameter x : String | Capture.cs:273:19:273:19 | x : String | provenance |  |
 | GlobalDataFlow.cs:18:9:18:23 | access to field SinkField0 : String | GlobalDataFlow.cs:19:15:19:29 | access to field SinkField0 | provenance |  |
 | GlobalDataFlow.cs:18:9:18:23 | access to field SinkField0 : String | GlobalDataFlow.cs:26:9:26:26 | access to property SinkProperty0 : String | provenance |  |
 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:18:9:18:23 | access to field SinkField0 : String | provenance |  |
@@ -710,24 +715,27 @@ nodes
 | Capture.cs:328:17:328:30 | "taint source" : String | semmle.label | "taint source" : String |
 | Capture.cs:330:9:330:49 | CapturedLocalFunction(...) : CapturedLocalFunction [captured x] : String | semmle.label | CapturedLocalFunction(...) : CapturedLocalFunction [captured x] : String |
 | Capture.cs:330:47:330:47 | access to local variable x | semmle.label | access to local variable x |
+| Capture.cs:332:9:332:65 | CapturingLocalFunction(...) : CapturingLocalFunction [captured x] : String | semmle.label | CapturingLocalFunction(...) : CapturingLocalFunction [captured x] : String |
 | Capture.cs:332:42:332:62 | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String | semmle.label | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String |
-| Capture.cs:337:17:337:30 | "taint source" : String | semmle.label | "taint source" : String |
-| Capture.cs:339:33:339:46 | (...) => ... : (...) => ... [captured x] : String | semmle.label | (...) => ... : (...) => ... [captured x] : String |
-| Capture.cs:339:45:339:45 | access to local variable x | semmle.label | access to local variable x |
-| Capture.cs:341:16:341:30 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | semmle.label | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String |
-| Capture.cs:341:34:341:55 | (...) => ... : (...) => ... [captured capturedLambda, captured x] : String | semmle.label | (...) => ... : (...) => ... [captured capturedLambda, captured x] : String |
-| Capture.cs:341:40:341:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | semmle.label | access to local variable capturedLambda : (...) => ... [captured x] : String |
-| Capture.cs:343:9:343:23 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | semmle.label | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String |
-| Capture.cs:343:9:343:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | semmle.label | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String |
-| Capture.cs:348:34:348:34 | a : (...) => ... [captured s] : String | semmle.label | a : (...) => ... [captured s] : String |
-| Capture.cs:348:34:348:34 | a : (...) => ... [captured sink39] : String | semmle.label | a : (...) => ... [captured sink39] : String |
-| Capture.cs:348:34:348:34 | a : (...) => ... [captured sink39] : String | semmle.label | a : (...) => ... [captured sink39] : String |
-| Capture.cs:350:9:350:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | semmle.label | [post] access to parameter a : (...) => ... [captured sink40] : String |
-| Capture.cs:350:9:350:9 | access to parameter a : (...) => ... [captured s] : String | semmle.label | access to parameter a : (...) => ... [captured s] : String |
-| Capture.cs:350:9:350:9 | access to parameter a : (...) => ... [captured sink39] : String | semmle.label | access to parameter a : (...) => ... [captured sink39] : String |
-| Capture.cs:350:9:350:9 | access to parameter a : (...) => ... [captured sink39] : String | semmle.label | access to parameter a : (...) => ... [captured sink39] : String |
-| Capture.cs:353:45:353:45 | x : String | semmle.label | x : String |
-| Capture.cs:355:11:355:11 | access to parameter x : String | semmle.label | access to parameter x : String |
+| Capture.cs:332:42:332:62 | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String | semmle.label | access to local function CapturedLocalFunction : CapturedLocalFunction [captured x] : String |
+| Capture.cs:334:9:334:30 | access to local function CapturingLocalFunction : CapturingLocalFunction [captured x] : String | semmle.label | access to local function CapturingLocalFunction : CapturingLocalFunction [captured x] : String |
+| Capture.cs:339:17:339:30 | "taint source" : String | semmle.label | "taint source" : String |
+| Capture.cs:341:33:341:46 | (...) => ... : (...) => ... [captured x] : String | semmle.label | (...) => ... : (...) => ... [captured x] : String |
+| Capture.cs:341:45:341:45 | access to local variable x | semmle.label | access to local variable x |
+| Capture.cs:343:16:343:30 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | semmle.label | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String |
+| Capture.cs:343:34:343:55 | (...) => ... : (...) => ... [captured capturedLambda, captured x] : String | semmle.label | (...) => ... : (...) => ... [captured capturedLambda, captured x] : String |
+| Capture.cs:343:40:343:53 | access to local variable capturedLambda : (...) => ... [captured x] : String | semmle.label | access to local variable capturedLambda : (...) => ... [captured x] : String |
+| Capture.cs:345:9:345:23 | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String | semmle.label | access to local variable capturingLambda : (...) => ... [captured capturedLambda, captured x] : String |
+| Capture.cs:345:9:345:23 | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String | semmle.label | access to local variable capturingLambda : Action [captured capturedLambda, captured x] : String |
+| Capture.cs:350:34:350:34 | a : (...) => ... [captured s] : String | semmle.label | a : (...) => ... [captured s] : String |
+| Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | semmle.label | a : (...) => ... [captured sink39] : String |
+| Capture.cs:350:34:350:34 | a : (...) => ... [captured sink39] : String | semmle.label | a : (...) => ... [captured sink39] : String |
+| Capture.cs:352:9:352:9 | [post] access to parameter a : (...) => ... [captured sink40] : String | semmle.label | [post] access to parameter a : (...) => ... [captured sink40] : String |
+| Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured s] : String | semmle.label | access to parameter a : (...) => ... [captured s] : String |
+| Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | semmle.label | access to parameter a : (...) => ... [captured sink39] : String |
+| Capture.cs:352:9:352:9 | access to parameter a : (...) => ... [captured sink39] : String | semmle.label | access to parameter a : (...) => ... [captured sink39] : String |
+| Capture.cs:355:45:355:45 | x : String | semmle.label | x : String |
+| Capture.cs:357:11:357:11 | access to parameter x : String | semmle.label | access to parameter x : String |
 | GlobalDataFlow.cs:18:9:18:23 | access to field SinkField0 : String | semmle.label | access to field SinkField0 : String |
 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | semmle.label | "taint source" : String |
 | GlobalDataFlow.cs:19:15:19:29 | access to field SinkField0 | semmle.label | access to field SinkField0 |
@@ -1144,7 +1152,7 @@ subpaths
 | Capture.cs:312:15:312:15 | access to local variable x | Capture.cs:311:17:311:30 | "taint source" : String | Capture.cs:312:15:312:15 | access to local variable x | access to local variable x |
 | Capture.cs:319:19:319:19 | access to local variable x | Capture.cs:318:17:318:30 | "taint source" : String | Capture.cs:319:19:319:19 | access to local variable x | access to local variable x |
 | Capture.cs:330:47:330:47 | access to local variable x | Capture.cs:328:17:328:30 | "taint source" : String | Capture.cs:330:47:330:47 | access to local variable x | access to local variable x |
-| Capture.cs:339:45:339:45 | access to local variable x | Capture.cs:337:17:337:30 | "taint source" : String | Capture.cs:339:45:339:45 | access to local variable x | access to local variable x |
+| Capture.cs:341:45:341:45 | access to local variable x | Capture.cs:339:17:339:30 | "taint source" : String | Capture.cs:341:45:341:45 | access to local variable x | access to local variable x |
 | GlobalDataFlow.cs:19:15:19:29 | access to field SinkField0 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:19:15:19:29 | access to field SinkField0 | access to field SinkField0 |
 | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:27:15:27:32 | access to property SinkProperty0 | access to property SinkProperty0 |
 | GlobalDataFlow.cs:45:50:45:59 | access to parameter sinkParam2 | GlobalDataFlow.cs:18:27:18:40 | "taint source" : String | GlobalDataFlow.cs:45:50:45:59 | access to parameter sinkParam2 | access to parameter sinkParam2 |
