@@ -1,8 +1,10 @@
 using System;
+using System.Collections.Generic;
+using Microsoft.Extensions.Configuration;
 
 namespace CommandArgs
 {
-    class CommandArgsUse
+    public class CommandArgsUse
     {
         public static void M1()
         {
@@ -13,5 +15,25 @@ namespace CommandArgs
         {
             string result = Environment.CommandLine;
         }
+
+        public static void Main(string[] args)
+        {
+            var builder = new ConfigurationBuilder();
+            builder.AddCommandLine(args);
+            var config = builder.Build();
+            var arg1 = config["arg1"];
+            Sink(arg1);
+        }
+
+        public static void AddCommandLine2()
+        {
+            var config = new ConfigurationBuilder()
+                .AddCommandLine(Environment.GetCommandLineArgs())
+                .Build();
+            var arg1 = config["arg1"];
+            Sink(arg1);
+        }
+
+        static void Sink(object o) { }
     }
 }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Microsoft.Extensions.Configuration;
 
 namespace EnvironmentVariables
 {
@@ -23,5 +24,26 @@ namespace EnvironmentVariables
         {
             string expanded = Environment.ExpandEnvironmentVariables("%PATH%");
         }
+
+        public static void TaintedConfiguration()
+        {
+            var config = new ConfigurationBuilder()
+                .AddEnvironmentVariables()
+                .Build();
+            var path = config["PATH"];
+            Sink(path);
+        }
+
+        public static void TaintedConfigurationWithPrefix()
+        {
+            var builder = new ConfigurationBuilder();
+
+            builder.AddEnvironmentVariables("prefix");
+            var config = builder.Build();
+            var path = config["PATH"];
+            Sink(path);
+        }
+
+        static void Sink(object o) { }
     }
 }

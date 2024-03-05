@@ -1,6 +1,6 @@
 import csharp
-import semmle.code.csharp.dataflow.internal.ExternalFlow
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 from DataFlow::Node source
-where sourceNode(source, "commandargs")
+where source instanceof ThreatModelFlowSource
 select source
