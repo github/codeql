@@ -112,8 +112,9 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		throws IOException, ServletException {
 		String path = ((HttpServletRequest) request).getServletPath();
 
+		// actually BAD since could potentially bypass with ".." encoded as "%2e%2e"?
 		if (path.startsWith(BASE_PATH) && !path.contains("..")) {
-			request.getRequestDispatcher(path).forward(request, response);
+			request.getRequestDispatcher(path).forward(request, response); // $ hasUrlForward
 		} else {
 			chain.doFilter(request, response);
 		}
@@ -124,6 +125,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		throws IOException, ServletException {
 		String path = ((HttpServletRequest) request).getServletPath();
 
+		// this is still good, should not flag here..., url-decoding first doesn't matter if looking for exact match... :(
 		if (path.equals("/comaction")) {
 			request.getRequestDispatcher(path).forward(request, response);
 		} else {
@@ -199,8 +201,9 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 			throws ServletException, IOException {
 		String path = request.getParameter("path");
 
+		// actually BAD since could potentially bypass with ".." encoded as "%2e%2e"?
 		if (path.startsWith(BASE_PATH) && !path.contains("..")) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response);
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUrlForward
 		}
 	}
 
@@ -212,34 +215,43 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 
 		// /pages/welcome.jsp/../../WEB-INF/web.xml becomes /WEB-INF/web.xml
 		// /pages/welcome.jsp/../../%57EB-INF/web.xml becomes /%57EB-INF/web.xml
+		// actually BAD since could potentially bypass with ".." encoded as "%2e%2e": "/pages/welcome.jsp/%2e%2e/%2e%2e/WEB-INF/web.xml" becomes /pages/welcome.jsp/%2e%2e/%2e%2e/WEB-INF/web.xml, which will pass this check and potentially be problematic if decoded later?
 		if (requestedPath.startsWith(BASE_PATH)) {
-			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response);
+			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ hasUrlForward
 		}
 	}
 
-	// FN: Request dispatcher with negation check and path normalization, but without URL decoding
-	// When promoting this query, consider using FlowStates to make `getRequestDispatcher` a sink
-	// only if a URL-decoding step has NOT been crossed (i.e. make URLDecoder.decode change the
-	// state to a different value than the one required at the sink).
-	// TODO: but does this need to take into account URLDecoder.decode in a loop...?
+	// BAD (original FN): Request dispatcher with negation check and path normalization, but without URL decoding
 	protected void doHead5(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String path = request.getParameter("path");
 		Path requestedPath = Paths.get(BASE_PATH).resolve(path).normalize();
 
 		if (!requestedPath.startsWith("/WEB-INF") && !requestedPath.startsWith("/META-INF")) {
-			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ MISSING: hasUrlForward
+			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ hasUrlForward
 		}
 	}
 
-	// GOOD: Request dispatcher with path traversal check and URL decoding
-	protected void doHead6(HttpServletRequest request, HttpServletResponse response)
+	// BAD (I added to test decode with no loop): Request dispatcher with path traversal check and single URL decoding; may be vulnerable to double-encoding
+	protected void doHead7(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String path = request.getParameter("path");
-		boolean hasEncoding = path.contains("%");
-		while (hasEncoding) {
-			path = URLDecoder.decode(path, "UTF-8");
-			hasEncoding = path.contains("%");
+		path = URLDecoder.decode(path, "UTF-8");
+
+		if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUrlForward
+		}
+	}
+
+	// GOOD: Request dispatcher with path traversal check and URL decoding in a loop to avoid double-encoding bypass
+	protected void doHead6(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String path = request.getParameter("path"); // v
+
+		if (path.contains("%")){ // v.getAnAccess()
+			while (path.contains("%")) {
+				path = URLDecoder.decode(path, "UTF-8");
+			}
 		}
 
 		if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
@@ -247,10 +259,107 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		}
 	}
 
-	// New Tests (i.e. Added by me)
+	// GOOD: Request dispatcher with path traversal check and URL decoding in a loop to avoid double-encoding bypass
+	protected void doHead8(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String path = request.getParameter("path"); // v
+		while (path.contains("%")) {
+			path = URLDecoder.decode(path, "UTF-8");
+		}
+
+		if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
+			request.getServletContext().getRequestDispatcher(path).include(request, response);
+		}
+	}
+
+	// FP now....
+	// GOOD: Request dispatcher with path traversal check and URL decoding in a loop to avoid double-encoding bypass
+	protected void doHead9(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		String path = request.getParameter("path"); // v
+		boolean hasEncoding = path.contains("%");
+		while (hasEncoding) {
+			path = URLDecoder.decode(path, "UTF-8");
+			hasEncoding = path.contains("%");
+		}
+
+		if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ SPURIOUS: hasUrlForward
+		}
+	}
+
+	// New Tests
 	public void generateResponse(StaplerRequest req, StaplerResponse rsp, Object obj) throws IOException, ServletException {
 		String url = req.getParameter("target");
 		rsp.forward(obj, url, req); // $ hasUrlForward
 	}
+
+	// Other Tests for edge cases:
+	// // GOOD (I added): Request dispatcher with path traversal check and URL decoding in a loop to avoid double-encoding bypass
+	// // testing `if` stmt requirement for BB controlling
+	// protected void doHead12(HttpServletRequest request, HttpServletResponse response)
+	// 		throws ServletException, IOException {
+	// 	String path = request.getParameter("path");
+	// 	if (path.contains("%")) {
+	// 		while (path.contains("%")) {
+	// 			path = URLDecoder.decode(path, "UTF-8");
+	// 		}
+	// 	}
+	// 	if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
+	// 		request.getServletContext().getRequestDispatcher(path).include(request, response);
+	// 	}
+	// }
+	// // BAD (I added): Request dispatcher with path traversal check and single URL decoding; may be vulnerable to double-encoding
+	// // Tests urlEncoding BarrierGuard "a guard that considers a string safe because it is checked for URL encoding sequences,
+    // // having previously been checked against a block-list of forbidden values."
+	// protected void doHead8(HttpServletRequest request, HttpServletResponse response)
+	// 		throws ServletException, IOException {
+	// 	String path = request.getParameter("path");
+
+	// 	if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
+	// 		boolean hasEncoding = path.contains("%"); // BAD: doesn't do anything with the check...
+	// 		request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUrlForward
+	// 	}
+	// }
+	// // BAD (I added): Request dispatcher with path traversal check and single URL decoding; may be vulnerable to double-encoding
+	// // Tests urlEncoding BarrierGuard "a guard that considers a string safe because it is checked for URL encoding sequences,
+    // // having previously been checked against a block-list of forbidden values."
+	// protected void doHead9(HttpServletRequest request, HttpServletResponse response)
+	// 		throws ServletException, IOException {
+	// 	String path = request.getParameter("path");
+
+	// 	boolean hasEncoding = path.contains("%"); // BAD: doesn't do anything with the check... and check comes BEFORE blocklist so guard should not trigger
+	// 	if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
+	// 		request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUrlForward
+	// 	}
+	// }
+
+	// // BAD (I added): Request dispatcher with path traversal check and single URL decoding; may be vulnerable to double-encoding
+	// // Tests urlEncoding BarrierGuard "a guard that considers a string safe because it is checked for URL encoding sequences,
+    // // having previously been checked against a block-list of forbidden values."
+	// protected void doHead10(HttpServletRequest request, HttpServletResponse response)
+	// 		throws ServletException, IOException {
+	// 	String path = request.getParameter("path");
+
+	// 	if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
+	// 		if (path.contains("%")){ // BAD: wrong check
+	// 			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUrlForward
+	// 		}
+	// 	}
+	// }
+
+	// // "GOOD" (I added): Request dispatcher with path traversal check and single URL decoding; may be vulnerable to double-encoding
+	// // Tests urlEncoding BarrierGuard "a guard that considers a string safe because it is checked for URL encoding sequences,
+    // // having previously been checked against a block-list of forbidden values."
+	// protected void doHead11(HttpServletRequest request, HttpServletResponse response)
+	// 		throws ServletException, IOException {
+	// 	String path = request.getParameter("path");
+
+	// 	if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
+	// 		if (!path.contains("%")){ // GOOD: right check
+	// 			request.getServletContext().getRequestDispatcher(path).include(request, response);
+	// 		}
+	// 	}
+	// }
 
 }

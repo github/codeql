@@ -25,10 +25,7 @@ module UrlForwardFlowConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlForwardSink }
 
-  predicate isBarrier(DataFlow::Node node) {
-    node instanceof UrlForwardBarrier or
-    node instanceof PathInjectionSanitizer
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof UrlForwardBarrier }
 
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 }
