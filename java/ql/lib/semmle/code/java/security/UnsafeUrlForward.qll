@@ -15,18 +15,6 @@ private class DefaultUnsafeUrlForwardSink extends UnsafeUrlForwardSink {
   DefaultUnsafeUrlForwardSink() { sinkNode(this, "url-forward") }
 }
 
-/** An argument to `new ModelAndView` or `ModelAndView.setViewName`. */
-private class SpringModelAndViewSink extends UnsafeUrlForwardSink {
-  SpringModelAndViewSink() {
-    exists(ClassInstanceExpr cie |
-      cie.getConstructedType() instanceof ModelAndView and
-      cie.getArgument(0) = this.asExpr()
-    )
-    or
-    exists(SpringModelAndViewSetViewNameCall smavsvnc | smavsvnc.getArgument(0) = this.asExpr())
-  }
-}
-
 private class PrimitiveSanitizer extends UnsafeUrlForwardSanitizer {
   PrimitiveSanitizer() {
     this.getType() instanceof PrimitiveType or
