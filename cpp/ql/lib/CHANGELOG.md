@@ -1,9 +1,3 @@
-## 0.12.7
-
-### Minor Analysis Improvements
-
-* Added destructors for named objects to the intermediate representation.
-
 ## 0.12.6
 
 ### New Features
