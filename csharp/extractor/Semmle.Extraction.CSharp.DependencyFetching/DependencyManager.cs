@@ -814,6 +814,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private IEnumerable<string> RestoreSolutions(IEnumerable<string> solutions, out IEnumerable<string> assets)
         {
             var successCount = 0;
+            var nugetSourceFailures = 0;
             var assetFiles = new List<string>();
             var projects = solutions.SelectMany(solution =>
                 {
@@ -823,11 +824,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     {
                         successCount++;
                     }
+                    if (res.HasNugetPackageSourceError)
+                    {
+                        nugetSourceFailures++;
+                    }
                     assetFiles.AddRange(res.AssetsFilePaths);
                     return res.RestoredProjects;
                 }).ToList();
             assets = assetFiles;
             CompilationInfos.Add(("Successfully restored solution files", successCount.ToString()));
+            CompilationInfos.Add(("Failed solution restore with package source error", nugetSourceFailures.ToString()));
             CompilationInfos.Add(("Restored projects through solution files", projects.Count.ToString()));
             return projects;
         }
@@ -841,6 +847,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private void RestoreProjects(IEnumerable<string> projects, out IEnumerable<string> assets)
         {
             var successCount = 0;
+            var nugetSourceFailures = 0;
             var assetFiles = new List<string>();
             var sync = new object();
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = threads }, project =>
@@ -853,11 +860,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     {
                         successCount++;
                     }
+                    if (res.HasNugetPackageSourceError)
+                    {
+                        nugetSourceFailures++;
+                    }
                     assetFiles.AddRange(res.AssetsFilePaths);
                 }
             });
             assets = assetFiles;
             CompilationInfos.Add(("Successfully restored project files", successCount.ToString()));
+            CompilationInfos.Add(("Failed project restore with package source error", nugetSourceFailures.ToString()));
         }
 
         [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
