@@ -12874,7 +12874,7 @@ ir.cpp:
 # 2215|     r2215_1(glval<bool>)    = VariableAddress[b]              : 
 # 2215|     r2215_2(bool)           = Load[b]                         : &:r2215_1, ~m?
 # 2215|     v2215_3(void)           = ConditionalBranch               : r2215_2
-#-----|   False -> Block 5
+#-----|   False -> Block 4
 #-----|   True -> Block 3
 
 # 2212|   Block 1
@@ -12891,44 +12891,35 @@ ir.cpp:
 # 2216|     r2216_3(char *)          = Convert                          : r2216_2
 # 2216|     mu2216_4(char *)         = Store[#throw2216:7]              : &:r2216_1, r2216_3
 # 2216|     v2216_5(void)            = ThrowValue                       : &:r2216_1, ~m?
-#-----|   Exception -> Block 6
+#-----|   Exception -> Block 5
 
-# 2219|   Block 4
-# 2219|     r2219_1(glval<String>)  = VariableAddress[s]              : 
+# 2218|   Block 4
+# 2218|     r2218_1(glval<String>)  = VariableAddress[s2]             : 
+# 2218|     mu2218_2(String)        = Uninitialized[s2]               : &:r2218_1
+# 2218|     r2218_3(glval<unknown>) = FunctionAddress[String]         : 
+# 2218|     v2218_4(void)           = Call[String]                    : func:r2218_3, this:r2218_1
+# 2218|     mu2218_5(unknown)       = ^CallSideEffect                 : ~m?
+# 2218|     mu2218_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2218_1
+# 2219|     r2219_1(glval<String>)  = VariableAddress[s2]             : 
 # 2219|     r2219_2(glval<unknown>) = FunctionAddress[~String]        : 
 # 2219|     v2219_3(void)           = Call[~String]                   : func:r2219_2, this:r2219_1
 # 2219|     mu2219_4(unknown)       = ^CallSideEffect                 : ~m?
 # 2219|     v2219_5(void)           = ^IndirectReadSideEffect[-1]     : &:r2219_1, ~m?
 # 2219|     mu2219_6(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2219_1
-#-----|   Goto -> Block 5
+# 2219|     r2219_7(glval<String>)  = VariableAddress[s]              : 
+# 2219|     r2219_8(glval<unknown>) = FunctionAddress[~String]        : 
+# 2219|     v2219_9(void)           = Call[~String]                   : func:r2219_8, this:r2219_7
+# 2219|     mu2219_10(unknown)      = ^CallSideEffect                 : ~m?
+# 2219|     v2219_11(void)          = ^IndirectReadSideEffect[-1]     : &:r2219_7, ~m?
+# 2219|     mu2219_12(String)       = ^IndirectMayWriteSideEffect[-1] : &:r2219_7
+#-----|   Goto -> Block 10
 
-# 2218|   Block 5
-# 2218|     r2218_1(glval<String>)   = VariableAddress[s2]             : 
-# 2218|     mu2218_2(String)         = Uninitialized[s2]               : &:r2218_1
-# 2218|     r2218_3(glval<unknown>)  = FunctionAddress[String]         : 
-# 2218|     v2218_4(void)            = Call[String]                    : func:r2218_3, this:r2218_1
-# 2218|     mu2218_5(unknown)        = ^CallSideEffect                 : ~m?
-# 2218|     mu2218_6(String)         = ^IndirectMayWriteSideEffect[-1] : &:r2218_1
-# 2219|     r2219_7(glval<String>)   = VariableAddress[s2]             : 
-# 2219|     r2219_8(glval<unknown>)  = FunctionAddress[~String]        : 
-# 2219|     v2219_9(void)            = Call[~String]                   : func:r2219_8, this:r2219_7
-# 2219|     mu2219_10(unknown)       = ^CallSideEffect                 : ~m?
-# 2219|     v2219_11(void)           = ^IndirectReadSideEffect[-1]     : &:r2219_7, ~m?
-# 2219|     mu2219_12(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2219_7
-# 2219|     r2219_13(glval<String>)  = VariableAddress[s]              : 
-# 2219|     r2219_14(glval<unknown>) = FunctionAddress[~String]        : 
-# 2219|     v2219_15(void)           = Call[~String]                   : func:r2219_14, this:r2219_13
-# 2219|     mu2219_16(unknown)       = ^CallSideEffect                 : ~m?
-# 2219|     v2219_17(void)           = ^IndirectReadSideEffect[-1]     : &:r2219_13, ~m?
-# 2219|     mu2219_18(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2219_13
-#-----|   Goto -> Block 11
+# 2220|   Block 5
+# 2220|     v2220_1(void) = CatchByType[const char *] : 
+#-----|   Exception -> Block 7
+#-----|   Goto -> Block 6
 
 # 2220|   Block 6
-# 2220|     v2220_1(void) = CatchByType[const char *] : 
-#-----|   Exception -> Block 8
-#-----|   Goto -> Block 7
-
-# 2220|   Block 7
 # 2220|     r2220_2(glval<char *>)  = VariableAddress[s]              : 
 # 2220|     mu2220_3(char *)        = InitializeParameter[s]          : &:r2220_2
 # 2220|     r2220_4(char *)         = Load[s]                         : &:r2220_2, ~m?
@@ -12945,25 +12936,25 @@ ir.cpp:
 # 2221|     v2221_10(void)          = ThrowValue                      : &:r2221_1, ~m?
 #-----|   Exception -> Block 2
 
-# 2223|   Block 8
+# 2223|   Block 7
 # 2223|     v2223_1(void) = CatchByType[const String &] : 
-#-----|   Exception -> Block 10
-#-----|   Goto -> Block 9
+#-----|   Exception -> Block 9
+#-----|   Goto -> Block 8
 
-# 2223|   Block 9
+# 2223|   Block 8
 # 2223|     r2223_2(glval<String &>) = VariableAddress[e]       : 
 # 2223|     mu2223_3(String &)       = InitializeParameter[e]   : &:r2223_2
 # 2223|     r2223_4(String &)        = Load[e]                  : &:r2223_2, ~m?
 # 2223|     mu2223_5(unknown)        = InitializeIndirection[e] : &:r2223_4
 # 2223|     v2223_6(void)            = NoOp                     : 
-#-----|   Goto -> Block 11
+#-----|   Goto -> Block 10
 
-# 2225|   Block 10
+# 2225|   Block 9
 # 2225|     v2225_1(void) = CatchAny : 
 # 2226|     v2226_1(void) = ReThrow  : 
 #-----|   Exception -> Block 2
 
-# 2228|   Block 11
+# 2228|   Block 10
 # 2228|     v2228_1(void) = NoOp       : 
 # 2212|     v2212_9(void) = ReturnVoid : 
 #-----|   Goto -> Block 1
