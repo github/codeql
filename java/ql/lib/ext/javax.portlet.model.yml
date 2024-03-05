@@ -3,5 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      # TODO: potentially switch to using Argument[this] of `PortletRequestDispatcher.forward|include` as sink instead of the below.
       - ["javax.portlet", "PortletContext", True, "getRequestDispatcher", "(String)", "", "Argument[0]", "url-forward", "manual"]
