@@ -6,6 +6,7 @@ private import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.security.PathSanitizer
 private import semmle.code.java.controlflow.Guards
+private import semmle.code.java.security.Sanitizers
 
 /** A URL forward sink. */
 abstract class UrlForwardSink extends DataFlow::Node { }
@@ -38,13 +39,7 @@ private class ForwardPrefix extends InterestingPrefix {
 /** A URL forward barrier. */
 abstract class UrlForwardBarrier extends DataFlow::Node { }
 
-private class PrimitiveBarrier extends UrlForwardBarrier {
-  PrimitiveBarrier() {
-    this.getType() instanceof PrimitiveType or
-    this.getType() instanceof BoxedType or
-    this.getType() instanceof NumberType
-  }
-}
+private class PrimitiveBarrier extends UrlForwardBarrier instanceof SimpleTypeSanitizer { }
 
 // TODO: should this also take URL encoding/decoding into account?
 // TODO: and PathSanitization in general?
@@ -87,9 +82,7 @@ private class DefaultUrlDecodeCall extends UrlDecodeCall {
 // TODO: this can probably be named/designed better...
 abstract class RepeatedStmt extends Stmt { }
 
-private class DefaultRepeatedStmt extends RepeatedStmt {
-  DefaultRepeatedStmt() { this instanceof LoopStmt }
-}
+private class DefaultRepeatedStmt extends RepeatedStmt instanceof LoopStmt { }
 
 abstract class CheckEncodingCall extends MethodCall { }
 
@@ -111,9 +104,7 @@ private class RepeatedUrlDecodeCall extends MethodCall {
   }
 }
 
-private class CheckEncodingGuard extends Guard instanceof MethodCall {
-  CheckEncodingGuard() { this instanceof CheckEncodingCall }
-
+private class CheckEncodingGuard extends Guard instanceof MethodCall, CheckEncodingCall {
   Expr getCheckedExpr() { result = this.(MethodCall).getQualifier() }
 }
 
