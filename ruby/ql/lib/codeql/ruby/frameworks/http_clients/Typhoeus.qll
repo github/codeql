@@ -27,7 +27,7 @@ class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNo
             .getReturn(["get", "head", "delete", "options", "post", "put", "patch"])
       or
       directResponse = false and
-      requestNode = API::getTopLevelMember("Typhoeus").getMember("Request").getReturn("new")
+      requestNode = API::getTopLevelMember("Typhoeus").getMember("Request").getInstance()
     )
   }
 
@@ -38,7 +38,7 @@ class TyphoeusHttpRequest extends Http::Client::Request::Range, DataFlow::CallNo
     result = getBodyFromResponse(requestNode)
     or
     directResponse = false and
-    result = getBodyFromRequest(requestNode)
+    result = getResponseBodyFromRequest(requestNode)
   }
 
   /** Gets the value that controls certificate validation, if any. */
@@ -69,10 +69,10 @@ private module TyphoeusDisablesCertificateValidationConfig implements DataFlow::
 private module TyphoeusDisablesCertificateValidationFlow =
   DataFlow::Global<TyphoeusDisablesCertificateValidationConfig>;
 
-/** Gets the body from the given `requestNode` representing a Typhoeus request */
+/** Gets the response body from the given `requestNode` representing a Typhoeus request */
 bindingset[requestNode]
 pragma[inline_late]
-private DataFlow::Node getBodyFromRequest(API::Node requestNode) {
+private DataFlow::Node getResponseBodyFromRequest(API::Node requestNode) {
   result =
     [
       getBodyFromResponse(getResponseFromRequest(requestNode)),
@@ -95,7 +95,7 @@ private API::Node getResponseFromRequest(API::Node requestNode) {
     ]
 }
 
-/** Gets the body from the given `responseNode` representing a Typhoeus response */
+/** Gets the response body from the given `responseNode` representing a Typhoeus response */
 bindingset[responseNode]
 pragma[inline_late]
 private DataFlow::Node getBodyFromResponse(API::Node responseNode) {
