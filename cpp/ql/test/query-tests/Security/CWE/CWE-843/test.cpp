@@ -189,4 +189,24 @@ void test15() {
   UInt8_with_more* u8 = (UInt8_with_more*)u64; // BAD
 }
 
+struct SingleInt {
+  int i;
+} __attribute__((packed));;
+
+struct PairInts {
+  int x, y;
+} __attribute__((packed));;
+
+union MyUnion
+{
+  PairInts p;
+  unsigned long long foo;
+} __attribute__((packed));
+
+void test16() {
+  void* si = new SingleInt;
+  // ...
+  MyUnion* mu = (MyUnion*)si; // BAD [NOT DETECTED]
+}
+
 // semmle-extractor-options: --gcc -std=c++11
