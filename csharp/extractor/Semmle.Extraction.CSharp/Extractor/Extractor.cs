@@ -47,6 +47,8 @@ namespace Semmle.Extraction.CSharp
                 }
             }
 
+            public void Started(int item, int total, string source) { }
+
             public void MissingNamespace(string @namespace) { }
 
             public void MissingSummary(int types, int namespaces) { }
