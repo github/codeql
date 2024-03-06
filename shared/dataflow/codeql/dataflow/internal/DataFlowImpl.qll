@@ -441,15 +441,6 @@ module MakeImpl<InputSig Lang> {
 
     // inline to reduce fan-out via `getAReadContent`
     bindingset[c]
-    private predicate clearsContentEx(NodeEx n, Content c) {
-      exists(ContentSet cs |
-        clearsContentCached(n.asNode(), cs) and
-        pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
-      )
-    }
-
-    // inline to reduce fan-out via `getAReadContent`
-    bindingset[c]
     private predicate expectsContentEx(NodeEx n, Content c) {
       exists(ContentSet cs |
         expectsContentCached(n.asNode(), cs) and
@@ -2944,16 +2935,24 @@ module MakeImpl<InputSig Lang> {
       }
 
       pragma[nomagic]
-      private predicate clearContent(NodeEx node, Content c) {
+      additional predicate clearContent(NodeEx node, Content c, boolean isStoreTarget) {
         exists(ContentSet cs |
           PrevStage::readStepCand(_, pragma[only_bind_into](c), _) and
           c = cs.getAReadContent() and
-          clearSet(node, cs)
+          clearSet(node, cs) and
+          if PrevStage::storeStepCand(_, _, _, node, _, _)
+          then isStoreTarget = true
+          else isStoreTarget = false
         )
       }
 
       pragma[nomagic]
-      private predicate clear(NodeEx node, Ap ap) { clearContent(node, ap.getHead()) }
+      private predicate clear(NodeEx node, Ap ap) {
+        // When `node` is the target of a store, we interpret `clearsContent` as
+        // only pertaining to _earlier_ store steps. In this case, we need to postpone
+        // checking `clearsContent` to the `pathStep` predicate
+        clearContent(node, ap.getHead(), false)
+      }
 
       pragma[nomagic]
       private predicate expectsContentCand(NodeEx node, Ap ap) {
@@ -3491,6 +3490,16 @@ module MakeImpl<InputSig Lang> {
 
       /** Gets a textual representation of this access path. */
       abstract string toString();
+
+      /** Holds if `node`, which is the target of a store step, clears data stored in this access path. */
+      pragma[nomagic]
+      predicate storeTargetIsClearedAt(NodeEx node) {
+        exists(AccessPathApprox apa |
+          apa = this.getApprox() and
+          Stage5::revFlowAp(node, apa) and
+          Stage4Param::clearContent(node, apa.getHead(), true)
+        )
+      }
     }
 
     private class AccessPathNil extends AccessPath, TAccessPathNil {
@@ -3985,11 +3994,15 @@ module MakeImpl<InputSig Lang> {
       PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
       AccessPath ap
     ) {
-      exists(DataFlowType t0 |
-        pathStep0(mid, pragma[only_bind_into](node), pragma[only_bind_into](state), cc, sc, t0, ap) and
+      exists(DataFlowType t0, boolean isStoreStep |
+        pathStep0(mid, pragma[only_bind_into](node), pragma[only_bind_into](state), cc, sc, t0, ap,
+          isStoreStep) and
         Stage5::revFlow(pragma[only_bind_into](node), pragma[only_bind_into](state), ap.getApprox()) and
         strengthenType(node, t0, t) and
         not inBarrier(node, state)
+      |
+        isStoreStep = true or
+        not ap.storeTargetIsClearedAt(node)
       )
     }
 
@@ -4000,17 +4013,19 @@ module MakeImpl<InputSig Lang> {
     pragma[nomagic]
     private predicate pathStep0(
       PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
-      AccessPath ap
+      AccessPath ap, boolean isStoreStep
     ) {
       exists(NodeEx midnode, FlowState state0, LocalCallContext localCC |
         pathNode(mid, midnode, state0, cc, sc, t, ap, localCC) and
-        localFlowBigStep(midnode, state0, node, state, true, _, localCC)
+        localFlowBigStep(midnode, state0, node, state, true, _, localCC) and
+        isStoreStep = false
       )
       or
       exists(NodeEx midnode, FlowState state0, LocalCallContext localCC |
         pathNode(mid, midnode, state0, cc, sc, _, ap, localCC) and
         localFlowBigStep(midnode, state0, node, state, false, t, localCC) and
-        ap instanceof AccessPathNil
+        ap instanceof AccessPathNil and
+        isStoreStep = false
       )
       or
       jumpStepEx(mid.getNodeExOutgoing(), node) and
@@ -4018,7 +4033,8 @@ module MakeImpl<InputSig Lang> {
       cc instanceof CallContextAny and
       sc instanceof SummaryCtxNone and
       t = mid.getType() and
-      ap = mid.getAp()
+      ap = mid.getAp() and
+      isStoreStep = false
       or
       additionalJumpStep(mid.getNodeExOutgoing(), node) and
       state = mid.getState() and
@@ -4026,35 +4042,45 @@ module MakeImpl<InputSig Lang> {
       sc instanceof SummaryCtxNone and
       mid.getAp() instanceof AccessPathNil and
       t = node.getDataFlowType() and
-      ap = TAccessPathNil()
+      ap = TAccessPathNil() and
+      isStoreStep = false
       or
       additionalJumpStateStep(mid.getNodeExOutgoing(), mid.getState(), node, state) and
       cc instanceof CallContextAny and
       sc instanceof SummaryCtxNone and
       mid.getAp() instanceof AccessPathNil and
       t = node.getDataFlowType() and
-      ap = TAccessPathNil()
+      ap = TAccessPathNil() and
+      isStoreStep = false
       or
       exists(Content c, DataFlowType t0, AccessPath ap0 |
         pathStoreStep(mid, node, state, t0, ap0, c, t, cc) and
         ap.isCons(c, t0, ap0) and
-        sc = mid.getSummaryCtx()
+        sc = mid.getSummaryCtx() and
+        isStoreStep = true
       )
       or
       exists(Content c, AccessPath ap0 |
         pathReadStep(mid, node, state, ap0, c, cc) and
         ap0.isCons(c, t, ap) and
-        sc = mid.getSummaryCtx()
+        sc = mid.getSummaryCtx() and
+        isStoreStep = false
       )
       or
-      pathIntoCallable(mid, node, state, _, cc, sc, _) and t = mid.getType() and ap = mid.getAp()
+      pathIntoCallable(mid, node, state, _, cc, sc, _) and
+      t = mid.getType() and
+      ap = mid.getAp() and
+      isStoreStep = false
       or
       pathOutOfCallable(mid, node, state, cc) and
       t = mid.getType() and
       ap = mid.getAp() and
-      sc instanceof SummaryCtxNone
+      sc instanceof SummaryCtxNone and
+      isStoreStep = false
       or
-      pathThroughCallable(mid, node, state, cc, t, ap) and sc = mid.getSummaryCtx()
+      pathThroughCallable(mid, node, state, cc, t, ap) and
+      sc = mid.getSummaryCtx() and
+      isStoreStep = false
     }
 
     pragma[nomagic]
@@ -4712,16 +4738,17 @@ module MakeImpl<InputSig Lang> {
           exists(explorationLimit())
           or
           revPartialPathStep(_, node, state, sc1, sc2, sc3, ap) and
-          not clearsContentEx(node, ap.getHead()) and
-          (
-            notExpectsContent(node) or
-            expectsContentEx(node, ap.getHead())
-          ) and
-          not fullBarrier(node) and
-          not stateBarrier(node, state) and
-          not outBarrier(node, state) and
           distSink(node.getEnclosingCallable()) <= explorationLimit()
         }
+
+      // inline to reduce fan-out via `getAReadContent`
+      bindingset[c]
+      private predicate clearsContentEx(NodeEx n, Content c) {
+        exists(ContentSet cs |
+          clearsContentCached(n.asNode(), cs) and
+          pragma[only_bind_out](c) = pragma[only_bind_into](cs).getAReadContent()
+        )
+      }
 
       pragma[nomagic]
       private predicate partialPathStep(
@@ -4737,16 +4764,20 @@ module MakeImpl<InputSig Lang> {
         TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t0, DataFlowType t,
         PartialAccessPath ap
       ) {
-        partialPathStep0(mid, node, state, cc, sc1, sc2, sc3, sc4, t0, ap) and
-        not fullBarrier(node) and
-        not stateBarrier(node, state) and
-        not inBarrier(node, state) and
-        not clearsContentEx(node, ap.getHead()) and
-        (
-          notExpectsContent(node) or
-          expectsContentEx(node, ap.getHead())
-        ) and
-        strengthenType(node, t0, t)
+        exists(boolean isStoreStep |
+          partialPathStep0(mid, node, state, cc, sc1, sc2, sc3, sc4, t0, ap, isStoreStep) and
+          not fullBarrier(node) and
+          not stateBarrier(node, state) and
+          not inBarrier(node, state) and
+          (
+            notExpectsContent(node) or
+            expectsContentEx(node, ap.getHead())
+          ) and
+          strengthenType(node, t0, t)
+        |
+          isStoreStep = true or
+          not clearsContentEx(node, ap.getHead())
+        )
       }
 
       pragma[nomagic]
@@ -4941,7 +4972,8 @@ module MakeImpl<InputSig Lang> {
       pragma[nomagic]
       private predicate partialPathStep0(
         PartialPathNodeFwd mid, NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1,
-        TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
+        TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap,
+        boolean isStoreStep
       ) {
         not isUnreachableInCallCached(node.asNode(), cc.(CallContextSpecificCall).getCall()) and
         (
@@ -4975,7 +5007,8 @@ module MakeImpl<InputSig Lang> {
           mid.getAp() instanceof PartialAccessPathNil and
           t = node.getDataFlowType() and
           ap = TPartialNil()
-        )
+        ) and
+        isStoreStep = false
         or
         jumpStepEx(mid.getNodeEx(), node) and
         state = mid.getState() and
@@ -4985,7 +5018,8 @@ module MakeImpl<InputSig Lang> {
         sc3 = TSummaryCtx3None() and
         sc4 = TSummaryCtx4None() and
         t = mid.getType() and
-        ap = mid.getAp()
+        ap = mid.getAp() and
+        isStoreStep = false
         or
         additionalJumpStep(mid.getNodeEx(), node) and
         state = mid.getState() and
@@ -4996,7 +5030,8 @@ module MakeImpl<InputSig Lang> {
         sc4 = TSummaryCtx4None() and
         mid.getAp() instanceof PartialAccessPathNil and
         t = node.getDataFlowType() and
-        ap = TPartialNil()
+        ap = TPartialNil() and
+        isStoreStep = false
         or
         additionalJumpStateStep(mid.getNodeEx(), mid.getState(), node, state) and
         cc instanceof CallContextAny and
@@ -5006,7 +5041,8 @@ module MakeImpl<InputSig Lang> {
         sc4 = TSummaryCtx4None() and
         mid.getAp() instanceof PartialAccessPathNil and
         t = node.getDataFlowType() and
-        ap = TPartialNil()
+        ap = TPartialNil() and
+        isStoreStep = false
         or
         partialPathStoreStep(mid, _, _, _, node, t, ap) and
         state = mid.getState() and
@@ -5014,7 +5050,8 @@ module MakeImpl<InputSig Lang> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
-        sc4 = mid.getSummaryCtx4()
+        sc4 = mid.getSummaryCtx4() and
+        isStoreStep = true
         or
         exists(DataFlowType t0, PartialAccessPath ap0, Content c |
           partialPathReadStep(mid, t0, ap0, c, node, cc) and
@@ -5024,21 +5061,25 @@ module MakeImpl<InputSig Lang> {
           sc3 = mid.getSummaryCtx3() and
           sc4 = mid.getSummaryCtx4() and
           apConsFwd(t, ap, c, t0, ap0)
-        )
+        ) and
+        isStoreStep = false
         or
-        partialPathIntoCallable(mid, node, state, _, cc, sc1, sc2, sc3, sc4, _, t, ap)
+        partialPathIntoCallable(mid, node, state, _, cc, sc1, sc2, sc3, sc4, _, t, ap) and
+        isStoreStep = false
         or
         partialPathOutOfCallable(mid, node, state, cc, t, ap) and
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
-        sc4 = TSummaryCtx4None()
+        sc4 = TSummaryCtx4None() and
+        isStoreStep = false
         or
         partialPathThroughCallable(mid, node, state, cc, t, ap) and
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
-        sc4 = mid.getSummaryCtx4()
+        sc4 = mid.getSummaryCtx4() and
+        isStoreStep = false
       }
 
       bindingset[result, i]
@@ -5219,12 +5260,46 @@ module MakeImpl<InputSig Lang> {
         PartialPathNodeRev mid, NodeEx node, FlowState state, TRevSummaryCtx1 sc1,
         TRevSummaryCtx2 sc2, TRevSummaryCtx3 sc3, PartialAccessPath ap
       ) {
+        exists(boolean isStoreStep |
+          revPartialPathStep0(mid, node, state, sc1, sc2, sc3, ap, isStoreStep) and
+          (
+            notExpectsContent(node) or
+            expectsContentEx(node, ap.getHead())
+          ) and
+          not fullBarrier(node) and
+          not stateBarrier(node, state) and
+          not outBarrier(node, state) and
+          // if a node is not the target of a store, we can check `clearsContent` immediately
+          (
+            storeEx(_, _, node, _, _)
+            or
+            not clearsContentEx(node, ap.getHead())
+          )
+        |
+          // if a node is the target of a store, we can only check `clearsContent`
+          // when we know whether we took the store step
+          isStoreStep = true
+          or
+          exists(NodeEx midNode, PartialAccessPath midAp |
+            midNode = mid.getNodeEx() and
+            midAp = mid.getAp() and
+            not clearsContentEx(midNode, midAp.getHead())
+          )
+        )
+      }
+
+      pragma[nomagic]
+      private predicate revPartialPathStep0(
+        PartialPathNodeRev mid, NodeEx node, FlowState state, TRevSummaryCtx1 sc1,
+        TRevSummaryCtx2 sc2, TRevSummaryCtx3 sc3, PartialAccessPath ap, boolean isStoreStep
+      ) {
         localFlowStepEx(node, mid.getNodeEx()) and
         state = mid.getState() and
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
-        ap = mid.getAp()
+        ap = mid.getAp() and
+        isStoreStep = false
         or
         additionalLocalFlowStep(node, mid.getNodeEx()) and
         state = mid.getState() and
@@ -5232,21 +5307,24 @@ module MakeImpl<InputSig Lang> {
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
         mid.getAp() instanceof PartialAccessPathNil and
-        ap = TPartialNil()
+        ap = TPartialNil() and
+        isStoreStep = false
         or
         additionalLocalStateStep(node, state, mid.getNodeEx(), mid.getState()) and
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
         mid.getAp() instanceof PartialAccessPathNil and
-        ap = TPartialNil()
+        ap = TPartialNil() and
+        isStoreStep = false
         or
         jumpStepEx(node, mid.getNodeEx()) and
         state = mid.getState() and
         sc1 = TRevSummaryCtx1None() and
         sc2 = TRevSummaryCtx2None() and
         sc3 = TRevSummaryCtx3None() and
-        ap = mid.getAp()
+        ap = mid.getAp() and
+        isStoreStep = false
         or
         additionalJumpStep(node, mid.getNodeEx()) and
         state = mid.getState() and
@@ -5254,20 +5332,23 @@ module MakeImpl<InputSig Lang> {
         sc2 = TRevSummaryCtx2None() and
         sc3 = TRevSummaryCtx3None() and
         mid.getAp() instanceof PartialAccessPathNil and
-        ap = TPartialNil()
+        ap = TPartialNil() and
+        isStoreStep = false
         or
         additionalJumpStateStep(node, state, mid.getNodeEx(), mid.getState()) and
         sc1 = TRevSummaryCtx1None() and
         sc2 = TRevSummaryCtx2None() and
         sc3 = TRevSummaryCtx3None() and
         mid.getAp() instanceof PartialAccessPathNil and
-        ap = TPartialNil()
+        ap = TPartialNil() and
+        isStoreStep = false
         or
         revPartialPathReadStep(mid, _, _, node, ap) and
         state = mid.getState() and
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
-        sc3 = mid.getSummaryCtx3()
+        sc3 = mid.getSummaryCtx3() and
+        isStoreStep = false
         or
         exists(PartialAccessPath ap0, Content c |
           revPartialPathStoreStep(mid, ap0, c, node) and
@@ -5275,7 +5356,8 @@ module MakeImpl<InputSig Lang> {
           sc1 = mid.getSummaryCtx1() and
           sc2 = mid.getSummaryCtx2() and
           sc3 = mid.getSummaryCtx3() and
-          apConsRev(ap, c, ap0)
+          apConsRev(ap, c, ap0) and
+          isStoreStep = true
         )
         or
         exists(ParamNodeEx p |
@@ -5288,18 +5370,21 @@ module MakeImpl<InputSig Lang> {
           sc1 = TRevSummaryCtx1None() and
           sc2 = TRevSummaryCtx2None() and
           sc3 = TRevSummaryCtx3None() and
-          ap = mid.getAp()
+          ap = mid.getAp() and
+          isStoreStep = false
         )
         or
         exists(ReturnPosition pos |
           revPartialPathIntoReturn(mid, pos, state, sc1, sc2, sc3, _, ap) and
-          pos = getReturnPosition(node.asNode())
+          pos = getReturnPosition(node.asNode()) and
+          isStoreStep = false
         )
         or
         revPartialPathThroughCallable(mid, node, state, ap) and
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
-        sc3 = mid.getSummaryCtx3()
+        sc3 = mid.getSummaryCtx3() and
+        isStoreStep = false
       }
 
       pragma[inline]
