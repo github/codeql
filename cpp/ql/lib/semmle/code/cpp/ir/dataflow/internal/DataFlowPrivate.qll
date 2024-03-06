@@ -1165,7 +1165,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   //  override CallTargetOperand getCallTargetOperand() TODO
-  override DataFlowCallable getStaticCallTarget() { result = TSummarizedCallable(c) }
+  override DataFlowCallable getStaticCallTarget() { result = TSummarizedCallable(c) } // TODO: is this right?
 
   //  override ArgumentOperand getArgumentOperand(int index) TODO
   override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) } // TODO: is this right?
