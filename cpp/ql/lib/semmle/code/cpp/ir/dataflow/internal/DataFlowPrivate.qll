@@ -795,6 +795,10 @@ predicate jumpStep(Node n1, Node n2) {
       v = n1.asIndirectVariable(globalDef.getIndirection())
     )
   )
+  or
+  // models-as-data summarized flow
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(n1.(FlowSummaryNode).getSummaryNode(),
+    n2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -805,23 +809,28 @@ predicate jumpStep(Node n1, Node n2) {
  * The boolean `certain` is true if the destination address does not involve
  * any pointer arithmetic, and false otherwise.
  */
-predicate storeStepImpl(Node node1, Content c, PostFieldUpdateNode node2, boolean certain) {
+predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
   exists(int indirectionIndex1, int numberOfLoads, StoreInstruction store |
     nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
-    node2.getIndirectionIndex() = 1 and
-    numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
-      numberOfLoads, certain)
+    node2.(PostFieldUpdateNode).getIndirectionIndex() = 1 and
+    numberOfLoadsFromOperand(node2.(PostFieldUpdateNode).getFieldAddress(),
+      store.getDestinationAddressOperand(), numberOfLoads, certain)
   |
     exists(FieldContent fc | fc = c |
-      fc.getField() = node2.getUpdatedField() and
+      fc.getField() = node2.(PostFieldUpdateNode).getUpdatedField() and
       fc.getIndirectionIndex() = 1 + indirectionIndex1 + numberOfLoads
     )
     or
     exists(UnionContent uc | uc = c |
-      uc.getAField() = node2.getUpdatedField() and
+      uc.getAField() = node2.(PostFieldUpdateNode).getUpdatedField() and
       uc.getIndirectionIndex() = 1 + indirectionIndex1 + numberOfLoads
     )
   )
+  or
+  // models-as-data summarized flow
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode()) and
+  certain = [true, false] // TODO
 }
 
 /**
@@ -908,6 +917,10 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
       uc.getIndirectionIndex() = indirectionIndex2 + numberOfLoads
     )
   )
+  or
+  // models-as-data summarized flow
+  FlowSummaryImpl::Private::Steps::summaryReadStep(node1.(FlowSummaryNode).getSummaryNode(), c,
+    node2.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
