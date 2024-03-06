@@ -14,6 +14,7 @@ private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.frameworks.EntityFramework
 private import semmle.code.csharp.frameworks.NHibernate
 private import semmle.code.csharp.frameworks.Razor
+private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import codeql.util.Unit
@@ -839,6 +840,58 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   VariableCapture::valueStep(nodeFrom, nodeTo)
   or
   nodeTo = nodeFrom.(LocalFunctionCreationNode).getAnAccess(true)
+}
+
+module ApiTypeFlow {
+  private Callable getRelevantCallable(NonDelegateDataFlowCall call) {
+    exists(DispatchCall dc |
+      dc = call.getDispatchCall() and
+      dc.getCall().fromSource() and
+      (
+        result = dc.getADynamicTarget() or
+        result = dc.getAStaticTarget()
+      ) and
+      result.fromLibrary()
+    )
+  }
+
+  /**
+   * Notes:
+   * (1) Make some test code (including a library that is called)
+   * (2) Make sure that flow doesn't go in- and out of out parameters.
+   * (3) Make sure that we only apply this to non source code calls
+   * (4) Make sure that we only apply this if there doesn't exist a summary or neutral.
+   * (5) Match input and out-out types.
+   * (6) Only consider "interesting" types (eg. non-simple types)
+   * (7) We should track taint from qualifier to the return (this could be fluent APIs)
+   * (8) Assume that the constructor call taints the object case a tainited non simple
+   * typed value is provided.
+   * (9) Respect neutrals (no flow if there exist any neutral)
+   * (10) Should we also handle properties?
+   */
+  predicate taintStep(ArgumentNode nodeFrom, OutNode nodeTo) {
+    exists(DataFlowCall call, Callable c, ArgumentPosition apos |
+      call = nodeTo.getCall(_) and
+      nodeFrom.argumentOf(call, apos) and
+      c = getRelevantCallable(call) and
+      (
+        // r = new C(arg)
+        exists(apos.getPosition()) and c instanceof Constructor
+        or
+        // r = arg.Api(...)
+        apos.isQualifier() and not c instanceof Constructor
+        or
+        // r = c.Api(arg)
+        exists(Type t |
+          not t instanceof SimpleType and
+          not t instanceof SystemDateTimeStruct
+        |
+          t = nodeFrom.getType() and
+          t = nodeTo.getType()
+        )
+      )
+    )
+  }
 }
 
 /**
