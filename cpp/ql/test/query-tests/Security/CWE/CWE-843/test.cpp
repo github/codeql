@@ -145,3 +145,29 @@ void test12() {
   HasSomeBitFields* hbf2 = reinterpret_cast<HasSomeBitFields*>(s1_2); // BAD
 }
 
+void test13(bool b, Cat* c) {
+  Animal* a;
+  if(b) {
+    a = c;
+  } else {
+    a = new Dog;
+  }
+  // This FP happens despite the `not GoodFlow::flowTo(sinkNode)` condition in the query
+  // because we don't find a flow path from `a = c` to `static_cast<Cat*>(a)` because
+  // the "source" (i.e., `a = c`) doesn't have an allocation.
+  if(b) {
+    Cat* d = static_cast<Cat*>(a); // GOOD [FALSE POSITIVE]
+  }
+}
+
+void test14(bool b) {
+  Animal* a;
+  if(b) {
+    a = new Cat;
+  } else {
+    a = new Dog;
+  }
+  if(!b) {
+    Cat* d = static_cast<Cat*>(a); // BAD [NOT DETECTED]
+  }
+}
