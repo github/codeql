@@ -43,5 +43,8 @@ returns a null pointer, which can be checked for and handled appropriately.
 </example>
 
 <references>
+<li>
+Microsoft Learn: <a href="https://learn.microsoft.com/en-us/cpp/cpp/type-conversions-and-type-safety-modern-cpp">Type conversions and type safety</a>.
+</li>
 </references>
 </qhelp>
