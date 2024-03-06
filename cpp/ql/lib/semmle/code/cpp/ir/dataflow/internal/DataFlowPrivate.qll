@@ -1280,7 +1280,12 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   p instanceof IndirectParameterNode
-  // TODO: Swift has a case for summarized callables here.
+  or
+  // models-as-data summarized flow
+  exists(DataFlowCallable c, ParameterPosition pos |
+    p.(ParameterNode).isParameterOf(c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
+  )
 }
 
 private predicate fieldHasApproxName(Field f, string s) {
