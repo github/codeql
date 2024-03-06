@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -22,8 +23,6 @@ namespace Semmle.Extraction.CSharp
         protected CommonOptions? options;
         private protected Entities.Compilation? compilationEntity;
         private IDisposable? compilationTrapFile;
-
-        private readonly object progressMutex = new object();
 
         // The bulk of the extraction work, potentially executed in parallel.
         protected readonly List<Action> extractionTasks = new List<Action>();
@@ -242,8 +241,6 @@ namespace Semmle.Extraction.CSharp
             try
             {
                 var assemblyPath = extractor.OutputPath;
-
-
                 var stopwatch = new Stopwatch();
                 stopwatch.Start();
                 var currentTaskId = IncrementTaskCount();
@@ -298,10 +295,7 @@ namespace Semmle.Extraction.CSharp
 
         private int IncrementTaskCount()
         {
-            lock (progressMutex)
-            {
-                return ++taskCount;
-            }
+            return Interlocked.Increment(ref taskCount);
         }
 
         private void ReportProgressTaskStarted(int currentCount, string src)
