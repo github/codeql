@@ -144,3 +144,4 @@ void test12() {
   // This one has a non-bitfield members. So we detect the problem
   HasSomeBitFields* hbf2 = reinterpret_cast<HasSomeBitFields*>(s1_2); // BAD
 }
+
