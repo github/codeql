@@ -7778,11 +7778,11 @@ summary
 | System.IO;TextReader;true;Read;(System.Char[],System.Int32,System.Int32);;Argument[this];Argument[0].Element;taint;manual |
 | System.IO;TextReader;true;Read;(System.Span<System.Char>);;Argument[this];Argument[0].Element;taint;manual |
 | System.IO;TextReader;true;ReadAsync;(System.Char[],System.Int32,System.Int32);;Argument[this];Argument[0].Element;taint;manual |
-| System.IO;TextReader;true;ReadAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;manual |
+| System.IO;TextReader;true;ReadAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[this];Argument[0].Element;taint;manual |
 | System.IO;TextReader;true;ReadBlock;(System.Char[],System.Int32,System.Int32);;Argument[this];Argument[0].Element;taint;manual |
 | System.IO;TextReader;true;ReadBlock;(System.Span<System.Char>);;Argument[this];Argument[0].Element;taint;manual |
 | System.IO;TextReader;true;ReadBlockAsync;(System.Char[],System.Int32,System.Int32);;Argument[this];Argument[0].Element;taint;manual |
-| System.IO;TextReader;true;ReadBlockAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;manual |
+| System.IO;TextReader;true;ReadBlockAsync;(System.Memory<System.Char>,System.Threading.CancellationToken);;Argument[this];Argument[0].Element;taint;manual |
 | System.IO;TextReader;true;ReadLine;();;Argument[this];ReturnValue;taint;manual |
 | System.IO;TextReader;true;ReadLineAsync;();;Argument[this];ReturnValue;taint;manual |
 | System.IO;TextReader;true;ReadToEnd;();;Argument[this];ReturnValue;taint;manual |
