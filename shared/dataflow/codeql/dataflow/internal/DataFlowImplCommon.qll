@@ -61,6 +61,39 @@ module MakeImplCommon<InputSig Lang> {
       override string toString() { result = "FeatureEqualSourceSinkCallContext" }
     }
 
+    signature module SimpleGlobalInputSig {
+      predicate isSource(Node n);
+
+      /**
+       * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
+       */
+      default predicate isAdditionalFlowStep(Node node1, Node node2) { none() }
+    }
+
+    /**
+     * EXPERIMENTAL: This API is subject to change without notice.
+     *
+     * Given a source definition, this constructs a simple forward flow
+     * computation with an access path limit of 1.
+     */
+    module SimpleGlobalExt<SimpleGlobalInputSig Input> {
+      private module Inp implements TypeTracking::TypeTrackInputSig {
+        predicate source = Input::isSource/1;
+
+        predicate isAdditionalLevelStep(Node node1, Node node2) {
+          Input::isAdditionalFlowStep(pragma[only_bind_into](node1), pragma[only_bind_into](node2)) and
+          getNodeEnclosingCallable(node1) = getNodeEnclosingCallable(node2)
+        }
+
+        predicate isAdditionalJumpStep(Node node1, Node node2) {
+          Input::isAdditionalFlowStep(pragma[only_bind_into](node1), pragma[only_bind_into](node2)) and
+          getNodeEnclosingCallable(node1) != getNodeEnclosingCallable(node2)
+        }
+      }
+
+      import TypeTracking::TypeTrackExt<Inp>
+    }
+
     /**
      * Holds if `source` is a relevant data flow source.
      */

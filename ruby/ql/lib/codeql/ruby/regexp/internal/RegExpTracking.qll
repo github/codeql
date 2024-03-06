@@ -55,7 +55,7 @@ DataFlow::Node stringSink() {
 /** Gets a node where regular expressions that flow to the node are used. */
 DataFlow::Node regSink() { result = any(RegexExecution exec).getRegex() }
 
-private signature module TypeTrackInputSig {
+private signature module TypeTrackInputSig2 {
   DataFlow::LocalSourceNode start(TypeTracker t, DataFlow::Node start);
 
   predicate end(DataFlow::Node n);
@@ -67,7 +67,7 @@ private signature module TypeTrackInputSig {
  * Provides a version of type tracking where we first prune for reachable nodes,
  * before doing the type tracking computation.
  */
-private module PrunedTypeTrack<TypeTrackInputSig Input> {
+private module PrunedTypeTrack<TypeTrackInputSig2 Input> {
   private predicate additionalStep(
     DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo
   ) {
@@ -162,7 +162,7 @@ private predicate regFromString(DataFlow::LocalSourceNode inputStr, DataFlow::Ca
   )
 }
 
-private module StringTypeTrackInput implements TypeTrackInputSig {
+private module StringTypeTrackInput implements TypeTrackInputSig2 {
   DataFlow::LocalSourceNode start(TypeTracker t, DataFlow::Node start) {
     start = strStart() and t.start() and result = start
   }
@@ -204,7 +204,7 @@ private predicate regFromStringStart(DataFlow::Node strConst, TypeTracker t, Dat
   exists(t.continue())
 }
 
-private module RegTypeTrackInput implements TypeTrackInputSig {
+private module RegTypeTrackInput implements TypeTrackInputSig2 {
   DataFlow::LocalSourceNode start(TypeTracker t, DataFlow::Node start) {
     start = regStart() and
     t.start() and

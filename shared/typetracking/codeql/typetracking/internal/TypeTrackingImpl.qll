@@ -17,6 +17,9 @@ private import codeql.typetracking.TypeTracking
 module TypeTracking<TypeTrackingInput I> {
   private import I
 
+  pragma[inline]
+  private predicate isLocalSourceNode(LocalSourceNode n) { any() }
+
   signature module ConsistencyChecksInputSig {
     /** Holds if `n` should be excluded from the consistency test `unreachableNode`. */
     default predicate unreachableNodeExclude(Node n) { none() }
@@ -245,9 +248,6 @@ module TypeTracking<TypeTrackingInput I> {
       or
       returnStep(nodeFrom, nodeTo) and summary = ReturnStep()
     }
-
-    pragma[inline]
-    private predicate isLocalSourceNode(LocalSourceNode n) { any() }
 
     cached
     predicate standardFlowsTo(Node localSource, Node dst) {
@@ -690,22 +690,41 @@ module TypeTracking<TypeTrackingInput I> {
     TypeBackTracker end() { result.end() }
   }
 
-  signature predicate endpoint(Node node);
+  signature predicate endpoint(Node n);
+
+  signature module TypeTrackInputSig {
+    predicate source(Node n);
+
+    /**
+     * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
+     */
+    predicate isAdditionalLevelStep(Node node1, Node node2);
+
+    /**
+     * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
+     */
+    predicate isAdditionalJumpStep(Node node1, Node node2);
+  }
 
   /**
    * Given a source definition, constructs the default forward type tracking from
    * those sources.
    */
-  module TypeTrack<endpoint/1 source> {
+  module TypeTrack<TypeTrackInputSig Input> {
+    private import Input
+
     pragma[nomagic]
     private predicate sourceSimpleLocalSmallSteps(Node src, Node n) {
       source(src) and
       not src instanceof LocalSourceNode and
       src = n
       or
-      exists(Node mid |
-        sourceSimpleLocalSmallSteps(src, mid) and
+      exists(Node mid | sourceSimpleLocalSmallSteps(src, mid) |
         simpleLocalSmallStep(mid, n)
+        or
+        isAdditionalLevelStep(mid, n)
+        or
+        isAdditionalJumpStep(mid, n)
       )
     }
 
@@ -717,19 +736,72 @@ module TypeTracking<TypeTrackingInput I> {
       )
     }
 
+    predicate additionalStepFlowsTo(Node add, Node dst) {
+      isAdditionalLevelStep(_, add) and
+      dst = add
+      or
+      isAdditionalJumpStep(_, add) and
+      dst = add
+      or
+      exists(Node mid |
+        additionalStepFlowsTo(add, mid) and
+        simpleLocalSmallStep(mid, dst)
+      )
+    }
+
+    predicate additionalLevelStep(LocalSourceNode node1, LocalSourceNode node2) {
+      exists(Node n1, Node n2 |
+        flowsTo(node1, n1) and
+        isAdditionalLevelStep(n1, n2) and
+        additionalStepFlowsTo(n2, node2)
+      )
+    }
+
+    predicate additionalJumpStep(LocalSourceNode node1, LocalSourceNode node2) {
+      exists(Node n1, Node n2 |
+        flowsTo(node1, n1) and
+        isAdditionalJumpStep(n1, n2) and
+        additionalStepFlowsTo(n2, node2)
+      )
+    }
+
+    pragma[inline]
+    TypeTracker stepExt(TypeTracker tt, LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
+      result = tt.step(nodeFrom, nodeTo)
+      or
+      result = append(tt, LevelStep()) and
+      additionalLevelStep(nodeFrom, nodeTo)
+      or
+      result = append(tt, JumpStep()) and
+      additionalJumpStep(nodeFrom, nodeTo)
+    }
+
     private Node flow(TypeTracker tt) {
       tt.start() and source(result)
       or
       firstStep(tt, _, result)
       or
-      exists(TypeTracker ttMid | tt = ttMid.step(flow(ttMid), result))
+      exists(TypeTracker ttMid | tt = stepExt(ttMid, flow(ttMid), result))
+    }
+
+    private predicate flowsToExt(Node localSource, Node dst) {
+      not nonStandardFlowsTo(_, _) and
+      // explicit type check in base case to avoid repeated type tests in recursive case
+      isLocalSourceNode(localSource) and
+      dst = localSource
+      or
+      exists(Node mid | flowsToExt(localSource, mid) |
+        simpleLocalSmallStep(mid, dst) or
+        isAdditionalLevelStep(mid, dst) or
+        isAdditionalJumpStep(mid, dst)
+      )
     }
 
     /**
      * Holds if a source flows to `n`.
      */
     predicate flowsTo(Node n) {
-      flowsTo(flow(TypeTracker::end()), n) or sourceSimpleLocalSmallSteps(_, n)
+      flowsToExt(flow(TypeTracker::end()), n) or sourceSimpleLocalSmallSteps(_, n)
     }
 
     /**
@@ -779,7 +851,7 @@ module TypeTracking<TypeTrackingInput I> {
       private predicate edgeCand(Node n1, TypeTracker tt1, Node n2, TypeTracker tt2) {
         n1 = flow(tt1) and
         (
-          tt2 = tt1.step(n1, n2)
+          tt2 = stepExt(tt1, n1, n2)
           or
           tt1.start() and firstStep(tt2, n1, n2)
         )
@@ -799,7 +871,7 @@ module TypeTracking<TypeTrackingInput I> {
         )
         or
         n1.getTypeTracker().end() and
-        flowsTo(getNodeMid(n1), getNodeSink(n2)) and
+        flowsToExt(getNodeMid(n1), getNodeSink(n2)) and
         getNodeMid(n1) != getNodeSink(n2)
         or
         sourceSimpleLocalSmallSteps(n1.getNode(), getNodeSink(n2)) and

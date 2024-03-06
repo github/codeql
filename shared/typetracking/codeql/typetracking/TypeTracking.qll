@@ -142,6 +142,32 @@ module TypeTracking<TypeTrackingInput I> {
 
   module TypeBackTracker = MkImpl::TypeBackTracker;
 
+  signature module TypeTrackInputSig {
+    predicate source(I::Node n);
+
+    /**
+     * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
+     */
+    default predicate isAdditionalLevelStep(I::Node node1, I::Node node2) { none() }
+
+    /**
+     * Holds if data may flow from `node1` to `node2` in addition to the normal data-flow steps.
+     */
+    default predicate isAdditionalJumpStep(I::Node node1, I::Node node2) { none() }
+  }
+
+  /**
+   * Given a source definition, constructs the default forward type tracking from
+   * those sources.
+   */
+  module TypeTrackExt<TypeTrackInputSig Input> {
+    private module Inp implements MkImpl::TypeTrackInputSig {
+      import Input
+    }
+
+    import MkImpl::TypeTrack<Inp>
+  }
+
   signature predicate endpoint(I::Node node);
 
   /**
@@ -149,6 +175,16 @@ module TypeTracking<TypeTrackingInput I> {
    * those sources.
    */
   module TypeTrack<endpoint/1 source> {
-    import MkImpl::TypeTrack<source/1>
+    private predicate sourceAlias = source/1;
+
+    private module Inp implements MkImpl::TypeTrackInputSig {
+      predicate source = sourceAlias/1;
+
+      predicate isAdditionalLevelStep(I::Node node1, I::Node node2) { none() }
+
+      predicate isAdditionalJumpStep(I::Node node1, I::Node node2) { none() }
+    }
+
+    import MkImpl::TypeTrack<Inp>
   }
 }
