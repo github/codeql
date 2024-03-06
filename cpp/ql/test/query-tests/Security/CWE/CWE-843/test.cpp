@@ -171,3 +171,22 @@ void test14(bool b) {
     Cat* d = static_cast<Cat*>(a); // BAD [NOT DETECTED]
   }
 }
+
+struct UInt64 { unsigned long u64; };
+struct UInt8 { unsigned char u8; };
+
+void test14() {
+  void* u64 = new UInt64;
+  // ...
+  UInt8* u8 = (UInt8*)u64; // GOOD
+}
+
+struct UInt8_with_more { UInt8 u8; void* p; };
+
+void test15() {
+  void* u64 = new UInt64;
+  // ...
+  UInt8_with_more* u8 = (UInt8_with_more*)u64; // BAD
+}
+
+// semmle-extractor-options: --gcc -std=c++11
