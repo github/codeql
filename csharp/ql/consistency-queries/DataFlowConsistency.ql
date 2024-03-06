@@ -30,8 +30,6 @@ private module Input implements InputSig<CsharpDataFlow> {
     n instanceof FlowInsensitiveFieldNode
   }
 
-  predicate missingLocationExclude(Node n) { none() }
-
   predicate postWithInFlowExclude(Node n) {
     n instanceof FlowSummaryNode
     or

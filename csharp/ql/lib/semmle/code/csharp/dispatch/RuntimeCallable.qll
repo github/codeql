@@ -21,12 +21,7 @@ class RuntimeCallable extends Callable {
 }
 
 /** A run-time method. */
-class RuntimeMethod extends RuntimeCallable {
-  RuntimeMethod() { this instanceof Method }
-
-  /** Holds if the method is `static`. */
-  predicate isStatic() { this.(Method).isStatic() }
-}
+class RuntimeMethod extends RuntimeCallable, Method { }
 
 /** A run-time instance method. */
 class RuntimeInstanceMethod extends RuntimeMethod {

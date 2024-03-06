@@ -3,12 +3,12 @@ tooManyMatchingHandles
 missingCil
 csharpLocationViolation
 matchingObjectMethods
-| System.Boolean System.Object.Equals(System.Object) | System.Boolean System.Object.Equals(System.Object) |
-| System.Boolean System.Object.Equals(System.Object,System.Object) | System.Boolean System.Object.Equals(System.Object,System.Object) |
-| System.Boolean System.Object.ReferenceEquals(System.Object,System.Object) | System.Boolean System.Object.ReferenceEquals(System.Object,System.Object) |
-| System.Int32 System.Object.GetHashCode() | System.Int32 System.Object.GetHashCode() |
-| System.Object System.Object.MemberwiseClone() | System.Object System.Object.MemberwiseClone() |
-| System.String System.Object.ToString() | System.String System.Object.ToString() |
-| System.Type System.Object.GetType() | System.Type System.Object.GetType() |
-| System.Void System.Object..ctor() | System.Void System.Object..ctor() |
-| System.Void System.Object.Finalize() | System.Void System.Object.Finalize() |
+| Equals(object) | System.Boolean System.Object.Equals(System.Object) |
+| Equals(object, object) | System.Boolean System.Object.Equals(System.Object,System.Object) |
+| GetHashCode() | System.Int32 System.Object.GetHashCode() |
+| GetType() | System.Type System.Object.GetType() |
+| MemberwiseClone() | System.Object System.Object.MemberwiseClone() |
+| Object() | System.Void System.Object..ctor() |
+| ReferenceEquals(object, object) | System.Boolean System.Object.ReferenceEquals(System.Object,System.Object) |
+| ToString() | System.String System.Object.ToString() |
+| ~Object() | System.Void System.Object.Finalize() |
