@@ -163,6 +163,12 @@ predicate isSourceImpl(DataFlow::Node source, Class state) {
   )
 }
 
+/**
+ * The `RelevantStateConfig` configuration is used to find the set of
+ * states for the `BadConfig` and `GoodConfig`. The flow computed by
+ * `RelevantStateConfig` is used to implement the `relevantState` predicate
+ * which is used to avoid a cartesian product in `isSinkImpl`.
+ */
 module RelevantStateConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
 
@@ -204,9 +210,16 @@ predicate isSinkImpl(DataFlow::Node sink, Class state, Type convertedType, boole
   )
 }
 
+/**
+ * The `BadConfig` configuration tracks flow from an allocation to an
+ * incompatible cast.
+ *
+ * We use `FlowState` to track the type of the source, and compare the
+ * flow state to the target of the cast in the `isSink` definition.
+ */
 module BadConfig implements DataFlow::StateConfigSig {
   class FlowState extends Class {
-    FlowState() { isSourceImpl(_, this) }
+    FlowState() { relevantState(_, this) }
   }
 
   predicate isSource(DataFlow::Node source, FlowState state) { isSourceImpl(source, state) }
@@ -220,6 +233,45 @@ module BadConfig implements DataFlow::StateConfigSig {
 
 module BadFlow = DataFlow::GlobalWithState<BadConfig>;
 
+/**
+ * The `GoodConfig` configuration tracks flow from an allocation to a
+ * compatible cast.
+ *
+ * We use `GoodConfig` to reduce the number of FPs from infeasible paths.
+ * For example, consider the following example:
+ * ```cpp
+ * struct Animal { virtual ~Animal(); };
+ *
+ * struct Cat : public Animal {
+ *   Cat();
+ *   ~Cat();
+ * };
+ *
+ * struct Dog : public Animal {
+ *   Dog();
+ *   ~Dog();
+ * };
+ *
+ * void test9(bool b) {
+ *   Animal* a;
+ *   if(b) {
+ *     a = new Cat;
+ *   } else {
+ *     a = new Dog;
+ *   }
+ *   if(b) {
+ *    Cat* d = static_cast<Cat*>(a);
+ *   }
+ * }
+ * ```
+ * Here, `BadConfig` finds a flow from `a = new Dog` to `static_cast<Cat*>(a)`.
+ * However, that path is never realized in an actual execution path. So in
+ * order to remove this result we exclude results where there exists an
+ * allocation of a type that's compatible with `static_cast<Cat*>(a)`.
+ *
+ * We use `FlowState` to track the type of the source, and compare the
+ * flow state to the target of the cast in the `isSink` definition.
+ */
 module GoodConfig implements DataFlow::StateConfigSig {
   class FlowState = BadConfig::FlowState;
 
