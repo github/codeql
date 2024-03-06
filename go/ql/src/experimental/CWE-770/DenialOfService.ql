@@ -3,8 +3,9 @@
  * @description slices created with the built-in make function from user-controlled sources using a
  * maliciously large value possibly leading to a denial of service.
  * @kind path-problem
- * @problem.severity high
+ * @problem.severity error
  * @security-severity 9
+ * @precision high
  * @id go/denial-of-service
  * @tags security
  *       experimental
