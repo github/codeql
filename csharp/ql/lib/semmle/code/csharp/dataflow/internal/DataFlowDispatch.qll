@@ -14,11 +14,9 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
  * a flow summary.
  */
 Callable getCallableForDataFlow(Callable c) {
-  exists(Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
-    unboundDecl.hasBody() and
-    unboundDecl.getFile().fromSource() and
-    result = unboundDecl
-  )
+  result = c.getUnboundDeclaration() and
+  result.hasBody() and
+  result.getFile().fromSource()
 }
 
 newtype TReturnKind =

@@ -76,7 +76,7 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
   /** Gets a nested child type, if any. */
   NestedType getAChildType() { nested_types(result, this, _) }
 
-  private string getPrefixWithTypes() {
+  deprecated private string getPrefixWithTypes() {
     result = this.getDeclaringType().getLabel() + "."
     or
     if this.getDeclaringNamespace().isGlobalNamespace()
@@ -85,17 +85,17 @@ class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
   }
 
   pragma[noinline]
-  private string getLabelNonGeneric() {
+  deprecated private string getLabelNonGeneric() {
     not this instanceof Generic and
     result = this.getPrefixWithTypes() + this.getUndecoratedName()
   }
 
   pragma[noinline]
-  private string getLabelGeneric() {
+  deprecated private string getLabelGeneric() {
     result = this.getPrefixWithTypes() + this.getUndecoratedName() + getGenericsLabel(this)
   }
 
-  override string getLabel() {
+  deprecated override string getLabel() {
     result = this.getLabelNonGeneric() or
     result = this.getLabelGeneric()
   }
@@ -997,7 +997,7 @@ class FunctionPointerType extends Type, Parameterizable, @function_pointer_type 
 
   override string getAPrimaryQlClass() { result = "FunctionPointerType" }
 
-  override string getLabel() { result = this.getName() }
+  deprecated override string getLabel() { result = this.getName() }
 }
 
 /**
@@ -1116,7 +1116,7 @@ class ArrayType extends RefType, @array_type {
     array_element_type(this, _, _, getTypeRef(result))
   }
 
-  final override string getLabel() { result = this.getElementType().getLabel() + "[]" }
+  deprecated final override string getLabel() { result = this.getElementType().getLabel() + "[]" }
 
   /** Holds if this array type has the same shape (dimension and rank) as `that` array type. */
   predicate hasSameShapeAs(ArrayType that) {
@@ -1180,7 +1180,7 @@ class PointerType extends Type, @pointer_type {
 
   final override string getName() { types(this, _, result) }
 
-  final override string getLabel() { result = this.getReferentType().getLabel() + "*" }
+  deprecated final override string getLabel() { result = this.getReferentType().getLabel() + "*" }
 
   final override string getUndecoratedName() {
     result = this.getReferentType().getUndecoratedName()
@@ -1271,7 +1271,7 @@ class TupleType extends ValueType, @tuple_type {
         ")"
   }
 
-  override string getLabel() { result = this.getUnderlyingType().getLabel() }
+  deprecated override string getLabel() { result = this.getUnderlyingType().getLabel() }
 
   override Type getChild(int i) { result = this.getUnderlyingType().getChild(i) }
 

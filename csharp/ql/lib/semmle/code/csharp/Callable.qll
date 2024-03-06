@@ -22,17 +22,17 @@ private import TypeRef
  */
 class Callable extends Parameterizable, ExprOrStmtParent, @callable {
   pragma[noinline]
-  private string getDeclaringTypeLabel() { result = this.getDeclaringType().getLabel() }
+  deprecated private string getDeclaringTypeLabel() { result = this.getDeclaringType().getLabel() }
 
   pragma[noinline]
-  private string getParameterTypeLabelNonGeneric(int p) {
+  deprecated private string getParameterTypeLabelNonGeneric(int p) {
     not this instanceof Generic and
     result = this.getParameter(p).getType().getLabel()
   }
 
   language[monotonicAggregates]
   pragma[nomagic]
-  private string getMethodParamListNonGeneric() {
+  deprecated private string getMethodParamListNonGeneric() {
     result =
       concat(int p |
         p in [0 .. this.getNumberOfParameters() - 1]
@@ -42,14 +42,14 @@ class Callable extends Parameterizable, ExprOrStmtParent, @callable {
   }
 
   pragma[noinline]
-  private string getParameterTypeLabelGeneric(int p) {
+  deprecated private string getParameterTypeLabelGeneric(int p) {
     this instanceof Generic and
     result = this.getParameter(p).getType().getLabel()
   }
 
   language[monotonicAggregates]
   pragma[nomagic]
-  private string getMethodParamListGeneric() {
+  deprecated private string getMethodParamListGeneric() {
     result =
       concat(int p |
         p in [0 .. this.getNumberOfParameters() - 1]
@@ -59,7 +59,7 @@ class Callable extends Parameterizable, ExprOrStmtParent, @callable {
   }
 
   pragma[noinline]
-  private string getLabelNonGeneric() {
+  deprecated private string getLabelNonGeneric() {
     not this instanceof Generic and
     result =
       this.getReturnTypeLabel() + " " + this.getDeclaringTypeLabel() + "." +
@@ -67,19 +67,19 @@ class Callable extends Parameterizable, ExprOrStmtParent, @callable {
   }
 
   pragma[noinline]
-  private string getLabelGeneric() {
+  deprecated private string getLabelGeneric() {
     result =
       this.getReturnTypeLabel() + " " + this.getDeclaringTypeLabel() + "." +
         this.getUndecoratedName() + getGenericsLabel(this) + "(" + this.getMethodParamListGeneric() +
         ")"
   }
 
-  final override string getLabel() {
+  deprecated final override string getLabel() {
     result = this.getLabelNonGeneric() or
     result = this.getLabelGeneric()
   }
 
-  private string getReturnTypeLabel() {
+  deprecated private string getReturnTypeLabel() {
     result = this.getReturnType().getLabel()
     or
     not exists(this.getReturnType()) and result = "System.Void"
@@ -579,8 +579,8 @@ class RecordCloneMethod extends Method {
     this.hasName("<Clone>$") and
     this.getNumberOfParameters() = 0 and
     this.getReturnType() = getARecordBaseType(this.getDeclaringType()) and
-    this.(Member).isPublic() and
-    not this.(Member).isStatic()
+    this.isPublic() and
+    not this.isStatic()
   }
 
   /** Gets the constructor that this clone method calls. */

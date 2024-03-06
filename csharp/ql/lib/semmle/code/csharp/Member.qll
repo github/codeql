@@ -263,33 +263,6 @@ class Member extends Modifiable, @member {
   /** Gets an access to this member. */
   MemberAccess getAnAccess() { result.getTarget() = this }
 
-  /** Holds if this member is declared `public`. */
-  override predicate isPublic() { Modifiable.super.isPublic() }
-
-  /** Holds if this member is declared `protected.` */
-  override predicate isProtected() { Modifiable.super.isProtected() }
-
-  /** Holds if this member is `private`. */
-  override predicate isPrivate() { Modifiable.super.isPrivate() }
-
-  /** Holds if this member is `internal`. */
-  override predicate isInternal() { Modifiable.super.isInternal() }
-
-  /** Holds if this member is `sealed`. */
-  override predicate isSealed() { Modifiable.super.isSealed() }
-
-  /** Holds if this member is `abstract`. */
-  override predicate isAbstract() { Modifiable.super.isAbstract() }
-
-  /** Holds if this member is `static`. */
-  override predicate isStatic() { Modifiable.super.isStatic() }
-
-  /** Holds if this member is declared `required`. */
-  override predicate isRequired() { Modifiable.super.isRequired() }
-
-  /** Holds if this member is declared `file` local. */
-  override predicate isFile() { Modifiable.super.isFile() }
-
   /**
    * DEPRECATED: Use `hasFullyQualifiedName` instead.
    *
