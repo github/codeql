@@ -588,7 +588,7 @@ module MakeImpl<InputSig Lang> {
           cc = false
           or
           cc = true and
-          not reducedViableImplInCallContext(call, _, _)
+          not CachedCallContextSensitivity::reducedViableImplInCallContext(call, _, _)
         )
         or
         // call context may help reduce virtual dispatch
@@ -611,7 +611,7 @@ module MakeImpl<InputSig Lang> {
       ) {
         fwdFlow(arg, true) and
         viableParamArgEx(call, p, arg) and
-        reducedViableImplInCallContext(call, _, _) and
+        CachedCallContextSensitivity::reducedViableImplInCallContext(call, _, _) and
         target = p.getEnclosingCallable() and
         not fullBarrier(p)
       }
@@ -982,6 +982,14 @@ module MakeImpl<InputSig Lang> {
         exists(ap)
       }
 
+      predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
+        callEdgeArgParam(call, c, _, _, _, _)
+      }
+
+      predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
+        callEdgeReturn(call, c, _, _, _, _, _)
+      }
+
       additional predicate stats(
         boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges
       ) {
@@ -1178,6 +1186,10 @@ module MakeImpl<InputSig Lang> {
         DataFlowCall call, DataFlowCallable c, RetNodeEx ret, ReturnKindExt kind, NodeEx out,
         boolean allowsFieldFlow, Ap ap
       );
+
+      predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c);
+
+      predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c);
     }
 
     private module MkStage<StageSig PrevStage> {
@@ -1219,7 +1231,9 @@ module MakeImpl<InputSig Lang> {
 
         ApOption apSome(Ap ap);
 
-        class Cc;
+        class Cc {
+          string toString();
+        }
 
         class CcCall extends Cc;
 
@@ -1731,13 +1745,9 @@ module MakeImpl<InputSig Lang> {
         private module FwdTypeFlowInput implements TypeFlowInput {
           predicate enableTypeFlow = Param::enableTypeFlow/0;
 
-          predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
-            PrevStage::callEdgeArgParam(call, c, _, _, _, _)
-          }
+          predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
 
-          predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
-            PrevStage::callEdgeReturn(call, c, _, _, _, _, _)
-          }
+          predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
 
           pragma[nomagic]
           private predicate dataFlowTakenCallEdgeIn0(
@@ -2314,6 +2324,14 @@ module MakeImpl<InputSig Lang> {
           )
         }
 
+        predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
+          callEdgeArgParam(call, c, _, _, _, _)
+        }
+
+        predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
+          callEdgeReturn(call, c, _, _, _, _, _)
+        }
+
         additional predicate stats(
           boolean fwd, int nodes, int fields, int conscand, int states, int tuples, int calledges,
           int tfnodes, int tftuples
@@ -2356,9 +2374,7 @@ module MakeImpl<InputSig Lang> {
     }
 
     private module BooleanCallContext {
-      class Cc extends boolean {
-        Cc() { this in [true, false] }
-      }
+      class Cc = Boolean;
 
       class CcCall extends Cc {
         CcCall() { this = true }
@@ -2398,7 +2414,24 @@ module MakeImpl<InputSig Lang> {
       CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) { any() }
     }
 
-    private module Level1CallContext {
+    private signature module Level1CallContextInputSig {
+      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, CallContextSpecificCall ctx);
+
+      bindingset[call, ctx]
+      predicate noPrunedViableImplInCallContext(DataFlowCall call, CallContext ctx);
+
+      predicate recordDataFlowCallSiteDispatch(DataFlowCall call, DataFlowCallable callable);
+
+      predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable callable);
+
+      predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call);
+
+      DataFlowCall prunedViableImplInCallContextReverse(
+        DataFlowCallable callable, CallContextReturn ctx
+      );
+    }
+
+    private module Level1CallContext<Level1CallContextInputSig Input> {
       class Cc = CallContext;
 
       class CcCall = CallContextCall;
@@ -2419,17 +2452,17 @@ module MakeImpl<InputSig Lang> {
         LocalCc getLocalCc(NodeEx node, Cc cc) { any() }
 
         DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) {
-          result = prunedViableImplInCallContext(call, ctx)
+          result = Input::prunedViableImplInCallContext(call, ctx)
         }
 
         bindingset[call, ctx]
         predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
-          noPrunedViableImplInCallContext(call, ctx)
+          Input::noPrunedViableImplInCallContext(call, ctx)
         }
 
         bindingset[call, c]
         CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
-          if recordDataFlowCallSiteDispatch(call, c)
+          if Input::recordDataFlowCallSiteDispatch(call, c)
           then result = TSpecificCall(call)
           else result = TSomeCall()
         }
@@ -2446,24 +2479,26 @@ module MakeImpl<InputSig Lang> {
         }
 
         DataFlowCallable viableImplCallContextReduced(DataFlowCall call, CcCall ctx) {
-          result = prunedViableImplInCallContext(call, ctx)
+          result = Input::prunedViableImplInCallContext(call, ctx)
         }
 
         bindingset[call, ctx]
         predicate viableImplNotCallContextReduced(DataFlowCall call, Cc ctx) {
-          noPrunedViableImplInCallContext(call, ctx)
+          Input::noPrunedViableImplInCallContext(call, ctx)
         }
 
         bindingset[call, c]
         CcCall getCallContextCall(DataFlowCall call, DataFlowCallable c) {
-          if recordDataFlowCallSite(call, c)
+          if
+            Input::recordDataFlowCallSiteDispatch(call, c) or
+            Input::recordDataFlowCallSiteUnreachable(call, c)
           then result = TSpecificCall(call)
           else result = TSomeCall()
         }
       }
 
       DataFlowCallable viableImplCallContextReducedReverse(DataFlowCall call, CcNoCall ctx) {
-        call = prunedViableImplInCallContextReverse(result, ctx)
+        call = Input::prunedViableImplInCallContextReverse(result, ctx)
       }
 
       predicate viableImplNotCallContextReducedReverse(CcNoCall ctx) {
@@ -2472,7 +2507,9 @@ module MakeImpl<InputSig Lang> {
 
       bindingset[call, c]
       CcNoCall getCallContextReturn(DataFlowCallable c, DataFlowCall call) {
-        if reducedViableImplInReturn(c, call) then result = TReturn(c, call) else result = ccNone()
+        if Input::reducedViableImplInReturn(c, call)
+        then result = TReturn(c, call)
+        else result = ccNone()
       }
     }
 
@@ -2510,7 +2547,11 @@ module MakeImpl<InputSig Lang> {
 
       ApOption apSome(Ap ap) { result = TBooleanSome(ap) }
 
-      import Level1CallContext
+      private module Level1CallContextInput implements Level1CallContextInputSig {
+        import CachedCallContextSensitivity
+      }
+
+      import Level1CallContext<Level1CallContextInput>
       import NoLocalCallContext
 
       bindingset[node1, state1]
@@ -2780,7 +2821,23 @@ module MakeImpl<InputSig Lang> {
 
       ApOption apSome(Ap ap) { result = TApproxAccessPathFrontSome(ap) }
 
-      import Level1CallContext
+      additional module Level1CallContextInput implements Level1CallContextInputSig {
+        private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+          predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
+
+          predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
+
+          predicate reducedViableImplInCallContextCand =
+            CachedCallContextSensitivity::reducedViableImplInCallContext/3;
+
+          predicate reducedViableImplInReturnCand =
+            CachedCallContextSensitivity::reducedViableImplInReturn/2;
+        }
+
+        import CallContextSensitivity<CallContextSensitivityInput>
+      }
+
+      import Level1CallContext<Level1CallContextInput>
       import NoLocalCallContext
 
       predicate localStep(
@@ -3148,7 +3205,23 @@ module MakeImpl<InputSig Lang> {
 
       ApOption apSome(Ap ap) { result = TAccessPathApproxSome(ap) }
 
-      import Level1CallContext
+      additional module Level1CallContextInput implements Level1CallContextInputSig {
+        private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+          predicate relevantCallEdgeIn = PrevStage::relevantCallEdgeIn/2;
+
+          predicate relevantCallEdgeOut = PrevStage::relevantCallEdgeOut/2;
+
+          predicate reducedViableImplInCallContextCand =
+            Stage3Param::Level1CallContextInput::reducedViableImplInCallContext/3;
+
+          predicate reducedViableImplInReturnCand =
+            Stage3Param::Level1CallContextInput::reducedViableImplInReturn/2;
+        }
+
+        import CallContextSensitivity<CallContextSensitivityInput>
+      }
+
+      import Level1CallContext<Level1CallContextInput>
       import LocalCallContext
 
       predicate localStep(
@@ -4026,6 +4099,22 @@ module MakeImpl<InputSig Lang> {
       )
     }
 
+    private module PrunedCallContextSensitivityStage5 {
+      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+        predicate relevantCallEdgeIn = Stage5::relevantCallEdgeIn/2;
+
+        predicate relevantCallEdgeOut = Stage5::relevantCallEdgeOut/2;
+
+        predicate reducedViableImplInCallContextCand =
+          Stage5Param::Level1CallContextInput::reducedViableImplInCallContext/3;
+
+        predicate reducedViableImplInReturnCand =
+          Stage5Param::Level1CallContextInput::reducedViableImplInReturn/2;
+      }
+
+      import CallContextSensitivity<CallContextSensitivityInput>
+    }
+
     pragma[nomagic]
     private predicate pathOutOfCallable1(
       PathNodeMid mid, DataFlowCall call, ReturnKindExt kind, FlowState state, CallContext cc,
@@ -4035,9 +4124,11 @@ module MakeImpl<InputSig Lang> {
         pathOutOfCallable0(mid, pos, state, innercc, apa) and
         c = pos.getCallable() and
         kind = pos.getKind() and
-        resolveReturn(innercc, c, call)
+        PrunedCallContextSensitivityStage5::resolveReturn(innercc, c, call)
       |
-        if reducedViableImplInReturn(c, call) then cc = TReturn(c, call) else cc = TAnyCallContext()
+        if PrunedCallContextSensitivityStage5::reducedViableImplInReturn(c, call)
+        then cc = TReturn(c, call)
+        else cc = TAnyCallContext()
       )
     }
 
@@ -4087,8 +4178,6 @@ module MakeImpl<InputSig Lang> {
       )
     }
 
-    private predicate parameterCandProj(DataFlowCallable c) { parameterCand(c, _, _) }
-
     pragma[nomagic]
     private predicate pathIntoCallable0(
       PathNodeMid mid, DataFlowCallable callable, ParameterPosition pos, FlowState state,
@@ -4097,7 +4186,7 @@ module MakeImpl<InputSig Lang> {
       exists(AccessPathApprox apa |
         pathIntoArg(mid, pragma[only_bind_into](pos), state, outercc, call, t, ap,
           pragma[only_bind_into](apa)) and
-        callable = ResolveCall<parameterCandProj/1>::resolveCall(call, outercc) and
+        callable = PrunedCallContextSensitivityStage5::resolveCall(call, outercc) and
         parameterCand(callable, pragma[only_bind_into](pos), pragma[only_bind_into](apa))
       )
     }
@@ -4127,7 +4216,7 @@ module MakeImpl<InputSig Lang> {
           not Config::getAFeature() instanceof FeatureEqualSourceSinkCallContext
         )
       |
-        if recordDataFlowCallSite(call, callable)
+        if PrunedCallContextSensitivityStage5::recordDataFlowCallSite(call, callable)
         then innercc = TSpecificCall(call)
         else innercc = TSomeCall()
       )
@@ -5019,9 +5108,9 @@ module MakeImpl<InputSig Lang> {
           partialPathOutOfCallable0(mid, pos, state, innercc, t, ap) and
           c = pos.getCallable() and
           kind = pos.getKind() and
-          resolveReturn(innercc, c, call)
+          CachedCallContextSensitivity::resolveReturn(innercc, c, call)
         |
-          if reducedViableImplInReturn(c, call)
+          if CachedCallContextSensitivity::reducedViableImplInReturn(c, call)
           then cc = TReturn(c, call)
           else cc = TAnyCallContext()
         )
@@ -5054,15 +5143,13 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      private predicate anyCallable(DataFlowCallable c) { any() }
-
       pragma[nomagic]
       private predicate partialPathIntoCallable0(
         PartialPathNodeFwd mid, DataFlowCallable callable, ParameterPosition pos, FlowState state,
         CallContext outercc, DataFlowCall call, DataFlowType t, PartialAccessPath ap
       ) {
         partialPathIntoArg(mid, pos, state, outercc, call, t, ap) and
-        callable = ResolveCall<anyCallable/1>::resolveCall(call, outercc)
+        callable = CachedCallContextSensitivity::resolveCall(call, outercc)
       }
 
       private predicate partialPathIntoCallable(
@@ -5078,7 +5165,7 @@ module MakeImpl<InputSig Lang> {
           sc3 = TSummaryCtx3Some(t) and
           sc4 = TSummaryCtx4Some(ap)
         |
-          if recordDataFlowCallSite(call, callable)
+          if CachedCallContextSensitivity::recordDataFlowCallSite(call, callable)
           then innercc = TSpecificCall(call)
           else innercc = TSomeCall()
         )
