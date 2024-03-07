@@ -131,11 +131,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 try
                 {
                     var o = JObject.Parse(File.ReadAllText(path));
-                    versions.Add((string)o?["sdk"]?["version"]!);
+                    var v = (string?)o?["sdk"]?["version"];
+                    if (v is not null)
+                    {
+                        versions.Add(v);
+                    }
                 }
                 catch
                 {
                     // not a valid `global.json` file
+                    logger.LogInfo($"Couldn't find .NET SDK version in '{path}'.");
                     continue;
                 }
             }
