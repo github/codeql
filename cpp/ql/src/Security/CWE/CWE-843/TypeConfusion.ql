@@ -139,6 +139,20 @@ class UnsafeCast extends Cast {
 
   Class getConvertedType() { result = toType }
 
+  /**
+   * Holds if the result of this cast can safely be interpreted as a value of
+   * type `t`.
+   *
+   * The compatibility rules are as follows:
+   *
+   * 1. the result of `(T)x` is compatible with the type `T` for any `T`
+   * 2. the result of `(T)x` is compatible with the type `U` for any `U` such
+   *    that `U` is a subtype of `T`, or `T` is a subtype of `U`.
+   * 3. the result of `(T)x` is compatible with the type `U` if `U` the list
+   *    of fields of `U` is a prefix of the list of fields of `T`.
+   *    For example, if `T` is `struct { unsigned char x; int y; };`
+   *    and `U` is `struct { unsigned char uc; };`.
+   */
   bindingset[this, t]
   pragma[inline_late]
   predicate compatibleWith(Type t) {
