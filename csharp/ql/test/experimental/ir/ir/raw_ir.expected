@@ -1,5 +1,5 @@
 array.cs:
-#    2| System.Void ArrayTest.one_dim_init_acc()
+#    2| ArrayTest.one_dim_init_acc()
 #    2|   Block 0
 #    2|     v2_1(Void)             = EnterFunction            : 
 #    2|     mu2_2(<unknown>)       = AliasedDefinition        : 
@@ -54,7 +54,7 @@ array.cs:
 #    2|     v2_5(Void)             = AliasedUse               : ~m?
 #    2|     v2_6(Void)             = ExitFunction             : 
 
-#   13| System.Void ArrayTest.twod_and_init_acc()
+#   13| ArrayTest.twod_and_init_acc()
 #   13|   Block 0
 #   13|     v13_1(Void)             = EnterFunction      : 
 #   13|     mu13_2(<unknown>)       = AliasedDefinition  : 
@@ -145,7 +145,7 @@ array.cs:
 #   13|     v13_6(Void)             = ExitFunction       : 
 
 assignop.cs:
-#    5| System.Void AssignOp.Main()
+#    5| AssignOp.Main()
 #    5|   Block 0
 #    5|     v5_1(Void)          = EnterFunction      : 
 #    5|     mu5_2(<unknown>)    = AliasedDefinition  : 
@@ -220,7 +220,7 @@ assignop.cs:
 #    5|     v5_5(Void)          = ExitFunction       : 
 
 casts.cs:
-#   11| System.Void Casts.Main()
+#   11| Casts.Main()
 #   11|   Block 0
 #   11|     v11_1(Void)           = EnterFunction            : 
 #   11|     mu11_2(<unknown>)     = AliasedDefinition        : 
@@ -245,7 +245,7 @@ casts.cs:
 #   11|     v11_5(Void)           = ExitFunction             : 
 
 collections.cs:
-#   11| System.Void Collections.Main()
+#   11| Collections.Main()
 #   11|   Block 0
 #   11|     v11_1(Void)                             = EnterFunction               : 
 #   11|     mu11_2(<unknown>)                       = AliasedDefinition           : 
@@ -288,7 +288,7 @@ collections.cs:
 #   11|     v11_5(Void)                             = ExitFunction                : 
 
 constructor_init.cs:
-#    5| System.Void BaseClass..ctor()
+#    5| BaseClass.BaseClass()
 #    5|   Block 0
 #    5|     v5_1(Void)             = EnterFunction               : 
 #    5|     mu5_2(<unknown>)       = AliasedDefinition           : 
@@ -302,7 +302,7 @@ constructor_init.cs:
 #    5|     v5_9(Void)             = AliasedUse                  : ~m?
 #    5|     v5_10(Void)            = ExitFunction                : 
 
-#    9| System.Void BaseClass..ctor(System.Int32)
+#    9| BaseClass.BaseClass(int)
 #    9|   Block 0
 #    9|     v9_1(Void)             = EnterFunction               : 
 #    9|     mu9_2(<unknown>)       = AliasedDefinition           : 
@@ -322,7 +322,7 @@ constructor_init.cs:
 #    9|     v9_11(Void)            = AliasedUse                  : ~m?
 #    9|     v9_12(Void)            = ExitFunction                : 
 
-#   17| System.Void DerivedClass..ctor()
+#   17| DerivedClass.DerivedClass()
 #   17|   Block 0
 #   17|     v17_1(Void)                = EnterFunction                     : 
 #   17|     mu17_2(<unknown>)          = AliasedDefinition                 : 
@@ -336,7 +336,7 @@ constructor_init.cs:
 #   17|     v17_9(Void)                = AliasedUse                        : ~m?
 #   17|     v17_10(Void)               = ExitFunction                      : 
 
-#   21| System.Void DerivedClass..ctor(System.Int32)
+#   21| DerivedClass.DerivedClass(int)
 #   21|   Block 0
 #   21|     v21_1(Void)                = EnterFunction                     : 
 #   21|     mu21_2(<unknown>)          = AliasedDefinition                 : 
@@ -354,7 +354,7 @@ constructor_init.cs:
 #   21|     v21_13(Void)               = AliasedUse                        : ~m?
 #   21|     v21_14(Void)               = ExitFunction                      : 
 
-#   25| System.Void DerivedClass..ctor(System.Int32,System.Int32)
+#   25| DerivedClass.DerivedClass(int, int)
 #   25|   Block 0
 #   25|     v25_1(Void)                = EnterFunction                 : 
 #   25|     mu25_2(<unknown>)          = AliasedDefinition             : 
@@ -373,7 +373,7 @@ constructor_init.cs:
 #   25|     v25_14(Void)               = AliasedUse                    : ~m?
 #   25|     v25_15(Void)               = ExitFunction                  : 
 
-#   29| System.Void DerivedClass.Main()
+#   29| DerivedClass.Main()
 #   29|   Block 0
 #   29|     v29_1(Void)                = EnterFunction                 : 
 #   29|     mu29_2(<unknown>)          = AliasedDefinition             : 
@@ -403,7 +403,7 @@ constructor_init.cs:
 #   29|     v29_5(Void)                = ExitFunction                  : 
 
 crement.cs:
-#    3| System.Void CrementOpsTest.Main()
+#    3| CrementOpsTest.Main()
 #    3|   Block 0
 #    3|     v3_1(Void)         = EnterFunction      : 
 #    3|     mu3_2(<unknown>)   = AliasedDefinition  : 
@@ -443,7 +443,7 @@ crement.cs:
 #    3|     v3_5(Void)         = ExitFunction       : 
 
 delegates.cs:
-#    6| System.Int32 Delegates.returns(System.Int32)
+#    6| Delegates.returns(int)
 #    6|   Block 0
 #    6|     v6_1(Void)         = EnterFunction            : 
 #    6|     mu6_2(<unknown>)   = AliasedDefinition        : 
@@ -458,7 +458,7 @@ delegates.cs:
 #    6|     v6_7(Void)         = AliasedUse               : ~m?
 #    6|     v6_8(Void)         = ExitFunction             : 
 
-#   11| System.Void Delegates.Main()
+#   11| Delegates.Main()
 #   11|   Block 0
 #   11|     v11_1(Void)       = EnterFunction            : 
 #   11|     mu11_2(<unknown>) = AliasedDefinition        : 
@@ -480,7 +480,7 @@ delegates.cs:
 #   11|     v11_5(Void)       = ExitFunction             : 
 
 events.cs:
-#    8| System.Void Events..ctor()
+#    8| Events.Events()
 #    8|   Block 0
 #    8|     v8_1(Void)          = EnterFunction            : 
 #    8|     mu8_2(<unknown>)    = AliasedDefinition        : 
@@ -501,7 +501,7 @@ events.cs:
 #    8|     v8_9(Void)          = AliasedUse               : ~m?
 #    8|     v8_10(Void)         = ExitFunction             : 
 
-#   13| System.Void Events.AddEvent()
+#   13| Events.AddEvent()
 #   13|   Block 0
 #   13|     v13_1(Void)          = EnterFunction                : 
 #   13|     mu13_2(<unknown>)    = AliasedDefinition            : 
@@ -517,7 +517,7 @@ events.cs:
 #   13|     v13_5(Void)          = AliasedUse                   : ~m?
 #   13|     v13_6(Void)          = ExitFunction                 : 
 
-#   18| System.Void Events.RemoveEvent()
+#   18| Events.RemoveEvent()
 #   18|   Block 0
 #   18|     v18_1(Void)          = EnterFunction                   : 
 #   18|     mu18_2(<unknown>)    = AliasedDefinition               : 
@@ -533,7 +533,7 @@ events.cs:
 #   18|     v18_5(Void)          = AliasedUse                      : ~m?
 #   18|     v18_6(Void)          = ExitFunction                    : 
 
-#   23| System.String Events.Fun(System.String)
+#   23| Events.Fun(string)
 #   23|   Block 0
 #   23|     v23_1(Void)          = EnterFunction            : 
 #   23|     mu23_2(<unknown>)    = AliasedDefinition        : 
@@ -549,7 +549,7 @@ events.cs:
 #   23|     v23_8(Void)          = AliasedUse               : ~m?
 #   23|     v23_9(Void)          = ExitFunction             : 
 
-#   28| System.Void Events.Main(System.String[])
+#   28| Events.Main(String[])
 #   28|   Block 0
 #   28|     v28_1(Void)            = EnterFunction                : 
 #   28|     mu28_2(<unknown>)      = AliasedDefinition            : 
@@ -584,7 +584,7 @@ events.cs:
 #   28|     v28_7(Void)            = ExitFunction                 : 
 
 foreach.cs:
-#    4| System.Void ForEach.Main()
+#    4| ForEach.Main()
 #    4|   Block 0
 #    4|     v4_1(Void)               = EnterFunction                  : 
 #    4|     mu4_2(<unknown>)         = AliasedDefinition              : 
@@ -662,7 +662,7 @@ foreach.cs:
 #    4|     v4_5(Void)                = ExitFunction              : 
 
 func_with_param_call.cs:
-#    5| System.Int32 test_call_with_param.f(System.Int32,System.Int32)
+#    5| test_call_with_param.f(int, int)
 #    5|   Block 0
 #    5|     v5_1(Void)         = EnterFunction            : 
 #    5|     mu5_2(<unknown>)   = AliasedDefinition        : 
@@ -682,7 +682,7 @@ func_with_param_call.cs:
 #    5|     v5_9(Void)         = AliasedUse               : ~m?
 #    5|     v5_10(Void)        = ExitFunction             : 
 
-#   10| System.Int32 test_call_with_param.g()
+#   10| test_call_with_param.g()
 #   10|   Block 0
 #   10|     v10_1(Void)         = EnterFunction            : 
 #   10|     mu10_2(<unknown>)   = AliasedDefinition        : 
@@ -699,7 +699,7 @@ func_with_param_call.cs:
 #   10|     v10_6(Void)         = ExitFunction             : 
 
 indexers.cs:
-#    8| System.String Indexers.MyClass.get_Item(System.Int32)
+#    8| Indexers+MyClass.get_Item(int)
 #    8|   Block 0
 #    8|     v8_1(Void)             = EnterFunction              : 
 #    8|     mu8_2(<unknown>)       = AliasedDefinition          : 
@@ -720,7 +720,7 @@ indexers.cs:
 #    8|     v8_6(Void)             = AliasedUse                 : ~m?
 #    8|     v8_7(Void)             = ExitFunction               : 
 
-#   12| System.Void Indexers.MyClass.set_Item(System.Int32,System.String)
+#   12| Indexers+MyClass.set_Item(int, string)
 #   12|   Block 0
 #   12|     v12_1(Void)            = EnterFunction              : 
 #   12|     mu12_2(<unknown>)      = AliasedDefinition          : 
@@ -742,7 +742,7 @@ indexers.cs:
 #   12|     v12_7(Void)            = AliasedUse                 : ~m?
 #   12|     v12_8(Void)            = ExitFunction               : 
 
-#   19| System.Void Indexers.Main()
+#   19| Indexers.Main()
 #   19|   Block 0
 #   19|     v19_1(Void)           = EnterFunction             : 
 #   19|     mu19_2(<unknown>)     = AliasedDefinition         : 
@@ -783,7 +783,7 @@ indexers.cs:
 #   19|     v19_5(Void)           = ExitFunction              : 
 
 inheritance_polymorphism.cs:
-#    3| System.Int32 A.function()
+#    3| A.function()
 #    3|   Block 0
 #    3|     v3_1(Void)         = EnterFunction            : 
 #    3|     mu3_2(<unknown>)   = AliasedDefinition        : 
@@ -796,7 +796,7 @@ inheritance_polymorphism.cs:
 #    3|     v3_6(Void)         = AliasedUse               : ~m?
 #    3|     v3_7(Void)         = ExitFunction             : 
 
-#   15| System.Int32 C.function()
+#   15| C.function()
 #   15|   Block 0
 #   15|     v15_1(Void)         = EnterFunction            : 
 #   15|     mu15_2(<unknown>)   = AliasedDefinition        : 
@@ -809,7 +809,7 @@ inheritance_polymorphism.cs:
 #   15|     v15_6(Void)         = AliasedUse               : ~m?
 #   15|     v15_7(Void)         = ExitFunction             : 
 
-#   23| System.Void Program.Main()
+#   23| Program.Main()
 #   23|   Block 0
 #   23|     v23_1(Void)       = EnterFunction             : 
 #   23|     mu23_2(<unknown>) = AliasedDefinition         : 
@@ -853,7 +853,7 @@ inheritance_polymorphism.cs:
 #   23|     v23_5(Void)       = ExitFunction              : 
 
 inoutref.cs:
-#   11| System.Void InOutRef.set(MyClass,MyClass)
+#   11| InOutRef.set(ref MyClass, MyClass)
 #   11|   Block 0
 #   11|     v11_1(Void)           = EnterFunction           : 
 #   11|     mu11_2(<unknown>)     = AliasedDefinition       : 
@@ -870,7 +870,7 @@ inoutref.cs:
 #   11|     v11_8(Void)           = AliasedUse              : ~m?
 #   11|     v11_9(Void)           = ExitFunction            : 
 
-#   16| System.Void InOutRef.F(System.Int32,MyStruct,MyStruct,MyClass,MyClass)
+#   16| InOutRef.F(ref int, ref MyStruct, MyStruct, ref MyClass, MyClass)
 #   16|   Block 0
 #   16|     v16_1(Void)            = EnterFunction           : 
 #   16|     mu16_2(<unknown>)      = AliasedDefinition       : 
@@ -928,7 +928,7 @@ inoutref.cs:
 #   16|     v16_14(Void)           = AliasedUse              : ~m?
 #   16|     v16_15(Void)           = ExitFunction            : 
 
-#   29| System.Void InOutRef.Main()
+#   29| InOutRef.Main()
 #   29|   Block 0
 #   29|     v29_1(Void)            = EnterFunction             : 
 #   29|     mu29_2(<unknown>)      = AliasedDefinition         : 
@@ -966,7 +966,7 @@ inoutref.cs:
 #   29|     v29_5(Void)            = ExitFunction              : 
 
 isexpr.cs:
-#    8| System.Void IsExpr.Main()
+#    8| IsExpr.Main()
 #    8|   Block 0
 #    8|     v8_1(Void)           = EnterFunction        : 
 #    8|     mu8_2(<unknown>)     = AliasedDefinition    : 
@@ -1028,7 +1028,7 @@ isexpr.cs:
 #-----|   Goto -> Block 1
 
 jumps.cs:
-#    5| System.Void Jumps.Main()
+#    5| Jumps.Main()
 #    5|   Block 0
 #    5|     v5_1(Void)         = EnterFunction      : 
 #    5|     mu5_2(<unknown>)   = AliasedDefinition  : 
@@ -1201,7 +1201,7 @@ jumps.cs:
 #    5|     v5_5(Void)        = ExitFunction               : 
 
 lock.cs:
-#    5| System.Void LockTest.A()
+#    5| LockTest.A()
 #    5|   Block 0
 #    5|     v5_1(Void)            = EnterFunction              : 
 #    5|     mu5_2(<unknown>)      = AliasedDefinition          : 
@@ -1252,7 +1252,7 @@ lock.cs:
 #-----|   Goto -> Block 1
 
 obj_creation.cs:
-#    7| System.Void ObjCreation.MyClass..ctor()
+#    7| ObjCreation+MyClass.MyClass()
 #    7|   Block 0
 #    7|     v7_1(Void)           = EnterFunction             : 
 #    7|     mu7_2(<unknown>)     = AliasedDefinition         : 
@@ -1266,7 +1266,7 @@ obj_creation.cs:
 #    7|     v7_9(Void)           = AliasedUse                : ~m?
 #    7|     v7_10(Void)          = ExitFunction              : 
 
-#   11| System.Void ObjCreation.MyClass..ctor(System.Int32)
+#   11| ObjCreation+MyClass.MyClass(int)
 #   11|   Block 0
 #   11|     v11_1(Void)           = EnterFunction             : 
 #   11|     mu11_2(<unknown>)     = AliasedDefinition         : 
@@ -1286,7 +1286,7 @@ obj_creation.cs:
 #   11|     v11_11(Void)          = AliasedUse                : ~m?
 #   11|     v11_12(Void)          = ExitFunction              : 
 
-#   17| System.Void ObjCreation.SomeFun(ObjCreation.MyClass)
+#   17| ObjCreation.SomeFun(MyClass)
 #   17|   Block 0
 #   17|     v17_1(Void)           = EnterFunction          : 
 #   17|     mu17_2(<unknown>)     = AliasedDefinition      : 
@@ -1297,7 +1297,7 @@ obj_creation.cs:
 #   17|     v17_6(Void)           = AliasedUse             : ~m?
 #   17|     v17_7(Void)           = ExitFunction           : 
 
-#   21| System.Void ObjCreation.Main()
+#   21| ObjCreation.Main()
 #   21|   Block 0
 #   21|     v21_1(Void)           = EnterFunction                 : 
 #   21|     mu21_2(<unknown>)     = AliasedDefinition             : 
@@ -1336,7 +1336,7 @@ obj_creation.cs:
 #   21|     v21_5(Void)           = ExitFunction                  : 
 
 pointers.cs:
-#    3| System.Void Pointers.addone(System.Int32[])
+#    3| Pointers.addone(Int32[])
 #    3|   Block 0
 #    3|     v3_1(Void)           = EnterFunction               : 
 #    3|     mu3_2(<unknown>)     = AliasedDefinition           : 
@@ -1395,7 +1395,7 @@ pointers.cs:
 #    9|     mu9_14(Int32)        = Store[i]           : &:r9_10, r9_13
 #-----|   Goto (back edge) -> Block 2
 
-#   25| System.Void Pointers.Main()
+#   25| Pointers.Main()
 #   25|   Block 0
 #   25|     v25_1(Void)             = EnterFunction             : 
 #   25|     mu25_2(<unknown>)       = AliasedDefinition         : 
@@ -1463,7 +1463,7 @@ pointers.cs:
 #   25|     v25_5(Void)             = ExitFunction              : 
 
 prop.cs:
-#    7| System.Int32 PropClass.get_Prop()
+#    7| PropClass.get_Prop()
 #    7|   Block 0
 #    7|     v7_1(Void)             = EnterFunction            : 
 #    7|     mu7_2(<unknown>)       = AliasedDefinition        : 
@@ -1479,7 +1479,7 @@ prop.cs:
 #    7|     v7_6(Void)             = AliasedUse               : ~m?
 #    7|     v7_7(Void)             = ExitFunction             : 
 
-#   12| System.Void PropClass.set_Prop(System.Int32)
+#   12| PropClass.set_Prop(int)
 #   12|   Block 0
 #   12|     v12_1(Void)             = EnterFunction              : 
 #   12|     mu12_2(<unknown>)       = AliasedDefinition          : 
@@ -1494,7 +1494,7 @@ prop.cs:
 #   12|     v12_7(Void)             = AliasedUse                 : ~m?
 #   12|     v12_8(Void)             = ExitFunction               : 
 
-#   18| System.Int32 PropClass.func()
+#   18| PropClass.func()
 #   18|   Block 0
 #   18|     v18_1(Void)             = EnterFunction            : 
 #   18|     mu18_2(<unknown>)       = AliasedDefinition        : 
@@ -1507,7 +1507,7 @@ prop.cs:
 #   18|     v18_6(Void)             = AliasedUse               : ~m?
 #   18|     v18_7(Void)             = ExitFunction             : 
 
-#   26| System.Void Prog.Main()
+#   26| Prog.Main()
 #   26|   Block 0
 #   26|     v26_1(Void)             = EnterFunction              : 
 #   26|     mu26_2(<unknown>)       = AliasedDefinition          : 
@@ -1535,7 +1535,7 @@ prop.cs:
 #   26|     v26_5(Void)             = ExitFunction               : 
 
 simple_call.cs:
-#    5| System.Int32 test_simple_call.f()
+#    5| test_simple_call.f()
 #    5|   Block 0
 #    5|     v5_1(Void)         = EnterFunction            : 
 #    5|     mu5_2(<unknown>)   = AliasedDefinition        : 
@@ -1547,7 +1547,7 @@ simple_call.cs:
 #    5|     v5_5(Void)         = AliasedUse               : ~m?
 #    5|     v5_6(Void)         = ExitFunction             : 
 
-#   10| System.Int32 test_simple_call.g()
+#   10| test_simple_call.g()
 #   10|   Block 0
 #   10|     v10_1(Void)                    = EnterFunction            : 
 #   10|     mu10_2(<unknown>)              = AliasedDefinition        : 
@@ -1563,7 +1563,7 @@ simple_call.cs:
 #   10|     v10_7(Void)                    = ExitFunction             : 
 
 simple_function.cs:
-#    5| System.Int32 test_simple_function.f()
+#    5| test_simple_function.f()
 #    5|   Block 0
 #    5|     v5_1(Void)         = EnterFunction            : 
 #    5|     mu5_2(<unknown>)   = AliasedDefinition        : 
@@ -1576,7 +1576,7 @@ simple_function.cs:
 #    5|     v5_6(Void)         = ExitFunction             : 
 
 stmts.cs:
-#    5| System.Int32 test_stmts.ifStmt(System.Int32)
+#    5| test_stmts.ifStmt(int)
 #    5|   Block 0
 #    5|     v5_1(Void)         = EnterFunction          : 
 #    5|     mu5_2(<unknown>)   = AliasedDefinition      : 
@@ -1608,7 +1608,7 @@ stmts.cs:
 #   10|     mu10_3(Int32)       = Store[#return]           : &:r10_1, r10_2
 #-----|   Goto -> Block 1
 
-#   13| System.Void test_stmts.whileStmt(System.Int32)
+#   13| test_stmts.whileStmt(int)
 #   13|   Block 0
 #   13|     v13_1(Void)         = EnterFunction          : 
 #   13|     mu13_2(<unknown>)   = AliasedDefinition      : 
@@ -1642,7 +1642,7 @@ stmts.cs:
 #   18|     mu18_6(Int32)       = Store[x]           : &:r18_5, r18_4
 #-----|   Goto (back edge) -> Block 2
 
-#   22| System.Int32 test_stmts.switchStmt()
+#   22| test_stmts.switchStmt()
 #   22|   Block 0
 #   22|     v22_1(Void)          = EnterFunction               : 
 #   22|     mu22_2(<unknown>)    = AliasedDefinition           : 
@@ -1707,7 +1707,7 @@ stmts.cs:
 #   40|     mu40_4(Int32)       = Store[#return]           : &:r40_1, r40_3
 #-----|   Goto -> Block 1
 
-#   45| System.Void test_stmts.tryCatchFinally()
+#   45| test_stmts.tryCatchFinally()
 #   45|   Block 0
 #   45|     v45_1(Void)         = EnterFunction      : 
 #   45|     mu45_2(<unknown>)   = AliasedDefinition  : 
@@ -1771,7 +1771,7 @@ stmts.cs:
 #   60|     v60_1(Void) = ReThrow  : 
 #-----|   Exception -> Block 2
 
-#   68| System.Void test_stmts.forStmt()
+#   68| test_stmts.forStmt()
 #   68|   Block 0
 #   68|     v68_1(Void)         = EnterFunction      : 
 #   68|     mu68_2(<unknown>)   = AliasedDefinition  : 
@@ -1853,7 +1853,7 @@ stmts.cs:
 #   83|     v83_1(Void) = NoOp : 
 #-----|   Goto (back edge) -> Block 7
 
-#   88| System.Void test_stmts.doWhile()
+#   88| test_stmts.doWhile()
 #   88|   Block 0
 #   88|     v88_1(Void)         = EnterFunction      : 
 #   88|     mu88_2(<unknown>)   = AliasedDefinition  : 
@@ -1882,7 +1882,7 @@ stmts.cs:
 #-----|   False -> Block 1
 #-----|   True (back edge) -> Block 2
 
-#   98| System.Void test_stmts.checkedUnchecked()
+#   98| test_stmts.checkedUnchecked()
 #   98|   Block 0
 #   98|     v98_1(Void)          = EnterFunction        : 
 #   98|     mu98_2(<unknown>)    = AliasedDefinition    : 
@@ -1907,7 +1907,7 @@ stmts.cs:
 #   98|     v98_5(Void)          = ExitFunction         : 
 
 using.cs:
-#    7| System.Void UsingStmt.MyDisposable..ctor()
+#    7| UsingStmt+MyDisposable.MyDisposable()
 #    7|   Block 0
 #    7|     v7_1(Void)                = EnterFunction                  : 
 #    7|     mu7_2(<unknown>)          = AliasedDefinition              : 
@@ -1921,7 +1921,7 @@ using.cs:
 #    7|     v7_10(Void)               = AliasedUse                     : ~m?
 #    7|     v7_11(Void)               = ExitFunction                   : 
 
-#    8| System.Void UsingStmt.MyDisposable.DoSomething()
+#    8| UsingStmt+MyDisposable.DoSomething()
 #    8|   Block 0
 #    8|     v8_1(Void)                = EnterFunction     : 
 #    8|     mu8_2(<unknown>)          = AliasedDefinition : 
@@ -1931,7 +1931,7 @@ using.cs:
 #    8|     v8_6(Void)                = AliasedUse        : ~m?
 #    8|     v8_7(Void)                = ExitFunction      : 
 
-#    9| System.Void UsingStmt.MyDisposable.Dispose()
+#    9| UsingStmt+MyDisposable.Dispose()
 #    9|   Block 0
 #    9|     v9_1(Void)                = EnterFunction     : 
 #    9|     mu9_2(<unknown>)          = AliasedDefinition : 
@@ -1941,7 +1941,7 @@ using.cs:
 #    9|     v9_6(Void)                = AliasedUse        : ~m?
 #    9|     v9_7(Void)                = ExitFunction      : 
 
-#   12| System.Void UsingStmt.Main()
+#   12| UsingStmt.Main()
 #   12|   Block 0
 #   12|     v12_1(Void)                = EnterFunction                 : 
 #   12|     mu12_2(<unknown>)          = AliasedDefinition             : 
@@ -1983,7 +1983,7 @@ using.cs:
 #   12|     v12_5(Void)                = ExitFunction                  : 
 
 variables.cs:
-#    5| System.Void test_variables.f()
+#    5| test_variables.f()
 #    5|   Block 0
 #    5|     v5_1(Void)          = EnterFunction      : 
 #    5|     mu5_2(<unknown>)    = AliasedDefinition  : 
