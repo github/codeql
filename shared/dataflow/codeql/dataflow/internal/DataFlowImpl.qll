@@ -1904,11 +1904,11 @@ module MakeImpl<InputSig Lang> {
         pragma[nomagic]
         private predicate returnFlowsThrough(
           RetNodeEx ret, ReturnPosition pos, FlowState state, CcCall ccc, ParamNodeEx p, Typ argT,
-          Ap argAp, Ap ap
+          Ap argAp, ApApprox argApa, Ap ap
         ) {
-          exists(DataFlowCall call, ApApprox apa, boolean allowsFieldFlow, ApApprox innerArgApa |
-            returnFlowsThrough0(call, state, ccc, ap, apa, ret, p, argT, argAp, innerArgApa) and
-            flowThroughOutOfCall(call, ccc, ret, _, allowsFieldFlow, innerArgApa, apa) and
+          exists(DataFlowCall call, ApApprox apa, boolean allowsFieldFlow |
+            returnFlowsThrough0(call, state, ccc, ap, apa, ret, p, argT, argAp, argApa) and
+            flowThroughOutOfCall(call, ccc, ret, _, allowsFieldFlow, argApa, apa) and
             pos = ret.getReturnPosition() and
             if allowsFieldFlow = false then ap instanceof ApNil else any()
           )
@@ -1920,10 +1920,10 @@ module MakeImpl<InputSig Lang> {
         ) {
           exists(ApApprox argApa, Typ argT |
             returnFlowsThrough(_, _, _, _, pragma[only_bind_into](p), pragma[only_bind_into](argT),
-              pragma[only_bind_into](argAp), ap) and
+              pragma[only_bind_into](argAp), pragma[only_bind_into](argApa), ap) and
             flowIntoCallApaTaken(call, _, pragma[only_bind_into](arg), p, allowsFieldFlow, argApa) and
             fwdFlow(arg, _, _, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
-              argApa) and
+              pragma[only_bind_into](argApa)) and
             if allowsFieldFlow = false then argAp instanceof ApNil else any()
           )
         }
@@ -2027,7 +2027,7 @@ module MakeImpl<InputSig Lang> {
           // flow out of a callable
           exists(ReturnPosition pos |
             revFlowOut(_, node, pos, state, _, _, _, ap) and
-            if returnFlowsThrough(node, pos, state, _, _, _, _, ap)
+            if returnFlowsThrough(node, pos, state, _, _, _, _, _, ap)
             then (
               returnCtx = TReturnCtxMaybeFlowThrough(pos) and
               returnAp = apSome(ap)
@@ -2189,7 +2189,7 @@ module MakeImpl<InputSig Lang> {
         ) {
           exists(RetNodeEx ret, FlowState state, CcCall ccc |
             revFlowOut(call, ret, pos, state, returnCtx, _, returnAp, ap) and
-            returnFlowsThrough(ret, pos, state, ccc, _, _, _, ap) and
+            returnFlowsThrough(ret, pos, state, ccc, _, _, _, _, ap) and
             matchesCall(ccc, call)
           )
         }
@@ -2258,7 +2258,7 @@ module MakeImpl<InputSig Lang> {
         pragma[nomagic]
         predicate parameterMayFlowThrough(ParamNodeEx p, Ap ap) {
           exists(ReturnPosition pos |
-            returnFlowsThrough(_, pos, _, _, p, _, ap, _) and
+            returnFlowsThrough(_, pos, _, _, p, _, ap, _, _) and
             parameterFlowsThroughRev(p, ap, pos, _)
           )
         }
@@ -2266,7 +2266,7 @@ module MakeImpl<InputSig Lang> {
         pragma[nomagic]
         predicate returnMayFlowThrough(RetNodeEx ret, Ap argAp, Ap ap, ReturnKindExt kind) {
           exists(ParamNodeEx p, ReturnPosition pos |
-            returnFlowsThrough(ret, pos, _, _, p, _, argAp, ap) and
+            returnFlowsThrough(ret, pos, _, _, p, _, argAp, _, ap) and
             parameterFlowsThroughRev(p, argAp, pos, ap) and
             kind = pos.getKind()
           )
@@ -3986,8 +3986,8 @@ module MakeImpl<InputSig Lang> {
       AccessPath ap
     ) {
       exists(DataFlowType t0 |
-        pathStep0(mid, node, state, cc, sc, t0, ap) and
-        Stage5::revFlow(node, state, ap.getApprox()) and
+        pathStep0(mid, pragma[only_bind_into](node), pragma[only_bind_into](state), cc, sc, t0, ap) and
+        Stage5::revFlow(pragma[only_bind_into](node), pragma[only_bind_into](state), ap.getApprox()) and
         strengthenType(node, t0, t) and
         not inBarrier(node, state)
       )
