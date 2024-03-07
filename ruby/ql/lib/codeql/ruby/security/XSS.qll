@@ -13,6 +13,7 @@ private import codeql.ruby.frameworks.Rails
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
+private import codeql.ruby.typetracking.TypeTracking
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -278,30 +279,24 @@ module ReflectedXss {
   }
 }
 
-private module OrmTracking {
-  /**
-   * A data flow configuration to track flow from finder calls to field accesses.
-   */
-  private module Config implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) {
-      // We currently only use ORM instances that come from a call site, so restrict the sources
-      // to calls. This works around a performance issue that would arise from using 'self' as a source
-      // in ActiveRecord models. Over time, library models should stop relying on OrmInstantiation and instead
-      // use API graphs or type-tracking the same way we track other types.
-      source instanceof OrmInstantiation and source instanceof DataFlow::CallNode
-    }
+private DataFlow::LocalSourceNode ormInstance(TypeTracker t, OrmInstantiation instance) {
+  t.start() and
+  result = instance
+  or
+  exists(TypeTracker t2, DataFlow::LocalSourceNode mid |
+    t = t2.step(ormInstance(t2, instance), mid) and
+    (
+      result = mid
+      or
+      Shared::isAdditionalXssFlowStep(mid, result)
+    )
+  )
+}
 
-    // Select any call receiver and narrow down later
-    predicate isSink(DataFlow::Node sink) { sink = any(DataFlow::CallNode c).getReceiver() }
-
-    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-      Shared::isAdditionalXssFlowStep(node1, node2)
-    }
-
-    predicate isBarrierIn(DataFlow::Node node) { node instanceof DataFlow::SelfParameterNode }
-  }
-
-  import DataFlow::Global<Config>
+private DataFlow::Node ormInstance(OrmInstantiation i) {
+  exists(DataFlow::Node mid | ormInstance(TypeTracker::end(), i).flowsTo(mid) |
+    result = mid or Shared::isAdditionalXssFlowStep(mid, result)
+  )
 }
 
 /** Provides default sources, sinks and sanitizers for detecting stored cross-site scripting (XSS) vulnerabilities. */
@@ -322,9 +317,9 @@ module StoredXss {
 
   private class OrmFieldAsSource extends Source instanceof DataFlow::CallNode {
     OrmFieldAsSource() {
-      exists(DataFlow::CallNode subSrc |
-        OrmTracking::flow(subSrc, this.getReceiver()) and
-        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName()) and
+      exists(OrmInstantiation instance |
+        this.getReceiver() = ormInstance(instance) and
+        instance.methodCallMayAccessField(this.getMethodName()) and
         this.getNumberOfArguments() = 0 and
         not exists(this.getBlock())
       )
