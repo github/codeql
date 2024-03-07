@@ -22,7 +22,7 @@ private module MyConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(ReusableWorkflow w | w.getAnOutput() = sink.asExpr())
+    exists(ReusableWorkflow w | w.getAnOutputExpr() = sink.asExpr())
   }
 }
 

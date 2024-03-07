@@ -11,7 +11,14 @@ private module YamlSig implements LibYaml::InputSig {
   import codeql.Locations
 
   class LocatableBase extends @yaml_locatable {
-    Location getLocation() { yaml_locations(this, result) }
+    Location getLocation() {
+      exists(@location_default loc, File f, string p, int sl, int sc, int el, int ec |
+        f.getAbsolutePath() = p and
+        locations_default(loc, f, sl, sc, el, ec) and
+        yaml_locations(this, loc) and
+        result = TBaseLocation(p, sl, sc, el, ec)
+      )
+    }
 
     string toString() { none() }
   }

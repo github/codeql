@@ -13,14 +13,18 @@ query predicate jobNodes(Job s) { any() }
 
 query predicate stepNodes(Step s) { any() }
 
+query predicate runNodes(Run s) { any() }
+
+query predicate runExprNodes(Run s, ExpressionNode e) { e = s.getScript().getAnExpression() }
+
 query predicate allUsesNodes(Uses s) { any() }
 
 query predicate stepUsesNodes(UsesStep s) { any() }
 
 query predicate jobUsesNodes(UsesStep s) { any() }
 
-query predicate usesSteps(Uses call, string argname, Expression arg) {
-  call.getArgument(argname) = arg
+query predicate usesSteps(Uses call, string argname, AstNode arg) {
+  call.getArgumentExpr(argname) = arg
 }
 
 query predicate runSteps(Run run, string body) { run.getScript().getValue() = body }

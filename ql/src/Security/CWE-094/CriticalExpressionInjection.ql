@@ -19,7 +19,7 @@ import codeql.actions.dataflow.ExternalFlow
 
 private class ExpressionInjectionSink extends DataFlow::Node {
   ExpressionInjectionSink() {
-    exists(Run e | e.getScript() = this.asExpr()) or
+    exists(Run e | e.getScript().getAnExpression() = this.asExpr()) or
     externallyDefinedSink(this, "expression-injection")
   }
 }
@@ -43,4 +43,5 @@ where
       .getEnclosingWorkflow()
       .hasTriggerEvent(source.getNode().(RemoteFlowSource).getATriggerEvent())
 select sink.getNode(), source, sink,
-  "Potential expression injection, which may be controlled by an external user."
+  "Potential expression injection in $@, which may be controlled by an external user.", sink,
+  sink.getNode().asExpr().(ExpressionNode).getExpression()
