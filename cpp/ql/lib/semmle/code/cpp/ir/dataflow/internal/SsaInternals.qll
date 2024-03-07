@@ -103,6 +103,7 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
 
 cached
 private newtype TDefOrUseImpl =
+  TDefAddressImpl(BaseIRVariable v) or
   TDefImpl(BaseSourceVariableInstruction base, Operand address, int indirectionIndex) {
     isDef(_, _, address, base, _, indirectionIndex)
   } or
@@ -272,7 +273,41 @@ abstract class DefImpl extends DefOrUseImpl {
   abstract Node0Impl getValue();
 }
 
-abstract class OperandBasedDef extends DefImpl {
+/** An initial definition of an `IRVariable`'s address. */
+private class DefAddressImpl extends DefImpl, TDefAddressImpl {
+  BaseIRVariable v;
+
+  DefAddressImpl() {
+    this = TDefAddressImpl(v) and
+    ind = 0
+  }
+
+  final override int getIndirection() { result = 0 }
+
+  final override predicate isCertain() { any() }
+
+  final override Node0Impl getValue() { none() }
+
+  final override predicate hasIndexInBlock(IRBlock block, int index) {
+    block = v.getIRVariable().getEnclosingIRFunction().getEntryBlock() and
+    index = 0
+  }
+
+  override Cpp::Location getLocation() { result = v.getIRVariable().getLocation() }
+
+  final override SourceVariable getSourceVariable() {
+    result.getBaseVariable() = v and
+    result.getIndirection() = 0
+  }
+
+  final override BaseSourceVariableInstruction getBase() { none() }
+}
+
+/**
+ * An SSA definition that has an associated `Operand` representing the address
+ * that is being written to.
+ */
+abstract private class OperandBasedDef extends DefImpl {
   Operand address;
 
   bindingset[ind]
