@@ -1,12 +1,12 @@
 edges
-| action1/action.yml:42:7:44:4 | Uses Step: changed-files | action1/action.yml:48:18:48:69 | ${{ ste ... iles }} |
-| action1/action.yml:44:7:48:70 | Run Step: source [tainted] | action1/action.yml:14:12:14:45 | ${{ ste ... inted}} |
-| action1/action.yml:48:18:48:69 | ${{ ste ... iles }} | action1/action.yml:44:7:48:70 | Run Step: source [tainted] |
+| action1/action.yml:42:7:44:4 | Uses Step: changed-files | action1/action.yml:48:19:48:70 | steps.changed-files.outputs.all_changed_files |
+| action1/action.yml:44:7:48:70 | Run Step: source [tainted] | action1/action.yml:14:13:14:46 | steps.source.outputs.tainted |
+| action1/action.yml:48:19:48:70 | steps.changed-files.outputs.all_changed_files | action1/action.yml:44:7:48:70 | Run Step: source [tainted] |
 nodes
-| action1/action.yml:14:12:14:45 | ${{ ste ... inted}} | semmle.label | ${{ ste ... inted}} |
+| action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | semmle.label | steps.source.outputs.tainted |
 | action1/action.yml:42:7:44:4 | Uses Step: changed-files | semmle.label | Uses Step: changed-files |
 | action1/action.yml:44:7:48:70 | Run Step: source [tainted] | semmle.label | Run Step: source [tainted] |
-| action1/action.yml:48:18:48:69 | ${{ ste ... iles }} | semmle.label | ${{ ste ... iles }} |
+| action1/action.yml:48:19:48:70 | steps.changed-files.outputs.all_changed_files | semmle.label | steps.changed-files.outputs.all_changed_files |
 subpaths
 #select
-| action1/action.yml:14:12:14:45 | ${{ ste ... inted}} | action1/action.yml:42:7:44:4 | Uses Step: changed-files | action1/action.yml:14:12:14:45 | ${{ ste ... inted}} | Source |
+| action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | action1/action.yml:42:7:44:4 | Uses Step: changed-files | action1/action.yml:14:13:14:46 | steps.source.outputs.tainted | Source |

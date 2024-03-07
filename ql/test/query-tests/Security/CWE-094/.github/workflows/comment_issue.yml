@@ -5,7 +5,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: |
+        Foo
         echo '${{ github.event.comment.body }}'
+        Bar
 
   echo-chamber2:
     runs-on: ubuntu-latest

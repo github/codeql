@@ -1,0 +1,22 @@
+on: issue_comment
+
+jobs:
+  echo-chamber:
+    runs-on: ubuntu-latest
+    steps:
+      - run: LINE 1echo '${{ github.event.comment.body }}'
+      - run: |
+          LINE 1 echo '${{ github.event.comment.body }}'
+      - run: |
+          LINE 1 echo '${{ github.event.comment.body }}'
+          LINE 2 echo '${{github.event.issue.body}}'
+      - run: >  
+          LINE 1 echo '${{ github.event.comment.body }}'
+          echo '${{github.event.issue.body}}'
+      - run: |   
+          LINE 1 echo '${{ github.event.comment.body }}'
+          LINE 2 echo '${{github.event.issue.body}}'
+          LINE 3 echo '${{ github.event.comment.body }}'
+      - run: "LINE 1 echo '${{ github.event.comment.body }}'
+          echo '${{github.event.issue.body}}'"
+

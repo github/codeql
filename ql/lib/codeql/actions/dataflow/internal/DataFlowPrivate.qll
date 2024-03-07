@@ -72,8 +72,7 @@ class DataFlowCall instanceof Cfg::Node {
   /** Gets a textual representation of this element. */
   string toString() { result = super.toString() }
 
-  Location getLocation() { result = super.getLocation() }
-
+  //Location getLocation() { result = super.getLocation() }
   string getName() { result = super.getAstNode().(Uses).getCallee() }
 
   DataFlowCallable getEnclosingCallable() { result = super.getScope() }
@@ -85,8 +84,7 @@ class DataFlowCall instanceof Cfg::Node {
 class DataFlowCallable instanceof Cfg::CfgScope {
   string toString() { result = super.toString() }
 
-  Location getLocation() { result = super.getLocation() }
-
+  //Location getLocation() { result = super.getLocation() }
   string getName() {
     if this instanceof ReusableWorkflow
     then result = this.(ReusableWorkflow).getLocation().getFile().getRelativePath()
@@ -162,7 +160,7 @@ class ParameterPosition extends string {
  * Made a string to match `With:` keys in the AST
  */
 class ArgumentPosition extends string {
-  ArgumentPosition() { exists(any(Uses e).getArgument(this)) }
+  ArgumentPosition() { exists(any(Uses e).getArgumentExpr(this)) }
 }
 
 /**
@@ -232,7 +230,7 @@ predicate matrixCtxLocalStep(Node nodeFrom, Node nodeTo) {
  * e.g. ${{ env.foo }}
  */
 predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
-  exists(Expression astFrom, EnvExpression astTo |
+  exists(AstNode astFrom, EnvExpression astTo |
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     (
@@ -301,7 +299,7 @@ predicate readStep(Node node1, ContentSet c, Node node2) { ctxFieldReadStep(node
  */
 predicate fieldStoreStep(Node node1, Node node2, ContentSet c) {
   exists(Outputs out, string fieldName |
-    node1.asExpr() = out.getOutput(fieldName) and
+    node1.asExpr() = out.getOutputExpr(fieldName) and
     node2.asExpr() = out and
     c = any(FieldContent ct | ct.getName() = fieldName)
   )

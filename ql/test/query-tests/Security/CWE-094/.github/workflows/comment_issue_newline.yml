@@ -7,4 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: |
-          echo '${{ github.event.comment.body }}'
+          LINE 1 echo '${{ github.event.comment.body }}'
+          LINE 2 echo '${{github.event.issue.body}}'
+          LINE 3 echo '${{ github.event.comment.body }}'

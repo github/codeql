@@ -39,8 +39,7 @@ where
   job.getAStep() = checkoutStep and
   checkoutStep.getCallee() = "actions/checkout" and
   checkoutStep
-      .getArgument("ref")
-      .(Expression)
+      .getArgumentExpr("ref")
       .getExpression()
       .matches([
           "%github.event.pull_request.head.ref%", "%github.event.pull_request.head.sha%",

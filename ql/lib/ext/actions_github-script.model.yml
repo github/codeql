@@ -3,5 +3,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["","","",""]
+      - ["actions/github-script","*","input.script","expression-injection"]
+
+
 

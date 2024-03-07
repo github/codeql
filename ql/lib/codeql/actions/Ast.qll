@@ -3,7 +3,9 @@ private import codeql.Locations
 
 newtype TAstNode =
   TWorflowNode(YamlNode n) or
-  TExpressionNode()
+  TExpressionNode(StringValue n, string expression, int exprOffset) {
+    expression = getASimpleReferenceExpression(n, exprOffset)
+  }
 
 class AstNode extends TAstNode {
   abstract AstNode getAChildNode();
@@ -12,21 +14,160 @@ class AstNode extends TAstNode {
 
   abstract string getAPrimaryQlClass();
 
+  abstract string toString();
+
   abstract Location getLocation();
 
-  abstract string toString();
+  abstract File getFile();
+
+  /**
+   * Gets the enclosing workflow statement.
+   */
+  Workflow getEnclosingWorkflow() { this = result.getAChildNode*() }
+
+  /**
+   * Gets a environment variable expression by name in the scope of the current node.
+   */
+  ExpressionNode getInScopeEnvVarExpr(string name) {
+    exists(StringValue l, Env env |
+      env.asYamlMapping().maps(any(YamlScalar s | s.getValue() = name), l.asYamlNode()) and
+      l.getAnExpression() = result
+    |
+      env.(StepEnv).getStep().getAChildNode*() = this
+      or
+      env.(JobEnv).getJob().getAChildNode*() = this
+      or
+      env.(WorkflowEnv).getWorkflow().getAChildNode*() = this
+    )
+  }
 }
 
 class ExpressionNode extends AstNode, TExpressionNode {
-  override string toString() { result = "expression node" }
+  StringValue n;
+  string rawExpression;
+  string expression;
+  int exprOffset;
+
+  ExpressionNode() {
+    this = TExpressionNode(n, rawExpression, exprOffset - 1) and
+    expression =
+      rawExpression.regexpCapture("\\$\\{\\{\\s*([A-Za-z0-9_\\[\\]\\*\\((\\)\\.\\-]+)\\s*\\}\\}", 1)
+  }
+
+  override string toString() { result = expression }
 
   override AstNode getAChildNode() { none() }
 
-  override AstNode getParentNode() { none() }
+  override AstNode getParentNode() { result = n }
 
   override string getAPrimaryQlClass() { result = "ExpressionNode" }
 
-  override Location getLocation() { none() }
+  string getExpression() { result = expression }
+
+  string getRawExpression() { result = rawExpression }
+
+  Job getJob() { result.getAChildNode*() = n }
+
+  int lineLength(int idx) {
+    exists(string line | line = n.getValue().splitAt("\n", idx) and result = line.length() + 1)
+  }
+
+  bindingset[i]
+  int unboundPartialLineLengthSum(int i) {
+    result = sum(int j, int length | j in [0 .. i] and length = this.lineLength(j) | length)
+  }
+
+  int partialLineLengthSum(int i) {
+    i in [0 .. count(n.getValue().splitAt("\n"))] and
+    result = this.unboundPartialLineLengthSum(i)
+  }
+
+  predicate expressionOffsets(int sl, int sc, int el, int ec) {
+    exists(int lineDiff, string style, Location loc |
+      loc = n.asYamlNode().getLocation() and
+      lineDiff = loc.getEndLine() - loc.getStartLine() and
+      style = n.asYamlNode().(YamlString).getStyle()
+    |
+      // eg:
+      //  - run: echo "hello"
+      //  - run: 'echo "hello"'
+      //  - run: "echo 'hello'"
+      style = ["", "\"", "'"] and
+      lineDiff = 0 and
+      sl = loc.getStartLine() and
+      el = sl and
+      sc = loc.getStartColumn() + exprOffset and
+      ec = sc + rawExpression.length() - 1
+      or
+      // eg:
+      //  - run: "echo 'hello'
+      //      echo 'hello'"
+      //  - run: "echo 'hello'
+      //     echo 'hello'
+      //     echo 'hello'"
+      style = ["", "\"", "'"] and
+      lineDiff > 0 and
+      sl = loc.getStartLine() and
+      el = loc.getEndLine() and
+      sc = loc.getStartColumn() and
+      ec = loc.getEndColumn()
+      or
+      // eg:
+      //  - run: |
+      //      echo "hello"
+      //  - run: |
+      //      echo "hello"
+      //      echo "bye"
+      style = "|" and
+      exists(int r |
+        (
+          r > 0 and
+          this.partialLineLengthSum(r - 1) < exprOffset and
+          this.partialLineLengthSum(r) >= exprOffset and
+          sl = loc.getStartLine() + r + 1 and
+          el = sl and
+          sc =
+            n.getKeyNode().getLocation().getStartColumn() + exprOffset -
+                  this.partialLineLengthSum(r - 1) + 2 - 1 and
+          ec = sc + rawExpression.length() - 1
+          or
+          r = 0 and
+          this.partialLineLengthSum(r) > exprOffset and
+          sl = loc.getStartLine() + r + 1 and
+          el = sl and
+          sc = n.getKeyNode().getLocation().getStartColumn() + 2 + exprOffset and
+          ec = sc + rawExpression.length() - 1
+        )
+      )
+      or
+      // eg:
+      //  - run: >
+      //      echo "hello"
+      //  - run: >
+      //      echo "hello"
+      //      echo "hello"
+      style = ">" and
+      sl = loc.getStartLine() + 1 and
+      el = loc.getEndLine() and
+      sc = n.getKeyNode().getLocation().getStartColumn() and
+      ec = loc.getEndColumn()
+    )
+  }
+
+  override Location getLocation() {
+    exists(Location loc |
+      this.hasLocationInfo(loc.getFile().getAbsolutePath(), loc.getStartLine(),
+        loc.getStartColumn(), loc.getEndLine(), loc.getEndColumn()) and
+      result = loc
+    )
+  }
+
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = n.asYamlNode().getFile().getAbsolutePath() and
+    this.expressionOffsets(sl, sc, el, ec)
+  }
+
+  override File getFile() { result = n.asYamlNode().getFile() }
 }
 
 /**
@@ -39,37 +180,23 @@ class WorkflowNode extends AstNode, TWorflowNode {
 
   override AstNode getParentNode() { result = TWorflowNode(n.getParentNode()) }
 
-  override AstNode getAChildNode() { result = TWorflowNode(n.getAChildNode()) }
+  override AstNode getAChildNode() {
+    result = TWorflowNode(n.getAChildNode())
+    or
+    exists(ExpressionNode e | e.getParentNode() = this | result = e)
+  }
 
   override string getAPrimaryQlClass() { result = n.getAPrimaryQlClass() }
 
   override Location getLocation() { result = n.getLocation() }
 
-  override string toString() { result = n.toString() }
-
-  /**
-   * Gets the enclosing workflow statement.
-   */
-  Workflow getEnclosingWorkflow() { this = result.getAChildNode*() }
-
-  /**
-   * Gets a environment variable expression by name in the scope of the current node.
-   */
-  StringLiteral getEnvVar(string name) {
-    exists(Env env |
-      env.asYamlMapping().maps(any(YamlScalar s | s.getValue() = name), result.asYamlNode())
-    |
-      env.(StepEnv).getStep().getAChildNode*() = this
-      or
-      env.(JobEnv).getJob().getAChildNode*() = this
-      or
-      env.(WorkflowEnv).getWorkflow().getAChildNode*() = this
-    )
-  }
+  override File getFile() { result = n.getFile() }
 
   YamlNode asYamlNode() { result = n }
 
   YamlMapping asYamlMapping() { result = n }
+
+  override string toString() { result = n.toString() }
 }
 
 /** A common class for `env` in workflow, job or step. */
@@ -117,7 +244,7 @@ class CompositeAction extends WorkflowNode {
   CompositeAction() {
     n instanceof YamlDocument and
     n instanceof YamlMapping and
-    this.getLocation().getFile().getBaseName() = ["action.yml", "action.yaml"] and
+    this.getFile().getBaseName() = ["action.yml", "action.yaml"] and
     this.asYamlMapping().lookup("runs").(YamlMapping).lookup("using").(YamlScalar).getValue() =
       "composite"
   }
@@ -127,9 +254,9 @@ class CompositeAction extends WorkflowNode {
 
   Outputs getOutputs() { result.asYamlNode() = this.asYamlMapping().lookup("outputs") }
 
-  StringLiteral getAnOutput() { result = this.getOutputs().getAnOutput() }
+  ExpressionNode getAnOutputExpr() { result = this.getOutputs().getAnOutputExpr() }
 
-  StringLiteral getOutput(string name) { result = this.getOutputs().getOutput(name) }
+  ExpressionNode getOutputExpr(string name) { result = this.getOutputs().getOutputExpr(name) }
 
   Input getAnInput() {
     this.asYamlMapping().lookup("inputs").(YamlMapping).maps(result.asYamlNode(), _)
@@ -214,9 +341,9 @@ class ReusableWorkflow extends Workflow {
 
   Outputs getOutputs() { result.asYamlNode() = workflow_call.(YamlMapping).lookup("outputs") }
 
-  StringLiteral getAnOutput() { result = this.getOutputs().getAnOutput() }
+  ExpressionNode getAnOutputExpr() { result = this.getOutputs().getAnOutputExpr() }
 
-  StringLiteral getOutput(string name) { result = this.getOutputs().getOutput(name) }
+  ExpressionNode getOutputExpr(string name) { result = this.getOutputs().getOutputExpr(name) }
 
   Input getAnInput() {
     workflow_call.(YamlMapping).lookup("inputs").(YamlMapping).maps(result.asYamlNode(), _)
@@ -245,17 +372,19 @@ class Outputs extends WorkflowNode {
   /**
    * Gets an output expression.
    */
-  StringLiteral getAnOutput() {
-    this.asYamlMapping().lookup(_).(YamlMapping).lookup("value") = result.asYamlNode() or
-    this.asYamlMapping().lookup(_) = result.asYamlNode()
-  }
+  ExpressionNode getAnOutputExpr() { result = this.getOutputExpr(_) }
 
   /**
    * Gets a specific output expression by name.
    */
-  StringLiteral getOutput(string name) {
-    this.asYamlMapping().lookup(name).(YamlMapping).lookup("value") = result.asYamlNode() or
-    this.asYamlMapping().lookup(name) = result.asYamlNode()
+  ExpressionNode getOutputExpr(string name) {
+    exists(StringValue l |
+      l.getAnExpression() = result and
+      (
+        this.asYamlMapping().lookup(name).(YamlMapping).lookup("value") = l.asYamlNode() or
+        this.asYamlMapping().lookup(name) = l.asYamlNode()
+      )
+    )
   }
 
   string getAnOutputName() {
@@ -285,14 +414,14 @@ class Strategy extends WorkflowNode {
   /**
    * Gets a specific matric expression (YamlMapping) by name.
    */
-  StringLiteral getMatrixVar(string name) {
+  StringValue getMatrixVar(string name) {
     this.asYamlMapping().lookup("matrix").(YamlMapping).lookup(name) = result.asYamlNode()
   }
 
   /**
    * Gets a specific matric expression (YamlMapping) by name.
    */
-  StringLiteral getAMatrixVar() {
+  StringValue getAMatrixVar() {
     this.asYamlMapping().lookup("matrix").(YamlMapping).lookup(_) = result.asYamlNode()
   }
 }
@@ -312,17 +441,7 @@ class Needs extends WorkflowNode {
 
   Job getANeededJob() {
     result.getId() = this.asYamlNode().(YamlMappingLikeNode).getNode(_).(YamlString).getValue() and
-    result.getLocation().getFile() = job.getLocation().getFile()
-    // if this instanceof YamlString
-    // then
-    //   result.getId() = this.(YamlString).getValue() and
-    //   result.getLocation().getFile() = job.getLocation().getFile()
-    // else
-    //   if this instanceof YamlSequence
-    //   then
-    //     result.getId() = this.(YamlSequence).getElementNode(_).(YamlString).getValue() and
-    //     result.getLocation().getFile() = job.getLocation().getFile()
-    //   else none()
+    result.getFile() = job.getFile()
   }
 }
 
@@ -378,9 +497,9 @@ class Job extends WorkflowNode {
    */
   Outputs getOutputs() { result.asYamlNode() = this.asYamlMapping().lookup("outputs") }
 
-  StringLiteral getAnOutput() { result = this.getOutputs().getAnOutput() }
+  ExpressionNode getAnOutputExpr() { result = this.getOutputs().getAnOutputExpr() }
 
-  StringLiteral getOutput(string name) { result = this.getOutputs().getOutput(name) }
+  ExpressionNode getOutputExpr(string name) { result = this.getOutputs().getOutputExpr(name) }
 
   /**
    * Reusable workflow jobs may have Uses children
@@ -448,7 +567,7 @@ abstract class Uses extends WorkflowNode {
 
   abstract string getVersion();
 
-  abstract StringLiteral getArgument(string key);
+  abstract ExpressionNode getArgumentExpr(string key);
 
   override string toString() { result = "Uses Step" }
 }
@@ -482,8 +601,11 @@ class UsesStep extends Step, Uses {
   /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
   override string getVersion() { result = uses.getValue().regexpCapture(usesParser(), 3) }
 
-  override StringLiteral getArgument(string key) {
-    result.asYamlNode() = this.asYamlMapping().lookup("with").(YamlMapping).lookup(key)
+  override Expression getArgumentExpr(string key) {
+    exists(StringValue l |
+      l.asYamlNode() = this.asYamlMapping().lookup("with").(YamlMapping).lookup(key) and
+      result = l.getAnExpression()
+    )
   }
 
   override string toString() {
@@ -535,8 +657,11 @@ class UsesJob extends Uses {
     )
   }
 
-  override StringLiteral getArgument(string key) {
-    this.asYamlMapping().lookup("with").(YamlMapping).lookup(key) = result.asYamlNode()
+  override ExpressionNode getArgumentExpr(string key) {
+    exists(StringValue l |
+      this.asYamlMapping().lookup("with").(YamlMapping).lookup(key) = l.asYamlNode() and
+      result = l.getAnExpression()
+    )
   }
 }
 
@@ -545,11 +670,11 @@ class UsesJob extends Uses {
  * See https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsrun.
  */
 class Run extends Step {
-  StringLiteral script;
+  StringValue script;
 
   Run() { this.asYamlMapping().maps(any(YamlString s | s.getValue() = "run"), script.asYamlNode()) }
 
-  StringLiteral getScript() { result = script }
+  StringValue getScript() { result = script }
 
   override string toString() {
     if exists(this.getId()) then result = "Run Step: " + this.getId() else result = "Run Step"
@@ -559,19 +684,29 @@ class Run extends Step {
 /**
  * A YamlString part of a YamlSequence or YamlMapping values.
  */
-class StringLiteral extends WorkflowNode {
-  StringLiteral() {
+class StringValue extends WorkflowNode {
+  YamlNode keyNode;
+
+  StringValue() {
     n instanceof YamlString and
     exists(YamlCollection c |
-      c instanceof YamlMapping and
-      c.(YamlMapping).maps(_, this.asYamlNode())
-      or
-      c instanceof YamlSequence and
-      c.(YamlSequence).getElementNode(_) = this.asYamlNode()
+      c = keyNode and
+      (
+        c instanceof YamlMapping and
+        //c.(YamlMapping).maps(_, this.asYamlNode())
+        exists(int i | this.asYamlNode() = c.(YamlMapping).getValueNode(i))
+        or
+        c instanceof YamlSequence and
+        c.(YamlSequence).getElementNode(_) = this.asYamlNode()
+      )
     )
   }
 
   string getValue() { result = this.asYamlNode().(YamlString).getValue() }
+
+  YamlNode getKeyNode() { result = keyNode }
+
+  ExpressionNode getAnExpression() { result = this.getAChildNode() }
 }
 
 /**
@@ -580,27 +715,16 @@ class StringLiteral extends WorkflowNode {
  * Only finds simple expressions like `${{ github.event.comment.body }}`, where the expression contains only alphanumeric characters, underscores, dots, or dashes.
  * Does not identify more complicated expressions like `${{ fromJSON(env.time) }}`, or ${{ format('{{Hello {0}!}}', github.event.head_commit.author.name) }}
  */
-string getASimpleReferenceExpression(YamlString node) {
+string getASimpleReferenceExpression(StringValue node, int offset) {
   // We use `regexpFind` to obtain *all* matches of `${{...}}`,
   // not just the last (greedy match) or first (reluctant match).
   result =
     node.getValue()
-        .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9_\\[\\]\\*\\(\\)\\.\\-]+\\s*\\}\\}", _, _)
-        .regexpCapture("\\$\\{\\{\\s*([A-Za-z0-9_\\[\\]\\*\\((\\)\\.\\-]+)\\s*\\}\\}", 1)
+        .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9_\\[\\]\\*\\(\\)\\.\\-]+\\s*\\}\\}", _, offset)
+        .regexpCapture("(\\$\\{\\{\\s*[A-Za-z0-9_\\[\\]\\*\\((\\)\\.\\-]+\\s*\\}\\})", 1)
 }
 
-/**
- * A StringLiteral containing a workflow expression ${{}}.
- */
-class Expression extends StringLiteral {
-  string expr;
-
-  Expression() { expr = getASimpleReferenceExpression(this.asYamlNode()) }
-
-  string getExpression() { result = expr }
-
-  Job getJob() { result.getAChildNode*() = this }
-}
+class Expression extends ExpressionNode { }
 
 /**
  * A ${{}} expression accessing a context variable such as steps, needs, jobs, env, inputs, or matrix.
@@ -608,15 +732,16 @@ class Expression extends StringLiteral {
  */
 class ContextExpression extends Expression {
   ContextExpression() {
-    expr.regexpMatch([
-        stepsCtxRegex(), needsCtxRegex(), jobsCtxRegex(), envCtxRegex(), inputsCtxRegex(),
-        matrixCtxRegex()
-      ])
+    expression
+        .regexpMatch([
+            stepsCtxRegex(), needsCtxRegex(), jobsCtxRegex(), envCtxRegex(), inputsCtxRegex(),
+            matrixCtxRegex()
+          ])
   }
 
   abstract string getFieldName();
 
-  abstract WorkflowNode getTarget();
+  abstract AstNode getTarget();
 }
 
 private string stepsCtxRegex() {
@@ -654,15 +779,15 @@ class StepsExpression extends ContextExpression {
   string fieldName;
 
   StepsExpression() {
-    expr.regexpMatch(stepsCtxRegex()) and
-    stepId = expr.regexpCapture(stepsCtxRegex(), 1) and
-    fieldName = expr.regexpCapture(stepsCtxRegex(), 2)
+    expression.regexpMatch(stepsCtxRegex()) and
+    stepId = expression.regexpCapture(stepsCtxRegex(), 1) and
+    fieldName = expression.regexpCapture(stepsCtxRegex(), 2)
   }
 
   override string getFieldName() { result = fieldName }
 
-  override WorkflowNode getTarget() {
-    this.getLocation().getFile() = result.getLocation().getFile() and
+  override AstNode getTarget() {
+    this.getFile() = result.getFile() and
     result.(Step).getId() = stepId
   }
 }
@@ -678,9 +803,9 @@ class NeedsExpression extends ContextExpression {
   string fieldName;
 
   NeedsExpression() {
-    expr.regexpMatch(needsCtxRegex()) and
-    neededJobId = expr.regexpCapture(needsCtxRegex(), 1) and
-    fieldName = expr.regexpCapture(needsCtxRegex(), 2) and
+    expression.regexpMatch(needsCtxRegex()) and
+    neededJobId = expression.regexpCapture(needsCtxRegex(), 1) and
+    fieldName = expression.regexpCapture(needsCtxRegex(), 2) and
     neededJob.getId() = neededJobId
   }
 
@@ -688,8 +813,8 @@ class NeedsExpression extends ContextExpression {
 
   override string getFieldName() { result = fieldName }
 
-  override WorkflowNode getTarget() {
-    neededJob.getLocation().getFile() = this.getLocation().getFile() and
+  override AstNode getTarget() {
+    neededJob.getFile() = this.getFile() and
     this.getJob().getANeededJob() = neededJob and
     (
       // regular jobs
@@ -711,17 +836,17 @@ class JobsExpression extends ContextExpression {
   string fieldName;
 
   JobsExpression() {
-    expr.regexpMatch(jobsCtxRegex()) and
-    jobId = expr.regexpCapture(jobsCtxRegex(), 1) and
-    fieldName = expr.regexpCapture(jobsCtxRegex(), 2)
+    expression.regexpMatch(jobsCtxRegex()) and
+    jobId = expression.regexpCapture(jobsCtxRegex(), 1) and
+    fieldName = expression.regexpCapture(jobsCtxRegex(), 2)
   }
 
   override string getFieldName() { result = fieldName }
 
-  override WorkflowNode getTarget() {
+  override AstNode getTarget() {
     exists(Job job |
       job.getId() = jobId and
-      job.getLocation().getFile() = this.getLocation().getFile() and
+      job.getFile() = this.getFile() and
       job.getOutputs() = result
     )
   }
@@ -736,14 +861,14 @@ class InputsExpression extends ContextExpression {
   string fieldName;
 
   InputsExpression() {
-    expr.regexpMatch(inputsCtxRegex()) and
-    fieldName = expr.regexpCapture(inputsCtxRegex(), 1)
+    expression.regexpMatch(inputsCtxRegex()) and
+    fieldName = expression.regexpCapture(inputsCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
 
-  override WorkflowNode getTarget() {
-    result.getLocation().getFile() = this.getLocation().getFile() and
+  override AstNode getTarget() {
+    result.getFile() = this.getFile() and
     (
       exists(ReusableWorkflow w | w.getInput(fieldName) = result)
       or
@@ -761,15 +886,15 @@ class EnvExpression extends ContextExpression {
   string fieldName;
 
   EnvExpression() {
-    expr.regexpMatch(envCtxRegex()) and
-    fieldName = expr.regexpCapture(envCtxRegex(), 1)
+    expression.regexpMatch(envCtxRegex()) and
+    fieldName = expression.regexpCapture(envCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
 
-  override WorkflowNode getTarget() {
+  override AstNode getTarget() {
     exists(WorkflowNode s |
-      s.getEnvVar(fieldName) = result and
+      s.getInScopeEnvVarExpr(fieldName) = result and
       s.getAChildNode*() = this
     )
   }
@@ -784,13 +909,13 @@ class MatrixExpression extends ContextExpression {
   string fieldName;
 
   MatrixExpression() {
-    expr.regexpMatch(matrixCtxRegex()) and
-    fieldName = expr.regexpCapture(matrixCtxRegex(), 1)
+    expression.regexpMatch(matrixCtxRegex()) and
+    fieldName = expression.regexpCapture(matrixCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
 
-  override WorkflowNode getTarget() {
+  override AstNode getTarget() {
     exists(Workflow w |
       w.getStrategy().getMatrixVar(fieldName) = result and
       w.getAChildNode*() = this

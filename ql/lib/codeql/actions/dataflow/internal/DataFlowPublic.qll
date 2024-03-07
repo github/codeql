@@ -78,12 +78,12 @@ class CallNode extends ExprNode {
  * An argument to a Uses step (call).
  */
 class ArgumentNode extends ExprNode {
-  ArgumentNode() { this.getCfgNode().getAstNode() = any(Uses e).getArgument(_) }
+  ArgumentNode() { this.getCfgNode().getAstNode() = any(Uses e).getArgumentExpr(_) }
 
   predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     this.getCfgNode() = call.(Cfg::Node).getASuccessor+() and
     call.(Cfg::Node).getAstNode() =
-      any(Uses e | e.getArgument(pos) = this.getCfgNode().getAstNode())
+      any(Uses e | e.getArgumentExpr(pos) = this.getCfgNode().getAstNode())
   }
 }
 

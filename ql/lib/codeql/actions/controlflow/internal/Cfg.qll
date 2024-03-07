@@ -80,7 +80,7 @@ module Completion {
 }
 
 module CfgScope {
-  abstract class CfgScope extends AstNode { }
+  abstract class CfgScope extends WorkflowNode { }
 
   class WorkflowScope extends CfgScope instanceof Workflow { }
 
@@ -148,7 +148,7 @@ private class CompositeActionTree extends StandardPreOrderTree instanceof Compos
       rank[i](AstNode child, Location l |
         (
           child = this.(CompositeAction).getAnInput() or
-          child = this.(CompositeAction).getAnOutput() or
+          child = this.(CompositeAction).getAnOutputExpr() or
           child = this.(CompositeAction).getRuns()
         ) and
         l = child.getLocation()
@@ -172,7 +172,7 @@ private class WorkflowTree extends StandardPreOrderTree instanceof Workflow {
         rank[i](AstNode child, Location l |
           (
             child = this.(ReusableWorkflow).getAnInput() or
-            child = this.(ReusableWorkflow).getAnOutput() or
+            child = this.(ReusableWorkflow).getAnOutputExpr() or
             child = this.(ReusableWorkflow).getStrategy() or
             child = this.(ReusableWorkflow).getAJob()
           ) and
@@ -202,7 +202,7 @@ private class OutputsTree extends StandardPreOrderTree instanceof Outputs {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        child = super.getOutput(_) and l = child.getLocation()
+        child = super.getOutputExpr(_) and l = child.getLocation()
       |
         child
         order by
@@ -247,7 +247,7 @@ private class UsesTree extends StandardPreOrderTree instanceof Uses {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        (child = super.getArgument(_) or child = super.getEnvVar(_)) and
+        (child = super.getArgumentExpr(_) or child = super.getInScopeEnvVarExpr(_)) and
         l = child.getLocation()
       |
         child
@@ -261,7 +261,7 @@ private class RunTree extends StandardPreOrderTree instanceof Run {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        (child = super.getEnvVar(_) or child = super.getScript()) and
+        (child = super.getInScopeEnvVarExpr(_) or child = super.getScript()) and
         l = child.getLocation()
       |
         child
@@ -271,8 +271,21 @@ private class RunTree extends StandardPreOrderTree instanceof Run {
   }
 }
 
+private class StringValueTree extends StandardPreOrderTree instanceof StringValue {
+  override ControlFlowTree getChildNode(int i) {
+    result =
+      rank[i](ExpressionNode child, int sl, int el, int sc, int ec, string path |
+        child = super.getAChildNode() and child.hasLocationInfo(path, sl, sc, el, ec)
+      |
+        child order by sl, sc, ec, el, child.toString()
+      )
+  }
+}
+
 private class UsesLeaf extends LeafTree instanceof Uses { }
 
 private class InputTree extends LeafTree instanceof Input { }
 
-private class StringLiteralLeaf extends LeafTree instanceof StringLiteral { }
+private class StringValueLeaf extends LeafTree instanceof StringValue { }
+
+private class ExpressionLeaf extends LeafTree instanceof ExpressionNode { }
