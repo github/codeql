@@ -209,4 +209,22 @@ void test16() {
   MyUnion* mu = (MyUnion*)si; // BAD [NOT DETECTED]
 }
 
+struct UnrelatedStructSize {
+  unsigned char buffer[1024];
+};
+
+void test17() {
+  void* p = new S1;
+  UnrelatedStructSize* uss = static_cast<UnrelatedStructSize*>(p); // BAD
+}
+
+struct TooLargeBufferSize {
+  unsigned char buffer[sizeof(S1) + 1];
+};
+
+void test18() {
+  void* p = new S1;
+  TooLargeBufferSize* uss = static_cast<TooLargeBufferSize*>(p); // BAD
+}
+
 // semmle-extractor-options: --gcc -std=c++11
