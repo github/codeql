@@ -17,7 +17,7 @@ func OutOfMemoryBad(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result := make([]string, sink)
+	result := make([]string, sink) // $hasTaintFlow="sink"
 	for i := 0; i < sink; i++ {
 		result[i] = fmt.Sprintf("Item %d", i+1)
 	}
