@@ -274,10 +274,13 @@ private class RunTree extends StandardPreOrderTree instanceof Run {
 private class StringValueTree extends StandardPreOrderTree instanceof StringValue {
   override ControlFlowTree getChildNode(int i) {
     result =
-      rank[i](ExpressionNode child, int sl, int el, int sc, int ec, string path |
-        child = super.getAChildNode() and child.hasLocationInfo(path, sl, sc, el, ec)
+      rank[i](ExpressionNode child, Location l |
+        child = super.getAChildNode() and
+        l = child.getLocation()
       |
-        child order by sl, sc, ec, el, child.toString()
+        child
+        order by
+          l.getStartLine(), l.getStartColumn(), l.getEndColumn(), l.getEndLine(), child.toString()
       )
   }
 }

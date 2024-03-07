@@ -68,21 +68,25 @@ class ExpressionNode extends AstNode, TExpressionNode {
 
   Job getJob() { result.getAChildNode*() = n }
 
+  /**
+   * Gets the length of each line in the StringValue .
+   */
   int lineLength(int idx) {
     exists(string line | line = n.getValue().splitAt("\n", idx) and result = line.length() + 1)
   }
 
-  bindingset[i]
-  int unboundPartialLineLengthSum(int i) {
+  /**
+   * Gets the sum of the length of the lines up to the given index.
+   */
+  int partialLineLengthSum(int i) {
+    i in [0 .. count(n.getValue().splitAt("\n"))] and
     result = sum(int j, int length | j in [0 .. i] and length = this.lineLength(j) | length)
   }
 
-  int partialLineLengthSum(int i) {
-    i in [0 .. count(n.getValue().splitAt("\n"))] and
-    result = this.unboundPartialLineLengthSum(i)
-  }
-
-  predicate expressionOffsets(int sl, int sc, int el, int ec) {
+  /**
+   * Gets the absolute coordinates of the expression.
+   */
+  predicate expressionLocation(int sl, int sc, int el, int ec) {
     exists(int lineDiff, string style, Location loc |
       loc = n.asYamlNode().getLocation() and
       lineDiff = loc.getEndLine() - loc.getStartLine() and
@@ -164,7 +168,7 @@ class ExpressionNode extends AstNode, TExpressionNode {
 
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = n.asYamlNode().getFile().getAbsolutePath() and
-    this.expressionOffsets(sl, sc, el, ec)
+    this.expressionLocation(sl, sc, el, ec)
   }
 
   override File getFile() { result = n.asYamlNode().getFile() }
