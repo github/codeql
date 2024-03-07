@@ -219,16 +219,14 @@ module RelevantStateConfig implements DataFlow::ConfigSig {
 
 module RelevantStateFlow = DataFlow::Global<RelevantStateConfig>;
 
-predicate relevantState(DataFlow::Node sink, Class state) {
-  exists(DataFlow::Node source |
-    RelevantStateFlow::flow(source, sink) and
-    isSourceImpl(source, state)
-  )
+predicate relevantState(DataFlow::Node source, DataFlow::Node sink, Class state) {
+  RelevantStateFlow::flow(source, sink) and
+  isSourceImpl(source, state)
 }
 
 predicate isSinkImpl(DataFlow::Node sink, Class state, Type convertedType, boolean compatible) {
   exists(UnsafeCast cast |
-    relevantState(sink, state) and
+    relevantState(_, sink, state) and
     sink.asExpr() = cast.getUnconverted() and
     convertedType = cast.getConvertedType()
   |
@@ -245,10 +243,10 @@ predicate isSinkImpl(DataFlow::Node sink, Class state, Type convertedType, boole
  */
 module BadConfig implements DataFlow::StateConfigSig {
   class FlowState extends Class {
-    FlowState() { relevantState(_, this) }
+    FlowState() { relevantState(_, _, this) }
   }
 
-  predicate isSource(DataFlow::Node source, FlowState state) { isSourceImpl(source, state) }
+  predicate isSource(DataFlow::Node source, FlowState state) { relevantState(source, _, state) }
 
   predicate isBarrier(DataFlow::Node node) { RelevantStateConfig::isBarrier(node) }
 
