@@ -3,7 +3,7 @@
 
 <overview>
 <p>
-Certain casts in C and C++ places no restrictions on the target type. For
+Certain casts in C and C++ place no restrictions on the target type. For
 example, C style casts such as <code>(MyClass*)p</code> allows the programmer
 to cast any pointer <code>p</code> to an expression of type <code>MyClass*</code>.
 If the runtime type of <code>p</code> turns out to be a type that's incompatible
