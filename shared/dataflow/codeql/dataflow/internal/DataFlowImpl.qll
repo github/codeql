@@ -3999,10 +3999,8 @@ module MakeImpl<InputSig Lang> {
           isStoreStep) and
         Stage5::revFlow(pragma[only_bind_into](node), pragma[only_bind_into](state), ap.getApprox()) and
         strengthenType(node, t0, t) and
-        not inBarrier(node, state)
-      |
-        isStoreStep = true or
-        not ap.storeTargetIsClearedAt(node)
+        not inBarrier(node, state) and
+        if ap.storeTargetIsClearedAt(node) then isStoreStep = true else any()
       )
     }
 
