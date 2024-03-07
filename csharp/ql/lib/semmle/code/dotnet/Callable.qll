@@ -9,7 +9,7 @@ import Expr
 import Parameterizable
 
 /** A .Net callable. */
-class Callable extends Parameterizable, @dotnet_callable {
+deprecated class Callable extends Parameterizable, @dotnet_callable {
   /** Holds if this callable has a body or an implementation. */
   predicate hasBody() { none() }
 
@@ -85,13 +85,13 @@ class Callable extends Parameterizable, @dotnet_callable {
 }
 
 /** A constructor. */
-abstract class Constructor extends Callable { }
+abstract deprecated class Constructor extends Callable { }
 
 /** A destructor/finalizer. */
-abstract class Destructor extends Callable { }
+abstract deprecated class Destructor extends Callable { }
 
 pragma[nomagic]
-private ValueOrRefType getARecordBaseType(ValueOrRefType t) {
+deprecated private ValueOrRefType getARecordBaseType(ValueOrRefType t) {
   exists(Callable c |
     c.hasName("<Clone>$") and
     c.getNumberOfParameters() = 0 and
@@ -103,7 +103,7 @@ private ValueOrRefType getARecordBaseType(ValueOrRefType t) {
 }
 
 /** A clone method on a record. */
-class RecordCloneCallable extends Callable {
+deprecated class RecordCloneCallable extends Callable {
   RecordCloneCallable() {
     this.getDeclaringType() instanceof ValueOrRefType and
     this.hasName("<Clone>$") and

@@ -1,7 +1,9 @@
 import cil::CIL
 
-from UnboundGenericMethod f, ConstructedMethod fc
-where
+deprecated query predicate constructedMethods(
+  UnboundGenericMethod f, ConstructedMethod fc, Type typeArgument
+) {
   fc.getUnboundMethod() = f and
-  f.hasFullyQualifiedName("Methods", "Class1", "F")
-select f, fc, fc.getTypeArgument(0)
+  f.hasFullyQualifiedName("Methods", "Class1", "F") and
+  typeArgument = fc.getTypeArgument(0)
+}

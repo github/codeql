@@ -1,9 +1,14 @@
 import semmle.code.cil.CIL
 
-private string getTypeArguments(GenericAttribute a) {
+deprecated private string getTypeArguments(GenericAttribute a) {
   result = "(" + concat(Type t | t = a.getATypeArgument() | t.getName(), ",") + ")"
 }
 
-from GenericAttribute a
-where a.getFile().getStem() = "assembly"
-select a, a.getType().getName(), a.getNumberOfTypeArguments(), getTypeArguments(a)
+deprecated query predicate genericAttribute(
+  GenericAttribute a, string name, int numArgs, string args
+) {
+  a.getFile().getStem() = "assembly" and
+  name = a.getType().getName() and
+  numArgs = a.getNumberOfTypeArguments() and
+  args = getTypeArguments(a)
+}

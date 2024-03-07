@@ -3,7 +3,6 @@
  */
 
 private import csharp as CS
-private import dotnet
 private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
@@ -62,7 +61,7 @@ predicate isRelevantForTypeBasedFlowModels = isRelevantForModels/1;
  * In the Standard library and 3rd party libraries it the callables that can be called
  * from outside the library itself.
  */
-class TargetApiSpecific extends DotNet::Callable {
+class TargetApiSpecific extends CS::Callable {
   TargetApiSpecific() {
     this.fromSource() and
     this.isUnboundDeclaration()

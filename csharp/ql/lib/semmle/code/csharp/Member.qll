@@ -4,7 +4,6 @@ import Callable
 import Element
 import Modifier
 import Variable
-private import dotnet
 private import Implements
 private import TypeRef
 private import commons.QualifiedName
@@ -26,8 +25,46 @@ private module FullyQualifiedNameInput implements QualifiedNameInputSig {
  *
  * Either a modifiable (`Modifiable`) or an assignable (`Assignable`).
  */
-class Declaration extends DotNet::Declaration, Element, @declaration {
-  override ValueOrRefType getDeclaringType() { none() }
+class Declaration extends NamedElement, @declaration {
+  /** Gets the name of this declaration, without additional decoration such as `<...>`. */
+  string getUndecoratedName() { none() }
+
+  /** Holds if this element has undecorated name 'name'. */
+  final predicate hasUndecoratedName(string name) { name = this.getUndecoratedName() }
+
+  /**
+   * Gets the unbound version of this declaration, that is, the declaration where
+   * all type arguments have been removed. For example, in
+   *
+   * ```csharp
+   * class C<T>
+   * {
+   *     class Nested
+   *     {
+   *     }
+   *
+   *     void Method<S>() { }
+   * }
+   * ```
+   *
+   * we have the following
+   *
+   * | Declaration             | Unbound declaration |
+   * |-------------------------|---------------------|
+   * | `C<int>`                | ``C`1``             |
+   * | ``C`1.Nested``          | ``C`1.Nested``      |
+   * | `C<int>.Nested`         | ``C`1.Nested``      |
+   * | ``C`1.Method`1``        | ``C`1.Method`1``    |
+   * | ``C<int>.Method`1``     | ``C`1.Method`1``    |
+   * | `C<int>.Method<string>` | ``C`1.Method`1``    |
+   */
+  Declaration getUnboundDeclaration() { result = this }
+
+  /** Holds if this declaration is unbound. */
+  final predicate isUnboundDeclaration() { this.getUnboundDeclaration() = this }
+
+  /** Gets the type containing this declaration, if any. */
+  ValueOrRefType getDeclaringType() { none() }
 
   /** Holds if this declaration is unconstructed and in source code. */
   final predicate isSourceDeclaration() { this.fromSource() and this.isUnboundDeclaration() }
@@ -222,33 +259,27 @@ class Modifiable extends Declaration, @modifiable {
 }
 
 /** A declaration that is a member of a type. */
-class Member extends DotNet::Member, Modifiable, @member {
+class Member extends Modifiable, @member {
   /** Gets an access to this member. */
   MemberAccess getAnAccess() { result.getTarget() = this }
 
-  override predicate isPublic() { Modifiable.super.isPublic() }
-
-  override predicate isProtected() { Modifiable.super.isProtected() }
-
-  override predicate isPrivate() { Modifiable.super.isPrivate() }
-
-  override predicate isInternal() { Modifiable.super.isInternal() }
-
-  override predicate isSealed() { Modifiable.super.isSealed() }
-
-  override predicate isAbstract() { Modifiable.super.isAbstract() }
-
-  override predicate isStatic() { Modifiable.super.isStatic() }
-
-  override predicate isRequired() { Modifiable.super.isRequired() }
-
-  override predicate isFile() { Modifiable.super.isFile() }
-
-  deprecated final override predicate hasQualifiedName(string namespace, string type, string name) {
+  /**
+   * DEPRECATED: Use `hasFullyQualifiedName` instead.
+   *
+   * Holds if this member has name `name` and is defined in type `type`
+   * with namespace `namespace`.
+   */
+  cached
+  deprecated final predicate hasQualifiedName(string namespace, string type, string name) {
     QualifiedName<QualifiedNameInput>::hasQualifiedName(this, namespace, type, name)
   }
 
-  final override predicate hasFullyQualifiedName(string namespace, string type, string name) {
+  /**
+   * Holds if this member has name `name` and is defined in type `type`
+   * with namespace `namespace`.
+   */
+  cached
+  final predicate hasFullyQualifiedName(string namespace, string type, string name) {
     QualifiedName<FullyQualifiedNameInput>::hasQualifiedName(this, namespace, type, name)
   }
 }
@@ -477,10 +508,24 @@ class Virtualizable extends Overridable, Member, @virtualizable {
  * A parameterizable declaration. Either a callable (`Callable`), a delegate
  * type (`DelegateType`), or an indexer (`Indexer`).
  */
-class Parameterizable extends DotNet::Parameterizable, Declaration, @parameterizable {
-  override Parameter getRawParameter(int i) { params(result, _, _, i, _, this, _) }
+class Parameterizable extends Declaration, @parameterizable {
+  /** Gets raw parameter `i`, including the `this` parameter at index 0. */
+  Parameter getRawParameter(int i) { params(result, _, _, i, _, this, _) }
 
-  override Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
+  /** Gets the `i`th parameter, excluding the `this` parameter. */
+  Parameter getParameter(int i) { params(result, _, _, i, _, this, _) }
+
+  /** Gets the number of parameters of this callable. */
+  int getNumberOfParameters() { result = count(this.getAParameter()) }
+
+  /** Holds if this declaration has no parameters. */
+  predicate hasNoParameters() { not exists(this.getAParameter()) }
+
+  /** Gets a parameter, if any. */
+  Parameter getAParameter() { result = this.getParameter(_) }
+
+  /** Gets a raw parameter (including the qualifier), if any. */
+  final Parameter getARawParameter() { result = this.getRawParameter(_) }
 
   /**
    * Gets the type of the parameter, possibly prefixed
