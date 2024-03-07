@@ -60,10 +60,9 @@ namespace Semmle.Extraction.CSharp.Standalone
             {
                 try
                 {
-                    FileUtils.TryDelete(output.FullName);
                     if (shouldCleanUpContainingFolder)
                     {
-                        output.Directory?.Delete(true);
+                        FileUtils.TryDelete(output.FullName);
                     }
                 }
                 catch
@@ -105,12 +104,19 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             public void Analysed(int item, int total, string source, string output, TimeSpan time, AnalysisAction action)
             {
-                logger.Log(Severity.Info, "[{0}/{1}] {2} ({3})", item, total, source,
-                    action == AnalysisAction.Extracted
-                        ? time.ToString()
-                        : action == AnalysisAction.Excluded
-                            ? "excluded"
-                            : "up to date");
+                var extra = action switch
+                {
+                    AnalysisAction.Extracted => time.ToString(),
+                    AnalysisAction.Excluded => "excluded",
+                    AnalysisAction.UpToDate => "up to date",
+                    _ => "unknown action"
+                };
+                logger.LogInfo($"[{item}/{total}] {source} ({extra})");
+            }
+
+            public void Started(int item, int total, string source)
+            {
+                logger.LogInfo($"[{item}/{total}] {source} (processing started)");
             }
 
             public void MissingType(string type)
