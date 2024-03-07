@@ -319,9 +319,9 @@
 | delegatedProperties.kt:62:25:62:48 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:62:25:62:48 | this | delegatedProperties.kt:62:25:62:48 | getAnotherClassInt | ThisAccess |
 | delegatedProperties.kt:62:25:62:48 | this.anotherClassInt | delegatedProperties.kt:62:25:62:48 | getAnotherClassInt | VarAccess |
-| delegatedProperties.kt:63:17:63:37 | ...=... | delegatedProperties.kt:63:6:63:38 | Base | KtInitializerAssignExpr |
-| delegatedProperties.kt:63:17:63:37 | baseClassInt | delegatedProperties.kt:63:6:63:38 | Base | VarAccess |
-| delegatedProperties.kt:63:17:63:37 | baseClassInt | delegatedProperties.kt:63:6:63:38 | Base | VarAccess |
+| delegatedProperties.kt:63:17:63:37 | ...=... | delegatedProperties.kt:63:16:63:38 | Base | KtInitializerAssignExpr |
+| delegatedProperties.kt:63:17:63:37 | baseClassInt | delegatedProperties.kt:63:16:63:38 | Base | VarAccess |
+| delegatedProperties.kt:63:17:63:37 | baseClassInt | delegatedProperties.kt:63:16:63:38 | Base | VarAccess |
 | delegatedProperties.kt:63:17:63:37 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:63:17:63:37 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:63:17:63:37 | int | file://:0:0:0:0 | <none> | TypeAccess |
