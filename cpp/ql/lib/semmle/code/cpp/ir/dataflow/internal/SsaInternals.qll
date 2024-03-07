@@ -256,23 +256,29 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
 }
 
 abstract class DefImpl extends DefOrUseImpl {
-  Operand address;
   int ind;
 
   bindingset[ind]
   DefImpl() { any() }
 
-  abstract int getIndirection();
-
-  abstract Node0Impl getValue();
-
-  abstract predicate isCertain();
-
-  Operand getAddressOperand() { result = address }
-
   override int getIndirectionIndex() { result = ind }
 
   override string toString() { result = "Def of " + this.getSourceVariable() }
+
+  abstract int getIndirection();
+
+  abstract predicate isCertain();
+
+  abstract Node0Impl getValue();
+}
+
+abstract class OperandBasedDef extends DefImpl {
+  Operand address;
+
+  bindingset[ind]
+  OperandBasedDef() { any() }
+
+  Operand getAddressOperand() { result = address }
 
   override Cpp::Location getLocation() { result = this.getAddressOperand().getUse().getLocation() }
 
@@ -281,7 +287,7 @@ abstract class DefImpl extends DefOrUseImpl {
   }
 }
 
-private class DirectDef extends DefImpl, TDefImpl {
+private class DirectDef extends OperandBasedDef, TDefImpl {
   BaseSourceVariableInstruction base;
 
   DirectDef() { this = TDefImpl(base, address, ind) }
@@ -295,7 +301,7 @@ private class DirectDef extends DefImpl, TDefImpl {
   override predicate isCertain() { isDef(true, _, address, base, _, ind) }
 }
 
-private class IteratorDef extends DefImpl, TIteratorDef {
+private class IteratorDef extends OperandBasedDef, TIteratorDef {
   BaseSourceVariableInstruction container;
 
   IteratorDef() { this = TIteratorDef(address, container, ind) }
@@ -1178,7 +1184,7 @@ class UseOrPhi extends SsaDefOrUse {
 class Def extends DefOrUse {
   override DefImpl defOrUse;
 
-  Operand getAddressOperand() { result = defOrUse.getAddressOperand() }
+  Operand getAddressOperand() { result = defOrUse.(OperandBasedDef).getAddressOperand() }
 
   Instruction getAddress() { result = this.getAddressOperand().getDef() }
 
