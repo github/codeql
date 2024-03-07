@@ -1,6 +1,6 @@
 import os
 import sys
-sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "..", "integration-tests"))
+sys.path.append(os.path.join(os.path.dirname(__file__), "..", "..", "..", "..", "..", "integration-tests"))
 import diagnostics_test_utils
 
 test_db = "db"
