@@ -2,7 +2,7 @@
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:19:9:19:51 | <get-varResource1> | NullLiteral |
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:19:9:19:51 | <set-varResource1> | NullLiteral |
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:23:9:23:31 | <get-name> | NullLiteral |
-| delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:33:9:33:47 | <get-readOnly> | NullLiteral |
+| delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:33:9:33:76 | <get-readOnly> | NullLiteral |
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:34:9:34:48 | <get-readWrite> | NullLiteral |
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:34:9:34:48 | <set-readWrite> | NullLiteral |
 | delegatedProperties.kt:0:0:0:0 | null | delegatedProperties.kt:39:9:39:51 | <get-varResource2> | NullLiteral |
