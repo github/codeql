@@ -7532,7 +7532,8 @@
 | System.IO;BinaryWriter;false;Write;(System.Byte[]);;Argument[0].Element;Argument[this];taint;df-generated |
 | System.IO;BinaryWriter;false;Write;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[this];taint;df-generated |
 | System.IO;BinaryWriter;false;get_BaseStream;();;Argument[this];ReturnValue;taint;df-generated |
-| System.IO;BufferedStream;false;BufferedStream;(System.IO.Stream,System.Int32);;Argument[0];Argument[this];taint;df-generated |
+| System.IO;BufferedStream;false;BufferedStream;(System.IO.Stream);;Argument[0];Argument[this];taint;manual |
+| System.IO;BufferedStream;false;BufferedStream;(System.IO.Stream,System.Int32);;Argument[0];Argument[this];taint;manual |
 | System.IO;BufferedStream;false;get_UnderlyingStream;();;Argument[this];ReturnValue;taint;df-generated |
 | System.IO;Directory;false;CreateDirectory;(System.String);;Argument[0];ReturnValue;taint;df-generated |
 | System.IO;Directory;false;CreateDirectory;(System.String,System.IO.UnixFileMode);;Argument[0];ReturnValue;taint;df-generated |
@@ -7738,6 +7739,7 @@
 | System.IO;Stream;true;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;manual |
 | System.IO;Stream;true;FlushAsync;(System.Threading.CancellationToken);;Argument[this];ReturnValue;taint;df-generated |
 | System.IO;Stream;true;Read;(System.Byte[],System.Int32,System.Int32);;Argument[this];Argument[0].Element;taint;manual |
+| System.IO;Stream;true;Read;(System.Span<System.Byte>);;Argument[this];Argument[0];taint;manual |
 | System.IO;Stream;true;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[this];Argument[0].Element;taint;manual |
 | System.IO;Stream;true;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[this];ReturnValue;taint;df-generated |
 | System.IO;Stream;true;Write;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[this];taint;manual |
