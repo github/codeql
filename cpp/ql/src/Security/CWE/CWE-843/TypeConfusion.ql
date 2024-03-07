@@ -148,20 +148,32 @@ class UnsafeCast extends Cast {
    * 1. the result of `(T)x` is compatible with the type `T` for any `T`
    * 2. the result of `(T)x` is compatible with the type `U` for any `U` such
    *    that `U` is a subtype of `T`, or `T` is a subtype of `U`.
-   * 3. the result of `(T)x` is compatible with the type `U` if `U` the list
+   * 3. the result of `(T)x` is compatible with the type `U` if the list
+   *    of fields of `T` is a prefix of the list of fields of `U`.
+   *    For example, if `U` is `struct { unsigned char x; int y; };`
+   *    and `T` is `struct { unsigned char uc; };`.
+   * 4. the result of `(T)x` is compatible with the type `U` if the list
    *    of fields of `U` is a prefix of the list of fields of `T`.
-   *    For example, if `T` is `struct { unsigned char x; int y; };`
-   *    and `U` is `struct { unsigned char uc; };`.
+   *
+   *    Condition 4 is a bit controversial, since it assumes that the additional
+   *    fields in `T` won't be accessed. This may result in some FNs.
    */
   bindingset[this, t]
   pragma[inline_late]
   predicate compatibleWith(Type t) {
+    // Conition 1
     t.stripType() = this.getConvertedType()
     or
+    // Condition 3
     prefix(this.getConvertedType(), t.stripType())
     or
+    // Condition 4
+    prefix(t.stripType(), this.getConvertedType())
+    or
+    // Condition 2 (a)
     t.stripType().(Class).getABaseClass+() = this.getConvertedType()
     or
+    // Condition 2 (b)
     t.stripType() = this.getConvertedType().getABaseClass+()
   }
 }
