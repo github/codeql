@@ -19,12 +19,12 @@
       of size <code>n</code> without further verification, potentially exhausting all the available
       memory.</p>
 
-    <sample src="UncontrolledAllocationSize.go" />
+    <sample src="UncontrolledAllocationSizeBad.go" />
 
     <p>One way to prevent this vulnerability is by implementing a maximum allowed value for the
       user-controlled input, as seen in the following example:</p>
 
-    <sample src="UncontrolledAllocationSize.go" />
+    <sample src="UncontrolledAllocationSizeGood.go" />
   </example>
 
   <references>
