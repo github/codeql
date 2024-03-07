@@ -215,6 +215,8 @@ module RelevantStateConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     exists(UnsafeCast cast | sink.asExpr() = cast.getUnconverted())
   }
+
+  int fieldFlowBranchLimit() { result = 0 }
 }
 
 module RelevantStateFlow = DataFlow::Global<RelevantStateConfig>;
@@ -253,6 +255,8 @@ module BadConfig implements DataFlow::StateConfigSig {
   predicate isSink(DataFlow::Node sink, FlowState state) { isSinkImpl(sink, state, _, false) }
 
   predicate isBarrierOut(DataFlow::Node sink, FlowState state) { isSink(sink, state) }
+
+  int fieldFlowBranchLimit() { result = 0 }
 }
 
 module BadFlow = DataFlow::GlobalWithState<BadConfig>;
@@ -307,6 +311,8 @@ module GoodConfig implements DataFlow::StateConfigSig {
     isSinkImpl(sink, state, _, true) and
     BadFlow::flowTo(sink)
   }
+
+  int fieldFlowBranchLimit() { result = 0 }
 }
 
 module GoodFlow = DataFlow::GlobalWithState<GoodConfig>;
