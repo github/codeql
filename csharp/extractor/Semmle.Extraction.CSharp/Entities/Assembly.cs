@@ -33,8 +33,13 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             if (assemblyPath is not null)
             {
-                trapFile.assemblies(this, File.Create(Context, assemblyPath), assembly.ToString() ?? "",
-                    assembly.Identity.Name, assembly.Identity.Version.ToString());
+                var isBuildlessOutputAssembly = isOutputAssembly && Context.Extractor.Mode.HasFlag(ExtractorMode.Standalone);
+                var identifier = isBuildlessOutputAssembly
+                    ? ""
+                    : assembly.ToString() ?? "";
+                var name = isBuildlessOutputAssembly ? "" : assembly.Identity.Name;
+                var version = isBuildlessOutputAssembly ? "" : assembly.Identity.Version.ToString();
+                trapFile.assemblies(this, File.Create(Context, assemblyPath), identifier, name, version);
             }
         }
 
