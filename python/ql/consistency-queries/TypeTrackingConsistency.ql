@@ -24,6 +24,12 @@ private module ConsistencyChecksInput implements ConsistencyChecksInputSig {
     // TODO: when adding support for proper content, handle iterable unpacking better
     // such as `for k,v in items:`, or `a, (b,c) = ...`
     n instanceof DataFlow::IterableSequenceNode
+    or
+    // We have missing use-use flow in
+    // https://github.com/python/cpython/blob/0fb18b02c8ad56299d6a2910be0bab8ad601ef24/Lib/socketserver.py#L276-L303
+    // which I couldn't just fix. We ignore the problems here, and instead rely on the
+    // test-case added in https://github.com/github/codeql/pull/15841
+    n.getLocation().getFile().getAbsolutePath().matches("%/socketserver.py")
   }
 }
 
