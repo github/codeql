@@ -8,7 +8,7 @@ edition = "2018"
 
 # When changing/updating these, the `Cargo.Bazel.lock` file has to be regenerated.
 # Check out the documentation at https://bazelbuild.github.io/rules_rust/crate_universe.html#repinning--updating-dependencies
-# for how to do so. The bazel repository for the tsg-python project is called `tsg_python_crate_index`,
+# for how to do so. The bazel repository for the tsg-python project is called `py_deps`,
 # and instead of calling `bazel sync`, `./build --bazel sync` should be used instead, to always use the correct bazel version.
 [dependencies]
 anyhow = "1.0"
