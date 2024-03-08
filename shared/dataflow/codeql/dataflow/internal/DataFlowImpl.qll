@@ -7,12 +7,13 @@
 private import codeql.util.Unit
 private import codeql.util.Option
 private import codeql.util.Boolean
+private import codeql.util.Location
 private import codeql.dataflow.DataFlow
 
-module MakeImpl<InputSig Lang> {
+module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import DataFlowMake<Lang>
-  private import DataFlowImplCommon::MakeImplCommon<Lang>
+  private import DataFlowMake<Location, Lang>
+  private import DataFlowImplCommon::MakeImplCommon<Location, Lang>
   private import DataFlowImplCommonPublic
 
   /**
@@ -192,11 +193,7 @@ module MakeImpl<InputSig Lang> {
         pragma[only_bind_out](this).getDataFlowType0() = pragma[only_bind_into](result)
       }
 
-      predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        this.projectToNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
+      Location getLocation() { result = this.projectToNode().getLocation() }
     }
 
     private class ArgNodeEx extends NodeEx {
@@ -3305,11 +3302,7 @@ module MakeImpl<InputSig Lang> {
 
       override string toString() { result = p + concat(" : " + ppReprType(t)) + " " + ap }
 
-      predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        p.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
+      Location getLocation() { result = p.getLocation() }
     }
 
     /**
@@ -3727,18 +3720,8 @@ module MakeImpl<InputSig Lang> {
             this.ppSummaryCtx()
       }
 
-      /**
-       * Holds if this element is at the specified location.
-       * The location spans column `startcolumn` of line `startline` to
-       * column `endcolumn` of line `endline` in file `filepath`.
-       * For more information, see
-       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-       */
-      predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        this.getNodeEx().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
+      /** Gets the location of this node. */
+      Location getLocation() { result = this.getNodeEx().getLocation() }
     }
 
     /** Holds if `n` can reach a sink. */
@@ -3774,6 +3757,9 @@ module MakeImpl<InputSig Lang> {
        */
       final string toStringWithContext() { result = super.toStringWithContext() }
 
+      /** Gets the location of this node. */
+      Location getLocation() { result = super.getLocation() }
+
       /**
        * Holds if this element is at the specified location.
        * The location spans column `startcolumn` of line `startline` to
@@ -3781,10 +3767,11 @@ module MakeImpl<InputSig Lang> {
        * For more information, see
        * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
        */
-      final predicate hasLocationInfo(
+      pragma[inline]
+      deprecated final predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
       ) {
-        super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+        this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       }
 
       /** Gets the underlying `Node`. */
@@ -3945,12 +3932,6 @@ module MakeImpl<InputSig Lang> {
       override predicate isSource() { none() }
 
       override string toString() { result = sourceGroup }
-
-      override predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
-      }
     }
 
     private class PathNodeSinkGroup extends PathNodeImpl, TPathNodeSinkGroup {
@@ -3967,12 +3948,6 @@ module MakeImpl<InputSig Lang> {
       override predicate isSource() { none() }
 
       override string toString() { result = sinkGroup }
-
-      override predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
-      }
     }
 
     private predicate pathNode(
@@ -4801,6 +4776,9 @@ module MakeImpl<InputSig Lang> {
             result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
           }
 
+          /** Gets the location of this node. */
+          Location getLocation() { result = this.getNodeEx().getLocation() }
+
           /**
            * Holds if this element is at the specified location.
            * The location spans column `startcolumn` of line `startline` to
@@ -4808,10 +4786,11 @@ module MakeImpl<InputSig Lang> {
            * For more information, see
            * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
            */
-          predicate hasLocationInfo(
+          pragma[inline]
+          deprecated predicate hasLocationInfo(
             string filepath, int startline, int startcolumn, int endline, int endcolumn
           ) {
-            this.getNodeEx().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+            this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
           }
 
           /** Gets the underlying `Node`. */
