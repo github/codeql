@@ -2782,6 +2782,43 @@ class TranslatedTemporaryObjectExpr extends TranslatedNonConstantExpr,
   final override Instruction getResult() { result = this.getTargetAddress() }
 }
 
+class TranslatedReuseExpr extends TranslatedNonConstantExpr {
+  override ReuseExpr expr;
+
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(OnlyInstructionTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    opcode instanceof Opcode::CopyValue and
+    tag instanceof OnlyInstructionTag and
+    resultType = this.getResultType()
+  }
+
+  override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override TranslatedElement getChildInternal(int id) { none() }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(OnlyInstructionTag())
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) { 
+    tag = OnlyInstructionTag() and
+    operandTag instanceof UnaryOperandTag and
+    if getTranslatedExpr(expr.getReusedExpr()) instanceof TranslatedLoad
+    then result = getTranslatedExpr(expr.getReusedExpr()).(TranslatedLoad).getOperand().getResult()
+    else result = getTranslatedExpr(expr.getReusedExpr()).getResult()
+  }
+}
+
 /**
  * IR translation of a `throw` expression.
  */

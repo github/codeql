@@ -1334,8 +1334,16 @@ class ReuseExpr extends Expr, @reuseexpr {
     result = this.getReusedExpr().getType()
   }
 
-  override string getValueCategoryString() {
-    result = this.getReusedExpr().getValueCategoryString()
+  override predicate isLValueCategory() {
+    none()
+  }
+
+  override predicate isXValueCategory() {
+    any()
+  }
+
+  override predicate isPRValueCategory() {
+    none()
   }
 
   Expr getReusedExpr() {
