@@ -1161,7 +1161,12 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
 
-  /** Gets the data flow node that this call targets. */
+  /**
+   * Gets the data flow node that this call targets.
+   * OR
+   * Gets the data flow node that receives the result of the call.
+   * TODO: which is right?
+   */
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   //  override CallTargetOperand getCallTargetOperand() TODO

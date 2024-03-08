@@ -119,6 +119,7 @@ module SourceSinkInterpretationInput implements
     DataFlowCall asCall() {
       this.asElement() = result.asCallInstruction().getUnconvertedResultExpression()
       // TODO: or summary call?
+      // ??? this.asNode().(FlowSummaryNode).getSummaryNode() = result.(SummaryCall).getReceiver()
     }
 
     /** Gets the callable that this node corresponds to, if any. */

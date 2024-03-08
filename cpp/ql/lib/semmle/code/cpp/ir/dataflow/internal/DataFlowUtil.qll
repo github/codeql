@@ -757,7 +757,7 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
    * TODO: QLDoc.
    */
   override DataFlowCallable getEnclosingCallable() {
-    result = TSummarizedCallable(this.getSummarizedCallable())
+    result = TSummarizedCallable(this.getSummarizedCallable()) // TODO: this doesn't look right.
   }
 
   override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
