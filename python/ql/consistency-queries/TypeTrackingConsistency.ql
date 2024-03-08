@@ -17,7 +17,13 @@ private module ConsistencyChecksInput implements ConsistencyChecksInputSig {
     //
     // match (NONSOURCE, SOURCE):
     //   case (x, y): ...
-    exists(DataFlow::Node m | m.asCfgNode().getNode() instanceof MatchCapturePattern |
+    exists(DataFlow::Node m |
+      m.asCfgNode().getNode() instanceof MatchCapturePattern
+      or
+      m.asCfgNode().getNode() instanceof MatchAsPattern
+      or
+      m.asCfgNode().getNode() instanceof MatchOrPattern
+    |
       TypeTrackingInput::simpleLocalSmallStep*(m, n)
     )
     or
