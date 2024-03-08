@@ -21,7 +21,7 @@ module DecompressionBombs {
     /**
      * Holds if there is a additional taint step between pred and succ.
      */
-    abstract predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode);
+    predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) { none() }
 
     /**
      * Holds if there is a additional taint step between pred and succ.
@@ -56,10 +56,6 @@ module DecompressionBombs {
           toState = "ZstdNewReader"
         )
       }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
-      }
     }
   }
 
@@ -93,10 +89,6 @@ module DecompressionBombs {
           toState = "ZstdNewReader"
         )
       }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
-      }
     }
   }
 
@@ -118,10 +110,6 @@ module DecompressionBombs {
           fromState = "" and
           toState = "ZipOpenReader"
         )
-      }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
       }
     }
   }
@@ -185,10 +173,6 @@ module DecompressionBombs {
           toState = "XzNewReader"
         )
       }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
-      }
     }
   }
 
@@ -211,10 +195,6 @@ module DecompressionBombs {
           fromState = "" and
           toState = "GzipNewReader"
         )
-      }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
       }
     }
   }
@@ -245,10 +225,6 @@ module DecompressionBombs {
           toState = "GzipNewReader"
         )
       }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
-      }
     }
   }
 
@@ -271,10 +247,6 @@ module DecompressionBombs {
           fromState = "" and
           toState = "Bzip2NewReader"
         )
-      }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
       }
     }
   }
@@ -299,10 +271,6 @@ module DecompressionBombs {
           toState = "Bzip2NewReader"
         )
       }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
-      }
     }
   }
 
@@ -325,10 +293,6 @@ module DecompressionBombs {
           fromState = "" and
           toState = "FlateNewReader"
         )
-      }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
       }
     }
   }
@@ -365,10 +329,6 @@ module DecompressionBombs {
           toState = "FlateNewReader"
         )
       }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
-      }
     }
   }
 
@@ -404,10 +364,6 @@ module DecompressionBombs {
           toState = "FlateNewReader"
         )
       }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
-      }
     }
   }
 
@@ -430,10 +386,6 @@ module DecompressionBombs {
           fromState = "" and
           toState = "ZlibNewReader"
         )
-      }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
       }
     }
   }
@@ -458,10 +410,6 @@ module DecompressionBombs {
           toState = "ZlibNewReader"
         )
       }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
-      }
     }
   }
 
@@ -485,10 +433,6 @@ module DecompressionBombs {
           toState = "SnappyNewReader"
         )
       }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
-      }
     }
   }
 
@@ -511,10 +455,6 @@ module DecompressionBombs {
           fromState = "" and
           toState = "SnappyNewReader"
         )
-      }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
       }
     }
   }
@@ -550,10 +490,6 @@ module DecompressionBombs {
           fromState = "" and
           toState = "S2NewReader"
         )
-      }
-
-      override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-        none()
       }
     }
   }
