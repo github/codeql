@@ -1,0 +1,19 @@
+testFailures
+| TypeBased.cs:18:22:18:40 | // ... | Missing result:hasTaintFlow=2 |
+| TypeBased.cs:25:22:25:40 | // ... | Missing result:hasTaintFlow=3 |
+| TypeBased.cs:32:22:32:40 | // ... | Missing result:hasTaintFlow=3 |
+| TypeBased.cs:40:22:40:40 | // ... | Missing result:hasTaintFlow=4 |
+| TypeBased.cs:62:22:62:40 | // ... | Missing result:hasTaintFlow=5 |
+| TypeBased.cs:69:22:69:40 | // ... | Missing result:hasTaintFlow=6 |
+| TypeBased.cs:76:23:76:41 | // ... | Missing result:hasTaintFlow=7 |
+| TypeBased.cs:77:23:77:41 | // ... | Missing result:hasTaintFlow=7 |
+edges
+| TypeBased.cs:9:17:9:18 | access to local variable s1 : String | TypeBased.cs:11:18:11:19 | access to local variable s1 | provenance |  |
+| TypeBased.cs:9:22:9:38 | call to method Source<String> : String | TypeBased.cs:9:17:9:18 | access to local variable s1 : String | provenance |  |
+nodes
+| TypeBased.cs:9:17:9:18 | access to local variable s1 : String | semmle.label | access to local variable s1 : String |
+| TypeBased.cs:9:22:9:38 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:11:18:11:19 | access to local variable s1 | semmle.label | access to local variable s1 |
+subpaths
+#select
+| TypeBased.cs:11:18:11:19 | access to local variable s1 | TypeBased.cs:9:22:9:38 | call to method Source<String> : String | TypeBased.cs:11:18:11:19 | access to local variable s1 | $@ | TypeBased.cs:9:22:9:38 | call to method Source<String> : String | call to method Source<String> : String |

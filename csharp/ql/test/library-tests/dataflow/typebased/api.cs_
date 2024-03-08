@@ -1,0 +1,19 @@
+using System;
+
+public static class MyApi {
+    public static void M1(string s) => throw null;
+    public static string M2(string s) => throw null;
+    public static string M3(string s1, string s2) => throw null;
+    public static string M4(string s, object o) => throw null;
+    public static object M5(string s, object o) => throw null;
+    public static void M6(string s1, out string s2) {
+        s2 = "hello";
+    }
+    public static string M7(string s1, out string s2) {
+        s2 = "hello";
+        throw null;
+    }
+    public static int M8(object o, int i) => throw null;
+    public static DateTime M9(DateTime d, TimeSpan t) => throw null;
+    public static bool M10(bool b, int i) => throw null;
+}
