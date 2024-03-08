@@ -37,7 +37,9 @@ module DecompressionBombs {
   abstract class Sink extends DataFlow::Node { }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/DataDog/zstd` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/DataDog/zstd` package.
+   *
+   * `Reader.Read` already modeled.
    */
   module DataDogZstd {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -60,7 +62,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/zstd` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/zstd` package.
+   *
+   * `Reader.Read`, `Reader.WriteTo` already modeled.
    */
   module KlauspostZstd {
     class TheSink extends Sink {
@@ -155,7 +159,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/ulikunitz/xz` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/ulikunitz/xz` package.
+   *
+   * `Reader.Read` already modeled.
    */
   module UlikunitzXz {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -177,7 +183,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `compress/gzip` package
+   * Provides decompression bomb sinks and additional flow steps for `compress/gzip` package.
+   *
+   * `Reader.Read` already modeled.
    */
   module CompressGzipBombs {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -200,9 +208,11 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/gzip` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/pgzip` package.
+   *
+   * `Reader.Read`, `Reader.WriteTo` already modeled.
    */
-  module KlauspostGzipAndPgzip {
+  module KlauspostPgzip {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -216,7 +226,24 @@ module DecompressionBombs {
           toNode = call.getResult(0) and
           fromState = "" and
           toState = "PgzipNewReader"
-          or
+        )
+      }
+    }
+  }
+
+  /**
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/gzip` package.
+   *
+   * `Reader.Read`, `Reader.WriteTo` already modeled.
+   */
+  module KlauspostGzip {
+    class TheAdditionalTaintStep extends AdditionalTaintStep {
+      TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
+
+      override predicate isAdditionalFlowStep(
+        DataFlow::Node fromNode, FlowState fromState, DataFlow::Node toNode, FlowState toState
+      ) {
+        exists(Function f, DataFlow::CallNode call |
           f.hasQualifiedName("github.com/klauspost/compress/gzip", "NewReader") and
           call = f.getACall() and
           fromNode = call.getArgument(0) and
@@ -229,7 +256,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `compress/bzip2` package
+   * Provides decompression bomb sinks and additional flow steps for `compress/bzip2` package.
+   *
+   * `Reader.Read` already modeled.
    */
   module CompressBzip2 {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -252,7 +281,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/dsnet/compress/bzip2` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/dsnet/compress/bzip2` package.
+   *
+   * `Reader.Read` already modeled.
    */
   module DsnetBzip2 {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -275,7 +306,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/dsnet/compress/flate` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/dsnet/compress/flate` package.
+   *
+   * `Reader.Read` already modeled.
    */
   module DsnetFlate {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -298,21 +331,11 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `compress/flate` package
+   * Provides decompression bomb sinks and additional flow steps for `compress/flate` package.
+   *
+   * `Reader.Read` already modeled.
    */
-  module CompressFlateBombs {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("compress/flate", "decompressor", "Read") and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
+  module CompressFlate {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -333,21 +356,11 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/flate` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/flate` package.
+   *
+   * `Reader.Read` already modeled.
    */
   module KlauspostFlate {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("github.com/klauspost/compress/flate", "decompressor", "Read") and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-      }
-    }
-
     class TheAdditionalTaintStep extends AdditionalTaintStep {
       TheAdditionalTaintStep() { this = "AdditionalTaintStep" }
 
@@ -368,7 +381,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/zlib` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/zlib` package.
+   *
+   * `Reader.Read` already modeled.
    */
   module KlauspostZlib {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -391,7 +406,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `compress/zlib` package
+   * Provides decompression bomb sinks and additional flow steps for `compress/zlib` package.
+   *
+   * `Reader.Read` already modeled.
    */
   module CompressZlibBombs {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -414,7 +431,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/golang/snappy` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/golang/snappy` package.
+   *
+   * `Reader.Read`, `Reader.ReadByte` already modeled.
    */
   module GolangSnappy {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -437,7 +456,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bombs sinks and additional flow steps for `github.com/klauspost/compress/snappy` package
+   * Provides decompression bombs sinks and additional flow steps for `github.com/klauspost/compress/snappy` package.
+   *
+   * `Reader.Read`, `Reader.ReadByte` already modeled.
    */
   module KlauspostSnappy {
     class TheAdditionalTaintStep extends AdditionalTaintStep {
@@ -460,7 +481,9 @@ module DecompressionBombs {
   }
 
   /**
-   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/s2` package
+   * Provides decompression bomb sinks and additional flow steps for `github.com/klauspost/compress/s2` package.
+   *
+   * `Reader.Read`, `Reader.ReadByte` already modeled.
    */
   module KlauspostS2 {
     class TheSink extends Sink {
@@ -497,61 +520,57 @@ module DecompressionBombs {
   /**
    * Provides decompression bomb sinks for packages that use some standard IO interfaces/methods for reading decompressed data
    */
-  module GeneralReadIoSink {
-    class TheSink extends Sink {
-      TheSink() {
-        exists(Function f, DataFlow::CallNode cn |
-          f.hasQualifiedName("io", "CopyN") and cn = f.getACall()
-        |
-          this = cn.getArgument(1) and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-        or
-        exists(Method m, DataFlow::CallNode cn |
-          (
-            m.implements("io", "Reader", "Read") or
-            m.implements("io", "ByteReader", "ReadByte") or
-            m.implements("io", "WriterTo", "WriteTo")
-          ) and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-        or
-        exists(Function f | f.hasQualifiedName("io", ["Copy", "CopyBuffer"]) |
-          this = f.getACall().getArgument(1)
-        )
-        or
-        exists(Function f |
-          f.hasQualifiedName("io", ["Pipe", "ReadAll", "ReadAtLeast", "ReadFull"])
-        |
-          this = f.getACall().getArgument(0)
-        )
-        or
-        exists(Method m |
-          m.hasQualifiedName("bufio", "Reader",
-            ["ReadBytes", "ReadByte", "ReadLine", "ReadRune", "ReadSlice", "ReadString"])
-        |
-          this = m.getACall().getReceiver()
-        )
-        or
-        exists(Method m, DataFlow::CallNode cn |
-          m.hasQualifiedName("bufio", "Reader", ["Read", "WriteTo"]) and
-          cn = m.getACall()
-        |
-          this = cn.getReceiver() and
-          not hasFlowToComparison(cn.getResult(0))
-        )
-        or
-        exists(Method m | m.hasQualifiedName("bufio", "Scanner", ["Text", "Bytes"]) |
-          this = m.getACall().getReceiver()
-        )
-        or
-        exists(Function f | f.hasQualifiedName("io/ioutil", "ReadAll") |
-          this = f.getACall().getArgument(0)
-        )
-      }
+  class GeneralReadIoSink extends Sink {
+    GeneralReadIoSink() {
+      exists(Function f, DataFlow::CallNode cn |
+        f.hasQualifiedName("io", "CopyN") and cn = f.getACall()
+      |
+        this = cn.getArgument(1) and
+        not hasFlowToComparison(cn.getResult(0))
+      )
+      or
+      exists(Method m, DataFlow::CallNode cn |
+        (
+          m.implements("io", "Reader", "Read") or
+          m.implements("io", "ByteReader", "ReadByte") or
+          m.implements("io", "WriterTo", "WriteTo")
+        ) and
+        cn = m.getACall()
+      |
+        this = cn.getReceiver() and
+        not hasFlowToComparison(cn.getResult(0))
+      )
+      or
+      exists(Function f | f.hasQualifiedName("io", ["Copy", "CopyBuffer"]) |
+        this = f.getACall().getArgument(1)
+      )
+      or
+      exists(Function f | f.hasQualifiedName("io", ["Pipe", "ReadAll", "ReadAtLeast", "ReadFull"]) |
+        this = f.getACall().getArgument(0)
+      )
+      or
+      exists(Method m |
+        m.hasQualifiedName("bufio", "Reader",
+          ["ReadBytes", "ReadByte", "ReadLine", "ReadRune", "ReadSlice", "ReadString"])
+      |
+        this = m.getACall().getReceiver()
+      )
+      or
+      exists(Method m, DataFlow::CallNode cn |
+        m.hasQualifiedName("bufio", "Reader", ["Read", "WriteTo"]) and
+        cn = m.getACall()
+      |
+        this = cn.getReceiver() and
+        not hasFlowToComparison(cn.getResult(0))
+      )
+      or
+      exists(Method m | m.hasQualifiedName("bufio", "Scanner", ["Text", "Bytes"]) |
+        this = m.getACall().getReceiver()
+      )
+      or
+      exists(Function f | f.hasQualifiedName("io/ioutil", "ReadAll") |
+        this = f.getACall().getArgument(0)
+      )
     }
   }
 
