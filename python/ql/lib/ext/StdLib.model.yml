@@ -12,8 +12,26 @@ extensions:
   - addsTo:
       pack: codeql/python-all
       extensible: summaryModel
-    data: []
-
+    data:
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote
+      - ["urllib", "Member[parse].Member[quote]", "Argument[0,string:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.quote_plus
+      - ["urllib", "Member[parse].Member[quote_plus]", "Argument[0,string:]", "ReturnValue", "taint"]
+      # See https://epydoc.sourceforge.net/stdlib/urllib-module.html
+      - ["urllib", "Member[parse].Member[splitquery]", "Argument[0,url:]", "ReturnValue.TupleElement[0]", "taint"]
+      - ["urllib", "Member[parse].Member[splitquery]", "Argument[0,url:]", "ReturnValue.TupleElement[1]", "taint"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.unquote
+      - ["urllib", "Member[parse].Member[unquote]", "Argument[0,string:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.unquote_plus
+      - ["urllib", "Member[parse].Member[unquote_plus]", "Argument[0,string:]", "ReturnValue", "taint"]
+      # We could consider a more precise source than the first argument, namely tuple or dict content.
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urlencode
+      - ["urllib", "Member[parse].Member[urlencode]", "Argument[0,query:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urljoin
+      - ["urllib", "Member[parse].Member[urljoin]", "Argument[0,base:]", "ReturnValue", "taint"]
+      - ["urllib", "Member[parse].Member[urljoin]", "Argument[1,url:]", "ReturnValue", "taint"]
+      # See https://docs.python.org/3/library/re.html#re.compile
+      - ["re", "Member[compile]", "Argument[0,pattern:]", "ReturnValue", "taint"]
   - addsTo:
       pack: codeql/python-all
       extensible: neutralModel
