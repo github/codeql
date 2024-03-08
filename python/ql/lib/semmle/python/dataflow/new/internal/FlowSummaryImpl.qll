@@ -27,6 +27,11 @@ module Input implements InputSig<DataFlowImplSpecific::PythonDataFlow> {
       result = i.toString()
     )
     or
+    exists(int i |
+      pos.isPositionalLowerBound(i) and
+      result = i + ".."
+    )
+    or
     exists(string name |
       pos.isKeyword(name) and
       result = name + ":"
