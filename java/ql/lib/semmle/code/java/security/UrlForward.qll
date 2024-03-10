@@ -41,8 +41,6 @@ abstract class UrlForwardBarrier extends DataFlow::Node { }
 
 private class PrimitiveBarrier extends UrlForwardBarrier instanceof SimpleTypeSanitizer { }
 
-// TODO: should this also take URL encoding/decoding into account?
-// TODO: and PathSanitization in general?
 private class FollowsBarrierPrefix extends UrlForwardBarrier {
   FollowsBarrierPrefix() { this.asExpr() = any(BarrierPrefix fp).getAnAppendedExpression() }
 }
@@ -58,9 +56,8 @@ private class BarrierPrefix extends InterestingPrefix {
 
 private class UrlPathBarrier extends UrlForwardBarrier instanceof PathInjectionSanitizer {
   UrlPathBarrier() {
-    this instanceof ExactPathMatchSanitizer //TODO: still need a better solution for this edge case...
+    this instanceof ExactPathMatchSanitizer
     or
-    // TODO: these don't enforce order of checks and PathSanitization... make bypass test cases.
     this instanceof NoEncodingBarrier
     or
     this instanceof FullyDecodesBarrier
@@ -71,7 +68,7 @@ abstract class UrlDecodeCall extends MethodCall { }
 
 private class DefaultUrlDecodeCall extends UrlDecodeCall {
   DefaultUrlDecodeCall() {
-    this.getMethod().hasQualifiedName("java.net", "URLDecoder", "decode") or // TODO: reuse existing class? Or make this a class?
+    this.getMethod() instanceof UrlDecodeMethod or
     this.getMethod().hasQualifiedName("org.eclipse.jetty.util.URIUtil", "URIUtil", "decodePath")
   }
 }
