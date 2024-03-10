@@ -64,7 +64,10 @@ private predicate exactPathMatchGuard(Guard g, Expr e, boolean branch) {
   )
 }
 
-// TODO: switch back to private if possible
+/**
+ * A sanitizer that protects against path injection vulnerabilities
+ * by checking for a matching path.
+ */
 class ExactPathMatchSanitizer extends PathInjectionSanitizer {
   ExactPathMatchSanitizer() {
     this = DataFlow::BarrierGuard<exactPathMatchGuard/3>::getABarrierNode()
@@ -152,8 +155,7 @@ private class DotDotCheckSanitizer extends PathInjectionSanitizer {
   }
 }
 
-// TODO: switch back to private if possible
-class BlockListGuard extends PathGuard instanceof MethodCall {
+private class BlockListGuard extends PathGuard instanceof MethodCall {
   BlockListGuard() {
     (isStringPartialMatch(this) or isPathPrefixMatch(this)) and
     isDisallowedWord(super.getAnArgument())
@@ -230,7 +232,6 @@ private predicate isStringPartialMatch(MethodCall ma) {
   exists(RefType t | t = ma.getMethod().getDeclaringType() |
     t instanceof TypeString or t instanceof StringsKt
   ) and
-  // TODO ! Why not use `StringPartialMatchMethod` for the below?
   getSourceMethod(ma.getMethod())
       .hasName(["contains", "matches", "regionMatches", "indexOf", "lastIndexOf"])
 }

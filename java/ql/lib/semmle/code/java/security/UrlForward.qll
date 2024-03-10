@@ -50,23 +50,20 @@ private class FollowsBarrierPrefix extends UrlForwardBarrier {
 private class BarrierPrefix extends InterestingPrefix {
   BarrierPrefix() {
     not this.getStringValue().matches("/WEB-INF/%") and
-    not this.getStringValue() = "forward:"
+    not this instanceof ForwardPrefix
   }
 
   override int getOffset() { result = 0 }
 }
 
-private class UrlPathBarrier extends UrlForwardBarrier {
+private class UrlPathBarrier extends UrlForwardBarrier instanceof PathInjectionSanitizer {
   UrlPathBarrier() {
-    this instanceof PathInjectionSanitizer and
-    (
-      this instanceof ExactPathMatchSanitizer //TODO: still need a better solution for this edge case...
-      or
-      // TODO: these don't enforce order of checks and PathSanitization... make bypass test cases.
-      this instanceof NoEncodingBarrier
-      or
-      this instanceof FullyDecodesBarrier
-    )
+    this instanceof ExactPathMatchSanitizer //TODO: still need a better solution for this edge case...
+    or
+    // TODO: these don't enforce order of checks and PathSanitization... make bypass test cases.
+    this instanceof NoEncodingBarrier
+    or
+    this instanceof FullyDecodesBarrier
   }
 }
 
