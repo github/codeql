@@ -38,6 +38,13 @@ class StringLengthMethod extends Method {
   StringLengthMethod() { this.hasName("length") and this.getDeclaringType() instanceof TypeString }
 }
 
+/** The `contains()` method of the class `java.lang.String`. */
+class StringContainsMethod extends Method {
+  StringContainsMethod() {
+    this.hasName("contains") and this.getDeclaringType() instanceof TypeString
+  }
+}
+
 /**
  * The methods on the class `java.lang.String` that are used to perform partial matches with a specified substring or char.
  */

@@ -58,12 +58,13 @@ private class UrlPathBarrier extends UrlForwardBarrier instanceof PathInjectionS
   UrlPathBarrier() {
     this instanceof ExactPathMatchSanitizer
     or
-    this instanceof NoEncodingBarrier
+    this instanceof NoUrlEncodingBarrier
     or
-    this instanceof FullyDecodesBarrier
+    this instanceof FullyDecodesUrlBarrier
   }
 }
 
+/** A call to a method that decodes a URL. */
 abstract class UrlDecodeCall extends MethodCall { }
 
 private class DefaultUrlDecodeCall extends UrlDecodeCall {
@@ -73,77 +74,69 @@ private class DefaultUrlDecodeCall extends UrlDecodeCall {
   }
 }
 
-// TODO: this can probably be named/designed better...
-abstract class RepeatedStmt extends Stmt { }
+/** A repeated call to a method that decodes a URL. */
+abstract class RepeatedUrlDecodeCall extends MethodCall { }
 
-private class DefaultRepeatedStmt extends RepeatedStmt instanceof LoopStmt { }
+private class DefaultRepeatedUrlDecodeCall extends RepeatedUrlDecodeCall {
+  DefaultRepeatedUrlDecodeCall() {
+    this instanceof UrlDecodeCall and
+    this.getAnEnclosingStmt() instanceof LoopStmt
+  }
+}
 
-abstract class CheckEncodingCall extends MethodCall { }
+/** A method call that checks a string for URL encoding. */
+abstract class CheckUrlEncodingCall extends MethodCall { }
 
-private class DefaultCheckEncodingCall extends CheckEncodingCall {
-  DefaultCheckEncodingCall() {
-    // TODO: indexOf?, etc.
-    this.getMethod().hasQualifiedName("java.lang", "String", "contains") and // TODO: reuse existing class? Or make this a class?
+private class DefaultCheckUrlEncodingCall extends CheckUrlEncodingCall {
+  DefaultCheckUrlEncodingCall() {
+    this.getMethod() instanceof StringContainsMethod and
     this.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "%"
   }
 }
 
-// TODO: better naming?
-// TODO: check if any URL decoding implementations _fully_ decode... or if all need to be called in a loop?
-// TODO: make this extendable instead of `RepeatedStmt`?
-private class RepeatedUrlDecodeCall extends MethodCall {
-  RepeatedUrlDecodeCall() {
-    this instanceof UrlDecodeCall and
-    this.getAnEnclosingStmt() instanceof RepeatedStmt
-  }
-}
-
-private class CheckEncodingGuard extends Guard instanceof MethodCall, CheckEncodingCall {
+private class CheckUrlEncodingGuard extends Guard instanceof CheckUrlEncodingCall {
   Expr getCheckedExpr() { result = this.(MethodCall).getQualifier() }
 }
 
-private predicate noEncodingGuard(Guard g, Expr e, boolean branch) {
-  g instanceof CheckEncodingGuard and
-  e = g.(CheckEncodingGuard).getCheckedExpr() and
+private predicate noUrlEncodingGuard(Guard g, Expr e, boolean branch) {
+  g instanceof CheckUrlEncodingGuard and
+  e = g.(CheckUrlEncodingGuard).getCheckedExpr() and
   branch = false
   or
-  // branch = false and
-  // g instanceof AssignExpr and // AssignExpr
-  // exists(CheckEncodingCall call | g.(AssignExpr).getSource() = call | e = call.getQualifier())
   branch = false and
-  g.(Expr).getType() instanceof BooleanType and // AssignExpr
+  g.(Expr).getType() instanceof BooleanType and // TODO: remove debugging comment: // AssignExpr
   (
-    exists(CheckEncodingCall call, AssignExpr ae |
+    exists(CheckUrlEncodingCall call, AssignExpr ae |
       ae.getSource() = call and
       e = call.getQualifier() and
       g = ae.getDest()
     )
     or
-    exists(CheckEncodingCall call, LocalVariableDeclExpr vde |
+    exists(CheckUrlEncodingCall call, LocalVariableDeclExpr vde |
       vde.getInitOrPatternSource() = call and
       e = call.getQualifier() and
       g = vde.getAnAccess() //and
       //vde.getVariable() = g
+      // TODO: remove debugging comments above
     )
   )
 }
 
-// TODO: check edge case of !contains(%), make sure that behaves as expected at least.
-private class NoEncodingBarrier extends DataFlow::Node {
-  NoEncodingBarrier() { this = DataFlow::BarrierGuard<noEncodingGuard/3>::getABarrierNode() }
+private class NoUrlEncodingBarrier extends DataFlow::Node {
+  NoUrlEncodingBarrier() { this = DataFlow::BarrierGuard<noUrlEncodingGuard/3>::getABarrierNode() }
 }
 
-private predicate fullyDecodesGuard(Expr e) {
-  exists(CheckEncodingGuard g, RepeatedUrlDecodeCall decodeCall |
+private predicate fullyDecodesUrlGuard(Expr e) {
+  exists(CheckUrlEncodingGuard g, RepeatedUrlDecodeCall decodeCall |
     e = g.getCheckedExpr() and
     g.controls(decodeCall.getBasicBlock(), true)
   )
 }
 
-private class FullyDecodesBarrier extends DataFlow::Node {
-  FullyDecodesBarrier() {
+private class FullyDecodesUrlBarrier extends DataFlow::Node {
+  FullyDecodesUrlBarrier() {
     exists(Variable v, Expr e | this.asExpr() = v.getAnAccess() |
-      fullyDecodesGuard(e) and
+      fullyDecodesUrlGuard(e) and
       e = v.getAnAccess() and
       e.getBasicBlock().bbDominates(this.asExpr().getBasicBlock())
     )
