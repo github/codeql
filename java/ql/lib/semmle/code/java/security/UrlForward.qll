@@ -41,10 +41,12 @@ abstract class UrlForwardBarrier extends DataFlow::Node { }
 
 private class PrimitiveBarrier extends UrlForwardBarrier instanceof SimpleTypeSanitizer { }
 
+// TODO: QLDoc
 private class FollowsBarrierPrefix extends UrlForwardBarrier {
   FollowsBarrierPrefix() { this.asExpr() = any(BarrierPrefix fp).getAnAppendedExpression() }
 }
 
+// TODO: QLDoc and fix broadness of this prefix check...
 private class BarrierPrefix extends InterestingPrefix {
   BarrierPrefix() {
     not this.getStringValue().matches("/WEB-INF/%") and
@@ -54,6 +56,7 @@ private class BarrierPrefix extends InterestingPrefix {
   override int getOffset() { result = 0 }
 }
 
+/** A barrier that protects against path injection vulnerabilities while accounting for URL encoding. */
 private class UrlPathBarrier extends UrlForwardBarrier instanceof PathInjectionSanitizer {
   UrlPathBarrier() {
     this instanceof ExactPathMatchSanitizer
@@ -77,11 +80,8 @@ private class DefaultUrlDecodeCall extends UrlDecodeCall {
 /** A repeated call to a method that decodes a URL. */
 abstract class RepeatedUrlDecodeCall extends MethodCall { }
 
-private class DefaultRepeatedUrlDecodeCall extends RepeatedUrlDecodeCall {
-  DefaultRepeatedUrlDecodeCall() {
-    this instanceof UrlDecodeCall and
-    this.getAnEnclosingStmt() instanceof LoopStmt
-  }
+private class DefaultRepeatedUrlDecodeCall extends RepeatedUrlDecodeCall instanceof UrlDecodeCall {
+  DefaultRepeatedUrlDecodeCall() { this.getAnEnclosingStmt() instanceof LoopStmt }
 }
 
 /** A method call that checks a string for URL encoding. */
@@ -94,17 +94,19 @@ private class DefaultCheckUrlEncodingCall extends CheckUrlEncodingCall {
   }
 }
 
+/** A guard that looks for a method call that checks for URL encoding. */
 private class CheckUrlEncodingGuard extends Guard instanceof CheckUrlEncodingCall {
   Expr getCheckedExpr() { result = this.(MethodCall).getQualifier() }
 }
 
+/** Holds if `g` is guard for a URL that does not contain URL encoding. */
 private predicate noUrlEncodingGuard(Guard g, Expr e, boolean branch) {
   g instanceof CheckUrlEncodingGuard and
   e = g.(CheckUrlEncodingGuard).getCheckedExpr() and
   branch = false
   or
   branch = false and
-  g.(Expr).getType() instanceof BooleanType and // TODO: remove debugging comment: // AssignExpr
+  g.(Expr).getType() instanceof BooleanType and
   (
     exists(CheckUrlEncodingCall call, AssignExpr ae |
       ae.getSource() = call and
@@ -115,17 +117,17 @@ private predicate noUrlEncodingGuard(Guard g, Expr e, boolean branch) {
     exists(CheckUrlEncodingCall call, LocalVariableDeclExpr vde |
       vde.getInitOrPatternSource() = call and
       e = call.getQualifier() and
-      g = vde.getAnAccess() //and
-      //vde.getVariable() = g
-      // TODO: remove debugging comments above
+      g = vde.getAnAccess()
     )
   )
 }
 
+/** A barrier for URLs that do not contain URL encoding. */
 private class NoUrlEncodingBarrier extends DataFlow::Node {
   NoUrlEncodingBarrier() { this = DataFlow::BarrierGuard<noUrlEncodingGuard/3>::getABarrierNode() }
 }
 
+/** Holds if `g` is guard for a URL that is fully decoded. */
 private predicate fullyDecodesUrlGuard(Expr e) {
   exists(CheckUrlEncodingGuard g, RepeatedUrlDecodeCall decodeCall |
     e = g.getCheckedExpr() and
@@ -133,6 +135,7 @@ private predicate fullyDecodesUrlGuard(Expr e) {
   )
 }
 
+/** A barrier for URLs that are fully decoded. */
 private class FullyDecodesUrlBarrier extends DataFlow::Node {
   FullyDecodesUrlBarrier() {
     exists(Variable v, Expr e | this.asExpr() = v.getAnAccess() |
