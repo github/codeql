@@ -6,6 +6,7 @@
  * @kind metric
  * @tags summary
  *       lines-of-code
+ *       telemetry
  * @id js/summary/lines-of-user-code
  */
 

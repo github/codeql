@@ -8,6 +8,7 @@
  * @kind metric
  * @tags summary
  *       lines-of-code
+ *       telemetry
  */
 
 import codeql.ruby.AST
