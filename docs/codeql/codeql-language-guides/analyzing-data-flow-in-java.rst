@@ -27,7 +27,13 @@ Local data flow is data flow within a single method or callable. Local data flow
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
 
-The local data flow library is in the module ``DataFlow``, which defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). You can map between data flow nodes and expressions/parameters using the member predicates ``asExpr`` and ``asParameter``:
+To use the data flow library you need the following import:
+
+.. code-block:: ql
+
+   import semmle.code.java.dataflow.DataFlow
+
+The ``DataFlow`` module defines the class ``Node`` denoting any element that data can flow through. ``Node``\ s are divided into expression nodes (``ExprNode``) and parameter nodes (``ParameterNode``). You can map between data flow nodes and expressions/parameters using the member predicates ``asExpr`` and ``asParameter``:
 
 .. code-block:: ql
 
@@ -75,7 +81,14 @@ Local taint tracking extends local data flow by including non-value-preserving f
 
 If ``x`` is a tainted string then ``y`` is also tainted.
 
-The local taint tracking library is in the module ``TaintTracking``. Like local data flow, a predicate ``localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo)`` holds if there is an immediate taint propagation edge from the node ``nodeFrom`` to the node ``nodeTo``. You can apply the predicate recursively by using the ``+`` and ``*`` operators, or by using the predefined recursive predicate ``localTaint``, which is equivalent to ``localTaintStep*``.
+
+To use the taint tracking library you need the following import:
+
+.. code-block:: ql
+
+   import semmle.code.java.dataflow.TaintTracking
+
+Like local data flow, a predicate ``localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo)`` holds if there is an immediate taint propagation edge from the node ``nodeFrom`` to the node ``nodeTo``. You can apply the predicate recursively by using the ``+`` and ``*`` operators, or by using the predefined recursive predicate ``localTaint``, which is equivalent to ``localTaintStep*``.
 
 For example, you can find taint propagation from a parameter ``source`` to an expression ``sink`` in zero or more local steps:
 

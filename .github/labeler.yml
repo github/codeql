@@ -20,7 +20,7 @@ JS:
 
 Kotlin:
   - java/kotlin-extractor/**/*
-  - java/ql/test/kotlin/**/*
+  - java/ql/test-kotlin*/**/*
 
 Python:
   - python/**/*

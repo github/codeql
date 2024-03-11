@@ -7,8 +7,6 @@ private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.ControlFlowReachability
 private import semmle.code.csharp.dispatch.Dispatch
 private import semmle.code.csharp.commons.ComparisonTest
-private import cil
-private import dotnet
 // import `TaintedMember` definitions from other files to avoid potential reevaluation
 private import semmle.code.csharp.frameworks.JsonNET
 private import semmle.code.csharp.frameworks.WCF
@@ -32,16 +30,6 @@ predicate defaultTaintSanitizer(DataFlow::Node node) {
  */
 bindingset[node]
 predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::ContentSet c) { none() }
-
-private predicate localCilTaintStep(CIL::DataFlowNode src, CIL::DataFlowNode sink) {
-  src = sink.(CIL::BinaryArithmeticExpr).getAnOperand() or
-  src = sink.(CIL::Opcodes::Neg).getOperand() or
-  src = sink.(CIL::UnaryBitwiseOperation).getOperand()
-}
-
-private predicate localTaintStepCil(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  localCilTaintStep(asCilDataFlowNode(nodeFrom), asCilDataFlowNode(nodeTo))
-}
 
 private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityConfiguration {
   LocalTaintExprStepConfiguration() { this = "LocalTaintExprStepConfiguration" }
@@ -106,8 +94,6 @@ private class LocalTaintExprStepConfiguration extends ControlFlowReachabilityCon
 
 private predicate localTaintStepCommon(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   hasNodePath(any(LocalTaintExprStepConfiguration x), nodeFrom, nodeTo)
-  or
-  localTaintStepCil(nodeFrom, nodeTo)
 }
 
 cached

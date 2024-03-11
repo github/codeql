@@ -45,6 +45,15 @@ def test_dict_update():
     SINK(d["key"])  # $ flow="SOURCE, l:-1 -> d['key']"
     SINK(d.get("key"))  # $ flow="SOURCE, l:-2 -> d.get(..)"
 
+
+def test_dict_update_fresh_key():
+    # we had a regression where we did not create a dictionary element content
+    # for keys used in "inline update" like this
+    d = {}
+    d["fresh_key"] = SOURCE
+    SINK(d["fresh_key"])  # $ flow="SOURCE, l:-1 -> d['fresh_key']"
+
+
 @expects(3) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
 def test_dict_setdefault():
     d = {}

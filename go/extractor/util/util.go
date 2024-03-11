@@ -10,6 +10,7 @@ import (
 	"os/exec"
 	"path/filepath"
 	"runtime"
+	"slices"
 	"strings"
 )
 
@@ -204,13 +205,13 @@ func RunCmd(cmd *exec.Cmd) bool {
 	in, _ := cmd.StdinPipe()
 	err := cmd.Start()
 	if err != nil {
-		log.Printf("Running %s failed, continuing anyway: %s\n", cmd.Path, err.Error())
+		log.Printf("Running %s %v failed, continuing anyway: %s\n", cmd.Path, cmd.Args, err.Error())
 		return false
 	}
 	in.Close()
 	err = cmd.Wait()
 	if err != nil {
-		log.Printf("Running %s failed, continuing anyway: %s\n", cmd.Path, err.Error())
+		log.Printf("Running %s %v failed, continuing anyway: %s\n", cmd.Path, cmd.Args, err.Error())
 		return false
 	}
 
@@ -319,24 +320,33 @@ func FindAllFilesWithName(root string, name string, dirsToSkip ...string) []stri
 	return paths
 }
 
-func AnyGoFilesOutsideDirs(root string, dirsToSkip ...string) bool {
-	found := false
+// Returns an array of any Go source files in locations which do not have a `go.mod`
+// file in the same directory or higher up in the file hierarchy, relative to the `root`.
+func GoFilesOutsideDirs(root string, dirsToSkip ...string) []string {
+	result := []string{}
+
 	filepath.WalkDir(root, func(path string, d fs.DirEntry, err error) error {
 		if err != nil {
 			return err
 		}
-		if d.IsDir() {
-			for _, dirToSkip := range dirsToSkip {
-				if path == dirToSkip {
-					return filepath.SkipDir
-				}
-			}
+		if d.IsDir() && slices.Contains(dirsToSkip, path) {
+			return filepath.SkipDir
 		}
 		if filepath.Ext(d.Name()) == ".go" {
-			found = true
-			return filepath.SkipAll
+			log.Printf("Found stray Go source file in %s.\n", path)
+			result = append(result, path)
 		}
 		return nil
 	})
-	return found
+
+	return result
+}
+
+// For every file path in the input array, return the parent directory.
+func GetParentDirs(paths []string) []string {
+	dirs := make([]string, len(paths))
+	for i, path := range paths {
+		dirs[i] = filepath.Dir(path)
+	}
+	return dirs
 }

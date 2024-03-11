@@ -2,7 +2,7 @@ import cil
 import semmle.code.csharp.commons.QualifiedName
 import semmle.code.cil.Type
 
-private string elementType(Element e, string toString) {
+deprecated private string elementType(Element e, string toString) {
   exists(string namespace, string type, string name |
     toString = getQualifiedName(namespace, type, name)
   |
@@ -48,7 +48,7 @@ private string elementType(Element e, string toString) {
   toString = e.toString()
 }
 
-private predicate exclude(string s) {
+deprecated private predicate exclude(string s) {
   s in [
       "Parameter 0 of Interop.libobjc.NSOperatingSystemVersion_objc_msgSend_stret",
       "Parameter 1 of Interop.procfs.TryParseStatusFile",
@@ -77,17 +77,18 @@ private predicate exclude(string s) {
     ]
 }
 
-from Element e, int i, string toString, string type
-where
-  cil_type_annotation(e, i) and
-  type = elementType(e, toString) and
-  not exclude(toString) and
-  (
-    not e instanceof Parameter
-    or
-    not exists(Type t |
-      t = e.(Parameter).getDeclaringElement().(Method).getDeclaringType() and
-      t.hasFullyQualifiedName("System", "Environment")
-    ) // There are OS specific methods in this class
+deprecated query predicate typeAnnotation(string toString, string type, int i) {
+  exists(Element e |
+    cil_type_annotation(e, i) and
+    type = elementType(e, toString) and
+    not exclude(toString) and
+    (
+      not e instanceof Parameter
+      or
+      not exists(Type t |
+        t = e.(Parameter).getDeclaringElement().(Method).getDeclaringType() and
+        t.hasFullyQualifiedName("System", "Environment")
+      ) // There are OS specific methods in this class
+    )
   )
-select toString, type, i
+}

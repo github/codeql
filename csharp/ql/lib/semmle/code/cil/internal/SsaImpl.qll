@@ -1,7 +1,7 @@
 private import cil
 private import codeql.ssa.Ssa as SsaImplCommon
 
-private module SsaInput implements SsaImplCommon::InputSig<CIL::Location> {
+deprecated private module SsaInput implements SsaImplCommon::InputSig<CIL::Location> {
   class BasicBlock = CIL::BasicBlock;
 
   BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) { result = bb.getImmediateDominator() }
@@ -29,17 +29,17 @@ private module SsaInput implements SsaImplCommon::InputSig<CIL::Location> {
   }
 }
 
-import SsaImplCommon::Make<CIL::Location, SsaInput>
+deprecated import SsaImplCommon::Make<CIL::Location, SsaInput>
 
 cached
 private module Cached {
   private import CIL
 
   cached
-  predicate forceCachingInSameStage() { any() }
+  deprecated predicate forceCachingInSameStage() { any() }
 
   cached
-  ReadAccess getARead(Definition def) {
+  deprecated ReadAccess getARead(Definition def) {
     exists(BasicBlock bb, int i |
       ssaDefReachesRead(_, def, bb, i) and
       result = bb.getNode(i)
@@ -47,7 +47,7 @@ private module Cached {
   }
 
   cached
-  ReadAccess getAFirstReadExt(DefinitionExt def) {
+  deprecated ReadAccess getAFirstReadExt(DefinitionExt def) {
     exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
       def.definesAt(_, bb1, i1, _) and
       adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
@@ -56,7 +56,7 @@ private module Cached {
   }
 
   cached
-  predicate hasAdjacentReadsExt(DefinitionExt def, ReadAccess first, ReadAccess second) {
+  deprecated predicate hasAdjacentReadsExt(DefinitionExt def, ReadAccess first, ReadAccess second) {
     exists(BasicBlock bb1, int i1, BasicBlock bb2, int i2 |
       first = bb1.getNode(i1) and
       adjacentDefReadExt(def, _, bb1, i1, bb2, i2) and
@@ -65,10 +65,12 @@ private module Cached {
   }
 
   cached
-  Definition getAPhiInput(PhiNode phi) { phiHasInputFromBlock(phi, result, _) }
+  deprecated Definition getAPhiInput(PhiNode phi) { phiHasInputFromBlock(phi, result, _) }
 
   cached
-  predicate lastRefBeforeRedefExt(DefinitionExt def, BasicBlock bb, int i, DefinitionExt next) {
+  deprecated predicate lastRefBeforeRedefExt(
+    DefinitionExt def, BasicBlock bb, int i, DefinitionExt next
+  ) {
     lastRefRedefExt(def, _, bb, i, next)
   }
 }

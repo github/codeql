@@ -195,6 +195,8 @@ predicate copyStep(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeTo) {
     call = API::moduleImport("copy").getMember(["copy", "deepcopy"]).getACall() and
     call.getArg(0) = nodeFrom
   )
+  or
+  nodeTo.(DataFlow::MethodCallNode).calls(nodeFrom, "copy")
 }
 
 /**

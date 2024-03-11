@@ -7,7 +7,7 @@ private import CIL
 /**
  * Provides classes for working with static single assignment (SSA) form.
  */
-module Ssa {
+deprecated module Ssa {
   private import internal.SsaImpl as SsaImpl
 
   /** An SSA definition. */

@@ -6,7 +6,7 @@ private import Declaration
 private import semmle.code.csharp.commons.QualifiedName
 
 /** A namespace. */
-class Namespace extends Declaration, @namespace {
+deprecated class Namespace extends Declaration, @namespace {
   /**
    * Gets the parent namespace, if any. For example the parent namespace of `System.IO`
    * is `System`. The parent namespace of `System` is the global namespace.
@@ -64,6 +64,6 @@ class Namespace extends Declaration, @namespace {
 }
 
 /** The global namespace. */
-class GlobalNamespace extends Namespace {
+deprecated class GlobalNamespace extends Namespace {
   GlobalNamespace() { this.getName() = "" }
 }

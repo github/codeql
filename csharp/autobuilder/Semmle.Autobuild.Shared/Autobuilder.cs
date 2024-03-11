@@ -70,11 +70,9 @@ namespace Semmle.Autobuild.Shared
         IBuildActions Actions { get; }
 
         /// <summary>
-        /// Log a given build event to the console.
+        /// A logger.
         /// </summary>
-        /// <param name="format">The format string.</param>
-        /// <param name="args">Inserts to the format string.</param>
-        void Log(Severity severity, string format, params object[] args);
+        ILogger Logger { get; }
 
         /// <summary>
         /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.
@@ -135,21 +133,7 @@ namespace Semmle.Autobuild.Shared
         /// <returns>True iff the path was found.</returns>
         public bool HasPath(string path) => Paths.Any(p => path == p.Item1);
 
-        private void FindFiles(string dir, int depth, int maxDepth, IList<(string, int)> results)
-        {
-            foreach (var f in Actions.EnumerateFiles(dir))
-            {
-                results.Add((f, depth));
-            }
 
-            if (depth < maxDepth)
-            {
-                foreach (var d in Actions.EnumerateDirectories(dir))
-                {
-                    FindFiles(d, depth + 1, maxDepth, results);
-                }
-            }
-        }
 
         /// <summary>
         /// The root of the source directory.
@@ -196,12 +180,7 @@ namespace Semmle.Autobuild.Shared
             Options = options;
             DiagnosticClassifier = diagnosticClassifier;
 
-            pathsLazy = new Lazy<IEnumerable<(string, int)>>(() =>
-            {
-                var files = new List<(string, int)>();
-                FindFiles(options.RootDirectory, 0, options.SearchDepth, files);
-                return files.OrderBy(f => f.Item2).ToArray();
-            });
+            pathsLazy = new Lazy<IEnumerable<(string, int)>>(() => Actions.FindFiles(options.RootDirectory, options.SearchDepth));
 
             projectsOrSolutionsToBuildLazy = new Lazy<IList<IProjectOrSolution>>(() =>
             {
@@ -214,7 +193,7 @@ namespace Semmle.Autobuild.Shared
                         if (actions.FileExists(solution))
                             ret.Add(new Solution<TAutobuildOptions>(this, solution, true));
                         else
-                            Log(Severity.Error, $"The specified project or solution file {solution} was not found");
+                            logger.LogError($"The specified project or solution file {solution} was not found");
                     }
                     return ret;
                 }
@@ -273,6 +252,8 @@ namespace Semmle.Autobuild.Shared
                 logThreadId: false) ?? Verbosity.Info,
             logThreadId: false);
 
+        public ILogger Logger => logger;
+
         private readonly IDiagnosticsWriter diagnostics;
 
         /// <summary>
@@ -283,16 +264,6 @@ namespace Semmle.Autobuild.Shared
         public string MakeRelative(string path)
         {
             return Path.GetRelativePath(this.RootDirectory, path);
-        }
-
-        /// <summary>
-        /// Log a given build event to the console.
-        /// </summary>
-        /// <param name="format">The format string.</param>
-        /// <param name="args">Inserts to the format string.</param>
-        public void Log(Severity severity, string format, params object[] args)
-        {
-            logger.Log(severity, format, args);
         }
 
         /// <summary>
@@ -310,7 +281,7 @@ namespace Semmle.Autobuild.Shared
         /// <returns>The exit code, 0 for success and non-zero for failures.</returns>
         public int AttemptBuild()
         {
-            Log(Severity.Info, $"Working directory: {Options.RootDirectory}");
+            logger.LogInfo($"Working directory: {Options.RootDirectory}");
 
             var script = GetBuildScript();
 
@@ -319,12 +290,12 @@ namespace Semmle.Autobuild.Shared
 
             void startCallback(string s, bool silent)
             {
-                Log(silent ? Severity.Debug : Severity.Info, $"\nRunning {s}");
+                logger.Log(silent ? Severity.Debug : Severity.Info, $"\nRunning {s}");
             }
 
             void exitCallback(int ret, string msg, bool silent)
             {
-                Log(silent ? Severity.Debug : Severity.Info, $"Exit code {ret}{(string.IsNullOrEmpty(msg) ? "" : $": {msg}")}");
+                logger.Log(silent ? Severity.Debug : Severity.Info, $"Exit code {ret}{(string.IsNullOrEmpty(msg) ? "" : $": {msg}")}");
             }
 
             var onOutput = BuildOutputHandler(Console.Out);
@@ -374,7 +345,7 @@ namespace Semmle.Autobuild.Shared
         protected BuildScript AutobuildFailure() =>
             BuildScript.Create(actions =>
                 {
-                    Log(Severity.Error, "Could not auto-detect a suitable build method");
+                    logger.LogError("Could not auto-detect a suitable build method");
 
                     AutobuildFailureDiagnostic();
 

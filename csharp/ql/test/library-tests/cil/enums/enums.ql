@@ -9,8 +9,11 @@ predicate osSpecific(string qualifier, string name) {
   )
 }
 
-from Enum e, string qualifier, string name
-where
-  e.hasFullyQualifiedName(qualifier, name) and
-  not osSpecific(qualifier, name)
-select getQualifiedName(qualifier, name), e.getUnderlyingType().toStringWithTypes()
+deprecated query predicate enums(string qualifiedName, string type) {
+  exists(Enum e, string qualifier, string name |
+    e.hasFullyQualifiedName(qualifier, name) and
+    not osSpecific(qualifier, name) and
+    qualifiedName = getQualifiedName(qualifier, name) and
+    type = e.getUnderlyingType().toStringWithTypes()
+  )
+}

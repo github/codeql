@@ -96,6 +96,9 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(BuiltInVarArgsStart vaStartExpr |
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
   )
+  or
+  // suppress destructors of temporary variables until proper support is added for them.
+  exists(Expr parent | parent.getAnImplicitDestructorCall() = expr)
 }
 
 /**
@@ -744,9 +747,13 @@ newtype TTranslatedElement =
   // The declaration/initialization part of a `ConditionDeclExpr`
   TTranslatedConditionDecl(ConditionDeclExpr expr) { not ignoreExpr(expr) } or
   // The side effects of a `Call`
-  TTranslatedCallSideEffects(CallOrAllocationExpr expr) { not ignoreSideEffects(expr) } or
+  TTranslatedCallSideEffects(CallOrAllocationExpr expr) {
+    not ignoreExpr(expr) and
+    not ignoreSideEffects(expr)
+  } or
   // The non-argument-specific side effect of a `Call`
   TTranslatedCallSideEffect(Expr expr, SideEffectOpcode opcode) {
+    not ignoreExpr(expr) and
     not ignoreSideEffects(expr) and
     opcode = getCallSideEffectOpcode(expr)
   } or
@@ -764,6 +771,7 @@ newtype TTranslatedElement =
   // Constructor calls lack a qualifier (`this`) expression, so we need to handle the side effects
   // on `*this` without an `Expr`.
   TTranslatedStructorQualifierSideEffect(Call call, SideEffectOpcode opcode) {
+    not ignoreExpr(call) and
     not ignoreSideEffects(call) and
     call instanceof ConstructorCall and
     opcode = getASideEffectOpcode(call, -1)

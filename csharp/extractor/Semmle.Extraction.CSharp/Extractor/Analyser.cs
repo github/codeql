@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -22,8 +23,6 @@ namespace Semmle.Extraction.CSharp
         protected CommonOptions? options;
         private protected Entities.Compilation? compilationEntity;
         private IDisposable? compilationTrapFile;
-
-        private readonly object progressMutex = new object();
 
         // The bulk of the extraction work, potentially executed in parallel.
         protected readonly List<Action> extractionTasks = new List<Action>();
@@ -131,6 +130,9 @@ namespace Semmle.Extraction.CSharp
 
                 var skipExtraction = options.Cache && File.Exists(trapWriter.TrapFile);
 
+                var currentTaskId = IncrementTaskCount();
+                ReportProgressTaskStarted(currentTaskId, assemblyPath);
+
                 if (!skipExtraction)
                 {
                     /* Note on parallel builds:
@@ -167,7 +169,7 @@ namespace Semmle.Extraction.CSharp
                     }
                 }
 
-                ReportProgress(assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, skipExtraction ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                ReportProgressTaskDone(currentTaskId, assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, skipExtraction ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -177,11 +179,13 @@ namespace Semmle.Extraction.CSharp
 
         private void DoExtractCIL(PortableExecutableReference r)
         {
+            var currentTaskId = IncrementTaskCount();
+            ReportProgressTaskStarted(currentTaskId, r.FilePath);
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             CIL.Analyser.ExtractCIL(r.FilePath!, Logger, options, out var trapFile, out var extracted);
             stopwatch.Stop();
-            ReportProgress(r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
+            ReportProgressTaskDone(currentTaskId, r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
         }
 
         private void DoExtractTree(SyntaxTree tree)
@@ -200,6 +204,9 @@ namespace Semmle.Extraction.CSharp
                 using var trapWriter = transformedSourcePath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
 
                 upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
+
+                var currentTaskId = IncrementTaskCount();
+                ReportProgressTaskStarted(currentTaskId, sourcePath);
 
                 if (!upToDate)
                 {
@@ -221,7 +228,7 @@ namespace Semmle.Extraction.CSharp
                     cx.PopulateAll();
                 }
 
-                ReportProgress(sourcePath, trapPath, stopwatch.Elapsed, upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
+                ReportProgressTaskDone(currentTaskId, sourcePath, trapPath, stopwatch.Elapsed, upToDate ? AnalysisAction.UpToDate : AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -234,6 +241,11 @@ namespace Semmle.Extraction.CSharp
             try
             {
                 var assemblyPath = extractor.OutputPath;
+                var stopwatch = new Stopwatch();
+                stopwatch.Start();
+                var currentTaskId = IncrementTaskCount();
+                ReportProgressTaskStarted(currentTaskId, assemblyPath);
+
                 var transformedAssemblyPath = PathTransformer.Transform(assemblyPath);
                 var assembly = compilation.Assembly;
                 var trapWriter = transformedAssemblyPath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
@@ -243,6 +255,8 @@ namespace Semmle.Extraction.CSharp
                 compilationEntity = Entities.Compilation.Create(cx);
 
                 extractor.CompilationInfos.ForEach(ci => trapWriter.Writer.compilation_info(compilationEntity, ci.key, ci.value));
+
+                ReportProgressTaskDone(currentTaskId, assemblyPath, trapWriter.TrapFile, stopwatch.Elapsed, AnalysisAction.Extracted);
             }
             catch (Exception ex)  // lgtm[cs/catch-of-all-exceptions]
             {
@@ -279,10 +293,19 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private void ReportProgress(string src, string output, TimeSpan time, AnalysisAction action)
+        private int IncrementTaskCount()
         {
-            lock (progressMutex)
-                progressMonitor.Analysed(++taskCount, extractionTasks.Count, src, output, time, action);
+            return Interlocked.Increment(ref taskCount);
+        }
+
+        private void ReportProgressTaskStarted(int currentCount, string src)
+        {
+            progressMonitor.Started(currentCount, extractionTasks.Count, src);
+        }
+
+        private void ReportProgressTaskDone(int currentCount, string src, string output, TimeSpan time, AnalysisAction action)
+        {
+            progressMonitor.Analysed(currentCount, extractionTasks.Count, src, output, time, action);
         }
 
         /// <summary>
