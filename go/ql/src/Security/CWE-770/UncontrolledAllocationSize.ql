@@ -2,8 +2,8 @@
  * @name Slice memory allocation with excessive size value
  * @description Allocating memory for slices with the built-in make function from user-controlled sources can lead to a denial of service.
  * @kind path-problem
- * @problem.severity warning
- * @security-severity 6.0
+ * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id go/uncontrolled-allocation-size
  * @tags security
