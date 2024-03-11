@@ -37,6 +37,11 @@ class UncalledFunction extends Function {
   }
 }
 
+predicate dataFlowOrTaintFlowFunction(Function func, FunctionOutput output) {
+  func.(DataFlowFunction).hasDataFlow(_, output) or
+  func.(TaintFunction).hasTaintFlow(_, output)
+}
+
 /**
  * Holds if `node` is a non-constant source of data flow for non-const format string detection.
  * This is defined as either:
@@ -81,24 +86,30 @@ predicate isNonConst(DataFlow::Node node) {
   // i.e., functions that with unknown bodies and are not known to define the output through its input
   //       are considered as possible non-const sources
   // The function's output must also not be const to be considered a non-const source
-  exists(Function func, CallInstruction call |
-    // NOTE: could use `Call` getAnArgument() instead of `CallInstruction` but requires two
-    // variables representing the same call in ordoer to use `callOutput` below.
-    exists(Expr arg |
-      call.getPositionalArgumentOperand(_).getDef().getUnconvertedResultExpression() = arg and
-      arg = node.asDefiningArgument()
+  (
+    // Case 1: It's a known dataflow or taintflow function with flow to the return value
+    exists(Function func, CallInstruction call |
+      // NOTE: could use `Call` getAnArgument() instead of `CallInstruction` but requires two
+      // variables representing the same call in ordoer to use `callOutput` below.
+      call.getUnconvertedResultExpression() = node.asIndirectExpr() and
+      func = call.getStaticCallTarget() and
+      not exists(FunctionOutput output |
+        dataFlowOrTaintFlowFunction(func, output) and
+        output.isReturnValueDeref() and
+        node = callOutput(call, output)
+      )
     )
     or
-    call.getUnconvertedResultExpression() = node.asIndirectExpr()
-  |
-    func = call.getStaticCallTarget() and
-    not exists(FunctionOutput output |
-      // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
-      // variant function's output are now possible non-const sources
-      pragma[only_bind_out](func).(DataFlowFunction).hasDataFlow(_, output) or
-      pragma[only_bind_out](func).(TaintFunction).hasTaintFlow(_, output)
-    |
-      node = callOutput(call, output)
+    // Case 1: It's a known dataflow or taintflow function with flow to an output parameter
+    exists(Function func, int i, CallInstruction call |
+      call.getPositionalArgumentOperand(i).getDef().getUnconvertedResultExpression() =
+        node.asDefiningArgument() and
+      func = call.getStaticCallTarget() and
+      not exists(FunctionOutput output |
+        dataFlowOrTaintFlowFunction(func, output) and
+        output.isParameterDeref(i) and
+        node = callOutput(call, output)
+      )
     )
   ) and
   not exists(Call c |
