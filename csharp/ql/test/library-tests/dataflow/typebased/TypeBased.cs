@@ -101,6 +101,38 @@ namespace My.TypeBased
             Sink(r); // No flow
         }
 
+        public void M11()
+        {
+            var c = new MyClass("hello", 42);
+            var r = c.Api1(42);
+            Sink(r); // No flow
+        }
+
+        public void M12()
+        {
+            var s12 = Source<string>(12);
+            var c = new MyClass(s12, 0);
+            var r = c.Api1(0);
+            Sink(r); // $ hasTaintFlow=12
+        }
+
+        public void M13()
+        {
+            var s131 = Source<string>(131);
+            var s132 = Source<string>(132);
+            var c = new MyClass(s131, 0);
+            var r = c.Api2(s132);
+            Sink(r); // $ hasTaintFlow=131 hasTaintFlow=132
+        }
+
+        public void M14()
+        {
+            var s14 = Source<string>(14);
+            var c = new MyClass(s14, 0);
+            c.Api3(out var r);
+            Sink(r); // $ hasTaintFlow=14
+        }
+
         public static void Sink(object o) { }
 
         public static T Source<T>(object source) => throw null;
