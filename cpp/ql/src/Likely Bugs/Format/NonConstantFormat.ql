@@ -110,8 +110,6 @@ predicate isNonConst(DataFlow::Node node) {
   (
     // Case 1: It's a known dataflow or taintflow function with flow to the return value
     exists(Function func, CallInstruction call |
-      // NOTE: could use `Call` getAnArgument() instead of `CallInstruction` but requires two
-      // variables representing the same call in ordoer to use `callOutput` below.
       call.getUnconvertedResultExpression() = node.asIndirectExpr() and
       func = call.getStaticCallTarget() and
       not exists(FunctionOutput output |
