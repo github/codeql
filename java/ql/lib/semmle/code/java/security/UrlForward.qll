@@ -23,8 +23,8 @@ private class DefaultUrlForwardSink extends UrlForwardSink {
  * An expression appended (perhaps indirectly) to `"forward:"`
  * and reachable from a Spring entry point.
  */
-private class SpringUrlForwardSink extends UrlForwardSink {
-  SpringUrlForwardSink() {
+private class SpringUrlForwardPrefixSink extends UrlForwardSink {
+  SpringUrlForwardPrefixSink() {
     any(SpringRequestMappingMethod srmm).polyCalls*(this.getEnclosingCallable()) and
     this.asExpr() = any(ForwardPrefix fp).getAnAppendedExpression()
   }
