@@ -41,12 +41,11 @@ abstract class UrlForwardBarrier extends DataFlow::Node { }
 
 private class PrimitiveBarrier extends UrlForwardBarrier instanceof SimpleTypeSanitizer { }
 
-// TODO: QLDoc
+/** A barrier for URLs appended to a prefix. */
 private class FollowsBarrierPrefix extends UrlForwardBarrier {
   FollowsBarrierPrefix() { this.asExpr() = any(BarrierPrefix fp).getAnAppendedExpression() }
 }
 
-// TODO: QLDoc and fix broadness of this prefix check...
 private class BarrierPrefix extends InterestingPrefix {
   BarrierPrefix() {
     not this.getStringValue().matches("/WEB-INF/%") and
