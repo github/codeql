@@ -74,7 +74,9 @@ predicate isNonConst(DataFlow::Node node) {
   // Parameters of uncalled functions that aren't const
   exists(UncalledFunction f, Parameter p |
     f.getAParameter() = p and
-    p = node.asParameter() and
+    // We pick the indirection of the parameter since this query is focused
+    // on strings.
+    p = node.asParameter(1) and
     // Ignore main's argv parameter as it is already considered a `FlowSource`
     // not ignoring it will result in path redundancies
     (f.getName() = "main" implies p != f.getParameter(1))
@@ -116,7 +118,7 @@ predicate isNonConst(DataFlow::Node node) {
     c.getTarget().hasDefinition() and
     if node instanceof DataFlow::DefinitionByReferenceNode
     then c.getAnArgument() = node.asDefiningArgument()
-    else c = [node.asExpr(), node.asIndirectExpr()]
+    else c = node.asIndirectExpr()
   )
 }
 
@@ -125,7 +127,7 @@ predicate isNonConst(DataFlow::Node node) {
  * `FormattingFunctionCall`.
  */
 predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
-  [sink.asExpr(), sink.asIndirectExpr()] = formatString and
+  sink.asIndirectExpr() = formatString and
   exists(FormattingFunctionCall fc | formatString = fc.getArgument(fc.getFormatParameterIndex()))
 }
 
@@ -136,7 +138,7 @@ module NonConstFlowConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     // Ignore tracing non-const through array indices
-    exists(ArrayExpr a | a.getArrayOffset() = node.asExpr())
+    exists(ArrayExpr a | a.getArrayOffset() = node.asIndirectExpr())
   }
 }
 
