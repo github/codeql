@@ -46,7 +46,7 @@ namespace Semmle.Extraction.CIL.Driver
                 .ToArray();
 
             foreach (var missingRef in options.MissingReferences)
-                logger.Log(Severity.Info, "  Missing assembly " + missingRef);
+                logger.LogInfo("  Missing assembly " + missingRef);
 
             var sw = new Stopwatch();
             sw.Start();

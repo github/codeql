@@ -24,4 +24,8 @@ module CsharpDataFlow implements InputSig {
   predicate mayBenefitFromCallContext = Private::mayBenefitFromCallContext/1;
 
   predicate viableImplInCallContext = Private::viableImplInCallContext/2;
+
+  predicate neverSkipInPathGraph(Node n) {
+    exists(n.(AssignableDefinitionNode).getDefinition().getTargetAccess())
+  }
 }

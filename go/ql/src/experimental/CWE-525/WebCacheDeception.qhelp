@@ -17,13 +17,31 @@
         <p>
             Vulnerable code example: A web server is configured to cache all responses ending in '.css'. An attacker requests 'profile.css', and the server processes 'profile', a sensitive page, and caches it.
         </p>
-        <sample src="WebCacheDeceptionBad.go" />
+        <sample src="examples/WebCacheDeceptionBad.go" />
     </example>
     <example>
         <p>
             Secure code example: The server is configured with strict cache controls and URL validation, preventing caching of dynamic or sensitive pages regardless of their URL pattern.
         </p>
-        <sample src="WebCacheDeceptionGood.go" />
+        <sample src="examples/WebCacheDeceptionGood.go" />
+    </example>
+    <example>
+        <p>
+            Vulnerable code example: The server is configured with strict cache controls and URL validation, preventing caching of dynamic or sensitive pages regardless of their URL pattern.
+        </p>
+        <sample src="examples/WebCacheDeceptionFiber.go" />
+    </example>
+    <example>
+        <p>
+            Vulnerable code example: The server is configured with strict cache controls and URL validation, preventing caching of dynamic or sensitive pages regardless of their URL pattern.
+        </p>
+        <sample src="examples/WebCacheDeceptionGoChi.go" />
+    </example>
+     <example>
+        <p>
+            Vulnerable code example: The server is configured with strict cache controls and URL validation, preventing caching of dynamic or sensitive pages regardless of their URL pattern.
+        </p>
+        <sample src="examples/WebCacheDeceptionHTTPRouter.go" />
     </example>
     <references>
         <li>

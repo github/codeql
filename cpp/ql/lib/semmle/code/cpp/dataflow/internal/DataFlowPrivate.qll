@@ -1,3 +1,7 @@
+/**
+ * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+ */
+
 private import cpp
 private import DataFlowUtil
 private import DataFlowDispatch

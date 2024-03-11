@@ -13,6 +13,8 @@ namespace Semmle.Util
     {
         public const string NugetExeUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
 
+        public static readonly char[] NewLineCharacters = ['\r', '\n'];
+
         public static string ConvertToWindows(string path)
         {
             return path.Replace('/', '\\');
@@ -131,14 +133,14 @@ namespace Semmle.Util
                 var directoryName = Path.GetDirectoryName(nested);
                 if (directoryName is null)
                 {
-                    logger.Log(Severity.Warning, "Failed to get directory name from path '" + nested + "'.");
+                    logger.LogWarning("Failed to get directory name from path '" + nested + "'.");
                     throw new InvalidOperationException();
                 }
                 Directory.CreateDirectory(directoryName);
             }
             catch (PathTooLongException)
             {
-                logger.Log(Severity.Warning, "Failed to create parent directory of '" + nested + "': Path too long.");
+                logger.LogWarning("Failed to create parent directory of '" + nested + "': Path too long.");
                 throw;
             }
             return nested;

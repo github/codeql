@@ -9,8 +9,7 @@ private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 
 /** A data flow source of local data. */
 abstract class LocalFlowSource extends SourceNode {
-  /** Gets a string that describes the type of this local flow source. */
-  abstract string getSourceType();
+  override string getSourceType() { result = "local flow source" }
 
   override string getThreatModel() { result = "local" }
 }

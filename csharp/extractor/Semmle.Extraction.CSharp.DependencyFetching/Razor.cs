@@ -71,7 +71,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 var args = new StringBuilder();
                 args.Append($"/target:exe /generatedfilesout:\"{outputFolder}\" /out:\"{dllPath}\" /analyzerconfig:\"{analyzerConfig}\" ");
 
-                foreach (var f in Directory.GetFiles(sourceGeneratorFolder, "*.dll"))
+                foreach (var f in Directory.GetFiles(sourceGeneratorFolder, "*.dll", new EnumerationOptions { RecurseSubdirectories = false, MatchCasing = MatchCasing.CaseInsensitive }))
                 {
                     args.Append($"/analyzer:\"{f}\" ");
                 }

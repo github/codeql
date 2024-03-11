@@ -1,6 +1,6 @@
-load("@//:dist.bzl", "dist")
+load("@semmle_code//:dist.bzl", "dist")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
-load("@//buildutils-internal:zipmerge.bzl", "zipmerge")
+load("@semmle_code//buildutils-internal:zipmerge.bzl", "zipmerge")
 
 package(default_visibility = ["//visibility:public"])
 
@@ -30,7 +30,7 @@ dist(
         "//javascript/downgrades",
         "//javascript/externs",
         "//javascript/extractor:tools-extractor",
-        "@//language-packs/javascript:resources",
+        "@semmle_code//language-packs/javascript:resources",
     ],
     prefix = "javascript",
 )

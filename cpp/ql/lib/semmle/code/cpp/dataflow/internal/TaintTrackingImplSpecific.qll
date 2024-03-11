@@ -1,4 +1,6 @@
 /**
+ * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+ *
  * Provides C++-specific definitions for use in the taint tracking library.
  */
 

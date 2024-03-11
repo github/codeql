@@ -138,7 +138,7 @@ namespace Semmle.Extraction.CSharp.Standalone
 
             using var logger = new ConsoleLogger(options.Verbosity, logThreadId: true);
             logger.Log(Severity.Info, "Extracting C# in buildless mode");
-            using var dependencyManager = new DependencyManager(options.SrcDir, options.Dependencies, logger);
+            using var dependencyManager = new DependencyManager(options.SrcDir, logger);
 
             if (!dependencyManager.AllSourceFiles.Any())
             {

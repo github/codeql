@@ -1,3 +1,10 @@
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Calls to `Object#method`, `Object#public_method` and `Object#singleton_method` with untrusted data are now recognised as sinks for code injection.
+* Added additional request sources for Ruby on Rails.
+
 ## 0.8.9
 
 No user-facing changes.

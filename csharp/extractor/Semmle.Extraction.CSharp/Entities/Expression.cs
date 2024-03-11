@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             if (info.IsCompilerGenerated)
-                trapFile.expr_compiler_generated(this);
+                trapFile.compiler_generated(this);
 
             if (info.ExprValue is string value)
                 trapFile.expr_value(this, value);

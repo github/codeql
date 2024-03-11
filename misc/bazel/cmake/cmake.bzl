@@ -22,7 +22,9 @@ CmakeInfo = provider(
 )
 
 def _cmake_name(label):
-    ret = ("%s_%s_%s" % (label.workspace_name, label.package, label.name)).replace("/", "_")
+    # strip away the bzlmod module version for now
+    workspace_name, _, _ = label.workspace_name.partition("~")
+    ret = ("%s_%s_%s" % (workspace_name, label.package, label.name)).replace("/", "_")
     internal_transition_suffix = "_INTERNAL_TRANSITION"
     if ret.endswith(internal_transition_suffix):
         ret = ret[:-len(internal_transition_suffix)]
@@ -68,10 +70,10 @@ def _cmake_aspect_impl(target, ctx):
 
     is_macos = "darwin" in ctx.var["TARGET_CPU"]
 
-    is_binary = ctx.rule.kind == "cc_binary"
+    is_binary = ctx.rule.kind in ("cc_binary", "cc_test")
     force_cxx_compilation = "force_cxx_compilation" in ctx.rule.attr.features
     attr = ctx.rule.attr
-    srcs = attr.srcs + getattr(attr, "hdrs", []) + getattr(attr, "textual_hdrs", [])
+    srcs = getattr(attr, "srcs", []) + getattr(attr, "hdrs", []) + getattr(attr, "textual_hdrs", [])
     srcs = [f for src in srcs for f in src.files.to_list()]
     inputs = [f for f in srcs if not f.is_source or f.path.startswith("external/")]
     by_kind = {}
@@ -90,10 +92,10 @@ def _cmake_aspect_impl(target, ctx):
     cxx_compilation = force_cxx_compilation or any([not src.endswith(".c") for src in srcs])
 
     copts = ctx.fragments.cpp.copts + (ctx.fragments.cpp.cxxopts if cxx_compilation else ctx.fragments.cpp.conlyopts)
-    copts += [ctx.expand_make_variables("copts", o, {}) for o in ctx.rule.attr.copts]
+    copts += [ctx.expand_make_variables("copts", o, {}) for o in getattr(ctx.rule.attr, "copts", [])]
 
     linkopts = ctx.fragments.cpp.linkopts
-    linkopts += [ctx.expand_make_variables("linkopts", o, {}) for o in ctx.rule.attr.linkopts]
+    linkopts += [ctx.expand_make_variables("linkopts", o, {}) for o in getattr(ctx.rule.attr, "linkopts", [])]
 
     compilation_ctx = target[CcInfo].compilation_context
     system_includes = _get_includes(compilation_ctx.system_includes)
@@ -120,7 +122,6 @@ def _cmake_aspect_impl(target, ctx):
                 prefix,  # source
                 "${BAZEL_EXEC_ROOT}/%s/%s" % (ctx.var["BINDIR"], prefix),  # generated
             ]
-
     deps = [dep[CmakeInfo] for dep in deps if CmakeInfo in dep]
 
     # by the book this should be done with depsets, but so far the performance implication is negligible
