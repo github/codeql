@@ -107,7 +107,7 @@ class Node0Impl extends TIRDataFlowNode0 {
   /**
    * INTERNAL: Do not use.
    */
-  DataFlowCallable getEnclosingCallable() { none() } // overridden in subclasses
+  Declaration getEnclosingCallable() { none() } // overridden in subclasses
 
   /** Gets the function to which this node belongs, if any. */
   Declaration getFunction() { none() } // overridden in subclasses
@@ -177,7 +177,7 @@ abstract class InstructionNode0 extends Node0Impl {
   /** Gets the instruction corresponding to this node. */
   Instruction getInstruction() { result = instr }
 
-  override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(this.getFunction()) }
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override Declaration getFunction() { result = instr.getEnclosingFunction() }
 
@@ -222,7 +222,7 @@ abstract class OperandNode0 extends Node0Impl {
   /** Gets the operand corresponding to this node. */
   Operand getOperand() { result = op }
 
-  override DataFlowCallable getEnclosingCallable() { result = TSourceCallable(this.getFunction()) }
+  override Declaration getEnclosingCallable() { result = this.getFunction() }
 
   override Declaration getFunction() { result = op.getUse().getEnclosingFunction() }
 
@@ -339,7 +339,7 @@ private module IndirectInstructions {
 import IndirectInstructions
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
+DataFlowCallable nodeGetEnclosingCallable(Node n) { result.asSourceCallable() = n.getEnclosingCallable() }
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
