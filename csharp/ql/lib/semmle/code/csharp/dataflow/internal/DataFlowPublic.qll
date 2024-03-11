@@ -109,18 +109,13 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
 }
 
 /** A definition, viewed as a node in a data flow graph. */
-class AssignableDefinitionNode extends Node, TSsaDefinitionExtNode {
-  private Ssa::ExplicitDefinition edef;
-
-  AssignableDefinitionNode() { this = TSsaDefinitionExtNode(edef) }
-
+class AssignableDefinitionNode extends Node instanceof AssignableDefinitionNodeImpl {
   /** Gets the underlying definition. */
-  AssignableDefinition getDefinition() { result = this.getDefinitionAtNode(_) }
+  AssignableDefinition getDefinition() { result = super.getDefinition() }
 
   /** Gets the underlying definition, at control flow node `cfn`, if any. */
   AssignableDefinition getDefinitionAtNode(ControlFlow::Node cfn) {
-    result = edef.getADefinition() and
-    cfn = edef.getControlFlowNode()
+    result = super.getDefinitionAtNode(cfn)
   }
 }
 
@@ -261,6 +256,17 @@ class ElementContent extends Content, TElementContent {
   override string toString() { result = "element" }
 
   override Location getLocation() { result instanceof EmptyLocation }
+}
+
+/** A captured variable. */
+class CapturedVariableContent extends Content, TCapturedVariableContent {
+  private VariableCapture::CapturedVariable v;
+
+  CapturedVariableContent() { this = TCapturedVariableContent(v) }
+
+  override string toString() { result = "captured " + v }
+
+  override Location getLocation() { result = v.getLocation() }
 }
 
 /**

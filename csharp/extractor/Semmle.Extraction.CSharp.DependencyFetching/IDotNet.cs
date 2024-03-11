@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
-    internal interface IDotNet
+    public interface IDotNet
     {
         RestoreResult Restore(RestoreSettings restoreSettings);
         bool New(string folder);
@@ -15,9 +15,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         bool Exec(string execArgs);
     }
 
-    internal record class RestoreSettings(string File, string PackageDirectory, bool ForceDotnetRefAssemblyFetching, string? PathToNugetConfig = null, bool ForceReevaluation = false);
+    public record class RestoreSettings(string File, string PackageDirectory, bool ForceDotnetRefAssemblyFetching, string? PathToNugetConfig = null, bool ForceReevaluation = false);
 
-    internal partial record class RestoreResult(bool Success, IList<string> Output)
+    public partial record class RestoreResult(bool Success, IList<string> Output)
     {
         private readonly Lazy<IEnumerable<string>> assetsFilePaths = new(() => GetFirstGroupOnMatch(AssetsFileRegex(), Output));
         public IEnumerable<string> AssetsFilePaths => Success ? assetsFilePaths.Value : Array.Empty<string>();

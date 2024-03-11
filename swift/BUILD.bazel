@@ -115,6 +115,7 @@ py_binary(
     deps = [":_create_extractor_pack"],
 )
 
+# TODO this is unneeded here but still used in the internal repo. Remove once it's not
 generate_cmake(
     name = "cmake",
     targets = [

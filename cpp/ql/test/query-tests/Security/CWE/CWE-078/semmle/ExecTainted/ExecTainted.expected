@@ -46,6 +46,8 @@ edges
 | test.cpp:187:11:187:15 | strncat output argument | test.cpp:188:20:188:24 | *flags | provenance |  |
 | test.cpp:187:18:187:25 | *filename | test.cpp:187:11:187:15 | strncat output argument | provenance |  |
 | test.cpp:187:18:187:25 | *filename | test.cpp:187:11:187:15 | strncat output argument | provenance |  |
+| test.cpp:188:11:188:17 | strncat output argument | test.cpp:186:19:186:25 | *command | provenance |  |
+| test.cpp:188:11:188:17 | strncat output argument | test.cpp:186:19:186:25 | *command | provenance |  |
 | test.cpp:188:20:188:24 | *flags | test.cpp:188:11:188:17 | strncat output argument | provenance |  |
 | test.cpp:188:20:188:24 | *flags | test.cpp:188:11:188:17 | strncat output argument | provenance |  |
 | test.cpp:194:9:194:16 | fread output argument | test.cpp:196:26:196:33 | *filename | provenance |  |
@@ -57,9 +59,6 @@ edges
 | test.cpp:218:9:218:16 | fread output argument | test.cpp:220:19:220:26 | *filename | provenance |  |
 | test.cpp:220:10:220:16 | strncat output argument | test.cpp:220:10:220:16 | strncat output argument | provenance |  |
 | test.cpp:220:10:220:16 | strncat output argument | test.cpp:220:10:220:16 | strncat output argument | provenance |  |
-| test.cpp:220:10:220:16 | strncat output argument | test.cpp:220:10:220:16 | strncat output argument | provenance |  |
-| test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | *command | provenance |  |
-| test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | *command | provenance |  |
 | test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | *command | provenance |  |
 | test.cpp:220:10:220:16 | strncat output argument | test.cpp:222:32:222:38 | *command | provenance |  |
 | test.cpp:220:19:220:26 | *filename | test.cpp:220:10:220:16 | strncat output argument | provenance |  |
@@ -118,6 +117,8 @@ nodes
 | test.cpp:183:32:183:38 | *command | semmle.label | *command |
 | test.cpp:183:32:183:38 | *command | semmle.label | *command |
 | test.cpp:183:32:183:38 | *command | semmle.label | *command |
+| test.cpp:186:19:186:25 | *command | semmle.label | *command |
+| test.cpp:186:19:186:25 | *command | semmle.label | *command |
 | test.cpp:186:47:186:54 | *filename | semmle.label | *filename |
 | test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
 | test.cpp:187:11:187:15 | strncat output argument | semmle.label | strncat output argument |
@@ -142,6 +143,8 @@ nodes
 | test.cpp:222:32:222:38 | *command | semmle.label | *command |
 | test.cpp:222:32:222:38 | *command | semmle.label | *command |
 subpaths
+| test.cpp:196:26:196:33 | *filename | test.cpp:186:47:186:54 | *filename | test.cpp:186:19:186:25 | *command | test.cpp:196:10:196:16 | concat output argument |
+| test.cpp:196:26:196:33 | *filename | test.cpp:186:47:186:54 | *filename | test.cpp:186:19:186:25 | *command | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:196:26:196:33 | *filename | test.cpp:186:47:186:54 | *filename | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:196:26:196:33 | *filename | test.cpp:186:47:186:54 | *filename | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
 #select

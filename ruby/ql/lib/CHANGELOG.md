@@ -1,3 +1,12 @@
+## 0.8.10
+
+### Minor Analysis Improvements
+
+* Calls to `I18n.translate` as well as Rails helper translate methods now propagate taint from their keyword arguments. The Rails translate methods are also recognized as XSS sanitizers when using keys marked as html safe.
+* Calls to `Arel::Nodes::SqlLiteral.new` are now modeled as instances of the `SqlConstruction` concept, as well as propagating taint from their argument.
+* Additional arguments beyond the first of calls to the  `ActiveRecord` methods `select`, `reselect`, `order`, `reorder`, `joins`, `group`, and `pluck` are now recognized as sql injection sinks. 
+* Calls to several methods of `ActiveRecord::Connection`, such as `ActiveRecord::Connection#exec_query`, are now recognized as SQL executions, including those via subclasses.
+
 ## 0.8.9
 
 ### Minor Analysis Improvements
@@ -15,7 +24,7 @@
 
 ### Minor Analysis Improvements
 
-* Deleted many deprecated predicates and classes with uppercase `HTTP`, `CSRF`, ``, `` etc. in their names. Use the PascalCased versions instead.
+* Deleted many deprecated predicates and classes with uppercase `HTTP`, `CSRF` etc. in their names. Use the PascalCased versions instead.
 * Deleted the deprecated `getAUse` and `getARhs` predicates from `API::Node`, use `getASource` and `getASink` instead.
 * Deleted the deprecated `disablesCertificateValidation` predicate from the `Http` module.
 * Deleted the deprecated `ParamsCall`, `CookiesCall`, and `ActionControllerControllerClass` classes from `ActionController.qll`, use the simarly named classes from `codeql.ruby.frameworks.Rails::Rails` instead.

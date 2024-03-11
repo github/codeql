@@ -4,7 +4,11 @@ private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.models.interfaces.Allocation as Alloc
 private import semmle.code.cpp.models.interfaces.DataFlow as DataFlow
+private import semmle.code.cpp.models.interfaces.Taint as Taint
+private import semmle.code.cpp.models.interfaces.PartialFlow as PartialFlow
+private import semmle.code.cpp.models.interfaces.FunctionInputsAndOutputs as FIO
 private import semmle.code.cpp.ir.internal.IRCppLanguage
+private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 private import DataFlowPrivate
 private import ssa0.SsaInternals as SsaInternals0
 import SsaInternalsCommon
@@ -138,12 +142,11 @@ private newtype TDefOrUseImpl =
     isIteratorUse(container, iteratorAddress, _, indirectionIndex)
   } or
   TFinalParameterUse(Parameter p, int indirectionIndex) {
-    // Avoid creating parameter nodes if there is no definitions of the variable other than the initializaion.
-    exists(SsaInternals0::Def def |
-      def.getSourceVariable().getBaseVariable().(BaseIRVariable).getIRVariable().getAst() = p and
-      not def.getValue().asInstruction() instanceof InitializeParameterInstruction and
-      underlyingTypeIsModifiableAt(p.getUnderlyingType(), indirectionIndex)
-    )
+    underlyingTypeIsModifiableAt(p.getUnderlyingType(), indirectionIndex) and
+    // Only create an SSA read for the final use of a parameter if there's
+    // actually a body of the enclosing function. If there's no function body
+    // then we'll never need to flow out of the function anyway.
+    p.getFunction().hasDefinition()
   }
 
 private predicate isGlobalUse(
@@ -796,10 +799,58 @@ private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
   )
 }
 
+private predicate inOut(FIO::FunctionInput input, FIO::FunctionOutput output) {
+  exists(int indirectionIndex |
+    input.isQualifierObject(indirectionIndex) and
+    output.isQualifierObject(indirectionIndex)
+    or
+    exists(int i |
+      input.isParameterDeref(i, indirectionIndex) and
+      output.isParameterDeref(i, indirectionIndex)
+    )
+  )
+}
+
+/**
+ * Holds if there should not be use-use flow out of `n`. That is, `n` is
+ * an out-barrier to use-use flow. This includes:
+ *
+ * - an input to a call that would be assumed to have use-use flow to the same
+ *   argument as an output, but this flow should be blocked because the
+ *   function is modeled with another flow to that output (for example the
+ *   first argument of `strcpy`).
+ * - a conversion that flows to such an input.
+ */
+private predicate modeledFlowBarrier(Node n) {
+  exists(
+    FIO::FunctionInput input, FIO::FunctionOutput output, CallInstruction call,
+    PartialFlow::PartialFlowFunction partialFlowFunc
+  |
+    n = callInput(call, input) and
+    inOut(input, output) and
+    exists(callOutput(call, output)) and
+    partialFlowFunc = call.getStaticCallTarget() and
+    not partialFlowFunc.isPartialWrite(output)
+  |
+    call.getStaticCallTarget().(DataFlow::DataFlowFunction).hasDataFlow(_, output)
+    or
+    call.getStaticCallTarget().(Taint::TaintFunction).hasTaintFlow(_, output)
+  )
+  or
+  exists(Operand operand, Instruction instr, Node n0, int indirectionIndex |
+    modeledFlowBarrier(n0) and
+    nodeHasInstruction(n0, instr, indirectionIndex) and
+    conversionFlow(operand, instr, false, _) and
+    nodeHasOperand(n, operand, indirectionIndex)
+  )
+}
+
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   exists(Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
-    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and nodeFrom != nodeTo
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and
+    not modeledFlowBarrier(nFrom) and
+    nodeFrom != nodeTo
   |
     if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(defOrUse)] else nodeFrom = nFrom
   )

@@ -18,9 +18,9 @@ When you open the model editor, it analyzes the currently selected CodeQL databa
 
 The model editor has two different modes:
 
-- Application mode (default view): The editor lists each external framework used by the selected CodeQL database. When you expand a framework, a list of all calls to and from the external API is shown with the options available to model dataflow through each call. This mode is most useful for improving the CodeQL results for a specific codebase.
+- **Application mode (default view):** The editor lists each external framework used by the selected CodeQL database. When you expand a framework, a list of all calls to and from the external API is shown with the options available to model dataflow through each call. This mode is most useful for improving the CodeQL results for a specific codebase.
 
-- Dependency mode: The editor identifies all of the publicly accessible APIs in the selected CodeQL database. This view guides you through modeling each public API that the codebase makes available. When you have finished modeling the entire API, you can save the model and use it to improve the CodeQL analysis for all codebases that use the dependency.
+- **Dependency mode:** The editor identifies all of the publicly accessible APIs in the selected CodeQL database. This view guides you through modeling each public API that the codebase makes available. When you have finished modeling the entire API, you can save the model and use it to improve the CodeQL analysis for all codebases that use the dependency.
 
 Displaying the CodeQL model editor
 ----------------------------------
@@ -32,7 +32,7 @@ Displaying the CodeQL model editor
 #. The CodeQL model editor runs a series of telemetry queries to identify APIs in the code and the editor is displayed in a new tab.
 #. When the telemetry queries are complete, the APIs that have been identified are shown in the editor.
 
-.. tip::
+.. pull-quote:: Tip
 
    The "CodeQL method modeling" section is a view that you can move from the primary sidebar to the secondary sidebar, when you want more space while you are modeling calls or methods. If you close the view, you can reopen it from the "Open Views" option in the **View** menu.
 
@@ -40,6 +40,8 @@ Modeling the calls your codebase makes to external APIs
 -------------------------------------------------------
 
 You typically use this approach when you are looking at a specific codebase where you want to improve the precision of CodeQL results. This is useful when the codebase uses frameworks or libraries that are not supported by CodeQL and if the source code of the framework or library is not included in the analysis.
+
+This section uses an open source Java project called "sofa-jraft" as an example. The experience of modeling calls to external APIs written in other static languages is similar.
 
 #. Select the CodeQL database that you want to improve CodeQL coverage for.
 #. Display the CodeQL model editor. By default the editor runs in application mode, so the list of external APIs used by the selected codebase is shown.
@@ -89,6 +91,8 @@ The models are stored in a series of YAML data extension files, one for each ext
 
 Modeling the public API of a codebase
 -------------------------------------
+
+This section uses an open source Java project called "sofa-jraft" as an example. The experience of modeling the public API written using other static languages is similar.
 
 You typically use this method when you want to model a framework or library that your organization uses in more than one codebase. Once you have finished creating and testing the model, you can publish the CodeQL model pack to the GitHub Container Registry for your whole organization to use.
 

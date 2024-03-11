@@ -6,4 +6,4 @@ import * as foo from "./foo";
 
 export function expose() {
     return new foo.Foo(); // expose an instance of Foo but not the class
-} // $ method=(pack9).expose
+} // $ name=(pack9).expose

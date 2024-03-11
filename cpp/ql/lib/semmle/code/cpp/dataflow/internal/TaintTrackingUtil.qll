@@ -1,4 +1,6 @@
 /**
+ * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+ *
  * Provides classes for performing local (intra-procedural) and
  * global (inter-procedural) taint-tracking analyses.
  *

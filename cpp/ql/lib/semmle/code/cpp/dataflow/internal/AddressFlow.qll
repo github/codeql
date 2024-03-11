@@ -1,4 +1,6 @@
 /**
+ * DEPRECATED: Use `semmle.code.cpp.dataflow.new.DataFlow` instead.
+ *
  * Provides a local analysis for identifying where a variable address
  * is effectively taken. Array-like offsets are allowed to pass through but
  * not field-like offsets.

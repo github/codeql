@@ -1,3 +1,13 @@
+## 0.8.10
+
+### New Queries
+
+* Added a new query `java/android/insecure-local-key-gen` for finding instances of keys generated for biometric authentication in an insecure way.
+
+### Minor Analysis Improvements
+
+* To reduce the number of false positives in the query "Insertion of sensitive information into log files" (`java/sensitive-log`), variables with names that contain "null" (case-insensitively) are no longer considered sources of sensitive information.
+
 ## 0.8.9
 
 ### New Queries
@@ -15,7 +25,7 @@
 ### Minor Analysis Improvements
 
 * The sanitizer for the path injection queries has been improved to handle more cases where `equals` is used to check an exact path match.
-* The query `java/unvalidated-url-redirection` now sanitizes results following the same logic as the query `java/ssrf`. URLs the destination of which cannot be externally controlled will not be reported anymore.
+* The query `java/unvalidated-url-redirection` now sanitizes results following the same logic as the query `java/ssrf`. URLs where the destination cannot be controlled externally are no longer reported.
 
 ## 0.8.8
 

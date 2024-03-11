@@ -6,7 +6,7 @@
 import csharp
 private import XSSSinks
 private import semmle.code.csharp.security.Sanitizers
-private import semmle.code.csharp.security.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.dataflow.DataFlow2
 private import semmle.code.csharp.dataflow.TaintTracking2
 
@@ -179,8 +179,8 @@ module XssTrackingConfig implements DataFlow::ConfigSig {
 
 module XssTracking = TaintTracking::Global<XssTrackingConfig>;
 
-/** A source of remote user input. */
-private class RemoteSource extends Source instanceof RemoteFlowSource { }
+/** A source supported by the current threat model. */
+private class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
