@@ -150,7 +150,7 @@ module SourceSinkInterpretationInput implements
   /** Provides additional sink specification logic. */
   bindingset[c]
   predicate interpretOutput(string c, InterpretNode mid, InterpretNode node) {
-    // Allow fields to be picked as output nodes.
+    // Allow variables to be picked as output nodes.
     exists(Node n, Element ast |
       n = node.asNode() and
       ast = mid.asElement()
@@ -158,6 +158,7 @@ module SourceSinkInterpretationInput implements
       c = "" and
       n.asExpr().(VariableAccess).getTarget() = ast
     )
+    // TODO: source fields?
   }
 
   /** Provides additional source specification logic. */
@@ -169,6 +170,7 @@ module SourceSinkInterpretationInput implements
       e.getTarget() = ast
     |
       // Allow fields to be picked as input nodes.
+      // TODO: this has no test cases.
       c = "" and
       e.getQualifier() = n.asExpr()
       or
@@ -188,6 +190,7 @@ module SourceSinkInterpretationInput implements
       or
       // Allow post update nodes to be picked as input nodes when the `input` column
       // of the row is `PostUpdate`.
+      // TODO: this has no test cases.
       c = "PostUpdate" and
       e.getQualifier() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     )
