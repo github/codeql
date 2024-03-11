@@ -91,6 +91,10 @@ type BuildCommand struct {
 // An array of build scripts to check for and corresponding commands that we can execute
 // if they exist.
 var BuildScripts = []BuildScript{
+	{Filename: "yarn.lock", Commands: []BuildCommand{
+		{Command: "yarn", Args: []string{"install"}},
+		{Command: "yarn", Args: []string{"build"}}},
+	},
 	{Filename: "Makefile", Commands: []BuildCommand{{Command: "make"}}},
 	{Filename: "makefile", Commands: []BuildCommand{{Command: "make"}}},
 	{Filename: "GNUmakefile", Commands: []BuildCommand{{Command: "make"}}},
