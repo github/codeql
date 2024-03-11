@@ -12,7 +12,7 @@
 
 import cpp
 import semmle.code.cpp.dataflow.new.DataFlow
-import BadFlow::PathGraph
+import Flow::PathGraph
 
 /**
  * Holds if `f` is a field located at byte offset `offset` in `c`.
@@ -179,23 +179,28 @@ class UnsafeCast extends Cast {
 }
 
 /**
- * Holds if `source` is an allocation that allocates a value of type `state`.
+ * Holds if `source` is an allocation that allocates a value of type `type`.
  */
-predicate isSourceImpl(DataFlow::Node source, Class state) {
-  state = source.asExpr().(AllocationExpr).getAllocatedElementType().stripType() and
+predicate isSourceImpl(DataFlow::Node source, Class type) {
+  exists(AllocationExpr alloc |
+    alloc = source.asExpr() and
+    type = alloc.getAllocatedElementType().stripType() and
+    not exists(
+      alloc
+          .(NewOrNewArrayExpr)
+          .getAllocator()
+          .(OperatorNewAllocationFunction)
+          .getPlacementArgument()
+    )
+  ) and
   exists(TypeDeclarationEntry tde |
-    tde = state.getDefinition() and
+    tde = type.getDefinition() and
     not tde.isFromUninstantiatedTemplate(_)
   )
 }
 
-/**
- * The `RelevantStateConfig` configuration is used to find the set of
- * states for the `BadConfig` and `GoodConfig`. The flow computed by
- * `RelevantStateConfig` is used to implement the `relevantState` predicate
- * which is used to avoid a cartesian product in `isSinkImpl`.
- */
-module RelevantStateConfig implements DataFlow::ConfigSig {
+/** A configuration describing flow from an allocation to a potentially unsafe cast. */
+module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
 
   predicate isBarrier(DataFlow::Node node) {
@@ -212,122 +217,47 @@ module RelevantStateConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(UnsafeCast cast | sink.asExpr() = cast.getUnconverted())
-  }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() = any(UnsafeCast cast).getUnconverted() }
 
   int fieldFlowBranchLimit() { result = 0 }
 }
 
-module RelevantStateFlow = DataFlow::Global<RelevantStateConfig>;
+module Flow = DataFlow::Global<Config>;
 
-predicate relevantState(DataFlow::Node source, DataFlow::Node sink, Class state) {
-  RelevantStateFlow::flow(source, sink) and
-  isSourceImpl(source, state)
-}
-
-predicate isSinkImpl(DataFlow::Node sink, Class state, Type convertedType, boolean compatible) {
-  exists(UnsafeCast cast |
-    relevantState(_, sink, state) and
-    sink.asExpr() = cast.getUnconverted() and
-    convertedType = cast.getConvertedType()
-  |
-    if cast.compatibleWith(state) then compatible = true else compatible = false
+predicate relevantType(DataFlow::Node sink, Class allocatedType) {
+  exists(DataFlow::Node source |
+    Flow::flow(source, sink) and
+    isSourceImpl(source, allocatedType)
   )
 }
 
-/**
- * The `BadConfig` configuration tracks flow from an allocation to an
- * incompatible cast.
- *
- * We use `FlowState` to track the type of the source, and compare the
- * flow state to the target of the cast in the `isSink` definition.
- */
-module BadConfig implements DataFlow::StateConfigSig {
-  class FlowState extends Class {
-    FlowState() { relevantState(_, _, this) }
-  }
-
-  predicate isSource(DataFlow::Node source, FlowState state) { relevantState(source, _, state) }
-
-  predicate isBarrier(DataFlow::Node node) { RelevantStateConfig::isBarrier(node) }
-
-  predicate isSink(DataFlow::Node sink, FlowState state) { isSinkImpl(sink, state, _, false) }
-
-  predicate isBarrierOut(DataFlow::Node sink, FlowState state) { isSink(sink, state) }
-
-  int fieldFlowBranchLimit() { result = 0 }
+predicate isSinkImpl(
+  DataFlow::Node sink, Class allocatedType, Type convertedType, boolean compatible
+) {
+  exists(UnsafeCast cast |
+    relevantType(sink, allocatedType) and
+    sink.asExpr() = cast.getUnconverted() and
+    convertedType = cast.getConvertedType()
+  |
+    if cast.compatibleWith(allocatedType) then compatible = true else compatible = false
+  )
 }
-
-module BadFlow = DataFlow::GlobalWithState<BadConfig>;
-
-/**
- * The `GoodConfig` configuration tracks flow from an allocation to a
- * compatible cast.
- *
- * We use `GoodConfig` to reduce the number of FPs from infeasible paths.
- * For example, consider the following example:
- * ```cpp
- * struct Animal { virtual ~Animal(); };
- *
- * struct Cat : public Animal {
- *   Cat();
- *   ~Cat();
- * };
- *
- * struct Dog : public Animal {
- *   Dog();
- *   ~Dog();
- * };
- *
- * void test9(bool b) {
- *   Animal* a;
- *   if(b) {
- *     a = new Cat;
- *   } else {
- *     a = new Dog;
- *   }
- *   if(b) {
- *    Cat* d = static_cast<Cat*>(a);
- *   }
- * }
- * ```
- * Here, `BadConfig` finds a flow from `a = new Dog` to `static_cast<Cat*>(a)`.
- * However, that path is never realized in an actual execution path. So in
- * order to remove this result we exclude results where there exists an
- * allocation of a type that's compatible with `static_cast<Cat*>(a)`.
- *
- * We use `FlowState` to track the type of the source, and compare the
- * flow state to the target of the cast in the `isSink` definition.
- */
-module GoodConfig implements DataFlow::StateConfigSig {
-  class FlowState = BadConfig::FlowState;
-
-  predicate isSource(DataFlow::Node source, FlowState state) { BadConfig::isSource(source, state) }
-
-  predicate isBarrier(DataFlow::Node node) { BadConfig::isBarrier(node) }
-
-  predicate isSink(DataFlow::Node sink, FlowState state) {
-    isSinkImpl(sink, state, _, true) and
-    BadFlow::flowTo(sink)
-  }
-
-  int fieldFlowBranchLimit() { result = 0 }
-}
-
-module GoodFlow = DataFlow::GlobalWithState<GoodConfig>;
 
 from
-  BadFlow::PathNode source, BadFlow::PathNode sink, Type sourceType, Type sinkType,
+  Flow::PathNode source, Flow::PathNode sink, Type badSourceType, Type sinkType,
   DataFlow::Node sinkNode
 where
-  BadFlow::flowPath(source, sink) and
+  Flow::flowPath(source, sink) and
   sinkNode = sink.getNode() and
+  isSourceImpl(source.getNode(), badSourceType) and
+  isSinkImpl(sinkNode, badSourceType, sinkType, false) and
   // If there is any flow that would result in a valid cast then we don't
   // report an alert here. This reduces the number of FPs from infeasible paths
   // significantly.
-  not GoodFlow::flowTo(sinkNode) and
-  isSourceImpl(source.getNode(), sourceType) and
-  isSinkImpl(sinkNode, _, sinkType, false)
-select sinkNode, source, sink, "Conversion from $@ to $@ is invalid.", sourceType,
-  sourceType.toString(), sinkType, sinkType.toString()
+  not exists(DataFlow::Node goodSource, Type goodSourceType |
+    isSourceImpl(goodSource, goodSourceType) and
+    isSinkImpl(sinkNode, goodSourceType, sinkType, true) and
+    Flow::flow(goodSource, sinkNode)
+  )
+select sinkNode, source, sink, "Conversion from $@ to $@ is invalid.", badSourceType,
+  badSourceType.toString(), sinkType, sinkType.toString()
