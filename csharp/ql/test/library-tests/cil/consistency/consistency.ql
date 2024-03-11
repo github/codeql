@@ -1,5 +1,6 @@
 import cil
 import semmle.code.cil.ConsistencyChecks
 
-from ConsistencyViolation v
-select v, v.getMessage()
+deprecated query predicate consistencyViolation(ConsistencyViolation v, string message) {
+  message = v.getMessage()
+}

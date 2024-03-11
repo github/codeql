@@ -1,7 +1,7 @@
 import semmle.code.cil.Attribute
 import semmle.code.cil.Declaration
 
-private predicate isOsSpecific(Declaration d) {
+deprecated private predicate isOsSpecific(Declaration d) {
   d.getFullyQualifiedName()
       .matches("%" +
           [
@@ -13,7 +13,7 @@ private predicate isOsSpecific(Declaration d) {
           ] + "%")
 }
 
-query predicate attrNoArg(string dec, string attr) {
+deprecated query predicate attrNoArg(string dec, string attr) {
   exists(Declaration d, Attribute a |
     not isOsSpecific(d) and
     a.getDeclaration() = d and
@@ -24,7 +24,7 @@ query predicate attrNoArg(string dec, string attr) {
   )
 }
 
-query predicate attrArgNamed(string dec, string attr, string name, string value) {
+deprecated query predicate attrArgNamed(string dec, string attr, string name, string value) {
   exists(Declaration d, Attribute a |
     a.getDeclaration() = d and
     not isOsSpecific(d) and
@@ -35,7 +35,7 @@ query predicate attrArgNamed(string dec, string attr, string name, string value)
   )
 }
 
-query predicate attrArgPositional(string dec, string attr, int index, string value) {
+deprecated query predicate attrArgPositional(string dec, string attr, int index, string value) {
   exists(Declaration d, Attribute a |
     a.getDeclaration() = d and
     not isOsSpecific(d) and

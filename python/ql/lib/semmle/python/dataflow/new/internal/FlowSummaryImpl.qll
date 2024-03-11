@@ -27,6 +27,11 @@ module Input implements InputSig<DataFlowImplSpecific::PythonDataFlow> {
       result = i.toString()
     )
     or
+    exists(int i |
+      pos.isPositionalLowerBound(i) and
+      result = i + ".."
+    )
+    or
     exists(string name |
       pos.isKeyword(name) and
       result = name + ":"
@@ -193,6 +198,11 @@ module ParsePositions {
   predicate isParsedPositionalArgumentPosition(string c, int i) {
     isArgBody(c) and
     i = AccessPath::parseInt(c)
+  }
+
+  predicate isParsedArgumentLowerBoundPosition(string c, int i) {
+    isArgBody(c) and
+    i = AccessPath::parseLowerBound(c)
   }
 
   predicate isParsedKeywordArgumentPosition(string c, string argName) {

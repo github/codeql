@@ -114,6 +114,12 @@ class FooController < ActionController::Base
     User.joins(:a, params[:column])
 
     User.count_by_sql(params[:custom_sql_query])
+
+    # BAD: executes `SELECT users.* FROM #{params[:tab]}`
+    # where `params[:tab]` is unsanitized
+    User.all.from(params[:tab]) 
+    # BAD: executes `SELECT "users".* FROM (SELECT "users".* FROM "users") #{params[:sq]}
+    User.all.from(User.all, params[:sq])
   end
 end
 

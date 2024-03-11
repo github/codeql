@@ -1,0 +1,305 @@
+Module: [2, 0] - [22, 0]
+  body: [
+    Assign: [2, 0] - [2, 60]
+      targets: [
+        Name: [2, 0] - [2, 5]
+          variable: Variable('songs', None)
+          ctx: Store
+      ]
+      value:
+        List: [2, 8] - [2, 60]
+          elts: [
+            Str: [2, 9] - [2, 31]
+              s: 'Take me back to Eden'
+              prefix: "'"
+              implicitly_concatenated_parts: None
+            Str: [2, 33] - [2, 43]
+              s: 'Alkaline'
+              prefix: "'"
+              implicitly_concatenated_parts: None
+            Str: [2, 45] - [2, 59]
+              s: 'Ascensionism'
+              prefix: "'"
+              implicitly_concatenated_parts: None
+          ]
+          ctx: Load
+    Expr: [3, 0] - [3, 43]
+      value:
+        JoinedStr: [3, 0] - [3, 43]
+          values: [
+            Str: [3, 0] - [3, 25]
+              s: 'This is the playlist: '
+              prefix: 'f"'
+              implicitly_concatenated_parts: None
+            Call: [3, 25] - [3, 41]
+              func:
+                Attribute: [3, 25] - [3, 34]
+                  value:
+                    Str: [3, 25] - [3, 29]
+                      s: ', '
+                      prefix: '"'
+                      implicitly_concatenated_parts: None
+                  attr: 'join'
+                  ctx: Load
+              positional_args: [
+                Name: [3, 35] - [3, 40]
+                  variable: Variable('songs', None)
+                  ctx: Load
+              ]
+              named_args: []
+            Str: [3, 41] - [3, 43]
+              s: ''
+              prefix: 'f"'
+              implicitly_concatenated_parts: None
+          ]
+    Expr: [6, 0] - [6, 31]
+      value:
+        JoinedStr: [6, 0] - [6, 31]
+          values: [
+            Str: [6, 0] - [6, 5]
+              s: ''
+              prefix: 'f"""'
+              implicitly_concatenated_parts: None
+            JoinedStr: [6, 5] - [6, 27]
+              values: [
+                Str: [6, 5] - [6, 10]
+                  s: ''
+                  prefix: "f'''"
+                  implicitly_concatenated_parts: None
+                JoinedStr: [6, 10] - [6, 23]
+                  values: [
+                    Str: [6, 10] - [6, 13]
+                      s: ''
+                      prefix: "f'"
+                      implicitly_concatenated_parts: None
+                    JoinedStr: [6, 13] - [6, 21]
+                      values: [
+                        Str: [6, 13] - [6, 16]
+                          s: ''
+                          prefix: 'f"'
+                          implicitly_concatenated_parts: None
+                        BinOp: [6, 16] - [6, 19]
+                          left:
+                            Num: [6, 16] - [6, 17]
+                              n: 1
+                              text: '1'
+                          op: Add
+                          right:
+                            Num: [6, 18] - [6, 19]
+                              n: 1
+                              text: '1'
+                        Str: [6, 19] - [6, 21]
+                          s: ''
+                          prefix: 'f"'
+                          implicitly_concatenated_parts: None
+                      ]
+                    Str: [6, 21] - [6, 23]
+                      s: ''
+                      prefix: "f'"
+                      implicitly_concatenated_parts: None
+                  ]
+                Str: [6, 23] - [6, 27]
+                  s: ''
+                  prefix: "f'''"
+                  implicitly_concatenated_parts: None
+              ]
+            Str: [6, 27] - [6, 31]
+              s: ''
+              prefix: 'f"""'
+              implicitly_concatenated_parts: None
+          ]
+    Expr: [9, 0] - [9, 33]
+      value:
+        JoinedStr: [9, 0] - [9, 33]
+          values: [
+            Str: [9, 0] - [9, 3]
+              s: ''
+              prefix: 'f"'
+              implicitly_concatenated_parts: None
+            JoinedStr: [9, 3] - [9, 31]
+              values: [
+                Str: [9, 3] - [9, 6]
+                  s: ''
+                  prefix: 'f"'
+                  implicitly_concatenated_parts: None
+                JoinedStr: [9, 6] - [9, 29]
+                  values: [
+                    Str: [9, 6] - [9, 9]
+                      s: ''
+                      prefix: 'f"'
+                      implicitly_concatenated_parts: None
+                    JoinedStr: [9, 9] - [9, 27]
+                      values: [
+                        Str: [9, 9] - [9, 12]
+                          s: ''
+                          prefix: 'f"'
+                          implicitly_concatenated_parts: None
+                        JoinedStr: [9, 12] - [9, 25]
+                          values: [
+                            Str: [9, 12] - [9, 15]
+                              s: ''
+                              prefix: 'f"'
+                              implicitly_concatenated_parts: None
+                            JoinedStr: [9, 15] - [9, 23]
+                              values: [
+                                Str: [9, 15] - [9, 18]
+                                  s: ''
+                                  prefix: 'f"'
+                                  implicitly_concatenated_parts: None
+                                BinOp: [9, 18] - [9, 21]
+                                  left:
+                                    Num: [9, 18] - [9, 19]
+                                      n: 1
+                                      text: '1'
+                                  op: Add
+                                  right:
+                                    Num: [9, 20] - [9, 21]
+                                      n: 1
+                                      text: '1'
+                                Str: [9, 21] - [9, 23]
+                                  s: ''
+                                  prefix: 'f"'
+                                  implicitly_concatenated_parts: None
+                              ]
+                            Str: [9, 23] - [9, 25]
+                              s: ''
+                              prefix: 'f"'
+                              implicitly_concatenated_parts: None
+                          ]
+                        Str: [9, 25] - [9, 27]
+                          s: ''
+                          prefix: 'f"'
+                          implicitly_concatenated_parts: None
+                      ]
+                    Str: [9, 27] - [9, 29]
+                      s: ''
+                      prefix: 'f"'
+                      implicitly_concatenated_parts: None
+                  ]
+                Str: [9, 29] - [9, 31]
+                  s: ''
+                  prefix: 'f"'
+                  implicitly_concatenated_parts: None
+              ]
+            Str: [9, 31] - [9, 33]
+              s: ''
+              prefix: 'f"'
+              implicitly_concatenated_parts: None
+          ]
+    Expr: [12, 0] - [16, 4]
+      value:
+        JoinedStr: [12, 0] - [16, 4]
+          values: [
+            Str: [12, 0] - [12, 25]
+              s: 'This is the playlist: '
+              prefix: 'f"'
+              implicitly_concatenated_parts: None
+            Call: [12, 25] - [16, 2]
+              func:
+                Attribute: [12, 25] - [12, 34]
+                  value:
+                    Str: [12, 25] - [12, 29]
+                      s: ', '
+                      prefix: '"'
+                      implicitly_concatenated_parts: None
+                  attr: 'join'
+                  ctx: Load
+              positional_args: [
+                List: [12, 35] - [16, 1]
+                  elts: [
+                    Str: [13, 4] - [13, 26]
+                      s: 'Take me back to Eden'
+                      prefix: "'"
+                      implicitly_concatenated_parts: None
+                    Str: [14, 4] - [14, 14]
+                      s: 'Alkaline'
+                      prefix: "'"
+                      implicitly_concatenated_parts: None
+                    Str: [15, 4] - [15, 18]
+                      s: 'Ascensionism'
+                      prefix: "'"
+                      implicitly_concatenated_parts: None
+                  ]
+                  ctx: Load
+              ]
+              named_args: []
+            Str: [16, 2] - [16, 4]
+              s: ''
+              prefix: 'f"'
+              implicitly_concatenated_parts: None
+          ]
+    Expr: [19, 0] - [19, 50]
+      value:
+        Call: [19, 0] - [19, 50]
+          func:
+            Name: [19, 0] - [19, 5]
+              variable: Variable('print', None)
+              ctx: Load
+          positional_args: [
+            JoinedStr: [19, 6] - [19, 49]
+              values: [
+                Str: [19, 6] - [19, 31]
+                  s: 'This is the playlist: '
+                  prefix: 'f"'
+                  implicitly_concatenated_parts: None
+                Call: [19, 31] - [19, 47]
+                  func:
+                    Attribute: [19, 31] - [19, 40]
+                      value:
+                        Str: [19, 31] - [19, 35]
+                          s: '\n'
+                          prefix: '"'
+                          implicitly_concatenated_parts: None
+                      attr: 'join'
+                      ctx: Load
+                  positional_args: [
+                    Name: [19, 41] - [19, 46]
+                      variable: Variable('songs', None)
+                      ctx: Load
+                  ]
+                  named_args: []
+                Str: [19, 47] - [19, 49]
+                  s: ''
+                  prefix: 'f"'
+                  implicitly_concatenated_parts: None
+              ]
+          ]
+          named_args: []
+    Expr: [21, 0] - [21, 68]
+      value:
+        Call: [21, 0] - [21, 68]
+          func:
+            Name: [21, 0] - [21, 5]
+              variable: Variable('print', None)
+              ctx: Load
+          positional_args: [
+            JoinedStr: [21, 6] - [21, 67]
+              values: [
+                Str: [21, 6] - [21, 31]
+                  s: 'This is the playlist: '
+                  prefix: 'f"'
+                  implicitly_concatenated_parts: None
+                Call: [21, 31] - [21, 65]
+                  func:
+                    Attribute: [21, 31] - [21, 58]
+                      value:
+                        Str: [21, 31] - [21, 53]
+                          s: '♥'
+                          prefix: '"'
+                          implicitly_concatenated_parts: None
+                      attr: 'join'
+                      ctx: Load
+                  positional_args: [
+                    Name: [21, 59] - [21, 64]
+                      variable: Variable('songs', None)
+                      ctx: Load
+                  ]
+                  named_args: []
+                Str: [21, 65] - [21, 67]
+                  s: ''
+                  prefix: 'f"'
+                  implicitly_concatenated_parts: None
+              ]
+          ]
+          named_args: []
+  ]

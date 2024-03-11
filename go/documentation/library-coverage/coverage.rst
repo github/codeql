@@ -15,7 +15,7 @@ Go framework & library support
    `Go kit <https://gokit.io/>`_,``github.com/go-kit/kit*``,,,1
    `Iris <https://www.iris-go.com/>`_,``github.com/kataras/iris*``,,,1
    `Kubernetes <https://kubernetes.io/>`_,"``k8s.io/api*``, ``k8s.io/apimachinery*``",,57,
-   `Macaron <https://gopkg.in/macaron.v1>`_,``gopkg.in/macaron*``,,1,
+   `Macaron <https://gopkg.in/macaron.v1>`_,``gopkg.in/macaron*``,12,1,
    `Revel <http://revel.github.io/>`_,"``github.com/revel/revel*``, ``github.com/robfig/revel*``",,20,
    `SendGrid <https://github.com/sendgrid/sendgrid-go>`_,``github.com/sendgrid/sendgrid-go*``,,1,
    `Standard library <https://pkg.go.dev/std>`_,"````, ``archive/*``, ``bufio``, ``bytes``, ``cmp``, ``compress/*``, ``container/*``, ``context``, ``crypto``, ``crypto/*``, ``database/*``, ``debug/*``, ``embed``, ``encoding``, ``encoding/*``, ``errors``, ``expvar``, ``flag``, ``fmt``, ``go/*``, ``hash``, ``hash/*``, ``html``, ``html/*``, ``image``, ``image/*``, ``index/*``, ``io``, ``io/*``, ``log``, ``log/*``, ``maps``, ``math``, ``math/*``, ``mime``, ``mime/*``, ``net``, ``net/*``, ``os``, ``os/*``, ``path``, ``path/*``, ``plugin``, ``reflect``, ``reflect/*``, ``regexp``, ``regexp/*``, ``slices``, ``sort``, ``strconv``, ``strings``, ``sync``, ``sync/*``, ``syscall``, ``syscall/*``, ``testing``, ``testing/*``, ``text/*``, ``time``, ``time/*``, ``unicode``, ``unicode/*``, ``unsafe``",8,578,
@@ -35,5 +35,5 @@ Go framework & library support
    `yaml <https://gopkg.in/yaml.v3>`_,``gopkg.in/yaml*``,,9,
    `zap <https://go.uber.org/zap>`_,``go.uber.org/zap*``,,11,
    Others,"``github.com/go-jose/go-jose/$ANYVERSION/jwt``, ``gopkg.in/square/go-jose.v2/jwt``",,8,2
-   Totals,,8,871,24
+   Totals,,20,871,24
 

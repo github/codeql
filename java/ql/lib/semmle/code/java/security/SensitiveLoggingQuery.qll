@@ -9,7 +9,12 @@ private import semmle.code.java.security.Sanitizers
 
 /** A variable that may hold sensitive information, judging by its name. */
 class VariableWithSensitiveName extends Variable {
-  VariableWithSensitiveName() { this.getName().regexpMatch(getCommonSensitiveInfoRegex()) }
+  VariableWithSensitiveName() {
+    exists(string name | name = this.getName() |
+      name.regexpMatch(getCommonSensitiveInfoRegex()) and
+      not name.regexpMatch("(?i).*null.*")
+    )
+  }
 }
 
 /** A reference to a variable that may hold sensitive information, judging by its name. */

@@ -6,6 +6,11 @@ extensions:
       - ["System", "Console", False, "Read", "", "", "ReturnValue", "local", "manual"]
       - ["System", "Console", False, "ReadKey", "", "", "ReturnValue", "local", "manual"]
       - ["System", "Console", False, "ReadLine", "", "", "ReturnValue", "local", "manual"]
+      - ["System", "Environment", False, "ExpandEnvironmentVariables", "(System.String)", "", "ReturnValue", "environment", "manual"]
+      - ["System", "Environment", False, "GetCommandLineArgs", "()", "", "ReturnValue", "commandargs", "manual"]
+      - ["System", "Environment", False, "get_CommandLine", "()", "", "ReturnValue", "commandargs", "manual"]
+      - ["System", "Environment", False, "GetEnvironmentVariable", "", "", "ReturnValue", "environment", "manual"]
+      - ["System", "Environment", False, "GetEnvironmentVariables", "", "", "ReturnValue", "environment", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel

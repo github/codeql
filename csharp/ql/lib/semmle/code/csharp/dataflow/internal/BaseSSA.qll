@@ -24,7 +24,16 @@ module BaseSsa {
     )
   }
 
+  private predicate implicitEntryDef(
+    Callable c, ControlFlow::BasicBlocks::EntryBlock bb, SsaInput::SourceVariable v
+  ) {
+    v.isReadonlyCapturedBy(c) and
+    c = bb.getCallable()
+  }
+
   private module SsaInput implements SsaImplCommon::InputSig<Location> {
+    private import semmle.code.csharp.controlflow.internal.PreSsa
+
     class BasicBlock = ControlFlow::BasicBlock;
 
     BasicBlock getImmediateBasicBlockDominator(BasicBlock bb) {
@@ -35,20 +44,17 @@ module BaseSsa {
 
     class ExitBasicBlock = ControlFlow::BasicBlocks::ExitBlock;
 
-    pragma[noinline]
-    private Callable getAnAssigningCallable(LocalScopeVariable v) {
-      result = any(AssignableDefinition def | def.getTarget() = v).getEnclosingCallable()
-    }
-
-    class SourceVariable extends LocalScopeVariable {
-      SourceVariable() { not getAnAssigningCallable(this) != getAnAssigningCallable(this) }
-    }
+    class SourceVariable = PreSsa::SimpleLocalScopeVariable;
 
     predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(AssignableDefinition def |
         definitionAt(def, bb, i, v) and
         if def.isCertain() then certain = true else certain = false
       )
+      or
+      implicitEntryDef(_, bb, v) and
+      i = -1 and
+      certain = true
     }
 
     predicate variableRead(BasicBlock bb, int i, SourceVariable v, boolean certain) {
@@ -87,7 +93,15 @@ module BaseSsa {
       not result instanceof PhiNode
     }
 
-    Location getLocation() { result = this.getDefinition().getLocation() }
+    Location getLocation() {
+      result = this.getDefinition().getLocation()
+      or
+      exists(Callable c, SsaInput::BasicBlock bb, SsaInput::SourceVariable v |
+        this.definesAt(v, bb, -1) and
+        implicitEntryDef(c, bb, v) and
+        result = c.getLocation()
+      )
+    }
   }
 
   class PhiNode extends SsaImpl::PhiNode, Definition {

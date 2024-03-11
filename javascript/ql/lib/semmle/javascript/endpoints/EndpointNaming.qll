@@ -277,9 +277,16 @@ private predicate nameFromGlobal(DataFlow::Node node, string package, string nam
   (if node.getTopLevel().isExterns() then badness = -10 else badness = 10)
 }
 
+/** Gets an API node whose value is exposed to client code. */
+private API::Node exposedNode() {
+  result = API::moduleExport(_)
+  or
+  result = exposedNode().getASuccessor()
+}
+
 /** Holds if an instance of `cls` can be exposed to client code. */
 private predicate hasEscapingInstance(DataFlow::ClassNode cls) {
-  cls.getAnInstanceReference().flowsTo(any(API::Node n).asSink())
+  cls.getAnInstanceReference().flowsTo(exposedNode().asSink())
 }
 
 private predicate sourceNodeHasNameCandidate(

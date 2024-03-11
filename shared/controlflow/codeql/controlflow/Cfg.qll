@@ -4,6 +4,7 @@
  */
 
 private import codeql.util.Location
+private import codeql.util.FileSystem
 
 /** Provides the language-specific input specification. */
 signature module InputSig<LocationSig Location> {
@@ -1132,19 +1133,19 @@ module Make<LocationSig Location, InputSig<Location> Input> {
 
   final class AstCfgNode = AstCfgNodeImpl;
 
+  /** A node to be included in the output of `TestOutput`. */
+  signature class RelevantNodeSig extends Node {
+    /**
+     * Gets a string used to resolve ties in node and edge ordering.
+     */
+    string getOrderDisambiguation();
+  }
+
   /**
    * Import this module into a `.ql` file of `@kind graph` to render a CFG. The
    * graph is restricted to nodes from `RelevantNode`.
    */
-  module TestOutput {
-    /** A CFG node to include in the output. */
-    abstract class RelevantNode extends Node {
-      /**
-       * Gets a string used to resolve ties in node and edge ordering.
-       */
-      string getOrderDisambiguation() { result = "" }
-    }
-
+  module TestOutput<RelevantNodeSig RelevantNode> {
     /** Holds if `n` is a relevant node in the CFG. */
     query predicate nodes(RelevantNode n, string attr, string val) {
       attr = "semmle.order" and
@@ -1190,6 +1191,78 @@ module Make<LocationSig Location, InputSig<Location> Input> {
             )
         ).toString()
     }
+  }
+
+  /** Provides the input to `ViewCfgQuery`. */
+  signature module ViewCfgQueryInputSig<FileSig File> {
+    /** The source file selected in the IDE. Should be an `external` predicate. */
+    string selectedSourceFile();
+
+    /** The source line selected in the IDE. Should be an `external` predicate. */
+    int selectedSourceLine();
+
+    /** The source column selected in the IDE. Should be an `external` predicate. */
+    int selectedSourceColumn();
+
+    /**
+     * Holds if CFG scope `scope` spans column `startColumn` of line `startLine` to
+     * column `endColumn` of line `endLine` in `file`.
+     */
+    predicate cfgScopeSpan(
+      CfgScope scope, File file, int startLine, int startColumn, int endLine, int endColumn
+    );
+  }
+
+  /**
+   * Provides an implementation for a `View CFG` query.
+   *
+   * Import this module into a `.ql` that looks like
+   *
+   * ```ql
+   * @name Print CFG
+   * @description Produces a representation of a file's Control Flow Graph.
+   *              This query is used by the VS Code extension.
+   * @id <lang>/print-cfg
+   * @kind graph
+   * @tags ide-contextual-queries/print-cfg
+   * ```
+   */
+  module ViewCfgQuery<FileSig File, ViewCfgQueryInputSig<File> ViewCfgQueryInput> {
+    private import ViewCfgQueryInput
+
+    bindingset[file, line, column]
+    private CfgScope smallestEnclosingScope(File file, int line, int column) {
+      result =
+        min(CfgScope scope, int startLine, int startColumn, int endLine, int endColumn |
+          cfgScopeSpan(scope, file, startLine, startColumn, endLine, endColumn) and
+          (
+            startLine < line
+            or
+            startLine = line and startColumn <= column
+          ) and
+          (
+            endLine > line
+            or
+            endLine = line and endColumn >= column
+          )
+        |
+          scope order by startLine desc, startColumn desc, endLine, endColumn
+        )
+    }
+
+    private import IdeContextual<File>
+
+    private class RelevantNode extends Node {
+      RelevantNode() {
+        this.getScope() =
+          smallestEnclosingScope(getFileBySourceArchiveName(selectedSourceFile()),
+            selectedSourceLine(), selectedSourceColumn())
+      }
+
+      string getOrderDisambiguation() { result = "" }
+    }
+
+    import TestOutput<RelevantNode>
   }
 
   /** Provides a set of consistency queries. */
