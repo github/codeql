@@ -53,40 +53,50 @@ func checkExtractorRun() bool {
 	}
 }
 
-// tryBuildIfExists tries to run the command `cmd args...` if the file `buildFile` exists and is not
+// tryBuildIfExists tries to run the build commands `cmds` if the file `buildFile` exists and is not
 // a directory. Returns true if the command was successful and false if not.
-func tryBuildIfExists(buildFile, cmd string, args ...string) bool {
+func tryBuildIfExists(buildFile string, cmds []BuildCommand) bool {
 	if util.FileExists(buildFile) {
 		log.Printf("%s found.\n", buildFile)
-		return tryBuild(cmd, args...)
+		return tryBuild(cmds)
 	}
 	return false
 }
 
-// tryBuild tries to run `cmd args...`, returning true if successful and false if not.
-func tryBuild(cmd string, args ...string) bool {
-	log.Printf("Trying build command %s %v", cmd, args)
-	res := util.RunCmd(exec.Command(cmd, args...))
-	return res && (!CheckExtracted || checkExtractorRun())
+// tryBuild tries to run `cmds`, returning true if successful and false if not.
+func tryBuild(cmds []BuildCommand) bool {
+	for _, cmd := range cmds {
+		log.Printf("Trying build command %s %v", cmd.Command, cmd.Args)
+		if !util.RunCmd(exec.Command(cmd.Command, cmd.Args...)) {
+			return false
+		}
+	}
+	return !CheckExtracted || checkExtractorRun()
 }
 
 // If a project is accompanied by a build script (such as a makefile), then we try executing such
 // build scripts to build the project. This type represents pairs of script names to check for
-// and the names of corresponding build tools to invoke if those scripts exist.
+// and the corresponding build commands to invoke if those scripts exist.
 type BuildScript struct {
-	Tool     string // The name of the command to execute if the build script exists
-	Filename string // The name of the build script to check for
+	Commands []BuildCommand // The commands to execute if the build script exists
+	Filename string         // The name of the build script to check for
+}
+
+// Represents build commands comprised of command names and arguments.
+type BuildCommand struct {
+	Command string   // The name of the command to execute if the build script exists
+	Args    []string // Extra arguments to pass to the build command
 }
 
 // An array of build scripts to check for and corresponding commands that we can execute
 // if they exist.
 var BuildScripts = []BuildScript{
-	{Tool: "make", Filename: "Makefile"},
-	{Tool: "make", Filename: "makefile"},
-	{Tool: "make", Filename: "GNUmakefile"},
-	{Tool: "ninja", Filename: "build.ninja"},
-	{Tool: "./build", Filename: "build"},
-	{Tool: "./build.sh", Filename: "build.sh"},
+	{Filename: "Makefile", Commands: []BuildCommand{{Command: "make"}}},
+	{Filename: "makefile", Commands: []BuildCommand{{Command: "make"}}},
+	{Filename: "GNUmakefile", Commands: []BuildCommand{{Command: "make"}}},
+	{Filename: "build.ninja", Commands: []BuildCommand{{Command: "ninja"}}},
+	{Filename: "build", Commands: []BuildCommand{{Command: "./build"}}},
+	{Filename: "build.sh", Commands: []BuildCommand{{Command: "./build.sh"}}},
 }
 
 // Autobuild attempts to detect build systems based on the presence of build scripts from the
@@ -94,7 +104,7 @@ var BuildScripts = []BuildScript{
 // build scripts in the order given by `BuildScripts`.
 func Autobuild() bool {
 	for _, script := range BuildScripts {
-		if tryBuildIfExists(script.Filename, script.Tool) {
+		if tryBuildIfExists(script.Filename, script.Commands) {
 			return true
 		}
 	}
