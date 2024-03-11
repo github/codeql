@@ -1045,3 +1045,9 @@ void memset_test(char* buf) { // $ ast-def=buf ir-def=*buf
 	memset(buf, source(), 10);
 	sink(*buf); // $ ir MISSING: ast
 }
+
+void flow_out_of_address_with_local_flow() {
+  MyStruct a;
+  a.content = nullptr;
+  sink(&a); // $ SPURIOUS: ast
+}
