@@ -1,28 +1,10 @@
 edges
-<<<<<<< HEAD
-<<<<<<< HEAD
 | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:13:18:13:30 | call to Query | provenance |  |
 | TaintedPath.go:13:18:13:30 | call to Query | TaintedPath.go:16:29:16:40 | tainted_path | provenance |  |
 | TaintedPath.go:13:18:13:30 | call to Query | TaintedPath.go:20:57:20:68 | tainted_path | provenance |  |
+| TaintedPath.go:13:18:13:30 | call to Query | TaintedPath.go:67:39:67:56 | ...+... | provenance |  |
 | TaintedPath.go:20:57:20:68 | tainted_path | TaintedPath.go:20:28:20:69 | call to Join | provenance |  |
-| tst.go:14:2:14:39 | ... := ...[1] | tst.go:17:41:17:56 | selection of Filename | provenance |  |
-=======
-| TaintedPath.go:13:18:13:22 | selection of URL : pointer type | TaintedPath.go:16:29:16:40 | tainted_path |
-| TaintedPath.go:13:18:13:22 | selection of URL : pointer type | TaintedPath.go:20:28:20:69 | call to Join |
-| TaintedPath.go:13:18:13:22 | selection of URL : pointer type | TaintedPath.go:67:28:67:57 | call to Clean |
-| TaintedPath.go:13:18:13:22 | selection of URL : pointer type | TaintedPath.go:77:28:77:56 | call to Base |
-| tst.go:14:2:14:39 | ... := ...[1] : pointer type | tst.go:17:41:17:56 | selection of Filename |
->>>>>>> a45343fb6c (Add New Sanitizers and Modify Old Ones)
-=======
-| TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:13:18:13:30 | call to Query |
-| TaintedPath.go:13:18:13:30 | call to Query | TaintedPath.go:16:29:16:40 | tainted_path |
-| TaintedPath.go:13:18:13:30 | call to Query | TaintedPath.go:20:57:20:68 | tainted_path |
-| TaintedPath.go:13:18:13:30 | call to Query | TaintedPath.go:67:39:67:56 | ...+... |
-| TaintedPath.go:13:18:13:30 | call to Query | TaintedPath.go:77:38:77:55 | ...+... |
-| TaintedPath.go:20:57:20:68 | tainted_path | TaintedPath.go:20:28:20:69 | call to Join |
-| TaintedPath.go:67:39:67:56 | ...+... | TaintedPath.go:67:28:67:57 | call to Clean |
-| TaintedPath.go:77:38:77:55 | ...+... | TaintedPath.go:77:28:77:56 | call to Base |
->>>>>>> db14838a4f (resolve feedback)
+| TaintedPath.go:67:39:67:56 | ...+... | TaintedPath.go:67:28:67:57 | call to Clean | provenance |  |
 nodes
 | TaintedPath.go:13:18:13:22 | selection of URL | semmle.label | selection of URL |
 | TaintedPath.go:13:18:13:30 | call to Query | semmle.label | call to Query |
@@ -31,11 +13,8 @@ nodes
 | TaintedPath.go:20:57:20:68 | tainted_path | semmle.label | tainted_path |
 | TaintedPath.go:67:28:67:57 | call to Clean | semmle.label | call to Clean |
 | TaintedPath.go:67:39:67:56 | ...+... | semmle.label | ...+... |
-| TaintedPath.go:77:28:77:56 | call to Base | semmle.label | call to Base |
-| TaintedPath.go:77:38:77:55 | ...+... | semmle.label | ...+... |
 subpaths
 #select
 | TaintedPath.go:16:29:16:40 | tainted_path | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:16:29:16:40 | tainted_path | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
 | TaintedPath.go:20:28:20:69 | call to Join | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:20:28:20:69 | call to Join | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
 | TaintedPath.go:67:28:67:57 | call to Clean | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:67:28:67:57 | call to Clean | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
-| TaintedPath.go:77:28:77:56 | call to Base | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:77:28:77:56 | call to Base | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |

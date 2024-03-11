@@ -88,19 +88,6 @@ module TaintedPath {
     }
   }
 
-  /**
-   * A call to `filepath.Base(e)`, considered to sanitize `e` against path traversal.
-   */
-  class FilepathBaseSanitizer extends Sanitizer {
-    FilepathBaseSanitizer() {
-      exists(Function f, FunctionOutput outp |
-        f.hasQualifiedName("path/filepath", "Base") and
-        outp.isResult(0) and
-        this = outp.getNode(f.getACall())
-      )
-    }
-  }
-
   /**An call to ParseMultipartForm creates multipart.Form and cleans mutlpart.Form.FileHeader.Filename using path.Base() */
   class MultipartClean extends Sanitizer {
     MultipartClean() {
