@@ -263,20 +263,34 @@ module CallGraph {
   }
 
   /**
-   * Gets a step summary for tracking object literals.
-   *
-   * To avoid false flow from callbacks passed in via "named parameters", we only track object
-   * literals out of returns, not into calls.
+   * Holds if `node` has methods but appears in a position where it might be an object
+   * with callbacks pased in via "named parmaeters". This avoid false flow, we do not allow
+   * such objects to be tracked into calls.
    */
-  private StepSummary objectWithMethodsStep() { result = LevelStep() or result = ReturnStep() }
+  pragma[nomagic]
+  private predicate isNamedParameterArgument(DataFlow::ObjectLiteralNode node) {
+    shouldTrackObjectWithMethods(node) and
+    node = any(DataFlow::InvokeNode invoke).getAnArgument()
+  }
+
+  /** Gets a node that refers to the given object, via a limited form of type tracking. */
+  private DataFlow::SourceNode getAnAllocationSiteRef(
+    DataFlow::SourceNode node, DataFlow::TypeTracker t
+  ) {
+    shouldTrackObjectWithMethods(node) and
+    result = node and
+    t.start()
+    or
+    exists(DataFlow::TypeTracker t2 |
+      result = getAnAllocationSiteRef(node, t2).track(t2, t) and
+      (if isNamedParameterArgument(node) then t.hasCall() = false else any())
+    )
+  }
 
   /** Gets a node that refers to the given object, via a limited form of type tracking. */
   cached
   DataFlow::SourceNode getAnAllocationSiteRef(DataFlow::SourceNode node) {
-    shouldTrackObjectWithMethods(node) and
-    result = node
-    or
-    StepSummary::step(getAnAllocationSiteRef(node), result, objectWithMethodsStep())
+    result = getAnAllocationSiteRef(node, DataFlow::TypeTracker::end())
   }
 
   /**
