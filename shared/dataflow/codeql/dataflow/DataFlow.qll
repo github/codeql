@@ -376,6 +376,9 @@ module Configs<InputSig Lang> {
      */
     default int fieldFlowBranchLimit() { result = 2 }
 
+    /** Gets the access path limit. */
+    default int accessPathLimit() { result = Lang::accessPathLimit() }
+
     /**
      * Gets a data flow configuration feature to add restrictions to the set of
      * valid flow paths.
@@ -495,6 +498,9 @@ module Configs<InputSig Lang> {
      */
     default int fieldFlowBranchLimit() { result = 2 }
 
+    /** Gets the access path limit. */
+    default int accessPathLimit() { result = Lang::accessPathLimit() }
+
     /**
      * Gets a data flow configuration feature to add restrictions to the set of
      * valid flow paths.
@@ -583,6 +589,8 @@ module DataFlowMake<InputSig Lang> {
     private module C implements FullStateConfigSig {
       import DefaultState<Config>
       import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
     }
 
     import Impl<C>
@@ -599,6 +607,8 @@ module DataFlowMake<InputSig Lang> {
   module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
     private module C implements FullStateConfigSig {
       import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
     }
 
     import Impl<C>
