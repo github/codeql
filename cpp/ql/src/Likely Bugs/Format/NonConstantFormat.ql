@@ -37,6 +37,25 @@ class UncalledFunction extends Function {
   }
 }
 
+/**
+ * Holds if `t` cannot refer to a string. That is, it's a built-in
+ * or arithmetic type that is not a "`char` like" type.
+ */
+predicate cannotContainString(Type t) {
+  exists(Type unspecified |
+    unspecified = t.getUnspecifiedType() and
+    not unspecified instanceof UnknownType and
+    not unspecified instanceof CharType and
+    not unspecified instanceof WideCharType and
+    not unspecified instanceof Char8Type and
+    not unspecified instanceof Char16Type and
+    not unspecified instanceof Char32Type
+  |
+    unspecified instanceof ArithmeticType or
+    unspecified instanceof BuiltInType
+  )
+}
+
 predicate dataFlowOrTaintFlowFunction(Function func, FunctionOutput output) {
   func.(DataFlowFunction).hasDataFlow(_, output) or
   func.(TaintFunction).hasTaintFlow(_, output)
@@ -132,13 +151,24 @@ predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
 }
 
 module NonConstFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { isNonConst(source) }
+  predicate isSource(DataFlow::Node source) {
+    exists(Type t |
+      isNonConst(source) and
+      t = source.getType() and
+      not cannotContainString(t)
+    )
+  }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
 
   predicate isBarrier(DataFlow::Node node) {
     // Ignore tracing non-const through array indices
     exists(ArrayExpr a | a.getArrayOffset() = node.asIndirectExpr())
+    or
+    exists(Type t |
+      t = node.getType() and
+      cannotContainString(t)
+    )
   }
 }
 
