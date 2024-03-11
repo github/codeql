@@ -9,7 +9,7 @@ private import DataFlowImplSpecific as DataFlowImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 
-module Input implements InputSig<DataFlowImplSpecific::PythonDataFlow> {
+module Input implements InputSig<Location, DataFlowImplSpecific::PythonDataFlow> {
   class SummarizedCallableBase = string;
 
   ArgumentPosition callbackSelfParameterPosition() { result.isLambdaSelf() }
@@ -83,7 +83,7 @@ module Input implements InputSig<DataFlowImplSpecific::PythonDataFlow> {
   }
 }
 
-private import Make<DataFlowImplSpecific::PythonDataFlow, Input> as Impl
+private import Make<Location, DataFlowImplSpecific::PythonDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
