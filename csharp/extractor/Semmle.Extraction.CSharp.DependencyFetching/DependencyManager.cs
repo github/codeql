@@ -924,6 +924,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 return;
             }
 
+            var multipleVersions = notYetDownloadedPackages
+                .GroupBy(p => p.Name)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+
+            foreach (var package in multipleVersions)
+            {
+                logger.LogWarning($"Found multiple not yet restored packages with name '{package}'.");
+                notYetDownloadedPackages.Remove(new(package, PackageReferenceSource.PackagesConfig));
+            }
+
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
 
             var nugetConfigs = allFiles.SelectFileNamesByName("nuget.config").ToArray();
