@@ -480,7 +480,9 @@ module MakeImpl<InputSig Lang> {
     /**
      * Holds if field flow should be used for the given configuration.
      */
-    private predicate useFieldFlow() { Config::fieldFlowBranchLimit() >= 1 }
+    private predicate useFieldFlow() {
+      Config::fieldFlowBranchLimit() >= 1 and Config::accessPathLimit() > 0
+    }
 
     private predicate hasSourceCallCtx() {
       exists(FlowFeature feature | feature = Config::getAFeature() |
@@ -1329,15 +1331,6 @@ module MakeImpl<InputSig Lang> {
         pragma[nomagic]
         private predicate typeStrengthen(Typ t0, Ap ap, Typ t) {
           fwdFlow1(_, _, _, _, _, _, t0, t, ap, _) and t0 != t
-        }
-
-        bindingset[c, t, tail]
-        additional Ap apCons(Content c, Typ t, Ap tail) {
-          result = Param::apCons(c, t, tail) and
-          exists(int limit |
-            limit = Config::accessPathLimit() and
-            if tail instanceof ApNil then limit > 0 else limit > 1
-          )
         }
 
         pragma[nomagic]
@@ -2534,7 +2527,10 @@ module MakeImpl<InputSig Lang> {
 
       bindingset[c, t, tail]
       Ap apCons(Content c, Typ t, Ap tail) {
-        result = true and exists(c) and exists(t) and exists(tail)
+        result = true and
+        exists(c) and
+        exists(t) and
+        if tail = true then Config::accessPathLimit() > 1 else any()
       }
 
       class ApHeadContent = Unit;
@@ -3201,10 +3197,7 @@ module MakeImpl<InputSig Lang> {
       Typ getTyp(DataFlowType t) { result = t }
 
       bindingset[c, t, tail]
-      Ap apCons(Content c, Typ t, Ap tail) {
-        result.isCons(c, t, tail) and
-        Config::accessPathLimit() > tail.len()
-      }
+      Ap apCons(Content c, Typ t, Ap tail) { result.isCons(c, t, tail) }
 
       class ApHeadContent = Content;
 
@@ -4641,7 +4634,7 @@ module MakeImpl<InputSig Lang> {
 
       private newtype TPartialAccessPath =
         TPartialNil() or
-        TPartialCons(Content c, int len) { len in [1 .. accessPathLimit()] }
+        TPartialCons(Content c, int len) { len in [1 .. Config::accessPathLimit()] }
 
       /**
        * Conceptually a list of `Content`s, but only the first
