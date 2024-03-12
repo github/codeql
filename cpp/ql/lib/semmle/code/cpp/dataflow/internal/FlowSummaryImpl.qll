@@ -48,7 +48,10 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
     // needed to support `Argument[x..y]` ranges and `Argument[-1]`
     token.getName() = "Argument" and
     exists(int pos | pos = AccessPath::parseInt(token.getAnArgument()) |
-      result = TDirectPosition(pos)
+      pos >= 0 and result = TDirectPosition(pos)
+      or
+      // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
+      pos = -1 and result = TIndirectionPosition(pos, 1)
     )
   }
 
@@ -57,7 +60,10 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
     // needed to support `Parameter[x..y]` ranges and `Parameter[-1]`
     token.getName() = "Parameter" and
     exists(int pos | pos = AccessPath::parseInt(token.getAnArgument()) |
-      result = TDirectPosition(pos)
+      pos >= 0 and result = TDirectPosition(pos)
+      or
+      // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
+      pos = -1 and result = TIndirectionPosition(pos, 1)
     )
   }
 }

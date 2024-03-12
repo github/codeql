@@ -6,11 +6,11 @@
 | tests.cpp:119:6:119:18 | [summary param] 1 in madArg0ToArg1 | ParameterNode | madArg0ToArg1 | madArg0ToArg1 |
 | tests.cpp:119:6:119:18 | [summary] to write: Argument[1] in madArg0ToArg1 | PostUpdateNode | madArg0ToArg1 | madArg0ToArg1 |
 | tests.cpp:180:7:180:19 | [summary param] 0 in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
-| tests.cpp:180:7:180:19 | [summary param] this in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
-| tests.cpp:180:7:180:19 | [summary] to write: Argument[this] in madArg0ToSelf | PostUpdateNode | madArg0ToSelf | madArg0ToSelf |
-| tests.cpp:181:6:181:20 | [summary param] this in madSelfToReturn | ParameterNode | madSelfToReturn | madSelfToReturn |
+| tests.cpp:180:7:180:19 | [summary param] this indirection in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:180:7:180:19 | [summary] to write: Argument[this indirection] in madArg0ToSelf | PostUpdateNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:181:6:181:20 | [summary param] this indirection in madSelfToReturn | ParameterNode | madSelfToReturn | madSelfToReturn |
 | tests.cpp:181:6:181:20 | [summary] to write: ReturnValue in madSelfToReturn | ReturnNode | madSelfToReturn | madSelfToReturn |
-| tests.cpp:209:7:209:30 | [summary param] this in namespaceMadSelfToReturn | ParameterNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
+| tests.cpp:209:7:209:30 | [summary param] this indirection in namespaceMadSelfToReturn | ParameterNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
 | tests.cpp:209:7:209:30 | [summary] to write: ReturnValue in namespaceMadSelfToReturn | ReturnNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
 | tests.cpp:305:5:305:29 | [summary param] 0 in madCallArg0ReturnToReturn | ParameterNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
 | tests.cpp:305:5:305:29 | [summary] read: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | PostUpdateNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |

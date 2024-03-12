@@ -253,7 +253,7 @@ void test_class_members() {
 	mc2.madArg0ToSelf(0);
 	sink(mc2);
 	mc2.madArg0ToSelf(source());
-	sink(mc2); // $ MISSING: ir
+	sink(mc2); // $ ir
 
 	ptr = new MyClass();
 	sink(*ptr);
@@ -268,11 +268,11 @@ void test_class_members() {
 	mc4 = source2();
 	mc4_ptr = &mc4;
 	sink(mc4); // $ ir
-	sink(mc4.madSelfToReturn()); // $ MISSING: ir
+	sink(mc4.madSelfToReturn()); // $ ir
 	sink(mc4.notASummary());
-	sink(mc4_ptr->madSelfToReturn()); // $ MISSING: ir
+	sink(mc4_ptr->madSelfToReturn()); // $ ir
 	sink(mc4_ptr->notASummary());
-	sink(source2().madSelfToReturn()); // $ ir
+	sink(source2().madSelfToReturn()); // $ MISSING: ir (works if flow is modelled from qualifier *address*)
 	sink(source2().notASummary());
 
 	mc5.val = source();
@@ -280,16 +280,16 @@ void test_class_members() {
 
 	mnc2 = source3();
 	mnc2_ptr = &mnc2;
-	sink(mnc2.namespaceMadSelfToReturn()); // $ MISSING: ir
-	sink(mnc2_ptr->namespaceMadSelfToReturn()); // $ MISSING: ir
-	sink(source3().namespaceMadSelfToReturn()); // $ ir
+	sink(mnc2.namespaceMadSelfToReturn()); // $ ir
+	sink(mnc2_ptr->namespaceMadSelfToReturn()); // $ ir
+	sink(source3().namespaceMadSelfToReturn()); // $ MISSING: ir (works if flow is modelled from qualifier *address*)
 
 	// test class member sources + sinks + summaries together
 
 	mc.memberMadSinkArg0(mc.memberRemoteMadSource()); // $ ir
 
 	mc6.madArg0ToSelf(source());
-	sink(mc6.madSelfToReturn()); // $ MISSING: ir
+	sink(mc6.madSelfToReturn()); // $ ir
 
 	mc7.madArg0ToField(source());
 	sink(mc7.madFieldToReturn()); // $ MISSING: ir
