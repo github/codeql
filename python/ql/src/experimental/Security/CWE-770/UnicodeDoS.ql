@@ -23,41 +23,24 @@ class UnicodeCompatibilityNormalize extends API::CallNode {
   int argIdx;
 
   UnicodeCompatibilityNormalize() {
-    exists(API::CallNode cn, DataFlow::Node form |
-      cn = API::moduleImport("unicodedata").getMember("normalize").getACall() and
-      form.asExpr().(StrConst).getS() in ["NFKC", "NFKD"] and
-      TaintTracking::localTaint(form, cn.getArg(0)) and
-      this = cn and
-      argIdx = 1
-    )
+    (
+      this = API::moduleImport("unicodedata").getMember("normalize").getACall() and
+      this.getParameter(0).getAValueReachingSink().asExpr().(StrConst).getText() in ["NFKC", "NFKD"]
+      or
+      this = API::moduleImport("pyunormalize").getMember("normalize").getACall() and
+      this.getParameter(0).getAValueReachingSink().asExpr().(StrConst).getText() in ["NFKC", "NFKD"]
+    ) and
+    argIdx = 1
     or
-    exists(API::CallNode cn |
-      cn = API::moduleImport("unidecode").getMember("unidecode").getACall() and
-      this = cn and
-      argIdx = 0
-    )
-    or
-    exists(API::CallNode cn |
-      cn = API::moduleImport("pyunormalize").getMember(["NFKC", "NFKD"]).getACall() and
-      this = cn and
-      argIdx = 0
-    )
-    or
-    exists(API::CallNode cn, DataFlow::Node form |
-      cn = API::moduleImport("pyunormalize").getMember("normalize").getACall() and
-      form.asExpr().(StrConst).getS() in ["NFKC", "NFKD"] and
-      TaintTracking::localTaint(form, cn.getArg(0)) and
-      this = cn and
-      argIdx = 1
-    )
-    or
-    exists(API::CallNode cn, DataFlow::Node form |
-      cn = API::moduleImport("textnorm").getMember("normalize_unicode").getACall() and
-      form.asExpr().(StrConst).getS() in ["NFKC", "NFKD"] and
-      TaintTracking::localTaint(form, cn.getArg(1)) and
-      this = cn and
-      argIdx = 0
-    )
+    (
+      this = API::moduleImport("textnorm").getMember("normalize_unicode").getACall() and
+      this.getParameter(1).getAValueReachingSink().asExpr().(StrConst).getText() in ["NFKC", "NFKD"]
+      or
+      this = API::moduleImport("unidecode").getMember("unidecode").getACall()
+      or
+      this = API::moduleImport("pyunormalize").getMember(["NFKC", "NFKD"]).getACall()
+    ) and
+    argIdx = 0
   }
 
   DataFlow::Node getPathArg() { result = this.getArg(argIdx) }
@@ -73,7 +56,7 @@ predicate underAValue(DataFlow::GuardNode g, ControlFlowNode node, boolean branc
         branch = true and
         cn.operands(n.asCfgNode(), op_lt, _)
         or
-        // LIMIT >= arg OR LIMIT > arg 
+        // LIMIT >= arg OR LIMIT > arg
         (op_gt = any(GtE gte) or op_gt = any(Gt gt)) and
         branch = true and
         cn.operands(_, op_gt, n.asCfgNode())
