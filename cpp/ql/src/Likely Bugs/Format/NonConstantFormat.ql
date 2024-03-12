@@ -109,35 +109,28 @@ predicate isNonConst(DataFlow::Node node) {
   // i.e., functions that with unknown bodies and are not known to define the output through its input
   //       are considered as possible non-const sources
   // The function's output must also not be const to be considered a non-const source
-  (
+  exists(Function func, CallInstruction call |
+    not func.hasDefinition() and
+    func = call.getStaticCallTarget()
+  |
     // Case 1: It's a known dataflow or taintflow function with flow to the return value
-    exists(Function func, CallInstruction call |
-      call.getUnconvertedResultExpression() = node.asIndirectExpr() and
-      func = call.getStaticCallTarget() and
-      not exists(FunctionOutput output |
-        dataFlowOrTaintFlowFunction(func, output) and
-        output.isReturnValueDeref() and
-        node = callOutput(call, output)
-      )
+    call.getUnconvertedResultExpression() = node.asIndirectExpr() and
+    not exists(FunctionOutput output |
+      dataFlowOrTaintFlowFunction(func, output) and
+      output.isReturnValueDeref(_) and
+      node = callOutput(call, output)
     )
     or
-    // Case 1: It's a known dataflow or taintflow function with flow to an output parameter
-    exists(Function func, int i, CallInstruction call |
+    // Case 2: It's a known dataflow or taintflow function with flow to an output parameter
+    exists(int i |
       call.getPositionalArgumentOperand(i).getDef().getUnconvertedResultExpression() =
         node.asDefiningArgument() and
-      func = call.getStaticCallTarget() and
       not exists(FunctionOutput output |
         dataFlowOrTaintFlowFunction(func, output) and
-        output.isParameterDeref(i) and
+        output.isParameterDeref(i, _) and
         node = callOutput(call, output)
       )
     )
-  ) and
-  not exists(Call c |
-    c.getTarget().hasDefinition() and
-    if node instanceof DataFlow::DefinitionByReferenceNode
-    then c.getAnArgument() = node.asDefiningArgument()
-    else c = node.asIndirectExpr()
   )
 }
 
