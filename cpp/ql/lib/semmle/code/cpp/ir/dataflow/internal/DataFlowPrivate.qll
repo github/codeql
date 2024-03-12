@@ -807,7 +807,8 @@ predicate jumpStep(Node n1, Node n2) {
  * value of `node1`.
  *
  * The boolean `certain` is true if the destination address does not involve
- * any pointer arithmetic, and false otherwise.
+ * any pointer arithmetic, and false otherwise. This has to do with whether a
+ * store step can be used to clear a field (see `clearsContent`).
  */
 predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
   exists(int indirectionIndex1, int numberOfLoads, StoreInstruction store |
@@ -830,7 +831,7 @@ predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
   // models-as-data summarized flow
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1.(FlowSummaryNode).getSummaryNode(), c,
     node2.(FlowSummaryNode).getSummaryNode()) and
-  certain = [true, false] // TODO
+  certain = true
 }
 
 /**
