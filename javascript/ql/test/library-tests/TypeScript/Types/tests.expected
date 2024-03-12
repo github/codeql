@@ -669,6 +669,29 @@ getExprType
 | tst.ts:491:29:491:36 | "yellow" | "yellow" |
 | tst.ts:491:39:491:45 | "green" | "green" |
 | tst.ts:491:49:491:56 | "yellow" | "yellow" |
+| tst.ts:493:9:493:13 | myObj | Partial<Record<"even" \| "odd", number[]>> |
+| tst.ts:493:17:493:22 | Object | ObjectConstructor |
+| tst.ts:493:17:493:30 | Object.groupBy | <K extends PropertyKey, T>(items: Iterable<T>, ... |
+| tst.ts:493:17:495:4 | Object. ... ";\\n  }) | Partial<Record<"even" \| "odd", number[]>> |
+| tst.ts:493:24:493:30 | groupBy | <K extends PropertyKey, T>(items: Iterable<T>, ... |
+| tst.ts:493:32:493:49 | [0, 1, 2, 3, 4, 5] | Iterable<number> |
+| tst.ts:493:33:493:33 | 0 | 0 |
+| tst.ts:493:36:493:36 | 1 | 1 |
+| tst.ts:493:39:493:39 | 2 | 2 |
+| tst.ts:493:42:493:42 | 3 | 3 |
+| tst.ts:493:45:493:45 | 4 | 4 |
+| tst.ts:493:48:493:48 | 5 | 5 |
+| tst.ts:493:52:495:3 | (num, i ... d";\\n  } | (num: number, index: number) => "even" \| "odd" |
+| tst.ts:493:53:493:55 | num | number |
+| tst.ts:493:58:493:62 | index | number |
+| tst.ts:494:12:494:14 | num | number |
+| tst.ts:494:12:494:18 | num % 2 | number |
+| tst.ts:494:12:494:24 | num % 2 === 0 | boolean |
+| tst.ts:494:12:494:40 | num % 2 ... : "odd" | "even" \| "odd" |
+| tst.ts:494:18:494:18 | 2 | 2 |
+| tst.ts:494:24:494:24 | 0 | 0 |
+| tst.ts:494:28:494:33 | "even" | "even" |
+| tst.ts:494:36:494:40 | "odd" | "odd" |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -1374,6 +1397,7 @@ unionIndex
 | "boolean" | 3 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "c" | 2 | "a" \| "b" \| "c" |
 | "circle" | 0 | "circle" \| "square" |
+| "even" | 0 | "even" \| "odd" |
 | "function" | 7 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "green" | 1 | "red" \| "green" \| "blue" |
 | "green" | 1 | "red" \| "green" \| "yellow" |
@@ -1381,6 +1405,7 @@ unionIndex
 | "number" | 1 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "number" | 1 | keyof TypeMap |
 | "object" | 6 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "odd" | 1 | "even" \| "odd" |
 | "red" | 0 | "red" \| "green" \| "blue" |
 | "red" | 0 | "red" \| "green" \| "yellow" |
 | "square" | 1 | "circle" \| "square" |

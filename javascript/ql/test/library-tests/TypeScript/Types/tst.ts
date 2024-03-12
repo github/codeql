@@ -489,4 +489,8 @@ module TS54 {
   }
 
   createStreetLight(["red", "yellow", "green"], "yellow");
+
+  const myObj = Object.groupBy([0, 1, 2, 3, 4, 5], (num, index) => {
+    return num % 2 === 0 ? "even": "odd";
+  });
 }
