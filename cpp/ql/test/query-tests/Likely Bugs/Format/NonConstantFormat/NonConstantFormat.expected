@@ -7,7 +7,6 @@ edges
 | nested.cpp:34:37:34:39 | *fmt | nested.cpp:35:19:35:21 | *fmt | provenance |  |
 | nested.cpp:35:19:35:21 | *fmt | nested.cpp:27:32:27:34 | *fmt | provenance |  |
 | nested.cpp:42:24:42:34 | *call to ext_fmt_str | nested.cpp:34:37:34:39 | *fmt | provenance |  |
-| nested.cpp:86:19:86:46 | *call to __builtin_alloca | nested.cpp:87:18:87:20 | *fmt | provenance |  |
 | test.cpp:46:27:46:30 | **argv | test.cpp:130:20:130:26 | *access to array | provenance |  |
 | test.cpp:167:31:167:34 | *data | test.cpp:170:12:170:14 | *res | provenance |  |
 | test.cpp:193:32:193:34 | *str | test.cpp:195:31:195:33 | *str | provenance |  |
@@ -35,8 +34,6 @@ nodes
 | nested.cpp:35:19:35:21 | *fmt | semmle.label | *fmt |
 | nested.cpp:42:24:42:34 | *call to ext_fmt_str | semmle.label | *call to ext_fmt_str |
 | nested.cpp:79:32:79:38 | *call to get_fmt | semmle.label | *call to get_fmt |
-| nested.cpp:86:19:86:46 | *call to __builtin_alloca | semmle.label | *call to __builtin_alloca |
-| nested.cpp:87:18:87:20 | *fmt | semmle.label | *fmt |
 | test.cpp:46:27:46:30 | **argv | semmle.label | **argv |
 | test.cpp:130:20:130:26 | *access to array | semmle.label | *access to array |
 | test.cpp:167:31:167:34 | *data | semmle.label | *data |
@@ -68,7 +65,6 @@ subpaths
 | NonConstantFormat.c:45:9:45:48 | *call to gettext | NonConstantFormat.c:45:11:45:47 | *call to any_random_function | NonConstantFormat.c:45:9:45:48 | *call to gettext | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | NonConstantFormat.c:45:2:45:7 | call to printf | printf |
 | nested.cpp:21:23:21:26 | *fmt0 | nested.cpp:42:24:42:34 | *call to ext_fmt_str | nested.cpp:21:23:21:26 | *fmt0 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | nested.cpp:21:5:21:12 | call to snprintf | snprintf |
 | nested.cpp:79:32:79:38 | *call to get_fmt | nested.cpp:79:32:79:38 | *call to get_fmt | nested.cpp:79:32:79:38 | *call to get_fmt | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | nested.cpp:79:5:79:14 | call to diagnostic | diagnostic |
-| nested.cpp:87:18:87:20 | *fmt | nested.cpp:86:19:86:46 | *call to __builtin_alloca | nested.cpp:87:18:87:20 | *fmt | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | nested.cpp:87:7:87:16 | call to diagnostic | diagnostic |
 | test.cpp:130:20:130:26 | *access to array | test.cpp:46:27:46:30 | **argv | test.cpp:130:20:130:26 | *access to array | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:130:2:130:10 | call to sprintf | sprintf |
 | test.cpp:170:12:170:14 | *res | test.cpp:167:31:167:34 | *data | test.cpp:170:12:170:14 | *res | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:170:5:170:10 | call to printf | printf |
 | test.cpp:195:31:195:33 | *str | test.cpp:193:32:193:34 | *str | test.cpp:195:31:195:33 | *str | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | test.cpp:195:3:195:18 | call to StringCchPrintfW | StringCchPrintfW |
