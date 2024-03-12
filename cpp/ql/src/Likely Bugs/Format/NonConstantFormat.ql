@@ -49,7 +49,9 @@ predicate cannotContainString(Type t) {
     not unspecified instanceof WideCharType and
     not unspecified instanceof Char8Type and
     not unspecified instanceof Char16Type and
-    not unspecified instanceof Char32Type
+    not unspecified instanceof Char32Type and
+    // C often defines `wchar_t` as `unsigned short`
+    unspecified = any(ShortType short | not short.isUnsigned())
   |
     unspecified instanceof ArithmeticType or
     unspecified instanceof BuiltInType
