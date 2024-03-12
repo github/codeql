@@ -48,7 +48,9 @@ private module Cached {
         or
         summarizedLoadStoreStep(_, _, fromProp, toProp)
       } or
-      WithoutPropStep(PropertySet props) { SharedTypeTrackingStep::withoutPropStep(_, _, props) }
+      WithoutPropStep(PropertySet props) { SharedTypeTrackingStep::withoutPropStep(_, _, props) } or
+      NoPropStep() or
+      LoadAnyProp()
   }
 
   /**
@@ -223,6 +225,10 @@ class StepSummary extends TStepSummary {
   /** Gets a textual representation of this step summary. */
   string toString() {
     this instanceof LevelStep and result = "level"
+    or
+    this instanceof NoPropStep and result = "no-prop"
+    or
+    this instanceof LoadAnyProp and result = "load-any"
     or
     this instanceof CallStep and result = "call"
     or

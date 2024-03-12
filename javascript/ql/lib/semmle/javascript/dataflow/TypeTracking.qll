@@ -57,6 +57,10 @@ class TypeTracker extends TTypeTracker {
     step = LevelStep() and
     result = this
     or
+    step = NoPropStep() and
+    prop = "" and
+    result = this
+    or
     exists(string toProp | step = LoadStoreStep(prop, toProp) |
       result = MkTypeTracker(hasCall, toProp)
     )
