@@ -19047,6 +19047,49 @@ temp.cpp:
 #   39|           Type = [Class] ClassWithDestructor2
 #   39|           ValueCategory = prvalue
 #   40|     getStmt(1): [ReturnStmt] return ...
+#   42| [TopLevelFunction] void temp_test6(bool)
+#   42|   <params>: 
+#   42|     getParameter(0): [Parameter] b
+#   42|         Type = [BoolType] bool
+#   42|   getEntryPoint(): [BlockStmt] { ... }
+#   43|     getStmt(0): [ExprStmt] ExprStmt
+#   43|       getExpr(): [ConditionalExpr] ... ? ... : ...
+#   43|           Type = [PlainCharType] char
+#   43|           ValueCategory = prvalue
+#   43|         getCondition(): [VariableAccess] b
+#   43|             Type = [BoolType] bool
+#   43|             ValueCategory = prvalue(load)
+#   43|         getThen(): [FunctionCall] call to get_x
+#   43|             Type = [PlainCharType] char
+#   43|             ValueCategory = prvalue
+#   43|           getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   43|               Type = [VoidType] void
+#   43|               ValueCategory = prvalue
+#   43|           getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   43|               Type = [Class] ClassWithDestructor2
+#   43|               ValueCategory = prvalue(load)
+#   43|         getElse(): [FunctionCall] call to get_x
+#   43|             Type = [PlainCharType] char
+#   43|             ValueCategory = prvalue
+#   43|           getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   43|               Type = [VoidType] void
+#   43|               ValueCategory = prvalue
+#   43|           getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   43|               Type = [Class] ClassWithDestructor2
+#   43|               ValueCategory = prvalue(load)
+#   43|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   43|             Type = [VoidType] void
+#   43|             ValueCategory = prvalue
+#   43|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   43|               Type = [Class] ClassWithDestructor2
+#   43|               ValueCategory = xvalue
+#   43|         getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor2
+#   43|             Type = [VoidType] void
+#   43|             ValueCategory = prvalue
+#   43|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   43|               Type = [Class] ClassWithDestructor2
+#   43|               ValueCategory = xvalue
+#   44|     getStmt(1): [ReturnStmt] return ...
 try_except.c:
 #    3| [TopLevelFunction] void ProbeFunction()
 #    3|   <params>: 

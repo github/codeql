@@ -38,3 +38,7 @@ void temp_test4() {
 void temp_test5(bool b) {
   b ? ClassWithDestructor2() : ClassWithDestructor2();
 }
+
+void temp_test6(bool b) {
+  b ? ClassWithDestructor2().get_x(): ClassWithDestructor2().get_x();
+}
