@@ -21,6 +21,28 @@ def test_tuple(index_arg):
         print(tup[i])
 
 
+    # nested tuples
+    nested_tuples = ((tracked, other), (other, tracked)) # $tracked
+
+    nested_tuples[0][0] # $ MISSING: tracked
+    nested_tuples[0][1]
+    nested_tuples[1][0]
+    nested_tuples[1][1] # $ MISSING: tracked
+
+    (aa, ab), (ba, bb) = nested_tuples
+    aa # $ MISSING: tracked
+    ab
+    ba
+    bb # $ MISSING: tracked
+
+
+    # non-precise access is not supported right now (and it's not 100% clear if we want
+    # to support it, or if it will lead to bad results)
+    for (x, y) in nested_tuples:
+        x
+        y
+
+
 def test_dict(key_arg):
     d1 = {"t": tracked, "o": other} # $tracked
     d1["t"] # $ tracked
