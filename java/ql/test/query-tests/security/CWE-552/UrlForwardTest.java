@@ -85,7 +85,41 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	@GetMapping("/good1")
 	public void good1(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher("/index.jsp?token=" + url).forward(request, response);
+			request.getRequestDispatcher("/index.jsp?token=" + url).forward(request, response); // $ SPURIOUS: hasUrlForward
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// BAD: appended to a prefix without path sanitization
+	@GetMapping("/bad8")
+	public void bad8(String urlPath, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			String url = "/pages" + urlPath;
+			request.getRequestDispatcher(url).forward(request, response); // $ hasUrlForward
+		} catch (ServletException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	// GOOD: appended to a prefix with path sanitization
+	@GetMapping("/good2")
+	public void good2(String urlPath, HttpServletRequest request, HttpServletResponse response) {
+		try {
+			while (urlPath.contains("%")) {
+				urlPath = URLDecoder.decode(urlPath, "UTF-8");
+			}
+
+			if (!urlPath.contains("..") && !urlPath.startsWith("/WEB-INF")) {
+				// Note: path injection sanitizer does not account for string concatenation instead of a `startswith` check
+				String url = "/pages" + urlPath;
+				request.getRequestDispatcher(url).forward(request, response);
+			}
+
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

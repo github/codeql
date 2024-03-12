@@ -41,8 +41,7 @@ abstract class UrlForwardBarrier extends DataFlow::Node { }
 
 private class PrimitiveBarrier extends UrlForwardBarrier instanceof SimpleTypeSanitizer { }
 
-/** A barrier for URLs appended to a prefix. */
-private class FollowsBarrierPrefix extends UrlForwardBarrier {
+private class FollowsBarrierPrefix extends DataFlow::Node {
   FollowsBarrierPrefix() { this.asExpr() = any(BarrierPrefix fp).getAnAppendedExpression() }
 }
 
@@ -55,14 +54,16 @@ private class BarrierPrefix extends InterestingPrefix {
   override int getOffset() { result = 0 }
 }
 
-/** A barrier that protects against path injection vulnerabilities while accounting for URL encoding. */
+/**
+ * A barrier that protects against path injection vulnerabilities while accounting
+ * for URL encoding and concatenated prefixes.
+ */
 private class UrlPathBarrier extends UrlForwardBarrier instanceof PathInjectionSanitizer {
   UrlPathBarrier() {
-    this instanceof ExactPathMatchSanitizer
-    or
-    this instanceof NoUrlEncodingBarrier
-    or
-    this instanceof FullyDecodesUrlBarrier
+    this instanceof ExactPathMatchSanitizer or
+    this instanceof NoUrlEncodingBarrier or
+    this instanceof FullyDecodesUrlBarrier or
+    this instanceof FollowsBarrierPrefix
   }
 }
 
