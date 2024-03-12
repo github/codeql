@@ -1164,17 +1164,15 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
 
   /**
    * Gets the data flow node that this call targets.
-   * OR
-   * Gets the data flow node that receives the result of the call.
-   * TODO: which is right?
    */
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
-  //  override CallTargetOperand getCallTargetOperand() TODO
-  override DataFlowCallable getStaticCallTarget() { result = TSummarizedCallable(c) } // TODO: is this right?
+  // no implementation for `getCallTargetOperand()`, `getStaticCallTarget()`
+  // or `getArgumentOperand(int index)`. This is because the flow summary
+  // library is responsible for finding the call target, and there are no
+  // IR nodes available for the call target operand or argument operands.
 
-  //  override ArgumentOperand getArgumentOperand(int index) TODO
-  override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) } // TODO: is this right?
+  override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
