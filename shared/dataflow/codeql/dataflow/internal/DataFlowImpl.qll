@@ -1334,8 +1334,10 @@ module MakeImpl<InputSig Lang> {
         bindingset[c, t, tail]
         additional Ap apCons(Content c, Typ t, Ap tail) {
           result = Param::apCons(c, t, tail) and
-          Config::accessPathLimit() > 0 and
-          if tail instanceof ApNil then any() else Config::accessPathLimit() > 1
+          exists(int limit |
+            limit = Config::accessPathLimit() and
+            if tail instanceof ApNil then limit > 0 else limit > 1
+          )
         }
 
         pragma[nomagic]
