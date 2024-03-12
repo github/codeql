@@ -8,4 +8,4 @@ private import JsonStringify
 private import Maps
 private import Promises
 private import Sets
-private import Strings2
+private import Strings
