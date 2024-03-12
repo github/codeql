@@ -71,35 +71,8 @@ class Declaration extends NamedElement, @declaration {
 
   override string toString() { result = this.getName() }
 
-  deprecated override predicate hasQualifiedName(string qualifier, string name) {
-    QualifiedName<QualifiedNameInput>::hasQualifiedName(this, qualifier, name)
-  }
-
   override predicate hasFullyQualifiedName(string qualifier, string name) {
     QualifiedName<FullyQualifiedNameInput>::hasQualifiedName(this, qualifier, name)
-  }
-
-  /**
-   * DEPRECATED: Use `getFullyQualifiedNameWithTypes` instead.
-   *
-   * Gets the fully qualified name of this declaration, including types, for example
-   * the fully qualified name with types of `M` on line 3 is `N.C.M(int, string)` in
-   *
-   * ```csharp
-   * namespace N {
-   *   class C {
-   *     void M(int i, string s) { }
-   *   }
-   * }
-   * ```
-   */
-  deprecated string getQualifiedNameWithTypes() {
-    exists(string qual |
-      qual = this.getDeclaringType().getQualifiedName() and
-      if this instanceof NestedType
-      then result = qual + "+" + this.toStringWithTypes()
-      else result = qual + "." + this.toStringWithTypes()
-    )
   }
 
   /**
@@ -262,17 +235,6 @@ class Modifiable extends Declaration, @modifiable {
 class Member extends Modifiable, @member {
   /** Gets an access to this member. */
   MemberAccess getAnAccess() { result.getTarget() = this }
-
-  /**
-   * DEPRECATED: Use `hasFullyQualifiedName` instead.
-   *
-   * Holds if this member has name `name` and is defined in type `type`
-   * with namespace `namespace`.
-   */
-  cached
-  deprecated final predicate hasQualifiedName(string namespace, string type, string name) {
-    QualifiedName<QualifiedNameInput>::hasQualifiedName(this, namespace, type, name)
-  }
 
   /**
    * Holds if this member has name `name` and is defined in type `type`
