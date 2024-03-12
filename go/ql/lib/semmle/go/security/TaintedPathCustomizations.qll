@@ -88,7 +88,7 @@ module TaintedPath {
     }
   }
 
-  /**An call to ParseMultipartForm creates multipart.Form and cleans mutlpart.Form.FileHeader.Filename using path.Base() */
+  /**An call to ParseMultipartForm creates multipart.Form and cleans multipart.Form.FileHeader.Filename using path.Base() */
   class MultipartClean extends Sanitizer {
     MultipartClean() {
       exists(DataFlow::FieldReadNode frn |
