@@ -92,10 +92,10 @@ extensions:
       - ["org.springframework.util", "PropertyPlaceholderHelper", False, "parseStringValue", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.util", "PropertyPlaceholderHelper", False, "replacePlaceholders", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.util", "PropertyPlaceholderHelper", False, "replacePlaceholders", "(java.lang.String,java.util.Properties)", "", "Argument[1].MapValue", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.util", "ResourceUtils", False, "extractArchiveURL", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.util", "ResourceUtils", False, "extractJarFileURL", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.util", "ResourceUtils", False, "getFile", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.springframework.util", "ResourceUtils", False, "getURL", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["org.springframework.util", "ResourceUtils", False, "extractArchiveURL", "", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! model already exists as summary
+      - ["org.springframework.util", "ResourceUtils", False, "extractJarFileURL", "", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! model already exists as summary
+      - ["org.springframework.util", "ResourceUtils", False, "getFile", "", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! model already exists as summary
+      - ["org.springframework.util", "ResourceUtils", False, "getURL", "", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! model already exists as summary
       - ["org.springframework.util", "ResourceUtils", False, "toURI", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.util", "RouteMatcher", True, "combine", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.util", "RouteMatcher", True, "matchAndExtract", "", "", "Argument[0]", "ReturnValue.MapKey", "taint", "manual"]
