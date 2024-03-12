@@ -63,6 +63,14 @@ predicate dataFlowOrTaintFlowFunction(Function func, FunctionOutput output) {
   func.(TaintFunction).hasTaintFlow(_, output)
 }
 
+/** Holds if `func` is declared inside the source root. */
+predicate isInsideSourceRoot(Function func) {
+  exists(File f |
+    f = func.getFile() and
+    exists(f.getRelativePath())
+  )
+}
+
 /**
  * Holds if `node` is a non-constant source of data flow for non-const format string detection.
  * This is defined as either:
@@ -111,7 +119,8 @@ predicate isNonConst(DataFlow::Node node) {
   // The function's output must also not be const to be considered a non-const source
   exists(Function func, CallInstruction call |
     not func.hasDefinition() and
-    func = call.getStaticCallTarget()
+    func = call.getStaticCallTarget() and
+    isInsideSourceRoot(func)
   |
     // Case 1: It's a known dataflow or taintflow function with flow to the return value
     call.getUnconvertedResultExpression() = node.asIndirectExpr() and
