@@ -80,7 +80,7 @@ module Completion {
 }
 
 module CfgScope {
-  abstract class CfgScope extends WorkflowNode { }
+  abstract class CfgScope extends AstNode { }
 
   class WorkflowScope extends CfgScope instanceof Workflow { }
 
@@ -215,7 +215,7 @@ private class StrategyTree extends StandardPreOrderTree instanceof Strategy {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        child = super.getAMatrixVar() and l = child.getLocation()
+        child = super.getAMatrixVarExpr() and l = child.getLocation()
       |
         child
         order by
@@ -224,15 +224,14 @@ private class StrategyTree extends StandardPreOrderTree instanceof Strategy {
   }
 }
 
-private class JobTree extends StandardPreOrderTree instanceof Job {
+private class JobTree extends StandardPreOrderTree instanceof LocalJob {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
         (
           child = super.getAStep() or
           child = super.getOutputs() or
-          child = super.getStrategy() or
-          child = super.getUses()
+          child = super.getStrategy()
         ) and
         l = child.getLocation()
       |
@@ -261,7 +260,7 @@ private class RunTree extends StandardPreOrderTree instanceof Run {
   override ControlFlowTree getChildNode(int i) {
     result =
       rank[i](AstNode child, Location l |
-        (child = super.getInScopeEnvVarExpr(_) or child = super.getScript()) and
+        (child = super.getInScopeEnvVarExpr(_) or child = super.getAnScriptExpr()) and
         l = child.getLocation()
       |
         child
@@ -271,10 +270,10 @@ private class RunTree extends StandardPreOrderTree instanceof Run {
   }
 }
 
-private class StringValueTree extends StandardPreOrderTree instanceof StringValue {
+private class ScalarValueTree extends StandardPreOrderTree instanceof ScalarValue {
   override ControlFlowTree getChildNode(int i) {
     result =
-      rank[i](ExpressionNode child, Location l |
+      rank[i](Expression child, Location l |
         child = super.getAChildNode() and
         l = child.getLocation()
       |
@@ -289,6 +288,6 @@ private class UsesLeaf extends LeafTree instanceof Uses { }
 
 private class InputTree extends LeafTree instanceof Input { }
 
-private class StringValueLeaf extends LeafTree instanceof StringValue { }
+private class ScalarValueLeaf extends LeafTree instanceof ScalarValue { }
 
-private class ExpressionLeaf extends LeafTree instanceof ExpressionNode { }
+private class ExpressionLeaf extends LeafTree instanceof Expression { }

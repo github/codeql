@@ -1,7 +1,7 @@
 /** Provides classes for working with locations. */
 
 import files.FileSystem
-import codeql.actions.Ast
+import codeql.actions.ast.internal.Ast
 
 bindingset[loc]
 pragma[inline_late]
@@ -19,7 +19,7 @@ newtype TLocation =
       locations_default(_, file, startline, startcolumn, endline, endcolumn)
     )
     or
-    exists(ExpressionNode e |
+    exists(ExpressionImpl e |
       e.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     )
     or

@@ -4,6 +4,3 @@ extensions:
       extensible: sinkModel
     data:
       - ["actions/github-script","*","input.script","expression-injection"]
-
-
-
