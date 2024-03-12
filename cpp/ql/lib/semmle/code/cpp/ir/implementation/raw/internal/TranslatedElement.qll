@@ -127,6 +127,11 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   exists(BuiltInVarArgsStart vaStartExpr |
     vaStartExpr.getLastNamedParameter().getFullyConverted() = expr
   )
+  or
+  // Do not translate implicit destructor calls for unnamed temporary variables that are
+  // conditionally constructed (until we have a mechanism for calling these only when the
+  // temporary's constructor was run)
+  isConditionalTemporaryDestructorCall(expr)
 }
 
 /**
@@ -250,6 +255,20 @@ private predicate usedAsCondition(Expr expr) {
     paren.getExpr() = expr and
     usedAsCondition(paren)
   )
+}
+
+private predicate isInConditionalEvaluation(Expr e) {
+  exists(ConditionalExpr cond |
+    e = cond.getThen() and not cond.isTwoOperand()
+    or
+    e = cond.getElse()
+  )
+  or
+  isInConditionalEvaluation(getRealParent(e))
+}
+
+private predicate isConditionalTemporaryDestructorCall(DestructorCall dc) {
+  isInConditionalEvaluation(dc.getQualifier().(ReuseExpr).getReusedExpr())
 }
 
 /**
