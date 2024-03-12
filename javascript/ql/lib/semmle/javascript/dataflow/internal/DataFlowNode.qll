@@ -50,7 +50,7 @@ private module Cached {
       // We have read steps out of the await operand, so it technically needs a post-update
       e = any(AwaitExpr a).getOperand() or
       e = any(Function f) or // functions are passed as their own self-reference argument
-      // RHS of a setter call is an argument, so it needs a post-update node
+      // The RHS of an assignment can be an argument to a setter-call, so it needs a post-update node
       e = any(Assignment asn | asn.getTarget() instanceof PropAccess).getRhs()
     } or
     TConstructorThisArgumentNode(InvokeExpr e) { e instanceof NewExpr or e instanceof SuperCall } or
