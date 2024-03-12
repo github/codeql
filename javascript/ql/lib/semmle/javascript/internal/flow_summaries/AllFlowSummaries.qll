@@ -3,7 +3,7 @@ private import Arrays
 private import AsyncAwait
 private import ForOfLoops
 private import Generators
-private import Iterators2
+private import Iterators
 private import JsonStringify
 private import Maps2
 private import Promises2
