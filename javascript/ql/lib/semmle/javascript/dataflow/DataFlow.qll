@@ -152,6 +152,14 @@ module DataFlow {
       none()
     }
 
+    /** Gets the location of this node. */
+    Location getLocation() {
+      exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+        this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+        result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      )
+    }
+
     /** Gets the file this data flow node comes from. */
     File getFile() { none() } // overridden in subclasses
 
