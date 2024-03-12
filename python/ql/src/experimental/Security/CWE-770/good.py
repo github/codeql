@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 @app.route("/good_1")
 def good_1():
-    r = request.args.get("r", "")
+    r = request.args.get("file_path", "")
 
     if len(r) <= 1_000:
         # Normalize the r using NFKD Unicode normalization
