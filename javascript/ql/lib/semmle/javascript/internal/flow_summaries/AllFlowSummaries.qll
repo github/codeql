@@ -1,5 +1,5 @@
 private import AmbiguousCoreMethods
-private import Arrays2
+private import Arrays
 private import AsyncAwait
 private import ForOfLoops
 private import Generators
