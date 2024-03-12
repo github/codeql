@@ -38,7 +38,7 @@ predicate runEnvToScriptStoreStep(DataFlow::Node pred, DataFlow::Node succ, Data
     c = any(DataFlow::FieldContent ct | ct.getName() = output.replaceAll("output\\.", "")) and
     r.getInScopeEnvVarExpr(varName) = pred.asExpr() and
     exists(string script, string line |
-      script = r.getScript().getValue() and
+      script = r.getScript() and
       line = script.splitAt("\n") and
       (
         output = line.regexpCapture(".*::set-output\\s+name=(.*)::.*", 1) or

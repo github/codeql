@@ -1,4 +1,3 @@
-import codeql.actions.ast.internal.Yaml
 import codeql.actions.Ast
 import codeql.actions.Cfg as Cfg
 import codeql.actions.DataFlow
@@ -7,27 +6,31 @@ import codeql.actions.dataflow.ExternalFlow
 
 query predicate files(File f) { any() }
 
-query predicate yamlNodes(YamlNode n) { any() }
+query predicate workflows(Workflow w) { any() }
 
-query predicate jobNodes(Job s) { any() }
+query predicate reusableWorkflows(ReusableWorkflow w) { any() }
 
-query predicate stepNodes(Step s) { any() }
+query predicate compositeActions(CompositeAction w) { any() }
 
-query predicate runNodes(Run s) { any() }
+query predicate jobs(Job s) { any() }
 
-query predicate runExprNodes(Run s, ExpressionNode e) { e = s.getScript().getAnExpression() }
+query predicate localJobs(LocalJob s) { any() }
 
-query predicate allUsesNodes(Uses s) { any() }
+query predicate extJobs(ExternalJob s) { any() }
 
-query predicate stepUsesNodes(UsesStep s) { any() }
+query predicate steps(Step s) { any() }
 
-query predicate jobUsesNodes(UsesStep s) { any() }
+query predicate runSteps(Run run, string body) { run.getScript() = body }
 
-query predicate usesSteps(Uses call, string argname, AstNode arg) {
+query predicate runExprs(Run s, Expression e) { e = s.getAnScriptExpr() }
+
+query predicate uses(Uses s) { any() }
+
+query predicate stepUses(UsesStep s) { any() }
+
+query predicate usesArgs(Uses call, string argname, Expression arg) {
   call.getArgumentExpr(argname) = arg
 }
-
-query predicate runSteps(Run run, string body) { run.getScript().getValue() = body }
 
 query predicate runStepChildren(Run run, AstNode child) { child.getParentNode() = run }
 
@@ -36,8 +39,6 @@ query predicate parentNodes(AstNode child, AstNode parent) { child.getParentNode
 query predicate cfgNodes(Cfg::Node n) { any() }
 
 query predicate dfNodes(DataFlow::Node e) { any() }
-
-query predicate exprNodes(DataFlow::Node e) { any() }
 
 query predicate argumentNodes(DataFlow::ArgumentNode e) { any() }
 

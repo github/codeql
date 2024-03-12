@@ -19,7 +19,10 @@ import actions
  * An If node that contains an `actor` check
  */
 class ActorCheck extends If {
-  ActorCheck() { this.getCondition().regexpMatch(".*github\\.(triggering_)?actor.*") }
+  ActorCheck() {
+    this.getCondition().regexpMatch(".*github\\.(triggering_)?actor.*") or
+    this.getCondition().regexpMatch(".*github\\.event\\.pull_request\\.user\\.login.*")
+  }
 }
 
 /**
@@ -32,7 +35,7 @@ class LabelCheck extends If {
   }
 }
 
-from Workflow w, Job job, UsesStep checkoutStep
+from Workflow w, LocalJob job, UsesStep checkoutStep
 where
   w.hasTriggerEvent("pull_request_target") and
   w.getAJob() = job and

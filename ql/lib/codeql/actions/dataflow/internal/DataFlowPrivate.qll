@@ -243,7 +243,7 @@ predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
 /**
  * Holds if there is a local flow step from `nodeFrom` to `nodeTo`.
  * For Actions, we dont need SSA nodes since it should be already in SSA form
- * Local flow steps are always between two nodes in the same Cfg scope (job definition).
+ * Local flow steps are always between two nodes in the same Cfg scope.
  */
 pragma[nomagic]
 predicate localFlowStep(Node nodeFrom, Node nodeTo) {
