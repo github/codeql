@@ -1,0 +1,4 @@
+| classes.js:31:28:31:122 | /* use= ... ce() */ | def moduleImport("classes").getMember("exports").getMember("MyThirdStream") has no outgoing edge labelled getInstance(); it does have outgoing edges labelled getReceiver(). |
+| classes.js:33:37:33:131 | /* use= ... ce() */ | def moduleImport("classes").getMember("exports").getMember("MyThirdStream") has no outgoing edge labelled getInstance(); it does have outgoing edges labelled getReceiver(). |
+| classes.js:40:28:40:112 | /* use= ... ce() */ | def moduleImport("classes").getMember("exports").getMember("bar") has no outgoing edge labelled getInstance(); it does have outgoing edges labelled getReceiver(). |
+| classes.js:45:26:45:110 | /* use= ... ce() */ | def moduleImport("classes").getMember("exports").getMember("bar") has no outgoing edge labelled getInstance(); it does have outgoing edges labelled getReceiver(). |

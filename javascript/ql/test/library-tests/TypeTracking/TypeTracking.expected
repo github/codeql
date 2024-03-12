@@ -1,0 +1,3 @@
+| implicit-receiver.js:8:22:8:52 | // trac ... ver-obj | Failed to track implicit-receiver-obj here. |
+| implicit-receiver.js:9:24:9:84 | // trac ... er-prop | Failed to track implicit-receiver-obj here. |
+| implicit-receiver.js:9:24:9:84 | // trac ... er-prop | Failed to track implicit-receiver-prop here. |
