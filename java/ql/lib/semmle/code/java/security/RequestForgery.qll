@@ -103,7 +103,7 @@ private predicate isContainsUrlSanitizer(Guard guard, Expr e, boolean branch) {
  * This `contains` method is usually called on a list, but the sanitizer matches any call to a method
  * called `contains`, so other methods with the same name will also be considered sanitizers.
  */
-class ContainsUrlSanitizer extends RequestForgerySanitizer {
+private class ContainsUrlSanitizer extends RequestForgerySanitizer {
   ContainsUrlSanitizer() {
     this = DataFlow::BarrierGuard<isContainsUrlSanitizer/3>::getABarrierNode()
   }
@@ -115,11 +115,7 @@ class ContainsUrlSanitizer extends RequestForgerySanitizer {
 private predicate isRelativeUrlSanitizer(Guard guard, Expr e, boolean branch) {
   guard =
     any(MethodCall call |
-      exists(Method method |
-        call.getMethod() = method and
-        method.getName() = "isAbsolute" and
-        method.getDeclaringType().hasQualifiedName("java.net", "URI")
-      ) and
+      call.getMethod().hasQualifiedName("java.net", "URI", "isAbsolute") and
       e = call.getQualifier() and
       branch = false
     )
@@ -128,7 +124,7 @@ private predicate isRelativeUrlSanitizer(Guard guard, Expr e, boolean branch) {
 /**
  * A check that the URL is relative, and therefore safe for URL redirects.
  */
-class RelativeUrlSanitizer extends RequestForgerySanitizer {
+private class RelativeUrlSanitizer extends RequestForgerySanitizer {
   RelativeUrlSanitizer() {
     this = DataFlow::BarrierGuard<isRelativeUrlSanitizer/3>::getABarrierNode()
   }
@@ -145,8 +141,7 @@ private predicate isHostComparisonSanitizer(Guard guard, Expr e, boolean branch)
       branch = true and
       exists(MethodCall hostCall |
         hostCall = [equalsCall.getQualifier(), equalsCall.getArgument(0)] and
-        hostCall.getMethod().getName() = "getHost" and
-        hostCall.getMethod().getDeclaringType().hasQualifiedName("java.net", "URI") and
+        hostCall.getMethod().hasQualifiedName("java.net", "URI", "getHost") and
         e = hostCall.getQualifier()
       )
     )
@@ -155,7 +150,7 @@ private predicate isHostComparisonSanitizer(Guard guard, Expr e, boolean branch)
 /**
  * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
  */
-class HostComparisonSanitizer extends RequestForgerySanitizer {
+private class HostComparisonSanitizer extends RequestForgerySanitizer {
   HostComparisonSanitizer() {
     this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
   }
