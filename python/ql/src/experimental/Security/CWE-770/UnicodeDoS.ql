@@ -60,6 +60,16 @@ predicate underAValue(DataFlow::GuardNode g, ControlFlowNode node, boolean branc
         (op_gt = any(GtE gte) or op_gt = any(Gt gt)) and
         branch = true and
         cn.operands(_, op_gt, n.asCfgNode())
+        or
+        // not arg <= LIMIT OR not arg < LIMIT
+        (op_lt = any(LtE lte) or op_lt = any(Lt lt)) and
+        branch = false and
+        cn.operands(n.asCfgNode(), op_lt, _)
+        or
+        // not LIMIT >= arg OR not LIMIT > arg
+        (op_gt = any(GtE gte) or op_gt = any(Gt gt)) and
+        branch = false and
+        cn.operands(_, op_gt, n.asCfgNode())
       )
     |
       lenCall = API::builtin("len").getACall() and
