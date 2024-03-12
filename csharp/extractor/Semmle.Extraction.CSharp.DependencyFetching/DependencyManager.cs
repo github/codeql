@@ -927,7 +927,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var multipleVersions = notYetDownloadedPackages
                 .GroupBy(p => p.Name)
                 .Where(g => g.Count() > 1)
-                .Select(g => g.Key);
+                .Select(g => g.Key)
+                .ToList();
 
             foreach (var package in multipleVersions)
             {
