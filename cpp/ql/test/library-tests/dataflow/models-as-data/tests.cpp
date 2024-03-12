@@ -213,9 +213,11 @@ namespace MyNamespace {
 MyNamespace::MyClass source3();
 
 void test_class_members() {
-	MyClass mc, mc2, mc3, mc4, mc5, mc6;
+	MyClass mc, mc2, mc3, mc4, mc5, mc6, mc7;
+	MyClass *ptr, *mc4_ptr;
 	MyDerivedClass mdc;
-	MyNamespace::MyClass mnc;
+	MyNamespace::MyClass mnc, mnc2;
+	MyNamespace::MyClass *mnc2_ptr;
 
 	// test class member sources
 
@@ -253,26 +255,44 @@ void test_class_members() {
 	mc2.madArg0ToSelf(source());
 	sink(mc2); // $ MISSING: ir
 
+	ptr = new MyClass();
+	sink(*ptr);
+	ptr->madArg0ToSelf(0);
+	sink(*ptr);
+	ptr->madArg0ToSelf(source());
+	sink(*ptr); // $ ir
+
 	mc3.madArg0ToField(source());
 	sink(mc3.val); // $ MISSING: ir
 
+	mc4 = source2();
+	mc4_ptr = &mc4;
+	sink(mc4); // $ ir
+	sink(mc4.madSelfToReturn()); // $ MISSING: ir
+	sink(mc4.notASummary());
+	sink(mc4_ptr->madSelfToReturn()); // $ MISSING: ir
+	sink(mc4_ptr->notASummary());
 	sink(source2().madSelfToReturn()); // $ ir
 	sink(source2().notASummary());
 
-	mc4.val = source();
-	sink(mc4.madFieldToReturn()); // $ MISSING: ir
+	mc5.val = source();
+	sink(mc5.madFieldToReturn()); // $ MISSING: ir
 
+	mnc2 = source3();
+	mnc2_ptr = &mnc2;
+	sink(mnc2.namespaceMadSelfToReturn()); // $ MISSING: ir
+	sink(mnc2_ptr->namespaceMadSelfToReturn()); // $ MISSING: ir
 	sink(source3().namespaceMadSelfToReturn()); // $ ir
 
 	// test class member sources + sinks + summaries together
 
 	mc.memberMadSinkArg0(mc.memberRemoteMadSource()); // $ ir
 
-	mc5.madArg0ToSelf(source());
-	sink(mc5.madSelfToReturn()); // $ MISSING: ir
+	mc6.madArg0ToSelf(source());
+	sink(mc6.madSelfToReturn()); // $ MISSING: ir
 
-	mc6.madArg0ToField(source());
-	sink(mc6.madFieldToReturn()); // $ MISSING: ir
+	mc7.madArg0ToField(source());
+	sink(mc7.madFieldToReturn()); // $ MISSING: ir
 }
 
 // --- MAD cases involving function pointers ---
