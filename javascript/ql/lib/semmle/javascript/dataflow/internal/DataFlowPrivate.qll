@@ -140,11 +140,6 @@ class OutNode extends DataFlow::Node {
 
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { result = getAnOutNodeImpl(call, kind) }
 
-/**
- * Base class for classes that should be empty.
- */
-abstract private class EmptyType extends DataFlow::Node { }
-
 cached
 predicate postUpdatePair(Node pre, Node post) {
   exists(AST::ValueNode expr |
@@ -173,7 +168,9 @@ predicate postUpdatePair(Node pre, Node post) {
   VariableCaptureOutput::capturePostUpdateNode(getClosureNode(post), getClosureNode(pre))
 }
 
-class CastNode extends DataFlow::Node instanceof EmptyType { }
+class CastNode extends DataFlow::Node {
+  CastNode() { none() }
+}
 
 cached
 newtype TDataFlowCallable =
