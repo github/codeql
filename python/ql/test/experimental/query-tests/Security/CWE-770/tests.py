@@ -55,6 +55,30 @@ def bad_4():
         return jsonify({"error": "File not found"}), 404
 
 
+@app.route("/bad_5")
+def bad_5():
+    r = request.args.get("r", "")
+    length = len(r)
+    if not length < 1_000:
+        # Normalize the r using NFKD Unicode normalization
+        r = unicodedata.normalize("NFKD", r)
+        return r, 200, {"Content-Type": "application/octet-stream"}
+    else:
+        return jsonify({"error": "File not found"}), 404
+
+
+@app.route("/bad_6")
+def bad_6():
+    r = request.args.get("r", "")
+    length = len(r)
+    if not 1_000 > length:
+        # Normalize the r using NFKD Unicode normalization
+        r = unicodedata.normalize("NFKD", r)
+        return r, 200, {"Content-Type": "application/octet-stream"}
+    else:
+        return jsonify({"error": "File not found"}), 404
+
+
 @app.route("/good_1")
 def good_1():
     r = request.args.get("r", "")
@@ -73,6 +97,31 @@ def good_2():
     MAX_LENGTH = 1_000
     length = len(r)
     if length <= MAX_LENGTH:
+        # Normalize the r using NFKD Unicode normalization
+        r = unicodedata.normalize("NFKD", r)
+        return r, 200, {"Content-Type": "application/octet-stream"}
+    else:
+        return jsonify({"error": "File not found"}), 404
+
+@app.route("/good_3")
+def good_3():
+    r = request.args.get("r", "")
+    MAX_LENGTH = 1_000
+    length = len(r)
+    if not length >= MAX_LENGTH:
+        # Normalize the r using NFKD Unicode normalization
+        r = unicodedata.normalize("NFKD", r)
+        return r, 200, {"Content-Type": "application/octet-stream"}
+    else:
+        return jsonify({"error": "File not found"}), 404
+
+
+@app.route("/good_4")
+def good_4():
+    r = request.args.get("r", "")
+    MAX_LENGTH = 1_000
+    length = len(r)
+    if not MAX_LENGTH <= length:
         # Normalize the r using NFKD Unicode normalization
         r = unicodedata.normalize("NFKD", r)
         return r, 200, {"Content-Type": "application/octet-stream"}
