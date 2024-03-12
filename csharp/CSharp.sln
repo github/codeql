@@ -8,8 +8,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semmle.Extraction", "extrac
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semmle.Extraction.CSharp", "extractor\Semmle.Extraction.CSharp\Semmle.Extraction.CSharp.csproj", "{C4D62DA0-B64B-440B-86DC-AB52318CB8BF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semmle.Extraction.CIL", "extractor\Semmle.Extraction.CIL\Semmle.Extraction.CIL.csproj", "{399A1579-68F0-40F4-9A23-F241BA697F9C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semmle.Extraction.CSharp.DependencyFetching", "extractor\Semmle.Extraction.CSharp.DependencyFetching\Semmle.Extraction.CSharp.DependencyFetching.csproj", "{541D1AC5-E42C-4AB2-A1A4-C2355CE2A2EF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semmle.Extraction.CSharp.Standalone", "extractor\Semmle.Extraction.CSharp.Standalone\Semmle.Extraction.CSharp.Standalone.csproj", "{D00E7D25-0FA0-48EC-B048-CD60CE1B30D8}"
@@ -17,8 +15,6 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semmle.Extraction.CSharp.StubGenerator", "extractor\Semmle.Extraction.CSharp.StubGenerator\Semmle.Extraction.CSharp.StubGenerator.csproj", "{B7C9FD47-A78C-4C20-AC29-B0AE638ADE9D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semmle.Extraction.CSharp.Util", "extractor\Semmle.Extraction.CSharp.Util\Semmle.Extraction.CSharp.Util.csproj", "{998A0D4C-8BFC-4513-A28D-4816AFB89882}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semmle.Extraction.CIL.Driver", "extractor\Semmle.Extraction.CIL.Driver\Semmle.Extraction.CIL.Driver.csproj", "{EFA400B3-C1CE-446F-A4E2-8B44E61EF47C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Semmle.Extraction.CSharp.Driver", "extractor\Semmle.Extraction.CSharp.Driver\Semmle.Extraction.CSharp.Driver.csproj", "{C36453BF-0C82-448A-B15D-26947503A2D3}"
 EndProject
