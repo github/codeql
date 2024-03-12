@@ -86,17 +86,15 @@ predicate underAValue(DataFlow::GuardNode g, ControlFlowNode node, boolean branc
   )
 }
 
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "RemoteSourcesReachUnicodeCharacters" }
+private module UnicodeDoSConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
+  predicate isBarrier(DataFlow::Node sanitizer) {
     // underAValue is a check to ensure that the length of the user-provided value is limited to a certain amount
     sanitizer = DataFlow::BarrierGuard<underAValue/3>::getABarrierNode()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     // Any call to the Unicode compatibility normalization is a costly operation
     sink = any(UnicodeCompatibilityNormalize ucn).getPathArg()
     or
@@ -113,9 +111,11 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
-import DataFlow::PathGraph
+module UnicodeDoSFlow = TaintTracking::Global<UnicodeDoSConfig>;
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+import UnicodeDoSFlow::PathGraph
+
+from UnicodeDoSFlow::PathNode source, UnicodeDoSFlow::PathNode sink
+where UnicodeDoSFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This $@ can reach a $@.", source.getNode(),
   "user-provided value", sink.getNode(), "costly Unicode normalization operation"
