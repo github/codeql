@@ -46,6 +46,7 @@ class PreCallGraphStep extends Unit {
   }
 }
 
+cached
 module PreCallGraphStep {
   /**
    * Holds if there is a step from `pred` to `succ`.
@@ -83,6 +84,7 @@ module PreCallGraphStep {
   /**
    * Holds if there is a step from the `loadProp` property of `pred` to the `storeProp` property in `succ`.
    */
+  cached
   predicate loadStoreStep(
     DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
   ) {
@@ -129,6 +131,7 @@ class LegacyPreCallGraphStep extends Unit {
   }
 }
 
+cached
 module LegacyPreCallGraphStep {
   /**
    * Holds if there is a step from `pred` to `succ`.
@@ -166,6 +169,7 @@ module LegacyPreCallGraphStep {
   /**
    * Holds if there is a step from the `loadProp` property of `pred` to the `storeProp` property in `succ`.
    */
+  cached
   predicate loadStoreStep(
     DataFlow::Node pred, DataFlow::SourceNode succ, string loadProp, string storeProp
   ) {
