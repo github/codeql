@@ -86,7 +86,9 @@ private class HostnameSantizer extends RequestForgerySanitizer {
 }
 
 /**
- * An argument to a call to `List.contains()` that is a sanitizer for URL redirects.
+ * An argument to a call to a `.contains()` method that is a sanitizer for URL redirects.
+ *
+ * Matches any method call where the method is named `contains`.
  */
 private predicate isContainsUrlSanitizer(Guard guard, Expr e, boolean branch) {
   guard =
