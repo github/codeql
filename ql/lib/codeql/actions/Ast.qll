@@ -1,6 +1,16 @@
 private import codeql.actions.ast.internal.Ast
 private import codeql.Locations
 
+module Utils {
+  bindingset[expr]
+  string normalizeExpr(string expr) {
+    result =
+      expr.regexpReplaceAll("[\\.\\'\\[\\]\"]+", ".")
+          .regexpReplaceAll("\\.$", "")
+          .regexpReplaceAll("\\.\\s", " ")
+  }
+}
+
 class AstNode instanceof AstNodeImpl {
   AstNode getAChildNode() { result = super.getAChildNode() }
 
@@ -188,6 +198,8 @@ class Step extends AstNode instanceof StepImpl {
  */
 class If extends AstNode instanceof IfImpl {
   string getCondition() { result = super.getCondition() }
+
+  Expression getConditionExpr() { result = super.getConditionExpr() }
 }
 
 abstract class Uses extends AstNode instanceof UsesImpl {

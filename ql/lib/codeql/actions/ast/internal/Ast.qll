@@ -45,6 +45,14 @@ private newtype TAstNode =
         )
       )
     )
+    or
+    // if's conditions do not need to be delimted with ${{}}
+    exists(YamlMapping m |
+      m.maps(key, value) and
+      key.(YamlScalar).getValue() = ["if"] and
+      value.getValue() = raw and
+      exprOffset = 1
+    )
   } or
   TCompositeAction(YamlMapping n) {
     n instanceof YamlDocument and
@@ -123,7 +131,7 @@ class ScalarValueImpl extends AstNodeImpl, TScalarValueNode {
 
   override Location getLocation() { result = value.getLocation() }
 
-  override YamlNode getNode() { result = value }
+  override YamlScalar getNode() { result = value }
 }
 
 class ExpressionImpl extends AstNodeImpl, TExpressionNode {
@@ -135,15 +143,16 @@ class ExpressionImpl extends AstNodeImpl, TExpressionNode {
 
   ExpressionImpl() {
     this = TExpressionNode(key, value, rawExpression, exprOffset - 1) and
-    expression =
-      rawExpression.regexpCapture("\\$\\{\\{\\s*([A-Za-z0-9_\\[\\]\\*\\((\\)\\.\\-]+)\\s*\\}\\}", 1)
+    if rawExpression.trim().regexpMatch("\\$\\{\\{.*\\}\\}")
+    then expression = rawExpression.trim().regexpCapture("\\$\\{\\{\\s*(.*)\\s*\\}\\}", 1).trim()
+    else expression = rawExpression.trim()
   }
 
   override string toString() { result = expression }
 
   override AstNodeImpl getAChildNode() { none() }
 
-  override AstNodeImpl getParentNode() { result.getNode() = value }
+  override ScalarValueImpl getParentNode() { result.getNode() = value }
 
   override string getAPrimaryQlClass() { result = "ExpressionNode" }
 
@@ -638,6 +647,9 @@ class IfImpl extends AstNodeImpl, TIfNode {
 
   /** Gets the condition that must be satisfied for this job to run. */
   string getCondition() { result = n.(YamlScalar).getValue() }
+
+  /** Gets the condition that must be satisfied for this job to run. */
+  ExpressionImpl getConditionExpr() { result.getParentNode().getNode() = n }
 }
 
 class EnvImpl extends AstNodeImpl, TEnvNode {

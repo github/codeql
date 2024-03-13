@@ -18,29 +18,32 @@ import actions
 /** An If node that contains an actor, user or label check */
 class ControlCheck extends If {
   ControlCheck() {
-    this.getCondition().regexpMatch(".*github\\.(triggering_)?actor.*") or
-    this.getCondition().regexpMatch(".*github\\.event\\.pull_request\\.user\\.login.*") or
-    this.getCondition().regexpMatch(".*github\\.event\\.pull_request\\.labels.*") or
-    this.getCondition().regexpMatch(".*github\\.event\\.label\\.name.*")
+    Utils::normalizeExpr(this.getCondition())
+        .regexpMatch([
+            ".*github\\.actor.*", ".*github\\.triggering_actor.*",
+            ".*github\\.event\\.pull_request\\.user\\.login.*",
+            ".*github\\.event\\.pull_request\\.labels.*", ".*github\\.event\\.label\\.name.*"
+          ])
   }
 }
 
 bindingset[s]
 predicate containsHeadRef(string s) {
-  s.matches("%" +
-      [
-        "github.event.number", // The pull request number.
-        "github.event.pull_request.head.ref", // The ref name of head.
-        "github.event.pull_request.head.sha", //  The commit SHA of head.
-        "github.event.pull_request.id", // The pull request ID.
-        "github.event.pull_request.number", // The pull request number.
-        "github.event.pull_request.merge_commit_sha", // The SHA of the merge commit.
-        "github.head_ref", // The head_ref or source branch of the pull request in a workflow run.
-        "github.event.workflow_run.head_branch", // The branch of the head commit.
-        "github.event.workflow_run.head_commit.id", // The SHA of the head commit.
-        "github.event.workflow_run.head_sha", // The SHA of the head commit.
-        "env.GITHUB_HEAD_REF",
-      ] + "%")
+  Utils::normalizeExpr(s)
+      .matches("%" +
+          [
+            "github.event.number", // The pull request number.
+            "github.event.pull_request.head.ref", // The ref name of head.
+            "github.event.pull_request.head.sha", //  The commit SHA of head.
+            "github.event.pull_request.id", // The pull request ID.
+            "github.event.pull_request.number", // The pull request number.
+            "github.event.pull_request.merge_commit_sha", // The SHA of the merge commit.
+            "github.head_ref", // The head_ref or source branch of the pull request in a workflow run.
+            "github.event.workflow_run.head_branch", // The branch of the head commit.
+            "github.event.workflow_run.head_commit.id", // The SHA of the head commit.
+            "github.event.workflow_run.head_sha", // The SHA of the head commit.
+            "env.GITHUB_HEAD_REF",
+          ] + "%")
 }
 
 /** Checkout of a Pull Request HEAD ref */
