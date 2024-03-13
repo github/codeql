@@ -48,28 +48,28 @@ class UnicodeCompatibilityNormalize extends API::CallNode {
 
 predicate underAValue(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
   exists(CompareNode cn | cn = g |
-    exists(API::CallNode lenCall, Cmpop op_gt, Cmpop op_lt, Node n |
+    exists(API::CallNode lenCall, Cmpop op, Node n |
       lenCall = n.getALocalSource() and
       (
         // arg <= LIMIT OR arg < LIMIT
-        (op_lt = any(LtE lte) or op_lt = any(Lt lt)) and
+        (op instanceof LtE or op instanceof Lt) and
         branch = true and
-        cn.operands(n.asCfgNode(), op_lt, _)
+        cn.operands(n.asCfgNode(), op, _)
         or
         // LIMIT >= arg OR LIMIT > arg
-        (op_gt = any(GtE gte) or op_gt = any(Gt gt)) and
+        (op instanceof GtE or op instanceof Gt) and
         branch = true and
-        cn.operands(_, op_gt, n.asCfgNode())
+        cn.operands(_, op, n.asCfgNode())
         or
         // not arg >= LIMIT OR not arg > LIMIT
-        (op_gt = any(GtE gte) or op_gt = any(Gt gt)) and
+        (op instanceof GtE or op instanceof Gt) and
         branch = false and
-        cn.operands(n.asCfgNode(), op_gt, _)
+        cn.operands(n.asCfgNode(), op, _)
         or
         // not LIMIT <= arg OR not LIMIT < arg
-        (op_lt = any(LtE lte) or op_lt = any(Lt lt)) and
+        (op instanceof LtE or op instanceof Lt) and
         branch = false and
-        cn.operands(_, op_lt, n.asCfgNode())
+        cn.operands(_, op, n.asCfgNode())
       )
     |
       lenCall = API::builtin("len").getACall() and
