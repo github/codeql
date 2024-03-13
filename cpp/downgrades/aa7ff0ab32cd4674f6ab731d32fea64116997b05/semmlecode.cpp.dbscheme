@@ -1513,11 +1513,6 @@ exprs(
     int location: @location_expr ref
 );
 
-expr_reuse(
-    int reuse: @expr ref,
-    int original: @expr ref
-)
-
 /*
   case @value.category of
     1 = prval
@@ -1746,7 +1741,6 @@ case @expr.kind of
 | 360 = @isunsigned
 | 361 = @isvoid
 | 362 = @isvolatile
-| 363 = @reuseexpr
 ;
 
 @var_args_expr = @vastartexpr
