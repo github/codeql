@@ -110,6 +110,7 @@ void madSinkParam0(int x) { // $ interpretElement
 
 struct MyContainer {
 	int value;
+	int *ptr;
 };
 
 int madArg0ToReturn(int x); // $ interpretElement
@@ -121,12 +122,13 @@ void madArg0IndirectToArg1Indirect(const int *x, int *y); // $ interpretElement
 
 int madArg0FieldToReturn(MyContainer mc); // $ interpretElement
 int madArg0IndirectFieldToReturn(MyContainer *mc); // $ interpretElement
+int madArg0FieldIndirectToReturn(MyContainer mc); // $ interpretElement
 MyContainer madArg0ToReturnField(int x); // $ interpretElement
 
 void test_summaries() {
 	// test summaries
 
-	int a, b, c;
+	int a, b, c, d, e;
 
 	sink(madArg0ToReturn(0));
 	sink(madArg0ToReturn(source())); // $ ir
@@ -145,13 +147,19 @@ void test_summaries() {
 
 	MyContainer mc1, mc2;
 
+	d = 0;
 	mc1.value = 0;
+	mc1.ptr = &d;
 	sink(madArg0FieldToReturn(mc1));
 	sink(madArg0IndirectFieldToReturn(&mc1));
+	sink(madArg0FieldIndirectToReturn(mc1));
 
+	e = source();
 	mc2.value = source();
+	mc2.ptr = &e;
 	sink(madArg0FieldToReturn(mc2)); // $ MISSING: ir
 	sink(madArg0IndirectFieldToReturn(&mc2)); // $ MISSING: ir
+	sink(madArg0FieldIndirectToReturn(mc2)); // $ MISSING: ir
 
 	sink(madArg0ToReturnField(0).value);
 	sink(madArg0ToReturnField(source()).value); // $ MISSING: ir
