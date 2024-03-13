@@ -116,9 +116,12 @@ extensions:
       - ["java.io", "File", "isFile", "()", "summary", "manual"]
       - ["java.io", "File", "length", "()", "summary", "manual"]
       - ["java.io", "File", "isDirectory", "()", "summary", "manual"]
+      - ["java.io", "File", "listFiles", "", "summary", "manual"]
       - ["java.io", "File", "mkdirs", "()", "summary", "manual"]
       - ["java.io", "FileInputStream", "FileInputStream", "(File)", "summary", "manual"]
+      - ["java.io", "FileInputStream", "FileInputStream", "(String)", "summary", "manual"]
       - ["java.io", "InputStream", "close", "()", "summary", "manual"]
+      - ["java.io", "ObjectInput", "readObject", "()", "summary", "manual"]
       - ["java.io", "OutputStream", "flush", "()", "summary", "manual"]
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.

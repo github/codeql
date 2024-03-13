@@ -24,3 +24,5 @@ extensions:
       - ["javax.crypto", "Cipher", "update", "", "summary", "manual"]
       - ["javax.crypto", "Cipher", "updateAAD", "", "summary", "manual"]
       - ["javax.crypto", "Cipher", "wrap", "", "summary", "manual"]
+      - ["javax.crypto", "Mac", "init", "(Key)", "summary", "manual"]
+      - ["javax.crypto", "Mac", "doFinal", "()", "summary", "manual"]
