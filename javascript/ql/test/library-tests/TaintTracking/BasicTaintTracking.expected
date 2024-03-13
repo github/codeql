@@ -21,9 +21,11 @@ legacyDataFlowDifference
 | object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:23:14:23:20 | obj.foo | only flow with OLD data flow library |
 | object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:28:10:28:30 | sanitiz ... bj).foo | only flow with OLD data flow library |
 | promise.js:12:20:12:27 | source() | promise.js:13:8:13:23 | resolver.promise | only flow with OLD data flow library |
+| promise.js:43:20:43:27 | source() | promise.js:43:8:43:28 | Promise ... urce()) | only flow with OLD data flow library |
 | sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
 consistencyIssue
 | library-tests/TaintTracking/nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
+| library-tests/TaintTracking/promise.js:43 | expected an alert, but found none | NOT OK | Consistency |
 | library-tests/TaintTracking/stringification-read-steps.js:17 | expected an alert, but found none | NOT OK | Consistency |
 | library-tests/TaintTracking/stringification-read-steps.js:25 | expected an alert, but found none | NOT OK | Consistency |
 flow

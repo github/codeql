@@ -38,3 +38,7 @@ function exceptionThroughThen2() {
     sink(e); // NOT OK
   })
 }
+
+function promiseAllTaint() {
+  sink(Promise.all(source())); // NOT OK
+}
