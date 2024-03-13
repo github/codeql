@@ -2,10 +2,10 @@
  * Provides classes representing various flow steps for taint tracking.
  */
 
-import actions
+private import actions
 private import codeql.util.Unit
 private import codeql.actions.DataFlow
-import codeql.actions.dataflow.ExternalFlow
+private import codeql.actions.dataflow.ExternalFlow
 
 /**
  * A unit class for adding additional taint steps.

@@ -18,32 +18,37 @@ import actions
 /** An If node that contains an actor, user or label check */
 class ControlCheck extends If {
   ControlCheck() {
-    Utils::normalizeExpr(this.getCondition())
-        .regexpMatch([
-            ".*github\\.actor.*", ".*github\\.triggering_actor.*",
-            ".*github\\.event\\.pull_request\\.user\\.login.*",
-            ".*github\\.event\\.pull_request\\.labels.*", ".*github\\.event\\.label\\.name.*"
-          ])
+    exists(
+      Utils::normalizeExpr(this.getCondition())
+          .regexpFind([
+              "\\bgithub\\.actor\\b", // actor
+              "\\bgithub\\.triggering_actor\\b", // actor
+              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b", //user
+              "\\bgithub\\.event\\.pull_request\\.labels\\b", // label
+              "\\bgithub\\.event\\.label\\.name\\b" // label
+            ], _, _)
+    )
   }
 }
 
 bindingset[s]
 predicate containsHeadRef(string s) {
-  Utils::normalizeExpr(s)
-      .matches("%" +
-          [
-            "github.event.number", // The pull request number.
-            "github.event.pull_request.head.ref", // The ref name of head.
-            "github.event.pull_request.head.sha", //  The commit SHA of head.
-            "github.event.pull_request.id", // The pull request ID.
-            "github.event.pull_request.number", // The pull request number.
-            "github.event.pull_request.merge_commit_sha", // The SHA of the merge commit.
-            "github.head_ref", // The head_ref or source branch of the pull request in a workflow run.
-            "github.event.workflow_run.head_branch", // The branch of the head commit.
-            "github.event.workflow_run.head_commit.id", // The SHA of the head commit.
-            "github.event.workflow_run.head_sha", // The SHA of the head commit.
-            "env.GITHUB_HEAD_REF",
-          ] + "%")
+  exists(
+    Utils::normalizeExpr(s)
+        .regexpFind([
+            "\\bgithub\\.event\\.number\\b", // The pull request number.
+            "\\bgithub\\.event\\.pull_request\\.head\\.ref\\b", // The ref name of head.
+            "\\bgithub\\.event\\.pull_request\\.head\\.sha\\b", //  The commit SHA of head.
+            "\\bgithub\\.event\\.pull_request\\.id\\b", // The pull request ID.
+            "\\bgithub\\.event\\.pull_request\\.number\\b", // The pull request number.
+            "\\bgithub\\.event\\.pull_request\\.merge_commit_sha\\b", // The SHA of the merge commit.
+            "\\bgithub\\.head_ref\\b", // The head_ref or source branch of the pull request in a workflow run.
+            "\\bgithub\\.event\\.workflow_run\\.head_branch\\b", // The branch of the head commit.
+            "\\bgithub\\.event\\.workflow_run\\.head_commit\\.id\\b", // The SHA of the head commit.
+            "\\bgithub\\.event\\.workflow_run\\.head_sha\\b", // The SHA of the head commit.
+            "\\benv\\.GITHUB_HEAD_REF\\b",
+          ], _, _)
+  )
 }
 
 /** Checkout of a Pull Request HEAD ref */
@@ -68,7 +73,7 @@ class GitCheckout extends PRHeadCheckoutStep instanceof Run {
         or
         exists(string varname |
           containsHeadRef(this.getInScopeEnvVarExpr(varname).getExpression()) and
-          line.matches("%" + varname + "%")
+          exists(line.regexpFind(varname, _, _))
         )
       )
     )

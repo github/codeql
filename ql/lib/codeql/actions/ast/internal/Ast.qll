@@ -1,5 +1,6 @@
 private import codeql.actions.ast.internal.Yaml
 private import codeql.Locations
+private import codeql.actions.Ast::Utils as Utils
 
 /**
  * Gets the length of each line in the StringValue .
@@ -833,9 +834,9 @@ class StepsExpressionImpl extends ContextExpressionImpl {
   string fieldName;
 
   StepsExpressionImpl() {
-    expression.regexpMatch(stepsCtxRegex()) and
-    stepId = expression.regexpCapture(stepsCtxRegex(), 1) and
-    fieldName = expression.regexpCapture(stepsCtxRegex(), 2)
+    Utils::normalizeExpr(expression).regexpMatch(stepsCtxRegex()) and
+    stepId = Utils::normalizeExpr(expression).regexpCapture(stepsCtxRegex(), 1) and
+    fieldName = Utils::normalizeExpr(expression).regexpCapture(stepsCtxRegex(), 2)
   }
 
   override string getFieldName() { result = fieldName }
@@ -856,9 +857,9 @@ class NeedsExpressionImpl extends ContextExpressionImpl {
   string fieldName;
 
   NeedsExpressionImpl() {
-    expression.regexpMatch(needsCtxRegex()) and
-    fieldName = expression.regexpCapture(needsCtxRegex(), 2) and
-    neededJob.getId() = expression.regexpCapture(needsCtxRegex(), 1) and
+    Utils::normalizeExpr(expression).regexpMatch(needsCtxRegex()) and
+    fieldName = Utils::normalizeExpr(expression).regexpCapture(needsCtxRegex(), 2) and
+    neededJob.getId() = Utils::normalizeExpr(expression).regexpCapture(needsCtxRegex(), 1) and
     neededJob.getLocation().getFile() = this.getLocation().getFile()
   }
 
@@ -886,9 +887,9 @@ class JobsExpressionImpl extends ContextExpressionImpl {
   string fieldName;
 
   JobsExpressionImpl() {
-    expression.regexpMatch(jobsCtxRegex()) and
-    jobId = expression.regexpCapture(jobsCtxRegex(), 1) and
-    fieldName = expression.regexpCapture(jobsCtxRegex(), 2)
+    Utils::normalizeExpr(expression).regexpMatch(jobsCtxRegex()) and
+    jobId = Utils::normalizeExpr(expression).regexpCapture(jobsCtxRegex(), 1) and
+    fieldName = Utils::normalizeExpr(expression).regexpCapture(jobsCtxRegex(), 2)
   }
 
   override string getFieldName() { result = fieldName }
@@ -911,8 +912,8 @@ class InputsExpressionImpl extends ContextExpressionImpl {
   string fieldName;
 
   InputsExpressionImpl() {
-    expression.regexpMatch(inputsCtxRegex()) and
-    fieldName = expression.regexpCapture(inputsCtxRegex(), 1)
+    Utils::normalizeExpr(expression).regexpMatch(inputsCtxRegex()) and
+    fieldName = Utils::normalizeExpr(expression).regexpCapture(inputsCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
@@ -936,8 +937,8 @@ class EnvExpressionImpl extends ContextExpressionImpl {
   string fieldName;
 
   EnvExpressionImpl() {
-    expression.regexpMatch(envCtxRegex()) and
-    fieldName = expression.regexpCapture(envCtxRegex(), 1)
+    Utils::normalizeExpr(expression).regexpMatch(envCtxRegex()) and
+    fieldName = Utils::normalizeExpr(expression).regexpCapture(envCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }
@@ -959,8 +960,8 @@ class MatrixExpressionImpl extends ContextExpressionImpl {
   string fieldName;
 
   MatrixExpressionImpl() {
-    expression.regexpMatch(matrixCtxRegex()) and
-    fieldName = expression.regexpCapture(matrixCtxRegex(), 1)
+    Utils::normalizeExpr(expression).regexpMatch(matrixCtxRegex()) and
+    fieldName = Utils::normalizeExpr(expression).regexpCapture(matrixCtxRegex(), 1)
   }
 
   override string getFieldName() { result = fieldName }

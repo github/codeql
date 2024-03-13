@@ -1,6 +1,6 @@
 private import internal.ExternalFlowExtensions as Extensions
-import codeql.actions.DataFlow
-import actions
+private import codeql.actions.DataFlow
+private import actions
 
 /**
  * MaD sources

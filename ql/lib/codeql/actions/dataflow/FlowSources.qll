@@ -1,7 +1,7 @@
-import actions
-import codeql.actions.DataFlow
-import codeql.actions.dataflow.ExternalFlow
-import codeql.actions.Ast::Utils as Utils
+private import actions
+private import codeql.actions.DataFlow
+private import codeql.actions.dataflow.ExternalFlow
+private import codeql.actions.Ast::Utils as Utils
 
 /**
  * A data flow source.
