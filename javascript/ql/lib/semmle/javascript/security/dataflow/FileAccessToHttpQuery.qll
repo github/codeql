@@ -22,8 +22,6 @@ module FileAccessToHttpConfig implements DataFlow::ConfigSig {
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {
     isSink(node) and
-    // or
-    // node = any(DataFlow::MethodCallNode call | call.getMethodName() = "stringify").getAnArgument()
     contents = DataFlow::ContentSet::anyProperty()
   }
 }
