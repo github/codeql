@@ -1,0 +1,35 @@
+version: "{build}"
+
+image: Visual Studio 2019
+
+# scripts that are called at very beginning, before repo cloning
+init:
+  - git config --global core.autocrlf true
+
+clone_folder: c:\gopath\src\github.com\CloudyKit\jet
+
+environment:
+  GOPATH: c:\gopath
+  GO111MODULE: on
+  matrix:
+    - GOVERSION: 113
+    - GOVERSION: 114
+    - GOVERSION: 115
+
+install:
+  - set PATH=%GOPATH%\bin;c:\go%GOVERSION%\bin;%PATH%
+  - set GOROOT=c:\go%GOVERSION%
+  - echo %PATH%
+  - echo %GOPATH%
+  - go version
+  - go env
+
+build: off
+
+test_script:
+  - go test -v ./...
+  - cd examples/asset_packaging/
+  - go generate
+  - go run -tags=deploy_build main.go --run-and-exit
+  - go build -tags=deploy_build -o bin/app.exe main.go
+  - .\bin\app.exe --run-and-exit
