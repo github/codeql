@@ -10,8 +10,14 @@ private import semmle.javascript.dataflow.internal.DataFlowPrivate
 class ForOfLoopStep extends AdditionalFlowInternal {
   override predicate needsSynthesizedNode(AstNode node, string tag, DataFlowCallable container) {
     // Intermediate nodes to convert (MapKey, MapValue) to a `[key, value]` array.
+    //
+    // For the loop `for (let lvalue of domain)` we generate the following steps:
+    //
+    //      domain --- READ[MapKey]   ---> synthetic node 1 --- STORE[0] ---> lvalue
+    //      domain --- READ[MapValue] ---> synthetic node 2 --- STORE[1] ---> lvalue
+    //
     node instanceof ForOfStmt and
-    tag = ["map-key", "map-value"] and
+    tag = ["for-of-map-key", "for-of-map-value"] and
     container.asSourceCallable() = node.getContainer()
   }
 
@@ -27,10 +33,10 @@ class ForOfLoopStep extends AdditionalFlowInternal {
       succ = DataFlow::lvalueNode(stmt.getLValue())
       or
       contents = DataFlow::ContentSet::mapKey() and
-      succ = getSynthesizedNode(stmt, "map-key")
+      succ = getSynthesizedNode(stmt, "for-of-map-key")
       or
       contents = DataFlow::ContentSet::mapValueAll() and
-      succ = getSynthesizedNode(stmt, "map-value")
+      succ = getSynthesizedNode(stmt, "for-of-map-value")
       or
       contents = DataFlow::ContentSet::iteratorError() and
       succ = stmt.getIterationDomain().getExceptionTarget()
@@ -41,10 +47,10 @@ class ForOfLoopStep extends AdditionalFlowInternal {
     DataFlow::Node pred, DataFlow::ContentSet contents, DataFlow::Node succ
   ) {
     exists(ForOfStmt stmt |
-      pred = getSynthesizedNode(stmt, "map-key") and
+      pred = getSynthesizedNode(stmt, "for-of-map-key") and
       contents.asArrayIndex() = 0
       or
-      pred = getSynthesizedNode(stmt, "map-value") and
+      pred = getSynthesizedNode(stmt, "for-of-map-value") and
       contents.asArrayIndex() = 1
     |
       succ = DataFlow::lvalueNode(stmt.getLValue())
