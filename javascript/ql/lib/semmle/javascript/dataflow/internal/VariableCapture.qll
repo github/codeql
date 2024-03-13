@@ -185,7 +185,7 @@ module VariableCaptureConfig implements InputSig<js::Location> {
 
     string toString() { none() } // Overridden in subclass
 
-    Location getLocation() { none() } // Overridden in subclass
+    js::Location getLocation() { none() } // Overridden in subclass
 
     predicate hasCfgNode(BasicBlock bb, int i) { none() } // Overridden in subclass
 
@@ -203,7 +203,7 @@ module VariableCaptureConfig implements InputSig<js::Location> {
     override string toString() { result = pattern.toString() }
 
     /** Gets the location of this write. */
-    override Location getLocation() { result = pattern.getLocation() }
+    override js::Location getLocation() { result = pattern.getLocation() }
 
     override js::DataFlow::Node getSource() {
       // Note: there is not always an expression corresponding to the RHS of the assignment.
@@ -239,7 +239,7 @@ module VariableCaptureConfig implements InputSig<js::Location> {
 
     override string toString() { result = "[implicit init] " + variable }
 
-    override Location getLocation() { result = variable.getLocation() }
+    override js::Location getLocation() { result = variable.getLocation() }
 
     override CapturedVariable getVariable() { result = variable }
 
