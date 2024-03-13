@@ -130,8 +130,6 @@ module VariableCaptureConfig implements InputSig<js::Location> {
     Callable getEnclosingCallable() { result = this.getContainer().getFunctionBoundary() }
   }
 
-  class Location = js::Location;
-
   class Callable extends js::StmtContainer {
     predicate isConstructor() {
       // TODO: clarify exactly what the library wants to know here as the meaning of "constructor" varies between languages.
