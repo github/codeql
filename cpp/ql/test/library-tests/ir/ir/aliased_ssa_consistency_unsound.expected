@@ -3,9 +3,13 @@ unexpectedOperand
 duplicateOperand
 missingPhiOperand
 missingOperandType
+| ir.cpp:1378:5:1378:30 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1367:6:1367:21 | void temporary_string() | void temporary_string() |
+| ir.cpp:1390:5:1390:39 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1381:6:1381:30 | void temporary_destructor_only() | void temporary_destructor_only() |
+| temp.cpp:39:3:39:53 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | temp.cpp:38:6:38:15 | void temp_test5(bool) | void temp_test5(bool) |
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| temp.cpp:43:3:43:68 | Load: ... ? ... : ... | Instruction 'Load: ... ? ... : ...' has no successors in function '$@'. | temp.cpp:42:6:42:15 | void temp_test6(bool) | void temp_test6(bool) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

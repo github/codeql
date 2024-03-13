@@ -6,6 +6,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| temp.cpp:43:3:43:68 | Load: ... ? ... : ... | Instruction 'Load: ... ? ... : ...' has no successors in function '$@'. | temp.cpp:42:6:42:15 | void temp_test6(bool) | void temp_test6(bool) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
