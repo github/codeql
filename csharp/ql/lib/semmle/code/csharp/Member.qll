@@ -87,7 +87,7 @@ class Declaration extends NamedElement, @declaration {
    * }
    * ```
    */
-  string getFullyQualifiedNameWithTypes() {
+  deprecated string getFullyQualifiedNameWithTypes() {
     exists(string fullqual, string qual, string name |
       this.getDeclaringType().hasFullyQualifiedName(qual, name) and
       fullqual = getQualifiedName(qual, name) and
