@@ -43,6 +43,8 @@ module SecondOrderCommandInjectionConfig implements DataFlow::StateConfigSig {
   ) {
     TaintedObject::step(src, trg, inlbl, outlbl)
     or
+    // We're not using a taint-tracking config because taint steps would then apply to all flow states.
+    // So we use a plain data flow config and manually add the default taint steps.
     inlbl.isTaint() and
     TaintTracking::defaultTaintStep(src, trg) and
     inlbl = outlbl
