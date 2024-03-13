@@ -9,7 +9,7 @@ import javascript
 newtype TLocation =
   TDbLocation(@location loc) or
   TSynthLocation(string filepath, int startline, int startcolumn, int endline, int endcolumn) {
-    any(DataFlow::Node n).hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+    any(SsaDefinition def).hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
     // avoid overlap with existing DB locations
     not exists(File f |
       locations_default(_, f, startline, startcolumn, endline, endcolumn) and
