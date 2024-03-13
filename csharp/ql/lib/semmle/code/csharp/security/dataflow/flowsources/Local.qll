@@ -55,3 +55,16 @@ abstract class CommandLineArgumentSource extends LocalFlowSource {
 private class MainMethodArgumentSource extends CommandLineArgumentSource {
   MainMethodArgumentSource() { this.asParameter() = any(MainMethod mainMethod).getAParameter() }
 }
+
+/**
+ * A data flow source that represents the access of a value from the Windows registry.
+ */
+abstract class WindowsRegistrySource extends LocalFlowSource {
+  override string getThreatModel() { result = "windows-registry" }
+
+  override string getSourceType() { result = "a value from the Windows registry" }
+}
+
+private class ExternalWindowsRegistrySource extends WindowsRegistrySource {
+  ExternalWindowsRegistrySource() { sourceNode(this, "windows-registry") }
+}

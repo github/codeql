@@ -6,6 +6,7 @@ edges
 | mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String | provenance |  |
 | mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... | provenance |  |
 nodes
+| UrlRedirect2.java:27:25:27:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | semmle.label | weakCleanup(...) |
 | UrlRedirect.java:32:37:32:66 | getParameter(...) : String | semmle.label | getParameter(...) : String |
@@ -20,6 +21,7 @@ nodes
 subpaths
 | UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) |
 #select
+| UrlRedirect2.java:27:25:27:54 | getParameter(...) | UrlRedirect2.java:27:25:27:54 | getParameter(...) | UrlRedirect2.java:27:25:27:54 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect2.java:27:25:27:54 | getParameter(...) | user-provided value |
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | UrlRedirect.java:23:25:23:54 | getParameter(...) | UrlRedirect.java:23:25:23:54 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:23:25:23:54 | getParameter(...) | user-provided value |
 | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:32:37:32:66 | getParameter(...) | user-provided value |
 | UrlRedirect.java:39:34:39:63 | getParameter(...) | UrlRedirect.java:39:34:39:63 | getParameter(...) | UrlRedirect.java:39:34:39:63 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:39:34:39:63 | getParameter(...) | user-provided value |

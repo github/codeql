@@ -58,7 +58,6 @@ namespace Semmle.Extraction.CSharp.Standalone
             output.WriteLine("Additional options:\n");
             output.WriteLine("    --threads:nnn    Specify number of threads (default=CPU cores)");
             output.WriteLine("    --verbose        Produce more output");
-            output.WriteLine("    --pdb            Cross-reference information from PDBs where available");
         }
 
         private Options()

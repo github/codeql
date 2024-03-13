@@ -1414,29 +1414,29 @@
 | exprs.kt:157:8:157:8 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:157:8:157:21 | ...instanceof... | exprs.kt:156:1:163:1 | typeTests | InstanceOfExpr |
 | exprs.kt:157:8:157:21 | Subclass1 | exprs.kt:156:1:163:1 | typeTests | TypeAccess |
-| exprs.kt:158:13:158:14 | x1 | exprs.kt:156:1:163:1 | typeTests | LocalVariableDeclExpr |
+| exprs.kt:158:9:158:29 | x1 | exprs.kt:156:1:163:1 | typeTests | LocalVariableDeclExpr |
 | exprs.kt:158:29:158:29 | <implicit cast> | exprs.kt:156:1:163:1 | typeTests | ImplicitCastExpr |
 | exprs.kt:158:29:158:29 | Subclass1 | exprs.kt:156:1:163:1 | typeTests | TypeAccess |
 | exprs.kt:158:29:158:29 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
-| exprs.kt:160:9:160:10 | y1 | exprs.kt:156:1:163:1 | typeTests | LocalVariableDeclExpr |
+| exprs.kt:160:5:160:60 | y1 | exprs.kt:156:1:163:1 | typeTests | LocalVariableDeclExpr |
 | exprs.kt:160:25:160:60 | true | exprs.kt:156:1:163:1 | typeTests | BooleanLiteral |
 | exprs.kt:160:25:160:60 | when ... | exprs.kt:156:1:163:1 | typeTests | WhenExpr |
 | exprs.kt:160:29:160:29 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:160:29:160:42 | ...instanceof... | exprs.kt:156:1:163:1 | typeTests | InstanceOfExpr |
 | exprs.kt:160:29:160:42 | Subclass1 | exprs.kt:156:1:163:1 | typeTests | TypeAccess |
 | exprs.kt:160:45:160:49 | <Stmt> | exprs.kt:156:1:163:1 | typeTests | StmtExpr |
-| exprs.kt:160:45:160:49 | <implicit cast> | exprs.kt:156:1:163:1 | typeTests | ImplicitCastExpr |
-| exprs.kt:160:45:160:49 | Subclass1 | exprs.kt:156:1:163:1 | typeTests | TypeAccess |
+| exprs.kt:160:47:160:47 | <implicit cast> | exprs.kt:156:1:163:1 | typeTests | ImplicitCastExpr |
+| exprs.kt:160:47:160:47 | Subclass1 | exprs.kt:156:1:163:1 | typeTests | TypeAccess |
 | exprs.kt:160:47:160:47 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:160:58:160:58 | y | exprs.kt:156:1:163:1 | typeTests | VarAccess |
-| exprs.kt:161:9:161:9 | q | exprs.kt:156:1:163:1 | typeTests | LocalVariableDeclExpr |
+| exprs.kt:161:5:161:13 | q | exprs.kt:156:1:163:1 | typeTests | LocalVariableDeclExpr |
 | exprs.kt:161:13:161:13 | 1 | exprs.kt:156:1:163:1 | typeTests | IntegerLiteral |
 | exprs.kt:162:5:162:48 | true | exprs.kt:156:1:163:1 | typeTests | BooleanLiteral |
 | exprs.kt:162:5:162:48 | when ... | exprs.kt:156:1:163:1 | typeTests | WhenExpr |
 | exprs.kt:162:9:162:9 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:162:9:162:22 | ...instanceof... | exprs.kt:156:1:163:1 | typeTests | InstanceOfExpr |
 | exprs.kt:162:9:162:22 | Subclass1 | exprs.kt:156:1:163:1 | typeTests | TypeAccess |
-| exprs.kt:162:27:162:27 | q | exprs.kt:156:1:163:1 | typeTests | VarAccess |
+| exprs.kt:162:27:162:31 | q | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:162:27:162:31 | ...=... | exprs.kt:156:1:163:1 | typeTests | AssignExpr |
 | exprs.kt:162:31:162:31 | 2 | exprs.kt:156:1:163:1 | typeTests | IntegerLiteral |
 | exprs.kt:162:42:162:42 | q | exprs.kt:156:1:163:1 | typeTests | VarAccess |
@@ -1444,23 +1444,23 @@
 | exprs.kt:162:46:162:46 | 3 | exprs.kt:156:1:163:1 | typeTests | IntegerLiteral |
 | exprs.kt:165:1:172:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:165:9:165:18 | Polygon | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:166:9:166:9 | r | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
+| exprs.kt:166:5:166:25 | r | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
 | exprs.kt:166:13:166:13 | p | exprs.kt:165:1:172:1 | foo | VarAccess |
 | exprs.kt:166:13:166:25 | getBounds(...) | exprs.kt:165:1:172:1 | foo | MethodCall |
 | exprs.kt:167:5:171:5 | when ... | exprs.kt:165:1:172:1 | foo | WhenExpr |
 | exprs.kt:167:8:167:8 | r | exprs.kt:165:1:172:1 | foo | VarAccess |
 | exprs.kt:167:8:167:16 | ... (value not-equals) ... | exprs.kt:165:1:172:1 | foo | ValueNEExpr |
 | exprs.kt:167:13:167:16 | null | exprs.kt:165:1:172:1 | foo | NullLiteral |
-| exprs.kt:168:13:168:14 | r2 | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
+| exprs.kt:168:9:168:29 | r2 | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
 | exprs.kt:168:29:168:29 | <implicit not null> | exprs.kt:165:1:172:1 | foo | ImplicitNotNullExpr |
 | exprs.kt:168:29:168:29 | Rectangle | exprs.kt:165:1:172:1 | foo | TypeAccess |
 | exprs.kt:168:29:168:29 | r | exprs.kt:165:1:172:1 | foo | VarAccess |
-| exprs.kt:169:13:169:18 | height | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
+| exprs.kt:169:9:169:30 | height | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
 | exprs.kt:169:22:169:23 | r2 | exprs.kt:165:1:172:1 | foo | VarAccess |
 | exprs.kt:169:25:169:30 | r2.height | exprs.kt:165:1:172:1 | foo | VarAccess |
 | exprs.kt:170:9:170:10 | r2 | exprs.kt:165:1:172:1 | foo | VarAccess |
-| exprs.kt:170:9:170:17 | r2.height | exprs.kt:165:1:172:1 | foo | VarAccess |
-| exprs.kt:170:9:170:21 | ...=... | exprs.kt:165:1:172:1 | foo | AssignExpr |
+| exprs.kt:170:12:170:21 | r2.height | exprs.kt:165:1:172:1 | foo | VarAccess |
+| exprs.kt:170:12:170:21 | ...=... | exprs.kt:165:1:172:1 | foo | AssignExpr |
 | exprs.kt:170:21:170:21 | 3 | exprs.kt:165:1:172:1 | foo | IntegerLiteral |
 | exprs.kt:174:1:176:1 | 0 | exprs.kt:174:1:176:1 | Direction | IntegerLiteral |
 | exprs.kt:174:1:176:1 | Direction | exprs.kt:174:1:176:1 | Direction | TypeAccess |
@@ -1471,7 +1471,7 @@
 | exprs.kt:174:1:176:1 | Enum<Direction> | exprs.kt:174:1:176:1 | Direction | TypeAccess |
 | exprs.kt:174:1:176:1 | EnumEntries<Direction> | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:174:1:176:1 | String | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:174:1:176:1 | new Enum(...) | exprs.kt:174:1:176:1 | Direction | ClassInstanceExpr |
+| exprs.kt:174:1:176:1 | new Enum<Direction>(...) | exprs.kt:174:1:176:1 | Direction | ClassInstanceExpr |
 | exprs.kt:174:1:176:1 | null | exprs.kt:174:1:176:1 | Direction | NullLiteral |
 | exprs.kt:175:5:175:10 | ...=... | exprs.kt:0:0:0:0 | <clinit> | KtInitializerAssignExpr |
 | exprs.kt:175:5:175:10 | Direction | exprs.kt:0:0:0:0 | <clinit> | TypeAccess |

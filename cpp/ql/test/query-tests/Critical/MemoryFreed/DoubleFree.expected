@@ -11,6 +11,7 @@ edges
 | test_free.cpp:128:10:128:11 | pointer to free output argument | test_free.cpp:129:10:129:11 | * ... | provenance |  |
 | test_free.cpp:152:27:152:27 | pointer to free output argument | test_free.cpp:154:10:154:10 | a | provenance |  |
 | test_free.cpp:207:10:207:10 | pointer to free output argument | test_free.cpp:209:10:209:10 | a | provenance |  |
+| test_free.cpp:301:12:301:14 | pointer to g_free output argument | test_free.cpp:302:12:302:14 | buf | provenance |  |
 nodes
 | test_free.cpp:11:10:11:10 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:14:10:14:10 | a | semmle.label | a |
@@ -36,6 +37,8 @@ nodes
 | test_free.cpp:154:10:154:10 | a | semmle.label | a |
 | test_free.cpp:207:10:207:10 | pointer to free output argument | semmle.label | pointer to free output argument |
 | test_free.cpp:209:10:209:10 | a | semmle.label | a |
+| test_free.cpp:301:12:301:14 | pointer to g_free output argument | semmle.label | pointer to g_free output argument |
+| test_free.cpp:302:12:302:14 | buf | semmle.label | buf |
 subpaths
 #select
 | test_free.cpp:14:10:14:10 | a | test_free.cpp:11:10:11:10 | pointer to free output argument | test_free.cpp:14:10:14:10 | a | Memory pointed to by 'a' may already have been freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
@@ -50,3 +53,4 @@ subpaths
 | test_free.cpp:129:10:129:11 | * ... | test_free.cpp:128:10:128:11 | pointer to free output argument | test_free.cpp:129:10:129:11 | * ... | Memory pointed to by '* ...' may already have been freed by $@. | test_free.cpp:128:5:128:8 | call to free | call to free |
 | test_free.cpp:154:10:154:10 | a | test_free.cpp:152:27:152:27 | pointer to free output argument | test_free.cpp:154:10:154:10 | a | Memory pointed to by 'a' may already have been freed by $@. | test_free.cpp:152:22:152:25 | call to free | call to free |
 | test_free.cpp:209:10:209:10 | a | test_free.cpp:207:10:207:10 | pointer to free output argument | test_free.cpp:209:10:209:10 | a | Memory pointed to by 'a' may already have been freed by $@. | test_free.cpp:207:5:207:8 | call to free | call to free |
+| test_free.cpp:302:12:302:14 | buf | test_free.cpp:301:12:301:14 | pointer to g_free output argument | test_free.cpp:302:12:302:14 | buf | Memory pointed to by 'buf' may already have been freed by $@. | test_free.cpp:301:5:301:10 | call to g_free | call to g_free |
