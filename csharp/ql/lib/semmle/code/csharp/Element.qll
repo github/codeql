@@ -102,6 +102,8 @@ class NamedElement extends Element, @named_element {
   final predicate hasName(string name) { name = this.getName() }
 
   /**
+   * DEPRECATED: Use `hasFullyQualifiedName` instead.
+   *
    * Gets the fully qualified name of this element, for example the
    * fully qualified name of `M` on line 3 is `N.C.M` in
    *
@@ -117,7 +119,7 @@ class NamedElement extends Element, @named_element {
    * ``System.Collections.Generic.IList`1``.
    */
   cached
-  final string getFullyQualifiedName() {
+  deprecated final string getFullyQualifiedName() {
     exists(string qualifier, string name | this.hasFullyQualifiedName(qualifier, name) |
       if qualifier = "" then result = name else result = qualifier + "." + name
     )

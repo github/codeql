@@ -88,11 +88,12 @@ class Declaration extends NamedElement, @declaration {
    * ```
    */
   string getFullyQualifiedNameWithTypes() {
-    exists(string qual |
-      qual = this.getDeclaringType().getFullyQualifiedName() and
+    exists(string fullqual, string qual, string name |
+      this.getDeclaringType().hasFullyQualifiedName(qual, name) and
+      fullqual = getQualifiedName(qual, name) and
       if this instanceof NestedType
-      then result = qual + "+" + this.toStringWithTypes()
-      else result = qual + "." + this.toStringWithTypes()
+      then result = fullqual + "+" + this.toStringWithTypes()
+      else result = fullqual + "." + this.toStringWithTypes()
     )
   }
 
