@@ -34,6 +34,7 @@ module PostMessageStarConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
   predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet contents) {
+    // If an object leaks, all of its properties have leaked
     isSink(node) and contents = DataFlow::ContentSet::anyProperty()
   }
 }
