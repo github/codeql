@@ -340,7 +340,7 @@ module Public {
  */
 module Private {
   private import Public
-  import AccessPathSyntax
+  private import codeql.dataflow.internal.AccessPathSyntax
 
   newtype TSummaryComponent =
     TContentSummaryComponent(ContentSet c) or
@@ -1037,23 +1037,21 @@ module Private {
     }
   }
 
+  /** Holds if `spec` is a relevant external specification. */
+  private predicate relevantSpec(string spec) {
+    summaryElement(_, spec, _, _, _) or
+    summaryElement(_, _, spec, _, _) or
+    sourceElement(_, spec, _, _) or
+    sinkElement(_, spec, _, _)
+  }
+
+  import AccessPath<relevantSpec/1>
+
   /**
    * Provides a means of translating externally (e.g., MaD) defined flow
    * summaries into a `SummarizedCallable`s.
    */
   module External {
-    /** Holds if `spec` is a relevant external specification. */
-    private predicate relevantSpec(string spec) {
-      summaryElement(_, spec, _, _, _) or
-      summaryElement(_, _, spec, _, _) or
-      sourceElement(_, spec, _, _) or
-      sinkElement(_, spec, _, _)
-    }
-
-    private class AccessPathRange extends AccessPath::Range {
-      AccessPathRange() { relevantSpec(this) }
-    }
-
     /** Holds if specification component `token` parses as parameter `pos`. */
     predicate parseParam(AccessPathToken token, ArgumentPosition pos) {
       token.getName() = "Parameter" and
@@ -1184,7 +1182,7 @@ module Private {
     predicate invalidIndexComponent(AccessPath spec, AccessPathToken part) {
       part = spec.getToken(_) and
       part.getName() = ["Parameter", "Argument"] and
-      AccessPath::parseInt(part.getArgumentList()) < 0
+      parseInt(part.getArgumentList()) < 0
     }
 
     private predicate inputNeedsReference(AccessPathToken c) {

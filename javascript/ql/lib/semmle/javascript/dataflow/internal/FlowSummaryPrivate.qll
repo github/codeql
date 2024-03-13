@@ -9,7 +9,7 @@ private import semmle.javascript.dataflow.FlowSummary as FlowSummary
 private import sharedlib.DataFlowImplCommon
 private import sharedlib.FlowSummaryImpl::Private as Private
 private import sharedlib.FlowSummaryImpl::Public
-import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+private import codeql.dataflow.internal.AccessPathSyntax as AccessPathSyntax
 
 private class Node = DataFlow::Node;
 
@@ -147,7 +147,7 @@ private predicate desugaredPositionName(ParameterPosition pos, string operand) {
   operand = "any" and
   pos.asPositionalLowerBound() = 0
   or
-  pos.asPositional() = AccessPathSyntax::AccessPath::parseInt(operand) // parse closed intervals
+  pos.asPositional() = AccessPathSyntax::parseInt(operand) // parse closed intervals
 }
 
 bindingset[operand]
@@ -186,7 +186,7 @@ SummaryComponent interpretComponentSpecific(Private::AccessPathToken c) {
     result = makePropertyContentComponents(c, "ArrayElement", n.toString())
     or
     // ArrayElement[n..] refers to index n or greater
-    n = AccessPathSyntax::AccessPath::parseLowerBound(c.getAnArgument()) and
+    n = AccessPathSyntax::parseLowerBound(c.getAnArgument()) and
     result = makeContentComponents(c, "ArrayElement", ContentSet::arrayElementLowerBoundFromInt(n))
   )
   or
@@ -355,7 +355,7 @@ ArgumentPosition parseParamBody(string s) {
   or
   s = "function" and result.isFunctionSelfReference()
   or
-  result.asPositional() = AccessPathSyntax::AccessPath::parseInt(s)
+  result.asPositional() = AccessPathSyntax::parseInt(s)
 }
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */

@@ -1,5 +1,5 @@
 private import javascript
-private import semmle.javascript.frameworks.data.internal.AccessPathSyntax as AccessPathSyntax
+private import semmle.javascript.frameworks.data.internal.ApiGraphModels as ApiGraphModels
 
 module Private {
   import Public
@@ -25,7 +25,7 @@ module Private {
       call.getArgument(0).getStringValue() = key
     )
     or
-    exists(AccessPathSyntax::AccessPathToken token |
+    exists(ApiGraphModels::AccessPathToken token |
       token.getName() = "MapValue" and
       token.getAnArgument() = key
     )
@@ -47,7 +47,7 @@ module Private {
       or
       this = getAPreciseArrayIndex().toString()
       or
-      exists(AccessPathSyntax::AccessPathToken tok |
+      exists(ApiGraphModels::AccessPathToken tok |
         tok.getName() = "Member" and this = tok.getAnArgument()
       )
     }
