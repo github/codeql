@@ -5,10 +5,9 @@ module Utils {
   bindingset[expr]
   string normalizeExpr(string expr) {
     result =
-      expr.replaceAll("['", ".")
-          .replaceAll("']", "")
-          .replaceAll("[\"", ".")
-          .replaceAll("\"]", "")
+      //[A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]
+      expr.regexpReplaceAll("\\['([a-zA-Z0-9_\\*\\-]+)'\\]", ".$1")
+          .regexpReplaceAll("\\[\"([a-zA-Z0-9_\\*\\-]+)\"\\]", ".$1")
           .regexpReplaceAll("\\s*\\.\\s*", ".")
   }
 }
@@ -45,6 +44,8 @@ class Expression extends AstNode instanceof ExpressionImpl {
   string getExpression() { result = expression }
 
   string getRawExpression() { result = rawExpression }
+
+  string getNormalizedExpression() { result = Utils::normalizeExpr(expression) }
 }
 
 /** A common class for `env` in workflow, job or step. */

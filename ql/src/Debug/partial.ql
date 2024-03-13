@@ -8,6 +8,7 @@
  */
 
 import actions
+import codeql.actions.DataFlow
 import codeql.actions.TaintTracking
 import codeql.actions.dataflow.FlowSources
 import PartialFlow::PartialPathGraph

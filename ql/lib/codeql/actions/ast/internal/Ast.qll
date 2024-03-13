@@ -30,8 +30,8 @@ string getASimpleReferenceExpression(YamlString s, int offset) {
   // not just the last (greedy match) or first (reluctant match).
   result =
     s.getValue()
-        .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9_\\[\\]\\*\\(\\)\\.\\-]+\\s*\\}\\}", _, offset)
-        .regexpCapture("(\\$\\{\\{\\s*[A-Za-z0-9_\\[\\]\\*\\((\\)\\.\\-]+\\s*\\}\\})", 1)
+        .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+\\s*\\}\\}", _, offset)
+        .regexpCapture("(\\$\\{\\{\\s*[A-Za-z0-9'\"_\\[\\]\\*\\((\\)\\.\\-]+\\s*\\}\\})", 1)
 }
 
 private newtype TAstNode =
