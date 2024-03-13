@@ -252,11 +252,6 @@ class CompositeActionImpl extends AstNodeImpl, TCompositeAction {
 
   override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
 
-  // override AstNodeImpl getAChildNode() {
-  //   result = this.getInputs() or
-  //   result = this.getOutputs() or
-  //   result = this.getRuns()
-  // }
   override AstNodeImpl getParentNode() { none() }
 
   override string getAPrimaryQlClass() { result = "CompositeActionImpl" }
@@ -292,12 +287,6 @@ class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
 
   override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
 
-  // override AstNodeImpl getAChildNode() {
-  //   result = this.getAJob() or
-  //   result = this.getStrategy() or
-  //   result = this.getEnv() or
-  //   result = this.getPermissions()
-  // }
   override AstNodeImpl getParentNode() { none() }
 
   override string getAPrimaryQlClass() { result = "WorkflowImpl" }
@@ -306,8 +295,6 @@ class WorkflowImpl extends AstNodeImpl, TWorkflowNode {
 
   override YamlMapping getNode() { result = n }
 
-  // /** Gets the `jobs` mapping from job IDs to job definitions in this workflow. */
-  // YamlMapping getJobs() { result = this.asYamlMapping().lookup("jobs") }
   /** Gets the 'global' `env` mapping in this workflow. */
   EnvImpl getEnv() { result.getNode() = n.lookup("env") }
 
@@ -346,11 +333,6 @@ class ReusableWorkflowImpl extends AstNodeImpl, WorkflowImpl {
 
   override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
 
-  // override AstNodeImpl getAChildNode() {
-  //   result = super.getAChildNode() or
-  //   result = this.getInputs() or
-  //   result = this.getOutputs()
-  // }
   OutputsImpl getOutputs() { result.getNode() = workflow_call.(YamlMapping).lookup("outputs") }
 
   ExpressionImpl getAnOutputExpr() { result = this.getOutputs().getAnOutputExpr() }
@@ -378,7 +360,6 @@ class RunsImpl extends AstNodeImpl, TRunsNode {
 
   override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
 
-  //override AstNodeImpl getAChildNode() { result = this.getAStep() }
   override CompositeActionImpl getParentNode() { result.getAChildNode() = this }
 
   override string getAPrimaryQlClass() { result = "RunsImpl" }
@@ -450,7 +431,6 @@ class OutputsImpl extends AstNodeImpl, TOutputsNode {
 
   override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
 
-  //override AstNodeImpl getAChildNode() { result = this.getAnOutputExpr() }
   override AstNodeImpl getParentNode() { result.getAChildNode() = this }
 
   override string getAPrimaryQlClass() { result = "OutputsImpl" }
@@ -503,7 +483,6 @@ class StrategyImpl extends AstNodeImpl, TStrategyNode {
 
   override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
 
-  //override ExpressionImpl getAChildNode() { result = this.getAMatrixVarExpr() }
   override AstNodeImpl getParentNode() { result.getAChildNode() = this }
 
   override string getAPrimaryQlClass() { result = "StrategyImpl" }
@@ -557,10 +536,8 @@ class JobImpl extends AstNodeImpl, TJobNode {
     workflow.getNode().lookup("jobs").(YamlMapping).lookup(jobId) = n
   }
 
-  // TODO: REMOVE
   override string toString() { result = "Job: " + jobId }
 
-  //override string toString() { result = n.toString() }
   override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
 
   override WorkflowImpl getParentNode() { result.getAChildNode() = this }
@@ -739,7 +716,6 @@ class UsesStepImpl extends StepImpl, UsesImpl {
     result.getParentNode().getNode() = n.lookup("with").(YamlMapping).lookup(key)
   }
 
-  // TODO: REMOVE
   override string toString() {
     if exists(this.getId()) then result = "Uses Step: " + this.getId() else result = "Uses Step"
   }
@@ -760,7 +736,6 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
 
   ExternalJobImpl() { n.lookup("uses") = u }
 
-  //override AstNodeImpl getAChildNode() { result.getNode() = n.getAChildNode*() }
   override string getCallee() {
     if u.getValue().matches("./%")
     then result = u.getValue().regexpCapture(pathUsesParser(), 1)
@@ -796,7 +771,6 @@ class RunImpl extends StepImpl {
 
   ExpressionImpl getAnScriptExpr() { result.getParentNode().getNode() = script }
 
-  // TODO: REMOVE
   override string toString() {
     if exists(this.getId()) then result = "Run Step: " + this.getId() else result = "Run Step"
   }
@@ -807,14 +781,6 @@ class RunImpl extends StepImpl {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  */
 abstract class ContextExpressionImpl extends ExpressionImpl {
-  // TODO: REMOVE
-  // ContextExpressionImpl() {
-  //   expression
-  //       .regexpMatch([
-  //           stepsCtxRegex(), needsCtxRegex(), jobsCtxRegex(), envCtxRegex(), inputsCtxRegex(),
-  //           matrixCtxRegex()
-  //         ])
-  // }
   abstract string getFieldName();
 
   abstract AstNodeImpl getTarget();

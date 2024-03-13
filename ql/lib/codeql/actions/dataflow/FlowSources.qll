@@ -96,6 +96,7 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
   exists(string reg |
     reg =
       [
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow\\s*\\.\\s*path\\b",
         "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_branch\\b",
         "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*display_title\\b",
         "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_repository\\b\\s*\\.\\s*description\\b",

@@ -121,7 +121,6 @@ class Outputs extends AstNode instanceof OutputsImpl {
 
   Expression getOutputExpr(string outputName) { result = super.getOutputExpr(outputName) }
 
-  // TODO: REMOVE
   override string toString() { result = "Job outputs node" }
 }
 

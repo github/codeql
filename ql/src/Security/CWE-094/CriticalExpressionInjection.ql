@@ -34,14 +34,14 @@ module MyFlow = TaintTracking::Global<MyConfig>;
 
 import MyFlow::PathGraph
 
-from MyFlow::PathNode source, MyFlow::PathNode sink
+from MyFlow::PathNode source, MyFlow::PathNode sink, Workflow w
 where
   MyFlow::flowPath(source, sink) and
-  source
-      .getNode()
-      .asExpr()
-      .getEnclosingWorkflow()
-      .hasTriggerEvent(source.getNode().(RemoteFlowSource).getATriggerEvent())
+  w = source.getNode().asExpr().getEnclosingWorkflow() and
+  (
+    w instanceof ReusableWorkflow or
+    w.hasTriggerEvent(source.getNode().(RemoteFlowSource).getATriggerEvent())
+  )
 select sink.getNode(), source, sink,
   "Potential expression injection in $@, which may be controlled by an external user.", sink,
   sink.getNode().asExpr().(Expression).getExpression()
