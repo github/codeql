@@ -33,8 +33,8 @@ class ShouldInterceptRequestMethod extends Method {
 }
 
 /** A method call to `WebView.setWebViewClient`. */
-class SetWebViewClientMethodAccess extends MethodAccess {
-  SetWebViewClientMethodAccess() {
+class SetWebViewClientMethodCall extends MethodCall {
+  SetWebViewClientMethodCall() {
     this.getMethod().hasName("setWebViewClient") and
     this.getMethod().getDeclaringType().getASupertype*() instanceof TypeWebView
   }
@@ -66,7 +66,7 @@ private class FetchUrlStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     exists(
       // webview.loadUrl(url) -> webview.setWebViewClient(new WebViewClient() { shouldInterceptRequest(view, url) });
-      MethodAccess lma, ShouldInterceptRequestMethod im, SetWebViewClientMethodAccess sma
+      MethodCall lma, ShouldInterceptRequestMethod im, SetWebViewClientMethodCall sma
     |
       sma.getArgument(0).getType() = im.getDeclaringType().getASupertype*() and
       lma.getMethod() instanceof WebViewLoadUrlMethod and

@@ -44,7 +44,9 @@ predicate hasDynamicHrefHostAttributeValue(DOM::ElementDefinition elem) {
       // ... that does not start with a fixed host or a relative path (common formats)
       not url.regexpMatch("(?i)((https?:)?//)?[-a-z0-9.]*/.*") and
       // .. that is not a call to `url_for` in a Flask / nunjucks application
-      not url.regexpMatch("\\{\\{\\s*url(_for)?\\(.+\\).*")
+      not url.regexpMatch("\\{\\{\\s*url(_for)?\\(.+\\).*") and
+      // .. that is not a call to `url` in a Django application
+      not url.regexpMatch("\\{%\\s*url.*")
     )
   )
 }

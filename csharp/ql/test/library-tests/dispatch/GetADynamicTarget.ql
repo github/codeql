@@ -5,4 +5,4 @@ from DispatchCall call, Callable callable
 where
   callable = call.getADynamicTarget() and
   callable.fromSource()
-select call, callable.getQualifiedNameWithTypes()
+select call, callable.getFullyQualifiedNameWithTypes()

@@ -69,11 +69,11 @@
 | Program.cs:144:27:144:27 | T |
 | Program.cs:144:31:144:41 | DynamicType |
 | Program.cs:154:15:154:35 | TEmbeddedTypesManager |
-| Program.cs:154:39:154:96 | EmbeddedTypesManager<,> |
+| Program.cs:154:39:154:96 | EmbeddedTypesManager`2 |
 | Program.cs:154:60:154:80 | TEmbeddedTypesManager |
 | Program.cs:154:83:154:95 | TEmbeddedType |
 | Program.cs:155:15:155:27 | TEmbeddedType |
-| Program.cs:155:31:155:88 | EmbeddedTypesManager<,> |
+| Program.cs:155:31:155:88 | EmbeddedTypesManager`2 |
 | Program.cs:155:52:155:72 | TEmbeddedTypesManager |
 | Program.cs:155:75:155:87 | TEmbeddedType |
 | Program.cs:162:5:162:7 | Int32 |

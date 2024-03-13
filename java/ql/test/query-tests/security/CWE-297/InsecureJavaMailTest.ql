@@ -7,7 +7,7 @@ module InsecureJavaMailTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasInsecureJavaMail" and
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getLocation() = location and
       element = ma.toString() and
       value = ""

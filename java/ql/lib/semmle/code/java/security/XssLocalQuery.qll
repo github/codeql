@@ -12,6 +12,14 @@ module XssLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof XssSanitizer }
+
+  predicate isBarrierOut(DataFlow::Node node) { node instanceof XssSinkBarrier }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(XssAdditionalTaintStep s).step(node1, node2)
+  }
 }
 
 /**

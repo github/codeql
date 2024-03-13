@@ -1,11 +1,11 @@
 extensions:
 
   - addsTo:
-      pack: codeql/java-all
-      extensible: supportedThreatModels
+      pack: codeql/threat-models
+      extensible: threatModelConfiguration
     data:
-      - ["environment"]
-      - ["commandargs"]
+      - ["environment", true, 0]
+      - ["commandargs", true, 0]
 
   - addsTo:
       pack: codeql/java-all

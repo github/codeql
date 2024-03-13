@@ -61,10 +61,8 @@ private predicate closureFlowStep(Expr e1, Expr e2) {
   )
 }
 
-private module CaptureInput implements VariableCapture::InputSig {
+private module CaptureInput implements VariableCapture::InputSig<Location> {
   private import java as J
-
-  class Location = J::Location;
 
   class BasicBlock instanceof J::BasicBlock {
     string toString() { result = super.toString() }
@@ -114,7 +112,7 @@ private module CaptureInput implements VariableCapture::InputSig {
     CapturedVariable getVariable() { result = v }
   }
 
-  class VariableRead extends Expr instanceof RValue {
+  class VariableRead extends Expr instanceof VarRead {
     CapturedVariable v;
 
     VariableRead() { super.getVariable() = v }
@@ -146,7 +144,7 @@ class CapturedVariable = CaptureInput::CapturedVariable;
 
 class CapturedParameter = CaptureInput::CapturedParameter;
 
-module CaptureFlow = VariableCapture::Flow<CaptureInput>;
+module CaptureFlow = VariableCapture::Flow<Location, CaptureInput>;
 
 private CaptureFlow::ClosureNode asClosureNode(Node n) {
   result = n.(CaptureNode).getSynthesizedCaptureNode()
@@ -178,6 +176,10 @@ private predicate captureStoreStep(Node node1, CapturedVariableContent c, Node n
 
 private predicate captureReadStep(Node node1, CapturedVariableContent c, Node node2) {
   CaptureFlow::readStep(asClosureNode(node1), c.getVariable(), asClosureNode(node2))
+}
+
+private predicate captureClearsContent(Node node, CapturedVariableContent c) {
+  CaptureFlow::clearsContent(asClosureNode(node), c.getVariable())
 }
 
 predicate captureValueStep(Node node1, Node node2) {
@@ -234,6 +236,27 @@ predicate storeStep(Node node1, ContentSet f, Node node2) {
     pragma[only_bind_out](node2.getEnclosingCallable())
 }
 
+// Manual join hacking, to avoid a parameters x fields product.
+pragma[noinline]
+private predicate hasNamedField(Record r, Field f, string name) {
+  f = r.getAField() and name = f.getName()
+}
+
+pragma[noinline]
+private predicate hasNamedCanonicalParameter(Record r, Parameter p, int idx, string name) {
+  p = r.getCanonicalConstructor().getParameter(idx) and name = p.getName()
+}
+
+private Field getLexicallyOrderedRecordField(Record r, int idx) {
+  result =
+    rank[idx + 1](Field f, int i, Parameter p, string name |
+      hasNamedCanonicalParameter(r, p, i, name) and
+      hasNamedField(r, f, name)
+    |
+      f order by i
+    )
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` via a read of `f`.
  * Thus, `node1` references an object with a field `f` whose value ends up in
@@ -246,7 +269,7 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
     fr = node2.asExpr()
   )
   or
-  exists(Record r, Method getter, Field recf, MethodAccess get |
+  exists(Record r, Method getter, Field recf, MethodCall get |
     getter.getDeclaringType() = r and
     recf.getDeclaringType() = r and
     getter.getNumberOfParameters() = 0 and
@@ -256,6 +279,13 @@ predicate readStep(Node node1, ContentSet f, Node node2) {
     get.getMethod() = getter and
     node1.asExpr() = get.getQualifier() and
     node2.asExpr() = get
+  )
+  or
+  exists(RecordPatternExpr rpe, PatternExpr subPattern, int i |
+    node1.asExpr() = rpe and
+    subPattern = rpe.getSubPattern(i) and
+    node2.asExpr() = subPattern and
+    f.(FieldContent).getField() = getLexicallyOrderedRecordField(rpe.getType(), i)
   )
   or
   f instanceof ArrayContent and arrayReadStep(node1, node2, _)
@@ -285,6 +315,8 @@ predicate clearsContent(Node n, ContentSet c) {
   )
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
+  or
+  captureClearsContent(n, c)
 }
 
 /**
@@ -349,7 +381,18 @@ predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { compatibleTypes0(t
 
 /** A node that performs a type cast. */
 class CastNode extends ExprNode {
-  CastNode() { this.getExpr() instanceof CastingExpr }
+  CastNode() {
+    this.getExpr() instanceof CastingExpr
+    or
+    exists(SsaExplicitUpdate upd |
+      upd.getDefiningExpr().(VariableAssign).getSource() =
+        [
+          any(SwitchStmt ss).getExpr(), any(SwitchExpr se).getExpr(),
+          any(InstanceOfExpr ioe).getExpr()
+        ] and
+      this.asExpr() = upd.getAFirstUse()
+    )
+  }
 }
 
 private newtype TDataFlowCallable =
@@ -541,7 +584,10 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
-  FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+  exists(DataFlowCallable c, ParameterPosition pos |
+    parameterNode(p, c, pos) and
+    FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
+  )
   or
   CaptureFlow::heuristicAllowInstanceParameterReturnInSelf(p.(InstanceParameterNode).getCallable())
 }

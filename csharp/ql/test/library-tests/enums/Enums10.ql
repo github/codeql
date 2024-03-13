@@ -8,7 +8,7 @@ from EnumConstant c, EnumConstant d
 where
   c.getName() = "Blue" and
   d.hasName("AnotherBlue") and
-  c.getDeclaringType().hasQualifiedName("Enums", "SparseColor") and
+  c.getDeclaringType().hasFullyQualifiedName("Enums", "SparseColor") and
   c.getType() = c.getDeclaringType() and
   c.getType() = d.getType() and
   c.getValue() = "11" and

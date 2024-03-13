@@ -13,6 +13,8 @@ namespace Semmle.Util
     {
         public const string NugetExeUrl = "https://dist.nuget.org/win-x86-commandline/latest/nuget.exe";
 
+        public static readonly char[] NewLineCharacters = ['\r', '\n'];
+
         public static string ConvertToWindows(string path)
         {
             return path.Replace('/', '\\');
@@ -131,34 +133,43 @@ namespace Semmle.Util
                 var directoryName = Path.GetDirectoryName(nested);
                 if (directoryName is null)
                 {
-                    logger.Log(Severity.Warning, "Failed to get directory name from path '" + nested + "'.");
+                    logger.LogWarning("Failed to get directory name from path '" + nested + "'.");
                     throw new InvalidOperationException();
                 }
                 Directory.CreateDirectory(directoryName);
             }
             catch (PathTooLongException)
             {
-                logger.Log(Severity.Warning, "Failed to create parent directory of '" + nested + "': Path too long.");
+                logger.LogWarning("Failed to create parent directory of '" + nested + "': Path too long.");
                 throw;
             }
             return nested;
         }
 
-        public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp)
+        private static readonly Lazy<string> tempFolderPath = new Lazy<string>(() =>
         {
-            shouldCleanUp = false;
-            var tempFolder = EnvironmentVariables.GetScratchDirectory();
+            var tempPath = Path.GetTempPath();
+            var name = Guid.NewGuid().ToString("N").ToUpper();
+            var tempFolder = Path.Combine(tempPath, "GitHub", name);
+            Directory.CreateDirectory(tempFolder);
+            return tempFolder;
+        });
 
-            if (string.IsNullOrEmpty(tempFolder))
+        public static string GetTemporaryWorkingDirectory(Func<string, string?> getEnvironmentVariable, string lang, out bool shouldCleanUp)
+        {
+            var tempFolder = getEnvironmentVariable($"CODEQL_EXTRACTOR_{lang}_SCRATCH_DIR");
+            if (!string.IsNullOrEmpty(tempFolder))
             {
-                var tempPath = Path.GetTempPath();
-                var name = Guid.NewGuid().ToString("N").ToUpper();
-                tempFolder = Path.Combine(tempPath, "GitHub", name);
-                shouldCleanUp = true;
+                shouldCleanUp = false;
+                return tempFolder;
             }
 
-            return tempFolder;
+            shouldCleanUp = true;
+            return tempFolderPath.Value;
         }
+
+        public static string GetTemporaryWorkingDirectory(out bool shouldCleanUp) =>
+            GetTemporaryWorkingDirectory(Environment.GetEnvironmentVariable, "CSHARP", out shouldCleanUp);
 
         public static FileInfo CreateTemporaryFile(string extension, out bool shouldCleanUpContainingFolder)
         {

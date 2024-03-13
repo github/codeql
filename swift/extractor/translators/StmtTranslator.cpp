@@ -73,7 +73,6 @@ codeql::ForEachStmt StmtTranslator::translateForEachStmt(const swift::ForEachStm
   auto entry = dispatcher.createEntry(stmt);
   fillLabeledStmt(stmt, entry);
   entry.body = dispatcher.fetchLabel(stmt.getBody());
- // entry.sequence = dispatcher.fetchLabel(stmt.getTypeCheckedSequence());
   entry.pattern = dispatcher.fetchLabel(stmt.getPattern());
   entry.iteratorVar = dispatcher.fetchLabel(stmt.getIteratorVar());
   entry.where = dispatcher.fetchOptionalLabel(stmt.getWhere());
@@ -135,11 +134,7 @@ codeql::CaseStmt StmtTranslator::translateCaseStmt(const swift::CaseStmt& stmt) 
   auto entry = dispatcher.createEntry(stmt);
   entry.body = dispatcher.fetchLabel(stmt.getBody());
   entry.labels = dispatcher.fetchRepeatedLabels(stmt.getCaseLabelItems());
-  if (stmt.hasCaseBodyVariables()) {
-    for (auto var : stmt.getCaseBodyVariables()) {
-      entry.variables.push_back(dispatcher.fetchLabel(var));
-    }
-  }
+  entry.variables = dispatcher.fetchRepeatedLabels(stmt.getCaseBodyVariablesOrEmptyArray());
   return entry;
 }
 
@@ -214,6 +209,12 @@ codeql::PoundAssertStmt StmtTranslator::translatePoundAssertStmt(
   auto entry = dispatcher.createEntry(stmt);
   entry.condition = dispatcher.fetchLabel(stmt.getCondition());
   entry.message = stmt.getMessage();
+  return entry;
+}
+
+codeql::DiscardStmt StmtTranslator::translateDiscardStmt(const swift::DiscardStmt& stmt) {
+  auto entry = dispatcher.createEntry(stmt);
+  entry.sub_expr = dispatcher.fetchLabel(stmt.getSubExpr());
   return entry;
 }
 

@@ -1,0 +1,1 @@
+| each T | getName: | each T | getCanonicalType: | each T | getInterfaceType: | each T | hasSuperclass: | no | getNumberOfProtocols: | 0 |

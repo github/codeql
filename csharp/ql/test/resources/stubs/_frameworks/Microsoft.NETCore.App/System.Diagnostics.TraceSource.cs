@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.Diagnostics.TraceSource, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.Diagnostics.TraceSource, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Diagnostics
@@ -88,6 +88,7 @@ namespace System
             protected int SwitchSetting { get => throw null; set { } }
             public string Value { get => throw null; set { } }
         }
+        [System.AttributeUsage((System.AttributeTargets)741)]
         public sealed class SwitchAttribute : System.Attribute
         {
             public SwitchAttribute(string switchName, System.Type switchType) => throw null;
@@ -96,6 +97,7 @@ namespace System
             public string SwitchName { get => throw null; set { } }
             public System.Type SwitchType { get => throw null; set { } }
         }
+        [System.AttributeUsage((System.AttributeTargets)4)]
         public sealed class SwitchLevelAttribute : System.Attribute
         {
             public SwitchLevelAttribute(System.Type switchLevelType) => throw null;

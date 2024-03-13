@@ -6,6 +6,9 @@
 
 /** Provides language-specific data flow parameters. */
 signature module InputSig {
+  /**
+   * A node in the data flow graph.
+   */
   class Node {
     /** Gets a textual representation of this element. */
     string toString();
@@ -30,9 +33,27 @@ signature module InputSig {
     ReturnKind getKind();
   }
 
+  /**
+   * A node in the data flow graph that represents an output of a call.
+   */
   class OutNode extends Node;
 
+  /**
+   * A node in the data flow graph representing the value of some other node
+   * after an operation that might have changed its state. A typical example is
+   * an argument, which may have been modified by the callee. For example,
+   * consider the following code calling a setter method:
+   * ```
+   * x.setFoo(y);
+   * ```
+   * The post-update node for the argument node `x` is the node representing the
+   * value of `x` after the field `foo` has been updated.
+   */
   class PostUpdateNode extends Node {
+    /**
+     * Gets the pre-update node, that is, the node that represents the same
+     * value prior to the operation.
+     */
     Node getPreUpdateNode();
   }
 
@@ -77,13 +98,13 @@ signature module InputSig {
    * Holds if the set of viable implementations that can be called by `call`
    * might be improved by knowing the call context.
    */
-  predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable c);
+  default predicate mayBenefitFromCallContext(DataFlowCall call) { none() }
 
   /**
    * Gets a viable dispatch target of `call` in the context `ctx`. This is
    * restricted to those `call`s for which a context might make a difference.
    */
-  DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx);
+  default DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
   /**
    * Gets a node that can read the value returned from `call` with return kind
@@ -91,6 +112,13 @@ signature module InputSig {
    */
   OutNode getAnOutNode(DataFlowCall call, ReturnKind kind);
 
+  /**
+   * A type for a data flow node.
+   *
+   * This may or may not coincide with any type system existing for the source
+   * language, but should minimally include unique types for individual closure
+   * expressions (typically lambdas).
+   */
   class DataFlowType {
     /** Gets a textual representation of this element. */
     string toString();
@@ -98,9 +126,25 @@ signature module InputSig {
 
   string ppReprType(DataFlowType t);
 
+  /**
+   * Holds if `t1` and `t2` are compatible types.
+   *
+   * This predicate must be symmetric and reflexive.
+   *
+   * This predicate is used in the following way: If the data flow library
+   * tracks an object from node `n1` to `n2` using solely value-preserving
+   * steps, then it will check that the types of `n1` and `n2` are compatible.
+   * If they are not, then flow will be blocked.
+   */
   bindingset[t1, t2]
   predicate compatibleTypes(DataFlowType t1, DataFlowType t2);
 
+  /**
+   * Holds if `t1` is strictly stronger than `t2`. That is, `t1` is a strict
+   * subtype of `t2`.
+   *
+   * This predicate must be transitive and imply `compatibleTypes(t1, t2)`.
+   */
   predicate typeStrongerThan(DataFlowType t1, DataFlowType t2);
 
   class Content {
@@ -108,6 +152,12 @@ signature module InputSig {
     string toString();
   }
 
+  /**
+   * Holds if access paths with `c` at their head always should be tracked at
+   * high precision. This disables adaptive access path precision for such
+   * access paths. This may be beneficial for content that indicates an
+   * element of an array or container.
+   */
   predicate forceHighPrecision(Content c);
 
   /**
@@ -117,6 +167,9 @@ signature module InputSig {
    * stored into (`getAStoreContent`) or read from (`getAReadContent`).
    */
   class ContentSet {
+    /** Gets a textual representation of this element. */
+    string toString();
+
     /** Gets a content that may be stored into when storing into this set. */
     Content getAStoreContent();
 
@@ -124,11 +177,19 @@ signature module InputSig {
     Content getAReadContent();
   }
 
+  /**
+   * A content approximation. A content approximation corresponds to one or
+   * more `Content`s, and is used to provide an in-between level of precision
+   * for pruning.
+   */
   class ContentApprox {
     /** Gets a textual representation of this element. */
     string toString();
   }
 
+  /**
+   * Gets the content approximation for content `c`.
+   */
   ContentApprox getContentApprox(Content c);
 
   class ParameterPosition {
@@ -143,9 +204,24 @@ signature module InputSig {
     string toString();
   }
 
+  /**
+   * Holds if the parameter position `ppos` matches the argument position
+   * `apos`.
+   */
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
+  /**
+   * Holds if there is a simple local flow step from `node1` to `node2`. These
+   * are the value-preserving intra-callable flow steps.
+   */
   predicate simpleLocalFlowStep(Node node1, Node node2);
+
+  /**
+   * Holds if the data-flow step from `node1` to `node2` can be used to
+   * determine where side-effects may return from a callable.
+   */
+  bindingset[node1, node2]
+  default predicate validParameterAliasStep(Node node1, Node node2) { any() }
 
   /**
    * Holds if data can flow from `node1` to `node2` through a non-local step
@@ -199,6 +275,12 @@ signature module InputSig {
 
   /**
    * Holds if the value of `node2` is given by `node1`.
+   *
+   * This predicate is combined with type information in the following way: If
+   * the data flow library is able to compute an improved type for `node1` then
+   * it will also conclude that this type applies to `node2`. Vice versa, if
+   * `node2` must be visited along a flow path, then any type known for `node2`
+   * must also apply to `node1`.
    */
   predicate localMustFlowStep(Node node1, Node node2);
 
@@ -234,6 +316,9 @@ signature module InputSig {
   ) {
     any()
   }
+
+  /** Holds if `fieldFlowBranchLimit` should be ignored for flow going into/out of `c`. */
+  default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
 }
 
 module Configs<InputSig Lang> {
@@ -290,6 +375,9 @@ module Configs<InputSig Lang> {
      * value of 0 disables field flow), or a larger value to get more results.
      */
     default int fieldFlowBranchLimit() { result = 2 }
+
+    /** Gets the access path limit. */
+    default int accessPathLimit() { result = Lang::accessPathLimit() }
 
     /**
      * Gets a data flow configuration feature to add restrictions to the set of
@@ -410,6 +498,9 @@ module Configs<InputSig Lang> {
      */
     default int fieldFlowBranchLimit() { result = 2 }
 
+    /** Gets the access path limit. */
+    default int accessPathLimit() { result = Lang::accessPathLimit() }
+
     /**
      * Gets a data flow configuration feature to add restrictions to the set of
      * valid flow paths.
@@ -498,6 +589,8 @@ module DataFlowMake<InputSig Lang> {
     private module C implements FullStateConfigSig {
       import DefaultState<Config>
       import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
     }
 
     import Impl<C>
@@ -514,6 +607,8 @@ module DataFlowMake<InputSig Lang> {
   module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
     private module C implements FullStateConfigSig {
       import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
     }
 
     import Impl<C>
@@ -545,7 +640,7 @@ module DataFlowMake<InputSig Lang> {
 
   signature module PathGraphSig<PathNodeSig PathNode> {
     /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-    predicate edges(PathNode a, PathNode b);
+    predicate edges(PathNode a, PathNode b, string key, string val);
 
     /** Holds if `n` is a node in the graph of data flow path explanations. */
     predicate nodes(PathNode n, string key, string val);
@@ -609,9 +704,9 @@ module DataFlowMake<InputSig Lang> {
      */
     module PathGraph implements PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-      query predicate edges(PathNode a, PathNode b) {
-        Graph1::edges(a.asPathNode1(), b.asPathNode1()) or
-        Graph2::edges(a.asPathNode2(), b.asPathNode2())
+      query predicate edges(PathNode a, PathNode b, string key, string val) {
+        Graph1::edges(a.asPathNode1(), b.asPathNode1(), key, val) or
+        Graph2::edges(a.asPathNode2(), b.asPathNode2(), key, val)
       }
 
       /** Holds if `n` is a node in the graph of data flow path explanations. */
@@ -680,7 +775,9 @@ module DataFlowMake<InputSig Lang> {
      */
     module PathGraph implements PathGraphSig<PathNode> {
       /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
-      query predicate edges(PathNode a, PathNode b) { Merged::PathGraph::edges(a, b) }
+      query predicate edges(PathNode a, PathNode b, string key, string val) {
+        Merged::PathGraph::edges(a, b, key, val)
+      }
 
       /** Holds if `n` is a node in the graph of data flow path explanations. */
       query predicate nodes(PathNode n, string key, string val) {

@@ -1,0 +1,12 @@
+load("@rules_pkg//:mappings.bzl", "pkg_files")
+
+_strip_prefix = "usr/lib/swift"
+
+pkg_files(
+    name = "resource-dir",
+    srcs = glob(
+        ["usr/lib/swift/**/*"],
+    ),
+    strip_prefix = _strip_prefix,
+    visibility = ["//visibility:public"],
+)

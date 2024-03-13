@@ -71,6 +71,16 @@ private class EncryptionKeySinks extends SinkModelCsv {
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:);;;Argument[3];encryption-key",
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[3];encryption-key",
         ";Realm.Configuration;true;encryptionKey;;;PostUpdate;encryption-key",
+        // sqlite3 C API (Encryption Extension)
+        ";;false;sqlite3_key(_:_:_:);;;Argument[1];encryption-key",
+        ";;false;sqlite3_rekey(_:_:_:);;;Argument[1];encryption-key",
+        ";;false;sqlite3_key_v2(_:_:_:_:);;;Argument[2];encryption-key",
+        ";;false;sqlite3_rekey_v2(_:_:_:_:);;;Argument[2];encryption-key",
+        // SQLite.swift
+        ";Connection;true;key(_:db:);;;Argument[0];encryption-key",
+        ";Connection;true;keyAndMigrate(_:db:);;;Argument[0];encryption-key",
+        ";Connection;true;rekey(_:db:);;;Argument[0];encryption-key",
+        ";Connection;true;sqlcipher_export(_:key:);;;Argument[1];encryption-key",
         // GRDB
         ";Database;true;usePassphrase(_:);;;Argument[0];encryption-key",
         ";Database;true;changePassphrase(_:);;;Argument[0];encryption-key",

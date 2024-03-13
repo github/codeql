@@ -44,7 +44,7 @@ module SpringViewManipulationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof ThreatModelFlowSource or
     source instanceof WebRequestSource or
-    source.asExpr().(MethodAccess).getMethod() instanceof PortletRenderRequestMethod
+    source.asExpr().(MethodCall).getMethod() instanceof PortletRenderRequestMethod
   }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof SpringViewManipulationSink }

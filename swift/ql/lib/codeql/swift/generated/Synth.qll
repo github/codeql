@@ -42,6 +42,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TMacroRole(Raw::MacroRole id) { constructMacroRole(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TOtherAvailabilitySpec(Raw::OtherAvailabilitySpec id) { constructOtherAvailabilitySpec(id) } or
     /**
      * INTERNAL: Do not use.
@@ -121,6 +125,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TInitializer(Raw::Initializer id) { constructInitializer(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TMacroDecl(Raw::MacroDecl id) { constructMacroDecl(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -238,6 +246,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TBorrowExpr(Raw::BorrowExpr id) { constructBorrowExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TBridgeFromObjCExpr(Raw::BridgeFromObjCExpr id) { constructBridgeFromObjCExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -279,6 +291,14 @@ module Synth {
     TConditionalCheckedCastExpr(Raw::ConditionalCheckedCastExpr id) {
       constructConditionalCheckedCastExpr(id)
     } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TConsumeExpr(Raw::ConsumeExpr id) { constructConsumeExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TCopyExpr(Raw::CopyExpr id) { constructCopyExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -486,6 +506,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TMaterializePackExpr(Raw::MaterializePackExpr id) { constructMaterializePackExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TMemberRefExpr(Raw::MemberRefExpr id) { constructMemberRefExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -540,6 +564,14 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TPackElementExpr(Raw::PackElementExpr id) { constructPackElementExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPackExpansionExpr(Raw::PackExpansionExpr id) { constructPackExpansionExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TParenExpr(Raw::ParenExpr id) { constructParenExpr(id) } or
     /**
      * INTERNAL: Do not use.
@@ -579,6 +611,10 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TSequenceExpr(Raw::SequenceExpr id) { constructSequenceExpr(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TSingleValueStmtExpr(Raw::SingleValueStmtExpr id) { constructSingleValueStmtExpr(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -738,6 +774,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TDiscardStmt(Raw::DiscardStmt id) { constructDiscardStmt(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TDoCatchStmt(Raw::DoCatchStmt id) { constructDoCatchStmt(id) } or
     /**
      * INTERNAL: Do not use.
@@ -890,6 +930,10 @@ module Synth {
     /**
      * INTERNAL: Do not use.
      */
+    TElementArchetypeType(Raw::ElementArchetypeType id) { constructElementArchetypeType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
     TEnumType(Raw::EnumType id) { constructEnumType(id) } or
     /**
      * INTERNAL: Do not use.
@@ -947,6 +991,22 @@ module Synth {
      * INTERNAL: Do not use.
      */
     TOptionalType(Raw::OptionalType id) { constructOptionalType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPackArchetypeType(Raw::PackArchetypeType id) { constructPackArchetypeType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPackElementType(Raw::PackElementType id) { constructPackElementType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPackExpansionType(Raw::PackExpansionType id) { constructPackExpansionType(id) } or
+    /**
+     * INTERNAL: Do not use.
+     */
+    TPackType(Raw::PackType id) { constructPackType(id) } or
     /**
      * INTERNAL: Do not use.
      */
@@ -1017,7 +1077,7 @@ module Synth {
    */
   class TAstNode =
     TAvailabilityInfo or TAvailabilitySpec or TCaseLabelItem or TConditionElement or TDecl or
-        TExpr or TKeyPathComponent or TPattern or TStmt or TStmtCondition or TTypeRepr;
+        TExpr or TKeyPathComponent or TMacroRole or TPattern or TStmt or TStmtCondition or TTypeRepr;
 
   /**
    * INTERNAL: Do not use.
@@ -1084,7 +1144,8 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TGenericContext = TExtensionDecl or TFunction or TGenericTypeDecl or TSubscriptDecl;
+  class TGenericContext =
+    TExtensionDecl or TFunction or TGenericTypeDecl or TMacroDecl or TSubscriptDecl;
 
   /**
    * INTERNAL: Do not use.
@@ -1109,7 +1170,8 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TValueDecl = TAbstractStorageDecl or TEnumElementDecl or TFunction or TTypeDecl;
+  class TValueDecl =
+    TAbstractStorageDecl or TEnumElementDecl or TFunction or TMacroDecl or TTypeDecl;
 
   /**
    * INTERNAL: Do not use.
@@ -1163,24 +1225,26 @@ module Synth {
    */
   class TExpr =
     TAnyTryExpr or TAppliedPropertyWrapperExpr or TApplyExpr or TAssignExpr or TBindOptionalExpr or
-        TCaptureListExpr or TClosureExpr or TCollectionExpr or TDeclRefExpr or
-        TDefaultArgumentExpr or TDiscardAssignmentExpr or TDotSyntaxBaseIgnoredExpr or
-        TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or TExplicitCastExpr or TForceValueExpr or
-        TIdentityExpr or TIfExpr or TImplicitConversionExpr or TInOutExpr or
-        TKeyPathApplicationExpr or TKeyPathDotExpr or TKeyPathExpr or TLazyInitializationExpr or
-        TLiteralExpr or TLookupExpr or TMakeTemporarilyEscapableExpr or TObjCSelectorExpr or
-        TOneWayExpr or TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
-        TOtherInitializerRefExpr or TOverloadedDeclRefExpr or
-        TPropertyWrapperValuePlaceholderExpr or TRebindSelfInInitializerExpr or TSequenceExpr or
-        TSuperRefExpr or TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or
-        TUnresolvedDeclRefExpr or TUnresolvedDotExpr or TUnresolvedMemberExpr or
-        TUnresolvedPatternExpr or TUnresolvedSpecializeExpr or TVarargExpansionExpr;
+        TCaptureListExpr or TClosureExpr or TCollectionExpr or TConsumeExpr or TCopyExpr or
+        TDeclRefExpr or TDefaultArgumentExpr or TDiscardAssignmentExpr or
+        TDotSyntaxBaseIgnoredExpr or TDynamicTypeExpr or TEnumIsCaseExpr or TErrorExpr or
+        TExplicitCastExpr or TForceValueExpr or TIdentityExpr or TIfExpr or
+        TImplicitConversionExpr or TInOutExpr or TKeyPathApplicationExpr or TKeyPathDotExpr or
+        TKeyPathExpr or TLazyInitializationExpr or TLiteralExpr or TLookupExpr or
+        TMakeTemporarilyEscapableExpr or TMaterializePackExpr or TObjCSelectorExpr or TOneWayExpr or
+        TOpaqueValueExpr or TOpenExistentialExpr or TOptionalEvaluationExpr or
+        TOtherInitializerRefExpr or TOverloadedDeclRefExpr or TPackElementExpr or
+        TPackExpansionExpr or TPropertyWrapperValuePlaceholderExpr or
+        TRebindSelfInInitializerExpr or TSequenceExpr or TSingleValueStmtExpr or TSuperRefExpr or
+        TTapExpr or TTupleElementExpr or TTupleExpr or TTypeExpr or TUnresolvedDeclRefExpr or
+        TUnresolvedDotExpr or TUnresolvedMemberExpr or TUnresolvedPatternExpr or
+        TUnresolvedSpecializeExpr or TVarargExpansionExpr;
 
   /**
    * INTERNAL: Do not use.
    */
   class TIdentityExpr =
-    TAwaitExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
+    TAwaitExpr or TBorrowExpr or TDotSelfExpr or TParenExpr or TUnresolvedMemberChainResultExpr;
 
   /**
    * INTERNAL: Do not use.
@@ -1245,9 +1309,9 @@ module Synth {
    * INTERNAL: Do not use.
    */
   class TStmt =
-    TBraceStmt or TBreakStmt or TCaseStmt or TContinueStmt or TDeferStmt or TFailStmt or
-        TFallthroughStmt or TLabeledStmt or TPoundAssertStmt or TReturnStmt or TThrowStmt or
-        TYieldStmt;
+    TBraceStmt or TBreakStmt or TCaseStmt or TContinueStmt or TDeferStmt or TDiscardStmt or
+        TFailStmt or TFallthroughStmt or TLabeledStmt or TPoundAssertStmt or TReturnStmt or
+        TThrowStmt or TYieldStmt;
 
   /**
    * INTERNAL: Do not use.
@@ -1272,7 +1336,8 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class TArchetypeType = TOpaqueTypeArchetypeType or TOpenedArchetypeType or TPrimaryArchetypeType;
+  class TArchetypeType =
+    TLocalArchetypeType or TOpaqueTypeArchetypeType or TPackArchetypeType or TPrimaryArchetypeType;
 
   /**
    * INTERNAL: Do not use.
@@ -1288,6 +1353,11 @@ module Synth {
         TBuiltinExecutorType or TBuiltinFloatType or TBuiltinJobType or TBuiltinNativeObjectType or
         TBuiltinRawPointerType or TBuiltinRawUnsafeContinuationType or
         TBuiltinUnsafeValueBufferType or TBuiltinVectorType;
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class TLocalArchetypeType = TElementArchetypeType or TOpenedArchetypeType;
 
   /**
    * INTERNAL: Do not use.
@@ -1325,8 +1395,9 @@ module Synth {
   class TType =
     TAnyFunctionType or TAnyGenericType or TAnyMetatypeType or TBuiltinType or
         TDependentMemberType or TDynamicSelfType or TErrorType or TExistentialType or TInOutType or
-        TLValueType or TModuleType or TParameterizedProtocolType or TProtocolCompositionType or
-        TReferenceStorageType or TSubstitutableType or TSugarType or TTupleType or TUnresolvedType;
+        TLValueType or TModuleType or TPackElementType or TPackExpansionType or TPackType or
+        TParameterizedProtocolType or TProtocolCompositionType or TReferenceStorageType or
+        TSubstitutableType or TSugarType or TTupleType or TUnresolvedType;
 
   /**
    * INTERNAL: Do not use.
@@ -1374,6 +1445,13 @@ module Synth {
    */
   cached
   TKeyPathComponent convertKeyPathComponentFromRaw(Raw::Element e) { result = TKeyPathComponent(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMacroRole`, if possible.
+   */
+  cached
+  TMacroRole convertMacroRoleFromRaw(Raw::Element e) { result = TMacroRole(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1526,6 +1604,13 @@ module Synth {
    */
   cached
   TInitializer convertInitializerFromRaw(Raw::Element e) { result = TInitializer(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMacroDecl`, if possible.
+   */
+  cached
+  TMacroDecl convertMacroDeclFromRaw(Raw::Element e) { result = TMacroDecl(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -1749,6 +1834,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TBorrowExpr`, if possible.
+   */
+  cached
+  TBorrowExpr convertBorrowExprFromRaw(Raw::Element e) { result = TBorrowExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TBridgeFromObjCExpr`, if possible.
    */
   cached
@@ -1819,6 +1911,20 @@ module Synth {
   TConditionalCheckedCastExpr convertConditionalCheckedCastExprFromRaw(Raw::Element e) {
     result = TConditionalCheckedCastExpr(e)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TConsumeExpr`, if possible.
+   */
+  cached
+  TConsumeExpr convertConsumeExprFromRaw(Raw::Element e) { result = TConsumeExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TCopyExpr`, if possible.
+   */
+  cached
+  TCopyExpr convertCopyExprFromRaw(Raw::Element e) { result = TCopyExpr(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -2199,6 +2305,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TMaterializePackExpr`, if possible.
+   */
+  cached
+  TMaterializePackExpr convertMaterializePackExprFromRaw(Raw::Element e) {
+    result = TMaterializePackExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TMemberRefExpr`, if possible.
    */
   cached
@@ -2302,6 +2417,22 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPackElementExpr`, if possible.
+   */
+  cached
+  TPackElementExpr convertPackElementExprFromRaw(Raw::Element e) { result = TPackElementExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPackExpansionExpr`, if possible.
+   */
+  cached
+  TPackExpansionExpr convertPackExpansionExprFromRaw(Raw::Element e) {
+    result = TPackExpansionExpr(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TParenExpr`, if possible.
    */
   cached
@@ -2372,6 +2503,15 @@ module Synth {
    */
   cached
   TSequenceExpr convertSequenceExprFromRaw(Raw::Element e) { result = TSequenceExpr(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TSingleValueStmtExpr`, if possible.
+   */
+  cached
+  TSingleValueStmtExpr convertSingleValueStmtExprFromRaw(Raw::Element e) {
+    result = TSingleValueStmtExpr(e)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -2662,6 +2802,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TDiscardStmt`, if possible.
+   */
+  cached
+  TDiscardStmt convertDiscardStmtFromRaw(Raw::Element e) { result = TDiscardStmt(e) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TDoCatchStmt`, if possible.
    */
   cached
@@ -2935,6 +3082,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TElementArchetypeType`, if possible.
+   */
+  cached
+  TElementArchetypeType convertElementArchetypeTypeFromRaw(Raw::Element e) {
+    result = TElementArchetypeType(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a raw element to a synthesized `TEnumType`, if possible.
    */
   cached
@@ -3040,6 +3196,38 @@ module Synth {
    */
   cached
   TOptionalType convertOptionalTypeFromRaw(Raw::Element e) { result = TOptionalType(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPackArchetypeType`, if possible.
+   */
+  cached
+  TPackArchetypeType convertPackArchetypeTypeFromRaw(Raw::Element e) {
+    result = TPackArchetypeType(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPackElementType`, if possible.
+   */
+  cached
+  TPackElementType convertPackElementTypeFromRaw(Raw::Element e) { result = TPackElementType(e) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPackExpansionType`, if possible.
+   */
+  cached
+  TPackExpansionType convertPackExpansionTypeFromRaw(Raw::Element e) {
+    result = TPackExpansionType(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw element to a synthesized `TPackType`, if possible.
+   */
+  cached
+  TPackType convertPackTypeFromRaw(Raw::Element e) { result = TPackType(e) }
 
   /**
    * INTERNAL: Do not use.
@@ -3179,6 +3367,8 @@ module Synth {
     result = convertExprFromRaw(e)
     or
     result = convertKeyPathComponentFromRaw(e)
+    or
+    result = convertMacroRoleFromRaw(e)
     or
     result = convertPatternFromRaw(e)
     or
@@ -3389,6 +3579,8 @@ module Synth {
     or
     result = convertGenericTypeDeclFromRaw(e)
     or
+    result = convertMacroDeclFromRaw(e)
+    or
     result = convertSubscriptDeclFromRaw(e)
   }
 
@@ -3457,6 +3649,8 @@ module Synth {
     result = convertEnumElementDeclFromRaw(e)
     or
     result = convertFunctionFromRaw(e)
+    or
+    result = convertMacroDeclFromRaw(e)
     or
     result = convertTypeDeclFromRaw(e)
   }
@@ -3596,6 +3790,10 @@ module Synth {
     or
     result = convertCollectionExprFromRaw(e)
     or
+    result = convertConsumeExprFromRaw(e)
+    or
+    result = convertCopyExprFromRaw(e)
+    or
     result = convertDeclRefExprFromRaw(e)
     or
     result = convertDefaultArgumentExprFromRaw(e)
@@ -3636,6 +3834,8 @@ module Synth {
     or
     result = convertMakeTemporarilyEscapableExprFromRaw(e)
     or
+    result = convertMaterializePackExprFromRaw(e)
+    or
     result = convertObjCSelectorExprFromRaw(e)
     or
     result = convertOneWayExprFromRaw(e)
@@ -3650,11 +3850,17 @@ module Synth {
     or
     result = convertOverloadedDeclRefExprFromRaw(e)
     or
+    result = convertPackElementExprFromRaw(e)
+    or
+    result = convertPackExpansionExprFromRaw(e)
+    or
     result = convertPropertyWrapperValuePlaceholderExprFromRaw(e)
     or
     result = convertRebindSelfInInitializerExprFromRaw(e)
     or
     result = convertSequenceExprFromRaw(e)
+    or
+    result = convertSingleValueStmtExprFromRaw(e)
     or
     result = convertSuperRefExprFromRaw(e)
     or
@@ -3686,6 +3892,8 @@ module Synth {
   cached
   TIdentityExpr convertIdentityExprFromRaw(Raw::Element e) {
     result = convertAwaitExprFromRaw(e)
+    or
+    result = convertBorrowExprFromRaw(e)
     or
     result = convertDotSelfExprFromRaw(e)
     or
@@ -3896,6 +4104,8 @@ module Synth {
     or
     result = convertDeferStmtFromRaw(e)
     or
+    result = convertDiscardStmtFromRaw(e)
+    or
     result = convertFailStmtFromRaw(e)
     or
     result = convertFallthroughStmtFromRaw(e)
@@ -3961,9 +4171,11 @@ module Synth {
    */
   cached
   TArchetypeType convertArchetypeTypeFromRaw(Raw::Element e) {
+    result = convertLocalArchetypeTypeFromRaw(e)
+    or
     result = convertOpaqueTypeArchetypeTypeFromRaw(e)
     or
-    result = convertOpenedArchetypeTypeFromRaw(e)
+    result = convertPackArchetypeTypeFromRaw(e)
     or
     result = convertPrimaryArchetypeTypeFromRaw(e)
   }
@@ -4008,6 +4220,17 @@ module Synth {
     result = convertBuiltinUnsafeValueBufferTypeFromRaw(e)
     or
     result = convertBuiltinVectorTypeFromRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a raw DB element to a synthesized `TLocalArchetypeType`, if possible.
+   */
+  cached
+  TLocalArchetypeType convertLocalArchetypeTypeFromRaw(Raw::Element e) {
+    result = convertElementArchetypeTypeFromRaw(e)
+    or
+    result = convertOpenedArchetypeTypeFromRaw(e)
   }
 
   /**
@@ -4112,6 +4335,12 @@ module Synth {
     or
     result = convertModuleTypeFromRaw(e)
     or
+    result = convertPackElementTypeFromRaw(e)
+    or
+    result = convertPackExpansionTypeFromRaw(e)
+    or
+    result = convertPackTypeFromRaw(e)
+    or
     result = convertParameterizedProtocolTypeFromRaw(e)
     or
     result = convertProtocolCompositionTypeFromRaw(e)
@@ -4181,6 +4410,13 @@ module Synth {
    */
   cached
   Raw::Element convertKeyPathComponentToRaw(TKeyPathComponent e) { e = TKeyPathComponent(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TMacroRole` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMacroRoleToRaw(TMacroRole e) { e = TMacroRole(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -4333,6 +4569,13 @@ module Synth {
    */
   cached
   Raw::Element convertInitializerToRaw(TInitializer e) { e = TInitializer(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TMacroDecl` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMacroDeclToRaw(TMacroDecl e) { e = TMacroDecl(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -4556,6 +4799,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TBorrowExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertBorrowExprToRaw(TBorrowExpr e) { e = TBorrowExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TBridgeFromObjCExpr` to a raw DB element, if possible.
    */
   cached
@@ -4626,6 +4876,20 @@ module Synth {
   Raw::Element convertConditionalCheckedCastExprToRaw(TConditionalCheckedCastExpr e) {
     e = TConditionalCheckedCastExpr(result)
   }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TConsumeExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertConsumeExprToRaw(TConsumeExpr e) { e = TConsumeExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TCopyExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertCopyExprToRaw(TCopyExpr e) { e = TCopyExpr(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -5004,6 +5268,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TMaterializePackExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertMaterializePackExprToRaw(TMaterializePackExpr e) {
+    e = TMaterializePackExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TMemberRefExpr` to a raw DB element, if possible.
    */
   cached
@@ -5107,6 +5380,22 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TPackElementExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertPackElementExprToRaw(TPackElementExpr e) { e = TPackElementExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPackExpansionExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertPackExpansionExprToRaw(TPackExpansionExpr e) {
+    e = TPackExpansionExpr(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TParenExpr` to a raw DB element, if possible.
    */
   cached
@@ -5177,6 +5466,15 @@ module Synth {
    */
   cached
   Raw::Element convertSequenceExprToRaw(TSequenceExpr e) { e = TSequenceExpr(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TSingleValueStmtExpr` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertSingleValueStmtExprToRaw(TSingleValueStmtExpr e) {
+    e = TSingleValueStmtExpr(result)
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -5467,6 +5765,13 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TDiscardStmt` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertDiscardStmtToRaw(TDiscardStmt e) { e = TDiscardStmt(result) }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TDoCatchStmt` to a raw DB element, if possible.
    */
   cached
@@ -5740,6 +6045,15 @@ module Synth {
 
   /**
    * INTERNAL: Do not use.
+   * Converts a synthesized `TElementArchetypeType` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertElementArchetypeTypeToRaw(TElementArchetypeType e) {
+    e = TElementArchetypeType(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
    * Converts a synthesized `TEnumType` to a raw DB element, if possible.
    */
   cached
@@ -5845,6 +6159,38 @@ module Synth {
    */
   cached
   Raw::Element convertOptionalTypeToRaw(TOptionalType e) { e = TOptionalType(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPackArchetypeType` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertPackArchetypeTypeToRaw(TPackArchetypeType e) {
+    e = TPackArchetypeType(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPackElementType` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertPackElementTypeToRaw(TPackElementType e) { e = TPackElementType(result) }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPackExpansionType` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertPackExpansionTypeToRaw(TPackExpansionType e) {
+    e = TPackExpansionType(result)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TPackType` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertPackTypeToRaw(TPackType e) { e = TPackType(result) }
 
   /**
    * INTERNAL: Do not use.
@@ -5984,6 +6330,8 @@ module Synth {
     result = convertExprToRaw(e)
     or
     result = convertKeyPathComponentToRaw(e)
+    or
+    result = convertMacroRoleToRaw(e)
     or
     result = convertPatternToRaw(e)
     or
@@ -6194,6 +6542,8 @@ module Synth {
     or
     result = convertGenericTypeDeclToRaw(e)
     or
+    result = convertMacroDeclToRaw(e)
+    or
     result = convertSubscriptDeclToRaw(e)
   }
 
@@ -6262,6 +6612,8 @@ module Synth {
     result = convertEnumElementDeclToRaw(e)
     or
     result = convertFunctionToRaw(e)
+    or
+    result = convertMacroDeclToRaw(e)
     or
     result = convertTypeDeclToRaw(e)
   }
@@ -6401,6 +6753,10 @@ module Synth {
     or
     result = convertCollectionExprToRaw(e)
     or
+    result = convertConsumeExprToRaw(e)
+    or
+    result = convertCopyExprToRaw(e)
+    or
     result = convertDeclRefExprToRaw(e)
     or
     result = convertDefaultArgumentExprToRaw(e)
@@ -6441,6 +6797,8 @@ module Synth {
     or
     result = convertMakeTemporarilyEscapableExprToRaw(e)
     or
+    result = convertMaterializePackExprToRaw(e)
+    or
     result = convertObjCSelectorExprToRaw(e)
     or
     result = convertOneWayExprToRaw(e)
@@ -6455,11 +6813,17 @@ module Synth {
     or
     result = convertOverloadedDeclRefExprToRaw(e)
     or
+    result = convertPackElementExprToRaw(e)
+    or
+    result = convertPackExpansionExprToRaw(e)
+    or
     result = convertPropertyWrapperValuePlaceholderExprToRaw(e)
     or
     result = convertRebindSelfInInitializerExprToRaw(e)
     or
     result = convertSequenceExprToRaw(e)
+    or
+    result = convertSingleValueStmtExprToRaw(e)
     or
     result = convertSuperRefExprToRaw(e)
     or
@@ -6491,6 +6855,8 @@ module Synth {
   cached
   Raw::Element convertIdentityExprToRaw(TIdentityExpr e) {
     result = convertAwaitExprToRaw(e)
+    or
+    result = convertBorrowExprToRaw(e)
     or
     result = convertDotSelfExprToRaw(e)
     or
@@ -6701,6 +7067,8 @@ module Synth {
     or
     result = convertDeferStmtToRaw(e)
     or
+    result = convertDiscardStmtToRaw(e)
+    or
     result = convertFailStmtToRaw(e)
     or
     result = convertFallthroughStmtToRaw(e)
@@ -6766,9 +7134,11 @@ module Synth {
    */
   cached
   Raw::Element convertArchetypeTypeToRaw(TArchetypeType e) {
+    result = convertLocalArchetypeTypeToRaw(e)
+    or
     result = convertOpaqueTypeArchetypeTypeToRaw(e)
     or
-    result = convertOpenedArchetypeTypeToRaw(e)
+    result = convertPackArchetypeTypeToRaw(e)
     or
     result = convertPrimaryArchetypeTypeToRaw(e)
   }
@@ -6813,6 +7183,17 @@ module Synth {
     result = convertBuiltinUnsafeValueBufferTypeToRaw(e)
     or
     result = convertBuiltinVectorTypeToRaw(e)
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   * Converts a synthesized `TLocalArchetypeType` to a raw DB element, if possible.
+   */
+  cached
+  Raw::Element convertLocalArchetypeTypeToRaw(TLocalArchetypeType e) {
+    result = convertElementArchetypeTypeToRaw(e)
+    or
+    result = convertOpenedArchetypeTypeToRaw(e)
   }
 
   /**
@@ -6916,6 +7297,12 @@ module Synth {
     result = convertLValueTypeToRaw(e)
     or
     result = convertModuleTypeToRaw(e)
+    or
+    result = convertPackElementTypeToRaw(e)
+    or
+    result = convertPackExpansionTypeToRaw(e)
+    or
+    result = convertPackTypeToRaw(e)
     or
     result = convertParameterizedProtocolTypeToRaw(e)
     or

@@ -19,7 +19,7 @@ import CorsOriginFlow::PathGraph
 /**
  *  Holds if `header` sets `Access-Control-Allow-Credentials` to `true`. This ensures fair chances of exploitability.
  */
-private predicate setsAllowCredentials(MethodAccess header) {
+private predicate setsAllowCredentials(MethodCall header) {
   (
     header.getMethod() instanceof ResponseSetHeaderMethod or
     header.getMethod() instanceof ResponseAddHeaderMethod
@@ -29,7 +29,7 @@ private predicate setsAllowCredentials(MethodAccess header) {
   header.getArgument(1).(CompileTimeConstantExpr).getStringValue().toLowerCase() = "true"
 }
 
-private class CorsProbableCheckAccess extends MethodAccess {
+private class CorsProbableCheckAccess extends MethodCall {
   CorsProbableCheckAccess() {
     this.getMethod().hasName("contains") and
     this.getMethod().getDeclaringType().getASourceSupertype*() instanceof CollectionType
@@ -66,7 +66,7 @@ private module CorsOriginConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess corsHeader, MethodAccess allowCredentialsHeader |
+    exists(MethodCall corsHeader, MethodCall allowCredentialsHeader |
       (
         corsHeader.getMethod() instanceof ResponseSetHeaderMethod or
         corsHeader.getMethod() instanceof ResponseAddHeaderMethod

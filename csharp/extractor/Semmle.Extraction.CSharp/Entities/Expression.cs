@@ -54,7 +54,7 @@ namespace Semmle.Extraction.CSharp.Entities
             }
 
             if (info.IsCompilerGenerated)
-                trapFile.expr_compiler_generated(this);
+                trapFile.compiler_generated(this);
 
             if (info.ExprValue is string value)
                 trapFile.expr_value(this, value);
@@ -202,24 +202,21 @@ namespace Semmle.Extraction.CSharp.Entities
                 return Default.CreateGenerated(cx, parent, childIndex, location, parameter.Type.IsReferenceType ? ValueAsString(null) : null);
             }
 
-            if (parameter.Type.SpecialType is SpecialType.System_Object)
-            {
-                // this can happen in VB.NET
-                cx.ExtractionError($"Extracting default argument value 'object {parameter.Name} = default' instead of 'object {parameter.Name} = {defaultValue}'. The latter is not supported in C#.",
-                    null, null, severity: Semmle.Util.Logging.Severity.Warning);
-
-                // we're generating a default expression:
-                return Default.CreateGenerated(cx, parent, childIndex, location, ValueAsString(null));
-            }
-
             if (type.SpecialType is SpecialType.None)
             {
-                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+                return ImplicitCast.CreateGeneratedConversion(cx, parent, childIndex, type, defaultValue, location);
             }
 
             if (type.SpecialType is SpecialType.System_DateTime)
             {
                 return DateTimeObjectCreation.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+            }
+
+            if (type.SpecialType is SpecialType.System_Object ||
+                type.SpecialType is SpecialType.System_IntPtr ||
+                type.SpecialType is SpecialType.System_UIntPtr)
+            {
+                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
             }
 
             // const literal:

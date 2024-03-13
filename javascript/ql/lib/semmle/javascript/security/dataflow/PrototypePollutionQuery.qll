@@ -9,7 +9,6 @@
 
 import javascript
 import semmle.javascript.security.TaintedObject
-import semmle.javascript.dependencies.Dependencies
 import semmle.javascript.dependencies.SemVer
 import PrototypePollutionCustomizations::PrototypePollution
 

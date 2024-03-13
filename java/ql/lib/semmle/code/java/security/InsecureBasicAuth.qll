@@ -25,7 +25,7 @@ abstract class InsecureBasicAuthSink extends DataFlow::Node { }
 /** A default sink representing methods that set an Authorization header. */
 private class DefaultInsecureBasicAuthSink extends InsecureBasicAuthSink {
   DefaultInsecureBasicAuthSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("addHeader") or
       ma.getMethod().hasName("setHeader") or
       ma.getMethod().hasName("setRequestProperty")

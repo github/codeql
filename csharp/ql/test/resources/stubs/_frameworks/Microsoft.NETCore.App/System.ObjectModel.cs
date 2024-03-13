@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `System.ObjectModel, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
+// Generated from `System.ObjectModel, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 namespace System
 {
     namespace Collections
@@ -48,6 +48,7 @@ namespace System
                 protected virtual event System.Collections.Specialized.NotifyCollectionChangedEventHandler CollectionChanged;
                 event System.Collections.Specialized.NotifyCollectionChangedEventHandler System.Collections.Specialized.INotifyCollectionChanged.CollectionChanged { add { } remove { } }
                 public ReadOnlyObservableCollection(System.Collections.ObjectModel.ObservableCollection<T> list) : base(default(System.Collections.Generic.IList<T>)) => throw null;
+                public static System.Collections.ObjectModel.ReadOnlyObservableCollection<T> Empty { get => throw null; }
                 protected virtual void OnCollectionChanged(System.Collections.Specialized.NotifyCollectionChangedEventArgs args) => throw null;
                 protected virtual void OnPropertyChanged(System.ComponentModel.PropertyChangedEventArgs args) => throw null;
                 protected virtual event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
@@ -123,6 +124,7 @@ namespace System
             public virtual string PropertyName { get => throw null; }
         }
         public delegate void PropertyChangingEventHandler(object sender, System.ComponentModel.PropertyChangingEventArgs e);
+        [System.AttributeUsage((System.AttributeTargets)32767)]
         public sealed class TypeConverterAttribute : System.Attribute
         {
             public string ConverterTypeName { get => throw null; }
@@ -133,6 +135,7 @@ namespace System
             public override bool Equals(object obj) => throw null;
             public override int GetHashCode() => throw null;
         }
+        [System.AttributeUsage((System.AttributeTargets)4, Inherited = true)]
         public sealed class TypeDescriptionProviderAttribute : System.Attribute
         {
             public TypeDescriptionProviderAttribute(string typeName) => throw null;
@@ -160,6 +163,7 @@ namespace System
         }
         namespace Markup
         {
+            [System.AttributeUsage((System.AttributeTargets)1244, AllowMultiple = false, Inherited = true)]
             public sealed class ValueSerializerAttribute : System.Attribute
             {
                 public ValueSerializerAttribute(string valueSerializerTypeName) => throw null;

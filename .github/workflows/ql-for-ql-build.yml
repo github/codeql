@@ -9,8 +9,13 @@ on:
 env:
   CARGO_TERM_COLOR: always
 
+permissions:
+  contents: read
+  security-events: write
+
 jobs:
   analyze:
+    if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
     steps:
       ### Build the queries ###
@@ -19,7 +24,7 @@ jobs:
           fetch-depth: 0
       - name: Find codeql
         id: find-codeql
-        uses: github/codeql-action/init@v2
+        uses: github/codeql-action/init@main
         with:
           languages: javascript # does not matter
       - uses: ./.github/actions/os-version
@@ -65,7 +70,7 @@ jobs:
             exclude:*/ql/lib/upgrades/
             exclude:java/ql/integration-tests
       - name: Upload sarif to code-scanning
-        uses: github/codeql-action/upload-sarif@v2
+        uses: github/codeql-action/upload-sarif@main
         with:
           sarif_file: ql-for-ql.sarif
           category: ql-for-ql

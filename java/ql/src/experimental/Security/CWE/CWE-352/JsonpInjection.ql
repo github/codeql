@@ -32,7 +32,7 @@ module RequestResponseFlowConfig implements DataFlow::ConfigSig {
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       isRequestGetParamMethod(ma) and pred.asExpr() = ma.getQualifier() and succ.asExpr() = ma
     )
   }

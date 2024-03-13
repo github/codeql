@@ -22,9 +22,9 @@ Test.java:
 #    8|           0: [TypeAccess] int
 #    8|           1: [LocalVariableDeclExpr] ret
 #    8|             0: [ErrorExpr] <error expr>
-#    8|               0: [MethodAccess] yield(...)
+#    8|               0: [MethodCall] yield(...)
 #    8|                 0: [VarAccess] x
 #    9|         1: [ExprStmt] <Expr>;
-#    9|           0: [MethodAccess] secondCall(...)
+#    9|           0: [MethodCall] secondCall(...)
 #   10|         2: [ReturnStmt] return ...
 #   10|           0: [VarAccess] ret

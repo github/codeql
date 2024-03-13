@@ -15,9 +15,12 @@ class Variable extends @variable, Annotatable, Element, Modifiable {
   /** Gets an access to this variable. */
   VarAccess getAnAccess() { variableBinding(result, this) }
 
-  /** Gets an expression on the right-hand side of an assignment to this variable. */
+  /**
+   * Gets an expression assigned to this variable, either appearing on the right-hand side of an
+   * assignment or bound to it via a binding `instanceof` expression or `switch` block.
+   */
   Expr getAnAssignedValue() {
-    exists(LocalVariableDeclExpr e | e.getVariable() = this and result = e.getInit())
+    exists(LocalVariableDeclExpr e | e.getVariable() = this and result = e.getInitOrPatternSource())
     or
     exists(AssignExpr e | e.getDest() = this.getAnAccess() and result = e.getSource())
   }

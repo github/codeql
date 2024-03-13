@@ -36,7 +36,7 @@ private class DefaultJndiInjectionSink extends JndiInjectionSink {
  */
 private class ConditionedJndiInjectionSink extends JndiInjectionSink, DataFlow::ExprNode {
   ConditionedJndiInjectionSink() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       ma.getMethod() = m and
       ma.getArgument(0) = this.asExpr() and
       m.getDeclaringType().getASourceSupertype*() instanceof TypeLdapOperations
@@ -56,7 +56,7 @@ private class ConditionedJndiInjectionSink extends JndiInjectionSink, DataFlow::
  */
 private class ProviderUrlJndiInjectionSink extends JndiInjectionSink, DataFlow::ExprNode {
   ProviderUrlJndiInjectionSink() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       ma.getMethod() = m and
       ma.getArgument(1) = this.getExpr()
     |
@@ -105,7 +105,7 @@ private predicate nameStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
  * `CompoundName` by calling `new CompositeName().add(tainted)` or `new CompoundName().add(tainted)`.
  */
 private predicate nameAddStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(Method m, MethodAccess ma |
+  exists(Method m, MethodCall ma |
     ma.getMethod() = m and
     m.hasName("add") and
     (
@@ -134,7 +134,7 @@ private predicate jmxServiceUrlStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2
  * `JMXConnector` by calling `JMXConnectorFactory.newJMXConnector(tainted)`.
  */
 private predicate jmxConnectorStep(DataFlow::ExprNode n1, DataFlow::ExprNode n2) {
-  exists(MethodAccess ma, Method m | n1.asExpr() = ma.getArgument(0) and n2.asExpr() = ma |
+  exists(MethodCall ma, Method m | n1.asExpr() = ma.getArgument(0) and n2.asExpr() = ma |
     ma.getMethod() = m and
     m.getDeclaringType() instanceof TypeJmxConnectorFactory and
     m.hasName("newJMXConnector")

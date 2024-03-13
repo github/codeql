@@ -1,0 +1,12 @@
+| enums.swift:2:5:2:18 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 2 |
+| enums.swift:3:5:3:26 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 3 |
+| enums.swift:8:5:8:18 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 2 |
+| enums.swift:9:5:9:26 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 3 |
+| enums.swift:13:5:13:22 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 1 |
+| enums.swift:14:5:14:21 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 1 |
+| enums.swift:15:5:15:35 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 1 |
+| enums.swift:19:5:19:10 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 1 |
+| enums.swift:20:5:20:16 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 1 |
+| enums.swift:24:5:24:25 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 1 |
+| enums.swift:25:5:25:24 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 1 |
+| enums.swift:26:5:26:44 | case ... | getModule: | file://:0:0:0:0 | enums | getNumberOfMembers: | 0 | getNumberOfElements: | 1 |

@@ -19,7 +19,7 @@ private class ELMessageInterpolatorType extends RefType {
 /**
  * A method call that sets the application's default message interpolator.
  */
-class SetMessageInterpolatorCall extends MethodAccess {
+class SetMessageInterpolatorCall extends MethodCall {
   SetMessageInterpolatorCall() {
     exists(Method m, RefType t |
       this.getMethod() = m and

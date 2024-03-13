@@ -57,7 +57,7 @@ class With_init:
 
 
 def test_init():
-    with_init = With_init()  #$ MISSING: arg1="SSA variable with_init" func=With_init.__init__
+    with_init = With_init()  #$ MISSING: arg1="with_init" func=With_init.__init__
 
 
 # object.__del__(self)
@@ -68,7 +68,7 @@ class With_del:
 
 
 def test_del():
-    with_del = With_del()  #$ MISSING: arg1="SSA variable with_del" func=With_del.__del__
+    with_del = With_del()  #$ MISSING: arg1="with_del" func=With_del.__del__
     del with_del
 
 
@@ -81,7 +81,7 @@ class With_repr:
 
 
 def test_repr():
-    with_repr = With_repr()  #$ MISSING: arg1="SSA variable with_repr" func=With_repr.__repr__
+    with_repr = With_repr()  #$ MISSING: arg1="with_repr" func=With_repr.__repr__
     repr(with_repr)
 
 
@@ -94,7 +94,7 @@ class With_str:
 
 
 def test_str():
-    with_str = With_str()  #$ MISSING: arg1="SSA variable with_str" func=With_str.__str__
+    with_str = With_str()  #$ MISSING: arg1="with_str" func=With_str.__str__
     str(with_str)
 
 
@@ -107,7 +107,7 @@ class With_bytes:
 
 
 def test_bytes():
-    with_bytes = With_bytes()  #$ MISSING: arg1="SSA variable with_bytes" func=With_bytes.__bytes__
+    with_bytes = With_bytes()  #$ MISSING: arg1="with_bytes" func=With_bytes.__bytes__
     bytes(with_bytes)
 
 
@@ -121,18 +121,18 @@ class With_format:
 
 
 def test_format():
-    with_format = With_format()  #$ MISSING: arg1="SSA variable with_format" func=With_format.__format__
+    with_format = With_format()  #$ MISSING: arg1="with_format" func=With_format.__format__
     arg2 = ""  #$ MISSING: arg2 func=With_format.__format__
     format(with_format, arg2)
 
 
 def test_format_str():
-    with_format = With_format()  #$ MISSING: arg1="SSA variable with_format" func=With_format.__format__
+    with_format = With_format()  #$ MISSING: arg1="with_format" func=With_format.__format__
     "{0}".format(with_format)
 
 
 def test_format_fstr():
-    with_format = With_format()  #$ MISSING: arg1="SSA variable with_format" func=With_format.__format__
+    with_format = With_format()  #$ MISSING: arg1="with_format" func=With_format.__format__
     f"{with_format}"
 
 
@@ -146,7 +146,7 @@ class With_lt:
 
 
 def test_lt():
-    with_lt = With_lt()  #$ MISSING: arg1="SSA variable with_lt" func=With_lt.__lt__
+    with_lt = With_lt()  #$ MISSING: arg1="with_lt" func=With_lt.__lt__
     arg2 = with_lt  #$ MISSING: arg2 func=With_lt.__lt__
     with_lt < arg2
 
@@ -161,7 +161,7 @@ class With_le:
 
 
 def test_le():
-    with_le = With_le()  #$ MISSING: arg1="SSA variable with_le" func=With_le.__le__
+    with_le = With_le()  #$ MISSING: arg1="with_le" func=With_le.__le__
     arg2 = with_le  #$ MISSING: arg2 func=With_le.__le__
     with_le <= arg2
 
@@ -176,7 +176,7 @@ class With_eq:
 
 
 def test_eq():
-    with_eq = With_eq()  #$ MISSING: arg1="SSA variable with_eq" func=With_eq.__eq__
+    with_eq = With_eq()  #$ MISSING: arg1="with_eq" func=With_eq.__eq__
     with_eq == with_eq  #$ MISSING: arg2="with_eq" func=With_eq.__eq__
 
 
@@ -190,7 +190,7 @@ class With_ne:
 
 
 def test_ne():
-    with_ne = With_ne()  #$ MISSING: arg1="SSA variable with_ne" func=With_ne.__ne__
+    with_ne = With_ne()  #$ MISSING: arg1="with_ne" func=With_ne.__ne__
     with_ne != with_ne  #$ MISSING: arg2="with_ne" func=With_ne.__ne__
 
 
@@ -204,7 +204,7 @@ class With_gt:
 
 
 def test_gt():
-    with_gt = With_gt()  #$ MISSING: arg1="SSA variable with_gt" func=With_gt.__gt__
+    with_gt = With_gt()  #$ MISSING: arg1="with_gt" func=With_gt.__gt__
     arg2 = with_gt  #$ MISSING: arg2 func=With_gt.__gt__
     with_gt > arg2
 
@@ -219,7 +219,7 @@ class With_ge:
 
 
 def test_ge():
-    with_ge = With_ge()  #$ MISSING: arg1="SSA variable with_ge" func=With_ge.__ge__
+    with_ge = With_ge()  #$ MISSING: arg1="with_ge" func=With_ge.__ge__
     arg2 = with_ge  #$ MISSING: arg2 func=With_ge.__ge__
     with_ge >= arg2
 
@@ -233,22 +233,22 @@ class With_hash:
 
 
 def test_hash():
-    with_hash = With_hash()  #$ MISSING: arg1="SSA variable with_hash" func=With_hash.__hash__
+    with_hash = With_hash()  #$ MISSING: arg1="with_hash" func=With_hash.__hash__
     hash(with_hash)
 
 
 def test_hash_set():
-    with_hash = With_hash()  #$ MISSING: arg1="SSA variable with_hash" func=With_hash.__hash__
+    with_hash = With_hash()  #$ MISSING: arg1="with_hash" func=With_hash.__hash__
     len(set([with_hash]))
 
 
 def test_hash_frozenset():
-    with_hash = With_hash()  #$ MISSING: arg1="SSA variable with_hash" func=With_hash.__hash__
+    with_hash = With_hash()  #$ MISSING: arg1="with_hash" func=With_hash.__hash__
     len(frozenset([with_hash]))
 
 
 def test_hash_dict():
-    with_hash = With_hash()  #$ MISSING: arg1="SSA variable with_hash" func=With_hash.__hash__
+    with_hash = With_hash()  #$ MISSING: arg1="with_hash" func=With_hash.__hash__
     len(dict({with_hash: 0}))
 
 
@@ -261,12 +261,12 @@ class With_bool:
 
 
 def test_bool():
-    with_bool = With_bool()  #$ MISSING: arg1="SSA variable with_bool" func=With_bool.__bool__
+    with_bool = With_bool()  #$ MISSING: arg1="with_bool" func=With_bool.__bool__
     bool(with_bool)
 
 
 def test_bool_if():
-    with_bool = With_bool()  #$ MISSING: arg1="SSA variable with_bool" func=With_bool.__bool__
+    with_bool = With_bool()  #$ MISSING: arg1="with_bool" func=With_bool.__bool__
     if with_bool:
         pass
 
@@ -282,7 +282,7 @@ class With_getattr:
 
 
 def test_getattr():
-    with_getattr = With_getattr()  #$ MISSING: arg1="SSA variable with_getattr" func=With_getattr.__getattr__
+    with_getattr = With_getattr()  #$ MISSING: arg1="with_getattr" func=With_getattr.__getattr__
     with_getattr.arg2  #$ MISSING: arg2="with_getattr.arg2" func=With_getattr.__getattr__
 
 
@@ -296,7 +296,7 @@ class With_getattribute:
 
 
 def test_getattribute():
-    with_getattribute = With_getattribute()  #$ MISSING: arg1="SSA variable with_getattribute" func=With_getattribute.__getattribute__
+    with_getattribute = With_getattribute()  #$ MISSING: arg1="with_getattribute" func=With_getattribute.__getattribute__
     with_getattribute.arg2  #$ MISSING: arg2 func=With_getattribute.__getattribute__
 
 
@@ -310,7 +310,7 @@ class With_setattr:
 
 
 def test_setattr():
-    with_setattr = With_setattr()  #$ MISSING: arg1="SSA variable with_setattr" func=With_setattr.__setattr__
+    with_setattr = With_setattr()  #$ MISSING: arg1="with_setattr" func=With_setattr.__setattr__
     arg3 = ""  #$ MISSING: arg3 func=With_setattr.__setattr__
     with_setattr.arg2 = arg3  #$ MISSING: arg2 func=With_setattr.__setattr__
 
@@ -324,7 +324,7 @@ class With_delattr:
 
 
 def test_delattr():
-    with_delattr = With_delattr()  #$ MISSING: arg1="SSA variable with_delattr" func=With_delattr.__delattr__
+    with_delattr = With_delattr()  #$ MISSING: arg1="with_delattr" func=With_delattr.__delattr__
     del with_delattr.arg2  #$ MISSING: arg2 func=With_delattr.__delattr__
 
 
@@ -337,7 +337,7 @@ class With_dir:
 
 
 def test_dir():
-    with_dir = With_dir()  #$ MISSING: arg1="SSA variable with_dir" func=With_dir.__dir__
+    with_dir = With_dir()  #$ MISSING: arg1="with_dir" func=With_dir.__dir__
     dir(with_dir)
 
 
@@ -360,7 +360,7 @@ def test_get():
     class arg3:
         pass
 
-    with_get = With_get()  #$ MISSING: arg1="SSA variable with_get" func=With_get.__get__
+    with_get = With_get()  #$ MISSING: arg1="with_get" func=With_get.__get__
     arg3.attr = with_get
     arg2 = arg3()  #$ MISSING: arg2 func=With_get.__get__
     arg2.attr
@@ -376,7 +376,7 @@ class With_set:
 
 
 def test_set():
-    with_set = With_set()  #$ MISSING: arg1="SSA variable with_set" func=With_set.__set__
+    with_set = With_set()  #$ MISSING: arg1="with_set" func=With_set.__set__
     Owner.attr = with_set
     arg2 = Owner()  #$ MISSING: arg2 func=With_set.__set__
     arg3 = ""  #$ MISSING: arg3 func=With_set.__set__
@@ -392,7 +392,7 @@ class With_delete:
 
 
 def test_delete():
-    with_delete = With_delete()  #$ MISSING: arg1="SSA variable with_delete" func=With_delete.__delete__
+    with_delete = With_delete()  #$ MISSING: arg1="with_delete" func=With_delete.__delete__
     Owner.attr = with_delete
     arg2 = Owner()  #$ MISSING: arg2 func=With_delete.__delete__
     del arg2.attr
@@ -408,7 +408,7 @@ class With_set_name:
 
 
 def test_set_name():
-    with_set_name = With_set_name()  #$ MISSING: arg1="SSA variable with_set_name" func=With_set_name.__set_name__
+    with_set_name = With_set_name()  #$ MISSING: arg1="with_set_name" func=With_set_name.__set_name__
     type("arg2", (object,), dict(arg3=with_set_name))  #$ MISSING: arg2 arg3 func=With_set_name.__set_name__
 
 
@@ -462,7 +462,7 @@ class With_instancecheck:
 
 
 def test_instancecheck():
-    with_instancecheck = With_instancecheck()  #$ MISSING: arg1="SSA variable with_instancecheck" func=With_instancecheck.__instancecheck__
+    with_instancecheck = With_instancecheck()  #$ MISSING: arg1="with_instancecheck" func=With_instancecheck.__instancecheck__
     arg2 = ""  #$ MISSING: arg2 func=With_instancecheck.__instancecheck__
     isinstance(arg2, with_instancecheck)
 
@@ -477,7 +477,7 @@ class With_subclasscheck:
 
 
 def test_subclasscheck():
-    with_subclasscheck = With_subclasscheck()  #$ MISSING: arg1="SSA variable with_subclasscheck" func=With_subclasscheck.__subclasscheck__
+    with_subclasscheck = With_subclasscheck()  #$ MISSING: arg1="with_subclasscheck" func=With_subclasscheck.__subclasscheck__
     arg2 = object  #$ MISSING: arg2 func=With_subclasscheck.__subclasscheck__
     issubclass(arg2, with_subclasscheck)
 
@@ -506,7 +506,7 @@ class With_call:
 
 
 def test_call():
-    with_call = With_call()  #$ arg1="SSA variable with_call" func=With_call.__call__
+    with_call = With_call()  #$ arg1="with_call" func=With_call.__call__
     with_call()
 
 
@@ -520,17 +520,17 @@ class With_len:
 
 
 def test_len():
-    with_len = With_len()  #$ MISSING: arg1="SSA variable with_len" func=With_len.__len__
+    with_len = With_len()  #$ MISSING: arg1="with_len" func=With_len.__len__
     len(with_len)
 
 
 def test_len_bool():
-    with_len = With_len()  #$ MISSING: arg1="SSA variable with_len" func=With_len.__len__
+    with_len = With_len()  #$ MISSING: arg1="with_len" func=With_len.__len__
     bool(with_len)
 
 
 def test_len_if():
-    with_len = With_len()  #$ MISSING: arg1="SSA variable with_len" func=With_len.__len__
+    with_len = With_len()  #$ MISSING: arg1="with_len" func=With_len.__len__
     if with_len:
         pass
 
@@ -545,7 +545,7 @@ class With_getitem:
 
 
 def test_getitem():
-    with_getitem = With_getitem() #$ MISSING: arg1="SSA variable with_getitem" func=With_getitem.__getitem__
+    with_getitem = With_getitem() #$ MISSING: arg1="with_getitem" func=With_getitem.__getitem__
     arg2 = 0
     with_getitem[arg2] #$ MISSING: arg2 func=With_getitem.__getitem__
 
@@ -560,7 +560,7 @@ class With_setitem:
 
 
 def test_setitem():
-    with_setitem = With_setitem()  #$ MISSING: arg1="SSA variable with_setitem" func=With_setitem.__setitem__
+    with_setitem = With_setitem()  #$ MISSING: arg1="with_setitem" func=With_setitem.__setitem__
     arg2 = 0
     arg3 = ""
     with_setitem[arg2] = arg3  #$ MISSING: arg2 arg3 func=With_setitem.__setitem__
@@ -575,7 +575,7 @@ class With_delitem:
 
 
 def test_delitem():
-    with_delitem = With_delitem()  #$ MISSING: arg1="SSA variable with_delitem" func=With_delitem.__delitem__
+    with_delitem = With_delitem()  #$ MISSING: arg1="with_delitem" func=With_delitem.__delitem__
     arg2 = 0
     del with_delitem[arg2]  #$ MISSING: arg2 func=With_delitem.__delitem__
 
@@ -590,7 +590,7 @@ class With_missing(dict):
 
 
 def test_missing():
-    with_missing = With_missing()  #$ MISSING: arg1="SSA variable with_missing" func=With_missing.__missing__
+    with_missing = With_missing()  #$ MISSING: arg1="with_missing" func=With_missing.__missing__
     arg2 = 0  #$ MISSING: arg2 func=With_missing.__missing__
     with_missing[arg2]
 
@@ -604,7 +604,7 @@ class With_iter:
 
 
 def test_iter():
-    with_iter = With_iter()  #$ MISSING: arg1="SSA variable with_iter" func=With_iter.__iter__
+    with_iter = With_iter()  #$ MISSING: arg1="with_iter" func=With_iter.__iter__
     [x for x in with_iter]
 
 
@@ -617,7 +617,7 @@ class With_reversed:
 
 
 def test_reversed():
-    with_reversed = With_reversed()  #$ MISSING: arg1="SSA variable with_reversed" func=With_reversed.__reversed__
+    with_reversed = With_reversed()  #$ MISSING: arg1="with_reversed" func=With_reversed.__reversed__
     reversed(with_reversed)
 
 
@@ -631,7 +631,7 @@ class With_contains:
 
 
 def test_contains():
-    with_contains = With_contains()  #$ MISSING: arg1="SSA variable with_contains" func=With_contains.__contains__
+    with_contains = With_contains()  #$ MISSING: arg1="with_contains" func=With_contains.__contains__
     arg2 = 0  #$ MISSING: arg2 func=With_contains.__contains__
     arg2 in with_contains
 
@@ -647,7 +647,7 @@ class With_add:
 
 
 def test_add():
-    with_add = With_add()  #$ MISSING: arg1="SSA variable with_add" func=With_add.__add__
+    with_add = With_add()  #$ MISSING: arg1="with_add" func=With_add.__add__
     arg2 = with_add
     with_add + arg2  #$ MISSING: arg2 func=With_add.__add__
 
@@ -662,7 +662,7 @@ class With_sub:
 
 
 def test_sub():
-    with_sub = With_sub()  #$ MISSING: arg1="SSA variable with_sub" func=With_sub.__sub__
+    with_sub = With_sub()  #$ MISSING: arg1="with_sub" func=With_sub.__sub__
     arg2 = with_sub
     with_sub - arg2  #$ MISSING: arg2 func=With_sub.__sub__
 
@@ -677,7 +677,7 @@ class With_mul:
 
 
 def test_mul():
-    with_mul = With_mul()  #$ MISSING: arg1="SSA variable with_mul" func=With_mul.__mul__
+    with_mul = With_mul()  #$ MISSING: arg1="with_mul" func=With_mul.__mul__
     arg2 = with_mul
     with_mul * arg2  #$ MISSING: arg2 func=With_mul.__mul__
 
@@ -692,7 +692,7 @@ class With_matmul:
 
 
 def test_matmul():
-    with_matmul = With_matmul()  #$ MISSING: arg1="SSA variable with_matmul" func=With_matmul.__matmul__
+    with_matmul = With_matmul()  #$ MISSING: arg1="with_matmul" func=With_matmul.__matmul__
     arg2 = with_matmul
     with_matmul @ arg2  #$ MISSING: arg2 func=With_matmul.__matmul__
 
@@ -707,7 +707,7 @@ class With_truediv:
 
 
 def test_truediv():
-    with_truediv = With_truediv()  #$ MISSING: arg1="SSA variable with_truediv" func=With_truediv.__truediv__
+    with_truediv = With_truediv()  #$ MISSING: arg1="with_truediv" func=With_truediv.__truediv__
     arg2 = with_truediv
     with_truediv / arg2  #$ MISSING: arg2 func=With_truediv.__truediv__
 
@@ -722,7 +722,7 @@ class With_floordiv:
 
 
 def test_floordiv():
-    with_floordiv = With_floordiv()  #$ MISSING: arg1="SSA variable with_floordiv" func=With_floordiv.__floordiv__
+    with_floordiv = With_floordiv()  #$ MISSING: arg1="with_floordiv" func=With_floordiv.__floordiv__
     arg2 = with_floordiv
     with_floordiv // arg2  #$ MISSING: arg2 func=With_floordiv.__floordiv__
 
@@ -737,7 +737,7 @@ class With_mod:
 
 
 def test_mod():
-    with_mod = With_mod()  #$ MISSING: arg1="SSA variable with_mod" func=With_mod.__mod__
+    with_mod = With_mod()  #$ MISSING: arg1="with_mod" func=With_mod.__mod__
     arg2 = with_mod
     with_mod % arg2  #$ MISSING: arg2 func=With_mod.__mod__
 
@@ -752,7 +752,7 @@ class With_divmod:
 
 
 def test_divmod():
-    with_divmod = With_divmod()  #$ MISSING: arg1="SSA variable with_divmod" func=With_divmod.__divmod__
+    with_divmod = With_divmod()  #$ MISSING: arg1="with_divmod" func=With_divmod.__divmod__
     arg2 = With_divmod  #$ MISSING: arg2 func=With_divmod.__divmod__
     divmod(with_divmod, arg2)
 
@@ -767,13 +767,13 @@ class With_pow:
 
 
 def test_pow():
-    with_pow = With_pow()  #$ MISSING: arg1="SSA variable with_pow" func=With_pow.__pow__
+    with_pow = With_pow()  #$ MISSING: arg1="with_pow" func=With_pow.__pow__
     arg2 = with_pow
     pow(with_pow, arg2)  #$ MISSING: arg2 func=With_pow.__pow__
 
 
 def test_pow_op():
-    with_pow = With_pow()  #$ MISSING: arg1="SSA variable with_pow" func=With_pow.__pow__
+    with_pow = With_pow()  #$ MISSING: arg1="with_pow" func=With_pow.__pow__
     arg2 = with_pow
     with_pow ** arg2  #$ MISSING: arg2 func=With_pow.__pow__
 
@@ -788,7 +788,7 @@ class With_lshift:
 
 
 def test_lshift():
-    with_lshift = With_lshift()  #$ MISSING: arg1="SSA variable with_lshift" func=With_lshift.__lshift__
+    with_lshift = With_lshift()  #$ MISSING: arg1="with_lshift" func=With_lshift.__lshift__
     arg2 = with_lshift
     with_lshift << arg2  #$ MISSING: arg2 func=With_lshift.__lshift__
 
@@ -803,7 +803,7 @@ class With_rshift:
 
 
 def test_rshift():
-    with_rshift = With_rshift()  #$ MISSING: arg1="SSA variable with_rshift" func=With_rshift.__rshift__
+    with_rshift = With_rshift()  #$ MISSING: arg1="with_rshift" func=With_rshift.__rshift__
     arg2 = with_rshift
     with_rshift >> arg2  #$ MISSING: arg2 func=With_rshift.__rshift__
 
@@ -818,7 +818,7 @@ class With_and:
 
 
 def test_and():
-    with_and = With_and()  #$ MISSING: arg1="SSA variable with_and" func=With_and.__and__
+    with_and = With_and()  #$ MISSING: arg1="with_and" func=With_and.__and__
     arg2 = with_and
     with_and & arg2  #$ MISSING: arg2 func=With_and.__and__
 
@@ -833,7 +833,7 @@ class With_xor:
 
 
 def test_xor():
-    with_xor = With_xor()  #$ MISSING: arg1="SSA variable with_xor" func=With_xor.__xor__
+    with_xor = With_xor()  #$ MISSING: arg1="with_xor" func=With_xor.__xor__
     arg2 = with_xor
     with_xor ^ arg2  #$ MISSING: arg2 func=With_xor.__xor__
 
@@ -848,7 +848,7 @@ class With_or:
 
 
 def test_or():
-    with_or = With_or()  #$ MISSING: arg1="SSA variable with_or" func=With_or.__or__
+    with_or = With_or()  #$ MISSING: arg1="with_or" func=With_or.__or__
     arg2 = with_or
     with_or | arg2  #$ MISSING: arg2 func=With_or.__or__
 
@@ -863,7 +863,7 @@ class With_radd:
 
 
 def test_radd():
-    with_radd = With_radd()  #$ MISSING: arg1="SSA variable with_radd" func=With_radd.__radd__
+    with_radd = With_radd()  #$ MISSING: arg1="with_radd" func=With_radd.__radd__
     arg2 = ""  #$ MISSING: arg2 func=With_radd.__radd__
     arg2 + with_radd
 
@@ -878,7 +878,7 @@ class With_rsub:
 
 
 def test_rsub():
-    with_rsub = With_rsub()  #$ MISSING: arg1="SSA variable with_rsub" func=With_rsub.__rsub__
+    with_rsub = With_rsub()  #$ MISSING: arg1="with_rsub" func=With_rsub.__rsub__
     arg2 = ""  #$ MISSING: arg2 func=With_rsub.__rsub__
     arg2 - with_rsub
 
@@ -893,7 +893,7 @@ class With_rmul:
 
 
 def test_rmul():
-    with_rmul = With_rmul()  #$ MISSING: arg1="SSA variable with_rmul" func=With_rmul.__rmul__
+    with_rmul = With_rmul()  #$ MISSING: arg1="with_rmul" func=With_rmul.__rmul__
     arg2 = ""  #$ MISSING: arg2 func=With_rmul.__rmul__
     arg2 * with_rmul
 
@@ -908,7 +908,7 @@ class With_rmatmul:
 
 
 def test_rmatmul():
-    with_rmatmul = With_rmatmul()  #$ MISSING: arg1="SSA variable with_rmatmul" func=With_rmatmul.__rmatmul__
+    with_rmatmul = With_rmatmul()  #$ MISSING: arg1="with_rmatmul" func=With_rmatmul.__rmatmul__
     arg2 = ""  #$ MISSING: arg2 func=With_rmatmul.__rmatmul__
     arg2 @ with_rmatmul
 
@@ -923,7 +923,7 @@ class With_rtruediv:
 
 
 def test_rtruediv():
-    with_rtruediv = With_rtruediv()  #$ MISSING: arg1="SSA variable with_rtruediv" func=With_rtruediv.__rtruediv__
+    with_rtruediv = With_rtruediv()  #$ MISSING: arg1="with_rtruediv" func=With_rtruediv.__rtruediv__
     arg2 = ""  #$ MISSING: arg2 func=With_rtruediv.__rtruediv__
     arg2 / with_rtruediv
 
@@ -938,7 +938,7 @@ class With_rfloordiv:
 
 
 def test_rfloordiv():
-    with_rfloordiv = With_rfloordiv()  #$ MISSING: arg1="SSA variable with_rfloordiv" func=With_rfloordiv.__rfloordiv__
+    with_rfloordiv = With_rfloordiv()  #$ MISSING: arg1="with_rfloordiv" func=With_rfloordiv.__rfloordiv__
     arg2 = ""  #$ MISSING: arg2 func=With_rfloordiv.__rfloordiv__
     arg2 // with_rfloordiv
 
@@ -953,7 +953,7 @@ class With_rmod:
 
 
 def test_rmod():
-    with_rmod = With_rmod()  #$ MISSING: arg1="SSA variable with_rmod" func=With_rmod.__rmod__
+    with_rmod = With_rmod()  #$ MISSING: arg1="with_rmod" func=With_rmod.__rmod__
     arg2 = {}  #$ MISSING: arg2 func=With_rmod.__rmod__
     arg2 % with_rmod
 
@@ -968,7 +968,7 @@ class With_rdivmod:
 
 
 def test_rdivmod():
-    with_rdivmod = With_rdivmod()  #$ MISSING: arg1="SSA variable with_rdivmod" func=With_rdivmod.__rdivmod__
+    with_rdivmod = With_rdivmod()  #$ MISSING: arg1="with_rdivmod" func=With_rdivmod.__rdivmod__
     arg2 = ""  #$ MISSING: arg2 func=With_rdivmod.__rdivmod__
     divmod(arg2, with_rdivmod)
 
@@ -983,13 +983,13 @@ class With_rpow:
 
 
 def test_rpow():
-    with_rpow = With_rpow()  #$ MISSING: arg1="SSA variable with_rpow" func=With_rpow.__rpow__
+    with_rpow = With_rpow()  #$ MISSING: arg1="with_rpow" func=With_rpow.__rpow__
     arg2 = ""  #$ MISSING: arg2 func=With_rpow.__rpow__
     pow(arg2, with_rpow)
 
 
 def test_rpow_op():
-    with_rpow = With_rpow()  #$ MISSING: arg1="SSA variable with_rpow" func=With_rpow.__rpow__
+    with_rpow = With_rpow()  #$ MISSING: arg1="with_rpow" func=With_rpow.__rpow__
     arg2 = ""  #$ MISSING: arg2 func=With_rpow.__rpow__
     arg2 ** with_rpow
 
@@ -1004,7 +1004,7 @@ class With_rlshift:
 
 
 def test_rlshift():
-    with_rlshift = With_rlshift()  #$ MISSING: arg1="SSA variable with_rlshift" func=With_rlshift.__rlshift__
+    with_rlshift = With_rlshift()  #$ MISSING: arg1="with_rlshift" func=With_rlshift.__rlshift__
     arg2 = ""  #$ MISSING: arg2 func=With_rlshift.__rlshift__
     arg2 << with_rlshift
 
@@ -1019,7 +1019,7 @@ class With_rrshift:
 
 
 def test_rrshift():
-    with_rrshift = With_rrshift()  #$ MISSING: arg1="SSA variable with_rrshift" func=With_rrshift.__rrshift__
+    with_rrshift = With_rrshift()  #$ MISSING: arg1="with_rrshift" func=With_rrshift.__rrshift__
     arg2 = ""  #$ MISSING: arg2 func=With_rrshift.__rrshift__
     arg2 >> with_rrshift
 
@@ -1034,7 +1034,7 @@ class With_rand:
 
 
 def test_rand():
-    with_rand = With_rand()  #$ MISSING: arg1="SSA variable with_rand" func=With_rand.__rand__
+    with_rand = With_rand()  #$ MISSING: arg1="with_rand" func=With_rand.__rand__
     arg2 = ""  #$ MISSING: arg2 func=With_rand.__rand__
     arg2 & with_rand
 
@@ -1049,7 +1049,7 @@ class With_rxor:
 
 
 def test_rxor():
-    with_rxor = With_rxor()  #$ MISSING: arg1="SSA variable with_rxor" func=With_rxor.__rxor__
+    with_rxor = With_rxor()  #$ MISSING: arg1="with_rxor" func=With_rxor.__rxor__
     arg2 = ""  #$ MISSING: arg2 func=With_rxor.__rxor__
     arg2 ^ with_rxor
 
@@ -1064,7 +1064,7 @@ class With_ror:
 
 
 def test_ror():
-    with_ror = With_ror()  #$ MISSING: arg1="SSA variable with_ror" func=With_ror.__ror__
+    with_ror = With_ror()  #$ MISSING: arg1="with_ror" func=With_ror.__ror__
     arg2 = ""  #$ MISSING: arg2 func=With_ror.__ror__
     arg2 | with_ror
 
@@ -1079,7 +1079,7 @@ class With_iadd:
 
 
 def test_iadd():
-    with_iadd = With_iadd()  #$ MISSING: arg1="SSA variable with_iadd" func=With_iadd.__iadd__
+    with_iadd = With_iadd()  #$ MISSING: arg1="with_iadd" func=With_iadd.__iadd__
     arg2 = with_iadd  #$ MISSING: arg2 func=With_iadd.__iadd__
     with_iadd += arg2
 
@@ -1094,7 +1094,7 @@ class With_isub:
 
 
 def test_isub():
-    with_isub = With_isub()  #$ MISSING: arg1="SSA variable with_isub" func=With_isub.__isub__
+    with_isub = With_isub()  #$ MISSING: arg1="with_isub" func=With_isub.__isub__
     arg2 = with_isub  #$ MISSING: arg2 func=With_isub.__isub__
     with_isub -= arg2
 
@@ -1109,7 +1109,7 @@ class With_imul:
 
 
 def test_imul():
-    with_imul = With_imul()  #$ MISSING: arg1="SSA variable with_imul" func=With_imul.__imul__
+    with_imul = With_imul()  #$ MISSING: arg1="with_imul" func=With_imul.__imul__
     arg2 = with_imul  #$ MISSING: arg2 func=With_imul.__imul__
     with_imul *= arg2
 
@@ -1124,7 +1124,7 @@ class With_imatmul:
 
 
 def test_imatmul():
-    with_imatmul = With_imatmul()  #$ MISSING: arg1="SSA variable with_imatmul" func=With_imatmul.__imatmul__
+    with_imatmul = With_imatmul()  #$ MISSING: arg1="with_imatmul" func=With_imatmul.__imatmul__
     arg2 = with_imatmul  #$ MISSING: arg2 func=With_imatmul.__imatmul__
     with_imatmul @= arg2
 
@@ -1139,7 +1139,7 @@ class With_itruediv:
 
 
 def test_itruediv():
-    with_itruediv = With_itruediv()  #$ MISSING: arg1="SSA variable with_itruediv" func=With_itruediv.__itruediv__
+    with_itruediv = With_itruediv()  #$ MISSING: arg1="with_itruediv" func=With_itruediv.__itruediv__
     arg2 = with_itruediv  #$ MISSING: arg2 func=With_itruediv.__itruediv__
     with_itruediv /= arg2
 
@@ -1154,7 +1154,7 @@ class With_ifloordiv:
 
 
 def test_ifloordiv():
-    with_ifloordiv = With_ifloordiv()  #$ MISSING: arg1="SSA variable with_ifloordiv" func=With_ifloordiv.__ifloordiv__
+    with_ifloordiv = With_ifloordiv()  #$ MISSING: arg1="with_ifloordiv" func=With_ifloordiv.__ifloordiv__
     arg2 = with_ifloordiv  #$ MISSING: arg2 func=With_ifloordiv.__ifloordiv__
     with_ifloordiv //= arg2
 
@@ -1169,7 +1169,7 @@ class With_imod:
 
 
 def test_imod():
-    with_imod = With_imod()  #$ MISSING: arg1="SSA variable with_imod" func=With_imod.__imod__
+    with_imod = With_imod()  #$ MISSING: arg1="with_imod" func=With_imod.__imod__
     arg2 = with_imod  #$ MISSING: arg2 func=With_imod.__imod__
     with_imod %= arg2
 
@@ -1184,7 +1184,7 @@ class With_ipow:
 
 
 def test_ipow():
-    with_ipow = With_ipow()  #$ MISSING: arg1="SSA variable with_ipow" func=With_ipow.__ipow__
+    with_ipow = With_ipow()  #$ MISSING: arg1="with_ipow" func=With_ipow.__ipow__
     arg2 = with_ipow  #$ MISSING: arg2 func=With_ipow.__ipow__
     with_ipow **= arg2
 
@@ -1199,7 +1199,7 @@ class With_ilshift:
 
 
 def test_ilshift():
-    with_ilshift = With_ilshift()  #$ MISSING: arg1="SSA variable with_ilshift" func=With_ilshift.__ilshift__
+    with_ilshift = With_ilshift()  #$ MISSING: arg1="with_ilshift" func=With_ilshift.__ilshift__
     arg2 = with_ilshift  #$ MISSING: arg2 func=With_ilshift.__ilshift__
     with_ilshift <<= arg2
 
@@ -1214,7 +1214,7 @@ class With_irshift:
 
 
 def test_irshift():
-    with_irshift = With_irshift()  #$ MISSING: arg1="SSA variable with_irshift" func=With_irshift.__irshift__
+    with_irshift = With_irshift()  #$ MISSING: arg1="with_irshift" func=With_irshift.__irshift__
     arg2 = with_irshift  #$ MISSING: arg2 func=With_irshift.__irshift__
     with_irshift >>= arg2
 
@@ -1229,7 +1229,7 @@ class With_iand:
 
 
 def test_iand():
-    with_iand = With_iand()  #$ MISSING: arg1="SSA variable with_iand" func=With_iand.__iand__
+    with_iand = With_iand()  #$ MISSING: arg1="with_iand" func=With_iand.__iand__
     arg2 = with_iand  #$ MISSING: arg2 func=With_iand.__iand__
     with_iand &= arg2
 
@@ -1244,7 +1244,7 @@ class With_ixor:
 
 
 def test_ixor():
-    with_ixor = With_ixor()  #$ MISSING: arg1="SSA variable with_ixor" func=With_ixor.__ixor__
+    with_ixor = With_ixor()  #$ MISSING: arg1="with_ixor" func=With_ixor.__ixor__
     arg2 = with_ixor  #$ MISSING: arg2 func=With_ixor.__ixor__
     with_ixor ^= arg2
 
@@ -1259,7 +1259,7 @@ class With_ior:
 
 
 def test_ior():
-    with_ior = With_ior()  #$ MISSING: arg1="SSA variable with_ior" func=With_ior.__ior__
+    with_ior = With_ior()  #$ MISSING: arg1="with_ior" func=With_ior.__ior__
     arg2 = with_ior  #$ MISSING: arg2 func=With_ior.__ior__
     with_ior |= arg2
 
@@ -1273,7 +1273,7 @@ class With_neg:
 
 
 def test_neg():
-    with_neg = With_neg()  #$ MISSING: arg1="SSA variable with_neg" func=With_neg.__neg__
+    with_neg = With_neg()  #$ MISSING: arg1="with_neg" func=With_neg.__neg__
     -with_neg
 
 
@@ -1286,7 +1286,7 @@ class With_pos:
 
 
 def test_pos():
-    with_pos = With_pos()  #$ MISSING: arg1="SSA variable with_pos" func=With_pos.__pos__
+    with_pos = With_pos()  #$ MISSING: arg1="with_pos" func=With_pos.__pos__
     +with_pos
 
 
@@ -1299,7 +1299,7 @@ class With_abs:
 
 
 def test_abs():
-    with_abs = With_abs()  #$ MISSING: arg1="SSA variable with_abs" func=With_abs.__abs__
+    with_abs = With_abs()  #$ MISSING: arg1="with_abs" func=With_abs.__abs__
     abs(with_abs)
 
 
@@ -1312,7 +1312,7 @@ class With_invert:
 
 
 def test_invert():
-    with_invert = With_invert()  #$ MISSING: arg1="SSA variable with_invert" func=With_invert.__invert__
+    with_invert = With_invert()  #$ MISSING: arg1="with_invert" func=With_invert.__invert__
     ~with_invert
 
 
@@ -1325,7 +1325,7 @@ class With_complex:
 
 
 def test_complex():
-    with_complex = With_complex()  #$ MISSING: arg1="SSA variable with_complex" func=With_complex.__complex__
+    with_complex = With_complex()  #$ MISSING: arg1="with_complex" func=With_complex.__complex__
     complex(with_complex)
 
 
@@ -1338,7 +1338,7 @@ class With_int:
 
 
 def test_int():
-    with_int = With_int()  #$ MISSING: arg1="SSA variable with_int" func=With_int.__int__
+    with_int = With_int()  #$ MISSING: arg1="with_int" func=With_int.__int__
     int(with_int)
 
 
@@ -1351,7 +1351,7 @@ class With_float:
 
 
 def test_float():
-    with_float = With_float()  #$ MISSING: arg1="SSA variable with_float" func=With_float.__float__
+    with_float = With_float()  #$ MISSING: arg1="with_float" func=With_float.__float__
     float(with_float)
 
 
@@ -1364,37 +1364,37 @@ class With_index:
 
 
 def test_index_slicing():
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
+    with_index = With_index()  #$ MISSING: arg1="with_index" func=With_index.__index__
     [0][with_index:1]
 
 
 def test_index_bin():
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
+    with_index = With_index()  #$ MISSING: arg1="with_index" func=With_index.__index__
     bin(with_index)
 
 
 def test_index_hex():
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
+    with_index = With_index()  #$ MISSING: arg1="with_index" func=With_index.__index__
     hex(with_index)
 
 
 def test_index_oct():
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
+    with_index = With_index()  #$ MISSING: arg1="with_index" func=With_index.__index__
     oct(with_index)
 
 
 def test_index_int():
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
+    with_index = With_index()  #$ MISSING: arg1="with_index" func=With_index.__index__
     int(with_index)
 
 
 def test_index_float():
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
+    with_index = With_index()  #$ MISSING: arg1="with_index" func=With_index.__index__
     float(with_index)
 
 
 def test_index_complex():
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
+    with_index = With_index()  #$ MISSING: arg1="with_index" func=With_index.__index__
     complex(with_index)
 
 
@@ -1407,7 +1407,7 @@ class With_round:
 
 
 def test_round():
-    with_round = With_round()  #$ MISSING: arg1="SSA variable with_round" func=With_round.__round__
+    with_round = With_round()  #$ MISSING: arg1="with_round" func=With_round.__round__
     round(with_round)
 
 
@@ -1420,7 +1420,7 @@ class With_trunc:
 
 
 def test_trunc():
-    with_trunc = With_trunc()  #$ MISSING: arg1="SSA variable with_trunc" func=With_trunc.__trunc__
+    with_trunc = With_trunc()  #$ MISSING: arg1="with_trunc" func=With_trunc.__trunc__
     import math
 
     math.trunc(with_trunc)
@@ -1435,7 +1435,7 @@ class With_floor:
 
 
 def test_floor():
-    with_floor = With_floor()  #$ MISSING: arg1="SSA variable with_floor" func=With_floor.__floor__
+    with_floor = With_floor()  #$ MISSING: arg1="with_floor" func=With_floor.__floor__
     import math
 
     math.floor(with_floor)
@@ -1450,7 +1450,7 @@ class With_ceil:
 
 
 def test_ceil():
-    with_ceil = With_ceil()  #$ MISSING: arg1="SSA variable with_ceil" func=With_ceil.__ceil__
+    with_ceil = With_ceil()  #$ MISSING: arg1="with_ceil" func=With_ceil.__ceil__
     import math
 
     math.ceil(with_ceil)
@@ -1503,7 +1503,7 @@ class With_await:
 
 
 async def atest_await():
-    with_await = With_await()  #$ MISSING: arg1="SSA variable with_await" func=With_await.__await__
+    with_await = With_await()  #$ MISSING: arg1="with_await" func=With_await.__await__
     await (with_await)
 
 
@@ -1525,7 +1525,7 @@ class With_aiter:
 
 
 async def atest_aiter():
-    with_aiter = With_aiter()  #$ MISSING: arg1="SSA variable with_aiter" func=With_aiter.__aiter__
+    with_aiter = With_aiter()  #$ MISSING: arg1="with_aiter" func=With_aiter.__aiter__
     async for x in with_aiter:
         pass
 
@@ -1542,7 +1542,7 @@ class With_anext:
 
 
 async def atest_anext():
-    with_anext = With_anext()  #$ MISSING: arg1="SSA variable with_anext" func=With_anext.__anext__
+    with_anext = With_anext()  #$ MISSING: arg1="with_anext" func=With_anext.__anext__
     async for x in with_anext:
         pass
 
@@ -1559,7 +1559,7 @@ class With_aenter:
 
 
 async def atest_aenter():
-    with_aenter = With_aenter()  #$ MISSING: arg1="SSA variable with_aenter" func=With_aenter.__aenter__
+    with_aenter = With_aenter()  #$ MISSING: arg1="with_aenter" func=With_aenter.__aenter__
     async with with_aenter:
         pass
 
@@ -1578,6 +1578,6 @@ class With_aexit:
 
 
 async def atest_aexit():
-    with_aexit = With_aexit()  #$ MISSING: arg1="SSA variable with_aexit" func=With_aexit.__aexit__
+    with_aexit = With_aexit()  #$ MISSING: arg1="with_aexit" func=With_aexit.__aexit__
     async with with_aexit:
         pass

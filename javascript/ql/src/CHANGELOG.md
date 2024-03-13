@@ -1,3 +1,56 @@
+## 0.8.9
+
+### Bug Fixes
+
+* The left operand of the `&&` operator no longer propagates data flow by default.
+
+## 0.8.8
+
+No user-facing changes.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Added support for [doT](https://github.com/olado/doT) templates. 
+
+## 0.8.6
+
+No user-facing changes.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Added django URLs to detected "safe" URL patterns in `js/unsafe-external-link`. 
+
+## 0.8.3
+
+### Query Metadata Changes
+
+* Lower the security severity of log-injection to medium.
+* Increase the security severity of XSS to high.
+
+## 0.8.2
+
+### Minor Analysis Improvements
+
+* Added modeling for importing `express-rate-limit` using a named import.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Added the `AmdModuleDefinition::Range` class, making it possible to define custom aliases for the AMD `define` function.
+
+## 0.8.0
+
+No user-facing changes.
+
 ## 0.7.5
 
 ### Bug Fixes

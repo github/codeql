@@ -15,6 +15,7 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
+import semmle.code.cpp.models.implementations.Memset
 import ExposedSystemData::PathGraph
 import SystemData
 
@@ -27,6 +28,10 @@ module ExposedSystemDataConfig implements DataFlow::ConfigSig {
       input.isParameterDeref(arg) and
       fc.getArgument(arg).getAChild*() = sink.asIndirectExpr()
     )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.asIndirectArgument() = any(MemsetFunction func).getACallToThisFunction().getAnArgument()
   }
 }
 

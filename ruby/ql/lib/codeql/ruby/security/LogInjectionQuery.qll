@@ -8,6 +8,7 @@ import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.frameworks.Core
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * A data flow source for user input used in log entries.
@@ -48,6 +49,10 @@ class RemoteSource extends Source instanceof RemoteFlowSource { }
  */
 class LoggingSink extends Sink {
   LoggingSink() { this = any(Logging logging).getAnInput() }
+}
+
+private class ExternalLogInjectionSink extends Sink {
+  ExternalLogInjectionSink() { this = ModelOutput::getASinkNode("log-injection").asSink() }
 }
 
 /**

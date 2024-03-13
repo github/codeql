@@ -184,3 +184,12 @@ func test(s: String) {
 
 // `begin :thumbsup: end`, with thumbs up emoji and skin tone modifier
 test(s: "begin \u{0001F44D}\u{0001F3FF} end")
+
+extension String {
+    func newStringMethod() {
+        _ = NSMakeRange(0, count) // BAD
+        _ = NSMakeRange(0, utf8.count) // BAD
+        _ = NSMakeRange(0, utf16.count) // GOOD (`String.UTF16View` and `NSString` lengths are equivalent)
+        _ = NSMakeRange(0, unicodeScalars.count) // BAD
+    }
+}

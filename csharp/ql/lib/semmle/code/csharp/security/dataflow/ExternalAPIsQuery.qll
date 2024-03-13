@@ -5,7 +5,7 @@
 
 import csharp
 private import semmle.code.csharp.commons.QualifiedName
-private import semmle.code.csharp.dataflow.flowsources.Remote
+private import semmle.code.csharp.security.dataflow.flowsources.FlowSources
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.dataflow.FlowSummary
 
@@ -69,7 +69,7 @@ class ExternalApiDataNode extends DataFlow::Node {
 
   /** Holds if the callable being use has name `name` and has qualifier `qualifier`. */
   predicate hasQualifiedName(string qualifier, string name) {
-    this.getCallable().hasQualifiedName(qualifier, name)
+    this.getCallable().hasFullyQualifiedName(qualifier, name)
   }
 
   /**
@@ -92,19 +92,19 @@ class ExternalApiDataNode extends DataFlow::Node {
 deprecated class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
   UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfig" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  override predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
 
-/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
+/** A configuration for tracking flow from `ThreatModelFlowSource`s to `ExternalApiDataNode`s. */
 private module RemoteSourceToExternalApiConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof ThreatModelFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
 
-/** A module for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
+/** A module for tracking flow from `ThreatModelFlowSource`s to `ExternalApiDataNode`s. */
 module RemoteSourceToExternalApi = TaintTracking::Global<RemoteSourceToExternalApiConfig>;
 
 /** A node representing untrusted data being passed to an external API. */
@@ -144,8 +144,8 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
     |
       this = TExternalApiParameter(m, index) and
       result =
-        m.getDeclaringType().getQualifiedName() + "." + m.toStringWithTypes() + " [" + indexString +
-          "]"
+        m.getDeclaringType().getFullyQualifiedName() + "." + m.toStringWithTypes() + " [" +
+          indexString + "]"
     )
   }
 }

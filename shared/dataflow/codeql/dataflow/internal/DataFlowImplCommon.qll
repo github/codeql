@@ -7,16 +7,22 @@ module MakeImplCommon<InputSig Lang> {
   import Cached
 
   module DataFlowImplCommonPublic {
-    /** Provides `FlowState = string`. */
-    module FlowStateString {
+    /**
+     * DEPRECATED: Generally, a custom `FlowState` type should be used instead,
+     * but `string` can of course still be used without referring to this
+     * module.
+     *
+     * Provides `FlowState = string`.
+     */
+    deprecated module FlowStateString {
       /** A state value to track during data flow. */
-      class FlowState = string;
+      deprecated class FlowState = string;
 
       /**
        * The default state, which is used when the state is unspecified for a source
        * or a sink.
        */
-      class FlowStateEmpty extends FlowState {
+      deprecated class FlowStateEmpty extends FlowState {
         FlowStateEmpty() { this = "" }
       }
     }
@@ -77,7 +83,7 @@ module MakeImplCommon<InputSig Lang> {
     class LocalSourceNode extends Node {
       LocalSourceNode() {
         storeStep(_, this, _) or
-        loadStep(_, this, _) or
+        loadStep0(_, this, _) or
         jumpStepCached(_, this) or
         this instanceof ParamNode or
         this instanceof OutNodeExt
@@ -109,11 +115,13 @@ module MakeImplCommon<InputSig Lang> {
     // TODO: support setters
     predicate storeStep(Node n1, Node n2, Content f) { storeSet(n1, f, n2, _, _) }
 
-    predicate loadStep(Node n1, LocalSourceNode n2, Content f) {
+    private predicate loadStep0(Node n1, Node n2, Content f) {
       readSet(n1, f, n2)
       or
       argumentValueFlowsThrough(n1, TReadStepTypesSome(_, f, _), n2)
     }
+
+    predicate loadStep(Node n1, LocalSourceNode n2, Content f) { loadStep0(n1, n2, f) }
 
     predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content f1, Content f2) { none() }
 
@@ -380,9 +388,219 @@ module MakeImplCommon<InputSig Lang> {
   }
 
   private DataFlowCallable viableCallableExt(DataFlowCall call) {
-    result = viableCallable(call)
+    result = viableCallableCached(call)
     or
     result = viableCallableLambda(call, _)
+  }
+
+  signature module CallContextSensitivityInputSig {
+    /** Holds if the edge is possibly needed in the direction `call` to `c`. */
+    predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c);
+
+    /** Holds if the edge is possibly needed in the direction `c` to `call`. */
+    predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c);
+
+    /**
+     * Holds if the call context `ctx` may reduce the set of viable run-time
+     * dispatch targets of call `call` in `c`.
+     */
+    default predicate reducedViableImplInCallContextCand(
+      DataFlowCall call, DataFlowCallable c, DataFlowCall ctx
+    ) {
+      relevantCallEdgeIn(ctx, c) and
+      mayBenefitFromCallContextExt(call, c)
+    }
+
+    /**
+     * Holds if flow returning from callable `c` to call `call` might return
+     * further and if this path may restrict the set of call sites that can be
+     * returned to.
+     */
+    default predicate reducedViableImplInReturnCand(DataFlowCallable c, DataFlowCall call) {
+      relevantCallEdgeOut(call, c) and
+      mayBenefitFromCallContextExt(call, _)
+    }
+  }
+
+  /** Provides predicates releated to call-context sensitivity. */
+  module CallContextSensitivity<CallContextSensitivityInputSig Input> {
+    private import Input
+
+    pragma[nomagic]
+    DataFlowCallable viableImplInCallContextExtIn(DataFlowCall call, DataFlowCall ctx) {
+      reducedViableImplInCallContextCand(call, _, ctx) and
+      result = viableImplInCallContextExt(call, ctx) and
+      relevantCallEdgeIn(call, result)
+    }
+
+    /**
+     * Holds if the call context `ctx` reduces the set of viable run-time
+     * dispatch targets of call `call` in `c`.
+     */
+    pragma[nomagic]
+    predicate reducedViableImplInCallContext(DataFlowCall call, DataFlowCallable c, DataFlowCall ctx) {
+      exists(int tgts, int ctxtgts |
+        reducedViableImplInCallContextCand(call, c, ctx) and
+        ctxtgts = count(viableImplInCallContextExtIn(call, ctx)) and
+        tgts = strictcount(DataFlowCallable tgt | relevantCallEdgeIn(call, tgt)) and
+        ctxtgts < tgts
+      )
+    }
+
+    /**
+     * Holds if the call context `call` allows us to prune unreachable nodes in `callable`.
+     */
+    pragma[nomagic]
+    predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable callable) {
+      exists(Node n |
+        relevantCallEdgeIn(call, callable) and
+        getNodeEnclosingCallable(n) = callable and
+        isUnreachableInCallCached(n, call)
+      )
+    }
+
+    pragma[nomagic]
+    DataFlowCallable viableImplInCallContextExtOut(DataFlowCall call, DataFlowCall ctx) {
+      exists(DataFlowCallable c |
+        reducedViableImplInReturnCand(result, call) and
+        result = viableImplInCallContextExt(call, ctx) and
+        mayBenefitFromCallContextExt(call, c) and
+        relevantCallEdgeOut(ctx, c)
+      )
+    }
+
+    /**
+     * Holds if flow returning from callable `c` to call `call` might return
+     * further and if this path restricts the set of call sites that can be
+     * returned to.
+     */
+    pragma[nomagic]
+    predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
+      exists(int tgts, int ctxtgts |
+        reducedViableImplInReturnCand(c, call) and
+        ctxtgts = count(DataFlowCall ctx | c = viableImplInCallContextExtOut(call, ctx)) and
+        tgts =
+          strictcount(DataFlowCall ctx |
+            callEnclosingCallable(call, any(DataFlowCallable encl | relevantCallEdgeOut(ctx, encl)))
+          ) and
+        ctxtgts < tgts
+      )
+    }
+
+    signature module PrunedViableImplInputSig {
+      predicate reducedViableImplInCallContext(
+        DataFlowCall call, DataFlowCallable c, DataFlowCall ctx
+      );
+
+      predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call);
+
+      predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable c);
+    }
+
+    /**
+     * This module is only parameterized so that we can refer to cached versions
+     * of the input predicates in `CachedCallContextSensitivity`.
+     */
+    module PrunedViableImpl<PrunedViableImplInputSig Input2> {
+      /**
+       * Gets a viable run-time dispatch target for the call `call` in the
+       * context `ctx`. This is restricted to those calls for which a context
+       * makes a difference.
+       */
+      pragma[nomagic]
+      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, CallContextSpecificCall ctx) {
+        exists(DataFlowCall outer | ctx = TSpecificCall(outer) |
+          result = viableImplInCallContextExtIn(call, outer) and
+          Input2::reducedViableImplInCallContext(call, _, outer)
+        )
+      }
+
+      /** Holds if `call` does not have a reduced set of dispatch targets in call context `ctx`. */
+      bindingset[call, ctx]
+      predicate noPrunedViableImplInCallContext(DataFlowCall call, CallContext ctx) {
+        exists(DataFlowCall outer | ctx = TSpecificCall(outer) |
+          not Input2::reducedViableImplInCallContext(call, _, outer)
+        )
+        or
+        ctx instanceof CallContextSomeCall
+        or
+        ctx instanceof CallContextAny
+        or
+        ctx instanceof CallContextReturn
+      }
+
+      /**
+       * Resolves a call from `call` in `cc` to `result`, where `result` is
+       * restricted by `relevantResolveTarget`.
+       */
+      bindingset[call, cc]
+      DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
+        result = prunedViableImplInCallContext(call, cc)
+        or
+        noPrunedViableImplInCallContext(call, cc) and
+        relevantCallEdgeIn(call, result)
+      }
+
+      /**
+       * Gets a viable call site for the return from `callable` in call context
+       * `ctx`. This is restricted to those callables and contexts for which
+       * the possible call sites are restricted.
+       */
+      pragma[nomagic]
+      DataFlowCall prunedViableImplInCallContextReverse(
+        DataFlowCallable callable, CallContextReturn ctx
+      ) {
+        exists(DataFlowCallable c0, DataFlowCall call0 |
+          callEnclosingCallable(call0, callable) and
+          ctx = TReturn(c0, call0) and
+          c0 = viableImplInCallContextExtOut(call0, result) and
+          Input2::reducedViableImplInReturn(c0, call0)
+        )
+      }
+
+      /**
+       * Resolves a return from `callable` in `cc` to `call`.
+       */
+      bindingset[cc, callable]
+      predicate resolveReturn(CallContextNoCall cc, DataFlowCallable callable, DataFlowCall call) {
+        cc instanceof CallContextAny and relevantCallEdgeOut(call, callable)
+        or
+        call = prunedViableImplInCallContextReverse(callable, cc)
+      }
+
+      /**
+       * Holds if the call context `call` improves virtual dispatch in `callable`.
+       */
+      pragma[nomagic]
+      predicate recordDataFlowCallSiteDispatch(DataFlowCall call, DataFlowCallable callable) {
+        Input2::reducedViableImplInCallContext(_, callable, call)
+      }
+
+      /**
+       * Holds if the call context `call` either improves virtual dispatch in
+       * `callable` or if it allows us to prune unreachable nodes in `callable`.
+       */
+      predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable c) {
+        Input2::recordDataFlowCallSiteUnreachable(call, c) or
+        recordDataFlowCallSiteDispatch(call, c)
+      }
+    }
+
+    private predicate reducedViableImplInCallContextAlias = reducedViableImplInCallContext/3;
+
+    private predicate reducedViableImplInReturnAlias = reducedViableImplInReturn/2;
+
+    private predicate recordDataFlowCallSiteUnreachableAlias = recordDataFlowCallSiteUnreachable/2;
+
+    private module DefaultPrunedViableImplInput implements PrunedViableImplInputSig {
+      predicate reducedViableImplInCallContext = reducedViableImplInCallContextAlias/3;
+
+      predicate reducedViableImplInReturn = reducedViableImplInReturnAlias/2;
+
+      predicate recordDataFlowCallSiteUnreachable = recordDataFlowCallSiteUnreachableAlias/2;
+    }
+
+    import PrunedViableImpl<DefaultPrunedViableImplInput>
   }
 
   cached
@@ -473,6 +691,9 @@ module MakeImplCommon<InputSig Lang> {
       isArgumentNode(n, call, pos)
     }
 
+    cached
+    DataFlowCallable viableCallableCached(DataFlowCall call) { result = viableCallable(call) }
+
     /**
      * Gets a viable target for the lambda call `call`.
      *
@@ -485,6 +706,102 @@ module MakeImplCommon<InputSig Lang> {
         LambdaFlow::revLambdaFlow(call, kind, creation, _, _, _, lastCall) and
         lambdaCreation(creation, kind, result)
       )
+    }
+
+    /**
+     * Holds if the set of viable implementations that can be called by `call`
+     * might be improved by knowing the call context.
+     */
+    cached
+    predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
+      (
+        mayBenefitFromCallContext(call)
+        or
+        exists(viableCallableLambda(call, TDataFlowCallSome(_)))
+      ) and
+      callEnclosingCallable(call, callable)
+    }
+
+    /**
+     * Gets a viable dispatch target of `call` in the context `ctx`. This is
+     * restricted to those `call`s for which a context might make a difference.
+     */
+    cached
+    DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
+      result = viableImplInCallContext(call, ctx) and
+      result = viableCallable(call)
+      or
+      result = viableCallableLambda(call, TDataFlowCallSome(ctx))
+      or
+      exists(DataFlowCallable enclosing |
+        mayBenefitFromCallContextExt(call, enclosing) and
+        enclosing = viableCallableExt(ctx) and
+        result = viableCallableLambda(call, TDataFlowCallNone())
+      )
+    }
+
+    /**
+     * A cached version of the `CallContextSensitivity` module. Only used in
+     * pruning stages 1+2 and flow exploration; all subsequent pruning stages use a
+     * pruned version, based on the relevant call edges from the previous stage.
+     */
+    cached
+    module CachedCallContextSensitivity {
+      private module CallContextSensitivityInput implements CallContextSensitivityInputSig {
+        predicate relevantCallEdgeIn(DataFlowCall call, DataFlowCallable c) {
+          c = viableCallableExt(call)
+        }
+
+        predicate relevantCallEdgeOut(DataFlowCall call, DataFlowCallable c) {
+          c = viableCallableExt(call)
+        }
+      }
+
+      private module Impl1 = CallContextSensitivity<CallContextSensitivityInput>;
+
+      cached
+      predicate reducedViableImplInCallContext(
+        DataFlowCall call, DataFlowCallable c, DataFlowCall ctx
+      ) {
+        Impl1::reducedViableImplInCallContext(call, c, ctx)
+      }
+
+      cached
+      predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable c) {
+        Impl1::recordDataFlowCallSiteUnreachable(call, c)
+      }
+
+      cached
+      predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
+        Impl1::reducedViableImplInReturn(c, call)
+      }
+
+      private module PrunedViableImplInput implements Impl1::PrunedViableImplInputSig {
+        predicate reducedViableImplInCallContext =
+          CachedCallContextSensitivity::reducedViableImplInCallContext/3;
+
+        predicate reducedViableImplInReturn =
+          CachedCallContextSensitivity::reducedViableImplInReturn/2;
+
+        predicate recordDataFlowCallSiteUnreachable =
+          CachedCallContextSensitivity::recordDataFlowCallSiteUnreachable/2;
+      }
+
+      private module Impl2 = Impl1::PrunedViableImpl<PrunedViableImplInput>;
+
+      import Impl2
+
+      cached
+      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, CallContextSpecificCall ctx) {
+        result = Impl2::prunedViableImplInCallContext(call, ctx)
+      }
+
+      cached
+      DataFlowCall prunedViableImplInCallContextReverse(
+        DataFlowCallable callable, CallContextReturn ctx
+      ) {
+        result = Impl2::prunedViableImplInCallContextReverse(callable, ctx)
+      }
     }
 
     /**
@@ -551,7 +868,8 @@ module MakeImplCommon<InputSig Lang> {
           // local flow
           exists(Node mid |
             parameterValueFlowCand(p, mid, read) and
-            simpleLocalFlowStep(mid, node)
+            simpleLocalFlowStep(mid, node) and
+            validParameterAliasStep(mid, node)
           )
           or
           // read
@@ -670,7 +988,8 @@ module MakeImplCommon<InputSig Lang> {
           // local flow
           exists(Node mid |
             parameterValueFlow(p, mid, read) and
-            simpleLocalFlowStep(mid, node)
+            simpleLocalFlowStep(mid, node) and
+            validParameterAliasStep(mid, node)
           )
           or
           // read
@@ -775,104 +1094,6 @@ module MakeImplCommon<InputSig Lang> {
 
     import FlowThrough
 
-    cached
-    private module DispatchWithCallContext {
-      /**
-       * Holds if the set of viable implementations that can be called by `call`
-       * might be improved by knowing the call context.
-       */
-      pragma[nomagic]
-      private predicate mayBenefitFromCallContextExt(DataFlowCall call, DataFlowCallable callable) {
-        mayBenefitFromCallContext(call, callable)
-        or
-        callEnclosingCallable(call, callable) and
-        exists(viableCallableLambda(call, TDataFlowCallSome(_)))
-      }
-
-      /**
-       * Gets a viable dispatch target of `call` in the context `ctx`. This is
-       * restricted to those `call`s for which a context might make a difference.
-       */
-      cached
-      DataFlowCallable viableImplInCallContextExt(DataFlowCall call, DataFlowCall ctx) {
-        result = viableImplInCallContext(call, ctx) and
-        result = viableCallable(call)
-        or
-        result = viableCallableLambda(call, TDataFlowCallSome(ctx))
-        or
-        exists(DataFlowCallable enclosing |
-          mayBenefitFromCallContextExt(call, enclosing) and
-          enclosing = viableCallableExt(ctx) and
-          result = viableCallableLambda(call, TDataFlowCallNone())
-        )
-      }
-
-      /**
-       * Holds if the call context `ctx` reduces the set of viable run-time
-       * dispatch targets of call `call` in `c`.
-       */
-      cached
-      predicate reducedViableImplInCallContext(
-        DataFlowCall call, DataFlowCallable c, DataFlowCall ctx
-      ) {
-        exists(int tgts, int ctxtgts |
-          mayBenefitFromCallContextExt(call, c) and
-          c = viableCallableExt(ctx) and
-          ctxtgts = count(viableImplInCallContextExt(call, ctx)) and
-          tgts = strictcount(viableCallableExt(call)) and
-          ctxtgts < tgts
-        )
-      }
-
-      /**
-       * Gets a viable run-time dispatch target for the call `call` in the
-       * context `ctx`. This is restricted to those calls for which a context
-       * makes a difference.
-       */
-      cached
-      DataFlowCallable prunedViableImplInCallContext(DataFlowCall call, CallContextSpecificCall ctx) {
-        exists(DataFlowCall outer | ctx = TSpecificCall(outer) |
-          result = viableImplInCallContextExt(call, outer) and
-          reducedViableImplInCallContext(call, _, outer)
-        )
-      }
-
-      /**
-       * Holds if flow returning from callable `c` to call `call` might return
-       * further and if this path restricts the set of call sites that can be
-       * returned to.
-       */
-      cached
-      predicate reducedViableImplInReturn(DataFlowCallable c, DataFlowCall call) {
-        exists(int tgts, int ctxtgts |
-          mayBenefitFromCallContextExt(call, _) and
-          c = viableCallableExt(call) and
-          ctxtgts = count(DataFlowCall ctx | c = viableImplInCallContextExt(call, ctx)) and
-          tgts = strictcount(DataFlowCall ctx | callEnclosingCallable(call, viableCallableExt(ctx))) and
-          ctxtgts < tgts
-        )
-      }
-
-      /**
-       * Gets a viable call site for the return from `callable` in call context
-       * `ctx`. This is restricted to those callables and contexts for which
-       * the possible call sites are restricted.
-       */
-      cached
-      DataFlowCall prunedViableImplInCallContextReverse(
-        DataFlowCallable callable, CallContextReturn ctx
-      ) {
-        exists(DataFlowCallable c0, DataFlowCall call0 |
-          callEnclosingCallable(call0, callable) and
-          ctx = TReturn(c0, call0) and
-          c0 = viableImplInCallContextExt(call0, result) and
-          reducedViableImplInReturn(c0, call0)
-        )
-      }
-    }
-
-    import DispatchWithCallContext
-
     /**
      * Holds if `p` can flow to the pre-update node associated with post-update
      * node `n`, in the same callable, using only value-preserving steps.
@@ -951,22 +1172,6 @@ module MakeImplCommon<InputSig Lang> {
       reverseStepThroughInputOutputAlias(node1, node2)
     }
 
-    /**
-     * Holds if the call context `call` improves virtual dispatch in `callable`.
-     */
-    cached
-    predicate recordDataFlowCallSiteDispatch(DataFlowCall call, DataFlowCallable callable) {
-      reducedViableImplInCallContext(_, callable, call)
-    }
-
-    /**
-     * Holds if the call context `call` allows us to prune unreachable nodes in `callable`.
-     */
-    cached
-    predicate recordDataFlowCallSiteUnreachable(DataFlowCall call, DataFlowCallable callable) {
-      exists(Node n | getNodeEnclosingCallable(n) = callable | isUnreachableInCallCached(n, call))
-    }
-
     cached
     predicate allowParameterReturnInSelfCached(ParamNode p) { allowParameterReturnInSelf(p) }
 
@@ -974,11 +1179,18 @@ module MakeImplCommon<InputSig Lang> {
     predicate paramMustFlow(ParamNode p, ArgNode arg) { localMustFlowStep+(p, arg) }
 
     cached
+    ContentApprox getContentApproxCached(Content c) { result = getContentApprox(c) }
+
+    cached
     newtype TCallContext =
       TAnyCallContext() or
-      TSpecificCall(DataFlowCall call) { recordDataFlowCallSite(call, _) } or
+      TSpecificCall(DataFlowCall call) {
+        CachedCallContextSensitivity::recordDataFlowCallSite(call, _)
+      } or
       TSomeCall() or
-      TReturn(DataFlowCallable c, DataFlowCall call) { reducedViableImplInReturn(c, call) }
+      TReturn(DataFlowCallable c, DataFlowCall call) {
+        CachedCallContextSensitivity::reducedViableImplInReturn(c, call)
+      }
 
     cached
     newtype TReturnPosition =
@@ -1121,8 +1333,8 @@ module MakeImplCommon<InputSig Lang> {
       Input::enableTypeFlow() and
       (
         exists(ParamNode p, DataFlowType at, DataFlowType pt |
-          at = getNodeType(arg) and
-          pt = getNodeType(p) and
+          nodeDataFlowType(arg, at) and
+          nodeDataFlowType(p, pt) and
           relevantCallEdge(_, _, arg, p) and
           typeStrongerThan0(pt, at)
         )
@@ -1131,8 +1343,8 @@ module MakeImplCommon<InputSig Lang> {
           // A call edge may implicitly strengthen a type by ensuring that a
           // specific argument node was reached if the type of that argument was
           // strengthened via a cast.
-          at = getNodeType(arg) and
-          pt = getNodeType(p) and
+          nodeDataFlowType(arg, at) and
+          nodeDataFlowType(p, pt) and
           paramMustFlow(p, arg) and
           relevantCallEdge(_, _, arg, _) and
           typeStrongerThan0(at, pt)
@@ -1172,8 +1384,8 @@ module MakeImplCommon<InputSig Lang> {
       or
       exists(ArgNode arg, DataFlowType at, DataFlowType pt |
         trackedParamTypeCand(p) and
-        at = getNodeType(arg) and
-        pt = getNodeType(p) and
+        nodeDataFlowType(arg, at) and
+        nodeDataFlowType(p, pt) and
         relevantCallEdge(_, _, arg, p) and
         typeStrongerThan0(at, pt)
       )
@@ -1431,15 +1643,6 @@ module MakeImplCommon<InputSig Lang> {
   }
 
   /**
-   * Holds if the call context `call` either improves virtual dispatch in
-   * `callable` or if it allows us to prune unreachable nodes in `callable`.
-   */
-  predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
-    recordDataFlowCallSiteDispatch(call, callable) or
-    recordDataFlowCallSiteUnreachable(call, callable)
-  }
-
-  /**
    * A `Node` at which a cast can occur such that the type should be checked.
    */
   class CastingNode instanceof Node {
@@ -1524,7 +1727,7 @@ module MakeImplCommon<InputSig Lang> {
     }
 
     override predicate relevantFor(DataFlowCallable callable) {
-      recordDataFlowCallSite(this.getCall(), callable)
+      CachedCallContextSensitivity::recordDataFlowCallSite(this.getCall(), callable)
     }
 
     override predicate matchesCall(DataFlowCall call) { call = this.getCall() }
@@ -1535,9 +1738,7 @@ module MakeImplCommon<InputSig Lang> {
   class CallContextSomeCall extends CallContextCall, TSomeCall {
     override string toString() { result = "CcSomeCall" }
 
-    override predicate relevantFor(DataFlowCallable callable) {
-      exists(ParamNode p | getNodeEnclosingCallable(p) = callable)
-    }
+    override predicate relevantFor(DataFlowCallable callable) { any() }
 
     override predicate matchesCall(DataFlowCall call) { any() }
   }
@@ -1757,58 +1958,6 @@ module MakeImplCommon<InputSig Lang> {
     result = getReturnPosition0(ret, ret.getKind())
   }
 
-  /** Holds if `call` does not have a reduced set of dispatch targets in call context `ctx`. */
-  bindingset[call, ctx]
-  predicate noPrunedViableImplInCallContext(DataFlowCall call, CallContext ctx) {
-    exists(DataFlowCall outer | ctx = TSpecificCall(outer) |
-      not reducedViableImplInCallContext(call, _, outer)
-    )
-    or
-    ctx instanceof CallContextSomeCall
-    or
-    ctx instanceof CallContextAny
-    or
-    ctx instanceof CallContextReturn
-  }
-
-  /**
-   * Resolves a return from `callable` in `cc` to `call`.
-   */
-  bindingset[cc, callable]
-  predicate resolveReturn(CallContext cc, DataFlowCallable callable, DataFlowCall call) {
-    cc instanceof CallContextAny and callable = viableCallableExt(call)
-    or
-    call = prunedViableImplInCallContextReverse(callable, cc)
-  }
-
-  signature predicate relevantResolveTargetSig(DataFlowCallable c);
-
-  module ResolveCall<relevantResolveTargetSig/1 relevantResolveTarget> {
-    pragma[nomagic]
-    private DataFlowCallable prunedRelevantViableImplInCallContext(DataFlowCall call, CallContext cc) {
-      result = prunedViableImplInCallContext(call, cc) and
-      relevantResolveTarget(result)
-    }
-
-    pragma[nomagic]
-    private DataFlowCallable viableRelevantCallableExt(DataFlowCall call) {
-      result = viableCallableExt(call) and
-      relevantResolveTarget(result)
-    }
-
-    /**
-     * Resolves a call from `call` in `cc` to `result`, where `result` is
-     * restricted by `relevantResolveTarget`.
-     */
-    bindingset[call, cc]
-    DataFlowCallable resolveCall(DataFlowCall call, CallContext cc) {
-      result = prunedRelevantViableImplInCallContext(call, cc)
-      or
-      noPrunedViableImplInCallContext(call, cc) and
-      result = viableRelevantCallableExt(call)
-    }
-  }
-
   /** An optional Boolean value. */
   class BooleanOption extends TBooleanOption {
     string toString() {
@@ -1883,7 +2032,7 @@ module MakeImplCommon<InputSig Lang> {
     Content getAHead() {
       exists(ContentApprox cont |
         this = TApproxFrontHead(cont) and
-        cont = getContentApprox(result)
+        cont = getContentApproxCached(result)
       )
     }
   }

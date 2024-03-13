@@ -6,7 +6,7 @@
  * @id cs/hash-without-salt
  * @tags security
  *       experimental
- *       external/cwe-759
+ *       external/cwe/cwe-759
  */
 
 import csharp
@@ -15,19 +15,19 @@ import HashWithoutSalt::PathGraph
 /** The C# class `Windows.Security.Cryptography.Core.HashAlgorithmProvider`. */
 class HashAlgorithmProvider extends RefType {
   HashAlgorithmProvider() {
-    this.hasQualifiedName("Windows.Security.Cryptography.Core", "HashAlgorithmProvider")
+    this.hasFullyQualifiedName("Windows.Security.Cryptography.Core", "HashAlgorithmProvider")
   }
 }
 
 /** The C# class `System.Security.Cryptography.HashAlgorithm`. */
 class HashAlgorithm extends RefType {
-  HashAlgorithm() { this.hasQualifiedName("System.Security.Cryptography", "HashAlgorithm") }
+  HashAlgorithm() { this.hasFullyQualifiedName("System.Security.Cryptography", "HashAlgorithm") }
 }
 
 /** The C# class `System.Security.Cryptography.KeyedHashAlgorithm`. */
 class KeyedHashAlgorithm extends RefType {
   KeyedHashAlgorithm() {
-    this.hasQualifiedName("System.Security.Cryptography", "KeyedHashAlgorithm")
+    this.hasFullyQualifiedName("System.Security.Cryptography", "KeyedHashAlgorithm")
   }
 }
 
@@ -95,10 +95,10 @@ predicate hasAnotherHashCall(MethodCall mc) {
 predicate hasFurtherProcessing(MethodCall mc) {
   mc.getTarget().fromLibrary() and
   (
-    mc.getTarget().hasQualifiedName("System", "Array", "Copy") or // Array.Copy(passwordHash, 0, password.Length), 0, key, 0, keyLen);
-    mc.getTarget().hasQualifiedName("System", "String", "Concat") or // string.Concat(passwordHash, saltkey)
-    mc.getTarget().hasQualifiedName("System", "Buffer", "BlockCopy") or // Buffer.BlockCopy(passwordHash, 0, allBytes, 0, 20)
-    mc.getTarget().hasQualifiedName("System", "String", "Format") // String.Format("{0}:{1}:{2}", username, salt, password)
+    mc.getTarget().hasFullyQualifiedName("System", "Array", "Copy") or // Array.Copy(passwordHash, 0, password.Length), 0, key, 0, keyLen);
+    mc.getTarget().hasFullyQualifiedName("System", "String", "Concat") or // string.Concat(passwordHash, saltkey)
+    mc.getTarget().hasFullyQualifiedName("System", "Buffer", "BlockCopy") or // Buffer.BlockCopy(passwordHash, 0, allBytes, 0, 20)
+    mc.getTarget().hasFullyQualifiedName("System", "String", "Format") // String.Format("{0}:{1}:{2}", username, salt, password)
   )
 }
 
@@ -137,7 +137,7 @@ module HashWithoutSaltConfig implements DataFlow::ConfigSig {
           c.getTarget()
               .getDeclaringType()
               .getABaseType*()
-              .hasQualifiedName("System.Security.Cryptography", "DeriveBytes")
+              .hasFullyQualifiedName("System.Security.Cryptography", "DeriveBytes")
         ) and
         DataFlow::localExprFlow(mc, c.getAnArgument())
       )
@@ -147,7 +147,7 @@ module HashWithoutSaltConfig implements DataFlow::ConfigSig {
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodCall mc |
       mc.getTarget()
-          .hasQualifiedName("Windows.Security.Cryptography", "CryptographicBuffer",
+          .hasFullyQualifiedName("Windows.Security.Cryptography", "CryptographicBuffer",
             "ConvertStringToBinary") and
       mc.getArgument(0) = node1.asExpr() and
       mc = node2.asExpr()
@@ -176,7 +176,7 @@ module HashWithoutSaltConfig implements DataFlow::ConfigSig {
       c.getTarget()
           .getDeclaringType()
           .getABaseType*()
-          .hasQualifiedName("System.Security.Cryptography", "DeriveBytes")
+          .hasFullyQualifiedName("System.Security.Cryptography", "DeriveBytes")
     )
     or
     // a salt or key is included in subclasses of `KeyedHashAlgorithm`

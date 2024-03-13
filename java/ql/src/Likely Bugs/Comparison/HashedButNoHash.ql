@@ -38,7 +38,7 @@ predicate usedInHash(RefType t, Expr e) {
   exists(RefType s |
     s.getName().matches("%Hash%") and not s.getSourceDeclaration().getName() = "IdentityHashMap"
   |
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getQualifier().getType() = s and
       ma.getArgument(0).getType() = t and
       e = ma and

@@ -1,0 +1,29 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Data.OracleClient", "OraclePermission", "Add", "(System.String,System.String,System.Data.KeyRestrictionBehavior)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "Copy", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "FromXml", "(System.Security.SecurityElement)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "Intersect", "(System.Security.IPermission)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "IsSubsetOf", "(System.Security.IPermission)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "IsUnrestricted", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "OraclePermission", "(System.Security.Permissions.PermissionState)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "ToXml", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "Union", "(System.Security.IPermission)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "get_AllowBlankPassword", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermission", "set_AllowBlankPassword", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "CreatePermission", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "OraclePermissionAttribute", "(System.Security.Permissions.SecurityAction)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "ShouldSerializeConnectionString", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "ShouldSerializeKeyRestrictions", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "get_AllowBlankPassword", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "get_ConnectionString", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "get_KeyRestrictionBehavior", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "get_KeyRestrictions", "()", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "set_AllowBlankPassword", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "set_ConnectionString", "(System.String)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "set_KeyRestrictionBehavior", "(System.Data.KeyRestrictionBehavior)", "summary", "df-generated"]
+      - ["System.Data.OracleClient", "OraclePermissionAttribute", "set_KeyRestrictions", "(System.String)", "summary", "df-generated"]

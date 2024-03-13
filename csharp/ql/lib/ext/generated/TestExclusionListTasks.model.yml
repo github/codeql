@@ -1,0 +1,19 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "Execute", "()", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "get_AndroidSdk", "()", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "get_ApkPaths", "()", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "get_BuildToolsVersion", "()", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "get_ExcludedTests", "()", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "get_KeyStorePath", "()", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "get_MinApiLevel", "()", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "set_AndroidSdk", "(System.String)", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "set_ApkPaths", "(Microsoft.Build.Framework.ITaskItem[])", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "set_BuildToolsVersion", "(System.String)", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "set_ExcludedTests", "(Microsoft.Build.Framework.ITaskItem[])", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "set_KeyStorePath", "(System.String)", "summary", "df-generated"]
+      - ["TestExclusionListTasks", "PatchExclusionListInApks", "set_MinApiLevel", "(System.String)", "summary", "df-generated"]

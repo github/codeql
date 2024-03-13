@@ -12,5 +12,5 @@ from MethodCall call, Method method
 where
   call.getTarget() = method and
   method.hasName("MethodName") and
-  method.getDeclaringType().hasQualifiedName("Company", "Class")
+  method.getDeclaringType().hasFullyQualifiedName("Company", "Class")
 select call

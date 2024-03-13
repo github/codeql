@@ -24,18 +24,20 @@ import semmle.code.java.security.TempDirLocalInformationDisclosureQuery
  * We achieve this by making inherently-insecure method invocations into an edge-less graph,
  * resulting in a zero-length paths.
  */
-module InsecureMethodPathGraph implements DataFlow::PathGraphSig<MethodAccessInsecureFileCreation> {
-  predicate edges(MethodAccessInsecureFileCreation n1, MethodAccessInsecureFileCreation n2) {
+module InsecureMethodPathGraph implements DataFlow::PathGraphSig<MethodCallInsecureFileCreation> {
+  predicate edges(
+    MethodCallInsecureFileCreation n1, MethodCallInsecureFileCreation n2, string key, string value
+  ) {
     none()
   }
 
-  predicate nodes(MethodAccessInsecureFileCreation n, string key, string val) {
+  predicate nodes(MethodCallInsecureFileCreation n, string key, string val) {
     key = "semmle.label" and val = n.toString()
   }
 
   predicate subpaths(
-    MethodAccessInsecureFileCreation n1, MethodAccessInsecureFileCreation n2,
-    MethodAccessInsecureFileCreation n3, MethodAccessInsecureFileCreation n4
+    MethodCallInsecureFileCreation n1, MethodCallInsecureFileCreation n2,
+    MethodCallInsecureFileCreation n3, MethodCallInsecureFileCreation n4
   ) {
     none()
   }
@@ -43,7 +45,7 @@ module InsecureMethodPathGraph implements DataFlow::PathGraphSig<MethodAccessIns
 
 module Flow =
   DataFlow::MergePathGraph<TempDirSystemGetPropertyToCreate::PathNode,
-    MethodAccessInsecureFileCreation, TempDirSystemGetPropertyToCreate::PathGraph,
+    MethodCallInsecureFileCreation, TempDirSystemGetPropertyToCreate::PathGraph,
     InsecureMethodPathGraph>;
 
 import Flow::PathGraph

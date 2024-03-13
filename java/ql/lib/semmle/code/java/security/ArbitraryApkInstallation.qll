@@ -50,7 +50,7 @@ class SetDataMethod extends Method {
 /** A dataflow sink for the URI of an intent. */
 class SetDataSink extends DataFlow::ExprNode {
   SetDataSink() {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       this.getExpr() = ma.getQualifier() and
       ma.getMethod() instanceof SetDataMethod
     )
@@ -72,7 +72,7 @@ class UriConstructorMethod extends Method {
 class ExternalApkSource extends DataFlow::Node {
   ExternalApkSource() {
     sourceNode(this, "android-external-storage-dir") or
-    this.asExpr().(MethodAccess).getMethod() instanceof UriConstructorMethod or
+    this.asExpr().(MethodCall).getMethod() instanceof UriConstructorMethod or
     this.asExpr().(StringLiteral).getValue().matches("file://%") or
     this instanceof ThreatModelFlowSource
   }

@@ -4,6 +4,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.dataflow.BarrierGuards
+private import codeql.ruby.frameworks.data.internal.ApiGraphModels
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -155,5 +156,9 @@ module CodeInjection {
     deprecated override DataFlow::FlowState getAFlowState() { result = FlowState::full() }
 
     override FlowState::State getAState() { result instanceof FlowState::Full }
+  }
+
+  private class ExternalCodeInjectionSink extends Sink {
+    ExternalCodeInjectionSink() { this = ModelOutput::getASinkNode("code-injection").asSink() }
   }
 }

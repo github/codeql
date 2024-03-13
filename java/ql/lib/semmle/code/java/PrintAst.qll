@@ -423,7 +423,8 @@ private class SingleLocalVarDeclParent extends ExprOrStmt {
   SingleLocalVarDeclParent() {
     this instanceof EnhancedForStmt or
     this instanceof CatchClause or
-    this.(InstanceOfExpr).isPattern()
+    this.(InstanceOfExpr).isPattern() or
+    this instanceof PatternCase
   }
 
   /** Gets the variable declaration that this element contains */

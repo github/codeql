@@ -27,7 +27,7 @@ where
   ) and
   not summaryStep(src, sink)
   or
-  exists(ArgumentNode arg, MethodAccess call, DataFlow::ParameterNode p, int i |
+  exists(ArgumentNode arg, MethodCall call, DataFlow::ParameterNode p, int i |
     src = arg and
     p.isParameterOf(any(DataFlowCallable c |
         c.asCallable() = call.getMethod().getSourceDeclaration()

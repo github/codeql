@@ -25,7 +25,7 @@ private class DefaultRegexInjectionSink extends RegexInjectionSink {
  */
 private class PatternQuoteCall extends RegexInjectionSanitizer {
   PatternQuoteCall() {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    exists(MethodCall ma, Method m | m = ma.getMethod() |
       ma.getArgument(0) = this.asExpr() and
       m instanceof PatternQuoteMethod
     )
@@ -38,7 +38,7 @@ private class PatternQuoteCall extends RegexInjectionSanitizer {
  */
 private class PatternLiteralFlag extends RegexInjectionSanitizer {
   PatternLiteralFlag() {
-    exists(MethodAccess ma, Method m, PatternLiteralField field | m = ma.getMethod() |
+    exists(MethodCall ma, Method m, PatternLiteralField field | m = ma.getMethod() |
       ma.getArgument(0) = this.asExpr() and
       m.getDeclaringType() instanceof TypeRegexPattern and
       m.hasName("compile") and

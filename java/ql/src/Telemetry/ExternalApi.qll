@@ -79,7 +79,7 @@ class ExternalApi extends Callable {
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
-  predicate isNeutral() { this instanceof FlowSummaryImpl::Public::NeutralCallable }
+  predicate isNeutral() { this = any(FlowSummaryImpl::Public::NeutralCallable n).asCallable() }
 
   /**
    * Holds if this API is supported by existing CodeQL libraries, that is, it is either a

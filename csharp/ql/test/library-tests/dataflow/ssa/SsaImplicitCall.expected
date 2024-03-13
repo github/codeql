@@ -1,15 +1,3 @@
-| Capture.cs:6:16:6:16 | i | Capture.cs:38:9:38:11 | SSA call def(i) | Capture.cs:13:13:13:17 | ... = ... |
-| Capture.cs:8:13:8:13 | x | Capture.cs:38:9:38:11 | SSA call def(x) | Capture.cs:15:13:15:17 | ... = ... |
-| Capture.cs:8:13:8:13 | x | Capture.cs:44:9:44:12 | SSA call def(x) | Capture.cs:15:13:15:17 | ... = ... |
-| Capture.cs:29:13:29:13 | z | Capture.cs:32:9:32:11 | SSA call def(z) | Capture.cs:30:28:30:32 | ... = ... |
-| Capture.cs:50:20:50:20 | a | Capture.cs:53:9:53:11 | SSA call def(a) | Capture.cs:52:28:52:40 | ... = ... |
-| Capture.cs:59:13:59:13 | i | Capture.cs:61:9:61:25 | SSA call def(i) | Capture.cs:60:36:60:38 | ...++ |
-| Capture.cs:75:13:75:13 | i | Capture.cs:77:9:77:25 | SSA call def(i) | Capture.cs:76:80:76:80 | access to local variable i |
-| Capture.cs:130:13:130:13 | c | Capture.cs:136:9:136:12 | SSA call def(c) | Capture.cs:133:13:133:17 | ... = ... |
-| Capture.cs:139:13:139:13 | d | Capture.cs:144:9:144:12 | SSA call def(d) | Capture.cs:142:13:142:17 | ... = ... |
-| Capture.cs:168:13:168:13 | h | Capture.cs:176:13:176:16 | SSA call def(h) | Capture.cs:174:17:174:21 | ... = ... |
-| Capture.cs:229:13:229:13 | i | Capture.cs:236:9:236:12 | SSA call def(i) | Capture.cs:235:21:235:25 | ... = ... |
-| DefUse.cs:167:23:167:23 | i | DefUse.cs:181:9:181:11 | SSA call def(i) | DefUse.cs:173:13:173:17 | ... = ... |
 | DefUse.cs:184:9:184:14 | this.Field5 | DefUse.cs:191:9:191:11 | SSA call def(this.Field5) | DefUse.cs:188:13:188:22 | ... = ... |
 | Example.cs:8:9:8:18 | this.Field | Example.cs:13:13:13:23 | SSA call def(this.Field) | Example.cs:8:9:8:22 | ... = ... |
 | Example.cs:8:9:8:18 | this.Field | Example.cs:13:13:13:23 | SSA call def(this.Field) | Example.cs:11:13:11:30 | ... = ... |

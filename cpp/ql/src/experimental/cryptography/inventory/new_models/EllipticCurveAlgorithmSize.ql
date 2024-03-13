@@ -4,7 +4,6 @@
  * @kind problem
  * @id cpp/quantum-readiness/cbom/elliptic-curve-key-length
  * @problem.severity error
- * @precision high
  * @tags cbom
  *       cryptography
  */

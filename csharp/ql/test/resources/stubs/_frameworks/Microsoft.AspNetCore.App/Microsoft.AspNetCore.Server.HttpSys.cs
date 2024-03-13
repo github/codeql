@@ -1,5 +1,5 @@
 // This file contains auto-generated code.
-// Generated from `Microsoft.AspNetCore.Server.HttpSys, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
+// Generated from `Microsoft.AspNetCore.Server.HttpSys, Version=8.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 namespace Microsoft
 {
     namespace AspNetCore
@@ -64,6 +64,7 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Server.HttpSys.AuthenticationManager Authentication { get => throw null; }
                     public Microsoft.AspNetCore.Server.HttpSys.ClientCertificateMethod ClientCertificateMethod { get => throw null; set { } }
                     public HttpSysOptions() => throw null;
+                    public bool EnableKernelResponseBuffering { get => throw null; set { } }
                     public bool EnableResponseCaching { get => throw null; set { } }
                     public Microsoft.AspNetCore.Server.HttpSys.Http503VerbosityLevel Http503Verbosity { get => throw null; set { } }
                     public int MaxAccepts { get => throw null; set { } }
@@ -78,6 +79,39 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Server.HttpSys.UrlPrefixCollection UrlPrefixes { get => throw null; }
                     public bool UseLatin1RequestHeaders { get => throw null; set { } }
                 }
+                public enum HttpSysRequestTimingType
+                {
+                    ConnectionStart = 0,
+                    DataStart = 1,
+                    TlsCertificateLoadStart = 2,
+                    TlsCertificateLoadEnd = 3,
+                    TlsHandshakeLeg1Start = 4,
+                    TlsHandshakeLeg1End = 5,
+                    TlsHandshakeLeg2Start = 6,
+                    TlsHandshakeLeg2End = 7,
+                    TlsAttributesQueryStart = 8,
+                    TlsAttributesQueryEnd = 9,
+                    TlsClientCertQueryStart = 10,
+                    TlsClientCertQueryEnd = 11,
+                    Http2StreamStart = 12,
+                    Http2HeaderDecodeStart = 13,
+                    Http2HeaderDecodeEnd = 14,
+                    RequestHeaderParseStart = 15,
+                    RequestHeaderParseEnd = 16,
+                    RequestRoutingStart = 17,
+                    RequestRoutingEnd = 18,
+                    RequestQueuedForInspection = 19,
+                    RequestDeliveredForInspection = 20,
+                    RequestReturnedAfterInspection = 21,
+                    RequestQueuedForDelegation = 22,
+                    RequestDeliveredForDelegation = 23,
+                    RequestReturnedAfterDelegation = 24,
+                    RequestQueuedForIO = 25,
+                    RequestDeliveredForIO = 26,
+                    Http3StreamStart = 27,
+                    Http3HeaderDecodeStart = 28,
+                    Http3HeaderDecodeEnd = 29,
+                }
                 public interface IHttpSysRequestDelegationFeature
                 {
                     bool CanDelegate { get; }
@@ -86,6 +120,12 @@ namespace Microsoft
                 public interface IHttpSysRequestInfoFeature
                 {
                     System.Collections.Generic.IReadOnlyDictionary<int, System.ReadOnlyMemory<byte>> RequestInfo { get; }
+                }
+                public interface IHttpSysRequestTimingFeature
+                {
+                    System.ReadOnlySpan<long> Timestamps { get; }
+                    bool TryGetElapsedTime(Microsoft.AspNetCore.Server.HttpSys.HttpSysRequestTimingType startingTimestampType, Microsoft.AspNetCore.Server.HttpSys.HttpSysRequestTimingType endingTimestampType, out System.TimeSpan elapsed);
+                    bool TryGetTimestamp(Microsoft.AspNetCore.Server.HttpSys.HttpSysRequestTimingType timestampType, out long timestamp);
                 }
                 public interface IServerDelegationFeature
                 {

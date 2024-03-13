@@ -169,7 +169,7 @@ predicate localMustFlowStep(Node node1, Node node2) {
 import Cached
 
 private predicate capturedVariableRead(Node n) {
-  n.asExpr().(RValue).getVariable() instanceof CapturedVariable
+  n.asExpr().(VarRead).getVariable() instanceof CapturedVariable
 }
 
 /**
@@ -190,6 +190,19 @@ predicate simpleAstFlowStep(Expr e1, Expr e2) {
   e2 = any(NotNullExpr nne | e1 = nne.getExpr())
   or
   e2.(WhenExpr).getBranch(_).getAResult() = e1
+  or
+  // In the following three cases only record patterns need this flow edge, leading from the bound instanceof
+  // or switch tested expression to a record pattern that will read its fields. Simple binding patterns are
+  // handled via VariableAssign.getSource instead.
+  exists(SwitchExpr se |
+    e1 = se.getExpr() and e2 = se.getACase().(PatternCase).getPattern().asRecordPattern()
+  )
+  or
+  exists(SwitchStmt ss |
+    e1 = ss.getExpr() and e2 = ss.getACase().(PatternCase).getPattern().asRecordPattern()
+  )
+  or
+  exists(InstanceOfExpr ioe | e1 = ioe.getExpr() and e2 = ioe.getPattern().asRecordPattern())
 }
 
 private predicate simpleLocalFlowStep0(Node node1, Node node2) {
@@ -197,7 +210,8 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   // Variable flow steps through adjacent def-use and use-use pairs.
   exists(SsaExplicitUpdate upd |
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
-    upd.getDefiningExpr().(AssignOp) = node1.asExpr()
+    upd.getDefiningExpr().(AssignOp) = node1.asExpr() or
+    upd.getDefiningExpr().(RecordBindingVariableExpr) = node1.asExpr()
   |
     node2.asExpr() = upd.getAFirstUse() and
     not capturedVariableRead(node2)
@@ -225,7 +239,7 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   or
   simpleAstFlowStep(node1.asExpr(), node2.asExpr())
   or
-  exists(MethodAccess ma, ValuePreservingMethod m, int argNo |
+  exists(MethodCall ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
   |
     node2.asExpr() = ma and
@@ -379,7 +393,7 @@ signature predicate guardChecksSig(Guard g, Expr e, boolean branch);
 module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   Node getABarrierNode() {
-    exists(Guard g, SsaVariable v, boolean branch, RValue use |
+    exists(Guard g, SsaVariable v, boolean branch, VarRead use |
       guardChecks(g, v.getAUse(), branch) and
       use = v.getAUse() and
       g.controls(use.getBasicBlock(), branch) and

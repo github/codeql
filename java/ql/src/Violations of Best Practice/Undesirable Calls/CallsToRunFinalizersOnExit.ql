@@ -13,7 +13,7 @@
 
 import java
 
-from MethodAccess ma, Method runfinalizers, Class c
+from MethodCall ma, Method runfinalizers, Class c
 where
   ma.getMethod() = runfinalizers and
   runfinalizers.hasName("runFinalizersOnExit") and

@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "Execute", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "get_Architecture", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "get_AsPrefixPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "get_ClangPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "get_HostOS", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "get_LdName", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "get_LdPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "get_MinApiLevel", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "get_ToolPrefixPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "get_Triple", "()", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "set_Architecture", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "set_AsPrefixPath", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "set_ClangPath", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "set_HostOS", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "set_LdName", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "set_LdPath", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "set_MinApiLevel", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "set_ToolPrefixPath", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Android.Build.Tasks", "NdkToolFinderTask", "set_Triple", "(System.String)", "summary", "df-generated"]

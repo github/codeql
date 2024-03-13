@@ -1,4 +1,18 @@
 {
+  "markdownMessage": "Java buildless extraction has completed.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/complete",
+    "name": "Java buildless extraction completed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
   "markdownMessage": "Java buildless mode used build tool Maven to pick a JDK version and/or to recommend external dependencies.",
   "severity": "unknown",
   "source": {
@@ -41,12 +55,12 @@
   }
 }
 {
-  "markdownMessage": "Reading the dependency graph from Maven build files provided 2 classpath entries",
+  "markdownMessage": "Reading the dependency graph from build files provided 2 classpath entries",
   "severity": "unknown",
   "source": {
     "extractorName": "java",
     "id": "java/autobuilder/buildless/depgraph-provided-by-maven",
-    "name": "Java buildless mode extracted precise dependency graph information from Maven"
+    "name": "Java buildless mode extracted precise dependency graph information from tool Maven"
   },
   "visibility": {
     "cliSummaryTable": true,

@@ -58,27 +58,27 @@ private class VersionGuardedNode extends DataFlow::Node {
   int getVersion() { result = version }
 }
 
-private class ImportConfiguration extends DataFlow::Configuration {
-  ImportConfiguration() { this = "ImportConfiguration" }
+module ImportConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof SourceString }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof SourceString }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink = API::moduleImport("trace").getMember("check").getACall().getArg(1)
   }
 
-  override predicate isBarrier(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(DataFlow::MethodCallNode call | call.calls(node, "block_flow"))
   }
 }
+
+module ImportFlow = DataFlow::Global<ImportConfig>;
 
 module ResolutionTest implements TestSig {
   string getARelevantTag() { result = "prints" }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     (
-      exists(DataFlow::PathNode source, DataFlow::PathNode sink, ImportConfiguration config |
-        config.hasFlowPath(source, sink) and
+      exists(ImportFlow::PathNode source, ImportFlow::PathNode sink |
+        ImportFlow::flowPath(source, sink) and
         not sink.getNode() instanceof VersionGuardedNode and
         tag = "prints" and
         location = sink.getNode().getLocation() and
@@ -108,8 +108,8 @@ module VersionSpecificResolutionTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     (
-      exists(DataFlow::PathNode source, DataFlow::PathNode sink, ImportConfiguration config |
-        config.hasFlowPath(source, sink) and
+      exists(ImportFlow::PathNode source, ImportFlow::PathNode sink |
+        ImportFlow::flowPath(source, sink) and
         tag = getTagForVersion(sink.getNode().(VersionGuardedNode).getVersion()) and
         location = sink.getNode().getLocation() and
         value = source.getNode().(SourceString).getContents() and

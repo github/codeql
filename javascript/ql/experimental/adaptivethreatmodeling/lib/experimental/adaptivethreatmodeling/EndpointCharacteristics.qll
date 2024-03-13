@@ -6,14 +6,12 @@ import experimental.adaptivethreatmodeling.EndpointTypes
 private import semmle.javascript.security.dataflow.SqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.DomBasedXssCustomizations
 private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
-private import semmle.javascript.security.dataflow.TaintedPathCustomizations
 private import semmle.javascript.heuristics.SyntacticHeuristics as SyntacticHeuristics
 private import semmle.javascript.filters.ClassifyFiles as ClassifyFiles
 private import semmle.javascript.security.dataflow.XxeCustomizations
 private import semmle.javascript.security.dataflow.RemotePropertyInjectionCustomizations
 private import semmle.javascript.security.dataflow.TypeConfusionThroughParameterTamperingCustomizations
 private import semmle.javascript.security.dataflow.ZipSlipCustomizations
-private import semmle.javascript.security.dataflow.TaintedPathCustomizations
 private import semmle.javascript.security.dataflow.CleartextLoggingCustomizations
 private import semmle.javascript.security.dataflow.XpathInjectionCustomizations
 private import semmle.javascript.security.dataflow.Xss::Shared as Xss
@@ -28,10 +26,8 @@ private import semmle.javascript.security.dataflow.CommandInjectionCustomization
 private import semmle.javascript.security.dataflow.PrototypePollutionCustomizations
 private import semmle.javascript.security.dataflow.UnvalidatedDynamicMethodCallCustomizations
 private import semmle.javascript.security.dataflow.TaintedFormatStringCustomizations
-private import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.PostMessageStarCustomizations
 private import semmle.javascript.security.dataflow.RegExpInjectionCustomizations
-private import semmle.javascript.security.dataflow.SqlInjectionCustomizations
 private import semmle.javascript.security.dataflow.InsecureRandomnessCustomizations
 private import semmle.javascript.security.dataflow.XmlBombCustomizations
 private import semmle.javascript.security.dataflow.InsufficientPasswordHashCustomizations

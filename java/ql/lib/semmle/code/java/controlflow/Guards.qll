@@ -7,6 +7,7 @@ import java
 private import semmle.code.java.controlflow.Dominance
 private import semmle.code.java.controlflow.internal.GuardsLogic
 private import semmle.code.java.controlflow.internal.Preconditions
+private import semmle.code.java.controlflow.internal.SwitchCases
 
 /**
  * A basic block that terminates in a condition, splitting the subsequent control flow.
@@ -18,7 +19,7 @@ class ConditionBlock extends BasicBlock {
   ConditionNode getConditionNode() { result = this.getLastNode() }
 
   /** Gets the condition of the last node of this basic block. */
-  Expr getCondition() { result = this.getConditionNode().getCondition() }
+  ExprParent getCondition() { result = this.getConditionNode().getCondition() }
 
   /** Gets a `true`- or `false`-successor of the last node of this basic block. */
   BasicBlock getTestSuccessor(boolean testIsTrue) {
@@ -72,6 +73,54 @@ class ConditionBlock extends BasicBlock {
   }
 }
 
+// Join order engineering -- first determine the switch block and the case indices required, then retrieve them.
+bindingset[switch, i]
+pragma[inline_late]
+private predicate isNthCaseOf(SwitchBlock switch, SwitchCase c, int i) { c.isNthCaseOf(switch, i) }
+
+/**
+ * Gets a switch case >= pred, up to but not including `pred`'s successor pattern case,
+ * where `pred` is declared on `switch`.
+ */
+private SwitchCase getACaseUpToNextPattern(PatternCase pred, SwitchBlock switch) {
+  // Note we do include `case null, default` (as well as plain old `default`) here.
+  not result.(ConstCase).getValue(_) instanceof NullLiteral and
+  exists(int maxCaseIndex |
+    switch = pred.getParent() and
+    if exists(getNextPatternCase(pred))
+    then maxCaseIndex = getNextPatternCase(pred).getCaseIndex() - 1
+    else maxCaseIndex = lastCaseIndex(switch)
+  |
+    isNthCaseOf(switch, result, [pred.getCaseIndex() .. maxCaseIndex])
+  )
+}
+
+/**
+ * Gets the closest pattern case preceding `case`, including `case` itself, if any.
+ */
+private PatternCase getClosestPrecedingPatternCase(SwitchCase case) {
+  case = getACaseUpToNextPattern(result, _)
+}
+
+/**
+ * Holds if `pred` is a control-flow predecessor of switch case `sc` that is not a
+ * fall-through from a previous case.
+ *
+ * For classic switches that means flow from the selector expression; for switches
+ * involving pattern cases it can also mean flow from a previous pattern case's type
+ * test or guard failing and proceeding to then consider subsequent cases.
+ */
+private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pred) {
+  pred = sc.getControlFlowNode().getAPredecessor() and
+  (
+    pred.(Expr).getParent*() = sc.getSelectorExpr()
+    or
+    pred.(Expr).getParent*() = getClosestPrecedingPatternCase(sc).getGuard()
+    or
+    pred = getClosestPrecedingPatternCase(sc)
+  )
+}
+
 /**
  * A condition that can be evaluated to either true or false. This can either
  * be an `Expr` of boolean type that isn't a boolean literal, or a case of a
@@ -103,13 +152,21 @@ class Guard extends ExprParent {
   }
 
   /**
-   * Gets the basic block containing this guard or the basic block containing
-   * the switch expression if the guard is a switch case.
+   * Gets the basic block containing this guard or the basic block that tests the
+   * applicability of this switch case -- for a pattern case this is the case statement
+   * itself; for a non-pattern case this is the most recent pattern case or the top of
+   * the switch block if there is none.
    */
   BasicBlock getBasicBlock() {
-    result = this.(Expr).getBasicBlock() or
-    result = this.(SwitchCase).getSwitch().getExpr().getBasicBlock() or
-    result = this.(SwitchCase).getSwitchExpr().getExpr().getBasicBlock()
+    // Not a switch case
+    result = this.(Expr).getBasicBlock()
+    or
+    // Return the closest pattern case statement before this one, including this one.
+    result = getClosestPrecedingPatternCase(this).getBasicBlock()
+    or
+    // Not a pattern case and no preceding pattern case -- return the top of the switch block.
+    not exists(getClosestPrecedingPatternCase(this)) and
+    result = this.(SwitchCase).getSelectorExpr().getBasicBlock()
   }
 
   /**
@@ -127,6 +184,39 @@ class Guard extends ExprParent {
   }
 
   /**
+   * Holds if this guard tests whether `testedExpr` has type `testedType`.
+   *
+   * `restricted` is true if the test applies additional restrictions on top of just `testedType`, and so
+   * this guard failing does not guarantee `testedExpr` is *not* a `testedType`-- for example,
+   * matching `record R(Object o)` with `case R(String s)` is a guard with an additional restriction on the
+   * type of field `o`, so the guard passing guarantees `testedExpr` is an `R`, but it failing does not
+   * guarantee `testedExpr` is not an `R`.
+   */
+  predicate appliesTypeTest(Expr testedExpr, Type testedType, boolean restricted) {
+    (
+      exists(InstanceOfExpr ioe | this = ioe |
+        testedExpr = ioe.getExpr() and
+        testedType = ioe.getSyntacticCheckedType()
+      )
+      or
+      exists(PatternCase pc | this = pc |
+        pc.getSelectorExpr() = testedExpr and
+        testedType = pc.getPattern().getType()
+      )
+    ) and
+    (
+      if
+        exists(RecordPatternExpr rpe |
+          rpe = [this.(InstanceOfExpr).getPattern(), this.(PatternCase).getPattern()]
+        |
+          not rpe.isUnrestricted()
+        )
+      then restricted = true
+      else restricted = false
+    )
+  }
+
+  /**
    * Holds if the evaluation of this guard to `branch` corresponds to the edge
    * from `bb1` to `bb2`.
    */
@@ -139,10 +229,11 @@ class Guard extends ExprParent {
     or
     exists(SwitchCase sc, ControlFlowNode pred |
       sc = this and
+      // Pattern cases are handled as ConditionBlocks above.
+      not sc instanceof PatternCase and
       branch = true and
       bb2.getFirstNode() = sc.getControlFlowNode() and
-      pred = sc.getControlFlowNode().getAPredecessor() and
-      pred.(Expr).getParent*() = sc.getSelectorExpr() and
+      isNonFallThroughPredecessor(sc, pred) and
       bb1 = pred.getBasicBlock()
     )
     or
@@ -176,25 +267,27 @@ class Guard extends ExprParent {
 }
 
 private predicate switchCaseControls(SwitchCase sc, BasicBlock bb) {
-  exists(BasicBlock caseblock, Expr selector |
-    selector = sc.getSelectorExpr() and
+  exists(BasicBlock caseblock |
+    // Pattern cases are handled as condition blocks
+    not sc instanceof PatternCase and
     caseblock.getFirstNode() = sc.getControlFlowNode() and
     caseblock.bbDominates(bb) and
+    // Check we can't fall through from a previous block:
     forall(ControlFlowNode pred | pred = sc.getControlFlowNode().getAPredecessor() |
-      pred.(Expr).getParent*() = selector
+      isNonFallThroughPredecessor(sc, pred)
     )
   )
 }
 
 private predicate preconditionBranchEdge(
-  MethodAccess ma, BasicBlock bb1, BasicBlock bb2, boolean branch
+  MethodCall ma, BasicBlock bb1, BasicBlock bb2, boolean branch
 ) {
   conditionCheckArgument(ma, _, branch) and
   bb1.getLastNode() = ma.getControlFlowNode() and
   bb2 = bb1.getLastNode().getANormalSuccessor()
 }
 
-private predicate preconditionControls(MethodAccess ma, BasicBlock controlled, boolean branch) {
+private predicate preconditionControls(MethodCall ma, BasicBlock controlled, boolean branch) {
   exists(BasicBlock check, BasicBlock succ |
     preconditionBranchEdge(ma, check, succ, branch) and
     dominatingEdge(check, succ) and
@@ -249,7 +342,7 @@ private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
     eqtest.hasOperands(e1, e2)
   )
   or
-  exists(MethodAccess ma |
+  exists(MethodCall ma |
     ma = g and
     ma.getMethod() instanceof EqualsMethod and
     polarity = true and
@@ -257,7 +350,7 @@ private predicate equalityGuard(Guard g, Expr e1, Expr e2, boolean polarity) {
     ma.getQualifier() = e2
   )
   or
-  exists(MethodAccess ma, Method equals |
+  exists(MethodCall ma, Method equals |
     ma = g and
     ma.getMethod() = equals and
     polarity = true and

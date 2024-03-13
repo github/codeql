@@ -61,6 +61,41 @@ private class EnumConstructorPathInjectionSink extends PathInjectionSink {
   }
 }
 
+/**
+ * A string that might be a label for a path argument.
+ */
+pragma[inline]
+private predicate pathLikeHeuristic(string label) {
+  label =
+    [
+      "atFile", "atPath", "atDirectory", "toFile", "toPath", "toDirectory", "inFile", "inPath",
+      "inDirectory", "contentsOfFile", "contentsOfPath", "contentsOfDirectory", "filePath",
+      "directory", "directoryPath"
+    ]
+}
+
+/**
+ * A path injection sink that is determined by imprecise methods.
+ */
+private class HeuristicPathInjectionSink extends PathInjectionSink {
+  HeuristicPathInjectionSink() {
+    // by parameter name
+    exists(CallExpr ce, int ix, ParamDecl pd |
+      pathLikeHeuristic(pragma[only_bind_into](pd.getName())) and
+      pd.getType().getUnderlyingType().getName() = ["String", "NSString"] and
+      pd = ce.getStaticTarget().getParam(ix) and
+      this.asExpr() = ce.getArgument(ix).getExpr()
+    )
+    or
+    // by argument name
+    exists(Argument a |
+      pathLikeHeuristic(pragma[only_bind_into](a.getLabel())) and
+      a.getExpr().getType().getUnderlyingType().getName() = ["String", "NSString"] and
+      this.asExpr() = a.getExpr()
+    )
+  }
+}
+
 private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
   DefaultPathInjectionBarrier() {
     // This is a simplified implementation.
@@ -87,7 +122,14 @@ private class PathInjectionSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
+        ";Data;true;init(contentsOf:options:);;;Argument[0];path-injection",
         ";Data;true;write(to:options:);;;Argument[0];path-injection",
+        ";NSData;true;init(contentsOfFile:);;;Argument[0];path-injection",
+        ";NSData;true;init(contentsOfFile:options:);;;Argument[0];path-injection",
+        ";NSData;true;init(contentsOf:);;;Argument[0];path-injection",
+        ";NSData;true;init(contentsOf:options:);;;Argument[0];path-injection",
+        ";NSData;true;init(contentsOfMappedFile:);;;Argument[0];path-injection",
+        ";NSData;true;dataWithContentsOfMappedFile(_:);;;Argument[0];path-injection",
         ";NSData;true;write(to:atomically:);;;Argument[0];path-injection",
         ";NSData;true;write(to:options:);;;Argument[0];path-injection",
         ";NSData;true;write(toFile:atomically:);;;Argument[0];path-injection",
@@ -118,12 +160,14 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";FileManager;true;fileExists(atPath:);;;Argument[0];path-injection",
         ";FileManager;true;fileExists(atPath:isDirectory:);;;Argument[0];path-injection",
         ";FileManager;true;setAttributes(_:ofItemAtPath:);;;Argument[1];path-injection",
+        ";FileManager;true;attributesOfItem(atPath:);;;Argument[0];path-injection",
         ";FileManager;true;contents(atPath:);;;Argument[0];path-injection",
         ";FileManager;true;contentsEqual(atPath:andPath:);;;Argument[0..1];path-injection",
         ";FileManager;true;changeCurrentDirectoryPath(_:);;;Argument[0];path-injection",
         ";FileManager;true;unmountVolume(at:options:completionHandler:);;;Argument[0];path-injection",
         // Deprecated FileManager methods:
         ";FileManager;true;changeFileAttributes(_:atPath:);;;Argument[1];path-injection",
+        ";FileManager;true;fileAttributes(atPath:traverseLink:);;;Argument[0];path-injection",
         ";FileManager;true;directoryContents(atPath:);;;Argument[0];path-injection",
         ";FileManager;true;createDirectory(atPath:attributes:);;;Argument[0];path-injection",
         ";FileManager;true;createSymbolicLink(atPath:pathContent:);;;Argument[0..1];path-injection",
@@ -146,6 +190,7 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";ArchiveByteStream;true;withFileStream(path:mode:options:permissions:_:);;;Argument[0];path-injection",
         ";Bundle;true;init(url:);;;Argument[0];path-injection",
         ";Bundle;true;init(path:);;;Argument[0];path-injection",
+        ";NSURL;writeBookmarkData(_:to:options:);;;Argument[1];path-injection",
         // GRDB
         ";Database;true;init(path:description:configuration:);;;Argument[0];path-injection",
         ";DatabasePool;true;init(path:configuration:);;;Argument[0];path-injection",

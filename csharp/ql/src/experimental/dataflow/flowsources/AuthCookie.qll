@@ -159,7 +159,7 @@ deprecated class OnAppendCookieHttpOnlyTrackingConfig extends OnAppendCookieTrac
 /**
  * Tracks if a callback used in `OnAppendCookie` sets a cookie property to `true`.
  */
-abstract private class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
+abstract deprecated private class OnAppendCookieTrackingConfig extends DataFlow::Configuration {
   bindingset[this]
   OnAppendCookieTrackingConfig() { any() }
 

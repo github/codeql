@@ -1,0 +1,18 @@
+# github.com/DataDog/zstd v1.5.5
+## explicit
+github.com/DataDog/zstd
+# github.com/dsnet/compress v0.0.1
+## explicit
+github.com/dsnet/compress
+# github.com/golang/snappy v0.0.4
+## explicit
+github.com/golang/snappy
+# github.com/klauspost/compress v1.16.6
+## explicit
+github.com/klauspost/compress
+# github.com/klauspost/pgzip v1.2.6
+## explicit
+github.com/klauspost/pgzip
+# github.com/ulikunitz/xz v0.5.11
+## explicit
+github.com/ulikunitz/xz

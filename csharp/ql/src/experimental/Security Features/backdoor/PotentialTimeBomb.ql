@@ -13,14 +13,18 @@
 import csharp
 import Flow::PathGraph
 
-query predicate edges(Flow::PathNode a, Flow::PathNode b) {
-  Flow::PathGraph::edges(a, b)
+query predicate edges(Flow::PathNode a, Flow::PathNode b, string key, string val) {
+  Flow::PathGraph::edges(a, b, key, val)
   or
   FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallableConfig::isSink(a.getNode()) and
-  FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig::isSource(b.getNode())
+  FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig::isSource(b.getNode()) and
+  key = "provenance" and
+  val = ""
   or
   FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig::isSink(a.getNode()) and
-  FlowsFromTimeComparisonCallableToSelectionStatementConditionConfig::isSource(b.getNode())
+  FlowsFromTimeComparisonCallableToSelectionStatementConditionConfig::isSource(b.getNode()) and
+  key = "provenance" and
+  val = ""
 }
 
 /**
@@ -30,7 +34,7 @@ query predicate edges(Flow::PathNode a, Flow::PathNode b) {
  */
 class GetLastWriteTimeMethod extends Method {
   GetLastWriteTimeMethod() {
-    this.hasQualifiedName("System.IO.File",
+    this.hasFullyQualifiedName("System.IO.File",
       ["GetLastWriteTime", "GetFileCreationTime", "GetCreationTimeUtc", "GetLastAccessTimeUtc"])
   }
 }
@@ -39,7 +43,7 @@ class GetLastWriteTimeMethod extends Method {
  * Abstracts `System.DateTime` structure
  */
 class DateTimeStruct extends Struct {
-  DateTimeStruct() { this.hasQualifiedName("System", "DateTime") }
+  DateTimeStruct() { this.hasFullyQualifiedName("System", "DateTime") }
 
   /**
    * holds if the Callable is used for DateTime arithmetic operations

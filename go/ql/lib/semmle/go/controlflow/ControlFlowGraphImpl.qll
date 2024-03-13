@@ -623,12 +623,20 @@ module CFG {
       not cmpl.isNormal()
     }
 
-    predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    /**
+     * Holds if `succ` is a successor of `pred`, ignoring the execution of any
+     * deferred functions when a function ends.
+     */
+    pragma[nomagic]
+    predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(int i |
         lastNode(this.getChildTreeRanked(i), pred, normalCompletion()) and
         firstNode(this.getChildTreeRanked(i + 1), succ)
       )
     }
+
+    /** Holds if `succ` is a successor of `pred`. */
+    predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) { this.succ0(pred, succ) }
 
     final ControlFlowTree getChildTreeRanked(int i) {
       exists(int j |
@@ -727,8 +735,9 @@ module CFG {
       last = this.getNode() and cmpl = this.getCompletion()
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      super.succ(pred, succ)
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+      super.succ0(pred, succ)
       or
       lastNode(this.getLastChildTree(), pred, normalCompletion()) and
       succ = this.getNode()
@@ -750,8 +759,9 @@ module CFG {
       cmpl = Done()
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      super.succ(pred, succ)
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+      super.succ0(pred, succ)
       or
       pred = this.getNode() and
       firstNode(this.getFirstChildTree(), succ)
@@ -853,8 +863,9 @@ module CFG {
       cmpl = Done()
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ(pred, succ)
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+      ControlFlowTree.super.succ0(pred, succ)
       or
       exists(int i | lastNode(this.getLhs(i), pred, normalCompletion()) |
         firstNode(this.getLhs(i + 1), succ)
@@ -978,7 +989,8 @@ module CFG {
       )
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(Completion lcmpl |
         lastNode(this.getLeftOperand(), pred, lcmpl) and
         succ = this.getGuard(lcmpl.getOutcome())
@@ -1028,11 +1040,12 @@ module CFG {
       not result instanceof TypeExpr
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       // interpose implicit argument destructuring nodes between last argument
       // and call itself; this is for cases like `f(g())` where `g` has multiple
       // results
-      exists(ControlFlow::Node mid | PostOrderTree.super.succ(pred, mid) |
+      exists(ControlFlow::Node mid | PostOrderTree.super.succ0(pred, mid) |
         if mid = this.getNode() then succ = this.getEpilogueNode(0) else succ = mid
       )
       or
@@ -1102,8 +1115,9 @@ module CFG {
       lastNode(this.getStmt(this.getNumStmt() - 1), last, cmpl)
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ(pred, succ)
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+      ControlFlowTree.super.succ0(pred, succ)
       or
       exists(int i |
         lastNode(this.getExpr(i), pred, normalCompletion()) and
@@ -1172,7 +1186,8 @@ module CFG {
       cmpl = Done()
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       this.firstNode(pred) and
       succ = this.getElementStart(0)
       or
@@ -1250,7 +1265,8 @@ module CFG {
       cmpl = Done()
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       lastNode(this.getInit(), pred, normalCompletion()) and
       firstNode(this.getCond(), succ)
       or
@@ -1281,7 +1297,8 @@ module CFG {
       (cmpl = Done() or cmpl = Panic())
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       lastNode(this.getBase(), pred, normalCompletion()) and
       (
         succ = MkImplicitDeref(this.getBase())
@@ -1318,8 +1335,9 @@ module CFG {
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) { none() }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ(pred, succ)
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+      ControlFlowTree.super.succ0(pred, succ)
       or
       pred = MkEntryNode(this) and
       firstNode(this.getDecl(0), succ)
@@ -1374,7 +1392,8 @@ module CFG {
       i = 5 and result = this.getBody()
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(int i, ControlFlowTree predTree, Completion cmpl |
         predTree = this.getChildTreeRanked(i) and
         lastNode(predTree, pred, cmpl) and
@@ -1440,13 +1459,14 @@ module CFG {
         // `defer` can be the first `defer` statement executed
         // there is always a predecessor node because the `defer`'s call is always
         // evaluated before the defer statement itself
-        MkDeferNode(defer) = succ(notDeferSucc*(this.getEntry()))
+        MkDeferNode(defer) = succ0(notDeferSucc0*(this.getEntry()))
       )
     }
 
     override predicate lastNode(ControlFlow::Node last, Completion cmpl) { none() }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(int i |
         pred = this.getPrologueNode(i) and
         succ = this.getPrologueNode(i + 1)
@@ -1460,10 +1480,19 @@ module CFG {
         firstNode(ls, succ)
       )
       or
+      exists(int i |
+        pred = this.getEpilogueNode(i) and
+        succ = this.getEpilogueNode(i + 1)
+      )
+    }
+
+    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+      this.succ0(pred, succ)
+      or
       exists(Completion cmpl |
         lastNode(this.getBody(), pred, cmpl) and
         // last node of function body can be reached without going through a `defer` statement
-        pred = notDeferSucc*(this.getEntry())
+        pred = notDeferSucc0*(this.getEntry())
       |
         // panic goes directly to exit, non-panic reads result variables first
         if cmpl = Panic() then succ = MkExitNode(this) else succ = this.getEpilogueNode(0)
@@ -1473,7 +1502,7 @@ module CFG {
       exists(DeferStmt defer | defer = this.getADeferStmt() |
         succ = MkExprNode(defer.getCall()) and
         // the last `DeferStmt` executed before pred is this `defer`
-        pred = notDeferSucc*(MkDeferNode(defer))
+        pred = notDeferSucc0*(MkDeferNode(defer))
       )
       or
       exists(DeferStmt predDefer, DeferStmt succDefer |
@@ -1494,11 +1523,6 @@ module CFG {
         or
         succ = this.getEpilogueNode(0)
       )
-      or
-      exists(int i |
-        pred = this.getEpilogueNode(i) and
-        succ = this.getEpilogueNode(i + 1)
-      )
     }
   }
 
@@ -1516,7 +1540,8 @@ module CFG {
       cmpl = Done()
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       lastNode(this.getOperand(), pred, normalCompletion()) and
       succ = MkImplicitOne(this)
       or
@@ -1547,7 +1572,8 @@ module CFG {
       not cmpl.isNormal()
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       lastNode(this.getDomain(), pred, normalCompletion()) and
       succ = MkNextNode(this)
       or
@@ -1622,7 +1648,8 @@ module CFG {
 
     override Completion getCompletion() { result = Return() }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(int i |
         lastNode(this.getExpr(i), pred, normalCompletion()) and
         succ = this.complete(i)
@@ -1678,8 +1705,9 @@ module CFG {
       )
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ(pred, succ)
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+      ControlFlowTree.super.succ0(pred, succ)
       or
       exists(CommClause cc, int i, Stmt comm |
         cc = this.getNonDefaultCommClause(i) and
@@ -1777,7 +1805,8 @@ module CFG {
       cmpl = Done()
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
       exists(int i | pred = this.getStepWithRank(i) and succ = this.getStepWithRank(i + 1))
     }
 
@@ -1814,8 +1843,9 @@ module CFG {
       (cmpl = Done() or cmpl = Panic())
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ(pred, succ)
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+      ControlFlowTree.super.succ0(pred, succ)
       or
       not this = any(CommClause cc).getComm() and
       lastNode(this.getValue(), pred, normalCompletion()) and
@@ -1843,8 +1873,9 @@ module CFG {
       (cmpl = Done() or cmpl = Panic())
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ(pred, succ)
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+      ControlFlowTree.super.succ0(pred, succ)
       or
       lastNode(this.getBase(), pred, normalCompletion()) and
       (
@@ -1930,8 +1961,9 @@ module CFG {
       )
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ(pred, succ)
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+      ControlFlowTree.super.succ0(pred, succ)
       or
       lastNode(this.getInit(), pred, normalCompletion()) and
       (
@@ -2004,8 +2036,9 @@ module CFG {
       )
     }
 
-    override predicate succ(ControlFlow::Node pred, ControlFlow::Node succ) {
-      ControlFlowTree.super.succ(pred, succ)
+    pragma[nomagic]
+    override predicate succ0(ControlFlow::Node pred, ControlFlow::Node succ) {
+      ControlFlowTree.super.succ0(pred, succ)
       or
       not this = any(RecvStmt recv).getExpr() and
       lastNode(this.getOperand(), pred, normalCompletion()) and
@@ -2033,9 +2066,9 @@ module CFG {
   }
 
   /** Gets a successor of `nd` that is not a `defer` node */
-  private ControlFlow::Node notDeferSucc(ControlFlow::Node nd) {
+  private ControlFlow::Node notDeferSucc0(ControlFlow::Node nd) {
     not result = MkDeferNode(_) and
-    result = succ(nd)
+    result = succ0(nd)
   }
 
   /** Gets `defer` statements that can be the first defer statement after `nd` in the CFG */
@@ -2043,9 +2076,9 @@ module CFG {
     nd = MkDeferNode(_) and
     result = MkDeferNode(_) and
     (
-      result = succ(nd)
+      result = succ0(nd)
       or
-      result = succ(notDeferSucc+(nd))
+      result = succ0(notDeferSucc0+(nd))
     )
   }
 
@@ -2072,6 +2105,15 @@ module CFG {
     exists(ExpressionSwitchStmt ess | ess.getExpr() = switchExpr |
       ess.getACase().(CaseClauseTree).isPassingEdge(_, pred, succ, testExpr)
     )
+  }
+
+  /**
+   * Gets a successor of `nd`, that is, a node that is executed after `nd`,
+   * ignoring the execution of any deferred functions when a function ends.
+   */
+  pragma[nomagic]
+  private ControlFlow::Node succ0(ControlFlow::Node nd) {
+    any(ControlFlowTree tree).succ0(nd, result)
   }
 
   /** Gets a successor of `nd`, that is, a node that is executed after `nd`. */

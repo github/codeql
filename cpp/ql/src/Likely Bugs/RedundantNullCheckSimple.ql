@@ -5,10 +5,12 @@
  *              it should be moved before the dereference.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 7.5
  * @precision high
  * @id cpp/redundant-null-check-simple
  * @tags reliability
  *       correctness
+ *       security
  *       external/cwe/cwe-476
  */
 

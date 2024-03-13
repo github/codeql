@@ -56,7 +56,7 @@ predicate methodInfo(Method m, RefType t, string name) {
   m.getName() = name
 }
 
-predicate query(MethodAccess m, Method def, int paramNo, string message, Element evidence) {
+predicate query(MethodCall m, Method def, int paramNo, string message, Element evidence) {
   m.getMethod() = def and
   // Using a networking method.
   def.getDeclaringType() instanceof NetworkClass and
@@ -76,6 +76,6 @@ predicate query(MethodAccess m, Method def, int paramNo, string message, Element
   )
 }
 
-from MethodAccess m, Method def, int param, string message, Element evidence
+from MethodCall m, Method def, int param, string message, Element evidence
 where query(m, def, param, message, evidence)
 select m, "Method " + message + ": use an SSL factory."

@@ -16,10 +16,7 @@ class Getenv extends LocalFlowSourceFunction {
   }
 
   override predicate hasLocalFlowSource(FunctionOutput output, string description) {
-    (
-      output.isReturnValueDeref() or
-      output.isReturnValue()
-    ) and
+    output.isReturnValueDeref() and
     description = "an environment variable"
   }
 }

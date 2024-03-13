@@ -13,8 +13,8 @@ private predicate isDebugCheck(Expr ex) {
   |
     subex.(VarAccess).getVariable().getName() = debug
     or
-    subex.(MethodAccess).getMethod().hasName("getProperty") and
-    subex.(MethodAccess).getAnArgument().(CompileTimeConstantExpr).getStringValue() = debug
+    subex.(MethodCall).getMethod().hasName("getProperty") and
+    subex.(MethodCall).getAnArgument().(CompileTimeConstantExpr).getStringValue() = debug
   )
 }
 
@@ -31,7 +31,7 @@ deprecated class WebviewDebugEnabledConfig extends DataFlow::Configuration {
   }
 
   override predicate isSink(DataFlow::Node node) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and
       node.asExpr() = ma.getArgument(0)
     )
@@ -51,7 +51,7 @@ module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node node) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and
       node.asExpr() = ma.getArgument(0)
     )

@@ -12,7 +12,7 @@ private import codeql.regex.HostnameRegexp as Shared
 /**
  * An implementation of the signature that allows the Hostname analysis to run.
  */
-private module Impl implements Shared::HostnameRegexpSig<TreeImpl> {
+module Impl implements Shared::HostnameRegexpSig<TreeImpl> {
   class DataFlowNode = DataFlow::Node;
 
   class RegExpPatternSource = Regex::RegexPatternSource;

@@ -20,14 +20,14 @@ import semmle.code.java.controlflow.Guards
 import UnsafeReflectionFlow::PathGraph
 
 private predicate containsSanitizer(Guard g, Expr e, boolean branch) {
-  g.(MethodAccess).getMethod().hasName("contains") and
-  e = g.(MethodAccess).getArgument(0) and
+  g.(MethodCall).getMethod().hasName("contains") and
+  e = g.(MethodCall).getArgument(0) and
   branch = true
 }
 
 private predicate equalsSanitizer(Guard g, Expr e, boolean branch) {
-  g.(MethodAccess).getMethod().hasName("equals") and
-  e = [g.(MethodAccess).getArgument(0), g.(MethodAccess).getQualifier()] and
+  g.(MethodCall).getMethod().hasName("equals") and
+  e = [g.(MethodCall).getArgument(0), g.(MethodCall).getQualifier()] and
   branch = true
 }
 
@@ -38,22 +38,22 @@ module UnsafeReflectionConfig implements DataFlow::ConfigSig {
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     // Argument -> return of Class.forName, ClassLoader.loadClass
-    exists(ReflectiveClassIdentifierMethodAccess rcimac |
+    exists(ReflectiveClassIdentifierMethodCall rcimac |
       rcimac.getArgument(0) = pred.asExpr() and rcimac = succ.asExpr()
     )
     or
     // Qualifier -> return of Class.getDeclaredConstructors/Methods and similar
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       (
-        ma instanceof ReflectiveConstructorsAccess or
-        ma instanceof ReflectiveMethodsAccess
+        ma instanceof ReflectiveGetConstructorsCall or
+        ma instanceof ReflectiveGetMethodsCall
       ) and
       ma.getQualifier() = pred.asExpr() and
       ma = succ.asExpr()
     )
     or
     // Qualifier -> return of Object.getClass
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasName("getClass") and
       ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "Object") and
       ma.getQualifier() = pred.asExpr() and
@@ -81,7 +81,7 @@ module UnsafeReflectionConfig implements DataFlow::ConfigSig {
 
 module UnsafeReflectionFlow = TaintTracking::Global<UnsafeReflectionConfig>;
 
-private Expr getAMethodArgument(MethodAccess reflectiveCall) {
+private Expr getAMethodArgument(MethodCall reflectiveCall) {
   result = reflectiveCall.(NewInstance).getAnArgument()
   or
   result = reflectiveCall.(MethodInvokeCall).getAnArgument()
@@ -89,7 +89,7 @@ private Expr getAMethodArgument(MethodAccess reflectiveCall) {
 
 from
   UnsafeReflectionFlow::PathNode source, UnsafeReflectionFlow::PathNode sink,
-  MethodAccess reflectiveCall
+  MethodCall reflectiveCall
 where
   UnsafeReflectionFlow::flowPath(source, sink) and
   sink.getNode().asExpr() = reflectiveCall.getQualifier() and

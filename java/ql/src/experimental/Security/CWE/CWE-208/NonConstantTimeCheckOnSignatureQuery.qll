@@ -7,7 +7,7 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 
 /** A method call that produces cryptographic result. */
-abstract private class ProduceCryptoCall extends MethodAccess {
+abstract private class ProduceCryptoCall extends MethodCall {
   Expr output;
 
   /** Gets the result of cryptographic operation. */
@@ -51,7 +51,7 @@ private class ProduceSignatureCall extends ProduceCryptoCall {
  */
 private module InitializeEncryptorConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasQualifiedName("javax.crypto", "Cipher", "init") and
       ma.getArgument(0).(VarAccess).getVariable().hasName("ENCRYPT_MODE") and
       ma.getQualifier() = source.asExpr()
@@ -59,7 +59,7 @@ private module InitializeEncryptorConfig implements DataFlow::ConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink) {
-    exists(MethodAccess ma |
+    exists(MethodCall ma |
       ma.getMethod().hasQualifiedName("javax.crypto", "Cipher", "doFinal") and
       ma.getQualifier() = sink.asExpr()
     )
@@ -96,7 +96,7 @@ private class ProduceCiphertextCall extends ProduceCryptoCall {
 
 /** Holds if `fromNode` to `toNode` is a dataflow step that updates a cryptographic operation. */
 private predicate updateCryptoOperationStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
-  exists(MethodAccess call, Method m |
+  exists(MethodCall call, Method m |
     m = call.getMethod() and
     call.getQualifier() = toNode.asExpr() and
     call.getArgument(0) = fromNode.asExpr()
@@ -112,21 +112,21 @@ private predicate updateCryptoOperationStep(DataFlow2::Node fromNode, DataFlow2:
 
 /** Holds if `fromNode` to `toNode` is a dataflow step that creates a hash. */
 private predicate createMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
     m.hasStringSignature("digest()") and
     ma.getQualifier() = fromNode.asExpr() and
     ma = toNode.asExpr()
   )
   or
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
     m.hasStringSignature("digest(byte[], int, int)") and
     ma.getQualifier() = fromNode.asExpr() and
     ma.getArgument(0) = toNode.asExpr()
   )
   or
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     m.getDeclaringType().hasQualifiedName("java.security", "MessageDigest") and
     m.hasStringSignature("digest(byte[])") and
     ma.getArgument(0) = fromNode.asExpr() and
@@ -136,7 +136,7 @@ private predicate createMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::N
 
 /** Holds if `fromNode` to `toNode` is a dataflow step that updates a hash. */
 private predicate updateMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
-  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+  exists(MethodCall ma, Method m | m = ma.getMethod() |
     m.hasQualifiedName("java.security", "MessageDigest", "update") and
     ma.getArgument(0) = fromNode.asExpr() and
     ma.getQualifier() = toNode.asExpr()
@@ -190,7 +190,7 @@ class CryptoOperationSource extends DataFlow::Node {
 }
 
 /** Methods that use a non-constant-time algorithm for comparing inputs. */
-private class NonConstantTimeEqualsCall extends MethodAccess {
+private class NonConstantTimeEqualsCall extends MethodCall {
   NonConstantTimeEqualsCall() {
     this.getMethod()
         .hasQualifiedName("java.lang", "String", ["equals", "contentEquals", "equalsIgnoreCase"]) or
@@ -199,7 +199,7 @@ private class NonConstantTimeEqualsCall extends MethodAccess {
 }
 
 /** A static method that uses a non-constant-time algorithm for comparing inputs. */
-private class NonConstantTimeComparisonCall extends StaticMethodAccess {
+private class NonConstantTimeComparisonCall extends StaticMethodCall {
   NonConstantTimeComparisonCall() {
     this.getMethod().hasQualifiedName("java.util", "Arrays", ["equals", "deepEquals"]) or
     this.getMethod().hasQualifiedName("java.util", "Objects", "deepEquals") or

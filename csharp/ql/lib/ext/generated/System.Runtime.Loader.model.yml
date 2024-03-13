@@ -1,0 +1,40 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Runtime.Loader", "AssemblyDependencyResolver", False, "ResolveAssemblyToPath", "(System.Reflection.AssemblyName)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyDependencyResolver", False, "ResolveAssemblyToPath", "(System.Reflection.AssemblyName)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyDependencyResolver", False, "ResolveUnmanagedDllToPath", "(System.String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyDependencyResolver", False, "ResolveUnmanagedDllToPath", "(System.String)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", False, "EnterContextualReflection", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", False, "ToString", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", False, "get_Name", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["System.Runtime.Loader", "AssemblyDependencyResolver", "AssemblyDependencyResolver", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext+ContextualReflectionScope", "Dispose", "()", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "AssemblyLoadContext", "(System.Boolean)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "AssemblyLoadContext", "(System.String,System.Boolean)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "EnterContextualReflection", "(System.Reflection.Assembly)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "GetAssemblyName", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "GetLoadContext", "(System.Reflection.Assembly)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "Load", "(System.Reflection.AssemblyName)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "LoadFromAssemblyName", "(System.Reflection.AssemblyName)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "LoadFromAssemblyPath", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "LoadFromNativeImagePath", "(System.String,System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "LoadFromStream", "(System.IO.Stream)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "LoadFromStream", "(System.IO.Stream,System.IO.Stream)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "LoadUnmanagedDll", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "LoadUnmanagedDllFromPath", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "SetProfileOptimizationRoot", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "StartProfileOptimization", "(System.String)", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "Unload", "()", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "get_All", "()", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "get_Assemblies", "()", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "get_CurrentContextualReflectionContext", "()", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "get_Default", "()", "summary", "df-generated"]
+      - ["System.Runtime.Loader", "AssemblyLoadContext", "get_IsCollectible", "()", "summary", "df-generated"]

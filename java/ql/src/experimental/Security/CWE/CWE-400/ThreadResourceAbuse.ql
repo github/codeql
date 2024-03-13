@@ -22,12 +22,12 @@ module ThreadResourceAbuseConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(AdditionalValueStep r).step(pred, succ)
+    any(ThreadResourceAbuseAdditionalTaintStep c).step(pred, succ)
   }
 
   predicate isBarrier(DataFlow::Node node) {
     exists(
-      MethodAccess ma // Math.min(sleepTime, MAX_INTERVAL)
+      MethodCall ma // Math.min(sleepTime, MAX_INTERVAL)
     |
       ma.getMethod().hasQualifiedName("java.lang", "Math", "min") and
       node.asExpr() = ma.getAnArgument()

@@ -15,14 +15,12 @@ namespace Semmle.Autobuild.Shared
         /// <returns></returns>
         public static CommandBuilder MsBuildCommand(this CommandBuilder cmdBuilder, IAutobuilder<AutobuildOptionsShared> builder)
         {
-            var isArmMac = builder.Actions.IsMacOs() && builder.Actions.IsArm();
-
             // mono doesn't ship with `msbuild` on Arm-based Macs, but we can fall back to
             // msbuild that ships with `dotnet` which can be invoked with `dotnet msbuild`
             // perhaps we should do this on all platforms?
-            return isArmMac ?
-                cmdBuilder.RunCommand("dotnet").Argument("msbuild") :
-                cmdBuilder.RunCommand("msbuild");
+            return builder.Actions.IsRunningOnAppleSilicon()
+                ? cmdBuilder.RunCommand("dotnet").Argument("msbuild")
+                : cmdBuilder.RunCommand("msbuild");
         }
     }
 
@@ -42,7 +40,7 @@ namespace Semmle.Autobuild.Shared
                 return BuildScript.Failure;
 
             if (auto)
-                builder.Log(Severity.Info, "Attempting to build using MSBuild");
+                builder.Logger.LogInfo("Attempting to build using MSBuild");
 
             var vsTools = GetVcVarsBatFile(builder);
 
@@ -56,13 +54,13 @@ namespace Semmle.Autobuild.Shared
 
             if (vsTools is null && builder.Actions.IsWindows())
             {
-                builder.Log(Severity.Warning, "Could not find a suitable version of VsDevCmd.bat/vcvarsall.bat");
+                builder.Logger.LogWarning("Could not find a suitable version of VsDevCmd.bat/vcvarsall.bat");
             }
 
             // Use `nuget.exe` from source code repo, if present, otherwise first attempt with global
             // `nuget` command, and if that fails, attempt to download `nuget.exe` from nuget.org
             var nuget = builder.GetFilename("nuget.exe").Select(t => t.Item1).FirstOrDefault() ?? "nuget";
-            var nugetDownload = builder.Actions.PathCombine(builder.Options.RootDirectory, ".nuget", "nuget.exe");
+            var nugetDownloadPath = builder.Actions.PathCombine(FileUtils.GetTemporaryWorkingDirectory(builder.Actions.GetEnvironmentVariable, builder.Options.Language.UpperCaseName, out var _), ".nuget", "nuget.exe");
             var nugetDownloaded = false;
 
             var ret = BuildScript.Success;
@@ -84,7 +82,12 @@ namespace Semmle.Autobuild.Shared
                         Argument("/t:restore").
                         QuoteArgument(projectOrSolution.FullPath);
 
-                    if (nugetDownloaded)
+                    if (builder.Actions.IsRunningOnAppleSilicon())
+                    {
+                        // On Apple Silicon, only try package restore with `dotnet msbuild /t:restore`
+                        ret &= BuildScript.Try(msbuildRestoreCommand.Script);
+                    }
+                    else if (nugetDownloaded)
                     {
                         ret &= BuildScript.Try(nugetRestore | msbuildRestoreCommand.Script);
                     }
@@ -93,13 +96,13 @@ namespace Semmle.Autobuild.Shared
                         // If `nuget restore` fails, and we have not already attempted to download `nuget.exe`,
                         // download it and reattempt `nuget restore`.
                         var nugetDownloadAndRestore =
-                            BuildScript.Bind(DownloadNugetExe(builder, nugetDownload), exitCode =>
+                            BuildScript.Bind(DownloadNugetExe(builder, nugetDownloadPath), exitCode =>
                             {
                                 nugetDownloaded = true;
                                 if (exitCode != 0)
                                     return BuildScript.Failure;
 
-                                nuget = nugetDownload;
+                                nuget = nugetDownloadPath;
                                 return GetNugetRestoreScript();
                             });
                         ret &= BuildScript.Try(nugetRestore | nugetDownloadAndRestore | msbuildRestoreCommand.Script);
@@ -162,18 +165,18 @@ namespace Semmle.Autobuild.Shared
                 {
                     foreach (var b in BuildTools.VcVarsAllBatFiles(builder.Actions))
                     {
-                        builder.Log(Severity.Info, "Found {0} version {1}", b.Path, b.ToolsVersion);
+                        builder.Logger.Log(Severity.Info, "Found {0} version {1}", b.Path, b.ToolsVersion);
                     }
 
                     vsTools = BuildTools.FindCompatibleVcVars(builder.Actions, msToolsVersion);
                     if (vsTools is null)
-                        builder.Log(Severity.Warning, "Could not find build tools matching version {0}", msToolsVersion);
+                        builder.Logger.LogWarning("Could not find build tools matching version {0}", msToolsVersion);
                     else
-                        builder.Log(Severity.Info, "Setting Visual Studio tools to {0}", vsTools.Path);
+                        builder.Logger.Log(Severity.Info, "Setting Visual Studio tools to {0}", vsTools.Path);
                 }
                 else
                 {
-                    builder.Log(Severity.Error, "The format of vstools_version is incorrect. Please specify an integer.");
+                    builder.Logger.LogError("The format of vstools_version is incorrect. Please specify an integer.");
                 }
             }
 
@@ -186,18 +189,18 @@ namespace Semmle.Autobuild.Shared
         private static BuildScript DownloadNugetExe<TAutobuildOptions>(IAutobuilder<TAutobuildOptions> builder, string path) where TAutobuildOptions : AutobuildOptionsShared =>
             BuildScript.Create(_ =>
             {
-                builder.Log(Severity.Info, "Attempting to download nuget.exe");
+                builder.Logger.LogInfo("Attempting to download nuget.exe");
                 return 0;
             })
             &
             BuildScript.DownloadFile(
                 FileUtils.NugetExeUrl,
                 path,
-                e => builder.Log(Severity.Warning, $"Failed to download 'nuget.exe': {e.Message}"))
+                e => builder.Logger.LogWarning($"Failed to download 'nuget.exe': {e.Message}"))
             &
             BuildScript.Create(_ =>
             {
-                builder.Log(Severity.Info, $"Successfully downloaded {path}");
+                builder.Logger.LogInfo($"Successfully downloaded {path}");
                 return 0;
             });
     }

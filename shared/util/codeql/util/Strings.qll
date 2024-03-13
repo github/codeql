@@ -18,7 +18,11 @@ string escape(string s) {
 bindingset[s]
 private string escapeUnicodeString(string s) {
   result =
-    concat(int i, string char | char = escapeUnicodeChar(getCodepointAt(s, i)) | char order by i)
+    concat(int i, string char |
+      char = escapeUnicodeChar(s.codePointAt(i).toUnicode())
+    |
+      char order by i
+    )
 }
 
 /**
@@ -44,15 +48,32 @@ private predicate isPrintable(string char) {
 
 /**
  * Gets the `i`th codepoint in `s`.
+ * Unpaired surrogates are skipped.
  */
 bindingset[s]
-string getCodepointAt(string s, int i) { result = s.regexpFind("(.|\\s)", i, _) }
+string getCodepointAt(string s, int i) {
+  // codePointAt returns the integer codePoint, so we need to convert to a string.
+  // codePointAt returns integers for both the high and low end. The invalid strings are filtered out by `toUnicode`, but we need to re-count the index, therefore the rank.
+  // rank is 1-indexed, so we need to offset for that to make this predicate 0-indexed.
+  result =
+    rank[i + 1](string char, int charIndex |
+      char = s.codePointAt(charIndex).toUnicode()
+    |
+      char order by charIndex
+    )
+}
 
 /**
- * Gets the length of `s` in codepoints.
+ * Gets any unicode character that appears in `s`.
+ */
+bindingset[s]
+string getACodepoint(string s) { result = s.codePointAt(_).toUnicode() }
+
+/**
+ * Gets the number of unicode codepoints in `s` not counting unpaired surrogates.
  */
 bindingset[str]
-int getCodepointLength(string str) { result = str.regexpReplaceAll("(.|\\s)", "x").length() }
+int getCodepointLength(string str) { result = str.codePointCount(0, str.length()) }
 
 /**
  * Gets the ASCII code for `char`.

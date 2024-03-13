@@ -1,0 +1,30 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", False, "ApplicationLifetime", "(Microsoft.Extensions.Logging.ILogger<Microsoft.Extensions.Hosting.Internal.ApplicationLifetime>)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", False, "get_ApplicationStarted", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", False, "get_ApplicationStopped", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", False, "get_ApplicationStopping", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: neutralModel
+    data:
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", "NotifyStarted", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", "NotifyStopped", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ApplicationLifetime", "StopApplication", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", "ConsoleLifetime", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.ConsoleLifetimeOptions>,Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", "ConsoleLifetime", "(Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.ConsoleLifetimeOptions>,Microsoft.Extensions.Hosting.IHostEnvironment,Microsoft.Extensions.Hosting.IHostApplicationLifetime,Microsoft.Extensions.Options.IOptions<Microsoft.Extensions.Hosting.HostOptions>,Microsoft.Extensions.Logging.ILoggerFactory)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", "Dispose", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", "StopAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "ConsoleLifetime", "WaitForStartAsync", "(System.Threading.CancellationToken)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "HostingEnvironment", "get_ApplicationName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "HostingEnvironment", "get_ContentRootFileProvider", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "HostingEnvironment", "get_ContentRootPath", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "HostingEnvironment", "get_EnvironmentName", "()", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "HostingEnvironment", "set_ApplicationName", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "HostingEnvironment", "set_ContentRootFileProvider", "(Microsoft.Extensions.FileProviders.IFileProvider)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "HostingEnvironment", "set_ContentRootPath", "(System.String)", "summary", "df-generated"]
+      - ["Microsoft.Extensions.Hosting.Internal", "HostingEnvironment", "set_EnvironmentName", "(System.String)", "summary", "df-generated"]

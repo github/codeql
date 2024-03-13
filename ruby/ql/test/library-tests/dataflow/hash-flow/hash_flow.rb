@@ -966,3 +966,37 @@ def m52()
 end
 
 m52()
+
+def m53(i)
+    h = Hash[a: 1, b: taint(53), c: 2]
+    sink(h[:a])
+    sink(h[:b]) # $ hasValueFlow=53
+    sink(h[:c])
+    sink(h[i]) # $ hasValueFlow=53
+end
+
+m53(:b)
+
+class M54
+    class Hash
+        def self.[](**kwargs)
+            ::Hash.new
+        end
+    end
+
+    def m54(i)
+        h = Hash[a: 0, b: taint(54.1), c: 2]
+        sink(h[:a])
+        sink(h[:b])
+        sink(h[:c])
+        sink(h[i])
+
+        h2 = ::Hash[a: 0, b: taint(54.2), c: 2]
+        sink(h2[:a])
+        sink(h2[:b]) # $ hasValueFlow=54.2
+        sink(h2[:c])
+        sink(h2[i]) # $ hasValueFlow=54.2
+    end
+end
+
+M54.new.m54(:b)

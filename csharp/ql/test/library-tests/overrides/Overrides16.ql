@@ -7,7 +7,7 @@ import csharp
 from Method m, Method n
 where
   m.hasName("Add") and
-  m.getDeclaringType().hasName("List<>") and
+  m.getDeclaringType().hasName("List`1") and
   n.hasName("Add") and
   n.getDeclaringType().hasName("ICollection<T>") and
   m.getImplementee() = n

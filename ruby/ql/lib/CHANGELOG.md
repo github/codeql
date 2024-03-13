@@ -1,3 +1,73 @@
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* Raw output ERB tags of the form `<%== ... %>` are now recognised as cross-site scripting sinks.
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
+## 0.8.8
+
+### Minor Analysis Improvements
+
+* Flow is now tracked through Rails `render` calls, when the argument is a `ViewComponent`. In this case, data flow is tracked into the accompanying `.html.erb` file.
+
+## 0.8.7
+
+### Minor Analysis Improvements
+
+* Deleted many deprecated predicates and classes with uppercase `HTTP`, `CSRF` etc. in their names. Use the PascalCased versions instead.
+* Deleted the deprecated `getAUse` and `getARhs` predicates from `API::Node`, use `getASource` and `getASink` instead.
+* Deleted the deprecated `disablesCertificateValidation` predicate from the `Http` module.
+* Deleted the deprecated `ParamsCall`, `CookiesCall`, and `ActionControllerControllerClass` classes from `ActionController.qll`, use the simarly named classes from `codeql.ruby.frameworks.Rails::Rails` instead.
+* Deleted the deprecated `HtmlSafeCall`, `HtmlEscapeCall`, `RenderCall`, and `RenderToCall` classes from `ActionView.qll`, use the simarly named classes from `codeql.ruby.frameworks.Rails::Rails` instead.
+* Deleted the deprecated `HtmlSafeCall` class from `Rails.qll`.
+* Deleted the deprecated `codeql/ruby/security/BadTagFilterQuery.qll`, `codeql/ruby/security/OverlyLargeRangeQuery.qll`, `codeql/ruby/security/regexp/ExponentialBackTracking.qll`, `codeql/ruby/security/regexp/NfaUtils.qll`, `codeql/ruby/security/regexp/RegexpMatching.qll`, and `codeql/ruby/security/regexp/SuperlinearBackTracking.qll` files.
+* Deleted the deprecated `localSourceStoreStep` predicate from `TypeTracker.qll`, use `flowsToStoreStep` instead.
+* The diagnostic query `rb/diagnostics/successfully-extracted-files`, and therefore the Code Scanning UI measure of scanned Ruby files, now considers any Ruby file seen during extraction, even one with some errors, to be extracted / scanned.
+
+## 0.8.6
+
+### Minor Analysis Improvements
+
+* Parsing of division operators (`/`) at the end of a line has been improved. Before they were wrongly interpreted as the start of a regular expression literal (`/.../`) leading to syntax errors.
+* Parsing of `case` statements that are formatted with the value expression on a different line than the `case` keyword  has been improved and should no longer lead to syntax errors.
+* Ruby now makes use of the shared type tracking library, exposed as `codeql.ruby.typetracking.TypeTracking`. The existing type tracking library, `codeql.ruby.typetracking.TypeTracker`, has consequently been deprecated.
+
+## 0.8.5
+
+No user-facing changes.
+
+## 0.8.4
+
+### Minor Analysis Improvements
+
+* Improved modeling for `ActiveRecord`s `update_all` method
+
+## 0.8.3
+
+No user-facing changes.
+
+## 0.8.2
+
+No user-facing changes.
+
+## 0.8.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `isBarrierGuard` predicate from the dataflow library and its uses, use `isBarrier` and the `BarrierGuard` module instead.
+* Deleted the deprecated `isWeak` predicate from the `CryptographicOperation` class.
+* Deleted the deprecated `getStringOrSymbol` and `isStringOrSymbol` predicates from the `ConstantValue` class.
+* Deleted the deprecated `getAPI` from the `IOOrFileMethodCall` class.
+* Deleted the deprecated `codeql.ruby.security.performance` folder, use `codeql.ruby.security.regexp` instead.
+* GraphQL enums are no longer considered remote flow sources.
+
+## 0.8.0
+
+### Major Analysis Improvements
+
+* Improved support for flow through captured variables that properly adheres to inter-procedural control flow.
+
 ## 0.7.5
 
 No user-facing changes.

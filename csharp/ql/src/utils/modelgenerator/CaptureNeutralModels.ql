@@ -11,7 +11,5 @@ import internal.CaptureModels
 import internal.CaptureSummaryFlowQuery
 
 from DataFlowTargetApi api, string noflow
-where
-  noflow = captureNoFlow(api) and
-  not api.(FlowSummaryImpl::Public::SummarizedCallable).applyManualModel()
+where noflow = captureNoFlow(api)
 select noflow order by noflow

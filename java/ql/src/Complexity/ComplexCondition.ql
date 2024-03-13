@@ -21,7 +21,7 @@ predicate nontrivialLogicalOperator(BinaryExpr e) {
 
 Expr getSimpleParent(Expr e) {
   result = e.getParent() and
-  not result instanceof MethodAccess
+  not result instanceof MethodCall
 }
 
 from Expr e

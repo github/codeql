@@ -2,9 +2,9 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.DataFlow2
+deprecated import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking3
+deprecated import semmle.code.java.dataflow.TaintTracking3
 import semmle.code.java.security.AndroidIntentRedirection
 
 /**
@@ -103,7 +103,7 @@ private module TaintedIntentComponentConfig implements DataFlow::ConfigSig {
 private module TaintedIntentComponentFlow = TaintTracking::Global<TaintedIntentComponentConfig>;
 
 /** A call to a method that changes the component of an `Intent`. */
-private class IntentSetComponent extends MethodAccess {
+private class IntentSetComponent extends MethodCall {
   int sinkArg;
 
   IntentSetComponent() {

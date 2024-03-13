@@ -275,7 +275,7 @@ private module SsaImpl {
   }
 
   /** Holds if `VarAccess` `use` of `v` occurs in `b` at index `i`. */
-  private predicate variableUse(TrackedVar v, RValue use, BasicBlock b, int i) {
+  private predicate variableUse(TrackedVar v, VarRead use, BasicBlock b, int i) {
     v.getAnAccess() = use and b.getNode(i) = use
   }
 
@@ -381,7 +381,7 @@ private module SsaImpl {
    * ```
    */
   private predicate intraInstanceCallEdge(Callable c1, Method m2) {
-    exists(MethodAccess ma, RefType t1 |
+    exists(MethodCall ma, RefType t1 |
       ma.getCaller() = c1 and
       m2 = viableImpl_v2(ma) and
       not m2.isStatic() and
@@ -652,7 +652,7 @@ private module SsaImpl {
      * Holds if the SSA definition of `v` at `def` reaches `use` in the same basic block
      * without crossing another SSA definition of `v`.
      */
-    private predicate ssaDefReachesUseWithinBlock(TrackedVar v, TrackedSsaDef def, RValue use) {
+    private predicate ssaDefReachesUseWithinBlock(TrackedVar v, TrackedSsaDef def, VarRead use) {
       exists(BasicBlock b, int rankix, int i |
         ssaDefReachesRank(v, def, b, rankix) and
         defUseRank(v, b, rankix, i) and
@@ -665,7 +665,7 @@ private module SsaImpl {
      * SSA definition of `v`.
      */
     cached
-    predicate ssaDefReachesUse(TrackedVar v, TrackedSsaDef def, RValue use) {
+    predicate ssaDefReachesUse(TrackedVar v, TrackedSsaDef def, VarRead use) {
       ssaDefReachesUseWithinBlock(v, def, use)
       or
       exists(BasicBlock b |
@@ -813,7 +813,7 @@ private module SsaImpl {
    * any other uses, but possibly through phi nodes and uncertain implicit updates.
    */
   cached
-  predicate firstUse(TrackedSsaDef def, RValue use) {
+  predicate firstUse(TrackedSsaDef def, VarRead use) {
     exists(TrackedVar v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
       adjacentVarRefs(v, b1, i1, b2, i2) and
       def.definesAt(v, b1, i1) and
@@ -838,7 +838,7 @@ private module SsaImpl {
      * through any other use or any SSA definition of the variable.
      */
     cached
-    predicate adjacentUseUseSameVar(RValue use1, RValue use2) {
+    predicate adjacentUseUseSameVar(VarRead use1, VarRead use2) {
       exists(TrackedVar v, BasicBlock b1, int i1, BasicBlock b2, int i2 |
         adjacentVarRefs(v, b1, i1, b2, i2) and
         variableUse(v, use1, b1, i1) and
@@ -853,7 +853,7 @@ private module SsaImpl {
      * except for phi nodes and uncertain implicit updates.
      */
     cached
-    predicate adjacentUseUse(RValue use1, RValue use2) {
+    predicate adjacentUseUse(VarRead use1, VarRead use2) {
       adjacentUseUseSameVar(use1, use2)
       or
       exists(TrackedVar v, TrackedSsaDef def, BasicBlock b1, int i1, BasicBlock b2, int i2 |
@@ -938,7 +938,7 @@ class SsaVariable extends TSsaVariable {
   BasicBlock getBasicBlock() { result = this.getCfgNode().getBasicBlock() }
 
   /** Gets an access of this SSA variable. */
-  RValue getAUse() {
+  VarRead getAUse() {
     ssaDefReachesUse(_, this, result) or
     this = TSsaUntracked(_, result)
   }
@@ -952,7 +952,7 @@ class SsaVariable extends TSsaVariable {
    * Subsequent uses can be found by following the steps defined by
    * `adjacentUseUse`.
    */
-  RValue getAFirstUse() {
+  VarRead getAFirstUse() {
     firstUse(this, result) or
     this = TSsaUntracked(_, result)
   }

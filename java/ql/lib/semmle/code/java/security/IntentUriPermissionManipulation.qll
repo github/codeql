@@ -38,7 +38,7 @@ class IntentUriPermissionManipulationAdditionalTaintStep extends Unit {
 private class DefaultIntentUriPermissionManipulationSink extends IntentUriPermissionManipulationSink
 {
   DefaultIntentUriPermissionManipulationSink() {
-    exists(MethodAccess ma | ma.getMethod() instanceof ActivitySetResultMethod |
+    exists(MethodCall ma | ma.getMethod() instanceof ActivitySetResultMethod |
       ma.getArgument(1) = this.asExpr()
     )
   }
@@ -54,7 +54,7 @@ private class DefaultIntentUriPermissionManipulationSink extends IntentUriPermis
  */
 private class IntentFlagsOrDataChangedSanitizer extends IntentUriPermissionManipulationSanitizer {
   IntentFlagsOrDataChangedSanitizer() {
-    exists(MethodAccess ma, Method m |
+    exists(MethodCall ma, Method m |
       ma.getMethod() = m and
       m.getDeclaringType() instanceof TypeIntent and
       this.asExpr() = ma.getQualifier()
@@ -99,7 +99,7 @@ private class IntentFlagsOrDataCheckedSanitizer extends IntentUriPermissionManip
  * is equality-tested.
  */
 private predicate intentFlagsOrDataChecked(Guard g, Expr intent, boolean branch) {
-  exists(MethodAccess ma, Method m, Expr checkedValue |
+  exists(MethodCall ma, Method m, Expr checkedValue |
     ma.getQualifier() = intent and
     ma.getMethod() = m and
     m.getDeclaringType() instanceof TypeIntent and
@@ -109,9 +109,9 @@ private predicate intentFlagsOrDataChecked(Guard g, Expr intent, boolean branch)
     bitwiseCheck(g, branch) and
     checkedValue = g.(EqualityTest).getAnOperand().(AndBitwiseExpr)
     or
-    g.(MethodAccess).getMethod() instanceof EqualsMethod and
+    g.(MethodCall).getMethod() instanceof EqualsMethod and
     branch = true and
-    checkedValue = [g.(MethodAccess).getArgument(0), g.(MethodAccess).getQualifier()]
+    checkedValue = [g.(MethodCall).getArgument(0), g.(MethodCall).getQualifier()]
   )
 }
 

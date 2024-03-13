@@ -32,7 +32,7 @@ class GetInitParameter extends Method {
 }
 
 /** An access to the `getInitParameter` method. */
-class GetInitParameterAccess extends MethodAccess {
+class GetInitParameterAccess extends MethodCall {
   GetInitParameterAccess() { this.getMethod() instanceof GetInitParameter }
 }
 
@@ -53,7 +53,7 @@ module ThreadResourceAbuseConfig implements DataFlow::ConfigSig {
 
   predicate isBarrier(DataFlow::Node node) {
     exists(
-      MethodAccess ma // Math.min(sleepTime, MAX_INTERVAL)
+      MethodCall ma // Math.min(sleepTime, MAX_INTERVAL)
     |
       ma.getMethod().hasQualifiedName("java.lang", "Math", "min") and
       node.asExpr() = ma.getAnArgument()

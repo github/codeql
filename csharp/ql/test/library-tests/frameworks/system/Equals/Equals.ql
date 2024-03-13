@@ -6,4 +6,4 @@ where
   t.fromSource() and
   m = getInvokedEqualsMethod(t) and
   if implementsEquals(t) then b = true else b = false
-select t, m.getQualifiedNameWithTypes(), b
+select t, m.getFullyQualifiedNameWithTypes(), b

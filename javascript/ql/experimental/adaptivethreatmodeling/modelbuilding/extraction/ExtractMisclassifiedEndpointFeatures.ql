@@ -6,10 +6,8 @@
 
 import javascript
 import experimental.adaptivethreatmodeling.AdaptiveThreatModeling
-import experimental.adaptivethreatmodeling.ATMConfig
 import experimental.adaptivethreatmodeling.BaseScoring
 import experimental.adaptivethreatmodeling.EndpointFeatures as EndpointFeatures
-import experimental.adaptivethreatmodeling.EndpointTypes
 import semmle.javascript.security.dataflow.NosqlInjectionCustomizations
 
 /** Gets the positive endpoint type for which you wish to find misclassified examples. */

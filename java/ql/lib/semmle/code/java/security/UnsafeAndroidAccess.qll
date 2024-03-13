@@ -88,7 +88,7 @@ private predicate applyReceiverVariable(Parameter p, Variable v) {
  * with `urlArg` as its first argument.
  */
 private predicate webViewLoadUrl(Argument urlArg, WebViewRef webview) {
-  exists(MethodAccess loadUrl |
+  exists(MethodCall loadUrl |
     loadUrl.getArgument(0) = urlArg and
     loadUrl.getMethod() instanceof WebViewLoadUrlMethod
   |
@@ -98,7 +98,7 @@ private predicate webViewLoadUrl(Argument urlArg, WebViewRef webview) {
     or
     // `webview` is received as a parameter of an event method in a custom `WebViewClient`,
     // so we need to find `WebViews` that use that specific `WebViewClient`.
-    exists(WebViewClientEventMethod eventMethod, MethodAccess setWebClient |
+    exists(WebViewClientEventMethod eventMethod, MethodCall setWebClient |
       setWebClient.getMethod() instanceof WebViewSetWebViewClientMethod and
       setWebClient.getArgument(0).getType() = eventMethod.getDeclaringType() and
       loadUrl.getQualifier().getUnderlyingExpr() = eventMethod.getWebViewParameter().getAnAccess()
@@ -114,7 +114,7 @@ private predicate webViewLoadUrl(Argument urlArg, WebViewRef webview) {
  * has been set to `true` via a `WebSettings` object obtained from it.
  */
 private predicate isJSEnabled(WebViewRef webview) {
-  exists(MethodAccess allowJs, MethodAccess settings |
+  exists(MethodCall allowJs, MethodCall settings |
     allowJs.getMethod() instanceof AllowJavaScriptMethod and
     allowJs.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
     settings.getMethod() instanceof WebViewGetSettingsMethod and
@@ -129,7 +129,7 @@ private predicate isJSEnabled(WebViewRef webview) {
  *  obtained from it.
  */
 private predicate isAllowFileAccessEnabled(WebViewRef webview) {
-  exists(MethodAccess allowFileAccess, MethodAccess settings |
+  exists(MethodCall allowFileAccess, MethodCall settings |
     allowFileAccess.getMethod() instanceof CrossOriginAccessMethod and
     allowFileAccess.getArgument(0).(CompileTimeConstantExpr).getBooleanValue() = true and
     settings.getMethod() instanceof WebViewGetSettingsMethod and

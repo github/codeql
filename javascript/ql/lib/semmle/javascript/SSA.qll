@@ -758,6 +758,3 @@ module Ssa {
   /** Gets the SSA variable corresponding to `d`. */
   SsaVariable variable(VarDef d) { result.getDefinition() = definition(d) }
 }
-
-/** DEPRECATED: Alias for Ssa */
-deprecated module SSA = Ssa;

@@ -1,6 +1,7 @@
-private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
-import semmle.code.csharp.dataflow.FlowSummary
+import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private
+import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Public
 import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private::TestOutput
+private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
 abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
   IncludeSummarizedCallable() {
@@ -8,5 +9,5 @@ abstract class IncludeSummarizedCallable extends RelevantSummarizedCallable {
   }
 
   /** Gets a string representing the callable in semi-colon separated format for use in flow summaries. */
-  final override string getCallableCsv() { result = Csv::asPartialModel(this) }
+  final override string getCallableCsv() { result = asPartialModel(this) }
 }

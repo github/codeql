@@ -24,7 +24,6 @@
 | test.c:126:12:126:26 | call to test3_condition |
 | test.c:131:7:131:7 | b |
 | test.c:137:7:137:7 | 0 |
-| test.c:138:9:138:9 | i |
 | test.c:146:7:146:8 | ! ... |
 | test.c:146:8:146:8 | x |
 | test.cpp:18:8:18:10 | call to get |

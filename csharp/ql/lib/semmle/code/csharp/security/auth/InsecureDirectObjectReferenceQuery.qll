@@ -1,7 +1,8 @@
 /** Definitions for the Insecure Direct Object Reference query */
 
 import csharp
-import semmle.code.csharp.dataflow.flowsources.Remote
+import semmle.code.csharp.security.dataflow.flowsources.FlowSources
+deprecated import semmle.code.csharp.dataflow.flowsources.Remote
 import ActionMethods
 
 /**
@@ -17,7 +18,7 @@ private predicate needsChecks(ActionMethod m) { m.isEdit() and not m.isAdmin() }
  * that may indicate that it's used as the ID for some resource
  */
 private predicate hasIdParameter(ActionMethod m) {
-  exists(RemoteFlowSource src | src.getEnclosingCallable() = m |
+  exists(ThreatModelFlowSource src | src.getEnclosingCallable() = m |
     src.asParameter().getName().toLowerCase().matches(["%id", "%idx"])
     or
     // handle cases like `Request.QueryString["Id"]`
@@ -51,29 +52,31 @@ private predicate callsPlus(Callable c1, Callable c2) = fastTC(calls/2)(c1, c2)
 /** Holds if `m`, its containing class, or a parent class has an attribute that extends `AuthorizeAttribute` */
 private predicate hasAuthorizeAttribute(ActionMethod m) {
   exists(Attribute attr |
-    attr.getType()
-        .getABaseType*()
-        .hasQualifiedName([
+    getAnUnboundBaseType*(attr.getType())
+        .hasFullyQualifiedName([
             "Microsoft.AspNetCore.Authorization", "System.Web.Mvc", "System.Web.Http"
           ], "AuthorizeAttribute")
   |
     attr = m.getOverridee*().getAnAttribute() or
-    attr = m.getDeclaringType().getABaseType*().getAnAttribute()
+    attr = getAnUnboundBaseType*(m.getDeclaringType()).getAnAttribute()
   )
 }
 
 /** Holds if `m`, its containing class, or a parent class has an attribute that extends `AllowAnonymousAttribute` */
 private predicate hasAllowAnonymousAttribute(ActionMethod m) {
   exists(Attribute attr |
-    attr.getType()
-        .getABaseType*()
-        .hasQualifiedName([
+    getAnUnboundBaseType*(attr.getType())
+        .hasFullyQualifiedName([
             "Microsoft.AspNetCore.Authorization", "System.Web.Mvc", "System.Web.Http"
           ], "AllowAnonymousAttribute")
   |
     attr = m.getOverridee*().getAnAttribute() or
-    attr = m.getDeclaringType().getABaseType*().getAnAttribute()
+    attr = getAnUnboundBaseType*(m.getDeclaringType()).getAnAttribute()
   )
+}
+
+private ValueOrRefType getAnUnboundBaseType(ValueOrRefType t) {
+  result = t.getABaseType().getUnboundDeclaration()
 }
 
 /** Holds if `m` is authorized via an `Authorize` attribute */

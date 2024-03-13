@@ -7,8 +7,9 @@
 #include "swift/logging/SwiftLogging.h"
 
 const std::string_view codeql::programName = "autobuilder";
+const std::string_view codeql::extractorName = "swift";
 
-constexpr codeql::SwiftDiagnostic incompatibleOs{
+constexpr codeql::Diagnostic incompatibleOs{
     .id = "incompatible-os",
     .name = "Incompatible operating system (expected macOS)",
     .action =
@@ -22,9 +23,9 @@ constexpr codeql::SwiftDiagnostic incompatibleOs{
         "[2]: "
         "https://docs.github.com/en/enterprise-server/code-security/code-scanning/"
         "automatically-scanning-your-code-for-vulnerabilities-and-errors/"
-        "configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-"
-        "language",
-};
+        "configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-"
+        "compiled-"
+        "language"};
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"main"};

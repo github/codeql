@@ -17,8 +17,8 @@ import semmle.code.java.Collections
 predicate isDefinitelyPositive(Expr e) {
   isDefinitelyPositive(e) or
   e.(IntegerLiteral).getIntValue() >= 0 or
-  e.(MethodAccess).getMethod() instanceof CollectionSizeMethod or
-  e.(MethodAccess).getMethod() instanceof StringLengthMethod or
+  e.(MethodCall).getMethod() instanceof CollectionSizeMethod or
+  e.(MethodCall).getMethod() instanceof StringLengthMethod or
   e.(FieldAccess).getField() instanceof ArrayLengthField
 }
 

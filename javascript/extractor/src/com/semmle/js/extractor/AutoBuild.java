@@ -153,7 +153,7 @@ import com.semmle.util.trap.TrapWriter;
  *   <li>All JavaScript files, that is, files with one of the extensions supported by {@link
  *       FileType#JS} (currently ".js", ".jsx", ".mjs", ".cjs", ".es6", ".es").
  *   <li>All HTML files, that is, files with with one of the extensions supported by {@link
- *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".html.erb").
+ *       FileType#HTML} (currently ".htm", ".html", ".xhtm", ".xhtml", ".vue", ".html.erb", ".html.dot", ".jsp").
  *   <li>All YAML files, that is, files with one of the extensions supported by {@link
  *       FileType#YAML} (currently ".raml", ".yaml", ".yml").
  *   <li>Files with base name "package.json" or "tsconfig.json", and files whose base name
@@ -892,10 +892,15 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
           // For named packages, find the main file.
           String name = packageJson.getName();
           if (name != null) {
-            Path entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
-            if (entryPoint == null) {
-              // Try a TypeScript-recognized JS extension instead
-              entryPoint = guessPackageMainFile(path, packageJson, Arrays.asList(".js", ".jsx"));
+            Path entryPoint = null; 
+            try {
+              entryPoint = guessPackageMainFile(path, packageJson, FileType.TYPESCRIPT.getExtensions());
+              if (entryPoint == null) {
+                // Try a TypeScript-recognized JS extension instead
+                entryPoint = guessPackageMainFile(path, packageJson, Arrays.asList(".js", ".jsx"));
+              }
+            } catch (InvalidPathException ignore) {
+              // can happen if the `main:` field is invalid. E.g. on Windows a path like `dist/*.js` will crash.
             }
             if (entryPoint != null) {
               System.out.println(relativePath + ": Main file set to " + sourceRoot.relativize(entryPoint));

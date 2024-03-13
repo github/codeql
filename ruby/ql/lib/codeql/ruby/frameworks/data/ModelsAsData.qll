@@ -48,7 +48,7 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
     )
   }
 
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
     exists(string kind | ModelOutput::relevantSummaryModel(type, path, input, output, kind) |
       kind = "value" and
       preservesValue = true

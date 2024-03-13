@@ -300,7 +300,7 @@ private class PpCall extends PpAst, Call {
     or
     i = 2 and
     (
-      result = this.(MethodAccess).getMethod().getName()
+      result = this.(MethodCall).getMethod().getName()
       or
       result = "this" and this instanceof ThisConstructorInvocationStmt
       or
@@ -383,15 +383,18 @@ private class PpInstanceOfExpr extends PpAst, InstanceOfExpr {
   override string getPart(int i) {
     i = 1 and result = " instanceof "
     or
-    i = 3 and result = " " and this.isPattern()
+    i = 3 and result = " " and this.getPattern() instanceof LocalVariableDeclExpr
     or
-    i = 4 and result = this.getLocalVariableDeclExpr().getName()
+    i = 4 and
+    result = this.getPattern().asBindingPattern().getName()
   }
 
   override PpAst getChild(int i) {
     i = 0 and result = this.getExpr()
     or
     i = 2 and result = this.getTypeName()
+    or
+    i = 2 and result = this.getPattern().asRecordPattern()
   }
 }
 
@@ -742,11 +745,19 @@ private class PpSwitchStmt extends PpAst, SwitchStmt {
   }
 }
 
+private predicate isNonNullDefaultCase(SwitchCase sc) {
+  sc instanceof DefaultCase and not sc instanceof NullDefaultCase
+}
+
 private class PpSwitchCase extends PpAst, SwitchCase {
+  PpSwitchCase() { not this instanceof PatternCase }
+
   override string getPart(int i) {
-    i = 0 and result = "default" and this instanceof DefaultCase
+    i = 0 and result = "default" and isNonNullDefaultCase(this)
     or
-    i = 0 and result = "case " and this instanceof ConstCase
+    i = 0 and result = "case null, default" and this instanceof NullDefaultCase
+    or
+    i = 0 and result = "case " and not this instanceof DefaultCase
     or
     exists(int j | i = 2 * j and j != 0 and result = ", " and exists(this.(ConstCase).getValue(j)))
     or
@@ -758,7 +769,7 @@ private class PpSwitchCase extends PpAst, SwitchCase {
   }
 
   private int lastConstCaseValueIndex() {
-    result = 1 + 2 * max(int j | j = 0 or exists(this.(ConstCase).getValue(j)))
+    result = 1 + 2 * (max(int j | j = 0 or exists(this.(ConstCase).getValue(j))))
   }
 
   override PpAst getChild(int i) {
@@ -767,6 +778,32 @@ private class PpSwitchCase extends PpAst, SwitchCase {
     i = 2 + this.lastConstCaseValueIndex() and result = this.getRuleExpression()
     or
     i = 2 + this.lastConstCaseValueIndex() and result = this.getRuleStatement()
+  }
+}
+
+private class PpPatternCase extends PpAst, PatternCase {
+  override string getPart(int i) {
+    i = 0 and result = "case "
+    or
+    i = 2 and this.getPattern() instanceof LocalVariableDeclExpr and result = " "
+    or
+    i = 3 and result = this.getPattern().asBindingPattern().getName()
+    or
+    i = 4 and result = ":" and not this.isRule()
+    or
+    i = 4 and result = " -> " and this.isRule()
+    or
+    i = 6 and result = ";" and exists(this.getRuleExpression())
+  }
+
+  override PpAst getChild(int i) {
+    i = 1 and result = this.getPattern().asBindingPattern().getTypeAccess()
+    or
+    i = 1 and result = this.getPattern().asRecordPattern()
+    or
+    i = 5 and result = this.getRuleExpression()
+    or
+    i = 5 and result = this.getRuleStatement()
   }
 }
 
@@ -885,6 +922,8 @@ private class PpAssertStmt extends PpAst, AssertStmt {
 
 private class PpLocalVariableDeclStmt extends PpAst, LocalVariableDeclStmt {
   override string getPart(int i) {
+    i = 0 and not exists(this.getAVariable().getTypeAccess()) and result = "var"
+    or
     i = 1 and result = " "
     or
     exists(int v | v > 1 and i = 2 * v - 1 and result = ", " and v = this.getAVariableIndex())
@@ -1023,5 +1062,39 @@ private class PpCallable extends PpAst, Callable {
 
   override PpAst getChild(int i) {
     i = 5 + 4 * this.getNumberOfParameters() and result = this.getBody()
+  }
+}
+
+private class PpRecordPattern extends PpAst, RecordPatternExpr {
+  override string getPart(int i) {
+    i = 0 and result = this.getType().getName()
+    or
+    i = 1 and result = "("
+    or
+    i = 1 + ((any(int x | x >= 1 and exists(this.getSubPattern(x)))) * 4) and result = ", "
+    or
+    i = 1 + (count(this.getSubPattern(_)) * 4) and result = ")"
+    or
+    exists(int x, LocalVariableDeclExpr v, int offset | v = this.getSubPattern(x) |
+      i = (offset) + (x * 4) and
+      (
+        offset = 2 and not exists(v.getTypeAccess()) and result = "var"
+        or
+        offset = 3 and result = " "
+      )
+    )
+  }
+
+  override PpAst getChild(int i) {
+    exists(int x, PatternExpr subPattern, int offset | subPattern = this.getSubPattern(x) |
+      i = (offset) + (x * 4) and
+      (
+        result = subPattern.(RecordPatternExpr) and offset = 2
+        or
+        result = subPattern.(LocalVariableDeclExpr).getTypeAccess() and offset = 2
+        or
+        result = subPattern.(LocalVariableDeclExpr) and offset = 4
+      )
+    )
   }
 }

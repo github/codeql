@@ -63,13 +63,18 @@ deprecated class Configuration extends TaintTracking::Configuration {
   }
 }
 
+abstract private class NormalizationState extends string {
+  bindingset[this]
+  NormalizationState() { any() }
+}
+
 /** A state signifying that the file path has not been normalized. */
-class NotNormalized extends DataFlow::FlowState {
+class NotNormalized extends NormalizationState {
   NotNormalized() { this = "NotNormalized" }
 }
 
 /** A state signifying that the file path has been normalized, but not checked. */
-class NormalizedUnchecked extends DataFlow::FlowState {
+class NormalizedUnchecked extends NormalizationState {
   NormalizedUnchecked() { this = "NormalizedUnchecked" }
 }
 
@@ -85,7 +90,7 @@ class NormalizedUnchecked extends DataFlow::FlowState {
  * Such checks are ineffective in the `NotNormalized` state.
  */
 module PathInjectionConfig implements DataFlow::StateConfigSig {
-  class FlowState = DataFlow::FlowState;
+  class FlowState = NormalizationState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     source instanceof Source and state instanceof NotNormalized

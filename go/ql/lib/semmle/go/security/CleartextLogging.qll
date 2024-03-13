@@ -74,6 +74,8 @@ module CleartextLogging {
       )
     }
 
+    predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
+
     predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg) {
       // A taint propagating data-flow edge through structs: a tainted write taints the entire struct.
       exists(Write write |

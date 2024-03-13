@@ -7,9 +7,12 @@ private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
  * Gets a function that might be called by `call`.
+ *
+ * This predicate does not take additional call targets
+ * from `AdditionalCallTarget` into account.
  */
 cached
-DataFlowCallable viableCallable(DataFlowCall call) {
+DataFlowCallable defaultViableCallable(DataFlowCall call) {
   DataFlowImplCommon::forceCachingInSameStage() and
   result = call.getStaticCallTarget()
   or
@@ -27,6 +30,17 @@ DataFlowCallable viableCallable(DataFlowCall call) {
   or
   // Virtual dispatch
   result = call.(VirtualDispatch::DataSensitiveCall).resolve()
+}
+
+/**
+ * Gets a function that might be called by `call`.
+ */
+cached
+DataFlowCallable viableCallable(DataFlowCall call) {
+  result = defaultViableCallable(call)
+  or
+  // Additional call targets
+  result = any(AdditionalCallTarget additional).viableTarget(call.getUnconvertedResultExpression())
 }
 
 /**
@@ -235,9 +249,7 @@ private predicate functionSignature(Function f, string qualifiedName, int nparam
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f) {
-  mayBenefitFromCallContext(call, f, _)
-}
+predicate mayBenefitFromCallContext(DataFlowCall call) { mayBenefitFromCallContext(call, _, _) }
 
 /**
  * Holds if `call` is a call through a function pointer, and the pointer

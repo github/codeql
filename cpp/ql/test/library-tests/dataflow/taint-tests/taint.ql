@@ -84,6 +84,8 @@ module IRTest {
       or
       source.asIndirectExpr().(FunctionCall).getTarget().getName() = "source"
       or
+      source.asIndirectExpr().(FunctionCall).getTarget().getName() = "indirect_source"
+      or
       source.asParameter().getName().matches("source%")
       or
       exists(FunctionCall fc |

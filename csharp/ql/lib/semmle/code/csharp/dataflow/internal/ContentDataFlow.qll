@@ -109,6 +109,8 @@ module Global<ConfigSig ContentConfig> {
 
     DataFlow::FlowFeature getAFeature() { result = ContentConfig::getAFeature() }
 
+    predicate accessPathLimit = ContentConfig::accessPathLimit/0;
+
     // needed to record reads/stores inside summarized callables
     predicate includeHiddenNodes() { any() }
   }
@@ -277,10 +279,6 @@ module Global<ConfigSig ContentConfig> {
     }
   }
 
-  // important to use `edges` and not `PathNode::getASuccessor()`, as the latter
-  // is not pruned for reachability
-  private predicate pathSucc = Flow::PathGraph::edges/2;
-
   /**
    * Provides a big-step flow relation, where flow stops at read/store steps that
    * must be recorded, and flow via `subpaths` such that reads/stores inside
@@ -290,10 +288,7 @@ module Global<ConfigSig ContentConfig> {
     private predicate reachesSink(Flow::PathNode node) {
       FlowConfig::isSink(node.getNode(), node.getState())
       or
-      exists(Flow::PathNode mid |
-        pathSucc(node, mid) and
-        reachesSink(mid)
-      )
+      reachesSink(node.getASuccessor())
     }
 
     /**
@@ -302,7 +297,7 @@ module Global<ConfigSig ContentConfig> {
      */
     pragma[nomagic]
     private predicate excludeStep(Flow::PathNode pred, Flow::PathNode succ) {
-      pathSucc(pred, succ) and
+      pred.getASuccessor() = succ and
       (
         // we need to record reads/stores inside summarized callables
         Flow::PathGraph::subpaths(pred, _, _, succ)
@@ -356,7 +351,7 @@ module Global<ConfigSig ContentConfig> {
 
     pragma[nomagic]
     private predicate step(Flow::PathNode pred, Flow::PathNode succ) {
-      pathSucc(pred, succ) and
+      pred.getASuccessor() = succ and
       not excludeStep(pred, succ)
     }
 
@@ -471,7 +466,7 @@ module Global<ConfigSig ContentConfig> {
     exists(Flow::PathNode mid |
       nodeReaches(source, scReads, scStores, mid, reads, stores) and
       storeStep(mid.getNode(), mid.getState(), c, node.getNode(), node.getState()) and
-      pathSucc(mid, node)
+      mid.getASuccessor() = node
     )
   }
 
@@ -483,7 +478,7 @@ module Global<ConfigSig ContentConfig> {
     exists(Flow::PathNode mid |
       nodeReaches(source, scReads, scStores, mid, reads, stores) and
       readStep(mid.getNode(), mid.getState(), c, node.getNode(), node.getState()) and
-      pathSucc(mid, node)
+      mid.getASuccessor() = node
     )
   }
 

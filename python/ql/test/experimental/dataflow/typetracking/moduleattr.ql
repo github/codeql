@@ -1,6 +1,6 @@
 import python
 import semmle.python.dataflow.new.DataFlow
-import semmle.python.dataflow.new.TypeTracker
+import semmle.python.dataflow.new.TypeTracking
 import semmle.python.ApiGraphs
 
 private DataFlow::TypeTrackingNode module_tracker(TypeTracker t) {
