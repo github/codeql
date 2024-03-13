@@ -10,7 +10,7 @@ int remoteMadSource(); // $ interpretElement
 int notASource();
 int localMadSourceVoid(void); // $ interpretElement
 int localMadSourceHasBody() { return 0; } // $ interpretElement
-int *remoteMadSourceIndirect(); // $ MISSING: interpretElement
+int *remoteMadSourceIndirect(); // $ interpretElement
 void remoteMadSourceArg0(int *x, int *y); // $ interpretElement
 void remoteMadSourceArg1(int &x, int &y); // $ interpretElement
 int remoteMadSourceVar; // $ interpretElement
@@ -73,7 +73,7 @@ void notASink(int x);
 void madSinkArg1(int x, int y); // $ interpretElement
 void madSinkArg01(int x, int y, int z); // $ interpretElement
 void madSinkArg02(int x, int y, int z); // $ interpretElement
-void madSinkIndirectArg0(int *x); // $ MISSING: interpretElement
+void madSinkIndirectArg0(int *x); // $ interpretElement
 int madSinkVar; // $ interpretElement
 
 void test_sinks() {
@@ -115,12 +115,12 @@ struct MyContainer {
 int madArg0ToReturn(int x); // $ interpretElement
 int notASummary(int x);
 int madArg0ToReturnValueFlow(int x); // $ interpretElement
-int madArg0IndirectToReturn(int *x); // $ MISSING: interpretElement
+int madArg0IndirectToReturn(int *x); // $ interpretElement
 void madArg0ToArg1(int x, int &y); // $ interpretElement
-void madArg0IndirectToArg1(const int *x, int *y); // $ MISSING: interpretElement
+void madArg0IndirectToArg1Indirect(const int *x, int *y); // $ interpretElement
 
 int madArg0FieldToReturn(MyContainer mc); // $ interpretElement
-int madArg0IndirectFieldToReturn(MyContainer *mc); // $ MISSING: interpretElement
+int madArg0IndirectFieldToReturn(MyContainer *mc); // $ interpretElement
 MyContainer madArg0ToReturnField(int x); // $ interpretElement
 
 void test_summaries() {
@@ -140,7 +140,7 @@ void test_summaries() {
 	madArg0ToArg1(source(), b);
 	sink(b); // $ MISSING: ir
 
-	madArg0IndirectToArg1(&a, &c);
+	madArg0IndirectToArg1Indirect(&a, &c);
 	sink(c); // $ MISSING: ir
 
 	MyContainer mc1, mc2;

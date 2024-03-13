@@ -11,7 +11,7 @@ private class TestSources extends SourceModelCsv {
         ";;false;remoteMadSource;;;ReturnValue;remote",
         ";;false;localMadSourceVoid;;;ReturnValue;local",
         ";;false;localMadSourceHasBody;;;ReturnValue;local",
-        // TODO: remoteMadSourceIndirect
+        ";;false;remoteMadSourceIndirect;;;*ReturnValue;remote",
         ";;false;remoteMadSourceArg0;;;Argument[0];remote",
         ";;false;remoteMadSourceArg1;;;Argument[1];remote", ";;false;remoteMadSourceVar;;;;remote",
         ";;false;remoteMadSourceParam0;;;Parameter[0];remote",
@@ -39,7 +39,7 @@ private class TestSinks extends SinkModelCsv {
         ";;false;madSinkArg1;;;Argument[1];test-sink",
         ";;false;madSinkArg01;;;Argument[0..1];test-sink",
         ";;false;madSinkArg02;;;Argument[0,2];test-sink",
-        // TODO: madSinkIndirectArg0
+        ";;false;madSinkIndirectArg0;;;*Argument[0];test-sink",
         ";;false;madSinkVar;;;;test-sink", ";;false;madSinkParam0;;;Parameter[0];test-sink",
         ";MyClass;true;memberMadSinkArg0;;;Argument[0];test-sink",
         ";MyClass;true;memberMadSinkVar;;;;test-sink",
@@ -60,11 +60,11 @@ private class TestSummaries extends SummaryModelCsv {
       [
         ";;false;madArg0ToReturn;;;Argument[0];ReturnValue;taint",
         ";;false;madArg0ToReturnValueFlow;;;Argument[0];ReturnValue;value",
-        // TODO: madArg0IndirectToReturn
+        ";;false;madArg0IndirectToReturn;;;*Argument[0];ReturnValue;taint",
         ";;false;madArg0ToArg1;;;Argument[0];Argument[1];taint",
-        // TODO: madArg0IndirectToArg1
+        ";;false;madArg0IndirectToArg1Indirect;;;*Argument[0];*Argument[1];taint",
         ";;false;madArg0FieldToReturn;;;Argument[0].value;ReturnValue;taint",
-        // TODO: madArg0IndirectFieldToReturn
+        ";;false;madArg0IndirectFieldToReturn;;;*Argument[0].value;ReturnValue;taint",
         ";;false;madArg0ToReturnField;;;Argument[0];ReturnValue.value;taint",
         ";MyClass;true;madArg0ToSelf;;;Argument[0];Argument[-1];taint",
         ";MyClass;true;madSelfToReturn;;;Argument[-1];ReturnValue;taint",
