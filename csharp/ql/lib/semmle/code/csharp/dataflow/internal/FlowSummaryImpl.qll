@@ -3,6 +3,7 @@
  */
 
 private import csharp
+private import semmle.code.csharp.commons.QualifiedName
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 private import codeql.dataflow.internal.FlowSummaryImpl
 private import codeql.dataflow.internal.AccessPathSyntax as AccessPath
@@ -42,10 +43,18 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow>
   string encodeContent(ContentSet c, string arg) {
     c = TElementContent() and result = "Element" and arg = ""
     or
-    exists(Field f | c = TFieldContent(f) and result = "Field" and arg = f.getFullyQualifiedName())
+    exists(Field f, string qualifier, string name |
+      c = TFieldContent(f) and
+      f.hasFullyQualifiedName(qualifier, name) and
+      arg = getQualifiedName(qualifier, name) and
+      result = "Field"
+    )
     or
-    exists(Property p |
-      c = TPropertyContent(p) and result = "Property" and arg = p.getFullyQualifiedName()
+    exists(Property p, string qualifier, string name |
+      c = TPropertyContent(p) and
+      p.hasFullyQualifiedName(qualifier, name) and
+      arg = getQualifiedName(qualifier, name) and
+      result = "Property"
     )
     or
     exists(SyntheticField f |

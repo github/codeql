@@ -10,4 +10,4 @@ where
   c.getDeclaringType().hasFullyQualifiedName(qualifier, name) and
   qualifier = "Constructors" and
   name = "Class"
-select c, c.getDeclaringType().getFullyQualifiedName()
+select c, getQualifiedName(qualifier, name)
