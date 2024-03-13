@@ -118,7 +118,6 @@ class NamedElement extends Element, @named_element {
    * Unbound generic types, such as `IList<T>`, are represented as
    * ``System.Collections.Generic.IList`1``.
    */
-  cached
   deprecated final string getFullyQualifiedName() {
     exists(string qualifier, string name | this.hasFullyQualifiedName(qualifier, name) |
       if qualifier = "" then result = name else result = qualifier + "." + name
