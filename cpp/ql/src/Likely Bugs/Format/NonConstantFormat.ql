@@ -37,6 +37,11 @@ class UncalledFunction extends Function {
   }
 }
 
+/** The `unsigned short` type. */
+class UnsignedShort extends ShortType {
+  UnsignedShort() { this.isUnsigned() }
+}
+
 /**
  * Holds if `t` cannot refer to a string. That is, it's a built-in
  * or arithmetic type that is not a "`char` like" type.
@@ -51,7 +56,7 @@ predicate cannotContainString(Type t) {
     not unspecified instanceof Char16Type and
     not unspecified instanceof Char32Type and
     // C often defines `wchar_t` as `unsigned short`
-    unspecified = any(ShortType short | not short.isUnsigned())
+    not unspecified instanceof UnsignedShort
   |
     unspecified instanceof ArithmeticType or
     unspecified instanceof BuiltInType
@@ -61,14 +66,6 @@ predicate cannotContainString(Type t) {
 predicate dataFlowOrTaintFlowFunction(Function func, FunctionOutput output) {
   func.(DataFlowFunction).hasDataFlow(_, output) or
   func.(TaintFunction).hasTaintFlow(_, output)
-}
-
-/** Holds if `func` is declared inside the source root. */
-predicate isInsideSourceRoot(Function func) {
-  exists(File f |
-    f = func.getFile() and
-    exists(f.getRelativePath())
-  )
 }
 
 /**
@@ -119,8 +116,7 @@ predicate isNonConst(DataFlow::Node node) {
   // The function's output must also not be const to be considered a non-const source
   exists(Function func, CallInstruction call |
     not func.hasDefinition() and
-    func = call.getStaticCallTarget() and
-    isInsideSourceRoot(func)
+    func = call.getStaticCallTarget()
   |
     // Case 1: It's a known dataflow or taintflow function with flow to the return value
     call.getUnconvertedResultExpression() = node.asIndirectExpr() and
