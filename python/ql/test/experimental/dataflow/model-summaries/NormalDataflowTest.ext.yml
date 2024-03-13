@@ -3,7 +3,7 @@ extensions:
       pack: codeql/python-all
       extensible: summaryModel
     data:
-      - ["foo", "Member[MS_identity]", "Argument[0]", "ReturnValue", "value"]
+      - ["foo", "Member[MS_identity]", "Argument[0,x:]", "ReturnValue", "value"]
       - ["foo", "Member[MS_apply_lambda]", "Argument[1]", "Argument[0].Parameter[0]", "value"]
       - ["foo", "Member[MS_apply_lambda]", "Argument[0].ReturnValue", "ReturnValue", "value"]
       - ["foo", "Member[MS_reversed]", "Argument[0].ListElement", "ReturnValue.ListElement", "value"]

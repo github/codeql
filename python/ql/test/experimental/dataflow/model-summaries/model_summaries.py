@@ -36,6 +36,10 @@ from foo import MS_identity, MS_apply_lambda, MS_reversed, MS_list_map, MS_appen
 via_identity = MS_identity(SOURCE)
 SINK(via_identity)  # $ flow="SOURCE, l:-1 -> via_identity"
 
+# Simple summary keyword
+via_identity_kw = MS_identity(x = SOURCE)
+SINK(via_identity_kw)  # $ flow="SOURCE, l:-1 -> via_identity_kw"
+
 # Lambda summary
 via_lambda = MS_apply_lambda(lambda x: [x], SOURCE)
 SINK(via_lambda[0])  # $ flow="SOURCE, l:-1 -> via_lambda[0]"
