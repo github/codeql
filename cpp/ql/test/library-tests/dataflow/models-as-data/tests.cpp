@@ -11,6 +11,7 @@ int notASource();
 int localMadSourceVoid(void); // $ interpretElement
 int localMadSourceHasBody() { return 0; } // $ interpretElement
 int *remoteMadSourceIndirect(); // $ interpretElement
+int **remoteMadSourceDoubleIndirect(); // $ interpretElement
 void remoteMadSourceIndirectArg0(int *x, int *y); // $ interpretElement
 void remoteMadSourceIndirectArg1(int &x, int &y); // $ interpretElement
 int remoteMadSourceVar; // $ interpretElement
@@ -40,6 +41,7 @@ void test_sources() {
 	sink(localMadSourceVoid()); // $ ir
 	sink(localMadSourceHasBody()); // $ ir
 	sink(*remoteMadSourceIndirect()); // $ MISSING: ir
+	sink(**remoteMadSourceDoubleIndirect()); // $ MISSING: ir
 
 	int a, b, c, d;
 
@@ -76,6 +78,7 @@ void madSinkArg1(int x, int y); // $ interpretElement
 void madSinkArg01(int x, int y, int z); // $ interpretElement
 void madSinkArg02(int x, int y, int z); // $ interpretElement
 void madSinkIndirectArg0(int *x); // $ interpretElement
+void madSinkDoubleIndirectArg0(int **x); // $ interpretElement
 int madSinkVar; // $ interpretElement
 int *madSinkVarIndirect; // $ interpretElement
 
@@ -94,7 +97,10 @@ void test_sinks() {
 	madSinkArg02(0, 0, source()); // $ ir
 
 	int a = source();
+	int *a_ptr = &a;
 	madSinkIndirectArg0(&a); // $ MISSING: ir
+	madSinkIndirectArg0(a_ptr); // $ MISSING: ir
+	madSinkDoubleIndirectArg0(&a_ptr); // $ MISSING: ir
 
 	madSinkVar = source();  // $ ir
 
@@ -122,6 +128,7 @@ int *madArg0ToReturnIndirect(int x); // $ interpretElement
 int notASummary(int x);
 int madArg0ToReturnValueFlow(int x); // $ interpretElement
 int madArg0IndirectToReturn(int *x); // $ interpretElement
+int madArg0DoubleIndirectToReturn(int **x); // $ interpretElement
 void madArg0ToArg1Indirect(int x, int &y); // $ interpretElement
 void madArg0IndirectToArg1Indirect(const int *x, int *y); // $ interpretElement
 
@@ -134,6 +141,7 @@ void test_summaries() {
 	// test summaries
 
 	int a, b, c, d, e;
+	int *a_ptr;
 
 	sink(madArg0ToReturn(0));
 	sink(madArg0ToReturn(source())); // $ ir
@@ -144,7 +152,10 @@ void test_summaries() {
 	sink(madArg0ToReturnValueFlow(source())); // $ ir
 
 	a = source();
+	a_ptr = &a;
 	sink(madArg0IndirectToReturn(&a)); // $ MISSING: ir
+	sink(madArg0IndirectToReturn(a_ptr)); // $ MISSING: ir
+	sink(madArg0DoubleIndirectToReturn(&a_ptr)); // $ MISSING: ir
 
 	madArg0ToArg1Indirect(source(), b);
 	sink(b); // $ MISSING: ir
