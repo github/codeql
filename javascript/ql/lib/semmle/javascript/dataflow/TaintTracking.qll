@@ -424,7 +424,7 @@ module TaintTracking {
       // In and out of .replace callbacks
       exists(StringReplaceCall call |
         // Into the callback if the regexp does not sanitize matches
-        hasWildcardReplaceRegExp(call) and
+        call.hasRegExpContainingWildcard() and
         pred = call.getReceiver() and
         succ = call.getReplacementCallback().getParameter(0)
         or
@@ -433,12 +433,6 @@ module TaintTracking {
         succ = call
       )
     }
-  }
-
-  /** Holds if the given call takes a regexp containing a wildcard. */
-  pragma[noinline]
-  private predicate hasWildcardReplaceRegExp(StringReplaceCall call) {
-    RegExp::isWildcardLike(call.getRegExp().getRoot().getAChild*())
   }
 
   /**

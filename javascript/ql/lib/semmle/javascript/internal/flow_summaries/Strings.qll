@@ -5,12 +5,6 @@
 private import javascript
 private import semmle.javascript.dataflow.FlowSummary
 
-/** Holds if the given call takes a regexp containing a wildcard. */
-pragma[noinline]
-private predicate hasWildcardReplaceRegExp(StringReplaceCall call) {
-  RegExp::isWildcardLike(call.getRegExp().getRoot().getAChild*())
-}
-
 /**
  * Summary for calls to `.replace` or `.replaceAll` (without a regexp pattern containing a wildcard).
  */
@@ -19,7 +13,7 @@ private class StringReplaceNoWildcard extends SummarizedCallable {
     this = "String#replace / String#replaceAll (without wildcard pattern)"
   }
 
-  override StringReplaceCall getACall() { not hasWildcardReplaceRegExp(result) }
+  override StringReplaceCall getACall() { not result.hasRegExpContainingWildcard() }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     preservesValue = false and
@@ -43,7 +37,7 @@ private class StringReplaceWithWildcard extends SummarizedCallable {
     this = "String#replace / String#replaceAll (with wildcard pattern)"
   }
 
-  override StringReplaceCall getACall() { hasWildcardReplaceRegExp(result) }
+  override StringReplaceCall getACall() { result.hasRegExpContainingWildcard() }
 
   override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
     preservesValue = false and

@@ -154,6 +154,15 @@ class StringReplaceCall extends DataFlow::MethodCallNode {
       new = ret.getStringValue()
     )
   }
+
+  /**
+   * Holds if this call takes a regexp containing a wildcard-like term such as `.`.
+   *
+   * Also see `RegExp::isWildcardLike`.
+   */
+  final predicate hasRegExpContainingWildcard() {
+    RegExp::isWildcardLike(this.getRegExp().getRoot().getAChild*())
+  }
 }
 
 /**
