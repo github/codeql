@@ -8,6 +8,7 @@ private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.typetracking.TypeTracking
 private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.ActionView
 private import codeql.ruby.frameworks.Rails
@@ -505,6 +506,27 @@ private module ParamsSummaries {
       ]
   }
 
+  /** Gets a field of an instance of `ActionController::Parameters` */
+  private DataFlow::LocalSourceNode paramsField() {
+    result =
+      [
+        paramsInstance(),
+        paramsInstance().getAMethodCall(methodReturnsTaintFromSelf()).getAnElementRead*()
+      ]
+  }
+
+  private DataFlow::LocalSourceNode paramsFieldType(TypeTracker t) {
+    t.start() and
+    result = paramsField()
+    or
+    exists(TypeTracker t2 | result = paramsFieldType(t2).track(t2, t))
+  }
+
+  /** Gets a node with a type that can be a field of `ActionController::Parameters */
+  private DataFlow::LocalSourceNode paramsFieldType() {
+    paramsFieldType(TypeTracker::end()).flowsTo(result)
+  }
+
   /**
    * A flow summary for methods on `ActionController::Parameters` which
    * propagate taint from receiver to return value.
@@ -567,6 +589,44 @@ private module ParamsSummaries {
       input = ["Argument[self]", "Argument[0]"] and
       output = ["ReturnValue", "Argument[self]"] and
       preservesValue = false
+    }
+  }
+
+  /** Flow summaries for `ActiveDispatch::Http::UploadedFile`, which can be an field of `ActionController::Parameters`. */
+  module UploadedFileSummaries {
+    /** Flow summary for `ActiveDispatch::Http::UploadedFile.original_filename` */
+    private class UploadedFileOriginalFilenameSummary extends SummarizedCallable {
+      UploadedFileOriginalFilenameSummary() {
+        this = "ActionDispatch::Http::UploadedFile::original_filename"
+      }
+
+      override MethodCall getACall() {
+        result = paramsFieldType().getAMethodCall("original_filename").asExpr().getExpr() and
+        result.getNumberOfArguments() = 0
+      }
+
+      override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+        input = "Argument[self]" and output = "ReturnValue" and preservesValue = false
+      }
+    }
+
+    /**
+     * Flow summary for `ActiveDispatch::Http::UploadedFile.original_filename`,
+     * which propagates taint from the receiver to the return value or to the second (buffer) argument
+     */
+    private class UploadedFileReadSummary extends SummarizedCallable {
+      UploadedFileReadSummary() { this = "ActionDispatch::Http::UploadedFile::read" }
+
+      override MethodCall getACall() {
+        result = paramsFieldType().getAMethodCall("read").asExpr().getExpr() and
+        result.getNumberOfArguments() in [0 .. 2]
+      }
+
+      override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+        input = "Argument[self]" and
+        output = ["ReturnValue", "Argument[1]"] and
+        preservesValue = false
+      }
     }
   }
 }
