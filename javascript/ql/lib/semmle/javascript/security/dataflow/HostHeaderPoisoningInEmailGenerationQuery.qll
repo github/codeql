@@ -30,14 +30,7 @@ module HostHeaderPoisoningFlow = TaintTracking::Global<HostHeaderPoisoningConfig
 deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "TaintedHostHeader" }
 
-  override predicate isSource(DataFlow::Node node) {
-    exists(Http::RequestHeaderAccess input | node = input |
-      input.getKind() = "header" and
-      input.getAHeaderName() = "host"
-    )
-  }
+  override predicate isSource(DataFlow::Node node) { HostHeaderPoisoningConfig::isSource(node) }
 
-  override predicate isSink(DataFlow::Node node) {
-    exists(EmailSender email | node = email.getABody())
-  }
+  override predicate isSink(DataFlow::Node node) { HostHeaderPoisoningConfig::isSink(node) }
 }
