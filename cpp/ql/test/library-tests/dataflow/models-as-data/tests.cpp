@@ -171,10 +171,13 @@ public:
 	int memberRemoteMadSource(); // $ interpretElement
 	void memberRemoteMadSourceIndirectArg0(int *x); // $ interpretElement
 	int memberRemoteMadSourceVar; // $ interpretElement
+	void qualifierSource(); // $ interpretElement
 
 	// sinks
 	void memberMadSinkArg0(int x); // $ interpretElement
 	int memberMadSinkVar; // $ interpretElement
+	void qualifierSink(); // $ interpretElement
+	void qualifierArg0Sink(int x); // $ interpretElement
 
 	// summaries
 	void madArg0ToSelf(int x); // $ interpretElement
@@ -213,7 +216,7 @@ namespace MyNamespace {
 MyNamespace::MyClass source3();
 
 void test_class_members() {
-	MyClass mc, mc2, mc3, mc4, mc5, mc6, mc7;
+	MyClass mc, mc2, mc3, mc4, mc5, mc6, mc7, mc8, mc9;
 	MyClass *ptr, *mc4_ptr;
 	MyDerivedClass mdc;
 	MyNamespace::MyClass mnc, mnc2;
@@ -293,6 +296,21 @@ void test_class_members() {
 
 	mc7.madArg0ToField(source());
 	sink(mc7.madFieldToReturn()); // $ MISSING: ir
+
+	// test taint through qualifier
+
+	sink(mc8);
+	mc8.qualifierArg0Sink(0);
+	mc8.qualifierArg0Sink(source()); // $ ir
+
+	mc9 = source2();
+	mc9.qualifierSink(); // $ ir
+	mc9.qualifierArg0Sink(0); // $ ir
+
+	mc8.qualifierSource();
+	sink(mc8); // $ ir
+	mc8.qualifierSink(); // $ ir
+	mc9.qualifierArg0Sink(0); // $ ir
 }
 
 // --- MAD cases involving function pointers ---

@@ -24,6 +24,7 @@ private class TestSources extends SourceModelCsv {
         ";MyClass;true;memberRemoteMadSourceVar;;;;remote",
         ";MyClass;true;subtypeRemoteMadSource1;;;ReturnValue;remote",
         ";MyClass;false;subtypeNonSource;;;ReturnValue;remote", // the tests define this in MyDerivedClass, so it should *not* be recongized as a source
+        ";MyClass;true;qualifierSource;;;Argument[-1];remote",
         ";MyDerivedClass;false;subtypeRemoteMadSource2;;;ReturnValue;remote",
       ]
   }
@@ -44,6 +45,8 @@ private class TestSinks extends SinkModelCsv {
         ";;false;madSinkVar;;;;test-sink", ";;false;madSinkParam0;;;Parameter[0];test-sink",
         ";MyClass;true;memberMadSinkArg0;;;Argument[0];test-sink",
         ";MyClass;true;memberMadSinkVar;;;;test-sink",
+        ";MyClass;true;qualifierSink;;;Argument[-1];test-sink",
+        ";MyClass;true;qualifierArg0Sink;;;Argument[-1..0];test-sink",
         "MyNamespace;MyClass;true;namespaceMemberMadSinkArg0;;;Argument[0];test-sink",
         "MyNamespace;MyClass;true;namespaceStaticMemberMadSinkArg0;;;Argument[0];test-sink",
         "MyNamespace;MyClass;true;namespaceMemberMadSinkVar;;;;test-sink",
