@@ -14,6 +14,7 @@ int *remoteMadSourceIndirect(); // $ interpretElement
 void remoteMadSourceIndirectArg0(int *x, int *y); // $ interpretElement
 void remoteMadSourceIndirectArg1(int &x, int &y); // $ interpretElement
 int remoteMadSourceVar; // $ interpretElement
+int *remoteMadSourceVarIndirect; // $ interpretElement
 
 namespace MyNamespace {
 	int namespaceLocalMadSource(); // $ interpretElement
@@ -50,6 +51,7 @@ void test_sources() {
 	sink(d); // $ MISSING: ir
 
 	sink(remoteMadSourceVar); // $ ir
+	sink(*remoteMadSourceVarIndirect); // $ MISSING: ir
 
 	int e = localMadSource();
 	sink(e); // $ ir
@@ -75,6 +77,7 @@ void madSinkArg01(int x, int y, int z); // $ interpretElement
 void madSinkArg02(int x, int y, int z); // $ interpretElement
 void madSinkIndirectArg0(int *x); // $ interpretElement
 int madSinkVar; // $ interpretElement
+int *madSinkVarIndirect; // $ interpretElement
 
 void test_sinks() {
 	// test sinks
@@ -100,6 +103,7 @@ void test_sinks() {
 	madSinkArg0(localMadSource()); // $ ir
 	madSinkIndirectArg0(remoteMadSourceIndirect()); // $ MISSING: ir
 	madSinkVar = remoteMadSourceVar; // $ ir
+	*madSinkVarIndirect = remoteMadSourceVar; // $ MISSING: ir
 }
 
 void madSinkParam0(int x) { // $ interpretElement
@@ -114,6 +118,7 @@ struct MyContainer {
 };
 
 int madArg0ToReturn(int x); // $ interpretElement
+int *madArg0ToReturnIndirect(int x); // $ interpretElement
 int notASummary(int x);
 int madArg0ToReturnValueFlow(int x); // $ interpretElement
 int madArg0IndirectToReturn(int *x); // $ interpretElement
@@ -132,6 +137,8 @@ void test_summaries() {
 
 	sink(madArg0ToReturn(0));
 	sink(madArg0ToReturn(source())); // $ ir
+	sink(*madArg0ToReturnIndirect(0));
+	sink(*madArg0ToReturnIndirect(source())); // $ MISSING: ir
 	sink(notASummary(source()));
 	sink(madArg0ToReturnValueFlow(0));
 	sink(madArg0ToReturnValueFlow(source())); // $ ir

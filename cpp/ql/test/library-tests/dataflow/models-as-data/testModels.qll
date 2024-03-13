@@ -15,6 +15,7 @@ private class TestSources extends SourceModelCsv {
         ";;false;remoteMadSourceIndirectArg0;;;*Argument[0];remote",
         ";;false;remoteMadSourceIndirectArg1;;;*Argument[1];remote",
         ";;false;remoteMadSourceVar;;;;remote",
+        ";;false;remoteMadSourceVarIndirect;;;*;remote",
         ";;false;remoteMadSourceParam0;;;Parameter[0];remote",
         "MyNamespace;;false;namespaceLocalMadSource;;;ReturnValue;local",
         "MyNamespace;;false;namespaceLocalMadSourceVar;;;;local",
@@ -42,7 +43,9 @@ private class TestSinks extends SinkModelCsv {
         ";;false;madSinkArg01;;;Argument[0..1];test-sink",
         ";;false;madSinkArg02;;;Argument[0,2];test-sink",
         ";;false;madSinkIndirectArg0;;;*Argument[0];test-sink",
-        ";;false;madSinkVar;;;;test-sink", ";;false;madSinkParam0;;;Parameter[0];test-sink",
+        ";;false;madSinkVar;;;;test-sink",
+        ";;false;madSinkVarIndirect;;;*;test-sink",
+        ";;false;madSinkParam0;;;Parameter[0];test-sink",
         ";MyClass;true;memberMadSinkArg0;;;Argument[0];test-sink",
         ";MyClass;true;memberMadSinkVar;;;;test-sink",
         ";MyClass;true;qualifierSink;;;Argument[-1];test-sink",
@@ -63,6 +66,7 @@ private class TestSummaries extends SummaryModelCsv {
     row =
       [
         ";;false;madArg0ToReturn;;;Argument[0];ReturnValue;taint",
+        ";;false;madArg0ToReturnIndirect;;;Argument[0];*ReturnValue;taint",
         ";;false;madArg0ToReturnValueFlow;;;Argument[0];ReturnValue;value",
         ";;false;madArg0IndirectToReturn;;;*Argument[0];ReturnValue;taint",
         ";;false;madArg0ToArg1Indirect;;;Argument[0];*Argument[1];taint",
