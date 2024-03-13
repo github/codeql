@@ -84,7 +84,7 @@ namespace ns {
   class blab { 
     void out1(void) {
       char *fmt = (char *)__builtin_alloca(10);
-      diagnostic(fmt);  // BAD [NOT DETECTED]
+      diagnostic(fmt);  // BAD
     }
   };
 }
