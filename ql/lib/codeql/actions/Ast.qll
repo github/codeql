@@ -5,9 +5,11 @@ module Utils {
   bindingset[expr]
   string normalizeExpr(string expr) {
     result =
-      expr.regexpReplaceAll("[\\.\\'\\[\\]\"]+", ".")
-          .regexpReplaceAll("\\.$", "")
-          .regexpReplaceAll("\\.\\s", " ")
+      expr.replaceAll("['", ".")
+          .replaceAll("']", "")
+          .replaceAll("[\"", ".")
+          .replaceAll("\"]", "")
+          .regexpReplaceAll("\\s*\\.\\s*", ".")
   }
 }
 

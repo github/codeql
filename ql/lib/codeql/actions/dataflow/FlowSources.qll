@@ -1,6 +1,7 @@
 import actions
 import codeql.actions.DataFlow
 import codeql.actions.dataflow.ExternalFlow
+import codeql.actions.Ast::Utils as Utils
 
 /**
  * A data flow source.
@@ -24,8 +25,11 @@ abstract class RemoteFlowSource extends SourceNode {
 
 bindingset[context]
 private predicate isExternalUserControlledIssue(string context) {
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*issue\\s*\\.\\s*title\\b") or
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*issue\\s*\\.\\s*body\\b")
+  exists(string reg |
+    reg = ["\\bgithub\\.event\\.issue\\.title\\b", "\\bgithub\\.event\\.issue\\.body\\b"]
+  |
+    Utils::normalizeExpr(context).regexpMatch(reg)
+  )
 }
 
 bindingset[context]
@@ -33,35 +37,39 @@ private predicate isExternalUserControlledPullRequest(string context) {
   exists(string reg |
     reg =
       [
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*title\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*body\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*label\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*repo\\s*\\.\\s*default_branch\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*repo\\s*\\.\\s*description\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*repo\\s*\\.\\s*homepage\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*ref\\b",
-        "\\bgithub\\s*\\.\\s*head_ref\\b"
+        "\\bgithub\\.event\\.pull_request\\.title\\b", "\\bgithub\\.event\\.pull_request\\.body\\b",
+        "\\bgithub\\.event\\.pull_request\\.head\\.label\\b",
+        "\\bgithub\\.event\\.pull_request\\.head\\.repo\\.default_branch\\b",
+        "\\bgithub\\.event\\.pull_request\\.head\\.repo\\.description\\b",
+        "\\bgithub\\.event\\.pull_request\\.head\\.repo\\.homepage\\b",
+        "\\bgithub\\.event\\.pull_request\\.head\\.ref\\b", "\\bgithub\\.head_ref\\b"
       ]
   |
-    context.regexpMatch(reg)
+    Utils::normalizeExpr(context).regexpMatch(reg)
   )
 }
 
 bindingset[context]
 private predicate isExternalUserControlledReview(string context) {
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*review\\s*\\.\\s*body\\b")
+  Utils::normalizeExpr(context).regexpMatch("\\bgithub\\.event\\.review\\.body\\b")
 }
 
 bindingset[context]
 private predicate isExternalUserControlledComment(string context) {
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*comment\\s*\\.\\s*body\\b")
+  Utils::normalizeExpr(context).regexpMatch("\\bgithub\\.event\\.comment\\.body\\b")
 }
 
 bindingset[context]
 private predicate isExternalUserControlledGollum(string context) {
-  context
-      .regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pages\\[[0-9]+\\]\\s*\\.\\s*page_name\\b") or
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pages\\[[0-9]+\\]\\s*\\.\\s*title\\b")
+  exists(string reg |
+    reg =
+      [
+        "\\bgithub\\.event\\.pages\\[[0-9]+\\]\\.page_name\\b",
+        "\\bgithub\\.event\\.pages\\[[0-9]+\\]\\.title\\b"
+      ]
+  |
+    Utils::normalizeExpr(context).regexpMatch(reg)
+  )
 }
 
 bindingset[context]
@@ -69,26 +77,29 @@ private predicate isExternalUserControlledCommit(string context) {
   exists(string reg |
     reg =
       [
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits\\[[0-9]+\\]\\s*\\.\\s*message\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*message\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*author\\s*\\.\\s*email\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*author\\s*\\.\\s*name\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*committer\\s*\\.\\s*email\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*committer\\s*\\.\\s*name\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits\\[[0-9]+\\]\\s*\\.\\s*author\\s*\\.\\s*email\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits\\[[0-9]+\\]\\s*\\.\\s*author\\s*\\.\\s*name\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits\\[[0-9]+\\]\\s*\\.\\s*committer\\s*\\.\\s*email\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits\\[[0-9]+\\]\\s*\\.\\s*committer\\s*\\.\\s*name\\b",
+        "\\bgithub\\.event\\.commits\\[[0-9]+\\]\\.message\\b",
+        "\\bgithub\\.event\\.head_commit\\.message\\b",
+        "\\bgithub\\.event\\.head_commit\\.author\\.email\\b",
+        "\\bgithub\\.event\\.head_commit\\.author\\.name\\b",
+        "\\bgithub\\.event\\.head_commit\\.committer\\.email\\b",
+        "\\bgithub\\.event\\.head_commit\\.committer\\.name\\b",
+        "\\bgithub\\.event\\.commits\\[[0-9]+\\]\\.author\\.email\\b",
+        "\\bgithub\\.event\\.commits\\[[0-9]+\\]\\.author\\.name\\b",
+        "\\bgithub\\.event\\.commits\\[[0-9]+\\]\\.committer\\.email\\b",
+        "\\bgithub\\.event\\.commits\\[[0-9]+\\]\\.committer\\.name\\b",
       ]
   |
-    context.regexpMatch(reg)
+    Utils::normalizeExpr(context).regexpMatch(reg)
   )
 }
 
 bindingset[context]
 private predicate isExternalUserControlledDiscussion(string context) {
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*discussion\\s*\\.\\s*title\\b") or
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*discussion\\s*\\.\\s*body\\b")
+  exists(string reg |
+    reg = ["\\bgithub\\.event\\.discussion\\.title\\b", "\\bgithub\\.event\\.discussion\\.body\\b"]
+  |
+    Utils::normalizeExpr(context).regexpMatch(reg)
+  )
 }
 
 bindingset[context]
@@ -96,18 +107,18 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
   exists(string reg |
     reg =
       [
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow\\s*\\.\\s*path\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_branch\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*display_title\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_repository\\b\\s*\\.\\s*description\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_commit\\b\\s*\\.\\s*message\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_commit\\b\\s*\\.\\s*author\\b\\s*\\.\\s*email\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_commit\\b\\s*\\.\\s*author\\b\\s*\\.\\s*name\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_commit\\b\\s*\\.\\s*committer\\b\\s*\\.\\s*email\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_commit\\b\\s*\\.\\s*committer\\b\\s*\\.\\s*name\\b",
+        "\\bgithub\\.event\\.workflow\\.path\\b",
+        "\\bgithub\\.event\\.workflow_run\\.head_branch\\b",
+        "\\bgithub\\.event\\.workflow_run\\.display_title\\b",
+        "\\bgithub\\.event\\.workflow_run\\.head_repository\\.description\\b",
+        "\\bgithub\\.event\\.workflow_run\\.head_commit\\.message\\b",
+        "\\bgithub\\.event\\.workflow_run\\.head_commit\\.author\\.email\\b",
+        "\\bgithub\\.event\\.workflow_run\\.head_commit\\.author\\.name\\b",
+        "\\bgithub\\.event\\.workflow_run\\.head_commit\\.committer\\.email\\b",
+        "\\bgithub\\.event\\.workflow_run\\.head_commit\\.committer\\.name\\b",
       ]
   |
-    context.regexpMatch(reg)
+    Utils::normalizeExpr(context).regexpMatch(reg)
   )
 }
 
