@@ -1,3 +1,10 @@
+## 0.8.9
+
+### Minor Analysis Improvements
+
+* Raw output ERB tags of the form `<%== ... %>` are now recognised as cross-site scripting sinks.
+* The name "certification" is no longer seen as possibly being a certificate, and will therefore no longer be flagged in queries like "clear-text-logging" which look for sensitive data.
+
 ## 0.8.8
 
 ### Minor Analysis Improvements
@@ -8,7 +15,7 @@
 
 ### Minor Analysis Improvements
 
-* Deleted many deprecated predicates and classes with uppercase `HTTP`, `CSRF`, ``, `` etc. in their names. Use the PascalCased versions instead.
+* Deleted many deprecated predicates and classes with uppercase `HTTP`, `CSRF` etc. in their names. Use the PascalCased versions instead.
 * Deleted the deprecated `getAUse` and `getARhs` predicates from `API::Node`, use `getASource` and `getASink` instead.
 * Deleted the deprecated `disablesCertificateValidation` predicate from the `Http` module.
 * Deleted the deprecated `ParamsCall`, `CookiesCall`, and `ActionControllerControllerClass` classes from `ActionController.qll`, use the simarly named classes from `codeql.ruby.frameworks.Rails::Rails` instead.

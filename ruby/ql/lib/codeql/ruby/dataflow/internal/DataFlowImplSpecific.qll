@@ -31,4 +31,6 @@ module RubyDataFlow implements InputSig {
   predicate mayBenefitFromCallContext = Private::mayBenefitFromCallContext/1;
 
   predicate viableImplInCallContext = Private::viableImplInCallContext/2;
+
+  predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { exists(c.asLibraryCallable()) }
 }

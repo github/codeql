@@ -44,3 +44,6 @@ constructors.cs:
 #   28|           -1: [TypeMention] string
 #   28|         2: [Parameter] i
 #   28|           -1: [TypeMention] int
+#   28|       3: [ConstructorInitializer] call to constructor C1
+#   28|         0: [ParameterAccess] access to parameter o
+#   28|         1: [ParameterAccess] access to parameter s

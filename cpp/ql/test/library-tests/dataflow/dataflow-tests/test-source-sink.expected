@@ -123,6 +123,7 @@ astFlow
 | test.cpp:842:11:842:16 | call to source | test.cpp:844:8:844:8 | y |
 | test.cpp:846:13:846:27 | call to indirect_source | test.cpp:848:23:848:25 | rpx |
 | test.cpp:860:54:860:59 | call to source | test.cpp:861:10:861:37 | static_local_pointer_dynamic |
+| test.cpp:1050:12:1050:12 | a | test.cpp:1052:8:1052:9 | & ... |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
 | true_upon_entry.cpp:33:11:33:16 | call to source | true_upon_entry.cpp:39:8:39:8 | x |
@@ -238,8 +239,6 @@ irFlow
 | test.cpp:382:48:382:54 | source1 | test.cpp:385:8:385:10 | tmp |
 | test.cpp:388:53:388:59 | source1 | test.cpp:392:8:392:10 | tmp |
 | test.cpp:388:53:388:59 | source1 | test.cpp:394:10:394:12 | tmp |
-| test.cpp:399:7:399:9 | definition of tmp | test.cpp:401:8:401:10 | tmp |
-| test.cpp:405:7:405:9 | definition of tmp | test.cpp:408:8:408:10 | tmp |
 | test.cpp:416:7:416:11 | definition of local | test.cpp:418:8:418:12 | local |
 | test.cpp:417:16:417:20 | intRefSource output argument | test.cpp:418:8:418:12 | local |
 | test.cpp:422:7:422:11 | definition of local | test.cpp:424:8:424:12 | local |
@@ -266,6 +265,7 @@ irFlow
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:568:10:568:19 | * ... |
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:572:10:572:19 | * ... |
 | test.cpp:576:17:576:31 | *call to indirect_source | test.cpp:578:10:578:19 | * ... |
+| test.cpp:583:11:583:16 | call to source | test.cpp:590:8:590:8 | x |
 | test.cpp:594:12:594:26 | *call to indirect_source | test.cpp:597:8:597:13 | * ... |
 | test.cpp:601:20:601:20 | intPointerSource output argument | test.cpp:603:8:603:9 | * ... |
 | test.cpp:607:20:607:20 | intPointerSource output argument | test.cpp:609:8:609:9 | * ... |

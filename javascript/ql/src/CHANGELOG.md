@@ -1,3 +1,9 @@
+## 0.8.9
+
+### Bug Fixes
+
+* The left operand of the `&&` operator no longer propagates data flow by default.
+
 ## 0.8.8
 
 No user-facing changes.

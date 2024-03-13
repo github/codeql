@@ -7,7 +7,6 @@ import Location
 import Namespace
 import Property
 private import Conversion
-private import dotnet
 private import semmle.code.csharp.metrics.Coupling
 private import TypeRef
 private import semmle.code.csharp.frameworks.System
@@ -20,7 +19,10 @@ private import semmle.code.csharp.frameworks.system.runtime.CompilerServices
  * a pointer type (`PointerType`), the arglist type (`ArglistType`), an unknown
  * type (`UnknownType`), or a type parameter (`TypeParameter`).
  */
-class Type extends DotNet::Type, Member, TypeContainer, @type {
+class Type extends Member, TypeContainer, @type {
+  /** Gets the name of this type without additional syntax such as `[]` or `*`. */
+  override string getUndecoratedName() { none() }
+
   override string getName() { types(this, _, result) }
 
   override Type getUnboundDeclaration() { result = this }
@@ -56,7 +58,7 @@ private predicate isObjectClass(Class c) { c instanceof ObjectType }
  *
  * Either a value type (`ValueType`) or a reference type (`RefType`).
  */
-class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_or_ref_type {
+class ValueOrRefType extends Type, Attributable, @value_or_ref_type {
   /** Gets the namespace containing this type. */
   Namespace getNamespace() {
     if exists(this.getDeclaringType())
@@ -64,7 +66,8 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     else result.getATypeDeclaration() = this
   }
 
-  override Namespace getDeclaringNamespace() { this = result.getATypeDeclaration() }
+  /** Gets the namespace declaring this type, if any. */
+  Namespace getDeclaringNamespace() { this = result.getATypeDeclaration() }
 
   override ValueOrRefType getDeclaringType() { none() }
 
@@ -72,6 +75,30 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
 
   /** Gets a nested child type, if any. */
   NestedType getAChildType() { nested_types(result, this, _) }
+
+  deprecated private string getPrefixWithTypes() {
+    result = this.getDeclaringType().getLabel() + "."
+    or
+    if this.getDeclaringNamespace().isGlobalNamespace()
+    then result = ""
+    else result = this.getDeclaringNamespace().getFullName() + "."
+  }
+
+  pragma[noinline]
+  deprecated private string getLabelNonGeneric() {
+    not this instanceof Generic and
+    result = this.getPrefixWithTypes() + this.getUndecoratedName()
+  }
+
+  pragma[noinline]
+  deprecated private string getLabelGeneric() {
+    result = this.getPrefixWithTypes() + this.getUndecoratedName() + getGenericsLabel(this)
+  }
+
+  deprecated override string getLabel() {
+    result = this.getLabelNonGeneric() or
+    result = this.getLabelGeneric()
+  }
 
   /**
    * Gets the source namespace declaration in which this type is declared, if any.
@@ -120,7 +147,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
   }
 
   /** Gets an immediate base type of this type, if any. */
-  override ValueOrRefType getABaseType() {
+  ValueOrRefType getABaseType() {
     result = this.getBaseClass() or
     result = this.getABaseInterface()
   }
@@ -360,7 +387,8 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     nested_types(this, _, result)
   }
 
-  override predicate isRecord() { this.hasModifier("record") }
+  /** Holds if this type is a `record`. */
+  predicate isRecord() { this.hasModifier("record") }
 
   override string toString() { result = Type.super.toString() }
 }
@@ -969,7 +997,7 @@ class FunctionPointerType extends Type, Parameterizable, @function_pointer_type 
 
   override string getAPrimaryQlClass() { result = "FunctionPointerType" }
 
-  override string getLabel() { result = this.getName() }
+  deprecated override string getLabel() { result = this.getName() }
 }
 
 /**
@@ -1064,7 +1092,7 @@ class InlineArrayType extends ValueType, @inline_array_type {
 /**
  * An array type, for example `int[]`.
  */
-class ArrayType extends DotNet::ArrayType, RefType, @array_type {
+class ArrayType extends RefType, @array_type {
   /**
    * Gets the dimension of this array type. For example `int[][]` is of
    * dimension 2, while `int[]` is of dimension 1.
@@ -1081,12 +1109,14 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
   predicate isMultiDimensional() { this.getRank() > 1 }
 
   /** Gets the element type of this array, for example `int` in `int[]`. */
-  override Type getElementType() {
+  Type getElementType() {
     array_element_type(this, _, _, result)
     or
     not array_element_type(this, _, _, any(Type t)) and
     array_element_type(this, _, _, getTypeRef(result))
   }
+
+  deprecated final override string getLabel() { result = this.getElementType().getLabel() + "[]" }
 
   /** Holds if this array type has the same shape (dimension and rank) as `that` array type. */
   predicate hasSameShapeAs(ArrayType that) {
@@ -1128,32 +1158,35 @@ class ArrayType extends DotNet::ArrayType, RefType, @array_type {
     not type_location(this, _) and
     result = this.getElementType().getALocation()
   }
+
+  override string getAPrimaryQlClass() { result = "ArrayType" }
 }
 
 /**
  * A pointer type, for example `char*`.
  */
-class PointerType extends DotNet::PointerType, Type, @pointer_type {
-  override Type getReferentType() {
+class PointerType extends Type, @pointer_type {
+  /** Gets the type referred by this pointer type, for example `char` in `char*`. */
+  Type getReferentType() {
     pointer_referent_type(this, result)
     or
     not pointer_referent_type(this, any(Type t)) and
     pointer_referent_type(this, getTypeRef(result))
   }
 
-  override string toStringWithTypes() { result = DotNet::PointerType.super.toStringWithTypes() }
+  override string toStringWithTypes() { result = this.getReferentType().toStringWithTypes() + "*" }
 
   override Type getChild(int n) { result = this.getReferentType() and n = 0 }
 
   final override string getName() { types(this, _, result) }
+
+  deprecated final override string getLabel() { result = this.getReferentType().getLabel() + "*" }
 
   final override string getUndecoratedName() {
     result = this.getReferentType().getUndecoratedName()
   }
 
   override Location getALocation() { result = this.getReferentType().getALocation() }
-
-  override string toString() { result = DotNet::PointerType.super.toString() }
 
   override string getAPrimaryQlClass() { result = "PointerType" }
 }
@@ -1238,7 +1271,7 @@ class TupleType extends ValueType, @tuple_type {
         ")"
   }
 
-  override string getLabel() { result = this.getUnderlyingType().getLabel() }
+  deprecated override string getLabel() { result = this.getUnderlyingType().getLabel() }
 
   override Type getChild(int i) { result = this.getUnderlyingType().getChild(i) }
 

@@ -2798,12 +2798,14 @@
 | UseUseExplosion.rb:21:3691:21:3696 | call to use | UseUseExplosion.rb:21:3686:21:3696 | else ... |
 | UseUseExplosion.rb:24:5:25:7 | synthetic splat parameter | UseUseExplosion.rb:24:13:24:13 | i |
 | UseUseExplosion.rb:24:5:25:7 | use | UseUseExplosion.rb:1:1:26:3 | C |
+| file://:0:0:0:0 | [summary param] ** in I18n.translate | file://:0:0:0:0 | [summary] read: Argument[hash-splat].Element[any] in I18n.translate |
 | file://:0:0:0:0 | [summary param] position 0 in & | file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in & |
 | file://:0:0:0:0 | [summary param] position 0 in + | file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in + |
 | file://:0:0:0:0 | [summary param] position 0 in ActionController::Parameters#merge | file://:0:0:0:0 | [summary] to write: ReturnValue in ActionController::Parameters#merge |
 | file://:0:0:0:0 | [summary param] position 0 in ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: Argument[self] in ActionController::Parameters#merge! |
 | file://:0:0:0:0 | [summary param] position 0 in ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: ReturnValue in ActionController::Parameters#merge! |
 | file://:0:0:0:0 | [summary param] position 0 in Arel.sql | file://:0:0:0:0 | [summary] to write: ReturnValue in Arel.sql |
+| file://:0:0:0:0 | [summary param] position 0 in Arel::Nodes::SqlLiteral.new | file://:0:0:0:0 | [summary] to write: ReturnValue in Arel::Nodes::SqlLiteral.new |
 | file://:0:0:0:0 | [summary param] position 0 in Base64.decode64() | file://:0:0:0:0 | [summary] to write: ReturnValue in Base64.decode64() |
 | file://:0:0:0:0 | [summary param] position 0 in ERB.new | file://:0:0:0:0 | [summary] to write: ReturnValue in ERB.new |
 | file://:0:0:0:0 | [summary param] position 0 in File.absolute_path | file://:0:0:0:0 | [summary] to write: ReturnValue in File.absolute_path |
@@ -2839,6 +2841,7 @@
 | file://:0:0:0:0 | [summary param] self in assoc-unknown-arg | file://:0:0:0:0 | [summary] read: Argument[self].Element[any] in assoc-unknown-arg |
 | file://:0:0:0:0 | [summary param] self in each(0) | file://:0:0:0:0 | [summary] read: Argument[self].Element[any] in each(0) |
 | file://:0:0:0:0 | [summary] read: Argument[0].Element[any] in Hash[] | file://:0:0:0:0 | [summary] read: Argument[0].Element[any].Element[1] in Hash[] |
+| file://:0:0:0:0 | [summary] read: Argument[hash-splat].Element[any] in I18n.translate | file://:0:0:0:0 | [summary] to write: ReturnValue in I18n.translate |
 | local_dataflow.rb:1:1:7:3 | self (foo) | local_dataflow.rb:3:8:3:10 | self |
 | local_dataflow.rb:1:1:7:3 | self in foo | local_dataflow.rb:1:1:7:3 | self (foo) |
 | local_dataflow.rb:1:1:7:3 | synthetic splat parameter | local_dataflow.rb:1:9:1:9 | a |

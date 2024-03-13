@@ -27,6 +27,10 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
     kind instanceof GotoEdge
   }
 
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(ExitFunctionTag())
+  }
+
   override TranslatedElement getChild(int n) {
     n = 1 and
     result = getTranslatedInitialization(var.getInitializer().getExpr().getFullyConverted())
@@ -58,7 +62,7 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
     type = getVoidType()
   }
 
-  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
       tag = EnterFunctionTag() and
@@ -81,7 +85,7 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
     )
   }
 
-  override Instruction getChildSuccessor(TranslatedElement child, EdgeKind kind) {
+  override Instruction getChildSuccessorInternal(TranslatedElement child, EdgeKind kind) {
     child = this.getChild(1) and
     result = this.getInstruction(ReturnTag()) and
     kind instanceof GotoEdge

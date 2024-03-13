@@ -47,6 +47,8 @@ namespace Semmle.Extraction.CSharp
                 }
             }
 
+            public void Started(int item, int total, string source) { }
+
             public void MissingNamespace(string @namespace) { }
 
             public void MissingSummary(int types, int namespaces) { }
@@ -386,7 +388,7 @@ namespace Semmle.Extraction.CSharp
 
                     if (compilerArguments.GeneratedFilesOutputDirectory is not null)
                     {
-                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", SearchOption.AllDirectories));
+                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive }));
                     }
 
                     return ReadSyntaxTrees(

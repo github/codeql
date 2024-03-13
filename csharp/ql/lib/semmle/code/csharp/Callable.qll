@@ -8,7 +8,6 @@ import Stmt
 import Type
 import exprs.Call
 private import commons.QualifiedName
-private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
 private import semmle.code.csharp.metrics.Complexity
 private import TypeRef
@@ -21,8 +20,73 @@ private import TypeRef
  * an anonymous function (`AnonymousFunctionExpr`), or a local function
  * (`LocalFunction`).
  */
-class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @callable {
-  override Type getReturnType() { none() }
+class Callable extends Parameterizable, ExprOrStmtParent, @callable {
+  pragma[noinline]
+  deprecated private string getDeclaringTypeLabel() { result = this.getDeclaringType().getLabel() }
+
+  pragma[noinline]
+  deprecated private string getParameterTypeLabelNonGeneric(int p) {
+    not this instanceof Generic and
+    result = this.getParameter(p).getType().getLabel()
+  }
+
+  language[monotonicAggregates]
+  pragma[nomagic]
+  deprecated private string getMethodParamListNonGeneric() {
+    result =
+      concat(int p |
+        p in [0 .. this.getNumberOfParameters() - 1]
+      |
+        this.getParameterTypeLabelNonGeneric(p), "," order by p
+      )
+  }
+
+  pragma[noinline]
+  deprecated private string getParameterTypeLabelGeneric(int p) {
+    this instanceof Generic and
+    result = this.getParameter(p).getType().getLabel()
+  }
+
+  language[monotonicAggregates]
+  pragma[nomagic]
+  deprecated private string getMethodParamListGeneric() {
+    result =
+      concat(int p |
+        p in [0 .. this.getNumberOfParameters() - 1]
+      |
+        this.getParameterTypeLabelGeneric(p), "," order by p
+      )
+  }
+
+  pragma[noinline]
+  deprecated private string getLabelNonGeneric() {
+    not this instanceof Generic and
+    result =
+      this.getReturnTypeLabel() + " " + this.getDeclaringTypeLabel() + "." +
+        this.getUndecoratedName() + "(" + this.getMethodParamListNonGeneric() + ")"
+  }
+
+  pragma[noinline]
+  deprecated private string getLabelGeneric() {
+    result =
+      this.getReturnTypeLabel() + " " + this.getDeclaringTypeLabel() + "." +
+        this.getUndecoratedName() + getGenericsLabel(this) + "(" + this.getMethodParamListGeneric() +
+        ")"
+  }
+
+  deprecated final override string getLabel() {
+    result = this.getLabelNonGeneric() or
+    result = this.getLabelGeneric()
+  }
+
+  deprecated private string getReturnTypeLabel() {
+    result = this.getReturnType().getLabel()
+    or
+    not exists(this.getReturnType()) and result = "System.Void"
+  }
+
+  /** Gets the return type of this callable. */
+  Type getReturnType() { none() }
 
   /** Gets the annotated return type of this callable. */
   final AnnotatedType getAnnotatedReturnType() { result.appliesTo(this) }
@@ -65,7 +129,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     result = this.getExpressionBody()
   }
 
-  override predicate hasBody() { exists(this.getBody()) }
+  /** Holds if this callable has a body or an implementation. */
+  predicate hasBody() { exists(this.getBody()) }
 
   /**
    * Holds if this callable has a non-empty body. That is, either it has
@@ -196,7 +261,8 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
     )
   }
 
-  override predicate canReturn(DotNet::Expr e) {
+  /** Holds if this callable can return expression `e`. */
+  predicate canReturn(Expr e) {
     exists(ReturnStmt ret | ret.getEnclosingCallable() = this | e = ret.getExpr())
     or
     e = this.getExpressionBody() and
@@ -218,8 +284,6 @@ class Callable extends DotNet::Callable, Parameterizable, ExprOrStmtParent, @cal
 
   /** Gets a `Call` that has this callable as a target. */
   Call getACall() { this = result.getTarget() }
-
-  override Parameter getAParameter() { result = Parameterizable.super.getAParameter() }
 }
 
 /**
@@ -325,7 +389,7 @@ class ExtensionMethod extends Method {
  * }
  * ```
  */
-class Constructor extends DotNet::Constructor, Callable, Member, Attributable, @constructor {
+class Constructor extends Callable, Member, Attributable, @constructor {
   override string getName() { constructors(this, result, _, _) }
 
   override Type getReturnType() {
@@ -416,7 +480,9 @@ class InstanceConstructor extends Constructor {
  */
 class PrimaryConstructor extends Constructor {
   PrimaryConstructor() {
-    not this.hasBody() and
+    // In the extractor we use the constructor location as the location for the
+    // synthesized empty body of the constructor.
+    this.getLocation() = this.getBody().getLocation() and
     this.getDeclaringType().fromSource() and
     this.fromSource()
   }
@@ -433,7 +499,7 @@ class PrimaryConstructor extends Constructor {
  * }
  * ```
  */
-class Destructor extends DotNet::Destructor, Callable, Member, Attributable, @destructor {
+class Destructor extends Callable, Member, Attributable, @destructor {
   override string getName() { destructors(this, result, _, _) }
 
   override Type getReturnType() {
@@ -495,10 +561,33 @@ class Operator extends Callable, Member, Attributable, Overridable, @operator {
   override Parameter getRawParameter(int i) { result = this.getParameter(i) }
 }
 
+pragma[nomagic]
+private ValueOrRefType getARecordBaseType(ValueOrRefType t) {
+  exists(Callable c |
+    c.hasName("<Clone>$") and
+    c.getNumberOfParameters() = 0 and
+    t = c.getDeclaringType() and
+    result = t
+  )
+  or
+  result = getARecordBaseType(t).getABaseType()
+}
+
 /** A clone method on a record. */
-class RecordCloneMethod extends Method, DotNet::RecordCloneCallable {
-  override Constructor getConstructor() {
-    result = DotNet::RecordCloneCallable.super.getConstructor()
+class RecordCloneMethod extends Method {
+  RecordCloneMethod() {
+    this.hasName("<Clone>$") and
+    this.getNumberOfParameters() = 0 and
+    this.getReturnType() = getARecordBaseType(this.getDeclaringType()) and
+    this.isPublic() and
+    not this.isStatic()
+  }
+
+  /** Gets the constructor that this clone method calls. */
+  Constructor getConstructor() {
+    result.getDeclaringType() = this.getDeclaringType() and
+    result.getNumberOfParameters() = 1 and
+    result.getParameter(0).getType() = this.getDeclaringType()
   }
 }
 

@@ -735,7 +735,9 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(ForStmt).getStmt() = e and pred = "getStmt()"
     or
-    s.(RangeBasedForStmt).getChild(0) = e and pred = "getChild(0)"
+    s.(RangeBasedForStmt).getInitialization() = e and pred = "getInitialization()"
+    or
+    s.(RangeBasedForStmt).getChild(1) = e and pred = "getChild(1)"
     or
     s.(RangeBasedForStmt).getBeginEndDeclaration() = e and pred = "getBeginEndDeclaration()"
     or
@@ -743,7 +745,7 @@ private predicate namedStmtChildPredicates(Locatable s, Element e, string pred) 
     or
     s.(RangeBasedForStmt).getUpdate() = e and pred = "getUpdate()"
     or
-    s.(RangeBasedForStmt).getChild(4) = e and pred = "getChild(4)"
+    s.(RangeBasedForStmt).getChild(5) = e and pred = "getChild(5)"
     or
     s.(RangeBasedForStmt).getStmt() = e and pred = "getStmt()"
     or

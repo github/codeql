@@ -105,7 +105,21 @@ class FooController < ActionController::Base
 
     User.reorder(params[:direction])
 
+    User.select('a','b', params[:column])
+    User.reselect('a','b', params[:column])
+    User.order('a ASC', "b #{params[:direction]}")
+    User.reorder('a ASC', "b #{params[:direction]}")
+    User.group('a', params[:column])
+    User.pluck('a', params[:column])
+    User.joins(:a, params[:column])
+
     User.count_by_sql(params[:custom_sql_query])
+
+    # BAD: executes `SELECT users.* FROM #{params[:tab]}`
+    # where `params[:tab]` is unsanitized
+    User.all.from(params[:tab]) 
+    # BAD: executes `SELECT "users".* FROM (SELECT "users".* FROM "users") #{params[:sq]}
+    User.all.from(User.all, params[:sq])
   end
 end
 

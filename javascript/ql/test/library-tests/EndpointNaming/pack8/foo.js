@@ -1,4 +1,4 @@
-class Foo {} // $ class=(pack8).Foo instance=(pack8).Foo.prototype
+class Foo {} // $ name=(pack8).Foo
 
 module.exports = Foo;
 module.exports.default = Foo; // $ alias=(pack8).Foo.default==(pack8).Foo

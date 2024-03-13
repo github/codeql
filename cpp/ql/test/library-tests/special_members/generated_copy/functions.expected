@@ -11,8 +11,7 @@
 | copy.cpp:13:9:13:9 | operator= | protected_cc::Sub2& protected_cc::Sub2::operator=(protected_cc::Sub2 const&) |  |  |
 | copy.cpp:13:9:13:9 | operator= | protected_cc::Sub2& protected_cc::Sub2::operator=(protected_cc::Sub2&&) |  |  |
 | copy.cpp:17:9:17:9 | HasMember | void protected_cc::HasMember::HasMember() | deleted |  |
-| copy.cpp:17:9:17:9 | HasMember | void protected_cc::HasMember::HasMember(protected_cc::HasMember const&) |  |  |
-| copy.cpp:17:9:17:9 | HasMember | void protected_cc::HasMember::HasMember(protected_cc::HasMember&&) |  |  |
+| copy.cpp:17:9:17:9 | HasMember | void protected_cc::HasMember::HasMember(protected_cc::HasMember const&) | deleted |  |
 | copy.cpp:17:9:17:9 | operator= | protected_cc::HasMember& protected_cc::HasMember::operator=(protected_cc::HasMember const&) |  |  |
 | copy.cpp:17:9:17:9 | operator= | protected_cc::HasMember& protected_cc::HasMember::operator=(protected_cc::HasMember&&) |  |  |
 | copy.cpp:25:5:25:5 | C | void deleted_cc::C::C(deleted_cc::C const&) | deleted |  |

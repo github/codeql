@@ -1,13 +1,21 @@
-export class PublicClass {} // $ class=(pack1).PublicClass instance=(pack1).PublicClass.prototype
+export class PublicClass {} // $ name=(pack1).PublicClass
 
 class PrivateClass {}
 
-export const ExportedConst = class ExportedConstClass {} // $ class=(pack1).ExportedConst instance=(pack1).ExportedConst.prototype
+export const ExportedConst = class ExportedConstClass {} // $ name=(pack1).ExportedConst
 
-class ClassWithEscapingInstance {} // $ instance=(pack1).ClassWithEscapingInstance.prototype
+class ClassWithEscapingInstance {
+    m() {} // $ name=(pack1).ClassWithEscapingInstance.prototype.m
+}
 
 export function getEscapingInstance() {
     return new ClassWithEscapingInstance();
-} // $ method=(pack1).getEscapingInstance
+} // $ name=(pack1).getEscapingInstance
 
-export function publicFunction() {} // $ method=(pack1).publicFunction
+export function publicFunction() {} // $ name=(pack1).publicFunction
+
+// Escapes into an upstream library, but is not exposed downstream
+class InternalClass {
+    m() {}
+}
+require('foo').bar(new InternalClass());

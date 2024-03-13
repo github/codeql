@@ -1,4 +1,4 @@
-load("@//:common.bzl", "on_windows")
+load("@semmle_code//:common.bzl", "on_windows")
 
 # Builds a zip file of the compiled typscript-parser-wrapper and its dependencies.
 genrule(

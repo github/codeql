@@ -34,7 +34,7 @@ private import Node0ToString
 cached
 private newtype TIRDataFlowNode =
   TNode0(Node0Impl node) { DataFlowImplCommon::forceCachingInSameStage() } or
-  TVariableNode(Variable var, int indirectionIndex) {
+  TGlobalLikeVariableNode(GlobalLikeVariable var, int indirectionIndex) {
     indirectionIndex =
       [getMinIndirectionsForType(var.getUnspecifiedType()) .. Ssa::getMaxIndirectionsForType(var.getUnspecifiedType())]
   } or
@@ -55,28 +55,11 @@ private newtype TIRDataFlowNode =
   TFinalParameterNode(Parameter p, int indirectionIndex) {
     exists(Ssa::FinalParameterUse use |
       use.getParameter() = p and
-      use.getIndirectionIndex() = indirectionIndex and
-      parameterIsRedefined(p)
+      use.getIndirectionIndex() = indirectionIndex
     )
   } or
   TFinalGlobalValue(Ssa::GlobalUse globalUse) or
   TInitialGlobalValue(Ssa::GlobalDef globalUse)
-
-/**
- * Holds if the value of `*p` (or `**p`, `***p`, etc.) is redefined somewhere in the body
- * of the enclosing function of `p`.
- *
- * Only parameters satisfying this predicate will generate a `FinalParameterNode` transferring
- * flow out of the function.
- */
-private predicate parameterIsRedefined(Parameter p) {
-  exists(Ssa::Def def |
-    def.getSourceVariable().getBaseVariable().(Ssa::BaseIRVariable).getIRVariable().getAst() = p and
-    def.getIndirectionIndex() = 0 and
-    def.getIndirection() > 1 and
-    not def.getValue().asInstruction() instanceof InitializeParameterInstruction
-  )
-}
 
 /**
  * An operand that is defined by a `FieldAddressInstruction`.
@@ -413,7 +396,7 @@ class Node extends TIRDataFlowNode {
    * modeling flow in and out of global variables.
    */
   Variable asVariable() {
-    this = TVariableNode(result, getMinIndirectionsForType(result.getUnspecifiedType()))
+    this = TGlobalLikeVariableNode(result, getMinIndirectionsForType(result.getUnspecifiedType()))
   }
 
   /**
@@ -423,7 +406,7 @@ class Node extends TIRDataFlowNode {
    */
   Variable asIndirectVariable(int indirectionIndex) {
     indirectionIndex > getMinIndirectionsForType(result.getUnspecifiedType()) and
-    this = TVariableNode(result, indirectionIndex)
+    this = TGlobalLikeVariableNode(result, indirectionIndex)
   }
 
   /** Gets an indirection of this node's underlying variable, if any. */
@@ -1768,15 +1751,18 @@ class DefinitionByReferenceNode extends IndirectArgumentOutNode {
 }
 
 /**
- * A `Node` corresponding to a variable in the program, as opposed to the
- * value of that variable at some particular point. This can be used for
- * modeling flow in and out of global variables.
+ * A `Node` corresponding to a global (or `static` local) variable in the
+ * program, as opposed to the value of that variable at some particular point.
+ * This is used to model flow through global variables (and `static` local
+ * variables).
+ *
+ * There is no `VariableNode` for non-`static` local variables.
  */
-class VariableNode extends Node, TVariableNode {
+class VariableNode extends Node, TGlobalLikeVariableNode {
   Variable v;
   int indirectionIndex;
 
-  VariableNode() { this = TVariableNode(v, indirectionIndex) }
+  VariableNode() { this = TGlobalLikeVariableNode(v, indirectionIndex) }
 
   /** Gets the variable corresponding to this node. */
   Variable getVariable() { result = v }

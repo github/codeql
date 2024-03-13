@@ -1728,6 +1728,374 @@ complex.c:
 #  144|             Type = [LongDoubleType] long double
 #  144|             ValueCategory = prvalue
 #  145|     getStmt(72): [ReturnStmt] return ...
+destructors_for_temps.cpp:
+#    1| [CopyAssignmentOperator] ClassWithDestructor2& ClassWithDestructor2::operator=(ClassWithDestructor2 const&)
+#    1|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ClassWithDestructor2 &
+#    1| [CopyConstructor] void ClassWithDestructor2::ClassWithDestructor2(ClassWithDestructor2 const&)
+#    1|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ClassWithDestructor2 &
+#    3| [Constructor] void ClassWithDestructor2::ClassWithDestructor2()
+#    3|   <params>: 
+#    4| [Destructor] void ClassWithDestructor2::~ClassWithDestructor2()
+#    4|   <params>: 
+#    6| [MemberFunction] char ClassWithDestructor2::get_x()
+#    6|   <params>: 
+#    9| [CopyAssignmentOperator] ClassWithConstructor& ClassWithConstructor::operator=(ClassWithConstructor const&)
+#    9|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ClassWithConstructor &
+#    9| [MoveAssignmentOperator] ClassWithConstructor& ClassWithConstructor::operator=(ClassWithConstructor&&)
+#    9|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] ClassWithConstructor &&
+#    9| [CopyConstructor] void ClassWithConstructor::ClassWithConstructor(ClassWithConstructor const&)
+#    9|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ClassWithConstructor &
+#    9| [MoveConstructor] void ClassWithConstructor::ClassWithConstructor(ClassWithConstructor&&)
+#    9|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] ClassWithConstructor &&
+#    9|   <initializations>: 
+#    9|   getEntryPoint(): [BlockStmt] { ... }
+#    9|     getStmt(0): [ReturnStmt] return ...
+#   11| [Constructor] void ClassWithConstructor::ClassWithConstructor(char, char)
+#   11|   <params>: 
+#   11|     getParameter(0): [Parameter] x
+#   11|         Type = [PlainCharType] char
+#   11|     getParameter(1): [Parameter] y
+#   11|         Type = [PlainCharType] char
+#   14| [TopLevelFunction] char temp_test()
+#   14|   <params>: 
+#   14|   getEntryPoint(): [BlockStmt] { ... }
+#   15|     getStmt(0): [DeclStmt] declaration
+#   15|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   15|           Type = [PlainCharType] char
+#   15|         getVariable().getInitializer(): [Initializer] initializer for x
+#   15|           getExpr(): [FunctionCall] call to get_x
+#   15|               Type = [PlainCharType] char
+#   15|               ValueCategory = prvalue
+#   15|             getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   15|                 Type = [VoidType] void
+#   15|                 ValueCategory = prvalue
+#   15|             getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   15|                 Type = [Class] ClassWithDestructor2
+#   15|                 ValueCategory = prvalue(load)
+#   16|     getStmt(1): [DeclStmt] declaration
+#   16|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+#   16|           Type = [Class] ClassWithConstructor
+#   16|         getVariable().getInitializer(): [Initializer] initializer for y
+#   16|           getExpr(): [ConstructorCall] call to ClassWithConstructor
+#   16|               Type = [VoidType] void
+#   16|               ValueCategory = prvalue
+#   16|             getArgument(0): [CharLiteral] 97
+#   16|                 Type = [PlainCharType] char
+#   16|                 Value = [CharLiteral] 97
+#   16|                 ValueCategory = prvalue
+#   16|             getArgument(1): [FunctionCall] call to get_x
+#   16|                 Type = [PlainCharType] char
+#   16|                 ValueCategory = prvalue
+#   16|               getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   16|                   Type = [VoidType] void
+#   16|                   ValueCategory = prvalue
+#   16|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   16|                   Type = [Class] ClassWithDestructor2
+#   16|                   ValueCategory = prvalue(load)
+#   17|     getStmt(2): [ReturnStmt] return ...
+#   17|       getExpr(): [FunctionCall] call to get_x
+#   17|           Type = [PlainCharType] char
+#   17|           ValueCategory = prvalue
+#   17|         getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   17|             Type = [VoidType] void
+#   17|             ValueCategory = prvalue
+#   17|         getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   17|             Type = [Class] ClassWithDestructor2
+#   17|             ValueCategory = prvalue(load)
+#   21| [TopLevelFunction] char temp_test2()
+#   21|   <params>: 
+#   21|   getEntryPoint(): [BlockStmt] { ... }
+#   22|     getStmt(0): [ExprStmt] ExprStmt
+#   22|       getExpr(): [NewExpr] new
+#   22|           Type = [PointerType] ClassWithDestructor2 *
+#   22|           ValueCategory = prvalue
+#   22|         getInitializer(): [ConstructorCall] call to ClassWithDestructor2
+#   22|             Type = [VoidType] void
+#   22|             ValueCategory = prvalue
+#   23|     getStmt(1): [ReturnStmt] return ...
+#   23|       getExpr(): [AddExpr] ... + ...
+#   23|           Type = [IntType] int
+#   23|           ValueCategory = prvalue
+#   23|         getLeftOperand(): [FunctionCall] call to get_x
+#   23|             Type = [PlainCharType] char
+#   23|             ValueCategory = prvalue
+#   23|           getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   23|               Type = [VoidType] void
+#   23|               ValueCategory = prvalue
+#   23|           getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   23|               Type = [Class] ClassWithDestructor2
+#   23|               ValueCategory = prvalue(load)
+#   23|         getRightOperand(): [FunctionCall] call to get_x
+#   23|             Type = [PlainCharType] char
+#   23|             ValueCategory = prvalue
+#   23|           getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   23|               Type = [VoidType] void
+#   23|               ValueCategory = prvalue
+#   23|           getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   23|               Type = [Class] ClassWithDestructor2
+#   23|               ValueCategory = prvalue(load)
+#   23|         getLeftOperand().getFullyConverted(): [CStyleCast] (int)...
+#   23|             Conversion = [IntegralConversion] integral conversion
+#   23|             Type = [IntType] int
+#   23|             ValueCategory = prvalue
+#   23|         getRightOperand().getFullyConverted(): [CStyleCast] (int)...
+#   23|             Conversion = [IntegralConversion] integral conversion
+#   23|             Type = [IntType] int
+#   23|             ValueCategory = prvalue
+#   23|       getExpr().getFullyConverted(): [CStyleCast] (char)...
+#   23|           Conversion = [IntegralConversion] integral conversion
+#   23|           Type = [PlainCharType] char
+#   23|           ValueCategory = prvalue
+#   27| [FunctionTemplateInstantiation,TopLevelFunction] ClassWithDestructor2 returnValue<ClassWithDestructor2>()
+#   27|   <params>: 
+#   27| [TemplateFunction,TopLevelFunction] T returnValue<T>()
+#   27|   <params>: 
+#   29| [TopLevelFunction] void temp_test3()
+#   29|   <params>: 
+#   29|   getEntryPoint(): [BlockStmt] { ... }
+#   30|     getStmt(0): [DeclStmt] declaration
+#   30|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of rs
+#   30|           Type = [LValueReferenceType] const ClassWithDestructor2 &
+#   30|         getVariable().getInitializer(): [Initializer] initializer for rs
+#   30|           getExpr(): [FunctionCall] call to returnValue
+#   30|               Type = [Class] ClassWithDestructor2
+#   30|               ValueCategory = prvalue
+#   30|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#   30|               Type = [LValueReferenceType] const ClassWithDestructor2 &
+#   30|               ValueCategory = prvalue
+#   30|             getExpr(): [CStyleCast] (const ClassWithDestructor2)...
+#   30|                 Conversion = [GlvalueConversion] glvalue conversion
+#   30|                 Type = [SpecifiedType] const ClassWithDestructor2
+#   30|                 ValueCategory = lvalue
+#   30|               getExpr(): [TemporaryObjectExpr] temporary object
+#   30|                   Type = [Class] ClassWithDestructor2
+#   30|                   ValueCategory = lvalue
+#   31|     getStmt(1): [ReturnStmt] return ...
+#   33| [TopLevelFunction] void temp_test4()
+#   33|   <params>: 
+#   33|   getEntryPoint(): [BlockStmt] { ... }
+#   34|     getStmt(0): [DeclStmt] declaration
+#   34|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+#   34|           Type = [Class] ClassWithDestructor2
+#   34|         getVariable().getInitializer(): [Initializer] initializer for c
+#   34|           getExpr(): [ConstructorCall] call to ClassWithDestructor2
+#   34|               Type = [VoidType] void
+#   34|               ValueCategory = prvalue
+#   35|     getStmt(1): [DeclStmt] declaration
+#   35|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of rs2
+#   35|           Type = [LValueReferenceType] const ClassWithDestructor2 &
+#   35|         getVariable().getInitializer(): [Initializer] initializer for rs2
+#   35|           getExpr(): [FunctionCall] call to returnValue
+#   35|               Type = [Class] ClassWithDestructor2
+#   35|               ValueCategory = prvalue
+#   35|           getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+#   35|               Type = [LValueReferenceType] const ClassWithDestructor2 &
+#   35|               ValueCategory = prvalue
+#   35|             getExpr(): [CStyleCast] (const ClassWithDestructor2)...
+#   35|                 Conversion = [GlvalueConversion] glvalue conversion
+#   35|                 Type = [SpecifiedType] const ClassWithDestructor2
+#   35|                 ValueCategory = lvalue
+#   35|               getExpr(): [TemporaryObjectExpr] temporary object
+#   35|                   Type = [Class] ClassWithDestructor2
+#   35|                   ValueCategory = lvalue
+#   36|     getStmt(2): [ReturnStmt] return ...
+#   36|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   36|           Type = [VoidType] void
+#   36|           ValueCategory = prvalue
+#   36|         getQualifier(): [VariableAccess] c
+#   36|             Type = [Class] ClassWithDestructor2
+#   36|             ValueCategory = lvalue
+#   38| [TopLevelFunction] void temp_test5(bool)
+#   38|   <params>: 
+#   38|     getParameter(0): [Parameter] b
+#   38|         Type = [BoolType] bool
+#   38|   getEntryPoint(): [BlockStmt] { ... }
+#   39|     getStmt(0): [ExprStmt] ExprStmt
+#   39|       getExpr(): [ConditionalExpr] ... ? ... : ...
+#   39|           Type = [Class] ClassWithDestructor2
+#   39|           ValueCategory = prvalue
+#   39|         getCondition(): [VariableAccess] b
+#   39|             Type = [BoolType] bool
+#   39|             ValueCategory = prvalue(load)
+#   39|         getThen(): [ConstructorCall] call to ClassWithDestructor2
+#   39|             Type = [VoidType] void
+#   39|             ValueCategory = prvalue
+#   39|         getElse(): [ConstructorCall] call to ClassWithDestructor2
+#   39|             Type = [VoidType] void
+#   39|             ValueCategory = prvalue
+#   39|         getThen().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   39|             Type = [Class] ClassWithDestructor2
+#   39|             ValueCategory = prvalue(load)
+#   39|         getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   39|             Type = [Class] ClassWithDestructor2
+#   39|             ValueCategory = prvalue(load)
+#   39|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   39|           Type = [Class] ClassWithDestructor2
+#   39|           ValueCategory = prvalue
+#   40|     getStmt(1): [ReturnStmt] return ...
+#   42| [TopLevelFunction] void temp_test6(bool)
+#   42|   <params>: 
+#   42|     getParameter(0): [Parameter] b
+#   42|         Type = [BoolType] bool
+#   42|   getEntryPoint(): [BlockStmt] { ... }
+#   43|     getStmt(0): [DeclStmt] declaration
+#   43|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+#   43|           Type = [Class] ClassWithDestructor2
+#   43|         getVariable().getInitializer(): [Initializer] initializer for c
+#   43|           getExpr(): [ConstructorCall] call to ClassWithDestructor2
+#   43|               Type = [VoidType] void
+#   43|               ValueCategory = prvalue
+#   44|     getStmt(1): [IfStmt] if (...) ... 
+#   44|       getCondition(): [VariableAccess] b
+#   44|           Type = [BoolType] bool
+#   44|           ValueCategory = prvalue(load)
+#   44|       getThen(): [BlockStmt] { ... }
+#   45|         getStmt(0): [ExprStmt] ExprStmt
+#   45|           getExpr(): [ThrowExpr] throw ...
+#   45|               Type = [Class] ClassWithConstructor
+#   45|               ValueCategory = prvalue
+#   45|             getExpr(): [ConstructorCall] call to ClassWithConstructor
+#   45|                 Type = [VoidType] void
+#   45|                 ValueCategory = prvalue
+#   45|               getArgument(0): [CharLiteral] 120
+#   45|                   Type = [PlainCharType] char
+#   45|                   Value = [CharLiteral] 120
+#   45|                   ValueCategory = prvalue
+#   45|               getArgument(1): [FunctionCall] call to get_x
+#   45|                   Type = [PlainCharType] char
+#   45|                   ValueCategory = prvalue
+#   45|                 getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   45|                     Type = [VoidType] void
+#   45|                     ValueCategory = prvalue
+#   45|                 getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   45|                     Type = [Class] ClassWithDestructor2
+#   45|                     ValueCategory = prvalue(load)
+#   47|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   47|                 Type = [VoidType] void
+#   47|                 ValueCategory = prvalue
+#   47|               getQualifier(): [VariableAccess] c
+#   47|                   Type = [Class] ClassWithDestructor2
+#   47|                   ValueCategory = lvalue
+#   47|     getStmt(2): [ReturnStmt] return ...
+#   47|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   47|           Type = [VoidType] void
+#   47|           ValueCategory = prvalue
+#   47|         getQualifier(): [VariableAccess] c
+#   47|             Type = [Class] ClassWithDestructor2
+#   47|             ValueCategory = lvalue
+#   49| [TopLevelFunction] void temp_test7(bool)
+#   49|   <params>: 
+#   49|     getParameter(0): [Parameter] b
+#   49|         Type = [BoolType] bool
+#   49|   getEntryPoint(): [BlockStmt] { ... }
+#   50|     getStmt(0): [DeclStmt] declaration
+#   50|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+#   50|           Type = [Class] ClassWithDestructor2
+#   50|         getVariable().getInitializer(): [Initializer] initializer for c
+#   50|           getExpr(): [ConstructorCall] call to ClassWithDestructor2
+#   50|               Type = [VoidType] void
+#   50|               ValueCategory = prvalue
+#   51|     getStmt(1): [ExprStmt] ExprStmt
+#   51|       getExpr(): [ConditionalExpr] ... ? ... : ...
+#   51|           Type = [Class] ClassWithDestructor2
+#   51|           ValueCategory = prvalue(load)
+#   51|         getCondition(): [VariableAccess] b
+#   51|             Type = [BoolType] bool
+#   51|             ValueCategory = prvalue(load)
+#   51|         getThen(): [ThrowExpr] throw ...
+#   51|             Type = [Class] ClassWithConstructor
+#   51|             ValueCategory = prvalue
+#   51|           getExpr(): [ConstructorCall] call to ClassWithConstructor
+#   51|               Type = [VoidType] void
+#   51|               ValueCategory = prvalue
+#   51|             getArgument(0): [CharLiteral] 120
+#   51|                 Type = [PlainCharType] char
+#   51|                 Value = [CharLiteral] 120
+#   51|                 ValueCategory = prvalue
+#   51|             getArgument(1): [FunctionCall] call to get_x
+#   51|                 Type = [PlainCharType] char
+#   51|                 ValueCategory = prvalue
+#   51|               getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   51|                   Type = [VoidType] void
+#   51|                   ValueCategory = prvalue
+#   51|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   51|                   Type = [Class] ClassWithDestructor2
+#   51|                   ValueCategory = prvalue(load)
+#   52|           getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   52|               Type = [VoidType] void
+#   52|               ValueCategory = prvalue
+#   52|             getQualifier(): [VariableAccess] c
+#   52|                 Type = [Class] ClassWithDestructor2
+#   52|                 ValueCategory = lvalue
+#   51|         getElse(): [ConstructorCall] call to ClassWithDestructor2
+#   51|             Type = [VoidType] void
+#   51|             ValueCategory = prvalue
+#   51|         getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   51|             Type = [Class] ClassWithDestructor2
+#   51|             ValueCategory = prvalue(load)
+#   51|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   51|           Type = [Class] ClassWithDestructor2
+#   51|           ValueCategory = prvalue
+#   52|     getStmt(2): [ReturnStmt] return ...
+#   52|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   52|           Type = [VoidType] void
+#   52|           ValueCategory = prvalue
+#   52|         getQualifier(): [VariableAccess] c
+#   52|             Type = [Class] ClassWithDestructor2
+#   52|             ValueCategory = lvalue
+#   54| [TopLevelFunction] void temp_test8(bool)
+#   54|   <params>: 
+#   54|     getParameter(0): [Parameter] b
+#   54|         Type = [BoolType] bool
+#   54|   getEntryPoint(): [BlockStmt] { ... }
+#   55|     getStmt(0): [ExprStmt] ExprStmt
+#   55|       getExpr(): [ConditionalExpr] ... ? ... : ...
+#   55|           Type = [Class] ClassWithDestructor2
+#   55|           ValueCategory = prvalue(load)
+#   55|         getCondition(): [VariableAccess] b
+#   55|             Type = [BoolType] bool
+#   55|             ValueCategory = prvalue(load)
+#   55|         getThen(): [ThrowExpr] throw ...
+#   55|             Type = [Class] ClassWithConstructor
+#   55|             ValueCategory = prvalue
+#   55|           getExpr(): [ConstructorCall] call to ClassWithConstructor
+#   55|               Type = [VoidType] void
+#   55|               ValueCategory = prvalue
+#   55|             getArgument(0): [CharLiteral] 120
+#   55|                 Type = [PlainCharType] char
+#   55|                 Value = [CharLiteral] 120
+#   55|                 ValueCategory = prvalue
+#   55|             getArgument(1): [FunctionCall] call to get_x
+#   55|                 Type = [PlainCharType] char
+#   55|                 ValueCategory = prvalue
+#   55|               getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   55|                   Type = [VoidType] void
+#   55|                   ValueCategory = prvalue
+#   55|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   55|                   Type = [Class] ClassWithDestructor2
+#   55|                   ValueCategory = prvalue(load)
+#   55|         getElse(): [ConstructorCall] call to ClassWithDestructor2
+#   55|             Type = [VoidType] void
+#   55|             ValueCategory = prvalue
+#   55|         getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   55|             Type = [Class] ClassWithDestructor2
+#   55|             ValueCategory = prvalue(load)
+#   55|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   55|           Type = [Class] ClassWithDestructor2
+#   55|           ValueCategory = prvalue
+#   56|     getStmt(1): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 
@@ -4316,8 +4684,6 @@ ir.cpp:
 #  365|                 ValueCategory = prvalue
 #  361|         getStmt(2): [LabelStmt] label ...:
 #  367|     getStmt(1): [ReturnStmt] return ...
-#  369| [TopLevelFunction] void VoidFunc()
-#  369|   <params>: 
 #  370| [TopLevelFunction] int Add(int, int)
 #  370|   <params>: 
 #  370|     getParameter(0): [Parameter] x
@@ -5553,6 +5919,8 @@ ir.cpp:
 #  605|         Type = [RValueReferenceType] String &&
 #  607| [ConstMemberFunction] char const* String::c_str() const
 #  607|   <params>: 
+#  608| [MemberFunction] char String::pop_back()
+#  608|   <params>: 
 #  613| [TopLevelFunction] String ReturnObject()
 #  613|   <params>: 
 #  615| [TopLevelFunction] void DeclareObject()
@@ -9386,6 +9754,10 @@ ir.cpp:
 # 1059|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const vector<ClassWithDestructor> &
+# 1059| [CopyAssignmentOperator] vector<String>& vector<String>::operator=(vector<String> const&)
+# 1059|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const vector<String> &
 # 1059| [CopyAssignmentOperator] vector<int>& vector<int>::operator=(vector<int> const&)
 # 1059|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -9394,6 +9766,10 @@ ir.cpp:
 # 1059|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const vector<ClassWithDestructor> &
+# 1059| [CopyConstructor] void vector<String>::vector(vector<String> const&)
+# 1059|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const vector<String> &
 # 1059| [CopyConstructor] void vector<int>::vector(vector<int> const&)
 # 1059|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -9403,6 +9779,14 @@ ir.cpp:
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const iterator &
 # 1060| [MoveAssignmentOperator] vector<ClassWithDestructor>::iterator& vector<ClassWithDestructor>::iterator::operator=(vector<ClassWithDestructor>::iterator&&)
+# 1060|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] iterator &&
+# 1060| [CopyAssignmentOperator] vector<String>::iterator& vector<String>::iterator::operator=(vector<String>::iterator const public&)
+# 1060|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const iterator &
+# 1060| [MoveAssignmentOperator] vector<String>::iterator& vector<String>::iterator::operator=(vector<String>::iterator&&)
 # 1060|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] iterator &&
@@ -9416,17 +9800,25 @@ ir.cpp:
 #-----|         Type = [RValueReferenceType] iterator &&
 # 1062| [MemberFunction] vector<ClassWithDestructor>::iterator& vector<ClassWithDestructor>::iterator::operator++()
 # 1062|   <params>: 
+# 1062| [MemberFunction] vector<String>::iterator& vector<String>::iterator::operator++()
+# 1062|   <params>: 
 # 1062| [MemberFunction] vector<T>::iterator& vector<T>::iterator::operator++()
 # 1062|   <params>: 
 # 1062| [MemberFunction] vector<int>::iterator& vector<int>::iterator::operator++()
 # 1062|   <params>: 
 # 1063| [ConstMemberFunction] ClassWithDestructor& vector<ClassWithDestructor>::iterator::operator*() const
 # 1063|   <params>: 
+# 1063| [ConstMemberFunction] String& vector<String>::iterator::operator*() const
+# 1063|   <params>: 
 # 1063| [ConstMemberFunction] T& vector<T>::iterator::operator*() const
 # 1063|   <params>: 
 # 1063| [ConstMemberFunction] int& vector<int>::iterator::operator*() const
 # 1063|   <params>: 
 # 1065| [ConstMemberFunction] bool vector<ClassWithDestructor>::iterator::operator!=(vector<ClassWithDestructor>::iterator) const
+# 1065|   <params>: 
+# 1065|     getParameter(0): [Parameter] right
+# 1065|         Type = [NestedStruct] iterator
+# 1065| [ConstMemberFunction] bool vector<String>::iterator::operator!=(vector<String>::iterator) const
 # 1065|   <params>: 
 # 1065|     getParameter(0): [Parameter] right
 # 1065|         Type = [NestedStruct] iterator
@@ -9442,19 +9834,35 @@ ir.cpp:
 # 1068|   <params>: 
 # 1068|     getParameter(0): [Parameter] (unnamed parameter 0)
 # 1068|         Type = [Class] ClassWithDestructor
+# 1068| [Constructor] void vector<String>::vector(String)
+# 1068|   <params>: 
+# 1068|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 1068|         Type = [Struct] String
 # 1068| [Constructor] void vector<T>::vector(T)
 # 1068|   <params>: 
 # 1068|     getParameter(0): [Parameter] (unnamed parameter 0)
 # 1068|         Type = [TemplateParameter] T
+# 1068| [Constructor] void vector<int>::vector(int)
+# 1068|   <params>: 
+# 1068|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 1068|         Type = [IntType] int
+# 1069| [Destructor] void vector<ClassWithDestructor>::~vector()
+# 1069|   <params>: 
 # 1069| [Destructor] void vector<T>::~vector()
 # 1069|   <params>: 
+# 1069| [Destructor] void vector<int>::~vector()
+# 1069|   <params>: 
 # 1070| [ConstMemberFunction] vector<ClassWithDestructor>::iterator vector<ClassWithDestructor>::begin() const
+# 1070|   <params>: 
+# 1070| [ConstMemberFunction] vector<String>::iterator vector<String>::begin() const
 # 1070|   <params>: 
 # 1070| [ConstMemberFunction] vector<T>::iterator vector<T>::begin() const
 # 1070|   <params>: 
 # 1070| [ConstMemberFunction] vector<int>::iterator vector<int>::begin() const
 # 1070|   <params>: 
 # 1071| [ConstMemberFunction] vector<ClassWithDestructor>::iterator vector<ClassWithDestructor>::end() const
+# 1071|   <params>: 
+# 1071| [ConstMemberFunction] vector<String>::iterator vector<String>::end() const
 # 1071|   <params>: 
 # 1071| [ConstMemberFunction] vector<T>::iterator vector<T>::end() const
 # 1071|   <params>: 
@@ -9478,7 +9886,7 @@ ir.cpp:
 # 1079|         Type = [LValueReferenceType] const vector<int> &
 # 1079|   getEntryPoint(): [BlockStmt] { ... }
 # 1080|     getStmt(0): [RangeBasedForStmt] for(...:...) ...
-# 1080|       getChild(0): [DeclStmt] declaration
+# 1080|       getChild(1): [DeclStmt] declaration
 # 1080|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
 # 1080|             Type = [LValueReferenceType] const vector<int> &
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
@@ -9535,7 +9943,7 @@ ir.cpp:
 # 1080|         getQualifier(): [VariableAccess] (__begin)
 # 1080|             Type = [NestedStruct] iterator
 # 1080|             ValueCategory = lvalue
-# 1080|       getChild(4): [DeclStmt] declaration
+# 1080|       getChild(5): [DeclStmt] declaration
 # 1080|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of e
 # 1080|             Type = [IntType] int
 # 1080|           getVariable().getInitializer(): [Initializer] initializer for e
@@ -9571,7 +9979,7 @@ ir.cpp:
 # 1080|           Type = [NestedStruct] iterator
 # 1080|           ValueCategory = lvalue
 # 1086|     getStmt(1): [RangeBasedForStmt] for(...:...) ...
-# 1086|       getChild(0): [DeclStmt] declaration
+# 1086|       getChild(1): [DeclStmt] declaration
 # 1086|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
 # 1086|             Type = [LValueReferenceType] const vector<int> &
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
@@ -9628,7 +10036,7 @@ ir.cpp:
 # 1086|         getQualifier(): [VariableAccess] (__begin)
 # 1086|             Type = [NestedStruct] iterator
 # 1086|             ValueCategory = lvalue
-# 1086|       getChild(4): [DeclStmt] declaration
+# 1086|       getChild(5): [DeclStmt] declaration
 # 1086|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of e
 # 1086|             Type = [LValueReferenceType] const int &
 # 1086|           getVariable().getInitializer(): [Initializer] initializer for e
@@ -10400,24 +10808,6 @@ ir.cpp:
 # 1245|                 Type = [PointerType] const char *
 # 1245|                 ValueCategory = prvalue(load)
 # 1246|     getStmt(3): [ReturnStmt] return ...
-# 1246|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
-# 1246|           Type = [VoidType] void
-# 1246|           ValueCategory = prvalue
-# 1246|         getQualifier(): [VariableAccess] c
-# 1246|             Type = [Struct] String
-# 1246|             ValueCategory = lvalue
-# 1246|       getImplicitDestructorCall(1): [DestructorCall] call to ~String
-# 1246|           Type = [VoidType] void
-# 1246|           ValueCategory = prvalue
-# 1246|         getQualifier(): [VariableAccess] b
-# 1246|             Type = [Struct] String
-# 1246|             ValueCategory = lvalue
-# 1246|       getImplicitDestructorCall(2): [DestructorCall] call to ~String
-# 1246|           Type = [VoidType] void
-# 1246|           ValueCategory = prvalue
-# 1246|         getQualifier(): [VariableAccess] a
-# 1246|             Type = [Struct] String
-# 1246|             ValueCategory = lvalue
 # 1250| [TopLevelFunction] char* strcpy(char*, char const*)
 # 1250|   <params>: 
 # 1250|     getParameter(0): [Parameter] destination
@@ -16384,162 +16774,188 @@ ir.cpp:
 # 2131|             Type = [PlainCharType] char
 # 2131|             ValueCategory = prvalue(load)
 # 2131|     getStmt(1): [ReturnStmt] return ...
-# 2134| [GlobalVariable] bool initialization_with_destructor_bool
-# 2134|   getInitializer(): [Initializer] initializer for initialization_with_destructor_bool
-# 2134|     getExpr(): [Literal] 1
-# 2134|         Type = [BoolType] bool
-# 2134|         Value = [Literal] 1
-# 2134|         ValueCategory = prvalue
-# 2136| [TopLevelFunction] void initialization_with_destructor(bool, char)
-# 2136|   <params>: 
-# 2136|     getParameter(0): [Parameter] b
-# 2136|         Type = [BoolType] bool
-# 2136|     getParameter(1): [Parameter] c
-# 2136|         Type = [PlainCharType] char
-# 2136|   getEntryPoint(): [BlockStmt] { ... }
-# 2137|     getStmt(0): [IfStmt] if (...) ... 
-# 2137|       getInitialization(): [DeclStmt] declaration
-# 2137|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
-# 2137|             Type = [Class] ClassWithDestructor
-# 2137|           getVariable().getInitializer(): [Initializer] initializer for x
-# 2137|             getExpr(): [ConstructorCall] call to ClassWithDestructor
-# 2137|                 Type = [VoidType] void
-# 2137|                 ValueCategory = prvalue
-# 2137|       getCondition(): [VariableAccess] b
-# 2137|           Type = [BoolType] bool
-# 2137|           ValueCategory = prvalue(load)
-# 2138|       getThen(): [ExprStmt] ExprStmt
-# 2138|         getExpr(): [FunctionCall] call to set_x
-# 2138|             Type = [VoidType] void
-# 2138|             ValueCategory = prvalue
-# 2138|           getQualifier(): [VariableAccess] x
-# 2138|               Type = [Class] ClassWithDestructor
-# 2138|               ValueCategory = lvalue
-# 2138|           getArgument(0): [CharLiteral] 97
-# 2138|               Type = [PlainCharType] char
-# 2138|               Value = [CharLiteral] 97
-# 2138|               ValueCategory = prvalue
-# 2138|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
-# 2138|           Type = [VoidType] void
-# 2138|           ValueCategory = prvalue
-# 2138|         getQualifier(): [VariableAccess] x
+# 2132| [MemberFunction] char ClassWithDestructor::get_x()
+# 2132|   <params>: 
+# 2132|   getEntryPoint(): [BlockStmt] { ... }
+# 2132|     getStmt(0): [ReturnStmt] return ...
+# 2132|       getExpr(): [PointerDereferenceExpr] * ...
+# 2132|           Type = [PlainCharType] char
+# 2132|           ValueCategory = prvalue(load)
+# 2132|         getOperand(): [ImplicitThisFieldAccess,PointerFieldAccess] x
+# 2132|             Type = [CharPointerType] char *
+# 2132|             ValueCategory = prvalue(load)
+# 2132|           getQualifier(): [ThisExpr] this
+# 2132|               Type = [PointerType] ClassWithDestructor *
+# 2132|               ValueCategory = prvalue(load)
+# 2135| [GlobalVariable] bool initialization_with_destructor_bool
+# 2135|   getInitializer(): [Initializer] initializer for initialization_with_destructor_bool
+# 2135|     getExpr(): [Literal] 1
+# 2135|         Type = [BoolType] bool
+# 2135|         Value = [Literal] 1
+# 2135|         ValueCategory = prvalue
+# 2137| [TopLevelFunction] void initialization_with_destructor(bool, char)
+# 2137|   <params>: 
+# 2137|     getParameter(0): [Parameter] b
+# 2137|         Type = [BoolType] bool
+# 2137|     getParameter(1): [Parameter] c
+# 2137|         Type = [PlainCharType] char
+# 2137|   getEntryPoint(): [BlockStmt] { ... }
+# 2138|     getStmt(0): [IfStmt] if (...) ... 
+# 2138|       getInitialization(): [DeclStmt] declaration
+# 2138|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
 # 2138|             Type = [Class] ClassWithDestructor
-# 2138|             ValueCategory = lvalue
-# 2140|     getStmt(1): [ConstexprIfStmt] if constexpr (...) ... 
-# 2140|       getInitialization(): [DeclStmt] declaration
-# 2140|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
-# 2140|             Type = [Class] ClassWithDestructor
-# 2140|           getVariable().getInitializer(): [Initializer] initializer for x
-# 2140|             getExpr(): [ConstructorCall] call to ClassWithDestructor
-# 2140|                 Type = [VoidType] void
-# 2140|                 ValueCategory = prvalue
-# 2140|       getCondition(): [VariableAccess] initialization_with_destructor_bool
-# 2140|           Type = [BoolType] bool
-# 2140|           Value = [VariableAccess] 1
-# 2140|           ValueCategory = prvalue(load)
-# 2141|       getThen(): [ExprStmt] ExprStmt
-# 2141|         getExpr(): [FunctionCall] call to set_x
-# 2141|             Type = [VoidType] void
-# 2141|             ValueCategory = prvalue
-# 2141|           getQualifier(): [VariableAccess] x
-# 2141|               Type = [Class] ClassWithDestructor
-# 2141|               ValueCategory = lvalue
-# 2141|           getArgument(0): [CharLiteral] 97
-# 2141|               Type = [PlainCharType] char
-# 2141|               Value = [CharLiteral] 97
-# 2141|               ValueCategory = prvalue
-# 2141|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
-# 2141|           Type = [VoidType] void
-# 2141|           ValueCategory = prvalue
-# 2141|         getQualifier(): [VariableAccess] x
+# 2138|           getVariable().getInitializer(): [Initializer] initializer for x
+# 2138|             getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2138|                 Type = [VoidType] void
+# 2138|                 ValueCategory = prvalue
+# 2138|       getCondition(): [VariableAccess] b
+# 2138|           Type = [BoolType] bool
+# 2138|           ValueCategory = prvalue(load)
+# 2139|       getThen(): [ExprStmt] ExprStmt
+# 2139|         getExpr(): [FunctionCall] call to set_x
+# 2139|             Type = [VoidType] void
+# 2139|             ValueCategory = prvalue
+# 2139|           getQualifier(): [VariableAccess] x
+# 2139|               Type = [Class] ClassWithDestructor
+# 2139|               ValueCategory = lvalue
+# 2139|           getArgument(0): [CharLiteral] 97
+# 2139|               Type = [PlainCharType] char
+# 2139|               Value = [CharLiteral] 97
+# 2139|               ValueCategory = prvalue
+# 2139|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2139|           Type = [VoidType] void
+# 2139|           ValueCategory = prvalue
+# 2139|         getQualifier(): [VariableAccess] x
+# 2139|             Type = [Class] ClassWithDestructor
+# 2139|             ValueCategory = lvalue
+# 2141|     getStmt(1): [ConstexprIfStmt] if constexpr (...) ... 
+# 2141|       getInitialization(): [DeclStmt] declaration
+# 2141|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
 # 2141|             Type = [Class] ClassWithDestructor
-# 2141|             ValueCategory = lvalue
-# 2143|     getStmt(2): [SwitchStmt] switch (...) ... 
-# 2143|       getInitialization(): [DeclStmt] declaration
-# 2143|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
-# 2143|             Type = [Class] ClassWithDestructor
-# 2143|           getVariable().getInitializer(): [Initializer] initializer for x
-# 2143|             getExpr(): [ConstructorCall] call to ClassWithDestructor
-# 2143|                 Type = [VoidType] void
-# 2143|                 ValueCategory = prvalue
-# 2143|       getExpr(): [VariableAccess] c
-# 2143|           Type = [PlainCharType] char
-# 2143|           ValueCategory = prvalue(load)
-# 2143|       getStmt(): [BlockStmt] { ... }
-# 2144|         getStmt(0): [SwitchCase] case ...:
-# 2144|           getExpr(): [CharLiteral] 97
-# 2144|               Type = [PlainCharType] char
-# 2144|               Value = [CharLiteral] 97
-# 2144|               ValueCategory = prvalue
-# 2144|           getExpr().getFullyConverted(): [CStyleCast] (int)...
-# 2144|               Conversion = [IntegralConversion] integral conversion
-# 2144|               Type = [IntType] int
-# 2144|               Value = [CStyleCast] 97
-# 2144|               ValueCategory = prvalue
-# 2145|         getStmt(1): [ExprStmt] ExprStmt
-# 2145|           getExpr(): [FunctionCall] call to set_x
-# 2145|               Type = [VoidType] void
+# 2141|           getVariable().getInitializer(): [Initializer] initializer for x
+# 2141|             getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2141|                 Type = [VoidType] void
+# 2141|                 ValueCategory = prvalue
+# 2141|       getCondition(): [VariableAccess] initialization_with_destructor_bool
+# 2141|           Type = [BoolType] bool
+# 2141|           Value = [VariableAccess] 1
+# 2141|           ValueCategory = prvalue(load)
+# 2142|       getThen(): [ExprStmt] ExprStmt
+# 2142|         getExpr(): [FunctionCall] call to set_x
+# 2142|             Type = [VoidType] void
+# 2142|             ValueCategory = prvalue
+# 2142|           getQualifier(): [VariableAccess] x
+# 2142|               Type = [Class] ClassWithDestructor
+# 2142|               ValueCategory = lvalue
+# 2142|           getArgument(0): [CharLiteral] 97
+# 2142|               Type = [PlainCharType] char
+# 2142|               Value = [CharLiteral] 97
+# 2142|               ValueCategory = prvalue
+# 2142|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2142|           Type = [VoidType] void
+# 2142|           ValueCategory = prvalue
+# 2142|         getQualifier(): [VariableAccess] x
+# 2142|             Type = [Class] ClassWithDestructor
+# 2142|             ValueCategory = lvalue
+# 2144|     getStmt(2): [SwitchStmt] switch (...) ... 
+# 2144|       getInitialization(): [DeclStmt] declaration
+# 2144|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2144|             Type = [Class] ClassWithDestructor
+# 2144|           getVariable().getInitializer(): [Initializer] initializer for x
+# 2144|             getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2144|                 Type = [VoidType] void
+# 2144|                 ValueCategory = prvalue
+# 2144|       getExpr(): [VariableAccess] c
+# 2144|           Type = [PlainCharType] char
+# 2144|           ValueCategory = prvalue(load)
+# 2144|       getStmt(): [BlockStmt] { ... }
+# 2145|         getStmt(0): [SwitchCase] case ...:
+# 2145|           getExpr(): [CharLiteral] 97
+# 2145|               Type = [PlainCharType] char
+# 2145|               Value = [CharLiteral] 97
 # 2145|               ValueCategory = prvalue
-# 2145|             getQualifier(): [VariableAccess] x
-# 2145|                 Type = [Class] ClassWithDestructor
-# 2145|                 ValueCategory = lvalue
-# 2145|             getArgument(0): [CharLiteral] 97
-# 2145|                 Type = [PlainCharType] char
-# 2145|                 Value = [CharLiteral] 97
-# 2145|                 ValueCategory = prvalue
-# 2146|         getStmt(2): [BreakStmt] break;
-# 2147|         getStmt(3): [SwitchCase] default: 
-# 2148|         getStmt(4): [ExprStmt] ExprStmt
-# 2148|           getExpr(): [FunctionCall] call to set_x
-# 2148|               Type = [VoidType] void
-# 2148|               ValueCategory = prvalue
-# 2148|             getQualifier(): [VariableAccess] x
-# 2148|                 Type = [Class] ClassWithDestructor
-# 2148|                 ValueCategory = lvalue
-# 2148|             getArgument(0): [CharLiteral] 98
-# 2148|                 Type = [PlainCharType] char
-# 2148|                 Value = [CharLiteral] 98
-# 2148|                 ValueCategory = prvalue
-# 2149|         getStmt(5): [BreakStmt] break;
-# 2150|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
-# 2150|           Type = [VoidType] void
-# 2150|           ValueCategory = prvalue
-# 2150|         getQualifier(): [VariableAccess] x
-# 2150|             Type = [Class] ClassWithDestructor
-# 2150|             ValueCategory = lvalue
-# 2143|       getExpr().getFullyConverted(): [CStyleCast] (int)...
-# 2143|           Conversion = [IntegralConversion] integral conversion
-# 2143|           Type = [IntType] int
-# 2143|           ValueCategory = prvalue
-# 2150|     getStmt(3): [LabelStmt] label ...:
-# 2152|     getStmt(4): [DeclStmt] declaration
-# 2152|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
-# 2152|           Type = [Class] ClassWithDestructor
-# 2152|         getVariable().getInitializer(): [Initializer] initializer for x
-# 2152|           getExpr(): [ConstructorCall] call to ClassWithDestructor
-# 2152|               Type = [VoidType] void
-# 2152|               ValueCategory = prvalue
-# 2153|     getStmt(5): [RangeBasedForStmt] for(...:...) ...
-# 2153|       getChild(0): [DeclStmt] declaration
-# 2153|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
-# 2153|             Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2145|           getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2145|               Conversion = [IntegralConversion] integral conversion
+# 2145|               Type = [IntType] int
+# 2145|               Value = [CStyleCast] 97
+# 2145|               ValueCategory = prvalue
+# 2146|         getStmt(1): [ExprStmt] ExprStmt
+# 2146|           getExpr(): [FunctionCall] call to set_x
+# 2146|               Type = [VoidType] void
+# 2146|               ValueCategory = prvalue
+# 2146|             getQualifier(): [VariableAccess] x
+# 2146|                 Type = [Class] ClassWithDestructor
+# 2146|                 ValueCategory = lvalue
+# 2146|             getArgument(0): [CharLiteral] 97
+# 2146|                 Type = [PlainCharType] char
+# 2146|                 Value = [CharLiteral] 97
+# 2146|                 ValueCategory = prvalue
+# 2147|         getStmt(2): [BreakStmt] break;
+# 2148|         getStmt(3): [SwitchCase] default: 
+# 2149|         getStmt(4): [ExprStmt] ExprStmt
+# 2149|           getExpr(): [FunctionCall] call to set_x
+# 2149|               Type = [VoidType] void
+# 2149|               ValueCategory = prvalue
+# 2149|             getQualifier(): [VariableAccess] x
+# 2149|                 Type = [Class] ClassWithDestructor
+# 2149|                 ValueCategory = lvalue
+# 2149|             getArgument(0): [CharLiteral] 98
+# 2149|                 Type = [PlainCharType] char
+# 2149|                 Value = [CharLiteral] 98
+# 2149|                 ValueCategory = prvalue
+# 2150|         getStmt(5): [BreakStmt] break;
+# 2151|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2151|           Type = [VoidType] void
+# 2151|           ValueCategory = prvalue
+# 2151|         getQualifier(): [VariableAccess] x
+# 2151|             Type = [Class] ClassWithDestructor
+# 2151|             ValueCategory = lvalue
+# 2144|       getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2144|           Conversion = [IntegralConversion] integral conversion
+# 2144|           Type = [IntType] int
+# 2144|           ValueCategory = prvalue
+# 2151|     getStmt(3): [LabelStmt] label ...:
+# 2153|     getStmt(4): [DeclStmt] declaration
+# 2153|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2153|           Type = [Class] ClassWithDestructor
+# 2153|         getVariable().getInitializer(): [Initializer] initializer for x
+# 2153|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2153|               Type = [VoidType] void
+# 2153|               ValueCategory = prvalue
+# 2154|     getStmt(5): [RangeBasedForStmt] for(...:...) ...
+# 2154|       getInitialization(): [DeclStmt] declaration
+# 2154|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ys
+# 2154|             Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2154|           getVariable().getInitializer(): [Initializer] initializer for ys
+# 2154|             getExpr(): [ConstructorCall] call to vector
+# 2154|                 Type = [VoidType] void
+# 2154|                 ValueCategory = prvalue
+# 2154|               getArgument(0): [VariableAccess] x
+# 2154|                   Type = [Class] ClassWithDestructor
+# 2154|                   ValueCategory = prvalue(load)
+# 2154|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2154|                   Type = [Class] ClassWithDestructor
+# 2154|                   ValueCategory = lvalue
+# 2154|       getChild(1): [DeclStmt] declaration
+# 2154|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
+# 2154|             Type = [LValueReferenceType] vector<ClassWithDestructor> &
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
-# 2153|             getExpr(): [VariableAccess] ys
-# 2153|                 Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
-# 2153|                 ValueCategory = lvalue
-# 2153|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
-# 2153|                 Type = [LValueReferenceType] vector<ClassWithDestructor> &
-# 2153|                 ValueCategory = prvalue
-# 2153|       getBeginEndDeclaration(): [DeclStmt] declaration
-# 2153|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
-# 2153|             Type = [NestedStruct] iterator
+# 2154|             getExpr(): [VariableAccess] ys
+# 2154|                 Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2154|                 ValueCategory = lvalue
+# 2154|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2154|                 Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2154|                 ValueCategory = prvalue
+# 2154|       getBeginEndDeclaration(): [DeclStmt] declaration
+# 2154|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
+# 2154|             Type = [NestedStruct] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
-# 2153|             getExpr(): [FunctionCall] call to begin
-# 2153|                 Type = [NestedStruct] iterator
-# 2153|                 ValueCategory = prvalue
-# 2153|               getQualifier(): [VariableAccess] (__range)
-# 2153|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
-# 2153|                   ValueCategory = prvalue(load)
+# 2154|             getExpr(): [FunctionCall] call to begin
+# 2154|                 Type = [NestedStruct] iterator
+# 2154|                 ValueCategory = prvalue
+# 2154|               getQualifier(): [VariableAccess] (__range)
+# 2154|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2154|                   ValueCategory = prvalue(load)
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<ClassWithDestructor>)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
 #-----|                   Type = [SpecifiedType] const vector<ClassWithDestructor>
@@ -16547,15 +16963,15 @@ ir.cpp:
 #-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
 #-----|                     ValueCategory = lvalue
-# 2153|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
-# 2153|             Type = [NestedStruct] iterator
+# 2154|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
+# 2154|             Type = [NestedStruct] iterator
 #-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
-# 2153|             getExpr(): [FunctionCall] call to end
-# 2153|                 Type = [NestedStruct] iterator
-# 2153|                 ValueCategory = prvalue
-# 2153|               getQualifier(): [VariableAccess] (__range)
-# 2153|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
-# 2153|                   ValueCategory = prvalue(load)
+# 2154|             getExpr(): [FunctionCall] call to end
+# 2154|                 Type = [NestedStruct] iterator
+# 2154|                 ValueCategory = prvalue
+# 2154|               getQualifier(): [VariableAccess] (__range)
+# 2154|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2154|                   ValueCategory = prvalue(load)
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<ClassWithDestructor>)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
 #-----|                   Type = [SpecifiedType] const vector<ClassWithDestructor>
@@ -16563,63 +16979,1490 @@ ir.cpp:
 #-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
 #-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
 #-----|                     ValueCategory = lvalue
-# 2153|       getCondition(): [FunctionCall] call to operator!=
-# 2153|           Type = [BoolType] bool
-# 2153|           ValueCategory = prvalue
-# 2153|         getQualifier(): [VariableAccess] (__begin)
-# 2153|             Type = [NestedStruct] iterator
-# 2153|             ValueCategory = lvalue
-# 2153|         getArgument(0): [VariableAccess] (__end)
-# 2153|             Type = [NestedStruct] iterator
-# 2153|             ValueCategory = prvalue(load)
+# 2154|       getCondition(): [FunctionCall] call to operator!=
+# 2154|           Type = [BoolType] bool
+# 2154|           ValueCategory = prvalue
+# 2154|         getQualifier(): [VariableAccess] (__begin)
+# 2154|             Type = [NestedStruct] iterator
+# 2154|             ValueCategory = lvalue
+# 2154|         getArgument(0): [VariableAccess] (__end)
+# 2154|             Type = [NestedStruct] iterator
+# 2154|             ValueCategory = prvalue(load)
 #-----|         getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
 #-----|             Conversion = [GlvalueConversion] glvalue conversion
 #-----|             Type = [SpecifiedType] const iterator
 #-----|             ValueCategory = lvalue
-# 2153|       getUpdate(): [FunctionCall] call to operator++
-# 2153|           Type = [LValueReferenceType] iterator &
-# 2153|           ValueCategory = prvalue
-# 2153|         getQualifier(): [VariableAccess] (__begin)
-# 2153|             Type = [NestedStruct] iterator
-# 2153|             ValueCategory = lvalue
-# 2153|       getChild(4): [DeclStmt] declaration
-# 2153|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
-# 2153|             Type = [Class] ClassWithDestructor
-# 2153|           getVariable().getInitializer(): [Initializer] initializer for y
-# 2153|             getExpr(): [OverloadedPointerDereferenceExpr] call to operator*
-# 2153|                 Type = [LValueReferenceType] ClassWithDestructor &
-# 2153|                 ValueCategory = prvalue
-# 2153|               getQualifier(): [VariableAccess] (__begin)
-# 2153|                   Type = [NestedStruct] iterator
-# 2153|                   ValueCategory = lvalue
+# 2154|       getUpdate(): [FunctionCall] call to operator++
+# 2154|           Type = [LValueReferenceType] iterator &
+# 2154|           ValueCategory = prvalue
+# 2154|         getQualifier(): [VariableAccess] (__begin)
+# 2154|             Type = [NestedStruct] iterator
+# 2154|             ValueCategory = lvalue
+# 2154|       getChild(5): [DeclStmt] declaration
+# 2154|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2154|             Type = [Class] ClassWithDestructor
+# 2154|           getVariable().getInitializer(): [Initializer] initializer for y
+# 2154|             getExpr(): [OverloadedPointerDereferenceExpr] call to operator*
+# 2154|                 Type = [LValueReferenceType] ClassWithDestructor &
+# 2154|                 ValueCategory = prvalue
+# 2154|               getQualifier(): [VariableAccess] (__begin)
+# 2154|                   Type = [NestedStruct] iterator
+# 2154|                   ValueCategory = lvalue
 #-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
 #-----|                   Conversion = [GlvalueConversion] glvalue conversion
 #-----|                   Type = [SpecifiedType] const iterator
 #-----|                   ValueCategory = lvalue
-# 2153|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 2153|                 Type = [Class] ClassWithDestructor
-# 2153|                 ValueCategory = prvalue(load)
-# 2154|       getStmt(): [ExprStmt] ExprStmt
-# 2154|         getExpr(): [FunctionCall] call to set_x
+# 2154|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2154|                 Type = [Class] ClassWithDestructor
+# 2154|                 ValueCategory = prvalue(load)
+# 2155|       getStmt(): [ExprStmt] ExprStmt
+# 2155|         getExpr(): [FunctionCall] call to set_x
+# 2155|             Type = [VoidType] void
+# 2155|             ValueCategory = prvalue
+# 2155|           getQualifier(): [VariableAccess] y
+# 2155|               Type = [Class] ClassWithDestructor
+# 2155|               ValueCategory = lvalue
+# 2155|           getArgument(0): [CharLiteral] 97
+# 2155|               Type = [PlainCharType] char
+# 2155|               Value = [CharLiteral] 97
+# 2155|               ValueCategory = prvalue
+# 2154|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
 # 2154|             Type = [VoidType] void
 # 2154|             ValueCategory = prvalue
 # 2154|           getQualifier(): [VariableAccess] y
 # 2154|               Type = [Class] ClassWithDestructor
 # 2154|               ValueCategory = lvalue
-# 2154|           getArgument(0): [CharLiteral] 97
-# 2154|               Type = [PlainCharType] char
-# 2154|               Value = [CharLiteral] 97
-# 2154|               ValueCategory = prvalue
-# 2153|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
-# 2153|           Type = [NestedStruct] iterator
-# 2153|           ValueCategory = lvalue
-# 2155|     getStmt(6): [ReturnStmt] return ...
-# 2155|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
-# 2155|           Type = [VoidType] void
-# 2155|           ValueCategory = prvalue
-# 2155|         getQualifier(): [VariableAccess] x
-# 2155|             Type = [Class] ClassWithDestructor
-# 2155|             ValueCategory = lvalue
+# 2154|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2154|           Type = [VoidType] void
+# 2154|           ValueCategory = prvalue
+# 2154|         getQualifier(): [VariableAccess] ys
+# 2154|             Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2154|             ValueCategory = lvalue
+# 2154|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2154|           Type = [NestedStruct] iterator
+# 2154|           ValueCategory = lvalue
+# 2157|     getStmt(6): [RangeBasedForStmt] for(...:...) ...
+# 2157|       getInitialization(): [DeclStmt] declaration
+# 2157|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ys
+# 2157|             Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2157|           getVariable().getInitializer(): [Initializer] initializer for ys
+# 2157|             getExpr(): [ConstructorCall] call to vector
+# 2157|                 Type = [VoidType] void
+# 2157|                 ValueCategory = prvalue
+# 2157|               getArgument(0): [VariableAccess] x
+# 2157|                   Type = [Class] ClassWithDestructor
+# 2157|                   ValueCategory = prvalue(load)
+# 2157|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2157|                   Type = [Class] ClassWithDestructor
+# 2157|                   ValueCategory = lvalue
+# 2157|       getChild(1): [DeclStmt] declaration
+# 2157|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
+# 2157|             Type = [LValueReferenceType] vector<ClassWithDestructor> &
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
+# 2157|             getExpr(): [VariableAccess] ys
+# 2157|                 Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2157|                 ValueCategory = lvalue
+# 2157|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2157|                 Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2157|                 ValueCategory = prvalue
+# 2157|       getBeginEndDeclaration(): [DeclStmt] declaration
+# 2157|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
+# 2157|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
+# 2157|             getExpr(): [FunctionCall] call to begin
+# 2157|                 Type = [NestedStruct] iterator
+# 2157|                 ValueCategory = prvalue
+# 2157|               getQualifier(): [VariableAccess] (__range)
+# 2157|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2157|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<ClassWithDestructor>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<ClassWithDestructor>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+#-----|                     ValueCategory = lvalue
+# 2157|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
+# 2157|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
+# 2157|             getExpr(): [FunctionCall] call to end
+# 2157|                 Type = [NestedStruct] iterator
+# 2157|                 ValueCategory = prvalue
+# 2157|               getQualifier(): [VariableAccess] (__range)
+# 2157|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2157|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<ClassWithDestructor>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<ClassWithDestructor>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+#-----|                     ValueCategory = lvalue
+# 2157|       getCondition(): [FunctionCall] call to operator!=
+# 2157|           Type = [BoolType] bool
+# 2157|           ValueCategory = prvalue
+# 2157|         getQualifier(): [VariableAccess] (__begin)
+# 2157|             Type = [NestedStruct] iterator
+# 2157|             ValueCategory = lvalue
+# 2157|         getArgument(0): [VariableAccess] (__end)
+# 2157|             Type = [NestedStruct] iterator
+# 2157|             ValueCategory = prvalue(load)
+#-----|         getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|             Conversion = [GlvalueConversion] glvalue conversion
+#-----|             Type = [SpecifiedType] const iterator
+#-----|             ValueCategory = lvalue
+# 2157|       getUpdate(): [FunctionCall] call to operator++
+# 2157|           Type = [LValueReferenceType] iterator &
+# 2157|           ValueCategory = prvalue
+# 2157|         getQualifier(): [VariableAccess] (__begin)
+# 2157|             Type = [NestedStruct] iterator
+# 2157|             ValueCategory = lvalue
+# 2157|       getChild(5): [DeclStmt] declaration
+# 2157|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2157|             Type = [Class] ClassWithDestructor
+# 2157|           getVariable().getInitializer(): [Initializer] initializer for y
+# 2157|             getExpr(): [OverloadedPointerDereferenceExpr] call to operator*
+# 2157|                 Type = [LValueReferenceType] ClassWithDestructor &
+# 2157|                 ValueCategory = prvalue
+# 2157|               getQualifier(): [VariableAccess] (__begin)
+# 2157|                   Type = [NestedStruct] iterator
+# 2157|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const iterator
+#-----|                   ValueCategory = lvalue
+# 2157|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2157|                 Type = [Class] ClassWithDestructor
+# 2157|                 ValueCategory = prvalue(load)
+# 2157|       getStmt(): [BlockStmt] { ... }
+# 2158|         getStmt(0): [ExprStmt] ExprStmt
+# 2158|           getExpr(): [FunctionCall] call to set_x
+# 2158|               Type = [VoidType] void
+# 2158|               ValueCategory = prvalue
+# 2158|             getQualifier(): [VariableAccess] y
+# 2158|                 Type = [Class] ClassWithDestructor
+# 2158|                 ValueCategory = lvalue
+# 2158|             getArgument(0): [CharLiteral] 97
+# 2158|                 Type = [PlainCharType] char
+# 2158|                 Value = [CharLiteral] 97
+# 2158|                 ValueCategory = prvalue
+# 2159|         getStmt(1): [IfStmt] if (...) ... 
+# 2159|           getCondition(): [EQExpr] ... == ...
+# 2159|               Type = [BoolType] bool
+# 2159|               ValueCategory = prvalue
+# 2159|             getLeftOperand(): [FunctionCall] call to get_x
+# 2159|                 Type = [PlainCharType] char
+# 2159|                 ValueCategory = prvalue
+# 2159|               getQualifier(): [VariableAccess] y
+# 2159|                   Type = [Class] ClassWithDestructor
+# 2159|                   ValueCategory = lvalue
+# 2159|             getRightOperand(): [CharLiteral] 98
+# 2159|                 Type = [PlainCharType] char
+# 2159|                 Value = [CharLiteral] 98
+# 2159|                 ValueCategory = prvalue
+# 2159|             getLeftOperand().getFullyConverted(): [CStyleCast] (int)...
+# 2159|                 Conversion = [IntegralConversion] integral conversion
+# 2159|                 Type = [IntType] int
+# 2159|                 ValueCategory = prvalue
+# 2159|             getRightOperand().getFullyConverted(): [CStyleCast] (int)...
+# 2159|                 Conversion = [IntegralConversion] integral conversion
+# 2159|                 Type = [IntType] int
+# 2159|                 Value = [CStyleCast] 98
+# 2159|                 ValueCategory = prvalue
+# 2160|           getThen(): [ReturnStmt] return ...
+# 2157|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2157|                 Type = [VoidType] void
+# 2157|                 ValueCategory = prvalue
+# 2157|               getQualifier(): [VariableAccess] y
+# 2157|                   Type = [Class] ClassWithDestructor
+# 2157|                   ValueCategory = lvalue
+# 2157|             getImplicitDestructorCall(1): [DestructorCall] call to ~vector
+# 2157|                 Type = [VoidType] void
+# 2157|                 ValueCategory = prvalue
+# 2157|               getQualifier(): [VariableAccess] ys
+# 2157|                   Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2157|                   ValueCategory = lvalue
+# 2172|             getImplicitDestructorCall(2): [DestructorCall] call to ~ClassWithDestructor
+# 2172|                 Type = [VoidType] void
+# 2172|                 ValueCategory = prvalue
+# 2172|               getQualifier(): [VariableAccess] x
+# 2172|                   Type = [Class] ClassWithDestructor
+# 2172|                   ValueCategory = lvalue
+# 2157|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2157|             Type = [VoidType] void
+# 2157|             ValueCategory = prvalue
+# 2157|           getQualifier(): [VariableAccess] y
+# 2157|               Type = [Class] ClassWithDestructor
+# 2157|               ValueCategory = lvalue
+# 2157|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2157|           Type = [VoidType] void
+# 2157|           ValueCategory = prvalue
+# 2157|         getQualifier(): [VariableAccess] ys
+# 2157|             Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2157|             ValueCategory = lvalue
+# 2157|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2157|           Type = [NestedStruct] iterator
+# 2157|           ValueCategory = lvalue
+# 2163|     getStmt(7): [RangeBasedForStmt] for(...:...) ...
+# 2163|       getInitialization(): [DeclStmt] declaration
+# 2163|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ys
+# 2163|             Type = [ClassTemplateInstantiation,Struct] vector<int>
+# 2163|           getVariable().getInitializer(): [Initializer] initializer for ys
+# 2163|             getExpr(): [ConstructorCall] call to vector
+# 2163|                 Type = [VoidType] void
+# 2163|                 ValueCategory = prvalue
+# 2163|               getArgument(0): [Literal] 1
+# 2163|                   Type = [IntType] int
+# 2163|                   Value = [Literal] 1
+# 2163|                   ValueCategory = prvalue
+# 2163|       getChild(1): [DeclStmt] declaration
+# 2163|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
+# 2163|             Type = [LValueReferenceType] vector<int> &
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
+# 2163|             getExpr(): [VariableAccess] ys
+# 2163|                 Type = [ClassTemplateInstantiation,Struct] vector<int>
+# 2163|                 ValueCategory = lvalue
+# 2163|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2163|                 Type = [LValueReferenceType] vector<int> &
+# 2163|                 ValueCategory = prvalue
+# 2163|       getBeginEndDeclaration(): [DeclStmt] declaration
+# 2163|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
+# 2163|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
+# 2163|             getExpr(): [FunctionCall] call to begin
+# 2163|                 Type = [NestedStruct] iterator
+# 2163|                 ValueCategory = prvalue
+# 2163|               getQualifier(): [VariableAccess] (__range)
+# 2163|                   Type = [LValueReferenceType] vector<int> &
+# 2163|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<int>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<int>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<int>
+#-----|                     ValueCategory = lvalue
+# 2163|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
+# 2163|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
+# 2163|             getExpr(): [FunctionCall] call to end
+# 2163|                 Type = [NestedStruct] iterator
+# 2163|                 ValueCategory = prvalue
+# 2163|               getQualifier(): [VariableAccess] (__range)
+# 2163|                   Type = [LValueReferenceType] vector<int> &
+# 2163|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<int>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<int>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<int>
+#-----|                     ValueCategory = lvalue
+# 2163|       getCondition(): [FunctionCall] call to operator!=
+# 2163|           Type = [BoolType] bool
+# 2163|           ValueCategory = prvalue
+# 2163|         getQualifier(): [VariableAccess] (__begin)
+# 2163|             Type = [NestedStruct] iterator
+# 2163|             ValueCategory = lvalue
+# 2163|         getArgument(0): [VariableAccess] (__end)
+# 2163|             Type = [NestedStruct] iterator
+# 2163|             ValueCategory = prvalue(load)
+#-----|         getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|             Conversion = [GlvalueConversion] glvalue conversion
+#-----|             Type = [SpecifiedType] const iterator
+#-----|             ValueCategory = lvalue
+# 2163|       getUpdate(): [FunctionCall] call to operator++
+# 2163|           Type = [LValueReferenceType] iterator &
+# 2163|           ValueCategory = prvalue
+# 2163|         getQualifier(): [VariableAccess] (__begin)
+# 2163|             Type = [NestedStruct] iterator
+# 2163|             ValueCategory = lvalue
+# 2163|       getChild(5): [DeclStmt] declaration
+# 2163|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2163|             Type = [IntType] int
+# 2163|           getVariable().getInitializer(): [Initializer] initializer for y
+# 2163|             getExpr(): [OverloadedPointerDereferenceExpr] call to operator*
+# 2163|                 Type = [LValueReferenceType] int &
+# 2163|                 ValueCategory = prvalue
+# 2163|               getQualifier(): [VariableAccess] (__begin)
+# 2163|                   Type = [NestedStruct] iterator
+# 2163|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const iterator
+#-----|                   ValueCategory = lvalue
+# 2163|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2163|                 Type = [IntType] int
+# 2163|                 ValueCategory = prvalue(load)
+# 2163|       getStmt(): [BlockStmt] { ... }
+# 2164|         getStmt(0): [IfStmt] if (...) ... 
+# 2164|           getCondition(): [EQExpr] ... == ...
+# 2164|               Type = [BoolType] bool
+# 2164|               ValueCategory = prvalue
+# 2164|             getLeftOperand(): [VariableAccess] y
+# 2164|                 Type = [IntType] int
+# 2164|                 ValueCategory = prvalue(load)
+# 2164|             getRightOperand(): [Literal] 1
+# 2164|                 Type = [IntType] int
+# 2164|                 Value = [Literal] 1
+# 2164|                 ValueCategory = prvalue
+# 2165|           getThen(): [ReturnStmt] return ...
+# 2163|             getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2163|                 Type = [VoidType] void
+# 2163|                 ValueCategory = prvalue
+# 2163|               getQualifier(): [VariableAccess] ys
+# 2163|                   Type = [ClassTemplateInstantiation,Struct] vector<int>
+# 2163|                   ValueCategory = lvalue
+# 2172|             getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor
+# 2172|                 Type = [VoidType] void
+# 2172|                 ValueCategory = prvalue
+# 2172|               getQualifier(): [VariableAccess] x
+# 2172|                   Type = [Class] ClassWithDestructor
+# 2172|                   ValueCategory = lvalue
+# 2163|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2163|           Type = [VoidType] void
+# 2163|           ValueCategory = prvalue
+# 2163|         getQualifier(): [VariableAccess] ys
+# 2163|             Type = [ClassTemplateInstantiation,Struct] vector<int>
+# 2163|             ValueCategory = lvalue
+# 2163|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2163|           Type = [NestedStruct] iterator
+# 2163|           ValueCategory = lvalue
+# 2168|     getStmt(8): [RangeBasedForStmt] for(...:...) ...
+# 2168|       getInitialization(): [DeclStmt] declaration
+# 2168|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of ys
+# 2168|             Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2168|           getVariable().getInitializer(): [Initializer] initializer for ys
+# 2168|             getExpr(): [ConstructorCall] call to vector
+# 2168|                 Type = [VoidType] void
+# 2168|                 ValueCategory = prvalue
+# 2168|               getArgument(0): [VariableAccess] x
+# 2168|                   Type = [Class] ClassWithDestructor
+# 2168|                   ValueCategory = prvalue(load)
+# 2168|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2168|                   Type = [Class] ClassWithDestructor
+# 2168|                   ValueCategory = lvalue
+# 2168|       getChild(1): [DeclStmt] declaration
+# 2168|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
+# 2168|             Type = [LValueReferenceType] vector<ClassWithDestructor> &
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
+# 2168|             getExpr(): [VariableAccess] ys
+# 2168|                 Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2168|                 ValueCategory = lvalue
+# 2168|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2168|                 Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2168|                 ValueCategory = prvalue
+# 2168|       getBeginEndDeclaration(): [DeclStmt] declaration
+# 2168|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
+# 2168|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
+# 2168|             getExpr(): [FunctionCall] call to begin
+# 2168|                 Type = [NestedStruct] iterator
+# 2168|                 ValueCategory = prvalue
+# 2168|               getQualifier(): [VariableAccess] (__range)
+# 2168|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2168|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<ClassWithDestructor>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<ClassWithDestructor>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+#-----|                     ValueCategory = lvalue
+# 2168|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
+# 2168|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
+# 2168|             getExpr(): [FunctionCall] call to end
+# 2168|                 Type = [NestedStruct] iterator
+# 2168|                 ValueCategory = prvalue
+# 2168|               getQualifier(): [VariableAccess] (__range)
+# 2168|                   Type = [LValueReferenceType] vector<ClassWithDestructor> &
+# 2168|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<ClassWithDestructor>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<ClassWithDestructor>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+#-----|                     ValueCategory = lvalue
+# 2168|       getCondition(): [FunctionCall] call to operator!=
+# 2168|           Type = [BoolType] bool
+# 2168|           ValueCategory = prvalue
+# 2168|         getQualifier(): [VariableAccess] (__begin)
+# 2168|             Type = [NestedStruct] iterator
+# 2168|             ValueCategory = lvalue
+# 2168|         getArgument(0): [VariableAccess] (__end)
+# 2168|             Type = [NestedStruct] iterator
+# 2168|             ValueCategory = prvalue(load)
+#-----|         getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|             Conversion = [GlvalueConversion] glvalue conversion
+#-----|             Type = [SpecifiedType] const iterator
+#-----|             ValueCategory = lvalue
+# 2168|       getUpdate(): [FunctionCall] call to operator++
+# 2168|           Type = [LValueReferenceType] iterator &
+# 2168|           ValueCategory = prvalue
+# 2168|         getQualifier(): [VariableAccess] (__begin)
+# 2168|             Type = [NestedStruct] iterator
+# 2168|             ValueCategory = lvalue
+# 2168|       getChild(5): [DeclStmt] declaration
+# 2168|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2168|             Type = [Class] ClassWithDestructor
+# 2168|           getVariable().getInitializer(): [Initializer] initializer for y
+# 2168|             getExpr(): [OverloadedPointerDereferenceExpr] call to operator*
+# 2168|                 Type = [LValueReferenceType] ClassWithDestructor &
+# 2168|                 ValueCategory = prvalue
+# 2168|               getQualifier(): [VariableAccess] (__begin)
+# 2168|                   Type = [NestedStruct] iterator
+# 2168|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const iterator
+#-----|                   ValueCategory = lvalue
+# 2168|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2168|                 Type = [Class] ClassWithDestructor
+# 2168|                 ValueCategory = prvalue(load)
+# 2168|       getStmt(): [BlockStmt] { ... }
+# 2169|         getStmt(0): [DeclStmt] declaration
+# 2169|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of z1
+# 2169|               Type = [Class] ClassWithDestructor
+# 2169|             getVariable().getInitializer(): [Initializer] initializer for z1
+# 2169|               getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2169|                   Type = [VoidType] void
+# 2169|                   ValueCategory = prvalue
+# 2170|         getStmt(1): [DeclStmt] declaration
+# 2170|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of z2
+# 2170|               Type = [Class] ClassWithDestructor
+# 2170|             getVariable().getInitializer(): [Initializer] initializer for z2
+# 2170|               getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2170|                   Type = [VoidType] void
+# 2170|                   ValueCategory = prvalue
+# 2171|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2171|             Type = [VoidType] void
+# 2171|             ValueCategory = prvalue
+# 2171|           getQualifier(): [VariableAccess] z2
+# 2171|               Type = [Class] ClassWithDestructor
+# 2171|               ValueCategory = lvalue
+# 2171|         getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor
+# 2171|             Type = [VoidType] void
+# 2171|             ValueCategory = prvalue
+# 2171|           getQualifier(): [VariableAccess] z1
+# 2171|               Type = [Class] ClassWithDestructor
+# 2171|               ValueCategory = lvalue
+# 2168|         getImplicitDestructorCall(2): [DestructorCall] call to ~ClassWithDestructor
+# 2168|             Type = [VoidType] void
+# 2168|             ValueCategory = prvalue
+# 2168|           getQualifier(): [VariableAccess] y
+# 2168|               Type = [Class] ClassWithDestructor
+# 2168|               ValueCategory = lvalue
+# 2168|       getImplicitDestructorCall(0): [DestructorCall] call to ~vector
+# 2168|           Type = [VoidType] void
+# 2168|           ValueCategory = prvalue
+# 2168|         getQualifier(): [VariableAccess] ys
+# 2168|             Type = [ClassTemplateInstantiation,Struct] vector<ClassWithDestructor>
+# 2168|             ValueCategory = lvalue
+# 2168|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2168|           Type = [NestedStruct] iterator
+# 2168|           ValueCategory = lvalue
+# 2172|     getStmt(9): [ReturnStmt] return ...
+# 2172|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2172|           Type = [VoidType] void
+# 2172|           ValueCategory = prvalue
+# 2172|         getQualifier(): [VariableAccess] x
+# 2172|             Type = [Class] ClassWithDestructor
+# 2172|             ValueCategory = lvalue
+# 2174| [TopLevelFunction] void static_variable_with_destructor_1()
+# 2174|   <params>: 
+# 2174|   getEntryPoint(): [BlockStmt] { ... }
+# 2175|     getStmt(0): [DeclStmt] declaration
+# 2175|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
+# 2175|           Type = [Class] ClassWithDestructor
+# 2175|         getVariable().getInitializer(): [Initializer] initializer for a
+# 2175|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2175|               Type = [VoidType] void
+# 2175|               ValueCategory = prvalue
+# 2176|     getStmt(1): [DeclStmt] declaration
+# 2176|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 2176|           Type = [Class] ClassWithDestructor
+#-----|         getVariable().getInitializer(): [Initializer] initializer for b
+#-----|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+# 2177|     getStmt(2): [ReturnStmt] return ...
+# 2177|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2177|           Type = [VoidType] void
+# 2177|           ValueCategory = prvalue
+# 2177|         getQualifier(): [VariableAccess] a
+# 2177|             Type = [Class] ClassWithDestructor
+# 2177|             ValueCategory = lvalue
+# 2179| [TopLevelFunction] void static_variable_with_destructor_2()
+# 2179|   <params>: 
+# 2179|   getEntryPoint(): [BlockStmt] { ... }
+# 2180|     getStmt(0): [DeclStmt] declaration
+# 2180|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
+# 2180|           Type = [Class] ClassWithDestructor
+#-----|         getVariable().getInitializer(): [Initializer] initializer for a
+#-----|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+# 2181|     getStmt(1): [DeclStmt] declaration
+# 2181|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 2181|           Type = [Class] ClassWithDestructor
+# 2181|         getVariable().getInitializer(): [Initializer] initializer for b
+# 2181|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2181|               Type = [VoidType] void
+# 2181|               ValueCategory = prvalue
+# 2182|     getStmt(2): [ReturnStmt] return ...
+# 2182|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2182|           Type = [VoidType] void
+# 2182|           ValueCategory = prvalue
+# 2182|         getQualifier(): [VariableAccess] b
+# 2182|             Type = [Class] ClassWithDestructor
+# 2182|             ValueCategory = lvalue
+# 2184| [TopLevelFunction] void static_variable_with_destructor_3()
+# 2184|   <params>: 
+# 2184|   getEntryPoint(): [BlockStmt] { ... }
+# 2185|     getStmt(0): [DeclStmt] declaration
+# 2185|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
+# 2185|           Type = [Class] ClassWithDestructor
+# 2185|         getVariable().getInitializer(): [Initializer] initializer for a
+# 2185|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2185|               Type = [VoidType] void
+# 2185|               ValueCategory = prvalue
+# 2186|     getStmt(1): [DeclStmt] declaration
+# 2186|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 2186|           Type = [Class] ClassWithDestructor
+# 2186|         getVariable().getInitializer(): [Initializer] initializer for b
+# 2186|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2186|               Type = [VoidType] void
+# 2186|               ValueCategory = prvalue
+# 2187|     getStmt(2): [DeclStmt] declaration
+# 2187|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 2187|           Type = [Class] ClassWithDestructor
+#-----|         getVariable().getInitializer(): [Initializer] initializer for c
+#-----|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+#-----|               Type = [VoidType] void
+#-----|               ValueCategory = prvalue
+# 2188|     getStmt(3): [ReturnStmt] return ...
+# 2188|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2188|           Type = [VoidType] void
+# 2188|           ValueCategory = prvalue
+# 2188|         getQualifier(): [VariableAccess] b
+# 2188|             Type = [Class] ClassWithDestructor
+# 2188|             ValueCategory = lvalue
+# 2188|       getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor
+# 2188|           Type = [VoidType] void
+# 2188|           ValueCategory = prvalue
+# 2188|         getQualifier(): [VariableAccess] a
+# 2188|             Type = [Class] ClassWithDestructor
+# 2188|             ValueCategory = lvalue
+# 2190| [GlobalVariable] ClassWithDestructor global_class_with_destructor
+# 2190|   getInitializer(): [Initializer] initializer for global_class_with_destructor
+# 2190|     getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2190|         Type = [VoidType] void
+# 2190|         ValueCategory = prvalue
+# 2194| [FunctionTemplateInstantiation,TopLevelFunction] ClassWithDestructor& vacuous_destructor_call::get<ClassWithDestructor>(ClassWithDestructor&)
+# 2194|   <params>: 
+# 2194|     getParameter(0): [Parameter] t
+# 2194|         Type = [LValueReferenceType] ClassWithDestructor &
+# 2194|   getEntryPoint(): [BlockStmt] { ... }
+# 2194|     getStmt(0): [ReturnStmt] return ...
+# 2194|       getExpr(): [VariableAccess] t
+# 2194|           Type = [LValueReferenceType] ClassWithDestructor &
+# 2194|           ValueCategory = prvalue(load)
+# 2194|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2194|           Type = [LValueReferenceType] ClassWithDestructor &
+# 2194|           ValueCategory = prvalue
+# 2194|         getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 2194|             Type = [Class] ClassWithDestructor
+# 2194|             ValueCategory = lvalue
+# 2194| [TemplateFunction,TopLevelFunction] T& vacuous_destructor_call::get<T>(T&)
+# 2194|   <params>: 
+# 2194|     getParameter(0): [Parameter] t
+# 2194|         Type = [LValueReferenceType] T &
+# 2194|   getEntryPoint(): [BlockStmt] { ... }
+# 2194|     getStmt(0): [ReturnStmt] return ...
+# 2194|       getExpr(): [VariableAccess] t
+# 2194|           Type = [LValueReferenceType] T &
+# 2194|           ValueCategory = prvalue(load)
+# 2194|       getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2194|           Type = [TemplateParameter] T
+# 2194|           ValueCategory = lvalue
+# 2194| [FunctionTemplateInstantiation,TopLevelFunction] int& vacuous_destructor_call::get<int>(int&)
+# 2194|   <params>: 
+# 2194|     getParameter(0): [Parameter] t
+# 2194|         Type = [LValueReferenceType] int &
+# 2194|   getEntryPoint(): [BlockStmt] { ... }
+# 2194|     getStmt(0): [ReturnStmt] return ...
+# 2194|       getExpr(): [VariableAccess] t
+# 2194|           Type = [LValueReferenceType] int &
+# 2194|           ValueCategory = prvalue(load)
+# 2194|       getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2194|           Type = [LValueReferenceType] int &
+# 2194|           ValueCategory = prvalue
+# 2194|         getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 2194|             Type = [IntType] int
+# 2194|             ValueCategory = lvalue
+# 2197| [FunctionTemplateInstantiation,TopLevelFunction] void vacuous_destructor_call::call_destructor<ClassWithDestructor>(ClassWithDestructor&)
+# 2197|   <params>: 
+# 2197|     getParameter(0): [Parameter] t
+# 2197|         Type = [LValueReferenceType] ClassWithDestructor &
+# 2197|   getEntryPoint(): [BlockStmt] { ... }
+# 2198|     getStmt(0): [ExprStmt] ExprStmt
+# 2198|       getExpr(): [DestructorCall] call to ~ClassWithDestructor
+# 2198|           Type = [VoidType] void
+# 2198|           ValueCategory = prvalue
+# 2198|         getQualifier(): [FunctionCall] call to get
+# 2198|             Type = [LValueReferenceType] ClassWithDestructor &
+# 2198|             ValueCategory = prvalue
+# 2198|           getArgument(0): [VariableAccess] t
+# 2198|               Type = [LValueReferenceType] ClassWithDestructor &
+# 2198|               ValueCategory = prvalue(load)
+# 2198|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2198|               Type = [LValueReferenceType] ClassWithDestructor &
+# 2198|               ValueCategory = prvalue
+# 2198|             getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 2198|                 Type = [Class] ClassWithDestructor
+# 2198|                 ValueCategory = lvalue
+# 2198|         getQualifier().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2198|             Type = [Class] ClassWithDestructor
+# 2198|             ValueCategory = lvalue
+# 2199|     getStmt(1): [ReturnStmt] return ...
+# 2197| [TemplateFunction,TopLevelFunction] void vacuous_destructor_call::call_destructor<T>(T&)
+# 2197|   <params>: 
+# 2197|     getParameter(0): [Parameter] t
+# 2197|         Type = [LValueReferenceType] T &
+# 2197|   getEntryPoint(): [BlockStmt] { ... }
+# 2198|     getStmt(0): [ExprStmt] ExprStmt
+# 2198|       getExpr(): [ExprCall] call to expression
+# 2198|           Type = [UnknownType] unknown
+# 2198|           ValueCategory = prvalue
+# 2198|         getExpr(): [Literal] Unknown literal
+# 2198|             Type = [UnknownType] unknown
+# 2198|             ValueCategory = prvalue
+# 2198|           getChild(-1): [ExprCall] call to expression
+# 2198|               Type = [UnknownType] unknown
+# 2198|               ValueCategory = prvalue
+# 2198|             getExpr(): [Literal] Unknown literal
+# 2198|                 Type = [UnknownType] unknown
+# 2198|                 ValueCategory = prvalue
+# 2198|             getArgument(0): [VariableAccess] t
+# 2198|                 Type = [LValueReferenceType] T &
+# 2198|                 ValueCategory = prvalue(load)
+# 2198|             getArgument(0).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2198|                 Type = [TemplateParameter] T
+# 2198|                 ValueCategory = lvalue
+# 2199|     getStmt(1): [ReturnStmt] return ...
+# 2197| [FunctionTemplateInstantiation,TopLevelFunction] void vacuous_destructor_call::call_destructor<int>(int&)
+# 2197|   <params>: 
+# 2197|     getParameter(0): [Parameter] t
+# 2197|         Type = [LValueReferenceType] int &
+# 2197|   getEntryPoint(): [BlockStmt] { ... }
+# 2198|     getStmt(0): [ExprStmt] ExprStmt
+# 2198|       getExpr(): [VacuousDestructorCall] (vacuous destructor call)
+# 2198|           Type = [VoidType] void
+# 2198|           ValueCategory = prvalue
+# 2198|         getChild(0): [FunctionCall] call to get
+# 2198|             Type = [LValueReferenceType] int &
+# 2198|             ValueCategory = prvalue
+# 2198|           getArgument(0): [VariableAccess] t
+# 2198|               Type = [LValueReferenceType] int &
+# 2198|               ValueCategory = prvalue(load)
+# 2198|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2198|               Type = [LValueReferenceType] int &
+# 2198|               ValueCategory = prvalue
+# 2198|             getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 2198|                 Type = [IntType] int
+# 2198|                 ValueCategory = lvalue
+# 2198|         getChild(0).getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2198|             Type = [IntType] int
+# 2198|             ValueCategory = lvalue
+# 2199|     getStmt(1): [ReturnStmt] return ...
+# 2201| [TopLevelFunction] void vacuous_destructor_call::non_vacuous_destructor_call()
+# 2201|   <params>: 
+# 2201|   getEntryPoint(): [BlockStmt] { ... }
+# 2202|     getStmt(0): [DeclStmt] declaration
+# 2202|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 2202|           Type = [Class] ClassWithDestructor
+# 2202|         getVariable().getInitializer(): [Initializer] initializer for c
+# 2202|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2202|               Type = [VoidType] void
+# 2202|               ValueCategory = prvalue
+# 2203|     getStmt(1): [ExprStmt] ExprStmt
+# 2203|       getExpr(): [FunctionCall] call to call_destructor
+# 2203|           Type = [VoidType] void
+# 2203|           ValueCategory = prvalue
+# 2203|         getArgument(0): [VariableAccess] c
+# 2203|             Type = [Class] ClassWithDestructor
+# 2203|             ValueCategory = lvalue
+# 2203|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2203|             Type = [LValueReferenceType] ClassWithDestructor &
+# 2203|             ValueCategory = prvalue
+# 2204|     getStmt(2): [ReturnStmt] return ...
+# 2204|       getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2204|           Type = [VoidType] void
+# 2204|           ValueCategory = prvalue
+# 2204|         getQualifier(): [VariableAccess] c
+# 2204|             Type = [Class] ClassWithDestructor
+# 2204|             ValueCategory = lvalue
+# 2206| [TopLevelFunction] void vacuous_destructor_call::vacuous_destructor_call()
+# 2206|   <params>: 
+# 2206|   getEntryPoint(): [BlockStmt] { ... }
+# 2207|     getStmt(0): [DeclStmt] declaration
+# 2207|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of i
+# 2207|           Type = [IntType] int
+# 2208|     getStmt(1): [ExprStmt] ExprStmt
+# 2208|       getExpr(): [FunctionCall] call to call_destructor
+# 2208|           Type = [VoidType] void
+# 2208|           ValueCategory = prvalue
+# 2208|         getArgument(0): [VariableAccess] i
+# 2208|             Type = [IntType] int
+# 2208|             ValueCategory = lvalue
+# 2208|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2208|             Type = [LValueReferenceType] int &
+# 2208|             ValueCategory = prvalue
+# 2209|     getStmt(2): [ReturnStmt] return ...
+# 2212| [TopLevelFunction] void TryCatchDestructors(bool)
+# 2212|   <params>: 
+# 2212|     getParameter(0): [Parameter] b
+# 2212|         Type = [BoolType] bool
+# 2212|   getEntryPoint(): [BlockStmt] { ... }
+# 2213|     getStmt(0): [TryStmt] try { ... }
+# 2213|       getStmt(): [BlockStmt] { ... }
+# 2214|         getStmt(0): [DeclStmt] declaration
+# 2214|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2214|               Type = [Struct] String
+# 2214|             getVariable().getInitializer(): [Initializer] initializer for s
+# 2214|               getExpr(): [ConstructorCall] call to String
+# 2214|                   Type = [VoidType] void
+# 2214|                   ValueCategory = prvalue
+# 2215|         getStmt(1): [IfStmt] if (...) ... 
+# 2215|           getCondition(): [VariableAccess] b
+# 2215|               Type = [BoolType] bool
+# 2215|               ValueCategory = prvalue(load)
+# 2215|           getThen(): [BlockStmt] { ... }
+# 2216|             getStmt(0): [ExprStmt] ExprStmt
+# 2216|               getExpr(): [ThrowExpr] throw ...
+# 2216|                   Type = [PointerType] const char *
+# 2216|                   ValueCategory = prvalue
+# 2216|                 getExpr(): string literal
+# 2216|                     Type = [ArrayType] const char[15]
+# 2216|                     Value = [StringLiteral] "string literal"
+# 2216|                     ValueCategory = lvalue
+# 2219|                 getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2219|                     Type = [VoidType] void
+# 2219|                     ValueCategory = prvalue
+# 2219|                   getQualifier(): [VariableAccess] s
+# 2219|                       Type = [Struct] String
+# 2219|                       ValueCategory = lvalue
+# 2216|                 getExpr().getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2216|                     Type = [PointerType] const char *
+# 2216|                     ValueCategory = prvalue
+# 2218|         getStmt(2): [DeclStmt] declaration
+# 2218|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s2
+# 2218|               Type = [Struct] String
+# 2218|             getVariable().getInitializer(): [Initializer] initializer for s2
+# 2218|               getExpr(): [ConstructorCall] call to String
+# 2218|                   Type = [VoidType] void
+# 2218|                   ValueCategory = prvalue
+# 2219|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2219|             Type = [VoidType] void
+# 2219|             ValueCategory = prvalue
+# 2219|           getQualifier(): [VariableAccess] s2
+# 2219|               Type = [Struct] String
+# 2219|               ValueCategory = lvalue
+# 2219|         getImplicitDestructorCall(1): [DestructorCall] call to ~String
+# 2219|             Type = [VoidType] void
+# 2219|             ValueCategory = prvalue
+# 2219|           getQualifier(): [VariableAccess] s
+# 2219|               Type = [Struct] String
+# 2219|               ValueCategory = lvalue
+# 2220|       getChild(1): [Handler] <handler>
+# 2220|         getBlock(): [CatchBlock] { ... }
+# 2221|           getStmt(0): [ExprStmt] ExprStmt
+# 2221|             getExpr(): [ThrowExpr] throw ...
+# 2221|                 Type = [Struct] String
+# 2221|                 ValueCategory = prvalue
+# 2221|               getExpr(): [ConstructorCall] call to String
+# 2221|                   Type = [VoidType] void
+# 2221|                   ValueCategory = prvalue
+# 2221|                 getArgument(0): [VariableAccess] s
+# 2221|                     Type = [PointerType] const char *
+# 2221|                     ValueCategory = prvalue(load)
+# 2223|       getChild(2): [Handler] <handler>
+# 2223|         getBlock(): [CatchBlock] { ... }
+# 2225|       getChild(3): [Handler] <handler>
+# 2225|         getBlock(): [CatchAnyBlock] { ... }
+# 2226|           getStmt(0): [ExprStmt] ExprStmt
+# 2226|             getExpr(): [ReThrowExpr] re-throw exception 
+# 2226|                 Type = [VoidType] void
+# 2226|                 ValueCategory = prvalue
+# 2228|     getStmt(1): [ReturnStmt] return ...
+# 2230| [TopLevelFunction] void IfDestructors(bool)
+# 2230|   <params>: 
+# 2230|     getParameter(0): [Parameter] b
+# 2230|         Type = [BoolType] bool
+# 2230|   getEntryPoint(): [BlockStmt] { ... }
+# 2231|     getStmt(0): [DeclStmt] declaration
+# 2231|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s1
+# 2231|           Type = [Struct] String
+# 2231|         getVariable().getInitializer(): [Initializer] initializer for s1
+# 2231|           getExpr(): [ConstructorCall] call to String
+# 2231|               Type = [VoidType] void
+# 2231|               ValueCategory = prvalue
+# 2232|     getStmt(1): [IfStmt] if (...) ... 
+# 2232|       getCondition(): [VariableAccess] b
+# 2232|           Type = [BoolType] bool
+# 2232|           ValueCategory = prvalue(load)
+# 2232|       getThen(): [BlockStmt] { ... }
+# 2233|         getStmt(0): [DeclStmt] declaration
+# 2233|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s2
+# 2233|               Type = [Struct] String
+# 2233|             getVariable().getInitializer(): [Initializer] initializer for s2
+# 2233|               getExpr(): [ConstructorCall] call to String
+# 2233|                   Type = [VoidType] void
+# 2233|                   ValueCategory = prvalue
+# 2234|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2234|             Type = [VoidType] void
+# 2234|             ValueCategory = prvalue
+# 2234|           getQualifier(): [VariableAccess] s2
+# 2234|               Type = [Struct] String
+# 2234|               ValueCategory = lvalue
+# 2234|       getElse(): [BlockStmt] { ... }
+# 2235|         getStmt(0): [DeclStmt] declaration
+# 2235|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s3
+# 2235|               Type = [Struct] String
+# 2235|             getVariable().getInitializer(): [Initializer] initializer for s3
+# 2235|               getExpr(): [ConstructorCall] call to String
+# 2235|                   Type = [VoidType] void
+# 2235|                   ValueCategory = prvalue
+# 2236|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2236|             Type = [VoidType] void
+# 2236|             ValueCategory = prvalue
+# 2236|           getQualifier(): [VariableAccess] s3
+# 2236|               Type = [Struct] String
+# 2236|               ValueCategory = lvalue
+# 2237|     getStmt(2): [DeclStmt] declaration
+# 2237|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s4
+# 2237|           Type = [Struct] String
+# 2237|         getVariable().getInitializer(): [Initializer] initializer for s4
+# 2237|           getExpr(): [ConstructorCall] call to String
+# 2237|               Type = [VoidType] void
+# 2237|               ValueCategory = prvalue
+# 2238|     getStmt(3): [ReturnStmt] return ...
+# 2238|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2238|           Type = [VoidType] void
+# 2238|           ValueCategory = prvalue
+# 2238|         getQualifier(): [VariableAccess] s4
+# 2238|             Type = [Struct] String
+# 2238|             ValueCategory = lvalue
+# 2238|       getImplicitDestructorCall(1): [DestructorCall] call to ~String
+# 2238|           Type = [VoidType] void
+# 2238|           ValueCategory = prvalue
+# 2238|         getQualifier(): [VariableAccess] s1
+# 2238|             Type = [Struct] String
+# 2238|             ValueCategory = lvalue
+# 2240| [TopLevelFunction] void ForDestructors()
+# 2240|   <params>: 
+# 2240|   getEntryPoint(): [BlockStmt] { ... }
+# 2241|     getStmt(0): [DeclStmt] declaration
+# 2241|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 2241|           Type = [PlainCharType] char
+# 2241|         getVariable().getInitializer(): [Initializer] initializer for c
+# 2241|           getExpr(): [CharLiteral] 97
+# 2241|               Type = [PlainCharType] char
+# 2241|               Value = [CharLiteral] 97
+# 2241|               ValueCategory = prvalue
+# 2242|     getStmt(1): [ForStmt] for(...;...;...) ...
+# 2242|       getInitialization(): [DeclStmt] declaration
+# 2242|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2242|             Type = [Struct] String
+# 2242|           getVariable().getInitializer(): [Initializer] initializer for s
+# 2242|             getExpr(): [ConstructorCall] call to String
+# 2242|                 Type = [VoidType] void
+# 2242|                 ValueCategory = prvalue
+# 2242|               getArgument(0): hello
+# 2242|                   Type = [ArrayType] const char[6]
+# 2242|                   Value = [StringLiteral] "hello"
+# 2242|                   ValueCategory = lvalue
+# 2242|               getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2242|                   Type = [PointerType] const char *
+# 2242|                   ValueCategory = prvalue
+# 2242|       getCondition(): [NEExpr] ... != ...
+# 2242|           Type = [BoolType] bool
+# 2242|           ValueCategory = prvalue
+# 2242|         getLeftOperand(): [VariableAccess] c
+# 2242|             Type = [PlainCharType] char
+# 2242|             ValueCategory = prvalue(load)
+# 2242|         getRightOperand(): [Literal] 0
+# 2242|             Type = [IntType] int
+# 2242|             Value = [Literal] 0
+# 2242|             ValueCategory = prvalue
+# 2242|         getLeftOperand().getFullyConverted(): [CStyleCast] (int)...
+# 2242|             Conversion = [IntegralConversion] integral conversion
+# 2242|             Type = [IntType] int
+# 2242|             ValueCategory = prvalue
+# 2242|       getUpdate(): [AssignExpr] ... = ...
+# 2242|           Type = [PlainCharType] char
+# 2242|           ValueCategory = lvalue
+# 2242|         getLValue(): [VariableAccess] c
+# 2242|             Type = [PlainCharType] char
+# 2242|             ValueCategory = lvalue
+# 2242|         getRValue(): [FunctionCall] call to pop_back
+# 2242|             Type = [PlainCharType] char
+# 2242|             ValueCategory = prvalue
+# 2242|           getQualifier(): [VariableAccess] s
+# 2242|               Type = [Struct] String
+# 2242|               ValueCategory = lvalue
+# 2242|       getStmt(): [BlockStmt] { ... }
+# 2243|         getStmt(0): [DeclStmt] declaration
+# 2243|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s2
+# 2243|               Type = [Struct] String
+# 2243|             getVariable().getInitializer(): [Initializer] initializer for s2
+# 2243|               getExpr(): [ConstructorCall] call to String
+# 2243|                   Type = [VoidType] void
+# 2243|                   ValueCategory = prvalue
+# 2244|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2244|             Type = [VoidType] void
+# 2244|             ValueCategory = prvalue
+# 2244|           getQualifier(): [VariableAccess] s2
+# 2244|               Type = [Struct] String
+# 2244|               ValueCategory = lvalue
+# 2242|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2242|           Type = [VoidType] void
+# 2242|           ValueCategory = prvalue
+# 2242|         getQualifier(): [VariableAccess] s
+# 2242|             Type = [Struct] String
+# 2242|             ValueCategory = lvalue
+# 2246|     getStmt(2): [RangeBasedForStmt] for(...:...) ...
+# 2246|       getChild(1): [DeclStmt] declaration
+# 2246|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
+# 2246|             Type = [RValueReferenceType] vector<String> &&
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
+# 2246|             getExpr(): [ConstructorCall] call to vector
+# 2246|                 Type = [VoidType] void
+# 2246|                 ValueCategory = prvalue
+# 2246|               getArgument(0): [ConstructorCall] call to String
+# 2246|                   Type = [VoidType] void
+# 2246|                   ValueCategory = prvalue
+# 2246|                 getArgument(0): hello
+# 2246|                     Type = [ArrayType] const char[6]
+# 2246|                     Value = [StringLiteral] "hello"
+# 2246|                     ValueCategory = lvalue
+# 2246|                 getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2246|                     Type = [PointerType] const char *
+# 2246|                     ValueCategory = prvalue
+# 2246|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2246|                   Type = [Struct] String
+# 2246|                   ValueCategory = lvalue
+# 2246|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2246|                 Type = [LValueReferenceType] vector<String> &
+# 2246|                 ValueCategory = prvalue
+# 2246|               getExpr(): [TemporaryObjectExpr] temporary object
+# 2246|                   Type = [ClassTemplateInstantiation,Struct] vector<String>
+# 2246|                   ValueCategory = xvalue
+# 2246|       getBeginEndDeclaration(): [DeclStmt] declaration
+# 2246|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
+# 2246|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
+# 2246|             getExpr(): [FunctionCall] call to begin
+# 2246|                 Type = [NestedStruct] iterator
+# 2246|                 ValueCategory = prvalue
+# 2246|               getQualifier(): [VariableAccess] (__range)
+# 2246|                   Type = [RValueReferenceType] vector<String> &&
+# 2246|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<String>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<String>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<String>
+#-----|                     ValueCategory = lvalue
+# 2246|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
+# 2246|             Type = [NestedStruct] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
+# 2246|             getExpr(): [FunctionCall] call to end
+# 2246|                 Type = [NestedStruct] iterator
+# 2246|                 ValueCategory = prvalue
+# 2246|               getQualifier(): [VariableAccess] (__range)
+# 2246|                   Type = [RValueReferenceType] vector<String> &&
+# 2246|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<String>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<String>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<String>
+#-----|                     ValueCategory = lvalue
+# 2246|       getCondition(): [FunctionCall] call to operator!=
+# 2246|           Type = [BoolType] bool
+# 2246|           ValueCategory = prvalue
+# 2246|         getQualifier(): [VariableAccess] (__begin)
+# 2246|             Type = [NestedStruct] iterator
+# 2246|             ValueCategory = lvalue
+# 2246|         getArgument(0): [VariableAccess] (__end)
+# 2246|             Type = [NestedStruct] iterator
+# 2246|             ValueCategory = prvalue(load)
+#-----|         getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|             Conversion = [GlvalueConversion] glvalue conversion
+#-----|             Type = [SpecifiedType] const iterator
+#-----|             ValueCategory = lvalue
+# 2246|       getUpdate(): [FunctionCall] call to operator++
+# 2246|           Type = [LValueReferenceType] iterator &
+# 2246|           ValueCategory = prvalue
+# 2246|         getQualifier(): [VariableAccess] (__begin)
+# 2246|             Type = [NestedStruct] iterator
+# 2246|             ValueCategory = lvalue
+# 2246|       getChild(5): [DeclStmt] declaration
+# 2246|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2246|             Type = [Struct] String
+# 2246|           getVariable().getInitializer(): [Initializer] initializer for s
+# 2246|             getExpr(): [ConstructorCall] call to String
+# 2246|                 Type = [VoidType] void
+# 2246|                 ValueCategory = prvalue
+# 2246|               getArgument(0): [OverloadedPointerDereferenceExpr] call to operator*
+# 2246|                   Type = [LValueReferenceType] String &
+# 2246|                   ValueCategory = prvalue
+# 2246|                 getQualifier(): [VariableAccess] (__begin)
+# 2246|                     Type = [NestedStruct] iterator
+# 2246|                     ValueCategory = lvalue
+#-----|                 getQualifier().getFullyConverted(): [CStyleCast] (const iterator)...
+#-----|                     Conversion = [GlvalueConversion] glvalue conversion
+#-----|                     Type = [SpecifiedType] const iterator
+#-----|                     ValueCategory = lvalue
+# 2246|               getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2246|                   Type = [LValueReferenceType] const String &
+# 2246|                   ValueCategory = prvalue
+# 2246|                 getExpr(): [CStyleCast] (const String)...
+# 2246|                     Conversion = [GlvalueConversion] glvalue conversion
+# 2246|                     Type = [SpecifiedType] const String
+# 2246|                     ValueCategory = lvalue
+# 2246|                   getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+# 2246|                       Type = [Struct] String
+# 2246|                       ValueCategory = lvalue
+# 2246|       getStmt(): [BlockStmt] { ... }
+# 2247|         getStmt(0): [DeclStmt] declaration
+# 2247|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s2
+# 2247|               Type = [Struct] String
+# 2247|             getVariable().getInitializer(): [Initializer] initializer for s2
+# 2247|               getExpr(): [ConstructorCall] call to String
+# 2247|                   Type = [VoidType] void
+# 2247|                   ValueCategory = prvalue
+# 2248|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2248|             Type = [VoidType] void
+# 2248|             ValueCategory = prvalue
+# 2248|           getQualifier(): [VariableAccess] s2
+# 2248|               Type = [Struct] String
+# 2248|               ValueCategory = lvalue
+# 2246|         getImplicitDestructorCall(1): [DestructorCall] call to ~String
+# 2246|             Type = [VoidType] void
+# 2246|             ValueCategory = prvalue
+# 2246|           getQualifier(): [VariableAccess] s
+# 2246|               Type = [Struct] String
+# 2246|               ValueCategory = lvalue
+# 2246|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2246|           Type = [NestedStruct] iterator
+# 2246|           ValueCategory = lvalue
+# 2250|     getStmt(3): [ForStmt] for(...;...;...) ...
+# 2250|       getInitialization(): [DeclStmt] declaration
+# 2250|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2250|             Type = [Struct] String
+# 2250|           getVariable().getInitializer(): [Initializer] initializer for s
+# 2250|             getExpr(): [ConstructorCall] call to String
+# 2250|                 Type = [VoidType] void
+# 2250|                 ValueCategory = prvalue
+# 2250|               getArgument(0): hello
+# 2250|                   Type = [ArrayType] const char[6]
+# 2250|                   Value = [StringLiteral] "hello"
+# 2250|                   ValueCategory = lvalue
+# 2250|               getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2250|                   Type = [PointerType] const char *
+# 2250|                   ValueCategory = prvalue
+# 2250|         getDeclarationEntry(1): [VariableDeclarationEntry] definition of s2
+# 2250|             Type = [Struct] String
+# 2250|           getVariable().getInitializer(): [Initializer] initializer for s2
+# 2250|             getExpr(): [ConstructorCall] call to String
+# 2250|                 Type = [VoidType] void
+# 2250|                 ValueCategory = prvalue
+# 2250|               getArgument(0): world
+# 2250|                   Type = [ArrayType] const char[6]
+# 2250|                   Value = [StringLiteral] "world"
+# 2250|                   ValueCategory = lvalue
+# 2250|               getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2250|                   Type = [PointerType] const char *
+# 2250|                   ValueCategory = prvalue
+# 2250|       getCondition(): [NEExpr] ... != ...
+# 2250|           Type = [BoolType] bool
+# 2250|           ValueCategory = prvalue
+# 2250|         getLeftOperand(): [VariableAccess] c
+# 2250|             Type = [PlainCharType] char
+# 2250|             ValueCategory = prvalue(load)
+# 2250|         getRightOperand(): [Literal] 0
+# 2250|             Type = [IntType] int
+# 2250|             Value = [Literal] 0
+# 2250|             ValueCategory = prvalue
+# 2250|         getLeftOperand().getFullyConverted(): [CStyleCast] (int)...
+# 2250|             Conversion = [IntegralConversion] integral conversion
+# 2250|             Type = [IntType] int
+# 2250|             ValueCategory = prvalue
+# 2250|       getUpdate(): [AssignExpr] ... = ...
+# 2250|           Type = [PlainCharType] char
+# 2250|           ValueCategory = lvalue
+# 2250|         getLValue(): [VariableAccess] c
+# 2250|             Type = [PlainCharType] char
+# 2250|             ValueCategory = lvalue
+# 2250|         getRValue(): [FunctionCall] call to pop_back
+# 2250|             Type = [PlainCharType] char
+# 2250|             ValueCategory = prvalue
+# 2250|           getQualifier(): [VariableAccess] s
+# 2250|               Type = [Struct] String
+# 2250|               ValueCategory = lvalue
+# 2250|       getStmt(): [BlockStmt] { ... }
+# 2251|         getStmt(0): [ExprStmt] ExprStmt
+# 2251|           getExpr(): [AssignExpr] ... = ...
+# 2251|               Type = [PlainCharType] char
+# 2251|               ValueCategory = lvalue
+# 2251|             getLValue(): [VariableAccess] c
+# 2251|                 Type = [PlainCharType] char
+# 2251|                 ValueCategory = lvalue
+# 2251|             getRValue(): [Literal] 0
+# 2251|                 Type = [IntType] int
+# 2251|                 Value = [Literal] 0
+# 2251|                 ValueCategory = prvalue
+# 2251|             getRValue().getFullyConverted(): [CStyleCast] (char)...
+# 2251|                 Conversion = [IntegralConversion] integral conversion
+# 2251|                 Type = [PlainCharType] char
+# 2251|                 Value = [CStyleCast] 0
+# 2251|                 ValueCategory = prvalue
+# 2250|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2250|           Type = [VoidType] void
+# 2250|           ValueCategory = prvalue
+# 2250|         getQualifier(): [VariableAccess] s2
+# 2250|             Type = [Struct] String
+# 2250|             ValueCategory = lvalue
+# 2250|       getImplicitDestructorCall(1): [DestructorCall] call to ~String
+# 2250|           Type = [VoidType] void
+# 2250|           ValueCategory = prvalue
+# 2250|         getQualifier(): [VariableAccess] s
+# 2250|             Type = [Struct] String
+# 2250|             ValueCategory = lvalue
+# 2253|     getStmt(4): [ReturnStmt] return ...
+# 2255| [TopLevelFunction] void IfDestructors2(bool)
+# 2255|   <params>: 
+# 2255|     getParameter(0): [Parameter] b
+# 2255|         Type = [BoolType] bool
+# 2255|   getEntryPoint(): [BlockStmt] { ... }
+# 2256|     getStmt(0): [IfStmt] if (...) ... 
+# 2256|       getInitialization(): [DeclStmt] declaration
+# 2256|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2256|             Type = [Struct] String
+# 2256|           getVariable().getInitializer(): [Initializer] initializer for s
+# 2256|             getExpr(): [ConstructorCall] call to String
+# 2256|                 Type = [VoidType] void
+# 2256|                 ValueCategory = prvalue
+# 2256|               getArgument(0): hello
+# 2256|                   Type = [ArrayType] const char[6]
+# 2256|                   Value = [StringLiteral] "hello"
+# 2256|                   ValueCategory = lvalue
+# 2256|               getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+# 2256|                   Type = [PointerType] const char *
+# 2256|                   ValueCategory = prvalue
+# 2256|       getCondition(): [VariableAccess] b
+# 2256|           Type = [BoolType] bool
+# 2256|           ValueCategory = prvalue(load)
+# 2256|       getThen(): [BlockStmt] { ... }
+# 2257|         getStmt(0): [DeclStmt] declaration
+# 2257|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2257|               Type = [IntType] int
+# 2257|             getVariable().getInitializer(): [Initializer] initializer for x
+# 2257|               getExpr(): [Literal] 0
+# 2257|                   Type = [IntType] int
+# 2257|                   Value = [Literal] 0
+# 2257|                   ValueCategory = prvalue
+# 2258|       getElse(): [BlockStmt] { ... }
+# 2259|         getStmt(0): [DeclStmt] declaration
+# 2259|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2259|               Type = [IntType] int
+# 2259|             getVariable().getInitializer(): [Initializer] initializer for y
+# 2259|               getExpr(): [Literal] 0
+# 2259|                   Type = [IntType] int
+# 2259|                   Value = [Literal] 0
+# 2259|                   ValueCategory = prvalue
+# 2260|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2260|           Type = [VoidType] void
+# 2260|           ValueCategory = prvalue
+# 2260|         getQualifier(): [VariableAccess] s
+# 2260|             Type = [Struct] String
+# 2260|             ValueCategory = lvalue
+# 2261|     getStmt(1): [ReturnStmt] return ...
+# 2263| [CopyAssignmentOperator] Bool& Bool::operator=(Bool const&)
+# 2263|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Bool &
+# 2263| [CopyConstructor] void Bool::Bool(Bool const&)
+# 2263|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const Bool &
+# 2265| [Constructor] void Bool::Bool(bool)
+# 2265|   <params>: 
+# 2265|     getParameter(0): [Parameter] b_
+# 2265|         Type = [BoolType] bool
+# 2266| [ConversionOperator] bool Bool::operator bool()
+# 2266|   <params>: 
+# 2267| [Destructor] void Bool::~Bool()
+# 2267|   <params>: 
+# 2270| [TopLevelFunction] void IfDestructors3(bool)
+# 2270|   <params>: 
+# 2270|     getParameter(0): [Parameter] b
+# 2270|         Type = [BoolType] bool
+# 2270|   getEntryPoint(): [BlockStmt] { ... }
+# 2271|     getStmt(0): [IfStmt] if (...) ... 
+# 2271|       getCondition(): [ConditionDeclExpr] (condition decl)
+# 2271|           Type = [BoolType] bool
+# 2271|           ValueCategory = prvalue
+# 2271|         getChild(0): [FunctionCall] call to operator bool
+# 2271|             Type = [BoolType] bool
+# 2271|             ValueCategory = prvalue
+# 2271|           getQualifier(): [VariableAccess] B
+# 2271|               Type = [Class] Bool
+# 2271|               ValueCategory = prvalue(load)
+# 2271|       getThen(): [BlockStmt] { ... }
+# 2272|         getStmt(0): [DeclStmt] declaration
+# 2272|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s1
+# 2272|               Type = [Struct] String
+# 2272|             getVariable().getInitializer(): [Initializer] initializer for s1
+# 2272|               getExpr(): [ConstructorCall] call to String
+# 2272|                   Type = [VoidType] void
+# 2272|                   ValueCategory = prvalue
+# 2273|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2273|             Type = [VoidType] void
+# 2273|             ValueCategory = prvalue
+# 2273|           getQualifier(): [VariableAccess] s1
+# 2273|               Type = [Struct] String
+# 2273|               ValueCategory = lvalue
+# 2273|       getElse(): [BlockStmt] { ... }
+# 2274|         getStmt(0): [DeclStmt] declaration
+# 2274|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s2
+# 2274|               Type = [Struct] String
+# 2274|             getVariable().getInitializer(): [Initializer] initializer for s2
+# 2274|               getExpr(): [ConstructorCall] call to String
+# 2274|                   Type = [VoidType] void
+# 2274|                   ValueCategory = prvalue
+# 2275|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2275|             Type = [VoidType] void
+# 2275|             ValueCategory = prvalue
+# 2275|           getQualifier(): [VariableAccess] s2
+# 2275|               Type = [Struct] String
+# 2275|               ValueCategory = lvalue
+# 2275|       getImplicitDestructorCall(0): [DestructorCall] call to ~Bool
+# 2275|           Type = [VoidType] void
+# 2275|           ValueCategory = prvalue
+# 2275|         getQualifier(): [VariableAccess] B
+# 2275|             Type = [Class] Bool
+# 2275|             ValueCategory = lvalue
+# 2276|     getStmt(1): [ReturnStmt] return ...
+# 2278| [TopLevelFunction] void WhileLoopDestructors(bool)
+# 2278|   <params>: 
+# 2278|     getParameter(0): [Parameter] b
+# 2278|         Type = [BoolType] bool
+# 2278|   getEntryPoint(): [BlockStmt] { ... }
+# 2279|     getStmt(0): [BlockStmt] { ... }
+# 2280|       getStmt(0): [DeclStmt] declaration
+# 2280|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2280|             Type = [Struct] String
+# 2280|           getVariable().getInitializer(): [Initializer] initializer for s
+# 2280|             getExpr(): [ConstructorCall] call to String
+# 2280|                 Type = [VoidType] void
+# 2280|                 ValueCategory = prvalue
+# 2281|       getStmt(1): [WhileStmt] while (...) ...
+# 2281|         getCondition(): [VariableAccess] b
+# 2281|             Type = [BoolType] bool
+# 2281|             ValueCategory = prvalue(load)
+# 2281|         getStmt(): [BlockStmt] { ... }
+# 2282|           getStmt(0): [ExprStmt] ExprStmt
+# 2282|             getExpr(): [AssignExpr] ... = ...
+# 2282|                 Type = [BoolType] bool
+# 2282|                 ValueCategory = lvalue
+# 2282|               getLValue(): [VariableAccess] b
+# 2282|                   Type = [BoolType] bool
+# 2282|                   ValueCategory = lvalue
+# 2282|               getRValue(): [Literal] 0
+# 2282|                   Type = [BoolType] bool
+# 2282|                   Value = [Literal] 0
+# 2282|                   ValueCategory = prvalue
+# 2284|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2284|           Type = [VoidType] void
+# 2284|           ValueCategory = prvalue
+# 2284|         getQualifier(): [VariableAccess] s
+# 2284|             Type = [Struct] String
+# 2284|             ValueCategory = lvalue
+# 2286|     getStmt(1): [BlockStmt] { ... }
+# 2287|       getStmt(0): [WhileStmt] while (...) ...
+# 2287|         getCondition(): [ConditionDeclExpr] (condition decl)
+# 2287|             Type = [BoolType] bool
+# 2287|             ValueCategory = prvalue
+# 2287|           getChild(0): [FunctionCall] call to operator bool
+# 2287|               Type = [BoolType] bool
+# 2287|               ValueCategory = prvalue
+# 2287|             getQualifier(): [VariableAccess] B
+# 2287|                 Type = [Class] Bool
+# 2287|                 ValueCategory = prvalue(load)
+# 2287|         getStmt(): [BlockStmt] { ... }
+# 2288|           getStmt(0): [ExprStmt] ExprStmt
+# 2288|             getExpr(): [AssignExpr] ... = ...
+# 2288|                 Type = [BoolType] bool
+# 2288|                 ValueCategory = lvalue
+# 2288|               getLValue(): [VariableAccess] b
+# 2288|                   Type = [BoolType] bool
+# 2288|                   ValueCategory = lvalue
+# 2288|               getRValue(): [Literal] 0
+# 2288|                   Type = [BoolType] bool
+# 2288|                   Value = [Literal] 0
+# 2288|                   ValueCategory = prvalue
+# 2289|           getImplicitDestructorCall(0): [DestructorCall] call to ~Bool
+# 2289|               Type = [VoidType] void
+# 2289|               ValueCategory = prvalue
+# 2289|             getQualifier(): [VariableAccess] B
+# 2289|                 Type = [Class] Bool
+# 2289|                 ValueCategory = lvalue
+# 2289|         getImplicitDestructorCall(0): [DestructorCall] call to ~Bool
+# 2289|             Type = [VoidType] void
+# 2289|             ValueCategory = prvalue
+# 2289|           getQualifier(): [VariableAccess] B
+# 2289|               Type = [Class] Bool
+# 2289|               ValueCategory = lvalue
+# 2291|     getStmt(2): [ReturnStmt] return ...
+# 2293| [TopLevelFunction] void VoidFunc()
+# 2293|   <params>: 
+# 2293|   getEntryPoint(): [BlockStmt] { ... }
+# 2293|     getStmt(0): [ReturnStmt] return ...
+# 2295| [TopLevelFunction] void IfReturnDestructors(bool)
+# 2295|   <params>: 
+# 2295|     getParameter(0): [Parameter] b
+# 2295|         Type = [BoolType] bool
+# 2295|   getEntryPoint(): [BlockStmt] { ... }
+# 2296|     getStmt(0): [DeclStmt] declaration
+# 2296|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2296|           Type = [Struct] String
+# 2296|         getVariable().getInitializer(): [Initializer] initializer for s
+# 2296|           getExpr(): [ConstructorCall] call to String
+# 2296|               Type = [VoidType] void
+# 2296|               ValueCategory = prvalue
+# 2297|     getStmt(1): [IfStmt] if (...) ... 
+# 2297|       getCondition(): [VariableAccess] b
+# 2297|           Type = [BoolType] bool
+# 2297|           ValueCategory = prvalue(load)
+# 2297|       getThen(): [BlockStmt] { ... }
+# 2298|         getStmt(0): [ReturnStmt] return ...
+# 2304|           getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2304|               Type = [VoidType] void
+# 2304|               ValueCategory = prvalue
+# 2304|             getQualifier(): [VariableAccess] s
+# 2304|                 Type = [Struct] String
+# 2304|                 ValueCategory = lvalue
+# 2300|     getStmt(2): [IfStmt] if (...) ... 
+# 2300|       getCondition(): [VariableAccess] b
+# 2300|           Type = [BoolType] bool
+# 2300|           ValueCategory = prvalue(load)
+# 2300|       getThen(): [BlockStmt] { ... }
+# 2301|         getStmt(0): [ReturnStmt] return ...
+# 2301|           getExpr(): [FunctionCall] call to VoidFunc
+# 2301|               Type = [VoidType] void
+# 2301|               ValueCategory = prvalue
+# 2304|           getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2304|               Type = [VoidType] void
+# 2304|               ValueCategory = prvalue
+# 2304|             getQualifier(): [VariableAccess] s
+# 2304|                 Type = [Struct] String
+# 2304|                 ValueCategory = lvalue
+# 2303|     getStmt(3): [ExprStmt] ExprStmt
+# 2303|       getExpr(): [VariableAccess] s
+# 2303|           Type = [Struct] String
+# 2303|           ValueCategory = lvalue
+# 2304|     getStmt(4): [ReturnStmt] return ...
+# 2304|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2304|           Type = [VoidType] void
+# 2304|           ValueCategory = prvalue
+# 2304|         getQualifier(): [VariableAccess] s
+# 2304|             Type = [Struct] String
+# 2304|             ValueCategory = lvalue
+# 2306| [TopLevelFunction] int IfReturnDestructors3(bool)
+# 2306|   <params>: 
+# 2306|     getParameter(0): [Parameter] b
+# 2306|         Type = [BoolType] bool
+# 2306|   getEntryPoint(): [BlockStmt] { ... }
+# 2307|     getStmt(0): [DeclStmt] declaration
+# 2307|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2307|           Type = [Struct] String
+# 2307|         getVariable().getInitializer(): [Initializer] initializer for s
+# 2307|           getExpr(): [ConstructorCall] call to String
+# 2307|               Type = [VoidType] void
+# 2307|               ValueCategory = prvalue
+# 2308|     getStmt(1): [IfStmt] if (...) ... 
+# 2308|       getCondition(): [VariableAccess] b
+# 2308|           Type = [BoolType] bool
+# 2308|           ValueCategory = prvalue(load)
+# 2308|       getThen(): [BlockStmt] { ... }
+# 2309|         getStmt(0): [ReturnStmt] return ...
+# 2309|           getExpr(): [Literal] 1
+# 2309|               Type = [IntType] int
+# 2309|               Value = [Literal] 1
+# 2309|               ValueCategory = prvalue
+# 2312|           getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2312|               Type = [VoidType] void
+# 2312|               ValueCategory = prvalue
+# 2312|             getQualifier(): [VariableAccess] s
+# 2312|                 Type = [Struct] String
+# 2312|                 ValueCategory = lvalue
+# 2311|     getStmt(2): [ReturnStmt] return ...
+# 2311|       getExpr(): [Literal] 0
+# 2311|           Type = [IntType] int
+# 2311|           Value = [Literal] 0
+# 2311|           ValueCategory = prvalue
+# 2312|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2312|           Type = [VoidType] void
+# 2312|           ValueCategory = prvalue
+# 2312|         getQualifier(): [VariableAccess] s
+# 2312|             Type = [Struct] String
+# 2312|             ValueCategory = lvalue
+# 2314| [TopLevelFunction] void VoidReturnDestructors()
+# 2314|   <params>: 
+# 2314|   getEntryPoint(): [BlockStmt] { ... }
+# 2315|     getStmt(0): [DeclStmt] declaration
+# 2315|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of s
+# 2315|           Type = [Struct] String
+# 2315|         getVariable().getInitializer(): [Initializer] initializer for s
+# 2315|           getExpr(): [ConstructorCall] call to String
+# 2315|               Type = [VoidType] void
+# 2315|               ValueCategory = prvalue
+# 2316|     getStmt(1): [ReturnStmt] return ...
+# 2316|       getExpr(): [FunctionCall] call to VoidFunc
+# 2316|           Type = [VoidType] void
+# 2316|           ValueCategory = prvalue
+# 2317|       getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2317|           Type = [VoidType] void
+# 2317|           ValueCategory = prvalue
+# 2317|         getQualifier(): [VariableAccess] s
+# 2317|             Type = [Struct] String
+# 2317|             ValueCategory = lvalue
+# 2320| [CopyAssignmentOperator] return_routine_type::HasVoidToIntFunc& return_routine_type::HasVoidToIntFunc::operator=(return_routine_type::HasVoidToIntFunc const&)
+# 2320|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const HasVoidToIntFunc &
+# 2320| [MoveAssignmentOperator] return_routine_type::HasVoidToIntFunc& return_routine_type::HasVoidToIntFunc::operator=(return_routine_type::HasVoidToIntFunc&&)
+# 2320|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] HasVoidToIntFunc &&
+# 2322| [MemberFunction] void return_routine_type::HasVoidToIntFunc::VoidToInt(int)
+# 2322|   <params>: 
+# 2322|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 2322|         Type = [IntType] int
+# 2327| [TopLevelFunction] return_routine_type::VoidToIntMemberFunc return_routine_type::GetVoidToIntFunc()
+# 2327|   <params>: 
+# 2328|   getEntryPoint(): [BlockStmt] { ... }
+# 2329|     getStmt(0): [ReturnStmt] return ...
+# 2329|       getExpr(): [FunctionAccess] VoidToInt
+# 2329|           Type = [RoutineType] ..()(..)
+# 2329|           ValueCategory = prvalue
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

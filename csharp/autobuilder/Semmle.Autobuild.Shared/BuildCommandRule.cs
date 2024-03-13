@@ -1,4 +1,6 @@
-﻿namespace Semmle.Autobuild.Shared
+﻿using Semmle.Util;
+
+namespace Semmle.Autobuild.Shared
 {
     /// <summary>
     /// Execute the build_command rule.

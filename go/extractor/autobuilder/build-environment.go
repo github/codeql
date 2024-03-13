@@ -12,7 +12,7 @@ import (
 )
 
 const minGoVersion = "1.11"
-const maxGoVersion = "1.21"
+const maxGoVersion = "1.22"
 
 type versionInfo struct {
 	goModVersion      string // The version of Go found in the go directive in the `go.mod` file.
@@ -267,15 +267,22 @@ func outputEnvironmentJson(version string) {
 // Get the version of Go to install and output it to stdout as json.
 func IdentifyEnvironment() {
 	var v versionInfo
-	buildInfo := project.GetBuildInfo(false)
-	goVersionInfo := project.TryReadGoDirective(buildInfo)
-	v.goModVersion, v.goModVersionFound = goVersionInfo.Version, goVersionInfo.Found
+	workspaces := project.GetWorkspaceInfo(false)
 
+	// Remove temporary extractor files (e.g. auto-generated go.mod files) when we are done
+	defer project.RemoveTemporaryExtractorFiles()
+
+	// Find the greatest Go version required by any of the workspaces.
+	greatestGoVersion := project.RequiredGoVersion(&workspaces)
+	v.goModVersion, v.goModVersionFound = greatestGoVersion.Version, greatestGoVersion.Found
+
+	// Find which, if any, version of Go is installed on the system already.
 	v.goEnvVersionFound = toolchain.IsInstalled()
 	if v.goEnvVersionFound {
 		v.goEnvVersion = toolchain.GetEnvGoVersion()[2:]
 	}
 
+	// Determine which version of Go we should recommend to install.
 	msg, versionToInstall := getVersionToInstall(v)
 	log.Println(msg)
 

@@ -110,10 +110,51 @@ class UsersController < ActionController::Base
     hash = Hash.from_trusted_xml(xml)
   end
 
-  # BAD
+  # BAD before psych version 4.0.0
   def route15
     yaml_data = params[:key]
     object = Psych.load yaml_data
+    object = Psych.load_file yaml_data
+  end
+
+  # GOOD In psych version 4.0.0 and above
+  def route16
+    yaml_data = params[:key]
+    object = Psych.load yaml_data
+    object = Psych.load_file yaml_data
+  end
+
+  # GOOD
+  def route17
+    yaml_data = params[:key]
+    object = Psych.parse_stream(yaml_data) 
+    object = Psych.parse(yaml_data)
+    object = Psych.parse_file(yaml_data)
+  end
+
+  # BAD
+  def route18
+    yaml_data = params[:key]
+    object = Psych.unsafe_load(yaml_data)
+    object = Psych.unsafe_load_file(yaml_data)
+    object = Psych.load_stream(yaml_data)
+    parse_output = Psych.parse_stream(yaml_data)
+    object = parse_output.to_ruby
+    object = Psych.parse(yaml_data).to_ruby
+    object = Psych.parse_file(yaml_data).to_ruby
+  end
+
+  # BAD
+  def route19
+    plist_data = params[:key]
+    result = Plist.parse_xml(plist_data)
+    result = Plist.parse_xml(plist_data, marshal: true)
+  end
+
+  # GOOD
+  def route20
+    plist_data = params[:key]
+    result = Plist.parse_xml(plist_data, marshal: false)
   end
 
   def stdin

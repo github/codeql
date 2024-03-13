@@ -913,6 +913,9 @@ Record.cs:
 #   29|         -1: [TypeMention] string
 #   29|       2: [Parameter] Subject
 #   29|         -1: [TypeMention] string
+#   30|     3: [ConstructorInitializer] call to constructor Person1
+#   30|       0: [ParameterAccess] access to parameter FirstName
+#   30|       1: [ParameterAccess] access to parameter LastName
 #   29|   17: [Property] Subject
 #   29|     3: [Getter] get_Subject
 #   29|     4: [Setter] set_Subject
@@ -937,6 +940,9 @@ Record.cs:
 #   32|         -1: [TypeMention] string
 #   32|       2: [Parameter] Level
 #   32|         -1: [TypeMention] int
+#   33|     3: [ConstructorInitializer] call to constructor Person1
+#   33|       0: [ParameterAccess] access to parameter FirstName
+#   33|       1: [ParameterAccess] access to parameter LastName
 #   32|   17: [Property] Level
 #   32|     3: [Getter] get_Level
 #   32|     4: [Setter] set_Level
@@ -981,6 +987,8 @@ Record.cs:
 #-----|     2: (Parameters)
 #   41|       0: [Parameter] Name
 #   41|         -1: [TypeMention] string
+#   41|     3: [ConstructorInitializer] call to constructor Pet
+#   41|       0: [ParameterAccess] access to parameter Name
 #   41|   15: [Property] EqualityContract
 #   41|     3: [Getter] get_EqualityContract
 #   43|   16: [Method] WagTail
@@ -1044,6 +1052,8 @@ Record.cs:
 #   56|         -1: [TypeMention] string
 #   56|       1: [Parameter] B
 #   56|         -1: [TypeMention] string
+#   56|     3: [ConstructorInitializer] call to constructor R1
+#   56|       0: [ParameterAccess] access to parameter A
 #   56|   17: [Property] B
 #   56|     3: [Getter] get_B
 #   56|     4: [Setter] set_B

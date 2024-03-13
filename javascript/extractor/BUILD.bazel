@@ -1,21 +1,21 @@
-load("@//:common.bzl", "codeql_fat_jar", "codeql_java_project")
+load("@semmle_code//:common.bzl", "codeql_fat_jar", "codeql_java_project")
 load("@rules_pkg//pkg:mappings.bzl", "pkg_files")
 
 java_library(
     name = "deps",
     visibility = [":__subpackages__"],
     exports = [
-        "@//extractor:html",
-        "@//extractor:yaml",
-        "@//resources/lib/java:commons-compress",
-        "@//resources/lib/java:gson",
-        "@//resources/lib/java:jericho-html",
-        "@//resources/lib/java:slf4j-api",
-        "@//resources/lib/java:snakeyaml",
-        "@//third_party:jackson",
-        "@//third_party:logback",
-        "@//util-java7",
-        "@//util-java8",
+        "@semmle_code//extractor:html",
+        "@semmle_code//extractor:yaml",
+        "@semmle_code//resources/lib/java:commons-compress",
+        "@semmle_code//resources/lib/java:gson",
+        "@semmle_code//resources/lib/java:jericho-html",
+        "@semmle_code//resources/lib/java:slf4j-api",
+        "@semmle_code//resources/lib/java:snakeyaml",
+        "@semmle_code//third_party:jackson",
+        "@semmle_code//third_party:logback",
+        "@semmle_code//util-java7",
+        "@semmle_code//util-java8",
     ],
 )
 
@@ -26,30 +26,23 @@ codeql_java_project(
     ],
 )
 
-pkg_files(
-    name = "javascript-extractor-resources",
-    srcs = glob(["resources/**"]),
-    strip_prefix = "resources",
-)
-
 codeql_fat_jar(
     name = "extractor-javascript",
     srcs = [
         ":extractor",
-        "@//extractor:html",
-        "@//extractor:xml-trap-writer",
-        "@//extractor:yaml",
-        "@//resources/lib/java:commons-compress",
-        "@//resources/lib/java:gson",
-        "@//resources/lib/java:jericho-html",
-        "@//resources/lib/java:slf4j-api",
-        "@//resources/lib/java:snakeyaml",
-        "@//third_party:jackson",
-        "@//third_party:logback",
-        "@//util-java7",
-        "@//util-java8",
+        "@semmle_code//extractor:html",
+        "@semmle_code//extractor:xml-trap-writer",
+        "@semmle_code//extractor:yaml",
+        "@semmle_code//resources/lib/java:commons-compress",
+        "@semmle_code//resources/lib/java:gson",
+        "@semmle_code//resources/lib/java:jericho-html",
+        "@semmle_code//resources/lib/java:slf4j-api",
+        "@semmle_code//resources/lib/java:snakeyaml",
+        "@semmle_code//third_party:jackson",
+        "@semmle_code//third_party:logback",
+        "@semmle_code//util-java7",
+        "@semmle_code//util-java8",
     ],
-    files = [":javascript-extractor-resources"],
     main_class = "com.semmle.js.extractor.Main",
 )
 

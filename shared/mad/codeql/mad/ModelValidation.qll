@@ -39,7 +39,9 @@ module KindValidation<KindValidationConfigSig Config> {
           "mongodb.sink", "nosql-injection", "unsafe-deserialization",
           // Swift-only currently, but may be shared in the future
           "database-store", "format-string", "hash-iteration-count", "predicate-injection",
-          "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe"
+          "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe",
+          // Go-only currently, but may be shared in the future
+          "jwt"
         ]
       or
       this.matches([
@@ -114,11 +116,11 @@ module KindValidation<KindValidationConfigSig Config> {
       this =
         [
           // shared
-          "local", "remote", "file",
+          "local", "remote", "file", "commandargs", "database", "environment",
           // Java
-          "android-external-storage-dir", "contentprovider", "database", "environment",
+          "android-external-storage-dir", "contentprovider",
           // C#
-          "file-write",
+          "file-write", "windows-registry",
           // JavaScript
           "database-access-result"
         ]
