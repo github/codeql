@@ -136,6 +136,8 @@ int madArg0FieldToReturn(MyContainer mc); // $ interpretElement
 int madArg0IndirectFieldToReturn(MyContainer *mc); // $ interpretElement
 int madArg0FieldIndirectToReturn(MyContainer mc); // $ interpretElement
 MyContainer madArg0ToReturnField(int x); // $ interpretElement
+MyContainer *madArg0ToReturnIndirectField(int x); // $ interpretElement
+MyContainer madArg0ToReturnFieldIndirect(int x); // $ interpretElement
 
 void test_summaries() {
 	// test summaries
@@ -181,6 +183,13 @@ void test_summaries() {
 
 	sink(madArg0ToReturnField(0).value);
 	sink(madArg0ToReturnField(source()).value); // $ MISSING: ir
+
+	MyContainer *rtn1 = madArg0ToReturnIndirectField(source());
+	sink(rtn1->value); // $ MISSING: ir
+
+	MyContainer rtn2 = madArg0ToReturnFieldIndirect(source());
+	int *rtn2_ptr = rtn2.ptr;
+	sink(*rtn2_ptr); // $ MISSING: ir
 
 	// test source + sinks + summaries together
 
