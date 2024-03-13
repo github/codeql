@@ -72,7 +72,6 @@ class DataFlowCall instanceof Cfg::Node {
   /** Gets a textual representation of this element. */
   string toString() { result = super.toString() }
 
-  //Location getLocation() { result = super.getLocation() }
   string getName() { result = super.getAstNode().(Uses).getCallee() }
 
   DataFlowCallable getEnclosingCallable() { result = super.getScope() }
@@ -84,7 +83,6 @@ class DataFlowCall instanceof Cfg::Node {
 class DataFlowCallable instanceof Cfg::CfgScope {
   string toString() { result = super.toString() }
 
-  //Location getLocation() { result = super.getLocation() }
   string getName() {
     if this instanceof ReusableWorkflow
     then result = this.(ReusableWorkflow).getLocation().getFile().getRelativePath()
