@@ -2,22 +2,22 @@
 | tests.cpp:126:5:126:19 | [summary] to write: ReturnValue in madArg0ToReturn | ReturnNode | madArg0ToReturn | madArg0ToReturn |
 | tests.cpp:129:5:129:28 | [summary param] 0 in madArg0ToReturnValueFlow | ParameterNode | madArg0ToReturnValueFlow | madArg0ToReturnValueFlow |
 | tests.cpp:129:5:129:28 | [summary] to write: ReturnValue in madArg0ToReturnValueFlow | ReturnNode | madArg0ToReturnValueFlow | madArg0ToReturnValueFlow |
-| tests.cpp:218:7:218:19 | [summary param] 0 in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
-| tests.cpp:218:7:218:19 | [summary param] this indirection in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
-| tests.cpp:218:7:218:19 | [summary] to write: Argument[this indirection] in madArg0ToSelf | PostUpdateNode | madArg0ToSelf | madArg0ToSelf |
-| tests.cpp:219:6:219:20 | [summary param] this indirection in madSelfToReturn | ParameterNode | madSelfToReturn | madSelfToReturn |
-| tests.cpp:219:6:219:20 | [summary] to write: ReturnValue in madSelfToReturn | ReturnNode | madSelfToReturn | madSelfToReturn |
-| tests.cpp:247:7:247:30 | [summary param] this indirection in namespaceMadSelfToReturn | ParameterNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
-| tests.cpp:247:7:247:30 | [summary] to write: ReturnValue in namespaceMadSelfToReturn | ReturnNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
-| tests.cpp:358:5:358:29 | [summary param] 0 in madCallArg0ReturnToReturn | ParameterNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:358:5:358:29 | [summary] read: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | PostUpdateNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:358:5:358:29 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturn | OutNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:358:5:358:29 | [summary] to write: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | ArgumentNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:358:5:358:29 | [summary] to write: ReturnValue in madCallArg0ReturnToReturn | ReturnNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:360:6:360:25 | [summary param] 0 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:360:6:360:25 | [summary param] 1 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:360:6:360:25 | [summary] read: Argument[0].Parameter[0] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:360:6:360:25 | [summary] read: Argument[0].Parameter[this] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:360:6:360:25 | [summary] to write: Argument[0].Parameter[0] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:360:6:360:25 | [summary] to write: Argument[0].Parameter[this] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:360:6:360:25 | [summary] to write: Argument[1] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:220:7:220:19 | [summary param] 0 in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:220:7:220:19 | [summary param] this indirection in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:220:7:220:19 | [summary] to write: Argument[this indirection] in madArg0ToSelf | PostUpdateNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:221:6:221:20 | [summary param] this indirection in madSelfToReturn | ParameterNode | madSelfToReturn | madSelfToReturn |
+| tests.cpp:221:6:221:20 | [summary] to write: ReturnValue in madSelfToReturn | ReturnNode | madSelfToReturn | madSelfToReturn |
+| tests.cpp:249:7:249:30 | [summary param] this indirection in namespaceMadSelfToReturn | ParameterNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
+| tests.cpp:249:7:249:30 | [summary] to write: ReturnValue in namespaceMadSelfToReturn | ReturnNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
+| tests.cpp:370:5:370:29 | [summary param] 0 in madCallArg0ReturnToReturn | ParameterNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:370:5:370:29 | [summary] read: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | PostUpdateNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:370:5:370:29 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturn | OutNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:370:5:370:29 | [summary] to write: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | ArgumentNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:370:5:370:29 | [summary] to write: ReturnValue in madCallArg0ReturnToReturn | ReturnNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:372:6:372:25 | [summary param] 0 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:372:6:372:25 | [summary param] 1 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:372:6:372:25 | [summary] read: Argument[0].Parameter[0] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:372:6:372:25 | [summary] read: Argument[0].Parameter[this] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:372:6:372:25 | [summary] to write: Argument[0].Parameter[0] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:372:6:372:25 | [summary] to write: Argument[0].Parameter[this] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:372:6:372:25 | [summary] to write: Argument[1] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
