@@ -3,7 +3,7 @@ private import semmle.javascript.dataflow.internal.DataFlowNode
 private import codeql.dataflow.VariableCapture
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 
-module VariableCaptureConfig implements InputSig {
+module VariableCaptureConfig implements InputSig<js::Location> {
   private js::Function getLambdaFromVariable(js::LocalVariable variable) {
     result.getVariable() = variable
     or
@@ -261,7 +261,7 @@ module VariableCaptureConfig implements InputSig {
   predicate exitBlock(BasicBlock bb) { bb.getLastNode() instanceof js::ControlFlowExitNode }
 }
 
-module VariableCaptureOutput = Flow<VariableCaptureConfig>;
+module VariableCaptureOutput = Flow<js::Location, VariableCaptureConfig>;
 
 js::DataFlow::Node getNodeFromClosureNode(VariableCaptureOutput::ClosureNode node) {
   result = TValueNode(node.(VariableCaptureOutput::ExprNode).getExpr())
