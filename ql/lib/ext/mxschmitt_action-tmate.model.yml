@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["mxschmitt/action-tmate", "*", "input.tmate-server-rsa-fingerprint", "command-injection"]
+      - ["mxschmitt/action-tmate", "*", "input.tmate-server-ed25519-fingerprint", "command-injection"]

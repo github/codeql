@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["ilammy/setup-nasm", "*", "input.version", "command-injection"]
+      - ["ilammy/setup-nasm", "*", "input.destination", "command-injection"]

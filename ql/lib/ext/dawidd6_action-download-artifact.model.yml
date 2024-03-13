@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sourceModel
+    data:
+      - ["dawidd6/action-download-artifact", "*", "output.artifacts", "*", "Artifact details"]

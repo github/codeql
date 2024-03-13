@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["manusa/actions-setup-minikube", "*", "input.kubernetes_version", "command-injection"]
+      - ["manusa/actions-setup-minikube", "*", "input.driver", "command-injection"]
+      - ["manusa/actions-setup-minikube", "*", "input.container_runtime", "command-injection"]
+      - ["manusa/actions-setup-minikube", "*", "input.start_args", "command-injection"]

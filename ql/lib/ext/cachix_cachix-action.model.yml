@@ -4,3 +4,9 @@ extensions:
       extensible: summaryModel
     data:
       - ["cachix/cachix-action", "*", "input.signingKey", "env.CACHIX_SIGNING_KEY", "taint"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["cachix/cachix-action", "*", "input.installCommand", "command-injection"]
+      - ["cachix/cachix-action", "*", "input.cachixBin", "command-injection"]

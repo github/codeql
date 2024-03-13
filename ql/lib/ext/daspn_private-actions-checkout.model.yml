@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["daspn/private-actions-checkout", "*", "input.actions_list", "command-injection"]
+      - ["daspn/private-actions-checkout", "*", "input.checkout_base_path", "command-injection"]

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["renovatebot/github-action", "*", "input.renovate-image", "command-injection"]
+      - ["renovatebot/github-action", "*", "input.renovate-version", "command-injection"]
+      - ["renovatebot/github-action", "*", "input.docker-cmd-file", "command-injection"]
+      - ["renovatebot/github-action", "*", "input.docker-user", "command-injection"]
+      - ["renovatebot/github-action", "*", "input.docker-volumes", "command-injection"]

@@ -4,3 +4,8 @@ extensions:
       extensible: summaryModel
     data:
       - ["salsify/action-detect-and-tag-new-version", "*", "input.tag-template", "output.tag", "taint"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["salsify/action-detect-and-tag-new-version", "*", "input.version-command", "command-injection"]

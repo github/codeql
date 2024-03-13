@@ -4,3 +4,8 @@ extensions:
       extensible: summaryModel
     data:
       - ["ruby/setup-ruby", "*", "input.ruby-version", "output.ruby-prefix", "taint"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["ruby/setup-ruby", "*", "input.ruby-version", "command-injection"]
