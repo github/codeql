@@ -82,7 +82,7 @@ class MapGet extends SummarizedCallable {
   MapGet() { this = "Map#get" }
 
   override DataFlow::MethodCallNode getACallSimple() {
-    none() and // Disabled for now - need MaD syntax for known map values
+    none() and // TODO: Disabled for now - need MaD syntax for known map values
     result.getMethodName() = "get" and
     result.getNumArgument() = 1
   }
@@ -108,7 +108,7 @@ class MapSet extends SummarizedCallable {
     output = "ReturnValue"
     or
     preservesValue = true and
-    none() and // Disabled for now - need MaD syntax for known map values
+    none() and // TODO: Disabled for now - need MaD syntax for known map values
     (
       input = "Argument[0]" and
       output = "Argument[this].MapKey"
