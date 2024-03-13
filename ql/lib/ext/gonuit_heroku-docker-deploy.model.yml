@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["gonuit/heroku-docker-deploy", "*", "input.email", "command-injection"]
+      - ["gonuit/heroku-docker-deploy", "*", "input.heroku_api_key", "command-injection"]

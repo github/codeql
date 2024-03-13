@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["anchore/sbom-action", "*", "input.syft-version", "command-injection"]
+      - ["anchore/sbom-action", "*", "input.format", "command-injection"]
+      - ["anchore/sbom-action", "*", "input.path", "command-injection"]
+      - ["anchore/sbom-action", "*", "input.file", "command-injection"]
+      - ["anchore/sbom-action", "*", "input.image", "command-injection"]

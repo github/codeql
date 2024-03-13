@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["leafo/gh-actions-lua", "*", "input.luaVersion", "command-injection"]
+      - ["leafo/gh-actions-lua", "*", "input.luaCompileFlags", "command-injection"]

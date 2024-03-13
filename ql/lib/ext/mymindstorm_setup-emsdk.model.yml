@@ -4,3 +4,9 @@ extensions:
       extensible: summaryModel
     data:
       - ["mymindstorm/setup-emsdk", "*", "input.actions-cache-folder", "env.EMSDK", "taint"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["mymindstorm/setup-emsdk", "*", "input.actions-cache-folder", "command-injection"]
+      - ["mymindstorm/setup-emsdk", "*", "input.version", "command-injection"]

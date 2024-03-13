@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["skitionek/notify-microsoft-teams", "*", "input.overwrite", "code-injection"]

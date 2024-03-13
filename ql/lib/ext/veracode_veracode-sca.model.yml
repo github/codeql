@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["veracode/veracode-sca", "*", "input.url", "command-injection"]
+      - ["veracode/veracode-sca", "*", "input.path", "command-injection"]
+      - ["veracode/veracode-sca", "*", "input.skip-collectors", "command-injection"]
+      - ["veracode/veracode-sca", "*", "input.url", "command-injection"]
