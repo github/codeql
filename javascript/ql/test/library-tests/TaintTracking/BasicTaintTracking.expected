@@ -21,11 +21,9 @@ legacyDataFlowDifference
 | object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:23:14:23:20 | obj.foo | only flow with OLD data flow library |
 | object-bypass-sanitizer.js:35:29:35:36 | source() | object-bypass-sanitizer.js:28:10:28:30 | sanitiz ... bj).foo | only flow with OLD data flow library |
 | promise.js:12:20:12:27 | source() | promise.js:13:8:13:23 | resolver.promise | only flow with OLD data flow library |
-| promise.js:43:20:43:27 | source() | promise.js:43:8:43:28 | Promise ... urce()) | only flow with OLD data flow library |
 | sanitizer-guards.js:57:11:57:18 | source() | sanitizer-guards.js:64:8:64:8 | x | only flow with NEW data flow library |
 consistencyIssue
 | library-tests/TaintTracking/nested-props.js:20 | expected an alert, but found none | NOT OK - but not found | Consistency |
-| library-tests/TaintTracking/promise.js:43 | expected an alert, but found none | NOT OK | Consistency |
 | library-tests/TaintTracking/stringification-read-steps.js:17 | expected an alert, but found none | NOT OK | Consistency |
 | library-tests/TaintTracking/stringification-read-steps.js:25 | expected an alert, but found none | NOT OK | Consistency |
 flow
@@ -225,6 +223,7 @@ flow
 | promise.js:10:24:10:31 | source() | promise.js:10:8:10:32 | Promise ... urce()) |
 | promise.js:18:22:18:29 | source() | promise.js:24:10:24:10 | e |
 | promise.js:33:21:33:28 | source() | promise.js:38:10:38:10 | e |
+| promise.js:43:20:43:27 | source() | promise.js:43:8:43:28 | Promise ... urce()) |
 | rxjs.js:3:1:3:8 | source() | rxjs.js:10:14:10:17 | data |
 | rxjs.js:13:1:13:8 | source() | rxjs.js:17:23:17:23 | x |
 | rxjs.js:13:1:13:8 | source() | rxjs.js:18:23:18:23 | x |

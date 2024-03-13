@@ -228,6 +228,10 @@ private class PromiseAll extends SummarizedCallable {
     preservesValue = true and
     input = "Argument[0].ArrayElement.WithAwaited[error]" and
     output = "ReturnValue"
+    or
+    preservesValue = false and
+    input = "Argument[0]" and
+    output = "ReturnValue"
   }
 }
 
