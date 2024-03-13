@@ -8,6 +8,7 @@ private import semmle.javascript.dataflow.internal.VariableCapture
 private import semmle.javascript.dataflow.internal.sharedlib.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.javascript.internal.flow_summaries.AllFlowSummaries
 private import sharedlib.FlowSummaryImpl as FlowSummaryImpl
+private import semmle.javascript.dataflow.internal.BarrierGuards
 
 private class Node = DataFlow::Node;
 
@@ -730,18 +731,36 @@ private predicate sameContainerAsEnclosingContainer(Node node, Function fun) {
   node.getContainer() = fun.getEnclosingContainer()
 }
 
+private class BarrierGuardAdapter extends DataFlow::Node instanceof DataFlow::AdditionalBarrierGuardNode
+{
+  // Note: avoid depending on DataFlow::FlowLabel here as it will cause these barriers to be re-evaluated
+  predicate blocksExpr(boolean outcome, Expr e) { super.blocks(outcome, e) }
+}
+
 /**
- * Holds if `node` should be removed from the local data flow graph, but the node
- * still exists for use by the legacy data flow library.
+ * Holds if `node` should be a barrier in all data flow configurations due to custom subclasses
+ * of `AdditionalBarrierGuardNode`.
+ *
+ * The standard library contains no subclasses of that class; this is for backwards compatibility only.
  */
 pragma[nomagic]
-private predicate isBlockedLegacyNode(TCapturedVariableNode node) {
+private predicate legacyBarrier(DataFlow::Node node) {
+  node = MakeBarrierGuard<BarrierGuardAdapter>::getABarrierNode()
+}
+
+/**
+ * Holds if `node` should be removed from the local data flow graph, for compatibility with legacy code.
+ */
+pragma[nomagic]
+private predicate isBlockedLegacyNode(Node node) {
   // Ignore captured variable nodes for those variables that are handled by the captured-variable library.
   // Note that some variables, such as top-level variables, are still modelled with these nodes (which will result in jump steps).
   exists(LocalVariable variable |
     node = TCapturedVariableNode(variable) and
     variable instanceof VariableCaptureConfig::CapturedVariable
   )
+  or
+  legacyBarrier(node)
 }
 
 /**
