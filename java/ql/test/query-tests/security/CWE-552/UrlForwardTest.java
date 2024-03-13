@@ -388,4 +388,25 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 			sc.getRequestDispatcher(VALID_FORWARD).forward(request, response);
 		}
 	}
+
+	// Test `StringBuilder.append` sequence with `?` appended before the user input
+	private static final String LOGIN_URL = "/UI/Login";
+
+	public void doPost2(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		StringBuilder forwardUrl = new StringBuilder(200);
+		forwardUrl.append(LOGIN_URL);
+
+		String queryString = request.getQueryString();
+
+		// should be sanitized due to the `?` appended
+		forwardUrl.append('?').append(queryString);
+
+		String fUrl = forwardUrl.toString();
+
+		ServletConfig config = getServletConfig();
+
+        RequestDispatcher dispatcher = config.getServletContext().getRequestDispatcher(fUrl); // $ SPURIOUS: hasUrlForward
+        dispatcher.forward(request, response);
+	}
 }
