@@ -935,11 +935,15 @@ module DataFlowMake<InputSig Lang> {
       exists(getAPathNode(node, toString))
     }
 
+    private predicate edgesProj(InputPathNode node1, InputPathNode node2) {
+      Graph::edges(node2, node1, _, _)
+    }
+
     private module Pass1 =
-      MakeDiscriminatorPass<initialCandidate/2, Graph::edges/2, Graph::subpaths/4>;
+      MakeDiscriminatorPass<initialCandidate/2, edgesProj/2, Graph::subpaths/4>;
 
     private predicate edgesRev(InputPathNode node1, InputPathNode node2) {
-      Graph::edges(node2, node1)
+      Graph::edges(node2, node1, _, _)
     }
 
     private predicate subpathsRev(
@@ -1009,8 +1013,9 @@ module DataFlowMake<InputSig Lang> {
         Graph::nodes(node.getAnOriginalPathNode(), key, val)
       }
 
-      query predicate edges(PathNode node1, PathNode node2) {
-        Graph::edges(node1.getAnOriginalPathNode(), node2.getAnOriginalPathNode())
+      query predicate edges(PathNode node1, PathNode node2, string key, string val) {
+        // TODO: ensure deduplication preserves key/val sequence?
+        Graph::edges(node1.getAnOriginalPathNode(), node2.getAnOriginalPathNode(), key, val)
       }
 
       query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
