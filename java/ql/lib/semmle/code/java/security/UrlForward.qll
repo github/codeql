@@ -41,29 +41,50 @@ abstract class UrlForwardBarrier extends DataFlow::Node { }
 
 private class PrimitiveBarrier extends UrlForwardBarrier instanceof SimpleTypeSanitizer { }
 
-private class FollowsBarrierPrefix extends DataFlow::Node {
-  FollowsBarrierPrefix() { this.asExpr() = any(BarrierPrefix fp).getAnAppendedExpression() }
+/**
+ * A barrier for values appended to a "redirect:" prefix.
+ * These results are excluded because they should be handled
+ * by the `java/unvalidated-url-redirection` query instead.
+ */
+private class RedirectPrefixBarrier extends UrlForwardBarrier {
+  RedirectPrefixBarrier() { this.asExpr() = any(RedirectPrefix fp).getAnAppendedExpression() }
 }
 
-private class BarrierPrefix extends InterestingPrefix {
-  BarrierPrefix() {
-    not this.getStringValue().matches("/WEB-INF/%") and
-    not this instanceof ForwardPrefix
-  }
+private class RedirectPrefix extends InterestingPrefix {
+  RedirectPrefix() { this.getStringValue() = "redirect:" }
 
   override int getOffset() { result = 0 }
 }
 
 /**
- * A barrier that protects against path injection vulnerabilities while accounting
- * for URL encoding and concatenated prefixes.
+ * A value that is the result of prepending a string that prevents
+ * any value from controlling the path of a URL.
+ */
+private class FollowsBarrierPrefix extends UrlForwardBarrier {
+  FollowsBarrierPrefix() { this.asExpr() = any(BarrierPrefix fp).getAnAppendedExpression() }
+}
+
+private class BarrierPrefix extends InterestingPrefix {
+  int offset;
+
+  BarrierPrefix() {
+    // Matches strings that look like when prepended to untrusted input, they will restrict
+    // the path of a URL: for example, anything containing `?` or `#`.
+    exists(this.getStringValue().regexpFind("[?#]", 0, offset))
+  }
+
+  override int getOffset() { result = offset }
+}
+
+/**
+ * A barrier that protects against path injection vulnerabilities
+ * while accounting for URL encoding.
  */
 private class UrlPathBarrier extends UrlForwardBarrier instanceof PathInjectionSanitizer {
   UrlPathBarrier() {
     this instanceof ExactPathMatchSanitizer or
     this instanceof NoUrlEncodingBarrier or
-    this instanceof FullyDecodesUrlBarrier or
-    this instanceof FollowsBarrierPrefix
+    this instanceof FullyDecodesUrlBarrier
   }
 }
 

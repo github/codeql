@@ -48,6 +48,14 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		return modelAndView;
 	}
 
+	// Not relevant for this query since redirecting instead of forwarding
+	// This result should be found by the `java/unvalidated-url-redirection` query instead.
+	@GetMapping("/redirect")
+	public ModelAndView redirect(String url) {
+		ModelAndView modelAndView = new ModelAndView("redirect:" + url);
+		return modelAndView;
+	}
+
 	// `RequestDispatcher` test cases from a Spring `GetMapping` entry point
 	@GetMapping("/bad5")
 	public void bad5(String url, HttpServletRequest request, HttpServletResponse response) {
@@ -85,7 +93,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	@GetMapping("/good1")
 	public void good1(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher("/index.jsp?token=" + url).forward(request, response); // $ SPURIOUS: hasUrlForward
+			request.getRequestDispatcher("/index.jsp?token=" + url).forward(request, response);
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
