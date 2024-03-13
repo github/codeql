@@ -39,7 +39,12 @@ module ExternalAPIUsedWithUntrustedDataConfig implements DataFlow::ConfigSig {
 module ExternalAPIUsedWithUntrustedDataFlow =
   TaintTracking::Global<ExternalAPIUsedWithUntrustedDataConfig>;
 
-/** Flow label for objects from which a tainted value is reachable. */
+/**
+ * Flow label for objects from which a tainted value is reachable.
+ *
+ * Only used by the legacy data-flow configuration, as the new data flow configuration
+ * uses `allowImplicitRead` to achieve this instead.
+ */
 deprecated private class ObjectWrapperFlowLabel extends DataFlow::FlowLabel {
   ObjectWrapperFlowLabel() { this = "object-wrapper" }
 }
