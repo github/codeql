@@ -71,6 +71,8 @@ private class BarrierPrefix extends InterestingPrefix {
     // Matches strings that look like when prepended to untrusted input, they will restrict
     // the path of a URL: for example, anything containing `?` or `#`.
     exists(this.getStringValue().regexpFind("[?#]", 0, offset))
+    or
+    this.(CharacterLiteral).getValue() = ["?", "#"] and offset = 0
   }
 
   override int getOffset() { result = offset }
