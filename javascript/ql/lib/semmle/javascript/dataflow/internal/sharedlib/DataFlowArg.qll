@@ -12,6 +12,8 @@ module JSDataFlow implements SharedDataFlow::InputSig {
   predicate neverSkipInPathGraph = Private::neverSkipInPathGraph/1;
 
   predicate accessPathLimit = Private::accessPathLimit/0;
+
+  predicate viableImplInCallContext = Private::viableImplInCallContext/2;
 }
 
 module JSTaintFlow implements SharedTaintTracking::InputSig<JSDataFlow> {
