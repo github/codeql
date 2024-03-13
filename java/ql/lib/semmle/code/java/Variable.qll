@@ -117,4 +117,11 @@ class Parameter extends Element, @param, LocalScopeVariable {
   }
 
   override string getAPrimaryQlClass() { result = "Parameter" }
+
+  override string toString() {
+    if this.getName() = "" then result = "<anonymous parameter>" else result = super.toString()
+  }
+
+  /** Holds if this is an anonymous parameter, `_` */
+  predicate isAnonymous() { this.getName() = "" }
 }

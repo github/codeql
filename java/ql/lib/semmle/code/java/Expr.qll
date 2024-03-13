@@ -1691,6 +1691,9 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   /** Gets the name of the variable declared by this local variable declaration expression. */
   string getName() { result = this.getVariable().getName() }
 
+  /** Holds if this is an anonymous local variable, `_` */
+  predicate isAnonymous() { this.getName() = "" }
+
   /**
    * Gets the switch statement or expression whose pattern declares this identifier, if any.
    */
@@ -1763,7 +1766,9 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = this.getName() }
+  override string toString() {
+    if this.getName() = "" then result = "<anonymous local variable>" else result = this.getName()
+  }
 
   override string getAPrimaryQlClass() { result = "LocalVariableDeclExpr" }
 }
