@@ -31,11 +31,6 @@ module StoredXss {
     predicate blocksExpr(boolean outcome, Expr e) { none() }
   }
 
-  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
-  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
-    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
-  }
-
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
   private class AnySink extends Sink {
     AnySink() { this instanceof Shared::Sink }
