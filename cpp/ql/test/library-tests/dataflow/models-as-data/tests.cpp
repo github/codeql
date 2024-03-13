@@ -11,8 +11,8 @@ int notASource();
 int localMadSourceVoid(void); // $ interpretElement
 int localMadSourceHasBody() { return 0; } // $ interpretElement
 int *remoteMadSourceIndirect(); // $ interpretElement
-void remoteMadSourceArg0(int *x, int *y); // $ interpretElement
-void remoteMadSourceArg1(int &x, int &y); // $ interpretElement
+void remoteMadSourceIndirectArg0(int *x, int *y); // $ interpretElement
+void remoteMadSourceIndirectArg1(int &x, int &y); // $ interpretElement
 int remoteMadSourceVar; // $ interpretElement
 
 namespace MyNamespace {
@@ -42,10 +42,10 @@ void test_sources() {
 
 	int a, b, c, d;
 
-	remoteMadSourceArg0(&a, &b);
+	remoteMadSourceIndirectArg0(&a, &b);
 	sink(a); // $ MISSING: ir
 	sink(a);
-	remoteMadSourceArg1(c, d);
+	remoteMadSourceIndirectArg1(c, d);
 	sink(c);
 	sink(d); // $ MISSING: ir
 
@@ -116,7 +116,7 @@ int madArg0ToReturn(int x); // $ interpretElement
 int notASummary(int x);
 int madArg0ToReturnValueFlow(int x); // $ interpretElement
 int madArg0IndirectToReturn(int *x); // $ interpretElement
-void madArg0ToArg1(int x, int &y); // $ interpretElement
+void madArg0ToArg1Indirect(int x, int &y); // $ interpretElement
 void madArg0IndirectToArg1Indirect(const int *x, int *y); // $ interpretElement
 
 int madArg0FieldToReturn(MyContainer mc); // $ interpretElement
@@ -137,7 +137,7 @@ void test_summaries() {
 	a = source();
 	sink(madArg0IndirectToReturn(&a)); // $ MISSING: ir
 
-	madArg0ToArg1(source(), b);
+	madArg0ToArg1Indirect(source(), b);
 	sink(b); // $ MISSING: ir
 
 	madArg0IndirectToArg1Indirect(&a, &c);
@@ -169,7 +169,7 @@ class MyClass {
 public:
 	// sources
 	int memberRemoteMadSource(); // $ interpretElement
-	void memberRemoteMadSourceArg0(int *x); // $ interpretElement
+	void memberRemoteMadSourceIndirectArg0(int *x); // $ interpretElement
 	int memberRemoteMadSourceVar; // $ interpretElement
 
 	// sinks
@@ -224,7 +224,7 @@ void test_class_members() {
 	sink(mc.memberRemoteMadSource()); // $ ir
 
 	int a;
-	mc.memberRemoteMadSourceArg0(&a);
+	mc.memberRemoteMadSourceIndirectArg0(&a);
 	sink(a); // $ MISSING: ir
 
 	sink(mc.memberRemoteMadSourceVar); // $ ir
