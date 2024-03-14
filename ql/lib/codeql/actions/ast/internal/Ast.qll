@@ -24,8 +24,9 @@ string getADelimitedExpression(YamlString s, int offset) {
   // not just the last (greedy match) or first (reluctant match).
   result =
     s.getValue()
-        .regexpFind("\\$\\{\\{\\s*[^\\}]+\\s*\\}\\}", _, offset)
-        .regexpCapture("(\\$\\{\\{\\s*[^\\}]+\\s*\\}\\})", 1)
+        .regexpFind("\\$\\{\\{(?:[^}]|}(?!}))*\\}\\}", _, offset)
+        .regexpCapture("(\\$\\{\\{(?:[^}]|}(?!}))*\\}\\})", 1)
+        .trim()
 }
 
 private newtype TAstNode =
