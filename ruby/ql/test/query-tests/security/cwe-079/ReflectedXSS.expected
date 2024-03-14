@@ -15,16 +15,27 @@ edges
 | app/controllers/foo/bars_controller.rb:19:22:19:23 | dt | app/views/foo/bars/show.html.erb:40:3:40:16 | @instance_text | provenance |  |
 | app/controllers/foo/bars_controller.rb:24:39:24:44 | call to params | app/controllers/foo/bars_controller.rb:24:39:24:59 | ...[...] | provenance |  |
 | app/controllers/foo/bars_controller.rb:24:39:24:59 | ...[...] | app/controllers/foo/bars_controller.rb:24:39:24:59 | ... = ... | provenance |  |
-| app/controllers/foo/bars_controller.rb:26:53:26:54 | dt | app/views/foo/bars/show.html.erb:5:9:5:20 | call to display_text | provenance |  |
-| app/controllers/foo/bars_controller.rb:26:53:26:54 | dt | app/views/foo/bars/show.html.erb:8:9:8:21 | call to local_assigns [element :display_text] | provenance |  |
-| app/controllers/foo/bars_controller.rb:26:53:26:54 | dt | app/views/foo/bars/show.html.erb:12:9:12:21 | call to local_assigns [element :display_text] | provenance |  |
-| app/controllers/foo/bars_controller.rb:26:53:26:54 | dt | app/views/foo/bars/show.html.erb:17:15:17:27 | call to local_assigns [element :display_text] | provenance |  |
-| app/controllers/foo/bars_controller.rb:26:53:26:54 | dt | app/views/foo/bars/show.html.erb:35:3:35:14 | call to display_text | provenance |  |
-| app/controllers/foo/bars_controller.rb:26:53:26:54 | dt | app/views/foo/bars/show.html.erb:43:76:43:87 | call to display_text | provenance |  |
-| app/controllers/foo/bars_controller.rb:26:53:26:54 | dt | app/views/foo/bars/show.html.erb:82:6:82:17 | call to display_text | provenance |  |
+| app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | app/views/foo/bars/show.html.erb:5:9:5:20 | call to display_text | provenance |  |
+| app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | app/views/foo/bars/show.html.erb:8:9:8:21 | call to local_assigns [element :display_text] | provenance |  |
+| app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | app/views/foo/bars/show.html.erb:12:9:12:21 | call to local_assigns [element :display_text] | provenance |  |
+| app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | app/views/foo/bars/show.html.erb:17:15:17:27 | call to local_assigns [element :display_text] | provenance |  |
+| app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | app/views/foo/bars/show.html.erb:35:3:35:14 | call to display_text | provenance |  |
+| app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | app/views/foo/bars/show.html.erb:43:76:43:87 | call to display_text | provenance |  |
+| app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | app/views/foo/bars/show.html.erb:82:6:82:17 | call to display_text | provenance |  |
+| app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | app/views/foo/bars/show.html.erb:85:36:85:47 | call to display_text | provenance |  |
+| app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | app/views/foo/bars/show.html.erb:86:28:86:39 | call to display_text | provenance |  |
+| app/controllers/foo/bars_controller.rb:26:53:26:54 | dt | app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | provenance |  |
 | app/controllers/foo/bars_controller.rb:30:5:30:7 | str | app/controllers/foo/bars_controller.rb:31:5:31:7 | str | provenance |  |
 | app/controllers/foo/bars_controller.rb:30:11:30:16 | call to params | app/controllers/foo/bars_controller.rb:30:11:30:28 | ...[...] | provenance |  |
 | app/controllers/foo/bars_controller.rb:30:11:30:28 | ...[...] | app/controllers/foo/bars_controller.rb:30:5:30:7 | str | provenance |  |
+| app/controllers/foo/bars_controller.rb:33:32:33:37 | call to params | app/controllers/foo/bars_controller.rb:33:32:33:49 | ...[...] | provenance |  |
+| app/controllers/foo/bars_controller.rb:33:32:33:49 | ...[...] | app/controllers/foo/bars_controller.rb:33:5:33:50 | call to translate | provenance |  |
+| app/controllers/foo/bars_controller.rb:34:24:34:29 | call to params | app/controllers/foo/bars_controller.rb:34:24:34:41 | ...[...] | provenance |  |
+| app/controllers/foo/bars_controller.rb:34:24:34:41 | ...[...] | app/controllers/foo/bars_controller.rb:34:5:34:42 | call to t | provenance |  |
+| app/controllers/foo/bars_controller.rb:36:34:36:39 | call to params | app/controllers/foo/bars_controller.rb:36:34:36:51 | ...[...] | provenance |  |
+| app/controllers/foo/bars_controller.rb:36:34:36:51 | ...[...] | app/controllers/foo/bars_controller.rb:36:5:36:52 | call to t | provenance |  |
+| app/controllers/foo/bars_controller.rb:37:42:37:47 | call to params | app/controllers/foo/bars_controller.rb:37:42:37:59 | ...[...] | provenance |  |
+| app/controllers/foo/bars_controller.rb:37:42:37:59 | ...[...] | app/controllers/foo/bars_controller.rb:37:5:37:60 | call to translate | provenance |  |
 | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text [element] | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | provenance |  |
 | app/views/foo/bars/_widget.html.erb:8:9:8:21 | call to local_assigns [element :display_text, element] | app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] [element] | provenance |  |
 | app/views/foo/bars/_widget.html.erb:8:9:8:21 | call to local_assigns [element :display_text] | app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] | provenance |  |
@@ -32,16 +43,20 @@ edges
 | app/views/foo/bars/show.html.erb:8:9:8:21 | call to local_assigns [element :display_text] | app/views/foo/bars/show.html.erb:8:9:8:36 | ...[...] | provenance |  |
 | app/views/foo/bars/show.html.erb:12:9:12:21 | call to local_assigns [element :display_text] | app/views/foo/bars/show.html.erb:12:9:12:26 | ...[...] | provenance |  |
 | app/views/foo/bars/show.html.erb:17:15:17:27 | call to local_assigns [element :display_text] | app/views/foo/bars/show.html.erb:17:15:17:32 | ...[...] | provenance |  |
-| app/views/foo/bars/show.html.erb:43:64:43:87 | ... + ... | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | provenance |  |
-| app/views/foo/bars/show.html.erb:43:64:43:87 | ... + ... | app/views/foo/bars/_widget.html.erb:8:9:8:21 | call to local_assigns [element :display_text] | provenance |  |
-| app/views/foo/bars/show.html.erb:43:64:43:87 | ... + ... [element] | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text [element] | provenance |  |
-| app/views/foo/bars/show.html.erb:43:64:43:87 | ... + ... [element] | app/views/foo/bars/_widget.html.erb:8:9:8:21 | call to local_assigns [element :display_text, element] | provenance |  |
+| app/views/foo/bars/show.html.erb:43:48:43:89 | call to [] [element :display_text, element] | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text [element] | provenance |  |
+| app/views/foo/bars/show.html.erb:43:48:43:89 | call to [] [element :display_text, element] | app/views/foo/bars/_widget.html.erb:8:9:8:21 | call to local_assigns [element :display_text, element] | provenance |  |
+| app/views/foo/bars/show.html.erb:43:48:43:89 | call to [] [element :display_text] | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | provenance |  |
+| app/views/foo/bars/show.html.erb:43:48:43:89 | call to [] [element :display_text] | app/views/foo/bars/_widget.html.erb:8:9:8:21 | call to local_assigns [element :display_text] | provenance |  |
+| app/views/foo/bars/show.html.erb:43:64:43:87 | ... + ... | app/views/foo/bars/show.html.erb:43:48:43:89 | call to [] [element :display_text] | provenance |  |
+| app/views/foo/bars/show.html.erb:43:64:43:87 | ... + ... [element] | app/views/foo/bars/show.html.erb:43:48:43:89 | call to [] [element :display_text, element] | provenance |  |
 | app/views/foo/bars/show.html.erb:43:76:43:87 | call to display_text | app/views/foo/bars/show.html.erb:43:64:43:87 | ... + ... | provenance |  |
 | app/views/foo/bars/show.html.erb:43:76:43:87 | call to display_text | app/views/foo/bars/show.html.erb:43:64:43:87 | ... + ... [element] | provenance |  |
 | app/views/foo/bars/show.html.erb:53:29:53:34 | call to params | app/views/foo/bars/show.html.erb:53:29:53:44 | ...[...] | provenance |  |
 | app/views/foo/bars/show.html.erb:56:13:56:18 | call to params | app/views/foo/bars/show.html.erb:56:13:56:28 | ...[...] | provenance |  |
 | app/views/foo/bars/show.html.erb:73:19:73:24 | call to params | app/views/foo/bars/show.html.erb:73:19:73:34 | ...[...] | provenance |  |
 | app/views/foo/bars/show.html.erb:76:28:76:33 | call to params | app/views/foo/bars/show.html.erb:76:28:76:39 | ...[...] | provenance |  |
+| app/views/foo/bars/show.html.erb:85:36:85:47 | call to display_text | app/views/foo/bars/show.html.erb:85:9:85:48 | call to translate | provenance |  |
+| app/views/foo/bars/show.html.erb:86:28:86:39 | call to display_text | app/views/foo/bars/show.html.erb:86:9:86:40 | call to t | provenance |  |
 nodes
 | app/controllers/foo/bars_controller.rb:9:12:9:17 | call to params | semmle.label | call to params |
 | app/controllers/foo/bars_controller.rb:9:12:9:29 | ...[...] | semmle.label | ...[...] |
@@ -57,11 +72,24 @@ nodes
 | app/controllers/foo/bars_controller.rb:24:39:24:44 | call to params | semmle.label | call to params |
 | app/controllers/foo/bars_controller.rb:24:39:24:59 | ... = ... | semmle.label | ... = ... |
 | app/controllers/foo/bars_controller.rb:24:39:24:59 | ...[...] | semmle.label | ...[...] |
+| app/controllers/foo/bars_controller.rb:26:37:26:76 | call to [] [element :display_text] | semmle.label | call to [] [element :display_text] |
 | app/controllers/foo/bars_controller.rb:26:53:26:54 | dt | semmle.label | dt |
 | app/controllers/foo/bars_controller.rb:30:5:30:7 | str | semmle.label | str |
 | app/controllers/foo/bars_controller.rb:30:11:30:16 | call to params | semmle.label | call to params |
 | app/controllers/foo/bars_controller.rb:30:11:30:28 | ...[...] | semmle.label | ...[...] |
 | app/controllers/foo/bars_controller.rb:31:5:31:7 | str | semmle.label | str |
+| app/controllers/foo/bars_controller.rb:33:5:33:50 | call to translate | semmle.label | call to translate |
+| app/controllers/foo/bars_controller.rb:33:32:33:37 | call to params | semmle.label | call to params |
+| app/controllers/foo/bars_controller.rb:33:32:33:49 | ...[...] | semmle.label | ...[...] |
+| app/controllers/foo/bars_controller.rb:34:5:34:42 | call to t | semmle.label | call to t |
+| app/controllers/foo/bars_controller.rb:34:24:34:29 | call to params | semmle.label | call to params |
+| app/controllers/foo/bars_controller.rb:34:24:34:41 | ...[...] | semmle.label | ...[...] |
+| app/controllers/foo/bars_controller.rb:36:5:36:52 | call to t | semmle.label | call to t |
+| app/controllers/foo/bars_controller.rb:36:34:36:39 | call to params | semmle.label | call to params |
+| app/controllers/foo/bars_controller.rb:36:34:36:51 | ...[...] | semmle.label | ...[...] |
+| app/controllers/foo/bars_controller.rb:37:5:37:60 | call to translate | semmle.label | call to translate |
+| app/controllers/foo/bars_controller.rb:37:42:37:47 | call to params | semmle.label | call to params |
+| app/controllers/foo/bars_controller.rb:37:42:37:59 | ...[...] | semmle.label | ...[...] |
 | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | semmle.label | call to display_text |
 | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text [element] | semmle.label | call to display_text [element] |
 | app/views/foo/bars/_widget.html.erb:8:9:8:21 | call to local_assigns [element :display_text, element] | semmle.label | call to local_assigns [element :display_text, element] |
@@ -78,6 +106,8 @@ nodes
 | app/views/foo/bars/show.html.erb:17:15:17:32 | ...[...] | semmle.label | ...[...] |
 | app/views/foo/bars/show.html.erb:35:3:35:14 | call to display_text | semmle.label | call to display_text |
 | app/views/foo/bars/show.html.erb:40:3:40:16 | @instance_text | semmle.label | @instance_text |
+| app/views/foo/bars/show.html.erb:43:48:43:89 | call to [] [element :display_text, element] | semmle.label | call to [] [element :display_text, element] |
+| app/views/foo/bars/show.html.erb:43:48:43:89 | call to [] [element :display_text] | semmle.label | call to [] [element :display_text] |
 | app/views/foo/bars/show.html.erb:43:64:43:87 | ... + ... | semmle.label | ... + ... |
 | app/views/foo/bars/show.html.erb:43:64:43:87 | ... + ... [element] | semmle.label | ... + ... [element] |
 | app/views/foo/bars/show.html.erb:43:76:43:87 | call to display_text | semmle.label | call to display_text |
@@ -92,10 +122,18 @@ nodes
 | app/views/foo/bars/show.html.erb:76:28:76:33 | call to params | semmle.label | call to params |
 | app/views/foo/bars/show.html.erb:76:28:76:39 | ...[...] | semmle.label | ...[...] |
 | app/views/foo/bars/show.html.erb:82:6:82:17 | call to display_text | semmle.label | call to display_text |
+| app/views/foo/bars/show.html.erb:85:9:85:48 | call to translate | semmle.label | call to translate |
+| app/views/foo/bars/show.html.erb:85:36:85:47 | call to display_text | semmle.label | call to display_text |
+| app/views/foo/bars/show.html.erb:86:9:86:40 | call to t | semmle.label | call to t |
+| app/views/foo/bars/show.html.erb:86:28:86:39 | call to display_text | semmle.label | call to display_text |
 subpaths
 #select
 | app/controllers/foo/bars_controller.rb:24:39:24:59 | ... = ... | app/controllers/foo/bars_controller.rb:24:39:24:44 | call to params | app/controllers/foo/bars_controller.rb:24:39:24:59 | ... = ... | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:24:39:24:44 | call to params | user-provided value |
 | app/controllers/foo/bars_controller.rb:31:5:31:7 | str | app/controllers/foo/bars_controller.rb:30:11:30:16 | call to params | app/controllers/foo/bars_controller.rb:31:5:31:7 | str | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:30:11:30:16 | call to params | user-provided value |
+| app/controllers/foo/bars_controller.rb:33:5:33:50 | call to translate | app/controllers/foo/bars_controller.rb:33:32:33:37 | call to params | app/controllers/foo/bars_controller.rb:33:5:33:50 | call to translate | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:33:32:33:37 | call to params | user-provided value |
+| app/controllers/foo/bars_controller.rb:34:5:34:42 | call to t | app/controllers/foo/bars_controller.rb:34:24:34:29 | call to params | app/controllers/foo/bars_controller.rb:34:5:34:42 | call to t | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:34:24:34:29 | call to params | user-provided value |
+| app/controllers/foo/bars_controller.rb:36:5:36:52 | call to t | app/controllers/foo/bars_controller.rb:36:34:36:39 | call to params | app/controllers/foo/bars_controller.rb:36:5:36:52 | call to t | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:36:34:36:39 | call to params | user-provided value |
+| app/controllers/foo/bars_controller.rb:37:5:37:60 | call to translate | app/controllers/foo/bars_controller.rb:37:42:37:47 | call to params | app/controllers/foo/bars_controller.rb:37:5:37:60 | call to translate | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:37:42:37:47 | call to params | user-provided value |
 | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | user-provided value |
 | app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | app/views/foo/bars/_widget.html.erb:8:9:8:36 | ...[...] | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | user-provided value |
 | app/views/foo/bars/show.html.erb:2:18:2:30 | @user_website | app/controllers/foo/bars_controller.rb:17:21:17:26 | call to params | app/views/foo/bars/show.html.erb:2:18:2:30 | @user_website | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:17:21:17:26 | call to params | user-provided value |
@@ -112,3 +150,5 @@ subpaths
 | app/views/foo/bars/show.html.erb:73:19:73:34 | ...[...] | app/views/foo/bars/show.html.erb:73:19:73:24 | call to params | app/views/foo/bars/show.html.erb:73:19:73:34 | ...[...] | Cross-site scripting vulnerability due to a $@. | app/views/foo/bars/show.html.erb:73:19:73:24 | call to params | user-provided value |
 | app/views/foo/bars/show.html.erb:76:28:76:39 | ...[...] | app/views/foo/bars/show.html.erb:76:28:76:33 | call to params | app/views/foo/bars/show.html.erb:76:28:76:39 | ...[...] | Cross-site scripting vulnerability due to a $@. | app/views/foo/bars/show.html.erb:76:28:76:33 | call to params | user-provided value |
 | app/views/foo/bars/show.html.erb:82:6:82:17 | call to display_text | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | app/views/foo/bars/show.html.erb:82:6:82:17 | call to display_text | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | user-provided value |
+| app/views/foo/bars/show.html.erb:85:9:85:48 | call to translate | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | app/views/foo/bars/show.html.erb:85:9:85:48 | call to translate | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | user-provided value |
+| app/views/foo/bars/show.html.erb:86:9:86:40 | call to t | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | app/views/foo/bars/show.html.erb:86:9:86:40 | call to t | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:18:10:18:15 | call to params | user-provided value |

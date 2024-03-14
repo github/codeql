@@ -18,14 +18,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private const string aspNetCoreApp = "Microsoft.AspNetCore.App";
 
         private readonly IDotNet dotNet;
-        private readonly ILogger logger;
         private readonly Lazy<Dictionary<string, DotNetVersion>> newestRuntimes;
         private Dictionary<string, DotNetVersion> NewestRuntimes => newestRuntimes.Value;
 
-        public Runtime(IDotNet dotNet, ILogger logger)
+        public Runtime(IDotNet dotNet)
         {
             this.dotNet = dotNet;
-            this.logger = logger;
             this.newestRuntimes = new(GetNewestRuntimes);
         }
 

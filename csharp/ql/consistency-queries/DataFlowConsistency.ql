@@ -1,5 +1,4 @@
 import csharp
-import cil
 private import semmle.code.csharp.controlflow.internal.ControlFlowGraphImpl as ControlFlowGraphImpl
 private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
@@ -31,11 +30,6 @@ private module Input implements InputSig<CsharpDataFlow> {
     n instanceof FlowInsensitiveFieldNode
   }
 
-  predicate missingLocationExclude(Node n) {
-    // Some CIL methods are missing locations
-    n.asParameter() instanceof CIL::Parameter
-  }
-
   predicate postWithInFlowExclude(Node n) {
     n instanceof FlowSummaryNode
     or
@@ -47,11 +41,7 @@ private module Input implements InputSig<CsharpDataFlow> {
     or
     not exists(LocalFlow::getAPostUpdateNodeForArg(n.getControlFlowNode()))
     or
-    n instanceof ImplicitCapturedArgumentNode
-    or
     n instanceof ParamsArgumentNode
-    or
-    n.asExpr() instanceof CIL::Expr
   }
 
   predicate postHasUniquePreExclude(PostUpdateNode n) {
@@ -103,8 +93,6 @@ private module Input implements InputSig<CsharpDataFlow> {
         split = call.getControlFlowNode().getASplit() and
         not split = cfn.getASplit()
       )
-      or
-      call instanceof TransitiveCapturedDataFlowCall
       or
       call.(NonDelegateDataFlowCall).getDispatchCall().isReflection()
     )

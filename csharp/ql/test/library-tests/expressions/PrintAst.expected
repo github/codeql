@@ -2411,7 +2411,6 @@ expressions.cs:
 #-----|       2: (Parameters)
 #  518|         0: [Parameter] oc1
 #  518|           -1: [TypeMention] object
-#  518|       4: [BlockStmt] {...}
 #  520|   23: [Class] ClassC2
 #-----|     3: (Base types)
 #  520|       0: [TypeMention] ClassC1
@@ -2421,4 +2420,3 @@ expressions.cs:
 #  520|           -1: [TypeMention] object
 #  520|       3: [ConstructorInitializer] call to constructor ClassC1
 #  520|         0: [ParameterAccess] access to parameter oc2
-#  520|       4: [BlockStmt] {...}

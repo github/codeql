@@ -116,11 +116,11 @@ module KindValidation<KindValidationConfigSig Config> {
       this =
         [
           // shared
-          "local", "remote", "file",
+          "local", "remote", "file", "commandargs", "database", "environment",
           // Java
-          "android-external-storage-dir", "contentprovider", "database", "environment",
+          "android-external-storage-dir", "contentprovider",
           // C#
-          "file-write",
+          "file-write", "windows-registry",
           // JavaScript
           "database-access-result"
         ]

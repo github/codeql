@@ -16,6 +16,7 @@ extensions:
       - ["commandargs", "local"]
       - ["environment", "local"]
       - ["file", "local"]
+      - ["windows-registry", "local"]
 
       # Android threat models
       - ["android-external-storage-dir", "android"]

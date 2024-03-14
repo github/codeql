@@ -4,12 +4,6 @@ edges
 | CollectionFlow.cs:14:52:14:53 | access to parameter ts : A[] [element] : A | CollectionFlow.cs:14:52:14:56 | access to array element | provenance |  |
 | CollectionFlow.cs:14:52:14:53 | access to parameter ts : null [element] : A | CollectionFlow.cs:14:52:14:56 | access to array element | provenance |  |
 | CollectionFlow.cs:16:49:16:52 | list : List<T> [element] : A | CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | provenance |  |
-| CollectionFlow.cs:16:49:16:52 | list : List<T> [element] : A | CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | provenance |  |
-| CollectionFlow.cs:16:49:16:52 | list : List<T> [element] : A | CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | provenance |  |
-| CollectionFlow.cs:16:49:16:52 | list : List<T> [element] : A | CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | provenance |  |
-| CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | CollectionFlow.cs:16:63:16:69 | access to indexer | provenance |  |
-| CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | CollectionFlow.cs:16:63:16:69 | access to indexer | provenance |  |
-| CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | CollectionFlow.cs:16:63:16:69 | access to indexer | provenance |  |
 | CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | CollectionFlow.cs:16:63:16:69 | access to indexer | provenance |  |
 | CollectionFlow.cs:18:61:18:64 | dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:18:75:18:78 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
 | CollectionFlow.cs:18:75:18:78 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:18:75:18:81 | access to indexer | provenance |  |
@@ -21,12 +15,6 @@ edges
 | CollectionFlow.cs:22:41:22:42 | access to parameter ts : A[] [element] : A | CollectionFlow.cs:22:41:22:45 | access to array element : A | provenance |  |
 | CollectionFlow.cs:22:41:22:42 | access to parameter ts : null [element] : A | CollectionFlow.cs:22:41:22:45 | access to array element : A | provenance |  |
 | CollectionFlow.cs:24:43:24:46 | list : List<T> [element] : A | CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | provenance |  |
-| CollectionFlow.cs:24:43:24:46 | list : List<T> [element] : A | CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | provenance |  |
-| CollectionFlow.cs:24:43:24:46 | list : List<T> [element] : A | CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | provenance |  |
-| CollectionFlow.cs:24:43:24:46 | list : List<T> [element] : A | CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | provenance |  |
-| CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | CollectionFlow.cs:24:52:24:58 | access to indexer : A | provenance |  |
-| CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | CollectionFlow.cs:24:52:24:58 | access to indexer : A | provenance |  |
-| CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | CollectionFlow.cs:24:52:24:58 | access to indexer : A | provenance |  |
 | CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | CollectionFlow.cs:24:52:24:58 | access to indexer : A | provenance |  |
 | CollectionFlow.cs:26:58:26:61 | dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:26:67:26:70 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | provenance |  |
 | CollectionFlow.cs:26:67:26:70 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:26:67:26:73 | access to indexer : A | provenance |  |
@@ -324,12 +312,6 @@ nodes
 | CollectionFlow.cs:14:52:14:53 | access to parameter ts : null [element] : A | semmle.label | access to parameter ts : null [element] : A |
 | CollectionFlow.cs:14:52:14:56 | access to array element | semmle.label | access to array element |
 | CollectionFlow.cs:16:49:16:52 | list : List<T> [element] : A | semmle.label | list : List<T> [element] : A |
-| CollectionFlow.cs:16:49:16:52 | list : List<T> [element] : A | semmle.label | list : List<T> [element] : A |
-| CollectionFlow.cs:16:49:16:52 | list : List<T> [element] : A | semmle.label | list : List<T> [element] : A |
-| CollectionFlow.cs:16:49:16:52 | list : List<T> [element] : A | semmle.label | list : List<T> [element] : A |
-| CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | semmle.label | access to parameter list : List<T> [element] : A |
-| CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | semmle.label | access to parameter list : List<T> [element] : A |
-| CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | semmle.label | access to parameter list : List<T> [element] : A |
 | CollectionFlow.cs:16:63:16:66 | access to parameter list : List<T> [element] : A | semmle.label | access to parameter list : List<T> [element] : A |
 | CollectionFlow.cs:16:63:16:69 | access to indexer | semmle.label | access to indexer |
 | CollectionFlow.cs:18:61:18:64 | dict : Dictionary<T,T> [element, property Value] : A | semmle.label | dict : Dictionary<T,T> [element, property Value] : A |
@@ -346,16 +328,7 @@ nodes
 | CollectionFlow.cs:22:41:22:45 | access to array element : A | semmle.label | access to array element : A |
 | CollectionFlow.cs:22:41:22:45 | access to array element : A | semmle.label | access to array element : A |
 | CollectionFlow.cs:24:43:24:46 | list : List<T> [element] : A | semmle.label | list : List<T> [element] : A |
-| CollectionFlow.cs:24:43:24:46 | list : List<T> [element] : A | semmle.label | list : List<T> [element] : A |
-| CollectionFlow.cs:24:43:24:46 | list : List<T> [element] : A | semmle.label | list : List<T> [element] : A |
-| CollectionFlow.cs:24:43:24:46 | list : List<T> [element] : A | semmle.label | list : List<T> [element] : A |
 | CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | semmle.label | access to parameter list : List<T> [element] : A |
-| CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | semmle.label | access to parameter list : List<T> [element] : A |
-| CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | semmle.label | access to parameter list : List<T> [element] : A |
-| CollectionFlow.cs:24:52:24:55 | access to parameter list : List<T> [element] : A | semmle.label | access to parameter list : List<T> [element] : A |
-| CollectionFlow.cs:24:52:24:58 | access to indexer : A | semmle.label | access to indexer : A |
-| CollectionFlow.cs:24:52:24:58 | access to indexer : A | semmle.label | access to indexer : A |
-| CollectionFlow.cs:24:52:24:58 | access to indexer : A | semmle.label | access to indexer : A |
 | CollectionFlow.cs:24:52:24:58 | access to indexer : A | semmle.label | access to indexer : A |
 | CollectionFlow.cs:26:58:26:61 | dict : Dictionary<T,T> [element, property Value] : A | semmle.label | dict : Dictionary<T,T> [element, property Value] : A |
 | CollectionFlow.cs:26:67:26:70 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | semmle.label | access to parameter dict : Dictionary<T,T> [element, property Value] : A |

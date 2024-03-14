@@ -6,6 +6,9 @@
 
 /** Provides language-specific data flow parameters. */
 signature module InputSig {
+  /**
+   * A node in the data flow graph.
+   */
   class Node {
     /** Gets a textual representation of this element. */
     string toString();
@@ -30,9 +33,27 @@ signature module InputSig {
     ReturnKind getKind();
   }
 
+  /**
+   * A node in the data flow graph that represents an output of a call.
+   */
   class OutNode extends Node;
 
+  /**
+   * A node in the data flow graph representing the value of some other node
+   * after an operation that might have changed its state. A typical example is
+   * an argument, which may have been modified by the callee. For example,
+   * consider the following code calling a setter method:
+   * ```
+   * x.setFoo(y);
+   * ```
+   * The post-update node for the argument node `x` is the node representing the
+   * value of `x` after the field `foo` has been updated.
+   */
   class PostUpdateNode extends Node {
+    /**
+     * Gets the pre-update node, that is, the node that represents the same
+     * value prior to the operation.
+     */
     Node getPreUpdateNode();
   }
 
@@ -131,6 +152,12 @@ signature module InputSig {
     string toString();
   }
 
+  /**
+   * Holds if access paths with `c` at their head always should be tracked at
+   * high precision. This disables adaptive access path precision for such
+   * access paths. This may be beneficial for content that indicates an
+   * element of an array or container.
+   */
   predicate forceHighPrecision(Content c);
 
   /**
@@ -150,11 +177,19 @@ signature module InputSig {
     Content getAReadContent();
   }
 
+  /**
+   * A content approximation. A content approximation corresponds to one or
+   * more `Content`s, and is used to provide an in-between level of precision
+   * for pruning.
+   */
   class ContentApprox {
     /** Gets a textual representation of this element. */
     string toString();
   }
 
+  /**
+   * Gets the content approximation for content `c`.
+   */
   ContentApprox getContentApprox(Content c);
 
   class ParameterPosition {
@@ -169,8 +204,16 @@ signature module InputSig {
     string toString();
   }
 
+  /**
+   * Holds if the parameter position `ppos` matches the argument position
+   * `apos`.
+   */
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos);
 
+  /**
+   * Holds if there is a simple local flow step from `node1` to `node2`. These
+   * are the value-preserving intra-callable flow steps.
+   */
   predicate simpleLocalFlowStep(Node node1, Node node2);
 
   /**
@@ -333,6 +376,9 @@ module Configs<InputSig Lang> {
      */
     default int fieldFlowBranchLimit() { result = 2 }
 
+    /** Gets the access path limit. */
+    default int accessPathLimit() { result = Lang::accessPathLimit() }
+
     /**
      * Gets a data flow configuration feature to add restrictions to the set of
      * valid flow paths.
@@ -452,6 +498,9 @@ module Configs<InputSig Lang> {
      */
     default int fieldFlowBranchLimit() { result = 2 }
 
+    /** Gets the access path limit. */
+    default int accessPathLimit() { result = Lang::accessPathLimit() }
+
     /**
      * Gets a data flow configuration feature to add restrictions to the set of
      * valid flow paths.
@@ -540,6 +589,8 @@ module DataFlowMake<InputSig Lang> {
     private module C implements FullStateConfigSig {
       import DefaultState<Config>
       import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
     }
 
     import Impl<C>
@@ -556,6 +607,8 @@ module DataFlowMake<InputSig Lang> {
   module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
     private module C implements FullStateConfigSig {
       import Config
+
+      predicate accessPathLimit = Config::accessPathLimit/0;
     }
 
     import Impl<C>

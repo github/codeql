@@ -8,7 +8,7 @@ private import CIL
  * A basic block, that is, a maximal straight-line sequence of control flow nodes
  * without branches or joins.
  */
-class BasicBlock extends Cached::TBasicBlockStart {
+deprecated class BasicBlock extends Cached::TBasicBlockStart {
   /** Gets an immediate successor of this basic block, if any. */
   BasicBlock getASuccessor() { result.getFirstNode() = this.getLastNode().getASuccessor() }
 
@@ -249,7 +249,7 @@ class BasicBlock extends Cached::TBasicBlockStart {
  * Internal implementation details.
  */
 cached
-private module Cached {
+deprecated private module Cached {
   /** Internal representation of basic blocks. */
   cached
   newtype TBasicBlock = TBasicBlockStart(ControlFlowNode cfn) { startsBB(cfn) }
@@ -287,49 +287,54 @@ private module Cached {
  * Holds if the first node of basic block `succ` is a control flow
  * successor of the last node of basic block `pred`.
  */
-private predicate succBB(BasicBlock pred, BasicBlock succ) { succ = pred.getASuccessor() }
+deprecated private predicate succBB(BasicBlock pred, BasicBlock succ) {
+  succ = pred.getASuccessor()
+}
 
 /** Holds if `dom` is an immediate dominator of `bb`. */
-predicate bbIDominates(BasicBlock dom, BasicBlock bb) = idominance(entryBB/1, succBB/2)(_, dom, bb)
+deprecated predicate bbIDominates(BasicBlock dom, BasicBlock bb) =
+  idominance(entryBB/1, succBB/2)(_, dom, bb)
 
 /** Holds if `pred` is a basic block predecessor of `succ`. */
-private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
+deprecated private predicate predBB(BasicBlock succ, BasicBlock pred) { succBB(pred, succ) }
 
 /** Holds if `dom` is an immediate post-dominator of `bb`. */
-predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
+deprecated predicate bbIPostDominates(BasicBlock dom, BasicBlock bb) =
   idominance(exitBB/1, predBB/2)(_, dom, bb)
 
 /**
  * An entry basic block, that is, a basic block whose first node is
  * the entry node of a callable.
  */
-class EntryBasicBlock extends BasicBlock {
+deprecated class EntryBasicBlock extends BasicBlock {
   EntryBasicBlock() { entryBB(this) }
 }
 
 /** Holds if `bb` is an entry basic block. */
-private predicate entryBB(BasicBlock bb) { bb.getFirstNode() instanceof MethodImplementation }
+deprecated private predicate entryBB(BasicBlock bb) {
+  bb.getFirstNode() instanceof MethodImplementation
+}
 
 /**
  * An exit basic block, that is, a basic block whose last node is
  * an exit node.
  */
-class ExitBasicBlock extends BasicBlock {
+deprecated class ExitBasicBlock extends BasicBlock {
   ExitBasicBlock() { exitBB(this) }
 }
 
 /** Holds if `bb` is an exit basic block. */
-private predicate exitBB(BasicBlock bb) { not exists(bb.getLastNode().getASuccessor()) }
+deprecated private predicate exitBB(BasicBlock bb) { not exists(bb.getLastNode().getASuccessor()) }
 
 /**
  * A basic block with more than one predecessor.
  */
-class JoinBlock extends BasicBlock {
+deprecated class JoinBlock extends BasicBlock {
   JoinBlock() { this.getFirstNode().isJoin() }
 }
 
 /** A basic block that terminates in a condition, splitting the subsequent control flow. */
-class ConditionBlock extends BasicBlock {
+deprecated class ConditionBlock extends BasicBlock {
   ConditionBlock() {
     exists(BasicBlock succ |
       succ = this.getATrueSuccessor()
