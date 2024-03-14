@@ -66,6 +66,7 @@ predicate containsHeadRef(string s) {
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.id\\b",
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.number\\b",
+            "\\bhead\\.sha\\b", "\\bhead\\.ref\\b"
           ], _, _)
   )
 }
@@ -79,6 +80,14 @@ class ActionsCheckout extends PRHeadCheckoutStep instanceof UsesStep {
     this.getCallee() = "actions/checkout" and
     (
       containsHeadRef(this.getArgumentExpr("ref").getExpression())
+      or
+      exists(StepsExpression e |
+        this.getArgumentExpr("ref") = e and
+        (
+          e.getStepId().matches(["%sha%", "%head%", "branch"]) or
+          e.getFieldName().matches(["%sha%", "%head%", "branch"])
+        )
+      )
       or
       exists(UsesStep head |
         head.getCallee() = ["eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch"] and

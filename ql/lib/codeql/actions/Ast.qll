@@ -232,7 +232,9 @@ abstract class SimpleReferenceExpression extends AstNode instanceof SimpleRefere
   AstNode getTarget() { result = super.getTarget() }
 }
 
-class StepsExpression extends SimpleReferenceExpression instanceof StepsExpressionImpl { }
+class StepsExpression extends SimpleReferenceExpression instanceof StepsExpressionImpl {
+  string getStepId() { result = super.getStepId() }
+}
 
 class NeedsExpression extends SimpleReferenceExpression instanceof NeedsExpressionImpl { }
 

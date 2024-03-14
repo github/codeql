@@ -858,6 +858,8 @@ class StepsExpressionImpl extends SimpleReferenceExpressionImpl {
     this.getEnclosingJob() = result.getEnclosingJob() and
     result.(StepImpl).getId() = stepId
   }
+
+  string getStepId() { result = stepId }
 }
 
 /**
