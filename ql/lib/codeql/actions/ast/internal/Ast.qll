@@ -855,7 +855,14 @@ class StepsExpressionImpl extends SimpleReferenceExpressionImpl {
   override string getFieldName() { result = fieldName }
 
   override AstNodeImpl getTarget() {
-    this.getEnclosingJob() = result.getEnclosingJob() and
+    (
+      this.getEnclosingJob() = result.getEnclosingJob()
+      or
+      exists(CompositeActionImpl a |
+        a.getAChildNode*() = this and
+        a.getAChildNode*() = result
+      )
+    ) and
     result.(StepImpl).getId() = stepId
   }
 
