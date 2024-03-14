@@ -37,11 +37,7 @@ module HardcodedCredentials {
 
   /** A hardcoded string literal as a source for hardcoded credentials. */
   private class HardcodedStringSource extends Source {
-    HardcodedStringSource() {
-      exists(StringLit val | this.asExpr() = val |
-        not PasswordHeuristics::isDummyPassword(val.getStringValue())
-      )
-    }
+    HardcodedStringSource() { this.asExpr() instanceof StringLit }
   }
 
   /** A use of a credential. */
