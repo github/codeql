@@ -148,7 +148,7 @@ void test_summaries() {
 	sink(madArg0ToReturn(0));
 	sink(madArg0ToReturn(source())); // $ ir
 	sink(*madArg0ToReturnIndirect(0));
-	sink(*madArg0ToReturnIndirect(source())); // $ MISSING: ir
+	sink(*madArg0ToReturnIndirect(source())); // $ ir
 	sink(notASummary(source()));
 	sink(madArg0ToReturnValueFlow(0));
 	sink(madArg0ToReturnValueFlow(source())); // $ ir

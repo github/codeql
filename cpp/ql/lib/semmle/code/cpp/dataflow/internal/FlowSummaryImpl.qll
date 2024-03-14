@@ -12,6 +12,14 @@ private import semmle.code.cpp.dataflow.ExternalFlow
 private import semmle.code.cpp.ir.IR
 
 module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
+  /**
+   * Gets a string representing a level of indirection, for example for
+   * `indirection = 2`, the result is `**`.
+   */
+  private bindingset[indirection] string indirectionString(int indirection) {
+    result = concat(int i | i in [1 .. indirection] | "*")
+  }
+
   class SummarizedCallableBase = Function;
 
   ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
@@ -24,8 +32,8 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
 
   string encodeReturn(ReturnKind rk, string arg) {
     rk != getStandardReturnValueKind() and
-    result = "ReturnValue" and
-    arg = rk.toString()
+    result = indirectionString(rk.(NormalReturnKind).getIndirectionIndex()) + "ReturnValue" and
+    arg = ""
   }
 
   string encodeContent(ContentSet cs, string arg) {
@@ -34,7 +42,6 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
       result = "Field" and
       arg = c.getField().getName()
     )
-    // TODO: indirection support here?
   }
 
   string encodeWithoutContent(ContentSet c, string arg) {
