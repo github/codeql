@@ -1351,7 +1351,7 @@ private predicate indirectExprNodeShouldBeIndirectOperand(
 /** Holds if `node` should be an `IndirectOperand` that maps `node.asExpr()` to `e`. */
 private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, int n) {
   exists(ArgumentOperand operand |
-    // When an argument (qualifier or position) is a PR value and the
+    // When an argument (qualifier or positional) is a prvalue and the
     // parameter (qualifier or positional) is a (const) reference, IR
     // construction introduces a temporary `IRVariable`. The `VariableAddress`
     // instruction has the argument as its `getConvertedResultExpression`
