@@ -1025,7 +1025,9 @@ private class RelevantGvnType extends Gvn::GvnType {
   RelevantGvnType() { this = any(NodeImpl n).getDataFlowType().asGvnType() }
 }
 
-/** A GVN type that is either a `DataFlowType` or unifiable with a `DataFlowType`. */
+/**
+ * A GVN type that is either a `DataFlowType` or unifiable with a `DataFlowType`.
+ */
 private class DataFlowTypeOrUnifiable extends Gvn::GvnType {
   pragma[nomagic]
   DataFlowTypeOrUnifiable() {
