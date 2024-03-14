@@ -1,34 +1,30 @@
 /**
- * @name Expression injection in Actions
- * @description Using user-controlled GitHub Actions contexts like `run:` or `script:` may allow a malicious
- *              user to inject code into the GitHub action.
+ * @name Command built from user-controlled sources
+ * @description Building a system command from user-controlled sources is vulnerable to insertion of
+ *              malicious code by the user.
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 5.0
  * @precision high
- * @id actions/expression-injection
+ * @id actions/command-injection
  * @tags actions
  *       security
- *       external/cwe/cwe-094
+ *       external/cwe/cwe-078
  */
 
 import actions
-import codeql.actions.DataFlow
 import codeql.actions.TaintTracking
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.dataflow.ExternalFlow
 
-private class ExpressionInjectionSink extends DataFlow::Node {
-  ExpressionInjectionSink() {
-    exists(Run e | e.getAnScriptExpr() = this.asExpr()) or
-    externallyDefinedSink(this, "expression-injection")
-  }
+private class CommandInjectionSink extends DataFlow::Node {
+  CommandInjectionSink() { externallyDefinedSink(this, "command-injection") }
 }
 
 private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionInjectionSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjectionSink }
 }
 
 module MyFlow = TaintTracking::Global<MyConfig>;
