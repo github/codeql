@@ -594,14 +594,18 @@ private module ParamsSummaries {
 
   /** Flow summaries for `ActiveDispatch::Http::UploadedFile`, which can be an field of `ActionController::Parameters`. */
   module UploadedFileSummaries {
-    /** Flow summary for `ActiveDispatch::Http::UploadedFile.original_filename` */
-    private class UploadedFileOriginalFilenameSummary extends SummarizedCallable {
-      UploadedFileOriginalFilenameSummary() {
-        this = "ActionDispatch::Http::UploadedFile::original_filename"
+    /** Flow summary for various string attributes of `UploadedFile`, including `original_filename`, `content_type`, and `headers`. */
+    private class UploadedFileStringAttributeSummary extends SummarizedCallable {
+      UploadedFileStringAttributeSummary() {
+        this = "ActionDispatch::Http::UploadedFile::[original_filename,content_type,headers]"
       }
 
       override MethodCall getACall() {
-        result = paramsFieldType().getAMethodCall("original_filename").asExpr().getExpr() and
+        result =
+          paramsFieldType()
+              .getAMethodCall(["original_filename", "content_type", "headers"])
+              .asExpr()
+              .getExpr() and
         result.getNumberOfArguments() = 0
       }
 
