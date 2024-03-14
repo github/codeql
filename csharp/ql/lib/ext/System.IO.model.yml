@@ -92,6 +92,8 @@ extensions:
       - ["System.IO", "Stream", True, "ReadAtLeast", "(System.Span<System.Byte>,System.Int32,System.Boolean)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       # Post-update nodes for `Memory<T>` are currently unsupported. This model is provided for completeness
       - ["System.IO", "Stream", True, "ReadAtLeastAsync", "(System.Memory<System.Byte>,System.Int32,System.Boolean,System.Threading.CancellationToken)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      - ["System.IO", "Stream", True, "ReadExactly", "(System.Span<System.Byte>)", "", "Argument[this]", "Argument[0].Element", "taint", "manual"]
+      - ["System.IO", "Stream", True, "ReadExactly", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[this]", "Argument[0].Element", "taint", "manual"]
       - ["System.IO", "Stream", True, "Write", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0].Element", "Argument[this]", "taint", "manual"]
       - ["System.IO", "Stream", False, "WriteAsync", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[0].Element", "Argument[this]", "taint", "manual"]
       - ["System.IO", "Stream", True, "WriteAsync", "(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)", "", "Argument[0].Element", "Argument[this]", "taint", "manual"]
