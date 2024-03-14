@@ -271,7 +271,7 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) { none() }
  * Holds if a Expression reads a field from a job (needs/jobs), step (steps) output via a read of `c` (fieldname)
  */
 predicate ctxFieldReadStep(Node node1, Node node2, ContentSet c) {
-  exists(ContextExpression access |
+  exists(SimpleReferenceExpression access |
     (
       access instanceof NeedsExpression or
       access instanceof StepsExpression or

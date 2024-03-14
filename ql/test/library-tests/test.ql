@@ -1,4 +1,5 @@
 import codeql.actions.Ast
+import codeql.actions.Ast::Utils as Utils
 import codeql.actions.Cfg as Cfg
 import codeql.actions.DataFlow
 import codeql.Locations
@@ -59,3 +60,12 @@ query predicate summaries(string action, string version, string input, string ou
 query predicate calls(DataFlow::CallNode call, string callee) { callee = call.getCallee() }
 
 query predicate needs(DataFlow::Node e) { e.asExpr() instanceof NeedsExpression }
+
+query string testNormalizeExpr(string s) {
+  s =
+    [
+      "github.event.pull_request.user['login']", "github.event.pull_request.user[\"login\"]",
+      "github.event.pull_request['user']['login']", "foo['bar'] == baz"
+    ] and
+  result = Utils::normalizeExpr(s)
+}

@@ -190,7 +190,7 @@ parentNodes
 | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} |
 | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} |
 | .github/workflows/test.yml:34:10:34:24 | always() | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} |
-| .github/workflows/test.yml:34:10:34:24 | always() | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} |
+| .github/workflows/test.yml:34:11:34:25 | always() | .github/workflows/test.yml:34:9:34:23 | ${{ always() }} |
 | .github/workflows/test.yml:36:12:36:15 | job1 | .github/workflows/test.yml:1:1:40:53 | on: push |
 | .github/workflows/test.yml:36:12:36:15 | job1 | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
 | .github/workflows/test.yml:36:12:36:15 | job1 | .github/workflows/test.yml:32:5:40:53 | Job: job2 |
@@ -415,3 +415,8 @@ calls
 | .github/workflows/test.yml:19:9:26:6 | Uses Step: step | mad9000/actions-find-and-replace-string |
 needs
 | .github/workflows/test.yml:40:20:40:53 | needs.job1.outputs.job_output |
+testNormalizeExpr
+| foo['bar'] == baz | foo.bar == baz |
+| github.event.pull_request.user["login"] | github.event.pull_request.user.login |
+| github.event.pull_request.user['login'] | github.event.pull_request.user.login |
+| github.event.pull_request['user']['login'] | github.event.pull_request.user.login |

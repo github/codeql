@@ -14,40 +14,121 @@
  */
 
 import actions
+import codeql.actions.DataFlow
 
-/**
- * An If node that contains an `actor` check
- */
-class ActorCheck extends If {
-  ActorCheck() {
-    this.getCondition().regexpMatch(".*github\\.(triggering_)?actor.*") or
-    this.getCondition().regexpMatch(".*github\\.event\\.pull_request\\.user\\.login.*")
+/** An If node that contains an actor, user or label check */
+class ControlCheck extends If {
+  ControlCheck() {
+    exists(
+      Utils::normalizeExpr(this.getCondition())
+          .regexpFind([
+              "\\bgithub\\.actor\\b", // actor
+              "\\bgithub\\.triggering_actor\\b", // actor
+              "\\bgithub\\.event\\.comment\\.user\\.login\\b", //user
+              "\\bgithub\\.event\\.pull_request\\.user\\.login\\b", //user
+              "\\bgithub\\.event\\.pull_request\\.labels\\b", // label
+              "\\bgithub\\.event\\.label\\.name\\b" // label
+            ], _, _)
+    )
   }
 }
 
-/**
- * An If node that contains a `label` check
- */
-class LabelCheck extends If {
-  LabelCheck() {
-    this.getCondition().regexpMatch(".*github\\.event\\.pull_request\\.labels.*") or
-    this.getCondition().regexpMatch(".*github\\.event\\.label\\.name.*")
+bindingset[s]
+predicate containsHeadRef(string s) {
+  exists(
+    Utils::normalizeExpr(s)
+        .regexpFind([
+            "\\bgithub\\.event\\.number\\b", // The pull request number.
+            "\\bgithub\\.event\\.issue\\.number\\b", // The pull request number on issue_comment.
+            "\\bgithub\\.event\\.pull_request\\.head\\.ref\\b", // The ref name of head.
+            "\\bgithub\\.event\\.pull_request\\.head\\.sha\\b", //  The commit SHA of head.
+            "\\bgithub\\.event\\.pull_request\\.id\\b", // The pull request ID.
+            "\\bgithub\\.event\\.pull_request\\.number\\b", // The pull request number.
+            "\\bgithub\\.event\\.pull_request\\.merge_commit_sha\\b", // The SHA of the merge commit.
+            "\\bgithub\\.head_ref\\b", // The head_ref or source branch of the pull request in a workflow run.
+            "\\bgithub\\.event\\.workflow_run\\.head_branch\\b", // The branch of the head commit.
+            "\\bgithub\\.event\\.workflow_run\\.head_commit\\.id\\b", // The SHA of the head commit.
+            "\\bgithub\\.event\\.workflow_run\\.head_sha\\b", // The SHA of the head commit.
+            "\\benv\\.GITHUB_HEAD_REF\\b", "\\bgithub\\.event\\.check_suite\\.after\\b",
+            "\\bgithub\\.event\\.check_suite\\.head_sha\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.id\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.number\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.after\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.head_sha\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.id\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.number\\b",
+            "\\bgithub\\.event\\.check_run\\.head_sha\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.id\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.number\\b",
+            "\\bhead\\.sha\\b", "\\bhead\\.ref\\b"
+          ], _, _)
+  )
+}
+
+/** Checkout of a Pull Request HEAD ref */
+abstract class PRHeadCheckoutStep extends Step { }
+
+/** Checkout of a Pull Request HEAD ref using actions/checkout action */
+class ActionsCheckout extends PRHeadCheckoutStep instanceof UsesStep {
+  ActionsCheckout() {
+    this.getCallee() = "actions/checkout" and
+    (
+      // ref argument contains the head ref
+      exists(Expression e |
+        containsHeadRef(e.getExpression()) and
+        DataFlow::hasLocalFlowExpr(e, this.getArgumentExpr("ref"))
+      )
+      or
+      // 3rd party actions returning the PR head sha/ref
+      exists(UsesStep head |
+        head.getCallee() = ["eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch"] and
+        DataFlow::hasLocalFlowExpr(head, this.getArgumentExpr("ref"))
+      )
+      or
+      // heuristic base on the step id and field name
+      exists(StepsExpression e |
+        this.getArgumentExpr("ref") = e and
+        (
+          e.getStepId().matches(["%sha%", "%head%", "branch"]) or
+          e.getFieldName().matches(["%sha%", "%head%", "branch"])
+        )
+      )
+    )
   }
 }
 
-from Workflow w, LocalJob job, UsesStep checkoutStep
+/** Checkout of a Pull Request HEAD ref using git within a Run step */
+class GitCheckout extends PRHeadCheckoutStep instanceof Run {
+  GitCheckout() {
+    exists(string line |
+      this.getScript().splitAt("\n") = line and
+      line.regexpMatch(".*git\\s+fetch.*") and
+      (
+        containsHeadRef(line)
+        or
+        exists(string varname |
+          containsHeadRef(this.getInScopeEnvVarExpr(varname).getExpression()) and
+          exists(line.regexpFind(varname, _, _))
+        )
+      )
+    )
+  }
+}
+
+from Workflow w, PRHeadCheckoutStep checkout
 where
-  w.hasTriggerEvent("pull_request_target") and
-  w.getAJob() = job and
-  job.getAStep() = checkoutStep and
-  checkoutStep.getCallee() = "actions/checkout" and
-  checkoutStep
-      .getArgumentExpr("ref")
-      .getExpression()
-      .matches([
-          "%github.event.pull_request.head.ref%", "%github.event.pull_request.head.sha%",
-          "%github.event.pull_request.number%", "%github.event.number%", "%github.head_ref%"
-        ]) and
-  not exists(ActorCheck check | job.getIf() = check or checkoutStep.getIf() = check) and
-  not exists(LabelCheck check | job.getIf() = check or checkoutStep.getIf() = check)
-select checkoutStep, "Potential unsafe checkout of untrusted pull request on 'pull_request_target'."
+  w.hasTriggerEvent([
+      "pull_request_target", "issue_comment", "pull_request_review_comment", "pull_request_review",
+      "workflow_run", "check_run", "check_suite", "workflow_call"
+    ]) and
+  w.getAJob().(LocalJob).getAStep() = checkout and
+  not exists(ControlCheck check |
+    checkout.getIf() = check or checkout.getEnclosingJob().getIf() = check
+  )
+select checkout, "Potential unsafe checkout of untrusted pull request on privileged workflow."

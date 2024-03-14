@@ -12,7 +12,7 @@ jobs:
       - id: step0 
         uses: mad9000/actions-find-and-replace-string@3
         with:
-          source: ${{ github.event.head_commit.message }}
+          source: ${{ github.event['head_commit']['message'] }}
           find: 'foo'
           replace: ''
       - id: step1
@@ -34,4 +34,4 @@ jobs:
     needs: job1
 
     steps:
-      - run: echo ${{needs.job1.outputs.job_output}}
+      - run: echo ${{needs.job1.outputs['job_output']}}
