@@ -597,7 +597,7 @@ private module ParamsSummaries {
     /** Flow summary for various string attributes of `UploadedFile`, including `original_filename`, `content_type`, and `headers`. */
     private class UploadedFileStringAttributeSummary extends SummarizedCallable {
       UploadedFileStringAttributeSummary() {
-        this = "ActionDispatch::Http::UploadedFile::[original_filename,content_type,headers]"
+        this = "ActionDispatch::Http::UploadedFile#[original_filename,content_type,headers]"
       }
 
       override MethodCall getACall() {
@@ -615,11 +615,11 @@ private module ParamsSummaries {
     }
 
     /**
-     * Flow summary for `ActiveDispatch::Http::UploadedFile.original_filename`,
-     * which propagates taint from the receiver to the return value or to the second (buffer) argument
+     * Flow summary for `ActiveDispatch::Http::UploadedFile#read`,
+     * which propagates taint from the receiver to the return value or to the second (out string) argument
      */
     private class UploadedFileReadSummary extends SummarizedCallable {
-      UploadedFileReadSummary() { this = "ActionDispatch::Http::UploadedFile::read" }
+      UploadedFileReadSummary() { this = "ActionDispatch::Http::UploadedFile#read" }
 
       override MethodCall getACall() {
         result = paramsFieldType().getAMethodCall("read").asExpr().getExpr() and
