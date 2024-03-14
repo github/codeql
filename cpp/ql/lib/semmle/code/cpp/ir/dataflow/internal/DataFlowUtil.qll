@@ -1552,8 +1552,8 @@ private class IndirectArgumentOutExprNode extends ExprNodeBase, IndirectArgument
   final override Expr getConvertedExpr(int n) { exprNodeShouldBeIndirectOutNode(this, result, n) }
 }
 
-private class IndirectTemporaryExpr extends ExprNodeBase instanceof IndirectOperand {
-  IndirectTemporaryExpr() { exprNodeShouldBeIndirectOperand(this, _, _) }
+private class IndirectOperandExprNode extends ExprNodeBase instanceof IndirectOperand {
+  IndirectOperandExprNode() { exprNodeShouldBeIndirectOperand(this, _, _) }
 
   final override Expr getConvertedExpr(int n) { exprNodeShouldBeIndirectOperand(this, result, n) }
 }
