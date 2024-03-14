@@ -84,7 +84,7 @@ extensions:
       - ["System.IO", "Stream", True, "CopyToAsync", "(System.IO.Stream,System.Int32,System.Threading.CancellationToken)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["System.IO", "Stream", False, "CopyToAsync", "(System.IO.Stream,System.Threading.CancellationToken)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["System.IO", "Stream", True, "Read", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[this]", "Argument[0].Element", "taint", "manual"]
-      - ["System.IO", "Stream", True, "Read", "(System.Span<System.Byte>)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      - ["System.IO", "Stream", True, "Read", "(System.Span<System.Byte>)", "", "Argument[this]", "Argument[0].Element", "taint", "manual"]
       - ["System.IO", "Stream", False, "ReadAsync", "(System.Byte[],System.Int32,System.Int32)", "", "Argument[this]", "Argument[0].Element", "taint", "manual"]
       - ["System.IO", "Stream", True, "ReadAsync", "(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken)", "", "Argument[this]", "Argument[0].Element", "taint", "manual"]
       # Post-update nodes for `Memory<T>` are currently unsupported. This model is provided for completeness
