@@ -1354,7 +1354,7 @@ private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, 
     // When an argument (qualifier or position) is a PR value and the
     // parameter (qualifier or positional) is a (const) reference, IR
     // construction introduces a temporary `IRVariable`. The `VariableAddress`
-    // instruction has the argument as it's `getConvertedResultExpression`
+    // instruction has the argument as its `getConvertedResultExpression`
     // result. However, the instruction actually represents the _address_ of
     // the argument. So to fix this mismatch, we have the indirection of the
     // `VariableAddressInstruction` map to the expression.
