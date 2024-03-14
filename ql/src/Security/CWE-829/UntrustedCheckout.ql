@@ -37,6 +37,7 @@ predicate containsHeadRef(string s) {
     Utils::normalizeExpr(s)
         .regexpFind([
             "\\bgithub\\.event\\.number\\b", // The pull request number.
+            "\\bgithub\\.event\\.issue\\.number\\b", // The pull request number on issue_comment.
             "\\bgithub\\.event\\.pull_request\\.head\\.ref\\b", // The ref name of head.
             "\\bgithub\\.event\\.pull_request\\.head\\.sha\\b", //  The commit SHA of head.
             "\\bgithub\\.event\\.pull_request\\.id\\b", // The pull request ID.
@@ -82,7 +83,7 @@ class GitCheckout extends PRHeadCheckoutStep instanceof Run {
 
 from Workflow w, PRHeadCheckoutStep checkout
 where
-  w.hasTriggerEvent(["pull_request_target", "issue_comment", "workflow_run"]) and
+  w.hasTriggerEvent(["pull_request_target", "issue_comment", "pull_request_review_comment", "pull_request_review", "workflow_run", "check_run", "check_suite", "workflow_call"]) and
   w.getAJob().(LocalJob).getAStep() = checkout and
   not exists(ControlCheck check |
     checkout.getIf() = check or checkout.getEnclosingJob().getIf() = check
