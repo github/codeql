@@ -14,6 +14,7 @@
  */
 
 import actions
+import codeql.actions.DataFlow
 
 /** An If node that contains an actor, user or label check */
 class ControlCheck extends If {
@@ -23,6 +24,7 @@ class ControlCheck extends If {
           .regexpFind([
               "\\bgithub\\.actor\\b", // actor
               "\\bgithub\\.triggering_actor\\b", // actor
+              "\\bgithub\\.event\\.comment\\.user\\.login\\b", //user
               "\\bgithub\\.event\\.pull_request\\.user\\.login\\b", //user
               "\\bgithub\\.event\\.pull_request\\.labels\\b", // label
               "\\bgithub\\.event\\.label\\.name\\b" // label
@@ -47,22 +49,18 @@ predicate containsHeadRef(string s) {
             "\\bgithub\\.event\\.workflow_run\\.head_branch\\b", // The branch of the head commit.
             "\\bgithub\\.event\\.workflow_run\\.head_commit\\.id\\b", // The SHA of the head commit.
             "\\bgithub\\.event\\.workflow_run\\.head_sha\\b", // The SHA of the head commit.
-            "\\benv\\.GITHUB_HEAD_REF\\b",
-            
-            "\\bgithub\\.event\\.check_suite\\.after\\b",
+            "\\benv\\.GITHUB_HEAD_REF\\b", "\\bgithub\\.event\\.check_suite\\.after\\b",
             "\\bgithub\\.event\\.check_suite\\.head_sha\\b",
             "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
             "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
             "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.id\\b",
             "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.number\\b",
-            
             "\\bgithub\\.event\\.check_run\\.check_suite\\.after\\b",
             "\\bgithub\\.event\\.check_run\\.check_suite\\.head_sha\\b",
             "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
             "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
             "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.id\\b",
             "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.number\\b",
-            
             "\\bgithub\\.event\\.check_run\\.head_sha\\b",
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
             "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
@@ -79,7 +77,14 @@ abstract class PRHeadCheckoutStep extends Step { }
 class ActionsCheckout extends PRHeadCheckoutStep instanceof UsesStep {
   ActionsCheckout() {
     this.getCallee() = "actions/checkout" and
-    containsHeadRef(this.getArgumentExpr("ref").getExpression())
+    (
+      containsHeadRef(this.getArgumentExpr("ref").getExpression())
+      or
+      exists(UsesStep head |
+        head.getCallee() = ["eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch"] and
+        DataFlow::hasLocalFlowExpr(head, this.getArgumentExpr("ref"))
+      )
+    )
   }
 }
 
@@ -103,7 +108,10 @@ class GitCheckout extends PRHeadCheckoutStep instanceof Run {
 
 from Workflow w, PRHeadCheckoutStep checkout
 where
-  w.hasTriggerEvent(["pull_request_target", "issue_comment", "pull_request_review_comment", "pull_request_review", "workflow_run", "check_run", "check_suite", "workflow_call"]) and
+  w.hasTriggerEvent([
+      "pull_request_target", "issue_comment", "pull_request_review_comment", "pull_request_review",
+      "workflow_run", "check_run", "check_suite", "workflow_call"
+    ]) and
   w.getAJob().(LocalJob).getAStep() = checkout and
   not exists(ControlCheck check |
     checkout.getIf() = check or checkout.getEnclosingJob().getIf() = check

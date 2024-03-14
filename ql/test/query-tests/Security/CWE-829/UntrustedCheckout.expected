@@ -1,4 +1,13 @@
 | .github/workflows/auto_ci.yml:20:9:27:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/auto_ci.yml:67:9:74:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/gitcheckout.yml:10:11:18:8 | Run Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/issue_comment_3rd_party_action.yml:17:9:23:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/issue_comment_3rd_party_action.yml:31:9:37:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/issue_comment_3rd_party_action.yml:46:9:50:6 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/issue_comment_3rd_party_action.yml:50:9:53:25 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/issue_comment_direct.yml:12:9:16:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/issue_comment_direct.yml:20:9:24:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/issue_comment_direct.yml:28:9:32:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/issue_comment_direct.yml:35:9:40:2 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
+| .github/workflows/issue_comment_direct.yml:43:9:46:126 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
 | .github/workflows/untrusted_checkout.yml:9:7:13:4 | Uses Step | Potential unsafe checkout of untrusted pull request on privileged workflow. |
