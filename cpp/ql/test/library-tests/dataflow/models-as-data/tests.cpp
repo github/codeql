@@ -312,7 +312,7 @@ void test_class_members() {
 	sink(mc4.notASummary());
 	sink(mc4_ptr->madSelfToReturn()); // $ ir
 	sink(mc4_ptr->notASummary());
-	sink(source2().madSelfToReturn()); // $ MISSING: ir (works if flow is modelled from qualifier *address*)
+	sink(source2().madSelfToReturn()); // $ ir
 	sink(source2().notASummary());
 
 	mc5.val = source();
@@ -322,7 +322,7 @@ void test_class_members() {
 	mnc2_ptr = &mnc2;
 	sink(mnc2.namespaceMadSelfToReturn()); // $ ir
 	sink(mnc2_ptr->namespaceMadSelfToReturn()); // $ ir
-	sink(source3().namespaceMadSelfToReturn()); // $ MISSING: ir (works if flow is modelled from qualifier *address*)
+	sink(source3().namespaceMadSelfToReturn()); // $ ir
 
 	// test class member sources + sinks + summaries together
 
