@@ -48,6 +48,26 @@ predicate containsHeadRef(string s) {
             "\\bgithub\\.event\\.workflow_run\\.head_commit\\.id\\b", // The SHA of the head commit.
             "\\bgithub\\.event\\.workflow_run\\.head_sha\\b", // The SHA of the head commit.
             "\\benv\\.GITHUB_HEAD_REF\\b",
+            
+            "\\bgithub\\.event\\.check_suite\\.after\\b",
+            "\\bgithub\\.event\\.check_suite\\.head_sha\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.id\\b",
+            "\\bgithub\\.event\\.check_suite\\.pull_requests\\[\\d+\\]\\.number\\b",
+            
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.after\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.head_sha\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.id\\b",
+            "\\bgithub\\.event\\.check_run\\.check_suite\\.pull_requests\\[\\d+\\]\\.number\\b",
+            
+            "\\bgithub\\.event\\.check_run\\.head_sha\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.ref\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.head\\.sha\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.id\\b",
+            "\\bgithub\\.event\\.check_run\\.pull_requests\\[\\d+\\]\\.number\\b",
           ], _, _)
   )
 }
