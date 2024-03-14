@@ -91,6 +91,7 @@ extensions:
     data:
       # summary neutrals
       - ["java.nio.file", "Files", "exists", "(Path,LinkOption[])", "summary", "manual"]
+      - ["java.nio.file", "Files", "newInputStream", "(Path,LinkOption[])", "summary", "df-manual"]
       # sink neutrals
       - ["java.nio.file", "Files", "getLastModifiedTime", "", "sink", "hq-manual"]
       - ["java.nio.file", "Files", "getOwner", "", "sink", "hq-manual"]

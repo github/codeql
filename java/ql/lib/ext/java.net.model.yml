@@ -61,3 +61,10 @@ extensions:
       - ["java.net", "URL", False, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URL", False, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URLDecoder", False, "decode", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # summary neutrals
+      - ["java.net", "Socket", "getOutputStream", "()", "summary", "df-manual"]
+      - ["java.net", "Socket", "connect", "(SocketAddress,int)", "summary", "df-manual"]
