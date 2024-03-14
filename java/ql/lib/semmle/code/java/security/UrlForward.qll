@@ -25,7 +25,8 @@ private class DefaultUrlForwardSink extends UrlForwardSink {
  */
 private class SpringUrlForwardPrefixSink extends UrlForwardSink {
   SpringUrlForwardPrefixSink() {
-    any(SpringRequestMappingMethod srmm).polyCalls*(this.getEnclosingCallable()) and
+    any(SpringRequestMappingMethod srmm)
+        .polyCalls*(pragma[only_bind_into](this).getEnclosingCallable()) and
     this.asExpr() = any(ForwardPrefix fp).getAnAppendedExpression()
   }
 }
