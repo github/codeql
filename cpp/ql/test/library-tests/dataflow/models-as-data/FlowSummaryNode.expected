@@ -4,6 +4,16 @@
 | tests.cpp:127:6:127:28 | [summary] to write: *ReturnValue in madArg0ToReturnIndirect | ReturnNode | madArg0ToReturnIndirect | madArg0ToReturnIndirect |
 | tests.cpp:129:5:129:28 | [summary param] 0 in madArg0ToReturnValueFlow | ParameterNode | madArg0ToReturnValueFlow | madArg0ToReturnValueFlow |
 | tests.cpp:129:5:129:28 | [summary] to write: ReturnValue in madArg0ToReturnValueFlow | ReturnNode | madArg0ToReturnValueFlow | madArg0ToReturnValueFlow |
+| tests.cpp:130:5:130:27 | [summary param] 0 indirection in madArg0IndirectToReturn | ParameterNode | madArg0IndirectToReturn | madArg0IndirectToReturn |
+| tests.cpp:130:5:130:27 | [summary] to write: ReturnValue in madArg0IndirectToReturn | ReturnNode | madArg0IndirectToReturn | madArg0IndirectToReturn |
+| tests.cpp:131:5:131:33 | [summary param] 0 indirection in madArg0DoubleIndirectToReturn | ParameterNode | madArg0DoubleIndirectToReturn | madArg0DoubleIndirectToReturn |
+| tests.cpp:131:5:131:33 | [summary] to write: ReturnValue in madArg0DoubleIndirectToReturn | ReturnNode | madArg0DoubleIndirectToReturn | madArg0DoubleIndirectToReturn |
+| tests.cpp:132:6:132:26 | [summary param] 0 in madArg0ToArg1Indirect | ParameterNode | madArg0ToArg1Indirect | madArg0ToArg1Indirect |
+| tests.cpp:132:6:132:26 | [summary param] 1 indirection in madArg0ToArg1Indirect | ParameterNode | madArg0ToArg1Indirect | madArg0ToArg1Indirect |
+| tests.cpp:132:6:132:26 | [summary] to write: Argument[1 indirection] in madArg0ToArg1Indirect | PostUpdateNode | madArg0ToArg1Indirect | madArg0ToArg1Indirect |
+| tests.cpp:133:6:133:34 | [summary param] 0 indirection in madArg0IndirectToArg1Indirect | ParameterNode | madArg0IndirectToArg1Indirect | madArg0IndirectToArg1Indirect |
+| tests.cpp:133:6:133:34 | [summary param] 1 indirection in madArg0IndirectToArg1Indirect | ParameterNode | madArg0IndirectToArg1Indirect | madArg0IndirectToArg1Indirect |
+| tests.cpp:133:6:133:34 | [summary] to write: Argument[1 indirection] in madArg0IndirectToArg1Indirect | PostUpdateNode | madArg0IndirectToArg1Indirect | madArg0IndirectToArg1Indirect |
 | tests.cpp:220:7:220:19 | [summary param] 0 in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
 | tests.cpp:220:7:220:19 | [summary param] this indirection in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
 | tests.cpp:220:7:220:19 | [summary] to write: Argument[this indirection] in madArg0ToSelf | PostUpdateNode | madArg0ToSelf | madArg0ToSelf |

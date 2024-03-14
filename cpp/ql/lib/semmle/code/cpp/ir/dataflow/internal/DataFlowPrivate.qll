@@ -455,7 +455,7 @@ class IndirectionPosition extends Position, TIndirectionPosition {
 }
 
 newtype TPosition =
-  TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index)) } or
+  TDirectPosition(int argumentIndex) { exists(any(CallInstruction c).getArgument(argumentIndex)) } or
   TIndirectionPosition(int argumentIndex, int indirectionIndex) {
     Ssa::hasIndirectOperand(any(CallInstruction call).getArgumentOperand(argumentIndex),
       indirectionIndex)

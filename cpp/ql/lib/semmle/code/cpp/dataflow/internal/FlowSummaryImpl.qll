@@ -52,25 +52,33 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
 
   bindingset[token]
   ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
-    // needed to support `Argument[x..y]` ranges and `Argument[-1]`
-    token.getName() = "Argument" and
-    exists(int pos | pos = AccessPath::parseInt(token.getAnArgument()) |
-      pos >= 0 and result = TDirectPosition(pos)
-      or
-      // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
-      pos = -1 and result = TIndirectionPosition(pos, 1)
+    // needed to support `Argument[x..y]` ranges, `Argument[-1]`, and indirections `*Argument[0]`.
+    exists(int indirection |
+      token.getName() = indirectionString(indirection) + "Argument" and
+      exists(int pos | pos = AccessPath::parseInt(token.getAnArgument()) |
+        pos >= 0 and indirection = 0 and result = TDirectPosition(pos)
+        or
+        pos >= 0 and indirection > 0 and result = TIndirectionPosition(pos, indirection)
+        or
+        // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
+        pos = -1 and result = TIndirectionPosition(pos, indirection + 1)
+      )
     )
   }
 
   bindingset[token]
   ArgumentPosition decodeUnknownArgumentPosition(AccessPath::AccessPathTokenBase token) {
-    // needed to support `Parameter[x..y]` ranges and `Parameter[-1]`
-    token.getName() = "Parameter" and
-    exists(int pos | pos = AccessPath::parseInt(token.getAnArgument()) |
-      pos >= 0 and result = TDirectPosition(pos)
-      or
-      // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
-      pos = -1 and result = TIndirectionPosition(pos, 1)
+    // needed to support `Argument[x..y]` ranges, `Argument[-1]`, and indirections `*Argument[0]`.
+    exists(int indirection |
+      token.getName() = indirectionString(indirection) + "Parameter" and
+      exists(int pos | pos = AccessPath::parseInt(token.getAnArgument()) |
+        pos >= 0 and indirection = 0 and result = TDirectPosition(pos)
+        or
+        pos >= 0 and indirection > 0 and result = TIndirectionPosition(pos, indirection)
+        or
+        // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
+        pos = -1 and result = TIndirectionPosition(pos, indirection + 1)
+      )
     )
   }
 }

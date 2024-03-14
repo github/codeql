@@ -155,15 +155,15 @@ void test_summaries() {
 
 	a = source();
 	a_ptr = &a;
-	sink(madArg0IndirectToReturn(&a)); // $ MISSING: ir
-	sink(madArg0IndirectToReturn(a_ptr)); // $ MISSING: ir
-	sink(madArg0DoubleIndirectToReturn(&a_ptr)); // $ MISSING: ir
+	sink(madArg0IndirectToReturn(&a)); // $ ir
+	sink(madArg0IndirectToReturn(a_ptr)); // $ ir
+	sink(madArg0DoubleIndirectToReturn(&a_ptr)); // $ ir
 
 	madArg0ToArg1Indirect(source(), b);
-	sink(b); // $ MISSING: ir
+	sink(b); // $ ir
 
 	madArg0IndirectToArg1Indirect(&a, &c);
-	sink(c); // $ MISSING: ir
+	sink(c); // $ ir
 
 	MyContainer mc1, mc2;
 
