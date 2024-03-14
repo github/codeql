@@ -174,3 +174,16 @@ class FieldContent extends Content, TFieldContent {
 
   override string toString() { result = name }
 }
+
+predicate hasLocalFlow(Node n1, Node n2) {
+  simpleLocalFlowStep(n1, n2) or
+  exists(ContentSet c | ctxFieldReadStep(n1, n2, c))
+}
+
+predicate hasLocalFlowExpr(AstNode n1, AstNode n2) {
+  exists(Node dn1, Node dn2 |
+    dn1.asExpr() = n1 and
+    dn2.asExpr() = n2 and
+    hasLocalFlow(dn1, dn2)
+  )
+}
