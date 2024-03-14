@@ -79,19 +79,25 @@ class ActionsCheckout extends PRHeadCheckoutStep instanceof UsesStep {
   ActionsCheckout() {
     this.getCallee() = "actions/checkout" and
     (
-      containsHeadRef(this.getArgumentExpr("ref").getExpression())
+      // ref argument contains the head ref
+      exists(Expression e |
+        containsHeadRef(e.getExpression()) and
+        DataFlow::hasLocalFlowExpr(e, this.getArgumentExpr("ref"))
+      )
       or
+      // 3rd party actions returning the PR head sha/ref
+      exists(UsesStep head |
+        head.getCallee() = ["eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch"] and
+        DataFlow::hasLocalFlowExpr(head, this.getArgumentExpr("ref"))
+      )
+      or
+      // heuristic base on the step id and field name
       exists(StepsExpression e |
         this.getArgumentExpr("ref") = e and
         (
           e.getStepId().matches(["%sha%", "%head%", "branch"]) or
           e.getFieldName().matches(["%sha%", "%head%", "branch"])
         )
-      )
-      or
-      exists(UsesStep head |
-        head.getCallee() = ["eficode/resolve-pr-refs", "xt0rted/pull-request-comment-branch"] and
-        DataFlow::hasLocalFlowExpr(head, this.getArgumentExpr("ref"))
       )
     )
   }

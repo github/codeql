@@ -176,6 +176,7 @@ class FieldContent extends Content, TFieldContent {
 }
 
 predicate hasLocalFlow(Node n1, Node n2) {
+  n1 = n2 or
   simpleLocalFlowStep(n1, n2) or
   exists(ContentSet c | ctxFieldReadStep(n1, n2, c))
 }

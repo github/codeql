@@ -3,23 +3,13 @@ on:
 
 jobs:
   build:
-    name: Build and test
     runs-on: ubuntu-latest
+    env:
+      HEAD: ${{ github.event.pull_request.head.sha }}
     steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: ${{ github.event.pull_request.head.sha }}
-
-    - uses: actions/setup-node@v1
-    - run: |
-        npm install
-        npm build
-
-    - uses: completely/fakeaction@v2
-      with:
-        arg1: ${{ secrets.supersecret }}
-
-    - uses: fakerepo/comment-on-pr@v1
-      with:
-        message: |
-          Thank you!
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ env.HEAD }}
