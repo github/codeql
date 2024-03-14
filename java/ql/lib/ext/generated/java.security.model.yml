@@ -200,7 +200,6 @@ extensions:
       - ["java.security", "KeyStoreException", True, "KeyStoreException", "(Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["java.security", "KeyStoreSpi", True, "engineGetEntry", "(String,KeyStore$ProtectionParameter)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.security", "KeyStoreSpi", True, "engineSetEntry", "(String,KeyStore$Entry,KeyStore$ProtectionParameter)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["java.security", "MessageDigest", True, "digest", "(byte[],int,int)", "", "Argument[this]", "Argument[0]", "taint", "df-generated"]
       - ["java.security", "MessageDigest", True, "getAlgorithm", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.security", "MessageDigest", True, "getInstance", "(String)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
       - ["java.security", "MessageDigest", True, "getInstance", "(String,Provider)", "", "Argument[0]", "ReturnValue", "taint", "df-generated"]
