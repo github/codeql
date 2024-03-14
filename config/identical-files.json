@@ -253,7 +253,6 @@
   ],
   "XML": [
     "cpp/ql/lib/semmle/code/cpp/XML.qll",
-    "csharp/ql/lib/semmle/code/csharp/XML.qll",
     "java/ql/lib/semmle/code/xml/XML.qll",
     "python/ql/lib/semmle/python/xml/XML.qll"
   ],
