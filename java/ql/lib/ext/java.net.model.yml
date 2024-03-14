@@ -66,5 +66,5 @@ extensions:
       extensible: neutralModel
     data:
       # summary neutrals
-      - ["java.net", "Socket", "getOutputStream", "()", "summary", "manual"]
-      - ["java.net", "Socket", "connect", "(SocketAddress,int)", "summary", "manual"]
+      - ["java.net", "Socket", "getOutputStream", "()", "summary", "df-manual"]
+      - ["java.net", "Socket", "connect", "(SocketAddress,int)", "summary", "df-manual"]

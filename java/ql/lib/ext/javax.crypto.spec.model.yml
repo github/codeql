@@ -30,4 +30,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["javax.crypto.spec", "SecretKeySpec", "SecretKeySpec", "(byte[],String)", "summary", "manual"]
+      - ["javax.crypto.spec", "SecretKeySpec", "SecretKeySpec", "(byte[],String)", "summary", "df-manual"]

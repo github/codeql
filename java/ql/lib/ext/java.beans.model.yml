@@ -9,7 +9,7 @@ extensions:
       extensible: neutralModel
     data:
       # summary neutrals
-      - ["java.beans", "PropertyEditor", "getAsText", "()", "summary", "manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
-      - ["java.beans", "PropertyEditor", "getValue", "()", "summary", "manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
-      - ["java.beans", "PropertyEditor", "setAsText", "()", "summary", "manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
-      - ["java.beans", "PropertyEditor", "setValue", "()", "summary", "manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.beans", "PropertyEditor", "getAsText", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.beans", "PropertyEditor", "getValue", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.beans", "PropertyEditor", "setAsText", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+      - ["java.beans", "PropertyEditor", "setValue", "()", "summary", "df-manual"] # needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
