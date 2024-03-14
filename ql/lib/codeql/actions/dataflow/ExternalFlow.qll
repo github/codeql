@@ -86,8 +86,10 @@ predicate externallyDefinedStoreStep(
   )
 }
 
-predicate externallyDefinedSink(DataFlow::ExprNode sink, string kind) {
+predicate externallyDefinedSink(DataFlow::Node sink, string kind) {
   exists(Uses uses, string action, string version, string input |
+    sinkModel(action, version, input, kind) and
+    uses.getCallee() = action.toLowerCase() and
     (
       if input.trim().matches("env.%")
       then sink.asExpr() = uses.getInScopeEnvVarExpr(input.trim().replaceAll("env.", ""))
@@ -96,8 +98,6 @@ predicate externallyDefinedSink(DataFlow::ExprNode sink, string kind) {
         then sink.asExpr() = uses.getArgumentExpr(input.trim().replaceAll("input.", ""))
         else none()
     ) and
-    sinkModel(action, version, input, kind) and
-    uses.getCallee() = action.toLowerCase() and
     (
       if version.trim() = "*"
       then uses.getVersion() = any(string v)

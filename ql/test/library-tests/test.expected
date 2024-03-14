@@ -315,6 +315,9 @@ scopes
 sources
 | ahmadnassri/action-changed-files | * | output.files | pull_request_target | PR changed files |
 | ahmadnassri/action-changed-files | * | output.json | pull_request_target | PR changed files |
+| amannn/action-semantic-pull-request | * | output.error_message | pull_request_target | PR title |
+| cypress-io/github-action | * | env.GH_BRANCH | pull_request_target | PR branch |
+| dawidd6/action-download-artifact | * | output.artifacts | * | Artifact details |
 | dorny/paths-filter | * | output.changes | pull_request_target | PR changed files |
 | franzdiebold/github-env-vars-action | * | output.CI_PR_DESCRIPTION | pull_request_target | PR body |
 | franzdiebold/github-env-vars-action | * | output.CI_PR_TITLE | pull_request_target | PR title |

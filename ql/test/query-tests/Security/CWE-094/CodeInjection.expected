@@ -1,0 +1,14 @@
+edges
+| .github/workflows/changelog.yml:49:19:49:56 | github.event.pull_request.title | .github/workflows/changelog.yml:58:26:58:39 | env.log |
+nodes
+| .github/workflows/changelog.yml:49:19:49:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/changelog.yml:58:26:58:39 | env.log | semmle.label | env.log |
+| .github/workflows/comment_issue.yml:24:31:24:62 | github.event.comment.body | semmle.label | github.event.comment.body |
+| .github/workflows/comment_issue.yml:27:31:27:60 | github.event.issue.body | semmle.label | github.event.issue.body |
+| .github/workflows/comment_issue.yml:30:31:30:61 | github.event.issue.title | semmle.label | github.event.issue.title |
+subpaths
+#select
+| .github/workflows/changelog.yml:58:26:58:39 | env.log | .github/workflows/changelog.yml:49:19:49:56 | github.event.pull_request.title | .github/workflows/changelog.yml:58:26:58:39 | env.log | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/changelog.yml:58:26:58:39 | env.log | ${{ env.log }} |
+| .github/workflows/comment_issue.yml:24:31:24:62 | github.event.comment.body | .github/workflows/comment_issue.yml:24:31:24:62 | github.event.comment.body | .github/workflows/comment_issue.yml:24:31:24:62 | github.event.comment.body | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/comment_issue.yml:24:31:24:62 | github.event.comment.body | ${{ github.event.comment.body }} |
+| .github/workflows/comment_issue.yml:27:31:27:60 | github.event.issue.body | .github/workflows/comment_issue.yml:27:31:27:60 | github.event.issue.body | .github/workflows/comment_issue.yml:27:31:27:60 | github.event.issue.body | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/comment_issue.yml:27:31:27:60 | github.event.issue.body | ${{ github.event.issue.body }} |
+| .github/workflows/comment_issue.yml:30:31:30:61 | github.event.issue.title | .github/workflows/comment_issue.yml:30:31:30:61 | github.event.issue.title | .github/workflows/comment_issue.yml:30:31:30:61 | github.event.issue.title | Potential code injection in $@, which may be controlled by an external user. | .github/workflows/comment_issue.yml:30:31:30:61 | github.event.issue.title | ${{ github.event.issue.title }} |

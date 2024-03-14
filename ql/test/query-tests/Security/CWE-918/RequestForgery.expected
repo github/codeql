@@ -1,0 +1,6 @@
+edges
+nodes
+| .github/workflows/test.yml:9:19:9:50 | github.event.comment.body | semmle.label | github.event.comment.body |
+subpaths
+#select
+| .github/workflows/test.yml:9:19:9:50 | github.event.comment.body | .github/workflows/test.yml:9:19:9:50 | github.event.comment.body | .github/workflows/test.yml:9:19:9:50 | github.event.comment.body | Potential request forgery in $@, which may be controlled by an external user. | .github/workflows/test.yml:9:19:9:50 | github.event.comment.body | ${{ github.event.comment.body }} |
