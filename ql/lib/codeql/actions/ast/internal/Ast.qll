@@ -47,7 +47,7 @@ private newtype TAstNode =
       )
     )
     or
-    // if's conditions do not need to be delimted with ${{}}
+    // `if`'s conditions do not need to be delimted with ${{}}
     exists(YamlMapping m |
       m.maps(key, value) and
       key.(YamlScalar).getValue() = ["if"] and

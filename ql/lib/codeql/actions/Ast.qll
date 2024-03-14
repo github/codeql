@@ -5,7 +5,6 @@ module Utils {
   bindingset[expr]
   string normalizeExpr(string expr) {
     result =
-      //[A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]
       expr.regexpReplaceAll("\\['([a-zA-Z0-9_\\*\\-]+)'\\]", ".$1")
           .regexpReplaceAll("\\[\"([a-zA-Z0-9_\\*\\-]+)\"\\]", ".$1")
           .regexpReplaceAll("\\s*\\.\\s*", ".")
