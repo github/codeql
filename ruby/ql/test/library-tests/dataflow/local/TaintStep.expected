@@ -2835,6 +2835,9 @@
 | file://:0:0:0:0 | [summary param] self in ActionController::Parameters#merge | file://:0:0:0:0 | [summary] to write: ReturnValue in ActionController::Parameters#merge |
 | file://:0:0:0:0 | [summary param] self in ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: Argument[self] in ActionController::Parameters#merge! |
 | file://:0:0:0:0 | [summary param] self in ActionController::Parameters#merge! | file://:0:0:0:0 | [summary] to write: ReturnValue in ActionController::Parameters#merge! |
+| file://:0:0:0:0 | [summary param] self in ActionDispatch::Http::UploadedFile::[original_filename,content_type,headers] | file://:0:0:0:0 | [summary] to write: ReturnValue in ActionDispatch::Http::UploadedFile::[original_filename,content_type,headers] |
+| file://:0:0:0:0 | [summary param] self in ActionDispatch::Http::UploadedFile::read | file://:0:0:0:0 | [summary] to write: Argument[1] in ActionDispatch::Http::UploadedFile::read |
+| file://:0:0:0:0 | [summary param] self in ActionDispatch::Http::UploadedFile::read | file://:0:0:0:0 | [summary] to write: ReturnValue in ActionDispatch::Http::UploadedFile::read |
 | file://:0:0:0:0 | [summary param] self in ActiveSupportStringTransform | file://:0:0:0:0 | [summary] to write: ReturnValue in ActiveSupportStringTransform |
 | file://:0:0:0:0 | [summary param] self in [] | file://:0:0:0:0 | [summary] to write: ReturnValue in [] |
 | file://:0:0:0:0 | [summary param] self in \| | file://:0:0:0:0 | [summary] read: Argument[self].Element[any] in \| |
