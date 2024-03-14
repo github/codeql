@@ -25,6 +25,7 @@ extensions:
       - ["System.IO", "FileInfo", False, "Open", "", "", "ReturnValue", "file-write", "manual"]
       - ["System.IO", "FileInfo", False, "Open", "", "", "ReturnValue", "file", "manual"]
       - ["System.IO", "FileInfo", False, "OpenRead", "", "", "ReturnValue", "file", "manual"]
+      - ["System.IO", "FileInfo", False, "OpenText", "", "", "ReturnValue", "file", "manual"]
       - ["System.IO", "FileInfo", False, "OpenWrite", "", "", "ReturnValue", "file-write", "manual"]
       - ["System.IO", "FileStream", False, "FileStream", "", "", "Argument[this]", "file", "manual"]
       - ["System.IO", "FileStream", False, "FileStream", "", "", "Argument[this]", "file-write", "manual"]
