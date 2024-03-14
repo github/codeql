@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["preactjs/compressed-size-action", "*", "input.build-script", "command-injection"]
+      - ["preactjs/compressed-size-action", "*", "input.clean-script", "command-injection"]

@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["tryghost/action-deploy-theme", "*", "input.theme-name", "command-injection"]
+      - ["tryghost/action-deploy-theme", "*", "input.exclude", "command-injection"]

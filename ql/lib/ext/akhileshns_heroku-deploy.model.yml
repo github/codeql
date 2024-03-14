@@ -4,3 +4,18 @@ extensions:
       extensible: summaryModel
     data:
       - ["akhileshns/heroku-deploy", "*", "input.branch", "output.status", "taint"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["akhileshns/heroku-deploy", "*", "input.heroku_app_name", "command-injection"]
+      - ["akhileshns/heroku-deploy", "*", "input.buildpack", "command-injection"]
+      - ["akhileshns/heroku-deploy", "*", "input.region", "command-injection"]
+      - ["akhileshns/heroku-deploy", "*", "input.stack", "command-injection"]
+      - ["akhileshns/heroku-deploy", "*", "input.team", "command-injection"]
+      - ["akhileshns/heroku-deploy", "*", "input.docker_heroku_process_type", "command-injection"]
+      - ["akhileshns/heroku-deploy", "*", "input.docker_build_args", "command-injection"]
+      - ["akhileshns/heroku-deploy", "*", "input.branch", "command-injection"]
+      - ["akhileshns/heroku-deploy", "*", "input.appdir", "command-injection"]
+      - ["akhileshns/heroku-deploy", "*", "input.heroku_api_key", "command-injection"]
+      - ["akhileshns/heroku-deploy", "*", "input.heroku_email", "command-injection"]

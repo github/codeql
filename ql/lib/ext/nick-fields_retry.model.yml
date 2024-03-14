@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["nick-fields/retry", "*", "input.on_retry_command", "command-injection"]
+      - ["nick-fields/retry", "*", "input.new_command_on_retry", "command-injection"]
+      - ["nick-fields/retry", "*", "input.command", "command-injection"]

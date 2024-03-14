@@ -4,3 +4,10 @@ extensions:
       extensible: summaryModel
     data:
       - ["jwalton/gh-ecr-push", "*", "input.image", "output.imageUrl", "taint"]
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["jwalton/gh-ecr-push", "*", "input.image", "command-injection"]
+      - ["jwalton/gh-ecr-push", "*", "input.local-image", "command-injection"]
+      - ["jwalton/gh-ecr-push", "*", "input.region", "command-injection"]

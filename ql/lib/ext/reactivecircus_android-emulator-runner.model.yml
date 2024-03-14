@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["reactivecircus/android-emulator-runner", "*", "input.api-level", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.target", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.arch", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.profile", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.sdcard-path-or-size'", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.cores", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ram-size", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.heap-size", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.disk-size", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.emulator-options", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.emulator-build", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.cmake", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection"]
+      - ["reactivecircus/android-emulator-runner", "*", "input.ndk", "command-injection"]

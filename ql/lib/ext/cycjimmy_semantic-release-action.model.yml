@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+      - ["cycjimmy/semantic-release-action", "*", "input.semantic_version", "command-injection"]
+      - ["cycjimmy/semantic-release-action", "*", "input.extra_plugins", "command-injection"]
+      - ["cycjimmy/semantic-release-action", "*", "input.extends", "command-injection"]
