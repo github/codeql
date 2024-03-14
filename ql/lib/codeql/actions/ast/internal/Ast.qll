@@ -19,24 +19,18 @@ int partialLineLengthSum(string text, int i) {
   result = sum(int j, int length | j in [0 .. i] and length = lineLength(text, j) | length)
 }
 
-/**
- * Holds if `${{ e }}` is a GitHub Actions expression evaluated within this YAML string.
- * See https://docs.github.com/en/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions.
- * Only finds simple expressions like `${{ github.event.comment.body }}`, where the expression contains only alphanumeric characters, underscores, dots, or dashes.
- * Does not identify more complicated expressions like `${{ fromJSON(env.time) }}`, or ${{ format('{{Hello {0}!}}', github.event.head_commit.author.name) }}
- */
-string getASimpleReferenceExpression(YamlString s, int offset) {
+string getADelimitedExpression(YamlString s, int offset) {
   // We use `regexpFind` to obtain *all* matches of `${{...}}`,
   // not just the last (greedy match) or first (reluctant match).
   result =
     s.getValue()
-        .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+\\s*\\}\\}", _, offset)
-        .regexpCapture("(\\$\\{\\{\\s*[A-Za-z0-9'\"_\\[\\]\\*\\((\\)\\.\\-]+\\s*\\}\\})", 1)
+        .regexpFind("\\$\\{\\{\\s*.*\\s*\\}\\}", _, offset)
+        .regexpCapture("(\\$\\{\\{\\s*.*\\s*\\}\\})", 1)
 }
 
 private newtype TAstNode =
   TExpressionNode(YamlNode key, YamlScalar value, string raw, int exprOffset) {
-    raw = getASimpleReferenceExpression(value, exprOffset) and
+    raw = getADelimitedExpression(value, exprOffset) and
     exists(YamlMapping m |
       (
         exists(int i | value = m.getValueNode(i) and key = m.getKeyNode(i))
@@ -790,10 +784,28 @@ class RunImpl extends StepImpl {
 }
 
 /**
+ * Holds if `${{ e }}` is a GitHub Actions expression evaluated within this YAML string.
+ * See https://docs.github.com/en/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions.
+ * Only finds simple expressions like `${{ github.event.comment.body }}`, where the expression contains only alphanumeric characters, underscores, dots, or dashes.
+ * Does not identify more complicated expressions like `${{ fromJSON(env.time) }}`, or ${{ format('{{Hello {0}!}}', github.event.head_commit.author.name) }}
+ */
+bindingset[s]
+string getASimpleReferenceExpression(string s, int offset) {
+  // We use `regexpFind` to obtain *all* matches of `${{...}}`,
+  // not just the last (greedy match) or first (reluctant match).
+  result =
+    s.trim()
+        .regexpFind("[A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+", _, offset)
+        .regexpCapture("([A-Za-z0-9'\"_\\[\\]\\*\\(\\)\\.\\-]+)", 1)
+}
+
+/**
  * A ${{}} expression accessing a context variable such as steps, needs, jobs, env, inputs, or matrix.
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  */
-abstract class ContextExpressionImpl extends ExpressionImpl {
+abstract class SimpleReferenceExpressionImpl extends ExpressionImpl {
+  SimpleReferenceExpressionImpl() { exists(getASimpleReferenceExpression(expression, _)) }
+
   abstract string getFieldName();
 
   abstract AstNodeImpl getTarget();
@@ -829,7 +841,7 @@ private string wrapRegexp(string regex) {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ steps.changed-files.outputs.all_changed_files }}`
  */
-class StepsExpressionImpl extends ContextExpressionImpl {
+class StepsExpressionImpl extends SimpleReferenceExpressionImpl {
   string stepId;
   string fieldName;
 
@@ -842,7 +854,7 @@ class StepsExpressionImpl extends ContextExpressionImpl {
   override string getFieldName() { result = fieldName }
 
   override AstNodeImpl getTarget() {
-    this.getLocation().getFile() = result.getLocation().getFile() and
+    this.getEnclosingJob() = result.getEnclosingJob() and
     result.(StepImpl).getId() = stepId
   }
 }
@@ -852,7 +864,7 @@ class StepsExpressionImpl extends ContextExpressionImpl {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ needs.job1.outputs.foo}}`
  */
-class NeedsExpressionImpl extends ContextExpressionImpl {
+class NeedsExpressionImpl extends SimpleReferenceExpressionImpl {
   JobImpl neededJob;
   string fieldName;
 
@@ -866,7 +878,10 @@ class NeedsExpressionImpl extends ContextExpressionImpl {
   override string getFieldName() { result = fieldName }
 
   override AstNodeImpl getTarget() {
-    this.getEnclosingJob().getANeededJob() = neededJob and
+    (
+      this.getEnclosingJob().getANeededJob() = neededJob or
+      this.getEnclosingJob() = neededJob
+    ) and
     (
       // regular jobs
       neededJob.getOutputs() = result
@@ -882,7 +897,7 @@ class NeedsExpressionImpl extends ContextExpressionImpl {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ jobs.job1.outputs.foo}}` (within reusable workflows)
  */
-class JobsExpressionImpl extends ContextExpressionImpl {
+class JobsExpressionImpl extends SimpleReferenceExpressionImpl {
   string jobId;
   string fieldName;
 
@@ -908,7 +923,7 @@ class JobsExpressionImpl extends ContextExpressionImpl {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ inputs.foo }}`
  */
-class InputsExpressionImpl extends ContextExpressionImpl {
+class InputsExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   InputsExpressionImpl() {
@@ -933,7 +948,7 @@ class InputsExpressionImpl extends ContextExpressionImpl {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ env.foo }}`
  */
-class EnvExpressionImpl extends ContextExpressionImpl {
+class EnvExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   EnvExpressionImpl() {
@@ -956,7 +971,7 @@ class EnvExpressionImpl extends ContextExpressionImpl {
  * https://docs.github.com/en/actions/learn-github-actions/contexts#context-availability
  * e.g. `${{ matrix.foo }}`
  */
-class MatrixExpressionImpl extends ContextExpressionImpl {
+class MatrixExpressionImpl extends SimpleReferenceExpressionImpl {
   string fieldName;
 
   MatrixExpressionImpl() {

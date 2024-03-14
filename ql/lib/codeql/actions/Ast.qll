@@ -226,20 +226,20 @@ class Run extends Step instanceof RunImpl {
   Expression getAnScriptExpr() { result = super.getAnScriptExpr() }
 }
 
-abstract class ContextExpression extends AstNode instanceof ContextExpressionImpl {
+abstract class SimpleReferenceExpression extends AstNode instanceof SimpleReferenceExpressionImpl {
   string getFieldName() { result = super.getFieldName() }
 
   AstNode getTarget() { result = super.getTarget() }
 }
 
-class StepsExpression extends ContextExpression instanceof StepsExpressionImpl { }
+class StepsExpression extends SimpleReferenceExpression instanceof StepsExpressionImpl { }
 
-class NeedsExpression extends ContextExpression instanceof NeedsExpressionImpl { }
+class NeedsExpression extends SimpleReferenceExpression instanceof NeedsExpressionImpl { }
 
-class JobsExpression extends ContextExpression instanceof JobsExpressionImpl { }
+class JobsExpression extends SimpleReferenceExpression instanceof JobsExpressionImpl { }
 
-class InputsExpression extends ContextExpression instanceof InputsExpressionImpl { }
+class InputsExpression extends SimpleReferenceExpression instanceof InputsExpressionImpl { }
 
-class EnvExpression extends ContextExpression instanceof EnvExpressionImpl { }
+class EnvExpression extends SimpleReferenceExpression instanceof EnvExpressionImpl { }
 
-class MatrixExpression extends ContextExpression instanceof MatrixExpressionImpl { }
+class MatrixExpression extends SimpleReferenceExpression instanceof MatrixExpressionImpl { }
