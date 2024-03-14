@@ -6,7 +6,7 @@
  * @problem.severity error
  * @security-severity 9
  * @precision high
- * @id actions/command-injection
+ * @id actions/critical-command-injection
  * @tags actions
  *       security
  *       external/cwe/cwe-078
@@ -40,5 +40,5 @@ where
     w.hasTriggerEvent(source.getNode().(RemoteFlowSource).getATriggerEvent())
   )
 select sink.getNode(), source, sink,
-  "Potential expression injection in $@, which may be controlled by an external user.", sink,
+  "Potential critical command injection in $@, which may be controlled by an external user.", sink,
   sink.getNode().asExpr().(Expression).getRawExpression()

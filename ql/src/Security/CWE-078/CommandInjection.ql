@@ -34,5 +34,5 @@ import MyFlow::PathGraph
 from MyFlow::PathNode source, MyFlow::PathNode sink
 where MyFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Potential expression injection in $@, which may be controlled by an external user.", sink,
+  "Potential command injection in $@, which may be controlled by an external user.", sink,
   sink.getNode().asExpr().(Expression).getRawExpression()

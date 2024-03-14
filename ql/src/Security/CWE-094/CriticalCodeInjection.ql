@@ -6,7 +6,7 @@
  * @problem.severity error
  * @security-severity 9
  * @precision high
- * @id actions/code-injection
+ * @id actions/critical-code-injection
  * @tags actions
  *       security
  *       external/cwe/cwe-094
@@ -20,7 +20,7 @@ import codeql.actions.dataflow.FlowSources
 import codeql.actions.dataflow.ExternalFlow
 
 private class CodeInjectionSink extends DataFlow::Node {
-  CodeInjectionSink() { externallyDefinedSink(this, "request-forgery") }
+  CodeInjectionSink() { externallyDefinedSink(this, "code-injection") }
 }
 
 private module MyConfig implements DataFlow::ConfigSig {
@@ -42,5 +42,5 @@ where
     w.hasTriggerEvent(source.getNode().(RemoteFlowSource).getATriggerEvent())
   )
 select sink.getNode(), source, sink,
-  "Potential expression injection in $@, which may be controlled by an external user.", sink,
+  "Potential critical code injection in $@, which may be controlled by an external user.", sink,
   sink.getNode().asExpr().(Expression).getRawExpression()
