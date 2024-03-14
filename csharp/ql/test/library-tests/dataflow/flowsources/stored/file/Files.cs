@@ -30,7 +30,7 @@ namespace Test
             }
         }
 
-        public static void BuuferedRead(string path)
+        public static void BufferedRead(string path)
         {
             using (FileStream fs = new FileStream(path, FileMode.Open))
             {
