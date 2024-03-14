@@ -522,7 +522,7 @@ private module ParamsSummaries {
     exists(TypeTracker t2 | result = paramsFieldType(t2).track(t2, t))
   }
 
-  /** Gets a node with a type that can be a field of `ActionController::Parameters */
+  /** Gets a node with a type that can be a field of `ActionController::Parameters` */
   private DataFlow::LocalSourceNode paramsFieldType() {
     paramsFieldType(TypeTracker::end()).flowsTo(result)
   }
