@@ -30,8 +30,6 @@ extensions:
       # See https://docs.python.org/3/library/urllib.parse.html#urllib.parse.urljoin
       - ["urllib", "Member[parse].Member[urljoin]", "Argument[0,base:]", "ReturnValue", "taint"]
       - ["urllib", "Member[parse].Member[urljoin]", "Argument[1,url:]", "ReturnValue", "taint"]
-      # See https://docs.python.org/3/library/re.html#re.compile
-      - ["re", "Member[compile]", "Argument[0,pattern:]", "ReturnValue", "taint"]
   - addsTo:
       pack: codeql/python-all
       extensible: neutralModel
