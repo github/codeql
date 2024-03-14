@@ -251,10 +251,6 @@
     "cpp/ql/src/Security/CWE/CWE-020/SafeExternalAPIFunction.qll",
     "cpp/ql/src/Security/CWE/CWE-020/ir/SafeExternalAPIFunction.qll"
   ],
-  "XML": [
-    "java/ql/lib/semmle/code/xml/XML.qll",
-    "python/ql/lib/semmle/python/xml/XML.qll"
-  ],
   "DuplicationProblems.inc.qhelp": [
     "cpp/ql/src/Metrics/Files/DuplicationProblems.inc.qhelp",
     "javascript/ql/src/Metrics/DuplicationProblems.inc.qhelp",
