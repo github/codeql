@@ -73,6 +73,10 @@ deprecated class ORMMappedProperty extends DataFlow::Node {
   }
 }
 
+private class ExternalDatabaseInputSource extends DatabaseInputSource {
+  ExternalDatabaseInputSource() { sourceNode(this, "database") }
+}
+
 /** A file stream source is considered a stored flow source. */
 class FileStreamStoredFlowSource extends StoredFlowSource {
   FileStreamStoredFlowSource() { sourceNode(this, "file") }

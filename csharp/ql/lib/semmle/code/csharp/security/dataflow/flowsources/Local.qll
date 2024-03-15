@@ -40,6 +40,10 @@ abstract class EnvironmentVariableSource extends LocalFlowSource {
   override string getSourceType() { result = "environment variable" }
 }
 
+private class ExternalEnvironmentVariableSource extends EnvironmentVariableSource {
+  ExternalEnvironmentVariableSource() { sourceNode(this, "environment") }
+}
+
 /**
  * A dataflow source that represents the access of a command line argument.
  */
@@ -47,6 +51,10 @@ abstract class CommandLineArgumentSource extends LocalFlowSource {
   override string getThreatModel() { result = "commandargs" }
 
   override string getSourceType() { result = "command line argument" }
+}
+
+private class ExternalCommandLineArgumentSource extends CommandLineArgumentSource {
+  ExternalCommandLineArgumentSource() { sourceNode(this, "command-line") }
 }
 
 /**
