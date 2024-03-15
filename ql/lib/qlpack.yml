@@ -2,12 +2,12 @@
 library: true
 warnOnImplicitThis: true
 name: githubsecuritylab/actions-all
-version: 0.0.1
+version: 0.0.2
 dependencies:
-  codeql/controlflow: ^0.1.7
-  codeql/yaml: "*"
+  codeql/controlflow: "*"
+  codeql/dataflow: "*"
   codeql/util: "*"
-  codeql/dataflow: ^0.1.7
+  codeql/yaml: "*"
 dbscheme: yaml.dbscheme
 extractor: yaml
 groups:
