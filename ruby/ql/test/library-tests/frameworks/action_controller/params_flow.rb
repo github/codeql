@@ -202,6 +202,6 @@ class UploadedFileTests < MyController
   def m41
     a = ""
     params[:file].read(nil,a)
-    sink a # $ MISSING:hasTaintFlow
+    sink a # $ hasTaintFlow
   end
 end
