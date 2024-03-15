@@ -506,8 +506,8 @@ private module ParamsSummaries {
       ]
   }
 
-  /** Gets a field of an instance of `ActionController::Parameters` */
-  private DataFlow::LocalSourceNode paramsField() {
+  /** Gets a node that may be tainted from an `ActionController::Parameters` instance, through field accesses and hash/array element reads. */
+  private DataFlow::LocalSourceNode taintFromParamsBase() {
     result =
       [
         paramsInstance(),
@@ -515,16 +515,16 @@ private module ParamsSummaries {
       ]
   }
 
-  private DataFlow::LocalSourceNode paramsFieldType(TypeTracker t) {
+  private DataFlow::LocalSourceNode taintFromParamsType(TypeTracker t) {
     t.start() and
-    result = paramsField()
+    result = taintFromParamsBase()
     or
-    exists(TypeTracker t2 | result = paramsFieldType(t2).track(t2, t))
+    exists(TypeTracker t2 | result = taintFromParamsType(t2).track(t2, t))
   }
 
-  /** Gets a node with a type that can be a field of `ActionController::Parameters` */
-  private DataFlow::LocalSourceNode paramsFieldType() {
-    paramsFieldType(TypeTracker::end()).flowsTo(result)
+  /** Gets a node with a type that may be tainted from an `ActionController::Parameters` instance. */
+  private DataFlow::LocalSourceNode taintFromParamsType() {
+    taintFromParamsType(TypeTracker::end()).flowsTo(result)
   }
 
   /**
@@ -602,7 +602,7 @@ private module ParamsSummaries {
 
       override MethodCall getACall() {
         result =
-          paramsFieldType()
+          taintFromParamsType()
               .getAMethodCall(["original_filename", "content_type", "headers"])
               .asExpr()
               .getExpr() and
@@ -622,7 +622,7 @@ private module ParamsSummaries {
       UploadedFileReadSummary() { this = "ActionDispatch::Http::UploadedFile#read" }
 
       override MethodCall getACall() {
-        result = paramsFieldType().getAMethodCall("read").asExpr().getExpr() and
+        result = taintFromParamsType().getAMethodCall("read").asExpr().getExpr() and
         result.getNumberOfArguments() in [0 .. 2]
       }
 
