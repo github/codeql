@@ -12,7 +12,11 @@ module Utils {
 
   bindingset[regex]
   string wrapRegexp(string regex) {
-    result = ["\\b" + regex + "\\b", "fromJSON\\(" + regex + "\\)", "toJSON\\(" + regex + "\\)"]
+    result =
+      [
+        "\\b" + regex + "\\b", "fromJSON\\(\\s*" + regex + "\\s*\\)",
+        "toJSON\\(\\s*" + regex + "\\s*\\)"
+      ]
   }
 }
 
