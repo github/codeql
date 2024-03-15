@@ -1,0 +1,10 @@
+| test.cpp:680:30:680:30 | call to operator[] | This object is destroyed before $@ is called. | test.cpp:680:17:680:17 | call to begin | call to begin |
+| test.cpp:680:30:680:30 | call to operator[] | This object is destroyed before $@ is called. | test.cpp:680:17:680:17 | call to end | call to end |
+| test.cpp:683:31:683:32 | call to at | This object is destroyed before $@ is called. | test.cpp:683:17:683:17 | call to begin | call to begin |
+| test.cpp:683:31:683:32 | call to at | This object is destroyed before $@ is called. | test.cpp:683:17:683:17 | call to end | call to end |
+| test.cpp:689:16:689:28 | temporary object | This object is destroyed before $@ is called. | test.cpp:689:30:689:34 | call to begin | call to begin |
+| test.cpp:689:45:689:57 | temporary object | This object is destroyed before $@ is called. | test.cpp:689:59:689:61 | call to end | call to end |
+| test.cpp:702:26:702:26 | call to operator[] | This object is destroyed before $@ is called. | test.cpp:703:18:703:22 | call to begin | call to begin |
+| test.cpp:702:26:702:26 | call to operator[] | This object is destroyed before $@ is called. | test.cpp:703:35:703:37 | call to end | call to end |
+| test.cpp:716:35:716:47 | temporary object | This object is destroyed before $@ is called. | test.cpp:716:16:716:16 | call to begin | call to begin |
+| test.cpp:716:35:716:47 | temporary object | This object is destroyed before $@ is called. | test.cpp:716:16:716:16 | call to end | call to end |
