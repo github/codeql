@@ -12,24 +12,16 @@
  */
 
 import actions
-import codeql.actions.DataFlow
+import codeql.actions.security.CodeInjectionQuery
 import codeql.actions.TaintTracking
-import codeql.actions.dataflow.FlowSources
 import codeql.actions.dataflow.ExternalFlow
-
-private class ExpressionInjectionSink extends DataFlow::Node {
-  ExpressionInjectionSink() {
-    exists(Run e | e.getAnScriptExpr() = this.asExpr()) or
-    externallyDefinedSink(this, "expression-injection")
-  }
-}
 
 private module MyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(ReusableWorkflow w | w.getAnInput() = source.asExpr())
   }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionInjectionSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CodeInjectionSink }
 }
 
 module MyFlow = TaintTracking::Global<MyConfig>;

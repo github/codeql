@@ -14,4 +14,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["octo-org/sink-repo/.github/workflows/workflow.yml", "*", "input.config-path", "expression-injection"]
+      - ["octo-org/sink-repo/.github/workflows/workflow.yml", "*", "input.config-path", "code-injection"]
