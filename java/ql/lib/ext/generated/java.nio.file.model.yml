@@ -100,8 +100,6 @@ extensions:
       - ["java.nio.file", "NotLinkException", True, "NotLinkException", "(String,String,String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["java.nio.file", "NotLinkException", True, "NotLinkException", "(String,String,String)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
       - ["java.nio.file", "NotLinkException", True, "NotLinkException", "(String,String,String)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
-      - ["java.nio.file", "Path", True, "resolveSibling", "(Path)", "", "Argument[0].Element", "ReturnValue", "taint", "df-generated"]
-      - ["java.nio.file", "Path", True, "resolveSibling", "(Path)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
       - ["java.nio.file", "ProviderMismatchException", True, "ProviderMismatchException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["java.nio.file", "ProviderNotFoundException", True, "ProviderNotFoundException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
   - addsTo:
