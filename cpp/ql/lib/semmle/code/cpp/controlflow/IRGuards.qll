@@ -249,10 +249,10 @@ private predicate nonExcludedIRAndBasicBlock(IRBlock irb, BasicBlock controlled)
  */
 cached
 class IRGuardCondition extends Instruction {
-  ConditionalBranchInstruction branch;
+  Instruction branch;
 
   cached
-  IRGuardCondition() { branch = get_branch_for_condition(this) }
+  IRGuardCondition() { branch = getBranchForCondition(this) }
 
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
@@ -302,7 +302,7 @@ class IRGuardCondition extends Instruction {
     this.controls(pred, testIsTrue)
     or
     succ = this.getBranchSuccessor(testIsTrue) and
-    branch.getCondition() = this and
+    branch.(ConditionalBranchInstruction).getCondition() = this and
     branch.getBlock() = pred
   }
 
@@ -322,13 +322,13 @@ class IRGuardCondition extends Instruction {
    * ```
    */
   private IRBlock getBranchSuccessor(boolean testIsTrue) {
-    branch.getCondition() = this and
+    branch.(ConditionalBranchInstruction).getCondition() = this and
     (
       testIsTrue = true and
-      result.getFirstInstruction() = branch.getTrueSuccessor()
+      result.getFirstInstruction() = branch.(ConditionalBranchInstruction).getTrueSuccessor()
       or
       testIsTrue = false and
-      result.getFirstInstruction() = branch.getFalseSuccessor()
+      result.getFirstInstruction() = branch.(ConditionalBranchInstruction).getFalseSuccessor()
     )
   }
 
@@ -476,12 +476,14 @@ class IRGuardCondition extends Instruction {
   private IRBlock getBranchBlock() { result = branch.getBlock() }
 }
 
-private ConditionalBranchInstruction get_branch_for_condition(Instruction guard) {
-  result.getCondition() = guard
+private Instruction getBranchForCondition(Instruction guard) {
+  result.(ConditionalBranchInstruction).getCondition() = guard
   or
   exists(LogicalNotInstruction cond |
-    result = get_branch_for_condition(cond) and cond.getUnary() = guard
+    result = getBranchForCondition(cond) and cond.getUnary() = guard
   )
+  or
+  result.(SwitchInstruction).getExpression() = guard
 }
 
 /**
