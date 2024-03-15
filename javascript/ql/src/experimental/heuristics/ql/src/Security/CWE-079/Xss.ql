@@ -15,11 +15,11 @@
 
 import javascript
 import semmle.javascript.security.dataflow.DomBasedXssQuery
-import DataFlow::PathGraph
 import semmle.javascript.heuristics.AdditionalSources
+import DomBasedXssFlow::PathGraph
 
-from DataFlow::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink) and source.getNode() instanceof HeuristicSource
+from DomBasedXssFlow::PathNode source, DomBasedXssFlow::PathNode sink
+where DomBasedXssFlow::flowPath(source, sink) and source.getNode() instanceof HeuristicSource
 select sink.getNode(), source, sink,
   sink.getNode().(Sink).getVulnerabilityKind() + " vulnerability due to $@.", source.getNode(),
   "user-provided value"

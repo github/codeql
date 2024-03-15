@@ -59,7 +59,9 @@ class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNo
     )
   }
 
-  override predicate sanitizes(boolean outcome, Expr e) {
+  override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+  predicate blocksExpr(boolean outcome, Expr e) {
     polarity = outcome and
     e = operand
   }

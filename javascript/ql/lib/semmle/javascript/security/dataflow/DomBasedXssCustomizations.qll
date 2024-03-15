@@ -19,6 +19,30 @@ module DomBasedXss {
   abstract class Sanitizer extends Shared::Sanitizer { }
 
   /**
+   * A barrier guard for any tainted value.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
+    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, label)
+    }
+  }
+
+  /**
    * An expression whose value is interpreted as HTML
    * and may be inserted into the DOM through a library.
    */
@@ -347,9 +371,8 @@ module DomBasedXss {
   /**
    * A sanitizer that blocks the `PrefixString` label when the start of the string is being tested as being of a particular prefix.
    */
-  abstract class PrefixStringSanitizer extends TaintTracking::LabeledSanitizerGuardNode instanceof StringOps::StartsWith
-  {
-    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+  abstract class PrefixStringSanitizer extends BarrierGuardLegacy instanceof StringOps::StartsWith {
+    override predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = super.getBaseString().asExpr() and
       label = prefixLabel() and
       outcome = super.getPolarity()

@@ -38,6 +38,30 @@ module PrototypePollutingAssignment {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
+  /**
+   * A barrier guard for prototype-polluting assignments.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+
+    /**
+     * Holds if this node acts as a barrier for `label`, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e, DataFlow::FlowLabel label) { none() }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
+    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
+      this.blocksExpr(outcome, e, label)
+    }
+  }
+
   /** A flow label representing the `Object.prototype` value. */
   abstract class ObjectPrototype extends DataFlow::FlowLabel {
     ObjectPrototype() { this = "Object.prototype" }
@@ -46,7 +70,9 @@ module PrototypePollutingAssignment {
   /** The base of an assignment or extend call, as a sink for `Object.prototype` references. */
   private class DefaultSink extends Sink {
     DefaultSink() {
-      this = any(DataFlow::PropWrite write).getBase()
+      // Avoid using PropWrite here as we only want assignments that can mutate a pre-existing object,
+      // so not object literals or array literals.
+      this = any(AssignExpr assign).getTarget().(PropAccess).getBase().flow()
       or
       this = any(ExtendCall c).getDestinationOperand()
       or
@@ -67,7 +93,9 @@ module PrototypePollutingAssignment {
    * A parameter of an exported function, seen as a source prototype-polluting assignment.
    */
   class ExternalInputSource extends Source {
-    ExternalInputSource() { this = Exports::getALibraryInputParameter() }
+    ExternalInputSource() {
+      this = Exports::getALibraryInputParameter() and not this instanceof RemoteFlowSource
+    }
 
     override string describe() { result = "library input" }
   }

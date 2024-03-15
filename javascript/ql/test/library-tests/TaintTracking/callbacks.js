@@ -35,8 +35,8 @@ function test() {
   provideTaint2(x => sink(x)); // NOT OK
 
   forwardTaint2(source(), x => sink(x)); // NOT OK
-  forwardTaint2("safe", x => sink(x)); // OK
-  
+  forwardTaint2("safe", x => sink(x)); // OK [INCONSISTENCY]
+
   function helper1(x) {
     sink(x); // NOT OK
     return x;
@@ -57,4 +57,19 @@ function test() {
   helper2(x => {
     sink(x); // NOT OK
   });
+}
+
+function forwardTaint3(x, cb) {
+  cb(x); // Same as 'forwardTaint' but copied to avoid interference between tests
+  cb(x);
+}
+
+function forwardTaint4(x, cb) {
+  forwardTaint3(x, cb); // Same as 'forwardTaint2' but copied to avoid interference between tests
+  forwardTaint3(x, cb);
+}
+
+function test2() {
+  forwardTaint4(source(), x => sink(x)); // NOT OK
+  forwardTaint4("safe", x => sink(x)); // OK
 }

@@ -13,11 +13,13 @@
 
 import javascript
 import semmle.javascript.security.dataflow.ConditionalBypassQuery
-import DataFlow::PathGraph
+import ConditionalBypassFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, SensitiveAction action
+from
+  ConditionalBypassFlow::PathNode source, ConditionalBypassFlow::PathNode sink,
+  SensitiveAction action
 where
-  isTaintedGuardForSensitiveAction(sink, source, action) and
-  not isEarlyAbortGuard(sink, action)
+  isTaintedGuardNodeForSensitiveAction(sink, source, action) and
+  not isEarlyAbortGuardNode(sink, action)
 select sink.getNode(), source, sink, "This condition guards a sensitive $@, but a $@ controls it.",
   action, "action", source.getNode(), "user-provided value"

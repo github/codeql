@@ -31,6 +31,21 @@ module ResourceExhaustion {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
+  /**
+   * A barrier guard for resource exhaustion vulnerabilities.
+   */
+  abstract class BarrierGuard extends DataFlow::Node {
+    /**
+     * Holds if this node acts as a barrier for data flow, blocking further flow from `e` if `this` evaluates to `outcome`.
+     */
+    predicate blocksExpr(boolean outcome, Expr e) { none() }
+  }
+
+  /** A subclass of `BarrierGuard` that is used for backward compatibility with the old data flow library. */
+  abstract class BarrierGuardLegacy extends BarrierGuard, TaintTracking::SanitizerGuardNode {
+    override predicate sanitizes(boolean outcome, Expr e) { this.blocksExpr(outcome, e) }
+  }
+
   /** A source of remote user input, considered as a data flow source for resource exhaustion vulnerabilities. */
   class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
     RemoteFlowSourceAsSource() {
