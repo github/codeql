@@ -74,6 +74,15 @@ class GuardCondition extends Expr {
 
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
+   * entered if the value of this condition is `v`.
+   *
+   * For details on what "controls" mean, see the QLDoc for `controls`.
+   */
+  cached
+  predicate valueControls(BasicBlock controlled, AbstractValue v) { none() }
+
+  /**
+   * Holds if this condition controls `controlled`, meaning that `controlled` is only
    * entered if the value of this condition is `testIsTrue`.
    *
    * Illustration:
@@ -99,7 +108,9 @@ class GuardCondition extends Expr {
    * true (for `&&`) or false (for `||`) branch.
    */
   cached
-  predicate controls(BasicBlock controlled, boolean testIsTrue) { none() }
+  final predicate controls(BasicBlock controlled, boolean testIsTrue) {
+    this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
+  }
 
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
   cached
@@ -136,13 +147,13 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
     this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
   }
 
-  override predicate controls(BasicBlock controlled, boolean testIsTrue) {
+  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
     exists(BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
       this = binop and
       lhs = binop.getLeftOperand() and
       rhs = binop.getRightOperand() and
-      lhs.controls(controlled, testIsTrue) and
-      rhs.controls(controlled, testIsTrue)
+      lhs.valueControls(controlled, v) and
+      rhs.valueControls(controlled, v)
     )
   }
 
@@ -184,10 +195,10 @@ private class GuardConditionFromIR extends GuardCondition {
 
   GuardConditionFromIR() { this = ir.getUnconvertedResultExpression() }
 
-  override predicate controls(BasicBlock controlled, boolean testIsTrue) {
+  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
-    this.controlsBlock(controlled, testIsTrue)
+    this.controlsBlock(controlled, v)
   }
 
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
@@ -240,9 +251,9 @@ private class GuardConditionFromIR extends GuardCondition {
    * predicate does not necessarily hold for binary logical operations like
    * `&&` and `||`. See the detailed explanation on predicate `controls`.
    */
-  private predicate controlsBlock(BasicBlock controlled, boolean testIsTrue) {
+  private predicate controlsBlock(BasicBlock controlled, AbstractValue v) {
     exists(IRBlock irb |
-      ir.controls(irb, testIsTrue) and
+      ir.valueControls(irb, v) and
       nonExcludedIRAndBasicBlock(irb, controlled) and
       not isUnreachedBlock(irb)
     )
@@ -319,14 +330,38 @@ class IRGuardCondition extends Instruction {
    * true (for `&&`) or false (for `||`) branch.
    */
   cached
-  predicate controls(IRBlock controlled, boolean testIsTrue) {
+  predicate valueControls(IRBlock controlled, AbstractValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
-    this.controlsBlock(controlled, testIsTrue)
+    this.controlsBlock(controlled, v)
     or
     exists(IRGuardCondition ne |
       this = ne.(LogicalNotInstruction).getUnary() and
-      ne.controls(controlled, testIsTrue.booleanNot())
+      ne.valueControls(controlled, v.getDualValue())
+    )
+  }
+
+  cached
+  predicate controls(IRBlock controlled, boolean testIsTrue) {
+    this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
+  }
+
+  /**
+   * Holds if the control-flow edge `(pred, succ)` may be taken only if
+   * the value of this condition is `v`.
+   */
+  cached
+  predicate valueControlsEdge(IRBlock pred, IRBlock succ, AbstractValue v) {
+    pred.getASuccessor() = succ and
+    this.valueControls(pred, v)
+    or
+    succ = this.getBranchSuccessor(v) and
+    (
+      branch.(ConditionalBranchInstruction).getCondition() = this and
+      branch.getBlock() = pred
+      or
+      branch.(SwitchInstruction).getExpression() = this and
+      branch.getBlock() = pred
     )
   }
 
@@ -335,13 +370,8 @@ class IRGuardCondition extends Instruction {
    * the value of this condition is `testIsTrue`.
    */
   cached
-  predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
-    pred.getASuccessor() = succ and
-    this.controls(pred, testIsTrue)
-    or
-    succ = this.getBranchSuccessor(testIsTrue) and
-    branch.(ConditionalBranchInstruction).getCondition() = this and
-    branch.getBlock() = pred
+  final predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
+    this.valueControlsEdge(pred, succ, any(BooleanValue bv | bv.getValue() = testIsTrue))
   }
 
   /**
@@ -440,11 +470,11 @@ class IRGuardCondition extends Instruction {
 
   /**
    * Holds if this condition controls `block`, meaning that `block` is only
-   * entered if the value of this condition is `testIsTrue`. This helper
+   * entered if the value of this condition is `v`. This helper
    * predicate does not necessarily hold for binary logical operations like
    * `&&` and `||`. See the detailed explanation on predicate `controls`.
    */
-  private predicate controlsBlock(IRBlock controlled, boolean testIsTrue) {
+  private predicate controlsBlock(IRBlock controlled, AbstractValue v) {
     not isUnreachedBlock(controlled) and
     //
     // For this block to control the block `controlled` with `testIsTrue` the
@@ -485,7 +515,7 @@ class IRGuardCondition extends Instruction {
     // that `this` strictly dominates `controlled` so that isn't necessary to check
     // directly.
     exists(IRBlock succ |
-      succ = this.getBranchSuccessor(testIsTrue) and
+      succ = this.getBranchSuccessor(v) and
       this.hasDominatingEdgeTo(succ) and
       succ.dominates(controlled)
     )
