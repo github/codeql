@@ -12,6 +12,7 @@ private import DataFlowImplSpecific::Public
 private import DataFlowImplCommon
 private import codeql.util.Unit
 
+// TODO: switch to the shared implementation of FlowSummaryImpl.qll
 /** Provides classes and predicates for defining flow summaries. */
 module Public {
   private import Private
