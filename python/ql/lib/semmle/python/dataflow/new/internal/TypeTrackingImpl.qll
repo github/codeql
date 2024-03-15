@@ -102,7 +102,21 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
 
   class LocalSourceNode = DataFlowPublic::LocalSourceNode;
 
-  class Content = DataFlowPublic::Content;
+  class Content extends DataFlowPublic::Content {
+    Content() {
+      // TODO: for now, it's not 100% clear if should support non-precise content in
+      // type-tracking, or if it will lead to bad results. We start with only allowing
+      // precise content, which should always be a good improvement! It also simplifies
+      // the process of examining new results from non-precise content steps in the
+      // future, since you will _only_ have to look over the results from the new
+      // non-precise steps.
+      this instanceof DataFlowPublic::AttributeContent
+      or
+      this instanceof DataFlowPublic::DictionaryElementContent
+      or
+      this instanceof DataFlowPublic::TupleElementContent
+    }
+  }
 
   /**
    * A label to use for `WithContent` and `WithoutContent` steps, restricting
