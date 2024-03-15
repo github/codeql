@@ -26,5 +26,8 @@ runs:
       env:
         GITHUB_TOKEN: ${{ inputs.token }}
         GH_TOKEN: ${{ inputs.token }}
+        INPUT_SOURCE-ROOT: ${{ inputs.source-root }}
+        INPUT_SARIF-OUTPUT: ${{ inputs.sarif-output }}
+        INPUT_SUITE: ${{ inputs.suite }}
       run: |
         node ${{ github.action_path }}/.github/action/dist/index.js
