@@ -1055,28 +1055,75 @@ void Lambda(int x, const String& s) {
   lambda_inits(6);
 }
 
-template<typename T>
-struct vector {
-    struct iterator {
-        T* p;
-        iterator& operator++();
-        T& operator*() const;
+namespace std {
+    template<class T>
+	struct remove_const { typedef T type; };
 
-        bool operator!=(iterator right) const;
+	template<class T>
+	struct remove_const<const T> { typedef T type; };
+
+	// `remove_const_t<T>` removes any `const` specifier from `T`
+	template<class T>
+	using remove_const_t = typename remove_const<T>::type;
+
+    struct ptrdiff_t;
+
+	template<class I> struct iterator_traits;
+
+	template <class Category,
+			  class value_type,
+			  class difference_type = ptrdiff_t,
+			  class pointer_type = value_type*,
+			  class reference_type = value_type&>
+	struct iterator {
+		typedef Category iterator_category;
+
+		iterator();
+		iterator(iterator<Category, remove_const_t<value_type> > const &other); // non-const -> const conversion constructor
+
+		iterator &operator++();
+		iterator operator++(int);
+		iterator &operator--();
+		iterator operator--(int);
+		bool operator==(iterator other) const;
+		bool operator!=(iterator other) const;
+		reference_type operator*() const;
+		pointer_type operator->() const;
+		iterator operator+(int);
+		iterator operator-(int);
+		iterator &operator+=(int);
+		iterator &operator-=(int);
+		int operator-(iterator);
+		reference_type operator[](int);
+	};
+
+	struct input_iterator_tag {};
+	struct forward_iterator_tag : public input_iterator_tag {};
+	struct bidirectional_iterator_tag : public forward_iterator_tag {};
+	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+
+	struct output_iterator_tag {};
+
+    template<typename T>
+    struct vector {
+        vector(T);
+        ~vector();
+
+        using iterator = std::iterator<random_access_iterator_tag, T>;
+		using const_iterator = std::iterator<random_access_iterator_tag, const T>;
+
+        iterator begin() const;
+        iterator end() const;
     };
 
-    vector(T);
-    ~vector();
-    iterator begin() const;
-    iterator end() const;
-};
+    template<typename T>
+    bool operator==(typename vector<T>::iterator left, typename vector<T>::iterator right);
+    template<typename T>
+    bool operator!=(typename vector<T>::iterator left, typename vector<T>::iterator right);
 
-template<typename T>
-bool operator==(typename vector<T>::iterator left, typename vector<T>::iterator right);
-template<typename T>
-bool operator!=(typename vector<T>::iterator left, typename vector<T>::iterator right);
+}
 
-void RangeBasedFor(const vector<int>& v) {
+void RangeBasedFor(const std::vector<int>& v) {
     for (int e : v) {
         if (e > 0) {
             continue;
@@ -2151,21 +2198,21 @@ void initialization_with_destructor(bool b, char c) {
     }
 
     ClassWithDestructor x;
-    for(vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys)
+    for(std::vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys)
       y.set_x('a');
 
-    for(vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys) {
+    for(std::vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys) {
       y.set_x('a');
       if (y.get_x() == 'b')
         return;
     }
 
-    for(vector<int> ys(1); int y : ys) {
+    for(std::vector<int> ys(1); int y : ys) {
       if (y == 1)
         return;
     }
 
-    for(vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys) {
+    for(std::vector<ClassWithDestructor> ys(x); ClassWithDestructor y : ys) {
       ClassWithDestructor z1;
       ClassWithDestructor z2;
     }
@@ -2243,7 +2290,7 @@ void ForDestructors() {
         String s2;
     }
 
-    for(String s : vector<String>(String("hello"))) {
+    for(String s : std::vector<String>(String("hello"))) {
         String s2;
     }
     
@@ -2330,5 +2377,19 @@ namespace return_routine_type {
     }
 
 }
+
+
+using size_t = decltype(sizeof(0));
+
+template<class T>
+struct remove_const { typedef T type; };
+
+template<class T>
+struct remove_const<const T> { typedef T type; };
+
+// `remove_const_t<T>` removes any `const` specifier from `T`
+template<class T>
+using remove_const_t = typename remove_const<T>::type;
+
 
 // semmle-extractor-options: -std=c++20 --clang
