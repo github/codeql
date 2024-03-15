@@ -120,6 +120,7 @@ extensions:
       - ["java.io", "File", "listFiles", "", "summary", "df-manual"]
       - ["java.io", "File", "mkdirs", "()", "summary", "manual"]
       - ["java.io", "FileInputStream", "FileInputStream", "(File)", "summary", "manual"]
+      - ["java.io", "FileInputStream", "FileInputStream", "(FileDescriptor)", "summary", "df-manual"]
       - ["java.io", "FileInputStream", "FileInputStream", "(String)", "summary", "df-manual"]
       - ["java.io", "InputStream", "close", "()", "summary", "manual"]
       - ["java.io", "ObjectInput", "readObject", "()", "summary", "df-manual"] # this is a deserialization sink modeled in regular CodeQL

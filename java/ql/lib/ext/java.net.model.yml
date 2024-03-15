@@ -67,4 +67,5 @@ extensions:
     data:
       # summary neutrals
       - ["java.net", "Socket", "getOutputStream", "()", "summary", "df-manual"]
+      - ["java.net", "Socket", "connect", "(SocketAddress)", "summary", "df-manual"]
       - ["java.net", "Socket", "connect", "(SocketAddress,int)", "summary", "df-manual"]
