@@ -438,7 +438,7 @@ private class IteratorAssignmentMemberOperatorModel extends IteratorAssignmentMe
  * A `begin` or `end` member function, or a related member function, that
  * returns an iterator.
  */
-private class BeginOrEndFunction extends MemberFunction, TaintFunction, GetIteratorFunction {
+class BeginOrEndFunction extends MemberFunction {
   BeginOrEndFunction() {
     this.hasName([
         "begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend", "before_begin",
@@ -446,7 +446,11 @@ private class BeginOrEndFunction extends MemberFunction, TaintFunction, GetItera
       ]) and
     this.getType().getUnspecifiedType() instanceof Iterator
   }
+}
 
+private class BeginOrEndFunctionModels extends BeginOrEndFunction, TaintFunction,
+  GetIteratorFunction
+{
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValue()
