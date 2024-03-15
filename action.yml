@@ -24,6 +24,7 @@ runs:
     - name: Do something with context
       shell: bash
       env:
+        GITHUB_TOKEN: ${{ github.token }}
         GH_TOKEN: ${{ github.token }}
       run: |
         node ${{ github.action_path }}/.github/action/dist/index.js
