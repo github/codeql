@@ -247,7 +247,7 @@ private class GuardConditionFromIR extends GuardCondition {
 
   /**
    * Holds if this condition controls `block`, meaning that `block` is only
-   * entered if the value of this condition is `testIsTrue`. This helper
+   * entered if the value of this condition is `v`. This helper
    * predicate does not necessarily hold for binary logical operations like
    * `&&` and `||`. See the detailed explanation on predicate `controls`.
    */
@@ -305,6 +305,24 @@ class IRGuardCondition extends Instruction {
 
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
+   * entered if the value of this condition is `v`.
+   *
+   * For details on what "controls" mean, see the QLDoc for `controls`.
+   */
+  cached
+  predicate valueControls(IRBlock controlled, AbstractValue v) {
+    // This condition must determine the flow of control; that is, this
+    // node must be a top-level condition.
+    this.controlsBlock(controlled, v)
+    or
+    exists(IRGuardCondition ne |
+      this = ne.(LogicalNotInstruction).getUnary() and
+      ne.valueControls(controlled, v.getDualValue())
+    )
+  }
+
+  /**
+   * Holds if this condition controls `controlled`, meaning that `controlled` is only
    * entered if the value of this condition is `testIsTrue`.
    *
    * Illustration:
@@ -329,18 +347,6 @@ class IRGuardCondition extends Instruction {
    * being short-circuited) then it will only control blocks dominated by the
    * true (for `&&`) or false (for `||`) branch.
    */
-  cached
-  predicate valueControls(IRBlock controlled, AbstractValue v) {
-    // This condition must determine the flow of control; that is, this
-    // node must be a top-level condition.
-    this.controlsBlock(controlled, v)
-    or
-    exists(IRGuardCondition ne |
-      this = ne.(LogicalNotInstruction).getUnary() and
-      ne.valueControls(controlled, v.getDualValue())
-    )
-  }
-
   cached
   predicate controls(IRBlock controlled, boolean testIsTrue) {
     this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
@@ -375,7 +381,7 @@ class IRGuardCondition extends Instruction {
   }
 
   /**
-   * Gets the block to which `branch` jumps directly when this condition is `testIsTrue`.
+   * Gets the block to which `branch` jumps directly when the value of this condition is `v`.
    *
    * This predicate is intended to help with situations in which an inference can only be made
    * based on an edge between a block with multiple successors and a block with multiple
