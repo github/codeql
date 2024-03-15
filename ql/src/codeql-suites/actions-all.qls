@@ -1,2 +1,5 @@
 - description: Standard Code Scanning queries for Actions
 - queries: .
+- include:
+    kind:
+    - path-problem
