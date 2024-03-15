@@ -52,3 +52,37 @@ bool testWithCatch0(int v)
 
     return false;
 }
+
+void use1(int);
+void use2(int);
+void use3(int);
+
+void test_switches_simple(int i) {
+  switch(i) {
+    case 0:
+      use1(i);
+      break;
+    case 1:
+      use2(i);
+      /* NOTE: fallthrough */
+    case 2:
+      use3(i);
+  }
+}
+
+void test_switches_range(int i) {
+  switch(i) {
+    case 0 ... 10:
+      use1(i);
+      break;
+    case 11 ... 20:
+      use2(i);
+  }
+}
+
+void test_switches_default(int i) {
+  switch(i) {
+    default:
+      use1(i);
+  }
+}
