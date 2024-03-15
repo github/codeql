@@ -20,6 +20,44 @@ private predicate isUnreachedBlock(IRBlock block) {
   block.getFirstInstruction() instanceof UnreachedInstruction
 }
 
+private newtype TAbstractValue =
+  TBooleanValue(boolean b) { b = true or b = false } or
+  TMatchValue(CaseEdge c)
+
+/**
+ * An abstract value. This is either a boolean value, or a `switch` case.
+ */
+abstract class AbstractValue extends TAbstractValue {
+  /** Gets an abstract value that represents the dual of this value, if any. */
+  abstract AbstractValue getDualValue();
+
+  /** Gets a textual representation of this abstract value. */
+  abstract string toString();
+}
+
+/** A Boolean value. */
+class BooleanValue extends AbstractValue, TBooleanValue {
+  /** Gets the underlying Boolean value. */
+  boolean getValue() { this = TBooleanValue(result) }
+
+  override BooleanValue getDualValue() { result.getValue() = this.getValue().booleanNot() }
+
+  override string toString() { result = this.getValue().toString() }
+}
+
+/** A value that represents a match against a specific `switch` case. */
+class MatchValue extends AbstractValue, TMatchValue {
+  /** Gets the case. */
+  CaseEdge getCase() { this = TMatchValue(result) }
+
+  override MatchValue getDualValue() {
+    // A `MatchValue` has no dual.
+    none()
+  }
+
+  override string toString() { result = this.getCase().toString() }
+}
+
 /**
  * A Boolean condition in the AST that guards one or more basic blocks. This includes
  * operands of logical operators but not switch statements.
