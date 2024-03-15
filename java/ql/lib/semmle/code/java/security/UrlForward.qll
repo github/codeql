@@ -26,8 +26,13 @@ private class DefaultUrlForwardSink extends UrlForwardSink {
 private class SpringUrlForwardPrefixSink extends UrlForwardSink {
   SpringUrlForwardPrefixSink() {
     any(SpringRequestMappingMethod srmm).polyCalls*(this.getEnclosingCallable()) and
-    this.asExpr() = any(ForwardPrefix fp).getAnAppendedExpression()
+    appendedToForwardPrefix(this)
   }
+}
+
+pragma[nomagic]
+private predicate appendedToForwardPrefix(DataFlow::ExprNode exprNode) {
+  exists(ForwardPrefix fp | exprNode.asExpr() = fp.getAnAppendedExpression())
 }
 
 private class ForwardPrefix extends InterestingPrefix {
