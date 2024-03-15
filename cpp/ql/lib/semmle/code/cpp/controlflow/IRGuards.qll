@@ -359,14 +359,20 @@ class IRGuardCondition extends Instruction {
    * return x;
    * ```
    */
-  private IRBlock getBranchSuccessor(boolean testIsTrue) {
+  private IRBlock getBranchSuccessor(AbstractValue v) {
     branch.(ConditionalBranchInstruction).getCondition() = this and
-    (
-      testIsTrue = true and
+    exists(BooleanValue bv | bv = v |
+      bv.getValue() = true and
       result.getFirstInstruction() = branch.(ConditionalBranchInstruction).getTrueSuccessor()
       or
-      testIsTrue = false and
+      bv.getValue() = false and
       result.getFirstInstruction() = branch.(ConditionalBranchInstruction).getFalseSuccessor()
+    )
+    or
+    exists(SwitchInstruction switch, CaseEdge kind | switch = branch |
+      switch.getExpression() = this and
+      result.getFirstInstruction() = switch.getSuccessor(kind) and
+      kind = v.(MatchValue).getCase()
     )
   }
 
