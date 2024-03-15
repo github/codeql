@@ -1,6 +1,0 @@
-edges
-nodes
-| .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | semmle.label | github.event.comment.body |
-subpaths
-#select
-| .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | Potential critical command injection in $@, which may be controlled by an external user. | .github/workflows/comment_issue.yml:9:26:9:57 | github.event.comment.body | ${{ github.event.comment.body }} |
