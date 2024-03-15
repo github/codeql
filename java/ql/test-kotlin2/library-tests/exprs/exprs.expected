@@ -219,27 +219,27 @@
 | delegatedProperties.kt:37:9:37:24 | setVarResource0(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
 | delegatedProperties.kt:37:9:37:24 | this | delegatedProperties.kt:18:5:40:5 | fn | ThisAccess |
 | delegatedProperties.kt:37:24:37:24 | 3 | delegatedProperties.kt:18:5:40:5 | fn | IntegerLiteral |
-| delegatedProperties.kt:39:31:39:51 | ...::... | delegatedProperties.kt:18:5:40:5 | fn | PropertyRefExpr |
-| delegatedProperties.kt:39:31:39:51 | ...::... | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | PropertyRefExpr |
-| delegatedProperties.kt:39:31:39:51 | <get-varResource2>(...) | delegatedProperties.kt:39:31:39:51 | get | MethodCall |
-| delegatedProperties.kt:39:31:39:51 | <get-varResource2>(...) | delegatedProperties.kt:39:31:39:51 | get | MethodCall |
-| delegatedProperties.kt:39:31:39:51 | Integer | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
-| delegatedProperties.kt:39:31:39:51 | Integer | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | TypeAccess |
-| delegatedProperties.kt:39:31:39:51 | KProperty0<Integer> | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
-| delegatedProperties.kt:39:31:39:51 | KProperty0<Integer> | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | TypeAccess |
-| delegatedProperties.kt:39:31:39:51 | Object | delegatedProperties.kt:39:31:39:51 | get | TypeAccess |
-| delegatedProperties.kt:39:31:39:51 | Object | delegatedProperties.kt:39:31:39:51 | get | TypeAccess |
-| delegatedProperties.kt:39:31:39:51 | get(...) | delegatedProperties.kt:39:31:39:51 | invoke | MethodCall |
-| delegatedProperties.kt:39:31:39:51 | get(...) | delegatedProperties.kt:39:31:39:51 | invoke | MethodCall |
-| delegatedProperties.kt:39:31:39:51 | getValue(...) | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | MethodCall |
-| delegatedProperties.kt:39:31:39:51 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:39:31:39:51 | new (...) | delegatedProperties.kt:39:31:39:51 | get | ClassInstanceExpr |
-| delegatedProperties.kt:39:31:39:51 | new (...) | delegatedProperties.kt:39:31:39:51 | get | ClassInstanceExpr |
-| delegatedProperties.kt:39:31:39:51 | provideDelegate(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
-| delegatedProperties.kt:39:31:39:51 | this | delegatedProperties.kt:39:31:39:51 | invoke | ThisAccess |
-| delegatedProperties.kt:39:31:39:51 | this | delegatedProperties.kt:39:31:39:51 | invoke | ThisAccess |
-| delegatedProperties.kt:39:31:39:51 | varResource2$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
-| delegatedProperties.kt:39:31:39:51 | varResource2$delegate | delegatedProperties.kt:39:31:39:51 | <get-varResource2> | VarAccess |
+| delegatedProperties.kt:39:34:39:51 | ...::... | delegatedProperties.kt:18:5:40:5 | fn | PropertyRefExpr |
+| delegatedProperties.kt:39:34:39:51 | ...::... | delegatedProperties.kt:39:34:39:51 | <get-varResource2> | PropertyRefExpr |
+| delegatedProperties.kt:39:34:39:51 | <get-varResource2>(...) | delegatedProperties.kt:39:34:39:51 | get | MethodCall |
+| delegatedProperties.kt:39:34:39:51 | <get-varResource2>(...) | delegatedProperties.kt:39:34:39:51 | get | MethodCall |
+| delegatedProperties.kt:39:34:39:51 | Integer | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
+| delegatedProperties.kt:39:34:39:51 | Integer | delegatedProperties.kt:39:34:39:51 | <get-varResource2> | TypeAccess |
+| delegatedProperties.kt:39:34:39:51 | KProperty0<Integer> | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
+| delegatedProperties.kt:39:34:39:51 | KProperty0<Integer> | delegatedProperties.kt:39:34:39:51 | <get-varResource2> | TypeAccess |
+| delegatedProperties.kt:39:34:39:51 | Object | delegatedProperties.kt:39:34:39:51 | get | TypeAccess |
+| delegatedProperties.kt:39:34:39:51 | Object | delegatedProperties.kt:39:34:39:51 | get | TypeAccess |
+| delegatedProperties.kt:39:34:39:51 | get(...) | delegatedProperties.kt:39:34:39:51 | invoke | MethodCall |
+| delegatedProperties.kt:39:34:39:51 | get(...) | delegatedProperties.kt:39:34:39:51 | invoke | MethodCall |
+| delegatedProperties.kt:39:34:39:51 | getValue(...) | delegatedProperties.kt:39:34:39:51 | <get-varResource2> | MethodCall |
+| delegatedProperties.kt:39:34:39:51 | int | file://:0:0:0:0 | <none> | TypeAccess |
+| delegatedProperties.kt:39:34:39:51 | new (...) | delegatedProperties.kt:39:34:39:51 | get | ClassInstanceExpr |
+| delegatedProperties.kt:39:34:39:51 | new (...) | delegatedProperties.kt:39:34:39:51 | get | ClassInstanceExpr |
+| delegatedProperties.kt:39:34:39:51 | provideDelegate(...) | delegatedProperties.kt:18:5:40:5 | fn | MethodCall |
+| delegatedProperties.kt:39:34:39:51 | this | delegatedProperties.kt:39:34:39:51 | invoke | ThisAccess |
+| delegatedProperties.kt:39:34:39:51 | this | delegatedProperties.kt:39:34:39:51 | invoke | ThisAccess |
+| delegatedProperties.kt:39:34:39:51 | varResource2$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
+| delegatedProperties.kt:39:34:39:51 | varResource2$delegate | delegatedProperties.kt:39:34:39:51 | <get-varResource2> | VarAccess |
 | delegatedProperties.kt:39:34:39:51 | DelegateProvider | delegatedProperties.kt:18:5:40:5 | fn | TypeAccess |
 | delegatedProperties.kt:39:34:39:51 | new DelegateProvider(...) | delegatedProperties.kt:18:5:40:5 | fn | ClassInstanceExpr |
 | delegatedProperties.kt:42:27:42:47 | ...::... | delegatedProperties.kt:42:27:42:47 | getVarResource0 | PropertyRefExpr |
