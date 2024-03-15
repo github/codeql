@@ -813,28 +813,24 @@ abstract class SimpleReferenceExpressionImpl extends ExpressionImpl {
 }
 
 private string stepsCtxRegex() {
-  result = wrapRegexp("steps\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
+  result = Utils::wrapRegexp("steps\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
 }
 
 private string needsCtxRegex() {
-  result = wrapRegexp("needs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
+  result = Utils::wrapRegexp("needs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
 }
 
 private string jobsCtxRegex() {
-  result = wrapRegexp("jobs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
+  result = Utils::wrapRegexp("jobs\\.([A-Za-z0-9_-]+)\\.outputs\\.([A-Za-z0-9_-]+)")
 }
 
-private string envCtxRegex() { result = wrapRegexp("env\\.([A-Za-z0-9_-]+)") }
+private string envCtxRegex() { result = Utils::wrapRegexp("env\\.([A-Za-z0-9_-]+)") }
 
-private string matrixCtxRegex() { result = wrapRegexp("matrix\\.([A-Za-z0-9_-]+)") }
+private string matrixCtxRegex() { result = Utils::wrapRegexp("matrix\\.([A-Za-z0-9_-]+)") }
 
 private string inputsCtxRegex() {
-  result = wrapRegexp(["inputs\\.([A-Za-z0-9_-]+)", "github\\.event\\.inputs\\.([A-Za-z0-9_-]+)"])
-}
-
-bindingset[regex]
-private string wrapRegexp(string regex) {
-  result = ["\\b" + regex + "\\b", "fromJSON\\(" + regex + "\\)", "toJSON\\(" + regex + "\\)"]
+  result =
+    Utils::wrapRegexp(["inputs\\.([A-Za-z0-9_-]+)", "github\\.event\\.inputs\\.([A-Za-z0-9_-]+)"])
 }
 
 /**

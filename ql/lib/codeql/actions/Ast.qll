@@ -9,6 +9,11 @@ module Utils {
           .regexpReplaceAll("\\[\"([a-zA-Z0-9_\\*\\-]+)\"\\]", ".$1")
           .regexpReplaceAll("\\s*\\.\\s*", ".")
   }
+
+  bindingset[regex]
+  string wrapRegexp(string regex) {
+    result = ["\\b" + regex + "\\b", "fromJSON\\(" + regex + "\\)", "toJSON\\(" + regex + "\\)"]
+  }
 }
 
 class AstNode instanceof AstNodeImpl {

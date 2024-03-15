@@ -28,7 +28,7 @@ private predicate isExternalUserControlledIssue(string context) {
   exists(string reg |
     reg = ["\\bgithub\\.event\\.issue\\.title\\b", "\\bgithub\\.event\\.issue\\.body\\b"]
   |
-    Utils::normalizeExpr(context).regexpMatch(reg)
+    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
   )
 }
 
@@ -45,18 +45,20 @@ private predicate isExternalUserControlledPullRequest(string context) {
         "\\bgithub\\.event\\.pull_request\\.head\\.ref\\b", "\\bgithub\\.head_ref\\b"
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(reg)
+    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
   )
 }
 
 bindingset[context]
 private predicate isExternalUserControlledReview(string context) {
-  Utils::normalizeExpr(context).regexpMatch("\\bgithub\\.event\\.review\\.body\\b")
+  Utils::normalizeExpr(context)
+      .regexpMatch(Utils::wrapRegexp("\\bgithub\\.event\\.review\\.body\\b"))
 }
 
 bindingset[context]
 private predicate isExternalUserControlledComment(string context) {
-  Utils::normalizeExpr(context).regexpMatch("\\bgithub\\.event\\.comment\\.body\\b")
+  Utils::normalizeExpr(context)
+      .regexpMatch(Utils::wrapRegexp("\\bgithub\\.event\\.comment\\.body\\b"))
 }
 
 bindingset[context]
@@ -68,7 +70,7 @@ private predicate isExternalUserControlledGollum(string context) {
         "\\bgithub\\.event\\.pages\\[[0-9]+\\]\\.title\\b"
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(reg)
+    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
   )
 }
 
@@ -89,7 +91,7 @@ private predicate isExternalUserControlledCommit(string context) {
         "\\bgithub\\.event\\.commits\\[[0-9]+\\]\\.committer\\.name\\b",
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(reg)
+    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
   )
 }
 
@@ -98,7 +100,7 @@ private predicate isExternalUserControlledDiscussion(string context) {
   exists(string reg |
     reg = ["\\bgithub\\.event\\.discussion\\.title\\b", "\\bgithub\\.event\\.discussion\\.body\\b"]
   |
-    Utils::normalizeExpr(context).regexpMatch(reg)
+    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
   )
 }
 
@@ -118,7 +120,7 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
         "\\bgithub\\.event\\.workflow_run\\.head_commit\\.committer\\.name\\b",
       ]
   |
-    Utils::normalizeExpr(context).regexpMatch(reg)
+    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
   )
 }
 
