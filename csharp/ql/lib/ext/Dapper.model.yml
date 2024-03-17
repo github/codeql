@@ -62,6 +62,12 @@ extensions:
       pack: codeql/csharp-all
       extensible: sourceModel
     data:
+      - ["Dapper", "SqlMapper", False, "ExecuteReader", "", "", "ReturnValue", "database", "manual"]
+      - ["Dapper", "SqlMapper", False, "ExecuteReaderAsync", "", "", "ReturnValue", "database", "manual"]
+      - ["Dapper", "SqlMapper", False, "ExecuteScalar", "", "", "ReturnValue", "database", "manual"]
+      - ["Dapper", "SqlMapper", False, "ExecuteScalar<T>", "", "", "ReturnValue", "database", "manual"]
+      - ["Dapper", "SqlMapper", False, "ExecuteScalarAsync", "", "", "ReturnValue", "database", "manual"]
+      - ["Dapper", "SqlMapper", False, "ExecuteScalarAsync<T>", "", "", "ReturnValue", "database", "manual"]
       - ["Dapper", "SqlMapper", False, "Query", "", "", "ReturnValue", "database", "manual"]
       - ["Dapper", "SqlMapper", False, "Query<T>", "", "", "ReturnValue", "database", "manual"]
       - ["Dapper", "SqlMapper", False, "Query<TFirst,TSecond,TReturn>", "", "", "ReturnValue", "database", "manual"]
