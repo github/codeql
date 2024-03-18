@@ -1,0 +1,10 @@
+| Program.cs:2:9:2:9 | CS0103: The name 'M' does not exist in the current context | Error CS0103 The name 'M' does not exist in the current context |
+| Program.cs:2:15:2:15 | CS0103: The name 'M' does not exist in the current context | Error CS0103 The name 'M' does not exist in the current context |
+| Program.cs:2:21:2:21 | CS0103: The name 'M' does not exist in the current context | Error CS0103 The name 'M' does not exist in the current context |
+| test-db/working/implicitUsings/GlobalUsings.g.cs:3:1:3:28 | CS8019: Unnecessary using directive. | Hidden CS8019 Unnecessary using directive. |
+| test-db/working/implicitUsings/GlobalUsings.g.cs:4:1:4:48 | CS8019: Unnecessary using directive. | Hidden CS8019 Unnecessary using directive. |
+| test-db/working/implicitUsings/GlobalUsings.g.cs:5:1:5:31 | CS8019: Unnecessary using directive. | Hidden CS8019 Unnecessary using directive. |
+| test-db/working/implicitUsings/GlobalUsings.g.cs:6:1:6:33 | CS8019: Unnecessary using directive. | Hidden CS8019 Unnecessary using directive. |
+| test-db/working/implicitUsings/GlobalUsings.g.cs:7:1:7:37 | CS8019: Unnecessary using directive. | Hidden CS8019 Unnecessary using directive. |
+| test-db/working/implicitUsings/GlobalUsings.g.cs:8:1:8:38 | CS8019: Unnecessary using directive. | Hidden CS8019 Unnecessary using directive. |
+| test-db/working/implicitUsings/GlobalUsings.g.cs:9:1:9:44 | CS8019: Unnecessary using directive. | Hidden CS8019 Unnecessary using directive. |
