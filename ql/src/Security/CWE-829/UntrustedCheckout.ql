@@ -1,6 +1,6 @@
 /**
  * @name Checkout of untrusted code in trusted context
- * @description Workflows triggered on `pull_request_target` have read/write access to the base repository and access to secrets.
+ * @description Priveleged workflows have read/write access to the base repository and access to secrets.
  *              By explicitly checking out and running the build script from a fork the untrusted code is running in an environment
  *              that is able to push to the base repository and to access secrets.
  * @kind problem
@@ -121,12 +121,26 @@ class GitCheckout extends PRHeadCheckoutStep instanceof Run {
   }
 }
 
+predicate isSingleTriggerWorkflow(Workflow w, string trigger) {
+  w.getATriggerEvent() = trigger and
+  count(string t | w.getATriggerEvent() = t | t) = 1
+}
+
 from Workflow w, PRHeadCheckoutStep checkout
 where
-  w.hasTriggerEvent([
-      "pull_request_target", "issue_comment", "pull_request_review_comment", "pull_request_review",
-      "workflow_run", "check_run", "check_suite", "workflow_call"
-    ]) and
+  (
+    // The Workflow is triggered by an event other than `pull_request`
+    not isSingleTriggerWorkflow(w, "pull_request")
+    or
+    // The Workflow is only triggered by `workflow_call` and there is
+    // a caller workflow triggered by an event other than `pull_request`
+    isSingleTriggerWorkflow(w, "workflow_call") and
+    exists(ExternalJob call, Workflow caller |
+      call.getCallee() = w.getLocation().getFile().getRelativePath() and
+      caller = call.getWorkflow() and
+      not isSingleTriggerWorkflow(caller, "pull_request")
+    )
+  ) and
   w.getAJob().(LocalJob).getAStep() = checkout and
   not exists(ControlCheck check |
     checkout.getIf() = check or checkout.getEnclosingJob().getIf() = check
