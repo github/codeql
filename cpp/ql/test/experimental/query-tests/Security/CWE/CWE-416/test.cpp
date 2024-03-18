@@ -717,3 +717,52 @@ void test() {
 
   for (auto x : return_self_by_value(returnValue())) {} // GOOD
 }
+
+template<typename T>
+void iterate(const std::vector<T>& v) {
+  for (auto x : v) {}
+}
+
+std::vector<int>& ref_to_first_in_returnValue_1() {
+  return returnValue()[0]; // BAD [NOT DETECTED] (see *)
+}
+
+std::vector<int>& ref_to_first_in_returnValue_2() {
+  return returnValue()[0]; // BAD [NOT DETECTED]
+}
+
+std::vector<int>& ref_to_first_in_returnValue_3() {
+  return returnValue()[0]; // BAD [NOT DETECTED] (see *)
+}
+
+std::vector<int> first_in_returnValue_1() {
+  return returnValue()[0]; // GOOD
+}
+
+std::vector<int> first_in_returnValue_2() {
+  return returnValue()[0]; // GOOD
+}
+
+void test2() {
+  iterate(returnValue()); // GOOD [FALSE POSITIVE] (see *)
+  iterate(returnValue()[0]); // GOOD [FALSE POSITIVE] (see *)
+
+  for (auto x : ref_to_first_in_returnValue_1()) {}
+
+  {
+  auto value = ref_to_first_in_returnValue_2();
+  for (auto x : value) {}
+  }
+
+  {
+  auto& ref = ref_to_first_in_returnValue_3();
+  for (auto x : ref) {}
+  }
+
+  for (auto x : first_in_returnValue_1()) {}
+
+  {
+  auto value = first_in_returnValue_2();
+  for (auto x : value) {}
+  }
+}
