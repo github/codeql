@@ -1,5 +1,0 @@
-| Program.cs:2:9:2:11 | Failed to determine type | 5 | M() |
-| Program.cs:2:9:2:17 | Failed to determine type | 5 | M() + M() |
-| Program.cs:2:9:2:23 | Failed to determine type | 5 | M() + M() + M() |
-| Program.cs:2:21:2:23 | Failed to determine type | 5 | M() |
-| Program.cs:2:21:2:23 | Unable to resolve target for call. (Compilation error?) | 5 | M() |
