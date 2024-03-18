@@ -4356,14 +4356,14 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      private PathNodeImpl localStepToHidden(PathNodeImpl n) {
-        result = localStep(n) and
-        result.isHidden()
+      private predicate localStepToHidden(PathNodeImpl n1, PathNodeImpl n2) {
+        n2 = localStep(n1) and
+        n2.isHidden()
       }
 
-      private PathNodeImpl localStepFromHidden(PathNodeImpl n) {
-        n = localStep(result) and
-        result.isHidden()
+      private predicate localStepFromHidden(PathNodeImpl n1, PathNodeImpl n2) {
+        n2 = localStep(n1) and
+        n1.isHidden()
       }
 
       pragma[nomagic]
@@ -4404,7 +4404,8 @@ module MakeImpl<InputSig Lang> {
         PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out
       ) {
         // direct subpath
-        subpaths04(arg, localStepFromHidden*(par), localStepToHidden*(ret), out) and
+        subpaths04(arg, any(PathNodeImpl n | localStepFromHidden*(n, par)),
+          any(PathNodeImpl n | localStepToHidden*(ret, n)), out) and
         not par.isHidden() and
         not ret.isHidden() and
         ret = summaryCtxStep*(par)
@@ -4412,7 +4413,8 @@ module MakeImpl<InputSig Lang> {
         // wrapped subpath using hidden nodes, e.g. flow through a callback inside
         // a summarized callable
         exists(PathNodeImpl par0, PathNodeImpl ret0 |
-          subpaths05(localStepToHidden*(par0), par, ret, localStepFromHidden*(ret0)) and
+          subpaths05(any(PathNodeImpl n | localStepToHidden*(par0, n)), par, ret,
+            any(PathNodeImpl n | localStepFromHidden*(n, ret0))) and
           subpaths04(arg, par0, ret0, out)
         )
       }
@@ -4426,7 +4428,8 @@ module MakeImpl<InputSig Lang> {
        */
       pragma[nomagic]
       predicate subpaths(PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out) {
-        subpaths05(localStepToHidden*(arg), par, ret, localStepFromHidden*(out)) and
+        subpaths05(any(PathNodeImpl n | localStepToHidden*(arg, n)), par, ret,
+          any(PathNodeImpl n | localStepFromHidden*(n, out))) and
         not arg.isHidden() and
         not out.isHidden()
       }
