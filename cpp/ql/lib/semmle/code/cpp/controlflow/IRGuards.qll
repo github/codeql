@@ -137,6 +137,17 @@ class GuardCondition extends Expr {
    */
   cached
   predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) { none() }
+
+  /** Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
+  cached
+  predicate comparesEq(Expr e, int k, boolean areEqual, boolean testIsTrue) { none() }
+
+  /**
+   * Holds if (determined by this guard) `e == k` must be `areEqual` in `block`.
+   * If `areEqual = false` then this implies `e != k`.
+   */
+  cached
+  predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) { none() }
 }
 
 /**
@@ -182,6 +193,20 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
   override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
     exists(boolean testIsTrue |
       this.comparesEq(left, right, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
+    )
+  }
+
+  override predicate comparesEq(Expr e, int k, boolean areEqual, boolean testIsTrue) {
+    exists(boolean partIsTrue, GuardCondition part |
+      this.(BinaryLogicalOperation).impliesValue(part, partIsTrue, testIsTrue)
+    |
+      part.comparesEq(e, k, areEqual, partIsTrue)
+    )
+  }
+
+  override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
+    exists(boolean testIsTrue |
+      this.comparesEq(e, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
     )
   }
 }
@@ -241,6 +266,21 @@ private class GuardConditionFromIR extends GuardCondition {
       li.getUnconvertedResultExpression() = left and
       ri.getUnconvertedResultExpression() = right and
       ir.comparesEq(li.getAUse(), ri.getAUse(), k, areEqual, testIsTrue) and
+      this.controls(block, testIsTrue)
+    )
+  }
+
+  override predicate comparesEq(Expr e, int k, boolean areEqual, boolean testIsTrue) {
+    exists(Instruction i |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesEq(i.getAUse(), k, areEqual, testIsTrue)
+    )
+  }
+
+  override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
+    exists(Instruction i, boolean testIsTrue |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesEq(i.getAUse(), k, areEqual, testIsTrue) and
       this.controls(block, testIsTrue)
     )
   }
