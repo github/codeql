@@ -1611,7 +1611,7 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   override string toString() { result = this.getSummaryNode().toString() }
 
   // Hack to return "empty location"
-  override predicate hasLocationInfo(
+  deprecated override predicate hasLocationInfo(
     string file, int startline, int startcolumn, int endline, int endcolumn
   ) {
     file = "" and

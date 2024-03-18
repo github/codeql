@@ -4,8 +4,10 @@
  * modules.
  */
 
+private import codeql.util.Location
+
 /** Provides language-specific data flow parameters. */
-signature module InputSig {
+signature module InputSig<LocationSig Location> {
   /**
    * A node in the data flow graph.
    */
@@ -13,16 +15,8 @@ signature module InputSig {
     /** Gets a textual representation of this element. */
     string toString();
 
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    );
+    /** Gets the location of this node. */
+    Location getLocation();
   }
 
   class ParameterNode extends Node;
@@ -321,9 +315,9 @@ signature module InputSig {
   default predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { none() }
 }
 
-module Configs<InputSig Lang> {
+module Configs<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import internal.DataFlowImplCommon::MakeImplCommon<Lang>
+  private import internal.DataFlowImplCommon::MakeImplCommon<Location, Lang>
   import DataFlowImplCommonPublic
 
   /** An input configuration for data flow. */
@@ -537,10 +531,10 @@ module Configs<InputSig Lang> {
   }
 }
 
-module DataFlowMake<InputSig Lang> {
+module DataFlowMake<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import internal.DataFlowImpl::MakeImpl<Lang>
-  import Configs<Lang>
+  private import internal.DataFlowImpl::MakeImpl<Location, Lang>
+  import Configs<Location, Lang>
 
   /**
    * Gets the exploration limit for `partialFlow` and `partialFlowRev`
@@ -623,19 +617,11 @@ module DataFlowMake<InputSig Lang> {
     /** Gets a textual representation of this element. */
     string toString();
 
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    );
-
     /** Gets the underlying `Node`. */
     Node getNode();
+
+    /** Gets the location of this node. */
+    Location getLocation();
   }
 
   signature module PathGraphSig<PathNodeSig PathNode> {
@@ -678,6 +664,15 @@ module DataFlowMake<InputSig Lang> {
         result = this.asPathNode2().toString()
       }
 
+      /** Gets the underlying `Node`. */
+      Node getNode() {
+        result = this.asPathNode1().getNode() or
+        result = this.asPathNode2().getNode()
+      }
+
+      /** Gets the location of this node. */
+      Location getLocation() { result = this.getNode().getLocation() }
+
       /**
        * Holds if this element is at the specified location.
        * The location spans column `startcolumn` of line `startline` to
@@ -685,17 +680,10 @@ module DataFlowMake<InputSig Lang> {
        * For more information, see
        * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
        */
-      predicate hasLocationInfo(
+      deprecated predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
       ) {
-        this.asPathNode1().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-        this.asPathNode2().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
-
-      /** Gets the underlying `Node`. */
-      Node getNode() {
-        result = this.asPathNode1().getNode() or
-        result = this.asPathNode2().getNode()
+        this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       }
     }
 
@@ -760,7 +748,7 @@ module DataFlowMake<InputSig Lang> {
        * For more information, see
        * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
        */
-      predicate hasLocationInfo(
+      deprecated predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
       ) {
         super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -768,6 +756,9 @@ module DataFlowMake<InputSig Lang> {
 
       /** Gets the underlying `Node`. */
       Node getNode() { result = super.getNode() }
+
+      /** Gets the location of this node. */
+      Location getLocation() { result = super.getLocation() }
     }
 
     /**

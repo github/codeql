@@ -157,6 +157,14 @@ module Public {
       endcolumn = 0
     }
 
+    /** Gets the location of this node. */
+    Location getLocation() {
+      exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
+        this.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+        result.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      )
+    }
+
     /** Gets the file in which this node appears. */
     File getFile() { this.hasLocationInfo(result.getAbsolutePath(), _, _, _, _) }
 

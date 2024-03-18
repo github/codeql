@@ -4,7 +4,8 @@
 
 private import codeql.dataflow.TaintTracking
 private import DataFlowImplSpecific
+private import semmle.code.cpp.Location
 
-module CppTaintTracking implements InputSig<CppDataFlow> {
+module CppTaintTracking implements InputSig<Location, CppDataFlow> {
   import TaintTrackingUtil
 }

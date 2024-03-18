@@ -10,7 +10,7 @@ private import AccessPathSyntax as AccessPathSyntax
 /**
  * Provides language-specific parameters.
  */
-signature module InputSig<DF::InputSig Lang> {
+signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
   /**
    * A base class of callables that are candidates for flow summary modeling.
    */
@@ -139,10 +139,12 @@ signature module InputSig<DF::InputSig Lang> {
   }
 }
 
-module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
+module Make<
+  LocationSig Location, DF::InputSig<Location> DataFlowLang, InputSig<Location, DataFlowLang> Input>
+{
   private import DataFlowLang
   private import Input
-  private import codeql.dataflow.internal.DataFlowImplCommon::MakeImplCommon<DataFlowLang>
+  private import codeql.dataflow.internal.DataFlowImplCommon::MakeImplCommon<Location, DataFlowLang>
   private import codeql.util.Unit
 
   final private class SummarizedCallableBaseFinal = SummarizedCallableBase;
@@ -1457,7 +1459,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         AccessPathSyntax::parseInt(part.getArgumentList()) < 0
       }
 
-      signature module SourceSinkInterpretationInputSig<LocationSig Location> {
+      signature module SourceSinkInterpretationInputSig {
         class Element {
           string toString();
 
@@ -1523,8 +1525,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
        * Should eventually be replaced with API graphs like in dynamic languages.
        */
       module SourceSinkInterpretation<
-        LocationSig Location,
-        SourceSinkInterpretationInputSig<Location> SourceSinkInterpretationInput>
+        SourceSinkInterpretationInputSig SourceSinkInterpretationInput>
       {
         private import SourceSinkInterpretationInput
 
