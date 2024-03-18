@@ -100,6 +100,7 @@ edges
 | captured_variables.rb:206:13:206:21 | call to taint | captured_variables.rb:208:14:208:14 | x | provenance |  |
 | captured_variables.rb:219:9:219:17 | call to taint | captured_variables.rb:226:5:226:7 | fn1 [captured x] | provenance |  |
 | captured_variables.rb:226:5:226:7 | [post] fn1 [captured y] | captured_variables.rb:227:10:227:10 | y | provenance |  |
+| captured_variables.rb:226:5:226:7 | fn1 [captured x] | captured_variables.rb:223:13:223:13 | x | provenance |  |
 | captured_variables.rb:226:5:226:7 | fn1 [captured x] | captured_variables.rb:226:5:226:7 | [post] fn1 [captured y] | provenance |  |
 | instance_variables.rb:10:19:10:19 | x | instance_variables.rb:11:18:11:18 | x | provenance |  |
 | instance_variables.rb:11:18:11:18 | x | instance_variables.rb:11:9:11:14 | [post] self [@field] | provenance |  |
@@ -347,6 +348,7 @@ nodes
 | captured_variables.rb:206:13:206:21 | call to taint | semmle.label | call to taint |
 | captured_variables.rb:208:14:208:14 | x | semmle.label | x |
 | captured_variables.rb:219:9:219:17 | call to taint | semmle.label | call to taint |
+| captured_variables.rb:223:13:223:13 | x | semmle.label | x |
 | captured_variables.rb:226:5:226:7 | [post] fn1 [captured y] | semmle.label | [post] fn1 [captured y] |
 | captured_variables.rb:226:5:226:7 | fn1 [captured x] | semmle.label | fn1 [captured x] |
 | captured_variables.rb:227:10:227:10 | y | semmle.label | y |
@@ -470,6 +472,7 @@ subpaths
 | captured_variables.rb:83:6:83:8 | foo [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | captured_variables.rb:83:6:83:18 | call to get_field |
 | captured_variables.rb:83:6:83:8 | foo [@field] | instance_variables.rb:13:5:15:7 | self in get_field [@field] | instance_variables.rb:14:9:14:21 | return | captured_variables.rb:83:6:83:18 | call to get_field |
 | captured_variables.rb:98:13:98:20 | call to taint | captured_variables.rb:93:17:93:17 | x | captured_variables.rb:94:5:96:5 | -> { ... } [captured x] | captured_variables.rb:98:1:98:21 | call to capture_arg [captured x] |
+| captured_variables.rb:226:5:226:7 | fn1 [captured x] | captured_variables.rb:223:13:223:13 | x | captured_variables.rb:223:13:223:13 | x | captured_variables.rb:226:5:226:7 | [post] fn1 [captured y] |
 | instance_variables.rb:28:20:28:24 | field | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:28:9:28:25 | [post] self [@field] |
 | instance_variables.rb:33:13:33:13 | x | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:33:9:33:14 | call to new [@field] |
 | instance_variables.rb:36:10:36:23 | call to new [@field] | captured_variables.rb:60:5:62:7 | self in get_field [@field] | captured_variables.rb:61:9:61:21 | return | instance_variables.rb:36:10:36:33 | call to get_field |
