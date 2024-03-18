@@ -90,6 +90,15 @@ class CaseEdge extends EdgeKind, TCaseEdge {
    * Gets the largest value of the switch expression for which control will flow along this edge.
    */
   final string getMaxValue() { result = maxValue }
+
+  /**
+   * Gets the unique value of the switch expression for which control will
+   * flow along this edge, if any.
+   */
+  final string getValue() {
+    minValue = maxValue and
+    result = minValue
+  }
 }
 
 /**
