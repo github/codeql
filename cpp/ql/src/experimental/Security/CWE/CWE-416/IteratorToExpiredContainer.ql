@@ -74,7 +74,7 @@ predicate isSinkImpl(DataFlow::Node sink, FunctionCall fc) {
 }
 
 /**
- * Flow from any destroyed object to the qualifier of a `begin` call
+ * Flow from any destroyed object to the qualifier of a `begin` or `end` call
  */
 module DestroyedToBeginConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source = getADestroyedNode() }
