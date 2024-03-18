@@ -1781,6 +1781,12 @@ destructors_for_temps.cpp:
 #   15|             getQualifier(): [ConstructorCall] call to ClassWithDestructor2
 #   15|                 Type = [VoidType] void
 #   15|                 ValueCategory = prvalue
+#   15|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   15|                 Type = [VoidType] void
+#   15|                 ValueCategory = prvalue
+#   15|               getQualifier(): [ReuseExpr] reuse of temporary object
+#   15|                   Type = [Class] ClassWithDestructor2
+#   15|                   ValueCategory = xvalue
 #   15|             getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   15|                 Type = [Class] ClassWithDestructor2
 #   15|                 ValueCategory = prvalue(load)
@@ -1804,6 +1810,12 @@ destructors_for_temps.cpp:
 #   16|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   16|                   Type = [Class] ClassWithDestructor2
 #   16|                   ValueCategory = prvalue(load)
+#   16|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   16|                 Type = [VoidType] void
+#   16|                 ValueCategory = prvalue
+#   16|               getQualifier(): [ReuseExpr] reuse of temporary object
+#   16|                   Type = [Class] ClassWithDestructor2
+#   16|                   ValueCategory = xvalue
 #   17|     getStmt(2): [ReturnStmt] return ...
 #   17|       getExpr(): [FunctionCall] call to get_x
 #   17|           Type = [PlainCharType] char
@@ -18145,6 +18157,12 @@ ir.cpp:
 # 2293|                 getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 # 2293|                     Type = [PointerType] const char *
 # 2293|                     ValueCategory = prvalue
+# 2293|               getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 2293|                   Type = [VoidType] void
+# 2293|                   ValueCategory = prvalue
+# 2293|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2293|                     Type = [Struct] String
+# 2293|                     ValueCategory = xvalue
 # 2293|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2293|                   Type = [Struct] String
 # 2293|                   ValueCategory = lvalue
