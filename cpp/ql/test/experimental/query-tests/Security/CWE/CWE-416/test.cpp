@@ -744,8 +744,8 @@ std::vector<int> first_in_returnValue_2() {
 }
 
 void test2() {
-  iterate(returnValue()); // GOOD [FALSE POSITIVE] (see *)
-  iterate(returnValue()[0]); // GOOD [FALSE POSITIVE] (see *)
+  iterate(returnValue()); // GOOD
+  iterate(returnValue()[0]); // GOOD
 
   for (auto x : ref_to_first_in_returnValue_1()) {}
 

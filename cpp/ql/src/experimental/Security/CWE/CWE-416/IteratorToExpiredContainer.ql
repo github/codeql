@@ -80,6 +80,20 @@ module DestroyedToBeginConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source = getADestroyedNode() }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+
+  DataFlow::FlowFeature getAFeature() {
+    // By blocking argument-to-parameter flow we ensure that we don't enter a
+    // function body where the temporary outlives anything inside the function.
+    // This prevents false positives in cases like:
+    // ```cpp
+    // void foo(const std::vector<int>& v) {
+    //   for(auto x : v) { ... } // this is fine since v outlives the loop
+    // }
+    // ...
+    // foo(create_temporary())
+    // ```
+    result instanceof DataFlow::FeatureHasSinkCallContext
+  }
 }
 
 module DestroyedToBeginFlow = DataFlow::Global<DestroyedToBeginConfig>;
