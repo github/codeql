@@ -1057,52 +1057,52 @@ void Lambda(int x, const String& s) {
 
 namespace std {
     template<class T>
-	struct remove_const { typedef T type; };
+    struct remove_const { typedef T type; };
 
-	template<class T>
-	struct remove_const<const T> { typedef T type; };
+    template<class T>
+    struct remove_const<const T> { typedef T type; };
 
-	// `remove_const_t<T>` removes any `const` specifier from `T`
-	template<class T>
-	using remove_const_t = typename remove_const<T>::type;
+    // `remove_const_t<T>` removes any `const` specifier from `T`
+    template<class T>
+    using remove_const_t = typename remove_const<T>::type;
 
     struct ptrdiff_t;
 
-	template<class I> struct iterator_traits;
+    template<class I> struct iterator_traits;
 
-	template <class Category,
-			  class value_type,
-			  class difference_type = ptrdiff_t,
-			  class pointer_type = value_type*,
-			  class reference_type = value_type&>
-	struct iterator {
-		typedef Category iterator_category;
+    template <class Category,
+              class value_type,
+              class difference_type = ptrdiff_t,
+              class pointer_type = value_type*,
+              class reference_type = value_type&>
+    struct iterator {
+        typedef Category iterator_category;
 
-		iterator();
-		iterator(iterator<Category, remove_const_t<value_type> > const &other); // non-const -> const conversion constructor
+        iterator();
+        iterator(iterator<Category, remove_const_t<value_type> > const &other); // non-const -> const conversion constructor
 
-		iterator &operator++();
-		iterator operator++(int);
-		iterator &operator--();
-		iterator operator--(int);
-		bool operator==(iterator other) const;
-		bool operator!=(iterator other) const;
-		reference_type operator*() const;
-		pointer_type operator->() const;
-		iterator operator+(int);
-		iterator operator-(int);
-		iterator &operator+=(int);
-		iterator &operator-=(int);
-		int operator-(iterator);
-		reference_type operator[](int);
-	};
+        iterator &operator++();
+        iterator operator++(int);
+        iterator &operator--();
+        iterator operator--(int);
+        bool operator==(iterator other) const;
+        bool operator!=(iterator other) const;
+        reference_type operator*() const;
+        pointer_type operator->() const;
+        iterator operator+(int);
+        iterator operator-(int);
+        iterator &operator+=(int);
+        iterator &operator-=(int);
+        int operator-(iterator);
+        reference_type operator[](int);
+    };
 
-	struct input_iterator_tag {};
-	struct forward_iterator_tag : public input_iterator_tag {};
-	struct bidirectional_iterator_tag : public forward_iterator_tag {};
-	struct random_access_iterator_tag : public bidirectional_iterator_tag {};
+    struct input_iterator_tag {};
+    struct forward_iterator_tag : public input_iterator_tag {};
+    struct bidirectional_iterator_tag : public forward_iterator_tag {};
+    struct random_access_iterator_tag : public bidirectional_iterator_tag {};
 
-	struct output_iterator_tag {};
+    struct output_iterator_tag {};
 
     template<typename T>
     struct vector {
@@ -1110,7 +1110,7 @@ namespace std {
         ~vector();
 
         using iterator = std::iterator<random_access_iterator_tag, T>;
-		using const_iterator = std::iterator<random_access_iterator_tag, const T>;
+        using const_iterator = std::iterator<random_access_iterator_tag, const T>;
 
         iterator begin() const;
         iterator end() const;
