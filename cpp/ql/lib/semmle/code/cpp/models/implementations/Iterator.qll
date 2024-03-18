@@ -9,6 +9,8 @@ import cpp
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Iterator
+import semmle.code.cpp.models.interfaces.Alias
+import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * An instantiation of the `std::iterator_traits` template.
@@ -449,7 +451,7 @@ class BeginOrEndFunction extends MemberFunction {
 }
 
 private class BeginOrEndFunctionModels extends BeginOrEndFunction, TaintFunction,
-  GetIteratorFunction
+  GetIteratorFunction, AliasFunction, SideEffectFunction
 {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
@@ -459,6 +461,22 @@ private class BeginOrEndFunctionModels extends BeginOrEndFunction, TaintFunction
   override predicate getsIterator(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValue()
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    none()
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
   }
 }
 
