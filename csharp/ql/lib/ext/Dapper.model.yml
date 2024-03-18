@@ -108,4 +108,4 @@ extensions:
       pack: codeql/csharp-all
       extensible: summaryModel
     data:
-      - ["Dapper", "SqlMapper", False, "AsList<T>", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].WithElement", "ReturnValue", "taint", "manual"]
+      - ["Dapper", "SqlMapper", False, "AsList<T>", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "ReturnValue.Element", "taint", "manual"]

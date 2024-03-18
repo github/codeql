@@ -41,7 +41,7 @@ namespace Test
             using (var connection = new SqlConnection(connectionString))
             {
                 var results = connection.Query<object>(query).AsList();
-                Sink(results); // $ hasTaintFlow=line:43
+                Sink(results[0]); // $ hasTaintFlow=line:43
             }
         }
 
