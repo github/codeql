@@ -170,7 +170,6 @@ summary
 | System.Data.Entity;DbContext;false;SaveChangesAsync;(System.Threading.CancellationToken);;Argument[this].Property[EFTests.MyContext.Persons].Element.Property[EFTests.Person.Id];SyntheticGlobal[EFTests.MyContext.Persons#ReturnValue.Element.Property[EFTests.Person.Id]];value;manual |
 | System.Data.Entity;DbContext;false;SaveChangesAsync;(System.Threading.CancellationToken);;Argument[this].Property[EFTests.MyContext.Persons].Element.Property[EFTests.Person.Name];SyntheticGlobal[EFTests.MyContext.PersonAddresses#ReturnValue.Element.Property[EFTests.PersonAddressMap.Person].Property[EFTests.Person.Name]];value;manual |
 | System.Data.Entity;DbContext;false;SaveChangesAsync;(System.Threading.CancellationToken);;Argument[this].Property[EFTests.MyContext.Persons].Element.Property[EFTests.Person.Name];SyntheticGlobal[EFTests.MyContext.Persons#ReturnValue.Element.Property[EFTests.Person.Name]];value;manual |
-neutral
 sourceNode
 sinkNode
 | EntityFrameworkCore.cs:72:36:72:40 | "sql" | sql-injection |
