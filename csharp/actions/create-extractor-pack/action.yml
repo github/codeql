@@ -4,6 +4,8 @@ runs:
   using: composite
   steps:
     - uses: ./.github/actions/fetch-codeql
+      with:
+        channel: release
     - name: Setup dotnet
       uses: actions/setup-dotnet@v3
       with:
