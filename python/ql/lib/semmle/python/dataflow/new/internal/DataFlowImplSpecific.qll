@@ -22,4 +22,6 @@ module PythonDataFlow implements InputSig {
   predicate neverSkipInPathGraph = Private::neverSkipInPathGraph/1;
 
   Node exprNode(DataFlowExpr e) { result = Public::exprNode(e) }
+
+  predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { exists(c.asLibraryCallable()) }
 }

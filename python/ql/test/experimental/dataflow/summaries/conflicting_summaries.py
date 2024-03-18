@@ -7,7 +7,7 @@ from extracted_package.functions import with_subpath, without_subpath
 # can be concluded from its definition. This seems to discard all summaries, including
 # the one with flow to `ReturnValue.Attribute[pattern]`.
 ensure_tainted(
-    with_subpath(ts).pattern,  # $ MISSING: tainted
+    with_subpath(ts).pattern,  # $ tainted
     with_subpath(ts),  # $ tainted
     with_subpath(ts),  # $ tainted
 )
