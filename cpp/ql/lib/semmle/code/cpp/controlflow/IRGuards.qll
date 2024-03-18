@@ -452,6 +452,21 @@ class IRGuardCondition extends Instruction {
     )
   }
 
+  /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
+  cached
+  predicate comparesEq(Operand op, int k, boolean areEqual, boolean testIsTrue) {
+    exists(MatchValue mv |
+      compares_eq(this, op, k, areEqual, mv) and
+      // A match value cannot be dualized, so `testIsTrue` is always true
+      testIsTrue = true
+    )
+    or
+    exists(BooleanValue bv |
+      compares_eq(this, op, k, areEqual, bv) and
+      bv.getValue() = testIsTrue
+    )
+  }
+
   /**
    * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
    * If `areEqual = false` then this implies `left != right + k`.
@@ -460,6 +475,17 @@ class IRGuardCondition extends Instruction {
   predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
       compares_eq(this, left, right, k, areEqual, value) and this.valueControls(block, value)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `op == k` must be `areEqual` in `block`.
+   * If `areEqual = false` then this implies `op != k`.
+   */
+  cached
+  predicate ensuresEq(Operand op, int k, IRBlock block, boolean areEqual) {
+    exists(AbstractValue value |
+      compares_eq(this, op, k, areEqual, value) and this.valueControls(block, value)
     )
   }
 
@@ -473,6 +499,18 @@ class IRGuardCondition extends Instruction {
   ) {
     exists(AbstractValue value |
       compares_eq(this, left, right, k, areEqual, value) and
+      this.valueControlsEdge(pred, succ, value)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `op == k` must be `areEqual` on the edge from
+   * `pred` to `succ`. If `areEqual = false` then this implies `op != k`.
+   */
+  cached
+  predicate ensuresEqEdge(Operand op, int k, IRBlock pred, IRBlock succ, boolean areEqual) {
+    exists(AbstractValue value |
+      compares_eq(this, op, k, areEqual, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -598,6 +636,33 @@ private predicate compares_eq(
   )
 }
 
+/** Holds if `op == k` is `areEqual` given that `test` is equal to `value`. */
+private predicate compares_eq(
+  Instruction test, Operand op, int k, boolean areEqual, AbstractValue value
+) {
+  /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
+  exists(AbstractValue v | simple_comparison_eq(test, op, k, v) |
+    areEqual = true and value = v
+    or
+    areEqual = false and value = v.getDualValue()
+  )
+  or
+  complex_eq(test, op, k, areEqual, value)
+  or
+  /* (x is true => (op == k)) => (!x is false => (op == k)) */
+  exists(AbstractValue dual | value = dual.getDualValue() |
+    compares_eq(test.(LogicalNotInstruction).getUnary(), op, k, areEqual, dual)
+  )
+  or
+  // ((test is `areEqual` => op == const + k2) and const == `k1`) =>
+  // test is `areEqual` => op == k1 + k2
+  exists(int k1, int k2, ConstantInstruction const |
+    compares_eq(test, op, const.getAUse(), k2, areEqual, value) and
+    int_value(const) = k1 and
+    k = k1 + k2
+  )
+}
+
 /** Rearrange various simple comparisons into `left == right + k` form. */
 private predicate simple_comparison_eq(
   CompareInstruction cmp, Operand left, Operand right, int k, AbstractValue value
@@ -615,12 +680,29 @@ private predicate simple_comparison_eq(
   value.(BooleanValue).getValue() = false
 }
 
+/** Rearrange various simple comparisons into `op == k` form. */
+private predicate simple_comparison_eq(Instruction test, Operand op, int k, AbstractValue value) {
+  exists(SwitchInstruction switch |
+    test = switch.getExpression() and
+    op.getDef() = test and
+    value.(MatchValue).getCase().getValue().toInt() = k
+  )
+}
+
 private predicate complex_eq(
   CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
   sub_eq(cmp, left, right, k, areEqual, value)
   or
   add_eq(cmp, left, right, k, areEqual, value)
+}
+
+private predicate complex_eq(
+  Instruction test, Operand op, int k, boolean areEqual, AbstractValue value
+) {
+  sub_eq(test, op, k, areEqual, value)
+  or
+  add_eq(test, op, k, areEqual, value)
 }
 
 /*
@@ -802,6 +884,23 @@ private predicate sub_eq(
   )
 }
 
+// op - x == c => op == (c+x)
+private predicate sub_eq(Instruction test, Operand op, int k, boolean areEqual, AbstractValue value) {
+  exists(SubInstruction sub, int c, int x |
+    compares_eq(test, sub.getAUse(), c, areEqual, value) and
+    op = sub.getLeftOperand() and
+    x = int_value(sub.getRight()) and
+    k = c + x
+  )
+  or
+  exists(PointerSubInstruction sub, int c, int x |
+    compares_eq(test, sub.getAUse(), c, areEqual, value) and
+    op = sub.getLeftOperand() and
+    x = int_value(sub.getRight()) and
+    k = c + x
+  )
+}
+
 // left + x == right + c => left == right + (c-x)
 // left == (right + x) + c => left == right + (c+x)
 private predicate add_eq(
@@ -845,6 +944,31 @@ private predicate add_eq(
       right = rhs.getRightOperand() and x = int_value(rhs.getLeft())
     ) and
     k = c + x
+  )
+}
+
+// left + x == right + c => left == right + (c-x)
+private predicate add_eq(
+  Instruction test, Operand left, int k, boolean areEqual, AbstractValue value
+) {
+  exists(AddInstruction lhs, int c, int x |
+    compares_eq(test, lhs.getAUse(), c, areEqual, value) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
+  )
+  or
+  exists(PointerAddInstruction lhs, int c, int x |
+    compares_eq(test, lhs.getAUse(), c, areEqual, value) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
   )
 }
 
