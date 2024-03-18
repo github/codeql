@@ -1650,8 +1650,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
    */
   class CastingNode extends NodeFinal {
     CastingNode() { castingNode(this) }
-
-    string toString() { result = super.toString() }
   }
 
   private predicate readStepWithTypes(
@@ -1800,8 +1798,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   class ParamNode extends NodeFinal {
     ParamNode() { parameterNode(this, _, _) }
 
-    string toString() { result = super.toString() }
-
     /**
      * Holds if this node is the parameter of callable `c` at the specified
      * position.
@@ -1814,8 +1810,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   /** A data-flow node that represents a call argument. */
   class ArgNode extends NodeFinal {
     ArgNode() { argumentNode(this, _, _) }
-
-    string toString() { result = super.toString() }
 
     /** Holds if this argument occurs at the given position in the given call. */
     final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -1830,8 +1824,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   class ReturnNodeExt extends NodeFinal {
     ReturnNodeExt() { returnNodeExt(this, _) }
 
-    string toString() { result = super.toString() }
-
     /** Gets the kind of this returned value. */
     ReturnKindExt getKind() { returnNodeExt(this, result) }
   }
@@ -1842,8 +1834,6 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
    */
   class OutNodeExt extends NodeFinal {
     OutNodeExt() { outNodeExt(this) }
-
-    string toString() { result = super.toString() }
   }
 
   /**

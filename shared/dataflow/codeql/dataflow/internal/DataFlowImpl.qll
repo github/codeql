@@ -3932,6 +3932,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       override predicate isSource() { none() }
 
       override string toString() { result = sourceGroup }
+
+      override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
     }
 
     private class PathNodeSinkGroup extends PathNodeImpl, TPathNodeSinkGroup {
@@ -3948,6 +3950,8 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
       override predicate isSource() { none() }
 
       override string toString() { result = sinkGroup }
+
+      override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
     }
 
     private predicate pathNode(
