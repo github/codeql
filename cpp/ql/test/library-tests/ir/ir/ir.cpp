@@ -2378,18 +2378,4 @@ namespace return_routine_type {
 
 }
 
-
-using size_t = decltype(sizeof(0));
-
-template<class T>
-struct remove_const { typedef T type; };
-
-template<class T>
-struct remove_const<const T> { typedef T type; };
-
-// `remove_const_t<T>` removes any `const` specifier from `T`
-template<class T>
-using remove_const_t = typename remove_const<T>::type;
-
-
 // semmle-extractor-options: -std=c++20 --clang
