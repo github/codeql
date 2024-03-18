@@ -101,6 +101,24 @@ edges
 | params_flow.rb:166:10:166:15 | call to params | params_flow.rb:166:10:166:19 | ...[...] | provenance |  |
 | params_flow.rb:172:10:172:15 | call to params | params_flow.rb:172:10:172:19 | ...[...] | provenance |  |
 | params_flow.rb:176:10:176:15 | call to params | params_flow.rb:176:10:176:19 | ...[...] | provenance |  |
+| params_flow.rb:182:10:182:15 | call to params | params_flow.rb:182:10:182:22 | ...[...] | provenance |  |
+| params_flow.rb:182:10:182:22 | ...[...] | params_flow.rb:182:10:182:40 | call to original_filename | provenance |  |
+| params_flow.rb:186:10:186:15 | call to params | params_flow.rb:186:10:186:30 | call to require | provenance |  |
+| params_flow.rb:186:10:186:30 | call to require | params_flow.rb:186:10:186:43 | call to content_type | provenance |  |
+| params_flow.rb:190:10:190:15 | call to params | params_flow.rb:190:10:190:29 | call to permit | provenance |  |
+| params_flow.rb:190:10:190:29 | call to permit | params_flow.rb:190:10:190:36 | ...[...] | provenance |  |
+| params_flow.rb:190:10:190:36 | ...[...] | params_flow.rb:190:10:190:44 | call to headers | provenance |  |
+| params_flow.rb:194:10:194:15 | call to params | params_flow.rb:194:10:194:19 | ...[...] | provenance |  |
+| params_flow.rb:194:10:194:19 | ...[...] | params_flow.rb:194:10:194:31 | call to to_unsafe_h | provenance |  |
+| params_flow.rb:194:10:194:31 | call to to_unsafe_h | params_flow.rb:194:10:194:35 | ...[...] | provenance |  |
+| params_flow.rb:194:10:194:35 | ...[...] | params_flow.rb:194:10:194:42 | ...[...] | provenance |  |
+| params_flow.rb:194:10:194:42 | ...[...] | params_flow.rb:194:10:194:47 | call to read | provenance |  |
+| params_flow.rb:198:5:198:10 | call to params | params_flow.rb:198:5:198:17 | ...[...] | provenance |  |
+| params_flow.rb:198:5:198:17 | ...[...] | params_flow.rb:198:28:198:28 | [post] a | provenance |  |
+| params_flow.rb:198:28:198:28 | [post] a | params_flow.rb:199:10:199:10 | a | provenance |  |
+| params_flow.rb:204:5:204:10 | call to params | params_flow.rb:204:5:204:17 | ...[...] | provenance |  |
+| params_flow.rb:204:5:204:17 | ...[...] | params_flow.rb:204:28:204:28 | [post] a | provenance |  |
+| params_flow.rb:204:28:204:28 | [post] a | params_flow.rb:205:10:205:10 | a | provenance |  |
 nodes
 | filter_flow.rb:14:5:14:8 | [post] self [@foo] | semmle.label | [post] self [@foo] |
 | filter_flow.rb:14:12:14:17 | call to params | semmle.label | call to params |
@@ -244,6 +262,30 @@ nodes
 | params_flow.rb:172:10:172:19 | ...[...] | semmle.label | ...[...] |
 | params_flow.rb:176:10:176:15 | call to params | semmle.label | call to params |
 | params_flow.rb:176:10:176:19 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:182:10:182:15 | call to params | semmle.label | call to params |
+| params_flow.rb:182:10:182:22 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:182:10:182:40 | call to original_filename | semmle.label | call to original_filename |
+| params_flow.rb:186:10:186:15 | call to params | semmle.label | call to params |
+| params_flow.rb:186:10:186:30 | call to require | semmle.label | call to require |
+| params_flow.rb:186:10:186:43 | call to content_type | semmle.label | call to content_type |
+| params_flow.rb:190:10:190:15 | call to params | semmle.label | call to params |
+| params_flow.rb:190:10:190:29 | call to permit | semmle.label | call to permit |
+| params_flow.rb:190:10:190:36 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:190:10:190:44 | call to headers | semmle.label | call to headers |
+| params_flow.rb:194:10:194:15 | call to params | semmle.label | call to params |
+| params_flow.rb:194:10:194:19 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:194:10:194:31 | call to to_unsafe_h | semmle.label | call to to_unsafe_h |
+| params_flow.rb:194:10:194:35 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:194:10:194:42 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:194:10:194:47 | call to read | semmle.label | call to read |
+| params_flow.rb:198:5:198:10 | call to params | semmle.label | call to params |
+| params_flow.rb:198:5:198:17 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:198:28:198:28 | [post] a | semmle.label | [post] a |
+| params_flow.rb:199:10:199:10 | a | semmle.label | a |
+| params_flow.rb:204:5:204:10 | call to params | semmle.label | call to params |
+| params_flow.rb:204:5:204:17 | ...[...] | semmle.label | ...[...] |
+| params_flow.rb:204:28:204:28 | [post] a | semmle.label | [post] a |
+| params_flow.rb:205:10:205:10 | a | semmle.label | a |
 subpaths
 #select
 | filter_flow.rb:21:10:21:13 | @foo | filter_flow.rb:14:12:14:17 | call to params | filter_flow.rb:21:10:21:13 | @foo | $@ | filter_flow.rb:14:12:14:17 | call to params | call to params |
@@ -298,3 +340,9 @@ subpaths
 | params_flow.rb:166:10:166:19 | ...[...] | params_flow.rb:166:10:166:15 | call to params | params_flow.rb:166:10:166:19 | ...[...] | $@ | params_flow.rb:166:10:166:15 | call to params | call to params |
 | params_flow.rb:172:10:172:19 | ...[...] | params_flow.rb:172:10:172:15 | call to params | params_flow.rb:172:10:172:19 | ...[...] | $@ | params_flow.rb:172:10:172:15 | call to params | call to params |
 | params_flow.rb:176:10:176:19 | ...[...] | params_flow.rb:176:10:176:15 | call to params | params_flow.rb:176:10:176:19 | ...[...] | $@ | params_flow.rb:176:10:176:15 | call to params | call to params |
+| params_flow.rb:182:10:182:40 | call to original_filename | params_flow.rb:182:10:182:15 | call to params | params_flow.rb:182:10:182:40 | call to original_filename | $@ | params_flow.rb:182:10:182:15 | call to params | call to params |
+| params_flow.rb:186:10:186:43 | call to content_type | params_flow.rb:186:10:186:15 | call to params | params_flow.rb:186:10:186:43 | call to content_type | $@ | params_flow.rb:186:10:186:15 | call to params | call to params |
+| params_flow.rb:190:10:190:44 | call to headers | params_flow.rb:190:10:190:15 | call to params | params_flow.rb:190:10:190:44 | call to headers | $@ | params_flow.rb:190:10:190:15 | call to params | call to params |
+| params_flow.rb:194:10:194:47 | call to read | params_flow.rb:194:10:194:15 | call to params | params_flow.rb:194:10:194:47 | call to read | $@ | params_flow.rb:194:10:194:15 | call to params | call to params |
+| params_flow.rb:199:10:199:10 | a | params_flow.rb:198:5:198:10 | call to params | params_flow.rb:199:10:199:10 | a | $@ | params_flow.rb:198:5:198:10 | call to params | call to params |
+| params_flow.rb:205:10:205:10 | a | params_flow.rb:204:5:204:10 | call to params | params_flow.rb:205:10:205:10 | a | $@ | params_flow.rb:204:5:204:10 | call to params | call to params |
