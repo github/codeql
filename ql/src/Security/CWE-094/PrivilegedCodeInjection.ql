@@ -24,6 +24,7 @@ where
   w = source.getNode().asExpr().getEnclosingWorkflow() and
   (
     w instanceof ReusableWorkflow or
+    source.getNode().(RemoteFlowSource).getATriggerEvent() = "*" or
     w.hasTriggerEvent(source.getNode().(RemoteFlowSource).getATriggerEvent())
   )
 select sink.getNode(), source, sink,
