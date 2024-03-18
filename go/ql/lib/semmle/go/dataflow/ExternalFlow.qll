@@ -299,8 +299,8 @@ predicate hasExternalSpecification(Function f) {
   f = any(SummarizedCallable sc).asFunction()
   or
   exists(SourceSinkInterpretationInput::SourceOrSinkElement e | f = e.asEntity() |
-    SourceSinkInterpretationInput::sourceElement(e, _, _) or
-    SourceSinkInterpretationInput::sinkElement(e, _, _)
+    SourceSinkInterpretationInput::sourceElement(e, _, _, _) or
+    SourceSinkInterpretationInput::sinkElement(e, _, _, _)
   )
 }
 
