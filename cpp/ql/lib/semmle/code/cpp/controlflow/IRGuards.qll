@@ -20,6 +20,44 @@ private predicate isUnreachedBlock(IRBlock block) {
   block.getFirstInstruction() instanceof UnreachedInstruction
 }
 
+private newtype TAbstractValue =
+  TBooleanValue(boolean b) { b = true or b = false } or
+  TMatchValue(CaseEdge c)
+
+/**
+ * An abstract value. This is either a boolean value, or a `switch` case.
+ */
+abstract class AbstractValue extends TAbstractValue {
+  /** Gets an abstract value that represents the dual of this value, if any. */
+  abstract AbstractValue getDualValue();
+
+  /** Gets a textual representation of this abstract value. */
+  abstract string toString();
+}
+
+/** A Boolean value. */
+class BooleanValue extends AbstractValue, TBooleanValue {
+  /** Gets the underlying Boolean value. */
+  boolean getValue() { this = TBooleanValue(result) }
+
+  override BooleanValue getDualValue() { result.getValue() = this.getValue().booleanNot() }
+
+  override string toString() { result = this.getValue().toString() }
+}
+
+/** A value that represents a match against a specific `switch` case. */
+class MatchValue extends AbstractValue, TMatchValue {
+  /** Gets the case. */
+  CaseEdge getCase() { this = TMatchValue(result) }
+
+  override MatchValue getDualValue() {
+    // A `MatchValue` has no dual.
+    none()
+  }
+
+  override string toString() { result = this.getCase().toString() }
+}
+
 /**
  * A Boolean condition in the AST that guards one or more basic blocks. This includes
  * operands of logical operators but not switch statements.
@@ -33,6 +71,15 @@ class GuardCondition extends Expr {
     // no binary operators in the IR
     this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
   }
+
+  /**
+   * Holds if this condition controls `controlled`, meaning that `controlled` is only
+   * entered if the value of this condition is `v`.
+   *
+   * For details on what "controls" mean, see the QLDoc for `controls`.
+   */
+  cached
+  predicate valueControls(BasicBlock controlled, AbstractValue v) { none() }
 
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
@@ -61,7 +108,9 @@ class GuardCondition extends Expr {
    * true (for `&&`) or false (for `||`) branch.
    */
   cached
-  predicate controls(BasicBlock controlled, boolean testIsTrue) { none() }
+  final predicate controls(BasicBlock controlled, boolean testIsTrue) {
+    this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
+  }
 
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
   cached
@@ -98,13 +147,13 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
     this.(BinaryLogicalOperation).getAnOperand() instanceof GuardCondition
   }
 
-  override predicate controls(BasicBlock controlled, boolean testIsTrue) {
+  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
     exists(BinaryLogicalOperation binop, GuardCondition lhs, GuardCondition rhs |
       this = binop and
       lhs = binop.getLeftOperand() and
       rhs = binop.getRightOperand() and
-      lhs.controls(controlled, testIsTrue) and
-      rhs.controls(controlled, testIsTrue)
+      lhs.valueControls(controlled, v) and
+      rhs.valueControls(controlled, v)
     )
   }
 
@@ -146,10 +195,10 @@ private class GuardConditionFromIR extends GuardCondition {
 
   GuardConditionFromIR() { this = ir.getUnconvertedResultExpression() }
 
-  override predicate controls(BasicBlock controlled, boolean testIsTrue) {
+  override predicate valueControls(BasicBlock controlled, AbstractValue v) {
     // This condition must determine the flow of control; that is, this
     // node must be a top-level condition.
-    this.controlsBlock(controlled, testIsTrue)
+    this.controlsBlock(controlled, v)
   }
 
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
@@ -198,13 +247,13 @@ private class GuardConditionFromIR extends GuardCondition {
 
   /**
    * Holds if this condition controls `block`, meaning that `block` is only
-   * entered if the value of this condition is `testIsTrue`. This helper
+   * entered if the value of this condition is `v`. This helper
    * predicate does not necessarily hold for binary logical operations like
    * `&&` and `||`. See the detailed explanation on predicate `controls`.
    */
-  private predicate controlsBlock(BasicBlock controlled, boolean testIsTrue) {
+  private predicate controlsBlock(BasicBlock controlled, AbstractValue v) {
     exists(IRBlock irb |
-      ir.controls(irb, testIsTrue) and
+      ir.valueControls(irb, v) and
       nonExcludedIRAndBasicBlock(irb, controlled) and
       not isUnreachedBlock(irb)
     )
@@ -249,10 +298,28 @@ private predicate nonExcludedIRAndBasicBlock(IRBlock irb, BasicBlock controlled)
  */
 cached
 class IRGuardCondition extends Instruction {
-  ConditionalBranchInstruction branch;
+  Instruction branch;
 
   cached
-  IRGuardCondition() { branch = get_branch_for_condition(this) }
+  IRGuardCondition() { branch = getBranchForCondition(this) }
+
+  /**
+   * Holds if this condition controls `controlled`, meaning that `controlled` is only
+   * entered if the value of this condition is `v`.
+   *
+   * For details on what "controls" mean, see the QLDoc for `controls`.
+   */
+  cached
+  predicate valueControls(IRBlock controlled, AbstractValue v) {
+    // This condition must determine the flow of control; that is, this
+    // node must be a top-level condition.
+    this.controlsBlock(controlled, v)
+    or
+    exists(IRGuardCondition ne |
+      this = ne.(LogicalNotInstruction).getUnary() and
+      ne.valueControls(controlled, v.getDualValue())
+    )
+  }
 
   /**
    * Holds if this condition controls `controlled`, meaning that `controlled` is only
@@ -282,13 +349,25 @@ class IRGuardCondition extends Instruction {
    */
   cached
   predicate controls(IRBlock controlled, boolean testIsTrue) {
-    // This condition must determine the flow of control; that is, this
-    // node must be a top-level condition.
-    this.controlsBlock(controlled, testIsTrue)
+    this.valueControls(controlled, any(BooleanValue bv | bv.getValue() = testIsTrue))
+  }
+
+  /**
+   * Holds if the control-flow edge `(pred, succ)` may be taken only if
+   * the value of this condition is `v`.
+   */
+  cached
+  predicate valueControlsEdge(IRBlock pred, IRBlock succ, AbstractValue v) {
+    pred.getASuccessor() = succ and
+    this.valueControls(pred, v)
     or
-    exists(IRGuardCondition ne |
-      this = ne.(LogicalNotInstruction).getUnary() and
-      ne.controls(controlled, testIsTrue.booleanNot())
+    succ = this.getBranchSuccessor(v) and
+    (
+      branch.(ConditionalBranchInstruction).getCondition() = this and
+      branch.getBlock() = pred
+      or
+      branch.(SwitchInstruction).getExpression() = this and
+      branch.getBlock() = pred
     )
   }
 
@@ -297,17 +376,12 @@ class IRGuardCondition extends Instruction {
    * the value of this condition is `testIsTrue`.
    */
   cached
-  predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
-    pred.getASuccessor() = succ and
-    this.controls(pred, testIsTrue)
-    or
-    succ = this.getBranchSuccessor(testIsTrue) and
-    branch.getCondition() = this and
-    branch.getBlock() = pred
+  final predicate controlsEdge(IRBlock pred, IRBlock succ, boolean testIsTrue) {
+    this.valueControlsEdge(pred, succ, any(BooleanValue bv | bv.getValue() = testIsTrue))
   }
 
   /**
-   * Gets the block to which `branch` jumps directly when this condition is `testIsTrue`.
+   * Gets the block to which `branch` jumps directly when the value of this condition is `v`.
    *
    * This predicate is intended to help with situations in which an inference can only be made
    * based on an edge between a block with multiple successors and a block with multiple
@@ -321,14 +395,20 @@ class IRGuardCondition extends Instruction {
    * return x;
    * ```
    */
-  private IRBlock getBranchSuccessor(boolean testIsTrue) {
-    branch.getCondition() = this and
-    (
-      testIsTrue = true and
-      result.getFirstInstruction() = branch.getTrueSuccessor()
+  private IRBlock getBranchSuccessor(AbstractValue v) {
+    branch.(ConditionalBranchInstruction).getCondition() = this and
+    exists(BooleanValue bv | bv = v |
+      bv.getValue() = true and
+      result.getFirstInstruction() = branch.(ConditionalBranchInstruction).getTrueSuccessor()
       or
-      testIsTrue = false and
-      result.getFirstInstruction() = branch.getFalseSuccessor()
+      bv.getValue() = false and
+      result.getFirstInstruction() = branch.(ConditionalBranchInstruction).getFalseSuccessor()
+    )
+    or
+    exists(SwitchInstruction switch, CaseEdge kind | switch = branch |
+      switch.getExpression() = this and
+      result.getFirstInstruction() = switch.getSuccessor(kind) and
+      kind = v.(MatchValue).getCase()
     )
   }
 
@@ -396,11 +476,11 @@ class IRGuardCondition extends Instruction {
 
   /**
    * Holds if this condition controls `block`, meaning that `block` is only
-   * entered if the value of this condition is `testIsTrue`. This helper
+   * entered if the value of this condition is `v`. This helper
    * predicate does not necessarily hold for binary logical operations like
    * `&&` and `||`. See the detailed explanation on predicate `controls`.
    */
-  private predicate controlsBlock(IRBlock controlled, boolean testIsTrue) {
+  private predicate controlsBlock(IRBlock controlled, AbstractValue v) {
     not isUnreachedBlock(controlled) and
     //
     // For this block to control the block `controlled` with `testIsTrue` the
@@ -441,7 +521,7 @@ class IRGuardCondition extends Instruction {
     // that `this` strictly dominates `controlled` so that isn't necessary to check
     // directly.
     exists(IRBlock succ |
-      succ = this.getBranchSuccessor(testIsTrue) and
+      succ = this.getBranchSuccessor(v) and
       this.hasDominatingEdgeTo(succ) and
       succ.dominates(controlled)
     )
@@ -476,12 +556,14 @@ class IRGuardCondition extends Instruction {
   private IRBlock getBranchBlock() { result = branch.getBlock() }
 }
 
-private ConditionalBranchInstruction get_branch_for_condition(Instruction guard) {
-  result.getCondition() = guard
+private Instruction getBranchForCondition(Instruction guard) {
+  result.(ConditionalBranchInstruction).getCondition() = guard
   or
   exists(LogicalNotInstruction cond |
-    result = get_branch_for_condition(cond) and cond.getUnary() = guard
+    result = getBranchForCondition(cond) and cond.getUnary() = guard
   )
+  or
+  result.(SwitchInstruction).getExpression() = guard
 }
 
 /**

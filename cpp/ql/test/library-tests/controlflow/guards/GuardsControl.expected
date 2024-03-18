@@ -86,3 +86,7 @@
 | test.cpp:31:7:31:13 | ... == ... | true | 31 | 32 |
 | test.cpp:42:13:42:20 | call to getABool | false | 53 | 53 |
 | test.cpp:42:13:42:20 | call to getABool | true | 43 | 45 |
+| test.cpp:61:10:61:10 | i | Case[0] | 62 | 64 |
+| test.cpp:61:10:61:10 | i | Case[1] | 65 | 66 |
+| test.cpp:74:10:74:10 | i | Case[0..10] | 75 | 77 |
+| test.cpp:74:10:74:10 | i | Case[11..20] | 78 | 79 |
