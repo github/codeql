@@ -523,3 +523,13 @@ private class ValuesSummary extends SimpleSummarizedCallable {
     preservesValue = true
   }
 }
+
+private class KeysSummary extends SimpleSummarizedCallable {
+  KeysSummary() { this = "keys" }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[self].Element[any]" and
+    output = "ReturnValue.Element[?]" and
+    preservesValue = true
+  }
+}
