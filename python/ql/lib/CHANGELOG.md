@@ -1,3 +1,7 @@
+## 0.11.11
+
+No user-facing changes.
+
 ## 0.11.10
 
 ### Minor Analysis Improvements
