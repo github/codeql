@@ -204,3 +204,14 @@ class RegressionController < ActionController::Base
     Regression.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}")
   end
 end
+
+class User
+  scope :with_role, ->(role) { where("role = #{role}") }
+end
+
+class UsersController < ActionController::Base
+  def index
+    # BAD: user input passed to scope which uses it without sanitization.
+    @users = User.with_role(params[:role])
+  end
+end
