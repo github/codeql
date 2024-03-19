@@ -138,9 +138,9 @@ class GuardCondition extends Expr {
   cached
   predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) { none() }
 
-  /** Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
+  /** Holds if (determined by this guard) `e == k` evaluates to `areEqual` if this expression evaluates to `value`. */
   cached
-  predicate comparesEq(Expr e, int k, boolean areEqual, boolean testIsTrue) { none() }
+  predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) { none() }
 
   /**
    * Holds if (determined by this guard) `e == k` must be `areEqual` in `block`.
@@ -196,17 +196,18 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
     )
   }
 
-  override predicate comparesEq(Expr e, int k, boolean areEqual, boolean testIsTrue) {
-    exists(boolean partIsTrue, GuardCondition part |
-      this.(BinaryLogicalOperation).impliesValue(part, partIsTrue, testIsTrue)
+  override predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) {
+    exists(BooleanValue partValue, GuardCondition part |
+      this.(BinaryLogicalOperation)
+          .impliesValue(part, partValue.getValue(), value.(BooleanValue).getValue())
     |
-      part.comparesEq(e, k, areEqual, partIsTrue)
+      part.comparesEq(e, k, areEqual, partValue)
     )
   }
 
   override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
-    exists(boolean testIsTrue |
-      this.comparesEq(e, k, areEqual, testIsTrue) and this.controls(block, testIsTrue)
+    exists(AbstractValue value |
+      this.comparesEq(e, k, areEqual, value) and this.valueControls(block, value)
     )
   }
 }
@@ -270,18 +271,18 @@ private class GuardConditionFromIR extends GuardCondition {
     )
   }
 
-  override predicate comparesEq(Expr e, int k, boolean areEqual, boolean testIsTrue) {
+  override predicate comparesEq(Expr e, int k, boolean areEqual, AbstractValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
-      ir.comparesEq(i.getAUse(), k, areEqual, testIsTrue)
+      ir.comparesEq(i.getAUse(), k, areEqual, value)
     )
   }
 
   override predicate ensuresEq(Expr e, int k, BasicBlock block, boolean areEqual) {
-    exists(Instruction i, boolean testIsTrue |
+    exists(Instruction i, AbstractValue value |
       i.getUnconvertedResultExpression() = e and
-      ir.comparesEq(i.getAUse(), k, areEqual, testIsTrue) and
-      this.controls(block, testIsTrue)
+      ir.comparesEq(i.getAUse(), k, areEqual, value) and
+      this.valueControls(block, value)
     )
   }
 
@@ -492,19 +493,10 @@ class IRGuardCondition extends Instruction {
     )
   }
 
-  /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
+  /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `value`. */
   cached
-  predicate comparesEq(Operand op, int k, boolean areEqual, boolean testIsTrue) {
-    exists(MatchValue mv |
-      compares_eq(this, op, k, areEqual, mv) and
-      // A match value cannot be dualized, so `testIsTrue` is always true
-      testIsTrue = true
-    )
-    or
-    exists(BooleanValue bv |
-      compares_eq(this, op, k, areEqual, bv) and
-      bv.getValue() = testIsTrue
-    )
+  predicate comparesEq(Operand op, int k, boolean areEqual, AbstractValue value) {
+    compares_eq(this, op, k, areEqual, value)
   }
 
   /**
