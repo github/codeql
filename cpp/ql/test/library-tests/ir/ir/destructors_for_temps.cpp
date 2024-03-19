@@ -2,7 +2,7 @@ class ClassWithDestructor2 {
 public:
     ClassWithDestructor2();
     ~ClassWithDestructor2();
-
+    ClassWithDestructor2(int x);
     char get_x();
 };
 
@@ -54,3 +54,18 @@ void temp_test7(bool b) {
 void temp_test8(bool b) {
     b ? throw ClassWithConstructor('x', ClassWithDestructor2().get_x()) : ClassWithDestructor2();
 }
+
+void temp_test9() {
+    char x[2] = {0, ClassWithDestructor2().get_x()};
+}
+
+struct ClassWithField {
+    int x;
+};
+
+void temp_test10() {
+    ClassWithField c = {.x = ClassWithDestructor2().get_x()};
+}
+
+
+// semmle-extractor-options: -std=c++20 --clang

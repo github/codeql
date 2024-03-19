@@ -1741,6 +1741,10 @@ destructors_for_temps.cpp:
 #    3|   <params>: 
 #    4| [Destructor] void ClassWithDestructor2::~ClassWithDestructor2()
 #    4|   <params>: 
+#    5| [Constructor] void ClassWithDestructor2::ClassWithDestructor2(int)
+#    5|   <params>: 
+#    5|     getParameter(0): [Parameter] x
+#    5|         Type = [IntType] int
 #    6| [MemberFunction] char ClassWithDestructor2::get_x()
 #    6|   <params>: 
 #    9| [CopyAssignmentOperator] ClassWithConstructor& ClassWithConstructor::operator=(ClassWithConstructor const&)
@@ -1759,9 +1763,6 @@ destructors_for_temps.cpp:
 #    9|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [RValueReferenceType] ClassWithConstructor &&
-#    9|   <initializations>: 
-#    9|   getEntryPoint(): [BlockStmt] { ... }
-#    9|     getStmt(0): [ReturnStmt] return ...
 #   11| [Constructor] void ClassWithConstructor::ClassWithConstructor(char, char)
 #   11|   <params>: 
 #   11|     getParameter(0): [Parameter] x
@@ -2120,6 +2121,79 @@ destructors_for_temps.cpp:
 #   55|           Type = [Class] ClassWithDestructor2
 #   55|           ValueCategory = prvalue
 #   56|     getStmt(1): [ReturnStmt] return ...
+#   58| [TopLevelFunction] void temp_test9()
+#   58|   <params>: 
+#   58|   getEntryPoint(): [BlockStmt] { ... }
+#   59|     getStmt(0): [DeclStmt] declaration
+#   59|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   59|           Type = [ArrayType] char[2]
+#   59|         getVariable().getInitializer(): [Initializer] initializer for x
+#   59|           getExpr(): [ArrayAggregateLiteral] {...}
+#   59|               Type = [ArrayType] char[2]
+#   59|               ValueCategory = prvalue
+#   59|             getAnElementExpr(0): [Literal] 0
+#   59|                 Type = [IntType] int
+#   59|                 Value = [Literal] 0
+#   59|                 ValueCategory = prvalue
+#   59|             getAnElementExpr(1): [FunctionCall] call to get_x
+#   59|                 Type = [PlainCharType] char
+#   59|                 ValueCategory = prvalue
+#   59|               getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   59|                   Type = [VoidType] void
+#   59|                   ValueCategory = prvalue
+#   59|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   59|                   Type = [VoidType] void
+#   59|                   ValueCategory = prvalue
+#   59|                 getQualifier(): [ReuseExpr] reuse of temporary object
+#   59|                     Type = [Class] ClassWithDestructor2
+#   59|                     ValueCategory = xvalue
+#   59|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   59|                   Type = [Class] ClassWithDestructor2
+#   59|                   ValueCategory = prvalue(load)
+#   59|             getAnElementExpr(0).getFullyConverted(): [CStyleCast] (char)...
+#   59|                 Conversion = [IntegralConversion] integral conversion
+#   59|                 Type = [PlainCharType] char
+#   59|                 Value = [CStyleCast] 0
+#   59|                 ValueCategory = prvalue
+#   60|     getStmt(1): [ReturnStmt] return ...
+#   62| [CopyAssignmentOperator] ClassWithField& ClassWithField::operator=(ClassWithField const&)
+#   62|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ClassWithField &
+#   62| [MoveAssignmentOperator] ClassWithField& ClassWithField::operator=(ClassWithField&&)
+#   62|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] ClassWithField &&
+#   66| [TopLevelFunction] void temp_test10()
+#   66|   <params>: 
+#   66|   getEntryPoint(): [BlockStmt] { ... }
+#   67|     getStmt(0): [DeclStmt] declaration
+#   67|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+#   67|           Type = [Struct] ClassWithField
+#   67|         getVariable().getInitializer(): [Initializer] initializer for c
+#   67|           getExpr(): [ClassAggregateLiteral] {...}
+#   67|               Type = [Struct] ClassWithField
+#   67|               ValueCategory = prvalue
+#   67|             getAFieldExpr(x): [FunctionCall] call to get_x
+#   67|                 Type = [PlainCharType] char
+#   67|                 ValueCategory = prvalue
+#   67|               getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   67|                   Type = [VoidType] void
+#   67|                   ValueCategory = prvalue
+#   67|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   67|                   Type = [VoidType] void
+#   67|                   ValueCategory = prvalue
+#   67|                 getQualifier(): [ReuseExpr] reuse of temporary object
+#   67|                     Type = [Class] ClassWithDestructor2
+#   67|                     ValueCategory = xvalue
+#   67|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   67|                   Type = [Class] ClassWithDestructor2
+#   67|                   ValueCategory = prvalue(load)
+#   67|             getAFieldExpr(x).getFullyConverted(): [CStyleCast] (int)...
+#   67|                 Conversion = [IntegralConversion] integral conversion
+#   67|                 Type = [IntType] int
+#   67|                 ValueCategory = prvalue
+#   68|     getStmt(1): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 
