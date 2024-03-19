@@ -40,9 +40,14 @@ IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
   result.getTag() = tag
 }
 
+/** Gets an operand of `binOp`. */
 private Expr getAnOperand(BinaryOperation binOp) { result = binOp.getAnOperand() }
 
-private int getNumberOfBinaryOperands(BinaryOperation binOp) {
+/**
+ * Gets the number of nested operands of `binOp`. For example,
+ * `getNumberOfNestedBinaryOperands((1 + 2) + 3))` is `3`.
+ */
+private int getNumberOfNestedBinaryOperands(BinaryOperation binOp) {
   result = count(getAnOperand*(binOp))
 }
 
@@ -60,7 +65,7 @@ predicate isIRConstant(Expr expr) {
   // But to avoid creating an outrageous amount of IR from very large
   // constant expressions we fall back to constant folding if the operation
   // has more than 50 operands (i.e., 1 + 2 + 3 + 4 + ... + 50)
-  if expr instanceof BinaryOperation then getNumberOfBinaryOperands(expr) > 50 else any()
+  if expr instanceof BinaryOperation then getNumberOfNestedBinaryOperands(expr) > 50 else any()
 }
 
 // Pulled out for performance. See
