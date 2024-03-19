@@ -55,9 +55,9 @@
 | 58 | y < 0+0 when ... < ... is true |
 | 58 | y >= 0+0 when ... < ... is false |
 | 58 | y >= 0+0 when ... \|\| ... is false |
-| 61 | i == 0 when i is true |
-| 61 | i == 1 when i is true |
-| 61 | i == 2 when i is true |
+| 61 | i == 0 when i is Case[0] |
+| 61 | i == 1 when i is Case[1] |
+| 61 | i == 2 when i is Case[2] |
 | 75 | 0 != x+0 when ... == ... is false |
 | 75 | 0 == x+0 when ... == ... is true |
 | 75 | x != 0 when ... == ... is false |

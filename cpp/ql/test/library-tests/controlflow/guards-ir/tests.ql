@@ -4,8 +4,8 @@ import semmle.code.cpp.controlflow.IRGuards
 query predicate astGuards(GuardCondition guard) { any() }
 
 query predicate astGuardsCompare(int startLine, string msg) {
-  exists(GuardCondition guard, Expr left, int k, string which, string op |
-    exists(boolean sense |
+  exists(GuardCondition guard, Expr left, int k, string op |
+    exists(boolean sense, string which |
       sense = true and which = "true"
       or
       sense = false and which = "false"
@@ -21,14 +21,16 @@ query predicate astGuardsCompare(int startLine, string msg) {
       |
         msg = left + op + right + "+" + k + " when " + guard + " is " + which
       )
+    )
+    or
+    exists(AbstractValue value |
+      guard.comparesEq(left, k, true, value) and op = " == "
       or
-      (
-        guard.comparesEq(left, k, true, sense) and op = " == "
-        or
-        guard.comparesEq(left, k, false, sense) and op = " != "
-      ) and
-      msg = left + op + k + " when " + guard + " is " + which
-    ) and
+      guard.comparesEq(left, k, false, value) and op = " != "
+    |
+      msg = left + op + k + " when " + guard + " is " + value
+    )
+  |
     startLine = guard.getLocation().getStartLine()
   )
 }
@@ -71,8 +73,8 @@ query predicate astGuardsEnsure_const(
 query predicate irGuards(IRGuardCondition guard) { any() }
 
 query predicate irGuardsCompare(int startLine, string msg) {
-  exists(IRGuardCondition guard, Operand left, int k, string which, string op |
-    exists(boolean sense |
+  exists(IRGuardCondition guard, Operand left, int k, string op |
+    exists(boolean sense, string which |
       sense = true and which = "true"
       or
       sense = false and which = "false"
@@ -91,16 +93,18 @@ query predicate irGuardsCompare(int startLine, string msg) {
             right.getAnyDef().getUnconvertedResultExpression() + "+" + k + " when " + guard + " is "
             + which
       )
+    )
+    or
+    exists(AbstractValue value |
+      guard.comparesEq(left, k, true, value) and op = " == "
       or
-      (
-        guard.comparesEq(left, k, true, sense) and op = " == "
-        or
-        guard.comparesEq(left, k, false, sense) and op = " != "
-      ) and
+      guard.comparesEq(left, k, false, value) and op = " != "
+    |
       msg =
         left.getAnyDef().getUnconvertedResultExpression() + op + k + " when " + guard + " is " +
-          which
-    ) and
+          value
+    )
+  |
     startLine = guard.getLocation().getStartLine()
   )
 }
