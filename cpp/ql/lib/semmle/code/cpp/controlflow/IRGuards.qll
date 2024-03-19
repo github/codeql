@@ -125,6 +125,20 @@ class GuardCondition extends Expr {
   cached
   predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) { none() }
 
+  /**
+   * Holds if (determined by this guard) `e < k` evaluates to `isLessThan` if
+   * this expression evaluates to `value`.
+   */
+  cached
+  predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) { none() }
+
+  /**
+   * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
+   * If `isLessThan = false` then this implies `left >= k`.
+   */
+  cached
+  predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) { none() }
+
   /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
   cached
   predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
@@ -176,9 +190,24 @@ private class GuardConditionFromBinaryLogicalOperator extends GuardCondition {
     )
   }
 
+  override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
+    exists(BooleanValue partValue, GuardCondition part |
+      this.(BinaryLogicalOperation)
+          .impliesValue(part, partValue.getValue(), value.(BooleanValue).getValue())
+    |
+      part.comparesLt(e, k, isLessThan, partValue)
+    )
+  }
+
   override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
     exists(boolean testIsTrue |
       this.comparesLt(left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
+    )
+  }
+
+  override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
+    exists(AbstractValue value |
+      this.comparesLt(e, k, isLessThan, value) and this.valueControls(block, value)
     )
   }
 
@@ -237,6 +266,17 @@ private class GuardConditionFromIR extends GuardCondition {
   }
 
   /**
+   * Holds if (determined by this guard) `e < k` evaluates to `isLessThan` if
+   * this expression evaluates to `value`.
+   */
+  override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
+    exists(Instruction i |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesLt(i.getAUse(), k, isLessThan, value)
+    )
+  }
+
+  /**
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
    * If `isLessThan = false` then this implies `left >= right + k`.
    */
@@ -246,6 +286,18 @@ private class GuardConditionFromIR extends GuardCondition {
       ri.getUnconvertedResultExpression() = right and
       ir.comparesLt(li.getAUse(), ri.getAUse(), k, isLessThan, testIsTrue) and
       this.controls(block, testIsTrue)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
+   * If `isLessThan = false` then this implies `e >= k`.
+   */
+  override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
+    exists(Instruction i, AbstractValue value |
+      i.getUnconvertedResultExpression() = e and
+      ir.comparesLt(i.getAUse(), k, isLessThan, value) and
+      this.valueControls(block, value)
     )
   }
 
@@ -463,6 +515,15 @@ class IRGuardCondition extends Instruction {
   }
 
   /**
+   * Holds if (determined by this guard) `op < k` evaluates to `isLessThan` if
+   * this expression evaluates to `value`.
+   */
+  cached
+  predicate comparesLt(Operand op, int k, boolean isLessThan, AbstractValue value) {
+    compares_lt(this, op, k, isLessThan, value)
+  }
+
+  /**
    * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
    * If `isLessThan = false` then this implies `left >= right + k`.
    */
@@ -470,6 +531,17 @@ class IRGuardCondition extends Instruction {
   predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean isLessThan) {
     exists(AbstractValue value |
       compares_lt(this, left, right, k, isLessThan, value) and this.valueControls(block, value)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `op < k` must be `isLessThan` in `block`.
+   * If `isLessThan = false` then this implies `op >= k`.
+   */
+  cached
+  predicate ensuresLt(Operand op, int k, IRBlock block, boolean isLessThan) {
+    exists(AbstractValue value |
+      compares_lt(this, op, k, isLessThan, value) and this.valueControls(block, value)
     )
   }
 
@@ -483,6 +555,18 @@ class IRGuardCondition extends Instruction {
   ) {
     exists(AbstractValue value |
       compares_lt(this, left, right, k, isLessThan, value) and
+      this.valueControlsEdge(pred, succ, value)
+    )
+  }
+
+  /**
+   * Holds if (determined by this guard) `op < k` must be `isLessThan` on the edge from
+   * `pred` to `succ`. If `isLessThan = false` then this implies `op >= k`.
+   */
+  cached
+  predicate ensuresLtEdge(Operand left, int k, IRBlock pred, IRBlock succ, boolean isLessThan) {
+    exists(AbstractValue value |
+      compares_lt(this, left, k, isLessThan, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -766,6 +850,24 @@ private predicate compares_lt(
   )
 }
 
+/** Holds if `op < k` evaluates to `isLt` given that `test` evaluates to `value`. */
+private predicate compares_lt(Instruction test, Operand op, int k, boolean isLt, AbstractValue value) {
+  simple_comparison_lt(test, op, k, isLt, value)
+  or
+  complex_lt(test, op, k, isLt, value)
+  or
+  /* (x is true => (op < k)) => (!x is false => (op < k)) */
+  exists(AbstractValue dual | value = dual.getDualValue() |
+    compares_lt(test.(LogicalNotInstruction).getUnary(), op, k, isLt, dual)
+  )
+  or
+  exists(int k1, int k2, ConstantInstruction const |
+    compares_lt(test, op, const.getAUse(), k2, isLt, value) and
+    int_value(const) = k1 and
+    k = k1 + k2
+  )
+}
+
 /** `(a < b + k) => (b > a - k) => (b >= a + (1-k))` */
 private predicate compares_ge(
   Instruction test, Operand left, Operand right, int k, boolean isGe, AbstractValue value
@@ -796,12 +898,40 @@ private predicate simple_comparison_lt(CompareInstruction cmp, Operand left, Ope
   k = 1
 }
 
+/** Rearrange various simple comparisons into `op < k` form. */
+private predicate simple_comparison_lt(
+  Instruction test, Operand op, int k, boolean isLt, AbstractValue value
+) {
+  exists(SwitchInstruction switch, CaseEdge case |
+    test = switch.getExpression() and
+    op.getDef() = test and
+    case = value.(MatchValue).getCase() and
+    exists(switch.getSuccessor(case)) and
+    case.getMaxValue() > case.getMinValue()
+  |
+    // op <= k => op < k - 1
+    isLt = true and
+    case.getMaxValue().toInt() = k - 1
+    or
+    isLt = false and
+    case.getMinValue().toInt() = k
+  )
+}
+
 private predicate complex_lt(
   CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   sub_lt(cmp, left, right, k, isLt, value)
   or
   add_lt(cmp, left, right, k, isLt, value)
+}
+
+private predicate complex_lt(
+  Instruction test, Operand left, int k, boolean isLt, AbstractValue value
+) {
+  sub_lt(test, left, k, isLt, value)
+  or
+  add_lt(test, left, k, isLt, value)
 }
 
 // left - x < right + c => left < right + (c+x)
@@ -835,6 +965,22 @@ private predicate sub_lt(
     right = rhs.getLeftOperand() and
     x = int_value(rhs.getRight()) and
     k = c - x
+  )
+}
+
+private predicate sub_lt(Instruction test, Operand left, int k, boolean isLt, AbstractValue value) {
+  exists(SubInstruction lhs, int c, int x |
+    compares_lt(test, lhs.getAUse(), c, isLt, value) and
+    left = lhs.getLeftOperand() and
+    x = int_value(lhs.getRight()) and
+    k = c + x
+  )
+  or
+  exists(PointerSubInstruction lhs, int c, int x |
+    compares_lt(test, lhs.getAUse(), c, isLt, value) and
+    left = lhs.getLeftOperand() and
+    x = int_value(lhs.getRight()) and
+    k = c + x
   )
 }
 
@@ -881,6 +1027,28 @@ private predicate add_lt(
       right = rhs.getRightOperand() and x = int_value(rhs.getLeft())
     ) and
     k = c + x
+  )
+}
+
+private predicate add_lt(Instruction test, Operand left, int k, boolean isLt, AbstractValue value) {
+  exists(AddInstruction lhs, int c, int x |
+    compares_lt(test, lhs.getAUse(), c, isLt, value) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
+  )
+  or
+  exists(PointerAddInstruction lhs, int c, int x |
+    compares_lt(test, lhs.getAUse(), c, isLt, value) and
+    (
+      left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
+      or
+      left = lhs.getRightOperand() and x = int_value(lhs.getLeft())
+    ) and
+    k = c - x
   )
 }
 
