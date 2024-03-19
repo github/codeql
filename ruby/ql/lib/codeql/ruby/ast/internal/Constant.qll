@@ -423,7 +423,7 @@ private module Cached {
       or
       s = any(StringComponentImpl c).getValue()
     } or
-    TSymbol(string s) { isString(_, s) or isSymbolExpr(_, s) } or
+    TSymbol(string s) { isSymbolExpr(_, s) } or
     TRegExp(string s, string flags) {
       isRegExp(_, s, flags)
       or

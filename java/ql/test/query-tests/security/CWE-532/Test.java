@@ -19,4 +19,10 @@ class Test {
         logger.error("Auth failed for: " + username); // Safe
     }
 
+    void test4(String nullToken) {
+        Logger logger = null;
+
+        logger.error("Auth failed for: " + nullToken); // Safe
+    }
+
 }

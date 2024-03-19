@@ -15,7 +15,7 @@ private module FlowSummaries {
   private import semmle.go.dataflow.FlowSummary as F
 }
 
-module Input implements InputSig<DataFlowImplSpecific::GoDataFlow> {
+module Input implements InputSig<Location, DataFlowImplSpecific::GoDataFlow> {
   class SummarizedCallableBase = Callable;
 
   ArgumentPosition callbackSelfParameterPosition() { result = -1 }
@@ -83,7 +83,7 @@ module Input implements InputSig<DataFlowImplSpecific::GoDataFlow> {
   }
 }
 
-private import Make<DataFlowImplSpecific::GoDataFlow, Input> as Impl
+private import Make<Location, DataFlowImplSpecific::GoDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
@@ -95,7 +95,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 }
 
 module SourceSinkInterpretationInput implements
-  Impl::Private::External::SourceSinkInterpretationInputSig<Location>
+  Impl::Private::External::SourceSinkInterpretationInputSig
 {
   class Element = SourceOrSinkElement;
 
@@ -264,7 +264,7 @@ module Private {
 
   module External {
     import Impl::Private::External
-    import Impl::Private::External::SourceSinkInterpretation<Location, SourceSinkInterpretationInput>
+    import Impl::Private::External::SourceSinkInterpretation<SourceSinkInterpretationInput>
   }
 
   /**

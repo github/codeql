@@ -9,6 +9,7 @@ extra_env_vars:
 build_modes:
   - autobuild
   - manual
+  - none
 github_api_languages:
   - C#
 scc_languages:
@@ -33,8 +34,10 @@ options:
         type: string
         pattern: "^(none|gzip|brotli)$"
   buildless:
-    title: Whether to use buildless (standalone) extraction.
+    title: DEPRECATED - Whether to use buildless (standalone) extraction.
     description: >
+      DEPRECATED: Use `--build-mode none` instead.
+
       A value indicating, which type of extraction the autobuilder should perform.
       If 'true', then the standalone extractor will be used, otherwise tracing extraction
       will be performed.
@@ -42,13 +45,6 @@ options:
       Note that buildless extraction will generally yield less accurate analysis results,
       and should only be used in cases where it is not possible to build
       the code (for example if it uses inaccessible dependencies).
-    type: string
-    pattern: "^(false|true)$"
-  cil:
-    title: Whether to enable CIL extraction.
-    description: >
-      A value indicating, whether CIL extraction should be enabled.
-      The default is 'true'.
     type: string
     pattern: "^(false|true)$"
   logging:

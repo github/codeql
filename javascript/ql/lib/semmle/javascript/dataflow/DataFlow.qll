@@ -146,12 +146,15 @@ module DataFlow {
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    cached
-    predicate hasLocationInfo(
+    final predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      none()
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
+
+    /** Gets the location of this node. */
+    cached
+    Location getLocation() { none() }
 
     /** Gets the file this data flow node comes from. */
     File getFile() { none() } // overridden in subclasses
@@ -293,11 +296,9 @@ module DataFlow {
 
     override BasicBlock getBasicBlock() { astNode = result.getANode() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
+    override Location getLocation() {
       Stages::DataFlowStage::ref() and
-      astNode.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+      result = astNode.getLocation()
     }
 
     override File getFile() { result = astNode.getFile() }
@@ -318,11 +319,7 @@ module DataFlow {
 
     override BasicBlock getBasicBlock() { result = ssa.getBasicBlock() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      ssa.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = ssa.getLocation() }
 
     override string toString() { result = ssa.getSourceVariable().getName() }
 
@@ -341,13 +338,7 @@ module DataFlow {
 
     override BasicBlock getBasicBlock() { result = prop.(ControlFlowNode).getBasicBlock() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      prop.(Locatable)
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = prop.(Locatable).getLocation() }
 
     override string toString() { result = prop.(AstNode).toString() }
 
@@ -368,11 +359,7 @@ module DataFlow {
 
     override BasicBlock getBasicBlock() { result = rest.getBasicBlock() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      rest.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = rest.getLocation() }
 
     override string toString() { result = "..." + rest.toString() }
 
@@ -393,11 +380,7 @@ module DataFlow {
 
     override BasicBlock getBasicBlock() { result = elt.getBasicBlock() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      elt.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = elt.getLocation() }
 
     override string toString() { result = elt.toString() }
 
@@ -422,11 +405,7 @@ module DataFlow {
 
     override BasicBlock getBasicBlock() { result = elt.getBasicBlock() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      elt.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = elt.getLocation() }
 
     override string toString() { result = elt.toString() }
 
@@ -446,11 +425,7 @@ module DataFlow {
 
     override BasicBlock getBasicBlock() { result = call.getBasicBlock() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      call.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = call.getLocation() }
 
     override string toString() { result = "reflective call" }
 
@@ -467,11 +442,7 @@ module DataFlow {
 
     override BasicBlock getBasicBlock() { result = imprt.getBasicBlock() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      imprt.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = imprt.getLocation() }
 
     override string toString() { result = imprt.toString() }
 
@@ -961,11 +932,7 @@ module DataFlow {
 
     override string toString() { result = attr.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      attr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = attr.getLocation() }
 
     /** Gets the attribute corresponding to this data flow node. */
     HTML::Attribute getAttribute() { result = attr }
@@ -983,11 +950,7 @@ module DataFlow {
 
     override string toString() { result = attr.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      attr.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = attr.getLocation() }
 
     /** Gets the attribute corresponding to this data flow node. */
     XmlAttribute getAttribute() { result = attr }
@@ -1005,11 +968,7 @@ module DataFlow {
 
     override string toString() { result = "exceptional return of " + function.describe() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = function.getLocation() }
 
     override BasicBlock getBasicBlock() { result = function.getExit().getBasicBlock() }
 
@@ -1031,11 +990,7 @@ module DataFlow {
 
     override string toString() { result = "return of " + function.describe() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = function.getLocation() }
 
     override BasicBlock getBasicBlock() { result = function.getExit().getBasicBlock() }
 
@@ -1057,11 +1012,7 @@ module DataFlow {
 
     override string toString() { result = "'arguments' object of " + function.describe() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      function.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = function.getLocation() }
 
     override BasicBlock getBasicBlock() { result = function.getEntry().getBasicBlock() }
 
@@ -1083,11 +1034,7 @@ module DataFlow {
 
     override string toString() { result = "exceptional return of " + invoke.toString() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      invoke.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = invoke.getLocation() }
 
     override BasicBlock getBasicBlock() { result = invoke.getBasicBlock() }
 
@@ -1359,15 +1306,10 @@ module DataFlow {
       exists(StmtContainer container | this = TThisNode(container) | result = container.getEntry())
     }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
+    override Location getLocation() {
       // Use the function entry as the location
       exists(StmtContainer container | this = TThisNode(container) |
-        container
-            .getEntry()
-            .getLocation()
-            .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+        result = container.getEntry().getLocation()
       )
     }
 
@@ -1386,11 +1328,7 @@ module DataFlow {
 
     override BasicBlock getBasicBlock() { result = variable.getDeclaringContainer().getStartBB() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      variable.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = variable.getLocation() }
 
     override string toString() { result = variable.getName() }
   }
@@ -1402,13 +1340,7 @@ module DataFlow {
 
     override BasicBlock getBasicBlock() { none() }
 
-    override predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.getTag()
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    override Location getLocation() { result = this.getTag().getLocation() }
 
     override string toString() { result = this.getTag().toString() }
   }

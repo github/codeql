@@ -109,6 +109,8 @@ module Global<ConfigSig ContentConfig> {
 
     DataFlow::FlowFeature getAFeature() { result = ContentConfig::getAFeature() }
 
+    predicate accessPathLimit = ContentConfig::accessPathLimit/0;
+
     // needed to record reads/stores inside summarized callables
     predicate includeHiddenNodes() { any() }
   }

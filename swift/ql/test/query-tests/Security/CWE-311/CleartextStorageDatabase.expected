@@ -164,7 +164,6 @@ edges
 | testCoreData2.swift:98:18:98:18 | d [value] | testCoreData2.swift:98:18:98:20 | .value | provenance |  |
 | testCoreData2.swift:98:18:98:20 | .value | testCoreData2.swift:98:2:98:2 | [post] dbObj [myValue] | provenance |  |
 | testCoreData2.swift:101:10:101:10 | bankAccountNo | testCoreData2.swift:103:13:103:13 | e | provenance |  |
-| testCoreData2.swift:103:13:103:13 | e | testCoreData2.swift:70:9:70:9 | self | provenance |  |
 | testCoreData2.swift:103:13:103:13 | e | testCoreData2.swift:104:18:104:18 | e | provenance |  |
 | testCoreData2.swift:104:2:104:2 | [post] dbObj [myValue] | testCoreData2.swift:104:2:104:2 | [post] dbObj | provenance |  |
 | testCoreData2.swift:104:18:104:18 | e | testCoreData2.swift:70:9:70:9 | self | provenance |  |

@@ -322,7 +322,11 @@ private class Argument extends CfgNodes::ExprCfgNode {
 
 /** Holds if `n` is not a constant expression. */
 predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
-  not exists(n.getConstantValue()) and
+  not exists(ConstantValue cv |
+    cv = n.getConstantValue() and
+    // strings are mutable in Ruby
+    not cv.isString(_)
+  ) and
   not n.getExpr() instanceof ConstantAccess
 }
 
@@ -800,7 +804,17 @@ predicate nodeIsHidden(Node n) {
   or
   n = LocalFlow::getParameterDefNode(_)
   or
-  isDesugarNode(n.(ExprNode).getExprNode().getExpr())
+  exists(AstNode desug |
+    isDesugarNode(desug) and
+    desug.isSynthesized() and
+    not desug = [any(ArrayLiteral al).getDesugared(), any(HashLiteral hl).getDesugared()]
+  |
+    desug = n.asExpr().getExpr()
+    or
+    desug = n.(PostUpdateNode).getPreUpdateNode().asExpr().getExpr()
+    or
+    desug = n.(ParameterNode).getParameter()
+  )
   or
   n instanceof FlowSummaryNode
   or

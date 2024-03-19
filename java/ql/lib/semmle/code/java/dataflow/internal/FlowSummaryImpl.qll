@@ -26,7 +26,7 @@ private string positionToString(int pos) {
   if pos = -1 then result = "this" else result = pos.toString()
 }
 
-module Input implements InputSig<DataFlowImplSpecific::JavaDataFlow> {
+module Input implements InputSig<Location, DataFlowImplSpecific::JavaDataFlow> {
   class SummarizedCallableBase = FlowSummary::SummarizedCallableBase;
 
   ArgumentPosition callbackSelfParameterPosition() { result = -1 }
@@ -85,7 +85,7 @@ module Input implements InputSig<DataFlowImplSpecific::JavaDataFlow> {
   }
 }
 
-private import Make<DataFlowImplSpecific::JavaDataFlow, Input> as Impl
+private import Make<Location, DataFlowImplSpecific::JavaDataFlow, Input> as Impl
 
 private module TypesInput implements Impl::Private::TypesInputSig {
   DataFlowType getSyntheticGlobalType(Impl::Private::SyntheticGlobal sg) {
@@ -186,7 +186,7 @@ private predicate correspondingKotlinParameterDefaultsArgSpec(
 }
 
 module SourceSinkInterpretationInput implements
-  Impl::Private::External::SourceSinkInterpretationInputSig<Location>
+  Impl::Private::External::SourceSinkInterpretationInputSig
 {
   private import java as J
 
@@ -294,7 +294,7 @@ module Private {
 
   module External {
     import Impl::Private::External
-    import Impl::Private::External::SourceSinkInterpretation<Location, SourceSinkInterpretationInput>
+    import Impl::Private::External::SourceSinkInterpretation<SourceSinkInterpretationInput>
 
     /**
      * Holds if an external flow summary exists for `c` with input specification

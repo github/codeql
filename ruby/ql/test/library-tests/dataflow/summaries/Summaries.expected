@@ -65,8 +65,12 @@ edges
 | summaries.rb:4:24:4:30 | tainted | summaries.rb:4:36:4:36 | x | provenance |  |
 | summaries.rb:4:36:4:36 | x | summaries.rb:5:8:5:8 | x | provenance |  |
 | summaries.rb:4:36:4:36 | x | summaries.rb:5:8:5:8 | x | provenance |  |
+| summaries.rb:4:36:4:36 | x | summaries.rb:6:3:6:3 | x | provenance |  |
+| summaries.rb:4:36:4:36 | x | summaries.rb:6:3:6:3 | x | provenance |  |
 | summaries.rb:11:17:11:17 | x | summaries.rb:12:8:12:8 | x | provenance |  |
 | summaries.rb:11:17:11:17 | x | summaries.rb:12:8:12:8 | x | provenance |  |
+| summaries.rb:11:17:11:17 | x | summaries.rb:13:3:13:3 | x | provenance |  |
+| summaries.rb:11:17:11:17 | x | summaries.rb:13:3:13:3 | x | provenance |  |
 | summaries.rb:16:1:16:8 | tainted3 | summaries.rb:18:6:18:13 | tainted3 | provenance |  |
 | summaries.rb:16:1:16:8 | tainted3 | summaries.rb:18:6:18:13 | tainted3 | provenance |  |
 | summaries.rb:16:12:16:43 | call to apply_lambda | summaries.rb:16:1:16:8 | tainted3 | provenance |  |
@@ -93,7 +97,8 @@ edges
 | summaries.rb:48:24:48:41 | call to source | summaries.rb:48:8:48:42 | call to preserveTaint | provenance |  |
 | summaries.rb:51:24:51:30 | tainted | summaries.rb:51:6:51:31 | call to namedArg | provenance |  |
 | summaries.rb:53:1:53:4 | args [element :foo] | summaries.rb:54:21:54:24 | args [element :foo] | provenance |  |
-| summaries.rb:53:15:53:31 | call to source | summaries.rb:53:1:53:4 | args [element :foo] | provenance |  |
+| summaries.rb:53:8:53:33 | call to [] [element :foo] | summaries.rb:53:1:53:4 | args [element :foo] | provenance |  |
+| summaries.rb:53:15:53:31 | call to source | summaries.rb:53:8:53:33 | call to [] [element :foo] | provenance |  |
 | summaries.rb:54:19:54:24 | ** ... [element :foo] | summaries.rb:54:6:54:25 | call to namedArg | provenance |  |
 | summaries.rb:54:21:54:24 | args [element :foo] | summaries.rb:54:19:54:24 | ** ... [element :foo] | provenance |  |
 | summaries.rb:56:22:56:28 | tainted | summaries.rb:56:6:56:29 | call to anyArg | provenance |  |
@@ -118,10 +123,14 @@ edges
 | summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:86:6:86:6 | a [element 2] | provenance |  |
 | summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:95:1:95:1 | a [element 2] | provenance |  |
 | summaries.rb:79:1:79:1 | a [element 2] | summaries.rb:95:1:95:1 | a [element 2] | provenance |  |
-| summaries.rb:79:15:79:29 | call to source | summaries.rb:79:1:79:1 | a [element 1] | provenance |  |
-| summaries.rb:79:15:79:29 | call to source | summaries.rb:79:1:79:1 | a [element 1] | provenance |  |
-| summaries.rb:79:32:79:46 | call to source | summaries.rb:79:1:79:1 | a [element 2] | provenance |  |
-| summaries.rb:79:32:79:46 | call to source | summaries.rb:79:1:79:1 | a [element 2] | provenance |  |
+| summaries.rb:79:5:79:47 | call to [] [element 1] | summaries.rb:79:1:79:1 | a [element 1] | provenance |  |
+| summaries.rb:79:5:79:47 | call to [] [element 1] | summaries.rb:79:1:79:1 | a [element 1] | provenance |  |
+| summaries.rb:79:5:79:47 | call to [] [element 2] | summaries.rb:79:1:79:1 | a [element 2] | provenance |  |
+| summaries.rb:79:5:79:47 | call to [] [element 2] | summaries.rb:79:1:79:1 | a [element 2] | provenance |  |
+| summaries.rb:79:15:79:29 | call to source | summaries.rb:79:5:79:47 | call to [] [element 1] | provenance |  |
+| summaries.rb:79:15:79:29 | call to source | summaries.rb:79:5:79:47 | call to [] [element 1] | provenance |  |
+| summaries.rb:79:32:79:46 | call to source | summaries.rb:79:5:79:47 | call to [] [element 2] | provenance |  |
+| summaries.rb:79:32:79:46 | call to source | summaries.rb:79:5:79:47 | call to [] [element 2] | provenance |  |
 | summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:82:6:82:6 | a [element] | provenance |  |
 | summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:82:6:82:6 | a [element] | provenance |  |
 | summaries.rb:81:1:81:1 | [post] a [element] | summaries.rb:84:6:84:6 | a [element] | provenance |  |
@@ -270,12 +279,16 @@ nodes
 | summaries.rb:4:36:4:36 | x | semmle.label | x |
 | summaries.rb:5:8:5:8 | x | semmle.label | x |
 | summaries.rb:5:8:5:8 | x | semmle.label | x |
+| summaries.rb:6:3:6:3 | x | semmle.label | x |
+| summaries.rb:6:3:6:3 | x | semmle.label | x |
 | summaries.rb:9:6:9:13 | tainted2 | semmle.label | tainted2 |
 | summaries.rb:9:6:9:13 | tainted2 | semmle.label | tainted2 |
 | summaries.rb:11:17:11:17 | x | semmle.label | x |
 | summaries.rb:11:17:11:17 | x | semmle.label | x |
 | summaries.rb:12:8:12:8 | x | semmle.label | x |
 | summaries.rb:12:8:12:8 | x | semmle.label | x |
+| summaries.rb:13:3:13:3 | x | semmle.label | x |
+| summaries.rb:13:3:13:3 | x | semmle.label | x |
 | summaries.rb:16:1:16:8 | tainted3 | semmle.label | tainted3 |
 | summaries.rb:16:1:16:8 | tainted3 | semmle.label | tainted3 |
 | summaries.rb:16:12:16:43 | call to apply_lambda | semmle.label | call to apply_lambda |
@@ -317,6 +330,7 @@ nodes
 | summaries.rb:51:6:51:31 | call to namedArg | semmle.label | call to namedArg |
 | summaries.rb:51:24:51:30 | tainted | semmle.label | tainted |
 | summaries.rb:53:1:53:4 | args [element :foo] | semmle.label | args [element :foo] |
+| summaries.rb:53:8:53:33 | call to [] [element :foo] | semmle.label | call to [] [element :foo] |
 | summaries.rb:53:15:53:31 | call to source | semmle.label | call to source |
 | summaries.rb:54:6:54:25 | call to namedArg | semmle.label | call to namedArg |
 | summaries.rb:54:19:54:24 | ** ... [element :foo] | semmle.label | ** ... [element :foo] |
@@ -340,6 +354,10 @@ nodes
 | summaries.rb:79:1:79:1 | a [element 1] | semmle.label | a [element 1] |
 | summaries.rb:79:1:79:1 | a [element 2] | semmle.label | a [element 2] |
 | summaries.rb:79:1:79:1 | a [element 2] | semmle.label | a [element 2] |
+| summaries.rb:79:5:79:47 | call to [] [element 1] | semmle.label | call to [] [element 1] |
+| summaries.rb:79:5:79:47 | call to [] [element 1] | semmle.label | call to [] [element 1] |
+| summaries.rb:79:5:79:47 | call to [] [element 2] | semmle.label | call to [] [element 2] |
+| summaries.rb:79:5:79:47 | call to [] [element 2] | semmle.label | call to [] [element 2] |
 | summaries.rb:79:15:79:29 | call to source | semmle.label | call to source |
 | summaries.rb:79:15:79:29 | call to source | semmle.label | call to source |
 | summaries.rb:79:32:79:46 | call to source | semmle.label | call to source |
@@ -504,6 +522,10 @@ nodes
 | summaries.rb:166:20:166:36 | call to source | semmle.label | call to source |
 | summaries.rb:166:20:166:36 | call to source | semmle.label | call to source |
 subpaths
+| summaries.rb:4:24:4:30 | tainted | summaries.rb:4:36:4:36 | x | summaries.rb:6:3:6:3 | x | summaries.rb:4:12:7:3 | call to apply_block |
+| summaries.rb:4:24:4:30 | tainted | summaries.rb:4:36:4:36 | x | summaries.rb:6:3:6:3 | x | summaries.rb:4:12:7:3 | call to apply_block |
+| summaries.rb:16:36:16:42 | tainted | summaries.rb:11:17:11:17 | x | summaries.rb:13:3:13:3 | x | summaries.rb:16:12:16:43 | call to apply_lambda |
+| summaries.rb:16:36:16:42 | tainted | summaries.rb:11:17:11:17 | x | summaries.rb:13:3:13:3 | x | summaries.rb:16:12:16:43 | call to apply_lambda |
 invalidSpecComponent
 #select
 | summaries.rb:2:6:2:12 | tainted | summaries.rb:1:20:1:36 | call to source | summaries.rb:2:6:2:12 | tainted | $@ | summaries.rb:1:20:1:36 | call to source | call to source |

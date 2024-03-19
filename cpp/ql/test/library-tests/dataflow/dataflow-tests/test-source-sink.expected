@@ -123,6 +123,7 @@ astFlow
 | test.cpp:842:11:842:16 | call to source | test.cpp:844:8:844:8 | y |
 | test.cpp:846:13:846:27 | call to indirect_source | test.cpp:848:23:848:25 | rpx |
 | test.cpp:860:54:860:59 | call to source | test.cpp:861:10:861:37 | static_local_pointer_dynamic |
+| test.cpp:1050:12:1050:12 | a | test.cpp:1052:8:1052:9 | & ... |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
 | true_upon_entry.cpp:33:11:33:16 | call to source | true_upon_entry.cpp:39:8:39:8 | x |

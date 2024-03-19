@@ -1,5 +1,7 @@
 ﻿using System;
+
 using Semmle.Autobuild.Shared;
+using Semmle.Util;
 
 namespace Semmle.Autobuild.Cpp
 {

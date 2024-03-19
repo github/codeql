@@ -285,6 +285,8 @@ deprecated private module Config implements FullStateConfigSig {
 
   int fieldFlowBranchLimit() { result = min(any(Configuration config).fieldFlowBranchLimit()) }
 
+  int accessPathLimit() { result = 5 }
+
   FlowFeature getAFeature() { result = any(Configuration config).getAFeature() }
 
   predicate sourceGrouping(Node source, string sourceGroup) {

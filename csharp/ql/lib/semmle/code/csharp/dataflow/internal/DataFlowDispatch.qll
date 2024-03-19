@@ -1,6 +1,4 @@
 private import csharp
-private import cil
-private import dotnet
 private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowPublic
 private import DataFlowPrivate
@@ -14,30 +12,11 @@ private import semmle.code.csharp.frameworks.system.collections.Generic
 /**
  * Gets a source declaration of callable `c` that has a body or has
  * a flow summary.
- *
- * If the callable has both CIL and source code, return only the source
- * code version.
  */
-DotNet::Callable getCallableForDataFlow(DotNet::Callable c) {
-  exists(DotNet::Callable unboundDecl | unboundDecl = c.getUnboundDeclaration() |
-    result.hasBody() and
-    if unboundDecl.getFile().fromSource()
-    then
-      // C# callable with C# implementation in the database
-      result = unboundDecl
-    else
-      if unboundDecl instanceof CIL::Callable
-      then
-        // CIL callable with C# implementation in the database
-        unboundDecl.matchesHandle(result.(Callable))
-        or
-        // CIL callable without C# implementation in the database
-        not unboundDecl.matchesHandle(any(Callable k | k.hasBody())) and
-        result = unboundDecl
-      else
-        // C# callable without C# implementation in the database
-        unboundDecl.matchesHandle(result.(CIL::Callable))
-  )
+Callable getCallableForDataFlow(Callable c) {
+  result = c.getUnboundDeclaration() and
+  result.hasBody() and
+  result.getFile().fromSource()
 }
 
 newtype TReturnKind =
@@ -67,7 +46,7 @@ private module Cached {
    */
   cached
   newtype TDataFlowCallable =
-    TDotNetCallable(DotNet::Callable c) { c.isUnboundDeclaration() } or
+    TCallable(Callable c) { c.isUnboundDeclaration() } or
     TSummarizedCallable(DataFlowSummarizedCallable sc) or
     TFieldOrPropertyCallable(FieldOrProperty f) or
     TCapturedVariableCallable(LocalScopeVariable v) { v.isCaptured() }
@@ -80,10 +59,6 @@ private module Cached {
     } or
     TExplicitDelegateLikeCall(ControlFlow::Nodes::ElementNode cfn, DelegateLikeCall dc) {
       cfn.getAstNode() = dc
-    } or
-    TCilCall(CIL::Call call) {
-      // No need to include calls that are compiled from source
-      not call.getImplementation().getMethod().compiledFromSource()
     } or
     TSummaryCall(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
@@ -197,7 +172,7 @@ class RefReturnKind extends OutRefReturnKind, TRefReturnKind {
 /** A callable used for data flow. */
 class DataFlowCallable extends TDataFlowCallable {
   /** Gets the underlying source code callable, if any. */
-  DotNet::Callable asCallable() { this = TDotNetCallable(result) }
+  Callable asCallable() { this = TCallable(result) }
 
   /** Gets the underlying summarized callable, if any. */
   FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
@@ -208,7 +183,7 @@ class DataFlowCallable extends TDataFlowCallable {
   LocalScopeVariable asCapturedVariable() { this = TCapturedVariableCallable(result) }
 
   /** Gets the underlying callable. */
-  DotNet::Callable getUnderlyingCallable() {
+  Callable getUnderlyingCallable() {
     result = this.asCallable() or result = this.asSummarizedCallable()
   }
 
@@ -235,8 +210,7 @@ class DataFlowCallable extends TDataFlowCallable {
 abstract class DataFlowCall extends TDataFlowCall {
   /**
    * Gets a run-time target of this call. A target is always a source
-   * declaration, and if the callable has both CIL and source code, only
-   * the source code version is returned.
+   * declaration.
    */
   abstract DataFlowCallable getARuntimeTarget();
 
@@ -250,7 +224,7 @@ abstract class DataFlowCall extends TDataFlowCall {
   abstract DataFlowCallable getEnclosingCallable();
 
   /** Gets the underlying expression, if any. */
-  final DotNet::Expr getExpr() { result = this.getNode().asExpr() }
+  final Expr getExpr() { result = this.getNode().asExpr() }
 
   /** Gets the argument at position `pos` of this call. */
   final ArgumentNode getArgument(ArgumentPosition pos) { result.argumentOf(this, pos) }
@@ -346,33 +320,6 @@ class ExplicitDelegateLikeDataFlowCall extends DelegateDataFlowCall, TExplicitDe
   override string toString() { result = cfn.toString() }
 
   override Location getLocation() { result = cfn.getLocation() }
-}
-
-/** A CIL call relevant for data flow. */
-class CilDataFlowCall extends DataFlowCall, TCilCall {
-  private CIL::Call call;
-
-  CilDataFlowCall() { this = TCilCall(call) }
-
-  /** Gets the underlying CIL call. */
-  CIL::Call getCilCall() { result = call }
-
-  override DataFlowCallable getARuntimeTarget() {
-    // There is no dispatch library for CIL, so do not consider overrides for now
-    result.getUnderlyingCallable() = getCallableForDataFlow(call.getTarget())
-  }
-
-  override ControlFlow::Nodes::ElementNode getControlFlowNode() { none() }
-
-  override DataFlow::ExprNode getNode() { result.getExpr() = call }
-
-  override DataFlowCallable getEnclosingCallable() {
-    result.asCallable() = call.getEnclosingCallable()
-  }
-
-  override string toString() { result = call.toString() }
-
-  override Location getLocation() { result = call.getLocation() }
 }
 
 /**

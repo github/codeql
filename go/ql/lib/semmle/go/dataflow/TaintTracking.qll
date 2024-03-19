@@ -13,7 +13,8 @@ module TaintTracking {
   import semmle.go.dataflow.internal.tainttracking1.TaintTrackingParameter::Public
   private import semmle.go.dataflow.internal.DataFlowImplSpecific
   private import semmle.go.dataflow.internal.TaintTrackingImplSpecific
+  private import semmle.go.Locations
   private import codeql.dataflow.TaintTracking
-  import TaintFlowMake<GoDataFlow, GoTaintTracking>
+  import TaintFlowMake<Location, GoDataFlow, GoTaintTracking>
   import semmle.go.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

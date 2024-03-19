@@ -250,7 +250,7 @@ module CallGraph {
       result = node.(DataFlow::ObjectLiteralNode).getPropertySetter(_)
     ) and
     not node.getTopLevel().isExterns() and
-    // Do not track instance methods on classes
+    // Ignore writes to `this` inside a constructor, since this is already handled by instance method tracking
     not exists(DataFlow::ClassNode cls |
       node = cls.getConstructor().getReceiver()
       or

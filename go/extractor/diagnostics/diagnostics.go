@@ -493,3 +493,18 @@ func EmitNewerSystemGoRequired(requiredVersion string) {
 		noLocation,
 	)
 }
+
+func EmitExtractionFailedForProjects(path []string) {
+	emitDiagnostic(
+		"go/autobuilder/extraction-failed-for-project",
+		fmt.Sprintf("Unable to extract %d Go projects", len(path)),
+		fmt.Sprintf(
+			"The following %d Go project%s could not be extracted successfully:\n\n`%s`\n",
+			len(path),
+			plural(len(path), "", "s"),
+			strings.Join(path, "`, `")),
+		severityWarning,
+		fullVisibility,
+		noLocation,
+	)
+}

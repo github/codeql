@@ -860,3 +860,12 @@ void test_regression(size_t size) {
     *p = 42; // $ deref=L857->L860 // BAD
   }
 }
+
+
+void* g_malloc(size_t size);
+
+void test17(int size) {
+    char* p = (char*)g_malloc(size);
+    char* q = p + size; // $ alloc=L868
+    char a = *q; // $ deref=L869->L870 // BAD
+}

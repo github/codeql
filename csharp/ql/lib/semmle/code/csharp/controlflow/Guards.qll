@@ -3,8 +3,6 @@
  */
 
 import csharp
-private import cil
-private import dotnet
 private import ControlFlow::SuccessorTypes
 private import semmle.code.csharp.commons.Assertions
 private import semmle.code.csharp.commons.ComparisonTest
@@ -844,8 +842,6 @@ class NullGuardedDataFlowNode extends GuardedDataFlowNode {
 
 /** INTERNAL: Do not use. */
 module Internal {
-  private import semmle.code.cil.CallableReturns
-
   newtype TAbstractValue =
     TBooleanValue(boolean b) { b = true or b = false } or
     TIntegerValue(int i) { i = any(Expr e).getValue().toInt() } or
@@ -856,20 +852,11 @@ module Internal {
     } or
     TEmptyCollectionValue(boolean b) { b = true or b = false }
 
-  /** A callable that always returns a `null` value. */
-  private class NullCallable extends Callable {
-    NullCallable() {
-      exists(CIL::Method m | m.matchesHandle(this) | alwaysNullMethod(m) and not m.isVirtual())
-    }
-  }
-
   /** Holds if expression `e` is a `null` value. */
   predicate nullValue(Expr e) {
     e instanceof NullLiteral
     or
     e instanceof DefaultValueExpr and e.getType().isRefType()
-    or
-    e.(Call).getTarget().getUnboundDeclaration() instanceof NullCallable
   }
 
   /** Holds if expression `e2` is a `null` value whenever `e1` is. */
@@ -890,11 +877,7 @@ module Internal {
 
   /** A callable that always returns a non-`null` value. */
   private class NonNullCallable extends Callable {
-    NonNullCallable() {
-      exists(CIL::Method m | m.matchesHandle(this) | alwaysNotNullMethod(m) and not m.isVirtual())
-      or
-      this = any(SystemObjectClass c).getGetTypeMethod()
-    }
+    NonNullCallable() { this = any(SystemObjectClass c).getGetTypeMethod() }
   }
 
   /** Holds if expression `e` is a non-`null` value. */
