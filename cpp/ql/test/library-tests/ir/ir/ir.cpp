@@ -2378,4 +2378,19 @@ namespace return_routine_type {
 
 }
 
+int small_operation_should_not_be_constant_folded() {
+    return 1 + 1;
+}
+
+#define BINOP2(x) (x + x)
+#define BINOP4(x) (BINOP2(x) + BINOP2(x))
+#define BINOP8(x) (BINOP4(x) + BINOP4(x))
+#define BINOP16(x) (BINOP8(x) + BINOP8(x))
+#define BINOP32(x) (BINOP16(x) + BINOP16(x))
+#define BINOP64(x) (BINOP32(x) + BINOP32(x))
+
+int large_operation_should_be_constant_folded() {
+    return BINOP64(1);
+}
+
 // semmle-extractor-options: -std=c++20 --clang
