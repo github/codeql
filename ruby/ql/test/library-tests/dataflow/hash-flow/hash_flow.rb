@@ -1000,3 +1000,18 @@ class M54
 end
 
 M54.new.m54(:b)
+
+def m55
+    h = {}
+    h[f()] = taint(55.1)
+    keys = h.keys
+    sink(keys[:a]) # $ hasValueFlow=55.1
+end
+
+def m56
+    h = { a: taint(56.1), taint(56.2) => :b }
+    h.map do |k, v|
+        sink(v) # $ hasValueFlow=56.1
+        sink(k) # $ MISSING: hasValueFlow=56.2 SPURIOUS: hasValueFlow=56.1
+    end
+end

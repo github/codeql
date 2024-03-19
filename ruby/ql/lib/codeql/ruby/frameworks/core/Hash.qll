@@ -524,6 +524,8 @@ private class ValuesSummary extends SimpleSummarizedCallable {
   }
 }
 
+// We don't (yet) track data flow through hash keys, but this is still useful in cases where a
+// whole hash(like) object is tainted, such as `ActionController#params`.
 private class KeysSummary extends SimpleSummarizedCallable {
   KeysSummary() { this = "keys" }
 
