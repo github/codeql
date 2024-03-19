@@ -5,13 +5,23 @@ private import semmle.python.frameworks.data.ModelsAsData
 private import semmle.python.frameworks.data.internal.ApiGraphModelsExtensions
 private import queries.modeling.internal.Util as Util
 
-/**
- * Gets the namespace of an endpoint `scope`.
- */
-string getNamespace(Scope scope) { result = scope.getEnclosingModule().getPackage().getName() }
-
 abstract class Endpoint instanceof Scope {
-  string getNamespace() { result = getNamespace(this) }
+  string namespace;
+  string path;
+
+  Endpoint() {
+    this.isPublic() and
+    this.getLocation().getFile() instanceof Util::RelevantFile and
+    exists(string scopePath, int firstDot |
+      scopePath = Util::computeScopePath(this) and
+      firstDot = scopePath.indexOf(".", 0, 0)
+    |
+      namespace = scopePath.prefix(firstDot) and
+      path = scopePath.suffix(firstDot + 1)
+    )
+  }
+
+  string getNamespace() { result = namespace }
 
   string getFileName() { result = super.getLocation().getFile().getBaseName() }
 
@@ -19,9 +29,9 @@ abstract class Endpoint instanceof Scope {
 
   Location getLocation() { result = super.getLocation() }
 
-  abstract string getType();
+  string getType() { result = "" }
 
-  abstract string getName();
+  string getName() { result = path }
 
   abstract string getParameters();
 
@@ -31,25 +41,9 @@ abstract class Endpoint instanceof Scope {
 }
 
 /**
- * A callable function from source code.
+ * A callable function or method from source code.
  */
 class FunctionEndpoint extends Endpoint instanceof Function {
-  FunctionEndpoint() {
-    this.isPublic() and
-    this.(Function).getLocation().getFile() instanceof Util::RelevantFile
-  }
-
-  override string getName() { result = this.(Function).getName() }
-
-  /**
-   * Gets the unbound type name of this endpoint.
-   */
-  override string getType() {
-    result = this.(Function).getEnclosingScope().(Class).getQualifiedName()
-    or
-    not exists(this.(Function).getEnclosingScope().(Class)) and result = ""
-  }
-
   /**
    * Gets the parameter types of this endpoint.
    */

@@ -23,3 +23,25 @@ class TestFile extends File {
 class RelevantFile extends File {
   RelevantFile() { not this instanceof TestFile and not this.inStdlib() }
 }
+
+string computeScopePath(Scope scope) {
+  // base case
+  if scope instanceof Module
+  then
+    scope.(Module).isPackageInit() and
+    result = scope.(Module).getPackageName()
+    or
+    not scope.(Module).isPackageInit() and
+    result = scope.(Module).getName()
+  else
+    //recursive cases
+    if scope instanceof Class
+    then
+      result = computeScopePath(scope.(Class).getEnclosingScope()) + "." + scope.(Class).getName()
+    else
+      if scope instanceof Function
+      then
+        result =
+          computeScopePath(scope.(Function).getEnclosingScope()) + "." + scope.(Function).getName()
+      else result = "unknown: " + scope.toString()
+}
