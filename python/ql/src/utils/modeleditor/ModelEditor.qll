@@ -66,19 +66,19 @@ class FunctionEndpoint extends Endpoint instanceof Function {
 
   /** Holds if this API has a supported summary. */
   pragma[nomagic]
-  predicate hasSummary() { none() }
+  predicate hasSummary() { this instanceof SummaryCallable }
 
   /** Holds if this API is a known source. */
   pragma[nomagic]
-  predicate isSource() { none() }
+  predicate isSource() { this instanceof SourceCallable }
 
   /** Holds if this API is a known sink. */
   pragma[nomagic]
-  predicate isSink() { none() }
+  predicate isSink() { this instanceof SinkCallable }
 
   /** Holds if this API is a known neutral. */
   pragma[nomagic]
-  predicate isNeutral() { none() }
+  predicate isNeutral() { this instanceof NeutralCallable }
 
   /**
    * Holds if this API is supported by existing CodeQL libraries, that is, it is either a
@@ -102,5 +102,53 @@ class FunctionEndpoint extends Endpoint instanceof Function {
     this.isNeutral() and result = "neutral"
     or
     not this.isSupported() and result = ""
+  }
+}
+
+/**
+ * A callable where there exists a MaD sink model that applies to it.
+ */
+class SinkCallable extends Function {
+  SinkCallable() {
+    exists(string type, string path |
+      Util::pathToFunction(this, type, path) and
+      sinkModel(type, path, _)
+    )
+  }
+}
+
+/**
+ * A callable where there exists a MaD source model that applies to it.
+ */
+class SourceCallable extends Function {
+  SourceCallable() {
+    exists(string type, string path |
+      Util::pathToFunction(this, type, path) and
+      sourceModel(type, path, _)
+    )
+  }
+}
+
+/**
+ * A callable where there exists a MaD summary model that applies to it.
+ */
+class SummaryCallable extends Function {
+  SummaryCallable() {
+    exists(string type, string path |
+      Util::pathToFunction(this, type, path) and
+      summaryModel(type, path, _, _, _)
+    )
+  }
+}
+
+/**
+ * A callable where there exists a MaD neutral model that applies to it.
+ */
+class NeutralCallable extends Function {
+  NeutralCallable() {
+    exists(string type, string path |
+      Util::pathToFunction(this, type, path) and
+      neutralModel(type, path, _)
+    )
   }
 }

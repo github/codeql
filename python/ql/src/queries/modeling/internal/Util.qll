@@ -45,3 +45,25 @@ string computeScopePath(Scope scope) {
           computeScopePath(scope.(Function).getEnclosingScope()) + "." + scope.(Function).getName()
       else result = "unknown: " + scope.toString()
 }
+
+string computeFunctionName(Function function) { result = computeScopePath(function) }
+
+bindingset[fullyQualified]
+predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string path) {
+  exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
+    type2 = fullyQualified.prefix(firstDot) and
+    path =
+      ("Member[" + fullyQualified.suffix(firstDot + 1).replaceAll(".", "].Member[") + "]")
+          .replaceAll(".Member[__init__].", "")
+          .replaceAll("Member[__init__].", "")
+  )
+}
+
+/**
+ * Holds if `(type,path)` evaluates to the given function or method, when evalauted from a client of the current library.
+ */
+predicate pathToFunction(Function function, string type, string path) {
+  function.getLocation().getFile() instanceof RelevantFile and
+  function.isPublic() and // only public methods are modeled
+  fullyQualifiedToYamlFormat(computeFunctionName(function), type, path)
+}
