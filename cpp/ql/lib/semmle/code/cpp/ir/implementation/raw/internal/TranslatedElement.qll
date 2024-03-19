@@ -40,12 +40,28 @@ IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
   result.getTag() = tag
 }
 
+private Expr getAnOperand(BinaryOperation binOp) { result = binOp.getAnOperand() }
+
+private int getNumberOfBinaryOperands(BinaryOperation binOp) {
+  result = count(getAnOperand*(binOp))
+}
+
 /**
  * Holds if `expr` is a constant of a type that can be replaced directly with
  * its value in the IR. This does not include address constants as we have no
  * means to express those as QL values.
  */
-predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
+predicate isIRConstant(Expr expr) {
+  exists(expr.getValue()) and
+  // We avoid constant folding binary operations since it's often useful to
+  // mark one of those as a source in dataflow, and if the operation is
+  // constant folded it's not possible to mark its operands as a source (or
+  // sink).
+  // But to avoid creating an outrageous amount of IR from very large
+  // constant expressions we fall back to constant folding if the operation
+  // has more than 50 operands (i.e., 1 + 2 + 3 + 4 + ... + 50)
+  if expr instanceof BinaryOperation then getNumberOfBinaryOperands(expr) > 50 else any()
+}
 
 // Pulled out for performance. See
 // https://github.com/github/codeql-coreql-team/issues/1044.
