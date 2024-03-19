@@ -722,10 +722,12 @@ private predicate simple_comparison_eq(
 
 /** Rearrange various simple comparisons into `op == k` form. */
 private predicate simple_comparison_eq(Instruction test, Operand op, int k, AbstractValue value) {
-  exists(SwitchInstruction switch |
+  exists(SwitchInstruction switch, CaseEdge case |
     test = switch.getExpression() and
     op.getDef() = test and
-    value.(MatchValue).getCase().getValue().toInt() = k
+    case = value.(MatchValue).getCase() and
+    exists(switch.getSuccessor(case)) and
+    case.getValue().toInt() = k
   )
 }
 
