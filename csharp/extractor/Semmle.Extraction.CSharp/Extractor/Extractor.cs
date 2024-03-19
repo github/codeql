@@ -47,6 +47,8 @@ namespace Semmle.Extraction.CSharp
                 }
             }
 
+            public void Started(int item, int total, string source) { }
+
             public void MissingNamespace(string @namespace) { }
 
             public void MissingSummary(int types, int namespaces) { }
@@ -282,9 +284,14 @@ namespace Semmle.Extraction.CSharp
                 try
                 {
                     using var file = new FileStream(path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                    var st = CSharpSyntaxTree.ParseText(SourceText.From(file, encoding), parseOptions, path);
+                    analyser.Logger.Log(Severity.Trace, $"Parsing source file: '{path}'");
+                    var tree = CSharpSyntaxTree.ParseText(SourceText.From(file, encoding), parseOptions, path);
+                    analyser.Logger.Log(Severity.Trace, $"Source file parsed: '{path}'");
+
                     lock (ret)
-                        ret.Add(st);
+                    {
+                        ret.Add(tree);
+                    }
                 }
                 catch (IOException ex)
                 {

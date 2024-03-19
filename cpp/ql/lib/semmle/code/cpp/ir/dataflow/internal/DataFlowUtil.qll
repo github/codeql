@@ -448,7 +448,7 @@ class Node extends TIRDataFlowNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -1331,6 +1331,7 @@ private import GetConvertedResultExpression
 
 /** Holds if `node` is an `OperandNode` that should map `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeOperand(OperandNode node, Expr e, int n) {
+  not exprNodeShouldBeIndirectOperand(_, e, n) and
   exists(Instruction def |
     unique( | | getAUse(def)) = node.getOperand() and
     e = getConvertedResultExpression(def, n)
@@ -1347,6 +1348,22 @@ private predicate indirectExprNodeShouldBeIndirectOperand(
   )
 }
 
+/** Holds if `node` should be an `IndirectOperand` that maps `node.asExpr()` to `e`. */
+private predicate exprNodeShouldBeIndirectOperand(IndirectOperand node, Expr e, int n) {
+  exists(ArgumentOperand operand |
+    // When an argument (qualifier or positional) is a prvalue and the
+    // parameter (qualifier or positional) is a (const) reference, IR
+    // construction introduces a temporary `IRVariable`. The `VariableAddress`
+    // instruction has the argument as its `getConvertedResultExpression`
+    // result. However, the instruction actually represents the _address_ of
+    // the argument. So to fix this mismatch, we have the indirection of the
+    // `VariableAddressInstruction` map to the expression.
+    node.hasOperandAndIndirectionIndex(operand, 1) and
+    e = getConvertedResultExpression(operand.getDef(), n) and
+    operand.getDef().(VariableAddressInstruction).getIRVariable() instanceof IRTempVariable
+  )
+}
+
 private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, Expr e, int n) {
   exists(CallInstruction call |
     call.getStaticCallTarget() instanceof Constructor and
@@ -1359,6 +1376,7 @@ private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, 
 predicate exprNodeShouldBeInstruction(Node node, Expr e, int n) {
   not exprNodeShouldBeOperand(_, e, n) and
   not exprNodeShouldBeIndirectOutNode(_, e, n) and
+  not exprNodeShouldBeIndirectOperand(_, e, n) and
   e = getConvertedResultExpression(node.asInstruction(), n)
 }
 
@@ -1391,7 +1409,8 @@ abstract private class ExprNodeBase extends Node {
 private predicate exprNodeShouldBe(Expr e, int n) {
   exprNodeShouldBeInstruction(_, e, n) or
   exprNodeShouldBeOperand(_, e, n) or
-  exprNodeShouldBeIndirectOutNode(_, e, n)
+  exprNodeShouldBeIndirectOutNode(_, e, n) or
+  exprNodeShouldBeIndirectOperand(_, e, n)
 }
 
 private class InstructionExprNode extends ExprNodeBase, InstructionNode {
@@ -1531,6 +1550,12 @@ private class IndirectArgumentOutExprNode extends ExprNodeBase, IndirectArgument
   IndirectArgumentOutExprNode() { exprNodeShouldBeIndirectOutNode(this, _, _) }
 
   final override Expr getConvertedExpr(int n) { exprNodeShouldBeIndirectOutNode(this, result, n) }
+}
+
+private class IndirectOperandExprNode extends ExprNodeBase instanceof IndirectOperand {
+  IndirectOperandExprNode() { exprNodeShouldBeIndirectOperand(this, _, _) }
+
+  final override Expr getConvertedExpr(int n) { exprNodeShouldBeIndirectOperand(this, result, n) }
 }
 
 /**

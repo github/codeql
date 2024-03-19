@@ -327,9 +327,11 @@ class Capture
     {
         var x = "taint source";
 
-        void CapturedLocalFunction() => Check(x); // missing flow from line 328
+        void CapturedLocalFunction() => Check(x);
 
         void CapturingLocalFunction() => CapturedLocalFunction();
+
+        CapturingLocalFunction();
     }
 
     void M13()

@@ -7,18 +7,18 @@ import Assignable
 import Callable
 import Element
 import Type
-private import dotnet
 private import semmle.code.csharp.ExprOrStmtParent
 private import TypeRef
 
 /**
  * A variable. Either a variable with local scope (`LocalScopeVariable`) or a field (`Field`).
  */
-class Variable extends Assignable, DotNet::Variable, @variable {
+class Variable extends Assignable, @variable {
   override Variable getUnboundDeclaration() { result = this }
 
   override VariableAccess getAnAccess() { result.getTarget() = this }
 
+  /** Gets the type of this variable. */
   override Type getType() { none() }
 
   /** Gets the expression used to initialise this variable, if any. */
@@ -87,9 +87,10 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
  * }
  * ```
  */
-class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, TopLevelExprParent,
-  @parameter
-{
+class Parameter extends LocalScopeVariable, Attributable, TopLevelExprParent, @parameter {
+  /** Gets the raw position of this parameter, including the `this` parameter at index 0. */
+  final int getRawPosition() { this = this.getDeclaringElement().getRawParameter(result) }
+
   /**
    * Gets the position of this parameter. For example, the position of `x` is
    * 0 and the position of `y` is 1 in
@@ -100,7 +101,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * }
    * ```
    */
-  override int getPosition() { params(this, _, _, result, _, _, _) }
+  int getPosition() { params(this, _, _, result, _, _, _) }
 
   override int getIndex() { result = this.getPosition() }
 
@@ -138,7 +139,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
    * }
    * ```
    */
-  override predicate isOut() { params(this, _, _, _, 2, _, _) }
+  predicate isOut() { params(this, _, _, _, 2, _, _) }
 
   /**
    * Holds if this parameter is a value type that is passed in by reference.
@@ -193,7 +194,7 @@ class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, Top
   predicate hasExtensionMethodModifier() { params(this, _, _, _, 4, _, _) }
 
   /** Gets the declaring element of this parameter. */
-  override Parameterizable getDeclaringElement() { params(this, _, _, _, _, result, _) }
+  Parameterizable getDeclaringElement() { params(this, _, _, _, _, result, _) }
 
   override Parameter getUnboundDeclaration() { params(this, _, _, _, _, _, result) }
 
@@ -396,9 +397,7 @@ class LocalConstant extends LocalVariable, @local_constant {
  * }
  * ```
  */
-class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent, DotNet::Field,
-  @field
-{
+class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent, @field {
   /**
    * Gets the initial value of this field, if any. For example, the initial
    * value of `F` on line 2 is `20` in

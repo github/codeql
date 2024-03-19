@@ -1,5 +1,4 @@
 private import csharp
-private import dotnet
 
 pragma[nomagic]
 private predicate isTestNamespace(Namespace ns) {

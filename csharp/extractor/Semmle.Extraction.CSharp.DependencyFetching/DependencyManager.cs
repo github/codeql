@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var allFiles = GetAllFiles().ToList();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
             var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
-            var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(logger).SelectFileNames();
+            var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(logger).SelectFileNames().ToList();
             this.fileContent = new FileContent(logger, smallNonBinaryFiles);
             this.nonGeneratedSources = allNonBinaryFiles.SelectFileNamesByExtension(".cs").ToList();
             this.generatedSources = new();
@@ -814,6 +814,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private IEnumerable<string> RestoreSolutions(IEnumerable<string> solutions, out IEnumerable<string> assets)
         {
             var successCount = 0;
+            var nugetSourceFailures = 0;
             var assetFiles = new List<string>();
             var projects = solutions.SelectMany(solution =>
                 {
@@ -823,11 +824,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     {
                         successCount++;
                     }
+                    if (res.HasNugetPackageSourceError)
+                    {
+                        nugetSourceFailures++;
+                    }
                     assetFiles.AddRange(res.AssetsFilePaths);
                     return res.RestoredProjects;
                 }).ToList();
             assets = assetFiles;
             CompilationInfos.Add(("Successfully restored solution files", successCount.ToString()));
+            CompilationInfos.Add(("Failed solution restore with package source error", nugetSourceFailures.ToString()));
             CompilationInfos.Add(("Restored projects through solution files", projects.Count.ToString()));
             return projects;
         }
@@ -841,6 +847,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         private void RestoreProjects(IEnumerable<string> projects, out IEnumerable<string> assets)
         {
             var successCount = 0;
+            var nugetSourceFailures = 0;
             var assetFiles = new List<string>();
             var sync = new object();
             Parallel.ForEach(projects, new ParallelOptions { MaxDegreeOfParallelism = threads }, project =>
@@ -853,11 +860,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                     {
                         successCount++;
                     }
+                    if (res.HasNugetPackageSourceError)
+                    {
+                        nugetSourceFailures++;
+                    }
                     assetFiles.AddRange(res.AssetsFilePaths);
                 }
             });
             assets = assetFiles;
             CompilationInfos.Add(("Successfully restored project files", successCount.ToString()));
+            CompilationInfos.Add(("Failed project restore with package source error", nugetSourceFailures.ToString()));
         }
 
         [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
@@ -910,6 +922,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (notYetDownloadedPackages.Count == 0)
             {
                 return;
+            }
+
+            var multipleVersions = notYetDownloadedPackages
+                .GroupBy(p => p.Name)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+
+            foreach (var package in multipleVersions)
+            {
+                logger.LogWarning($"Found multiple not yet restored packages with name '{package}'.");
+                notYetDownloadedPackages.Remove(new(package, PackageReferenceSource.PackagesConfig));
             }
 
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");

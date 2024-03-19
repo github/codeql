@@ -2676,6 +2676,7 @@
 | local_dataflow.rb:131:7:131:8 | "" | local_dataflow.rb:131:3:131:8 | ... = ... |
 | local_dataflow.rb:132:6:132:11 | [post] self | local_dataflow.rb:133:8:133:13 | self |
 | local_dataflow.rb:132:6:132:11 | self | local_dataflow.rb:133:8:133:13 | self |
+| local_dataflow.rb:132:10:132:10 | [post] x | local_dataflow.rb:133:12:133:12 | x |
 | local_dataflow.rb:132:10:132:10 | x | local_dataflow.rb:133:12:133:12 | x |
 | local_dataflow.rb:132:12:148:10 | then ... | local_dataflow.rb:132:3:149:5 | if ... |
 | local_dataflow.rb:133:5:139:7 | SSA phi read(self) | local_dataflow.rb:141:9:141:14 | self |
@@ -2686,17 +2687,20 @@
 | local_dataflow.rb:133:8:133:13 | self | local_dataflow.rb:133:18:133:23 | self |
 | local_dataflow.rb:133:8:133:23 | SSA phi read(self) | local_dataflow.rb:134:7:134:12 | self |
 | local_dataflow.rb:133:8:133:23 | SSA phi read(x) | local_dataflow.rb:134:11:134:11 | x |
+| local_dataflow.rb:133:12:133:12 | [post] x | local_dataflow.rb:133:22:133:22 | x |
 | local_dataflow.rb:133:12:133:12 | x | local_dataflow.rb:133:22:133:22 | x |
 | local_dataflow.rb:133:18:133:23 | [post] self | local_dataflow.rb:136:7:136:12 | self |
 | local_dataflow.rb:133:18:133:23 | call to use | local_dataflow.rb:133:8:133:23 | [false] ... \|\| ... |
 | local_dataflow.rb:133:18:133:23 | call to use | local_dataflow.rb:133:8:133:23 | [true] ... \|\| ... |
 | local_dataflow.rb:133:18:133:23 | self | local_dataflow.rb:136:7:136:12 | self |
+| local_dataflow.rb:133:22:133:22 | [post] x | local_dataflow.rb:136:11:136:11 | x |
 | local_dataflow.rb:133:22:133:22 | x | local_dataflow.rb:136:11:136:11 | x |
 | local_dataflow.rb:133:24:134:12 | then ... | local_dataflow.rb:133:5:139:7 | if ... |
 | local_dataflow.rb:134:7:134:12 | call to use | local_dataflow.rb:133:24:134:12 | then ... |
 | local_dataflow.rb:135:5:138:9 | else ... | local_dataflow.rb:133:5:139:7 | if ... |
 | local_dataflow.rb:136:7:136:12 | [post] self | local_dataflow.rb:137:10:137:15 | self |
 | local_dataflow.rb:136:7:136:12 | self | local_dataflow.rb:137:10:137:15 | self |
+| local_dataflow.rb:136:11:136:11 | [post] x | local_dataflow.rb:137:14:137:14 | x |
 | local_dataflow.rb:136:11:136:11 | x | local_dataflow.rb:137:14:137:14 | x |
 | local_dataflow.rb:137:7:138:9 | SSA phi read(self) | local_dataflow.rb:133:5:139:7 | SSA phi read(self) |
 | local_dataflow.rb:137:7:138:9 | SSA phi read(x) | local_dataflow.rb:133:5:139:7 | SSA phi read(x) |
@@ -2705,6 +2709,7 @@
 | local_dataflow.rb:137:10:137:15 | self | local_dataflow.rb:137:21:137:26 | self |
 | local_dataflow.rb:137:10:137:26 | SSA phi read(self) | local_dataflow.rb:137:7:138:9 | SSA phi read(self) |
 | local_dataflow.rb:137:10:137:26 | SSA phi read(x) | local_dataflow.rb:137:7:138:9 | SSA phi read(x) |
+| local_dataflow.rb:137:14:137:14 | [post] x | local_dataflow.rb:137:25:137:25 | x |
 | local_dataflow.rb:137:14:137:14 | x | local_dataflow.rb:137:25:137:25 | x |
 | local_dataflow.rb:137:20:137:26 | [false] ! ... | local_dataflow.rb:137:10:137:26 | [false] ... && ... |
 | local_dataflow.rb:137:20:137:26 | [true] ! ... | local_dataflow.rb:137:10:137:26 | [true] ... && ... |
@@ -2717,6 +2722,7 @@
 | local_dataflow.rb:141:8:141:37 | SSA phi read(x) | local_dataflow.rb:141:5:145:7 | SSA phi read(x) |
 | local_dataflow.rb:141:9:141:14 | [post] self | local_dataflow.rb:141:20:141:25 | self |
 | local_dataflow.rb:141:9:141:14 | self | local_dataflow.rb:141:20:141:25 | self |
+| local_dataflow.rb:141:13:141:13 | [post] x | local_dataflow.rb:141:24:141:24 | x |
 | local_dataflow.rb:141:13:141:13 | x | local_dataflow.rb:141:24:141:24 | x |
 | local_dataflow.rb:141:19:141:37 | [false] ( ... ) | local_dataflow.rb:141:8:141:37 | [false] ... \|\| ... |
 | local_dataflow.rb:141:19:141:37 | [true] ( ... ) | local_dataflow.rb:141:8:141:37 | [true] ... \|\| ... |
@@ -2726,6 +2732,7 @@
 | local_dataflow.rb:141:20:141:36 | SSA phi read(x) | local_dataflow.rb:143:15:143:15 | x |
 | local_dataflow.rb:141:20:141:36 | [false] ... && ... | local_dataflow.rb:141:19:141:37 | [false] ( ... ) |
 | local_dataflow.rb:141:20:141:36 | [true] ... && ... | local_dataflow.rb:141:19:141:37 | [true] ( ... ) |
+| local_dataflow.rb:141:24:141:24 | [post] x | local_dataflow.rb:141:35:141:35 | x |
 | local_dataflow.rb:141:24:141:24 | x | local_dataflow.rb:141:35:141:35 | x |
 | local_dataflow.rb:141:30:141:36 | [false] ! ... | local_dataflow.rb:141:20:141:36 | [false] ... && ... |
 | local_dataflow.rb:141:30:141:36 | [true] ! ... | local_dataflow.rb:141:20:141:36 | [true] ... && ... |
@@ -2740,6 +2747,7 @@
 | local_dataflow.rb:143:11:143:16 | self | local_dataflow.rb:143:21:143:26 | self |
 | local_dataflow.rb:143:11:143:26 | SSA phi read(self) | local_dataflow.rb:144:11:144:16 | self |
 | local_dataflow.rb:143:11:143:26 | SSA phi read(x) | local_dataflow.rb:144:15:144:15 | x |
+| local_dataflow.rb:143:15:143:15 | [post] x | local_dataflow.rb:143:25:143:25 | x |
 | local_dataflow.rb:143:15:143:15 | x | local_dataflow.rb:143:25:143:25 | x |
 | local_dataflow.rb:143:21:143:26 | call to use | local_dataflow.rb:143:11:143:26 | [false] ... \|\| ... |
 | local_dataflow.rb:143:21:143:26 | call to use | local_dataflow.rb:143:11:143:26 | [true] ... \|\| ... |
@@ -2747,5 +2755,6 @@
 | local_dataflow.rb:144:11:144:16 | call to use | local_dataflow.rb:143:27:144:16 | then ... |
 | local_dataflow.rb:147:5:147:10 | [post] self | local_dataflow.rb:148:5:148:10 | self |
 | local_dataflow.rb:147:5:147:10 | self | local_dataflow.rb:148:5:148:10 | self |
+| local_dataflow.rb:147:9:147:9 | [post] x | local_dataflow.rb:148:9:148:9 | x |
 | local_dataflow.rb:147:9:147:9 | x | local_dataflow.rb:148:9:148:9 | x |
 | local_dataflow.rb:148:5:148:10 | call to use | local_dataflow.rb:132:12:148:10 | then ... |

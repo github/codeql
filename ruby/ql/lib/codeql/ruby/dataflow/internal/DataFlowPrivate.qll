@@ -322,7 +322,11 @@ private class Argument extends CfgNodes::ExprCfgNode {
 
 /** Holds if `n` is not a constant expression. */
 predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
-  not exists(n.getConstantValue()) and
+  not exists(ConstantValue cv |
+    cv = n.getConstantValue() and
+    // strings are mutable in Ruby
+    not cv.isString(_)
+  ) and
   not n.getExpr() instanceof ConstantAccess
 }
 

@@ -1,4 +1,18 @@
 {
+  "markdownMessage": "Java buildless extraction has completed.",
+  "severity": "unknown",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/buildless/complete",
+    "name": "Java buildless extraction completed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": false,
+    "telemetry": true
+  }
+}
+{
   "markdownMessage": "Java buildless mode dropped the following dependencies because a sibling project depends on a higher version:\n\n* `junit/junit-4.11`",
   "severity": "unknown",
   "source": {

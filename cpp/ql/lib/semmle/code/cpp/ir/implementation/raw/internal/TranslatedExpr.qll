@@ -97,19 +97,6 @@ abstract class TranslatedExpr extends TranslatedElement {
     )
   }
 
-  final override predicate hasAnImplicitDestructorCall() {
-    exists(expr.getAnImplicitDestructorCall())
-  }
-
-  final override int getFirstDestructorCallIndex() {
-    not this.handlesDestructorsExplicitly() and
-    (
-      result = max(int childId | exists(this.getChildInternal(childId))) + 1
-      or
-      not exists(this.getChildInternal(_)) and result = 0
-    )
-  }
-
   final override Locatable getAst() { result = expr }
 
   final override Declaration getFunction() { result = getEnclosingDeclaration(expr) }

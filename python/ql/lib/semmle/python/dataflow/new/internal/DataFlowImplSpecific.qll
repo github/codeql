@@ -15,7 +15,7 @@ module Public {
   import DataFlowUtil
 }
 
-module PythonDataFlow implements InputSig {
+module PythonDataFlow implements InputSig<Python::Location> {
   import Private
   import Public
 

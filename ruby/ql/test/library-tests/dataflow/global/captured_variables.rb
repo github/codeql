@@ -228,3 +228,17 @@ def multi_capture
 end
 
 multi_capture
+
+def m1
+    x = taint(19)
+    
+    fn1 = -> {
+        sink x
+    }
+
+    x = nil
+
+    fn1.call()
+end
+
+m1
