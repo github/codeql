@@ -140,7 +140,7 @@ abstract class EntryPointsByQuery extends string {
 
   predicate entryPoint(
     DataFlow::Node argument, string parameterName, string functionName, DataFlow::Node outNode,
-    string alreadyModelled, string madSummary
+    string alreadyModeled, string madSummary
   ) {
     exists(DataFlow::ParameterNode parameter, Function function |
       parameterName = parameter.getParameter().getName() and
@@ -150,7 +150,7 @@ abstract class EntryPointsByQuery extends string {
       not inStdLib(argument) and
       inStdLib(parameter) and
       function = parameter.getScope() and
-      alreadyModelled = stepsTo(argument, outNode) and
+      alreadyModeled = stepsTo(argument, outNode) and
       (
         madSummary = madSummary(argument, parameterName, function, outNode)
         or
