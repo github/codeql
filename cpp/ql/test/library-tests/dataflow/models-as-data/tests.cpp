@@ -1,6 +1,7 @@
 
 // non-MAD sources / sinks
 int source();
+int *sourcePtr();
 int *sourceIndirect();
 void sink(int val);
 
@@ -130,6 +131,7 @@ int notASummary(int x);
 int madArg0ToReturnValueFlow(int x); // $ interpretElement
 int madArg0IndirectToReturn(int *x); // $ interpretElement
 int madArg0DoubleIndirectToReturn(int **x); // $ interpretElement
+int madArg0NotIndirectToReturn(int *x); // $ interpretElement
 void madArg0ToArg1Indirect(int x, int &y); // $ interpretElement
 void madArg0IndirectToArg1Indirect(const int *x, int *y); // $ interpretElement
 
@@ -159,6 +161,9 @@ void test_summaries() {
 	sink(madArg0IndirectToReturn(&a)); // $ ir
 	sink(madArg0IndirectToReturn(a_ptr)); // $ ir
 	sink(madArg0DoubleIndirectToReturn(&a_ptr)); // $ ir
+	sink(madArg0NotIndirectToReturn(a_ptr));
+	sink(madArg0NotIndirectToReturn(sourcePtr())); // $ ir
+	sink(madArg0NotIndirectToReturn(sourceIndirect()));
 
 	madArg0ToArg1Indirect(source(), b);
 	sink(b); // $ ir
@@ -196,6 +201,7 @@ void test_summaries() {
 
 	madSinkArg0(madArg0ToReturn(remoteMadSource())); // $ ir
 	madSinkArg0(madArg0ToReturnValueFlow(remoteMadSource())); // $ ir
+	madSinkArg0(madArg0IndirectToReturn(sourcePtr()));
 	madSinkArg0(madArg0IndirectToReturn(sourceIndirect())); // $ ir
 }
 

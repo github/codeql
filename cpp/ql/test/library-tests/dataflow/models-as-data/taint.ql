@@ -10,7 +10,7 @@ module IRTest {
     predicate isSource(DataFlow::Node source) {
       source instanceof FlowSource
       or
-      source.asExpr().(FunctionCall).getTarget().getName() = ["source", "source2", "source3"]
+      source.asExpr().(FunctionCall).getTarget().getName() = ["source", "source2", "source3", "sourcePtr"]
       or
       source.asIndirectExpr(1).(FunctionCall).getTarget().getName() = "sourceIndirect"
     }

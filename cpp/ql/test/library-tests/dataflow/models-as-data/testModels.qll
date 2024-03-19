@@ -74,6 +74,7 @@ private class TestSummaries extends SummaryModelCsv {
         ";;false;madArg0ToReturnValueFlow;;;Argument[0];ReturnValue;value",
         ";;false;madArg0IndirectToReturn;;;*Argument[0];ReturnValue;taint",
         ";;false;madArg0DoubleIndirectToReturn;;;**Argument[0];ReturnValue;taint",
+        ";;false;madArg0NotIndirectToReturn;;;Argument[0];ReturnValue;taint",
         ";;false;madArg0ToArg1Indirect;;;Argument[0];*Argument[1];taint",
         ";;false;madArg0IndirectToArg1Indirect;;;*Argument[0];*Argument[1];taint",
         ";;false;madArg0FieldToReturn;;;Argument[0].value;ReturnValue;taint",
