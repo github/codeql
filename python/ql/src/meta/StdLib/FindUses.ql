@@ -29,10 +29,10 @@ import EntryPointsForAll
 // }
 from
   EntryPointsByQuery e, DataFlow::Node argument, string parameter, string functionName,
-  DataFlow::Node outNode, string alreadyModelled, string madSummary
+  DataFlow::Node outNode, string alreadyModeled, string madSummary
 where
-  e.entryPoint(argument, parameter, functionName, outNode, alreadyModelled, madSummary) and
-  alreadyModelled = "no"
+  e.entryPoint(argument, parameter, functionName, outNode, alreadyModeled, madSummary) and
+  alreadyModeled = "no"
 // select e, functionName
 select e, argument, parameter, functionName, outNode, madSummary
 // select parameter, functionName, madSummary
