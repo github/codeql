@@ -2769,6 +2769,13 @@ class TranslatedTemporaryObjectExpr extends TranslatedNonConstantExpr,
   final override Instruction getResult() { result = this.getTargetAddress() }
 }
 
+/**
+ * IR translation of a `ReuseExpr`.
+ *
+ * This translation produces a copy of the glvalue instruction holding the (unconverted) result
+ * of the reused expression. In the case where the original expression was a prvalue, the
+ * result will be a copy of the glvalue operand of a `TranslatedLoad`.
+ */
 class TranslatedReuseExpr extends TranslatedNonConstantExpr {
   override ReuseExpr expr;
 
@@ -2797,7 +2804,7 @@ class TranslatedReuseExpr extends TranslatedNonConstantExpr {
     result = this.getInstruction(OnlyInstructionTag())
   }
 
-  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) { 
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = OnlyInstructionTag() and
     operandTag instanceof UnaryOperandTag and
     if getTranslatedExpr(expr.getReusedExpr()) instanceof TranslatedLoad
