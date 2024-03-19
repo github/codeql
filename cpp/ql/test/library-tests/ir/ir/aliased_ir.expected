@@ -1457,13 +1457,15 @@ ir.cpp:
 #   43|     m43_3(unknown)      = InitializeNonLocal : 
 #   43|     m43_4(unknown)      = Chi                : total:m43_2, partial:m43_3
 #   44|     r44_1(glval<int>)   = VariableAddress[x] : 
-#   44|     r44_2(int)          = Constant[17]       : 
-#   44|     m44_3(int)          = Store[x]           : &:r44_1, r44_2
+#   44|     r44_2(int)          = Constant[5]        : 
+#   44|     r44_3(int)          = Constant[12]       : 
+#   44|     r44_4(int)          = Add                : r44_2, r44_3
+#   44|     m44_5(int)          = Store[x]           : &:r44_1, r44_4
 #   45|     r45_1(glval<short>) = VariableAddress[y] : 
 #   45|     r45_2(short)        = Constant[7]        : 
 #   45|     m45_3(short)        = Store[y]           : &:r45_1, r45_2
 #   46|     r46_1(glval<int>)   = VariableAddress[x] : 
-#   46|     r46_2(int)          = Load[x]            : &:r46_1, m44_3
+#   46|     r46_2(int)          = Load[x]            : &:r46_1, m44_5
 #   46|     r46_3(glval<short>) = VariableAddress[y] : 
 #   46|     r46_4(short)        = Load[y]            : &:r46_3, m45_3
 #   46|     r46_5(int)          = Convert            : r46_4
@@ -1472,7 +1474,7 @@ ir.cpp:
 #   46|     r46_8(glval<short>) = VariableAddress[y] : 
 #   46|     m46_9(short)        = Store[y]           : &:r46_8, r46_7
 #   47|     r47_1(glval<int>)   = VariableAddress[x] : 
-#   47|     r47_2(int)          = Load[x]            : &:r47_1, m44_3
+#   47|     r47_2(int)          = Load[x]            : &:r47_1, m44_5
 #   47|     r47_3(glval<short>) = VariableAddress[y] : 
 #   47|     r47_4(short)        = Load[y]            : &:r47_3, m46_9
 #   47|     r47_5(int)          = Convert            : r47_4
@@ -6102,14 +6104,30 @@ ir.cpp:
 #  913|     m913_6(int)         = InitializeParameter[x] : &:r913_5
 #  914|     r914_1(glval<bool>) = VariableAddress[a]     : 
 #  914|     r914_2(bool)        = Constant[1]            : 
-#  914|     m914_3(bool)        = Store[a]               : &:r914_1, r914_2
-#  915|     r915_1(glval<int>)  = VariableAddress[b]     : 
-#  915|     r915_2(bool)        = Constant[1]            : 
-#  915|     v915_3(void)        = ConditionalBranch      : r915_2
-#-----|   False -> Block 2
+#  914|     v914_3(void)        = ConditionalBranch      : r914_2
+#-----|   False -> Block 4
+#-----|   True -> Block 2
+
+#  914|   Block 1
+#  914|     r914_4(glval<bool>) = VariableAddress[#temp914:12] : 
+#  914|     r914_5(bool)        = Constant[1]                  : 
+#  914|     m914_6(bool)        = Store[#temp914:12]           : &:r914_4, r914_5
+#  914|     r914_7(glval<bool>) = VariableAddress[#temp914:12] : 
+#  914|     r914_8(bool)        = Load[#temp914:12]            : &:r914_7, m914_6
+#  914|     m914_9(bool)        = Store[a]                     : &:r914_1, r914_8
+#  915|     r915_1(glval<int>)  = VariableAddress[b]           : 
+#  915|     r915_2(bool)        = Constant[1]                  : 
+#  915|     v915_3(void)        = ConditionalBranch            : r915_2
+#-----|   False -> Block 4
+#-----|   True -> Block 3
+
+#  914|   Block 2
+#  914|     r914_10(bool) = Constant[1]       : 
+#  914|     v914_11(void) = ConditionalBranch : r914_10
+#-----|   False -> Block 4
 #-----|   True -> Block 1
 
-#  915|   Block 1
+#  915|   Block 3
 #  915|     r915_4(glval<int>) = VariableAddress[x]           : 
 #  915|     r915_5(int)        = Load[x]                      : &:r915_4, m913_6
 #  915|     r915_6(glval<int>) = VariableAddress[#temp915:11] : 
@@ -6122,7 +6140,7 @@ ir.cpp:
 #  913|     v913_8(void)       = AliasedUse                   : m913_3
 #  913|     v913_9(void)       = ExitFunction                 : 
 
-#  913|   Block 2
+#  913|   Block 4
 #  913|     v913_10(void) = Unreached : 
 
 #  949| void OperatorNew()
@@ -7718,15 +7736,17 @@ ir.cpp:
 # 1215|     r1215_4(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4]             : 
 # 1215|     r1215_5(__attribute((vector_size(16UL))) int)        = Load[vi4]                        : &:r1215_4, m1214_8
 # 1215|     r1215_6(int)                                         = Constant[3]                      : 
-# 1215|     r1215_7(int)                                         = Constant[2]                      : 
-# 1215|     r1215_8(int)                                         = Constant[1]                      : 
-# 1215|     r1215_9(int)                                         = Constant[0]                      : 
-# 1215|     r1215_10(__attribute((vector_size(16))) int)         = BuiltIn[__builtin_shufflevector] : 0:r1215_3, 1:r1215_5, 2:r1215_6, 3:r1215_7, 4:r1215_8, 5:r1215_9
-# 1215|     m1215_11(__attribute((vector_size(16UL))) int)       = Store[vi4_shuffle]               : &:r1215_1, r1215_10
+# 1215|     r1215_7(int)                                         = Constant[0]                      : 
+# 1215|     r1215_8(int)                                         = Add                              : r1215_6, r1215_7
+# 1215|     r1215_9(int)                                         = Constant[2]                      : 
+# 1215|     r1215_10(int)                                        = Constant[1]                      : 
+# 1215|     r1215_11(int)                                        = Constant[0]                      : 
+# 1215|     r1215_12(__attribute((vector_size(16))) int)         = BuiltIn[__builtin_shufflevector] : 0:r1215_3, 1:r1215_5, 2:r1215_8, 3:r1215_9, 4:r1215_10, 5:r1215_11
+# 1215|     m1215_13(__attribute((vector_size(16UL))) int)       = Store[vi4_shuffle]               : &:r1215_1, r1215_12
 # 1216|     r1216_1(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4]             : 
 # 1216|     r1216_2(__attribute((vector_size(16UL))) int)        = Load[vi4]                        : &:r1216_1, m1214_8
 # 1216|     r1216_3(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4_shuffle]     : 
-# 1216|     r1216_4(__attribute((vector_size(16UL))) int)        = Load[vi4_shuffle]                : &:r1216_3, m1215_11
+# 1216|     r1216_4(__attribute((vector_size(16UL))) int)        = Load[vi4_shuffle]                : &:r1216_3, m1215_13
 # 1216|     r1216_5(__attribute((vector_size(16UL))) int)        = Add                              : r1216_2, r1216_4
 # 1216|     r1216_6(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4]             : 
 # 1216|     m1216_7(__attribute((vector_size(16UL))) int)        = Store[vi4]                       : &:r1216_6, r1216_5
@@ -15142,10 +15162,12 @@ ir.cpp:
 # 2381|     m2381_3(unknown)    = InitializeNonLocal       : 
 # 2381|     m2381_4(unknown)    = Chi                      : total:m2381_2, partial:m2381_3
 # 2382|     r2382_1(glval<int>) = VariableAddress[#return] : 
-# 2382|     r2382_2(int)        = Constant[2]              : 
-# 2382|     m2382_3(int)        = Store[#return]           : &:r2382_1, r2382_2
+# 2382|     r2382_2(int)        = Constant[1]              : 
+# 2382|     r2382_3(int)        = Constant[1]              : 
+# 2382|     r2382_4(int)        = Add                      : r2382_2, r2382_3
+# 2382|     m2382_5(int)        = Store[#return]           : &:r2382_1, r2382_4
 # 2381|     r2381_5(glval<int>) = VariableAddress[#return] : 
-# 2381|     v2381_6(void)       = ReturnValue              : &:r2381_5, m2382_3
+# 2381|     v2381_6(void)       = ReturnValue              : &:r2381_5, m2382_5
 # 2381|     v2381_7(void)       = AliasedUse               : m2381_3
 # 2381|     v2381_8(void)       = ExitFunction             : 
 
