@@ -3,6 +3,17 @@ private import semmle.python.dataflow.new.DataFlow
 import FindUses
 import EntryPointsForAll
 
+query predicate summaries(string madSummary) {
+  exists(
+    EntryPointsByQuery e, DataFlow::Node argument, string parameter, string functionName,
+    DataFlow::Node outNode, string alreadyModelled
+  |
+    e.entryPoint(argument, parameter, functionName, outNode, alreadyModelled, madSummary) and
+    alreadyModelled = "no"
+  )
+}
+
+//
 // predicate debug(
 //   DataFlow::Node nodeFrom, DataFlow::Node nodeTo, FlowSummaryImpl::Public::SummarizedCallable sc
 // ) {
