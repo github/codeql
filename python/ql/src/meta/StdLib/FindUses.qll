@@ -62,14 +62,20 @@ predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string
 }
 
 pragma[inline]
-string computeArgumentPath(string parameter, Function function) {
+string computeArgumentPosition(string parameter, Function function) {
   exists(int index |
     parameter = function.getArg(index).getName() and
-    result = "Argument[" + index.toString() + "]"
+    result = index.toString()
   )
   or
   exists(function.getArgByName(parameter)) and
-  result = "Argument[" + parameter + ":]"
+  result = parameter + ":"
+}
+
+bindingset[parameter, function]
+pragma[inline]
+string computeArgumentPath(string parameter, Function function) {
+  result = "Argument[" + concat(computeArgumentPosition(parameter, function), ",") + "]"
 }
 
 bindingset[parameter, function]
@@ -84,14 +90,16 @@ string computeReturnPath(
   result = "ReturnValue"
   or
   outNode.(DataFlow::MethodCallNode).getObject() = argument and
-  result = "Argument[self:]"
+  result = "ReturnValue"
   or
-  outNode.(DataFlow::PostUpdateNode).getPreUpdateNode() = argument and
-  (
-    result = computeArgumentPath(parameter, function)
-    or
-    not exists(computeArgumentPath(parameter, function)) and
-    result = "Argument[?]"
+  exists(DataFlow::MethodCallNode call |
+    call.getObject() = outNode and
+    (
+      call.getArg(_) = argument
+      or
+      call.getArgByName(_) = argument
+    ) and
+    result = "Argument[self:]"
   )
 }
 
