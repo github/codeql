@@ -1,6 +1,5 @@
 import shared.FlowSummaries
 import semmle.code.csharp.dataflow.internal.ExternalFlow
-import External
 
 final private class NeutralCallableFinal = NeutralCallable;
 
@@ -18,4 +17,4 @@ class RelevantSinkCallable extends SinkCallable {
 
 import TestSummaryOutput<IncludeSummarizedCallable>
 import TestNeutralOutput<RelevantNeutralCallable>
-import TestSourceSinkOutput<RelevantSourceCallable, RelevantSinkCallable>
+import External::TestSourceSinkOutput<RelevantSourceCallable, RelevantSinkCallable>
