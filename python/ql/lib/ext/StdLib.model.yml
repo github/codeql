@@ -30,6 +30,7 @@ extensions:
       - ["gettext", "Member[gettext]", "Argument[0,message:]", "ReturnValue", "taint"]
       - ["gzip", "Member[GzipFile].Member[__init__]", "Argument[1,filename:]", "ReturnValue", "taint"]
       - ["html", "Member[escape]", "Argument[0,s:]", "ReturnValue", "taint"]
+      - ["html", "Member[parser].Member[HTMLParser].Member[feed]", "Argument[1,data:]", "Argument[self:]", "taint"]
       - ["imp", "Member[find_module]", "Argument[0,name:]", "ReturnValue", "taint"]
       - ["imp", "Member[find_module]", "Argument[1,path:]", "ReturnValue", "taint"]
       - ["logging", "Member[getLevelName]", "Argument[0,level:]", "ReturnValue", "taint"]
