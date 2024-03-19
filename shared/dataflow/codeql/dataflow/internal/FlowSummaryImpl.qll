@@ -1751,32 +1751,31 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       }
     }
 
-    /** Provides a query predicate for outputting a set of relevant flow summaries. */
-    module TestOutput {
-      final private class SummarizedCallableImplFinal = SummarizedCallableImpl;
-
-      /** A flow summary to include in the `summary/1` query predicate. */
-      abstract class RelevantSummarizedCallable extends SummarizedCallableImplFinal {
+    signature module TestSummaryInputSig {
+      /**
+       * A class of callables where the flow summary should be included
+       * in the `summary/1` query predicate.
+       */
+      class RelevantSummarizedCallable instanceof SummarizedCallableImpl {
         /** Gets the string representation of this callable used by `summary/1`. */
-        abstract string getCallableCsv();
+        string getCallableCsv();
+      }
+    }
 
+    /** Provides a query predicate for outputting a set of relevant flow summaries. */
+    module TestSummaryOutput<TestSummaryInputSig TestInput> {
+      private import TestInput
+
+      final class RelevantSummarizedCallableFinal = TestInput::RelevantSummarizedCallable;
+
+      class RelevantSummarizedCallable extends RelevantSummarizedCallableFinal instanceof SummarizedCallableImpl
+      {
         /** Holds if flow is propagated between `input` and `output`. */
         predicate relevantSummary(
           SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
         ) {
           super.propagatesFlow(input, output, preservesValue)
         }
-      }
-
-      /** A model to include in the `neutral/1` query predicate. */
-      abstract class RelevantNeutralCallable instanceof NeutralCallable {
-        /** Gets the string representation of this callable used by `neutral/1`. */
-        abstract string getCallableCsv();
-
-        /**
-         * Gets the kind of the neutral.
-         */
-        string getKind() { result = super.getKind() }
 
         string toString() { result = super.toString() }
       }
@@ -1792,13 +1791,6 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
         or
         not c.applyManualModel() and
-        c.hasProvenance(result)
-      }
-
-      private string renderProvenanceNeutral(NeutralCallable c) {
-        exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
-        or
-        not c.hasManualModel() and
         c.hasProvenance(result)
       }
 
@@ -1822,6 +1814,39 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
               + renderProvenance(c) // provenance
         )
       }
+    }
+
+    signature module TestNeutralInputSig {
+      /**
+       * A class of callables where the neutral model should be included
+       * in the `neutral/1` query predicate.
+       */
+      class RelevantNeutralCallable instanceof NeutralCallable {
+        /** Gets the string representation of this callable used by `neutral/1`. */
+        string getCallableCsv();
+      }
+    }
+
+    module TestNeutralOutput<TestNeutralInputSig TestInput> {
+      private import TestInput
+
+      final class RelevantNeutralCallableFinal = TestInput::RelevantNeutralCallable;
+
+      class RelevantNeutralCallable extends RelevantNeutralCallableFinal instanceof NeutralCallable {
+        /**
+         * Gets the kind of the neutral.
+         */
+        string getKind() { result = super.getKind() }
+
+        string toString() { result = super.toString() }
+      }
+
+      private string renderProvenance(NeutralCallable c) {
+        exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
+        or
+        not c.hasManualModel() and
+        c.hasProvenance(result)
+      }
 
       /**
        * Holds if there exists a relevant neutral callable with information roughly corresponding to `csv`.
@@ -1833,7 +1858,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
           csv =
             c.getCallableCsv() // Callable information
               + c.getKind() + ";" // kind
-              + renderProvenanceNeutral(c) // provenance
+              + renderProvenance(c) // provenance
         )
       }
     }

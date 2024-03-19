@@ -3,8 +3,12 @@ import shared.FlowSummaries
 import semmle.code.csharp.frameworks.EntityFramework::EntityFramework
 import semmle.code.csharp.dataflow.internal.ExternalFlow as ExternalFlow
 
-private class IncludeEFSummarizedCallable extends IncludeSummarizedCallable instanceof EFSummarizedCallable
-{ }
+module TestSummaryInput implements TestSummaryInputSig {
+  class RelevantSummarizedCallable extends IncludeSummarizedCallable instanceof EFSummarizedCallable
+  { }
+}
+
+import TestSummaryOutput<TestSummaryInput>
 
 query predicate sourceNode(DataFlow::Node node, string kind) {
   ExternalFlow::sourceNode(node, kind)

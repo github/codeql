@@ -1,14 +1,17 @@
 import shared.FlowSummaries
 import semmle.code.csharp.dataflow.internal.ExternalFlow
-import semmle.code.csharp.dataflow.internal.FlowSummaryImpl::Private::External
+import External
 
-private class IncludeAllSummarizedCallable extends IncludeSummarizedCallable {
-  IncludeAllSummarizedCallable() { exists(this) }
+module TestSummaryInput implements TestSummaryInputSig {
+  class RelevantSummarizedCallable = IncludeSummarizedCallable;
 }
 
-private class IncludeNeutralSummarizedCallable extends RelevantNeutralCallable {
-  /** Gets a string representing the callable in semi-colon separated format for use in flow summaries. */
-  final override string getCallableCsv() { result = asPartialNeutralModel(this) }
+module TestNeutralInput implements TestNeutralInputSig {
+  class RelevantNeutralCallable instanceof NeutralCallable {
+    final string getCallableCsv() { result = asPartialNeutralModel(this) }
+
+    string toString() { result = super.toString() }
+  }
 }
 
 module TestSourceSinkInput implements TestSourceSinkInputSig {
@@ -25,4 +28,6 @@ module TestSourceSinkInput implements TestSourceSinkInputSig {
   }
 }
 
+import TestSummaryOutput<TestSummaryInput>
+import TestNeutralOutput<TestNeutralInput>
 import TestSourceSinkOutput<TestSourceSinkInput>
