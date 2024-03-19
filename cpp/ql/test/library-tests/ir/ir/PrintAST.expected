@@ -1823,6 +1823,12 @@ destructors_for_temps.cpp:
 #   17|         getQualifier(): [ConstructorCall] call to ClassWithDestructor2
 #   17|             Type = [VoidType] void
 #   17|             ValueCategory = prvalue
+#   17|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   17|             Type = [VoidType] void
+#   17|             ValueCategory = prvalue
+#   17|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   17|               Type = [Class] ClassWithDestructor2
+#   17|               ValueCategory = xvalue
 #   17|         getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   17|             Type = [Class] ClassWithDestructor2
 #   17|             ValueCategory = prvalue(load)
@@ -1858,6 +1864,18 @@ destructors_for_temps.cpp:
 #   23|           getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   23|               Type = [Class] ClassWithDestructor2
 #   23|               ValueCategory = prvalue(load)
+#   23|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   23|             Type = [VoidType] void
+#   23|             ValueCategory = prvalue
+#   23|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   23|               Type = [Class] ClassWithDestructor2
+#   23|               ValueCategory = xvalue
+#   23|         getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor2
+#   23|             Type = [VoidType] void
+#   23|             ValueCategory = prvalue
+#   23|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   23|               Type = [Class] ClassWithDestructor2
+#   23|               ValueCategory = xvalue
 #   23|         getLeftOperand().getFullyConverted(): [CStyleCast] (int)...
 #   23|             Conversion = [IntegralConversion] integral conversion
 #   23|             Type = [IntType] int
@@ -1959,6 +1977,12 @@ destructors_for_temps.cpp:
 #   39|         getElse(): [ConstructorCall] call to ClassWithDestructor2
 #   39|             Type = [VoidType] void
 #   39|             ValueCategory = prvalue
+#   39|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   39|             Type = [VoidType] void
+#   39|             ValueCategory = prvalue
+#   39|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   39|               Type = [Class] ClassWithDestructor2
+#   39|               ValueCategory = xvalue
 #   39|         getThen().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   39|             Type = [Class] ClassWithDestructor2
 #   39|             ValueCategory = prvalue(load)
@@ -2066,6 +2090,24 @@ destructors_for_temps.cpp:
 #   51|         getElse(): [ConstructorCall] call to ClassWithDestructor2
 #   51|             Type = [VoidType] void
 #   51|             ValueCategory = prvalue
+#   51|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   51|             Type = [VoidType] void
+#   51|             ValueCategory = prvalue
+#   51|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   51|               Type = [Class] ClassWithDestructor2
+#   51|               ValueCategory = xvalue
+#   51|         getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor2
+#   51|             Type = [VoidType] void
+#   51|             ValueCategory = prvalue
+#   51|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   51|               Type = [Class] ClassWithDestructor2
+#   51|               ValueCategory = xvalue
+#   51|         getImplicitDestructorCall(2): [DestructorCall] call to ~ClassWithDestructor2
+#   51|             Type = [VoidType] void
+#   51|             ValueCategory = prvalue
+#   51|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   51|               Type = [Class] ClassWithDestructor2
+#   51|               ValueCategory = xvalue
 #   51|         getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   51|             Type = [Class] ClassWithDestructor2
 #   51|             ValueCategory = prvalue(load)
@@ -2113,6 +2155,24 @@ destructors_for_temps.cpp:
 #   55|         getElse(): [ConstructorCall] call to ClassWithDestructor2
 #   55|             Type = [VoidType] void
 #   55|             ValueCategory = prvalue
+#   55|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   55|             Type = [VoidType] void
+#   55|             ValueCategory = prvalue
+#   55|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   55|               Type = [Class] ClassWithDestructor2
+#   55|               ValueCategory = xvalue
+#   55|         getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor2
+#   55|             Type = [VoidType] void
+#   55|             ValueCategory = prvalue
+#   55|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   55|               Type = [Class] ClassWithDestructor2
+#   55|               ValueCategory = xvalue
+#   55|         getImplicitDestructorCall(2): [DestructorCall] call to ~ClassWithDestructor2
+#   55|             Type = [VoidType] void
+#   55|             ValueCategory = prvalue
+#   55|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   55|               Type = [Class] ClassWithDestructor2
+#   55|               ValueCategory = xvalue
 #   55|         getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   55|             Type = [Class] ClassWithDestructor2
 #   55|             ValueCategory = prvalue(load)
@@ -7245,6 +7305,12 @@ ir.cpp:
 #  809|                 Conversion = [BaseClassConversion] base class conversion
 #  809|                 Type = [SpecifiedType] const Base
 #  809|                 ValueCategory = lvalue
+#  809|         getImplicitDestructorCall(0): [DestructorCall] call to ~Base
+#  809|             Type = [VoidType] void
+#  809|             ValueCategory = prvalue
+#  809|           getQualifier(): [ReuseExpr] reuse of temporary object
+#  809|               Type = [Struct,VirtualBaseClass] Base
+#  809|               ValueCategory = xvalue
 #  809|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #  809|             Type = [LValueReferenceType] const Base &
 #  809|             ValueCategory = prvalue
@@ -7278,6 +7344,12 @@ ir.cpp:
 #  810|                 Conversion = [BaseClassConversion] base class conversion
 #  810|                 Type = [SpecifiedType] const Base
 #  810|                 ValueCategory = lvalue
+#  810|         getImplicitDestructorCall(0): [DestructorCall] call to ~Base
+#  810|             Type = [VoidType] void
+#  810|             ValueCategory = prvalue
+#  810|           getQualifier(): [ReuseExpr] reuse of temporary object
+#  810|               Type = [Struct,VirtualBaseClass] Base
+#  810|               ValueCategory = xvalue
 #  810|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #  810|             Type = [LValueReferenceType] const Base &
 #  810|             ValueCategory = prvalue
@@ -7485,6 +7557,12 @@ ir.cpp:
 #  823|                   Conversion = [BaseClassConversion] base class conversion
 #  823|                   Type = [SpecifiedType] const Middle
 #  823|                   ValueCategory = lvalue
+#  823|         getImplicitDestructorCall(0): [DestructorCall] call to ~Base
+#  823|             Type = [VoidType] void
+#  823|             ValueCategory = prvalue
+#  823|           getQualifier(): [ReuseExpr] reuse of temporary object
+#  823|               Type = [Struct,VirtualBaseClass] Base
+#  823|               ValueCategory = xvalue
 #  823|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #  823|             Type = [LValueReferenceType] const Base &
 #  823|             ValueCategory = prvalue
@@ -7522,6 +7600,12 @@ ir.cpp:
 #  824|                   Conversion = [BaseClassConversion] base class conversion
 #  824|                   Type = [SpecifiedType] const Middle
 #  824|                   ValueCategory = lvalue
+#  824|         getImplicitDestructorCall(0): [DestructorCall] call to ~Base
+#  824|             Type = [VoidType] void
+#  824|             ValueCategory = prvalue
+#  824|           getQualifier(): [ReuseExpr] reuse of temporary object
+#  824|               Type = [Struct,VirtualBaseClass] Base
+#  824|               ValueCategory = xvalue
 #  824|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #  824|             Type = [LValueReferenceType] const Base &
 #  824|             ValueCategory = prvalue
@@ -11685,6 +11769,12 @@ ir.cpp:
 # 1419|           getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 # 1419|               Type = [PointerType] const char *
 # 1419|               ValueCategory = prvalue
+# 1419|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 1419|             Type = [VoidType] void
+# 1419|             ValueCategory = prvalue
+# 1419|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 1419|               Type = [SpecifiedType] const String
+# 1419|               ValueCategory = xvalue
 # 1419|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 # 1419|             Type = [LValueReferenceType] const String &
 # 1419|             ValueCategory = prvalue
@@ -11708,6 +11798,12 @@ ir.cpp:
 # 1420|                 Conversion = [GlvalueConversion] glvalue conversion
 # 1420|                 Type = [SpecifiedType] const String
 # 1420|                 ValueCategory = lvalue
+# 1420|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 1420|             Type = [VoidType] void
+# 1420|             ValueCategory = prvalue
+# 1420|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 1420|               Type = [Struct] String
+# 1420|               ValueCategory = xvalue
 # 1420|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 1420|             Type = [Struct] String
 # 1420|             ValueCategory = lvalue
@@ -11725,6 +11821,12 @@ ir.cpp:
 # 1421|           getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
 # 1421|               Type = [PointerType] const char *
 # 1421|               ValueCategory = prvalue
+# 1421|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 1421|             Type = [VoidType] void
+# 1421|             ValueCategory = prvalue
+# 1421|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 1421|               Type = [Struct] String
+# 1421|               ValueCategory = xvalue
 # 1421|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 1421|             Type = [Struct] String
 # 1421|             ValueCategory = lvalue
@@ -11735,6 +11837,12 @@ ir.cpp:
 # 1422|         getQualifier(): [ConstructorCall] call to String
 # 1422|             Type = [VoidType] void
 # 1422|             ValueCategory = prvalue
+# 1422|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 1422|             Type = [VoidType] void
+# 1422|             ValueCategory = prvalue
+# 1422|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 1422|               Type = [Struct] String
+# 1422|               ValueCategory = xvalue
 # 1422|         getQualifier().getFullyConverted(): [CStyleCast] (const String)...
 # 1422|             Conversion = [PrvalueAdjustmentConversion] prvalue adjustment conversion
 # 1422|             Type = [SpecifiedType] const String
@@ -11749,6 +11857,12 @@ ir.cpp:
 # 1423|         getQualifier(): [FunctionCall] call to returnValue
 # 1423|             Type = [Struct] String
 # 1423|             ValueCategory = prvalue
+# 1423|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 1423|             Type = [VoidType] void
+# 1423|             ValueCategory = prvalue
+# 1423|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 1423|               Type = [Struct] String
+# 1423|               ValueCategory = xvalue
 # 1423|         getQualifier().getFullyConverted(): [CStyleCast] (const String)...
 # 1423|             Conversion = [PrvalueAdjustmentConversion] prvalue adjustment conversion
 # 1423|             Type = [SpecifiedType] const String
@@ -11760,6 +11874,12 @@ ir.cpp:
 # 1425|       getExpr(): [FunctionCall] call to defaultConstruct
 # 1425|           Type = [Struct] String
 # 1425|           ValueCategory = prvalue
+# 1425|         getImplicitDestructorCall(0): [DestructorCall] call to ~String
+# 1425|             Type = [VoidType] void
+# 1425|             ValueCategory = prvalue
+# 1425|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 1425|               Type = [Struct] String
+# 1425|               ValueCategory = xvalue
 # 1425|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 1425|           Type = [Struct] String
 # 1425|           ValueCategory = prvalue
@@ -11827,6 +11947,12 @@ ir.cpp:
 # 1433|         getArgument(0): [VariableAccess] d
 # 1433|             Type = [Class] destructor_only
 # 1433|             ValueCategory = prvalue(load)
+# 1433|         getImplicitDestructorCall(0): [DestructorCall] call to ~destructor_only
+# 1433|             Type = [VoidType] void
+# 1433|             ValueCategory = prvalue
+# 1433|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 1433|               Type = [Class] destructor_only
+# 1433|               ValueCategory = xvalue
 # 1433|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 1433|             Type = [Class] destructor_only
 # 1433|             ValueCategory = lvalue
@@ -11838,6 +11964,12 @@ ir.cpp:
 # 1434|             Type = [Class] destructor_only
 # 1434|             Value = [Literal] 0
 # 1434|             ValueCategory = prvalue
+# 1434|         getImplicitDestructorCall(0): [DestructorCall] call to ~destructor_only
+# 1434|             Type = [VoidType] void
+# 1434|             ValueCategory = prvalue
+# 1434|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 1434|               Type = [Class] destructor_only
+# 1434|               ValueCategory = xvalue
 # 1434|         getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 1434|             Type = [Class] destructor_only
 # 1434|             ValueCategory = prvalue(load)
@@ -11848,6 +11980,12 @@ ir.cpp:
 # 1435|         getQualifier(): [FunctionCall] call to returnValue
 # 1435|             Type = [Class] destructor_only
 # 1435|             ValueCategory = prvalue
+# 1435|         getImplicitDestructorCall(0): [DestructorCall] call to ~destructor_only
+# 1435|             Type = [VoidType] void
+# 1435|             ValueCategory = prvalue
+# 1435|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 1435|               Type = [Class] destructor_only
+# 1435|               ValueCategory = xvalue
 # 1435|         getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 1435|             Type = [Class] destructor_only
 # 1435|             ValueCategory = prvalue(load)
@@ -11855,6 +11993,12 @@ ir.cpp:
 # 1437|       getExpr(): [FunctionCall] call to defaultConstruct
 # 1437|           Type = [Class] destructor_only
 # 1437|           ValueCategory = prvalue
+# 1437|         getImplicitDestructorCall(0): [DestructorCall] call to ~destructor_only
+# 1437|             Type = [VoidType] void
+# 1437|             ValueCategory = prvalue
+# 1437|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 1437|               Type = [Class] destructor_only
+# 1437|               ValueCategory = xvalue
 # 1437|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 1437|           Type = [Class] destructor_only
 # 1437|           ValueCategory = prvalue
@@ -16229,6 +16373,12 @@ ir.cpp:
 # 2068|           getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2068|               Type = [Struct] TernaryNonPodObj
 # 2068|               ValueCategory = prvalue(load)
+# 2068|         getImplicitDestructorCall(0): [DestructorCall] call to ~TernaryNonPodObj
+# 2068|             Type = [VoidType] void
+# 2068|             ValueCategory = prvalue
+# 2068|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 2068|               Type = [Struct] TernaryNonPodObj
+# 2068|               ValueCategory = xvalue
 # 2068|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 # 2068|             Type = [LValueReferenceType] const TernaryNonPodObj &
 # 2068|             ValueCategory = prvalue
@@ -16267,6 +16417,12 @@ ir.cpp:
 # 2069|           getElse().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2069|               Type = [Struct] TernaryNonPodObj
 # 2069|               ValueCategory = prvalue(load)
+# 2069|         getImplicitDestructorCall(0): [DestructorCall] call to ~TernaryNonPodObj
+# 2069|             Type = [VoidType] void
+# 2069|             ValueCategory = prvalue
+# 2069|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 2069|               Type = [Struct] TernaryNonPodObj
+# 2069|               ValueCategory = xvalue
 # 2069|         getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 # 2069|             Type = [LValueReferenceType] const TernaryNonPodObj &
 # 2069|             ValueCategory = prvalue
@@ -16312,6 +16468,12 @@ ir.cpp:
 # 2070|         getArgument(0): [ConstructorCall] call to TernaryNonPodObj
 # 2070|             Type = [VoidType] void
 # 2070|             ValueCategory = prvalue
+# 2070|         getImplicitDestructorCall(0): [DestructorCall] call to ~TernaryNonPodObj
+# 2070|             Type = [VoidType] void
+# 2070|             ValueCategory = prvalue
+# 2070|           getQualifier(): [ReuseExpr] reuse of temporary object
+# 2070|               Type = [Struct] TernaryNonPodObj
+# 2070|               ValueCategory = xvalue
 # 2070|         getQualifier().getFullyConverted(): [ParenthesisExpr] (...)
 # 2070|             Type = [Struct] TernaryNonPodObj
 # 2070|             ValueCategory = lvalue
@@ -18767,6 +18929,12 @@ smart_ptr.cpp:
 #   12|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
 #   12|               Type = [LValueReferenceType] unique_ptr<int, default_delete<int>> &
 #   12|               ValueCategory = prvalue
+#   12|         getImplicitDestructorCall(0): [DestructorCall] call to ~unique_ptr
+#   12|             Type = [VoidType] void
+#   12|             ValueCategory = prvalue
+#   12|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   12|               Type = [ClassTemplateInstantiation] unique_ptr<int, default_delete<int>>
+#   12|               ValueCategory = xvalue
 #   12|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   12|             Type = [ClassTemplateInstantiation] unique_ptr<int, default_delete<int>>
 #   12|             ValueCategory = lvalue
@@ -18816,6 +18984,12 @@ smart_ptr.cpp:
 #   19|                 Conversion = [GlvalueConversion] glvalue conversion
 #   19|                 Type = [SpecifiedType] const shared_ptr<float>
 #   19|                 ValueCategory = lvalue
+#   19|         getImplicitDestructorCall(0): [DestructorCall] call to ~shared_ptr
+#   19|             Type = [VoidType] void
+#   19|             ValueCategory = prvalue
+#   19|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   19|               Type = [ClassTemplateInstantiation] shared_ptr<float>
+#   19|               ValueCategory = xvalue
 #   19|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   19|             Type = [ClassTemplateInstantiation] shared_ptr<float>
 #   19|             ValueCategory = lvalue
@@ -18869,6 +19043,12 @@ smart_ptr.cpp:
 #   31|                 Conversion = [GlvalueConversion] glvalue conversion
 #   31|                 Type = [SpecifiedType] const shared_ptr<const int>
 #   31|                 ValueCategory = lvalue
+#   31|         getImplicitDestructorCall(0): [DestructorCall] call to ~shared_ptr
+#   31|             Type = [VoidType] void
+#   31|             ValueCategory = prvalue
+#   31|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   31|               Type = [ClassTemplateInstantiation] shared_ptr<const int>
+#   31|               ValueCategory = xvalue
 #   31|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   31|             Type = [ClassTemplateInstantiation] shared_ptr<const int>
 #   31|             ValueCategory = lvalue
@@ -18892,6 +19072,12 @@ smart_ptr.cpp:
 #   35|                 Conversion = [GlvalueConversion] glvalue conversion
 #   35|                 Type = [SpecifiedType] const shared_ptr<int *const>
 #   35|                 ValueCategory = lvalue
+#   35|         getImplicitDestructorCall(0): [DestructorCall] call to ~shared_ptr
+#   35|             Type = [VoidType] void
+#   35|             ValueCategory = prvalue
+#   35|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   35|               Type = [ClassTemplateInstantiation] shared_ptr<int *const>
+#   35|               ValueCategory = xvalue
 #   35|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   35|             Type = [ClassTemplateInstantiation] shared_ptr<int *const>
 #   35|             ValueCategory = lvalue
@@ -18915,6 +19101,12 @@ smart_ptr.cpp:
 #   39|                 Conversion = [GlvalueConversion] glvalue conversion
 #   39|                 Type = [SpecifiedType] const shared_ptr<shared_ptr<const int>>
 #   39|                 ValueCategory = lvalue
+#   39|         getImplicitDestructorCall(0): [DestructorCall] call to ~shared_ptr
+#   39|             Type = [VoidType] void
+#   39|             ValueCategory = prvalue
+#   39|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   39|               Type = [ClassTemplateInstantiation] shared_ptr<shared_ptr<const int>>
+#   39|               ValueCategory = xvalue
 #   39|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   39|             Type = [ClassTemplateInstantiation] shared_ptr<shared_ptr<const int>>
 #   39|             ValueCategory = lvalue
@@ -18938,6 +19130,12 @@ smart_ptr.cpp:
 #   43|                 Conversion = [GlvalueConversion] glvalue conversion
 #   43|                 Type = [SpecifiedType] const shared_ptr<const shared_ptr<int>>
 #   43|                 ValueCategory = lvalue
+#   43|         getImplicitDestructorCall(0): [DestructorCall] call to ~shared_ptr
+#   43|             Type = [VoidType] void
+#   43|             ValueCategory = prvalue
+#   43|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   43|               Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<int>>
+#   43|               ValueCategory = xvalue
 #   43|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   43|             Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<int>>
 #   43|             ValueCategory = lvalue
@@ -18961,6 +19159,12 @@ smart_ptr.cpp:
 #   47|                 Conversion = [GlvalueConversion] glvalue conversion
 #   47|                 Type = [SpecifiedType] const shared_ptr<const shared_ptr<const int>>
 #   47|                 ValueCategory = lvalue
+#   47|         getImplicitDestructorCall(0): [DestructorCall] call to ~shared_ptr
+#   47|             Type = [VoidType] void
+#   47|             ValueCategory = prvalue
+#   47|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   47|               Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<const int>>
+#   47|               ValueCategory = xvalue
 #   47|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   47|             Type = [ClassTemplateInstantiation] shared_ptr<const shared_ptr<const int>>
 #   47|             ValueCategory = lvalue
