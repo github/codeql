@@ -229,6 +229,23 @@ private predicate usedAsCondition(Expr expr) {
   )
 }
 
+private predicate isInConditionalEvaluation(Expr e) {
+  exists(ConditionalExpr cond |
+    e = cond.getThen() and not cond.isTwoOperand()
+    or
+    e = cond.getElse()
+  )
+  or
+  exists(BinaryLogicalOperation blo | e = blo.getRightOperand())
+  or
+  isInConditionalEvaluation(getRealParent(e))
+}
+
+private predicate isConditionalTemporaryDestructorCall(DestructorCall dc) {
+  isInConditionalEvaluation(dc.getQualifier().(ReuseExpr).getReusedExpr())
+}
+
+
 /**
  * Holds if `conv` is an `InheritanceConversion` that requires a `TranslatedLoad`, despite not being
  * marked as having an lvalue-to-rvalue conversion.
@@ -778,7 +795,16 @@ newtype TTranslatedElement =
   } or
   // The side effect that initializes newly-allocated memory.
   TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) } or
-  TTranslatedStaticStorageDurationVarInit(Variable var) { Raw::varHasIRFunc(var) }
+  TTranslatedStaticStorageDurationVarInit(Variable var) { Raw::varHasIRFunc(var) } or
+  TTranslatedFullExpr(Expr expr) {
+    not ignoreExpr(expr) and
+    (
+      not getRealParent(expr) instanceof Expr or
+      // weird cases with initializers - how to refactor/rename this?
+      getRealParent(expr) instanceof ThrowExpr or
+      exists(TemporaryObjectExpr temp | temp.getExpr() = expr)
+    )
+  }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
@@ -1161,3 +1187,22 @@ abstract class TranslatedRootElement extends TranslatedElement {
     this instanceof TTranslatedStaticStorageDurationVarInit
   }
 }
+
+abstract class TranslatedFullExpr extends TranslatedElement, TTranslatedFullExpr {
+  Expr expr;
+
+  TranslatedFullExpr() { this = TTranslatedFullExpr(expr) }
+
+  Expr getExpr() { result = expr }
+
+  final override Expr getAst() { result = expr }
+
+  final override Declaration getFunction() { result = expr.getEnclosingFunction() }
+
+  final override string toString() { result = "full expr for " + expr.toString() }
+}
+
+/**
+ * Gets the TranslatedExpr for the specified full expression, if any.
+ */
+TranslatedFullExpr getTranslatedFullExpr(Expr expr) { result.getExpr() = expr }
