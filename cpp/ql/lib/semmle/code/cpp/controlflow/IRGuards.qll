@@ -456,7 +456,10 @@ class IRGuardCondition extends Instruction {
   /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
   cached
   predicate comparesLt(Operand left, Operand right, int k, boolean isLessThan, boolean testIsTrue) {
-    compares_lt(this, left, right, k, isLessThan, testIsTrue)
+    exists(BooleanValue value |
+      compares_lt(this, left, right, k, isLessThan, value) and
+      value.getValue() = testIsTrue
+    )
   }
 
   /**
@@ -465,8 +468,8 @@ class IRGuardCondition extends Instruction {
    */
   cached
   predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean isLessThan) {
-    exists(boolean testIsTrue |
-      compares_lt(this, left, right, k, isLessThan, testIsTrue) and this.controls(block, testIsTrue)
+    exists(AbstractValue value |
+      compares_lt(this, left, right, k, isLessThan, value) and this.valueControls(block, value)
     )
   }
 
@@ -478,9 +481,9 @@ class IRGuardCondition extends Instruction {
   predicate ensuresLtEdge(
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean isLessThan
   ) {
-    exists(boolean testIsTrue |
-      compares_lt(this, left, right, k, isLessThan, testIsTrue) and
-      this.controlsEdge(pred, succ, testIsTrue)
+    exists(AbstractValue value |
+      compares_lt(this, left, right, k, isLessThan, value) and
+      this.valueControlsEdge(pred, succ, value)
     )
   }
 
@@ -746,31 +749,28 @@ private predicate complex_eq(
 
 /** Holds if `left < right + k` evaluates to `isLt` given that test is `testIsTrue`. */
 private predicate compares_lt(
-  Instruction test, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue
+  Instruction test, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   /* In the simple case, the test is the comparison, so isLt = testIsTrue */
-  simple_comparison_lt(test, left, right, k) and isLt = true and testIsTrue = true
+  simple_comparison_lt(test, left, right, k) and
+  value.(BooleanValue).getValue() = isLt
   or
-  simple_comparison_lt(test, left, right, k) and isLt = false and testIsTrue = false
-  or
-  complex_lt(test, left, right, k, isLt, testIsTrue)
+  complex_lt(test, left, right, k, isLt, value)
   or
   /* (not (left < right + k)) => (left >= right + k) */
-  exists(boolean isGe | isLt = isGe.booleanNot() |
-    compares_ge(test, left, right, k, isGe, testIsTrue)
-  )
+  exists(boolean isGe | isLt = isGe.booleanNot() | compares_ge(test, left, right, k, isGe, value))
   or
   /* (x is true => (left < right + k)) => (!x is false => (left < right + k)) */
-  exists(boolean isFalse | testIsTrue = isFalse.booleanNot() |
-    compares_lt(test.(LogicalNotInstruction).getUnary(), left, right, k, isLt, isFalse)
+  exists(AbstractValue dual | value = dual.getDualValue() |
+    compares_lt(test.(LogicalNotInstruction).getUnary(), left, right, k, isLt, dual)
   )
 }
 
 /** `(a < b + k) => (b > a - k) => (b >= a + (1-k))` */
 private predicate compares_ge(
-  Instruction test, Operand left, Operand right, int k, boolean isGe, boolean testIsTrue
+  Instruction test, Operand left, Operand right, int k, boolean isGe, AbstractValue value
 ) {
-  exists(int onemk | k = 1 - onemk | compares_lt(test, right, left, onemk, isGe, testIsTrue))
+  exists(int onemk | k = 1 - onemk | compares_lt(test, right, left, onemk, isGe, value))
 }
 
 /** Rearrange various simple comparisons into `left < right + k` form. */
@@ -797,41 +797,41 @@ private predicate simple_comparison_lt(CompareInstruction cmp, Operand left, Ope
 }
 
 private predicate complex_lt(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
-  sub_lt(cmp, left, right, k, isLt, testIsTrue)
+  sub_lt(cmp, left, right, k, isLt, value)
   or
-  add_lt(cmp, left, right, k, isLt, testIsTrue)
+  add_lt(cmp, left, right, k, isLt, value)
 }
 
 // left - x < right + c => left < right + (c+x)
 // left < (right - x) + c => left < right + (c-x)
 private predicate sub_lt(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   exists(SubInstruction lhs, int c, int x |
-    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, value) and
     left = lhs.getLeftOperand() and
     x = int_value(lhs.getRight()) and
     k = c + x
   )
   or
   exists(SubInstruction rhs, int c, int x |
-    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, value) and
     right = rhs.getLeftOperand() and
     x = int_value(rhs.getRight()) and
     k = c - x
   )
   or
   exists(PointerSubInstruction lhs, int c, int x |
-    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, value) and
     left = lhs.getLeftOperand() and
     x = int_value(lhs.getRight()) and
     k = c + x
   )
   or
   exists(PointerSubInstruction rhs, int c, int x |
-    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, value) and
     right = rhs.getLeftOperand() and
     x = int_value(rhs.getRight()) and
     k = c - x
@@ -841,10 +841,10 @@ private predicate sub_lt(
 // left + x < right + c => left < right + (c-x)
 // left < (right + x) + c => left < right + (c+x)
 private predicate add_lt(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, boolean testIsTrue
+  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   exists(AddInstruction lhs, int c, int x |
-    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, value) and
     (
       left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
       or
@@ -854,7 +854,7 @@ private predicate add_lt(
   )
   or
   exists(AddInstruction rhs, int c, int x |
-    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, value) and
     (
       right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
       or
@@ -864,7 +864,7 @@ private predicate add_lt(
   )
   or
   exists(PointerAddInstruction lhs, int c, int x |
-    compares_lt(cmp, lhs.getAUse(), right, c, isLt, testIsTrue) and
+    compares_lt(cmp, lhs.getAUse(), right, c, isLt, value) and
     (
       left = lhs.getLeftOperand() and x = int_value(lhs.getRight())
       or
@@ -874,7 +874,7 @@ private predicate add_lt(
   )
   or
   exists(PointerAddInstruction rhs, int c, int x |
-    compares_lt(cmp, left, rhs.getAUse(), c, isLt, testIsTrue) and
+    compares_lt(cmp, left, rhs.getAUse(), c, isLt, value) and
     (
       right = rhs.getLeftOperand() and x = int_value(rhs.getRight())
       or
