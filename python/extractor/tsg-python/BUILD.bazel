@@ -12,5 +12,5 @@ codeql_rust_binary(
     visibility = ["//visibility:public"],
     deps = all_crate_deps(
         normal = True,
-    ) + ["//python/extractor/tsg-python/tree-sitter-python"],
+    ) + ["//python/extractor/tsg-python/tsp"],
 )
