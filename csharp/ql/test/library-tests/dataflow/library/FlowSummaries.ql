@@ -2,32 +2,20 @@ import shared.FlowSummaries
 import semmle.code.csharp.dataflow.internal.ExternalFlow
 import External
 
-module TestSummaryInput implements TestSummaryInputSig {
-  class RelevantSummarizedCallable = IncludeSummarizedCallable;
+final private class NeutralCallableFinal = NeutralCallable;
+
+class RelevantNeutralCallable extends NeutralCallableFinal {
+  final string getCallableCsv() { result = asPartialNeutralModel(this) }
 }
 
-module TestNeutralInput implements TestNeutralInputSig {
-  class RelevantNeutralCallable instanceof NeutralCallable {
-    final string getCallableCsv() { result = asPartialNeutralModel(this) }
-
-    string toString() { result = super.toString() }
-  }
+class RelevantSourceCallable extends SourceCallable {
+  string getCallableCsv() { result = asPartialModel(this) }
 }
 
-module TestSourceSinkInput implements TestSourceSinkInputSig {
-  class RelevantSourceCallable instanceof SourceCallable {
-    string getCallableCsv() { result = asPartialModel(this) }
-
-    string toString() { result = super.toString() }
-  }
-
-  class RelevantSinkCallable instanceof SinkCallable {
-    string getCallableCsv() { result = asPartialModel(this) }
-
-    string toString() { result = super.toString() }
-  }
+class RelevantSinkCallable extends SinkCallable {
+  string getCallableCsv() { result = asPartialModel(this) }
 }
 
-import TestSummaryOutput<TestSummaryInput>
-import TestNeutralOutput<TestNeutralInput>
-import TestSourceSinkOutput<TestSourceSinkInput>
+import TestSummaryOutput<IncludeSummarizedCallable>
+import TestNeutralOutput<RelevantNeutralCallable>
+import TestSourceSinkOutput<RelevantSourceCallable, RelevantSinkCallable>

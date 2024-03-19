@@ -1692,28 +1692,16 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
           )
         }
 
-        signature module TestSourceSinkInputSig {
-          /**
-           * A class or source elements relevant for testing.
-           */
-          class RelevantSourceCallable instanceof SourceOrSinkElement {
-            /** Gets the string representation of this callable used by `source/1`. */
-            string getCallableCsv();
-          }
-
-          /**
-           * A class or sink elements relevant for testing.
-           */
-          class RelevantSinkCallable instanceof SourceOrSinkElement {
-            /** Gets the string representation of this callable used by `source/1`. */
-            string getCallableCsv();
-          }
+        /** A source or sink relevant for testing. */
+        signature class RelevantSourceOrSinkElementSig extends SourceOrSinkElement {
+          /** Gets the string representation of this callable used by `source/1` or `sink/1`. */
+          string getCallableCsv();
         }
 
         /** Provides query predicates for outputting a set of relevant sources and sinks. */
-        module TestSourceSinkOutput<TestSourceSinkInputSig TestSourceSinkInput> {
-          private import TestSourceSinkInput
-
+        module TestSourceSinkOutput<
+          RelevantSourceOrSinkElementSig RelevantSource, RelevantSourceOrSinkElementSig RelevantSink>
+        {
           /**
            * Holds if there exists a relevant source callable with information roughly corresponding to `csv`.
            * Used for testing.
@@ -1721,10 +1709,10 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
            * ext is hardcoded to empty.
            */
           query predicate source(string csv) {
-            exists(RelevantSourceCallable c, string output, string kind, Provenance provenance |
-              sourceElement(c, output, kind, provenance) and
+            exists(RelevantSource s, string output, string kind, Provenance provenance |
+              sourceElement(s, output, kind, provenance) and
               csv =
-                c.getCallableCsv() // Callable information
+                s.getCallableCsv() // Callable information
                   + output + ";" // output
                   + kind + ";" // kind
                   + provenance // provenance
@@ -1738,10 +1726,10 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
            * ext is hardcoded to empty.
            */
           query predicate sink(string csv) {
-            exists(RelevantSinkCallable c, string input, string kind, Provenance provenance |
-              sinkElement(c, input, kind, provenance) and
+            exists(RelevantSink s, string input, string kind, Provenance provenance |
+              sinkElement(s, input, kind, provenance) and
               csv =
-                c.getCallableCsv() // Callable information
+                s.getCallableCsv() // Callable information
                   + input + ";" // input
                   + kind + ";" // kind
                   + provenance // provenance
@@ -1751,35 +1739,18 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       }
     }
 
-    signature module TestSummaryInputSig {
-      /**
-       * A class of callables where the flow summary should be included
-       * in the `summary/1` query predicate.
-       */
-      class RelevantSummarizedCallable instanceof SummarizedCallableImpl {
-        /** Gets the string representation of this callable used by `summary/1`. */
-        string getCallableCsv();
-      }
+    /** A summarized callable relevant for testing. */
+    signature class RelevantSummarizedCallableSig extends SummarizedCallableImpl {
+      /** Gets the string representation of this callable used by `summary/1`. */
+      string getCallableCsv();
+
+      predicate relevantSummary(
+        SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      );
     }
 
     /** Provides a query predicate for outputting a set of relevant flow summaries. */
-    module TestSummaryOutput<TestSummaryInputSig TestInput> {
-      private import TestInput
-
-      final class RelevantSummarizedCallableFinal = TestInput::RelevantSummarizedCallable;
-
-      class RelevantSummarizedCallable extends RelevantSummarizedCallableFinal instanceof SummarizedCallableImpl
-      {
-        /** Holds if flow is propagated between `input` and `output`. */
-        predicate relevantSummary(
-          SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-        ) {
-          super.propagatesFlow(input, output, preservesValue)
-        }
-
-        string toString() { result = super.toString() }
-      }
-
+    module TestSummaryOutput<RelevantSummarizedCallableSig RelevantSummarizedCallable> {
       /** Render the kind in the format used in flow summaries. */
       private string renderKind(boolean preservesValue) {
         preservesValue = true and result = "value"
@@ -1816,31 +1787,13 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
       }
     }
 
-    signature module TestNeutralInputSig {
-      /**
-       * A class of callables where the neutral model should be included
-       * in the `neutral/1` query predicate.
-       */
-      class RelevantNeutralCallable instanceof NeutralCallable {
-        /** Gets the string representation of this callable used by `neutral/1`. */
-        string getCallableCsv();
-      }
+    /** A summarized callable relevant for testing. */
+    signature class RelevantNeutralCallableSig extends NeutralCallable {
+      /** Gets the string representation of this callable used by `neutral/1`. */
+      string getCallableCsv();
     }
 
-    module TestNeutralOutput<TestNeutralInputSig TestInput> {
-      private import TestInput
-
-      final class RelevantNeutralCallableFinal = TestInput::RelevantNeutralCallable;
-
-      class RelevantNeutralCallable extends RelevantNeutralCallableFinal instanceof NeutralCallable {
-        /**
-         * Gets the kind of the neutral.
-         */
-        string getKind() { result = super.getKind() }
-
-        string toString() { result = super.toString() }
-      }
-
+    module TestNeutralOutput<RelevantNeutralCallableSig RelevantNeutralCallable> {
       private string renderProvenance(NeutralCallable c) {
         exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
         or
