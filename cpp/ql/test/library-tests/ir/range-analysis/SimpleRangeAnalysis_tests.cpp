@@ -1014,7 +1014,7 @@ void test_overflow() {
   if ((x + y) <= 512) {
     range(x); // $ range===2147483647
     range(y); // $ range===256
-    range(x + y); // $ range=<=2147483903 overflow=+
+    range(x + y); // $ range===-2147483393
   }
 }
 
