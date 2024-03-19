@@ -185,7 +185,7 @@ void test_summaries() {
 	mc2.ptr = &e;
 	sink(madArg0FieldToReturn(mc2)); // $ MISSING: ir
 	sink(madArg0IndirectFieldToReturn(&mc2)); // $ MISSING: ir
-	sink(madArg0FieldIndirectToReturn(mc2)); // $ MISSING: ir
+	sink(madArg0FieldIndirectToReturn(mc2)); // $ ir
 
 	sink(madArg0ToReturnField(0).value);
 	sink(madArg0ToReturnField(source()).value); // $ MISSING: ir
@@ -195,7 +195,7 @@ void test_summaries() {
 
 	MyContainer rtn2 = madArg0ToReturnFieldIndirect(source());
 	int *rtn2_ptr = rtn2.ptr;
-	sink(*rtn2_ptr); // $ MISSING: ir
+	sink(*rtn2_ptr); // $ ir
 
 	// test source + sinks + summaries together
 

@@ -39,7 +39,7 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
   string encodeContent(ContentSet cs, string arg) {
     exists(FieldContent c |
       cs.isSingleton(c) and
-      result = "Field" and
+      result = indirectionString(c.getIndirectionIndex()) + "Field" and
       arg = c.getField().getName()
     )
   }
@@ -79,6 +79,15 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
         // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
         pos = -1 and result = TIndirectionPosition(pos, indirection + 1)
       )
+    )
+  }
+
+  bindingset[token]
+  ContentSet decodeUnknownContent(AccessPath::AccessPathTokenBase token) {
+    // field content (with indirection support).
+    exists(FieldContent c |
+      result.isSingleton(c) and
+      token = indirectionString(c.getIndirectionIndex()) + c.getField().getName()
     )
   }
 }
