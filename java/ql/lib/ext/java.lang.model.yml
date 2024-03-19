@@ -114,7 +114,7 @@ extensions:
       - ["java.lang", "String", False, "indent", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "intern", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "join", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "String", False, "lines", "()", "", "Argument[this]", "ReturnValue.Element", "taint", "df-generated"]
+      - ["java.lang", "String", False, "lines", "()", "", "Argument[this]", "ReturnValue.Element", "taint", "df-manual"]
       - ["java.lang", "String", False, "repeat", "(int)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "replace", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "String", False, "replace", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
