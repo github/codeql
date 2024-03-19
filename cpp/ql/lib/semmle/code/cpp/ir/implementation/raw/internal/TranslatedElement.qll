@@ -40,15 +40,25 @@ IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
   result.getTag() = tag
 }
 
-/** Gets an operand of `binOp`. */
-private Expr getAnOperand(BinaryOperation binOp) { result = binOp.getAnOperand() }
+/** Gets an operand of `op`. */
+private Expr getAnOperand(Operation op) { result = op.getAnOperand() }
 
 /**
- * Gets the number of nested operands of `binOp`. For example,
+ * Gets the number of nested operands of `op`. For example,
  * `getNumberOfNestedBinaryOperands((1 + 2) + 3))` is `3`.
  */
-private int getNumberOfNestedBinaryOperands(BinaryOperation binOp) {
-  result = count(getAnOperand*(binOp))
+private int getNumberOfNestedBinaryOperands(Operation op) { result = count(getAnOperand*(op)) }
+
+/**
+ * Holds if `op` should not be translated to a `ConstantInstruction` as part of
+ * IR generation, even if the value of `op` is constant.
+ */
+private predicate ignoreConstantValue(Operation op) {
+  op instanceof BitwiseAndExpr
+  or
+  op instanceof BitwiseOrExpr
+  or
+  op instanceof BitwiseXorExpr
 }
 
 /**
@@ -58,14 +68,14 @@ private int getNumberOfNestedBinaryOperands(BinaryOperation binOp) {
  */
 predicate isIRConstant(Expr expr) {
   exists(expr.getValue()) and
-  // We avoid constant folding binary operations since it's often useful to
+  // We avoid constant folding certain operations since it's often useful to
   // mark one of those as a source in dataflow, and if the operation is
   // constant folded it's not possible to mark its operands as a source (or
   // sink).
   // But to avoid creating an outrageous amount of IR from very large
   // constant expressions we fall back to constant folding if the operation
   // has more than 50 operands (i.e., 1 + 2 + 3 + 4 + ... + 50)
-  if expr instanceof BinaryOperation then getNumberOfNestedBinaryOperands(expr) > 50 else any()
+  if ignoreConstantValue(expr) then getNumberOfNestedBinaryOperands(expr) > 50 else any()
 }
 
 // Pulled out for performance. See

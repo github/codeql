@@ -1357,10 +1357,8 @@ ir.cpp:
 #   43|     mu43_2(unknown)     = AliasedDefinition  : 
 #   43|     mu43_3(unknown)     = InitializeNonLocal : 
 #   44|     r44_1(glval<int>)   = VariableAddress[x] : 
-#   44|     r44_2(int)          = Constant[5]        : 
-#   44|     r44_3(int)          = Constant[12]       : 
-#   44|     r44_4(int)          = Add                : r44_2, r44_3
-#   44|     mu44_5(int)         = Store[x]           : &:r44_1, r44_4
+#   44|     r44_2(int)          = Constant[17]       : 
+#   44|     mu44_3(int)         = Store[x]           : &:r44_1, r44_2
 #   45|     r45_1(glval<short>) = VariableAddress[y] : 
 #   45|     r45_2(short)        = Constant[7]        : 
 #   45|     mu45_3(short)       = Store[y]           : &:r45_1, r45_2
@@ -5749,39 +5747,14 @@ ir.cpp:
 #  913|     mu913_5(int)        = InitializeParameter[x] : &:r913_4
 #  914|     r914_1(glval<bool>) = VariableAddress[a]     : 
 #  914|     r914_2(bool)        = Constant[1]            : 
-#  914|     v914_3(void)        = ConditionalBranch      : r914_2
-#-----|   False -> Block 1
-#-----|   True -> Block 4
+#  914|     mu914_3(bool)       = Store[a]               : &:r914_1, r914_2
+#  915|     r915_1(glval<int>)  = VariableAddress[b]     : 
+#  915|     r915_2(bool)        = Constant[1]            : 
+#  915|     v915_3(void)        = ConditionalBranch      : r915_2
+#-----|   False -> Block 3
+#-----|   True -> Block 2
 
-#  914|   Block 1
-#  914|     r914_4(glval<bool>) = VariableAddress[#temp914:12] : 
-#  914|     r914_5(bool)        = Constant[0]                  : 
-#  914|     mu914_6(bool)       = Store[#temp914:12]           : &:r914_4, r914_5
-#-----|   Goto -> Block 2
-
-#  914|   Block 2
-#  914|     r914_7(glval<bool>) = VariableAddress[#temp914:12] : 
-#  914|     r914_8(bool)        = Load[#temp914:12]            : &:r914_7, ~m?
-#  914|     mu914_9(bool)       = Store[a]                     : &:r914_1, r914_8
-#  915|     r915_1(glval<int>)  = VariableAddress[b]           : 
-#  915|     r915_2(bool)        = Constant[1]                  : 
-#  915|     v915_3(void)        = ConditionalBranch            : r915_2
-#-----|   False -> Block 7
-#-----|   True -> Block 6
-
-#  914|   Block 3
-#  914|     r914_10(glval<bool>) = VariableAddress[#temp914:12] : 
-#  914|     r914_11(bool)        = Constant[1]                  : 
-#  914|     mu914_12(bool)       = Store[#temp914:12]           : &:r914_10, r914_11
-#-----|   Goto -> Block 2
-
-#  914|   Block 4
-#  914|     r914_13(bool) = Constant[1]       : 
-#  914|     v914_14(void) = ConditionalBranch : r914_13
-#-----|   False -> Block 1
-#-----|   True -> Block 3
-
-#  915|   Block 5
+#  915|   Block 1
 #  915|     r915_4(glval<int>) = VariableAddress[#temp915:11] : 
 #  915|     r915_5(int)        = Load[#temp915:11]            : &:r915_4, ~m?
 #  915|     mu915_6(int)       = Store[b]                     : &:r915_1, r915_5
@@ -5790,19 +5763,19 @@ ir.cpp:
 #  913|     v913_7(void)       = AliasedUse                   : ~m?
 #  913|     v913_8(void)       = ExitFunction                 : 
 
-#  915|   Block 6
+#  915|   Block 2
 #  915|     r915_7(glval<int>) = VariableAddress[x]           : 
 #  915|     r915_8(int)        = Load[x]                      : &:r915_7, ~m?
 #  915|     r915_9(glval<int>) = VariableAddress[#temp915:11] : 
 #  915|     mu915_10(int)      = Store[#temp915:11]           : &:r915_9, r915_8
-#-----|   Goto -> Block 5
+#-----|   Goto -> Block 1
 
-#  915|   Block 7
+#  915|   Block 3
 #  915|     r915_11(glval<int>) = VariableAddress[x]           : 
 #  915|     r915_12(int)        = Load[x]                      : &:r915_11, ~m?
 #  915|     r915_13(glval<int>) = VariableAddress[#temp915:11] : 
 #  915|     mu915_14(int)       = Store[#temp915:11]           : &:r915_13, r915_12
-#-----|   Goto -> Block 5
+#-----|   Goto -> Block 1
 
 #  949| void OperatorNew()
 #  949|   Block 0
@@ -7293,13 +7266,11 @@ ir.cpp:
 # 1215|     r1215_4(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4]             : 
 # 1215|     r1215_5(__attribute((vector_size(16UL))) int)        = Load[vi4]                        : &:r1215_4, ~m?
 # 1215|     r1215_6(int)                                         = Constant[3]                      : 
-# 1215|     r1215_7(int)                                         = Constant[0]                      : 
-# 1215|     r1215_8(int)                                         = Add                              : r1215_6, r1215_7
-# 1215|     r1215_9(int)                                         = Constant[2]                      : 
-# 1215|     r1215_10(int)                                        = Constant[1]                      : 
-# 1215|     r1215_11(int)                                        = Constant[0]                      : 
-# 1215|     r1215_12(__attribute((vector_size(16))) int)         = BuiltIn[__builtin_shufflevector] : 0:r1215_3, 1:r1215_5, 2:r1215_8, 3:r1215_9, 4:r1215_10, 5:r1215_11
-# 1215|     mu1215_13(__attribute((vector_size(16UL))) int)      = Store[vi4_shuffle]               : &:r1215_1, r1215_12
+# 1215|     r1215_7(int)                                         = Constant[2]                      : 
+# 1215|     r1215_8(int)                                         = Constant[1]                      : 
+# 1215|     r1215_9(int)                                         = Constant[0]                      : 
+# 1215|     r1215_10(__attribute((vector_size(16))) int)         = BuiltIn[__builtin_shufflevector] : 0:r1215_3, 1:r1215_5, 2:r1215_6, 3:r1215_7, 4:r1215_8, 5:r1215_9
+# 1215|     mu1215_11(__attribute((vector_size(16UL))) int)      = Store[vi4_shuffle]               : &:r1215_1, r1215_10
 # 1216|     r1216_1(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4]             : 
 # 1216|     r1216_2(__attribute((vector_size(16UL))) int)        = Load[vi4]                        : &:r1216_1, ~m?
 # 1216|     r1216_3(glval<__attribute((vector_size(16UL))) int>) = VariableAddress[vi4_shuffle]     : 
@@ -14013,8 +13984,8 @@ ir.cpp:
 # 2381|     mu2381_3(unknown)   = InitializeNonLocal       : 
 # 2382|     r2382_1(glval<int>) = VariableAddress[#return] : 
 # 2382|     r2382_2(int)        = Constant[1]              : 
-# 2382|     r2382_3(int)        = Constant[1]              : 
-# 2382|     r2382_4(int)        = Add                      : r2382_2, r2382_3
+# 2382|     r2382_3(int)        = Constant[2]              : 
+# 2382|     r2382_4(int)        = BitXor                   : r2382_2, r2382_3
 # 2382|     mu2382_5(int)       = Store[#return]           : &:r2382_1, r2382_4
 # 2381|     r2381_4(glval<int>) = VariableAddress[#return] : 
 # 2381|     v2381_5(void)       = ReturnValue              : &:r2381_4, ~m?
@@ -14027,7 +13998,7 @@ ir.cpp:
 # 2392|     mu2392_2(unknown)   = AliasedDefinition        : 
 # 2392|     mu2392_3(unknown)   = InitializeNonLocal       : 
 # 2393|     r2393_1(glval<int>) = VariableAddress[#return] : 
-# 2393|     r2393_2(int)        = Constant[64]             : 
+# 2393|     r2393_2(int)        = Constant[0]              : 
 # 2393|     mu2393_3(int)       = Store[#return]           : &:r2393_1, r2393_2
 # 2392|     r2392_4(glval<int>) = VariableAddress[#return] : 
 # 2392|     v2392_5(void)       = ReturnValue              : &:r2392_4, ~m?

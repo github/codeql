@@ -18674,45 +18674,45 @@ ir.cpp:
 # 2381|   <params>: 
 # 2381|   getEntryPoint(): [BlockStmt] { ... }
 # 2382|     getStmt(0): [ReturnStmt] return ...
-# 2382|       getExpr(): [AddExpr] ... + ...
+# 2382|       getExpr(): [BitwiseXorExpr] ... ^ ...
 # 2382|           Type = [IntType] int
-# 2382|           Value = [AddExpr] 2
+# 2382|           Value = [BitwiseXorExpr] 3
 # 2382|           ValueCategory = prvalue
 # 2382|         getLeftOperand(): [Literal] 1
 # 2382|             Type = [IntType] int
 # 2382|             Value = [Literal] 1
 # 2382|             ValueCategory = prvalue
-# 2382|         getRightOperand(): [Literal] 1
+# 2382|         getRightOperand(): [Literal] 2
 # 2382|             Type = [IntType] int
-# 2382|             Value = [Literal] 1
+# 2382|             Value = [Literal] 2
 # 2382|             ValueCategory = prvalue
 # 2392| [TopLevelFunction] int large_operation_should_be_constant_folded()
 # 2392|   <params>: 
 # 2392|   getEntryPoint(): [BlockStmt] { ... }
 # 2393|     getStmt(0): [ReturnStmt] return ...
-# 2393|       getExpr(): [AddExpr] ... + ...
+# 2393|       getExpr(): [BitwiseXorExpr] ... ^ ...
 # 2393|           Type = [IntType] int
-# 2393|           Value = [AddExpr] 64
+# 2393|           Value = [BitwiseXorExpr] 0
 # 2393|           ValueCategory = prvalue
-# 2393|         getLeftOperand(): [AddExpr] ... + ...
+# 2393|         getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|             Type = [IntType] int
-# 2393|             Value = [AddExpr] 32
+# 2393|             Value = [BitwiseXorExpr] 0
 # 2393|             ValueCategory = prvalue
-# 2393|           getLeftOperand(): [AddExpr] ... + ...
+# 2393|           getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|               Type = [IntType] int
-# 2393|               Value = [AddExpr] 16
+# 2393|               Value = [BitwiseXorExpr] 0
 # 2393|               ValueCategory = prvalue
-# 2393|             getLeftOperand(): [AddExpr] ... + ...
+# 2393|             getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [AddExpr] 8
+# 2393|                 Value = [BitwiseXorExpr] 0
 # 2393|                 ValueCategory = prvalue
-# 2393|               getLeftOperand(): [AddExpr] ... + ...
+# 2393|               getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18722,9 +18722,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18736,19 +18736,19 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
-# 2393|               getRightOperand(): [AddExpr] ... + ...
+# 2393|               getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18758,9 +18758,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18772,31 +18772,31 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|               getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|               getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|             getRightOperand(): [AddExpr] ... + ...
+# 2393|             getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [AddExpr] 8
+# 2393|                 Value = [BitwiseXorExpr] 0
 # 2393|                 ValueCategory = prvalue
-# 2393|               getLeftOperand(): [AddExpr] ... + ...
+# 2393|               getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18806,9 +18806,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18820,19 +18820,19 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
-# 2393|               getRightOperand(): [AddExpr] ... + ...
+# 2393|               getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18842,9 +18842,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18856,43 +18856,43 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|               getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|               getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|             getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [ParenthesisExpr] 8
+# 2393|                 Value = [ParenthesisExpr] 0
 # 2393|                 ValueCategory = prvalue
 # 2393|             getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [ParenthesisExpr] 8
+# 2393|                 Value = [ParenthesisExpr] 0
 # 2393|                 ValueCategory = prvalue
-# 2393|           getRightOperand(): [AddExpr] ... + ...
+# 2393|           getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|               Type = [IntType] int
-# 2393|               Value = [AddExpr] 16
+# 2393|               Value = [BitwiseXorExpr] 0
 # 2393|               ValueCategory = prvalue
-# 2393|             getLeftOperand(): [AddExpr] ... + ...
+# 2393|             getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [AddExpr] 8
+# 2393|                 Value = [BitwiseXorExpr] 0
 # 2393|                 ValueCategory = prvalue
-# 2393|               getLeftOperand(): [AddExpr] ... + ...
+# 2393|               getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18902,9 +18902,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18916,19 +18916,19 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
-# 2393|               getRightOperand(): [AddExpr] ... + ...
+# 2393|               getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18938,9 +18938,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18952,31 +18952,31 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|               getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|               getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|             getRightOperand(): [AddExpr] ... + ...
+# 2393|             getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [AddExpr] 8
+# 2393|                 Value = [BitwiseXorExpr] 0
 # 2393|                 ValueCategory = prvalue
-# 2393|               getLeftOperand(): [AddExpr] ... + ...
+# 2393|               getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -18986,9 +18986,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19000,19 +19000,19 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
-# 2393|               getRightOperand(): [AddExpr] ... + ...
+# 2393|               getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19022,9 +19022,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19036,55 +19036,55 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|               getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|               getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|             getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [ParenthesisExpr] 8
+# 2393|                 Value = [ParenthesisExpr] 0
 # 2393|                 ValueCategory = prvalue
 # 2393|             getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [ParenthesisExpr] 8
+# 2393|                 Value = [ParenthesisExpr] 0
 # 2393|                 ValueCategory = prvalue
 # 2393|           getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|               Type = [IntType] int
-# 2393|               Value = [ParenthesisExpr] 16
+# 2393|               Value = [ParenthesisExpr] 0
 # 2393|               ValueCategory = prvalue
 # 2393|           getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|               Type = [IntType] int
-# 2393|               Value = [ParenthesisExpr] 16
+# 2393|               Value = [ParenthesisExpr] 0
 # 2393|               ValueCategory = prvalue
-# 2393|         getRightOperand(): [AddExpr] ... + ...
+# 2393|         getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|             Type = [IntType] int
-# 2393|             Value = [AddExpr] 32
+# 2393|             Value = [BitwiseXorExpr] 0
 # 2393|             ValueCategory = prvalue
-# 2393|           getLeftOperand(): [AddExpr] ... + ...
+# 2393|           getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|               Type = [IntType] int
-# 2393|               Value = [AddExpr] 16
+# 2393|               Value = [BitwiseXorExpr] 0
 # 2393|               ValueCategory = prvalue
-# 2393|             getLeftOperand(): [AddExpr] ... + ...
+# 2393|             getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [AddExpr] 8
+# 2393|                 Value = [BitwiseXorExpr] 0
 # 2393|                 ValueCategory = prvalue
-# 2393|               getLeftOperand(): [AddExpr] ... + ...
+# 2393|               getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19094,9 +19094,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19108,19 +19108,19 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
-# 2393|               getRightOperand(): [AddExpr] ... + ...
+# 2393|               getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19130,9 +19130,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19144,31 +19144,31 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|               getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|               getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|             getRightOperand(): [AddExpr] ... + ...
+# 2393|             getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [AddExpr] 8
+# 2393|                 Value = [BitwiseXorExpr] 0
 # 2393|                 ValueCategory = prvalue
-# 2393|               getLeftOperand(): [AddExpr] ... + ...
+# 2393|               getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19178,9 +19178,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19192,19 +19192,19 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
-# 2393|               getRightOperand(): [AddExpr] ... + ...
+# 2393|               getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19214,9 +19214,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19228,43 +19228,43 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|               getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|               getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|             getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [ParenthesisExpr] 8
+# 2393|                 Value = [ParenthesisExpr] 0
 # 2393|                 ValueCategory = prvalue
 # 2393|             getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [ParenthesisExpr] 8
+# 2393|                 Value = [ParenthesisExpr] 0
 # 2393|                 ValueCategory = prvalue
-# 2393|           getRightOperand(): [AddExpr] ... + ...
+# 2393|           getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|               Type = [IntType] int
-# 2393|               Value = [AddExpr] 16
+# 2393|               Value = [BitwiseXorExpr] 0
 # 2393|               ValueCategory = prvalue
-# 2393|             getLeftOperand(): [AddExpr] ... + ...
+# 2393|             getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [AddExpr] 8
+# 2393|                 Value = [BitwiseXorExpr] 0
 # 2393|                 ValueCategory = prvalue
-# 2393|               getLeftOperand(): [AddExpr] ... + ...
+# 2393|               getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19274,9 +19274,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19288,19 +19288,19 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
-# 2393|               getRightOperand(): [AddExpr] ... + ...
+# 2393|               getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19310,9 +19310,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19324,31 +19324,31 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|               getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|               getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|             getRightOperand(): [AddExpr] ... + ...
+# 2393|             getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [AddExpr] 8
+# 2393|                 Value = [BitwiseXorExpr] 0
 # 2393|                 ValueCategory = prvalue
-# 2393|               getLeftOperand(): [AddExpr] ... + ...
+# 2393|               getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19358,9 +19358,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19372,19 +19372,19 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
-# 2393|               getRightOperand(): [AddExpr] ... + ...
+# 2393|               getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [AddExpr] 4
+# 2393|                   Value = [BitwiseXorExpr] 0
 # 2393|                   ValueCategory = prvalue
-# 2393|                 getLeftOperand(): [AddExpr] ... + ...
+# 2393|                 getLeftOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19394,9 +19394,9 @@ ir.cpp:
 # 2393|                       Type = [IntType] int
 # 2393|                       Value = [Literal] 1
 # 2393|                       ValueCategory = prvalue
-# 2393|                 getRightOperand(): [AddExpr] ... + ...
+# 2393|                 getRightOperand(): [BitwiseXorExpr] ... ^ ...
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [AddExpr] 2
+# 2393|                     Value = [BitwiseXorExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                   getLeftOperand(): [Literal] 1
 # 2393|                       Type = [IntType] int
@@ -19408,47 +19408,47 @@ ir.cpp:
 # 2393|                       ValueCategory = prvalue
 # 2393|                 getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|                 getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                     Type = [IntType] int
-# 2393|                     Value = [ParenthesisExpr] 2
+# 2393|                     Value = [ParenthesisExpr] 0
 # 2393|                     ValueCategory = prvalue
 # 2393|               getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|               getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                   Type = [IntType] int
-# 2393|                   Value = [ParenthesisExpr] 4
+# 2393|                   Value = [ParenthesisExpr] 0
 # 2393|                   ValueCategory = prvalue
 # 2393|             getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [ParenthesisExpr] 8
+# 2393|                 Value = [ParenthesisExpr] 0
 # 2393|                 ValueCategory = prvalue
 # 2393|             getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|                 Type = [IntType] int
-# 2393|                 Value = [ParenthesisExpr] 8
+# 2393|                 Value = [ParenthesisExpr] 0
 # 2393|                 ValueCategory = prvalue
 # 2393|           getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|               Type = [IntType] int
-# 2393|               Value = [ParenthesisExpr] 16
+# 2393|               Value = [ParenthesisExpr] 0
 # 2393|               ValueCategory = prvalue
 # 2393|           getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|               Type = [IntType] int
-# 2393|               Value = [ParenthesisExpr] 16
+# 2393|               Value = [ParenthesisExpr] 0
 # 2393|               ValueCategory = prvalue
 # 2393|         getLeftOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|             Type = [IntType] int
-# 2393|             Value = [ParenthesisExpr] 32
+# 2393|             Value = [ParenthesisExpr] 0
 # 2393|             ValueCategory = prvalue
 # 2393|         getRightOperand().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|             Type = [IntType] int
-# 2393|             Value = [ParenthesisExpr] 32
+# 2393|             Value = [ParenthesisExpr] 0
 # 2393|             ValueCategory = prvalue
 # 2393|       getExpr().getFullyConverted(): [ParenthesisExpr] (...)
 # 2393|           Type = [IntType] int
-# 2393|           Value = [ParenthesisExpr] 64
+# 2393|           Value = [ParenthesisExpr] 0
 # 2393|           ValueCategory = prvalue
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
