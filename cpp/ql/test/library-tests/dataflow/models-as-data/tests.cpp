@@ -183,15 +183,15 @@ void test_summaries() {
 	e = source();
 	mc2.value = source();
 	mc2.ptr = &e;
-	sink(madArg0FieldToReturn(mc2)); // $ MISSING: ir
-	sink(madArg0IndirectFieldToReturn(&mc2)); // $ MISSING: ir
-	sink(madArg0FieldIndirectToReturn(mc2)); // $ ir
+	sink(madArg0FieldToReturn(mc2)); // $ ir
+	sink(madArg0IndirectFieldToReturn(&mc2)); // $ ir
+	sink(madArg0FieldIndirectToReturn(mc2)); // $ MISSING: ir
 
 	sink(madArg0ToReturnField(0).value);
-	sink(madArg0ToReturnField(source()).value); // $ MISSING: ir
+	sink(madArg0ToReturnField(source()).value); // $ ir
 
 	MyContainer *rtn1 = madArg0ToReturnIndirectField(source());
-	sink(rtn1->value); // $ MISSING: ir
+	sink(rtn1->value); // $ ir
 
 	MyContainer rtn2 = madArg0ToReturnFieldIndirect(source());
 	int *rtn2_ptr = rtn2.ptr;
@@ -310,7 +310,7 @@ void test_class_members() {
 	sink(*ptr); // $ ir
 
 	mc3.madArg0ToField(source());
-	sink(mc3.val); // $ MISSING: ir
+	sink(mc3.val); // $ ir
 
 	mc4 = source2();
 	mc4_ptr = &mc4;
@@ -323,7 +323,7 @@ void test_class_members() {
 	sink(source2().notASummary());
 
 	mc5.val = source();
-	sink(mc5.madFieldToReturn()); // $ MISSING: ir
+	sink(mc5.madFieldToReturn()); // $ ir
 
 	mnc2 = source3();
 	mnc2_ptr = &mnc2;
@@ -339,7 +339,7 @@ void test_class_members() {
 	sink(mc6.madSelfToReturn()); // $ ir
 
 	mc7.madArg0ToField(source());
-	sink(mc7.madFieldToReturn()); // $ MISSING: ir
+	sink(mc7.madFieldToReturn()); // $ ir
 
 	// test taint involving qualifier
 

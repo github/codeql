@@ -39,7 +39,8 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
   string encodeContent(ContentSet cs, string arg) {
     exists(FieldContent c |
       cs.isSingleton(c) and
-      result = indirectionString(c.getIndirectionIndex()) + "Field" and
+      // FieldContent indices have 0 for the address, 1 for content, so we need to subtract one.
+      result = indirectionString(c.getIndirectionIndex() - 1) + "Field" and
       arg = c.getField().getName()
     )
   }
@@ -87,7 +88,8 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
     // field content (with indirection support).
     exists(FieldContent c |
       result.isSingleton(c) and
-      token = indirectionString(c.getIndirectionIndex()) + c.getField().getName()
+      // FieldContent indices have 0 for the address, 1 for content, so we need to subtract one.
+      token = indirectionString(c.getIndirectionIndex() - 1) + c.getField().getName()
     )
   }
 }

@@ -2317,6 +2317,8 @@ private Field getAFieldWithSize(Union u, int bytes) {
 cached
 private newtype TContent =
   TFieldContent(Field f, int indirectionIndex) {
+    // the indirection index for field content starts at 1 (because `TFieldContent` is thought of as
+    // the address of the field, `FieldAddress` in the IR).
     indirectionIndex = [1 .. Ssa::getMaxIndirectionsForType(f.getUnspecifiedType())] and
     // Reads and writes of union fields are tracked using `UnionContent`.
     not f.getDeclaringType() instanceof Union
@@ -2326,7 +2328,8 @@ private newtype TContent =
       f = u.getAField() and
       bytes = getFieldSize(f) and
       // We key `UnionContent` by the union instead of its fields since a write to one
-      // field can be read by any read of the union's fields.
+      // field can be read by any read of the union's fields. Again, the indirection index
+      // is 1-based (because 0 is considered the address).
       indirectionIndex =
         [1 .. max(Ssa::getMaxIndirectionsForType(getAFieldWithSize(u, bytes).getUnspecifiedType()))]
     )
