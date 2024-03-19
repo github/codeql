@@ -31,3 +31,4 @@ extensions:
       extensible: neutralModel
     data:
       - ["javax.crypto.spec", "SecretKeySpec", "SecretKeySpec", "(byte[],String)", "summary", "df-manual"]
+      - ["javax.crypto.spec", "SecretKeySpec", "SecretKeySpec", "(byte[],int,int,String)", "summary", "df-manual"]
