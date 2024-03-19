@@ -93,7 +93,7 @@ string computeReturnPath(
   result = "ReturnValue"
   or
   exists(DataFlow::MethodCallNode call |
-    call.getObject() = outNode and
+    call.getObject() = outNode.(DataFlow::PostUpdateNode).getPreUpdateNode() and
     (
       call.getArg(_) = argument
       or
