@@ -11,6 +11,8 @@ module IRTest {
       source instanceof FlowSource
       or
       source.asExpr().(FunctionCall).getTarget().getName() = ["source", "source2", "source3"]
+      or
+      source.asIndirectExpr(1).(FunctionCall).getTarget().getName() = "sourceIndirect"
     }
 
     predicate isSink(DataFlow::Node sink) {

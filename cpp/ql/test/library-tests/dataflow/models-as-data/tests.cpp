@@ -1,6 +1,7 @@
 
 // non-MAD sources / sinks
 int source();
+int *sourceIndirect();
 void sink(int val);
 
 // --- global MAD sources ---
@@ -195,7 +196,7 @@ void test_summaries() {
 
 	madSinkArg0(madArg0ToReturn(remoteMadSource())); // $ ir
 	madSinkArg0(madArg0ToReturnValueFlow(remoteMadSource())); // $ ir
-	madSinkArg0(madArg0IndirectToReturn(remoteMadSourceIndirect())); // $ MISSING: ir*/
+	madSinkArg0(madArg0IndirectToReturn(sourceIndirect())); // $ ir
 }
 
 // --- MAD class members ---
