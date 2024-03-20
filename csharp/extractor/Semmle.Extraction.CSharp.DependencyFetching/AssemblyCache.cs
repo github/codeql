@@ -1,10 +1,84 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
 {
+    /// <summary>
+    /// Used to represent a path to an assembly or a directory containing assemblies
+    /// and a selector function to determine which files to include, when indexing the assemblies.
+    /// </summary>
+    internal sealed class AssemblyPath(string p, Func<string, bool> includeFileName)
+    {
+        public string Path => p;
+
+        public AssemblyPath(string p) : this(p, _ => true) { }
+
+        public static implicit operator AssemblyPath(string path) => new(path);
+
+        /// <summary>
+        /// Finds all assemblies nested within the directory `path`
+        /// and adds them to the a list of assembly names to index.
+        /// Indexing is performed at a later stage. This only collects the names.
+        /// </summary>
+        /// <param name="dir">The directory to index.</param>
+        private void AddReferenceDirectory(List<string> dllsToIndex, ILogger logger)
+        {
+            foreach (var dll in new DirectoryInfo(p).EnumerateFiles("*.dll", SearchOption.AllDirectories))
+            {
+                if (includeFileName(dll.Name))
+                {
+                    dllsToIndex.Add(dll.FullName);
+                }
+                else
+                {
+                    logger.LogInfo($"AssemblyPath: Skipping {dll.FullName}.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds all assemblies in `p` that should be indexed and adds them to
+        /// the list of assembly names to index.
+        /// </summary>
+        /// <param name="dllsToIndex">List of assembly names to index.</param>
+        /// <param name="logger">Logger</param>
+        public void Process(List<string> dllsToIndex, ILogger logger)
+        {
+            if (File.Exists(p))
+            {
+                if (includeFileName(System.IO.Path.GetFileName(p)))
+                {
+                    dllsToIndex.Add(p);
+                }
+                else
+                {
+                    logger.LogInfo($"AssemblyPath: Skipping {p}.");
+                }
+                return;
+            }
+
+            if (Directory.Exists(p))
+            {
+                logger.LogInfo($"AssemblyPath: Finding reference DLLs in {p}...");
+                AddReferenceDirectory(dllsToIndex, logger);
+            }
+            else
+            {
+                logger.LogInfo("AssemblyCache: Path not found: " + p);
+            }
+        }
+
+        public override bool Equals(object? obj) =>
+            obj is AssemblyPath ap && p.Equals(ap.Path);
+
+        public override int GetHashCode() => p.GetHashCode();
+
+        public override string ToString() => p;
+    }
+
     /// <summary>
     /// Manages the set of assemblies.
     /// Searches for assembly DLLs, indexes them and provides
@@ -20,42 +94,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// assembly cache.
         /// </param>
         /// <param name="logger">Callback for progress.</param>
-        public AssemblyCache(IEnumerable<string> paths, IEnumerable<string> frameworkPaths, ILogger logger)
+        public AssemblyCache(IEnumerable<AssemblyPath> paths, IEnumerable<string> frameworkPaths, ILogger logger)
         {
             this.logger = logger;
             foreach (var path in paths)
             {
-                if (File.Exists(path))
-                {
-                    dllsToIndex.Add(path);
-                    continue;
-                }
-
-                if (Directory.Exists(path))
-                {
-                    logger.LogInfo($"Finding reference DLLs in {path}...");
-                    AddReferenceDirectory(path);
-                }
-                else
-                {
-                    logger.LogInfo("AssemblyCache: Path not found: " + path);
-                }
+                path.Process(dllsToIndex, logger);
             }
             IndexReferences(frameworkPaths);
-        }
-
-        /// <summary>
-        /// Finds all assemblies nested within a directory
-        /// and adds them to its index.
-        /// (Indexing is performed at a later stage by IndexReferences()).
-        /// </summary>
-        /// <param name="dir">The directory to index.</param>
-        private void AddReferenceDirectory(string dir)
-        {
-            foreach (var dll in new DirectoryInfo(dir).EnumerateFiles("*.dll", SearchOption.AllDirectories))
-            {
-                dllsToIndex.Add(dll.FullName);
-            }
         }
 
         /// <summary>
