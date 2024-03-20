@@ -39,7 +39,8 @@ string computeScopePath(Scope scope) {
     //recursive cases
     if scope instanceof Class
     then
-      result = computeScopePath(scope.(Class).getEnclosingScope()) + "." + scope.(Class).getName()
+      result =
+        computeScopePath(scope.(Class).getEnclosingScope()) + "." + scope.(Class).getName() + "!"
     else
       if scope instanceof Function
       then
@@ -55,21 +56,30 @@ predicate fullyQualifiedToYamlFormat(string fullyQualified, string type2, string
   exists(int firstDot | firstDot = fullyQualified.indexOf(".", 0, 0) |
     type2 = fullyQualified.prefix(firstDot) and
     path =
-      ("Member[" + fullyQualified.suffix(firstDot + 1).replaceAll(".", "].Member[") + "]")
-          .replaceAll(".Member[__init__].", "")
-          .replaceAll("Member[__init__].", "")
+      (
+        "Member[" +
+          fullyQualified
+              .suffix(firstDot + 1)
+              .replaceAll("!.", "]InstanceMember[")
+              .replaceAll(".", "].Member[")
+              .replaceAll("]InstanceMember[", "].Subclass.Instance.Member[") + "]"
+      ).replaceAll(".Member[__init__].", "").replaceAll("Member[__init__].", "").replaceAll("!", "")
   )
 }
 
 pragma[inline]
 string computeArgumentPosition(string parameter, Function function) {
-  exists(int index |
+  exists(int index, int offset, int adjusted_index |
+    (if function.isMethod() then offset = -1 else offset = 0) and
+    adjusted_index = index + offset and
+    adjusted_index >= 0
+  |
     parameter = function.getArg(index).getName() and
-    result = index.toString()
+    result = adjusted_index.toString()
   )
   or
   exists(function.getArgByName(parameter)) and
-  result = parameter + ":"
+  if parameter = "self" then result = parameter else result = parameter + ":"
 }
 
 bindingset[parameter, function]
@@ -99,7 +109,7 @@ string computeReturnPath(
       or
       call.getArgByName(_) = argument
     ) and
-    result = "Argument[self:]"
+    result = "Argument[self]"
   )
 }
 
