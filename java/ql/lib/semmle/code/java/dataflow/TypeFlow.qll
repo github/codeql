@@ -14,7 +14,7 @@ private import semmle.code.java.dataflow.internal.BaseSSA
 private import semmle.code.java.controlflow.Guards
 private import codeql.typeflow.TypeFlow
 
-private module Input implements TypeFlowInput {
+private module Input implements TypeFlowInput<J::Location> {
   private newtype TTypeFlowNode =
     TField(Field f) { not f.getType() instanceof PrimitiveType } or
     TSsa(BaseSsaVariable ssa) { not ssa.getSourceVariable().getType() instanceof PrimitiveType } or
@@ -36,12 +36,6 @@ private module Input implements TypeFlowInput {
       result = this.asSsa().toString() or
       result = this.asExpr().toString() or
       result = this.asMethod().toString()
-    }
-
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     }
 
     Location getLocation() {
@@ -164,7 +158,7 @@ private module Input implements TypeFlowInput {
    */
   pragma[nomagic]
   private predicate upcastCand(TypeFlowNode n, RefType t1, RefType t1e, RefType t2, RefType t2e) {
-    exists(TypeFlowNode next | step(n, next) or Make<Input>::joinStep(n, next) |
+    exists(TypeFlowNode next | step(n, next) or Make<J::Location, Input>::joinStep(n, next) |
       n.getType() = t1 and
       next.getType() = t2 and
       t1.getErasure() = t1e and
@@ -356,7 +350,7 @@ private module Input implements TypeFlowInput {
 
 cached
 private module TypeFlowBounds {
-  private module TypeFlow = Make<Input>;
+  private module TypeFlow = Make<J::Location, Input>;
 
   /**
    * Holds if the runtime type of `f` is bounded by `t` and if this bound is

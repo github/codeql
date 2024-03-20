@@ -8,8 +8,10 @@
  * explicit or implicit cast that lost type information.
  */
 
+private import codeql.util.Location
+
 /** Provides the input specification. */
-signature module TypeFlowInput {
+signature module TypeFlowInput<LocationSig Location> {
   /**
    * A node for which type information is available. For example, expressions
    * and method declarations.
@@ -21,16 +23,8 @@ signature module TypeFlowInput {
     /** Gets the type of this node. */
     Type getType();
 
-    /**
-     * Holds if this element is at the specified location.
-     * The location spans column `startcolumn` of line `startline` to
-     * column `endcolumn` of line `endline` in file `filepath`.
-     * For more information, see
-     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-     */
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    );
+    /** Gets the location of this node. */
+    Location getLocation();
   }
 
   /**
@@ -112,6 +106,6 @@ private import internal.TypeFlowImpl as Impl
 /**
  * Provides an implementation of type-flow using input `I`.
  */
-module Make<TypeFlowInput I> {
-  import Impl::TypeFlow<I>
+module Make<LocationSig Location, TypeFlowInput<Location> I> {
+  import Impl::TypeFlow<Location, I>
 }

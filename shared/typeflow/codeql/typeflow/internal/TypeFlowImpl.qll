@@ -1,7 +1,8 @@
 private import codeql.typeflow.TypeFlow
+private import codeql.util.Location
 private import codeql.util.Unit
 
-module TypeFlow<TypeFlowInput I> {
+module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private import I
 
   /**
@@ -56,7 +57,7 @@ module TypeFlow<TypeFlowInput I> {
       n1 =
         rank[r](TypeFlowNode n, int startline, int startcolumn |
           edge(n, n2) and
-          n.hasLocationInfo(_, startline, startcolumn, _, _)
+          n.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
         |
           n order by startline, startcolumn
         )
