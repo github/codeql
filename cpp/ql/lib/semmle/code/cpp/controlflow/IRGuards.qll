@@ -134,7 +134,7 @@ class GuardCondition extends Expr {
 
   /**
    * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
-   * If `isLessThan = false` then this implies `left >= k`.
+   * If `isLessThan = false` then this implies `e >= k`.
    */
   cached
   predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) { none() }
@@ -256,7 +256,6 @@ private class GuardConditionFromIR extends GuardCondition {
     this.controlsBlock(controlled, v)
   }
 
-  /** Holds if (determined by this guard) `left < right + k` evaluates to `isLessThan` if this expression evaluates to `testIsTrue`. */
   override predicate comparesLt(Expr left, Expr right, int k, boolean isLessThan, boolean testIsTrue) {
     exists(Instruction li, Instruction ri |
       li.getUnconvertedResultExpression() = left and
@@ -265,10 +264,6 @@ private class GuardConditionFromIR extends GuardCondition {
     )
   }
 
-  /**
-   * Holds if (determined by this guard) `e < k` evaluates to `isLessThan` if
-   * this expression evaluates to `value`.
-   */
   override predicate comparesLt(Expr e, int k, boolean isLessThan, AbstractValue value) {
     exists(Instruction i |
       i.getUnconvertedResultExpression() = e and
@@ -276,10 +271,6 @@ private class GuardConditionFromIR extends GuardCondition {
     )
   }
 
-  /**
-   * Holds if (determined by this guard) `left < right + k` must be `isLessThan` in `block`.
-   * If `isLessThan = false` then this implies `left >= right + k`.
-   */
   override predicate ensuresLt(Expr left, Expr right, int k, BasicBlock block, boolean isLessThan) {
     exists(Instruction li, Instruction ri, boolean testIsTrue |
       li.getUnconvertedResultExpression() = left and
@@ -289,10 +280,6 @@ private class GuardConditionFromIR extends GuardCondition {
     )
   }
 
-  /**
-   * Holds if (determined by this guard) `e < k` must be `isLessThan` in `block`.
-   * If `isLessThan = false` then this implies `e >= k`.
-   */
   override predicate ensuresLt(Expr e, int k, BasicBlock block, boolean isLessThan) {
     exists(Instruction i, AbstractValue value |
       i.getUnconvertedResultExpression() = e and
@@ -301,7 +288,6 @@ private class GuardConditionFromIR extends GuardCondition {
     )
   }
 
-  /** Holds if (determined by this guard) `left == right + k` evaluates to `areEqual` if this expression evaluates to `testIsTrue`. */
   override predicate comparesEq(Expr left, Expr right, int k, boolean areEqual, boolean testIsTrue) {
     exists(Instruction li, Instruction ri |
       li.getUnconvertedResultExpression() = left and
@@ -310,10 +296,6 @@ private class GuardConditionFromIR extends GuardCondition {
     )
   }
 
-  /**
-   * Holds if (determined by this guard) `left == right + k` must be `areEqual` in `block`.
-   * If `areEqual = false` then this implies `left != right + k`.
-   */
   override predicate ensuresEq(Expr left, Expr right, int k, BasicBlock block, boolean areEqual) {
     exists(Instruction li, Instruction ri, boolean testIsTrue |
       li.getUnconvertedResultExpression() = left and
