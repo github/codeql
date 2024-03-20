@@ -13977,6 +13977,34 @@ ir.cpp:
 # 2374|     v2374_6(void)          = AliasedUse                 : ~m?
 # 2374|     v2374_7(void)          = ExitFunction               : 
 
+# 2381| int small_operation_should_not_be_constant_folded()
+# 2381|   Block 0
+# 2381|     v2381_1(void)       = EnterFunction            : 
+# 2381|     mu2381_2(unknown)   = AliasedDefinition        : 
+# 2381|     mu2381_3(unknown)   = InitializeNonLocal       : 
+# 2382|     r2382_1(glval<int>) = VariableAddress[#return] : 
+# 2382|     r2382_2(int)        = Constant[1]              : 
+# 2382|     r2382_3(int)        = Constant[2]              : 
+# 2382|     r2382_4(int)        = BitXor                   : r2382_2, r2382_3
+# 2382|     mu2382_5(int)       = Store[#return]           : &:r2382_1, r2382_4
+# 2381|     r2381_4(glval<int>) = VariableAddress[#return] : 
+# 2381|     v2381_5(void)       = ReturnValue              : &:r2381_4, ~m?
+# 2381|     v2381_6(void)       = AliasedUse               : ~m?
+# 2381|     v2381_7(void)       = ExitFunction             : 
+
+# 2392| int large_operation_should_be_constant_folded()
+# 2392|   Block 0
+# 2392|     v2392_1(void)       = EnterFunction            : 
+# 2392|     mu2392_2(unknown)   = AliasedDefinition        : 
+# 2392|     mu2392_3(unknown)   = InitializeNonLocal       : 
+# 2393|     r2393_1(glval<int>) = VariableAddress[#return] : 
+# 2393|     r2393_2(int)        = Constant[0]              : 
+# 2393|     mu2393_3(int)       = Store[#return]           : &:r2393_1, r2393_2
+# 2392|     r2392_4(glval<int>) = VariableAddress[#return] : 
+# 2392|     v2392_5(void)       = ReturnValue              : &:r2392_4, ~m?
+# 2392|     v2392_6(void)       = AliasedUse               : ~m?
+# 2392|     v2392_7(void)       = ExitFunction             : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
