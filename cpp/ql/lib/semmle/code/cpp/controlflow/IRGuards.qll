@@ -839,28 +839,30 @@ private predicate compares_eq(
 
 /** Rearrange various simple comparisons into `left == right + k` form. */
 private predicate simple_comparison_eq(
-  CompareInstruction cmp, Operand left, Operand right, int k, AbstractValue value
+  CompareValueNumber cmp, Operand left, Operand right, int k, AbstractValue value
 ) {
   left = cmp.getLeftOperand() and
-  cmp instanceof CompareEQInstruction and
+  cmp instanceof CompareEQValueNumber and
   right = cmp.getRightOperand() and
   k = 0 and
   value.(BooleanValue).getValue() = true
   or
   left = cmp.getLeftOperand() and
-  cmp instanceof CompareNEInstruction and
+  cmp instanceof CompareNEValueNumber and
   right = cmp.getRightOperand() and
   k = 0 and
   value.(BooleanValue).getValue() = false
 }
 
 /** Rearrange various simple comparisons into `op == k` form. */
-private predicate simple_comparison_eq(Instruction test, Operand op, int k, AbstractValue value) {
-  exists(SwitchInstruction switch, CaseEdge case |
-    test = switch.getExpression() and
-    op.getDef() = test and
+private predicate simple_comparison_eq(
+  ScrutineeValueNumber test, Operand op, int k, AbstractValue value
+) {
+  exists(CaseEdge case, Instruction expression |
+    expression = test.getExpressionInstruction() and
+    op.getDef() = expression and
     case = value.(MatchValue).getCase() and
-    exists(switch.getSuccessor(case)) and
+    exists(test.getSwitchInstruction().getSuccessor(case)) and
     case.getValue().toInt() = k
   )
 }
@@ -931,37 +933,37 @@ private predicate compares_ge(
 }
 
 /** Rearrange various simple comparisons into `left < right + k` form. */
-private predicate simple_comparison_lt(CompareInstruction cmp, Operand left, Operand right, int k) {
+private predicate simple_comparison_lt(CompareValueNumber cmp, Operand left, Operand right, int k) {
   left = cmp.getLeftOperand() and
-  cmp instanceof CompareLTInstruction and
+  cmp instanceof CompareLTValueNumber and
   right = cmp.getRightOperand() and
   k = 0
   or
   left = cmp.getLeftOperand() and
-  cmp instanceof CompareLEInstruction and
+  cmp instanceof CompareLEValueNumber and
   right = cmp.getRightOperand() and
   k = 1
   or
   right = cmp.getLeftOperand() and
-  cmp instanceof CompareGTInstruction and
+  cmp instanceof CompareGTValueNumber and
   left = cmp.getRightOperand() and
   k = 0
   or
   right = cmp.getLeftOperand() and
-  cmp instanceof CompareGEInstruction and
+  cmp instanceof CompareGEValueNumber and
   left = cmp.getRightOperand() and
   k = 1
 }
 
 /** Rearrange various simple comparisons into `op < k` form. */
 private predicate simple_comparison_lt(
-  Instruction test, Operand op, int k, boolean isLt, AbstractValue value
+  ScrutineeValueNumber test, Operand op, int k, boolean isLt, AbstractValue value
 ) {
-  exists(SwitchInstruction switch, CaseEdge case |
-    test = switch.getExpression() and
-    op.getDef() = test and
+  exists(CaseEdge case, Instruction expression |
+    expression = test.getExpressionInstruction() and
+    op.getDef() = expression and
     case = value.(MatchValue).getCase() and
-    exists(switch.getSuccessor(case)) and
+    exists(test.getSwitchInstruction().getSuccessor(case)) and
     case.getMaxValue() > case.getMinValue()
   |
     // op <= k => op < k - 1
