@@ -1,0 +1,12 @@
+edges
+| test.rb:17:9:17:14 | call to params | test.rb:17:9:17:29 | call to require | provenance |  |
+| test.rb:17:9:17:29 | call to require | test.rb:17:9:17:37 | call to permit! | provenance |  |
+| test.rb:17:9:17:37 | call to permit! | test.rb:8:18:8:28 | call to user_params | provenance |  |
+nodes
+| test.rb:8:18:8:28 | call to user_params | semmle.label | call to user_params |
+| test.rb:17:9:17:14 | call to params | semmle.label | call to params |
+| test.rb:17:9:17:29 | call to require | semmle.label | call to require |
+| test.rb:17:9:17:37 | call to permit! | semmle.label | call to permit! |
+subpaths
+#select
+| test.rb:8:18:8:28 | call to user_params | test.rb:17:9:17:14 | call to params | test.rb:8:18:8:28 | call to user_params | mass assignment |
