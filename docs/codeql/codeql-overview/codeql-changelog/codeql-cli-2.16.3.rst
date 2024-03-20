@@ -27,14 +27,15 @@ Bug Fixes
 New Features
 ~~~~~~~~~~~~
 
-*   A new extractor option has been added to the Python extractor: :code:`python_executable_name`.
-    You can use this option to override the default process the extractor uses to find and select a Python executable.
-    Pass one of :code:`--extractor-option python_executable_name=py` or :code:`--extractor-option python_executable_name=python` or :code:`--extractor-option python_executable_name=python3` to commands that run the extractor, for example: :code:`codeql database create`. 
+*   A new extractor option has been added to the Python extractor:
+    :code:`python_executable_name`. You can use this option to override the default process the extractor uses to find and select a Python executable. Pass one of
+    :code:`--extractor-option python_executable_name=py` or :code:`--extractor-option python_executable_name=python` or :code:`--extractor-option python_executable_name=python3` to commands that run the extractor, for example: :code:`codeql database create`.
     
-    On Windows machines, the Python extractor will expect to find :code:`py.exe` on the system :code:`PATH` by default.
-    If the Python executable has a different name, you can set the new extractor option to override this value and look for :code:`python.exe` or :code:`python3.exe`.
+    On Windows machines, the Python extractor will expect to find :code:`py.exe` on the system :code:`PATH` by default. If the Python executable has a different name, you can set the new extractor option to override this value and look for
+    :code:`python.exe` or :code:`python3.exe`.
     
-    For more information about using the extractor option with the CodeQL CLI, see `Extractor options <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/extractor-options>`__.
+    For more information about using the extractor option with the CodeQL CLI, see
+    \ `Extractor options <https://docs.github.com/en/code-security/codeql-cli/using-the-advanced-functionality-of-the-codeql-cli/extractor-options>`__.
 
 Security Updates
 ~~~~~~~~~~~~~~~~

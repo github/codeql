@@ -1,3 +1,11 @@
+## 0.3.11
+
+No user-facing changes.
+
+## 0.3.10
+
+No user-facing changes.
+
 ## 0.3.9
 
 ### New Queries
