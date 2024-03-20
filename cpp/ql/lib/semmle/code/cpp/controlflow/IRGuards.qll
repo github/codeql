@@ -805,8 +805,10 @@ private predicate compares_eq(
   complex_eq(test, left, right, k, areEqual, value)
   or
   /* (x is true => (left == right + k)) => (!x is false => (left == right + k)) */
-  exists(AbstractValue dual | value = dual.getDualValue() |
-    compares_eq(test.(LogicalNotInstruction).getUnary(), left, right, k, areEqual, dual)
+  exists(AbstractValue dual, LogicalNotInstruction logicalNot |
+    value = dual.getDualValue() and
+    logicalNot = test.getAnInstruction() and
+    compares_eq(valueNumber(logicalNot.getUnary()), left, right, k, areEqual, dual)
   )
 }
 
@@ -824,8 +826,10 @@ private predicate compares_eq(
   complex_eq(test, op, k, areEqual, value)
   or
   /* (x is true => (op == k)) => (!x is false => (op == k)) */
-  exists(AbstractValue dual | value = dual.getDualValue() |
-    compares_eq(test.(LogicalNotInstruction).getUnary(), op, k, areEqual, dual)
+  exists(AbstractValue dual, LogicalNotInstruction logicalNot |
+    value = dual.getDualValue() and
+    logicalNot = test.getAnInstruction() and
+    compares_eq(valueNumber(logicalNot.getUnary()), op, k, areEqual, dual)
   )
   or
   // ((test is `areEqual` => op == const + k2) and const == `k1`) =>
@@ -902,8 +906,10 @@ private predicate compares_lt(
   exists(boolean isGe | isLt = isGe.booleanNot() | compares_ge(test, left, right, k, isGe, value))
   or
   /* (x is true => (left < right + k)) => (!x is false => (left < right + k)) */
-  exists(AbstractValue dual | value = dual.getDualValue() |
-    compares_lt(test.(LogicalNotInstruction).getUnary(), left, right, k, isLt, dual)
+  exists(AbstractValue dual, LogicalNotInstruction logicalNot |
+    value = dual.getDualValue() and
+    logicalNot = test.getAnInstruction() and
+    compares_lt(valueNumber(logicalNot.getUnary()), left, right, k, isLt, dual)
   )
 }
 
@@ -914,8 +920,10 @@ private predicate compares_lt(Instruction test, Operand op, int k, boolean isLt,
   complex_lt(test, op, k, isLt, value)
   or
   /* (x is true => (op < k)) => (!x is false => (op < k)) */
-  exists(AbstractValue dual | value = dual.getDualValue() |
-    compares_lt(test.(LogicalNotInstruction).getUnary(), op, k, isLt, dual)
+  exists(AbstractValue dual, LogicalNotInstruction logicalNot |
+    value = dual.getDualValue() and
+    logicalNot = test.getAnInstruction() and
+    compares_lt(valueNumber(logicalNot.getUnary()), op, k, isLt, dual)
   )
   or
   exists(int k1, int k2, ConstantInstruction const |
