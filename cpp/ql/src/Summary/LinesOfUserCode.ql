@@ -4,7 +4,7 @@
  * @kind metric
  * @tags summary
  *       lines-of-code
- *       telemetry
+ *       debug
  * @id cpp/summary/lines-of-user-code
  */
 

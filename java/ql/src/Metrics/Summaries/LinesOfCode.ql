@@ -7,7 +7,7 @@
  * @kind metric
  * @tags summary
  *       lines-of-code
- *       telemetry
+ *       debug
  */
 
 import java

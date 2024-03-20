@@ -6,7 +6,7 @@
  *   query counts the lines of code, excluding whitespace or comments.
  * @kind metric
  * @tags summary
- *       telemetry
+ *       debug
  */
 
 import codeql.ruby.AST
