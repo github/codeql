@@ -117,7 +117,7 @@ class CallNode extends LocalSourceNode, ExprNode {
   int getNumberOfArguments() { result = node.getNumberOfArguments() }
 
   /** Gets the block of this call. */
-  Node getBlock() { result.asExpr() = node.getBlock() }
+  CallableNode getBlock() { result.asExpr() = node.getBlock() }
 
   /**
    * Gets the data-flow node corresponding to the named argument of the call
