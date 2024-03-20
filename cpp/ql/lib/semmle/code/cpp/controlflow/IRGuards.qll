@@ -5,6 +5,7 @@
 
 import cpp
 import semmle.code.cpp.ir.IR
+private import semmle.code.cpp.ir.ValueNumbering
 private import semmle.code.cpp.ir.implementation.raw.internal.TranslatedExpr
 private import semmle.code.cpp.ir.implementation.raw.internal.InstructionTag
 
@@ -56,6 +57,78 @@ class MatchValue extends AbstractValue, TMatchValue {
   }
 
   override string toString() { result = this.getCase().toString() }
+}
+
+/**
+ * A value number such that at least one of the instructions is
+ * a `CompareInstruction`.
+ */
+private class CompareValueNumber extends ValueNumber {
+  CompareInstruction cmp;
+
+  CompareValueNumber() { cmp = this.getAnInstruction() }
+
+  /** Gets an `CompareInstruction` belonging to this value number. */
+  CompareInstruction getCompareInstruction() { result = cmp }
+
+  /**
+   * Gets a left operand of a `CompareInstruction` that belongs to this
+   * value number
+   */
+  Operand getLeftOperand() { result = cmp.getLeftOperand() }
+
+  /**
+   * Gets a right operand of a `CompareInstruction` that belongs to this
+   * value number
+   */
+  Operand getRightOperand() { result = cmp.getRightOperand() }
+}
+
+private class CompareEQValueNumber extends CompareValueNumber {
+  override CompareEQInstruction cmp;
+}
+
+private class CompareNEValueNumber extends CompareValueNumber {
+  override CompareNEInstruction cmp;
+}
+
+private class CompareLTValueNumber extends CompareValueNumber {
+  override CompareLTInstruction cmp;
+}
+
+private class CompareGTValueNumber extends CompareValueNumber {
+  override CompareGTInstruction cmp;
+}
+
+private class CompareLEValueNumber extends CompareValueNumber {
+  override CompareLEInstruction cmp;
+}
+
+private class CompareGEValueNumber extends CompareValueNumber {
+  override CompareGEInstruction cmp;
+}
+
+/**
+ * A value number such that at least one of the instructions is an
+ * insruction that is used in a `SwitchInstruction`'s expression.
+ */
+private class ScrutineeValueNumber extends ValueNumber {
+  SwitchInstruction switch;
+  Instruction scrutinee;
+
+  ScrutineeValueNumber() {
+    switch.getExpression() = scrutinee and
+    this.getAnInstruction() = scrutinee
+  }
+
+  /**
+   * Gets a `SwitchInstruction` that branches based on the value
+   * of this value number's value.
+   */
+  SwitchInstruction getSwitchInstruction() { result = switch }
+
+  /** Gets an expression that belongs to this value number. */
+  SwitchInstruction getExpressionInstruction() { result = scrutinee }
 }
 
 /**
