@@ -39,7 +39,7 @@ def m6
         x = "safe"
     end
 
-    sink x # $ SPURIOUS hasValueFlow=6
+    sink x
 end
 
 def m7
@@ -47,7 +47,7 @@ def m7
 
     x = "safe" unless x == "safe"
 
-    sink x # $ SPURIOUS hasValueFlow=7
+    sink x
 end
 
 def m8(b)
@@ -59,7 +59,7 @@ def m8(b)
         return unless x == "safe2"
     end
 
-    sink x # $ SPURIOUS hasValueFlow=8
+    sink x
 end
 
 def m9(b)
@@ -75,5 +75,5 @@ def m9(b)
         end
     end
 
-    sink x # $ SPURIOUS hasValueFlow=9
+    sink x
 end
