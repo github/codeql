@@ -3,10 +3,6 @@ private import semmle.code.cpp.commons.Scanf
 private import semmle.code.cpp.controlflow.IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
 
-private ConstantInstruction getZeroInstruction() { result.getValue() = "0" }
-
-private Operand zero() { result.getDef() = getZeroInstruction() }
-
 private predicate exprInBooleanContext(Expr e) {
   exists(IRGuardCondition gc |
     exists(Instruction i |
@@ -46,7 +42,7 @@ private predicate checkedForEof(ScanfFunctionCall call) {
       gc.comparesEq(valueNumber(i).getAUse(), getEofValue().toInt(), _, _)
       or
       // call < 0 (EOF is guaranteed to be negative)
-      gc.comparesLt(valueNumber(i).getAUse(), zero(), 0, true, _)
+      gc.comparesLt(valueNumber(i).getAUse(), 0, true, _)
     )
   )
 }
