@@ -84,11 +84,6 @@ module IncompleteHostNameRegexpConfig implements DataFlow::ConfigSig {
     exists(Expr e |
       e = source.asExpr() and
       isIncompleteHostNameRegexpPattern(e.getStringValue(), hostPart)
-    |
-      e instanceof StringLit
-      or
-      e instanceof AddExpr and
-      not isIncompleteHostNameRegexpPattern(e.(AddExpr).getAnOperand().getStringValue(), _)
     )
   }
 
