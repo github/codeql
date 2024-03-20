@@ -101,6 +101,10 @@ module IncompleteHostNameRegexpConfig implements DataFlow::ConfigSig {
     ) and
     not regexpGuardsError(sink)
   }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    StringOps::Concatenation::taintStep(node1, node2)
+  }
 }
 
 module Flow = DataFlow::Global<IncompleteHostNameRegexpConfig>;
