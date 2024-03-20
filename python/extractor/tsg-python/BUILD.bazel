@@ -1,5 +1,5 @@
-load("@tsg_python_crate_index//:defs.bzl", "aliases", "all_crate_deps")
-load("//:common.bzl", "codeql_rust_binary")
+load("@py_deps//:defs.bzl", "aliases", "all_crate_deps")
+load("@semmle_code//:common.bzl", "codeql_rust_binary")
 
 codeql_rust_binary(
     name = "tsg-python",
@@ -12,5 +12,5 @@ codeql_rust_binary(
     visibility = ["//visibility:public"],
     deps = all_crate_deps(
         normal = True,
-    ) + ["//extractor-python/tsg-python/tree-sitter-python"],
+    ) + ["//python/extractor/tsg-python/tsp"],
 )
