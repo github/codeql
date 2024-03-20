@@ -1,23 +1,33 @@
 | 7 | 0 < x+0 when ... > ... is true |
 | 7 | 0 >= x+0 when ... > ... is false |
 | 7 | x < 0+1 when ... > ... is false |
+| 7 | x < 1 when ... > ... is false |
 | 7 | x >= 0+1 when ... > ... is true |
+| 7 | x >= 1 when ... > ... is true |
 | 17 | 0 < x+1 when ... < ... is false |
 | 17 | 0 >= x+1 when ... && ... is true |
 | 17 | 0 >= x+1 when ... < ... is true |
 | 17 | 1 < y+0 when ... && ... is true |
 | 17 | 1 < y+0 when ... > ... is true |
 | 17 | 1 >= y+0 when ... > ... is false |
+| 17 | x < 0 when ... && ... is true |
+| 17 | x < 0 when ... < ... is true |
 | 17 | x < 0+0 when ... && ... is true |
 | 17 | x < 0+0 when ... < ... is true |
+| 17 | x >= 0 when ... < ... is false |
 | 17 | x >= 0+0 when ... < ... is false |
 | 17 | y < 1+1 when ... > ... is false |
+| 17 | y < 2 when ... > ... is false |
 | 17 | y >= 1+1 when ... && ... is true |
 | 17 | y >= 1+1 when ... > ... is true |
+| 17 | y >= 2 when ... && ... is true |
+| 17 | y >= 2 when ... > ... is true |
 | 26 | 0 < x+0 when ... > ... is true |
 | 26 | 0 >= x+0 when ... > ... is false |
 | 26 | x < 0+1 when ... > ... is false |
+| 26 | x < 1 when ... > ... is false |
 | 26 | x >= 0+1 when ... > ... is true |
+| 26 | x >= 1 when ... > ... is true |
 | 31 | - ... != x+0 when ... == ... is false |
 | 31 | - ... == x+0 when ... == ... is true |
 | 31 | x != -1 when ... == ... is false |
@@ -26,20 +36,28 @@
 | 31 | x == - ...+0 when ... == ... is true |
 | 34 | 10 < j+1 when ... < ... is false |
 | 34 | 10 >= j+1 when ... < ... is true |
+| 34 | j < 10 when ... < ... is true |
 | 34 | j < 10+0 when ... < ... is true |
+| 34 | j >= 10 when ... < ... is false |
 | 34 | j >= 10+0 when ... < ... is false |
 | 42 | 10 < j+1 when ... < ... is false |
 | 42 | 10 >= j+1 when ... < ... is true |
+| 42 | j < 10 when ... < ... is true |
 | 42 | j < 10+0 when ... < ... is true |
+| 42 | j >= 10 when ... < ... is false |
 | 42 | j >= 10+0 when ... < ... is false |
 | 44 | 0 < z+0 when ... > ... is true |
 | 44 | 0 >= z+0 when ... > ... is false |
 | 44 | z < 0+1 when ... > ... is false |
+| 44 | z < 1 when ... > ... is false |
 | 44 | z >= 0+1 when ... > ... is true |
+| 44 | z >= 1 when ... > ... is true |
 | 45 | 0 < y+0 when ... > ... is true |
 | 45 | 0 >= y+0 when ... > ... is false |
 | 45 | y < 0+1 when ... > ... is false |
+| 45 | y < 1 when ... > ... is false |
 | 45 | y >= 0+1 when ... > ... is true |
+| 45 | y >= 1 when ... > ... is true |
 | 58 | 0 != x+0 when ... == ... is false |
 | 58 | 0 != x+0 when ... \|\| ... is false |
 | 58 | 0 < y+1 when ... < ... is false |
@@ -52,12 +70,19 @@
 | 58 | x != 0+0 when ... \|\| ... is false |
 | 58 | x == 0 when ... == ... is true |
 | 58 | x == 0+0 when ... == ... is true |
+| 58 | y < 0 when ... < ... is true |
 | 58 | y < 0+0 when ... < ... is true |
+| 58 | y >= 0 when ... < ... is false |
+| 58 | y >= 0 when ... \|\| ... is false |
 | 58 | y >= 0+0 when ... < ... is false |
 | 58 | y >= 0+0 when ... \|\| ... is false |
 | 61 | i == 0 when i is Case[0] |
 | 61 | i == 1 when i is Case[1] |
 | 61 | i == 2 when i is Case[2] |
+| 74 | i < 11 when i is Case[0..10] |
+| 74 | i < 21 when i is Case[11..20] |
+| 74 | i >= 0 when i is Case[0..10] |
+| 74 | i >= 11 when i is Case[11..20] |
 | 75 | 0 != x+0 when ... == ... is false |
 | 75 | 0 == x+0 when ... == ... is true |
 | 75 | x != 0 when ... == ... is false |
@@ -90,7 +115,9 @@
 | 94 | x == 0+0 when ... != ... is false |
 | 102 | 10 < j+1 when ... < ... is false |
 | 102 | 10 >= j+1 when ... < ... is true |
+| 102 | j < 10 when ... < ... is true |
 | 102 | j < 10+0 when ... < ... is true |
+| 102 | j >= 10 when ... < ... is false |
 | 102 | j >= 10+0 when ... < ... is false |
 | 109 | 0 != x+0 when ... == ... is false |
 | 109 | 0 != x+0 when ... \|\| ... is false |
@@ -104,6 +131,9 @@
 | 109 | x != 0+0 when ... \|\| ... is false |
 | 109 | x == 0 when ... == ... is true |
 | 109 | x == 0+0 when ... == ... is true |
+| 109 | y < 0 when ... < ... is true |
 | 109 | y < 0+0 when ... < ... is true |
+| 109 | y >= 0 when ... < ... is false |
+| 109 | y >= 0 when ... \|\| ... is false |
 | 109 | y >= 0+0 when ... < ... is false |
 | 109 | y >= 0+0 when ... \|\| ... is false |

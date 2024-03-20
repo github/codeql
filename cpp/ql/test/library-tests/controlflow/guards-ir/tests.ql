@@ -96,6 +96,10 @@ query predicate irGuardsCompare(int startLine, string msg) {
     )
     or
     exists(AbstractValue value |
+      guard.comparesLt(left, k, true, value) and op = " < "
+      or
+      guard.comparesLt(left, k, false, value) and op = " >= "
+      or
       guard.comparesEq(left, k, true, value) and op = " == "
       or
       guard.comparesEq(left, k, false, value) and op = " != "
@@ -138,6 +142,10 @@ query predicate irGuardsEnsure_const(
   IRGuardCondition guard, Instruction left, string op, int k, int start, int end
 ) {
   exists(IRBlock block, Operand leftOp |
+    guard.ensuresLt(leftOp, k, block, true) and op = "<"
+    or
+    guard.ensuresLt(leftOp, k, block, false) and op = ">="
+    or
     guard.ensuresEq(leftOp, k, block, true) and op = "=="
     or
     guard.ensuresEq(leftOp, k, block, false) and op = "!="

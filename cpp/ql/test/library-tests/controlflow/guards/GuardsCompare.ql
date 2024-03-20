@@ -28,6 +28,10 @@ where
   )
   or
   exists(AbstractValue value |
+    guard.comparesLt(left, k, true, value) and op = " < "
+    or
+    guard.comparesLt(left, k, false, value) and op = " >= "
+    or
     guard.comparesEq(left, k, true, value) and op = " == "
     or
     guard.comparesEq(left, k, false, value) and op = " != "
