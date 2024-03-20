@@ -787,7 +787,7 @@ private Instruction getBranchForCondition(Instruction guard) {
  * Beware making mistaken logical implications here relating `areEqual` and `testIsTrue`.
  */
 private predicate compares_eq(
-  Instruction test, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
+  ValueNumber test, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
   /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
   exists(AbstractValue v | simple_comparison_eq(test, left, right, k, v) |
@@ -814,7 +814,7 @@ private predicate compares_eq(
 
 /** Holds if `op == k` is `areEqual` given that `test` is equal to `value`. */
 private predicate compares_eq(
-  Instruction test, Operand op, int k, boolean areEqual, AbstractValue value
+  ValueNumber test, Operand op, int k, boolean areEqual, AbstractValue value
 ) {
   /* The simple case where the test *is* the comparison so areEqual = testIsTrue xor eq. */
   exists(AbstractValue v | simple_comparison_eq(test, op, k, v) |
@@ -872,7 +872,7 @@ private predicate simple_comparison_eq(
 }
 
 private predicate complex_eq(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
+  ValueNumber cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
   sub_eq(cmp, left, right, k, areEqual, value)
   or
@@ -880,7 +880,7 @@ private predicate complex_eq(
 }
 
 private predicate complex_eq(
-  Instruction test, Operand op, int k, boolean areEqual, AbstractValue value
+  ValueNumber test, Operand op, int k, boolean areEqual, AbstractValue value
 ) {
   sub_eq(test, op, k, areEqual, value)
   or
@@ -894,7 +894,7 @@ private predicate complex_eq(
 
 /** Holds if `left < right + k` evaluates to `isLt` given that test is `testIsTrue`. */
 private predicate compares_lt(
-  Instruction test, Operand left, Operand right, int k, boolean isLt, AbstractValue value
+  ValueNumber test, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   /* In the simple case, the test is the comparison, so isLt = testIsTrue */
   simple_comparison_lt(test, left, right, k) and
@@ -914,7 +914,7 @@ private predicate compares_lt(
 }
 
 /** Holds if `op < k` evaluates to `isLt` given that `test` evaluates to `value`. */
-private predicate compares_lt(Instruction test, Operand op, int k, boolean isLt, AbstractValue value) {
+private predicate compares_lt(ValueNumber test, Operand op, int k, boolean isLt, AbstractValue value) {
   simple_comparison_lt(test, op, k, isLt, value)
   or
   complex_lt(test, op, k, isLt, value)
@@ -935,7 +935,7 @@ private predicate compares_lt(Instruction test, Operand op, int k, boolean isLt,
 
 /** `(a < b + k) => (b > a - k) => (b >= a + (1-k))` */
 private predicate compares_ge(
-  Instruction test, Operand left, Operand right, int k, boolean isGe, AbstractValue value
+  ValueNumber test, Operand left, Operand right, int k, boolean isGe, AbstractValue value
 ) {
   exists(int onemk | k = 1 - onemk | compares_lt(test, right, left, onemk, isGe, value))
 }
@@ -984,7 +984,7 @@ private predicate simple_comparison_lt(
 }
 
 private predicate complex_lt(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
+  ValueNumber cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   sub_lt(cmp, left, right, k, isLt, value)
   or
@@ -992,7 +992,7 @@ private predicate complex_lt(
 }
 
 private predicate complex_lt(
-  Instruction test, Operand left, int k, boolean isLt, AbstractValue value
+  ValueNumber test, Operand left, int k, boolean isLt, AbstractValue value
 ) {
   sub_lt(test, left, k, isLt, value)
   or
@@ -1002,7 +1002,7 @@ private predicate complex_lt(
 // left - x < right + c => left < right + (c+x)
 // left < (right - x) + c => left < right + (c-x)
 private predicate sub_lt(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
+  ValueNumber cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   exists(SubInstruction lhs, int c, int x |
     compares_lt(cmp, lhs.getAUse(), right, c, isLt, value) and
@@ -1033,7 +1033,7 @@ private predicate sub_lt(
   )
 }
 
-private predicate sub_lt(Instruction test, Operand left, int k, boolean isLt, AbstractValue value) {
+private predicate sub_lt(ValueNumber test, Operand left, int k, boolean isLt, AbstractValue value) {
   exists(SubInstruction lhs, int c, int x |
     compares_lt(test, lhs.getAUse(), c, isLt, value) and
     left = lhs.getLeftOperand() and
@@ -1052,7 +1052,7 @@ private predicate sub_lt(Instruction test, Operand left, int k, boolean isLt, Ab
 // left + x < right + c => left < right + (c-x)
 // left < (right + x) + c => left < right + (c+x)
 private predicate add_lt(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
+  ValueNumber cmp, Operand left, Operand right, int k, boolean isLt, AbstractValue value
 ) {
   exists(AddInstruction lhs, int c, int x |
     compares_lt(cmp, lhs.getAUse(), right, c, isLt, value) and
@@ -1095,7 +1095,7 @@ private predicate add_lt(
   )
 }
 
-private predicate add_lt(Instruction test, Operand left, int k, boolean isLt, AbstractValue value) {
+private predicate add_lt(ValueNumber test, Operand left, int k, boolean isLt, AbstractValue value) {
   exists(AddInstruction lhs, int c, int x |
     compares_lt(test, lhs.getAUse(), c, isLt, value) and
     (
@@ -1120,7 +1120,7 @@ private predicate add_lt(Instruction test, Operand left, int k, boolean isLt, Ab
 // left - x == right + c => left == right + (c+x)
 // left == (right - x) + c => left == right + (c-x)
 private predicate sub_eq(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
+  ValueNumber cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
   exists(SubInstruction lhs, int c, int x |
     compares_eq(cmp, lhs.getAUse(), right, c, areEqual, value) and
@@ -1152,7 +1152,7 @@ private predicate sub_eq(
 }
 
 // op - x == c => op == (c+x)
-private predicate sub_eq(Instruction test, Operand op, int k, boolean areEqual, AbstractValue value) {
+private predicate sub_eq(ValueNumber test, Operand op, int k, boolean areEqual, AbstractValue value) {
   exists(SubInstruction sub, int c, int x |
     compares_eq(test, sub.getAUse(), c, areEqual, value) and
     op = sub.getLeftOperand() and
@@ -1171,7 +1171,7 @@ private predicate sub_eq(Instruction test, Operand op, int k, boolean areEqual, 
 // left + x == right + c => left == right + (c-x)
 // left == (right + x) + c => left == right + (c+x)
 private predicate add_eq(
-  CompareInstruction cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
+  ValueNumber cmp, Operand left, Operand right, int k, boolean areEqual, AbstractValue value
 ) {
   exists(AddInstruction lhs, int c, int x |
     compares_eq(cmp, lhs.getAUse(), right, c, areEqual, value) and
@@ -1216,7 +1216,7 @@ private predicate add_eq(
 
 // left + x == right + c => left == right + (c-x)
 private predicate add_eq(
-  Instruction test, Operand left, int k, boolean areEqual, AbstractValue value
+  ValueNumber test, Operand left, int k, boolean areEqual, AbstractValue value
 ) {
   exists(AddInstruction lhs, int c, int x |
     compares_eq(test, lhs.getAUse(), c, areEqual, value) and
