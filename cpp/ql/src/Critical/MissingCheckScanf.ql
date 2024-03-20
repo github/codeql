@@ -2,7 +2,7 @@
  * @name Missing return-value check for a 'scanf'-like function
  * @description Failing to check that a call to 'scanf' actually writes to an
  *              output variable can lead to unexpected behavior at reading time.
- * @kind problem
+ * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
  * @precision medium
@@ -20,6 +20,7 @@ import semmle.code.cpp.dataflow.new.DataFlow::DataFlow
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.ValueNumbering
 import ScanfChecks
+import ScanfToUseFlow::PathGraph
 
 /**
  * Holds if `n` represents an uninitialized stack-allocated variable, or a
@@ -118,10 +119,13 @@ module ScanfToUseFlow = Global<ScanfToUseConfig>;
  * Holds if `source` is the `index`'th argument to the `scanf`-like call `call`, and `sink` is
  * a dataflow node that represents the expression `e`.
  */
-predicate hasFlow(Node source, ScanfFunctionCall call, int index, Node sink, Expr e) {
-  isSource(call, index, source, _) and
-  ScanfToUseFlow::flow(source, sink) and
-  isSink(sink, e)
+predicate flowPath(
+  ScanfToUseFlow::PathNode source, ScanfFunctionCall call, int index, ScanfToUseFlow::PathNode sink,
+  Expr e
+) {
+  isSource(call, index, source.getNode(), _) and
+  ScanfToUseFlow::flowPath(source, sink) and
+  isSink(sink.getNode(), e)
 }
 
 /**
@@ -143,9 +147,12 @@ int getMinimumGuardConstant(ScanfFunctionCall call, int index) {
  * Holds the access to `e` isn't guarded by a check that ensures that `call` returned
  * at least `minGuard`.
  */
-predicate hasNonGuardedAccess(ScanfFunctionCall call, Expr e, int minGuard) {
+predicate hasNonGuardedAccess(
+  ScanfToUseFlow::PathNode source, ScanfFunctionCall call, ScanfToUseFlow::PathNode sink, Expr e,
+  int minGuard
+) {
   exists(int index |
-    hasFlow(_, call, index, _, e) and
+    flowPath(source, call, index, sink, e) and
     minGuard = getMinimumGuardConstant(call, index)
   |
     not exists(int value |
@@ -173,9 +180,11 @@ BasicBlock blockGuardedBy(int value, string op, ScanfFunctionCall call) {
   )
 }
 
-from ScanfFunctionCall call, Expr e, int minGuard
-where hasNonGuardedAccess(call, e, minGuard)
-select e,
+from
+  ScanfToUseFlow::PathNode source, ScanfToUseFlow::PathNode sink, ScanfFunctionCall call, Expr e,
+  int minGuard
+where hasNonGuardedAccess(source, call, sink, e, minGuard)
+select e, source, sink,
   "This variable is read, but may not have been written. " +
     "It should be guarded by a check that the $@ returns at least " + minGuard + ".", call,
   call.toString()
