@@ -212,6 +212,16 @@ func LoadGoModules(emitDiagnostics bool, goModFilePaths []string) []*GoModule {
 		if modFile.Toolchain == nil && modFile.Go != nil &&
 			!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && semver.Compare("v"+modFile.Go.Version, "v1.21.0") >= 0 {
 			diagnostics.EmitInvalidToolchainVersion(goModFilePath, modFile.Go.Version)
+
+			modPath := filepath.Dir(goModFilePath)
+
+			log.Printf(
+				"`%s` is not a valid toolchain version, trying to install it explicitly using the canonical representation in `%s`.",
+				modFile.Go.Version,
+				modPath,
+			)
+
+			toolchain.InstallVersion(modPath, modFile.Go.Version)
 		}
 	}
 
