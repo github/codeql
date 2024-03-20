@@ -4,7 +4,11 @@ use crate::{generator::ql, node_types};
 
 /// Creates the hard-coded `AstNode` class that acts as a supertype of all
 /// classes we generate.
-pub fn create_ast_node_class<'a>(ast_node: &'a str, node_info_table: &'a str) -> ql::Class<'a> {
+pub fn create_ast_node_class<'a>(
+    ast_node: &'a str,
+    node_location_table: &'a str,
+    node_parent_table: &'a str,
+) -> ql::Class<'a> {
     // Default implementation of `toString` calls `this.getAPrimaryQlClass()`
     let to_string = ql::Predicate {
         qldoc: Some(String::from(
@@ -32,13 +36,8 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, node_info_table: &'a str) ->
         return_type: Some(ql::Type::Normal("L::Location")),
         formal_parameters: vec![],
         body: ql::Expression::Pred(
-            node_info_table,
-            vec![
-                ql::Expression::Var("this"),
-                ql::Expression::Var("_"),      // parent
-                ql::Expression::Var("_"),      // parent index
-                ql::Expression::Var("result"), // location
-            ],
+            node_location_table,
+            vec![ql::Expression::Var("this"), ql::Expression::Var("result")],
         ),
     };
     let get_a_field_or_child = create_none_predicate(
@@ -55,12 +54,11 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, node_info_table: &'a str) ->
         return_type: Some(ql::Type::Normal("AstNode")),
         formal_parameters: vec![],
         body: ql::Expression::Pred(
-            node_info_table,
+            node_parent_table,
             vec![
                 ql::Expression::Var("this"),
                 ql::Expression::Var("result"),
-                ql::Expression::Var("_"), // parent index
-                ql::Expression::Var("_"), // location
+                ql::Expression::Var("_"),
             ],
         ),
     };
@@ -74,12 +72,11 @@ pub fn create_ast_node_class<'a>(ast_node: &'a str, node_info_table: &'a str) ->
         return_type: Some(ql::Type::Int),
         formal_parameters: vec![],
         body: ql::Expression::Pred(
-            node_info_table,
+            node_parent_table,
             vec![
                 ql::Expression::Var("this"),
-                ql::Expression::Var("_"),      // parent
-                ql::Expression::Var("result"), // parent index
-                ql::Expression::Var("_"),      // location
+                ql::Expression::Var("_"),
+                ql::Expression::Var("result"),
             ],
         ),
     };
