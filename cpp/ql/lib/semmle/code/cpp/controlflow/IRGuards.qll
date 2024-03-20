@@ -564,7 +564,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate comparesLt(Operand left, Operand right, int k, boolean isLessThan, boolean testIsTrue) {
     exists(BooleanValue value |
-      compares_lt(this, left, right, k, isLessThan, value) and
+      compares_lt(valueNumber(this), left, right, k, isLessThan, value) and
       value.getValue() = testIsTrue
     )
   }
@@ -575,7 +575,7 @@ class IRGuardCondition extends Instruction {
    */
   cached
   predicate comparesLt(Operand op, int k, boolean isLessThan, AbstractValue value) {
-    compares_lt(this, op, k, isLessThan, value)
+    compares_lt(valueNumber(this), op, k, isLessThan, value)
   }
 
   /**
@@ -585,7 +585,8 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresLt(Operand left, Operand right, int k, IRBlock block, boolean isLessThan) {
     exists(AbstractValue value |
-      compares_lt(this, left, right, k, isLessThan, value) and this.valueControls(block, value)
+      compares_lt(valueNumber(this), left, right, k, isLessThan, value) and
+      this.valueControls(block, value)
     )
   }
 
@@ -596,7 +597,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresLt(Operand op, int k, IRBlock block, boolean isLessThan) {
     exists(AbstractValue value |
-      compares_lt(this, op, k, isLessThan, value) and this.valueControls(block, value)
+      compares_lt(valueNumber(this), op, k, isLessThan, value) and this.valueControls(block, value)
     )
   }
 
@@ -609,7 +610,7 @@ class IRGuardCondition extends Instruction {
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean isLessThan
   ) {
     exists(AbstractValue value |
-      compares_lt(this, left, right, k, isLessThan, value) and
+      compares_lt(valueNumber(this), left, right, k, isLessThan, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -621,7 +622,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresLtEdge(Operand left, int k, IRBlock pred, IRBlock succ, boolean isLessThan) {
     exists(AbstractValue value |
-      compares_lt(this, left, k, isLessThan, value) and
+      compares_lt(valueNumber(this), left, k, isLessThan, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -630,7 +631,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate comparesEq(Operand left, Operand right, int k, boolean areEqual, boolean testIsTrue) {
     exists(BooleanValue value |
-      compares_eq(this, left, right, k, areEqual, value) and
+      compares_eq(valueNumber(this), left, right, k, areEqual, value) and
       value.getValue() = testIsTrue
     )
   }
@@ -638,7 +639,7 @@ class IRGuardCondition extends Instruction {
   /** Holds if (determined by this guard) `op == k` evaluates to `areEqual` if this expression evaluates to `value`. */
   cached
   predicate comparesEq(Operand op, int k, boolean areEqual, AbstractValue value) {
-    compares_eq(this, op, k, areEqual, value)
+    compares_eq(valueNumber(this), op, k, areEqual, value)
   }
 
   /**
@@ -648,7 +649,8 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresEq(Operand left, Operand right, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
-      compares_eq(this, left, right, k, areEqual, value) and this.valueControls(block, value)
+      compares_eq(valueNumber(this), left, right, k, areEqual, value) and
+      this.valueControls(block, value)
     )
   }
 
@@ -659,7 +661,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresEq(Operand op, int k, IRBlock block, boolean areEqual) {
     exists(AbstractValue value |
-      compares_eq(this, op, k, areEqual, value) and this.valueControls(block, value)
+      compares_eq(valueNumber(this), op, k, areEqual, value) and this.valueControls(block, value)
     )
   }
 
@@ -672,7 +674,7 @@ class IRGuardCondition extends Instruction {
     Operand left, Operand right, int k, IRBlock pred, IRBlock succ, boolean areEqual
   ) {
     exists(AbstractValue value |
-      compares_eq(this, left, right, k, areEqual, value) and
+      compares_eq(valueNumber(this), left, right, k, areEqual, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
@@ -684,7 +686,7 @@ class IRGuardCondition extends Instruction {
   cached
   predicate ensuresEqEdge(Operand op, int k, IRBlock pred, IRBlock succ, boolean areEqual) {
     exists(AbstractValue value |
-      compares_eq(this, op, k, areEqual, value) and
+      compares_eq(valueNumber(this), op, k, areEqual, value) and
       this.valueControlsEdge(pred, succ, value)
     )
   }
