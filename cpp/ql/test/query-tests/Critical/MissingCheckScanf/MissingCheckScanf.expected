@@ -37,6 +37,9 @@ edges
 | test.cpp:420:19:420:20 | scanf output argument | test.cpp:423:7:423:7 | i | provenance |  |
 | test.cpp:455:41:455:46 | sscanf output argument | test.cpp:460:6:460:10 | value | provenance |  |
 | test.cpp:467:20:467:25 | scanf output argument | test.cpp:474:6:474:10 | value | provenance |  |
+| test.cpp:479:30:479:31 | scanf output argument | test.cpp:481:9:481:9 | i | provenance |  |
+| test.cpp:487:35:487:36 | scanf output argument | test.cpp:489:9:489:9 | i | provenance |  |
+| test.cpp:495:30:495:31 | scanf output argument | test.cpp:497:9:497:9 | i | provenance |  |
 nodes
 | test.cpp:34:15:34:16 | scanf output argument | semmle.label | scanf output argument |
 | test.cpp:35:7:35:7 | i | semmle.label | i |
@@ -114,6 +117,12 @@ nodes
 | test.cpp:460:6:460:10 | value | semmle.label | value |
 | test.cpp:467:20:467:25 | scanf output argument | semmle.label | scanf output argument |
 | test.cpp:474:6:474:10 | value | semmle.label | value |
+| test.cpp:479:30:479:31 | scanf output argument | semmle.label | scanf output argument |
+| test.cpp:481:9:481:9 | i | semmle.label | i |
+| test.cpp:487:35:487:36 | scanf output argument | semmle.label | scanf output argument |
+| test.cpp:489:9:489:9 | i | semmle.label | i |
+| test.cpp:495:30:495:31 | scanf output argument | semmle.label | scanf output argument |
+| test.cpp:497:9:497:9 | i | semmle.label | i |
 subpaths
 #select
 | test.cpp:35:7:35:7 | i | test.cpp:34:15:34:16 | scanf output argument | test.cpp:35:7:35:7 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:34:3:34:7 | call to scanf | call to scanf |
@@ -134,3 +143,6 @@ subpaths
 | test.cpp:423:7:423:7 | i | test.cpp:420:19:420:20 | scanf output argument | test.cpp:423:7:423:7 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:420:7:420:11 | call to scanf | call to scanf |
 | test.cpp:460:6:460:10 | value | test.cpp:455:41:455:46 | sscanf output argument | test.cpp:460:6:460:10 | value | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:455:12:455:17 | call to sscanf | call to sscanf |
 | test.cpp:474:6:474:10 | value | test.cpp:467:20:467:25 | scanf output argument | test.cpp:474:6:474:10 | value | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:467:8:467:12 | call to scanf | call to scanf |
+| test.cpp:481:9:481:9 | i | test.cpp:479:30:479:31 | scanf output argument | test.cpp:481:9:481:9 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:479:18:479:22 | call to scanf | call to scanf |
+| test.cpp:489:9:489:9 | i | test.cpp:487:35:487:36 | scanf output argument | test.cpp:489:9:489:9 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:487:23:487:27 | call to scanf | call to scanf |
+| test.cpp:497:9:497:9 | i | test.cpp:495:30:495:31 | scanf output argument | test.cpp:497:9:497:9 | i | This variable is read, but may not have been written. It should be guarded by a check that the $@ returns at least 1. | test.cpp:495:18:495:22 | call to scanf | call to scanf |

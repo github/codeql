@@ -473,3 +473,27 @@ void check_for_negative_test() {
 	}
 	use(value);
 }
+
+void test_scanf_compared_right_away() {
+  int i;
+  bool success = scanf("%d", &i) == 1;
+  if(success) {
+    use(i); // GOOD [FALSE POSITIVE]
+  }
+}
+
+void test_scanf_compared_in_conjunct_right(bool b) {
+  int i;
+  bool success = b && scanf("%d", &i) == 1;
+  if(success) {
+    use(i); // GOOD [FALSE POSITIVE]
+  }
+}
+
+void test_scanf_compared_in_conjunct_left(bool b) {
+  int i;
+  bool success = scanf("%d", &i) == 1 && b;
+  if(success) {
+    use(i); // GOOD [FALSE POSITIVE]
+  }
+}
