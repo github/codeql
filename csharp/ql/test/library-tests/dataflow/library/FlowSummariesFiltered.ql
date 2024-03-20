@@ -13,7 +13,7 @@ class IncludeFilteredSummarizedCallable extends IncludeSummarizedCallable {
     this.propagatesFlow(input, output, preservesValue) and
     not exists(IncludeSummarizedCallable rsc |
       isBaseCallableOrPrototype(rsc) and
-      rsc.(SummarizedCallableImpl).propagatesFlow(input, output, preservesValue) and
+      rsc.propagatesFlow(input, output, preservesValue) and
       this.(UnboundCallable).overridesOrImplementsUnbound(rsc)
     )
   }

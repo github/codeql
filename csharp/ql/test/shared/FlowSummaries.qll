@@ -17,6 +17,4 @@ class IncludeSummarizedCallable extends SummarizedCallableImplFinal {
   ) {
     this.propagatesFlow(input, output, preservesValue)
   }
-
-  string toString() { result = super.toString() }
 }
