@@ -2030,7 +2030,13 @@ destructors_for_temps.cpp:
 #   45|                 getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 #   45|                     Type = [Class] ClassWithDestructor2
 #   45|                     ValueCategory = prvalue(load)
-#   47|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   45|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   45|                 Type = [VoidType] void
+#   45|                 ValueCategory = prvalue
+#   45|               getQualifier(): [ReuseExpr] reuse of temporary object
+#   45|                   Type = [Class] ClassWithDestructor2
+#   45|                   ValueCategory = xvalue
+#   47|             getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor2
 #   47|                 Type = [VoidType] void
 #   47|                 ValueCategory = prvalue
 #   47|               getQualifier(): [VariableAccess] c
