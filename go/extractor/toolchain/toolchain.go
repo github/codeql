@@ -25,7 +25,7 @@ func GetEnvGoVersion() string {
 		// download the version of Go specified in there. That may either fail or result in us just
 		// being told what's already in 'go.mod'. Setting 'GOTOOLCHAIN' to 'local' will force it
 		// to use the local Go toolchain instead.
-		cmd := exec.Command("go", "version")
+		cmd := Version()
 		cmd.Env = append(os.Environ(), "GOTOOLCHAIN=local")
 		out, err := cmd.CombinedOutput()
 
@@ -91,4 +91,10 @@ func VendorModule(path string) *exec.Cmd {
 	modVendor := exec.Command("go", "mod", "vendor", "-e")
 	modVendor.Dir = path
 	return modVendor
+}
+
+// Constructs a command to run `go version`.
+func Version() *exec.Cmd {
+	version := exec.Command("go", "version")
+	return version
 }
