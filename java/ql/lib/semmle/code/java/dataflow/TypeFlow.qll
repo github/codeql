@@ -75,7 +75,7 @@ private module Input implements TypeFlowInput<J::Location> {
    * Holds if data can flow from `n1` to `n2` in one step, and `n1` is not
    * necessarily functionally determined by `n2`.
    */
-  predicate joinStep0(TypeFlowNode n1, TypeFlowNode n2) {
+  predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
     n2.asExpr().(ChooseExpr).getAResultExpr() = n1.asExpr()
     or
     exists(Field f, Expr e |
@@ -134,7 +134,7 @@ private module Input implements TypeFlowInput<J::Location> {
       not exists(decl.getInit())
     )
     or
-    forex(TypeFlowNode mid | joinStep0(mid, n) | Make<J::Location, Input>::isNull(mid)) and
+    forex(TypeFlowNode mid | joinStep(mid, n) | Make<J::Location, Input>::isNull(mid)) and
     // Fields that are never assigned a non-null value are probably set by
     // reflection and are thus not always null.
     not exists(n.asField())
