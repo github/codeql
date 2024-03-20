@@ -39,10 +39,8 @@ signature module TypeFlowInput<LocationSig Location> {
    */
   predicate step(TypeFlowNode n1, TypeFlowNode n2);
 
-  /**
-   * Holds if `null` is the only value that flows to `n`.
-   */
-  predicate isNull(TypeFlowNode n);
+  /** Holds if `n` represents a `null` value. */
+  predicate isNullValue(TypeFlowNode n);
 
   /** A type. */
   class Type {

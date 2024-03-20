@@ -125,7 +125,7 @@ private module Input implements TypeFlowInput<J::Location> {
   /**
    * Holds if `null` is the only value that flows to `n`.
    */
-  predicate isNull(TypeFlowNode n) {
+  predicate isNullValue(TypeFlowNode n) {
     n.asExpr() instanceof NullLiteral
     or
     exists(LocalVariableDeclExpr decl |
@@ -134,9 +134,7 @@ private module Input implements TypeFlowInput<J::Location> {
       not exists(decl.getInit())
     )
     or
-    exists(TypeFlowNode mid | isNull(mid) and step(mid, n))
-    or
-    forex(TypeFlowNode mid | joinStep0(mid, n) | isNull(mid)) and
+    forex(TypeFlowNode mid | joinStep0(mid, n) | Make<J::Location, Input>::isNull(mid)) and
     // Fields that are never assigned a non-null value are probably set by
     // reflection and are thus not always null.
     not exists(n.asField())

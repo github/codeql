@@ -5,6 +5,13 @@ private import codeql.util.Unit
 module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private import I
 
+  /** Holds if `null` is the only value that flows to `n`. */
+  predicate isNull(TypeFlowNode n) {
+    isNullValue(n)
+    or
+    exists(TypeFlowNode mid | isNull(mid) and step(mid, n))
+  }
+
   /**
    * Holds if data can flow from `n1` to `n2` in one step, `n1` is not necessarily
    * functionally determined by `n2`, and `n1` might take a non-null value.
