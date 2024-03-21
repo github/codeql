@@ -106,7 +106,10 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
       [
         "github\\.event\\.workflow\\.path", "github\\.event\\.workflow_run\\.head_branch",
         "github\\.event\\.workflow_run\\.display_title",
+        "github\\.event\\.workflow_run\\.head_branch",
         "github\\.event\\.workflow_run\\.head_repository\\.description",
+        "github\\.event\\.workflow_run\\.head_repository\\.full_name",
+        "github\\.event\\.workflow_run\\.head_repository\\.name",
         "github\\.event\\.workflow_run\\.head_commit\\.message",
         "github\\.event\\.workflow_run\\.head_commit\\.author\\.email",
         "github\\.event\\.workflow_run\\.head_commit\\.author\\.name",
