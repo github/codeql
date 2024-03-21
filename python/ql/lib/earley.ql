@@ -2,21 +2,24 @@
  * @kind graph
  * @id shared/earley
  */
-string input() { result = "[a][b-c][e-][f-g---h][i-j-k]" } //[b-c][-d][e-][^f-g]" }
+//string input() { result = "[------------------------------------]" } //"[a][b-c][e-][f-g---h][i-j-k]" } //[b-c][-d][e-][^f-g]" }
+string input() { grammar("grammars", result) }
 
 /** The production that matches the empty string. */
 string epsilon() { result = "" }
 
-extensible predicate grammar(string line);
+extensible predicate grammar(string name, string lines);
 
-string grammar_line() { exists(string grm | grammar(grm) | result = grm.splitAt("\n")) }
+string grammar_line(int i) {
+  exists(string grm | grammar("grammars", grm) | result = grm.splitAt("\n", i))
+}
 
-predicate rule(string lhs, string prod) {
+predicate rule(string lhs, string rhs, int priority) {
   exists(string line, string delimiter |
-    line = grammar_line() and delimiter = " ::= " and line.charAt(0) != "#"
+    line = grammar_line(priority) and delimiter = " ::= " and line.charAt(0) != "#"
   |
     lhs = line.splitAt(delimiter, 0) and
-    prod = line.splitAt(delimiter, 1)
+    rhs = line.splitAt(delimiter, 1)
   )
 }
 
@@ -29,88 +32,155 @@ string getRegexToken(string s) { s.charAt(0) = "r" and result = s.substring(2, s
 bindingset[s]
 predicate is_nonterminal(string s) { s.charAt(0).toUpperCase() = s.charAt(0) }
 
-predicate valid_index(string lhs, string prod, int index) {
-  rule(lhs, prod) and
-  if prod = epsilon()
+predicate valid_index(string lhs, string rhs, int index, int priority) {
+  rule(lhs, rhs, priority) and
+  if rhs = epsilon()
   then index = 0
-  else index in [0 .. max(int i | exists(prod.splitAt(" ", i)) | i) + 1]
+  else index in [0 .. max(int i | exists(rhs.splitAt(" ", i)) | i) + 1]
+}
+
+string rhs_part(string lhs, string rhs, int index) {
+  valid_index(lhs, rhs, index, _) and
+  result = rhs.splitAt(" ", index)
 }
 
 string start_symbol() {
   result = "S"
   or
   none() and
-  result = unique(string s | rule(s, _) and not s = any(Item i).getNextPart())
+  result = unique(string s | rule(s, _, _) and not s = any(EarleyProduction i).getNextPart())
 }
 
-newtype TItem = TEarleyItem(string lhs, string prod, int index) { valid_index(lhs, prod, index) }
+string left_corner(string nonterminal) { result = rhs_part(nonterminal, _, 0) }
+
+string left_corner_token(string nonterminal) {
+  result = left_corner+(nonterminal) and
+  result.charAt(0) in ["'", "r"]
+}
+
+newtype TProduction =
+  TEarleyProduction(string lhs, string rhs, int index, int priority) {
+    valid_index(lhs, rhs, index, priority)
+  } or
+  TTokenProduction(string token, int index) {
+    index in [0, 1] and
+    token = any(rhs_part(_, _, _)) and
+    (exists(getRegexToken(token)) or exists(getStringToken(token)))
+  }
+
+class Production extends TProduction {
+  abstract string toString();
+
+  abstract predicate isComplete();
+
+  abstract predicate isPrediction();
+
+  abstract predicate isStartItem();
+
+  abstract predicate isHidden();
+
+  abstract int getPriority();
+
+  abstract string getLhs();
+}
+
+class TokenProduction extends TTokenProduction, Production {
+  string token;
+  int index;
+
+  TokenProduction() { this = TTokenProduction(token, index) }
+
+  override string getLhs() { result = token }
+
+  override predicate isComplete() { index = 1 }
+
+  override predicate isPrediction() { index = 0 }
+
+  override predicate isStartItem() { none() }
+
+  override predicate isHidden() { none() }
+
+  override int getPriority() { result = 0 }
+
+  TokenProduction asPrediction() { result.getLhs() = this.getLhs() and result.isPrediction() }
+
+  override string toString() {
+    if index = 0 then result = token + " (predicted)" else result = token + " (completed)"
+  }
+
+  bindingset[specific, start, end]
+  string toStringAsSpecificInstance(string specific, int start, int end) {
+    result =
+      "'" + specific + "' : " + this.getLhs() + " @ [" + start.toString() + ", " + end.toString() +
+        "]"
+  }
+}
 
 /**
  * An item in an Earley-style parser. Each item consists of a grammar production rule (which we
- * write `lhs -> prod`) and an index indicating how far into the production we have successfully
+ * write `lhs -> rhs`) and an index indicating how far into the production we have successfully
  * parsed. As is customary, we indicate this by putting a marker (`*`) in that spot.
  *
- * Thus, the item `S -> A b * C d` has `lhs` equal to `S`, `prod` equal to `A b C d`, and `index`
+ * Thus, the item `S -> A b * C d` has `lhs` equal to `S`, `rhs` equal to `A b C d`, and `index`
  * equal to `2`. The possible values for `index` range from zero (indicating no right-hand
  * side parts have been parsed) to the number of right-hand side parts (indicating that
  * all parts have been parsed successfully).
  */
-class Item extends TItem {
+class EarleyProduction extends TEarleyProduction, Production {
   string lhs;
-  string prod;
+  string rhs;
   int index;
+  int priority;
 
-  Item() { this = TEarleyItem(lhs, prod, index) }
+  EarleyProduction() { this = TEarleyProduction(lhs, rhs, index, priority) }
 
   /** Gets the `i`th item in the production for this item. */
-  string getRhsPart(int i) { prod != epsilon() and result = prod.splitAt(" ", i) }
+  string getRhsPart(int i) { rhs != epsilon() and result = rhs.splitAt(" ", i) }
 
   /** Holds if the production for this item has no more parts left after the index. */
-  predicate isComplete() { not exists(this.getNextPart()) }
+  override predicate isComplete() { not exists(this.getNextPart()) }
 
   /**
    * Holds if this item is the entry point for parsing. Its lhs is the root nonterminal for the
    * grammar, and its index is 0.
    */
-  predicate isStartItem() {
+  override predicate isStartItem() {
     lhs = start_symbol() and
     index = 0
   }
 
   /** Gets the nonterminal for this item. */
-  string getLhs() { result = lhs }
+  override string getLhs() { result = lhs }
 
-  /** Gets the production for this item. */
-  string getProduction() { result = prod }
+  /** Gets the right hand side for this item. */
+  string getRhs() { result = rhs }
 
   /** Gets the index for this item. */
   int getIndex() { result = index }
 
-  predicate isHidden() { this.getLhs().charAt(0) = "_" }
+  override predicate isPrediction() { index = 0 }
+
+  override int getPriority() { result = priority }
+
+  override predicate isHidden() { this.getLhs().charAt(0) = "_" }
 
   /**
-   * Gets the item that precedes this one, if one exists. Has the same lhs and production, but the
+   * Gets the item that precedes this one, if one exists. Has the same lhs and rhs, but the
    * index is one lower.
    */
-  Item getPredecessor() {
+  EarleyProduction getPredecessor() {
     result.getLhs() = this.getLhs() and
-    result.getProduction() = this.getProduction() and
+    result.getRhs() = this.getRhs() and
     result.getIndex() = this.getIndex() - 1
   }
 
-  Item getSuccessor() { result.getPredecessor() = this }
+  EarleyProduction getSuccessor() { result.getPredecessor() = this }
 
   /** Gets the part (token or nonterminal) that is needed for this item to continue its parse. */
   string getNextPart() { result = this.getRhsPart(index) }
 
   /** Gets the part (token or nonterminal) just before the index. */
   string getPreviousPart() { result = this.getRhsPart(index - 1) }
-
-  predicate isPreviousPartNonterminal() { is_nonterminal(this.getPreviousPart()) }
-
-  predicate isPreviousPartTerminal() {
-    exists(getStringToken(this.getPreviousPart())) or exists(getRegexToken(this.getPreviousPart()))
-  }
 
   private string beforeIndex() {
     index = 0 and result = ""
@@ -125,7 +195,9 @@ class Item extends TItem {
   }
 
   /** Gets a string representation of this element. */
-  string toString() { result = lhs + " -> " + this.beforeIndex() + " * " + this.afterIndex() }
+  override string toString() {
+    result = lhs + " -> " + this.beforeIndex() + " * " + this.afterIndex()
+  }
 
   bindingset[i, j]
   string toStringWithIndices(int i, int j) {
@@ -134,15 +206,77 @@ class Item extends TItem {
 }
 
 /**
- * Holds if the grammar rule `lhs -> prod` can be matched until the `index`th position of `prod`
- * (with all three of these represented as the single item `item`) starting just before
- * the `start`th token, and ending just after the `end`th token. Moreover, the length of the last
- * part of the item is recorded in `last_part_length`.
+ * Holds if `rhs_part` has been predicted (top-down) to appear at position `start` in the input.
+ * This is the case if it is the next part of a production that has been completed up to the point * where it next expects `rhs_part` (which may be either a terminal or nonterminal).
  */
-predicate earleySet(Item item, int start, int end, int last_part_length) {
-  // Start
-  // Add Root_node -> * Root_prod (from 0 to 0)
-  item.isStartItem() and start = 0 and end = 0 and last_part_length = 0
+predicate predict_rhs_part(string rhs_part, int start) {
+  exists(EarleyProduction prod |
+    earleyItem(prod, _, start) and
+    rhs_part = prod.getNextPart()
+  )
+}
+
+/**
+ * Holds if `prod` has been predicted (bottom-up) to start at position `start` in the input. This
+ * is a hybrid of prediction and completion, where we only predict an intermediate item if we have
+ * already found a way to complete the first part of the production. Thus, this boils down to
+ * finding a production for a left corner (of the outer top-down prediction) for which the first
+ * part of the right hand side has a completion. If this is found, we create a normal prediction
+ * item for that production at the given position (and this will then in turn be completed
+ * immediately).
+ */
+predicate bottom_up_prediction(EarleyProduction prod, int start) {
+  exists(string top_down_predictor, Production completed_left_corner |
+    predict_rhs_part(top_down_predictor, start) and
+    prod.getLhs() = left_corner*(top_down_predictor) and
+    prod.isPrediction() and
+    prod.getNextPart() = completed_left_corner.getLhs() and
+    earleyItem(completed_left_corner, start, _)
+  )
+}
+
+/**
+ * Holds if the token production `prod` has been predicted to start at position `start` in the
+ * input. This requires that the token is a left corner of some outer top-down prediction also
+ * starting at `start`.
+ */
+predicate predict_terminal(TokenProduction prod, int start) {
+  exists(string top_down_predictor |
+    predict_rhs_part(top_down_predictor, start) and
+    prod.getLhs() = left_corner*(top_down_predictor) and
+    prod.isPrediction()
+  )
+}
+
+/**
+ * Holds if the token production `prod` matches the input from `start` to `end`. Note that only
+ * tokens that are in the `predict_terminal` relation are attempted to be matched.
+ */
+predicate scan(TokenProduction prod, int start, int end) {
+  prod.isComplete() and
+  predict_terminal(prod.asPrediction(), start) and
+  (
+    exists(string token | token = getStringToken(prod.getLhs()) |
+      token = input().substring(start, end) and
+      end = token.length() + start
+    )
+    or
+    exists(string regex, string match | regex = getRegexToken(prod.getLhs()) |
+      match = input().suffix(start).regexpFind(regex, _, 0) and
+      end = match.length() + start
+    )
+  )
+}
+
+/**
+ * Holds if the grammar rule `lhs -> rhs` can be matched until the `index`th position of `rhs`
+ * (with all three of these represented as the single dotted production `prod`) starting just before
+ * the `start`th token, and ending just after the `end`th token.
+ */
+predicate earleyItem(Production prod, int start, int end) {
+  start = 0 and
+  start = end and
+  prod.isStartItem()
   or
   // Scanning
   // If Lhs -> ... * token ... (from start to end - length)
@@ -151,61 +285,37 @@ predicate earleySet(Item item, int start, int end, int last_part_length) {
   //
   // where length is the length of the matched nonterminal (this is just the length of the string
   // for simple string matches, or the length of the regular expression match for regex matches).
-  exists(Item pred, string next_part |
-    pred = item.getPredecessor() and next_part = pred.getNextPart()
-  |
-    exists(string token | token = getStringToken(next_part) |
-      earleySet(pred, start, end - token.length(), _) and
-      token = input().substring(end - token.length(), end) and
-      last_part_length = token.length()
-    )
-    or
-    exists(string token, string match, int prev_end | token = getRegexToken(next_part) |
-      earleySet(pred, start, prev_end, _) and
-      match = input().suffix(prev_end).regexpFind(token, _, 0) and
-      end = prev_end + match.length() and
-      last_part_length = match.length()
-    )
-  )
+  scan(prod, start, end)
   or
   // Prediction
   // If Outer_lhs -> ... * Lhs ... (from start to end)
-  // we want to add Lhs -> * Prod (from end to end)
-  // for all possible productions Prod for Lhs
-  exists(Item outer |
-    earleySet(outer, _, end, _) and
-    outer.getNextPart() = item.getLhs() and
-    item.getIndex() = 0 and
+  // we want to add Lhs -> * Rhs (from end to end)
+  // for all possible right hand sides Rhs for Lhs
+  bottom_up_prediction(prod, start) and
+  end = start
+  or
+  none() and
+  // Normal prediction
+  exists(EarleyProduction outer_prod |
+    earleyItem(outer_prod, _, start) and
     start = end and
-    last_part_length = 0
+    outer_prod.getNextPart() = prod.getLhs() and
+    prod.isPrediction()
   )
   or
   // Completion
   // If Lhs -> ... * Inner_lhs ... (from start to mid)
-  // and Inner_lhs -> Prod * (from mid to end)
+  // and Inner_lhs -> Rhs * (from mid to end)
   // then Lhs -> ... Inner_lhs * ... (from start to end)
-  exists(Item inner, int mid |
+  exists(Production inner, int mid |
     inner.isComplete() and
-    item.getPreviousPart() = inner.getLhs() and
-    earleySet(item.getPredecessor(), start, mid, _) and
-    earleySet(inner, mid, end, _) and
-    last_part_length = end - mid
+    prod.(EarleyProduction).getPreviousPart() = inner.getLhs() and
+    earleyItem(prod.(EarleyProduction).getPredecessor(), start, mid) and
+    earleyItem(inner, mid, end)
   )
 }
 
-newtype TNode =
-  TItemNode(Item item, int start, int end, int last_part_length) {
-    earleySet(item, start, end, last_part_length)
-  } or
-  TTokenNode(string terminal, int start, int end, string token) {
-    exists(Item item, int last_part_length |
-      earleySet(item, _, end, last_part_length) and
-      terminal = item.getPreviousPart() and
-      start = end - last_part_length and
-      token = input().substring(start, end) and
-      item.isPreviousPartTerminal()
-    )
-  }
+newtype TNode = TItemNode(Production prod, int start, int end) { earleyItem(prod, start, end) }
 
 class Node extends TNode {
   abstract string toString();
@@ -217,28 +327,42 @@ class Node extends TNode {
   abstract predicate isVisible();
 }
 
+// Gets the lowest priority item that matches the given nonterminal at the given end position.
+ItemNode best_match(string rhs_part, int start, int end) {
+  result =
+    min(ItemNode right, ItemNode left |
+      right.getItem().getLhs() = rhs_part and
+      right.getItem().isComplete() and
+      right.getEnd() = end and
+      left.getStart() = start and
+      left.getEnd() = right.getStart() and
+      left.getItem().(EarleyProduction).getNextPart() = rhs_part
+    |
+      right order by right.getItem().getPriority()
+    )
+}
+
 class ItemNode extends TItemNode, Node {
-  Item item;
+  Production prod;
   int start;
   int end;
-  int last_part_length;
 
-  ItemNode() { this = TItemNode(item, start, end, last_part_length) }
+  ItemNode() { this = TItemNode(prod, start, end) }
 
-  Item getItem() { result = item }
+  Production getItem() { result = prod }
 
   override int getStart() { result = start }
 
   override int getEnd() { result = end }
 
-  int getLastPartLength() { result = last_part_length }
-
   override predicate isVisible() {
-    not item.isHidden() and
-    exists(item.getRhsPart(1))
+    prod instanceof TokenProduction
+    or
+    not prod.isHidden() and
+    exists(prod.(EarleyProduction).getRhsPart(1))
   }
 
-  predicate isTopNode() { start = 0 and end = input().length() and item.getLhs() = "S" }
+  predicate isTopNode() { start = 0 and end = input().length() and prod.getLhs() = "S" }
 
   /**
    * Gets the left and right children of this node. The right child corresponds to the nonterminal
@@ -251,36 +375,20 @@ class ItemNode extends TItemNode, Node {
    * and these two items exactly split up the range of tokens from start to end.
    */
   predicate getNextSpineAndChildForNonterminal(ItemNode left, ItemNode right) {
-    item.isPreviousPartNonterminal() and
-    left.getItem() = item.getPredecessor() and
+    left.getItem() = prod.(EarleyProduction).getPredecessor() and
     left.getStart() = start and
     left.getEnd() = right.getStart() and
-    right.getStart() = end - last_part_length and
     right.getItem().isComplete() and
-    right.getItem().getLhs() = item.getPreviousPart() and
-    right.getEnd() = end
-  }
-
-  predicate getNextSpineItemAndTokenForTerminal(ItemNode left, TokenNode right) {
-    left.getItem() = item.getPredecessor() and
-    left.getStart() = start and
-    left.getEnd() = right.getStart() and
-    right.getStart() = end - last_part_length and
+    right.getItem().getLhs() = prod.(EarleyProduction).getPreviousPart() and
     right.getEnd() = end and
-    right.getTerminal() = item.getPreviousPart()
+    right = best_match(prod.(EarleyProduction).getPreviousPart(), start, end)
   }
 
-  ItemNode getSpineItem() {
-    this.getNextSpineAndChildForNonterminal(result, _) or
-    this.getNextSpineItemAndTokenForTerminal(result, _)
-  }
+  ItemNode getSpineItem() { this.getNextSpineAndChildForNonterminal(result, _) }
 
   Node getAChild() {
-    item.isComplete() and
-    (
-      this.getSpineItem*().getNextSpineAndChildForNonterminal(_, result) or
-      this.getSpineItem*().getNextSpineItemAndTokenForTerminal(_, result)
-    )
+    prod.isComplete() and
+    this.getSpineItem*().getNextSpineAndChildForNonterminal(_, result)
   }
 
   Node getAVisibleChild() {
@@ -294,29 +402,11 @@ class ItemNode extends TItemNode, Node {
     result = rank[i + 1](Node n | n = this.getAVisibleChild() | n order by n.getStart())
   }
 
-  override string toString() { result = item.toStringWithIndices(start, end) }
-}
-
-class TokenNode extends TTokenNode, Node {
-  string terminal;
-  int start;
-  int end;
-  string token;
-
-  TokenNode() { this = TTokenNode(terminal, start, end, token) }
-
-  string getTerminal() { result = terminal }
-
-  override int getStart() { result = start }
-
-  override int getEnd() { result = end }
-
-  string getToken() { result = token }
-
-  override predicate isVisible() { terminal.charAt(0) = "r" }
-
   override string toString() {
-    result = token + " : " + terminal + " @ (" + start + ", " + end + ")"
+    result in [
+        prod.(EarleyProduction).toStringWithIndices(start, end),
+        prod.(TokenProduction).toStringAsSpecificInstance(input().substring(start, end), start, end)
+      ]
   }
 }
 

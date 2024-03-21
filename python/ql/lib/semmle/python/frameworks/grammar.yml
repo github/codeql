@@ -3,7 +3,25 @@ extensions:
       pack: codeql/python-all
       extensible: grammar
     data:
-      - - |-
+      -
+        - grammars
+        - |-
+          S ::= Space Rules Space
+          Rules ::= Rules Space Rule
+          Rules ::= Rule
+          Rule ::= Nonterminal Space '::=' Space Parts
+          Parts ::= Parts Space Part
+          Parts ::= Part
+          Part ::= Nonterminal
+          Part ::= StringToken
+          Part ::= RegexToken
+          StringToken ::= r'\x27[^\x27]*\x27'
+          RegexToken ::= r'r\x27[^\x27]*\x27'
+          Nonterminal ::= r'[A-Z][a-zA-Z]*'
+          Space ::= r'\s*'
+      -
+        - regex
+        - |-
           S ::= Alternatives
           Alternatives ::= Sequence
           Alternatives ::= Alternatives '|' Sequence
@@ -14,21 +32,18 @@ extensions:
           _RegexItem ::= _Character
           _RegexItem ::= Group
           CharacterClass ::= '[' CompleteClassSequence ']'
-          # NegatedCharacterClass ::= '[^' ClassSequence ']'
+          # NegatedCharacterClass ::= '[^' CompleteClassSequence ']'
           EndsInRange ::= CharacterRange
           EndsInRange ::= EndsInRange CharacterRange
           EndsInRange ::= EndsInCharacter CharacterRange
           EndsInCharacter ::= _Character
           EndsInCharacter ::= EndsInRange _Character
           EndsInCharacter ::= EndsInCharacter _NonMinusCharacter
-          EndsInMinus ::= EndsInCharacter r'-'
+          CompleteClassSequence ::= EndsInCharacter r'-'
           CompleteClassSequence ::= EndsInCharacter
-          CompleteClassSequence ::= EndsInMinus
           CompleteClassSequence ::= EndsInRange
-          ClassItem ::= _Character
-          ClassItem ::= CharacterRange
           CharacterRange ::= _Character '-' _Character
-          _Character ::= r'[a-z]|-'
+          _Character ::= r'[a-z-]'
           _NonMinusCharacter ::= r'[a-z]'
           Group ::= '(' Alternatives ')'
           # [^]
