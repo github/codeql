@@ -40,6 +40,5 @@ where
   compareToMethod(m, actualParamType) and
   not implementsIComparable(declaringType, actualParamType)
 select m,
-  "The parameter of this 'CompareTo' method is of type $@, but $@ does not implement 'IComparable<$@>'.",
-  actualParamType, actualParamType.getName(), declaringType, declaringType.getName(),
-  actualParamType, actualParamType.getName()
+  "The parameter of this 'CompareTo' method is of type '" + actualParamType.getName() +
+    "', but the declaring type does not implement 'IComparable<" + actualParamType.getName() + ">'."

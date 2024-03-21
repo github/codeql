@@ -80,8 +80,7 @@ namespace Semmle.Extraction.CSharp.Entities
             // Diagnostics
             Context.Compilation
                 .GetDiagnostics()
-                .Select(d => new Diagnostic(Context, d))
-                .ForEach((diag, index) => trapFile.diagnostic_for(diag, this, 0, index));
+                .ForEach((diag, index) => new CompilerDiagnostic(Context, diag, this, index));
         }
 
         public void PopulatePerformance(PerformanceMetrics p)
