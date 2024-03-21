@@ -72,16 +72,13 @@ private class CompareValueNumber extends ValueNumber {
   CompareInstruction getCompareInstruction() { result = cmp }
 
   /**
-   * Gets a left operand of a `CompareInstruction` that belongs to this
-   * value number
+   * Gets the left and right operands of a `CompareInstruction` that
+   * belongs to this value number.
    */
-  Operand getLeftOperand() { result = cmp.getLeftOperand() }
-
-  /**
-   * Gets a right operand of a `CompareInstruction` that belongs to this
-   * value number
-   */
-  Operand getRightOperand() { result = cmp.getRightOperand() }
+  predicate hasOperands(Operand left, Operand right) {
+    left = cmp.getLeftOperand() and
+    right = cmp.getRightOperand()
+  }
 }
 
 private class CompareEQValueNumber extends CompareValueNumber {
@@ -847,15 +844,13 @@ private predicate compares_eq(
 private predicate simple_comparison_eq(
   CompareValueNumber cmp, Operand left, Operand right, int k, AbstractValue value
 ) {
-  left = cmp.getLeftOperand() and
   cmp instanceof CompareEQValueNumber and
-  right = cmp.getRightOperand() and
+  cmp.hasOperands(left, right) and
   k = 0 and
   value.(BooleanValue).getValue() = true
   or
-  left = cmp.getLeftOperand() and
   cmp instanceof CompareNEValueNumber and
-  right = cmp.getRightOperand() and
+  cmp.hasOperands(left, right) and
   k = 0 and
   value.(BooleanValue).getValue() = false
 }
@@ -944,24 +939,20 @@ private predicate compares_ge(
 
 /** Rearrange various simple comparisons into `left < right + k` form. */
 private predicate simple_comparison_lt(CompareValueNumber cmp, Operand left, Operand right, int k) {
-  left = cmp.getLeftOperand() and
+  cmp.hasOperands(left, right) and
   cmp instanceof CompareLTValueNumber and
-  right = cmp.getRightOperand() and
   k = 0
   or
-  left = cmp.getLeftOperand() and
+  cmp.hasOperands(left, right) and
   cmp instanceof CompareLEValueNumber and
-  right = cmp.getRightOperand() and
   k = 1
   or
-  right = cmp.getLeftOperand() and
+  cmp.hasOperands(right, left) and
   cmp instanceof CompareGTValueNumber and
-  left = cmp.getRightOperand() and
   k = 0
   or
-  right = cmp.getLeftOperand() and
+  cmp.hasOperands(right, left) and
   cmp instanceof CompareGEValueNumber and
-  left = cmp.getRightOperand() and
   k = 1
 }
 
