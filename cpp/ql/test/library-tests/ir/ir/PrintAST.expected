@@ -19815,6 +19815,12 @@ ir.cpp:
 # 2400|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
 # 2400|                   Type = [VoidType] void
 # 2400|                   ValueCategory = prvalue
+# 2400|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2400|                   Type = [VoidType] void
+# 2400|                   ValueCategory = prvalue
+# 2400|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2400|                     Type = [Class] ClassWithDestructor
+# 2400|                     ValueCategory = xvalue
 # 2400|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2400|                   Type = [Class] ClassWithDestructor
 # 2400|                   ValueCategory = prvalue(load)
@@ -19843,6 +19849,12 @@ ir.cpp:
 # 2403|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
 # 2403|                   Type = [VoidType] void
 # 2403|                   ValueCategory = prvalue
+# 2403|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2403|                   Type = [VoidType] void
+# 2403|                   ValueCategory = prvalue
+# 2403|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2403|                     Type = [Class] ClassWithDestructor
+# 2403|                     ValueCategory = xvalue
 # 2403|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2403|                   Type = [Class] ClassWithDestructor
 # 2403|                   ValueCategory = prvalue(load)
@@ -19912,6 +19924,12 @@ ir.cpp:
 # 2411|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
 # 2411|                   Type = [VoidType] void
 # 2411|                   ValueCategory = prvalue
+# 2411|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2411|                   Type = [VoidType] void
+# 2411|                   ValueCategory = prvalue
+# 2411|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2411|                     Type = [Class] ClassWithDestructor
+# 2411|                     ValueCategory = xvalue
 # 2411|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2411|                   Type = [Class] ClassWithDestructor
 # 2411|                   ValueCategory = prvalue(load)
