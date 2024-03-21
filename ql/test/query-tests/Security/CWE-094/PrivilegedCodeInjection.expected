@@ -4,6 +4,7 @@ edges
 | .github/workflows/argus_case_study.yml:22:20:22:39 | env.ISSUE_TITLE | .github/workflows/argus_case_study.yml:15:9:24:6 | Uses Step: remove_quotations [replaced] |
 | .github/workflows/changed-files.yml:16:9:20:6 | Uses Step: changed-files | .github/workflows/changed-files.yml:22:24:22:75 | steps.changed-files.outputs.all_changed_files |
 | .github/workflows/changelog.yml:49:19:49:56 | github.event.pull_request.title | .github/workflows/changelog.yml:58:26:58:39 | env.log |
+| .github/workflows/changelog_from_prt.yml:49:19:49:56 | github.event.pull_request.title | .github/workflows/changelog_from_prt.yml:58:26:58:39 | env.log |
 | .github/workflows/cross3.yml:27:7:37:4 | Uses Step: remove_quotations [replaced] | .github/workflows/cross3.yml:39:31:39:75 | steps.remove_quotations.outputs.replaced |
 | .github/workflows/cross3.yml:27:7:37:4 | Uses Step: remove_quotations [replaced] | .github/workflows/cross3.yml:57:29:57:73 | steps.remove_quotations.outputs.replaced |
 | .github/workflows/cross3.yml:32:18:32:53 | github.event.commits[0].message | .github/workflows/cross3.yml:27:7:37:4 | Uses Step: remove_quotations [replaced] |
@@ -66,6 +67,8 @@ nodes
 | .github/workflows/changed-files.yml:22:24:22:75 | steps.changed-files.outputs.all_changed_files | semmle.label | steps.changed-files.outputs.all_changed_files |
 | .github/workflows/changelog.yml:49:19:49:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/changelog.yml:58:26:58:39 | env.log | semmle.label | env.log |
+| .github/workflows/changelog_from_prt.yml:49:19:49:56 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+| .github/workflows/changelog_from_prt.yml:58:26:58:39 | env.log | semmle.label | env.log |
 | .github/workflows/comment_issue.yml:9:15:9:46 | github.event.comment.body | semmle.label | github.event.comment.body |
 | .github/workflows/comment_issue.yml:15:19:15:50 | github.event.comment.body | semmle.label | github.event.comment.body |
 | .github/workflows/comment_issue.yml:16:19:16:48 | github.event.issue.body | semmle.label | github.event.issue.body |
@@ -204,6 +207,7 @@ subpaths
 #select
 | .github/workflows/argus_case_study.yml:27:33:27:77 | steps.remove_quotations.outputs.replaced | .github/workflows/argus_case_study.yml:17:25:17:53 | github.event.issue.title | .github/workflows/argus_case_study.yml:27:33:27:77 | steps.remove_quotations.outputs.replaced | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/argus_case_study.yml:27:33:27:77 | steps.remove_quotations.outputs.replaced | ${{steps.remove_quotations.outputs.replaced}} |
 | .github/workflows/changelog.yml:58:26:58:39 | env.log | .github/workflows/changelog.yml:49:19:49:56 | github.event.pull_request.title | .github/workflows/changelog.yml:58:26:58:39 | env.log | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/changelog.yml:58:26:58:39 | env.log | ${{ env.log }} |
+| .github/workflows/changelog_from_prt.yml:58:26:58:39 | env.log | .github/workflows/changelog_from_prt.yml:49:19:49:56 | github.event.pull_request.title | .github/workflows/changelog_from_prt.yml:58:26:58:39 | env.log | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/changelog_from_prt.yml:58:26:58:39 | env.log | ${{ env.log }} |
 | .github/workflows/comment_issue.yml:9:15:9:46 | github.event.comment.body | .github/workflows/comment_issue.yml:9:15:9:46 | github.event.comment.body | .github/workflows/comment_issue.yml:9:15:9:46 | github.event.comment.body | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/comment_issue.yml:9:15:9:46 | github.event.comment.body | ${{ github.event.comment.body }} |
 | .github/workflows/comment_issue.yml:15:19:15:50 | github.event.comment.body | .github/workflows/comment_issue.yml:15:19:15:50 | github.event.comment.body | .github/workflows/comment_issue.yml:15:19:15:50 | github.event.comment.body | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/comment_issue.yml:15:19:15:50 | github.event.comment.body | ${{ github.event.comment.body }} |
 | .github/workflows/comment_issue.yml:16:19:16:48 | github.event.issue.body | .github/workflows/comment_issue.yml:16:19:16:48 | github.event.issue.body | .github/workflows/comment_issue.yml:16:19:16:48 | github.event.issue.body | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/comment_issue.yml:16:19:16:48 | github.event.issue.body | ${{ github.event.issue.body }} |
