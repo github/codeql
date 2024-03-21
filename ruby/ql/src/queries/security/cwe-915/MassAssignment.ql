@@ -1,6 +1,6 @@
 /**
  * @name Insecure Mass Assignment
- * @description Using mass assignment with user-controlled keys allows unintended parameters to be set.
+ * @description Using mass assignment with user-controlled attributes allows unintended parameters to be set.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 7.5
@@ -15,4 +15,6 @@ import MassAssignmentFlow::PathGraph
 
 from MassAssignmentFlow::PathNode source, MassAssignmentFlow::PathNode sink
 where MassAssignmentFlow::flowPath(source, sink)
-select sink.getNode(), source, sink, "mass assignment"
+select sink.getNode(), source, sink,
+  "This mass assignment operation can assign user-controlled attributes from $@.", source.getNode(),
+  "this remote flow source"
