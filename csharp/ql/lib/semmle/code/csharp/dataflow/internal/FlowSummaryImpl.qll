@@ -160,20 +160,20 @@ module SourceSinkInterpretationInput implements
 
   class Element = Cs::Element;
 
-  predicate sourceElement(Element e, string output, string kind) {
+  predicate sourceElement(Element e, string output, string kind, Public::Provenance provenance) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, _) and
+      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance) and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
 
-  predicate sinkElement(Element e, string input, string kind) {
+  predicate sinkElement(Element e, string input, string kind, Public::Provenance provenance) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, _) and
+      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance) and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
