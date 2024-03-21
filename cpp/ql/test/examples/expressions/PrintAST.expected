@@ -105,9 +105,23 @@ ConditionDecl.cpp:
 #    3|         getVariableAccess(): [VariableAccess] k
 #    3|             Type = [IntType] int
 #    3|             ValueCategory = prvalue(load)
+#    3|         getInitializingExpr(): [LTExpr] ... < ...
+#    3|             Type = [BoolType] bool
+#    3|             ValueCategory = prvalue
+#    3|           getLesserOperand(): [VariableAccess] j
+#    3|               Type = [IntType] int
+#    3|               ValueCategory = prvalue(load)
+#    3|           getGreaterOperand(): [Literal] 5
+#    3|               Type = [IntType] int
+#    3|               Value = [Literal] 5
+#    3|               ValueCategory = prvalue
 #    3|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 #    3|             Conversion = [BoolConversion] conversion to bool
 #    3|             Type = [BoolType] bool
+#    3|             ValueCategory = prvalue
+#    3|         getInitializingExpr().getFullyConverted(): [CStyleCast] (int)...
+#    3|             Conversion = [IntegralConversion] integral conversion
+#    3|             Type = [IntType] int
 #    3|             ValueCategory = prvalue
 #    3|       getStmt(): [BlockStmt] { ... }
 #    5|     getStmt(2): [ReturnStmt] return ...
