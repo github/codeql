@@ -125,7 +125,7 @@ private class ScrutineeValueNumber extends ValueNumber {
   SwitchInstruction getSwitchInstruction() { result = switch }
 
   /** Gets an expression that belongs to this value number. */
-  SwitchInstruction getExpressionInstruction() { result = scrutinee }
+  Instruction getExpressionInstruction() { result = scrutinee }
 }
 
 /**
