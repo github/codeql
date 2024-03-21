@@ -15165,6 +15165,295 @@ ir.cpp:
 # 2392|     v2392_7(void)       = AliasedUse               : m2392_3
 # 2392|     v2392_8(void)       = ExitFunction             : 
 
+# 2396| void initialization_with_temp_destructor()
+# 2396|   Block 0
+# 2396|     v2396_1(void)                       = EnterFunction                        : 
+# 2396|     m2396_2(unknown)                    = AliasedDefinition                    : 
+# 2396|     m2396_3(unknown)                    = InitializeNonLocal                   : 
+# 2396|     m2396_4(unknown)                    = Chi                                  : total:m2396_2, partial:m2396_3
+# 2397|     r2397_1(glval<char>)                = VariableAddress[x]                   : 
+# 2397|     r2397_2(glval<ClassWithDestructor>) = VariableAddress[#temp2397:18]        : 
+# 2397|     m2397_3(ClassWithDestructor)        = Uninitialized[#temp2397:18]          : &:r2397_2
+# 2397|     r2397_4(glval<unknown>)             = FunctionAddress[ClassWithDestructor] : 
+# 2397|     v2397_5(void)                       = Call[ClassWithDestructor]            : func:r2397_4, this:r2397_2
+# 2397|     m2397_6(unknown)                    = ^CallSideEffect                      : ~m2396_4
+# 2397|     m2397_7(unknown)                    = Chi                                  : total:m2396_4, partial:m2397_6
+# 2397|     m2397_8(ClassWithDestructor)        = ^IndirectMayWriteSideEffect[-1]      : &:r2397_2
+# 2397|     m2397_9(ClassWithDestructor)        = Chi                                  : total:m2397_3, partial:m2397_8
+# 2397|     r2397_10(glval<unknown>)            = FunctionAddress[get_x]               : 
+# 2397|     r2397_11(char)                      = Call[get_x]                          : func:r2397_10, this:r2397_2
+# 2397|     m2397_12(unknown)                   = ^CallSideEffect                      : ~m2397_7
+# 2397|     m2397_13(unknown)                   = Chi                                  : total:m2397_7, partial:m2397_12
+# 2397|     v2397_14(void)                      = ^IndirectReadSideEffect[-1]          : &:r2397_2, m2397_9
+# 2397|     m2397_15(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]      : &:r2397_2
+# 2397|     m2397_16(ClassWithDestructor)       = Chi                                  : total:m2397_9, partial:m2397_15
+# 2397|     m2397_17(char)                      = Store[x]                             : &:r2397_1, r2397_11
+# 2397|     r2397_18(glval<char>)               = VariableAddress[x]                   : 
+# 2397|     r2397_19(char)                      = Load[x]                              : &:r2397_18, m2397_17
+# 2397|     r2397_20(char)                      = Constant[0]                          : 
+# 2397|     r2397_21(bool)                      = CompareNE                            : r2397_19, r2397_20
+# 2397|     r2397_22(bool)                      = CopyValue                            : r2397_21
+# 2397|     v2397_23(void)                      = ConditionalBranch                    : r2397_22
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+# 2398|   Block 1
+# 2398|     r2398_1(glval<char>) = VariableAddress[x] : 
+# 2398|     r2398_2(char)        = Load[x]            : &:r2398_1, m2397_17
+# 2398|     r2398_3(char)        = Constant[1]        : 
+# 2398|     r2398_4(char)        = Add                : r2398_2, r2398_3
+# 2398|     m2398_5(char)        = Store[x]           : &:r2398_1, r2398_4
+#-----|   Goto -> Block 2
+
+# 2400|   Block 2
+# 2400|     r2400_1(glval<char>)                = VariableAddress[x]                   : 
+# 2400|     r2400_2(glval<ClassWithDestructor>) = VariableAddress[#temp2400:18]        : 
+# 2400|     m2400_3(ClassWithDestructor)        = Uninitialized[#temp2400:18]          : &:r2400_2
+# 2400|     r2400_4(glval<unknown>)             = FunctionAddress[ClassWithDestructor] : 
+# 2400|     v2400_5(void)                       = Call[ClassWithDestructor]            : func:r2400_4, this:r2400_2
+# 2400|     m2400_6(unknown)                    = ^CallSideEffect                      : ~m2397_13
+# 2400|     m2400_7(unknown)                    = Chi                                  : total:m2397_13, partial:m2400_6
+# 2400|     m2400_8(ClassWithDestructor)        = ^IndirectMayWriteSideEffect[-1]      : &:r2400_2
+# 2400|     m2400_9(ClassWithDestructor)        = Chi                                  : total:m2400_3, partial:m2400_8
+# 2400|     r2400_10(glval<unknown>)            = FunctionAddress[get_x]               : 
+# 2400|     r2400_11(char)                      = Call[get_x]                          : func:r2400_10, this:r2400_2
+# 2400|     m2400_12(unknown)                   = ^CallSideEffect                      : ~m2400_7
+# 2400|     m2400_13(unknown)                   = Chi                                  : total:m2400_7, partial:m2400_12
+# 2400|     v2400_14(void)                      = ^IndirectReadSideEffect[-1]          : &:r2400_2, m2400_9
+# 2400|     m2400_15(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]      : &:r2400_2
+# 2400|     m2400_16(ClassWithDestructor)       = Chi                                  : total:m2400_9, partial:m2400_15
+# 2400|     m2400_17(char)                      = Store[x]                             : &:r2400_1, r2400_11
+# 2400|     r2400_18(glval<char>)               = VariableAddress[x]                   : 
+# 2400|     r2400_19(char)                      = Load[x]                              : &:r2400_18, m2400_17
+# 2400|     r2400_20(char)                      = Constant[0]                          : 
+# 2400|     r2400_21(bool)                      = CompareNE                            : r2400_19, r2400_20
+# 2400|     v2400_22(void)                      = ConditionalBranch                    : r2400_21
+#-----|   False -> Block 4
+#-----|   True -> Block 3
+
+# 2401|   Block 3
+# 2401|     r2401_1(glval<char>) = VariableAddress[x] : 
+# 2401|     r2401_2(char)        = Load[x]            : &:r2401_1, m2400_17
+# 2401|     r2401_3(char)        = Constant[1]        : 
+# 2401|     r2401_4(char)        = Add                : r2401_2, r2401_3
+# 2401|     m2401_5(char)        = Store[x]           : &:r2401_1, r2401_4
+#-----|   Goto -> Block 4
+
+# 2403|   Block 4
+# 2403|     r2403_1(glval<char>)                = VariableAddress[x]                   : 
+# 2403|     r2403_2(glval<ClassWithDestructor>) = VariableAddress[#temp2403:28]        : 
+# 2403|     m2403_3(ClassWithDestructor)        = Uninitialized[#temp2403:28]          : &:r2403_2
+# 2403|     r2403_4(glval<unknown>)             = FunctionAddress[ClassWithDestructor] : 
+# 2403|     v2403_5(void)                       = Call[ClassWithDestructor]            : func:r2403_4, this:r2403_2
+# 2403|     m2403_6(unknown)                    = ^CallSideEffect                      : ~m2400_13
+# 2403|     m2403_7(unknown)                    = Chi                                  : total:m2400_13, partial:m2403_6
+# 2403|     m2403_8(ClassWithDestructor)        = ^IndirectMayWriteSideEffect[-1]      : &:r2403_2
+# 2403|     m2403_9(ClassWithDestructor)        = Chi                                  : total:m2403_3, partial:m2403_8
+# 2403|     r2403_10(glval<unknown>)            = FunctionAddress[get_x]               : 
+# 2403|     r2403_11(char)                      = Call[get_x]                          : func:r2403_10, this:r2403_2
+# 2403|     m2403_12(unknown)                   = ^CallSideEffect                      : ~m2403_7
+# 2403|     m2403_13(unknown)                   = Chi                                  : total:m2403_7, partial:m2403_12
+# 2403|     v2403_14(void)                      = ^IndirectReadSideEffect[-1]          : &:r2403_2, m2403_9
+# 2403|     m2403_15(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]      : &:r2403_2
+# 2403|     m2403_16(ClassWithDestructor)       = Chi                                  : total:m2403_9, partial:m2403_15
+# 2403|     m2403_17(char)                      = Store[x]                             : &:r2403_1, r2403_11
+# 2403|     r2403_18(bool)                      = Constant[1]                          : 
+# 2403|     v2403_19(void)                      = ConditionalBranch                    : r2403_18
+#-----|   False -> Block 13
+#-----|   True -> Block 5
+
+# 2404|   Block 5
+# 2404|     r2404_1(glval<char>)                = VariableAddress[x]                   : 
+# 2404|     r2404_2(char)                       = Load[x]                              : &:r2404_1, m2403_17
+# 2404|     r2404_3(char)                       = Constant[1]                          : 
+# 2404|     r2404_4(char)                       = Add                                  : r2404_2, r2404_3
+# 2404|     m2404_5(char)                       = Store[x]                             : &:r2404_1, r2404_4
+# 2406|     r2406_1(glval<char>)                = VariableAddress[x]                   : 
+# 2406|     r2406_2(glval<ClassWithDestructor>) = VariableAddress[#temp2406:21]        : 
+# 2406|     m2406_3(ClassWithDestructor)        = Uninitialized[#temp2406:21]          : &:r2406_2
+# 2406|     r2406_4(glval<unknown>)             = FunctionAddress[ClassWithDestructor] : 
+# 2406|     v2406_5(void)                       = Call[ClassWithDestructor]            : func:r2406_4, this:r2406_2
+# 2406|     m2406_6(unknown)                    = ^CallSideEffect                      : ~m2403_13
+# 2406|     m2406_7(unknown)                    = Chi                                  : total:m2403_13, partial:m2406_6
+# 2406|     m2406_8(ClassWithDestructor)        = ^IndirectMayWriteSideEffect[-1]      : &:r2406_2
+# 2406|     m2406_9(ClassWithDestructor)        = Chi                                  : total:m2406_3, partial:m2406_8
+# 2406|     r2406_10(glval<unknown>)            = FunctionAddress[get_x]               : 
+# 2406|     r2406_11(char)                      = Call[get_x]                          : func:r2406_10, this:r2406_2
+# 2406|     m2406_12(unknown)                   = ^CallSideEffect                      : ~m2406_7
+# 2406|     m2406_13(unknown)                   = Chi                                  : total:m2406_7, partial:m2406_12
+# 2406|     v2406_14(void)                      = ^IndirectReadSideEffect[-1]          : &:r2406_2, m2406_9
+# 2406|     m2406_15(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]      : &:r2406_2
+# 2406|     m2406_16(ClassWithDestructor)       = Chi                                  : total:m2406_9, partial:m2406_15
+# 2406|     m2406_17(char)                      = Store[x]                             : &:r2406_1, r2406_11
+# 2406|     r2406_18(glval<char>)               = VariableAddress[x]                   : 
+# 2406|     r2406_19(char)                      = Load[x]                              : &:r2406_18, m2406_17
+# 2406|     r2406_20(int)                       = Convert                              : r2406_19
+# 2406|     r2406_21(int)                       = CopyValue                            : r2406_20
+# 2406|     v2406_22(void)                      = Switch                               : r2406_21
+#-----|   Case[97] -> Block 6
+#-----|   Default -> Block 7
+
+# 2407|   Block 6
+# 2407|     v2407_1(void)        = NoOp               : 
+# 2408|     r2408_1(glval<char>) = VariableAddress[x] : 
+# 2408|     r2408_2(char)        = Load[x]            : &:r2408_1, m2406_17
+# 2408|     r2408_3(char)        = Constant[1]        : 
+# 2408|     r2408_4(char)        = Add                : r2408_2, r2408_3
+# 2408|     m2408_5(char)        = Store[x]           : &:r2408_1, r2408_4
+#-----|   Goto -> Block 7
+
+# 2411|   Block 7
+# 2411|     r2411_1(glval<char>)                = VariableAddress[x]                   : 
+# 2411|     r2411_2(glval<ClassWithDestructor>) = VariableAddress[#temp2411:21]        : 
+# 2411|     m2411_3(ClassWithDestructor)        = Uninitialized[#temp2411:21]          : &:r2411_2
+# 2411|     r2411_4(glval<unknown>)             = FunctionAddress[ClassWithDestructor] : 
+# 2411|     v2411_5(void)                       = Call[ClassWithDestructor]            : func:r2411_4, this:r2411_2
+# 2411|     m2411_6(unknown)                    = ^CallSideEffect                      : ~m2406_13
+# 2411|     m2411_7(unknown)                    = Chi                                  : total:m2406_13, partial:m2411_6
+# 2411|     m2411_8(ClassWithDestructor)        = ^IndirectMayWriteSideEffect[-1]      : &:r2411_2
+# 2411|     m2411_9(ClassWithDestructor)        = Chi                                  : total:m2411_3, partial:m2411_8
+# 2411|     r2411_10(glval<unknown>)            = FunctionAddress[get_x]               : 
+# 2411|     r2411_11(char)                      = Call[get_x]                          : func:r2411_10, this:r2411_2
+# 2411|     m2411_12(unknown)                   = ^CallSideEffect                      : ~m2411_7
+# 2411|     m2411_13(unknown)                   = Chi                                  : total:m2411_7, partial:m2411_12
+# 2411|     v2411_14(void)                      = ^IndirectReadSideEffect[-1]          : &:r2411_2, m2411_9
+# 2411|     m2411_15(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]      : &:r2411_2
+# 2411|     m2411_16(ClassWithDestructor)       = Chi                                  : total:m2411_9, partial:m2411_15
+# 2411|     m2411_17(char)                      = Store[x]                             : &:r2411_1, r2411_11
+# 2411|     r2411_18(glval<char>)               = VariableAddress[x]                   : 
+# 2411|     r2411_19(char)                      = Load[x]                              : &:r2411_18, m2411_17
+# 2411|     r2411_20(int)                       = Convert                              : r2411_19
+# 2411|     v2411_21(void)                      = Switch                               : r2411_20
+#-----|   Case[97] -> Block 8
+#-----|   Default -> Block 9
+
+# 2412|   Block 8
+# 2412|     v2412_1(void)        = NoOp               : 
+# 2413|     r2413_1(glval<char>) = VariableAddress[x] : 
+# 2413|     r2413_2(char)        = Load[x]            : &:r2413_1, m2411_17
+# 2413|     r2413_3(char)        = Constant[1]        : 
+# 2413|     r2413_4(char)        = Add                : r2413_2, r2413_3
+# 2413|     m2413_5(char)        = Store[x]           : &:r2413_1, r2413_4
+#-----|   Goto -> Block 9
+
+# 2416|   Block 9
+# 2416|     r2416_1(glval<char>)                                                                   = VariableAddress[x]                   : 
+# 2416|     r2416_2(glval<ClassWithDestructor>)                                                    = VariableAddress[#temp2416:18]        : 
+# 2416|     m2416_3(ClassWithDestructor)                                                           = Uninitialized[#temp2416:18]          : &:r2416_2
+# 2416|     r2416_4(glval<unknown>)                                                                = FunctionAddress[ClassWithDestructor] : 
+# 2416|     v2416_5(void)                                                                          = Call[ClassWithDestructor]            : func:r2416_4, this:r2416_2
+# 2416|     m2416_6(unknown)                                                                       = ^CallSideEffect                      : ~m2411_13
+# 2416|     m2416_7(unknown)                                                                       = Chi                                  : total:m2411_13, partial:m2416_6
+# 2416|     m2416_8(ClassWithDestructor)                                                           = ^IndirectMayWriteSideEffect[-1]      : &:r2416_2
+# 2416|     m2416_9(ClassWithDestructor)                                                           = Chi                                  : total:m2416_3, partial:m2416_8
+# 2416|     r2416_10(glval<unknown>)                                                               = FunctionAddress[get_x]               : 
+# 2416|     r2416_11(char)                                                                         = Call[get_x]                          : func:r2416_10, this:r2416_2
+# 2416|     m2416_12(unknown)                                                                      = ^CallSideEffect                      : ~m2416_7
+# 2416|     m2416_13(unknown)                                                                      = Chi                                  : total:m2416_7, partial:m2416_12
+# 2416|     v2416_14(void)                                                                         = ^IndirectReadSideEffect[-1]          : &:r2416_2, m2416_9
+# 2416|     m2416_15(ClassWithDestructor)                                                          = ^IndirectMayWriteSideEffect[-1]      : &:r2416_2
+# 2416|     m2416_16(ClassWithDestructor)                                                          = Chi                                  : total:m2416_9, partial:m2416_15
+# 2416|     m2416_17(char)                                                                         = Store[x]                             : &:r2416_1, r2416_11
+# 2416|     r2416_18(glval<vector<char> &&>)                                                       = VariableAddress[(__range)]           : 
+# 2416|     r2416_19(glval<vector<char>>)                                                          = VariableAddress[#temp2416:58]        : 
+# 2416|     m2416_20(vector<char>)                                                                 = Uninitialized[#temp2416:58]          : &:r2416_19
+# 2416|     r2416_21(glval<unknown>)                                                               = FunctionAddress[vector]              : 
+# 2416|     r2416_22(glval<char>)                                                                  = VariableAddress[x]                   : 
+# 2416|     r2416_23(char)                                                                         = Load[x]                              : &:r2416_22, m2416_17
+# 2416|     v2416_24(void)                                                                         = Call[vector]                         : func:r2416_21, this:r2416_19, 0:r2416_23
+# 2416|     m2416_25(unknown)                                                                      = ^CallSideEffect                      : ~m2416_13
+# 2416|     m2416_26(unknown)                                                                      = Chi                                  : total:m2416_13, partial:m2416_25
+# 2416|     m2416_27(vector<char>)                                                                 = ^IndirectMayWriteSideEffect[-1]      : &:r2416_19
+# 2416|     m2416_28(vector<char>)                                                                 = Chi                                  : total:m2416_20, partial:m2416_27
+# 2416|     r2416_29(vector<char> &)                                                               = CopyValue                            : r2416_19
+# 2416|     m2416_30(vector<char> &&)                                                              = Store[(__range)]                     : &:r2416_18, r2416_29
+# 2416|     r2416_31(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>) = VariableAddress[(__begin)]           : 
+# 2416|     r2416_32(glval<vector<char> &&>)                                                       = VariableAddress[(__range)]           : 
+# 2416|     r2416_33(vector<char> &&)                                                              = Load[(__range)]                      : &:r2416_32, m2416_30
+#-----|     r0_1(glval<vector<char>>)                                                              = CopyValue                            : r2416_33
+#-----|     r0_2(glval<vector<char>>)                                                              = Convert                              : r0_1
+# 2416|     r2416_34(glval<unknown>)                                                               = FunctionAddress[begin]               : 
+# 2416|     r2416_35(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)        = Call[begin]                          : func:r2416_34, this:r0_2
+#-----|     v0_3(void)                                                                             = ^IndirectReadSideEffect[-1]          : &:r0_2, m2416_28
+# 2416|     m2416_36(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)        = Store[(__begin)]                     : &:r2416_31, r2416_35
+# 2416|     r2416_37(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>) = VariableAddress[(__end)]             : 
+# 2416|     r2416_38(glval<vector<char> &&>)                                                       = VariableAddress[(__range)]           : 
+# 2416|     r2416_39(vector<char> &&)                                                              = Load[(__range)]                      : &:r2416_38, m2416_30
+#-----|     r0_4(glval<vector<char>>)                                                              = CopyValue                            : r2416_39
+#-----|     r0_5(glval<vector<char>>)                                                              = Convert                              : r0_4
+# 2416|     r2416_40(glval<unknown>)                                                               = FunctionAddress[end]                 : 
+# 2416|     r2416_41(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)        = Call[end]                            : func:r2416_40, this:r0_5
+#-----|     v0_6(void)                                                                             = ^IndirectReadSideEffect[-1]          : &:r0_5, m2416_28
+# 2416|     m2416_42(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)        = Store[(__end)]                       : &:r2416_37, r2416_41
+#-----|   Goto -> Block 10
+
+# 2416|   Block 10
+# 2416|     m2416_43(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)        = Phi                             : from 9:m2416_36, from 11:m2416_73
+# 2416|     m2416_44(unknown)                                                                      = Phi                             : from 9:~m2416_26, from 11:~m2416_70
+# 2416|     r2416_45(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>) = VariableAddress[(__begin)]      : 
+#-----|     r0_7(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>)     = Convert                         : r2416_45
+# 2416|     r2416_46(glval<unknown>)                                                               = FunctionAddress[operator!=]     : 
+#-----|     r0_8(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>)     = VariableAddress[#temp0:0]       : 
+#-----|     m0_9(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)            = Uninitialized[#temp0:0]         : &:r0_8
+# 2416|     r2416_47(glval<unknown>)                                                               = FunctionAddress[iterator]       : 
+# 2416|     r2416_48(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>) = VariableAddress[(__end)]        : 
+#-----|     r0_10(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>)    = Convert                         : r2416_48
+#-----|     r0_11(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &> &)         = CopyValue                       : r0_10
+# 2416|     v2416_49(void)                                                                         = Call[iterator]                  : func:r2416_47, this:r0_8, 0:r0_11
+# 2416|     m2416_50(unknown)                                                                      = ^CallSideEffect                 : ~m2416_44
+# 2416|     m2416_51(unknown)                                                                      = Chi                             : total:m2416_44, partial:m2416_50
+#-----|     v0_12(void)                                                                            = ^BufferReadSideEffect[0]        : &:r0_11, ~m2416_42
+# 2416|     m2416_52(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)        = ^IndirectMayWriteSideEffect[-1] : &:r0_8
+# 2416|     m2416_53(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)        = Chi                             : total:m0_9, partial:m2416_52
+#-----|     r0_13(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)           = Load[#temp0:0]                  : &:r0_8, m2416_53
+# 2416|     r2416_54(bool)                                                                         = Call[operator!=]                : func:r2416_46, this:r0_7, 0:r0_13
+# 2416|     m2416_55(unknown)                                                                      = ^CallSideEffect                 : ~m2416_51
+# 2416|     m2416_56(unknown)                                                                      = Chi                             : total:m2416_51, partial:m2416_55
+#-----|     v0_14(void)                                                                            = ^IndirectReadSideEffect[-1]     : &:r0_7, m2416_43
+# 2416|     v2416_57(void)                                                                         = ConditionalBranch               : r2416_54
+#-----|   False -> Block 12
+#-----|   True -> Block 11
+
+# 2416|   Block 11
+# 2416|     r2416_58(glval<char>)                                                                  = VariableAddress[y]              : 
+# 2416|     r2416_59(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>) = VariableAddress[(__begin)]      : 
+#-----|     r0_15(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>)    = Convert                         : r2416_59
+# 2416|     r2416_60(glval<unknown>)                                                               = FunctionAddress[operator*]      : 
+# 2416|     r2416_61(char &)                                                                       = Call[operator*]                 : func:r2416_60, this:r0_15
+# 2416|     m2416_62(unknown)                                                                      = ^CallSideEffect                 : ~m2416_56
+# 2416|     m2416_63(unknown)                                                                      = Chi                             : total:m2416_56, partial:m2416_62
+#-----|     v0_16(void)                                                                            = ^IndirectReadSideEffect[-1]     : &:r0_15, m2416_43
+# 2416|     r2416_64(char)                                                                         = Load[?]                         : &:r2416_61, ~m2416_63
+# 2416|     m2416_65(char)                                                                         = Store[y]                        : &:r2416_58, r2416_64
+# 2417|     r2417_1(glval<char>)                                                                   = VariableAddress[x]              : 
+# 2417|     r2417_2(char)                                                                          = Load[x]                         : &:r2417_1, m2416_17
+# 2417|     r2417_3(int)                                                                           = Convert                         : r2417_2
+# 2417|     r2417_4(glval<char>)                                                                   = VariableAddress[y]              : 
+# 2417|     r2417_5(char)                                                                          = Load[y]                         : &:r2417_4, m2416_65
+# 2417|     r2417_6(int)                                                                           = Convert                         : r2417_5
+# 2417|     r2417_7(int)                                                                           = Add                             : r2417_6, r2417_3
+# 2417|     r2417_8(char)                                                                          = Convert                         : r2417_7
+# 2417|     m2417_9(char)                                                                          = Store[y]                        : &:r2417_4, r2417_8
+# 2416|     r2416_66(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>) = VariableAddress[(__begin)]      : 
+# 2416|     r2416_67(glval<unknown>)                                                               = FunctionAddress[operator++]     : 
+# 2416|     r2416_68(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &> &)      = Call[operator++]                : func:r2416_67, this:r2416_66
+# 2416|     m2416_69(unknown)                                                                      = ^CallSideEffect                 : ~m2416_63
+# 2416|     m2416_70(unknown)                                                                      = Chi                             : total:m2416_63, partial:m2416_69
+# 2416|     v2416_71(void)                                                                         = ^IndirectReadSideEffect[-1]     : &:r2416_66, m2416_43
+# 2416|     m2416_72(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)        = ^IndirectMayWriteSideEffect[-1] : &:r2416_66
+# 2416|     m2416_73(iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)        = Chi                             : total:m2416_43, partial:m2416_72
+# 2416|     r2416_74(glval<iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>>) = CopyValue                       : r2416_68
+#-----|   Goto (back edge) -> Block 10
+
+# 2418|   Block 12
+# 2418|     v2418_1(void) = NoOp         : 
+# 2396|     v2396_5(void) = ReturnVoid   : 
+# 2396|     v2396_6(void) = AliasedUse   : ~m2416_56
+# 2396|     v2396_7(void) = ExitFunction : 
+
+# 2396|   Block 13
+# 2396|     v2396_8(void) = Unreached : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

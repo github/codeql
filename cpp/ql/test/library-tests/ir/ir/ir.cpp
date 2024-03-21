@@ -2393,4 +2393,28 @@ int large_operation_should_be_constant_folded() {
     return BINOP64(1);
 }
 
+void initialization_with_temp_destructor() {
+    if (char x = ClassWithDestructor().get_x())
+        x++;
+
+    if (char x = ClassWithDestructor().get_x(); x)
+        x++;
+
+    if constexpr (char x = ClassWithDestructor().get_x(); initialization_with_destructor_bool)
+        x++;
+
+    switch(char x = ClassWithDestructor().get_x()) {
+        case 'a':
+          x++;
+    }
+
+    switch(char x = ClassWithDestructor().get_x(); x) {
+        case 'a':
+          x++;
+    }
+
+    for(char x = ClassWithDestructor().get_x(); char y : std::vector<char>(x))
+        y += x;
+}
+
 // semmle-extractor-options: -std=c++20 --clang
