@@ -17357,6 +17357,12 @@ ir.cpp:
 # 2201|               getArgument(0): [VariableAccess] x
 # 2201|                   Type = [Class] ClassWithDestructor
 # 2201|                   ValueCategory = prvalue(load)
+# 2201|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2201|                   Type = [VoidType] void
+# 2201|                   ValueCategory = prvalue
+# 2201|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2201|                     Type = [Class] ClassWithDestructor
+# 2201|                     ValueCategory = xvalue
 # 2201|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2201|                   Type = [Class] ClassWithDestructor
 # 2201|                   ValueCategory = lvalue
@@ -17489,6 +17495,12 @@ ir.cpp:
 # 2204|               getArgument(0): [VariableAccess] x
 # 2204|                   Type = [Class] ClassWithDestructor
 # 2204|                   ValueCategory = prvalue(load)
+# 2204|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2204|                   Type = [VoidType] void
+# 2204|                   ValueCategory = prvalue
+# 2204|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2204|                     Type = [Class] ClassWithDestructor
+# 2204|                     ValueCategory = xvalue
 # 2204|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2204|                   Type = [Class] ClassWithDestructor
 # 2204|                   ValueCategory = lvalue
@@ -17802,6 +17814,12 @@ ir.cpp:
 # 2215|               getArgument(0): [VariableAccess] x
 # 2215|                   Type = [Class] ClassWithDestructor
 # 2215|                   ValueCategory = prvalue(load)
+# 2215|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2215|                   Type = [VoidType] void
+# 2215|                   ValueCategory = prvalue
+# 2215|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2215|                     Type = [Class] ClassWithDestructor
+# 2215|                     ValueCategory = xvalue
 # 2215|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2215|                   Type = [Class] ClassWithDestructor
 # 2215|                   ValueCategory = lvalue
@@ -19797,6 +19815,12 @@ ir.cpp:
 # 2400|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
 # 2400|                   Type = [VoidType] void
 # 2400|                   ValueCategory = prvalue
+# 2400|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2400|                   Type = [VoidType] void
+# 2400|                   ValueCategory = prvalue
+# 2400|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2400|                     Type = [Class] ClassWithDestructor
+# 2400|                     ValueCategory = xvalue
 # 2400|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2400|                   Type = [Class] ClassWithDestructor
 # 2400|                   ValueCategory = prvalue(load)
@@ -19825,6 +19849,12 @@ ir.cpp:
 # 2403|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
 # 2403|                   Type = [VoidType] void
 # 2403|                   ValueCategory = prvalue
+# 2403|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2403|                   Type = [VoidType] void
+# 2403|                   ValueCategory = prvalue
+# 2403|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2403|                     Type = [Class] ClassWithDestructor
+# 2403|                     ValueCategory = xvalue
 # 2403|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2403|                   Type = [Class] ClassWithDestructor
 # 2403|                   ValueCategory = prvalue(load)
@@ -19894,6 +19924,12 @@ ir.cpp:
 # 2411|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
 # 2411|                   Type = [VoidType] void
 # 2411|                   ValueCategory = prvalue
+# 2411|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2411|                   Type = [VoidType] void
+# 2411|                   ValueCategory = prvalue
+# 2411|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2411|                     Type = [Class] ClassWithDestructor
+# 2411|                     ValueCategory = xvalue
 # 2411|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2411|                   Type = [Class] ClassWithDestructor
 # 2411|                   ValueCategory = prvalue(load)
@@ -19933,6 +19969,12 @@ ir.cpp:
 # 2416|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
 # 2416|                   Type = [VoidType] void
 # 2416|                   ValueCategory = prvalue
+# 2416|               getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2416|                   Type = [VoidType] void
+# 2416|                   ValueCategory = prvalue
+# 2416|                 getQualifier(): [ReuseExpr] reuse of temporary object
+# 2416|                     Type = [Class] ClassWithDestructor
+# 2416|                     ValueCategory = xvalue
 # 2416|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
 # 2416|                   Type = [Class] ClassWithDestructor
 # 2416|                   ValueCategory = prvalue(load)
