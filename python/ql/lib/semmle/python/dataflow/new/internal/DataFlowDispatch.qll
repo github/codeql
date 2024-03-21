@@ -876,7 +876,7 @@ private module TrackAttrReadInput implements CallGraphConstruction::Simple::Inpu
 
   predicate start(Node start, AttrRead attr) {
     start = attr and
-    attr.getObject() in [
+    pragma[only_bind_into](attr.getObject()) in [
         classTracker(_), classInstanceTracker(_), selfTracker(_), clsArgumentTracker(_),
         superCallNoArgumentTracker(_), superCallTwoArgumentTracker(_, _)
       ]
