@@ -1,3 +1,7 @@
+## 0.9.11
+
+No user-facing changes.
+
 ## 0.9.10
 
 ### New Queries

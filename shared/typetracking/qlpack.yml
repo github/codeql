@@ -1,5 +1,5 @@
 name: codeql/typetracking
-version: 0.2.10
+version: 0.2.11
 groups: shared
 library: true
 dependencies:
