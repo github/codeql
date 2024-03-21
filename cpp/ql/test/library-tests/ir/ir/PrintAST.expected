@@ -8812,6 +8812,15 @@ ir.cpp:
 #  976|         getVariableAccess(): [VariableAccess] b
 #  976|             Type = [BoolType] bool
 #  976|             ValueCategory = prvalue(load)
+#  976|         getInitializingExpr(): [LTExpr] ... < ...
+#  976|             Type = [BoolType] bool
+#  976|             ValueCategory = prvalue
+#  976|           getLesserOperand(): [VariableAccess] x
+#  976|               Type = [IntType] int
+#  976|               ValueCategory = prvalue(load)
+#  976|           getGreaterOperand(): [VariableAccess] y
+#  976|               Type = [IntType] int
+#  976|               ValueCategory = prvalue(load)
 #  976|       getThen(): [BlockStmt] { ... }
 #  977|         getStmt(0): [ExprStmt] ExprStmt
 #  977|           getExpr(): [AssignExpr] ... = ...
@@ -8831,6 +8840,15 @@ ir.cpp:
 #  979|           getVariableAccess(): [VariableAccess] z
 #  979|               Type = [IntType] int
 #  979|               ValueCategory = prvalue(load)
+#  979|           getInitializingExpr(): [AddExpr] ... + ...
+#  979|               Type = [IntType] int
+#  979|               ValueCategory = prvalue
+#  979|             getLeftOperand(): [VariableAccess] x
+#  979|                 Type = [IntType] int
+#  979|                 ValueCategory = prvalue(load)
+#  979|             getRightOperand(): [VariableAccess] y
+#  979|                 Type = [IntType] int
+#  979|                 ValueCategory = prvalue(load)
 #  979|           getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 #  979|               Conversion = [BoolConversion] conversion to bool
 #  979|               Type = [BoolType] bool
@@ -8854,6 +8872,12 @@ ir.cpp:
 #  982|             getVariableAccess(): [VariableAccess] p
 #  982|                 Type = [IntPointerType] int *
 #  982|                 ValueCategory = prvalue(load)
+#  982|             getInitializingExpr(): [AddressOfExpr] & ...
+#  982|                 Type = [IntPointerType] int *
+#  982|                 ValueCategory = prvalue
+#  982|               getOperand(): [VariableAccess] x
+#  982|                   Type = [IntType] int
+#  982|                   ValueCategory = lvalue
 #  982|             getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 #  982|                 Conversion = [BoolConversion] conversion to bool
 #  982|                 Type = [BoolType] bool
@@ -8888,6 +8912,15 @@ ir.cpp:
 #  988|         getVariableAccess(): [VariableAccess] b
 #  988|             Type = [BoolType] bool
 #  988|             ValueCategory = prvalue(load)
+#  988|         getInitializingExpr(): [LTExpr] ... < ...
+#  988|             Type = [BoolType] bool
+#  988|             ValueCategory = prvalue
+#  988|           getLesserOperand(): [VariableAccess] x
+#  988|               Type = [IntType] int
+#  988|               ValueCategory = prvalue(load)
+#  988|           getGreaterOperand(): [VariableAccess] y
+#  988|               Type = [IntType] int
+#  988|               ValueCategory = prvalue(load)
 #  988|       getStmt(): [BlockStmt] { ... }
 #  990|     getStmt(1): [WhileStmt] while (...) ...
 #  990|       getCondition(): [ConditionDeclExpr] (condition decl)
@@ -8896,6 +8929,15 @@ ir.cpp:
 #  990|         getVariableAccess(): [VariableAccess] z
 #  990|             Type = [IntType] int
 #  990|             ValueCategory = prvalue(load)
+#  990|         getInitializingExpr(): [AddExpr] ... + ...
+#  990|             Type = [IntType] int
+#  990|             ValueCategory = prvalue
+#  990|           getLeftOperand(): [VariableAccess] x
+#  990|               Type = [IntType] int
+#  990|               ValueCategory = prvalue(load)
+#  990|           getRightOperand(): [VariableAccess] y
+#  990|               Type = [IntType] int
+#  990|               ValueCategory = prvalue(load)
 #  990|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 #  990|             Conversion = [BoolConversion] conversion to bool
 #  990|             Type = [BoolType] bool
@@ -8908,6 +8950,12 @@ ir.cpp:
 #  992|         getVariableAccess(): [VariableAccess] p
 #  992|             Type = [IntPointerType] int *
 #  992|             ValueCategory = prvalue(load)
+#  992|         getInitializingExpr(): [AddressOfExpr] & ...
+#  992|             Type = [IntPointerType] int *
+#  992|             ValueCategory = prvalue
+#  992|           getOperand(): [VariableAccess] x
+#  992|               Type = [IntType] int
+#  992|               ValueCategory = lvalue
 #  992|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 #  992|             Conversion = [BoolConversion] conversion to bool
 #  992|             Type = [BoolType] bool
@@ -14780,6 +14828,9 @@ ir.cpp:
 # 1816|         getVariableAccess(): [VariableAccess] w2
 # 1816|             Type = [IntType] int
 # 1816|             ValueCategory = prvalue(load)
+# 1816|         getInitializingExpr(): [VariableAccess] w
+# 1816|             Type = [IntType] int
+# 1816|             ValueCategory = prvalue(load)
 # 1816|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 # 1816|             Conversion = [BoolConversion] conversion to bool
 # 1816|             Type = [BoolType] bool
@@ -14813,6 +14864,9 @@ ir.cpp:
 # 1820|           Type = [BoolType] bool
 # 1820|           ValueCategory = prvalue
 # 1820|         getVariableAccess(): [VariableAccess] v2
+# 1820|             Type = [IntType] int
+# 1820|             ValueCategory = prvalue(load)
+# 1820|         getInitializingExpr(): [VariableAccess] v
 # 1820|             Type = [IntType] int
 # 1820|             ValueCategory = prvalue(load)
 # 1820|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
@@ -14873,6 +14927,9 @@ ir.cpp:
 # 1829|           Type = [BoolType] bool
 # 1829|           ValueCategory = prvalue
 # 1829|         getVariableAccess(): [VariableAccess] z2
+# 1829|             Type = [IntType] int
+# 1829|             ValueCategory = prvalue(load)
+# 1829|         getInitializingExpr(): [VariableAccess] z
 # 1829|             Type = [IntType] int
 # 1829|             ValueCategory = prvalue(load)
 # 1829|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
@@ -14991,6 +15048,9 @@ ir.cpp:
 # 1846|         getVariableAccess(): [VariableAccess] w2
 # 1846|             Type = [IntType] int
 # 1846|             ValueCategory = prvalue(load)
+# 1846|         getInitializingExpr(): [VariableAccess] w
+# 1846|             Type = [IntType] int
+# 1846|             ValueCategory = prvalue(load)
 # 1846|       getStmt(): [BlockStmt] { ... }
 # 1847|         getStmt(0): [SwitchCase] default: 
 # 1848|         getStmt(1): [ExprStmt] ExprStmt
@@ -15021,6 +15081,9 @@ ir.cpp:
 # 1851|           Type = [IntType] int
 # 1851|           ValueCategory = prvalue
 # 1851|         getVariableAccess(): [VariableAccess] v2
+# 1851|             Type = [IntType] int
+# 1851|             ValueCategory = prvalue(load)
+# 1851|         getInitializingExpr(): [VariableAccess] v
 # 1851|             Type = [IntType] int
 # 1851|             ValueCategory = prvalue(load)
 # 1851|       getStmt(): [BlockStmt] { ... }
@@ -15075,6 +15138,9 @@ ir.cpp:
 # 1862|           Type = [IntType] int
 # 1862|           ValueCategory = prvalue
 # 1862|         getVariableAccess(): [VariableAccess] z2
+# 1862|             Type = [IntType] int
+# 1862|             ValueCategory = prvalue(load)
+# 1862|         getInitializingExpr(): [VariableAccess] z
 # 1862|             Type = [IntType] int
 # 1862|             ValueCategory = prvalue(load)
 # 1862|       getStmt(): [BlockStmt] { ... }
@@ -17048,6 +17114,10 @@ ir.cpp:
 # 2169|           getQualifier(): [VariableAccess] b
 # 2169|               Type = [Struct] HasOperatorBool
 # 2169|               ValueCategory = prvalue(load)
+# 2169|         getInitializingExpr(): [Literal] 0
+# 2169|             Type = [Struct] HasOperatorBool
+# 2169|             Value = [Literal] 0
+# 2169|             ValueCategory = prvalue
 # 2169|       getThen(): [BlockStmt] { ... }
 # 2170|     getStmt(1): [ReturnStmt] return ...
 # 2172| [CopyAssignmentOperator] ClassWithDestructor& ClassWithDestructor::operator=(ClassWithDestructor const&)
@@ -18650,6 +18720,12 @@ ir.cpp:
 # 2318|           getQualifier(): [VariableAccess] B
 # 2318|               Type = [Class] Bool
 # 2318|               ValueCategory = prvalue(load)
+# 2318|         getInitializingExpr(): [ConstructorCall] call to Bool
+# 2318|             Type = [VoidType] void
+# 2318|             ValueCategory = prvalue
+# 2318|           getArgument(0): [VariableAccess] b
+# 2318|               Type = [BoolType] bool
+# 2318|               ValueCategory = prvalue(load)
 # 2318|       getThen(): [BlockStmt] { ... }
 # 2319|         getStmt(0): [DeclStmt] declaration
 # 2319|           getDeclarationEntry(0): [VariableDeclarationEntry] definition of s1
@@ -18730,6 +18806,12 @@ ir.cpp:
 # 2334|               ValueCategory = prvalue
 # 2334|             getQualifier(): [VariableAccess] B
 # 2334|                 Type = [Class] Bool
+# 2334|                 ValueCategory = prvalue(load)
+# 2334|           getInitializingExpr(): [ConstructorCall] call to Bool
+# 2334|               Type = [VoidType] void
+# 2334|               ValueCategory = prvalue
+# 2334|             getArgument(0): [VariableAccess] b
+# 2334|                 Type = [BoolType] bool
 # 2334|                 ValueCategory = prvalue(load)
 # 2334|         getStmt(): [BlockStmt] { ... }
 # 2335|           getStmt(0): [ExprStmt] ExprStmt
@@ -19678,6 +19760,21 @@ ir.cpp:
 # 2397|         getVariableAccess(): [VariableAccess] x
 # 2397|             Type = [PlainCharType] char
 # 2397|             ValueCategory = prvalue(load)
+# 2397|         getInitializingExpr(): [FunctionCall] call to get_x
+# 2397|             Type = [PlainCharType] char
+# 2397|             ValueCategory = prvalue
+# 2397|           getQualifier(): [ConstructorCall] call to ClassWithDestructor
+# 2397|               Type = [VoidType] void
+# 2397|               ValueCategory = prvalue
+# 2397|           getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2397|               Type = [VoidType] void
+# 2397|               ValueCategory = prvalue
+# 2397|             getQualifier(): [ReuseExpr] reuse of temporary object
+# 2397|                 Type = [Class] ClassWithDestructor
+# 2397|                 ValueCategory = xvalue
+# 2397|           getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2397|               Type = [Class] ClassWithDestructor
+# 2397|               ValueCategory = prvalue(load)
 # 2397|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
 # 2397|             Conversion = [BoolConversion] conversion to bool
 # 2397|             Type = [BoolType] bool
@@ -19749,6 +19846,21 @@ ir.cpp:
 # 2406|         getVariableAccess(): [VariableAccess] x
 # 2406|             Type = [PlainCharType] char
 # 2406|             ValueCategory = prvalue(load)
+# 2406|         getInitializingExpr(): [FunctionCall] call to get_x
+# 2406|             Type = [PlainCharType] char
+# 2406|             ValueCategory = prvalue
+# 2406|           getQualifier(): [ConstructorCall] call to ClassWithDestructor
+# 2406|               Type = [VoidType] void
+# 2406|               ValueCategory = prvalue
+# 2406|           getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2406|               Type = [VoidType] void
+# 2406|               ValueCategory = prvalue
+# 2406|             getQualifier(): [ReuseExpr] reuse of temporary object
+# 2406|                 Type = [Class] ClassWithDestructor
+# 2406|                 ValueCategory = xvalue
+# 2406|           getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2406|               Type = [Class] ClassWithDestructor
+# 2406|               ValueCategory = prvalue(load)
 # 2406|         getVariableAccess().getFullyConverted(): [CStyleCast] (int)...
 # 2406|             Conversion = [IntegralConversion] integral conversion
 # 2406|             Type = [IntType] int
