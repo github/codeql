@@ -18,7 +18,7 @@ import semmle.code.cpp.commons.Scanf
 import semmle.code.cpp.controlflow.Guards
 import semmle.code.cpp.dataflow.new.DataFlow::DataFlow
 import semmle.code.cpp.ir.IR
-import semmle.code.cpp.ir.ValueNumbering
+import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import ScanfChecks
 import ScanfToUseFlow::PathGraph
 
@@ -155,28 +155,17 @@ predicate hasNonGuardedAccess(
     flowPath(source, call, index, sink, e) and
     minGuard = getMinimumGuardConstant(call, index)
   |
-    not exists(int value |
-      e.getBasicBlock() = blockGuardedBy(value, "==", call) and minGuard <= value
+    not exists(GuardCondition guard |
+      // call == k and k >= minGuard so call >= minGuard
+      guard
+          .ensuresEq(globalValueNumber(call).getAnExpr(), any(int k | minGuard <= k),
+            e.getBasicBlock(), true)
       or
-      e.getBasicBlock() = blockGuardedBy(value, "<", call) and minGuard - 1 <= value
-      or
-      e.getBasicBlock() = blockGuardedBy(value, "<=", call) and minGuard <= value
+      // call >= k and k >= minGuard so call >= minGuard
+      guard
+          .ensuresLt(globalValueNumber(call).getAnExpr(), any(int k | minGuard <= k),
+            e.getBasicBlock(), false)
     )
-  )
-}
-
-/** Returns a block guarded by the assertion of `value op call` */
-BasicBlock blockGuardedBy(int value, string op, ScanfFunctionCall call) {
-  exists(GuardCondition g, Expr left, Expr right |
-    right = g.getAChild() and
-    value = left.getValue().toInt() and
-    localExprFlow(call, right)
-  |
-    g.ensuresEq(left, right, 0, result, true) and op = "=="
-    or
-    g.ensuresLt(left, right, 0, result, true) and op = "<"
-    or
-    g.ensuresLt(left, right, 1, result, true) and op = "<="
   )
 }
 
