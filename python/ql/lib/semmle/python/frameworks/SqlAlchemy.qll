@@ -129,7 +129,7 @@ module SqlAlchemy {
       ConnectionConstruction() {
         // without the `pragma[only_bind_out]` we would start with joining
         // `API::Node.getACall` with `CallCfgNode` which is not optimal
-        this = pragma[only_bind_out](classRef().getACall())
+        this = pragma[only_bind_out](classRef()).getACall()
         or
         this = connectionConstruction_helper()
       }
