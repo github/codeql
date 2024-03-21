@@ -9872,6 +9872,10 @@ ir.cpp:
 # 1078|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &> &
+# 1078| [CopyAssignmentOperator] std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&>& std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&>::operator=(std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&> const&)
+# 1078|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &> &
 # 1078| [CopyAssignmentOperator] std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&>& std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&>::operator=(std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&> const&)
 # 1078|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -9890,6 +9894,10 @@ ir.cpp:
 # 1082|   <params>: 
 # 1082|     getParameter(0): [Parameter] other
 # 1082|         Type = [LValueReferenceType] const iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &> &
+# 1082| [CopyConstructor] void std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&>::iterator(std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&> const&)
+# 1082|   <params>: 
+# 1082|     getParameter(0): [Parameter] other
+# 1082|         Type = [LValueReferenceType] const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &> &
 # 1082| [CopyConstructor] void std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&>::iterator(std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&> const&)
 # 1082|   <params>: 
 # 1082|     getParameter(0): [Parameter] other
@@ -9899,6 +9907,8 @@ ir.cpp:
 # 1084| [MemberFunction] std::iterator<std::random_access_iterator_tag, ClassWithDestructor, std::ptrdiff_t, ClassWithDestructor*, ClassWithDestructor&>& std::iterator<std::random_access_iterator_tag, ClassWithDestructor, std::ptrdiff_t, ClassWithDestructor*, ClassWithDestructor&>::operator++()
 # 1084|   <params>: 
 # 1084| [MemberFunction] std::iterator<std::random_access_iterator_tag, String, std::ptrdiff_t, String*, String&>& std::iterator<std::random_access_iterator_tag, String, std::ptrdiff_t, String*, String&>::operator++()
+# 1084|   <params>: 
+# 1084| [MemberFunction] std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&>& std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&>::operator++()
 # 1084|   <params>: 
 # 1084| [MemberFunction] std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&>& std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&>::operator++()
 # 1084|   <params>: 
@@ -9928,6 +9938,10 @@ ir.cpp:
 # 1089|   <params>: 
 # 1089|     getParameter(0): [Parameter] other
 # 1089|         Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, String, ptrdiff_t, String *, String &>
+# 1089| [ConstMemberFunction] bool std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&>::operator!=(std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&>) const
+# 1089|   <params>: 
+# 1089|     getParameter(0): [Parameter] other
+# 1089|         Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>
 # 1089| [ConstMemberFunction] bool std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&>::operator!=(std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&>) const
 # 1089|   <params>: 
 # 1089|     getParameter(0): [Parameter] other
@@ -9935,6 +9949,8 @@ ir.cpp:
 # 1090| [ConstMemberFunction] ClassWithDestructor& std::iterator<std::random_access_iterator_tag, ClassWithDestructor, std::ptrdiff_t, ClassWithDestructor*, ClassWithDestructor&>::operator*() const
 # 1090|   <params>: 
 # 1090| [ConstMemberFunction] String& std::iterator<std::random_access_iterator_tag, String, std::ptrdiff_t, String*, String&>::operator*() const
+# 1090|   <params>: 
+# 1090| [ConstMemberFunction] char& std::iterator<std::random_access_iterator_tag, char, std::ptrdiff_t, char*, char&>::operator*() const
 # 1090|   <params>: 
 # 1090| [ConstMemberFunction] int& std::iterator<std::random_access_iterator_tag, int, std::ptrdiff_t, int*, int&>::operator*() const
 # 1090|   <params>: 
@@ -10020,6 +10036,10 @@ ir.cpp:
 # 1108|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const vector<String> &
+# 1108| [CopyAssignmentOperator] std::vector<char>& std::vector<char>::operator=(std::vector<char> const&)
+# 1108|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const vector<char> &
 # 1108| [CopyAssignmentOperator] std::vector<int>& std::vector<int>::operator=(std::vector<int> const&)
 # 1108|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -10032,6 +10052,10 @@ ir.cpp:
 # 1108|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
 #-----|         Type = [LValueReferenceType] const vector<String> &
+# 1108| [CopyConstructor] void std::vector<char>::vector(std::vector<char> const&)
+# 1108|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const vector<char> &
 # 1108| [CopyConstructor] void std::vector<int>::vector(std::vector<int> const&)
 # 1108|   <params>: 
 #-----|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -10048,6 +10072,10 @@ ir.cpp:
 # 1109|   <params>: 
 # 1109|     getParameter(0): [Parameter] (unnamed parameter 0)
 # 1109|         Type = [TemplateParameter] T
+# 1109| [Constructor] void std::vector<char>::vector(char)
+# 1109|   <params>: 
+# 1109|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 1109|         Type = [PlainCharType] char
 # 1109| [Constructor] void std::vector<int>::vector(int)
 # 1109|   <params>: 
 # 1109|     getParameter(0): [Parameter] (unnamed parameter 0)
@@ -10064,6 +10092,8 @@ ir.cpp:
 # 1115|   <params>: 
 # 1115| [ConstMemberFunction] std::vector<T>::iterator std::vector<T>::begin() const
 # 1115|   <params>: 
+# 1115| [ConstMemberFunction] std::vector<char>::iterator std::vector<char>::begin() const
+# 1115|   <params>: 
 # 1115| [ConstMemberFunction] std::vector<int>::iterator std::vector<int>::begin() const
 # 1115|   <params>: 
 # 1116| [ConstMemberFunction] std::vector<ClassWithDestructor>::iterator std::vector<ClassWithDestructor>::end() const
@@ -10071,6 +10101,8 @@ ir.cpp:
 # 1116| [ConstMemberFunction] std::vector<String>::iterator std::vector<String>::end() const
 # 1116|   <params>: 
 # 1116| [ConstMemberFunction] std::vector<T>::iterator std::vector<T>::end() const
+# 1116|   <params>: 
+# 1116| [ConstMemberFunction] std::vector<char>::iterator std::vector<char>::end() const
 # 1116|   <params>: 
 # 1116| [ConstMemberFunction] std::vector<int>::iterator std::vector<int>::end() const
 # 1116|   <params>: 
@@ -19636,6 +19668,278 @@ ir.cpp:
 # 2393|           Type = [IntType] int
 # 2393|           Value = [ParenthesisExpr] 0
 # 2393|           ValueCategory = prvalue
+# 2396| [TopLevelFunction] void initialization_with_temp_destructor()
+# 2396|   <params>: 
+# 2396|   getEntryPoint(): [BlockStmt] { ... }
+# 2397|     getStmt(0): [IfStmt] if (...) ... 
+# 2397|       getCondition(): [ConditionDeclExpr] (condition decl)
+# 2397|           Type = [BoolType] bool
+# 2397|           ValueCategory = prvalue
+# 2397|         getVariableAccess(): [VariableAccess] x
+# 2397|             Type = [PlainCharType] char
+# 2397|             ValueCategory = prvalue(load)
+# 2397|         getVariableAccess().getFullyConverted(): [CStyleCast] (bool)...
+# 2397|             Conversion = [BoolConversion] conversion to bool
+# 2397|             Type = [BoolType] bool
+# 2397|             ValueCategory = prvalue
+# 2398|       getThen(): [ExprStmt] ExprStmt
+# 2398|         getExpr(): [PostfixIncrExpr] ... ++
+# 2398|             Type = [PlainCharType] char
+# 2398|             ValueCategory = prvalue
+# 2398|           getOperand(): [VariableAccess] x
+# 2398|               Type = [PlainCharType] char
+# 2398|               ValueCategory = lvalue
+# 2400|     getStmt(1): [IfStmt] if (...) ... 
+# 2400|       getInitialization(): [DeclStmt] declaration
+# 2400|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2400|             Type = [PlainCharType] char
+# 2400|           getVariable().getInitializer(): [Initializer] initializer for x
+# 2400|             getExpr(): [FunctionCall] call to get_x
+# 2400|                 Type = [PlainCharType] char
+# 2400|                 ValueCategory = prvalue
+# 2400|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
+# 2400|                   Type = [VoidType] void
+# 2400|                   ValueCategory = prvalue
+# 2400|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2400|                   Type = [Class] ClassWithDestructor
+# 2400|                   ValueCategory = prvalue(load)
+# 2400|       getCondition(): [VariableAccess] x
+# 2400|           Type = [PlainCharType] char
+# 2400|           ValueCategory = prvalue(load)
+# 2401|       getThen(): [ExprStmt] ExprStmt
+# 2401|         getExpr(): [PostfixIncrExpr] ... ++
+# 2401|             Type = [PlainCharType] char
+# 2401|             ValueCategory = prvalue
+# 2401|           getOperand(): [VariableAccess] x
+# 2401|               Type = [PlainCharType] char
+# 2401|               ValueCategory = lvalue
+# 2400|       getCondition().getFullyConverted(): [CStyleCast] (bool)...
+# 2400|           Conversion = [BoolConversion] conversion to bool
+# 2400|           Type = [BoolType] bool
+# 2400|           ValueCategory = prvalue
+# 2403|     getStmt(2): [ConstexprIfStmt] if constexpr (...) ... 
+# 2403|       getInitialization(): [DeclStmt] declaration
+# 2403|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2403|             Type = [PlainCharType] char
+# 2403|           getVariable().getInitializer(): [Initializer] initializer for x
+# 2403|             getExpr(): [FunctionCall] call to get_x
+# 2403|                 Type = [PlainCharType] char
+# 2403|                 ValueCategory = prvalue
+# 2403|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
+# 2403|                   Type = [VoidType] void
+# 2403|                   ValueCategory = prvalue
+# 2403|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2403|                   Type = [Class] ClassWithDestructor
+# 2403|                   ValueCategory = prvalue(load)
+# 2403|       getCondition(): [VariableAccess] initialization_with_destructor_bool
+# 2403|           Type = [BoolType] bool
+# 2403|           Value = [VariableAccess] 1
+# 2403|           ValueCategory = prvalue(load)
+# 2404|       getThen(): [ExprStmt] ExprStmt
+# 2404|         getExpr(): [PostfixIncrExpr] ... ++
+# 2404|             Type = [PlainCharType] char
+# 2404|             ValueCategory = prvalue
+# 2404|           getOperand(): [VariableAccess] x
+# 2404|               Type = [PlainCharType] char
+# 2404|               ValueCategory = lvalue
+# 2406|     getStmt(3): [SwitchStmt] switch (...) ... 
+# 2406|       getExpr(): [ConditionDeclExpr] (condition decl)
+# 2406|           Type = [IntType] int
+# 2406|           ValueCategory = prvalue
+# 2406|         getVariableAccess(): [VariableAccess] x
+# 2406|             Type = [PlainCharType] char
+# 2406|             ValueCategory = prvalue(load)
+# 2406|         getVariableAccess().getFullyConverted(): [CStyleCast] (int)...
+# 2406|             Conversion = [IntegralConversion] integral conversion
+# 2406|             Type = [IntType] int
+# 2406|             ValueCategory = prvalue
+# 2406|       getStmt(): [BlockStmt] { ... }
+# 2407|         getStmt(0): [SwitchCase] case ...:
+# 2407|           getExpr(): [CharLiteral] 97
+# 2407|               Type = [PlainCharType] char
+# 2407|               Value = [CharLiteral] 97
+# 2407|               ValueCategory = prvalue
+# 2407|           getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2407|               Conversion = [IntegralConversion] integral conversion
+# 2407|               Type = [IntType] int
+# 2407|               Value = [CStyleCast] 97
+# 2407|               ValueCategory = prvalue
+# 2408|         getStmt(1): [ExprStmt] ExprStmt
+# 2408|           getExpr(): [PostfixIncrExpr] ... ++
+# 2408|               Type = [PlainCharType] char
+# 2408|               ValueCategory = prvalue
+# 2408|             getOperand(): [VariableAccess] x
+# 2408|                 Type = [PlainCharType] char
+# 2408|                 ValueCategory = lvalue
+# 2411|     getStmt(4): [SwitchStmt] switch (...) ... 
+# 2411|       getInitialization(): [DeclStmt] declaration
+# 2411|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2411|             Type = [PlainCharType] char
+# 2411|           getVariable().getInitializer(): [Initializer] initializer for x
+# 2411|             getExpr(): [FunctionCall] call to get_x
+# 2411|                 Type = [PlainCharType] char
+# 2411|                 ValueCategory = prvalue
+# 2411|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
+# 2411|                   Type = [VoidType] void
+# 2411|                   ValueCategory = prvalue
+# 2411|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2411|                   Type = [Class] ClassWithDestructor
+# 2411|                   ValueCategory = prvalue(load)
+# 2411|       getExpr(): [VariableAccess] x
+# 2411|           Type = [PlainCharType] char
+# 2411|           ValueCategory = prvalue(load)
+# 2411|       getStmt(): [BlockStmt] { ... }
+# 2412|         getStmt(0): [SwitchCase] case ...:
+# 2412|           getExpr(): [CharLiteral] 97
+# 2412|               Type = [PlainCharType] char
+# 2412|               Value = [CharLiteral] 97
+# 2412|               ValueCategory = prvalue
+# 2412|           getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2412|               Conversion = [IntegralConversion] integral conversion
+# 2412|               Type = [IntType] int
+# 2412|               Value = [CStyleCast] 97
+# 2412|               ValueCategory = prvalue
+# 2413|         getStmt(1): [ExprStmt] ExprStmt
+# 2413|           getExpr(): [PostfixIncrExpr] ... ++
+# 2413|               Type = [PlainCharType] char
+# 2413|               ValueCategory = prvalue
+# 2413|             getOperand(): [VariableAccess] x
+# 2413|                 Type = [PlainCharType] char
+# 2413|                 ValueCategory = lvalue
+# 2411|       getExpr().getFullyConverted(): [CStyleCast] (int)...
+# 2411|           Conversion = [IntegralConversion] integral conversion
+# 2411|           Type = [IntType] int
+# 2411|           ValueCategory = prvalue
+# 2416|     getStmt(5): [RangeBasedForStmt] for(...:...) ...
+# 2416|       getInitialization(): [DeclStmt] declaration
+# 2416|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 2416|             Type = [PlainCharType] char
+# 2416|           getVariable().getInitializer(): [Initializer] initializer for x
+# 2416|             getExpr(): [FunctionCall] call to get_x
+# 2416|                 Type = [PlainCharType] char
+# 2416|                 ValueCategory = prvalue
+# 2416|               getQualifier(): [ConstructorCall] call to ClassWithDestructor
+# 2416|                   Type = [VoidType] void
+# 2416|                   ValueCategory = prvalue
+# 2416|               getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2416|                   Type = [Class] ClassWithDestructor
+# 2416|                   ValueCategory = prvalue(load)
+# 2416|       getChild(1): [DeclStmt] declaration
+# 2416|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__range)
+# 2416|             Type = [RValueReferenceType] vector<char> &&
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__range)
+# 2416|             getExpr(): [ConstructorCall] call to vector
+# 2416|                 Type = [VoidType] void
+# 2416|                 ValueCategory = prvalue
+# 2416|               getArgument(0): [VariableAccess] x
+# 2416|                   Type = [PlainCharType] char
+# 2416|                   ValueCategory = prvalue(load)
+# 2416|             getExpr().getFullyConverted(): [ReferenceToExpr] (reference to)
+# 2416|                 Type = [LValueReferenceType] vector<char> &
+# 2416|                 ValueCategory = prvalue
+# 2416|               getExpr(): [TemporaryObjectExpr] temporary object
+# 2416|                   Type = [ClassTemplateInstantiation,Struct] vector<char>
+# 2416|                   ValueCategory = xvalue
+# 2416|       getBeginEndDeclaration(): [DeclStmt] declaration
+# 2416|         getDeclarationEntry(0): [VariableDeclarationEntry] declaration of (__begin)
+# 2416|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__begin)
+# 2416|             getExpr(): [FunctionCall] call to begin
+# 2416|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2416|                 ValueCategory = prvalue
+# 2416|               getQualifier(): [VariableAccess] (__range)
+# 2416|                   Type = [RValueReferenceType] vector<char> &&
+# 2416|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<char>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<char>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<char>
+#-----|                     ValueCategory = lvalue
+# 2416|         getDeclarationEntry(1): [VariableDeclarationEntry] declaration of (__end)
+# 2416|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+#-----|           getVariable().getInitializer(): [Initializer] initializer for (__end)
+# 2416|             getExpr(): [FunctionCall] call to end
+# 2416|                 Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2416|                 ValueCategory = prvalue
+# 2416|               getQualifier(): [VariableAccess] (__range)
+# 2416|                   Type = [RValueReferenceType] vector<char> &&
+# 2416|                   ValueCategory = prvalue(load)
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const vector<char>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const vector<char>
+#-----|                   ValueCategory = lvalue
+#-----|                 getExpr(): [ReferenceDereferenceExpr] (reference dereference)
+#-----|                     Type = [ClassTemplateInstantiation,Struct] vector<char>
+#-----|                     ValueCategory = lvalue
+# 2416|       getCondition(): [FunctionCall] call to operator!=
+# 2416|           Type = [BoolType] bool
+# 2416|           ValueCategory = prvalue
+# 2416|         getQualifier(): [VariableAccess] (__begin)
+# 2416|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2416|             ValueCategory = lvalue
+# 2416|         getArgument(0): [ConstructorCall] call to iterator
+# 2416|             Type = [VoidType] void
+# 2416|             ValueCategory = prvalue
+# 2416|           getArgument(0): [VariableAccess] (__end)
+# 2416|               Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2416|               ValueCategory = lvalue
+#-----|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#-----|               Type = [LValueReferenceType] const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &> &
+#-----|               ValueCategory = prvalue
+#-----|             getExpr(): [CStyleCast] (const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)...
+#-----|                 Conversion = [GlvalueConversion] glvalue conversion
+#-----|                 Type = [SpecifiedType] const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>
+#-----|                 ValueCategory = lvalue
+#-----|         getQualifier().getFullyConverted(): [CStyleCast] (const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)...
+#-----|             Conversion = [GlvalueConversion] glvalue conversion
+#-----|             Type = [SpecifiedType] const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>
+#-----|             ValueCategory = lvalue
+#-----|         getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+#-----|             Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>
+#-----|             ValueCategory = lvalue
+# 2416|       getUpdate(): [FunctionCall] call to operator++
+# 2416|           Type = [LValueReferenceType] iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &> &
+# 2416|           ValueCategory = prvalue
+# 2416|         getQualifier(): [VariableAccess] (__begin)
+# 2416|             Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2416|             ValueCategory = lvalue
+# 2416|       getChild(5): [DeclStmt] declaration
+# 2416|         getDeclarationEntry(0): [VariableDeclarationEntry] definition of y
+# 2416|             Type = [PlainCharType] char
+# 2416|           getVariable().getInitializer(): [Initializer] initializer for y
+# 2416|             getExpr(): [OverloadedPointerDereferenceExpr] call to operator*
+# 2416|                 Type = [LValueReferenceType] char &
+# 2416|                 ValueCategory = prvalue
+# 2416|               getQualifier(): [VariableAccess] (__begin)
+# 2416|                   Type = [NestedTypedefType,UsingAliasTypedefType] iterator
+# 2416|                   ValueCategory = lvalue
+#-----|               getQualifier().getFullyConverted(): [CStyleCast] (const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>)...
+#-----|                   Conversion = [GlvalueConversion] glvalue conversion
+#-----|                   Type = [SpecifiedType] const iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>
+#-----|                   ValueCategory = lvalue
+# 2416|             getExpr().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2416|                 Type = [PlainCharType] char
+# 2416|                 ValueCategory = prvalue(load)
+# 2417|       getStmt(): [ExprStmt] ExprStmt
+# 2417|         getExpr(): [AssignAddExpr] ... += ...
+# 2417|             Type = [PlainCharType] char
+# 2417|             ValueCategory = lvalue
+# 2417|           getLValue(): [VariableAccess] y
+# 2417|               Type = [PlainCharType] char
+# 2417|               ValueCategory = lvalue
+# 2417|           getRValue(): [VariableAccess] x
+# 2417|               Type = [PlainCharType] char
+# 2417|               ValueCategory = prvalue(load)
+# 2417|           getRValue().getFullyConverted(): [CStyleCast] (int)...
+# 2417|               Conversion = [IntegralConversion] integral conversion
+# 2417|               Type = [IntType] int
+# 2417|               ValueCategory = prvalue
+# 2416|       getUpdate().getFullyConverted(): [ReferenceDereferenceExpr] (reference dereference)
+# 2416|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>
+# 2416|           ValueCategory = lvalue
+# 2418|     getStmt(6): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
