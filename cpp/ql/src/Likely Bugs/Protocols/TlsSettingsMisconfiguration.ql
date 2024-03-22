@@ -43,10 +43,9 @@ predicate isOptionSet(ConstructorCall cc, int flag, FunctionCall fcSetOptions) {
     ExistsAnyFlow::flow(source, sink) and
     f.getACallToThisFunction() = fcSetOptions and
     contextSetOptions = fcSetOptions.getQualifier() and
-    forall(Expr optionArgument, Expr optionArgumentSource |
+    forex(Expr optionArgument |
       optionArgument = fcSetOptions.getArgument(0) and
-      BoostorgAsio::SslOptionFlow::flow(DataFlow::exprNode(optionArgumentSource),
-        DataFlow::exprNode(optionArgument))
+      BoostorgAsio::SslOptionFlow::flowTo(DataFlow::exprNode(optionArgument))
     |
       optionArgument.getValue().toInt().bitShiftRight(16).bitAnd(flag) = flag
     )
