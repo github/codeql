@@ -32,7 +32,7 @@ module MassAssignment {
    * A call that permits arbitrary parameters to be used for mass assignment.
    */
   abstract class MassPermit extends DataFlow::Node {
-    /** Gets the argument for the parameters to be permitted */
+    /** Gets the argument for the parameters to be permitted. */
     abstract DataFlow::Node getParamsArgument();
 
     /** Gets the result node of the permitted parameters. */

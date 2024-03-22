@@ -793,7 +793,7 @@ class ActiveRecordScopeCallTarget extends AdditionalCallTarget {
   }
 }
 
-/** Sinks for the mass assignment query */
+/** Sinks for the mass assignment query. */
 private module MassAssignmentSinks {
   private import codeql.ruby.security.MassAssignmentCustomizations
 
