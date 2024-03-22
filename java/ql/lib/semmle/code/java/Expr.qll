@@ -1684,7 +1684,7 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     exists(InstanceOfExpr ioe | this.getParent() = ioe | result.isNthChildOf(ioe, 1))
     or
     exists(PatternCase pc, int index, int typeAccessIdx | this.isNthChildOf(pc, index) |
-      (if index = 0 then typeAccessIdx = -4 else typeAccessIdx = (-3 - index)) and
+      (if index = 0 then typeAccessIdx = -2 else typeAccessIdx = (-3 - index)) and
       result.isNthChildOf(pc, typeAccessIdx)
     )
     or
