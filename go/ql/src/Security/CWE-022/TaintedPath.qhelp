@@ -72,7 +72,9 @@ that the resulting path is still within it.
 <sample src="TaintedPathGood2.go" />
 <p>
 Note that <code>/home/user</code> is just an example, you should replace it with the actual
-safe directory in your application.
+safe directory in your application. Also, while in this example the path of the safe
+directory is absolute, this may not always be the case, and you may need to resolve it
+first before checking the input.
 </p>
 </example>
 
