@@ -98,6 +98,24 @@ public class Test {
          break;
      }
 
+     switch(thing) {
+       case B(_, _):
+       case Integer _, String _, A(_, _) when thing.toString().equals("abc"):
+       case Float _:
+         break;
+       default:
+         break;
+     }
+
+     var result = switch(thing) {
+       case B(_, _):
+       case Integer _, String _, A(_, _) when thing.toString().equals("abc"):
+       case Float _:
+         yield 1;
+       default:
+         yield 2;
+     };
+
   }
 
 }
