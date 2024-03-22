@@ -1,4 +1,3 @@
-using System.Collections.Concurrent;
 using System.IO;
 using Semmle.Util;
 
@@ -7,7 +6,6 @@ namespace Semmle.Extraction.CSharp.Entities
     internal class CompilerDiagnostic : FreshEntity
     {
         private static readonly int limit = EnvironmentVariables.TryGetExtractorNumberOption<int>("COMPILER_DIAGNOSTIC_LIMIT") ?? 1000;
-        private static readonly ConcurrentDictionary<string, int> messageCounts = new();
 
         private readonly Microsoft.CodeAnalysis.Diagnostic diagnostic;
         private readonly Compilation compilation;
@@ -25,12 +23,12 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             // The below doesn't limit the extractor messages to the exact limit, but it's good enough.
             var key = diagnostic.Id;
-            var messageCount = messageCounts.AddOrUpdate(key, 1, (_, c) => c + 1);
+            var messageCount = compilation.messageCounts.AddOrUpdate(key, 1, (_, c) => c + 1);
             if (messageCount > limit)
             {
                 if (messageCount == limit + 1)
                 {
-                    Context.Extractor.Logger.LogWarning($"Stopped logging {key} compiler diagnostics after reaching {limit}");
+                    Context.Extractor.Logger.LogWarning($"Stopped logging {key} compiler diagnostics for the current compilation after reaching {limit}");
                 }
 
                 return;
