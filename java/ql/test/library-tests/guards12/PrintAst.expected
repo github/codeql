@@ -54,7 +54,7 @@ Test.java:
 #   17|             -1: [BlockStmt] { ... }
 #-----|             0: (Pattern case declaration)
 #   17|               0: [TypeAccess] String
-#   17|               1: [LocalVariableDeclExpr] s2
+#   17|               1: [LocalVariableDeclExpr] <anonymous local variable>
 #   18|           1: [ConstCase] case ...
 #   18|             -1: [BlockStmt] { ... }
 #   18|             0: [StringLiteral] "e"
