@@ -5,7 +5,7 @@
  * @problem.severity error
  * @security-severity 9.8
  * @precision high
- * @id ruby/insecure-mass-assignment
+ * @id rb/insecure-mass-assignment
  * @tags security
  *       external/cwe/cwe-915
  */
