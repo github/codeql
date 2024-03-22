@@ -116,10 +116,15 @@ module ImproperArrayIndexValidationConfig implements DataFlow::ConfigSig {
 
 module ImproperArrayIndexValidation = TaintTracking::Global<ImproperArrayIndexValidationConfig>;
 
+predicate isInTestFile(ImproperArrayIndexValidation::PathNode node){
+  node.getNode().asExpr().getFile().getRelativePath().regexpMatch("/tests?/")
+}
+
 from
   ImproperArrayIndexValidation::PathNode source, ImproperArrayIndexValidation::PathNode sink,
   string sourceType
 where
+  not isInTestFile(source) and
   ImproperArrayIndexValidation::flowPath(source, sink) and
   isFlowSource(source.getNode(), sourceType)
 select sink.getNode(), source, sink,
