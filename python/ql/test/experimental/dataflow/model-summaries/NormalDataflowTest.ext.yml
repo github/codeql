@@ -17,4 +17,5 @@ extensions:
       - ["foo", "Member[MS_append_to_list]", "Argument[1]", "ReturnValue", "taint"]
       - ["foo", "Member[MS_spread]", "Argument[0]", "ReturnValue.TupleElement[0]", "value"]
       - ["foo", "Member[MS_spread]", "Argument[1]", "ReturnValue.TupleElement[1]", "value"]
+      - ["foo", "Member[MS_spread_all]", "Argument[0]", "ReturnValue.TupleElement[0,1]", "value"]
       - ["json", "Member[MS_loads]", "Argument[0]", "ReturnValue", "taint"]

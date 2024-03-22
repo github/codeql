@@ -30,7 +30,7 @@ def SINK_F(x):
 ensure_tainted = ensure_not_tainted = print
 TAINTED_STRING = "TAINTED_STRING"
 
-from foo import MS_identity, MS_apply_lambda, MS_reversed, MS_list_map, MS_append_to_list, MS_spread
+from foo import MS_identity, MS_apply_lambda, MS_reversed, MS_list_map, MS_append_to_list, MS_spread, MS_spread_all
 
 # Simple summary
 via_identity = MS_identity(SOURCE)
@@ -117,6 +117,10 @@ SINK_F(b)
 x, y = MS_spread(NONSOURCE, SOURCE)
 SINK_F(x)
 SINK(y)  # $ flow="SOURCE, l:-2 -> y"
+
+a, b = MS_spread_all(SOURCE)
+SINK(a)  # $ flow="SOURCE, l:-1 -> a"
+SINK(b)  # $ flow="SOURCE, l:-2 -> b"
 
 # Modeled flow-summary is not value preserving
 from json import MS_loads as json_loads
