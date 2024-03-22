@@ -781,10 +781,9 @@ private module ControlFlowGraphImpl {
       getSwitchStatement(switch, i) = pred and
       getSwitchStatement(switch, i + 1) = immediateSucc and
       (
-        succ = immediateSucc and
-        not immediateSucc instanceof PatternCase
-        or
-        isNextNormalSwitchStmt(switch, immediateSucc, succ)
+        if immediateSucc instanceof PatternCase
+        then isNextNormalSwitchStmt(switch, immediateSucc, succ)
+        else succ = immediateSucc
       )
     )
   }
