@@ -400,7 +400,8 @@ private class PpInstanceOfExpr extends PpAst, InstanceOfExpr {
 
 private class PpLocalVariableDeclExpr extends PpAst, LocalVariableDeclExpr {
   override string getPart(int i) {
-    i = 0 and result = this.getName()
+    i = 0 and
+    (if this.isAnonymous() then result = "_" else result = this.getName())
     or
     i = 1 and result = " = " and exists(this.getInit())
   }
@@ -793,7 +794,11 @@ private class PpPatternCase extends PpAst, PatternCase {
       or
       i = base + 2 and
       this.getPatternAtIndex(n) instanceof LocalVariableDeclExpr and
-      not this.isAnonymousPattern(n) and
+      (
+        exists(this.getPatternAtIndex(n).asBindingOrUnnamedPattern().getTypeAccess())
+        or
+        not this.isAnonymousPattern(n)
+      ) and
       result = " "
       or
       i = base + 3 and
@@ -815,9 +820,10 @@ private class PpPatternCase extends PpAst, PatternCase {
 
   override PpAst getChild(int i) {
     exists(int n, int base | exists(this.getPatternAtIndex(n)) and base = n * 4 |
-      i = 1 and result = this.getPatternAtIndex(n).asBindingOrUnnamedPattern().getTypeAccess()
+      i = base + 1 and
+      result = this.getPatternAtIndex(n).asBindingOrUnnamedPattern().getTypeAccess()
       or
-      i = 1 and result = this.getPatternAtIndex(n).asRecordPattern()
+      i = base + 1 and result = this.getPatternAtIndex(n).asRecordPattern()
     )
     or
     exists(int base | base = (max(int n | exists(this.getPatternAtIndex(n))) + 1) * 4 |
