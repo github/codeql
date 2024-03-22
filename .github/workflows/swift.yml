@@ -37,14 +37,23 @@ permissions:
   contents: read
 
 jobs:
-  # not using a matrix as you cannot depend on a specific job in a matrix, and we want to start linux checks
-  # without waiting for the macOS build
-  build-and-test-macos:
+  # not putting using a matrix as you cannot depend on a specific job in a matrix, and we want to start qltest and
+  # integration tests as soon as the corresponding build required has finished, without waiting for the slowest macOS
+  # build
+  build-and-test-macos-intel:
     if: github.repository_owner == 'github'
-    runs-on: macos-12-xl
+    runs-on: macos-13-large
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
+  build-and-test-macos-arm:
+    if: github.repository_owner == 'github'
+    runs-on: macos-13-xlarge
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./swift/actions/build-and-test
+        with:
+          upload: false  # use intel build for further tests
   build-and-test-linux:
     if: github.repository_owner == 'github'
     runs-on: ubuntu-latest-xl
@@ -60,8 +69,8 @@ jobs:
       - uses: ./swift/actions/run-ql-tests
   qltests-macos:
     if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
-    needs: build-and-test-macos
-    runs-on: macos-12-xl
+    needs: build-and-test-macos-intel
+    runs-on: macos-13-xlarge
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/run-ql-tests
@@ -74,8 +83,8 @@ jobs:
       - uses: ./swift/actions/run-integration-tests
   integration-tests-macos:
     if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
-    needs: build-and-test-macos
-    runs-on: macos-12-xl
+    needs: build-and-test-macos-intel
+    runs-on: macos-13-xlarge
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4

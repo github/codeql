@@ -1,0 +1,16 @@
+name: Upload Swift CodeQL pack
+description: Uploads the Swift CodeQL pack
+runs:
+  using: composite
+  steps:
+    - name: Compress
+      shell: bash
+      run: |
+        tar cf - swift/extractor-pack | zstd > swift-extractor-pack-${{ runner.os }}.tar.zst
+    - name: Upload
+      uses: actions/upload-artifact@v4
+      with:
+        name: swift-extractor-pack-${{ runner.os }}
+        path: swift-extractor-pack-${{ runner.os }}.tar.zst
+        compression-level: 0
+        retention-days: 3

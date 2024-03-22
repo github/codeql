@@ -3,7 +3,7 @@ description: Builds the Swift CodeQL pack
 runs:
   using: composite
   steps:
-    - uses: ./swift/actions/share-extractor-pack
+    - uses: ./swift/actions/download-extractor-pack
     - uses: actions/setup-python@v4
       with:
         python-version-file: 'swift/.python-version'

@@ -8,7 +8,7 @@ inputs:
 runs:
   using: composite
   steps:
-    - uses: ./swift/actions/share-extractor-pack
+    - uses: ./swift/actions/download-extractor-pack
     - uses: ./.github/actions/fetch-codeql
     - id: query-cache
       uses: ./.github/actions/cache-query-compilation
