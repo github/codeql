@@ -7,17 +7,28 @@ private import queries.modeling.internal.Util as Util
 
 abstract class Endpoint instanceof Scope {
   string namespace;
-  string path;
+  string type;
+  string name;
 
   Endpoint() {
     this.isPublic() and
     this.getLocation().getFile() instanceof Util::RelevantFile and
-    exists(string scopePath, int firstDot |
+    exists(string scopePath, string path, int pathIndex |
       scopePath = Util::computeScopePath(this) and
-      firstDot = scopePath.indexOf(".", 0, 0)
+      pathIndex = scopePath.indexOf(".", 0, 0)
     |
-      namespace = scopePath.prefix(firstDot) and
-      path = scopePath.suffix(firstDot + 1)
+      namespace = scopePath.prefix(pathIndex) and
+      path = scopePath.suffix(pathIndex + 1) and
+      (
+        exists(int nameIndex | nameIndex = max(path.indexOf(".")) |
+          type = path.prefix(nameIndex) and
+          name = path.suffix(nameIndex + 1)
+        )
+        or
+        not exists(path.indexOf(".any()")) and
+        type = "" and
+        name = path
+      )
     )
   }
 
@@ -29,9 +40,9 @@ abstract class Endpoint instanceof Scope {
 
   Location getLocation() { result = super.getLocation() }
 
-  string getType() { result = "" }
+  string getType() { result = type }
 
-  string getName() { result = path }
+  string getName() { result = name }
 
   abstract string getParameters();
 
