@@ -439,7 +439,7 @@ private class SingleLocalVarDeclParent extends ExprOrStmt {
  * want to use a synthetic node to variable declaration and its type access.
  *
  * Excludes `LocalVariableDeclStmt` and `ForStmt`, as they can hold multiple declarations.
- * For these cases, either a synthetic node is not necassary or a different synthetic node is used.
+ * For these cases, either a synthetic node is not necessary or a different synthetic node is used.
  */
 final class SingleLocalVarDeclParentNode extends ExprStmtNode {
   SingleLocalVarDeclParent lvdp;
