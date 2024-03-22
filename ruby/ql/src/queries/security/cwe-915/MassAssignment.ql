@@ -3,7 +3,7 @@
  * @description Using mass assignment with user-controlled attributes allows unintended parameters to be set.
  * @kind path-problem
  * @problem.severity error
- * @security-severity 7.5
+ * @security-severity 9.8
  * @precision high
  * @id ruby/insecure-mass-assignment
  * @tags security
