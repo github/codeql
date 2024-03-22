@@ -46,6 +46,7 @@ namespace Semmle.Util
         [JsonConverter(typeof(StringEnumConverter), typeof(CamelCaseNamingStrategy))]
         public enum TspSeverity
         {
+            Unknown,
             Note,
             Warning,
             Error

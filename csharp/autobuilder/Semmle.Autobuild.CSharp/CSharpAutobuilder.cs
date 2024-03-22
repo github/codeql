@@ -44,7 +44,7 @@ namespace Semmle.Autobuild.CSharp
         public override BuildScript GetBuildScript()
         {
             var attempt = BuildScript.Failure;
-            switch (GetCSharpBuildStrategy())
+            switch (BuildStrategy)
             {
                 case CSharpBuildStrategy.CustomBuildCommand:
                     attempt = new BuildCommandRule(DotNetRule.WithDotNet).Analyse(this, false) & CheckExtractorRun(true);
@@ -217,6 +217,10 @@ namespace Semmle.Autobuild.CSharp
 
             return CSharpBuildStrategy.Auto;
         }
+
+        private CSharpBuildStrategy? buildStrategy = null;
+        private CSharpBuildStrategy BuildStrategy => buildStrategy ??= GetCSharpBuildStrategy();
+        public override bool IsBuildless => BuildStrategy == CSharpBuildStrategy.Buildless;
 
         private enum CSharpBuildStrategy
         {
