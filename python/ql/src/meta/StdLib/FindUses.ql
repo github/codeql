@@ -1,6 +1,7 @@
 import python
 private import semmle.python.dataflow.new.DataFlow
 import FindUses
+// import EntryPointsForAll::EntryPointsForHardcodedCredentialsQuery
 import EntryPointsForAll
 
 // query predicate summaries(string madSummary) {
