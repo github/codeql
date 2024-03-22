@@ -42,6 +42,7 @@ extensions:
       - ["nturl2path", "Member[url2pathname]", "Argument[0,url:]", "ReturnValue", "taint"]
       - ["optparse", "Member[OptionParser].Subclass.Instance.Member[parse_args]", "Argument[0,args:]", "ReturnValue", "taint"]
       - ["pathlib", "Member[Path].Subclass.Instance.Member[__enter__]", "Argument[self]", "ReturnValue", "taint"]
+      - ["random", "Member[choice]", "Argument[0,seq:]", "ReturnValue", "taint"]
       - ["random", "Member[Random].Subclass.Instance.Member[choice]", "Argument[0,seq:]", "ReturnValue", "taint"]
       - ["re", "Member[split]", "Argument[0,pattern:]", "ReturnValue", "taint"]
       - ["shlex", "Member[quote]", "Argument[0,s:]", "ReturnValue", "taint"]
