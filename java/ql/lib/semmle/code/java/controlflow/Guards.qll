@@ -213,13 +213,13 @@ class Guard extends ExprParent {
       or
       exists(PatternCase pc | this = pc |
         pc.getSelectorExpr() = testedExpr and
-        testedType = pc.getPattern().getType()
+        testedType = pc.getUniquePattern().getType()
       )
     ) and
     (
       if
         exists(RecordPatternExpr rpe |
-          rpe = [this.(InstanceOfExpr).getPattern(), this.(PatternCase).getPattern()]
+          rpe = [this.(InstanceOfExpr).getPattern(), this.(PatternCase).getAPattern()]
         |
           not rpe.isUnrestricted()
         )
