@@ -1,4 +1,4 @@
 ---
 category: queryMetadata
 ---
-* The `@precision` of the `js/unsafe-external-link` has been lowered to `low` to reflect that modern browsers do not provider the `opener` attribute and thus mitigate the potential security risk of having a link with `target="_blank"`.
+* The `@precision` of the `js/unsafe-external-link` has been reduced to `low` to reflect the fact that modern browsers do not expose the opening window for such links. This mitigates the potential security risk of having a link with `target="_blank"`.
