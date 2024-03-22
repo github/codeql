@@ -123,8 +123,12 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
       previousPatternCase = getClosestPrecedingPatternCase(sc)
     |
       pred.(Expr).getParent*() = previousPatternCase.getGuard() and
-      // Check there is any statement in between the previous pattern case and this one.
-      not previousPatternCase.getIndex() = sc.getIndex() - 1
+      // Check there is any statement in between the previous pattern case and this one,
+      // or the case is a rule, so there is no chance of a fall-through.
+      (
+        previousPatternCase.isRule() or
+        not previousPatternCase.getIndex() = sc.getIndex() - 1
+      )
     )
     or
     // Unambigious: on the test-passing edge there must be at least one intervening
