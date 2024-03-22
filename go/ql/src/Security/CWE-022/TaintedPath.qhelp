@@ -64,9 +64,9 @@ path separators or ".." sequences.
 Note that this approach is only suitable if the input is expected to be a single file name.
 </p>
 <p>
-If the input can be a path with multiple components, we can make it safe by verifying
+If the input can be a path with multiple components, you can make it safe by verifying
 that the path is within a specific directory that is considered safe.
-This can be done by resolving the input with respect to that directory, and then checking
+You can do this by resolving the input with respect to that directory, and then checking
 that the resulting path is still within it.
 </p>
 <sample src="TaintedPathGood2.go" />
