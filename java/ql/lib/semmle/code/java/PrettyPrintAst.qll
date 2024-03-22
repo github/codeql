@@ -782,10 +782,6 @@ private class PpSwitchCase extends PpAst, SwitchCase {
 }
 
 private class PpPatternCase extends PpAst, PatternCase {
-  private TypeAccess getPatternTypeAccess(int n) {
-    result = this.getPatternAtIndex(n).asBindingOrUnnamedPattern().getTypeAccess()
-  }
-
   private predicate isAnonymousPattern(int n) {
     this.getPatternAtIndex(n).asBindingOrUnnamedPattern().isAnonymous()
   }
