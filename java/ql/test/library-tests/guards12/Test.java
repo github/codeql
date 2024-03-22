@@ -24,5 +24,14 @@ class Test {
       case "g" -> { }
       default -> { }
     }
+    switch (s) {
+      case "h":
+      case String _ when len == 4:
+      case "i":
+        String target = "Shouldn't be controlled by any of those tests";
+        break;
+      default:
+        break;
+    }
   }
 }
