@@ -9,4 +9,4 @@ nodes
 | test.rb:17:9:17:37 | call to permit! | semmle.label | call to permit! |
 subpaths
 #select
-| test.rb:8:18:8:28 | call to user_params | test.rb:17:9:17:14 | call to params | test.rb:8:18:8:28 | call to user_params | mass assignment |
+| test.rb:8:18:8:28 | call to user_params | test.rb:17:9:17:14 | call to params | test.rb:8:18:8:28 | call to user_params | This mass assignment operation can assign user-controlled attributes from $@. | test.rb:17:9:17:14 | call to params | this remote flow source |

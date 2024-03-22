@@ -6,49 +6,7 @@ private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking
 private import codeql.ruby.dataflow.RemoteFlowSources
-
-/** Provides default sources and sinks for the mass assignment query. */
-module MassAssignment {
-  /**
-   * A data flow source for user input used for mass assignment.
-   */
-  abstract class Source extends DataFlow::Node { }
-
-  /**
-   * A data flow sink for user input used for mass assignment.
-   */
-  abstract class Sink extends DataFlow::Node { }
-
-  /**
-   * A call that permits arbitrary parameters to be used for mass assignment.
-   */
-  abstract class MassPermit extends DataFlow::Node {
-    /** Gets the argument for the parameters to be permitted */
-    abstract DataFlow::Node getParamsArgument();
-
-    /** Gets the result node of the permitted parameters. */
-    abstract DataFlow::Node getPermittedParamsResult();
-  }
-
-  private class RemoteSource extends Source instanceof RemoteFlowSource { }
-
-  private class CreateSink extends Sink {
-    CreateSink() {
-      exists(DataFlow::CallNode create |
-        create.asExpr().getExpr().(MethodCall).getMethodName() = ["create", "new", "update"] and
-        this = create.getArgument(0)
-      )
-    }
-  }
-
-  private class PermitCall extends MassPermit instanceof DataFlow::CallNode {
-    PermitCall() { this.asExpr().getExpr().(MethodCall).getMethodName() = "permit!" }
-
-    override DataFlow::Node getParamsArgument() { result = this.(DataFlow::CallNode).getReceiver() }
-
-    override DataFlow::Node getPermittedParamsResult() { result = this }
-  }
-}
+private import MassAssignmentCustomizations
 
 private module FlowState {
   private newtype TState =
@@ -78,15 +36,14 @@ private module Config implements DataFlow::StateConfigSig {
   predicate isSource(DataFlow::Node node, FlowState state) {
     node instanceof MassAssignment::Source and
     state instanceof FlowState::Unpermitted
-    // or
-    // node = any(MassAssignment::MassPermit p).getPermittedParamsResult() and
-    // state instanceof FlowState::Permitted
   }
 
   predicate isSink(DataFlow::Node node, FlowState state) {
     node instanceof MassAssignment::Sink and
     state instanceof FlowState::Permitted
   }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof MassAssignment::Sanitizer }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
