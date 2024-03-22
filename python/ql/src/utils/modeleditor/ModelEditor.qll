@@ -25,7 +25,7 @@ abstract class Endpoint instanceof Scope {
           name = path.suffix(nameIndex + 1)
         )
         or
-        not exists(path.indexOf(".any()")) and
+        not exists(path.indexOf(".")) and
         type = "" and
         name = path
       )
