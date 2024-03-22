@@ -194,12 +194,14 @@ predicate simpleAstFlowStep(Expr e1, Expr e2) {
   // In the following three cases only record patterns need this flow edge, leading from the bound instanceof
   // or switch tested expression to a record pattern that will read its fields. Simple binding patterns are
   // handled via VariableAssign.getSource instead.
+  // We only consider unique patterns because cases that declare multiple patterns are not allowed to declare
+  // any identifiers, so can't participate in dataflow.
   exists(SwitchExpr se |
-    e1 = se.getExpr() and e2 = se.getACase().(PatternCase).getPattern().asRecordPattern()
+    e1 = se.getExpr() and e2 = se.getACase().(PatternCase).getUniquePattern().asRecordPattern()
   )
   or
   exists(SwitchStmt ss |
-    e1 = ss.getExpr() and e2 = ss.getACase().(PatternCase).getPattern().asRecordPattern()
+    e1 = ss.getExpr() and e2 = ss.getACase().(PatternCase).getUniquePattern().asRecordPattern()
   )
   or
   exists(InstanceOfExpr ioe | e1 = ioe.getExpr() and e2 = ioe.getPattern().asRecordPattern())
