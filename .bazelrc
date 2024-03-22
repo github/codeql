@@ -11,7 +11,7 @@ common --override_module=semmle_code=%workspace%/misc/bazel/semmle_code_stub
 build --repo_env=CC=clang --repo_env=CXX=clang++
 
 build:linux --cxxopt=-std=c++20
-build:macos --cxxopt=-std=c++20 --cpu=darwin_x86_64
+build:macos --cxxopt=-std=c++20 --platforms=@apple_support//platforms:macos_x86_64
 build:windows --cxxopt=/std:c++20 --cxxopt=/Zc:preprocessor
 
 try-import %workspace%/local.bazelrc
