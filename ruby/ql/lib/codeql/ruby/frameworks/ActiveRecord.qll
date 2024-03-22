@@ -811,9 +811,9 @@ private module MassAssignmentSinks {
           name =
             [
               "build", "create", "create!", "create_with", "create_or_find_by",
-              "create_or_find_by!", "find_or_create_by", "find_or_create_by!", "insert", "insert!",
-              "insert_all", "insert_all!", "instantiate", "new", "update", "update!", "upsert",
-              "upsert_all"
+              "create_or_find_by!", "find_or_create_by", "find_or_create_by!",
+              "find_or_initialize_by", "insert", "insert!", "insert_all", "insert_all!",
+              "instantiate", "new", "update", "update!", "upsert", "upsert_all"
             ] and
           this = call.getArgument(0)
           or
