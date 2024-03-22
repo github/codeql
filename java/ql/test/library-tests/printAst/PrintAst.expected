@@ -127,7 +127,7 @@ A.java:
 #   54|                         -1: [VarAccess] System.out
 #   54|                           -1: [TypeAccess] System
 #   54|                         0: [VarAccess] s
-#-----|                     0: (Single Local Variable Declaration)
+#-----|                     0: (Pattern case declaration)
 #   54|                       0: [TypeAccess] String
 #   54|                       1: [LocalVariableDeclExpr] s
 #   55|                   1: [PatternCase] case <Pattern>
@@ -138,7 +138,7 @@ A.java:
 #   55|                         0: [AddExpr] ... + ...
 #   55|                           0: [StringLiteral] "An integer: "
 #   55|                           1: [VarAccess] i
-#-----|                     0: (Single Local Variable Declaration)
+#-----|                     0: (Pattern case declaration)
 #   55|                       0: [TypeAccess] Integer
 #   55|                       1: [LocalVariableDeclExpr] i
 #   56|                   2: [DefaultCase] default
@@ -146,7 +146,7 @@ A.java:
 #   58|                 3: [SwitchStmt] switch (...)
 #   58|                   -1: [VarAccess] thing
 #   59|                   0: [PatternCase] case <Pattern>
-#-----|                     0: (Single Local Variable Declaration)
+#-----|                     0: (Pattern case declaration)
 #   59|                       0: [TypeAccess] String
 #   59|                       1: [LocalVariableDeclExpr] s
 #   60|                   1: [ExprStmt] <Expr>;
@@ -156,7 +156,7 @@ A.java:
 #   60|                       0: [VarAccess] s
 #   61|                   2: [BreakStmt] break
 #   62|                   3: [PatternCase] case <Pattern>
-#-----|                     0: (Single Local Variable Declaration)
+#-----|                     0: (Pattern case declaration)
 #   62|                       0: [TypeAccess] Integer
 #   62|                       1: [LocalVariableDeclExpr] i
 #   63|                   4: [ExprStmt] <Expr>;
@@ -175,14 +175,14 @@ A.java:
 #   68|                       -1: [VarAccess] thing
 #   69|                       0: [PatternCase] case <Pattern>
 #   69|                         -1: [VarAccess] s
-#-----|                         0: (Single Local Variable Declaration)
+#-----|                         0: (Pattern case declaration)
 #   69|                           0: [TypeAccess] String
 #   69|                           1: [LocalVariableDeclExpr] s
 #   70|                       1: [PatternCase] case <Pattern>
 #   70|                         -1: [AddExpr] ... + ...
 #   70|                           0: [StringLiteral] "An integer: "
 #   70|                           1: [VarAccess] i
-#-----|                         0: (Single Local Variable Declaration)
+#-----|                         0: (Pattern case declaration)
 #   70|                           0: [TypeAccess] Integer
 #   70|                           1: [LocalVariableDeclExpr] i
 #   71|                       2: [DefaultCase] default
@@ -192,13 +192,13 @@ A.java:
 #   73|                     0: [SwitchExpr] switch (...)
 #   73|                       -1: [VarAccess] thing
 #   74|                       0: [PatternCase] case <Pattern>
-#-----|                         0: (Single Local Variable Declaration)
+#-----|                         0: (Pattern case declaration)
 #   74|                           0: [TypeAccess] String
 #   74|                           1: [LocalVariableDeclExpr] s
 #   75|                       1: [YieldStmt] yield ...
 #   75|                         0: [VarAccess] s
 #   76|                       2: [PatternCase] case <Pattern>
-#-----|                         0: (Single Local Variable Declaration)
+#-----|                         0: (Pattern case declaration)
 #   76|                           0: [TypeAccess] Integer
 #   76|                           1: [LocalVariableDeclExpr] i
 #   77|                       3: [YieldStmt] yield ...
@@ -232,7 +232,7 @@ A.java:
 #   87|                             -1: [VarAccess] s
 #   87|                           1: [IntegerLiteral] 3
 #   87|                         -1: [StringLiteral] "It's 3 letters long"
-#-----|                         0: (Single Local Variable Declaration)
+#-----|                         0: (Pattern case declaration)
 #   87|                           0: [TypeAccess] String
 #   87|                           1: [LocalVariableDeclExpr] s
 #   88|                       2: [PatternCase] case <Pattern>
@@ -241,7 +241,7 @@ A.java:
 #   88|                             -1: [VarAccess] s
 #   88|                           1: [IntegerLiteral] 5
 #   88|                         -1: [StringLiteral] "it's 5 letters long"
-#-----|                         0: (Single Local Variable Declaration)
+#-----|                         0: (Pattern case declaration)
 #   88|                           0: [TypeAccess] String
 #   88|                           1: [LocalVariableDeclExpr] s
 #   89|                       3: [DefaultCase] default
@@ -252,7 +252,7 @@ A.java:
 #   91|                       -1: [VarAccess] thing
 #   92|                       0: [PatternCase] case <Pattern>
 #   92|                         -1: [StringLiteral] "It's a string"
-#-----|                         0: (Single Local Variable Declaration)
+#-----|                         0: (Pattern case declaration)
 #   92|                           0: [TypeAccess] String
 #   92|                           1: [LocalVariableDeclExpr] s
 #   93|                       1: [NullDefaultCase] case null, default

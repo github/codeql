@@ -52,7 +52,7 @@ Test.java:
 #   17|               0: [VarAccess] len
 #   17|               1: [IntegerLiteral] 4
 #   17|             -1: [BlockStmt] { ... }
-#-----|             0: (Single Local Variable Declaration)
+#-----|             0: (Pattern case declaration)
 #   17|               0: [TypeAccess] String
 #   17|               1: [LocalVariableDeclExpr] s2
 #   18|           1: [ConstCase] case ...
@@ -74,7 +74,7 @@ Test.java:
 #   23|               0: [VarAccess] len
 #   23|               1: [IntegerLiteral] 4
 #   23|             -1: [BlockStmt] { ... }
-#-----|             0: (Single Local Variable Declaration)
+#-----|             0: (Pattern case declaration)
 #   23|               0: [TypeAccess] String
 #   23|               1: [LocalVariableDeclExpr] s2
 #   24|           2: [ConstCase] case ...
