@@ -38,8 +38,8 @@ module UnsafeHtmlConstruction {
   /** A sanitizer for HTML constructed from library input vulnerabilities. */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  // inherit all the sanitizers from ReflectedXss
-  class ReflectedXssSanitizers extends Sanitizer instanceof ReflectedXss::Sanitizer { }
+  /** A sanitizer from the reflected-xss query, which is also a sanitizer for unsafe HTML construction. */
+  private class ReflectedXssSanitizers extends Sanitizer instanceof ReflectedXss::Sanitizer { }
 
   /** Gets a node that eventually ends up in the XSS `sink`. */
   private DataFlow::Node getANodeThatEndsInXssSink(ReflectedXss::Sink sink) {
