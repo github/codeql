@@ -1590,7 +1590,9 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
    * Note that this won't get anything when record pattern matching is used-- for more general patterns,
    * use `getPattern`.
    */
-  LocalVariableDeclExpr getLocalVariableDeclExpr() { result = this.getPattern().asBindingPattern() }
+  LocalVariableDeclExpr getLocalVariableDeclExpr() {
+    result = this.getPattern().asBindingOrUnnamedPattern()
+  }
 
   /**
    * Gets the access to the type on the right-hand side of the `instanceof` operator.
@@ -1681,7 +1683,10 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     or
     exists(InstanceOfExpr ioe | this.getParent() = ioe | result.isNthChildOf(ioe, 1))
     or
-    exists(PatternCase pc | this.getParent() = pc | result.isNthChildOf(pc, -2))
+    exists(PatternCase pc, int index, int typeAccessIdx | this.isNthChildOf(pc, index) |
+      (if index = 0 then typeAccessIdx = -4 else typeAccessIdx = (-3 - index)) and
+      result.isNthChildOf(pc, typeAccessIdx)
+    )
     or
     exists(RecordPatternExpr rpe, int index |
       this.isNthChildOf(rpe, index) and result.isNthChildOf(rpe, -(index + 1))
@@ -1742,17 +1747,17 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     or
     exists(SwitchStmt switch |
       result = switch.getExpr() and
-      this = switch.getAPatternCase().getPattern().asBindingPattern()
+      this = switch.getAPatternCase().getAPattern().asBindingOrUnnamedPattern()
     )
     or
     exists(SwitchExpr switch |
       result = switch.getExpr() and
-      this = switch.getAPatternCase().getPattern().asBindingPattern()
+      this = switch.getAPatternCase().getAPattern().asBindingOrUnnamedPattern()
     )
     or
     exists(InstanceOfExpr ioe |
       result = ioe.getExpr() and
-      this = ioe.getPattern().asBindingPattern()
+      this = ioe.getPattern().asBindingOrUnnamedPattern()
     )
   }
 
@@ -2676,9 +2681,9 @@ class NotNullExpr extends UnaryExpr, @notnullexpr {
 }
 
 /**
- * A binding or record pattern.
+ * A binding, unnamed or record pattern.
  *
- * Note binding patterns are represented as `LocalVariableDeclExpr`s.
+ * Note binding and unnamed patterns are represented as `LocalVariableDeclExpr`s.
  */
 class PatternExpr extends Expr {
   PatternExpr() {
@@ -2691,9 +2696,14 @@ class PatternExpr extends Expr {
   }
 
   /**
-   * Gets this pattern cast to a binding pattern.
+   * Gets this pattern cast to a binding or unnamed pattern.
    */
-  LocalVariableDeclExpr asBindingPattern() { result = this }
+  LocalVariableDeclExpr asBindingOrUnnamedPattern() { result = this }
+
+  /**
+   * DEPRECATED: alias for `asBindingOrUnnamedPattern`.
+   */
+  deprecated LocalVariableDeclExpr asBindingPattern() { result = this.asBindingOrUnnamedPattern() }
 
   /**
    * Gets this pattern cast to a record pattern.

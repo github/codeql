@@ -58,7 +58,13 @@ class LocalVariableDecl extends @localvar, LocalScopeVariable {
   /** Gets the callable in which this declaration occurs. */
   Callable getEnclosingCallable() { result = this.getCallable() }
 
-  override string toString() { result = this.getType().getName() + " " + this.getName() }
+  override string toString() {
+    exists(string sourceName |
+      if this.getName() = "" then sourceName = "_" else sourceName = this.getName()
+    |
+      result = this.getType().getName() + " " + sourceName
+    )
+  }
 
   /** Gets the initializer expression of this local variable declaration. */
   override Expr getInitializer() { result = this.getDeclExpr().getInit() }

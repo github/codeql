@@ -539,12 +539,19 @@ class ConstCase extends SwitchCase {
 
 /** A pattern case of a `switch` statement */
 class PatternCase extends SwitchCase {
-  PatternExpr pattern;
+  PatternCase() { exists(PatternExpr pe | pe.isNthChildOf(this, _)) }
 
-  PatternCase() { pattern.isNthChildOf(this, 0) }
+  /**
+   * DEPRECATED: alias for getPatternAtIndex(0)
+   */
+  deprecated PatternExpr getPattern() { result = this.getPatternAtIndex(0) }
 
-  /** Gets this case's pattern. */
-  PatternExpr getPattern() { result = pattern }
+  /**
+   * Gets this case's `n`th pattern.
+   */
+  PatternExpr getPatternAtIndex(int n) { result.isNthChildOf(this, n) }
+
+  PatternExpr getAPattern() { result = this.getPatternAtIndex(_) }
 
   /** Gets the guard applicable to this pattern case, if any. */
   Expr getGuard() { result.isNthChildOf(this, -3) }

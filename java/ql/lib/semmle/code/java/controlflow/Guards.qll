@@ -115,8 +115,20 @@ private predicate isNonFallThroughPredecessor(SwitchCase sc, ControlFlowNode pre
   (
     pred.(Expr).getParent*() = sc.getSelectorExpr()
     or
-    pred.(Expr).getParent*() = getClosestPrecedingPatternCase(sc).getGuard()
+    // Ambiguous: in the case of `case String _ when x: case "SomeConstant":`, the guard `x`
+    // passing edge will fall through into the constant case, and the guard failing edge
+    // will test if the selector equals `"SomeConstant"` and if so branch to the same
+    // case statement. Therefore don't label this a non-fall-through predecessor.
+    exists(PatternCase previousPatternCase |
+      previousPatternCase = getClosestPrecedingPatternCase(sc)
+    |
+      pred.(Expr).getParent*() = previousPatternCase.getGuard() and
+      // Check there is any statement in between the previous pattern case and this one.
+      not previousPatternCase.getIndex() = sc.getIndex() - 1
+    )
     or
+    // Unambigious: on the test-passing edge there must be at least one intervening
+    // declaration node, including anonymous `_` declarations.
     pred = getClosestPrecedingPatternCase(sc)
   )
 }

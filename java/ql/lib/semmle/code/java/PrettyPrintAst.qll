@@ -386,7 +386,7 @@ private class PpInstanceOfExpr extends PpAst, InstanceOfExpr {
     i = 3 and result = " " and this.getPattern() instanceof LocalVariableDeclExpr
     or
     i = 4 and
-    result = this.getPattern().asBindingPattern().getName()
+    result = this.getPattern().asBindingOrUnnamedPattern().getName()
   }
 
   override PpAst getChild(int i) {
@@ -782,28 +782,53 @@ private class PpSwitchCase extends PpAst, SwitchCase {
 }
 
 private class PpPatternCase extends PpAst, PatternCase {
+  private TypeAccess getPatternTypeAccess(int n) {
+    result = this.getPatternAtIndex(n).asBindingOrUnnamedPattern().getTypeAccess()
+  }
+
+  private predicate isAnonymousPattern(int n) {
+    this.getPatternAtIndex(n).asBindingOrUnnamedPattern().isAnonymous()
+  }
+
   override string getPart(int i) {
-    i = 0 and result = "case "
+    exists(int n, int base | exists(this.getPatternAtIndex(n)) and base = n * 4 |
+      i = base and
+      (if n = 0 then result = "case " else result = ", ")
+      or
+      i = base + 2 and
+      this.getPatternAtIndex(n) instanceof LocalVariableDeclExpr and
+      not this.isAnonymousPattern(n) and
+      result = " "
+      or
+      i = base + 3 and
+      (
+        if this.isAnonymousPattern(n)
+        then result = "_"
+        else result = this.getPatternAtIndex(n).asBindingOrUnnamedPattern().getName()
+      )
+    )
     or
-    i = 2 and this.getPattern() instanceof LocalVariableDeclExpr and result = " "
-    or
-    i = 3 and result = this.getPattern().asBindingPattern().getName()
-    or
-    i = 4 and result = ":" and not this.isRule()
-    or
-    i = 4 and result = " -> " and this.isRule()
-    or
-    i = 6 and result = ";" and exists(this.getRuleExpression())
+    exists(int base | base = (max(int n | exists(this.getPatternAtIndex(n))) + 1) * 4 |
+      i = base and result = ":" and not this.isRule()
+      or
+      i = base and result = " -> " and this.isRule()
+      or
+      i = base + 2 and result = ";" and exists(this.getRuleExpression())
+    )
   }
 
   override PpAst getChild(int i) {
-    i = 1 and result = this.getPattern().asBindingPattern().getTypeAccess()
+    exists(int n, int base | exists(this.getPatternAtIndex(n)) and base = n * 4 |
+      i = 1 and result = this.getPatternAtIndex(n).asBindingOrUnnamedPattern().getTypeAccess()
+      or
+      i = 1 and result = this.getPatternAtIndex(n).asRecordPattern()
+    )
     or
-    i = 1 and result = this.getPattern().asRecordPattern()
-    or
-    i = 5 and result = this.getRuleExpression()
-    or
-    i = 5 and result = this.getRuleStatement()
+    exists(int base | base = (max(int n | exists(this.getPatternAtIndex(n))) + 1) * 4 |
+      i = base + 1 and result = this.getRuleExpression()
+      or
+      i = base + 1 and result = this.getRuleStatement()
+    )
   }
 }
 
