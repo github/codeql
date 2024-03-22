@@ -34,7 +34,7 @@ void bad2()
 
 void good3()
 {
-	// GOOD [FALSE POSITIVE]
+	// GOOD
 	boost::asio::ssl::context *ctx = new boost::asio::ssl::context(boost::asio::ssl::context::sslv23);
 	ctx->set_options(boost::asio::ssl::context::no_tlsv1 | boost::asio::ssl::context::no_tlsv1_1 | boost::asio::ssl::context::no_sslv3);
 }

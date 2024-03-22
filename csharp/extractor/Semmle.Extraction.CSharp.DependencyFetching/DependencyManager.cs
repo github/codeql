@@ -65,7 +65,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var allFiles = GetAllFiles().ToList();
             var binaryFileExtensions = new HashSet<string>(new[] { ".dll", ".exe" }); // TODO: add more binary file extensions.
             var allNonBinaryFiles = allFiles.Where(f => !binaryFileExtensions.Contains(f.Extension.ToLowerInvariant())).ToList();
-            var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(logger).SelectFileNames();
+            var smallNonBinaryFiles = allNonBinaryFiles.SelectSmallFiles(logger).SelectFileNames().ToList();
             this.fileContent = new FileContent(logger, smallNonBinaryFiles);
             this.nonGeneratedSources = allNonBinaryFiles.SelectFileNamesByExtension(".cs").ToList();
             this.generatedSources = new();
@@ -922,6 +922,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (notYetDownloadedPackages.Count == 0)
             {
                 return;
+            }
+
+            var multipleVersions = notYetDownloadedPackages
+                .GroupBy(p => p.Name)
+                .Where(g => g.Count() > 1)
+                .Select(g => g.Key)
+                .ToList();
+
+            foreach (var package in multipleVersions)
+            {
+                logger.LogWarning($"Found multiple not yet restored packages with name '{package}'.");
+                notYetDownloadedPackages.Remove(new(package, PackageReferenceSource.PackagesConfig));
             }
 
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");

@@ -15,11 +15,13 @@ module Public {
   import DataFlowUtil
 }
 
-module PythonDataFlow implements InputSig {
+module PythonDataFlow implements InputSig<Python::Location> {
   import Private
   import Public
 
   predicate neverSkipInPathGraph = Private::neverSkipInPathGraph/1;
 
   Node exprNode(DataFlowExpr e) { result = Public::exprNode(e) }
+
+  predicate ignoreFieldFlowBranchLimit(DataFlowCallable c) { exists(c.asLibraryCallable()) }
 }

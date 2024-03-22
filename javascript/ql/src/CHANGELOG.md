@@ -1,3 +1,11 @@
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+No user-facing changes.
+
 ## 0.8.9
 
 ### Bug Fixes

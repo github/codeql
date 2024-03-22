@@ -3,6 +3,7 @@
 import javascript
 private import NodeModuleResolutionImpl
 private import codeql.util.FileSystem
+private import internal.Locations
 
 private module FsInput implements InputSig {
   abstract class ContainerBase extends @container {
@@ -83,7 +84,7 @@ class File extends Container, Impl::File {
    *
    * Note that files have special locations starting and ending at line zero, column zero.
    */
-  Location getLocation() { hasLocation(this, result) }
+  DbLocation getLocation() { result = getLocatableLocation(this) }
 
   /** Gets the number of lines in this file. */
   int getNumberOfLines() { result = sum(int loc | numlines(this, loc, _, _) | loc) }

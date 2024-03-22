@@ -8,6 +8,7 @@ import semmle.code.java.frameworks.JaxWS
 import semmle.code.java.frameworks.javase.Http
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.frameworks.Properties
+private import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.StringPrefixes
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.security.Sanitizers
@@ -82,4 +83,77 @@ private class HostnameSanitizingPrefix extends InterestingPrefix {
  */
 private class HostnameSantizer extends RequestForgerySanitizer {
   HostnameSantizer() { this.asExpr() = any(HostnameSanitizingPrefix hsp).getAnAppendedExpression() }
+}
+
+/**
+ * An argument to a call to a `.contains()` method that is a sanitizer for URL redirects.
+ *
+ * Matches any method call where the method is named `contains`.
+ */
+private predicate isContainsUrlSanitizer(Guard guard, Expr e, boolean branch) {
+  guard =
+    any(MethodCall method |
+      method.getMethod().getName() = "contains" and
+      e = method.getArgument(0) and
+      branch = true
+    )
+}
+
+/**
+ * An URL argument to a call to `.contains()` that is a sanitizer for URL redirects.
+ *
+ * This `contains` method is usually called on a list, but the sanitizer matches any call to a method
+ * called `contains`, so other methods with the same name will also be considered sanitizers.
+ */
+private class ContainsUrlSanitizer extends RequestForgerySanitizer {
+  ContainsUrlSanitizer() {
+    this = DataFlow::BarrierGuard<isContainsUrlSanitizer/3>::getABarrierNode()
+  }
+}
+
+/**
+ * A check that the URL is relative, and therefore safe for URL redirects.
+ */
+private predicate isRelativeUrlSanitizer(Guard guard, Expr e, boolean branch) {
+  guard =
+    any(MethodCall call |
+      call.getMethod().hasQualifiedName("java.net", "URI", "isAbsolute") and
+      e = call.getQualifier() and
+      branch = false
+    )
+}
+
+/**
+ * A check that the URL is relative, and therefore safe for URL redirects.
+ */
+private class RelativeUrlSanitizer extends RequestForgerySanitizer {
+  RelativeUrlSanitizer() {
+    this = DataFlow::BarrierGuard<isRelativeUrlSanitizer/3>::getABarrierNode()
+  }
+}
+
+/**
+ * A comparison on the host of a url, that is a sanitizer for URL redirects.
+ * E.g. `"example.org".equals(url.getHost())"`
+ */
+private predicate isHostComparisonSanitizer(Guard guard, Expr e, boolean branch) {
+  guard =
+    any(MethodCall equalsCall |
+      equalsCall.getMethod().getName() = "equals" and
+      branch = true and
+      exists(MethodCall hostCall |
+        hostCall = [equalsCall.getQualifier(), equalsCall.getArgument(0)] and
+        hostCall.getMethod().hasQualifiedName("java.net", "URI", "getHost") and
+        e = hostCall.getQualifier()
+      )
+    )
+}
+
+/**
+ * A comparison on the `Host` property of a url, that is a sanitizer for URL redirects.
+ */
+private class HostComparisonSanitizer extends RequestForgerySanitizer {
+  HostComparisonSanitizer() {
+    this = DataFlow::BarrierGuard<isHostComparisonSanitizer/3>::getABarrierNode()
+  }
 }

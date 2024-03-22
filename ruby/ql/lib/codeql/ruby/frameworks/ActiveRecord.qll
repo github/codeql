@@ -175,14 +175,14 @@ private predicate sqlFragmentArgumentInner(DataFlow::CallNode call, DataFlow::No
   call =
     activeRecordQueryBuilderCall([
         "delete_all", "delete_by", "destroy_all", "destroy_by", "exists?", "find_by", "find_by!",
-        "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "from",
-        "having", "lock", "not", "where", "rewhere"
+        "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "having",
+        "lock", "not", "where", "rewhere"
       ]) and
   sink = call.getArgument(0)
   or
   call =
     activeRecordQueryBuilderCall([
-        "group", "joins", "order", "reorder", "pluck", "select", "reselect"
+        "from", "group", "joins", "order", "reorder", "pluck", "select", "reselect"
       ]) and
   sink = call.getArgument(_)
   or
@@ -763,5 +763,32 @@ private class ActiveRecordCollectionProxyModelInstantiation extends ActiveRecord
 {
   override ActiveRecordModelClass getClass() {
     result = this.(ActiveRecordCollectionProxyMethodCall).getAssociation().getTargetClass()
+  }
+}
+
+/**
+ * An additional call step for calls to ActiveRecord scopes. For example, in the following code:
+ *
+ * ```rb
+ * class User < ActiveRecord::Base
+ *   scope :with_role, ->(role) { where(role: role) }
+ * end
+ *
+ * User.with_role(r)
+ * ```
+ *
+ * the call to `with_role` targets the lambda, and argument `r` flows to the parameter `role`.
+ */
+class ActiveRecordScopeCallTarget extends AdditionalCallTarget {
+  override DataFlowCallable viableTarget(ExprNodes::CallCfgNode scopeCall) {
+    exists(DataFlow::ModuleNode model, string scopeName |
+      model = activeRecordBaseClass().getADescendentModule() and
+      exists(DataFlow::CallNode scope |
+        scope = model.getAModuleLevelCall("scope") and
+        scope.getArgument(0).getConstantValue().isStringlikeValue(scopeName) and
+        scope.getArgument(1).asCallable().asCallableAstNode() = result.asCfgScope()
+      ) and
+      scopeCall = model.getAnImmediateReference().getAMethodCall(scopeName).asExpr()
+    )
   }
 }

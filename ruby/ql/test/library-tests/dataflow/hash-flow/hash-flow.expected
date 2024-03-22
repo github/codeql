@@ -1089,6 +1089,13 @@ edges
 | hash_flow.rb:994:30:994:40 | call to taint | hash_flow.rb:994:14:994:47 | ...[...] [element :b] | provenance |  |
 | hash_flow.rb:996:14:996:15 | h2 [element :b] | hash_flow.rb:996:14:996:19 | ...[...] | provenance |  |
 | hash_flow.rb:998:14:998:15 | h2 [element :b] | hash_flow.rb:998:14:998:18 | ...[...] | provenance |  |
+| hash_flow.rb:1011:5:1011:5 | h [element :a] | hash_flow.rb:1012:5:1012:5 | h [element :a] | provenance |  |
+| hash_flow.rb:1011:9:1011:45 | call to [] [element :a] | hash_flow.rb:1011:5:1011:5 | h [element :a] | provenance |  |
+| hash_flow.rb:1011:14:1011:24 | call to taint | hash_flow.rb:1011:9:1011:45 | call to [] [element :a] | provenance |  |
+| hash_flow.rb:1012:5:1012:5 | h [element :a] | hash_flow.rb:1012:15:1012:15 | k | provenance |  |
+| hash_flow.rb:1012:5:1012:5 | h [element :a] | hash_flow.rb:1012:18:1012:18 | v | provenance |  |
+| hash_flow.rb:1012:15:1012:15 | k | hash_flow.rb:1014:14:1014:14 | k | provenance |  |
+| hash_flow.rb:1012:18:1012:18 | v | hash_flow.rb:1013:14:1013:14 | v | provenance |  |
 nodes
 | hash_flow.rb:10:5:10:8 | hash [element 0] | semmle.label | hash [element 0] |
 | hash_flow.rb:10:5:10:8 | hash [element :a] | semmle.label | hash [element :a] |
@@ -2251,6 +2258,14 @@ nodes
 | hash_flow.rb:996:14:996:19 | ...[...] | semmle.label | ...[...] |
 | hash_flow.rb:998:14:998:15 | h2 [element :b] | semmle.label | h2 [element :b] |
 | hash_flow.rb:998:14:998:18 | ...[...] | semmle.label | ...[...] |
+| hash_flow.rb:1011:5:1011:5 | h [element :a] | semmle.label | h [element :a] |
+| hash_flow.rb:1011:9:1011:45 | call to [] [element :a] | semmle.label | call to [] [element :a] |
+| hash_flow.rb:1011:14:1011:24 | call to taint | semmle.label | call to taint |
+| hash_flow.rb:1012:5:1012:5 | h [element :a] | semmle.label | h [element :a] |
+| hash_flow.rb:1012:15:1012:15 | k | semmle.label | k |
+| hash_flow.rb:1012:18:1012:18 | v | semmle.label | v |
+| hash_flow.rb:1013:14:1013:14 | v | semmle.label | v |
+| hash_flow.rb:1014:14:1014:14 | k | semmle.label | k |
 subpaths
 hashLiteral
 | hash_flow.rb:10:12:21:5 | call to [] |
@@ -2324,6 +2339,7 @@ hashLiteral
 | hash_flow.rb:946:13:950:5 | call to [] |
 | hash_flow.rb:971:9:971:38 | ...[...] |
 | hash_flow.rb:994:14:994:47 | ...[...] |
+| hash_flow.rb:1011:9:1011:45 | call to [] |
 #select
 | hash_flow.rb:22:10:22:17 | ...[...] | hash_flow.rb:11:15:11:24 | call to taint | hash_flow.rb:22:10:22:17 | ...[...] | $@ | hash_flow.rb:11:15:11:24 | call to taint | call to taint |
 | hash_flow.rb:24:10:24:17 | ...[...] | hash_flow.rb:13:12:13:21 | call to taint | hash_flow.rb:24:10:24:17 | ...[...] | $@ | hash_flow.rb:13:12:13:21 | call to taint | call to taint |
@@ -2569,3 +2585,5 @@ hashLiteral
 | hash_flow.rb:975:10:975:13 | ...[...] | hash_flow.rb:971:23:971:31 | call to taint | hash_flow.rb:975:10:975:13 | ...[...] | $@ | hash_flow.rb:971:23:971:31 | call to taint | call to taint |
 | hash_flow.rb:996:14:996:19 | ...[...] | hash_flow.rb:994:30:994:40 | call to taint | hash_flow.rb:996:14:996:19 | ...[...] | $@ | hash_flow.rb:994:30:994:40 | call to taint | call to taint |
 | hash_flow.rb:998:14:998:18 | ...[...] | hash_flow.rb:994:30:994:40 | call to taint | hash_flow.rb:998:14:998:18 | ...[...] | $@ | hash_flow.rb:994:30:994:40 | call to taint | call to taint |
+| hash_flow.rb:1013:14:1013:14 | v | hash_flow.rb:1011:14:1011:24 | call to taint | hash_flow.rb:1013:14:1013:14 | v | $@ | hash_flow.rb:1011:14:1011:24 | call to taint | call to taint |
+| hash_flow.rb:1014:14:1014:14 | k | hash_flow.rb:1011:14:1011:24 | call to taint | hash_flow.rb:1014:14:1014:14 | k | $@ | hash_flow.rb:1011:14:1011:24 | call to taint | call to taint |

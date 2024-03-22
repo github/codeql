@@ -299,6 +299,8 @@ private module OrmTracking {
     }
 
     predicate isBarrierIn(DataFlow::Node node) { node instanceof DataFlow::SelfParameterNode }
+
+    int accessPathLimit() { result = 1 }
   }
 
   import DataFlow::Global<Config>

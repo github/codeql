@@ -10,7 +10,7 @@ private import AccessPathSyntax as AccessPathSyntax
 /**
  * Provides language-specific parameters.
  */
-signature module InputSig<DF::InputSig Lang> {
+signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
   /**
    * A base class of callables that are candidates for flow summary modeling.
    */
@@ -139,10 +139,12 @@ signature module InputSig<DF::InputSig Lang> {
   }
 }
 
-module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
+module Make<
+  LocationSig Location, DF::InputSig<Location> DataFlowLang, InputSig<Location, DataFlowLang> Input>
+{
   private import DataFlowLang
   private import Input
-  private import codeql.dataflow.internal.DataFlowImplCommon::MakeImplCommon<DataFlowLang>
+  private import codeql.dataflow.internal.DataFlowImplCommon::MakeImplCommon<Location, DataFlowLang>
   private import codeql.util.Unit
 
   final private class SummarizedCallableBaseFinal = SummarizedCallableBase;
@@ -1457,7 +1459,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         AccessPathSyntax::parseInt(part.getArgumentList()) < 0
       }
 
-      signature module SourceSinkInterpretationInputSig<LocationSig Location> {
+      signature module SourceSinkInterpretationInputSig {
         class Element {
           string toString();
 
@@ -1468,13 +1470,13 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
          * Holds if an external source specification exists for `n` with output specification
          * `output` and kind `kind`.
          */
-        predicate sourceElement(Element n, string output, string kind);
+        predicate sourceElement(Element n, string output, string kind, Provenance provenance);
 
         /**
          * Holds if an external sink specification exists for `n` with input specification
          * `input` and kind `kind`.
          */
-        predicate sinkElement(Element n, string input, string kind);
+        predicate sinkElement(Element n, string input, string kind, Provenance provenance);
 
         class SourceOrSinkElement extends Element;
 
@@ -1523,14 +1525,13 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
        * Should eventually be replaced with API graphs like in dynamic languages.
        */
       module SourceSinkInterpretation<
-        LocationSig Location,
-        SourceSinkInterpretationInputSig<Location> SourceSinkInterpretationInput>
+        SourceSinkInterpretationInputSig SourceSinkInterpretationInput>
       {
         private import SourceSinkInterpretationInput
 
         private predicate sourceSinkSpec(string spec) {
-          sourceElement(_, spec, _) or
-          sinkElement(_, spec, _)
+          sourceElement(_, spec, _, _) or
+          sinkElement(_, spec, _, _)
         }
 
         private module AccessPath = AccessPathSyntax::AccessPath<sourceSinkSpec/1>;
@@ -1562,7 +1563,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
           InterpretNode ref, SourceSinkAccessPath output, string kind
         ) {
           exists(SourceOrSinkElement e |
-            sourceElement(e, output, kind) and
+            sourceElement(e, output, kind, _) and
             if outputNeedsReferenceExt(output.getToken(0))
             then e = ref.getCallTarget()
             else e = ref.asElement()
@@ -1576,7 +1577,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
 
         private predicate sinkElementRef(InterpretNode ref, SourceSinkAccessPath input, string kind) {
           exists(SourceOrSinkElement e |
-            sinkElement(e, input, kind) and
+            sinkElement(e, input, kind, _) and
             if inputNeedsReferenceExt(input.getToken(0))
             then e = ref.getCallTarget()
             else e = ref.asElement()
@@ -1691,39 +1692,66 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
             interpretInput(input, input.getNumToken(), ref, node)
           )
         }
+
+        /** A source or sink relevant for testing. */
+        signature class RelevantSourceOrSinkElementSig extends SourceOrSinkElement {
+          /** Gets the string representation of this callable used by `source/1` or `sink/1`. */
+          string getCallableCsv();
+        }
+
+        /** Provides query predicates for outputting a set of relevant sources and sinks. */
+        module TestSourceSinkOutput<
+          RelevantSourceOrSinkElementSig RelevantSource, RelevantSourceOrSinkElementSig RelevantSink>
+        {
+          /**
+           * Holds if there exists a relevant source callable with information roughly corresponding to `csv`.
+           * Used for testing.
+           * The syntax is: "namespace;type;overrides;name;signature;ext;outputspec;kind;provenance",
+           * ext is hardcoded to empty.
+           */
+          query predicate source(string csv) {
+            exists(RelevantSource s, string output, string kind, Provenance provenance |
+              sourceElement(s, output, kind, provenance) and
+              csv =
+                s.getCallableCsv() // Callable information
+                  + output + ";" // output
+                  + kind + ";" // kind
+                  + provenance // provenance
+            )
+          }
+
+          /**
+           * Holds if there exists a relevant sink callable with information roughly corresponding to `csv`.
+           * Used for testing.
+           * The syntax is: "namespace;type;overrides;name;signature;ext;inputspec;kind;provenance",
+           * ext is hardcoded to empty.
+           */
+          query predicate sink(string csv) {
+            exists(RelevantSink s, string input, string kind, Provenance provenance |
+              sinkElement(s, input, kind, provenance) and
+              csv =
+                s.getCallableCsv() // Callable information
+                  + input + ";" // input
+                  + kind + ";" // kind
+                  + provenance // provenance
+            )
+          }
+        }
       }
     }
 
+    /** A summarized callable relevant for testing. */
+    signature class RelevantSummarizedCallableSig extends SummarizedCallableImpl {
+      /** Gets the string representation of this callable used by `summary/1`. */
+      string getCallableCsv();
+
+      predicate relevantSummary(
+        SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
+      );
+    }
+
     /** Provides a query predicate for outputting a set of relevant flow summaries. */
-    module TestOutput {
-      final private class SummarizedCallableImplFinal = SummarizedCallableImpl;
-
-      /** A flow summary to include in the `summary/1` query predicate. */
-      abstract class RelevantSummarizedCallable extends SummarizedCallableImplFinal {
-        /** Gets the string representation of this callable used by `summary/1`. */
-        abstract string getCallableCsv();
-
-        /** Holds if flow is propagated between `input` and `output`. */
-        predicate relevantSummary(
-          SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-        ) {
-          super.propagatesFlow(input, output, preservesValue)
-        }
-      }
-
-      /** A model to include in the `neutral/1` query predicate. */
-      abstract class RelevantNeutralCallable instanceof NeutralCallable {
-        /** Gets the string representation of this callable used by `neutral/1`. */
-        abstract string getCallableCsv();
-
-        /**
-         * Gets the kind of the neutral.
-         */
-        string getKind() { result = super.getKind() }
-
-        string toString() { result = super.toString() }
-      }
-
+    module TestSummaryOutput<RelevantSummarizedCallableSig RelevantSummarizedCallable> {
       /** Render the kind in the format used in flow summaries. */
       private string renderKind(boolean preservesValue) {
         preservesValue = true and result = "value"
@@ -1738,15 +1766,9 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
         c.hasProvenance(result)
       }
 
-      private string renderProvenanceNeutral(NeutralCallable c) {
-        exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
-        or
-        not c.hasManualModel() and
-        c.hasProvenance(result)
-      }
-
       /**
-       * A query predicate for outputting flow summaries in semi-colon separated format in QL tests.
+       * Holds if there exists a relevant summary callable with information roughly corresponding to `csv`.
+       * Used for testing.
        * The syntax is: "namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind;provenance",
        * ext is hardcoded to empty.
        */
@@ -1764,9 +1786,25 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
               + renderProvenance(c) // provenance
         )
       }
+    }
+
+    /** A summarized callable relevant for testing. */
+    signature class RelevantNeutralCallableSig extends NeutralCallable {
+      /** Gets the string representation of this callable used by `neutral/1`. */
+      string getCallableCsv();
+    }
+
+    module TestNeutralOutput<RelevantNeutralCallableSig RelevantNeutralCallable> {
+      private string renderProvenance(NeutralCallable c) {
+        exists(Provenance p | p.isManual() and c.hasProvenance(p) and result = p.toString())
+        or
+        not c.hasManualModel() and
+        c.hasProvenance(result)
+      }
 
       /**
-       * Holds if a neutral model `csv` exists (semi-colon separated format). Used for testing purposes.
+       * Holds if there exists a relevant neutral callable with information roughly corresponding to `csv`.
+       * Used for testing.
        * The syntax is: "namespace;type;name;signature;kind;provenance"",
        */
       query predicate neutral(string csv) {
@@ -1774,7 +1812,7 @@ module Make<DF::InputSig DataFlowLang, InputSig<DataFlowLang> Input> {
           csv =
             c.getCallableCsv() // Callable information
               + c.getKind() + ";" // kind
-              + renderProvenanceNeutral(c) // provenance
+              + renderProvenance(c) // provenance
         )
       }
     }

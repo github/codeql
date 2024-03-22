@@ -658,6 +658,40 @@ getExprType
 | tst.ts:483:17:483:58 | ["hello ... string> | [first: string, string] |
 | tst.ts:483:18:483:24 | "hello" | "hello" |
 | tst.ts:483:27:483:33 | "world" | "world" |
+| tst.ts:486:8:486:11 | TS54 | typeof TS54 in library-tests/TypeScript/Types/tst.ts |
+| tst.ts:487:48:487:53 | colors | C[] |
+| tst.ts:488:12:488:17 | colors | C[] |
+| tst.ts:488:12:488:20 | colors[0] | C |
+| tst.ts:488:19:488:19 | 0 | 0 |
+| tst.ts:491:3:491:57 | createS ... ellow") | "red" \| "green" \| "yellow" |
+| tst.ts:491:21:491:46 | ["red", ... green"] | ("red" \| "green" \| "yellow")[] |
+| tst.ts:491:22:491:26 | "red" | "red" |
+| tst.ts:491:29:491:36 | "yellow" | "yellow" |
+| tst.ts:491:39:491:45 | "green" | "green" |
+| tst.ts:491:49:491:56 | "yellow" | "yellow" |
+| tst.ts:493:9:493:13 | myObj | Partial<Record<"even" \| "odd", number[]>> |
+| tst.ts:493:17:493:22 | Object | ObjectConstructor |
+| tst.ts:493:17:493:30 | Object.groupBy | <K extends PropertyKey, T>(items: Iterable<T>, ... |
+| tst.ts:493:17:495:4 | Object. ... ";\\n  }) | Partial<Record<"even" \| "odd", number[]>> |
+| tst.ts:493:24:493:30 | groupBy | <K extends PropertyKey, T>(items: Iterable<T>, ... |
+| tst.ts:493:32:493:49 | [0, 1, 2, 3, 4, 5] | Iterable<number> |
+| tst.ts:493:33:493:33 | 0 | 0 |
+| tst.ts:493:36:493:36 | 1 | 1 |
+| tst.ts:493:39:493:39 | 2 | 2 |
+| tst.ts:493:42:493:42 | 3 | 3 |
+| tst.ts:493:45:493:45 | 4 | 4 |
+| tst.ts:493:48:493:48 | 5 | 5 |
+| tst.ts:493:52:495:3 | (num, i ... d";\\n  } | (num: number, index: number) => "even" \| "odd" |
+| tst.ts:493:53:493:55 | num | number |
+| tst.ts:493:58:493:62 | index | number |
+| tst.ts:494:12:494:14 | num | number |
+| tst.ts:494:12:494:18 | num % 2 | number |
+| tst.ts:494:12:494:24 | num % 2 === 0 | boolean |
+| tst.ts:494:12:494:40 | num % 2 ... : "odd" | "even" \| "odd" |
+| tst.ts:494:18:494:18 | 2 | 2 |
+| tst.ts:494:24:494:24 | 0 | 0 |
+| tst.ts:494:28:494:33 | "even" | "even" |
+| tst.ts:494:36:494:40 | "odd" | "odd" |
 | tstModuleCJS.cts:1:17:1:28 | tstModuleCJS | () => "a" \| "b" |
 | tstModuleCJS.cts:2:12:2:15 | Math | Math |
 | tstModuleCJS.cts:2:12:2:22 | Math.random | () => number |
@@ -1138,6 +1172,12 @@ getTypeExprType
 | tst.ts:483:46:483:50 | Pair3 | Pair3<T> |
 | tst.ts:483:46:483:58 | Pair3<string> | Pair3<string> |
 | tst.ts:483:52:483:57 | string | string |
+| tst.ts:487:30:487:30 | C | C |
+| tst.ts:487:40:487:45 | string | string |
+| tst.ts:487:56:487:56 | C | C |
+| tst.ts:487:56:487:58 | C[] | C[] |
+| tst.ts:487:76:487:82 | NoInfer | any |
+| tst.ts:487:84:487:84 | C | C |
 | tstModuleCJS.cts:1:33:1:35 | 'a' | "a" |
 | tstModuleCJS.cts:1:33:1:41 | 'a' \| 'b' | "a" \| "b" |
 | tstModuleCJS.cts:1:39:1:41 | 'b' | "b" |
@@ -1357,18 +1397,23 @@ unionIndex
 | "boolean" | 3 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "c" | 2 | "a" \| "b" \| "c" |
 | "circle" | 0 | "circle" \| "square" |
+| "even" | 0 | "even" \| "odd" |
 | "function" | 7 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "green" | 1 | "red" \| "green" \| "blue" |
+| "green" | 1 | "red" \| "green" \| "yellow" |
 | "hello" | 0 | "hello" \| 42 |
 | "number" | 1 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "number" | 1 | keyof TypeMap |
 | "object" | 6 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "odd" | 1 | "even" \| "odd" |
 | "red" | 0 | "red" \| "green" \| "blue" |
+| "red" | 0 | "red" \| "green" \| "yellow" |
 | "square" | 1 | "circle" \| "square" |
 | "string" | 0 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "string" | 0 | keyof TypeMap |
 | "symbol" | 4 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
 | "undefined" | 5 | "string" \| "number" \| "bigint" \| "boolean" \| "s... |
+| "yellow" | 2 | "red" \| "green" \| "yellow" |
 | () => number | 0 | (() => number) \| (ClassMethodDecoratorContext<P... |
 | () => number | 1 | void \| (() => number) |
 | ClassMethodDecoratorContext<Person, () => numbe... | 1 | (() => number) \| (ClassMethodDecoratorContext<P... |

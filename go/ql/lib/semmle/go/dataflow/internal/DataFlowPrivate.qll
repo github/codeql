@@ -251,8 +251,6 @@ class DataFlowType extends TDataFlowType {
   string toString() { result = "" }
 }
 
-class DataFlowLocation = Location;
-
 private newtype TDataFlowCallable =
   TCallable(Callable c) or
   TFileScope(File f) or

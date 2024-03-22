@@ -129,9 +129,11 @@ private class StdMapMerge extends TaintFunction {
 /**
  * The standard map functions `at` and `operator[]`.
  */
-private class StdMapAt extends TaintFunction {
+class StdMapAt extends MemberFunction {
   StdMapAt() { this.getClassAndName(["at", "operator[]"]) instanceof MapOrUnorderedMap }
+}
 
+private class StdMapAtModels extends StdMapAt, TaintFunction {
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from qualifier to referenced return value
     input.isQualifierObject() and

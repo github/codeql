@@ -120,7 +120,7 @@ module KindValidation<KindValidationConfigSig Config> {
           // Java
           "android-external-storage-dir", "contentprovider",
           // C#
-          "file-write",
+          "file-write", "windows-registry",
           // JavaScript
           "database-access-result"
         ]
