@@ -6,7 +6,7 @@ namespace Semmle.Extraction.Entities
 {
     internal class ExtractionMessage : FreshEntity
     {
-        private static readonly int limit = EnvironmentVariables.TryGetExtractorOption<int>("MESSAGE_LIMIT") ?? 10000;
+        private static readonly int limit = EnvironmentVariables.TryGetExtractorNumberOption<int>("MESSAGE_LIMIT") ?? 10000;
         private static int messageCount = 0;
 
         private readonly Message msg;

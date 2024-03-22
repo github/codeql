@@ -6,7 +6,7 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class CompilerDiagnostic : FreshEntity
     {
-        private static readonly int limit = EnvironmentVariables.TryGetExtractorOption<int>("COMPILER_DIAGNOSTIC_LIMIT") ?? 1000;
+        private static readonly int limit = EnvironmentVariables.TryGetExtractorNumberOption<int>("COMPILER_DIAGNOSTIC_LIMIT") ?? 1000;
         private static readonly ConcurrentDictionary<string, int> messageCounts = new();
 
         private readonly Microsoft.CodeAnalysis.Diagnostic diagnostic;
