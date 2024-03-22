@@ -116,6 +116,15 @@ public class Test {
          yield 2;
      };
 
+     switch ((String)thing) {
+       case "a":
+       case String _ when ((String)thing).length() == 5:
+       case "b":
+         break;
+       default:
+         break;
+     }
+
   }
 
 }
