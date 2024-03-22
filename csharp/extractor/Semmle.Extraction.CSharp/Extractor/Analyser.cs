@@ -189,7 +189,7 @@ namespace Semmle.Extraction.CSharp
                 // compilation.Clone() is used to allow symbols to be garbage collected.
                 using var trapWriter = transformedSourcePath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
 
-                upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
+                upToDate = FileIsUpToDate(sourcePath, trapWriter.TrapFile);
 
                 var currentTaskId = IncrementTaskCount();
                 ReportProgressTaskStarted(currentTaskId, sourcePath);
