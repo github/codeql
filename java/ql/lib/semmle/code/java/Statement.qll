@@ -551,7 +551,15 @@ class PatternCase extends SwitchCase {
    */
   PatternExpr getPatternAtIndex(int n) { result.isNthChildOf(this, n) }
 
+  /**
+   * Gets any of this case's patterns.
+   */
   PatternExpr getAPattern() { result = this.getPatternAtIndex(_) }
+
+  /**
+   * Gets this case's sole pattern, if there is exactly one.
+   */
+  PatternExpr getUniquePattern() { result = unique(PatternExpr pe | pe = this.getPatternAtIndex(_)) }
 
   /** Gets the guard applicable to this pattern case, if any. */
   Expr getGuard() { result.isNthChildOf(this, -3) }
