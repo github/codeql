@@ -1708,7 +1708,7 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
       or
       pc = result.(SwitchExpr).getAPatternCase()
     |
-      this = pc.getPattern().getAChildExpr*()
+      this = pc.getAPattern().getAChildExpr*()
     )
   }
 
