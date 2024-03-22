@@ -876,7 +876,7 @@ private module TrackAttrReadInput implements CallGraphConstruction::Simple::Inpu
 
   predicate start(Node start, AttrRead attr) {
     start = attr and
-    attr.getObject() in [
+    pragma[only_bind_into](attr.getObject()) in [
         classTracker(_), classInstanceTracker(_), selfTracker(_), clsArgumentTracker(_),
         superCallNoArgumentTracker(_), superCallTwoArgumentTracker(_, _)
       ]
@@ -1302,9 +1302,7 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
     //
     // call_func(my_obj.some_method)
     // ```
-    exists(CfgNode cfgNode | cfgNode.getNode() = call |
-      cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
-    )
+    exists(CfgNode cfgNode | cfgNode.getNode() = call | sameEnclosingCallable(cfgNode, arg))
     or
     // cls argument for classmethod calls -- see note above about bound methods
     type instanceof CallTypeClassMethod and
@@ -1312,9 +1310,7 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
     resolveMethodCall(call, target, type, arg) and
     (arg = classTracker(_) or arg = clsArgumentTracker(_)) and
     // dataflow lib has requirement that arguments and calls are in same enclosing callable.
-    exists(CfgNode cfgNode | cfgNode.getNode() = call |
-      cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
-    )
+    exists(CfgNode cfgNode | cfgNode.getNode() = call | sameEnclosingCallable(cfgNode, arg))
     or
     // normal arguments for method calls
     (
@@ -1363,6 +1359,16 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
       normalCallArg(call, arg, apos)
     )
   )
+}
+
+/**
+ * join-order helper for getCallArg, since otherwise we would do cartesian product of
+ * the enclosing callables
+ */
+bindingset[node1, node2]
+pragma[inline_late]
+private predicate sameEnclosingCallable(Node node1, Node node2) {
+  node1.getEnclosingCallable() = node2.getEnclosingCallable()
 }
 
 // =============================================================================

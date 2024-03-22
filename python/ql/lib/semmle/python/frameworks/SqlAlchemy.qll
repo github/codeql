@@ -113,15 +113,25 @@ module SqlAlchemy {
      */
     abstract class InstanceSource extends DataFlow::LocalSourceNode { }
 
+    /**
+     * join-ordering helper for ConnectionConstruction char-pred -- without this would
+     * start with _all_ `CallCfgNode` and join those with `MethodCallNode` .. which is
+     * silly
+     */
+    pragma[noinline]
+    private DataFlow::MethodCallNode connectionConstruction_helper() {
+      result.calls(Engine::instance(), ["begin", "connect"])
+      or
+      result.calls(instance(), ["connect", "execution_options"])
+    }
+
     private class ConnectionConstruction extends InstanceSource, DataFlow::CallCfgNode {
       ConnectionConstruction() {
-        this = classRef().getACall()
+        // without the `pragma[only_bind_out]` we would start with joining
+        // `API::Node.getACall` with `CallCfgNode` which is not optimal
+        this = pragma[only_bind_out](classRef()).getACall()
         or
-        this.(DataFlow::MethodCallNode).calls(Engine::instance(), ["begin", "connect"])
-        or
-        this.(DataFlow::MethodCallNode).calls(instance(), "connect")
-        or
-        this.(DataFlow::MethodCallNode).calls(instance(), "execution_options")
+        this = connectionConstruction_helper()
       }
     }
 
