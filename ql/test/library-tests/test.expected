@@ -313,48 +313,46 @@ scopes
 | .github/workflows/expression_nodes.yml:1:1:21:47 | on: issue_comment |
 | .github/workflows/test.yml:1:1:40:53 | on: push |
 sources
-| ahmadnassri/action-changed-files | * | output.files | pull_request_target | PR changed files |
-| ahmadnassri/action-changed-files | * | output.json | pull_request_target | PR changed files |
-| amannn/action-semantic-pull-request | * | output.error_message | pull_request_target | PR title |
-| cypress-io/github-action | * | env.GH_BRANCH | pull_request_target | PR branch |
-| dawidd6/action-download-artifact | * | output.artifacts | * | Artifact details |
-| dorny/paths-filter | * | output.changes | pull_request_target | PR changed files |
-| franzdiebold/github-env-vars-action | * | output.CI_PR_DESCRIPTION | pull_request_target | PR body |
-| franzdiebold/github-env-vars-action | * | output.CI_PR_TITLE | pull_request_target | PR title |
-| jitterbit/get-changed-files | * | output.added | pull_request_target | PR changed files |
-| jitterbit/get-changed-files | * | output.added_modified | pull_request_target | PR changed files |
-| jitterbit/get-changed-files | * | output.all | pull_request_target | PR changed files |
-| jitterbit/get-changed-files | * | output.deleted | pull_request_target | PR changed files |
-| jitterbit/get-changed-files | * | output.modified | pull_request_target | PR changed files |
-| jitterbit/get-changed-files | * | output.removed | pull_request_target | PR changed files |
-| jitterbit/get-changed-files | * | output.renamed | pull_request_target | PR changed files |
-| khan/pull-request-comment-trigger | * | output.comment_body | issue_comment |  |
-| khan/pull-request-comment-trigger | * | output.comment_body | pull_request_comment |  |
-| octo-org/source-repo/.github/workflows/workflow.yml | * | output.workflow-output | * | Foo |
-| tj-actions/branch-names | * | output.current_branch | pull_request_target | PR current branch |
-| tj-actions/branch-names | * | output.head_ref_branch | pull_request_target | PR head branch |
-| tj-actions/branch-names | * | output.ref_branch | pull_request_target | Branch tirggering workflow run |
-| tj-actions/changed-files | * | output.added_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.all_changed_and_modified_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.all_changed_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.all_modified_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.all_old_new_renamed_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.changed_keys | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.copied_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.deleted_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.modified_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.modified_keys | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.other_changed_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.other_deleted_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.other_modified_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.renamed_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.type_changed_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.unknown_files | pull_request_target | PR changed files |
-| tj-actions/changed-files | * | output.unmerged_files | pull_request_target | PR changed files |
-| tj-actions/verify-changed-files | * | output.changed-files | pull_request_target | PR changed files |
-| tzkhan/pr-update-action | * | output.headMatch | pull_request_target |  |
-| xt0rted/slash-command-action | * | output.command-arguments | issue_comment |  |
-| xt0rted/slash-command-action | * | output.command-arguments | pull_request_comment |  |
+| ahmadnassri/action-changed-files | * | output.files | PR changed files |
+| ahmadnassri/action-changed-files | * | output.json | PR changed files |
+| amannn/action-semantic-pull-request | * | output.error_message | PR title |
+| cypress-io/github-action | * | env.GH_BRANCH | PR branch |
+| dawidd6/action-download-artifact | * | output.artifacts | Artifact details |
+| dorny/paths-filter | * | output.changes | PR changed files |
+| franzdiebold/github-env-vars-action | * | output.CI_PR_DESCRIPTION | PR body |
+| franzdiebold/github-env-vars-action | * | output.CI_PR_TITLE | PR title |
+| jitterbit/get-changed-files | * | output.added | PR changed files |
+| jitterbit/get-changed-files | * | output.added_modified | PR changed files |
+| jitterbit/get-changed-files | * | output.all | PR changed files |
+| jitterbit/get-changed-files | * | output.deleted | PR changed files |
+| jitterbit/get-changed-files | * | output.modified | PR changed files |
+| jitterbit/get-changed-files | * | output.removed | PR changed files |
+| jitterbit/get-changed-files | * | output.renamed | PR changed files |
+| khan/pull-request-comment-trigger | * | output.comment_body | Comment body |
+| octo-org/source-repo/.github/workflows/workflow.yml | * | output.workflow-output | Foo |
+| tj-actions/branch-names | * | output.current_branch | PR current branch |
+| tj-actions/branch-names | * | output.head_ref_branch | PR head branch |
+| tj-actions/branch-names | * | output.ref_branch | Branch tirggering workflow run |
+| tj-actions/changed-files | * | output.added_files | PR changed files |
+| tj-actions/changed-files | * | output.all_changed_and_modified_files | PR changed files |
+| tj-actions/changed-files | * | output.all_changed_files | PR changed files |
+| tj-actions/changed-files | * | output.all_modified_files | PR changed files |
+| tj-actions/changed-files | * | output.all_old_new_renamed_files | PR changed files |
+| tj-actions/changed-files | * | output.changed_keys | PR changed files |
+| tj-actions/changed-files | * | output.copied_files | PR changed files |
+| tj-actions/changed-files | * | output.deleted_files | PR changed files |
+| tj-actions/changed-files | * | output.modified_files | PR changed files |
+| tj-actions/changed-files | * | output.modified_keys | PR changed files |
+| tj-actions/changed-files | * | output.other_changed_files | PR changed files |
+| tj-actions/changed-files | * | output.other_deleted_files | PR changed files |
+| tj-actions/changed-files | * | output.other_modified_files | PR changed files |
+| tj-actions/changed-files | * | output.renamed_files | PR changed files |
+| tj-actions/changed-files | * | output.type_changed_files | PR changed files |
+| tj-actions/changed-files | * | output.unknown_files | PR changed files |
+| tj-actions/changed-files | * | output.unmerged_files | PR changed files |
+| tj-actions/verify-changed-files | * | output.changed-files | PR changed files |
+| tzkhan/pr-update-action | * | output.headMatch |  |
+| xt0rted/slash-command-action | * | output.command-arguments |  |
 summaries
 | akhileshns/heroku-deploy | * | input.branch | output.status | taint |
 | android-actions/setup-android | * | input.cmdline-tools-version | output.ANDROID_COMMANDLINE_TOOLS_VERSION | taint |

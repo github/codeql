@@ -18,8 +18,6 @@ abstract class RemoteFlowSource extends SourceNode {
   /** Gets a string that describes the type of this remote flow source. */
   abstract string getSourceType();
 
-  abstract string getATriggerEvent();
-
   override string getThreatModel() { result = "remote" }
 }
 
@@ -122,33 +120,20 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
 }
 
 private class EventSource extends RemoteFlowSource {
-  string trigger;
-
   EventSource() {
     exists(Expression e, string context | this.asExpr() = e and context = e.getExpression() |
-      trigger = ["issues", "issue_comment"] and isExternalUserControlledIssue(context)
-      or
-      trigger = ["pull_request_target", "pull_request_review", "pull_request_review_comment"] and
-      isExternalUserControlledPullRequest(context)
-      or
-      trigger = ["pull_request_review"] and isExternalUserControlledReview(context)
-      or
-      trigger = ["pull_request_review_comment", "issue_comment", "discussion_comment"] and
-      isExternalUserControlledComment(context)
-      or
-      trigger = ["gollum"] and isExternalUserControlledGollum(context)
-      or
-      trigger = ["push"] and isExternalUserControlledCommit(context)
-      or
-      trigger = ["discussion", "discussion_comment"] and isExternalUserControlledDiscussion(context)
-      or
-      trigger = ["workflow_run"] and isExternalUserControlledWorkflowRun(context)
+      isExternalUserControlledIssue(context) or
+      isExternalUserControlledPullRequest(context) or
+      isExternalUserControlledReview(context) or
+      isExternalUserControlledComment(context) or
+      isExternalUserControlledGollum(context) or
+      isExternalUserControlledCommit(context) or
+      isExternalUserControlledDiscussion(context) or
+      isExternalUserControlledWorkflowRun(context)
     )
   }
 
   override string getSourceType() { result = "User-controlled events" }
-
-  override string getATriggerEvent() { result = trigger }
 }
 
 /**
@@ -156,13 +141,10 @@ private class EventSource extends RemoteFlowSource {
  */
 private class ExternallyDefinedSource extends RemoteFlowSource {
   string sourceType;
-  string trigger;
 
-  ExternallyDefinedSource() { externallyDefinedSource(this, sourceType, _, trigger) }
+  ExternallyDefinedSource() { externallyDefinedSource(this, sourceType, _) }
 
   override string getSourceType() { result = sourceType }
-
-  override string getATriggerEvent() { result = trigger }
 }
 
 /**
@@ -174,6 +156,4 @@ private class CompositeActionInputSource extends RemoteFlowSource {
   CompositeActionInputSource() { c.getAnInput() = this.asExpr() }
 
   override string getSourceType() { result = "Composite action input" }
-
-  override string getATriggerEvent() { result = "*" }
 }
