@@ -8,10 +8,9 @@ private import actions
  *    - action: Fully-qualified action name (NWO)
  *    - version: Either '*' or a specific SHA/Tag
  *    - output arg: To node (prefixed with either `env.` or `output.`)
- *    - trigger: Triggering event under which this model introduces tainted data. Use `*` for any event.
  */
-predicate sourceModel(string action, string version, string output, string trigger, string kind) {
-  Extensions::sourceModel(action, version, output, trigger, kind)
+predicate sourceModel(string action, string version, string output, string kind) {
+  Extensions::sourceModel(action, version, output, kind)
 }
 
 /**
@@ -39,11 +38,9 @@ predicate sinkModel(string action, string version, string input, string kind) {
   Extensions::sinkModel(action, version, input, kind)
 }
 
-predicate externallyDefinedSource(
-  DataFlow::Node source, string sourceType, string fieldName, string trigger
-) {
+predicate externallyDefinedSource(DataFlow::Node source, string sourceType, string fieldName) {
   exists(Uses uses, string action, string version, string kind |
-    sourceModel(action, version, fieldName, trigger, kind) and
+    sourceModel(action, version, fieldName, kind) and
     uses.getCallee() = action.toLowerCase() and
     (
       if version.trim() = "*"

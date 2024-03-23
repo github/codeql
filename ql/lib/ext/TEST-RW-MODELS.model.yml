@@ -9,7 +9,7 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["octo-org/source-repo/.github/workflows/workflow.yml", "*", "output.workflow-output", "*", "Foo"]
+      - ["octo-org/source-repo/.github/workflows/workflow.yml", "*", "output.workflow-output", "Foo"]
   - addsTo:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel

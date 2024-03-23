@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["khan/pull-request-comment-trigger", "*", "output.comment_body", "issue_comment", ""]
-      - ["khan/pull-request-comment-trigger", "*", "output.comment_body", "pull_request_comment", ""]
+      - ["khan/pull-request-comment-trigger", "*", "output.comment_body", "Comment body"]
+      - ["khan/pull-request-comment-trigger", "*", "output.comment_body", "Comment body"]
