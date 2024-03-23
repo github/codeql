@@ -15,3 +15,13 @@ public class TokenSequenceParserTest implements TokenSequenceParserConstants {
     }
 
 }
+
+class ParseExceptionTest extends Exception {
+    String[] tokenImage;
+
+    void test() {
+        Logger logger = null;
+
+        logger.info("When parsing found this: " + tokenImage[0]); // Safe
+    }
+}
