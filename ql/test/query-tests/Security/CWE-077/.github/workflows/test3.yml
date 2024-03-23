@@ -1,0 +1,64 @@
+# https://www.legitsecurity.com/blog/-how-we-found-another-github-action-environment-injection-vulnerability-in-a-google-project
+# https://github.com/google/orbit/commit/6cd71a3f1eec098d0de61bf9bb742737cb3aa5fa
+name: report-checks
+on:
+  workflow_run:
+    workflows: ['checks']
+    types:
+      - completed
+permissions: read-all
+jobs:
+
+  report-clang-tidy-diff:
+    permissions:
+      pull-requests: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download PR metadata
+      uses: dawidd6/action-download-artifact@e6e25ac3a2b93187502a8be1ef9e9603afc34925 # v2.24.2
+      with:
+        workflow: ${{ github.event.workflow_run.workflow_id }}
+        workflow_conclusion: ''
+        name: pr_metadata
+        if_no_artifact_found: 'ignore'
+    - name: Download clang_tidy_fixes
+      uses: dawidd6/action-download-artifact@e6e25ac3a2b93187502a8be1ef9e9603afc34925 # v2.24.2
+      with:
+        workflow: ${{ github.event.workflow_run.workflow_id }}
+        workflow_conclusion: ''
+        name: clang_tidy_fixes
+        if_no_artifact_found: 'ignore'
+    - name: Set found_files
+      id: set_found_files
+      run: |
+        if [ -f clang-tidy-fixes.yml ] && [ -f pr_number.txt ] && [ -f pr_head_repo.txt ] && [ -f pr_head_ref.txt ]; then
+          echo "found_files=true" >> $GITHUB_OUTPUT
+        else
+          echo "found_files=false" >> $GITHUB_OUTPUT
+        fi
+    - run: |
+         echo "PR_NUMBER=$(cat pr_number.txt | jq -r .)" >> $GITHUB_ENV
+         echo "PR_HEAD_REPO=$(cat pr_head_repo.txt | jq -Rr .)" >> $GITHUB_ENV
+         echo "PR_HEAD_REF=$(cat pr_head_ref.txt | jq -Rr .)" >> $GITHUB_ENV
+      if: steps.set_found_files.outputs.found_files == 'true'
+    - uses: actions/checkout@v3
+      if: steps.set_found_files.outputs.found_files == 'true'
+      with:
+        repository: ${{ env.PR_HEAD_REPO }}
+        ref: ${{ env.PR_HEAD_REF }}
+        persist-credentials: false
+    - name: Redownload clang_tidy_fixes
+      if: steps.set_found_files.outputs.found_files == 'true'
+      uses: dawidd6/action-download-artifact@e6e25ac3a2b93187502a8be1ef9e9603afc34925 # v2.24.2
+      with:
+        workflow: ${{ github.event.workflow_run.workflow_id }}
+        workflow_conclusion: ''
+        name: clang_tidy_fixes
+        if_no_artifact_found: 'ignore'
+    - uses: platisd/clang-tidy-pr-comments@89ea1b828cdac1a6ec993d225972adea3b8841b6
+      if: steps.set_found_files.outputs.found_files == 'true'
+      with:
+        github_token: ${{ secrets.ORBITPROFILER_BOT_PAT }}
+        clang_tidy_fixes: clang-tidy-fixes.yml
+        pull_request_id: ${{ env.PR_NUMBER }}
+
