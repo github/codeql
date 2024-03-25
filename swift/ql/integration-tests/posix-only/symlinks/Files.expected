@@ -1,0 +1,5 @@
+| file://:0:0:0:0 |  |
+| main.swift:0:0:0:0 | main.swift |
+| preserve/Package.swift:0:0:0:0 | preserve/Package.swift |
+| preserve/Sources/A.swift:0:0:0:0 | preserve/Sources/A.swift |
+| resolve/Package.swift:0:0:0:0 | resolve/Package.swift |

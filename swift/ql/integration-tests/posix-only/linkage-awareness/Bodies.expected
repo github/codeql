@@ -1,0 +1,2 @@
+| Foo1/Sources/foo/main.swift:1:1:1:31 | foo() | Foo1/Sources/foo/main.swift:1:19:1:31 | { ... } |
+| Foo2/Sources/foo/main.swift:2:1:2:32 | foo() | Foo2/Sources/foo/main.swift:2:19:2:32 | { ... } |

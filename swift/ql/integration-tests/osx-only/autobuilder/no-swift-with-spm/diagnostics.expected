@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "`autobuild` failed to run the build command:\n\n```\n/usr/bin/swift build --package-path <test-root-directory>/hello-objective\n```\n\nSet up a [manual build command][1] or [check the logs of the autobuild step][2].\n\n[1]: https://docs.github.com/en/enterprise-server/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language\n[2]: https://docs.github.com/en/actions/monitoring-and-troubleshooting-workflows/using-workflow-run-logs",
+  "severity": "error",
+  "source": {
+    "extractorName": "swift",
+    "id": "swift/autobuilder/build-command-failed",
+    "name": "Detected build command failed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

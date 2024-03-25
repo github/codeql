@@ -1,4 +1,0 @@
-| Sources/cross-references/lib.swift:1:1:1:11 | f() |
-| Sources/cross-references/lib.swift:17:8:19:1 | ~(_:) |
-| Sources/cross-references/lib.swift:22:9:24:1 | ~(_:) |
-| Sources/cross-references/lib.swift:27:1:29:1 | ~(_:_:) |

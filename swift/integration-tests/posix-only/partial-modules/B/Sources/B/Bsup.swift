@@ -1,1 +1,0 @@
-let Btext = "Hello, B"

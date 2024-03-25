@@ -1,0 +1,2 @@
+| regex.swift:1:5:1:5 | a.*a | getType: | Regex<Substring> | getPattern: | a.*a | getVersion: | 1 |
+| regex.swift:2:5:2:5 | the number (\\d+) | getType: | Regex<(Substring, Substring)> | getPattern: | the number (\\d+) | getVersion: | 1 |

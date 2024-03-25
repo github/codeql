@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -8,6 +9,8 @@ namespace Semmle.Extraction.CSharp.Entities
 {
     internal class Compilation : CachedEntity<object>
     {
+        internal readonly ConcurrentDictionary<string, int> messageCounts = new();
+
         private static (string Cwd, string[] Args) settings;
         private static int hashCode;
 
@@ -78,10 +81,11 @@ namespace Semmle.Extraction.CSharp.Entities
                 .ForEach((file, index) => trapFile.compilation_referencing_files(this, index, file));
 
             // Diagnostics
-            Context.Compilation
-                .GetDiagnostics()
-                .Select(d => new Diagnostic(Context, d))
-                .ForEach((diag, index) => trapFile.diagnostic_for(diag, this, 0, index));
+            var diags = Context.Compilation.GetDiagnostics();
+            diags.ForEach((diag, index) => new CompilerDiagnostic(Context, diag, this, index));
+
+            var diagCounts = diags.GroupBy(diag => diag.Id).ToDictionary(group => group.Key, group => group.Count());
+            diagCounts.ForEach(pair => trapFile.compilation_info(this, $"Compiler diagnostic count for {pair.Key}", pair.Value.ToString()));
         }
 
         public void PopulatePerformance(PerformanceMetrics p)
