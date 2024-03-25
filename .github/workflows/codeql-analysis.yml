@@ -59,7 +59,7 @@ jobs:
        dotnet build csharp
 
     - run: |
-        bazel run //swift:create-extractor-pack
+        bazel run //swift:create-extractor-pack --verbose_failures
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@main
