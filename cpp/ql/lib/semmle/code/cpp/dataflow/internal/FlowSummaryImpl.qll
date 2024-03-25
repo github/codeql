@@ -51,40 +51,36 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
 
   string encodeWithContent(ContentSet c, string arg) { result = "WithContent" + c and arg = "" }
 
-  bindingset[token]
-  ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
-    // needed to support `Argument[x..y]` ranges, `Argument[-1]`, and indirections `*Argument[0]`.
-    exists(int indirection, string argPosString, int argPos |
-      token.getName() = "Argument" and
-      token.getAnArgument() = indirectionString(indirection) + argPosString and
-      argPos = AccessPath::parseInt(argPosString) and
+  /**
+   * Decodes an argument / parameter position string, for example the `0` in `Argument[0]`.
+   * Supports ranges (`Argument[x..y]`), qualifiers (`Argument[-1]`), indirections
+   * (`Argument[*x]`) and combinations (such as `Argument[**0..1]`).
+   */
+  private bindingset[argString] TPosition decodePosition(string argString) {
+    exists(int indirection, string posString, int pos |
+      argString = indirectionString(indirection) + posString and
+      pos = AccessPath::parseInt(posString) and
       (
-        argPos >= 0 and indirection = 0 and result = TDirectPosition(argPos)
+        pos >= 0 and indirection = 0 and result = TDirectPosition(pos)
         or
-        argPos >= 0 and indirection > 0 and result = TIndirectionPosition(argPos, indirection)
+        pos >= 0 and indirection > 0 and result = TIndirectionPosition(pos, indirection)
         or
-        // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
-        argPos = -1 and result = TIndirectionPosition(argPos, indirection + 1)
+        // `Argument[-1]` / `Parameter[-1]` is the qualifier object `*this`, not the `this` pointer itself.
+        pos = -1 and result = TIndirectionPosition(pos, indirection + 1)
       )
     )
   }
 
   bindingset[token]
+  ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
+    token.getName() = "Argument" and
+    result = decodePosition(token.getAnArgument())
+  }
+
+  bindingset[token]
   ArgumentPosition decodeUnknownArgumentPosition(AccessPath::AccessPathTokenBase token) {
-    // needed to support `Argument[x..y]` ranges, `Argument[-1]`, and indirections `*Argument[0]`.
-    exists(int indirection, string paramPosString, int paramPos |
-      token.getName() = "Parameter" and
-      token.getAnArgument() = indirectionString(indirection) + paramPosString and
-      paramPos = AccessPath::parseInt(paramPosString) and
-      (
-        paramPos >= 0 and indirection = 0 and result = TDirectPosition(paramPos)
-        or
-        paramPos >= 0 and indirection > 0 and result = TIndirectionPosition(paramPos, indirection)
-        or
-        // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
-        paramPos = -1 and result = TIndirectionPosition(paramPos, indirection + 1)
-      )
-    )
+    token.getName() = "Parameter" and
+    result = decodePosition(token.getAnArgument())
   }
 
   bindingset[token]
