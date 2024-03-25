@@ -1,5 +1,5 @@
 name: codeql/java-automodel-queries
-version: 0.0.19
+version: 0.0.20-dev
 groups:
     - java
     - automodel
