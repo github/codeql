@@ -6,5 +6,5 @@ xcuserdata/
 DerivedData/
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 *.actual
-db
+test-db
 *.swiftmodule
