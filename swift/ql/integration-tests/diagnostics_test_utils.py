@@ -50,7 +50,7 @@ def _normalize_json(data):
     return "\n".join(entries)
 
 
-def check_diagnostics(test_dir=".", test_db="db", actual = None):
+def check_diagnostics(test_dir=".", test_db="test-db", actual = None):
     test_dir = pathlib.Path(test_dir)
     test_db = pathlib.Path(test_db)
     if actual is None:
