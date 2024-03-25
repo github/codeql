@@ -37,8 +37,9 @@
  *        indirection, for example, `Argument[*0]` indicates the first indirection
  *        of the 0th argument.
  *      - `n1..n2` syntax can be used to indicate a range of arguments, inclusive
- *        at both ends. One or more "*" can be added in front of the range to
- *        indicate indirection on all arguments in the range, for example `*n1..n2`.
+ *        at both ends. One or more "*"s can be added in front of the whole range
+ *        to indicate that every argument in the range is indirect, for example
+ *        `*0..1` is the first indirection of both arguments 0 and 1.
  *    - "ReturnValue": Selects a value being returned by the selected element.
  *      One or more "*" can be added as an argument to indicate indirection, for
  *      example, "ReturnValue[*]" indicates the first indirection of the return
@@ -54,8 +55,9 @@
  *        indirection, for example, `Argument[*0]` indicates the first indirection
  *        of the 0th argument.
  *      - `n1..n2` syntax can be used to indicate a range of arguments, inclusive
- *        at both ends. One or more "*" can be added in front of the range to
- *        indicate indirection on all arguments in the range, for example `*n1..n2`.
+ *        at both ends. One or more "*"s can be added in front of the whole range
+ *        to indicate that every argument in the range is indirect, for example
+ *        `*0..1` is the first indirection of both arguments 0 and 1.
  *    - "Parameter[n]": Selects the value of a parameter of the selected element.
  *      The syntax is the same as for "Argument", for example "Parameter[0]",
  *      "Parameter[*0]", "Parameter[0..2]" etc.
