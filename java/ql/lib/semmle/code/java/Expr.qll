@@ -2739,4 +2739,14 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
       )
     )
   }
+
+  /**
+   * Holds if this record pattern declares any identifiers (i.e., at least one leaf declaration is named).
+   */
+  predicate declaresAnyIdentifiers() {
+    exists(PatternExpr subPattern | subPattern = this.getSubPattern(_) |
+      subPattern.asRecordPattern().declaresAnyIdentifiers() or
+      not subPattern.asBindingOrUnnamedPattern().isAnonymous()
+    )
+  }
 }
