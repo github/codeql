@@ -306,9 +306,9 @@ namespace Semmle.Autobuild.Shared
                 AddDiagnostic(new DiagnosticMessage(
                     Options.Language,
                     "buildless/mode-active",
-                    "C# was extracted in buildless mode",
+                    "C# with build-mode set to 'none'",
                     visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
-                    markdownMessage: "C# was extracted in buildless mode. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
+                    markdownMessage: "C# with build-mode set to 'none'. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
                     severity: DiagnosticMessage.TspSeverity.Note
                 ));
             }
@@ -327,9 +327,9 @@ namespace Semmle.Autobuild.Shared
                 AddDiagnostic(new DiagnosticMessage(
                     Options.Language,
                     "buildless/complete",
-                    "C# buildless extraction completed",
+                    "C# analysis with build-mode 'none' completed",
                     visibility: new DiagnosticMessage.TspVisibility(statusPage: false, cliSummaryTable: true, telemetry: true),
-                    markdownMessage: "C# buildless extraction has completed.",
+                    markdownMessage: "C# analysis with build-mode 'none' completed.",
                     severity: DiagnosticMessage.TspSeverity.Unknown
                 ));
             }
