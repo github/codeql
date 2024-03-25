@@ -122,6 +122,7 @@ void madSinkParam0(int x) { // $ interpretElement
 
 struct MyContainer {
 	int value;
+	int value2;
 	int *ptr;
 };
 
@@ -134,6 +135,7 @@ int madArg0DoubleIndirectToReturn(int **x); // $ interpretElement
 int madArg0NotIndirectToReturn(int *x); // $ interpretElement
 void madArg0ToArg1Indirect(int x, int &y); // $ interpretElement
 void madArg0IndirectToArg1Indirect(const int *x, int *y); // $ interpretElement
+int madArgsComplex(int *a, int *b, int c, int d);
 
 int madArg0FieldToReturn(MyContainer mc); // $ interpretElement
 int madArg0IndirectFieldToReturn(MyContainer *mc); // $ interpretElement
@@ -141,6 +143,10 @@ int madArg0FieldIndirectToReturn(MyContainer mc); // $ interpretElement
 MyContainer madArg0ToReturnField(int x); // $ interpretElement
 MyContainer *madArg0ToReturnIndirectField(int x); // $ interpretElement
 MyContainer madArg0ToReturnFieldIndirect(int x); // $ interpretElement
+
+MyContainer madFieldToFieldVar; // $ interpretElement
+MyContainer madFieldToIndirectFieldVar; // $ interpretElement
+MyContainer *madIndirectFieldToFieldVar; // $ interpretElement
 
 void test_summaries() {
 	// test summaries
@@ -171,6 +177,14 @@ void test_summaries() {
 	madArg0IndirectToArg1Indirect(&a, &c);
 	sink(c); // $ ir
 
+	sink(madArgsComplex(0, 0, 0, 0));
+	sink(madArgsComplex(sourceIndirect(), 0, 0, 0)); // $ ir
+	sink(madArgsComplex(0, sourceIndirect(), 0, 0)); // $ ir
+	sink(madArgsComplex(0, 0, source(), 0)); // $ ir
+	sink(madArgsComplex(0, 0, 0, source()));
+
+	// test summaries involving structs / fields
+
 	MyContainer mc1, mc2;
 
 	d = 0;
@@ -196,6 +210,19 @@ void test_summaries() {
 	MyContainer rtn2 = madArg0ToReturnFieldIndirect(source());
 	int *rtn2_ptr = rtn2.ptr;
 	sink(*rtn2_ptr); // $ ir
+
+	// test global variable summaries
+
+	madFieldToFieldVar.value = source();
+	sink(madFieldToFieldVar.value2); // $ MISSING: ir
+
+	madFieldToIndirectFieldVar.value = source();
+	sink(madFieldToFieldVar.ptr);
+	sink(*(madFieldToFieldVar.ptr)); // $ MISSING: ir
+
+	madIndirectFieldToFieldVar->value = source();
+	sink((*madIndirectFieldToFieldVar).value2); // $ MISSING: ir
+	sink(madIndirectFieldToFieldVar->value2); // $ MISSING: ir
 
 	// test source + sinks + summaries together
 
