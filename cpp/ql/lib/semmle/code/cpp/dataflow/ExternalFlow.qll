@@ -25,11 +25,7 @@
  *    types can be short names or fully qualified names (mixing these two options
  *    is not allowed within a single signature).
  * 6. The `ext` column specifies additional API-graph-like edges. Currently
- *    there are only two valid values: "" and "Annotated". The empty string has no
- *    effect. "Annotated" applies if `name` and `signature` were left blank and
- *    acts by selecting an element that is annotated by the annotation type
- *    selected by the first 4 columns. This can be another member such as a field
- *    or method, or a parameter.
+ *    there is only one valid value: "".
  * 7. The `input` column specifies how data enters the element selected by the
  *    first 6 columns, and the `output` column specifies how data leaves the
  *    element selected by the first 6 columns. An `input` can be either:
@@ -43,13 +39,15 @@
  *      - `n1..n2` syntax can be used to indicate a range of arguments, inclusive
  *        at both ends. One or more "*" can be added in front of the range to
  *        indicate indirection on all arguments in the range, for example `*n1..n2`.
+ *      - "Argument" can be specified without any "[]". In this case, any argument
+ *        is accepted.
  *    - "ReturnValue": Selects a value being returned by the selected element.
  *      One or more "*" can be added as an argument to indicate indirection, for
  *      example, "ReturnValue[*]" indicates the first indirection of the return
  *      value.
  *
  *    An `output` can be either:
- *    - "": Selects a read of a selected field, or a selected parameter.
+ *    - "": Selects a read of a selected field.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to
  *      the selected element. That is, the value of the argument after the call
  *      returns. The arguments are zero-indexed, and `-1` specifies the qualifier
@@ -60,10 +58,11 @@
  *      - `n1..n2` syntax can be used to indicate a range of arguments, inclusive
  *        at both ends. One or more "*" can be added in front of the range to
  *        indicate indirection on all arguments in the range, for example `*n1..n2`.
- *    - "Parameter": Selects the value of a parameter of the selected element.
+ *      - "Argument" can be specified without any "[]". In this case, any argument
+ *        is accepted.
+ *    - "Parameter[n]": Selects the value of a parameter of the selected element.
  *      The syntax is the same as for "Argument", for example "Parameter[0]",
- *      "Parameter[*0]", "Parameter[0..2]" etc. "Parameter" is also allowed in
- *      case the selected element is already a parameter itself.
+ *      "Parameter[*0]", "Parameter[0..2]" etc.
  *    - "ReturnValue": Selects a value being returned by the selected element.
  *      One or more "*" can be added as an argument to indicate indirection, for
  *      example, "ReturnValue[*]" indicates the first indirection of the return
