@@ -1,5 +1,5 @@
 py_library(
-    name = "integration_tests",
+    name = "utils",
     srcs = [
         "create_database_utils.py",
         "diagnostics_test_utils.py",
