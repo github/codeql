@@ -42,13 +42,13 @@ jobs:
   # build
   build-and-test-macos-intel:
     if: github.repository_owner == 'github'
-    runs-on: macos-13-large
+    runs-on: macos-14-large
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
   build-and-test-macos-arm:
     if: github.repository_owner == 'github'
-    runs-on: macos-13-xlarge
+    runs-on: macos-14-xlarge
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/build-and-test
@@ -70,7 +70,7 @@ jobs:
   qltests-macos:
     if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
     needs: build-and-test-macos-intel
-    runs-on: macos-13-large
+    runs-on: macos-14-large
     steps:
       - uses: actions/checkout@v4
       - uses: ./swift/actions/run-ql-tests
@@ -84,7 +84,7 @@ jobs:
   integration-tests-macos:
     if: ${{ github.repository_owner == 'github' && github.event_name == 'pull_request' }}
     needs: build-and-test-macos-intel
-    runs-on: macos-13-large
+    runs-on: macos-14-large
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v4
