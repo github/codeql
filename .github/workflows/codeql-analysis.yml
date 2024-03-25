@@ -40,7 +40,7 @@ jobs:
       uses: github/codeql-action/init@main
       # Override language selection by uncommenting this and choosing your languages
       with:
-        languages: csharp
+        languages: csharp, cpp
         config-file: ./.github/codeql/codeql-config.yml
 
     # Autobuild attempts to build any compiled languages  (C/C++, C#, or Java).
@@ -57,6 +57,9 @@ jobs:
 
     - run: |
        dotnet build csharp
+
+    - run: |
+        bazel run //swift:create-extractor-pack
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@main
