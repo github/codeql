@@ -4,6 +4,7 @@ int source();
 int *sourcePtr();
 int *sourceIndirect();
 void sink(int val);
+void sink(int *ptr);
 
 // --- global MAD sources ---
 
@@ -135,7 +136,7 @@ int madArg0DoubleIndirectToReturn(int **x); // $ interpretElement
 int madArg0NotIndirectToReturn(int *x); // $ interpretElement
 void madArg0ToArg1Indirect(int x, int &y); // $ interpretElement
 void madArg0IndirectToArg1Indirect(const int *x, int *y); // $ interpretElement
-int madArgsComplex(int *a, int *b, int c, int d);
+int madArgsComplex(int *a, int *b, int c, int d); // $ interpretElement
 
 int madArg0FieldToReturn(MyContainer mc); // $ interpretElement
 int madArg0IndirectFieldToReturn(MyContainer *mc); // $ interpretElement
@@ -217,8 +218,8 @@ void test_summaries() {
 	sink(madFieldToFieldVar.value2); // $ MISSING: ir
 
 	madFieldToIndirectFieldVar.value = source();
-	sink(madFieldToFieldVar.ptr);
-	sink(*(madFieldToFieldVar.ptr)); // $ MISSING: ir
+	sink(madFieldToIndirectFieldVar.ptr);
+	sink(*(madFieldToIndirectFieldVar.ptr)); // $ MISSING: ir
 
 	madIndirectFieldToFieldVar->value = source();
 	sink((*madIndirectFieldToFieldVar).value2); // $ MISSING: ir
