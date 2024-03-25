@@ -125,6 +125,12 @@ public class Test {
          break;
      }
 
+     // Test the case where a case falls out of a switch block without a break:
+     switch(thing) {
+       case String _:
+       default:
+     }
+
   }
 
 }
