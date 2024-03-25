@@ -22,6 +22,9 @@
 | tests.cpp:139:5:139:32 | [summary param] 0 indirection in madArg0IndirectFieldToReturn | ParameterNode | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
 | tests.cpp:139:5:139:32 | [summary] read: Argument[0 indirection].Field[value] in madArg0IndirectFieldToReturn |  | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
 | tests.cpp:139:5:139:32 | [summary] to write: ReturnValue in madArg0IndirectFieldToReturn | ReturnNode | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
+| tests.cpp:140:5:140:32 | [summary param] 0 in madArg0FieldIndirectToReturn | ParameterNode | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
+| tests.cpp:140:5:140:32 | [summary] read: Argument[0].*Field[ptr] in madArg0FieldIndirectToReturn |  | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
+| tests.cpp:140:5:140:32 | [summary] to write: ReturnValue in madArg0FieldIndirectToReturn | ReturnNode | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
 | tests.cpp:141:13:141:32 | [summary param] 0 in madArg0ToReturnField | ParameterNode | madArg0ToReturnField | madArg0ToReturnField |
 | tests.cpp:141:13:141:32 | [summary] to write: ReturnValue in madArg0ToReturnField | ReturnNode | madArg0ToReturnField | madArg0ToReturnField |
 | tests.cpp:141:13:141:32 | [summary] to write: ReturnValue.Field[value] in madArg0ToReturnField |  | madArg0ToReturnField | madArg0ToReturnField |

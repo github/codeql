@@ -185,7 +185,7 @@ void test_summaries() {
 	mc2.ptr = &e;
 	sink(madArg0FieldToReturn(mc2)); // $ ir
 	sink(madArg0IndirectFieldToReturn(&mc2)); // $ ir
-	sink(madArg0FieldIndirectToReturn(mc2)); // $ MISSING: ir
+	sink(madArg0FieldIndirectToReturn(mc2)); // $ ir
 
 	sink(madArg0ToReturnField(0).value);
 	sink(madArg0ToReturnField(source()).value); // $ ir
