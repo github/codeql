@@ -137,6 +137,7 @@ int madArg0NotIndirectToReturn(int *x); // $ interpretElement
 void madArg0ToArg1Indirect(int x, int &y); // $ interpretElement
 void madArg0IndirectToArg1Indirect(const int *x, int *y); // $ interpretElement
 int madArgsComplex(int *a, int *b, int c, int d); // $ interpretElement
+int madArgsAny(int a, int *b); // $ interpretElement
 
 int madArg0FieldToReturn(MyContainer mc); // $ interpretElement
 int madArg0IndirectFieldToReturn(MyContainer *mc); // $ interpretElement
@@ -183,6 +184,11 @@ void test_summaries() {
 	sink(madArgsComplex(0, sourceIndirect(), 0, 0)); // $ ir
 	sink(madArgsComplex(0, 0, source(), 0)); // $ ir
 	sink(madArgsComplex(0, 0, 0, source()));
+
+	sink(madArgsAny(0, 0));
+	sink(madArgsAny(source(), 0)); // $ MISSING: ir
+	sink(madArgsAny(0, sourcePtr())); // $ MISSING: ir
+	sink(madArgsAny(0, sourceIndirect())); // $ MISSING: ir
 
 	// test summaries involving structs / fields
 
