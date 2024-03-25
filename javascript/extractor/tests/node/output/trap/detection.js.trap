@@ -137,7 +137,6 @@ variables(#20046,"__dirname",#20041)
 #20047=@"var;{arguments};{#20041}"
 variables(#20047,"arguments",#20041)
 is_module(#20001)
-is_es2015_module(#20001)
 #20048=@"var;{fs};{#20041}"
 variables(#20048,"fs",#20041)
 #20049=*
@@ -199,5 +198,6 @@ successor(#20053,#20050)
 successor(#20052,#20055)
 successor(#20050,#20061)
 successor(#20059,#20049)
+is_nodejs(#20001)
 numlines(#10000,6,1,5)
 filetype(#10000,"javascript")
