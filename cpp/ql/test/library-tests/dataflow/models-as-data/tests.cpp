@@ -49,7 +49,7 @@ void test_sources() {
 
 	remoteMadSourceIndirectArg0(&a, &b);
 	sink(a); // $ ir
-	sink(a); // $ SPURIOUS: ir
+	sink(b);
 	remoteMadSourceIndirectArg1(c, d);
 	sink(c);
 	sink(d); // $ ir
