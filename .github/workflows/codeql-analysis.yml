@@ -57,9 +57,15 @@ jobs:
 
     - run: |
        dotnet build csharp
+  
+    - name: Install GCC 11
+      run: sudo apt-get install gcc-11 g++-11
 
     - run: |
         bazel run //swift:create-extractor-pack --verbose_failures
+      env:
+        CC: gcc-11
+        CXX: g++-11
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@main
