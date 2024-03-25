@@ -27,8 +27,8 @@ def runUnsuccessfully(cmd):
 def run_codeql_database_create(cmds, lang, keep_trap=True, db=None, runFunction=runSuccessfully):
     """ db parameter is here solely for compatibility with the internal test runner """
     assert lang == 'swift'
-    codeql_root = pathlib.Path(__file__).parents[2]
-    shutil.rmtree("db", ignore_errors=True)
+    codeql_root = pathlib.Path(__file__).parents[3]
+    shutil.rmtree("test-db", ignore_errors=True)
     cmd = [
         "codeql", "database", "create",
         "-s", ".", "-l", "swift", f"--search-path={codeql_root}", "--no-cleanup",
@@ -37,5 +37,5 @@ def run_codeql_database_create(cmds, lang, keep_trap=True, db=None, runFunction=
         cmd.append("--keep-trap")
     for c in cmds:
         cmd += ["-c", c]
-    cmd.append("db")
+    cmd.append("test-db")
     runFunction(cmd)

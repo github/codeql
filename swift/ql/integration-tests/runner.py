@@ -17,6 +17,7 @@ import shutil
 import platform
 
 this_dir = pathlib.Path(__file__).parent.resolve()
+codeql_root = this_dir.parents[2]
 
 def options():
     p = argparse.ArgumentParser()
@@ -30,7 +31,7 @@ def options():
 
 
 def execute_test(path):
-    shutil.rmtree(path.parent / "db", ignore_errors=True)
+    shutil.rmtree(path.parent / "test-db", ignore_errors=True)
     return subprocess.run([sys.executable, "-u", path.name], cwd=path.parent).returncode == 0
 
 def skipped(test):
@@ -51,18 +52,18 @@ def main(opts):
         return False
 
     os.environ["PYTHONPATH"] = str(this_dir)
+    os.environ["CODEQL_CONFIG_FILE"] = "/dev/null"
     failed_db_creation = []
     succesful_db_creation = []
     for t in tests:
         (succesful_db_creation if execute_test(t) else failed_db_creation).append(t)
 
     if succesful_db_creation:
-        codeql_root = this_dir.parents[1]
         cmd = [
             "codeql", "test", "run",
             f"--additional-packs={codeql_root}",
             "--keep-databases",
-            "--dataset=db/db-swift",
+            "--dataset=test-db/db-swift",
             f"--threads={opts.threads}",
         ]
         if opts.check_databases:
