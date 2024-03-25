@@ -19,15 +19,6 @@ private module SourceVariables {
       ind = [0 .. countIndirectionsForCppType(base.getLanguageType()) + 1]
     }
 
-  private int maxNumberOfIndirections() { result = max(SourceVariable sv | | sv.getIndirection()) }
-
-  private string repeatStars(int n) {
-    n = 0 and result = ""
-    or
-    n = [1 .. maxNumberOfIndirections()] and
-    result = "*" + repeatStars(n - 1)
-  }
-
   class SourceVariable extends TSourceVariable {
     BaseSourceVariable base;
     int ind;

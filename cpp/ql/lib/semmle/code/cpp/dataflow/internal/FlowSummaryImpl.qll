@@ -12,14 +12,6 @@ private import semmle.code.cpp.dataflow.ExternalFlow
 private import semmle.code.cpp.ir.IR
 
 module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
-  /**
-   * Gets a string representing a level of indirection, for example for
-   * `indirection = 2`, the result is `**`.
-   */
-  private bindingset[indirection] string indirectionString(int indirection) {
-    result = concat(int i | i in [1 .. indirection] | "*")
-  }
-
   class SummarizedCallableBase = Function;
 
   ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
@@ -33,7 +25,7 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
   string encodeReturn(ReturnKind rk, string arg) {
     rk != getStandardReturnValueKind() and
     result = "ReturnValue" and
-    arg = indirectionString(rk.(NormalReturnKind).getIndirectionIndex())
+    arg = repeatStars(rk.(NormalReturnKind).getIndirectionIndex())
   }
 
   string encodeContent(ContentSet cs, string arg) {
@@ -41,7 +33,7 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
       cs.isSingleton(c) and
       // FieldContent indices have 0 for the address, 1 for content, so we need to subtract one.
       result = "Field" and
-      arg = indirectionString(c.getIndirectionIndex() - 1) + c.getField().getName()
+      arg = repeatStars(c.getIndirectionIndex() - 1) + c.getField().getName()
     )
   }
 
@@ -58,7 +50,7 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
    */
   private bindingset[argString] TPosition decodePosition(string argString) {
     exists(int indirection, string posString, int pos |
-      argString = indirectionString(indirection) + posString and
+      argString = repeatStars(indirection) + posString and
       pos = AccessPath::parseInt(posString) and
       (
         pos >= 0 and indirection = 0 and result = TDirectPosition(pos)
@@ -98,7 +90,7 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
       result.isSingleton(c) and
       token.getName() = c.getField().getName() and
       // FieldContent indices have 0 for the address, 1 for content, so we need to subtract one.
-      token.getAnArgument() = indirectionString(c.getIndirectionIndex() - 1)
+      token.getAnArgument() = repeatStars(c.getIndirectionIndex() - 1)
     )
   }
 }

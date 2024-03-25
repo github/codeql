@@ -2363,16 +2363,15 @@ class Content extends TContent {
   abstract predicate impliesClearOf(Content c);
 }
 
+/**
+ * Gets a string consisting of `n` star characters ("*"), where n >= 0. This is
+ * used to represent indirection.
+ */
+bindingset[n] string repeatStars(int n) {
+  result = concat(int i | i in [1 .. n] | "*")
+}
+
 private module ContentStars {
-  private int maxNumberOfIndirections() { result = max(any(Content c).getIndirectionIndex()) }
-
-  private string repeatStars(int n) {
-    n = 0 and result = ""
-    or
-    n = [1 .. maxNumberOfIndirections()] and
-    result = "*" + repeatStars(n - 1)
-  }
-
   /**
    * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
    * output for `c`.

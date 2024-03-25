@@ -80,15 +80,6 @@ module NodeStars {
     result = n.(FinalParameterNode).getIndirectionIndex()
   }
 
-  private int maxNumberOfIndirections() { result = max(getNumberOfIndirections(_)) }
-
-  private string repeatStars(int n) {
-    n = 0 and result = ""
-    or
-    n = [1 .. maxNumberOfIndirections()] and
-    result = "*" + repeatStars(n - 1)
-  }
-
   /**
    * Gets the number of stars (i.e., `*`s) needed to produce the `toString`
    * output for `n`.
