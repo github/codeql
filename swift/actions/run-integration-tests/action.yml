@@ -7,9 +7,9 @@ runs:
     - uses: actions/setup-python@v4
       with:
         python-version-file: 'swift/.python-version'
-    - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
+    - uses: swift-actions/setup-swift@e1dca7c4a36344146bbc2803f0d538462477bb37
       with:
-        swift-version: "5.8"
+        swift-version: 5.9
     - uses: ./.github/actions/fetch-codeql
     - id: query-cache
       uses: ./.github/actions/cache-query-compilation
