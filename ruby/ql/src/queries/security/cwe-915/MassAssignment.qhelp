@@ -5,7 +5,7 @@
 	<overview>
 		<p>
 			Operations that allow for mass assignment (setting multiple attributes of an object using a hash), such as <code>ActiveRecord::Base.new</code>, should take care not to 
-            allow arbitrary parameters to be set by the user. Otherwise, unintended attributes may be set, such as an <code>isAdmin</code> feild for a <code>User</code> object.
+            allow arbitrary parameters to be set by the user. Otherwise, unintended attributes may be set, such as an <code>is_admin</code> field for a <code>User</code> object.
 		</p>
 	</overview>
 	<recommendation>
@@ -29,6 +29,6 @@
 	</example>
 
 	<references>
-		
+		<li>Rails guides: <a href="https://guides.rubyonrails.org/action_controller_overview.html#strong-parameters">Strong Parameters</a>.</li>
 	</references>
 </qhelp>
