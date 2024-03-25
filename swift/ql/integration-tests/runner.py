@@ -63,7 +63,6 @@ def main(opts):
             "codeql", "test", "run",
             f"--additional-packs={codeql_root}",
             "--keep-databases",
-            "--no-cleanup",
             "--dataset=test-db/db-swift",
             f"--threads={opts.threads}",
         ]
