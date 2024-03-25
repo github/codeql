@@ -186,9 +186,9 @@ void test_summaries() {
 	sink(madArgsComplex(0, 0, 0, source()));
 
 	sink(madArgsAny(0, 0));
-	sink(madArgsAny(source(), 0)); // $ MISSING: ir
-	sink(madArgsAny(0, sourcePtr())); // $ MISSING: ir
-	sink(madArgsAny(0, sourceIndirect())); // $ MISSING: ir
+	sink(madArgsAny(source(), 0)); // (syntax not supported)
+	sink(madArgsAny(0, sourcePtr())); // (syntax not supported)
+	sink(madArgsAny(0, sourceIndirect())); // (syntax not supported)
 
 	// test summaries involving structs / fields
 
