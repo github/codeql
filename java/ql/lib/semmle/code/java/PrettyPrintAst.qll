@@ -784,18 +784,18 @@ private class PpSwitchCase extends PpAst, SwitchCase {
 
 private class PpPatternCase extends PpAst, PatternCase {
   private predicate isAnonymousPattern(int n) {
-    this.getPatternAtIndex(n).asBindingOrUnnamedPattern().isAnonymous()
+    this.getPattern(n).asBindingOrUnnamedPattern().isAnonymous()
   }
 
   override string getPart(int i) {
-    exists(int n, int base | exists(this.getPatternAtIndex(n)) and base = n * 4 |
+    exists(int n, int base | exists(this.getPattern(n)) and base = n * 4 |
       i = base and
       (if n = 0 then result = "case " else result = ", ")
       or
       i = base + 2 and
-      this.getPatternAtIndex(n) instanceof LocalVariableDeclExpr and
+      this.getPattern(n) instanceof LocalVariableDeclExpr and
       (
-        exists(this.getPatternAtIndex(n).asBindingOrUnnamedPattern().getTypeAccess())
+        exists(this.getPattern(n).asBindingOrUnnamedPattern().getTypeAccess())
         or
         not this.isAnonymousPattern(n)
       ) and
@@ -805,11 +805,11 @@ private class PpPatternCase extends PpAst, PatternCase {
       (
         if this.isAnonymousPattern(n)
         then result = "_"
-        else result = this.getPatternAtIndex(n).asBindingOrUnnamedPattern().getName()
+        else result = this.getPattern(n).asBindingOrUnnamedPattern().getName()
       )
     )
     or
-    exists(int base | base = (max(int n | exists(this.getPatternAtIndex(n))) + 1) * 4 |
+    exists(int base | base = (max(int n | exists(this.getPattern(n))) + 1) * 4 |
       i = base and result = ":" and not this.isRule()
       or
       i = base and result = " -> " and this.isRule()
@@ -819,14 +819,14 @@ private class PpPatternCase extends PpAst, PatternCase {
   }
 
   override PpAst getChild(int i) {
-    exists(int n, int base | exists(this.getPatternAtIndex(n)) and base = n * 4 |
+    exists(int n, int base | exists(this.getPattern(n)) and base = n * 4 |
       i = base + 1 and
-      result = this.getPatternAtIndex(n).asBindingOrUnnamedPattern().getTypeAccess()
+      result = this.getPattern(n).asBindingOrUnnamedPattern().getTypeAccess()
       or
-      i = base + 1 and result = this.getPatternAtIndex(n).asRecordPattern()
+      i = base + 1 and result = this.getPattern(n).asRecordPattern()
     )
     or
-    exists(int base | base = (max(int n | exists(this.getPatternAtIndex(n))) + 1) * 4 |
+    exists(int base | base = (max(int n | exists(this.getPattern(n))) + 1) * 4 |
       i = base + 1 and result = this.getRuleExpression()
       or
       i = base + 1 and result = this.getRuleStatement()

@@ -432,7 +432,7 @@ final class PatternCaseNode extends ExprStmtNode {
     not result.(ElementNode).getElement() instanceof LocalVariableDeclExpr and
     not result.(ElementNode).getElement() instanceof TypeAccess
     or
-    result = TLocalVarDeclNode(pc.getPatternAtIndex(childIndex))
+    result = TLocalVarDeclNode(pc.getPattern(childIndex))
   }
 }
 
