@@ -17,7 +17,7 @@ namespace Semmle.Autobuild.Cpp
                 try
                 {
                     Console.WriteLine("CodeQL C++ autobuilder");
-                    var builder = new CppAutobuilder(actions, options);
+                    using var builder = new CppAutobuilder(actions, options);
                     return builder.AttemptBuild();
                 }
                 catch (InvalidEnvironmentException ex)
