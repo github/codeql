@@ -9,7 +9,7 @@ Code that constructs a quoted string literal containing user-provided data needs
 this data does not itself contain a quote. Otherwise the embedded data could (accidentally or
 intentionally) terminate the string literal early and thereby change the structure of the overall
 string, with potentially severe consequences. If, for example, the string is later used as
-part an operating-system command or database query, an attacker may be able to craft input data
+part of an operating-system command or database query, an attacker may be able to craft input data
 that injects a malicious command.
 </p>
 </overview>
@@ -18,7 +18,7 @@ that injects a malicious command.
 <p>
 Sanitize the embedded data appropriately to ensure quotes are escaped, or use an API that does
 not rely on manually constructing quoted substrings. Make sure to use the appropriate escaping
-mechanism, for example double quoting for SQL strings or backslash escaping for shell commands.
+mechanism, for example, double quoting for SQL strings or backslash escaping for shell commands.
 When using backslash escaping, the backslash character itself must also be escaped.
 </p>
 </recommendation>
@@ -42,7 +42,7 @@ queries, which avoids the need to explicitly construct a quoted string.
 </p>
 <sample src="StringBreakGood.go"/>
 <p>
-In situations where a structured API is not available, make sure to escape quotes before embedding
+In situations where a structured API is not available, make sure that you escape quotes before embedding
 user-provided data into a quoted string. For example, this is how you can backslash-escape single
 quotes using <code>strings.ReplaceAll</code>:
 </p>
