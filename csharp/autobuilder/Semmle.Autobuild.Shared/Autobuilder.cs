@@ -322,16 +322,30 @@ namespace Semmle.Autobuild.Shared
                 .Select(result => result.ToDiagnosticMessage(this, diagSeverity))
                 .ForEach(AddDiagnostic);
 
-            if (buildResult == 0 && IsBuildless)
+            if (IsBuildless)
             {
-                AddDiagnostic(new DiagnosticMessage(
-                    Options.Language,
-                    "buildless/complete",
-                    "C# analysis with build-mode 'none' completed",
-                    visibility: new DiagnosticMessage.TspVisibility(statusPage: false, cliSummaryTable: true, telemetry: true),
-                    markdownMessage: "C# analysis with build-mode 'none' completed.",
-                    severity: DiagnosticMessage.TspSeverity.Unknown
-                ));
+                if (buildResult == 0)
+                {
+                    AddDiagnostic(new DiagnosticMessage(
+                        Options.Language,
+                        "buildless/complete",
+                        "C# analysis with build-mode 'none' completed",
+                        visibility: new DiagnosticMessage.TspVisibility(statusPage: false, cliSummaryTable: true, telemetry: true),
+                        markdownMessage: "C# analysis with build-mode 'none' completed.",
+                        severity: DiagnosticMessage.TspSeverity.Unknown
+                    ));
+                }
+                else
+                {
+                    AddDiagnostic(new DiagnosticMessage(
+                        Options.Language,
+                        "buildless/failed",
+                        "C# analysis with build-mode 'none' failed",
+                        visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                        markdownMessage: "C# analysis with build-mode 'none' failed.",
+                        severity: DiagnosticMessage.TspSeverity.Error
+                    ));
+                }
             }
 
             return buildResult;
