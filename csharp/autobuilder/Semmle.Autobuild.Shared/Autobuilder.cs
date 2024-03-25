@@ -301,18 +301,6 @@ namespace Semmle.Autobuild.Shared
             var onOutput = BuildOutputHandler(Console.Out);
             var onError = BuildOutputHandler(Console.Error);
 
-            if (IsBuildless)
-            {
-                AddDiagnostic(new DiagnosticMessage(
-                    Options.Language,
-                    "buildless/mode-active",
-                    "C# with build-mode set to 'none'",
-                    visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
-                    markdownMessage: "C# with build-mode set to 'none'. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
-                    severity: DiagnosticMessage.TspSeverity.Note
-                ));
-            }
-
             var buildResult = script.Run(Actions, startCallback, exitCallback, onOutput, onError);
 
             // if the build succeeded, all diagnostics we captured from the build output should be warnings;
@@ -322,32 +310,6 @@ namespace Semmle.Autobuild.Shared
                 .Select(result => result.ToDiagnosticMessage(this, diagSeverity))
                 .ForEach(AddDiagnostic);
 
-            if (IsBuildless)
-            {
-                if (buildResult == 0)
-                {
-                    AddDiagnostic(new DiagnosticMessage(
-                        Options.Language,
-                        "buildless/complete",
-                        "C# analysis with build-mode 'none' completed",
-                        visibility: new DiagnosticMessage.TspVisibility(statusPage: false, cliSummaryTable: true, telemetry: true),
-                        markdownMessage: "C# analysis with build-mode 'none' completed.",
-                        severity: DiagnosticMessage.TspSeverity.Unknown
-                    ));
-                }
-                else
-                {
-                    AddDiagnostic(new DiagnosticMessage(
-                        Options.Language,
-                        "buildless/failed",
-                        "C# analysis with build-mode 'none' failed",
-                        visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
-                        markdownMessage: "C# analysis with build-mode 'none' failed.",
-                        severity: DiagnosticMessage.TspSeverity.Error
-                    ));
-                }
-            }
-
             return buildResult;
         }
 
@@ -355,8 +317,6 @@ namespace Semmle.Autobuild.Shared
         /// Returns the build script to use for this project.
         /// </summary>
         public abstract BuildScript GetBuildScript();
-
-        public virtual bool IsBuildless { get; } = false;
 
 
         /// <summary>
