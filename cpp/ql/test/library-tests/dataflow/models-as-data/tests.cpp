@@ -48,11 +48,11 @@ void test_sources() {
 	int a, b, c, d;
 
 	remoteMadSourceIndirectArg0(&a, &b);
-	sink(a); // $ MISSING: ir
-	sink(a);
+	sink(a); // $ ir
+	sink(a); // $ SPURIOUS: ir
 	remoteMadSourceIndirectArg1(c, d);
 	sink(c);
-	sink(d); // $ MISSING: ir
+	sink(d); // $ ir
 
 	sink(remoteMadSourceVar); // $ ir
 	sink(*remoteMadSourceVarIndirect); // $ MISSING: ir
@@ -100,9 +100,9 @@ void test_sinks() {
 
 	int a = source();
 	int *a_ptr = &a;
-	madSinkIndirectArg0(&a); // $ MISSING: ir
-	madSinkIndirectArg0(a_ptr); // $ MISSING: ir
-	madSinkDoubleIndirectArg0(&a_ptr); // $ MISSING: ir
+	madSinkIndirectArg0(&a); // $ ir
+	madSinkIndirectArg0(a_ptr); // $ ir
+	madSinkDoubleIndirectArg0(&a_ptr); // $ ir
 
 	madSinkVar = source();  // $ ir
 
@@ -272,7 +272,7 @@ void test_class_members() {
 
 	int a;
 	mc.memberRemoteMadSourceIndirectArg0(&a);
-	sink(a); // $ MISSING: ir
+	sink(a); // $ ir
 
 	sink(mc.memberRemoteMadSourceVar); // $ ir
 

@@ -32,16 +32,16 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
 
   string encodeReturn(ReturnKind rk, string arg) {
     rk != getStandardReturnValueKind() and
-    result = indirectionString(rk.(NormalReturnKind).getIndirectionIndex()) + "ReturnValue" and
-    arg = ""
+    result = "ReturnValue" and
+    arg = indirectionString(rk.(NormalReturnKind).getIndirectionIndex())
   }
 
   string encodeContent(ContentSet cs, string arg) {
     exists(FieldContent c |
       cs.isSingleton(c) and
       // FieldContent indices have 0 for the address, 1 for content, so we need to subtract one.
-      result = indirectionString(c.getIndirectionIndex() - 1) + "Field" and
-      arg = c.getField().getName()
+      result = "Field" and
+      arg = indirectionString(c.getIndirectionIndex() - 1) + c.getField().getName()
     )
   }
 
@@ -54,15 +54,17 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
   bindingset[token]
   ParameterPosition decodeUnknownParameterPosition(AccessPath::AccessPathTokenBase token) {
     // needed to support `Argument[x..y]` ranges, `Argument[-1]`, and indirections `*Argument[0]`.
-    exists(int indirection |
-      token.getName() = indirectionString(indirection) + "Argument" and
-      exists(int pos | pos = AccessPath::parseInt(token.getAnArgument()) |
-        pos >= 0 and indirection = 0 and result = TDirectPosition(pos)
+    exists(int indirection, string argPosString, int argPos |
+      token.getName() = "Argument" and
+      token.getAnArgument() = indirectionString(indirection) + argPosString and
+      argPos = AccessPath::parseInt(argPosString) and
+      (
+        argPos >= 0 and indirection = 0 and result = TDirectPosition(argPos)
         or
-        pos >= 0 and indirection > 0 and result = TIndirectionPosition(pos, indirection)
+        argPos >= 0 and indirection > 0 and result = TIndirectionPosition(argPos, indirection)
         or
         // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
-        pos = -1 and result = TIndirectionPosition(pos, indirection + 1)
+        argPos = -1 and result = TIndirectionPosition(argPos, indirection + 1)
       )
     )
   }
@@ -70,26 +72,37 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
   bindingset[token]
   ArgumentPosition decodeUnknownArgumentPosition(AccessPath::AccessPathTokenBase token) {
     // needed to support `Argument[x..y]` ranges, `Argument[-1]`, and indirections `*Argument[0]`.
-    exists(int indirection |
-      token.getName() = indirectionString(indirection) + "Parameter" and
-      exists(int pos | pos = AccessPath::parseInt(token.getAnArgument()) |
-        pos >= 0 and indirection = 0 and result = TDirectPosition(pos)
+    exists(int indirection, string paramPosString, int paramPos |
+      token.getName() = "Parameter" and
+      token.getAnArgument() = indirectionString(indirection) + paramPosString and
+      paramPos = AccessPath::parseInt(paramPosString) and
+      (
+        paramPos >= 0 and indirection = 0 and result = TDirectPosition(paramPos)
         or
-        pos >= 0 and indirection > 0 and result = TIndirectionPosition(pos, indirection)
+        paramPos >= 0 and indirection > 0 and result = TIndirectionPosition(paramPos, indirection)
         or
         // `Argument[-1]` is the qualifier object `*this`, not the `this` pointer itself
-        pos = -1 and result = TIndirectionPosition(pos, indirection + 1)
+        paramPos = -1 and result = TIndirectionPosition(paramPos, indirection + 1)
       )
     )
   }
 
   bindingset[token]
   ContentSet decodeUnknownContent(AccessPath::AccessPathTokenBase token) {
-    // field content (with indirection support).
+    // field content (no indirection support)
     exists(FieldContent c |
       result.isSingleton(c) and
+      token.getName() = c.getField().getName() and
+      not exists(token.getArgumentList()) and
+      c.getIndirectionIndex() = 1
+    )
+    or
+    // field content (with indirection support)
+    exists(FieldContent c |
+      result.isSingleton(c) and
+      token.getName() = c.getField().getName() and
       // FieldContent indices have 0 for the address, 1 for content, so we need to subtract one.
-      token = indirectionString(c.getIndirectionIndex() - 1) + c.getField().getName()
+      token.getAnArgument() = indirectionString(c.getIndirectionIndex() - 1)
     )
   }
 }
