@@ -139,6 +139,7 @@ private module ParameterSinks {
 }
 
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 
 /**
  * Holds if `n` represents the expression `e`, and `e` is a pointer that is
@@ -149,11 +150,11 @@ private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
 predicate isUse(DataFlow::Node n, Expr e) {
   isUse0(e) and n.asExpr() = e
   or
-  exists(CallInstruction call, InitializeParameterInstruction init |
+  exists(DataFlowCall call, InitializeParameterInstruction init |
     n.asOperand().getDef().getUnconvertedResultExpression() = e and
     pragma[only_bind_into](init) = ParameterSinks::getAnAlwaysDereferencedParameter() and
     viableParamArg(call, DataFlow::instructionNode(init), n) and
     pragma[only_bind_out](init.getEnclosingFunction()) =
-      pragma[only_bind_out](call.getStaticCallTarget())
+      pragma[only_bind_out](call.asCallInstruction().getStaticCallTarget())
   )
 }

@@ -20,6 +20,9 @@ abstract class RemoteFlowSource extends FlowSource { }
 /** A data flow source of local user input. */
 abstract class LocalFlowSource extends FlowSource { }
 
+/**
+ * A remote data flow source that is defined through a `RemoteFlowSourceFunction` model.
+ */
 private class RemoteModelSource extends RemoteFlowSource {
   string sourceType;
 
@@ -34,6 +37,9 @@ private class RemoteModelSource extends RemoteFlowSource {
   override string getSourceType() { result = sourceType }
 }
 
+/**
+ * A local data flow source that is defined through a `LocalFlowSourceFunction` model.
+ */
 private class LocalModelSource extends LocalFlowSource {
   string sourceType;
 
@@ -48,6 +54,9 @@ private class LocalModelSource extends LocalFlowSource {
   override string getSourceType() { result = sourceType }
 }
 
+/**
+ * A local data flow source that the `argv` parameter to `main`.
+ */
 private class ArgvSource extends LocalFlowSource {
   ArgvSource() {
     exists(Function main, Parameter argv |
@@ -58,6 +67,24 @@ private class ArgvSource extends LocalFlowSource {
   }
 
   override string getSourceType() { result = "a command-line argument" }
+}
+
+/**
+ * A remote data flow source that is defined through 'models as data'.
+ */
+private class ExternalRemoteFlowSource extends RemoteFlowSource {
+  ExternalRemoteFlowSource() { sourceNode(this, "remote") }
+
+  override string getSourceType() { result = "external" }
+}
+
+/**
+ * A local data flow source that is defined through 'models as data'.
+ */
+private class ExternalLocalFlowSource extends LocalFlowSource {
+  ExternalLocalFlowSource() { sourceNode(this, "local") }
+
+  override string getSourceType() { result = "external" }
 }
 
 /** A remote data flow sink. */

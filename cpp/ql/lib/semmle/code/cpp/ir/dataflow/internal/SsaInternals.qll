@@ -19,15 +19,6 @@ private module SourceVariables {
       ind = [0 .. countIndirectionsForCppType(base.getLanguageType()) + 1]
     }
 
-  private int maxNumberOfIndirections() { result = max(SourceVariable sv | | sv.getIndirection()) }
-
-  private string repeatStars(int n) {
-    n = 0 and result = ""
-    or
-    n = [1 .. maxNumberOfIndirections()] and
-    result = "*" + repeatStars(n - 1)
-  }
-
   class SourceVariable extends TSourceVariable {
     BaseSourceVariable base;
     int ind;
@@ -74,17 +65,26 @@ private module SourceVariables {
 import SourceVariables
 
 /**
- * Holds if the `(operand, indirectionIndex)` columns should be
- * assigned a `RawIndirectOperand` value.
+ * Holds if `indirectionIndex` is a valid non-zero indirection index for
+ * operand `op`. That is, `indirectionIndex` is between 1 and the maximum
+ * indirection for the operand's type.
  */
-predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
+predicate hasIndirectOperand(Operand op, int indirectionIndex) {
   exists(CppType type, int m |
     not ignoreOperand(op) and
     type = getLanguageType(op) and
     m = countIndirectionsForCppType(type) and
-    indirectionIndex = [1 .. m] and
-    not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
+    indirectionIndex = [1 .. m]
   )
+}
+
+/**
+ * Holds if the `(operand, indirectionIndex)` columns should be
+ * assigned a `RawIndirectOperand` value.
+ */
+predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
+  hasIndirectOperand(op, indirectionIndex) and
+  not hasIRRepresentationOfIndirectOperand(op, indirectionIndex, _, _)
 }
 
 /**
@@ -442,6 +442,8 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
   FinalParameterUse() { this = TFinalParameterUse(p, ind) }
 
   Parameter getParameter() { result = p }
+
+  int getArgumentIndex() { result = p.getIndex() }
 
   override Node getNode() { finalParameterNodeHasParameterAndIndex(result, p, ind) }
 
@@ -891,7 +893,7 @@ private predicate isArgumentOfCallableInstruction(DataFlowCall call, Instruction
 }
 
 private predicate isArgumentOfCallableOperand(DataFlowCall call, Operand operand) {
-  operand.(ArgumentOperand).getCall() = call
+  operand = call.getArgumentOperand(_)
   or
   exists(FieldAddressInstruction fai |
     fai.getObjectAddressOperand() = operand and
