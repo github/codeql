@@ -1,0 +1,107 @@
+testFailures
+edges
+| TypeBased.cs:9:17:9:18 | access to local variable s1 : String | TypeBased.cs:11:18:11:19 | access to local variable s1 | provenance |  |
+| TypeBased.cs:9:22:9:38 | call to method Source<String> : String | TypeBased.cs:9:17:9:18 | access to local variable s1 : String | provenance |  |
+| TypeBased.cs:16:17:16:18 | access to local variable s2 : String | TypeBased.cs:17:17:17:17 | access to local variable r : String | provenance |  |
+| TypeBased.cs:16:22:16:38 | call to method Source<String> : String | TypeBased.cs:16:17:16:18 | access to local variable s2 : String | provenance |  |
+| TypeBased.cs:17:17:17:17 | access to local variable r : String | TypeBased.cs:18:18:18:18 | access to local variable r | provenance |  |
+| TypeBased.cs:23:17:23:18 | access to local variable s3 : String | TypeBased.cs:24:17:24:17 | access to local variable r : String | provenance |  |
+| TypeBased.cs:23:22:23:38 | call to method Source<String> : String | TypeBased.cs:23:17:23:18 | access to local variable s3 : String | provenance |  |
+| TypeBased.cs:24:17:24:17 | access to local variable r : String | TypeBased.cs:25:18:25:18 | access to local variable r | provenance |  |
+| TypeBased.cs:30:17:30:18 | access to local variable s3 : String | TypeBased.cs:31:17:31:17 | access to local variable r : String | provenance |  |
+| TypeBased.cs:30:22:30:38 | call to method Source<String> : String | TypeBased.cs:30:17:30:18 | access to local variable s3 : String | provenance |  |
+| TypeBased.cs:31:17:31:17 | access to local variable r : String | TypeBased.cs:32:18:32:18 | access to local variable r | provenance |  |
+| TypeBased.cs:37:17:37:18 | access to local variable s4 : String | TypeBased.cs:39:17:39:17 | access to local variable r : String | provenance |  |
+| TypeBased.cs:37:22:37:38 | call to method Source<String> : String | TypeBased.cs:37:17:37:18 | access to local variable s4 : String | provenance |  |
+| TypeBased.cs:39:17:39:17 | access to local variable r : String | TypeBased.cs:40:18:40:18 | access to local variable r | provenance |  |
+| TypeBased.cs:60:17:60:18 | access to local variable o5 : Object | TypeBased.cs:61:17:61:17 | access to local variable r : Object | provenance |  |
+| TypeBased.cs:60:22:60:38 | call to method Source<Object> : Object | TypeBased.cs:60:17:60:18 | access to local variable o5 : Object | provenance |  |
+| TypeBased.cs:61:17:61:17 | access to local variable r : Object | TypeBased.cs:62:18:62:18 | access to local variable r | provenance |  |
+| TypeBased.cs:67:17:67:18 | access to local variable s6 : String | TypeBased.cs:68:36:68:36 | String r : String | provenance |  |
+| TypeBased.cs:67:22:67:38 | call to method Source<String> : String | TypeBased.cs:67:17:67:18 | access to local variable s6 : String | provenance |  |
+| TypeBased.cs:68:36:68:36 | String r : String | TypeBased.cs:69:18:69:18 | access to local variable r | provenance |  |
+| TypeBased.cs:74:17:74:18 | access to local variable s7 : String | TypeBased.cs:75:17:75:18 | access to local variable r2 : String | provenance |  |
+| TypeBased.cs:74:17:74:18 | access to local variable s7 : String | TypeBased.cs:75:45:75:46 | String r1 : String | provenance |  |
+| TypeBased.cs:74:22:74:38 | call to method Source<String> : String | TypeBased.cs:74:17:74:18 | access to local variable s7 : String | provenance |  |
+| TypeBased.cs:75:17:75:18 | access to local variable r2 : String | TypeBased.cs:77:18:77:19 | access to local variable r2 | provenance |  |
+| TypeBased.cs:75:45:75:46 | String r1 : String | TypeBased.cs:76:18:76:19 | access to local variable r1 | provenance |  |
+| TypeBased.cs:113:17:113:19 | access to local variable s12 : String | TypeBased.cs:114:17:114:17 | access to local variable c : MyClass | provenance |  |
+| TypeBased.cs:113:23:113:40 | call to method Source<String> : String | TypeBased.cs:113:17:113:19 | access to local variable s12 : String | provenance |  |
+| TypeBased.cs:114:17:114:17 | access to local variable c : MyClass | TypeBased.cs:115:17:115:17 | access to local variable r : String | provenance |  |
+| TypeBased.cs:115:17:115:17 | access to local variable r : String | TypeBased.cs:116:18:116:18 | access to local variable r | provenance |  |
+| TypeBased.cs:121:17:121:20 | access to local variable s131 : String | TypeBased.cs:123:17:123:17 | access to local variable c : MyClass | provenance |  |
+| TypeBased.cs:121:24:121:42 | call to method Source<String> : String | TypeBased.cs:121:17:121:20 | access to local variable s131 : String | provenance |  |
+| TypeBased.cs:122:17:122:20 | access to local variable s132 : String | TypeBased.cs:124:17:124:17 | access to local variable r : String | provenance |  |
+| TypeBased.cs:122:24:122:42 | call to method Source<String> : String | TypeBased.cs:122:17:122:20 | access to local variable s132 : String | provenance |  |
+| TypeBased.cs:123:17:123:17 | access to local variable c : MyClass | TypeBased.cs:124:17:124:17 | access to local variable r : String | provenance |  |
+| TypeBased.cs:124:17:124:17 | access to local variable r : String | TypeBased.cs:125:18:125:18 | access to local variable r | provenance |  |
+| TypeBased.cs:130:17:130:19 | access to local variable s14 : String | TypeBased.cs:131:17:131:17 | access to local variable c : MyClass | provenance |  |
+| TypeBased.cs:130:23:130:40 | call to method Source<String> : String | TypeBased.cs:130:17:130:19 | access to local variable s14 : String | provenance |  |
+| TypeBased.cs:131:17:131:17 | access to local variable c : MyClass | TypeBased.cs:132:28:132:28 | String r : String | provenance |  |
+| TypeBased.cs:132:28:132:28 | String r : String | TypeBased.cs:133:18:133:18 | access to local variable r | provenance |  |
+nodes
+| TypeBased.cs:9:17:9:18 | access to local variable s1 : String | semmle.label | access to local variable s1 : String |
+| TypeBased.cs:9:22:9:38 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:11:18:11:19 | access to local variable s1 | semmle.label | access to local variable s1 |
+| TypeBased.cs:16:17:16:18 | access to local variable s2 : String | semmle.label | access to local variable s2 : String |
+| TypeBased.cs:16:22:16:38 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:17:17:17:17 | access to local variable r : String | semmle.label | access to local variable r : String |
+| TypeBased.cs:18:18:18:18 | access to local variable r | semmle.label | access to local variable r |
+| TypeBased.cs:23:17:23:18 | access to local variable s3 : String | semmle.label | access to local variable s3 : String |
+| TypeBased.cs:23:22:23:38 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:24:17:24:17 | access to local variable r : String | semmle.label | access to local variable r : String |
+| TypeBased.cs:25:18:25:18 | access to local variable r | semmle.label | access to local variable r |
+| TypeBased.cs:30:17:30:18 | access to local variable s3 : String | semmle.label | access to local variable s3 : String |
+| TypeBased.cs:30:22:30:38 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:31:17:31:17 | access to local variable r : String | semmle.label | access to local variable r : String |
+| TypeBased.cs:32:18:32:18 | access to local variable r | semmle.label | access to local variable r |
+| TypeBased.cs:37:17:37:18 | access to local variable s4 : String | semmle.label | access to local variable s4 : String |
+| TypeBased.cs:37:22:37:38 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:39:17:39:17 | access to local variable r : String | semmle.label | access to local variable r : String |
+| TypeBased.cs:40:18:40:18 | access to local variable r | semmle.label | access to local variable r |
+| TypeBased.cs:60:17:60:18 | access to local variable o5 : Object | semmle.label | access to local variable o5 : Object |
+| TypeBased.cs:60:22:60:38 | call to method Source<Object> : Object | semmle.label | call to method Source<Object> : Object |
+| TypeBased.cs:61:17:61:17 | access to local variable r : Object | semmle.label | access to local variable r : Object |
+| TypeBased.cs:62:18:62:18 | access to local variable r | semmle.label | access to local variable r |
+| TypeBased.cs:67:17:67:18 | access to local variable s6 : String | semmle.label | access to local variable s6 : String |
+| TypeBased.cs:67:22:67:38 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:68:36:68:36 | String r : String | semmle.label | String r : String |
+| TypeBased.cs:69:18:69:18 | access to local variable r | semmle.label | access to local variable r |
+| TypeBased.cs:74:17:74:18 | access to local variable s7 : String | semmle.label | access to local variable s7 : String |
+| TypeBased.cs:74:22:74:38 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:75:17:75:18 | access to local variable r2 : String | semmle.label | access to local variable r2 : String |
+| TypeBased.cs:75:45:75:46 | String r1 : String | semmle.label | String r1 : String |
+| TypeBased.cs:76:18:76:19 | access to local variable r1 | semmle.label | access to local variable r1 |
+| TypeBased.cs:77:18:77:19 | access to local variable r2 | semmle.label | access to local variable r2 |
+| TypeBased.cs:113:17:113:19 | access to local variable s12 : String | semmle.label | access to local variable s12 : String |
+| TypeBased.cs:113:23:113:40 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:114:17:114:17 | access to local variable c : MyClass | semmle.label | access to local variable c : MyClass |
+| TypeBased.cs:115:17:115:17 | access to local variable r : String | semmle.label | access to local variable r : String |
+| TypeBased.cs:116:18:116:18 | access to local variable r | semmle.label | access to local variable r |
+| TypeBased.cs:121:17:121:20 | access to local variable s131 : String | semmle.label | access to local variable s131 : String |
+| TypeBased.cs:121:24:121:42 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:122:17:122:20 | access to local variable s132 : String | semmle.label | access to local variable s132 : String |
+| TypeBased.cs:122:24:122:42 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:123:17:123:17 | access to local variable c : MyClass | semmle.label | access to local variable c : MyClass |
+| TypeBased.cs:124:17:124:17 | access to local variable r : String | semmle.label | access to local variable r : String |
+| TypeBased.cs:125:18:125:18 | access to local variable r | semmle.label | access to local variable r |
+| TypeBased.cs:130:17:130:19 | access to local variable s14 : String | semmle.label | access to local variable s14 : String |
+| TypeBased.cs:130:23:130:40 | call to method Source<String> : String | semmle.label | call to method Source<String> : String |
+| TypeBased.cs:131:17:131:17 | access to local variable c : MyClass | semmle.label | access to local variable c : MyClass |
+| TypeBased.cs:132:28:132:28 | String r : String | semmle.label | String r : String |
+| TypeBased.cs:133:18:133:18 | access to local variable r | semmle.label | access to local variable r |
+subpaths
+#select
+| TypeBased.cs:11:18:11:19 | access to local variable s1 | TypeBased.cs:9:22:9:38 | call to method Source<String> : String | TypeBased.cs:11:18:11:19 | access to local variable s1 | $@ | TypeBased.cs:9:22:9:38 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:18:18:18:18 | access to local variable r | TypeBased.cs:16:22:16:38 | call to method Source<String> : String | TypeBased.cs:18:18:18:18 | access to local variable r | $@ | TypeBased.cs:16:22:16:38 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:25:18:25:18 | access to local variable r | TypeBased.cs:23:22:23:38 | call to method Source<String> : String | TypeBased.cs:25:18:25:18 | access to local variable r | $@ | TypeBased.cs:23:22:23:38 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:32:18:32:18 | access to local variable r | TypeBased.cs:30:22:30:38 | call to method Source<String> : String | TypeBased.cs:32:18:32:18 | access to local variable r | $@ | TypeBased.cs:30:22:30:38 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:40:18:40:18 | access to local variable r | TypeBased.cs:37:22:37:38 | call to method Source<String> : String | TypeBased.cs:40:18:40:18 | access to local variable r | $@ | TypeBased.cs:37:22:37:38 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:62:18:62:18 | access to local variable r | TypeBased.cs:60:22:60:38 | call to method Source<Object> : Object | TypeBased.cs:62:18:62:18 | access to local variable r | $@ | TypeBased.cs:60:22:60:38 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| TypeBased.cs:69:18:69:18 | access to local variable r | TypeBased.cs:67:22:67:38 | call to method Source<String> : String | TypeBased.cs:69:18:69:18 | access to local variable r | $@ | TypeBased.cs:67:22:67:38 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:76:18:76:19 | access to local variable r1 | TypeBased.cs:74:22:74:38 | call to method Source<String> : String | TypeBased.cs:76:18:76:19 | access to local variable r1 | $@ | TypeBased.cs:74:22:74:38 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:77:18:77:19 | access to local variable r2 | TypeBased.cs:74:22:74:38 | call to method Source<String> : String | TypeBased.cs:77:18:77:19 | access to local variable r2 | $@ | TypeBased.cs:74:22:74:38 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:116:18:116:18 | access to local variable r | TypeBased.cs:113:23:113:40 | call to method Source<String> : String | TypeBased.cs:116:18:116:18 | access to local variable r | $@ | TypeBased.cs:113:23:113:40 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:125:18:125:18 | access to local variable r | TypeBased.cs:121:24:121:42 | call to method Source<String> : String | TypeBased.cs:125:18:125:18 | access to local variable r | $@ | TypeBased.cs:121:24:121:42 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:125:18:125:18 | access to local variable r | TypeBased.cs:122:24:122:42 | call to method Source<String> : String | TypeBased.cs:125:18:125:18 | access to local variable r | $@ | TypeBased.cs:122:24:122:42 | call to method Source<String> : String | call to method Source<String> : String |
+| TypeBased.cs:133:18:133:18 | access to local variable r | TypeBased.cs:130:23:130:40 | call to method Source<String> : String | TypeBased.cs:133:18:133:18 | access to local variable r | $@ | TypeBased.cs:130:23:130:40 | call to method Source<String> : String | call to method Source<String> : String |

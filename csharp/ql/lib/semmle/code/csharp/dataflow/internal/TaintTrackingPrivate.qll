@@ -165,6 +165,8 @@ private module Cached {
       nodeTo.(FlowSummaryNode).getSummaryNode(), false)
     or
     nodeTo = nodeFrom.(DataFlow::NonLocalJumpNode).getAJumpSuccessor(false)
+    or
+    ApiTypeFlow::taintStep(nodeFrom, nodeTo)
   }
 }
 
