@@ -19,6 +19,7 @@
 private import javascript
 private import internal.ApiGraphModels as Shared
 private import internal.ApiGraphModelsSpecific as Specific
+private import semmle.javascript.endpoints.EndpointNaming as EndpointNaming
 import Shared::ModelInput as ModelInput
 import Shared::ModelOutput as ModelOutput
 
@@ -54,4 +55,37 @@ private class TaintStepFromSummary extends TaintTracking::SharedTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
     summaryStepNodes(pred, succ, "taint")
   }
+}
+
+/**
+ * Specifies which parts of the API graph to export in `ModelExport`.
+ */
+signature module ModelExportSig {
+  /**
+   * Holds if the exported model should contain `node`, if it is publicly accessible.
+   *
+   * This ensures that all ways to access `node` will be exported in type models.
+   */
+  predicate shouldContain(API::Node node);
+}
+
+/**
+ * Module for exporting type models for a given set of nodes in the API graph.
+ */
+module ModelExport<ModelExportSig S> {
+  private import internal.GraphExport
+
+  private module GraphExportConfig implements GraphExportSig {
+    class Node = API::Node;
+
+    predicate edge = Specific::apiGraphHasEdge/3;
+
+    predicate shouldContain = S::shouldContain/1;
+
+    predicate shouldNotContain = EndpointNaming::isPrivateLike/1;
+
+    predicate getNodeFromName = EndpointNaming::getAnExportedApiNode/2;
+  }
+
+  import GraphExport<GraphExportConfig>
 }
