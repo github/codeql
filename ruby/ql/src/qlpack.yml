@@ -1,5 +1,5 @@
 name: codeql/ruby-queries
-version: 0.8.12-dev
+version: 0.8.13-dev
 groups:
   - ruby
   - queries
