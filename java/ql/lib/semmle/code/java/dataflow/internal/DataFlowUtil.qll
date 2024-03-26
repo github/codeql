@@ -106,7 +106,7 @@ private module Cached {
    */
   cached
   predicate localFlowStep(Node node1, Node node2) {
-    simpleLocalFlowStep0(node1, node2)
+    simpleLocalFlowStep0(node1, node2, _)
     or
     adjacentUseUse(node1.asExpr(), node2.asExpr())
     or
@@ -122,12 +122,13 @@ private module Cached {
    * data flow. It may have less flow than the `localFlowStep` predicate.
    */
   cached
-  predicate simpleLocalFlowStep(Node node1, Node node2) {
-    simpleLocalFlowStep0(node1, node2)
+  predicate simpleLocalFlowStep(Node node1, Node node2, string model) {
+    simpleLocalFlowStep0(node1, node2, model)
     or
     any(AdditionalValueStep a).step(node1, node2) and
     pragma[only_bind_out](node1.getEnclosingCallable()) =
       pragma[only_bind_out](node2.getEnclosingCallable()) and
+    model = "AdditionalValueStep" and
     // prevent recursive call
     (any(AdditionalValueStep a).step(_, _) implies any())
   }
@@ -162,7 +163,7 @@ predicate localMustFlowStep(Node node1, Node node2) {
   node1 =
     unique(FlowSummaryNode n1 |
       FlowSummaryImpl::Private::Steps::summaryLocalStep(n1.getSummaryNode(),
-        node2.(FlowSummaryNode).getSummaryNode(), true)
+        node2.(FlowSummaryNode).getSummaryNode(), true, _)
     )
 }
 
@@ -210,51 +211,55 @@ predicate simpleAstFlowStep(Expr e1, Expr e2) {
   exists(InstanceOfExpr ioe | e1 = ioe.getExpr() and e2 = ioe.getPattern().asRecordPattern())
 }
 
-private predicate simpleLocalFlowStep0(Node node1, Node node2) {
-  TaintTrackingUtil::forceCachingInSameStage() and
-  // Variable flow steps through adjacent def-use and use-use pairs.
-  exists(SsaExplicitUpdate upd |
-    upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
-    upd.getDefiningExpr().(AssignOp) = node1.asExpr() or
-    upd.getDefiningExpr().(RecordBindingVariableExpr) = node1.asExpr()
-  |
-    node2.asExpr() = upd.getAFirstUse() and
+private predicate simpleLocalFlowStep0(Node node1, Node node2, string model) {
+  (
+    TaintTrackingUtil::forceCachingInSameStage() and
+    // Variable flow steps through adjacent def-use and use-use pairs.
+    exists(SsaExplicitUpdate upd |
+      upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
+      upd.getDefiningExpr().(AssignOp) = node1.asExpr() or
+      upd.getDefiningExpr().(RecordBindingVariableExpr) = node1.asExpr()
+    |
+      node2.asExpr() = upd.getAFirstUse() and
+      not capturedVariableRead(node2)
+    )
+    or
+    exists(SsaImplicitInit init |
+      init.isParameterDefinition(node1.asParameter()) and
+      node2.asExpr() = init.getAFirstUse() and
+      not capturedVariableRead(node2)
+    )
+    or
+    adjacentUseUse(node1.asExpr(), node2.asExpr()) and
+    not exists(FieldRead fr |
+      hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
+    ) and
+    not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _) and
     not capturedVariableRead(node2)
-  )
-  or
-  exists(SsaImplicitInit init |
-    init.isParameterDefinition(node1.asParameter()) and
-    node2.asExpr() = init.getAFirstUse() and
+    or
+    ThisFlow::adjacentThisRefs(node1, node2)
+    or
+    adjacentUseUse(node1.(PostUpdateNode).getPreUpdateNode().asExpr(), node2.asExpr()) and
     not capturedVariableRead(node2)
-  )
-  or
-  adjacentUseUse(node1.asExpr(), node2.asExpr()) and
-  not exists(FieldRead fr |
-    hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
+    or
+    ThisFlow::adjacentThisRefs(node1.(PostUpdateNode).getPreUpdateNode(), node2)
+    or
+    simpleAstFlowStep(node1.asExpr(), node2.asExpr())
+    or
+    captureValueStep(node1, node2)
   ) and
-  not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _) and
-  not capturedVariableRead(node2)
-  or
-  ThisFlow::adjacentThisRefs(node1, node2)
-  or
-  adjacentUseUse(node1.(PostUpdateNode).getPreUpdateNode().asExpr(), node2.asExpr()) and
-  not capturedVariableRead(node2)
-  or
-  ThisFlow::adjacentThisRefs(node1.(PostUpdateNode).getPreUpdateNode(), node2)
-  or
-  simpleAstFlowStep(node1.asExpr(), node2.asExpr())
+  model = ""
   or
   exists(MethodCall ma, ValuePreservingMethod m, int argNo |
     ma.getCallee().getSourceDeclaration() = m and m.returnsValue(argNo)
   |
     node2.asExpr() = ma and
-    node1.(ArgumentNode).argumentOf(any(DataFlowCall c | c.asCall() = ma), argNo)
+    node1.(ArgumentNode).argumentOf(any(DataFlowCall c | c.asCall() = ma), argNo) and
+    model = "ValuePreservingMethod"
   )
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
-    node2.(FlowSummaryNode).getSummaryNode(), true)
-  or
-  captureValueStep(node1, node2)
+    node2.(FlowSummaryNode).getSummaryNode(), true, model)
 }
 
 /**

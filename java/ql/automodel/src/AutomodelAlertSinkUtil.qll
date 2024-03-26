@@ -15,7 +15,8 @@ private newtype TSinkModel =
     string package, string type, boolean subtypes, string name, string signature, string ext,
     string input, string kind, string provenance
   ) {
-    ExternalFlow::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)
+    ExternalFlow::sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance,
+      _)
   }
 
 class SinkModel extends TSinkModel {

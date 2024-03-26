@@ -1892,7 +1892,7 @@ private module Cached {
    * (intra-procedural) step.
    */
   cached
-  predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+  predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo, _) }
 
   private predicate indirectionOperandFlow(RawIndirectOperand nodeFrom, Node nodeTo) {
     nodeFrom != nodeTo and
@@ -1962,41 +1962,45 @@ private module Cached {
    * data flow. It may have less flow than the `localFlowStep` predicate.
    */
   cached
-  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
-    // Post update node -> Node flow
-    Ssa::postUpdateFlow(nodeFrom, nodeTo)
-    or
-    // Def-use/Use-use flow
-    Ssa::ssaFlow(nodeFrom, nodeTo)
-    or
-    // Operand -> Instruction flow
-    simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
-    or
-    // Instruction -> Operand flow
-    exists(Instruction iFrom, Operand opTo |
-      iFrom = nodeFrom.asInstruction() and opTo = nodeTo.asOperand()
-    |
-      simpleOperandLocalFlowStep(iFrom, opTo) and
-      // Omit when the instruction node also represents the operand.
-      not iFrom = Ssa::getIRRepresentationOfOperand(opTo)
-    )
-    or
-    // Phi node -> Node flow
-    Ssa::fromPhiNode(nodeFrom, nodeTo)
-    or
-    // Indirect operand -> (indirect) instruction flow
-    indirectionOperandFlow(nodeFrom, nodeTo)
-    or
-    // Indirect instruction -> indirect operand flow
-    indirectionInstructionFlow(nodeFrom, nodeTo)
+  predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo, string model) {
+    (
+      // Post update node -> Node flow
+      Ssa::postUpdateFlow(nodeFrom, nodeTo)
+      or
+      // Def-use/Use-use flow
+      Ssa::ssaFlow(nodeFrom, nodeTo)
+      or
+      // Operand -> Instruction flow
+      simpleInstructionLocalFlowStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+      or
+      // Instruction -> Operand flow
+      exists(Instruction iFrom, Operand opTo |
+        iFrom = nodeFrom.asInstruction() and opTo = nodeTo.asOperand()
+      |
+        simpleOperandLocalFlowStep(iFrom, opTo) and
+        // Omit when the instruction node also represents the operand.
+        not iFrom = Ssa::getIRRepresentationOfOperand(opTo)
+      )
+      or
+      // Phi node -> Node flow
+      Ssa::fromPhiNode(nodeFrom, nodeTo)
+      or
+      // Indirect operand -> (indirect) instruction flow
+      indirectionOperandFlow(nodeFrom, nodeTo)
+      or
+      // Indirect instruction -> indirect operand flow
+      indirectionInstructionFlow(nodeFrom, nodeTo)
+    ) and
+    model = ""
     or
     // Flow through modeled functions
-    modelFlow(nodeFrom, nodeTo)
+    modelFlow(nodeFrom, nodeTo, model)
     or
     // Reverse flow: data that flows from the definition node back into the indirection returned
     // by a function. This allows data to flow 'in' through references returned by a modeled
     // function such as `operator[]`.
-    reverseFlow(nodeFrom, nodeTo)
+    reverseFlow(nodeFrom, nodeTo) and
+    model = ""
   }
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
@@ -2011,12 +2015,13 @@ private module Cached {
     opTo.getDef() = iFrom
   }
 
-  private predicate modelFlow(Node nodeFrom, Node nodeTo) {
+  private predicate modelFlow(Node nodeFrom, Node nodeTo, string model) {
     exists(
       CallInstruction call, DataFlowFunction func, FunctionInput modelIn, FunctionOutput modelOut
     |
       call.getStaticCallTarget() = func and
-      func.hasDataFlow(modelIn, modelOut)
+      func.hasDataFlow(modelIn, modelOut) and
+      model = "DataFlowFunction"
     |
       nodeFrom = callInput(call, modelIn) and
       nodeTo = callOutput(call, modelOut)

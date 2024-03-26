@@ -138,7 +138,7 @@ predicate invocationMatchesExtraCallSiteFilter(API::CallNode invoke, AccessPathT
 pragma[nomagic]
 private predicate relevantInputOutputPath(API::CallNode base, AccessPath inputOrOutput) {
   exists(string type, string input, string output, string path |
-    ModelOutput::relevantSummaryModel(type, path, input, output, _) and
+    ModelOutput::relevantSummaryModel(type, path, input, output, _, _) and
     ModelOutput::resolvedSummaryBase(type, path, base) and
     inputOrOutput = [input, output]
   )
@@ -170,7 +170,7 @@ private API::Node getNodeFromInputOutputPath(API::CallNode baseNode, AccessPath 
  */
 predicate summaryStep(API::Node pred, API::Node succ, string kind) {
   exists(string type, string path, API::CallNode base, AccessPath input, AccessPath output |
-    ModelOutput::relevantSummaryModel(type, path, input, output, kind) and
+    ModelOutput::relevantSummaryModel(type, path, input, output, kind, _) and // TODO???
     ModelOutput::resolvedSummaryBase(type, path, base) and
     pred = getNodeFromInputOutputPath(base, input) and
     succ = getNodeFromInputOutputPath(base, output)

@@ -74,7 +74,7 @@ class ExternalApi extends Callable {
   predicate hasSummary() {
     this instanceof SummarizedCallable
     or
-    defaultAdditionalTaintStep(this.getAnInput(), _)
+    defaultAdditionalTaintStep(this.getAnInput(), _, _)
   }
 
   /** Holds if this API is a known source. */

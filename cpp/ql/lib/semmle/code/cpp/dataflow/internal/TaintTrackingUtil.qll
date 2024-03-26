@@ -32,8 +32,8 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
  * Holds if the additional step from `src` to `sink` should be included in all
  * global taint flow configurations.
  */
-predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
-  localAdditionalTaintStep(src, sink)
+predicate defaultAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink, string model) {
+  localAdditionalTaintStep(src, sink) and model = ""
 }
 
 /**
