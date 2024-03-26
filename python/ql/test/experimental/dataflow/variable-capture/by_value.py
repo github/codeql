@@ -34,7 +34,7 @@ def by_value1():
     a = SOURCE
     def inner(a_val=a):
         SINK(a_val) #$ captured
-        SINK_F(a) #$ SPURIOUS: captured
+        SINK_F(a)
     a = NONSOURCE
     inner()
 

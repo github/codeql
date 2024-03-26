@@ -51,7 +51,9 @@ namespace Semmle.Autobuild.CSharp
                     break;
                 case CSharpBuildStrategy.Buildless:
                     // No need to check that the extractor has been executed in buildless mode
-                    attempt = new StandaloneBuildRule().Analyse(this, false);
+                    attempt = BuildScript.Bind(
+                        AddBuildlessStartedDiagnostic() & new StandaloneBuildRule().Analyse(this, false),
+                        AddBuildlessEndedDiagnostic);
                     break;
                 case CSharpBuildStrategy.MSBuild:
                     attempt = new MsBuildRule().Analyse(this, false) & CheckExtractorRun(true);
@@ -85,6 +87,52 @@ namespace Semmle.Autobuild.CSharp
 
                 return 1;
             });
+
+        private BuildScript AddBuildlessStartedDiagnostic()
+        {
+            return BuildScript.Create(actions =>
+            {
+                AddDiagnostic(new DiagnosticMessage(
+                    Options.Language,
+                    "buildless/mode-active",
+                    "C# with build-mode set to 'none'",
+                    visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                    markdownMessage: "C# with build-mode set to 'none'. This means that all C# source in the working directory will be scanned, with build tools, such as Nuget and Dotnet CLIs, only contributing information about external dependencies.",
+                    severity: DiagnosticMessage.TspSeverity.Note
+                ));
+                return 0;
+            });
+        }
+
+        private BuildScript AddBuildlessEndedDiagnostic(int buildResult)
+        {
+            return BuildScript.Create(actions =>
+            {
+                if (buildResult == 0)
+                {
+                    AddDiagnostic(new DiagnosticMessage(
+                        Options.Language,
+                        "buildless/complete",
+                        "C# analysis with build-mode 'none' completed",
+                        visibility: new DiagnosticMessage.TspVisibility(statusPage: false, cliSummaryTable: true, telemetry: true),
+                        markdownMessage: "C# analysis with build-mode 'none' completed.",
+                        severity: DiagnosticMessage.TspSeverity.Unknown
+                    ));
+                }
+                else
+                {
+                    AddDiagnostic(new DiagnosticMessage(
+                        Options.Language,
+                        "buildless/failed",
+                        "C# analysis with build-mode 'none' failed",
+                        visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                        markdownMessage: "C# analysis with build-mode 'none' failed.",
+                        severity: DiagnosticMessage.TspSeverity.Error
+                    ));
+                }
+                return buildResult;
+            });
+        }
 
         protected override void AutobuildFailureDiagnostic()
         {

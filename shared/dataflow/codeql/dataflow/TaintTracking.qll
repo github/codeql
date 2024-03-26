@@ -5,11 +5,12 @@
 
 private import DataFlow as DF
 private import internal.DataFlowImpl
+private import codeql.util.Location
 
 /**
  * Provides language-specific taint-tracking parameters.
  */
-signature module InputSig<DF::InputSig Lang> {
+signature module InputSig<LocationSig Location, DF::InputSig<Location> Lang> {
   /**
    * Holds if `node` should be a sanitizer in all global taint flow configurations
    * but not in local taint.
@@ -33,10 +34,13 @@ signature module InputSig<DF::InputSig Lang> {
 /**
  * Construct the modules for taint-tracking analyses.
  */
-module TaintFlowMake<DF::InputSig DataFlowLang, InputSig<DataFlowLang> TaintTrackingLang> {
+module TaintFlowMake<
+  LocationSig Location, DF::InputSig<Location> DataFlowLang,
+  InputSig<Location, DataFlowLang> TaintTrackingLang>
+{
   private import TaintTrackingLang
-  private import DF::DataFlowMake<DataFlowLang> as DataFlow
-  private import MakeImpl<DataFlowLang> as DataFlowInternal
+  private import DF::DataFlowMake<Location, DataFlowLang> as DataFlow
+  private import MakeImpl<Location, DataFlowLang> as DataFlowInternal
 
   private module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> implements
     DataFlowInternal::FullStateConfigSig

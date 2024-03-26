@@ -29,6 +29,6 @@ deprecated module TaintTracking {
   private import semmle.code.cpp.dataflow.internal.DataFlowImplSpecific
   private import semmle.code.cpp.dataflow.internal.TaintTrackingImplSpecific
   private import codeql.dataflow.TaintTracking
-  import TaintFlowMake<CppOldDataFlow, CppOldTaintTracking>
+  import TaintFlowMake<Location, CppOldDataFlow, CppOldTaintTracking>
   import semmle.code.cpp.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

@@ -241,24 +241,25 @@ module CallGraph {
     )
   }
 
-  private DataFlow::FunctionNode getAMethodOnPlainObject(DataFlow::SourceNode node) {
+  private DataFlow::FunctionNode getAMethodOnObject(DataFlow::SourceNode node) {
     (
-      (
-        node instanceof DataFlow::ObjectLiteralNode
-        or
-        node instanceof DataFlow::FunctionNode
-      ) and
       result = node.getAPropertySource()
       or
       result = node.(DataFlow::ObjectLiteralNode).getPropertyGetter(_)
       or
       result = node.(DataFlow::ObjectLiteralNode).getPropertySetter(_)
     ) and
-    not node.getTopLevel().isExterns()
+    not node.getTopLevel().isExterns() and
+    // Ignore writes to `this` inside a constructor, since this is already handled by instance method tracking
+    not exists(DataFlow::ClassNode cls |
+      node = cls.getConstructor().getReceiver()
+      or
+      node = cls.(DataFlow::ClassNode::FunctionStyleClass).getAPrototypeReference()
+    )
   }
 
   private predicate shouldTrackObjectWithMethods(DataFlow::SourceNode node) {
-    exists(getAMethodOnPlainObject(node))
+    exists(getAMethodOnObject(node))
   }
 
   /**
@@ -292,7 +293,7 @@ module CallGraph {
   predicate impliedReceiverStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
     exists(DataFlow::SourceNode host |
       pred = getAnAllocationSiteRef(host) and
-      succ = getAMethodOnPlainObject(host).getReceiver()
+      succ = getAMethodOnObject(host).getReceiver()
     )
   }
 }

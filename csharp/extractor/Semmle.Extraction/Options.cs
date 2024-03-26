@@ -56,19 +56,9 @@ namespace Semmle.Extraction
         public bool Console { get; private set; } = false;
 
         /// <summary>
-        /// Holds if CIL should be extracted.
-        /// </summary>
-        public bool CIL { get; private set; } = false;
-
-        /// <summary>
         /// Holds if assemblies shouldn't be extracted twice.
         /// </summary>
         public bool Cache { get; private set; } = true;
-
-        /// <summary>
-        /// Whether to extract PDB information.
-        /// </summary>
-        public bool PDB { get; private set; } = false;
 
         /// <summary>
         /// Whether "fast extraction mode" has been enabled.
@@ -102,9 +92,6 @@ namespace Semmle.Extraction
                         return true;
                     }
                     return false;
-                case "cil":
-                    CIL = Boolean.Parse(value);
-                    return true;
                 default:
                     return false;
             }
@@ -128,12 +115,7 @@ namespace Semmle.Extraction
                 case "cache":
                     Cache = value;
                     return true;
-                case "pdb":
-                    PDB = value;
-                    CIL = true;
-                    return true;
                 case "fast":
-                    CIL = !value;
                     Fast = value;
                     return true;
                 case "qltest":

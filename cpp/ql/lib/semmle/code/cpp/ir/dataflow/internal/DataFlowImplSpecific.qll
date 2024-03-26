@@ -3,6 +3,7 @@
  */
 
 private import codeql.dataflow.DataFlow
+private import semmle.code.cpp.Location
 
 module Private {
   import DataFlowPrivate
@@ -13,7 +14,7 @@ module Public {
   import DataFlowUtil
 }
 
-module CppDataFlow implements InputSig {
+module CppDataFlow implements InputSig<Location> {
   import Private
   import Public
 

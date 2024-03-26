@@ -4,12 +4,13 @@
  */
 
 import ruby
+private import codeql.Locations
 private import codeql.dataflow.test.InlineFlowTest
 private import codeql.ruby.dataflow.internal.DataFlowImplSpecific
 private import codeql.ruby.dataflow.internal.TaintTrackingImplSpecific
 private import internal.InlineExpectationsTestImpl
 
-private module FlowTestImpl implements InputSig<RubyDataFlow> {
+private module FlowTestImpl implements InputSig<Location, RubyDataFlow> {
   import TestUtilities.InlineFlowTestUtil
 
   bindingset[src, sink]
@@ -19,4 +20,4 @@ private module FlowTestImpl implements InputSig<RubyDataFlow> {
   }
 }
 
-import InlineFlowTestMake<RubyDataFlow, RubyTaintTracking, Impl, FlowTestImpl>
+import InlineFlowTestMake<Location, RubyDataFlow, RubyTaintTracking, Impl, FlowTestImpl>

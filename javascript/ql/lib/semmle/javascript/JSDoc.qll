@@ -18,8 +18,6 @@ private import semmle.javascript.internal.CachedStages
  * </pre>
  */
 class JSDoc extends @jsdoc, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the description text of this JSDoc comment. */
   string getDescription() { jsdoc(this, result, _) }
 
@@ -75,8 +73,6 @@ abstract class Documentable extends AstNode {
  * ```
  */
 class JSDocTypeExprParent extends @jsdoc_type_expr_parent, Locatable {
-  override Location getLocation() { hasLocation(this, result) }
-
   /** Gets the JSDoc comment to which this element belongs. */
   JSDoc getJSDocComment() { none() }
 }

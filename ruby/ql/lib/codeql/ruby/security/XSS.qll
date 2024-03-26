@@ -299,6 +299,8 @@ private module OrmTracking {
     }
 
     predicate isBarrierIn(DataFlow::Node node) { node instanceof DataFlow::SelfParameterNode }
+
+    int accessPathLimit() { result = 1 }
   }
 
   import DataFlow::Global<Config>
@@ -324,7 +326,9 @@ module StoredXss {
     OrmFieldAsSource() {
       exists(DataFlow::CallNode subSrc |
         OrmTracking::flow(subSrc, this.getReceiver()) and
-        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName())
+        subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName()) and
+        this.getNumberOfArguments() = 0 and
+        not exists(this.getBlock())
       )
     }
   }

@@ -2,6 +2,7 @@
  * Provides Ruby-specific definitions for use in the data flow library.
  */
 
+private import codeql.Locations
 private import codeql.dataflow.DataFlow
 
 module Private {
@@ -13,7 +14,7 @@ module Public {
   import DataFlowPublic
 }
 
-module RubyDataFlow implements InputSig {
+module RubyDataFlow implements InputSig<Location> {
   import Private
   import Public
 

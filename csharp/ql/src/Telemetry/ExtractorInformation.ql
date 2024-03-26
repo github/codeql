@@ -10,6 +10,7 @@ import csharp
 import semmle.code.csharp.commons.Diagnostics
 
 predicate compilationInfo(string key, float value) {
+  not key.matches("Compiler diagnostic count for%") and
   exists(Compilation c, string infoKey, string infoValue | infoValue = c.getInfo(infoKey) |
     key = infoKey and
     value = infoValue.toFloat()
