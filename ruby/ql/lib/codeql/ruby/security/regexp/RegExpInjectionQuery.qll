@@ -31,6 +31,8 @@ private module RegExpInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof RegExpInjection::Sink }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof RegExpInjection::Sanitizer }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 }
 
 /**
