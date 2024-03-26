@@ -9,6 +9,90 @@ private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.InclusionTests
 private import codeql.ruby.ast.internal.Literal
 
+/**
+ * A barrier guard for code of the form
+ * ```rb
+ * if x != "foo"
+ *   x = "bar"
+ * end
+ *
+ * x
+ * ```
+ *
+ * In this example the read of `x` on the last line is guarded by the `if` statement.
+ * This is because if `x == "foo"` then it has a constant value and is not considered tainted,
+ * and if `x != "foo"` then it is overwritten to the constant value `"bar"`.
+ *
+ * It would be nice to make this guard generic over the kind of test performed
+ * on `x`, but that is tricky because it affects what kind of overwrites we
+ * consider to be safe.
+ */
+cached
+private DataFlow::Node stringConstCompareAndOverwrite() {
+  exists(
+    CfgNodes::AstCfgNode guard, ExprCfgNode testedNode, boolean branch, Ssa::PhiNode phi,
+    Ssa::WriteDefinition overwrite
+  |
+    stringConstCompare(guard, testedNode, branch) and
+    variableOverwrite(testedNode, overwrite) and
+    guardControlsDef(overwrite, guard, branch.booleanNot()) and
+    phi.getAnInput() = overwrite and
+    result.asExpr() = phi.getARead()
+  )
+}
+
+/**
+ * A barrier guard for code of the form
+ * ```rb
+ * unless a_const_array.include? x
+ *   x = "foo"
+ * end
+ *
+ * x
+ * ```
+ *
+ * This is similar to the `stringConstCompareAndOverwrite` guard, but for string
+ * constant array inclusion tests.
+ */
+cached
+private DataFlow::Node stringConstArrayInclusionAndOverwrite() {
+  exists(
+    CfgNodes::AstCfgNode guard, ExprCfgNode testedNode, boolean branch, Ssa::PhiNode phi,
+    Ssa::WriteDefinition overwrite
+  |
+    stringConstArrayInclusionCall(guard, testedNode, branch) and
+    variableOverwrite(testedNode, overwrite) and
+    guardControlsDef(overwrite, guard, branch.booleanNot()) and
+    phi.getAnInput() = overwrite and
+    result.asExpr() = phi.getARead()
+  )
+}
+
+/**
+ * Holds if `variableRead` is a read of a variable which is overwritten with a
+ * constant string value in `overwrite`.
+ */
+private predicate variableOverwrite(ExprCfgNode variableRead, Ssa::WriteDefinition overwrite) {
+  overwrite.getSourceVariable() = variableRead.getExpr().(VariableReadAccess).getVariable() and
+  exists(ExprCfgNode value | overwrite.assigns(value) |
+    value.getConstantValue().isStringlikeValue(_)
+  )
+}
+
+/**
+ * Holds if `guard` is a control flow branch, and control flow reaches `def`
+ * when `guard` evaluates to `branch`.
+ */
+private predicate guardControlsDef(
+  Ssa::WriteDefinition def, CfgNodes::AstCfgNode guard, boolean branch
+) {
+  exists(ConditionBlock conditionBlock, SuccessorTypes::BooleanSuccessor s |
+    guard = conditionBlock.getLastNode() and
+    s.getValue() = branch and
+    conditionBlock.controls(def.getBasicBlock(), s)
+  )
+}
+
 cached
 private predicate stringConstCompare(CfgNodes::AstCfgNode guard, CfgNode testedNode, boolean branch) {
   exists(CfgNodes::ExprNodes::ComparisonOperationCfgNode c |
@@ -72,7 +156,8 @@ private predicate stringConstCompareOr(
  */
 class StringConstCompareBarrier extends DataFlow::Node {
   StringConstCompareBarrier() {
-    this = DataFlow::BarrierGuard<stringConstCompare/3>::getABarrierNode()
+    this = DataFlow::BarrierGuard<stringConstCompare/3>::getABarrierNode() or
+    this = stringConstCompareAndOverwrite()
   }
 }
 
@@ -111,7 +196,8 @@ private predicate stringConstArrayInclusionCall(
  */
 class StringConstArrayInclusionCallBarrier extends DataFlow::Node {
   StringConstArrayInclusionCallBarrier() {
-    this = DataFlow::BarrierGuard<stringConstArrayInclusionCall/3>::getABarrierNode()
+    this = DataFlow::BarrierGuard<stringConstArrayInclusionCall/3>::getABarrierNode() or
+    this = stringConstArrayInclusionAndOverwrite()
   }
 }
 

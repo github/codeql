@@ -293,3 +293,40 @@ when g
 else
     foo
 end
+
+if foo != "foo"
+    foo = "bar"
+end
+
+foo # $ guarded
+
+foo = some_call()
+foo = "bar" unless foo == "foo"
+foo # $ guarded
+
+foos = ["foo", "bar"]
+foo = some_call()
+foo # not guarded
+unless foos.include? foo
+    foo = "bar"
+end
+foo # $ guarded
+
+foo = some_call()
+foo = "bar" unless foos.include? foo
+foo # $ guarded
+
+foo = some_call()
+if foos.include? foo
+    foo = "bar"
+end
+foo # not guarded - the overwrite happens in the wrong branch.
+
+foo = some_call()
+case foo
+when "foo"
+    puts "nothing"
+when "bar"
+    foo = "foo"
+end
+foo # not guarded
