@@ -68,7 +68,7 @@ jobs:
     - name: "Build Swift extractor using Bazel"
       run: |
         bazel clean --expunge
-        bazel run //swift:create-extractor-pack --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results
+        bazel run //swift:create-extractor-pack --spawn_strategy=local --noremote_upload_local_results
         bazel shutdown
 
     - name: Perform CodeQL Analysis
