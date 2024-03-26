@@ -1,0 +1,84 @@
+name: Make more memory available
+description: Stops services and adds swap
+
+inputs:
+  max:
+    description: Maximum memory to suggest using
+    default: 50000
+
+outputs:
+  available:
+    description: Available memory
+    value: ${{ steps.memory.outputs.available }}
+  suggested:
+    description: Memory suggested for use (constrained by max and available)
+    value: ${{ steps.memory.outputs.suggested }}
+
+runs:
+  using: composite
+  steps:
+    - name: Stop services
+      if: env.RUNNER_OS == 'Linux'
+      shell: bash
+      run: |
+        sudo systemctl disable php8.1-fpm mono-xsp4 walinuxagent multipathd walinuxagent chrony cron getty@tty1 networkd-dispatcher rsyslog serial-getty@ttyS0 snapd multipathd.socket snapd.socket
+        sudo systemctl stop php8.1-fpm mono-xsp4 walinuxagent multipathd walinuxagent chrony cron getty@tty1 networkd-dispatcher rsyslog serial-getty@ttyS0 snapd
+        sudo killall mono
+
+    - name: enable swap
+      if: env.RUNNER_OS == 'Linux'
+      shell: bash
+      run: |
+        sudo fallocate -l 10G /mnt/big-swapfile
+        sudo chmod 600 /mnt/big-swapfile
+        sudo mkswap /mnt/big-swapfile
+        sudo swapon /mnt/big-swapfile
+
+    - name: Report Available Memory (Linux)
+      id: memory-linux
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        free |
+        perl -ne '
+          next unless /Mem:.*\s(\d+)$/;
+          my $m = int($1 / 102400)*100;
+          print "available=$m\n";
+        ' >> "$GITHUB_OUTPUT"
+
+    - name: Report Available Memory (macOS)
+      id: memory-mac
+      if: runner.os == 'macOS'
+      shell: bash
+      run: |
+        sysctl -a |
+        perl -e '
+          my $m;
+          while (<>) {
+            next unless /.*memsize.*:\s*(\d+)/;
+            my $m0 = int($1 >> 20);
+            $m = $m0 unless ($m && $m > $m0);
+          }
+          print "available=$m\n";
+        ' >> "$GITHUB_OUTPUT"
+
+    - name: Report Available Memory (Windows)
+      id: memory-windows
+      if: runner.os == 'Windows'
+      shell: bash
+      run: |
+        echo "available=10240" >> "$GITHUB_OUTPUT"
+
+    - name: Report Memory
+      id: memory
+      shell: bash
+      env:
+        max: ${{ inputs.max }}
+        available: ${{ steps.memory-linux.outputs.available || steps.memory-mac.outputs.available || steps.memory-windows.outputs.available }}
+      run: |
+        perl -e '
+          my $available = $ENV{available};
+          my $max = $ENV{max} || $available;
+          my $s = ($m < $max ? $available : $max);
+          print "suggested=$s\n"."available=$available\n";
+        ' >> "$GITHUB_OUTPUT"
