@@ -12,7 +12,7 @@ local_path_override(
 )
 
 # see https://registry.bazel.build/ for a list of available packages
-
+bazel_dep(name = "apple_support", version = "1.14.0")
 bazel_dep(name = "platforms", version = "0.0.8")
 bazel_dep(name = "rules_pkg", version = "0.9.1")
 bazel_dep(name = "rules_nodejs", version = "6.0.3")

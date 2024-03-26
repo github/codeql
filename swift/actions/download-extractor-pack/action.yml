@@ -1,0 +1,13 @@
+name: Download Swift CodeQL pack
+description: Downloads the Swift CodeQL pack
+runs:
+  using: composite
+  steps:
+    - name: Download
+      uses: actions/download-artifact@v4
+      with:
+        name: swift-extractor-pack-${{ runner.os }}
+    - name: Extract
+      shell: bash
+      run: |
+        zstd -cd swift-extractor-pack-${{ runner.os }}.tar.zst | tar xvf -
