@@ -150,11 +150,6 @@ private predicate ignoreExprOnly(Expr expr) {
   or
   not translateFunction(getEnclosingFunction(expr)) and
   not Raw::varHasIRFunc(getEnclosingVariable(expr))
-  or
-  exists(DeleteOrDeleteArrayExpr deleteExpr |
-    // Ignore the destructor call, because the duplicated qualifier breaks control flow.
-    deleteExpr.getDestructorCall() = expr
-  )
 }
 
 /**
