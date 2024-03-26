@@ -146,7 +146,7 @@ namespace Semmle.Extraction.CSharp.Standalone
             logger.Log(Severity.Info, "Extracting C# in buildless mode");
             using var dependencyManager = new DependencyManager(options.SrcDir, logger);
 
-            if (!dependencyManager.AllSourceFiles.Any())
+            if (!dependencyManager.NonGeneratedSourcesFiles.Any())
             {
                 logger.Log(Severity.Error, "No source files found");
                 return ExitCode.Errors;

@@ -729,6 +729,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public IEnumerable<string> GeneratedSourceFiles => generatedSources;
 
         /// <summary>
+        /// All of the non-generated source files in the source directory.
+        /// </summary>
+        public IEnumerable<string> NonGeneratedSourcesFiles => nonGeneratedSources;
+
+        /// <summary>
         /// All of the source files in the source directory.
         /// </summary>
         public IEnumerable<string> AllSourceFiles => generatedSources.Concat(nonGeneratedSources);
