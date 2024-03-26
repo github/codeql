@@ -89,11 +89,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return dotnetCliInvoker.RunCommand(args);
         }
 
-        public IList<string> GetListedRuntimes() => GetListed("--list-runtimes", "runtime");
+        public IList<string> GetListedRuntimes() => GetListed("--list-runtimes");
 
-        public IList<string> GetListedSdks() => GetListed("--list-sdks", "SDK");
+        public IList<string> GetListedSdks() => GetListed("--list-sdks");
 
-        private IList<string> GetListed(string args, string artifact)
+        private IList<string> GetListed(string args)
         {
             if (dotnetCliInvoker.RunCommand(args, out var artifacts))
             {

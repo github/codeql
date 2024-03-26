@@ -150,8 +150,7 @@ namespace Semmle.Autobuild.CSharp
                 Argument("--no-incremental");
 
             return
-                script.Argument(builder.Options.DotNetArguments).
-                    QuoteArgument(projOrSln).
+                script.QuoteArgument(projOrSln).
                     Script;
         }
     }

@@ -25,9 +25,11 @@ namespace Semmle.Autobuild.CSharp
         /// </summary>
         public CSharpAutobuildOptions(IBuildActions actions) : base(actions)
         {
-            Buildless = actions.GetEnvironmentVariable(lgtmPrefix + "BUILDLESS").AsBool("buildless", false) ||
+            Buildless =
                 actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false) ||
                 actions.GetEnvironmentVariable(buildModeEnvironmentVariable)?.ToLower() == "none";
+
+
         }
     }
 
@@ -46,20 +48,11 @@ namespace Semmle.Autobuild.CSharp
             var attempt = BuildScript.Failure;
             switch (GetCSharpBuildStrategy())
             {
-                case CSharpBuildStrategy.CustomBuildCommand:
-                    attempt = new BuildCommandRule(DotNetRule.WithDotNet).Analyse(this, false) & CheckExtractorRun(true);
-                    break;
                 case CSharpBuildStrategy.Buildless:
                     // No need to check that the extractor has been executed in buildless mode
                     attempt = BuildScript.Bind(
                         AddBuildlessStartedDiagnostic() & new StandaloneBuildRule().Analyse(this, false),
                         AddBuildlessEndedDiagnostic);
-                    break;
-                case CSharpBuildStrategy.MSBuild:
-                    attempt = new MsBuildRule().Analyse(this, false) & CheckExtractorRun(true);
-                    break;
-                case CSharpBuildStrategy.DotNet:
-                    attempt = new DotNetRule().Analyse(this, false) & CheckExtractorRun(true);
                     break;
                 case CSharpBuildStrategy.Auto:
                     attempt =
@@ -246,32 +239,15 @@ namespace Semmle.Autobuild.CSharp
         /// </summary>
         private CSharpBuildStrategy GetCSharpBuildStrategy()
         {
-            if (Options.BuildCommand is not null)
-                return CSharpBuildStrategy.CustomBuildCommand;
-
             if (Options.Buildless)
                 return CSharpBuildStrategy.Buildless;
-
-            if (Options.MsBuildArguments is not null
-                || Options.MsBuildConfiguration is not null
-                || Options.MsBuildPlatform is not null
-                || Options.MsBuildTarget is not null)
-            {
-                return CSharpBuildStrategy.MSBuild;
-            }
-
-            if (Options.DotNetArguments is not null || Options.DotNetVersion is not null)
-                return CSharpBuildStrategy.DotNet;
 
             return CSharpBuildStrategy.Auto;
         }
 
         private enum CSharpBuildStrategy
         {
-            CustomBuildCommand,
             Buildless,
-            MSBuild,
-            DotNet,
             Auto
         }
     }

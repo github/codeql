@@ -61,11 +61,6 @@ namespace Semmle.Extraction
         public bool Cache { get; private set; } = true;
 
         /// <summary>
-        /// Whether "fast extraction mode" has been enabled.
-        /// </summary>
-        public bool Fast { get; private set; } = false;
-
-        /// <summary>
         /// Whether extraction is done using `codeql test run`.
         /// </summary>
         public bool QlTest { get; private set; } = false;
@@ -114,9 +109,6 @@ namespace Semmle.Extraction
                     return true;
                 case "cache":
                     Cache = value;
-                    return true;
-                case "fast":
-                    Fast = value;
                     return true;
                 case "qltest":
                     QlTest = value;

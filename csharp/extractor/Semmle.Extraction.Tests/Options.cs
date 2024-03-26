@@ -12,11 +12,6 @@ namespace Semmle.Extraction.Tests
         private CSharp.Options? options;
         private CSharp.Standalone.Options? standaloneOptions;
 
-        public OptionsTests()
-        {
-            Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "");
-        }
-
         [Fact]
         public void DefaultOptions()
         {
@@ -28,7 +23,6 @@ namespace Semmle.Extraction.Tests
             Assert.True(options.Threads >= 1);
             Assert.Equal(Verbosity.Info, options.LegacyVerbosity);
             Assert.False(options.Console);
-            Assert.False(options.Fast);
             Assert.Equal(TrapWriter.CompressionMode.Brotli, options.TrapCompression);
         }
 
@@ -163,14 +157,6 @@ namespace Semmle.Extraction.Tests
             standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--help" });
             Assert.False(standaloneOptions.Errors);
             Assert.True(standaloneOptions.Help);
-        }
-
-        [Fact]
-        public void Fast()
-        {
-            Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "--fast");
-            options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
-            Assert.True(options.Fast);
         }
 
         [Fact]

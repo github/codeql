@@ -26,9 +26,6 @@ namespace Semmle.Autobuild.Cpp
 
         public override BuildScript GetBuildScript()
         {
-            if (Options.BuildCommand != null)
-                return new BuildCommandRule((_, f) => f(null)).Analyse(this, false);
-
             return
                 // First try MSBuild
                 new MsBuildRule().Analyse(this, true) |

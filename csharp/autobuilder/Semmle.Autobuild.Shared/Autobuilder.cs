@@ -161,9 +161,6 @@ namespace Semmle.Autobuild.Shared
             if (matchingFiles.Length == 0)
                 return null;
 
-            if (Options.AllSolutions)
-                return matchingFiles.Select(p => p.ProjectOrSolution);
-
             return matchingFiles
                 .Where(f => f.DistanceFromRoot == matchingFiles[0].DistanceFromRoot)
                 .Select(f => f.ProjectOrSolution);
@@ -185,19 +182,6 @@ namespace Semmle.Autobuild.Shared
             projectsOrSolutionsToBuildLazy = new Lazy<IList<IProjectOrSolution>>(() =>
             {
                 List<IProjectOrSolution>? ret;
-                if (options.Solution.Any())
-                {
-                    ret = new List<IProjectOrSolution>();
-                    foreach (var solution in options.Solution)
-                    {
-                        if (actions.FileExists(solution))
-                            ret.Add(new Solution<TAutobuildOptions>(this, solution, true));
-                        else
-                            logger.LogError($"The specified project or solution file {solution} was not found");
-                    }
-                    return ret;
-                }
-
                 // First look for `.proj` files
                 ret = FindFiles(".proj", f => new Project<TAutobuildOptions>(this, f))?.ToList();
                 if (ret is not null)
@@ -284,9 +268,6 @@ namespace Semmle.Autobuild.Shared
             logger.LogInfo($"Working directory: {Options.RootDirectory}");
 
             var script = GetBuildScript();
-
-            if (Options.IgnoreErrors)
-                script |= BuildScript.Success;
 
             void startCallback(string s, bool silent)
             {
