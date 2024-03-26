@@ -12,12 +12,12 @@ for entry in tar:
     tar.extract(entry)
 
 tar = tarfile.open(unsafe_filename_tar)
-tar.extractall()
+tar.extractall() # $flow="tarfile.open(..), l:-1 -> tar"
 tar.close()
 
 tar = tarfile.open(unsafe_filename_tar)
 for entry in tar:
-    tar.extract(entry)
+    tar.extract(entry) # $flow="tarfile.open(..), l:-2 -> entry"
 
 tar = tarfile.open(safe_filename_tar)
 tar.extractall()
@@ -36,11 +36,11 @@ tar = tarfile.open(unsafe_filename_tar)
 for entry in tar:
     if ".." in entry.name:
         raise ValueError("Illegal tar archive entry")
-    tar.extract(entry, "/tmp/unpack/")
+    tar.extract(entry, "/tmp/unpack/") # $flow="tarfile.open(..), l:-4 -> entry"
 
 #Unsanitized members
 tar = tarfile.open(unsafe_filename_tar)
-tar.extractall(members=tar)
+tar.extractall(members=tar) # $flow="tarfile.open(..), l:-1 -> tar"
 
 
 #Sanitize members
@@ -58,7 +58,7 @@ tar.extractall(members=safemembers(tar))
 tar = tarfile.open(unsafe_filename_tar)
 for entry in tar:
     if os.path.isabs(entry.name) or ".." in entry.name:
-        tar.extract(entry, "/tmp/unpack/")
+        tar.extract(entry, "/tmp/unpack/") # $flow="tarfile.open(..), l:-3 -> entry"
 
 
 # OK Sanitized using not
