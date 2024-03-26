@@ -65,8 +65,11 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y --allow-downgrades libc6=2.35-* libc6-dev=2.35-* libstdc++6=12.3.0-* libgcc-s1=12.3.0-*
 
-    - run: |
-        bazel run //swift:create-extractor-pack --spawn_strategy=local
+    - name: "Build Swift extractor using Bazel"
+      run: |
+        bazel clean --expunge
+        bazel run //swift:create-extractor-pack --spawn_strategy=local --nouse_action_cache --noremote_accept_cached --noremote_upload_local_results
+        bazel shutdown
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@main
