@@ -1,3 +1,8 @@
+/**
+ * This file provides an abstract class that can be used to model additional
+ * object-to-field taint-flow.
+ */
+
 private import codeql.util.Unit
 private import semmle.code.cpp.dataflow.new.DataFlow
 
