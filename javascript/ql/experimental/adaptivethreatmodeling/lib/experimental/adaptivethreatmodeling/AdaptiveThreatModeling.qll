@@ -34,7 +34,7 @@ module ATM {
      */
     pragma[inline]
     float getScoreForFlow(DataFlow::Node source, DataFlow::Node sink) {
-      any(DataFlow::Configuration cfg).hasFlow(source, sink) and
+      Optimizations::hasFlow(source, sink) and
       shouldResultBeIncluded(source, sink) and
       result = unique(float s | s = any(ScoringResults results).getScoreForFlow(source, sink))
     }
@@ -118,6 +118,28 @@ module ATM {
             any(string s | if sourceOrigins != "" then s = sourceOrigins else s = "unknown") +
             "; sink origins: " +
             any(string s | if sinkOrigins != "" then s = sinkOrigins else s = "unknown") + "]"
+      )
+    }
+  }
+
+  /**
+   * Predicates for performance improvements that should not affect the semantics.
+   */
+  module Optimizations {
+    /**
+     * EXPERIMENTAL. This API may change in the future.
+     *
+     * Holds if data may flow from `source` to `sink` for *some* configuration.
+     *
+     * This is a variant of `Configuration::hasFlow`, that does not require the precense of a source and a sink.
+     */
+    predicate hasFlow(DataFlow::Node source, DataFlow::Node sink) {
+      exists(DataFlow::Configuration cfg |
+        exists(DataFlow::SourcePathNode flowsource, DataFlow::SinkPathNode flowsink |
+          cfg.hasFlowPath(flowsource, flowsink) and
+          source = flowsource.getNode() and
+          sink = flowsink.getNode()
+        )
       )
     }
   }
