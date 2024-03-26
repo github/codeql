@@ -1154,7 +1154,8 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   SummaryCall() { this = TSummaryCall(c, receiver) }
 
   /**
-   * Gets the data flow node that this call targets.
+   * Gets the data flow node that holds the address of the function this call
+   * targets.
    */
   FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 

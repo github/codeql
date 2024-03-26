@@ -747,7 +747,7 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
   /**
-   * TODO: QLDoc.
+   * Gets the summarized callable that this node belongs to.
    */
   FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() {
     result = this.getSummaryNode().getSummarizedCallable()
