@@ -108,7 +108,7 @@ private class ValueAccessPathString extends string {
   private string accessPath;
 
   ValueAccessPathString() {
-    isRelevantFullPath(this, _) and
+    isRelevantType(this) and
     parseValueAccessPath(this, package, accessPath)
   }
 
