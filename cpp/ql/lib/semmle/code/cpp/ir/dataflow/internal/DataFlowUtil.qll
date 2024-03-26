@@ -2301,8 +2301,8 @@ private import ContentStars
 
 /** A reference through a non-union instance field. */
 class FieldContent extends Content, TFieldContent {
-  Field f;
-  int indirectionIndex;
+  private Field f;
+  private int indirectionIndex;
 
   FieldContent() { this = TFieldContent(f, indirectionIndex) }
 
@@ -2329,9 +2329,9 @@ class FieldContent extends Content, TFieldContent {
 
 /** A reference through an instance field of a union. */
 class UnionContent extends Content, TUnionContent {
-  Union u;
-  int indirectionIndex;
-  int bytes;
+  private Union u;
+  private int indirectionIndex;
+  private int bytes;
 
   UnionContent() { this = TUnionContent(u, bytes, indirectionIndex) }
 
