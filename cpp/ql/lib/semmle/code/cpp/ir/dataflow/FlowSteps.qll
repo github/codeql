@@ -11,7 +11,7 @@ private import semmle.code.cpp.dataflow.new.DataFlow
  * is itself tainted.
  *
  * For example, if we had a type `struct Container { int field; }`, then by default a tainted
- * `Container` and a `Container` with a tainted `Contained` stored in its `field` are distinct.
+ * `Container` and a `Container` with a tainted `int` stored in its `field` are distinct.
  *
  * If `any(DataFlow::FieldContent fc | fc.getField().hasQualifiedName("Container", "field"))` was
  * included in this type however, then a tainted `Container` would imply that its `field` is also
