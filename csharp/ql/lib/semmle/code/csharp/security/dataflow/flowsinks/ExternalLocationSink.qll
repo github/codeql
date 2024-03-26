@@ -29,8 +29,6 @@ class LogMessageSink extends ExternalLocationSink {
   LogMessageSink() {
     this.getExpr() = any(LoggerType i).getAMethod().getACall().getAnArgument() or
     this.getExpr() =
-      any(MethodCall call | call.getQualifier().getType() instanceof LoggerType).getAnArgument() or
-    this.getExpr() =
       any(ExtensionMethodCall call |
         call.getTarget().(ExtensionMethod).getExtendedType() instanceof LoggerType
       ).getArgument(any(int i | i > 0))
