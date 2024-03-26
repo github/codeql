@@ -58,14 +58,15 @@ jobs:
     - run: |
        dotnet build csharp
   
-    - name: Install GCC 11
-      run: sudo apt-get install gcc-11 g++-11
+    - name: "[Ubuntu] Remove GCC 13 from runner image"
+      shell: bash
+      run: |
+        sudo rm -f /etc/apt/sources.list.d/ubuntu-toolchain-r-ubuntu-test-jammy.list
+        sudo apt-get update
+        sudo apt-get install -y --allow-downgrades libc6=2.35-* libc6-dev=2.35-* libstdc++6=12.3.0-* libgcc-s1=12.3.0-*
 
     - run: |
-        bazel run //swift:create-extractor-pack --verbose_failures
-      env:
-        CC: gcc-11
-        CXX: g++-11
+        bazel run //swift:create-extractor-pack
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@main
