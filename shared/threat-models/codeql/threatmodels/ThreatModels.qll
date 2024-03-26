@@ -59,7 +59,7 @@ private predicate threatModelEnabled(string kind) {
       threatModelConfiguration(configuredKind, enabled, priority)
     )
   |
-    enabled order by priority
+    enabled order by priority, enabled
   ) = true
 }
 
