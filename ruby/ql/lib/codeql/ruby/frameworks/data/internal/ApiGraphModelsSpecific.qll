@@ -248,3 +248,14 @@ predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string a
 }
 
 module ModelOutputSpecific { }
+
+/**
+ * Holds if the edge `pred -> succ` labelled with `path` exists in the API graph.
+ *
+ * This is similar to `getAnExtraSuccessorFromNode` except it is used for producing MaD
+ * paths rather than consuming them.
+ */
+bindingset[pred]
+predicate apiGraphHasEdge(API::Node pred, string path, API::Node succ) {
+  none() // Not implemented yet
+}

@@ -290,6 +290,14 @@ private predicate typeVariableModel(string name, string path) {
 }
 
 /**
+ * Holds if any call idenified by `(type, path)` path should be flagged as potentially
+ * vulnerable, for reasons explained by the advisory with the given `id`.
+ */
+private predicate vulnerableCallModel(string type, string path, string id) {
+  Extensions::vulnerableCallModel(type, path, id)
+}
+
+/**
  * Holds if CSV rows involving `type` might be relevant for the analysis of this database.
  */
 predicate isRelevantType(string type) {
@@ -297,7 +305,8 @@ predicate isRelevantType(string type) {
     sourceModel(type, _, _) or
     sinkModel(type, _, _) or
     summaryModel(type, _, _, _, _) or
-    typeModel(_, type, _)
+    typeModel(_, type, _) or
+    vulnerableCallModel(type, _, _)
   ) and
   (
     Specific::isTypeUsed(type)
@@ -322,7 +331,8 @@ predicate isRelevantFullPath(string type, string path) {
     sourceModel(type, path, _) or
     sinkModel(type, path, _) or
     summaryModel(type, path, _, _, _) or
-    typeModel(_, type, path)
+    typeModel(_, type, path) or
+    vulnerableCallModel(type, path, _)
   )
 }
 
@@ -674,6 +684,17 @@ module ModelOutput {
      */
     cached
     API::Node getATypeNode(string type) { result = getNodeFromType(type) }
+
+    /**
+     * Gets a call that is marked as vulnerable by a model, for reasons explained by the advisory with the given `id`.
+     */
+    cached
+    Specific::InvokeNode getAVulnerableCall(string id) {
+      exists(string type, string path |
+        vulnerableCallModel(type, path, id) and
+        result = getInvocationFromPath(type, path)
+      )
+    }
   }
 
   import Cached
@@ -737,5 +758,124 @@ module ModelOutput {
     or
     // Check for invalid model kinds
     result = KindVal::getInvalidModelKind()
+  }
+}
+
+/**
+ * Specifies which parts of the API graph to export in `ApiGraphExport`.
+ */
+signature module ApiGraphExportSig {
+  /**
+   * Gets a value that is accessible to other codebases (it is part of the public API of a library),
+   * and can be identified by other analyses as `(type, path)`.
+   *
+   * A consumer of the exported API graph should be able to interpret the `(type, path)` pair
+   * without having access to the current codebase.
+   */
+  API::Node getADirectlyAccessibleNode(string type, string path);
+
+  /**
+   * Holds if the exported API graph should contain `node`, if it is publicly accessible.
+   *
+   * This ensures that all paths leading from a directly accessible node to `node` will be exported.
+   */
+  predicate shouldContain(API::Node node);
+}
+
+/**
+ * Module for producing access paths identifying relevant API graphs nodes,
+ * to facilitate generation of data extensions based on the API graph.
+ */
+module ApiGraphExport<ApiGraphExportSig S> {
+  private API::Node getAnExportedNode() {
+    result = S::getADirectlyAccessibleNode(_, _)
+    or
+    Specific::apiGraphHasEdge(getAnExportedNode(), _, result)
+  }
+
+  /**
+   * Gets a predecessor of `node`, labelled with the given access path.
+   */
+  pragma[nomagic]
+  private API::Node getAPredecessor(API::Node node, string path) {
+    result = getAnExportedNode() and
+    Specific::apiGraphHasEdge(result, path, node)
+  }
+
+  private API::Node getARelevantNode() {
+    result = getAnExportedNode() and
+    (
+      S::shouldContain(result)
+      or
+      result = getAPredecessor(getARelevantNode(), _)
+    )
+  }
+
+  /**
+   * Holds if a named type exists or will be generated for `node`.
+   */
+  private predicate isNamedNode(API::Node node) {
+    node = getARelevantNode() and
+    (
+      node = S::getADirectlyAccessibleNode(_, _)
+      or
+      strictcount(API::Node succ |
+        Specific::apiGraphHasEdge(node, _, succ) and succ = getARelevantNode()
+      ) > 1
+    )
+  }
+
+  /**
+   * Gets a synthetic type name to generate for `node`.
+   */
+  private string getSyntheticName(API::Node node) {
+    exists(int k |
+      node =
+        rank[k](API::Node n |
+          isNamedNode(n) and not n = S::getADirectlyAccessibleNode(_, _)
+        |
+          n order by n.toString()
+        ) and
+      result = "~T" + k
+    )
+  }
+
+  /**
+   * Gets the node accessible from other codebases as `(type, path)`.
+   */
+  private API::Node getADirectlyAccessibleNode(string type, string path) {
+    result = S::getADirectlyAccessibleNode(type, path)
+    or
+    type = getSyntheticName(result) and path = ""
+  }
+
+  bindingset[x, y]
+  private string join(string x, string y) {
+    if x = "" or y = "" then result = x + y else result = x + "." + y
+  }
+
+  /**
+   * Holds if `(type, path)` resolves to `node` in the exported API graph.
+   */
+  predicate pathToNode(string type, string path, API::Node node) {
+    node = getADirectlyAccessibleNode(type, path)
+    or
+    not node = getADirectlyAccessibleNode(type, path) and
+    node = getARelevantNode() and
+    exists(string label, string midPath |
+      pathToNode(type, midPath, getAPredecessor(node, label)) and
+      path = join(midPath, label)
+    )
+  }
+
+  /**
+   * Holds if `type1, type2, path` should be emitted as a type row.
+   */
+  predicate typeModel(string type1, string type2, string path) {
+    exists(string label, string midPath, API::Node node |
+      node = getADirectlyAccessibleNode(type1, "") and
+      pathToNode(type2, midPath, getAPredecessor(node, label)) and
+      path = join(midPath, label)
+    )
   }
 }

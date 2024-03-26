@@ -29,3 +29,8 @@ extensions:
       pack: codeql/ruby-all
       extensible: typeVariableModel
     data: []
+
+  - addsTo:
+      pack: codeql/ruby-all
+      extensible: vulnerableCallModel
+    data: []

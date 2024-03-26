@@ -227,7 +227,7 @@ module ExternalApiUsedWithUntrustedData {
    * takes one or more arguments (methods not taking arguments are unlikely to be called
    * by a call that actually has arguments, so they are excluded).
    */
-  private predicate isCommonBuiltinMethodName(string name) {
+  predicate isCommonBuiltinMethodName(string name) {
     exists(ExternalInstanceMemberDecl member |
       member.getBaseName() in ["Object", "Array", "String"] and
       name = member.getName() and

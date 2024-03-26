@@ -29,3 +29,8 @@ extensions:
       pack: codeql/python-all
       extensible: typeVariableModel
     data: []
+
+  - addsTo:
+      pack: codeql/python-all
+      extensible: vulnerableCallModel
+    data: []

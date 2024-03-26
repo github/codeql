@@ -41,3 +41,9 @@ extensible predicate typeModel(string type1, string type2, string path);
  * Holds if `path` can be substituted for a token `TypeVar[name]`.
  */
 extensible predicate typeVariableModel(string name, string path);
+
+/**
+ * Holds if any call idenified by `(type, path)` path should be flagged as potentially
+ * vulnerable, for reasons explained by the advisory with the given `id`.
+ */
+extensible predicate vulnerableCallModel(string type, string path, string id);
