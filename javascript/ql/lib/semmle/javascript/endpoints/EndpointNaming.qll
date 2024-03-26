@@ -78,6 +78,9 @@ private module ApiGraphDistance<isRootNodeSig/1 isRootNode, edgeSig/2 edges> {
 private predicate distanceFromPackageExport =
   ApiGraphDistance<isPackageExport/1, relevantEdge/2>::distanceTo/1;
 
+/** Badness penalty to apply when synthesizing a name. */
+private int syntheticNameBadness() { result = 100 }
+
 /**
  * Holds if `(package, name)` is the fallback name for `cls`, to be used as a last resort
  * in order to name its instance methods.
@@ -96,7 +99,8 @@ private predicate classHasFallbackName(
   hasEscapingInstance(cls) and
   not exists(distanceFromPackageExport(any(API::Node node | node.getAValueReachingSink() = cls))) and
   exists(string baseName |
-    InternalModuleNaming::fallbackModuleName(cls.getTopLevel(), package, baseName, badness - 100) and
+    InternalModuleNaming::fallbackModuleName(cls.getTopLevel(), package, baseName,
+      badness - syntheticNameBadness()) and
     name = join(baseName, cls.getName())
   )
 }
@@ -236,7 +240,7 @@ private predicate sinkHasNameCandidate(API::Node sink, string package, string na
  *
  * `badness` is bound to the associated badness of the name.
  */
-private predicate sinkHasPrimaryName(API::Node sink, string package, string name, int badness) {
+private predicate sinkHasPrimaryNameAux(API::Node sink, string package, string name, int badness) {
   badness = min(int b | sinkHasNameCandidate(sink, _, _, b) | b) and
   package = min(string p | sinkHasNameCandidate(sink, p, _, badness) | p) and
   name = min(string n | sinkHasNameCandidate(sink, package, n, badness) | n order by n.length(), n)
@@ -246,7 +250,19 @@ private predicate sinkHasPrimaryName(API::Node sink, string package, string name
  * Holds if `(package, name)` is the primary name to associate with `node`.
  */
 predicate sinkHasPrimaryName(API::Node sink, string package, string name) {
-  sinkHasPrimaryName(sink, package, name, _)
+  sinkHasPrimaryNameAux(sink, package, name, _)
+}
+
+/**
+ * Holds if `(package, name)` is the primary name to associate with `node`.
+ *
+ * `isSynthetic` is bound to true if the name was synthesized, and false if it is a proper access path.
+ */
+predicate sinkHasPrimaryName(API::Node sink, string package, string name, boolean isSynthetic) {
+  exists(int badness |
+    sinkHasPrimaryNameAux(sink, package, name, badness) and
+    (if badness >= syntheticNameBadness() then isSynthetic = true else isSynthetic = false)
+  )
 }
 
 /** Gets a source node that can flow to `sink` without using a return step. */
@@ -292,7 +308,7 @@ private predicate hasEscapingInstance(DataFlow::ClassNode cls) {
 private predicate sourceNodeHasNameCandidate(
   DataFlow::SourceNode node, string package, string name, int badness
 ) {
-  sinkHasPrimaryName(getASinkNode(node), package, name, badness)
+  sinkHasPrimaryNameAux(getASinkNode(node), package, name, badness)
   or
   nameFromGlobal(node, package, name, badness)
 }
