@@ -1,0 +1,6 @@
+passingPositiveTests
+| PASSED | PathInjection | tests.js:9:43:9:64 | // test ... jection |
+| PASSED | PathInjection | tests.js:12:50:12:71 | // test ... jection |
+| PASSED | PathInjection | tests.js:15:61:15:82 | // test ... jection |
+| PASSED | PathInjection | tests.js:18:73:18:94 | // test ... jection |
+failingPositiveTests
