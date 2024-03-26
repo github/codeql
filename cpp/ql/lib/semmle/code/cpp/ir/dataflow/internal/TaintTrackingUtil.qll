@@ -41,7 +41,6 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   or
   // object->field conflation for content that is a `TaintInheritingContent`.
   exists(DataFlow::ContentSet f |
-    nodeFrom.getEnclosingCallable().hasName("test_TaintInheritingContent") and
     readStep(nodeFrom, f, nodeTo) and
     f.getAReadContent() instanceof TaintInheritingContent
   )
