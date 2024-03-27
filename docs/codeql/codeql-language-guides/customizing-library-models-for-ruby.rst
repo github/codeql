@@ -30,8 +30,6 @@ The CodeQL library for Ruby exposes the following extensible predicates:
 - **typeModel**\(type1, type2, path)
 - **summaryModel**\(type, path, input, output, kind)
 
-See the `CLI documentation for how to load and use data extensions in a CodeQL evaluation run <https://docs.google.com/document/d/14IYCHX8wWuU-HTvJ2gPSdXQKHKYbWCHQKOgn8oLaa80/edit#heading=h.m0v53lpi6w2n>`__ (internal access required).
-
 We'll explain how to use these using a few examples, and provide some reference material at the end of this article.
 
 Example: Taint sink in the 'tty-command' gem
