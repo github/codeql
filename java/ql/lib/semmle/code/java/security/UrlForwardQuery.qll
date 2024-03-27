@@ -12,12 +12,12 @@ module UrlForwardFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof ThreatModelFlowSource and
     // excluded due to FPs
-    not exists(MethodCall mc, Method m | mc.getMethod() = m |
-      (
-        m instanceof HttpServletRequestGetRequestUriMethod or
-        m instanceof HttpServletRequestGetRequestUrlMethod or
-        m instanceof HttpServletRequestGetPathMethod
-      ) and
+    not exists(MethodCall mc, Method m |
+      m instanceof HttpServletRequestGetRequestUriMethod or
+      m instanceof HttpServletRequestGetRequestUrlMethod or
+      m instanceof HttpServletRequestGetPathMethod
+    |
+      mc.getMethod() = m and
       mc = source.asExpr()
     )
   }
