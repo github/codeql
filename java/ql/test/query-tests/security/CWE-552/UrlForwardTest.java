@@ -26,25 +26,25 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	// Spring `ModelAndView` test cases
 	@GetMapping("/bad1")
 	public ModelAndView bad1(String url) {
-		return new ModelAndView(url); // $ hasUrlForward
+		return new ModelAndView(url); // $ hasTaintFlow
 	}
 
 	@GetMapping("/bad2")
 	public ModelAndView bad2(String url) {
 		ModelAndView modelAndView = new ModelAndView();
-		modelAndView.setViewName(url); // $ hasUrlForward
+		modelAndView.setViewName(url); // $ hasTaintFlow
 		return modelAndView;
 	}
 
 	// Spring `"forward:"` prefix test cases
 	@GetMapping("/bad3")
 	public String bad3(String url) {
-		return "forward:" + url + "/swagger-ui/index.html"; // $ hasUrlForward
+		return "forward:" + url + "/swagger-ui/index.html"; // $ hasTaintFlow
 	}
 
 	@GetMapping("/bad4")
 	public ModelAndView bad4(String url) {
-		ModelAndView modelAndView = new ModelAndView("forward:" + url); // $ hasUrlForward
+		ModelAndView modelAndView = new ModelAndView("forward:" + url); // $ hasTaintFlow
 		return modelAndView;
 	}
 
@@ -60,7 +60,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	@GetMapping("/bad5")
 	public void bad5(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher(url).include(request, response); // $ hasUrlForward
+			request.getRequestDispatcher(url).include(request, response); // $ hasTaintFlow
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -71,7 +71,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	@GetMapping("/bad6")
 	public void bad6(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").include(request, response); // $ hasUrlForward
+			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").include(request, response); // $ hasTaintFlow
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -82,7 +82,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	@GetMapping("/bad7")
 	public void bad7(String url, HttpServletRequest request, HttpServletResponse response) {
 		try {
-			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").forward(request, response); // $ hasUrlForward
+			request.getRequestDispatcher("/WEB-INF/jsp/" + url + ".jsp").forward(request, response); // $ hasTaintFlow
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -106,7 +106,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 	public void bad8(String urlPath, HttpServletRequest request, HttpServletResponse response) {
 		try {
 			String url = "/pages" + urlPath;
-			request.getRequestDispatcher(url).forward(request, response); // $ hasUrlForward
+			request.getRequestDispatcher(url).forward(request, response); // $ hasTaintFlow
 		} catch (ServletException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -145,7 +145,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		String path = ((HttpServletRequest) request).getServletPath();
 		// A sample payload "/%57EB-INF/web.xml" can bypass this `startsWith` check
 		if (path != null && !path.startsWith("/WEB-INF")) {
-			request.getRequestDispatcher(path).forward(request, response); // $ hasUrlForward
+			request.getRequestDispatcher(path).forward(request, response); // $ hasTaintFlow
 		} else {
 			chain.doFilter(request, response);
 		}
@@ -158,7 +158,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		String path = ((HttpServletRequest) request).getServletPath();
 
 		if (path.startsWith(BASE_PATH) && !path.contains("..")) {
-			request.getRequestDispatcher(path).forward(request, response); // $ hasUrlForward
+			request.getRequestDispatcher(path).forward(request, response); // $ hasTaintFlow
 		} else {
 			chain.doFilter(request, response);
 		}
@@ -190,7 +190,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 			rd.forward(request, response);
 		} else {
 			ServletContext sc = cfg.getServletContext();
-			RequestDispatcher rd = sc.getRequestDispatcher(returnURL); // $ hasUrlForward
+			RequestDispatcher rd = sc.getRequestDispatcher(returnURL); // $ hasTaintFlow
 			rd.forward(request, response);
 		}
 	}
@@ -206,7 +206,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 			RequestDispatcher rd = request.getRequestDispatcher("/Login.jsp");
 			rd.forward(request, response);
 		} else {
-			RequestDispatcher rd = request.getRequestDispatcher(returnURL); // $ hasUrlForward
+			RequestDispatcher rd = request.getRequestDispatcher(returnURL); // $ hasTaintFlow
 			rd.forward(request, response);
 		}
 	}
@@ -233,7 +233,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 
 		// A sample payload "/pages/welcome.jsp/../WEB-INF/web.xml" can bypass the `startsWith` check
 		if (path.startsWith(BASE_PATH)) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUrlForward
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasTaintFlow
 		}
 	}
 
@@ -244,7 +244,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		String path = request.getParameter("path");
 
 		if (path.startsWith(BASE_PATH) && !path.contains("..")) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUrlForward
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasTaintFlow
 		}
 	}
 
@@ -258,7 +258,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		Path requestedPath = Paths.get(BASE_PATH).resolve(path).normalize();
 
 		if (requestedPath.startsWith(BASE_PATH)) {
-			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ hasUrlForward
+			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ hasTaintFlow
 		}
 	}
 
@@ -270,7 +270,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		Path requestedPath = Paths.get(BASE_PATH).resolve(path).normalize();
 
 		if (!requestedPath.startsWith("/WEB-INF") && !requestedPath.startsWith("/META-INF")) {
-			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ hasUrlForward
+			request.getServletContext().getRequestDispatcher(requestedPath.toString()).forward(request, response); // $ hasTaintFlow
 		}
 	}
 
@@ -281,7 +281,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		path = URLDecoder.decode(path, "UTF-8");
 
 		if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUrlForward
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasTaintFlow
 		}
 	}
 
@@ -319,7 +319,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		String path = request.getParameter("path");
 		if (path.contains("%")){ // incorrect check
 			if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
-				request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasUrlForward
+				request.getServletContext().getRequestDispatcher(path).include(request, response); // $ hasTaintFlow
 			}
 		}
 	}
@@ -362,14 +362,14 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		}
 
 		if (!path.startsWith("/WEB-INF/") && !path.contains("..")) {
-			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ SPURIOUS: hasUrlForward
+			request.getServletContext().getRequestDispatcher(path).include(request, response); // $ SPURIOUS: hasTaintFlow
 		}
 	}
 
 	// BAD: `StaplerResponse.forward` without any checks
 	public void generateResponse(StaplerRequest req, StaplerResponse rsp, Object obj) throws IOException, ServletException {
 		String url = req.getParameter("target");
-		rsp.forward(obj, url, req); // $ hasUrlForward
+		rsp.forward(obj, url, req); // $ hasTaintFlow
 	}
 
 	// QHelp example
@@ -381,7 +381,7 @@ public class UrlForwardTest extends HttpServlet implements Filter {
 		ServletContext sc = cfg.getServletContext();
 
 		// BAD: a request parameter is incorporated without validation into a URL forward
-		sc.getRequestDispatcher(request.getParameter("target")).forward(request, response); // $ hasUrlForward
+		sc.getRequestDispatcher(request.getParameter("target")).forward(request, response); // $ hasTaintFlow
 
 		// GOOD: the request parameter is validated against a known fixed string
 		if (VALID_FORWARD.equals(request.getParameter("target"))) {
