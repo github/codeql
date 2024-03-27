@@ -738,12 +738,11 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
 }
 
 /**
- * A data-flow node used to model flow summaries.
+ * A data-flow node used to model flow summaries. That is, a dataflow node
+ * that is synthesized to represent a parameter, return value, or other part
+ * of a models-as-data modelled function.
  */
 class FlowSummaryNode extends Node, TFlowSummaryNode {
-  /**
-   * TODO: QLDoc.
-   */
   FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
   /**
@@ -754,10 +753,11 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   }
 
   /**
-   * TODO: QLDoc.
+   * Gets the enclosing callable. For a `FlowSummaryNode` this is always the
+   * summarized function this node is part of.
    */
   override Declaration getEnclosingCallable() {
-    result = this.getSummarizedCallable() // TODO: this doesn't look right.
+    result = this.getSummarizedCallable()
   }
 
   override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
