@@ -30,8 +30,8 @@ EnumConstant nthMissing(SwitchStmt switch, int index) {
 predicate first3(string msg, SwitchStmt switch, EnumConstant e1, EnumConstant e2, EnumConstant e3) {
   exists(int n | n = strictcount(nthMissing(switch, _)) |
     if n > 3
-    then msg = "Switch statement does not have a case for $@, $@, $@ or " + (n - 3) + " more."
-    else msg = "Switch statement does not have a case for $@, $@ or $@."
+    then msg = "Switch statement does not have a case for $@, $@, $@, or " + (n - 3) + " more."
+    else msg = "Switch statement does not have a case for $@, $@, or $@."
   ) and
   e1 = nthMissing(switch, 1) and
   e2 = nthMissing(switch, 2) and
