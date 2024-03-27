@@ -149,7 +149,7 @@ module AccessPath<accessPathRangeSig/1 accessPathRange> {
     // Avoid splitting by '.' since tokens may contain dots, e.g. `Field[foo.Bar.x]`.
     // Instead use regexpFind to match valid tokens, and supplement with a final length
     // check (in `AccessPath.hasSyntaxError`) to ensure all characters were included in a token.
-    result = path.regexpFind("\\w+(?:\\[[^\\]]*\\])?(?=\\.|$)", n, _)
+    result = path.regexpFind("[a-zA-Z_*0-9]+(?:\\[[^\\]]*\\])?(?=\\.|$)", n, _)
   }
 
   /**
