@@ -3476,8 +3476,75 @@ cfg.swift:
 #  577|             getBase(): [CallExpr] call to getMyProtocolImpl()
 #  577|               getFunction(): [DeclRefExpr] getMyProtocolImpl()
 #  577|             getMethodRef(): [DeclRefExpr] source()
-#  580| [Comment] // ---
-#  580| 
+#  580| [NamedFunction] singleStmtExpr(_:)
+#  580|     InterfaceType = (Int) -> ()
+#  580|   getParam(0): [ParamDecl] x
+#  580|       Type = Int
+#  580|   getBody(): [BraceStmt] { ... }
+#  581|     getVariable(0): [ConcreteVarDecl] a
+#  581|         Type = Int
+#  585|     getVariable(1): [ConcreteVarDecl] b
+#  585|         Type = Int
+#  581|     getElement(0): [PatternBindingDecl] var ... = ...
+#  581|       getInit(0): [SingleValueStmtExpr] SingleValueStmtExpr
+#  581|         getStmt(): [SwitchStmt] switch x { ... }
+#  581|           getExpr(): [DeclRefExpr] x
+#  582|           getCase(0): [CaseStmt] case ...
+#  582|             getLabel(0): [CaseLabelItem] =~ ...
+#  582|               getPattern(): [ExprPattern] =~ ...
+#  582|                 getSubExpr(): [BinaryExpr] ... .~=(_:_:) ...
+#  582|                   getFunction(): [MethodLookupExpr] .~=(_:_:)
+#  582|                     getBase(): [TypeExpr] Range<Int>.Type
+#  582|                       getTypeRepr(): [TypeRepr] Range<Int>
+#  582|                     getMethodRef(): [DeclRefExpr] ~=(_:_:)
+#  582|                   getArgument(0): [Argument] : ... ...<(_:_:) ...
+#  582|                     getExpr(): [BinaryExpr] ... ...<(_:_:) ...
+#  582|                       getFunction(): [MethodLookupExpr] ...<(_:_:)
+#  582|                         getBase(): [TypeExpr] Int.Type
+#  582|                           getTypeRepr(): [TypeRepr] Int
+#  582|                         getMethodRef(): [DeclRefExpr] ..<(_:_:)
+#  582|                       getArgument(0): [Argument] : 0
+#  582|                         getExpr(): [IntegerLiteralExpr] 0
+#  582|                       getArgument(1): [Argument] : 5
+#  582|                         getExpr(): [IntegerLiteralExpr] 5
+#  582|                   getArgument(1): [Argument] : $match
+#  582|                     getExpr(): [DeclRefExpr] $match
+#  582|             getBody(): [BraceStmt] { ... }
+#  582|               getElement(0): [ThenStmt] ThenStmt
+#  582|                 getResult(): [IntegerLiteralExpr] 1
+#  583|           getCase(1): [CaseStmt] case ...
+#  583|             getLabel(0): [CaseLabelItem] _
+#  583|               getPattern(): [AnyPattern] _
+#  583|             getBody(): [BraceStmt] { ... }
+#  583|               getElement(0): [ThenStmt] ThenStmt
+#  583|                 getResult(): [IntegerLiteralExpr] 2
+#  581|       getPattern(0): [NamedPattern] a
+#  585|     getElement(1): [PatternBindingDecl] var ... = ...
+#  585|       getInit(0): [SingleValueStmtExpr] SingleValueStmtExpr
+#  585|         getStmt(): [IfStmt] if ... then { ... } else { ... }
+#  585|           getCondition(): [StmtCondition] StmtCondition
+#  585|             getElement(0): [ConditionElement] ... .<(_:_:) ...
+#  585|               getBoolean(): [BinaryExpr] ... .<(_:_:) ...
+#  585|                 getFunction(): [MethodLookupExpr] .<(_:_:)
+#  585|                   getBase(): [TypeExpr] Int.Type
+#  585|                     getTypeRepr(): [TypeRepr] Int
+#  585|                   getMethodRef(): [DeclRefExpr] <(_:_:)
+#  585|                 getArgument(0): [Argument] : x
+#  585|                   getExpr(): [DeclRefExpr] x
+#  585|                 getArgument(1): [Argument] : 42
+#  585|                   getExpr(): [IntegerLiteralExpr] 42
+#  585|               getBoolean().getFullyConverted(): [ParenExpr] (...)
+#  585|           getThen(): [BraceStmt] { ... }
+#  585|             getElement(0): [ThenStmt] ThenStmt
+#  585|               getResult(): [IntegerLiteralExpr] 1
+#  585|           getElse(): [BraceStmt] { ... }
+#  585|             getElement(0): [ThenStmt] ThenStmt
+#  585|               getResult(): [IntegerLiteralExpr] 2
+#  585|       getPattern(0): [NamedPattern] b
+#  582| [ConcreteVarDecl] $match
+#  582|     Type = Int
+#  587| [Comment] // ---
+#  587| 
 declarations.swift:
 #    1| [StructDecl] Foo
 #    2|   getMember(0): [PatternBindingDecl] var ... = ...

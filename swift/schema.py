@@ -1006,7 +1006,7 @@ class ThenStmt(Stmt):
     ```
     the literal expressions `1`, `2` and `3` are wrapped in `ThenStmt`.
     """
-    result: Expr
+    result: Expr | child
 
 class DoCatchStmt(LabeledStmt):
     body: Stmt | child
