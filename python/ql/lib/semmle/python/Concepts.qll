@@ -1026,6 +1026,45 @@ module Http {
     }
 
     /**
+     * A data-flow node that sets a header in an HTTP response.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `ResponseHeaderWrite::Range` instead.
+     */
+    class ResponseHeaderWrite extends DataFlow::Node instanceof ResponseHeaderWrite::Range {
+      /**
+       * Gets the argument containing the header name.
+       */
+      DataFlow::Node getNameArg() { result = super.getNameArg() }
+
+      /**
+       * Gets the argument containing the header value.
+       */
+      DataFlow::Node getValueArg() { result = super.getValueArg() }
+    }
+
+    /** Provides a class for modelling header writes on HTTP responses. */
+    module ResponseHeaderWrite {
+      /**
+       *A data-flow node that sets a header in an HTTP response.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `ResponseHeaderWrite` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument containing the header name.
+         */
+        abstract DataFlow::Node getNameArg();
+
+        /**
+         * Gets the argument containing the header value.
+         */
+        abstract DataFlow::Node getValueArg();
+      }
+    }
+
+    /**
      * A data-flow node that sets a cookie in an HTTP response.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,

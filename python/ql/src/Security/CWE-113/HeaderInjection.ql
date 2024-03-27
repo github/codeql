@@ -1,19 +1,19 @@
 /**
  * @name HTTP Header Injection
- * @description User input should not be used in HTTP headers, otherwise a malicious user
- *              may be able to inject a value that could manipulate the response.
+ * @description Writing user input directly to an HTTP header
+ *              makes code vulnerable to attack by header splitting.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 6.1
+ * @precision high
  * @id py/header-injection
  * @tags security
- *       experimental
  *       external/cwe/cwe-113
  *       external/cwe/cwe-079
  */
 
-// determine precision above
 import python
-import experimental.semmle.python.security.injection.HTTPHeaders
+import semmle.python.security.dataflow.HttpHeaderInjectionQuery
 import HeaderInjectionFlow::PathGraph
 
 from HeaderInjectionFlow::PathNode source, HeaderInjectionFlow::PathNode sink
