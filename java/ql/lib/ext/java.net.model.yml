@@ -55,7 +55,7 @@ extensions:
       - ["java.net", "URI", False, "toURL", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URL", False, "getFile", "()", "", "Argument[this].SyntheticField[java.net.URL.path]", "ReturnValue", "taint", "ai-manual"]
       - ["java.net", "URL", False, "getPath", "()", "", "Argument[this].SyntheticField[java.net.URL.path]", "ReturnValue", "taint", "ai-manual"]
-      - ["java.net", "URL", False, "getQuery", "()", "", "Argument[this].SyntheticField[java.net.URL.path]", "ReturnValue", "taint", "df-manual"] # query is parth of the path
+      - ["java.net", "URL", False, "getQuery", "()", "", "Argument[this].SyntheticField[java.net.URL.path]", "ReturnValue", "taint", "df-manual"] # query is part of the path
       - ["java.net", "URL", False, "URL", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.net", "URL", False, "URL", "(String,String,int,String)", "", "Argument[1]", "Argument[this]", "taint", "df-manual"]
       - ["java.net", "URL", False, "URL", "(String,String,int,String)", "", "Argument[3]", "Argument[this].SyntheticField[java.net.URL.path]", "taint", "df-manual"]
