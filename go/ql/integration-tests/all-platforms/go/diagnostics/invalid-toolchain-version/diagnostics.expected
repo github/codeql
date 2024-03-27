@@ -2,12 +2,12 @@
   "location": {
     "file": "go.mod"
   },
-  "markdownMessage": "As of Go 1.21, toolchain versions [must use the 1.N.P syntax](https://tip.golang.org/doc/toolchain#version).\n\n`1.21` in `go.mod` does not match this syntax and there is no additional `toolchain` directive, which may cause some `go` commands to fail.",
+  "markdownMessage": "As of Go 1.21, toolchain versions [must use the 1.N.P syntax](https://go.dev/doc/toolchain#version).\n\n`1.21` in `go.mod` does not match this syntax and there is no additional `toolchain` directive, which may cause some `go` commands to fail.",
   "severity": "warning",
   "source": {
     "extractorName": "go",
     "id": "go/autobuilder/invalid-go-toolchain-version",
-    "name": "`1.21` is not a valid Go toolchain version"
+    "name": "Invalid Go toolchain version"
   },
   "visibility": {
     "cliSummaryTable": true,
