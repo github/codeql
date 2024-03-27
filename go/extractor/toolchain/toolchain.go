@@ -67,6 +67,8 @@ func InstallVersion(workingDir string, version string) bool {
 	versionCmd := Version()
 	versionCmd.Dir = workingDir
 	versionCmd.Env = append(os.Environ(), toolchainArg)
+	versionCmd.Stdout = os.Stdout
+	versionCmd.Stderr = os.Stderr
 
 	log.Printf(
 		"Trying to install Go %s using its canonical representation in `%s`.",
