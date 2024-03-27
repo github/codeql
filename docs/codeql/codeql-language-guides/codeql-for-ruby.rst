@@ -13,6 +13,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    abstract-syntax-tree-classes-for-working-with-ruby-programs
    analyzing-data-flow-in-ruby
    using-api-graphs-in-ruby
+   customizing-library-models-for-ruby
 
 -  :doc:`Basic query for Ruby code <basic-query-for-ruby-code>`: Learn to write and run a simple CodeQL query.
 
