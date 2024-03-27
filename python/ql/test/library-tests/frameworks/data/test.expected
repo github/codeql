@@ -11,11 +11,14 @@ taintFlow
 | test.py:83:50:83:60 | ControlFlowNode for getSource() | test.py:83:8:83:61 | ControlFlowNode for Attribute() |
 | test.py:86:49:86:59 | ControlFlowNode for getSource() | test.py:86:8:86:60 | ControlFlowNode for Attribute() |
 | test.py:87:56:87:66 | ControlFlowNode for getSource() | test.py:87:8:87:67 | ControlFlowNode for Attribute() |
-| test.py:114:19:114:29 | ControlFlowNode for getSource() | test.py:114:19:114:29 | ControlFlowNode for getSource() |
-| test.py:115:20:115:30 | ControlFlowNode for getSource() | test.py:115:20:115:30 | ControlFlowNode for getSource() |
-| test.py:116:31:116:41 | ControlFlowNode for getSource() | test.py:116:31:116:41 | ControlFlowNode for getSource() |
-| test.py:117:31:117:41 | ControlFlowNode for getSource() | test.py:117:31:117:41 | ControlFlowNode for getSource() |
-| test.py:118:35:118:45 | ControlFlowNode for getSource() | test.py:118:35:118:45 | ControlFlowNode for getSource() |
+| test.py:90:27:90:37 | ControlFlowNode for getSource() | test.py:90:8:90:38 | ControlFlowNode for Attribute() |
+| test.py:91:31:91:41 | ControlFlowNode for getSource() | test.py:91:8:91:42 | ControlFlowNode for Attribute() |
+| test.py:93:20:93:30 | ControlFlowNode for getSource() | test.py:94:8:94:8 | ControlFlowNode for x |
+| test.py:121:19:121:29 | ControlFlowNode for getSource() | test.py:121:19:121:29 | ControlFlowNode for getSource() |
+| test.py:122:20:122:30 | ControlFlowNode for getSource() | test.py:122:20:122:30 | ControlFlowNode for getSource() |
+| test.py:123:31:123:41 | ControlFlowNode for getSource() | test.py:123:31:123:41 | ControlFlowNode for getSource() |
+| test.py:124:31:124:41 | ControlFlowNode for getSource() | test.py:124:31:124:41 | ControlFlowNode for getSource() |
+| test.py:125:35:125:45 | ControlFlowNode for getSource() | test.py:125:35:125:45 | ControlFlowNode for getSource() |
 isSink
 | test.py:4:8:4:8 | ControlFlowNode for x | test-sink |
 | test.py:7:17:7:17 | ControlFlowNode for x | test-sink |
@@ -51,15 +54,18 @@ isSink
 | test.py:85:8:85:53 | ControlFlowNode for Attribute() | test-sink |
 | test.py:86:8:86:60 | ControlFlowNode for Attribute() | test-sink |
 | test.py:87:8:87:67 | ControlFlowNode for Attribute() | test-sink |
-| test.py:89:21:89:23 | ControlFlowNode for one | test-sink |
-| test.py:91:21:91:23 | ControlFlowNode for one | test-sink |
-| test.py:91:30:91:32 | ControlFlowNode for two | test-sink |
-| test.py:98:6:98:9 | ControlFlowNode for baz2 | test-sink |
-| test.py:114:19:114:29 | ControlFlowNode for getSource() | test-sink |
-| test.py:115:20:115:30 | ControlFlowNode for getSource() | test-sink |
-| test.py:116:31:116:41 | ControlFlowNode for getSource() | test-sink |
-| test.py:117:31:117:41 | ControlFlowNode for getSource() | test-sink |
-| test.py:118:35:118:45 | ControlFlowNode for getSource() | test-sink |
+| test.py:90:8:90:38 | ControlFlowNode for Attribute() | test-sink |
+| test.py:91:8:91:42 | ControlFlowNode for Attribute() | test-sink |
+| test.py:94:8:94:8 | ControlFlowNode for x | test-sink |
+| test.py:96:21:96:23 | ControlFlowNode for one | test-sink |
+| test.py:98:21:98:23 | ControlFlowNode for one | test-sink |
+| test.py:98:30:98:32 | ControlFlowNode for two | test-sink |
+| test.py:105:6:105:9 | ControlFlowNode for baz2 | test-sink |
+| test.py:121:19:121:29 | ControlFlowNode for getSource() | test-sink |
+| test.py:122:20:122:30 | ControlFlowNode for getSource() | test-sink |
+| test.py:123:31:123:41 | ControlFlowNode for getSource() | test-sink |
+| test.py:124:31:124:41 | ControlFlowNode for getSource() | test-sink |
+| test.py:125:35:125:45 | ControlFlowNode for getSource() | test-sink |
 isSource
 | test.py:3:5:3:15 | ControlFlowNode for getSource() | test-source |
 | test.py:9:8:9:14 | ControlFlowNode for alias() | test-source |
@@ -94,17 +100,20 @@ isSource
 | test.py:85:42:85:52 | ControlFlowNode for getSource() | test-source |
 | test.py:86:49:86:59 | ControlFlowNode for getSource() | test-source |
 | test.py:87:56:87:66 | ControlFlowNode for getSource() | test-source |
-| test.py:101:29:101:31 | ControlFlowNode for arg | test-source |
-| test.py:104:24:104:29 | ControlFlowNode for param1 | test-source |
-| test.py:104:32:104:37 | ControlFlowNode for param2 | test-source |
-| test.py:107:24:107:28 | ControlFlowNode for name1 | test-source |
-| test.py:107:31:107:35 | ControlFlowNode for name2 | test-source |
-| test.py:114:19:114:29 | ControlFlowNode for getSource() | test-source |
-| test.py:115:20:115:30 | ControlFlowNode for getSource() | test-source |
-| test.py:116:31:116:41 | ControlFlowNode for getSource() | test-source |
-| test.py:117:31:117:41 | ControlFlowNode for getSource() | test-source |
-| test.py:118:35:118:45 | ControlFlowNode for getSource() | test-source |
-| test.py:119:20:119:30 | ControlFlowNode for getSource() | test-source |
+| test.py:90:27:90:37 | ControlFlowNode for getSource() | test-source |
+| test.py:91:31:91:41 | ControlFlowNode for getSource() | test-source |
+| test.py:93:20:93:30 | ControlFlowNode for getSource() | test-source |
+| test.py:108:29:108:31 | ControlFlowNode for arg | test-source |
+| test.py:111:24:111:29 | ControlFlowNode for param1 | test-source |
+| test.py:111:32:111:37 | ControlFlowNode for param2 | test-source |
+| test.py:114:24:114:28 | ControlFlowNode for name1 | test-source |
+| test.py:114:31:114:35 | ControlFlowNode for name2 | test-source |
+| test.py:121:19:121:29 | ControlFlowNode for getSource() | test-source |
+| test.py:122:20:122:30 | ControlFlowNode for getSource() | test-source |
+| test.py:123:31:123:41 | ControlFlowNode for getSource() | test-source |
+| test.py:124:31:124:41 | ControlFlowNode for getSource() | test-source |
+| test.py:125:35:125:45 | ControlFlowNode for getSource() | test-source |
+| test.py:126:20:126:30 | ControlFlowNode for getSource() | test-source |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |

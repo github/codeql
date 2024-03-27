@@ -57,10 +57,14 @@ private module Cached {
     or
     asyncWithStep(nodeFrom, nodeTo)
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom
-          .(DataFlowPrivate::FlowSummaryNode)
-          .getSummaryNode(), nodeTo.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
+    summaryLocalStep(nodeFrom, nodeTo)
   }
+}
+
+predicate summaryLocalStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom
+        .(DataFlowPrivate::FlowSummaryNode)
+        .getSummaryNode(), nodeTo.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
 }
 
 import Cached
