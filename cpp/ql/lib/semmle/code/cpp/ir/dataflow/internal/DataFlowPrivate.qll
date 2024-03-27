@@ -330,7 +330,9 @@ private module IndirectInstructions {
 import IndirectInstructions
 
 /** Gets the callable in which this node occurs. */
-DataFlowCallable nodeGetEnclosingCallable(Node n) { result.asSourceCallable() = n.getEnclosingCallable() }
+DataFlowCallable nodeGetEnclosingCallable(Node n) {
+  result.getUnderlyingCallable() = n.getEnclosingCallable()
+}
 
 /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
 predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
@@ -988,9 +990,9 @@ class CastNode extends Node {
 
 cached
 newtype TDataFlowCallable =
-  TSourceCallable(Cpp::Declaration decl) or
-  /*{ not decl instanceof FlowSummaryImpl::Public::SummarizedCallable }*/ TSummarizedCallable(
-    // TODO: figure this out
+  TSourceCallable(Cpp::Declaration decl) { not decl instanceof FlowSummaryImpl::Public::SummarizedCallable }
+  or
+  TSummarizedCallable(
     FlowSummaryImpl::Public::SummarizedCallable c
   )
 
@@ -1128,13 +1130,13 @@ private class NormalCall extends DataFlowCall, TNormalCall {
   override CallTargetOperand getCallTargetOperand() { result = call.getCallTargetOperand() }
 
   override DataFlowCallable getStaticCallTarget() {
-    result = TSourceCallable(call.getStaticCallTarget())
+    result.getUnderlyingCallable() = call.getStaticCallTarget()
   }
 
   override ArgumentOperand getArgumentOperand(int index) { result = call.getArgumentOperand(index) }
 
   override DataFlowCallable getEnclosingCallable() {
-    result = TSourceCallable(call.getEnclosingFunction())
+    result.getUnderlyingCallable() = call.getEnclosingFunction()
   }
 
   override string toString() { result = call.toString() }
