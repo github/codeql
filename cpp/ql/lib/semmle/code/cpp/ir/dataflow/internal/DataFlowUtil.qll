@@ -1962,10 +1962,20 @@ cached
 private module Cached {
   /**
    * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
-   * (intra-procedural) step.
+   * (intra-procedural) step. This relation is only used for local dataflow
+   * (for example `DataFlow::localFlow(source, sink)`) so it contains
+   * special cases that should only apply to local dataflow.
    */
   cached
-  predicate localFlowStep(Node nodeFrom, Node nodeTo) { simpleLocalFlowStep(nodeFrom, nodeTo) }
+  predicate localFlowStep(Node nodeFrom, Node nodeTo) {
+    // common dataflow steps
+    simpleLocalFlowStep(nodeFrom, nodeTo)
+    or
+    // models-as-data summarized flow for local data flow (i.e. special case for flow
+    // through calls to modelled functions, without relying on global dataflow to join
+    // the dots).
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
+ }
 
   private predicate indirectionOperandFlow(RawIndirectOperand nodeFrom, Node nodeTo) {
     nodeFrom != nodeTo and
@@ -2031,8 +2041,9 @@ private module Cached {
   /**
    * INTERNAL: do not use.
    *
-   * This is the local flow predicate that's used as a building block in global
-   * data flow. It may have less flow than the `localFlowStep` predicate.
+   * This is the local flow predicate that's used as a building block in both
+   * local and global data flow. It may have less flow than the `localFlowStep`
+   * predicate.
    */
   cached
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
@@ -2072,11 +2083,8 @@ private module Cached {
     reverseFlow(nodeFrom, nodeTo)
     or
     // models-as-data summarized flow
-    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
-    or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
       nodeTo.(FlowSummaryNode).getSummaryNode(), true)
-    // TODO: should these really be in the same place?
   }
 
   private predicate simpleInstructionLocalFlowStep(Operand opFrom, Instruction iTo) {
