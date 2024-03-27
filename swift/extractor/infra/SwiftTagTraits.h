@@ -43,6 +43,7 @@ MAP(swift::Stmt, StmtTag)
   MAP(swift::BraceStmt, BraceStmtTag)
   MAP(swift::ReturnStmt, ReturnStmtTag)
   MAP(swift::YieldStmt, YieldStmtTag)
+  MAP(swift::ThenStmt, void)  // gated behind yet unusable experimental feature
   MAP(swift::DeferStmt, DeferStmtTag)
   MAP(swift::LabeledStmt, LabeledStmtTag)
     MAP(swift::LabeledConditionalStmt, LabeledConditionalStmtTag)
