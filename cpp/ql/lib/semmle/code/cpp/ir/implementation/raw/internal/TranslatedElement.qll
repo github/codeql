@@ -130,11 +130,6 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   or
   // suppress destructors of temporary variables until proper support is added for them.
   exists(Expr parent | parent.getAnImplicitDestructorCall() = expr)
-  or
-  exists(Stmt parent |
-    parent.getAnImplicitDestructorCall() = expr and
-    expr.(DestructorCall).getQualifier() instanceof ReuseExpr
-  )
 }
 
 /**
