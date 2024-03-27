@@ -1340,5 +1340,13 @@ class ReuseExpr extends Expr, @reuseexpr {
   /**
    * Gets the expression that is being re-used.
    */
-  Expr getReusedExpr() { expr_reuse(underlyingElement(this), unresolveElement(result)) }
+  Expr getReusedExpr() { expr_reuse(underlyingElement(this), unresolveElement(result), _) }
+
+  override Type getType() { result = this.getReusedExpr().getType() }
+
+  override predicate isLValueCategory() { expr_reuse(underlyingElement(this), _, 3) }
+
+  override predicate isXValueCategory() { expr_reuse(underlyingElement(this), _, 2) }
+
+  override predicate isPRValueCategory() { expr_reuse(underlyingElement(this), _, 1) }
 }
