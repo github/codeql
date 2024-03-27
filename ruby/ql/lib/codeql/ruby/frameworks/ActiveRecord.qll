@@ -765,3 +765,30 @@ private class ActiveRecordCollectionProxyModelInstantiation extends ActiveRecord
     result = this.(ActiveRecordCollectionProxyMethodCall).getAssociation().getTargetClass()
   }
 }
+
+/**
+ * An additional call step for calls to ActiveRecord scopes. For example, in the following code:
+ *
+ * ```rb
+ * class User < ActiveRecord::Base
+ *   scope :with_role, ->(role) { where(role: role) }
+ * end
+ *
+ * User.with_role(r)
+ * ```
+ *
+ * the call to `with_role` targets the lambda, and argument `r` flows to the parameter `role`.
+ */
+class ActiveRecordScopeCallTarget extends AdditionalCallTarget {
+  override DataFlowCallable viableTarget(ExprNodes::CallCfgNode scopeCall) {
+    exists(DataFlow::ModuleNode model, string scopeName |
+      model = activeRecordBaseClass().getADescendentModule() and
+      exists(DataFlow::CallNode scope |
+        scope = model.getAModuleLevelCall("scope") and
+        scope.getArgument(0).getConstantValue().isStringlikeValue(scopeName) and
+        scope.getArgument(1).asCallable().asCallableAstNode() = result.asCfgScope()
+      ) and
+      scopeCall = model.getAnImmediateReference().getAMethodCall(scopeName).asExpr()
+    )
+  }
+}

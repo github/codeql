@@ -309,9 +309,12 @@ class ExprNode extends AstNode {
   override AstNode getChildInternal(int childIndex) {
     result.getAst() = expr.getChild(childIndex)
     or
+    childIndex = max(int index | exists(expr.getChild(index)) or index = 0) + 1 and
+    result.getAst() = expr.(ConditionDeclExpr).getInitializingExpr()
+    or
     exists(int destructorIndex |
       result.getAst() = expr.getImplicitDestructorCall(destructorIndex) and
-      childIndex = destructorIndex + max(int index | exists(expr.getChild(index)) or index = 0) + 1
+      childIndex = destructorIndex + max(int index | exists(expr.getChild(index)) or index = 0) + 2
     )
   }
 
@@ -685,6 +688,8 @@ private string getChildAccessorWithoutConversions(Locatable parent, Element chil
       or
       not namedExprChildPredicates(expr, child, _) and
       exists(int n | expr.getChild(n) = child and result = "getChild(" + n + ")")
+      or
+      expr.(ConditionDeclExpr).getInitializingExpr() = child and result = "getInitializingExpr()"
       or
       exists(int n |
         expr.getImplicitDestructorCall(n) = child and

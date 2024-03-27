@@ -439,8 +439,9 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 			for _, component := range components {
 				path = filepath.Join(path, component)
 
-				// Try to initialize a `go.mod` file automatically for the stray source files.
-				if !slices.Contains(goModDirs, path) {
+				// Try to initialize a `go.mod` file automatically for the stray source files if
+				// doing so would not place it in a parent directory of an existing `go.mod` file.
+				if !startsWithAnyOf(path, goModDirs) {
 					goWorkspaces = append(goWorkspaces, GoWorkspace{
 						BaseDir: path,
 						DepMode: GoGetNoModules,
@@ -475,6 +476,16 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 	}
 
 	return
+}
+
+// Determines whether `str` starts with any of `prefixes`.
+func startsWithAnyOf(str string, prefixes []string) bool {
+	for _, prefix := range prefixes {
+		if relPath, err := filepath.Rel(str, prefix); err == nil && !strings.HasPrefix(relPath, "..") {
+			return true
+		}
+	}
+	return false
 }
 
 // Finds Go workspaces in the current working directory.

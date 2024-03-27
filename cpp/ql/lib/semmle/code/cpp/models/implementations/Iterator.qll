@@ -9,6 +9,8 @@ import cpp
 import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.DataFlow
 import semmle.code.cpp.models.interfaces.Iterator
+import semmle.code.cpp.models.interfaces.Alias
+import semmle.code.cpp.models.interfaces.SideEffect
 
 /**
  * An instantiation of the `std::iterator_traits` template.
@@ -438,7 +440,7 @@ private class IteratorAssignmentMemberOperatorModel extends IteratorAssignmentMe
  * A `begin` or `end` member function, or a related member function, that
  * returns an iterator.
  */
-private class BeginOrEndFunction extends MemberFunction, TaintFunction, GetIteratorFunction {
+class BeginOrEndFunction extends MemberFunction {
   BeginOrEndFunction() {
     this.hasName([
         "begin", "cbegin", "rbegin", "crbegin", "end", "cend", "rend", "crend", "before_begin",
@@ -446,7 +448,11 @@ private class BeginOrEndFunction extends MemberFunction, TaintFunction, GetItera
       ]) and
     this.getType().getUnspecifiedType() instanceof Iterator
   }
+}
 
+private class BeginOrEndFunctionModels extends BeginOrEndFunction, TaintFunction,
+  GetIteratorFunction, AliasFunction, SideEffectFunction
+{
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValue()
@@ -455,6 +461,22 @@ private class BeginOrEndFunction extends MemberFunction, TaintFunction, GetItera
   override predicate getsIterator(FunctionInput input, FunctionOutput output) {
     input.isQualifierObject() and
     output.isReturnValue()
+  }
+
+  override predicate parameterNeverEscapes(int index) { index = -1 }
+
+  override predicate parameterEscapesOnlyViaReturn(int index) { none() }
+
+  override predicate hasOnlySpecificReadSideEffects() { any() }
+
+  override predicate hasOnlySpecificWriteSideEffects() { any() }
+
+  override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    none()
+  }
+
+  override predicate hasSpecificReadSideEffect(ParameterIndex i, boolean buffer) {
+    i = -1 and buffer = false
   }
 }
 

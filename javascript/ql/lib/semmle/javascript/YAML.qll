@@ -9,9 +9,9 @@ import javascript
 private import codeql.yaml.Yaml as LibYaml
 
 private module YamlSig implements LibYaml::InputSig {
-  class LocatableBase extends @yaml_locatable, Locatable {
-    override Location getLocation() { yaml_locations(this, result) }
-  }
+  class Location = DbLocation;
+
+  class LocatableBase extends @yaml_locatable, Locatable { }
 
   import javascript
 
@@ -51,8 +51,6 @@ import LibYaml::Make<YamlSig>
 // private class to forward the `toString` etc. predicates from `YamlNode` to `Locatable`.
 private class MyYmlNode extends Locatable instanceof YamlNode {
   override string getAPrimaryQlClass() { result = YamlNode.super.getAPrimaryQlClass() }
-
-  override Location getLocation() { result = YamlNode.super.getLocation() }
 
   override string toString() { result = YamlNode.super.toString() }
 }

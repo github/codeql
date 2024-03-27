@@ -5,8 +5,9 @@
 
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking as TT
+private import codeql.util.Location
 
-signature module InputSig<DF::InputSig DataFlowLang> {
+signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowLang> {
   /** Holds if `n` should be excluded from the consistency test `uniqueEnclosingCallable`. */
   default predicate uniqueEnclosingCallableExclude(DataFlowLang::Node n) { none() }
 
@@ -71,8 +72,8 @@ signature module InputSig<DF::InputSig DataFlowLang> {
 }
 
 module MakeConsistency<
-  DF::InputSig DataFlowLang, TT::InputSig<DataFlowLang> TaintTrackingLang,
-  InputSig<DataFlowLang> Input>
+  LocationSig Location, DF::InputSig<Location> DataFlowLang,
+  TT::InputSig<Location, DataFlowLang> TaintTrackingLang, InputSig<Location, DataFlowLang> Input>
 {
   private import DataFlowLang
   private import TaintTrackingLang
@@ -128,10 +129,7 @@ module MakeConsistency<
 
   query predicate uniqueNodeLocation(Node n, string msg) {
     exists(int c |
-      c =
-        count(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-          n.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-        ) and
+      c = count(n.getLocation()) and
       c != 1 and
       not Input::uniqueNodeLocationExclude(n) and
       msg = "Node should have one location but has " + c + "."
@@ -142,7 +140,7 @@ module MakeConsistency<
     exists(int c |
       c =
         strictcount(Node n |
-          not n.hasLocationInfo(_, _, _, _, _) and
+          not exists(n.getLocation()) and
           not Input::missingLocationExclude(n)
         ) and
       msg = "Nodes without location: " + c

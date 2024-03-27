@@ -12,13 +12,13 @@ module QL {
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { ql_ast_node_info(this, _, _, result) }
+    final L::Location getLocation() { ql_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { ql_ast_node_info(this, result, _, _) }
+    final AstNode getParent() { ql_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { ql_ast_node_info(this, _, result, _) }
+    final int getParentIndex() { ql_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }
@@ -1282,13 +1282,13 @@ module Dbscheme {
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { dbscheme_ast_node_info(this, _, _, result) }
+    final L::Location getLocation() { dbscheme_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { dbscheme_ast_node_info(this, result, _, _) }
+    final AstNode getParent() { dbscheme_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { dbscheme_ast_node_info(this, _, result, _) }
+    final int getParentIndex() { dbscheme_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }
@@ -1618,13 +1618,13 @@ module Blame {
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { blame_ast_node_info(this, _, _, result) }
+    final L::Location getLocation() { blame_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { blame_ast_node_info(this, result, _, _) }
+    final AstNode getParent() { blame_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { blame_ast_node_info(this, _, result, _) }
+    final int getParentIndex() { blame_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }
@@ -1731,13 +1731,13 @@ module JSON {
     string toString() { result = this.getAPrimaryQlClass() }
 
     /** Gets the location of this element. */
-    final L::Location getLocation() { json_ast_node_info(this, _, _, result) }
+    final L::Location getLocation() { json_ast_node_location(this, result) }
 
     /** Gets the parent of this element. */
-    final AstNode getParent() { json_ast_node_info(this, result, _, _) }
+    final AstNode getParent() { json_ast_node_parent(this, result, _) }
 
     /** Gets the index of this node among the children of its parent. */
-    final int getParentIndex() { json_ast_node_info(this, _, result, _) }
+    final int getParentIndex() { json_ast_node_parent(this, _, result) }
 
     /** Gets a field or child node of this node. */
     AstNode getAFieldOrChild() { none() }
