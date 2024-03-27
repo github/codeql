@@ -8,6 +8,7 @@ public class Test {
 		String url = "jdbc:mysql://localhost/test";
 		String usr = "admin"; // hard-coded user name (flow source)
 		String pass = "123456"; // hard-coded password (flow source)
+		String pwd = "myPassword"; // hard-coded password (flow source)
 
 		test(url, usr, pass); // flow through method
 
@@ -26,11 +27,17 @@ public class Test {
 		passwordCheck(pass); // $ HardcodedCredentialsSourceCall
 	}
 
-	public static void test(String url, String user, String password) throws SQLException {
-		DriverManager.getConnection(url, user, password); // $ HardcodedCredentialsApiCall
+	public static void test(String url, String user, String v) throws SQLException {
+		DriverManager.getConnection(url, user, v); // $ HardcodedCredentialsApiCall
 	}
 
 	public static final String password = "myOtherPassword"; // $ HardcodedPasswordField
+
+	public static final String pwd = "myOtherPassword"; // $ HardcodedPasswordField
+
+	public static final String hard_coded_passphrase_chars = "MyPassPhrase"; // $ HardcodedPasswordField
+
+	public static final String password_question = "What is your password?"; // Good: not a password
 
 	public static boolean passwordCheck(String password) {
 		return password.equals("admin"); // $ HardcodedCredentialsComparison

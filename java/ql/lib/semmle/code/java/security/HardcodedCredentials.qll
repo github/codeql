@@ -66,7 +66,8 @@ class CredentialsApiSink extends CredentialsSink {
  */
 class PasswordVariable extends Variable {
   PasswordVariable() {
-    this.getName().regexpMatch("(?i)(encrypted|old|new)?pass(wd|word|code|phrase)(chars|value)?")
+    this.getName().regexpMatch("(?i).*pass(w|wd|wrd|word|code|phrase|key|_)(chars|value)?(?!.*(size|length|question|path|prompt)).*") or
+    this.getName().regexpMatch("(?i)pwd")
   }
 }
 
@@ -74,7 +75,7 @@ class PasswordVariable extends Variable {
  * A variable whose name indicates that it may hold a user name.
  */
 class UsernameVariable extends Variable {
-  UsernameVariable() { this.getName().regexpMatch("(?i)(user|username)") }
+  UsernameVariable() { this.getName().regexpMatch("(?i)(puid|user|username|userid)(?!.*(characters|claimtype)).*") }
 }
 
 /**
