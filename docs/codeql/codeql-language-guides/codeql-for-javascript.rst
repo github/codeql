@@ -34,4 +34,4 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
 
 -  :doc:`Data flow cheat sheet for JavaScript <data-flow-cheat-sheet-for-javascript>`: This article describes parts of the JavaScript libraries commonly used for variant analysis and in data flow queries.
 
-- :doc:`Customizing library models for JavaScript <customizing-library-models-for-ruby>`: You can model frameworks and libraries that your codebase depends on using data extensions and publish them as CodeQL model packs.
+- :doc:`Customizing library models for JavaScript <customizing-library-models-for-javascript>`: You can model frameworks and libraries that your codebase depends on using data extensions and publish them as CodeQL model packs.
