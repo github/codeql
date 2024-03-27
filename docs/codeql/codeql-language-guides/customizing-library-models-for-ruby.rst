@@ -1,7 +1,5 @@
 .. _customizing-library-models-for-ruby:
 
-:orphan:
-:nosearch:
 
 Customizing Library Models for Ruby
 ===================================
