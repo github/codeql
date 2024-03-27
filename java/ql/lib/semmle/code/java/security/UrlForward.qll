@@ -129,7 +129,6 @@ private class CheckUrlEncodingGuard extends Guard instanceof CheckUrlEncodingCal
 
 /** Holds if `g` is guard for a URL that does not contain URL encoding. */
 private predicate noUrlEncodingGuard(Guard g, Expr e, boolean branch) {
-  g instanceof CheckUrlEncodingGuard and
   e = g.(CheckUrlEncodingGuard).getCheckedExpr() and
   branch = false
   or
