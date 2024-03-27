@@ -15605,7 +15605,7 @@ ir.cpp:
 # 1934|             Type = [ClassTemplateInstantiation,Struct] Bar2<int>
 # 1934|             ValueCategory = lvalue
 # 1935|     getStmt(2): [ReturnStmt] return ...
-# 1938| [GlobalVariable] char global_template<char>
+# 1938| [GlobalVariable,VariableTemplateInstantiation] char global_template<char>
 # 1938|   getInitializer(): [Initializer] initializer for global_template
 # 1938|     getExpr(): [Literal] 42
 # 1938|         Type = [IntType] int
@@ -15616,7 +15616,7 @@ ir.cpp:
 # 1938|         Type = [PlainCharType] char
 # 1938|         Value = [CStyleCast] 42
 # 1938|         ValueCategory = prvalue
-# 1938| [GlobalVariable] int global_template<int>
+# 1938| [GlobalVariable,VariableTemplateInstantiation] int global_template<int>
 # 1938|   getInitializer(): [Initializer] initializer for global_template
 # 1938|     getExpr(): [Literal] 42
 # 1938|         Type = [IntType] int
