@@ -1,0 +1,12 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.xml.stream.util", "EventReaderDelegate", True, "EventReaderDelegate", "(XMLEventReader)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.stream.util", "EventReaderDelegate", True, "getParent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.stream.util", "EventReaderDelegate", True, "setParent", "(XMLEventReader)", "", "Argument[0].Element", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", True, "StreamReaderDelegate", "(XMLStreamReader)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", True, "getParent", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.xml.stream.util", "StreamReaderDelegate", True, "setParent", "(XMLStreamReader)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]

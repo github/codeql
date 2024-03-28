@@ -1,0 +1,10 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["jdk.internal.access.foreign", "UnmapperProxy", "address", "()", "summary", "df-generated"]
+      - ["jdk.internal.access.foreign", "UnmapperProxy", "fileDescriptor", "()", "summary", "df-generated"]
+      - ["jdk.internal.access.foreign", "UnmapperProxy", "isSync", "()", "summary", "df-generated"]
+      - ["jdk.internal.access.foreign", "UnmapperProxy", "unmap", "()", "summary", "df-generated"]

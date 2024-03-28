@@ -1,0 +1,25 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["javax.naming.event", "NamingEvent", True, "NamingEvent", "(EventContext,int,Binding,Binding,Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "NamingEvent", "(EventContext,int,Binding,Binding,Object)", "", "Argument[2]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "NamingEvent", "(EventContext,int,Binding,Binding,Object)", "", "Argument[3]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "NamingEvent", "(EventContext,int,Binding,Binding,Object)", "", "Argument[4]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "getChangeInfo", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "getEventContext", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "getNewBinding", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingEvent", True, "getOldBinding", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingExceptionEvent", True, "NamingExceptionEvent", "(EventContext,NamingException)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingExceptionEvent", True, "NamingExceptionEvent", "(EventContext,NamingException)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingExceptionEvent", True, "getEventContext", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["javax.naming.event", "NamingExceptionEvent", True, "getException", "()", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["javax.naming.event", "NamingEvent", "dispatch", "(NamingListener)", "summary", "df-generated"]
+      - ["javax.naming.event", "NamingEvent", "getType", "()", "summary", "df-generated"]
+      - ["javax.naming.event", "NamingExceptionEvent", "dispatch", "(NamingListener)", "summary", "df-generated"]
