@@ -161,6 +161,14 @@ public class TrapTests {
                         byte[] actual_utf8_bytes = StringUtil.stringToBytes(sw.toString());
                         String actual = new String(actual_utf8_bytes, Charset.forName("UTF-8"));
                         File trap = new File(outputDir, f.getName() + ".trap");
+                        // NOTE: If you want to replace expected output, you MUST change
+                        // the way this test is run under bazel to escape the bazel
+                        // sandbox. Add `tags = ["no-sandbox"]` to the test rule in
+                        // javascript/extractor/test/com/semmle/js/extractor/test/BUILD.bazel
+                        //
+                        // if you have problems with too much caching, you need to find the right bazel command,
+                        // and run `./build --bazel test ... --cache_test_results=no`
+                        // (at least I had problems getting the "no-cache" tag to work)
                         boolean replaceExpectedOutput = false;
                         if (replaceExpectedOutput) {
                           System.out.println("Replacing expected output for " + trap);
