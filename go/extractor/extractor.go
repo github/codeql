@@ -1010,7 +1010,10 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		}
 		kind = dbscheme.TypeAssertExpr.Index()
 		extractExpr(tw, expr.X, lbl, 0)
-		extractExpr(tw, expr.Type, lbl, 1)
+		// expr.Type can be `nil` if this is the `x.(type)` in a type switch.
+		if expr.Type != nil {
+			extractExpr(tw, expr.Type, lbl, 1)
+		}
 	case *ast.CallExpr:
 		if expr == nil {
 			return
