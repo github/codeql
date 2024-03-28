@@ -1423,7 +1423,6 @@
 | exprs.kt:160:29:160:29 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:160:29:160:42 | ...instanceof... | exprs.kt:156:1:163:1 | typeTests | InstanceOfExpr |
 | exprs.kt:160:29:160:42 | Subclass1 | exprs.kt:156:1:163:1 | typeTests | TypeAccess |
-| exprs.kt:160:45:160:49 | <Stmt> | exprs.kt:156:1:163:1 | typeTests | StmtExpr |
 | exprs.kt:160:47:160:47 | <implicit cast> | exprs.kt:156:1:163:1 | typeTests | ImplicitCastExpr |
 | exprs.kt:160:47:160:47 | Subclass1 | exprs.kt:156:1:163:1 | typeTests | TypeAccess |
 | exprs.kt:160:47:160:47 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
