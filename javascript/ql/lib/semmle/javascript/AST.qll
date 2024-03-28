@@ -245,7 +245,7 @@ class TopLevel extends @toplevel, StmtContainer {
   /** Gets the number of lines containing comments in this toplevel. */
   int getNumberOfLinesOfComments() { numlines(this, _, _, result) }
 
-  override predicate isStrict() { this.getAStmt() instanceof StrictModeDecl }
+  override predicate isStrict() { this.getAStmt() instanceof Directive::StrictModeDecl }
 
   override ControlFlowNode getFirstControlFlowNode() { result = this.getEntry() }
 

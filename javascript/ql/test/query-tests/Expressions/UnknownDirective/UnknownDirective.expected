@@ -11,7 +11,7 @@
 | UnknownDirective.js:12:5:12:17 | "use struct;" | Unknown directive: 'use struct;'. |
 | UnknownDirective.js:13:5:13:17 | "Use Strict"; | Unknown directive: 'Use Strict'. |
 | UnknownDirective.js:14:5:14:14 | "use bar"; | Unknown directive: 'use bar'. |
-| UnknownDirective.js:38:5:38:17 | "[0, 0, 0];"; | Unknown directive: '[0, 0, 0];'. |
-| UnknownDirective.js:39:5:39:65 | "[0, 0, ... , 0];"; | Unknown directive: '[0, 0, 0, 0, 0, 0, 0 ... (truncated)'. |
-| UnknownDirective.js:45:5:45:15 | ":nomunge"; | Unknown directive: ':nomunge'. |
-| UnknownDirective.js:46:5:46:30 | "foo(), ... munge"; | Unknown directive: 'foo(), bar, baz:nomu ... (truncated)'. |
+| UnknownDirective.js:40:5:40:17 | "[0, 0, 0];"; | Unknown directive: '[0, 0, 0];'. |
+| UnknownDirective.js:41:5:41:65 | "[0, 0, ... , 0];"; | Unknown directive: '[0, 0, 0, 0, 0, 0, 0 ... (truncated)'. |
+| UnknownDirective.js:47:5:47:15 | ":nomunge"; | Unknown directive: ':nomunge'. |
+| UnknownDirective.js:48:5:48:30 | "foo(), ... munge"; | Unknown directive: 'foo(), bar, baz:nomu ... (truncated)'. |

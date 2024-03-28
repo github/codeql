@@ -32,6 +32,8 @@ function good() {
     "ngNoInject"; // OK
     "deps foo"; // OK
     "deps bar"; // OK
+    "use server"; // OK
+    "use client"; // OK
 }
 
 function data() {
@@ -46,6 +48,6 @@ function yui() {
     "foo(), bar, baz:nomunge"; // NOT OK
 }
 
-function babel_typeof(obj) { 
+function babel_typeof(obj) {
     "@babel/helpers - typeof"
 }
