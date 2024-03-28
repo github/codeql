@@ -7,6 +7,7 @@
 private import ruby
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.core.Gem::Gem as Gem
+private import codeql.ruby.security.XSS::ReflectedXss as ReflectedXss
 private import codeql.ruby.typetracking.TypeTracking
 
 /**
@@ -34,7 +35,11 @@ module UnsafeHtmlConstruction {
     abstract string getSinkType();
   }
 
-  private import codeql.ruby.security.XSS::ReflectedXss as ReflectedXss
+  /** A sanitizer for HTML constructed from library input vulnerabilities. */
+  abstract class Sanitizer extends DataFlow::Node { }
+
+  /** A sanitizer from the reflected-xss query, which is also a sanitizer for unsafe HTML construction. */
+  private class ReflectedXssSanitizers extends Sanitizer instanceof ReflectedXss::Sanitizer { }
 
   /** Gets a node that eventually ends up in the XSS `sink`. */
   private DataFlow::Node getANodeThatEndsInXssSink(ReflectedXss::Sink sink) {
