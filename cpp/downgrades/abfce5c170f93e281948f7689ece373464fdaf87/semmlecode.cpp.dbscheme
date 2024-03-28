@@ -1515,8 +1515,7 @@ exprs(
 
 expr_reuse(
     int reuse: @expr ref,
-    int original: @expr ref,
-    int value_category: int ref
+    int original: @expr ref
 )
 
 /*
