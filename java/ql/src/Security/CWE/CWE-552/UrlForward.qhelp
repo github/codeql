@@ -11,9 +11,9 @@ can cause file information disclosure by allowing an attacker to access unauthor
 </overview>
 <recommendation>
 
-<p>To guard against untrusted URL forwarding, it is advisable to avoid putting user input
-directly into a forwarded URL. Instead, maintain a list of authorized
-URLs on the server; then choose from that list based on the user input provided.</p>
+<p>To guard against untrusted URL forwarding, you should avoid putting user input
+directly into a forwarded URL. Instead, you should maintain a list of authorized
+URLs on the server, then choose from that list based on the user input provided.</p>
 
 </recommendation>
 <example>

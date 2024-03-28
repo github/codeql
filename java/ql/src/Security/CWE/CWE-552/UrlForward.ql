@@ -1,6 +1,6 @@
 /**
  * @name URL forward from a remote source
- * @description URL forward based on unvalidated user-input
+ * @description URL forward based on unvalidated user input
  *              may cause file information disclosure.
  * @kind path-problem
  * @problem.severity error
