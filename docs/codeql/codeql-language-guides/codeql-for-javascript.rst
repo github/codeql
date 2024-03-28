@@ -17,6 +17,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    using-type-tracking-for-api-modeling
    abstract-syntax-tree-classes-for-working-with-javascript-and-typescript-programs
    data-flow-cheat-sheet-for-javascript
+   customizing-library-models-for-javascript
 
 -  :doc:`Basic query for JavaScript and TypeScript code <basic-query-for-javascript-code>`: Learn to write and run a simple CodeQL query.
 
