@@ -97,24 +97,25 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
 
 private module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;
 
-/**
- * Gets the name of a possible piece of content. For Python, this is currently only attribute names,
- * using the name of the attribute for the corresponding content.
- */
-private string getPossibleContentName() {
-  Stages::TypeTracking::ref() and // the TypeTracking::append() etc. predicates that we want to cache depend on this predicate, so we can place the `ref()` call here to get around identical files.
-  result = any(DataFlowPublic::AttrRef a).getAttributeName()
-}
-
 module TypeTrackingInput implements Shared::TypeTrackingInput {
   class Node = DataFlowPublic::Node;
 
   class LocalSourceNode = DataFlowPublic::LocalSourceNode;
 
-  class Content instanceof string {
-    Content() { this = getPossibleContentName() }
-
-    string toString() { result = this }
+  class Content extends DataFlowPublic::Content {
+    Content() {
+      // TODO: for now, it's not 100% clear if should support non-precise content in
+      // type-tracking, or if it will lead to bad results. We start with only allowing
+      // precise content, which should always be a good improvement! It also simplifies
+      // the process of examining new results from non-precise content steps in the
+      // future, since you will _only_ have to look over the results from the new
+      // non-precise steps.
+      this instanceof DataFlowPublic::AttributeContent
+      or
+      this instanceof DataFlowPublic::DictionaryElementContent
+      or
+      this instanceof DataFlowPublic::TupleElementContent
+    }
   }
 
   /**
@@ -181,46 +182,50 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
    * Holds if `nodeFrom` is being written to the `content` content of the object in `nodeTo`.
    */
   predicate storeStep(Node nodeFrom, Node nodeTo, Content content) {
-    exists(DataFlowPublic::AttrWrite a |
-      a.mayHaveAttributeName(content) and
+    exists(DataFlowPublic::AttrWrite a, string attrName |
+      content.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
+      a.mayHaveAttributeName(attrName) and
       nodeFrom = a.getValue() and
       nodeTo = a.getObject()
     )
     or
-    exists(DataFlowPublic::ContentSet contents |
-      contents.(DataFlowPublic::AttributeContent).getAttribute() = content
+    // type-tracking doesn't really handle PostUpdateNodes, so for some assignment steps
+    // like `my_dict["foo"] = foo` the data-flow step targets the PostUpdateNode for
+    // `my_dict`, where we want to translate that into a type-tracking step that targets
+    // the normal/non-PostUpdateNode for `my_dict`.
+    exists(DataFlowPublic::Node storeTarget |
+      DataFlowPrivate::storeStepCommon(nodeFrom, content, storeTarget)
     |
-      TypeTrackerSummaryFlow::basicStoreStep(nodeFrom, nodeTo, contents)
+      not storeTarget instanceof DataFlowPrivate::SyntheticPostUpdateNode and
+      nodeTo = storeTarget
+      or
+      nodeTo = storeTarget.(DataFlowPrivate::SyntheticPostUpdateNode).getPreUpdateNode()
     )
+    or
+    TypeTrackerSummaryFlow::basicStoreStep(nodeFrom, nodeTo, content)
   }
 
   /**
    * Holds if `nodeTo` is the result of accessing the `content` content of `nodeFrom`.
    */
   predicate loadStep(Node nodeFrom, LocalSourceNode nodeTo, Content content) {
-    exists(DataFlowPublic::AttrRead a |
-      a.mayHaveAttributeName(content) and
+    exists(DataFlowPublic::AttrRead a, string attrName |
+      content.(DataFlowPublic::AttributeContent).getAttribute() = attrName and
+      a.mayHaveAttributeName(attrName) and
       nodeFrom = a.getObject() and
       nodeTo = a
     )
     or
-    exists(DataFlowPublic::ContentSet contents |
-      contents.(DataFlowPublic::AttributeContent).getAttribute() = content
-    |
-      TypeTrackerSummaryFlow::basicLoadStep(nodeFrom, nodeTo, contents)
-    )
+    DataFlowPrivate::readStepCommon(nodeFrom, content, nodeTo)
+    or
+    TypeTrackerSummaryFlow::basicLoadStep(nodeFrom, nodeTo, content)
   }
 
   /**
    * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
    */
   predicate loadStoreStep(Node nodeFrom, Node nodeTo, Content loadContent, Content storeContent) {
-    exists(DataFlowPublic::ContentSet loadContents, DataFlowPublic::ContentSet storeContents |
-      loadContents.(DataFlowPublic::AttributeContent).getAttribute() = loadContent and
-      storeContents.(DataFlowPublic::AttributeContent).getAttribute() = storeContent
-    |
-      TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo, loadContents, storeContents)
-    )
+    TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo, loadContent, storeContent)
   }
 
   /**

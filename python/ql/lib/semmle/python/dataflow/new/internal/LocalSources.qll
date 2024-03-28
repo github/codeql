@@ -74,6 +74,8 @@ class LocalSourceNode extends Node {
     this instanceof ScopeEntryDefinitionNode
     or
     this instanceof ParameterNode
+    or
+    this instanceof IterableSequenceNode
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */

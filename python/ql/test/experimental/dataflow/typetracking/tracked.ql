@@ -30,6 +30,14 @@ module TrackedTest implements TestSig {
       not e instanceof DataFlow::ScopeEntryDefinitionNode and
       // ...same for `SynthCaptureNode`s
       not e instanceof DP::SynthCaptureNode and
+      // after starting to track all kinds of content, we generally just want to show
+      // annotations after reading the tracked data out again. (we keep the old
+      // attribute logic to not rewrite all our tests)
+      (
+        t.getContent().isNone()
+        or
+        t.getContent().asSome() instanceof DataFlow::AttributeContent
+      ) and
       tag = "tracked" and
       location = e.getLocation() and
       value = t.getAttr() and
