@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.jboss.vfs", "VirtualFile", True, "getChild", "", "", "Argument[0]", "path-injection", "manual"]

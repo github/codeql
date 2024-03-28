@@ -13,6 +13,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["javax.servlet", "ServletContext", True, "getResource", "(String)", "", "Argument[0]", "path-injection", "manual"]
       - ["javax.servlet", "ServletContext", True, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
   - addsTo:
       pack: codeql/java-all
