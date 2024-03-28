@@ -74,6 +74,13 @@ taintFlow
 | test.js:249:28:249:35 | source() | test.js:249:28:249:35 | source() |
 | test.js:252:15:252:22 | source() | test.js:252:15:252:22 | source() |
 | test.js:254:32:254:39 | source() | test.js:254:32:254:39 | source() |
+| test.js:261:19:261:26 | source() | test.js:261:19:261:26 | source() |
+| test.js:266:22:266:29 | source() | test.js:266:22:266:29 | source() |
+| test.js:271:25:271:32 | source() | test.js:271:25:271:32 | source() |
+| test.js:273:21:273:28 | source() | test.js:273:21:273:28 | source() |
+| test.js:274:21:274:28 | source() | test.js:274:21:274:28 | source() |
+| test.js:276:30:276:37 | source() | test.js:276:30:276:37 | source() |
+| test.js:278:8:278:23 | window.fqnSource | test.js:278:8:278:23 | window.fqnSource |
 isSink
 | test.js:54:18:54:25 | source() | test-sink |
 | test.js:55:22:55:29 | source() | test-sink |
@@ -152,6 +159,12 @@ isSink
 | test.js:249:28:249:35 | source() | test-sink |
 | test.js:252:15:252:22 | source() | test-sink |
 | test.js:254:32:254:39 | source() | test-sink |
+| test.js:261:19:261:26 | source() | test-sink |
+| test.js:266:22:266:29 | source() | test-sink |
+| test.js:271:25:271:32 | source() | test-sink |
+| test.js:273:21:273:28 | source() | test-sink |
+| test.js:274:21:274:28 | source() | test-sink |
+| test.js:276:30:276:37 | source() | test-sink |
 syntaxErrors
 | Member[foo |
 | Member[foo] .Member[bar] |
