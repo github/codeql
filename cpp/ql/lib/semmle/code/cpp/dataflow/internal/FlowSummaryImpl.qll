@@ -38,10 +38,14 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
   }
 
   string encodeWithoutContent(ContentSet c, string arg) {
+    // used for type tracking, not currently used in C/C++.
     result = "WithoutContent" + c and arg = ""
   }
 
-  string encodeWithContent(ContentSet c, string arg) { result = "WithContent" + c and arg = "" }
+  string encodeWithContent(ContentSet c, string arg) {
+    // used for type tracking, not currently used in C/C++.
+    result = "WithContent" + c and arg = ""
+  }
 
   /**
    * Decodes an argument / parameter position string, for example the `0` in `Argument[0]`.
