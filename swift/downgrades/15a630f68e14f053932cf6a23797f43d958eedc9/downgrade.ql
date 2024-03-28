@@ -5,8 +5,7 @@ class Element extends @element {
 query predicate new_unspecified_elements(Element e, string property, string error) {
   unspecified_elements(e, property, error)
   or
-  error =
-    "ThenStmt nodes removed during database downgrade. Please update your CodeQL code." and
+  error = "ThenStmt nodes removed during database downgrade. Please update your CodeQL code." and
   property = "" and
   then_stmts(e, _)
 }
