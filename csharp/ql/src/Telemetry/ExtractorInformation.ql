@@ -87,7 +87,7 @@ predicate extractionIsStandalone(string key, int value) {
     value = 0 and
     not extractionIsStandalone()
   ) and
-  key = "Is buildless extraction"
+  key = "Is extracted with build-mode set to 'none'"
 }
 
 signature module StatsSig {
