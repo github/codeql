@@ -55,8 +55,6 @@ module InlineFlowTestMake<
     predicate isSource(DataFlowLang::Node source) { Impl::defaultSource(source) }
 
     predicate isSink(DataFlowLang::Node sink) { Impl::defaultSink(sink) }
-
-    int fieldFlowBranchLimit() { result = 1000 }
   }
 
   private module NoFlowConfig implements DataFlow::ConfigSig {
