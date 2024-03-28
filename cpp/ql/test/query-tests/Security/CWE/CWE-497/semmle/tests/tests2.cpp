@@ -135,16 +135,16 @@ void test_zmq(void *remoteSocket)
 	message_len = strlen(message_data) + 1;
 
 	// send as data
-	if (zmq_send(socket, message_data, message_len, 0) >= 0) { // BAD: outputs HOME environment variable [NOT DETECTED]
+	if (zmq_send(socket, message_data, message_len, 0) >= 0) { // BAD: outputs HOME environment variable
 		// ...
 	}
 
 	// send as message
 	if (zmq_msg_init_data(&message, message_data, message_len, 0, 0)) {
-		if (zmq_sendmsg(remoteSocket, &message, message_len)) { // BAD: outputs HOME environment variable [NOT DETECTED]
+		if (zmq_sendmsg(remoteSocket, &message, message_len)) { // BAD: outputs HOME environment variable (detected above)
 			// ...
 		}
-		if (zmq_msg_send(&message, remoteSocket, message_len)) { // BAD: outputs HOME environment variable [NOT DETECTED]
+		if (zmq_msg_send(&message, remoteSocket, message_len)) { // BAD: outputs HOME environment variable (detected above)
 			// ...
 		}
 	}

@@ -101,17 +101,17 @@ void test_zmc(void *socket) {
   zmq_msg_t msg1, msg2;
   char buffer[1024];
 
-  if (zmq_recv(socket, buffer, sizeof(buffer), 0) >= 0) { // $ MISSING: remote_source
+  if (zmq_recv(socket, buffer, sizeof(buffer), 0) >= 0) { // $ remote_source
     // ...
   }
 
   zmq_msg_init(&msg1);
-  if (zmq_msg_recv(&msg1, socket, 0) >= 0) { // $ MISSING: remote_source
+  if (zmq_msg_recv(&msg1, socket, 0) >= 0) { // $ remote_source
     // ...
   }
 
   zmq_msg_init(&msg2);
-  if (zmq_recvmsg(socket, &msg2, 0) >= 0) { // $ MISSING: remote_source
+  if (zmq_recvmsg(socket, &msg2, 0) >= 0) { // $ remote_source
     // ...
   }
 }

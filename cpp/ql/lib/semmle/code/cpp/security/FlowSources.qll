@@ -93,6 +93,9 @@ abstract class RemoteFlowSink extends DataFlow::Node {
   abstract string getSinkType();
 }
 
+/**
+ * A remote flow sink derived from the `RemoteFlowSinkFunction` model.
+ */
 private class RemoteParameterSink extends RemoteFlowSink {
   string sourceType;
 
@@ -105,4 +108,13 @@ private class RemoteParameterSink extends RemoteFlowSink {
   }
 
   override string getSinkType() { result = sourceType }
+}
+
+/**
+ * A remote flow sink defined in a CSV model.
+ */
+private class RemoteFlowFromCSVSink extends RemoteFlowSink {
+  RemoteFlowFromCSVSink() { sinkNode(this, "remote-sink") }
+
+  override string getSinkType() { result = "remote flow sink" }
 }
