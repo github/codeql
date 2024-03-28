@@ -15,6 +15,13 @@ private import semmle.python.dataflow.new.TaintTracking
 private import experimental.semmle.python.Frameworks
 private import semmle.python.Concepts
 
+/**
+ * A data-flow node that responsible for a command that can be executed on a secondary remote system,
+ *
+ * Extend this class to model new APIs.
+ */
+abstract class SecondaryCommandInjection extends DataFlow::Node { }
+
 /** Provides classes for modeling copying file related APIs. */
 module CopyFile {
   /**
