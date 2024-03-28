@@ -85,3 +85,33 @@ void test_getchar(FILE *stream) {
   int l = _getchar_nolock(); // $ local_source
   wint_t m = _getwchar_nolock(); // $ local_source
 }
+
+// ZMC networking library
+
+typedef unsigned long size_t;
+
+struct zmq_msg_t {
+};
+int zmq_msg_init(zmq_msg_t *msg);
+int zmq_msg_recv(zmq_msg_t *msg, void *socket, int flags);
+int zmq_recvmsg(void *socket, zmq_msg_t *msg, int flags); // deprecated
+int zmq_recv(void *socket, void *buf, size_t len, int flags);
+
+void test_zmc(void *socket) {
+  zmq_msg_t msg1, msg2;
+  char buffer[1024];
+
+  if (zmq_recv(socket, buffer, sizeof(buffer), 0) >= 0) { // $ MISSING: remote_source
+    // ...
+  }
+
+  zmq_msg_init(&msg1);
+  if (zmq_msg_recv(&msg1, socket, 0) >= 0) { // $ MISSING: remote_source
+    // ...
+  }
+
+  zmq_msg_init(&msg2);
+  if (zmq_recvmsg(socket, &msg2, 0) >= 0) { // $ MISSING: remote_source
+    // ...
+  }
+}
