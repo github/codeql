@@ -3,13 +3,12 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      # TODO: maybe switch below to parent class `PathResourceManager` instead...? Also `getFileResource` method as well?
-      - ["io.undertow.server.handlers.resource", "FileResourceManager", True, "getResource", "(String)", "", "Argument[0]", "path-injection", "manual"]
+      - ["io.undertow.server.handlers.resource", "PathResourceManager", True, "getResource", "(String)", "", "Argument[0]", "path-injection", "manual"]
 
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["io.undertow.server.handlers.resource", "Resource", True, "getFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"] # TODO: sink instead?
+      - ["io.undertow.server.handlers.resource", "Resource", True, "getFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["io.undertow.server.handlers.resource", "Resource", True, "getFilePath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["io.undertow.server.handlers.resource", "Resource", True, "getPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

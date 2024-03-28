@@ -3,11 +3,11 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.lang", "Class", False, "getResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"] # ! model already exists
-      - ["java.lang", "Class", False, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"] # ! model already exists
+      - ["java.lang", "Class", False, "getResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "Class", False, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "ClassLoader", False, "getSystemResources", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
-      - ["java.lang", "ClassLoader", True, "getResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"] # ! model already exists
-      - ["java.lang", "ClassLoader", True, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"] # ! model already exists
+      - ["java.lang", "ClassLoader", True, "getResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "ClassLoader", True, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "ClassLoader", True, "getResources", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "ClassLoader", True, "getSystemResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "ClassLoader", True, "getSystemResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
