@@ -500,6 +500,22 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
 }
 
 /**
+ * A negative characteristic that excludes the result of getter methods from being considered sources.
+ *
+ * Our heuristic for detecting getter methods is extremely simple: any method whose name starts with `get` is considered
+ * a getter.
+ */
+private class GetterResultCharacteristic extends CharacteristicsImpl::NotASourceCharacteristic {
+  GetterResultCharacteristic() { this = "result of getter method" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    e.getCallable().getName().matches("get%") and
+    e.getMaDOutput() = "ReturnValue" and
+    not FrameworkCandidatesImpl::isSource(e, _, _)
+  }
+}
+
+/**
  * A negative characteristic that indicates that parameters of an existence-checking boolean method should not be
  * considered sinks.
  *
