@@ -1,5 +1,5 @@
 | railsapp/app/controllers/application_controller.rb:5:3:5:22 | call to protect_from_forgery | Potential CSRF vulnerability due to forgery protection being disabled or weakened. |
 | railsapp/app/controllers/users_controller.rb:4:3:4:47 | call to skip_before_action | Potential CSRF vulnerability due to forgery protection being disabled or weakened. |
-| railsapp/config/application.rb:15:5:15:53 | call to allow_forgery_protection= | Potential CSRF vulnerability due to forgery protection being disabled or weakened. |
+| railsapp/config/application.rb:16:5:16:53 | call to allow_forgery_protection= | Potential CSRF vulnerability due to forgery protection being disabled or weakened. |
 | railsapp/config/environments/development.rb:5:3:5:51 | call to allow_forgery_protection= | Potential CSRF vulnerability due to forgery protection being disabled or weakened. |
 | railsapp/config/environments/production.rb:5:3:5:51 | call to allow_forgery_protection= | Potential CSRF vulnerability due to forgery protection being disabled or weakened. |

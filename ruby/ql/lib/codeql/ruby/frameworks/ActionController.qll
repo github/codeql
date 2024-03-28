@@ -22,6 +22,35 @@ private import codeql.ruby.dataflow.internal.DataFlowDispatch
 module ActionController {
   // TODO: move the rest of this file inside this module.
   import codeql.ruby.frameworks.actioncontroller.Filters
+
+  /**
+   * An ActionController class which sits at the top of the class hierarchy.
+   * In other words, it does not subclass any other class in source code.
+   */
+  class RootController extends ActionControllerClass {
+    RootController() {
+      not exists(ActionControllerClass parent | this != parent and this = parent.getADescendent())
+    }
+  }
+
+  /**
+   * A call to `protect_from_forgery`.
+   */
+  class ProtectFromForgeryCall extends CsrfProtectionSetting::Range, DataFlow::CallNode {
+    ProtectFromForgeryCall() {
+      this = actionControllerInstance().getAMethodCall("protect_from_forgery")
+    }
+
+    private string getWithValueText() {
+      result = this.getKeywordArgument("with").getConstantValue().getSymbol()
+    }
+
+    // Calls without `with: :exception` can allow for bypassing CSRF protection
+    // in some scenarios.
+    override boolean getVerificationSetting() {
+      if this.getWithValueText() = "exception" then result = true else result = false
+    }
+  }
 }
 
 /**
@@ -39,18 +68,12 @@ module ActionController {
  */
 class ActionControllerClass extends DataFlow::ClassNode {
   ActionControllerClass() {
-    this =
-      [
-        DataFlow::getConstant("ActionController").getConstant("Base"),
-        // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
-        // treat it separately in case the `ApplicationController` definition is not in the database.
-        DataFlow::getConstant("ApplicationController"),
-        // ActionController::Metal technically doesn't contain all of the
-        // methods available in Base, such as those for rendering views.
-        // However we prefer to be over-sensitive in this case in order to find
-        // more results.
-        DataFlow::getConstant("ActionController").getConstant("Metal")
-      ].getADescendentModule()
+    // In Rails applications `ApplicationController` typically extends `ActionController::Base`, but we
+    // treat it separately in case the `ApplicationController` definition is not in the database.
+    this = DataFlow::getConstant("ApplicationController").getADescendentModule()
+    or
+    this = actionControllerBaseClass().getADescendentModule() and
+    not exists(DataFlow::ModuleNode m | m = actionControllerBaseClass().asModule() | this = m)
   }
 
   /**
@@ -72,6 +95,18 @@ class ActionControllerClass extends DataFlow::ClassNode {
     // TODO: revisit when we have better infrastructure for handling self in a block
     result = this.getModuleLevelSelf()
   }
+}
+
+private DataFlow::ConstRef actionControllerBaseClass() {
+  result =
+    [
+      DataFlow::getConstant("ActionController").getConstant("Base"),
+      // ActionController::Metal and ActionController::API technically don't contain all of the
+      // methods available in Base, such as those for rendering views.
+      // However we prefer to be over-sensitive in this case in order to find more results.
+      DataFlow::getConstant("ActionController").getConstant("Metal"),
+      DataFlow::getConstant("ActionController").getConstant("API")
+    ]
 }
 
 private API::Node actionControllerInstance() {
@@ -405,27 +440,6 @@ class ActionControllerSkipForgeryProtectionCall extends CsrfProtectionSetting::R
   }
 
   override boolean getVerificationSetting() { result = false }
-}
-
-/**
- * A call to `protect_from_forgery`.
- */
-private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetting::Range,
-  DataFlow::CallNode
-{
-  ActionControllerProtectFromForgeryCall() {
-    this = actionControllerInstance().getAMethodCall("protect_from_forgery")
-  }
-
-  private string getWithValueText() {
-    result = this.getKeywordArgument("with").getConstantValue().getSymbol()
-  }
-
-  // Calls without `with: :exception` can allow for bypassing CSRF protection
-  // in some scenarios.
-  override boolean getVerificationSetting() {
-    if this.getWithValueText() = "exception" then result = true else result = false
-  }
 }
 
 /**
