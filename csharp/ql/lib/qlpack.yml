@@ -13,6 +13,7 @@ dependencies:
   codeql/threat-models: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
+  codeql/xml: ${workspace}
 dataExtensions:
   - ext/*.model.yml
   - ext/generated/*.model.yml
