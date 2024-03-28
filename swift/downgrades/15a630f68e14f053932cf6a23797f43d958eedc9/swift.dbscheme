@@ -1846,7 +1846,6 @@ condition_element_availabilities(  //dir=stmt
 | @labeled_stmt
 | @pound_assert_stmt
 | @return_stmt
-| @then_stmt
 | @throw_stmt
 | @yield_stmt
 ;
@@ -1972,11 +1971,6 @@ return_stmts(  //dir=stmt
 #keyset[id]
 return_stmt_results(  //dir=stmt
   int id: @return_stmt ref,
-  int result: @expr_or_none ref
-);
-
-then_stmts(  //dir=stmt
-  unique int id: @then_stmt,
   int result: @expr_or_none ref
 );
 
