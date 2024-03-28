@@ -1494,17 +1494,17 @@
 | exprs.kt:175:25:175:28 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:175:25:175:28 | Direction.EAST | exprs.kt:0:0:0:0 | <clinit> | VarAccess |
 | exprs.kt:175:25:175:28 | new Direction(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
-| exprs.kt:178:1:182:1 | 0 | exprs.kt:178:6:182:1 | Color | IntegerLiteral |
-| exprs.kt:178:1:182:1 | Color | exprs.kt:178:6:182:1 | Color | TypeAccess |
 | exprs.kt:178:1:182:1 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:1:182:1 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:1:182:1 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:1:182:1 | Color[] | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:178:1:182:1 | Enum<Color> | exprs.kt:178:6:182:1 | Color | TypeAccess |
 | exprs.kt:178:1:182:1 | EnumEntries<Color> | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:1:182:1 | String | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:178:1:182:1 | new Enum(...) | exprs.kt:178:6:182:1 | Color | ClassInstanceExpr |
-| exprs.kt:178:1:182:1 | null | exprs.kt:178:6:182:1 | Color | NullLiteral |
+| exprs.kt:178:17:178:30 | 0 | exprs.kt:178:17:178:30 | Color | IntegerLiteral |
+| exprs.kt:178:17:178:30 | Color | exprs.kt:178:17:178:30 | Color | TypeAccess |
+| exprs.kt:178:17:178:30 | Enum<Color> | exprs.kt:178:17:178:30 | Color | TypeAccess |
+| exprs.kt:178:17:178:30 | new Enum<Color>(...) | exprs.kt:178:17:178:30 | Color | ClassInstanceExpr |
+| exprs.kt:178:17:178:30 | null | exprs.kt:178:17:178:30 | Color | NullLiteral |
 | exprs.kt:178:18:178:29 | ...=... | exprs.kt:178:17:178:30 | Color | KtInitializerAssignExpr |
 | exprs.kt:178:18:178:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:18:178:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
