@@ -1451,8 +1451,6 @@
 | exprs.kt:167:8:167:16 | ... (value not-equals) ... | exprs.kt:165:1:172:1 | foo | ValueNEExpr |
 | exprs.kt:167:13:167:16 | null | exprs.kt:165:1:172:1 | foo | NullLiteral |
 | exprs.kt:168:9:168:29 | r2 | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
-| exprs.kt:168:29:168:29 | <implicit not null> | exprs.kt:165:1:172:1 | foo | ImplicitNotNullExpr |
-| exprs.kt:168:29:168:29 | Rectangle | exprs.kt:165:1:172:1 | foo | TypeAccess |
 | exprs.kt:168:29:168:29 | r | exprs.kt:165:1:172:1 | foo | VarAccess |
 | exprs.kt:169:9:169:30 | height | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
 | exprs.kt:169:22:169:23 | r2 | exprs.kt:165:1:172:1 | foo | VarAccess |
