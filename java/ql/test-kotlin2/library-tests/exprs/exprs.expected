@@ -1379,7 +1379,6 @@
 | exprs.kt:137:12:137:23 | ... > ... | exprs.kt:4:1:142:1 | topLevelMethod | GTExpr |
 | exprs.kt:137:23:137:23 | 0 | exprs.kt:4:1:142:1 | topLevelMethod | IntegerLiteral |
 | exprs.kt:138:9:138:16 | variable | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:138:9:138:16 | variable | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:138:9:138:18 | ...=... | exprs.kt:4:1:142:1 | topLevelMethod | AssignExpr |
 | exprs.kt:138:9:138:18 | <Stmt> | exprs.kt:4:1:142:1 | topLevelMethod | StmtExpr |
 | exprs.kt:138:9:138:18 | <implicit coercion to unit> | exprs.kt:4:1:142:1 | topLevelMethod | ImplicitCoercionToUnitExpr |
@@ -1388,6 +1387,7 @@
 | exprs.kt:138:9:138:18 | <unary> | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:138:9:138:18 | Unit | exprs.kt:4:1:142:1 | topLevelMethod | TypeAccess |
 | exprs.kt:138:9:138:18 | dec(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
+| exprs.kt:138:9:138:18 | variable | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:141:12:141:14 | 123 | exprs.kt:4:1:142:1 | topLevelMethod | IntegerLiteral |
 | exprs.kt:141:12:141:20 | ... + ... | exprs.kt:4:1:142:1 | topLevelMethod | AddExpr |
 | exprs.kt:141:18:141:20 | 456 | exprs.kt:4:1:142:1 | topLevelMethod | IntegerLiteral |
@@ -1430,7 +1430,6 @@
 | exprs.kt:160:58:160:58 | y | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:161:5:161:13 | q | exprs.kt:156:1:163:1 | typeTests | LocalVariableDeclExpr |
 | exprs.kt:161:13:161:13 | 1 | exprs.kt:156:1:163:1 | typeTests | IntegerLiteral |
-| exprs.kt:162:5:162:48 | true | exprs.kt:156:1:163:1 | typeTests | BooleanLiteral |
 | exprs.kt:162:5:162:48 | when ... | exprs.kt:156:1:163:1 | typeTests | WhenExpr |
 | exprs.kt:162:9:162:9 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:162:9:162:22 | ...instanceof... | exprs.kt:156:1:163:1 | typeTests | InstanceOfExpr |
@@ -1438,8 +1437,9 @@
 | exprs.kt:162:27:162:31 | ...=... | exprs.kt:156:1:163:1 | typeTests | AssignExpr |
 | exprs.kt:162:27:162:31 | q | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:162:31:162:31 | 2 | exprs.kt:156:1:163:1 | typeTests | IntegerLiteral |
+| exprs.kt:162:40:162:48 | true | exprs.kt:156:1:163:1 | typeTests | BooleanLiteral |
 | exprs.kt:162:42:162:46 | ...=... | exprs.kt:156:1:163:1 | typeTests | AssignExpr |
-| exprs.kt:162:42:162:42 | q | exprs.kt:156:1:163:1 | typeTests | VarAccess |
+| exprs.kt:162:42:162:46 | q | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:162:46:162:46 | 3 | exprs.kt:156:1:163:1 | typeTests | IntegerLiteral |
 | exprs.kt:165:1:172:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:165:9:165:18 | Polygon | file://:0:0:0:0 | <none> | TypeAccess |
