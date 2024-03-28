@@ -5,7 +5,6 @@
 | E2 | interface { } |
 | Edge | EdgeConstraint |
 | Edge | interface { } |
-| F | floaty |
 | K | comparable |
 | Node | NodeConstraint |
 | Node | interface { } |
@@ -19,12 +18,9 @@
 | T | comparable |
 | T | interface { string \| []uint8 } |
 | T | interface { } |
-| T1 | interface { } |
-| T2 | interface { } |
 | TF1 | interface { } |
 | TF2 | interface { } |
 | TG1 | interface { } |
 | TG2 | interface { } |
 | U | interface { } |
 | V | interface { int64 \| float64 } |
-| bytes | interface { []uint8 \| string } |
