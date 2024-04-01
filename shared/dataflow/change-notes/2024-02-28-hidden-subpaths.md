@@ -1,4 +1,0 @@
----
-category: minorAnalysis
----
-* Path explanations now include flow that goes through callbacks passed into library functions. For example, if `map` is a library function, then in `result = map(xs, x => x + 1)` we will now include the step from `x` to `x + 1` in the path explanation, instead of going directly from `xs` to `result`. Note that this change does not affect actual query results, but only how path explanations are computed.
