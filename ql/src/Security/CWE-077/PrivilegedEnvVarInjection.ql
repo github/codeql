@@ -16,11 +16,16 @@ import actions
 import codeql.actions.security.EnvVarInjectionQuery
 import EnvVarInjectionFlow::PathGraph
 
+predicate isSingleTriggerWorkflow(Workflow w, string trigger) {
+  w.getATriggerEvent() = trigger and
+  count(string t | w.getATriggerEvent() = t | t) = 1
+}
+
 from EnvVarInjectionFlow::PathNode source, EnvVarInjectionFlow::PathNode sink, Workflow w
 where
   EnvVarInjectionFlow::flowPath(source, sink) and
   w = source.getNode().asExpr().getEnclosingWorkflow() and
-  w.hasTriggerEvent(source.getNode().(RemoteFlowSource).getATriggerEvent())
+  not isSingleTriggerWorkflow(w, "pull_request")
 select sink.getNode(), source, sink,
   "Potential privileged environment variable injection in $@, which may be controlled by an external user.",
   sink, sink.getNode().asExpr().(Expression).getRawExpression()
