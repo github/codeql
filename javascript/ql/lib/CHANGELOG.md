@@ -1,3 +1,9 @@
+## 0.8.13
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.4.
+
 ## 0.8.12
 
 No user-facing changes.
