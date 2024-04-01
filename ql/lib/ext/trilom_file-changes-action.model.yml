@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sourceModel
+    data:
+      # https://github.com/trilom/file-changes-action
+      # if `prNumber` is provided, the trigger event dont need to be `pull_request_target`
+      - ["trilom/file-changes-action", "*", "output.files", "*", "PR changed files"]
+      - ["trilom/file-changes-action", "*", "output.files_added", "*", "PR changed files"]
+      - ["trilom/file-changes-action", "*", "output.files_modified", "*", "PR changed files"]
+      - ["trilom/file-changes-action", "*", "output.files_removed", "*", "PR changed files"]
