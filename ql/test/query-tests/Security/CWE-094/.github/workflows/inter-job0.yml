@@ -36,7 +36,7 @@ jobs:
 
     if: ${{ always() }}
 
-    needs: job
+    needs: job1
 
     steps:
       - id: sink

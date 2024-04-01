@@ -128,6 +128,8 @@ class ScalarValueImpl extends AstNodeImpl, TScalarValueNode {
   override Location getLocation() { result = value.getLocation() }
 
   override YamlScalar getNode() { result = value }
+
+  string getValue() { result = value.getValue() }
 }
 
 class ExpressionImpl extends AstNodeImpl, TExpressionNode {
@@ -687,7 +689,19 @@ abstract class UsesImpl extends AstNodeImpl {
 
   abstract string getVersion();
 
-  abstract ExpressionImpl getArgumentExpr(string key);
+  /** Gets the argument expression for the given key. */
+  string getArgument(string key) {
+    exists(ScalarValueImpl scalar |
+      scalar.getNode() = this.getNode().(YamlMapping).lookup("with").(YamlMapping).lookup(key) and
+      result = scalar.getValue()
+    )
+  }
+
+  /** Gets the argument expression for the given key (if it exists). */
+  ExpressionImpl getArgumentExpr(string key) {
+    result.getParentNode().getNode() =
+      this.getNode().(YamlMapping).lookup("with").(YamlMapping).lookup(key)
+  }
 }
 
 /**
@@ -718,11 +732,6 @@ class UsesStepImpl extends StepImpl, UsesImpl {
 
   /** Gets the version reference used when checking out the Action, e.g. `v2` in `actions/checkout@v2`. */
   override string getVersion() { result = u.getValue().regexpCapture(usesParser(), 3) }
-
-  /** Gets the argument expression for the given key. */
-  override ExpressionImpl getArgumentExpr(string key) {
-    result.getParentNode().getNode() = n.lookup("with").(YamlMapping).lookup(key)
-  }
 
   override string toString() {
     if exists(this.getId()) then result = "Uses Step: " + this.getId() else result = "Uses Step"
@@ -762,11 +771,6 @@ class ExternalJobImpl extends JobImpl, UsesImpl {
       then result = name.getValue().regexpCapture(repoUsesParser(), 4)
       else none()
     )
-  }
-
-  /** Gets the argument expression for the given key. */
-  override ExpressionImpl getArgumentExpr(string key) {
-    result.getParentNode().getNode() = n.lookup("with").(YamlMapping).lookup(key)
   }
 }
 

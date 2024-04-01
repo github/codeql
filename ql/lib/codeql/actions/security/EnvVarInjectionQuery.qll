@@ -4,12 +4,13 @@ private import codeql.actions.dataflow.ExternalFlow
 import codeql.actions.dataflow.FlowSources
 import codeql.actions.DataFlow
 
-predicate writeToGithubEnvSink(DataFlow::Node sink) {
-  exists(Expression expr, Run run, string script, string line, string value |
+predicate writeToGithubEnvSink(DataFlow::Node exprNode, string key, string value) {
+  exists(Expression expr, Run run, string script, string line |
     script = run.getScript() and
     line = script.splitAt("\n") and
-    value = line.regexpCapture("echo\\s+.*\\s*=(.*)>>\\s*\\$GITHUB_ENV", 1) and
-    expr = sink.asExpr() and
+    key = line.regexpCapture("echo\\s+([^=]+)\\s*=(.*)>>\\s*\\$GITHUB_ENV", 1) and
+    value = line.regexpCapture("echo\\s+([^=]+)\\s*=(.*)>>\\s*\\$GITHUB_ENV", 2) and
+    expr = exprNode.asExpr() and
     run.getAnScriptExpr() = expr and
     value.indexOf(expr.getRawExpression()) > 0
   )
@@ -17,7 +18,7 @@ predicate writeToGithubEnvSink(DataFlow::Node sink) {
 
 private class EnvVarInjectionSink extends DataFlow::Node {
   EnvVarInjectionSink() {
-    writeToGithubEnvSink(this) or
+    writeToGithubEnvSink(this, _, _) or
     externallyDefinedSink(this, "envvar-injection")
   }
 }
