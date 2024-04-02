@@ -1025,7 +1025,7 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   /**
    * Gets the object or array being deleted, and gets a `ReuseExpr` when there
    * is a destructor call and the object is also the qualifier of the call.
-   * 
+   *
    * For example, given:
    * ```
    * struct HasDestructor { ~HasDestructor(); };
