@@ -11,7 +11,7 @@ private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplSpecific as Data
 private import semmle.code.cpp.dataflow.ExternalFlow
 private import semmle.code.cpp.ir.IR
 
-module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
+module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
   class SummarizedCallableBase = Function;
 
   ArgumentPosition callbackSelfParameterPosition() { result = TDirectPosition(-1) }
@@ -99,7 +99,7 @@ module Input implements InputSig<DataFlowImplSpecific::CppDataFlow> {
   }
 }
 
-private import Make<DataFlowImplSpecific::CppDataFlow, Input> as Impl
+private import Make<Location, DataFlowImplSpecific::CppDataFlow, Input> as Impl
 
 private module StepsInput implements Impl::Private::StepsInputSig {
   DataFlowCall getACall(Public::SummarizedCallable sc) {
@@ -108,7 +108,7 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 }
 
 module SourceSinkInterpretationInput implements
-  Impl::Private::External::SourceSinkInterpretationInputSig<Location>
+  Impl::Private::External::SourceSinkInterpretationInputSig
 {
   class Element = Cpp::Element;
 
@@ -239,7 +239,7 @@ module Private {
 
   module External {
     import Impl::Private::External
-    import Impl::Private::External::SourceSinkInterpretation<Location, SourceSinkInterpretationInput>
+    import Impl::Private::External::SourceSinkInterpretation<SourceSinkInterpretationInput>
   }
 
   /**
