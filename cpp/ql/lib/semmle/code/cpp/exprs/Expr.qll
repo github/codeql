@@ -1023,9 +1023,23 @@ class DeleteOrDeleteArrayExpr extends Expr, TDeleteOrDeleteArrayExpr {
   }
 
   /**
-   * Gets the object or array being deleted, and gets a re-use expression when
-   * there is a destructor call and the object is also the qualifier of the
-   * call.
+   * Gets the object or array being deleted, and gets a `ReuseExpr` when there
+   * is a destructor call and the object is also the qualifier of the call.
+   * 
+   * For example, given:
+   * ```
+   * struct HasDestructor { ~HasDestructor(); };
+   * struct PlainOldData { int x, char y; };
+   *
+   * void f(HasDestructor* hasDestructor, PlainOldData* pod) {
+   *   delete hasDestructor;
+   *   delete pod;
+   * }
+   * ```
+   * This predicate yields a `ReuseExpr` for `delete hasDestructor`, as the
+   * the deleted expression has a destructor, and that expression is also
+   * the qualifier of the destructor call. In the case of `delete pod` the
+   * predicate does not yield a `ReuseExpr`, as there is no destructor call.
    */
   Expr getExprWithReuse() { result = this.getChild(3) }
 }
