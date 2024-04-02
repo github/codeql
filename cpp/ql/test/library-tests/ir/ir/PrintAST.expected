@@ -9068,11 +9068,11 @@ ir.cpp:
 # 1016|       getExpr(): [DeleteExpr] delete
 # 1016|           Type = [VoidType] void
 # 1016|           ValueCategory = prvalue
-# 1016|         getExpr(): [Literal] 0
+# 1016|         getExprWithReuse(): [Literal] 0
 # 1016|             Type = [NullPointerType] decltype(nullptr)
 # 1016|             Value = [Literal] 0
 # 1016|             ValueCategory = prvalue
-# 1016|         getExpr().getFullyConverted(): [StaticCast] static_cast<int *>...
+# 1016|         getExprWithReuse().getFullyConverted(): [StaticCast] static_cast<int *>...
 # 1016|             Conversion = [PointerConversion] pointer conversion
 # 1016|             Type = [IntPointerType] int *
 # 1016|             Value = [StaticCast] 0
@@ -9093,6 +9093,9 @@ ir.cpp:
 # 1017|               Type = [PointerType] String *
 # 1017|               Value = [StaticCast] 0
 # 1017|               ValueCategory = prvalue
+# 1017|         getExprWithReuse(): [ReuseExpr] reuse of static_cast<String *>...
+# 1017|             Type = [PointerType] String *
+# 1017|             ValueCategory = prvalue
 # 1018|     getStmt(2): [ExprStmt] ExprStmt
 # 1018|       getExpr(): [DeleteExpr] delete
 # 1018|           Type = [VoidType] void
@@ -9100,11 +9103,11 @@ ir.cpp:
 # 1018|         getDeallocatorCall(): [FunctionCall] call to operator delete
 # 1018|             Type = [VoidType] void
 # 1018|             ValueCategory = prvalue
-# 1018|         getExpr(): [Literal] 0
+# 1018|         getExprWithReuse(): [Literal] 0
 # 1018|             Type = [NullPointerType] decltype(nullptr)
 # 1018|             Value = [Literal] 0
 # 1018|             ValueCategory = prvalue
-# 1018|         getExpr().getFullyConverted(): [StaticCast] static_cast<SizedDealloc *>...
+# 1018|         getExprWithReuse().getFullyConverted(): [StaticCast] static_cast<SizedDealloc *>...
 # 1018|             Conversion = [PointerConversion] pointer conversion
 # 1018|             Type = [PointerType] SizedDealloc *
 # 1018|             Value = [StaticCast] 0
@@ -9113,11 +9116,11 @@ ir.cpp:
 # 1019|       getExpr(): [DeleteExpr] delete
 # 1019|           Type = [VoidType] void
 # 1019|           ValueCategory = prvalue
-# 1019|         getExpr(): [Literal] 0
+# 1019|         getExprWithReuse(): [Literal] 0
 # 1019|             Type = [NullPointerType] decltype(nullptr)
 # 1019|             Value = [Literal] 0
 # 1019|             ValueCategory = prvalue
-# 1019|         getExpr().getFullyConverted(): [StaticCast] static_cast<Overaligned *>...
+# 1019|         getExprWithReuse().getFullyConverted(): [StaticCast] static_cast<Overaligned *>...
 # 1019|             Conversion = [PointerConversion] pointer conversion
 # 1019|             Type = [PointerType] Overaligned *
 # 1019|             Value = [StaticCast] 0
@@ -9138,6 +9141,9 @@ ir.cpp:
 # 1020|               Type = [PointerType] PolymorphicBase *
 # 1020|               Value = [StaticCast] 0
 # 1020|               ValueCategory = prvalue
+# 1020|         getExprWithReuse(): [ReuseExpr] reuse of static_cast<PolymorphicBase *>...
+# 1020|             Type = [PointerType] PolymorphicBase *
+# 1020|             ValueCategory = prvalue
 # 1021|     getStmt(5): [ReturnStmt] return ...
 # 1024| [TopLevelFunction] void OperatorDeleteArray()
 # 1024|   <params>: 
@@ -9146,11 +9152,11 @@ ir.cpp:
 # 1025|       getExpr(): [DeleteArrayExpr] delete[]
 # 1025|           Type = [VoidType] void
 # 1025|           ValueCategory = prvalue
-# 1025|         getExpr(): [Literal] 0
+# 1025|         getExprWithReuse(): [Literal] 0
 # 1025|             Type = [NullPointerType] decltype(nullptr)
 # 1025|             Value = [Literal] 0
 # 1025|             ValueCategory = prvalue
-# 1025|         getExpr().getFullyConverted(): [StaticCast] static_cast<int *>...
+# 1025|         getExprWithReuse().getFullyConverted(): [StaticCast] static_cast<int *>...
 # 1025|             Conversion = [PointerConversion] pointer conversion
 # 1025|             Type = [IntPointerType] int *
 # 1025|             Value = [StaticCast] 0
@@ -9171,6 +9177,9 @@ ir.cpp:
 # 1026|               Type = [PointerType] String *
 # 1026|               Value = [StaticCast] 0
 # 1026|               ValueCategory = prvalue
+# 1026|         getExprWithReuse(): [ReuseExpr] reuse of static_cast<String *>...
+# 1026|             Type = [PointerType] String *
+# 1026|             ValueCategory = prvalue
 # 1027|     getStmt(2): [ExprStmt] ExprStmt
 # 1027|       getExpr(): [DeleteArrayExpr] delete[]
 # 1027|           Type = [VoidType] void
@@ -9178,11 +9187,11 @@ ir.cpp:
 # 1027|         getDeallocatorCall(): [FunctionCall] call to operator delete[]
 # 1027|             Type = [VoidType] void
 # 1027|             ValueCategory = prvalue
-# 1027|         getExpr(): [Literal] 0
+# 1027|         getExprWithReuse(): [Literal] 0
 # 1027|             Type = [NullPointerType] decltype(nullptr)
 # 1027|             Value = [Literal] 0
 # 1027|             ValueCategory = prvalue
-# 1027|         getExpr().getFullyConverted(): [StaticCast] static_cast<SizedDealloc *>...
+# 1027|         getExprWithReuse().getFullyConverted(): [StaticCast] static_cast<SizedDealloc *>...
 # 1027|             Conversion = [PointerConversion] pointer conversion
 # 1027|             Type = [PointerType] SizedDealloc *
 # 1027|             Value = [StaticCast] 0
@@ -9191,11 +9200,11 @@ ir.cpp:
 # 1028|       getExpr(): [DeleteArrayExpr] delete[]
 # 1028|           Type = [VoidType] void
 # 1028|           ValueCategory = prvalue
-# 1028|         getExpr(): [Literal] 0
+# 1028|         getExprWithReuse(): [Literal] 0
 # 1028|             Type = [NullPointerType] decltype(nullptr)
 # 1028|             Value = [Literal] 0
 # 1028|             ValueCategory = prvalue
-# 1028|         getExpr().getFullyConverted(): [StaticCast] static_cast<Overaligned *>...
+# 1028|         getExprWithReuse().getFullyConverted(): [StaticCast] static_cast<Overaligned *>...
 # 1028|             Conversion = [PointerConversion] pointer conversion
 # 1028|             Type = [PointerType] Overaligned *
 # 1028|             Value = [StaticCast] 0
@@ -9216,6 +9225,9 @@ ir.cpp:
 # 1029|               Type = [PointerType] PolymorphicBase *
 # 1029|               Value = [StaticCast] 0
 # 1029|               ValueCategory = prvalue
+# 1029|         getExprWithReuse(): [ReuseExpr] reuse of static_cast<PolymorphicBase *>...
+# 1029|             Type = [PointerType] PolymorphicBase *
+# 1029|             ValueCategory = prvalue
 # 1030|     getStmt(5): [ReturnStmt] return ...
 # 1032| [CopyAssignmentOperator] EmptyStruct& EmptyStruct::operator=(EmptyStruct const&)
 # 1032|   <params>: 
@@ -16699,7 +16711,7 @@ ir.cpp:
 # 2085|       getExpr(): [DeleteExpr] delete
 # 2085|           Type = [VoidType] void
 # 2085|           ValueCategory = prvalue
-# 2085|         getExpr(): [VariableAccess] x
+# 2085|         getExprWithReuse(): [VariableAccess] x
 # 2085|             Type = [IntPointerType] int *
 # 2085|             ValueCategory = prvalue(load)
 # 2086|     getStmt(3): [ReturnStmt] return ...
@@ -16783,6 +16795,9 @@ ir.cpp:
 # 2108|           getQualifier(): [VariableAccess] b1
 # 2108|               Type = [PointerType] Base2 *
 # 2108|               ValueCategory = prvalue(load)
+# 2108|         getExprWithReuse(): [ReuseExpr] reuse of b1
+# 2108|             Type = [PointerType] Base2 *
+# 2108|             ValueCategory = prvalue
 # 2110|     getStmt(2): [DeclStmt] declaration
 # 2110|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b2
 # 2110|           Type = [PointerType] Base2 *
@@ -16810,6 +16825,9 @@ ir.cpp:
 # 2111|           getQualifier(): [VariableAccess] b2
 # 2111|               Type = [PointerType] Base2 *
 # 2111|               ValueCategory = prvalue(load)
+# 2111|         getExprWithReuse(): [ReuseExpr] reuse of b2
+# 2111|             Type = [PointerType] Base2 *
+# 2111|             ValueCategory = prvalue
 # 2113|     getStmt(4): [DeclStmt] declaration
 # 2113|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of d
 # 2113|           Type = [PointerType] Derived2 *
@@ -16833,6 +16851,9 @@ ir.cpp:
 # 2114|           getQualifier(): [VariableAccess] d
 # 2114|               Type = [PointerType] Derived2 *
 # 2114|               ValueCategory = prvalue(load)
+# 2114|         getExprWithReuse(): [ReuseExpr] reuse of d
+# 2114|             Type = [PointerType] Derived2 *
+# 2114|             ValueCategory = prvalue
 # 2115|     getStmt(6): [ReturnStmt] return ...
 # 2117| [TopLevelFunction] void test_constant_folding_use(int)
 # 2117|   <params>: 
@@ -17168,7 +17189,7 @@ ir.cpp:
 # 2176|       getExpr(): [DeleteExpr] delete
 # 2176|           Type = [VoidType] void
 # 2176|           ValueCategory = prvalue
-# 2176|         getExpr(): [ImplicitThisFieldAccess,PointerFieldAccess] x
+# 2176|         getExprWithReuse(): [ImplicitThisFieldAccess,PointerFieldAccess] x
 # 2176|             Type = [CharPointerType] char *
 # 2176|             ValueCategory = prvalue(load)
 # 2176|           getQualifier(): [ThisExpr] this
