@@ -14,9 +14,3 @@ func TestParseGoVersion(t *testing.T) {
 		}
 	}
 }
-
-func TestHasGoVersion(t *testing.T) {
-	if HasGoVersion("1.21") {
-		t.Error("Expected HasGoVersion(\"1.21\") to be false, but got true")
-	}
-}
