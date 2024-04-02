@@ -209,10 +209,10 @@ struct Visitor<'a> {
     diagnostics_writer: &'a mut diagnostics::LogWriter,
     /// A trap::Writer to accumulate trap entries
     trap_writer: &'a mut trap::Writer,
-    /// A counter for top-level child nodes
-    toplevel_child_counter: usize,
-    /// Language-specific name of the AST info table
-    ast_node_info_table_name: String,
+    /// Language-specific name of the AST location table
+    ast_node_location_table_name: String,
+    /// Language-specific name of the AST parent table
+    ast_node_parent_table_name: String,
     /// Language-specific name of the tokeninfo table
     tokeninfo_table_name: String,
     /// A lookup table from type name to node types
@@ -242,8 +242,8 @@ impl<'a> Visitor<'a> {
             source,
             diagnostics_writer,
             trap_writer,
-            toplevel_child_counter: 0,
-            ast_node_info_table_name: format!("{}_ast_node_info", language_prefix),
+            ast_node_location_table_name: format!("{}_ast_node_location", language_prefix),
+            ast_node_parent_table_name: format!("{}_ast_node_parent", language_prefix),
             tokeninfo_table_name: format!("{}_tokeninfo", language_prefix),
             schema,
             stack: Vec::new(),
@@ -342,27 +342,29 @@ impl<'a> Visitor<'a> {
             })
             .unwrap();
         let mut valid = true;
-        let (parent_id, parent_index) = match self.stack.last_mut() {
+        let parent_info = match self.stack.last_mut() {
             Some(p) if !node.is_extra() => {
                 p.1 += 1;
-                (p.0, p.1 - 1)
+                Some((p.0, p.1 - 1))
             }
-            _ => {
-                self.toplevel_child_counter += 1;
-                (self.file_label, self.toplevel_child_counter - 1)
-            }
+            _ => None,
         };
         match &table.kind {
             EntryKind::Token { kind_id, .. } => {
                 self.trap_writer.add_tuple(
-                    &self.ast_node_info_table_name,
-                    vec![
-                        trap::Arg::Label(id),
-                        trap::Arg::Label(parent_id),
-                        trap::Arg::Int(parent_index),
-                        trap::Arg::Label(loc_label),
-                    ],
+                    &self.ast_node_location_table_name,
+                    vec![trap::Arg::Label(id), trap::Arg::Label(loc_label)],
                 );
+                if let Some((parent_id, parent_index)) = parent_info {
+                    self.trap_writer.add_tuple(
+                        &self.ast_node_parent_table_name,
+                        vec![
+                            trap::Arg::Label(id),
+                            trap::Arg::Label(parent_id),
+                            trap::Arg::Int(parent_index),
+                        ],
+                    );
+                };
                 self.trap_writer.add_tuple(
                     &self.tokeninfo_table_name,
                     vec![
@@ -378,14 +380,19 @@ impl<'a> Visitor<'a> {
             } => {
                 if let Some(args) = self.complex_node(&node, fields, &child_nodes, id) {
                     self.trap_writer.add_tuple(
-                        &self.ast_node_info_table_name,
-                        vec![
-                            trap::Arg::Label(id),
-                            trap::Arg::Label(parent_id),
-                            trap::Arg::Int(parent_index),
-                            trap::Arg::Label(loc_label),
-                        ],
+                        &self.ast_node_location_table_name,
+                        vec![trap::Arg::Label(id), trap::Arg::Label(loc_label)],
                     );
+                    if let Some((parent_id, parent_index)) = parent_info {
+                        self.trap_writer.add_tuple(
+                            &self.ast_node_parent_table_name,
+                            vec![
+                                trap::Arg::Label(id),
+                                trap::Arg::Label(parent_id),
+                                trap::Arg::Int(parent_index),
+                            ],
+                        );
+                    };
                     let mut all_args = vec![trap::Arg::Label(id)];
                     all_args.extend(args);
                     self.trap_writer.add_tuple(table_name, all_args);

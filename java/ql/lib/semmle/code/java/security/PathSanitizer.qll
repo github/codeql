@@ -64,7 +64,11 @@ private predicate exactPathMatchGuard(Guard g, Expr e, boolean branch) {
   )
 }
 
-private class ExactPathMatchSanitizer extends PathInjectionSanitizer {
+/**
+ * A sanitizer that protects against path injection vulnerabilities
+ * by checking for a matching path.
+ */
+class ExactPathMatchSanitizer extends PathInjectionSanitizer {
   ExactPathMatchSanitizer() {
     this = DataFlow::BarrierGuard<exactPathMatchGuard/3>::getABarrierNode()
     or

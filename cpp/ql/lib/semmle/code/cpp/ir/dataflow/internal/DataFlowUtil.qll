@@ -450,7 +450,7 @@ class Node extends TIRDataFlowNode {
    * For more information, see
    * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
    */
-  predicate hasLocationInfo(
+  deprecated predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
@@ -1589,8 +1589,8 @@ private class IndirectArgumentOutExprNode extends ExprNodeBase, IndirectArgument
   final override Expr getConvertedExpr(int n) { exprNodeShouldBeIndirectOutNode(this, result, n) }
 }
 
-private class IndirectTemporaryExpr extends ExprNodeBase instanceof IndirectOperand {
-  IndirectTemporaryExpr() { exprNodeShouldBeIndirectOperand(this, _, _) }
+private class IndirectOperandExprNode extends ExprNodeBase instanceof IndirectOperand {
+  IndirectOperandExprNode() { exprNodeShouldBeIndirectOperand(this, _, _) }
 
   final override Expr getConvertedExpr(int n) { exprNodeShouldBeIndirectOperand(this, result, n) }
 }
@@ -2391,8 +2391,8 @@ private import ContentStars
 
 /** A reference through a non-union instance field. */
 class FieldContent extends Content, TFieldContent {
-  Field f;
-  int indirectionIndex;
+  private Field f;
+  private int indirectionIndex;
 
   FieldContent() { this = TFieldContent(f, indirectionIndex) }
 
@@ -2419,9 +2419,9 @@ class FieldContent extends Content, TFieldContent {
 
 /** A reference through an instance field of a union. */
 class UnionContent extends Content, TUnionContent {
-  Union u;
-  int indirectionIndex;
-  int bytes;
+  private Union u;
+  private int indirectionIndex;
+  private int bytes;
 
   UnionContent() { this = TUnionContent(u, bytes, indirectionIndex) }
 

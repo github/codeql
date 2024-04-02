@@ -994,6 +994,20 @@ class ThrowStmt(Stmt):
 class YieldStmt(Stmt):
     results: list[Expr] | child
 
+@qltest.test_with('SingleValueStmtExpr')
+class ThenStmt(Stmt):
+    """ A statement implicitly wrapping values to be used in branches of if/switch expressions. For example in:
+    ```
+    let rank = switch value {
+        case 0..<0x80: 1
+        case 0x80..<0x0800: 2
+        default: 3
+    }
+    ```
+    the literal expressions `1`, `2` and `3` are wrapped in `ThenStmt`.
+    """
+    result: Expr | child
+
 class DoCatchStmt(LabeledStmt):
     body: Stmt | child
     catches: list[CaseStmt] | child

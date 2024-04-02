@@ -1,4 +1,3 @@
-summary
 | Dapper;CustomPropertyTypeMap;false;CustomPropertyTypeMap;(System.Type,System.Func<System.Type,System.String,System.Reflection.PropertyInfo>);;Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | Dapper;DynamicParameters;false;Output<T>;(T,System.Linq.Expressions.Expression<System.Func<T,System.Object>>,System.Nullable<System.Data.DbType>,System.Nullable<System.Int32>);;Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | Dapper;SqlMapper+GridReader;false;GridReader;(System.Data.IDbCommand,System.Data.Common.DbDataReader,Dapper.SqlMapper+Identity,System.Action<System.Object>,System.Object,System.Boolean,System.Threading.CancellationToken);;Argument[3];Argument[3].Parameter[delegate-self];value;hq-generated |
@@ -9,6 +8,7 @@ summary
 | Dapper;SqlMapper+GridReader;false;Read<TFirst,TSecond,TThird,TFourth,TReturn>;(System.Func<TFirst,TSecond,TThird,TFourth,TReturn>,System.String,System.Boolean);;Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Dapper;SqlMapper+GridReader;false;Read<TFirst,TSecond,TThird,TReturn>;(System.Func<TFirst,TSecond,TThird,TReturn>,System.String,System.Boolean);;Argument[0];Argument[0].Parameter[delegate-self];value;hq-generated |
 | Dapper;SqlMapper+GridReader;false;Read<TReturn>;(System.Type[],System.Func<System.Object[],TReturn>,System.String,System.Boolean);;Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
+| Dapper;SqlMapper;false;AsList<T>;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;ReturnValue.Element;value;manual |
 | Dapper;SqlMapper;false;Query<TFirst,TSecond,TReturn>;(System.Data.IDbConnection,System.String,System.Func<TFirst,TSecond,TReturn>,System.Object,System.Data.IDbTransaction,System.Boolean,System.String,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>);;Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | Dapper;SqlMapper;false;Query<TFirst,TSecond,TThird,TFourth,TFifth,TReturn>;(System.Data.IDbConnection,System.String,System.Func<TFirst,TSecond,TThird,TFourth,TFifth,TReturn>,System.Object,System.Data.IDbTransaction,System.Boolean,System.String,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>);;Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
 | Dapper;SqlMapper;false;Query<TFirst,TSecond,TThird,TFourth,TFifth,TSixth,TReturn>;(System.Data.IDbConnection,System.String,System.Func<TFirst,TSecond,TThird,TFourth,TFifth,TSixth,TReturn>,System.Object,System.Data.IDbTransaction,System.Boolean,System.String,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>);;Argument[2];Argument[2].Parameter[delegate-self];value;hq-generated |
@@ -7471,7 +7471,6 @@ summary
 | System.IO.IsolatedStorage;IsolatedStorage;false;get_AssemblyIdentity;();;Argument[this];ReturnValue;taint;df-generated |
 | System.IO.IsolatedStorage;IsolatedStorage;false;get_DomainIdentity;();;Argument[this];ReturnValue;taint;df-generated |
 | System.IO.IsolatedStorage;IsolatedStorageFileStream;false;FlushAsync;(System.Threading.CancellationToken);;Argument[0];ReturnValue;taint;df-generated |
-| System.IO.IsolatedStorage;IsolatedStorageFileStream;false;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;df-generated |
 | System.IO.IsolatedStorage;IsolatedStorageFileStream;false;WriteAsync;(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken);;Argument[0];ReturnValue;taint;df-generated |
 | System.IO.IsolatedStorage;IsolatedStorageFileStream;false;WriteAsync;(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;df-generated |
 | System.IO.MemoryMappedFiles;MemoryMappedFile;false;CreateFromFile;(Microsoft.Win32.SafeHandles.SafeFileHandle,System.String,System.Int64,System.IO.MemoryMappedFiles.MemoryMappedFileAccess,System.IO.HandleInheritability,System.Boolean);;Argument[0];ReturnValue;taint;df-generated |
@@ -7533,7 +7532,8 @@ summary
 | System.IO;BinaryWriter;false;Write;(System.Byte[]);;Argument[0].Element;Argument[this];taint;df-generated |
 | System.IO;BinaryWriter;false;Write;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[this];taint;df-generated |
 | System.IO;BinaryWriter;false;get_BaseStream;();;Argument[this];ReturnValue;taint;df-generated |
-| System.IO;BufferedStream;false;BufferedStream;(System.IO.Stream,System.Int32);;Argument[0];Argument[this];taint;df-generated |
+| System.IO;BufferedStream;false;BufferedStream;(System.IO.Stream);;Argument[0];Argument[this];taint;manual |
+| System.IO;BufferedStream;false;BufferedStream;(System.IO.Stream,System.Int32);;Argument[0];Argument[this];taint;manual |
 | System.IO;BufferedStream;false;get_UnderlyingStream;();;Argument[this];ReturnValue;taint;df-generated |
 | System.IO;Directory;false;CreateDirectory;(System.String);;Argument[0];ReturnValue;taint;df-generated |
 | System.IO;Directory;false;CreateDirectory;(System.String,System.IO.UnixFileMode);;Argument[0];ReturnValue;taint;df-generated |
@@ -7618,7 +7618,6 @@ summary
 | System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.Boolean);;Argument[0];Argument[this];taint;manual |
 | System.IO;FileStream;false;FileStream;(System.String,System.IO.FileMode,System.IO.FileAccess,System.IO.FileShare,System.Int32,System.IO.FileOptions);;Argument[0];Argument[this];taint;manual |
 | System.IO;FileStream;false;FlushAsync;(System.Threading.CancellationToken);;Argument[0];ReturnValue;taint;df-generated |
-| System.IO;FileStream;false;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;df-generated |
 | System.IO;FileStream;false;WriteAsync;(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken);;Argument[0];ReturnValue;taint;df-generated |
 | System.IO;FileStream;false;WriteAsync;(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;df-generated |
 | System.IO;FileStream;false;get_SafeFileHandle;();;Argument[this];ReturnValue;taint;df-generated |
@@ -7729,6 +7728,10 @@ summary
 | System.IO;Stream;false;CopyToAsync;(System.IO.Stream,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;manual |
 | System.IO;Stream;false;FlushAsync;();;Argument[this];ReturnValue;taint;df-generated |
 | System.IO;Stream;false;ReadAsync;(System.Byte[],System.Int32,System.Int32);;Argument[this];Argument[0].Element;taint;manual |
+| System.IO;Stream;false;ReadAtLeast;(System.Span<System.Byte>,System.Int32,System.Boolean);;Argument[this];Argument[0].Element;taint;manual |
+| System.IO;Stream;false;ReadAtLeastAsync;(System.Memory<System.Byte>,System.Int32,System.Boolean,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;manual |
+| System.IO;Stream;false;ReadExactly;(System.Byte[],System.Int32,System.Int32);;Argument[this];Argument[0].Element;taint;manual |
+| System.IO;Stream;false;ReadExactly;(System.Span<System.Byte>);;Argument[this];Argument[0].Element;taint;manual |
 | System.IO;Stream;false;Synchronized;(System.IO.Stream);;Argument[0];ReturnValue;taint;df-generated |
 | System.IO;Stream;false;WriteAsync;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[this];taint;manual |
 | System.IO;Stream;true;BeginRead;(System.Byte[],System.Int32,System.Int32,System.AsyncCallback,System.Object);;Argument[3];Argument[3].Parameter[delegate-self];value;manual |
@@ -7739,8 +7742,9 @@ summary
 | System.IO;Stream;true;CopyToAsync;(System.IO.Stream,System.Int32,System.Threading.CancellationToken);;Argument[this];Argument[0];taint;manual |
 | System.IO;Stream;true;FlushAsync;(System.Threading.CancellationToken);;Argument[this];ReturnValue;taint;df-generated |
 | System.IO;Stream;true;Read;(System.Byte[],System.Int32,System.Int32);;Argument[this];Argument[0].Element;taint;manual |
+| System.IO;Stream;true;Read;(System.Span<System.Byte>);;Argument[this];Argument[0].Element;taint;manual |
 | System.IO;Stream;true;ReadAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[this];Argument[0].Element;taint;manual |
-| System.IO;Stream;true;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[this];ReturnValue;taint;df-generated |
+| System.IO;Stream;true;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[this];Argument[0].Element;taint;manual |
 | System.IO;Stream;true;Write;(System.Byte[],System.Int32,System.Int32);;Argument[0].Element;Argument[this];taint;manual |
 | System.IO;Stream;true;WriteAsync;(System.Byte[],System.Int32,System.Int32,System.Threading.CancellationToken);;Argument[0].Element;Argument[this];taint;manual |
 | System.IO;Stream;true;WriteAsync;(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken);;Argument[this];ReturnValue;taint;df-generated |
@@ -9674,8 +9678,6 @@ summary
 | System.Net.Security;NegotiateStream;false;BeginAuthenticateAsServer;(System.Net.NetworkCredential,System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy,System.Net.Security.ProtectionLevel,System.Security.Principal.TokenImpersonationLevel,System.AsyncCallback,System.Object);;Argument[4];Argument[4].Parameter[delegate-self];value;hq-generated |
 | System.Net.Security;NegotiateStream;false;BeginAuthenticateAsServer;(System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy,System.AsyncCallback,System.Object);;Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |
 | System.Net.Security;NegotiateStream;false;FlushAsync;(System.Threading.CancellationToken);;Argument[0];ReturnValue;taint;df-generated |
-| System.Net.Security;NegotiateStream;false;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[0];ReturnValue;taint;df-generated |
-| System.Net.Security;NegotiateStream;false;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;df-generated |
 | System.Net.Security;NegotiateStream;false;WriteAsync;(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken);;Argument[0];ReturnValue;taint;df-generated |
 | System.Net.Security;NegotiateStream;false;WriteAsync;(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;df-generated |
 | System.Net.Security;NegotiateStream;false;get_RemoteIdentity;();;Argument[this];ReturnValue;taint;df-generated |
@@ -9722,8 +9724,6 @@ summary
 | System.Net.Sockets;MulticastOption;false;set_Group;(System.Net.IPAddress);;Argument[0];Argument[this];taint;df-generated |
 | System.Net.Sockets;MulticastOption;false;set_LocalAddress;(System.Net.IPAddress);;Argument[0];Argument[this];taint;df-generated |
 | System.Net.Sockets;NetworkStream;false;NetworkStream;(System.Net.Sockets.Socket,System.IO.FileAccess,System.Boolean);;Argument[0];Argument[this];taint;df-generated |
-| System.Net.Sockets;NetworkStream;false;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[0];ReturnValue;taint;df-generated |
-| System.Net.Sockets;NetworkStream;false;ReadAsync;(System.Memory<System.Byte>,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;df-generated |
 | System.Net.Sockets;NetworkStream;false;WriteAsync;(System.ReadOnlyMemory<System.Byte>,System.Threading.CancellationToken);;Argument[1];ReturnValue;taint;df-generated |
 | System.Net.Sockets;NetworkStream;false;get_Socket;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Net.Sockets;SafeSocketHandle;false;SafeSocketHandle;(System.IntPtr,System.Boolean);;Argument[0];Argument[this];taint;df-generated |
@@ -16125,4 +16125,3 @@ summary
 | System;ValueTuple<T1>;false;ToString;();;Argument[this];ReturnValue;taint;df-generated |
 | System;ValueTuple<T1>;false;ValueTuple;(T1);;Argument[0];Argument[this].Field[System.ValueTuple`1.Item1];value;manual |
 | System;ValueTuple<T1>;false;get_Item;(System.Int32);;Argument[this].Field[System.ValueTuple`1.Item1];ReturnValue;value;manual |
-neutral

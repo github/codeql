@@ -176,10 +176,13 @@ func findGoModFiles(root string) []string {
 	return util.FindAllFilesWithName(root, "go.mod", "vendor")
 }
 
+// A regular expression for the Go toolchain version syntax.
+var toolchainVersionRe *regexp.Regexp = regexp.MustCompile(`(?m)^([0-9]+\.[0-9]+\.[0-9]+)$`)
+
 // Given a list of `go.mod` file paths, try to parse them all. The resulting array of `GoModule` objects
 // will be the same length as the input array and the objects will contain at least the `go.mod` path.
 // If parsing the corresponding file is successful, then the parsed contents will also be available.
-func LoadGoModules(goModFilePaths []string) []*GoModule {
+func LoadGoModules(emitDiagnostics bool, goModFilePaths []string) []*GoModule {
 	results := make([]*GoModule, len(goModFilePaths))
 
 	for i, goModFilePath := range goModFilePaths {
@@ -201,6 +204,25 @@ func LoadGoModules(goModFilePaths []string) []*GoModule {
 		}
 
 		results[i].Module = modFile
+
+		// If this `go.mod` file specifies a Go language version, that version is `1.21` or greater, and
+		// there is no `toolchain` directive, check that it is a valid Go toolchain version. Otherwise,
+		// `go` commands which try to download the right version of the Go toolchain will fail. We detect
+		// this situation and emit a diagnostic.
+		if modFile.Toolchain == nil && modFile.Go != nil &&
+			!toolchainVersionRe.Match([]byte(modFile.Go.Version)) && semver.Compare("v"+modFile.Go.Version, "v1.21.0") >= 0 {
+			diagnostics.EmitInvalidToolchainVersion(goModFilePath, modFile.Go.Version)
+
+			modPath := filepath.Dir(goModFilePath)
+
+			log.Printf(
+				"`%s` is not a valid toolchain version, trying to install it explicitly using the canonical representation in `%s`.",
+				modFile.Go.Version,
+				modPath,
+			)
+
+			toolchain.InstallVersion(modPath, modFile.Go.Version)
+		}
 	}
 
 	return results
@@ -209,7 +231,7 @@ func LoadGoModules(goModFilePaths []string) []*GoModule {
 // Given a path to a `go.work` file, this function attempts to parse the `go.work` file. If unsuccessful,
 // we attempt to discover `go.mod` files within subdirectories of the directory containing the `go.work`
 // file ourselves.
-func discoverWorkspace(workFilePath string) GoWorkspace {
+func discoverWorkspace(emitDiagnostics bool, workFilePath string) GoWorkspace {
 	log.Printf("Loading %s...\n", workFilePath)
 	baseDir := filepath.Dir(workFilePath)
 	workFileSrc, err := os.ReadFile(workFilePath)
@@ -223,7 +245,7 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 
 		return GoWorkspace{
 			BaseDir: baseDir,
-			Modules: LoadGoModules(goModFilePaths),
+			Modules: LoadGoModules(emitDiagnostics, goModFilePaths),
 			DepMode: GoGetWithModules,
 			ModMode: getModMode(GoGetWithModules, baseDir),
 		}
@@ -240,7 +262,7 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 
 		return GoWorkspace{
 			BaseDir: baseDir,
-			Modules: LoadGoModules(goModFilePaths),
+			Modules: LoadGoModules(emitDiagnostics, goModFilePaths),
 			DepMode: GoGetWithModules,
 			ModMode: getModMode(GoGetWithModules, baseDir),
 		}
@@ -263,7 +285,7 @@ func discoverWorkspace(workFilePath string) GoWorkspace {
 	return GoWorkspace{
 		BaseDir:       baseDir,
 		WorkspaceFile: workFile,
-		Modules:       LoadGoModules(goModFilePaths),
+		Modules:       LoadGoModules(emitDiagnostics, goModFilePaths),
 		DepMode:       GoGetWithModules,
 		ModMode:       ModReadonly, // Workspaces only support "readonly"
 	}
@@ -286,7 +308,7 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 		for i, goModFile := range goModFiles {
 			results[i] = GoWorkspace{
 				BaseDir: filepath.Dir(goModFile),
-				Modules: LoadGoModules([]string{goModFile}),
+				Modules: LoadGoModules(emitDiagnostics, []string{goModFile}),
 				DepMode: GoGetWithModules,
 				ModMode: getModMode(GoGetWithModules, filepath.Dir(goModFile)),
 			}
@@ -303,7 +325,7 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 
 		results := make([]GoWorkspace, len(goWorkFiles))
 		for i, workFilePath := range goWorkFiles {
-			results[i] = discoverWorkspace(workFilePath)
+			results[i] = discoverWorkspace(emitDiagnostics, workFilePath)
 		}
 
 		// Add all stray `go.mod` files (i.e. those not referenced by `go.work` files)
@@ -335,7 +357,7 @@ func discoverWorkspaces(emitDiagnostics bool) []GoWorkspace {
 				log.Printf("Module %s is not referenced by any go.work file; adding it separately.\n", goModFile)
 				results = append(results, GoWorkspace{
 					BaseDir: filepath.Dir(goModFile),
-					Modules: LoadGoModules([]string{goModFile}),
+					Modules: LoadGoModules(emitDiagnostics, []string{goModFile}),
 					DepMode: GoGetWithModules,
 					ModMode: getModMode(GoGetWithModules, filepath.Dir(goModFile)),
 				})
@@ -439,8 +461,9 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 			for _, component := range components {
 				path = filepath.Join(path, component)
 
-				// Try to initialize a `go.mod` file automatically for the stray source files.
-				if !slices.Contains(goModDirs, path) {
+				// Try to initialize a `go.mod` file automatically for the stray source files if
+				// doing so would not place it in a parent directory of an existing `go.mod` file.
+				if !startsWithAnyOf(path, goModDirs) {
 					goWorkspaces = append(goWorkspaces, GoWorkspace{
 						BaseDir: path,
 						DepMode: GoGetNoModules,
@@ -475,6 +498,16 @@ func getBuildRoots(emitDiagnostics bool) (goWorkspaces []GoWorkspace, totalModul
 	}
 
 	return
+}
+
+// Determines whether `str` starts with any of `prefixes`.
+func startsWithAnyOf(str string, prefixes []string) bool {
+	for _, prefix := range prefixes {
+		if relPath, err := filepath.Rel(str, prefix); err == nil && !strings.HasPrefix(relPath, "..") {
+			return true
+		}
+	}
+	return false
 }
 
 // Finds Go workspaces in the current working directory.

@@ -16,7 +16,7 @@
 | Exhaustive.java:5:15:5:15 | { ... } | Exhaustive.java:5:15:5:15 | super(...) |
 | Exhaustive.java:6:15:6:15 | super(...) | Exhaustive.java:6:15:6:15 | Y |
 | Exhaustive.java:6:15:6:15 | { ... } | Exhaustive.java:6:15:6:15 | super(...) |
-| Exhaustive.java:8:47:29:3 | { ... } | Exhaustive.java:11:5:11:14 | switch (...) |
+| Exhaustive.java:8:47:35:3 | { ... } | Exhaustive.java:11:5:11:14 | switch (...) |
 | Exhaustive.java:11:5:11:14 | switch (...) | Exhaustive.java:11:13:11:13 | o |
 | Exhaustive.java:11:13:11:13 | o | Exhaustive.java:12:7:12:22 | case <Pattern> |
 | Exhaustive.java:12:7:12:22 | case <Pattern> | Exhaustive.java:12:19:12:19 | s |
@@ -42,13 +42,20 @@
 | Exhaustive.java:25:7:25:17 | case <Pattern> | Exhaustive.java:25:14:25:14 | x |
 | Exhaustive.java:25:7:25:17 | case <Pattern> | Exhaustive.java:26:7:26:17 | case <Pattern> |
 | Exhaustive.java:25:14:25:14 | x | Exhaustive.java:25:19:25:21 | { ... } |
-| Exhaustive.java:25:19:25:21 | { ... } | Exhaustive.java:8:22:8:25 | test |
+| Exhaustive.java:25:19:25:21 | { ... } | Exhaustive.java:30:5:30:14 | switch (...) |
 | Exhaustive.java:26:7:26:17 | case <Pattern> | Exhaustive.java:26:14:26:14 | y |
 | Exhaustive.java:26:14:26:14 | y | Exhaustive.java:26:19:26:21 | { ... } |
-| Exhaustive.java:26:19:26:21 | { ... } | Exhaustive.java:8:22:8:25 | test |
+| Exhaustive.java:26:19:26:21 | { ... } | Exhaustive.java:30:5:30:14 | switch (...) |
+| Exhaustive.java:30:5:30:14 | switch (...) | Exhaustive.java:30:13:30:13 | i |
+| Exhaustive.java:30:13:30:13 | i | Exhaustive.java:31:7:31:15 | case <Pattern> |
+| Exhaustive.java:31:7:31:15 | case <Pattern> | Exhaustive.java:31:14:31:14 | <anonymous local variable> |
+| Exhaustive.java:31:7:31:15 | case <Pattern> | Exhaustive.java:32:7:32:15 | case <Pattern> |
+| Exhaustive.java:31:14:31:14 | <anonymous local variable> | Exhaustive.java:8:22:8:25 | test |
+| Exhaustive.java:32:7:32:15 | case <Pattern> | Exhaustive.java:32:14:32:14 | <anonymous local variable> |
+| Exhaustive.java:32:14:32:14 | <anonymous local variable> | Exhaustive.java:8:22:8:25 | test |
 | Test.java:1:14:1:17 | super(...) | Test.java:1:14:1:17 | Test |
 | Test.java:1:14:1:17 | { ... } | Test.java:1:14:1:17 | super(...) |
-| Test.java:3:41:101:3 | { ... } | Test.java:5:6:5:19 | switch (...) |
+| Test.java:3:41:134:3 | { ... } | Test.java:5:6:5:19 | switch (...) |
 | Test.java:5:6:5:19 | switch (...) | Test.java:5:14:5:18 | thing |
 | Test.java:5:14:5:18 | thing | Test.java:6:8:6:23 | case <Pattern> |
 | Test.java:6:8:6:23 | case <Pattern> | Test.java:6:20:6:20 | s |
@@ -288,26 +295,109 @@
 | Test.java:95:21:95:21 | x | Test.java:95:28:95:28 | y |
 | Test.java:95:28:95:28 | y | Test.java:95:15:95:29 | B(...) |
 | Test.java:95:36:95:36 | z | Test.java:95:13:95:37 | A(...) |
-| Test.java:96:10:96:15 | break | Test.java:3:22:3:25 | test |
+| Test.java:96:10:96:15 | break | Test.java:101:6:101:18 | switch (...) |
 | Test.java:97:8:97:15 | default | Test.java:98:10:98:15 | break |
-| Test.java:98:10:98:15 | break | Test.java:3:22:3:25 | test |
-| Test.java:105:8:105:8 | ...=... | Test.java:105:8:105:8 | <Expr>; |
-| Test.java:105:8:105:8 | ...=... | Test.java:105:8:105:8 | A |
-| Test.java:105:8:105:8 | <Expr>; | Test.java:105:8:105:8 | this |
-| Test.java:105:8:105:8 | <Expr>; | Test.java:105:8:105:8 | this |
-| Test.java:105:8:105:8 | b | Test.java:105:8:105:8 | ...=... |
-| Test.java:105:8:105:8 | field3 | Test.java:105:8:105:8 | ...=... |
-| Test.java:105:8:105:8 | super(...) | Test.java:105:8:105:8 | <Expr>; |
-| Test.java:105:8:105:8 | this | Test.java:105:8:105:8 | b |
-| Test.java:105:8:105:8 | this | Test.java:105:8:105:8 | field3 |
-| Test.java:105:8:105:8 | { ... } | Test.java:105:8:105:8 | super(...) |
-| Test.java:106:8:106:8 | ...=... | Test.java:106:8:106:8 | <Expr>; |
-| Test.java:106:8:106:8 | ...=... | Test.java:106:8:106:8 | B |
-| Test.java:106:8:106:8 | <Expr>; | Test.java:106:8:106:8 | this |
-| Test.java:106:8:106:8 | <Expr>; | Test.java:106:8:106:8 | this |
-| Test.java:106:8:106:8 | field1 | Test.java:106:8:106:8 | ...=... |
-| Test.java:106:8:106:8 | field2 | Test.java:106:8:106:8 | ...=... |
-| Test.java:106:8:106:8 | super(...) | Test.java:106:8:106:8 | <Expr>; |
-| Test.java:106:8:106:8 | this | Test.java:106:8:106:8 | field1 |
-| Test.java:106:8:106:8 | this | Test.java:106:8:106:8 | field2 |
-| Test.java:106:8:106:8 | { ... } | Test.java:106:8:106:8 | super(...) |
+| Test.java:98:10:98:15 | break | Test.java:101:6:101:18 | switch (...) |
+| Test.java:101:6:101:18 | switch (...) | Test.java:101:13:101:17 | thing |
+| Test.java:101:13:101:17 | thing | Test.java:102:8:102:20 | case <Pattern> |
+| Test.java:102:8:102:20 | case <Pattern> | Test.java:102:15:102:15 | <anonymous local variable> |
+| Test.java:102:8:102:20 | case <Pattern> | Test.java:103:8:103:77 | case <Pattern> |
+| Test.java:102:13:102:19 | B(...) | Test.java:105:10:105:15 | break |
+| Test.java:102:15:102:15 | <anonymous local variable> | Test.java:102:18:102:18 | <anonymous local variable> |
+| Test.java:102:18:102:18 | <anonymous local variable> | Test.java:102:13:102:19 | B(...) |
+| Test.java:103:8:103:77 | case <Pattern> | Test.java:103:21:103:21 | <anonymous local variable> |
+| Test.java:103:8:103:77 | case <Pattern> | Test.java:103:31:103:31 | <anonymous local variable> |
+| Test.java:103:8:103:77 | case <Pattern> | Test.java:103:36:103:36 | <anonymous local variable> |
+| Test.java:103:8:103:77 | case <Pattern> | Test.java:104:8:104:20 | case <Pattern> |
+| Test.java:103:21:103:21 | <anonymous local variable> | Test.java:103:47:103:51 | thing |
+| Test.java:103:31:103:31 | <anonymous local variable> | Test.java:103:47:103:51 | thing |
+| Test.java:103:34:103:40 | A(...) | Test.java:103:47:103:51 | thing |
+| Test.java:103:36:103:36 | <anonymous local variable> | Test.java:103:39:103:39 | <anonymous local variable> |
+| Test.java:103:39:103:39 | <anonymous local variable> | Test.java:103:34:103:40 | A(...) |
+| Test.java:103:47:103:51 | thing | Test.java:103:47:103:62 | toString(...) |
+| Test.java:103:47:103:62 | toString(...) | Test.java:103:71:103:75 | "abc" |
+| Test.java:103:47:103:76 | equals(...) | Test.java:104:8:104:20 | case <Pattern> |
+| Test.java:103:47:103:76 | equals(...) | Test.java:105:10:105:15 | break |
+| Test.java:103:71:103:75 | "abc" | Test.java:103:47:103:76 | equals(...) |
+| Test.java:104:8:104:20 | case <Pattern> | Test.java:104:19:104:19 | <anonymous local variable> |
+| Test.java:104:8:104:20 | case <Pattern> | Test.java:106:8:106:15 | default |
+| Test.java:104:19:104:19 | <anonymous local variable> | Test.java:105:10:105:15 | break |
+| Test.java:105:10:105:15 | break | Test.java:110:6:117:7 | var ...; |
+| Test.java:106:8:106:15 | default | Test.java:107:10:107:15 | break |
+| Test.java:107:10:107:15 | break | Test.java:110:6:117:7 | var ...; |
+| Test.java:110:6:117:7 | var ...; | Test.java:110:19:110:31 | switch (...) |
+| Test.java:110:10:110:31 | result | Test.java:119:6:119:27 | switch (...) |
+| Test.java:110:19:110:31 | switch (...) | Test.java:110:26:110:30 | thing |
+| Test.java:110:26:110:30 | thing | Test.java:111:8:111:20 | case <Pattern> |
+| Test.java:111:8:111:20 | case <Pattern> | Test.java:111:15:111:15 | <anonymous local variable> |
+| Test.java:111:8:111:20 | case <Pattern> | Test.java:112:8:112:77 | case <Pattern> |
+| Test.java:111:13:111:19 | B(...) | Test.java:114:10:114:17 | yield ... |
+| Test.java:111:15:111:15 | <anonymous local variable> | Test.java:111:18:111:18 | <anonymous local variable> |
+| Test.java:111:18:111:18 | <anonymous local variable> | Test.java:111:13:111:19 | B(...) |
+| Test.java:112:8:112:77 | case <Pattern> | Test.java:112:21:112:21 | <anonymous local variable> |
+| Test.java:112:8:112:77 | case <Pattern> | Test.java:112:31:112:31 | <anonymous local variable> |
+| Test.java:112:8:112:77 | case <Pattern> | Test.java:112:36:112:36 | <anonymous local variable> |
+| Test.java:112:8:112:77 | case <Pattern> | Test.java:113:8:113:20 | case <Pattern> |
+| Test.java:112:21:112:21 | <anonymous local variable> | Test.java:112:47:112:51 | thing |
+| Test.java:112:31:112:31 | <anonymous local variable> | Test.java:112:47:112:51 | thing |
+| Test.java:112:34:112:40 | A(...) | Test.java:112:47:112:51 | thing |
+| Test.java:112:36:112:36 | <anonymous local variable> | Test.java:112:39:112:39 | <anonymous local variable> |
+| Test.java:112:39:112:39 | <anonymous local variable> | Test.java:112:34:112:40 | A(...) |
+| Test.java:112:47:112:51 | thing | Test.java:112:47:112:62 | toString(...) |
+| Test.java:112:47:112:62 | toString(...) | Test.java:112:71:112:75 | "abc" |
+| Test.java:112:47:112:76 | equals(...) | Test.java:113:8:113:20 | case <Pattern> |
+| Test.java:112:47:112:76 | equals(...) | Test.java:114:10:114:17 | yield ... |
+| Test.java:112:71:112:75 | "abc" | Test.java:112:47:112:76 | equals(...) |
+| Test.java:113:8:113:20 | case <Pattern> | Test.java:113:19:113:19 | <anonymous local variable> |
+| Test.java:113:8:113:20 | case <Pattern> | Test.java:115:8:115:15 | default |
+| Test.java:113:19:113:19 | <anonymous local variable> | Test.java:114:10:114:17 | yield ... |
+| Test.java:114:10:114:17 | yield ... | Test.java:114:16:114:16 | 1 |
+| Test.java:114:16:114:16 | 1 | Test.java:110:10:110:31 | result |
+| Test.java:115:8:115:15 | default | Test.java:116:10:116:17 | yield ... |
+| Test.java:116:10:116:17 | yield ... | Test.java:116:16:116:16 | 2 |
+| Test.java:116:16:116:16 | 2 | Test.java:110:10:110:31 | result |
+| Test.java:119:6:119:27 | switch (...) | Test.java:119:22:119:26 | thing |
+| Test.java:119:14:119:26 | (...)... | Test.java:120:8:120:16 | case ... |
+| Test.java:119:14:119:26 | (...)... | Test.java:121:8:121:56 | case <Pattern> |
+| Test.java:119:22:119:26 | thing | Test.java:119:14:119:26 | (...)... |
+| Test.java:120:8:120:16 | case ... | Test.java:122:8:122:16 | case ... |
+| Test.java:121:8:121:56 | case <Pattern> | Test.java:121:20:121:20 | <anonymous local variable> |
+| Test.java:121:8:121:56 | case <Pattern> | Test.java:122:8:122:16 | case ... |
+| Test.java:121:8:121:56 | case <Pattern> | Test.java:124:8:124:15 | default |
+| Test.java:121:20:121:20 | <anonymous local variable> | Test.java:121:36:121:40 | thing |
+| Test.java:121:27:121:50 | length(...) | Test.java:121:55:121:55 | 5 |
+| Test.java:121:27:121:55 | ... == ... | Test.java:122:8:122:16 | case ... |
+| Test.java:121:27:121:55 | ... == ... | Test.java:124:8:124:15 | default |
+| Test.java:121:28:121:40 | (...)... | Test.java:121:27:121:50 | length(...) |
+| Test.java:121:36:121:40 | thing | Test.java:121:28:121:40 | (...)... |
+| Test.java:121:55:121:55 | 5 | Test.java:121:27:121:55 | ... == ... |
+| Test.java:122:8:122:16 | case ... | Test.java:123:10:123:15 | break |
+| Test.java:123:10:123:15 | break | Test.java:129:6:129:18 | switch (...) |
+| Test.java:124:8:124:15 | default | Test.java:125:10:125:15 | break |
+| Test.java:125:10:125:15 | break | Test.java:129:6:129:18 | switch (...) |
+| Test.java:129:6:129:18 | switch (...) | Test.java:129:13:129:17 | thing |
+| Test.java:129:13:129:17 | thing | Test.java:130:8:130:21 | case <Pattern> |
+| Test.java:130:8:130:21 | case <Pattern> | Test.java:130:20:130:20 | <anonymous local variable> |
+| Test.java:130:8:130:21 | case <Pattern> | Test.java:131:8:131:15 | default |
+| Test.java:130:20:130:20 | <anonymous local variable> | Test.java:131:8:131:15 | default |
+| Test.java:131:8:131:15 | default | Test.java:3:22:3:25 | test |
+| Test.java:138:8:138:8 | ...=... | Test.java:138:8:138:8 | <Expr>; |
+| Test.java:138:8:138:8 | ...=... | Test.java:138:8:138:8 | A |
+| Test.java:138:8:138:8 | <Expr>; | Test.java:138:8:138:8 | this |
+| Test.java:138:8:138:8 | <Expr>; | Test.java:138:8:138:8 | this |
+| Test.java:138:8:138:8 | b | Test.java:138:8:138:8 | ...=... |
+| Test.java:138:8:138:8 | field3 | Test.java:138:8:138:8 | ...=... |
+| Test.java:138:8:138:8 | super(...) | Test.java:138:8:138:8 | <Expr>; |
+| Test.java:138:8:138:8 | this | Test.java:138:8:138:8 | b |
+| Test.java:138:8:138:8 | this | Test.java:138:8:138:8 | field3 |
+| Test.java:138:8:138:8 | { ... } | Test.java:138:8:138:8 | super(...) |
+| Test.java:139:8:139:8 | ...=... | Test.java:139:8:139:8 | <Expr>; |
+| Test.java:139:8:139:8 | ...=... | Test.java:139:8:139:8 | B |
+| Test.java:139:8:139:8 | <Expr>; | Test.java:139:8:139:8 | this |
+| Test.java:139:8:139:8 | <Expr>; | Test.java:139:8:139:8 | this |
+| Test.java:139:8:139:8 | field1 | Test.java:139:8:139:8 | ...=... |
+| Test.java:139:8:139:8 | field2 | Test.java:139:8:139:8 | ...=... |
+| Test.java:139:8:139:8 | super(...) | Test.java:139:8:139:8 | <Expr>; |
+| Test.java:139:8:139:8 | this | Test.java:139:8:139:8 | field1 |
+| Test.java:139:8:139:8 | this | Test.java:139:8:139:8 | field2 |
+| Test.java:139:8:139:8 | { ... } | Test.java:139:8:139:8 | super(...) |

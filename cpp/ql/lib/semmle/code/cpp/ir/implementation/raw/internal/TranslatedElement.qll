@@ -40,12 +40,43 @@ IRTempVariable getIRTempVariable(Locatable ast, TempVariableTag tag) {
   result.getTag() = tag
 }
 
+/** Gets an operand of `op`. */
+private Expr getAnOperand(Operation op) { result = op.getAnOperand() }
+
+/**
+ * Gets the number of nested operands of `op`. For example,
+ * `getNumberOfNestedBinaryOperands((1 + 2) + 3))` is `3`.
+ */
+private int getNumberOfNestedBinaryOperands(Operation op) { result = count(getAnOperand*(op)) }
+
+/**
+ * Holds if `op` should not be translated to a `ConstantInstruction` as part of
+ * IR generation, even if the value of `op` is constant.
+ */
+private predicate ignoreConstantValue(Operation op) {
+  op instanceof BitwiseAndExpr
+  or
+  op instanceof BitwiseOrExpr
+  or
+  op instanceof BitwiseXorExpr
+}
+
 /**
  * Holds if `expr` is a constant of a type that can be replaced directly with
  * its value in the IR. This does not include address constants as we have no
  * means to express those as QL values.
  */
-predicate isIRConstant(Expr expr) { exists(expr.getValue()) }
+predicate isIRConstant(Expr expr) {
+  exists(expr.getValue()) and
+  // We avoid constant folding certain operations since it's often useful to
+  // mark one of those as a source in dataflow, and if the operation is
+  // constant folded it's not possible to mark its operands as a source (or
+  // sink).
+  // But to avoid creating an outrageous amount of IR from very large
+  // constant expressions we fall back to constant folding if the operation
+  // has more than 50 operands (i.e., 1 + 2 + 3 + 4 + ... + 50)
+  if ignoreConstantValue(expr) then getNumberOfNestedBinaryOperands(expr) > 50 else any()
+}
 
 // Pulled out for performance. See
 // https://github.com/github/codeql-coreql-team/issues/1044.
@@ -99,11 +130,6 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   or
   // suppress destructors of temporary variables until proper support is added for them.
   exists(Expr parent | parent.getAnImplicitDestructorCall() = expr)
-  or
-  exists(Stmt parent |
-    parent.getAnImplicitDestructorCall() = expr and
-    expr.(DestructorCall).getQualifier() instanceof ReuseExpr
-  )
 }
 
 /**
@@ -124,11 +150,6 @@ private predicate ignoreExprOnly(Expr expr) {
   or
   not translateFunction(getEnclosingFunction(expr)) and
   not Raw::varHasIRFunc(getEnclosingVariable(expr))
-  or
-  exists(DeleteOrDeleteArrayExpr deleteExpr |
-    // Ignore the destructor call, because the duplicated qualifier breaks control flow.
-    deleteExpr.getDestructorCall() = expr
-  )
 }
 
 /**

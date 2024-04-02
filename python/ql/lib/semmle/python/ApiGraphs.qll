@@ -328,6 +328,9 @@ module API {
      */
     DataFlow::Node getInducingNode() { this = Impl::MkUse(result) or this = Impl::MkDef(result) }
 
+    /** Gets the location of this node */
+    PY::Location getLocation() { result = this.getInducingNode().getLocation() }
+
     /**
      * Holds if this element is at the specified location.
      * The location spans column `startcolumn` of line `startline` to
@@ -335,7 +338,7 @@ module API {
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       this.getInducingNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)

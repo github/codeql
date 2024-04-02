@@ -4,7 +4,7 @@ private import semmle.code.csharp.dataflow.internal.DataFlowImplSpecific
 private import semmle.code.csharp.dataflow.internal.TaintTrackingImplSpecific
 private import codeql.dataflow.internal.DataFlowImplConsistency
 
-private module Input implements InputSig<CsharpDataFlow> {
+private module Input implements InputSig<Location, CsharpDataFlow> {
   private import CsharpDataFlow
 
   private predicate isStaticAssignable(Assignable a) { a.(Modifiable).isStatic() }
@@ -99,4 +99,4 @@ private module Input implements InputSig<CsharpDataFlow> {
   }
 }
 
-import MakeConsistency<CsharpDataFlow, CsharpTaintTracking, Input>
+import MakeConsistency<Location, CsharpDataFlow, CsharpTaintTracking, Input>
