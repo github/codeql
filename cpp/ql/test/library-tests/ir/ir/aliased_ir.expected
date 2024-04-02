@@ -738,6 +738,71 @@ complex.c:
 #   58|     v58_6(void)                           = AliasedUse           : m58_3
 #   58|     v58_7(void)                           = ExitFunction         : 
 
+coroutines.cpp:
+#   87| co_returnable_void co_return_void()
+#   87|   Block 0
+#   87|     v87_1(void)               = EnterFunction                             : 
+#   87|     m87_2(unknown)            = AliasedDefinition                         : 
+#   87|     m87_3(unknown)            = InitializeNonLocal                        : 
+#   87|     m87_4(unknown)            = Chi                                       : total:m87_2, partial:m87_3
+#-----|     r0_1(glval<promise_type>) = VariableAddress[(unnamed local variable)] : 
+#-----|     m0_2(promise_type)        = Uninitialized[(unnamed local variable)]   : &:r0_1
+
+#   91| co_returnable_value co_return_int(int)
+#   91|   Block 0
+#   91|     v91_1(void)               = EnterFunction                             : 
+#   91|     m91_2(unknown)            = AliasedDefinition                         : 
+#   91|     m91_3(unknown)            = InitializeNonLocal                        : 
+#   91|     m91_4(unknown)            = Chi                                       : total:m91_2, partial:m91_3
+#   91|     r91_5(glval<int>)         = VariableAddress[i]                        : 
+#   91|     m91_6(int)                = InitializeParameter[i]                    : &:r91_5
+#-----|     r0_1(glval<promise_type>) = VariableAddress[(unnamed local variable)] : 
+#-----|     m0_2(promise_type)        = Uninitialized[(unnamed local variable)]   : &:r0_1
+
+#   95| co_returnable_void co_yield_value_void(int)
+#   95|   Block 0
+#   95|     v95_1(void)               = EnterFunction                             : 
+#   95|     m95_2(unknown)            = AliasedDefinition                         : 
+#   95|     m95_3(unknown)            = InitializeNonLocal                        : 
+#   95|     m95_4(unknown)            = Chi                                       : total:m95_2, partial:m95_3
+#   95|     r95_5(glval<int>)         = VariableAddress[i]                        : 
+#   95|     m95_6(int)                = InitializeParameter[i]                    : &:r95_5
+#-----|     r0_1(glval<promise_type>) = VariableAddress[(unnamed local variable)] : 
+#-----|     m0_2(promise_type)        = Uninitialized[(unnamed local variable)]   : &:r0_1
+
+#   99| co_returnable_value co_yield_value_value(int)
+#   99|   Block 0
+#   99|     v99_1(void)               = EnterFunction                             : 
+#   99|     m99_2(unknown)            = AliasedDefinition                         : 
+#   99|     m99_3(unknown)            = InitializeNonLocal                        : 
+#   99|     m99_4(unknown)            = Chi                                       : total:m99_2, partial:m99_3
+#   99|     r99_5(glval<int>)         = VariableAddress[i]                        : 
+#   99|     m99_6(int)                = InitializeParameter[i]                    : &:r99_5
+#-----|     r0_1(glval<promise_type>) = VariableAddress[(unnamed local variable)] : 
+#-----|     m0_2(promise_type)        = Uninitialized[(unnamed local variable)]   : &:r0_1
+
+#  103| co_returnable_void co_yield_and_return_void(int)
+#  103|   Block 0
+#  103|     v103_1(void)              = EnterFunction                             : 
+#  103|     m103_2(unknown)           = AliasedDefinition                         : 
+#  103|     m103_3(unknown)           = InitializeNonLocal                        : 
+#  103|     m103_4(unknown)           = Chi                                       : total:m103_2, partial:m103_3
+#  103|     r103_5(glval<int>)        = VariableAddress[i]                        : 
+#  103|     m103_6(int)               = InitializeParameter[i]                    : &:r103_5
+#-----|     r0_1(glval<promise_type>) = VariableAddress[(unnamed local variable)] : 
+#-----|     m0_2(promise_type)        = Uninitialized[(unnamed local variable)]   : &:r0_1
+
+#  108| co_returnable_value co_yield_and_return_value(int)
+#  108|   Block 0
+#  108|     v108_1(void)              = EnterFunction                             : 
+#  108|     m108_2(unknown)           = AliasedDefinition                         : 
+#  108|     m108_3(unknown)           = InitializeNonLocal                        : 
+#  108|     m108_4(unknown)           = Chi                                       : total:m108_2, partial:m108_3
+#  108|     r108_5(glval<int>)        = VariableAddress[i]                        : 
+#  108|     m108_6(int)               = InitializeParameter[i]                    : &:r108_5
+#-----|     r0_1(glval<promise_type>) = VariableAddress[(unnamed local variable)] : 
+#-----|     m0_2(promise_type)        = Uninitialized[(unnamed local variable)]   : &:r0_1
+
 destructors_for_temps.cpp:
 #    9| void ClassWithConstructor::ClassWithConstructor(ClassWithConstructor&&)
 #    9|   Block 0
