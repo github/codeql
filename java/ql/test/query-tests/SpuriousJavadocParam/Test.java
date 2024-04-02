@@ -120,5 +120,18 @@ public class Test<V> {
    */
   interface GenericInterface<T> {}
 
+  /**
+   * @param i exists
+   * @param k does not
+   */
+  static record SomeRecord(int i, int j) {}
+
+  /**
+   * @param <T> exists
+   * @param i exists
+   * @param k does not
+   */
+  static record GenericRecord<T>(int i, int j) {}
+
   // Diagnostic Matches: Incomplete inheritance relation for type java.lang.Object and supertype none
 }
