@@ -52,6 +52,7 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
   // models-as-data summarized flow
   FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
     nodeTo.(FlowSummaryNode).getSummaryNode(), false)
+  or
   // object->field conflation for content that is a `TaintInheritingContent`.
   exists(DataFlow::ContentSet f |
     readStep(nodeFrom, f, nodeTo) and
