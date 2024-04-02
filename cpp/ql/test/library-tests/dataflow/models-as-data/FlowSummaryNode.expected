@@ -20,53 +20,55 @@
 | tests.cpp:139:5:139:18 | [summary param] 1 indirection in madArgsComplex | ParameterNode | madArgsComplex | madArgsComplex |
 | tests.cpp:139:5:139:18 | [summary param] 2 in madArgsComplex | ParameterNode | madArgsComplex | madArgsComplex |
 | tests.cpp:139:5:139:18 | [summary] to write: ReturnValue in madArgsComplex | ReturnNode | madArgsComplex | madArgsComplex |
-| tests.cpp:142:5:142:24 | [summary param] 0 in madArg0FieldToReturn | ParameterNode | madArg0FieldToReturn | madArg0FieldToReturn |
-| tests.cpp:142:5:142:24 | [summary] read: Argument[0].Field[value] in madArg0FieldToReturn |  | madArg0FieldToReturn | madArg0FieldToReturn |
-| tests.cpp:142:5:142:24 | [summary] to write: ReturnValue in madArg0FieldToReturn | ReturnNode | madArg0FieldToReturn | madArg0FieldToReturn |
-| tests.cpp:143:5:143:32 | [summary param] 0 indirection in madArg0IndirectFieldToReturn | ParameterNode | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
-| tests.cpp:143:5:143:32 | [summary] read: Argument[0 indirection].Field[value] in madArg0IndirectFieldToReturn |  | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
-| tests.cpp:143:5:143:32 | [summary] to write: ReturnValue in madArg0IndirectFieldToReturn | ReturnNode | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
-| tests.cpp:144:5:144:32 | [summary param] 0 in madArg0FieldIndirectToReturn | ParameterNode | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
-| tests.cpp:144:5:144:32 | [summary] read: Argument[0].Field[*ptr] in madArg0FieldIndirectToReturn |  | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
-| tests.cpp:144:5:144:32 | [summary] to write: ReturnValue in madArg0FieldIndirectToReturn | ReturnNode | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
-| tests.cpp:145:13:145:32 | [summary param] 0 in madArg0ToReturnField | ParameterNode | madArg0ToReturnField | madArg0ToReturnField |
-| tests.cpp:145:13:145:32 | [summary] to write: ReturnValue in madArg0ToReturnField | ReturnNode | madArg0ToReturnField | madArg0ToReturnField |
-| tests.cpp:145:13:145:32 | [summary] to write: ReturnValue.Field[value] in madArg0ToReturnField |  | madArg0ToReturnField | madArg0ToReturnField |
-| tests.cpp:146:14:146:41 | [summary param] 0 in madArg0ToReturnIndirectField | ParameterNode | madArg0ToReturnIndirectField | madArg0ToReturnIndirectField |
-| tests.cpp:146:14:146:41 | [summary] to write: ReturnValue[*] in madArg0ToReturnIndirectField | ReturnNode | madArg0ToReturnIndirectField | madArg0ToReturnIndirectField |
-| tests.cpp:146:14:146:41 | [summary] to write: ReturnValue[*].Field[value] in madArg0ToReturnIndirectField |  | madArg0ToReturnIndirectField | madArg0ToReturnIndirectField |
-| tests.cpp:147:13:147:40 | [summary param] 0 in madArg0ToReturnFieldIndirect | ParameterNode | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
-| tests.cpp:147:13:147:40 | [summary] to write: ReturnValue in madArg0ToReturnFieldIndirect | ReturnNode | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
-| tests.cpp:147:13:147:40 | [summary] to write: ReturnValue.Field[*ptr] in madArg0ToReturnFieldIndirect |  | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
-| tests.cpp:261:7:261:19 | [summary param] 0 in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
-| tests.cpp:261:7:261:19 | [summary param] this indirection in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
-| tests.cpp:261:7:261:19 | [summary] to write: Argument[this indirection] in madArg0ToSelf | PostUpdateNode | madArg0ToSelf | madArg0ToSelf |
-| tests.cpp:262:6:262:20 | [summary param] this indirection in madSelfToReturn | ParameterNode | madSelfToReturn | madSelfToReturn |
-| tests.cpp:262:6:262:20 | [summary] to write: ReturnValue in madSelfToReturn | ReturnNode | madSelfToReturn | madSelfToReturn |
-| tests.cpp:264:7:264:20 | [summary param] 0 in madArg0ToField | ParameterNode | madArg0ToField | madArg0ToField |
-| tests.cpp:264:7:264:20 | [summary param] this indirection in madArg0ToField | ParameterNode | madArg0ToField | madArg0ToField |
-| tests.cpp:264:7:264:20 | [summary] to write: Argument[this indirection] in madArg0ToField | PostUpdateNode | madArg0ToField | madArg0ToField |
-| tests.cpp:264:7:264:20 | [summary] to write: Argument[this indirection].Field[val] in madArg0ToField |  | madArg0ToField | madArg0ToField |
-| tests.cpp:265:6:265:21 | [summary param] this indirection in madFieldToReturn | ParameterNode | madFieldToReturn | madFieldToReturn |
-| tests.cpp:265:6:265:21 | [summary] read: Argument[this indirection].Field[val] in madFieldToReturn |  | madFieldToReturn | madFieldToReturn |
-| tests.cpp:265:6:265:21 | [summary] to write: ReturnValue in madFieldToReturn | ReturnNode | madFieldToReturn | madFieldToReturn |
-| tests.cpp:290:7:290:30 | [summary param] this indirection in namespaceMadSelfToReturn | ParameterNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
-| tests.cpp:290:7:290:30 | [summary] to write: ReturnValue in namespaceMadSelfToReturn | ReturnNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
-| tests.cpp:411:5:411:29 | [summary param] 0 in madCallArg0ReturnToReturn | ParameterNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:411:5:411:29 | [summary] read: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | PostUpdateNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:411:5:411:29 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturn | OutNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:411:5:411:29 | [summary] to write: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | ArgumentNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:411:5:411:29 | [summary] to write: ReturnValue in madCallArg0ReturnToReturn | ReturnNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
-| tests.cpp:412:9:412:38 | [summary param] 0 in madCallArg0ReturnToReturnFirst | ParameterNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
-| tests.cpp:412:9:412:38 | [summary] read: Argument[0].Parameter[this] in madCallArg0ReturnToReturnFirst | PostUpdateNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
-| tests.cpp:412:9:412:38 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturnFirst | OutNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
-| tests.cpp:412:9:412:38 | [summary] to write: Argument[0].Parameter[this] in madCallArg0ReturnToReturnFirst | ArgumentNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
-| tests.cpp:412:9:412:38 | [summary] to write: ReturnValue in madCallArg0ReturnToReturnFirst | ReturnNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
-| tests.cpp:412:9:412:38 | [summary] to write: ReturnValue.Field[first] in madCallArg0ReturnToReturnFirst |  | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
-| tests.cpp:413:6:413:25 | [summary param] 0 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:413:6:413:25 | [summary param] 1 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:413:6:413:25 | [summary] read: Argument[0].Parameter[0] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:413:6:413:25 | [summary] read: Argument[0].Parameter[this] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:413:6:413:25 | [summary] to write: Argument[0].Parameter[0] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:413:6:413:25 | [summary] to write: Argument[0].Parameter[this] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
-| tests.cpp:413:6:413:25 | [summary] to write: Argument[1] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:141:5:141:28 | [summary param] 2 in madAndImplementedComplex | ParameterNode | madAndImplementedComplex | madAndImplementedComplex |
+| tests.cpp:141:5:141:28 | [summary] to write: ReturnValue in madAndImplementedComplex | ReturnNode | madAndImplementedComplex | madAndImplementedComplex |
+| tests.cpp:146:5:146:24 | [summary param] 0 in madArg0FieldToReturn | ParameterNode | madArg0FieldToReturn | madArg0FieldToReturn |
+| tests.cpp:146:5:146:24 | [summary] read: Argument[0].Field[value] in madArg0FieldToReturn |  | madArg0FieldToReturn | madArg0FieldToReturn |
+| tests.cpp:146:5:146:24 | [summary] to write: ReturnValue in madArg0FieldToReturn | ReturnNode | madArg0FieldToReturn | madArg0FieldToReturn |
+| tests.cpp:147:5:147:32 | [summary param] 0 indirection in madArg0IndirectFieldToReturn | ParameterNode | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
+| tests.cpp:147:5:147:32 | [summary] read: Argument[0 indirection].Field[value] in madArg0IndirectFieldToReturn |  | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
+| tests.cpp:147:5:147:32 | [summary] to write: ReturnValue in madArg0IndirectFieldToReturn | ReturnNode | madArg0IndirectFieldToReturn | madArg0IndirectFieldToReturn |
+| tests.cpp:148:5:148:32 | [summary param] 0 in madArg0FieldIndirectToReturn | ParameterNode | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
+| tests.cpp:148:5:148:32 | [summary] read: Argument[0].Field[*ptr] in madArg0FieldIndirectToReturn |  | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
+| tests.cpp:148:5:148:32 | [summary] to write: ReturnValue in madArg0FieldIndirectToReturn | ReturnNode | madArg0FieldIndirectToReturn | madArg0FieldIndirectToReturn |
+| tests.cpp:149:13:149:32 | [summary param] 0 in madArg0ToReturnField | ParameterNode | madArg0ToReturnField | madArg0ToReturnField |
+| tests.cpp:149:13:149:32 | [summary] to write: ReturnValue in madArg0ToReturnField | ReturnNode | madArg0ToReturnField | madArg0ToReturnField |
+| tests.cpp:149:13:149:32 | [summary] to write: ReturnValue.Field[value] in madArg0ToReturnField |  | madArg0ToReturnField | madArg0ToReturnField |
+| tests.cpp:150:14:150:41 | [summary param] 0 in madArg0ToReturnIndirectField | ParameterNode | madArg0ToReturnIndirectField | madArg0ToReturnIndirectField |
+| tests.cpp:150:14:150:41 | [summary] to write: ReturnValue[*] in madArg0ToReturnIndirectField | ReturnNode | madArg0ToReturnIndirectField | madArg0ToReturnIndirectField |
+| tests.cpp:150:14:150:41 | [summary] to write: ReturnValue[*].Field[value] in madArg0ToReturnIndirectField |  | madArg0ToReturnIndirectField | madArg0ToReturnIndirectField |
+| tests.cpp:151:13:151:40 | [summary param] 0 in madArg0ToReturnFieldIndirect | ParameterNode | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
+| tests.cpp:151:13:151:40 | [summary] to write: ReturnValue in madArg0ToReturnFieldIndirect | ReturnNode | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
+| tests.cpp:151:13:151:40 | [summary] to write: ReturnValue.Field[*ptr] in madArg0ToReturnFieldIndirect |  | madArg0ToReturnFieldIndirect | madArg0ToReturnFieldIndirect |
+| tests.cpp:270:7:270:19 | [summary param] 0 in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:270:7:270:19 | [summary param] this indirection in madArg0ToSelf | ParameterNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:270:7:270:19 | [summary] to write: Argument[this indirection] in madArg0ToSelf | PostUpdateNode | madArg0ToSelf | madArg0ToSelf |
+| tests.cpp:271:6:271:20 | [summary param] this indirection in madSelfToReturn | ParameterNode | madSelfToReturn | madSelfToReturn |
+| tests.cpp:271:6:271:20 | [summary] to write: ReturnValue in madSelfToReturn | ReturnNode | madSelfToReturn | madSelfToReturn |
+| tests.cpp:273:7:273:20 | [summary param] 0 in madArg0ToField | ParameterNode | madArg0ToField | madArg0ToField |
+| tests.cpp:273:7:273:20 | [summary param] this indirection in madArg0ToField | ParameterNode | madArg0ToField | madArg0ToField |
+| tests.cpp:273:7:273:20 | [summary] to write: Argument[this indirection] in madArg0ToField | PostUpdateNode | madArg0ToField | madArg0ToField |
+| tests.cpp:273:7:273:20 | [summary] to write: Argument[this indirection].Field[val] in madArg0ToField |  | madArg0ToField | madArg0ToField |
+| tests.cpp:274:6:274:21 | [summary param] this indirection in madFieldToReturn | ParameterNode | madFieldToReturn | madFieldToReturn |
+| tests.cpp:274:6:274:21 | [summary] read: Argument[this indirection].Field[val] in madFieldToReturn |  | madFieldToReturn | madFieldToReturn |
+| tests.cpp:274:6:274:21 | [summary] to write: ReturnValue in madFieldToReturn | ReturnNode | madFieldToReturn | madFieldToReturn |
+| tests.cpp:299:7:299:30 | [summary param] this indirection in namespaceMadSelfToReturn | ParameterNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
+| tests.cpp:299:7:299:30 | [summary] to write: ReturnValue in namespaceMadSelfToReturn | ReturnNode | namespaceMadSelfToReturn | namespaceMadSelfToReturn |
+| tests.cpp:420:5:420:29 | [summary param] 0 in madCallArg0ReturnToReturn | ParameterNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:420:5:420:29 | [summary] read: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | PostUpdateNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:420:5:420:29 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturn | OutNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:420:5:420:29 | [summary] to write: Argument[0].Parameter[this] in madCallArg0ReturnToReturn | ArgumentNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:420:5:420:29 | [summary] to write: ReturnValue in madCallArg0ReturnToReturn | ReturnNode | madCallArg0ReturnToReturn | madCallArg0ReturnToReturn |
+| tests.cpp:421:9:421:38 | [summary param] 0 in madCallArg0ReturnToReturnFirst | ParameterNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:421:9:421:38 | [summary] read: Argument[0].Parameter[this] in madCallArg0ReturnToReturnFirst | PostUpdateNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:421:9:421:38 | [summary] read: Argument[0].ReturnValue in madCallArg0ReturnToReturnFirst | OutNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:421:9:421:38 | [summary] to write: Argument[0].Parameter[this] in madCallArg0ReturnToReturnFirst | ArgumentNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:421:9:421:38 | [summary] to write: ReturnValue in madCallArg0ReturnToReturnFirst | ReturnNode | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:421:9:421:38 | [summary] to write: ReturnValue.Field[first] in madCallArg0ReturnToReturnFirst |  | madCallArg0ReturnToReturnFirst | madCallArg0ReturnToReturnFirst |
+| tests.cpp:422:6:422:25 | [summary param] 0 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:422:6:422:25 | [summary param] 1 in madCallArg0WithValue | ParameterNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:422:6:422:25 | [summary] read: Argument[0].Parameter[0] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:422:6:422:25 | [summary] read: Argument[0].Parameter[this] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:422:6:422:25 | [summary] to write: Argument[0].Parameter[0] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:422:6:422:25 | [summary] to write: Argument[0].Parameter[this] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:422:6:422:25 | [summary] to write: Argument[1] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
