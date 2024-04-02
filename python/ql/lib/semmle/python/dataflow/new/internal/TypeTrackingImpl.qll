@@ -8,6 +8,7 @@ private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPr
 private import codeql.typetracking.internal.SummaryTypeTracker as SummaryTypeTracker
 private import semmle.python.dataflow.new.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
+private import semmle.python.dataflow.new.internal.IterableUnpacking as IterableUnpacking
 
 private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   // Dataflow nodes
@@ -135,7 +136,27 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
   }
 
   /** Holds if there is a simple local flow step from `nodeFrom` to `nodeTo` */
-  predicate simpleLocalSmallStep = DataFlowPrivate::simpleLocalFlowStepForTypetracking/2;
+  predicate simpleLocalSmallStep(Node nodeFrom, Node nodeTo) {
+    DataFlowPrivate::simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo) and
+    // for `for k,v in foo` no need to do local flow step from the synthetic sequence
+    // node for `k,v` to the tuple `k,v` -- since type-tracking only supports one level
+    // of content tracking, and there is one read-step from `foo` the synthetic sequence
+    // node required, we can skip the flow step from the synthetic sequence node to the
+    // tuple itself, since the read-step from the tuple to the tuple elements will not
+    // matter.
+    not (
+      IterableUnpacking::iterableUnpackingForReadStep(_, _, nodeFrom) and
+      IterableUnpacking::iterableUnpackingTupleFlowStep(nodeFrom, nodeTo)
+    ) and
+    // for nested iterable unpacking, such as `[[a]] = foo` or `((a,b),) = bar`, we can
+    // ignore the flow steps from the synthetic sequence node to the real sequence node,
+    // since we only support one level of content in type-trackers, and the nested
+    // structure requires two levels at least to be useful.
+    not exists(SequenceNode outer |
+      outer.getAnElement() = nodeTo.asCfgNode() and
+      IterableUnpacking::iterableUnpackingTupleFlowStep(nodeFrom, nodeTo)
+    )
+  }
 
   /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
   predicate levelStepCall(Node nodeFrom, LocalSourceNode nodeTo) { none() }
@@ -200,7 +221,10 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
       nodeTo = storeTarget
       or
       nodeTo = storeTarget.(DataFlowPrivate::SyntheticPostUpdateNode).getPreUpdateNode()
-    )
+    ) and
+    // when only supporting precise content, no need for IterableElementNode (since it
+    // is only fed set/list content)
+    not nodeFrom instanceof DataFlowPublic::IterableElementNode
     or
     TypeTrackerSummaryFlow::basicStoreStep(nodeFrom, nodeTo, content)
   }
@@ -216,7 +240,22 @@ module TypeTrackingInput implements Shared::TypeTrackingInput {
       nodeTo = a
     )
     or
-    DataFlowPrivate::readStepCommon(nodeFrom, content, nodeTo)
+    DataFlowPrivate::readStepCommon(nodeFrom, content, nodeTo) and
+    // Since we only support one level of content in type-trackers we don't actually
+    // support `(aa, ab), (ba, bb) = ...`. Therefore we exclude the read-step from `(aa,
+    // ab)` to `aa` (since it is not needed).
+    not exists(SequenceNode outer |
+      outer.getAnElement() = nodeFrom.asCfgNode() and
+      IterableUnpacking::iterableUnpackingTupleFlowStep(_, nodeFrom)
+    ) and
+    // Again, due to only supporting one level deep, for `for (k,v) in ...` we exclude read-step from
+    // the tuple to `k` and `v`.
+    not exists(DataFlowPublic::IterableSequenceNode seq, DataFlowPublic::IterableElementNode elem |
+      IterableUnpacking::iterableUnpackingForReadStep(_, _, seq) and
+      IterableUnpacking::iterableUnpackingConvertingReadStep(seq, _, elem) and
+      IterableUnpacking::iterableUnpackingConvertingStoreStep(elem, _, nodeFrom) and
+      nodeFrom.asCfgNode() instanceof SequenceNode
+    )
     or
     TypeTrackerSummaryFlow::basicLoadStep(nodeFrom, nodeTo, content)
   }
