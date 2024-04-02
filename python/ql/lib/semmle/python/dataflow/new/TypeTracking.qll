@@ -7,8 +7,12 @@ private import internal.TypeTrackingImpl as Impl
 import Impl::Shared::TypeTracking<Impl::TypeTrackingInput>
 private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
 
-/** A string that may appear as the name of an attribute or access path. */
-class AttributeName = Impl::TypeTrackingInput::Content;
+/**
+ * DEPRECATED.
+ *
+ * A string that may appear as the name of an attribute or access path.
+ */
+deprecated class AttributeName = Impl::TypeTrackingInput::Content;
 
 /**
  * A summary of the steps needed to track a value to a given dataflow node.
