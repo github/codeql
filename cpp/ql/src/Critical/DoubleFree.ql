@@ -37,6 +37,5 @@ where
   DoubleFree::flowPath(source, sink) and
   isFree(source.getNode(), _, _, dealloc) and
   isFree(sink.getNode(), e2)
-select sink.getNode(), source, sink,
-  "Memory pointed to by '" + e2.toString() + "' may already have been freed by $@.", dealloc,
-  dealloc.toString()
+select sink.getNode(), source, sink, "Memory pointed to by $@ may already have been freed by $@.",
+  e2, e2.toString(), dealloc, dealloc.toString()
