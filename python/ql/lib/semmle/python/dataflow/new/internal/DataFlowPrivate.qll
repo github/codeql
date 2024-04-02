@@ -643,6 +643,13 @@ predicate jumpStepNotSharedWithTypeTracker(Node nodeFrom, Node nodeTo) {
 //--------
 /**
  * Subset of `storeStep` that should be shared with type-tracking.
+ *
+ * NOTE: This does not include attributeStoreStep right now, since it has its' own
+ * modeling in the type-tracking library (which is slightly different due to
+ * PostUpdateNodes).
+ *
+ * As of 2024-04-02 the type-tracking library only supports precise content, so there is
+ * no reason to include steps for list content right now.
  */
 predicate storeStepCommon(Node nodeFrom, ContentSet c, Node nodeTo) {
   tupleStoreStep(nodeFrom, c, nodeTo)
