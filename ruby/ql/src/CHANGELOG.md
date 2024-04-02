@@ -1,7 +1,3 @@
-## 0.8.13
-
-No user-facing changes.
-
 ## 0.8.12
 
 No user-facing changes.

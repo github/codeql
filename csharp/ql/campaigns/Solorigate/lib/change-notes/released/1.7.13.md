@@ -1,3 +1,0 @@
-## 1.7.13
-
-No user-facing changes.
