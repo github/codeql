@@ -1041,6 +1041,16 @@ module Http {
        * Gets the argument containing the header value.
        */
       DataFlow::Node getValueArg() { result = super.getValueArg() }
+
+      /**
+       * Holds if newlines are accepted in the header name argument.
+       */
+      predicate nameAllowsNewline() { super.nameAllowsNewline() }
+
+      /**
+       * Holds if newlines are accepted in the header value argument.
+       */
+      predicate valueAllowsNewline() { super.valueAllowsNewline() }
     }
 
     /** Provides a class for modelling header writes on HTTP responses. */
@@ -1061,6 +1071,16 @@ module Http {
          * Gets the argument containing the header value.
          */
         abstract DataFlow::Node getValueArg();
+
+        /**
+         * Holds if newlines are accepted in the header name argument.
+         */
+        abstract predicate nameAllowsNewline();
+
+        /**
+         * Holds if newlines are accepted in the header value argument.
+         */
+        abstract predicate valueAllowsNewline();
       }
     }
 

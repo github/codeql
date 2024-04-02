@@ -41,8 +41,12 @@ module HttpHeaderInjection {
    */
   class HeaderWriteAsSink extends Sink {
     HeaderWriteAsSink() {
-      exists(Http::Server::ResponseHeaderWrite headerDeclaration |
-        this in [headerDeclaration.getNameArg(), headerDeclaration.getValueArg()]
+      exists(Http::Server::ResponseHeaderWrite headerWrite |
+        headerWrite.nameAllowsNewline() and
+        this = headerWrite.getNameArg()
+        or
+        headerWrite.valueAllowsNewline() and
+        this = headerWrite.getValueArg()
       )
     }
   }

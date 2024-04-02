@@ -182,8 +182,52 @@ module Werkzeug {
 
       override string getAsyncMethodName() { none() }
     }
+
+    /** A call to a method that writes to a header, assumed to be a response header. */
+    private class HeaderWriteCall extends Http::Server::ResponseHeaderWrite::Range,
+      DataFlow::MethodCallNode
+    {
+      HeaderWriteCall() {
+        this.getObject() = instance() and
+        this.getMethodName() = ["add", "add_header", "set", "set_default", "__setitem__"]
+      }
+
+      override DataFlow::Node getNameArg() { result = this.getArg(0) }
+
+      override DataFlow::Node getValueArg() { result = this.getArg(1) }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
+
+    /** A dict-like write to a header, assumed to be a response header. */
+    private class HeaderWriteSubscript extends Http::Server::ResponseHeaderWrite::Range,
+      DataFlow::Node
+    {
+      DataFlow::Node name;
+      DataFlow::Node value;
+
+      HeaderWriteSubscript() {
+        exists(SubscriptNode subscript |
+          this.asCfgNode() = subscript and
+          value.asCfgNode() = subscript.(DefinitionNode).getValue() and
+          name.asCfgNode() = subscript.getIndex() and
+          subscript.getObject() = instance().asCfgNode()
+        )
+      }
+
+      override DataFlow::Node getNameArg() { result = name }
+
+      override DataFlow::Node getValueArg() { result = value }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
   }
 
+  // TODO: `extend` bulk header update
   /**
    * Provides models for the `werkzeug.datastructures.Authorization` class
    *
