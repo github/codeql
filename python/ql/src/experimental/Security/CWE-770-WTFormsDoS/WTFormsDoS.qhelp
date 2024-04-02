@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>A form field in the <code>WTForms</code> library must be validated before use. An attacker
+      could potentially trigger a Denial of Service(DoS) if the field is left unvalidated.</p>
+
+  </overview>
+  <recommendation>
+
+    <p>Ensure that every field in the form is validated before use.</p>
+
+  </recommendation>
+
+  <example>
+    <p> For example, please see the snippet below. Here, the <code>StringField</code> has not
+      validation performed on it's length. This would allow an attacker to send a big string as an
+      input and potentially cause a denial of service. </p>
+
+    <sample src="WTFormsBad.py" />
+
+    <p>To fix this vulnerability, we need restrain the size of the field.</p>
+
+    <p>For example, we can use the <code>Length</code> library function to limit the size of the
+      user input.</p>
+
+    <sample src="WTFormsGood.py" />
+
+  </example>
+  <references>
+</references>
+</qhelp>

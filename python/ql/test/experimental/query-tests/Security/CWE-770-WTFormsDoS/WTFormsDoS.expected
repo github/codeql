@@ -1,0 +1,1 @@
+| WTFormsDoS.py:5:11:5:53 | ControlFlowNode for StringField() | This WTForm field may be vulnerable to Denial of Service (DoS) attacks. |
