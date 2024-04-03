@@ -361,7 +361,7 @@ namespace Semmle.Autobuild.Shared
         {
             if (disposing)
             {
-                (diagnostics as IDisposable)?.Dispose();
+                diagnostics.Dispose();
             }
         }
 

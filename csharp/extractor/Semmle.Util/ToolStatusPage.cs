@@ -183,7 +183,7 @@ namespace Semmle.Util
     /// <summary>
     /// Provides the ability to write diagnostic messages to some output.
     /// </summary>
-    public interface IDiagnosticsWriter
+    public interface IDiagnosticsWriter : IDisposable
     {
         /// <summary>
         /// Adds <paramref name="message" /> as a new diagnostics entry.
