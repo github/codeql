@@ -1053,7 +1053,7 @@ module Http {
       predicate valueAllowsNewline() { super.valueAllowsNewline() }
     }
 
-    /** Provides a class for modelling header writes on HTTP responses. */
+    /** Provides a class for modeling header writes on HTTP responses. */
     module ResponseHeaderWrite {
       /**
        *A data-flow node that sets a header in an HTTP response.
@@ -1107,7 +1107,7 @@ module Http {
       predicate valueAllowsNewline() { super.valueAllowsNewline() }
     }
 
-    /** Provides a class for modelling bulk header writes on HTTP responses. */
+    /** Provides a class for modeling bulk header writes on HTTP responses. */
     module ResponseHeaderBulkWrite {
       /**
        *sets multiple headers in an HTTP response using a dict.
