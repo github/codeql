@@ -113,8 +113,8 @@ private class RemoteParameterSink extends RemoteFlowSink {
 /**
  * A remote flow sink defined in a CSV model.
  */
-private class RemoteFlowFromCSVSink extends RemoteFlowSink {
-  RemoteFlowFromCSVSink() { sinkNode(this, "remote-sink") }
+private class RemoteFlowFromCsvSink extends RemoteFlowSink {
+  RemoteFlowFromCsvSink() { sinkNode(this, "remote-sink") }
 
   override string getSinkType() { result = "remote flow sink" }
 }

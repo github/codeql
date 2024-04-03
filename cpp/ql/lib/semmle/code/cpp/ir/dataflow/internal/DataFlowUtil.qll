@@ -740,7 +740,7 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
 /**
  * A data-flow node used to model flow summaries. That is, a dataflow node
  * that is synthesized to represent a parameter, return value, or other part
- * of a models-as-data modelled function.
+ * of a models-as-data modeled function.
  */
 class FlowSummaryNode extends Node, TFlowSummaryNode {
   FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
@@ -1972,7 +1972,7 @@ private module Cached {
     simpleLocalFlowStep(nodeFrom, nodeTo)
     or
     // models-as-data summarized flow for local data flow (i.e. special case for flow
-    // through calls to modelled functions, without relying on global dataflow to join
+    // through calls to modeled functions, without relying on global dataflow to join
     // the dots).
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
  }

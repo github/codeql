@@ -27,7 +27,7 @@ module ExposedSystemDataConfig implements DataFlow::ConfigSig {
     sink instanceof RemoteFlowSink
     or
     // workaround for cases where the sink contains the tainted thing as a child; this could
-    // probably be handled better with taint inheriting content or similar modelling.
+    // probably be handled better with taint inheriting content or similar modeling.
     exists(RemoteFlowSink sinkNode |
       sinkNode.asIndirectExpr().getAChild*() = sink.asIndirectExpr()
     )

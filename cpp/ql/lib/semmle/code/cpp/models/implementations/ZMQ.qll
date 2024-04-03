@@ -7,7 +7,7 @@ import semmle.code.cpp.models.interfaces.FlowSource
 /**
  * Remote flow sources.
  */
-private class ZMQSource extends SourceModelCsv {
+private class ZmqSource extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
@@ -21,7 +21,7 @@ private class ZMQSource extends SourceModelCsv {
 /**
  * Remote flow sinks.
  */
-private class ZMQSinks extends SinkModelCsv {
+private class ZmqSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [

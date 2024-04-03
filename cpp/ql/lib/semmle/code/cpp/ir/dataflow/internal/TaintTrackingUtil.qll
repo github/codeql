@@ -23,7 +23,7 @@ predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   localAdditionalTaintStep(nodeFrom, nodeTo)
   or
   // models-as-data summarized flow for local data flow (i.e. special case for flow
-  // through calls to modelled functions, without relying on global dataflow to join
+  // through calls to modeled functions, without relying on global dataflow to join
   // the dots).
   FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
 }
