@@ -237,9 +237,21 @@ module Werkzeug {
 
       override predicate valueAllowsNewline() { none() }
     }
+
+    /** A call to `Headers.extend`, assumed to be a response header. */
+    private class HeaderExtendCall extends Http::Server::ResponseHeaderBulkWrite::Range,
+      DataFlow::MethodCallNode
+    {
+      HeaderExtendCall() { this.calls(instance(), "extend") }
+
+      override DataFlow::Node getBulkArg() { result = this.getArg(0) }
+
+      override predicate nameAllowsNewline() { any() }
+
+      override predicate valueAllowsNewline() { none() }
+    }
   }
 
-  // TODO: `extend` bulk header update
   /**
    * Provides models for the `werkzeug.datastructures.Authorization` class
    *

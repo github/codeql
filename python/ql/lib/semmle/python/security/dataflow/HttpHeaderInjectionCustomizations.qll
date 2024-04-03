@@ -50,4 +50,25 @@ module HttpHeaderInjection {
       )
     }
   }
+
+  /** A key-value pair in a literal for a bulk header update, considered as a single header update. */
+  // TODO: We could instead consider bulk writes as sinks with an implicit read step of DictionaryKey/DictionaryValue content as needed.
+  private class HeaderBulkWriteDictLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
+  {
+    KeyValuePair item;
+
+    HeaderBulkWriteDictLiteral() { item = super.geBulkArg().asExpr().(Dict).getAnItem() }
+
+    override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
+
+    override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
+
+    override predicate nameAllowsNewline() {
+      Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
+    }
+
+    override predicate valueAllowsNewline() {
+      Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
+    }
+  }
 }

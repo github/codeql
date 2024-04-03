@@ -3,12 +3,27 @@ edges
 | flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:9:18:9:24 | ControlFlowNode for request | provenance |  |
 | flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:20:18:20:24 | ControlFlowNode for request | provenance |  |
 | flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:29:18:29:24 | ControlFlowNode for request | provenance |  |
+| flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:38:18:38:24 | ControlFlowNode for request | provenance |  |
+| flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:49:44:49:50 | ControlFlowNode for request | provenance |  |
+| flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:49:72:49:78 | ControlFlowNode for request | provenance |  |
+| flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:53:18:53:24 | ControlFlowNode for request | provenance |  |
+| flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:54:41:54:47 | ControlFlowNode for request | provenance |  |
+| flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:59:18:59:24 | ControlFlowNode for request | provenance |  |
+| flask_tests.py:1:29:1:35 | ControlFlowNode for request | flask_tests.py:60:36:60:42 | ControlFlowNode for request | provenance |  |
 | flask_tests.py:9:5:9:14 | ControlFlowNode for rfs_header | flask_tests.py:13:17:13:26 | ControlFlowNode for rfs_header | provenance |  |
 | flask_tests.py:9:18:9:24 | ControlFlowNode for request | flask_tests.py:9:5:9:14 | ControlFlowNode for rfs_header | provenance |  |
 | flask_tests.py:20:5:20:14 | ControlFlowNode for rfs_header | flask_tests.py:23:22:23:31 | ControlFlowNode for rfs_header | provenance |  |
 | flask_tests.py:20:18:20:24 | ControlFlowNode for request | flask_tests.py:20:5:20:14 | ControlFlowNode for rfs_header | provenance |  |
 | flask_tests.py:29:5:29:14 | ControlFlowNode for rfs_header | flask_tests.py:32:22:32:31 | ControlFlowNode for rfs_header | provenance |  |
 | flask_tests.py:29:18:29:24 | ControlFlowNode for request | flask_tests.py:29:5:29:14 | ControlFlowNode for rfs_header | provenance |  |
+| flask_tests.py:38:5:38:14 | ControlFlowNode for rfs_header | flask_tests.py:43:10:43:19 | ControlFlowNode for rfs_header | provenance |  |
+| flask_tests.py:38:18:38:24 | ControlFlowNode for request | flask_tests.py:38:5:38:14 | ControlFlowNode for rfs_header | provenance |  |
+| flask_tests.py:49:44:49:50 | ControlFlowNode for request | flask_tests.py:49:72:49:97 | ControlFlowNode for Subscript | provenance |  |
+| flask_tests.py:49:72:49:78 | ControlFlowNode for request | flask_tests.py:49:72:49:97 | ControlFlowNode for Subscript | provenance |  |
+| flask_tests.py:53:18:53:24 | ControlFlowNode for request | flask_tests.py:54:41:54:66 | ControlFlowNode for Subscript | provenance |  |
+| flask_tests.py:54:41:54:47 | ControlFlowNode for request | flask_tests.py:54:41:54:66 | ControlFlowNode for Subscript | provenance |  |
+| flask_tests.py:59:18:59:24 | ControlFlowNode for request | flask_tests.py:60:36:60:61 | ControlFlowNode for Subscript | provenance |  |
+| flask_tests.py:60:36:60:42 | ControlFlowNode for request | flask_tests.py:60:36:60:61 | ControlFlowNode for Subscript | provenance |  |
 nodes
 | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | flask_tests.py:1:29:1:35 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -21,8 +36,24 @@ nodes
 | flask_tests.py:29:5:29:14 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
 | flask_tests.py:29:18:29:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | flask_tests.py:32:22:32:31 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+| flask_tests.py:38:5:38:14 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+| flask_tests.py:38:18:38:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_tests.py:43:10:43:19 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+| flask_tests.py:49:44:49:50 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_tests.py:49:72:49:78 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_tests.py:49:72:49:97 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_tests.py:53:18:53:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_tests.py:54:41:54:47 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_tests.py:54:41:54:66 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+| flask_tests.py:59:18:59:24 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_tests.py:60:36:60:42 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| flask_tests.py:60:36:60:61 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 subpaths
 #select
 | flask_tests.py:13:17:13:26 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:13:17:13:26 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
 | flask_tests.py:23:22:23:31 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:23:22:23:31 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
 | flask_tests.py:32:22:32:31 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:32:22:32:31 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
+| flask_tests.py:43:10:43:19 | ControlFlowNode for rfs_header | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:43:10:43:19 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
+| flask_tests.py:49:72:49:97 | ControlFlowNode for Subscript | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:49:72:49:97 | ControlFlowNode for Subscript | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
+| flask_tests.py:54:41:54:66 | ControlFlowNode for Subscript | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:54:41:54:66 | ControlFlowNode for Subscript | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |
+| flask_tests.py:60:36:60:61 | ControlFlowNode for Subscript | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | flask_tests.py:60:36:60:61 | ControlFlowNode for Subscript | This HTTP header is constructed from a $@. | flask_tests.py:1:29:1:35 | ControlFlowNode for ImportMember | user-provided value |

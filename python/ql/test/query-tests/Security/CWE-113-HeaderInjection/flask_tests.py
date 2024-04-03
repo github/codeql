@@ -40,10 +40,22 @@ def flask_make_response_extend():
     resp.headers.extend(
         {'HeaderName': rfs_header}) # GOOD
     resp.headers.extend(
-        {rfs_header: "HeaderValue"}) # BAD but not yet found
+        {rfs_header: "HeaderValue"}) # BAD
     return resp
 
 
 @app.route("/Response_arg")
 def Response_arg():
-    return Response(headers={'HeaderName': request.args["rfs_header"], request.args["rfs_header"]: "HeaderValue"}) # BAD but not yet found
+    return Response(headers={'HeaderName': request.args["rfs_header"], request.args["rfs_header"]: "HeaderValue"}) # BAD
+
+@app.route("/flask_make_response_header_arg3")
+def flask_make_response_header_arg3():
+    rfs_header = request.args["rfs_header"]
+    resp = make_response("hello", 200, {request.args["rfs_header"]: "HeaderValue"}) # BAD
+    return resp
+
+@app.route("/flask_make_response_header_arg2")
+def flask_make_response_header_arg2():
+    rfs_header = request.args["rfs_header"]
+    resp = make_response("hello", {request.args["rfs_header"]: "HeaderValue"}) # BAD
+    return resp

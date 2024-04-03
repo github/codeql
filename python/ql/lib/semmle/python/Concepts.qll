@@ -1085,6 +1085,55 @@ module Http {
     }
 
     /**
+     * A data-flow node that sets multiple headers in an HTTP response using a dict.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models,
+     * extend `ResponseHeaderBulkWrite::Range` instead.
+     */
+    class ResponseHeaderBulkWrite extends DataFlow::Node instanceof ResponseHeaderBulkWrite::Range {
+      /**
+       * Gets the argument containing the headers dictionary.
+       */
+      DataFlow::Node geBulkArg() { result = super.getBulkArg() }
+
+      /**
+       * Holds if newlines are accepted in the header name argument.
+       */
+      predicate nameAllowsNewline() { super.nameAllowsNewline() }
+
+      /**
+       * Holds if newlines are accepted in the header value argument.
+       */
+      predicate valueAllowsNewline() { super.valueAllowsNewline() }
+    }
+
+    /** Provides a class for modelling bulk header writes on HTTP responses. */
+    module ResponseHeaderBulkWrite {
+      /**
+       *sets multiple headers in an HTTP response using a dict.
+       *
+       * Extend this class to model new APIs. If you want to refine existing API models,
+       * extend `ResponseHeaderBulkWrite` instead.
+       */
+      abstract class Range extends DataFlow::Node {
+        /**
+         * Gets the argument containing the headers dictionary.
+         */
+        abstract DataFlow::Node getBulkArg();
+
+        /**
+         * Holds if newlines are accepted in the header name argument.
+         */
+        abstract predicate nameAllowsNewline();
+
+        /**
+         * Holds if newlines are accepted in the header value argument.
+         */
+        abstract predicate valueAllowsNewline();
+      }
+    }
+
+    /**
      * A data-flow node that sets a cookie in an HTTP response.
      *
      * Extend this class to refine existing API models. If you want to model new APIs,
