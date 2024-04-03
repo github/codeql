@@ -19,7 +19,16 @@ import codeql.actions.security.CodeInjectionQuery
 import CodeInjectionFlow::PathGraph
 
 from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
-where CodeInjectionFlow::flowPath(source, sink)
+where
+  CodeInjectionFlow::flowPath(source, sink) and
+  (
+    exists(source.getNode().asExpr().getEnclosingCompositeAction())
+    or
+    exists(Workflow w |
+      w = source.getNode().asExpr().getEnclosingWorkflow() and
+      not w.isPrivileged()
+    )
+  )
 select sink.getNode(), source, sink,
   "Potential code injection in $@, which may be controlled by an external user.", sink,
   sink.getNode().asExpr().(Expression).getRawExpression()

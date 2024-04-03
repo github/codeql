@@ -121,26 +121,9 @@ class GitCheckout extends PRHeadCheckoutStep instanceof Run {
   }
 }
 
-predicate isSingleTriggerWorkflow(Workflow w, string trigger) {
-  w.getATriggerEvent() = trigger and
-  count(string t | w.getATriggerEvent() = t | t) = 1
-}
-
 from Workflow w, PRHeadCheckoutStep checkout
 where
-  (
-    // The Workflow is triggered by an event other than `pull_request`
-    not isSingleTriggerWorkflow(w, "pull_request")
-    or
-    // The Workflow is only triggered by `workflow_call` and there is
-    // a caller workflow triggered by an event other than `pull_request`
-    isSingleTriggerWorkflow(w, "workflow_call") and
-    exists(ExternalJob call, Workflow caller |
-      call.getCallee() = w.getLocation().getFile().getRelativePath() and
-      caller = call.getWorkflow() and
-      not isSingleTriggerWorkflow(caller, "pull_request")
-    )
-  ) and
+  w.isPrivileged() and
   w.getAJob().(LocalJob).getAStep() = checkout and
   not exists(ControlCheck check |
     checkout.getIf() = check or checkout.getEnclosingJob().getIf() = check
