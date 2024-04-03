@@ -188,8 +188,7 @@ module Werkzeug {
       DataFlow::MethodCallNode
     {
       HeaderWriteCall() {
-        this.getObject() = instance() and
-        this.getMethodName() = ["add", "add_header", "set", "set_default", "__setitem__"]
+        this.calls(instance(), ["add", "add_header", "set", "set_default", "__setitem__"])
       }
 
       override DataFlow::Node getNameArg() { result = this.getArg(0) }

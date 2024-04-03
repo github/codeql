@@ -9,8 +9,9 @@ def werkzeug_headers():
     rfs_header = request.args["rfs_header"]
     response = Response()
     headers = Headers()
-    headers.add("HeaderName", rfs_header)
-    response.headers = headers
+    headers.add("HeaderName", rfs_header) # GOOD: Newlines are rejected from header value.
+    headers.add(rfs_header, "HeaderValue") # BAD: User controls header name. Not yet found.
+    response.headers = headers 
     return response
 
 
@@ -18,16 +19,18 @@ def werkzeug_headers():
 def flask_Response():
     rfs_header = request.args["rfs_header"]
     response = Response()
-    response.headers['HeaderName'] = rfs_header
+    response.headers['HeaderName'] = rfs_header # GOOD
+    response.headers[rfs_header] = "HeaderValue" # BAD
     return response
 
 
 @app.route("/flask_make_response")
 def flask_make_response():
     rfs_header = request.args["rfs_header"]
-    resp = make_response("hello")
-    resp.headers['HeaderName'] = rfs_header
-    return resp
+    response = make_response("hello")
+    response.headers['HeaderName'] = rfs_header # GOOD
+    response.headers[rfs_header] = "HeaderValue" # BAD
+    return response
 
 
 @app.route("/flask_make_response_extend")
@@ -35,13 +38,12 @@ def flask_make_response_extend():
     rfs_header = request.args["rfs_header"]
     resp = make_response("hello")
     resp.headers.extend(
-        {'HeaderName': rfs_header})
+        {'HeaderName': rfs_header}) # GOOD
+    resp.headers.extend(
+        {rfs_header: "HeaderValue"}) # BAD but not yet found
     return resp
 
 
 @app.route("/Response_arg")
 def Response_arg():
-    return Response(headers={'HeaderName': request.args["rfs_header"]})
-
-# if __name__ == "__main__":
-#     app.run(debug=True)
+    return Response(headers={'HeaderName': request.args["rfs_header"], request.args["rfs_header"]: "HeaderValue"}) # BAD but not yet found

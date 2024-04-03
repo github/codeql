@@ -222,10 +222,13 @@ module Flask {
     DataFlow::Node instance() { instance(DataFlow::TypeTracker::end()).flowsTo(result) }
 
     /** An `Headers` instance that is part of a Flask response. */
-    private class FlaskResponseHeadersInstances extends Werkzeug::Headers::InstanceSource {
-      FlaskResponseHeadersInstances() { this = request().getMember("headers").asSource() }
+    private class FlaskResponseHeadersInstances extends Werkzeug::Headers::InstanceSource
+    {
+      FlaskResponseHeadersInstances() {
+        this.(DataFlow::AttrRead).getObject() = instance() and
+        this.(DataFlow::AttrRead).getAttributeName() = "headers"
+      }
     }
-
     // TODO: headers arg to make_response
   }
 
