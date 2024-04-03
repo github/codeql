@@ -5,7 +5,6 @@ py_binary(
     srcs = [
         "make_zips.py",
         "python_tracer.py",
-        "unparse.py",
     ],
     data = [
         "LICENSE-PSF.md",
