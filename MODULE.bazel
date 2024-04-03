@@ -48,6 +48,13 @@ node.toolchain(
 )
 use_repo(node, "nodejs", "nodejs_toolchains")
 
+lfs_files = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_files")
+
+lfs_files(
+    name = "kotlin_deps",
+    dir = "//java/kotlin-extractor:deps",
+)
+
 register_toolchains(
     "@nodejs_toolchains//:all",
 )

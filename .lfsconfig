@@ -1,0 +1,3 @@
+[lfs]
+fetchexclude = \
+/java/extractor-kotlin/deps
