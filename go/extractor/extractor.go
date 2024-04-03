@@ -870,6 +870,10 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int) {
 		kind = dbscheme.IdentExpr.Index()
 		dbscheme.LiteralsTable.Emit(tw, lbl, expr.Name, expr.Name)
 		def := tw.Package.TypesInfo.Defs[expr]
+		// Note that there are some cases where `expr` is in the map but `def`
+		// is nil. The docs for `tw.Package.TypesInfo.Defs` give the following
+		// examples: the package name in package clauses, or symbolic variables
+		// `t` in `t := x.(type)` of type switch headers.
 		if def != nil {
 			defTyp := extractType(tw, def.Type())
 			objlbl, exists := tw.Labeler.LookupObjectID(def, defTyp)
