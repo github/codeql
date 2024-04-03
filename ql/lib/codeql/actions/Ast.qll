@@ -35,6 +35,8 @@ class AstNode instanceof AstNodeImpl {
 
   Workflow getEnclosingWorkflow() { result = super.getEnclosingWorkflow() }
 
+  CompositeAction getEnclosingCompositeAction() { result = super.getEnclosingCompositeAction() }
+
   Expression getInScopeEnvVarExpr(string name) { result = super.getInScopeEnvVarExpr(name) }
 }
 
@@ -123,6 +125,25 @@ class Workflow extends AstNode instanceof WorkflowImpl {
   Permissions getPermissions() { result = super.getPermissions() }
 
   Strategy getStrategy() { result = super.getStrategy() }
+
+  predicate hasSingleTrigger(string trigger) {
+    this.getATriggerEvent() = trigger and
+    count(string t | this.getATriggerEvent() = t | t) = 1
+  }
+
+  predicate isPrivileged() {
+    // The Workflow is triggered by an event other than `pull_request`
+    not this.hasSingleTrigger("pull_request")
+    or
+    // The Workflow is only triggered by `workflow_call` and there is
+    // a caller workflow triggered by an event other than `pull_request`
+    this.hasSingleTrigger("workflow_call") and
+    exists(ExternalJob call, Workflow caller |
+      call.getCallee() = this.getLocation().getFile().getRelativePath() and
+      caller = call.getWorkflow() and
+      not caller.hasSingleTrigger("pull_request")
+    )
+  }
 }
 
 class ReusableWorkflow extends Workflow instanceof ReusableWorkflowImpl {

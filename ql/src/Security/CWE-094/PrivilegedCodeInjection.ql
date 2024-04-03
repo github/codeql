@@ -18,16 +18,13 @@ import actions
 import codeql.actions.security.CodeInjectionQuery
 import CodeInjectionFlow::PathGraph
 
-predicate isSingleTriggerWorkflow(Workflow w, string trigger) {
-  w.getATriggerEvent() = trigger and
-  count(string t | w.getATriggerEvent() = t | t) = 1
-}
-
-from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink, Workflow w
+from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
 where
   CodeInjectionFlow::flowPath(source, sink) and
-  w = source.getNode().asExpr().getEnclosingWorkflow() and
-  not isSingleTriggerWorkflow(w, "pull_request")
+  exists(Workflow w |
+    w = source.getNode().asExpr().getEnclosingWorkflow() and
+    w.isPrivileged()
+  )
 select sink.getNode(), source, sink,
   "Potential privileged code injection in $@, which may be controlled by an external user.", sink,
   sink.getNode().asExpr().(Expression).getRawExpression()
