@@ -1110,7 +1110,7 @@ module Http {
     /** Provides a class for modeling bulk header writes on HTTP responses. */
     module ResponseHeaderBulkWrite {
       /**
-       *sets multiple headers in an HTTP response using a dict.
+       * A data-flow node that sets multiple headers in an HTTP response using a dict.
        *
        * Extend this class to model new APIs. If you want to refine existing API models,
        * extend `ResponseHeaderBulkWrite` instead.

@@ -217,14 +217,14 @@ class SqlEscape extends DataFlow::Node instanceof SqlEscape::Range {
 }
 
 /** Provides classes for modeling HTTP Header APIs. */
-deprecated module HeaderDeclaration {
+module HeaderDeclaration {
   /**
    * A data-flow node that collects functions setting HTTP Headers.
    *
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `HeaderDeclaration` instead.
    */
-  abstract deprecated class Range extends DataFlow::Node {
+  abstract class Range extends DataFlow::Node {
     /**
      * Gets the argument containing the header name.
      */
@@ -242,8 +242,10 @@ deprecated module HeaderDeclaration {
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `HeaderDeclaration::Range` instead.
+ *
+ * Exists as `Http::Server::ResponseHeaderWrite` in the main concepts library.
  */
-deprecated class HeaderDeclaration extends DataFlow::Node instanceof HeaderDeclaration::Range {
+class HeaderDeclaration extends DataFlow::Node instanceof HeaderDeclaration::Range {
   /**
    * Gets the argument containing the header name.
    */
