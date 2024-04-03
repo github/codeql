@@ -132,9 +132,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	pkgsNotFound := make([]string, 0, len(pkgs))
 
 	// Do a post-order traversal and extract the package scope of each package
-	packages.Visit(pkgs, func(pkg *packages.Package) bool {
-		return true
-	}, func(pkg *packages.Package) {
+	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
 		log.Printf("Processing package %s.", pkg.PkgPath)
 
 		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
@@ -200,9 +198,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	noExtractRe := regexp.MustCompile(`.*(^|` + sep + `)(\.\.|vendor)($|` + sep + `).*`)
 
 	// extract AST information for all packages
-	packages.Visit(pkgs, func(pkg *packages.Package) bool {
-		return true
-	}, func(pkg *packages.Package) {
+	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
 		for root, _ := range wantedRoots {
 			pkgInfo := pkgInfos[pkg.PkgPath]
 			relDir, err := filepath.Rel(root, pkgInfo.PkgDir)
