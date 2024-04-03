@@ -66,6 +66,18 @@ edges
 | tainted_path.rb:90:12:90:53 | call to new | tainted_path.rb:90:5:90:8 | path | provenance |  |
 | tainted_path.rb:90:40:90:45 | call to params | tainted_path.rb:90:40:90:52 | ...[...] | provenance |  |
 | tainted_path.rb:90:40:90:52 | ...[...] | tainted_path.rb:90:12:90:53 | call to new | provenance |  |
+| tainted_path.rb:98:5:98:12 | filename | tainted_path.rb:102:56:102:63 | filename | provenance |  |
+| tainted_path.rb:98:16:98:21 | call to params | tainted_path.rb:98:16:98:28 | ...[...] | provenance |  |
+| tainted_path.rb:98:16:98:28 | ...[...] | tainted_path.rb:98:5:98:12 | filename | provenance |  |
+| tainted_path.rb:102:5:102:13 | file_path | tainted_path.rb:108:28:108:36 | file_path | provenance |  |
+| tainted_path.rb:102:17:102:65 | call to new | tainted_path.rb:102:17:102:75 | call to cleanpath | provenance |  |
+| tainted_path.rb:102:17:102:75 | call to cleanpath | tainted_path.rb:102:17:102:80 | call to to_s | provenance |  |
+| tainted_path.rb:102:17:102:80 | call to to_s | tainted_path.rb:102:5:102:13 | file_path | provenance |  |
+| tainted_path.rb:102:30:102:64 | call to join | tainted_path.rb:102:17:102:65 | call to new | provenance |  |
+| tainted_path.rb:102:56:102:63 | filename | tainted_path.rb:102:30:102:64 | call to join | provenance |  |
+| tainted_path.rb:113:5:113:12 | filename | tainted_path.rb:119:28:119:57 | "/home/user/files/#{...}" | provenance |  |
+| tainted_path.rb:113:16:113:21 | call to params | tainted_path.rb:113:16:113:28 | ...[...] | provenance |  |
+| tainted_path.rb:113:16:113:28 | ...[...] | tainted_path.rb:113:5:113:12 | filename | provenance |  |
 nodes
 | ArchiveApiPathTraversal.rb:5:26:5:31 | call to params | semmle.label | call to params |
 | ArchiveApiPathTraversal.rb:5:26:5:42 | ...[...] | semmle.label | ...[...] |
@@ -150,6 +162,20 @@ nodes
 | tainted_path.rb:90:40:90:45 | call to params | semmle.label | call to params |
 | tainted_path.rb:90:40:90:52 | ...[...] | semmle.label | ...[...] |
 | tainted_path.rb:92:11:92:14 | path | semmle.label | path |
+| tainted_path.rb:98:5:98:12 | filename | semmle.label | filename |
+| tainted_path.rb:98:16:98:21 | call to params | semmle.label | call to params |
+| tainted_path.rb:98:16:98:28 | ...[...] | semmle.label | ...[...] |
+| tainted_path.rb:102:5:102:13 | file_path | semmle.label | file_path |
+| tainted_path.rb:102:17:102:65 | call to new | semmle.label | call to new |
+| tainted_path.rb:102:17:102:75 | call to cleanpath | semmle.label | call to cleanpath |
+| tainted_path.rb:102:17:102:80 | call to to_s | semmle.label | call to to_s |
+| tainted_path.rb:102:30:102:64 | call to join | semmle.label | call to join |
+| tainted_path.rb:102:56:102:63 | filename | semmle.label | filename |
+| tainted_path.rb:108:28:108:36 | file_path | semmle.label | file_path |
+| tainted_path.rb:113:5:113:12 | filename | semmle.label | filename |
+| tainted_path.rb:113:16:113:21 | call to params | semmle.label | call to params |
+| tainted_path.rb:113:16:113:28 | ...[...] | semmle.label | ...[...] |
+| tainted_path.rb:119:28:119:57 | "/home/user/files/#{...}" | semmle.label | "/home/user/files/#{...}" |
 subpaths
 #select
 | ArchiveApiPathTraversal.rb:59:21:59:36 | destination_file | ArchiveApiPathTraversal.rb:5:26:5:31 | call to params | ArchiveApiPathTraversal.rb:59:21:59:36 | destination_file | This path depends on a $@. | ArchiveApiPathTraversal.rb:5:26:5:31 | call to params | user-provided value |
@@ -170,3 +196,5 @@ subpaths
 | tainted_path.rb:85:10:85:13 | path | tainted_path.rb:84:40:84:45 | call to params | tainted_path.rb:85:10:85:13 | path | This path depends on a $@. | tainted_path.rb:84:40:84:45 | call to params | user-provided value |
 | tainted_path.rb:86:25:86:28 | path | tainted_path.rb:84:40:84:45 | call to params | tainted_path.rb:86:25:86:28 | path | This path depends on a $@. | tainted_path.rb:84:40:84:45 | call to params | user-provided value |
 | tainted_path.rb:92:11:92:14 | path | tainted_path.rb:90:40:90:45 | call to params | tainted_path.rb:92:11:92:14 | path | This path depends on a $@. | tainted_path.rb:90:40:90:45 | call to params | user-provided value |
+| tainted_path.rb:108:28:108:36 | file_path | tainted_path.rb:98:16:98:21 | call to params | tainted_path.rb:108:28:108:36 | file_path | This path depends on a $@. | tainted_path.rb:98:16:98:21 | call to params | user-provided value |
+| tainted_path.rb:119:28:119:57 | "/home/user/files/#{...}" | tainted_path.rb:113:16:113:21 | call to params | tainted_path.rb:119:28:119:57 | "/home/user/files/#{...}" | This path depends on a $@. | tainted_path.rb:113:16:113:21 | call to params | user-provided value |
