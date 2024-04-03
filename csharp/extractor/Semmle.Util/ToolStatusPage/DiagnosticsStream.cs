@@ -9,7 +9,7 @@ namespace Semmle.Util
     /// A wrapper around an underlying <see cref="StreamWriter" /> which allows
     /// <see cref="DiagnosticMessage" /> objects to be serialized to it.
     /// </summary>
-    public sealed class DiagnosticsStream : IDiagnosticsWriter, IDisposable
+    public sealed class DiagnosticsStream : IDiagnosticsWriter
     {
         private readonly JsonSerializer serializer;
         private readonly StreamWriter writer;
