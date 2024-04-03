@@ -1,0 +1,4 @@
+| .github/workflows/artifactpoisoning1.yml:13:9:30:6 | Uses Step | Potential artifact poisoning. |
+| .github/workflows/artifactpoisoning2.yml:13:9:17:6 | Uses Step | Potential artifact poisoning. |
+| .github/workflows/artifactpoisoning3.yml:13:9:15:6 | Run Step | Potential artifact poisoning. |
+| .github/workflows/artifactpoisoning4.yml:13:9:21:6 | Run Step | Potential artifact poisoning. |

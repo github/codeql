@@ -1,0 +1,31 @@
+/**
+ * @name Enviroment Variable built from user-controlled sources
+ * @description Building an environment variable from user-controlled sources may alter the execution of following system commands
+ * @kind path-problem
+ * @problem.severity error
+ * @security-severity 9
+ * @precision high
+ * @id actions/privileged-envvar-injection
+ * @tags actions
+ *       security
+ *       external/cwe/cwe-077
+ *       external/cwe/cwe-020
+ */
+
+import actions
+import codeql.actions.security.EnvVarInjectionQuery
+import EnvVarInjectionFlow::PathGraph
+
+predicate isSingleTriggerWorkflow(Workflow w, string trigger) {
+  w.getATriggerEvent() = trigger and
+  count(string t | w.getATriggerEvent() = t | t) = 1
+}
+
+from EnvVarInjectionFlow::PathNode source, EnvVarInjectionFlow::PathNode sink, Workflow w
+where
+  EnvVarInjectionFlow::flowPath(source, sink) and
+  w = source.getNode().asExpr().getEnclosingWorkflow() and
+  not isSingleTriggerWorkflow(w, "pull_request")
+select sink.getNode(), source, sink,
+  "Potential privileged environment variable injection in $@, which may be controlled by an external user.",
+  sink, sink.getNode().asExpr().(Expression).getRawExpression()

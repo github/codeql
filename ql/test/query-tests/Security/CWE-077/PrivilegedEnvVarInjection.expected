@@ -1,0 +1,6 @@
+edges
+nodes
+| .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
+subpaths
+#select
+| .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | Potential privileged environment variable injection in $@, which may be controlled by an external user. | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | ${{ github.event.pull_request.title }} |

@@ -232,8 +232,24 @@ predicate envCtxLocalStep(Node nodeFrom, Node nodeTo) {
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     (
-      externallyDefinedSource(nodeFrom, _, "env." + astTo.getFieldName()) or
+      externallyDefinedSource(nodeFrom, _, "env." + astTo.getFieldName())
+      or
       astTo.getTarget() = astFrom
+      or
+      // e.g:
+      // - run: echo ISSUE_KEY=$(echo "${{ github.event.pull_request.title }}") >> $GITHUB_ENV
+      // - run: echo ${{ env.ISSUE_KEY }}
+      exists(Run run, string script, Expression expr, string line, string key, string value |
+        run.getScript() = script and
+        run.getAnScriptExpr() = expr and
+        line = script.splitAt("\n") and
+        key = line.regexpCapture("echo\\s+([^=]+)\\s*=(.*)>>\\s*\\$GITHUB_ENV", 1) and
+        value = line.regexpCapture("echo\\s+([^=]+)\\s*=(.*)>>\\s*\\$GITHUB_ENV", 2) and
+        value.indexOf(expr.getRawExpression()) > 0 and
+        key = astTo.getFieldName() and
+        expr = astFrom and
+        expr.getEnclosingWorkflow() = run.getEnclosingWorkflow()
+      )
     )
   )
 }
@@ -312,7 +328,7 @@ predicate fieldStoreStep(Node node1, Node node2, ContentSet c) {
 predicate storeStep(Node node1, ContentSet c, Node node2) {
   fieldStoreStep(node1, node2, c) or
   externallyDefinedStoreStep(node1, node2, c) or
-  runEnvToScriptStoreStep(node1, node2, c)
+  envToOutputStoreStep(node1, node2, c)
 }
 
 /**

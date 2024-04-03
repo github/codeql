@@ -38,7 +38,9 @@ class AstNode instanceof AstNodeImpl {
   Expression getInScopeEnvVarExpr(string name) { result = super.getInScopeEnvVarExpr(name) }
 }
 
-class ScalarValue extends AstNode instanceof ScalarValueImpl { }
+class ScalarValue extends AstNode instanceof ScalarValueImpl {
+  string getValue() { result = super.getValue() }
+}
 
 class Expression extends AstNode instanceof ExpressionImpl {
   string expression;
@@ -217,6 +219,8 @@ abstract class Uses extends AstNode instanceof UsesImpl {
   string getCallee() { result = super.getCallee() }
 
   string getVersion() { result = super.getVersion() }
+
+  string getArgument(string argName) { result = super.getArgument(argName) }
 
   Expression getArgumentExpr(string argName) { result = super.getArgumentExpr(argName) }
 }
