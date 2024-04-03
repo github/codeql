@@ -6,6 +6,15 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<float>::dec() | void std::shared_ptr<float>::dec() |
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<int const>::dec() | void std::shared_ptr<int const>::dec() |
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<int* const>::dec() | void std::shared_ptr<int* const>::dec() |
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<std::shared_ptr<int const> const>::dec() | void std::shared_ptr<std::shared_ptr<int const> const>::dec() |
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<std::shared_ptr<int const>>::dec() | void std::shared_ptr<std::shared_ptr<int const>>::dec() |
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<std::shared_ptr<int> const>::dec() | void std::shared_ptr<std::shared_ptr<int> const>::dec() |
+| ir.cpp:1017:3:1017:38 | FunctionAddress: delete | Instruction 'FunctionAddress: delete' has no successors in function '$@'. | ir.cpp:1015:6:1015:19 | void OperatorDelete() | void OperatorDelete() |
+| ir.cpp:1026:3:1026:40 | FunctionAddress: delete[] | Instruction 'FunctionAddress: delete[]' has no successors in function '$@'. | ir.cpp:1024:6:1024:24 | void OperatorDeleteArray() | void OperatorDeleteArray() |
+| ir.cpp:2108:5:2108:13 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ir.cpp:2105:5:2105:18 | int virtual_delete() | int virtual_delete() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

@@ -6,6 +6,19 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<float>::dec() | void std::shared_ptr<float>::dec() |
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<int const>::dec() | void std::shared_ptr<int const>::dec() |
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<int* const>::dec() | void std::shared_ptr<int* const>::dec() |
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<std::shared_ptr<int const> const>::dec() | void std::shared_ptr<std::shared_ptr<int const> const>::dec() |
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<std::shared_ptr<int const>>::dec() | void std::shared_ptr<std::shared_ptr<int const>>::dec() |
+| ../../../include/memory.h:108:9:108:19 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<std::shared_ptr<int> const>::dec() | void std::shared_ptr<std::shared_ptr<int> const>::dec() |
+| ir.cpp:1017:3:1017:38 | FunctionAddress: delete | Instruction 'FunctionAddress: delete' has no successors in function '$@'. | ir.cpp:1015:6:1015:19 | void OperatorDelete() | void OperatorDelete() |
+| ir.cpp:1020:3:1020:47 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ir.cpp:1015:6:1015:19 | void OperatorDelete() | void OperatorDelete() |
+| ir.cpp:1026:3:1026:40 | FunctionAddress: delete[] | Instruction 'FunctionAddress: delete[]' has no successors in function '$@'. | ir.cpp:1024:6:1024:24 | void OperatorDeleteArray() | void OperatorDeleteArray() |
+| ir.cpp:1029:3:1029:49 | FunctionAddress: delete[] | Instruction 'FunctionAddress: delete[]' has no successors in function '$@'. | ir.cpp:1024:6:1024:24 | void OperatorDeleteArray() | void OperatorDeleteArray() |
+| ir.cpp:2108:5:2108:13 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ir.cpp:2105:5:2105:18 | int virtual_delete() | int virtual_delete() |
+| ir.cpp:2111:5:2111:13 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ir.cpp:2105:5:2105:18 | int virtual_delete() | int virtual_delete() |
+| ir.cpp:2114:5:2114:12 | VirtualDeleteFunctionAddress: delete | Instruction 'VirtualDeleteFunctionAddress: delete' has no successors in function '$@'. | ir.cpp:2105:5:2105:18 | int virtual_delete() | int virtual_delete() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
@@ -20,7 +33,20 @@ multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
+| ../../../include/memory.h:108:9:108:19 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<float>::dec() | void std::shared_ptr<float>::dec() |
+| ../../../include/memory.h:108:9:108:19 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<int const>::dec() | void std::shared_ptr<int const>::dec() |
+| ../../../include/memory.h:108:9:108:19 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<int* const>::dec() | void std::shared_ptr<int* const>::dec() |
+| ../../../include/memory.h:108:9:108:19 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<std::shared_ptr<int const> const>::dec() | void std::shared_ptr<std::shared_ptr<int const> const>::dec() |
+| ../../../include/memory.h:108:9:108:19 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<std::shared_ptr<int const>>::dec() | void std::shared_ptr<std::shared_ptr<int const>>::dec() |
+| ../../../include/memory.h:108:9:108:19 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ../../../include/memory.h:105:10:105:10 | void std::shared_ptr<std::shared_ptr<int> const>::dec() | void std::shared_ptr<std::shared_ptr<int> const>::dec() |
+| ir.cpp:1017:3:1017:38 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ir.cpp:1015:6:1015:19 | void OperatorDelete() | void OperatorDelete() |
+| ir.cpp:1020:3:1020:47 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ir.cpp:1015:6:1015:19 | void OperatorDelete() | void OperatorDelete() |
+| ir.cpp:1026:3:1026:40 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ir.cpp:1024:6:1024:24 | void OperatorDeleteArray() | void OperatorDeleteArray() |
+| ir.cpp:1029:3:1029:49 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ir.cpp:1024:6:1024:24 | void OperatorDeleteArray() | void OperatorDeleteArray() |
 | ir.cpp:1535:8:1535:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1535:8:1535:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
+| ir.cpp:2108:5:2108:13 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ir.cpp:2105:5:2105:18 | int virtual_delete() | int virtual_delete() |
+| ir.cpp:2111:5:2111:13 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ir.cpp:2105:5:2105:18 | int virtual_delete() | int virtual_delete() |
+| ir.cpp:2114:5:2114:12 | CallTarget | Operand 'CallTarget' is not dominated by its definition in function '$@'. | ir.cpp:2105:5:2105:18 | int virtual_delete() | int virtual_delete() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:39:15:39:15 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:32:6:32:6 | void h(int) | void h(int) |

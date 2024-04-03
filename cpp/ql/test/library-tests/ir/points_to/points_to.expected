@@ -1,2 +1,16 @@
 testFailures
+| smart_pointer.cpp:12:29:12:46 | //$ussa=dynamic{1} | Missing result:ussa=dynamic{1} |
+| smart_pointer.cpp:13:21:13:49 | //$ussa=dynamic{1}[0..4)<int> | Missing result:ussa=dynamic{1}[0..4)<int> |
+| smart_pointer.cpp:14:14:14:40 | //$ussa=dynamic{1}[0..4)<S> | Missing result:ussa=dynamic{1}[0..4)<S> |
+| smart_pointer.cpp:16:22:16:48 | //$ussa=dynamic{1}[0..4)<S> | Missing result:ussa=dynamic{1}[0..4)<S> |
+| smart_pointer.cpp:18:15:18:43 | //$ussa=dynamic{1}[0..4)<int> | Missing result:ussa=dynamic{1}[0..4)<int> |
+| smart_pointer.cpp:19:13:19:39 | //$ussa=dynamic{1}[0..4)<S> | Missing result:ussa=dynamic{1}[0..4)<S> |
+| smart_pointer.cpp:20:21:20:47 | //$ussa=dynamic{1}[0..4)<S> | Missing result:ussa=dynamic{1}[0..4)<S> |
+| smart_pointer.cpp:24:29:24:46 | //$ussa=dynamic{1} | Missing result:ussa=dynamic{1} |
+| smart_pointer.cpp:25:21:25:49 | //$ussa=dynamic{1}[0..4)<int> | Missing result:ussa=dynamic{1}[0..4)<int> |
+| smart_pointer.cpp:26:14:26:40 | //$ussa=dynamic{1}[0..4)<S> | Missing result:ussa=dynamic{1}[0..4)<S> |
+| smart_pointer.cpp:28:22:28:48 | //$ussa=dynamic{1}[0..4)<S> | Missing result:ussa=dynamic{1}[0..4)<S> |
+| smart_pointer.cpp:30:15:30:43 | //$ussa=dynamic{1}[0..4)<int> | Missing result:ussa=dynamic{1}[0..4)<int> |
+| smart_pointer.cpp:31:13:31:39 | //$ussa=dynamic{1}[0..4)<S> | Missing result:ussa=dynamic{1}[0..4)<S> |
+| smart_pointer.cpp:32:21:32:47 | //$ussa=dynamic{1}[0..4)<S> | Missing result:ussa=dynamic{1}[0..4)<S> |
 failures
