@@ -71,4 +71,14 @@ module HttpHeaderInjection {
       Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
     }
   }
+
+  /**
+   * A call to replace line breaks, considered as a sanitizer.
+   */
+  class ReplaceLineBreaksSanitizer extends Sanitizer, DataFlow::CallCfgNode {
+    ReplaceLineBreaksSanitizer() {
+      this.getFunction().(DataFlow::AttrRead).getAttributeName() = "replace" and
+      this.getArg(0).asExpr().(StrConst).getText() = "\n"
+    }
+  }
 }

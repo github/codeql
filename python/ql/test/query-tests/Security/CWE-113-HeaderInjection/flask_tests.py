@@ -59,3 +59,12 @@ def flask_make_response_header_arg2():
     rfs_header = request.args["rfs_header"]
     resp = make_response("hello", {request.args["rfs_header"]: "HeaderValue"}) # BAD
     return resp
+
+@app.route("/flask_escaped")
+def flask_escaped():
+    rfs_header = request.args["rfs_header"]
+    resp = make_response("hello", {rfs_header.replace("\n", ""): "HeaderValue"}) # GOOD - Newlines are removed from the input.
+    return resp
+
+# if __name__ == "__main__":
+#     app.run(debug=True)
