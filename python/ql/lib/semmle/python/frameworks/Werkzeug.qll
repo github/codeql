@@ -12,6 +12,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.Stdlib
 private import semmle.python.Concepts
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides models for the `Werkzeug` PyPI package.
@@ -144,6 +145,18 @@ module Werkzeug {
    * See https://werkzeug.palletsprojects.com/en/1.0.x/datastructures/#werkzeug.datastructures.Headers.
    */
   module Headers {
+    /** Gets a reference to the `werkzeug.datastructures.Headers` class. */
+    API::Node classRef() {
+      result = API::moduleImport("werkzeug").getMember("datastructures").getMember("Headers")
+      or
+      result = ModelOutput::getATypeNode("werkzeug.datastructures.Headers~Subclass").getASubclass*()
+    }
+
+    /** A direct instantiation of `werkzeug.datastructures.Headers`. */
+    private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
+      ClassInstantiation() { this = classRef().getACall() }
+    }
+
     /**
      * A source of instances of `werkzeug.datastructures.Headers`, extend this class to model new instances.
      *

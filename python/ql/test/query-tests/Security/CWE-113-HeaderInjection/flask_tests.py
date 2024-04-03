@@ -10,7 +10,7 @@ def werkzeug_headers():
     response = Response()
     headers = Headers()
     headers.add("HeaderName", rfs_header) # GOOD: Newlines are rejected from header value.
-    headers.add(rfs_header, "HeaderValue") # BAD: User controls header name. Not yet found.
+    headers.add(rfs_header, "HeaderValue") # BAD: User controls header name.
     response.headers = headers 
     return response
 
