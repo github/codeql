@@ -1,4 +1,4 @@
-def _smudge(repository_ctx, srcs):
+def lfs_smudge(repository_ctx, srcs):
     for src in srcs:
         repository_ctx.watch(src)
     script = Label("//misc/bazel/internal:git_lfs_smudge.py")
@@ -14,7 +14,7 @@ def _download_and_extract_lfs(repository_ctx):
     src = repository_ctx.path(attr.src)
     if attr.build_file_content and attr.build_file:
         fail("You should specify only one among build_file_content and build_file for rule @%s" % repository_ctx.name)
-    _smudge(repository_ctx, [src])
+    lfs_smudge(repository_ctx, [src])
     repository_ctx.extract(src.basename, stripPrefix = attr.strip_prefix)
     repository_ctx.delete(src.basename)
     if attr.build_file_content:
@@ -33,7 +33,7 @@ def _download_lfs(repository_ctx):
         if not dir.is_dir:
             fail("`dir` not a directory in @%s" % repository_ctx.name)
         srcs = [f for f in dir.readdir() if not f.is_dir]
-    _smudge(repository_ctx, srcs)
+    lfs_smudge(repository_ctx, srcs)
 
     # with bzlmod the name is qualified with `~` separators, and we want the base name here
     name = repository_ctx.name.split("~")[-1]

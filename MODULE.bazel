@@ -21,6 +21,14 @@ bazel_dep(name = "bazel_skylib", version = "1.5.0")
 bazel_dep(name = "abseil-cpp", version = "20240116.0", repo_name = "absl")
 bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "10.0.0")
+bazel_dep(name = "rules_kotlin", version = "1.9.4")
+
+# we patch `rules_kotlin` to allow passing `-language-version` at a jvm_kt_library level
+single_version_override(
+    module_name = "rules_kotlin",
+    patch_strip = 1,
+    patches = ["//java/kotlin-extractor:rules_kotlin.patch"],
+)
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
@@ -48,11 +56,23 @@ node.toolchain(
 )
 use_repo(node, "nodejs", "nodejs_toolchains")
 
-lfs_files = use_repo_rule("//misc/bazel:lfs.bzl", "lfs_files")
-
-lfs_files(
-    name = "kotlin_deps",
-    dir = "//java/kotlin-extractor:deps",
+kotlin_extractor_deps = use_extension("//java/kotlin-extractor:extension.bzl", "kotlin_extractor_deps")
+use_repo(
+    kotlin_extractor_deps,
+    "kotlin_extractor_dep_1.4.32",
+    "kotlin_extractor_dep_1.5.0",
+    "kotlin_extractor_dep_1.5.10",
+    "kotlin_extractor_dep_1.5.20",
+    "kotlin_extractor_dep_1.5.30",
+    "kotlin_extractor_dep_1.6.0",
+    "kotlin_extractor_dep_1.6.20",
+    "kotlin_extractor_dep_1.7.0",
+    "kotlin_extractor_dep_1.7.20",
+    "kotlin_extractor_dep_1.8.0",
+    "kotlin_extractor_dep_1.9.0-Beta",
+    "kotlin_extractor_dep_1.9.20-Beta",
+    "kotlin_extractor_dep_2.0.0-Beta4",
+    "kotlin_extractor_dep_2.0.255-SNAPSHOT",
 )
 
 register_toolchains(

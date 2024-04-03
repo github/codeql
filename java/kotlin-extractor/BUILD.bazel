@@ -1,0 +1,64 @@
+load(
+    "//java/kotlin-extractor:versions.bzl",
+    "VERSIONS",
+    "get_compatilibity_sources",
+    "version_less",
+)
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
+load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
+
+py_binary(
+    name = "generate_dbscheme",
+    srcs = ["generate_dbscheme.py"],
+)
+
+genrule(
+    name = "generated-dbscheme",
+    srcs = ["//java:dbscheme"],
+    outs = ["KotlinExtractorDbScheme.kt"],
+    cmd = "$(execpath :generate_dbscheme) $< $@",
+    tools = [":generate_dbscheme"],
+)
+
+kt_javac_options(
+    name = "javac-options",
+    warn = "off",
+)
+
+[
+    (
+        kt_kotlinc_options(
+            name = "kotlinc-options-%s" % v,
+            include_stdlibs = "none",
+            jvm_target = "1.8",
+            language_version = v[:3],
+            warn = "error",
+            x_optin = [
+                "kotlin.RequiresOptIn",
+                "org.jetbrains.kotlin.ir.symbols.%s" %
+                ("IrSymbolInternals" if version_less(v, "2.0.0") else "UnsafeDuringIrConstructionAPI"),
+            ],
+            x_suppress_version_warnings = True,
+        ),
+        kt_jvm_library(
+            name = "kotlin-extractor-%s" % v,
+            srcs =
+                [":generated-dbscheme"] +
+                glob(
+                    [
+                        "src/**/*.kt",
+                        "src/**/*.java",
+                    ],
+                    exclude = ["src/main/kotlin/utils/versions/**"],
+                ) + get_compatilibity_sources(v, "src/main/kotlin/utils/versions"),
+            javac_opts = ":javac-options",
+            kotlinc_opts = ":kotlinc-options-%s" % v,
+            module_name = "codeql-kotlin-extractor",
+            deps = [
+                "@kotlin_extractor_dep_%s//:kotlin-compiler" % v,
+                "@kotlin_extractor_dep_%s//:kotlin-stdlib" % v,
+            ],
+        ),
+    )
+    for v in VERSIONS
+]

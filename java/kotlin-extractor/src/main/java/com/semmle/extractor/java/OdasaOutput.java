@@ -547,6 +547,16 @@ public class OdasaOutput {
 			}
 		}
 
+        @Override
+        public int hashCode() {
+            int hash = 7;
+            hash = 31 * hash + majorVersion;
+            hash = 31 * hash + minorVersion;
+            hash = 31 * hash + (int)lastModified;
+            hash = 31 * hash + (extractorName == null ? 0 : extractorName.hashCode());
+            return hash;
+        }
+
 		private boolean newerThan(TrapClassVersion tcv) {
 			// Classes being compiled from source have major version 0 but should take precedence
 			// over any classes with the same qualified name loaded from the classpath
