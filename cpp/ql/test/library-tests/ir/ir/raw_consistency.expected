@@ -6,8 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ir.cpp:2436:5:2436:9 | ReThrow: re-throw exception  | Instruction 'ReThrow: re-throw exception ' has no successors in function '$@'. | ir.cpp:2434:6:2434:29 | void rethrow_with_destruction(int) | void rethrow_with_destruction(int) |
-| ir.cpp:2437:1:2437:1 | IndirectMayWriteSideEffect: c | Instruction 'IndirectMayWriteSideEffect: c' has no successors in function '$@'. | ir.cpp:2434:6:2434:29 | void rethrow_with_destruction(int) | void rethrow_with_destruction(int) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

@@ -13369,6 +13369,7 @@
 | ir.cpp:2431:14:2431:14 | Unary | r2431_2 |
 | ir.cpp:2434:6:2434:29 | ChiPartial | partial:m2434_3 |
 | ir.cpp:2434:6:2434:29 | ChiTotal | total:m2434_2 |
+| ir.cpp:2434:6:2434:29 | SideEffect | ~m2437_5 |
 | ir.cpp:2434:35:2434:35 | Address | &:r2434_5 |
 | ir.cpp:2435:25:2435:25 | Address | &:r2435_1 |
 | ir.cpp:2435:25:2435:25 | Address | &:r2435_1 |
@@ -13379,6 +13380,16 @@
 | ir.cpp:2435:25:2435:25 | ChiTotal | total:m2434_4 |
 | ir.cpp:2435:25:2435:25 | ChiTotal | total:m2435_2 |
 | ir.cpp:2435:25:2435:25 | SideEffect | ~m2434_4 |
+| ir.cpp:2437:1:2437:1 | Address | &:r2437_1 |
+| ir.cpp:2437:1:2437:1 | Address | &:r2437_1 |
+| ir.cpp:2437:1:2437:1 | Arg(this) | this:r2437_1 |
+| ir.cpp:2437:1:2437:1 | CallTarget | func:r2437_2 |
+| ir.cpp:2437:1:2437:1 | ChiPartial | partial:m2437_4 |
+| ir.cpp:2437:1:2437:1 | ChiPartial | partial:m2437_7 |
+| ir.cpp:2437:1:2437:1 | ChiTotal | total:m2435_6 |
+| ir.cpp:2437:1:2437:1 | ChiTotal | total:m2435_8 |
+| ir.cpp:2437:1:2437:1 | SideEffect | m2435_8 |
+| ir.cpp:2437:1:2437:1 | SideEffect | ~m2435_6 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_7 |
