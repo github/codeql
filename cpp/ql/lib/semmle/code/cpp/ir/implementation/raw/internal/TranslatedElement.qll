@@ -814,6 +814,16 @@ newtype TTranslatedElement =
     not ignoreSideEffects(expr) and
     opcode = getCallSideEffectOpcode(expr)
   } or
+  // The set of destructors to invoke after a `throw`. These need to be special
+  // cased because the edge kind following a throw is an `ExceptionEdge`, and
+  // we need to make sure that the edge kind is still an `ExceptionEdge` after
+  // all the destructors has run.
+  TTranslatedDestructorsAfterThrow(ThrowExpr throw) {
+    exists(DestructorCall dc |
+      dc = throw.getAnImplicitDestructorCall() and
+      not ignoreExpr(dc)
+    )
+  } or
   // A precise side effect of an argument to a `Call`
   TTranslatedArgumentExprSideEffect(Call call, Expr expr, int n, SideEffectOpcode opcode) {
     not ignoreExpr(expr) and
