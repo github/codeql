@@ -7,23 +7,7 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 ambiguousSuccessors
-| destructors_for_temps.cpp:51:5:51:96 | IndirectMayWriteSideEffect: reuse of temporary object | Instruction 'IndirectMayWriteSideEffect: reuse of temporary object' has 2 successors of kind 'Goto' in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:55:5:55:96 | IndirectMayWriteSideEffect: reuse of temporary object | Instruction 'IndirectMayWriteSideEffect: reuse of temporary object' has 2 successors of kind 'Goto' in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
 unexplainedLoop
-| destructors_for_temps.cpp:51:5:51:5 | Load: ... ? ... : ... | Instruction 'Load: ... ? ... : ...' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:51:5:51:96 | Call: call to ~ClassWithDestructor2 | Instruction 'Call: call to ~ClassWithDestructor2' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:51:5:51:96 | CallSideEffect: call to ~ClassWithDestructor2 | Instruction 'CallSideEffect: call to ~ClassWithDestructor2' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:51:5:51:96 | CopyValue: reuse of temporary object | Instruction 'CopyValue: reuse of temporary object' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:51:5:51:96 | FunctionAddress: call to ~ClassWithDestructor2 | Instruction 'FunctionAddress: call to ~ClassWithDestructor2' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:51:5:51:96 | IndirectMayWriteSideEffect: reuse of temporary object | Instruction 'IndirectMayWriteSideEffect: reuse of temporary object' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:51:5:51:96 | IndirectReadSideEffect: reuse of temporary object | Instruction 'IndirectReadSideEffect: reuse of temporary object' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:55:5:55:5 | Load: ... ? ... : ... | Instruction 'Load: ... ? ... : ...' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
-| destructors_for_temps.cpp:55:5:55:96 | Call: call to ~ClassWithDestructor2 | Instruction 'Call: call to ~ClassWithDestructor2' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
-| destructors_for_temps.cpp:55:5:55:96 | CallSideEffect: call to ~ClassWithDestructor2 | Instruction 'CallSideEffect: call to ~ClassWithDestructor2' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
-| destructors_for_temps.cpp:55:5:55:96 | CopyValue: reuse of temporary object | Instruction 'CopyValue: reuse of temporary object' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
-| destructors_for_temps.cpp:55:5:55:96 | FunctionAddress: call to ~ClassWithDestructor2 | Instruction 'FunctionAddress: call to ~ClassWithDestructor2' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
-| destructors_for_temps.cpp:55:5:55:96 | IndirectMayWriteSideEffect: reuse of temporary object | Instruction 'IndirectMayWriteSideEffect: reuse of temporary object' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
-| destructors_for_temps.cpp:55:5:55:96 | IndirectReadSideEffect: reuse of temporary object | Instruction 'IndirectReadSideEffect: reuse of temporary object' is part of an unexplained loop in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
@@ -34,15 +18,9 @@ containsLoopOfForwardEdges
 missingIRType
 multipleIRTypes
 lostReachability
-| destructors_for_temps.cpp:51:5:51:5 | Load: ... ? ... : ... | Block 'Load: ... ? ... : ...' is not reachable by traversing only forward edges in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:51:5:51:5 | Store: ... ? ... : ... | Block 'Store: ... ? ... : ...' is not reachable by traversing only forward edges in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:55:5:55:5 | Load: ... ? ... : ... | Block 'Load: ... ? ... : ...' is not reachable by traversing only forward edges in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
-| destructors_for_temps.cpp:55:5:55:5 | Store: ... ? ... : ... | Block 'Store: ... ? ... : ...' is not reachable by traversing only forward edges in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
 backEdgeCountMismatch
 useNotDominatedByDefinition
 | destructors_for_temps.cpp:45:39:45:60 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | destructors_for_temps.cpp:42:6:42:15 | void temp_test6(bool) | void temp_test6(bool) |
-| destructors_for_temps.cpp:51:5:51:5 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
-| destructors_for_temps.cpp:55:5:55:5 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |
 | ir.cpp:1535:8:1535:8 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:1535:8:1535:8 | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() | void StructuredBindingDataMemberStruct::StructuredBindingDataMemberStruct() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
 | try_except.c:13:13:13:13 | Left | Operand 'Left' is not dominated by its definition in function '$@'. | try_except.c:6:6:6:6 | void f() | void f() |
