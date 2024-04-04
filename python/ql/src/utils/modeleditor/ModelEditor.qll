@@ -145,7 +145,7 @@ class SinkCallable extends Function {
   SinkCallable() {
     exists(string type, string path |
       Util::pathToFunction(this, type, path) and
-      sinkModel(type, path, _)
+      sinkModel(type, Util::extendFunctionPath(path), _)
     )
   }
 }
@@ -157,7 +157,7 @@ class SourceCallable extends Function {
   SourceCallable() {
     exists(string type, string path |
       Util::pathToFunction(this, type, path) and
-      sourceModel(type, path, _)
+      sourceModel(type, Util::extendFunctionPath(path), _)
     )
   }
 }
