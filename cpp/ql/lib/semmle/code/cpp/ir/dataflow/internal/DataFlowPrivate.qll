@@ -1027,7 +1027,11 @@ class DataFlowCallable extends TDataFlowCallable {
 }
 
 /**
- * TODO: QLDoc.
+ * A source callable, conceptually, a function in the source code for the
+ * purpose of computing data flow. In practice this excludes functions that
+ * are summarized using models-as-data (as we don't want to create
+ * unmodelled flows or duplicate paths), and includes variables (for reasons
+ * explained in `DataFlowCallable`).
  */
 private class SourceCallable extends DataFlowCallable, TSourceCallable {
   Cpp::Declaration decl;
@@ -1040,7 +1044,9 @@ private class SourceCallable extends DataFlowCallable, TSourceCallable {
 }
 
 /**
- * TODO: QLDoc.
+ * A summarized callable, that is, a function synthesized from one or more
+ * models-as-data models as a place to contain the corresponding
+ * `FlowSummaryNode`s.
  */
 private class SummarizedCallable extends DataFlowCallable, TSummarizedCallable {
   FlowSummaryImpl::Public::SummarizedCallable sc;
@@ -1147,7 +1153,14 @@ private class NormalCall extends DataFlowCall, TNormalCall {
 /**
  * A synthesized call inside a callable with a flow summary.
  *
- * TODO: example.
+ * For example, consider the function:
+ * ```
+ * int myFunction(int (*funPtr)());
+ * ```
+ * with an accompanying models-as-data flow summary involving `funPtr` (for
+ * example from `Argument[0].ReturnValue` to `ReturnValue`). A `SummaryCall`
+ * will be synthesized representing a call to `funPtr` inside `myFunction`,
+ * so that flow can be connected as described in the model.
  */
 class SummaryCall extends DataFlowCall, TSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable c;
