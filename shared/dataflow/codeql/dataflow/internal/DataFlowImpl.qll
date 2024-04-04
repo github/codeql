@@ -461,11 +461,14 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     }
 
     pragma[nomagic]
+    private predicate hasReadStep(Content c) { read(_, c, _) }
+
+    pragma[nomagic]
     private predicate storeEx(
       NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
       storeExUnrestricted(node1, c, node2, contentType, containerType) and
-      read(_, c, _)
+      hasReadStep(c)
     }
 
     pragma[nomagic]
