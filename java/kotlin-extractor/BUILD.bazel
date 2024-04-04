@@ -5,7 +5,7 @@ load(
     "version_less",
 )
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
-load("@rules_kotlin//kotlin:core.bzl", "kt_javac_options", "kt_kotlinc_options")
+load("@rules_kotlin//kotlin:core.bzl", "kt_kotlinc_options")
 
 py_binary(
     name = "generate_dbscheme",
@@ -20,10 +20,13 @@ genrule(
     tools = [":generate_dbscheme"],
 )
 
-kt_javac_options(
-    name = "javac-options",
-    warn = "off",
-)
+_resources = [
+    (
+        r,
+        r[len("src/main/resources/"):],
+    )
+    for r in glob(["src/main/resources/**"])
+]
 
 [
     (
@@ -40,8 +43,27 @@ kt_javac_options(
             ],
             x_suppress_version_warnings = True,
         ),
+        # * extractor.name is different for each version, so we need to put it in different output dirs
+        # * in order to put it in `resources`, we need to define `resource_strip_prefix` to strip this version
+        # * `resource_strip_prefix` is unique per jar, so we must also put other resources under the same version prefix
+        genrule(
+            name = "resources-%s" % v,
+            srcs = [src for src, _ in _resources],
+            outs = [
+                "%s/com/github/codeql/extractor.name" % v,
+            ] + [
+                "%s/%s" % (v, tgt)
+                for _, tgt in _resources
+            ],
+            cmd = "\n".join([
+                "echo codeql-extractor-kotlin-standalone-%s > $(RULEDIR)/%s/com/github/codeql/extractor.name" % (v, v),
+            ] + [
+                "cp $(execpath %s) $(RULEDIR)/%s/%s" % (src, v, tgt)
+                for src, tgt in _resources
+            ]),
+        ),
         kt_jvm_library(
-            name = "kotlin-extractor-%s" % v,
+            name = "codeql-extractor-kotlin-standalone-%s" % v,
             srcs =
                 [":generated-dbscheme"] +
                 glob(
@@ -51,12 +73,18 @@ kt_javac_options(
                     ],
                     exclude = ["src/main/kotlin/utils/versions/**"],
                 ) + get_compatilibity_sources(v, "src/main/kotlin/utils/versions"),
-            javac_opts = ":javac-options",
             kotlinc_opts = ":kotlinc-options-%s" % v,
             module_name = "codeql-kotlin-extractor",
+            resource_strip_prefix = "%s/%s" % (
+                package_name(),
+                v,
+            ),
+            resources = [
+                ":resources-%s" % v,
+            ],
             deps = [
-                "@kotlin_extractor_dep_%s//:kotlin-compiler" % v,
-                "@kotlin_extractor_dep_%s//:kotlin-stdlib" % v,
+                "@kotlin-compiler-%s" % v,
+                "@kotlin-stdlib-%s" % v,
             ],
         ),
     )
