@@ -10,8 +10,8 @@ edges
 | test3.cpp:138:24:138:32 | password1 | test3.cpp:117:28:117:33 | buffer | provenance |  |
 | test3.cpp:138:24:138:32 | password1 | test3.cpp:138:21:138:22 | call to id | provenance |  |
 | test3.cpp:144:16:144:29 | call to get_global_str | test3.cpp:146:15:146:18 | data | provenance |  |
-| test3.cpp:157:19:157:26 | password | test3.cpp:159:15:159:20 | *buffer | provenance |  |
-| test3.cpp:270:16:270:23 | password | test3.cpp:272:15:272:18 | *data | provenance |  |
+| test3.cpp:157:19:157:26 | password | test3.cpp:159:15:159:20 | *buffer | provenance | TaintFunction |
+| test3.cpp:270:16:270:23 | password | test3.cpp:272:15:272:18 | *data | provenance | DataFlowFunction |
 | test3.cpp:278:20:278:23 | data | test3.cpp:280:14:280:17 | data | provenance |  |
 | test3.cpp:283:20:283:23 | data | test3.cpp:285:14:285:17 | data | provenance |  |
 | test3.cpp:288:20:288:23 | data | test3.cpp:290:14:290:17 | data | provenance |  |
@@ -25,10 +25,10 @@ edges
 | test3.cpp:322:16:322:24 | password2 | test3.cpp:325:11:325:14 | data | provenance |  |
 | test3.cpp:324:11:324:14 | data | test3.cpp:293:20:293:23 | data | provenance |  |
 | test3.cpp:325:11:325:14 | data | test3.cpp:298:20:298:23 | data | provenance |  |
-| test3.cpp:526:44:526:54 | my_latitude | test3.cpp:527:15:527:20 | *buffer | provenance |  |
-| test3.cpp:532:45:532:58 | home_longitude | test3.cpp:533:15:533:20 | *buffer | provenance |  |
-| test3.cpp:551:47:551:58 | salaryString | test3.cpp:552:15:552:20 | *buffer | provenance |  |
-| test3.cpp:556:19:556:30 | salaryString | test3.cpp:559:15:559:20 | *buffer | provenance |  |
+| test3.cpp:526:44:526:54 | my_latitude | test3.cpp:527:15:527:20 | *buffer | provenance | TaintFunction |
+| test3.cpp:532:45:532:58 | home_longitude | test3.cpp:533:15:533:20 | *buffer | provenance | TaintFunction |
+| test3.cpp:551:47:551:58 | salaryString | test3.cpp:552:15:552:20 | *buffer | provenance | TaintFunction |
+| test3.cpp:556:19:556:30 | salaryString | test3.cpp:559:15:559:20 | *buffer | provenance | TaintFunction |
 | test3.cpp:571:8:571:21 | call to get_home_phone | test3.cpp:572:14:572:16 | str | provenance |  |
 | test3.cpp:577:8:577:23 | call to get_home_address | test3.cpp:578:14:578:16 | str | provenance |  |
 nodes
