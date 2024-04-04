@@ -92,13 +92,17 @@ abstract class TranslatedExpr extends TranslatedElement {
     or
     exists(int maxChildId, int destructorIndex |
       maxChildId = max(int childId | exists(this.getChildInternal(childId))) and
-      result.(TranslatedExpr).getExpr() = expr.getImplicitDestructorCall(destructorIndex) and
+      result = this.getImplicitDestructorCall(destructorIndex) and
       id = maxChildId + 1 + destructorIndex
     )
   }
 
+  final private TranslatedExpr getImplicitDestructorCall(int index) {
+    result.getExpr() = expr.getImplicitDestructorCall(index)
+  }
+
   final override predicate hasAnImplicitDestructorCall() {
-    exists(expr.getAnImplicitDestructorCall())
+    exists(this.getImplicitDestructorCall(_))
   }
 
   final override int getFirstDestructorCallIndex() {
