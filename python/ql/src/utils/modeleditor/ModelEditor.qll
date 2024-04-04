@@ -60,19 +60,41 @@ class FunctionEndpoint extends Endpoint instanceof Function {
    */
   override string getParameters() {
     // For now, return the names of positional and keyword parameters. We don't always have type information, so we can't return type names.
-    // We don't yet handle splat params or block params.
-    result =
-      "(" +
-        concat(string key, string value |
-          value = any(int i | i.toString() = key | this.(Function).getArgName(i))
-          or
-          exists(Name param | param = this.(Function).getAKeywordOnlyArg() |
-            param.getId() = key and
-            value = key + ":"
-          )
-        |
-          value, "," order by key
-        ) + ")"
+    // We don't yet handle splat params or dict splat params.
+    //
+    // In Python, there are three types of parameters:
+    // 1. Positional-only parameters: These are parameters that can only be passed by position and not by keyword.
+    // 2. Positional-or-keyword parameters: These are parameters that can be passed by position or by keyword.
+    // 3. Keyword-only parameters: These are parameters that can only be passed by keyword.
+    //
+    // The syntax for defining these parameters is as follows:
+    // ```python
+    // def f(a, /, b, *, c):
+    //     pass
+    // ```
+    // In this example, `a` is a positional-only parameter, `b` is a positional-or-keyword parameter, and `c` is a keyword-only parameter.
+    //
+    // We handle positional-only parameters by adding a "/" to the parameter name, reminiscient of the syntax above.
+    // We handle keyword-only parameters by adding a ":" to the parameter name, to be consistent with the MaD syntax and the other languages.
+    exists(int nrPosOnly, Function f |
+      f = this and
+      nrPosOnly = f.getPositionalParameterCount()
+    |
+      result =
+        "(" +
+          concat(string key, string value |
+            // TODO: Once we have information about positional-only parameters:
+            // Handle positional-only parameters by adding a "/"
+            value = any(int i | i.toString() = key | f.getArgName(i))
+            or
+            exists(Name param | param = f.getAKeywordOnlyArg() |
+              param.getId() = key and
+              value = key + ":"
+            )
+          |
+            value, "," order by key
+          ) + ")"
+    )
   }
 
   /** Holds if this API has a supported summary. */
