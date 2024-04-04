@@ -122,9 +122,10 @@ class Entity extends @object {
   /**
    * Gets the declaring identifier for this entity, if any.
    *
-   * Note that type switch statements which define a new variable in the guard
+   * Note that type switch statements which declare a new variable in the guard
    * actually have a new variable (of the right type) implicitly declared at
-   * the beginning of each case clause, and these do not have a declaration.
+   * the beginning of each case clause, and these do not have a syntactic
+   * declaration.
    */
   Ident getDeclaration() { result.declares(this) }
 
@@ -136,6 +137,15 @@ class Entity extends @object {
 
   /** Gets a textual representation of this entity. */
   string toString() { result = this.getName() }
+
+  private predicate hasRealLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    // take the location of the declaration if there is one
+    this.getDeclaration().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
+    any(CaseClause cc | this = cc.getImplicitlyDeclaredVariable())
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /**
    * Holds if this element is at the specified location.
