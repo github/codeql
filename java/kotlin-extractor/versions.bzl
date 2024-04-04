@@ -22,14 +22,12 @@ def _version_to_tuple(v):
     v = tuple([int(x) for x in v.split(".")])
     return v + (tail,)
 
-def _tuple_to_version(t):
-    ret = ".".join([str(x) for x in t[:3]])
-    if t[3]:
-        ret += "-" + t[3]
-    return ret
-
 def version_less(lhs, rhs):
     return _version_to_tuple(lhs) < _version_to_tuple(rhs)
+
+def get_language_version(version):
+    major, minor, _, _ = _version_to_tuple(version)
+    return "%s.%s" % (major, minor)
 
 def _basename(path):
     if "/" not in path:

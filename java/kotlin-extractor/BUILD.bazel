@@ -1,9 +1,35 @@
-# notice that this is used in the `@codeql_koblin_embeddable` external repo, which means we need to
+"""
+# Usage overview
+Building the extractor can be done via
+```
+bazel build //java/kotlin-extractor:codeql-extractor-kotlin-<variant>-<version>
+```
+where `<variant>` is either `standalone` or `embeddable`, and `<version>` is one of the supported versions.
+
+For the moment both variants where tested by replacing them into `target/intree/codeql-java` and running one relevant integration test.
+
+```
+bazel build //java/kotlin-extractor
+```
+will build a default variant:
+* standalone, unless `CODEQL_KOTLIN_SINGLE_VERSION_EMBEDDABLE` is set to true, in which case it will go for embeddable
+* the version will be taken as the last supported version less than the version of the currently installed `kotlinc`
+    * if `CODEQL_KOTLIN_SINGLE_VERSION` is set, that will be used instead
+    * if `kotlinc` is not installed, `1.9.20-Beta` will be used
+
+If `kotlinc` is updated, bazel won't be aware of it and will therefore keep the same default version. Possible workarounds for that:
+* `bazel clean`
+* `bazel fetch --force @codeql_kotlin_defaults\\:all`
+* `CODEQL_KOTLIN_SINGLE_VERSION= bazel build //java/kotlin-extractor`
+"""
+
+# notice that this file is used in the `@codeql_koblin_embeddable` external repo, which means we need to
 # reference explicitly @codeql
 load(
     "@codeql//java/kotlin-extractor:versions.bzl",
     "VERSIONS",
     "get_compatilibity_sources",
+    "get_language_version",
     "version_less",
 )
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
@@ -46,7 +72,7 @@ _resources = [
             name = "kotlinc-options-%s" % v,
             include_stdlibs = "none",
             jvm_target = "1.8",
-            language_version = v[:3],
+            language_version = get_language_version(v),
             warn = "error",
             x_optin = [
                 "kotlin.RequiresOptIn",
