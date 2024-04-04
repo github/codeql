@@ -1158,18 +1158,12 @@ destructors_for_temps.cpp:
 #-----|   Goto -> Block 8
 
 #   51|   Block 8
-#   51|     r51_48(glval<ClassWithDestructor2>) = CopyValue                              : r51_1
-#   51|     r51_49(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
-#   51|     v51_50(void)                        = Call[~ClassWithDestructor2]            : func:r51_37, func:r51_49, this:r51_36, this:r51_48
-#   51|     mu51_51(unknown)                    = ^CallSideEffect                        : ~m?
-#   51|     v51_52(void)                        = ^IndirectReadSideEffect[-1]            : &:r51_36, &:r51_48, ~m?
-#   51|     mu51_53(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]        : &:r51_36, &:r51_48
-#   51|     r51_54(glval<ClassWithDestructor2>) = CopyValue                              : r51_26
-#   51|     r51_55(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
-#   51|     v51_56(void)                        = Call[~ClassWithDestructor2]            : func:r51_43, func:r51_55, this:r51_42, this:r51_54
-#   51|     mu51_57(unknown)                    = ^CallSideEffect                        : ~m?
-#   51|     v51_58(void)                        = ^IndirectReadSideEffect[-1]            : &:r51_42, &:r51_54, ~m?
-#   51|     mu51_59(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]        : &:r51_42, &:r51_54
+#   51|     r51_42(glval<ClassWithDestructor2>) = CopyValue                              : r51_1
+#   51|     r51_43(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
+#   51|     v51_44(void)                        = Call[~ClassWithDestructor2]            : func:r51_37, func:r51_43, this:r51_36, this:r51_42
+#   51|     mu51_45(unknown)                    = ^CallSideEffect                        : ~m?
+#   51|     v51_46(void)                        = ^IndirectReadSideEffect[-1]            : &:r51_36, &:r51_42, ~m?
+#   51|     mu51_47(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]        : &:r51_36, &:r51_42
 #-----|   Goto (back edge) -> Block 4
 #-----|   Goto (back edge) -> Block 3
 
@@ -1247,18 +1241,12 @@ destructors_for_temps.cpp:
 #-----|   Goto -> Block 8
 
 #   55|   Block 8
-#   55|     r55_48(glval<ClassWithDestructor2>) = CopyValue                              : r55_1
-#   55|     r55_49(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
-#   55|     v55_50(void)                        = Call[~ClassWithDestructor2]            : func:r55_37, func:r55_49, this:r55_36, this:r55_48
-#   55|     mu55_51(unknown)                    = ^CallSideEffect                        : ~m?
-#   55|     v55_52(void)                        = ^IndirectReadSideEffect[-1]            : &:r55_36, &:r55_48, ~m?
-#   55|     mu55_53(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]        : &:r55_36, &:r55_48
-#   55|     r55_54(glval<ClassWithDestructor2>) = CopyValue                              : r55_26
-#   55|     r55_55(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
-#   55|     v55_56(void)                        = Call[~ClassWithDestructor2]            : func:r55_43, func:r55_55, this:r55_42, this:r55_54
-#   55|     mu55_57(unknown)                    = ^CallSideEffect                        : ~m?
-#   55|     v55_58(void)                        = ^IndirectReadSideEffect[-1]            : &:r55_42, &:r55_54, ~m?
-#   55|     mu55_59(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]        : &:r55_42, &:r55_54
+#   55|     r55_42(glval<ClassWithDestructor2>) = CopyValue                              : r55_1
+#   55|     r55_43(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
+#   55|     v55_44(void)                        = Call[~ClassWithDestructor2]            : func:r55_37, func:r55_43, this:r55_36, this:r55_42
+#   55|     mu55_45(unknown)                    = ^CallSideEffect                        : ~m?
+#   55|     v55_46(void)                        = ^IndirectReadSideEffect[-1]            : &:r55_36, &:r55_42, ~m?
+#   55|     mu55_47(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]        : &:r55_36, &:r55_42
 #-----|   Goto (back edge) -> Block 4
 #-----|   Goto (back edge) -> Block 3
 
