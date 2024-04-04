@@ -259,9 +259,9 @@ private predicate usedAsCondition(Expr expr) {
 
 private predicate isInConditionalEvaluation(Expr e) {
   exists(ConditionalExpr cond |
-    e = cond.getThen() and not cond.isTwoOperand()
+    e = cond.getThen().getFullyConverted() and not cond.isTwoOperand()
     or
-    e = cond.getElse()
+    e = cond.getElse().getFullyConverted()
   )
   or
   isInConditionalEvaluation(getRealParent(e))
