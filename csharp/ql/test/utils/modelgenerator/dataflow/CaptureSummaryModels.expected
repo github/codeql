@@ -1,5 +1,3 @@
-| NoSummaries;Properties;false;get_Prop;();;Argument[this];ReturnValue;taint;df-generated |
-| NoSummaries;Properties;false;set_Prop;(System.Object);;Argument[0];Argument[this];taint;df-generated |
 | NoSummaries;PublicClassFlow;false;PublicReturn;(System.Object);;Argument[0];ReturnValue;taint;df-generated |
 | Summaries;BaseClassFlow;true;ReturnParam;(System.Object);;Argument[0];ReturnValue;taint;df-generated |
 | Summaries;BasicFlow;false;ReturnField;();;Argument[this];ReturnValue;taint;df-generated |
