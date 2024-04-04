@@ -50,7 +50,3 @@ extensions:
       - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "PhysicalFileProvider", "(System.String,Microsoft.Extensions.FileProviders.Physical.ExclusionFilters)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "Watch", "(System.String)", "summary", "df-generated"]
       - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "get_Root", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "get_UseActivePolling", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "get_UsePollingFileWatcher", "()", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "set_UseActivePolling", "(System.Boolean)", "summary", "df-generated"]
-      - ["Microsoft.Extensions.FileProviders", "PhysicalFileProvider", "set_UsePollingFileWatcher", "(System.Boolean)", "summary", "df-generated"]
