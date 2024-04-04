@@ -34,13 +34,52 @@ _kotlin_dep = repository_rule(
     implementation = _kotlin_dep_impl,
 )
 
+def _walk(dir):
+    res = []
+    next_dirs = [dir]
+
+    # loops must be bounded in starlark
+    for i in range(100):
+        current_dirs = next_dirs
+        next_dirs = []
+        for d in current_dirs:
+            children = d.readdir()
+            next_dirs.extend([c for c in children if c.is_dir])
+            res.extend([c for c in children if not c.is_dir])
+        if not next_dirs:
+            break
+    return res
+
+def _embeddable_source_impl(repository_ctx):
+    src_dir = repository_ctx.path(Label("//java/kotlin-extractor:src"))
+    for src in _walk(src_dir):
+        contents = repository_ctx.read(src)
+        contents = contents.replace(
+            "import com.intellij",
+            "import org.jetbrains.kotlin.com.intellij",
+        )
+        repository_ctx.file(str(src).replace(str(src_dir), "src"), contents)
+    repository_ctx.symlink(
+        Label("//java/kotlin-extractor:generate_dbscheme.py"),
+        "generate_dbscheme.py",
+    )
+    repository_ctx.symlink(
+        Label("//java/kotlin-extractor:BUILD.bazel"),
+        "BUILD.bazel",
+    )
+
+_embeddable_source = repository_rule(implementation = _embeddable_source_impl)
+
+def _add_rule(rules, rule, *, name, **kwargs):
+    rule(name = name, **kwargs)
+    rules.append(name)
+
 def _kotlin_deps_impl(module_ctx):
     deps = []
     for v in VERSIONS:
         for lib in ("compiler", "compiler-embeddable", "stdlib"):
-            dep = "kotlin-%s-%s" % (lib, v)
-            _kotlin_dep(name = dep)
-            deps.append(dep)
+            _add_rule(deps, _kotlin_dep, name = "kotlin-%s-%s" % (lib, v))
+    _add_rule(deps, _embeddable_source, name = "codeql_kotlin_embeddable")
     return module_ctx.extension_metadata(
         root_module_direct_deps = deps,
         root_module_direct_dev_deps = [],

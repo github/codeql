@@ -1,11 +1,22 @@
+# notice that this is used in the `@codeql_koblin_embeddable` external repo, which means we need to
+# reference explicitly @codeql
 load(
-    "//java/kotlin-extractor:versions.bzl",
+    "@codeql//java/kotlin-extractor:versions.bzl",
     "VERSIONS",
     "get_compatilibity_sources",
     "version_less",
 )
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
 load("@rules_kotlin//kotlin:core.bzl", "kt_kotlinc_options")
+
+_for_embeddable = repo_name().endswith("codeql_kotlin_embeddable")
+
+_common_extractor_name_prefix = "codeql-extractor-kotlin"
+
+_extractor_name_prefix = "%s-%s" % (
+    _common_extractor_name_prefix,
+    "embeddable" if _for_embeddable else "standalone",
+)
 
 py_binary(
     name = "generate_dbscheme",
@@ -14,7 +25,7 @@ py_binary(
 
 genrule(
     name = "generated-dbscheme",
-    srcs = ["//java:dbscheme"],
+    srcs = ["@codeql//java:dbscheme"],
     outs = ["KotlinExtractorDbScheme.kt"],
     cmd = "$(execpath :generate_dbscheme) $< $@",
     tools = [":generate_dbscheme"],
@@ -56,14 +67,14 @@ _resources = [
                 for _, tgt in _resources
             ],
             cmd = "\n".join([
-                "echo codeql-extractor-kotlin-standalone-%s > $(RULEDIR)/%s/com/github/codeql/extractor.name" % (v, v),
+                "echo %s-%s > $(RULEDIR)/%s/com/github/codeql/extractor.name" % (_extractor_name_prefix, v, v),
             ] + [
                 "cp $(execpath %s) $(RULEDIR)/%s/%s" % (src, v, tgt)
                 for src, tgt in _resources
             ]),
         ),
         kt_jvm_library(
-            name = "codeql-extractor-kotlin-standalone-%s" % v,
+            name = "%s-%s" % (_extractor_name_prefix, v),
             srcs =
                 [":generated-dbscheme"] +
                 glob(
@@ -75,18 +86,31 @@ _resources = [
                 ) + get_compatilibity_sources(v, "src/main/kotlin/utils/versions"),
             kotlinc_opts = ":kotlinc-options-%s" % v,
             module_name = "codeql-kotlin-extractor",
-            resource_strip_prefix = "%s/%s" % (
+            resource_strip_prefix = "../%s/%s" % (
+                repo_name(),
+                v,
+            ) if _for_embeddable else "%s/%s" % (
                 package_name(),
                 v,
             ),
             resources = [
                 ":resources-%s" % v,
             ],
+            visibility = ["//visibility:public"],
             deps = [
-                "@kotlin-compiler-%s" % v,
+                "@kotlin-compiler%s-%s" % (
+                    "-embeddable" if _for_embeddable else "",
+                    v,
+                ),
                 "@kotlin-stdlib-%s" % v,
             ],
         ),
+        # if in main repository, alias the embeddable versions from the modified @codeql_kotlin_embeddable repo
+        alias(
+            name = "%s-embeddable-%s" % (_common_extractor_name_prefix, v),
+            actual = "@codeql_kotlin_embeddable//:%s-embeddable-%s" % (_common_extractor_name_prefix, v),
+            visibility = ["//visibility:public"],
+        ) if not _for_embeddable else None,
     )
     for v in VERSIONS
 ]

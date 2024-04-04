@@ -56,11 +56,12 @@ node.toolchain(
 )
 use_repo(node, "nodejs", "nodejs_toolchains")
 
-kotlin_extractor_deps = use_extension("//java/kotlin-extractor:extension.bzl", "kotlin_extractor_deps")
+kotlin_extractor_deps = use_extension("//java/kotlin-extractor:deps.bzl", "kotlin_extractor_deps")
 
 # following list can be kept in sync by running `bazel mod tidy` in `codeql`
 use_repo(
     kotlin_extractor_deps,
+    "codeql_kotlin_embeddable",
     "kotlin-compiler-1.4.32",
     "kotlin-compiler-1.5.0",
     "kotlin-compiler-1.5.10",
