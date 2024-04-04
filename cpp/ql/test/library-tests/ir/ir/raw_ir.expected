@@ -1310,10 +1310,8 @@ destructors_for_temps.cpp:
 #   59|     mu59_20(char)       = Store[#temp59:5]           : &:r59_19, r59_18
 #   59|     r59_21(glval<char>) = VariableAddress[#temp59:5] : 
 #   59|     r59_22(char)        = Load[#temp59:5]            : &:r59_21, ~m?
-
-#   60|   Block 5
-#   60|     v60_1(void) = NoOp       : 
-#   58|     v58_9(void) = ReturnVoid : 
+#   60|     v60_1(void)         = NoOp                       : 
+#   58|     v58_9(void)         = ReturnVoid                 : 
 #-----|   Goto -> Block 1
 
 ir.c:

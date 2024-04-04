@@ -1376,15 +1376,19 @@ destructors_for_temps.cpp:
 #   59|     r59_1(glval<bool>) = VariableAddress[b]     : 
 #   59|     r59_2(bool)        = Load[b]                : &:r59_1, m58_6
 #   59|     v59_3(void)        = ConditionalBranch      : r59_2
-#-----|   False -> Block 3
-#-----|   True -> Block 2
+#-----|   False -> Block 4
+#-----|   True -> Block 3
 
 #   58|   Block 1
-#   58|     v58_7(void) = Unwind       : 
-#   58|     v58_8(void) = AliasedUse   : ~m59_16
-#   58|     v58_9(void) = ExitFunction : 
+#   58|     m58_7(unknown) = Phi          : from 2:~m59_16, from 4:~m58_4
+#   58|     v58_8(void)    = AliasedUse   : ~m58_7
+#   58|     v58_9(void)    = ExitFunction : 
 
-#   59|   Block 2
+#   58|   Block 2
+#   58|     v58_10(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+#   59|   Block 3
 #   59|     r59_4(glval<char>)                 = VariableAddress[#throw59:9]           : 
 #   59|     r59_5(glval<ClassWithDestructor2>) = VariableAddress[#temp59:15]           : 
 #   59|     m59_6(ClassWithDestructor2)        = Uninitialized[#temp59:15]             : &:r59_5
@@ -1403,14 +1407,17 @@ destructors_for_temps.cpp:
 #   59|     m59_19(ClassWithDestructor2)       = Chi                                   : total:m59_12, partial:m59_18
 #   59|     m59_20(char)                       = Store[#throw59:9]                     : &:r59_4, r59_14
 #   59|     v59_21(void)                       = ThrowValue                            : &:r59_4, m59_20
-#-----|   Exception -> Block 1
+#-----|   Exception -> Block 2
 
-#   59|   Block 3
+#   59|   Block 4
 #   59|     r59_22(char)        = Constant[97]               : 
 #   59|     r59_23(glval<char>) = VariableAddress[#temp59:5] : 
 #   59|     m59_24(char)        = Store[#temp59:5]           : &:r59_23, r59_22
 #   59|     r59_25(glval<char>) = VariableAddress[#temp59:5] : 
 #   59|     r59_26(char)        = Load[#temp59:5]            : &:r59_25, m59_24
+#   60|     v60_1(void)         = NoOp                       : 
+#   58|     v58_11(void)        = ReturnVoid                 : 
+#-----|   Goto -> Block 1
 
 ir.c:
 #    7| void MyCoordsTest(int)
