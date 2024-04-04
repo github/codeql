@@ -1252,12 +1252,12 @@ destructors_for_temps.cpp:
 #   51|     v51_85(void)                        = ^IndirectReadSideEffect[-1]            : &:r51_58, &:r51_80, m51_44, m51_47, m51_66, m51_69
 #   51|     m51_86(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]        : &:r51_58, &:r51_80
 #   51|     m51_87(ClassWithDestructor2)        = Chi                                    : total:m51_44, total:m51_47, total:m51_66, total:m51_69, partial:m51_64, partial:m51_86
-#-----|   Goto (back edge) -> Block 3
 #-----|   Goto (back edge) -> Block 4
+#-----|   Goto (back edge) -> Block 3
 
 #   51|   Block 8
-#-----|   Goto (back edge) -> Block 3
 #-----|   Goto (back edge) -> Block 4
+#-----|   Goto (back edge) -> Block 3
 
 #   54| void temp_test8(bool)
 #   54|   Block 0
@@ -1358,12 +1358,59 @@ destructors_for_temps.cpp:
 #   55|     v55_85(void)                        = ^IndirectReadSideEffect[-1]            : &:r55_58, &:r55_80, m55_45, m55_48, m55_67, m55_70
 #   55|     m55_86(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]        : &:r55_58, &:r55_80
 #   55|     m55_87(ClassWithDestructor2)        = Chi                                    : total:m55_45, total:m55_48, total:m55_67, total:m55_70, partial:m55_64, partial:m55_86
-#-----|   Goto (back edge) -> Block 3
 #-----|   Goto (back edge) -> Block 4
+#-----|   Goto (back edge) -> Block 3
 
 #   55|   Block 8
-#-----|   Goto (back edge) -> Block 3
 #-----|   Goto (back edge) -> Block 4
+#-----|   Goto (back edge) -> Block 3
+
+#   58| void temp_test8_simple(bool)
+#   58|   Block 0
+#   58|     v58_1(void)        = EnterFunction          : 
+#   58|     m58_2(unknown)     = AliasedDefinition      : 
+#   58|     m58_3(unknown)     = InitializeNonLocal     : 
+#   58|     m58_4(unknown)     = Chi                    : total:m58_2, partial:m58_3
+#   58|     r58_5(glval<bool>) = VariableAddress[b]     : 
+#   58|     m58_6(bool)        = InitializeParameter[b] : &:r58_5
+#   59|     r59_1(glval<bool>) = VariableAddress[b]     : 
+#   59|     r59_2(bool)        = Load[b]                : &:r59_1, m58_6
+#   59|     v59_3(void)        = ConditionalBranch      : r59_2
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   58|   Block 1
+#   58|     v58_7(void) = Unwind       : 
+#   58|     v58_8(void) = AliasedUse   : ~m59_16
+#   58|     v58_9(void) = ExitFunction : 
+
+#   59|   Block 2
+#   59|     r59_4(glval<char>)                 = VariableAddress[#throw59:9]           : 
+#   59|     r59_5(glval<ClassWithDestructor2>) = VariableAddress[#temp59:15]           : 
+#   59|     m59_6(ClassWithDestructor2)        = Uninitialized[#temp59:15]             : &:r59_5
+#   59|     r59_7(glval<unknown>)              = FunctionAddress[ClassWithDestructor2] : 
+#   59|     v59_8(void)                        = Call[ClassWithDestructor2]            : func:r59_7, this:r59_5
+#   59|     m59_9(unknown)                     = ^CallSideEffect                       : ~m58_4
+#   59|     m59_10(unknown)                    = Chi                                   : total:m58_4, partial:m59_9
+#   59|     m59_11(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]       : &:r59_5
+#   59|     m59_12(ClassWithDestructor2)       = Chi                                   : total:m59_6, partial:m59_11
+#   59|     r59_13(glval<unknown>)             = FunctionAddress[get_x]                : 
+#   59|     r59_14(char)                       = Call[get_x]                           : func:r59_13, this:r59_5
+#   59|     m59_15(unknown)                    = ^CallSideEffect                       : ~m59_10
+#   59|     m59_16(unknown)                    = Chi                                   : total:m59_10, partial:m59_15
+#   59|     v59_17(void)                       = ^IndirectReadSideEffect[-1]           : &:r59_5, m59_12
+#   59|     m59_18(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]       : &:r59_5
+#   59|     m59_19(ClassWithDestructor2)       = Chi                                   : total:m59_12, partial:m59_18
+#   59|     m59_20(char)                       = Store[#throw59:9]                     : &:r59_4, r59_14
+#   59|     v59_21(void)                       = ThrowValue                            : &:r59_4, m59_20
+#-----|   Exception -> Block 1
+
+#   59|   Block 3
+#   59|     r59_22(char)        = Constant[97]               : 
+#   59|     r59_23(glval<char>) = VariableAddress[#temp59:5] : 
+#   59|     m59_24(char)        = Store[#temp59:5]           : &:r59_23, r59_22
+#   59|     r59_25(glval<char>) = VariableAddress[#temp59:5] : 
+#   59|     r59_26(char)        = Load[#temp59:5]            : &:r59_25, m59_24
 
 ir.c:
 #    7| void MyCoordsTest(int)

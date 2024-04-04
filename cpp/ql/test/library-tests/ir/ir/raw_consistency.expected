@@ -6,6 +6,7 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
+| destructors_for_temps.cpp:59:5:59:50 | Load: ... ? ... : ... | Instruction 'Load: ... ? ... : ...' has no successors in function '$@'. | destructors_for_temps.cpp:58:6:58:22 | void temp_test8_simple(bool) | void temp_test8_simple(bool) |
 ambiguousSuccessors
 | destructors_for_temps.cpp:51:75:51:96 | IndirectMayWriteSideEffect: reuse of temporary object | Instruction 'IndirectMayWriteSideEffect: reuse of temporary object' has 2 successors of kind 'Goto' in function '$@'. | destructors_for_temps.cpp:49:6:49:15 | void temp_test7(bool) | void temp_test7(bool) |
 | destructors_for_temps.cpp:55:75:55:96 | IndirectMayWriteSideEffect: reuse of temporary object | Instruction 'IndirectMayWriteSideEffect: reuse of temporary object' has 2 successors of kind 'Goto' in function '$@'. | destructors_for_temps.cpp:54:6:54:15 | void temp_test8(bool) | void temp_test8(bool) |

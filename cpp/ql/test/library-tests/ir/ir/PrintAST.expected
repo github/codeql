@@ -2186,6 +2186,41 @@ destructors_for_temps.cpp:
 #   55|           Type = [Class] ClassWithDestructor2
 #   55|           ValueCategory = prvalue
 #   56|     getStmt(1): [ReturnStmt] return ...
+#   58| [TopLevelFunction] void temp_test8_simple(bool)
+#   58|   <params>: 
+#   58|     getParameter(0): [Parameter] b
+#   58|         Type = [BoolType] bool
+#   58|   getEntryPoint(): [BlockStmt] { ... }
+#   59|     getStmt(0): [ExprStmt] ExprStmt
+#   59|       getExpr(): [ConditionalExpr] ... ? ... : ...
+#   59|           Type = [PlainCharType] char
+#   59|           ValueCategory = prvalue
+#   59|         getCondition(): [VariableAccess] b
+#   59|             Type = [BoolType] bool
+#   59|             ValueCategory = prvalue(load)
+#   59|         getThen(): [ThrowExpr] throw ...
+#   59|             Type = [PlainCharType] char
+#   59|             ValueCategory = prvalue
+#   59|           getExpr(): [FunctionCall] call to get_x
+#   59|               Type = [PlainCharType] char
+#   59|               ValueCategory = prvalue
+#   59|             getQualifier(): [ConstructorCall] call to ClassWithDestructor2
+#   59|                 Type = [VoidType] void
+#   59|                 ValueCategory = prvalue
+#   59|             getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   59|                 Type = [Class] ClassWithDestructor2
+#   59|                 ValueCategory = prvalue(load)
+#   59|         getElse(): [CharLiteral] 97
+#   59|             Type = [PlainCharType] char
+#   59|             Value = [CharLiteral] 97
+#   59|             ValueCategory = prvalue
+#   59|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   59|             Type = [VoidType] void
+#   59|             ValueCategory = prvalue
+#   59|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   59|               Type = [Class] ClassWithDestructor2
+#   59|               ValueCategory = xvalue
+#   60|     getStmt(1): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 

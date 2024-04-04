@@ -54,3 +54,7 @@ void temp_test7(bool b) {
 void temp_test8(bool b) {
     b ? throw ClassWithConstructor('x', ClassWithDestructor2().get_x()) : ClassWithDestructor2();
 }
+
+void temp_test8_simple(bool b) {
+    b ? throw ClassWithDestructor2().get_x() : 'a';
+}

@@ -1170,12 +1170,12 @@ destructors_for_temps.cpp:
 #   51|     mu51_57(unknown)                    = ^CallSideEffect                        : ~m?
 #   51|     v51_58(void)                        = ^IndirectReadSideEffect[-1]            : &:r51_42, &:r51_54, ~m?
 #   51|     mu51_59(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]        : &:r51_42, &:r51_54
-#-----|   Goto (back edge) -> Block 3
 #-----|   Goto (back edge) -> Block 4
+#-----|   Goto (back edge) -> Block 3
 
 #   51|   Block 8
-#-----|   Goto (back edge) -> Block 3
 #-----|   Goto (back edge) -> Block 4
+#-----|   Goto (back edge) -> Block 3
 
 #   54| void temp_test8(bool)
 #   54|   Block 0
@@ -1259,12 +1259,62 @@ destructors_for_temps.cpp:
 #   55|     mu55_57(unknown)                    = ^CallSideEffect                        : ~m?
 #   55|     v55_58(void)                        = ^IndirectReadSideEffect[-1]            : &:r55_42, &:r55_54, ~m?
 #   55|     mu55_59(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]        : &:r55_42, &:r55_54
-#-----|   Goto (back edge) -> Block 3
 #-----|   Goto (back edge) -> Block 4
+#-----|   Goto (back edge) -> Block 3
 
 #   55|   Block 8
-#-----|   Goto (back edge) -> Block 3
 #-----|   Goto (back edge) -> Block 4
+#-----|   Goto (back edge) -> Block 3
+
+#   58| void temp_test8_simple(bool)
+#   58|   Block 0
+#   58|     v58_1(void)        = EnterFunction          : 
+#   58|     mu58_2(unknown)    = AliasedDefinition      : 
+#   58|     mu58_3(unknown)    = InitializeNonLocal     : 
+#   58|     r58_4(glval<bool>) = VariableAddress[b]     : 
+#   58|     mu58_5(bool)       = InitializeParameter[b] : &:r58_4
+#   59|     r59_1(glval<bool>) = VariableAddress[b]     : 
+#   59|     r59_2(bool)        = Load[b]                : &:r59_1, ~m?
+#   59|     v59_3(void)        = ConditionalBranch      : r59_2
+#-----|   False -> Block 4
+#-----|   True -> Block 3
+
+#   58|   Block 1
+#   58|     v58_6(void) = AliasedUse   : ~m?
+#   58|     v58_7(void) = ExitFunction : 
+
+#   58|   Block 2
+#   58|     v58_8(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+#   59|   Block 3
+#   59|     r59_4(glval<char>)                 = VariableAddress[#throw59:9]           : 
+#   59|     r59_5(glval<ClassWithDestructor2>) = VariableAddress[#temp59:15]           : 
+#   59|     mu59_6(ClassWithDestructor2)       = Uninitialized[#temp59:15]             : &:r59_5
+#   59|     r59_7(glval<unknown>)              = FunctionAddress[ClassWithDestructor2] : 
+#   59|     v59_8(void)                        = Call[ClassWithDestructor2]            : func:r59_7, this:r59_5
+#   59|     mu59_9(unknown)                    = ^CallSideEffect                       : ~m?
+#   59|     mu59_10(ClassWithDestructor2)      = ^IndirectMayWriteSideEffect[-1]       : &:r59_5
+#   59|     r59_11(glval<unknown>)             = FunctionAddress[get_x]                : 
+#   59|     r59_12(char)                       = Call[get_x]                           : func:r59_11, this:r59_5
+#   59|     mu59_13(unknown)                   = ^CallSideEffect                       : ~m?
+#   59|     v59_14(void)                       = ^IndirectReadSideEffect[-1]           : &:r59_5, ~m?
+#   59|     mu59_15(ClassWithDestructor2)      = ^IndirectMayWriteSideEffect[-1]       : &:r59_5
+#   59|     mu59_16(char)                      = Store[#throw59:9]                     : &:r59_4, r59_12
+#   59|     v59_17(void)                       = ThrowValue                            : &:r59_4, ~m?
+#-----|   Exception -> Block 2
+
+#   59|   Block 4
+#   59|     r59_18(char)        = Constant[97]               : 
+#   59|     r59_19(glval<char>) = VariableAddress[#temp59:5] : 
+#   59|     mu59_20(char)       = Store[#temp59:5]           : &:r59_19, r59_18
+#   59|     r59_21(glval<char>) = VariableAddress[#temp59:5] : 
+#   59|     r59_22(char)        = Load[#temp59:5]            : &:r59_21, ~m?
+
+#   60|   Block 5
+#   60|     v60_1(void) = NoOp       : 
+#   58|     v58_9(void) = ReturnVoid : 
+#-----|   Goto -> Block 1
 
 ir.c:
 #    7| void MyCoordsTest(int)
