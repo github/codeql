@@ -132,6 +132,4 @@ public class Test<V> {
    * @param k does not
    */
   static record GenericRecord<T>(int i, int j) {}
-
-  // Diagnostic Matches: Incomplete inheritance relation for type java.lang.Object and supertype none
 }
