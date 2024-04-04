@@ -257,11 +257,26 @@ private predicate usedAsCondition(Expr expr) {
   )
 }
 
+private predicate hasThrowingChild(Expr e) {
+  e = any(ThrowExpr throw).getFullyConverted()
+  or
+  exists(Expr child |
+    e = getRealParent(child) and
+    hasThrowingChild(child)
+  )
+}
+
 private predicate isInConditionalEvaluation(Expr e) {
   exists(ConditionalExpr cond |
     e = cond.getThen().getFullyConverted() and not cond.isTwoOperand()
     or
     e = cond.getElse().getFullyConverted()
+    or
+    // If one of the operands throws then the temporaries constructed in either
+    // branch will also be attached to the ternary expression. We suppress
+    // those destructor calls as well.
+    hasThrowingChild([cond.getThen(), cond.getElse()]) and
+    e = cond.getFullyConverted()
   )
   or
   isInConditionalEvaluation(getRealParent(e))
