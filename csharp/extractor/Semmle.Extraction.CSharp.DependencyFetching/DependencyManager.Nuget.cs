@@ -2,7 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using Semmle.Util;
 
@@ -14,6 +16,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             try
             {
+                var checkNugetFeedResponsiveness = EnvironmentVariables.GetBoolean(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
+                if (checkNugetFeedResponsiveness && !CheckFeeds(allNonBinaryFiles))
+                {
+                    DownloadMissingPackages(allNonBinaryFiles, dllPaths, withNugetConfig: false);
+                    return;
+                }
+
                 using (var nuget = new NugetPackages(sourceDir.FullName, legacyPackageDirectory, logger))
                 {
                     var count = nuget.InstallPackages();
@@ -139,7 +148,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             CompilationInfos.Add(("Failed project restore with package source error", nugetSourceFailures.ToString()));
         }
 
-        private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<string> dllPaths)
+        private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<string> dllPaths, bool withNugetConfig = true)
         {
             var alreadyDownloadedPackages = GetRestoredPackageDirectoryNames(packageDirectory.DirInfo);
             var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
@@ -172,30 +181,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
 
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
-
-            var nugetConfigs = allFiles.SelectFileNamesByName("nuget.config").ToArray();
-            string? nugetConfig = null;
-            if (nugetConfigs.Length > 1)
-            {
-                logger.LogInfo($"Found multiple nuget.config files: {string.Join(", ", nugetConfigs)}.");
-                nugetConfig = allFiles
-                    .SelectRootFiles(sourceDir)
-                    .SelectFileNamesByName("nuget.config")
-                    .FirstOrDefault();
-                if (nugetConfig == null)
-                {
-                    logger.LogInfo("Could not find a top-level nuget.config file.");
-                }
-            }
-            else
-            {
-                nugetConfig = nugetConfigs.FirstOrDefault();
-            }
-
-            if (nugetConfig != null)
-            {
-                logger.LogInfo($"Using nuget.config file {nugetConfig}.");
-            }
+            var nugetConfig = withNugetConfig
+                ? GetNugetConfig(allFiles)
+                : null;
 
             CompilationInfos.Add(("Fallback nuget restore", notYetDownloadedPackages.Count.ToString()));
 
@@ -219,6 +207,37 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             CompilationInfos.Add(("Successfully ran fallback nuget restore", successCount.ToString()));
 
             dllPaths.Add(missingPackageDirectory.DirInfo.FullName);
+        }
+
+        private string[] GetAllNugetConfigs(List<FileInfo> allFiles) => allFiles.SelectFileNamesByName("nuget.config").ToArray();
+
+        private string? GetNugetConfig(List<FileInfo> allFiles)
+        {
+            var nugetConfigs = GetAllNugetConfigs(allFiles);
+            string? nugetConfig;
+            if (nugetConfigs.Length > 1)
+            {
+                logger.LogInfo($"Found multiple nuget.config files: {string.Join(", ", nugetConfigs)}.");
+                nugetConfig = allFiles
+                    .SelectRootFiles(sourceDir)
+                    .SelectFileNamesByName("nuget.config")
+                    .FirstOrDefault();
+                if (nugetConfig == null)
+                {
+                    logger.LogInfo("Could not find a top-level nuget.config file.");
+                }
+            }
+            else
+            {
+                nugetConfig = nugetConfigs.FirstOrDefault();
+            }
+
+            if (nugetConfig != null)
+            {
+                logger.LogInfo($"Using nuget.config file {nugetConfig}.");
+            }
+
+            return nugetConfig;
         }
 
         private void LogAllUnusedPackages(DependencyContainer dependencies)
@@ -278,9 +297,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return Directory.GetDirectories(root.FullName)
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
         }
-
-        [GeneratedRegex(@"<TargetFramework>.*</TargetFramework>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
-        private static partial Regex TargetFramework();
 
         private bool TryRestorePackageManually(string package, string? nugetConfig, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj)
         {
@@ -358,7 +374,126 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
+        private static async Task ExecuteGetRequest(string address, HttpClient httpClient, CancellationToken cancellationToken)
+        {
+            using var stream = await httpClient.GetStreamAsync(address, cancellationToken);
+            var buffer = new byte[1024];
+            int bytesRead;
+            while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) > 0)
+            {
+                // do nothing
+            }
+        }
+
+        private bool IsFeedReachable(string feed)
+        {
+            using HttpClient client = new();
+            var timeoutSeconds = 1;
+            var tryCount = 4;
+
+            for (var i = 0; i < tryCount; i++)
+            {
+                using var cts = new CancellationTokenSource();
+                cts.CancelAfter(timeoutSeconds * 1000);
+                try
+                {
+                    ExecuteGetRequest(feed, client, cts.Token).GetAwaiter().GetResult();
+                    return true;
+                }
+                catch (Exception exc)
+                {
+                    if (exc is TaskCanceledException tce &&
+                        tce.CancellationToken == cts.Token &&
+                        cts.Token.IsCancellationRequested)
+                    {
+                        logger.LogWarning($"Didn't receive answer from Nuget feed '{feed}' in {timeoutSeconds} seconds.");
+                        timeoutSeconds *= 2;
+                        continue;
+                    }
+
+                    // We're only interested in timeouts.
+                    logger.LogWarning($"Querying Nuget feed '{feed}' failed: {exc}");
+                    return true;
+                }
+            }
+
+            logger.LogError($"Didn't receive answer from Nuget feed '{feed}'. Tried it {tryCount} times.");
+            return false;
+        }
+
+        private bool CheckFeeds(List<FileInfo> allFiles)
+        {
+            logger.LogInfo("Checking Nuget feeds...");
+            var feeds = GetAllFeeds(allFiles);
+
+            var excludedFeeds = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ExcludedNugetFeedsFromResponsivenessCheck)
+                ?.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries)
+                .ToHashSet() ?? [];
+
+            if (excludedFeeds.Count > 0)
+            {
+                logger.LogInfo($"Excluded feeds from responsiveness check: {string.Join(", ", excludedFeeds)}");
+            }
+
+            var allFeedsReachable = feeds.All(feed => excludedFeeds.Contains(feed) || IsFeedReachable(feed));
+            if (!allFeedsReachable)
+            {
+                diagnosticsWriter.AddEntry(new DiagnosticMessage(
+                    Language.CSharp,
+                    "buildless/unreachable-feed",
+                    "Found unreachable Nuget feed in C# analysis with build-mode 'none'",
+                    visibility: new DiagnosticMessage.TspVisibility(statusPage: true, cliSummaryTable: true, telemetry: true),
+                    markdownMessage: "Found unreachable Nuget feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.",
+                    severity: DiagnosticMessage.TspSeverity.Warning
+                ));
+            }
+            CompilationInfos.Add(("All Nuget feeds reachable", allFeedsReachable ? "1" : "0"));
+            return allFeedsReachable;
+        }
+
+        private IEnumerable<string> GetFeeds(string nugetConfig)
+        {
+            logger.LogInfo($"Getting Nuget feeds from '{nugetConfig}'...");
+            var results = dotnet.GetNugetFeeds(nugetConfig);
+            var regex = EnabledNugetFeed();
+            foreach (var result in results)
+            {
+                var match = regex.Match(result);
+                if (!match.Success)
+                {
+                    logger.LogError($"Failed to parse feed from '{result}'");
+                    continue;
+                }
+
+                var url = match.Groups[1].Value;
+                if (!url.StartsWith("https://", StringComparison.InvariantCultureIgnoreCase) &&
+                    !url.StartsWith("http://", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    logger.LogInfo($"Skipping feed '{url}' as it is not a valid URL.");
+                    continue;
+                }
+
+                yield return url;
+            }
+        }
+
+        private HashSet<string> GetAllFeeds(List<FileInfo> allFiles)
+        {
+            var nugetConfigs = GetAllNugetConfigs(allFiles);
+            var feeds = nugetConfigs
+                .SelectMany(nf => GetFeeds(nf))
+                .Where(str => !string.IsNullOrWhiteSpace(str))
+                .ToHashSet();
+            return feeds;
+        }
+
+        [GeneratedRegex(@"<TargetFramework>.*</TargetFramework>", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex TargetFramework();
+
         [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex LegacyNugetPackage();
+
+        [GeneratedRegex(@"^E (.*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        private static partial Regex EnabledNugetFeed();
     }
 }

@@ -20,6 +20,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     {
         private readonly AssemblyCache assemblyCache;
         private readonly ILogger logger;
+        private readonly IDiagnosticsWriter diagnosticsWriter;
 
         // Only used as a set, but ConcurrentDictionary is the only concurrent set in .NET.
         private readonly IDictionary<string, bool> usedReferences = new ConcurrentDictionary<string, bool>();
@@ -52,6 +53,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var startTime = DateTime.Now;
 
             this.logger = logger;
+            this.diagnosticsWriter = new DiagnosticsStream(Path.Combine(
+                Environment.GetEnvironmentVariable(EnvironmentVariableNames.DiagnosticDir) ?? "",
+                $"dependency-manager-{DateTime.UtcNow:yyyyMMddHHmm}-{Environment.ProcessId}.jsonc"));
             this.sourceDir = new DirectoryInfo(srcDir);
 
             packageDirectory = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "packages"));
@@ -177,8 +181,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var frameworkLocations = new HashSet<string>();
 
             var frameworkReferences = Environment.GetEnvironmentVariable(EnvironmentVariableNames.DotnetFrameworkReferences);
-            var frameworkReferencesUseSubfolders = Environment.GetEnvironmentVariable(EnvironmentVariableNames.DotnetFrameworkReferencesUseSubfolders);
-            _ = bool.TryParse(frameworkReferencesUseSubfolders, out var useSubfolders);
+            var useSubfolders = EnvironmentVariables.GetBoolean(EnvironmentVariableNames.DotnetFrameworkReferencesUseSubfolders);
             if (!string.IsNullOrWhiteSpace(frameworkReferences))
             {
                 RemoveFrameworkNugetPackages(dllPaths);
@@ -740,6 +743,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             {
                 Dispose(tempWorkingDirectory, "temporary working");
             }
+
+            diagnosticsWriter?.Dispose();
         }
     }
 }

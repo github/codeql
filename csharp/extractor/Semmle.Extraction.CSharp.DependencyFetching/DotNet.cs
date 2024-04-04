@@ -16,12 +16,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     public partial class DotNet : IDotNet
     {
         private readonly IDotNetCliInvoker dotnetCliInvoker;
+        private readonly ILogger logger;
         private readonly TemporaryDirectory? tempWorkingDirectory;
 
         private DotNet(IDotNetCliInvoker dotnetCliInvoker, ILogger logger, TemporaryDirectory? tempWorkingDirectory = null)
         {
             this.tempWorkingDirectory = tempWorkingDirectory;
             this.dotnetCliInvoker = dotnetCliInvoker;
+            this.logger = logger;
             Info();
         }
 
@@ -89,17 +91,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             return dotnetCliInvoker.RunCommand(args);
         }
 
-        public IList<string> GetListedRuntimes() => GetListed("--list-runtimes");
+        public IList<string> GetListedRuntimes() => GetResultList("--list-runtimes");
 
-        public IList<string> GetListedSdks() => GetListed("--list-sdks");
+        public IList<string> GetListedSdks() => GetResultList("--list-sdks");
 
-        private IList<string> GetListed(string args)
+        private IList<string> GetResultList(string args)
         {
-            if (dotnetCliInvoker.RunCommand(args, out var artifacts))
+            if (dotnetCliInvoker.RunCommand(args, out var results))
             {
-                return artifacts;
+                return results;
             }
-            return new List<string>();
+            logger.LogWarning($"Running 'dotnet {args}' failed.");
+            return [];
         }
 
         public bool Exec(string execArgs)
@@ -107,6 +110,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var args = $"exec {execArgs}";
             return dotnetCliInvoker.RunCommand(args);
         }
+
+        public IList<string> GetNugetFeeds(string nugetConfig) => GetResultList($"nuget list source --format Short --configfile \"{nugetConfig}\"");
 
         // The version number should be kept in sync with the version .NET version used for building the application.
         public const string LatestDotNetSdkVersion = "8.0.101";
