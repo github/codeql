@@ -420,9 +420,11 @@ struct intPair {
 int madCallArg0ReturnToReturn(int (*fun_ptr)()); // $ interpretElement
 intPair madCallArg0ReturnToReturnFirst(int (*fun_ptr)()); // $ interpretElement
 void madCallArg0WithValue(void (*fun_ptr)(int), int value); // $ interpretElement
+int madCallReturnValueIgnoreFunction(void (*fun_ptr)(int), int value); // $ interpretElement
 
 int getTainted() { return source(); }
 void useValue(int x) { sink(x); }
+void dontUseValue(int x) { }
 
 void test_function_pointers() {
 	sink(madCallArg0ReturnToReturn(&notASource));
@@ -433,4 +435,6 @@ void test_function_pointers() {
 	madCallArg0WithValue(&useValue, 0);
 	madCallArg0WithValue(&useValue, source()); // $ MISSING: ir
 	madCallArg0WithValue(&sink, source()); // $ MISSING: ir
+	madCallReturnValueIgnoreFunction(&sink, source());
+	sink(madCallReturnValueIgnoreFunction(&dontUseValue, source())); // $ ir
 }

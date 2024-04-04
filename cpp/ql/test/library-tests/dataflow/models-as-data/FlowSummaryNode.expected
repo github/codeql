@@ -72,3 +72,5 @@
 | tests.cpp:422:6:422:25 | [summary] to write: Argument[0].Parameter[0] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
 | tests.cpp:422:6:422:25 | [summary] to write: Argument[0].Parameter[this] in madCallArg0WithValue | ArgumentNode | madCallArg0WithValue | madCallArg0WithValue |
 | tests.cpp:422:6:422:25 | [summary] to write: Argument[1] in madCallArg0WithValue | PostUpdateNode | madCallArg0WithValue | madCallArg0WithValue |
+| tests.cpp:423:5:423:36 | [summary param] 1 in madCallReturnValueIgnoreFunction | ParameterNode | madCallReturnValueIgnoreFunction | madCallReturnValueIgnoreFunction |
+| tests.cpp:423:5:423:36 | [summary] to write: ReturnValue in madCallReturnValueIgnoreFunction | ReturnNode | madCallReturnValueIgnoreFunction | madCallReturnValueIgnoreFunction |

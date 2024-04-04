@@ -97,6 +97,7 @@ private class TestSummaries extends SummaryModelCsv {
         ";;false;madCallArg0ReturnToReturn;;;Argument[0].ReturnValue;ReturnValue;value",
         ";;false;madCallArg0ReturnToReturnFirst;;;Argument[0].ReturnValue;ReturnValue.first;value",
         ";;false;madCallArg0WithValue;;;Argument[1];Argument[0].Parameter[0];value",
+        ";;false;madCallReturnValueIgnoreFunction;;;Argument[1];ReturnValue;value",
       ]
   }
 }
