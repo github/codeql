@@ -1175,8 +1175,8 @@ destructors_for_temps.cpp:
 #   52|     r52_2(glval<ClassWithDestructor2>) = VariableAddress[c]                     : 
 #   52|     r52_3(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
 #   52|     v52_4(void)                        = Call[~ClassWithDestructor2]            : func:r52_3, this:r52_2
-#   52|     m52_5(unknown)                     = ^CallSideEffect                        : ~m51_104, ~m51_72
-#   52|     m52_6(unknown)                     = Chi                                    : total:m51_104, total:m51_72, partial:m52_5
+#   52|     m52_5(unknown)                     = ^CallSideEffect                        : ~m51_62, ~m51_84
+#   52|     m52_6(unknown)                     = Chi                                    : total:m51_62, total:m51_84, partial:m52_5
 #   52|     v52_7(void)                        = ^IndirectReadSideEffect[-1]            : &:r52_2, m50_8
 #   52|     m52_8(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]        : &:r52_2
 #   52|     m52_9(ClassWithDestructor2)        = Chi                                    : total:m50_8, partial:m52_8
@@ -1233,40 +1233,31 @@ destructors_for_temps.cpp:
 #-----|   Goto -> Block 8
 
 #   51|   Block 8
-#   51|     m51_82(ClassWithDestructor2)         = Phi                                    : from 4:m51_59, from 4:m51_91
-#   51|     m51_83(unknown)                      = Phi                                    : from 4:~m51_104, from 4:~m51_72, from 6:~m51_37
-#   51|     m51_80(ClassWithDestructor2)         = Phi                                    : from 4:m51_67, from 4:m51_99, from 6:m51_39
-#   51|     m51_81(ClassWithDestructor2)         = Phi                                    : from 4:m51_107, from 4:m51_75
-#   51|     r51_84(glval<ClassWithDestructor2>)  = CopyValue                              : r51_1
-#   51|     r51_85(glval<unknown>)               = FunctionAddress[~ClassWithDestructor2] : 
-#   51|     v51_86(void)                         = Call[~ClassWithDestructor2]            : func:r51_53, func:r51_85, this:r51_52, this:r51_84
-#   51|     m51_87(unknown)                      = ^CallSideEffect                        : ~m51_47, ~m51_51, ~m51_79, ~m51_83
-#   51|     m51_88(unknown)                      = Chi                                    : total:m51_47, total:m51_51, total:m51_79, total:m51_83, partial:m51_55, partial:m51_87
-#   51|     v51_89(void)                         = ^IndirectReadSideEffect[-1]            : &:r51_52, &:r51_84, m51_46, m51_50, m51_78, m51_82
-#   51|     m51_90(ClassWithDestructor2)         = ^IndirectMayWriteSideEffect[-1]        : &:r51_52, &:r51_84
-#   51|     m51_91(ClassWithDestructor2)         = Chi                                    : total:m51_46, total:m51_50, total:m51_78, total:m51_82, partial:m51_58, partial:m51_90
-#   51|     r51_92(glval<ClassWithDestructor2>)  = CopyValue                              : r51_32
-#   51|     r51_93(glval<unknown>)               = FunctionAddress[~ClassWithDestructor2] : 
-#   51|     v51_94(void)                         = Call[~ClassWithDestructor2]            : func:r51_61, func:r51_93, this:r51_60, this:r51_92
-#   51|     m51_95(unknown)                      = ^CallSideEffect                        : ~m51_56, ~m51_88
-#   51|     m51_96(unknown)                      = Chi                                    : total:m51_56, total:m51_88, partial:m51_63, partial:m51_95
-#   51|     v51_97(void)                         = ^IndirectReadSideEffect[-1]            : &:r51_60, &:r51_92, m51_44, m51_48, m51_76, m51_80
-#   51|     m51_98(ClassWithDestructor2)         = ^IndirectMayWriteSideEffect[-1]        : &:r51_60, &:r51_92
-#   51|     m51_99(ClassWithDestructor2)         = Chi                                    : total:m51_44, total:m51_48, total:m51_76, total:m51_80, partial:m51_66, partial:m51_98
-#   51|     r51_68(glval<ClassWithDestructor2>)  = CopyValue                              : r51_11
-#   51|     r51_69(glval<unknown>)               = FunctionAddress[~ClassWithDestructor2] : 
-#   51|     v51_70(void)                         = Call[~ClassWithDestructor2]            : func:r51_101, func:r51_69, this:r51_100, this:r51_68
-#   51|     m51_71(unknown)                      = ^CallSideEffect                        : ~m51_64, ~m51_96
-#   51|     m51_72(unknown)                      = Chi                                    : total:m51_64, total:m51_96, partial:m51_103, partial:m51_71
-#   51|     v51_73(void)                         = ^IndirectReadSideEffect[-1]            : &:r51_100, &:r51_68, m51_45, m51_49, m51_77, m51_81
-#   51|     m51_74(ClassWithDestructor2)         = ^IndirectMayWriteSideEffect[-1]        : &:r51_100, &:r51_68
-#   51|     m51_75(ClassWithDestructor2)         = Chi                                    : total:m51_45, total:m51_49, total:m51_77, total:m51_81, partial:m51_106, partial:m51_74
-#-----|   Goto (back edge) -> Block 4
+#   51|     m51_70(ClassWithDestructor2)        = Phi                                    : from 4:m51_57, from 4:m51_79
+#   51|     m51_71(unknown)                     = Phi                                    : from 4:~m51_62, from 4:~m51_84, from 6:~m51_37
+#   51|     m51_69(ClassWithDestructor2)        = Phi                                    : from 4:m51_65, from 4:m51_87, from 6:m51_39
+#   51|     r51_72(glval<ClassWithDestructor2>) = CopyValue                              : r51_1
+#   51|     r51_73(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
+#   51|     v51_74(void)                        = Call[~ClassWithDestructor2]            : func:r51_51, func:r51_73, this:r51_50, this:r51_72
+#   51|     m51_75(unknown)                     = ^CallSideEffect                        : ~m51_46, ~m51_49, ~m51_68, ~m51_71
+#   51|     m51_76(unknown)                     = Chi                                    : total:m51_46, total:m51_49, total:m51_68, total:m51_71, partial:m51_53, partial:m51_75
+#   51|     v51_77(void)                        = ^IndirectReadSideEffect[-1]            : &:r51_50, &:r51_72, m51_45, m51_48, m51_67, m51_70
+#   51|     m51_78(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]        : &:r51_50, &:r51_72
+#   51|     m51_79(ClassWithDestructor2)        = Chi                                    : total:m51_45, total:m51_48, total:m51_67, total:m51_70, partial:m51_56, partial:m51_78
+#   51|     r51_80(glval<ClassWithDestructor2>) = CopyValue                              : r51_32
+#   51|     r51_81(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
+#   51|     v51_82(void)                        = Call[~ClassWithDestructor2]            : func:r51_59, func:r51_81, this:r51_58, this:r51_80
+#   51|     m51_83(unknown)                     = ^CallSideEffect                        : ~m51_54, ~m51_76
+#   51|     m51_84(unknown)                     = Chi                                    : total:m51_54, total:m51_76, partial:m51_61, partial:m51_83
+#   51|     v51_85(void)                        = ^IndirectReadSideEffect[-1]            : &:r51_58, &:r51_80, m51_44, m51_47, m51_66, m51_69
+#   51|     m51_86(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]        : &:r51_58, &:r51_80
+#   51|     m51_87(ClassWithDestructor2)        = Chi                                    : total:m51_44, total:m51_47, total:m51_66, total:m51_69, partial:m51_64, partial:m51_86
 #-----|   Goto (back edge) -> Block 3
+#-----|   Goto (back edge) -> Block 4
 
 #   51|   Block 8
-#-----|   Goto (back edge) -> Block 4
 #-----|   Goto (back edge) -> Block 3
+#-----|   Goto (back edge) -> Block 4
 
 #   54| void temp_test8(bool)
 #   54|   Block 0
@@ -1284,7 +1275,7 @@ destructors_for_temps.cpp:
 #-----|   True -> Block 5
 
 #   54|   Block 1
-#   54|     m54_7(unknown) = Phi          : from 2:~m55_28, from 3:~m55_104, from 3:~m55_72
+#   54|     m54_7(unknown) = Phi          : from 2:~m55_28, from 3:~m55_62, from 3:~m55_84
 #   54|     v54_8(void)    = AliasedUse   : ~m54_7
 #   54|     v54_9(void)    = ExitFunction : 
 
@@ -1348,40 +1339,31 @@ destructors_for_temps.cpp:
 #-----|   Goto -> Block 8
 
 #   55|   Block 8
-#   55|     m55_82(ClassWithDestructor2)         = Phi                                    : from 4:m55_107, from 4:m55_75
-#   55|     m55_83(unknown)                      = Phi                                    : from 4:~m55_104, from 4:~m55_72, from 6:~m55_37
-#   55|     m55_80(ClassWithDestructor2)         = Phi                                    : from 4:m55_59, from 4:m55_91
-#   55|     m55_81(ClassWithDestructor2)         = Phi                                    : from 4:m55_67, from 4:m55_99, from 6:m55_39
-#   55|     r55_84(glval<ClassWithDestructor2>)  = CopyValue                              : r55_1
-#   55|     r55_85(glval<unknown>)               = FunctionAddress[~ClassWithDestructor2] : 
-#   55|     v55_86(void)                         = Call[~ClassWithDestructor2]            : func:r55_53, func:r55_85, this:r55_52, this:r55_84
-#   55|     m55_87(unknown)                      = ^CallSideEffect                        : ~m55_47, ~m55_51, ~m55_79, ~m55_83
-#   55|     m55_88(unknown)                      = Chi                                    : total:m55_47, total:m55_51, total:m55_79, total:m55_83, partial:m55_55, partial:m55_87
-#   55|     v55_89(void)                         = ^IndirectReadSideEffect[-1]            : &:r55_52, &:r55_84, m55_44, m55_48, m55_76, m55_80
-#   55|     m55_90(ClassWithDestructor2)         = ^IndirectMayWriteSideEffect[-1]        : &:r55_52, &:r55_84
-#   55|     m55_91(ClassWithDestructor2)         = Chi                                    : total:m55_44, total:m55_48, total:m55_76, total:m55_80, partial:m55_58, partial:m55_90
-#   55|     r55_92(glval<ClassWithDestructor2>)  = CopyValue                              : r55_32
-#   55|     r55_93(glval<unknown>)               = FunctionAddress[~ClassWithDestructor2] : 
-#   55|     v55_94(void)                         = Call[~ClassWithDestructor2]            : func:r55_61, func:r55_93, this:r55_60, this:r55_92
-#   55|     m55_95(unknown)                      = ^CallSideEffect                        : ~m55_56, ~m55_88
-#   55|     m55_96(unknown)                      = Chi                                    : total:m55_56, total:m55_88, partial:m55_63, partial:m55_95
-#   55|     v55_97(void)                         = ^IndirectReadSideEffect[-1]            : &:r55_60, &:r55_92, m55_45, m55_49, m55_77, m55_81
-#   55|     m55_98(ClassWithDestructor2)         = ^IndirectMayWriteSideEffect[-1]        : &:r55_60, &:r55_92
-#   55|     m55_99(ClassWithDestructor2)         = Chi                                    : total:m55_45, total:m55_49, total:m55_77, total:m55_81, partial:m55_66, partial:m55_98
-#   55|     r55_68(glval<ClassWithDestructor2>)  = CopyValue                              : r55_11
-#   55|     r55_69(glval<unknown>)               = FunctionAddress[~ClassWithDestructor2] : 
-#   55|     v55_70(void)                         = Call[~ClassWithDestructor2]            : func:r55_101, func:r55_69, this:r55_100, this:r55_68
-#   55|     m55_71(unknown)                      = ^CallSideEffect                        : ~m55_64, ~m55_96
-#   55|     m55_72(unknown)                      = Chi                                    : total:m55_64, total:m55_96, partial:m55_103, partial:m55_71
-#   55|     v55_73(void)                         = ^IndirectReadSideEffect[-1]            : &:r55_100, &:r55_68, m55_46, m55_50, m55_78, m55_82
-#   55|     m55_74(ClassWithDestructor2)         = ^IndirectMayWriteSideEffect[-1]        : &:r55_100, &:r55_68
-#   55|     m55_75(ClassWithDestructor2)         = Chi                                    : total:m55_46, total:m55_50, total:m55_78, total:m55_82, partial:m55_106, partial:m55_74
-#-----|   Goto (back edge) -> Block 4
+#   55|     m55_70(ClassWithDestructor2)        = Phi                                    : from 4:m55_65, from 4:m55_87, from 6:m55_39
+#   55|     m55_71(unknown)                     = Phi                                    : from 4:~m55_62, from 4:~m55_84, from 6:~m55_37
+#   55|     m55_69(ClassWithDestructor2)        = Phi                                    : from 4:m55_57, from 4:m55_79
+#   55|     r55_72(glval<ClassWithDestructor2>) = CopyValue                              : r55_1
+#   55|     r55_73(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
+#   55|     v55_74(void)                        = Call[~ClassWithDestructor2]            : func:r55_51, func:r55_73, this:r55_50, this:r55_72
+#   55|     m55_75(unknown)                     = ^CallSideEffect                        : ~m55_46, ~m55_49, ~m55_68, ~m55_71
+#   55|     m55_76(unknown)                     = Chi                                    : total:m55_46, total:m55_49, total:m55_68, total:m55_71, partial:m55_53, partial:m55_75
+#   55|     v55_77(void)                        = ^IndirectReadSideEffect[-1]            : &:r55_50, &:r55_72, m55_44, m55_47, m55_66, m55_69
+#   55|     m55_78(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]        : &:r55_50, &:r55_72
+#   55|     m55_79(ClassWithDestructor2)        = Chi                                    : total:m55_44, total:m55_47, total:m55_66, total:m55_69, partial:m55_56, partial:m55_78
+#   55|     r55_80(glval<ClassWithDestructor2>) = CopyValue                              : r55_32
+#   55|     r55_81(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
+#   55|     v55_82(void)                        = Call[~ClassWithDestructor2]            : func:r55_59, func:r55_81, this:r55_58, this:r55_80
+#   55|     m55_83(unknown)                     = ^CallSideEffect                        : ~m55_54, ~m55_76
+#   55|     m55_84(unknown)                     = Chi                                    : total:m55_54, total:m55_76, partial:m55_61, partial:m55_83
+#   55|     v55_85(void)                        = ^IndirectReadSideEffect[-1]            : &:r55_58, &:r55_80, m55_45, m55_48, m55_67, m55_70
+#   55|     m55_86(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]        : &:r55_58, &:r55_80
+#   55|     m55_87(ClassWithDestructor2)        = Chi                                    : total:m55_45, total:m55_48, total:m55_67, total:m55_70, partial:m55_64, partial:m55_86
 #-----|   Goto (back edge) -> Block 3
+#-----|   Goto (back edge) -> Block 4
 
 #   55|   Block 8
-#-----|   Goto (back edge) -> Block 4
 #-----|   Goto (back edge) -> Block 3
+#-----|   Goto (back edge) -> Block 4
 
 ir.c:
 #    7| void MyCoordsTest(int)

@@ -1060,44 +1060,42 @@
 | destructors_for_temps.cpp:51:5:51:5 | Load | m51_42 |
 | destructors_for_temps.cpp:51:5:51:5 | StoreValue | r51_6 |
 | destructors_for_temps.cpp:51:5:51:96 | Address | &:r51_1 |
-| destructors_for_temps.cpp:51:5:51:96 | Address | &:r51_52 |
-| destructors_for_temps.cpp:51:5:51:96 | Address | &:r51_52 |
-| destructors_for_temps.cpp:51:5:51:96 | Address | &:r51_84 |
-| destructors_for_temps.cpp:51:5:51:96 | Address | &:r51_84 |
-| destructors_for_temps.cpp:51:5:51:96 | Arg(this) | this:r51_52 |
-| destructors_for_temps.cpp:51:5:51:96 | Arg(this) | this:r51_84 |
-| destructors_for_temps.cpp:51:5:51:96 | CallTarget | func:r51_53 |
-| destructors_for_temps.cpp:51:5:51:96 | CallTarget | func:r51_85 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiPartial | partial:m51_55 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiPartial | partial:m51_58 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiPartial | partial:m51_87 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiPartial | partial:m51_90 |
+| destructors_for_temps.cpp:51:5:51:96 | Address | &:r51_50 |
+| destructors_for_temps.cpp:51:5:51:96 | Address | &:r51_50 |
+| destructors_for_temps.cpp:51:5:51:96 | Address | &:r51_72 |
+| destructors_for_temps.cpp:51:5:51:96 | Address | &:r51_72 |
+| destructors_for_temps.cpp:51:5:51:96 | Arg(this) | this:r51_50 |
+| destructors_for_temps.cpp:51:5:51:96 | Arg(this) | this:r51_72 |
+| destructors_for_temps.cpp:51:5:51:96 | CallTarget | func:r51_51 |
+| destructors_for_temps.cpp:51:5:51:96 | CallTarget | func:r51_73 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiPartial | partial:m51_53 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiPartial | partial:m51_56 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiPartial | partial:m51_75 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiPartial | partial:m51_78 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_45 |
 | destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_46 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_47 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_50 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_51 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_78 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_79 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_82 |
-| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_83 |
-| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:m51_59 |
-| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:m51_67 |
-| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:m51_75 |
-| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:m51_91 |
-| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:m51_99 |
-| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:m51_107 |
-| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:~m51_72 |
-| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:~m51_104 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_48 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_49 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_67 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_68 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_70 |
+| destructors_for_temps.cpp:51:5:51:96 | ChiTotal | total:m51_71 |
+| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:m51_57 |
+| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:m51_65 |
+| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:m51_79 |
+| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:m51_87 |
+| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:~m51_62 |
+| destructors_for_temps.cpp:51:5:51:96 | Phi | from 4:~m51_84 |
 | destructors_for_temps.cpp:51:5:51:96 | Phi | from 6:m51_39 |
 | destructors_for_temps.cpp:51:5:51:96 | Phi | from 6:~m51_37 |
-| destructors_for_temps.cpp:51:5:51:96 | SideEffect | m51_46 |
-| destructors_for_temps.cpp:51:5:51:96 | SideEffect | m51_50 |
-| destructors_for_temps.cpp:51:5:51:96 | SideEffect | m51_78 |
-| destructors_for_temps.cpp:51:5:51:96 | SideEffect | m51_82 |
-| destructors_for_temps.cpp:51:5:51:96 | SideEffect | ~m51_47 |
-| destructors_for_temps.cpp:51:5:51:96 | SideEffect | ~m51_51 |
-| destructors_for_temps.cpp:51:5:51:96 | SideEffect | ~m51_79 |
-| destructors_for_temps.cpp:51:5:51:96 | SideEffect | ~m51_83 |
+| destructors_for_temps.cpp:51:5:51:96 | SideEffect | m51_45 |
+| destructors_for_temps.cpp:51:5:51:96 | SideEffect | m51_48 |
+| destructors_for_temps.cpp:51:5:51:96 | SideEffect | m51_67 |
+| destructors_for_temps.cpp:51:5:51:96 | SideEffect | m51_70 |
+| destructors_for_temps.cpp:51:5:51:96 | SideEffect | ~m51_46 |
+| destructors_for_temps.cpp:51:5:51:96 | SideEffect | ~m51_49 |
+| destructors_for_temps.cpp:51:5:51:96 | SideEffect | ~m51_68 |
+| destructors_for_temps.cpp:51:5:51:96 | SideEffect | ~m51_71 |
 | destructors_for_temps.cpp:51:5:51:96 | Unary | r51_1 |
 | destructors_for_temps.cpp:51:9:51:71 | Address | &:r51_7 |
 | destructors_for_temps.cpp:51:9:51:71 | Address | &:r51_7 |
@@ -1115,42 +1113,17 @@
 | destructors_for_temps.cpp:51:41:51:62 | Address | &:r51_11 |
 | destructors_for_temps.cpp:51:41:51:62 | Address | &:r51_11 |
 | destructors_for_temps.cpp:51:41:51:62 | Address | &:r51_11 |
-| destructors_for_temps.cpp:51:41:51:62 | Address | &:r51_68 |
-| destructors_for_temps.cpp:51:41:51:62 | Address | &:r51_68 |
-| destructors_for_temps.cpp:51:41:51:62 | Address | &:r51_100 |
-| destructors_for_temps.cpp:51:41:51:62 | Address | &:r51_100 |
 | destructors_for_temps.cpp:51:41:51:62 | Arg(this) | this:r51_11 |
 | destructors_for_temps.cpp:51:41:51:62 | Arg(this) | this:r51_11 |
-| destructors_for_temps.cpp:51:41:51:62 | Arg(this) | this:r51_68 |
-| destructors_for_temps.cpp:51:41:51:62 | Arg(this) | this:r51_100 |
 | destructors_for_temps.cpp:51:41:51:62 | CallTarget | func:r51_13 |
-| destructors_for_temps.cpp:51:41:51:62 | CallTarget | func:r51_69 |
-| destructors_for_temps.cpp:51:41:51:62 | CallTarget | func:r51_101 |
 | destructors_for_temps.cpp:51:41:51:62 | ChiPartial | partial:m51_15 |
 | destructors_for_temps.cpp:51:41:51:62 | ChiPartial | partial:m51_17 |
 | destructors_for_temps.cpp:51:41:51:62 | ChiPartial | partial:m51_24 |
-| destructors_for_temps.cpp:51:41:51:62 | ChiPartial | partial:m51_71 |
-| destructors_for_temps.cpp:51:41:51:62 | ChiPartial | partial:m51_74 |
-| destructors_for_temps.cpp:51:41:51:62 | ChiPartial | partial:m51_103 |
-| destructors_for_temps.cpp:51:41:51:62 | ChiPartial | partial:m51_106 |
 | destructors_for_temps.cpp:51:41:51:62 | ChiTotal | total:m50_6 |
 | destructors_for_temps.cpp:51:41:51:62 | ChiTotal | total:m51_12 |
 | destructors_for_temps.cpp:51:41:51:62 | ChiTotal | total:m51_18 |
-| destructors_for_temps.cpp:51:41:51:62 | ChiTotal | total:m51_45 |
-| destructors_for_temps.cpp:51:41:51:62 | ChiTotal | total:m51_49 |
-| destructors_for_temps.cpp:51:41:51:62 | ChiTotal | total:m51_64 |
-| destructors_for_temps.cpp:51:41:51:62 | ChiTotal | total:m51_77 |
-| destructors_for_temps.cpp:51:41:51:62 | ChiTotal | total:m51_81 |
-| destructors_for_temps.cpp:51:41:51:62 | ChiTotal | total:m51_96 |
 | destructors_for_temps.cpp:51:41:51:62 | SideEffect | m51_18 |
-| destructors_for_temps.cpp:51:41:51:62 | SideEffect | m51_45 |
-| destructors_for_temps.cpp:51:41:51:62 | SideEffect | m51_49 |
-| destructors_for_temps.cpp:51:41:51:62 | SideEffect | m51_77 |
-| destructors_for_temps.cpp:51:41:51:62 | SideEffect | m51_81 |
 | destructors_for_temps.cpp:51:41:51:62 | SideEffect | ~m50_6 |
-| destructors_for_temps.cpp:51:41:51:62 | SideEffect | ~m51_64 |
-| destructors_for_temps.cpp:51:41:51:62 | SideEffect | ~m51_96 |
-| destructors_for_temps.cpp:51:41:51:62 | Unary | r51_11 |
 | destructors_for_temps.cpp:51:64:51:68 | Arg(1) | 1:r51_20 |
 | destructors_for_temps.cpp:51:64:51:68 | CallTarget | func:r51_19 |
 | destructors_for_temps.cpp:51:64:51:68 | ChiPartial | partial:m51_21 |
@@ -1159,38 +1132,38 @@
 | destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_32 |
 | destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_32 |
 | destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_32 |
-| destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_60 |
-| destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_60 |
-| destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_92 |
-| destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_92 |
+| destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_58 |
+| destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_58 |
+| destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_80 |
+| destructors_for_temps.cpp:51:75:51:96 | Address | &:r51_80 |
 | destructors_for_temps.cpp:51:75:51:96 | Arg(this) | this:r51_32 |
-| destructors_for_temps.cpp:51:75:51:96 | Arg(this) | this:r51_60 |
-| destructors_for_temps.cpp:51:75:51:96 | Arg(this) | this:r51_92 |
+| destructors_for_temps.cpp:51:75:51:96 | Arg(this) | this:r51_58 |
+| destructors_for_temps.cpp:51:75:51:96 | Arg(this) | this:r51_80 |
 | destructors_for_temps.cpp:51:75:51:96 | CallTarget | func:r51_34 |
-| destructors_for_temps.cpp:51:75:51:96 | CallTarget | func:r51_61 |
-| destructors_for_temps.cpp:51:75:51:96 | CallTarget | func:r51_93 |
+| destructors_for_temps.cpp:51:75:51:96 | CallTarget | func:r51_59 |
+| destructors_for_temps.cpp:51:75:51:96 | CallTarget | func:r51_81 |
 | destructors_for_temps.cpp:51:75:51:96 | ChiPartial | partial:m51_36 |
 | destructors_for_temps.cpp:51:75:51:96 | ChiPartial | partial:m51_38 |
-| destructors_for_temps.cpp:51:75:51:96 | ChiPartial | partial:m51_63 |
-| destructors_for_temps.cpp:51:75:51:96 | ChiPartial | partial:m51_66 |
-| destructors_for_temps.cpp:51:75:51:96 | ChiPartial | partial:m51_95 |
-| destructors_for_temps.cpp:51:75:51:96 | ChiPartial | partial:m51_98 |
+| destructors_for_temps.cpp:51:75:51:96 | ChiPartial | partial:m51_61 |
+| destructors_for_temps.cpp:51:75:51:96 | ChiPartial | partial:m51_64 |
+| destructors_for_temps.cpp:51:75:51:96 | ChiPartial | partial:m51_83 |
+| destructors_for_temps.cpp:51:75:51:96 | ChiPartial | partial:m51_86 |
 | destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m50_6 |
 | destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_33 |
 | destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_44 |
-| destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_48 |
-| destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_56 |
+| destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_47 |
+| destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_54 |
+| destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_66 |
+| destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_69 |
 | destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_76 |
-| destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_80 |
-| destructors_for_temps.cpp:51:75:51:96 | ChiTotal | total:m51_88 |
 | destructors_for_temps.cpp:51:75:51:96 | Load | m51_39 |
 | destructors_for_temps.cpp:51:75:51:96 | SideEffect | m51_44 |
-| destructors_for_temps.cpp:51:75:51:96 | SideEffect | m51_48 |
-| destructors_for_temps.cpp:51:75:51:96 | SideEffect | m51_76 |
-| destructors_for_temps.cpp:51:75:51:96 | SideEffect | m51_80 |
+| destructors_for_temps.cpp:51:75:51:96 | SideEffect | m51_47 |
+| destructors_for_temps.cpp:51:75:51:96 | SideEffect | m51_66 |
+| destructors_for_temps.cpp:51:75:51:96 | SideEffect | m51_69 |
 | destructors_for_temps.cpp:51:75:51:96 | SideEffect | ~m50_6 |
-| destructors_for_temps.cpp:51:75:51:96 | SideEffect | ~m51_56 |
-| destructors_for_temps.cpp:51:75:51:96 | SideEffect | ~m51_88 |
+| destructors_for_temps.cpp:51:75:51:96 | SideEffect | ~m51_54 |
+| destructors_for_temps.cpp:51:75:51:96 | SideEffect | ~m51_76 |
 | destructors_for_temps.cpp:51:75:51:96 | StoreValue | r51_40 |
 | destructors_for_temps.cpp:51:75:51:96 | Unary | r51_32 |
 | destructors_for_temps.cpp:52:1:52:1 | Address | &:r52_2 |
@@ -1200,16 +1173,16 @@
 | destructors_for_temps.cpp:52:1:52:1 | ChiPartial | partial:m52_5 |
 | destructors_for_temps.cpp:52:1:52:1 | ChiPartial | partial:m52_8 |
 | destructors_for_temps.cpp:52:1:52:1 | ChiTotal | total:m50_8 |
-| destructors_for_temps.cpp:52:1:52:1 | ChiTotal | total:m51_72 |
-| destructors_for_temps.cpp:52:1:52:1 | ChiTotal | total:m51_104 |
+| destructors_for_temps.cpp:52:1:52:1 | ChiTotal | total:m51_62 |
+| destructors_for_temps.cpp:52:1:52:1 | ChiTotal | total:m51_84 |
 | destructors_for_temps.cpp:52:1:52:1 | SideEffect | m50_8 |
-| destructors_for_temps.cpp:52:1:52:1 | SideEffect | ~m51_72 |
-| destructors_for_temps.cpp:52:1:52:1 | SideEffect | ~m51_104 |
+| destructors_for_temps.cpp:52:1:52:1 | SideEffect | ~m51_62 |
+| destructors_for_temps.cpp:52:1:52:1 | SideEffect | ~m51_84 |
 | destructors_for_temps.cpp:54:6:54:15 | ChiPartial | partial:m54_3 |
 | destructors_for_temps.cpp:54:6:54:15 | ChiTotal | total:m54_2 |
 | destructors_for_temps.cpp:54:6:54:15 | Phi | from 2:~m55_28 |
-| destructors_for_temps.cpp:54:6:54:15 | Phi | from 3:~m55_72 |
-| destructors_for_temps.cpp:54:6:54:15 | Phi | from 3:~m55_104 |
+| destructors_for_temps.cpp:54:6:54:15 | Phi | from 3:~m55_62 |
+| destructors_for_temps.cpp:54:6:54:15 | Phi | from 3:~m55_84 |
 | destructors_for_temps.cpp:54:6:54:15 | SideEffect | ~m54_7 |
 | destructors_for_temps.cpp:54:22:54:22 | Address | &:r54_5 |
 | destructors_for_temps.cpp:55:5:55:5 | Address | &:r55_2 |
@@ -1220,44 +1193,42 @@
 | destructors_for_temps.cpp:55:5:55:5 | Load | m55_42 |
 | destructors_for_temps.cpp:55:5:55:5 | StoreValue | r55_6 |
 | destructors_for_temps.cpp:55:5:55:96 | Address | &:r55_1 |
-| destructors_for_temps.cpp:55:5:55:96 | Address | &:r55_52 |
-| destructors_for_temps.cpp:55:5:55:96 | Address | &:r55_52 |
-| destructors_for_temps.cpp:55:5:55:96 | Address | &:r55_84 |
-| destructors_for_temps.cpp:55:5:55:96 | Address | &:r55_84 |
-| destructors_for_temps.cpp:55:5:55:96 | Arg(this) | this:r55_52 |
-| destructors_for_temps.cpp:55:5:55:96 | Arg(this) | this:r55_84 |
-| destructors_for_temps.cpp:55:5:55:96 | CallTarget | func:r55_53 |
-| destructors_for_temps.cpp:55:5:55:96 | CallTarget | func:r55_85 |
-| destructors_for_temps.cpp:55:5:55:96 | ChiPartial | partial:m55_55 |
-| destructors_for_temps.cpp:55:5:55:96 | ChiPartial | partial:m55_58 |
-| destructors_for_temps.cpp:55:5:55:96 | ChiPartial | partial:m55_87 |
-| destructors_for_temps.cpp:55:5:55:96 | ChiPartial | partial:m55_90 |
+| destructors_for_temps.cpp:55:5:55:96 | Address | &:r55_50 |
+| destructors_for_temps.cpp:55:5:55:96 | Address | &:r55_50 |
+| destructors_for_temps.cpp:55:5:55:96 | Address | &:r55_72 |
+| destructors_for_temps.cpp:55:5:55:96 | Address | &:r55_72 |
+| destructors_for_temps.cpp:55:5:55:96 | Arg(this) | this:r55_50 |
+| destructors_for_temps.cpp:55:5:55:96 | Arg(this) | this:r55_72 |
+| destructors_for_temps.cpp:55:5:55:96 | CallTarget | func:r55_51 |
+| destructors_for_temps.cpp:55:5:55:96 | CallTarget | func:r55_73 |
+| destructors_for_temps.cpp:55:5:55:96 | ChiPartial | partial:m55_53 |
+| destructors_for_temps.cpp:55:5:55:96 | ChiPartial | partial:m55_56 |
+| destructors_for_temps.cpp:55:5:55:96 | ChiPartial | partial:m55_75 |
+| destructors_for_temps.cpp:55:5:55:96 | ChiPartial | partial:m55_78 |
 | destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_44 |
+| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_46 |
 | destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_47 |
-| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_48 |
-| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_51 |
-| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_76 |
-| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_79 |
-| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_80 |
-| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_83 |
-| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:m55_59 |
-| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:m55_67 |
-| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:m55_75 |
-| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:m55_91 |
-| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:m55_99 |
-| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:m55_107 |
-| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:~m55_72 |
-| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:~m55_104 |
+| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_49 |
+| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_66 |
+| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_68 |
+| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_69 |
+| destructors_for_temps.cpp:55:5:55:96 | ChiTotal | total:m55_71 |
+| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:m55_57 |
+| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:m55_65 |
+| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:m55_79 |
+| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:m55_87 |
+| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:~m55_62 |
+| destructors_for_temps.cpp:55:5:55:96 | Phi | from 4:~m55_84 |
 | destructors_for_temps.cpp:55:5:55:96 | Phi | from 6:m55_39 |
 | destructors_for_temps.cpp:55:5:55:96 | Phi | from 6:~m55_37 |
 | destructors_for_temps.cpp:55:5:55:96 | SideEffect | m55_44 |
-| destructors_for_temps.cpp:55:5:55:96 | SideEffect | m55_48 |
-| destructors_for_temps.cpp:55:5:55:96 | SideEffect | m55_76 |
-| destructors_for_temps.cpp:55:5:55:96 | SideEffect | m55_80 |
-| destructors_for_temps.cpp:55:5:55:96 | SideEffect | ~m55_47 |
-| destructors_for_temps.cpp:55:5:55:96 | SideEffect | ~m55_51 |
-| destructors_for_temps.cpp:55:5:55:96 | SideEffect | ~m55_79 |
-| destructors_for_temps.cpp:55:5:55:96 | SideEffect | ~m55_83 |
+| destructors_for_temps.cpp:55:5:55:96 | SideEffect | m55_47 |
+| destructors_for_temps.cpp:55:5:55:96 | SideEffect | m55_66 |
+| destructors_for_temps.cpp:55:5:55:96 | SideEffect | m55_69 |
+| destructors_for_temps.cpp:55:5:55:96 | SideEffect | ~m55_46 |
+| destructors_for_temps.cpp:55:5:55:96 | SideEffect | ~m55_49 |
+| destructors_for_temps.cpp:55:5:55:96 | SideEffect | ~m55_68 |
+| destructors_for_temps.cpp:55:5:55:96 | SideEffect | ~m55_71 |
 | destructors_for_temps.cpp:55:5:55:96 | Unary | r55_1 |
 | destructors_for_temps.cpp:55:9:55:71 | Address | &:r55_7 |
 | destructors_for_temps.cpp:55:9:55:71 | Address | &:r55_7 |
@@ -1275,42 +1246,17 @@
 | destructors_for_temps.cpp:55:41:55:62 | Address | &:r55_11 |
 | destructors_for_temps.cpp:55:41:55:62 | Address | &:r55_11 |
 | destructors_for_temps.cpp:55:41:55:62 | Address | &:r55_11 |
-| destructors_for_temps.cpp:55:41:55:62 | Address | &:r55_68 |
-| destructors_for_temps.cpp:55:41:55:62 | Address | &:r55_68 |
-| destructors_for_temps.cpp:55:41:55:62 | Address | &:r55_100 |
-| destructors_for_temps.cpp:55:41:55:62 | Address | &:r55_100 |
 | destructors_for_temps.cpp:55:41:55:62 | Arg(this) | this:r55_11 |
 | destructors_for_temps.cpp:55:41:55:62 | Arg(this) | this:r55_11 |
-| destructors_for_temps.cpp:55:41:55:62 | Arg(this) | this:r55_68 |
-| destructors_for_temps.cpp:55:41:55:62 | Arg(this) | this:r55_100 |
 | destructors_for_temps.cpp:55:41:55:62 | CallTarget | func:r55_13 |
-| destructors_for_temps.cpp:55:41:55:62 | CallTarget | func:r55_69 |
-| destructors_for_temps.cpp:55:41:55:62 | CallTarget | func:r55_101 |
 | destructors_for_temps.cpp:55:41:55:62 | ChiPartial | partial:m55_15 |
 | destructors_for_temps.cpp:55:41:55:62 | ChiPartial | partial:m55_17 |
 | destructors_for_temps.cpp:55:41:55:62 | ChiPartial | partial:m55_24 |
-| destructors_for_temps.cpp:55:41:55:62 | ChiPartial | partial:m55_71 |
-| destructors_for_temps.cpp:55:41:55:62 | ChiPartial | partial:m55_74 |
-| destructors_for_temps.cpp:55:41:55:62 | ChiPartial | partial:m55_103 |
-| destructors_for_temps.cpp:55:41:55:62 | ChiPartial | partial:m55_106 |
 | destructors_for_temps.cpp:55:41:55:62 | ChiTotal | total:m54_4 |
 | destructors_for_temps.cpp:55:41:55:62 | ChiTotal | total:m55_12 |
 | destructors_for_temps.cpp:55:41:55:62 | ChiTotal | total:m55_18 |
-| destructors_for_temps.cpp:55:41:55:62 | ChiTotal | total:m55_46 |
-| destructors_for_temps.cpp:55:41:55:62 | ChiTotal | total:m55_50 |
-| destructors_for_temps.cpp:55:41:55:62 | ChiTotal | total:m55_64 |
-| destructors_for_temps.cpp:55:41:55:62 | ChiTotal | total:m55_78 |
-| destructors_for_temps.cpp:55:41:55:62 | ChiTotal | total:m55_82 |
-| destructors_for_temps.cpp:55:41:55:62 | ChiTotal | total:m55_96 |
 | destructors_for_temps.cpp:55:41:55:62 | SideEffect | m55_18 |
-| destructors_for_temps.cpp:55:41:55:62 | SideEffect | m55_46 |
-| destructors_for_temps.cpp:55:41:55:62 | SideEffect | m55_50 |
-| destructors_for_temps.cpp:55:41:55:62 | SideEffect | m55_78 |
-| destructors_for_temps.cpp:55:41:55:62 | SideEffect | m55_82 |
 | destructors_for_temps.cpp:55:41:55:62 | SideEffect | ~m54_4 |
-| destructors_for_temps.cpp:55:41:55:62 | SideEffect | ~m55_64 |
-| destructors_for_temps.cpp:55:41:55:62 | SideEffect | ~m55_96 |
-| destructors_for_temps.cpp:55:41:55:62 | Unary | r55_11 |
 | destructors_for_temps.cpp:55:64:55:68 | Arg(1) | 1:r55_20 |
 | destructors_for_temps.cpp:55:64:55:68 | CallTarget | func:r55_19 |
 | destructors_for_temps.cpp:55:64:55:68 | ChiPartial | partial:m55_21 |
@@ -1319,38 +1265,38 @@
 | destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_32 |
 | destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_32 |
 | destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_32 |
-| destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_60 |
-| destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_60 |
-| destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_92 |
-| destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_92 |
+| destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_58 |
+| destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_58 |
+| destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_80 |
+| destructors_for_temps.cpp:55:75:55:96 | Address | &:r55_80 |
 | destructors_for_temps.cpp:55:75:55:96 | Arg(this) | this:r55_32 |
-| destructors_for_temps.cpp:55:75:55:96 | Arg(this) | this:r55_60 |
-| destructors_for_temps.cpp:55:75:55:96 | Arg(this) | this:r55_92 |
+| destructors_for_temps.cpp:55:75:55:96 | Arg(this) | this:r55_58 |
+| destructors_for_temps.cpp:55:75:55:96 | Arg(this) | this:r55_80 |
 | destructors_for_temps.cpp:55:75:55:96 | CallTarget | func:r55_34 |
-| destructors_for_temps.cpp:55:75:55:96 | CallTarget | func:r55_61 |
-| destructors_for_temps.cpp:55:75:55:96 | CallTarget | func:r55_93 |
+| destructors_for_temps.cpp:55:75:55:96 | CallTarget | func:r55_59 |
+| destructors_for_temps.cpp:55:75:55:96 | CallTarget | func:r55_81 |
 | destructors_for_temps.cpp:55:75:55:96 | ChiPartial | partial:m55_36 |
 | destructors_for_temps.cpp:55:75:55:96 | ChiPartial | partial:m55_38 |
-| destructors_for_temps.cpp:55:75:55:96 | ChiPartial | partial:m55_63 |
-| destructors_for_temps.cpp:55:75:55:96 | ChiPartial | partial:m55_66 |
-| destructors_for_temps.cpp:55:75:55:96 | ChiPartial | partial:m55_95 |
-| destructors_for_temps.cpp:55:75:55:96 | ChiPartial | partial:m55_98 |
+| destructors_for_temps.cpp:55:75:55:96 | ChiPartial | partial:m55_61 |
+| destructors_for_temps.cpp:55:75:55:96 | ChiPartial | partial:m55_64 |
+| destructors_for_temps.cpp:55:75:55:96 | ChiPartial | partial:m55_83 |
+| destructors_for_temps.cpp:55:75:55:96 | ChiPartial | partial:m55_86 |
 | destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m54_4 |
 | destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_33 |
 | destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_45 |
-| destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_49 |
-| destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_56 |
-| destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_77 |
-| destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_81 |
-| destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_88 |
+| destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_48 |
+| destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_54 |
+| destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_67 |
+| destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_70 |
+| destructors_for_temps.cpp:55:75:55:96 | ChiTotal | total:m55_76 |
 | destructors_for_temps.cpp:55:75:55:96 | Load | m55_39 |
 | destructors_for_temps.cpp:55:75:55:96 | SideEffect | m55_45 |
-| destructors_for_temps.cpp:55:75:55:96 | SideEffect | m55_49 |
-| destructors_for_temps.cpp:55:75:55:96 | SideEffect | m55_77 |
-| destructors_for_temps.cpp:55:75:55:96 | SideEffect | m55_81 |
+| destructors_for_temps.cpp:55:75:55:96 | SideEffect | m55_48 |
+| destructors_for_temps.cpp:55:75:55:96 | SideEffect | m55_67 |
+| destructors_for_temps.cpp:55:75:55:96 | SideEffect | m55_70 |
 | destructors_for_temps.cpp:55:75:55:96 | SideEffect | ~m54_4 |
-| destructors_for_temps.cpp:55:75:55:96 | SideEffect | ~m55_56 |
-| destructors_for_temps.cpp:55:75:55:96 | SideEffect | ~m55_88 |
+| destructors_for_temps.cpp:55:75:55:96 | SideEffect | ~m55_54 |
+| destructors_for_temps.cpp:55:75:55:96 | SideEffect | ~m55_76 |
 | destructors_for_temps.cpp:55:75:55:96 | StoreValue | r55_40 |
 | destructors_for_temps.cpp:55:75:55:96 | Unary | r55_32 |
 | file://:0:0:0:0 | Address | &:r0_1 |
