@@ -72,6 +72,13 @@ signature module ModelExportSig {
    * Holds if a named must be generated for `node` if it is to be included in the exported graph.
    */
   default predicate mustBeNamed(API::Node node) { none() }
+
+  /**
+   * Holds if the exported model should preserve all paths leading to an instance of `type`,
+   * including partial ones. It does not need to be closed transitively, `ModelExport` will
+   * extend this to include type models from which `type` can be derived.
+   */
+  default predicate shouldContainType(string type) { none() }
 }
 
 /**
@@ -79,6 +86,7 @@ signature module ModelExportSig {
  */
 module ModelExport<ModelExportSig S> {
   private import codeql.mad.dynamic.GraphExport
+  private import internal.ApiGraphModelsExport
 
   private module GraphExportConfig implements GraphExportSig<API::Node> {
     predicate edge = Specific::apiGraphHasEdge/3;
@@ -147,7 +155,7 @@ module ModelExport<ModelExportSig S> {
     }
   }
 
-  private module ExportedGraph = GraphExport<API::Node, GraphExportConfig>;
+  private module ExportedGraph = TypeGraphExport<GraphExportConfig, S::shouldContainType/1>;
 
   import ExportedGraph
 }

@@ -8,6 +8,8 @@ module ModelExportConfig implements ModelExportSig {
   }
 
   predicate mustBeNamed(API::Node node) { shouldContain(node) }
+
+  predicate shouldContainType(string type) { Shared::isRelevantType(type) }
 }
 
 module Exported = ModelExport<ModelExportConfig>;

@@ -1,3 +1,7 @@
 typeModel
 | (reexport).func | reexport | Member[func] |
+| upstream-lib | (reexport).func | ReturnValue |
+| upstream-lib | reexport | Member[lib] |
+| upstream-lib.XYZ | reexport | Member[x].Member[y].Member[z] |
+| upstream-lib.XYZ | reexport | Member[xy].Member[z] |
 summaryModel
