@@ -61,6 +61,7 @@ kotlin_extractor_deps = use_extension("//java/kotlin-extractor:deps.bzl", "kotli
 # following list can be kept in sync by running `bazel mod tidy` in `codeql`
 use_repo(
     kotlin_extractor_deps,
+    "codeql_kotlin_defaults",
     "codeql_kotlin_embeddable",
     "kotlin-compiler-1.4.32",
     "kotlin-compiler-1.5.0",

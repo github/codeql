@@ -1,4 +1,4 @@
-load("//java/kotlin-extractor:versions.bzl", "VERSIONS")
+load("//java/kotlin-extractor:versions.bzl", "DEFAULT_FALLBACK_VERSION", "VERSIONS", "version_less")
 load("//misc/bazel:lfs.bzl", "lfs_smudge")
 
 _kotlin_dep_build = """
@@ -70,6 +70,41 @@ def _embeddable_source_impl(repository_ctx):
 
 _embeddable_source = repository_rule(implementation = _embeddable_source_impl)
 
+def _get_default_version(repository_ctx):
+    default_version = repository_ctx.getenv("CODEQL_KOTLIN_SINGLE_VERSION")
+    if default_version:
+        if default_version not in VERSIONS:
+            fail("overriding CODEQL_KOTLIN_SINGLE_VERSION=%s not known, must be one of:\n  %s" %
+                 (default_version, " ".join(VERSIONS)))
+        return default_version
+    kotlinc = repository_ctx.which("kotlinc")
+    if not kotlinc:
+        return DEFAULT_FALLBACK_VERSION
+    res = repository_ctx.execute([kotlinc, "-version"])
+    if not res:
+        fail("kotlinc -version failed: %s" % res.stderr)
+    out = res.stderr.split(" ")
+    if len(out) < 3:
+        fail("malformed kotlinc -version output: %s" % res.stdout)
+    host_version = out[2]
+    for version in reversed(VERSIONS):
+        if version_less(version, host_version) or version == host_version:
+            return version
+    fail("no relevant version found for host version %s among:\n  %s" % (host_version, " ".join(VERSIONS)))
+
+def _defaults_impl(repository_ctx):
+    default_version = _get_default_version(repository_ctx)
+    default_variant = "standalone"
+    if repository_ctx.getenv("CODEQL_KOTLIN_SINGLE_VERSION_EMBEDDABLE") in ("true", "1"):
+        default_variant = "embeddable"
+    repository_ctx.file(
+        "defaults.bzl",
+        "kotlin_extractor_defaults = struct(version = '%s', variant = '%s')\n" % (default_version, default_variant),
+    )
+    repository_ctx.file("BUILD.bazel")
+
+_defaults = repository_rule(implementation = _defaults_impl)
+
 def _add_rule(rules, rule, *, name, **kwargs):
     rule(name = name, **kwargs)
     rules.append(name)
@@ -80,6 +115,7 @@ def _kotlin_deps_impl(module_ctx):
         for lib in ("compiler", "compiler-embeddable", "stdlib"):
             _add_rule(deps, _kotlin_dep, name = "kotlin-%s-%s" % (lib, v))
     _add_rule(deps, _embeddable_source, name = "codeql_kotlin_embeddable")
+    _add_rule(deps, _defaults, name = "codeql_kotlin_defaults")
     return module_ctx.extension_metadata(
         root_module_direct_deps = deps,
         root_module_direct_dev_deps = [],

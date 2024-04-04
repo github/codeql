@@ -16,6 +16,8 @@ VERSIONS = [
     "2.0.255-SNAPSHOT",
 ]
 
+DEFAULT_FALLBACK_VERSION = "1.9.0-Beta"
+
 def _version_to_tuple(v):
     v, _, tail = v.partition("-")
     v = tuple([int(x) for x in v.split(".")])

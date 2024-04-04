@@ -8,6 +8,7 @@ load(
 )
 load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library")
 load("@rules_kotlin//kotlin:core.bzl", "kt_kotlinc_options")
+load("@codeql_kotlin_defaults//:defaults.bzl", "kotlin_extractor_defaults")
 
 _for_embeddable = repo_name().endswith("codeql_kotlin_embeddable")
 
@@ -114,3 +115,41 @@ _resources = [
     )
     for v in VERSIONS
 ]
+
+# default aliases, based on the kotlinc version installed on the host
+# * default version can be overridden with env variableCODEQL_KOTLIN_SINGLE_VERSION
+# * setting CODEQL_KOTLIN_SINGLE_VERSION_EMBEDDABLE=true overrides the default variant
+# * when a new kotlinc version is installed, you'll need to either `bazel clean` or
+#   `bazel fetch --force @codeql_kotlin_defaults//:all` to refresh the default
+(
+    alias(
+        name = "%s-standalone" % _common_extractor_name_prefix,
+        actual = "%s-standalone-%s" % (
+            _common_extractor_name_prefix,
+            kotlin_extractor_defaults.version,
+        ),
+        visibility = ["//visibility:public"],
+    ),
+    alias(
+        name = "%s-embeddable" % _common_extractor_name_prefix,
+        actual = "%s-embeddable-%s" % (
+            _common_extractor_name_prefix,
+            kotlin_extractor_defaults.version,
+        ),
+        visibility = ["//visibility:public"],
+    ),
+    alias(
+        name = _common_extractor_name_prefix,
+        actual = "%s-%s-%s" % (
+            _common_extractor_name_prefix,
+            kotlin_extractor_defaults.variant,
+            kotlin_extractor_defaults.version,
+        ),
+        visibility = ["//visibility:public"],
+    ),
+    alias(
+        name = "kotlin-extractor",
+        actual = _common_extractor_name_prefix,
+        visibility = ["//visibility:public"],
+    ),
+) if not _for_embeddable else None
