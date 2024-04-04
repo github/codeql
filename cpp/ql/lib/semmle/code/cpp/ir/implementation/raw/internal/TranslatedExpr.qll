@@ -90,10 +90,9 @@ abstract class TranslatedExpr extends TranslatedElement {
   final override TranslatedElement getChild(int id) {
     result = this.getChildInternal(id)
     or
-    exists(int maxChildId, int destructorIndex |
-      maxChildId = max(int childId | exists(this.getChildInternal(childId))) and
+    exists(int destructorIndex |
       result = this.getImplicitDestructorCall(destructorIndex) and
-      id = maxChildId + 1 + destructorIndex
+      id = this.getFirstDestructorCallIndex() + destructorIndex
     )
   }
 
