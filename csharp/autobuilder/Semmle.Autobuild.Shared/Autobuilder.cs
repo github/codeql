@@ -92,7 +92,7 @@ namespace Semmle.Autobuild.Shared
     /// The overall design is intended to be extensible so that in theory,
     /// it should be possible to add new build rules without touching this code.
     /// </summary>
-    public abstract class Autobuilder<TAutobuildOptions> : IAutobuilder<TAutobuildOptions> where TAutobuildOptions : AutobuildOptionsShared
+    public abstract class Autobuilder<TAutobuildOptions> : IDisposable, IAutobuilder<TAutobuildOptions> where TAutobuildOptions : AutobuildOptionsShared
     {
         /// <summary>
         /// Full file paths of files found in the project directory, as well as
@@ -350,6 +350,20 @@ namespace Semmle.Autobuild.Shared
                 DiagnosticClassifier.ClassifyLine(data);
             }
         });
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                diagnostics.Dispose();
+            }
+        }
 
         /// <summary>
         /// Value of CODEQL_EXTRACTOR_<LANG>_ROOT environment variable.

@@ -8,7 +8,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     internal class BinaryPattern : Expression
     {
         public BinaryPattern(Context cx, BinaryPatternSyntax syntax, IExpressionParentEntity parent, int child) :
-            base(new ExpressionInfo(cx, null, cx.CreateLocation(syntax.GetLocation()), GetKind(syntax.OperatorToken, syntax), parent, child, false, null))
+            base(new ExpressionInfo(cx, null, cx.CreateLocation(syntax.GetLocation()), GetKind(syntax.OperatorToken, syntax), parent, child, isCompilerGenerated: false, null))
         {
             Pattern.Create(cx, syntax.Left, this, 0);
             Pattern.Create(cx, syntax.Right, this, 1);

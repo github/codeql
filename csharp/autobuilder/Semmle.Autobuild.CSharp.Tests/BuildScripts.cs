@@ -218,6 +218,8 @@ namespace Semmle.Autobuild.CSharp.Tests
         public IList<DiagnosticMessage> Diagnostics { get; } = new List<DiagnosticMessage>();
 
         public void AddEntry(DiagnosticMessage message) => this.Diagnostics.Add(message);
+
+        public void Dispose() { }
     }
 
     /// <summary>

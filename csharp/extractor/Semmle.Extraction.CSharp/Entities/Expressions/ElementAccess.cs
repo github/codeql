@@ -22,7 +22,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             if (Kind == ExprKind.POINTER_INDIRECTION)
             {
                 var qualifierInfo = new ExpressionNodeInfo(Context, qualifier, this, 0);
-                var add = new Expression(new ExpressionInfo(Context, qualifierInfo.Type, Location, ExprKind.ADD, this, 0, false, null));
+                var add = new Expression(new ExpressionInfo(Context, qualifierInfo.Type, Location, ExprKind.ADD, this, 0, isCompilerGenerated: false, null));
                 qualifierInfo.SetParent(add, 0);
                 CreateFromNode(qualifierInfo);
                 PopulateArguments(trapFile, argumentList, 1);

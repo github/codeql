@@ -452,16 +452,23 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
     private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n.asNode(), _) }
 
     pragma[nomagic]
+    private predicate storeExUnrestricted(
+      NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
+    ) {
+      store(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode()),
+        contentType, containerType) and
+      stepFilter(node1, node2)
+    }
+
+    pragma[nomagic]
     private predicate hasReadStep(Content c) { read(_, c, _) }
 
     pragma[nomagic]
     private predicate storeEx(
       NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
-      store(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode()),
-        contentType, containerType) and
-      hasReadStep(c) and
-      stepFilter(node1, node2)
+      storeExUnrestricted(node1, c, node2, contentType, containerType) and
+      hasReadStep(c)
     }
 
     pragma[nomagic]
@@ -5141,7 +5148,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           midNode = mid.getNodeEx() and
           t1 = mid.getType() and
           ap1 = mid.getAp() and
-          storeEx(midNode, c, node, contentType, t2) and
+          storeExUnrestricted(midNode, c, node, contentType, t2) and
           ap2.getHead() = c and
           ap2.len() = unbindInt(ap1.len() + 1) and
           compatibleTypes(t1, contentType)
@@ -5318,7 +5325,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
           not outBarrier(node, state) and
           // if a node is not the target of a store, we can check `clearsContent` immediately
           (
-            storeEx(_, _, node, _, _)
+            storeExUnrestricted(_, _, node, _, _)
             or
             not clearsContentEx(node, ap.getHead())
           )
@@ -5459,7 +5466,7 @@ module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
         exists(NodeEx midNode |
           midNode = mid.getNodeEx() and
           ap = mid.getAp() and
-          storeEx(node, c, midNode, _, _) and
+          storeExUnrestricted(node, c, midNode, _, _) and
           ap.getHead() = c
         )
       }
