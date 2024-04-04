@@ -129,3 +129,26 @@ class SyntaxErrorTest extends ModelInput::SinkModelCsv {
 query predicate syntaxErrors(ApiGraphModels::AccessPath path) { path.hasSyntaxError() }
 
 query predicate warning = ModelOutput::getAWarning/0;
+
+class FqnSinks extends ModelInput::SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "(fqn1);Argument[0];test-sink", //
+        "(fqn2).p1;Argument[0];test-sink", //
+        "(fqn3).p1.p2;Argument[0];test-sink", //
+        "(global);Member[fqnGlobal1].Argument[0];test-sink", //
+        "(global).fqnGlobal2;Argument[0];test-sink", //
+        "(global).fqnGlobal3.p1.p2.p3;Argument[0];test-sink", //
+      ]
+  }
+}
+
+class FqnSource extends ModelInput::SourceModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        "(global).fqnSource;;test-source", //
+      ]
+  }
+}

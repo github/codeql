@@ -256,3 +256,24 @@ function fuzzy() {
   fuzzyCall(source()); // OK - does not come from 'testlib'
   require('blah').fuzzyCall(source()); // OK - does not come from 'testlib'
 }
+
+function fqn() {
+  require('fqn1')(source()); // NOT OK
+  require('fqn1').p1(source()); // OK
+  require('fqn1').p1.p2(source()); // OK
+
+  require('fqn2')(source()); // OK
+  require('fqn2').p1(source()); // NOT OK
+  require('fqn2').p1.p2(source()); // OK
+
+  require('fqn3')(source()); // OK
+  require('fqn3').p1(source()); // OK
+  require('fqn3').p1.p2(source()); // NOT OK
+
+  window.fqnGlobal1(source()); // NOT OK
+  window.fqnGlobal2(source()); // NOT OK
+  window.fqnGlobal3(source()); // OK
+  window.fqnGlobal3.p1.p2.p3(source()); // NOT OK
+
+  sink(window.fqnSource); // NOT OK
+}

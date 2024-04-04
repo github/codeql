@@ -43,6 +43,18 @@ predicate parseTypeString(string rawType, string package, string qualifiedName) 
 }
 
 /**
+ * Holds if `rawType` is of form `(package).accessPath`.
+ */
+bindingset[rawType]
+predicate parseValueAccessPath(string rawType, string package, string accessPath) {
+  exists(string regexp |
+    regexp = "\\(([^)]+)\\)(.*)" and
+    package = rawType.regexpCapture(regexp, 1) and
+    accessPath = rawType.regexpCapture(regexp, 2).regexpReplaceAll("^\\.", "")
+  )
+}
+
+/**
  * Holds if models describing `package` may be relevant for the analysis of this database.
  */
 predicate isPackageUsed(string package) {
@@ -58,7 +70,7 @@ predicate isPackageUsed(string package) {
 bindingset[type]
 predicate isTypeUsed(string type) {
   exists(string package |
-    parseTypeString(type, package, _) and
+    (parseTypeString(type, package, _) or parseValueAccessPath(type, package, _)) and
     isPackageUsed(package)
   )
 }
@@ -75,13 +87,56 @@ private predicate parseRelevantTypeString(string rawType, string package, string
   parseTypeString(rawType, package, qualifiedName)
 }
 
+/**
+ * A string of form `(package).accessPath` appearing in a relevant `type` column.
+ *
+ * The `accessPath` is a dot-separated list of property names to be evaluated relative to the
+ * package's root export object.
+ *
+ * Value-access paths are thus interpreted as values and property names. This is in contrast to
+ * a type string of form `package.type` which refers to the TypeScript type `type` exported from `package`.
+ * These paths are favored when generating a model from source code, as opposed to generating the
+ * model from `.d.ts` files.
+ *
+ * In common cases `foo.C` will refer to instances of the class `C` from `foo`, whereas `(foo).C` will refer
+ * to the class `C` itself. However, in general there is no way to know the relationship between values and types
+ * without having access to the `.d.ts` file. We therefore support both formats when consuming models, and the
+ * model generator is free to use either (or both) formats, depending on what the model is built from.
+ */
+private class ValueAccessPathString extends string {
+  private string package;
+  private string accessPath;
+
+  ValueAccessPathString() {
+    isRelevantType(this) and
+    parseValueAccessPath(this, package, accessPath)
+  }
+
+  string getPackageName() { result = package }
+
+  string getAccessPath() { result = accessPath }
+
+  pragma[nomagic]
+  string getAccessPathComponent(int n) {
+    result = accessPath.splitAt(".", n) and not accessPath = ""
+  }
+
+  pragma[nomagic]
+  int getNumAccessPathComponent() { result = count(int n | exists(this.getAccessPathComponent(n))) }
+}
+
 /** Holds if `global` is a global variable referenced via a the `global` package in a CSV row. */
 private predicate isRelevantGlobal(string global) {
   exists(AccessPath path, AccessPathToken token |
-    isRelevantFullPath("global", path) and
+    isRelevantFullPath(["global", "(global)"], path) and
     token = path.getToken(0) and
     token.getName() = "Member" and
     global = token.getAnArgument()
+  )
+  or
+  exists(ValueAccessPathString ap |
+    ap.getPackageName() = "global" and
+    global = ap.getAccessPathComponent(0)
   )
 }
 
@@ -112,12 +167,33 @@ bindingset[type, path]
 API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
   // Global variable accesses is via the 'global' package
   exists(AccessPathToken token |
-    type = "global" and
+    type = ["global", "(global)"] and
     token = path.getToken(0) and
     token.getName() = "Member" and
     result = getGlobalNode(token.getAnArgument()) and
     n = 1
   )
+}
+
+private API::Node packageNode(string packageName) {
+  result = API::Internal::getAModuleImportRaw(packageName)
+  or
+  result = API::moduleExport(packageName)
+}
+
+private API::Node getNodeFromValueAccessPath(ValueAccessPathString ap, int n) {
+  n = 0 and
+  result = packageNode(ap.getPackageName())
+  or
+  ap.getPackageName() = "global" and
+  n = 1 and
+  result = getGlobalNode(ap.getAccessPathComponent(0))
+  or
+  result = getNodeFromValueAccessPath(ap, n - 1).getMember(ap.getAccessPathComponent(n - 1))
+}
+
+private API::Node getNodeFromValueAccessPath(ValueAccessPathString ap) {
+  result = getNodeFromValueAccessPath(ap, ap.getNumAccessPathComponent())
 }
 
 /** Gets a JavaScript-specific interpretation of the `(package, type)` tuple. */
@@ -126,11 +202,13 @@ API::Node getExtraNodeFromType(string type) {
     parseRelevantTypeString(type, package, qualifiedName)
   |
     qualifiedName = "" and
-    result = [API::moduleImport(package), API::moduleExport(package)]
+    result = packageNode(package)
     or
     // Access instance of a type based on type annotations
     result = API::Internal::getANodeOfTypeRaw(package, qualifiedName)
   )
+  or
+  result = getNodeFromValueAccessPath(type)
 }
 
 /**
