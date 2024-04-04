@@ -27,10 +27,11 @@ class DangerousAssignOpExpr extends AssignOp {
 
 predicate problematicCasting(Type t, Expr e) { e.getType().(NumType).widerThan(t) }
 
-from DangerousAssignOpExpr a, Expr e
+from DangerousAssignOpExpr a, Expr e, Variable v
 where
   e = a.getSource() and
-  problematicCasting(a.getDest().getType(), e)
+  problematicCasting(a.getDest().getType(), e) and
+  v = a.getDest().(VarAccess).getVariable()
 select a,
-  "Implicit cast of source type " + e.getType().getName() + " to narrower destination type " +
-    a.getDest().getType().getName() + "."
+  "Implicit cast of source $@ to narrower destination type " + a.getDest().getType().getName() + ".",
+  v, "type " + e.getType().getName()
