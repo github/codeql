@@ -147,7 +147,11 @@ private predicate isPrivateAssignment(DataFlow::Node node) {
   )
 }
 
-private predicate isPrivateLike(API::Node node) { isPrivateAssignment(node.asSink()) }
+/**
+ * Holds if `node` is the sink node corresponding to the right-hand side of a private declaration,
+ * like a private field (`#field`) or class member with the `private` modifier.
+ */
+predicate isPrivateLike(API::Node node) { isPrivateAssignment(node.asSink()) }
 
 bindingset[name]
 private int getNameBadness(string name) {

@@ -435,7 +435,7 @@ private API::Node getNodeFromType(string type) {
  * Gets the API node identified by the first `n` tokens of `path` in the given `(type, path)` tuple.
  */
 pragma[nomagic]
-private API::Node getNodeFromPath(string type, AccessPath path, int n) {
+API::Node getNodeFromPath(string type, AccessPath path, int n) {
   isRelevantFullPath(type, path) and
   (
     n = 0 and

@@ -353,3 +353,23 @@ module ModelOutputSpecific {
     )
   }
 }
+
+/**
+ * Holds if the edge `pred -> succ` labelled with `path` exists in the API graph.
+ */
+bindingset[pred]
+predicate apiGraphHasEdge(API::Node pred, string path, API::Node succ) {
+  exists(string name | succ = pred.getMember(name) and path = "Member[" + name + "]")
+  or
+  succ = pred.getUnknownMember() and path = "AnyMember"
+  or
+  succ = pred.getInstance() and path = "Instance"
+  or
+  succ = pred.getReturn() and path = "ReturnValue"
+  or
+  exists(int n | succ = pred.getParameter(n) |
+    if pred instanceof API::Use then path = "Argument[" + n + "]" else path = "Parameter[" + n + "]"
+  )
+  or
+  succ = pred.getPromised() and path = "Awaited"
+}
