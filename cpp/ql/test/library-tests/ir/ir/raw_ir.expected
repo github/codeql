@@ -14644,6 +14644,41 @@ ir.cpp:
 # 2410|     v2410_5(void) = AliasedUse   : ~m?
 # 2410|     v2410_6(void) = ExitFunction : 
 
+# 2434| void rethrow_with_destruction(int)
+# 2434|   Block 0
+# 2434|     v2434_1(void)                       = EnterFunction                        : 
+# 2434|     mu2434_2(unknown)                   = AliasedDefinition                    : 
+# 2434|     mu2434_3(unknown)                   = InitializeNonLocal                   : 
+# 2434|     r2434_4(glval<int>)                 = VariableAddress[x]                   : 
+# 2434|     mu2434_5(int)                       = InitializeParameter[x]               : &:r2434_4
+# 2435|     r2435_1(glval<ClassWithDestructor>) = VariableAddress[c]                   : 
+# 2435|     mu2435_2(ClassWithDestructor)       = Uninitialized[c]                     : &:r2435_1
+# 2435|     r2435_3(glval<unknown>)             = FunctionAddress[ClassWithDestructor] : 
+# 2435|     v2435_4(void)                       = Call[ClassWithDestructor]            : func:r2435_3, this:r2435_1
+# 2435|     mu2435_5(unknown)                   = ^CallSideEffect                      : ~m?
+# 2435|     mu2435_6(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]      : &:r2435_1
+# 2436|     v2436_1(void)                       = ReThrow                              : 
+
+# 2434|   Block 1
+# 2434|     v2434_6(void) = AliasedUse   : ~m?
+# 2434|     v2434_7(void) = ExitFunction : 
+
+# 2434|   Block 2
+# 2434|     v2434_8(void) = ReturnVoid : 
+#-----|   Goto -> Block 1
+
+# 2434|   Block 3
+# 2434|     v2434_9(void) = Unwind : 
+#-----|   Goto -> Block 1
+
+# 2437|   Block 4
+# 2437|     r2437_1(glval<ClassWithDestructor>) = VariableAddress[c]                    : 
+# 2437|     r2437_2(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
+# 2437|     v2437_3(void)                       = Call[~ClassWithDestructor]            : func:r2437_2, this:r2437_1
+# 2437|     mu2437_4(unknown)                   = ^CallSideEffect                       : ~m?
+# 2437|     v2437_5(void)                       = ^IndirectReadSideEffect[-1]           : &:r2437_1, ~m?
+# 2437|     mu2437_6(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]       : &:r2437_1
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0

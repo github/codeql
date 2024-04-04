@@ -20198,6 +20198,28 @@ ir.cpp:
 # 2430|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>
 # 2430|           ValueCategory = lvalue
 # 2432|     getStmt(6): [ReturnStmt] return ...
+# 2434| [TopLevelFunction] void rethrow_with_destruction(int)
+# 2434|   <params>: 
+# 2434|     getParameter(0): [Parameter] x
+# 2434|         Type = [IntType] int
+# 2434|   getEntryPoint(): [BlockStmt] { ... }
+# 2435|     getStmt(0): [DeclStmt] declaration
+# 2435|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of c
+# 2435|           Type = [Class] ClassWithDestructor
+# 2435|         getVariable().getInitializer(): [Initializer] initializer for c
+# 2435|           getExpr(): [ConstructorCall] call to ClassWithDestructor
+# 2435|               Type = [VoidType] void
+# 2435|               ValueCategory = prvalue
+# 2436|     getStmt(1): [ExprStmt] ExprStmt
+# 2436|       getExpr(): [ReThrowExpr] re-throw exception 
+# 2436|           Type = [VoidType] void
+# 2436|           ValueCategory = prvalue
+# 2437|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2437|             Type = [VoidType] void
+# 2437|             ValueCategory = prvalue
+# 2437|           getQualifier(): [VariableAccess] c
+# 2437|               Type = [Class] ClassWithDestructor
+# 2437|               ValueCategory = lvalue
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

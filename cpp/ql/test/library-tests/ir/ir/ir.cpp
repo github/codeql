@@ -2431,4 +2431,9 @@ void initialization_with_temp_destructor() {
         y += x;
 }
 
+void rethrow_with_destruction(int x) {
+    ClassWithDestructor c;
+    throw;
+}
+
 // semmle-extractor-options: -std=c++20 --clang

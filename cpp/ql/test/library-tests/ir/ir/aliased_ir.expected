@@ -15901,6 +15901,24 @@ ir.cpp:
 # 2410|   Block 13
 # 2410|     v2410_8(void) = Unreached : 
 
+# 2434| void rethrow_with_destruction(int)
+# 2434|   Block 0
+# 2434|     v2434_1(void)                       = EnterFunction                        : 
+# 2434|     m2434_2(unknown)                    = AliasedDefinition                    : 
+# 2434|     m2434_3(unknown)                    = InitializeNonLocal                   : 
+# 2434|     m2434_4(unknown)                    = Chi                                  : total:m2434_2, partial:m2434_3
+# 2434|     r2434_5(glval<int>)                 = VariableAddress[x]                   : 
+# 2434|     m2434_6(int)                        = InitializeParameter[x]               : &:r2434_5
+# 2435|     r2435_1(glval<ClassWithDestructor>) = VariableAddress[c]                   : 
+# 2435|     m2435_2(ClassWithDestructor)        = Uninitialized[c]                     : &:r2435_1
+# 2435|     r2435_3(glval<unknown>)             = FunctionAddress[ClassWithDestructor] : 
+# 2435|     v2435_4(void)                       = Call[ClassWithDestructor]            : func:r2435_3, this:r2435_1
+# 2435|     m2435_5(unknown)                    = ^CallSideEffect                      : ~m2434_4
+# 2435|     m2435_6(unknown)                    = Chi                                  : total:m2434_4, partial:m2435_5
+# 2435|     m2435_7(ClassWithDestructor)        = ^IndirectMayWriteSideEffect[-1]      : &:r2435_1
+# 2435|     m2435_8(ClassWithDestructor)        = Chi                                  : total:m2435_2, partial:m2435_7
+# 2436|     v2436_1(void)                       = ReThrow                              : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
