@@ -8,10 +8,13 @@ import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.ApiGraphs
 
-
+/**
+ * Provides models for the `gradio` PyPI package.
+ * See https://pypi.org/project/gradio/.
+ */
 module Gradio {
   /**
-   * Event handlers in Gradio, which are sources of untrusted data.
+   * The event handlers in Gradio, which take untrusted data.
    */
 
   class GradioInput extends API::CallNode {
@@ -37,12 +40,16 @@ module Gradio {
 
     }
 
+    /**
+     * The high-level gradio.Interface and gradio.ChatInterface classes, which take untrusted data.
+     */
     class GradioInterface extends API::CallNode {
       GradioInterface() { this = API::moduleImport("gradio").getMember(["Interface", "ChatInterface"]).getACall() }
     }
 
   /**
-   * Track `inputs` parameters in Gradio event handlers, that are lists, back to source, f.ex. `gr.Textbox(...)`. Handle keyword and positional parameters.
+   * The `inputs` parameters in Gradio event handlers, that are lists and are sources of untrusted data.
+   * This model allows tracking each element list back to source, f.ex. `gr.Textbox(...)`.
    */
   class GradioInputList extends RemoteFlowSource::Range {
     GradioInputList() {
@@ -67,7 +74,7 @@ module Gradio {
   }
 
   /**
-   * Track `inputs` parameters in Gradio event handlers, that are not lists. Handle keyword and positional parameters.
+   * The `inputs` parameters in Gradio event handlers, that are not lists and are sources of untrusted data.
    */
   class GradioInputParameter extends RemoteFlowSource::Range {
     GradioInputParameter() {
@@ -92,7 +99,7 @@ module Gradio {
  }
 
   /**
-   * Track `inputs` parameters in Gradio decorators to event handlers.
+   * Track `inputs` parameters in Gradio decorators to event handlers, that are sources of untrusted data.
    */
  class GradioInputDecorator extends RemoteFlowSource::Range {
     GradioInputDecorator() {
