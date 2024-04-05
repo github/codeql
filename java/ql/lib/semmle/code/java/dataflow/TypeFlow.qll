@@ -23,7 +23,7 @@ private module Input implements TypeFlowInput<J::Location> {
 
   /** Gets `t` if it is a `RefType` or the boxed type if `t` is a primitive type. */
   private RefType boxIfNeeded(J::Type t) {
-    t.(J::PrimitiveType).getBoxedType() = result or
+    t.(PrimitiveType).getBoxedType() = result or
     result = t
   }
 
