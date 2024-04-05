@@ -3,6 +3,7 @@ import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.JwtHandlerAdapter;
 import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.JwtParserBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.DefaultJwtParser;
 import io.jsonwebtoken.impl.DefaultJwtParserBuilder;
@@ -13,40 +14,154 @@ public class MissingJWTSignatureCheckTest {
         return Jwts.parser().setSigningKey("someBase64EncodedKey");
     }
 
+    private JwtParser getASignedParserNonBuilderStyle() {
+        JwtParser parser = Jwts.parser();
+        parser.setSigningKey("someBase64EncodedKey");
+        return parser;
+    }
+
     private JwtParser getASignedParserFromParserBuilder() {
         return Jwts.parserBuilder().setSigningKey("someBase64EncodedKey").build();
+    }
+
+    private JwtParser getASignedParserFromParserBuilderNonBuilderStyle() {
+        JwtParserBuilder parserBuilder = Jwts.parserBuilder();
+        parserBuilder.setSigningKey("someBase64EncodedKey");
+        JwtParser parser = parserBuilder.build();
+        return parser;
     }
 
     private JwtParser getASignedNewParser() {
         return new DefaultJwtParser().setSigningKey("someBase64EncodedKey");
     }
 
+    private JwtParser getASignedNewParserNonBuilderStyle() {
+        JwtParser parser = new DefaultJwtParser();
+        parser.setSigningKey("someBase64EncodedKey");
+        return parser;
+    }
+
     private void callSignedParsers() {
         JwtParser parser1 = getASignedParser();
-        badJwtOnParserBuilder(parser1, "");
-        badJwtHandlerOnParserBuilder(parser1, "");
-        goodJwtOnParserBuilder(parser1, "");
-        goodJwtHandler(parser1, "");
+        parser1.parse(""); // $hasMissingJwtSignatureCheck
+        parser1.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // $hasMissingJwtSignatureCheck
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser1.parseClaimsJws("") // Safe
+                .getBody();
+        parser1.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
 
         JwtParser parser2 = getASignedParserFromParserBuilder();
-        badJwtOnParserBuilder(parser2, "");
-        badJwtHandlerOnParserBuilder(parser2, "");
-        goodJwtOnParserBuilder(parser2, "");
-        goodJwtHandler(parser2, "");
+        parser2.parse(""); // $hasMissingJwtSignatureCheck
+        parser2.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // $hasMissingJwtSignatureCheck
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser2.parseClaimsJws("") // Safe
+                .getBody();
+        parser2.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
 
         JwtParser parser3 = getASignedNewParser();
-        badJwtOnParserBuilder(parser3, "");
-        badJwtHandlerOnParserBuilder(parser3, "");
-        goodJwtOnParserBuilder(parser3, "");
-        goodJwtHandler(parser3, "");
+        parser3.parse(""); // $hasMissingJwtSignatureCheck
+        parser3.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // $hasMissingJwtSignatureCheck
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser3.parseClaimsJws("") // Safe
+                .getBody();
+        parser3.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
+
+        JwtParser parser4 = getASignedParserNonBuilderStyle();
+        parser4.parse(""); // $hasMissingJwtSignatureCheck
+        parser4.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // $hasMissingJwtSignatureCheck
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser4.parseClaimsJws("") // Safe
+                .getBody();
+        parser4.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
+
+        JwtParser parser5 = getASignedParserFromParserBuilderNonBuilderStyle();
+        parser5.parse(""); // $hasMissingJwtSignatureCheck
+        parser5.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // $hasMissingJwtSignatureCheck
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser5.parseClaimsJws("") // Safe
+                .getBody();
+        parser5.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
+
+        JwtParser parser6 = getASignedNewParserNonBuilderStyle();
+        parser6.parse(""); // $hasMissingJwtSignatureCheck
+        parser6.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // $hasMissingJwtSignatureCheck
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser6.parseClaimsJws("") // Safe
+                .getBody();
+        parser6.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
     }
 
     private JwtParser getAnUnsignedParser() {
         return Jwts.parser();
     }
 
+    private JwtParser getAnUnsignedParserNonBuilderStyle() {
+        JwtParser parser = Jwts.parser();
+        return parser;
+    }
+
     private JwtParser getAnUnsignedParserFromParserBuilder() {
         return Jwts.parserBuilder().build();
+    }
+
+    private JwtParser getAnUnsignedParserFromParserBuilderNonBuilderStyle() {
+        JwtParserBuilder parserBuilder = Jwts.parserBuilder();
+        JwtParser parser = parserBuilder.build();
+        return parser;
     }
 
     private JwtParser getAnUnsignedNewParser() {
@@ -55,55 +170,95 @@ public class MissingJWTSignatureCheckTest {
 
     private void callUnsignedParsers() {
         JwtParser parser1 = getAnUnsignedParser();
-        badJwtOnParserBuilder(parser1, "");
-        badJwtHandlerOnParserBuilder(parser1, "");
-        goodJwtOnParserBuilder(parser1, "");
-        goodJwtHandler(parser1, "");
+        parser1.parse(""); // Ignored, parser has no signing key
+        parser1.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // Ignored, parser has no signing key
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser1.parseClaimsJws("") // Safe
+                .getBody();
+        parser1.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
 
         JwtParser parser2 = getAnUnsignedParserFromParserBuilder();
-        badJwtOnParserBuilder(parser2, "");
-        badJwtHandlerOnParserBuilder(parser2, "");
-        goodJwtOnParserBuilder(parser2, "");
-        goodJwtHandler(parser2, "");
+        parser2.parse(""); // Ignored, parser has no signing key
+        parser2.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // Ignored, parser has no signing key
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser2.parseClaimsJws("") // Safe
+                .getBody();
+        parser2.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
 
         JwtParser parser3 = getAnUnsignedNewParser();
-        badJwtOnParserBuilder(parser3, "");
-        badJwtHandlerOnParserBuilder(parser3, "");
-        goodJwtOnParserBuilder(parser3, "");
-        goodJwtHandler(parser3, "");
+        parser3.parse(""); // Ignored, parser has no signing key
+        parser3.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // Ignored, parser has no signing key
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser3.parseClaimsJws("") // Safe
+                .getBody();
+        parser3.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
+
+        JwtParser parser4 = getAnUnsignedParserNonBuilderStyle();
+        parser4.parse(""); // Ignored, parser has no signing key
+        parser4.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // Ignored, parser has no signing key
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser4.parseClaimsJws("") // Safe
+                .getBody();
+        parser4.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
+
+        JwtParser parser5 = getAnUnsignedParserFromParserBuilderNonBuilderStyle();
+        parser5.parse(""); // Ignored, parser has no signing key
+        parser5.parse("", new JwtHandlerAdapter<Jwt<Header, String>>() { // Ignored, parser has no signing key
+            @Override
+            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
+                return jwt;
+            }
+        });
+        parser5.parseClaimsJws("") // Safe
+                .getBody();
+        parser5.parse("", new JwtHandlerAdapter<Jws<String>>() { // Safe
+            @Override
+            public Jws<String> onPlaintextJws(Jws<String> jws) {
+                return jws;
+            }
+        });
     }
 
     private void signParserAfterParseCall() {
         JwtParser parser = getAnUnsignedParser();
         parser.parse(""); // Safe
         parser.setSigningKey("someBase64EncodedKey");
-    }
-
-    private void badJwtOnParserBuilder(JwtParser parser, String token) {
-        parser.parse(token); // $hasMissingJwtSignatureCheck
-    }
-
-    private void badJwtHandlerOnParserBuilder(JwtParser parser, String token) {
-        parser.parse(token, new JwtHandlerAdapter<Jwt<Header, String>>() { // $hasMissingJwtSignatureCheck
-            @Override
-            public Jwt<Header, String> onPlaintextJwt(Jwt<Header, String> jwt) {
-                return jwt;
-            }
-        });
-    }
-
-    private void goodJwtOnParserBuilder(JwtParser parser, String token) {
-        parser.parseClaimsJws(token) // Safe
-                .getBody();
-    }
-
-    private void goodJwtHandler(JwtParser parser, String token) {
-        parser.parse(token, new JwtHandlerAdapter<Jws<String>>() { // Safe
-            @Override
-            public Jws<String> onPlaintextJws(Jws<String> jws) {
-                return jws;
-            }
-        });
     }
 
     private void badJwtOnParserBuilder(String token) {
