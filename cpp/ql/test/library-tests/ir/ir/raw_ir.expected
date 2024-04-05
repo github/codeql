@@ -1273,42 +1273,36 @@ destructors_for_temps.cpp:
 #-----|   Goto -> Block 2
 
 #   72|   Block 2
-#   72|     r72_8(glval<bool>)     = VariableAddress[#temp72:12]     : 
-#   72|     r72_9(bool)            = Load[#temp72:12]                : &:r72_8, ~m?
-#   72|     r72_10(glval<string>)  = CopyValue                       : r72_21
-#   72|     r72_11(glval<unknown>) = FunctionAddress[~string]        : 
-#   72|     v72_12(void)           = Call[~string]                   : func:r72_11, this:r72_10
-#   72|     mu72_13(unknown)       = ^CallSideEffect                 : ~m?
-#   72|     v72_14(void)           = ^IndirectReadSideEffect[-1]     : &:r72_10, ~m?
-#   72|     mu72_15(string)        = ^IndirectMayWriteSideEffect[-1] : &:r72_10
-#   72|     mu72_16(bool)          = Store[#return]                  : &:r72_1, r72_9
-#   70|     r70_6(glval<bool>)     = VariableAddress[#return]        : 
-#   70|     v70_7(void)            = ReturnValue                     : &:r70_6, ~m?
-#   70|     v70_8(void)            = AliasedUse                      : ~m?
-#   70|     v70_9(void)            = ExitFunction                    : 
+#   72|     r72_8(glval<bool>) = VariableAddress[#temp72:12] : 
+#   72|     r72_9(bool)        = Load[#temp72:12]            : &:r72_8, ~m?
+#   72|     mu72_10(bool)      = Store[#return]              : &:r72_1, r72_9
+#   70|     r70_6(glval<bool>) = VariableAddress[#return]    : 
+#   70|     v70_7(void)        = ReturnValue                 : &:r70_6, ~m?
+#   70|     v70_8(void)        = AliasedUse                  : ~m?
+#   70|     v70_9(void)        = ExitFunction                : 
 
 #   72|   Block 3
-#   72|     r72_17(glval<bool>) = VariableAddress[#temp72:12] : 
-#   72|     r72_18(bool)        = Constant[1]                 : 
-#   72|     mu72_19(bool)       = Store[#temp72:12]           : &:r72_17, r72_18
+#   72|     r72_11(glval<bool>) = VariableAddress[#temp72:12] : 
+#   72|     r72_12(bool)        = Constant[1]                 : 
+#   72|     mu72_13(bool)       = Store[#temp72:12]           : &:r72_11, r72_12
 #-----|   Goto -> Block 2
 
 #   72|   Block 4
-#   72|     r72_20(glval<unknown>) = FunctionAddress[const_ref_string] : 
-#   72|     r72_21(glval<string>)  = VariableAddress[#temp72:34]       : 
-#   72|     mu72_22(string)        = Uninitialized[#temp72:34]         : &:r72_21
-#   72|     r72_23(glval<unknown>) = FunctionAddress[string]           : 
-#   72|     r72_24(glval<char[1]>) = StringConstant[""]                : 
-#   72|     r72_25(char *)         = Convert                           : r72_24
-#   72|     v72_26(void)           = Call[string]                      : func:r72_23, this:r72_21, 0:r72_25
-#   72|     mu72_27(unknown)       = ^CallSideEffect                   : ~m?
-#   72|     v72_28(void)           = ^BufferReadSideEffect[0]          : &:r72_25, ~m?
-#   72|     mu72_29(string)        = ^IndirectMayWriteSideEffect[-1]   : &:r72_21
-#   72|     r72_30(string &)       = CopyValue                         : r72_21
-#   72|     r72_31(bool)           = Call[const_ref_string]            : func:r72_20, 0:r72_30
-#   72|     mu72_32(unknown)       = ^CallSideEffect                   : ~m?
-#   72|     v72_33(void)           = ^BufferReadSideEffect[0]          : &:r72_30, ~m?
-#   72|     v72_34(void)           = ConditionalBranch                 : r72_31
+#   72|     r72_14(glval<unknown>) = FunctionAddress[const_ref_string] : 
+#   72|     r72_15(glval<string>)  = VariableAddress[#temp72:34]       : 
+#   72|     mu72_16(string)        = Uninitialized[#temp72:34]         : &:r72_15
+#   72|     r72_17(glval<unknown>) = FunctionAddress[string]           : 
+#   72|     r72_18(glval<char[1]>) = StringConstant[""]                : 
+#   72|     r72_19(char *)         = Convert                           : r72_18
+#   72|     v72_20(void)           = Call[string]                      : func:r72_17, this:r72_15, 0:r72_19
+#   72|     mu72_21(unknown)       = ^CallSideEffect                   : ~m?
+#   72|     v72_22(void)           = ^BufferReadSideEffect[0]          : &:r72_19, ~m?
+#   72|     mu72_23(string)        = ^IndirectMayWriteSideEffect[-1]   : &:r72_15
+#   72|     r72_24(string &)       = CopyValue                         : r72_15
+#   72|     r72_25(bool)           = Call[const_ref_string]            : func:r72_14, 0:r72_24
+#   72|     mu72_26(unknown)       = ^CallSideEffect                   : ~m?
+#   72|     v72_27(void)           = ^BufferReadSideEffect[0]          : &:r72_24, ~m?
+#   72|     v72_28(void)           = ConditionalBranch                 : r72_25
 #-----|   False -> Block 1
 #-----|   True -> Block 3
 

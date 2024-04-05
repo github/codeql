@@ -20,7 +20,6 @@ multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
-| destructors_for_temps.cpp:72:34:72:35 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | destructors_for_temps.cpp:70:6:70:37 | bool conditional_temp_via_conjunction(bool) | bool conditional_temp_via_conjunction(bool) |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated

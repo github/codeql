@@ -1242,62 +1242,48 @@
 | destructors_for_temps.cpp:70:6:70:37 | Address | &:r70_7 |
 | destructors_for_temps.cpp:70:6:70:37 | ChiPartial | partial:m70_3 |
 | destructors_for_temps.cpp:70:6:70:37 | ChiTotal | total:m70_2 |
-| destructors_for_temps.cpp:70:6:70:37 | Load | m72_23 |
-| destructors_for_temps.cpp:70:6:70:37 | SideEffect | ~m72_19 |
+| destructors_for_temps.cpp:70:6:70:37 | Load | m72_13 |
+| destructors_for_temps.cpp:70:6:70:37 | SideEffect | ~m72_9 |
 | destructors_for_temps.cpp:70:44:70:44 | Address | &:r70_5 |
 | destructors_for_temps.cpp:72:5:72:37 | Address | &:r72_1 |
 | destructors_for_temps.cpp:72:12:72:12 | Address | &:r72_2 |
 | destructors_for_temps.cpp:72:12:72:12 | Condition | r72_3 |
 | destructors_for_temps.cpp:72:12:72:12 | Load | m70_6 |
-| destructors_for_temps.cpp:72:12:72:36 | Address | &:r72_7 |
-| destructors_for_temps.cpp:72:12:72:36 | Address | &:r72_13 |
-| destructors_for_temps.cpp:72:12:72:36 | Address | &:r72_24 |
-| destructors_for_temps.cpp:72:12:72:36 | Load | m72_12 |
+| destructors_for_temps.cpp:72:12:72:36 | Address | &:r72_6 |
+| destructors_for_temps.cpp:72:12:72:36 | Address | &:r72_11 |
+| destructors_for_temps.cpp:72:12:72:36 | Address | &:r72_14 |
+| destructors_for_temps.cpp:72:12:72:36 | Load | m72_10 |
 | destructors_for_temps.cpp:72:12:72:36 | Phi | from 0:~m70_4 |
-| destructors_for_temps.cpp:72:12:72:36 | Phi | from 1:m72_5 |
-| destructors_for_temps.cpp:72:12:72:36 | Phi | from 1:m72_9 |
-| destructors_for_temps.cpp:72:12:72:36 | Phi | from 1:~m72_6 |
-| destructors_for_temps.cpp:72:12:72:36 | Phi | from 3:m72_26 |
-| destructors_for_temps.cpp:72:12:72:36 | Phi | from 3:m72_38 |
-| destructors_for_temps.cpp:72:12:72:36 | Phi | from 3:~m72_42 |
-| destructors_for_temps.cpp:72:12:72:36 | Phi | from 4:m72_38 |
-| destructors_for_temps.cpp:72:12:72:36 | Phi | from 4:~m72_42 |
-| destructors_for_temps.cpp:72:12:72:36 | StoreValue | r72_8 |
-| destructors_for_temps.cpp:72:12:72:36 | StoreValue | r72_14 |
-| destructors_for_temps.cpp:72:12:72:36 | StoreValue | r72_25 |
-| destructors_for_temps.cpp:72:17:72:32 | CallTarget | func:r72_27 |
-| destructors_for_temps.cpp:72:17:72:32 | ChiPartial | partial:m72_41 |
-| destructors_for_temps.cpp:72:17:72:32 | ChiTotal | total:m72_35 |
-| destructors_for_temps.cpp:72:17:72:32 | Condition | r72_40 |
-| destructors_for_temps.cpp:72:17:72:32 | SideEffect | ~m72_35 |
-| destructors_for_temps.cpp:72:34:72:35 | Address | &:r72_15 |
-| destructors_for_temps.cpp:72:34:72:35 | Address | &:r72_15 |
-| destructors_for_temps.cpp:72:34:72:35 | Address | &:r72_28 |
-| destructors_for_temps.cpp:72:34:72:35 | Address | &:r72_28 |
-| destructors_for_temps.cpp:72:34:72:35 | Address | &:r72_32 |
-| destructors_for_temps.cpp:72:34:72:35 | Address | &:r72_39 |
-| destructors_for_temps.cpp:72:34:72:35 | Arg(0) | 0:r72_32 |
-| destructors_for_temps.cpp:72:34:72:35 | Arg(0) | 0:r72_39 |
-| destructors_for_temps.cpp:72:34:72:35 | Arg(this) | this:r72_15 |
-| destructors_for_temps.cpp:72:34:72:35 | Arg(this) | this:r72_28 |
-| destructors_for_temps.cpp:72:34:72:35 | CallTarget | func:r72_16 |
-| destructors_for_temps.cpp:72:34:72:35 | CallTarget | func:r72_30 |
-| destructors_for_temps.cpp:72:34:72:35 | ChiPartial | partial:m72_18 |
-| destructors_for_temps.cpp:72:34:72:35 | ChiPartial | partial:m72_21 |
-| destructors_for_temps.cpp:72:34:72:35 | ChiPartial | partial:m72_34 |
-| destructors_for_temps.cpp:72:34:72:35 | ChiPartial | partial:m72_37 |
+| destructors_for_temps.cpp:72:12:72:36 | Phi | from 1:m72_8 |
+| destructors_for_temps.cpp:72:12:72:36 | Phi | from 1:~m72_5 |
+| destructors_for_temps.cpp:72:12:72:36 | Phi | from 3:m72_16 |
+| destructors_for_temps.cpp:72:12:72:36 | Phi | from 3:~m72_32 |
+| destructors_for_temps.cpp:72:12:72:36 | Phi | from 4:~m72_32 |
+| destructors_for_temps.cpp:72:12:72:36 | StoreValue | r72_7 |
+| destructors_for_temps.cpp:72:12:72:36 | StoreValue | r72_12 |
+| destructors_for_temps.cpp:72:12:72:36 | StoreValue | r72_15 |
+| destructors_for_temps.cpp:72:17:72:32 | CallTarget | func:r72_17 |
+| destructors_for_temps.cpp:72:17:72:32 | ChiPartial | partial:m72_31 |
+| destructors_for_temps.cpp:72:17:72:32 | ChiTotal | total:m72_25 |
+| destructors_for_temps.cpp:72:17:72:32 | Condition | r72_30 |
+| destructors_for_temps.cpp:72:17:72:32 | SideEffect | ~m72_25 |
+| destructors_for_temps.cpp:72:34:72:35 | Address | &:r72_18 |
+| destructors_for_temps.cpp:72:34:72:35 | Address | &:r72_18 |
+| destructors_for_temps.cpp:72:34:72:35 | Address | &:r72_22 |
+| destructors_for_temps.cpp:72:34:72:35 | Address | &:r72_29 |
+| destructors_for_temps.cpp:72:34:72:35 | Arg(0) | 0:r72_22 |
+| destructors_for_temps.cpp:72:34:72:35 | Arg(0) | 0:r72_29 |
+| destructors_for_temps.cpp:72:34:72:35 | Arg(this) | this:r72_18 |
+| destructors_for_temps.cpp:72:34:72:35 | CallTarget | func:r72_20 |
+| destructors_for_temps.cpp:72:34:72:35 | ChiPartial | partial:m72_24 |
+| destructors_for_temps.cpp:72:34:72:35 | ChiPartial | partial:m72_27 |
 | destructors_for_temps.cpp:72:34:72:35 | ChiTotal | total:m70_4 |
-| destructors_for_temps.cpp:72:34:72:35 | ChiTotal | total:m72_10 |
-| destructors_for_temps.cpp:72:34:72:35 | ChiTotal | total:m72_11 |
-| destructors_for_temps.cpp:72:34:72:35 | ChiTotal | total:m72_29 |
-| destructors_for_temps.cpp:72:34:72:35 | SideEffect | m72_10 |
+| destructors_for_temps.cpp:72:34:72:35 | ChiTotal | total:m72_19 |
 | destructors_for_temps.cpp:72:34:72:35 | SideEffect | ~m70_3 |
 | destructors_for_temps.cpp:72:34:72:35 | SideEffect | ~m70_4 |
-| destructors_for_temps.cpp:72:34:72:35 | SideEffect | ~m72_11 |
-| destructors_for_temps.cpp:72:34:72:35 | SideEffect | ~m72_38 |
-| destructors_for_temps.cpp:72:34:72:35 | Unary | r72_28 |
-| destructors_for_temps.cpp:72:34:72:35 | Unary | r72_28 |
-| destructors_for_temps.cpp:72:34:72:35 | Unary | r72_31 |
+| destructors_for_temps.cpp:72:34:72:35 | SideEffect | ~m72_28 |
+| destructors_for_temps.cpp:72:34:72:35 | Unary | r72_18 |
+| destructors_for_temps.cpp:72:34:72:35 | Unary | r72_21 |
 | file://:0:0:0:0 | Address | &:r0_1 |
 | file://:0:0:0:0 | Address | &:r0_1 |
 | file://:0:0:0:0 | Address | &:r0_1 |

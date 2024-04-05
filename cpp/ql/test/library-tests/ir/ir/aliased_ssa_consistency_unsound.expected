@@ -2,7 +2,6 @@ missingOperand
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
-| destructors_for_temps.cpp:72:12:72:36 | Phi: ... && ... | Instruction 'Phi: ... && ...' is missing an operand for predecessor block 'EnterFunction: conditional_temp_via_conjunction' in function '$@'. | destructors_for_temps.cpp:70:6:70:37 | bool conditional_temp_via_conjunction(bool) | bool conditional_temp_via_conjunction(bool) |
 missingOperandType
 | destructors_for_temps.cpp:39:3:39:53 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | destructors_for_temps.cpp:38:6:38:15 | void temp_test5(bool) | void temp_test5(bool) |
 | ir.cpp:1425:5:1425:30 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1414:6:1414:21 | void temporary_string() | void temporary_string() |
@@ -24,7 +23,6 @@ multipleIRTypes
 lostReachability
 backEdgeCountMismatch
 useNotDominatedByDefinition
-| destructors_for_temps.cpp:72:34:72:35 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | destructors_for_temps.cpp:70:6:70:37 | bool conditional_temp_via_conjunction(bool) | bool conditional_temp_via_conjunction(bool) |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated
