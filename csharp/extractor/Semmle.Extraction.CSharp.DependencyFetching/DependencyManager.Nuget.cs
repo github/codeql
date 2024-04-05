@@ -389,13 +389,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             logger.LogInfo($"Checking if Nuget feed '{feed}' is reachable...");
             using HttpClient client = new();
-            var timeoutSeconds = 1;
-            var tryCount = 4;
+            int timeoutMilliSeconds = int.TryParse(Environment.GetEnvironmentVariable(EnvironmentVariableNames.NugetFeedResponsivenessInitialTimeout), out timeoutMilliSeconds)
+                ? timeoutMilliSeconds
+                : 1000;
+            int tryCount = int.TryParse(Environment.GetEnvironmentVariable(EnvironmentVariableNames.NugetFeedResponsivenessRequestCount), out tryCount)
+                ? tryCount
+                : 4;
 
             for (var i = 0; i < tryCount; i++)
             {
                 using var cts = new CancellationTokenSource();
-                cts.CancelAfter(timeoutSeconds * 1000);
+                cts.CancelAfter(timeoutMilliSeconds);
                 try
                 {
                     ExecuteGetRequest(feed, client, cts.Token).GetAwaiter().GetResult();
@@ -407,8 +411,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         tce.CancellationToken == cts.Token &&
                         cts.Token.IsCancellationRequested)
                     {
-                        logger.LogWarning($"Didn't receive answer from Nuget feed '{feed}' in {timeoutSeconds} seconds.");
-                        timeoutSeconds *= 2;
+                        logger.LogWarning($"Didn't receive answer from Nuget feed '{feed}' in {timeoutMilliSeconds}ms.");
+                        timeoutMilliSeconds *= 2;
                         continue;
                     }
 
@@ -418,7 +422,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            logger.LogError($"Didn't receive answer from Nuget feed '{feed}'. Tried it {tryCount} times.");
+            logger.LogWarning($"Didn't receive answer from Nuget feed '{feed}'. Tried it {tryCount} times.");
             return false;
         }
 
@@ -428,17 +432,18 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var feeds = GetAllFeeds(allFiles);
 
             var excludedFeeds = Environment.GetEnvironmentVariable(EnvironmentVariableNames.ExcludedNugetFeedsFromResponsivenessCheck)
-                ?.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries)
+                ?.Split(" ", StringSplitOptions.RemoveEmptyEntries)
                 .ToHashSet() ?? [];
 
             if (excludedFeeds.Count > 0)
             {
-                logger.LogInfo($"Excluded feeds from responsiveness check: {string.Join(", ", excludedFeeds.OrderBy(f => f))}");
+                logger.LogInfo($"Excluded Nuget feeds from responsiveness check: {string.Join(", ", excludedFeeds.OrderBy(f => f))}");
             }
 
             var allFeedsReachable = feeds.All(feed => excludedFeeds.Contains(feed) || IsFeedReachable(feed));
             if (!allFeedsReachable)
             {
+                logger.LogWarning("Found unreachable Nuget feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.");
                 diagnosticsWriter.AddEntry(new DiagnosticMessage(
                     Language.CSharp,
                     "buildless/unreachable-feed",

@@ -25,7 +25,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <summary>
         /// Specifies the NuGet feeds to exclude from the responsiveness check.
         /// </summary>
-        public const string ExcludedNugetFeedsFromResponsivenessCheck = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_EXCLUDED_FROM_CHECK";
+        public const string ExcludedNugetFeedsFromResponsivenessCheck = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_EXCLUDED";
+
+        /// <summary>
+        /// Specifies the timeout for the initial check of NuGet feeds responsiveness.
+        /// </summary>
+        public const string NugetFeedResponsivenessInitialTimeout = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_TIMEOUT";
+
+        /// <summary>
+        /// Specifies how many requests to make to the NuGet feed to check its responsiveness.
+        /// </summary>
+        public const string NugetFeedResponsivenessRequestCount = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_LIMIT";
 
         /// <summary>
         /// Specifies the location of the diagnostic directory.
