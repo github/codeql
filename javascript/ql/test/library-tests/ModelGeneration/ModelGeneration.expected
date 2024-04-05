@@ -1,4 +1,11 @@
 typeModel
+| (aliases).Alias1 | aliases | Member[Alias1] |
+| (aliases).Alias1 | aliases | Member[Alias2] |
+| (aliases).Alias1 | aliases | Member[Alias3].Member[x] |
+| (aliases).Alias1 | aliases | Member[Alias4].Member[x].Member[x] |
+| (aliases).Alias1 | aliases | Member[AliasedClass] |
+| (aliases).Alias1.prototype | (aliases).Alias1 | Instance |
+| (aliases).Alias1.prototype.foo | (aliases).Alias1.prototype | Member[foo] |
 | (reexport).func | reexport | Member[func] |
 | (return-this).FluentInterface | return-this | Member[FluentInterface] |
 | (return-this).FluentInterface.prototype | (return-this).FluentInterface | Instance |
@@ -14,6 +21,7 @@ typeModel
 | upstream-lib.XYZ | reexport | Member[x].Member[y].Member[z] |
 | upstream-lib.XYZ | reexport | Member[xy].Member[z] |
 summaryModel
+| (aliases).Alias1.prototype |  |  | Member[foo].ReturnValue | type |
 | (return-this).FluentInterface.prototype |  |  | Member[bar].ReturnValue | type |
 | (return-this).FluentInterface.prototype |  |  | Member[baz].ReturnValue | type |
 | (return-this).FluentInterface.prototype |  |  | Member[foo].ReturnValue | type |
