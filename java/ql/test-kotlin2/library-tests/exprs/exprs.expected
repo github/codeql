@@ -121,8 +121,8 @@
 | delegatedProperties.kt:23:29:23:31 | String | delegatedProperties.kt:23:9:23:31 | <get-name> | TypeAccess |
 | delegatedProperties.kt:23:29:23:31 | String | delegatedProperties.kt:23:9:23:31 | <get-name> | TypeAccess |
 | delegatedProperties.kt:23:29:23:31 | String | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:23:29:23:31 | get(...) | delegatedProperties.kt:23:9:23:31 | invoke | MethodCall |
-| delegatedProperties.kt:23:29:23:31 | getValue(...) | delegatedProperties.kt:23:29:23:31 | <get-name> | MethodCall |
+| delegatedProperties.kt:23:29:23:31 | get(...) | delegatedProperties.kt:23:29:23:31 | invoke | MethodCall |
+| delegatedProperties.kt:23:29:23:31 | getValue(...) | delegatedProperties.kt:23:9:23:31 | <get-name> | MethodCall |
 | delegatedProperties.kt:23:29:23:31 | name$delegate | delegatedProperties.kt:18:5:40:5 | fn | LocalVariableDeclExpr |
 | delegatedProperties.kt:23:29:23:31 | name$delegate | delegatedProperties.kt:23:9:23:31 | <get-name> | VarAccess |
 | delegatedProperties.kt:23:29:23:31 | new (...) | delegatedProperties.kt:23:29:23:31 | get | ClassInstanceExpr |
@@ -158,8 +158,8 @@
 | delegatedProperties.kt:28:50:28:71 | ? ... | file://:0:0:0:0 | <none> | WildcardTypeAccess |
 | delegatedProperties.kt:28:50:28:71 | KProperty<?> | file://:0:0:0:0 | <none> | TypeAccess |
 | delegatedProperties.kt:28:74:28:83 | int | file://:0:0:0:0 | <none> | TypeAccess |
-| delegatedProperties.kt:29:17:29:24 | setCurValue(...) | delegatedProperties.kt:28:13:30:13 | setValue | MethodCall |
-| delegatedProperties.kt:29:17:29:24 | this | delegatedProperties.kt:28:13:30:13 | setValue | ThisAccess |
+| delegatedProperties.kt:29:17:29:32 | setCurValue(...) | delegatedProperties.kt:28:13:30:13 | setValue | MethodCall |
+| delegatedProperties.kt:29:17:29:32 | this | delegatedProperties.kt:28:13:30:13 | setValue | ThisAccess |
 | delegatedProperties.kt:29:28:29:32 | value | delegatedProperties.kt:28:13:30:13 | setValue | VarAccess |
 | delegatedProperties.kt:33:30:33:47 | ...::... | delegatedProperties.kt:33:9:33:47 | <get-readOnly> | PropertyRefExpr |
 | delegatedProperties.kt:33:30:33:47 | <get-readOnly>(...) | delegatedProperties.kt:33:30:33:47 | get | MethodCall |
@@ -1379,7 +1379,6 @@
 | exprs.kt:137:12:137:23 | ... > ... | exprs.kt:4:1:142:1 | topLevelMethod | GTExpr |
 | exprs.kt:137:23:137:23 | 0 | exprs.kt:4:1:142:1 | topLevelMethod | IntegerLiteral |
 | exprs.kt:138:9:138:16 | variable | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
-| exprs.kt:138:9:138:16 | variable | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:138:9:138:18 | ...=... | exprs.kt:4:1:142:1 | topLevelMethod | AssignExpr |
 | exprs.kt:138:9:138:18 | <Stmt> | exprs.kt:4:1:142:1 | topLevelMethod | StmtExpr |
 | exprs.kt:138:9:138:18 | <implicit coercion to unit> | exprs.kt:4:1:142:1 | topLevelMethod | ImplicitCoercionToUnitExpr |
@@ -1388,6 +1387,7 @@
 | exprs.kt:138:9:138:18 | <unary> | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:138:9:138:18 | Unit | exprs.kt:4:1:142:1 | topLevelMethod | TypeAccess |
 | exprs.kt:138:9:138:18 | dec(...) | exprs.kt:4:1:142:1 | topLevelMethod | MethodCall |
+| exprs.kt:138:9:138:18 | variable | exprs.kt:4:1:142:1 | topLevelMethod | VarAccess |
 | exprs.kt:141:12:141:14 | 123 | exprs.kt:4:1:142:1 | topLevelMethod | IntegerLiteral |
 | exprs.kt:141:12:141:20 | ... + ... | exprs.kt:4:1:142:1 | topLevelMethod | AddExpr |
 | exprs.kt:141:18:141:20 | 456 | exprs.kt:4:1:142:1 | topLevelMethod | IntegerLiteral |
@@ -1423,7 +1423,6 @@
 | exprs.kt:160:29:160:29 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:160:29:160:42 | ...instanceof... | exprs.kt:156:1:163:1 | typeTests | InstanceOfExpr |
 | exprs.kt:160:29:160:42 | Subclass1 | exprs.kt:156:1:163:1 | typeTests | TypeAccess |
-| exprs.kt:160:45:160:49 | <Stmt> | exprs.kt:156:1:163:1 | typeTests | StmtExpr |
 | exprs.kt:160:47:160:47 | <implicit cast> | exprs.kt:156:1:163:1 | typeTests | ImplicitCastExpr |
 | exprs.kt:160:47:160:47 | Subclass1 | exprs.kt:156:1:163:1 | typeTests | TypeAccess |
 | exprs.kt:160:47:160:47 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
@@ -1431,7 +1430,6 @@
 | exprs.kt:160:58:160:58 | y | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:161:5:161:13 | q | exprs.kt:156:1:163:1 | typeTests | LocalVariableDeclExpr |
 | exprs.kt:161:13:161:13 | 1 | exprs.kt:156:1:163:1 | typeTests | IntegerLiteral |
-| exprs.kt:162:5:162:48 | true | exprs.kt:156:1:163:1 | typeTests | BooleanLiteral |
 | exprs.kt:162:5:162:48 | when ... | exprs.kt:156:1:163:1 | typeTests | WhenExpr |
 | exprs.kt:162:9:162:9 | x | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:162:9:162:22 | ...instanceof... | exprs.kt:156:1:163:1 | typeTests | InstanceOfExpr |
@@ -1439,8 +1437,9 @@
 | exprs.kt:162:27:162:31 | ...=... | exprs.kt:156:1:163:1 | typeTests | AssignExpr |
 | exprs.kt:162:27:162:31 | q | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:162:31:162:31 | 2 | exprs.kt:156:1:163:1 | typeTests | IntegerLiteral |
+| exprs.kt:162:40:162:48 | true | exprs.kt:156:1:163:1 | typeTests | BooleanLiteral |
 | exprs.kt:162:42:162:46 | ...=... | exprs.kt:156:1:163:1 | typeTests | AssignExpr |
-| exprs.kt:162:42:162:42 | q | exprs.kt:156:1:163:1 | typeTests | VarAccess |
+| exprs.kt:162:42:162:46 | q | exprs.kt:156:1:163:1 | typeTests | VarAccess |
 | exprs.kt:162:46:162:46 | 3 | exprs.kt:156:1:163:1 | typeTests | IntegerLiteral |
 | exprs.kt:165:1:172:1 | Unit | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:165:9:165:18 | Polygon | file://:0:0:0:0 | <none> | TypeAccess |
@@ -1452,8 +1451,6 @@
 | exprs.kt:167:8:167:16 | ... (value not-equals) ... | exprs.kt:165:1:172:1 | foo | ValueNEExpr |
 | exprs.kt:167:13:167:16 | null | exprs.kt:165:1:172:1 | foo | NullLiteral |
 | exprs.kt:168:9:168:29 | r2 | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
-| exprs.kt:168:29:168:29 | <implicit not null> | exprs.kt:165:1:172:1 | foo | ImplicitNotNullExpr |
-| exprs.kt:168:29:168:29 | Rectangle | exprs.kt:165:1:172:1 | foo | TypeAccess |
 | exprs.kt:168:29:168:29 | r | exprs.kt:165:1:172:1 | foo | VarAccess |
 | exprs.kt:169:9:169:30 | height | exprs.kt:165:1:172:1 | foo | LocalVariableDeclExpr |
 | exprs.kt:169:22:169:23 | r2 | exprs.kt:165:1:172:1 | foo | VarAccess |
@@ -1497,17 +1494,17 @@
 | exprs.kt:175:25:175:28 | Direction | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:175:25:175:28 | Direction.EAST | exprs.kt:0:0:0:0 | <clinit> | VarAccess |
 | exprs.kt:175:25:175:28 | new Direction(...) | exprs.kt:0:0:0:0 | <clinit> | ClassInstanceExpr |
-| exprs.kt:178:1:182:1 | 0 | exprs.kt:178:6:182:1 | Color | IntegerLiteral |
-| exprs.kt:178:1:182:1 | Color | exprs.kt:178:6:182:1 | Color | TypeAccess |
 | exprs.kt:178:1:182:1 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:1:182:1 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:1:182:1 | Color | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:1:182:1 | Color[] | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:178:1:182:1 | Enum<Color> | exprs.kt:178:6:182:1 | Color | TypeAccess |
 | exprs.kt:178:1:182:1 | EnumEntries<Color> | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:1:182:1 | String | file://:0:0:0:0 | <none> | TypeAccess |
-| exprs.kt:178:1:182:1 | new Enum(...) | exprs.kt:178:6:182:1 | Color | ClassInstanceExpr |
-| exprs.kt:178:1:182:1 | null | exprs.kt:178:6:182:1 | Color | NullLiteral |
+| exprs.kt:178:17:178:30 | 0 | exprs.kt:178:17:178:30 | Color | IntegerLiteral |
+| exprs.kt:178:17:178:30 | Color | exprs.kt:178:17:178:30 | Color | TypeAccess |
+| exprs.kt:178:17:178:30 | Enum<Color> | exprs.kt:178:17:178:30 | Color | TypeAccess |
+| exprs.kt:178:17:178:30 | new Enum<Color>(...) | exprs.kt:178:17:178:30 | Color | ClassInstanceExpr |
+| exprs.kt:178:17:178:30 | null | exprs.kt:178:17:178:30 | Color | NullLiteral |
 | exprs.kt:178:18:178:29 | ...=... | exprs.kt:178:17:178:30 | Color | KtInitializerAssignExpr |
 | exprs.kt:178:18:178:29 | int | file://:0:0:0:0 | <none> | TypeAccess |
 | exprs.kt:178:18:178:29 | int | file://:0:0:0:0 | <none> | TypeAccess |

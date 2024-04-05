@@ -7031,11 +7031,6 @@
 | System.Diagnostics;ProcessStartInfo;false;get_UserName;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Diagnostics;ProcessStartInfo;false;get_Verb;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Diagnostics;ProcessStartInfo;false;get_WorkingDirectory;();;Argument[this];ReturnValue;taint;df-generated |
-| System.Diagnostics;ProcessStartInfo;false;set_Arguments;(System.String);;Argument[0];Argument[this];taint;df-generated |
-| System.Diagnostics;ProcessStartInfo;false;set_FileName;(System.String);;Argument[0];Argument[this];taint;df-generated |
-| System.Diagnostics;ProcessStartInfo;false;set_UserName;(System.String);;Argument[0];Argument[this];taint;df-generated |
-| System.Diagnostics;ProcessStartInfo;false;set_Verb;(System.String);;Argument[0];Argument[this];taint;df-generated |
-| System.Diagnostics;ProcessStartInfo;false;set_WorkingDirectory;(System.String);;Argument[0];Argument[this];taint;df-generated |
 | System.Diagnostics;ProcessThreadCollection;false;Add;(System.Diagnostics.ProcessThread);;Argument[0];Argument[this].Element;value;manual |
 | System.Diagnostics;ProcessThreadCollection;false;CopyTo;(System.Diagnostics.ProcessThread[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
 | System.Diagnostics;SampleActivity<T>;false;BeginInvoke;(System.Diagnostics.ActivityCreationOptions<T>,System.AsyncCallback,System.Object);;Argument[1];Argument[1].Parameter[delegate-self];value;hq-generated |

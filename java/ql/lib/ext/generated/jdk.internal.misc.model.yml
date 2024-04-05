@@ -1,0 +1,11 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["jdk.internal.misc", "Signal$Handler", "handle", "(Signal)", "summary", "df-generated"]
+      - ["jdk.internal.misc", "VM$BufferPool", "getCount", "()", "summary", "df-generated"]
+      - ["jdk.internal.misc", "VM$BufferPool", "getMemoryUsed", "()", "summary", "df-generated"]
+      - ["jdk.internal.misc", "VM$BufferPool", "getName", "()", "summary", "df-generated"]
+      - ["jdk.internal.misc", "VM$BufferPool", "getTotalCapacity", "()", "summary", "df-generated"]

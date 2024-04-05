@@ -2245,7 +2245,11 @@ class TranslatedDeleteOrDeleteArrayExpr extends TranslatedNonConstantExpr, Trans
 
   final override Type getCallResultType() { result = expr.getType() }
 
-  final override TranslatedExpr getQualifier() { none() }
+  final override TranslatedExpr getQualifier() {
+    result = getTranslatedExpr(expr.getDestructorCall())
+  }
+
+  final override Instruction getQualifierResult() { none() }
 
   final override predicate hasArguments() {
     // All deallocator calls have at least one argument.
@@ -2260,7 +2264,7 @@ class TranslatedDeleteOrDeleteArrayExpr extends TranslatedNonConstantExpr, Trans
   final override TranslatedExpr getArgument(int index) {
     // The only argument we define is the pointer to be deallocated.
     index = 0 and
-    result = getTranslatedExpr(expr.getExpr().getFullyConverted())
+    result = getTranslatedExpr(expr.getExprWithReuse().getFullyConverted())
   }
 
   final override predicate mayThrowException() {

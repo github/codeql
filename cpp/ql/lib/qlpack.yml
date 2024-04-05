@@ -1,5 +1,5 @@
 name: codeql/cpp-all
-version: 0.12.10
+version: 0.12.11-dev
 groups: cpp
 dbscheme: semmlecode.cpp.dbscheme
 extractor: cpp
@@ -11,4 +11,5 @@ dependencies:
   codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
+  codeql/xml: ${workspace}
 warnOnImplicitThis: true
