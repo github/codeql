@@ -19,7 +19,9 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
    * Holds if data can flow from `n1` to `n2` in one step, `n1` is not necessarily
    * functionally determined by `n2`, and `n1` might take a non-null value.
    */
-  private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) { I::joinStep(n1, n2) and not isNull(n1) }
+  private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
+    I::joinStep(n1, n2) and not isNull(n1)
+  }
 
   private predicate anyStep(TypeFlowNode n1, TypeFlowNode n2) { joinStep(n1, n2) or step(n1, n2) }
 
@@ -184,6 +186,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   /**
    * Gets the source declaration of a direct supertype of this type, excluding itself.
    */
+  pragma[nomagic]
   private Type getASourceSupertype(Type t) {
     result = getSourceDeclaration(t.getASupertype()) and
     result != t
