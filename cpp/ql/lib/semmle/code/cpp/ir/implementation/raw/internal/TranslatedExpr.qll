@@ -2015,6 +2015,13 @@ abstract class TranslatedAllocationSize extends TranslatedExpr, TTranslatedAlloc
   final override predicate producesExprResult() { none() }
 
   final override Instruction getResult() { result = this.getInstruction(AllocationSizeTag()) }
+
+  final override predicate handlesDestructorsExplicitly() {
+    // Since the enclosing `TranslatedNewOrNewArrayExpr` (implicitly) handles the destructors
+    // we need to disable the implicit handling here as otherwise the destructors will have
+    // multiple parents
+    any()
+  }
 }
 
 TranslatedAllocationSize getTranslatedAllocationSize(NewOrNewArrayExpr newExpr) {
@@ -2171,6 +2178,13 @@ class TranslatedAllocatorCall extends TTranslatedAllocatorCall, TranslatedDirect
   final override string toString() { result = "Allocator call for " + expr.toString() }
 
   final override predicate producesExprResult() { none() }
+
+  final override predicate handlesDestructorsExplicitly() {
+    // Since the enclosing `TranslatedNewOrNewArrayExpr` (implicitly) handles the destructors
+    // we need to disable the implicit handling here as otherwise the destructors will have
+    // multiple parents
+    any()
+  }
 
   override Function getInstructionFunction(InstructionTag tag) {
     tag = CallTargetTag() and result = expr.getAllocator()
