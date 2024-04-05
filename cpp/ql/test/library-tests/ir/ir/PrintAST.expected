@@ -2221,6 +2221,61 @@ destructors_for_temps.cpp:
 #   59|               Type = [Class] ClassWithDestructor2
 #   59|               ValueCategory = xvalue
 #   60|     getStmt(1): [ReturnStmt] return ...
+#   62| [CopyAssignmentOperator] string& string::operator=(string const&)
+#   62|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const string &
+#   62| [CopyConstructor] void string::string(string const&)
+#   62|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const string &
+#   64| [Constructor] void string::string(char const*)
+#   64|   <params>: 
+#   64|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   64|         Type = [PointerType] const char *
+#   65| [Destructor] void string::~string()
+#   65|   <params>: 
+#   68| [TopLevelFunction] bool const_ref_string(string const&)
+#   68|   <params>: 
+#   68|     getParameter(0): [Parameter] (unnamed parameter 0)
+#   68|         Type = [LValueReferenceType] const string &
+#   70| [TopLevelFunction] bool conditional_temp_via_conjunction(bool)
+#   70|   <params>: 
+#   70|     getParameter(0): [Parameter] b
+#   70|         Type = [BoolType] bool
+#   71|   getEntryPoint(): [BlockStmt] { ... }
+#   72|     getStmt(0): [ReturnStmt] return ...
+#   72|       getExpr(): [LogicalAndExpr] ... && ...
+#   72|           Type = [BoolType] bool
+#   72|           ValueCategory = prvalue
+#   72|         getLeftOperand(): [VariableAccess] b
+#   72|             Type = [BoolType] bool
+#   72|             ValueCategory = prvalue(load)
+#   72|         getRightOperand(): [FunctionCall] call to const_ref_string
+#   72|             Type = [BoolType] bool
+#   72|             ValueCategory = prvalue
+#   72|           getArgument(0): [ConstructorCall] call to string
+#   72|               Type = [VoidType] void
+#   72|               ValueCategory = prvalue
+#   72|             getArgument(0): 
+#   72|                 Type = [ArrayType] const char[1]
+#   72|                 Value = [StringLiteral] ""
+#   72|                 ValueCategory = lvalue
+#   72|             getArgument(0).getFullyConverted(): [ArrayToPointerConversion] array to pointer conversion
+#   72|                 Type = [PointerType] const char *
+#   72|                 ValueCategory = prvalue
+#   72|           getArgument(0).getFullyConverted(): [ReferenceToExpr] (reference to)
+#   72|               Type = [LValueReferenceType] const string &
+#   72|               ValueCategory = prvalue
+#   72|             getExpr(): [TemporaryObjectExpr] temporary object
+#   72|                 Type = [SpecifiedType] const string
+#   72|                 ValueCategory = lvalue
+#   72|         getImplicitDestructorCall(0): [DestructorCall] call to ~string
+#   72|             Type = [VoidType] void
+#   72|             ValueCategory = prvalue
+#   72|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   72|               Type = [SpecifiedType] const string
+#   72|               ValueCategory = xvalue
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 

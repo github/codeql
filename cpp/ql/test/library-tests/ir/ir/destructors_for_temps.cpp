@@ -58,3 +58,16 @@ void temp_test8(bool b) {
 void temp_test8_simple(bool b) {
     b ? throw ClassWithDestructor2().get_x() : 'a';
 }
+
+struct string
+{
+    string(const char *);
+    ~string();
+};
+
+bool const_ref_string(const string &);
+
+bool conditional_temp_via_conjunction(bool b)
+{
+    return b && const_ref_string("");
+}

@@ -1185,6 +1185,7 @@ destructors_for_temps.cpp:
 #   55|     mu55_21(unknown)                   = ^CallSideEffect                       : ~m?
 #   55|     mu55_22(ClassWithConstructor)      = ^IndirectMayWriteSideEffect[-1]       : &:r55_5
 #   55|     v55_23(void)                       = ThrowValue                            : &:r55_5, ~m?
+#-----|   Exception -> Block 2
 
 #   55|   Block 4
 #   55|     r55_24(glval<ClassWithDestructor2>) = VariableAddress[#temp55:75]           : 
@@ -1239,6 +1240,7 @@ destructors_for_temps.cpp:
 #   59|     mu59_15(ClassWithDestructor2)      = ^IndirectMayWriteSideEffect[-1]       : &:r59_5
 #   59|     mu59_16(char)                      = Store[#throw59:9]                     : &:r59_4, r59_12
 #   59|     v59_17(void)                       = ThrowValue                            : &:r59_4, ~m?
+#-----|   Exception -> Block 2
 
 #   59|   Block 4
 #   59|     r59_18(char)        = Constant[97]               : 
@@ -1249,6 +1251,66 @@ destructors_for_temps.cpp:
 #   60|     v60_1(void)         = NoOp                       : 
 #   58|     v58_9(void)         = ReturnVoid                 : 
 #-----|   Goto -> Block 1
+
+#   70| bool conditional_temp_via_conjunction(bool)
+#   70|   Block 0
+#   70|     v70_1(void)        = EnterFunction            : 
+#   70|     mu70_2(unknown)    = AliasedDefinition        : 
+#   70|     mu70_3(unknown)    = InitializeNonLocal       : 
+#   70|     r70_4(glval<bool>) = VariableAddress[b]       : 
+#   70|     mu70_5(bool)       = InitializeParameter[b]   : &:r70_4
+#   72|     r72_1(glval<bool>) = VariableAddress[#return] : 
+#   72|     r72_2(glval<bool>) = VariableAddress[b]       : 
+#   72|     r72_3(bool)        = Load[b]                  : &:r72_2, ~m?
+#   72|     v72_4(void)        = ConditionalBranch        : r72_3
+#-----|   False -> Block 1
+#-----|   True -> Block 4
+
+#   72|   Block 1
+#   72|     r72_5(glval<bool>) = VariableAddress[#temp72:12] : 
+#   72|     r72_6(bool)        = Constant[0]                 : 
+#   72|     mu72_7(bool)       = Store[#temp72:12]           : &:r72_5, r72_6
+#-----|   Goto -> Block 2
+
+#   72|   Block 2
+#   72|     r72_8(glval<bool>)     = VariableAddress[#temp72:12]     : 
+#   72|     r72_9(bool)            = Load[#temp72:12]                : &:r72_8, ~m?
+#   72|     r72_10(glval<string>)  = CopyValue                       : r72_21
+#   72|     r72_11(glval<unknown>) = FunctionAddress[~string]        : 
+#   72|     v72_12(void)           = Call[~string]                   : func:r72_11, this:r72_10
+#   72|     mu72_13(unknown)       = ^CallSideEffect                 : ~m?
+#   72|     v72_14(void)           = ^IndirectReadSideEffect[-1]     : &:r72_10, ~m?
+#   72|     mu72_15(string)        = ^IndirectMayWriteSideEffect[-1] : &:r72_10
+#   72|     mu72_16(bool)          = Store[#return]                  : &:r72_1, r72_9
+#   70|     r70_6(glval<bool>)     = VariableAddress[#return]        : 
+#   70|     v70_7(void)            = ReturnValue                     : &:r70_6, ~m?
+#   70|     v70_8(void)            = AliasedUse                      : ~m?
+#   70|     v70_9(void)            = ExitFunction                    : 
+
+#   72|   Block 3
+#   72|     r72_17(glval<bool>) = VariableAddress[#temp72:12] : 
+#   72|     r72_18(bool)        = Constant[1]                 : 
+#   72|     mu72_19(bool)       = Store[#temp72:12]           : &:r72_17, r72_18
+#-----|   Goto -> Block 2
+
+#   72|   Block 4
+#   72|     r72_20(glval<unknown>) = FunctionAddress[const_ref_string] : 
+#   72|     r72_21(glval<string>)  = VariableAddress[#temp72:34]       : 
+#   72|     mu72_22(string)        = Uninitialized[#temp72:34]         : &:r72_21
+#   72|     r72_23(glval<unknown>) = FunctionAddress[string]           : 
+#   72|     r72_24(glval<char[1]>) = StringConstant[""]                : 
+#   72|     r72_25(char *)         = Convert                           : r72_24
+#   72|     v72_26(void)           = Call[string]                      : func:r72_23, this:r72_21, 0:r72_25
+#   72|     mu72_27(unknown)       = ^CallSideEffect                   : ~m?
+#   72|     v72_28(void)           = ^BufferReadSideEffect[0]          : &:r72_25, ~m?
+#   72|     mu72_29(string)        = ^IndirectMayWriteSideEffect[-1]   : &:r72_21
+#   72|     r72_30(string &)       = CopyValue                         : r72_21
+#   72|     r72_31(bool)           = Call[const_ref_string]            : func:r72_20, 0:r72_30
+#   72|     mu72_32(unknown)       = ^CallSideEffect                   : ~m?
+#   72|     v72_33(void)           = ^BufferReadSideEffect[0]          : &:r72_30, ~m?
+#   72|     v72_34(void)           = ConditionalBranch                 : r72_31
+#-----|   False -> Block 1
+#-----|   True -> Block 3
 
 ir.c:
 #    7| void MyCoordsTest(int)
@@ -4618,6 +4680,7 @@ ir.cpp:
 #  728|     r728_3(char *)          = Convert                          : r728_2
 #  728|     mu728_4(char *)         = Store[#throw728:7]               : &:r728_1, r728_3
 #  728|     v728_5(void)            = ThrowValue                       : &:r728_1, ~m?
+#-----|   Exception -> Block 9
 
 #  730|   Block 4
 #  730|     r730_1(glval<int>) = VariableAddress[x] : 
@@ -4656,6 +4719,7 @@ ir.cpp:
 #  731|     v731_18(void)            = ^BufferReadSideEffect[0]        : &:r731_15, ~m?
 #  731|     mu731_19(String)         = ^IndirectMayWriteSideEffect[-1] : &:r731_11
 #  731|     v731_20(void)            = ThrowValue                      : &:r731_11, ~m?
+#-----|   Exception -> Block 9
 
 #  733|   Block 8
 #  733|     r733_1(int)        = Constant[7]        : 
@@ -4683,6 +4747,7 @@ ir.cpp:
 #  736|     v736_8(void)           = ^BufferReadSideEffect[0]        : &:r736_5, ~m?
 #  736|     mu736_9(String)        = ^IndirectMayWriteSideEffect[-1] : &:r736_1
 #  736|     v736_10(void)          = ThrowValue                      : &:r736_1, ~m?
+#-----|   Exception -> Block 2
 
 #  738|   Block 11
 #  738|     v738_1(void) = CatchByType[const String &] : 
@@ -4700,6 +4765,7 @@ ir.cpp:
 #  740|   Block 13
 #  740|     v740_1(void) = CatchAny : 
 #  741|     v741_1(void) = ReThrow  : 
+#-----|   Exception -> Block 2
 
 #  743|   Block 14
 #  743|     v743_1(void) = NoOp       : 
@@ -7290,6 +7356,7 @@ ir.cpp:
 # 1195|     r1195_3(char *)          = Convert                          : r1195_2
 # 1195|     mu1195_4(char *)         = Store[#throw1195:7]              : &:r1195_1, r1195_3
 # 1195|     v1195_5(void)            = ThrowValue                       : &:r1195_1, ~m?
+#-----|   Exception -> Block 9
 
 # 1197|   Block 4
 # 1197|     r1197_1(glval<int>) = VariableAddress[x] : 
@@ -7328,6 +7395,7 @@ ir.cpp:
 # 1198|     v1198_18(void)            = ^BufferReadSideEffect[0]        : &:r1198_15, ~m?
 # 1198|     mu1198_19(String)         = ^IndirectMayWriteSideEffect[-1] : &:r1198_11
 # 1198|     v1198_20(void)            = ThrowValue                      : &:r1198_11, ~m?
+#-----|   Exception -> Block 9
 
 # 1200|   Block 8
 # 1200|     r1200_1(int)        = Constant[7]        : 
@@ -7355,6 +7423,7 @@ ir.cpp:
 # 1203|     v1203_8(void)           = ^BufferReadSideEffect[0]        : &:r1203_5, ~m?
 # 1203|     mu1203_9(String)        = ^IndirectMayWriteSideEffect[-1] : &:r1203_1
 # 1203|     v1203_10(void)          = ThrowValue                      : &:r1203_1, ~m?
+#-----|   Exception -> Block 2
 
 # 1205|   Block 11
 # 1205|     v1205_1(void) = CatchByType[const String &] : 
@@ -13617,6 +13686,7 @@ ir.cpp:
 # 2282|     v2282_8(void)           = ^BufferReadSideEffect[0]        : &:r2282_5, ~m?
 # 2282|     mu2282_9(String)        = ^IndirectMayWriteSideEffect[-1] : &:r2282_1
 # 2282|     v2282_10(void)          = ThrowValue                      : &:r2282_1, ~m?
+#-----|   Exception -> Block 2
 
 # 2284|   Block 7
 # 2284|     v2284_1(void) = CatchByType[const String &] : 
@@ -13634,6 +13704,7 @@ ir.cpp:
 # 2286|   Block 9
 # 2286|     v2286_1(void) = CatchAny : 
 # 2287|     v2287_1(void) = ReThrow  : 
+#-----|   Exception -> Block 2
 
 # 2289|   Block 10
 # 2289|     v2289_1(void) = NoOp       : 
@@ -15477,6 +15548,7 @@ try_except.cpp:
 #   48|     r48_2(int)        = Constant[1]                  : 
 #   48|     mu48_3(int)       = Store[#throw48:13]           : &:r48_1, r48_2
 #   48|     v48_4(void)       = ThrowValue                   : &:r48_1, ~m?
+#-----|   Exception -> Block 7
 
 #   51|   Block 4
 #   51|     r51_1(int)  = Constant[0]       : 
