@@ -372,4 +372,10 @@ predicate apiGraphHasEdge(API::Node pred, string path, API::Node succ) {
   )
   or
   succ = pred.getPromised() and path = "Awaited"
+  or
+  exists(DataFlow::ClassNode cls |
+    pred = API::Internal::getClassInstance(cls.getADirectSubClass()) and
+    succ = API::Internal::getClassInstance(cls) and
+    path = ""
+  )
 }

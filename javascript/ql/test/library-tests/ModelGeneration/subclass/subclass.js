@@ -2,10 +2,10 @@ export class A {
     a() {}
 }
 
-export class B {
+export class B extends A {
     b() {}
 }
 
-export class C {
+export class C extends B {
     c() {}
 }

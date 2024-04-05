@@ -36,9 +36,11 @@ typeModel
 | (semi-internal-class).getAnonymous~expr2 | (semi-internal-class).getAnonymous~expr1 | Member[method] |
 | (subclass).A | subclass | Member[A] |
 | (subclass).A.prototype | (subclass).A | Instance |
+| (subclass).A.prototype | (subclass).B.prototype |  |
 | (subclass).A.prototype.a | (subclass).A.prototype | Member[a] |
 | (subclass).B | subclass | Member[B] |
 | (subclass).B.prototype | (subclass).B | Instance |
+| (subclass).B.prototype | (subclass).C.prototype |  |
 | (subclass).B.prototype.b | (subclass).B.prototype | Member[b] |
 | (subclass).C | subclass | Member[C] |
 | (subclass).C.prototype | (subclass).C | Instance |
