@@ -196,4 +196,3 @@ class EnvVarInjectionRunStep extends PoisonableStep, Run {
     )
   }
 }
-// TODO: Taint Step for output var definition based on file content. eg: `echo "sha=$(cat test-results/sha-number)" >> $GITHUB_OUTPUT`
