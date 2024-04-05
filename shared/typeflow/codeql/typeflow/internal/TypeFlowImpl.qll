@@ -301,7 +301,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
     not irrelevantBound(n, t)
   }
 
-    /**
+  /**
    * Holds if the runtime type of `n` is bounded by `t` and if this bound is
    * likely to be better than the static type of `n`. The flag `exact` indicates
    * whether `t` is an exact bound or merely an upper bound.
@@ -389,14 +389,24 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
     )
   }
 
+  /** Holds if this type is the same as its source declaration. */
+  private predicate isSourceDeclaration(Type t) { getSourceDeclaration(t) = t }
+
+  final private class FinalType = Type;
+
+  /** A type that is the same as its source declaration. */
+  private class SrcType extends FinalType {
+    SrcType() { isSourceDeclaration(this) }
+  }
+
   /**
    * Holds if there is a common (reflexive, transitive) subtype of the erased
    * types `t1` and `t2`.
    */
+  pragma[nomagic]
   private predicate erasedHaveIntersection(Type t1, Type t2) {
-    exists(Type commonSub | commonSub = getSourceDeclaration(commonSub) |
-      getASourceSupertype*(commonSub) = t1 and
-      getASourceSupertype*(commonSub) = t2
+    exists(SrcType commonSub |
+      getASourceSupertype*(commonSub) = t1 and getASourceSupertype*(commonSub) = t2
     ) and
     t1 = getErasure(_) and
     t2 = getErasure(_)
