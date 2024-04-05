@@ -11,7 +11,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
     or
     exists(TypeFlowNode mid | isNull(mid) and step(mid, n))
     or
-    forex(TypeFlowNode mid | I::joinStep(mid, n) | isNull(mid)) and
+    forex(TypeFlowNode mid | joinStep(mid, n) | isNull(mid)) and
     not isExcludedFromNullAnalysis(n)
   }
 
@@ -19,11 +19,13 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
    * Holds if data can flow from `n1` to `n2` in one step, `n1` is not necessarily
    * functionally determined by `n2`, and `n1` might take a non-null value.
    */
-  private predicate joinStep(TypeFlowNode n1, TypeFlowNode n2) {
-    I::joinStep(n1, n2) and not isNull(n1)
+  private predicate joinStepNotNull(TypeFlowNode n1, TypeFlowNode n2) {
+    joinStep(n1, n2) and not isNull(n1)
   }
 
-  private predicate anyStep(TypeFlowNode n1, TypeFlowNode n2) { joinStep(n1, n2) or step(n1, n2) }
+  private predicate anyStep(TypeFlowNode n1, TypeFlowNode n2) {
+    joinStepNotNull(n1, n2) or step(n1, n2)
+  }
 
   private predicate sccEdge(TypeFlowNode n1, TypeFlowNode n2) {
     anyStep(n1, n2) and anyStep+(n2, n1)
@@ -36,9 +38,9 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   /** Holds if `n` is part of an SCC of size 2 or more represented by `scc`. */
   private predicate sccRepr(TypeFlowNode n, TypeFlowScc scc) { scc = Scc::getEquivalenceClass(n) }
 
-  private predicate sccJoinStep(TypeFlowNode n, TypeFlowScc scc) {
+  private predicate sccJoinStepNotNull(TypeFlowNode n, TypeFlowScc scc) {
     exists(TypeFlowNode mid |
-      joinStep(n, mid) and
+      joinStepNotNull(n, mid) and
       sccRepr(mid, scc) and
       not sccRepr(n, scc)
     )
@@ -141,13 +143,13 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
   private module JoinStep implements Edge {
     class Node = TypeFlowNode;
 
-    predicate edge = joinStep/2;
+    predicate edge = joinStepNotNull/2;
   }
 
   private module SccJoinStep implements Edge {
     class Node = TypeFlowScc;
 
-    predicate edge = sccJoinStep/2;
+    predicate edge = sccJoinStepNotNull/2;
   }
 
   private module RankedJoinStep = RankEdge<JoinStep>;
@@ -172,13 +174,13 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
     exists(TypeFlowNode mid | exactType(mid, t) and step(mid, n))
     or
     // The following is an optimized version of
-    // `forex(TypeFlowNode mid | joinStep(mid, n) | exactType(mid, t))`
+    // `forex(TypeFlowNode mid | joinStepNotNull(mid, n) | exactType(mid, t))`
     ForAll<TypeFlowNode, RankedJoinStep, ExactTypePropagation>::flowJoin(n, t)
     or
     exists(TypeFlowScc scc |
       sccRepr(n, scc) and
       // Optimized version of
-      // `forex(TypeFlowNode mid | sccJoinStep(mid, scc) | exactType(mid, t))`
+      // `forex(TypeFlowNode mid | sccJoinStepNotNull(mid, scc) | exactType(mid, t))`
       ForAll<TypeFlowScc, RankedSccJoinStep, ExactTypePropagation>::flowJoin(scc, t)
     )
   }
@@ -327,7 +329,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
    */
   private predicate unionTypeFlowBaseCand(TypeFlowNode n, Type t, boolean exact) {
     exists(TypeFlowNode next |
-      joinStep(n, next) and
+      joinStepNotNull(n, next) and
       bestTypeFlowOrTypeFlowBase(n, t, exact) and
       not bestTypeFlowOrTypeFlowBase(next, t, exact) and
       not exactType(next, _)
@@ -354,7 +356,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
     not exactType(n, _) and
     (
       // Optimized version of
-      // `forex(TypeFlowNode mid | joinStep(mid, n) | unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))`
+      // `forex(TypeFlowNode mid | joinStepNotNull(mid, n) | unionTypeFlowBaseCand(mid, _, _) or hasUnionTypeFlow(mid))`
       ForAll<TypeFlowNode, RankedJoinStep, HasUnionTypePropagation>::flowJoin(n, _)
       or
       exists(TypeFlowScc scc |
