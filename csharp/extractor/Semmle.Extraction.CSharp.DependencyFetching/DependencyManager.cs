@@ -53,8 +53,24 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var startTime = DateTime.Now;
 
             this.logger = logger;
+
+            var diagDirEnv = Environment.GetEnvironmentVariable(EnvironmentVariableNames.DiagnosticDir);
+            if (!string.IsNullOrWhiteSpace(diagDirEnv) &&
+                !Directory.Exists(diagDirEnv))
+            {
+                try
+                {
+                    Directory.CreateDirectory(diagDirEnv);
+                }
+                catch (Exception e)
+                {
+                    logger.LogError($"Failed to create diagnostic directory {diagDirEnv}: {e.Message}");
+                    diagDirEnv = null;
+                }
+            }
+
             this.diagnosticsWriter = new DiagnosticsStream(Path.Combine(
-                Environment.GetEnvironmentVariable(EnvironmentVariableNames.DiagnosticDir) ?? "",
+                diagDirEnv ?? "",
                 $"dependency-manager-{DateTime.UtcNow:yyyyMMddHHmm}-{Environment.ProcessId}.jsonc"));
             this.sourceDir = new DirectoryInfo(srcDir);
 
