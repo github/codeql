@@ -279,6 +279,16 @@ class Test {
 			// subsequently cast to narrower type int
 			int widenedThenNarrowed = (int) (data2 + 10L);
 		}
+
+    // InformationLoss
+		{
+			int[] arr = new int[10];
+			while (arr[2] < 1000000) {
+				// BAD: getLargeNumber is implicitly narrowed to an integer
+				// which will result in overflows if it is large
+				arr[2] += getLargeNumber();
+			}
+		}
 	}
 
 	public static long getLargeNumber() {
