@@ -279,6 +279,10 @@ private predicate isInConditionalEvaluation(Expr e) {
     e = cond.getFullyConverted()
   )
   or
+  e = any(LogicalAndExpr lae).getRightOperand().getFullyConverted()
+  or
+  e = any(LogicalOrExpr loe).getRightOperand().getFullyConverted()
+  or
   isInConditionalEvaluation(getRealParent(e))
 }
 
