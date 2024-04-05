@@ -10,19 +10,7 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 ambiguousSuccessors
-| ir.cpp:2464:18:2464:22 | Chi: reuse of temporary object | Instruction 'Chi: reuse of temporary object' has 2 successors of kind 'Goto' in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
 unexplainedLoop
-| ir.cpp:2464:18:2464:22 | Call: call to ~B | Instruction 'Call: call to ~B' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:18:2464:22 | CallSideEffect: call to ~B | Instruction 'CallSideEffect: call to ~B' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:18:2464:22 | Chi: call to ~B | Instruction 'Chi: call to ~B' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:18:2464:22 | Chi: reuse of temporary object | Instruction 'Chi: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:18:2464:22 | CopyValue: reuse of temporary object | Instruction 'CopyValue: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:18:2464:22 | FunctionAddress: call to ~B | Instruction 'FunctionAddress: call to ~B' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:18:2464:22 | IndirectMayWriteSideEffect: reuse of temporary object | Instruction 'IndirectMayWriteSideEffect: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:18:2464:22 | IndirectReadSideEffect: reuse of temporary object | Instruction 'IndirectReadSideEffect: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:18:2464:22 | Phi: reuse of temporary object | Instruction 'Phi: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:18:2464:22 | Phi: reuse of temporary object | Instruction 'Phi: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:25:2464:25 | Load: a | Instruction 'Load: a' is part of an unexplained loop in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
@@ -33,11 +21,8 @@ containsLoopOfForwardEdges
 missingIRType
 multipleIRTypes
 lostReachability
-| ir.cpp:2464:25:2464:25 | Load: a | Block 'Load: a' is not reachable by traversing only forward edges in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
-| ir.cpp:2464:25:2464:25 | Store: a | Block 'Store: a' is not reachable by traversing only forward edges in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
 backEdgeCountMismatch
 useNotDominatedByDefinition
-| ir.cpp:2464:25:2464:25 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | ir.cpp:2462:10:2462:13 | void rvalue_conversion_with_destructor::test() | void rvalue_conversion_with_destructor::test() |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated

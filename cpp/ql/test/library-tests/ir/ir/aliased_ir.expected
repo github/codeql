@@ -16069,56 +16069,38 @@ ir.cpp:
 
 # 2462| void rvalue_conversion_with_destructor::test()
 # 2462|   Block 0
-# 2462|     v2462_1(void)                 = EnterFunction                 : 
-# 2462|     m2462_2(unknown)              = AliasedDefinition             : 
-# 2462|     m2462_3(unknown)              = InitializeNonLocal            : 
-# 2462|     m2462_4(unknown)              = Chi                           : total:m2462_2, partial:m2462_3
-# 2464|     r2464_1(glval<unsigned int>)  = VariableAddress[a]            : 
-# 2464|     r2464_2(glval<B>)             = VariableAddress[#temp2464:18] : 
-# 2464|     r2464_3(glval<unknown>)       = FunctionAddress[get]          : 
-# 2464|     r2464_4(B)                    = Call[get]                     : func:r2464_3
-# 2464|     m2464_5(unknown)              = ^CallSideEffect               : ~m2462_4
-# 2464|     m2464_6(unknown)              = Chi                           : total:m2462_4, partial:m2464_5
-# 2464|     m2464_7(B)                    = Store[#temp2464:18]           : &:r2464_2, r2464_4
-# 2464|     r2464_8(glval<B>)             = Convert                       : r2464_2
-# 2464|     r2464_9(glval<unknown>)       = FunctionAddress[operator->]   : 
-# 2464|     r2464_10(A *)                 = Call[operator->]              : func:r2464_9, this:r2464_8
-# 2464|     m2464_11(unknown)             = ^CallSideEffect               : ~m2464_6
-# 2464|     m2464_12(unknown)             = Chi                           : total:m2464_6, partial:m2464_11
-# 2464|     v2464_13(void)                = ^IndirectReadSideEffect[-1]   : &:r2464_8, m2464_7
-# 2464|     r2464_14(glval<unsigned int>) = FieldAddress[a]               : r2464_10
-#-----|   Goto -> Block 3
-#-----|   Goto -> Block 3
-
-# 2464|   Block 1
-# 2464|     m2464_15(unsigned int) = Store[a]     : &:r2464_1, r2464_16
-# 2465|     v2465_1(void)          = NoOp         : 
-# 2462|     v2462_5(void)          = ReturnVoid   : 
-# 2462|     v2462_6(void)          = AliasedUse   : ~m2464_25, ~m2464_37
-# 2462|     v2462_7(void)          = ExitFunction : 
-
-# 2464|   Block 2
-# 2464|     r2464_16(unsigned int) = Load[?] : &:r2464_14, ~m2464_25, ~m2464_37
-#-----|   Goto (back edge) -> Block 3
-#-----|   Goto (back edge) -> Block 3
-
-# 2464|   Block 3
-# 2464|     m2464_31(B)              = Phi                             : from 0:m2464_7, from 2:m2464_28, from 2:m2464_40
-# 2464|     m2464_32(unknown)        = Phi                             : from 0:~m2464_12, from 2:~m2464_25, from 2:~m2464_37
-# 2464|     r2464_33(glval<B>)       = CopyValue                       : r2464_2
-# 2464|     r2464_34(glval<unknown>) = FunctionAddress[~B]             : 
-# 2464|     v2464_35(void)           = Call[~B]                        : func:r2464_22, func:r2464_34, this:r2464_21, this:r2464_33
-# 2464|     m2464_36(unknown)        = ^CallSideEffect                 : ~m2464_18, ~m2464_20, ~m2464_30, ~m2464_32
-# 2464|     m2464_37(unknown)        = Chi                             : total:m2464_18, total:m2464_20, total:m2464_30, total:m2464_32, partial:m2464_24, partial:m2464_36
-# 2464|     v2464_38(void)           = ^IndirectReadSideEffect[-1]     : &:r2464_21, &:r2464_33, m2464_17, m2464_19, m2464_29, m2464_31
-# 2464|     m2464_39(B)              = ^IndirectMayWriteSideEffect[-1] : &:r2464_21, &:r2464_33
-# 2464|     m2464_40(B)              = Chi                             : total:m2464_17, total:m2464_19, total:m2464_29, total:m2464_31, partial:m2464_27, partial:m2464_39
-#-----|   Goto (back edge) -> Block 1
-#-----|   Goto (back edge) -> Block 2
-
-# 2464|   Block 3
-#-----|   Goto (back edge) -> Block 1
-#-----|   Goto (back edge) -> Block 2
+# 2462|     v2462_1(void)                 = EnterFunction                   : 
+# 2462|     m2462_2(unknown)              = AliasedDefinition               : 
+# 2462|     m2462_3(unknown)              = InitializeNonLocal              : 
+# 2462|     m2462_4(unknown)              = Chi                             : total:m2462_2, partial:m2462_3
+# 2464|     r2464_1(glval<unsigned int>)  = VariableAddress[a]              : 
+# 2464|     r2464_2(glval<B>)             = VariableAddress[#temp2464:18]   : 
+# 2464|     r2464_3(glval<unknown>)       = FunctionAddress[get]            : 
+# 2464|     r2464_4(B)                    = Call[get]                       : func:r2464_3
+# 2464|     m2464_5(unknown)              = ^CallSideEffect                 : ~m2462_4
+# 2464|     m2464_6(unknown)              = Chi                             : total:m2462_4, partial:m2464_5
+# 2464|     m2464_7(B)                    = Store[#temp2464:18]             : &:r2464_2, r2464_4
+# 2464|     r2464_8(glval<B>)             = Convert                         : r2464_2
+# 2464|     r2464_9(glval<unknown>)       = FunctionAddress[operator->]     : 
+# 2464|     r2464_10(A *)                 = Call[operator->]                : func:r2464_9, this:r2464_8
+# 2464|     m2464_11(unknown)             = ^CallSideEffect                 : ~m2464_6
+# 2464|     m2464_12(unknown)             = Chi                             : total:m2464_6, partial:m2464_11
+# 2464|     v2464_13(void)                = ^IndirectReadSideEffect[-1]     : &:r2464_8, m2464_7
+# 2464|     r2464_14(glval<unsigned int>) = FieldAddress[a]                 : r2464_10
+# 2464|     r2464_15(glval<B>)            = CopyValue                       : r2464_2
+# 2464|     r2464_16(glval<unknown>)      = FunctionAddress[~B]             : 
+# 2464|     v2464_17(void)                = Call[~B]                        : func:r2464_16, this:r2464_15
+# 2464|     m2464_18(unknown)             = ^CallSideEffect                 : ~m2464_12
+# 2464|     m2464_19(unknown)             = Chi                             : total:m2464_12, partial:m2464_18
+# 2464|     v2464_20(void)                = ^IndirectReadSideEffect[-1]     : &:r2464_15, m2464_7
+# 2464|     m2464_21(B)                   = ^IndirectMayWriteSideEffect[-1] : &:r2464_15
+# 2464|     m2464_22(B)                   = Chi                             : total:m2464_7, partial:m2464_21
+# 2464|     r2464_23(unsigned int)        = Load[?]                         : &:r2464_14, ~m2464_19
+# 2464|     m2464_24(unsigned int)        = Store[a]                        : &:r2464_1, r2464_23
+# 2465|     v2465_1(void)                 = NoOp                            : 
+# 2462|     v2462_5(void)                 = ReturnVoid                      : 
+# 2462|     v2462_6(void)                 = AliasedUse                      : ~m2464_19
+# 2462|     v2462_7(void)                 = ExitFunction                    : 
 
 perf-regression.cpp:
 #    6| void Big::Big()
