@@ -37,6 +37,7 @@ typeModel
 | (subclass).A | subclass | Member[A] |
 | (subclass).A.prototype | (subclass).A | Instance |
 | (subclass).A.prototype | (subclass).B.prototype |  |
+| (subclass).A.prototype | (subclass).ExposedMidSubClass.prototype~expr1 |  |
 | (subclass).A.prototype.a | (subclass).A.prototype | Member[a] |
 | (subclass).B | subclass | Member[B] |
 | (subclass).B.prototype | (subclass).B | Instance |
@@ -51,6 +52,7 @@ typeModel
 | (subclass).ExposedMidSubClass | subclass | Member[ExposedMidSubClass] |
 | (subclass).ExposedMidSubClass.prototype | (subclass).ExposedMidSubClass | Instance |
 | (subclass).ExposedMidSubClass.prototype.m | (subclass).ExposedMidSubClass.prototype | Member[m] |
+| (subclass).ExposedMidSubClass.prototype~expr1 | (subclass).ExposedMidSubClass.prototype |  |
 | upstream-lib | (reexport).func | ReturnValue |
 | upstream-lib | reexport | Member[lib] |
 | upstream-lib.Type | (subclass).D.prototype |  |

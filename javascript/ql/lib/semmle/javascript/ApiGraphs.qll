@@ -696,14 +696,7 @@ module API {
         or
         any(Type t).hasUnderlyingType(m, _)
       } or
-      MkClassInstance(DataFlow::ClassNode cls) {
-        hasSemantics(cls) and
-        (
-          cls = trackDefNode(_)
-          or
-          cls.getAnInstanceReference() = trackDefNode(_)
-        )
-      } or
+      MkClassInstance(DataFlow::ClassNode cls) { needsDefNode(cls) } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       /** A use of a TypeScript type. */
@@ -715,6 +708,17 @@ module API {
       MkSyntheticCallbackArg(DataFlow::Node src, int bound, DataFlow::InvokeNode nd) {
         trackUseNode(src, true, bound, "").flowsTo(nd.getCalleeNode())
       }
+
+    private predicate needsDefNode(DataFlow::ClassNode cls) {
+      hasSemantics(cls) and
+      (
+        cls = trackDefNode(_)
+        or
+        cls.getAnInstanceReference() = trackDefNode(_)
+        or
+        needsDefNode(cls.getADirectSubClass())
+      )
+    }
 
     class TDef = MkModuleDef or TNonModuleDef;
 
