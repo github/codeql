@@ -4,3 +4,4 @@ extensions:
       extensible: typeModel
     data:
       - ["upstream-lib.XYZ", "upstream-lib", "Member[x].Member[y].Member[z]"]
+      - ["upstream-lib.Type", "upstream-lib", "Member[Type].Instance"]

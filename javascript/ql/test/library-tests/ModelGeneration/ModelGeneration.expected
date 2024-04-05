@@ -45,6 +45,9 @@ typeModel
 | (subclass).C | subclass | Member[C] |
 | (subclass).C.prototype | (subclass).C | Instance |
 | (subclass).C.prototype.c | (subclass).C.prototype | Member[c] |
+| (subclass).D | subclass | Member[D] |
+| (subclass).D.prototype | (subclass).D | Instance |
+| (subclass).D.prototype.d | (subclass).D.prototype | Member[d] |
 | upstream-lib | (reexport).func | ReturnValue |
 | upstream-lib | reexport | Member[lib] |
 | upstream-lib.XYZ | reexport | Member[x].Member[y].Member[z] |
