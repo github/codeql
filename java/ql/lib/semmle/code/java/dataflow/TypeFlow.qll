@@ -14,7 +14,7 @@ private import semmle.code.java.dataflow.internal.BaseSSA
 private import semmle.code.java.controlflow.Guards
 private import codeql.typeflow.TypeFlow
 
-private module Input implements TypeFlowInput<J::Location> {
+private module Input implements TypeFlowInput<Location> {
   private newtype TTypeFlowNode =
     TField(Field f) { not f.getType() instanceof PrimitiveType } or
     TSsa(BaseSsaVariable ssa) { not ssa.getSourceVariable().getType() instanceof PrimitiveType } or
@@ -61,7 +61,7 @@ private module Input implements TypeFlowInput<J::Location> {
     }
   }
 
-  class Type = J::RefType;
+  class Type = RefType;
 
   /**
    * Holds if `arg` is an argument for the parameter `p` in a private callable.
@@ -142,7 +142,7 @@ private module Input implements TypeFlowInput<J::Location> {
   }
 
   predicate exactTypeBase(TypeFlowNode n, RefType t) {
-    exists(J::ClassInstanceExpr e |
+    exists(ClassInstanceExpr e |
       n.asExpr() = e and
       e.getType() = t and
       not e instanceof FunctionalExpr and
@@ -349,7 +349,7 @@ private module Input implements TypeFlowInput<J::Location> {
 
 cached
 private module TypeFlowBounds {
-  private module TypeFlow = Make<J::Location, Input>;
+  private module TypeFlow = Make<Location, Input>;
 
   /**
    * Holds if the runtime type of `f` is bounded by `t` and if this bound is
