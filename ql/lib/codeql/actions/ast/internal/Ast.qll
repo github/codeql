@@ -629,6 +629,15 @@ class StepImpl extends AstNodeImpl, TStepNode {
 
   /** Gets the value of the `if` field in this step, if any. */
   IfImpl getIf() { result.getNode() = n.lookup("if") }
+
+  /** Gets a step that follows this step. */
+  StepImpl getAFollowingStep() {
+    exists(LocalJobImpl job, int i, int j |
+      job.getStep(i) = this and
+      result = job.getStep(j) and
+      i < j
+    )
+  }
 }
 
 class IfImpl extends AstNodeImpl, TIfNode {

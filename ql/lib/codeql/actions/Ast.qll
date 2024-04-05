@@ -225,6 +225,8 @@ class Step extends AstNode instanceof StepImpl {
   Env getEnv() { result = super.getEnv() }
 
   If getIf() { result = super.getIf() }
+
+  Step getAFollowingStep() { result = super.getAFollowingStep() }
 }
 
 /**

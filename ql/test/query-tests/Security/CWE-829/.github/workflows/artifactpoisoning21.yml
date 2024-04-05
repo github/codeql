@@ -10,10 +10,14 @@ jobs:
   Download:
     runs-on: ubuntu-latest
     steps:
-      - run: |
-          gh run download "${WORKFLOW_RUN_ID}" --repo "${GITHUB_REPOSITORY}" --name "artifact_name"
+      - uses: dawidd6/action-download-artifact@v2
+        with:
+          name: artifact_name
+          workflow: wf.yml
+          path: foo
       - name: Run command
-        run: cmd
+        run: |
+          ./foo/cmd
 
 
 

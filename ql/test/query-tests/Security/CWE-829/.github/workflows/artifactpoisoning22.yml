@@ -15,7 +15,7 @@ jobs:
           name: artifact_name
           workflow: wf.yml
       - name: Run command
-        run: cmd
+        run: ./cmd
 
 
 

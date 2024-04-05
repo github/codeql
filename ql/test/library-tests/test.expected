@@ -351,6 +351,10 @@ sources
 | tj-actions/changed-files | * | output.unknown_files | PR changed files |
 | tj-actions/changed-files | * | output.unmerged_files | PR changed files |
 | tj-actions/verify-changed-files | * | output.changed-files | PR changed files |
+| trilom/file-changes-action | * | output.files | PR changed files |
+| trilom/file-changes-action | * | output.files_added | PR changed files |
+| trilom/file-changes-action | * | output.files_modified | PR changed files |
+| trilom/file-changes-action | * | output.files_removed | PR changed files |
 | tzkhan/pr-update-action | * | output.headMatch |  |
 | xt0rted/slash-command-action | * | output.command-arguments |  |
 summaries
