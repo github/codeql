@@ -16,6 +16,10 @@ typeModel
 | (return-this).FluentInterface.prototype.foo | (return-this).FluentInterface.prototype | Member[foo] |
 | (return-this).FluentInterface.prototype.notFluent | (return-this).FluentInterface.prototype | Member[notFluent] |
 | (return-this).FluentInterface.prototype.notFluent2 | (return-this).FluentInterface.prototype | Member[notFluent2] |
+| (root-function).PublicClass | root-function | Member[PublicClass] |
+| (root-function).PublicClass.prototype | (root-function).PublicClass | Instance |
+| (root-function).PublicClass.prototype | root-function | ReturnValue |
+| (root-function).PublicClass.prototype.method | (root-function).PublicClass.prototype | Member[method] |
 | (semi-internal-class).PublicClass | semi-internal-class | Member[PublicClass] |
 | (semi-internal-class).PublicClass.prototype | (semi-internal-class).PublicClass | Instance |
 | (semi-internal-class).PublicClass.prototype | (semi-internal-class).SemiInternalClass.prototype.method | ReturnValue |
