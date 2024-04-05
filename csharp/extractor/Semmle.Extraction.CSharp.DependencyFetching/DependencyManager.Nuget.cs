@@ -387,6 +387,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private bool IsFeedReachable(string feed)
         {
+            logger.LogInfo($"Checking if Nuget feed '{feed}' is reachable...");
             using HttpClient client = new();
             var timeoutSeconds = 1;
             var tryCount = 4;
@@ -432,7 +433,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             if (excludedFeeds.Count > 0)
             {
-                logger.LogInfo($"Excluded feeds from responsiveness check: {string.Join(", ", excludedFeeds)}");
+                logger.LogInfo($"Excluded feeds from responsiveness check: {string.Join(", ", excludedFeeds.OrderBy(f => f))}");
             }
 
             var allFeedsReachable = feeds.All(feed => excludedFeeds.Contains(feed) || IsFeedReachable(feed));
@@ -481,9 +482,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             var nugetConfigs = GetAllNugetConfigs(allFiles);
             var feeds = nugetConfigs
-                .SelectMany(nf => GetFeeds(nf))
+                .SelectMany(GetFeeds)
                 .Where(str => !string.IsNullOrWhiteSpace(str))
                 .ToHashSet();
+            logger.LogInfo($"Found Nuget feeds in nuget.config files: {string.Join(", ", feeds.OrderBy(f => f))}");
             return feeds;
         }
 
@@ -493,7 +495,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         [GeneratedRegex(@"^(.+)\.(\d+\.\d+\.\d+(-(.+))?)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex LegacyNugetPackage();
 
-        [GeneratedRegex(@"^E (.*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
+        [GeneratedRegex(@"^E\s(.*)$", RegexOptions.IgnoreCase | RegexOptions.Compiled | RegexOptions.Singleline)]
         private static partial Regex EnabledNugetFeed();
     }
 }
