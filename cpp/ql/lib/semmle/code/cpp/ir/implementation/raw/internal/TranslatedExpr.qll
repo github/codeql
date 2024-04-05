@@ -411,6 +411,14 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
       result = this.getOperand().getResult()
     )
   }
+
+  override predicate handlesDestructorsExplicitly() {
+    // The class that generates IR for `e` will (implicitly or explicitly)
+    // handle the generation of destructor calls for `e`. Without disabling
+    // destructor call generation here the destructor will get multiple
+    // parents.
+    any()
+  }
 }
 
 /**
