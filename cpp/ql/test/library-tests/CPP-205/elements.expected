@@ -10,7 +10,9 @@
 | CPP-205.cpp:2:15:5:1 | { ... } | isFromUninstantiatedTemplate(fn) |
 | CPP-205.cpp:3:3:3:33 | declaration | isFromTemplateInstantiation(fn) |
 | CPP-205.cpp:3:3:3:33 | declaration | isFromUninstantiatedTemplate(fn) |
+| CPP-205.cpp:3:15:3:15 | declaration of y | isFromTemplateInstantiation(fn) |
 | CPP-205.cpp:3:15:3:15 | declaration of y | isFromUninstantiatedTemplate(fn) |
+| CPP-205.cpp:3:15:3:15 | y | isFromTemplateInstantiation(fn) |
 | CPP-205.cpp:3:15:3:15 | y | isFromUninstantiatedTemplate(fn) |
 | CPP-205.cpp:3:17:3:31 | 5 | isFromTemplateInstantiation(fn) |
 | CPP-205.cpp:4:3:4:11 | return ... | isFromTemplateInstantiation(fn) |
