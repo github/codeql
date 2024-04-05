@@ -133,11 +133,12 @@ private module Input implements TypeFlowInput<J::Location> {
       not decl.hasImplicitInit() and
       not exists(decl.getInit())
     )
-    or
-    forex(TypeFlowNode mid | joinStep(mid, n) | Make<J::Location, Input>::isNull(mid)) and
+  }
+
+  predicate isExcludedFromNullAnalysis(TypeFlowNode n) {
     // Fields that are never assigned a non-null value are probably set by
     // reflection and are thus not always null.
-    not exists(n.asField())
+    exists(n.asField())
   }
 
   predicate exactTypeBase(TypeFlowNode n, RefType t) {

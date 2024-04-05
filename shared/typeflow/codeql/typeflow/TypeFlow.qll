@@ -42,6 +42,12 @@ signature module TypeFlowInput<LocationSig Location> {
   /** Holds if `n` represents a `null` value. */
   predicate isNullValue(TypeFlowNode n);
 
+  /**
+   * Holds if `n` should be excluded from the set of null values even if
+   * the null analysis determines that `n` is always null.
+   */
+  default predicate isExcludedFromNullAnalysis(TypeFlowNode n) { none() }
+
   /** A type. */
   class Type {
     /** Gets a textual representation of this type. */

@@ -10,6 +10,9 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
     isNullValue(n)
     or
     exists(TypeFlowNode mid | isNull(mid) and step(mid, n))
+    or
+    forex(TypeFlowNode mid | I::joinStep(mid, n) | isNull(mid)) and
+    not isExcludedFromNullAnalysis(n)
   }
 
   /**
