@@ -368,10 +368,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
             }
 
-            runtimeLocation ??= Runtime.ExecutingRuntime;
+            if (runtimeLocation is null)
+            {
+                runtimeLocation ??= Runtime.ExecutingRuntime;
+                dllPaths.Add(new AssemblyPath(runtimeLocation, name => !name.StartsWith("Semmle.")));
+            }
+            else
+            {
+                dllPaths.Add(runtimeLocation);
+            }
 
             logger.LogInfo($".NET runtime location selected: {runtimeLocation}");
-            dllPaths.Add(runtimeLocation);
             frameworkLocations.Add(runtimeLocation);
         }
 
