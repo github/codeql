@@ -48,6 +48,9 @@ typeModel
 | (subclass).D | subclass | Member[D] |
 | (subclass).D.prototype | (subclass).D | Instance |
 | (subclass).D.prototype.d | (subclass).D.prototype | Member[d] |
+| (subclass).ExposedMidSubClass | subclass | Member[ExposedMidSubClass] |
+| (subclass).ExposedMidSubClass.prototype | (subclass).ExposedMidSubClass | Instance |
+| (subclass).ExposedMidSubClass.prototype.m | (subclass).ExposedMidSubClass.prototype | Member[m] |
 | upstream-lib | (reexport).func | ReturnValue |
 | upstream-lib | reexport | Member[lib] |
 | upstream-lib.Type | (subclass).D.prototype |  |
