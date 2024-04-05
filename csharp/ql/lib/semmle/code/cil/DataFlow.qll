@@ -9,7 +9,7 @@ private import CIL
  *
  * Either an instruction (`Instruction`), a method return (`Method`), or a variable (`Variable`).
  */
-class DataFlowNode extends @cil_dataflow_node {
+deprecated class DataFlowNode extends @cil_dataflow_node {
   /** Gets a textual representation of this data flow node. */
   abstract string toString();
 
@@ -24,7 +24,7 @@ class DataFlowNode extends @cil_dataflow_node {
 }
 
 /** A node that updates a variable. */
-abstract class VariableUpdate extends DataFlowNode {
+abstract deprecated class VariableUpdate extends DataFlowNode {
   /** Gets the value assigned, if any. */
   abstract DataFlowNode getSource();
 
@@ -35,7 +35,7 @@ abstract class VariableUpdate extends DataFlowNode {
   abstract predicate updatesAt(BasicBlock bb, int i);
 }
 
-private class MethodParameterDef extends VariableUpdate, MethodParameter {
+deprecated private class MethodParameterDef extends VariableUpdate, MethodParameter {
   override MethodParameter getSource() { result = this }
 
   override MethodParameter getVariable() { result = this }
@@ -46,7 +46,7 @@ private class MethodParameterDef extends VariableUpdate, MethodParameter {
   }
 }
 
-private class VariableWrite extends VariableUpdate, WriteAccess {
+deprecated private class VariableWrite extends VariableUpdate, WriteAccess {
   override Expr getSource() { result = this.getExpr() }
 
   override Variable getVariable() { result = this.getTarget() }
@@ -54,7 +54,7 @@ private class VariableWrite extends VariableUpdate, WriteAccess {
   override predicate updatesAt(BasicBlock bb, int i) { this = bb.getNode(i) }
 }
 
-private class MethodOutOrRefTarget extends VariableUpdate, Call {
+deprecated private class MethodOutOrRefTarget extends VariableUpdate, Call {
   int parameterIndex;
 
   MethodOutOrRefTarget() { this.getTarget().getRawParameter(parameterIndex).hasOutFlag() }

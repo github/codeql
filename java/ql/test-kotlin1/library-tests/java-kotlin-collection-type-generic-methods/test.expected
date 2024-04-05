@@ -32,6 +32,14 @@ methodWithDuplicate
 | AbstractCollection<String> | removeAll | Collection<?> |
 | AbstractCollection<String> | retainAll | Collection<?> |
 | AbstractCollection<String> | toArray | T[] |
+| AbstractCollection<T> | add | T |
+| AbstractCollection<T> | addAll | Collection<? extends T> |
+| AbstractCollection<T> | contains | Object |
+| AbstractCollection<T> | containsAll | Collection<?> |
+| AbstractCollection<T> | remove | Object |
+| AbstractCollection<T> | removeAll | Collection<?> |
+| AbstractCollection<T> | retainAll | Collection<?> |
+| AbstractCollection<T> | toArray | T[] |
 | AbstractList | add | E |
 | AbstractList | add | int |
 | AbstractList | addAll | Collection<? extends E> |
@@ -169,6 +177,17 @@ methodWithDuplicate
 | Collection<String> | retainAll | Collection<?> |
 | Collection<String> | toArray | IntFunction<T[]> |
 | Collection<String> | toArray | T[] |
+| Collection<T> | add | T |
+| Collection<T> | addAll | Collection<? extends T> |
+| Collection<T> | contains | Object |
+| Collection<T> | containsAll | Collection<?> |
+| Collection<T> | equals | Object |
+| Collection<T> | remove | Object |
+| Collection<T> | removeAll | Collection<?> |
+| Collection<T> | removeIf | Predicate<? super T> |
+| Collection<T> | retainAll | Collection<?> |
+| Collection<T> | toArray | IntFunction<T[]> |
+| Collection<T> | toArray | T[] |
 | Collection<V> | add | V |
 | Collection<V> | addAll | Collection<? extends V> |
 | Collection<V> | contains | Object |

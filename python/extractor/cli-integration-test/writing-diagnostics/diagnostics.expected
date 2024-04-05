@@ -1,0 +1,163 @@
+{
+  "attributes": {
+    "args": [
+      "Syntax Error"
+    ],
+    "traceback": [
+      "\"semmle/python/modules.py\", line 108, in py_ast",
+      "\"semmle/python/modules.py\", line 102, in old_py_ast",
+      "\"semmle/python/parser/__init__.py\", line 100, in parse",
+      "\"semmleFile \"<string>\", line 1",
+      "\"semmle/python/extractor.py\", line 84, in process_source_module",
+      "\"semmle/python/modules.py\", line 92, in ast",
+      "\"semmle/python/modules.py\", line 120, in py_ast",
+      "\"semmle/python/modules.py\", line 117, in py_ast",
+      "\"semmle/python/parser/tsg_parser.py\", line 221, in parse",
+      "\"semmleFile \"<string>\", line 1"
+    ]
+  },
+  "location": {
+    "file": "<test-root-directory>/repo_dir/syntaxerror3.py",
+    "startColumn": 0,
+    "endColumn": 0,
+    "startLine": 1,
+    "endLine": 1
+  },
+  "markdownMessage": "A parse error occurred while processing `<test-root-directory>/repo_dir/syntaxerror3.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "python",
+    "id": "py/diagnostics/syntax-error",
+    "name": "Could not process some files due to syntax errors"
+  },
+  "timestamp": "2023-03-13T15:03:48.177832",
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "attributes": {
+    "args": [
+      "Syntax Error"
+    ],
+    "traceback": [
+      "\"semmle/python/modules.py\", line 108, in py_ast",
+      "\"semmle/python/modules.py\", line 102, in old_py_ast",
+      "\"semmle/python/parser/__init__.py\", line 100, in parse",
+      "\"semmleFile \"<string>\", line 3",
+      "\"semmle/python/extractor.py\", line 84, in process_source_module",
+      "\"semmle/python/modules.py\", line 92, in ast",
+      "\"semmle/python/modules.py\", line 120, in py_ast",
+      "\"semmle/python/modules.py\", line 117, in py_ast",
+      "\"semmle/python/parser/tsg_parser.py\", line 221, in parse",
+      "\"semmleFile \"<string>\", line 3"
+    ]
+  },
+  "location": {
+    "file": "<test-root-directory>/repo_dir/syntaxerror1.py",
+    "startColumn": 0,
+    "endColumn": 0,
+    "startLine": 3,
+    "endLine": 3
+  },
+  "markdownMessage": "A parse error occurred while processing `<test-root-directory>/repo_dir/syntaxerror1.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "python",
+    "id": "py/diagnostics/syntax-error",
+    "name": "Could not process some files due to syntax errors"
+  },
+  "timestamp": "2023-03-13T15:03:48.181384",
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "attributes": {
+    "args": [
+      "Syntax Error"
+    ],
+    "traceback": [
+      "\"semmle/python/modules.py\", line 108, in py_ast",
+      "\"semmle/python/modules.py\", line 102, in old_py_ast",
+      "\"semmle/python/parser/__init__.py\", line 100, in parse",
+      "\"semmleFile \"<string>\", line 6",
+      "\"semmle/python/extractor.py\", line 84, in process_source_module",
+      "\"semmle/python/modules.py\", line 92, in ast",
+      "\"semmle/python/modules.py\", line 120, in py_ast",
+      "\"semmle/python/modules.py\", line 117, in py_ast",
+      "\"semmle/python/parser/tsg_parser.py\", line 221, in parse",
+      "\"semmleFile \"<string>\", line 5"
+    ]
+  },
+  "location": {
+    "file": "<test-root-directory>/repo_dir/syntaxerror2.py",
+    "startColumn": 0,
+    "endColumn": 0,
+    "startLine": 5,
+    "endLine": 5
+  },
+  "markdownMessage": "A parse error occurred while processing `<test-root-directory>/repo_dir/syntaxerror2.py`, and as a result this file could not be analyzed. Check the syntax of the file using the `python -m py_compile` command and correct any invalid syntax.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "python",
+    "id": "py/diagnostics/syntax-error",
+    "name": "Could not process some files due to syntax errors"
+  },
+  "timestamp": "2023-03-13T15:03:48.164991",
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "attributes": {
+    "args": [
+      "maximum recursion depth exceeded while calling a Python object"
+    ],
+    "traceback": [
+      "\"semmle/worker.py\", line 235, in _extract_loop",
+      "\"semmle/extractors/super_extractor.py\", line 37, in process",
+      "\"semmle/extractors/py_extractor.py\", line 43, in process",
+      "\"semmle/python/extractor.py\", line 227, in process_source_module",
+      "\"semmle/python/extractor.py\", line 84, in process_source_module",
+      "\"semmle/python/modules.py\", line 96, in ast",
+      "\"semmle/python/passes/labeller.py\", line 85, in apply",
+      "\"semmle/python/passes/labeller.py\", line 44, in __init__",
+      "\"semmle/python/passes/labeller.py\", line 14, in __init__",
+      "\"semmle/python/passes/ast_pass.py\", line 208, in visit",
+      "\"semmle/python/passes/ast_pass.py\", line 216, in generic_visit",
+      "\"semmle/python/passes/ast_pass.py\", line 213, in generic_visit",
+      "\"semmle/python/passes/ast_pass.py\", line 208, in visit",
+      "\"semmle/python/passes/ast_pass.py\", line 213, in generic_visit",
+      "\"semmle/python/passes/ast_pass.py\", line 208, in visit",
+      "... 3930 lines skipped",
+      "\"semmle/python/passes/ast_pass.py\", line 213, in generic_visit",
+      "\"semmle/python/passes/ast_pass.py\", line 208, in visit",
+      "\"semmle/python/passes/ast_pass.py\", line 213, in generic_visit",
+      "\"semmle/python/passes/ast_pass.py\", line 208, in visit",
+      "\"semmle/python/passes/ast_pass.py\", line 205, in _get_visit_method"
+    ]
+  },
+  "location": {
+    "file": "<test-root-directory>/repo_dir/recursion_error.py"
+  },
+  "plaintextMessage": "maximum recursion depth exceeded while calling a Python object",
+  "severity": "error",
+  "source": {
+    "extractorName": "python",
+    "id": "py/diagnostics/recursion-error",
+    "name": "Recursion error in Python extractor"
+  },
+  "timestamp": "2023-03-13T15:03:47.468924",
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

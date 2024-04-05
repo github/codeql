@@ -1448,12 +1448,3 @@ StructDefault.cs:
 #   11|             0: [AssignExpr] ... = ...
 #   11|               0: [FieldAccess] access to field Y
 #   11|               1: [IntLiteral] 1
-cil/class1.cs:
-#    4| [Class] Class1
-#    6|   5: [Method] Main
-#    6|     -1: [TypeMention] Void
-#-----|     2: (Parameters)
-#    6|       0: [Parameter] args
-#    6|         -1: [TypeMention] String[]
-#    6|           1: [TypeMention] string
-#    6|     4: [BlockStmt] {...}

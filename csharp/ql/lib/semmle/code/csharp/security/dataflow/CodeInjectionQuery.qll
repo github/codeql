@@ -68,8 +68,6 @@ deprecated class RemoteSource extends DataFlow::Node instanceof RemoteFlowSource
  */
 deprecated class LocalSource extends DataFlow::Node instanceof LocalFlowSource { }
 
-private class AddLocalSource extends Source instanceof LocalFlowSource { }
-
 /** A source supported by the current threat model. */
 class ThreatModelSource extends Source instanceof ThreatModelFlowSource { }
 

@@ -1590,7 +1590,9 @@ class InstanceOfExpr extends Expr, @instanceofexpr {
    * Note that this won't get anything when record pattern matching is used-- for more general patterns,
    * use `getPattern`.
    */
-  LocalVariableDeclExpr getLocalVariableDeclExpr() { result = this.getPattern().asBindingPattern() }
+  LocalVariableDeclExpr getLocalVariableDeclExpr() {
+    result = this.getPattern().asBindingOrUnnamedPattern()
+  }
 
   /**
    * Gets the access to the type on the right-hand side of the `instanceof` operator.
@@ -1681,7 +1683,10 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     or
     exists(InstanceOfExpr ioe | this.getParent() = ioe | result.isNthChildOf(ioe, 1))
     or
-    exists(PatternCase pc | this.getParent() = pc | result.isNthChildOf(pc, -2))
+    exists(PatternCase pc, int index, int typeAccessIdx | this.isNthChildOf(pc, index) |
+      (if index = 0 then typeAccessIdx = -2 else typeAccessIdx = (-3 - index)) and
+      result.isNthChildOf(pc, typeAccessIdx)
+    )
     or
     exists(RecordPatternExpr rpe, int index |
       this.isNthChildOf(rpe, index) and result.isNthChildOf(rpe, -(index + 1))
@@ -1690,6 +1695,9 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
 
   /** Gets the name of the variable declared by this local variable declaration expression. */
   string getName() { result = this.getVariable().getName() }
+
+  /** Holds if this is an anonymous local variable, `_` */
+  predicate isAnonymous() { this.getName() = "" }
 
   /**
    * Gets the switch statement or expression whose pattern declares this identifier, if any.
@@ -1700,7 +1708,7 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
       or
       pc = result.(SwitchExpr).getAPatternCase()
     |
-      this = pc.getPattern().getAChildExpr*()
+      this = pc.getAPattern().getAChildExpr*()
     )
   }
 
@@ -1739,17 +1747,17 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
     or
     exists(SwitchStmt switch |
       result = switch.getExpr() and
-      this = switch.getAPatternCase().getPattern().asBindingPattern()
+      this = switch.getAPatternCase().getAPattern().asBindingOrUnnamedPattern()
     )
     or
     exists(SwitchExpr switch |
       result = switch.getExpr() and
-      this = switch.getAPatternCase().getPattern().asBindingPattern()
+      this = switch.getAPatternCase().getAPattern().asBindingOrUnnamedPattern()
     )
     or
     exists(InstanceOfExpr ioe |
       result = ioe.getExpr() and
-      this = ioe.getPattern().asBindingPattern()
+      this = ioe.getPattern().asBindingOrUnnamedPattern()
     )
   }
 
@@ -1763,7 +1771,9 @@ class LocalVariableDeclExpr extends Expr, @localvariabledeclexpr {
   }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = this.getName() }
+  override string toString() {
+    if this.getName() = "" then result = "<anonymous local variable>" else result = this.getName()
+  }
 
   override string getAPrimaryQlClass() { result = "LocalVariableDeclExpr" }
 }
@@ -2671,9 +2681,9 @@ class NotNullExpr extends UnaryExpr, @notnullexpr {
 }
 
 /**
- * A binding or record pattern.
+ * A binding, unnamed or record pattern.
  *
- * Note binding patterns are represented as `LocalVariableDeclExpr`s.
+ * Note binding and unnamed patterns are represented as `LocalVariableDeclExpr`s.
  */
 class PatternExpr extends Expr {
   PatternExpr() {
@@ -2686,9 +2696,14 @@ class PatternExpr extends Expr {
   }
 
   /**
-   * Gets this pattern cast to a binding pattern.
+   * Gets this pattern cast to a binding or unnamed pattern.
    */
-  LocalVariableDeclExpr asBindingPattern() { result = this }
+  LocalVariableDeclExpr asBindingOrUnnamedPattern() { result = this }
+
+  /**
+   * DEPRECATED: alias for `asBindingOrUnnamedPattern`.
+   */
+  deprecated LocalVariableDeclExpr asBindingPattern() { result = this.asBindingOrUnnamedPattern() }
 
   /**
    * Gets this pattern cast to a record pattern.
@@ -2722,6 +2737,16 @@ class RecordPatternExpr extends Expr, @recordpatternexpr {
         or
         subPattern.(RecordPatternExpr).isUnrestricted()
       )
+    )
+  }
+
+  /**
+   * Holds if this record pattern declares any identifiers (i.e., at least one leaf declaration is named).
+   */
+  predicate declaresAnyIdentifiers() {
+    exists(PatternExpr subPattern | subPattern = this.getSubPattern(_) |
+      subPattern.asRecordPattern().declaresAnyIdentifiers() or
+      not subPattern.asBindingOrUnnamedPattern().isAnonymous()
     )
   }
 }

@@ -274,8 +274,6 @@ public class Env {
 		/**
 		 * The location of the snapshot being built.
 		 */
-		ODASA_SNAPSHOT,
-		ODASA_SNAPSHOT_NAME,
 		ODASA_SRC,
 		ODASA_DB,
 		ODASA_BUILD_ERROR_DIR,

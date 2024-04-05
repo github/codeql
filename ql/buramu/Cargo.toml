@@ -7,6 +7,6 @@ edition = "2018"
 
 [dependencies]
 lazy_static = "1.4.0"
-chrono = "0.4.34"
+chrono = "0.4.35"
 rayon = "1.9.0"
 regex = "1.10.3"

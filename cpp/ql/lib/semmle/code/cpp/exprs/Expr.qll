@@ -1322,3 +1322,31 @@ class CoYieldExpr extends UnaryOperation, @co_yield {
 
   override int getPrecedence() { result = 2 }
 }
+
+/**
+ * An expression representing the re-use of another expression.
+ *
+ * In some specific cases an expression may be referred to outside its
+ * original context. A re-use expression wraps any such reference. A
+ * re-use expression can for example occur as the qualifier of an implicit
+ * destructor called on a temporary object, where the original use of the
+ * expression is in the definition of the temporary.
+ */
+class ReuseExpr extends Expr, @reuseexpr {
+  override string getAPrimaryQlClass() { result = "ReuseExpr" }
+
+  override string toString() { result = "reuse of " + this.getReusedExpr().toString() }
+
+  /**
+   * Gets the expression that is being re-used.
+   */
+  Expr getReusedExpr() { expr_reuse(underlyingElement(this), unresolveElement(result), _) }
+
+  override Type getType() { result = this.getReusedExpr().getType() }
+
+  override predicate isLValueCategory() { expr_reuse(underlyingElement(this), _, 3) }
+
+  override predicate isXValueCategory() { expr_reuse(underlyingElement(this), _, 2) }
+
+  override predicate isPRValueCategory() { expr_reuse(underlyingElement(this), _, 1) }
+}

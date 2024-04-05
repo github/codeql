@@ -3,6 +3,7 @@
  */
 
 import semmle.files.FileSystem
+private import semmle.javascript.internal.Locations
 
 private class TXmlLocatable =
   @xmldtd or @xmlelement or @xmlattribute or @xmlnamespace or @xmlcomment or @xmlcharacters;
@@ -10,7 +11,7 @@ private class TXmlLocatable =
 /** An XML element that has a location. */
 class XmlLocatable extends @xmllocatable, TXmlLocatable {
   /** Gets the source location for this element. */
-  Location getLocation() { xmllocations(this, result) }
+  DbLocation getLocation() { result = getLocatableLocation(this) }
 
   /**
    * Holds if this element is at the specified location.
@@ -22,10 +23,7 @@ class XmlLocatable extends @xmllocatable, TXmlLocatable {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    exists(File f, Location l | l = this.getLocation() |
-      locations_default(l, f, startline, startcolumn, endline, endcolumn) and
-      filepath = f.getAbsolutePath()
-    )
+    this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets a textual representation of this element. */
