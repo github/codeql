@@ -1,7 +1,19 @@
 typeModel
 | (reexport).func | reexport | Member[func] |
+| (return-this).FluentInterface | return-this | Member[FluentInterface] |
+| (return-this).FluentInterface.prototype | (return-this).FluentInterface | Instance |
+| (return-this).FluentInterface.prototype | (return-this).FluentInterface.prototype.bar | ReturnValue |
+| (return-this).FluentInterface.prototype | (return-this).FluentInterface.prototype.baz | ReturnValue |
+| (return-this).FluentInterface.prototype.bar | (return-this).FluentInterface.prototype | Member[bar] |
+| (return-this).FluentInterface.prototype.baz | (return-this).FluentInterface.prototype | Member[baz] |
+| (return-this).FluentInterface.prototype.foo | (return-this).FluentInterface.prototype | Member[foo] |
+| (return-this).FluentInterface.prototype.notFluent | (return-this).FluentInterface.prototype | Member[notFluent] |
+| (return-this).FluentInterface.prototype.notFluent2 | (return-this).FluentInterface.prototype | Member[notFluent2] |
 | upstream-lib | (reexport).func | ReturnValue |
 | upstream-lib | reexport | Member[lib] |
 | upstream-lib.XYZ | reexport | Member[x].Member[y].Member[z] |
 | upstream-lib.XYZ | reexport | Member[xy].Member[z] |
 summaryModel
+| (return-this).FluentInterface.prototype |  |  | Member[bar].ReturnValue | type |
+| (return-this).FluentInterface.prototype |  |  | Member[baz].ReturnValue | type |
+| (return-this).FluentInterface.prototype |  |  | Member[foo].ReturnValue | type |
