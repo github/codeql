@@ -17,15 +17,6 @@
 | [...]/Microsoft.Win32.SystemEvents.dll |
 | [...]/Mono.Posix.NETStandard.dll |
 | [...]/Newtonsoft.Json.dll |
-| [...]/Semmle.Autobuild.CSharp.dll |
-| [...]/Semmle.Autobuild.Shared.dll |
-| [...]/Semmle.Extraction.CSharp.DependencyFetching.dll |
-| [...]/Semmle.Extraction.CSharp.Driver.dll |
-| [...]/Semmle.Extraction.CSharp.Standalone.dll |
-| [...]/Semmle.Extraction.CSharp.Util.dll |
-| [...]/Semmle.Extraction.CSharp.dll |
-| [...]/Semmle.Extraction.dll |
-| [...]/Semmle.Util.dll |
 | [...]/System.AppContext.dll |
 | [...]/System.Buffers.dll |
 | [...]/System.Collections.Concurrent.dll |
