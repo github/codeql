@@ -106,14 +106,14 @@ module TypeGraphExport<GraphExportSig<API::Node> S, shouldContainTypeSig/1 shoul
     shouldContainTypeEx(type1) and
     exists(API::Node node |
       // A relevant type is exported directly
-      ModelOutput::getATypeNode(type1).getAValueReachableFromSource() = node.asSink() and
+      Specific::sourceFlowsToSink(ModelOutput::getATypeNode(type1), node) and
       ExportedGraph::pathToNode(type2, path, node)
       or
       // Something that leads to a relevant type, but didn't finish its access path, is exported
       exists(string midType, string midPath, string remainingPath, string prefix, API::Node source |
         Shared::typeModel(type1, midType, midPath) and
         partiallyEvaluatedModel(midType, midPath, source, remainingPath) and
-        source.getAValueReachableFromSource() = node.asSink() and
+        Specific::sourceFlowsToSink(source, node) and
         ExportedGraph::pathToNode(type2, prefix, node) and
         path = join(prefix, remainingPath)
       )
