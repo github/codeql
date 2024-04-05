@@ -301,6 +301,11 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
     not irrelevantBound(n, t)
   }
 
+    /**
+   * Holds if the runtime type of `n` is bounded by `t` and if this bound is
+   * likely to be better than the static type of `n`. The flag `exact` indicates
+   * whether `t` is an exact bound or merely an upper bound.
+   */
   predicate bestTypeFlow(TypeFlowNode n, Type t, boolean exact) {
     exactType(n, t) and exact = true
     or
