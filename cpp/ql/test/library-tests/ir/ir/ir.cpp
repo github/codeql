@@ -2436,4 +2436,13 @@ void rethrow_with_destruction(int x) {
     throw;
 }
 
+struct ByValueConstructor {
+    ByValueConstructor(ClassWithDestructor);
+};
+
+void new_with_destructor(ClassWithDestructor a)
+{
+    ByValueConstructor* b = new ByValueConstructor(a);
+}
+
 // semmle-extractor-options: -std=c++20 --clang

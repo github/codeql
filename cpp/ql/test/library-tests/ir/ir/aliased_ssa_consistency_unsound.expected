@@ -2,6 +2,8 @@ missingOperand
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
+| ir.cpp:2445:52:2445:52 | Phi: reuse of temporary object | Instruction 'Phi: reuse of temporary object' is missing an operand for predecessor block 'EnterFunction: new_with_destructor' in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Phi: reuse of temporary object | Instruction 'Phi: reuse of temporary object' is missing an operand for predecessor block 'EnterFunction: new_with_destructor' in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
 missingOperandType
 | destructors_for_temps.cpp:39:3:39:53 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | destructors_for_temps.cpp:38:6:38:15 | void temp_test5(bool) | void temp_test5(bool) |
 | ir.cpp:1425:5:1425:30 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1414:6:1414:21 | void temporary_string() | void temporary_string() |
@@ -10,7 +12,35 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 ambiguousSuccessors
+| ir.cpp:2445:52:2445:52 | Chi: reuse of temporary object | Instruction 'Chi: reuse of temporary object' has 3 successors of kind 'Goto' in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
 unexplainedLoop
+| ir.cpp:2445:29:2445:53 | Call: call to ByValueConstructor | Instruction 'Call: call to ByValueConstructor' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | Call: new | Instruction 'Call: new' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | CallSideEffect: call to ByValueConstructor | Instruction 'CallSideEffect: call to ByValueConstructor' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | CallSideEffect: new | Instruction 'CallSideEffect: new' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | Chi: call to ByValueConstructor | Instruction 'Chi: call to ByValueConstructor' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | Chi: call to ByValueConstructor | Instruction 'Chi: call to ByValueConstructor' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | Chi: new | Instruction 'Chi: new' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | Convert: new | Instruction 'Convert: new' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | FunctionAddress: call to ByValueConstructor | Instruction 'FunctionAddress: call to ByValueConstructor' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | IndirectMayWriteSideEffect: call to ByValueConstructor | Instruction 'IndirectMayWriteSideEffect: call to ByValueConstructor' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | InitializeDynamicAllocation: new | Instruction 'InitializeDynamicAllocation: new' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Call: call to ~ClassWithDestructor | Instruction 'Call: call to ~ClassWithDestructor' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | CallSideEffect: call to ~ClassWithDestructor | Instruction 'CallSideEffect: call to ~ClassWithDestructor' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Chi: call to ~ClassWithDestructor | Instruction 'Chi: call to ~ClassWithDestructor' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Chi: reuse of temporary object | Instruction 'Chi: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | CopyValue: reuse of temporary object | Instruction 'CopyValue: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | FunctionAddress: call to ~ClassWithDestructor | Instruction 'FunctionAddress: call to ~ClassWithDestructor' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | IndirectMayWriteSideEffect: reuse of temporary object | Instruction 'IndirectMayWriteSideEffect: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | IndirectReadSideEffect: reuse of temporary object | Instruction 'IndirectReadSideEffect: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Load: a | Instruction 'Load: a' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Load: temporary object | Instruction 'Load: temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Phi: reuse of temporary object | Instruction 'Phi: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Phi: reuse of temporary object | Instruction 'Phi: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Phi: reuse of temporary object | Instruction 'Phi: reuse of temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Store: a | Instruction 'Store: a' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | VariableAddress: a | Instruction 'VariableAddress: a' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | VariableAddress: temporary object | Instruction 'VariableAddress: temporary object' is part of an unexplained loop in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
@@ -21,8 +51,14 @@ containsLoopOfForwardEdges
 missingIRType
 multipleIRTypes
 lostReachability
+| ir.cpp:2445:29:2445:53 | Call: new | Block 'Call: new' is not reachable by traversing only forward edges in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | Convert: new | Block 'Convert: new' is not reachable by traversing only forward edges in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | Store: new | Block 'Store: new' is not reachable by traversing only forward edges in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
 backEdgeCountMismatch
 useNotDominatedByDefinition
+| ir.cpp:2445:29:2445:53 | StoreValue | Operand 'StoreValue' is not dominated by its definition in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:29:2445:53 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
+| ir.cpp:2445:52:2445:52 | Unary | Operand 'Unary' is not dominated by its definition in function '$@'. | ir.cpp:2443:6:2443:24 | void new_with_destructor(ClassWithDestructor) | void new_with_destructor(ClassWithDestructor) |
 switchInstructionWithoutDefaultEdge
 notMarkedAsConflated
 wronglyMarkedAsConflated

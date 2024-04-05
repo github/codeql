@@ -20275,6 +20275,54 @@ ir.cpp:
 # 2437|           getQualifier(): [VariableAccess] c
 # 2437|               Type = [Class] ClassWithDestructor
 # 2437|               ValueCategory = lvalue
+# 2439| [CopyAssignmentOperator] ByValueConstructor& ByValueConstructor::operator=(ByValueConstructor const&)
+# 2439|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ByValueConstructor &
+# 2439| [MoveAssignmentOperator] ByValueConstructor& ByValueConstructor::operator=(ByValueConstructor&&)
+# 2439|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] ByValueConstructor &&
+# 2439| [CopyConstructor] void ByValueConstructor::ByValueConstructor(ByValueConstructor const&)
+# 2439|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ByValueConstructor &
+# 2439| [MoveConstructor] void ByValueConstructor::ByValueConstructor(ByValueConstructor&&)
+# 2439|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] ByValueConstructor &&
+# 2440| [Constructor] void ByValueConstructor::ByValueConstructor(ClassWithDestructor)
+# 2440|   <params>: 
+# 2440|     getParameter(0): [Parameter] (unnamed parameter 0)
+# 2440|         Type = [Class] ClassWithDestructor
+# 2443| [TopLevelFunction] void new_with_destructor(ClassWithDestructor)
+# 2443|   <params>: 
+# 2443|     getParameter(0): [Parameter] a
+# 2443|         Type = [Class] ClassWithDestructor
+# 2444|   getEntryPoint(): [BlockStmt] { ... }
+# 2445|     getStmt(0): [DeclStmt] declaration
+# 2445|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of b
+# 2445|           Type = [PointerType] ByValueConstructor *
+# 2445|         getVariable().getInitializer(): [Initializer] initializer for b
+# 2445|           getExpr(): [NewExpr] new
+# 2445|               Type = [PointerType] ByValueConstructor *
+# 2445|               ValueCategory = prvalue
+# 2445|             getInitializer(): [ConstructorCall] call to ByValueConstructor
+# 2445|                 Type = [VoidType] void
+# 2445|                 ValueCategory = prvalue
+# 2445|               getArgument(0): [VariableAccess] a
+# 2445|                   Type = [Class] ClassWithDestructor
+# 2445|                   ValueCategory = prvalue(load)
+# 2445|               getArgument(0).getFullyConverted(): [TemporaryObjectExpr] temporary object
+# 2445|                   Type = [Class] ClassWithDestructor
+# 2445|                   ValueCategory = lvalue
+# 2445|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor
+# 2445|                 Type = [VoidType] void
+# 2445|                 ValueCategory = prvalue
+# 2445|               getQualifier(): [ReuseExpr] reuse of temporary object
+# 2445|                   Type = [Class] ClassWithDestructor
+# 2445|                   ValueCategory = xvalue
+# 2446|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

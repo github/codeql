@@ -13476,6 +13476,79 @@
 | ir.cpp:2437:1:2437:1 | ChiTotal | total:m2435_8 |
 | ir.cpp:2437:1:2437:1 | SideEffect | m2435_8 |
 | ir.cpp:2437:1:2437:1 | SideEffect | ~m2435_6 |
+| ir.cpp:2443:6:2443:24 | ChiPartial | partial:m2443_3 |
+| ir.cpp:2443:6:2443:24 | ChiTotal | total:m2443_2 |
+| ir.cpp:2443:6:2443:24 | SideEffect | ~m2445_31 |
+| ir.cpp:2443:6:2443:24 | SideEffect | ~m2445_45 |
+| ir.cpp:2443:46:2443:46 | Address | &:r2443_5 |
+| ir.cpp:2445:25:2445:25 | Address | &:r2445_1 |
+| ir.cpp:2445:29:2445:53 | Address | &:r2445_5 |
+| ir.cpp:2445:29:2445:53 | Address | &:r2445_17 |
+| ir.cpp:2445:29:2445:53 | Arg(0) | 0:r2445_3 |
+| ir.cpp:2445:29:2445:53 | Arg(this) | this:r2445_5 |
+| ir.cpp:2445:29:2445:53 | CallTarget | func:r2445_2 |
+| ir.cpp:2445:29:2445:53 | CallTarget | func:r2445_6 |
+| ir.cpp:2445:29:2445:53 | ChiPartial | partial:m2445_13 |
+| ir.cpp:2445:29:2445:53 | ChiPartial | partial:m2445_15 |
+| ir.cpp:2445:29:2445:53 | ChiPartial | partial:m2445_18 |
+| ir.cpp:2445:29:2445:53 | ChiTotal | total:m2445_22 |
+| ir.cpp:2445:29:2445:53 | ChiTotal | total:m2445_25 |
+| ir.cpp:2445:29:2445:53 | ChiTotal | total:m2445_31 |
+| ir.cpp:2445:29:2445:53 | ChiTotal | total:m2445_31 |
+| ir.cpp:2445:29:2445:53 | ChiTotal | total:m2445_36 |
+| ir.cpp:2445:29:2445:53 | ChiTotal | total:m2445_39 |
+| ir.cpp:2445:29:2445:53 | ChiTotal | total:m2445_45 |
+| ir.cpp:2445:29:2445:53 | ChiTotal | total:m2445_45 |
+| ir.cpp:2445:29:2445:53 | SideEffect | ~m2445_31 |
+| ir.cpp:2445:29:2445:53 | SideEffect | ~m2445_31 |
+| ir.cpp:2445:29:2445:53 | SideEffect | ~m2445_45 |
+| ir.cpp:2445:29:2445:53 | SideEffect | ~m2445_45 |
+| ir.cpp:2445:29:2445:53 | StoreValue | r2445_5 |
+| ir.cpp:2445:29:2445:53 | Unary | r2445_17 |
+| ir.cpp:2445:52:2445:52 | Address | &:r2445_7 |
+| ir.cpp:2445:52:2445:52 | Address | &:r2445_7 |
+| ir.cpp:2445:52:2445:52 | Address | &:r2445_8 |
+| ir.cpp:2445:52:2445:52 | Address | &:r2445_27 |
+| ir.cpp:2445:52:2445:52 | Address | &:r2445_27 |
+| ir.cpp:2445:52:2445:52 | Address | &:r2445_41 |
+| ir.cpp:2445:52:2445:52 | Address | &:r2445_41 |
+| ir.cpp:2445:52:2445:52 | Arg(0) | 0:r2445_11 |
+| ir.cpp:2445:52:2445:52 | Arg(this) | this:r2445_27 |
+| ir.cpp:2445:52:2445:52 | Arg(this) | this:r2445_41 |
+| ir.cpp:2445:52:2445:52 | CallTarget | func:r2445_28 |
+| ir.cpp:2445:52:2445:52 | CallTarget | func:r2445_42 |
+| ir.cpp:2445:52:2445:52 | ChiPartial | partial:m2445_30 |
+| ir.cpp:2445:52:2445:52 | ChiPartial | partial:m2445_33 |
+| ir.cpp:2445:52:2445:52 | ChiPartial | partial:m2445_44 |
+| ir.cpp:2445:52:2445:52 | ChiPartial | partial:m2445_47 |
+| ir.cpp:2445:52:2445:52 | ChiTotal | total:m2445_21 |
+| ir.cpp:2445:52:2445:52 | ChiTotal | total:m2445_23 |
+| ir.cpp:2445:52:2445:52 | ChiTotal | total:m2445_24 |
+| ir.cpp:2445:52:2445:52 | ChiTotal | total:m2445_26 |
+| ir.cpp:2445:52:2445:52 | ChiTotal | total:m2445_35 |
+| ir.cpp:2445:52:2445:52 | ChiTotal | total:m2445_37 |
+| ir.cpp:2445:52:2445:52 | ChiTotal | total:m2445_38 |
+| ir.cpp:2445:52:2445:52 | ChiTotal | total:m2445_40 |
+| ir.cpp:2445:52:2445:52 | Load | m2443_6 |
+| ir.cpp:2445:52:2445:52 | Load | m2445_10 |
+| ir.cpp:2445:52:2445:52 | Phi | from 0:~m2443_4 |
+| ir.cpp:2445:52:2445:52 | Phi | from 2:m2445_10 |
+| ir.cpp:2445:52:2445:52 | Phi | from 2:m2445_16 |
+| ir.cpp:2445:52:2445:52 | Phi | from 2:~m2445_14 |
+| ir.cpp:2445:52:2445:52 | Phi | from 3:m2445_20 |
+| ir.cpp:2445:52:2445:52 | Phi | from 3:m2445_34 |
+| ir.cpp:2445:52:2445:52 | Phi | from 3:m2445_48 |
+| ir.cpp:2445:52:2445:52 | Phi | from 3:~m2445_19 |
+| ir.cpp:2445:52:2445:52 | SideEffect | m2445_21 |
+| ir.cpp:2445:52:2445:52 | SideEffect | m2445_24 |
+| ir.cpp:2445:52:2445:52 | SideEffect | m2445_35 |
+| ir.cpp:2445:52:2445:52 | SideEffect | m2445_38 |
+| ir.cpp:2445:52:2445:52 | SideEffect | ~m2445_23 |
+| ir.cpp:2445:52:2445:52 | SideEffect | ~m2445_26 |
+| ir.cpp:2445:52:2445:52 | SideEffect | ~m2445_37 |
+| ir.cpp:2445:52:2445:52 | SideEffect | ~m2445_40 |
+| ir.cpp:2445:52:2445:52 | StoreValue | r2445_9 |
+| ir.cpp:2445:52:2445:52 | Unary | r2445_7 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_7 |

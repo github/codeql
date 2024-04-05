@@ -14720,6 +14720,63 @@ ir.cpp:
 # 2434|     v2434_9(void) = Unwind : 
 #-----|   Goto -> Block 1
 
+# 2443| void new_with_destructor(ClassWithDestructor)
+# 2443|   Block 0
+# 2443|     v2443_1(void)                        = EnterFunction                 : 
+# 2443|     mu2443_2(unknown)                    = AliasedDefinition             : 
+# 2443|     mu2443_3(unknown)                    = InitializeNonLocal            : 
+# 2443|     r2443_4(glval<ClassWithDestructor>)  = VariableAddress[a]            : 
+# 2443|     mu2443_5(ClassWithDestructor)        = InitializeParameter[a]        : &:r2443_4
+# 2445|     r2445_1(glval<ByValueConstructor *>) = VariableAddress[b]            : 
+# 2445|     r2445_2(glval<unknown>)              = FunctionAddress[operator new] : 
+# 2445|     r2445_3(unsigned long)               = Constant[1]                   : 
+#-----|   Goto -> Block 4
+#-----|   Goto -> Block 4
+
+# 2445|   Block 1
+# 2445|     mu2445_4(ByValueConstructor *) = Store[b]     : &:r2445_1, r2445_5
+# 2446|     v2446_1(void)                  = NoOp         : 
+# 2443|     v2443_6(void)                  = ReturnVoid   : 
+# 2443|     v2443_7(void)                  = AliasedUse   : ~m?
+# 2443|     v2443_8(void)                  = ExitFunction : 
+
+# 2445|   Block 2
+# 2445|     r2445_5(ByValueConstructor *)       = Convert                             : r2445_15
+# 2445|     r2445_6(glval<unknown>)             = FunctionAddress[ByValueConstructor] : 
+# 2445|     r2445_7(glval<ClassWithDestructor>) = VariableAddress[#temp2445:52]       : 
+# 2445|     r2445_8(glval<ClassWithDestructor>) = VariableAddress[a]                  : 
+# 2445|     r2445_9(ClassWithDestructor)        = Load[a]                             : &:r2445_8, ~m?
+# 2445|     mu2445_10(ClassWithDestructor)      = Store[#temp2445:52]                 : &:r2445_7, r2445_9
+# 2445|     r2445_11(ClassWithDestructor)       = Load[#temp2445:52]                  : &:r2445_7, ~m?
+# 2445|     v2445_12(void)                      = Call[ByValueConstructor]            : func:r2445_6, this:r2445_5, 0:r2445_11
+# 2445|     mu2445_13(unknown)                  = ^CallSideEffect                     : ~m?
+# 2445|     mu2445_14(ByValueConstructor)       = ^IndirectMayWriteSideEffect[-1]     : &:r2445_5
+#-----|   Goto (back edge) -> Block 4
+#-----|   Goto (back edge) -> Block 4
+
+# 2445|   Block 3
+# 2445|     r2445_15(void *)   = Call[operator new]           : func:r2445_2, 0:r2445_3
+# 2445|     mu2445_16(unknown) = ^CallSideEffect              : ~m?
+# 2445|     mu2445_17(unknown) = ^InitializeDynamicAllocation : &:r2445_15
+#-----|   Goto (back edge) -> Block 4
+#-----|   Goto (back edge) -> Block 4
+
+# 2445|   Block 4
+# 2445|     r2445_24(glval<ClassWithDestructor>) = CopyValue                             : r2445_7
+# 2445|     r2445_25(glval<unknown>)             = FunctionAddress[~ClassWithDestructor] : 
+# 2445|     v2445_26(void)                       = Call[~ClassWithDestructor]            : func:r2445_19, func:r2445_25, this:r2445_18, this:r2445_24
+# 2445|     mu2445_27(unknown)                   = ^CallSideEffect                       : ~m?
+# 2445|     v2445_28(void)                       = ^IndirectReadSideEffect[-1]           : &:r2445_18, &:r2445_24, ~m?
+# 2445|     mu2445_29(ClassWithDestructor)       = ^IndirectMayWriteSideEffect[-1]       : &:r2445_18, &:r2445_24
+#-----|   Goto (back edge) -> Block 2
+#-----|   Goto (back edge) -> Block 3
+#-----|   Goto (back edge) -> Block 1
+
+# 2445|   Block 4
+#-----|   Goto (back edge) -> Block 2
+#-----|   Goto (back edge) -> Block 3
+#-----|   Goto (back edge) -> Block 1
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
