@@ -20323,6 +20323,56 @@ ir.cpp:
 # 2445|                   Type = [Class] ClassWithDestructor
 # 2445|                   ValueCategory = xvalue
 # 2446|     getStmt(1): [ReturnStmt] return ...
+# 2449| [CopyAssignmentOperator] rvalue_conversion_with_destructor::A& rvalue_conversion_with_destructor::A::operator=(rvalue_conversion_with_destructor::A const&)
+# 2449|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const A &
+# 2449| [MoveAssignmentOperator] rvalue_conversion_with_destructor::A& rvalue_conversion_with_destructor::A::operator=(rvalue_conversion_with_destructor::A&&)
+# 2449|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [RValueReferenceType] A &&
+# 2453| [CopyAssignmentOperator] rvalue_conversion_with_destructor::B& rvalue_conversion_with_destructor::B::operator=(rvalue_conversion_with_destructor::B const&)
+# 2453|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const B &
+# 2453| [Constructor] void rvalue_conversion_with_destructor::B::B()
+# 2453|   <params>: 
+# 2455| [Destructor] void rvalue_conversion_with_destructor::B::~B()
+# 2455|   <params>: 
+# 2457| [ConstMemberFunction] rvalue_conversion_with_destructor::A* rvalue_conversion_with_destructor::B::operator->() const
+# 2457|   <params>: 
+# 2460| [TopLevelFunction] rvalue_conversion_with_destructor::B rvalue_conversion_with_destructor::get()
+# 2460|   <params>: 
+# 2462| [TopLevelFunction] void rvalue_conversion_with_destructor::test()
+# 2462|   <params>: 
+# 2463|   getEntryPoint(): [BlockStmt] { ... }
+# 2464|     getStmt(0): [DeclStmt] declaration
+# 2464|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of a
+# 2464|           Type = [IntType] unsigned int
+# 2464|         getVariable().getInitializer(): [Initializer] initializer for a
+# 2464|           getExpr(): [PointerFieldAccess] a
+# 2464|               Type = [IntType] unsigned int
+# 2464|               ValueCategory = prvalue(load)
+# 2464|             getQualifier(): [FunctionCall] call to operator->
+# 2464|                 Type = [PointerType] A *
+# 2464|                 ValueCategory = prvalue
+# 2464|               getQualifier(): [FunctionCall] call to get
+# 2464|                   Type = [Struct] B
+# 2464|                   ValueCategory = prvalue
+# 2464|               getQualifier().getFullyConverted(): [CStyleCast] (const B)...
+# 2464|                   Conversion = [PrvalueAdjustmentConversion] prvalue adjustment conversion
+# 2464|                   Type = [SpecifiedType] const B
+# 2464|                   ValueCategory = prvalue
+# 2464|                 getExpr(): [TemporaryObjectExpr] temporary object
+# 2464|                     Type = [Struct] B
+# 2464|                     ValueCategory = prvalue(load)
+# 2464|             getImplicitDestructorCall(0): [DestructorCall] call to ~B
+# 2464|                 Type = [VoidType] void
+# 2464|                 ValueCategory = prvalue
+# 2464|               getQualifier(): [ReuseExpr] reuse of temporary object
+# 2464|                   Type = [Struct] B
+# 2464|                   ValueCategory = xvalue
+# 2465|     getStmt(1): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

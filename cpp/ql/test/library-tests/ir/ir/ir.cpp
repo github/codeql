@@ -2445,4 +2445,24 @@ void new_with_destructor(ClassWithDestructor a)
     ByValueConstructor* b = new ByValueConstructor(a);
 }
 
+namespace rvalue_conversion_with_destructor {
+    struct A {
+        unsigned a;
+    };
+
+    struct B
+    {
+        ~B();
+
+        inline A *operator->() const;
+    };
+
+    B get();
+
+    void test()
+    {
+        auto a = get()->a;
+    }
+}
+
 // semmle-extractor-options: -std=c++20 --clang

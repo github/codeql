@@ -13515,6 +13515,65 @@
 | ir.cpp:2445:52:2445:52 | SideEffect | ~m2445_17 |
 | ir.cpp:2445:52:2445:52 | StoreValue | r2445_12 |
 | ir.cpp:2445:52:2445:52 | Unary | r2445_10 |
+| ir.cpp:2462:10:2462:13 | ChiPartial | partial:m2462_3 |
+| ir.cpp:2462:10:2462:13 | ChiTotal | total:m2462_2 |
+| ir.cpp:2462:10:2462:13 | SideEffect | ~m2464_25 |
+| ir.cpp:2462:10:2462:13 | SideEffect | ~m2464_37 |
+| ir.cpp:2464:14:2464:14 | Address | &:r2464_1 |
+| ir.cpp:2464:18:2464:20 | CallTarget | func:r2464_3 |
+| ir.cpp:2464:18:2464:20 | ChiPartial | partial:m2464_5 |
+| ir.cpp:2464:18:2464:20 | ChiTotal | total:m2462_4 |
+| ir.cpp:2464:18:2464:20 | SideEffect | ~m2462_4 |
+| ir.cpp:2464:18:2464:20 | StoreValue | r2464_4 |
+| ir.cpp:2464:18:2464:22 | Address | &:r2464_2 |
+| ir.cpp:2464:18:2464:22 | Address | &:r2464_8 |
+| ir.cpp:2464:18:2464:22 | Address | &:r2464_21 |
+| ir.cpp:2464:18:2464:22 | Address | &:r2464_21 |
+| ir.cpp:2464:18:2464:22 | Address | &:r2464_33 |
+| ir.cpp:2464:18:2464:22 | Address | &:r2464_33 |
+| ir.cpp:2464:18:2464:22 | Arg(this) | this:r2464_8 |
+| ir.cpp:2464:18:2464:22 | Arg(this) | this:r2464_21 |
+| ir.cpp:2464:18:2464:22 | Arg(this) | this:r2464_33 |
+| ir.cpp:2464:18:2464:22 | CallTarget | func:r2464_22 |
+| ir.cpp:2464:18:2464:22 | CallTarget | func:r2464_34 |
+| ir.cpp:2464:18:2464:22 | ChiPartial | partial:m2464_24 |
+| ir.cpp:2464:18:2464:22 | ChiPartial | partial:m2464_27 |
+| ir.cpp:2464:18:2464:22 | ChiPartial | partial:m2464_36 |
+| ir.cpp:2464:18:2464:22 | ChiPartial | partial:m2464_39 |
+| ir.cpp:2464:18:2464:22 | ChiTotal | total:m2464_17 |
+| ir.cpp:2464:18:2464:22 | ChiTotal | total:m2464_18 |
+| ir.cpp:2464:18:2464:22 | ChiTotal | total:m2464_19 |
+| ir.cpp:2464:18:2464:22 | ChiTotal | total:m2464_20 |
+| ir.cpp:2464:18:2464:22 | ChiTotal | total:m2464_29 |
+| ir.cpp:2464:18:2464:22 | ChiTotal | total:m2464_30 |
+| ir.cpp:2464:18:2464:22 | ChiTotal | total:m2464_31 |
+| ir.cpp:2464:18:2464:22 | ChiTotal | total:m2464_32 |
+| ir.cpp:2464:18:2464:22 | Phi | from 0:m2464_7 |
+| ir.cpp:2464:18:2464:22 | Phi | from 0:~m2464_12 |
+| ir.cpp:2464:18:2464:22 | Phi | from 2:m2464_28 |
+| ir.cpp:2464:18:2464:22 | Phi | from 2:m2464_40 |
+| ir.cpp:2464:18:2464:22 | Phi | from 2:~m2464_25 |
+| ir.cpp:2464:18:2464:22 | Phi | from 2:~m2464_37 |
+| ir.cpp:2464:18:2464:22 | SideEffect | m2464_7 |
+| ir.cpp:2464:18:2464:22 | SideEffect | m2464_17 |
+| ir.cpp:2464:18:2464:22 | SideEffect | m2464_19 |
+| ir.cpp:2464:18:2464:22 | SideEffect | m2464_29 |
+| ir.cpp:2464:18:2464:22 | SideEffect | m2464_31 |
+| ir.cpp:2464:18:2464:22 | SideEffect | ~m2464_18 |
+| ir.cpp:2464:18:2464:22 | SideEffect | ~m2464_20 |
+| ir.cpp:2464:18:2464:22 | SideEffect | ~m2464_30 |
+| ir.cpp:2464:18:2464:22 | SideEffect | ~m2464_32 |
+| ir.cpp:2464:18:2464:22 | Unary | r2464_2 |
+| ir.cpp:2464:18:2464:22 | Unary | r2464_2 |
+| ir.cpp:2464:23:2464:23 | CallTarget | func:r2464_9 |
+| ir.cpp:2464:23:2464:23 | ChiPartial | partial:m2464_11 |
+| ir.cpp:2464:23:2464:23 | ChiTotal | total:m2464_6 |
+| ir.cpp:2464:23:2464:23 | SideEffect | ~m2464_6 |
+| ir.cpp:2464:23:2464:23 | Unary | r2464_10 |
+| ir.cpp:2464:25:2464:25 | Address | &:r2464_14 |
+| ir.cpp:2464:25:2464:25 | Load | ~m2464_25 |
+| ir.cpp:2464:25:2464:25 | Load | ~m2464_37 |
+| ir.cpp:2464:25:2464:25 | StoreValue | r2464_16 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_5 |
 | perf-regression.cpp:6:3:6:5 | Address | &:r6_7 |
