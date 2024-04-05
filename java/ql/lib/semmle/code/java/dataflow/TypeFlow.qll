@@ -157,7 +157,7 @@ private module Input implements TypeFlowInput<J::Location> {
    */
   pragma[nomagic]
   private predicate upcastCand(TypeFlowNode n, RefType t1, RefType t1e, RefType t2, RefType t2e) {
-    exists(TypeFlowNode next | step(n, next) or Make<J::Location, Input>::joinStep(n, next) |
+    exists(TypeFlowNode next | step(n, next) or joinStep(n, next) |
       n.getType() = t1 and
       next.getType() = t2 and
       t1.getErasure() = t1e and
