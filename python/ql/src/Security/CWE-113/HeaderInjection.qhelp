@@ -14,12 +14,12 @@ inject additional headers or control the response body, leading to vulnerabiliti
 </overview>
 
 <recommendation>
-Ensure that user input containing line break characters is not written to an HTTP header.
+<p>Ensure that user input containing line break characters is not written to an HTTP header.</p>
 </recommendation>
 
 <example>
-In the following example, the case marked BAD writes user input to the header name. 
-In the GOOD case, input is first escaped to not contain any line break characters.
+<p>In the following example, the case marked BAD writes user input to the header name. 
+In the GOOD case, input is first escaped to not contain any line break characters.</p>
 <sample src="examples/header_injection.py" />
 </example>
 
