@@ -29,3 +29,6 @@
 | test.cpp:18:8:18:10 | call to get |
 | test.cpp:31:7:31:13 | ... == ... |
 | test.cpp:42:13:42:20 | call to getABool |
+| test.cpp:61:10:61:10 | i |
+| test.cpp:74:10:74:10 | i |
+| test.cpp:84:10:84:10 | i |

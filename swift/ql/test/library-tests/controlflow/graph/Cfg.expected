@@ -340,9 +340,9 @@ cfg.swift:
 #-----| exception -> exit mightThrow(x:) (abnormal)
 
 #   19| MyError.Type
-#-----|  -> (Error) ...
+#-----|  -> (any Error) ...
 
-#   19| (Error) ...
+#   19| (any Error) ...
 #-----|  -> throw ...
 
 #   19| .error1
@@ -379,11 +379,11 @@ cfg.swift:
 #   22| .error3
 #-----|  -> MyError.Type
 
-#   22| (Error) ...
+#   22| (any Error) ...
 #-----|  -> throw ...
 
 #   22| call to ...
-#-----|  -> (Error) ...
+#-----|  -> (any Error) ...
 
 #   22| x
 #-----|  -> 1
@@ -6728,11 +6728,11 @@ cfg.swift:
 #  568| MyProcotolImpl.init()
 #-----|  -> MyProcotolImpl.Type
 
-#  568| (MyProtocol) ...
+#  568| (any MyProtocol) ...
 #-----|  -> return ...
 
 #  568| call to MyProcotolImpl.init()
-#-----|  -> (MyProtocol) ...
+#-----|  -> (any MyProtocol) ...
 
 #  569| enter getMyProtocolImpl()
 #-----|  -> getMyProtocolImpl()
@@ -6868,3 +6868,139 @@ cfg.swift:
 
 #  577| call to source()
 #-----|  -> call to sink(arg:)
+
+#  580| enter singleStmtExpr(_:)
+#-----|  -> singleStmtExpr(_:)
+
+#  580| exit singleStmtExpr(_:)
+
+#  580| exit singleStmtExpr(_:) (normal)
+#-----|  -> exit singleStmtExpr(_:)
+
+#  580| singleStmtExpr(_:)
+#-----|  -> x
+
+#  580| x
+#-----|  -> a
+
+#  581| var ... = ...
+#-----|  -> b
+
+#  581| a
+#-----| match -> switch x { ... }
+
+#  581| SingleValueStmtExpr
+#-----|  -> var ... = ...
+
+#  581| switch x { ... }
+#-----|  -> x
+
+#  581| x
+#-----|  -> case ...
+
+#  582| case ...
+#-----|  -> =~ ...
+
+#  582| .~=(_:_:)
+#-----|  -> Range<Int>.Type
+
+#  582| 0
+#-----|  -> 5
+
+#  582| Range<Int>.Type
+#-----|  -> ...<(_:_:)
+
+#  582| ... ...<(_:_:) ...
+#-----|  -> $match
+
+#  582| ... .~=(_:_:) ...
+#-----|  -> =~ ...
+
+#  582| =~ ...
+#-----|  -> .~=(_:_:)
+
+#  582| =~ ...
+#-----| match -> 1
+#-----| no-match -> case ...
+
+#  582| ...<(_:_:)
+#-----|  -> Int.Type
+
+#  582| Int.Type
+#-----|  -> 0
+
+#  582| $match
+#-----|  -> ... .~=(_:_:) ...
+
+#  582| 5
+#-----|  -> ... ...<(_:_:) ...
+
+#  582| 1
+#-----|  -> ThenStmt
+
+#  582| ThenStmt
+#-----|  -> SingleValueStmtExpr
+
+#  583| _
+#-----| match -> 2
+
+#  583| _
+#-----|  -> _
+
+#  583| case ...
+#-----|  -> _
+
+#  583| 2
+#-----|  -> ThenStmt
+
+#  583| ThenStmt
+#-----|  -> SingleValueStmtExpr
+
+#  585| var ... = ...
+#-----|  -> exit singleStmtExpr(_:) (normal)
+
+#  585| b
+#-----| match -> if ... then { ... } else { ... }
+
+#  585| SingleValueStmtExpr
+#-----|  -> var ... = ...
+
+#  585| if ... then { ... } else { ... }
+#-----|  -> StmtCondition
+
+#  585| StmtCondition
+#-----|  -> .<(_:_:)
+
+#  585| [false] (...)
+#-----| false -> 2
+
+#  585| [true] (...)
+#-----| true -> 1
+
+#  585| x
+#-----|  -> 42
+
+#  585| ... .<(_:_:) ...
+#-----| false -> [false] (...)
+#-----| true -> [true] (...)
+
+#  585| .<(_:_:)
+#-----|  -> Int.Type
+
+#  585| Int.Type
+#-----|  -> x
+
+#  585| 42
+#-----|  -> ... .<(_:_:) ...
+
+#  585| 1
+#-----|  -> ThenStmt
+
+#  585| ThenStmt
+#-----|  -> SingleValueStmtExpr
+
+#  585| 2
+#-----|  -> ThenStmt
+
+#  585| ThenStmt
+#-----|  -> SingleValueStmtExpr

@@ -28,6 +28,6 @@ import cpp
 module DataFlow {
   private import semmle.code.cpp.dataflow.internal.DataFlowImplSpecific
   private import codeql.dataflow.DataFlow
-  import DataFlowMake<CppOldDataFlow>
+  import DataFlowMake<Location, CppOldDataFlow>
   import semmle.code.cpp.dataflow.internal.DataFlowImpl1
 }

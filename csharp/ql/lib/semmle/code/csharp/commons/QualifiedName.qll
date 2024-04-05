@@ -1,7 +1,6 @@
 /** Provides predicates for working with fully qualified names. */
 
 private import csharp
-private import dotnet
 
 /**
  * Holds if namespace `n` has the qualified name `qualifier`.`name`.
@@ -9,8 +8,8 @@ private import dotnet
  * For example if the qualified name is `System.Collections.Generic`, then
  * `qualifier`=`System.Collections` and `name`=`Generic`.
  */
-predicate namespaceHasQualifiedName(DotNet::Namespace n, string qualifier, string name) {
-  if n instanceof DotNet::GlobalNamespace
+predicate namespaceHasQualifiedName(Namespace n, string qualifier, string name) {
+  if n instanceof GlobalNamespace
   then qualifier = "" and name = ""
   else (
     exists(string pqualifier, string pname |

@@ -2,4 +2,6 @@
 | NoDisposeCallOnLocalIDisposable.cs:51:18:51:73 | object creation of type FileStream | Disposable 'FileStream' is created but not disposed. |
 | NoDisposeCallOnLocalIDisposable.cs:52:9:52:64 | object creation of type FileStream | Disposable 'FileStream' is created but not disposed. |
 | NoDisposeCallOnLocalIDisposable.cs:74:25:74:71 | call to method Create | Disposable 'XmlReader' is created but not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:74:42:74:64 | object creation of type StringReader | Disposable 'StringReader' is created but not disposed. |
+| NoDisposeCallOnLocalIDisposable.cs:79:38:79:67 | object creation of type StreamWriter | Disposable 'StreamWriter' is created but not disposed. |
 | NoDisposeCallOnLocalIDisposableBad.cs:8:22:8:56 | object creation of type FileStream | Disposable 'FileStream' is created but not disposed. |

@@ -3,7 +3,7 @@
 private import CIL
 
 /** An instruction. */
-class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instruction {
+deprecated class Instruction extends Element, ControlFlowNode, DataFlowNode, @cil_instruction {
   override string toString() { result = this.getOpcodeName() }
 
   /** Gets a more verbose textual representation of this instruction. */

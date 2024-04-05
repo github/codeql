@@ -163,7 +163,7 @@ module Public {
      * For more information, see
      * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
      */
-    predicate hasLocationInfo(
+    deprecated predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)

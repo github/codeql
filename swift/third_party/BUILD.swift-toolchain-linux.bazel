@@ -30,7 +30,7 @@ _pm_interface_files = [
             srcs = ["%s/%s/%s" % (_strip_prefix, dir, interface)],
             outs = [module],
             cmd = "$(location usr/bin/swift-frontend) -compile-module-from-interface $< -o $@ -I $$(dirname $<)",
-            local = True,
+            tags = ["no-sandbox"],
             tools = ["usr/bin/swift-frontend"],
         ),
         pkg_files(

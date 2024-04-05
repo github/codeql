@@ -20,14 +20,10 @@ edges
 | call_sensitivity.rb:44:26:44:33 | call to taint | call_sensitivity.rb:21:27:21:27 | x | provenance |  |
 | call_sensitivity.rb:50:15:50:15 | x | call_sensitivity.rb:51:10:51:10 | x | provenance |  |
 | call_sensitivity.rb:54:15:54:15 | x | call_sensitivity.rb:55:13:55:13 | x | provenance |  |
-| call_sensitivity.rb:54:15:54:15 | x | call_sensitivity.rb:55:13:55:13 | x | provenance |  |
-| call_sensitivity.rb:55:13:55:13 | x | call_sensitivity.rb:50:15:50:15 | x | provenance |  |
 | call_sensitivity.rb:55:13:55:13 | x | call_sensitivity.rb:50:15:50:15 | x | provenance |  |
 | call_sensitivity.rb:58:20:58:20 | x | call_sensitivity.rb:59:18:59:18 | x | provenance |  |
 | call_sensitivity.rb:59:18:59:18 | x | call_sensitivity.rb:54:15:54:15 | x | provenance |  |
 | call_sensitivity.rb:62:18:62:18 | y | call_sensitivity.rb:63:15:63:15 | y | provenance |  |
-| call_sensitivity.rb:62:18:62:18 | y | call_sensitivity.rb:63:15:63:15 | y | provenance |  |
-| call_sensitivity.rb:63:15:63:15 | y | call_sensitivity.rb:50:15:50:15 | x | provenance |  |
 | call_sensitivity.rb:63:15:63:15 | y | call_sensitivity.rb:50:15:50:15 | x | provenance |  |
 | call_sensitivity.rb:66:20:66:20 | x | call_sensitivity.rb:67:24:67:24 | x | provenance |  |
 | call_sensitivity.rb:67:24:67:24 | x | call_sensitivity.rb:62:18:62:18 | y | provenance |  |
@@ -40,26 +36,16 @@ edges
 | call_sensitivity.rb:85:18:85:27 | ( ... ) | call_sensitivity.rb:80:15:80:15 | x | provenance |  |
 | call_sensitivity.rb:85:19:85:26 | call to taint | call_sensitivity.rb:85:18:85:27 | ( ... ) | provenance |  |
 | call_sensitivity.rb:88:30:88:30 | x | call_sensitivity.rb:89:23:89:23 | x | provenance |  |
-| call_sensitivity.rb:88:30:88:30 | x | call_sensitivity.rb:89:23:89:23 | x | provenance |  |
-| call_sensitivity.rb:89:23:89:23 | x | call_sensitivity.rb:70:30:70:30 | x | provenance |  |
 | call_sensitivity.rb:89:23:89:23 | x | call_sensitivity.rb:70:30:70:30 | x | provenance |  |
 | call_sensitivity.rb:92:35:92:35 | x | call_sensitivity.rb:93:28:93:28 | x | provenance |  |
 | call_sensitivity.rb:93:28:93:28 | x | call_sensitivity.rb:88:30:88:30 | x | provenance |  |
 | call_sensitivity.rb:96:33:96:33 | y | call_sensitivity.rb:97:25:97:25 | y | provenance |  |
-| call_sensitivity.rb:96:33:96:33 | y | call_sensitivity.rb:97:25:97:25 | y | provenance |  |
-| call_sensitivity.rb:97:25:97:25 | y | call_sensitivity.rb:70:30:70:30 | x | provenance |  |
 | call_sensitivity.rb:97:25:97:25 | y | call_sensitivity.rb:70:30:70:30 | x | provenance |  |
 | call_sensitivity.rb:100:35:100:35 | x | call_sensitivity.rb:101:34:101:34 | x | provenance |  |
 | call_sensitivity.rb:101:34:101:34 | x | call_sensitivity.rb:96:33:96:33 | y | provenance |  |
 | call_sensitivity.rb:104:18:104:18 | x | call_sensitivity.rb:105:10:105:10 | x | provenance |  |
 | call_sensitivity.rb:104:18:104:18 | x | call_sensitivity.rb:105:10:105:10 | x | provenance |  |
-| call_sensitivity.rb:104:18:104:18 | x | call_sensitivity.rb:105:10:105:10 | x | provenance |  |
-| call_sensitivity.rb:104:18:104:18 | x | call_sensitivity.rb:105:10:105:10 | x | provenance |  |
 | call_sensitivity.rb:104:18:104:18 | x | call_sensitivity.rb:106:13:106:13 | x | provenance |  |
-| call_sensitivity.rb:104:18:104:18 | x | call_sensitivity.rb:106:13:106:13 | x | provenance |  |
-| call_sensitivity.rb:104:18:104:18 | x | call_sensitivity.rb:106:13:106:13 | x | provenance |  |
-| call_sensitivity.rb:106:13:106:13 | x | call_sensitivity.rb:50:15:50:15 | x | provenance |  |
-| call_sensitivity.rb:106:13:106:13 | x | call_sensitivity.rb:50:15:50:15 | x | provenance |  |
 | call_sensitivity.rb:106:13:106:13 | x | call_sensitivity.rb:50:15:50:15 | x | provenance |  |
 | call_sensitivity.rb:109:21:109:21 | x | call_sensitivity.rb:110:9:110:9 | x | provenance |  |
 | call_sensitivity.rb:110:9:110:9 | x | call_sensitivity.rb:104:18:104:18 | x | provenance |  |
@@ -124,14 +110,10 @@ nodes
 | call_sensitivity.rb:50:15:50:15 | x | semmle.label | x |
 | call_sensitivity.rb:51:10:51:10 | x | semmle.label | x |
 | call_sensitivity.rb:54:15:54:15 | x | semmle.label | x |
-| call_sensitivity.rb:54:15:54:15 | x | semmle.label | x |
-| call_sensitivity.rb:55:13:55:13 | x | semmle.label | x |
 | call_sensitivity.rb:55:13:55:13 | x | semmle.label | x |
 | call_sensitivity.rb:58:20:58:20 | x | semmle.label | x |
 | call_sensitivity.rb:59:18:59:18 | x | semmle.label | x |
 | call_sensitivity.rb:62:18:62:18 | y | semmle.label | y |
-| call_sensitivity.rb:62:18:62:18 | y | semmle.label | y |
-| call_sensitivity.rb:63:15:63:15 | y | semmle.label | y |
 | call_sensitivity.rb:63:15:63:15 | y | semmle.label | y |
 | call_sensitivity.rb:66:20:66:20 | x | semmle.label | x |
 | call_sensitivity.rb:67:24:67:24 | x | semmle.label | x |
@@ -145,24 +127,16 @@ nodes
 | call_sensitivity.rb:85:18:85:27 | ( ... ) | semmle.label | ( ... ) |
 | call_sensitivity.rb:85:19:85:26 | call to taint | semmle.label | call to taint |
 | call_sensitivity.rb:88:30:88:30 | x | semmle.label | x |
-| call_sensitivity.rb:88:30:88:30 | x | semmle.label | x |
-| call_sensitivity.rb:89:23:89:23 | x | semmle.label | x |
 | call_sensitivity.rb:89:23:89:23 | x | semmle.label | x |
 | call_sensitivity.rb:92:35:92:35 | x | semmle.label | x |
 | call_sensitivity.rb:93:28:93:28 | x | semmle.label | x |
 | call_sensitivity.rb:96:33:96:33 | y | semmle.label | y |
-| call_sensitivity.rb:96:33:96:33 | y | semmle.label | y |
-| call_sensitivity.rb:97:25:97:25 | y | semmle.label | y |
 | call_sensitivity.rb:97:25:97:25 | y | semmle.label | y |
 | call_sensitivity.rb:100:35:100:35 | x | semmle.label | x |
 | call_sensitivity.rb:101:34:101:34 | x | semmle.label | x |
 | call_sensitivity.rb:104:18:104:18 | x | semmle.label | x |
 | call_sensitivity.rb:104:18:104:18 | x | semmle.label | x |
-| call_sensitivity.rb:104:18:104:18 | x | semmle.label | x |
-| call_sensitivity.rb:104:18:104:18 | x | semmle.label | x |
 | call_sensitivity.rb:105:10:105:10 | x | semmle.label | x |
-| call_sensitivity.rb:106:13:106:13 | x | semmle.label | x |
-| call_sensitivity.rb:106:13:106:13 | x | semmle.label | x |
 | call_sensitivity.rb:106:13:106:13 | x | semmle.label | x |
 | call_sensitivity.rb:109:21:109:21 | x | semmle.label | x |
 | call_sensitivity.rb:110:9:110:9 | x | semmle.label | x |

@@ -97,19 +97,6 @@ abstract class TranslatedExpr extends TranslatedElement {
     )
   }
 
-  final override predicate hasAnImplicitDestructorCall() {
-    exists(expr.getAnImplicitDestructorCall())
-  }
-
-  final override int getFirstDestructorCallIndex() {
-    not this.handlesDestructorsExplicitly() and
-    (
-      result = max(int childId | exists(this.getChildInternal(childId))) + 1
-      or
-      not exists(this.getChildInternal(_)) and result = 0
-    )
-  }
-
   final override Locatable getAst() { result = expr }
 
   final override Declaration getFunction() { result = getEnclosingDeclaration(expr) }
@@ -2780,6 +2767,50 @@ class TranslatedTemporaryObjectExpr extends TranslatedNonConstantExpr,
   }
 
   final override Instruction getResult() { result = this.getTargetAddress() }
+}
+
+/**
+ * IR translation of a `ReuseExpr`.
+ *
+ * This translation produces a copy of the glvalue instruction holding the (unconverted) result
+ * of the reused expression. In the case where the original expression was a prvalue, the
+ * result will be a copy of the glvalue operand of a `TranslatedLoad`.
+ */
+class TranslatedReuseExpr extends TranslatedNonConstantExpr {
+  override ReuseExpr expr;
+
+  override Instruction getFirstInstruction(EdgeKind kind) {
+    result = this.getInstruction(OnlyInstructionTag()) and
+    kind instanceof GotoEdge
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    opcode instanceof Opcode::CopyValue and
+    tag instanceof OnlyInstructionTag and
+    resultType = this.getResultType()
+  }
+
+  override Instruction getResult() { result = this.getInstruction(OnlyInstructionTag()) }
+
+  override Instruction getInstructionSuccessorInternal(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    kind instanceof GotoEdge and
+    result = this.getParent().getChildSuccessor(this, kind)
+  }
+
+  override TranslatedElement getChildInternal(int id) { none() }
+
+  override Instruction getALastInstructionInternal() {
+    result = this.getInstruction(OnlyInstructionTag())
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = OnlyInstructionTag() and
+    operandTag instanceof UnaryOperandTag and
+    if getTranslatedExpr(expr.getReusedExpr()) instanceof TranslatedLoad
+    then result = getTranslatedExpr(expr.getReusedExpr()).(TranslatedLoad).getOperand().getResult()
+    else result = getTranslatedExpr(expr.getReusedExpr()).getResult()
+  }
 }
 
 /**

@@ -12,7 +12,7 @@ private import dotnet
  * - the type of parameters.
  * A `CustomModifierReceiver` is therefore either a `Field`, `Property`, `Method`, or `Parameter`.
  */
-class CustomModifierReceiver extends Declaration, @cil_custom_modifier_receiver {
+deprecated class CustomModifierReceiver extends Declaration, @cil_custom_modifier_receiver {
   /** Holds if this targeted type has `modifier` applied as `modreq`. */
   predicate hasRequiredCustomModifier(Type modifier) { cil_custom_modifiers(this, modifier, 1) }
 
