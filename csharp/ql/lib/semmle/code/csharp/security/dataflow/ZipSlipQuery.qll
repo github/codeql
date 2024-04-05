@@ -20,12 +20,12 @@ class PathCombinerViaMethodCall extends UnsanitizedPathCombiner {
   }
 }
 
-class PathCombinerViaStringInterpolation extends UnsanitizedPathCombiner {
-  PathCombinerViaStringInterpolation() { exists(InterpolatedStringExpr e | this = e) }
-}
+class PathCombinerViaStringInterpolation extends UnsanitizedPathCombiner instanceof InterpolatedStringExpr {}
 
-class PathCombinerViaStringConcatenation extends UnsanitizedPathCombiner {
-  PathCombinerViaStringConcatenation() { exists(AddExpr e | this = e) }
+class PathCombinerViaStringConcatenation extends UnsanitizedPathCombiner instanceof AddExpr {
+  PathCombinerViaStringConcatenation() {
+    this.getAnOperand() instanceof StringLiteral
+  }
 }
 
 class MethodCallGetFullPath extends MethodCall {
