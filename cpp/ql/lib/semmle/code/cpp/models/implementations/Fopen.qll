@@ -3,7 +3,6 @@
  * functions. See `semmle.code.cpp.models.Models` for usage information.
  */
 
-import semmle.code.cpp.Function
 import semmle.code.cpp.models.interfaces.Alias
 import semmle.code.cpp.models.interfaces.SideEffect
 
