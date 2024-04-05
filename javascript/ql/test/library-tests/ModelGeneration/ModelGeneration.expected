@@ -34,6 +34,15 @@ typeModel
 | (semi-internal-class).getAnonymous | semi-internal-class | Member[getAnonymous] |
 | (semi-internal-class).getAnonymous~expr1 | (semi-internal-class).getAnonymous | ReturnValue |
 | (semi-internal-class).getAnonymous~expr2 | (semi-internal-class).getAnonymous~expr1 | Member[method] |
+| (subclass).A | subclass | Member[A] |
+| (subclass).A.prototype | (subclass).A | Instance |
+| (subclass).A.prototype.a | (subclass).A.prototype | Member[a] |
+| (subclass).B | subclass | Member[B] |
+| (subclass).B.prototype | (subclass).B | Instance |
+| (subclass).B.prototype.b | (subclass).B.prototype | Member[b] |
+| (subclass).C | subclass | Member[C] |
+| (subclass).C.prototype | (subclass).C | Instance |
+| (subclass).C.prototype.c | (subclass).C.prototype | Member[c] |
 | upstream-lib | (reexport).func | ReturnValue |
 | upstream-lib | reexport | Member[lib] |
 | upstream-lib.XYZ | reexport | Member[x].Member[y].Member[z] |
