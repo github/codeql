@@ -16,6 +16,17 @@ typeModel
 | (return-this).FluentInterface.prototype.foo | (return-this).FluentInterface.prototype | Member[foo] |
 | (return-this).FluentInterface.prototype.notFluent | (return-this).FluentInterface.prototype | Member[notFluent] |
 | (return-this).FluentInterface.prototype.notFluent2 | (return-this).FluentInterface.prototype | Member[notFluent2] |
+| (semi-internal-class).PublicClass | semi-internal-class | Member[PublicClass] |
+| (semi-internal-class).PublicClass.prototype | (semi-internal-class).PublicClass | Instance |
+| (semi-internal-class).PublicClass.prototype | (semi-internal-class).SemiInternalClass.prototype.method | ReturnValue |
+| (semi-internal-class).PublicClass.prototype | (semi-internal-class).getAnonymous~expr2 | ReturnValue |
+| (semi-internal-class).PublicClass.prototype.publicMethod | (semi-internal-class).PublicClass.prototype | Member[publicMethod] |
+| (semi-internal-class).SemiInternalClass.prototype | (semi-internal-class).get | ReturnValue |
+| (semi-internal-class).SemiInternalClass.prototype.method | (semi-internal-class).SemiInternalClass.prototype | Member[method] |
+| (semi-internal-class).get | semi-internal-class | Member[get] |
+| (semi-internal-class).getAnonymous | semi-internal-class | Member[getAnonymous] |
+| (semi-internal-class).getAnonymous~expr1 | (semi-internal-class).getAnonymous | ReturnValue |
+| (semi-internal-class).getAnonymous~expr2 | (semi-internal-class).getAnonymous~expr1 | Member[method] |
 | upstream-lib | (reexport).func | ReturnValue |
 | upstream-lib | reexport | Member[lib] |
 | upstream-lib.XYZ | reexport | Member[x].Member[y].Member[z] |
