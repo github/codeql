@@ -99,7 +99,7 @@ module Gradio {
  }
 
   /**
-   * Track `inputs` parameters in Gradio decorators to event handlers, that are sources of untrusted data.
+   * The `inputs` parameters in Gradio decorators to event handlers, that are sources of untrusted data.
    */
  class GradioInputDecorator extends RemoteFlowSource::Range {
     GradioInputDecorator() {
