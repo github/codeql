@@ -256,3 +256,17 @@ function fuzzy() {
   fuzzyCall(source()); // OK - does not come from 'testlib'
   require('blah').fuzzyCall(source()); // OK - does not come from 'testlib'
 }
+
+class MySubclass extends testlib.BaseClass {
+  foo() {
+    sink(this.baseclassSource()); // NOT OK
+  }
+}
+sink(new MySubclass().baseclassSource()); // NOT OK
+
+class MySubclass2 extends MySubclass {
+  foo2() {
+    sink(this.baseclassSource()); // NOT OK
+  }
+}
+sink(new MySubclass2().baseclassSource()); // NOT OK

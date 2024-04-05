@@ -891,6 +891,17 @@ module API {
       (propDesc = Promises::errorProp() or propDesc = "")
     }
 
+    pragma[nomagic]
+    private DataFlow::ClassNode getALocalSubclass(DataFlow::SourceNode node) {
+      result.getASuperClassNode().getALocalSource() = node
+    }
+
+    bindingset[node]
+    pragma[inline_late]
+    private DataFlow::ClassNode getALocalSubclassFwd(DataFlow::SourceNode node) {
+      result = getALocalSubclass(node)
+    }
+
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from `base` labeled
      * `lbl` in the API graph.
@@ -927,6 +938,15 @@ module API {
           or
           lbl = Label::forwardingFunction() and
           DataFlow::functionForwardingStep(pred.getALocalUse(), ref)
+          or
+          exists(DataFlow::ClassNode cls |
+            lbl = Label::instance() and
+            cls = getALocalSubclassFwd(pred).getADirectSubClass*()
+          |
+            ref = cls.getAReceiverNode()
+            or
+            ref = cls.getAClassReference().getAnInstantiation()
+          )
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
