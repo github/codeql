@@ -255,7 +255,7 @@ module TypeFlow<LocationSig Location, TypeFlowInput<Location> I> {
    * This does not include itself, unless this type is part of a cycle
    * in the type hierarchy.
    */
-  Type getAStrictAncestor(Type sub) { result = getAnAncestor(sub.getASupertype()) }
+  private Type getAStrictAncestor(Type sub) { result = getAnAncestor(sub.getASupertype()) }
 
   /**
    * Holds if we have a bound for `n` that is better than `t`.
