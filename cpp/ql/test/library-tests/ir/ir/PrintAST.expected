@@ -2276,6 +2276,56 @@ destructors_for_temps.cpp:
 #   72|           getQualifier(): [ReuseExpr] reuse of temporary object
 #   72|               Type = [SpecifiedType] const string
 #   72|               ValueCategory = xvalue
+#   75| [TopLevelFunction] ClassWithDestructor2 make()
+#   75|   <params>: 
+#   77| [TopLevelFunction] void temp_test9()
+#   77|   <params>: 
+#   77|   getEntryPoint(): [BlockStmt] { ... }
+#   78|     getStmt(0): [ExprStmt] ExprStmt
+#   78|       getExpr(): [FunctionCall] call to make
+#   78|           Type = [Class] ClassWithDestructor2
+#   78|           ValueCategory = prvalue
+#   78|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   78|             Type = [VoidType] void
+#   78|             ValueCategory = prvalue
+#   78|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   78|               Type = [Class] ClassWithDestructor2
+#   78|               ValueCategory = xvalue
+#   78|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   78|           Type = [Class] ClassWithDestructor2
+#   78|           ValueCategory = prvalue
+#   79|     getStmt(1): [ReturnStmt] return ...
+#   81| [TopLevelFunction] void temp_test10(int)
+#   81|   <params>: 
+#   81|     getParameter(0): [Parameter] i
+#   81|         Type = [IntType] int
+#   81|   getEntryPoint(): [BlockStmt] { ... }
+#   82|     getStmt(0): [WhileStmt] while (...) ...
+#   82|       getCondition(): [LTExpr] ... < ...
+#   82|           Type = [BoolType] bool
+#   82|           ValueCategory = prvalue
+#   82|         getLesserOperand(): [VariableAccess] i
+#   82|             Type = [IntType] int
+#   82|             ValueCategory = prvalue(load)
+#   82|         getGreaterOperand(): [Literal] 10
+#   82|             Type = [IntType] int
+#   82|             Value = [Literal] 10
+#   82|             ValueCategory = prvalue
+#   82|       getStmt(): [BlockStmt] { ... }
+#   83|         getStmt(0): [ExprStmt] ExprStmt
+#   83|           getExpr(): [FunctionCall] call to make
+#   83|               Type = [Class] ClassWithDestructor2
+#   83|               ValueCategory = prvalue
+#   83|             getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   83|                 Type = [VoidType] void
+#   83|                 ValueCategory = prvalue
+#   83|               getQualifier(): [ReuseExpr] reuse of temporary object
+#   83|                   Type = [Class] ClassWithDestructor2
+#   83|                   ValueCategory = xvalue
+#   83|           getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   83|               Type = [Class] ClassWithDestructor2
+#   83|               ValueCategory = prvalue
+#   85|     getStmt(1): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 

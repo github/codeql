@@ -2,8 +2,10 @@ missingOperand
 unexpectedOperand
 duplicateOperand
 missingPhiOperand
+| destructors_for_temps.cpp:82:11:82:11 | Phi: i | Instruction 'Phi: i' is missing an operand for predecessor block 'EnterFunction: temp_test10' in function '$@'. | destructors_for_temps.cpp:81:6:81:16 | void temp_test10(int) | void temp_test10(int) |
 missingOperandType
 | destructors_for_temps.cpp:39:3:39:53 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | destructors_for_temps.cpp:38:6:38:15 | void temp_test5(bool) | void temp_test5(bool) |
+| destructors_for_temps.cpp:78:5:78:10 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | destructors_for_temps.cpp:77:6:77:15 | void temp_test9() | void temp_test9() |
 | ir.cpp:1425:5:1425:30 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1414:6:1414:21 | void temporary_string() | void temporary_string() |
 | ir.cpp:1437:5:1437:39 | ChiTotal | Operand 'ChiTotal' of instruction 'Chi' is missing a type in function '$@'. | ir.cpp:1428:6:1428:30 | void temporary_destructor_only() | void temporary_destructor_only() |
 duplicateChiOperand

@@ -1306,6 +1306,65 @@ destructors_for_temps.cpp:
 #-----|   False -> Block 1
 #-----|   True -> Block 3
 
+#   77| void temp_test9()
+#   77|   Block 0
+#   77|     v77_1(void)                        = EnterFunction                          : 
+#   77|     mu77_2(unknown)                    = AliasedDefinition                      : 
+#   77|     mu77_3(unknown)                    = InitializeNonLocal                     : 
+#   78|     r78_1(glval<ClassWithDestructor2>) = VariableAddress[#temp78:5]             : 
+#   78|     r78_2(glval<unknown>)              = FunctionAddress[make]                  : 
+#   78|     r78_3(ClassWithDestructor2)        = Call[make]                             : func:r78_2
+#   78|     mu78_4(unknown)                    = ^CallSideEffect                        : ~m?
+#   78|     r78_5(glval<ClassWithDestructor2>) = CopyValue                              : r78_1
+#   78|     r78_6(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
+#   78|     v78_7(void)                        = Call[~ClassWithDestructor2]            : func:r78_6, this:r78_5
+#   78|     mu78_8(unknown)                    = ^CallSideEffect                        : ~m?
+#   78|     v78_9(void)                        = ^IndirectReadSideEffect[-1]            : &:r78_5, ~m?
+#   78|     mu78_10(ClassWithDestructor2)      = ^IndirectMayWriteSideEffect[-1]        : &:r78_5
+#   78|     mu78_11(ClassWithDestructor2)      = Store[#temp78:5]                       : &:r78_1, r78_3
+#   79|     v79_1(void)                        = NoOp                                   : 
+#   77|     v77_4(void)                        = ReturnVoid                             : 
+#   77|     v77_5(void)                        = AliasedUse                             : ~m?
+#   77|     v77_6(void)                        = ExitFunction                           : 
+
+#   81| void temp_test10(int)
+#   81|   Block 0
+#   81|     v81_1(void)       = EnterFunction          : 
+#   81|     mu81_2(unknown)   = AliasedDefinition      : 
+#   81|     mu81_3(unknown)   = InitializeNonLocal     : 
+#   81|     r81_4(glval<int>) = VariableAddress[i]     : 
+#   81|     mu81_5(int)       = InitializeParameter[i] : &:r81_4
+#-----|   Goto -> Block 1
+
+#   82|   Block 1
+#   82|     r82_1(glval<int>) = VariableAddress[i] : 
+#   82|     r82_2(int)        = Load[i]            : &:r82_1, ~m?
+#   82|     r82_3(int)        = Constant[10]       : 
+#   82|     r82_4(bool)       = CompareLT          : r82_2, r82_3
+#   82|     v82_5(void)       = ConditionalBranch  : r82_4
+#-----|   False -> Block 3
+#-----|   True -> Block 2
+
+#   83|   Block 2
+#   83|     r83_1(glval<ClassWithDestructor2>) = VariableAddress[#temp83:9]             : 
+#   83|     r83_2(glval<unknown>)              = FunctionAddress[make]                  : 
+#   83|     r83_3(ClassWithDestructor2)        = Call[make]                             : func:r83_2
+#   83|     mu83_4(unknown)                    = ^CallSideEffect                        : ~m?
+#   83|     r83_5(glval<ClassWithDestructor2>) = CopyValue                              : r83_1
+#   83|     r83_6(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2] : 
+#   83|     v83_7(void)                        = Call[~ClassWithDestructor2]            : func:r83_6, this:r83_5
+#   83|     mu83_8(unknown)                    = ^CallSideEffect                        : ~m?
+#   83|     v83_9(void)                        = ^IndirectReadSideEffect[-1]            : &:r83_5, ~m?
+#   83|     mu83_10(ClassWithDestructor2)      = ^IndirectMayWriteSideEffect[-1]        : &:r83_5
+#   83|     mu83_11(ClassWithDestructor2)      = Store[#temp83:9]                       : &:r83_1, r83_3
+#-----|   Goto (back edge) -> Block 1
+
+#   85|   Block 3
+#   85|     v85_1(void) = NoOp         : 
+#   81|     v81_6(void) = ReturnVoid   : 
+#   81|     v81_7(void) = AliasedUse   : ~m?
+#   81|     v81_8(void) = ExitFunction : 
+
 ir.c:
 #    7| void MyCoordsTest(int)
 #    7|   Block 0

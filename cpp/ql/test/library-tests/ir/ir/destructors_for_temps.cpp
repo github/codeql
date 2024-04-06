@@ -71,3 +71,15 @@ bool conditional_temp_via_conjunction(bool b)
 {
     return b && const_ref_string("");
 }
+
+ClassWithDestructor2 make();
+
+void temp_test9() {
+    make();
+}
+
+void temp_test10(int i) {
+    while(i < 10) {
+        make();
+    }
+}
