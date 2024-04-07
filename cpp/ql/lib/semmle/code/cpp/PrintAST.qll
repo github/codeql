@@ -364,6 +364,8 @@ class ConversionNode extends ExprNode {
     childIndex = 0 and
     result.getAst() = conv.getExpr() and
     conv.getExpr() instanceof Conversion
+    or
+    result.getAst() = expr.getImplicitDestructorCall(childIndex - 1)
   }
 }
 
