@@ -11,6 +11,8 @@ kt_jvm_import(
 )
 """
 
+_empty_zip = "PK\005\006\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000\000"
+
 def _get_dep(repository_ctx, name):
     return repository_ctx.path(Label("//java/kotlin-extractor/deps:%s" % name))
 
@@ -19,7 +21,7 @@ def _kotlin_dep_impl(repository_ctx):
     lfs_smudge(repository_ctx, [_get_dep(repository_ctx, name + ".jar")])
 
     # for some reason rules_kotlin warns about these jars missing, this is to silence those warnings
-    empty = _get_dep(repository_ctx, "empty.zip")
+    repository_ctx.file("empty.zip", _empty_zip)
     for jar in (
         "annotations-13.0.jar",
         "kotlin-stdlib.jar",
@@ -27,7 +29,7 @@ def _kotlin_dep_impl(repository_ctx):
         "kotlin-script-runtime.jar",
         "trove4j.jar",
     ):
-        repository_ctx.symlink(empty, jar)
+        repository_ctx.symlink("empty.zip", jar)
     repository_ctx.file("BUILD.bazel", _kotlin_dep_build.format(name = name))
 
 _kotlin_dep = repository_rule(
