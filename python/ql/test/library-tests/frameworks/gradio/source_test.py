@@ -4,6 +4,10 @@ import gradio as gr
 with gr.Blocks() as demo:
     name = gr.Textbox(label="Name")
     output = gr.Textbox(label="Output Box")
+    # static block - not used as a source
+    static_block = gr.HTML("""
+    <div style='height: 100px; width: 800px; background-color: pink;'></div>
+    """)
     greet_btn = gr.Button("Hello")
 
 	# decorator
