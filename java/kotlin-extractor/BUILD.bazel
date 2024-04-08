@@ -113,12 +113,12 @@ _resources = [
                 ) + get_compatilibity_sources(v, "src/main/kotlin/utils/versions"),
             kotlinc_opts = ":kotlinc-options-%s" % v,
             module_name = "codeql-kotlin-extractor",
-            resource_strip_prefix = "../%s/%s" % (
-                repo_name(),
-                v,
-            ) if _for_embeddable else "%s/%s" % (
-                package_name(),
-                v,
+            # resource_strip_prefix is very nit-picky: the following makes it work from
+            # `codeql`, `@codeql_kotlin_embeddable` and `semmle-code`
+            resource_strip_prefix = (
+                ("../%s/" % repo_name() if repo_name() else "") +
+                ("%s/" % package_name() if package_name() else "") +
+                v
             ),
             resources = [
                 ":resources-%s" % v,
