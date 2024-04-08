@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
 
     outputs:
-      job_output: ${{ steps.step2.outputs.test }}
+      job_output: ${{ steps.step5.outputs.MSG5 }}
 
     steps:
       - uses: actions/checkout@v4
@@ -24,7 +24,19 @@ jobs:
       - id: step2
         env:
             MSG: ${{steps.step1.outputs.MSG}}
-        run: echo "test=$MSG" >> "$GITHUB_OUTPUT"
+        run: echo "MSG2=$MSG" >> "$GITHUB_OUTPUT"
+      - id: step3
+        env:
+            MSG2: ${{steps.step2.outputs.MSG2}}
+        run: echo "MSG3=$MSG2" >> "${GITHUB_OUTPUT}"
+      - id: step4
+        env:
+            MSG3: ${{steps.step3.outputs.MSG3}}
+        run: echo "MSG4=$MSG3" >> ${GITHUB_OUTPUT}
+      - id: step5
+        env:
+            MSG4: ${{steps.step4.outputs.MSG4}}
+        run: echo "MSG5=$MSG4" >> $GITHUB_OUTPUT
 
   job2:
     runs-on: ubuntu-latest

@@ -54,14 +54,20 @@ edges
 | .github/workflows/simple2.yml:18:9:26:6 | Uses Step: step [value] | .github/workflows/simple2.yml:29:24:29:54 | steps.step.outputs.value |
 | .github/workflows/simple2.yml:22:20:22:64 | steps.source.outputs.all_changed_files | .github/workflows/simple2.yml:18:9:26:6 | Uses Step: step [value] |
 | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | .github/workflows/test1.yml:25:20:25:39 | env.ISSUE_KEY |
-| .github/workflows/test.yml:8:7:10:4 | Job outputs node [job_output] | .github/workflows/test.yml:37:20:37:56 | needs.job1.outputs['job_output'] |
-| .github/workflows/test.yml:8:20:8:50 | steps.step2.outputs.test | .github/workflows/test.yml:8:7:10:4 | Job outputs node [job_output] |
+| .github/workflows/test.yml:8:7:10:4 | Job outputs node [job_output] | .github/workflows/test.yml:49:20:49:56 | needs.job1.outputs['job_output'] |
+| .github/workflows/test.yml:8:20:8:50 | steps.step5.outputs.MSG5 | .github/workflows/test.yml:8:7:10:4 | Job outputs node [job_output] |
 | .github/workflows/test.yml:12:9:18:6 | Uses Step: step0 [value] | .github/workflows/test.yml:20:18:20:48 | steps.step0.outputs.value |
 | .github/workflows/test.yml:15:20:15:64 | github.event['head_commit']['message'] | .github/workflows/test.yml:12:9:18:6 | Uses Step: step0 [value] |
 | .github/workflows/test.yml:18:9:24:6 | Run Step: step1 [MSG] | .github/workflows/test.yml:26:19:26:46 | steps.step1.outputs.MSG |
 | .github/workflows/test.yml:20:18:20:48 | steps.step0.outputs.value | .github/workflows/test.yml:18:9:24:6 | Run Step: step1 [MSG] |
-| .github/workflows/test.yml:24:9:29:2 | Run Step: step2 [test] | .github/workflows/test.yml:8:20:8:50 | steps.step2.outputs.test |
-| .github/workflows/test.yml:26:19:26:46 | steps.step1.outputs.MSG | .github/workflows/test.yml:24:9:29:2 | Run Step: step2 [test] |
+| .github/workflows/test.yml:24:9:28:6 | Run Step: step2 [MSG2] | .github/workflows/test.yml:30:20:30:48 | steps.step2.outputs.MSG2 |
+| .github/workflows/test.yml:26:19:26:46 | steps.step1.outputs.MSG | .github/workflows/test.yml:24:9:28:6 | Run Step: step2 [MSG2] |
+| .github/workflows/test.yml:28:9:32:6 | Run Step: step3 [MSG3] | .github/workflows/test.yml:34:20:34:48 | steps.step3.outputs.MSG3 |
+| .github/workflows/test.yml:30:20:30:48 | steps.step2.outputs.MSG2 | .github/workflows/test.yml:28:9:32:6 | Run Step: step3 [MSG3] |
+| .github/workflows/test.yml:32:9:36:6 | Run Step: step4 [MSG4] | .github/workflows/test.yml:38:20:38:48 | steps.step4.outputs.MSG4 |
+| .github/workflows/test.yml:34:20:34:48 | steps.step3.outputs.MSG3 | .github/workflows/test.yml:32:9:36:6 | Run Step: step4 [MSG4] |
+| .github/workflows/test.yml:36:9:41:2 | Run Step: step5 [MSG5] | .github/workflows/test.yml:8:20:8:50 | steps.step5.outputs.MSG5 |
+| .github/workflows/test.yml:38:20:38:48 | steps.step4.outputs.MSG4 | .github/workflows/test.yml:36:9:41:2 | Run Step: step5 [MSG5] |
 nodes
 | .github/workflows/argus_case_study.yml:15:9:24:6 | Uses Step: remove_quotations [replaced] | semmle.label | Uses Step: remove_quotations [replaced] |
 | .github/workflows/argus_case_study.yml:17:25:17:53 | github.event.issue.title | semmle.label | github.event.issue.title |
@@ -198,14 +204,20 @@ nodes
 | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/test1.yml:25:20:25:39 | env.ISSUE_KEY | semmle.label | env.ISSUE_KEY |
 | .github/workflows/test.yml:8:7:10:4 | Job outputs node [job_output] | semmle.label | Job outputs node [job_output] |
-| .github/workflows/test.yml:8:20:8:50 | steps.step2.outputs.test | semmle.label | steps.step2.outputs.test |
+| .github/workflows/test.yml:8:20:8:50 | steps.step5.outputs.MSG5 | semmle.label | steps.step5.outputs.MSG5 |
 | .github/workflows/test.yml:12:9:18:6 | Uses Step: step0 [value] | semmle.label | Uses Step: step0 [value] |
 | .github/workflows/test.yml:15:20:15:64 | github.event['head_commit']['message'] | semmle.label | github.event['head_commit']['message'] |
 | .github/workflows/test.yml:18:9:24:6 | Run Step: step1 [MSG] | semmle.label | Run Step: step1 [MSG] |
 | .github/workflows/test.yml:20:18:20:48 | steps.step0.outputs.value | semmle.label | steps.step0.outputs.value |
-| .github/workflows/test.yml:24:9:29:2 | Run Step: step2 [test] | semmle.label | Run Step: step2 [test] |
+| .github/workflows/test.yml:24:9:28:6 | Run Step: step2 [MSG2] | semmle.label | Run Step: step2 [MSG2] |
 | .github/workflows/test.yml:26:19:26:46 | steps.step1.outputs.MSG | semmle.label | steps.step1.outputs.MSG |
-| .github/workflows/test.yml:37:20:37:56 | needs.job1.outputs['job_output'] | semmle.label | needs.job1.outputs['job_output'] |
+| .github/workflows/test.yml:28:9:32:6 | Run Step: step3 [MSG3] | semmle.label | Run Step: step3 [MSG3] |
+| .github/workflows/test.yml:30:20:30:48 | steps.step2.outputs.MSG2 | semmle.label | steps.step2.outputs.MSG2 |
+| .github/workflows/test.yml:32:9:36:6 | Run Step: step4 [MSG4] | semmle.label | Run Step: step4 [MSG4] |
+| .github/workflows/test.yml:34:20:34:48 | steps.step3.outputs.MSG3 | semmle.label | steps.step3.outputs.MSG3 |
+| .github/workflows/test.yml:36:9:41:2 | Run Step: step5 [MSG5] | semmle.label | Run Step: step5 [MSG5] |
+| .github/workflows/test.yml:38:20:38:48 | steps.step4.outputs.MSG4 | semmle.label | steps.step4.outputs.MSG4 |
+| .github/workflows/test.yml:49:20:49:56 | needs.job1.outputs['job_output'] | semmle.label | needs.job1.outputs['job_output'] |
 | .github/workflows/workflow_run.yml:9:19:9:64 | github.event.workflow_run.display_title | semmle.label | github.event.workflow_run.display_title |
 | .github/workflows/workflow_run.yml:10:19:10:70 | github.event.workflow_run.head_commit.message | semmle.label | github.event.workflow_run.head_commit.message |
 | .github/workflows/workflow_run.yml:11:19:11:75 | github.event.workflow_run.head_commit.author.email | semmle.label | github.event.workflow_run.head_commit.author.email |
@@ -297,7 +309,7 @@ subpaths
 | .github/workflows/simple2.yml:29:24:29:54 | steps.step.outputs.value | .github/workflows/simple2.yml:14:9:18:6 | Uses Step: source | .github/workflows/simple2.yml:29:24:29:54 | steps.step.outputs.value | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/simple2.yml:29:24:29:54 | steps.step.outputs.value | ${{ steps.step.outputs.value }} |
 | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | ${{ github.event.pull_request.title }} |
 | .github/workflows/test1.yml:25:20:25:39 | env.ISSUE_KEY | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | .github/workflows/test1.yml:25:20:25:39 | env.ISSUE_KEY | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/test1.yml:25:20:25:39 | env.ISSUE_KEY | ${{ env.ISSUE_KEY }} |
-| .github/workflows/test.yml:37:20:37:56 | needs.job1.outputs['job_output'] | .github/workflows/test.yml:15:20:15:64 | github.event['head_commit']['message'] | .github/workflows/test.yml:37:20:37:56 | needs.job1.outputs['job_output'] | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/test.yml:37:20:37:56 | needs.job1.outputs['job_output'] | ${{needs.job1.outputs['job_output']}} |
+| .github/workflows/test.yml:49:20:49:56 | needs.job1.outputs['job_output'] | .github/workflows/test.yml:15:20:15:64 | github.event['head_commit']['message'] | .github/workflows/test.yml:49:20:49:56 | needs.job1.outputs['job_output'] | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/test.yml:49:20:49:56 | needs.job1.outputs['job_output'] | ${{needs.job1.outputs['job_output']}} |
 | .github/workflows/workflow_run.yml:9:19:9:64 | github.event.workflow_run.display_title | .github/workflows/workflow_run.yml:9:19:9:64 | github.event.workflow_run.display_title | .github/workflows/workflow_run.yml:9:19:9:64 | github.event.workflow_run.display_title | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/workflow_run.yml:9:19:9:64 | github.event.workflow_run.display_title | ${{ github.event.workflow_run.display_title }} |
 | .github/workflows/workflow_run.yml:10:19:10:70 | github.event.workflow_run.head_commit.message | .github/workflows/workflow_run.yml:10:19:10:70 | github.event.workflow_run.head_commit.message | .github/workflows/workflow_run.yml:10:19:10:70 | github.event.workflow_run.head_commit.message | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/workflow_run.yml:10:19:10:70 | github.event.workflow_run.head_commit.message | ${{ github.event.workflow_run.head_commit.message }} |
 | .github/workflows/workflow_run.yml:11:19:11:75 | github.event.workflow_run.head_commit.author.email | .github/workflows/workflow_run.yml:11:19:11:75 | github.event.workflow_run.head_commit.author.email | .github/workflows/workflow_run.yml:11:19:11:75 | github.event.workflow_run.head_commit.author.email | Potential privileged code injection in $@, which may be controlled by an external user. | .github/workflows/workflow_run.yml:11:19:11:75 | github.event.workflow_run.head_commit.author.email | ${{ github.event.workflow_run.head_commit.author.email }} |

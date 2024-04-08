@@ -94,6 +94,9 @@ query predicate writeToGitHubOutput(string key, string value) {
         "echo \"sha1=$(<test-results1/sha-number)\" >> $GITHUB_OUTPUT",
         "echo 'sha2=$(<test-results2/sha-number)' >> $GITHUB_OUTPUT",
         "echo sha3=$(<test-results3/sha-number) >> $GITHUB_OUTPUT",
+        "echo sha4=$(<test-results4/sha-number) >> \"$GITHUB_OUTPUT\"",
+        "echo sha5=$(<test-results5/sha-number) >> ${GITHUB_OUTPUT}",
+        "echo sha6=$(<test-results6/sha-number) >> \"${GITHUB_OUTPUT}\"",
       ] and
     Utils::extractAssignment(t, "OUTPUT", key, value)
   )

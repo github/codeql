@@ -19,40 +19,25 @@ module Utils {
       ]
   }
 
+  bindingset[str]
+  string trimQuotes(string str) {
+    result = str.trim().regexpReplaceAll("^(\"|')", "").regexpReplaceAll("(\"|')$", "")
+  }
+
   bindingset[line, var]
   predicate extractAssignment(string line, string var, string key, string value) {
     exists(string assignment |
-      (
-        assignment =
-          line.regexpCapture("(echo|Write-Output)\\s+\"(.*)\"\\s*>>\\s*(\"|')?\\$GITHUB_" +
-              var.toUpperCase() + "(\"|')?", 2)
-              .regexpReplaceAll("^\"", "")
-              .regexpReplaceAll("\"$", "") or
-        assignment =
-          line.regexpCapture("(echo|Write-Output)\\s+'(.*)'\\s*>>\\s*(\"|')?\\$GITHUB_" +
-              var.toUpperCase() + "(\"|')?", 2)
-              .regexpReplaceAll("^'", "")
-              .regexpReplaceAll("'$", "") or
-        assignment =
-          line.regexpCapture("(echo|Write-Output)\\s+(.*)\\s*>>\\s*(\"|')?\\$GITHUB_" +
-              var.toUpperCase() + "(\"|')?", 2)
-      ) and
-      key = assignment.splitAt("=", 0).trim() and
-      value = assignment.splitAt("=", 1).trim()
+      assignment =
+        line.regexpCapture("(echo|Write-Output)\\s+(.*)\\s*>>\\s*(\"|')?\\$(\\{)?GITHUB_" +
+            var.toUpperCase() + "(\\})?(\"|')?", 2) and
+      key = trimQuotes(assignment.splitAt("=", 0)) and
+      value = trimQuotes(assignment.splitAt("=", 1))
       or
-      (
-        assignment =
-          line.regexpCapture("(echo|Write-Output)\\s+\"::set-" + var.toLowerCase() +
-              "\\s+name=(.*)\"", 2).regexpReplaceAll("^\"", "").regexpReplaceAll("\"$", "") or
-        assignment =
-          line.regexpCapture("(echo|Write-Output)\\s+'::set-" + var.toLowerCase() + "\\s+name=(.*)'",
-            2).regexpReplaceAll("^'", "").regexpReplaceAll("'$", "") or
-        assignment =
-          line.regexpCapture("(echo|Write-Output)\\s+::set-" + var.toLowerCase() + "\\s+name=(.*)",
-            2)
-      ) and
-      key = assignment.splitAt("::", 0).trim() and
-      value = assignment.splitAt("::", 1).trim()
+      assignment =
+        line.regexpCapture("(echo|Write-Output)\\s+(\"|')?::set-" + var.toLowerCase() +
+            "\\s+name=(.*)(\"|')?", 3).regexpReplaceAll("^\"", "").regexpReplaceAll("\"$", "") and
+      key = trimQuotes(assignment.splitAt("::", 0)) and
+      value = trimQuotes(assignment.splitAt("::", 1))
     )
   }
 
