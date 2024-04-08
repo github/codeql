@@ -1377,21 +1377,24 @@
 | stmts.go:113:9:113:9 | skip | stmts.go:113:14:113:14 | x |
 | stmts.go:113:14:113:14 | x | stmts.go:113:14:113:21 | type assertion |
 | stmts.go:113:14:113:21 | type assertion | stmts.go:113:9:113:9 | assignment to y |
+| stmts.go:114:2:115:16 | implicit type switch variable declaration | stmts.go:115:3:115:13 | selection of Println |
+| stmts.go:114:7:114:11 | case error | stmts.go:114:2:115:16 | implicit type switch variable declaration |
 | stmts.go:114:7:114:11 | case error | stmts.go:114:14:114:19 | case string |
-| stmts.go:114:7:114:11 | case error | stmts.go:115:3:115:13 | selection of Println |
-| stmts.go:114:14:114:19 | case string | stmts.go:115:3:115:13 | selection of Println |
+| stmts.go:114:14:114:19 | case string | stmts.go:114:2:115:16 | implicit type switch variable declaration |
 | stmts.go:114:14:114:19 | case string | stmts.go:116:7:116:13 | case float32 |
 | stmts.go:115:3:115:13 | selection of Println | stmts.go:115:15:115:15 | y |
 | stmts.go:115:3:115:16 | call to Println | stmts.go:123:9:123:9 | skip |
 | stmts.go:115:3:115:16 | call to Println | stmts.go:137:1:137:1 | exit |
 | stmts.go:115:15:115:15 | y | stmts.go:115:3:115:16 | call to Println |
-| stmts.go:116:7:116:13 | case float32 | stmts.go:117:3:117:7 | test5 |
-| stmts.go:116:7:116:13 | case float32 | stmts.go:120:3:120:3 | skip |
+| stmts.go:116:2:118:14 | implicit type switch variable declaration | stmts.go:117:3:117:7 | test5 |
+| stmts.go:116:7:116:13 | case float32 | stmts.go:116:2:118:14 | implicit type switch variable declaration |
+| stmts.go:116:7:116:13 | case float32 | stmts.go:119:2:120:7 | implicit type switch variable declaration |
 | stmts.go:117:3:117:7 | test5 | stmts.go:117:9:117:12 | true |
 | stmts.go:117:3:117:13 | call to test5 | stmts.go:137:1:137:1 | exit |
 | stmts.go:117:9:117:12 | true | stmts.go:117:3:117:13 | call to test5 |
 | stmts.go:118:3:118:7 | test5 | stmts.go:118:9:118:13 | false |
 | stmts.go:118:9:118:13 | false | stmts.go:118:3:118:14 | call to test5 |
+| stmts.go:119:2:120:7 | implicit type switch variable declaration | stmts.go:120:3:120:3 | skip |
 | stmts.go:120:3:120:3 | skip | stmts.go:120:7:120:7 | y |
 | stmts.go:120:7:120:7 | y | stmts.go:123:9:123:9 | skip |
 | stmts.go:123:9:123:9 | assignment to y | stmts.go:123:17:123:17 | y |

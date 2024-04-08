@@ -80,9 +80,9 @@ func expressionSwitch2(input string, defaultValue string) string {
 }
 
 func main() {
-	sink(typeSwitch1(&Type1{source()}, "default")) // $ MISSING: hasValueFlow="call to typeSwitch1"
-	sink(typeSwitch1(&Type2{source()}, "default")) // $ MISSING: hasValueFlow="call to typeSwitch1"
-	sink(typeSwitch1(&Type3{source()}, "default")) // $ MISSING: hasValueFlow="call to typeSwitch1"
+	sink(typeSwitch1(&Type1{source()}, "default")) // $ hasValueFlow="call to typeSwitch1"
+	sink(typeSwitch1(&Type2{source()}, "default")) // $ hasValueFlow="call to typeSwitch1"
+	sink(typeSwitch1(&Type3{source()}, "default")) // $ hasValueFlow="call to typeSwitch1"
 	sink(typeSwitch1(nil, source()))               // $ hasValueFlow="call to typeSwitch1"
 
 	sink(typeSwitch2(&Type1{source()}, "default")) // $ hasValueFlow="call to typeSwitch2"
