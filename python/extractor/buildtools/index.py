@@ -76,28 +76,11 @@ def get_filter_options():
         return []
 
 def get_path_options(version):
-    # We want to stop extracting libraries, and only extract the code that is in the
-    # repo. While in the transition period for stopping to install dependencies in the
-    # codeql-action, we will need to be able to support both old and new behavior.
-    #
-    # Like PYTHONUNBUFFERED for Python, we treat any non-empty string as meaning the
-    # flag is enabled.
-    # https://docs.python.org/3/using/cmdline.html#envvar-PYTHONUNBUFFERED
-    if os.environ.get("CODEQL_EXTRACTOR_PYTHON_DISABLE_LIBRARY_EXTRACTION"):
-        return []
+    # Before 2.17.1 it was possible to extract installed libraries
+    # where this function would return ["-p", "/path/to/library"].
+    # However, from 2.17.1 onwards, this is no longer supported.
 
-    # Not extracting dependencies will be default in CodeQL CLI release 2.16.0. Until
-    # 2.17.0, we provide an escape hatch to get the old behavior.
-    force_enable_envvar_name = "CODEQL_EXTRACTOR_PYTHON_FORCE_ENABLE_LIBRARY_EXTRACTION_UNTIL_2_17_0"
-    if os.environ.get(force_enable_envvar_name):
-        print("WARNING: We plan to remove the availability of the {} option in CodeQL CLI release 2.17.0 and beyond. Please let us know by submitting an issue to https://github.com/github/codeql why you needed to re-enable dependency extraction.".format(force_enable_envvar_name))
-        path_option = [ "-p", install.get_library(version)]
-        if PATH_TAG in os.environ:
-            path_option = split_into_options(os.environ[PATH_TAG], "-p") + path_option
-        return path_option
-    else:
-        print("INFO: The Python extractor has recently (from 2.16.0 CodeQL CLI release) stopped extracting dependencies by default, and therefore stopped analyzing the source code of dependencies by default. We plan to remove this entirely in CodeQL CLI release 2.17.0. If you encounter problems, please let us know by submitting an issue to https://github.com/github/codeql, so we can consider adjusting our plans. It is possible to re-enable dependency extraction by exporting '{}=1'.".format(force_enable_envvar_name))
-        return []
+    return []
 
 def get_stdlib():
     return os.path.dirname(os.__file__)

@@ -1,4 +1,4 @@
-load("//:dist.bzl", "pack_zip")
+load("@semmle_code//:dist.bzl", "pack_zip")
 
 py_binary(
     name = "make-zips-py",
@@ -33,7 +33,7 @@ genrule(
 )
 
 pack_zip(
-    name = "extractor-python",
+    name = "extractor",
     srcs = [
         "LICENSE-PSF.md",  # because we distribute imp.py
         "convert_setup.py",

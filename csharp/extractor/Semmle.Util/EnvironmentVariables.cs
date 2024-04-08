@@ -1,4 +1,6 @@
 using System;
+using System.Globalization;
+using System.Numerics;
 
 namespace Semmle.Util
 {
@@ -6,6 +8,16 @@ namespace Semmle.Util
     {
         public static string? GetExtractorOption(string name) =>
             Environment.GetEnvironmentVariable($"CODEQL_EXTRACTOR_CSHARP_OPTION_{name.ToUpper()}");
+
+        public static T? TryGetExtractorNumberOption<T>(string name) where T : struct, INumberBase<T>
+        {
+            var value = GetExtractorOption(name);
+            if (T.TryParse(value, NumberStyles.Number, CultureInfo.InvariantCulture, out var result))
+            {
+                return result;
+            }
+            return null;
+        }
 
         public static int GetDefaultNumberOfThreads()
         {

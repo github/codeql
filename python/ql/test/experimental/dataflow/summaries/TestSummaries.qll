@@ -136,3 +136,108 @@ private class SummarizedCallableJsonLoads extends SummarizedCallable {
     preservesValue = true
   }
 }
+
+// Repeated summaries
+private class SummarizedCallableWithSubpath extends SummarizedCallable {
+  SummarizedCallableWithSubpath() { this = "extracted_package.functions.with_subpath" }
+
+  override DataFlow::CallCfgNode getACall() {
+    result =
+      API::moduleImport("extracted_package")
+          .getMember("functions")
+          .getMember("with_subpath")
+          .getACall()
+  }
+
+  override DataFlow::ArgumentNode getACallback() {
+    result =
+      API::moduleImport("extracted_package")
+          .getMember("functions")
+          .getMember("with_subpath")
+          .getAValueReachableFromSource()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[0]" and
+    output = "ReturnValue" and
+    preservesValue = false
+  }
+}
+
+private class SummarizedCallableWithSubpathAgain extends SummarizedCallable {
+  SummarizedCallableWithSubpathAgain() { this = "extracted_package.functions.with_subpathII" }
+
+  override DataFlow::CallCfgNode getACall() {
+    result =
+      API::moduleImport("extracted_package")
+          .getMember("functions")
+          .getMember("with_subpath")
+          .getACall()
+  }
+
+  override DataFlow::ArgumentNode getACallback() {
+    result =
+      API::moduleImport("extracted_package")
+          .getMember("functions")
+          .getMember("with_subpath")
+          .getAValueReachableFromSource()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[0]" and
+    output = "ReturnValue.Attribute[pattern]" and
+    preservesValue = true
+  }
+}
+
+private class SummarizedCallableWithoutSubpath extends SummarizedCallable {
+  SummarizedCallableWithoutSubpath() { this = "extracted_package.functions.without_subpath" }
+
+  override DataFlow::CallCfgNode getACall() {
+    result =
+      API::moduleImport("extracted_package")
+          .getMember("functions")
+          .getMember("without_subpath")
+          .getACall()
+  }
+
+  override DataFlow::ArgumentNode getACallback() {
+    result =
+      API::moduleImport("extracted_package")
+          .getMember("functions")
+          .getMember("without_subpath")
+          .getAValueReachableFromSource()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[0]" and
+    output = "ReturnValue" and
+    preservesValue = false
+  }
+}
+
+private class SummarizedCallableWithoutSubpathAgain extends SummarizedCallable {
+  SummarizedCallableWithoutSubpathAgain() { this = "extracted_package.functions.without_subpathII" }
+
+  override DataFlow::CallCfgNode getACall() {
+    result =
+      API::moduleImport("extracted_package")
+          .getMember("functions")
+          .getMember("without_subpath")
+          .getACall()
+  }
+
+  override DataFlow::ArgumentNode getACallback() {
+    result =
+      API::moduleImport("extracted_package")
+          .getMember("functions")
+          .getMember("without_subpath")
+          .getAValueReachableFromSource()
+  }
+
+  override predicate propagatesFlow(string input, string output, boolean preservesValue) {
+    input = "Argument[0]" and
+    output = "ReturnValue.Attribute[pattern]" and
+    preservesValue = true
+  }
+}

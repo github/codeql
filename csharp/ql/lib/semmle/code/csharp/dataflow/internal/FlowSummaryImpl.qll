@@ -12,7 +12,7 @@ private import DataFlowImplSpecific::Public
 private import semmle.code.csharp.Unification
 private import semmle.code.csharp.dataflow.internal.ExternalFlow
 
-module Input implements InputSig<DataFlowImplSpecific::CsharpDataFlow> {
+module Input implements InputSig<Location, DataFlowImplSpecific::CsharpDataFlow> {
   class SummarizedCallableBase = UnboundCallable;
 
   ArgumentPosition callbackSelfParameterPosition() { result.isDelegateSelf() }
@@ -80,7 +80,7 @@ module Input implements InputSig<DataFlowImplSpecific::CsharpDataFlow> {
   }
 }
 
-private import Make<DataFlowImplSpecific::CsharpDataFlow, Input> as Impl
+private import Make<Location, DataFlowImplSpecific::CsharpDataFlow, Input> as Impl
 
 private module TypesInput implements Impl::Private::TypesInputSig {
   DataFlowType getSyntheticGlobalType(Impl::Private::SyntheticGlobal sg) {
@@ -154,26 +154,26 @@ private module StepsInput implements Impl::Private::StepsInputSig {
 }
 
 module SourceSinkInterpretationInput implements
-  Impl::Private::External::SourceSinkInterpretationInputSig<Location>
+  Impl::Private::External::SourceSinkInterpretationInputSig
 {
   private import csharp as Cs
 
   class Element = Cs::Element;
 
-  predicate sourceElement(Element e, string output, string kind) {
+  predicate sourceElement(Element e, string output, string kind, Public::Provenance provenance) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, _) and
+      sourceModel(namespace, type, subtypes, name, signature, ext, output, kind, provenance) and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
 
-  predicate sinkElement(Element e, string input, string kind) {
+  predicate sinkElement(Element e, string input, string kind, Public::Provenance provenance) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
-      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, _) and
+      sinkModel(namespace, type, subtypes, name, signature, ext, input, kind, provenance) and
       e = interpretElement(namespace, type, subtypes, name, signature, ext)
     )
   }
@@ -252,7 +252,7 @@ module Private {
 
   module External {
     import Impl::Private::External
-    import Impl::Private::External::SourceSinkInterpretation<Location, SourceSinkInterpretationInput>
+    import Impl::Private::External::SourceSinkInterpretation<SourceSinkInterpretationInput>
   }
 
   private module SummaryComponentInternal = Impl::Private::SummaryComponent;

@@ -1111,18 +1111,14 @@ StaticInterfaceMembers.cs:
 #-----|   3: (Base types)
 #   28|   4: [Property] Real
 #   28|     -1: [TypeMention] double
-#   28|     2: [AssignExpr] ... = ...
-#   28|       0: [PropertyCall] access to property Real
-#   28|       1: [DoubleLiteral] 0
+#   28|     2: [DoubleLiteral] 0
 #   28|     3: [Getter] get_Real
 #   28|     4: [Setter] set_Real
 #-----|       2: (Parameters)
 #   28|         0: [Parameter] value
 #   29|   5: [Property] Imaginary
 #   29|     -1: [TypeMention] double
-#   29|     2: [AssignExpr] ... = ...
-#   29|       0: [PropertyCall] access to property Imaginary
-#   29|       1: [DoubleLiteral] 0
+#   29|     2: [DoubleLiteral] 0
 #   29|     3: [Getter] get_Imaginary
 #   29|     4: [Setter] set_Imaginary
 #-----|       2: (Parameters)

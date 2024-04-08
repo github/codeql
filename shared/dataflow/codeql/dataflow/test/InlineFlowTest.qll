@@ -29,8 +29,9 @@
 private import codeql.dataflow.DataFlow as DF
 private import codeql.dataflow.TaintTracking as TT
 private import codeql.util.test.InlineExpectationsTest as IET
+private import codeql.util.Location
 
-signature module InputSig<DF::InputSig DataFlowLang> {
+signature module InputSig<LocationSig Location, DF::InputSig<Location> DataFlowLang> {
   predicate defaultSource(DataFlowLang::Node source);
 
   predicate defaultSink(DataFlowLang::Node source);
@@ -40,12 +41,13 @@ signature module InputSig<DF::InputSig DataFlowLang> {
 }
 
 module InlineFlowTestMake<
-  DF::InputSig DataFlowLang, TT::InputSig<DataFlowLang> TaintTrackingLang,
-  IET::InlineExpectationsTestSig Test, InputSig<DataFlowLang> Impl>
+  LocationSig Location, DF::InputSig<Location> DataFlowLang,
+  TT::InputSig<Location, DataFlowLang> TaintTrackingLang, IET::InlineExpectationsTestSig Test,
+  InputSig<Location, DataFlowLang> Impl>
 {
-  private module DataFlow = DF::DataFlowMake<DataFlowLang>;
+  private module DataFlow = DF::DataFlowMake<Location, DataFlowLang>;
 
-  private module TaintTracking = TT::TaintFlowMake<DataFlowLang, TaintTrackingLang>;
+  private module TaintTracking = TT::TaintFlowMake<Location, DataFlowLang, TaintTrackingLang>;
 
   private module InlineExpectationsTest = IET::Make<Test>;
 
@@ -76,7 +78,7 @@ module InlineFlowTestMake<
 
     private predicate hasLocationInfo(DataFlowLang::Node node, Test::Location location) {
       exists(string filepath, int startline, int startcolumn, int endline, int endcolumn |
-        node.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
+        node.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) and
         location.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       )
     }

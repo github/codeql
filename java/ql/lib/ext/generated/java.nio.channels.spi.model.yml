@@ -1,0 +1,21 @@
+# THIS FILE IS AN AUTO-GENERATED MODELS AS DATA FILE. DO NOT EDIT.
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", "openAsynchronousChannelGroup", "(ExecutorService,int)", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", "openAsynchronousChannelGroup", "(int,ThreadFactory)", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", "openAsynchronousServerSocketChannel", "(AsynchronousChannelGroup)", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", "openAsynchronousSocketChannel", "(AsynchronousChannelGroup)", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "AsynchronousChannelProvider", "provider", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "inheritedChannel", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "openDatagramChannel", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "openDatagramChannel", "(ProtocolFamily)", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "openPipe", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "openSelector", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "openServerSocketChannel", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "openServerSocketChannel", "(ProtocolFamily)", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "openSocketChannel", "()", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "openSocketChannel", "(ProtocolFamily)", "summary", "df-generated"]
+      - ["java.nio.channels.spi", "SelectorProvider", "provider", "()", "summary", "df-generated"]

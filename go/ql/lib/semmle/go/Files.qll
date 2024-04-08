@@ -50,8 +50,6 @@ class Folder extends Container, Impl::Folder {
 class ExtractedOrExternalFile extends Container, Impl::File, Documentable, ExprParent,
   GoModExprParent, DeclParent, ScopeNode
 {
-  override Location getLocation() { has_location(this, result) }
-
   /** Gets the number of lines in this file. */
   int getNumberOfLines() { numlines(this, result, _, _) }
 

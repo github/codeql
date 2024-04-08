@@ -42,9 +42,9 @@ namespace Semmle.Autobuild.Shared
             if (auto)
                 builder.Logger.LogInfo("Attempting to build using MSBuild");
 
-            var vsTools = GetVcVarsBatFile(builder);
+            VcVarsBatFile? vsTools = null;
 
-            if (vsTools is null && builder.ProjectsOrSolutionsToBuild.Any())
+            if (builder.ProjectsOrSolutionsToBuild.Any())
             {
                 var firstSolution = builder.ProjectsOrSolutionsToBuild.OfType<ISolution>().FirstOrDefault();
                 vsTools = firstSolution is not null
@@ -67,46 +67,44 @@ namespace Semmle.Autobuild.Shared
 
             foreach (var projectOrSolution in builder.ProjectsOrSolutionsToBuild)
             {
-                if (builder.Options.NugetRestore)
+
+                BuildScript GetNugetRestoreScript() =>
+                    new CommandBuilder(builder.Actions).
+                        RunCommand(nuget).
+                        Argument("restore").
+                        QuoteArgument(projectOrSolution.FullPath).
+                        Argument("-DisableParallelProcessing").
+                        Script;
+                var nugetRestore = GetNugetRestoreScript();
+                var msbuildRestoreCommand = new CommandBuilder(builder.Actions).
+                    MsBuildCommand(builder).
+                    Argument("/t:restore").
+                    QuoteArgument(projectOrSolution.FullPath);
+
+                if (builder.Actions.IsRunningOnAppleSilicon())
                 {
-                    BuildScript GetNugetRestoreScript() =>
-                        new CommandBuilder(builder.Actions).
-                            RunCommand(nuget).
-                            Argument("restore").
-                            QuoteArgument(projectOrSolution.FullPath).
-                            Argument("-DisableParallelProcessing").
-                            Script;
-                    var nugetRestore = GetNugetRestoreScript();
-                    var msbuildRestoreCommand = new CommandBuilder(builder.Actions).
-                        MsBuildCommand(builder).
-                        Argument("/t:restore").
-                        QuoteArgument(projectOrSolution.FullPath);
+                    // On Apple Silicon, only try package restore with `dotnet msbuild /t:restore`
+                    ret &= BuildScript.Try(msbuildRestoreCommand.Script);
+                }
+                else if (nugetDownloaded)
+                {
+                    ret &= BuildScript.Try(nugetRestore | msbuildRestoreCommand.Script);
+                }
+                else
+                {
+                    // If `nuget restore` fails, and we have not already attempted to download `nuget.exe`,
+                    // download it and reattempt `nuget restore`.
+                    var nugetDownloadAndRestore =
+                        BuildScript.Bind(DownloadNugetExe(builder, nugetDownloadPath), exitCode =>
+                        {
+                            nugetDownloaded = true;
+                            if (exitCode != 0)
+                                return BuildScript.Failure;
 
-                    if (builder.Actions.IsRunningOnAppleSilicon())
-                    {
-                        // On Apple Silicon, only try package restore with `dotnet msbuild /t:restore`
-                        ret &= BuildScript.Try(msbuildRestoreCommand.Script);
-                    }
-                    else if (nugetDownloaded)
-                    {
-                        ret &= BuildScript.Try(nugetRestore | msbuildRestoreCommand.Script);
-                    }
-                    else
-                    {
-                        // If `nuget restore` fails, and we have not already attempted to download `nuget.exe`,
-                        // download it and reattempt `nuget restore`.
-                        var nugetDownloadAndRestore =
-                            BuildScript.Bind(DownloadNugetExe(builder, nugetDownloadPath), exitCode =>
-                            {
-                                nugetDownloaded = true;
-                                if (exitCode != 0)
-                                    return BuildScript.Failure;
-
-                                nuget = nugetDownloadPath;
-                                return GetNugetRestoreScript();
-                            });
-                        ret &= BuildScript.Try(nugetRestore | nugetDownloadAndRestore | msbuildRestoreCommand.Script);
-                    }
+                            nuget = nugetDownloadPath;
+                            return GetNugetRestoreScript();
+                        });
+                    ret &= BuildScript.Try(nugetRestore | nugetDownloadAndRestore | msbuildRestoreCommand.Script);
                 }
 
                 var command = new CommandBuilder(builder.Actions);
@@ -124,17 +122,15 @@ namespace Semmle.Autobuild.Shared
                 command.MsBuildCommand(builder);
                 command.QuoteArgument(projectOrSolution.FullPath);
 
-                var target = builder.Options.MsBuildTarget ?? "rebuild";
-                var platform = builder.Options.MsBuildPlatform ?? (projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null);
-                var configuration = builder.Options.MsBuildConfiguration ?? (projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null);
+                var target = "rebuild";
+                var platform = projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null;
+                var configuration = projectOrSolution is ISolution s2 ? s2.DefaultConfigurationName : null;
 
                 command.Argument("/t:" + target);
                 if (platform is not null)
                     command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
                 if (configuration is not null)
                     command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
-
-                command.Argument(builder.Options.MsBuildArguments);
 
                 // append the build script which invokes msbuild to the overall build script `ret`;
                 // we insert a check that building the current project or solution was successful:
@@ -146,41 +142,6 @@ namespace Semmle.Autobuild.Shared
             }
 
             return ret;
-        }
-
-        /// <summary>
-        /// Gets the BAT file used to initialize the appropriate Visual Studio
-        /// version/platform, as specified by the `vstools_version` property in
-        /// lgtm.yml.
-        ///
-        /// Returns <code>null</code> when no version is specified.
-        /// </summary>
-        public static VcVarsBatFile? GetVcVarsBatFile<TAutobuildOptions>(IAutobuilder<TAutobuildOptions> builder) where TAutobuildOptions : AutobuildOptionsShared
-        {
-            VcVarsBatFile? vsTools = null;
-
-            if (builder.Options.VsToolsVersion is not null)
-            {
-                if (int.TryParse(builder.Options.VsToolsVersion, out var msToolsVersion))
-                {
-                    foreach (var b in BuildTools.VcVarsAllBatFiles(builder.Actions))
-                    {
-                        builder.Logger.Log(Severity.Info, "Found {0} version {1}", b.Path, b.ToolsVersion);
-                    }
-
-                    vsTools = BuildTools.FindCompatibleVcVars(builder.Actions, msToolsVersion);
-                    if (vsTools is null)
-                        builder.Logger.LogWarning("Could not find build tools matching version {0}", msToolsVersion);
-                    else
-                        builder.Logger.Log(Severity.Info, "Setting Visual Studio tools to {0}", vsTools.Path);
-                }
-                else
-                {
-                    builder.Logger.LogError("The format of vstools_version is incorrect. Please specify an integer.");
-                }
-            }
-
-            return vsTools;
         }
 
         /// <summary>

@@ -37,6 +37,37 @@ class UncalledFunction extends Function {
   }
 }
 
+/** The `unsigned short` type. */
+class UnsignedShort extends ShortType {
+  UnsignedShort() { this.isUnsigned() }
+}
+
+/**
+ * Holds if `t` cannot refer to a string. That is, it's a built-in
+ * or arithmetic type that is not a "`char` like" type.
+ */
+predicate cannotContainString(Type t) {
+  exists(Type unspecified |
+    unspecified = t.getUnspecifiedType() and
+    not unspecified instanceof UnknownType and
+    not unspecified instanceof CharType and
+    not unspecified instanceof WideCharType and
+    not unspecified instanceof Char8Type and
+    not unspecified instanceof Char16Type and
+    not unspecified instanceof Char32Type and
+    // C often defines `wchar_t` as `unsigned short`
+    not unspecified instanceof UnsignedShort
+  |
+    unspecified instanceof ArithmeticType or
+    unspecified instanceof BuiltInType
+  )
+}
+
+predicate dataFlowOrTaintFlowFunction(Function func, FunctionOutput output) {
+  func.(DataFlowFunction).hasDataFlow(_, output) or
+  func.(TaintFunction).hasTaintFlow(_, output)
+}
+
 /**
  * Holds if `node` is a non-constant source of data flow for non-const format string detection.
  * This is defined as either:
@@ -69,7 +100,9 @@ predicate isNonConst(DataFlow::Node node) {
   // Parameters of uncalled functions that aren't const
   exists(UncalledFunction f, Parameter p |
     f.getAParameter() = p and
-    p = node.asParameter() and
+    // We pick the indirection of the parameter since this query is focused
+    // on strings.
+    p = node.asParameter(1) and
     // Ignore main's argv parameter as it is already considered a `FlowSource`
     // not ignoring it will result in path redundancies
     (f.getName() = "main" implies p != f.getParameter(1))
@@ -82,30 +115,27 @@ predicate isNonConst(DataFlow::Node node) {
   //       are considered as possible non-const sources
   // The function's output must also not be const to be considered a non-const source
   exists(Function func, CallInstruction call |
-    // NOTE: could use `Call` getAnArgument() instead of `CallInstruction` but requires two
-    // variables representing the same call in ordoer to use `callOutput` below.
-    exists(Expr arg |
-      call.getPositionalArgumentOperand(_).getDef().getUnconvertedResultExpression() = arg and
-      arg = node.asDefiningArgument()
-    )
-    or
-    call.getUnconvertedResultExpression() = node.asIndirectExpr()
+    not func.hasDefinition() and
+    func = call.getStaticCallTarget()
   |
-    func = call.getStaticCallTarget() and
+    // Case 1: It's a known dataflow or taintflow function with flow to the return value
+    call.getUnconvertedResultExpression() = node.asIndirectExpr() and
     not exists(FunctionOutput output |
-      // NOTE: we must include dataflow and taintflow. e.g., including only dataflow we will find sprintf
-      // variant function's output are now possible non-const sources
-      pragma[only_bind_out](func).(DataFlowFunction).hasDataFlow(_, output) or
-      pragma[only_bind_out](func).(TaintFunction).hasTaintFlow(_, output)
-    |
+      dataFlowOrTaintFlowFunction(func, output) and
+      output.isReturnValueDeref(_) and
       node = callOutput(call, output)
     )
-  ) and
-  not exists(Call c |
-    c.getTarget().hasDefinition() and
-    if node instanceof DataFlow::DefinitionByReferenceNode
-    then c.getAnArgument() = node.asDefiningArgument()
-    else c = [node.asExpr(), node.asIndirectExpr()]
+    or
+    // Case 2: It's a known dataflow or taintflow function with flow to an output parameter
+    exists(int i |
+      call.getPositionalArgumentOperand(i).getDef().getUnconvertedResultExpression() =
+        node.asDefiningArgument() and
+      not exists(FunctionOutput output |
+        dataFlowOrTaintFlowFunction(func, output) and
+        output.isParameterDeref(i, _) and
+        node = callOutput(call, output)
+      )
+    )
   )
 }
 
@@ -114,18 +144,29 @@ predicate isNonConst(DataFlow::Node node) {
  * `FormattingFunctionCall`.
  */
 predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
-  [sink.asExpr(), sink.asIndirectExpr()] = formatString and
+  sink.asIndirectExpr() = formatString and
   exists(FormattingFunctionCall fc | formatString = fc.getArgument(fc.getFormatParameterIndex()))
 }
 
 module NonConstFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { isNonConst(source) }
+  predicate isSource(DataFlow::Node source) {
+    exists(Type t |
+      isNonConst(source) and
+      t = source.getType() and
+      not cannotContainString(t)
+    )
+  }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
 
   predicate isBarrier(DataFlow::Node node) {
     // Ignore tracing non-const through array indices
-    exists(ArrayExpr a | a.getArrayOffset() = node.asExpr())
+    exists(ArrayExpr a | a.getArrayOffset() = node.asIndirectExpr())
+    or
+    exists(Type t |
+      t = node.getType() and
+      cannotContainString(t)
+    )
   }
 }
 
