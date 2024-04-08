@@ -1365,6 +1365,40 @@ destructors_for_temps.cpp:
 #   81|     v81_7(void) = AliasedUse   : ~m?
 #   81|     v81_8(void) = ExitFunction : 
 
+#   94| void temp_test11()
+#   94|   Block 0
+#   94|     v94_1(void)                         = EnterFunction                             : 
+#   94|     mu94_2(unknown)                     = AliasedDefinition                         : 
+#   94|     mu94_3(unknown)                     = InitializeNonLocal                        : 
+#   99|     r99_1(glval<ClassWithDestructor2>)  = VariableAddress[#temp99:5]                : 
+#   99|     r99_2(glval<ClassWithDestructor3>)  = VariableAddress[#temp99:5]                : 
+#   99|     r99_3(glval<unknown>)               = FunctionAddress[makeClassWithDestructor3] : 
+#   99|     r99_4(ClassWithDestructor3)         = Call[makeClassWithDestructor3]            : func:r99_3
+#   99|     mu99_5(unknown)                     = ^CallSideEffect                           : ~m?
+#   99|     mu99_6(ClassWithDestructor3)        = Store[#temp99:5]                          : &:r99_2, r99_4
+#   99|     r99_7(glval<unknown>)               = FunctionAddress[getClassWithDestructor2]  : 
+#   99|     r99_8(ClassWithDestructor2)         = Call[getClassWithDestructor2]             : func:r99_7, this:r99_2
+#   99|     mu99_9(unknown)                     = ^CallSideEffect                           : ~m?
+#   99|     v99_10(void)                        = ^IndirectReadSideEffect[-1]               : &:r99_2, ~m?
+#   99|     mu99_11(ClassWithDestructor3)       = ^IndirectMayWriteSideEffect[-1]           : &:r99_2
+#   99|     mu99_12(ClassWithDestructor2)       = Store[#temp99:5]                          : &:r99_1, r99_8
+#   99|     r99_13(glval<ClassWithDestructor2>) = CopyValue                                 : r99_1
+#   99|     r99_14(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2]    : 
+#   99|     v99_15(void)                        = Call[~ClassWithDestructor2]               : func:r99_14, this:r99_13
+#   99|     mu99_16(unknown)                    = ^CallSideEffect                           : ~m?
+#   99|     v99_17(void)                        = ^IndirectReadSideEffect[-1]               : &:r99_13, ~m?
+#   99|     mu99_18(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]           : &:r99_13
+#   99|     r99_19(glval<ClassWithDestructor3>) = CopyValue                                 : r99_2
+#   99|     r99_20(glval<unknown>)              = FunctionAddress[~ClassWithDestructor3]    : 
+#   99|     v99_21(void)                        = Call[~ClassWithDestructor3]               : func:r99_20, this:r99_19
+#   99|     mu99_22(unknown)                    = ^CallSideEffect                           : ~m?
+#   99|     v99_23(void)                        = ^IndirectReadSideEffect[-1]               : &:r99_19, ~m?
+#   99|     mu99_24(ClassWithDestructor3)       = ^IndirectMayWriteSideEffect[-1]           : &:r99_19
+#  100|     v100_1(void)                        = NoOp                                      : 
+#   94|     v94_4(void)                         = ReturnVoid                                : 
+#   94|     v94_5(void)                         = AliasedUse                                : ~m?
+#   94|     v94_6(void)                         = ExitFunction                              : 
+
 ir.c:
 #    7| void MyCoordsTest(int)
 #    7|   Block 0

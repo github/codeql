@@ -2326,6 +2326,47 @@ destructors_for_temps.cpp:
 #   83|                   Type = [Class] ClassWithDestructor2
 #   83|                   ValueCategory = xvalue
 #   85|     getStmt(1): [ReturnStmt] return ...
+#   87| [CopyAssignmentOperator] ClassWithDestructor3& ClassWithDestructor3::operator=(ClassWithDestructor3 const&)
+#   87|   <params>: 
+#-----|     getParameter(0): [Parameter] (unnamed parameter 0)
+#-----|         Type = [LValueReferenceType] const ClassWithDestructor3 &
+#   87| [Constructor] void ClassWithDestructor3::ClassWithDestructor3()
+#   87|   <params>: 
+#   88| [Destructor] void ClassWithDestructor3::~ClassWithDestructor3()
+#   88|   <params>: 
+#   89| [MemberFunction] ClassWithDestructor2 ClassWithDestructor3::getClassWithDestructor2()
+#   89|   <params>: 
+#   92| [TopLevelFunction] ClassWithDestructor3 makeClassWithDestructor3()
+#   92|   <params>: 
+#   94| [TopLevelFunction] void temp_test11()
+#   94|   <params>: 
+#   94|   getEntryPoint(): [BlockStmt] { ... }
+#   99|     getStmt(0): [ExprStmt] ExprStmt
+#   99|       getExpr(): [FunctionCall] call to getClassWithDestructor2
+#   99|           Type = [Class] ClassWithDestructor2
+#   99|           ValueCategory = prvalue
+#   99|         getQualifier(): [FunctionCall] call to makeClassWithDestructor3
+#   99|             Type = [Struct] ClassWithDestructor3
+#   99|             ValueCategory = prvalue
+#   99|         getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   99|             Type = [Struct] ClassWithDestructor3
+#   99|             ValueCategory = prvalue(load)
+#   99|       getExpr().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#   99|           Type = [Class] ClassWithDestructor2
+#   99|           ValueCategory = prvalue
+#   99|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#   99|             Type = [VoidType] void
+#   99|             ValueCategory = prvalue
+#   99|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   99|               Type = [Class] ClassWithDestructor2
+#   99|               ValueCategory = xvalue
+#   99|         getImplicitDestructorCall(1): [DestructorCall] call to ~ClassWithDestructor3
+#   99|             Type = [VoidType] void
+#   99|             ValueCategory = prvalue
+#   99|           getQualifier(): [ReuseExpr] reuse of temporary object
+#   99|               Type = [Struct] ClassWithDestructor3
+#   99|               ValueCategory = xvalue
+#  100|     getStmt(1): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 

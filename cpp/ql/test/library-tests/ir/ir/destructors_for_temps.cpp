@@ -83,3 +83,18 @@ void temp_test10(int i) {
         make();
     }
 }
+
+struct ClassWithDestructor3 {
+    ~ClassWithDestructor3();
+    ClassWithDestructor2 getClassWithDestructor2();
+};
+
+ClassWithDestructor3 makeClassWithDestructor3();
+
+void temp_test11() {
+    // Two destructors are called at the semicolon (i.e., they're both attached
+    // to the call to `getClassWithDestructor2()`):
+    // First, ~ClassWithDestructor2::ClassWithDestructor2(), and then the call
+    // to `~ClassWithDestructor3::ClassWithDestructor3()`.
+    makeClassWithDestructor3().getClassWithDestructor2();
+}
