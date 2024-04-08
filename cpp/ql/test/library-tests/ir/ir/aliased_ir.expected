@@ -15583,6 +15583,67 @@ ir.cpp:
 # 2410|   Block 13
 # 2410|     v2410_8(void) = Unreached : 
 
+# 2434| void param_with_destructor_by_value(ClassWithDestructor)
+# 2434|   Block 0
+# 2434|     v2434_1(void)                       = EnterFunction          : 
+# 2434|     m2434_2(unknown)                    = AliasedDefinition      : 
+# 2434|     m2434_3(unknown)                    = InitializeNonLocal     : 
+# 2434|     m2434_4(unknown)                    = Chi                    : total:m2434_2, partial:m2434_3
+# 2434|     r2434_5(glval<ClassWithDestructor>) = VariableAddress[c]     : 
+# 2434|     m2434_6(ClassWithDestructor)        = InitializeParameter[c] : &:r2434_5
+# 2436|     v2436_1(void)                       = NoOp                   : 
+# 2434|     v2434_7(void)                       = ReturnVoid             : 
+# 2434|     v2434_8(void)                       = AliasedUse             : m2434_3
+# 2434|     v2434_9(void)                       = ExitFunction           : 
+
+# 2438| void param_with_destructor_by_pointer(ClassWithDestructor*)
+# 2438|   Block 0
+# 2438|     v2438_1(void)                         = EnterFunction            : 
+# 2438|     m2438_2(unknown)                      = AliasedDefinition        : 
+# 2438|     m2438_3(unknown)                      = InitializeNonLocal       : 
+# 2438|     m2438_4(unknown)                      = Chi                      : total:m2438_2, partial:m2438_3
+# 2438|     r2438_5(glval<ClassWithDestructor *>) = VariableAddress[c]       : 
+# 2438|     m2438_6(ClassWithDestructor *)        = InitializeParameter[c]   : &:r2438_5
+# 2438|     r2438_7(ClassWithDestructor *)        = Load[c]                  : &:r2438_5, m2438_6
+# 2438|     m2438_8(unknown)                      = InitializeIndirection[c] : &:r2438_7
+# 2440|     v2440_1(void)                         = NoOp                     : 
+# 2438|     v2438_9(void)                         = ReturnIndirection[c]     : &:r2438_7, m2438_8
+# 2438|     v2438_10(void)                        = ReturnVoid               : 
+# 2438|     v2438_11(void)                        = AliasedUse               : m2438_3
+# 2438|     v2438_12(void)                        = ExitFunction             : 
+
+# 2442| void param_with_destructor_by_ref(ClassWithDestructor&)
+# 2442|   Block 0
+# 2442|     v2442_1(void)                         = EnterFunction            : 
+# 2442|     m2442_2(unknown)                      = AliasedDefinition        : 
+# 2442|     m2442_3(unknown)                      = InitializeNonLocal       : 
+# 2442|     m2442_4(unknown)                      = Chi                      : total:m2442_2, partial:m2442_3
+# 2442|     r2442_5(glval<ClassWithDestructor &>) = VariableAddress[c]       : 
+# 2442|     m2442_6(ClassWithDestructor &)        = InitializeParameter[c]   : &:r2442_5
+# 2442|     r2442_7(ClassWithDestructor &)        = Load[c]                  : &:r2442_5, m2442_6
+# 2442|     m2442_8(unknown)                      = InitializeIndirection[c] : &:r2442_7
+# 2444|     v2444_1(void)                         = NoOp                     : 
+# 2442|     v2442_9(void)                         = ReturnIndirection[c]     : &:r2442_7, m2442_8
+# 2442|     v2442_10(void)                        = ReturnVoid               : 
+# 2442|     v2442_11(void)                        = AliasedUse               : m2442_3
+# 2442|     v2442_12(void)                        = ExitFunction             : 
+
+# 2446| void param_with_destructor_by_rref(ClassWithDestructor&&)
+# 2446|   Block 0
+# 2446|     v2446_1(void)                          = EnterFunction            : 
+# 2446|     m2446_2(unknown)                       = AliasedDefinition        : 
+# 2446|     m2446_3(unknown)                       = InitializeNonLocal       : 
+# 2446|     m2446_4(unknown)                       = Chi                      : total:m2446_2, partial:m2446_3
+# 2446|     r2446_5(glval<ClassWithDestructor &&>) = VariableAddress[c]       : 
+# 2446|     m2446_6(ClassWithDestructor &&)        = InitializeParameter[c]   : &:r2446_5
+# 2446|     r2446_7(ClassWithDestructor &&)        = Load[c]                  : &:r2446_5, m2446_6
+# 2446|     m2446_8(unknown)                       = InitializeIndirection[c] : &:r2446_7
+# 2448|     v2448_1(void)                          = NoOp                     : 
+# 2446|     v2446_9(void)                          = ReturnIndirection[c]     : &:r2446_7, m2446_8
+# 2446|     v2446_10(void)                         = ReturnVoid               : 
+# 2446|     v2446_11(void)                         = AliasedUse               : m2446_3
+# 2446|     v2446_12(void)                         = ExitFunction             : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
