@@ -18,6 +18,59 @@ module Utils {
         "toJSON\\(\\s*" + regex + "\\s*\\)"
       ]
   }
+
+  bindingset[line, var]
+  predicate extractAssignment(string line, string var, string key, string value) {
+    exists(string assignment |
+      (
+        assignment =
+          line.regexpCapture("(echo|Write-Output)\\s+\"(.*)\"\\s*>>\\s*(\"|')?\\$GITHUB_" +
+              var.toUpperCase() + "(\"|')?", 2)
+              .regexpReplaceAll("^\"", "")
+              .regexpReplaceAll("\"$", "") or
+        assignment =
+          line.regexpCapture("(echo|Write-Output)\\s+'(.*)'\\s*>>\\s*(\"|')?\\$GITHUB_" +
+              var.toUpperCase() + "(\"|')?", 2)
+              .regexpReplaceAll("^'", "")
+              .regexpReplaceAll("'$", "") or
+        assignment =
+          line.regexpCapture("(echo|Write-Output)\\s+([^'\"]*)\\s*>>\\s*(\"|')?\\$GITHUB_" +
+              var.toUpperCase() + "(\"|')?", 2)
+      ) and
+      key = assignment.splitAt("=", 0).trim() and
+      value = assignment.splitAt("=", 1).trim()
+      or
+      (
+        assignment =
+          line.regexpCapture("(echo|Write-Output)\\s+\"::set-" + var.toLowerCase() +
+              "\\s+name=(.*)\"", 2).regexpReplaceAll("^\"", "").regexpReplaceAll("\"$", "") or
+        assignment =
+          line.regexpCapture("(echo|Write-Output)\\s+'::set-" + var.toLowerCase() + "\\s+name=(.*)'",
+            2).regexpReplaceAll("^'", "").regexpReplaceAll("'$", "") or
+        assignment =
+          line.regexpCapture("(echo|Write-Output)\\s+::set-" + var.toLowerCase() + "\\s+name=(.*)",
+            2)
+      ) and
+      key = assignment.splitAt("::", 0).trim() and
+      value = assignment.splitAt("::", 1).trim()
+    )
+  }
+
+  predicate writeToGitHubEnv(Run run, string key, string value) {
+    exists(string script, string line |
+      script = run.getScript() and
+      line = script.splitAt("\n") and
+      Utils::extractAssignment(line, "ENV", key, value)
+    )
+  }
+
+  predicate writeToGitHubOutput(Run run, string key, string value) {
+    exists(string script, string line |
+      script = run.getScript() and
+      line = script.splitAt("\n") and
+      Utils::extractAssignment(line, "OUTPUT", key, value)
+    )
+  }
 }
 
 class AstNode instanceof AstNodeImpl {

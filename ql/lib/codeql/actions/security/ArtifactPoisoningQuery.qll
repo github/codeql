@@ -11,19 +11,82 @@ abstract class ArtifactDownloadStep extends Step {
   abstract string getPath();
 }
 
-class Dawidd6ActionDownloadArtifactDownloadStep extends ArtifactDownloadStep, UsesStep {
-  Dawidd6ActionDownloadArtifactDownloadStep() {
-    // eg: - uses: dawidd6/action-download-artifact@v2
-    this.getCallee() = "dawidd6/action-download-artifact" and
-    // An attacker should not be able to push to local branches which `branch` normally is used for.
+class DownloadArtifactActionStep extends ArtifactDownloadStep, UsesStep {
+  DownloadArtifactActionStep() {
+    this.getCallee() =
+      [
+        "dawidd6/action-download-artifact", "marcofaggian/action-download-multiple-artifacts",
+        "benday-inc/download-latest-artifact", "blablacar/action-download-last-artifact",
+        "levonet/action-download-last-artifact", "bettermarks/action-artifact-download",
+        "aochmann/actions-download-artifact", "cytopia/download-artifact-retry-action",
+        "alextompkins/download-prior-artifact", "nmerget/download-gzip-artifact",
+        "benday-inc/download-artifact", "synergy-au/download-workflow-artifacts-action",
+        "ishworkh/container-image-artifact-download", "sidx1024/action-download-artifact",
+        "hyperskill/azblob-download-artifact", "ma-ve/action-download-artifact-with-retry"
+      ] and
     (
-      not exists(this.getArgument("branch")) or
-      not this.getArgument("branch") = ["main", "master"]
+      not exists(this.getArgument(["branch", "branch_name"])) or
+      not this.getArgument(["branch", "branch_name"]) = ["main", "master"]
+    ) and
+    (
+      not exists(this.getArgument(["commit", "commitHash", "commit_sha"])) or
+      not this.getArgument(["commit", "commitHash", "commit_sha"])
+          .matches("%github.event.pull_request.head.sha%")
+    ) and
+    (
+      not exists(this.getArgument("event")) or
+      not this.getArgument("event") = "pull_request"
+    ) and
+    (
+      not exists(this.getArgument(["run-id", "run_id", "workflow-run-id", "workflow_run_id"])) or
+      not this.getArgument(["run-id", "run_id", "workflow-run-id", "workflow_run_id"])
+          .matches("%github.event.workflow_run.id%")
+    ) and
+    (
+      not exists(this.getArgument("pr")) or
+      not this.getArgument("pr").matches("%github.event.pull_request.number%")
     )
   }
 
   override string getPath() {
-    if exists(this.getArgument("path")) then result = this.getArgument("path") else result = ""
+    if exists(this.getArgument(["path", "download_path"]))
+    then result = this.getArgument(["path", "download_path"])
+    else
+      if exists(this.getArgument("paths"))
+      then result = this.getArgument("paths").splitAt(" ")
+      else result = ""
+  }
+}
+
+class LegitLabsDownloadArtifactActionStep extends ArtifactDownloadStep, UsesStep {
+  LegitLabsDownloadArtifactActionStep() {
+    this.getCallee() = "Legit-Labs/action-download-artifact" and
+    (
+      not exists(this.getArgument("branch")) or
+      not this.getArgument("branch") = ["main", "master"]
+    ) and
+    (
+      not exists(this.getArgument("commit")) or
+      not this.getArgument("commit").matches("%github.event.pull_request.head.sha%")
+    ) and
+    (
+      not exists(this.getArgument("event")) or
+      not this.getArgument("event") = "pull_request"
+    ) and
+    (
+      not exists(this.getArgument("run_id")) or
+      not this.getArgument("run_id").matches("%github.event.workflow_run.id%")
+    ) and
+    (
+      not exists(this.getArgument("pr")) or
+      not this.getArgument("pr").matches("%github.event.pull_request.number%")
+    )
+  }
+
+  override string getPath() {
+    if exists(this.getArgument("path"))
+    then result = this.getArgument("path")
+    else result = "./artifacts"
   }
 }
 
@@ -55,7 +118,9 @@ class ActionsGitHubScriptDownloadStep extends ArtifactDownloadStep, UsesStep {
     this.getArgument("script") = script and
     script.matches("%listWorkflowRunArtifacts(%") and
     script.matches("%downloadArtifact(%") and
-    script.matches("%writeFileSync%")
+    script.matches("%writeFileSync(%") and
+    // Filter out artifacts that were created by pull-request.
+    not script.matches("%exclude_pull_requests: true%")
   }
 
   override string getPath() {
@@ -175,15 +240,6 @@ class CommandExecutionRunStep extends PoisonableStep, Run {
   }
 }
 
-predicate writeToGithubEnv(Run run, string key, string value) {
-  exists(string script, string line |
-    script = run.getScript() and
-    line = script.splitAt("\n") and
-    key = line.regexpCapture("echo\\s+(\")?([^=]+)\\s*=(.*)(\")?\\s*>>\\s*\\$GITHUB_ENV", 2) and
-    value = line.regexpCapture("echo\\s+(\")?([^=]+)\\s*=(.*)(\")?\\s*>>\\s*\\$GITHUB_ENV", 3)
-  )
-}
-
 class EnvVarInjectionRunStep extends PoisonableStep, Run {
   EnvVarInjectionRunStep() {
     exists(ArtifactDownloadStep step, string value |
@@ -191,8 +247,10 @@ class EnvVarInjectionRunStep extends PoisonableStep, Run {
       // Heuristic:
       // Run step with env var definition based on file content.
       // eg: `echo "sha=$(cat test-results/sha-number)" >> $GITHUB_ENV`
-      writeToGithubEnv(this, _, value) and
-      value.regexpMatch(".*cat\\s+.*")
+      // eg: `echo "sha=$(<test-results/sha-number)" >> $GITHUB_ENV`
+      Utils::writeToGitHubEnv(this, _, value) and
+      // TODO: add support for other commands like `<`, `jq`, ...
+      value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
     )
   }
 }

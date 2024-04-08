@@ -6,6 +6,7 @@ private import codeql.actions.controlflow.BasicBlocks
 private import DataFlowPublic
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.dataflow.FlowSteps
+private import codeql.actions.dataflow.FlowSources
 
 cached
 newtype TNode = TExprNode(DataFlowExpr e)
@@ -175,7 +176,7 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos =
  */
 predicate stepsCtxLocalStep(Node nodeFrom, Node nodeTo) {
   exists(Uses astFrom, StepsExpression astTo |
-    externallyDefinedSource(nodeFrom, _, "output." + astTo.getFieldName()) and
+    externallyDefinedSource(nodeFrom, _, "output." + ["*", astTo.getFieldName()]) and
     astFrom = nodeFrom.asExpr() and
     astTo = nodeTo.asExpr() and
     astTo.getTarget() = astFrom
@@ -328,7 +329,8 @@ predicate fieldStoreStep(Node node1, Node node2, ContentSet c) {
 predicate storeStep(Node node1, ContentSet c, Node node2) {
   fieldStoreStep(node1, node2, c) or
   externallyDefinedStoreStep(node1, node2, c) or
-  envToOutputStoreStep(node1, node2, c)
+  envToOutputStoreStep(node1, node2, c) or
+  artifactToOutputStoreStep(node1, node2, c)
 }
 
 /**

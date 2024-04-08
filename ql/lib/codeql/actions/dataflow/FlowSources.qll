@@ -2,6 +2,7 @@ private import actions
 private import codeql.actions.DataFlow
 private import codeql.actions.dataflow.ExternalFlow
 private import codeql.actions.Ast::Utils as Utils
+private import codeql.actions.security.ArtifactPoisoningQuery
 
 /**
  * A data flow source.
@@ -156,4 +157,13 @@ private class CompositeActionInputSource extends RemoteFlowSource {
   CompositeActionInputSource() { c.getAnInput() = this.asExpr() }
 
   override string getSourceType() { result = "Composite action input" }
+}
+
+/**
+ * A downloadeded artifact.
+ */
+private class ArtifactToOptionSource extends RemoteFlowSource {
+  ArtifactToOptionSource() { this.asExpr() instanceof ArtifactDownloadStep }
+
+  override string getSourceType() { result = "Step output from Artifact" }
 }
