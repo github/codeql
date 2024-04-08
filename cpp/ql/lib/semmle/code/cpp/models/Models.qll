@@ -41,3 +41,4 @@ private import implementations.SqLite3
 private import implementations.PostgreSql
 private import implementations.System
 private import implementations.StructuredExceptionHandling
+private import implementations.Fopen
