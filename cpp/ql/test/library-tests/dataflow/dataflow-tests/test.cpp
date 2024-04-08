@@ -1054,7 +1054,7 @@ void flow_out_of_address_with_local_flow() {
 
 static void static_func_that_reassigns_pointer_before_sink(char** pp) { // $ ast-def=pp ir-def=*pp ir-def=**pp
     *pp = "";
-    indirect_sink(*pp); // $ SPURIOUS: ir
+    indirect_sink(*pp); // clean
 }
 
 void test_static_func_that_reassigns_pointer_before_sink() {
@@ -1071,5 +1071,5 @@ void single_object_in_both_cases(bool b, int x, int y) {
   }
   *p = source();
   *p = 0;
-  sink(*p); // $ SPURIOUS: ir
+  sink(*p); // clean
 }

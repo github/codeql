@@ -310,8 +310,6 @@ irFlow
 | test.cpp:1021:18:1021:32 | *call to indirect_source | test.cpp:1027:19:1027:28 | *translated |
 | test.cpp:1021:18:1021:32 | *call to indirect_source | test.cpp:1031:19:1031:28 | *translated |
 | test.cpp:1045:14:1045:19 | call to source | test.cpp:1046:7:1046:10 | * ... |
-| test.cpp:1061:15:1061:38 | *call to indirect_source | test.cpp:1057:19:1057:21 | ** ... |
-| test.cpp:1072:8:1072:13 | call to source | test.cpp:1074:8:1074:9 | * ... |
 | true_upon_entry.cpp:9:11:9:16 | call to source | true_upon_entry.cpp:13:8:13:8 | x |
 | true_upon_entry.cpp:17:11:17:16 | call to source | true_upon_entry.cpp:21:8:21:8 | x |
 | true_upon_entry.cpp:27:9:27:14 | call to source | true_upon_entry.cpp:29:8:29:8 | x |
