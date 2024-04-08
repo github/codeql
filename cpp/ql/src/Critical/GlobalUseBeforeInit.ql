@@ -98,10 +98,25 @@ predicate callReaches(Call call, ControlFlowNode successor) {
   )
 }
 
+// To avoid many false alarms like `static int a = 1;`
+predicate initialisedAtDeclaration(GlobalVariable v) {
+  exists(VariableDeclarationEntry vde |
+    vde = v.getDefinition()
+    and vde.isDefinition()
+  )
+}
+
+// No need to initialize those variables
+predicate isStdlibVariable(GlobalVariable v) {
+  v.getName() = ["stdin", "stdout", "stderr"]
+}
+
 from GlobalVariable v, Function f
 where
   uninitialisedBefore(v, f) and
-  useFunc(v, f)
+  useFunc(v, f) and
+  not initialisedAtDeclaration(v) and
+  not isStdlibVariable(v)
 select f,
   "The variable '" + v.getName() +
     " is used in this function but may not be initialized when it is called."
