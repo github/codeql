@@ -2367,6 +2367,42 @@ destructors_for_temps.cpp:
 #   99|               Type = [Struct] ClassWithDestructor3
 #   99|               ValueCategory = xvalue
 #  100|     getStmt(1): [ReturnStmt] return ...
+#  102| [TopLevelFunction] void temp_test12(ClassWithDestructor3)
+#  102|   <params>: 
+#  102|     getParameter(0): [Parameter] x
+#  102|         Type = [Struct] ClassWithDestructor3
+#  102|   getEntryPoint(): [BlockStmt] { ... }
+#  103|     getStmt(0): [ExprStmt] ExprStmt
+#  103|       getExpr(): [AddExpr] ... + ...
+#  103|           Type = [IntType] int
+#  103|           ValueCategory = prvalue
+#  103|         getLeftOperand(): [FunctionCall] call to get_x
+#  103|             Type = [PlainCharType] char
+#  103|             ValueCategory = prvalue
+#  103|           getQualifier(): [FunctionCall] call to getClassWithDestructor2
+#  103|               Type = [Class] ClassWithDestructor2
+#  103|               ValueCategory = prvalue
+#  103|             getQualifier(): [VariableAccess] x
+#  103|                 Type = [Struct] ClassWithDestructor3
+#  103|                 ValueCategory = lvalue
+#  103|           getQualifier().getFullyConverted(): [TemporaryObjectExpr] temporary object
+#  103|               Type = [Class] ClassWithDestructor2
+#  103|               ValueCategory = prvalue(load)
+#  103|         getRightOperand(): [Literal] 5
+#  103|             Type = [IntType] int
+#  103|             Value = [Literal] 5
+#  103|             ValueCategory = prvalue
+#  103|         getImplicitDestructorCall(0): [DestructorCall] call to ~ClassWithDestructor2
+#  103|             Type = [VoidType] void
+#  103|             ValueCategory = prvalue
+#  103|           getQualifier(): [ReuseExpr] reuse of temporary object
+#  103|               Type = [Class] ClassWithDestructor2
+#  103|               ValueCategory = xvalue
+#  103|         getLeftOperand().getFullyConverted(): [CStyleCast] (int)...
+#  103|             Conversion = [IntegralConversion] integral conversion
+#  103|             Type = [IntType] int
+#  103|             ValueCategory = prvalue
+#  104|     getStmt(1): [ReturnStmt] return ...
 ir.c:
 #    5| [TopLevelFunction] int getX(MyCoords*)
 #    5|   <params>: 

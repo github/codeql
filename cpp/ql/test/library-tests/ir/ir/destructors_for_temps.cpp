@@ -98,3 +98,7 @@ void temp_test11() {
     // to `~ClassWithDestructor3::ClassWithDestructor3()`.
     makeClassWithDestructor3().getClassWithDestructor2();
 }
+
+void temp_test12(ClassWithDestructor3 x) {
+    x.getClassWithDestructor2().get_x() + 5;
+}

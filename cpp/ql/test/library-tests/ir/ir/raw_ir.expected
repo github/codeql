@@ -1399,6 +1399,40 @@ destructors_for_temps.cpp:
 #   94|     v94_5(void)                         = AliasedUse                                : ~m?
 #   94|     v94_6(void)                         = ExitFunction                              : 
 
+#  102| void temp_test12(ClassWithDestructor3)
+#  102|   Block 0
+#  102|     v102_1(void)                         = EnterFunction                            : 
+#  102|     mu102_2(unknown)                     = AliasedDefinition                        : 
+#  102|     mu102_3(unknown)                     = InitializeNonLocal                       : 
+#  102|     r102_4(glval<ClassWithDestructor3>)  = VariableAddress[x]                       : 
+#  102|     mu102_5(ClassWithDestructor3)        = InitializeParameter[x]                   : &:r102_4
+#  103|     r103_1(glval<ClassWithDestructor2>)  = VariableAddress[#temp103:5]              : 
+#  103|     r103_2(glval<ClassWithDestructor3>)  = VariableAddress[x]                       : 
+#  103|     r103_3(glval<unknown>)               = FunctionAddress[getClassWithDestructor2] : 
+#  103|     r103_4(ClassWithDestructor2)         = Call[getClassWithDestructor2]            : func:r103_3, this:r103_2
+#  103|     mu103_5(unknown)                     = ^CallSideEffect                          : ~m?
+#  103|     v103_6(void)                         = ^IndirectReadSideEffect[-1]              : &:r103_2, ~m?
+#  103|     mu103_7(ClassWithDestructor3)        = ^IndirectMayWriteSideEffect[-1]          : &:r103_2
+#  103|     mu103_8(ClassWithDestructor2)        = Store[#temp103:5]                        : &:r103_1, r103_4
+#  103|     r103_9(glval<unknown>)               = FunctionAddress[get_x]                   : 
+#  103|     r103_10(char)                        = Call[get_x]                              : func:r103_9, this:r103_1
+#  103|     mu103_11(unknown)                    = ^CallSideEffect                          : ~m?
+#  103|     v103_12(void)                        = ^IndirectReadSideEffect[-1]              : &:r103_1, ~m?
+#  103|     mu103_13(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]          : &:r103_1
+#  103|     r103_14(int)                         = Convert                                  : r103_10
+#  103|     r103_15(int)                         = Constant[5]                              : 
+#  103|     r103_16(int)                         = Add                                      : r103_14, r103_15
+#  103|     r103_17(glval<ClassWithDestructor2>) = CopyValue                                : r103_1
+#  103|     r103_18(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2]   : 
+#  103|     v103_19(void)                        = Call[~ClassWithDestructor2]              : func:r103_18, this:r103_17
+#  103|     mu103_20(unknown)                    = ^CallSideEffect                          : ~m?
+#  103|     v103_21(void)                        = ^IndirectReadSideEffect[-1]              : &:r103_17, ~m?
+#  103|     mu103_22(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]          : &:r103_17
+#  104|     v104_1(void)                         = NoOp                                     : 
+#  102|     v102_6(void)                         = ReturnVoid                               : 
+#  102|     v102_7(void)                         = AliasedUse                               : ~m?
+#  102|     v102_8(void)                         = ExitFunction                             : 
+
 ir.c:
 #    7| void MyCoordsTest(int)
 #    7|   Block 0

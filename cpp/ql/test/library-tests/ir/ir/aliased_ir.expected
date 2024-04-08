@@ -1544,6 +1544,47 @@ destructors_for_temps.cpp:
 #   94|     v94_6(void)                         = AliasedUse                                : ~m99_28
 #   94|     v94_7(void)                         = ExitFunction                              : 
 
+#  102| void temp_test12(ClassWithDestructor3)
+#  102|   Block 0
+#  102|     v102_1(void)                         = EnterFunction                            : 
+#  102|     m102_2(unknown)                      = AliasedDefinition                        : 
+#  102|     m102_3(unknown)                      = InitializeNonLocal                       : 
+#  102|     m102_4(unknown)                      = Chi                                      : total:m102_2, partial:m102_3
+#  102|     r102_5(glval<ClassWithDestructor3>)  = VariableAddress[x]                       : 
+#  102|     m102_6(ClassWithDestructor3)         = InitializeParameter[x]                   : &:r102_5
+#  103|     r103_1(glval<ClassWithDestructor2>)  = VariableAddress[#temp103:5]              : 
+#  103|     r103_2(glval<ClassWithDestructor3>)  = VariableAddress[x]                       : 
+#  103|     r103_3(glval<unknown>)               = FunctionAddress[getClassWithDestructor2] : 
+#  103|     r103_4(ClassWithDestructor2)         = Call[getClassWithDestructor2]            : func:r103_3, this:r103_2
+#  103|     m103_5(unknown)                      = ^CallSideEffect                          : ~m102_4
+#  103|     m103_6(unknown)                      = Chi                                      : total:m102_4, partial:m103_5
+#  103|     v103_7(void)                         = ^IndirectReadSideEffect[-1]              : &:r103_2, m102_6
+#  103|     m103_8(ClassWithDestructor3)         = ^IndirectMayWriteSideEffect[-1]          : &:r103_2
+#  103|     m103_9(ClassWithDestructor3)         = Chi                                      : total:m102_6, partial:m103_8
+#  103|     m103_10(ClassWithDestructor2)        = Store[#temp103:5]                        : &:r103_1, r103_4
+#  103|     r103_11(glval<unknown>)              = FunctionAddress[get_x]                   : 
+#  103|     r103_12(char)                        = Call[get_x]                              : func:r103_11, this:r103_1
+#  103|     m103_13(unknown)                     = ^CallSideEffect                          : ~m103_6
+#  103|     m103_14(unknown)                     = Chi                                      : total:m103_6, partial:m103_13
+#  103|     v103_15(void)                        = ^IndirectReadSideEffect[-1]              : &:r103_1, m103_10
+#  103|     m103_16(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]          : &:r103_1
+#  103|     m103_17(ClassWithDestructor2)        = Chi                                      : total:m103_10, partial:m103_16
+#  103|     r103_18(int)                         = Convert                                  : r103_12
+#  103|     r103_19(int)                         = Constant[5]                              : 
+#  103|     r103_20(int)                         = Add                                      : r103_18, r103_19
+#  103|     r103_21(glval<ClassWithDestructor2>) = CopyValue                                : r103_1
+#  103|     r103_22(glval<unknown>)              = FunctionAddress[~ClassWithDestructor2]   : 
+#  103|     v103_23(void)                        = Call[~ClassWithDestructor2]              : func:r103_22, this:r103_21
+#  103|     m103_24(unknown)                     = ^CallSideEffect                          : ~m103_14
+#  103|     m103_25(unknown)                     = Chi                                      : total:m103_14, partial:m103_24
+#  103|     v103_26(void)                        = ^IndirectReadSideEffect[-1]              : &:r103_21, m103_17
+#  103|     m103_27(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]          : &:r103_21
+#  103|     m103_28(ClassWithDestructor2)        = Chi                                      : total:m103_17, partial:m103_27
+#  104|     v104_1(void)                         = NoOp                                     : 
+#  102|     v102_7(void)                         = ReturnVoid                               : 
+#  102|     v102_8(void)                         = AliasedUse                               : ~m103_25
+#  102|     v102_9(void)                         = ExitFunction                             : 
+
 ir.c:
 #    7| void MyCoordsTest(int)
 #    7|   Block 0
