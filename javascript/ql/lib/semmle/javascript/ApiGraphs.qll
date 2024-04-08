@@ -241,15 +241,23 @@ module API {
     }
 
     /**
-     * Gets a node representing an instance of this API component, that is, an object whose
-     * constructor is the function represented by this node.
+     * Gets a node representing an instance of the class represented by this node.
+     * This includes instances of subclasses.
      *
-     * For example, if this node represents a use of some class `A`, then there might be a node
-     * representing instances of `A`, typically corresponding to expressions `new A()` at the
-     * source level.
+     * For example:
+     * ```js
+     * import { C } from "foo";
      *
-     * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
-     * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
+     * new C(); // API::moduleImport("foo").getMember("C").getInstance()
+     *
+     * class D extends C {
+     *   m() {
+     *     this; // API::moduleImport("foo").getMember("C").getInstance()
+     *  }
+     * }
+     *
+     * new D(); // API::moduleImport("foo").getMember("C").getInstance()
+     * ```
      */
     cached
     Node getInstance() {
