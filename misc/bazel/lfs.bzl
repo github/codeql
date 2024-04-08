@@ -1,13 +1,13 @@
 def lfs_smudge(repository_ctx, srcs):
     for src in srcs:
         repository_ctx.watch(src)
-    script = Label("//misc/bazel/internal:git_lfs_checkout.py")
+    script = Label("//misc/bazel/internal:git_lfs_smudge.py")
     python = repository_ctx.which("python3") or repository_ctx.which("python")
     if not python:
         fail("Neither python3 nor python executables found")
     res = repository_ctx.execute([python, script] + srcs, quiet = False)
     if res.return_code != 0:
-        fail("git LFS checkout failed while instantiating @%s:\n%s" % (repository_ctx.name, res.stderr))
+        fail("git LFS smudging failed while instantiating @%s:\n%s" % (repository_ctx.name, res.stderr))
 
 def _download_and_extract_lfs(repository_ctx):
     attr = repository_ctx.attr
