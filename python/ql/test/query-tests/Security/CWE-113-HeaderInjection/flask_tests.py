@@ -66,5 +66,27 @@ def flask_escaped():
     resp = make_response("hello", {rfs_header.replace("\n", ""): "HeaderValue"}) # GOOD - Newlines are removed from the input.
     return resp
 
+@app.route("/werkzeug_methods")
+def werkzeug_methods():
+    rfs_header = request.args["rfs_header"]
+    response = Response()
+    headers = Headers()
+    headers.add(rfs_header, "HeaderValue") # BAD
+    headers.add_header(rfs_header, "HeaderValue") # BAD
+    headers.set(rfs_header, "HeaderValue") # BAD
+    headers.setdefault(rfs_header, "HeaderValue") # BAD
+    headers.__setitem__(rfs_header, "HeaderValue") # BAD
+    headers[rfs_header] = "HeaderValue" # BAD
+    h1 = {rfs_header: "HeaderValue"}
+    headers.extend(h1) # BAD
+    h2 = [(rfs_header, "HeaderValue")]
+    headers.extend(h2) # BAD
+    response.headers = headers 
+    h3 = {rfs_header: "HeaderValue"}
+    h4 = [(rfs_header, "HeaderValue")]
+    resp2 = make_response("hi", h3) # BAD
+    resp3 = make_response("hi", h4) # BAD
+    return response
+
 # if __name__ == "__main__":
 #     app.run(debug=True)
