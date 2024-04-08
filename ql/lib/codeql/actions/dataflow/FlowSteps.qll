@@ -6,6 +6,8 @@ private import actions
 private import codeql.util.Unit
 private import codeql.actions.DataFlow
 private import codeql.actions.dataflow.ExternalFlow
+private import codeql.actions.Ast::Utils as Utils
+private import codeql.actions.security.ArtifactPoisoningQuery
 
 /**
  * A unit class for adding additional taint steps.
@@ -40,12 +42,25 @@ predicate envToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlo
     exists(string script, string line |
       script = run.getScript() and
       line = script.splitAt("\n") and
-      (
-        output = line.regexpCapture(".*::set-output\\s+name=(.*)::.*", 1) or
-        output = line.regexpCapture(".*echo\\s*\"(.*)=.*\\s*>>\\s*(\")?\\$GITHUB_OUTPUT.*", 1)
-      ) and
+      Utils::extractAssignment(line, "OUTPUT", output, _) and
       line.indexOf("$" + ["", "{", "ENV{"] + varName) > 0
     ) and
     succ.asExpr() = run
+  )
+}
+
+/**
+ * A downloaded artifact that gets assigned to a Run step output.
+ * - uses: actions/download-artifact@v2
+ * - run: echo "::set-output name=id::$(<pr-id.txt)"
+ */
+predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, DataFlow::ContentSet c) {
+  exists(Run run, string key, string value, ArtifactDownloadStep download |
+    c = any(DataFlow::FieldContent ct | ct.getName() = key) and
+    download.getAFollowingStep() = run and
+    pred.asExpr() = download and
+    succ.asExpr() = run and
+    Utils::writeToGitHubOutput(run, key, value) and
+    value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
   )
 }

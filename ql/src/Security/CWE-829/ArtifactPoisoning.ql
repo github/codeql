@@ -14,13 +14,10 @@
 import actions
 import codeql.actions.security.ArtifactPoisoningQuery
 
-from LocalJob job, ArtifactDownloadStep download, Step run
+from LocalJob job, ArtifactDownloadStep downloadStep, PoisonableStep step
 where
+  // Workflow is privileged
   job.getWorkflow().isPrivileged() and
-  (run instanceof Run or run instanceof UsesStep) and
-  exists(int i, int j |
-    job.getStep(i) = download and
-    job.getStep(j) = run and
-    i < j
-  )
-select download, "Potential artifact poisoning."
+  // Download step is followed by a step that may be poisoned by the download
+  downloadStep.getAFollowingStep() = step
+select downloadStep, "Potential artifact poisoning."

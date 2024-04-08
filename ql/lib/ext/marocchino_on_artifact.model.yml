@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sourceModel
+    data:
+      - ["marocchino/on_artifact", "*", "output.*", "Downloaded artifact"]

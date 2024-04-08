@@ -329,7 +329,9 @@ sources
 | jitterbit/get-changed-files | * | output.removed | PR changed files |
 | jitterbit/get-changed-files | * | output.renamed | PR changed files |
 | khan/pull-request-comment-trigger | * | output.comment_body | Comment body |
+| marocchino/on_artifact | * | output.* | Downloaded artifact |
 | octo-org/source-repo/.github/workflows/workflow.yml | * | output.workflow-output | Foo |
+| redhat-plumbers-in-action/download-artifact | * | output.* | Downloaded artifact |
 | tj-actions/branch-names | * | output.current_branch | PR current branch |
 | tj-actions/branch-names | * | output.head_ref_branch | PR head branch |
 | tj-actions/branch-names | * | output.ref_branch | Branch tirggering workflow run |
@@ -351,6 +353,10 @@ sources
 | tj-actions/changed-files | * | output.unknown_files | PR changed files |
 | tj-actions/changed-files | * | output.unmerged_files | PR changed files |
 | tj-actions/verify-changed-files | * | output.changed-files | PR changed files |
+| trilom/file-changes-action | * | output.files | PR changed files |
+| trilom/file-changes-action | * | output.files_added | PR changed files |
+| trilom/file-changes-action | * | output.files_modified | PR changed files |
+| trilom/file-changes-action | * | output.files_removed | PR changed files |
 | tzkhan/pr-update-action | * | output.headMatch |  |
 | xt0rted/slash-command-action | * | output.command-arguments |  |
 summaries
@@ -421,3 +427,17 @@ testNormalizeExpr
 | github.event.pull_request.user["login"] | github.event.pull_request.user.login |
 | github.event.pull_request.user['login'] | github.event.pull_request.user.login |
 | github.event.pull_request['user']['login'] | github.event.pull_request.user.login |
+writeToGitHubEnv
+| id1 | $(<pr-id1.txt) |
+| id2 | $(<pr-id2.txt) |
+| id3 | $(<pr-id3.txt) |
+| sha1 | $(<test-results1/sha-number) |
+| sha2 | $(<test-results2/sha-number) |
+| sha3 | $(<test-results3/sha-number) |
+writeToGitHubOutput
+| id1 | $(<pr-id1.txt) |
+| id2 | $(<pr-id2.txt) |
+| id3 | $(<pr-id3.txt) |
+| sha1 | $(<test-results1/sha-number) |
+| sha2 | $(<test-results2/sha-number) |
+| sha3 | $(<test-results3/sha-number) |

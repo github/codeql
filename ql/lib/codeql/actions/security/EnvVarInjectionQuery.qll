@@ -8,8 +8,8 @@ predicate writeToGithubEnvSink(DataFlow::Node exprNode, string key, string value
   exists(Expression expr, Run run, string script, string line |
     script = run.getScript() and
     line = script.splitAt("\n") and
-    key = line.regexpCapture("echo\\s+([^=]+)\\s*=(.*)>>\\s*\\$GITHUB_ENV", 1) and
-    value = line.regexpCapture("echo\\s+([^=]+)\\s*=(.*)>>\\s*\\$GITHUB_ENV", 2) and
+    key = line.regexpCapture("echo\\s+(\")?([^=]+)\\s*=(.*)(\")?\\s*>>\\s*\\$GITHUB_ENV", 2) and
+    value = line.regexpCapture("echo\\s+(\")?([^=]+)\\s*=(.*)(\")?\\s*>>\\s*\\$GITHUB_ENV", 3) and
     expr = exprNode.asExpr() and
     run.getAnScriptExpr() = expr and
     value.indexOf(expr.getRawExpression()) > 0

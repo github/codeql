@@ -16,10 +16,10 @@ jobs:
           do
             IFS=$'\t' read name url <<< "$artifact"
             gh api $url > "$name.zip"
-            unzip -d "$name" "$name.zip"
+            unzip -d "foo" "$name.zip"
           done
       - name: Run command
-        run: cmd
+        run: ./foo/cmd
 
 
 

@@ -69,3 +69,32 @@ query string testNormalizeExpr(string s) {
     ] and
   result = Utils::normalizeExpr(s)
 }
+
+query predicate writeToGitHubEnv(string key, string value) {
+  exists(string t |
+    t =
+      [
+        "echo \"::set-env name=id1::$(<pr-id1.txt)\"", "echo '::set-env name=id2::$(<pr-id2.txt)'",
+        "echo ::set-env name=id3::$(<pr-id3.txt)",
+        "echo \"sha1=$(<test-results1/sha-number)\" >> $GITHUB_ENV",
+        "echo 'sha2=$(<test-results2/sha-number)' >> $GITHUB_ENV",
+        "echo sha3=$(<test-results3/sha-number) >> $GITHUB_ENV",
+      ] and
+    Utils::extractAssignment(t, "ENV", key, value)
+  )
+}
+
+query predicate writeToGitHubOutput(string key, string value) {
+  exists(string t |
+    t =
+      [
+        "echo \"::set-output name=id1::$(<pr-id1.txt)\"",
+        "echo '::set-output name=id2::$(<pr-id2.txt)'",
+        "echo ::set-output name=id3::$(<pr-id3.txt)",
+        "echo \"sha1=$(<test-results1/sha-number)\" >> $GITHUB_OUTPUT",
+        "echo 'sha2=$(<test-results2/sha-number)' >> $GITHUB_OUTPUT",
+        "echo sha3=$(<test-results3/sha-number) >> $GITHUB_OUTPUT",
+      ] and
+    Utils::extractAssignment(t, "OUTPUT", key, value)
+  )
+}

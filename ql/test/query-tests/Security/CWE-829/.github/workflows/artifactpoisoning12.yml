@@ -27,8 +27,14 @@ jobs:
                 artifact_id: matchArtifact.id,
                 archive_format: 'zip',
             });
+            let fs = require('fs');
+            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/sonarcloud-data.zip`, Buffer.from(download.data)); 
+      - name: Unzip
+        run: |
+          unzip sonarcloud-data.zip
+          ls -a sonarcloud-data
       - name: Run command
-        run: cmd
-
+        run: 
+          ./x.py build -j$(nproc) --compiler gcc --skip-build
 
 
