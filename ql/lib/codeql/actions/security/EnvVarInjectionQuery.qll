@@ -2,23 +2,38 @@ private import actions
 private import codeql.actions.TaintTracking
 private import codeql.actions.dataflow.ExternalFlow
 import codeql.actions.dataflow.FlowSources
+private import codeql.actions.security.ArtifactPoisoningQuery
 import codeql.actions.DataFlow
 
-predicate writeToGithubEnvSink(DataFlow::Node exprNode, string key, string value) {
-  exists(Expression expr, Run run, string script, string line |
-    script = run.getScript() and
-    line = script.splitAt("\n") and
-    key = line.regexpCapture("echo\\s+(\")?([^=]+)\\s*=(.*)(\")?\\s*>>\\s*\\$GITHUB_ENV", 2) and
-    value = line.regexpCapture("echo\\s+(\")?([^=]+)\\s*=(.*)(\")?\\s*>>\\s*\\$GITHUB_ENV", 3) and
-    expr = exprNode.asExpr() and
-    run.getAnScriptExpr() = expr and
-    value.indexOf(expr.getRawExpression()) > 0
-  )
+class EnvVarInjectionFromExprSink extends DataFlow::Node {
+  EnvVarInjectionFromExprSink() {
+    exists(Expression expr, Run run, string script, string line, string key, string value |
+      script = run.getScript() and
+      line = script.splitAt("\n") and
+      Utils::extractAssignment(line, "ENV", key, value) and
+      expr = this.asExpr() and
+      run.getAnScriptExpr() = expr and
+      value.indexOf(expr.getRawExpression()) > 0
+    )
+  }
+}
+
+class EnvVarInjectionFromFileSink extends DataFlow::Node {
+  EnvVarInjectionFromFileSink() {
+    exists(Run run, ArtifactDownloadStep step, string value |
+      this.asExpr() = run and
+      step.getAFollowingStep() = run and
+      Utils::writeToGitHubEnv(run, _, value) and
+      // TODO: add support for other commands like `<`, `jq`, ...
+      value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
+    )
+  }
 }
 
 private class EnvVarInjectionSink extends DataFlow::Node {
   EnvVarInjectionSink() {
-    writeToGithubEnvSink(this, _, _) or
+    this instanceof EnvVarInjectionFromExprSink or
+    this instanceof EnvVarInjectionFromFileSink or
     externallyDefinedSink(this, "envvar-injection")
   }
 }

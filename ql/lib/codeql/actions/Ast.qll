@@ -34,7 +34,7 @@ module Utils {
               .regexpReplaceAll("^'", "")
               .regexpReplaceAll("'$", "") or
         assignment =
-          line.regexpCapture("(echo|Write-Output)\\s+([^'\"]*)\\s*>>\\s*(\"|')?\\$GITHUB_" +
+          line.regexpCapture("(echo|Write-Output)\\s+(.*)\\s*>>\\s*(\"|')?\\$GITHUB_" +
               var.toUpperCase() + "(\"|')?", 2)
       ) and
       key = assignment.splitAt("=", 0).trim() and

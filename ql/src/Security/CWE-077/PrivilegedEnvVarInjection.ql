@@ -25,4 +25,4 @@ where
   )
 select sink.getNode(), source, sink,
   "Potential privileged environment variable injection in $@, which may be controlled by an external user.",
-  sink, sink.getNode().asExpr().(Expression).getRawExpression()
+  sink, sink.getNode().toString()
