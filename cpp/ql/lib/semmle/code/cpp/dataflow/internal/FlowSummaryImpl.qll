@@ -193,7 +193,6 @@ module SourceSinkInterpretationInput implements
       c = "" and
       n.asExpr().(VariableAccess).getTarget() = ast
     )
-    // TODO: source fields?
   }
 
   /** Provides additional source specification logic. */
@@ -204,11 +203,6 @@ module SourceSinkInterpretationInput implements
       ast = mid.asElement() and
       e.getTarget() = ast
     |
-      // Allow fields to be picked as input nodes.
-      // TODO: this has no test cases.
-      c = "" and
-      e.getQualifier() = n.asExpr()
-      or
       // Allow variables to be picked as input nodes.
       // We could simply do this as `e = n.asExpr()`, but that would not allow
       // us to pick `x` as a sink in an example such as `x = source()` (but
@@ -222,12 +216,6 @@ module SourceSinkInterpretationInput implements
         store.getDestinationAddress().getUnconvertedResultExpression() = e and
         n.asInstruction() = store
       )
-      or
-      // Allow post update nodes to be picked as input nodes when the `input` column
-      // of the row is `PostUpdate`.
-      // TODO: this has no test cases.
-      c = "PostUpdate" and
-      e.getQualifier() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 }
