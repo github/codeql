@@ -1085,7 +1085,7 @@ module Http {
     }
 
     /**
-     * A data-flow node that sets multiple headers in an HTTP response using a dict.
+     * A data-flow node that sets multiple headers in an HTTP response using a dict or a list of tuples.
      *
      * Extend this class to model new APIs. If you want to refine existing API models,
      * extend `ResponseHeaderBulkWrite::Range` instead.

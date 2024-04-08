@@ -57,11 +57,40 @@ module HttpHeaderInjection {
   {
     KeyValuePair item;
 
-    HeaderBulkWriteDictLiteral() { item = super.geBulkArg().asExpr().(Dict).getAnItem() }
+    HeaderBulkWriteDictLiteral() {
+      exists(Dict dict | DataFlow::localFlow(DataFlow::exprNode(dict), super.geBulkArg()) |
+        item = dict.getAnItem()
+      )
+    }
 
     override DataFlow::Node getNameArg() { result.asExpr() = item.getKey() }
 
     override DataFlow::Node getValueArg() { result.asExpr() = item.getValue() }
+
+    override predicate nameAllowsNewline() {
+      Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
+    }
+
+    override predicate valueAllowsNewline() {
+      Http::Server::ResponseHeaderBulkWrite.super.valueAllowsNewline()
+    }
+  }
+
+  /** A tuple in a list for a bulk header update, considered as a single header update. */
+  // TODO: We could instead consider bulk writes as sinks with implicit read steps as needed.
+  private class HeaderBulkWriteListLiteral extends Http::Server::ResponseHeaderWrite::Range instanceof Http::Server::ResponseHeaderBulkWrite
+  {
+    Tuple item;
+
+    HeaderBulkWriteListLiteral() {
+      exists(List list | DataFlow::localFlow(DataFlow::exprNode(list), super.geBulkArg()) |
+        item = list.getAnElt()
+      )
+    }
+
+    override DataFlow::Node getNameArg() { result.asExpr() = item.getElt(0) }
+
+    override DataFlow::Node getValueArg() { result.asExpr() = item.getElt(1) }
 
     override predicate nameAllowsNewline() {
       Http::Server::ResponseHeaderBulkWrite.super.nameAllowsNewline()
