@@ -1034,7 +1034,7 @@ class DataFlowCallable extends TDataFlowCallable {
  * A source callable, conceptually, a function in the source code for the
  * purpose of computing data flow. In practice this excludes functions that
  * are summarized using models-as-data (as we don't want to create
- * unmodelled flows or duplicate paths), and includes variables (for reasons
+ * unmodeled flows or duplicate paths), and includes variables (for reasons
  * explained in `DataFlowCallable`).
  */
 private class SourceCallable extends DataFlowCallable, TSourceCallable {
@@ -1298,7 +1298,7 @@ predicate allowParameterReturnInSelf(ParameterNode p) {
   or
   // models-as-data summarized flow
   exists(DataFlowCallable c, ParameterPosition pos |
-    p.(ParameterNode).isParameterOf(c, pos) and
+    p.isParameterOf(c, pos) and
     FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(c.asSummarizedCallable(), pos)
   )
 }
