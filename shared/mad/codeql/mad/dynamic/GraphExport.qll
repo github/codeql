@@ -121,6 +121,12 @@ module GraphExport<
     exposedEdge(result, path, node)
   }
 
+  private predicate hasPrettyName(RelevantNode node) {
+    exposedName(node, _, "")
+    or
+    suggestedName(node, _)
+  }
+
   private predicate nodeMustBeNamed(RelevantNode node) {
     exposedName(node, _, "")
     or
@@ -143,8 +149,7 @@ module GraphExport<
         prefix
       )
     or
-    not exposedName(node, _, _) and
-    not suggestedName(node, _) and
+    not hasPrettyName(node) and
     result = getAPrefixTypeName(getAPredecessor(node, _))
   }
 
@@ -153,8 +158,7 @@ module GraphExport<
    */
   private predicate isSyntheticallyNamedNode(RelevantNode node, string prefix) {
     nodeMustBeNamed(node) and
-    not exposedName(node, _, "") and
-    not suggestedName(node, _) and
+    not hasPrettyName(node) and
     prefix = min(getAPrefixTypeName(node))
   }
 
