@@ -124,6 +124,33 @@ class NamedElement extends Element, @named_element {
     )
   }
 
+  /**
+   * INTERNAL: Do not use.
+   *
+   * This is intended for DEBUG ONLY.
+   * Constructing the fully qualified name for all elements in a large codebase
+   * puts severe stress on the string pool.
+   *
+   * Gets the fully qualified name of this element, for example the
+   * fully qualified name of `M` on line 3 is `N.C.M` in
+   *
+   * ```csharp
+   * namespace N {
+   *   class C {
+   *     void M(int i, string s) { }
+   *   }
+   * }
+   * ```
+   *
+   * Unbound generic types, such as `IList<T>`, are represented as
+   * ``System.Collections.Generic.IList`1``.
+   */
+  final string getFullyQualifiedNameDebug() {
+    exists(string qualifier, string name | this.hasFullyQualifiedName(qualifier, name) |
+      if qualifier = "" then result = name else result = qualifier + "." + name
+    )
+  }
+
   /** Holds if this element has the fully qualified name `qualifier`.`name`. */
   cached
   predicate hasFullyQualifiedName(string qualifier, string name) {
