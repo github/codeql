@@ -23,11 +23,11 @@ def test_app2(environ, start_response):
     return [b"Hello"]
 
 def main1():
-    with make_server('', 8000, validate(test_app)) as httpd:
+    with make_server('', 8000, validator(test_app)) as httpd:
         print("Serving on port 8000...")
         httpd.serve_forever()
 
 def main2():
-    with make_server('', 8000, validate(test_app2)) as httpd:
+    with make_server('', 8000, validator(test_app2)) as httpd:
         print("Serving on port 8000...")
         httpd.serve_forever()
