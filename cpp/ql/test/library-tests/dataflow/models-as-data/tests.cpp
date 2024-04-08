@@ -43,7 +43,21 @@ void test_sources() {
 	sink(notASource());
 	sink(localMadSourceVoid()); // $ ir
 	sink(localMadSourceHasBody()); // $ ir
+
+	sink(sourceIndirect()); // $ SPURIOUS: ir
+	sink(*sourceIndirect()); // $ ir
+
+	int v = localMadSource();
+	int *v_indirect = &v;
+	int v_direct = *v_indirect;
+	sink(v); // $ ir
+	sink(v_indirect); // $ SPURIOUS: ir
+	sink(*v_indirect); // $ ir
+	sink(v_direct); // $ ir
+
+	sink(remoteMadSourceIndirect());
 	sink(*remoteMadSourceIndirect()); // $ MISSING: ir
+	sink(*remoteMadSourceDoubleIndirect());
 	sink(**remoteMadSourceDoubleIndirect()); // $ MISSING: ir
 
 	int a, b, c, d;
