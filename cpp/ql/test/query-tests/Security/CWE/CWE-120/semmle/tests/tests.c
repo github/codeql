@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 		char* argv1 = argv[1];
 		char buffer_with_tainted_char[4] = {0};
 		buffer_with_tainted_char[0] = *argv1;
-		sprintf(buffer100, buffer_with_tainted_char); // GOOD [FALSE POSITIVE]: Only a single character in buffer_with_tainted_char is tainted
+		sprintf(buffer100, buffer_with_tainted_char); // GOOD: Only a single character in buffer_with_tainted_char is tainted
 	}
 
 	// Test cases for BadlyBoundedWrite.ql
