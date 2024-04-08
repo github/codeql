@@ -14362,6 +14362,63 @@ ir.cpp:
 # 2410|     v2410_5(void) = AliasedUse   : ~m?
 # 2410|     v2410_6(void) = ExitFunction : 
 
+# 2434| void param_with_destructor_by_value(ClassWithDestructor)
+# 2434|   Block 0
+# 2434|     v2434_1(void)                       = EnterFunction          : 
+# 2434|     mu2434_2(unknown)                   = AliasedDefinition      : 
+# 2434|     mu2434_3(unknown)                   = InitializeNonLocal     : 
+# 2434|     r2434_4(glval<ClassWithDestructor>) = VariableAddress[c]     : 
+# 2434|     mu2434_5(ClassWithDestructor)       = InitializeParameter[c] : &:r2434_4
+# 2436|     v2436_1(void)                       = NoOp                   : 
+# 2434|     v2434_6(void)                       = ReturnVoid             : 
+# 2434|     v2434_7(void)                       = AliasedUse             : ~m?
+# 2434|     v2434_8(void)                       = ExitFunction           : 
+
+# 2438| void param_with_destructor_by_pointer(ClassWithDestructor*)
+# 2438|   Block 0
+# 2438|     v2438_1(void)                         = EnterFunction            : 
+# 2438|     mu2438_2(unknown)                     = AliasedDefinition        : 
+# 2438|     mu2438_3(unknown)                     = InitializeNonLocal       : 
+# 2438|     r2438_4(glval<ClassWithDestructor *>) = VariableAddress[c]       : 
+# 2438|     mu2438_5(ClassWithDestructor *)       = InitializeParameter[c]   : &:r2438_4
+# 2438|     r2438_6(ClassWithDestructor *)        = Load[c]                  : &:r2438_4, ~m?
+# 2438|     mu2438_7(unknown)                     = InitializeIndirection[c] : &:r2438_6
+# 2440|     v2440_1(void)                         = NoOp                     : 
+# 2438|     v2438_8(void)                         = ReturnIndirection[c]     : &:r2438_6, ~m?
+# 2438|     v2438_9(void)                         = ReturnVoid               : 
+# 2438|     v2438_10(void)                        = AliasedUse               : ~m?
+# 2438|     v2438_11(void)                        = ExitFunction             : 
+
+# 2442| void param_with_destructor_by_ref(ClassWithDestructor&)
+# 2442|   Block 0
+# 2442|     v2442_1(void)                         = EnterFunction            : 
+# 2442|     mu2442_2(unknown)                     = AliasedDefinition        : 
+# 2442|     mu2442_3(unknown)                     = InitializeNonLocal       : 
+# 2442|     r2442_4(glval<ClassWithDestructor &>) = VariableAddress[c]       : 
+# 2442|     mu2442_5(ClassWithDestructor &)       = InitializeParameter[c]   : &:r2442_4
+# 2442|     r2442_6(ClassWithDestructor &)        = Load[c]                  : &:r2442_4, ~m?
+# 2442|     mu2442_7(unknown)                     = InitializeIndirection[c] : &:r2442_6
+# 2444|     v2444_1(void)                         = NoOp                     : 
+# 2442|     v2442_8(void)                         = ReturnIndirection[c]     : &:r2442_6, ~m?
+# 2442|     v2442_9(void)                         = ReturnVoid               : 
+# 2442|     v2442_10(void)                        = AliasedUse               : ~m?
+# 2442|     v2442_11(void)                        = ExitFunction             : 
+
+# 2446| void param_with_destructor_by_rref(ClassWithDestructor&&)
+# 2446|   Block 0
+# 2446|     v2446_1(void)                          = EnterFunction            : 
+# 2446|     mu2446_2(unknown)                      = AliasedDefinition        : 
+# 2446|     mu2446_3(unknown)                      = InitializeNonLocal       : 
+# 2446|     r2446_4(glval<ClassWithDestructor &&>) = VariableAddress[c]       : 
+# 2446|     mu2446_5(ClassWithDestructor &&)       = InitializeParameter[c]   : &:r2446_4
+# 2446|     r2446_6(ClassWithDestructor &&)        = Load[c]                  : &:r2446_4, ~m?
+# 2446|     mu2446_7(unknown)                      = InitializeIndirection[c] : &:r2446_6
+# 2448|     v2448_1(void)                          = NoOp                     : 
+# 2446|     v2446_8(void)                          = ReturnIndirection[c]     : &:r2446_6, ~m?
+# 2446|     v2446_9(void)                          = ReturnVoid               : 
+# 2446|     v2446_10(void)                         = AliasedUse               : ~m?
+# 2446|     v2446_11(void)                         = ExitFunction             : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
