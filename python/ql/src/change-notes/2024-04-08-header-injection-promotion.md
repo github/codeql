@@ -1,0 +1,4 @@
+---
+category: newQuery
+---
+* The `py/header-injection` query, originally contributed to the experimental query pack by @jorgectf, has been promoted to the main query pack. This query finds instances of http header injection / response splitting vulnerabilities.
