@@ -7,7 +7,7 @@ def lfs_smudge(repository_ctx, srcs):
         fail("Neither python3 nor python executables found")
     res = repository_ctx.execute([python, script] + srcs, quiet = False)
     if res.return_code != 0:
-        fail("git LFS smudging failed while instantiating @%s" % repository_ctx.name)
+        fail("git LFS smudging failed while instantiating @%s:\n%s" % (repository_ctx.name, res.stderr))
 
 def _download_and_extract_lfs(repository_ctx):
     attr = repository_ctx.attr
