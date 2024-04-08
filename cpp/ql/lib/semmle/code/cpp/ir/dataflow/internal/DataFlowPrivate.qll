@@ -385,7 +385,8 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
 }
 
 /**
- * An argument node that is part of a summary.
+ * An argument node that is part of a summary. These only occur when the
+ * summary contains a synthesized call.
  */
 class SummaryArgumentNode extends ArgumentNode, FlowSummaryNode {
   private SummaryCall call_;
@@ -1127,7 +1128,7 @@ class DataFlowCall extends TDataFlowCall {
 }
 
 /**
- * TODO: QLDoc.
+ * A function call relevant for data flow, that exists in source code.
  */
 private class NormalCall extends DataFlowCall, TNormalCall {
   private CallInstruction call;
