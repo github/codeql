@@ -65,7 +65,9 @@ signature predicate shouldContainTypeSig(string type);
  * Notice that the access path `Member[blah].Member[z]` consists of an access path generated from the API
  * graph, with pieces of the access path from the original type model appended to it.
  */
-module TypeGraphExport<GraphExportSig<API::Node> S, shouldContainTypeSig/1 shouldContainType> {
+module TypeGraphExport<
+  GraphExportSig<Specific::Location, API::Node> S, shouldContainTypeSig/1 shouldContainType>
+{
   /** Like `shouldContainType` but includes types that lead to `type` via type models. */
   private predicate shouldContainTypeEx(string type) {
     shouldContainType(type)
@@ -76,7 +78,7 @@ module TypeGraphExport<GraphExportSig<API::Node> S, shouldContainTypeSig/1 shoul
     )
   }
 
-  private module Config implements GraphExportSig<API::Node> {
+  private module Config implements GraphExportSig<Specific::Location, API::Node> {
     import S
 
     predicate shouldContain(API::Node node) {
@@ -93,7 +95,7 @@ module TypeGraphExport<GraphExportSig<API::Node> S, shouldContainTypeSig/1 shoul
     }
   }
 
-  private module ExportedGraph = GraphExport<API::Node, Config>;
+  private module ExportedGraph = GraphExport<Specific::Location, API::Node, Config>;
 
   import ExportedGraph
 

@@ -2,6 +2,8 @@
  * Contains predicates for converting an arbitrary graph to a set of `typeModel` rows.
  */
 
+private import codeql.util.Location
+
 /**
  * Concatenates two access paths, separating them by `.` unless one of them is empty.
  */
@@ -10,21 +12,20 @@ string join(string x, string y) {
   if x = "" or y = "" then result = x + y else result = x + "." + y
 }
 
-signature class NodeSig {
-  /**
-   * Holds if this node is located in file `path` between line `startline`, column `startcol`,
-   * and line `endline`, column `endcol`.
-   */
-  predicate hasLocationInfo(string path, int startline, int startcol, int endline, int endcol);
+private module WithLocation<LocationSig Location> {
+  signature class NodeSig {
+    /** Gets the location of this node if it has one. */
+    Location getLocation();
 
-  /** Gets a string representation of this node. */
-  string toString();
+    /** Gets a string representation of this node. */
+    string toString();
+  }
 }
 
 /**
  * Specifies a graph to export in `GraphExport`.
  */
-signature module GraphExportSig<NodeSig Node> {
+signature module GraphExportSig<LocationSig Location, WithLocation<Location>::NodeSig Node> {
   /**
    * Holds if an edge `pred -> succ` exist with the access path `path`.
    */
@@ -81,7 +82,9 @@ signature module GraphExportSig<NodeSig Node> {
 /**
  * Module for exporting an arbitrary graph as models-as-data rows.
  */
-module GraphExport<NodeSig Node, GraphExportSig<Node> S> {
+module GraphExport<
+  LocationSig Location, WithLocation<Location>::NodeSig Node, GraphExportSig<Location, Node> S>
+{
   private import S
 
   private Node getAnExposedNode() {
@@ -163,9 +166,10 @@ module GraphExport<NodeSig Node, GraphExportSig<Node> S> {
       node =
         rank[k](RelevantNode n, string path, int startline, int startcol, int endline, int endcol |
           isSyntheticallyNamedNode(n, prefixTypeName) and
-          n.hasLocationInfo(path, startline, startcol, endline, endcol)
+          n.getLocation().hasLocationInfo(path, startline, startcol, endline, endcol)
         |
           // Use location information for an arbitrary ordering
+          // TODO: improve support for nodes without a location, currently they can cause FNs
           n order by path, startline, startcol, endline, endcol
         ) and
       result = prefixTypeName + "~expr" + k

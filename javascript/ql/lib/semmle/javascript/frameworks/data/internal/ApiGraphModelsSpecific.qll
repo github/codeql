@@ -27,6 +27,8 @@ module API = JS::API;
 
 import JS::DataFlow as DataFlow
 
+class Location = JS::Location;
+
 /**
  * Holds if `rawType` represents the JavaScript type `qualifiedName` from the given NPM `package`.
  *

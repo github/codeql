@@ -88,7 +88,7 @@ module ModelExport<ModelExportSig S> {
   private import codeql.mad.dynamic.GraphExport
   private import internal.ApiGraphModelsExport
 
-  private module GraphExportConfig implements GraphExportSig<API::Node> {
+  private module GraphExportConfig implements GraphExportSig<Location, API::Node> {
     predicate edge = Specific::apiGraphHasEdge/3;
 
     predicate shouldContain = S::shouldContain/1;
