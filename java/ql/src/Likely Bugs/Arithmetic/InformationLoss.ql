@@ -45,5 +45,5 @@ where
     v = a.getDest()
   )
 select a,
-  "Implicit cast of $@ to narrower destination type " + a.getDest().getType().getName() + ".", v,
-  "source type " + e.getType().getName()
+  "Implicit cast of source type " + e.getType().getName() + " to narrower destination type $@.", v,
+  a.getDest().getType().getName()
