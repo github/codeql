@@ -490,7 +490,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .SelectMany(GetFeeds)
                 .Where(str => !string.IsNullOrWhiteSpace(str))
                 .ToHashSet();
-            logger.LogInfo($"Found Nuget feeds in nuget.config files: {string.Join(", ", feeds.OrderBy(f => f))}");
+
+            if (feeds.Count > 0)
+            {
+                logger.LogInfo($"Found {feeds.Count} Nuget feeds in nuget.config files: {string.Join(", ", feeds.OrderBy(f => f))}");
+            }
+            else
+            {
+                logger.LogDebug("No Nuget feeds found in nuget.config files.");
+            }
             return feeds;
         }
 
