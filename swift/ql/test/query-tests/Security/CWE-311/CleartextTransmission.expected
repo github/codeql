@@ -23,14 +23,23 @@ edges
 | testURL.swift:73:52:73:67 | call to get_secret_key() | testURL.swift:73:18:73:67 | ... .+(_:_:) ... | provenance |  |
 | testURL.swift:75:53:75:69 | call to get_cert_string() | testURL.swift:75:18:75:69 | ... .+(_:_:) ... | provenance |  |
 | testURL.swift:96:51:96:51 | certificate | testURL.swift:96:18:96:18 | "..." | provenance |  |
-| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | provenance |  |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | provenance | AdditionalTaintStep |
 | testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:105:32:105:32 | data | provenance |  |
-| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:106:20:106:20 | "..." | provenance |  |
+| testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | testURL.swift:106:20:106:20 | "..." | provenance | AdditionalTaintStep |
+| testURL.swift:105:6:105:10 | let ...? [some:0] | testURL.swift:105:10:105:10 | string | provenance |  |
+| testURL.swift:105:6:105:10 | let ...? [some:0] | testURL.swift:105:10:105:10 | string | provenance |  |
+| testURL.swift:105:6:105:10 | let ...? [some:0] | testURL.swift:105:10:105:10 | string | provenance |  |
 | testURL.swift:105:6:105:10 | let ...? [some:0] | testURL.swift:105:10:105:10 | string | provenance |  |
 | testURL.swift:105:10:105:10 | string | testURL.swift:106:20:106:20 | "..." | provenance |  |
+| testURL.swift:105:10:105:10 | string | testURL.swift:106:20:106:20 | "..." | provenance |  |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | provenance |  |
 | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | provenance |  |
 | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | testURL.swift:106:20:106:20 | "..." | provenance |  |
 | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | testURL.swift:105:6:105:10 | let ...? [some:0] | provenance |  |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | testURL.swift:105:6:105:10 | let ...? [some:0] | provenance |  |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | testURL.swift:105:6:105:10 | let ...? [some:0] | provenance |  |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | testURL.swift:105:6:105:10 | let ...? [some:0] | provenance |  |
+| testURL.swift:105:32:105:32 | data | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | provenance |  |
 | testURL.swift:105:32:105:32 | data | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | provenance |  |
 nodes
 | file://:0:0:0:0 | .value | semmle.label | .value |
@@ -85,8 +94,11 @@ nodes
 | testURL.swift:96:51:96:51 | certificate | semmle.label | certificate |
 | testURL.swift:104:16:104:57 | call to SecKeyCopyExternalRepresentation(_:_:) | semmle.label | call to SecKeyCopyExternalRepresentation(_:_:) |
 | testURL.swift:105:6:105:10 | let ...? [some:0] | semmle.label | let ...? [some:0] |
+| testURL.swift:105:6:105:10 | let ...? [some:0] | semmle.label | let ...? [some:0] |
+| testURL.swift:105:10:105:10 | string | semmle.label | string |
 | testURL.swift:105:10:105:10 | string | semmle.label | string |
 | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) | semmle.label | call to String.init(data:encoding:) |
+| testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | semmle.label | call to String.init(data:encoding:) [some:0] |
 | testURL.swift:105:19:105:53 | call to String.init(data:encoding:) [some:0] | semmle.label | call to String.init(data:encoding:) [some:0] |
 | testURL.swift:105:32:105:32 | data | semmle.label | data |
 | testURL.swift:106:20:106:20 | "..." | semmle.label | "..." |
