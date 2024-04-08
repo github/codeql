@@ -27,6 +27,7 @@ import codeql.ruby.ApiGraphs
 import codeql.ruby.DataFlow::DataFlow as DataFlow
 private import FlowSummaryImpl::Public
 private import codeql.ruby.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+import codeql.Locations // re-export Location
 
 pragma[nomagic]
 private predicate isUsedTopLevelConstant(string name) {
@@ -248,3 +249,54 @@ predicate isExtraValidTokenArgumentInIdentifyingAccessPath(string name, string a
 }
 
 module ModelOutputSpecific { }
+
+/**
+ * Holds if the value of `source` is exposed at `sink`.
+ */
+bindingset[source]
+predicate sourceFlowsToSink(API::Node source, API::Node sink) {
+  // TODO: also establish subclass relationship
+  source.getAValueReachableFromSource() = sink.asSink()
+}
+
+/**
+ * Holds if the edge `pred -> succ` labelled with `path` exists in the API graph.
+ */
+bindingset[pred]
+predicate apiGraphHasEdge(API::Node pred, string path, API::Node succ) {
+  exists(string name |
+    API::Internal::methodEdge(pred, name, succ) and path = "Method[" + name + "]"
+  )
+  or
+  API::Internal::elementEdge(pred, succ) and path = "Element"
+  or
+  API::Internal::instanceEdge(pred, succ) and path = "Instance"
+  or
+  API::Internal::returnEdge(pred, succ) and path = "ReturnValue"
+  or
+  exists(DataFlowDispatch::ArgumentPosition pos |
+    not pos.isSelf() and
+    API::Internal::argumentEdge(pred, pos, succ) and
+    path = "Argument[" + FlowSummaryImpl::Input::encodeArgumentPosition(pos) + "]"
+  )
+  or
+  exists(DataFlowDispatch::ParameterPosition pos |
+    not pos.isSelf() and
+    API::Internal::parameterEdge(pred, pos, succ) and
+    path = "Parameter[" + FlowSummaryImpl::Input::encodeParameterPosition(pos) + "]"
+  )
+  or
+  path = "" and
+  API::Internal::epsilonEdge(pred, succ)
+}
+
+pragma[nomagic]
+private predicate inheritanceEdge(API::Node pred, API::Node succ) {
+  exists(DataFlow::ModuleNode mod |
+    pred = API::Internal::getModuleNodeUp(mod) and
+    succ = API::Internal::getModuleNodeUp(mod.getAnImmediateAncestor())
+    or
+    pred = API::Internal::getModuleInstanceUp(mod) and
+    succ = API::Internal::getModuleInstanceUp(mod.getAnImmediateAncestor())
+  )
+}

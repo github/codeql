@@ -1047,15 +1047,29 @@ module API {
 
     import MkShared
 
-    /** Gets the API node corresponding to the module/class object for `mod`. */
+    /** Gets the API node corresponding to the module/class object for `mod`, with epsilon edges to descendent modules/classes. */
     bindingset[mod]
     pragma[inline_late]
     Node getModuleNode(DataFlow::ModuleNode mod) { result = Impl::MkModuleObjectDown(mod) }
 
-    /** Gets the API node corresponding to instances of `mod`. */
+    /** Gets the API node corresponding to instances of `mod`, with epsilon edges to instances of descendent modules/classes. */
     bindingset[mod]
     pragma[inline_late]
     Node getModuleInstance(DataFlow::ModuleNode mod) { result = getModuleNode(mod).getInstance() }
+
+    /** Gets the API node corresponding to instances of `mod` with epsilon edges to ancestor modules/classes. */
+    bindingset[mod]
+    pragma[inline_late]
+    Node getModuleNodeUp(DataFlow::ModuleNode mod) { result = Impl::MkModuleObjectUp(mod) }
+
+    /** Gets the API node corresponding to instances of `mod`, with epsilon edges to instances of ancestor modules/classes. */
+    bindingset[mod]
+    pragma[inline_late]
+    Node getModuleInstanceUp(DataFlow::ModuleNode mod) {
+      result = getModuleNodeUp(mod).getInstance()
+    }
+
+    import Impl
   }
 
   private import Internal

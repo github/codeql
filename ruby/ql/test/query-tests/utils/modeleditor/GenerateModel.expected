@@ -1,7 +1,8 @@
 sourceModel
 sinkModel
+summaryModel
+| A! | Method[new] | Argument[0] | ReturnValue | value |
 typeVariableModel
 typeModel
 | M1 | B |  |
-summaryModel
-| A! | Method[new] | Argument[0] | ReturnValue | value |
+| M1! | B! |  |

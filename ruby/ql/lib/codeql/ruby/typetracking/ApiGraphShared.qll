@@ -144,6 +144,8 @@ module ApiGraphShared<ApiGraphSharedSig S> {
 
   private import Cached
 
+  predicate epsilonEdge = Cached::epsilonEdge/2;
+
   /** Gets an API node corresponding to the end of forward-tracking to `localSource`. */
   pragma[nomagic]
   private ApiNode forwardEndNode(DataFlow::LocalSourceNode localSource) {

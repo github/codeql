@@ -60,3 +60,117 @@ private class SummarizedCallableFromModel extends SummarizedCallable {
     )
   }
 }
+
+/**
+ * Specifies which parts of the API graph to export in `ModelExport`.
+ */
+signature module ModelExportSig {
+  /**
+   * Holds if the exported model should contain `node`, if it is publicly accessible.
+   *
+   * This ensures that all ways to access `node` will be exported in type models.
+   */
+  predicate shouldContain(API::Node node);
+
+  /**
+   * Holds if a named must be generated for `node` if it is to be included in the exported graph.
+   */
+  default predicate mustBeNamed(API::Node node) { none() }
+
+  /**
+   * Holds if the exported model should preserve all paths leading to an instance of `type`,
+   * including partial ones. It does not need to be closed transitively, `ModelExport` will
+   * extend this to include type models from which `type` can be derived.
+   */
+  default predicate shouldContainType(string type) { none() }
+}
+
+/**
+ * Module for exporting type models for a given set of nodes in the API graph.
+ */
+module ModelExport<ModelExportSig S> {
+  private import codeql.mad.dynamic.GraphExport
+  private import internal.ApiGraphModelsExport
+
+  private module GraphExportConfig implements GraphExportSig<Location, API::Node> {
+    predicate edge = Specific::apiGraphHasEdge/3;
+
+    predicate shouldContain = S::shouldContain/1;
+
+    predicate shouldNotContain(API::Node node) {
+      // Only export def-nodes, exclude use-nodes
+      node instanceof API::Internal::MkModuleObjectDown
+      or
+      node instanceof API::Internal::MkModuleInstanceDown
+      or
+      node instanceof API::Internal::MkForwardNode
+      or
+      node instanceof API::Internal::MkMethodAccessNode
+    }
+
+    predicate mustBeNamed(API::Node node) { S::mustBeNamed(node) }
+
+    predicate exposedName(API::Node node, string type, string path) {
+      path = "" and
+      exists(DataFlow::ModuleNode mod |
+        node = API::Internal::MkModuleObjectUp(mod) and
+        type = mod.getQualifiedName() + "!"
+        or
+        node = API::Internal::MkModuleInstanceUp(mod) and
+        type = mod.getQualifiedName()
+      )
+    }
+
+    private string suggestedMethodName(DataFlow::MethodNode method) {
+      exists(DataFlow::ModuleNode mod, string name |
+        method = mod.getOwnSingletonMethod(name) and
+        result = mod.getQualifiedName() + "." + name
+        or
+        method = mod.getOwnInstanceMethod(name) and
+        result = mod.getQualifiedName() + "#" + name
+      )
+    }
+
+    predicate suggestedName(API::Node node, string type) {
+      // exists(DataFlow::MethodNode method |
+      //   node.asSink() = method.getAReturnNode() and type = suggestedMethodName(method) + "()"
+      // )
+      none()
+    }
+
+    bindingset[host]
+    predicate hasTypeSummary(API::Node host, string path) {
+      exists(string methodName |
+        methodReturnsReceiver(host.getMethod(methodName).asCallable()) and
+        path = "Method[" + methodName + "].ReturnValue"
+      )
+    }
+
+    pragma[nomagic]
+    private predicate methodReturnsReceiver(DataFlow::MethodNode func) {
+      getAReceiverRef(func).flowsTo(func.getAReturnNode())
+    }
+
+    pragma[nomagic]
+    private DataFlow::CallNode getAReceiverCall(DataFlow::MethodNode func) {
+      result = getAReceiverRef(func).getAMethodCall()
+    }
+
+    pragma[nomagic]
+    private predicate callReturnsReceiver(DataFlow::CallNode call) {
+      methodReturnsReceiver(call.getATarget())
+    }
+
+    pragma[nomagic]
+    private DataFlow::LocalSourceNode getAReceiverRef(DataFlow::MethodNode func) {
+      result = func.getSelfParameter()
+      or
+      result = getAReceiverCall(func) and
+      callReturnsReceiver(result)
+    }
+  }
+
+  private module ExportedGraph = TypeGraphExport<GraphExportConfig, S::shouldContainType/1>;
+
+  import ExportedGraph
+}
