@@ -2,7 +2,7 @@
 library: true
 warnOnImplicitThis: true
 name: githubsecuritylab/actions-all
-version: 0.0.6
+version: 0.0.7
 dependencies:
   codeql/controlflow: "*"
   codeql/dataflow: "*"
