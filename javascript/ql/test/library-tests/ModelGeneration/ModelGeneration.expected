@@ -7,9 +7,8 @@ typeModel
 | (aliases).Alias1.prototype | (aliases).Alias1 | Instance |
 | (aliases).Alias1.prototype | (aliases).Alias1.prototype.foo | ReturnValue |
 | (aliases).Alias1.prototype.foo | (aliases).Alias1.prototype | Member[foo] |
-| (long-access-path).a.shortcut.d | (long-access-path) | Member[a].Member[b].Member[c].Member[d] |
-| (long-access-path).a.shortcut.d | (long-access-path) | Member[a].Member[shortcut].Member[d] |
-| (long-access-path).a.shortcut.d.e | (long-access-path).a.shortcut.d | Member[e] |
+| (long-access-path).a.shortcut.d.e | (long-access-path) | Member[a].Member[b].Member[c].Member[d].Member[e] |
+| (long-access-path).a.shortcut.d.e | (long-access-path) | Member[a].Member[shortcut].Member[d].Member[e] |
 | (reexport).func | (reexport) | Member[func] |
 | (return-this).FluentInterface | (return-this) | Member[FluentInterface] |
 | (return-this).FluentInterface.prototype | (return-this).FluentInterface | Instance |

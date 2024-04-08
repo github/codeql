@@ -100,7 +100,9 @@ module GraphExport<
   private predicate exposedEdge(Node pred, string path, Node succ) {
     // Materialize this relation so we can access 'edge' without binding set on 'pred'
     pred = getAnExposedNode() and
-    edge(pred, path, succ)
+    edge(pred, path, succ) and
+    // Filter trivial edges at this stage (they disturb fan-in and fan-out checks)
+    not (pred = succ and path = "")
   }
 
   private Node getARelevantNode() {
@@ -121,10 +123,73 @@ module GraphExport<
     exposedEdge(result, path, node)
   }
 
+  pragma[inline]
+  private RelevantNode getASuccessor(RelevantNode node, string path) {
+    exposedEdge(node, path, result)
+  }
+
   private predicate hasPrettyName(RelevantNode node) {
     exposedName(node, _, "")
     or
     suggestedName(node, _)
+  }
+
+  /**
+   * Holds if `node` has multiple predecessors, or one predecessor and an entry point.
+   */
+  private predicate hasFanIn(RelevantNode node) {
+    exists(int degree | degree = strictcount(getAPredecessor(node, _)) |
+      degree > 1
+      or
+      // Treat an entry point as an extra in-degree. This is needed to ensure all reachable cycles
+      // contain at least one node with fan-in (to ensure the node is named).
+      degree = 1 and
+      exposedName(node, _, _)
+    )
+  }
+
+  /**
+   * Holds if `succ` can be merged with `pred` as there are no other ways
+   * to reach it and it doesn't have a name.
+   */
+  private predicate unificationEdge(RelevantNode pred, RelevantNode succ) {
+    exposedEdge(pred, "", succ) and
+    not hasFanIn(succ) and
+    not exposedName(succ, _, _) and
+    not S::mustBeNamed(succ) and
+    not suggestedName(succ, _)
+    or
+    pred = succ // ensure all nodes are assigned to an SCC
+  }
+
+  private module Unification = QlBuiltins::EquivalenceRelation<RelevantNode, unificationEdge/2>;
+
+  pragma[nomagic]
+  private Unification::EquivalenceClass getASuccessorUnified(RelevantNode node, string path) {
+    result = Unification::getEquivalenceClass(getASuccessor(node, path))
+  }
+
+  /** Holds if `node` has multiple outgoing edges (after unifying equivalent successors). */
+  private predicate hasFanOut(RelevantNode node) { strictcount(getASuccessorUnified(node, _)) > 1 }
+
+  /** Holds if `node` reaches a fan-out without passing through a named node. */
+  private predicate reachesFanOut(RelevantNode node) {
+    not exposedName(node, _, "") and
+    (
+      hasFanOut(node)
+      or
+      // Handle the special case where a fan-in is part a cycle of nodes that all have out-degree 1.
+      getUniqueSuccessorIfUnnamed+(node) = node
+      or
+      reachesFanOut(getASuccessor(node, _))
+    )
+  }
+
+  private RelevantNode getUniqueSuccessorIfUnnamed(RelevantNode node) {
+    result = getASuccessor(node, _) and
+    not hasFanOut(node) and // ensures uniqueness
+    not exposedName(node, _, "") and
+    not S::mustBeNamed(node)
   }
 
   private predicate nodeMustBeNamed(RelevantNode node) {
@@ -132,7 +197,8 @@ module GraphExport<
     or
     S::mustBeNamed(node)
     or
-    strictcount(getAPredecessor(node, _)) > 1
+    hasFanIn(node) and
+    reachesFanOut(node)
   }
 
   /** Gets a type-name to use as a prefix, in case we need to synthesize a name. */
