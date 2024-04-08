@@ -1813,7 +1813,9 @@ abstract private class PartialDefinitionNode extends PostUpdateNode {
 }
 
 /**
- * TODO: QLDoc.
+ * A `PostUpdateNode` that is part of a flow summary. These are synthesized,
+ * for example, when a models-as-data summary models a write to a field since
+ * the write needs to target a `PostUpdateNode`.
  */
 class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
   SummaryPostUpdateNode() {

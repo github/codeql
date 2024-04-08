@@ -544,7 +544,7 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
 }
 
 /**
- * An return node that is part of a summary.
+ * A return node that is part of a summary.
  */
 private class SummaryReturnNode extends ReturnNode, FlowSummaryNode {
   private ReturnKind rk;
@@ -711,7 +711,10 @@ private class SideEffectOutNode extends OutNode, IndirectArgumentOutNode {
 }
 
 /**
- * An output node that is part of a summary.
+ * An output node that is part of a summary. An output node is needed when the
+ * model contains a synthesized call (`SummaryCall`) and the return value of
+ * that call is needed by the summary (for example when the model has flow from
+ * `Argument[0].ReturnValue`).
  */
 private class SummaryOutNode extends OutNode, FlowSummaryNode {
   private SummaryCall call;
