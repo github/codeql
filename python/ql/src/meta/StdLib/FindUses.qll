@@ -88,11 +88,8 @@ string computeArgumentPath(string parameter, Function function) {
   result = "Argument[" + concat(computeArgumentPosition(parameter, function), ",") + "]"
 }
 
-bindingset[parameter, function]
 pragma[inline]
-string computeReturnPath(
-  DataFlow::Node argument, string parameter, Function function, DataFlow::Node outNode
-) {
+string computeReturnPath(DataFlow::Node argument, DataFlow::Node outNode) {
   outNode.(DataFlow::CallCfgNode).getArg(_) = argument and
   result = "ReturnValue"
   or
@@ -108,6 +105,8 @@ string computeReturnPath(
       call.getArg(_) = argument
       or
       call.getArgByName(_) = argument
+      or
+      call.getObject() = argument
     ) and
     result = "Argument[self]"
   )
@@ -126,9 +125,9 @@ string madSummary(
       argumentPath = "Argument[?]"
     ) and
     (
-      returnPath = computeReturnPath(argument, parameter, function, outNode)
+      returnPath = computeReturnPath(argument, outNode)
       or
-      not exists(computeReturnPath(argument, parameter, function, outNode)) and
+      not exists(computeReturnPath(argument, outNode)) and
       returnPath =
         argument.getLocation().toString() + ": " + argument.toString() + " -> " + outNode.toString()
     ) and
@@ -153,13 +152,18 @@ abstract class EntryPointsByQuery extends string {
     string alreadyModeled, string madSummary
   ) {
     exists(DataFlow::ParameterNode parameter, Function function |
-      parameterName = parameter.getParameter().getName() and
-      functionName = computeFunctionName(function)
-    |
+      parameter.getScope() = function and
       this.subpath(argument, parameter, outNode) and
       not inStdLib(argument) and
-      inStdLib(parameter) and
-      function = parameter.getScope() and
+      inStdLib(parameter)
+    |
+      parameterName = parameter.getParameter().getName() and
+      (
+        functionName = computeFunctionName(function)
+        or
+        not exists(computeFunctionName(function)) and
+        functionName = "unknown function: " + function.toString()
+      ) and
       alreadyModeled = stepsTo(argument, outNode) and
       (
         madSummary = madSummary(argument, parameterName, function, outNode)
