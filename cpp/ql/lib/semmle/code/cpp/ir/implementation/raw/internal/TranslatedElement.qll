@@ -821,7 +821,7 @@ newtype TTranslatedElement =
   // The set of destructors to invoke after a `throw`. These need to be special
   // cased because the edge kind following a throw is an `ExceptionEdge`, and
   // we need to make sure that the edge kind is still an `ExceptionEdge` after
-  // all the destructors has run.
+  // all the destructors have run.
   TTranslatedDestructorsAfterThrow(ThrowExpr throw) {
     exists(DestructorCall dc |
       dc = throw.getAnImplicitDestructorCall() and
