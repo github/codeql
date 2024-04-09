@@ -38,6 +38,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public const string NugetFeedResponsivenessRequestCount = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_LIMIT";
 
         /// <summary>
+        /// Specifies the NuGet feeds to use for fallback Nuget dependency fetching. The value is a space-separated list of feed URLs.
+        /// The default value is `https://api.nuget.org/v3/index.json`.
+        /// </summary>
+        public const string FallbackNugetFeeds = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_FALLBACK";
+
+        /// <summary>
         /// Specifies the location of the diagnostic directory.
         /// </summary>
         public const string DiagnosticDir = "CODEQL_EXTRACTOR_CSHARP_DIAGNOSTIC_DIR";
