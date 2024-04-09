@@ -23,7 +23,10 @@ for src in sources:
             lfs_pointer = input.read()
             rel_src = src.relative_to(source_dir).as_posix()
             with open(src.name, 'wb') as output:
-                subprocess.run(["git", "-c", f"lfs.fetchinclude={rel_src}", "lfs", "smudge", "--", rel_src],
-                               input=lfs_pointer, stdout=output, check=True, cwd=source_dir)
+                subprocess.run(
+                    ["git",
+                     "-c", f"lfs.fetchinclude={rel_src}", "-c", "lfs.fetchexclude=",
+                     "lfs", "smudge", "--", rel_src],
+                    input=lfs_pointer, stdout=output, check=True, cwd=source_dir)
             continue
     pathlib.Path(src.name).symlink_to(src)

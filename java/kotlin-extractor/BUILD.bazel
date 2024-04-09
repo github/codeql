@@ -178,4 +178,13 @@ _resources = [
         actual = _common_extractor_name_prefix,
         visibility = ["//visibility:public"],
     ),
+    filegroup(
+        name = "many",
+        srcs = ["%s-%s-%s" % (
+            _common_extractor_name_prefix,
+            variant,
+            version,
+        ) for variant in ("standalone", "embeddable") for version in VERSIONS],
+        visibility = ["//visibility:public"],
+    ),
 ) if not _for_embeddable else None
