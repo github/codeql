@@ -32,5 +32,3 @@ private class ZmqSinks extends SinkModelCsv {
       ]
   }
 }
-
-        // TODO: flow into / through zmq_msg_data ?

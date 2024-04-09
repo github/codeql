@@ -140,7 +140,7 @@ void test_zmq(void *remoteSocket)
 	}
 
 	// send as message
-	if (zmq_msg_init_data(&message, message_data, message_len, 0, 0)) {
+	if (zmq_msg_init_data(&message, message_data, message_len, 0, 0)) { // (detected here)
 		if (zmq_sendmsg(remoteSocket, &message, message_len)) { // BAD: outputs HOME environment variable (detected above)
 			// ...
 		}
