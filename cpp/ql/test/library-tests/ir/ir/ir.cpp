@@ -1933,6 +1933,20 @@ namespace missing_declaration_entries {
         Bar2<int> b;
         b.two_missing_variable_declaration_entries();
     }
+
+    template<typename T> struct Bar3 {
+
+        int two_more_missing_variable_declaration_entries() {
+            extern int g;
+            int z(float);
+            return g;
+        }
+    };
+
+    void test3() {
+        Bar3<int> b;
+        b.two_more_missing_variable_declaration_entries();
+    }
 }
 
 template<typename T> T global_template = 42;
@@ -2376,6 +2390,61 @@ namespace return_routine_type {
         return &HasVoidToIntFunc::VoidToInt;
     }
 
+}
+
+int small_operation_should_not_be_constant_folded() {
+    return 1 ^ 2;
+}
+
+#define BINOP2(x) (x ^ x)
+#define BINOP4(x) (BINOP2(x) ^ BINOP2(x))
+#define BINOP8(x) (BINOP4(x) ^ BINOP4(x))
+#define BINOP16(x) (BINOP8(x) ^ BINOP8(x))
+#define BINOP32(x) (BINOP16(x) ^ BINOP16(x))
+#define BINOP64(x) (BINOP32(x) ^ BINOP32(x))
+
+int large_operation_should_be_constant_folded() {
+    return BINOP64(1);
+}
+
+void initialization_with_temp_destructor() {
+    if (char x = ClassWithDestructor().get_x())
+        x++;
+
+    if (char x = ClassWithDestructor().get_x(); x)
+        x++;
+
+    if constexpr (char x = ClassWithDestructor().get_x(); initialization_with_destructor_bool)
+        x++;
+
+    switch(char x = ClassWithDestructor().get_x()) {
+        case 'a':
+          x++;
+    }
+
+    switch(char x = ClassWithDestructor().get_x(); x) {
+        case 'a':
+          x++;
+    }
+
+    for(char x = ClassWithDestructor().get_x(); char y : std::vector<char>(x))
+        y += x;
+}
+
+void param_with_destructor_by_value(ClassWithDestructor c) {
+    // The call to ~ClassWithDestructor::ClassWithDestructor() seems to be missing here.
+}
+
+void param_with_destructor_by_pointer(ClassWithDestructor* c) {
+    // No destructor call should be here
+}
+
+void param_with_destructor_by_ref(ClassWithDestructor& c) {
+    // No destructor call should be here
+}
+
+void param_with_destructor_by_rref(ClassWithDestructor&& c) {
+    // No destructor call should be here
 }
 
 // semmle-extractor-options: -std=c++20 --clang

@@ -3,21 +3,26 @@ package main
 import (
 	"net/http"
 	"net/url"
+	"strings"
 )
 
-func serve() {
+func serve1() {
 	http.HandleFunc("/redir", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()
-		target, err := url.Parse(r.Form.Get("target"))
+		targetUrl := r.Form.Get("target")
+		// replace all backslashes with forward slashes before parsing the URL
+		targetUrl = strings.ReplaceAll(targetUrl, "\\", "/")
+
+		target, err := url.Parse(targetUrl)
 		if err != nil {
 			// ...
 		}
 
-		if target.Hostname() == "semmle.com" {
-			// GOOD: checking hostname
+		if target.Hostname() == "" {
+			// GOOD: check that it is a local redirect
 			http.Redirect(w, r, target.String(), 302)
 		} else {
-			http.WriteHeader(400)
+			w.WriteHeader(400)
 		}
 	})
 }

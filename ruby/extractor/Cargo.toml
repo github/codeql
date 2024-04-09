@@ -34,4 +34,4 @@ lazy_static = "1.4.0"
 # of lock-file update time, but `rules_rust` pins generates a bazel rule that unconditionally downloads `main`, which
 # breaks build hermeticity. So, rev-pinning it is.
 # See also https://github.com/bazelbuild/rules_rust/issues/2502.
-codeql-extractor = { git = "https://github.com/github/codeql.git", rev = "514a92d5bd1e24e4b7367d64430762ffd1ffbe7f" }
+codeql-extractor = { git = "https://github.com/github/codeql.git", rev = "cee6f003fd58c64916c629f7d8b27b870d6f78c5" }

@@ -192,12 +192,12 @@ module SourceSinkInterpretationInput implements
 
   class Element = J::Element;
 
-  predicate sourceElement(Element e, string output, string kind) {
+  predicate sourceElement(Element e, string output, string kind, Public::Provenance provenance) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
       SourceOrSinkElement baseSource, string originalOutput
     |
-      sourceModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, _) and
+      sourceModel(namespace, type, subtypes, name, signature, ext, originalOutput, kind, provenance) and
       baseSource = interpretElement(namespace, type, subtypes, name, signature, ext) and
       (
         e = baseSource and output = originalOutput
@@ -207,12 +207,12 @@ module SourceSinkInterpretationInput implements
     )
   }
 
-  predicate sinkElement(Element e, string input, string kind) {
+  predicate sinkElement(Element e, string input, string kind, Public::Provenance provenance) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext,
       SourceOrSinkElement baseSink, string originalInput
     |
-      sinkModel(namespace, type, subtypes, name, signature, ext, originalInput, kind, _) and
+      sinkModel(namespace, type, subtypes, name, signature, ext, originalInput, kind, provenance) and
       baseSink = interpretElement(namespace, type, subtypes, name, signature, ext) and
       (
         e = baseSink and originalInput = input

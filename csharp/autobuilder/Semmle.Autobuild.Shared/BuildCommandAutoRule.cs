@@ -82,11 +82,6 @@ namespace Semmle.Autobuild.Shared
             {
                 var command = new CommandBuilder(builder.Actions, dir, environment);
 
-                // A specific Visual Studio version may be required
-                var vsTools = MsBuildRule.GetVcVarsBatFile(builder);
-                if (vsTools is not null)
-                    command.CallBatFile(vsTools.Path);
-
                 command.RunCommand(this.ScriptPath);
                 return command.Script;
             });

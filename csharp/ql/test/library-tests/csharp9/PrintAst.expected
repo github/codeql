@@ -3,10 +3,8 @@ AnonymousObjectCreation.cs:
 #    7|   5: [Field] l
 #    7|     -1: [TypeMention] List<AnonObj>
 #    7|       1: [TypeMention] AnonObj
-#    7|     1: [AssignExpr] ... = ...
-#    7|       0: [FieldAccess] access to field l
-#    7|       1: [CastExpr] (...) ...
-#    7|         1: [ObjectCreation] object creation of type List<AnonObj>
+#    7|     1: [CastExpr] (...) ...
+#    7|       1: [ObjectCreation] object creation of type List<AnonObj>
 #    9|   6: [Property] Prop1
 #    9|     -1: [TypeMention] int
 #    9|     3: [Getter] get_Prop1
@@ -294,10 +292,8 @@ FunctionPointer.cs:
 #    5|   5: [Class] Program
 #    7|     5: [Field] pointer
 #    7|       -1: [TypeMention] delegate* default<Int32>
-#    7|       1: [AssignExpr] ... = ...
-#    7|         0: [FieldAccess] access to field pointer
-#    7|         1: [AddressOfExpr] &...
-#    7|           0: [MethodAccess] access to method M0
+#    7|       1: [AddressOfExpr] &...
+#    7|         0: [MethodAccess] access to method M0
 #    9|     6: [Method] M0
 #    9|       -1: [TypeMention] int
 #   10|       4: [BlockStmt] {...}

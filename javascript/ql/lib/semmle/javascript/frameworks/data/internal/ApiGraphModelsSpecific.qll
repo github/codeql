@@ -27,6 +27,8 @@ module API = JS::API;
 
 import JS::DataFlow as DataFlow
 
+class Location = JS::Location;
+
 /**
  * Holds if `rawType` represents the JavaScript type `qualifiedName` from the given NPM `package`.
  *
@@ -352,4 +354,55 @@ module ModelOutputSpecific {
       parseTypeString(rawType, package, qualifiedName)
     )
   }
+}
+
+/**
+ * Holds if the edge `pred -> succ` labelled with `path` exists in the API graph.
+ */
+bindingset[pred]
+predicate apiGraphHasEdge(API::Node pred, string path, API::Node succ) {
+  exists(string name | succ = pred.getMember(name) and path = "Member[" + name + "]")
+  or
+  succ = pred.getUnknownMember() and path = "AnyMember"
+  or
+  succ = pred.getInstance() and path = "Instance"
+  or
+  succ = pred.getReturn() and path = "ReturnValue"
+  or
+  exists(int n | succ = pred.getParameter(n) |
+    if pred instanceof API::Use then path = "Argument[" + n + "]" else path = "Parameter[" + n + "]"
+  )
+  or
+  succ = pred.getPromised() and path = "Awaited"
+  or
+  exists(DataFlow::ClassNode cls |
+    pred = API::Internal::getClassInstance(cls.getADirectSubClass()) and
+    succ = API::Internal::getClassInstance(cls) and
+    path = ""
+  )
+}
+
+/**
+ * Holds if the value of `source` is exposed at `sink`.
+ */
+bindingset[source]
+predicate sourceFlowsToSink(API::Node source, API::Node sink) {
+  source.getAValueReachableFromSource() = sink.asSink()
+  or
+  // Handle the case of an upstream class being the base class of an exposed own class
+  //
+  //   class Foo extends external.BaseClass {}
+  //
+  // Here we want to ensure that `Instance(Foo)` is seen as subtype of `Instance(external.BaseClass)`.
+  //
+  // Although we have a dedicated sink node for `Instance(Foo)` we don't have dedicate source node for `Instance(external.BaseClass)`.
+  //
+  // However, there is always an `Instance` edge from the base class expression (`external.BaseClass`)
+  // to the receiver node in subclass constructor (the implicit constructor of `Foo`), which always exists.
+  // So we use the constructor receiver as the representative for `Instance(external.BaseClass)`.
+  // (This will get simplified when migrating to Ruby-style API graphs, as both sides will have explicit API nodes).
+  exists(DataFlow::ClassNode cls |
+    source.asSource() = cls.getConstructor().getReceiver() and
+    sink = API::Internal::getClassInstance(cls)
+  )
 }

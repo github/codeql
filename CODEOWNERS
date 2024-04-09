@@ -1,4 +1,5 @@
 /cpp/ @github/codeql-c-analysis
+/cpp/autobuilder/ @github/codeql-c-extractor
 /csharp/ @github/codeql-csharp
 /go/ @github/codeql-go
 /java/ @github/codeql-java

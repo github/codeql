@@ -143,10 +143,10 @@ namespace Semmle.Extraction.CSharp.Standalone
             stopwatch.Start();
 
             using var logger = new ConsoleLogger(options.Verbosity, logThreadId: true);
-            logger.Log(Severity.Info, "Extracting C# in buildless mode");
+            logger.Log(Severity.Info, "Extracting C# with build-mode set to 'none'");
             using var dependencyManager = new DependencyManager(options.SrcDir, logger);
 
-            if (!dependencyManager.AllSourceFiles.Any())
+            if (!dependencyManager.NonGeneratedSourcesFiles.Any())
             {
                 logger.Log(Severity.Error, "No source files found");
                 return ExitCode.Errors;

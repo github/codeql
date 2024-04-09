@@ -1997,6 +1997,8 @@ class FieldOrProperty extends Assignable, Modifiable {
           or
           p.getDeclaringType() instanceof AnonymousClass
         )
+        or
+        p.fromLibrary()
       )
   }
 
