@@ -739,27 +739,6 @@ complex.c:
 #   58|     v58_7(void)                           = ExitFunction         : 
 
 destructors_for_temps.cpp:
-#    9| void ClassWithConstructor::ClassWithConstructor(ClassWithConstructor&&)
-#    9|   Block 0
-#    9|     v9_1(void)                           = EnterFunction                                : 
-#    9|     m9_2(unknown)                        = AliasedDefinition                            : 
-#    9|     m9_3(unknown)                        = InitializeNonLocal                           : 
-#    9|     m9_4(unknown)                        = Chi                                          : total:m9_2, partial:m9_3
-#    9|     r9_5(glval<unknown>)                 = VariableAddress[#this]                       : 
-#    9|     m9_6(glval<ClassWithConstructor>)    = InitializeParameter[#this]                   : &:r9_5
-#    9|     r9_7(glval<ClassWithConstructor>)    = Load[#this]                                  : &:r9_5, m9_6
-#    9|     m9_8(ClassWithConstructor)           = InitializeIndirection[#this]                 : &:r9_7
-#-----|     r0_1(glval<ClassWithConstructor &&>) = VariableAddress[(unnamed parameter 0)]       : 
-#-----|     m0_2(ClassWithConstructor &&)        = InitializeParameter[(unnamed parameter 0)]   : &:r0_1
-#-----|     r0_3(ClassWithConstructor &&)        = Load[(unnamed parameter 0)]                  : &:r0_1, m0_2
-#-----|     m0_4(unknown)                        = InitializeIndirection[(unnamed parameter 0)] : &:r0_3
-#    9|     v9_9(void)                           = NoOp                                         : 
-#    9|     v9_10(void)                          = ReturnIndirection[#this]                     : &:r9_7, m9_8
-#-----|     v0_5(void)                           = ReturnIndirection[(unnamed parameter 0)]     : &:r0_3, m0_4
-#    9|     v9_11(void)                          = ReturnVoid                                   : 
-#    9|     v9_12(void)                          = AliasedUse                                   : m9_3
-#    9|     v9_13(void)                          = ExitFunction                                 : 
-
 #   14| char temp_test()
 #   14|   Block 0
 #   14|     v14_1(void)                        = EnterFunction                         : 
@@ -1246,6 +1225,74 @@ destructors_for_temps.cpp:
 #   56|     v56_1(void)                         = NoOp                                  : 
 #   54|     v54_11(void)                        = ReturnVoid                            : 
 #-----|   Goto -> Block 1
+
+#   58| void temp_test9()
+#   58|   Block 0
+#   58|     v58_1(void)                         = EnterFunction                         : 
+#   58|     m58_2(unknown)                      = AliasedDefinition                     : 
+#   58|     m58_3(unknown)                      = InitializeNonLocal                    : 
+#   58|     m58_4(unknown)                      = Chi                                   : total:m58_2, partial:m58_3
+#   59|     r59_1(glval<char[2]>)               = VariableAddress[x]                    : 
+#   59|     m59_2(char[2])                      = Uninitialized[x]                      : &:r59_1
+#   59|     r59_3(int)                          = Constant[0]                           : 
+#   59|     r59_4(glval<char>)                  = PointerAdd[1]                         : r59_1, r59_3
+#   59|     r59_5(char)                         = Constant[0]                           : 
+#   59|     m59_6(char)                         = Store[?]                              : &:r59_4, r59_5
+#   59|     m59_7(char[2])                      = Chi                                   : total:m59_2, partial:m59_6
+#   59|     r59_8(int)                          = Constant[1]                           : 
+#   59|     r59_9(glval<char>)                  = PointerAdd[1]                         : r59_1, r59_8
+#   59|     r59_10(glval<ClassWithDestructor2>) = VariableAddress[#temp59:21]           : 
+#   59|     m59_11(ClassWithDestructor2)        = Uninitialized[#temp59:21]             : &:r59_10
+#   59|     r59_12(glval<unknown>)              = FunctionAddress[ClassWithDestructor2] : 
+#   59|     v59_13(void)                        = Call[ClassWithDestructor2]            : func:r59_12, this:r59_10
+#   59|     m59_14(unknown)                     = ^CallSideEffect                       : ~m58_4
+#   59|     m59_15(unknown)                     = Chi                                   : total:m58_4, partial:m59_14
+#   59|     m59_16(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]       : &:r59_10
+#   59|     m59_17(ClassWithDestructor2)        = Chi                                   : total:m59_11, partial:m59_16
+#   59|     r59_18(glval<unknown>)              = FunctionAddress[get_x]                : 
+#   59|     r59_19(char)                        = Call[get_x]                           : func:r59_18, this:r59_10
+#   59|     m59_20(unknown)                     = ^CallSideEffect                       : ~m59_15
+#   59|     m59_21(unknown)                     = Chi                                   : total:m59_15, partial:m59_20
+#   59|     v59_22(void)                        = ^IndirectReadSideEffect[-1]           : &:r59_10, m59_17
+#   59|     m59_23(ClassWithDestructor2)        = ^IndirectMayWriteSideEffect[-1]       : &:r59_10
+#   59|     m59_24(ClassWithDestructor2)        = Chi                                   : total:m59_17, partial:m59_23
+#   59|     m59_25(char)                        = Store[?]                              : &:r59_9, r59_19
+#   59|     m59_26(char[2])                     = Chi                                   : total:m59_7, partial:m59_25
+#   60|     v60_1(void)                         = NoOp                                  : 
+#   58|     v58_5(void)                         = ReturnVoid                            : 
+#   58|     v58_6(void)                         = AliasedUse                            : ~m59_21
+#   58|     v58_7(void)                         = ExitFunction                          : 
+
+#   66| void temp_test10()
+#   66|   Block 0
+#   66|     v66_1(void)                        = EnterFunction                         : 
+#   66|     m66_2(unknown)                     = AliasedDefinition                     : 
+#   66|     m66_3(unknown)                     = InitializeNonLocal                    : 
+#   66|     m66_4(unknown)                     = Chi                                   : total:m66_2, partial:m66_3
+#   67|     r67_1(glval<ClassWithField>)       = VariableAddress[c]                    : 
+#   67|     m67_2(ClassWithField)              = Uninitialized[c]                      : &:r67_1
+#   67|     r67_3(glval<int>)                  = FieldAddress[x]                       : r67_1
+#   67|     r67_4(glval<ClassWithDestructor2>) = VariableAddress[#temp67:30]           : 
+#   67|     m67_5(ClassWithDestructor2)        = Uninitialized[#temp67:30]             : &:r67_4
+#   67|     r67_6(glval<unknown>)              = FunctionAddress[ClassWithDestructor2] : 
+#   67|     v67_7(void)                        = Call[ClassWithDestructor2]            : func:r67_6, this:r67_4
+#   67|     m67_8(unknown)                     = ^CallSideEffect                       : ~m66_4
+#   67|     m67_9(unknown)                     = Chi                                   : total:m66_4, partial:m67_8
+#   67|     m67_10(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]       : &:r67_4
+#   67|     m67_11(ClassWithDestructor2)       = Chi                                   : total:m67_5, partial:m67_10
+#   67|     r67_12(glval<unknown>)             = FunctionAddress[get_x]                : 
+#   67|     r67_13(char)                       = Call[get_x]                           : func:r67_12, this:r67_4
+#   67|     m67_14(unknown)                    = ^CallSideEffect                       : ~m67_9
+#   67|     m67_15(unknown)                    = Chi                                   : total:m67_9, partial:m67_14
+#   67|     v67_16(void)                       = ^IndirectReadSideEffect[-1]           : &:r67_4, m67_11
+#   67|     m67_17(ClassWithDestructor2)       = ^IndirectMayWriteSideEffect[-1]       : &:r67_4
+#   67|     m67_18(ClassWithDestructor2)       = Chi                                   : total:m67_11, partial:m67_17
+#   67|     r67_19(int)                        = Convert                               : r67_13
+#   67|     m67_20(int)                        = Store[?]                              : &:r67_3, r67_19
+#   68|     v68_1(void)                        = NoOp                                  : 
+#   66|     v66_5(void)                        = ReturnVoid                            : 
+#   66|     v66_6(void)                        = AliasedUse                            : ~m67_15
+#   66|     v66_7(void)                        = ExitFunction                          : 
 
 ir.c:
 #    7| void MyCoordsTest(int)
