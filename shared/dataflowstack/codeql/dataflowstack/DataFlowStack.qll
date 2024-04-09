@@ -1,9 +1,10 @@
 
 private import codeql.dataflow.DataFlow as DF
+private import codeql.util.Location
 
-module DataFlowStackMake<DF::InputSig Lang>{
+module DataFlowStackMake<LocationSig Location, DF::InputSig<Location> Lang>{
 
-    import DF::DataFlowMake<Lang> as DataFlow
+    import DF::DataFlowMake<Location,Lang> as DataFlow
 
     module BiStackAnalysis<DataFlow::GlobalFlowSig FlowA, DataFlow::GlobalFlowSig FlowB>{
 
