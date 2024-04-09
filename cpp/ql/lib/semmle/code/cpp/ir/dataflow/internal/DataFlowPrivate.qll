@@ -460,7 +460,7 @@ private newtype TReturnKind =
     Ssa::hasIndirectOperand(any(ReturnValueInstruction ret).getReturnAddressOperand(),
       indirectionIndex + 1) // We subtract one because the return loads the value.
     or
-    indirectionIndex = FlowSummaryImpl::indirectionForModelledFunction(_, _, _, _, _, _, _, _, _, _)
+    indirectionIndex = FlowSummaryImpl::returnIndirectionForModelledFunction()
   } or
   TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
     exists(Ssa::FinalParameterUse use |

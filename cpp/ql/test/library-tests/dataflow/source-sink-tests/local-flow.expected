@@ -1,11 +1,2 @@
 testFailures
-| sources-and-sinks.cpp:78:20:78:36 | // $ local_source | Missing result:local_source= |
-| sources-and-sinks.cpp:79:21:79:37 | // $ local_source | Missing result:local_source= |
-| sources-and-sinks.cpp:80:25:80:41 | // $ local_source | Missing result:local_source= |
-| sources-and-sinks.cpp:81:28:81:44 | // $ local_source | Missing result:local_source= |
-| sources-and-sinks.cpp:82:32:82:48 | // $ local_source | Missing result:local_source= |
-| sources-and-sinks.cpp:83:22:83:38 | // $ local_source | Missing result:local_source= |
-| sources-and-sinks.cpp:84:26:84:42 | // $ local_source | Missing result:local_source= |
-| sources-and-sinks.cpp:85:30:85:46 | // $ local_source | Missing result:local_source= |
-| sources-and-sinks.cpp:86:34:86:50 | // $ local_source | Missing result:local_source= |
 failures
