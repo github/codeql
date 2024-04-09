@@ -262,3 +262,22 @@ module Private {
 }
 
 module Public = Impl::Public;
+
+/**
+ * Gets the number of indirections that can be returned by the function
+ * modelled using the given MaD row.
+ */
+int indirectionForModelledFunction(
+  string namespace, string type, boolean subtypes, string name, string signature, string ext,
+  string input, string output, string kind, string provenance
+) {
+  summaryModel(namespace, type, subtypes, name, signature, ext, input, output, kind, provenance) and
+  (
+    // Return the number of stars in `ReturnValue[...]`
+    result = output.regexpCapture("ReturnValue\\[(\\*+)\\]", 1).length()
+    or
+    // There are no brackets the result is 0
+    output = "ReturnValue" and
+    result = 0
+  )
+}
