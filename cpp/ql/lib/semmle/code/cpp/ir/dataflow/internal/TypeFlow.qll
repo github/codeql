@@ -3,6 +3,29 @@ private import semmle.code.cpp.ir.IR
 private import codeql.typeflow.TypeFlow
 
 private module Input implements TypeFlowInput<Location> {
+  /** Holds if `alloc` dynamically allocates a single object. */
+  private predicate isSingleObjectAllocation(AllocationExpr alloc) {
+    // i.e., `new int`;
+    alloc instanceof NewExpr
+    or
+    // i.e., `malloc(sizeof(int))`
+    exists(SizeofTypeOperator sizeOf | sizeOf = alloc.getSizeExpr() |
+      not sizeOf.getTypeOperand().getUnspecifiedType() instanceof ArrayType
+    )
+  }
+
+  /**
+   * Holds if `i` is the result of a dynamic allocation.
+   *
+   * `isObject` is `true` if the allocation allocated a single object,
+   * and `false` otherwise.
+   */
+  private predicate isAllocation(Instruction i, boolean isObject) {
+    exists(AllocationExpr alloc | alloc = i.getUnconvertedResultExpression() |
+      if isSingleObjectAllocation(alloc) then isObject = true else isObject = false
+    )
+  }
+
   private predicate hasExactSingleType(Instruction i) {
     // The address of a variable is always a single object
     i instanceof VariableAddressInstruction
@@ -14,23 +37,16 @@ private module Input implements TypeFlowInput<Location> {
     i instanceof InitializeThisInstruction
     or
     // An allocation of a non-array object
-    exists(AllocationExpr alloc | alloc = i.getUnconvertedResultExpression() |
-      // i.e., `new int`;
-      alloc instanceof NewExpr
-      or
-      // i.e., `malloc(sizeof(int))`
-      exists(SizeofTypeOperator sizeOf | sizeOf = alloc.getSizeExpr() |
-        not sizeOf.getTypeOperand().getUnspecifiedType() instanceof ArrayType
-      )
-    )
+    isAllocation(i, true)
   }
 
   private predicate hasExactBufferType(Instruction i) {
     // Anything with an array type is a buffer
     i.getResultLanguageType().hasUnspecifiedType(any(ArrayType at), false)
     or
-    not hasExactSingleType(i) and
-    i.getUnconvertedResultExpression() instanceof AllocationExpr
+    // An allocation expression that we couldn't conclude allocated a single
+    // expression is assigned a buffer type.
+    isAllocation(i, false)
   }
 
   private newtype TTypeFlowNode =
