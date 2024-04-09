@@ -10,7 +10,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// Used to represent a path to an assembly or a directory containing assemblies
     /// and a selector function to determine which files to include, when indexing the assemblies.
     /// </summary>
-    internal sealed class AssemblyLookupLocation(string p, Func<string, bool> includeFileName)
+    internal sealed class AssemblyLookupLocation(string p, Func<string, bool> includeFileName, bool indexSubdirectories = true)
     {
         public string Path => p;
 
@@ -26,22 +26,29 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="dir">The directory to index.</param>
         private void AddReferenceDirectory(List<string> dllsToIndex, ILogger logger)
         {
-            var dlls = new DirectoryInfo(p).EnumerateFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive, AttributesToSkip = FileAttributes.None });
-            if (!dlls.Any())
+            try
             {
-                logger.LogWarning($"AssemblyLookupLocation: No DLLs found in the path '{p}'.");
-                return;
+                var dlls = new DirectoryInfo(p).EnumerateFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = indexSubdirectories, MatchCasing = MatchCasing.CaseInsensitive, AttributesToSkip = FileAttributes.None });
+                if (!dlls.Any())
+                {
+                    logger.LogWarning($"AssemblyLookupLocation: No DLLs found in the path '{p}'.");
+                    return;
+                }
+                foreach (var dll in dlls)
+                {
+                    if (includeFileName(dll.Name))
+                    {
+                        dllsToIndex.Add(dll.FullName);
+                    }
+                    else
+                    {
+                        logger.LogInfo($"AssemblyLookupLocation: Skipping {dll.FullName}.");
+                    }
+                }
             }
-            foreach (var dll in dlls)
+            catch (Exception e)
             {
-                if (includeFileName(dll.Name))
-                {
-                    dllsToIndex.Add(dll.FullName);
-                }
-                else
-                {
-                    logger.LogInfo($"AssemblyLookupLocation: Skipping {dll.FullName}.");
-                }
+                logger.LogError($"AssemblyLookupLocation: Error while searching for DLLs in '{p}': {e.Message}");
             }
         }
 

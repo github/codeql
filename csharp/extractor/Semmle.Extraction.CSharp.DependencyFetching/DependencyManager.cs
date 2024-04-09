@@ -214,29 +214,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         continue;
                     }
 
-                    if (useSubfolders)
-                    {
-                        dllPaths.Add(path);
-                        frameworkLocations.Add(path);
-                        continue;
-                    }
-
-                    try
-                    {
-                        var dlls = Directory.GetFiles(path, "*.dll", new EnumerationOptions { RecurseSubdirectories = false, MatchCasing = MatchCasing.CaseInsensitive });
-                        if (dlls.Length == 0)
-                        {
-                            logger.LogError($"No DLLs found in specified framework reference path '{path}'.");
-                            continue;
-                        }
-
-                        dllPaths.UnionWith(dlls.Select(x => new AssemblyLookupLocation(x)));
-                        frameworkLocations.UnionWith(dlls);
-                    }
-                    catch (Exception e)
-                    {
-                        logger.LogError($"Error while searching for DLLs in '{path}': {e.Message}");
-                    }
+                    dllPaths.Add(new AssemblyLookupLocation(path, _ => true, useSubfolders));
+                    frameworkLocations.Add(path);
                 }
 
                 return frameworkLocations;
