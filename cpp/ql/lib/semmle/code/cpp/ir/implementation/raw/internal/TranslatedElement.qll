@@ -287,7 +287,10 @@ private predicate isInConditionalEvaluation(Expr e) {
 }
 
 private predicate isConditionalTemporaryDestructorCall(DestructorCall dc) {
-  isInConditionalEvaluation(dc.getQualifier().(ReuseExpr).getReusedExpr())
+  exists(TemporaryObjectExpr temp |
+    temp = dc.getQualifier().(ReuseExpr).getReusedExpr() and
+    isInConditionalEvaluation(temp)
+  )
 }
 
 /**
