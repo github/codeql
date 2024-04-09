@@ -103,10 +103,10 @@ class MoreTests {
 
 		Files.delete(
 			p // $ sinkModelCandidate=delete(Path):Argument[0] positiveSinkExample=delete(Path):Argument[0](path-injection)
-		); // $ not a source candidate (return type is void)
+		); // not a source candidate (return type is void)
 
 		Files.deleteIfExists(
 			p // $ sinkModelCandidate=deleteIfExists(Path):Argument[0] positiveSinkExample=deleteIfExists(Path):Argument[0](path-injection)
-		); // $ not a source candidate (return type is boolean)
+		); // not a source candidate (return type is boolean)
 	}
 }
