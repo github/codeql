@@ -1,2 +1,6 @@
 testFailures
+| sources-and-sinks.cpp:73:25:73:42 | // $ remote_source | Missing result:remote_source= |
+| sources-and-sinks.cpp:74:29:74:46 | // $ remote_source | Missing result:remote_source= |
+| sources-and-sinks.cpp:75:33:75:50 | // $ remote_source | Missing result:remote_source= |
+| sources-and-sinks.cpp:76:37:76:54 | // $ remote_source | Missing result:remote_source= |
 failures
