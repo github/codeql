@@ -12,7 +12,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     public sealed partial class DependencyManager
     {
-        private void RestoreNugetPackages(List<FileInfo> allNonBinaryFiles, IEnumerable<string> allProjects, IEnumerable<string> allSolutions, HashSet<AssemblyPath> dllPaths)
+        private void RestoreNugetPackages(List<FileInfo> allNonBinaryFiles, IEnumerable<string> allProjects, IEnumerable<string> allSolutions, HashSet<AssemblyLookupLocation> dllPaths)
         {
             try
             {
@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
 
                 nugetPackageDllPaths.ExceptWith(excludedPaths);
-                dllPaths.UnionWith(nugetPackageDllPaths.Select(p => new AssemblyPath(p)));
+                dllPaths.UnionWith(nugetPackageDllPaths.Select(p => new AssemblyLookupLocation(p)));
             }
             catch (Exception exc)
             {
@@ -72,7 +72,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .Paths
                 .Select(d => Path.Combine(packageDirectory.DirInfo.FullName, d))
                 .ToList();
-            dllPaths.UnionWith(paths.Select(p => new AssemblyPath(p)));
+            dllPaths.UnionWith(paths.Select(p => new AssemblyLookupLocation(p)));
 
             LogAllUnusedPackages(dependencies);
             DownloadMissingPackages(allNonBinaryFiles, dllPaths);
@@ -148,7 +148,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             CompilationInfos.Add(("Failed project restore with package source error", nugetSourceFailures.ToString()));
         }
 
-        private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<AssemblyPath> dllPaths, bool withNugetConfig = true)
+        private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<AssemblyLookupLocation> dllPaths, bool withNugetConfig = true)
         {
             var alreadyDownloadedPackages = GetRestoredPackageDirectoryNames(packageDirectory.DirInfo);
             var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();

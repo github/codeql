@@ -19,12 +19,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// assembly cache.
         /// </param>
         /// <param name="logger">Callback for progress.</param>
-        public AssemblyCache(IEnumerable<AssemblyPath> paths, IEnumerable<string> frameworkPaths, ILogger logger)
+        public AssemblyCache(IEnumerable<AssemblyLookupLocation> paths, IEnumerable<string> frameworkPaths, ILogger logger)
         {
             this.logger = logger;
             foreach (var path in paths)
             {
-                path.Process(dllsToIndex, logger);
+                dllsToIndex.AddRange(path.GetDlls(logger));
             }
             IndexReferences(frameworkPaths);
         }
