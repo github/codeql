@@ -122,6 +122,21 @@ a, b = MS_spread_all(SOURCE)
 SINK(a)  # $ flow="SOURCE, l:-1 -> a"
 SINK(b)  # $ flow="SOURCE, l:-2 -> b"
 
+from foo import MS_Class
+
+c = MS_Class()
+a, b = c.instance_method(SOURCE)
+SINK_F(a)
+SINK(b)  # $ flow="SOURCE, l:-2 -> b"
+
+m = c.instance_method
+x, y = (SOURCE, NONSOURCE)
+SINK(x)  # $ flow="SOURCE, l:-1 -> x"
+SINK_F(y)
+
+ms = c.explicit_self
+SINK(ms(SOURCE))  # $ MISSING: flow="SOURCE, l:0 -> ms(SOURCE)"
+
 # Modeled flow-summary is not value preserving
 from json import MS_loads as json_loads
 
