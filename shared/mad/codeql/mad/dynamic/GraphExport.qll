@@ -301,4 +301,30 @@ module GraphExport<
       kind = "type"
     )
   }
+
+  /** Predicates for debugging purposes. */
+  private module Debug {
+    private predicate edgeToUnnamedNode(RelevantNode pred, RelevantNode succ) {
+      exposedEdge(pred, _, succ) and
+      not nodeMustBeNamed(succ)
+    }
+
+    /**
+     * Holds if `node` is part of a cycle with a non-empty path string that is not broken
+     * by a named node -- this leads to divergence in `pathToNode`.
+     */
+    predicate cycle(RelevantNode pred, string step, RelevantNode succ) {
+      exposedEdge(pred, step, succ) and
+      step != "" and
+      not nodeMustBeNamed(pred) and
+      not nodeMustBeNamed(succ) and
+      edgeToUnnamedNode*(succ, pred)
+    }
+
+    /** Holds if `node` should be named could not be named. */
+    predicate missingNodeName(RelevantNode node) {
+      nodeMustBeNamed(node) and
+      not exists(getNodeName(node))
+    }
+  }
 }
