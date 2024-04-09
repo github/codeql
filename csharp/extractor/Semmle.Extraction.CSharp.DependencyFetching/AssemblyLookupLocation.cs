@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Semmle.Util.Logging;
 
 namespace Semmle.Extraction.CSharp.DependencyFetching
@@ -25,7 +26,13 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// <param name="dir">The directory to index.</param>
         private void AddReferenceDirectory(List<string> dllsToIndex, ILogger logger)
         {
-            foreach (var dll in new DirectoryInfo(p).EnumerateFiles("*.dll", SearchOption.AllDirectories))
+            var dlls = new DirectoryInfo(p).EnumerateFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = true, MatchCasing = MatchCasing.CaseInsensitive, AttributesToSkip = FileAttributes.None });
+            if (!dlls.Any())
+            {
+                logger.LogWarning($"AssemblyLookupLocation: No DLLs found in the path '{p}'.");
+                return;
+            }
+            foreach (var dll in dlls)
             {
                 if (includeFileName(dll.Name))
                 {
