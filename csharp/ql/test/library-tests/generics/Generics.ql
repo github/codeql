@@ -268,16 +268,12 @@ query predicate test33(ConstructedMethod cm, string s1, string s2) {
 
 query predicate test34(UnboundGeneric ug, string s1, string s2) {
   ug.fromSource() and
-  exists(string qualifier, string name |
-    ug.hasFullyQualifiedName(qualifier, name) and s1 = getQualifiedName(qualifier, name)
-  ) and
-  getFullyQualifiedNameWithTypes(ug) = s2
+  s1 = ug.getFullyQualifiedNameDebug() and
+  s2 = getFullyQualifiedNameWithTypes(ug)
 }
 
 query predicate test35(UnboundGenericMethod gm, string s1, string s2) {
   gm.fromSource() and
-  exists(string namespace, string type, string name |
-    gm.hasFullyQualifiedName(namespace, type, name) and s1 = getQualifiedName(namespace, type, name)
-  ) and
-  getFullyQualifiedNameWithTypes(gm) = s2
+  s1 = gm.getFullyQualifiedNameDebug() and
+  s2 = getFullyQualifiedNameWithTypes(gm)
 }

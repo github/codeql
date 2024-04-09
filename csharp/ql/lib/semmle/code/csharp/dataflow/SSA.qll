@@ -3,7 +3,6 @@
  */
 
 import csharp
-private import semmle.code.csharp.commons.QualifiedName
 
 /**
  * Provides classes for working with static single assignment (SSA) form.
@@ -121,12 +120,7 @@ module Ssa {
           result = prefix + "." + this.getAssignable()
         |
           if f.(Modifiable).isStatic()
-          then
-            exists(string qualifier, string name |
-              f.getDeclaringType().hasFullyQualifiedName(qualifier, name)
-            |
-              prefix = getQualifiedName(qualifier, name)
-            )
+          then prefix = f.getDeclaringType().getName()
           else prefix = "this"
         )
       }
