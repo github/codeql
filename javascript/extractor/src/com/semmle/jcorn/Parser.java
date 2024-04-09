@@ -3108,7 +3108,7 @@ public class Parser {
       if (stmt != null) body.add(stmt);
       if (first && allowStrict && this.isUseStrict(stmt)) {
         oldStrict = this.strict;
-        this.setStrict(this.strict = true);
+        this.setStrict(true);
       }
       first = false;
     }
