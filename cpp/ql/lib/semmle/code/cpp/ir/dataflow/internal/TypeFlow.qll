@@ -7,7 +7,7 @@ private module Input implements TypeFlowInput<Location> {
     // The address of a variable is always a single object
     i instanceof VariableAddressInstruction
     or
-    // A reference always points to a always a single object
+    // A reference always points to a single object
     i.getResultLanguageType().hasUnspecifiedType(any(ReferenceType rt), false)
     or
     // `this` is never an array
