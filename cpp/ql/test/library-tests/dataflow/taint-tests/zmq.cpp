@@ -26,7 +26,7 @@ void test_zmc(void *socket, char *message_data, size_t message_len) {
   sink(message_data); // $ ast,ir
 
   if (zmq_msg_init_data(&message, message_data, message_len, 0, 0)) {
-    sink(message); // $ ast MISSING: ir
-    sink(zmq_msg_data(&message)); // $ MISSING: ast,ir
+    sink(message); // $ ast,ir
+    sink(zmq_msg_data(&message)); // $ ir MISSING: ast
   }
 }
