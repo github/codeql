@@ -6,7 +6,6 @@ bazel build //java/kotlin-extractor:codeql-extractor-kotlin-<variant>-<version>
 ```
 where `<variant>` is either `standalone` or `embeddable`, and `<version>` is one of the supported versions.
 
-
 ```
 bazel build //java/kotlin-extractor
 ```
@@ -47,14 +46,6 @@ _extractor_name_prefix = "%s-%s" % (
 py_binary(
     name = "generate_dbscheme",
     srcs = ["generate_dbscheme.py"],
-)
-
-genrule(
-    name = "generated-dbscheme",
-    srcs = ["@codeql//java:dbscheme"],
-    outs = ["KotlinExtractorDbScheme.kt"],
-    cmd = "$(execpath :generate_dbscheme) $< $@",
-    tools = [":generate_dbscheme"],
 )
 
 _resources = [
@@ -102,7 +93,7 @@ _resources = [
         kt_jvm_library(
             name = "%s-%s" % (_extractor_name_prefix, v),
             srcs =
-                [":generated-dbscheme"] +
+                ["@codeql//java/kotlin-extractor:generated-dbscheme"] +
                 glob(
                     [
                         "src/**/*.kt",
@@ -141,12 +132,15 @@ _resources = [
     for v in VERSIONS
 ]
 
-# default aliases, based on the kotlinc version installed on the host
-# * default version can be overridden with env variable CODEQL_KOTLIN_SINGLE_VERSION
-# * setting CODEQL_KOTLIN_SINGLE_VERSION_EMBEDDABLE=true overrides the default variant
-# * when a new kotlinc version is installed, you'll need to either `bazel clean` or
-#   `bazel fetch --force @codeql_kotlin_defaults//:all` to refresh the default
 (
+    genrule(
+        name = "generated-dbscheme",
+        srcs = ["@codeql//java:dbscheme"],
+        outs = ["KotlinExtractorDbScheme.kt"],
+        cmd = "$(execpath :generate_dbscheme) $< $@",
+        tools = [":generate_dbscheme"],
+        visibility = ["@codeql_kotlin_embeddable//:__pkg__"],
+    ),
     alias(
         name = "%s-standalone" % _common_extractor_name_prefix,
         actual = "%s-standalone-%s" % (

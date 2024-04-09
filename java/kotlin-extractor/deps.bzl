@@ -62,10 +62,6 @@ def _embeddable_source_impl(repository_ctx):
         )
         repository_ctx.file(str(src).replace(str(src_dir), "src"), contents)
     repository_ctx.symlink(
-        Label("//java/kotlin-extractor:generate_dbscheme.py"),
-        "generate_dbscheme.py",
-    )
-    repository_ctx.symlink(
         Label("//java/kotlin-extractor:BUILD.bazel"),
         "BUILD.bazel",
     )
