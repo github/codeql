@@ -863,34 +863,37 @@ module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
          */
         pragma[nomagic]
         private predicate parameterValueFlowCand(ParamNode p, Node node, boolean read) {
-          p = node and
-          read = false
-          or
-          // local flow
-          exists(Node mid |
-            parameterValueFlowCand(p, mid, read) and
-            simpleLocalFlowStep(mid, node) and
-            validParameterAliasStep(mid, node)
-          )
-          or
-          // read
-          exists(Node mid |
-            parameterValueFlowCand(p, mid, false) and
-            readSet(mid, _, node) and
-            read = true
-          )
-          or
-          // flow through: no prior read
-          exists(ArgNode arg |
-            parameterValueFlowArgCand(p, arg, false) and
-            argumentValueFlowsThroughCand(arg, node, read)
-          )
-          or
-          // flow through: no read inside method
-          exists(ArgNode arg |
-            parameterValueFlowArgCand(p, arg, read) and
-            argumentValueFlowsThroughCand(arg, node, false)
-          )
+          (
+            p = node and
+            read = false
+            or
+            // local flow
+            exists(Node mid |
+              parameterValueFlowCand(p, mid, read) and
+              simpleLocalFlowStep(mid, node) and
+              validParameterAliasStep(mid, node)
+            )
+            or
+            // read
+            exists(Node mid |
+              parameterValueFlowCand(p, mid, false) and
+              readSet(mid, _, node) and
+              read = true
+            )
+            or
+            // flow through: no prior read
+            exists(ArgNode arg |
+              parameterValueFlowArgCand(p, arg, false) and
+              argumentValueFlowsThroughCand(arg, node, read)
+            )
+            or
+            // flow through: no read inside method
+            exists(ArgNode arg |
+              parameterValueFlowArgCand(p, arg, read) and
+              argumentValueFlowsThroughCand(arg, node, false)
+            )
+          ) and
+          not expectsContentCached(node, _)
         }
 
         pragma[nomagic]
