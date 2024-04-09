@@ -23,12 +23,12 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public const string CheckNugetFeedResponsiveness = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK";
 
         /// <summary>
-        /// Specifies the NuGet feeds to exclude from the responsiveness check.
+        /// Specifies the NuGet feeds to exclude from the responsiveness check. The value is a space-separated list of feed URLs.
         /// </summary>
         public const string ExcludedNugetFeedsFromResponsivenessCheck = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_EXCLUDED";
 
         /// <summary>
-        /// Specifies the timeout for the initial check of NuGet feeds responsiveness.
+        /// Specifies the timeout (as an integer) in milliseconds for the initial check of NuGet feeds responsiveness. The value is then doubled for each subsequent check.
         /// </summary>
         public const string NugetFeedResponsivenessInitialTimeout = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_TIMEOUT";
 
