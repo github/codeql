@@ -457,18 +457,14 @@ newtype TPosition =
 
 private newtype TReturnKind =
   TNormalReturnKind(int indirectionIndex) {
-    indirectionIndex =
-      [0 .. max(Ssa::Function f |
-          |
-          Ssa::getMaxIndirectionsForType(f.getUnspecifiedType()) - 1 // -1 because a returned value is a prvalue not a glvalue
-        )]
+    Ssa::hasIndirectOperand(any(ReturnValueInstruction ret).getReturnAddressOperand(),
+      indirectionIndex + 1) // We subtract one because the return loads the value.
   } or
   TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
-    indirectionIndex =
-      [0 .. max(Ssa::Function f |
-          |
-          Ssa::getMaxIndirectionsForType(f.getParameter(argumentIndex).getUnspecifiedType()) - 1 // -1 because an argument is a prvalue not a glvalue
-        )]
+    exists(Ssa::FinalParameterUse use |
+      use.getIndirectionIndex() = indirectionIndex and
+      use.getArgumentIndex() = argumentIndex
+    )
   }
 
 /**
@@ -994,11 +990,10 @@ class CastNode extends Node {
 
 cached
 newtype TDataFlowCallable =
-  TSourceCallable(Cpp::Declaration decl) { not decl instanceof FlowSummaryImpl::Public::SummarizedCallable }
-  or
-  TSummarizedCallable(
-    FlowSummaryImpl::Public::SummarizedCallable c
-  )
+  TSourceCallable(Cpp::Declaration decl) {
+    not decl instanceof FlowSummaryImpl::Public::SummarizedCallable
+  } or
+  TSummarizedCallable(FlowSummaryImpl::Public::SummarizedCallable c)
 
 /**
  * A callable, which may be:
@@ -1182,7 +1177,6 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   // or `getArgumentOperand(int index)`. This is because the flow summary
   // library is responsible for finding the call target, and there are no
   // IR nodes available for the call target operand or argument operands.
-
   override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
