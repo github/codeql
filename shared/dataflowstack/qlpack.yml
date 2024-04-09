@@ -4,4 +4,5 @@ groups: shared
 library: true
 dependencies:
   codeql/dataflow: ${workspace}
+  codeql/util: ${workspace}
 warnOnImplicitThis: true
