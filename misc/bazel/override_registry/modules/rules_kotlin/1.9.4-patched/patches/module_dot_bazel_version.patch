@@ -1,0 +1,12 @@
+===================================================================
+--- a/MODULE.bazel
++++ b/MODULE.bazel
+@@ -1,7 +1,7 @@
+ module(
+     name = "rules_kotlin",
+-    version = "1.9.0",
++    version = "1.9.4",
+     repo_name = "rules_kotlin",
+ )
+ 
+ bazel_dep(name = "platforms", version = "0.0.6")

@@ -1,0 +1,11 @@
+{
+    "homepage": "https://github.com/bazelbuild/rules_kotlin",
+    "maintainers": [],
+    "repository": [
+        "github:bazelbuild/rules_kotlin"
+    ],
+    "versions": [
+        "1.9.4-patched"
+    ],
+    "yanked_versions": {}
+}
