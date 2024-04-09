@@ -120,10 +120,13 @@ private module Input implements TypeFlowInput<Location> {
    * calls to this function.
    */
   private predicate isPrivate(Function func) {
+    // static functions have internal linkage
     func.isStatic()
     or
-    func.getNamespace().getParentNamespace*().isInline()
+    // anonymous namespaces have internal linkage
+    func.getNamespace().getParentNamespace*().isAnonymous()
     or
+    // private member functions are only called internally from inside the class
     func.(MemberFunction).isPrivate()
   }
 
