@@ -457,16 +457,32 @@ newtype TPosition =
 
 private newtype TReturnKind =
   TNormalReturnKind(int indirectionIndex) {
+    // derive a possible return indirection from SSA
+    // (this is a more durable approach if SSA infers additional indirections for any reason)
     Ssa::hasIndirectOperand(any(ReturnValueInstruction ret).getReturnAddressOperand(),
       indirectionIndex + 1) // We subtract one because the return loads the value.
     or
-    indirectionIndex = FlowSummaryImpl::returnIndirectionForModelledFunction()
+    // derive a possible return kind from the AST
+    // (this approach includes functions declared that have no body; they may still have flow summaries)
+    indirectionIndex =
+      [0 .. max(Ssa::Function f |
+          |
+          Ssa::getMaxIndirectionsForType(f.getUnspecifiedType()) - 1 // -1 because a returned value is a prvalue not a glvalue
+        )]
   } or
   TIndirectReturnKind(int argumentIndex, int indirectionIndex) {
+    // derive a possible return argument from SSA
     exists(Ssa::FinalParameterUse use |
       use.getIndirectionIndex() = indirectionIndex and
       use.getArgumentIndex() = argumentIndex
     )
+    or
+    // derive a possible return argument from the AST
+    indirectionIndex =
+      [0 .. max(Ssa::Function f |
+          |
+          Ssa::getMaxIndirectionsForType(f.getParameter(argumentIndex).getUnspecifiedType()) - 1 // -1 because an argument is a prvalue not a glvalue
+        )]
   }
 
 /**

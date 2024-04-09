@@ -262,25 +262,3 @@ module Private {
 }
 
 module Public = Impl::Public;
-
-/**
- * Gets a number of indirections that can be returned by a function
- * modelled using models-as-data.
- */
-int returnIndirectionForModelledFunction() {
-  exists(string inputOutput |
-    (
-      sourceModel(_, _, _, _, _, _, inputOutput, _, _) or
-      sinkModel(_, _, _, _, _, _, inputOutput, _, _) or
-      summaryModel(_, _, _, _, _, _, inputOutput, _, _, _) or
-      summaryModel(_, _, _, _, _, _, _, inputOutput, _, _)
-    ) and (
-      // Return the number of stars in `ReturnValue[...]`
-      result = inputOutput.regexpCapture("ReturnValue\\[(\\*+)\\]", 1).length()
-      or
-      // There are no brackets the result is 0
-      inputOutput = "ReturnValue" and
-      result = 0
-    )
-  )
-}
