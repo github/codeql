@@ -444,9 +444,9 @@ void test_function_pointers() {
 	sink(madCallArg0ReturnToReturn(&notASource));
 	sink(madCallArg0ReturnToReturn(&getTainted)); // $ ir
 	sink(madCallArg0ReturnToReturn(&source)); // $ MISSING: ir
-	sink(madCallArg0ReturnToReturnFirst(&source).first); // $ MISSING: ir
-	sink(madCallArg0ReturnToReturnFirst(&source).second);
-	madCallArg0WithValue(&useValue, 0);
+	sink(madCallArg0ReturnToReturnFirst(&getTainted).first); // $ ir
+	sink(madCallArg0ReturnToReturnFirst(&getTainted).second);
+
 	madCallArg0WithValue(&useValue, source());
 	madCallArg0WithValue(&sink, source()); // $ MISSING: ir
 	madCallReturnValueIgnoreFunction(&sink, source());
