@@ -216,5 +216,20 @@ namespace ZipSlip
                 }
             }
         }
+
+        /**
+        * Negative - dangerous path terminates early due to exception thrown by guarded condition.
+        */
+        static void fp_throw(ZipArchive archive, string root){
+            foreach (var entry in archive.Entries){
+                string destinationOnDisk = Path.GetFullPath(Path.Combine(root, entry.FullName));
+                string fullRoot = Path.GetFullPath(root + Path.DirectorySeparatorChar);
+                if (!destinationOnDisk.StartsWith(fullRoot)){
+                    throw new Exception("Entry is outside of target directory. There may have been some directory traversal sequences in filename.");
+                }
+                // NEGATIVE, above exception short circuits on invalid input by path traversal.
+                entry.ExtractToFile(destinationOnDisk, true);
+            }
+        }
     }
 }
