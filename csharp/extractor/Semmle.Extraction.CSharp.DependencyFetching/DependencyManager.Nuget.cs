@@ -12,14 +12,14 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 {
     public sealed partial class DependencyManager
     {
-        private void RestoreNugetPackages(List<FileInfo> allNonBinaryFiles, IEnumerable<string> allProjects, IEnumerable<string> allSolutions, HashSet<AssemblyLookupLocation> dllPaths)
+        private void RestoreNugetPackages(List<FileInfo> allNonBinaryFiles, IEnumerable<string> allProjects, IEnumerable<string> allSolutions, HashSet<AssemblyLookupLocation> dllLocations)
         {
             try
             {
                 var checkNugetFeedResponsiveness = EnvironmentVariables.GetBoolean(EnvironmentVariableNames.CheckNugetFeedResponsiveness);
                 if (checkNugetFeedResponsiveness && !CheckFeeds(allNonBinaryFiles))
                 {
-                    DownloadMissingPackages(allNonBinaryFiles, dllPaths, withNugetConfig: false);
+                    DownloadMissingPackages(allNonBinaryFiles, dllLocations, withNugetConfig: false);
                     return;
                 }
 
@@ -55,7 +55,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 }
 
                 nugetPackageDllPaths.ExceptWith(excludedPaths);
-                dllPaths.UnionWith(nugetPackageDllPaths.Select(p => new AssemblyLookupLocation(p)));
+                dllLocations.UnionWith(nugetPackageDllPaths.Select(p => new AssemblyLookupLocation(p)));
             }
             catch (Exception exc)
             {
@@ -72,10 +72,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .Paths
                 .Select(d => Path.Combine(packageDirectory.DirInfo.FullName, d))
                 .ToList();
-            dllPaths.UnionWith(paths.Select(p => new AssemblyLookupLocation(p)));
+            dllLocations.UnionWith(paths.Select(p => new AssemblyLookupLocation(p)));
 
             LogAllUnusedPackages(dependencies);
-            DownloadMissingPackages(allNonBinaryFiles, dllPaths);
+            DownloadMissingPackages(allNonBinaryFiles, dllLocations);
         }
 
         /// <summary>
@@ -148,7 +148,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             CompilationInfos.Add(("Failed project restore with package source error", nugetSourceFailures.ToString()));
         }
 
-        private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<AssemblyLookupLocation> dllPaths, bool withNugetConfig = true)
+        private void DownloadMissingPackages(List<FileInfo> allFiles, ISet<AssemblyLookupLocation> dllLocations, bool withNugetConfig = true)
         {
             var alreadyDownloadedPackages = GetRestoredPackageDirectoryNames(packageDirectory.DirInfo);
             var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
@@ -206,7 +206,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             CompilationInfos.Add(("Successfully ran fallback nuget restore", successCount.ToString()));
 
-            dllPaths.Add(missingPackageDirectory.DirInfo.FullName);
+            dllLocations.Add(missingPackageDirectory.DirInfo.FullName);
         }
 
         private string[] GetAllNugetConfigs(List<FileInfo> allFiles) => allFiles.SelectFileNamesByName("nuget.config").ToArray();
