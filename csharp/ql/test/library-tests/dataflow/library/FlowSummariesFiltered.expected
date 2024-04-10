@@ -6706,10 +6706,10 @@
 | System.Diagnostics;ProcessModule;false;get_FileName;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Diagnostics;ProcessModule;false;get_ModuleName;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Diagnostics;ProcessModuleCollection;false;CopyTo;(System.Diagnostics.ProcessModule[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual |
-| System.Diagnostics;ProcessStartInfo;false;ProcessStartInfo;(System.String);;Argument[0];Argument[this];taint;df-generated |
+| System.Diagnostics;ProcessStartInfo;false;ProcessStartInfo;(System.String);;Argument[0];Argument[this].Property[System.Diagnostics.ProcessStartInfo.FileName];value;manual |
 | System.Diagnostics;ProcessStartInfo;false;ProcessStartInfo;(System.String,System.Collections.Generic.IEnumerable<System.String>);;Argument[0];Argument[this];taint;df-generated |
-| System.Diagnostics;ProcessStartInfo;false;ProcessStartInfo;(System.String,System.String);;Argument[0];Argument[this];taint;df-generated |
-| System.Diagnostics;ProcessStartInfo;false;ProcessStartInfo;(System.String,System.String);;Argument[1];Argument[this];taint;df-generated |
+| System.Diagnostics;ProcessStartInfo;false;ProcessStartInfo;(System.String,System.String);;Argument[0];Argument[this].Property[System.Diagnostics.ProcessStartInfo.FileName];value;manual |
+| System.Diagnostics;ProcessStartInfo;false;ProcessStartInfo;(System.String,System.String);;Argument[1];Argument[this].Property[System.Diagnostics.ProcessStartInfo.Arguments];value;manual |
 | System.Diagnostics;ProcessStartInfo;false;get_Environment;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Diagnostics;ProcessStartInfo;false;get_EnvironmentVariables;();;Argument[this];ReturnValue;taint;df-generated |
 | System.Diagnostics;ProcessThreadCollection;false;Add;(System.Diagnostics.ProcessThread);;Argument[0];Argument[this].Element;value;manual |
