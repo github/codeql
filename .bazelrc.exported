@@ -1,4 +1,0 @@
-# these settings are shared between `codeql` and `semmle-code`
-
-# emitting jdeps does not work when building the 2.0.0+ kotlin extractor
-build --@rules_kotlin//kotlin/settings:jvm_emit_jdeps=false

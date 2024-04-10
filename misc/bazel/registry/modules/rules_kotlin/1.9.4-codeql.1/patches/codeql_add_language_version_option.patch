@@ -1,3 +1,5 @@
+We need to build different extractor variants with different -language-version options, which is not allowed
+in current kotlin_rules
 diff --git a/src/main/starlark/core/options/opts.kotlinc.bzl b/src/main/starlark/core/options/opts.kotlinc.bzl
 index 9b15fb8..c0ac2cd 100644
 --- a/src/main/starlark/core/options/opts.kotlinc.bzl

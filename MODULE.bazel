@@ -21,14 +21,7 @@ bazel_dep(name = "bazel_skylib", version = "1.5.0")
 bazel_dep(name = "abseil-cpp", version = "20240116.0", repo_name = "absl")
 bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "10.0.0")
-bazel_dep(name = "rules_kotlin", version = "1.9.4")
-
-# we patch `rules_kotlin` to allow passing `-language-version` at a jvm_kt_library level
-single_version_override(
-    module_name = "rules_kotlin",
-    patch_strip = 1,
-    patches = ["//java/kotlin-extractor:rules_kotlin.patch"],
-)
+bazel_dep(name = "rules_kotlin", version = "1.9.4-codeql.1")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(
