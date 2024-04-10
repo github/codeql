@@ -806,8 +806,8 @@ private module MassAssignmentSinks {
   }
 
   /** A call to a method that sets attributes of an database record using a hash. */
-  private class MassAssignmentCall extends MassAssignment::Sink {
-    MassAssignmentCall() {
+  private class MassAssignmentSink extends MassAssignment::Sink {
+    MassAssignmentSink() {
       exists(DataFlow::CallNode call, string name | massAssignmentCall(call, name) |
         name =
           [

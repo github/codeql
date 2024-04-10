@@ -43,10 +43,9 @@ private module Config implements DataFlow::StateConfigSig {
     state instanceof FlowState::Permitted
   }
 
-  predicate isBarrierIn(DataFlow::Node node, FlowState state) {
-    node instanceof MassAssignment::Source and
-    state instanceof FlowState::Unpermitted
-  }
+  predicate isBarrierIn(DataFlow::Node node, FlowState state) { isSource(node, state) }
+
+  predicate isBarrierOut(DataFlow::Node node, FlowState state) { isSink(node, state) }
 
   predicate isBarrier(DataFlow::Node node) { node instanceof MassAssignment::Sanitizer }
 
