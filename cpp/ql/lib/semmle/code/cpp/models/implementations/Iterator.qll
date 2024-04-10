@@ -141,12 +141,8 @@ private class IteratorCrementNonMemberOperatorModel extends IteratorCrementNonMe
   }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
-    // We have two choices here: either `buffer` must be `true` or `mustWrite`
-    // must be `false` to ensure that the IR alias analysis doesn't think that
-    // `it++` completely override the value of the iterator.
-    // We choose `mustWrite` must be `false`. In that case, the value of
-    // `buffer` isn't super important (it just decides which kind of read side
-    // effect will be emitted).
+    // See the comment on `IteratorCrementMemberOperatorModel::hasSpecificWriteSideEffect`
+    // for an explanation of these values.
     i = 0 and buffer = false and mustWrite = false
   }
 
