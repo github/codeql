@@ -88,13 +88,23 @@ module TaintedPath {
     }
   }
 
-  /**An call to ParseMultipartForm creates multipart.Form and cleans multipart.Form.FileHeader.Filename using path.Base() */
-  class MultipartClean extends Sanitizer {
-    MultipartClean() {
-      exists(DataFlow::FieldReadNode frn |
-        frn.getField().hasQualifiedName("mime/multipart", "FileHeader", "Filename") and
-        this = frn
-      )
+  /**
+   * A read from the field `Filename` of the type `mime/multipart.FileHeader`,
+   * considered as a sanitizer for path traversal.
+   *
+   * The only way to create a `mime/multipart.FileHeader` is to create a
+   * `mime/multipart.Form`, which creates the `Filename` field of each
+   * `mime/multipart.FileHeader` by calling `Part.FileName`, which calls
+   * `path/filepath.Base` on its return value. In general `path/filepath.Base`
+   * is not a sanitizer for path traversal, but in this specific case where the
+   * output is going to be used as a filename rather than a directory name, it
+   * is adequate.
+   */
+  class MimeMultipartFileHeaderFilenameSanitizer extends Sanitizer {
+    MimeMultipartFileHeaderFilenameSanitizer() {
+      this.(DataFlow::FieldReadNode)
+          .getField()
+          .hasQualifiedName("mime/multipart", "FileHeader", "Filename")
     }
   }
 
