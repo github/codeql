@@ -242,39 +242,39 @@
 | ConditionalAccess.cs:1:7:1:23 | enter ConditionalAccess | ConditionalAccess.cs:1:7:1:23 | exit ConditionalAccess | 5 |
 | ConditionalAccess.cs:3:12:3:13 | enter M1 | ConditionalAccess.cs:3:26:3:26 | access to parameter i | 2 |
 | ConditionalAccess.cs:3:12:3:13 | exit M1 (normal) | ConditionalAccess.cs:3:12:3:13 | exit M1 | 2 |
-| ConditionalAccess.cs:3:28:3:38 | call to method ToString | ConditionalAccess.cs:3:28:3:38 | call to method ToString | 1 |
-| ConditionalAccess.cs:3:40:3:49 | call to method ToLower | ConditionalAccess.cs:3:40:3:49 | call to method ToLower | 1 |
+| ConditionalAccess.cs:3:26:3:38 | call to method ToString | ConditionalAccess.cs:3:26:3:38 | call to method ToString | 1 |
+| ConditionalAccess.cs:3:26:3:49 | call to method ToLower | ConditionalAccess.cs:3:26:3:49 | call to method ToLower | 1 |
 | ConditionalAccess.cs:5:10:5:11 | enter M2 | ConditionalAccess.cs:5:26:5:26 | access to parameter s | 2 |
 | ConditionalAccess.cs:5:10:5:11 | exit M2 (normal) | ConditionalAccess.cs:5:10:5:11 | exit M2 | 2 |
-| ConditionalAccess.cs:5:28:5:34 | access to property Length | ConditionalAccess.cs:5:28:5:34 | access to property Length | 1 |
+| ConditionalAccess.cs:5:26:5:34 | access to property Length | ConditionalAccess.cs:5:26:5:34 | access to property Length | 1 |
 | ConditionalAccess.cs:7:10:7:11 | enter M3 | ConditionalAccess.cs:7:39:7:40 | access to parameter s1 | 2 |
 | ConditionalAccess.cs:7:10:7:11 | exit M3 (normal) | ConditionalAccess.cs:7:10:7:11 | exit M3 | 2 |
+| ConditionalAccess.cs:7:38:7:55 | access to property Length | ConditionalAccess.cs:7:38:7:55 | access to property Length | 1 |
 | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | ConditionalAccess.cs:7:39:7:46 | ... ?? ... | 1 |
 | ConditionalAccess.cs:7:39:7:46 | [non-null] ... ?? ... | ConditionalAccess.cs:7:39:7:46 | [non-null] ... ?? ... | 1 |
 | ConditionalAccess.cs:7:39:7:46 | [null] ... ?? ... | ConditionalAccess.cs:7:39:7:46 | [null] ... ?? ... | 1 |
 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | ConditionalAccess.cs:7:45:7:46 | access to parameter s2 | 1 |
-| ConditionalAccess.cs:7:49:7:55 | access to property Length | ConditionalAccess.cs:7:49:7:55 | access to property Length | 1 |
 | ConditionalAccess.cs:9:9:9:10 | enter M4 | ConditionalAccess.cs:9:25:9:25 | access to parameter s | 2 |
+| ConditionalAccess.cs:9:25:9:33 | access to property Length | ConditionalAccess.cs:9:25:9:33 | access to property Length | 1 |
 | ConditionalAccess.cs:9:25:9:38 | ... ?? ... | ConditionalAccess.cs:9:9:9:10 | exit M4 | 3 |
-| ConditionalAccess.cs:9:27:9:33 | access to property Length | ConditionalAccess.cs:9:27:9:33 | access to property Length | 1 |
 | ConditionalAccess.cs:9:38:9:38 | 0 | ConditionalAccess.cs:9:38:9:38 | 0 | 1 |
 | ConditionalAccess.cs:11:9:11:10 | enter M5 | ConditionalAccess.cs:13:13:13:13 | access to parameter s | 4 |
 | ConditionalAccess.cs:11:9:11:10 | exit M5 (normal) | ConditionalAccess.cs:11:9:11:10 | exit M5 | 2 |
-| ConditionalAccess.cs:13:15:13:21 | access to property Length | ConditionalAccess.cs:13:15:13:21 | access to property Length | 1 |
+| ConditionalAccess.cs:13:13:13:21 | access to property Length | ConditionalAccess.cs:13:13:13:21 | access to property Length | 1 |
 | ConditionalAccess.cs:13:25:13:25 | 0 | ConditionalAccess.cs:13:13:13:25 | ... > ... | 3 |
 | ConditionalAccess.cs:14:20:14:20 | 0 | ConditionalAccess.cs:14:13:14:21 | return ...; | 2 |
 | ConditionalAccess.cs:16:20:16:20 | 1 | ConditionalAccess.cs:16:13:16:21 | return ...; | 2 |
 | ConditionalAccess.cs:19:12:19:13 | enter M6 | ConditionalAccess.cs:19:40:19:41 | access to parameter s1 | 2 |
 | ConditionalAccess.cs:19:12:19:13 | exit M6 (normal) | ConditionalAccess.cs:19:12:19:13 | exit M6 | 2 |
-| ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:43:19:60 | call to method CommaJoinWith | 2 |
+| ConditionalAccess.cs:19:58:19:59 | access to parameter s2 | ConditionalAccess.cs:19:40:19:60 | call to method CommaJoinWith | 2 |
 | ConditionalAccess.cs:21:10:21:11 | enter M7 | ConditionalAccess.cs:23:18:23:29 | (...) ... | 5 |
 | ConditionalAccess.cs:23:13:23:38 | Nullable<Int32> j = ... | ConditionalAccess.cs:24:18:24:24 | (...) ... | 4 |
-| ConditionalAccess.cs:24:27:24:37 | call to method ToString | ConditionalAccess.cs:25:13:25:14 | "" | 4 |
+| ConditionalAccess.cs:24:17:24:37 | call to method ToString | ConditionalAccess.cs:25:13:25:14 | "" | 4 |
 | ConditionalAccess.cs:25:31:25:31 | access to local variable s | ConditionalAccess.cs:21:10:21:11 | exit M7 | 5 |
 | ConditionalAccess.cs:30:10:30:12 | enter Out | ConditionalAccess.cs:30:10:30:12 | exit Out | 5 |
 | ConditionalAccess.cs:32:10:32:11 | enter M8 | ConditionalAccess.cs:35:9:35:12 | access to property Prop | 8 |
 | ConditionalAccess.cs:32:10:32:11 | exit M8 (normal) | ConditionalAccess.cs:32:10:32:11 | exit M8 | 2 |
-| ConditionalAccess.cs:35:14:35:24 | call to method Out | ConditionalAccess.cs:35:14:35:24 | call to method Out | 1 |
+| ConditionalAccess.cs:35:9:35:24 | call to method Out | ConditionalAccess.cs:35:9:35:24 | call to method Out | 1 |
 | ConditionalAccess.cs:41:26:41:38 | enter CommaJoinWith | ConditionalAccess.cs:41:26:41:38 | exit CommaJoinWith | 8 |
 | Conditions.cs:1:7:1:16 | enter Conditions | Conditions.cs:1:7:1:16 | exit Conditions | 5 |
 | Conditions.cs:3:10:3:19 | enter IncrOrDecr | Conditions.cs:5:13:5:15 | access to parameter inc | 4 |
@@ -674,8 +674,8 @@
 | Foreach.cs:18:10:18:11 | exit M3 (normal) | Foreach.cs:18:10:18:11 | exit M3 | 2 |
 | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | Foreach.cs:20:9:21:11 | foreach (... ... in ...) ... | 1 |
 | Foreach.cs:20:22:20:22 | String x | Foreach.cs:21:11:21:11 | ; | 2 |
+| Foreach.cs:20:27:20:38 | call to method ToArray<String> | Foreach.cs:20:27:20:38 | call to method ToArray<String> | 1 |
 | Foreach.cs:20:27:20:68 | ... ?? ... | Foreach.cs:20:27:20:68 | ... ?? ... | 1 |
-| Foreach.cs:20:29:20:38 | call to method ToArray<String> | Foreach.cs:20:29:20:38 | call to method ToArray<String> | 1 |
 | Foreach.cs:20:43:20:68 | call to method Empty<String> | Foreach.cs:20:43:20:68 | call to method Empty<String> | 1 |
 | Foreach.cs:24:10:24:11 | enter M4 | Foreach.cs:26:36:26:39 | access to parameter args | 3 |
 | Foreach.cs:24:10:24:11 | exit M4 (normal) | Foreach.cs:24:10:24:11 | exit M4 | 2 |
@@ -1138,7 +1138,7 @@
 | Switch.cs:98:16:98:20 | false | Switch.cs:98:9:98:21 | return ...; | 2 |
 | Switch.cs:101:9:101:10 | enter M9 | Switch.cs:103:17:103:17 | access to parameter s | 4 |
 | Switch.cs:101:9:101:10 | exit M9 (normal) | Switch.cs:101:9:101:10 | exit M9 | 2 |
-| Switch.cs:103:19:103:25 | access to property Length | Switch.cs:103:19:103:25 | access to property Length | 1 |
+| Switch.cs:103:17:103:25 | access to property Length | Switch.cs:103:17:103:25 | access to property Length | 1 |
 | Switch.cs:105:13:105:19 | case ...: | Switch.cs:105:18:105:18 | 0 | 2 |
 | Switch.cs:105:28:105:28 | 0 | Switch.cs:105:21:105:29 | return ...; | 2 |
 | Switch.cs:106:13:106:19 | case ...: | Switch.cs:106:18:106:18 | 1 | 2 |
@@ -1166,6 +1166,7 @@
 | Switch.cs:126:13:126:19 | return ...; | Switch.cs:126:13:126:19 | return ...; | 1 |
 | Switch.cs:129:12:129:14 | enter M12 | Switch.cs:131:28:131:35 | String s | 4 |
 | Switch.cs:131:9:131:67 | return ...; | Switch.cs:129:12:129:14 | exit M12 | 3 |
+| Switch.cs:131:16:131:66 | call to method ToString | Switch.cs:131:16:131:66 | call to method ToString | 1 |
 | Switch.cs:131:17:131:53 | [non-null] ... switch { ... } | Switch.cs:131:17:131:53 | [non-null] ... switch { ... } | 1 |
 | Switch.cs:131:17:131:53 | [null] ... switch { ... } | Switch.cs:131:17:131:53 | [null] ... switch { ... } | 1 |
 | Switch.cs:131:28:131:40 | [non-null] ... => ... | Switch.cs:131:28:131:40 | [non-null] ... => ... | 1 |
@@ -1174,7 +1175,6 @@
 | Switch.cs:131:43:131:43 | _ | Switch.cs:131:43:131:43 | _ | 1 |
 | Switch.cs:131:43:131:51 | [null] ... => ... | Switch.cs:131:43:131:51 | [null] ... => ... | 1 |
 | Switch.cs:131:48:131:51 | null | Switch.cs:131:48:131:51 | null | 1 |
-| Switch.cs:131:56:131:66 | call to method ToString | Switch.cs:131:56:131:66 | call to method ToString | 1 |
 | Switch.cs:134:9:134:11 | enter M13 | Switch.cs:139:18:139:18 | 1 | 6 |
 | Switch.cs:134:9:134:11 | exit M13 (normal) | Switch.cs:134:9:134:11 | exit M13 | 2 |
 | Switch.cs:138:13:138:20 | default: | Switch.cs:138:22:138:31 | return ...; | 4 |
