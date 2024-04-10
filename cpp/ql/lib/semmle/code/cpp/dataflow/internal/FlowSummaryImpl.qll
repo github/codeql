@@ -52,7 +52,8 @@ module Input implements InputSig<Location, DataFlowImplSpecific::CppDataFlow> {
    * Supports ranges (`Argument[x..y]`), qualifiers (`Argument[-1]`), indirections
    * (`Argument[*x]`) and combinations (such as `Argument[**0..1]`).
    */
-  private bindingset[argString] TPosition decodePosition(string argString) {
+  bindingset[argString]
+  private TPosition decodePosition(string argString) {
     exists(int indirection, string posString, int pos |
       argString = repeatStars(indirection) + posString and
       pos = AccessPath::parseInt(posString) and
@@ -118,7 +119,9 @@ module SourceSinkInterpretationInput implements
    * Holds if an external source specification exists for `e` with output specification
    * `output`, kind `kind`, and provenance `provenance`.
    */
-  predicate sourceElement(SourceOrSinkElement e, string output, string kind, Public::Provenance provenance) {
+  predicate sourceElement(
+    SourceOrSinkElement e, string output, string kind, Public::Provenance provenance
+  ) {
     exists(
       string namespace, string type, boolean subtypes, string name, string signature, string ext
     |
@@ -131,7 +134,9 @@ module SourceSinkInterpretationInput implements
    * Holds if an external sink specification exists for `e` with input specification
    * `input`, kind `kind` and provenance `provenance`.
    */
-  predicate sinkElement(SourceOrSinkElement e, string input, string kind, Public::Provenance provenance) {
+  predicate sinkElement(
+    SourceOrSinkElement e, string input, string kind, Public::Provenance provenance
+  ) {
     exists(
       string package, string type, boolean subtypes, string name, string signature, string ext
     |
