@@ -269,5 +269,36 @@ namespace Semmle.Extraction.Tests
             var lastArgs = dotnetCliInvoker.GetLastArgs();
             Assert.Equal("exec myarg1 myarg2", lastArgs);
         }
+
+        [Fact]
+        public void TestNugetFeeds()
+        {
+            // Setup
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
+
+            // Execute
+            dotnet.GetNugetFeeds("abc");
+
+            // Verify
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
+            Assert.Equal("nuget list source --format Short --configfile \"abc\"", lastArgs);
+        }
+
+        [Fact]
+        public void TestNugetFeedsFromFolder()
+        {
+            // Setup
+            var dotnetCliInvoker = new DotNetCliInvokerStub(new List<string>());
+            var dotnet = MakeDotnet(dotnetCliInvoker);
+
+            // Execute
+            dotnet.GetNugetFeedsFromFolder("abc");
+
+            // Verify
+            var lastArgs = dotnetCliInvoker.GetLastArgs();
+            Assert.Equal("nuget list source --format Short", lastArgs);
+            Assert.Equal("abc", dotnetCliInvoker.WorkingDirectory);
+        }
     }
 }
