@@ -4,11 +4,11 @@
    :stub-columns: 1
 
    Language,Variants,Compilers,Extensions
-   C/C++,"C89, C99, C11, C17, C++98, C++03, C++11, C++14, C++17, C++20 [1]_ [2]_","Clang (including clang-cl [3]_ and armclang) extensions (up to Clang 12.0),
+   C/C++,"C89, C99, C11, C17, C++98, C++03, C++11, C++14, C++17, C++20 [1]_ [2]_","Clang (including clang-cl [3]_ and armclang) extensions (up to Clang 17.0),
 
-   GNU extensions (up to GCC 11.1),
+   GNU extensions (up to GCC 13.2),
 
-   Microsoft extensions (up to VS 2019),
+   Microsoft extensions (up to VS 2022),
 
    Arm Compiler 5 [4]_","``.cpp``, ``.c++``, ``.cxx``, ``.hpp``, ``.hh``, ``.h++``, ``.hxx``, ``.c``, ``.cc``, ``.h``"
    C#,C# up to 12,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
@@ -29,7 +29,7 @@
 
 .. container:: footnote-group
 
-    .. [1] C++20 support is currently in beta. Supported for GCC on Linux only. Modules are *not* supported.
+    .. [1] C++20 support is currently in beta. Modules are *not* supported.
     .. [2] Objective-C, Objective-C++, C++/CLI, and C++/CX are not supported.
     .. [3] Support for the clang-cl compiler is preliminary.
     .. [4] Support for the Arm Compiler (armcc) is preliminary.

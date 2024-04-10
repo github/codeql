@@ -27,5 +27,12 @@ namespace Semmle.Util
             }
             return threads;
         }
+
+        public static bool GetBoolean(string name)
+        {
+            var env = Environment.GetEnvironmentVariable(name);
+            var _ = bool.TryParse(env, out var value);
+            return value;
+        }
     }
 }
