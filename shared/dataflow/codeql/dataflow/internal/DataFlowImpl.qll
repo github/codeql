@@ -7,12 +7,13 @@
 private import codeql.util.Unit
 private import codeql.util.Option
 private import codeql.util.Boolean
+private import codeql.util.Location
 private import codeql.dataflow.DataFlow
 
-module MakeImpl<InputSig Lang> {
+module MakeImpl<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
-  private import DataFlowMake<Lang>
-  private import DataFlowImplCommon::MakeImplCommon<Lang>
+  private import DataFlowMake<Location, Lang>
+  private import DataFlowImplCommon::MakeImplCommon<Location, Lang>
   private import DataFlowImplCommonPublic
 
   /**
@@ -92,6 +93,9 @@ module MakeImpl<InputSig Lang> {
      * value of 0 disables field flow), or a larger value to get more results.
      */
     int fieldFlowBranchLimit();
+
+    /** Gets the access path limit. */
+    int accessPathLimit();
 
     /**
      * Gets a data flow configuration feature to add restrictions to the set of
@@ -192,11 +196,7 @@ module MakeImpl<InputSig Lang> {
         pragma[only_bind_out](this).getDataFlowType0() = pragma[only_bind_into](result)
       }
 
-      predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        this.projectToNode().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
+      Location getLocation() { result = this.projectToNode().getLocation() }
     }
 
     private class ArgNodeEx extends NodeEx {
@@ -452,16 +452,23 @@ module MakeImpl<InputSig Lang> {
     private predicate notExpectsContent(NodeEx n) { not expectsContentCached(n.asNode(), _) }
 
     pragma[nomagic]
+    private predicate storeExUnrestricted(
+      NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
+    ) {
+      store(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode()),
+        contentType, containerType) and
+      stepFilter(node1, node2)
+    }
+
+    pragma[nomagic]
     private predicate hasReadStep(Content c) { read(_, c, _) }
 
     pragma[nomagic]
     private predicate storeEx(
       NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
-      store(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode()),
-        contentType, containerType) and
-      hasReadStep(c) and
-      stepFilter(node1, node2)
+      storeExUnrestricted(node1, c, node2, contentType, containerType) and
+      hasReadStep(c)
     }
 
     pragma[nomagic]
@@ -477,7 +484,9 @@ module MakeImpl<InputSig Lang> {
     /**
      * Holds if field flow should be used for the given configuration.
      */
-    private predicate useFieldFlow() { Config::fieldFlowBranchLimit() >= 1 }
+    private predicate useFieldFlow() {
+      Config::fieldFlowBranchLimit() >= 1 and Config::accessPathLimit() > 0
+    }
 
     private predicate hasSourceCallCtx() {
       exists(FlowFeature feature | feature = Config::getAFeature() |
@@ -2522,7 +2531,10 @@ module MakeImpl<InputSig Lang> {
 
       bindingset[c, t, tail]
       Ap apCons(Content c, Typ t, Ap tail) {
-        result = true and exists(c) and exists(t) and exists(tail)
+        result = true and
+        exists(c) and
+        exists(t) and
+        if tail = true then Config::accessPathLimit() > 1 else any()
       }
 
       class ApHeadContent = Unit;
@@ -3026,11 +3038,11 @@ module MakeImpl<InputSig Lang> {
       } or
       TConsCons(Content c1, DataFlowType t, Content c2, int len) {
         Stage4::consCand(c1, t, TFrontHead(c2)) and
-        len in [2 .. accessPathLimit()] and
+        len in [2 .. Config::accessPathLimit()] and
         not expensiveLen2unfolding(c1)
       } or
       TCons1(Content c, int len) {
-        len in [1 .. accessPathLimit()] and
+        len in [1 .. Config::accessPathLimit()] and
         expensiveLen2unfolding(c)
       }
 
@@ -3305,11 +3317,7 @@ module MakeImpl<InputSig Lang> {
 
       override string toString() { result = p + concat(" : " + ppReprType(t)) + " " + ap }
 
-      predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        p.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
+      Location getLocation() { result = p.getLocation() }
     }
 
     /**
@@ -3727,18 +3735,8 @@ module MakeImpl<InputSig Lang> {
             this.ppSummaryCtx()
       }
 
-      /**
-       * Holds if this element is at the specified location.
-       * The location spans column `startcolumn` of line `startline` to
-       * column `endcolumn` of line `endline` in file `filepath`.
-       * For more information, see
-       * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
-       */
-      predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        this.getNodeEx().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-      }
+      /** Gets the location of this node. */
+      Location getLocation() { result = this.getNodeEx().getLocation() }
     }
 
     /** Holds if `n` can reach a sink. */
@@ -3774,6 +3772,9 @@ module MakeImpl<InputSig Lang> {
        */
       final string toStringWithContext() { result = super.toStringWithContext() }
 
+      /** Gets the location of this node. */
+      Location getLocation() { result = super.getLocation() }
+
       /**
        * Holds if this element is at the specified location.
        * The location spans column `startcolumn` of line `startline` to
@@ -3781,10 +3782,11 @@ module MakeImpl<InputSig Lang> {
        * For more information, see
        * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
        */
-      final predicate hasLocationInfo(
+      pragma[inline]
+      deprecated final predicate hasLocationInfo(
         string filepath, int startline, int startcolumn, int endline, int endcolumn
       ) {
-        super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+        this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
       }
 
       /** Gets the underlying `Node`. */
@@ -3946,11 +3948,7 @@ module MakeImpl<InputSig Lang> {
 
       override string toString() { result = sourceGroup }
 
-      override predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
-      }
+      override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
     }
 
     private class PathNodeSinkGroup extends PathNodeImpl, TPathNodeSinkGroup {
@@ -3968,11 +3966,7 @@ module MakeImpl<InputSig Lang> {
 
       override string toString() { result = sinkGroup }
 
-      override predicate hasLocationInfo(
-        string filepath, int startline, int startcolumn, int endline, int endcolumn
-      ) {
-        filepath = "" and startline = 0 and startcolumn = 0 and endline = 0 and endcolumn = 0
-      }
+      override Location getLocation() { result.hasLocationInfo("", 0, 0, 0, 0) }
     }
 
     private predicate pathNode(
@@ -4300,8 +4294,7 @@ module MakeImpl<InputSig Lang> {
           pragma[only_bind_into](apout)) and
         pathIntoCallable(arg, par, _, _, innercc, sc, _) and
         paramFlowsThrough(kind, pragma[only_bind_into](sout), innercc, sc,
-          pragma[only_bind_into](t), pragma[only_bind_into](apout), _) and
-        not arg.isHidden()
+          pragma[only_bind_into](t), pragma[only_bind_into](apout), _)
       }
 
       /**
@@ -4332,9 +4325,8 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
-      private PathNodeImpl localStepToHidden(PathNodeImpl n) {
+      private PathNodeImpl localStep(PathNodeImpl n) {
         n.getASuccessorImpl() = result and
-        result.isHidden() and
         exists(NodeEx n1, NodeEx n2 | n1 = n.getNodeEx() and n2 = result.getNodeEx() |
           localFlowBigStep(n1, _, n2, _, _, _, _) or
           storeEx(n1, _, n2, _, _) or
@@ -4342,30 +4334,90 @@ module MakeImpl<InputSig Lang> {
         )
       }
 
+      private PathNodeImpl summaryCtxStep(PathNodeImpl n) {
+        n.getASuccessorImpl() = result and
+        exists(SummaryCtxSome sc |
+          pathNode(n, _, _, _, pragma[only_bind_into](sc), _, _, _) and
+          pathNode(result, _, _, _, pragma[only_bind_into](sc), _, _, _)
+        )
+      }
+
+      private predicate localStepToHidden(PathNodeImpl n1, PathNodeImpl n2) {
+        n2 = localStep(n1) and
+        n2.isHidden()
+      }
+
+      private predicate localStepFromHidden(PathNodeImpl n1, PathNodeImpl n2) {
+        n2 = localStep(n1) and
+        n1.isHidden()
+      }
+
       pragma[nomagic]
       private predicate hasSuccessor(PathNodeImpl pred, PathNodeMid succ, NodeEx succNode) {
-        succ = pred.getANonHiddenSuccessor() and
+        succ = pred.getASuccessorImpl() and
         succNode = succ.getNodeEx()
+      }
+
+      /**
+       * Holds if `(arg, par, ret, out)` forms a subpath-tuple.
+       *
+       * All of the nodes may be hidden.
+       */
+      pragma[nomagic]
+      private predicate subpaths04(
+        PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out
+      ) {
+        exists(
+          ParamNodeEx p, NodeEx o, FlowState sout, DataFlowType t, AccessPath apout,
+          PathNodeMid out0
+        |
+          pragma[only_bind_into](arg).getASuccessorImpl() = pragma[only_bind_into](out0) and
+          subpaths03(pragma[only_bind_into](arg), p, ret, o, sout, t, apout) and
+          hasSuccessor(pragma[only_bind_into](arg), par, p) and
+          pathNode(out0, o, sout, _, _, t, apout, _)
+        |
+          out = out0 or out = out0.projectToSink()
+        )
+      }
+
+      /**
+       * Holds if `(arg, par, ret, out)` forms a subpath-tuple.
+       *
+       * `par` and `ret` are not hidden.
+       */
+      pragma[nomagic]
+      private predicate subpaths05(
+        PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out
+      ) {
+        // direct subpath
+        subpaths04(arg, any(PathNodeImpl n | localStepFromHidden*(n, par)),
+          any(PathNodeImpl n | localStepToHidden*(ret, n)), out) and
+        not par.isHidden() and
+        not ret.isHidden() and
+        ret = summaryCtxStep*(par)
+        or
+        // wrapped subpath using hidden nodes, e.g. flow through a callback inside
+        // a summarized callable
+        exists(PathNodeImpl par0, PathNodeImpl ret0 |
+          subpaths05(any(PathNodeImpl n | localStepToHidden*(par0, n)), par, ret,
+            any(PathNodeImpl n | localStepFromHidden*(n, ret0))) and
+          subpaths04(arg, par0, ret0, out)
+        )
       }
 
       /**
        * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
        * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
        * `ret -> out` is summarized as the edge `arg -> out`.
+       *
+       * None of the nodes are hidden.
        */
+      pragma[nomagic]
       predicate subpaths(PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out) {
-        exists(
-          ParamNodeEx p, NodeEx o, FlowState sout, DataFlowType t, AccessPath apout,
-          PathNodeMid out0
-        |
-          pragma[only_bind_into](arg).getANonHiddenSuccessor() = pragma[only_bind_into](out0) and
-          subpaths03(pragma[only_bind_into](arg), p, localStepToHidden*(ret), o, sout, t, apout) and
-          hasSuccessor(pragma[only_bind_into](arg), par, p) and
-          not ret.isHidden() and
-          pathNode(out0, o, sout, _, _, t, apout, _)
-        |
-          out = out0 or out = out0.projectToSink()
-        )
+        subpaths05(any(PathNodeImpl n | localStepToHidden*(arg, n)), par, ret,
+          any(PathNodeImpl n | localStepFromHidden*(n, out))) and
+        not arg.isHidden() and
+        not out.isHidden()
       }
 
       /**
@@ -4626,7 +4678,7 @@ module MakeImpl<InputSig Lang> {
 
       private newtype TPartialAccessPath =
         TPartialNil() or
-        TPartialCons(Content c, int len) { len in [1 .. accessPathLimit()] }
+        TPartialCons(Content c, int len) { len in [1 .. Config::accessPathLimit()] }
 
       /**
        * Conceptually a list of `Content`s, but only the first
@@ -4801,6 +4853,9 @@ module MakeImpl<InputSig Lang> {
             result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
           }
 
+          /** Gets the location of this node. */
+          Location getLocation() { result = this.getNodeEx().getLocation() }
+
           /**
            * Holds if this element is at the specified location.
            * The location spans column `startcolumn` of line `startline` to
@@ -4808,10 +4863,11 @@ module MakeImpl<InputSig Lang> {
            * For more information, see
            * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
            */
-          predicate hasLocationInfo(
+          pragma[inline]
+          deprecated predicate hasLocationInfo(
             string filepath, int startline, int startcolumn, int endline, int endcolumn
           ) {
-            this.getNodeEx().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+            this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
           }
 
           /** Gets the underlying `Node`. */
@@ -5092,7 +5148,7 @@ module MakeImpl<InputSig Lang> {
           midNode = mid.getNodeEx() and
           t1 = mid.getType() and
           ap1 = mid.getAp() and
-          storeEx(midNode, c, node, contentType, t2) and
+          storeExUnrestricted(midNode, c, node, contentType, t2) and
           ap2.getHead() = c and
           ap2.len() = unbindInt(ap1.len() + 1) and
           compatibleTypes(t1, contentType)
@@ -5269,7 +5325,7 @@ module MakeImpl<InputSig Lang> {
           not outBarrier(node, state) and
           // if a node is not the target of a store, we can check `clearsContent` immediately
           (
-            storeEx(_, _, node, _, _)
+            storeExUnrestricted(_, _, node, _, _)
             or
             not clearsContentEx(node, ap.getHead())
           )
@@ -5410,7 +5466,7 @@ module MakeImpl<InputSig Lang> {
         exists(NodeEx midNode |
           midNode = mid.getNodeEx() and
           ap = mid.getAp() and
-          storeEx(node, c, midNode, _, _) and
+          storeExUnrestricted(node, c, midNode, _, _) and
           ap.getHead() = c
         )
       }

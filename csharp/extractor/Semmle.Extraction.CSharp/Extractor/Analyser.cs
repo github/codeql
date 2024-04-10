@@ -66,9 +66,6 @@ namespace Semmle.Extraction.CSharp
         {
             foreach (var assembly in compilation.References.OfType<PortableExecutableReference>())
             {
-                // CIL first - it takes longer.
-                if (options.CIL)
-                    extractionTasks.Add(() => DoExtractCIL(assembly));
                 extractionTasks.Add(() => DoAnalyseReferenceAssembly(assembly));
             }
         }
@@ -177,17 +174,6 @@ namespace Semmle.Extraction.CSharp
             }
         }
 
-        private void DoExtractCIL(PortableExecutableReference r)
-        {
-            var currentTaskId = IncrementTaskCount();
-            ReportProgressTaskStarted(currentTaskId, r.FilePath);
-            var stopwatch = new Stopwatch();
-            stopwatch.Start();
-            CIL.Analyser.ExtractCIL(r.FilePath!, Logger, options, out var trapFile, out var extracted);
-            stopwatch.Stop();
-            ReportProgressTaskDone(currentTaskId, r.FilePath, trapFile, stopwatch.Elapsed, extracted ? AnalysisAction.Extracted : AnalysisAction.UpToDate);
-        }
-
         private void DoExtractTree(SyntaxTree tree)
         {
             try
@@ -203,7 +189,7 @@ namespace Semmle.Extraction.CSharp
                 // compilation.Clone() is used to allow symbols to be garbage collected.
                 using var trapWriter = transformedSourcePath.CreateTrapWriter(Logger, options.TrapCompression, discardDuplicates: false);
 
-                upToDate = options.Fast && FileIsUpToDate(sourcePath, trapWriter.TrapFile);
+                upToDate = FileIsUpToDate(sourcePath, trapWriter.TrapFile);
 
                 var currentTaskId = IncrementTaskCount();
                 ReportProgressTaskStarted(currentTaskId, sourcePath);

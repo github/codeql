@@ -12,25 +12,17 @@ namespace Semmle.Extraction.Tests
         private CSharp.Options? options;
         private CSharp.Standalone.Options? standaloneOptions;
 
-        public OptionsTests()
-        {
-            Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "");
-        }
-
         [Fact]
         public void DefaultOptions()
         {
             options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
             Assert.True(options.Cache);
-            Assert.False(options.CIL);
             Assert.Null(options.Framework);
             Assert.Null(options.CompilerName);
             Assert.Empty(options.CompilerArguments);
             Assert.True(options.Threads >= 1);
             Assert.Equal(Verbosity.Info, options.LegacyVerbosity);
             Assert.False(options.Console);
-            Assert.False(options.PDB);
-            Assert.False(options.Fast);
             Assert.Equal(TrapWriter.CompressionMode.Brotli, options.TrapCompression);
         }
 
@@ -46,25 +38,6 @@ namespace Semmle.Extraction.Tests
         {
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--nocache" });
             Assert.False(options.Cache);
-        }
-
-        [Fact]
-        public void CIL()
-        {
-            options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
-            Assert.False(options.CIL);
-
-            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_CIL", "false");
-            options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
-            Assert.False(options.CIL);
-
-            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_CIL", "true");
-            options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
-            Assert.True(options.CIL);
-
-            Environment.SetEnvironmentVariable("CODEQL_EXTRACTOR_CSHARP_OPTION_CIL", null);
-            options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
-            Assert.False(options.CIL);
         }
 
         [Fact]
@@ -142,13 +115,6 @@ namespace Semmle.Extraction.Tests
         }
 
         [Fact]
-        public void PDB()
-        {
-            options = CSharp.Options.CreateWithEnvironment(new string[] { "--pdb" });
-            Assert.True(options.PDB);
-        }
-
-        [Fact]
         public void Compiler()
         {
             options = CSharp.Options.CreateWithEnvironment(new string[] { "--compiler", "foo" });
@@ -191,14 +157,6 @@ namespace Semmle.Extraction.Tests
             standaloneOptions = CSharp.Standalone.Options.Create(new string[] { "--help" });
             Assert.False(standaloneOptions.Errors);
             Assert.True(standaloneOptions.Help);
-        }
-
-        [Fact]
-        public void Fast()
-        {
-            Environment.SetEnvironmentVariable("LGTM_INDEX_EXTRACTOR", "--fast");
-            options = CSharp.Options.CreateWithEnvironment(Array.Empty<string>());
-            Assert.True(options.Fast);
         }
 
         [Fact]

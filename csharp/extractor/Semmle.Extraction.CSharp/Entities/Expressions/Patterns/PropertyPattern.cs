@@ -7,7 +7,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
     internal class PropertyPattern : Expression
     {
         internal PropertyPattern(Context cx, PropertyPatternClauseSyntax pp, IExpressionParentEntity parent, int child) :
-            base(new ExpressionInfo(cx, null, cx.CreateLocation(pp.GetLocation()), ExprKind.PROPERTY_PATTERN, parent, child, false, null))
+            base(new ExpressionInfo(cx, null, cx.CreateLocation(pp.GetLocation()), ExprKind.PROPERTY_PATTERN, parent, child, isCompilerGenerated: false, null))
         {
             child = 0;
             foreach (var sub in pp.Subpatterns)
@@ -56,7 +56,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             };
 
         private static Expression CreateSyntheticExp(Context cx, Microsoft.CodeAnalysis.Location location, IExpressionParentEntity parent, int child) =>
-            new Expression(new ExpressionInfo(cx, null, cx.CreateLocation(location), ExprKind.PROPERTY_PATTERN, parent, child, false, null));
+            new Expression(new ExpressionInfo(cx, null, cx.CreateLocation(location), ExprKind.PROPERTY_PATTERN, parent, child, isCompilerGenerated: false, null));
 
         private static void MakeExpressions(Context cx, IExpressionParentEntity parent, SubpatternSyntax syntax, int child)
         {

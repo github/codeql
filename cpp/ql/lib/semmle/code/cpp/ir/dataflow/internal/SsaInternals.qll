@@ -103,6 +103,7 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
 
 cached
 private newtype TDefOrUseImpl =
+  TDefAddressImpl(BaseIRVariable v) or
   TDefImpl(BaseSourceVariableInstruction base, Operand address, int indirectionIndex) {
     isDef(_, _, address, base, _, indirectionIndex)
   } or
@@ -256,23 +257,63 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
 }
 
 abstract class DefImpl extends DefOrUseImpl {
-  Operand address;
   int ind;
 
   bindingset[ind]
   DefImpl() { any() }
 
-  abstract int getIndirection();
-
-  abstract Node0Impl getValue();
-
-  abstract predicate isCertain();
-
-  Operand getAddressOperand() { result = address }
-
   override int getIndirectionIndex() { result = ind }
 
   override string toString() { result = "Def of " + this.getSourceVariable() }
+
+  abstract int getIndirection();
+
+  abstract predicate isCertain();
+
+  abstract Node0Impl getValue();
+}
+
+/** An initial definition of an `IRVariable`'s address. */
+private class DefAddressImpl extends DefImpl, TDefAddressImpl {
+  BaseIRVariable v;
+
+  DefAddressImpl() {
+    this = TDefAddressImpl(v) and
+    ind = 0
+  }
+
+  final override int getIndirection() { result = 0 }
+
+  final override predicate isCertain() { any() }
+
+  final override Node0Impl getValue() { none() }
+
+  final override predicate hasIndexInBlock(IRBlock block, int index) {
+    block = v.getIRVariable().getEnclosingIRFunction().getEntryBlock() and
+    index = 0
+  }
+
+  override Cpp::Location getLocation() { result = v.getIRVariable().getLocation() }
+
+  final override SourceVariable getSourceVariable() {
+    result.getBaseVariable() = v and
+    result.getIndirection() = 0
+  }
+
+  final override BaseSourceVariableInstruction getBase() { none() }
+}
+
+/**
+ * An SSA definition that has an associated `Operand` representing the address
+ * that is being written to.
+ */
+abstract private class OperandBasedDef extends DefImpl {
+  Operand address;
+
+  bindingset[ind]
+  OperandBasedDef() { any() }
+
+  Operand getAddressOperand() { result = address }
 
   override Cpp::Location getLocation() { result = this.getAddressOperand().getUse().getLocation() }
 
@@ -281,7 +322,7 @@ abstract class DefImpl extends DefOrUseImpl {
   }
 }
 
-private class DirectDef extends DefImpl, TDefImpl {
+private class DirectDef extends OperandBasedDef, TDefImpl {
   BaseSourceVariableInstruction base;
 
   DirectDef() { this = TDefImpl(base, address, ind) }
@@ -295,7 +336,7 @@ private class DirectDef extends DefImpl, TDefImpl {
   override predicate isCertain() { isDef(true, _, address, base, _, ind) }
 }
 
-private class IteratorDef extends DefImpl, TIteratorDef {
+private class IteratorDef extends OperandBasedDef, TIteratorDef {
   BaseSourceVariableInstruction container;
 
   IteratorDef() { this = TIteratorDef(address, container, ind) }
@@ -1178,7 +1219,7 @@ class UseOrPhi extends SsaDefOrUse {
 class Def extends DefOrUse {
   override DefImpl defOrUse;
 
-  Operand getAddressOperand() { result = defOrUse.getAddressOperand() }
+  Operand getAddressOperand() { result = defOrUse.(OperandBasedDef).getAddressOperand() }
 
   Instruction getAddress() { result = this.getAddressOperand().getDef() }
 

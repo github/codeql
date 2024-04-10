@@ -459,14 +459,16 @@ private module Cached {
    * The reference is either a read of `def` or `def` itself.
    */
   cached
-  predicate lastRefBeforeRedefExt(DefinitionExt def, Cfg::BasicBlock bb, int i, DefinitionExt next) {
+  predicate lastRefBeforeRedefExt(
+    DefinitionExt def, Cfg::BasicBlock bb, int i, Cfg::BasicBlock input, DefinitionExt next
+  ) {
     exists(LocalVariable v |
-      Impl::lastRefRedefExt(def, v, bb, i, next) and
+      Impl::lastRefRedefExt(def, v, bb, i, input, next) and
       not SsaInput::variableRead(bb, i, v, false)
     )
     or
     exists(SsaInput::BasicBlock bb0, int i0 |
-      Impl::lastRefRedefExt(def, _, bb0, i0, next) and
+      Impl::lastRefRedefExt(def, _, bb0, i0, input, next) and
       adjacentDefReachesUncertainReadExt(def, bb, i, bb0, i0)
     )
   }

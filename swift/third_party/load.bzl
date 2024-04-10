@@ -1,11 +1,11 @@
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 load("@bazel_tools//tools/build_defs/repo:utils.bzl", "maybe")
 
-_swift_prebuilt_version = "swift-5.9.2-RELEASE.299"
+_swift_prebuilt_version = "swift-5.10-RELEASE.316"
 _swift_sha_map = {
-    "Linux-X64": "19e8150251601e7b27e76d1a405a72c459f9a3e2949a1e360fde15ebb4d87409",
-    "macOS-ARM64": "4aaec59489c1607be0bd9ea522c1772f9368e7e29197167d3db73e0eb4fa605f",
-    "macOS-X64": "16f3a248269a06b00c6a40567ca06d5494d9a0ce24e7dd7cb8534828639418e8",
+    "Linux-X64": "8c6769a39ec94517ed56a9bf437ffe391ab8d76268f7ece1464deb6cf414ef40",
+    "macOS-ARM64": "8541653cd3d78fd14a67150f12c96b9f522b2b51231b5d3085e356ed5f5f0a6b",
+    "macOS-X64": "69fafb0c93029e1824bc70e9d3b05d6359077da41d61eed014a4c82a35e9b56c",
 }
 
 _swift_arch_map = {
@@ -20,13 +20,13 @@ _toolchain_info = {
         platform = "ubuntu2004",
         suffix = "ubuntu20.04",
         extension = "tar.gz",
-        sha = "93477b80db16f3e5085738ade05478ed435793e39864418e737a10ac306cbd8c",
+        sha = "935d0b68757d9b1aceb6410fe0b126a28a07e362553ebba0c4bcd1c9a55d0bc5",
     ),
     "macos": struct(
         platform = "xcode",
         suffix = "osx",
         extension = "pkg",
-        sha = "68951c313b4b559878fc5be27e460c877f98d14e161f755220b063123919e896",
+        sha = "ef9bb6b38711324e1b1c89de44a27d9519d0711924c57f4df541734b04aaf6cc",
     ),
 }
 
@@ -124,14 +124,6 @@ def load_dependencies(module_ctx = None, repository_name = "codeql"):
             ),
             build_file = _build(repository_name, "swift-llvm-support"),
             sha256 = sha256,
-            patch_args = ["-p1"],
-            patches = [
-                "@%s//swift/third_party/swift-llvm-support:patches/%s.patch" % (repository_name, patch_name)
-                for patch_name in (
-                    "remove-redundant-operators",
-                    "add-constructor-to-Compilation",
-                )
-            ],
         )
 
     _toolchains(repository_name)

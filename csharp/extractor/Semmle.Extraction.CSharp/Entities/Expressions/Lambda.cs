@@ -63,7 +63,7 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         public static Lambda Create(ExpressionNodeInfo info, ParenthesizedLambdaExpressionSyntax node) => new Lambda(info, node);
 
         private Lambda(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node)
-            : this(info.SetKind(ExprKind.LAMBDA), node.Body, Enumerators.Singleton(node.Parameter), null) { }
+            : this(info.SetKind(ExprKind.LAMBDA), node.Body, [node.Parameter], null) { }
 
         public static Lambda Create(ExpressionNodeInfo info, SimpleLambdaExpressionSyntax node) => new Lambda(info, node);
 

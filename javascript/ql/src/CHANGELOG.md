@@ -1,3 +1,25 @@
+## 0.8.13
+
+### Query Metadata Changes
+
+* The `@precision` of the `js/unsafe-external-link` has been reduced to `low` to reflect the fact that modern browsers do not expose the opening window for such links. This mitigates the potential security risk of having a link with `target="_blank"`.
+
+### Minor Analysis Improvements
+
+* The call graph has been improved, leading to more alerts for data flow based queries.
+
+## 0.8.12
+
+No user-facing changes.
+
+## 0.8.11
+
+No user-facing changes.
+
+## 0.8.10
+
+No user-facing changes.
+
 ## 0.8.9
 
 ### Bug Fixes

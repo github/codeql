@@ -72,47 +72,51 @@ CfgNodes::ExprCfgNode getAPostUpdateNodeForArg(Argument arg) {
   not exists(getALastEvalNode(result))
 }
 
-/** Provides predicates related to local data flow. */
-module LocalFlow {
-  private import codeql.ruby.dataflow.internal.SsaImpl
-
-  /** An SSA definition into which another SSA definition may flow. */
-  private class SsaInputDefinitionExtNode extends SsaDefinitionExtNode {
-    SsaInputDefinitionExtNode() {
-      def instanceof Ssa::PhiNode
-      or
-      def instanceof SsaImpl::PhiReadNode
-    }
+/** An SSA definition into which another SSA definition may flow. */
+class SsaInputDefinitionExt extends SsaImpl::DefinitionExt {
+  SsaInputDefinitionExt() {
+    this instanceof Ssa::PhiNode
+    or
+    this instanceof SsaImpl::PhiReadNode
   }
 
+  predicate hasInputFromBlock(SsaImpl::DefinitionExt def, BasicBlock bb, int i, BasicBlock input) {
+    SsaImpl::lastRefBeforeRedefExt(def, bb, i, input, this)
+  }
+}
+
+/** Provides predicates related to local data flow. */
+module LocalFlow {
   /**
    * Holds if `nodeFrom` is a node for SSA definition `def`, which can reach `next`.
    */
   pragma[nomagic]
   private predicate localFlowSsaInputFromDef(
-    SsaDefinitionExtNode nodeFrom, SsaImpl::DefinitionExt def, SsaInputDefinitionExtNode next
+    SsaDefinitionExtNode nodeFrom, SsaImpl::DefinitionExt def, SsaInputNode nodeTo
   ) {
-    exists(BasicBlock bb, int i |
-      lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
+    exists(BasicBlock bb, int i, BasicBlock input, SsaInputDefinitionExt next |
+      next.hasInputFromBlock(def, bb, i, input) and
       def = nodeFrom.getDefinitionExt() and
       def.definesAt(_, bb, i, _) and
-      nodeFrom != next
+      nodeTo = TSsaInputNode(next, input)
     )
   }
 
   /**
    * Holds if `nodeFrom` is a last read of SSA definition `def`, which
-   * can reach `next`.
+   * can reach `nodeTo`.
    */
   pragma[nomagic]
-  predicate localFlowSsaInputFromRead(
-    SsaImpl::DefinitionExt def, Node nodeFrom, SsaInputDefinitionExtNode next
-  ) {
-    exists(BasicBlock bb, int i, CfgNodes::ExprCfgNode exprFrom |
-      SsaImpl::lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
+  predicate localFlowSsaInputFromRead(SsaImpl::DefinitionExt def, Node nodeFrom, SsaInputNode nodeTo) {
+    exists(
+      BasicBlock bb, int i, CfgNodes::ExprCfgNode exprFrom, BasicBlock input,
+      SsaInputDefinitionExt next
+    |
+      next.hasInputFromBlock(def, bb, i, input) and
       exprFrom = bb.getNode(i) and
       exprFrom.getExpr() instanceof VariableReadAccess and
-      exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNodeImpl).getPreUpdateNode().asExpr()]
+      exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNodeImpl).getPreUpdateNode().asExpr()] and
+      nodeTo = TSsaInputNode(next, input)
     )
   }
 
@@ -181,13 +185,16 @@ module LocalFlow {
     or
     // Flow from SSA definition to first read
     def = nodeFrom.(SsaDefinitionExtNode).getDefinitionExt() and
-    firstReadExt(def, nodeTo.asExpr())
+    SsaImpl::firstReadExt(def, nodeTo.asExpr())
     or
     // Flow from post-update read to next read
     localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNodeImpl).getPreUpdateNode(), nodeTo)
     or
     // Flow into phi (read) SSA definition node from def
     localFlowSsaInputFromDef(nodeFrom, def, nodeTo)
+    or
+    nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def and
+    def = nodeFrom.(SsaInputNode).getDefinitionExt()
     or
     localFlowSsaParamInput(nodeFrom, nodeTo) and
     def = nodeTo.(SsaDefinitionExtNode).getDefinitionExt()
@@ -322,7 +329,11 @@ private class Argument extends CfgNodes::ExprCfgNode {
 
 /** Holds if `n` is not a constant expression. */
 predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
-  not exists(n.getConstantValue()) and
+  not exists(ConstantValue cv |
+    cv = n.getConstantValue() and
+    // strings are mutable in Ruby
+    not cv.isString(_)
+  ) and
   not n.getExpr() instanceof ConstantAccess
 }
 
@@ -526,6 +537,9 @@ private module Cached {
     TExprNode(CfgNodes::ExprCfgNode n) or
     TReturningNode(CfgNodes::ReturningCfgNode n) { exists(n.getReturnedValueNode()) } or
     TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) or
+    TSsaInputNode(SsaInputDefinitionExt def, BasicBlock input) {
+      def.hasInputFromBlock(_, _, _, input)
+    } or
     TCapturedVariableNode(VariableCapture::CapturedVariable v) or
     TNormalParameterNode(Parameter p) {
       p instanceof SimpleParameter or
@@ -798,6 +812,8 @@ import Cached
 predicate nodeIsHidden(Node n) {
   n.(SsaDefinitionExtNode).isHidden()
   or
+  n instanceof SsaInputNode
+  or
   n = LocalFlow::getParameterDefNode(_)
   or
   exists(AstNode desug |
@@ -857,6 +873,57 @@ class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
   override Location getLocationImpl() { result = def.getLocation() }
 
   override string toStringImpl() { result = def.toString() }
+}
+
+/**
+ * A node that represents an input to an SSA phi (read) definition.
+ *
+ * This allows for barrier guards to filter input to phi nodes. For example, in
+ *
+ * ```rb
+ * x = taint
+ * if x != "safe" then
+ *     x = "safe"
+ * end
+ * sink x
+ * ```
+ *
+ * the `false` edge out of `x != "safe"` guards the input from `x = taint` into the
+ * `phi` node after the condition.
+ *
+ * It is also relevant to filter input into phi read nodes:
+ *
+ * ```rb
+ * x = taint
+ * if b then
+ *     if x != "safe1" then
+ *         return
+ *     end
+ * else
+ *     if x != "safe2" then
+ *         return
+ *     end
+ * end
+ *
+ * sink x
+ * ```
+ *
+ * both inputs into the phi read node after the outer condition are guarded.
+ */
+class SsaInputNode extends NodeImpl, TSsaInputNode {
+  SsaImpl::DefinitionExt def;
+  BasicBlock input;
+
+  SsaInputNode() { this = TSsaInputNode(def, input) }
+
+  /** Gets the underlying SSA definition. */
+  SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+
+  override CfgScope getCfgScope() { result = input.getScope() }
+
+  override Location getLocationImpl() { result = input.getLastNode().getLocation() }
+
+  override string toStringImpl() { result = "[input] " + def }
 }
 
 /** An SSA definition for a `self` variable. */

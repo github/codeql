@@ -57,6 +57,9 @@ newtype TParameterPosition =
     // parameter positions available.
     FlowSummaryImpl::ParsePositions::isParsedPositionalArgumentPosition(_, index)
   } or
+  TPositionalParameterLowerBoundPosition(int pos) {
+    FlowSummaryImpl::ParsePositions::isParsedArgumentLowerBoundPosition(_, pos)
+  } or
   TKeywordParameterPosition(string name) {
     name = any(Parameter p).getName()
     or
@@ -91,6 +94,9 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a positional parameter at (0-based) `index`. */
   predicate isPositional(int index) { this = TPositionalParameterPosition(index) }
 
+  /** Holds if this position represents any positional parameter starting from position `pos`. */
+  predicate isPositionalLowerBound(int pos) { this = TPositionalParameterLowerBoundPosition(pos) }
+
   /** Holds if this position represents a keyword parameter named `name`. */
   predicate isKeyword(string name) { this = TKeywordParameterPosition(name) }
 
@@ -122,6 +128,8 @@ class ParameterPosition extends TParameterPosition {
     this.isLambdaSelf() and result = "lambda self"
     or
     exists(int index | this.isPositional(index) and result = "position " + index)
+    or
+    exists(int pos | this.isPositionalLowerBound(pos) and result = "position " + pos + "..")
     or
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
     or
@@ -210,6 +218,10 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isLambdaSelf() and apos.isLambdaSelf()
   or
   exists(int index | ppos.isPositional(index) and apos.isPositional(index))
+  or
+  exists(int index1, int index2 |
+    ppos.isPositionalLowerBound(index1) and apos.isPositional(index2) and index2 >= index1
+  )
   or
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
   or
@@ -358,6 +370,10 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
   override ParameterNode getParameter(ParameterPosition ppos) {
     exists(int index | ppos.isPositional(index) |
       result.getParameter() = func.getArg(index + this.positionalOffset())
+    )
+    or
+    exists(int index1, int index2 | ppos.isPositionalLowerBound(index1) and index2 >= index1 |
+      result.getParameter() = func.getArg(index2 + this.positionalOffset())
     )
     or
     exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
@@ -860,7 +876,7 @@ private module TrackAttrReadInput implements CallGraphConstruction::Simple::Inpu
 
   predicate start(Node start, AttrRead attr) {
     start = attr and
-    attr.getObject() in [
+    pragma[only_bind_into](attr.getObject()) in [
         classTracker(_), classInstanceTracker(_), selfTracker(_), clsArgumentTracker(_),
         superCallNoArgumentTracker(_), superCallTwoArgumentTracker(_, _)
       ]
@@ -1286,9 +1302,7 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
     //
     // call_func(my_obj.some_method)
     // ```
-    exists(CfgNode cfgNode | cfgNode.getNode() = call |
-      cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
-    )
+    exists(CfgNode cfgNode | cfgNode.getNode() = call | sameEnclosingCallable(cfgNode, arg))
     or
     // cls argument for classmethod calls -- see note above about bound methods
     type instanceof CallTypeClassMethod and
@@ -1296,9 +1310,7 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
     resolveMethodCall(call, target, type, arg) and
     (arg = classTracker(_) or arg = clsArgumentTracker(_)) and
     // dataflow lib has requirement that arguments and calls are in same enclosing callable.
-    exists(CfgNode cfgNode | cfgNode.getNode() = call |
-      cfgNode.getEnclosingCallable() = arg.getEnclosingCallable()
-    )
+    exists(CfgNode cfgNode | cfgNode.getNode() = call | sameEnclosingCallable(cfgNode, arg))
     or
     // normal arguments for method calls
     (
@@ -1347,6 +1359,16 @@ predicate getCallArg(CallNode call, Function target, CallType type, Node arg, Ar
       normalCallArg(call, arg, apos)
     )
   )
+}
+
+/**
+ * join-order helper for getCallArg, since otherwise we would do cartesian product of
+ * the enclosing callables
+ */
+bindingset[node1, node2]
+pragma[inline_late]
+private predicate sameEnclosingCallable(Node node1, Node node2) {
+  node1.getEnclosingCallable() = node2.getEnclosingCallable()
 }
 
 // =============================================================================
@@ -1595,7 +1617,7 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
   override string toString() { result = this.getSummaryNode().toString() }
 
   // Hack to return "empty location"
-  override predicate hasLocationInfo(
+  deprecated override predicate hasLocationInfo(
     string file, int startline, int startcolumn, int endline, int endcolumn
   ) {
     file = "" and

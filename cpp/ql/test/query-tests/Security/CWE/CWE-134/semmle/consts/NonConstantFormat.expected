@@ -23,9 +23,7 @@ edges
 | consts.cpp:106:13:106:19 | *call to varFunc | consts.cpp:107:9:107:10 | *v5 | provenance |  |
 | consts.cpp:111:7:111:13 | *call to varFunc | consts.cpp:112:9:112:10 | *v6 | provenance |  |
 | consts.cpp:139:13:139:16 | readString output argument | consts.cpp:140:9:140:11 | *v11 | provenance |  |
-| consts.cpp:139:13:139:16 | readString output argument | consts.cpp:140:9:140:11 | v11 | provenance |  |
 | consts.cpp:144:16:144:18 | readStringRef output argument | consts.cpp:145:9:145:11 | *v12 | provenance |  |
-| consts.cpp:144:16:144:18 | readStringRef output argument | consts.cpp:145:9:145:11 | v12 | provenance |  |
 nodes
 | consts.cpp:24:7:24:9 | **gv1 | semmle.label | **gv1 |
 | consts.cpp:29:7:29:25 | **nonConstFuncToArray | semmle.label | **nonConstFuncToArray |
@@ -47,13 +45,9 @@ nodes
 | consts.cpp:130:9:130:10 | *v9 | semmle.label | *v9 |
 | consts.cpp:135:9:135:11 | *v10 | semmle.label | *v10 |
 | consts.cpp:139:13:139:16 | readString output argument | semmle.label | readString output argument |
-| consts.cpp:139:13:139:16 | readString output argument | semmle.label | readString output argument |
 | consts.cpp:140:9:140:11 | *v11 | semmle.label | *v11 |
-| consts.cpp:140:9:140:11 | v11 | semmle.label | v11 |
-| consts.cpp:144:16:144:18 | readStringRef output argument | semmle.label | readStringRef output argument |
 | consts.cpp:144:16:144:18 | readStringRef output argument | semmle.label | readStringRef output argument |
 | consts.cpp:145:9:145:11 | *v12 | semmle.label | *v12 |
-| consts.cpp:145:9:145:11 | v12 | semmle.label | v12 |
 subpaths
 #select
 | consts.cpp:86:9:86:10 | *v1 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:86:9:86:10 | *v1 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:86:2:86:7 | call to printf | printf |
@@ -78,6 +72,4 @@ subpaths
 | consts.cpp:135:9:135:11 | *v10 | consts.cpp:85:7:85:8 | gets output argument | consts.cpp:135:9:135:11 | *v10 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:135:2:135:7 | call to printf | printf |
 | consts.cpp:135:9:135:11 | *v10 | consts.cpp:90:12:90:13 | gets output argument | consts.cpp:135:9:135:11 | *v10 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:135:2:135:7 | call to printf | printf |
 | consts.cpp:140:9:140:11 | *v11 | consts.cpp:139:13:139:16 | readString output argument | consts.cpp:140:9:140:11 | *v11 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:140:2:140:7 | call to printf | printf |
-| consts.cpp:140:9:140:11 | v11 | consts.cpp:139:13:139:16 | readString output argument | consts.cpp:140:9:140:11 | v11 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:140:2:140:7 | call to printf | printf |
 | consts.cpp:145:9:145:11 | *v12 | consts.cpp:144:16:144:18 | readStringRef output argument | consts.cpp:145:9:145:11 | *v12 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:145:2:145:7 | call to printf | printf |
-| consts.cpp:145:9:145:11 | v12 | consts.cpp:144:16:144:18 | readStringRef output argument | consts.cpp:145:9:145:11 | v12 | The format string argument to $@ has a source which cannot be verified to originate from a string literal. | consts.cpp:145:2:145:7 | call to printf | printf |

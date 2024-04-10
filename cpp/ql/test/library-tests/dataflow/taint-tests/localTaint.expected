@@ -6676,6 +6676,7 @@ WARNING: Module TaintTracking has been deprecated and may be removed in future (
 | taint.cpp:757:7:757:10 | path | taint.cpp:759:8:759:11 | path |  |
 | taint.cpp:758:21:758:24 | ref arg path | taint.cpp:759:8:759:11 | path |  |
 | taint.cpp:759:8:759:11 | path | taint.cpp:759:7:759:11 | * ... |  |
+| taint.cpp:769:37:769:42 | call to source | taint.cpp:770:7:770:9 | obj |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:17:26:17:32 | source1 |  |
 | vector.cpp:16:43:16:49 | source1 | vector.cpp:31:38:31:44 | source1 |  |
 | vector.cpp:17:21:17:33 | call to vector | vector.cpp:19:14:19:14 | v |  |

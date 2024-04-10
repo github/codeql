@@ -119,7 +119,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	// root directories of packages that we want to extract
 	wantedRoots := make(map[string]bool)
 
-	if os.Getenv("CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO") != "" {
+	if os.Getenv("CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO") != "false" {
 		log.Printf("Running go list to resolve package and module directories.")
 		// get all packages information
 		pkgInfos, err = util.GetPkgsInfo(patterns, true, modFlags...)
@@ -132,9 +132,7 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	pkgsNotFound := make([]string, 0, len(pkgs))
 
 	// Do a post-order traversal and extract the package scope of each package
-	packages.Visit(pkgs, func(pkg *packages.Package) bool {
-		return true
-	}, func(pkg *packages.Package) {
+	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
 		log.Printf("Processing package %s.", pkg.PkgPath)
 
 		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
@@ -200,10 +198,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	noExtractRe := regexp.MustCompile(`.*(^|` + sep + `)(\.\.|vendor)($|` + sep + `).*`)
 
 	// extract AST information for all packages
-	packages.Visit(pkgs, func(pkg *packages.Package) bool {
-		return true
-	}, func(pkg *packages.Package) {
-		for root, _ := range wantedRoots {
+	packages.Visit(pkgs, nil, func(pkg *packages.Package) {
+		for root := range wantedRoots {
 			pkgInfo := pkgInfos[pkg.PkgPath]
 			relDir, err := filepath.Rel(root, pkgInfo.PkgDir)
 			if err != nil || noExtractRe.MatchString(relDir) {
@@ -392,6 +388,8 @@ func extractUniverseScope() {
 }
 
 // extractObjects extracts all objects declared in the given scope
+// For more information on objects, see:
+// https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) {
 	for _, name := range scope.Names() {
 		obj := scope.Lookup(name)
@@ -401,15 +399,15 @@ func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) 
 			// do not appear as objects in any scope, so they have to be dealt
 			// with separately in extractMethods.
 			if funcObj, ok := obj.(*types.Func); ok {
-				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).TypeParams(), obj)
-				populateTypeParamParents(tw, funcObj.Type().(*types.Signature).RecvTypeParams(), obj)
+				populateTypeParamParents(funcObj.Type().(*types.Signature).TypeParams(), obj)
+				populateTypeParamParents(funcObj.Type().(*types.Signature).RecvTypeParams(), obj)
 			}
 			// Populate type parameter parents for named types. Note that we
 			// skip type aliases as the original type should be the parent
 			// of any type parameters.
 			if typeNameObj, ok := obj.(*types.TypeName); ok && !typeNameObj.IsAlias() {
 				if tp, ok := typeNameObj.Type().(*types.Named); ok {
-					populateTypeParamParents(tw, tp.TypeParams(), obj)
+					populateTypeParamParents(tp.TypeParams(), obj)
 				}
 			}
 			extractObject(tw, obj, lbl)
@@ -435,8 +433,8 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 	if !exists {
 		// Populate type parameter parents for methods. They do not appear as
 		// objects in any scope, so they have to be dealt with separately here.
-		populateTypeParamParents(tw, meth.Type().(*types.Signature).TypeParams(), meth)
-		populateTypeParamParents(tw, meth.Type().(*types.Signature).RecvTypeParams(), meth)
+		populateTypeParamParents(meth.Type().(*types.Signature).TypeParams(), meth)
+		populateTypeParamParents(meth.Type().(*types.Signature).RecvTypeParams(), meth)
 		extractObject(tw, meth, methlbl)
 	}
 
@@ -444,6 +442,8 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 }
 
 // extractObject extracts a single object and emits it to the objects table.
+// For more information on objects, see:
+// https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObject(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	name := obj.Name()
 	isBuiltin := obj.Parent() == types.Universe
@@ -491,21 +491,25 @@ func extractObject(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 }
 
 // extractObjectTypes extracts type and receiver information for all objects
+// For more information on objects, see:
+// https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObjectTypes(tw *trap.Writer) {
 	// calling `extractType` on a named type will extract all methods defined
 	// on it, which will add new objects. Therefore we need to do this first
-	// before we loops over all objects and emit them.
+	// before we loop over all objects and emit them.
 	changed := true
 	for changed {
 		changed = tw.ForEachObject(extractObjectType)
 	}
 	changed = tw.ForEachObject(emitObjectType)
 	if changed {
-		log.Printf("Warning: more objects were labeled while emitted object types")
+		log.Printf("Warning: more objects were labeled while emitting object types")
 	}
 }
 
 // extractObjectType extracts type and receiver information for a given object
+// For more information on objects, see:
+// https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObjectType(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	if tp := obj.Type(); tp != nil {
 		extractType(tw, tp)
@@ -870,6 +874,10 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int, ski
 		kind = dbscheme.IdentExpr.Index()
 		dbscheme.LiteralsTable.Emit(tw, lbl, expr.Name, expr.Name)
 		def := tw.Package.TypesInfo.Defs[expr]
+		// Note that there are some cases where `expr` is in the map but `def`
+		// is nil. The docs for `tw.Package.TypesInfo.Defs` give the following
+		// examples: the package name in package clauses, or symbolic variables
+		// `t` in `t := x.(type)` of type switch headers.
 		if def != nil {
 			defTyp := extractType(tw, def.Type())
 			objlbl, exists := tw.Labeler.LookupObjectID(def, defTyp)
@@ -1010,7 +1018,10 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int, ski
 		}
 		kind = dbscheme.TypeAssertExpr.Index()
 		extractExpr(tw, expr.X, lbl, 0, false)
-		extractExpr(tw, expr.Type, lbl, 1, false)
+		// expr.Type can be `nil` if this is the `x.(type)` in a type switch.
+		if expr.Type != nil {
+			extractExpr(tw, expr.Type, lbl, 1, false)
+		}
 	case *ast.CallExpr:
 		if expr == nil {
 			return
@@ -1129,11 +1140,9 @@ func extractExpr(tw *trap.Writer, expr ast.Expr, parent trap.Label, idx int, ski
 // each child over its preceding child (usually either 1 for assigning increasing indices, or
 // -1 for decreasing indices)
 func extractExprs(tw *trap.Writer, exprs []ast.Expr, parent trap.Label, idx int, dir int) {
-	if exprs != nil {
-		for _, expr := range exprs {
-			extractExpr(tw, expr, parent, idx, false)
-			idx += dir
-		}
+	for _, expr := range exprs {
+		extractExpr(tw, expr, parent, idx, false)
+		idx += dir
 	}
 }
 
@@ -1389,13 +1398,10 @@ func extractStmt(tw *trap.Writer, stmt ast.Stmt, parent trap.Label, idx int) {
 // each child over its preceding child (usually either 1 for assigning increasing indices, or
 // -1 for decreasing indices)
 func extractStmts(tw *trap.Writer, stmts []ast.Stmt, parent trap.Label, idx int, dir int) {
-	if stmts != nil {
-		for _, stmt := range stmts {
-			extractStmt(tw, stmt, parent, idx)
-			idx += dir
-		}
+	for _, stmt := range stmts {
+		extractStmt(tw, stmt, parent, idx)
+		idx += dir
 	}
-
 }
 
 // extractDecl extracts AST information for the given declaration
@@ -1944,7 +1950,7 @@ func extractTypeParamDecls(tw *trap.Writer, fields *ast.FieldList, parent trap.L
 }
 
 // populateTypeParamParents sets `parent` as the parent of the elements of `typeparams`
-func populateTypeParamParents(tw *trap.Writer, typeparams *types.TypeParamList, parent types.Object) {
+func populateTypeParamParents(typeparams *types.TypeParamList, parent types.Object) {
 	if typeparams != nil {
 		for idx := 0; idx < typeparams.Len(); idx++ {
 			setTypeParamParent(typeparams.At(idx), parent)
@@ -1964,16 +1970,6 @@ func getObjectBeingUsed(tw *trap.Writer, ident *ast.Ident) types.Object {
 	default:
 		return obj
 	}
-}
-
-// tryGetGenericType returns the generic type of `tp`, and a boolean indicating
-// whether it is the same as `tp`.
-func tryGetGenericType(tp types.Type) (*types.Named, bool) {
-	if namedType, ok := tp.(*types.Named); ok {
-		originType := namedType.Origin()
-		return originType, namedType == originType
-	}
-	return nil, false
 }
 
 // trackInstantiatedStructFields tries to give the fields of an instantiated

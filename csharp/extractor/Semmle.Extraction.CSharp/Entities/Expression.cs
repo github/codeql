@@ -100,8 +100,14 @@ namespace Semmle.Extraction.CSharp.Entities
         /// <param name="child">The child index.</param>
         /// <param name="type">A type hint.</param>
         /// <returns>The new expression.</returns>
-        public static Expression Create(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child) =>
-            CreateFromNode(new ExpressionNodeInfo(cx, node, parent, child));
+        public static Expression Create(Context cx, ExpressionSyntax node, IExpressionParentEntity parent, int child, Boolean isCompilerGenerated = false)
+        {
+            var info = new ExpressionNodeInfo(cx, node, parent, child)
+            {
+                IsCompilerGenerated = isCompilerGenerated
+            };
+            return CreateFromNode(info);
+        }
 
         public static Expression CreateFromNode(ExpressionNodeInfo info) => Expressions.ImplicitCast.Create(info);
 

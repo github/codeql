@@ -40,6 +40,10 @@ abstract class EnvironmentVariableSource extends LocalFlowSource {
   override string getSourceType() { result = "environment variable" }
 }
 
+private class ExternalEnvironmentVariableSource extends EnvironmentVariableSource {
+  ExternalEnvironmentVariableSource() { sourceNode(this, "environment") }
+}
+
 /**
  * A dataflow source that represents the access of a command line argument.
  */
@@ -49,9 +53,26 @@ abstract class CommandLineArgumentSource extends LocalFlowSource {
   override string getSourceType() { result = "command line argument" }
 }
 
+private class ExternalCommandLineArgumentSource extends CommandLineArgumentSource {
+  ExternalCommandLineArgumentSource() { sourceNode(this, "command-line") }
+}
+
 /**
  * A data flow source that represents the parameters of the `Main` method of a program.
  */
 private class MainMethodArgumentSource extends CommandLineArgumentSource {
   MainMethodArgumentSource() { this.asParameter() = any(MainMethod mainMethod).getAParameter() }
+}
+
+/**
+ * A data flow source that represents the access of a value from the Windows registry.
+ */
+abstract class WindowsRegistrySource extends LocalFlowSource {
+  override string getThreatModel() { result = "windows-registry" }
+
+  override string getSourceType() { result = "a value from the Windows registry" }
+}
+
+private class ExternalWindowsRegistrySource extends WindowsRegistrySource {
+  ExternalWindowsRegistrySource() { sourceNode(this, "windows-registry") }
 }

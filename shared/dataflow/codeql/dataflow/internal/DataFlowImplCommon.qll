@@ -1,8 +1,9 @@
 private import codeql.dataflow.DataFlow
 private import codeql.typetracking.TypeTracking as Tt
+private import codeql.util.Location
 private import codeql.util.Unit
 
-module MakeImplCommon<InputSig Lang> {
+module MakeImplCommon<LocationSig Location, InputSig<Location> Lang> {
   private import Lang
   import Cached
 
@@ -862,34 +863,37 @@ module MakeImplCommon<InputSig Lang> {
          */
         pragma[nomagic]
         private predicate parameterValueFlowCand(ParamNode p, Node node, boolean read) {
-          p = node and
-          read = false
-          or
-          // local flow
-          exists(Node mid |
-            parameterValueFlowCand(p, mid, read) and
-            simpleLocalFlowStep(mid, node) and
-            validParameterAliasStep(mid, node)
-          )
-          or
-          // read
-          exists(Node mid |
-            parameterValueFlowCand(p, mid, false) and
-            readSet(mid, _, node) and
-            read = true
-          )
-          or
-          // flow through: no prior read
-          exists(ArgNode arg |
-            parameterValueFlowArgCand(p, arg, false) and
-            argumentValueFlowsThroughCand(arg, node, read)
-          )
-          or
-          // flow through: no read inside method
-          exists(ArgNode arg |
-            parameterValueFlowArgCand(p, arg, read) and
-            argumentValueFlowsThroughCand(arg, node, false)
-          )
+          (
+            p = node and
+            read = false
+            or
+            // local flow
+            exists(Node mid |
+              parameterValueFlowCand(p, mid, read) and
+              simpleLocalFlowStep(mid, node) and
+              validParameterAliasStep(mid, node)
+            )
+            or
+            // read
+            exists(Node mid |
+              parameterValueFlowCand(p, mid, false) and
+              readSet(mid, _, node) and
+              read = true
+            )
+            or
+            // flow through: no prior read
+            exists(ArgNode arg |
+              parameterValueFlowArgCand(p, arg, false) and
+              argumentValueFlowsThroughCand(arg, node, read)
+            )
+            or
+            // flow through: no read inside method
+            exists(ArgNode arg |
+              parameterValueFlowArgCand(p, arg, read) and
+              argumentValueFlowsThroughCand(arg, node, false)
+            )
+          ) and
+          not expectsContentCached(node, _)
         }
 
         pragma[nomagic]
@@ -1642,19 +1646,13 @@ module MakeImplCommon<InputSig Lang> {
     }
   }
 
+  final private class NodeFinal = Node;
+
   /**
    * A `Node` at which a cast can occur such that the type should be checked.
    */
-  class CastingNode instanceof Node {
+  class CastingNode extends NodeFinal {
     CastingNode() { castingNode(this) }
-
-    string toString() { result = super.toString() }
-
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
   }
 
   private predicate readStepWithTypes(
@@ -1800,16 +1798,8 @@ module MakeImplCommon<InputSig Lang> {
    * The value of a parameter at function entry, viewed as a node in a data
    * flow graph.
    */
-  class ParamNode instanceof Node {
+  class ParamNode extends NodeFinal {
     ParamNode() { parameterNode(this, _, _) }
-
-    string toString() { result = super.toString() }
-
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
 
     /**
      * Holds if this node is the parameter of callable `c` at the specified
@@ -1821,16 +1811,8 @@ module MakeImplCommon<InputSig Lang> {
   }
 
   /** A data-flow node that represents a call argument. */
-  class ArgNode instanceof Node {
+  class ArgNode extends NodeFinal {
     ArgNode() { argumentNode(this, _, _) }
-
-    string toString() { result = super.toString() }
-
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
 
     /** Holds if this argument occurs at the given position in the given call. */
     final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -1842,16 +1824,8 @@ module MakeImplCommon<InputSig Lang> {
    * A node from which flow can return to the caller. This is either a regular
    * `ReturnNode` or a `PostUpdateNode` corresponding to the value of a parameter.
    */
-  class ReturnNodeExt instanceof Node {
+  class ReturnNodeExt extends NodeFinal {
     ReturnNodeExt() { returnNodeExt(this, _) }
-
-    string toString() { result = super.toString() }
-
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
 
     /** Gets the kind of this returned value. */
     ReturnKindExt getKind() { returnNodeExt(this, result) }
@@ -1861,16 +1835,8 @@ module MakeImplCommon<InputSig Lang> {
    * A node to which data can flow from a call. Either an ordinary out node
    * or a post-update node associated with a call argument.
    */
-  class OutNodeExt instanceof Node {
+  class OutNodeExt extends NodeFinal {
     OutNodeExt() { outNodeExt(this) }
-
-    string toString() { result = super.toString() }
-
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
   }
 
   /**

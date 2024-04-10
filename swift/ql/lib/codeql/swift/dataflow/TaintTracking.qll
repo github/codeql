@@ -7,6 +7,7 @@ module TaintTracking {
   private import codeql.swift.dataflow.internal.DataFlowImplSpecific
   private import codeql.swift.dataflow.internal.TaintTrackingImplSpecific
   private import codeql.dataflow.TaintTracking
-  import TaintFlowMake<SwiftDataFlow, SwiftTaintTracking>
+  private import codeql.swift.elements.Location
+  import TaintFlowMake<Location, SwiftDataFlow, SwiftTaintTracking>
   import codeql.swift.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

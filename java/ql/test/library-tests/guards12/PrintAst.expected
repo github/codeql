@@ -52,9 +52,9 @@ Test.java:
 #   17|               0: [VarAccess] len
 #   17|               1: [IntegerLiteral] 4
 #   17|             -1: [BlockStmt] { ... }
-#-----|             0: (Single Local Variable Declaration)
+#-----|             0: (Pattern case declaration)
 #   17|               0: [TypeAccess] String
-#   17|               1: [LocalVariableDeclExpr] s2
+#   17|               1: [LocalVariableDeclExpr] <anonymous local variable>
 #   18|           1: [ConstCase] case ...
 #   18|             -1: [BlockStmt] { ... }
 #   18|             0: [StringLiteral] "e"
@@ -74,7 +74,7 @@ Test.java:
 #   23|               0: [VarAccess] len
 #   23|               1: [IntegerLiteral] 4
 #   23|             -1: [BlockStmt] { ... }
-#-----|             0: (Single Local Variable Declaration)
+#-----|             0: (Pattern case declaration)
 #   23|               0: [TypeAccess] String
 #   23|               1: [LocalVariableDeclExpr] s2
 #   24|           2: [ConstCase] case ...
@@ -82,3 +82,23 @@ Test.java:
 #   24|             0: [StringLiteral] "g"
 #   25|           3: [DefaultCase] default
 #   25|             -1: [BlockStmt] { ... }
+#   27|         5: [SwitchStmt] switch (...)
+#   27|           -1: [VarAccess] s
+#   28|           0: [ConstCase] case ...
+#   28|             0: [StringLiteral] "h"
+#   29|           1: [PatternCase] case <Pattern>
+#   29|             -3: [EQExpr] ... == ...
+#   29|               0: [VarAccess] len
+#   29|               1: [IntegerLiteral] 4
+#-----|             0: (Pattern case declaration)
+#   29|               0: [TypeAccess] String
+#   29|               1: [LocalVariableDeclExpr] <anonymous local variable>
+#   30|           2: [ConstCase] case ...
+#   30|             0: [StringLiteral] "i"
+#   31|           3: [LocalVariableDeclStmt] var ...;
+#   31|             0: [TypeAccess] String
+#   31|             1: [LocalVariableDeclExpr] target
+#   31|               0: [StringLiteral] "Shouldn't be controlled by any of those tests"
+#   32|           4: [BreakStmt] break
+#   33|           5: [DefaultCase] default
+#   34|           6: [BreakStmt] break
