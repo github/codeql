@@ -42,4 +42,15 @@ class UserController < ActionController::Base
     def user_params
         params.require(:user).permit!
     end
+
+    def create4
+        x = params[:user]
+        x.permit!
+        User.new(x) # BAD
+        User.new(x.permit(:name,:address)) # GOOD
+        User.new(params.permit(user: {})) # BAD
+        User.new(params.permit(user: [:name, :address, {friends:{}}])) # BAD
+        User.new(params.to_unsafe_h) # BAD
+        User.new(params.permit(user: [:name, :address]).to_unsafe_h) # GOOD
+     end
 end

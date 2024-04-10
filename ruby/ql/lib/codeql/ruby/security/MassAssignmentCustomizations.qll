@@ -41,8 +41,9 @@ module MassAssignment {
 
   private class RemoteSource extends Source instanceof RemoteFlowSource { }
 
+  /** A call to `permit!`, which permits each key of its receiver. */
   private class PermitBangCall extends MassPermit instanceof DataFlow::CallNode {
-    PermitBangCall() { this.asExpr().getExpr().(MethodCall).getMethodName() = "permit!" }
+    PermitBangCall() { this.(DataFlow::CallNode).getMethodName() = "permit!" }
 
     override DataFlow::Node getParamsArgument() { result = this.(DataFlow::CallNode).getReceiver() }
 
@@ -51,5 +52,46 @@ module MassAssignment {
       or
       result.(DataFlow::PostUpdateNode).getPreUpdateNode() = this.getParamsArgument()
     }
+  }
+
+  /** Holds if `h` is an empty hash or contains an empty hash at one if its (possibly nested) values. */
+  private predicate hasEmptyHash(Expr e) {
+    e instanceof HashLiteral and
+    count(e.(HashLiteral).getAKeyValuePair()) = 0
+    or
+    hasEmptyHash(e.(HashLiteral).getAKeyValuePair().getValue())
+    or
+    hasEmptyHash(e.(Pair).getValue())
+    or
+    hasEmptyHash(e.(ArrayLiteral).getAnElement())
+  }
+
+  /** A call to `permit` that fully specifies the permitted parameters. */
+  private class PermitCallSanitizer extends Sanitizer, DataFlow::CallNode {
+    PermitCallSanitizer() {
+      this.getMethodName() = "permit" and
+      not hasEmptyHash(this.getArgument(_).asExpr().getExpr())
+    }
+  }
+
+  /** A call to `permit` that uses an empty hash, which allows arbitrary keys to be specified. */
+  private class PermitCallMassPermit extends MassPermit instanceof DataFlow::CallNode {
+    PermitCallMassPermit() {
+      this.(DataFlow::CallNode).getMethodName() = "permit" and
+      hasEmptyHash(this.(DataFlow::CallNode).getArgument(_).asExpr().getExpr())
+    }
+
+    override DataFlow::Node getParamsArgument() { result = this.(DataFlow::CallNode).getReceiver() }
+
+    override DataFlow::Node getPermittedParamsResult() { result = this }
+  }
+
+  /** A call to `to_unsafe_h`, which allows arbitrary parameter. */
+  private class ToUnsafeHashCall extends MassPermit instanceof DataFlow::CallNode {
+    ToUnsafeHashCall() { this.(DataFlow::CallNode).getMethodName() = "to_unsafe_h" }
+
+    override DataFlow::Node getParamsArgument() { result = this.(DataFlow::CallNode).getReceiver() }
+
+    override DataFlow::Node getPermittedParamsResult() { result = this }
   }
 }
