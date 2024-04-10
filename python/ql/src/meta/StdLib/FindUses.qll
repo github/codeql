@@ -90,13 +90,17 @@ string computeArgumentPath(string parameter, Function function) {
 
 pragma[inline]
 string computeReturnPath(DataFlow::Node argument, DataFlow::Node outNode) {
-  outNode.(DataFlow::CallCfgNode).getArg(_) = argument and
-  result = "ReturnValue"
-  or
-  outNode.(DataFlow::CallCfgNode).getArgByName(_) = argument and
-  result = "ReturnValue"
-  or
-  outNode.(DataFlow::MethodCallNode).getObject() = argument and
+  (
+    outNode.(DataFlow::CallCfgNode).getArg(_) = argument
+    or
+    outNode.(DataFlow::CallCfgNode).getArgByName(_) = argument
+    or
+    outNode.(DataFlow::CallCfgNode).getNode().getNode().(Call).getKwargs() = argument.asExpr()
+    or
+    outNode.(DataFlow::CallCfgNode).getNode().getNode().(Call).getStarargs() = argument.asExpr()
+    or
+    outNode.(DataFlow::MethodCallNode).getObject() = argument
+  ) and
   result = "ReturnValue"
   or
   exists(DataFlow::MethodCallNode call |
