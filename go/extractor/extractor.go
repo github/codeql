@@ -388,6 +388,8 @@ func extractUniverseScope() {
 }
 
 // extractObjects extracts all objects declared in the given scope
+// For more information on objects, see:
+// https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObjects(tw *trap.Writer, scope *types.Scope, scopeLabel trap.Label) {
 	for _, name := range scope.Names() {
 		obj := scope.Lookup(name)
@@ -440,6 +442,8 @@ func extractMethod(tw *trap.Writer, meth *types.Func) trap.Label {
 }
 
 // extractObject extracts a single object and emits it to the objects table.
+// For more information on objects, see:
+// https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObject(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	name := obj.Name()
 	isBuiltin := obj.Parent() == types.Universe
@@ -487,6 +491,8 @@ func extractObject(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 }
 
 // extractObjectTypes extracts type and receiver information for all objects
+// For more information on objects, see:
+// https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObjectTypes(tw *trap.Writer) {
 	// calling `extractType` on a named type will extract all methods defined
 	// on it, which will add new objects. Therefore we need to do this first
@@ -497,11 +503,13 @@ func extractObjectTypes(tw *trap.Writer) {
 	}
 	changed = tw.ForEachObject(emitObjectType)
 	if changed {
-		log.Printf("Warning: more objects were labeled while emitted object types")
+		log.Printf("Warning: more objects were labeled while emitting object types")
 	}
 }
 
 // extractObjectType extracts type and receiver information for a given object
+// For more information on objects, see:
+// https://github.com/golang/example/blob/master/gotypes/README.md#objects
 func extractObjectType(tw *trap.Writer, obj types.Object, lbl trap.Label) {
 	if tp := obj.Type(); tp != nil {
 		extractType(tw, tp)
