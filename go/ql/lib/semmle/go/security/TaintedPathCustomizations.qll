@@ -148,15 +148,8 @@ module TaintedPath {
    * A replacement of the form `!strings.ReplaceAll(nd, "..")` or `!strings.ReplaceAll(nd, ".")`, considered as a sanitizer for
    * path traversal.
    */
-  class DotDotReplace extends Sanitizer {
-    DotDotReplace() {
-      exists(DataFlow::CallNode cleanCall, DataFlow::Node valueNode |
-        cleanCall = any(Function f | f.hasQualifiedName("strings", "ReplaceAll")).getACall() and
-        valueNode = cleanCall.getArgument(1) and
-        valueNode.asExpr().(StringLit).getValue() = ["..", "."] and
-        this = cleanCall.getResult()
-      )
-    }
+  class DotDotReplaceAll extends StringOps::ReplaceAll, Sanitizer {
+    DotDotReplaceAll() { this.getReplacedString() = ["..", "."] }
   }
 
   /**
