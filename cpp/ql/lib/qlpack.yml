@@ -9,6 +9,7 @@ dependencies:
   codeql/dataflow: ${workspace}
   codeql/rangeanalysis: ${workspace}
   codeql/ssa: ${workspace}
+  codeql/typeflow: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
   codeql/xml: ${workspace}
