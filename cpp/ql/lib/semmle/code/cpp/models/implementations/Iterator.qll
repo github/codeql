@@ -573,6 +573,8 @@ private class IteratorAssignmentMemberOperatorModel extends IteratorAssignmentMe
   override predicate hasOnlySpecificWriteSideEffects() { any() }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
+    // See the comment on `IteratorCrementMemberOperatorModel::hasSpecificWriteSideEffect`
+    // for an explanation of these values.
     i = -1 and buffer = false and mustWrite = false
   }
 
