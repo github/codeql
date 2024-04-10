@@ -23,6 +23,13 @@ abstract class RemoteFlowSource extends SourceNode {
 }
 
 bindingset[context]
+private predicate isExternalUserControlled(string context) {
+  exists(string reg | reg = "github\\.event" |
+    Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
+  )
+}
+
+bindingset[context]
 private predicate isExternalUserControlledIssue(string context) {
   exists(string reg | reg = ["github\\.event\\.issue\\.title", "github\\.event\\.issue\\.body"] |
     Utils::normalizeExpr(context).regexpMatch(Utils::wrapRegexp(reg))
@@ -123,6 +130,7 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
 private class EventSource extends RemoteFlowSource {
   EventSource() {
     exists(Expression e, string context | this.asExpr() = e and context = e.getExpression() |
+      isExternalUserControlled(context) or
       isExternalUserControlledIssue(context) or
       isExternalUserControlledPullRequest(context) or
       isExternalUserControlledReview(context) or

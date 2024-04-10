@@ -200,6 +200,8 @@ nodes
 | .github/workflows/simple2.yml:18:9:26:6 | Uses Step: step [value] | semmle.label | Uses Step: step [value] |
 | .github/workflows/simple2.yml:22:20:22:64 | steps.source.outputs.all_changed_files | semmle.label | steps.source.outputs.all_changed_files |
 | .github/workflows/simple2.yml:29:24:29:54 | steps.step.outputs.value | semmle.label | steps.step.outputs.value |
+| .github/workflows/simple3.yml:23:31:23:74 | github.event.workflow_run.head_branch | semmle.label | github.event.workflow_run.head_branch |
+| .github/workflows/simple3.yml:25:11:25:37 | toJSON(github.event) | semmle.label | toJSON(github.event) |
 | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/test1.yml:22:38:22:75 | github.event.pull_request.title | semmle.label | github.event.pull_request.title |
 | .github/workflows/test1.yml:25:20:25:39 | env.ISSUE_KEY | semmle.label | env.ISSUE_KEY |
