@@ -109,6 +109,24 @@ module TaintedPath {
   }
 
   /**
+   * A call to `mime/multipart.Part.FileName`, considered as a sanitizer
+   * against path traversal.
+   *
+   * `Part.FileName` calls `path/filepath.Base` on its return value. In
+   * general `path/filepath.Base` is not a sanitizer for path traversal, but in
+   * this specific case where the output is going to be used as a filename
+   * rather than a directory name, it is adequate.
+   */
+  class MimeMultipartPartFileNameSanitizer extends Sanitizer {
+    MimeMultipartPartFileNameSanitizer() {
+      this =
+        any(Method m | m.hasQualifiedName("mime/multipart", "Part", "FileName"))
+            .getACall()
+            .getResult()
+    }
+  }
+
+  /**
    * A check of the form `!strings.Contains(nd, "..")`, considered as a sanitizer guard for
    * path traversal.
    */
