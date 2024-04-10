@@ -15657,6 +15657,8 @@ ir.cpp:
 # 1911|         Type = [CTypedefType,NestedTypedefType] pointer
 # 1911|   getEntryPoint(): [BlockStmt] { ... }
 # 1912|     getStmt(0): [DeclStmt] declaration
+# 1912|       getDeclarationEntry(0): [TypeDeclarationEntry] declaration of _Res
+# 1912|           Type = [CTypedefType,LocalTypedefType] _Res
 # 1913|     getStmt(1): [ReturnStmt] return ...
 # 1913|       getExpr(): [VariableAccess] p
 # 1913|           Type = [CTypedefType,NestedTypedefType] pointer
@@ -15764,6 +15766,10 @@ ir.cpp:
 # 1924|   <params>: 
 # 1924|   getEntryPoint(): [BlockStmt] { ... }
 # 1925|     getStmt(0): [DeclStmt] declaration
+# 1925|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+# 1925|           Type = [ArrayType] int[10]
+# 1925|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of y
+# 1925|           Type = [ArrayType] int[10]
 # 1926|     getStmt(1): [ExprStmt] ExprStmt
 # 1926|       getExpr(): [AssignExpr] ... = ...
 # 1926|           Type = [IntType] int
@@ -15859,7 +15865,11 @@ ir.cpp:
 # 1939|   <params>: 
 # 1939|   getEntryPoint(): [BlockStmt] { ... }
 # 1940|     getStmt(0): [DeclStmt] declaration
+# 1940|       getDeclarationEntry(0): [VariableDeclarationEntry] declaration of g
+# 1940|           Type = [IntType] int
 # 1941|     getStmt(1): [DeclStmt] declaration
+# 1941|       getDeclarationEntry(0): [FunctionDeclarationEntry] declaration of z
+# 1941|           Type = [IntType] int
 # 1942|     getStmt(2): [ReturnStmt] return ...
 # 1942|       getExpr(): [VariableAccess] g
 # 1942|           Type = [IntType] int

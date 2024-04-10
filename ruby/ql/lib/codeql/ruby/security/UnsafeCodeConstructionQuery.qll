@@ -46,12 +46,6 @@ private module UnsafeCodeConstructionConfig implements DataFlow::ConfigSig {
 
   // override to require the path doesn't have unmatched return steps
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
-
-  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet set) {
-    // allow implicit reads of array elements
-    isSink(node) and
-    set.isElementOfTypeOrUnknown("int")
-  }
 }
 
 /**

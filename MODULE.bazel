@@ -31,6 +31,8 @@ pip.parse(
 use_repo(pip, "codegen_deps")
 
 swift_deps = use_extension("//swift/third_party:load.bzl", "swift_deps")
+
+# following list can be kept in sync with `bazel mod tidy`
 use_repo(
     swift_deps,
     "binlog",
