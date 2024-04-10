@@ -22,7 +22,7 @@ private import semmle.python.dataflow.new.FlowSummary
 /**
  * A remote flow source originating from a CSV source row.
  */
-private class RemoteFlowSourceFromCsv extends RemoteFlowSource {
+private class RemoteFlowSourceFromCsv extends RemoteFlowSource::Range {
   RemoteFlowSourceFromCsv() { this = ModelOutput::getASourceNode("remote").asSource() }
 
   override string getSourceType() { result = "Remote flow (from model)" }

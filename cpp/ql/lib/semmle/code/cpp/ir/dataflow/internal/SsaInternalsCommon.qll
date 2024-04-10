@@ -6,6 +6,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
 private import DataFlowUtil
 private import semmle.code.cpp.models.interfaces.PointerWrapper
 private import DataFlowPrivate
+private import TypeFlow
 private import semmle.code.cpp.ir.ValueNumbering
 
 /**
@@ -955,11 +956,7 @@ private module Cached {
    * Holds if the address computed by `operand` is guaranteed to write
    * to a specific address.
    */
-  private predicate isCertainAddress(Operand operand) {
-    valueNumberOfOperand(operand).getAnInstruction() instanceof VariableAddressInstruction
-    or
-    operand.getType() instanceof Cpp::ReferenceType
-  }
+  private predicate isCertainAddress(Operand operand) { isPointerToSingleObject(operand.getDef()) }
 
   /**
    * Holds if `address` is a use of an SSA variable rooted at `base`, and the

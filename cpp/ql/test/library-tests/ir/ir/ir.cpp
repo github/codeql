@@ -1933,6 +1933,20 @@ namespace missing_declaration_entries {
         Bar2<int> b;
         b.two_missing_variable_declaration_entries();
     }
+
+    template<typename T> struct Bar3 {
+
+        int two_more_missing_variable_declaration_entries() {
+            extern int g;
+            int z(float);
+            return g;
+        }
+    };
+
+    void test3() {
+        Bar3<int> b;
+        b.two_more_missing_variable_declaration_entries();
+    }
 }
 
 template<typename T> T global_template = 42;
@@ -2415,6 +2429,22 @@ void initialization_with_temp_destructor() {
 
     for(char x = ClassWithDestructor().get_x(); char y : std::vector<char>(x))
         y += x;
+}
+
+void param_with_destructor_by_value(ClassWithDestructor c) {
+    // The call to ~ClassWithDestructor::ClassWithDestructor() seems to be missing here.
+}
+
+void param_with_destructor_by_pointer(ClassWithDestructor* c) {
+    // No destructor call should be here
+}
+
+void param_with_destructor_by_ref(ClassWithDestructor& c) {
+    // No destructor call should be here
+}
+
+void param_with_destructor_by_rref(ClassWithDestructor&& c) {
+    // No destructor call should be here
 }
 
 // semmle-extractor-options: -std=c++20 --clang

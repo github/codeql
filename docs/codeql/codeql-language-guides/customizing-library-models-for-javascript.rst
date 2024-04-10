@@ -478,7 +478,7 @@ The following components are supported:
 - **Element** selects an element of an array, iterator, or set object.
 - **MapValue** selects a value of a map object.
 - **Awaited** selects the value of a promise.
-- **Instance** selects instances of a class.
+- **Instance** selects instances of a class, including instances of its subclasses.
 - **Fuzzy** selects all values that are derived from the current value through a combination of the other operations described in this list.
   For example, this can be used to find all values that appear to originate from a particular package. This can be useful for finding method calls
   from a known package, but where the receiver type is not known or is difficult to model.
