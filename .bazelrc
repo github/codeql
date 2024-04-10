@@ -17,5 +17,4 @@ build:windows --cxxopt=/std:c++20 --cxxopt=/Zc:preprocessor
 common --registry=file://%workspace%/misc/bazel/registry
 common --registry=https://bcr.bazel.build
 
-import %workspace%/.bazelrc.exported
 try-import %workspace%/local.bazelrc

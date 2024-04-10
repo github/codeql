@@ -3,7 +3,8 @@
     "url": "https://github.com/bazelbuild/rules_kotlin/releases/download/v1.9.4/rules_kotlin-v1.9.4.tar.gz",
     "patches": {
         "module_dot_bazel_version.patch": "sha256-0GnFHOv9wuuv3jFcHBSXrdo7JMFP7y66O5C4rccy5wg=",
-        "codeql_add_language_version_option.patch": "sha256-uF6LFpkqe9ye7+avviY1NE5ZhxJ3WMLenS+mbg4XFTM="
+        "codeql_do_not_emit_jdeps.patch": "sha256-x/HsujFlR1FGrgmbAbRZag9V4vKZZinBcs73tgRS478=",
+        "codeql_add_language_version_option.patch": "sha256-qFpP/hIvqGzjJi0h8LAQK0UuWqwlj/oCecZYGqlMVP8="
     },
     "patch_strip": 1
 }

@@ -21,7 +21,7 @@ bazel_dep(name = "bazel_skylib", version = "1.5.0")
 bazel_dep(name = "abseil-cpp", version = "20240116.0", repo_name = "absl")
 bazel_dep(name = "nlohmann_json", version = "3.11.3", repo_name = "json")
 bazel_dep(name = "fmt", version = "10.0.0")
-bazel_dep(name = "rules_kotlin", version = "1.9.4-patched")
+bazel_dep(name = "rules_kotlin", version = "1.9.4-codeql.1")
 
 pip = use_extension("@rules_python//python/extensions:pip.bzl", "pip")
 pip.parse(

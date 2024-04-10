@@ -1,6 +1,6 @@
 module(
     name = "rules_kotlin",
-    version = "1.9.4-patched",
+    version = "1.9.4-codeql.1",
     repo_name = "rules_kotlin",
 )
 
