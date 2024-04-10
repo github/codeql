@@ -562,7 +562,6 @@ private predicate isArrayExpr(Expr e, ArrayLiteralCfgNode arr) {
   forex(ExprCfgNode n | n = e.getAControlFlowNode() | isArrayConstant(n, arr))
   or
   // if `e` is an array, then `e.freeze` is also an array
-  e instanceof MethodCall and
   e.(MethodCall).getMethodName() = "freeze" and
   isArrayExpr(e.(MethodCall).getReceiver(), arr)
 }
