@@ -822,19 +822,23 @@ predicate jumpStep(Node n1, Node n2) {
  * store step can be used to clear a field (see `clearsContent`).
  */
 predicate storeStepImpl(Node node1, Content c, Node node2, boolean certain) {
-  exists(int indirectionIndex1, int numberOfLoads, StoreInstruction store |
+  exists(
+    PostFieldUpdateNode postFieldUpdate, int indirectionIndex1, int numberOfLoads,
+    StoreInstruction store
+  |
+    postFieldUpdate = node2 and
     nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
-    node2.(PostFieldUpdateNode).getIndirectionIndex() = 1 and
-    numberOfLoadsFromOperand(node2.(PostFieldUpdateNode).getFieldAddress(),
+    postFieldUpdate.getIndirectionIndex() = 1 and
+    numberOfLoadsFromOperand(postFieldUpdate.getFieldAddress(),
       store.getDestinationAddressOperand(), numberOfLoads, certain)
   |
     exists(FieldContent fc | fc = c |
-      fc.getField() = node2.(PostFieldUpdateNode).getUpdatedField() and
+      fc.getField() = postFieldUpdate.getUpdatedField() and
       fc.getIndirectionIndex() = 1 + indirectionIndex1 + numberOfLoads
     )
     or
     exists(UnionContent uc | uc = c |
-      uc.getAField() = node2.(PostFieldUpdateNode).getUpdatedField() and
+      uc.getAField() = postFieldUpdate.getUpdatedField() and
       uc.getIndirectionIndex() = 1 + indirectionIndex1 + numberOfLoads
     )
   )
