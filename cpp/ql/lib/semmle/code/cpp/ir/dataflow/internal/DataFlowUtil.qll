@@ -756,9 +756,7 @@ class FlowSummaryNode extends Node, TFlowSummaryNode {
    * Gets the enclosing callable. For a `FlowSummaryNode` this is always the
    * summarized function this node is part of.
    */
-  override Declaration getEnclosingCallable() {
-    result = this.getSummarizedCallable()
-  }
+  override Declaration getEnclosingCallable() { result = this.getSummarizedCallable() }
 
   override Location getLocationImpl() { result = this.getSummarizedCallable().getLocation() }
 
@@ -1013,9 +1011,7 @@ private module RawIndirectNodes {
       result = this.getOperand().getDef().getEnclosingFunction()
     }
 
-    override Declaration getEnclosingCallable() {
-      result = this.getFunction()
-    }
+    override Declaration getEnclosingCallable() { result = this.getFunction() }
 
     override predicate isGLValue() { this.getOperand().isGLValue() }
 
@@ -1059,9 +1055,7 @@ private module RawIndirectNodes {
 
     override Declaration getFunction() { result = this.getInstruction().getEnclosingFunction() }
 
-    override Declaration getEnclosingCallable() {
-      result = this.getFunction()
-    }
+    override Declaration getEnclosingCallable() { result = this.getFunction() }
 
     override predicate isGLValue() { this.getInstruction().isGLValue() }
 
@@ -1977,7 +1971,7 @@ private module Cached {
     // through calls to modeled functions, without relying on global dataflow to join
     // the dots).
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
- }
+  }
 
   private predicate indirectionOperandFlow(RawIndirectOperand nodeFrom, Node nodeTo) {
     nodeFrom != nodeTo and
@@ -2377,9 +2371,8 @@ class Content extends TContent {
  * Gets a string consisting of `n` star characters ("*"), where n >= 0. This is
  * used to represent indirection.
  */
-bindingset[n] string repeatStars(int n) {
-  result = concat(int i | i in [1 .. n] | "*")
-}
+bindingset[n]
+string repeatStars(int n) { result = concat(int i | i in [1 .. n] | "*") }
 
 private module ContentStars {
   /**

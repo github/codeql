@@ -15,4 +15,5 @@ string describe(DataFlow::Node n) {
 }
 
 from FlowSummaryNode n
-select n, concat(describe(n), ", "), concat(n.getSummarizedCallable().toString(), ", "), concat(n.getEnclosingCallable().toString(), ", ")
+select n, concat(describe(n), ", "), concat(n.getSummarizedCallable().toString(), ", "),
+  concat(n.getEnclosingCallable().toString(), ", ")
