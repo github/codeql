@@ -98,11 +98,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 fallbackFeeds.Add(PublicNugetFeed);
             }
 
-            logger.LogInfo("Checking fallback Nuget feed reachability");
-            var reachableFallbackFeeds = fallbackFeeds.Where(feed => IsFeedReachable(feed)).ToList();
+            logger.LogInfo($"Checking fallback Nuget feed reachability on feeds:  {string.Join(", ", fallbackFeeds.OrderBy(f => f))}");
+            var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback: true);
+            var reachableFallbackFeeds = fallbackFeeds.Where(feed => IsFeedReachable(feed, initialTimeout, tryCount, allowExceptions: false)).ToList();
             if (reachableFallbackFeeds.Count == 0)
             {
-                logger.LogWarning("No fallback Nuget feeds are reachable. Skipping fallback Nuget package restoration.");
+                logger.LogWarning("No fallback Nuget feeds are reachable.");
+            }
+            else
+            {
+                logger.LogInfo($"Reachable fallback Nuget feeds: {string.Join(", ", reachableFallbackFeeds.OrderBy(f => f))}");
             }
 
             return reachableFallbackFeeds;
@@ -183,11 +188,15 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var reachableFallbackFeeds = GetReachableFallbackNugetFeeds();
             if (reachableFallbackFeeds.Count > 0)
             {
-                DownloadMissingPackages(allNonBinaryFiles, dllLocations, withNugetConfig: false, fallbackNugetFeeds: reachableFallbackFeeds);
+                DownloadMissingPackages(allNonBinaryFiles, dllLocations, withNugetConfigFromSrc: false, fallbackNugetFeeds: reachableFallbackFeeds);
+            }
+            else
+            {
+                logger.LogWarning("Skipping download of missing packages from specific feeds as no fallback Nuget feeds are reachable.");
             }
         }
 
-        private void DownloadMissingPackages(List<FileInfo> allFiles, HashSet<AssemblyLookupLocation> dllLocations, bool withNugetConfig = true, IEnumerable<string>? fallbackNugetFeeds = null)
+        private void DownloadMissingPackages(List<FileInfo> allFiles, HashSet<AssemblyLookupLocation> dllLocations, bool withNugetConfigFromSrc = true, IEnumerable<string>? fallbackNugetFeeds = null)
         {
             var alreadyDownloadedPackages = GetRestoredPackageDirectoryNames(packageDirectory.DirInfo);
             var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
@@ -221,7 +230,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
             using var tempDir = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "nugetconfig"));
-            var nugetConfig = withNugetConfig
+            var nugetConfig = withNugetConfigFromSrc
                 ? GetNugetConfig(allFiles)
                 : CreateFallbackNugetConfig(fallbackNugetFeeds, tempDir.DirInfo.FullName);
 
@@ -232,7 +241,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = threads }, package =>
             {
-                var success = TryRestorePackageManually(package.Name, nugetConfig, package.PackageReferenceSource);
+                var success = TryRestorePackageManually(package.Name, nugetConfig, package.PackageReferenceSource, tryWithoutNugetConfig: withNugetConfigFromSrc);
                 if (!success)
                 {
                     return;
@@ -254,6 +263,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (fallbackNugetFeeds is null)
             {
                 // We're not overriding the inherited Nuget feeds
+                logger.LogInfo("No fallback Nuget feeds provided. Not creating a fallback nuget.config file.");
                 return null;
             }
 
@@ -365,7 +375,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 .Select(d => Path.GetFileName(d).ToLowerInvariant());
         }
 
-        private bool TryRestorePackageManually(string package, string? nugetConfig, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj)
+        private bool TryRestorePackageManually(string package, string? nugetConfig = null, PackageReferenceSource packageReferenceSource = PackageReferenceSource.SdkCsProj, bool tryWithoutNugetConfig = true)
         {
             logger.LogInfo($"Restoring package {package}...");
             using var tempDir = new TemporaryDirectory(ComputeTempDirectory(package, "missingpackages_workingdir"));
@@ -389,7 +399,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: nugetConfig));
             if (!res.Success)
             {
-                if (res.HasNugetPackageSourceError && nugetConfig is not null)
+                if (tryWithoutNugetConfig && res.HasNugetPackageSourceError && nugetConfig is not null)
                 {
                     // Restore could not be completed because the listed source is unavailable. Try without the nuget.config:
                     res = dotnet.Restore(new(tempDir.DirInfo.FullName, missingPackageDirectory.DirInfo.FullName, ForceDotnetRefAssemblyFetching: false, PathToNugetConfig: null, ForceReevaluation: true));
@@ -452,16 +462,10 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private bool IsFeedReachable(string feed)
+        private bool IsFeedReachable(string feed, int timeoutMilliSeconds, int tryCount, bool allowExceptions = true)
         {
             logger.LogInfo($"Checking if Nuget feed '{feed}' is reachable...");
             using HttpClient client = new();
-            int timeoutMilliSeconds = int.TryParse(Environment.GetEnvironmentVariable(EnvironmentVariableNames.NugetFeedResponsivenessInitialTimeout), out timeoutMilliSeconds)
-                ? timeoutMilliSeconds
-                : 1000;
-            int tryCount = int.TryParse(Environment.GetEnvironmentVariable(EnvironmentVariableNames.NugetFeedResponsivenessRequestCount), out tryCount)
-                ? tryCount
-                : 4;
 
             for (var i = 0; i < tryCount; i++)
             {
@@ -470,6 +474,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 try
                 {
                     ExecuteGetRequest(feed, client, cts.Token).GetAwaiter().GetResult();
+                    logger.LogInfo($"Querying Nuget feed '{feed}' succeeded.");
                     return true;
                 }
                 catch (Exception exc)
@@ -478,19 +483,39 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                         tce.CancellationToken == cts.Token &&
                         cts.Token.IsCancellationRequested)
                     {
-                        logger.LogWarning($"Didn't receive answer from Nuget feed '{feed}' in {timeoutMilliSeconds}ms.");
+                        logger.LogInfo($"Didn't receive answer from Nuget feed '{feed}' in {timeoutMilliSeconds}ms.");
                         timeoutMilliSeconds *= 2;
                         continue;
                     }
 
                     // We're only interested in timeouts.
-                    logger.LogWarning($"Querying Nuget feed '{feed}' failed: {exc}");
-                    return true;
+                    var start = allowExceptions ? "Considering" : "Not considering";
+                    logger.LogInfo($"Querying Nuget feed '{feed}' failed in a timely manner. {start} the feed for use. The reason for the failure: {exc.Message}");
+                    return allowExceptions;
                 }
             }
 
             logger.LogWarning($"Didn't receive answer from Nuget feed '{feed}'. Tried it {tryCount} times.");
             return false;
+        }
+
+        private (int initialTimeout, int tryCount) GetFeedRequestSettings(bool isFallback)
+        {
+            int timeoutMilliSeconds = isFallback && int.TryParse(Environment.GetEnvironmentVariable(EnvironmentVariableNames.NugetFeedResponsivenessInitialTimeoutForFallback), out timeoutMilliSeconds)
+                ? timeoutMilliSeconds
+                : int.TryParse(Environment.GetEnvironmentVariable(EnvironmentVariableNames.NugetFeedResponsivenessInitialTimeout), out timeoutMilliSeconds)
+                    ? timeoutMilliSeconds
+                    : 1000;
+            logger.LogDebug($"Initial timeout for Nuget feed reachability check is {timeoutMilliSeconds}ms.");
+
+            int tryCount = isFallback && int.TryParse(Environment.GetEnvironmentVariable(EnvironmentVariableNames.NugetFeedResponsivenessRequestCountForFallback), out tryCount)
+                ? tryCount
+                : int.TryParse(Environment.GetEnvironmentVariable(EnvironmentVariableNames.NugetFeedResponsivenessRequestCount), out tryCount)
+                    ? tryCount
+                    : 4;
+            logger.LogDebug($"Number of tries for Nuget feed reachability check is {tryCount}.");
+
+            return (timeoutMilliSeconds, tryCount);
         }
 
         private bool CheckFeeds(List<FileInfo> allFiles)
@@ -507,7 +532,9 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 logger.LogInfo($"Excluded Nuget feeds from responsiveness check: {string.Join(", ", excludedFeeds.OrderBy(f => f))}");
             }
 
-            var allFeedsReachable = explicitFeeds.All(feed => excludedFeeds.Contains(feed) || IsFeedReachable(feed));
+            var (initialTimeout, tryCount) = GetFeedRequestSettings(isFallback: false);
+
+            var allFeedsReachable = explicitFeeds.All(feed => excludedFeeds.Contains(feed) || IsFeedReachable(feed, initialTimeout, tryCount));
             if (!allFeedsReachable)
             {
                 logger.LogWarning("Found unreachable Nuget feed in C# analysis with build-mode 'none'. This may cause missing dependencies in the analysis.");

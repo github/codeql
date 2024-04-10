@@ -33,9 +33,21 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         public const string NugetFeedResponsivenessInitialTimeout = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_TIMEOUT";
 
         /// <summary>
-        /// Specifies how many requests to make to the NuGet feed to check its responsiveness.
+        /// Specifies the timeout (as an integer) in milliseconds for the initial check of fallback NuGet feeds responsiveness. The value is then doubled for each subsequent check.
+        /// This is primarily used in testing.
+        /// </summary>
+        internal const string NugetFeedResponsivenessInitialTimeoutForFallback = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_FALLBACK_TIMEOUT";
+
+        /// <summary>
+        /// Specifies how many requests to make to the NuGet feeds to check their responsiveness.
         /// </summary>
         public const string NugetFeedResponsivenessRequestCount = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_LIMIT";
+
+        /// <summary>
+        /// Specifies how many requests to make to the fallback NuGet feeds to check their responsiveness.
+        /// This is primarily used in testing.
+        /// </summary>
+        internal const string NugetFeedResponsivenessRequestCountForFallback = "CODEQL_EXTRACTOR_CSHARP_BUILDLESS_NUGET_FEEDS_CHECK_FALLBACK_LIMIT";
 
         /// <summary>
         /// Specifies the NuGet feeds to use for fallback Nuget dependency fetching. The value is a space-separated list of feed URLs.

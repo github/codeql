@@ -339,7 +339,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
                 {
                     logger.LogInfo("No .NET Desktop Runtime location found. Attempting to restore the .NET Framework reference assemblies manually.");
 
-                    if (TryRestorePackageManually(FrameworkPackageNames.LatestNetFrameworkReferenceAssemblies, null))
+                    if (TryRestorePackageManually(FrameworkPackageNames.LatestNetFrameworkReferenceAssemblies))
                     {
                         runtimeLocation = GetPackageDirectory(FrameworkPackageNames.LatestNetFrameworkReferenceAssemblies, missingPackageDirectory);
                     }
