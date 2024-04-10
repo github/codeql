@@ -145,7 +145,7 @@ _resources = [
         name = "%s-standalone" % _common_extractor_name_prefix,
         actual = "%s-standalone-%s" % (
             _common_extractor_name_prefix,
-            kotlin_extractor_defaults.version,
+            kotlin_extractor_defaults.extractor_version,
         ),
         visibility = ["//visibility:public"],
     ),
@@ -153,7 +153,7 @@ _resources = [
         name = "%s-embeddable" % _common_extractor_name_prefix,
         actual = "%s-embeddable-%s" % (
             _common_extractor_name_prefix,
-            kotlin_extractor_defaults.version,
+            kotlin_extractor_defaults.extractor_version,
         ),
         visibility = ["//visibility:public"],
     ),
@@ -162,7 +162,7 @@ _resources = [
         actual = "%s-%s-%s" % (
             _common_extractor_name_prefix,
             kotlin_extractor_defaults.variant,
-            kotlin_extractor_defaults.version,
+            kotlin_extractor_defaults.extractor_version,
         ),
         visibility = ["//visibility:public"],
     ),
@@ -179,5 +179,14 @@ _resources = [
             version,
         ) for variant in ("standalone", "embeddable") for version in VERSIONS],
         visibility = ["//visibility:public"],
+    ),
+    genrule(
+        name = "default-version-printer",
+        outs = ["print-default-version.sh"],
+        cmd = "echo echo %s > $@" % kotlin_extractor_defaults.version,
+    ),
+    sh_binary(
+        name = "print-default-version",
+        srcs = [":default-version-printer"],
     ),
 ) if not _for_embeddable else None

@@ -15,18 +15,18 @@ VERSIONS = [
     "2.0.255-SNAPSHOT",
 ]
 
-DEFAULT_FALLBACK_VERSION = "1.9.0-Beta"
+DEFAULT_VERSION = "1.9.0"
 
 def _version_to_tuple(v):
-    v, _, tail = v.partition("-")
-    v = tuple([int(x) for x in v.split(".")])
-    return v + (tail,)
+    # we ignore the tag when comparing versions, for example 1.9.0-Beta <= 1.9.0
+    v, _, ignored_tag = v.partition("-")
+    return tuple([int(x) for x in v.split(".")])
 
 def version_less(lhs, rhs):
     return _version_to_tuple(lhs) < _version_to_tuple(rhs)
 
 def get_language_version(version):
-    major, minor, _, _ = _version_to_tuple(version)
+    major, minor, _ = _version_to_tuple(version)
     return "%s.%s" % (major, minor)
 
 def _basename(path):
