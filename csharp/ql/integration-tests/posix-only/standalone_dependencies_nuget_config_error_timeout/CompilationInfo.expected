@@ -1,0 +1,13 @@
+| All Nuget feeds reachable | 0.0 |
+| Fallback nuget restore | 1.0 |
+| Project files on filesystem | 1.0 |
+| Resolved assembly conflicts | 7.0 |
+| Restored .NET framework variants | 0.0 |
+| Solution files on filesystem | 1.0 |
+| Source files generated | 0.0 |
+| Source files on filesystem | 1.0 |
+| Successfully ran fallback nuget restore | 1.0 |
+| Unresolved references | 0.0 |
+| UseWPF set | 0.0 |
+| UseWindowsForms set | 0.0 |
+| WebView extraction enabled | 1.0 |

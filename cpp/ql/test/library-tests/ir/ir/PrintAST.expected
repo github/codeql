@@ -20163,6 +20163,30 @@ ir.cpp:
 # 2430|           Type = [ClassTemplateInstantiation,Struct] iterator<random_access_iterator_tag, char, ptrdiff_t, char *, char &>
 # 2430|           ValueCategory = lvalue
 # 2432|     getStmt(6): [ReturnStmt] return ...
+# 2434| [TopLevelFunction] void param_with_destructor_by_value(ClassWithDestructor)
+# 2434|   <params>: 
+# 2434|     getParameter(0): [Parameter] c
+# 2434|         Type = [Class] ClassWithDestructor
+# 2434|   getEntryPoint(): [BlockStmt] { ... }
+# 2436|     getStmt(0): [ReturnStmt] return ...
+# 2438| [TopLevelFunction] void param_with_destructor_by_pointer(ClassWithDestructor*)
+# 2438|   <params>: 
+# 2438|     getParameter(0): [Parameter] c
+# 2438|         Type = [PointerType] ClassWithDestructor *
+# 2438|   getEntryPoint(): [BlockStmt] { ... }
+# 2440|     getStmt(0): [ReturnStmt] return ...
+# 2442| [TopLevelFunction] void param_with_destructor_by_ref(ClassWithDestructor&)
+# 2442|   <params>: 
+# 2442|     getParameter(0): [Parameter] c
+# 2442|         Type = [LValueReferenceType] ClassWithDestructor &
+# 2442|   getEntryPoint(): [BlockStmt] { ... }
+# 2444|     getStmt(0): [ReturnStmt] return ...
+# 2446| [TopLevelFunction] void param_with_destructor_by_rref(ClassWithDestructor&&)
+# 2446|   <params>: 
+# 2446|     getParameter(0): [Parameter] c
+# 2446|         Type = [RValueReferenceType] ClassWithDestructor &&
+# 2446|   getEntryPoint(): [BlockStmt] { ... }
+# 2448|     getStmt(0): [ReturnStmt] return ...
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

@@ -119,7 +119,13 @@ class Entity extends @object {
    */
   Scope getScope() { objectscopes(this, result) }
 
-  /** Gets the declaring identifier for this entity. */
+  /**
+   * Gets the declaring identifier for this entity, if any.
+   *
+   * Note that type switch statements which define a new variable in the guard
+   * actually have a new variable (of the right type) implicitly declared at
+   * the beginning of each case clause, and these do not have a declaration.
+   */
   Ident getDeclaration() { result.declares(this) }
 
   /** Gets a reference to this entity. */
