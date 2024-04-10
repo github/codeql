@@ -8,16 +8,16 @@ extensions:
       pack: codeql/ruby-all
       extensible: sinkModel
     data:
-      - ["Terrapin::CommandLine!","Method[new].Argument[0]","command-injection"]
-      - ["Terrapin::CommandLine!","Method[new].Argument[1]","command-injection"]
+      - ["Terrapin::CommandLine!","Method[new].Argument[0]","command-injection","manual"]
+      - ["Terrapin::CommandLine!","Method[new].Argument[1]","command-injection","manual"]
 
   - addsTo:
       pack: codeql/ruby-all
       extensible: summaryModel
     data:
-      - ["Terrapin::CommandLine::Output!","Method[new]","Argument[1]","ReturnValue","value"]
-      - ["Terrapin::CommandLine!","Method[path=]","Argument[0]","ReturnValue","taint"]
-      - ["Terrapin::CommandLine!","Method[new]","Argument[2]","ReturnValue","taint"]
+      - ["Terrapin::CommandLine::Output!","Method[new]","Argument[1]","ReturnValue","value","manual"]
+      - ["Terrapin::CommandLine!","Method[path=]","Argument[0]","ReturnValue","taint","manual"]
+      - ["Terrapin::CommandLine!","Method[new]","Argument[2]","ReturnValue","taint","manual"]
 
   - addsTo:
       pack: codeql/ruby-all
@@ -28,14 +28,14 @@ extensions:
       pack: codeql/ruby-all
       extensible: typeModel
     data:
-      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine::MultiPipe","Method[output].ReturnValue"]
-      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine::FakeRunner","Method[call].ReturnValue"]
-      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine::ProcessRunner","Method[call].ReturnValue"]
-      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine!","Method[runner].ReturnValue.ReturnValue"]
-      - ["Terrapin::CommandLine::FakeRunner","Terrapin::CommandLine!","Method[runner].ReturnValue"]
-      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine!","Method[fake!].ReturnValue.ReturnValue"]
-      - ["Terrapin::CommandLine::FakeRunner","Terrapin::CommandLine!","Method[fake!].ReturnValue"]
-      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine","Method[output].ReturnValue"]
-      - ["Terrapin::CommandLineError","Terrapin::CommandNotFoundError",""]
-      - ["Terrapin::CommandLineError","Terrapin::ExitStatusError",""]
-      - ["Terrapin::CommandLineError","Terrapin::InterpolationError",""]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine::MultiPipe","Method[output].ReturnValue","manual"]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine::FakeRunner","Method[call].ReturnValue","manual"]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine::ProcessRunner","Method[call].ReturnValue","manual"]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine!","Method[runner].ReturnValue.ReturnValue","manual"]
+      - ["Terrapin::CommandLine::FakeRunner","Terrapin::CommandLine!","Method[runner].ReturnValue","manual"]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine!","Method[fake!].ReturnValue.ReturnValue","manual"]
+      - ["Terrapin::CommandLine::FakeRunner","Terrapin::CommandLine!","Method[fake!].ReturnValue","manual"]
+      - ["Terrapin::CommandLine::Output","Terrapin::CommandLine","Method[output].ReturnValue","manual"]
+      - ["Terrapin::CommandLineError","Terrapin::CommandNotFoundError","","manual"]
+      - ["Terrapin::CommandLineError","Terrapin::ExitStatusError","","manual"]
+      - ["Terrapin::CommandLineError","Terrapin::InterpolationError","","manual"]
