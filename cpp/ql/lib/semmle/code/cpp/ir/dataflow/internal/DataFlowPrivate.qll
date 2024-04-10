@@ -465,7 +465,7 @@ private newtype TReturnKind =
     // derive a possible return kind from the AST
     // (this approach includes functions declared that have no body; they may still have flow summaries)
     indirectionIndex =
-      [0 .. max(Ssa::Function f |
+      [0 .. max(Cpp::Function f |
           |
           Ssa::getMaxIndirectionsForType(f.getUnspecifiedType()) - 1 // -1 because a returned value is a prvalue not a glvalue
         )]
@@ -479,7 +479,7 @@ private newtype TReturnKind =
     or
     // derive a possible return argument from the AST
     indirectionIndex =
-      [0 .. max(Ssa::Function f |
+      [0 .. max(Cpp::Function f |
           |
           Ssa::getMaxIndirectionsForType(f.getParameter(argumentIndex).getUnspecifiedType()) - 1 // -1 because an argument is a prvalue not a glvalue
         )]
@@ -1007,7 +1007,7 @@ class CastNode extends Node {
 }
 
 cached
-newtype TDataFlowCallable =
+private newtype TDataFlowCallable =
   TSourceCallable(Cpp::Declaration decl) {
     not decl instanceof FlowSummaryImpl::Public::SummarizedCallable
   } or
@@ -1031,8 +1031,17 @@ class DataFlowCallable extends TDataFlowCallable {
   /** Gets a textual representation of this callable. */
   string toString() { none() }
 
+  /**
+   * Gets the `Declaration` corresponding to this callable if it exists in the database.
+   * For summarized callables (which may not exist in the database), use `asSummarizedCallable`.
+   */
   Cpp::Declaration asSourceCallable() { this = TSourceCallable(result) }
 
+  /**
+   * Gets the underlying summarized callable, if
+   * this callable is generated from a models-as-data
+   * model.
+   */
   FlowSummaryImpl::Public::SummarizedCallable asSummarizedCallable() {
     this = TSummarizedCallable(result)
   }
@@ -1080,7 +1089,7 @@ class DataFlowExpr = Expr;
 class DataFlowType = Type;
 
 cached
-newtype TDataFlowCall =
+private newtype TDataFlowCall =
   TNormalCall(CallInstruction call) or
   TSummaryCall(
     FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
