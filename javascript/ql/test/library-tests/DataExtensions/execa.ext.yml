@@ -3,4 +3,4 @@ extensions:
       pack: codeql/javascript-all
       extensible: sinkModel
     data:
-      - ["@example/execa", "Member[shell].Argument[0]", "command-injection"]
+      - ["@example/execa", "Member[shell].Argument[0]", "command-injection", "manual"]
