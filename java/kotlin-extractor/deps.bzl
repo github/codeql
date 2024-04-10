@@ -108,19 +108,14 @@ def _defaults_impl(repository_ctx):
 
 _defaults = repository_rule(implementation = _defaults_impl)
 
-def _add_rule(rules, rule, *, name, **kwargs):
-    rule(name = name, **kwargs)
-    rules.append(name)
-
 def _kotlin_deps_impl(module_ctx):
-    deps = []
     for v in VERSIONS:
         for lib in ("compiler", "compiler-embeddable", "stdlib"):
-            _add_rule(deps, _kotlin_dep, name = "kotlin-%s-%s" % (lib, v))
-    _add_rule(deps, _embeddable_source, name = "codeql_kotlin_embeddable")
-    _add_rule(deps, _defaults, name = "codeql_kotlin_defaults")
+            _kotlin_dep(name = "kotlin-%s-%s" % (lib, v))
+    _embeddable_source(name = "codeql_kotlin_embeddable")
+    _defaults(name = "codeql_kotlin_defaults")
     return module_ctx.extension_metadata(
-        root_module_direct_deps = deps,
+        root_module_direct_deps = "all",
         root_module_direct_dev_deps = [],
     )
 
