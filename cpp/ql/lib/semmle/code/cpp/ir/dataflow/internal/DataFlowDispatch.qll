@@ -29,7 +29,7 @@ DataFlowCallable defaultViableCallable(DataFlowCall call) {
   )
   or
   // Virtual dispatch
-  result = TSourceCallable(call.(VirtualDispatch::DataSensitiveCall).resolve())
+  result.asSourceCallable() = call.(VirtualDispatch::DataSensitiveCall).resolve()
 }
 
 /**
@@ -284,11 +284,8 @@ DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) {
   exists(int i, DataFlowCallable f |
     mayBenefitFromCallContext(pragma[only_bind_into](call), f, i) and
     f = ctx.getStaticCallTarget() and
-    result =
-      TSourceCallable(ctx.getArgument(i)
-            .getUnconvertedResultExpression()
-            .(FunctionAccess)
-            .getTarget())
+    result.asSourceCallable() =
+      ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget()
   )
 }
 

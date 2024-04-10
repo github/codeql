@@ -1063,7 +1063,7 @@ class DataFlowCallable extends TDataFlowCallable {
  * unmodeled flows or duplicate paths), and includes variables (for reasons
  * explained in `DataFlowCallable`).
  */
-private class SourceCallable extends DataFlowCallable, TSourceCallable {
+class SourceCallable extends DataFlowCallable, TSourceCallable {
   Cpp::Declaration decl;
 
   SourceCallable() { this = TSourceCallable(decl) }
@@ -1078,7 +1078,7 @@ private class SourceCallable extends DataFlowCallable, TSourceCallable {
  * models-as-data models as a place to contain the corresponding
  * `FlowSummaryNode`s.
  */
-private class SummarizedCallable extends DataFlowCallable, TSummarizedCallable {
+class SummarizedCallable extends DataFlowCallable, TSummarizedCallable {
   FlowSummaryImpl::Public::SummarizedCallable sc;
 
   SummarizedCallable() { this = TSummarizedCallable(sc) }
