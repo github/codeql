@@ -522,7 +522,6 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         {
             logger.LogInfo("Checking Nuget feeds...");
             var (explicitFeeds, allFeeds) = GetAllFeeds(allFiles);
-            var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
 
             var excludedFeeds = EnvironmentVariables.GetURLs(EnvironmentVariableNames.ExcludedNugetFeedsFromResponsivenessCheck)
                 .ToHashSet() ?? [];
@@ -549,9 +548,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             CompilationInfos.Add(("All Nuget feeds reachable", allFeedsReachable ? "1" : "0"));
 
+
+            var inheritedFeeds = allFeeds.Except(explicitFeeds).ToHashSet();
             if (inheritedFeeds.Count > 0)
             {
-                logger.LogInfo($"Inherited Nuget feeds: {string.Join(", ", inheritedFeeds.OrderBy(f => f))}");
+                logger.LogInfo($"Inherited Nuget feeds (not checked for reachability): {string.Join(", ", inheritedFeeds.OrderBy(f => f))}");
                 CompilationInfos.Add(("Inherited Nuget feed count", inheritedFeeds.Count.ToString()));
             }
 
