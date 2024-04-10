@@ -141,10 +141,12 @@ private class IteratorCrementNonMemberOperatorModel extends IteratorCrementNonMe
   }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
-    // `buffer` must be `true` or `mustWrite` must be `false` to ensure that
-    // the IR alias analysis doesn't think that `it++` doesn't completely override
-    // the value of the iterator. Ideally, the IR alias analysis shouldn't deal with
-    // iterators, but this is necessary for taintflow to get any results in our iterator tests.
+    // We have two choices here: either `buffer` must be `true` or `mustWrite`
+    // must be `false` to ensure that the IR alias analysis doesn't think that
+    // `it++` completely override the value of the iterator.
+    // We choose `mustWrite` must be `false`. In that case, the value of
+    // `buffer` isn't super important (it just decides which kind of read side
+    // effect will be emitted).
     i = 0 and buffer = false and mustWrite = false
   }
 
@@ -193,10 +195,12 @@ private class IteratorCrementMemberOperatorModel extends IteratorCrementMemberOp
   }
 
   override predicate hasSpecificWriteSideEffect(ParameterIndex i, boolean buffer, boolean mustWrite) {
-    // `buffer` must be `true` or `mustWrite` must be `false` to ensure that
-    // the IR alias analysis doesn't think that `it++` doesn't completely override
-    // the value of the iterator. Ideally, the IR alias analysis shouldn't deal with
-    // iterators, but this is necessary for taintflow to get any results in our iterator tests.
+    // We have two choices here: either `buffer` must be `true` or `mustWrite`
+    // must be `false` to ensure that the IR alias analysis doesn't think that
+    // `it++` completely override the value of the iterator.
+    // We choose `mustWrite` must be `false`. In that case, the value of
+    // `buffer` isn't super important (it just decides which kind of read side
+    // effect will be emitted).
     i = -1 and buffer = false and mustWrite = false
   }
 
