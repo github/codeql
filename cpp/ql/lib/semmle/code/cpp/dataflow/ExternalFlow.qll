@@ -375,10 +375,12 @@ private string paramsStringPart(Function c, int i) {
  * Parameter types are represented by their type erasure.
  */
 cached
-string paramsString(Function c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
+private string paramsString(Function c) {
+  result = concat(int i | | paramsStringPart(c, i) order by i)
+}
 
 bindingset[func]
-predicate matchesSignature(Function func, string signature) {
+private predicate matchesSignature(Function func, string signature) {
   signature = "" or
   paramsString(func) = signature
 }

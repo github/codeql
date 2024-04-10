@@ -743,6 +743,10 @@ class InitialGlobalValue extends Node, TInitialGlobalValue {
  * of a models-as-data modeled function.
  */
 class FlowSummaryNode extends Node, TFlowSummaryNode {
+  /**
+   * Gets the models-as-data `SummaryNode` associated with this dataflow
+   * `FlowSummaryNode`.
+   */
   FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
   /**

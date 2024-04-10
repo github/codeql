@@ -1046,6 +1046,10 @@ class DataFlowCallable extends TDataFlowCallable {
     this = TSummarizedCallable(result)
   }
 
+  /**
+   * Gets the underlying `Declaration` of this `DataFlowCallable`. This
+   * predicate returns a result for both source and summarized callables.
+   */
   Cpp::Declaration getUnderlyingCallable() {
     result = this.asSummarizedCallable() or // SummarizedCallable = Function (in CPP)
     result = this.asSourceCallable()
