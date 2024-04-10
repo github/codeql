@@ -10,11 +10,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
     /// Used to represent a path to an assembly or a directory containing assemblies
     /// and a selector function to determine which files to include, when indexing the assemblies.
     /// </summary>
-    internal sealed class AssemblyLookupLocation(string p, Func<string, bool> includeFileName, bool indexSubdirectories = true)
+    internal sealed class AssemblyLookupLocation(string path, Func<string, bool> includeFileName, bool indexSubdirectories = true)
     {
-        public string Path => p;
+        public string Path => path;
 
-        public AssemblyLookupLocation(string p) : this(p, _ => true) { }
+        public AssemblyLookupLocation(string path) : this(path, _ => true) { }
 
         public static implicit operator AssemblyLookupLocation(string path) => new(path);
 
@@ -23,15 +23,16 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
         /// and adds them to the a list of assembly names to index.
         /// Indexing is performed at a later stage. This only collects the names.
         /// </summary>
-        /// <param name="dir">The directory to index.</param>
+        /// <param name="dllsToIndex">List of dlls to index.</param>
+        /// <param name="logger">Logger.</param>
         private void AddReferenceDirectory(List<string> dllsToIndex, ILogger logger)
         {
             try
             {
-                var dlls = new DirectoryInfo(p).EnumerateFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = indexSubdirectories, MatchCasing = MatchCasing.CaseInsensitive, AttributesToSkip = FileAttributes.None });
+                var dlls = new DirectoryInfo(path).EnumerateFiles("*.dll", new EnumerationOptions { RecurseSubdirectories = indexSubdirectories, MatchCasing = MatchCasing.CaseInsensitive, AttributesToSkip = FileAttributes.None });
                 if (!dlls.Any())
                 {
-                    logger.LogWarning($"AssemblyLookupLocation: No DLLs found in the path '{p}'.");
+                    logger.LogWarning($"AssemblyLookupLocation: No DLLs found in the path '{path}'.");
                     return;
                 }
                 foreach (var dll in dlls)
@@ -48,47 +49,47 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
             catch (Exception e)
             {
-                logger.LogError($"AssemblyLookupLocation: Error while searching for DLLs in '{p}': {e.Message}");
+                logger.LogError($"AssemblyLookupLocation: Error while searching for DLLs in '{path}': {e.Message}");
             }
         }
 
         /// <summary>
-        /// Returns a list of paths to all assemblies in `p` that should be indexed.
+        /// Returns a list of paths to all assemblies in `path` that should be indexed.
         /// </summary>
         /// <param name="logger">Logger</param>
         public List<string> GetDlls(ILogger logger)
         {
             var dllsToIndex = new List<string>();
-            if (File.Exists(p))
+            if (File.Exists(path))
             {
-                if (includeFileName(System.IO.Path.GetFileName(p)))
+                if (includeFileName(System.IO.Path.GetFileName(path)))
                 {
-                    dllsToIndex.Add(p);
+                    dllsToIndex.Add(path);
                 }
                 else
                 {
-                    logger.LogInfo($"AssemblyLookupLocation: Skipping {p}.");
+                    logger.LogInfo($"AssemblyLookupLocation: Skipping {path}.");
                 }
                 return dllsToIndex;
             }
 
-            if (Directory.Exists(p))
+            if (Directory.Exists(path))
             {
-                logger.LogInfo($"AssemblyLookupLocation: Finding reference DLLs in {p}...");
+                logger.LogInfo($"AssemblyLookupLocation: Finding reference DLLs in {path}...");
                 AddReferenceDirectory(dllsToIndex, logger);
             }
             else
             {
-                logger.LogInfo("AssemblyLookupLocation: Path not found: " + p);
+                logger.LogInfo("AssemblyLookupLocation: Path not found: " + path);
             }
             return dllsToIndex;
         }
 
         public override bool Equals(object? obj) =>
-            obj is AssemblyLookupLocation ap && p.Equals(ap.Path);
+            obj is AssemblyLookupLocation ap && path.Equals(ap.Path);
 
-        public override int GetHashCode() => p.GetHashCode();
+        public override int GetHashCode() => path.GetHashCode();
 
-        public override string ToString() => p;
+        public override string ToString() => path;
     }
 }
