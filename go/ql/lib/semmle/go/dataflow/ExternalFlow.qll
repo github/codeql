@@ -84,7 +84,7 @@ private import internal.FlowSummaryImpl::Public
 private import codeql.mad.ModelValidation as SharedModelVal
 
 /** Holds if `package` have MaD framework coverage. */
-private predicate packageHasMaDCoverage(string package) {
+private predicate relevantPackage(string package) {
   sourceModel(package, _, _, _, _, _, _, _, _, _) or
   sinkModel(package, _, _, _, _, _, _, _, _, _) or
   summaryModel(package, _, _, _, _, _, _, _, _, _, _)
@@ -95,8 +95,8 @@ private predicate packageHasMaDCoverage(string package) {
  * is a subpackage of `package`.
  */
 private predicate packageHasASubpackage(string package, string subpkg) {
-  packageHasMaDCoverage(package) and
-  packageHasMaDCoverage(subpkg) and
+  relevantPackage(package) and
+  relevantPackage(subpkg) and
   subpkg.prefix(subpkg.indexOf(".")) = package
 }
 
@@ -105,7 +105,7 @@ private predicate packageHasASubpackage(string package, string subpkg) {
  * any other package with MaD framework coverage.
  */
 private predicate canonicalPackage(string package) {
-  packageHasMaDCoverage(package) and not packageHasASubpackage(_, package)
+  relevantPackage(package) and not packageHasASubpackage(_, package)
 }
 
 /**
