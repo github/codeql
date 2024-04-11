@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["snow-actions/eclint", "*", "input.args", "command-injection"]
+      - ["snow-actions/eclint", "*", "input.args", "command-injection", "manual"]

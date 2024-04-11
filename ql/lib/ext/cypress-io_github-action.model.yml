@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sourceModel
     data:
-      - ["cypress-io/github-action", "*", "env.GH_BRANCH", "PR branch"]
+      - ["cypress-io/github-action", "*", "env.GH_BRANCH", "PR branch", "manual"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["bobheadxi/deployments", "*", "input.env", "output.env", "taint"]
+      - ["bobheadxi/deployments", "*", "input.env", "output.env", "taint", "manual"]

@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["anchore/scan-action", "*", "input.grype-version", "command-injection"]
+      - ["anchore/scan-action", "*", "input.grype-version", "command-injection", "manual"]

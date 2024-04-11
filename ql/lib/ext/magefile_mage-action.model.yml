@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["magefile/mage-action", "*", "input.args", "command-injection"]
+      - ["magefile/mage-action", "*", "input.args", "command-injection", "manual"]

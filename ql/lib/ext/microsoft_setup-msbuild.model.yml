@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["microsoft/setup-msbuild", "*", "input.vs-version", "command-injection"]
-      - ["microsoft/setup-msbuild", "*", "input.vswhere-path", "command-injection"]
+      - ["microsoft/setup-msbuild", "*", "input.vs-version", "command-injection", "manual"]
+      - ["microsoft/setup-msbuild", "*", "input.vswhere-path", "command-injection", "manual"]

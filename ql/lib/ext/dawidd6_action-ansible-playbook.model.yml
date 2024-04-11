@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["dawidd6/action-ansible-playbook", "*", "input.playbook", "command-injection"]
-      - ["dawidd6/action-ansible-playbook", "*", "input.options", "command-injection"]
+      - ["dawidd6/action-ansible-playbook", "*", "input.playbook", "command-injection", "manual"]
+      - ["dawidd6/action-ansible-playbook", "*", "input.options", "command-injection", "manual"]

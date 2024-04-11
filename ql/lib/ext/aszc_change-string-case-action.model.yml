@@ -3,6 +3,6 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["aszc/change-string-case-action", "*", "input.string", "output.capitalized", "taint"]
-      - ["aszc/change-string-case-action", "*", "input.replace-with", "output.uppercase", "taint"]
-      - ["aszc/change-string-case-action", "*", "input.replace-with", "output.lowercase", "taint"]
+      - ["aszc/change-string-case-action", "*", "input.string", "output.capitalized", "taint", "manual"]
+      - ["aszc/change-string-case-action", "*", "input.replace-with", "output.uppercase", "taint", "manual"]
+      - ["aszc/change-string-case-action", "*", "input.replace-with", "output.lowercase", "taint", "manual"]

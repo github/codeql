@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["gautamkrishnar/blog-post-workflow", "*", "input.item_exec", "code-injection"]
+      - ["gautamkrishnar/blog-post-workflow", "*", "input.item_exec", "code-injection", "manual"]

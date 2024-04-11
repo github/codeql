@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["android-actions/setup-android", "*", "input.cmdline-tools-version", "output.ANDROID_COMMANDLINE_TOOLS_VERSION", "taint"]
+      - ["android-actions/setup-android", "*", "input.cmdline-tools-version", "output.ANDROID_COMMANDLINE_TOOLS_VERSION", "taint", "manual"]

@@ -3,8 +3,8 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["stackhawk/hawkscan-action", "*", "input.workspace", "command-injection"]
-      - ["stackhawk/hawkscan-action", "*", "input.apiKey", "command-injection"]
-      - ["stackhawk/hawkscan-action", "*", "input.command", "command-injection"]
-      - ["stackhawk/hawkscan-action", "*", "input.args", "command-injection"]
-      - ["stackhawk/hawkscan-action", "*", "input.version", "command-injection"]
+      - ["stackhawk/hawkscan-action", "*", "input.workspace", "command-injection", "manual"]
+      - ["stackhawk/hawkscan-action", "*", "input.apiKey", "command-injection", "manual"]
+      - ["stackhawk/hawkscan-action", "*", "input.command", "command-injection", "manual"]
+      - ["stackhawk/hawkscan-action", "*", "input.args", "command-injection", "manual"]
+      - ["stackhawk/hawkscan-action", "*", "input.version", "command-injection", "manual"]

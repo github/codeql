@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["getsentry/action-release", "*", "input.version", "output.version", "taint"]
-      - ["getsentry/action-release", "*", "input.version_prefix", "output.version", "taint"]
+      - ["getsentry/action-release", "*", "input.version", "output.version", "taint", "manual"]
+      - ["getsentry/action-release", "*", "input.version_prefix", "output.version", "taint", "manual"]

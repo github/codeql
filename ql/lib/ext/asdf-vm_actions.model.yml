@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["asdf-vm/actions", "*", "input.before_install", "command-injection"]
+      - ["asdf-vm/actions", "*", "input.before_install", "command-injection", "manual"]

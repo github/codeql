@@ -3,9 +3,9 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["bufbuild/buf-lint-action", "*", "input.buf_token", "env.BUF_TOKEN", "taint"]
+      - ["bufbuild/buf-lint-action", "*", "input.buf_token", "env.BUF_TOKEN", "taint", "manual"]
   - addsTo:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["bufbuild/buf-lint-action", "*", "input.input", "command-injection"]
+      - ["bufbuild/buf-lint-action", "*", "input.input", "command-injection", "manual"]

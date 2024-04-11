@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["haya14busa/action-cond", "*", "input.if_true", "output.value", "taint"]
-      - ["haya14busa/action-cond", "*", "input.if_false", "output.value", "taint"]
+      - ["haya14busa/action-cond", "*", "input.if_true", "output.value", "taint", "manual"]
+      - ["haya14busa/action-cond", "*", "input.if_false", "output.value", "taint", "manual"]

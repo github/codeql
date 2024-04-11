@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["mad9000/actions-find-and-replace-string", "*", "input.source", "output.value", "taint"]
-      - ["mad9000/actions-find-and-replace-string", "*", "input.replace", "output.value", "taint"]
+      - ["mad9000/actions-find-and-replace-string", "*", "input.source", "output.value", "taint", "manual"]
+      - ["mad9000/actions-find-and-replace-string", "*", "input.replace", "output.value", "taint", "manual"]

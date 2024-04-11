@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["shallwefootball/upload-s3-action", "*", "input.destination_dir", "output.object_key", "taint"]
+      - ["shallwefootball/upload-s3-action", "*", "input.destination_dir", "output.object_key", "taint", "manual"]

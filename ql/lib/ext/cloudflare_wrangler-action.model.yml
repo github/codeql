@@ -3,5 +3,5 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: sinkModel
     data:
-      - ["cloudflare/wrangler-action", "*", "input.preCommands", "command-injection"]
-      - ["cloudflare/wrangler-action", "*", "input.postCommands", "command-injection"]
+      - ["cloudflare/wrangler-action", "*", "input.preCommands", "command-injection", "manual"]
+      - ["cloudflare/wrangler-action", "*", "input.postCommands", "command-injection", "manual"]

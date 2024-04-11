@@ -3,4 +3,4 @@ extensions:
       pack: githubsecuritylab/actions-all
       extensible: summaryModel
     data:
-      - ["coursier/cache-action", "*", "input.path", "env.COURSIER_CACHE", "taint"]
+      - ["coursier/cache-action", "*", "input.path", "env.COURSIER_CACHE", "taint", "manual"]
