@@ -79,7 +79,7 @@ def _get_default_version(repository_ctx):
     res = repository_ctx.execute([kotlinc, "-version"])
     if not res:
         fail("kotlinc -version failed: %s" % res.stderr)
-    out = res.stderr.split(" ")
+    out = (res.stdout or res.stderr).split(" ")
     kotlinc_jvm_index = out.index("kotlinc-jvm")
     return out[kotlinc_jvm_index + 1]
 
