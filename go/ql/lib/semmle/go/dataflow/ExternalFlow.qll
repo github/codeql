@@ -90,14 +90,10 @@ private predicate relevantPackage(string package) {
   summaryModel(package, _, _, _, _, _, _, _, _, _, _)
 }
 
-/**
- * Holds if `package` and `subpkg` have MaD framework coverage and `subpkg`
- * is a subpackage of `package`.
- */
-private predicate packageHasASubpackage(string package, string subpkg) {
-  relevantPackage(package) and
-  relevantPackage(subpkg) and
-  subpkg.prefix(subpkg.indexOf(".")) = package
+private predicate packageLink(string shortpkg, string longpkg) {
+  relevantPackage(shortpkg) and
+  relevantPackage(longpkg) and
+  longpkg.prefix(longpkg.indexOf(".")) = shortpkg
 }
 
 /**
@@ -105,7 +101,7 @@ private predicate packageHasASubpackage(string package, string subpkg) {
  * any other package with MaD framework coverage.
  */
 private predicate canonicalPackage(string package) {
-  relevantPackage(package) and not packageHasASubpackage(_, package)
+  relevantPackage(package) and not packageLink(_, package)
 }
 
 /**
@@ -115,7 +111,7 @@ private predicate canonicalPackage(string package) {
  */
 private predicate canonicalPackageHasASubpackage(string package, string subpkg) {
   canonicalPackage(package) and
-  (subpkg = package or packageHasASubpackage(package, subpkg))
+  (subpkg = package or packageLink(package, subpkg))
 }
 
 /**
