@@ -82,22 +82,18 @@ predicate artifactToOutputStoreStep(DataFlow::Node pred, DataFlow::Node succ, Da
 }
 
 /**
- * A downloaded artifact that gets assigned to an env var declaration.
- * - uses: actions/download-artifact@v2
- * - run: echo "::set-env name=id::$(<pr-id.txt)"
+ * A download artifact step followed by a step that may use downloaded artifacts.
  */
-predicate artifactToEnvStep(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Run run, string key, string value, ArtifactDownloadStep download |
+predicate artifactDownloadToUseStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(ArtifactDownloadStep download, Run run |
     pred.asExpr() = download and
     succ.asExpr() = run and
-    download.getAFollowingStep() = run and
-    Utils::writeToGitHubEnv(run, key, value) and
-    value.regexpMatch(["\\$\\(", "`"] + ["cat\\s+", "<"] + ".*" + ["`", "\\)"])
+    download.getAFollowingStep() = run
   )
 }
 
-class ArtifactDownloadToEnvTaintStep extends AdditionalTaintStep {
+class ArtifactDownloadToUseTaintStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
-    artifactToEnvStep(node1, node2)
+    artifactDownloadToUseStep(node1, node2)
   }
 }

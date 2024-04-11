@@ -1,4 +1,8 @@
 import actions
+private import codeql.actions.TaintTracking
+import codeql.actions.DataFlow
+private import codeql.actions.dataflow.ExternalFlow
+import codeql.actions.dataflow.FlowSources
 
 string unzipRegexp() { result = ".*(unzip|tar)\\s+.*" }
 
@@ -254,3 +258,20 @@ class EnvVarInjectionRunStep extends PoisonableStep, Run {
     )
   }
 }
+
+class ArtifactPoisoningSink extends DataFlow::Node {
+  ArtifactPoisoningSink() { this.asExpr() instanceof PoisonableStep }
+}
+
+/**
+ * A taint-tracking configuration for unsafe artifacts
+ * that is used may lead to artifact poisoning
+ */
+private module ArtifactPoisoningConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof ArtifactPoisoningSink }
+}
+
+/** Tracks flow of unsafe artifacts that is used in an insecure way. */
+module ArtifactPoisoningFlow = TaintTracking::Global<ArtifactPoisoningConfig>;
