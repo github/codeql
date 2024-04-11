@@ -113,9 +113,17 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
         private const string nugetListSourceCommand = "nuget list source --format Short";
 
-        public IList<string> GetNugetFeeds(string nugetConfig) => GetResultList($"{nugetListSourceCommand} --configfile \"{nugetConfig}\"");
+        public IList<string> GetNugetFeeds(string nugetConfig)
+        {
+            logger.LogInfo($"Getting Nuget feeds from '{nugetConfig}'...");
+            return GetResultList($"{nugetListSourceCommand} --configfile \"{nugetConfig}\"");
+        }
 
-        public IList<string> GetNugetFeedsFromFolder(string folderPath) => GetResultList(nugetListSourceCommand, folderPath);
+        public IList<string> GetNugetFeedsFromFolder(string folderPath)
+        {
+            logger.LogInfo($"Getting Nuget feeds in folder '{folderPath}'...");
+            return GetResultList(nugetListSourceCommand, folderPath);
+        }
 
         // The version number should be kept in sync with the version .NET version used for building the application.
         public const string LatestDotNetSdkVersion = "8.0.101";

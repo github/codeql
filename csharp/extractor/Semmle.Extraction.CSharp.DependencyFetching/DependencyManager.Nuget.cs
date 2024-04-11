@@ -96,6 +96,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             if (fallbackFeeds.Count == 0)
             {
                 fallbackFeeds.Add(PublicNugetFeed);
+                logger.LogInfo($"No fallback Nuget feeds specified. Using default feed: {PublicNugetFeed}");
             }
 
             logger.LogInfo($"Checking fallback Nuget feed reachability on feeds:  {string.Join(", ", fallbackFeeds.OrderBy(f => f))}");
@@ -188,7 +189,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             var reachableFallbackFeeds = GetReachableFallbackNugetFeeds();
             if (reachableFallbackFeeds.Count > 0)
             {
-                DownloadMissingPackages(allNonBinaryFiles, dllLocations, withNugetConfigFromSrc: false, fallbackNugetFeeds: reachableFallbackFeeds);
+                DownloadMissingPackages(allNonBinaryFiles, dllLocations, fallbackNugetFeeds: reachableFallbackFeeds);
             }
             else
             {
@@ -196,7 +197,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private void DownloadMissingPackages(List<FileInfo> allFiles, HashSet<AssemblyLookupLocation> dllLocations, bool withNugetConfigFromSrc = true, IEnumerable<string>? fallbackNugetFeeds = null)
+        private void DownloadMissingPackages(List<FileInfo> allFiles, HashSet<AssemblyLookupLocation> dllLocations, IEnumerable<string>? fallbackNugetFeeds = null)
         {
             var alreadyDownloadedPackages = GetRestoredPackageDirectoryNames(packageDirectory.DirInfo);
             var alreadyDownloadedLegacyPackages = GetRestoredLegacyPackageNames();
@@ -230,7 +231,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             logger.LogInfo($"Found {notYetDownloadedPackages.Count} packages that are not yet restored");
             using var tempDir = new TemporaryDirectory(ComputeTempDirectory(sourceDir.FullName, "nugetconfig"));
-            var nugetConfig = withNugetConfigFromSrc
+            var nugetConfig = fallbackNugetFeeds is null
                 ? GetNugetConfig(allFiles)
                 : CreateFallbackNugetConfig(fallbackNugetFeeds, tempDir.DirInfo.FullName);
 
@@ -241,7 +242,7 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
 
             Parallel.ForEach(notYetDownloadedPackages, new ParallelOptions { MaxDegreeOfParallelism = threads }, package =>
             {
-                var success = TryRestorePackageManually(package.Name, nugetConfig, package.PackageReferenceSource, tryWithoutNugetConfig: withNugetConfigFromSrc);
+                var success = TryRestorePackageManually(package.Name, nugetConfig, package.PackageReferenceSource, tryWithoutNugetConfig: fallbackNugetFeeds is null);
                 if (!success)
                 {
                     return;
@@ -258,15 +259,8 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             dllLocations.Add(missingPackageDirectory.DirInfo.FullName);
         }
 
-        private string? CreateFallbackNugetConfig(IEnumerable<string>? fallbackNugetFeeds, string folderPath)
+        private string? CreateFallbackNugetConfig(IEnumerable<string> fallbackNugetFeeds, string folderPath)
         {
-            if (fallbackNugetFeeds is null)
-            {
-                // We're not overriding the inherited Nuget feeds
-                logger.LogInfo("No fallback Nuget feeds provided. Not creating a fallback nuget.config file.");
-                return null;
-            }
-
             var sb = new StringBuilder();
             fallbackNugetFeeds.ForEach((feed, index) => sb.AppendLine($"<add key=\"feed{index}\" value=\"{feed}\" />"));
 
@@ -587,19 +581,11 @@ namespace Semmle.Extraction.CSharp.DependencyFetching
             }
         }
 
-        private (HashSet<string>, HashSet<string>) GetAllFeeds(List<FileInfo> allFiles)
+        private (HashSet<string> explicitFeeds, HashSet<string> allFeeds) GetAllFeeds(List<FileInfo> allFiles)
         {
-            IList<string> GetNugetFeeds(string nugetConfig)
-            {
-                logger.LogInfo($"Getting Nuget feeds from '{nugetConfig}'...");
-                return dotnet.GetNugetFeeds(nugetConfig);
-            }
+            IList<string> GetNugetFeeds(string nugetConfig) => dotnet.GetNugetFeeds(nugetConfig);
 
-            IList<string> GetNugetFeedsFromFolder(string folderPath)
-            {
-                logger.LogInfo($"Getting Nuget feeds in folder '{folderPath}'...");
-                return dotnet.GetNugetFeedsFromFolder(folderPath);
-            }
+            IList<string> GetNugetFeedsFromFolder(string folderPath) => dotnet.GetNugetFeedsFromFolder(folderPath);
 
             var nugetConfigs = GetAllNugetConfigs(allFiles);
             var explicitFeeds = nugetConfigs
