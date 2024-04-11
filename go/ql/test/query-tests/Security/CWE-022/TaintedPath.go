@@ -2,6 +2,7 @@ package main
 
 import (
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"path"
 	"path/filepath"
@@ -76,4 +77,20 @@ func handler(w http.ResponseWriter, r *http.Request) {
 	}
 	data, _ = ioutil.ReadFile(files[0].Filename)
 	w.Write(data)
+
+	// GOOD: Part.FileName sanitized by filepath.Base
+	r.ParseMultipartForm(32 << 20)
+	file, _, err := r.FormFile("uploadfile")
+	if err != nil {
+		return
+	}
+	reader := multipart.NewReader(file, "foo")
+
+	// Read the first part
+	part, err := reader.NextPart()
+	if err != nil {
+		return
+	}
+
+	data, _ = ioutil.ReadFile(part.FileName())
 }
