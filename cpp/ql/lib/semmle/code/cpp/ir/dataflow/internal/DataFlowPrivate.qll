@@ -466,7 +466,8 @@ private newtype TReturnKind =
     // (this approach includes functions declared that have no body; they may still have flow summaries)
     indirectionIndex =
       [0 .. max(Cpp::Function f |
-          |
+          not exists(f.getBlock())
+        |
           Ssa::getMaxIndirectionsForType(f.getUnspecifiedType()) - 1 // -1 because a returned value is a prvalue not a glvalue
         )]
   } or
@@ -480,7 +481,8 @@ private newtype TReturnKind =
     // derive a possible return argument from the AST
     indirectionIndex =
       [0 .. max(Cpp::Function f |
-          |
+          not exists(f.getBlock())
+        |
           Ssa::getMaxIndirectionsForType(f.getParameter(argumentIndex).getUnspecifiedType()) - 1 // -1 because an argument is a prvalue not a glvalue
         )]
   }
