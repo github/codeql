@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @precision high
- * @security-severity 9.3
+ * @security-severity 5.0
  * @id actions/artifact-poisoning
  * @tags actions
  *       security

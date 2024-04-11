@@ -20,7 +20,7 @@ module Utils {
   }
 
   bindingset[str]
-  string trimQuotes(string str) {
+  private string trimQuotes(string str) {
     result = str.trim().regexpReplaceAll("^(\"|')", "").regexpReplaceAll("(\"|')$", "")
   }
 
@@ -212,6 +212,13 @@ class Workflow extends AstNode instanceof WorkflowImpl {
   }
 
   predicate isPrivileged() {
+    // The Workflow has a permission to write to some scope
+    this.getPermissions().getAPermission() = "write" and
+    // The Workflow accesses a secret
+    exists(SecretsExpression expr |
+      expr.getEnclosingWorkflow() = this and not expr.getFieldName() = "GITHUB_TOKEN"
+    )
+    or
     // The Workflow is triggered by an event other than `pull_request`
     not this.hasSingleTrigger("pull_request")
     or
@@ -248,7 +255,11 @@ class Outputs extends AstNode instanceof OutputsImpl {
   override string toString() { result = "Job outputs node" }
 }
 
-class Permissions extends AstNode instanceof PermissionsImpl { }
+class Permissions extends AstNode instanceof PermissionsImpl {
+  string getPermission(string perm) { result = super.getPermission(perm) }
+
+  string getAPermission() { result = super.getAPermission() }
+}
 
 class Strategy extends AstNode instanceof StrategyImpl {
   Expression getMatrixVarExpr(string varName) { result = super.getMatrixVarExpr(varName) }
@@ -347,6 +358,8 @@ abstract class SimpleReferenceExpression extends AstNode instanceof SimpleRefere
 
   AstNode getTarget() { result = super.getTarget() }
 }
+
+class SecretsExpression extends SimpleReferenceExpression instanceof SecretsExpressionImpl { }
 
 class StepsExpression extends SimpleReferenceExpression instanceof StepsExpressionImpl {
   string getStepId() { result = super.getStepId() }

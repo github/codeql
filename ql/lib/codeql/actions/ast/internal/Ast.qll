@@ -484,6 +484,10 @@ class PermissionsImpl extends AstNodeImpl, TPermissionsNode {
   override Location getLocation() { result = n.getLocation() }
 
   override YamlMapping getNode() { result = n }
+
+  string getPermission(string perm) { result = n.lookup(perm).(YamlScalar).getValue() }
+
+  string getAPermission() { result = this.getPermission(_) }
 }
 
 class StrategyImpl extends AstNodeImpl, TStrategyNode {
@@ -849,6 +853,25 @@ private string matrixCtxRegex() { result = Utils::wrapRegexp("matrix\\.([A-Za-z0
 private string inputsCtxRegex() {
   result =
     Utils::wrapRegexp(["inputs\\.([A-Za-z0-9_-]+)", "github\\.event\\.inputs\\.([A-Za-z0-9_-]+)"])
+}
+
+private string secretsCtxRegex() { result = Utils::wrapRegexp("secrets\\.([A-Za-z0-9_-]+)") }
+
+/**
+ * Holds for an expression accesing the `secrets` context.
+ * e.g. `${{ secrets.FOO }}`
+ */
+class SecretsExpressionImpl extends SimpleReferenceExpressionImpl {
+  string fieldName;
+
+  SecretsExpressionImpl() {
+    Utils::normalizeExpr(expression).regexpMatch(secretsCtxRegex()) and
+    fieldName = Utils::normalizeExpr(expression).regexpCapture(secretsCtxRegex(), 1)
+  }
+
+  override string getFieldName() { result = fieldName }
+
+  override AstNodeImpl getTarget() { none() }
 }
 
 /**
