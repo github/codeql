@@ -1235,7 +1235,8 @@ class TranslatedUnaryExpr extends TranslatedSingleInstructionExpr {
     expr instanceof NotExpr or
     expr instanceof ComplementExpr or
     expr instanceof UnaryPlusExpr or
-    expr instanceof UnaryMinusExpr
+    expr instanceof UnaryMinusExpr or
+    expr instanceof CoAwaitExpr
   }
 
   final override Instruction getFirstInstruction(EdgeKind kind) {
