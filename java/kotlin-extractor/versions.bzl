@@ -12,7 +12,6 @@ VERSIONS = [
     "1.9.0-Beta",
     "1.9.20-Beta",
     "2.0.0-RC1",
-    "2.0.255-SNAPSHOT",
 ]
 
 DEFAULT_VERSION = "1.9.0"
