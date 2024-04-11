@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["vesoft-inc/nebula", "*", "inputs.target-path", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "inputs.bucket", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "inputs.key-secret", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "inputs.key-id", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "inputs.endpoint", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "inputs.asset-path", "code-injection", "generated"]
+     - ["vesoft-inc/nebula", "*", "inputs.tag", "code-injection", "generated"]

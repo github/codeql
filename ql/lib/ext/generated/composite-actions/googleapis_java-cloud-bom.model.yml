@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["googleapis/java-cloud-bom", "*", "inputs.bom-path", "code-injection", "generated"]

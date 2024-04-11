@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["trunk-io/trunk-action", "*", "inputs.tools", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "inputs.post-init", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "inputs.setup-deps", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "inputs.label", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "inputs.debug", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "inputs.check-run-id", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "inputs.check-all-mode", "code-injection", "generated"]
+     - ["trunk-io/trunk-action", "*", "inputs.cache-key", "code-injection", "generated"]

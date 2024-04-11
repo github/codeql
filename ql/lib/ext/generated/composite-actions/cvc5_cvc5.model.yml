@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["cvc5/cvc5", "*", "inputs.build-dir", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "inputs.macos-target", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "inputs.check-examples", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "inputs.check-python-bindings", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "inputs.check-install", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "inputs.regressions-exclude", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "inputs.strip-bin", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "inputs.configure-config", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "inputs.configure-env", "code-injection", "generated"]
+     - ["cvc5/cvc5", "*", "inputs.package-name", "code-injection", "generated"]

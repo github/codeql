@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["shader-slang/slang", "*", "inputs.platform", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "inputs.os", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "inputs.runs-on", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "inputs.config", "code-injection", "generated"]
+     - ["shader-slang/slang", "*", "inputs.compiler", "code-injection", "generated"]

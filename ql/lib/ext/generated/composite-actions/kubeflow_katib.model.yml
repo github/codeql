@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["kubeflow/katib", "*", "inputs.experiments", "code-injection", "generated"]
+     - ["kubeflow/katib", "*", "inputs.database-type", "code-injection", "generated"]
+     - ["kubeflow/katib", "*", "inputs.training-operator", "code-injection", "generated"]
+     - ["kubeflow/katib", "*", "inputs.katib-ui", "code-injection", "generated"]
+     - ["kubeflow/katib", "*", "inputs.trial-images", "code-injection", "generated"]

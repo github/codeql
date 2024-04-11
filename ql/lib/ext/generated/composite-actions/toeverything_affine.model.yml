@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["toeverything/affine", "*", "inputs.extra-flags", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "inputs.nmHoistingLimits", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "inputs.path", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "inputs.cluster-location", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "inputs.cluster-name", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "inputs.gcp-project-id", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "inputs.package", "code-injection", "generated"]
+     - ["toeverything/affine", "*", "inputs.target", "code-injection", "generated"]

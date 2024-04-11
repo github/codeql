@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["randombit/botan", "*", "inputs.target", "code-injection", "generated"]
+     - ["randombit/botan", "*", "inputs.arch", "code-injection", "generated"]

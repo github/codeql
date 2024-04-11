@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["autogluon/autogluon", "*", "inputs.submodule-to-test", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "inputs.command", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "inputs.work-dir", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "inputs.job-name", "code-injection", "generated"]
+     - ["autogluon/autogluon", "*", "inputs.job-type", "code-injection", "generated"]

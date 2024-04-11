@@ -1,0 +1,17 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["metabase/metabase", "*", "inputs.organization_name", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.github_token", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.username", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.test-args", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.clojure-version", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.include-log", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.message", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.mysql", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.postgres", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.openldap", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.maildev", "code-injection", "generated"]
+     - ["metabase/metabase", "*", "inputs.edition", "code-injection", "generated"]

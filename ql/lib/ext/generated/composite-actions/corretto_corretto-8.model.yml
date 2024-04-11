@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["corretto/corretto-8", "*", "inputs.version-branch", "code-injection", "generated"]
+     - ["corretto/corretto-8", "*", "inputs.upstream", "code-injection", "generated"]
+     - ["corretto/corretto-8", "*", "inputs.merge-branch", "code-injection", "generated"]
+     - ["corretto/corretto-8", "*", "inputs.local-branch", "code-injection", "generated"]

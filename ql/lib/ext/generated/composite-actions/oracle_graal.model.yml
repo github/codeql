@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["oracle/graal", "*", "inputs.components", "code-injection", "generated"]
+     - ["oracle/graal", "*", "inputs.native-images", "code-injection", "generated"]

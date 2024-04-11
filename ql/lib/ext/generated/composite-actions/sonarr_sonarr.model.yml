@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["sonarr/sonarr", "*", "inputs.filter", "code-injection", "generated"]
+     - ["sonarr/sonarr", "*", "inputs.binary_path", "code-injection", "generated"]
+     - ["sonarr/sonarr", "*", "inputs.artifact", "code-injection", "generated"]
+     - ["sonarr/sonarr", "*", "inputs.version", "code-injection", "generated"]
+     - ["sonarr/sonarr", "*", "inputs.major_version", "code-injection", "generated"]
+     - ["sonarr/sonarr", "*", "inputs.branch", "code-injection", "generated"]
+     - ["sonarr/sonarr", "*", "inputs.framework", "code-injection", "generated"]

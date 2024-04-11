@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["python/mypy", "*", "inputs.install_project_dependencies", "code-injection", "generated"]
+     - ["python/mypy", "*", "inputs.version", "code-injection", "generated"]

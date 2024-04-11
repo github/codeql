@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["mdanalysis/mdanalysis", "*", "inputs.extra-pip-deps", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "inputs.full-deps", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "inputs.micromamba", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "inputs.mamba", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "inputs.extra-conda-deps", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "inputs.isolation", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "inputs.build-docs", "code-injection", "generated"]
+     - ["mdanalysis/mdanalysis", "*", "inputs.build-tests", "code-injection", "generated"]

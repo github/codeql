@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["openvinotoolkit/openvino", "*", "inputs.skip_when_only_listed_files_changed", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "inputs.skip_when_only_listed_labels_set", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "inputs.labeler_config", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "inputs.components_config_schema", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "inputs.components_config", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "inputs.component_pattern", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "inputs.ref_name", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "inputs.repository", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "inputs.commit_sha", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "inputs.pr", "code-injection", "generated"]
+     - ["openvinotoolkit/openvino", "*", "inputs.pip-cache-path", "code-injection", "generated"]

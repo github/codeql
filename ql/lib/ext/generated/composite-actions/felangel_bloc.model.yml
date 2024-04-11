@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["felangel/bloc", "*", "inputs.coverage_excludes", "code-injection", "generated"]
+     - ["felangel/bloc", "*", "inputs.analyze_directories", "code-injection", "generated"]
+     - ["felangel/bloc", "*", "inputs.report_on", "code-injection", "generated"]
+     - ["felangel/bloc", "*", "inputs.concurrency", "code-injection", "generated"]

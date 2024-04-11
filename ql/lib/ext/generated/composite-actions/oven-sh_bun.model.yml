@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["oven-sh/bun", "*", "inputs.download-url", "code-injection", "generated"]
+     - ["oven-sh/bun", "*", "inputs.bun-version", "code-injection", "generated"]

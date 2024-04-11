@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["angular/dev-infra", "*", "inputs.firebase-public-dir", "code-injection", "generated"]
+     - ["angular/dev-infra", "*", "inputs.workflow-artifact-name", "code-injection", "generated"]
+     - ["angular/dev-infra", "*", "inputs.artifact-build-revision", "code-injection", "generated"]
+     - ["angular/dev-infra", "*", "inputs.pull-number", "code-injection", "generated"]
+     - ["angular/dev-infra", "*", "inputs.deploy-directory", "code-injection", "generated"]

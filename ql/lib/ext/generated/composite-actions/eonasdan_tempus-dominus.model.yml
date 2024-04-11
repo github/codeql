@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["eonasdan/tempus-dominus", "*", "inputs.VERSION", "code-injection", "generated"]
+     - ["eonasdan/tempus-dominus", "*", "inputs.NUGET_API_KEY", "code-injection", "generated"]

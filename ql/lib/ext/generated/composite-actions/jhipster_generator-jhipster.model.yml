@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["jhipster/generator-jhipster", "*", "inputs.generator-path", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.application-packaging", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.application-environment", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.executable", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.jdl-entities-sample", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.entities-sample", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.application-sample", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.jdl-sample", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.generator-jhipster-branch", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.generator-jhipster-repository", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.jhipster-bom-directory", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.jhipster-bom-branch", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.jhipster-bom-repository", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.package-with-executable", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.generator-jhipster-directory", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.application-path", "code-injection", "generated"]
+     - ["jhipster/generator-jhipster", "*", "inputs.extra-args", "code-injection", "generated"]

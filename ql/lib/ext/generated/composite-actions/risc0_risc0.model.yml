@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["risc0/risc0", "*", "inputs.key", "code-injection", "generated"]
+     - ["risc0/risc0", "*", "inputs.components", "code-injection", "generated"]
+     - ["risc0/risc0", "*", "inputs.targets", "code-injection", "generated"]
+     - ["risc0/risc0", "*", "inputs.toolchain", "code-injection", "generated"]

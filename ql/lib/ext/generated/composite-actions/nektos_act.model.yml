@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["nektos/act", "*", "inputs.test_input_optional", "code-injection", "generated"]
+     - ["nektos/act", "*", "inputs.composite-input", "code-injection", "generated"]
+     - ["nektos/act", "*", "inputs.some", "code-injection", "generated"]
+     - ["nektos/act", "*", "inputs.test_input_required_with_default_overriden", "code-injection", "generated"]
+     - ["nektos/act", "*", "inputs.test_input_required_with_default", "code-injection", "generated"]
+     - ["nektos/act", "*", "inputs.test_input_optional_with_default_overriden", "code-injection", "generated"]
+     - ["nektos/act", "*", "inputs.test_input_required", "code-injection", "generated"]

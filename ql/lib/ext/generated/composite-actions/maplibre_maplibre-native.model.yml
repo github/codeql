@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["maplibre/maplibre-native", "*", "inputs.artifact-name", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "inputs.externalData", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "inputs.testSpecArn", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "inputs.testFilter", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "inputs.testType", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "inputs.AWS_DEVICE_FARM_DEVICE_POOL_ARN", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "inputs.AWS_DEVICE_FARM_PROJECT_ARN", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "inputs.testFile", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "inputs.appFile", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "inputs.testPackageType", "code-injection", "generated"]
+     - ["maplibre/maplibre-native", "*", "inputs.appType", "code-injection", "generated"]

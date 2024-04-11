@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["keycloak/keycloak", "*", "inputs.job-name", "code-injection", "generated"]
+     - ["keycloak/keycloak", "*", "inputs.jobs", "code-injection", "generated"]
+     - ["keycloak/keycloak", "*", "inputs.version", "code-injection", "generated"]

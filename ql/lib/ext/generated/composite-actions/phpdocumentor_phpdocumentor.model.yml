@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["phpdocumentor/phpdocumentor", "*", "inputs.passphrase", "code-injection", "generated"]
+     - ["phpdocumentor/phpdocumentor", "*", "inputs.secret-key", "code-injection", "generated"]

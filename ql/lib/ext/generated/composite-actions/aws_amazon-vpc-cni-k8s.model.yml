@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["aws/amazon-vpc-cni-k8s", "*", "inputs.go-package", "code-injection", "generated"]
+     - ["aws/amazon-vpc-cni-k8s", "*", "inputs.work-dir", "code-injection", "generated"]

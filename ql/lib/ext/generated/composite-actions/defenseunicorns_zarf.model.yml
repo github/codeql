@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["defenseunicorns/zarf", "*", "inputs.os", "code-injection", "generated"]

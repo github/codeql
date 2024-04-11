@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["quarto-dev/quarto-cli", "*", "inputs.keychain-pw", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "inputs.keychain", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "inputs.certificate-file", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "inputs.certificate-value", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "inputs.working-dir", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "inputs.bucket", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "inputs.base-url", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "inputs.files", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "inputs.binary-name", "code-injection", "generated"]
+     - ["quarto-dev/quarto-cli", "*", "inputs.version", "code-injection", "generated"]

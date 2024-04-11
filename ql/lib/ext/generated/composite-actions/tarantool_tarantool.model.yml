@@ -1,0 +1,9 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["tarantool/tarantool", "*", "inputs.source", "code-injection", "generated"]
+     - ["tarantool/tarantool", "*", "inputs.chat-id", "code-injection", "generated"]
+     - ["tarantool/tarantool", "*", "inputs.revision", "code-injection", "generated"]
+     - ["tarantool/tarantool", "*", "inputs.submodule", "code-injection", "generated"]

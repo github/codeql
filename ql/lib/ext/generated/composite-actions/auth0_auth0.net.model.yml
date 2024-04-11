@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["auth0/auth0.net", "*", "inputs.nuget-token", "code-injection", "generated"]
+     - ["auth0/auth0.net", "*", "inputs.nuget-directory", "code-injection", "generated"]
+     - ["auth0/auth0.net", "*", "inputs.project-paths", "code-injection", "generated"]

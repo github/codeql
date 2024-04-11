@@ -1,0 +1,14 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["actions/actions-runner-controller", "*", "inputs.image-tag", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "inputs.image-name", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "inputs.arc-controller-namespace", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "inputs.arc-namespace", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "inputs.arc-name", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "inputs.repo-name", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "inputs.repo-owner", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "inputs.workflow-file", "code-injection", "generated"]
+     - ["actions/actions-runner-controller", "*", "inputs.auth-token", "code-injection", "generated"]

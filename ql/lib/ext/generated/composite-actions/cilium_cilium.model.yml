@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["cilium/cilium", "*", "inputs.job-name", "code-injection", "generated"]
+     - ["cilium/cilium", "*", "inputs.lb-acceleration", "code-injection", "generated"]
+     - ["cilium/cilium", "*", "inputs.mutual-auth", "code-injection", "generated"]

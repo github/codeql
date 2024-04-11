@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["tensorflow/datasets", "*", "inputs.extras", "code-injection", "generated"]
+     - ["tensorflow/datasets", "*", "inputs.tf-version", "code-injection", "generated"]

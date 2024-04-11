@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["macvim-dev/macvim", "*", "inputs.contents", "code-injection", "generated"]
+     - ["macvim-dev/macvim", "*", "inputs.formula", "code-injection", "generated"]

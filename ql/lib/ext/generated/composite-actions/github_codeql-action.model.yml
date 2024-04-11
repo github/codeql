@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["github/codeql-action", "*", "inputs.latest_tag", "code-injection", "generated"]
+     - ["github/codeql-action", "*", "inputs.major_version", "code-injection", "generated"]
+     - ["github/codeql-action", "*", "inputs.version", "code-injection", "generated"]
+     - ["github/codeql-action", "*", "inputs.use-all-platform-bundle", "code-injection", "generated"]
+     - ["github/codeql-action", "*", "inputs.expected-config-file-contents", "code-injection", "generated"]

@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: githubsecuritylab/actions-all
+      extensible: sinkModel
+    data:
+     - ["facebookresearch/xformers", "*", "inputs.arch", "code-injection", "generated"]
+     - ["facebookresearch/xformers", "*", "inputs.pytorch_channel", "code-injection", "generated"]
+     - ["facebookresearch/xformers", "*", "inputs.pytorch_version", "code-injection", "generated"]
+     - ["facebookresearch/xformers", "*", "inputs.python", "code-injection", "generated"]
+     - ["facebookresearch/xformers", "*", "inputs.cuda", "code-injection", "generated"]
