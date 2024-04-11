@@ -6,10 +6,10 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| file://:0:0:0:0 | CopyValue: co_await ... | Instruction 'CopyValue: co_await ...' has no successors in function '$@'. | coroutines.cpp:95:20:95:38 | co_returnable_void co_yield_value_void(int) | co_returnable_void co_yield_value_void(int) |
-| file://:0:0:0:0 | CopyValue: co_await ... | Instruction 'CopyValue: co_await ...' has no successors in function '$@'. | coroutines.cpp:99:21:99:40 | co_returnable_value co_yield_value_value(int) | co_returnable_value co_yield_value_value(int) |
-| file://:0:0:0:0 | CopyValue: co_await ... | Instruction 'CopyValue: co_await ...' has no successors in function '$@'. | coroutines.cpp:103:20:103:43 | co_returnable_void co_yield_and_return_void(int) | co_returnable_void co_yield_and_return_void(int) |
-| file://:0:0:0:0 | CopyValue: co_await ... | Instruction 'CopyValue: co_await ...' has no successors in function '$@'. | coroutines.cpp:108:21:108:45 | co_returnable_value co_yield_and_return_value(int) | co_returnable_value co_yield_and_return_value(int) |
+| coroutines.cpp:96:12:96:12 | IndirectMayWriteSideEffect: (unnamed local variable) | Instruction 'IndirectMayWriteSideEffect: (unnamed local variable)' has no successors in function '$@'. | coroutines.cpp:95:20:95:38 | co_returnable_void co_yield_value_void(int) | co_returnable_void co_yield_value_void(int) |
+| coroutines.cpp:100:12:100:12 | IndirectMayWriteSideEffect: (unnamed local variable) | Instruction 'IndirectMayWriteSideEffect: (unnamed local variable)' has no successors in function '$@'. | coroutines.cpp:99:21:99:40 | co_returnable_value co_yield_value_value(int) | co_returnable_value co_yield_value_value(int) |
+| coroutines.cpp:104:12:104:12 | IndirectMayWriteSideEffect: (unnamed local variable) | Instruction 'IndirectMayWriteSideEffect: (unnamed local variable)' has no successors in function '$@'. | coroutines.cpp:103:20:103:43 | co_returnable_void co_yield_and_return_void(int) | co_returnable_void co_yield_and_return_void(int) |
+| coroutines.cpp:109:12:109:12 | IndirectMayWriteSideEffect: (unnamed local variable) | Instruction 'IndirectMayWriteSideEffect: (unnamed local variable)' has no successors in function '$@'. | coroutines.cpp:108:21:108:45 | co_returnable_value co_yield_and_return_value(int) | co_returnable_value co_yield_and_return_value(int) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction
